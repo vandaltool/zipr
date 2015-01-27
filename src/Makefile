@@ -3,7 +3,7 @@ INC=-I../include -I../third_party/ELFIO/elfio-2.2 -I$(SECURITY_TRANSFORMS_HOME)/
 
 
 
-SRCS=zipr.cpp zipr_options.cpp zipr_stats.cpp memory_space.cpp main.cpp
+SRCS=zipr.cpp zipr_options.cpp zipr_stats.cpp memory_space.cpp main.cpp nonce_relocs.cpp
 OBJS=$(subst .cpp,.o, $(SRCS))
 EXE=zipr.exe
 

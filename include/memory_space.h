@@ -41,11 +41,16 @@ struct Range_tCompare
 	}
 };
 
-class MemorySpace_t
+
+// a memory space _is_ a map of range addres to char, with additional functionality.
+class MemorySpace_t : public std::map<RangeAddress_t,char>
 {
 	public:
-		MemorySpace_t():m_opts(NULL) { }
-		MemorySpace_t(Options_t *opts):m_opts(opts) { }
+//		MemorySpace_t():m_opts(NULL) { }
+		MemorySpace_t(Options_t *opts) :
+			m_opts(opts)
+		{ 
+		}
 
 		// range operatations
 		void SplitFreeRange(RangeAddress_t addr);
@@ -62,9 +67,30 @@ class MemorySpace_t
 		int GetRangeCount();
 
 		void PrintMemorySpace(std::ostream &out);
+
+		void PlopBytes(RangeAddress_t addr, const char the_byte[], int num)
+		{
+        		for(int i=0;i<num;i++)
+        		{
+                		PlopByte(addr+i,the_byte[i]);
+        		}
+		}
+		
+		void PlopByte(RangeAddress_t addr, char the_byte)
+		{
+        		if(this->find(addr) == this->end() )
+                		this->SplitFreeRange(addr);
+        		(*this)[addr]=the_byte;
+		}
+		void PlopJump(RangeAddress_t addr)
+		{
+        		char bytes[]={(char)0xe9,(char)0,(char)0,(char)0,(char)0}; // jmp rel8
+                	this->PlopBytes(addr,bytes,sizeof(bytes));
+		}
 	protected:
 		std::set<Range_t, Range_tCompare> free_ranges;   // keep ordered
 		Options_t *m_opts;
+
 	private:
 };
 

@@ -52,6 +52,7 @@ namespace zipr
 #include <zipr_optimizations.h>
 #include <zipr_options.h>
 #include <zipr_stats.h>
+#include <nonce_relocs.h>
 
 };
 

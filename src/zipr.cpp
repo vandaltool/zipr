@@ -137,6 +137,9 @@ void Zipr_t::CreateBinaryFile(const std::string &name)
 	// Convert all 5-byte pins into full fragments
 	OptimizePinnedInstructions();
 
+	NonceRelocs_t nr(memory_space,*elfiop, *m_firp, m_opts);
+	nr.HandleNonceRelocs();
+
 	// now that pinning is done, start emitting unpinnned instructions, and patching where needed.
 	PlopTheUnpinnedInstructions();
 
@@ -622,7 +625,7 @@ void Zipr_t::ReservePinnedInstructions()
 				upinsn->GetAddress()->GetFileID());
 			for(int i=0;i<upinsn->GetDataBits().size();i++)
 			{
-				byte_map[addr+i]=upinsn->GetDataBits()[i];
+				memory_space[addr+i]=upinsn->GetDataBits()[i];
 				memory_space.SplitFreeRange(addr+i);
 				m_stats->total_other_space++;
 			}
@@ -643,8 +646,8 @@ void Zipr_t::ReservePinnedInstructions()
 		two_byte_pins.insert(up);
 		for(int i=0;i<sizeof(bytes);i++)
 		{
-			assert(byte_map.find(addr+i) == byte_map.end() );
-			byte_map[addr+i]=bytes[i];
+			assert(memory_space.find(addr+i) == memory_space.end() );
+			memory_space[addr+i]=bytes[i];
 			memory_space.SplitFreeRange(addr+i);
 		}
 	}
@@ -669,7 +672,7 @@ void Zipr_t::ExpandPinnedInstructions()
 		{
 			if(m_opts.GetVerbose())
 				printf("Found %p can be updated to 5-byte jmp\n", (void*)addr);
-			PlopJump(addr);
+			memory_space.PlopJump(addr);
 
 			/*
 			 * Unreserve those bytes that we reserved before!
@@ -742,7 +745,7 @@ void Zipr_t::Fix2BytePinnedInstructions()
 					(void*)(uintptr_t)upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset());
 
 				five_byte_pins[up] = up.GetRange().GetStart();
-				PlopJump(up.GetRange().GetStart());
+				memory_space.PlopJump(up.GetRange().GetStart());
 				PatchJump(addr, up.GetRange().GetStart());
 
 				two_byte_pins.erase(it++);
@@ -766,8 +769,8 @@ void Zipr_t::Fix2BytePinnedInstructions()
 				char bytes[]={(char)0xeb,(char)0}; // jmp rel8
 				for(int i=0;i<sizeof(bytes);i++)
 				{
-					assert(byte_map.find(up.GetRange().GetStart()+i) == byte_map.end() );
-					byte_map[up.GetRange().GetStart()+i]=bytes[i];
+					assert(memory_space.find(up.GetRange().GetStart()+i) == memory_space.end() );
+					memory_space[up.GetRange().GetStart()+i]=bytes[i];
 					memory_space.SplitFreeRange(up.GetRange().GetStart()+i);
 					assert(!memory_space.IsByteFree(up.GetRange().GetStart()+i));
 				}
@@ -815,7 +818,7 @@ void Zipr_t::OptimizePinnedInstructions()
 		Patch_t	thepatch(addr,UncondJump_rel32);
 
 		patch_list.insert(pair<UnresolvedUnpinned_t,Patch_t>(uu,thepatch));
-		PlopJump(addr);
+		memory_space.PlopJump(addr);
 
 		DISASM d;
 		uu.GetInstruction()->Disassemble(d);
@@ -840,6 +843,7 @@ void Zipr_t::OptimizePinnedInstructions()
 }
 
 
+#if 0
 void Zipr_t::PlopBytes(RangeAddress_t addr, const char the_byte[], int num)
 {
 	for(int i=0;i<num;i++)
@@ -850,9 +854,9 @@ void Zipr_t::PlopBytes(RangeAddress_t addr, const char the_byte[], int num)
 
 void Zipr_t::PlopByte(RangeAddress_t addr, char the_byte)
 {
-	if(byte_map.find(addr) == byte_map.end() )
+	if(memory_space.find(addr) == memory_space.end() )
 		memory_space.SplitFreeRange(addr);
-	byte_map[addr]=the_byte;
+	memory_space[addr]=the_byte;
 }
 
 void Zipr_t::PlopJump(RangeAddress_t addr)
@@ -860,15 +864,16 @@ void Zipr_t::PlopJump(RangeAddress_t addr)
 	char bytes[]={(char)0xe9,(char)0,(char)0,(char)0,(char)0}; // jmp rel8
 	for(int i=0;i<sizeof(bytes);i++)        // don't check bytes 0-1, because they've got the short byte jmp
 	{
-		PlopByte(addr+i,bytes[i]);
+		memory_space.PlopByte(addr+i,bytes[i]);
 	}
 }
+#endif
 
 
 void Zipr_t::CallToNop(RangeAddress_t at_addr)
 {
 	char bytes[]={(char)0x90,(char)0x90,(char)0x90,(char)0x90,(char)0x90}; // nop;nop;nop;nop;nop
-	PlopBytes(at_addr,bytes,sizeof(bytes));
+	memory_space.PlopBytes(at_addr,bytes,sizeof(bytes));
 }
 
 void Zipr_t::PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr)
@@ -877,17 +882,17 @@ void Zipr_t::PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr)
 
 	assert(!memory_space.IsByteFree(at_addr));
 	
-	switch(byte_map[at_addr])
+	switch(memory_space[at_addr])
 	{
 		case (char)0xe8:	/* 5byte call */
 		{
 			assert(off==(uintptr_t)off);
 			assert(!memory_space.AreBytesFree(at_addr+1,4));
 
-			byte_map[at_addr+1]=(char)(off>> 0)&0xff;
-			byte_map[at_addr+2]=(char)(off>> 8)&0xff;
-			byte_map[at_addr+3]=(char)(off>>16)&0xff;
-			byte_map[at_addr+4]=(char)(off>>24)&0xff;
+			memory_space[at_addr+1]=(char)(off>> 0)&0xff;
+			memory_space[at_addr+2]=(char)(off>> 8)&0xff;
+			memory_space[at_addr+3]=(char)(off>>16)&0xff;
+			memory_space[at_addr+4]=(char)(off>>24)&0xff;
 			break;
 		}
 		default:
@@ -902,7 +907,7 @@ void Zipr_t::PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)
 
 	assert(!memory_space.IsByteFree(at_addr));
 	
-	switch(byte_map[at_addr])
+	switch(memory_space[at_addr])
 	{
 		case (char)0xe9:	/* 5byte jump */
 		{
@@ -913,7 +918,7 @@ void Zipr_t::PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)
 			assert(off==(uintptr_t)(char)off);
 
 			assert(!memory_space.IsByteFree(at_addr+1));
-			byte_map[at_addr+1]=(char)off;
+			memory_space[at_addr+1]=(char)off;
 		}
 	}
 }
@@ -1023,7 +1028,7 @@ void Zipr_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Pa
 				"Emitting jump from %p to %p.\n",
 				(void*)cur_addr,
 				(void*)to_addr);
-			PlopJump(cur_addr);
+			memory_space.PlopJump(cur_addr);
 			PatchJump(cur_addr, to_addr);
 			cur_insn = NULL;
 			cur_addr+=5;
@@ -1047,7 +1052,7 @@ void Zipr_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Pa
 		UnresolvedUnpinned_t uu(cur_insn);
 		Patch_t thepatch(cur_addr,UncondJump_rel32);
 		patch_list.insert(pair<UnresolvedUnpinned_t,Patch_t>(uu,thepatch));
-		PlopJump(cur_addr);
+		memory_space.PlopJump(cur_addr);
 		truncated="truncated due to lack of space.";
 		m_stats->total_tramp_space+=5;
 		m_stats->truncated_dollops++;
@@ -1252,7 +1257,7 @@ RangeAddress_t Zipr_t::PlopInstruction(Instruction_t* insn,RangeAddress_t addr)
 	}
 	else
 	{
-		PlopBytes(addr,insn->GetDataBits().c_str(), insn->GetDataBits().length());
+		memory_space.PlopBytes(addr,insn->GetDataBits().c_str(), insn->GetDataBits().length());
 		ret+=insn->GetDataBits().length();
 	}
 
@@ -1268,7 +1273,7 @@ RangeAddress_t Zipr_t::PlopWithTarget(Instruction_t* insn, RangeAddress_t at)
 	RangeAddress_t ret=at;
 	if(insn->GetDataBits().length() >2) 
 	{
-		PlopBytes(ret,insn->GetDataBits().c_str(), insn->GetDataBits().length());
+		memory_space.PlopBytes(ret,insn->GetDataBits().c_str(), insn->GetDataBits().length());
 		PatchInstruction(ret, insn->GetTarget());	
 		ret+=insn->GetDataBits().length();
 		return ret;
@@ -1298,7 +1303,7 @@ RangeAddress_t Zipr_t::PlopWithTarget(Instruction_t* insn, RangeAddress_t at)
 		// two byte JCC
 			char bytes[]={(char)0x0f,(char)0xc0,(char)0x0,(char)0x0,(char)0x0,(char)0x0 }; 	// 0xc0 is a placeholder, overwritten next statement
 			bytes[1]=insn->GetDataBits()[0]+0x10;		// convert to jcc with 4-byte offset.
-			PlopBytes(ret,bytes, sizeof(bytes));
+			memory_space.PlopBytes(ret,bytes, sizeof(bytes));
 			PatchInstruction(ret, insn->GetTarget());	
 			ret+=sizeof(bytes);
 			return ret;
@@ -1309,7 +1314,7 @@ RangeAddress_t Zipr_t::PlopWithTarget(Instruction_t* insn, RangeAddress_t at)
 			// two byte JMP
 			char bytes[]={(char)0xe9,(char)0x0,(char)0x0,(char)0x0,(char)0x0 }; 	
 			bytes[1]=insn->GetDataBits()[0]+0x10;		// convert to jcc with 4-byte offset.
-			PlopBytes(ret,bytes, sizeof(bytes));
+			memory_space.PlopBytes(ret,bytes, sizeof(bytes));
 			PatchInstruction(ret, insn->GetTarget());	
 			ret+=sizeof(bytes);
 			return ret;
@@ -1327,14 +1332,14 @@ RangeAddress_t Zipr_t::PlopWithTarget(Instruction_t* insn, RangeAddress_t at)
 			// +5: jmp target
 			char bytes[]={0,0x5};
 			bytes[0]=insn->GetDataBits()[0];		
-			PlopBytes(ret,bytes, sizeof(bytes));
+			memory_space.PlopBytes(ret,bytes, sizeof(bytes));
 			ret+=sizeof(bytes);
 
-			PlopJump(ret);
+			memory_space.PlopJump(ret);
 			PatchInstruction(ret, insn->GetFallthrough());	
 			ret+=5;
 
-			PlopJump(ret);
+			memory_space.PlopJump(ret);
 			PatchInstruction(ret, insn->GetTarget());	
 			ret+=5;
 	
@@ -1353,16 +1358,16 @@ void Zipr_t::RewritePCRelOffset(RangeAddress_t from_addr,RangeAddress_t to_addr,
 {
 	int new_offset=to_addr-from_addr-insn_length;
 
-	byte_map[from_addr+offset_pos+0]=(new_offset>>0)&0xff;
-	byte_map[from_addr+offset_pos+1]=(new_offset>>8)&0xff;
-	byte_map[from_addr+offset_pos+2]=(new_offset>>16)&0xff;
-	byte_map[from_addr+offset_pos+3]=(new_offset>>24)&0xff;
+	memory_space[from_addr+offset_pos+0]=(new_offset>>0)&0xff;
+	memory_space[from_addr+offset_pos+1]=(new_offset>>8)&0xff;
+	memory_space[from_addr+offset_pos+2]=(new_offset>>16)&0xff;
+	memory_space[from_addr+offset_pos+3]=(new_offset>>24)&0xff;
 }
 
 void Zipr_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)
 {
-	char insn_first_byte=byte_map[from_addr];
-	char insn_second_byte=byte_map[from_addr+1];
+	char insn_first_byte=memory_space[from_addr];
+	char insn_second_byte=memory_space[from_addr+1];
 
 	switch(insn_first_byte)
 	{
@@ -1414,7 +1419,7 @@ void Zipr_t::FillSection(section* sec, FILE* fexe)
 		if(!memory_space.IsByteFree(i))
 		{
 			// get byte and write it into exe.
-			char  b=byte_map[i];
+			char  b=memory_space[i];
 			int file_off=sec->get_offset()+i-start;
 			fseek(fexe, file_off, SEEK_SET);
 			fwrite(&b,1,1,fexe);
@@ -1500,7 +1505,7 @@ void Zipr_t::OutputBinaryFile(const string &name)
 		char b=0;
 		if(!memory_space.IsByteFree(i))
 		{
-			b=byte_map[i];
+			b=memory_space[i];
 		}
 		if(i-start_of_new_space<200)// keep verbose output short enough.
 		{
@@ -1737,7 +1742,7 @@ RangeAddress_t Zipr_t::PlopWithCallback(Instruction_t* insn, RangeAddress_t at)
 	// emit call <callback>
 	{
 	char bytes[]={(char)0xe8,(char)0,(char)0,(char)0,(char)0}; // call rel32
-	PlopBytes(at, bytes, sizeof(bytes)); 
+	memory_space.PlopBytes(at, bytes, sizeof(bytes)); 
 	unpatched_callbacks.insert(pair<Instruction_t*,RangeAddress_t>(insn,at));
 	at+=sizeof(bytes);
 	}
@@ -1745,7 +1750,7 @@ RangeAddress_t Zipr_t::PlopWithCallback(Instruction_t* insn, RangeAddress_t at)
 	// pop bogus ret addr
 	{
 	char bytes[]={(char)0x8d,(char)0x64,(char)0x24,(char)m_firp->GetArchitectureBitWidth()/0x08}; // lea esp, [esp+4]
-	PlopBytes(at, bytes, sizeof(bytes)); 
+	memory_space.PlopBytes(at, bytes, sizeof(bytes)); 
 	at+=sizeof(bytes);
 	}
 

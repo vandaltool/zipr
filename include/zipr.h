@@ -37,9 +37,13 @@ class Stats_t;
 class Zipr_t
 {
 	public:
-		Zipr_t(libIRDB::FileIR_t* p_firp, Options_t &p_opts)
-			: m_firp(p_firp), m_opts(p_opts), memory_space(), 
-			  m_stats(NULL), elfiop(NULL), start_of_new_space(0)
+		Zipr_t(libIRDB::FileIR_t* p_firp, Options_t &p_opts) : 
+			m_firp(p_firp), 
+			m_opts(p_opts), 
+			memory_space(&p_opts), 
+			m_stats(NULL), 
+			elfiop(NULL), 
+			start_of_new_space(0)
 		{ 
 			bss_needed=0;
 			use_stratafier_mode=false;
@@ -69,9 +73,10 @@ class Zipr_t
 		void PrintStats();
 
 		//  emitting bytes.
-		void PlopByte(RangeAddress_t addr, char the_byte);
-		void PlopBytes(RangeAddress_t addr, const char the_byte[], int num);
-		void PlopJump(RangeAddress_t addr);
+// moved to memory_space.Plop*
+//		void PlopByte(RangeAddress_t addr, char the_byte);
+//		void PlopBytes(RangeAddress_t addr, const char the_byte[], int num);
+//		void PlopJump(RangeAddress_t addr);
 
 		// emiting instructions
 		RangeAddress_t PlopInstruction(libIRDB::Instruction_t* insn,RangeAddress_t addr);
@@ -116,7 +121,7 @@ class Zipr_t
 		std::multimap<UnresolvedUnpinned_t,Patch_t> patch_list;
 
 		// map of where bytes will actually go.
-		std::map<RangeAddress_t,char> byte_map;
+//		std::map<RangeAddress_t,char> byte_map;
 
 		// structures to pinned things.
 		std::set<UnresolvedPinned_t> two_byte_pins; 
