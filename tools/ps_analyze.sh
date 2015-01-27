@@ -917,6 +917,8 @@ if [ $($PEASOUP_HOME/tools/is_so.sh a.ncexe) = 0 ]; then
 	perform_step ilr none $SECURITY_TRANSFORMS_HOME/libIRDB/test/ilr.exe $cloneid 
 fi
 
+perform_step selective_cfi none $SECURITY_TRANSFORMS_HOME/tools/selective_cfi/selective_cfi.exe $cloneid 
+
 # generate aspri, and assemble it to bspri
 perform_step generate_spri mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $($PEASOUP_HOME/tools/is_so.sh a.ncexe) $cloneid a.irdb.aspri
 
