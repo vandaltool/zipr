@@ -1,7 +1,7 @@
 security_transforms  http://svn.zephyr-software.com/repos/security_transforms/trunk/
 diablo_toolchain     http://svn.zephyr-software.com/repos/diablo_toolchain/trunk/
-idapro66             http://svn.zephyr-software.com/repos/idapro66/trunk/
-idapro66_sdk         http://svn.zephyr-software.com/repos/idapro66_sdk/trunk/
+idapro67             http://svn.zephyr-software.com/repos/idapro67/trunk/
+idapro67_sdk         http://svn.zephyr-software.com/repos/idapro67_sdk/trunk/
 peasoup_examples     http://svn.zephyr-software.com/repos/peasoup_examples/trunk/
 SMPStaticAnalyzer    http://svn.zephyr-software.com/repos/SMPStaticAnalyzer/trunk
 strata               http://svn.zephyr-software.com/repos/strata/branches/cgc_dev/
