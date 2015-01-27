@@ -14,11 +14,14 @@ analyze_file()
         		echo "IDA 5.* detected."
         		$SMPSA_HOME/SMP-analyze.sh $file
         		;;
-    		*idapro6* )
+    		*idapro6*|*idaproCur*)
         		# only works on IDA 6.0+
         		echo "IDA 6.* detected."
         		screen -D -L -ln -m -a -T xterm sh -x $SMPSA_HOME/SMP-analyze.sh $file
         		;;
+		*)
+			echo Cannot detect IDA version: $IDAROOT
+			exit 1
 	esac
 
 	lines=`cat $file.annot | wc -l`
