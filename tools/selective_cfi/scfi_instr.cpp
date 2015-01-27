@@ -234,10 +234,12 @@ unsigned int SCFI_Instrument::GetNonceSize(Instruction_t* insn)
 
 bool SCFI_Instrument::mark_targets() 
 {
+	int targets=0;
 	for(InstructionSet_t::iterator it=firp->GetInstructions().begin();
 		it!=firp->GetInstructions().end();
 		++it)
 	{
+		targets++;
 		Instruction_t* insn=*it;
 		if(insn->GetIndirectBranchTargetAddress())
 		{
@@ -250,12 +252,13 @@ bool SCFI_Instrument::mark_targets()
 			reloc->SetType(type);
 		}
 	}
+	cout<<"#ATTRIBUTE targets_found="<<std::dec<<targets<<endl;
 	return true;
 }
 
 void SCFI_Instrument::AddReturnCFI(Instruction_t* insn)
 {
-	string reg="rcx";
+	string reg="ecx";
 	string decoration="";
 	int nonce_size=GetNonceSize(insn);
 	unsigned int nonce=GetNonce(insn);
@@ -263,11 +266,11 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn)
 	
 
 	// convert a return to:
-	// 	pop rcx
+	// 	pop ecx
 	// 	cmp <nonce size> PTR [rcx-<nonce size>], Nonce
 	// 	jne slow	; reloc such that strata/zipr can convert slow to new code
 	//			; to handle places where nonce's can't be placed. 
-	// 	jmp rcx
+	// 	jmp ecx
 
 	switch(nonce_size)
 	{
@@ -325,7 +328,9 @@ bool SCFI_Instrument::instrument_jumps()
 				break;
 		}
 	}
+	
 
+	int cfi_checks=0;
 
 	// second pass, insert checking.  can't do this on pass one because
 	// we add IBs, which we'd later decide instrument
@@ -333,9 +338,11 @@ bool SCFI_Instrument::instrument_jumps()
 		it!=to_instrument.end();
 		++it)
 	{
+		cfi_checks++;
 		Instruction_t* insn=*it;
 		AddReturnCFI(insn);
 	}
+	cout<<"#ATTRIBUTE cfi_checks="<<std::dec<<cfi_checks<<endl;
 	return true;
 }
 
@@ -343,7 +350,7 @@ bool SCFI_Instrument::instrument_jumps()
 bool SCFI_Instrument::execute()
 {
 
-	bool success=false;
+	bool success=true;
 
 	success = success && mark_targets();
 	success = success && instrument_jumps();
