@@ -49,6 +49,7 @@ include/zipr_stats.h -text
 src/Makefile -text
 src/main.cpp -text
 src/memory_space.cpp -text
+src/nonce_relocs.cpp -text
 src/zipr.cpp -text
 src/zipr_options.cpp -text
 src/zipr_stats.cpp -text
