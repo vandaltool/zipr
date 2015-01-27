@@ -1,3 +1,10 @@
+sample.globals.o: sample.globals.c
+	gcc -c sample.globals.c -fno-stack-protector
+#	gcc -mcmodel=large -fno-pic -fno-PIC -c sample.globals.c -fno-stack-protector
+	
+sample.globals.exe: sample.globals.o
+	gcc sample.globals.o -o $@
+
 sample.o: sample.c
 	gcc -c sample.c -fno-stack-protector
 	

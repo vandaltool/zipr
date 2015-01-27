@@ -324,10 +324,10 @@ static Instruction_t* addShadowCheck64CallbackHandler(FileIR_t* p_firp, Instruct
 	saveFlags->SetComment("save flags -- shadow check");
 
 	// before:   push reg
-	const char *reg = p_annot->getRegister().c_str();
-	if (reg)
+	Register::RegisterName reg = p_annot->getRegister();
+	if (reg != Register::UNKNOWN)
 	{
-		sprintf(tmp,"push %s", reg); // assume we're calling via register, i.e. no offsets
+		sprintf(tmp,"push %s", Register::toString(reg).c_str()); // assume we're calling via register, i.e. no offsets
 	}			
 	else
 	{
@@ -366,9 +366,9 @@ static Instruction_t* addShadowCheck64CallbackHandler(FileIR_t* p_firp, Instruct
 	i = insertAssemblyAfter(p_firp, ch, tmp);  
 	i->SetComment("pop args");
 
-	const char *reg2 = p_annot->getRegister().c_str();
-	assert(reg2);
-	sprintf(tmp,"mov %s, [rsp]", reg2);
+	const Register::RegisterName reg2 = p_annot->getRegister();
+	assert(reg2 != Register::UNKNOWN);
+	sprintf(tmp,"mov %s, [rsp]", Register::toString(reg2).c_str());
 	i = insertAssemblyAfter(p_firp, i, tmp);  
 
 	i = insertAssemblyAfter(p_firp, i, "lea rsp, [rsp+8]");  
