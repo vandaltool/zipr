@@ -1433,21 +1433,16 @@ void Zipr_t::OutputBinaryFile(const string &name)
 	assert(elfiop);
 //	ELFIO::dump::section_headers(cout,*elfiop);
 
-	string myfn=name;
 	string callback_file_name;
 	ELFIO::elfio *rewrite_headers_elfiop = new ELFIO::elfio;
 	ELFIO::Elf_Half total_sections; 
-#ifdef CGC
-	if(!use_stratafier_mode)
-		myfn+=".stripped";
-#endif
 
 	/*
 	 * Unfortunately, we need to have a special 
 	 * "pass" to rewrite section header lengths.
 	 * Elfio does not work properly otherwise.
 	 */
-	rewrite_headers_elfiop->load(myfn);
+	rewrite_headers_elfiop->load(name);
 	total_sections = rewrite_headers_elfiop->sections.size();
 	for ( ELFIO::Elf_Half i = 0; i < total_sections; ++i )
 	{
@@ -1464,10 +1459,10 @@ void Zipr_t::OutputBinaryFile(const string &name)
 			next_sec=rewrite_headers_elfiop->sections[i+1];
 		extend_section(sec, next_sec);
 	}
-	rewrite_headers_elfiop->save(myfn);
+	rewrite_headers_elfiop->save(name);
 
-	printf("Opening %s\n", myfn.c_str());
-	FILE* fexe=fopen(myfn.c_str(),"r+");
+	printf("Opening %s\n", name.c_str());
+	FILE* fexe=fopen(name.c_str(),"r+");
 	assert(fexe);
 
         // For all sections
@@ -1518,7 +1513,7 @@ void Zipr_t::OutputBinaryFile(const string &name)
 	fclose(to_insert);
 
 	callback_file_name = AddCallbacksToNewSegment(tmpname,end_of_new_space);
-	InsertNewSegmentIntoExe(myfn,callback_file_name,start_of_new_space);
+	InsertNewSegmentIntoExe(name,callback_file_name,start_of_new_space);
 }
 
 
