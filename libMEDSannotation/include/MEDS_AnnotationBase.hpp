@@ -47,13 +47,18 @@ class MEDS_AnnotationBase
 
 		// virtual offset
 		virtual VirtualOffset getVirtualOffset() const { return m_virtualOffset; }
+		virtual void setVirtualOffset(VirtualOffset p_vo) { m_virtualOffset = p_vo; }
 
-		virtual void init() { m_isValid=false; }
+		virtual void setInstructionSize(int p_size) { m_size = p_size; }
+		virtual int getInstructionSize() { return m_size; }
+
+		virtual void init() { m_isValid = false; m_size = 0; }
 
 		virtual bool isFuncAnnotation() const { return false; } // false by default 
 
 	protected:
 		bool m_isValid;
+		int m_size;
 		VirtualOffset  m_virtualOffset;
 };
 

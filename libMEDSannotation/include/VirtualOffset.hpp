@@ -24,7 +24,7 @@
 #include <string>
 #include <sstream>
 
-typedef unsigned ApplicationAddress;
+typedef unsigned long long ApplicationAddress;
 
 #define DEFAULT_LIBRARY_NAME "a.out"
 

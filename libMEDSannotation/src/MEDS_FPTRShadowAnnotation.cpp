@@ -57,20 +57,19 @@ using namespace MEDS_Annotation;
 MEDS_FPTRShadowAnnotation::MEDS_FPTRShadowAnnotation() : MEDS_ShadowAnnotation()
 {
 	setInvalid();	
-#ifdef TO_BE_DEPRECATED
-	m_registerOffset = 0;
-	m_register = Register::UNKNOWN;
-#endif
 }
 
-MEDS_FPTRShadowAnnotation::MEDS_FPTRShadowAnnotation(const string &p_rawLine)
+MEDS_FPTRShadowAnnotation::MEDS_FPTRShadowAnnotation(const string &p_rawLine) : MEDS_ShadowAnnotation()
 {
+	setInvalid();	
 	m_rawInputLine=p_rawLine;
 	parse();
 }
 
 void MEDS_FPTRShadowAnnotation::parse()
 {
+	cerr << "MEDS_FPTRShadowAnnotation::parse(): enter" << endl;
+
 	if (m_rawInputLine.find(" INSTR ")==string::npos)
 		return;
 
@@ -90,30 +89,44 @@ void MEDS_FPTRShadowAnnotation::parse()
 
 	// get offset
 	VirtualOffset vo(m_rawInputLine);
-	m_virtualOffset = vo;
+	setVirtualOffset(vo);
 
 	int shadowId;
 	char buf[2048] = "";
+	int instrSize;
+
 	// 804b3a6      5 INSTR FPTRSHADOW  [esp+12] SHADOWID 7
     // 804c941      5 INSTR FPTRCHECK  [rdx] SHADOWID 7
-	sscanf(m_rawInputLine.c_str(), "%*s %*d %*s %*s %s SHADOWID %d", buf, &shadowId);
+	sscanf(m_rawInputLine.c_str(), "%*x %d %*s %*s %s SHADOWID %d", &instrSize, buf, &shadowId);
 
+	setInstructionSize(instrSize);
 	setExpression(std::string(buf));
 	setShadowId(shadowId);
 
+	cout << "virtual offset: " << hex << getVirtualOffset().getOffset() << dec << endl;
+	cout << "size: " << getInstructionSize() << endl;
+	cout << "expr: " << getExpression() << endl;
+	cout << "shadow id: " << getShadowId() << endl;
+
 	if (shadowId < 0)
+	{
 		setInvalid();
+		cout << "invalid shadow id" << endl;
+		return;
+	}
 
 	if (isCheckShadowId())
 	{
+		cout << "is check shadow id" << endl;
 		if (!verifyCheckShadowExpression(getExpression()))
+		{					
 			setInvalid();
+			cout << "invalid expression" << endl;
+			return;
+		}
 	}
 
-#ifdef TO_BE_DEPRECATED
-	parseRegister(buf, &m_register, &m_registerOffset);
-#endif
-	
+	cout << "valid annotation" << endl;
 	setValid();	
 }
 
@@ -124,16 +137,39 @@ bool MEDS_FPTRShadowAnnotation::verifyCheckShadowExpression(const string& expres
 	return Register::isValidRegister(reg);
 }
 
-const string MEDS_FPTRShadowAnnotation::getRegister() const
+const Register::RegisterName MEDS_FPTRShadowAnnotation::getRegister() const
 {
-	if (Register::isValidRegister(m_expression))
-			return m_expression.substr(1, m_expression.size()-2);
-	else
-			return string();
+	// expected format; [reg]
+	return Register::getRegister(m_expression.substr(1, m_expression.size()-2));
 }
 
-#ifdef TO_BE_DEPRECATED
-int MEDS_FPTRShadowAnnotation::parseRegisterOffset(char *p_buf)
+bool MEDS_FPTRShadowAnnotation::isRIPRelative() const
+{
+	return m_expression.find("rip") != string::npos;
+}
+
+// expect of the form:
+//     [rip+constant]
+//     [rip-constant]
+uintptr_t MEDS_FPTRShadowAnnotation::computeRIPAddress()
+{
+	Register::RegisterName reg;
+	int offset;
+	uintptr_t instructionAddress;
+	uintptr_t address;
+
+	parseRegister(getExpression().c_str(), &reg, &offset);
+
+	if (reg == Register::RIP) 
+	{
+		return getVirtualOffset().getOffset() + getInstructionSize() + offset;
+	}
+	else
+		return 0;
+}
+
+
+int MEDS_FPTRShadowAnnotation::parseRegisterOffset(const char *p_buf)
 {
 	// e.g.: [rsp] [esp+12] [esp-12] 
 	for (int i = 0; i < strlen(p_buf); ++i)
@@ -147,7 +183,7 @@ int MEDS_FPTRShadowAnnotation::parseRegisterOffset(char *p_buf)
 }
 
 // e.g.: [rsp] [esp+12] [esp-12] 
-void MEDS_FPTRShadowAnnotation::parseRegister(char *p_buf, Register::RegisterName *p_register, int *p_registerOffset)
+void MEDS_FPTRShadowAnnotation::parseRegister(const char *p_buf, Register::RegisterName *p_register, int *p_registerOffset)
 {
 	int startReg = -1;
 	int endReg = -1;
@@ -181,4 +217,3 @@ cout << "analyzing: " << p_buf << endl;
 
 	*p_registerOffset = parseRegisterOffset(p_buf);
 }
-#endif

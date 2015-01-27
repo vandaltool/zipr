@@ -58,6 +58,7 @@ void MEDS_AnnotationParser::parseFile(istream &p_inputStream)
 	    	getline(p_inputStream, line);
 		if (line.empty()) continue;
 
+cerr << "MEDS_AnnotationParser: line: " << line << endl;
 
 #define 	ADD_AND_CONTINUE_IF_VALID(type) \
 		{ \

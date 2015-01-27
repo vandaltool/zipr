@@ -71,6 +71,8 @@ Register::RegisterName Register::getRegister(std::string p_reg)
 		return R14;
 	else if (strcasecmp(p_reg.c_str(), "R15") == 0)
 		return R15;
+	else if (strcasecmp(p_reg.c_str(), "RIP") == 0)
+		return RIP;
 
 	else if (strcasecmp(p_reg.c_str(), "EAX") == 0)
 		return EAX;
@@ -212,7 +214,7 @@ bool Register::is64bit(Register::RegisterName p_reg)
 	return p_reg == RAX || p_reg == RBX || p_reg == RCX || p_reg == RDX || 
 		p_reg == RSI || p_reg == RDI || p_reg == RBP || p_reg == RSP ||
 		p_reg == R8 || p_reg == R9 || p_reg == R10 || p_reg == R11 || 
-		p_reg == R12 || p_reg == R13 || p_reg == R14 || p_reg == R15;
+		p_reg == R12 || p_reg == R13 || p_reg == R14 || p_reg == R15 || p_reg == RIP;
 }
 
 std::string Register::toString(Register::RegisterName p_reg)
@@ -237,6 +239,7 @@ std::string Register::toString(Register::RegisterName p_reg)
 	else if (p_reg == R13) return std::string("R13");
 	else if (p_reg == R14) return std::string("R14");
 	else if (p_reg == R15) return std::string("R15");
+	else if (p_reg == RIP) return std::string("RIP");
 
 	else if (p_reg == EAX) return std::string("EAX");
 	else if (p_reg == EBX) return std::string("EBX");
@@ -316,6 +319,7 @@ int Register::getBitWidth(Register::RegisterName p_reg)
 		case R13:
 		case R14:
 		case R15:
+		case RIP:
 			return 64;
 			break;
 		case EAX:

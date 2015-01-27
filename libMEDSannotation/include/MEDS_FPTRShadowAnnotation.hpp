@@ -23,6 +23,7 @@
 
 #include <algorithm>
 #include <string>
+#include <stdint.h>
 #include "VirtualOffset.hpp"
 #include "MEDS_ShadowAnnotation.hpp"
 #include "MEDS_Register.hpp"
@@ -48,34 +49,25 @@ class MEDS_FPTRShadowAnnotation : public MEDS_ShadowAnnotation
 		virtual ~MEDS_FPTRShadowAnnotation() {}
 		virtual const string toString() const { return "fptr shadow: " + m_rawInputLine; }
 
-#ifdef TO_BE_DEPRECATED
-		void setRegister(Register::RegisterName p_reg) { m_register = p_reg; }
-		Register::RegisterName getRegister() const { return m_register; }
-		void setRegisterOffset(int p_offset) { m_registerOffset = p_offset; }
-		int getRegisterOffset() const { return m_registerOffset; }
-#endif
-		const string getRegister() const;
+		bool isRIPRelative() const;
+		uintptr_t computeRIPAddress();
+		
+		const Register::RegisterName getRegister() const;
 		const string& getExpression() const { return m_expression; }
 
 	private:
 		void parse();
-		void setExpression(const string& p_expression) { 
-			std::transform(p_expression.begin(), p_expression.end(), m_expression.begin(), ::tolower);
+		void setExpression(const string p_expression) { 
+			m_expression = p_expression;
+			std::transform(m_expression.begin(), m_expression.end(), m_expression.begin(), ::tolower);
 		}
 		bool verifyCheckShadowExpression(const string& expression);
-#ifdef TO_BE_DEPRECATED
-		int parseRegisterOffset(char*);
-		void parseRegister(char *p_buf, Register::RegisterName *p_register, int *p_registerOffset);
-#endif
+		int parseRegisterOffset(const char*);
+		void parseRegister(const char *p_buf, Register::RegisterName *p_register, int *p_registerOffset);
 
 	private:
 		string m_rawInputLine;
 		string m_expression;
-#ifdef TO_BE_DEPRECATED
-		// @todo: to be deprecated in favor of m_expression
-		Register::RegisterName m_register;
-		int m_registerOffset;
-#endif
 };
 
 }
