@@ -484,9 +484,9 @@ void Zipr_t::OptimizePinnedFallthroughs()
 			  (!up_insn->GetTarget()))
 		{
 			if (m_opts.GetVerbose())
-				printf("Emitting pinned instruction (0x%p) "
-				       "with pinned fallthrough next.\n",
-				       (void*)up_ibta->GetVirtualOffset());
+			{
+				cout<<"Emitting pinned instruction (0x"<<std::hex<<up_ibta->GetVirtualOffset()<< ") with pinned fallthrough next.\n";
+			}
 			m_stats->Hit(Optimizations_t::OptimizationFallthroughPinned);
 
 			/*
@@ -553,7 +553,7 @@ void Zipr_t::PreReserve2ByteJumpTargets()
 						(void*)(addr+1),
 						(void*)(addr+i),
 						(void*)(addr+i+size),
-						(void*)upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset());
+						(void*)(uintptr_t)upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset());
 
 					up.SetRange(Range_t(addr+i, addr+i+size));
 					for (int j = up.GetRange().GetStart(); j<up.GetRange().GetEnd(); j++)
@@ -739,7 +739,7 @@ void Zipr_t::Fix2BytePinnedInstructions()
 					(void*)(addr+1),
 					(void*)(up.GetRange().GetStart()),
 					(void*)(up.GetRange().GetEnd()),
-					(void*)upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset());
+					(void*)(uintptr_t)upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset());
 
 				five_byte_pins[up] = up.GetRange().GetStart();
 				PlopJump(up.GetRange().GetStart());
@@ -776,7 +776,7 @@ void Zipr_t::Fix2BytePinnedInstructions()
 					printf("Patching 2 byte to 2 byte: %p to %p (orig: %p)\n", 
 					(void*)addr,
 					(void*)up.GetRange().GetStart(),
-					(void*)upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset());
+					(void*)(uintptr_t)upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset());
 
 				PatchJump(addr, up.GetRange().GetStart());
 				two_byte_pins.erase(it++);
@@ -1510,7 +1510,7 @@ void Zipr_t::OutputBinaryFile(const string &name)
 		if(i-start_of_new_space<200)// keep verbose output short enough.
 		{
 			if(m_opts.GetVerbose())
-				printf("Writing byte %#2x at %p, fileoffset=%x\n", ((unsigned)b)&0xff, 
+				printf("Writing byte %#2x at %p, fileoffset=%llx\n", ((unsigned)b)&0xff, 
 				(void*)i, (long long)(i-start_of_new_space));
 		}
 		fwrite(&b,1,1,to_insert);
