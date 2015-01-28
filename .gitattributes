@@ -39,6 +39,7 @@ callbacks/watchsyscall/Makefile.in -text
 callbacks/watchsyscall/cgc.s -text
 callbacks/watchsyscall/wa_callbacks.c -text
 include/memory_space.h -text
+include/nonce_relocs.h -text
 include/range.h -text
 include/unresolved.h -text
 include/zipr.h -text
