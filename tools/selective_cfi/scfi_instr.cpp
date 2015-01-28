@@ -184,6 +184,7 @@ static Instruction_t* addCallbackHandlerSequence
 
 Relocation_t* SCFI_Instrument::create_reloc(Instruction_t* insn)
 {
+	cout<<"Creating reloc for "<<insn->GetBaseID()<<endl;
         Relocation_t* reloc=new Relocation_t;
         insn->GetRelocations().insert(reloc);
         firp->GetRelocations().insert(reloc);
@@ -234,7 +235,7 @@ unsigned int SCFI_Instrument::GetNonceSize(Instruction_t* insn)
 
 bool SCFI_Instrument::mark_targets() 
 {
-	int targets=0;
+	int targets=0, ind_targets=0;
 	for(InstructionSet_t::iterator it=firp->GetInstructions().begin();
 		it!=firp->GetInstructions().end();
 		++it)
@@ -243,6 +244,7 @@ bool SCFI_Instrument::mark_targets()
 		Instruction_t* insn=*it;
 		if(insn->GetIndirectBranchTargetAddress())
 		{
+			ind_targets++;
 			string type;
 			type="cfi_nonce=";
 			type+=to_string(GetNonce(insn));
@@ -250,15 +252,20 @@ bool SCFI_Instrument::mark_targets()
 			Relocation_t* reloc=create_reloc(insn);
 			reloc->SetOffset(-GetNonceSize(insn));
 			reloc->SetType(type);
+			cout<<"Found indtarget  for "<<std::dec<<insn->GetBaseID()<<":"<<insn->GetComment()<<endl;
 		}
 	}
+	cout<<"#ATTRIBUTE ind_targets_found="<<std::dec<<ind_targets<<endl;
 	cout<<"#ATTRIBUTE targets_found="<<std::dec<<targets<<endl;
 	return true;
 }
 
 void SCFI_Instrument::AddReturnCFI(Instruction_t* insn)
 {
-	string reg="ecx";
+	string reg="ecx";	// 32-bit reg 
+	if(firp->GetArchitectureBitWidth()==64)
+		reg="rcx";	// 64-bit reg.
+
 	string decoration="";
 	int nonce_size=GetNonceSize(insn);
 	unsigned int nonce=GetNonce(insn);
@@ -267,7 +274,7 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn)
 
 	// convert a return to:
 	// 	pop ecx
-	// 	cmp <nonce size> PTR [rcx-<nonce size>], Nonce
+	// 	cmp <nonce size> PTR [ecx-<nonce size>], Nonce
 	// 	jne slow	; reloc such that strata/zipr can convert slow to new code
 	//			; to handle places where nonce's can't be placed. 
 	// 	jmp ecx
@@ -287,7 +294,8 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn)
 
 	// insert the pop/checking code.
 	insertAssemblyBefore(firp,insn,string("pop ")+reg);
-	tmp=insertAssemblyAfter(firp,insn,string("cmp ")+decoration+" ["+reg+"], "+to_string(nonce));
+	tmp=insertAssemblyAfter(firp,insn,string("cmp ")+decoration+
+		" ["+reg+"-"+to_string(nonce_size)+"], "+to_string(nonce));
     jne=tmp=insertAssemblyAfter(firp,tmp,"jne 0");
 
 	// convert the ret instruction to a jmp ecx
@@ -352,8 +360,10 @@ bool SCFI_Instrument::execute()
 
 	bool success=true;
 
+	success = success && instrument_jumps();	// to handle moving of relocs properly if
+							// an insn is both a IBT and a IB,
+							// we instrument first, then add relocs for targets
 	success = success && mark_targets();
-	success = success && instrument_jumps();
 
 	return success;
 }

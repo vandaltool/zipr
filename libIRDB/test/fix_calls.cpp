@@ -326,7 +326,7 @@ static void convert_to_jump(Instruction_t* insn, int offset)
 	string newbits=insn->GetDataBits();
 	DISASM d;
 	insn->Disassemble(d);
-	/* this case is odd, handle it specially (and more easy to understand */
+	/* this case is odd, handle it specially (and more easily to understand) */
 	if(strcmp(d.CompleteInstr, "call qword [rsp]")==0)
 	{
 		char buf[100];
@@ -335,30 +335,35 @@ static void convert_to_jump(Instruction_t* insn, int offset)
 		return;
 	}
 
+
+	int op_index=0;
+	if((insn->GetDataBits()[0]&0xf0)==0x40)
+		op_index++;
+
 	// on the opcode.  assume no prefix here 	
-	switch((unsigned char)newbits[0])
+	switch((unsigned char)newbits[op_index])
 	{
 		// opcodes: ff /2 and ff /3
 		case 0xff:	
 		{
 			// opcode: ff /2
 			// call r/m32, call near, absolute indirect, address given in r/m32
-			if(((((unsigned char)newbits[1])&0x38)>>3) == 2)
+			if(((((unsigned char)newbits[op_index+1])&0x38)>>3) == 2)
 			{
 				newbits=adjust_esp_offset(newbits,offset);
 				// convert to jmp r/m32
 				// opcode: FF /4
-				newbits[1]&=0xC7;	// remove old bits
-				newbits[1]|=(0x4<<3);	// set r/m field to 4
+				newbits[op_index+1]&=0xC7;	// remove old bits
+				newbits[op_index+1]|=(0x4<<3);	// set r/m field to 4
 			}
 			// opcode: ff /3
 			// call m16:32, call far, absolute indirect, address given in m16:32	
-			else if(((((unsigned char)newbits[1])&0x38)>>3) == 3)
+			else if(((((unsigned char)newbits[op_index+1])&0x38)>>3) == 3)
 			{
 				// convert to jmp m16:32
 				// opcode: FF /5
-				newbits[1]&=0xC7;	// remove old bits
-				newbits[1]|=(0x5<<3);	// set r/m field to 5
+				newbits[op_index+1]&=0xC7;	// remove old bits
+				newbits[op_index+1]|=(0x5<<3);	// set r/m field to 5
 			}
 			else
 				assert(0);
@@ -370,7 +375,7 @@ static void convert_to_jump(Instruction_t* insn, int offset)
 		{
 			// convert to jmp ptr16:32
 			// opcode: EA cp
-			newbits[0]=0xEA;
+			newbits[op_index+0]=0xEA;
 			break;
 		}
 
@@ -380,7 +385,7 @@ static void convert_to_jump(Instruction_t* insn, int offset)
 		{
 			// convert to jmp rel32
 			// opcode: E9 cd
-			newbits[0]=0xE9;
+			newbits[op_index+0]=0xE9;
 			break;
 		}
 
@@ -402,6 +407,7 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 {
 	/* record the possibly new indirect branch target if this call gets fixed */
 	Instruction_t* newindirtarg=insn->GetFallthrough();
+	bool has_rex=false;
 
 	/* disassemble */
         DISASM disasm;
@@ -419,8 +425,19 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 	/* if the first byte isn't a call opcode, there's some odd prefixing and we aren't handling it.
 	 * this comes up most frequently in a call gs:0x10 instruction where an override prefix specifes the gs: part.
 	 */
-	if( (insn->GetDataBits()[0]!=(char)0xff) && (insn->GetDataBits()[0]!=(char)0xe8) && (insn->GetDataBits()[0]!=(char)0x9a) )
+	if(insn->GetDataBits()[0]&0x40==0x40)
+	{
+		// has rex!
+		has_rex=true;
+	}
+	else if( (insn->GetDataBits()[0]!=(char)0xff) && 
+		 (insn->GetDataBits()[0]!=(char)0xe8) && 
+		 (insn->GetDataBits()[0]!=(char)0x9a) )
+	{
+		cout<<"Found odd prefixing.\n  Not handling **********************************************"<<endl;
+		assert(0);
 		return;
+	}
 
 	if(getenv("VERBOSE_FIX_CALLS"))
 	{
@@ -606,10 +623,17 @@ void fix_all_calls(FileIR_t* firp, bool print_stats, bool fix_all)
 				fix_call(insn, firp);
 			}
 			else
+			{
+				if(getenv("VERBOSE_FIX_CALLS"))
+					cout<<"no fix needed for "<<insn->GetAddress()->GetVirtualOffset()<<":"<<insn->getDisassembly()<<endl;
 				not_fixed_calls++;
+			}
 		}
+		
 		else
 		{
+			if(getenv("VERBOSE_FIX_CALLS"))
+				cout<<"Not a call "<<insn->GetAddress()->GetVirtualOffset()<<":"<<insn->getDisassembly()<<endl;
 			not_calls++;
 		}
 	}
