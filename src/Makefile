@@ -1,5 +1,5 @@
 
-INC=-I../include -I../third_party/ELFIO/elfio-2.2 -I$(SECURITY_TRANSFORMS_HOME)/include -I$(SECURITY_TRANSFORMS_HOME)/libIRDB/include  -I$(SECURITY_TRANSFORMS_HOME)/beaengine/include
+INC=-I../include -I../third_party/ELFIO/elfio-2.2 -I$(SECURITY_TRANSFORMS_HOME)/include -I$(SECURITY_TRANSFORMS_HOME)/libIRDB/include  -I$(SECURITY_TRANSFORMS_HOME)/beaengine/include -I${SECURITY_TRANSFORMS_HOME}/tools/transforms/
 
 
 
@@ -8,9 +8,10 @@ OBJS=$(subst .cpp,.o, $(SRCS))
 EXE=zipr.exe
 
 CXX=g++
-CXXFLAGS=$(INC) -g # -DCGC
+CXXFLAGS=$(INC) -g -DCGC
 LDFLAGS=-L$(SECURITY_TRANSFORMS_HOME)/lib
-LIBS=-lpqxx -lpq -lIRDB-core -lBeaEngine_s_d
+LIBS=-lpqxx -lpq -lIRDB-core -lBeaEngine_s_d -ltransform ${SECURITY_TRANSFORMS_HOME}/tools/transforms/Rewrite_Utility.o
+
 
 
 

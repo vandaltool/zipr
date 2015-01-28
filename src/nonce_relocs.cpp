@@ -1,11 +1,34 @@
 
 #include <zipr_all.h>
 #include <string>
+#include "utils.hpp"
+#include "Rewrite_Utility.hpp"
+
 
 using namespace libIRDB;
 using namespace std;
 using namespace zipr;
 using namespace ELFIO;
+
+static Instruction_t* addNewAssembly(FileIR_t* firp, Instruction_t *p_instr, string p_asm)
+{
+        Instruction_t* newinstr;
+        if (p_instr)
+                newinstr = allocateNewInstruction(firp,p_instr->GetAddress()->GetFileID(), p_instr->GetFunction());
+        else
+                newinstr = allocateNewInstruction(firp,BaseObj_t::NOT_IN_DATABASE, NULL);
+
+        firp->RegisterAssembly(newinstr, p_asm);
+
+        if (p_instr)
+        {
+                newinstr->SetFallthrough(p_instr->GetFallthrough());
+                p_instr->SetFallthrough(newinstr);
+        }
+
+        return newinstr;
+}
+
 
 
 bool NonceRelocs_t::IsNonceRelocation(Relocation_t& reloc)
@@ -64,6 +87,76 @@ void NonceRelocs_t::HandleNonceRelocation(Instruction_t &insn, Relocation_t& rel
 
 }
 
+void NonceRelocs_t::AddSlowPathInstructions()
+{
+
+	Instruction_t* slow_path=NULL, *tmp=NULL;
+
+	slow_path=tmp = addNewAssembly(&m_firp, NULL, "mov eax, 1");
+	          tmp = insertAssemblyAfter(&m_firp,tmp,"int 0x80",NULL);
+
+	for(InstructionSet_t::iterator it=slow_path_nonces.begin();
+		it!=slow_path_nonces.end();
+		++it
+	   )
+	{
+		Instruction_t* insn=*it;
+		Relocation_t* reloc=FindNonceRelocation(insn);
+		assert(reloc);
+
+		string reg="ecx";
+		if(m_firp.GetArchitectureBitWidth()==64)
+			reg="rcx";
+
+		string assembly="cmp "+reg+", "+to_string(insn->GetIndirectBranchTargetAddress()->GetVirtualOffset());
+        	Instruction_t* after = insertAssemblyBefore(&m_firp,slow_path,assembly);
+		Instruction_t* jne   = insertAssemblyAfter(&m_firp, slow_path, "je 0", insn);
+	}
+
+	for(InstructionSet_t::iterator it=m_firp.GetInstructions().begin();
+		it!=m_firp.GetInstructions().end();
+		++it
+	   )
+	{
+		Instruction_t* insn=*it;
+		Relocation_t* reloc=FindSlowpathRelocation(insn);
+		if(reloc)
+			insn->SetTarget(slow_path);	
+	}
+
+	m_firp.AssembleRegistry();	// resolve all assembly into actual bits.
+}
+
+Relocation_t* NonceRelocs_t::FindSlowpathRelocation(Instruction_t* insn)
+{
+	Instruction_t* first_slow_path_insn=NULL;
+	RelocationSet_t::iterator rit;
+	for( rit=insn->GetRelocations().begin(); rit!=insn->GetRelocations().end(); ++rit)
+	{
+		Relocation_t& reloc=*(*rit);
+		if(reloc.GetType()=="slow_cfi_path")
+		{
+			return &reloc;
+		}
+	}
+	return NULL;
+}
+
+Relocation_t* NonceRelocs_t::FindNonceRelocation(Instruction_t* insn)
+{
+	Instruction_t* first_slow_path_insn=NULL;
+	RelocationSet_t::iterator rit;
+	for( rit=insn->GetRelocations().begin(); rit!=insn->GetRelocations().end(); ++rit)
+	{
+		Relocation_t& reloc=*(*rit);
+		if(IsNonceRelocation(reloc))
+		{
+			return &reloc;
+		}
+	}
+	return NULL;
+}
+
 void NonceRelocs_t::HandleNonceRelocs()
 {
 	int handled=0;
@@ -76,22 +169,18 @@ void NonceRelocs_t::HandleNonceRelocs()
 		Instruction_t& insn=*(*iit);
 		insns++;
 
-		// for each relocation on this instruction
-		RelocationSet_t::iterator rit;
-		for( rit=insn.GetRelocations().begin(); rit!=insn.GetRelocations().end(); ++rit)
+		Relocation_t* reloc=FindNonceRelocation(&insn);
+		if(reloc)
 		{
-			relocs++;
-			Relocation_t& reloc=*(*rit);
-			if(IsNonceRelocation(reloc))
-			{
-				HandleNonceRelocation(insn,reloc);
-				handled++;
-			}
+			HandleNonceRelocation(insn,*reloc);
+			handled++;
 		}
 	}
+
+	AddSlowPathInstructions();
+
 	cout<<"#ATTRIBUTE nonce_references="<< std::dec<<handled<<endl;
-	cout<<"#ATTRIBUTE relocations="<< std::dec<<handled<<endl;
-	cout<<"#ATTRIBUTE instructions="<< std::dec<<handled<<endl;
+	cout<<"#ATTRIBUTE instructions="<< std::dec<<insns<<endl;
 	cout<<"#ATTRIBUTE slow_path_nonces="<< std::dec<<slow_path_nonces.size()<<endl;
 
 }

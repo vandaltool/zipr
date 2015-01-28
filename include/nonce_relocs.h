@@ -55,6 +55,9 @@ class NonceRelocs_t
 		int GetNonceValue(libIRDB::Relocation_t& reloc);
 		int GetNonceSize(libIRDB::Relocation_t& reloc);
 		void HandleNonceRelocation(libIRDB::Instruction_t& insn, libIRDB::Relocation_t& reloc);
+		libIRDB::Relocation_t* FindNonceRelocation(libIRDB::Instruction_t* insn);
+		void AddSlowPathInstructions();
+		libIRDB::Relocation_t* FindSlowpathRelocation(libIRDB::Instruction_t* insn);
 
 
 
@@ -68,7 +71,7 @@ class NonceRelocs_t
 
 		// the set of instructions where we were asked to insert a nonce, but 
 		// couldn't.  This will be necessary when we need to emit code for the slow path 
-		std::set<libIRDB::Instruction_t*> slow_path_nonces;
+		libIRDB::InstructionSet_t slow_path_nonces;
 
 		
 };
