@@ -8,7 +8,7 @@ OBJS=$(subst .cpp,.o, $(SRCS))
 EXE=zipr.exe
 
 CXX=g++
-CXXFLAGS=$(INC) -g  -DCGC
+CXXFLAGS=$(INC) -g # -DCGC
 LDFLAGS=-L$(SECURITY_TRANSFORMS_HOME)/lib
 LIBS=-lpqxx -lpq -lIRDB-core -lBeaEngine_s_d
 
