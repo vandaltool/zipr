@@ -8,8 +8,8 @@ export PIN_HOME=$PEASOUP_HOME/tools/pin
 export NICECAP_HOME=$PEASOUP_UMBRELLA_DIR/nicecap_example
 export SMPSA_HOME=$PEASOUP_UMBRELLA_DIR/SMPStaticAnalyzer
 export STRATAFIER=$PEASOUP_UMBRELLA_DIR/stratafier
-export IDAROOT=$PEASOUP_UMBRELLA_DIR/idapro65/
-export IDASDK=$PEASOUP_UMBRELLA_DIR/idapro65_sdk
+export IDAROOT=$PEASOUP_UMBRELLA_DIR/idaproCur
+export IDASDK=$PEASOUP_UMBRELLA_DIR/idaproCur_sdk
 export STRATA=$PEASOUP_UMBRELLA_DIR/strata
 export STRATA_HOME=$STRATA
 export STRATA32=$PEASOUP_UMBRELLA_DIR/strata32
@@ -23,7 +23,8 @@ then
 fi
 
 #Get IDAPRO to work with no errors
-export TVHEADLESS=1
+#export TVHEADLESS=1
+# just not needed, and annoying as hell when trying to debug ida.
 
 source ./irdb_vars
 
