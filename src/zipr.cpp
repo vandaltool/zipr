@@ -1466,8 +1466,15 @@ void Zipr_t::OutputBinaryFile(const string &name)
 	}
 	rewrite_headers_elfiop->save(name);
 
-	printf("Opening %s\n", name.c_str());
-	FILE* fexe=fopen(name.c_str(),"r+");
+
+        string myfn=name;
+#ifdef CGC
+        if(!use_stratafier_mode)
+                myfn+=".stripped";
+#endif
+
+	printf("Opening %s\n", myfn.c_str());
+	FILE* fexe=fopen(myfn.c_str(),"r+");
 	assert(fexe);
 
         // For all sections
