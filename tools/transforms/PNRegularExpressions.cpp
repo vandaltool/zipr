@@ -65,12 +65,13 @@ PNRegularExpressions::PNRegularExpressions()
 {
 	int errcode;
   
+	// match "and esp, *"
 	if (regcomp(&regex_and_esp, FIRN("[[:blank:]]*and[[:blank:]]+%sp[[:blank:]]*,[[:blank:]]*(.+)[[:blank:]]*"), REG_EXTENDED | REG_ICASE) != 0)
 	{
 		fprintf(stderr,"Error: regular expression for and esp to compile\n");
 		exit(1);
 	}
-
+	// match "ret"
 	if (regcomp(&regex_ret, FIRN("^ret[[:blank:]]*$"), REG_EXTENDED | REG_ICASE) != 0)
 	{
 		fprintf(stderr,"Error: regular expression for ret failed to compile\n");
@@ -83,13 +84,15 @@ PNRegularExpressions::PNRegularExpressions()
 		fprintf(stderr,"Error: regular expression for lea hack failed to compile\n");
 		exit(1);
 	}
-	
+
+	// match "[esp]"	
 	if(regcomp(&regex_esp_only, FIRN(".*\\[(%sp)\\].*"),REG_EXTENDED | REG_ICASE) !=0)
 	{
 		fprintf(stderr,"Error: regular expression for esp scaled addresses failed\n");
 		exit(1);
 	}
 
+	// match "[esp+reg*scale+disp]"	
 	if(regcomp(&regex_esp_scaled, FIRN(".*\\[%sp[+].*[+](.+)\\].*"),REG_EXTENDED | REG_ICASE) !=0)
 	{
 		fprintf(stderr,"Error: regular expression for esp scaled addresses failed\n");

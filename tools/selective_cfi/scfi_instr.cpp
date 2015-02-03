@@ -184,7 +184,6 @@ static Instruction_t* addCallbackHandlerSequence
 
 Relocation_t* SCFI_Instrument::create_reloc(Instruction_t* insn)
 {
-	cout<<"Creating reloc for "<<insn->GetBaseID()<<endl;
         Relocation_t* reloc=new Relocation_t;
         insn->GetRelocations().insert(reloc);
         firp->GetRelocations().insert(reloc);
@@ -266,6 +265,22 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn)
 	if(firp->GetArchitectureBitWidth()==64)
 		reg="rcx";	// 64-bit reg.
 
+#ifdef CGC
+	// insert the pop/checking code.
+//	Instruction_t* after=insertAssemblyBefore(firp,insn,string("pop ")+reg);
+	Instruction_t* after=insn;
+
+	string jmpBits=getJumpDataBits();
+	
+        after->SetDataBits(jmpBits);
+        after->SetComment(insn->getDisassembly()+" ; scfi");
+	createNewRelocation(firp,after,"slow_cfi_path",0);
+	after->SetFallthrough(NULL);
+	after->SetTarget(after);
+	return;
+	
+#else
+
 	string decoration="";
 	int nonce_size=GetNonceSize(insn);
 	unsigned int nonce=GetNonce(insn);
@@ -299,6 +314,7 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn)
     jne=tmp=insertAssemblyAfter(firp,tmp,"jne 0");
 
 	// convert the ret instruction to a jmp ecx
+	cout<<"Converting "<<dec<<tmp->GetFallthrough()->GetBaseID()<<":"<<tmp->GetFallthrough()->getDisassembly()<<"to jmp+reg"<<endl;
 	setInstructionAssembly(firp,tmp->GetFallthrough(), string("jmp ")+reg, NULL,NULL);
 
 	// set the jne's target to itself, and create a reloc that zipr/strata will have to resolve.
@@ -308,6 +324,7 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn)
 	reloc->SetOffset(0);
 
 	return;
+#endif
 }
 
 bool SCFI_Instrument::instrument_jumps() 
@@ -329,7 +346,8 @@ bool SCFI_Instrument::instrument_jumps()
 			case  CallType:
 				// not yet implemented.
 				break;
-			case  RetType: to_instrument.insert(insn);
+			case  RetType: 
+				to_instrument.insert(insn);
 				break;
 
 			default:

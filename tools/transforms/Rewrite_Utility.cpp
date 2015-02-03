@@ -192,6 +192,19 @@ void setInstructionDataBits(FileIR_t* virp, Instruction_t *p_instr, string p_dat
 	virp->GetInstructions().insert(p_instr);
 }
 
+
+string getJumpDataBits()
+{
+	string dataBits;
+	dataBits.resize(5);
+	dataBits[0] = 0xe9;
+	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
+	dataBits[2] = 0x00; // value doesn't matter -- we will fill it in later
+	dataBits[3] = 0x00; // value doesn't matter -- we will fill it in later
+	dataBits[4] = 0x00; // value doesn't matter -- we will fill it in later
+	return dataBits;
+}
+
 // jns - jump not signed
 string getJnsDataBits()
 {
@@ -312,3 +325,16 @@ Instruction_t* insertCanaryCheckBefore(FileIR_t* virp,Instruction_t *first, unsi
 	return next;
 
 }
+
+Relocation_t* createNewRelocation(FileIR_t* firp, Instruction_t* insn, string type, int offset)
+{
+        Relocation_t* reloc=new Relocation_t;
+        insn->GetRelocations().insert(reloc);
+        firp->GetRelocations().insert(reloc);
+
+	reloc->SetType(type);
+	reloc->SetOffset(offset);
+
+        return reloc;
+}
+

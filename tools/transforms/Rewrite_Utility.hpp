@@ -58,6 +58,7 @@ Instruction_t* allocateNewInstruction(FileIR_t* virp, db_id_t p_fileID,Function_
 Instruction_t* allocateNewInstruction(FileIR_t* virp, Instruction_t *template_instr);
 void setInstructionDataBits(FileIR_t* virp, Instruction_t *p_instr, string p_dataBits, Instruction_t *p_fallThrough, Instruction_t *p_target);
 void setInstructionAssembly(FileIR_t* virp,Instruction_t *p_instr, string p_assembly, Instruction_t *p_fallThrough, Instruction_t *p_target);
+string getJumpDataBits();
 string getJnsDataBits();
 string getJzDataBits();
 string getJnzDataBits();
@@ -68,4 +69,8 @@ Instruction_t* getHandlerCode(FileIR_t* virp, Instruction_t* fallthrough, mitiga
 //Returns the pointer for the copied "first" instruction, which is at the
 //end of the canary check block of instructions. 
 Instruction_t* insertCanaryCheckBefore(FileIR_t* virp,Instruction_t *first, unsigned int canary_val, int ret_offset, Instruction_t *fail_code); 
+
+Relocation_t* createNewRelocation(FileIR_t* firp, Instruction_t* insn, string type, int offset);
+
+
 

@@ -2475,7 +2475,7 @@ int PNTransformDriver::prologue_offset_to_actual_offset(ControlFlowGraph_t* cfg,
 				// note: offset is negative
 			
 				// sanity check that the allocation iss bigger than the neg offset
-				assert((int)ssize==(unsigned)ssize);
+				assert((unsigned)ssize==(unsigned)ssize);
 				if(-offset>(int)ssize)
 					return offset;
 
@@ -2505,7 +2505,9 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 
 	int max = PNRegularExpressions::MAX_MATCHES;
 	regmatch_t pmatch[max];
+	regmatch_t pmatch2[max];
 	memset(pmatch, 0,sizeof(regmatch_t) * max);
+	memset(pmatch2, 0,sizeof(regmatch_t) * max);
 
 	string matched="";
 	string disasm_str = "";
@@ -2805,8 +2807,21 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 
 		//TODO: I don't think this can happen but just in case
 		assert(offset >= 0);
-
-		int new_offset = layout->GetNewOffsetESP(offset);
+	
+		
+		// an ESP+<scale>+<const> that points at 
+		// the saved reg area isn't likely realy indexing the saved regs. assume it's in the 
+		// local var area instead.
+		int new_offset = 0; 
+		if((int)offset==(int)layout->GetOriginalAllocSize() && 
+			regexec(&(pn_regex->regex_esp_scaled), disasm_str.c_str(), 5, pmatch2, 0)==0)
+		{
+			if(verbose_log)
+				cerr<<"JDH: PNTransformDriver: found esp+scale+const pointing at saved regs."<<endl;	
+			new_offset=layout->GetNewOffsetESP(offset-1)+1;
+		}
+		else
+			new_offset=layout->GetNewOffsetESP(offset);
 		
 		stringstream ss;
 		ss<<hex<<new_offset;
