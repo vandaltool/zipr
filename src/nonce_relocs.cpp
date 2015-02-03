@@ -1,6 +1,7 @@
 
 #include <zipr_all.h>
 #include <string>
+#include <algorithm>
 #include "utils.hpp"
 #include "Rewrite_Utility.hpp"
 
@@ -9,6 +10,7 @@ using namespace libIRDB;
 using namespace std;
 using namespace zipr;
 using namespace ELFIO;
+
 
 static Instruction_t* addNewAssembly(FileIR_t* firp, Instruction_t *p_instr, string p_asm)
 {
@@ -90,33 +92,76 @@ void NonceRelocs_t::HandleNonceRelocation(Instruction_t &insn, Relocation_t& rel
 void NonceRelocs_t::AddSlowPathInstructions()
 {
 
-	Instruction_t* slow_path=NULL, *tmp=NULL;
+	InstructionSet_t::iterator it;
+        for( it=m_firp.GetInstructions().begin(); it!=m_firp.GetInstructions().end(); ++it)
+        {
+                Instruction_t* insn=*it;
+                Relocation_t* reloc=FindSlowpathRelocation(insn);
+                if(reloc)
+                        break;
+        }
+	// exited loop normally, or hit the break statement?
+	if(it==m_firp.GetInstructions().end())
+	{
+		cout<<"Found no slow paths to link, skipping slow-path code."<<endl;
+		return;
+	}
+	
 
+// optimization
+// find out if slow path insns are even needed!
+
+	Instruction_t* slow_path=NULL, *exit_node=NULL, *tmp=NULL;
+	string reg="ecx";
+	if(m_firp.GetArchitectureBitWidth()==64)
+		reg="rcx";
+
+	// call exit.
+	exit_node=
 	slow_path=tmp = addNewAssembly(&m_firp, NULL, "mov eax, 1");
 	          tmp = insertAssemblyAfter(&m_firp,tmp,"int 0x80",NULL);
 
-	for(InstructionSet_t::iterator it=slow_path_nonces.begin();
-		it!=slow_path_nonces.end();
-		++it
-	   )
+	for(it=slow_path_nonces.begin(); it!=slow_path_nonces.end(); ++it)
 	{
 		Instruction_t* insn=*it;
 		Relocation_t* reloc=FindNonceRelocation(insn);
 		assert(reloc);
 
-		string reg="ecx";
-		if(m_firp.GetArchitectureBitWidth()==64)
-			reg="rcx";
 
 		string assembly="cmp "+reg+", "+to_string(insn->GetIndirectBranchTargetAddress()->GetVirtualOffset());
+		// insert before acts weird, and really does enough bookkeeping to insert-after in a way to mimic insert before.
         	Instruction_t* after = insertAssemblyBefore(&m_firp,slow_path,assembly);
 		Instruction_t* jne   = insertAssemblyAfter(&m_firp, slow_path, "je 0", insn);
+		exit_node=after;
 	}
 
-	for(InstructionSet_t::iterator it=m_firp.GetInstructions().begin();
-		it!=m_firp.GetInstructions().end();
-		++it
-	   )
+#ifdef CGC
+	// CGC  needs to keep from faulting, so we have to check to make sure the IB is an intra-module IB.
+	// if not, we terminate immediately.
+	// so, we emit this sequence before we try the slow path:
+	// 	pop rcx (get ret addr)
+	//	cmp rcx, start_segement_addr
+	//	jlt terminate
+	//	cmp rcx, end_segment_addr
+	//	jgt terminate
+	// After we're sure it's in this segment, we can 
+	// go ahead and check for a nonce that we layed down previously.
+	// 	cmp byte [rcx-1], 0xf4
+	// 	jeq slow_path
+
+	Instruction_t* after = insertAssemblyBefore(&m_firp,slow_path,"pop "+reg);
+	tmp = insertAssemblyAfter(&m_firp,slow_path,"cmp "+reg+", 0x12345678");
+	min_addr_update.insert(tmp);
+        tmp = insertAssemblyAfter(&m_firp,tmp,"jl 0",exit_node);        // terminate
+	tmp = insertAssemblyAfter(&m_firp,tmp,"cmp "+reg+", 0x87654321");
+	max_addr_update.insert(tmp);
+        tmp = insertAssemblyAfter(&m_firp,tmp,"jg 0",exit_node);        // terminate
+        tmp = insertAssemblyAfter(&m_firp,tmp,"cmp byte ["+reg+"-1], 0xf4");
+        tmp = insertAssemblyAfter(&m_firp,tmp,"jne 0",after);       // finally, go to the slow path checks when a nonce didn't work.
+        tmp = insertAssemblyAfter(&m_firp,tmp,"jmp "+reg);
+#endif // CGC
+
+	for( it=m_firp.GetInstructions().begin(); it!=m_firp.GetInstructions().end(); ++it)
 	{
 		Instruction_t* insn=*it;
 		Relocation_t* reloc=FindSlowpathRelocation(insn);
@@ -124,22 +169,28 @@ void NonceRelocs_t::AddSlowPathInstructions()
 			insn->SetTarget(slow_path);	
 	}
 
+	m_firp.SetBaseIDS();		// assign a unique ID to each insn.
 	m_firp.AssembleRegistry();	// resolve all assembly into actual bits.
 }
 
-Relocation_t* NonceRelocs_t::FindSlowpathRelocation(Instruction_t* insn)
+Relocation_t* NonceRelocs_t::FindRelocation(Instruction_t* insn, string type)
 {
 	Instruction_t* first_slow_path_insn=NULL;
 	RelocationSet_t::iterator rit;
 	for( rit=insn->GetRelocations().begin(); rit!=insn->GetRelocations().end(); ++rit)
 	{
 		Relocation_t& reloc=*(*rit);
-		if(reloc.GetType()=="slow_cfi_path")
+		if(reloc.GetType()==type)
 		{
 			return &reloc;
 		}
 	}
 	return NULL;
+}
+
+Relocation_t* NonceRelocs_t::FindSlowpathRelocation(Instruction_t* insn)
+{
+	return FindRelocation(insn,"slow_cfi_path");
 }
 
 Relocation_t* NonceRelocs_t::FindNonceRelocation(Instruction_t* insn)
@@ -174,6 +225,9 @@ void NonceRelocs_t::HandleNonceRelocs()
 		{
 			HandleNonceRelocation(insn,*reloc);
 			handled++;
+
+			assert(insn.GetIndirectBranchTargetAddress());
+			
 		}
 	}
 
@@ -185,3 +239,44 @@ void NonceRelocs_t::HandleNonceRelocs()
 
 }
 
+
+void NonceRelocs_t::UpdateAddrRanges(std::map<libIRDB::Instruction_t*,RangeAddress_t> &final_insn_locations)
+{
+	RangeAddress_t  min_addr=m_memory_space.GetMinPlopped();
+	RangeAddress_t  max_addr=m_memory_space.GetMaxPlopped();
+
+	InstructionSet_t::iterator it;
+	for(it=min_addr_update.begin(); it!=min_addr_update.end(); ++it)
+	{
+		Instruction_t& insn=*(*it);
+		RangeAddress_t insn_addr=final_insn_locations[&insn];
+		if(insn_addr)
+		{
+			cout<<"Updating min_addr at "<<hex<<insn_addr<<" to compare to "<<min_addr<<endl;
+			m_memory_space.PlopBytes(insn_addr+2,(const char*)&min_addr,sizeof(RangeAddress_t));
+		}
+		else
+		{
+			cout<<"No addr for  min_addr at "<<hex<<insn_addr<<" to compare to "<<min_addr<<endl;
+		}
+	}
+
+	for(it=max_addr_update.begin(); it!=max_addr_update.end(); ++it)
+	{
+		Instruction_t& insn=*(*it);
+		RangeAddress_t insn_addr=final_insn_locations[&insn];
+		assert(insn_addr);
+		if(insn_addr)
+		{
+			cout<<"Updating max_addr at "<<hex<<insn_addr<<" to compare to "<<max_addr<<endl;
+			m_memory_space.PlopBytes(insn_addr+2,(const char*)&max_addr,sizeof(RangeAddress_t));
+		}
+		else
+		{
+			cout<<"No addr for  max_addr at "<<hex<<insn_addr<<" to compare to "<<max_addr<<endl;
+		}
+	}
+
+
+	
+}

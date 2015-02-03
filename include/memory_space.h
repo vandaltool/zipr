@@ -46,7 +46,6 @@ struct Range_tCompare
 class MemorySpace_t : public std::map<RangeAddress_t,char>
 {
 	public:
-//		MemorySpace_t():m_opts(NULL) { }
 		MemorySpace_t(Options_t *opts) :
 			m_opts(opts)
 		{ 
@@ -78,6 +77,8 @@ class MemorySpace_t : public std::map<RangeAddress_t,char>
 		
 		void PlopByte(RangeAddress_t addr, char the_byte)
 		{
+			min_plopped=std::min(addr,min_plopped);
+			max_plopped=std::max(addr,max_plopped);
         		if(this->find(addr) == this->end() )
                 		this->SplitFreeRange(addr);
         		(*this)[addr]=the_byte;
@@ -87,11 +88,16 @@ class MemorySpace_t : public std::map<RangeAddress_t,char>
         		char bytes[]={(char)0xe9,(char)0,(char)0,(char)0,(char)0}; // jmp rel8
                 	this->PlopBytes(addr,bytes,sizeof(bytes));
 		}
+		RangeAddress_t GetMinPlopped() const { return min_plopped; }
+		RangeAddress_t GetMaxPlopped() const { return max_plopped; }
+
 	protected:
 		std::set<Range_t, Range_tCompare> free_ranges;   // keep ordered
 		Options_t *m_opts;
 
 	private:
+		RangeAddress_t min_plopped;
+		RangeAddress_t max_plopped;
 };
 
 #endif

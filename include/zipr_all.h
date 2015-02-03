@@ -37,6 +37,7 @@
 #include <list>
 #include <map>
 #include <libIRDB-core.hpp>
+#include <algorithm>
 
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"

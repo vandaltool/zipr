@@ -47,19 +47,21 @@ class NonceRelocs_t
 
 		// main workhorse
 		void HandleNonceRelocs();
+		void UpdateAddrRanges(std::map<libIRDB::Instruction_t*,RangeAddress_t> &final_insn_locations);
 
 	private:
 
 		// helpers
-		bool IsNonceRelocation(libIRDB::Relocation_t& reloc);
 		int GetNonceValue(libIRDB::Relocation_t& reloc);
 		int GetNonceSize(libIRDB::Relocation_t& reloc);
-		void HandleNonceRelocation(libIRDB::Instruction_t& insn, libIRDB::Relocation_t& reloc);
+		bool IsNonceRelocation(libIRDB::Relocation_t& reloc);
+		libIRDB::Relocation_t* FindRelocation(libIRDB::Instruction_t* insn, std::string type);
 		libIRDB::Relocation_t* FindNonceRelocation(libIRDB::Instruction_t* insn);
-		void AddSlowPathInstructions();
 		libIRDB::Relocation_t* FindSlowpathRelocation(libIRDB::Instruction_t* insn);
 
-
+		// major workhorses
+		void HandleNonceRelocation(libIRDB::Instruction_t& insn, libIRDB::Relocation_t& reloc);
+		void AddSlowPathInstructions();
 
 		// references to input
 		MemorySpace_t &m_memory_space;	
@@ -73,7 +75,11 @@ class NonceRelocs_t
 		// couldn't.  This will be necessary when we need to emit code for the slow path 
 		libIRDB::InstructionSet_t slow_path_nonces;
 
-		
+
+		// max_addr_updates
+		libIRDB::InstructionSet_t max_addr_update;
+		libIRDB::InstructionSet_t min_addr_update;
+
 };
 
 #endif

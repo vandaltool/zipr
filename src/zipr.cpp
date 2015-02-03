@@ -147,6 +147,9 @@ void Zipr_t::CreateBinaryFile(const std::string &name)
 	// go ahead and update any callback sites with the new locations 
 	UpdateCallbacks();
 
+	// tell the Nonce class to update it's range of high/low addrs if it used any.
+	nr.UpdateAddrRanges(final_insn_locations);
+
 	m_stats->total_free_ranges = memory_space.GetRangeCount();
 
 	// write binary file to disk 

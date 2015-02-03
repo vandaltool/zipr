@@ -72,18 +72,10 @@ class Zipr_t
 		void UpdateCallbacks();
 		void PrintStats();
 
-		//  emitting bytes.
-// moved to memory_space.Plop*
-//		void PlopByte(RangeAddress_t addr, char the_byte);
-//		void PlopBytes(RangeAddress_t addr, const char the_byte[], int num);
-//		void PlopJump(RangeAddress_t addr);
-
 		// emiting instructions
-		RangeAddress_t PlopInstruction(libIRDB::Instruction_t* insn,RangeAddress_t addr);
+		RangeAddress_t PlopInstruction(libIRDB::Instruction_t* insn, RangeAddress_t addr);
 		RangeAddress_t PlopWithTarget(libIRDB::Instruction_t* insn, RangeAddress_t at);
 		RangeAddress_t PlopWithCallback(libIRDB::Instruction_t* insn, RangeAddress_t at);
-
-
 
 		// patching
 		void PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr);
