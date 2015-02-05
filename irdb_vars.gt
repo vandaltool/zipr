@@ -1,4 +1,4 @@
-export SMPSA_HOME=$PEASOUP_UMBRELLA_DIR/scripts/IdaProServer
+export SMPSA_HOME=$PEASOUP_UMBRELLA_DIR/../scripts/IdaProServer
 export SMPSA_PLUGIN=$PEASOUP_UMBRELLA_DIR/SMPStaticAnalyzer/SMPStaticAnalyzer.plx
 export IDA_PRO_SERVER_HOST=$(host weaver|awk '{print $4}')
 if [[ "$IDA_PRO_SERVER_HOST" =~ "10.233" ]]; then
