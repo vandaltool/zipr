@@ -941,7 +941,7 @@ perform_step spawner stratafy_with_pc_confine  $PEASOUP_HOME/tools/do_spawner.sh
 
 
 # zipr
-perform_step zipr clone,fill_in_indtargs,fill_in_cfg,meds2pdb $ZIPR_HOME/src/zipr.exe -v $cloneid -c $ZIPR_HOME/callbacks/lib/callbacks.exe -j $PS_OBJCOPY
+perform_step zipr clone,fill_in_indtargs,fill_in_cfg,meds2pdb $ZIPR_INSTALL/bin/zipr.exe -v $cloneid -c $ZIPR_INSTALL/bin/callbacks.exe -j $PS_OBJCOPY
 
 # copy TOCTOU tool here if it exists
 if [[ "$CONCURRENCY_HOME/toctou_tool" != "" && -d "$CONCURRENCY_HOME/toctou_tool" ]]; then
