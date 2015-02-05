@@ -23,6 +23,8 @@
 #include "itox.h"
 #include "strlen.h"
 #include "null.h"
+
+#define DEBUG_ADD
 #else
 
 typedef unsigned uintptr_t;
@@ -195,7 +197,7 @@ void zipr_post_allocate_watcher(int ret, reg_values_t rv)
  */
 int zipr_is_addr_ok(int ret, unsigned int to_check)
 {
-#ifdef DEBUG_ADD
+#ifdef DEBUG
 	print_str_debug("In zipr_is_addr_ok, addr=");
 	print_int_debug(to_check);
 	print_str_debug(", ret=");
@@ -215,7 +217,7 @@ int zipr_is_addr_ok(int ret, unsigned int to_check)
 	else
 	{
 		print_str_debug("didn't find stack addr to_check=  ");
-		print_int_debug((int)&to_check);
+		print_int_debug((int)to_check);
 		print_str_debug("\n");
 	}
 #endif 
@@ -225,10 +227,24 @@ int zipr_is_addr_ok(int ret, unsigned int to_check)
         while(al)
         {
                 page_no++;
+#ifdef DEBUG_ADD
+			print_str_debug("checking page=");
+			print_int_debug((int)page_no);
+			print_str_debug("\n");
+#endif
 		int i;
 		for(i=0;i<al->pairs;i++)
 		{
-                        if (al->addrs[al->pairs].start<to_check && to_check <= al->addrs[al->pairs].end)
+#ifdef DEBUG_ADD
+			print_str_debug("checking pair=");
+			print_int_debug((int)i);
+			print_str_debug(" start=");
+                        print_int_debug(al->addrs[i].start);
+			print_str_debug(" end=");
+			print_int_debug(al->addrs[i].end);
+			print_str_debug("\n");
+#endif
+                        if (al->addrs[i].start<=to_check && to_check <= al->addrs[i].end)
 			{
 				print_str_debug("Detected addr as OK\n");
 				return 1;
@@ -241,5 +257,6 @@ int zipr_is_addr_ok(int ret, unsigned int to_check)
 #ifdef DEBUG
 	print_str("Detected about-to-segfault\n");
 #endif
+	cgc_terminate(199);
 	return 0;
 }
