@@ -6,3 +6,5 @@ peasoup_examples     http://svn.zephyr-software.com/repos/peasoup_examples/trunk
 SMPStaticAnalyzer    http://svn.zephyr-software.com/repos/SMPStaticAnalyzer/trunk
 strata               http://svn.zephyr-software.com/repos/strata/branches/cgc_dev/
 stratafier           http://svn.zephyr-software.com/repos/stratafier/branches/cgc_dev/
+zipr_callbacks       http://svn.zephyr-software.com/repos/zipr_callbacks/trunk/
+zipr_install         http://svn.zephyr-software.com/repos/zipr_install/branches/cgc_dev/
