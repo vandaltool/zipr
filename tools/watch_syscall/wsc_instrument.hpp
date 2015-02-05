@@ -54,16 +54,19 @@ class WSC_Instrument
 		virtual ~WSC_Instrument() { delete elfiop; }
 		bool execute();
 
-	protected:
+	private:
 
 		bool add_wsc_instrumentation(libIRDB::Instruction_t *site);
 		bool add_init_call();
 		bool add_segfault_checking();
+		bool add_segfault_checking(libIRDB::Instruction_t*);
 		bool add_allocation_instrumentation();
 		bool needs_wsc_segfault_checking(libIRDB::Instruction_t*, const DISASM&);
 		bool add_receive_limit(libIRDB::Instruction_t* site);
 		bool add_receive_limit();
 
+		libIRDB::Instruction_t* GetCallbackCode();
+		libIRDB::Relocation_t* create_reloc(libIRDB::Instruction_t* insn, std::string type, int offset);
 
 
 	private:

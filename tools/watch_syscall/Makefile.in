@@ -1,6 +1,6 @@
 
 CC=@CXX@
-CFLAGS= @EXTRA_CXXFLAGS@
+CFLAGS= @EXTRA_CXXFLAGS@ -Wall
 INCLUDE=-I. -I ../../include/ -I../include -I../xform -I../../beaengine/include -I../../libIRDB/include/ -I../../libMEDSannotation/include/ -I../libtransform/include/ -I../transforms
 LIBS=-L../../lib -lxform -lIRDB-core -lIRDB-cfg -lIRDB-util -lIRDB-syscall -lBeaEngine_s_d -lpqxx  -lMEDSannotation -ltransform ../transforms/Rewrite_Utility.o
 

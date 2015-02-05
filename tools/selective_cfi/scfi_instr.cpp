@@ -180,6 +180,21 @@ static Instruction_t* addCallbackHandlerSequence
         return p_orig;
 }
 
+Relocation_t* SCFI_Instrument::FindRelocation(Instruction_t* insn, string type)
+{
+        RelocationSet_t::iterator rit;
+        for( rit=insn->GetRelocations().begin(); rit!=insn->GetRelocations().end(); ++rit)
+        {
+                Relocation_t& reloc=*(*rit);
+                if(reloc.GetType()==type)
+                {
+                        return &reloc;
+                }
+        }
+        return NULL;
+}
+
+
 
 
 Relocation_t* SCFI_Instrument::create_reloc(Instruction_t* insn)
@@ -259,6 +274,53 @@ bool SCFI_Instrument::mark_targets()
 	return true;
 }
 
+/*
+ * targ_change_to_push - use the mode in the insnp to create a new instruction that is a push instruction.
+ */
+static string change_to_push(Instruction_t *insn)
+{
+	string newbits=insn->GetDataBits();
+
+// fixme for REX insn.
+
+	unsigned char modregrm = (newbits[1]);
+	modregrm &= 0xc7;
+	modregrm |= 0x30;
+	newbits[0] = 0xFF;
+	newbits[1] = modregrm;
+
+        return newbits;
+}
+
+
+void SCFI_Instrument::AddJumpCFI(Instruction_t* insn)
+{
+	string reg="ecx";	// 32-bit reg 
+	if(firp->GetArchitectureBitWidth()==64)
+		reg="rcx";	// 64-bit reg.
+#ifdef CGC
+	// insert the pop/checking code.
+
+	string pushbits=change_to_push(insn);
+
+	cout<<"Converting ' "<<insn->getDisassembly()<<"' to '";
+	Instruction_t* after=insertDataBitsBefore(firp,insn,pushbits); 
+	cout<<insn->getDisassembly()<<"'"<<endl;
+
+	string jmpBits=getJumpDataBits();
+        after->SetDataBits(jmpBits);
+        after->SetComment(insn->getDisassembly()+" ; scfi");
+	createNewRelocation(firp,after,"slow_cfi_path",0);
+	after->SetFallthrough(NULL);
+	after->SetTarget(after);
+	return;
+#else
+	cout<<"Warning, JUMPS not CFI's yet"<<endl;
+	return
+#endif
+}
+
+
 void SCFI_Instrument::AddReturnCFI(Instruction_t* insn)
 {
 	string reg="ecx";	// 32-bit reg 
@@ -329,7 +391,7 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn)
 
 bool SCFI_Instrument::instrument_jumps() 
 {
-	InstructionSet_t to_instrument;
+	int cfi_checks=0;
 
 	// we do this in two passes.  first pass:  find instructions.
 	for(InstructionSet_t::iterator it=firp->GetInstructions().begin();
@@ -337,17 +399,38 @@ bool SCFI_Instrument::instrument_jumps()
 		++it)
 	{
 		Instruction_t* insn=*it;
+
+		if(insn->GetBaseID()==BaseObj_t::NOT_IN_DATABASE)
+			continue;
+
+		// if marked safe
+		if(FindRelocation(insn,"cf::safe"))
+			continue;
+
 		DISASM d;
 		insn->Disassemble(d);
+
 	
 		switch(d.Instruction.BranchType)
 		{
 			case  JmpType:
+				if((d.Argument1.ArgType&MEMORY_TYPE)==MEMORY_TYPE)
+				{
+					cfi_checks++;
+					AddJumpCFI(insn);
+				}
+				break;
+
 			case  CallType:
-				// not yet implemented.
+				if((d.Argument1.ArgType&MEMORY_TYPE)==MEMORY_TYPE)
+				{
+					// not yet implemented.	
+					assert(0); // fix calls should conver these to jumps
+				}
 				break;
 			case  RetType: 
-				to_instrument.insert(insn);
+				cfi_checks++;
+				AddReturnCFI(insn);
 				break;
 
 			default:
@@ -356,18 +439,7 @@ bool SCFI_Instrument::instrument_jumps()
 	}
 	
 
-	int cfi_checks=0;
 
-	// second pass, insert checking.  can't do this on pass one because
-	// we add IBs, which we'd later decide instrument
-	for(InstructionSet_t::iterator it=to_instrument.begin();
-		it!=to_instrument.end();
-		++it)
-	{
-		cfi_checks++;
-		Instruction_t* insn=*it;
-		AddReturnCFI(insn);
-	}
 	cout<<"#ATTRIBUTE cfi_checks="<<std::dec<<cfi_checks<<endl;
 	return true;
 }

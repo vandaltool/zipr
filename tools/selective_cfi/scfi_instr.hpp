@@ -20,6 +20,7 @@ class SCFI_Instrument
 
 		// helper
 		libIRDB::Relocation_t* create_reloc(libIRDB::Instruction_t* insn);
+		libIRDB::Relocation_t* FindRelocation(libIRDB::Instruction_t* insn, std::string type);
 
 		// add instrumentation
 		bool add_scfi_instrumentation(libIRDB::Instruction_t* insn);
@@ -27,11 +28,15 @@ class SCFI_Instrument
 
 		// return instrumentation
 		void  AddReturnCFI(libIRDB::Instruction_t* insn);
+		// jump instrumentation
+		void AddJumpCFI(libIRDB::Instruction_t* insn);
 
 
 		// Nonce Manipulation.
 		unsigned int GetNonce(libIRDB::Instruction_t* insn);
 		unsigned int GetNonceSize(libIRDB::Instruction_t* insn);
+
+
 
 	
 		libIRDB::FileIR_t* firp;

@@ -335,6 +335,22 @@ bool WSC_Instrument::add_allocation_instrumentation()
 	return success; /* success? */
 }
 
+
+static const ARGTYPE* FindMemoryArgument(const DISASM &d)
+{
+	 if((d.Argument1.ArgType & MEMORY_TYPE) == MEMORY_TYPE)
+		return &d.Argument1;
+	 if((d.Argument2.ArgType & MEMORY_TYPE) == MEMORY_TYPE)
+		return &d.Argument2;
+	 if((d.Argument3.ArgType & MEMORY_TYPE) == MEMORY_TYPE)
+		return &d.Argument3;
+	 if((d.Argument4.ArgType & MEMORY_TYPE) == MEMORY_TYPE)
+		return &d.Argument4;
+
+	return NULL;
+}
+
+
 bool WSC_Instrument::needs_wsc_segfault_checking(Instruction_t* insn, const DISASM& d)
 {
 
@@ -346,7 +362,33 @@ bool WSC_Instrument::needs_wsc_segfault_checking(Instruction_t* insn, const DISA
 		return true;
 	if(strstr(d.CompleteInstr,"[ebp+ecx-"))
 		return true;
-	return false;
+
+	/* lea's and nops don't access memory */
+	if(strstr(d.CompleteInstr,"lea") || strstr(d.CompleteInstr,"nop") )
+		return false;
+
+	const ARGTYPE *mem=FindMemoryArgument(d);	
+	if(!mem)
+		return false;
+
+	/* if there's indexing happening, we need to check, even if it's on the stack */
+	if(mem->Memory.IndexRegister!=0)
+		return true;
+
+	/* esp+<optional_scale>+<disp> is OK */
+	if(mem->Memory.BaseRegister==REG4)
+		return false;
+
+	/* ebp+<optional scale>+disp  is OK if there's a base pointer */
+	if(mem->Memory.BaseRegister==REG5 && insn->GetFunction() && insn->GetFunction()->GetUseFramePointer())
+		return false;
+
+	/* if there's no base reg, it must be an [<disp>] address, which is OK. */
+	if(mem->Memory.BaseRegister==0)
+		return false;
+
+	/* else, there's a non-stack base reg, so we should check */ 
+	return true;
 }
 
 
@@ -365,9 +407,80 @@ static string get_memory_addr(const DISASM& d)
 	return s;
 }
 
+Relocation_t* WSC_Instrument::create_reloc(Instruction_t* insn, string type, int offset )
+{
+        Relocation_t* reloc=new Relocation_t;
+        insn->GetRelocations().insert(reloc);
+        firp->GetRelocations().insert(reloc);
+
+	reloc->SetType(type);
+	reloc->SetOffset(offset);
+
+        return reloc;
+}
+
+
+
+Instruction_t* WSC_Instrument::GetCallbackCode()
+{
+	static Instruction_t* callback_dispatch=NULL;
+	if(callback_dispatch != NULL)
+		return callback_dispatch;
+
+
+      	virtual_offset_t postCallbackReturn = getAvailableAddress(firp);
+		
+	Instruction_t *tmp=NULL, *callback=NULL, *post_callback=NULL, *ret=NULL;
+	char tmpbuf[100];
+
+
+	callback_dispatch=tmp=addNewAssembly(firp,NULL,"pushf");
+	tmp=insertAssemblyAfter(firp,tmp,"push eax");	 // push eax -- addr to check
+	sprintf(tmpbuf,"push 0x%x", postCallbackReturn);
+	tmp=insertAssemblyAfter(firp,tmp,tmpbuf);	 // push <ret addr>
+callback=	// indented oddly to look like labels.
+	tmp=insertAssemblyAfter(firp,tmp,"nop");
+post_callback=
+       	tmp=insertAssemblyAfter(firp,tmp,"lea esp, [esp+4]");	// pop eax
+       	tmp=insertAssemblyAfter(firp,tmp,"popf");
+ret=
+       	tmp=insertAssemblyAfter(firp,tmp,"ret");
+	create_reloc(ret,"cf::safe",0);
+
+       	post_callback->GetAddress()->SetVirtualOffset(postCallbackReturn);
+	callback->SetCallback("zipr_is_addr_ok");
+
+
+	return callback_dispatch;
+              
+}
+
+
+bool	WSC_Instrument::add_segfault_checking(Instruction_t* insn)
+{
+	assert(insn);
+	DISASM d;
+	insn->Disassemble(d);
+	char tmpbuf[100];
+
+	Instruction_t* callback=GetCallbackCode(), *tmp=insn;
+
+cout<<"Adding callback to "<<d.CompleteInstr<<endl;
+
+
+       	insertAssemblyBefore(firp,insn,"pusha");
+       	sprintf(tmpbuf,"lea  eax, %s", get_memory_addr(d).c_str());
+       	tmp=insertAssemblyAfter(firp,tmp,tmpbuf);	 // lea addr,  [ expression ]
+       	tmp=insertAssemblyAfter(firp,tmp,"call 0x0", callback);
+       	tmp=insertAssemblyAfter(firp,tmp,"popa");
+
+	return true;
+}
+
 
 bool	WSC_Instrument::add_segfault_checking()
 {
+	int success=true;
 	for(InstructionSet_t::iterator it=firp->GetInstructions().begin();
 		it!=firp->GetInstructions().end();
 		++it)
@@ -375,49 +488,11 @@ bool	WSC_Instrument::add_segfault_checking()
 		Instruction_t *insn=*it;
 		DISASM d;
 		insn->Disassemble(d);
-		if(needs_wsc_segfault_checking(insn,d))
-		{
-
-cout<<"Adding callback to "<<d.CompleteInstr<<endl;
-
-        		virtual_offset_t postCallbackReturn = getAvailableAddress(firp);
-			char tmpbuf[100];
-		
-			Instruction_t *tmp=insn, *callback=NULL, *post_callback=NULL;
- 			Instruction_t *jmp=NULL, *recovery_handler=NULL;
-        	tmp=insn;
-			insertAssemblyBefore(firp,insn,"lea esp, [esp-4096]");
-        		tmp=insertAssemblyAfter(firp,tmp,"pushf");
-        		tmp=insertAssemblyAfter(firp,tmp,"pusha");
-// calc addr here 
-        		sprintf(tmpbuf,"lea  eax, %s", get_memory_addr(d).c_str());
-        		tmp=insertAssemblyAfter(firp,tmp,tmpbuf);	 // lea addr,  [ expression ]
-
-        		sprintf(tmpbuf,"push eax");
-        		tmp=insertAssemblyAfter(firp,tmp,tmpbuf);	 // push addr
-        		sprintf(tmpbuf,"push 0x%x", postCallbackReturn);
-        		tmp=insertAssemblyAfter(firp,tmp,tmpbuf);	 // push <ret addr>
-       		callback=	// indented oddly to look like labels.
-			tmp=insertAssemblyAfter(firp,tmp,"nop");
-        	post_callback=
-			tmp=insertAssemblyAfter(firp,tmp,"cmp eax, 0"); 	// did callback return 0?
-		jmp=
-			tmp=insertAssemblyAfter(firp,tmp,"je 0x0");		// 
-			tmp=insertAssemblyAfter(firp,tmp,"lea esp, [esp+4]"); // pop addr
-        		tmp=insertAssemblyAfter(firp,tmp,"popa");
-        		tmp=insertAssemblyAfter(firp,tmp,"popf");
-        		tmp=insertAssemblyAfter(firp,tmp,"lea esp, [esp+4096]");
-        		post_callback->GetAddress()->SetVirtualOffset(postCallbackReturn);
-			callback->SetCallback("zipr_is_addr_ok");
-                
-			recovery_handler=addNewAssembly(firp, NULL, "mov esp, 0xbaaaaffc ");
-			recovery_handler->SetFallthrough(last_startup_insn->GetFallthrough());
-			jmp->SetTarget(recovery_handler);
-		
-		}
+		if(insn->GetBaseID()!=BaseObj_t::NOT_IN_DATABASE && needs_wsc_segfault_checking(insn,d))
+			success=success && add_segfault_checking(insn);
 	}
 
-	return true;
+	return success;
 }
 
 bool WSC_Instrument::add_receive_limit(Instruction_t* site)
