@@ -1,0 +1,11 @@
+export SMPSA_HOME=$PEASOUP_UMBRELLA_DIR/scripts/IdaProServer
+export SMPSA_PLUGIN=$PEASOUP_UMBRELLA_DIR/SMPStaticAnalyzer/SMPStaticAnalyzer.plx
+export IDA_PRO_SERVER_HOST=$(host weaver|awk '{print $4}')
+if [[ "$IDA_PRO_SERVER_HOST" =~ "10.233" ]]; then
+    export IDA_PRO_SERVER_PORT=2222
+fi
+export IDA_PRO_SERVER_USER=tm
+export MAX_IDA_PROCESSES=2
+export PEASOUP=$PEASOUP_UMBRELLA_DIR
+export PGUSER=$USER
+export PGDATABASE=peasoup_$USER
