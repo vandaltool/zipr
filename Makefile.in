@@ -1,9 +1,13 @@
 
+
+
+bdir=@prefix@
+
 all:
 	cd src;make
 
 install: all
-	cp src/zipr.exe bin
+	cp src/zipr.exe $(bdir)/bin
 
 clean:
 	cd src;make clean

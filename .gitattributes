@@ -1,6 +1,6 @@
 * text=auto !eol
 /LICENSE.txt -text
-/Makefile -text
+/Makefile.in -text
 include/memory_space.h -text
 include/nonce_relocs.h -text
 include/range.h -text
@@ -10,7 +10,7 @@ include/zipr_all.h -text
 include/zipr_optimizations.h -text
 include/zipr_options.h -text
 include/zipr_stats.h -text
-src/Makefile -text
+src/Makefile.in -text
 src/main.cpp -text
 src/memory_space.cpp -text
 src/nonce_relocs.cpp -text
