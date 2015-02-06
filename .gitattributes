@@ -1,6 +1,8 @@
 * text=auto !eol
 /LICENSE.txt -text
 /Makefile.in -text
+/configure -text
+/configure.in -text
 include/memory_space.h -text
 include/nonce_relocs.h -text
 include/range.h -text
