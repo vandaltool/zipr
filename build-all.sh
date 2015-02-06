@@ -62,5 +62,10 @@ cd $SECURITY_TRANSFORMS_HOME
 cd $PEASOUP_HOME
 make
 
+cd $ZIPR_CALLBACKS
+./configure --enable-p1 --prefix=$ZIPR_INSTALL
+make 
+make install
+
 cd $ZIPR_HOME
-make
+./configure --prefix=$ZIPR_INSTALL; make;  make install
