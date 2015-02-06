@@ -13,7 +13,7 @@
 # set default values for 
 ##################################################################################
 
-initial_off_phases="isr ret_shadow_stack determine_program stats fill_in_safefr zipr installer watch_allocate spawner concolic"
+initial_off_phases="isr ret_shadow_stack determine_program stats fill_in_safefr zipr installer watch_allocate spawner concolic selective_cfi"
 
 
 ##################################################################################
