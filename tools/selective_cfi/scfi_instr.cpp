@@ -316,7 +316,7 @@ void SCFI_Instrument::AddJumpCFI(Instruction_t* insn)
 	return;
 #else
 	cout<<"Warning, JUMPS not CFI's yet"<<endl;
-	return
+	return;
 #endif
 }
 
