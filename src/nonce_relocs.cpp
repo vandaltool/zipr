@@ -92,6 +92,8 @@ void NonceRelocs_t::HandleNonceRelocation(Instruction_t &insn, Relocation_t& rel
 void NonceRelocs_t::AddSlowPathInstructions()
 {
 
+	// optimization
+	// find out if slow path insns are even needed!
 	InstructionSet_t::iterator it;
         for( it=m_firp.GetInstructions().begin(); it!=m_firp.GetInstructions().end(); ++it)
         {
@@ -108,18 +110,20 @@ void NonceRelocs_t::AddSlowPathInstructions()
 	}
 	
 
-// optimization
-// find out if slow path insns are even needed!
 
 	Instruction_t* slow_path=NULL, *exit_node=NULL, *tmp=NULL;
 	string reg="ecx";
 	if(m_firp.GetArchitectureBitWidth()==64)
 		reg="rcx";
 
-	// call exit.
+	// call exit -- note we can use 32-bit regs as they're valid on 64-bit machines and still get the 64-bit reg with the right value.
 	exit_node=
-	slow_path=tmp = addNewAssembly(&m_firp, NULL, "mov eax, 1");
-	          tmp = insertAssemblyAfter(&m_firp,tmp,"int 0x80",NULL);
+	slow_path=
+		  tmp = addNewAssembly(&m_firp, NULL, "mov eax, 1");		// SYS_exit
+#ifndef CGC	// any exit code is OK for CGC, save an instruction.
+		  tmp = insertAssemblyAfter(&m_firp, tmp, "mov ebx, 199");	// exit code 199
+#endif
+	          tmp = insertAssemblyAfter(&m_firp,tmp,"int 0x80");	// make syscall
 
 	for(it=slow_path_nonces.begin(); it!=slow_path_nonces.end(); ++it)
 	{
@@ -127,39 +131,66 @@ void NonceRelocs_t::AddSlowPathInstructions()
 		Relocation_t* reloc=FindNonceRelocation(insn);
 		assert(reloc);
 
-
 		string assembly="cmp "+reg+", "+to_string(insn->GetIndirectBranchTargetAddress()->GetVirtualOffset());
+		cout<<"Inserting slow-path comparison: "<<assembly<<endl; 
 		// insert before acts weird, and really does enough bookkeeping to insert-after in a way to mimic insert before.
         	Instruction_t* after = insertAssemblyBefore(&m_firp,slow_path,assembly);
 		Instruction_t* jne   = insertAssemblyAfter(&m_firp, slow_path, "je 0", insn);
 		exit_node=after;
 	}
 
+
+
+	// we need a dispatch handler in case the range check fails
+	// for now, just assume that cross-library jumps are safe
+	// we'll come back later and fix this to check better:  FIXME.
+	Instruction_t* out_of_range_handler=NULL;
+#ifdef CGC
+	out_of_range_handler=exit_node;	 // cgc is statically linked, so we can just go to the exit node.
+#else
+	
+	out_of_range_handler = addNewAssembly(&m_firp, NULL, "jmp "+reg);	// jmp rcx
+#endif
+
+	// before the individual checks on the slow path
+	// we want to insert a range check.
+	//	cmp rcx, start_segement_addr
+	//	jlt out_of_range_handler
+	//	cmp rcx, end_segment_addr
+	//	jgt out_of_range_handler
+
 #ifdef CGC
 	// CGC  needs to keep from faulting, so we have to check to make sure the IB is an intra-module IB.
 	// if not, we terminate immediately.
-	// so, we emit this sequence before we try the slow path:
-	// 	pop rcx (get ret addr)
-	//	cmp rcx, start_segement_addr
-	//	jlt terminate
-	//	cmp rcx, end_segment_addr
-	//	jgt terminate
+	// we aren't doing the pop/cmp before jumping to the slow path, so we have to do it here.
+	Instruction_t* after = insertAssemblyBefore(&m_firp,slow_path,"pop "+reg); // 	pop ecx (get ret addr)
+	tmp = insertAssemblyAfter(&m_firp,slow_path,"cmp "+reg+", 0x12345678");
+	out_of_range_handler=exit_node;	 // cgc is statically linked, so we can just go to the exit node.
+#else
+
+	Instruction_t* after = insertAssemblyBefore(&m_firp,slow_path,"cmp "+reg+", 0x12345678");
+	tmp=slow_path;
+#endif
+	min_addr_update.insert(tmp);
+        tmp = insertAssemblyAfter(&m_firp,tmp,"jl 0",out_of_range_handler);        // cross library jump detected
+	tmp = insertAssemblyAfter(&m_firp,tmp,"cmp "+reg+", 0x87654321");
+	max_addr_update.insert(tmp);
+        tmp = insertAssemblyAfter(&m_firp,tmp,"jg 0",out_of_range_handler);        // cross library jump detected
+#ifdef CGC
 	// After we're sure it's in this segment, we can 
 	// go ahead and check for a nonce that we layed down previously.
 	// 	cmp byte [rcx-1], 0xf4
 	// 	jeq slow_path
-
-	Instruction_t* after = insertAssemblyBefore(&m_firp,slow_path,"pop "+reg);
-	tmp = insertAssemblyAfter(&m_firp,slow_path,"cmp "+reg+", 0x12345678");
-	min_addr_update.insert(tmp);
-        tmp = insertAssemblyAfter(&m_firp,tmp,"jl 0",exit_node);        // terminate
-	tmp = insertAssemblyAfter(&m_firp,tmp,"cmp "+reg+", 0x87654321");
-	max_addr_update.insert(tmp);
-        tmp = insertAssemblyAfter(&m_firp,tmp,"jg 0",exit_node);        // terminate
         tmp = insertAssemblyAfter(&m_firp,tmp,"cmp byte ["+reg+"-1], 0xf4");
         tmp = insertAssemblyAfter(&m_firp,tmp,"jne 0",after);       // finally, go to the slow path checks when a nonce didn't work.
         tmp = insertAssemblyAfter(&m_firp,tmp,"jmp "+reg);
 #endif // CGC
+
+
+	m_firp.AssembleRegistry();	// resolve all assembly into actual bits.
+
+	assert(slow_path);
+	cout<<"Slow path insn is "<<slow_path->getDisassembly()<<endl;
 
 	for( it=m_firp.GetInstructions().begin(); it!=m_firp.GetInstructions().end(); ++it)
 	{
@@ -170,7 +201,6 @@ void NonceRelocs_t::AddSlowPathInstructions()
 	}
 
 	m_firp.SetBaseIDS();		// assign a unique ID to each insn.
-	m_firp.AssembleRegistry();	// resolve all assembly into actual bits.
 }
 
 Relocation_t* NonceRelocs_t::FindRelocation(Instruction_t* insn, string type)
@@ -245,6 +275,10 @@ void NonceRelocs_t::UpdateAddrRanges(std::map<libIRDB::Instruction_t*,RangeAddre
 	RangeAddress_t  min_addr=m_memory_space.GetMinPlopped();
 	RangeAddress_t  max_addr=m_memory_space.GetMaxPlopped();
 
+	int offset=0;	// deal with REX prefix for 64-bit mode.
+	if(m_firp.GetArchitectureBitWidth()==64)
+		offset=1;
+
 	InstructionSet_t::iterator it;
 	for(it=min_addr_update.begin(); it!=min_addr_update.end(); ++it)
 	{
@@ -253,7 +287,7 @@ void NonceRelocs_t::UpdateAddrRanges(std::map<libIRDB::Instruction_t*,RangeAddre
 		if(insn_addr)
 		{
 			cout<<"Updating min_addr at "<<hex<<insn_addr<<" to compare to "<<min_addr<<endl;
-			m_memory_space.PlopBytes(insn_addr+2,(const char*)&min_addr,sizeof(RangeAddress_t));
+			m_memory_space.PlopBytes(insn_addr+2+offset,(const char*)&min_addr,4); // cmp insn has a 4 byte immed.
 		}
 		else
 		{
@@ -263,13 +297,14 @@ void NonceRelocs_t::UpdateAddrRanges(std::map<libIRDB::Instruction_t*,RangeAddre
 
 	for(it=max_addr_update.begin(); it!=max_addr_update.end(); ++it)
 	{
+
 		Instruction_t& insn=*(*it);
 		RangeAddress_t insn_addr=final_insn_locations[&insn];
 		assert(insn_addr);
 		if(insn_addr)
 		{
 			cout<<"Updating max_addr at "<<hex<<insn_addr<<" to compare to "<<max_addr<<endl;
-			m_memory_space.PlopBytes(insn_addr+2,(const char*)&max_addr,sizeof(RangeAddress_t));
+			m_memory_space.PlopBytes(insn_addr+2+offset,(const char*)&max_addr,4);	// cmp insn with a 4-byte immed
 		}
 		else
 		{
