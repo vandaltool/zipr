@@ -17,7 +17,7 @@
 PROGS=p1transform.exe nulltransform.exe integertransformdriver.exe
 
 CC=g++
-CFLAGS= -g -Wall $(TWITCHER_FLAGS) @EXTRA_CXXFLAGS@
+CFLAGS= -g -Wall $(TWITCHER_FLAGS) @EXTRA_CXXFLAGS@ -fPIC
 INCLUDE=-I. -I../../include -I../../xform -I../../beaengine/include -I../../libIRDB/include/ -I../../libMEDSannotation/include/ -I../../libtransform/include/
 LIBS=-L../../lib -lxform -lIRDB-core -lIRDB-cfg -lBeaEngine_s_d -lpqxx  -lMEDSannotation -ltransform
 

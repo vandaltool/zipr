@@ -4,7 +4,7 @@ LIB=../../lib/libIRDB-syscall.a
 OBJS=syscall.o
 
 CXX=@CXX@
-EXTRA_CXXFLAGS=-g -c -I. -I../../include -I../../../beaengine/include @EXTRA_CXXFLAGS@
+EXTRA_CXXFLAGS=-fPIC -g -c -I. -I../../include -I../../../beaengine/include @EXTRA_CXXFLAGS@
 
 all: $(OBJS)
 

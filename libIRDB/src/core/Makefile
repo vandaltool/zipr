@@ -12,5 +12,5 @@ clean:
 	rm -f $(OBJS)
 
 .cpp.o:
-	g++ -g -c -I. -I../../include -I../../../beaengine/include $<
+	g++ -fPIC -g -c -I. -I../../include -I../../../beaengine/include $<
 	ar rc $(LIB) $@

@@ -18,7 +18,7 @@ clean: elfio_clean
 	rm -f include/config.h
 
 bea:	
-	cd beaengine; cmake .; make all
+	cd beaengine; cmake -DCMAKE_C_FLAGS=-fPIC .; make all
 	if [ ! -f lib/libBeaEngine_s_d.a -o ./beaengine/lib/Linux.gnu.Debug/libBeaEngine_s_d.a -nt lib/libBeaEngine_s_d.a ]; then cp ./beaengine/lib/Linux.gnu.Debug/libBeaEngine_s_d.a lib/libBeaEngine_s_d.a; fi
 
 
