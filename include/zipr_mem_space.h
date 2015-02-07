@@ -31,22 +31,13 @@
 #ifndef memory_space_h
 #define memory_space_h
 
-class Options_t;
-
-struct Range_tCompare
-{
-	bool operator()(const Range_t first, const Range_t second)
-	{
-		return first.GetEnd() < second.GetStart();
-	}
-};
-
+class ZiprOptions_t;
 
 // a memory space _is_ a map of range addres to char, with additional functionality.
-class MemorySpace_t : public std::map<RangeAddress_t,char>
+class ZiprMemorySpace_t : public MemorySpace_t
 {
 	public:
-		MemorySpace_t(Options_t *opts) :
+		ZiprMemorySpace_t(ZiprOptions_t *opts) :
 			m_opts(opts)
 		{ 
 		}
@@ -93,7 +84,7 @@ class MemorySpace_t : public std::map<RangeAddress_t,char>
 
 	protected:
 		std::set<Range_t, Range_tCompare> free_ranges;   // keep ordered
-		Options_t *m_opts;
+		ZiprOptions_t *m_opts;
 
 	private:
 		RangeAddress_t min_plopped;

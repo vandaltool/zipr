@@ -3,12 +3,12 @@ INC=-I../include -I../third_party/ELFIO/elfio-2.2 -I$(SECURITY_TRANSFORMS_HOME)/
 
 
 
-SRCS=zipr.cpp zipr_options.cpp zipr_stats.cpp memory_space.cpp main.cpp nonce_relocs.cpp
+SRCS=zipr.cpp zipr_options.cpp zipr_stats.cpp memory_space.cpp main.cpp plugin_man.cpp
 OBJS=$(subst .cpp,.o, $(SRCS))
 EXE=zipr.exe
 
-CXX=g++
-CXXFLAGS=$(INC) @OPTIMIZE@
+CXX=@CXX@
+CXXFLAGS=@CXXFLAGS@ @OPTIMIZE@
 LDFLAGS=-L$(SECURITY_TRANSFORMS_HOME)/lib
 LIBS=-lpqxx -lpq -lIRDB-core -lBeaEngine_s_d -ltransform ${SECURITY_TRANSFORMS_HOME}/tools/transforms/Rewrite_Utility.o
 

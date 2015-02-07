@@ -36,10 +36,10 @@
 #include <unistd.h>
 #include <libIRDB-core.hpp>
 
-class Options_t 
+class ZiprOptions_t : public Options_t
 {
 	public:
-		Options_t() : 
+		ZiprOptions_t() : 
 			m_outname("b.out"), 
 			m_objcopy_path("/usr/bin/objcopy")
 		{
@@ -48,7 +48,7 @@ class Options_t
 			m_architecture=-1;
 		}
 
-		static Options_t* parse_args(int p_argc, char* p_argv[]);
+		static ZiprOptions_t* parse_args(int p_argc, char* p_argv[]);
 		static void print_usage(int p_argc, char *p_argv[]);
 
 		std::string GetOutputFileName(libIRDB::File_t* p_file) { return m_outname; }

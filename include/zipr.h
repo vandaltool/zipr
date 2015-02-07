@@ -31,19 +31,20 @@
 #ifndef zipr_h
 #define zipr_h
 
-class Options_t;
+class ZiprOptions_t;
 class Stats_t;
 
 class Zipr_t
 {
 	public:
-		Zipr_t(libIRDB::FileIR_t* p_firp, Options_t &p_opts) : 
+		Zipr_t(libIRDB::FileIR_t* p_firp, ZiprOptions_t &p_opts) : 
 			m_firp(p_firp), 
 			m_opts(p_opts), 
 			memory_space(&p_opts), 
 			m_stats(NULL), 
-			elfiop(NULL), 
-			start_of_new_space(0)
+			elfiop(new ELFIO::elfio), 
+			start_of_new_space(0),
+			plugman(&memory_space, elfiop, p_firp, (Zipr_SDK::Options_t*)&p_opts, &final_insn_locations)
 		{ 
 			bss_needed=0;
 			use_stratafier_mode=false;
@@ -51,11 +52,11 @@ class Zipr_t
 
 		void CreateBinaryFile(const std::string &name);
 
-	protected:
+	private:
 
 		// data for the stuff we're rewriting.
 		libIRDB::FileIR_t* m_firp;
-		Options_t& m_opts;
+		ZiprOptions_t& m_opts;
 		Stats_t *m_stats;
 
 		// phases of rewriting.
@@ -133,10 +134,12 @@ class Zipr_t
 		// records where we will insert extra bytes into the program.
 		RangeAddress_t start_of_new_space;
 
-		MemorySpace_t memory_space;
+		ZiprMemorySpace_t memory_space;
 
 	        RangeAddress_t bss_needed;
 		bool use_stratafier_mode;
+
+		ZiprPluginManager_t plugman;
 
 };
 

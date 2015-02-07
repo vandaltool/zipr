@@ -43,17 +43,20 @@
 #include "elfio/elfio_dump.hpp"
 
 
+#include <zipr_sdk.h>
+
 namespace zipr
 {
 
-#include <range.h>
+using namespace Zipr_SDK;
+
 #include <unresolved.h>
-#include <memory_space.h>
+#include <zipr_mem_space.h>
+#include <plugin_man.h>
 #include <zipr.h>
 #include <zipr_optimizations.h>
-#include <zipr_options.h>
+#include <zipr_opts.h>
 #include <zipr_stats.h>
-#include <nonce_relocs.h>
 
 };
 

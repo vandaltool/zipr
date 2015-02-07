@@ -35,7 +35,7 @@ static void PrintStat(std::ostream &out, std::string description, double value)
 	out << description << ": " << std::dec << value << std::endl;
 }
 
-void Stats_t::PrintStats(Options_t opts, std::ostream &out)
+void Stats_t::PrintStats(ZiprOptions_t &opts, std::ostream &out)
 {
 	PrintStat(out, "Total dollops", total_dollops);
 	PrintStat(out, "Total dollop size", total_dollop_space);

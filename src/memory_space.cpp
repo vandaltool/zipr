@@ -26,9 +26,9 @@
 using namespace zipr;
 using namespace std;
 
-void MemorySpace_t::SplitFreeRange(RangeAddress_t addr)
+void ZiprMemorySpace_t::SplitFreeRange(RangeAddress_t addr)
 {
-	std::set<Range_t>::iterator it=FindFreeRange(addr);
+	RangeSet_t::iterator it=FindFreeRange(addr);
 	assert(IsValidRange(it));
 
 	Range_t r=*it;
@@ -55,7 +55,7 @@ void MemorySpace_t::SplitFreeRange(RangeAddress_t addr)
 	}
 }
 
-void MemorySpace_t::MergeFreeRange(RangeAddress_t addr)
+void ZiprMemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 {
 	/*
 	 * Make a new range of one byte.
@@ -68,7 +68,7 @@ void MemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 
 	Range_t nr(addr, addr);
 	bool merged = false;
-	std::set<Range_t>::iterator it=free_ranges.begin();
+	RangeSet_t::iterator it=free_ranges.begin();
 
 	for(;it!=free_ranges.end();++it)
 	{
@@ -163,9 +163,9 @@ void MemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 	}
 }
 
-void MemorySpace_t::PrintMemorySpace(std::ostream &out)
+void ZiprMemorySpace_t::PrintMemorySpace(std::ostream &out)
 {
-	for( std::set<Range_t>::iterator it=free_ranges.begin();
+	for( RangeSet_t::iterator it=free_ranges.begin();
 		it!=free_ranges.end();
 		++it)
 	{
@@ -174,20 +174,20 @@ void MemorySpace_t::PrintMemorySpace(std::ostream &out)
 	}
 }
 
-std::set<Range_t>::iterator MemorySpace_t::FindFreeRange(RangeAddress_t addr)
+RangeSet_t::iterator ZiprMemorySpace_t::FindFreeRange(RangeAddress_t addr)
 {
-	std::set<Range_t>::iterator freer = free_ranges.find(Range_t(addr, addr)); 
+	RangeSet_t::iterator freer = free_ranges.find(Range_t(addr, addr)); 
 	return freer;
 }
 
-bool MemorySpace_t::IsValidRange(std::set<Range_t>::iterator it)
+bool ZiprMemorySpace_t::IsValidRange(RangeSet_t::iterator it)
 {
 	return it!=free_ranges.end();
 }
 
-Range_t MemorySpace_t::GetFreeRange(int size)
+Range_t ZiprMemorySpace_t::GetFreeRange(int size)
 {
-	for( std::set<Range_t>::iterator it=free_ranges.begin();
+	for( RangeSet_t::iterator it=free_ranges.begin();
 		it!=free_ranges.end();
 		++it)
 	{
@@ -199,7 +199,7 @@ Range_t MemorySpace_t::GetFreeRange(int size)
 }
 
 // queries about free areas.
-bool MemorySpace_t::AreBytesFree(RangeAddress_t addr, int num_bytes)
+bool ZiprMemorySpace_t::AreBytesFree(RangeAddress_t addr, int num_bytes)
 {
 	for(int i=0;i<num_bytes;i++)
 		if(!IsByteFree(addr+i))
@@ -207,18 +207,18 @@ bool MemorySpace_t::AreBytesFree(RangeAddress_t addr, int num_bytes)
 	return true;
 }
 
-bool MemorySpace_t::IsByteFree(RangeAddress_t addr)
+bool ZiprMemorySpace_t::IsByteFree(RangeAddress_t addr)
 {
 	if (IsValidRange(FindFreeRange(addr)))
 		return true;
 	return false;
 }
 
-void MemorySpace_t::AddFreeRange(Range_t newRange)
+void ZiprMemorySpace_t::AddFreeRange(Range_t newRange)
 {
 	free_ranges.insert(Range_t(newRange.GetStart(), newRange.GetEnd()));
 }
-int MemorySpace_t::GetRangeCount()
+int ZiprMemorySpace_t::GetRangeCount()
 {
 	return free_ranges.size();
 }

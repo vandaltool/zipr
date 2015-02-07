@@ -41,7 +41,7 @@ class Stats_t
 			total_free_ranges = 0;
 		};
 
-		void PrintStats(Options_t opts, std::ostream &out);
+		void PrintStats(ZiprOptions_t &opts, std::ostream &out);
 
 		/*
 		 * General stats tracking.

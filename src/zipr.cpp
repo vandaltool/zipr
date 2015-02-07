@@ -95,6 +95,8 @@ void Zipr_t::CreateBinaryFile(const std::string &name)
 	// create ranges, including extra range that's def. big enough.
 	FindFreeRanges(name);
 
+	plugman.PinningBegin();
+
 	// add pinned instructions
 	AddPinnedInstructions();
 
@@ -134,21 +136,32 @@ void Zipr_t::CreateBinaryFile(const std::string &name)
 	}
 
 
+
 	// Convert all 5-byte pins into full fragments
 	OptimizePinnedInstructions();
 
-	NonceRelocs_t nr(memory_space,*elfiop, *m_firp, m_opts);
-	nr.HandleNonceRelocs();
+	// tell plugins we are done pinning.
+	plugman.PinningEnd();
+
+//	NonceRelocs_t nr(memory_space,*elfiop, *m_firp, m_opts);
+//	nr.HandleNonceRelocs();
 
 	// now that pinning is done, start emitting unpinnned instructions, and patching where needed.
 	PlopTheUnpinnedInstructions();
+
+	// tell plugins we are done plopping and about to link callbacks.
+	plugman.CallbackLinkingBegin();
 
 	// now that all instructions are put down, we can figure out where the callbacks for this file wil go.
 	// go ahead and update any callback sites with the new locations 
 	UpdateCallbacks();
 
+
+	// ask plugman to inform the plugins we are done linking callbacks
+	plugman.CallbackLinkingEnd();
+
 	// tell the Nonce class to update it's range of high/low addrs if it used any.
-	nr.UpdateAddrRanges(final_insn_locations);
+//	nr.UpdateAddrRanges(final_insn_locations);
 
 	m_stats->total_free_ranges = memory_space.GetRangeCount();
 
@@ -199,7 +212,7 @@ RangeAddress_t Zipr_t::extend_section(ELFIO::section *sec, ELFIO::section *next_
 void Zipr_t::FindFreeRanges(const std::string &name)
 {
 	/* use ELFIO to load the sections */
-	elfiop=new ELFIO::elfio;
+//	elfiop=new ELFIO::elfio;
 
 	assert(elfiop);
 	elfiop->load(name);

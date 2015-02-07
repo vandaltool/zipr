@@ -47,7 +47,7 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-	Options_t *options=Options_t::parse_args(argc,argv);
+	ZiprOptions_t *options=ZiprOptions_t::parse_args(argc,argv);
 
 
         VariantID_t *pidp=NULL;
@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
 
 	if (options->GetVariantID() == -1)
 	{
-		Options_t::print_usage(argc, argv);
+		ZiprOptions_t::print_usage(argc, argv);
 		return 1;
 	}
 

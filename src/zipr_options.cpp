@@ -25,7 +25,7 @@
 
 using namespace zipr;
 
-void Options_t::print_usage(int p_argc, char *p_argv[])
+void ZiprOptions_t::print_usage(int p_argc, char *p_argv[])
 {
 	printf("%s [options]\n", p_argv[0]);
 	printf("\t-v variant-id\t--variant variant-id: "
@@ -46,9 +46,9 @@ void Options_t::print_usage(int p_argc, char *p_argv[])
 		"Quiet the verbose output. \n");
 }
 
-Options_t* Options_t::parse_args(int p_argc, char* p_argv[])
+ZiprOptions_t* ZiprOptions_t::parse_args(int p_argc, char* p_argv[])
 {
-	Options_t *opt=new Options_t;
+	ZiprOptions_t *opt=new ZiprOptions_t;
 	opt->SetVerbose(true);
 	extern char *optarg;
 	extern int optind, opterr, optopt;
@@ -164,7 +164,7 @@ Options_t* Options_t::parse_args(int p_argc, char* p_argv[])
 	return opt;
 }
 
-int Options_t::GetArchitecture() {
+int ZiprOptions_t::GetArchitecture() {
 	/*
 	 * If the user specified an architecture, return it.
 	 * Otherwise, return the one detected.
