@@ -9,7 +9,7 @@ EXE=zipr.exe
 
 CXX=@CXX@
 CXXFLAGS=@CXXFLAGS@ @OPTIMIZE@
-LDFLAGS=-L$(SECURITY_TRANSFORMS_HOME)/lib
+LDFLAGS=-L$(SECURITY_TRANSFORMS_HOME)/lib -Wl,-E
 LIBS=-lpqxx -lpq -lIRDB-core -lBeaEngine_s_d -ltransform ${SECURITY_TRANSFORMS_HOME}/tools/transforms/Rewrite_Utility.o
 
 
