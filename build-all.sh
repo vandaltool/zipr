@@ -69,3 +69,6 @@ make install
 
 cd $ZIPR_HOME
 ./configure --prefix=$ZIPR_INSTALL; make;  make install
+
+cd $ZIPR_SCFI_PLUGIN
+./configure --prefix=$ZIPR_INSTALL; make;  make install
