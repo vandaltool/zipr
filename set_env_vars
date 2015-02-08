@@ -17,6 +17,9 @@ export STRATA_HOME32=$STRATA32
 export ZIPR_HOME=$PEASOUP_UMBRELLA_DIR/zipr
 export ZIPR_INSTALL=$PEASOUP_UMBRELLA_DIR/zipr_install
 export ZIPR_CALLBACKS=$PEASOUP_UMBRELLA_DIR/zipr_callbacks
+export ZIPR_SDK=$PEASOUP_UMBRELLA_DIR/zipr_sdk
+export ZIPR_SCFI_PLUGIN=$PEASOUP_UMBRELLA_DIR/zipr_scfi_plugin
+
 
 export SECURITY_TRANSFORMS_HOME=$PEASOUP_UMBRELLA_DIR/security_transforms
 if [[ ! "$LD_LIBRARY_PATH" =~ (^|:)"$PEASOUP_UMBRELLA_DIR/lib:$PEASOUP_UMBRELLA_DIR/grace/concolic/bin:$STRATA/lib"(:|$) ]]
@@ -25,7 +28,8 @@ then
 fi
 
 #Get IDAPRO to work with no errors
-export TVHEADLESS=1
+# just not needed.
+#export TVHEADLESS=1
 
 source $PEASOUP_UMBRELLA_DIR/irdb_vars
 

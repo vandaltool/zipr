@@ -8,3 +8,7 @@ strata               http://svn.zephyr-software.com/repos/strata/branches/cgc_de
 stratafier           http://svn.zephyr-software.com/repos/stratafier/branches/cgc_dev/
 zipr_callbacks       http://svn.zephyr-software.com/repos/zipr_callbacks/trunk/
 zipr_install         http://svn.zephyr-software.com/repos/zipr_install/branches/cgc_dev/
+zipr_sdk             http://svn.zephyr-software.com/repos/zipr_sdk/trunk/
+zipr_scfi_plugin     http://svn.zephyr-software.com/repos/zipr_scfi_plugin/trunk
+
+

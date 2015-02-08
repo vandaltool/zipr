@@ -63,3 +63,18 @@ cd $SECURITY_TRANSFORMS_HOME
 cd $PEASOUP_HOME
 make
 
+cd $ZIPR_CALLBACKS
+./configure_for_cgc --prefix=$ZIPR_INSTALL
+make
+make install
+
+
+if [ -d $ZIPR_HOME ]; then
+	cd $ZIPR_HOME
+	./configure --enable-cgc --prefix=$ZIPR_INSTALL; make;  make install
+fi
+
+cd $ZIPR_SCFI_PLUGIN
+./configure --enable-cgc --prefix=$ZIPR_INSTALL; make;  make install
+
+
