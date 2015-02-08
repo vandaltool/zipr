@@ -38,7 +38,7 @@ class ZiprMemorySpace_t : public MemorySpace_t
 {
 	public:
 		ZiprMemorySpace_t(ZiprOptions_t *opts) :
-			m_opts(opts)
+			m_opts(opts), max_plopped(0), min_plopped(-1)
 		{ 
 		}
 
