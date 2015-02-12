@@ -20,7 +20,19 @@ CREATE TABLE #FTN#
   stack_frame_size   	integer,			-- believed stack frame size
   out_args_region_size	integer,			-- believed out arg size
   use_frame_pointer	boolean,			-- believed whether this function uses the FP
+  type_id               integer DEFAULT -1, -- id for the type that describes the function prototype
   doip_id	   	integer DEFAULT -1 		-- the DOIP
+);
+
+CREATE TABLE #TYP#
+(
+  type_id            integer,     
+  type               integer DEFAULT 0,    -- possible types (0: UNKNOWN)
+  name               text DEFAULT '',      -- string representation of the type
+  ref_type_id        integer DEFAULT -1,   -- for aggregate types
+  pos                integer DEFAULT -1,   -- for aggregate types, position in aggregate
+  ref_type_id2       integer DEFAULT -1,   -- for func types
+  doip_id            integer DEFAULT -1    -- the DOIP
 );
 
 CREATE TABLE #ITN#

@@ -13,15 +13,9 @@
 # set default values for 
 ##################################################################################
 
-initial_off_phases="isr ret_shadow_stack determine_program stats fill_in_safefr zipr installer watch_allocate spawner concolic selective_cfi"
-
+initial_off_phases="isr ret_shadow_stack determine_program stats fill_in_safefr zipr installer watch_allocate spawner concolic selective_cfi fptr_shadow"
 
 ##################################################################################
-
-
-
-
-
 
 
 ulimit -s unlimited
@@ -49,7 +43,7 @@ DO_CANARIES=on
 CONCOLIC_DIR=concolic.files_a.stratafied_0001
 
 intxform_warnings_only=0  # default: integer warnings only mode is off
-intxform_detect_fp=1      # default: detect benign false positives is on
+intxform_detect_fp=0      # default: detect benign false positives is on
                           #   but if determine_program is off, it's a no-op
 intxform_instrument_idioms=0  # default: do not instrument instructions marked as IDIOM by STARS
 
@@ -872,10 +866,15 @@ fi
 perform_step manual_test none $PEASOUP_HOME/tools/do_manualtests.sh $name $stratafied_exe $manual_test_script $manual_test_coverage_file
 
 #
-# remove the parts of the aannotation file not needed at runtime
+# remove the parts of the annotation file not needed at runtime
 #
 perform_step fast_annot preLoaded_ILR2 $PEASOUP_HOME/tools/fast_annot.sh
 
+
+#
+# Function pointer shadowing
+#
+perform_step fptr_shadow meds_static,clone $PEASOUP_HOME/tools/do_fptr_shadow.sh $cloneid
 
 #
 # Do P1/Pn transform.

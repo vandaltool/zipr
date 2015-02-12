@@ -1,4 +1,4 @@
-#!/bin/sh   -x
+#!/bin/sh -x
 #
 # Copyright (c) 2014 - Zephyr Software LLC
 #
@@ -97,7 +97,7 @@ psql -q -t -c "UPDATE variant_info SET orig_variant_id = '$PROGRAM_ID' WHERE var
 #============================================
 create_table()
 {
-	$PEASOUP_HOME/tools/db/pdb_create_program_tables.sh $1 $2 $3 $4 db.tmp.$$
+	$PEASOUP_HOME/tools/db/pdb_create_program_tables.sh $1 $2 $3 $4 $5 db.tmp.$$
 	psql -q -t -c "`cat db.tmp.$$`"
 }
 
@@ -128,15 +128,15 @@ update_file_info()
 	pn=table_${pid}_${FILE_ID}
 
 	# Update original file id
-	psql -q -t -c "UPDATE file_info SET orig_file_id = '$FILE_ID', address_table_name = '${pn}_address', function_table_name = '${pn}_function', instruction_table_name = '${pn}_instruction', relocs_table_name = '${pn}_relocs' WHERE file_id = '$FILE_ID';" || exit 1
+	psql -q -t -c "UPDATE file_info SET orig_file_id = '$FILE_ID', address_table_name = '${pn}_address', function_table_name = '${pn}_function', instruction_table_name = '${pn}_instruction', relocs_table_name = '${pn}_relocs', types_table_name = '${pn}_types' WHERE file_id = '$FILE_ID';" || exit 1
 
 	# update the variant dependency table
 	psql -q -t -c "INSERT INTO variant_dependency (variant_id, file_id) VALUES ('$pid', '$FILE_ID')" || exit 1
 
-	create_table ${pn}_address ${pn}_function ${pn}_instruction ${pn}_relocs
+	create_table ${pn}_address ${pn}_function ${pn}_instruction ${pn}_relocs ${pn}_types
 
 	echo Importing $fn.annot into IRDB via meds2pdb 
-	$SECURITY_TRANSFORMS_HOME/tools/meds2pdb/meds2pdb ${fn}.annot $FILE_ID ${pn}_function ${pn}_instruction ${pn}_address $fn ${fn}.STARSxrefs || exit 1
+	$SECURITY_TRANSFORMS_HOME/tools/meds2pdb/meds2pdb ${fn}.annot ${fn}.infoannot $FILE_ID ${pn}_function ${pn}_instruction ${pn}_address ${pn}_types  $fn ${fn}.STARSxrefs || exit 1
 }
 
 
