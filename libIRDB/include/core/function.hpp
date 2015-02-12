@@ -18,6 +18,7 @@
  *
  */
 
+#include "core/type.hpp"
 
 typedef        std::set<Instruction_t*> InstructionSet_t;
 
@@ -29,7 +30,7 @@ class Function_t : public BaseObj_t
 	Function_t() : BaseObj_t(NULL) {}	// create a new function not in the db 
 
 	// create a function that's already in the DB  
-	Function_t(db_id_t id, std::string name, int size, int oa_size, bool use_fp, Instruction_t *entry);	
+	Function_t(db_id_t id, std::string name, int size, int oa_size, bool use_fp, FuncType_t *, Instruction_t *entry);	
 
 	InstructionSet_t& GetInstructions() { return my_insns; }
 
@@ -42,13 +43,15 @@ class Function_t : public BaseObj_t
         void SetOutArgsRegionSize(int oa_size) {out_args_region_size=oa_size;}
 
 	void SetEntryPoint(Instruction_t *insn) {entry_point=insn;}
-	Instruction_t* GetEntryPoint() { return entry_point;}
+	Instruction_t* GetEntryPoint() const { return entry_point;}
 
-	void WriteToDB();		// we need the variant ID to write into a program.
 	std::string WriteToDB(File_t *fid, db_id_t newid);
 
-        bool GetUseFramePointer() { return use_fp; }
+        bool GetUseFramePointer() const { return use_fp; }
         void SetUseFramePointer(bool useFP) { use_fp = useFP; }
+
+		void SetType(FuncType_t *t) { function_type = t; }
+		FuncType_t* GetType() const { return function_type; }
 
 
     private:
@@ -58,5 +61,6 @@ class Function_t : public BaseObj_t
         std::string name;
         int out_args_region_size;
         bool use_fp;
+		FuncType_t *function_type;
 };
 

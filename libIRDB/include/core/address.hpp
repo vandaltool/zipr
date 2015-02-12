@@ -46,8 +46,7 @@ class AddressID_t : public BaseObj_t
         virtual_offset_t GetVirtualOffset() { return virtual_offset; }
         void SetVirtualOffset(virtual_offset_t voff) { virtual_offset=voff; }
 
-	void WriteToDB() { assert(0); }
-        std::string WriteToDB(File_t *vid, db_id_t newid, bool p_withHeader);
+		std::string WriteToDB(File_t *vid, db_id_t newid, bool p_withHeader);
 
 	inline bool operator<(const AddressID_t& cmp) const 
 		{ return fileID < cmp.fileID || (fileID == cmp.fileID && virtual_offset < cmp.virtual_offset);} 

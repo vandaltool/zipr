@@ -1,7 +1,7 @@
 CC=g++
 CFLAGS= -g
-INCLUDE=-I. -I../../include -I../../xform -I../../beaengine/include
-LIBS=-L../../lib -lxform -lBeaEngine_s_d -lpq -lpqxx
+INCLUDE=-I. -I../../include -I../../xform -I../../beaengine/include -I../../libMEDSannotation/include -I../../libIRDB/include
+LIBS=-L../../lib -lxform -lBeaEngine_s_d -lpq -lpqxx -lIRDB-core -lMEDSannotation
 
 .SUFFIXES: .o .c .cpp
 

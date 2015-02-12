@@ -127,6 +127,7 @@ int IntegerTransform64::execute()
 
 				if (getAnnotations()->count(vo) == 0)
 					continue;
+
 				std::pair<MEDS_Annotations_t::iterator,MEDS_Annotations_t::iterator> ret;
 				ret = getAnnotations()->equal_range(vo);
 				MEDS_InstructionCheckAnnotation annotation; 

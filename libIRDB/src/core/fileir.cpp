@@ -89,6 +89,11 @@ FileIR_t::~FileIR_t()
 	{
 		delete *i;
 	}
+
+	for(std::set<Type_t*>::const_iterator i=types.begin(); i!=types.end(); ++i)
+	{
+		delete *i;
+	}
 }
   
 // DB operations
@@ -96,8 +101,9 @@ void FileIR_t::ReadFromDB()
 {
 	entry_points.clear();
 
+	std::map<db_id_t,Type_t*> typesMap = ReadTypesFromDB(types); 
 	std::map<db_id_t,AddressID_t*> 	addrMap=ReadAddrsFromDB();
-	std::map<db_id_t,Function_t*> 	funcMap=ReadFuncsFromDB(addrMap);
+	std::map<db_id_t,Function_t*> 	funcMap=ReadFuncsFromDB(addrMap, typesMap);
 	std::map<db_id_t,Instruction_t*> 	insnMap=ReadInsnsFromDB(funcMap,addrMap);
 	ReadRelocsFromDB(insnMap);
 
@@ -236,7 +242,8 @@ std::string FileIR_t::LookupAssembly(Instruction_t *instr)
 
 std::map<db_id_t,Function_t*> FileIR_t::ReadFuncsFromDB
 	(
-        	std::map<db_id_t,AddressID_t*> &addrMap
+        	std::map<db_id_t,AddressID_t*> &addrMap,
+			std::map<db_id_t,Type_t*> &typesMap
 	)
 {
 	std::map<db_id_t,Function_t*> idMap;
@@ -254,6 +261,7 @@ std::map<db_id_t,Function_t*> FileIR_t::ReadFuncsFromDB
 		std::string name=dbintr->GetResultColumn("name");
 		int sfsize=atoi(dbintr->GetResultColumn("stack_frame_size").c_str());
 		int oasize=atoi(dbintr->GetResultColumn("out_args_region_size").c_str());
+		db_id_t function_type_id=atoi(dbintr->GetResultColumn("type_id").c_str());
 // postgresql encoding of boolean can be 'true', '1', 'T', 'y'
                 bool useFP=false;
 		const char *useFPstr= dbintr->GetResultColumn("use_frame_pointer").c_str();
@@ -265,7 +273,10 @@ std::map<db_id_t,Function_t*> FileIR_t::ReadFuncsFromDB
 
 		db_id_t doipid=atoi(dbintr->GetResultColumn("doip_id").c_str());
 
-		Function_t *newfunc=new Function_t(fid,name,sfsize,oasize,useFP,NULL); 
+		FuncType_t* fnType = NULL;
+		if (typesMap.count(function_type_id) > 0)
+			fnType = dynamic_cast<FuncType_t*>(typesMap[function_type_id]);
+		Function_t *newfunc=new Function_t(fid,name,sfsize,oasize,useFP,fnType, NULL); 
 		entry_points[newfunc]=entry_point_id;
 		
 //std::cout<<"Found function "<<name<<"."<<std::endl;
@@ -445,12 +456,27 @@ void FileIR_t::WriteToDB()
 	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->function_table_name    + string(" cascade;"));
 	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->address_table_name     + string(" cascade;"));
 	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->relocs_table_name     + string(" cascade;"));
+	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->types_table_name     + string(" cascade;"));
 
 	/* and now that everything has an ID, let's write to the DB */
+
+	// write out the types
+	string q=string("");
+	for(std::set<Type_t*>::const_iterator t=types.begin(); t!=types.end(); ++t)
+	{
+		q+=(*t)->WriteToDB(fileptr,j); // @TODO: wtf is j?
+		if(q.size()>1024*1024)
+		{
+			dbintr->IssueQuery(q);
+			q=string("");
+		}
+	}
+	dbintr->IssueQuery(q);
+
 	bool withHeader;
 
 	withHeader = true;
-	string q=string("");
+	q=string("");
 	for(std::set<Function_t*>::const_iterator f=funcs.begin(); f!=funcs.end(); ++f)
 	{
 		q+=(*f)->WriteToDB(fileptr,j);
@@ -536,6 +562,7 @@ void FileIR_t::WriteToDB()
 			Relocation_t* reloc=*it;
 			r+=reloc->WriteToDB(fileptr,*i);
 		}
+
 		dbintr->IssueQuery(r);
 	}
 	dbintr->IssueQuery(q);
@@ -571,6 +598,9 @@ void FileIR_t::SetBaseIDS()
 		if((*i)->GetBaseID()==NOT_IN_DATABASE)
 			(*i)->SetBaseID(j++);
 	for(std::set<Relocation_t*>::const_iterator i=relocs.begin(); i!=relocs.end(); ++i)
+		if((*i)->GetBaseID()==NOT_IN_DATABASE)
+			(*i)->SetBaseID(j++);
+	for(std::set<Type_t*>::const_iterator i=types.begin(); i!=types.end(); ++i)
 		if((*i)->GetBaseID()==NOT_IN_DATABASE)
 			(*i)->SetBaseID(j++);
 }
@@ -648,3 +678,193 @@ void FileIR_t::SetArchitecture()
 }
 
 ArchitectureDescription_t* FileIR_t::archdesc=NULL;
+
+std::map<db_id_t, Type_t*> FileIR_t::ReadTypesFromDB (TypeSet_t& types)
+{
+	std::map<db_id_t, Type_t*> tMap;
+
+	// 3 pass algorithm. Must be done in this exact order as:
+	//      aggregrate type depend on basic types
+	//      function type depends on both aggregate and basic types
+	//
+	// pass 1: retrieve all basic types
+	// pass 2: retrieve all aggregate types
+	// pass 3: retrieve all function types
+	//
+
+	// pass 1, get all the basic types first
+//	std::string q= "select * from " + fileptr->types_table_name + " WHERE ref_type_id = -1 AND ref_type_id2 = -1 AND pos = -1 order by type; ";
+	std::string q= "select * from " + fileptr->types_table_name + " WHERE ref_type_id = -1 order by type; ";
+
+//	cout << "pass1: query: " << q;
+
+	dbintr->IssueQuery(q);
+
+	while(!dbintr->IsDone())
+	{
+//  type_id            integer,     
+//  type               integer DEFAULT 0,    -- possible types (0: UNKNOWN)
+//  name               text DEFAULT '',      -- string representation of the type
+//  ref_type_id        integer DEFAULT -1,   -- for aggregate types and func
+//  pos                integer DEFAULT -1,   -- for aggregate types, position in aggregate
+//  ref_type_id2       integer DEFAULT -1,   -- for func types
+//  doip_id            integer DEFAULT -1    -- the DOIP
+
+		db_id_t tid=atoi(dbintr->GetResultColumn("type_id").c_str());
+		IRDB_Type type=(IRDB_Type)atoi(dbintr->GetResultColumn("type").c_str());
+		std::string name=dbintr->GetResultColumn("name");
+		BasicType_t *t = NULL;	
+
+//		cout << "fileir::ReadFromDB(): pass1: " << name << endl;
+		switch(type) {
+				case T_UNKNOWN:
+				case T_VOID:
+				case T_NUMERIC:
+				case T_VARIADIC:
+				case T_INT:
+				case T_CHAR:
+				case T_FLOAT:
+				case T_DOUBLE:
+					t = new BasicType_t(tid, type, name);	
+					types.insert(t);
+					tMap[tid] = t;
+					break;
+
+				case T_POINTER:
+					// do nothing for pointers
+					break;
+
+				default:
+					cerr << "ReadTypesFromDB(): ERROR: pass 1 should only see basic types or pointer"  << endl;
+					assert(0); 
+					break;						
+		}
+
+		dbintr->MoveToNextRow();
+	} // end pass1
+
+	char query[2048];
+
+	// pass2 get pointers
+	sprintf(query,"select * from %s WHERE type = %d;", fileptr->types_table_name.c_str(), T_POINTER);
+	dbintr->IssueQuery(query);
+
+	while(!dbintr->IsDone())
+	{
+		db_id_t tid=atoi(dbintr->GetResultColumn("type_id").c_str());
+		IRDB_Type type=(IRDB_Type)atoi(dbintr->GetResultColumn("type").c_str());
+		std::string name=dbintr->GetResultColumn("name");
+		db_id_t ref1=atoi(dbintr->GetResultColumn("ref_type_id").c_str());
+		cout << "fileir::ReadFromDB(): pass2 (pointers): " << name << endl;
+		switch(type) {
+				case T_POINTER:
+					{
+						cout << "   pointer type: ref1: " << ref1 << endl;
+						Type_t *referentType = NULL;
+						if (ref1 >= 0) 
+						{
+							assert(tMap.count(ref1) > 0);
+							referentType = tMap[ref1];
+						}
+						PointerType_t *ptr = new PointerType_t(tid, referentType, name);	
+						types.insert(ptr);
+						tMap[tid] = ptr;
+					}
+					break;
+
+				default:
+					cerr << "ReadTypesFromDB(): ERROR: pass3: unhandled type id = "  << type << endl;
+					assert(0); // not yet handled
+					break;						
+
+		}
+
+		dbintr->MoveToNextRow();
+	} // end pass3
+
+	// pass3 get all aggregates
+	sprintf(query,"select * from %s WHERE type = %d order by type_id, pos;", fileptr->types_table_name.c_str(), T_AGGREGATE);
+	dbintr->IssueQuery(query);
+
+	while(!dbintr->IsDone())
+	{
+		db_id_t tid=atoi(dbintr->GetResultColumn("type_id").c_str());
+		IRDB_Type type=(IRDB_Type)atoi(dbintr->GetResultColumn("type").c_str());
+		std::string name=dbintr->GetResultColumn("name");
+		db_id_t ref1=atoi(dbintr->GetResultColumn("ref_type_id").c_str());
+		int pos=atoi(dbintr->GetResultColumn("pos").c_str());
+		AggregateType_t *agg = NULL;	
+		cout << "fileir::ReadFromDB(): pass3 (aggregates): " << name << endl;
+		switch(type) {
+				case T_AGGREGATE:
+					{
+						if (tMap.count(tid) == 0)  // new aggregate
+						{	
+		cout << "fileir::ReadFromDB(): pass3: new aggregate type: typeid: " << tid << " name: " << name << endl;
+							agg = new AggregateType_t(tid, name);	
+							types.insert(agg);
+							tMap[tid] = agg;
+						}
+						else
+							agg = dynamic_cast<AggregateType_t*>(tMap[tid]);
+
+						assert(agg);
+						// ref1 has the id of a basic type, look it up
+						Type_t *ref = tMap.at(ref1);
+						assert(ref);
+						agg->AddAggregatedType(ref, pos);
+					}
+					break;
+
+				default:
+					cerr << "ReadTypesFromDB(): ERROR: pass2: unhandled type id = "  << type << endl;
+					assert(0); // not yet handled
+					break;						
+
+		}
+
+		dbintr->MoveToNextRow();
+	} // end pass3
+
+	// pass4 get all functions
+	sprintf(query,"select * from %s WHERE type = %d;", fileptr->types_table_name.c_str(), T_FUNC);
+	dbintr->IssueQuery(query);
+
+	while(!dbintr->IsDone())
+	{
+		db_id_t tid=atoi(dbintr->GetResultColumn("type_id").c_str());
+		IRDB_Type type=(IRDB_Type)atoi(dbintr->GetResultColumn("type").c_str());
+		std::string name=dbintr->GetResultColumn("name");
+		db_id_t ref1=atoi(dbintr->GetResultColumn("ref_type_id").c_str());
+		db_id_t ref2=atoi(dbintr->GetResultColumn("ref_type_id2").c_str());
+		FuncType_t *fn = NULL;	
+
+		switch(type) {
+				case T_FUNC:
+					{
+					assert(tMap.count(tid) == 0);
+
+					fn = new FuncType_t(tid, name);	
+					types.insert(fn);
+					tMap[tid] = fn;
+					assert(tMap.at(ref1)); // return type
+					assert(tMap.at(ref2)); // argument type (which is an aggregate)
+					fn->SetReturnType(tMap[ref1]);
+					AggregateType_t *args = dynamic_cast<AggregateType_t*>(tMap[ref2]);
+					assert(args);
+					fn->SetArgumentsType(args);
+					}
+					break;
+
+				default:
+					cerr << "ReadTypesFromDB(): ERROR: pass4: unhandled type id = "  << type << endl;
+					assert(0); // not yet handled
+					break;						
+
+		}
+
+		dbintr->MoveToNextRow();
+	} // end pass4
+
+	return tMap;
+}

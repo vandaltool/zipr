@@ -39,11 +39,8 @@ class BaseObj_t
         db_id_t GetDoipID() const { return doip ? doip->GetBaseID() : NOT_IN_DATABASE; }
         void SetDoipID(doip_t *dp) { doip=dp; }
         void SetBaseID(db_id_t id) {base_id=id; }
-   
-        // A derived class must provide functionality to write to the database.
-        virtual void WriteToDB()=0;    
 
-	static const db_id_t NOT_IN_DATABASE;
+		static const db_id_t NOT_IN_DATABASE;
 
     protected:
         static DBinterface_t *dbintr;
@@ -51,6 +48,5 @@ class BaseObj_t
     private:
         doip_t* doip;
         db_id_t base_id;    // -1 means not yet in the DB.
-
 };
 

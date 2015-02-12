@@ -180,6 +180,8 @@ int main(int argc, char **argv)
 
 			MEDS_Annotations_t annotations = annotationParser.getAnnotations();
 
+			cout << "integer transform driver: found " << annotations.size() << " annotaitons" << endl;
+
 			// do the transformation
 
 			libTransform::IntegerTransform *intxform = NULL;

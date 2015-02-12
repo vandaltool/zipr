@@ -25,15 +25,21 @@
 #include "rewriter.h"
 #include <pqxx/pqxx>
 #include <stdlib.h>
+#include "MEDS_AnnotationParser.hpp"
+#include "MEDS_FuncPrototypeAnnotation.hpp"
+#include "libIRDB-core.hpp"
 
 using namespace std;
 using namespace pqxx;
+using namespace libIRDB;
+using namespace MEDS_Annotation;
 
 #include <sstream>
 
 string functionTable;
 string addressTable;
 string instructionTable;
+string typesTable;
 
 static const int STRIDE = 50;
 
@@ -49,7 +55,6 @@ inline std::string my_to_string (const T& t)
 int next_address_id=0;
 
 map<app_iaddr_t,int> address_to_instructionid_map;
-
 
 // extract the file id from the md5 hash and the program name
 int get_file_id(char *progName, char *md5hash)
@@ -272,35 +277,181 @@ void update_functions(int fileID, const vector<wahoo::Function*> &functions  )
   txn.commit(); // must commit o/w everything will be rolled back
 }
 
+/*
+	typedef enum IRDB_Type {
+		T_UNKNOWN = 0, T_NUMERIC = 1, T_POINTER = 2, 
+		T_INT = 10, T_CHAR = 11, T_FLOAT = 12, T_DOUBLE = 13,
+		T_VARIADIC = 20, T_TYPEDEF = 21, T_SUBTYPE = 22, 
+		T_FUNC = 100, T_AGGREGATE = 101
+	} IRDB_Type;
 
+// MUST MATCH typedef in type.hpp in libIRDB-core!!!
+*/
+
+static int getNewTypeId()
+{
+	// start at 5000 so we don't clash with predefined type ids
+	static int next_type_id=5000; 
+	return next_type_id++;
+}
+
+void populate_predefined_types()
+{
+	connection conn;
+	work txn(conn);
+	string q = "SET client_encoding='LATIN1';";
+	q += "INSERT into " + typesTable + " (type_id, type, name, ref_type_id, ref_type_id2) values ('0', '0','unknown','-1','-1');";
+	q += "INSERT into " + typesTable + " (type_id, type, name, ref_type_id, ref_type_id2) values ('1', '1','numeric','-1','-1');";
+	q += "INSERT into " + typesTable + " (type_id, type, name, ref_type_id, ref_type_id2) values ('2', '2','pointer','0','-1');";
+	txn.exec(q);
+	txn.commit(); 
+}
+
+void update_function_prototype(vector<wahoo::Function*> functions, char* annotFile)
+{
+	populate_predefined_types();
+
+	connection conn;
+	work txn(conn);
+	txn.exec("SET client_encoding='LATIN1';");
+
+	ifstream annotationif(annotFile, ifstream::in);
+	assert(annotationif.is_open());
+
+	MEDS_AnnotationParser annotationParser(annotationif);
+	MEDS_Annotations_t annotations = annotationParser.getFuncPrototypeAnnotations();
+
+	for (int i = 0; i < functions.size(); i += STRIDE)
+	{  
+		string q = "";
+		for (int j = i; j < i + STRIDE; ++j)
+		{
+			if (j >= functions.size()) break;
+			wahoo::Function *f = functions[j];
+      		int function_id = f->getFunctionID();
+			app_iaddr_t functionAddress = f->getAddress();
+			VirtualOffset vo(functionAddress);
+
+			MEDS_FuncPrototypeAnnotation* fn_prototype_annot = NULL; 
+			MEDS_FuncPrototypeAnnotation* fn_returntotype_annot = NULL; 
+			
+			std::vector<MEDS_Arg> *args = NULL;
+			MEDS_Arg *returnArg = NULL;
+
+			if (annotations.count(vo) > 0)
+			{
+				std::pair<MEDS_Annotations_t::iterator,MEDS_Annotations_t::iterator> ret; 
+				ret = annotations.equal_range(vo);
+				MEDS_FuncPrototypeAnnotation* p_annotation; 
+				for ( MEDS_Annotations_t::iterator it = ret.first; it != ret.second; ++it)
+				{    
+					MEDS_AnnotationBase *base_type=(it->second);
+					p_annotation = dynamic_cast<MEDS_FuncPrototypeAnnotation*>(base_type);
+					if(p_annotation == NULL || !p_annotation->isValid()) 
+						continue;
+
+					if (p_annotation->getArgs())
+						args = p_annotation->getArgs();
+
+					if (p_annotation->getReturnArg())
+						returnArg = p_annotation->getReturnArg();
+				}    
+			}
+
+			// we should have 2 valid annotations per function
+			// one for the args, one for the return type
+			if (args)
+			{
+				// (1) define new aggregate type
+				// (2) define new return type
+				// (3) define new function type (combo (1) + (2))
+				int aggregate_type_id = getNewTypeId();
+				int func_type_id = getNewTypeId();
+				int basic_type_id = T_UNKNOWN;
+
+				for (int i = 0; i < args->size(); ++i)
+				{
+					if ((*args)[i].isNumericType())
+						basic_type_id = T_NUMERIC;
+					else if ((*args)[i].isPointerType())
+						basic_type_id = T_POINTER;
+
+					q += "INSERT into " + typesTable + " (type_id, type, name, ref_type_id, pos) VALUES (";
+					q += txn.quote(my_to_string(aggregate_type_id)) + ",";
+					q += txn.quote(my_to_string(T_AGGREGATE)) + ",";
+					q += txn.quote(string(f->getName()) + "_arg" + my_to_string(i)) + ",";
+					q += txn.quote(my_to_string(basic_type_id)) + ",";
+					q += txn.quote(my_to_string(i)) + ");";
+				}
+
+				int return_type_id = T_UNKNOWN;
+				if (returnArg) 
+				{
+					if (returnArg->isNumericType())
+						return_type_id = T_NUMERIC;
+					else if (returnArg->isPointerType())
+						return_type_id = T_POINTER;
+					else
+						return_type_id = T_UNKNOWN;
+				}
+
+				// new function type id (ok to have duplicate prototypes)
+				// ref_type_id is the return type id
+				// ref_type_id2 is the type id for the aggregated type 
+				//     that describes the function arguments
+				q += "INSERT into " + typesTable + " (type_id, type, name, ref_type_id, ref_type_id2) VALUES (";
+
+				q += txn.quote(my_to_string(func_type_id)) + ",";
+				q += txn.quote(my_to_string(T_FUNC)) + ",";
+				q += txn.quote(string(f->getName()) + "_func") + ",";
+				q += txn.quote(my_to_string(return_type_id)) + ",";
+				q += txn.quote(my_to_string(aggregate_type_id)) + ");";
+
+				// update the type id in the function table
+				q += "UPDATE " + functionTable;
+				q += " SET type_id = " + txn.quote(my_to_string(func_type_id));
+				q += " where function_id = " + txn.quote(my_to_string(function_id)) + "; ";
+			} // update function prototype
+		} // strided
+
+		if (q.size() > 0)
+			txn.exec(q);
+	} // outer loop
+
+ 	txn.commit(); // must commit o/w everything will be rolled back
+}
 
 int main(int argc, char **argv)
 {
-  	if (argc != 8)
+  	if (argc != 10)
   	{
-    		cerr << "usage: " << argv[0] << " <annotations file> <file id> <func tab name> <insn tab name> <addr tab name> <elf file> <STARSxref file>" << endl;
+    		cerr << "usage: " << argv[0] << " <annotations file> <info annotation file> <file id> <func tab name> <insn tab name> <addr tab name> <types tab name> <elf file> <STARSxref file>" << endl;
     		return 1;
   	}
 
   	char *annotFile = argv[1];
-  	char *fid=argv[2];
-  	char *myFunctionTable=argv[3];
-  	char *myInstructionTable=argv[4];
-  	char *myAddressTable=argv[5];
-  	char *elfFile=argv[6];
-  	char *starsXrefFile=argv[7];
+  	char *infoAnnotFile = argv[2];
+  	char *fid=argv[3];
+  	char *myFunctionTable=argv[4];
+  	char *myInstructionTable=argv[5];
+  	char *myAddressTable=argv[6];
+  	char *myTypesTable=argv[7];
+  	char *elfFile=argv[8];
+  	char *starsXrefFile=argv[9];
 
 	cout<<"Annotation file: "<< annotFile<<endl;
+	cout<<"Info annotation file: "<< infoAnnotFile<<endl;
 	cout<<"File ID: "<< fid<<endl;
 	cout<<"FTN:: "<< myFunctionTable<<endl;
 	cout<<"ITN: "<< myInstructionTable<<endl;
 	cout<<"ATN: "<< myAddressTable<<endl;
+	cout<<"TYP: "<< myTypesTable<<endl;
 
 	// set global vars for importing.
 	functionTable=myFunctionTable;
 	addressTable=myAddressTable;
 	instructionTable=myInstructionTable;
-
+	typesTable=myTypesTable;
 
   	Rewriter *rewriter = new Rewriter(elfFile, annotFile, starsXrefFile);
 
@@ -321,6 +472,7 @@ int main(int argc, char **argv)
   	insert_instructions(fileID, instructions, functions);
   	update_functions(fileID, functions);
 
-
+	// add function prototype information to the IRDB
+	update_function_prototype(functions, infoAnnotFile);
 	exit(0);
 }

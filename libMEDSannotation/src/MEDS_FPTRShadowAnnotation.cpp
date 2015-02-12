@@ -68,8 +68,6 @@ MEDS_FPTRShadowAnnotation::MEDS_FPTRShadowAnnotation(const string &p_rawLine) : 
 
 void MEDS_FPTRShadowAnnotation::parse()
 {
-	cerr << "MEDS_FPTRShadowAnnotation::parse(): enter" << endl;
-
 	if (m_rawInputLine.find(" INSTR ")==string::npos)
 		return;
 

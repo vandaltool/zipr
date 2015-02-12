@@ -30,6 +30,9 @@
 namespace MEDS_Annotation 
 {
 
+// These strings must match those emitted by MEDS in the information annotation file exactly
+#define MEDS_ANNOT_FUNC        "FUNC"
+
 using namespace std;
 using namespace MEDS_Annotation;
 
@@ -42,7 +45,7 @@ class MEDS_FuncAnnotation : public MEDS_AnnotationBase
 		MEDS_FuncAnnotation() {}
 		virtual ~MEDS_FuncAnnotation(){}
 
-                virtual bool isFuncAnnotation() const { return true; } 
+		virtual bool isFuncAnnotation() const { return true; } 
 
 		virtual string getFuncName() const { return m_func_name; }
 		virtual void setFuncName(const string &p_func_name) { m_func_name=p_func_name; }

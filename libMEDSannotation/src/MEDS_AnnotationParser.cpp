@@ -24,6 +24,7 @@
 #include "MEDS_AnnotationParser.hpp"
 #include "MEDS_InstructionCheckAnnotation.hpp"
 #include "FuncExitAnnotation.hpp"
+#include "MEDS_FuncPrototypeAnnotation.hpp"
 #include "MEDS_SafeFuncAnnotation.hpp"
 #include "MEDS_ProblemFuncAnnotation.hpp"
 #include "MEDS_FRSafeAnnotation.hpp"
@@ -55,36 +56,48 @@ void MEDS_AnnotationParser::parseFile(istream &p_inputStream)
 
 	while (!p_inputStream.eof())
 	{
-	    	getline(p_inputStream, line);
+		getline(p_inputStream, line);
 		if (line.empty()) continue;
 
-cerr << "MEDS_AnnotationParser: line: " << line << endl;
+//cerr << "MEDS_AnnotationParser: line: " << line << endl;
 
 #define 	ADD_AND_CONTINUE_IF_VALID(type) \
 		{ \
 			type * annot=new type(line); \
 			if (annot->isValid()) \
 			{ \
-				if(annot->isFuncAnnotation()) \
+				if(annot->isFuncPrototypeAnnotation()) \
+				{ \
+					MEDS_FuncPrototypeAnnotation* fpannot=dynamic_cast<MEDS_FuncPrototypeAnnotation*>(annot); \
+					assert(fpannot); \
+					m_func_prototype_annotations.insert(MEDS_Annotations_Pair_t(annot->getVirtualOffset(), annot)); \
+					cout << "Insert func prototype annot: " << line << endl; \
+				} \
+				else if(annot->isFuncAnnotation()) \
 				{ \
 					MEDS_FuncAnnotation* fannot=dynamic_cast<MEDS_FuncAnnotation*>(annot); \
 					assert(fannot); \
 					string nam=fannot->getFuncName(); \
 					m_func_annotations.insert(MEDS_Annotations_FuncPair_t(nam, annot)); \
+					cout << "Insert func annot: " << line << endl; \
 				} \
 				else \
 				{ \
 					VirtualOffset vo = annot->getVirtualOffset(); \
 					m_annotations.insert(MEDS_Annotations_Pair_t(vo, annot)); \
+					cout << "Insert instruction annot: " << hex << vo.getOffset() << dec << " | " << line << endl; \
 				} \
 				continue; \
 			} \
 			else \
+			{ \
 				delete annot; \
+			} \
 		}
 
 		ADD_AND_CONTINUE_IF_VALID(MEDS_FPTRShadowAnnotation);
 		ADD_AND_CONTINUE_IF_VALID(MEDS_InstructionCheckAnnotation);
+		ADD_AND_CONTINUE_IF_VALID(MEDS_FuncPrototypeAnnotation);
 		ADD_AND_CONTINUE_IF_VALID(MEDS_SafeFuncAnnotation);
 		ADD_AND_CONTINUE_IF_VALID(MEDS_ProblemFuncAnnotation);
 		ADD_AND_CONTINUE_IF_VALID(MEDS_FRSafeAnnotation);

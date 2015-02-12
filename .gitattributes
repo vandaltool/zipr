@@ -198,6 +198,7 @@ libIRDB/include/core/function.hpp -text
 libIRDB/include/core/instruction.hpp -text
 libIRDB/include/core/pqxxdb.hpp -text
 libIRDB/include/core/reloc.hpp -text
+libIRDB/include/core/type.hpp -text
 libIRDB/include/core/variantid.hpp -text
 libIRDB/include/libIRDB-cfg.hpp -text
 libIRDB/include/libIRDB-core.hpp -text
@@ -223,6 +224,7 @@ libIRDB/src/core/function.cpp -text
 libIRDB/src/core/generate_spri.cpp -text
 libIRDB/src/core/instruction.cpp -text
 libIRDB/src/core/pqxxdb.cpp -text
+libIRDB/src/core/type.cpp -text
 libIRDB/src/core/variantid.cpp -text
 libIRDB/src/syscall/Makefile.in -text
 libIRDB/src/syscall/syscall.cpp -text
@@ -259,6 +261,7 @@ libMEDSannotation/include/MEDS_AnnotationParser.hpp -text
 libMEDSannotation/include/MEDS_FPTRShadowAnnotation.hpp -text
 libMEDSannotation/include/MEDS_FRSafeAnnotation.hpp -text
 libMEDSannotation/include/MEDS_FuncAnnotation.hpp -text
+libMEDSannotation/include/MEDS_FuncPrototypeAnnotation.hpp -text
 libMEDSannotation/include/MEDS_InstructionCheckAnnotation.hpp -text
 libMEDSannotation/include/MEDS_ProblemFuncAnnotation.hpp -text
 libMEDSannotation/include/MEDS_Register.hpp -text
@@ -269,6 +272,7 @@ libMEDSannotation/src/FuncExitAnnotation.cpp -text
 libMEDSannotation/src/MEDS_AnnotationParser.cpp -text
 libMEDSannotation/src/MEDS_FPTRShadowAnnotation.cpp -text
 libMEDSannotation/src/MEDS_FRSafeAnnotation.cpp -text
+libMEDSannotation/src/MEDS_FuncPrototypeAnnotation.cpp -text
 libMEDSannotation/src/MEDS_InstructionCheckAnnotation.cpp -text
 libMEDSannotation/src/MEDS_ProblemFuncAnnotation.cpp -text
 libMEDSannotation/src/MEDS_Register.cpp -text

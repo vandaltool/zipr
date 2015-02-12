@@ -18,9 +18,10 @@
  *
  */
 
+#include "type.hpp"
 
 typedef std::set<Function_t*> FunctionSet_t;
-typedef std::set<AddressID_t*> AddressSet_t;;
+typedef std::set<AddressID_t*> AddressSet_t;
 
 // A variant of a problem, this
 // may be an original variant
@@ -90,13 +91,15 @@ class FileIR_t : public BaseObj_t
 	InstructionSet_t insns;
 	AddressSet_t addrs;
 	RelocationSet_t relocs;
+	TypeSet_t types;
 	VariantID_t progid;
 	File_t* fileptr;
 
 	std::map<db_id_t,AddressID_t*> ReadAddrsFromDB();
 	std::map<db_id_t,Function_t*> ReadFuncsFromDB
 	(
-		std::map<db_id_t,AddressID_t*> &addrMap
+		std::map<db_id_t,AddressID_t*> &addrMap,
+		std::map<db_id_t,Type_t*> &typeMap
 	);
 	std::map<db_id_t,Instruction_t*> ReadInsnsFromDB 
 	(	
@@ -108,7 +111,10 @@ class FileIR_t : public BaseObj_t
 		std::map<db_id_t,Instruction_t*>		&insnMap
 	);
 
+	std::map<db_id_t, Type_t*> ReadTypesFromDB(TypeSet_t& types);
 
+
+	// @TODO: need types
 
 };
 
