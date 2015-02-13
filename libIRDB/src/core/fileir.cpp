@@ -755,11 +755,11 @@ std::map<db_id_t, Type_t*> FileIR_t::ReadTypesFromDB (TypeSet_t& types)
 		IRDB_Type type=(IRDB_Type)atoi(dbintr->GetResultColumn("type").c_str());
 		std::string name=dbintr->GetResultColumn("name");
 		db_id_t ref1=atoi(dbintr->GetResultColumn("ref_type_id").c_str());
-		cout << "fileir::ReadFromDB(): pass2 (pointers): " << name << endl;
+//		cout << "fileir::ReadFromDB(): pass2 (pointers): " << name << endl;
 		switch(type) {
 				case T_POINTER:
 					{
-						cout << "   pointer type: ref1: " << ref1 << endl;
+//						cout << "   pointer type: ref1: " << ref1 << endl;
 						Type_t *referentType = NULL;
 						if (ref1 >= 0) 
 						{
@@ -794,13 +794,13 @@ std::map<db_id_t, Type_t*> FileIR_t::ReadTypesFromDB (TypeSet_t& types)
 		db_id_t ref1=atoi(dbintr->GetResultColumn("ref_type_id").c_str());
 		int pos=atoi(dbintr->GetResultColumn("pos").c_str());
 		AggregateType_t *agg = NULL;	
-		cout << "fileir::ReadFromDB(): pass3 (aggregates): " << name << endl;
+//		cout << "fileir::ReadFromDB(): pass3 (aggregates): " << name << endl;
 		switch(type) {
 				case T_AGGREGATE:
 					{
 						if (tMap.count(tid) == 0)  // new aggregate
 						{	
-		cout << "fileir::ReadFromDB(): pass3: new aggregate type: typeid: " << tid << " name: " << name << endl;
+//		cout << "fileir::ReadFromDB(): pass3: new aggregate type: typeid: " << tid << " name: " << name << endl;
 							agg = new AggregateType_t(tid, name);	
 							types.insert(agg);
 							tMap[tid] = agg;

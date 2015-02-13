@@ -379,7 +379,8 @@ void update_function_prototype(vector<wahoo::Function*> functions, char* annotFi
 					q += "INSERT into " + typesTable + " (type_id, type, name, ref_type_id, pos) VALUES (";
 					q += txn.quote(my_to_string(aggregate_type_id)) + ",";
 					q += txn.quote(my_to_string(T_AGGREGATE)) + ",";
-					q += txn.quote(string(f->getName()) + "_arg" + my_to_string(i)) + ",";
+
+					q += txn.quote(string(f->getName()) + "_arg") + ",";
 					q += txn.quote(my_to_string(basic_type_id)) + ",";
 					q += txn.quote(my_to_string(i)) + ");";
 				}

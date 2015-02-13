@@ -71,7 +71,6 @@ void MEDS_AnnotationParser::parseFile(istream &p_inputStream)
 					MEDS_FuncPrototypeAnnotation* fpannot=dynamic_cast<MEDS_FuncPrototypeAnnotation*>(annot); \
 					assert(fpannot); \
 					m_func_prototype_annotations.insert(MEDS_Annotations_Pair_t(annot->getVirtualOffset(), annot)); \
-					cout << "Insert func prototype annot: " << line << endl; \
 				} \
 				else if(annot->isFuncAnnotation()) \
 				{ \
@@ -79,13 +78,11 @@ void MEDS_AnnotationParser::parseFile(istream &p_inputStream)
 					assert(fannot); \
 					string nam=fannot->getFuncName(); \
 					m_func_annotations.insert(MEDS_Annotations_FuncPair_t(nam, annot)); \
-					cout << "Insert func annot: " << line << endl; \
 				} \
 				else \
 				{ \
 					VirtualOffset vo = annot->getVirtualOffset(); \
 					m_annotations.insert(MEDS_Annotations_Pair_t(vo, annot)); \
-					cout << "Insert instruction annot: " << hex << vo.getOffset() << dec << " | " << line << endl; \
 				} \
 				continue; \
 			} \
