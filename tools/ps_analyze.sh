@@ -964,7 +964,19 @@ report_logs
 # go back to original directory
 cd - > /dev/null 2>&1
 
-cp $newdir/$name.sh $stratafied_exe
+#
+#select the output file name to use -- b.out.addseg if zipr is on.
+#
+is_step_on zipr
+zipr_on=$?
+if [ $zipr_on ]; then
+	my_outfile=$newdir/b.out.addseg
+else
+	my_outfile=$newdir/$name.sh
+fi
+
+# copy output file into requested location.
+cp $my_outfile $stratafied_exe
 
 # make sure we only do this once there are no more updates to the peasoup_dir
 cd $newdir
@@ -977,7 +989,10 @@ if [ ! -z $TIMER_PID ]; then
 	kill -9 $TIMER_PID
 fi
 
-# return success if we created a script to invoke the pgm. 
+
+#
+# return success if we created a script to invoke the pgm and zipr is off. 
+#
 if [ -f $stratafied_exe ]; then 
 	if [ $errors = 1 ]; then
 		echo
@@ -994,8 +1009,13 @@ if [ -f $stratafied_exe ]; then
 		fi
 	fi
 
+
 	exit 0;
 else
+		echo "**************************************"
+		echo "*Error: failed to create output file!*"
+		echo "*    Cannot protect this program.    *"
+		echo "**************************************"
 	if [ $record_stats -eq 1 ]; then
 		$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'error' "$ps_endtime"
 	fi
