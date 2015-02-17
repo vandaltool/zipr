@@ -38,9 +38,9 @@ printf(" fail\n"); \
 
 bool TestSplitMemorySpace()
 {
-	Options_t opts;
+	ZiprOptions_t opts;
 	opts.SetVerbose(true);
-	MemorySpace_t m(&opts);
+	ZiprMemorySpace_t m(&opts);
 
 	m.AddFreeRange(Range_t(500, 600));
 
@@ -54,9 +54,9 @@ bool TestSplitMemorySpace()
 bool TestBinarySearchMaxRange()
 {
 	std::set<Range_t>::iterator foundRange;
-	Options_t opts;
+	ZiprOptions_t opts;
 	opts.SetVerbose(true);
-	MemorySpace_t m(&opts);
+	ZiprMemorySpace_t m(&opts);
 	m.AddFreeRange(Range_t(256, (RangeAddress_t)-1));
 
 	m.SplitFreeRange(336);
@@ -79,9 +79,9 @@ bool TestBinarySearchMaxRange()
 bool TestBinarySearch()
 {
 	std::set<Range_t>::iterator foundRange;
-	Options_t opts;
+	ZiprOptions_t opts;
 	opts.SetVerbose(true);
-	MemorySpace_t m(&opts);
+	ZiprMemorySpace_t m(&opts);
 	m.AddFreeRange(Range_t(256, 512));
 
 	m.SplitFreeRange(300);
@@ -144,9 +144,9 @@ bool TestBinarySearch()
 }
 bool TestSort()
 {
-	Options_t opts;
+	ZiprOptions_t opts;
 	opts.SetVerbose(true);
-	MemorySpace_t m(&opts);
+	ZiprMemorySpace_t m(&opts);
 	m.AddFreeRange(Range_t(256, 512));
 
 	m.SplitFreeRange(300);
@@ -166,9 +166,9 @@ bool TestSort()
 }
 bool TestMergeFreeRange()
 {
-	Options_t opts;
+	ZiprOptions_t opts;
 	opts.SetVerbose(true);
-	MemorySpace_t m(&opts);
+	ZiprMemorySpace_t m(&opts);
 	m.AddFreeRange(Range_t(256, 512));
 
 	m.SplitFreeRange(300);

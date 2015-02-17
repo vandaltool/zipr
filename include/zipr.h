@@ -48,6 +48,9 @@ class Zipr_t
 		{ 
 			bss_needed=0;
 			use_stratafier_mode=false;
+
+			// init  pinned addresses map.
+			RecordPinnedInsnAddrs();
  		};
 
 		void CreateBinaryFile(const std::string &name);
@@ -72,6 +75,8 @@ class Zipr_t
 		void PlopTheUnpinnedInstructions();
 		void UpdateCallbacks();
 		void PrintStats();
+		void RecordPinnedInsnAddrs();
+
 
 		// emiting instructions
 		RangeAddress_t PlopInstruction(libIRDB::Instruction_t* insn, RangeAddress_t addr);
@@ -122,6 +127,7 @@ class Zipr_t
 
 		// final mapping of instruction to address.
 		std::map<libIRDB::Instruction_t*,RangeAddress_t> final_insn_locations; 
+		std::map<RangeAddress_t,libIRDB::Instruction_t*> m_InsnAtAddrs; 
 
 		// unpatched callbacks
 		std::set<std::pair<libIRDB::Instruction_t*,RangeAddress_t> > unpatched_callbacks; 

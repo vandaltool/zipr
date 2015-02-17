@@ -248,7 +248,11 @@ void Zipr_t::FindFreeRanges(const std::string &name)
 		if(m_opts.GetVerbose())
 			printf("Section %s:\n", sec->get_name().c_str());
 
-#if 1
+#ifdef CGC
+#define EXTEND_SECTIONS 
+#endif
+
+#ifdef EXTEND_SECTIONS
 
 		std::map<RangeAddress_t, int>::iterator next_sec_it = it;
 		++next_sec_it;
@@ -379,6 +383,8 @@ void Zipr_t::AddPinnedInstructions()
 
 }
 
+#if 0
+
 Instruction_t *Zipr_t::FindPinnedInsnAtAddr(RangeAddress_t addr)
 {
 	for(
@@ -403,6 +409,44 @@ Instruction_t *Zipr_t::FindPinnedInsnAtAddr(RangeAddress_t addr)
 	}
 	return NULL;
 }
+#else
+Instruction_t *Zipr_t::FindPinnedInsnAtAddr(RangeAddress_t addr)
+{
+        std::map<RangeAddress_t,libIRDB::Instruction_t*>::iterator it=m_InsnAtAddrs.find(addr);
+        if(it!=m_InsnAtAddrs.end())
+                return it->second;
+        return NULL;
+}
+
+#endif
+
+void Zipr_t::RecordPinnedInsnAddrs()
+{
+#if 1
+        for(
+                set<Instruction_t*>::const_iterator it=m_firp->GetInstructions().begin();
+                it!=m_firp->GetInstructions().end();
+                ++it
+        )
+        {
+                RangeAddress_t ibta_addr;
+                Instruction_t* insn=*it;
+                assert(insn);
+
+                if(!insn->GetIndirectBranchTargetAddress()) 
+		{
+                        continue;
+                }
+                ibta_addr=(RangeAddress_t)insn->
+                        GetIndirectBranchTargetAddress()->
+                        GetVirtualOffset();
+
+                m_InsnAtAddrs[ibta_addr]=insn;
+
+        }
+#endif
+}
+
 
 bool Zipr_t::ShouldPinImmediately(Instruction_t *upinsn)
 {
@@ -1195,10 +1239,13 @@ void Zipr_t::PatchInstruction(RangeAddress_t from_addr, Instruction_t* to_insn)
 
 RangeAddress_t Zipr_t::PlopInstruction(Instruction_t* insn,RangeAddress_t addr)
 {
+	assert(insn);
 	DISASM d;
 	insn->Disassemble(d);
 	RangeAddress_t ret=addr;
 	bool is_instr_relative = false;
+	string raw_data = insn->GetDataBits();
+	string orig_data = insn->GetDataBits();
 
 
 	final_insn_locations[insn]=addr;
@@ -1213,9 +1260,6 @@ RangeAddress_t Zipr_t::PlopInstruction(Instruction_t* insn,RangeAddress_t addr)
 		char instr_raw[20] = {0,};
 		int size;
 		int offset;
-		string raw_data;
-
-		raw_data = insn->GetDataBits();
 		assert(raw_data.length() <= 20);
 
 		/*
@@ -1279,6 +1323,13 @@ RangeAddress_t Zipr_t::PlopInstruction(Instruction_t* insn,RangeAddress_t addr)
 
 	// now that the insn is put down, adjust any patches that go here 
 	ApplyPatches(insn);
+
+	/* Reset the data bits for the instruction back to th
+	 * need to re-plop this instruction later.  we need t
+	 * so we can replop appropriately. 
+	 */
+	insn->SetDataBits(orig_data);
+
 
 	return ret;
 }
@@ -1478,7 +1529,9 @@ void Zipr_t::OutputBinaryFile(const string &name)
 		section* next_sec = NULL;
 		if(i+1<total_sections)
 			next_sec=rewrite_headers_elfiop->sections[i+1];
+#ifdef EXTEND_SECTIONS
 		extend_section(sec, next_sec);
+#endif
 	}
 	rewrite_headers_elfiop->save(name);
 
