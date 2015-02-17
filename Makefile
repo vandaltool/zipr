@@ -7,7 +7,7 @@ all:	lib include/targ-config.h elfio bea
 	cd appfw; if [ ! -f Makefile -o Makefile.in -nt Makefile ]; then ./configure ; fi ; make all
 
 clean: elfio_clean
-	cd beaengine; cmake .; make clean
+	(cd beaengine; cmake .; make clean ) || true
 	cd libIRDB; make clean
 	cd xform; make clean
 	cd libMEDSannotation; make clean
