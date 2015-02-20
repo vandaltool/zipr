@@ -10,7 +10,7 @@ sudo apt-get install aptitude tasksel xorg gnome-core dkms
 
 # add the following lines to .bashrc so that subsequent terminals opened will contain the right ENV VAR settings
 echo "# Adding lines to set up environment variables for CGC DEV" >> $HOME/.bashrc
-echo "cd $HOME/peasoup_umbrella" >> $HOME/.bashrc
+echo "cd $HOME/cgc_umbrella" >> $HOME/.bashrc
 echo ". ./set_env_vars" >> $HOME/.bashrc
 echo "cd .." >> $HOME/.bashrc
 
