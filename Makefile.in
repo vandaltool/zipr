@@ -5,9 +5,11 @@ bdir=@prefix@
 
 all:
 	cd src;make
+	cd test;make
 
 install: all
 	cp src/zipr.exe $(bdir)/bin
 
 clean:
 	cd src;make clean
+	cd test;make clean

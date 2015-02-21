@@ -18,6 +18,7 @@ src/plugin_man.cpp -text
 src/zipr.cpp -text
 src/zipr_options.cpp -text
 src/zipr_stats.cpp -text
+test/Makefile.in -text
 test/MemorySpace.cpp -text
 third_party/ELFIO/elfio-2.2/AUTHORS -text
 third_party/ELFIO/elfio-2.2/COPYING -text

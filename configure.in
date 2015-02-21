@@ -35,6 +35,7 @@ fi
 
 AC_OUTPUT(Makefile)
 AC_OUTPUT(src/Makefile)
+AC_OUTPUT(test/Makefile)
 
 AC_SUBST(DIRS)
 AC_SUBST(CC)
