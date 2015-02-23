@@ -49,8 +49,7 @@ using namespace libIRDB;
 using namespace std;
 using namespace ELFIO;
 
-// bool possible_target(int p, uintptr_t addr=0);
-bool is_possible_target(int p, uintptr_t addr);
+bool is_possible_target(uintptr_t p, uintptr_t addr);
 
 set< pair <int,int>  > bounds;
 set<int> targets;
@@ -118,8 +117,14 @@ void process_ranges(FileIR_t* firp)
 	}
 }
 
-bool possible_target(int p, uintptr_t addr)
+bool possible_target(uintptr_t p, uintptr_t addr)
 {
+	if(p!=(int)p)
+	{
+		if(getenv("IB_VERBOSE")!=NULL)
+			cout<<"Determined "<<hex<<p<<" cannot be a code pointer"<<endl;
+		return false;
+	}
 	if(is_possible_target(p,addr))
 	{
 		if(getenv("IB_VERBOSE")!=NULL)
@@ -135,8 +140,12 @@ bool possible_target(int p, uintptr_t addr)
 	return false;
 }
 
-bool is_possible_target(int p, uintptr_t addr)
+bool is_possible_target(uintptr_t p, uintptr_t addr)
 {
+	if(p!=(int)p)
+	{
+		return false;	// can't be a pointer if it's greater than 2gb. 
+	}
 	for(
 		set< pair <int,int>  >::iterator it=bounds.begin();
 		it!=bounds.end();
@@ -287,7 +296,11 @@ void infer_targets(FileIR_t *firp, section* shdr)
 		// even on 64-bit, pointers might be stored as 32-bit, as a 
 		// elf object has the 32-bit limitations.
 		// there's no real reason to look for 64-bit pointers 
-		int p=*(int*)&data[i];
+		uintptr_t p=0;
+		if(arch_ptr_bytes()==4)
+			p=*(int*)&data[i];
+		else
+			p=*(uintptr_t*)&data[i];	// 64 or 32-bit depending on sizeof uintptr_t, may need porting for cross platform analysis.
 		possible_target(p, i+shdr->get_address());
 	}
 

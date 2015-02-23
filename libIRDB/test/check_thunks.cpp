@@ -124,7 +124,7 @@ void check_func_for_thunk_offsets(Function_t *func, Instruction_t* thunk_insn,
 	string reg, string offset)
 {
 
-	bool possible_target(int p, uintptr_t at=0);
+	bool possible_target(uintptr_t p, uintptr_t at=0);
 
 
 	int thunk_base=thunk_insn->GetFallthrough()->GetAddress()->GetVirtualOffset()+
