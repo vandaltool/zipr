@@ -474,20 +474,35 @@ bool Zipr_t::ShouldPinImmediately(Instruction_t *upinsn)
 			return true;
 	}
 
+	// find the insn pinned at the next byte.
+	pin_at_next_byte = FindPinnedInsnAtAddr(upinsn_ibta->GetVirtualOffset() + 1);
+	if ( pin_at_next_byte && 
+
+	/* upinsn has lock prefix */
+		upinsn->GetDataBits()[0]==(char)(0xF0) 	&&
 	/*
-	 * lock cmpxchange op1 op2 [pinned at x]
-	 * x    x+1        x+2 x+3
+	 * upinsn:  lock cmpxchange op1 op2 [pinned at x]
+	 *          x    x+1        x+2 x+3
 	 * 
-	 * pin at x and pin at x+1
+	 * AND pin_at_next_byte (x+1) is:
+	 */
+		pin_at_next_byte->GetDataBits() == upinsn->GetDataBits().substr(1,upinsn->GetDataBits().length()-1) &&  
+	/*
+         *               cmpxchange op1 op2 [pinned at x+1]
+	 *               x+1        x+2 x+3
+	 * AND  pin_at_next_byte->fallthrough() == upinsn->Fallthrough()
+	 */
+		pin_at_next_byte->GetFallthrough() == upinsn->GetFallthrough() ) 
+	/*
 	 *
 	 * x should become nop, put down immediately
 	 * x+1 should become the entire lock command.
 	 */
-	if ((pin_at_next_byte = 
-		FindPinnedInsnAtAddr(upinsn_ibta->GetVirtualOffset() + 1)) != NULL)
 	{
 		if(m_opts.GetVerbose())
-			printf("Using pin_at_next_byte special case.\n");
+			printf("Using pin_at_next_byte special case, adrs=%x,%x.\n",
+				upinsn_ibta->GetVirtualOffset(),
+				pin_at_next_byte->GetAddress()->GetVirtualOffset());
 		/*
 		 * Because upinsn is longer than 
 		 * 1 byte, we must be somehow
