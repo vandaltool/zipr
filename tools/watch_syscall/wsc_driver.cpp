@@ -20,9 +20,12 @@
 
 #include <stdlib.h>
 #include <fstream>
-#include <libIRDB-core.hpp>
 #include <libgen.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <getopt.h>
 
+#include <libIRDB-core.hpp>
 #include "wsc_instrument.hpp"
 
 using namespace std;
@@ -35,19 +38,64 @@ using namespace libIRDB;
 
 void usage(char* name)
 {
-	cerr<<"Usage: "<<name<<" <variant_id>\n"; 
+	cerr<<"Usage: "<<name<<" --varid=<variant_id> --warn --warning_file=<file>\n"; 
 }
+
+
+int varid=0;
+char* warning_filename=NULL;
+
+int parse_args(int p_argc, char* p_argv[])
+{
+        int option = 0;
+        char options[] = "v:w:";
+        struct option long_options[] = {
+                {"varid",     		required_argument,       NULL, 'v'},
+                {"warning_file",       	required_argument,       NULL, 'w'},
+                {NULL, no_argument, NULL, '\0'},         // end-of-array marker
+        };
+
+        while ((option = getopt_long(
+                p_argc,
+                p_argv,
+                options,
+                long_options,
+                NULL)) != -1)
+        {
+                printf("Found option %c\n", option);
+                switch (option)
+                {
+                        case 'v':
+                        {
+				varid=atoi(::optarg);	
+				cout<<"Transforming variant "<<dec<<varid<<endl;
+				break;
+                        }
+                        case 'w':
+                        {
+				warning_filename=strdup(::optarg);
+				cout<<"Using warning_file =  "<<warning_filename<<endl;
+				break;
+                        }
+			default:
+				return 1;
+		}
+	}
+	return 0;
+}
+
 
 int main(int argc, char **argv)
 {
-        if(argc != 2)
+
+        if(0 != parse_args(argc,argv))
         {
                 usage(argv[0]);
                 exit(1);
         }
 
         string programName(argv[0]);
-        int variantID = atoi(argv[1]);
+        int variantID = varid;
 
         VariantID_t *pidp=NULL;
 
@@ -61,6 +109,7 @@ int main(int argc, char **argv)
 	cout<<"ret_shadow_stack.exe started\n";
 
         bool one_success = false;
+	bool one_fail=false;
         for(set<File_t*>::iterator it=pidp->GetFiles().begin();
             it!=pidp->GetFiles().end();
                 ++it)
@@ -76,7 +125,8 @@ int main(int argc, char **argv)
 
 			WSC_Instrument wsci(firp);
 
-			int success=wsci.execute();
+			bool success=wsci.FindInstructionsToProtect(warning_filename);
+			success= success && wsci.execute();
 
                         if (success)
                         {
@@ -87,6 +137,7 @@ int main(int argc, char **argv)
                         }
 			else
 			{
+				one_fail=true;
 				cout<<"Skipping (no changes) "<<this_file->GetURL()<<endl;
 			}
 			delete firp;
@@ -108,6 +159,6 @@ int main(int argc, char **argv)
                 pqxx_interface.Commit();
 	}
 
-        return 0;
+        return one_fail;
 }
 

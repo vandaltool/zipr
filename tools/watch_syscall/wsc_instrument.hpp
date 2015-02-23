@@ -43,6 +43,9 @@ class WSC_Instrument
 			assert(interface);
                         lo.to_file(interface->GetTransaction(),"readeh_tmp_file.exe");
 
+			// start off by saying we'll protect all instructions
+			to_protect=firp->GetInstructions();
+
                         elfiop=new ELFIO::elfio;
                         elfiop->load("readeh_tmp_file.exe");
                         ELFIO::dump::header(std::cout,*elfiop);
@@ -53,6 +56,7 @@ class WSC_Instrument
 		} 
 		virtual ~WSC_Instrument() { delete elfiop; }
 		bool execute();
+		bool FindInstructionsToProtect(std::string s);
 
 	private:
 
@@ -66,6 +70,7 @@ class WSC_Instrument
 		bool add_receive_limit();
 
 		libIRDB::Instruction_t* GetCallbackCode();
+		libIRDB::Instruction_t* FindInstruction(libIRDB::virtual_offset_t addr);
 		libIRDB::Relocation_t* create_reloc(libIRDB::Instruction_t* insn, std::string type, int offset);
 
 
@@ -74,6 +79,8 @@ class WSC_Instrument
 		libIRDB::Syscalls_t syscalls;
                 ELFIO::elfio*    elfiop;
 		libIRDB::Instruction_t *last_startup_insn;
+
+		libIRDB::InstructionSet_t to_protect;
 };
 
 #endif

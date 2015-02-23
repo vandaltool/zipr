@@ -481,11 +481,13 @@ cout<<"Adding callback to "<<d.CompleteInstr<<endl;
 bool	WSC_Instrument::add_segfault_checking()
 {
 	int success=true;
-	for(InstructionSet_t::iterator it=firp->GetInstructions().begin();
-		it!=firp->GetInstructions().end();
+	cout<<"Checking "<<to_protect.size()<< " instructions for protections "<<endl;
+	for(InstructionSet_t::iterator it=to_protect.begin();
+		it!=to_protect.end();
 		++it)
 	{
 		Instruction_t *insn=*it;
+		cout<<"Testing "<<insn->getDisassembly()<<endl;
 		DISASM d;
 		insn->Disassemble(d);
 		if(insn->GetBaseID()!=BaseObj_t::NOT_IN_DATABASE && needs_wsc_segfault_checking(insn,d))
@@ -528,7 +530,7 @@ bool WSC_Instrument::add_receive_limit()
 		SyscallSite_t ss=*it;
 		Instruction_t *site=ss.GetSyscallSite();
 		SyscallNumber_t num=ss.GetSyscallNumber();
-		if(num==SNT_receive)
+		if(num==SNT_receive && to_protect.find(site)!=to_protect.end())	// if it's receive, and it might overflow
 		{
 			cout<<"Adding receive limit to "<<site->GetBaseID()<<":"<<site->getDisassembly()<<endl;
 			success = success && add_receive_limit(site);
@@ -539,6 +541,69 @@ bool WSC_Instrument::add_receive_limit()
 	return success; /* success? */
 }
 
+bool WSC_Instrument::FindInstructionsToProtect(std::string s)
+{
+	bool success=true;
+
+	// no filename, skip this step
+	if(s=="")
+	{
+		cout<<"No filename provided for warnings, skipping selective application, applying to all instructions"<<endl;
+		return false;
+	}
+
+	ifstream fin(s.c_str(), ios_base::in);
+	if(!fin)
+	{
+		cerr<<"Cannot open file: "<<s<<endl;
+		exit(1);
+	}
+
+	// forget what we've protected before, which might be everything.
+	to_protect.clear();
+
+	libIRDB::virtual_offset_t addr;
+	while(  fin>>std::hex>>addr )
+	{
+		Instruction_t* insn=FindInstruction(addr);
+		if(insn)
+		{
+			cout<<"Found instruction to protect "<<insn->getDisassembly()<<" at "<<hex<<addr<<endl;
+			to_protect.insert(insn);
+		}
+		else
+		{
+			success=false;
+			cerr<<"***************************************************************************************************************************"<<endl;
+			cerr<<"***************************************************************************************************************************"<<endl;
+			cerr<<"					Cannot find insn for addr "<<hex<<addr<<endl;
+			cerr<<"***************************************************************************************************************************"<<endl;
+			cerr<<"***************************************************************************************************************************"<<endl;
+		}
+	}
+	
+	return success;	
+}
+
+libIRDB::Instruction_t* WSC_Instrument::FindInstruction(libIRDB::virtual_offset_t addr)
+{
+	for(InstructionSet_t::iterator it=firp->GetInstructions().begin();
+		it!=firp->GetInstructions().end();
+		++it
+	   )
+	{
+		Instruction_t* insn=*it;
+		if( insn->GetAddress()->GetVirtualOffset()==addr)
+			return insn;
+		if(insn->GetIndirectBranchTargetAddress() && 
+			insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()==addr)
+			return insn;
+	}
+
+	return NULL;	// can't find
+}
+
+
 
 bool WSC_Instrument::execute()
 {
@@ -547,7 +612,7 @@ bool WSC_Instrument::execute()
 	success = success && add_init_call();
 	success = success && add_allocation_instrumentation();
 	success = success && add_segfault_checking();
-//	success = success && add_receive_limit();
+	success = success && add_receive_limit();
 
 	return success;
 }
