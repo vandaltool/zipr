@@ -147,12 +147,21 @@ set_step_option()
 	option=`echo $1 | sed 's/.*:\(.*\)/\1/'`
 
 	case "$step" in
-       p1transform)
-           	set_p1transform_option $option
-            ;;
-		*) 	echo "Unrecognized --step-option: $step" 
-		 	exit -2 #What's the correct exit status?
-			;;
+		#
+		# please don't follow P1's example here, follow watch_allocate
+		#
+       		p1transform)
+           		set_p1transform_option $option
+            	;;
+		*) 	
+			#
+			# this sets step_options_$step to have the new option
+			# you can now, when writing your step, just add $step_options_<stepname> where you want the options passed to your step.
+			#
+			var="step_options_$step"
+			old_value="${!var}"
+			eval "step_options_$step='$old_value $option'"
+		;;
 	esac
 	
 }
@@ -908,7 +917,7 @@ if [[ "$TWITCHER_HOME" != "" && -d "$TWITCHER_HOME" ]]; then
 fi
 
 # watch syscalls
-perform_step watch_allocate clone,fill_in_indtargs,fill_in_cfg,meds2pdb $SECURITY_TRANSFORMS_HOME/tools/watch_syscall/watch_syscall.exe  $cloneid 
+perform_step watch_allocate clone,fill_in_indtargs,fill_in_cfg,meds2pdb $SECURITY_TRANSFORMS_HOME/tools/watch_syscall/watch_syscall.exe  --varid $cloneid $step_options_watch_allocate
 
 # only do ILR for main objects that aren't relocatable.  reloc. objects 
 # are still buggy for ILR
