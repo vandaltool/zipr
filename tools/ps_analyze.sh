@@ -978,10 +978,10 @@ cd - > /dev/null 2>&1
 #
 is_step_on zipr
 zipr_on=$?
-if [ $zipr_on ]; then
-	my_outfile=$newdir/b.out.addseg
-else
+if [ $zipr_on -eq 0 ]; then 
 	my_outfile=$newdir/$name.sh
+else
+	my_outfile=$newdir/b.out.addseg
 fi
 
 # copy output file into requested location.
