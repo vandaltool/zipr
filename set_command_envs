@@ -1,2 +1,3 @@
 export PS_OBJDUMP=`which objdump`
 export PS_OBJCOPY=`which objcopy`
+export PS_NM=`which nm`
