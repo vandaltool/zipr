@@ -4,3 +4,4 @@ cgc_tools_path=/usr/bin/i386-linux-cgc
 export PS_OBJCOPY=$cgc_tools_path-objcopy
 export PS_READELF=$cgc_tools_path-readcgc
 export PS_OBJDUMP=$cgc_tools_path-objdump
+export PS_NM=$cgc_tools_path-nm
