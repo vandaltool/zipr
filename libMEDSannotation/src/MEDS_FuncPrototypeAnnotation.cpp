@@ -111,7 +111,7 @@ void MEDS_FuncPrototypeAnnotation::parse()
 		Register::RegisterName reg = Register::getRegister(regbuf);
 		MEDS_Arg marg(meds_retType, reg);
 		setReturnArg(marg);
-		cout << "   adding return argument: " << Register::toString(reg) << " type: " << meds_retType << endl;
+//		cout << "   adding return argument: " << Register::toString(reg) << " type: " << meds_retType << endl;
 	}
 	else
 	{
