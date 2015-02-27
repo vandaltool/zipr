@@ -80,7 +80,7 @@ void MEDS_FPTRShadowAnnotation::parse()
 	if (!isDefineShadowId() && !isCheckShadowId())
 	{
 		/* invalid annotation */
-		cerr<<"Found invalid FPTR SHADOW annotation: " << m_rawInputLine<<endl;
+//		cerr<<"Found invalid FPTR SHADOW annotation: " << m_rawInputLine<<endl;
 		setInvalid();	
 		return;
 	}
