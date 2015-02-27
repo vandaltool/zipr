@@ -264,7 +264,8 @@ std::map<db_id_t,Function_t*> FileIR_t::ReadFuncsFromDB
 		db_id_t function_type_id=atoi(dbintr->GetResultColumn("type_id").c_str());
 // postgresql encoding of boolean can be 'true', '1', 'T', 'y'
                 bool useFP=false;
-		const char *useFPstr= dbintr->GetResultColumn("use_frame_pointer").c_str();
+		string useFPString=dbintr->GetResultColumn("use_frame_pointer"); 
+		const char *useFPstr=useFPString.c_str();
                 if (strlen(useFPstr) > 0)
 		{
 			if (useFPstr[0] == 't' || useFPstr[0] == 'T' || useFPstr[0] == '1' || useFPstr[0] == 'y' || useFPstr[0] == 'Y')
