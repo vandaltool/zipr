@@ -20,7 +20,7 @@
 
 
 #
-# pdb_create_program_tables <atn> <ftn> <itn> <rtn> <typ> file
+# pdb_create_program_tables <atn> <ftn> <itn> <ibn> <rtn> <typ> file
 #
 
 
@@ -29,17 +29,19 @@
 atn=$1
 ftn=$2
 itn=$3
-rtn=$4
-typ=$5
-file=$6
+ibn=$4
+rtn=$5
+typ=$6
+file=$7
 
-echo Creating tables $atn, $ftn, $itn, $rtn, and $typ.
+echo Creating tables $atn, $ftn, $itn, $ibn, $rtn, and $typ.
 
 DB_SCRIPT=$file
 cat $PEASOUP_HOME/tools/db/pdb.createprogram.tbl |  \
                 sed "s/#ATN#/$atn/g" | \
                 sed "s/#FTN#/$ftn/g" | \
                 sed "s/#ITN#/$itn/g" | \
+                sed "s/#IBN#/$ibn/g" | \
                 sed "s/#RTN#/$rtn/g" | \
                 sed "s/#TYP#/$typ/g"  \
                 > $DB_SCRIPT
