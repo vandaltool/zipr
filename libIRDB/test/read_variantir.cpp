@@ -40,7 +40,7 @@ main(int argc, char* argv[])
 
 
 	VariantID_t *pidp=NULL;
-	FileIR_t * virp=NULL;
+	FileIR_t * firp=NULL;
 	try 
 	{
 		/* setup the interface to the sql server */
@@ -54,7 +54,7 @@ main(int argc, char* argv[])
 		cout<<"New Variant, after reading registration, is: "<<*pidp << endl;
 
 		// read the db  
-		virp=new FileIR_t(*pidp);
+		firp=new FileIR_t(*pidp);
 
 
 	}
@@ -64,19 +64,32 @@ main(int argc, char* argv[])
 		exit(-1);
         }
 
-	assert(virp && pidp);
+	assert(firp && pidp);
 
 	for(
-		set<Instruction_t*>::const_iterator it=virp->GetInstructions().begin();
-		it!=virp->GetInstructions().end(); 
+		set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
+		it!=firp->GetInstructions().end(); 
 		++it
 	   )
 	{
 		Instruction_t* insn=*it;
-		cout<<"Found insn at addr:" << std::hex << insn->GetAddress()->GetVirtualOffset() << endl;
+		cout<<"Found insn at addr:" << std::hex << insn->GetAddress()->GetVirtualOffset() << " " << insn->getDisassembly() << endl;
+		InstructionCFGNodeSet_t ibtargets = insn->GetIBTargets();
+		InstructionCFGNodeSet_t::iterator ibtargets_it;
+
+		for (ibtargets_it = ibtargets.begin(); ibtargets_it != ibtargets.end(); ++ibtargets_it)
+		{
+			InstructionCFGNode_t *node = *ibtargets_it;
+			assert(node);
+			if (node->IsHellnode())
+				cout<<"   indirect branch target: hellnode" << std::endl;
+			else
+				cout<<"   indirect branch target: " << std::hex << node->GetInstruction()->GetAddress()->GetVirtualOffset() << dec << endl;
+		}
 	}
 
+	cout << firp->GetIBTargets().toString() << endl;;
 
-	delete virp;
+	delete firp;
 	delete pidp;
 }

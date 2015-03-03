@@ -261,3 +261,8 @@ bool Instruction_t::SetsStackPointer(DISASM* disasm)
 	return false;
 
 }
+
+InstructionCFGNodeSet_t& Instruction_t::GetIBTargets()
+{
+	return ibtargets;
+}

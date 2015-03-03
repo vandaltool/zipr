@@ -23,8 +23,8 @@ class CGC_libc {
 
 	private:
 		void findSyscallWrappers();
-		void findPotentialMallocs();
-		void findPotentialFrees();
+		void pruneMallocs();
+		void pruneFrees();
 		void emitFunctionInfo(Function_t *);
 		bool hasMallocFunctionPrototype(Function_t *p_fn);
 		bool hasFreeFunctionPrototype(Function_t *p_fn);
@@ -36,18 +36,30 @@ class CGC_libc {
 		FileIR_t *m_firp;
 		Callgraph_t m_cg;
 		Syscalls_t m_syscalls;
-		Function_t* m__terminateWrapper;
-		Function_t* m_transmitWrapper;
-		Function_t* m_receiveWrapper;
-		Function_t* m_fdwaitWrapper;
-		Function_t* m_allocateWrapper;
-		Function_t* m_deallocateWrapper;
-		Function_t* m_randomWrapper;
+
+		CallGraphNode_t* m__terminateWrapper;
+		CallGraphNode_t* m_transmitWrapper;
+		CallGraphNode_t* m_receiveWrapper;
+		CallGraphNode_t* m_fdwaitWrapper;
+		CallGraphNode_t* m_allocateWrapper;
+		CallGraphNode_t* m_deallocateWrapper;
+		CallGraphNode_t* m_randomWrapper;
+
+		CallGraphNodeSet_t m_maybeMallocs;
+		CallGraphNodeSet_t m_maybeFrees;
+		CallGraphNodeSet_t m_mallocUniverse;
+
+		/*
 		std::set<Function_t*> m_maybeMallocs;
 		std::set<Function_t*> m_maybeFrees;
 		std::set<Function_t*> m_mallocUniverse;
+		*/
+
+/*
 		Function_t* m_startNode;
 		Function_t* m_hellNode;
+		*/
+
 		bool m_skipHellNode;
 		bool m_clustering;
 		bool m_dominance;

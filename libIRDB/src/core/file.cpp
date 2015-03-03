@@ -32,9 +32,9 @@ using namespace std;
 
 
 File_t::File_t(db_id_t myfile_id, db_id_t my_orig_fid, std::string myurl, std::string myhash, std::string myarch, int myoid, 
-		std::string atn, std::string ftn, std::string itn, std::string rtn, std::string typ, db_id_t mydoipid) :
+		std::string atn, std::string ftn, std::string itn, std::string ibn, std::string rtn, std::string typ, db_id_t mydoipid) :
 	BaseObj_t(NULL), url(myurl), hash(myhash), arch(myarch), elfoid(myoid),
-	address_table_name(atn), function_table_name(ftn), instruction_table_name(itn), 
+	address_table_name(atn), function_table_name(ftn), instruction_table_name(itn), ibtargets_table_name(ibn), 
 	relocs_table_name(rtn), types_table_name(typ), orig_fid(my_orig_fid)
 {
 	SetBaseID(myfile_id);
@@ -53,6 +53,7 @@ void File_t::CreateTables()
 		address_table_name+" "+
 		function_table_name+" "+
 		instruction_table_name+" "+
+		ibtargets_table_name+" "+
 		relocs_table_name+" "+
 		types_table_name+" "+
 		tmpfile;

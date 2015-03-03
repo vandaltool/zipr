@@ -24,7 +24,7 @@ class File_t : public BaseObj_t
     public:
         // create new item.
         File_t(db_id_t file_id, db_id_t orig_fid, std::string url, std::string hash, std::string arch, int elfoid, 
-		std::string atn, std::string ftn, std::string itn, std::string rtn, std::string typ, db_id_t doipid);
+		std::string atn, std::string ftn, std::string itn, std::string ibn, std::string rtn, std::string typ, db_id_t doipid);
 
         File_t(db_id_t file_id) : BaseObj_t(NULL) { assert(0);}          // read from DB       
         void WriteToDB() { assert(0); }   // writes to DB ID is not -1.
@@ -32,6 +32,7 @@ class File_t : public BaseObj_t
         std::string GetAddressTableName() { return address_table_name; }
         std::string GetFunctionTableName() { return function_table_name; }
         std::string GetInstructionTableName() { return instruction_table_name; }
+        std::string GetIBTargetsTableName() { return ibtargets_table_name; }
         std::string GetRelocationsTableName() { return relocs_table_name; }
         std::string GetTypesTableName() { return types_table_name; }
         std::string GetURL() { return url; }
@@ -51,6 +52,7 @@ class File_t : public BaseObj_t
         friend class PointerType_t;
         friend class AggregateType_t;
         friend class FuncType_t;
+        friend class IBTargets;
 
     private:
 	db_id_t orig_fid;
@@ -60,6 +62,7 @@ class File_t : public BaseObj_t
         std::string address_table_name;
         std::string function_table_name;
         std::string instruction_table_name;
+        std::string ibtargets_table_name;
         std::string relocs_table_name;
         std::string types_table_name;
 	int elfoid;

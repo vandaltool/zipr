@@ -18,8 +18,6 @@
  *
  */
 
-
-
 #include <libIRDB-core.hpp>
 #include <iostream>
 #include <stdlib.h>
@@ -56,12 +54,17 @@ set<int> targets;
 
 set< pair< int, int> > ranges;
 
-// a way to map an instruction to it's set of predecessors. 
+// a way to map an instruction to its set of predecessors. 
 map< Instruction_t* , set<Instruction_t*> > preds;
 
+// keep track of jmp tables
+map< Instruction_t*, set<uintptr_t> > jmptables;
 
 void check_for_PIC_switch_table32(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop, const set<int>& thunk_bases);
 void check_for_PIC_switch_table64(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop);
+
+// get switch table structure, determine ib targets
+void handle_switch_table64(FileIR_t*, Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop);
 
 void range(int start, int end)
 { 	
@@ -196,6 +199,40 @@ void handle_argument(ARGTYPE *arg, Instruction_t* insn)
 	}
 }
 
+Instruction_t *lookupInstruction(FileIR_t *firp, uintptr_t virtual_offset)
+{
+	for(set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
+		it!=firp->GetInstructions().end(); ++it)
+        {
+			Instruction_t *insn=*it;
+			uintptr_t addr=insn->GetAddress()->GetVirtualOffset();
+
+			if (virtual_offset == addr)
+				return insn;
+	}
+
+	return NULL;
+}
+
+void mark_jmptables(FileIR_t *firp)
+{
+	map< Instruction_t*, set<uintptr_t> >::iterator it;
+	for (it = jmptables.begin(); it != jmptables.end(); ++it)
+	{
+		Instruction_t* instr = it->first;
+		set<uintptr_t> virtual_offset_set = it->second;
+		for (set<uintptr_t>::iterator j = virtual_offset_set.begin();
+			 j != virtual_offset_set.end();
+			 ++j)
+		{
+			uintptr_t vo = *j;
+			Instruction_t *ibtarget = lookupInstruction(firp, vo);
+			cout << "mark_jmptables(): 0x" << hex << instr->GetAddress()->GetVirtualOffset() << " add ib target 0x" << vo << dec << endl;
+			firp->GetIBTargets().AddTarget(instr, ibtarget);
+		}
+	}
+}
+
 void mark_targets(FileIR_t *firp)
 {
         for(
@@ -218,8 +255,8 @@ void mark_targets(FileIR_t *firp)
 			firp->GetAddresses().insert(newaddr);
 		}
 	}
-
 }
+
 void get_instruction_targets(FileIR_t *firp, ELFIO::elfio* elfiop, const set<int>& thunk_bases)
 {
 
@@ -237,6 +274,7 @@ void get_instruction_targets(FileIR_t *firp, ELFIO::elfio* elfiop, const set<int
 
 		check_for_PIC_switch_table32(insn,disasm, elfiop, thunk_bases);
 		check_for_PIC_switch_table64(insn,disasm, elfiop);
+		handle_switch_table64(firp, insn,disasm, elfiop);
 
 		/* other branches can't indicate an indirect branch target */
 		if(disasm.Instruction.BranchType)
@@ -249,7 +287,6 @@ void get_instruction_targets(FileIR_t *firp, ELFIO::elfio* elfiop, const set<int
 		handle_argument(&disasm.Argument2, insn);
 		handle_argument(&disasm.Argument3, insn);
 	}
-
 }
 
 void get_executable_bounds(FileIR_t *firp, const section* shdr)
@@ -405,27 +442,26 @@ bool backup_until(const char* insn_type_regex, Instruction_t *& prev, Instructio
 	prev=orig;
 	regex_t preg;
 
-        assert(0 == regcomp(&preg, insn_type_regex, REG_EXTENDED));
+	assert(0 == regcomp(&preg, insn_type_regex, REG_EXTENDED));
 
 	while(preds[prev].size()==1)
 	{
-        	// get the only item in the list.
+		// get the only item in the list.
 		prev=*(preds[prev].begin());
 
-        	// get I7's disassembly
-        	prev->Disassemble(disasm);
+       	// get I7's disassembly
+       	prev->Disassemble(disasm);
 
-        	// check it's the requested type
-        	if(regexec(&preg, disasm.Instruction.Mnemonic, 0, NULL, 0) == 0)
-                {
-                        regfree(&preg);
-                	return true;
-                }
+       	// check it's the requested type
+       	if(regexec(&preg, disasm.Instruction.Mnemonic, 0, NULL, 0) == 0)
+		{
+			regfree(&preg);
+			return true;
+		}
 
 		// otherwise, try backing up again.
-
 	}
-        regfree(&preg);
+	regfree(&preg);
 	return false;
 }
 
@@ -681,6 +717,112 @@ DN:   0x4824e0: .long 0x4824e0-LN
 
 }
 
+/*
+  Handles the following switch table pattern:
+  I1: 400518:   83 7d ec 0c             cmpl   $0xc,-0x14(%rbp)          'size
+  I2: 40051c:   0f 87 b7 00 00 00       ja     4005d9 <main+0xe5>        
+  I3: 400522:   8b 45 ec                mov    -0x14(%rbp),%eax 
+  I4: 400525:   48 8b 04 c5 20 07 40    mov    0x400720(,%rax,8),%rax    'start jump table
+      40052c:   00  
+  IJ: 40052d:   ff e0                   jmpq   *%rax                     'indirect branch
+      40052f:   c7 45 f4 00 00 00 00    movl   $0x0,-0xc(%rbp)
+      400536:   c7 45 f8 03 00 00 00    movl   $0x3,-0x8(%rbp)
+*/
+void handle_switch_table64(FileIR_t* firp, Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop)
+{
+	Instruction_t *I1 = NULL;
+	Instruction_t *I2 = NULL;
+	Instruction_t *I4 = NULL;
+	Instruction_t *IJ = insn;
+
+	if (!IJ) return;
+
+	// check if IJ is a jump
+	if(strstr(disasm.Instruction.Mnemonic, "jmp")==NULL)
+		return;
+
+	// return if it's a jump to a constant address, these are common
+	if(disasm.Argument1.ArgType&CONSTANT_TYPE)
+		return;
+
+	// return if it's a jump to a memory address
+	if(disasm.Argument1.ArgType&MEMORY_TYPE)
+		return;
+
+	// has to be a jump to a register now
+
+	// by default, insert the hell node
+	// if we get the full switch table, we will remove the hellnode
+	// as we have all the ib targets
+	firp->GetIBTargets().AddHellnodeTarget(IJ);
+
+	// backup and find the instruction that's a mov
+	if(!backup_until("mov", I4, IJ))
+		return;
+
+	// extract start of jmp table
+	DISASM d4;
+	I4->Disassemble(d4);
+
+	// get the offset from the thunk
+	int table_offset=d4.Argument2.Memory.Displacement;
+	if(table_offset==0)
+		return;
+
+	cout<<hex<<"(nonPIC-64): Found switch dispatch at "<<I4->GetAddress()->GetVirtualOffset()<< " with table_offset="<<table_offset<<dec<<endl;
+
+	if(!backup_until("cmp", I1, I4))
+	{
+		cout<<hex<<"(nonPIC-64): could not find size of switch table"<<endl;
+		return;
+	}
+
+	// extract size off the comparison
+	// make sure not off by one
+	DISASM d1;
+	I1->Disassemble(d1);
+	int table_size = d1.Instruction.Immediat;
+
+	if (table_size <= 0) return;
+
+	cout<<"(nonPIC-64): size of jmp table: "<< table_size << endl;
+
+	// find the section with the data table
+    ELFIO::section *pSec=find_section(table_offset,elfiop);
+	if(!pSec)
+	{
+		cout<<hex<<"(nonPIC-64): could not find jump table in section"<<endl;
+		return;
+	}
+
+	// if the section has no data, abort 
+	const char* secdata=pSec->get_data();
+	if(!secdata)
+		return;
+
+	// get the base offset into the section
+    int offset=table_offset-pSec->get_address();
+	int i;
+
+	set<uintptr_t> ibtargets;
+	for(i=0;i<table_size;++i)
+	{
+		if(offset+i*8+sizeof(int) > pSec->get_size())
+			return;
+
+		const int *table_entry_ptr=(const int*)&(secdata[offset+i*8]);
+		uintptr_t table_entry=*table_entry_ptr;
+
+		cout << "jmp table [" << i << "]: " << hex << table_entry << dec << endl;
+		ibtargets.insert(table_entry);
+	}
+
+	jmptables[IJ] = ibtargets;
+
+	// got the full switch table, remove hellnode
+	firp->GetIBTargets().RemoveHellnodeTarget(IJ);
+}
+
 void calc_preds(FileIR_t* firp)
 {
         preds.clear();
@@ -806,15 +948,16 @@ void fill_in_indtargs(FileIR_t* firp, elfio* elfiop)
 	print_targets();
 	cout<<"========================================="<<endl;
 
-
-
-
 	/* set the IR to have some instructions marked as IB targets */
 	mark_targets(firp);
+
+	mark_jmptables(firp);
+
+	if(getenv("IB_VERBOSE")!=NULL)
+	{
+		cout << firp->GetIBTargets().toString() << endl;
+	}
 }
-
-
-
 
 
 main(int argc, char* argv[])
@@ -825,9 +968,6 @@ main(int argc, char* argv[])
 		cerr<<"Usage: fill_in_indtargs <id>"<<endl;
 		exit(-1);
 	}
-
-
-
 
 	VariantID_t *pidp=NULL;
 	FileIR_t * firp=NULL;
@@ -872,7 +1012,6 @@ main(int argc, char* argv[])
 			fill_in_indtargs(firp, elfiop);
 	
 			// write the DB back and commit our changes 
-
 			firp->WriteToDB();
 			delete firp;
 		}

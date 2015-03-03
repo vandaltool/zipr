@@ -75,6 +75,7 @@ FileIR_t::~FileIR_t()
 		delete *i;
 	}
 
+
 	for(std::set<Instruction_t*>::const_iterator i=insns.begin(); i!=insns.end(); ++i)
 	{
 		delete *i;
@@ -105,6 +106,8 @@ void FileIR_t::ReadFromDB()
 	std::map<db_id_t,AddressID_t*> 	addrMap=ReadAddrsFromDB();
 	std::map<db_id_t,Function_t*> 	funcMap=ReadFuncsFromDB(addrMap, typesMap);
 	std::map<db_id_t,Instruction_t*> 	insnMap=ReadInsnsFromDB(funcMap,addrMap);
+
+	ReadIBTargetsFromDB(insnMap);
 	ReadRelocsFromDB(insnMap);
 
 	UpdateEntryPoints(insnMap);
@@ -567,6 +570,10 @@ void FileIR_t::WriteToDB()
 		dbintr->IssueQuery(r);
 	}
 	dbintr->IssueQuery(q);
+
+	q = string("");
+	q = ibtargets.WriteToDB(fileptr);
+	dbintr->IssueQuery(q);
 }
 
 
@@ -695,6 +702,7 @@ std::map<db_id_t, Type_t*> FileIR_t::ReadTypesFromDB (TypeSet_t& types)
 
 	// pass 1, get all the basic types first
 //	std::string q= "select * from " + fileptr->types_table_name + " WHERE ref_type_id = -1 AND ref_type_id2 = -1 AND pos = -1 order by type; ";
+
 	std::string q= "select * from " + fileptr->types_table_name + " WHERE ref_type_id = -1 order by type; ";
 
 //	cout << "pass1: query: " << q;
@@ -868,4 +876,38 @@ std::map<db_id_t, Type_t*> FileIR_t::ReadTypesFromDB (TypeSet_t& types)
 	} // end pass4
 
 	return tMap;
+}
+
+void FileIR_t::ReadIBTargetsFromDB(std::map<db_id_t,Instruction_t*> &insnMap)
+{
+	std::string q= "select * from " + fileptr->ibtargets_table_name + " ; ";
+
+	dbintr->IssueQuery(q);
+
+	while(!dbintr->IsDone())
+	{
+		// instruction_id | target_instruction_id
+		// target_instruction_id < 0  HELLNODE encoding (only one for now)
+		db_id_t instr_id = atoi(dbintr->GetResultColumn("instruction_id").c_str());
+		db_id_t ibtarget_id = atoi(dbintr->GetResultColumn("target_instruction_id").c_str());
+
+		assert(instr_id >= 0);
+
+		Instruction_t* instruction = insnMap[instr_id];
+		assert(instruction);
+
+		Instruction_t* ibtarget = NULL;
+		if (ibtarget_id >= 0)
+		{
+			ibtarget = insnMap[ibtarget_id];
+			assert(ibtarget);
+		}
+			
+		if (ibtarget)
+			ibtargets.AddTarget(instruction, ibtarget);
+		else
+			ibtargets.AddHellnodeTarget(instruction, (ICFGHellnodeType)ibtarget_id);
+
+		dbintr->MoveToNextRow();
+	}
 }

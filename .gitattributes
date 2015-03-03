@@ -195,7 +195,9 @@ libIRDB/include/core/doip.hpp -text
 libIRDB/include/core/file.hpp -text
 libIRDB/include/core/fileir.hpp -text
 libIRDB/include/core/function.hpp -text
+libIRDB/include/core/ibtargets.hpp -text
 libIRDB/include/core/instruction.hpp -text
+libIRDB/include/core/instructioncfg.hpp -text
 libIRDB/include/core/pqxxdb.hpp -text
 libIRDB/include/core/reloc.hpp -text
 libIRDB/include/core/type.hpp -text
@@ -222,7 +224,9 @@ libIRDB/src/core/file.cpp -text
 libIRDB/src/core/fileir.cpp -text
 libIRDB/src/core/function.cpp -text
 libIRDB/src/core/generate_spri.cpp -text
+libIRDB/src/core/ibtargets.cpp -text
 libIRDB/src/core/instruction.cpp -text
+libIRDB/src/core/instrution.cpp -text
 libIRDB/src/core/pqxxdb.cpp -text
 libIRDB/src/core/type.cpp -text
 libIRDB/src/core/variantid.cpp -text

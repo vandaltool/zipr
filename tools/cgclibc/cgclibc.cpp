@@ -17,6 +17,8 @@ void CGC_libc::emitFunctionInfo(Function_t *p_fn)
 //    <test> positive <function> <address>
 void CGC_libc::setPositiveInferences(std::string p_positiveFile)
 {
+	cerr << "Need to reimplement" << endl;
+	/*
 	ifstream pin(p_positiveFile.c_str(), std::ifstream::in);
 	while (!pin.eof())
 	{
@@ -46,6 +48,7 @@ void CGC_libc::setPositiveInferences(std::string p_positiveFile)
 	}
 
 	pin.close();
+	*/
 }
 
 void CGC_libc::displayAllFunctions()
@@ -67,18 +70,36 @@ static void emitCandidate(std::string str, Function_t *p_fn)
 	}
 }
 
-static void displayFinalInference(Callgraph_t &p_cg, set<Function_t*> &p_maybes, string p_funcName)
+static void displayFinalInference(Callgraph_t &p_cg, CallGraphNodeSet_t &p_maybes, string p_funcName)
 {
-	for (set<Function_t*>::iterator i = p_maybes.begin(); i != p_maybes.end(); ++i)
+	for (CallGraphNodeSet_t::iterator i = p_maybes.begin(); i != p_maybes.end(); ++i)
 	{
-		Function_t *fn = *i;
+		CallGraphNode_t *node = *i;
+		if (node->IsHellNode()) continue;
+
+		Function_t *fn = node->GetFunction();
 		if (!fn) continue;
 		emitCandidate(p_funcName, fn);
 	}
 }
 
+static void displayMaybes(Callgraph_t &p_cg, CallGraphNodeSet_t& p_maybes, string p_funcName)
+{
+	for (CallGraphNodeSet_t::iterator i = p_maybes.begin(); i != p_maybes.end(); ++i)
+	{
+		CallGraphNode_t *n = *i;
+		if (n->IsHellNode()) continue;
+		Function_t *fn = n->GetFunction();
+		if (fn && fn->GetEntryPoint() && fn->GetEntryPoint()->GetAddress())
+		{
+			cout << "maybe " << p_funcName << " 0x" << hex << fn->GetEntryPoint()->GetAddress()->GetVirtualOffset() << dec << " " << fn->GetName() << endl;
+		}
+	}
+}
+
 static void displayMaybes(Callgraph_t &p_cg, set<Function_t*> &p_maybes, string p_funcName)
 {
+		// obsolete?
 	for (set<Function_t*>::iterator i = p_maybes.begin(); i != p_maybes.end(); ++i)
 	{
 		Function_t *fn = *i;
@@ -105,8 +126,10 @@ CGC_libc::CGC_libc(FileIR_t *p_firp) :
 	m_deallocateWrapper = NULL;
 	m_randomWrapper = NULL;
 
+/*
 	m_startNode = NULL;
 	m_hellNode = NULL;
+	*/
 
 	m_cg.AddFile(m_firp);
 	m_cg.Dump(cout);
@@ -137,35 +160,35 @@ void CGC_libc::findSyscallWrappers()
 		switch (site.GetSyscallNumber()) 
 		{
 			case SNT_terminate:
-				m__terminateWrapper = fn;
+				m__terminateWrapper = m_cg.FindNode(fn);
 cout << "m__terminateWrapper found: " << fn->GetName() << endl;
 				break;
 			case SNT_transmit:
-				m_transmitWrapper = fn;
+				m_transmitWrapper = m_cg.FindNode(fn);
 cout << "m_transmitWrapper found: " << fn->GetName() << endl;
 				break;
 			case SNT_receive:
-				m_receiveWrapper = fn;
+				m_receiveWrapper = m_cg.FindNode(fn);
 cout << "m_receiveWrapper found: " << fn->GetName() << endl;
 				break;
 			case SNT_fdwait:
-				m_fdwaitWrapper = fn;
+				m_fdwaitWrapper = m_cg.FindNode(fn);
 cout << "m_fdwaitWrapper found: " << fn->GetName() << endl;
 				break;
 			case SNT_allocate:
-				m_allocateWrapper = fn;
+				m_allocateWrapper = m_cg.FindNode(fn);
 				m_cg.GetAncestors(m_allocateWrapper, m_maybeMallocs, m_skipHellNode);
 cout << "m_allocateWrapper found: " << fn->GetName() << endl;
 				break;
 			case SNT_deallocate:
-				m_deallocateWrapper = fn;
+				m_deallocateWrapper = m_cg.FindNode(fn);
 				m_cg.GetAncestors(m_deallocateWrapper, m_maybeFrees, m_skipHellNode);
 cout << "m_deallocateWrapper found: " << fn->GetName() << endl;
 	displayMaybes(m_cg,m_maybeFrees, "off-the-bat: free()");
 
 				break;
 			case SNT_random:
-				m_randomWrapper = fn;
+				m_randomWrapper = m_cg.FindNode(fn);
 cout << "m_randomWrapper found: " << fn->GetName() << endl;
 				break;
 		}
@@ -182,56 +205,70 @@ bool CGC_libc::hasFreeFunctionPrototype(Function_t *p_fn)
 	return true; // not yet implemented
 }
 
-void CGC_libc::findPotentialMallocs()
+void CGC_libc::pruneMallocs()
 {
 	// remove functions that cannot be malloc()
 	//    malloc() won't call transmit, receive, fdwait, even indirectly
 	//    should have the right function prototype: POINTER malloc(NUMERIC)
-	set<Function_t*> t = m_maybeMallocs; 
-	for (set<Function_t*>::iterator i = t.begin(); i != t.end(); ++i)
+//	set<Function_t*> t = m_maybeMallocs; 
+
+	// make a copy
+	CallGraphNodeSet_t t = m_maybeMallocs;
+
+	for (CallGraphNodeSet_t::iterator i = t.begin(); i != t.end(); ++i)
 	{
-		Function_t *fn = *i;
+		CallGraphNode_t* node = *i;
+		if (node->IsHellNode())
+		{
+			m_maybeMallocs.erase(node);
+			continue;
+		}
+
+		Function_t *fn = node->GetFunction();
 
 		if (fn == NULL) {
 			continue;
 		}
 
 cout << "Looking at function: 0x" << hex << fn << dec << endl;
-cout << "Function name: " << m_cg.GetNodeName(fn) << endl;
+cout << "Function name: " << fn->GetName() << endl;
 
-		if (m_mallocUniverse.size() > 0 && m_mallocUniverse.count(fn) == 0)
+		// m_mallocUniverse has candidate set of all mallocs
+		//   (determined dynamically)
+		if (m_mallocUniverse.size() > 0 && m_mallocUniverse.count(node) == 0)
 		{
-			m_maybeMallocs.erase(fn);
+			m_maybeMallocs.erase(node); 
 			continue;
 		}
 
-		if (m_cg.GetCalleesOfNode(m_transmitWrapper).count(fn) > 0)
+		if (m_cg.GetCalleesOfNode(m_transmitWrapper).count(node) > 0)
 		{
 			cout << "calls transmit, remove" << endl;
-			m_maybeMallocs.erase(fn);
+			m_maybeMallocs.erase(node);
 			continue;
 		}
 
-		if (m_cg.GetCalleesOfNode(m_receiveWrapper).count(fn) > 0)
+		if (m_cg.GetCalleesOfNode(m_receiveWrapper).count(node) > 0)
 		{
 			cout << "calls receive, remove" << endl;
-			m_maybeMallocs.erase(fn);
+			m_maybeMallocs.erase(node);
 			continue;
 		}
 
-		if (m_cg.GetCalleesOfNode(m_fdwaitWrapper).count(fn) > 0)
+		if (m_cg.GetCalleesOfNode(m_fdwaitWrapper).count(node) > 0)
 		{
 			cout << "calls fdwait, remove" << endl;
-			m_maybeMallocs.erase(fn);
+			m_maybeMallocs.erase(node);
 			continue;
 		}
 
 		if (!hasMallocFunctionPrototype(fn))
 		{
-			m_maybeMallocs.erase(fn);
+			m_maybeMallocs.erase(node);
 			continue;
 		}
 
+#ifdef NOT_NECESSARY
 		if (m_startNode) 
 		{
 			// CGC-hardwired rule: _start calls main and _terminate
@@ -251,62 +288,71 @@ cout << "Function name: " << m_cg.GetNodeName(fn) << endl;
 			else
 				cout << "Reachable node" << endl;
 		}
+#endif
 	}
 
-	m_maybeMallocs.erase(NULL); // get rid of the HellNode
-	for (set<Function_t*>::iterator i = m_maybeMallocs.begin(); i != m_maybeMallocs.end(); ++i)
+	for (CallGraphNodeSet_t::iterator i = m_maybeMallocs.begin(); i != m_maybeMallocs.end(); ++i)
 	{
-		Function_t *fn = *i;
-		cout << "Maybe malloc: " << m_cg.GetNodeName(fn) << endl;
+		CallGraphNode_t *node = *i;
+		cout << "Maybe malloc: " << m_cg.GetNodeName(node) << endl;
 	}
 }
 
-void CGC_libc::findPotentialFrees()
+void CGC_libc::pruneFrees()
 {
 	// (2) remove functions that cannot be free()
 	// free() won't call transmit, receive, fdwait, even indirectly
 	// should have the right function prototype: void free(POINTER)
-	set<Function_t*>::iterator i;
-	set<Function_t*> t = m_maybeFrees; 
+	CallGraphNodeSet_t t = m_maybeFrees; 
+	CallGraphNodeSet_t::iterator i;
+
 	for (i = t.begin(); i != t.end(); ++i)
 	{
-		Function_t *fn = *i;
+		CallGraphNode_t *node = *i;
+
+		if (node->IsHellNode())
+		{
+			m_maybeFrees.erase(node);
+			continue;
+		}
+
+		Function_t *fn = node->GetFunction();
 
 		if (!fn) continue;
 
 cout << "Looking at function: " << fn->GetName() << endl;
 
-		if (m_cg.GetCalleesOfNode(m_transmitWrapper).count(fn) > 0)
+		if (m_cg.GetCalleesOfNode(m_transmitWrapper).count(node) > 0)
 		{
 			cout << "calls transmit, remove" << endl;
-			m_maybeFrees.erase(fn);
+			m_maybeFrees.erase(node);
 			continue;
 		}
 
-		if (m_cg.GetCalleesOfNode(m_receiveWrapper).count(fn) > 0)
+		if (m_cg.GetCalleesOfNode(m_receiveWrapper).count(node) > 0)
 		{
 			cout << "calls receive, remove" << endl;
-			m_maybeFrees.erase(fn);
+			m_maybeFrees.erase(node);
 			continue;
 		}
 
-		if (m_cg.GetCalleesOfNode(m_fdwaitWrapper).count(fn) > 0)
+		if (m_cg.GetCalleesOfNode(m_fdwaitWrapper).count(node) > 0)
 		{
 			cout << "calls fdwait, remove" << endl;
-			m_maybeFrees.erase(fn);
+			m_maybeFrees.erase(node);
 			continue;
 		}
 
-		if (m_cg.GetCalleesOfNode(m_allocateWrapper).count(fn) > 0)
+		if (m_cg.GetCalleesOfNode(m_allocateWrapper).count(node) > 0)
 		{
 			cout << "calls allocate, remove" << endl;
-			m_maybeFrees.erase(fn);
+			m_maybeFrees.erase(node);
 			continue;
 		}
 
 		if (!hasFreeFunctionPrototype(fn))
 		{
-			m_maybeFrees.erase(fn);
+			m_maybeFrees.erase(node);
 			continue;
 		}
 
@@ -330,14 +376,13 @@ cout << "Looking at function: " << fn->GetName() << endl;
 */
 	}
 
-	m_maybeFrees.erase(NULL); // get rid of the HellNode
 	for (i = m_maybeFrees.begin(); i != m_maybeFrees.end(); ++i)
 	{
-		Function_t *fn = *i;
-		if (!fn) {
+		CallGraphNode_t *node = *i;
+		if (!node) {
 			continue;
 		}
-		cout << "Maybe free(): " << fn->GetName() << endl;
+		cout << "Maybe free(): " << m_cg.GetNodeName(node) << endl;
 	}
 }
 
@@ -360,6 +405,7 @@ void CGC_libc::findUnreachableNodes()
 
 void CGC_libc::clusterFreeMalloc()
 {
+#ifdef TODO
 	cout << "Do Malloc()" << endl;
 
 	std::set<Function_t*> maybeMallocsWithGlobals;
@@ -557,6 +603,7 @@ void CGC_libc::clusterFreeMalloc()
 
 	m_maybeMallocs = maybeMallocsWithGlobals;
 	m_maybeFrees = maybeFreesWithGlobals;
+#endif
 }
 
 bool CGC_libc::isGlobalData(int p_address)
@@ -582,6 +629,7 @@ bool CGC_libc::isGlobalData(int p_address)
 
 void CGC_libc::findDominant(set<Function_t*> &nodes)
 {
+#ifdef TODO
 	set<Function_t*> dominatedFunctions;
 
 	// for each function f
@@ -657,6 +705,7 @@ void CGC_libc::findDominant(set<Function_t*> &nodes)
 	{
 		nodes.erase(*d);
 	}
+#endif
 }
 
 bool CGC_libc::execute()
@@ -668,11 +717,11 @@ bool CGC_libc::execute()
 
 	displayMaybes(m_cg,m_mallocUniverse, "universe-malloc");
 
-	cout << "find potential mallocs" << endl;
-	findPotentialMallocs();
+	cout << "prune mallocs" << endl;
+	pruneMallocs();
 
 	cout << "find potential frees" << endl;
-	findPotentialFrees();
+	pruneFrees();
 
 	if (m_clustering)
 	{
@@ -685,6 +734,7 @@ bool CGC_libc::execute()
 	else
 		cout << "clustering heuristic is off" << endl;
 
+#ifdef TODO
 	if (m_dominance) 
 	{
 		cout << "# of candidate functions for malloc() prior to domination heuristic: " << m_maybeMallocs.size() << endl;
@@ -697,6 +747,7 @@ bool CGC_libc::execute()
 	}
 	else
 		cout << "domination heuristic is off" << endl;
+#endif
 
 	cout << endl << "Final summary" << endl;
 	cout << "-----------------------------------------" << endl;

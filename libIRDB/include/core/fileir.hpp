@@ -22,6 +22,7 @@
 
 typedef std::set<Function_t*> FunctionSet_t;
 typedef std::set<AddressID_t*> AddressSet_t;
+typedef std::map<Instruction_t*, InstructionCFGNodeSet_t> IBTargetMap_t;
 
 // A variant of a problem, this
 // may be an original variant
@@ -38,10 +39,11 @@ class FileIR_t : public BaseObj_t
 	void WriteToDB();
 
 	// accessors and mutators in one
-	FunctionSet_t& GetFunctions() { return funcs; }
+	FunctionSet_t&    GetFunctions() { return funcs; }
 	InstructionSet_t& GetInstructions() { return insns; }
-	AddressSet_t& GetAddresses() { return addrs; }
-	RelocationSet_t&	GetRelocations() { return relocs; }
+	AddressSet_t&     GetAddresses() { return addrs; }
+	RelocationSet_t&  GetRelocations() { return relocs; }
+	IBTargets&  	  GetIBTargets() { return ibtargets; }
 
 	// generate the spri rules into the output file, fout.
 	void GenerateSPRI(std::ostream &fout, bool with_ilr=false);
@@ -79,6 +81,7 @@ class FileIR_t : public BaseObj_t
 	#define ASM_REG_MAX_SIZE 500000
 
 	typedef std::map<Instruction_t*,std::string> registry_type;
+	typedef std::map<Instruction_t*,InstructionCFGNode_t*> ICFGNodeMap_t;
 
 	// a pointer to the original variants IR, NULL means not yet loaded.
 	FileIR_t* orig_variant_ir_p;
@@ -87,13 +90,14 @@ class FileIR_t : public BaseObj_t
 
 	void ReadFromDB();	//accesses DB
 
-	FunctionSet_t funcs;
-	InstructionSet_t insns;
-	AddressSet_t addrs;
-	RelocationSet_t relocs;
-	TypeSet_t types;
-	VariantID_t progid;
-	File_t* fileptr;
+	FunctionSet_t     funcs;
+	InstructionSet_t  insns;
+	AddressSet_t      addrs;
+	RelocationSet_t   relocs;
+	TypeSet_t         types;
+	VariantID_t       progid;
+	File_t*           fileptr;
+	IBTargets         ibtargets; // instructions* --> target set
 
 	std::map<db_id_t,AddressID_t*> ReadAddrsFromDB();
 	std::map<db_id_t,Function_t*> ReadFuncsFromDB
@@ -112,9 +116,6 @@ class FileIR_t : public BaseObj_t
 	);
 
 	std::map<db_id_t, Type_t*> ReadTypesFromDB(TypeSet_t& types);
-
-
-	// @TODO: need types
-
+	void ReadIBTargetsFromDB(std::map<db_id_t,Instruction_t*> &insnMap);
 };
 
