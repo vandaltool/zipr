@@ -206,7 +206,7 @@ void Callgraph_t::_GetAncestors(CallGraphNode_t* const node, CallGraphNodeSet_t 
 	if (!node || visited.count(node) > 0)
 		return;
 
-cerr << "visiting node: " << GetNodeName(node) << " 0x" << hex << node->GetFunction() << dec << " visited(size):" << visited.size() << endl;
+cerr << "visiting node: " << GetNodeName(node) << " visited(size):" << visited.size() << endl;
 
         // ancestor-traversal(node X)
         //    mark X visited
@@ -224,7 +224,7 @@ cerr << "visiting node: " << GetNodeName(node) << " 0x" << hex << node->GetFunct
 		if (visited.count(*it) == 0)
 		{
 			assert(*it);
-			if ((*it)->IsHellNode() && skipHellNode) continue;
+			if ((*it)->IsHellnode() && skipHellNode) continue;
 
 cerr << "adding " << GetNodeName(*it) << " to ancestor list " << hex << *it << dec << endl;
 			ancestors.insert(*it);

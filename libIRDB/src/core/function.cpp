@@ -60,8 +60,18 @@ string Function_t::WriteToDB(File_t *fid, db_id_t newid)
 		string("'") + to_string(stack_frame_size) 	  + string("', ") + 
 	        string("'") + to_string(out_args_region_size) 	  + string("', ") + 
 	        string("'") + to_string(use_fp) 		  + string("', ") + 
-	        string("'") + to_string(function_type_id) 		  + string("', ") + 
+	        string("'") + to_string(function_type_id) 	  + string("', ") + 
 		string("'") + to_string(GetDoipID()) 		  + string("') ; ") ;
 
 	return q;
+}
+
+int Function_t::GetNumArguments()
+{
+	if (!function_type) return -1;
+	AggregateType_t *argtype = function_type->GetArgumentsType();
+	if (argtype)
+		return argtype->GetNumAggregatedTypes();
+	else
+		return -1;
 }

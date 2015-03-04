@@ -19,7 +19,7 @@ class CallGraphNode_t
 			}
 		}
 
-		bool IsHellNode() const { return m_isHellNode; }
+		bool IsHellnode() const { return m_isHellNode; }
 
 		libIRDB::Function_t* GetFunction() const {
 			assert(!m_isHellNode);
@@ -97,7 +97,7 @@ class Callgraph_t
 
 		std::string GetNodeName(const CallGraphNode_t* const n1) const {
 			assert(n1);
-			if (n1->IsHellNode()) {
+			if (n1->IsHellnode()) {
 				std::ostringstream s;
 				s << "HELLNODE" << n1->GetHellNodeType();
 				return s.str();

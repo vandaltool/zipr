@@ -50,9 +50,10 @@ class Function_t : public BaseObj_t
         bool GetUseFramePointer() const { return use_fp; }
         void SetUseFramePointer(bool useFP) { use_fp = useFP; }
 
-		void SetType(FuncType_t *t) { function_type = t; }
-		FuncType_t* GetType() const { return function_type; }
+	void SetType(FuncType_t *t) { function_type = t; }
+	FuncType_t* GetType() const { return function_type; }
 
+	int GetNumArguments();
 
     private:
 	Instruction_t *entry_point;
@@ -61,6 +62,6 @@ class Function_t : public BaseObj_t
         std::string name;
         int out_args_region_size;
         bool use_fp;
-		FuncType_t *function_type;
+	FuncType_t *function_type;
 };
 
