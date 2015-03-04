@@ -114,12 +114,11 @@ class Callgraph_t
 
 		CallGraphNode_t& GetDefaultHellNode() { return default_hellnode; }
 
+		CallGraphNode_t* FindNode(Function_t* const fn);
 
 	private:
 		// create nodes from functions
 		void CreateNodes(libIRDB::FileIR_t *firp);
-
-		CallGraphNode_t* FindNode(Function_t* const fn);
 
 		// mark the given insn as a call site.
 		void MarkCallSite(Instruction_t* const insn);
