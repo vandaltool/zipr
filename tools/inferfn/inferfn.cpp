@@ -3,7 +3,6 @@
 
 using namespace std;
 
-#define START_NODE "_start"
 #define SPRI_AVAIL_ADDRESS 0xff08ff00
 
 InferFn::InferFn(FileIR_t *p_firp)
