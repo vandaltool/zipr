@@ -3179,6 +3179,7 @@ tools/db/sample_pgms/slash_usr_bin/zsh.strsig -text
 tools/db/sample_pgms/slash_usr_bin/zsoelim.strsig -text
 tools/db/sample_pgms/slash_usr_bin/zxpdf.strsig -text
 tools/do_appfw.sh -text
+tools/do_cinderella.sh -text
 tools/do_concolic.sh -text
 tools/do_fptr_shadow.sh -text
 tools/do_gatherlibs.sh -text
