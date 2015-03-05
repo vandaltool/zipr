@@ -580,6 +580,10 @@ tools/memcover/General_Utility.cpp -text
 tools/memcover/General_Utility.hpp -text
 tools/memcover/Makefile -text
 tools/memcover/memcover.cpp -text
+tools/prince/Makefile -text
+tools/prince/prince.cpp -text
+tools/prince/prince.sh -text
+tools/prince/prince_driver.cpp -text
 tools/ret_shadow_stack/LICENSE.txt -text
 tools/ret_shadow_stack/Makefile -text
 tools/ret_shadow_stack/rss_driver.cpp -text
