@@ -9,7 +9,7 @@
 #
 # $PEASOUP_HOME/tools/do_prince.sh `pwd`/$TESTABLE $PEASOUP_HOME/tools/cinderella.spec functions.all.addresses
 
-binary=$1                   # binary to test
+binary=$1                       # binary to test
 libcfunctions_filepath=$2       # file with list of libc functions to look for
 allfunctions_filepath=$3        # file with function names from binary to test
 malloc_addresses=$4

@@ -14,3 +14,4 @@ strspn
 strcspn
 memset
 memchr
+malloc
