@@ -1,4 +1,7 @@
 #!/bin/bash -x
+#
+# Find <libc_function> in <binary> using functions in <filename> as candidates
+#
 
 binary=$1                # binary augmented via test loop
 libc_function=$2         # what libc function are we looking for?

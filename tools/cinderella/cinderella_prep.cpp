@@ -68,7 +68,7 @@ void CinderellaPrep::addInferenceCallback(Instruction_t *site)
 //	tmp->SetFallthrough(fallthrough);
 }
 
-Instruction_t* CinderellaPrep::findEntryPoint()
+Instruction_t* CinderellaPrep::findProgramEntryPoint()
 {
 	Instruction_t* insn=NULL;
 	for(InstructionSet_t::iterator it=m_firp->GetInstructions().begin();
@@ -80,10 +80,9 @@ Instruction_t* CinderellaPrep::findEntryPoint()
 		if(insn->GetIndirectBranchTargetAddress() && 
 			insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()==(virtual_offset_t)m_elfiop->get_entry())
 		{
-			cout << "mallard: entry point is at 0x" << hex << m_elfiop->get_entry() << dec << endl;
+			cout << "program entry point is at 0x" << hex << m_elfiop->get_entry() << dec << endl;
 			return insn;	
 		}
-		
 	}
 
 	return NULL;
@@ -91,14 +90,15 @@ Instruction_t* CinderellaPrep::findEntryPoint()
 
 bool CinderellaPrep::execute()
 {
-	Instruction_t *entryPoint = findEntryPoint();	
+	Instruction_t *entryPoint = findProgramEntryPoint();	
 	assert(entryPoint);
 
 	insertAssemblyBefore(m_firp, entryPoint, "nop");
 	addInferenceCallback(entryPoint);
 	
 	// pin functions
-	pinAllFunctionEntryPoints();
+// why do we need to pin?
+//	pinAllFunctionEntryPoints();
 
 	return true;
 }
