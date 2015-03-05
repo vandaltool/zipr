@@ -115,6 +115,9 @@ examples/memcpy.c -text
 examples/myhanoi.c -text
 examples/print_ptr.c -text
 examples/recover_example.c -text
+prince/Makefile -text
+prince/prince.c -text
+prince/prince.sh -text
 stock_examples/Makefile -text
 stock_examples/bzip2.stock -text
 stock_examples/xpdf.stock -text
