@@ -395,6 +395,7 @@ tools/add_ifunc_attr.sh -text
 tools/bed.sh -text
 tools/bed_blackbox.sh -text
 tools/bed_manual.sh -text
+tools/cinderella.spec -text
 tools/cover.sh -text
 tools/db/drop_my_tables.sh -text
 tools/db/job.create.tbl -text
