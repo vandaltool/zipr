@@ -8,7 +8,7 @@ using namespace libIRDB;
 
 void usage(char* name)
 {
-	cerr<<"Usage: "<<name<<" <variant_id> <target_cinderella_executable> <libc_function> <function_name>\n";
+	cerr<<"Usage: "<<name<<" <variant_id> <target_cinderella_executable> <libc_function> <function_to_test>\n";
 }
 
 Function_t* findFunction(FileIR_t* firp, string functionName)
