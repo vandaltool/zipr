@@ -50,19 +50,32 @@ grep -i "positive malloc" cinderella.static.pass1.malloc | cut -d' ' -f4 > mallo
 $PEASOUP_HOME/tools/do_prince.sh `pwd`/$TESTABLE $PEASOUP_HOME/tools/cinderella.malloc.spec malloc.addresses
 
 #
-# Need to find the "true" malloc/free combo
+# At this point, we have found a whole bunch of libc functions via
+# dynamic testing
+#
+# Chances are, we have more than one choice for malloc(), so look
+# for the true malloc()
 #
 
 #
-# Use simple dominator heuristic to whittle down possible malloc/free
+# Use dominator heuristic to find malloc
+#    potential mallocs (dynamic): D = {A, B, C}
+#    potential mallocs (static) : S = {X, Y, A, B, C}
+#
+#    F = D intersect S = {A, B, C}
+#    call graph: A --> B --> C            ==>     A is malloc
+#    call graph: A --> B --> C, A --> C   ==>     A is malloc
 #
 echo "CINDERELLA PASS2: with restrictions on malloc / turn on --dominator"
 $SECURITY_TRANSFORMS_HOME/tools/cgclibc/cgclibc.exe $cloneid --positive-inferences cinderella.inferences.positive --dominator > cinderella.static.pass2
 count_malloc=`grep "^static positive malloc" cinderella.static.pass2 | wc -l`
 count_free=`grep "^static positive free" cinderella.static.pass2 | wc -l`
-grep -i "positive malloc" cinderella.static.pass2 | cut -d' ' -f4 > malloc.true.addresses
+grep -i "positive malloc" cinderella.static.pass2 | cut -d' ' -f4 > malloc.true.functions
 
 echo "CINDERELLA: PASS2: #mallocs: $count_malloc  #frees: $count_free"
+
+echo "CINDERELLA: TO DO: IMPLEMENT THE REST"
+return 1
 
 #
 # Haven't yet found the true malloc/free
@@ -71,7 +84,7 @@ echo "CINDERELLA: PASS2: #mallocs: $count_malloc  #frees: $count_free"
 if [ "$count_malloc" != "1" ] || [ "$count_free" != "1" ] ; then
 	echo "CINDERELLA PASS3: with restrictions on malloc / turn on --dominator"
 	$SECURITY_TRANSFORMS_HOME/tools/cgclibc/cgclibc.exe $cloneid --positive-inferences cinderella.inferences.positive --dominator --cluster > cinderella.static.pass3
-	grep -i "positive malloc" cinderella.static.pass3 | cut -d' ' -f4 > malloc.true.addresses
+	grep -i "positive malloc" cinderella.static.pass3 | cut -d' ' -f4 > malloc.true.functions
 	count_malloc=`grep "^static positive malloc" cinderella.static.pass3 | wc -l`
 	count_free=`grep "^static positive free" cinderella.static.pass3 | wc -l`
 fi
@@ -91,11 +104,11 @@ if [ "$count_malloc" = "1" ];then
 		# @todo: We should exclude all functions already discovered here to speed this up
 		#
 		echo "CINDERELLA SUCCESS: look for realloc"
-		$PEASOUP_HOME/tools/do_prince.sh `pwd`/$TESTABLE $PEASOUP_HOME/tools/cinderella.realloc.spec malloc.addresses malloc.true.addresses
+		$PEASOUP_HOME/tools/do_prince.sh `pwd`/$TESTABLE $PEASOUP_HOME/tools/cinderella.realloc.spec malloc.addresses malloc.true.functions
 
 		# @todo: fix this, not working at all
 		echo "CINDERELLA SUCCESS: look for calloc"
-		$PEASOUP_HOME/tools/do_prince.sh `pwd`/$TESTABLE $PEASOUP_HOME/tools/cinderella.calloc.spec malloc.addresses malloc.true.addresses
+		$PEASOUP_HOME/tools/do_prince.sh `pwd`/$TESTABLE $PEASOUP_HOME/tools/cinderella.calloc.spec malloc.addresses malloc.true.functions
 	fi
 fi
 
