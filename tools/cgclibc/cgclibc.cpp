@@ -5,31 +5,33 @@
 
 using namespace std;
 
+// WARNING: DO NOT CHANGE FORMAT OF OUTPUT
 void CGC_libc::emitFunctionInfo(Function_t *p_fn)
 {
 	if (p_fn && p_fn->GetEntryPoint() && p_fn->GetEntryPoint()->GetAddress())
 	{
-		cout << "function 0x" << hex << p_fn->GetEntryPoint()->GetAddress()->GetVirtualOffset() << dec << " " << p_fn->GetName() << endl;
+		cout << "function " << p_fn->GetName() << " 0x" << hex << p_fn->GetEntryPoint()->GetAddress()->GetVirtualOffset() << dec << endl;
 	}
 }
 
 // format of file
-//    <test> positive <function> <address>
+//    <test> positive <libc_function> <candidate_function>
+//
+// post: m_mallocUniverse will contains the relevant candidate functions
 void CGC_libc::setPositiveInferences(std::string p_positiveFile)
 {
-	cerr << "Need to reimplement" << endl;
-	/*
 	ifstream pin(p_positiveFile.c_str(), std::ifstream::in);
 	while (!pin.eof())
 	{
 		char buf[2024];
 		char libcFn[2024];
+		char candidateFn[2024];
 		Function_t* entryPoint;
 
 		if (pin.getline(buf, 2000))
 		{
-			sscanf(buf,"%*s %*s %s %p", libcFn, &entryPoint); 
-			cout << "fn: " << libcFn << " " << entryPoint << endl;
+			sscanf(buf,"%*s %*s %s %s", libcFn, candidateFn); 
+			cout << "fn: " << libcFn << endl;
 
 			if (strcmp(libcFn,"malloc")==0)
 			{
@@ -37,18 +39,16 @@ void CGC_libc::setPositiveInferences(std::string p_positiveFile)
 				for (it = m_firp->GetFunctions().begin(); it != m_firp->GetFunctions().end(); ++it)
 				{
 					Function_t *fn = *it;
-					if (fn && fn->GetEntryPoint() && fn->GetEntryPoint()->GetAddress() && fn->GetEntryPoint()->GetAddress()->GetVirtualOffset() == (uintptr_t) entryPoint)
+					if (fn && fn->GetName() == string(candidateFn))
 					{
-						m_mallocUniverse.insert(fn);
+						m_mallocUniverse.insert(m_cg.FindNode(fn));
 					}
 				}
 			} 
 		}
-
 	}
 
 	pin.close();
-	*/
 }
 
 void CGC_libc::displayAllFunctions()
@@ -66,7 +66,7 @@ static void emitCandidate(std::string str, Function_t *p_fn)
 {
 	if (p_fn && p_fn->GetEntryPoint() && p_fn->GetEntryPoint()->GetAddress())
 	{
-		cout << "static positive " << str << " 0x" << hex << p_fn->GetEntryPoint()->GetAddress()->GetVirtualOffset() << dec << " " << p_fn->GetName() << endl;
+		cout << "static positive " << str << " " << p_fn->GetName() << " 0x" << hex << p_fn->GetEntryPoint()->GetAddress()->GetVirtualOffset() << dec << " " << endl;
 	}
 }
 
