@@ -1,0 +1,30 @@
+static identification malloc/free
+
+conservative heuristic as of 20150304
+* #args check for free()/malloc()
+* descendant nodes call allocate()/deallocate()
+* for free/malloc: candidate function does not transitively call read()
+              
+Test name       Result  Malloc/Free 
+-------------	------	-------------------------
+CADET_00001	PASS	0/0 No malloc/free
+EAGLE_00004_1	PASS	0/0 No malloc/free
+EAGLE_00004_2	PASS	0/0 No malloc/free
+EAGLE_00004_3	PASS	0/0 No malloc/free
+KPRCA_00001	PASS	6/7
+KPRCA_00003	PASS	1/2  
+KPRCA_00015  	PASS	1/2
+LUNGE_00002  	PASS	6/3
+LUNGE_00005_1  	PASS	6/2
+LUNGE_00005_2  	PASS	5/2
+LUNGE_00005_3  	PASS	4/2
+LUNGE_00005_4	PASS	5/2  
+LUNGE_00005_5	PASS	4/2  
+LUNGE_00005_6	PASS	4/2  
+NRFIN_00003	PASS	2/0 No malloc/free
+NRFIN_00010 	PASS	12/6 No malloc/free (uses allocate(), deallocate() directly)
+NRFIN_00013     PASS	4/0 No malloc/free (uses allocate() directly)
+TNETS_00002  	PASS	9/11
+YAN01_00001	PASS	0/0 No malloc/free
+YAN01_00002	PASS	0/0 No malloc/free
+YAN01_00003	PASS	0/0 No malloc/free

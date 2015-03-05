@@ -26,8 +26,8 @@ class CGC_libc {
 		void pruneMallocs();
 		void pruneFrees();
 		void emitFunctionInfo(Function_t *);
-		bool hasMallocFunctionPrototype(Function_t *p_fn);
-		bool hasFreeFunctionPrototype(Function_t *p_fn);
+		bool potentialMallocFunctionPrototype(Function_t *p_fn);
+		bool potentialFreeFunctionPrototype(Function_t *p_fn);
 		void clusterFreeMalloc();
 		bool isGlobalData(int p_address);
 		void findDominant(std::set<Function_t*> &);

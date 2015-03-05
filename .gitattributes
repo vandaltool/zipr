@@ -545,6 +545,7 @@ third_party/elfio.hpp -text
 third_party/sqlite-autoconf-3071300.tar.gz -text
 tools/Makefile.in -text
 tools/cgclibc/Makefile -text
+tools/cgclibc/README -text
 tools/cgclibc/cgclibc.cpp -text
 tools/cgclibc/cgclibc.hpp -text
 tools/cgclibc/cgclibc_driver.cpp -text
