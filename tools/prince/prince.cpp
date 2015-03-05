@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include <libgen.h>
+// #include <libgen.h>
 #include <unistd.h>
 #include <signal.h>
 #include <string>
@@ -11,7 +11,10 @@
 
 #include "inferutil.h"
 
+#include <libIRDB-core.hpp>
+
 using namespace std;
+using namespace libIRDB;
 
 #define BOGUS_VALUE        2000000000
 #define BOGUS_VALUE_2     -2
@@ -1160,7 +1163,7 @@ void sig_chld(int signo)
 	exit(1); // exit with error code
 }
 
-int test_prince(string executable, string libcFunction, uintptr_t address) {
+int test_prince(string executable, string libcFunction, Function_t *functionToTest) {
 	int pipefd[2];
 	int pipefd2[2];
 	pid_t pid;
@@ -1186,6 +1189,7 @@ int test_prince(string executable, string libcFunction, uintptr_t address) {
 
 	const char *target = executable.c_str();
 	const char *fn = libcFunction.c_str();
+	uintptr_t address = functionToTest->GetEntryPoint()->GetAddress()->GetVirtualOffset();
 
 	pipe (pipefd);
 	pipe (pipefd2);

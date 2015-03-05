@@ -11,20 +11,19 @@ void usage(char* name)
 	cerr<<"Usage: "<<name<<" <variant_id> <target_cinderella_executable> <libc_function> <function_name>\n";
 }
 
-uintptr_t findAddress(FileIR_t* firp, string functionName)
+Function_t* findFunction(FileIR_t* firp, string functionName)
 {
 	FunctionSet_t functions = firp->GetFunctions();
 	for (FunctionSet_t::iterator it = functions.begin(); it != functions.end(); ++it)
 	{
 		Function_t *fn = *it;	
-		if (fn && fn->GetEntryPoint() && fn->GetEntryPoint()->GetAddress() &&
-			fn->GetEntryPoint()->GetAddress()->GetVirtualOffset() > 0)
-			return fn->GetEntryPoint()->GetAddress()->GetVirtualOffset();
+		if (fn && fn->GetName() == functionName)
+			return fn;
 	}
-	return 0;
+	return NULL;
 }
 
-extern int test_prince(string targetName, string functionName, uintptr_t address);
+extern int test_prince(string targetName, string functionName, Function_t* fn);
 
 int main(int argc, char **argv)
 {
@@ -59,9 +58,9 @@ int main(int argc, char **argv)
 			FileIR_t *firp = new FileIR_t(*pidp, this_file);
 			assert(firp && pidp);
 
-			uintptr_t address = findAddress(firp, functionName);
-			if (address > 0)
-				return test_prince(cinderellaExecutable, libcFunction, address);
+			Function_t *fn = findFunction(firp, functionName);
+			if (fn)
+				return test_prince(cinderellaExecutable, libcFunction, fn);
 			else
 				return 1;
 		}
