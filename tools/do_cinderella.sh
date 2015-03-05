@@ -6,12 +6,12 @@
 #     cleanup
 #     treat malloc/free differently then the rest of libc.spec
 #     better output files for positive/negative inferences
-#     fix bug -- something is wrong with positive inference when the fn we're looking for
+#     fix bug -- something is wrong with positive inference when the fn we're looking for 
 #                is not even supported
 #     rename a.ncexe.inferfn --> a.ncexe.cinderella
 #
 
-TESTABLE=a.ncexe.inferfn
+TESTABLE=a.ncexe.cinderella
 ORIG_ID=$1
 
 $SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $ORIG_ID clone.id
@@ -20,16 +20,14 @@ cloneid=`cat clone.id`
 echo "New clone id for function inference: $cloneid"
 
 # prep the binary for testing
-#     pin all functions
+#   // NO LONGER     pin all functions (no longer pin???)
 #     splice-in our testing loop into the target program
 $SECURITY_TRANSFORMS_HOME/tools/cinderella/cinderella_prep.exe $cloneid
 
 # get list of all functions
-$SECURITY_TRANSFORMS_HOME/tools/cgclibc/display_functions.exe $cloneid | grep "^function" > cinderella.functions.all
+$SECURITY_TRANSFORMS_HOME/tools/cgclibc/display_functions.exe $cloneid | grep "^function" | cut -d' ' -f2 > cinderella.functions.all 
 
 # statically get possible candidates for malloc/free
-# we don't really need this yet, but we do it anyways to exercise
-# the toolchain
 $SECURITY_TRANSFORMS_HOME/tools/cgclibc/cgclibc.exe $cloneid > cinderella.static.pass1
 grep "positive malloc" cinderella.static.pass1 > cinderella.static.pass1.malloc
 grep "positive free" cinderella.static.pass1 > cinderella.static.pass1.free
@@ -37,14 +35,13 @@ grep "positive free" cinderella.static.pass1 > cinderella.static.pass1.free
 # produce a zipr'd version so that we can dynamically test behavior
 # and stash it away
 echo "Cinderella: Produce zipr'ed test version: id: $cloneid"
-$ZIPR_HOME/src/zipr.exe -v $cloneid -c $ZIPR_HOME/callbacks/lib/callbacks.exe -j $PS_OBJCOPY
+$ZIPR_HOME/src/zipr.exe -v $cloneid -c $ZIPR_INSTALL/bin/callbacks.inferfn.exe -j $PS_OBJCOPY
 mv b.out.addseg $TESTABLE
 
 #----------------------------------------------------------
 # Dynamically test for a whole bunch of functions
 #----------------------------------------------------------
-cut -d' ' -f2 cinderella.functions.all > cinderella.functions.all.addresses
-$PEASOUP_HOME/tools/do_prince.sh `pwd`/$TESTABLE $PEASOUP_HOME/tools/cinderella.spec cinderella.functions.all.addresses
+$PEASOUP_HOME/tools/do_prince.sh `pwd`/$TESTABLE $PEASOUP_HOME/tools/cinderella.spec cinderella.functions.all
 
 #
 # Look for malloc
