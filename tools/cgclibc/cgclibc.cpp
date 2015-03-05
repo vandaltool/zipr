@@ -455,12 +455,10 @@ void CGC_libc::clusterFreeMalloc()
 	// m2 -> 20, 12
 	// m3 -> 20, 10
 	std::map<CallGraphNode_t*, std::set<int> > mallocs;
-	std::set<int> mallocAddresses;
 
 	// f1 -> 8
 	// f2 -> 10
 	std::map<CallGraphNode_t*, std::set<int> > frees;
-	std::set<int> freeAddresses;
 
 	for (CallGraphNodeSet_t::iterator n = m_maybeMallocs.begin(); n != m_maybeMallocs.end(); ++n)
 	{
@@ -469,8 +467,6 @@ void CGC_libc::clusterFreeMalloc()
 
 		Function_t *fn = node->GetFunction();
 		if (!fn) continue;
-
-		mallocAddresses.clear();
 
 		for(set<Instruction_t*>::const_iterator i=fn->GetInstructions().begin(); i!=fn->GetInstructions().end(); ++i)
 		{
@@ -486,9 +482,7 @@ void CGC_libc::clusterFreeMalloc()
 				if (isGlobalData(displacement))
 				{
 					cout << "Function: " << fn->GetName() << "  global data found at displacement: " << displacement << endl;
-			//		maybeMallocsWithGlobals.insert(node);
-					mallocAddresses.insert(displacement);
-					mallocs[node] = mallocAddresses;
+					mallocs[node].insert(displacement);
 				}
 			}
 
@@ -498,9 +492,7 @@ void CGC_libc::clusterFreeMalloc()
 				if (isGlobalData(displacement))
 				{
 					cout << "Function: " << fn->GetName() << "  global data found at displacement: " << displacement << endl;
-			//		maybeMallocsWithGlobals.insert(node);
-					mallocAddresses.insert(displacement);
-					mallocs[node] = mallocAddresses;
+					mallocs[node].insert(displacement);
 				}
 			}
 
@@ -510,8 +502,7 @@ void CGC_libc::clusterFreeMalloc()
 				if (isGlobalData(displacement))
 				{
 					cout << "Function: " << fn->GetName() << "  global data found at displacement: " << displacement << endl;
-			//		maybeMallocsWithGlobals.insert(node);
-					mallocs[node] = mallocAddresses;
+					mallocs[node].insert(displacement);
 				}
 			}
 		}
@@ -526,8 +517,6 @@ void CGC_libc::clusterFreeMalloc()
 		Function_t *fn = node->GetFunction();
 		if (!fn) continue;
 
-		freeAddresses.clear();
-
 		for(set<Instruction_t*>::const_iterator i=fn->GetInstructions().begin(); i!=fn->GetInstructions().end(); ++i)
 		{
 			Instruction_t *insn = *i;
@@ -542,9 +531,7 @@ void CGC_libc::clusterFreeMalloc()
 				if (isGlobalData(displacement))
 				{
 					cout << "Function: " << fn->GetName() << "  global data found at displacement: " << displacement << endl;
-			//		maybeFreesWithGlobals.insert(node);
-					freeAddresses.insert(displacement);
-					frees[node] = freeAddresses;
+					frees[node].insert(displacement);
 				}
 			}
 
@@ -554,9 +541,7 @@ void CGC_libc::clusterFreeMalloc()
 				if (isGlobalData(displacement))
 				{
 					cout << "Function: " << fn->GetName() << "  global data found at displacement: " << displacement << endl;
-			//		maybeFreesWithGlobals.insert(node);
-					freeAddresses.insert(displacement);
-					frees[node] = freeAddresses;
+					frees[node].insert(displacement);
 				}
 			}
 
@@ -566,16 +551,11 @@ void CGC_libc::clusterFreeMalloc()
 				if (isGlobalData(displacement))
 				{
 					cout << "Function: " << fn->GetName() << "  global data found at displacement: " << displacement << endl;
-			//		maybeFreesWithGlobals.insert(node);
-					freeAddresses.insert(displacement);
-					frees[node] = freeAddresses;
+					frees[node].insert(displacement);
 				}
 			}
 		}
 	}
-
-	//cout << "malloc() candidate size: " << maybeMallocsWithGlobals.size() << endl;
-//	cout << "free() candidate size: " << maybeFreesWithGlobals.size() << endl;
 
 	CallGraphNodeSet_t maybeMallocsWithGlobals;
 	CallGraphNodeSet_t maybeFreesWithGlobals;
@@ -591,7 +571,7 @@ void CGC_libc::clusterFreeMalloc()
 		Function_t *fn = node->GetFunction();
 		set<int> displacements = it->second;
 		cout << endl;
-		cout << "investigating function 1: " << fn->GetName() << endl;
+		cout << "investigating function: " << fn->GetName() << endl;
 		for (set<int>::iterator d = displacements.begin(); d != displacements.end(); ++d)
 		{
 			int displacement = *d;	
