@@ -13,7 +13,7 @@
 # set default values for 
 ##################################################################################
 
-initial_off_phases="isr ret_shadow_stack determine_program stats fill_in_safefr zipr installer watch_allocate spawner concolic selective_cfi fptr_shadow"
+initial_off_phases="isr ret_shadow_stack determine_program stats fill_in_safefr zipr installer watch_allocate cinderella spawner concolic selective_cfi fptr_shadow"
 
 ##################################################################################
 
@@ -918,6 +918,9 @@ fi
 
 # watch syscalls
 perform_step watch_allocate clone,fill_in_indtargs,fill_in_cfg,meds2pdb $SECURITY_TRANSFORMS_HOME/tools/watch_syscall/watch_syscall.exe  --varid $cloneid $step_options_watch_allocate
+
+# cinderella: infer malloc and other libc functions
+perform_step cinderella clone,fill_in_indtargs,fill_in_cfg,meds2pdb $PEASOUP_HOME/tools/do_cinderella.sh $cloneid
 
 # only do ILR for main objects that aren't relocatable.  reloc. objects 
 # are still buggy for ILR
