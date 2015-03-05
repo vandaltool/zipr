@@ -4,6 +4,7 @@ conservative heuristic as of 20150304
 * #args check for free()/malloc()
 * descendant nodes call allocate()/deallocate()
 * for free/malloc: candidate function does not transitively call read()
+* cluster algorithm looks for commong globals
               
 Test name       Result  M/F	Cluster	Comments
 -------------	------	-----   ------- --------
@@ -22,9 +23,16 @@ LUNGE_00005_4	PASS	5/2  	2/2
 LUNGE_00005_5	PASS	4/2  	2/2
 LUNGE_00005_6	PASS	4/2  	2/2
 NRFIN_00003	PASS	2/0	0/0	No malloc/free
-NRFIN_00010 	PASS	12/6 	2/2	No malloc/free (uses allocate(), deallocate() directly)
+NRFIN_00010 	PASS	12/6 	2/2	No malloc/free (uses allocate()/deallocate() directly)
 NRFIN_00013     PASS	4/0	0/0	No malloc/free (uses allocate() directly)
 TNETS_00002  	PASS	9/11	2/2
 YAN01_00001	PASS	0/0 	0/0	No malloc/free
 YAN01_00002	PASS	0/0 	0/0	No malloc/free
 YAN01_00003	PASS	0/0 	0/0	No malloc/free
+
+Summary
+* static heuristics work very well so far
+* clustering algorithm also works well (relies on common globals between free/malloc)
+      ... but might not be sufficient if there's a global used by every function such as
+          a debug flag
+
