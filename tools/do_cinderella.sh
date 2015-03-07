@@ -2,10 +2,6 @@
 #
 # pre: we are in the top-level directory created by ps_analyze.sh
 #
-# @todo:
-#     cleanup
-#     treat malloc/free differently then the rest of libc.spec
-#     better output files for positive/negative inferences
 #     fix bug -- something is wrong with positive inference when the fn we're looking for 
 #                is not even supported
 #
@@ -16,7 +12,7 @@
 ORIG_VARIANT_ID=$1
 TESTABLE=a.ncexe.cinderella     
 
-LIBC_SEARCH_SPEC=`pwd`/$TESTABLE $PEASOUP_HOME/tools/cinderella.spec
+LIBC_SEARCH_SPEC=$PEASOUP_HOME/tools/cinderella.spec
 
 $SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $ORIG_VARIANT_ID clone.id
 cloneid=`cat clone.id`
@@ -24,7 +20,7 @@ cloneid=`cat clone.id`
 TRUE_MALLOC=malloc.true.functions
 
 # prep the binary for testing
-#   // NO LONGER     pin all functions (no longer pin???)
+#     pin all functions
 #     splice-in our testing loop into the target program
 $SECURITY_TRANSFORMS_HOME/tools/cinderella/cinderella_prep.exe $cloneid
 
@@ -34,13 +30,13 @@ $SECURITY_TRANSFORMS_HOME/tools/cinderella/cinderella_prep.exe $cloneid
 $SECURITY_TRANSFORMS_HOME/tools/cgclibc/display_functions.exe $cloneid | grep "^function" | cut -d' ' -f2 > cinderella.functions.all 
 
 # pass 1: statically get possible candidates for malloc/free
-#$SECURITY_TRANSFORMS_HOME/tools/cgclibc/cgclibc.exe $cloneid > cinderella.static.pass1
+#$SECURITY_TRANSFORMS_HOME/tools/cgclibc/cgclibc.exe $ORIG_VARIANT_ID > cinderella.static.pass1
 #grep "positive malloc" cinderella.static.pass1 > cinderella.static.pass1.malloc
 #grep "positive free" cinderella.static.pass1 > cinderella.static.pass1.free
 
 # produce a zipr'd version so that we can dynamically test behavior
 echo "Cinderella: Produce zipr'ed test version: id: $cloneid"
-$ZIPR_HOME/src/zipr.exe -v $cloneid -c $ZIPR_INSTALL/bin/callbacks.inferfn.exe -j $PS_OBJCOPY
+$ZIPR_INSTALL/bin/zipr.exe -v $cloneid -c $ZIPR_INSTALL/bin/callbacks.inferfn.exe -j $PS_OBJCOPY
 mv b.out.addseg $TESTABLE
 
 #----------------------------------------------------------------
@@ -50,7 +46,7 @@ mv b.out.addseg $TESTABLE
 
 # Look for potential libc functions in the binary
 # TODO: fixme: specify output inference file here
-$PEASOUP_HOME/tools/do_prince.sh $LIBC_SEARCH_SPEC cinderella.functions.all
+$PEASOUP_HOME/tools/do_prince.sh $cloneid `pwd`/$TESTABLE $LIBC_SEARCH_SPEC cinderella.functions.all
 
 echo "CINDERELLA TODO: rename all libc functions detected: prepend to cinderella namespace, i.e., cinderella::strcpy, cinderella::memcpy"
 
@@ -58,7 +54,7 @@ echo "CINDERELLA TODO: rename all libc functions detected: prepend to cinderella
 # Look for the true malloc
 #
 #grep -i "positive malloc" cinderella.static.pass1.malloc | cut -d' ' -f4 > malloc.addresses
-#$PEASOUP_HOME/tools/do_prince.sh `pwd`/$TESTABLE $PEASOUP_HOME/tools/cinderella.malloc.spec malloc.addresses
+#$PEASOUP_HOME/tools/do_prince.sh $cloneid `pwd`/$TESTABLE $PEASOUP_HOME/tools/cinderella.malloc.spec malloc.addresses
 #
 #
 # At this point, we have found a whole bunch of libc functions via
@@ -77,8 +73,13 @@ echo "CINDERELLA TODO: rename all libc functions detected: prepend to cinderella
 #    call graph: A --> B --> C            ==>     A is malloc
 #    call graph: A --> B --> C, A --> C   ==>     A is malloc
 #
+# Warning: static analyses must use the original variant id
+#          as the clone id has all its functions pinned down so that zipr
+#          doesn't move them. but pinning down functions will interfere
+#          with the static analysis pass
+#
 echo "CINDERELLA PASS2: intersect dynamic and static analyses for malloc / turn on --dominator"
-$SECURITY_TRANSFORMS_HOME/tools/cgclibc/cgclibc.exe $cloneid --positive-inferences cinderella.inferences.positive --dominator > cinderella.static.pass2
+$SECURITY_TRANSFORMS_HOME/tools/cgclibc/cgclibc.exe $ORIG_VARIANT_ID --positive-inferences cinderella.inferences.positive --dominator > cinderella.static.pass2
 count_malloc=`grep "^static positive malloc" cinderella.static.pass2 | wc -l`
 count_free=`grep "^static positive free" cinderella.static.pass2 | wc -l`
 grep -i "positive malloc" cinderella.static.pass2 | cut -d' ' -f4 > $TRUE_MALLOC
@@ -86,9 +87,8 @@ grep -i "positive malloc" cinderella.static.pass2 | cut -d' ' -f4 > $TRUE_MALLOC
 if [ "$count_malloc" = "1" ]; then
 	echo "CINDERELLA: pass 2: detected true malloc"
 	cat $TRUE_MALLOC
-	
 	echo "CINDERELLA TODO: rename detected malloc fn to cinderella::malloc"
-	return 0
+	exit 0
 fi
 
 #
@@ -97,13 +97,20 @@ fi
 #
 if [ "$count_malloc" != "1" ] || [ "$count_free" != "1" ] ; then
 	echo "CINDERELLA PASS3: with restrictions on malloc / turn on --dominator and --cluster"
-	$SECURITY_TRANSFORMS_HOME/tools/cgclibc/cgclibc.exe $cloneid --positive-inferences cinderella.inferences.positive --dominator --cluster > cinderella.static.pass3
+	$SECURITY_TRANSFORMS_HOME/tools/cgclibc/cgclibc.exe $ORIG_VARIANT_ID --positive-inferences cinderella.inferences.positive --dominator --cluster > cinderella.static.pass3
 	grep -i "positive malloc" cinderella.static.pass3 | cut -d' ' -f4 > $TRUE_MALLOC
 	count_malloc=`grep "^static positive malloc" cinderella.static.pass3 | wc -l`
 	count_free=`grep "^static positive free" cinderella.static.pass3 | wc -l`
 fi
 
 echo "CINDERELLA: PASS3: #mallocs: $count_malloc  #frees: $count_free"
+
+if [ "$count_malloc" = "1" ]; then
+	echo "CINDERELLA: pass 2: detected true malloc"
+	cat $TRUE_MALLOC
+	echo "CINDERELLA TODO: rename detected malloc fn to cinderella::malloc"
+	exit 0
+fi
 
 echo "CINDERELLA: TODO: handle realloc() and calloc()"
 
@@ -120,11 +127,11 @@ if [ "$count_malloc" = "1" ];then
 		# @todo: We should exclude all functions already discovered here to speed this up
 		#
 		echo "CINDERELLA SUCCESS: look for realloc"
-		$PEASOUP_HOME/tools/do_prince.sh `pwd`/$TESTABLE $PEASOUP_HOME/tools/cinderella.realloc.spec malloc.addresses $TRUE_MALLOC
+		$PEASOUP_HOME/tools/do_prince.sh $cloneid `pwd`/$TESTABLE $PEASOUP_HOME/tools/cinderella.realloc.spec malloc.addresses $TRUE_MALLOC
 
 		# @todo: fix this, not working at all
 		echo "CINDERELLA SUCCESS: look for calloc"
-		$PEASOUP_HOME/tools/do_prince.sh `pwd`/$TESTABLE $PEASOUP_HOME/tools/cinderella.calloc.spec malloc.addresses $TRUE_MALLOC
+		$PEASOUP_HOME/tools/do_prince.sh $cloneid `pwd`/$TESTABLE $PEASOUP_HOME/tools/cinderella.calloc.spec malloc.addresses $TRUE_MALLOC
 
 echo "CINDERELLA TODO: if successful, rename detected calloc and realloc fns to cinderella::calloc, cinderella::realloc"
 	fi
