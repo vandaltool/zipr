@@ -1,4 +1,5 @@
-Identification of malloc()
+Identification of malloc() + other libc functions
+(not focussing on free right now)
 
 20150307
 
