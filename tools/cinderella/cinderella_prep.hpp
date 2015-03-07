@@ -15,7 +15,7 @@ class CinderellaPrep {
 		bool execute();
 
 	private:
-		Instruction_t* findEntryPoint();
+		Instruction_t* findProgramEntryPoint();
 		void addInferenceCallback(Instruction_t *);
 		void pinAllFunctionEntryPoints();
 
