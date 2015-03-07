@@ -22,7 +22,8 @@ touch $out
 
 echo "file with list of libc functions: $libcfunctions_filepath"
 tmp=$libcfunctions_filepath.tmp.$$
-tr -s '\r\n' ' ' < $libcfunctions_filepath | sed -e 's/ $/\n/' > $tmp
+grep -v '#' $libcfunctions_filepath | tr -s '\r\n' ' ' | sed -e 's/ $/\n/' > $tmp
+#tr -s '\r\n' ' ' < $libcfunctions_filepath | sed -e 's/ $/\n/' > $tmp
 alllibcfunctions=`cat $tmp`
 rm $tmp
 
