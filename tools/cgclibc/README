@@ -32,3 +32,26 @@ TNETS_00002  	PASS   	9/11	5/11	3/6  	1/1 	true malloc found
 YAN01_00001	PASS	0/0 		   		No malloc/free
 YAN01_00002	PASS	0/0 		   		No malloc/free
 YAN01_00003	PASS	0/0 	   			No malloc/free
+
+Example testing for functions besides malloc
+
+TNETS02 inference examples
+Some stats:
+#functions in TNETS02   : 94
+#libc functions to infer: 17
+cinderella run-time     : 10mns 30secs
+                          (6.7sec per function in TNETS02)
+
+libc functions successfully inferred:
+prince positive malloc malloc
+prince positive strdup strdup
+prince positive strlen strlen
+prince positive strlcpy strlcpy
+prince positive strlcat strlcat
+prince positive strcmp strcmp
+prince positive strncmp strncmp
+prince positive strchr strchr
+prince positive strtok strtok
+prince positive strspn strspn
+prince positive strcspn strcspn
+prince positive memset memset
