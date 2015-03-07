@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - Zephyr Software
+ * Copyright (c) 2015 - University of Virginia
  *
  * This file may be used and modified for non-commercial purposes as long as
  * all copyright, permission, and nonwarranty notices are preserved.
@@ -11,10 +11,6 @@
  * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
  * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
- *
- * Author: Zephyr Software
- * e-mail: jwd@zephyr-software.com
- * URL   : http://www.zephyr-software.com/
  *
  */
 
@@ -32,12 +28,13 @@ using namespace MEDS_Annotation;
 
 void usage(char* name)
 {
-	cerr<<"Usage: "<<name<<" <variant_id> [--dominator] [--cluster] [--positive_inferences <filename> ]\n"; 
+	cerr<<"Usage: "<<name<<" <variant_id> [--dominator] [--cluster] [--positive_inferences <filename> ] [--negative_inferences <filename>]\n"; 
 }
 
 static bool g_dominator = false;
 static bool g_cluster = false;
 static std::string g_positiveFile = "";
+static std::string g_negativeFile = "";
 
 void parseOptions(int argc, char **argv)
 {
@@ -51,6 +48,8 @@ void parseOptions(int argc, char **argv)
 			g_cluster = true;
 		else if (strcmp(argv[i], "--positive-inferences") == 0)
 			g_positiveFile = argv[++i];
+		else if (strcmp(argv[i], "--negative-inferences") == 0)
+			g_negativeFile = argv[++i];
 	}
 }
 
@@ -95,6 +94,9 @@ int main(int argc, char **argv)
 
 			if (g_positiveFile.size() > 0)
 				cgclibc.setPositiveInferences(g_positiveFile);
+
+			if (g_negativeFile.size() > 0)
+				cgclibc.setNegativeInferences(g_negativeFile);
 
 			bool success=cgclibc.execute();
 

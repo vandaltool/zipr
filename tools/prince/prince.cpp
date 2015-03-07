@@ -656,12 +656,12 @@ printf("test_for_strdup(): allocated[%p] new_str[%p]\n", ptr, new_str);
 	assert(new_str != (uintptr_t) NULL);
 
 	call_read(buf, (uintptr_t) new_str, strlen(str)+1, &ok);
-	assert(strcmp(buf, str)==0);
+	assert(strncmp(buf, str, strlen(str))==0);
 
 	call_write(new_str, str2, &ok);
 	call_read(buf, (uintptr_t) new_str, strlen(str2)+1, &ok);
 	call_read(buf2, (uintptr_t) ptr, strlen(str)+1, &ok);
-	assert(strcmp(buf, buf2)!=0);
+	assert(strncmp(buf, buf2, strlen(str2))!=0);
 
 	return ok;
 }
@@ -685,7 +685,6 @@ int test_for_strndup(const uintptr_t maybe_strdup)
 	call_read(buf, (uintptr_t) new_str, 6, &ok);
 	printf("test_for_strndup(): buf[%s] str[%s]\n");
 	assert(strncmp(buf,"the q", 5) == 0);
-	assert(strcmp(buf,str) != 0);
 
 	printf("test_for_strndup(): exit\n");
 	return 1;
@@ -693,7 +692,7 @@ int test_for_strndup(const uintptr_t maybe_strdup)
 
 int test_for_malloc(const uintptr_t address)
 {
-	char *str = "hello how %s %d are %c %% you?";
+	char *str = "%s xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxhello how %s %d are %c %% you?               \n                        %s";
 	int ok = 0;
 	uintptr_t malloc_address = call_malloc(address, 2000, &ok);
 	if (!ok || !malloc_address) return 0;
@@ -701,16 +700,41 @@ int test_for_malloc(const uintptr_t address)
 	call_write(malloc_address, str, &ok);
 	if (!ok) return 0;
 
-	char buf[1024];
-	call_read(buf, malloc_address, strlen(str), &ok);
-	assert(strcmp(buf,str) == 0);
+	char buf[2000];
+	call_read(buf, malloc_address, strlen(str)+1, &ok);
+	assert(strncmp(buf,str,strlen(str)) == 0);
 
 	// try larger value of malloc
+	char str2[10000];
 	uintptr_t ptr = call_malloc(address, 2000000, &ok);
+	memset(str2, 'x', 500);
+	str2[500] = '\0';
 	if (!ok) return 0;
-	call_write(ptr, str, &ok);
-	call_read(buf, ptr, strlen(str), &ok);
-	assert(strcmp(buf,str) == 0);
+
+	call_write(ptr, str2, &ok);
+	call_read(buf, ptr, strlen(str2)+1, &ok);
+	assert(strncmp(buf,str2,500) == 0);
+
+	// can only write max 512 byte at a time (infer.h)
+	// so advance pointer within malloc'ed region and try writing
+
+	// write on remote site starting at malloc'ed[25000]
+	uintptr_t ptr2 = ptr + 25000;
+	call_write(ptr2, str2, &ok);
+	call_read(buf, ptr2, strlen(str2)+1, &ok);
+	assert(strncmp(buf,str2,500) == 0);
+
+	// write on remote site starting at malloc'ed[100000]
+	ptr2 = ptr + 100000;
+	call_write(ptr2, str2, &ok);
+	call_read(buf, ptr2, strlen(str2)+1, &ok);
+	assert(strncmp(buf,str2,500) == 0);
+
+	// write on remote site starting at malloc'ed[1000000]
+	ptr2 = ptr + 1000000;
+	call_write(ptr2, str2, &ok);
+	call_read(buf, ptr2, strlen(str2)+1, &ok);
+	assert(strncmp(buf,str2,500) == 0);
 
 	return ok;
 }
@@ -740,8 +764,8 @@ int test_for_calloc(const uintptr_t maybe_calloc)
 	str[count*size-1] = '\0';
 
 	call_write(rptr, str, &ok);
-	call_read(buf, rptr, strlen(str), &ok);
-	assert(strcmp(buf,str) == 0);
+	call_read(buf, rptr, strlen(str)+1, &ok);
+	assert(strncmp(buf,str,strlen(str)) == 0);
 	assert(buf[10]=='a');
 	assert(buf[11]=='b');
 	assert(buf[12]=='a');
@@ -793,7 +817,7 @@ int test_for_memcpy(const uintptr_t maybe_memcpy)
 	assert(r == dst);
 
 	call_read(buf, dst, 256, &ok);
-	assert(strcmp(buf,str)==0);
+	assert(strncmp(buf,str,strlen(str))==0);
 
 	return 1;
 }
@@ -1161,7 +1185,7 @@ int test_for_realloc(const uintptr_t malloc_adddress, const uintptr_t maybe_real
 		assert(newptr != oldptr);
 
 		call_read(buf, newptr, strlen(str), &ok);
-		assert(strcmp(buf, str)==0);
+		assert(strncmp(buf, str, strlen(str))==0);
 
 		return ok;
 	}

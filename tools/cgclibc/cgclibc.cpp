@@ -26,7 +26,6 @@ void CGC_libc::setPositiveInferences(std::string p_positiveFile)
 		char buf[2024];
 		char libcFn[2024];
 		char candidateFn[2024];
-		Function_t* entryPoint;
 
 		if (pin.getline(buf, 2000))
 		{
@@ -42,6 +41,43 @@ void CGC_libc::setPositiveInferences(std::string p_positiveFile)
 					if (fn && fn->GetName() == string(candidateFn))
 					{
 						m_mallocUniverse.insert(m_cg.FindNode(fn));
+					}
+				}
+			} 
+		}
+	}
+
+	pin.close();
+}
+
+// format of file
+//    <test> negative <libc_function> <candidate_function>
+//
+// post: m_mallocNegativeUniverse set
+void CGC_libc::setNegativeInferences(std::string p_negativeFile)
+{
+	ifstream pin(p_negativeFile.c_str(), std::ifstream::in);
+	while (!pin.eof())
+	{
+		char buf[2024];
+		char libcFn[2024];
+		char candidateFn[2024];
+
+		if (pin.getline(buf, 2000))
+		{
+			sscanf(buf,"%*s %*s %s %s", libcFn, candidateFn); 
+			cout << "fn: " << libcFn << endl;
+
+			if (strcmp(libcFn,"malloc")==0)
+			{
+				set<Function_t*>::iterator it;
+				for (it = m_firp->GetFunctions().begin(); it != m_firp->GetFunctions().end(); ++it)
+				{
+					Function_t *fn = *it;
+					if (fn && fn->GetName() == string(candidateFn))
+					{
+						cout << fn->GetName() << " cannot be malloc()" << endl;
+						m_mallocNegativeUniverse.insert(m_cg.FindNode(fn));
 					}
 				}
 			} 
@@ -276,6 +312,12 @@ cout << "Function name: " << fn->GetName() << endl;
 		// m_mallocUniverse has candidate set of all mallocs
 		//   (determined dynamically)
 		if (m_mallocUniverse.size() > 0 && m_mallocUniverse.count(node) == 0)
+		{
+			m_maybeMallocs.erase(node); 
+			continue;
+		}
+
+		if (m_mallocNegativeUniverse.count(node) > 0)
 		{
 			m_maybeMallocs.erase(node); 
 			continue;
@@ -629,52 +671,53 @@ bool CGC_libc::isGlobalData(int p_address)
 	return false;
 }
 
-void CGC_libc::findDominant(set<Function_t*> &nodes)
+// out: <nodes> has dominated functions erased
+void CGC_libc::findDominant(CallGraphNodeSet_t& nodes)
 {
-#ifdef TODO
-	set<Function_t*> dominatedFunctions;
+	CallGraphNodeSet_t dominatedNodes;
 
 	// for each function f
 	//     A = get ancestors for each of f's immediate parent
 	//     for each m in maybeMallocs
 	//		if m is in all As, then m dominates f
 
-	for (set<Function_t*>::iterator i = nodes.begin(); i != nodes.end(); ++i)
+	for (CallGraphNodeSet_t::iterator i = nodes.begin(); i != nodes.end(); ++i)
 	{
-		Function_t *fn = *i;
-		if (!fn) continue;
+		CallGraphNode_t *node = *i;
+		Function_t* fn = NULL;
 
+		if (!node || node->IsHellnode())
+			continue;
+
+		fn = node->GetFunction();
 		cout << "Looking for dominator of function " << fn->GetName() << endl;
 
-		set<Function_t*> preds = m_cg.GetCallersOfNode(fn);
-		if (preds.size() < 1) continue;
+		CallGraphNodeSet_t preds = m_cg.GetCallersOfNode(node);
+		if (preds.size() == 0) continue;
 
-		// check to see if immediate caller dominates (ignore HELLNODE if needed)
-		if (preds.size() == 1 || (preds.size() == 2 && preds.count(m_hellNode) == 1))
+		// check to see if immediate caller dominates
+		if (preds.size() == 1)
 		{
 			bool yes_dominated = false;
 			// make sure the caller is in <nodes>
-			for (set<Function_t*>::iterator c = preds.begin(); c != preds.end(); ++c)
+			for (CallGraphNodeSet_t::iterator c = preds.begin(); c != preds.end(); ++c)
 			{
-				Function_t *caller = *c;
+				CallGraphNode_t *caller = *c;
 				if (caller == NULL) continue;
 
 				if (nodes.count(caller) >= 1)
 					yes_dominated = true;
-
 			}
 
 			if (yes_dominated) {
-				dominatedFunctions.insert(fn);
+				dominatedNodes.insert(node);
 				continue;
 			}
 		}
 
-/*
-*** unstable do not use ***
 		int preds_count = 0;
-		set<Function_t*> ancestors[preds.size()];
-		for (set<Function_t*>::iterator a = preds.begin(); a != preds.end(); ++a)
+		CallGraphNodeSet_t ancestors[preds.size()];
+		for (CallGraphNodeSet_t::iterator a = preds.begin(); a != preds.end(); ++a)
 		{
 			ancestors[preds_count] = m_cg.GetCallersOfNode(*a);
 			ancestors[preds_count].insert(*a); 
@@ -682,9 +725,9 @@ void CGC_libc::findDominant(set<Function_t*> &nodes)
 		}
 
 		// does m dominate fn?
-		for (set<Function_t*>::iterator m = nodes.begin(); m != nodes.end(); ++m)
+		for (CallGraphNodeSet_t::iterator m = nodes.begin(); m != nodes.end(); ++m)
 		{
-			cout << "Does function " << (*m)->GetName() << " dominate " << fn->GetName() << "?" << endl;
+			cout << "Does function " << (*m)->GetFunction()->GetName() << " dominate " << node->GetFunction()->GetName() << "?" << endl;
 			int dominated = true;
 			for (int a = 0; a < preds_count; ++a)
 			{
@@ -695,19 +738,17 @@ void CGC_libc::findDominant(set<Function_t*> &nodes)
 			}
 
 			if (dominated) {
-				cout << "Function " << fn->GetName() << " is dominated by " << (*m)->GetName() << endl;
-				dominatedFunctions.insert(fn);
+				cout << "Function " << node->GetFunction()->GetName() << " is dominated by " << (*m)->GetFunction()->GetName() << endl;
+				dominatedNodes.insert(node);
 			}
 		}
-*/
 	}
 
 
-	for (set<Function_t*>::iterator d = dominatedFunctions.begin(); d != dominatedFunctions.end(); ++d)
+	for (CallGraphNodeSet_t::iterator d = dominatedNodes.begin(); d != dominatedNodes.end(); ++d)
 	{
 		nodes.erase(*d);
 	}
-#endif
 }
 
 bool CGC_libc::execute()
@@ -739,7 +780,6 @@ bool CGC_libc::execute()
 	else
 		cout << "clustering heuristic is off" << endl;
 
-#ifdef TODO
 	if (m_dominance) 
 	{
 		cout << "# of candidate functions for malloc() prior to domination heuristic: " << m_maybeMallocs.size() << endl;
@@ -752,7 +792,6 @@ bool CGC_libc::execute()
 	}
 	else
 		cout << "domination heuristic is off" << endl;
-#endif
 
 	cout << endl << "Final summary" << endl;
 	cout << "-----------------------------------------" << endl;

@@ -15,6 +15,7 @@ class CGC_libc {
 	public:
 		CGC_libc(FileIR_t *p_firp);
 		void setPositiveInferences(std::string p_positiveFile);
+		void setNegativeInferences(std::string p_negativeFile);
 		bool execute();
 
 		void displayAllFunctions();
@@ -30,7 +31,7 @@ class CGC_libc {
 		bool potentialFreeFunctionPrototype(Function_t *p_fn);
 		void clusterFreeMalloc();
 		bool isGlobalData(int p_address);
-		void findDominant(std::set<Function_t*> &);
+		void findDominant(CallGraphNodeSet_t&);
 
 	private:
 		FileIR_t *m_firp;
@@ -47,18 +48,9 @@ class CGC_libc {
 
 		CallGraphNodeSet_t m_maybeMallocs;
 		CallGraphNodeSet_t m_maybeFrees;
+
 		CallGraphNodeSet_t m_mallocUniverse;
-
-		/*
-		std::set<Function_t*> m_maybeMallocs;
-		std::set<Function_t*> m_maybeFrees;
-		std::set<Function_t*> m_mallocUniverse;
-		*/
-
-/*
-		Function_t* m_startNode;
-		Function_t* m_hellNode;
-		*/
+		CallGraphNodeSet_t m_mallocNegativeUniverse;
 
 		bool m_skipHellNode;
 		bool m_clustering;
