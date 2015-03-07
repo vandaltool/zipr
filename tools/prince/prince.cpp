@@ -21,9 +21,12 @@ using namespace libIRDB;
 
 uintptr_t malloc_address = 0L;
 
+int success = 0;
+
 #define EXIT_CODE_TEST_SUCCESS 0
 #define EXIT_CODE_TEST_FAILURE 1
 #define EXIT_CODE_TEST_INVALID 2
+
 
 static void send_request(int fd, struct request *req)
 {
@@ -32,11 +35,20 @@ static void send_request(int fd, struct request *req)
 	bytes_written = write(fd, req, sizeof(struct request));
 }
 
+static void send_quit_command(int fd)
+{
+	struct request req;
+	clear_request(&req);
+	req.command = CMD_QUIT;
+	send_request(fd, &req);
+}
+
 static void get_response(int fd, struct response *res)
 {
 	int bytes_read;
 
 	bytes_read = read(fd, res, sizeof(struct response));
+//	cout << "get_response(): bytes_read = " << bytes_read << endl;
 }
 
 static void set_argument_int(struct argument *arg, int val)
@@ -78,7 +90,7 @@ int call_proto_i_pbb(uintptr_t fn, uintptr_t rptr, int bogus1, int bogus2, int *
 	set_argument_ptr(&req.arg2, rptr);
 	set_argument_int(&req.arg3, bogus1);
 	set_argument_int(&req.arg4, bogus2);
-	req.outarg_type = ARG_PTR;
+	req.outarg_type = ARG_INT;
 
 	send_request(CINDERELLA_DRIVER_WRITE, &req);
 	get_response(CINDERELLA_DRIVER_READ, &res);
@@ -1159,8 +1171,12 @@ int test_for_realloc(const uintptr_t malloc_adddress, const uintptr_t maybe_real
 
 void sig_chld(int signo) 
 {
-	fprintf(stderr,"Child segfaulted\n");
-	exit(1); // exit with error code
+	fprintf(stderr, "prince: SIGNAL %d raised: exit: success = %d\n", signo, success);
+
+	if (success) 
+		exit(EXIT_CODE_TEST_SUCCESS); 
+	else
+		exit(EXIT_CODE_TEST_FAILURE);
 }
 
 int test_prince(string executable, string libcFunction, Function_t *functionToTest) {
@@ -1169,7 +1185,6 @@ int test_prince(string executable, string libcFunction, Function_t *functionToTe
 	pid_t pid;
 	int status, died;
 	struct sigaction act;
-	int success = 0;
 
  /* We don't want to block any other signals in this example */
     sigemptyset(&act.sa_mask);
@@ -1184,7 +1199,7 @@ int test_prince(string executable, string libcFunction, Function_t *functionToTe
     if (sigaction(SIGCHLD, &act, NULL) < 0) 
     {
         fprintf(stderr, "sigaction failed\n");
-        return 1;
+	return EXIT_CODE_TEST_FAILURE;
     }
 
 	const char *target = executable.c_str();
@@ -1305,8 +1320,11 @@ int test_prince(string executable, string libcFunction, Function_t *functionToTe
 				success = test_for_strtok(address);
 			}
 
-			fprintf(stderr, "waiting for child to exit\n");
-			waitpid(-1, &status, 0);
+			fprintf(stderr, "waiting for child to exit: success = %d\n", success);
+
+			kill(pid, SIGKILL);
+
+//			waitpid(pid, &status, 0);
  	}
 
 	return success ? EXIT_CODE_TEST_SUCCESS : EXIT_CODE_TEST_FAILURE;

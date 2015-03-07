@@ -27,15 +27,15 @@ extern int test_prince(string targetName, string functionName, Function_t* fn);
 
 int main(int argc, char **argv)
 {
-	if(argc != 4)
+	if(argc != 5)
   	{
 		usage(argv[0]);
 		exit(1);
 	}
 
 	string programName(argv[0]);
-	string cinderellaExecutable(argv[1]);
-	int variantID = atoi(argv[2]);
+	int variantID = atoi(argv[1]);
+	string cinderellaExecutable(argv[2]);
 	string libcFunction(argv[3]);
 	string functionName(argv[4]);
 
@@ -59,8 +59,10 @@ int main(int argc, char **argv)
 			assert(firp && pidp);
 
 			Function_t *fn = findFunction(firp, functionName);
-			if (fn)
+			if (fn) {
+				cout << "prince_driver: cinderella_exec: " << cinderellaExecutable << "  libc_function: " << functionName << "  candidate_fn: " << fn->GetName() << endl;
 				return test_prince(cinderellaExecutable, libcFunction, fn);
+			}
 			else
 				return 1;
 		}

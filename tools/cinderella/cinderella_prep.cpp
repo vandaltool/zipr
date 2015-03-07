@@ -95,9 +95,8 @@ bool CinderellaPrep::execute()
 	insertAssemblyBefore(m_firp, entryPoint, "nop");
 	addInferenceCallback(entryPoint);
 	
-	// pin functions
-// why do we need to pin?
-//	pinAllFunctionEntryPoints();
+	// must pin functions o/w zipr will move
+	pinAllFunctionEntryPoints();
 
 	return true;
 }
