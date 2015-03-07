@@ -82,9 +82,9 @@ echo "CINDERELLA PASS2: intersect dynamic and static analyses for malloc / turn 
 $SECURITY_TRANSFORMS_HOME/tools/cgclibc/cgclibc.exe $ORIG_VARIANT_ID --positive-inferences cinderella.inferences.positive --dominator > cinderella.static.pass2
 count_malloc=`grep "^static positive malloc" cinderella.static.pass2 | wc -l`
 count_free=`grep "^static positive free" cinderella.static.pass2 | wc -l`
-grep -i "positive malloc" cinderella.static.pass2 | cut -d' ' -f4 > $TRUE_MALLOC
 
 if [ "$count_malloc" = "1" ]; then
+	grep -i "positive malloc" cinderella.static.pass2 | cut -d' ' -f4 > $TRUE_MALLOC
 	echo "CINDERELLA: pass 2: detected true malloc"
 	cat $TRUE_MALLOC
 	echo "CINDERELLA TODO: rename detected malloc fn to cinderella::malloc"
@@ -98,7 +98,6 @@ fi
 if [ "$count_malloc" != "1" ] || [ "$count_free" != "1" ] ; then
 	echo "CINDERELLA PASS3: with restrictions on malloc / turn on --dominator and --cluster"
 	$SECURITY_TRANSFORMS_HOME/tools/cgclibc/cgclibc.exe $ORIG_VARIANT_ID --positive-inferences cinderella.inferences.positive --dominator --cluster > cinderella.static.pass3
-	grep -i "positive malloc" cinderella.static.pass3 | cut -d' ' -f4 > $TRUE_MALLOC
 	count_malloc=`grep "^static positive malloc" cinderella.static.pass3 | wc -l`
 	count_free=`grep "^static positive free" cinderella.static.pass3 | wc -l`
 fi
@@ -106,13 +105,15 @@ fi
 echo "CINDERELLA: PASS3: #mallocs: $count_malloc  #frees: $count_free"
 
 if [ "$count_malloc" = "1" ]; then
-	echo "CINDERELLA: pass 2: detected true malloc"
+	grep -i "positive malloc" cinderella.static.pass3 | cut -d' ' -f4 > $TRUE_MALLOC
+	echo "CINDERELLA: pass 3: detected true malloc"
 	cat $TRUE_MALLOC
 	echo "CINDERELLA TODO: rename detected malloc fn to cinderella::malloc"
 	exit 0
 fi
 
 echo "CINDERELLA: TODO: handle realloc() and calloc()"
+exit 0
 
 #
 # if we pin down malloc and free correctly
