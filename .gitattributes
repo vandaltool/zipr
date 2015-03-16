@@ -254,6 +254,7 @@ libIRDB/test/list_programs.cpp -text
 libIRDB/test/print_variant.cpp -text
 libIRDB/test/read_ehframe.cpp -text
 libIRDB/test/read_variantir.cpp -text
+libIRDB/test/rename_function.cpp -text
 libIRDB/test/unfix_calls.cpp -text
 libIRDB/test/unwind-pe.h -text
 libMEDSannotation/LICENSE.txt -text
