@@ -32,10 +32,6 @@ void rename_function(FileIR_t* firp, string oldfn, string newfn)
 
 	assert(firp);
 
-	cout << "# ATTRIBUTE filename="<<firp->GetFile()->GetURL()<<endl;
-	cout << "# ATTRIBUTE old_function="<< oldfn << endl;
-	cout << "# ATTRIBUTE new_function="<< newfn << endl;
-
 	for(
 		set<Function_t*>::iterator it=firp->GetFunctions().begin();
 		it!=firp->GetFunctions().end();
