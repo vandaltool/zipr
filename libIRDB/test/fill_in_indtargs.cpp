@@ -228,7 +228,8 @@ void mark_jmptables(FileIR_t *firp)
 			uintptr_t vo = *j;
 			Instruction_t *ibtarget = lookupInstruction(firp, vo);
 			cout << "mark_jmptables(): 0x" << hex << instr->GetAddress()->GetVirtualOffset() << " add ib target 0x" << vo << dec << endl;
-			firp->GetIBTargets().AddTarget(instr, ibtarget);
+			if (instr && ibtarget)
+				firp->GetIBTargets().AddTarget(instr, ibtarget);
 		}
 	}
 }
