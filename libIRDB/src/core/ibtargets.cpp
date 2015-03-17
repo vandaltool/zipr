@@ -45,17 +45,13 @@ IBTargets::~IBTargets()
 void IBTargets::AddTarget(Instruction_t* const instr, Instruction_t* const ibtarget)
 {
 	assert(instr);
+	if (!instr || !ibtarget) return;
 
-	InstructionCFGNode_t *ibtargetnode = NULL;
-
-	if (ibtarget)	
-	{	
-		ibtargetnode = m_ibtMap[ibtarget];
-		if (!ibtargetnode)
-		{
-			ibtargetnode = new InstructionCFGNode_t(ibtarget);
-			m_ibtMap[ibtarget] = ibtargetnode;
-		}
+	InstructionCFGNode_t *ibtargetnode = m_ibtMap[ibtarget];
+	if (!ibtargetnode)
+	{
+		ibtargetnode = new InstructionCFGNode_t(ibtarget);
+		m_ibtMap[ibtarget] = ibtargetnode;
 	}
 
 	// update internal map
