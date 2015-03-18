@@ -43,7 +43,7 @@ void usage(char* name)
 
 
 int varid=0;
-char* warning_filename=NULL;
+string warning_filename="";
 
 int parse_args(int p_argc, char* p_argv[])
 {
@@ -73,7 +73,7 @@ int parse_args(int p_argc, char* p_argv[])
                         }
                         case 'w':
                         {
-				warning_filename=strdup(::optarg);
+				warning_filename=string(::optarg);
 				cout<<"Using warning_file =  "<<warning_filename<<endl;
 				break;
                         }

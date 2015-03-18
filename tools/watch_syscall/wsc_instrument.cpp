@@ -24,7 +24,7 @@
 #include <stdlib.h>
 #include <string>
 #include <iostream>
-
+#include "csowarn.hpp"
 
 
 using namespace std;
@@ -239,14 +239,14 @@ bool WSC_Instrument::add_wsc_instrumentation(Instruction_t *site)
         sprintf(tmpbuf,"push  0x%x", postCallbackReturn);
 
 	Instruction_t *tmp=site, *callback=NULL, *post_callback=NULL;
-        tmp=insertAssemblyAfter(firp,tmp,"lea esp, [esp-4096]");
+//        tmp=insertAssemblyAfter(firp,tmp,"lea esp, [esp-4096]");
         tmp=insertAssemblyAfter(firp,tmp,"pushf");
         tmp=insertAssemblyAfter(firp,tmp,"pusha");
         tmp=insertAssemblyAfter(firp,tmp,tmpbuf);	 // push <ret addr>
         callback=tmp=insertAssemblyAfter(firp,tmp,"nop");
         post_callback=tmp=insertAssemblyAfter(firp,tmp,"popa");
         tmp=insertAssemblyAfter(firp,tmp,"popf");
-        tmp=insertAssemblyAfter(firp,tmp,"lea esp, [esp+4096]");
+//        tmp=insertAssemblyAfter(firp,tmp,"lea esp, [esp+4096]");
         post_callback->GetAddress()->SetVirtualOffset(postCallbackReturn);
 	callback->SetCallback("zipr_post_allocate_watcher");
 	return true;
@@ -289,7 +289,7 @@ bool WSC_Instrument::add_init_call()
 		char tmpbuf[100];
 	
 		Instruction_t *tmp=insn, *callback=NULL, *post_callback=NULL;
-        	tmp=insertAssemblyAfter(firp,tmp,"lea esp, [esp-4096]");
+//        	tmp=insertAssemblyAfter(firp,tmp,"lea esp, [esp-4096]");
         	tmp=insertAssemblyAfter(firp,tmp,"pushf");
         	tmp=insertAssemblyAfter(firp,tmp,"pusha");
         	sprintf(tmpbuf,"push  0x%x", second);
@@ -303,7 +303,7 @@ bool WSC_Instrument::add_init_call()
 		tmp=insertAssemblyAfter(firp,tmp,"lea esp, [esp+8]"); // pop first and second 
         	tmp=insertAssemblyAfter(firp,tmp,"popa");
         	tmp=insertAssemblyAfter(firp,tmp,"popf");
-        	tmp=insertAssemblyAfter(firp,tmp,"lea esp, [esp+4096]");
+//        	tmp=insertAssemblyAfter(firp,tmp,"lea esp, [esp+4096]");
 	last_startup_insn=tmp;
         	post_callback->GetAddress()->SetVirtualOffset(postCallbackReturn);
 		callback->SetCallback("zipr_init_addrs");
@@ -456,17 +456,193 @@ ret=
 }
 
 
+static bool has_index_register(Instruction_t* i)
+{
+	DISASM d;
+	i->Disassemble(d);
+	const ARGTYPE* arg=FindMemoryArgument(d);
+
+	if(!arg)
+		return false;
+
+	if(arg->Memory.Scale)
+		return true;
+	return false;
+	
+}
+
+static string regToRegstring(size_t regno)
+{
+	switch(regno)
+	{
+		case REG0: return "eax";
+		case REG1: return "ecx";
+		case REG2: return "edx";
+		case REG3: return "ebx";
+		case REG4: return "esp";
+		case REG5: return "ebp";
+		case REG6: return "esi";
+		case REG7: return "edi";
+		default: assert(0);
+	}
+}
+
+Instruction_t* WSC_Instrument::GetFailCode()
+{
+	Instruction_t* tmp=NULL;
+	if(!fail_code)
+	{
+		fail_code=tmp=addNewAssembly(firp,NULL,"mov eax, 1");
+		          tmp=insertAssemblyAfter(firp,tmp,"int 0x80");
+		          tmp=insertAssemblyAfter(firp,tmp,"jmp 0x0", fail_code);
+		
+	}
+	return fail_code;
+}
+
+bool	WSC_Instrument::add_null_check(Instruction_t* insn, const CSO_WarningRecord_t *const wr)
+{
+
+
+	DISASM d;
+	insn->Disassemble(d);
+
+	const ARGTYPE* arg=FindMemoryArgument(d);
+	Instruction_t* fail=NULL;
+	Instruction_t *tmp=NULL;
+	char tmpbuf[100];
+
+	// log
+	cout<<"Adding null-check to "<<d.CompleteInstr<<endl;
+
+	// should have a bound and a memory argument.
+	assert(arg);
+
+	/*
+	 *	insert this instrumentation:
+	 * 	
+	 *	push ecx
+	 *	lea ecx, [memory]
+	 *	jecxz fail
+	 *	pop ecx
+	 *	...
+ 	 *	fail: mov eax, 0; int 0x80
+	 */
+
+	fail=GetFailCode();
+
+	tmp=insn;
+	tmp=insertAssemblyAfter(firp,tmp,"push ecx");
+	sprintf(tmpbuf,"lea  ecx, %s", get_memory_addr(d).c_str());
+	tmp=insertAssemblyAfter(firp,tmp,tmpbuf);	 // lea ecx,  [ expression ]
+	tmp=insertAssemblyAfter(firp,tmp,"jecxz 0x0", fail);
+	tmp=insertAssemblyAfter(firp,tmp,"pop ecx");
+
+	return true;
+}
+
+bool	WSC_Instrument::add_bounds_check(Instruction_t* insn, const CSO_WarningRecord_t *const wr)
+{
+
+
+	DISASM d;
+	insn->Disassemble(d);
+
+	const ARGTYPE* arg=FindMemoryArgument(d);
+	int bound=wr->GetBufferSize();
+	Instruction_t* fail=NULL;
+	Instruction_t *tmp=NULL;
+	char tmpbuf[100];
+
+
+	if(wr->GetType()==CSOWE_BufferOverrun && bound==0)	// if we have an overrun, but don't know the buffer's size
+		return true;
+		
+	// log
+	if(wr->GetType()==CSOWE_BufferOverrun)	// if we have an overrun, but don't know the buffer's size
+		cout<<"Adding upper bound check to "<<d.CompleteInstr<<endl;
+	else
+		cout<<"Adding lower bound check to "<<d.CompleteInstr<<endl;
+
+	// should have a bound and a memory argument.
+	assert(arg);
+
+	// adjust the bound by dividing by the scale, so we can just compare the index reg to the bound.
+	bound/=arg->Memory.Scale;
+
+	int reg=arg->Memory.IndexRegister;
+	string regstring=regToRegstring(reg);
+
+	/*
+	 *	insert this instrumentation:
+	 * 	
+  	 *	pushf
+	 *	cmp reg, #bound
+	 *	jg fail
+	 *	popf
+	 *	...
+ 	 *	fail: mov eax, 0; int 0x80
+	 */
+
+
+	fail=GetFailCode();
+
+	tmp=insn;
+       	insertAssemblyBefore(firp,tmp,"pushf");
+
+	if(wr->GetType()==CSOWE_BufferOverrun)	// check to see if we exceed the bound of the array with the index reg.
+	{
+		assert(bound);	// bound shouldn't be 0.
+       		sprintf(tmpbuf,"cmp  %s, %d", regstring.c_str(), bound);
+       		tmp=insertAssemblyAfter(firp,tmp,tmpbuf);	 // lea addr,  [ expression ]
+       		tmp=insertAssemblyAfter(firp,tmp,"jg 0x0", fail);
+	}
+	else
+	{
+       		sprintf(tmpbuf,"cmp  %s, 0", regstring.c_str());
+       		tmp=insertAssemblyAfter(firp,tmp,tmpbuf);	 // lea addr,  [ expression ]
+       		tmp=insertAssemblyAfter(firp,tmp,"jl 0x0", fail);
+	}
+       	tmp=insertAssemblyAfter(firp,tmp,"popf");
+
+	return true;
+}
+
 bool	WSC_Instrument::add_segfault_checking(Instruction_t* insn)
 {
 	assert(insn);
 	DISASM d;
 	insn->Disassemble(d);
-	char tmpbuf[100];
 
+	bool success=true;
+
+	for(CSO_WarningRecordSet_t::iterator it=warning_records[insn].begin();
+		it!=warning_records[insn].end();
+		++it
+	   )
+	{
+		CSO_WarningRecord_t* wr=*it;
+		assert(wr);
+		if((wr->GetType()==CSOWE_BufferOverrun || wr->GetType()==CSOWE_BufferUnderrun) && has_index_register(insn))
+			success = success && add_bounds_check(insn, wr);
+		if(wr->GetType()==CSOWE_NullPointerDereference)
+			success = success && add_null_check(insn, wr);
+		else if(wr->GetType()==CSOWE_TaintedDereference)
+			success = success && add_segfault_checking(insn, wr);
+		
+	}
+	return success;
+}
+
+
+bool	WSC_Instrument::add_segfault_checking(Instruction_t* insn, const CSO_WarningRecord_t *const wr)
+{
+	DISASM d;
+	insn->Disassemble(d);
+	char tmpbuf[100];
 	Instruction_t* callback=GetCallbackCode(), *tmp=insn;
 
-cout<<"Adding callback to "<<d.CompleteInstr<<endl;
-
+	cout<<"Adding callback to "<<d.CompleteInstr<<endl;
 
        	insertAssemblyBefore(firp,insn,"pusha");
        	sprintf(tmpbuf,"lea  eax, %s", get_memory_addr(d).c_str());
@@ -500,9 +676,22 @@ bool	WSC_Instrument::add_segfault_checking()
 bool WSC_Instrument::add_receive_limit(Instruction_t* site)
 {
 
-//cout<<"Found syscall to instrument "<<site->getDisassembly()<<endl;
 
-const int receive_limit=64;
+	int receive_limit=64;
+
+	for(CSO_WarningRecordSet_t::iterator it=warning_records[site].begin();
+		it!=warning_records[site].end();
+		++it
+	   )
+	{
+		CSO_WarningRecord_t* wr=*it;
+		assert(wr);
+		if(wr->GetType()==CSOWE_BufferOverrun)
+			receive_limit=wr->GetBufferSize();
+	}
+
+	cout<<"Found syscall to instrument "<<site->getDisassembly()<<", using limit="<<dec<<receive_limit<<endl;
+
 	char tmpbuf[100];
 
 	Instruction_t *tmp=site, *int_insn=NULL;
@@ -541,35 +730,79 @@ bool WSC_Instrument::add_receive_limit()
 	return success; /* success? */
 }
 
-bool WSC_Instrument::FindInstructionsToProtect(std::string s)
+template<class T> void check_result(const T& t)
+{
+	if(!t)
+		cerr<<"Failed in check_results with t="<<t<<endl;
+}
+
+bool WSC_Instrument::FindInstructionsToProtect(std::string filename)
 {
 	bool success=true;
 
 	// no filename, skip this step
-	if(s=="")
+	if(filename=="")
 	{
 		cout<<"No filename provided for warnings, skipping selective application, applying to all instructions"<<endl;
-		return false;
+		return true;
 	}
 
-	ifstream fin(s.c_str(), ios_base::in);
+	ifstream fin(filename.c_str(), ios_base::in);
 	if(!fin)
 	{
-		cerr<<"Cannot open file: "<<s<<endl;
+		cerr<<"Cannot open file: "<<filename<<endl;
 		exit(1);
 	}
 
 	// forget what we've protected before, which might be everything.
 	to_protect.clear();
 
-	libIRDB::virtual_offset_t addr;
-	while(  fin>>std::hex>>addr )
+	libIRDB::virtual_offset_t addr=0;
+	string line="";
+	size_t bufsize=0;
+	
+
+	/* read one line of the file at a time. */
+	while(getline(fin, line))
 	{
+		/* parse the line */
+		stringstream line_stream(line);
+		string bench="",addr_string="", bufsize_string="",type_string="";
+		check_result(getline(line_stream,bench, ','));
+		check_result(getline(line_stream,addr_string, ','));
+		check_result(getline(line_stream,bufsize_string, ','));
+		check_result(getline(line_stream,type_string, ','));
+
+		/* convert to strings to ints where approprriate */
+		stringstream addr_stream(addr_string);       check_result(addr_stream >> std::hex >> addr);
+
+		// bufsize may be empty
+		if(bufsize_string!="")
+		{
+			stringstream bufsize_stream(bufsize_string); check_result(bufsize_stream >> std::dec>> bufsize);
+		}
+
+
+		/* print results for sanity checking */
+		cout<<"Found CSO warning:  addr="<<hex<<addr<<" bufsize="<<dec<<bufsize
+		    <<" type="<<type_string<<" ";
+
+		CSO_WarningRecord_t wr;
+//		wr.SetType(CSO_WarningType_t(type_string));
+		wr.SetType(type_string);
+		wr.SetInstructionAddress(addr);
+		wr.SetBufferSize(bufsize);
+		
+	
+		/* lookup instruction */
 		Instruction_t* insn=FindInstruction(addr);
 		if(insn)
 		{
-			cout<<"Found instruction to protect "<<insn->getDisassembly()<<" at "<<hex<<addr<<endl;
+			/* add to set */
+			cout<<"insn= "<<insn->getDisassembly();
 			to_protect.insert(insn);
+			warning_records[insn].insert(new CSO_WarningRecord_t(wr));
+				
 		}
 		else
 		{
@@ -580,6 +813,7 @@ bool WSC_Instrument::FindInstructionsToProtect(std::string s)
 			cerr<<"***************************************************************************************************************************"<<endl;
 			cerr<<"***************************************************************************************************************************"<<endl;
 		}
+		cout<<endl;
 	}
 	
 	return success;	

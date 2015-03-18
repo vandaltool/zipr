@@ -28,13 +28,15 @@
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
 
+#include "csowarn.hpp"
 
-
+typedef std::set<CSO_WarningRecord_t*>  CSO_WarningRecordSet_t;
+typedef std::map< libIRDB::Instruction_t*, CSO_WarningRecordSet_t> CSO_WarningRecordMap_t;
 
 class WSC_Instrument
 {
 	public:
-		WSC_Instrument(libIRDB::FileIR_t *the_firp) : firp(the_firp), syscalls(firp) 
+		WSC_Instrument(libIRDB::FileIR_t *the_firp) : firp(the_firp), syscalls(firp), fail_code(NULL)
 		{
 			last_startup_insn=NULL;
                         int elfoid=firp->GetFile()->GetELFOID();
@@ -60,18 +62,24 @@ class WSC_Instrument
 
 	private:
 
-		bool add_wsc_instrumentation(libIRDB::Instruction_t *site);
+		// main tasks
 		bool add_init_call();
+		bool add_wsc_instrumentation(libIRDB::Instruction_t *site);
 		bool add_segfault_checking();
 		bool add_segfault_checking(libIRDB::Instruction_t*);
+		bool add_segfault_checking(libIRDB::Instruction_t* insn, const CSO_WarningRecord_t *const wr);
 		bool add_allocation_instrumentation();
 		bool needs_wsc_segfault_checking(libIRDB::Instruction_t*, const DISASM&);
 		bool add_receive_limit(libIRDB::Instruction_t* site);
 		bool add_receive_limit();
+		bool add_bounds_check(libIRDB::Instruction_t* insn, const CSO_WarningRecord_t *const wr);
+		bool add_null_check(libIRDB::Instruction_t* insn, const CSO_WarningRecord_t *const wr);
 
+		// helpers.
 		libIRDB::Instruction_t* GetCallbackCode();
 		libIRDB::Instruction_t* FindInstruction(libIRDB::virtual_offset_t addr);
 		libIRDB::Relocation_t* create_reloc(libIRDB::Instruction_t* insn, std::string type, int offset);
+		libIRDB::Instruction_t* GetFailCode();
 
 
 	private:
@@ -81,6 +89,9 @@ class WSC_Instrument
 		libIRDB::Instruction_t *last_startup_insn;
 
 		libIRDB::InstructionSet_t to_protect;
+		libIRDB::Instruction_t* fail_code;
+
+		CSO_WarningRecordMap_t warning_records;
 };
 
 #endif
