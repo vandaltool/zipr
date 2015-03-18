@@ -29,6 +29,7 @@ AC_OUTPUT(tools/Makefile
 	tools/selective_cfi/Makefile
 	tools/watch_syscall/Makefile
 	tools/transforms/Makefile
+	tools/cgc_hlx/Makefile
 	libIRDB/src/syscall/Makefile
 	libIRDB/test/Makefile
 )
