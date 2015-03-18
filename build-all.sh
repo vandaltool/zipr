@@ -63,11 +63,17 @@ cd $SECURITY_TRANSFORMS_HOME
 cd $PEASOUP_HOME
 make
 
+# build Cinderella callbacks
+cd $ZIPR_CALLBACKS
+./configure_for_cinderella --prefix=$ZIPR_INSTALL
+make
+make install_cinderella
+
+# build regular callbacks
 cd $ZIPR_CALLBACKS
 ./configure_for_cgc --prefix=$ZIPR_INSTALL
-make
+make clean all
 make install
-
 
 if [ -d $ZIPR_HOME ]; then
 	cd $ZIPR_HOME
@@ -76,5 +82,4 @@ fi
 
 cd $ZIPR_SCFI_PLUGIN
 ./configure --enable-cgc --prefix=$ZIPR_INSTALL; make;  make install
-
 
