@@ -44,8 +44,7 @@ IBTargets::~IBTargets()
 
 void IBTargets::AddTarget(Instruction_t* const instr, Instruction_t* const ibtarget)
 {
-	assert(instr);
-	if (!instr || !ibtarget) return;
+	assert(instr && ibtarget);
 
 	InstructionCFGNode_t *ibtargetnode = m_ibtMap[ibtarget];
 	if (!ibtargetnode)
