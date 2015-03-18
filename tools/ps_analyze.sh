@@ -13,7 +13,7 @@
 # set default values for 
 ##################################################################################
 
-initial_off_phases="isr ret_shadow_stack determine_program stats fill_in_safefr zipr installer watch_allocate cinderella spawner concolic selective_cfi fptr_shadow concolic"
+initial_off_phases="isr ret_shadow_stack determine_program stats fill_in_safefr zipr installer watch_allocate cinderella cgc_hlx spawner concolic selective_cfi fptr_shadow concolic"
 
 ##################################################################################
 
@@ -879,6 +879,15 @@ perform_step manual_test none $PEASOUP_HOME/tools/do_manualtests.sh $name $strat
 #
 perform_step fast_annot preLoaded_ILR2 $PEASOUP_HOME/tools/fast_annot.sh
 
+#
+# cinderella: infer malloc and other libc functions
+#
+perform_step cinderella clone,fill_in_indtargs,fill_in_cfg,meds2pdb $PEASOUP_HOME/tools/do_cinderella.sh $cloneid
+
+#
+# For CGC, pad malloc
+#
+perform_step cgc_hlx cinderella $SECURITY_TRANSFORMS_HOME/tools/cgc_hlx/cgc_hlx.exe $cloneid
 
 #
 # Function pointer shadowing
@@ -918,9 +927,6 @@ fi
 
 # watch syscalls
 perform_step watch_allocate clone,fill_in_indtargs,fill_in_cfg,meds2pdb $SECURITY_TRANSFORMS_HOME/tools/watch_syscall/watch_syscall.exe  --varid $cloneid $step_options_watch_allocate
-
-# cinderella: infer malloc and other libc functions
-perform_step cinderella clone,fill_in_indtargs,fill_in_cfg,meds2pdb $PEASOUP_HOME/tools/do_cinderella.sh $cloneid
 
 # only do ILR for main objects that aren't relocatable.  reloc. objects 
 # are still buggy for ILR
