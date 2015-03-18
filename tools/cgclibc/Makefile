@@ -5,14 +5,16 @@ LIBS=-L../../lib -lxform -lIRDB-core -lIRDB-cfg -lIRDB-util -lIRDB-syscall -lBea
 
 program=display_functions.exe
 program2=cgclibc.exe
+program3=infer_syscall_wrappers.exe
 
-all: $(program) $(program2)
+all: $(program) $(program2) $(program3)
 	@echo "-----------------------------------------------"
 	@echo "- CGC libc static inference engine -- Build complete -"
 	@echo "-----------------------------------------------"
 
 OBJS=cgclibc.o cgclibc_driver.o
 OBJS2=display_functions.o cgclibc.o
+OBJS3=infer_syscall_wrappers.o cgclibc.o
 
 .SUFFIXES: .o .c .exe .cpp .hpp
 
@@ -33,8 +35,6 @@ clean:
 	rm -f *.o core *.exe *.d
 
 #$(program): ../../lib/*.a
-
-
 #$(program):  $(OBJS)
 #	$(CC) $(CFLAGS) $^ $(INCLUDE) $(LIBS) -o $@
 
@@ -42,5 +42,8 @@ cgclibc.exe:  $(OBJS) ../../lib/*.a
 	$(CC) $(CFLAGS) $^ $(INCLUDE) $(LIBS) -o $@
 
 display_functions.exe:  $(OBJS2) ../../lib/*.a
+	$(CC) $(CFLAGS) $^ $(INCLUDE) $(LIBS) -o $@
+
+infer_syscall_wrappers.exe:  $(OBJS3) ../../lib/*.a
 	$(CC) $(CFLAGS) $^ $(INCLUDE) $(LIBS) -o $@
 

@@ -179,6 +179,14 @@ void CGC_libc::findSyscallWrappers()
 {
 	SyscallSiteSet_t sites = m_syscalls.GetSyscalls();
 
+	FunctionSet_t f_terminate;
+	FunctionSet_t f_transmit;
+	FunctionSet_t f_receive;
+	FunctionSet_t f_fdwait;
+	FunctionSet_t f_allocate;
+	FunctionSet_t f_deallocate;
+	FunctionSet_t f_random;
+	
 	set<SyscallSite_t>::iterator it;
 	for (it = sites.begin(); it != sites.end(); ++it)
 	{
@@ -190,37 +198,81 @@ void CGC_libc::findSyscallWrappers()
 		switch (site.GetSyscallNumber()) 
 		{
 			case SNT_terminate:
-				m__terminateWrapper = m_cg.FindNode(fn);
-cout << "m__terminateWrapper found: " << fn->GetName() << endl;
+				f_terminate.insert(fn);
 				break;
 			case SNT_transmit:
-				m_transmitWrapper = m_cg.FindNode(fn);
-cout << "m_transmitWrapper found: " << fn->GetName() << endl;
+				f_transmit.insert(fn);
 				break;
 			case SNT_receive:
-				m_receiveWrapper = m_cg.FindNode(fn);
-cout << "m_receiveWrapper found: " << fn->GetName() << endl;
+				f_receive.insert(fn);
 				break;
 			case SNT_fdwait:
-				m_fdwaitWrapper = m_cg.FindNode(fn);
-cout << "m_fdwaitWrapper found: " << fn->GetName() << endl;
+				f_fdwait.insert(fn);
 				break;
 			case SNT_allocate:
-				m_allocateWrapper = m_cg.FindNode(fn);
-				m_cg.GetAncestors(m_allocateWrapper, m_maybeMallocs, m_skipHellNode);
-cout << "m_allocateWrapper found: " << fn->GetName() << endl;
+				f_allocate.insert(fn);
 				break;
 			case SNT_deallocate:
-				m_deallocateWrapper = m_cg.FindNode(fn);
-				m_cg.GetAncestors(m_deallocateWrapper, m_maybeFrees, m_skipHellNode);
-cout << "m_deallocateWrapper found: " << fn->GetName() << endl;
-	displayMaybes(m_cg,m_maybeFrees, "off-the-bat: free()");
-
+				f_deallocate.insert(fn);
 				break;
 			case SNT_random:
-				m_randomWrapper = m_cg.FindNode(fn);
-cout << "m_randomWrapper found: " << fn->GetName() << endl;
+				f_random.insert(fn);
 				break;
+		}
+	}
+
+	if (f_terminate.size() == 1)
+	{
+		FunctionSet_t::iterator fi = f_terminate.begin();
+		if (*fi)
+			m__terminateWrapper = m_cg.FindNode(*fi);
+	}
+
+	if (f_transmit.size() == 1)
+	{
+		FunctionSet_t::iterator fi = f_transmit.begin();
+		if (*fi)
+			m_transmitWrapper = m_cg.FindNode(*fi);
+	}
+
+	if (f_receive.size() == 1)
+	{
+		FunctionSet_t::iterator fi = f_receive.begin();
+		if (*fi)
+			m_receiveWrapper = m_cg.FindNode(*fi);
+	}
+
+	if (f_fdwait.size() == 1)
+	{
+		FunctionSet_t::iterator fi = f_fdwait.begin();
+		if (*fi)
+			m_fdwaitWrapper = m_cg.FindNode(*fi);
+	}
+
+	if (f_random.size() == 1)
+	{
+		FunctionSet_t::iterator fi = f_random.begin();
+		if (*fi)
+			m_randomWrapper = m_cg.FindNode(*fi);
+	}
+
+	if (f_allocate.size() == 1)
+	{
+		FunctionSet_t::iterator fi = f_allocate.begin();
+		if (*fi)
+		{
+			m_allocateWrapper = m_cg.FindNode(*fi);
+			m_cg.GetAncestors(m_allocateWrapper, m_maybeMallocs, m_skipHellNode);
+		}
+	}
+
+	if (f_deallocate.size() == 1)
+	{
+		FunctionSet_t::iterator fi = f_deallocate.begin();
+		if (*fi)
+		{
+			m_deallocateWrapper = m_cg.FindNode(*fi);
+			m_cg.GetAncestors(m_deallocateWrapper, m_maybeFrees, m_skipHellNode);
 		}
 	}
 }
@@ -286,7 +338,6 @@ void CGC_libc::pruneMallocs()
 	// remove functions that cannot be malloc()
 	//    malloc() won't call transmit, receive, fdwait, even indirectly
 	//    should have the right function prototype: POINTER malloc(NUMERIC)
-//	set<Function_t*> t = m_maybeMallocs; 
 
 	// make a copy
 	CallGraphNodeSet_t t = m_maybeMallocs;
@@ -350,34 +401,6 @@ cout << "Function name: " << fn->GetName() << endl;
 			m_maybeMallocs.erase(node);
 			continue;
 		}
-
-#ifdef NOT_NECESSARY
-		if (m_startNode) 
-		{
-			// CGC-hardwired rule: _start calls main and _terminate
-			if (m_cg.GetCallersOfNode(fn).count(m_startNode) > 0 && m_cg.GetCalleesOfNode(m_startNode).size() == 2)
-			{
-	cout << "Directly reachable from _start, should be main() so not malloc(): _start calls " << m_cg.GetCalleesOfNode(m_startNode).size() << " functions" << endl;
-				m_maybeMallocs.erase(fn);
-				continue;
-			}
-		
-			if (!m_cg.Reachable(m_startNode, fn, m_skipHellNode))
-			{
-				cout << "Unreachable node" << endl;
-				m_maybeMallocs.erase(fn);
-				continue;
-			}
-			else
-				cout << "Reachable node" << endl;
-		}
-#endif
-	}
-
-	for (CallGraphNodeSet_t::iterator i = m_maybeMallocs.begin(); i != m_maybeMallocs.end(); ++i)
-	{
-		CallGraphNode_t *node = *i;
-		cout << "Maybe malloc: " << m_cg.GetNodeName(node) << endl;
 	}
 }
 
@@ -439,33 +462,6 @@ cout << "Looking at function: " << fn->GetName() << endl;
 			continue;
 		}
 
-/*
-		if (m_startNode)
-		{
-			// CGC-hardwired rule: _start calls main and _terminate
-			if (m_cg.GetCallersOfNode(fn).count(m_startNode) > 0 && m_cg.GetCalleesOfNode(m_startNode).size() == 2)
-			{
-	cout << "Directly reachable from _start, should be main() so not free()" << endl;
-				m_maybeFrees.erase(fn);
-				continue;
-			}
-
-			if (!m_cg.Reachable(m_startNode, fn, m_skipHellNode))
-			{
-				m_maybeFrees.erase(fn);
-				continue;
-			}
-		}
-*/
-	}
-
-	for (i = m_maybeFrees.begin(); i != m_maybeFrees.end(); ++i)
-	{
-		CallGraphNode_t *node = *i;
-		if (!node) {
-			continue;
-		}
-		cout << "Maybe free(): " << m_cg.GetNodeName(node) << endl;
 	}
 }
 
@@ -804,4 +800,69 @@ bool CGC_libc::execute()
 	displayFinalInference(m_cg,m_maybeFrees, "free");
 
 	return true;
+}
+
+bool CGC_libc::renameSyscallWrappers()
+{
+	bool success = false;
+
+	findSyscallWrappers(); 
+
+	if (m__terminateWrapper && !m__terminateWrapper->IsHellnode() &&
+		m__terminateWrapper->GetFunction())
+	{
+		cout << "renaming " << m__terminateWrapper->GetFunction()->GetName() << " to cinderella::terminate" << endl;
+		m__terminateWrapper->GetFunction()->SetName("cinderella::terminate");
+		success = true;
+	}
+		
+	if (m_transmitWrapper && !m_transmitWrapper->IsHellnode() &&
+		m_transmitWrapper->GetFunction())
+	{
+		cout << "renaming " << m_transmitWrapper->GetFunction()->GetName() << " to cinderella::transmit" << endl;
+		m_transmitWrapper->GetFunction()->SetName("cinderella::transmit");
+		success = true;
+	}
+
+	if (m_receiveWrapper && !m_receiveWrapper->IsHellnode() &&
+		m_receiveWrapper->GetFunction())
+	{
+		cout << "renaming " << m_receiveWrapper->GetFunction()->GetName() << " to cinderella::receive" << endl;
+		m_receiveWrapper->GetFunction()->SetName("cinderella::receive");
+		success = true;
+	}
+
+	if (m_fdwaitWrapper && !m_fdwaitWrapper->IsHellnode() &&
+		m_fdwaitWrapper->GetFunction())
+	{
+		cout << "renaming " << m_fdwaitWrapper->GetFunction()->GetName() << " to cinderella::fdwait" << endl;
+		m_fdwaitWrapper->GetFunction()->SetName("cinderella::fdwait");
+		success = true;
+	}
+
+	if (m_allocateWrapper && !m_allocateWrapper->IsHellnode() &&
+		m_allocateWrapper->GetFunction())
+	{
+		cout << "renaming " << m_allocateWrapper->GetFunction()->GetName() << " to cinderella::allocate" << endl;
+		m_allocateWrapper->GetFunction()->SetName("cinderella::allocate");
+		success = true;
+	}
+
+	if (m_deallocateWrapper && !m_deallocateWrapper->IsHellnode() &&
+		m_deallocateWrapper->GetFunction())
+	{
+		cout << "renaming " << m_deallocateWrapper->GetFunction()->GetName() << " to cinderella::deallocate" << endl;
+		m_deallocateWrapper->GetFunction()->SetName("cinderella::deallocate");
+		success = true;
+	}
+
+	if (m_randomWrapper && !m_randomWrapper->IsHellnode() &&
+		m_randomWrapper->GetFunction())
+	{
+		cout << "renaming " << m_randomWrapper->GetFunction()->GetName() << " to cinderella::random" << endl;
+		m_randomWrapper->GetFunction()->SetName("cinderella::random");
+		success = true;
+	}
+
+	return success;
 }

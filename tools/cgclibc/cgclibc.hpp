@@ -16,9 +16,11 @@ class CGC_libc {
 		CGC_libc(FileIR_t *p_firp);
 		void setPositiveInferences(std::string p_positiveFile);
 		void setNegativeInferences(std::string p_negativeFile);
-		bool execute();
 
+		bool execute();
+		bool renameSyscallWrappers();
 		void displayAllFunctions();
+
 		void enableClusteringHeuristic() { m_clustering = true; }
 		void enableDominanceHeuristic() { m_dominance = true; }
 

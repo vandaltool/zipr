@@ -46,5 +46,3 @@ done
 
 killall `basename $binary`
 echo "Done processing libc_function $libc_function with filename $filename"
-
-#cat $filename | awk '{print $1}' | while read name;
