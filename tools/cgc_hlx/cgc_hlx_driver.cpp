@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 
                         if (success)
                         {
-				cout << "Rewrote cinderella::malloc() successfully" << endl;
+				cout << "Padding successful" << endl;
                                 one_success = true;
                                 firp->WriteToDB();
                                 delete firp;
