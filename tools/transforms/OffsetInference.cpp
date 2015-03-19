@@ -100,6 +100,8 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 	//	 bool has_frame_pointer = false;
 
 	int max = PNRegularExpressions::MAX_MATCHES;
+//	regmatch_t pmatch[max];
+//	regmatch_t *pmatch=(regmatch_t*)malloc(max*sizeof(regmatch_t));
 	regmatch_t *pmatch=new regmatch_t[max];
 	memset(pmatch, 0,sizeof(regmatch_t) * max);	 
 

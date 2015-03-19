@@ -1,3 +1,6 @@
+// ldap not supported on solaris
+#if 0
+
 #define _GNU_SOURCE
 
 #include <stdio.h>
@@ -121,3 +124,4 @@ ldap_stearch_st(LDAP *ld, LDAP_CONST char *base, int scope, LDAP_CONST char *fil
   }
 }
 
+#endif

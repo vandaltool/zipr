@@ -61,8 +61,8 @@ int mysql_real_query(MYSQL* p_conn, const char *p_query, unsigned long p_length)
 }
 
 // intercept mysql_stmt_prepare
-int (*intercept_sqlStmtPrepare)(MYSQL_STMT *p_stmt, const char *p_stmt_str, unsigned long p_length) = NULL;
-int mysql_stmt_prepare(MYSQL_STMT *p_stmt, const char *p_stmt_str, unsigned long p_length)
+int (*intercept_sqlStmtPrepare)(void *p_stmt, const char *p_stmt_str, unsigned long p_length) = NULL;
+int mysql_stmt_prepare(void *p_stmt, const char *p_stmt_str, unsigned long p_length)
 {
 	if (!intercept_sqlStmtPrepare)
 	{

@@ -1,3 +1,5 @@
+// xpath/xquery not supported on solaris.
+#if 0
 #include <dlfcn.h>
 #include <stdarg.h>
 #include <assert.h>
@@ -8,6 +10,8 @@
 #include <libxml/xpath.h>
 #include <xqilla/xqilla-simple.hpp>
 #include <iostream>
+
+
 
 using namespace std;
 
@@ -98,3 +102,4 @@ XQQuery* XQilla::parse(unsigned short const* one, DynamicContext* two, unsigned 
 
 }
 
+#endif

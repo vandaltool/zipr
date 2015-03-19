@@ -499,6 +499,7 @@ void PNTransformDriver::GenerateTransformsInit()
 	blacklist_funcs = 0;
 	sanitized_funcs = 0;
 	push_pop_sanitized_funcs = 0;
+	jump_table_sanitized=0;
 	dynamic_frames = 0;
 	high_coverage_count = low_coverage_count = no_coverage_count = validation_count = 0;
 	not_transformable.clear();
