@@ -6,11 +6,11 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	   	\
 	-s watchdog=off 			\
 	-s signconv_func_monitor=off 	\
 	-s concolic=off 			\
-	-s appfw=off 			\
 	-s determine_program=off 		\
 	-s manual_test=off 			\
 	-s integertransform=off 		\
 	-s twitchertransform=off 		\
+	-s p1transform=off 			\
 	\
 	-s controlled_exit=off 		\
 	\
@@ -38,4 +38,4 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	   	\
 	-s is_so=on 			\
 	-s meds_static=on 			\
 	-s fast_annot=on 			\
-	-s p1transform=on 			\
+	-s appfw=on 			\
