@@ -51,3 +51,19 @@ alias nm=gnm
 export PGHOST=peasoup-datamanager.cs.virginia.edu
 export IDA_PRO_SERVER_HOST=192.168.184.131
 export SMPSA_HOME=$PEASOUP_UMBRELLA_DIR/scripts/IdaProServer
+
+. ./set_env_vars
+
+export STRATA_SIEVE=1
+export STRATA_RC=1
+export STRATA_PARTIAL_INLINING=0
+
+alias fgrep=gfgrep
+alias grep=ggrep
+alias egrep=gegrep
+alias timeout=gtimeout
+
+export PGHOST=peasoup-datamanager.cs.virginia.edu
+export IDA_PRO_SERVER_HOST=192.168.184.131
+
+alias svn="LD_LIBRARY_PATH= svn"
