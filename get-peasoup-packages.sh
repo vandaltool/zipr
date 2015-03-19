@@ -66,28 +66,28 @@ fi
 for arg in $@; do
     case $arg in
     all)
-	sudo apt-get install $ALL_PKGS
+	sudo apt-get -y install $ALL_PKGS
 	;;
     base)
-	sudo apt-get install $BASE_PKGS
+	sudo apt-get -y install $BASE_PKGS
 	;;
     client-irdb)
-	sudo apt-get install $CLIENT_IRDB_PKGS
+	sudo apt-get -y install $CLIENT_IRDB_PKGS
 	;;
     server-irdb)
-	sudo apt-get install $SERVER_IRDB_PKGS
+	sudo apt-get -y install $SERVER_IRDB_PKGS
 	;;
     irdb)
-	sudo apt-get install $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS
+	sudo apt-get -y install $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS
 	;;
     test)
-	sudo apt-get install $TEST_PKGS
+	sudo apt-get -y install $TEST_PKGS
 	;;
 	sql)
-	sudo apt-get install $SQL_PKGS
+	sudo apt-get -y install $SQL_PKGS
 	;;
 	ldap)
-	sudo apt-get install $LDAP_PKGS
+	sudo apt-get -y install $LDAP_PKGS
 	;;
     *)
 	echo "$arg not recognized. Recognized args: all, base, client-irdb,";
