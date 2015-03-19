@@ -1,8 +1,9 @@
-diablo_toolchain     http://svn.zephyr-software.com/repos/diablo_toolchain/branches/solaris_port/
-idapro65             http://svn.zephyr-software.com/repos/idapro65/branches/solaris_port/
-idapro65_sdk         http://svn.zephyr-software.com/repos/idapro65_sdk/branches/solaris_port/
+diablo_toolchain     http://svn.zephyr-software.com/repos/diablo_toolchain/trunk/
+idaproCur            http://svn.zephyr-software.com/repos/idaproCur/trunk/
+idaproCur_sdk        http://svn.zephyr-software.com/repos/idaproCur_sdk/trunk/
 strata               http://svn.zephyr-software.com/repos/strata/branches/solaris_port/
 peasoup_examples     http://svn.zephyr-software.com/repos/peasoup_examples/branches/solaris_port/
 security_transforms  http://svn.zephyr-software.com/repos/security_transforms/branches/solaris_port/
 SMPStaticAnalyzer    http://svn.zephyr-software.com/repos/SMPStaticAnalyzer/branches/solaris_port/
 stratafier           http://svn.zephyr-software.com/repos/stratafier/branches/solaris_port/
+
