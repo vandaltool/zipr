@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2014 - Zephyr Software LLC
+ *
+ * This file may be used and modified for non-commercial purposes as long as
+ * all copyright, permission, and nonwarranty notices are preserved.
+ * Redistribution is prohibited without prior written consent from Zephyr
+ * Software.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: Zephyr Software
+ * e-mail: jwd@zephyr-software.com
+ * URL   : http://www.zephyr-software.com/
+ *
+ */
+
 
 
 #include <libIRDB-core.hpp>
@@ -6,6 +26,11 @@
 
 using namespace libIRDB;
 using namespace std;
+
+template <class T> struct insn_less : binary_function <T,T,bool> {
+  bool operator() (const T& x, const T& y) const {
+	return  x->GetBaseID()  <   y->GetBaseID()  ;}
+};
 
 void do_ilr(VariantID_t *pidp, FileIR_t* firp)
 {
@@ -16,6 +41,8 @@ void do_ilr(VariantID_t *pidp, FileIR_t* firp)
 
 	long long unmoved_instr=0, moved_instr=0;
 
+	set<Instruction_t*,insn_less<Instruction_t*> > sorted_insns;
+
 	set<AddressID_t*> newaddressset;
 	for(
 		set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
@@ -23,7 +50,39 @@ void do_ilr(VariantID_t *pidp, FileIR_t* firp)
 		++it
 	   )
 	{
+		Instruction_t* insn=*it;	
+		sorted_insns.insert(insn);
+	}
+
+	int ilrd_instructions=0;
+
+
+
+	for(
+		set<Instruction_t*,insn_less<Instruction_t*> >::const_iterator it=sorted_insns.begin();
+		it!=sorted_insns.end(); 
+		++it
+	   )
+	{
 		Instruction_t* insn=*it;
+		ilrd_instructions++;
+
+                if(getenv("ILR_NUMINSNSTOTRANSFORM") && ilrd_instructions==atoi(getenv("ILR_NUMINSNSTOTRANSFORM")))
+		{
+			DISASM d;
+			insn->Disassemble(d);
+			cout<<"Aborting after insn #"<<std::dec<<ilrd_instructions<<": "<<d.CompleteInstr << " at "
+				<<std::hex<<insn->GetAddress()->GetVirtualOffset()<<std::dec<<endl; 
+		}
+                if(getenv("ILR_NUMINSNSTOTRANSFORM") && ilrd_instructions>=atoi(getenv("ILR_NUMINSNSTOTRANSFORM")))
+		{
+			newaddressset.insert(insn->GetAddress());
+			if (insn->GetIndirectBranchTargetAddress())
+				newaddressset.insert(insn->GetIndirectBranchTargetAddress());
+			continue;
+		}
+		
+
 		AddressID_t *newaddr=new AddressID_t;
 		newaddr->SetFileID(insn->GetAddress()->GetFileID());
 		insn->SetAddress(newaddr);

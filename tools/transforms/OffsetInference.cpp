@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2013, 2014 - University of Virginia 
+ *
+ * This file may be used and modified for non-commercial purposes as long as 
+ * all copyright, permission, and nonwarranty notices are preserved.  
+ * Redistribution is prohibited without prior written consent from the University 
+ * of Virginia.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: University of Virginia
+ * e-mail: jwd@virginia.com
+ * URL   : http://www.cs.virginia.edu/
+ *
+ */
+
 
 #include "OffsetInference.hpp"
 #include "General_Utility.hpp"
@@ -121,6 +141,8 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 	//until entry is null, or entry has left the function. 
 	while(entry != NULL && (entry->GetFunction()==func))
 	{
+
+		in_prologue[entry]=true;
 		string matched;
 
 		//Instruction_t* instr=*it;
@@ -317,6 +339,15 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 					saved_regs_size +=get_saved_reg_size();
 
 				//There is now enough information to create the PNStackLayout objects
+				if((unsigned)stack_frame_size<(unsigned)out_args_size)  // what?
+				{
+					cerr<<"****************************************************************"<<endl;
+					cerr<<"****************************************************************"<<endl;
+					cerr<<"**Insanity coming from STARS, out_args_size > stack_frame_size**"<<endl;
+					cerr<<"****************************************************************"<<endl;
+					cerr<<"****************************************************************"<<endl;
+					return NULL;
+				}
 				return new StackLayout("All Offset Layout",func->GetName(),stack_frame_size,saved_regs_size,(push_frame_pointer&&save_frame_pointer),out_args_size);
 		
 			}
@@ -346,6 +377,7 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 	unsigned int stack_frame_size = 0;
 	unsigned int saved_regs_size = 0;
 	int ret_cnt = 0;
+	bool lea_sanitize=false;
 
 /*
   out_args_size = func->GetOutArgsRegionSize();
@@ -376,11 +408,11 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 //	pn_all_offsets = SetupLayout(block,func);
 	pn_all_offsets = SetupLayout(func);
 
+	int out_args_size = func->GetOutArgsRegionSize();
 	if(pn_all_offsets != NULL)
 	{
 		stack_frame_size = pn_all_offsets->GetAllocSize();
 		saved_regs_size = pn_all_offsets->GetSavedRegsSize();
-		int out_args_size = func->GetOutArgsRegionSize();
 		bool has_frame_pointer = pn_all_offsets->HasFramePointer();
 		assert(out_args_size >=0);
 
@@ -508,6 +540,65 @@ pn_p1_offsets = new PNStackLayout("P1 Layout",func->GetName(),stack_frame_size,s
 }
 else 
 */
+
+	if(regexec(&(pn_regex->regex_push_anything), disasm_str.c_str(), max, pmatch, 0)==0)
+	{
+		Instruction_t* ft=instr->GetFallthrough();
+		if(ft && !ft->GetFallthrough() && 
+			(ft->GetTarget()==NULL || ft->GetTarget()->GetFunction()!=instr->GetFunction()))
+		{
+			/* probably a push/jmp converted by fix calls */
+			/* can ignore this push */
+		}
+		else if(!in_prologue[instr])
+		{
+			cerr<<"Found push instruction not in prologue, marking as not canary safe";
+			cerr<<"Insn="<<disasm_str<<endl;
+			pn_direct_offsets->SetCanarySafe(false);
+			pn_scaled_offsets->SetCanarySafe(false);
+			pn_all_offsets->SetCanarySafe(false);
+			pn_p1_offsets->SetCanarySafe(false);
+			
+		}
+	}
+
+
+	/* check for an lea with an rsp in it -- needs to be done before other regex's */
+	if(regexec(&(pn_regex->regex_lea_rsp), disasm_str.c_str(), 5, pmatch, 0)==0)
+	{
+		if(verbose_log)
+			cerr<<"OffsetInference: lea_rsp found "<<endl;
+
+                if (pmatch[1].rm_so >= 0 && pmatch[1].rm_eo >= 0)
+                {
+			if(verbose_log)
+				cerr<<"OffsetInference: lea_rsp found const"<<endl;
+                        int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;
+                        matched = disasm_str.substr(pmatch[1].rm_so,mlen);
+                        // extract displacement
+
+                        int offset = disasm.Argument2.Memory.Displacement;
+			if(offset<0) /* huh? */
+			{
+				if(verbose_log)
+					cerr<<"OffsetInference: lea_rsp neg offset sanitize"<<endl;
+				lea_sanitize=true;
+			}
+			unsigned uoffset=(unsigned)offset;
+			/* if this lea is pointing to saved regs -- huh? */
+			if(uoffset>=stack_frame_size && uoffset<saved_regs_size+stack_frame_size)
+			{
+				if(verbose_log)
+					cerr<<"OffsetInference: lea_rsp found in saved regs area"<<endl;
+				lea_sanitize=true;
+			}
+			
+		}
+
+		
+	}
+
+	/* now, on to doing offset identification */
 	if(regexec(&(pn_regex->regex_stack_dealloc_implicit), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
 		dealloc_flag = true;
@@ -856,10 +947,13 @@ else
 	//TODO: this was hacked together quickly, one flag is preferable. 
 	//TODO: there might be a memory leak here, see the objects deleted
 	//at the end of this function.
-	if(alloc_count>1)
+	if(alloc_count>1 || lea_sanitize)
 	{
-		if(verbose_log)
+		if(lea_sanitize)
+			cerr<<"OffsetInference: FindAllOffsets: lea_rsp that points to saved regs found "<<endl;
+		else if(verbose_log)
 			cerr<<"OffsetInference: FindAllOffsets: Multiple integral stack allocations found, returning null inferences"<<endl;
+		
 
 		direct[func] = NULL;
 		scaled[func] = NULL;

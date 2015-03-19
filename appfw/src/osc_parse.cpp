@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2013, 2014 - University of Virginia 
+ *
+ * This file may be used and modified for non-commercial purposes as long as 
+ * all copyright, permission, and nonwarranty notices are preserved.  
+ * Redistribution is prohibited without prior written consent from the University 
+ * of Virginia.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: University of Virginia
+ * e-mail: jwd@virginia.com
+ * URL   : http://www.cs.virginia.edu/
+ *
+ */
+
 
 #include <iostream>
 #include <fstream>
@@ -209,7 +229,7 @@ static inline bool is_command_word(string s)
 	return starting_command;
 }
 
-static void get_word(istream &fin, char c, int start, int semicolon_pos, matched_record** matched_signatures)
+static void get_word(istream &fin, char c, int start, int semicolon_pos)
 {
 	string s; 
 	char d;
@@ -249,9 +269,7 @@ static void get_word(istream &fin, char c, int start, int semicolon_pos, matched
 		// additional policy: make sure ; <command> comes from one signature
 		if (semicolon_pos >= 0)
 		{
-			//  check [semicolon_pos..position+s.length()-1]
-//			if (!appfw_is_from_same_signature(matched_signatures, semicolon_pos, s.length() + position -1))
-//				mark_violation(APPFW_SECURITY_VIOLATION, semicolon_pos, s.length() + position);
+			mark_violation(APPFW_SECURITY_VIOLATION, semicolon_pos, s.length() + position);
 		}
 
 		if(getenv("APPFW_VERBOSE"))
@@ -263,8 +281,7 @@ static void get_word(istream &fin, char c, int start, int semicolon_pos, matched
 		{
 			// -foobar, --foobar have to come from same signature	
 			check_taint(position,position+s.length());
-//			if (!appfw_is_from_same_signature(matched_signatures, position, position+s.length()-1))
-//				mark_violation(APPFW_SECURITY_VIOLATION, position, position+s.length());
+			mark_violation(APPFW_SECURITY_VIOLATION, position, position+s.length());
 		}
 		if(getenv("APPFW_VERBOSE"))
 			cerr<<"Found option word at "<<position<<": "<<s<<endl;
@@ -282,7 +299,7 @@ static void get_word(istream &fin, char c, int start, int semicolon_pos, matched
 
 }
 
-static void parse(istream &fin, int start, matched_record** matched_signatures)
+static void parse(istream &fin, int start)
 {
 	int semicolon_pos = -1; // keep track of last semicolon seen
 
@@ -350,7 +367,7 @@ static void parse(istream &fin, int start, matched_record** matched_signatures)
 				if (can_start_word(c))	
 				{
 					// taint checked in called func
-					get_word(fin,c,start,semicolon_pos,matched_signatures);
+					get_word(fin,c,start,semicolon_pos);
 					semicolon_pos = -1;
 				}
 				else if (isspace(c))
@@ -382,7 +399,7 @@ static void parse(istream &fin, int start, matched_record** matched_signatures)
 
 
 extern "C" 
-void osc_parse(char* to_parse, char* taint_markings, matched_record** matched_signatures)
+void osc_parse(char* to_parse, char* taint_markings)
 {
 	list<pair<string,int> > my_sub_commands;
 	sub_commands=&my_sub_commands;
@@ -394,8 +411,18 @@ void osc_parse(char* to_parse, char* taint_markings, matched_record** matched_si
 	sin<<to_parse;
 
 	if(getenv("APPFW_VERBOSE"))
+	{
 		cerr<<"Parsing "<<to_parse<<" length="<<strlen(to_parse)<<endl;
-	parse(sin,0,matched_signatures);
+		appfw_display_taint("osc-pre ", to_parse, taint_markings);
+		cout << flush;
+  	}
+
+	parse(sin,0);
+
+	if(getenv("APPFW_VERBOSE"))
+	{
+		appfw_display_taint("osc-post", to_parse, taint_markings);
+	}
 
 	while(!(*sub_commands).empty())
 	{
@@ -406,10 +433,8 @@ void osc_parse(char* to_parse, char* taint_markings, matched_record** matched_si
 		ss<<s<<endl;
 		if(getenv("APPFW_VERBOSE"))
 			cerr<<"Parsing sub-command " << s <<endl;
-		parse(ss,pos,matched_signatures);
+		parse(ss,pos);
 		if(getenv("APPFW_VERBOSE"))
 			cerr<<"Done with " << s <<endl<<endl;
 	}
-
-
 }

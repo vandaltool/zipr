@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2013, 2014 - University of Virginia 
+ *
+ * This file may be used and modified for non-commercial purposes as long as 
+ * all copyright, permission, and nonwarranty notices are preserved.  
+ * Redistribution is prohibited without prior written consent from the University 
+ * of Virginia.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: University of Virginia
+ * e-mail: jwd@virginia.com
+ * URL   : http://www.cs.virginia.edu/
+ *
+ */
+
 #include <iostream>
 #include <string.h>
 #include <stdlib.h>
@@ -10,6 +30,16 @@
 using namespace std;
 using namespace libTransform;
 
+//
+// Supported patterns:
+//     reg+reg
+//     reg+k
+//     reg*reg
+//     reg*k
+//
+// Not (yet) supported:
+//     reg+reg+k
+//
 LEAPattern::LEAPattern(const MEDS_InstructionCheckAnnotation& p_annotation)
 {
 	m_isValid = false;
@@ -21,48 +51,54 @@ LEAPattern::LEAPattern(const MEDS_InstructionCheckAnnotation& p_annotation)
 	m_reg2 = Register::UNKNOWN;
 	m_constant = 0;
 
-    if(regcomp(&m_regex_reg_plus_reg ,"[eax|EAX|ebx|EBX|ecx|ECX|edx|EDX|esi|ESI|edi|EDI|ebp|EDI]\\+[eax|EAX|ebx|EBX|ecx|ECX|edx|EDX|esi|ESI|edi|EDI|ebp|EDI]", REG_EXTENDED | REG_ICASE) !=0)
-	    cerr << "Error: regular expression for reg32+reg32 failed" << endl;
+    if(regcomp(&m_regex_reg_plus_reg ,"[eax|ebx|ecx|edx|esi|edi|ebp|rax|rbx|rcx|rdx|rbp|rsi|rdi|r8|r9|r10|r11|r12|r13|r14|r15]\\+[eax|ebx|ecx|edx|esi|edi|ebp|rax|rbx|rcx|rdx|rbp|rsi|rdi|r8|r9|r10|r11|r12|r13|r14|r15]", REG_EXTENDED | REG_ICASE) !=0)
+	    cerr << "Error: regular expression for reg+reg failed" << endl;
 
-    if(regcomp(&m_regex_reg_times_reg ,"[eax|EAX|ebx|EBX|ecx|ECX|edx|EDX|esi|ESI|edi|EDI|ebp|EDI]\\*[eax|EAX|ebx|EBX|ecx|ECX|edx|EDX|esi|ESI|edi|EDI|ebp|EDI]", REG_EXTENDED | REG_ICASE) !=0)
-	    cerr << "Error: regular expression for reg32*reg32 failed" << endl;
+    if(regcomp(&m_regex_reg_times_reg ,"[eax|ebx|ecx|edx|esi|edi|ebp|rax|rbx|rcx|rdx|rbp|rsi|rdi|r8|r9|r10|r11|r12|r13|r14|r15]\\*[eax|ebx|ecx|edx|esi|edi|ebp|rax|rbx|rcx|rdx|rbp|rsi|rdi|r8|r9|r10|r11|r12|r13|r14|r15]", REG_EXTENDED | REG_ICASE) !=0)
+	    cerr << "Error: regular expression for reg*reg failed" << endl;
 
-    if(regcomp(&m_regex_reg_plus_constant ,"[eax|EAX|ebx|EBX|ecx|ECX|edx|EDX|esi|ESI|edi|EDI|ebp|EDI]\\+[0-9+]", REG_EXTENDED | REG_ICASE) !=0)
-	    cerr << "Error: regular expression for reg32+constant failed" << endl;
+    if(regcomp(&m_regex_reg_plus_constant ,"[eax|ebx|ecx|edx|esi|edi|ebp|rax|rbx|rcx|rdx|rbp|rsi|rdi|r8|r9|r10|r11|r12|r13|r14|r15]\\+[0-9+]", REG_EXTENDED | REG_ICASE) !=0)
+	    cerr << "Error: regular expression for reg+constant failed" << endl;
 
-    if(regcomp(&m_regex_reg_plus_negconstant ,"[eax|EAX|ebx|EBX|ecx|ECX|edx|EDX|esi|ESI|edi|EDI|ebp|EDI]\\+\\-[0-9+]", REG_EXTENDED | REG_ICASE) !=0)
-	    cerr << "Error: regular expression for reg32+constant failed" << endl;
+    if(regcomp(&m_regex_reg_plus_negconstant ,"[eax|ebx|ecx|edx|esi|edi|ebp|rax|rbx|rcx|rdx|rbp|rsi|rdi|r8|r9|r10|r11|r12|r13|r14|r15]\\+\\-[0-9+]", REG_EXTENDED | REG_ICASE) !=0)
+	    cerr << "Error: regular expression for reg+constant failed" << endl;
 
-    if(regcomp(&m_regex_reg_times_constant ,"[eax|EAX|ebx|EBX|ecx|ECX|edx|EDX|esi|ESI|edi|EDI|ebp|EDI]\\*[0-9+]", REG_EXTENDED | REG_ICASE) !=0)
-	    cerr << "Error: regular expression for reg32+constant failed" << endl;
+    if(regcomp(&m_regex_reg_times_constant ,"[eax|ebx|ecx|edx|esi|edi|ebp|rax|rbx|rcx|rdx|rbp|rsi|rdi|r8|r9|r10|r11|r12|r13|r14|r15]\\*[0-9+]", REG_EXTENDED | REG_ICASE) !=0)
+	    cerr << "Error: regular expression for reg+constant failed" << endl;
 
 	const int max = 5;
-    regmatch_t pmatch[max];
+	regmatch_t pmatch[max];
 	int countMatch = 0;
 
-    if(regexec(&m_regex_reg_plus_reg, p_annotation.getTarget().c_str(), max, pmatch, 0)==0)
+	if(regexec(&m_regex_reg_plus_reg, p_annotation.getTarget().c_str(), max, pmatch, 0)==0)
 	{
 		// pattern is of the form reg+reg, e.g.:   EDX+EAX
-		countMatch++;
 		m_isRegPlusReg = true;
 		m_reg1 = Register::getRegister(p_annotation.getTarget().substr(0,3));
 		m_reg2 = Register::getRegister(p_annotation.getTarget().substr(4,3));
 
 		if (m_reg1 != Register::UNKNOWN && m_reg2 != Register::UNKNOWN)
+		{
+			countMatch++;
 			m_isValid = true;
+			cerr << "leapattern: reg+reg:" << Register::toString(m_reg1) << " " << Register::toString(m_reg2) << endl;  
+		}
 	}
     
 	if(regexec(&m_regex_reg_times_reg, p_annotation.getTarget().c_str(), max, pmatch, 0)==0)
 	{
 		// pattern is of the form reg*reg, e.g.:   EDX*EAX
 		// nb: is this even a valid pattern -- not used 
-		countMatch++;
 		m_isRegPlusReg = true;
 		m_reg1 = Register::getRegister(p_annotation.getTarget().substr(0,3));
 		m_reg2 = Register::getRegister(p_annotation.getTarget().substr(4,3));
 
 		if (m_reg1 != Register::UNKNOWN && m_reg2 != Register::UNKNOWN)
+		{
+			countMatch++;
 			m_isValid = true;
+			cerr << "leapattern: reg*reg:" << Register::toString(m_reg1) << " " << Register::toString(m_reg2) << endl;  
+		}
 	}
 	
 // integertransform: reg+constant: register: EDX constant: 80 target register: EAX  annotation:    805525b      6 INSTR CHECK OVERFLOW NOFLAGUNSIGNED 32 EDX+128 ZZ lea     eax, [edx+80h]
@@ -73,7 +109,6 @@ LEAPattern::LEAPattern(const MEDS_InstructionCheckAnnotation& p_annotation)
 		// pattern is of the form: reg+constant, e.g.: EDX+16
 		// pattern is of the form: reg+-constant, e.g.: EAX+-16
 		// note that constant value of annotation is in decimal (not hex)
-		countMatch++;
 		m_isRegPlusConstant = true;
 		m_reg1 = Register::getRegister(p_annotation.getTarget().substr(0,3));
 
@@ -81,14 +116,14 @@ LEAPattern::LEAPattern(const MEDS_InstructionCheckAnnotation& p_annotation)
 		if (constantSS >> m_constant)
 		{
 			m_isValid = true;
+		countMatch++;
+			cerr << "leapattern: reg+-constant: stream: " << p_annotation.getTarget().substr(4) << " constant: " << dec << m_constant << " annotation: " << p_annotation.toString() << endl;
 		}
 
-//		cerr << "leapattern: reg+-constant: stream: " << p_annotation.getTarget().substr(4) << " constant: " << dec << m_constant << " annotation: " << p_annotation.toString() << endl;
 	}
 	
 	if(regexec(&m_regex_reg_times_constant, p_annotation.getTarget().c_str(), max, pmatch, 0)==0)
 	{
-		countMatch++;
 		// pattern is of the form: reg*constant, e.g.: EDX*4
 		// note that constant value of annotation is in decimal (not hex)
 		m_isRegTimesConstant = true;
@@ -96,13 +131,15 @@ LEAPattern::LEAPattern(const MEDS_InstructionCheckAnnotation& p_annotation)
 		stringstream constantSS(p_annotation.getTarget().substr(4));
 		if (constantSS >> m_constant)
 		{
+		countMatch++;
+		cerr << "leapattern: reg*constant: stream: " << p_annotation.getTarget().substr(4) << " constant: " << dec << m_constant << " annotation: " << p_annotation.toString() << endl;
 			m_isValid = true;
 		}
 	}
 
 	if (countMatch == 0 || countMatch > 1)
 	{
-		cerr << "leapattern: fail sanity check -- there are more than 1 pattern that match" << endl;
+		cerr << "leapattern: matching patterns = " << countMatch << " : " << p_annotation.toString() << endl;
 		m_isValid = false;
 	}
 }

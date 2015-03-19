@@ -97,7 +97,7 @@ void frame_restore_hash_add_reg_restore(app_iaddr_t addr, int reg_num, int reg_o
         frhv->reg_offsets[reg_num]=reg_offset;
         frhv->reg_types[reg_num]=reg_type;
 
-	assert(reg_num>=0 && reg_num<=7);
+	assert(reg_num>=0 && reg_num<=15);
 	assert(reg_offset<=0);
 	
 }

@@ -1,16 +1,31 @@
+/*
+ * Copyright (c) 2013, 2014 - University of Virginia 
+ *
+ * This file may be used and modified for non-commercial purposes as long as 
+ * all copyright, permission, and nonwarranty notices are preserved.  
+ * Redistribution is prohibited without prior written consent from the University 
+ * of Virginia.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: University of Virginia
+ * e-mail: jwd@virginia.com
+ * URL   : http://www.cs.virginia.edu/
+ *
+ */
+
 #ifndef APPFW_INIT
 #define APPFW_INIT
 
 #include <stdio.h>
 
-#define MAX_COMMAND_LENGTH 65536
+#define MAX_COMMAND_LENGTH 65535
 
 enum { APPFW_BLESSED, APPFW_TAINTED, APPFW_SECURITY_VIOLATION, APPFW_SECURITY_VIOLATION2, APPFW_BLESSED_KEYWORD, APPFW_UNKNOWN, APPFW_CRITICAL_TOKEN };
-
-typedef struct matched_record {
-	int                    signatureId;
-	struct matched_record  *next;
-} matched_record;
 
 void appfw_init();               // load/initialize signature patterns off signature file (specified via env. variable)  
 void appfw_init_from_file(const char *p_file);
@@ -21,20 +36,18 @@ void appfw_error(const char*);   // generic error display routine
 
 void appfw_dump_signatures(FILE *);
 
-void appfw_taint_range(char *taint, char taintValue, int from, int len); // mark as tainted
-void appfw_taint_range_by_pos(char *taint, char taintValue, int beg, int end); // mark as tainted
+void appfw_taint_range(char *taint, char taintValue, int from, int len); // set taint markings
+void appfw_taint_range_by_pos(char *taint, char taintValue, int beg, int end); // set taint markings
 void appfw_display_taint(const char *p_msg, const char *p_query, const char *p_taint);
-extern void appfw_establish_taint(const char *input, char *taint, matched_record**, int case_sensitive); 
-int appfw_establish_taint_fast(const char *input, char *taint, int case_sensitive); 
-int appfw_establish_taint_fast2(const char *input, char *taint, int case_sensitive); 
-void appfw_empty_taint(const char *command, char *taint, matched_record** matched_signatures, int case_sensitive);
+extern void appfw_establish_blessed(const char *input, char *taint, int case_sensitive); 
+int appfw_establish_taint_fast2(const char *input, char *taint, int case_sensitive, int coalesce); 
+void appfw_empty_taint(const char *command, char *taint);
+void appfw_log(const char *p_msg);
+void appfw_log_taint(const char *p_msg, const char *p_query, const char *p_taint);
+void appfw_log_taint_f(FILE *p_fp, const char *p_msg, const char *p_query, const char *p_taint);
 
-
-	// return tainted portion of input string
-matched_record** appfw_allocate_matched_signatures(int size);
-void appfw_deallocate_matched_signatures(matched_record**, int size);
-
-int appfw_is_from_same_signature(matched_record**, int startPos, int endPos);
+int is_security_violation(char c);
+int is_blessed(char c);
 
 #ifndef TRUE
 #define TRUE 1

@@ -1,7 +1,7 @@
 
 LIB=../../lib/libIRDB-cfg.a
 
-OBJS=BasicBlock.o CFG.o
+OBJS=BasicBlock.o CFG.o callgraph.o
 
 all: $(OBJS)
 
@@ -11,5 +11,5 @@ clean:
 	rm -f $(OBJS)
 
 .cpp.o:
-	$(CXX) -g -c -I. -I../../include -I../../../beaengine/include $<
+	$(CXX) -fPIC -g -c -I. -I../../include -I../../../beaengine/include $<
 	ar rc $(LIB) $@

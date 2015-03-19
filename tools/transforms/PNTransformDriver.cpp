@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2013, 2014 - University of Virginia 
+ *
+ * This file may be used and modified for non-commercial purposes as long as 
+ * all copyright, permission, and nonwarranty notices are preserved.  
+ * Redistribution is prohibited without prior written consent from the University 
+ * of Virginia.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: University of Virginia
+ * e-mail: jwd@virginia.com
+ * URL   : http://www.cs.virginia.edu/
+ *
+ */
+
 #include "PNTransformDriver.hpp"
 #include <cassert>
 #include <algorithm>
@@ -17,6 +37,9 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+
+
+#define MAX_JUMPS_TO_FOLLOW 100000
 
 using namespace std;
 using namespace libIRDB;
@@ -123,6 +146,7 @@ void PNTransformDriver::SetDoCanaries(bool do_canaries)
 {
 	this->do_canaries = do_canaries;
 
+#if 0
 	//TODO: For the optimized TNE version I had to remove
 	//optional canaries. This would've been done by
 	//the finalize_transformation step, but for some reason
@@ -130,6 +154,20 @@ void PNTransformDriver::SetDoCanaries(bool do_canaries)
 	//assert false for now if the canaries are turned off
 	//to remind me to fix this. 
 	assert(do_canaries);
+#endif
+	if(!do_canaries)
+	{
+		cerr<<"************************************************************"<<endl;
+		cerr<<"************************************************************"<<endl;
+		cerr<<"** not doing canaries is not entirely supported.          **"<<endl;
+		cerr<<"** This flag turns says that error amplification with     **"<<endl;
+		cerr<<"** caranries is turnedoff , instead of just turning off   **"<<endl;
+		cerr<<"** in the final layout.                                   **"<<endl;
+		cerr<<"** TODO: this could be \"easily\" fixed by Ben, but no one**"<<endl;
+		cerr<<"** knows how and he is too busy.                          **"<<endl;
+		cerr<<"************************************************************"<<endl;
+		cerr<<"************************************************************"<<endl;
+	}
 }
 
 void PNTransformDriver::SetDoAlignStack(bool align_stack)
@@ -499,7 +537,9 @@ void PNTransformDriver::GenerateTransformsInit()
 	blacklist_funcs = 0;
 	sanitized_funcs = 0;
 	push_pop_sanitized_funcs = 0;
-	jump_table_sanitized=0;
+	jump_table_sanitized = 0;
+	bad_variadic_func_sanitized = 0;
+	pic_jump_table_sanitized = 0;
 	dynamic_frames = 0;
 	high_coverage_count = low_coverage_count = no_coverage_count = validation_count = 0;
 	not_transformable.clear();
@@ -523,9 +563,16 @@ void PNTransformDriver::InitNewFileIR(File_t* this_file)
 	
 	ELFIO::dump::header(cout,*elfiop);
 	ELFIO::dump::section_headers(cout,*elfiop);
+
+	//Calc preds is used for sanity checks.
+	//I believe it determines the predecessors of instructions
+	calc_preds();
 }
 
 
+template <class T> struct file_less : binary_function <T,T,bool> {
+  bool operator() (const T& x, const T& y) const {return  x->GetURL()  <   y->GetURL()  ;}
+};
 
 void PNTransformDriver::GenerateTransforms()
 {
@@ -577,8 +624,20 @@ void PNTransformDriver::GenerateTransforms()
 	if(do_shared_object_protection)
 	{
 		cout<<"PNTransformDriver: Shared Object Protection ON"<<endl;
+		set<File_t*,file_less<File_t*> > sorted_files;
+
 		for(set<File_t*>::iterator it=pidp->GetFiles().begin();
-			it!=pidp->GetFiles().end()&&!timeExpired;
+			it!=pidp->GetFiles().end();
+			++it
+			)
+		{
+			File_t* this_file=*it;
+			sorted_files.insert(this_file);
+		}
+
+
+		for(set<File_t*,file_less<File_t*> >::iterator it=sorted_files.begin();
+			it!=sorted_files.end()&&!timeExpired;
 			++it
 			)
 		{
@@ -671,7 +730,8 @@ static int count_prologue_pushes(Function_t *func)
 	// or encounters conditional control flow (it will follow past unconditional control flow
 	// it also stops at indirect branches (which may leave the function, or may generating 
 	// multiple successors)
-	for(insn=func->GetEntryPoint(); insn!=NULL; insn=GetNextInstruction(prev,insn, func))
+	int i;
+	for(i=0,insn=func->GetEntryPoint(); insn!=NULL && i<MAX_JUMPS_TO_FOLLOW; ++i,insn=GetNextInstruction(prev,insn, func))
 	{
 		DISASM d;
 		insn->Disassemble(d);
@@ -697,7 +757,7 @@ static int count_prologue_pushes(Function_t *func)
 Instruction_t* find_exit_insn(Instruction_t *insn, Function_t *func)
 {
 	Instruction_t *prev=NULL;
-	for(; insn!=NULL; insn=GetNextInstruction(prev,insn, func))
+	for(int i=0; insn!=NULL && i<MAX_JUMPS_TO_FOLLOW; ++i, insn=GetNextInstruction(prev,insn, func))
 	{
 		prev=insn;
 	}
@@ -801,6 +861,76 @@ bool	check_for_push_pop_coherence(Function_t *func)
 	return true;
 }
 
+/*
+ * check_for_bad_variadic_funcs  -- Look for functions of this form:
+   0x0000000000418108 <+0>:	push   rbp
+   0x0000000000418109 <+1>:	mov    rbp,rsp
+   0x000000000041810c <+4>:	sub    rsp,0x100
+   0x0000000000418113 <+11>:	mov    DWORD PTR [rbp-0xd4],edi
+   0x0000000000418119 <+17>:	mov    QWORD PTR [rbp-0xe0],rsi
+   0x0000000000418120 <+24>:	mov    QWORD PTR [rbp-0x98],rcx
+   0x0000000000418127 <+31>:	mov    QWORD PTR [rbp-0x90],r8
+   0x000000000041812e <+38>:	mov    QWORD PTR [rbp-0x88],r9
+   0x0000000000418135 <+45>:	movzx  eax,al
+   0x0000000000418138 <+48>:	mov    QWORD PTR [rbp-0xf8],rax
+   0x000000000041813f <+55>:	mov    rcx,QWORD PTR [rbp-0xf8]
+   0x0000000000418146 <+62>:	lea    rax,[rcx*4+0x0]
+   0x000000000041814e <+70>:	mov    QWORD PTR [rbp-0xf8],0x41818d
+   0x0000000000418159 <+81>:	sub    QWORD PTR [rbp-0xf8],rax
+   0x0000000000418160 <+88>:	lea    rax,[rbp-0x1]
+   0x0000000000418164 <+92>:	mov    rcx,QWORD PTR [rbp-0xf8]
+   0x000000000041816b <+99>:	jmp    rcx
+	<leaves function>
+
+This is a common IDApro failure, as the computed jump is strange for IDA.
+
+We check for this case by looking for the movzx before EAX is/used otherwise .
+
+Return value:  true if function is OK to transform, false if we find the pattern.
+
+*/
+bool	check_for_bad_variadic_funcs(Function_t *func, const ControlFlowGraph_t* cfg)
+{
+	BasicBlock_t *b=cfg->GetEntry();
+
+
+	/* sanity check that there's an entry block */
+	if(!b)
+		return true;
+
+	/* sanity check for ending in an indirect branch */
+	if(!b->EndsInIndirectBranch())
+		return true;
+
+	const std::vector<Instruction_t*>& insns=b->GetInstructions();
+
+	for(vector<Instruction_t*>::const_iterator it=insns.begin(); it!=insns.end(); ++it)
+	{
+		Instruction_t* insn=*it;
+		DISASM d;
+		insn->Disassemble(d);
+
+		/* found the suspicious move insn first */
+		if(strcmp(d.CompleteInstr,"movzx eax, al")==0)
+			return false;
+
+
+		/* else, check for a use or def of rax in any of it's forms */
+		if(strstr(d.CompleteInstr,"eax")!=0)
+			return true;
+		if(strstr(d.CompleteInstr,"rax")!=0)
+			return true;
+		if(strstr(d.CompleteInstr,"ax")!=0)
+			return true;
+		if(strstr(d.CompleteInstr,"ah")!=0)
+			return true;
+		if(strstr(d.CompleteInstr,"al")!=0)
+			return true;
+	}
+
+	return true;
+}
+
 
 static ELFIO::section*  find_section(unsigned int addr, ELFIO::elfio *elfiop)
 {
@@ -818,6 +948,11 @@ static ELFIO::section*  find_section(unsigned int addr, ELFIO::elfio *elfiop)
         return NULL;
 }
 
+/* 
+ * PNTransformDriver::check_jump_tables - 
+ *
+ * 	look for jmp [reg*8+table_base]
+ */
 bool PNTransformDriver::check_jump_tables(Instruction_t* insn)
 {
 	/* quick check to skip most instructions */
@@ -848,10 +983,13 @@ bool PNTransformDriver::check_jump_tables(Instruction_t* insn)
 
 	const char *secdata=pSec->get_data();
 
+	if(!secdata)
+		return true;
+
 	int offset=displacement-pSec->get_address();
 
 	set<int> jump_tab_entries;
-	for(int i=0;i<5;i++)
+	for(int i=0;jump_tab_entries.size()<5;i++)
 	{
 		if(offset+i*4+sizeof(int) > pSec->get_size())
 			break;
@@ -866,7 +1004,13 @@ bool PNTransformDriver::check_jump_tables(Instruction_t* insn)
 		}
 
 	}
+	
+	return check_jump_table_entries(jump_tab_entries,insn->GetFunction());
+	
+}
 
+bool PNTransformDriver::check_jump_table_entries(set<int> jump_tab_entries,Function_t* func)
+{
 	for(
 		set<Instruction_t*>::const_iterator it=orig_virp->GetInstructions().begin();
 		it!=orig_virp->GetInstructions().end();
@@ -883,9 +1027,9 @@ bool PNTransformDriver::check_jump_tables(Instruction_t* insn)
 			// it is!
 	
 			// now, check to see if the instruction is in my function 
-			if(insn->GetFunction()!=ftinsn->GetFunction())
+			if(func !=ftinsn->GetFunction())
 			{
-				cout<<"Sanitizing function "<< insn->GetFunction()->GetName()<< "due to jump-table to diff-func detected."<<endl;
+				cout<<"Sanitizing function "<< func->GetName()<< "due to jump-table to diff-func detected."<<endl;
 				return false;
 			}
 			else
@@ -898,8 +1042,160 @@ bool PNTransformDriver::check_jump_tables(Instruction_t* insn)
 
 }
 
+bool PNTransformDriver::backup_until(const char* insn_type, Instruction_t *& prev, Instruction_t* orig)
+{
+	DISASM disasm;
+	prev=orig;
+	while(preds[prev].size()==1)
+	{
+        	// get the only item in the list.
+		prev=*(preds[prev].begin());
+
+        	// get I7's disassembly
+        	prev->Disassemble(disasm);
+
+        	// check it's the requested type
+        	if(strstr(disasm.Instruction.Mnemonic, insn_type)!=NULL)
+                	return true;
+
+		// otherwise, try backing up again.
+
+	}
+	return false;
+}
+
+  void  PNTransformDriver::calc_preds()
+{
+  preds.clear();
+        for(
+                set<Instruction_t*>::const_iterator it=orig_virp->GetInstructions().begin();
+                it!=orig_virp->GetInstructions().end();
+                ++it
+           )
+        {
+                Instruction_t* insn=*it;
+                if(insn->GetTarget());
+                        preds[insn->GetTarget()].insert(insn);
+                if(insn->GetFallthrough());
+                        preds[insn->GetFallthrough()].insert(insn);
+        }
+}
+
+
+
+
+/* check if this instruction is an indirect jump via a register,
+ * if so, see if the jump location is in the same function. Return false if not in the same function. 
+ */
+bool PNTransformDriver::check_for_PIC_switch_table64(Instruction_t* insn, DISASM disasm)
+{
+
+        /* here's the pattern we're looking for */
+#if 0
+I1:   0x000000000044425a <+218>:        cmp    DWORD PTR [rax+0x8],0xd   // bounds checking code, 0xd cases.
+I2:   0x000000000044425e <+222>:        jbe    0x444320 <_gedit_tab_get_icon+416>
+
+<snip>
+I3:   0x0000000000444264 <+228>:        mov    rdi,rbp // default case, also jumped to via indirect branch below
+<snip>
+I4:   0x0000000000444320 <+416>:        mov    edx,DWORD PTR [rax+0x8]
+I5:   0x0000000000444323 <+419>:        lea    rax,[rip+0x3e1b6]        # 0x4824e0
+I6:   0x000000000044432a <+426>:        movsxd rdx,DWORD PTR [rax+rdx*4]
+I7:   0x000000000044432e <+430>:        add    rax,rdx
+I8:   0x0000000000444331 <+433>:        jmp    rax      // relatively standard switch dispatch code
+
+
+D1:   0x4824e0: .long 0x4824e0-L1       // L1-LN are labels in the code where case statements start.
+D2:   0x4824e0: .long 0x4824e0-L2
+..
+DN:   0x4824e0: .long 0x4824e0-LN
+#endif
+
+
+        // for now, only trying to find I4-I8.  ideally finding I1 would let us know the size of the
+        // jump table.  We'll figure out N by trying targets until they fail to produce something valid.
+
+        Instruction_t* I8=insn;
+        Instruction_t* I7=NULL;
+        Instruction_t* I6=NULL;
+        Instruction_t* I5=NULL;
+        // check if I8 is a jump
+        if(strstr(disasm.Instruction.Mnemonic, "jmp")==NULL)
+                return true;
+
+	// return if it's a jump to a constant address, these are common
+        if(disasm.Argument1.ArgType&CONSTANT_TYPE)
+		return true;
+	// return if it's a jump to a memory address
+        if(disasm.Argument1.ArgType&MEMORY_TYPE)
+		return true;
+
+	// has to be a jump to a register now
+
+	// backup and find the instruction that's an add before I8 
+	if(!backup_until("add", I7, I8))
+		return true;
+
+	// backup and find the instruction that's an movsxd before I7
+	if(!backup_until("movsxd", I6, I7))
+		return true;
+
+	// backup and find the instruction that's an lea before I6
+	if(!backup_until("lea", I5, I6))
+		return true;
+
+	I5->Disassemble(disasm);
+
+        if(!(disasm.Argument2.ArgType&MEMORY_TYPE))
+                return true;
+        if(!(disasm.Argument2.ArgType&RELATIVE_))
+                return true;
+
+        // note that we'd normally have to add the displacement to the
+        // instruction address (and include the instruction's size, etc.
+        // but, fix_calls has already removed this oddity so we can relocate
+        // the instruction.
+        int D1=strtol(disasm.Argument2.ArgMnemonic, NULL, 16);
+
+        // find the section with the data table
+        ELFIO::section *pSec=find_section(D1,elfiop);
+
+        // sanity check there's a section
+        if(!pSec)
+                return true;
+
+        const char* secdata=pSec->get_data();
+
+	// if the section has no data, abort 
+	if(!secdata)
+		return true;
+
+	set<int> table_entries;
+        int offset=D1-pSec->get_address();
+        int entry=0;
+        for(int i=0;table_entries.size()<5;i++)
+        {
+                // check that we can still grab a word from this section
+                if(offset+sizeof(int) > pSec->get_size())
+                        break;
+
+                const int *table_entry_ptr=(const int*)&(secdata[offset]);
+                int table_entry=*table_entry_ptr;
+
+		//put in set -> d1+table_entry
+		table_entries.insert(D1+table_entry);
+
+                offset+=sizeof(int);
+                entry++;
+
+        } 
+
+	return check_jump_table_entries(table_entries,insn->GetFunction());
+}
+
 void PNTransformDriver::SanitizeFunctions()
 {
+
 	//TODO: for now, the sanitized list is only created for an individual IR file
 	sanitized.clear();
 
@@ -909,9 +1205,8 @@ void PNTransformDriver::SanitizeFunctions()
 		++func_it
 		)
 	{
-
-		
 		Function_t *func = *func_it;
+		ControlFlowGraph_t cfg(func);
 		assert(func);
 
 		if(func == NULL)
@@ -964,6 +1259,17 @@ void PNTransformDriver::SanitizeFunctions()
 					continue;
 				}
 			}
+
+			// if it's not already sanitized
+			if(sanitized.find(func)==sanitized.end())
+			{
+			  if(!check_for_PIC_switch_table64(instr,disasm))
+			    {
+			      pic_jump_table_sanitized++;
+			      sanitized.insert(func);
+			      continue;
+			    }    
+			}
 		}
 
 		// if it's not already sanitized
@@ -973,6 +1279,17 @@ void PNTransformDriver::SanitizeFunctions()
 			if(!check_for_push_pop_coherence(func))
 			{
 				push_pop_sanitized_funcs++;	
+				sanitized.insert(func);
+				continue;
+			}
+		}
+		// if it's not already sanitized
+		if(sanitized.find(func)==sanitized.end())
+		{
+			// check for push/pop coherence.
+			if(!check_for_bad_variadic_funcs(func,&cfg))
+			{
+				bad_variadic_func_sanitized++;
 				sanitized.insert(func);
 				continue;
 			}
@@ -1031,6 +1348,12 @@ inline bool PNTransformDriver::TargetFunctionCheck(Instruction_t* a, Instruction
 	return FunctionCheck(a->GetFunction(),b->GetFunction());
 }
 
+
+template <class T> struct func_less : binary_function <T,T,bool> {
+  bool operator() (const T& x, const T& y) const {return  x->GetName()  <   y->GetName()  ;}
+};
+//Speculation note:
+
 //Speculation note:
 //Hypothesis generation assessment and refinement prior to modification.
 //hypothesis assessment and refinement after modification is performed by the recursive validation subroutine. 
@@ -1040,27 +1363,33 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 
 	vector<validation_record> high_covered_funcs, low_covered_funcs, not_covered_funcs,shuffle_validate_funcs;
 
-	int funcs_attempted=-1;
+	static int funcs_attempted=-1;
+
+	set<Function_t*, func_less<Function_t*> > sorted_funcs;
+	for(
+		set<Function_t*>::const_iterator it=orig_virp->GetFunctions().begin();
+		it!=orig_virp->GetFunctions().end();
+		++it
+		)
+	{
+			Function_t* func=*it;
+			sorted_funcs.insert(func);
+	}
 
 	//For each function
 	//Loop through each level, find boundaries for each, sort based on
 	//the number of boundaries, attempt transform in order until successful
 	//or until all inferences have been exhausted
 	for(
-		set<Function_t*>::const_iterator it=orig_virp->GetFunctions().begin();
-		it!=orig_virp->GetFunctions().end()&&!timeExpired;
+		set<Function_t*, func_less<Function_t*> >::const_iterator it=sorted_funcs.begin();
+		it!=sorted_funcs.end()&&!timeExpired;
 		++it
 		)
 
 	{
 		Function_t *func = *it;
 
-		funcs_attempted++;
-		if(getenv("PN_ONLYTRANSFORM") && funcs_attempted!=atoi(getenv("PN_ONLYTRANSFORM")))
-		{
-			cout<<"Skipping function "<<dec<<funcs_attempted<<", named: "<<func->GetName()<<endl;
-			continue;
-		}
+		/* skip before the increment, so we don't emit the message more than once */
 		if(getenv("PN_NUMFUNCSTOTRY") && funcs_attempted>=atoi(getenv("PN_NUMFUNCSTOTRY")))
 		{
 			cerr<<dec<<"Aborting transforms after func number "<<funcs_attempted<<", which is: "<<
@@ -1068,12 +1397,19 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 			break;
 		}
 		
+		if(getenv("PN_ONLYTRANSFORM") && funcs_attempted!=atoi(getenv("PN_ONLYTRANSFORM")))
+		{
+			cout<<"Skipping function "<<dec<<funcs_attempted<<", named: "<<func->GetName()<<endl;
+			funcs_attempted++;
+			continue;
+		}
 		
 
 		//TODO: remove this at some point when I understand if this can happen or not
 		assert(func != NULL);
 
-		cerr<<"PNTransformDriver: Function: "<<orig_virp->GetFile()->GetURL()<<" "<<func->GetName()<<endl;
+		cerr<<"PNTransformDriver: Function #"<<std::dec<<funcs_attempted<<": "<<orig_virp->GetFile()->GetURL()<<" "<<func->GetName()<<endl;
+		funcs_attempted++;
 
 		//Check if in blacklist
 		if(IsBlacklisted(func))
@@ -1687,7 +2023,9 @@ void PNTransformDriver::Print_Report()
 	cerr<<"Blacklisted Functions \t\t"<<blacklist_funcs<<endl;
 	cerr<<"Sanitized Functions \t\t"<<sanitized_funcs<<endl;
 	cerr<<"Push/Pop Sanitized Functions \t\t"<<push_pop_sanitized_funcs<<endl;
+	cerr<<"Bad Variadic Sanitized Functions \t\t"<<push_pop_sanitized_funcs<<endl;
 	cerr<<"Jump table Sanitized Functions \t\t"<<jump_table_sanitized<<endl;
+	cerr<<"PIC Jump table Sanitized Functions \t\t"<<jump_table_sanitized<<endl;
 	cerr<<"Transformable Functions \t"<<(total_funcs-not_transformable.size())<<endl;
 	cerr<<"Transformed \t\t\t"<<total_transformed<<endl;
 }
@@ -1821,6 +2159,17 @@ bool PNTransformDriver::Validate(FileIR_t *virp, string name)
 	assert(retval != 3);
 
 	//TODO: was I supposed to do something with actual_signal?
+
+	string asm_filename = string(get_current_dir_name()) + "/" + dirname + "/a.irdb.?spri.asm";
+	string bin_filename = string(get_current_dir_name()) + "/" + dirname + "/a.irdb.?spri.asm.bin";
+	string map_filename = string(get_current_dir_name()) + "/" + dirname + "/a.irdb.?spri.asm.map";
+	string rm_command="rm -f ";
+	rm_command+=bspri_filename + " ";
+	rm_command+=asm_filename   + " ";
+	rm_command+=bin_filename   + " ";
+	rm_command+=map_filename   + " ";
+
+	system(rm_command.c_str()); // don't bother with an error check.
 	
 	return (retval == 0);
 }
@@ -1850,6 +2199,10 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 		esp_reg="esp";
 	else
 		esp_reg="rsp";
+
+	if(verbose_log)
+		cout<<"PNTransformDriver: CanaryRewrite: Rewriting function named "<<func->GetName()<<endl;
+
 
 	//TODO: hack for TNE, assuming all virp is orig_virp now. 
 	FileIR_t *virp = orig_virp;
@@ -1895,6 +2248,8 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 	int max = PNRegularExpressions::MAX_MATCHES;
 	regmatch_t *pmatch=new regmatch_t[max]; 
 	memset(pmatch, 0,sizeof(regmatch_t) * max);
+
+
 
 	for(
 		set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
@@ -2107,8 +2462,7 @@ int PNTransformDriver::prologue_offset_to_actual_offset(ControlFlowGraph_t* cfg,
 
 	
 	Instruction_t* insn=*it, *prev=NULL;
-
-	for(;insn!=NULL; insn=GetNextInstruction(prev,insn, func))
+	for(int i=0;insn!=NULL && i<MAX_JUMPS_TO_FOLLOW; ++i, insn=GetNextInstruction(prev,insn, func))
 	{
 		assert(insn);
 		DISASM d;
@@ -2143,7 +2497,7 @@ int PNTransformDriver::prologue_offset_to_actual_offset(ControlFlowGraph_t* cfg,
 				// note: offset is negative
 			
 				// sanity check that the allocation iss bigger than the neg offset
-				assert((int)ssize==(unsigned)ssize);
+				assert((unsigned)ssize==(unsigned)ssize);
 				if(-offset>(int)ssize)
 					return offset;
 
@@ -2174,7 +2528,9 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	int max = PNRegularExpressions::MAX_MATCHES;
 	//regmatch_t pmatch[max];
 	regmatch_t *pmatch=new regmatch_t[max]; // (regmatch_t*)malloc(max*sizeof(regmatch_t));
+	regmatch_t pmatch2[max];
 	memset(pmatch, 0,sizeof(regmatch_t) * max);
+	memset(pmatch2, 0,sizeof(regmatch_t) * max);
 
 	string matched="";
 	string disasm_str = "";
@@ -2206,7 +2562,28 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	}
 		
 
-	if(regexec(&(pn_regex->regex_stack_alloc), disasm_str.c_str(), 5, pmatch, 0)==0)
+	if(instr->GetFunction() && instr->GetFunction()->GetUseFramePointer() && regexec(&(pn_regex->regex_add_rbp), disasm_str.c_str(), 5, pmatch, 0)==0)
+	{
+		if(verbose_log)
+			cerr << "PNTransformDriver: found add rbp insn: "<<disasm_str<<endl;
+		int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;
+		string dstreg=disasm_str.substr(pmatch[1].rm_so,mlen);
+
+		int new_offset = layout->GetNewOffsetEBP(1); /* make sure we get something from within the stack frame */
+		new_offset-=1;	/* re-adjust for the -8 above */
+
+		stringstream lea_string;
+		lea_string<<"lea "<<dstreg<<", [rbp+"<<dstreg<<" - 0x"<<std::hex<<new_offset<<"]"; 
+
+
+		if(verbose_log)
+			cerr << "PNTransformDriver: Convrting to "<<lea_string.str()<<endl;
+
+		undo_list[instr->GetFunction()][instr] = copyInstruction(instr);
+		virp->RegisterAssembly(instr,lea_string.str());
+		
+	}
+	else if(regexec(&(pn_regex->regex_stack_alloc), disasm_str.c_str(), 5, pmatch, 0)==0)
 	{
 		if(verbose_log)
 			cerr << "PNTransformDriver: Transforming Stack Alloc"<<endl;
@@ -2411,8 +2788,14 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 		}
 		else
 		{
+			if(verbose_log)
+				cerr<<"PNTransformDriver: ESP-k revised_offset is "<<std::hex<<revised_offset<<endl;
 			int new_location = layout->GetNewOffsetESP(revised_offset);
+			if(verbose_log)
+				cerr<<"PNTransformDriver: ESP-k new_location is "<<std::hex<<new_location<<endl;
 			int new_offset = new_location-layout->GetAlteredAllocSize();
+			if(verbose_log)
+				cerr<<"PNTransformDriver: ESP-k new_offset is "<<std::hex<<new_offset<<endl;
 
 			// sanity 
 			assert(new_offset<0);
@@ -2447,8 +2830,21 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 
 		//TODO: I don't think this can happen but just in case
 		assert(offset >= 0);
-
-		int new_offset = layout->GetNewOffsetESP(offset);
+	
+		
+		// an ESP+<scale>+<const> that points at 
+		// the saved reg area isn't likely realy indexing the saved regs. assume it's in the 
+		// local var area instead.
+		int new_offset = 0; 
+		if((int)offset==(int)layout->GetOriginalAllocSize() && 
+			regexec(&(pn_regex->regex_esp_scaled), disasm_str.c_str(), 5, pmatch2, 0)==0)
+		{
+			if(verbose_log)
+				cerr<<"JDH: PNTransformDriver: found esp+scale+const pointing at saved regs."<<endl;	
+			new_offset=layout->GetNewOffsetESP(offset-1)+1;
+		}
+		else
+			new_offset=layout->GetNewOffsetESP(offset);
 		
 		stringstream ss;
 		ss<<hex<<new_offset;

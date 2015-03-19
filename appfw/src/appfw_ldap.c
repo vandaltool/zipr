@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2013, 2014 - University of Virginia 
+ *
+ * This file may be used and modified for non-commercial purposes as long as 
+ * all copyright, permission, and nonwarranty notices are preserved.  
+ * Redistribution is prohibited without prior written consent from the University 
+ * of Virginia.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: University of Virginia
+ * e-mail: jwd@virginia.com
+ * URL   : http://www.cs.virginia.edu/
+ *
+ */
+
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
@@ -46,12 +66,9 @@ int appfw_ldap_isFilterOperator(char c)
 int appfw_ldap_verify(const char *p_filter)
 {
 	int length = strlen(p_filter);
-	matched_record** matched_signatures = appfw_allocate_matched_signatures(length);
 
 	char *p_taint=malloc(length+1);
-  	appfw_establish_taint(p_filter, p_taint, matched_signatures,FALSE);
-
-	appfw_deallocate_matched_signatures(matched_signatures, length);
+  	appfw_establish_blessed(p_filter, p_taint, FALSE);
 
 	if(getenv("APPFW_VERBOSE"))
 	  	appfw_display_taint("Debugging LDAP filter", p_filter, p_taint);
@@ -66,7 +83,7 @@ int appfw_ldap_verify(const char *p_filter)
 			if(getenv("APPFW_VERBOSE"))
 	  			appfw_display_taint("Security violation detected", p_filter, p_taint);
 
-    		free(p_taint);
+	    		free(p_taint);
 			return 0;
 		}
 	}

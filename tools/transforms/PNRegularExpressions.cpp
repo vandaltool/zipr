@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2013, 2014 - University of Virginia 
+ *
+ * This file may be used and modified for non-commercial purposes as long as 
+ * all copyright, permission, and nonwarranty notices are preserved.  
+ * Redistribution is prohibited without prior written consent from the University 
+ * of Virginia.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: University of Virginia
+ * e-mail: jwd@virginia.com
+ * URL   : http://www.cs.virginia.edu/
+ *
+ */
+
 
 #include "PNRegularExpressions.hpp"
 #include <cstdio>
@@ -45,12 +65,13 @@ PNRegularExpressions::PNRegularExpressions()
 {
 	int errcode;
   
+	// match "and esp, *"
 	if (regcomp(&regex_and_esp, FIRN("[[:blank:]]*and[[:blank:]]+%sp[[:blank:]]*,[[:blank:]]*(.+)[[:blank:]]*"), REG_EXTENDED | REG_ICASE) != 0)
 	{
 		fprintf(stderr,"Error: regular expression for and esp to compile\n");
 		exit(1);
 	}
-
+	// match "ret"
 	if (regcomp(&regex_ret, FIRN("^ret[[:blank:]]*$"), REG_EXTENDED | REG_ICASE) != 0)
 	{
 		fprintf(stderr,"Error: regular expression for ret failed to compile\n");
@@ -63,16 +84,25 @@ PNRegularExpressions::PNRegularExpressions()
 		fprintf(stderr,"Error: regular expression for lea hack failed to compile\n");
 		exit(1);
 	}
-	
+
+	// match "[esp]"	
 	if(regcomp(&regex_esp_only, FIRN(".*\\[(%sp)\\].*"),REG_EXTENDED | REG_ICASE) !=0)
 	{
 		fprintf(stderr,"Error: regular expression for esp scaled addresses failed\n");
 		exit(1);
 	}
 
+	// match "[esp+reg*scale+disp]"	
 	if(regcomp(&regex_esp_scaled, FIRN(".*\\[%sp[+].*[+](.+)\\].*"),REG_EXTENDED | REG_ICASE) !=0)
 	{
 		fprintf(stderr,"Error: regular expression for esp scaled addresses failed\n");
+		exit(1);
+	}
+	if((errcode=regcomp(&regex_lea_rsp, FIRN(".*lea.*\\[.*%sp.*("HEXNUM").*\\].*"),REG_EXTENDED | REG_ICASE)) !=0)
+	{
+		char buf[1000];
+		regerror(errcode,&regex_lea_rsp,buf,sizeof(buf));
+		fprintf(stderr,"Error: regular expression for regex_lea_rsp failed, code: %s\n", buf);
 		exit(1);
 	}
 	if((errcode=regcomp(&regex_esp_scaled_nodisp, FIRN(".*\\[%sp[+]"REGSTRING SCALE"(\\]).*"),REG_EXTENDED | REG_ICASE)) !=0)
@@ -167,6 +197,16 @@ PNRegularExpressions::PNRegularExpressions()
 		fprintf(stderr,"Error: regular expression for call failed to compile\n");
 		exit(1);
 	}
+
+
+        if((errcode=regcomp(&regex_add_rbp,FIRN("add ("REGSTRING"), *%bp *"),REG_EXTENDED | REG_ICASE)) !=0)
+        {
+                char buf[1000];
+                regerror(errcode,&regex_add_rbp,buf,sizeof(buf));
+                fprintf(stderr,"Error: regular expression for regex_add_rbp failed, code: %s\n",buf);
+                exit(1);
+        }
+
 
 
 }

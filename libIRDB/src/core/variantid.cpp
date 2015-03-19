@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2014 - Zephyr Software LLC
+ *
+ * This file may be used and modified for non-commercial purposes as long as
+ * all copyright, permission, and nonwarranty notices are preserved.
+ * Redistribution is prohibited without prior written consent from Zephyr
+ * Software.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: Zephyr Software
+ * e-mail: jwd@zephyr-software.com
+ * URL   : http://www.zephyr-software.com/
+ *
+ */
+
 
 
 #include <all.hpp>
@@ -165,7 +185,9 @@ File_t* VariantID_t::CloneFile(File_t* fptr)
 	std::string atn="atnfid"+to_string(newfid);
 	std::string ftn="ftnfid"+to_string(newfid);
 	std::string itn="itnfid"+to_string(newfid);
+	std::string ibn="ibnfid"+to_string(newfid);
 	std::string rtn="rtnfid"+to_string(newfid);
+	std::string typ="typfid"+to_string(newfid);
 
 	q ="update file_info set address_table_name='";
 	q+=atn;
@@ -173,8 +195,12 @@ File_t* VariantID_t::CloneFile(File_t* fptr)
 	q+=ftn;
 	q+="', instruction_table_name='";
 	q+=itn;
+	q+="', ibtargets_table_name='";
+	q+=ibn;
 	q+="', relocs_table_name='";
 	q+=rtn;
+	q+="', types_table_name='";
+	q+=typ;
 	q+="' where file_id='";
 	q+=to_string(newfid);
 	q+="' ; ";
@@ -182,13 +208,18 @@ File_t* VariantID_t::CloneFile(File_t* fptr)
         dbintr->IssueQuery(q);
 
 	File_t* newfile=new File_t(newfid, fptr->orig_fid, fptr->url, fptr->hash, fptr->arch, fptr->elfoid, 
-					atn, ftn, itn, rtn, fptr->GetDoipID());
+					atn, ftn, itn, ibn, rtn, typ, fptr->GetDoipID());
 
 	newfile->CreateTables();
 
         // first drop the old values
         q="drop table ";
         q+=itn;
+        q+=" ; ";
+        dbintr->IssueQuery(q);
+
+        q="drop table ";
+        q+=ibn;
         q+=" ; ";
         dbintr->IssueQuery(q);
 
@@ -207,6 +238,10 @@ File_t* VariantID_t::CloneFile(File_t* fptr)
         q+=" ; ";
         dbintr->IssueQuery(q);
 
+        q="drop table ";
+        q+=typ;
+        q+=" ; ";
+        dbintr->IssueQuery(q);
 
         // next issue SQL to clone each table
         q="select * into ";
@@ -224,6 +259,13 @@ File_t* VariantID_t::CloneFile(File_t* fptr)
         dbintr->IssueQuery(q);
 
         q="select * into ";
+        q+=ibn;
+        q+=" from ";
+        q+=fptr->ibtargets_table_name;
+        q+=" ;";
+        dbintr->IssueQuery(q);
+
+        q="select * into ";
         q+=ftn;
         q+=" from ";
         q+=fptr->function_table_name;
@@ -234,6 +276,13 @@ File_t* VariantID_t::CloneFile(File_t* fptr)
         q+=rtn;
         q+=" from ";
         q+=fptr->relocs_table_name;
+        q+=" ;";
+        dbintr->IssueQuery(q);
+
+        q="select * into ";
+        q+=typ;
+        q+=" from ";
+        q+=fptr->types_table_name;
         q+=" ;";
         dbintr->IssueQuery(q);
 
@@ -318,8 +367,8 @@ File_t* VariantID_t::GetMainFile() const
 void VariantID_t::ReadFilesFromDB()
 {
 
-	std::string q= "select  file_info.orig_file_id, file_info.address_table_name, file_info.instruction_table_name, "
-		" file_info.function_table_name, file_info.relocs_table_name, file_info.file_id, file_info.url, file_info.hash,"
+	std::string q= "select  file_info.orig_file_id, file_info.address_table_name, file_info.instruction_table_name, file_info.ibtargets_table_name,"
+		" file_info.function_table_name, file_info.relocs_table_name, file_info.types_table_name, file_info.file_id, file_info.url, file_info.hash,"
 		" file_info.arch, file_info.type, file_info.elfoid, file_info.doip_id "
 		" from file_info,variant_dependency "
 		" where variant_dependency.variant_id = '" + to_string(GetBaseID()) + "' AND "
@@ -341,14 +390,15 @@ void VariantID_t::ReadFilesFromDB()
         	std::string atn=(BaseObj_t::dbintr->GetResultColumn("address_table_name"));
         	std::string ftn=(BaseObj_t::dbintr->GetResultColumn("function_table_name"));
         	std::string itn=(BaseObj_t::dbintr->GetResultColumn("instruction_table_name"));
+        	std::string ibn=(BaseObj_t::dbintr->GetResultColumn("ibtargets_table_name"));
         	std::string rtn=(BaseObj_t::dbintr->GetResultColumn("relocs_table_name"));
+        	std::string typ=(BaseObj_t::dbintr->GetResultColumn("types_table_name"));
 
 
+		File_t *newfile=new File_t(file_id,orig_fid,url,hash,type,oid,atn,ftn,itn,ibn, rtn,typ,doipid);
 
-		File_t *newfile=new File_t(file_id,orig_fid,url,hash,type,oid,atn,ftn,itn,rtn,doipid);
-
-//std::cout<<"Found file "<<file_id<<"."<<std::endl;
-
+std::cout<<"Found file "<<file_id<<"."<<std::endl;
+std::cout<<"  atn: " << atn << " ftn: " << ftn << " rtn: " << rtn << " typ: " << typ << std::endl;
 
 		files.insert(newfile);
 

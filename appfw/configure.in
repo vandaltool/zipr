@@ -10,6 +10,10 @@ if test "$enable_debugging" = yes; then
         OPTIMIZE="-g "
 fi
 
+if test $(uname -s) = SunOS; then
+        OPTIMIZE="-DSOLARIS"
+fi
+
 AC_SUBST(OPTIMIZE, $OPTIMIZE)
 
 AC_OUTPUT(Makefile)

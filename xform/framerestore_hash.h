@@ -36,8 +36,8 @@ typedef struct framerestore_hash_key framerestore_hash_key_t;
 
 struct framerestore_hash_value
 {
-	int reg_offsets[8];	/* index by MD_REG_*, 0=do not restore, else add offset to ret_addr offset */
-	int reg_types[8];	/* index by MD_REG_*, return type of each register  */
+	int reg_offsets[16];	/* index by MD_REG_*, 0=do not restore, else add offset to ret_addr offset */
+	int reg_types[16];	/* index by MD_REG_*, return type of each register  */
 
 	int ret_offset;
 

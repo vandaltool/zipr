@@ -1,4 +1,25 @@
+/*
+ * Copyright (c) 2013, 2014 - University of Virginia 
+ *
+ * This file may be used and modified for non-commercial purposes as long as 
+ * all copyright, permission, and nonwarranty notices are preserved.  
+ * Redistribution is prohibited without prior written consent from the University 
+ * of Virginia.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: University of Virginia
+ * e-mail: jwd@virginia.com
+ * URL   : http://www.cs.virginia.edu/
+ *
+ */
+
 #include "transform.hpp"
+#include "Rewrite_Utility.hpp"
 
 /*
  * Find the first occurrence of find in s, ignore case.
@@ -31,7 +52,7 @@ using namespace MEDS_Annotation;
 // 20130415 Anh added support for additional registers for various utility functions
 // 20130415 Anh added assert() statements for unhandled registers
 
-Transform::Transform(VariantID_t *p_variantID, FileIR_t *p_fileIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions)
+Transform::Transform(VariantID_t *p_variantID, FileIR_t *p_fileIR, set<std::string> *p_filteredFunctions)
 {
 	m_variantID = p_variantID;                  // Current variant ID
 	m_fileIR = p_fileIR;                  		// File IR (off the database) for variant
@@ -51,6 +72,8 @@ void Transform::addInstruction(Instruction_t *p_instr, string p_dataBits, Instru
 	m_fileIR->GetInstructions().insert(p_instr);
 }
 
+#define BENSWAY
+
 //
 //  Before:                              After:
 //  <p_instrumented> ["mov edx,1"]       <p_newInstr> []
@@ -58,19 +81,34 @@ void Transform::addInstruction(Instruction_t *p_instr, string p_dataBits, Instru
 //
 Instruction_t* Transform::carefullyInsertBefore(Instruction_t* &p_instrumented, Instruction_t * &p_newInstr)
 {
+
+//For all insertBefore functions:
+//The "first" instruction will have its contents replaced and a duplicate of "first" will be in the follow of first. 
+//This duplicate is returned since the user already has a pointer to first.
+//To insert before an instruction is the same as modifying the original instruction, and inserting after it
+//a copy of the original instruction 
+
+#ifdef BENSWAY
+	Instruction_t* i2 = IRDBUtility::insertAssemblyBefore(m_fileIR, p_instrumented, m_fileIR->LookupAssembly(p_newInstr), p_newInstr->GetTarget());
+cerr << "carefullyInsertBefore (Ben's Way): @: 0x" << std::hex << p_instrumented->GetAddress() << std::dec << " old instruction: " << p_instrumented->getDisassembly() << " new instruction: " << m_fileIR->LookupAssembly(p_newInstr) << endl;
+	return i2;
+#else
 	db_id_t fileID = p_instrumented->GetAddress()->GetFileID();
 	Function_t* func = p_instrumented->GetFunction();
 
 	assert(p_instrumented && p_newInstr && p_instrumented->GetAddress());
 
+// why is old instrunction blank?
+cerr << "(1) carefullyInsertBefore: @: 0x" << std::hex << p_instrumented->GetAddress() << std::dec << " old instruction: " << p_instrumented->getDisassembly() << " new instruction: " << m_fileIR->LookupAssembly(p_newInstr) << endl;
+
 	// duplicate old instrumented instruction
-	Instruction_t* dupInstr = allocateNewInstruction(p_instrumented->GetAddress()->GetFileID(), p_instrumented->GetFunction());
+	Instruction_t* dupInstr = allocateNewInstruction(fileID, func);
+
 	dupInstr->SetDataBits(p_instrumented->GetDataBits());
 	dupInstr->SetComment(p_instrumented->GetComment());
 	dupInstr->SetCallback(p_instrumented->GetCallback());
 	dupInstr->SetFallthrough(p_instrumented->GetFallthrough());
 	dupInstr->SetTarget(p_instrumented->GetTarget());
-
 	dupInstr->SetOriginalAddressID(p_instrumented->GetOriginalAddressID());
 	AddressID_t *saveIBTA = p_instrumented->GetIndirectBranchTargetAddress();
 	dupInstr->SetIndirectBranchTargetAddress(NULL);
@@ -87,18 +125,32 @@ Instruction_t* Transform::carefullyInsertBefore(Instruction_t* &p_instrumented, 
 	//
 	m_fileIR->ChangeRegistryKey(p_instrumented, dupInstr);
 
-	// replace instrumented with new instruction
-	p_instrumented->SetDataBits(p_newInstr->GetDataBits());
+	if (p_newInstr->GetDataBits().size() == 0)
+		m_fileIR->RegisterAssembly(p_instrumented, m_fileIR->LookupAssembly(p_newInstr));
+	else
+		p_instrumented->SetDataBits(p_newInstr->GetDataBits()); 
+
 	p_instrumented->SetComment(p_newInstr->GetComment());
 	p_instrumented->SetCallback(p_newInstr->GetCallback());
 	p_instrumented->SetFallthrough(dupInstr);
 
 	p_instrumented->SetOriginalAddressID(BaseObj_t::NOT_IN_DATABASE);
 	p_instrumented->SetIndirectBranchTargetAddress(saveIBTA);
+	p_instrumented->GetRelocations().clear();
 
    	p_newInstr = p_instrumented;
 
+cerr << "(2) carefullyInsertBefore: @: 0x" << std::hex << p_instrumented->GetAddress() << std::dec << " old instruction: " << dupInstr->getDisassembly() << " new instruction: " << m_fileIR->LookupAssembly(p_newInstr) << endl;
 	return dupInstr;
+#endif
+}
+
+void Transform::addPushf(Instruction_t *p_pushf_i, Instruction_t *p_fallThrough)
+{
+	string dataBits;
+	dataBits.resize(1);
+	dataBits[0] = 0x9c;
+	addInstruction(p_pushf_i, dataBits, p_fallThrough, NULL);
 }
 
 void Transform::addPushRegister(Instruction_t *p_instr, Register::RegisterName p_reg, Instruction_t *p_fallThrough)
@@ -277,14 +329,6 @@ void Transform::addPusha(Instruction_t *p_pusha_i, Instruction_t *p_fallThrough)
 	addInstruction(p_pusha_i, dataBits, p_fallThrough, NULL);
 }
 
-void Transform::addPushf(Instruction_t *p_pushf_i, Instruction_t *p_fallThrough)
-{
-	string dataBits;
-	dataBits.resize(1);
-	dataBits[0] = 0x9c;
-	addInstruction(p_pushf_i, dataBits, p_fallThrough, NULL);
-}
-
 void Transform::addPopf(Instruction_t *p_popf_i, Instruction_t *p_fallThrough)
 {
 	string dataBits;
@@ -313,7 +357,7 @@ void Transform::addNop(Instruction_t *p_nop_i, Instruction_t *p_fallThrough)
 Instruction_t* Transform::allocateNewInstruction(db_id_t p_fileID, Function_t* p_func)
 {
 	Instruction_t *instr = new Instruction_t();
-	AddressID_t *a =new AddressID_t();
+	AddressID_t *a = new AddressID_t();
 
 	a->SetFileID(p_fileID);
 
@@ -455,7 +499,7 @@ void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumen
 }
 
 // returns true if BeaEngine says arg1 of the instruction is a register 
-bool Transform::hasTargetRegister(Instruction_t *p_instruction)
+bool Transform::hasTargetRegister(Instruction_t *p_instruction, int p_argNo)
 {
 	if (!p_instruction)
 		return false;
@@ -463,17 +507,29 @@ bool Transform::hasTargetRegister(Instruction_t *p_instruction)
 	DISASM disasm;
 	p_instruction->Disassemble(disasm);
 	
-	return disasm.Argument1.ArgType & 0xFFFF0000 & REGISTER_TYPE;
+	if (p_argNo == 1)
+		return disasm.Argument1.ArgType & 0xFFFF0000 & REGISTER_TYPE;
+	else if (p_argNo == 2)
+		return disasm.Argument2.ArgType & 0xFFFF0000 & REGISTER_TYPE;
+	else if (p_argNo == 3)
+		return disasm.Argument3.ArgType & 0xFFFF0000 & REGISTER_TYPE;
+	else
+		return false;
 }
 
-Register::RegisterName Transform::getTargetRegister(Instruction_t *p_instruction)
+Register::RegisterName Transform::getTargetRegister(Instruction_t *p_instruction, int p_argNo)
 {
-	if (hasTargetRegister(p_instruction))
+	if (hasTargetRegister(p_instruction, p_argNo))
 	{
 		DISASM disasm;
 		p_instruction->Disassemble(disasm);
 
-		return Register::getRegister(disasm.Argument1.ArgMnemonic);
+		if (p_argNo == 1)
+			return Register::getRegister(disasm.Argument1.ArgMnemonic);
+		else if (p_argNo == 2)
+			return Register::getRegister(disasm.Argument2.ArgMnemonic);
+		else if (p_argNo == 3)
+			return Register::getRegister(disasm.Argument3.ArgMnemonic);
 	}
 	else
 		return Register::UNKNOWN;
@@ -498,6 +554,28 @@ bool Transform::isMultiplyInstruction(Instruction_t *p_instruction)
 
 	// beaengine adds space at the end of the mnemonic string
 	return my_strcasestr(disasm.Instruction.Mnemonic, "MUL ") != NULL;
+}
+
+
+//
+// Returns true iff instruction is a MOV (according to BeaEngine)
+//
+bool Transform::isMovInstruction(Instruction_t *p_instruction)
+{
+	if (!p_instruction)
+		return false;
+
+	std::string assembly = m_fileIR->LookupAssembly(p_instruction);
+	if (assembly.length() > 0)
+	{
+		return my_strcasestr(assembly.c_str(), "MOV") != NULL;
+	}
+
+	DISASM disasm;
+	p_instruction->Disassemble(disasm);
+
+	// nb: beaengine adds space at the end of the mnemonic string
+	return my_strcasestr(disasm.Instruction.Mnemonic, "MOV") != NULL;
 }
 
 //
@@ -895,35 +973,12 @@ void Transform::addJo(Instruction_t *p_instr, Instruction_t *p_fallThrough, Inst
 
 	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
 }
-
-// jno - jump not overflow
-void Transform::addJno(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target)
-{
-	string dataBits;
-	dataBits.resize(2);
-	dataBits[0] = 0x71;
-	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
-
-	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
-}
-
 // jc - jump carry
 void Transform::addJc(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target)
 {
 	string dataBits;
 	dataBits.resize(2);
 	dataBits[0] = 0x72;
-	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
-
-	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
-}
-
-// jnc - jump not carry
-void Transform::addJnc(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target)
-{
-	string dataBits;
-	dataBits.resize(2);
-	dataBits[0] = 0x73;
 	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
 
 	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
@@ -1127,49 +1182,30 @@ void Transform::addMovRegisters(Instruction_t *p_instr, Register::RegisterName p
 //	cerr << "addMovRegisters(): " << p_instr->getDisassembly() << endl;
 }
 
-void Transform::addMovRegisterSignedConstant(Instruction_t *p_instr, Register::RegisterName p_regTgt, int p_constant, Instruction_t *p_fallThrough)
+void Transform::addMovRegisterSignedConstant(Instruction_t *p_instr, Register::RegisterName p_regTgt, long int p_constant, Instruction_t *p_fallThrough)
 {
-    p_instr->SetFallthrough(p_fallThrough);
+	p_instr->SetFallthrough(p_fallThrough);
 
 	char buf[128];
-	sprintf(buf,"mov %s, %d", Register::toString(p_regTgt).c_str(), p_constant);
 
-    string assembly(buf);
-#ifdef OPTIMIZE_ASSEMBLY
+	sprintf(buf,"mov %s, %ld", Register::toString(p_regTgt).c_str(), p_constant);
+
+	string assembly(buf);
 	m_fileIR->RegisterAssembly(p_instr, assembly);
-#else
-    if (!p_instr->Assemble(assembly))
-    {
-        cerr << "addMovRegisterSignedConstant(): error in assembling instruction: " << assembly << endl;
-		assert(0);
-        return;
-    }
-#endif
 
-//	cerr << "addMovRegisterSignedConstant(): " << p_instr->getDisassembly() << endl;
 	p_instr->SetComment("Saturating arithmetic");
 }
 
-void Transform::addMovRegisterUnsignedConstant(Instruction_t *p_instr, Register::RegisterName p_regTgt, unsigned int p_constant, Instruction_t *p_fallThrough)
+void Transform::addMovRegisterUnsignedConstant(Instruction_t *p_instr, Register::RegisterName p_regTgt, unsigned long int p_constant, Instruction_t *p_fallThrough)
 {
-    p_instr->SetFallthrough(p_fallThrough);
+	p_instr->SetFallthrough(p_fallThrough);
 
 	char buf[128];
-	sprintf(buf,"mov %s, %u", Register::toString(p_regTgt).c_str(), p_constant);
+	sprintf(buf,"mov %s, %lu", Register::toString(p_regTgt).c_str(), p_constant);
 
-    string assembly(buf);
-#ifdef OPTIMIZE_ASSEMBLY
+	string assembly(buf);
 	m_fileIR->RegisterAssembly(p_instr, assembly);
-#else
-    if (!p_instr->Assemble(assembly))
-    {
-        cerr << "addMovRegisterSignedConstant(): error in assembling instruction: " << assembly << endl;
-		assert(0);
-        return;
-    }
-#endif
 
-//	cerr << "addMovRegisterUnsignedConstant(): " << p_instr->getDisassembly() << endl;
 	p_instr->SetComment("Saturating arithmetic");
 }
 
@@ -1196,3 +1232,304 @@ void Transform::addAndRegister32Mask(Instruction_t *p_instr, Register::RegisterN
 	p_instr->SetComment("Saturating arithmetic by masking");
 }
 
+//-----------------------------------------------------
+// known to be used on x86-64
+//-----------------------------------------------------
+
+// hlt
+void Transform::addHlt(Instruction_t *p_instr, Instruction_t *p_fallThrough)
+{
+	string assembly("hlt");
+	m_fileIR->RegisterAssembly(p_instr, assembly);
+	p_instr->SetFallthrough(p_fallThrough);
+}
+
+// jno - jump not overflow
+void Transform::addJno(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target)
+{
+	string assembly("jno 0x22");
+	m_fileIR->RegisterAssembly(p_instr, assembly);
+	p_instr->SetFallthrough(p_fallThrough);
+	p_instr->SetTarget(p_target);
+}
+
+// jnc - jump not carry
+void Transform::addJnc(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target)
+{
+	string assembly("jnc 0x22");
+	m_fileIR->RegisterAssembly(p_instr, assembly);
+	p_instr->SetFallthrough(p_fallThrough);
+	p_instr->SetTarget(p_target);
+}
+
+Instruction_t* Transform::addNewMaxSaturation(Instruction_t *p_prev, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation p_annotation)
+{
+	Instruction_t *mov = allocateNewInstruction(p_prev->GetAddress()->GetFileID(), p_prev->GetFunction());
+	if (p_prev)
+		p_prev->SetFallthrough(mov);
+	addMaxSaturation(mov, p_reg, p_annotation, NULL);
+	return mov;
+}
+
+void Transform::addMaxSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough)
+{
+	assert(getFileIR() && p_instruction);
+
+	p_instruction->SetFallthrough(p_fallthrough);
+
+	if (p_annotation.isUnsigned())
+	{
+		// use MAX_UNSIGNED for the bit width
+		switch (Register::getBitWidth(p_reg))
+		{
+			case 64:
+				addMovRegisterUnsignedConstant(p_instruction, p_reg, 0xFFFFFFFFFFFFFFFF, p_fallthrough);
+				break;
+			case 32:
+				addMovRegisterUnsignedConstant(p_instruction, p_reg, 0xFFFFFFFF, p_fallthrough);
+				break;
+			case 16:
+				addMovRegisterUnsignedConstant(p_instruction, p_reg, 0xFFFF, p_fallthrough);
+				break;
+			case 8:
+				addMovRegisterUnsignedConstant(p_instruction, p_reg, 0xFF, p_fallthrough);
+				break;
+			default:
+				cerr << "Transform::addMaxSaturation(): invalid bit width: " << p_annotation.getBitWidth() << endl;
+				break;
+		}
+	}
+	else
+	{
+		// treat unknown and signed the same way for overflows
+		// use MAX_SIGNED for the bit width
+		switch (Register::getBitWidth(p_reg))
+		{
+			case 64:
+				addMovRegisterSignedConstant(p_instruction, p_reg, 0x7FFFFFFFFFFFFFFF, p_fallthrough);
+				break;
+			case 32:
+				addMovRegisterSignedConstant(p_instruction, p_reg, 0x7FFFFFFF, p_fallthrough);
+				break;
+			case 16:
+				addMovRegisterSignedConstant(p_instruction, p_reg, 0x7FFF, p_fallthrough);
+				break;
+			case 8:
+				addMovRegisterSignedConstant(p_instruction, p_reg, 0x7F, p_fallthrough);
+				break;
+			default:
+				cerr << "Transform::addMaxSaturation(): invalid bit width: " << p_annotation.getBitWidth() << endl;
+				break;
+		}
+	}
+}
+
+void Transform::addMinSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough)
+{
+	assert(getFileIR() && p_instruction);
+
+	p_instruction->SetFallthrough(p_fallthrough);
+
+	if (p_annotation.isUnsigned())
+	{
+		// use MIN_UNSIGNED
+		addMovRegisterUnsignedConstant(p_instruction, p_reg, 0, p_fallthrough);
+	}
+	else
+	{
+		// treat unknown and signed the same way for overflows
+		// use MIN_SIGNED for the bit width
+		switch (Register::getBitWidth(p_reg))
+		{
+			case 64:
+				addMovRegisterSignedConstant(p_instruction, p_reg, 0x8000000000000000, p_fallthrough);
+				break;
+			case 32:
+				addMovRegisterSignedConstant(p_instruction, p_reg, 0x80000000, p_fallthrough);
+				break;
+			case 16:
+				addMovRegisterSignedConstant(p_instruction, p_reg, 0x8000, p_fallthrough);
+				break;
+			case 8:
+				addMovRegisterSignedConstant(p_instruction, p_reg, 0x80, p_fallthrough);
+				break;
+			default:
+				cerr << "Transform::addMinSaturation(): invalid bit width: " << p_annotation.getBitWidth() << endl;
+				break;
+		}
+	}
+}
+
+void Transform::setAssembly(Instruction_t *p_instr, string p_asm)
+{
+	m_fileIR->RegisterAssembly(p_instr, p_asm);
+}
+
+//
+// Allocate and add new instruction given its assembly form
+// If <p_instr> not NULL, then set fallthrough appropriately
+//
+// Returns the newly added instruction
+//
+// <p_instr> defined:
+// <p_instr>            <p_instr>
+// <fallthrough>  ==>   <newinstr>(<p_asm>)
+//                      <fallthrough>
+//
+// <p_instr> is NULL:
+//                ==>   <newinstr>(<p_asm>)
+//
+Instruction_t* Transform::addNewAssembly(Instruction_t *p_instr, string p_asm)
+{
+	Instruction_t* newinstr;
+	if (p_instr)
+		newinstr = allocateNewInstruction(p_instr->GetAddress()->GetFileID(), p_instr->GetFunction());
+	else
+		newinstr = allocateNewInstruction(BaseObj_t::NOT_IN_DATABASE, NULL);
+
+	m_fileIR->RegisterAssembly(newinstr, p_asm);
+
+	if (p_instr)
+	{
+		newinstr->SetFallthrough(p_instr->GetFallthrough());
+		p_instr->SetFallthrough(newinstr);
+	}
+
+	return newinstr;
+}
+
+// register instruction in IRDB
+// 20140421
+Instruction_t* Transform::addNewAssembly(string p_asm)
+{
+	return addNewAssembly(NULL, p_asm);
+}
+
+// x86-64
+// 20140421
+void Transform::addCallbackHandler64(Instruction_t *p_orig, string p_callbackHandler, int p_numArgs)
+{
+	// nb: if first time, register and cache callback handler sequence
+	if (m_handlerMap.count(p_callbackHandler) == 0)
+	{
+		m_handlerMap[p_callbackHandler] = registerCallbackHandler64(p_callbackHandler, p_numArgs);
+	}
+
+	if (p_orig)
+		p_orig->SetTarget(m_handlerMap[p_callbackHandler]);
+}
+
+// x86-64
+// register callback handler sequence 
+// nb: strata semantics is that it does not save flags, so we don't bother
+//     saving/restoring flags either in the callback handler
+//     saving/restoring flags must be done outside of this routine
+// 20140416
+Instruction_t* Transform::registerCallbackHandler64(string p_callbackHandler, int p_numArgs)
+{
+	Instruction_t *instr;
+	Instruction_t *first;
+	char tmpbuf[1024];
+
+	// save flags and 16 registers (136 bytes)
+	// call pushes 8 bytes
+	// Total: 8 * 18 = 144
+	first = instr = addNewAssembly("push rsp");
+	instr = addNewAssembly(instr, "push rbp");
+	instr = addNewAssembly(instr, "push rdi");
+	instr = addNewAssembly(instr, "push rsi");
+	instr = addNewAssembly(instr, "push rdx");
+	instr = addNewAssembly(instr, "push rcx");
+	instr = addNewAssembly(instr, "push rbx");
+	instr = addNewAssembly(instr, "push rax");
+	instr = addNewAssembly(instr, "push r8");
+	instr = addNewAssembly(instr, "push r9");
+	instr = addNewAssembly(instr, "push r10");
+	instr = addNewAssembly(instr, "push r11");
+	instr = addNewAssembly(instr, "push r12");
+	instr = addNewAssembly(instr, "push r13");
+	instr = addNewAssembly(instr, "push r14");
+	instr = addNewAssembly(instr, "push r15");
+
+	// handle the arguments (if any): rdi, rsi, rdx, rcx, r8, r9
+	// first arg starts at byte +144
+	// now at +136??? b/c we took out the push
+	instr = addNewAssembly(instr, "mov rdi, rsp");
+
+	if (p_numArgs >= 1)
+		instr = addNewAssembly(instr,  "mov rsi, [rsp+136]");
+	if (p_numArgs >= 2)
+		instr = addNewAssembly(instr,  "mov rdx, [rsp+144]");
+	if (p_numArgs >= 3)
+		instr = addNewAssembly(instr,  "mov rcx, [rsp+152]");
+	if (p_numArgs >= 4)
+		instr = addNewAssembly(instr,  "mov r8, [rsp+160]");
+	if (p_numArgs > 4)
+		assert(0); // only handle up to 5 args
+
+	// pin the instruction that follows the callback handler
+	Instruction_t* postCallback = allocateNewInstruction();
+	virtual_offset_t postCallbackReturn = getAvailableAddress();
+	postCallback->GetAddress()->SetVirtualOffset(postCallbackReturn);
+
+	// push the address to return to once the callback handler is invoked
+	sprintf(tmpbuf,"mov rax, 0x%x", postCallbackReturn);
+	instr = addNewAssembly(instr, tmpbuf);
+
+	instr = addNewAssembly(instr, "push rax");
+
+	// use a nop instruction for the actual callback
+	instr = addNewAssembly(instr, "nop");
+	instr->SetComment(" -- callback: " + p_callbackHandler);
+	instr->SetCallback(p_callbackHandler); 
+	instr->SetFallthrough(postCallback); 
+
+	// need to make sure the post callback address is pinned
+	// (so that ILR and other transforms do not relocate it)
+	AddressID_t *indTarg = new AddressID_t();
+	m_fileIR->GetAddresses().insert(indTarg);
+	indTarg->SetVirtualOffset(postCallback->GetAddress()->GetVirtualOffset());
+	indTarg->SetFileID(BaseObj_t::NOT_IN_DATABASE); // SPRI global namespace
+	postCallback->SetIndirectBranchTargetAddress(indTarg);
+
+	// restore registers
+	setAssembly(postCallback, "pop r15");           
+	instr = addNewAssembly(postCallback, "pop r14");
+	instr = addNewAssembly(instr, "pop r13");
+	instr = addNewAssembly(instr, "pop r12");
+	instr = addNewAssembly(instr, "pop r11");
+	instr = addNewAssembly(instr, "pop r10");
+	instr = addNewAssembly(instr, "pop r9");
+	instr = addNewAssembly(instr, "pop r8");
+	instr = addNewAssembly(instr, "pop rax");
+	instr = addNewAssembly(instr, "pop rbx");
+	instr = addNewAssembly(instr, "pop rcx");
+	instr = addNewAssembly(instr, "pop rdx");
+	instr = addNewAssembly(instr, "pop rsi");
+	instr = addNewAssembly(instr, "pop rdi");
+	instr = addNewAssembly(instr, "pop rbp");
+	instr = addNewAssembly(instr, "lea rsp, [rsp+8]");
+
+	instr = addNewAssembly(instr, "ret");
+
+	// return first instruction in the callback handler chain
+	return first;
+}
+
+void Transform::logMessage(const std::string &p_method, const std::string &p_msg)
+{
+	std::cerr << p_method << ": " << p_msg << std::endl;
+}
+
+void Transform::logMessage(const std::string &p_method, const MEDS_InstructionCheckAnnotation& p_annotation, const std::string &p_msg)
+{
+	logMessage(p_method, p_msg + " annotation: " + p_annotation.toString());
+}
+
+void libTransform::convertToLowercase(string &str)
+{
+	for (int i = 0; i < str.length(); ++i)
+	{
+		str[i] = tolower(str[i]);
+	}
+}

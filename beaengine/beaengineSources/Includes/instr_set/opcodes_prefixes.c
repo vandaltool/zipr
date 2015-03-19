@@ -154,7 +154,9 @@ void __bea_callspec__ PrefSEGSS(PDISASM pMyDisasm)
  * ==================================================================== */
 void __bea_callspec__ PrefOpSize(PDISASM pMyDisasm)
 {
+	
     if (!Security(0, pMyDisasm)) return;
+    if(GV.VEX.has_vex) FailDecode(pMyDisasm);
     (*pMyDisasm).Prefix.OperandSize = InUsePrefix;
     GV.EIP_++;
     (*pMyDisasm).Prefix.Number++;

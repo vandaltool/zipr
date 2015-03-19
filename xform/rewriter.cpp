@@ -133,17 +133,22 @@ void Rewriter::readAnnotationFile(char p_filename[])
 				char zz[1000];
 				int reg_num, reg_offset, reg_type;
 				int reg=0;
-				for( ; reg<8;reg++)
+
+				while(1)	// loop until found ZZ 
 				{
-				fscanf(fin, "%d %d %d", &reg_num, &reg_offset, &reg_type);
-				assert(reg_num==reg);
+					fscanf(fin, "%s", zz);
+					if(strcmp("ZZ", zz)==0)
+						break;
+			
+					reg_num=atoi(zz);
+					fscanf(fin,"%d %d", &reg_offset, &reg_type);
+					assert(reg_num==reg);
 					frame_restore_hash_add_reg_restore(addr,reg_num,reg_offset,reg_type);
+					reg++;
+				}
 			}
-			fscanf(fin, "%s", zz);
-			assert(strcmp("ZZ", zz)==0);
-		}
-		else if(strcmp(scope,"MMSAFENESS")==0)
-		{
+			else if(strcmp(scope,"MMSAFENESS")==0)
+			{
 			char safeness[1000];
 			fscanf(fin, "%s", safeness);
 			if(strcmp(safeness, "SAFE") == 0)
@@ -153,17 +158,17 @@ void Rewriter::readAnnotationFile(char p_filename[])
 // bug in MEDS re. FUNCTION SAFENESS, the annotation file sometimes mark a function as
 // SAFE when in fact it isn't
 //					m_functions[addr]->setSafe();
-				frame_restore_hash_set_safe_bit(addr,TRUE);
-			}
-			else if(strcmp(safeness, "SPECSAFE") == 0)
-			{
-//				m_functions[addr]->setSafe();
-				frame_restore_hash_set_safe_bit(addr,TRUE);
-			}
-			else if(strcmp(safeness, "UNSAFE") == 0)
-				frame_restore_hash_set_safe_bit(addr,FALSE);
-			else
-				fprintf(stderr,"Do not understand safeness terminology '%s' at line %d\n", safeness, line);
+					frame_restore_hash_set_safe_bit(addr,TRUE);
+				}
+				else if(strcmp(safeness, "SPECSAFE") == 0)
+				{
+//					m_functions[addr]->setSafe();
+					frame_restore_hash_set_safe_bit(addr,TRUE);
+				}
+				else if(strcmp(safeness, "UNSAFE") == 0)
+					frame_restore_hash_set_safe_bit(addr,FALSE);
+				else
+					fprintf(stderr,"Do not understand safeness terminology '%s' at line %d\n", safeness, line);
 			}
 			else
 				fprintf(stderr,"Do not understand type terminology '%s' at line %d\n", type, line);
@@ -602,7 +607,7 @@ void Rewriter::readXrefsFile(char p_filename[])
 		assert(strcmp(scope,"XREF")==0);
 		fscanf(fin, "%s%s%s", ibt,fromib,dest);
 		assert(strcmp(ibt,"IBT")==0);
-		assert(strcmp(fromib,"FROMIB")==0);
+		assert(strcmp(fromib,"FROMIB")==0 || strcmp(fromib,"FROMDATA")==0);
 	
 		
       		wahoo::Instruction *instr = addr_to_insn_map[addr];
@@ -637,7 +642,10 @@ void Rewriter::readXrefsFile(char p_filename[])
 void Rewriter::readElfFile(char p_filename[])
 {
 	char buf[1000];
-	sprintf(buf, "gobjdump -d --prefix-addresses %s | grep \"^[0-9]\"", p_filename);
+	char* objdump=getenv("PS_OBJDUMP");
+	if(!objdump)
+		objdump=strdup("objdump");
+	sprintf(buf, "%s -d --prefix-addresses %s | grep \"^[0-9]\"", objdump, p_filename);
 	FILE* pin=popen(buf, "r");
 	int addr;
 
@@ -697,6 +705,8 @@ void Rewriter::dissassemble()
 		}
 		else
 		{
+			cerr<<"BeaEngine has decided that instrution at "<<hex
+				<<instr->getAddress()<<dec<<" is bogus."<<endl;
 			/* bogus intruction, remove it */
 			m_instructions[instr->getAddress()]=NULL;
 

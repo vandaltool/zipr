@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2013, 2014 - University of Virginia 
+ *
+ * This file may be used and modified for non-commercial purposes as long as 
+ * all copyright, permission, and nonwarranty notices are preserved.  
+ * Redistribution is prohibited without prior written consent from the University 
+ * of Virginia.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: University of Virginia
+ * e-mail: jwd@virginia.com
+ * URL   : http://www.cs.virginia.edu/
+ *
+ */
+
 //
 // Detection of SQL Injections using really simple heuristic:
 //   (a) extract strings in binary
@@ -15,7 +35,7 @@
 #include <ctype.h>
 #include <string.h>
 
-void osc_parse(char* to_parse, char* taint_markings,matched_record** matched_signatures);
+void osc_parse(char* to_parse, char* taint_markings);
 
 
 static int oscfw_initialized = 0;
@@ -40,87 +60,51 @@ int oscfw_isInitialized()
 
 int oscfw_verify_fast(const char *p_command, char *p_taint)
 {
+	int i;
 	int length = strlen(p_command);
-//    	matched_record** matched_signatures = appfw_allocate_matched_signatures(length);
 
-  	appfw_empty_taint(p_command, p_taint, NULL,TRUE);
-//	if(getenv("APPFW_VERBOSE"))
-//	  	appfw_display_taint("Debugging OS Command", p_command, p_taint);
+  	appfw_empty_taint(p_command, p_taint);
 
-	osc_parse((char*)p_command, (char*)p_taint, NULL);
-
-	if(getenv("APPFW_VERBOSE"))
-  		appfw_display_taint("Debug OSC after parse", p_command, p_taint);
-
-  	int OK=appfw_establish_taint_fast(p_command, p_taint, TRUE);
-
-//	appfw_deallocate_matched_signatures(matched_signatures, length);
-
-  	// return code is really a boolean
-  	// return > 0 if success
-  	// return 0 if failure
-//	int i;
-//	for(i=0;i<strlen(p_command);i++)
-//	{
-//		if(getenv("APPFW_PRINTCOMMAND_VERBOSE"))
-//			fprintf(stderr, "Verifyig p_command[%d]=%d\n", i, p_command[i]);
-//		if(p_taint[i]==APPFW_SECURITY_VIOLATION)
-//		{
-//			if(getenv("APPFW_VERBOSE"))
-//				fprintf(stderr,"verify NOT okayK\n");
-//			return 0;
-//		}
-//	}
-	if(!OK && getenv("APPFW_VERBOSE"))
-		fprintf(stderr,"verify NOT okayK\n");
-	if(OK && getenv("APPFW_VERBOSE"))
-		fprintf(stderr,"verify OK\n");
-	return OK;
-}
-
-int oscfw_verify_slow(const char *p_command, char *p_taint)
-{
-	int length = strlen(p_command);
-    	matched_record** matched_signatures = appfw_allocate_matched_signatures(length);
-
-  	appfw_empty_taint(p_command, p_taint, NULL,TRUE);
-   	appfw_establish_taint(p_command, p_taint, matched_signatures,TRUE);
 	if(getenv("APPFW_VERBOSE"))
 	  	appfw_display_taint("Debugging OS Command", p_command, p_taint);
 
-
-	osc_parse((char*)p_command, (char*)p_taint, NULL);
-
-	if(getenv("APPFW_VERBOSE"))
-  		appfw_display_taint("Debug OSC after parse", p_command, p_taint);
+	osc_parse((char*)p_command, (char*)p_taint);
+	// post: taint markings will be 'security violation' wherever there's a 
+	//       critical keyword
 
 
-	appfw_deallocate_matched_signatures(matched_signatures, length);
+  	int OK = appfw_establish_taint_fast2(p_command, p_taint, TRUE, FALSE);
 
-  	// return code is really a boolean
-  	// return > 0 if success
-  	// return 0 if failure
-	int i;
-	int OK=TRUE;
-	for(i=0;i<strlen(p_command);i++)
+	// heuristic -- if first critical token is tainted (a security violation)
+	//              then allow the command through
+	for (i = 0; i < length; ++i)
 	{
-		if(getenv("APPFW_PRINTCOMMAND_VERBOSE"))
-			fprintf(stderr, "Verifyig p_command[%d]=%d\n", i, p_command[i]);
-		if(p_taint[i]==APPFW_SECURITY_VIOLATION)
+		if (is_blessed(p_taint[i]))
+			break;
+
+		if (is_security_violation(p_taint[i]) )
 		{
-			OK=FALSE;
+			appfw_log("OSC: first critical token is tainted, but bless anyways");
+			OK = 1;
 			break;
 		}
 	}
-	if(!OK && getenv("APPFW_VERBOSE"))
-		fprintf(stderr,"verify NOT okayK\n");
-	if(OK && getenv("APPFW_VERBOSE"))
-		fprintf(stderr,"verify OK\n");
+
+	if (OK)
+	{
+		appfw_log("OSC: command verify OK");
+	}
+	else
+	{
+		appfw_log_taint("OS Command Injection detected", p_command, p_taint);
+	}
+
 	return OK;
 }
+
 
 // insert function below to parse & verify taint
 int oscfw_verify(const char *p_command, char *p_taint)
 {
-	return oscfw_verify_slow(p_command, p_taint);
+	return oscfw_verify_fast(p_command, p_taint);
 }

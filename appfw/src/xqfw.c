@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2013, 2014 - University of Virginia 
+ *
+ * This file may be used and modified for non-commercial purposes as long as 
+ * all copyright, permission, and nonwarranty notices are preserved.  
+ * Redistribution is prohibited without prior written consent from the University 
+ * of Virginia.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: University of Virginia
+ * e-mail: jwd@virginia.com
+ * URL   : http://www.cs.virginia.edu/
+ *
+ */
+
 
 #include "appfw.h"
 #include "xqfw.h"
@@ -33,10 +53,9 @@ int xqfw_isInitialized()
 int xqfw_verify(const char *p_command)
 {
 	int length = strlen(p_command);
-    matched_record** matched_signatures = appfw_allocate_matched_signatures(length);
 
 	char *p_taint=malloc(length+1);
-  	appfw_establish_taint(p_command, p_taint, matched_signatures,FALSE);
+  	appfw_establish_blessed(p_command, p_taint, FALSE);
 	if(getenv("APPFW_VERBOSE"))
 	  	appfw_display_taint("Debugging OS Command", p_command, p_taint);
 
@@ -44,8 +63,6 @@ int xqfw_verify(const char *p_command)
 
 	if(getenv("APPFW_VERBOSE"))
   		appfw_display_taint("Debug XQ after parse", p_command, p_taint);
-
-	appfw_deallocate_matched_signatures(matched_signatures, length);
 
   	// return code is really a boolean
   	// return > 0 if success

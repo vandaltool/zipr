@@ -1,5 +1,26 @@
+/*
+ * Copyright (c) 2014 - Zephyr Software LLC
+ *
+ * This file may be used and modified for non-commercial purposes as long as
+ * all copyright, permission, and nonwarranty notices are preserved.
+ * Redistribution is prohibited without prior written consent from Zephyr
+ * Software.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: Zephyr Software
+ * e-mail: jwd@zephyr-software.com
+ * URL   : http://www.zephyr-software.com/
+ *
+ */
+
 
 #include <map>
+#include <libIRDB-core.hpp>
 #include <libIRDB-cfg.hpp>
 #include <utils.hpp>
 
@@ -88,5 +109,69 @@ std::ostream& libIRDB::operator<<(std::ostream& os, const BasicBlock_t& block)
 	os<<endl;
 
 	return os;
+}
+
+
+bool BasicBlock_t::EndsInBranch() 
+{
+	DISASM d;
+	Instruction_t *branch=instructions[instructions.size()-1];	
+
+	assert(branch);
+
+	branch->Disassemble(d);
+
+	if(d.Instruction.BranchType!=0)
+		return true;
+	return false;
+
+	
+}
+bool BasicBlock_t::EndsInIndirectBranch() 
+{
+	DISASM d;
+	Instruction_t *branch=instructions[instructions.size()-1];	
+
+	assert(branch);
+
+	branch->Disassemble(d);
+
+	if(d.Instruction.BranchType==RetType)
+		return true;
+	if(d.Instruction.BranchType==JmpType || d.Instruction.BranchType==CallType)
+	{
+		if((d.Argument1.ArgType&CONSTANT_TYPE)==0)
+			/* not a constant type */
+			return true;
+		return false;
+		
+	}
+
+	return false;
+
+	
+}
+bool BasicBlock_t::EndsInConditionalBranch() 
+{
+	if(!EndsInBranch())
+		return false;
+	DISASM d;
+	Instruction_t *branch=instructions[instructions.size()-1];	
+	assert(branch);
+
+	if(d.Instruction.BranchType==RetType || d.Instruction.BranchType==JmpType || d.Instruction.BranchType==CallType)
+		return false;
+
+	return true;
+
+}
+Instruction_t* BasicBlock_t::GetBranchInstruction()
+
+{
+	if(!EndsInBranch())
+		return NULL;
+
+	Instruction_t *branch=instructions[instructions.size()-1];	
+	return branch;
 }
 

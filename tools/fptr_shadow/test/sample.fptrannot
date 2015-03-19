@@ -1,0 +1,23 @@
+#  4006f4:	b8 00 00 00 00       	mov    $0x0,%eax
+#  4006f9:	e8 d2 fd ff ff       	callq  4004d0 <fprintf@plt>
+###  4006fe:	48 c7 45 e8 e4 05 40 	movq   $0x4005e4,-0x18(%rbp)
+#  400705:	00 
+#  400706:	8b 45 fc             	mov    -0x4(%rbp),%eax
+#  400709:	83 e0 01             	and    $0x1,%eax
+#  40070c:	84 c0                	test   %al,%al
+#  40070e:	74 08                	je     400718 <main+0x7d>
+###  400710:	48 c7 45 e8 3d 06 40 	movq   $0x40063d,-0x18(%rbp)
+#  400717:	00 
+#  400718:	be ec 08 40 00       	mov    $0x4008ec,%esi
+#  40071d:	48 8b 05 0c 09 20 00 	mov    0x20090c(%rip),%rax        # 601030 <__bss_start>
+#  400724:	48 8d 55 e0          	lea    -0x20(%rbp),%rdx
+#  400728:	48 8d 4d e0          	lea    -0x20(%rbp),%rcx
+#  400795:	48 89 c7             	mov    %rax,%rdi
+###  400798:	ff d2                	callq  *%rdx
+#  40079a:	89 45 f8             	mov    %eax,-0x8(%rbp)
+
+4006fe  8    INSTR FPTRSHADOW [rbp-24] SHADOWID 1 
+400710  8    INSTR FPTRSHADOW [rbp-24] SHADOWID 1 
+
+#must do it on the previous instruction b/c call gets converted to push/jmp
+400795  2    INSTR FPTRCHECK [rdx] SHADOWID 1 

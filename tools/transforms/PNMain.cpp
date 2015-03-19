@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2013, 2014 - University of Virginia 
+ *
+ * This file may be used and modified for non-commercial purposes as long as 
+ * all copyright, permission, and nonwarranty notices are preserved.  
+ * Redistribution is prohibited without prior written consent from the University 
+ * of Virginia.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: University of Virginia
+ * e-mail: jwd@virginia.com
+ * URL   : http://www.cs.virginia.edu/
+ *
+ */
+
 
 
 #include <iostream>
@@ -161,6 +181,9 @@ void usage()
 	exit(-1);
 }
 
+// jdh -- moved this so it could be used in PNStackLayout.hpp.  Better to pass in the flag.
+bool do_canaries=true;
+
 int main(int argc, char **argv)
 {
 
@@ -180,7 +203,6 @@ int main(int argc, char **argv)
 	char *coverage_file=NULL;
 	char *only_validate=NULL;
 	bool validate_p1=true;
-	bool do_canaries=true;
 	bool align_stack=false;
 	bool shared_object_protection=false;
 	double p1threshold=0.0;
@@ -213,7 +235,9 @@ int main(int argc, char **argv)
 		case PN_THRESHOLD_OPTION:
 		{
 			p1threshold = strtod(optarg,NULL);
-			if(p1threshold <0 || p1threshold >1)
+			// valid values are -1, and 0-1, inclusive.
+			// -1 means disabled.
+			if(p1threshold != -1 && (p1threshold <0 || p1threshold >1))
 			{
 				//TODO: print a message call usage
 				usage();

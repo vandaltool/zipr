@@ -64,17 +64,41 @@ assert_test_env $outfile STRATAFIER STRATA TOOLCHAIN IDAROOT IDASDK PEASOUP_HOME
 
 # path to source
 cd $TESTLOC
-make clean all
+make clean all peasoup
 if [ ! $? -eq 0 ]; then
 	cleanup 1 "Failed to build mysql intercept tests"
 fi
 
-make run 2>$tmp >/dev/null
-
-num_detected=$(grep -i detected $tmp | wc -l)
-echo "Detected $num_detected violations"
-if [ ! $num_detected -eq 8 ]; then
+APPFW_VERBOSE=1 LDAP_DATA="hacker)(|(objectclass=*)" ./testldapintercept.exe.peasoup 2>$tmp >/dev/null
+grep detected $tmp
+if [ ! $? -eq 0 ]; then
+	echo "Output:"
+	cat $tmp
 	cleanup 1 "Failed to intercept and/or detect security violation"
+fi
+
+APPFW_VERBOSE=1 LDAP_DATA="hacker)(|(objectclass=*)" ./testldapintercept2.exe.peasoup 2>$tmp >/dev/null
+grep detected $tmp
+if [ ! $? -eq 0 ]; then
+	echo "Output:"
+	cat $tmp
+	cleanup 2 "Failed to intercept and/or detect security violation"
+fi
+
+APPFW_VERBOSE=1 LDAP_DATA="hacker)(|(objectclass=*)" ./testldapintercept3.exe.peasoup 2>$tmp >/dev/null
+grep detected $tmp
+if [ ! $? -eq 0 ]; then
+	echo "Output:"
+	cat $tmp
+	cleanup 4 "Failed to intercept and/or detect security violation"
+fi
+
+APPFW_VERBOSE=1 LDAP_DATA="hacker)(|(objectclass=*)" ./testldapintercept4.exe.peasoup 2>$tmp >/dev/null
+grep detected $tmp
+if [ ! $? -eq 0 ]; then
+	echo "Output:"
+	cat $tmp
+	cleanup 8 "Failed to intercept and/or detect security violation"
 fi
 
 cleanup 0 "Successfully tested ldap interception layer"

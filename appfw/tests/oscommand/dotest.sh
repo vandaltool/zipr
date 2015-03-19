@@ -1,6 +1,6 @@
-#!/bin/bash 
+#!/bin/bash -x
 
-APPFW_LIB=$SECURITY_TRANSFORMS_HOME/appfw/lib/libappfw.so
+APPFW_LIB=$SECURITY_TRANSFORMS_HOME/appfw/lib/libappfw.so64
 
 for i in {1..11}
 do

@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2013, 2014 - University of Virginia 
+ *
+ * This file may be used and modified for non-commercial purposes as long as 
+ * all copyright, permission, and nonwarranty notices are preserved.  
+ * Redistribution is prohibited without prior written consent from the University 
+ * of Virginia.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: University of Virginia
+ * e-mail: jwd@virginia.com
+ * URL   : http://www.cs.virginia.edu/
+ *
+ */
+
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdint.h>
@@ -6,6 +26,8 @@
 
 #include "sqlite3.h"
 #include "sqlfw.h"
+
+static int within_sql_hook=FALSE;
 
 //
 // Intercept sqlite queries & prepared statements
@@ -28,9 +50,13 @@ int sqlite3_exec(
   }
 
   char *errMsg = NULL;
-  if (sqlfw_verify(sql, &errMsg))
+  if (within_sql_hook || sqlfw_verify(sql, &errMsg))
   {
-    return intercept_sqlite3Query(db, sql, callback, arg, errmsg);
+	int old_wsh=within_sql_hook;
+	within_sql_hook=TRUE;
+    	int ret= intercept_sqlite3Query(db, sql, callback, arg, errmsg);
+	within_sql_hook=old_wsh;
+	return ret;
   }
   else
   {
@@ -55,9 +81,13 @@ int sqlite3_prepare(
 	}
 
 	char *errMsg = NULL;
-	if (sqlfw_verify(zSql, &errMsg))
+	if (within_sql_hook || sqlfw_verify(zSql, &errMsg))
 	{
-		return intercept_sqlite3Prepare(db, zSql, nByte, ppStmt, pzTail);
+        	int old_wsh=within_sql_hook;
+        	within_sql_hook=TRUE;
+		int ret= intercept_sqlite3Prepare(db, zSql, nByte, ppStmt, pzTail);
+        	within_sql_hook=old_wsh;
+		return ret;
 	}
 	else
 	{
@@ -82,9 +112,13 @@ int sqlite3_prepare_v2(
 	}
 
 	char *errMsg = NULL;
-	if (sqlfw_verify(zSql, &errMsg))
+	if (within_sql_hook || sqlfw_verify(zSql, &errMsg))
 	{
-		return intercept_sqlite3PrepareV2(db, zSql, nByte, ppStmt, pzTail);
+        	int old_wsh=within_sql_hook;
+        	within_sql_hook=TRUE;
+		int ret= intercept_sqlite3PrepareV2(db, zSql, nByte, ppStmt, pzTail);
+        	within_sql_hook=old_wsh;
+		return ret;
 	}
 	else
 	{

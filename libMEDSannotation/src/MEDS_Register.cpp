@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2014 - Zephyr Software LLC
+ *
+ * This file may be used and modified for non-commercial purposes as long as
+ * all copyright, permission, and nonwarranty notices are preserved.
+ * Redistribution is prohibited without prior written consent from Zephyr
+ * Software.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: Zephyr Software
+ * e-mail: jwd@zephyr-software.com
+ * URL   : http://www.zephyr-software.com/
+ *
+ */
+
 #include <string>
 #include <strings.h>
 
@@ -10,9 +30,16 @@ Register::RegisterName Register::getRegister(char *p_reg)
 	return Register::getRegister(std::string(p_reg));
 }
 
+bool Register::isValidRegister(std::string p_reg)
+{
+	return getRegister(p_reg) != UNKNOWN;
+}
+
 Register::RegisterName Register::getRegister(std::string p_reg)
 {
-	if (strcasecmp(p_reg.c_str(), "RAX") == 0)
+	if (strcasecmp(p_reg.c_str(), "EFLAGS") ==0)
+		return EFLAGS;
+	else if (strcasecmp(p_reg.c_str(), "RAX") == 0)
 		return RAX;
 	else if (strcasecmp(p_reg.c_str(), "RBX") == 0)
 		return RBX;
@@ -44,6 +71,8 @@ Register::RegisterName Register::getRegister(std::string p_reg)
 		return R14;
 	else if (strcasecmp(p_reg.c_str(), "R15") == 0)
 		return R15;
+	else if (strcasecmp(p_reg.c_str(), "RIP") == 0)
+		return RIP;
 
 	else if (strcasecmp(p_reg.c_str(), "EAX") == 0)
 		return EAX;
@@ -185,12 +214,14 @@ bool Register::is64bit(Register::RegisterName p_reg)
 	return p_reg == RAX || p_reg == RBX || p_reg == RCX || p_reg == RDX || 
 		p_reg == RSI || p_reg == RDI || p_reg == RBP || p_reg == RSP ||
 		p_reg == R8 || p_reg == R9 || p_reg == R10 || p_reg == R11 || 
-		p_reg == R12 || p_reg == R13 || p_reg == R14 || p_reg == R15;
+		p_reg == R12 || p_reg == R13 || p_reg == R14 || p_reg == R15 || p_reg == RIP;
 }
 
 std::string Register::toString(Register::RegisterName p_reg)
 {
 	if (p_reg == UNKNOWN) return std::string("UNKNOWN");
+
+	else if (p_reg == EFLAGS) return std::string("EFLAGS");
 
 	else if (p_reg == RAX) return std::string("RAX");
 	else if (p_reg == RBX) return std::string("RBX");
@@ -208,6 +239,7 @@ std::string Register::toString(Register::RegisterName p_reg)
 	else if (p_reg == R13) return std::string("R13");
 	else if (p_reg == R14) return std::string("R14");
 	else if (p_reg == R15) return std::string("R15");
+	else if (p_reg == RIP) return std::string("RIP");
 
 	else if (p_reg == EAX) return std::string("EAX");
 	else if (p_reg == EBX) return std::string("EBX");
@@ -251,6 +283,10 @@ std::string Register::toString(Register::RegisterName p_reg)
 	else if (p_reg == BL) return std::string("BL");
 	else if (p_reg == CL) return std::string("CL");
 	else if (p_reg == DL) return std::string("DL");
+	else if (p_reg == SIL) return std::string("SIL");
+	else if (p_reg == DIL) return std::string("DIL");
+	else if (p_reg == BPL) return std::string("BPL");
+	else if (p_reg == SPL) return std::string("SPL");
 	else if (p_reg == R8B) return std::string("R8B");
 	else if (p_reg == R9B) return std::string("R9B");
 	else if (p_reg == R10B) return std::string("R10B");
@@ -283,6 +319,7 @@ int Register::getBitWidth(Register::RegisterName p_reg)
 		case R13:
 		case R14:
 		case R15:
+		case RIP:
 			return 64;
 			break;
 		case EAX:
@@ -350,4 +387,42 @@ int Register::getBitWidth(Register::RegisterName p_reg)
 			return -1;
 			break;
 	}
+}
+
+// favor registers R10..R15
+Register::RegisterName Register::getFreeRegister64(std::set<Register::RegisterName> p_taken)
+{
+	if (p_taken.count(R10) == 0 && p_taken.count(R10D) == 0 && p_taken.count(R10W) == 0 && p_taken.count(R10B) == 0 )
+		return R10;
+	if (p_taken.count(R11) == 0 && p_taken.count(R11D) == 0 && p_taken.count(R11W) == 0 && p_taken.count(R11B) == 0 )
+		return R11;
+	if (p_taken.count(R12) == 0 && p_taken.count(R12D) == 0 && p_taken.count(R12W) == 0 && p_taken.count(R12B) == 0 )
+		return R12;
+	if (p_taken.count(R13) == 0 && p_taken.count(R13D) == 0 && p_taken.count(R13W) == 0 && p_taken.count(R13B) == 0 )
+		return R13;
+	if (p_taken.count(R14) == 0 && p_taken.count(R14D) == 0 && p_taken.count(R14W) == 0 && p_taken.count(R14B) == 0 )
+		return R14;
+	if (p_taken.count(R15) == 0 && p_taken.count(R15D) == 0 && p_taken.count(R15W) == 0 && p_taken.count(R15B) == 0 )
+		return R15;
+	if (p_taken.count(RAX) == 0 && p_taken.count(EAX) == 0  && p_taken.count(AX) == 0   && p_taken.count(AL) == 0 )
+		return RAX;
+	if (p_taken.count(RBX) == 0 && p_taken.count(EBX) == 0  && p_taken.count(BX) == 0   && p_taken.count(BL) == 0 )
+		return RBX;
+	if (p_taken.count(RCX) == 0 && p_taken.count(ECX) == 0  && p_taken.count(CX) == 0   && p_taken.count(CL) == 0 )
+		return RCX;
+	if (p_taken.count(RDX) == 0 && p_taken.count(EDX) == 0  && p_taken.count(DX) == 0   && p_taken.count(DL) == 0 )
+		return RDX;
+	if (p_taken.count(RSI) == 0 && p_taken.count(ESI) == 0  && p_taken.count(SI) == 0   && p_taken.count(SIL) == 0 )
+		return RSI;
+	if (p_taken.count(RDI) == 0 && p_taken.count(EDI) == 0  && p_taken.count(DI) == 0   && p_taken.count(DIL) == 0 )
+		return RDI;
+	if (p_taken.count(R8) == 0  && p_taken.count(R8D) == 0  && p_taken.count(R8W) == 0  && p_taken.count(R8B) == 0 )
+		return R8;
+	if (p_taken.count(R9) == 0  && p_taken.count(R9D) == 0  && p_taken.count(R9W) == 0  && p_taken.count(R9B) == 0 )
+		return R9;
+	if (p_taken.count(RSP) == 0 && p_taken.count(ESP) == 0  && p_taken.count(SP) == 0   && p_taken.count(SPL) == 0 )
+		return RSP;
+	if (p_taken.count(RBP) == 0 && p_taken.count(EBP) == 0  && p_taken.count(BP) == 0   && p_taken.count(BPL) == 0 )
+		return RBP;
+	return UNKNOWN;
 }

@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2014 - Zephyr Software LLC
+ *
+ * This file may be used and modified for non-commercial purposes as long as
+ * all copyright, permission, and nonwarranty notices are preserved.
+ * Redistribution is prohibited without prior written consent from Zephyr
+ * Software.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: Zephyr Software
+ * e-mail: jwd@zephyr-software.com
+ * URL   : http://www.zephyr-software.com/
+ *
+ */
+
 
 
 #include <libIRDB-core.hpp>
@@ -107,6 +127,7 @@ void is_string_pointer(void* addr, elf_info_t &ei)
 
 	for(int i=0;i<ei.secnum;i++)
 	{
+//cout << "is_string_pointer(): address: " << std::hex << intaddr << std::dec << "looking at section number: " << i << endl;
 		/* only look at loaded sections */
 		if( (ei.elfiop->sections[i]->get_flags() & SHF_ALLOC) != SHF_ALLOC)
 			continue;
@@ -116,7 +137,7 @@ void is_string_pointer(void* addr, elf_info_t &ei)
 		{
 			/* we found a pointer into a loadable segment */
 			load_section(ei,i,true);
-//			cout<<"Checking address "<<std::hex<<addr<<endl;
+
 			check_for_string(ei.sec_data[i]+((long long int)addr-ei.elfiop->sections[i]->get_address()),addr);
 		}
 	}
@@ -128,7 +149,7 @@ void is_string_constant(DISASM& disasm)
 	void *addr;
 
 	if(disasm.Argument1.ArgType != MEMORY_TYPE || disasm.Argument2.ArgType == MEMORY_TYPE
-	   || disasm.Argument1.ArgSize < 16 || disasm.Argument1.ArgSize > 32)
+	   || disasm.Argument1.ArgSize != FileIR_t::GetArchitectureBitWidth() )
 		return;
 
 	addr = (void*)disasm.Instruction.Immediat;
@@ -139,6 +160,18 @@ void is_string_constant(DISASM& disasm)
 	unsigned char byte3=(((long long unsigned int)addr)>>8)&0xff;
 	unsigned char byte4=(long long unsigned int)addr&0xff;
 	
+        /*  
+               mov reg, 0x6161 
+                       addr       = 0x00006161
+                       addr >> 24 = 0          byte1
+                       addr >> 16 = 0          byte2
+                       addr >> 8 = 61          byte3
+                       addr >> 0 = 61          byte4
+               mov reg, 0x61616161 
+
+               mov reg, 0x0000000061616161 
+        */
+// cout << "address: " << std::hex << addr << std::dec << byte1 << " " << byte2 << " " << byte3 << " " << byte4 << endl;
 	if(  
 		(is_string_character(byte1) || byte1==0) &&
 		(is_string_character(byte2) || byte2==0) &&
@@ -160,13 +193,16 @@ void is_string_constant(DISASM& disasm)
 
 } 
 
-void handle_argument(ARGTYPE *arg, elf_info_t &ei)
+void handle_argument(ARGTYPE *arg, elf_info_t &ei, Instruction_t *insn)
 {
-        if( arg->ArgType == MEMORY_TYPE )
+        if( (arg->ArgType & MEMORY_TYPE) == MEMORY_TYPE )
 	{
 		/* Only check without GOT offset if type is executable */
-		if ( ei.elfiop->get_type() == ET_EXEC )
+       		if( ((arg->ArgType & ABSOLUTE_) == ABSOLUTE_)  && ei.elfiop->get_type() == ET_EXEC )
 			is_string_pointer((void*)arg->Memory.Displacement,ei);
+		else
+			is_string_pointer((void*)(arg->Memory.Displacement + insn->GetDataBits().size()), ei);
+
 		/* Check with GOT offset if present */
 		if ( ei.got && arg->Memory.BaseRegister == REG3 /* ebx */ )
 			is_string_pointer((void*)(arg->Memory.Displacement + ei.got),ei);
@@ -262,7 +298,7 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei)
 				unsigned int basereg = 0;
 				while(iit!=(*bit)->GetInstructions().end())
 				{
-//						cout<<"Pass 1: Checking insn: "<<disasm.CompleteInstr<<" id: "<<insn->GetBaseID()<<endl;
+//					cout<<"Pass 1: Checking insn: "<<disasm.CompleteInstr<<" id: "<<(*iit)->GetBaseID()<<" category: " << (int) (disasm.Instruction.Category & 0xFFFF0000) << " ibta: " << (*iit)->GetIndirectBranchTargetAddress() << endl;
 
 					// Break if not assignment of an immediate to an esp/ebp/eax offset
 					if (disasm.Argument1.ArgType != MEMORY_TYPE
@@ -271,7 +307,9 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei)
 					        && disasm.Argument1.Memory.BaseRegister != REG0 /* eax */)
 					    || (basereg && disasm.Argument1.Memory.BaseRegister != basereg)
 					    || disasm.Argument2.ArgType == MEMORY_TYPE
-					    || disasm.Argument1.ArgSize > 32)
+//old					    || disasm.Argument1.ArgSize > 32)
+
+					    || ((disasm.Instruction.Category & 0XFFFF0000) != GENERAL_PURPOSE_INSTRUCTION)) 
 					{
 						// mark visited
 						visited_insns.insert(*iit);
@@ -292,6 +330,7 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei)
 					unsigned char byte3=(imm>>8)&0xff;
 					unsigned char byte4=imm&0xff;
 					size_t argsize = disasm.Argument1.ArgSize / 8;
+
 					if (((is_string_character(byte1) || byte1==0) || argsize < 4) &&
 					    ((is_string_character(byte2) || byte2==0) || argsize < 4) &&
 					    ((is_string_character(byte3) || byte3==0) || argsize < 2) &&
@@ -310,7 +349,9 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei)
 					}
 					++iit;
 					if (iit == (*bit)->GetInstructions().end())
+					{
 						break;
+					}
 					insn = *iit;
 					// break if none
 					if (insn == NULL)
@@ -355,18 +396,19 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei)
 	{
                 Instruction_t *insn=*it;
 
-//		cout<<"Pass 2: Checking insn: "<<disasm.CompleteInstr<<" id: "<<insn->GetBaseID()<<endl;
                 DISASM disasm;
 		int res=insn->Disassemble(disasm);
 		assert(res);
+//	cout<<"Pass 2: Checking insn: "<<disasm.CompleteInstr<<" id: "<<insn->GetBaseID()<<endl;
 
 		// check for immediate string pointers in non-PIC code
 		if ( ei.elfiop->get_type() == ET_EXEC )
 			is_string_pointer((void*)disasm.Instruction.Immediat,ei);
 		// always check for string pointers in memory argument displacements
-		handle_argument(&disasm.Argument1,ei);
-		handle_argument(&disasm.Argument2,ei);
-		handle_argument(&disasm.Argument3,ei);
+
+		handle_argument(&disasm.Argument1,ei, insn);
+		handle_argument(&disasm.Argument2,ei, insn);
+		handle_argument(&disasm.Argument3,ei, insn);
 
 		// if not in a function, check for string in immediate
 		if (visited_insns.find(insn) != visited_insns.end())

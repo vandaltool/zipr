@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2014 - Zephyr Software LLC
+ *
+ * This file may be used and modified for non-commercial purposes as long as
+ * all copyright, permission, and nonwarranty notices are preserved.
+ * Redistribution is prohibited without prior written consent from Zephyr
+ * Software.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: Zephyr Software
+ * e-mail: jwd@zephyr-software.com
+ * URL   : http://www.zephyr-software.com/
+ *
+ */
+
 #include <iostream>
 #include <cstdio>
 #include <string>
@@ -43,6 +63,7 @@ void MEDS_InstructionCheckAnnotation::init()
 	m_truncationFromWidth = -1;
 	m_truncationToWidth = -1;
 	m_register = Register::UNKNOWN;
+	m_register2 = Register::UNKNOWN;
 	m_stackOffset = -1;
 	m_objectSize = -1;
 	m_isEspOffset = false;
@@ -164,11 +185,15 @@ void MEDS_InstructionCheckAnnotation::parse()
 	else if (m_isTruncation) // get bid width from/to information for truncation
 	{
 		char buf[1024] = "";
+		char buf2[1024] = "";
 		// [ADDR] [SIZE] INSTR CHECK TRUNCATION UNKNOWNSIGN 32 EAX 16 AX ZZ mov     [esp+2Ah], ax
-		sscanf(m_rawInputLine.c_str(), "%*s %*d %*s %*s %*s %*s %d %s %d", &m_truncationFromWidth, buf, &m_truncationToWidth);
+		sscanf(m_rawInputLine.c_str(), "%*s %*d %*s %*s %*s %*s %d %s %d %s", &m_truncationFromWidth, buf, &m_truncationToWidth, buf2);
 
 		m_target = string(buf);
+		m_target2 = string(buf2);
+
 		m_register = Register::getRegister(m_target);
+		m_register2 = Register::getRegister(m_target2);
 
 		// 20120410 STARS added SEVERE field to TRUNC annotations to specify that we must use a terminating/saturating policy
 		if (m_rawInputLine.find(MEDS_ANNOT_SEVERE)!=string::npos)
@@ -205,10 +230,6 @@ void MEDS_InstructionCheckAnnotation::parse()
 		}
 	}
 
-	m_isValid = true;
+	setValid(); // m_isValid = true;
 }
 
-VirtualOffset MEDS_InstructionCheckAnnotation::getVirtualOffset() const
-{
-	return m_virtualOffset;
-}

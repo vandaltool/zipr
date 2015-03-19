@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2013, 2014 - University of Virginia 
+ *
+ * This file may be used and modified for non-commercial purposes as long as 
+ * all copyright, permission, and nonwarranty notices are preserved.  
+ * Redistribution is prohibited without prior written consent from the University 
+ * of Virginia.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: University of Virginia
+ * e-mail: jwd@virginia.com
+ * URL   : http://www.cs.virginia.edu/
+ *
+ */
+
 #define __USE_GNU
 #define _GNU_SOURCE
 #include <stdio.h>
@@ -36,8 +56,8 @@ int execl(const char *path, const char *arg, ...);
 int execlp(const char *file, const char *arg, ...);
 int execle(const char *path, const char *arg, ...);
 
-
-void* (*real_dlsym)()=NULL;
+typedef void* (*dlsym_t)(void*, const char*);
+dlsym_t real_dlsym=NULL;
 
 struct mapper
 {
@@ -76,6 +96,24 @@ struct mapper dlsym_mapper[] =
 };
 
 
+dlsym_t get_real_dlsym()
+{
+	char *verbose= getenv("APPFW_VERY_VERBOSE");
+	if (real_dlsym == NULL)
+	{
+		if(verbose !=0)
+        		fprintf(stderr, "Initing dlsym handle\n");
+		void* handler = dlopen("libdl.so", RTLD_LAZY);
+		assert(handler);
+		extern void* __libc_dlsym(void*, const char*);
+		real_dlsym  = (void*)__libc_dlsym(handler, "dlsym"); /* now, this will call dlsym() library function */
+		assert(real_dlsym);
+
+		if(verbose !=0)
+		fprintf(stderr, "Finished initing dlsym handle\n");
+	}
+	return real_dlsym;
+}
 
 
 void* dl_sym_helper(void* handle, const char* symbol, struct mapper *sym_map)
@@ -154,27 +192,19 @@ extern void appfw_ldap_init();
 void *dlsym(void *handle, const char *symbol)
 {
 	char *verbose= getenv("APPFW_VERY_VERBOSE");
-	 if(verbose !=0)
+	static init = 0;
+	if(verbose !=0)
         	fprintf(stderr, "Ha Ha...dlsym() Hooked with handle=%p, symbol=%s\n", (void*)handle,symbol);
 
-	if(real_dlsym==NULL)
+	if(init == 0)
 	{
-		if(verbose !=0)
-        		fprintf(stderr, "Initing dlsym handle\n");
-		void* handler = dlopen("libdl.so", RTLD_LAZY);
-		assert(handler);
-		extern void* __libc_dlsym(void*, const char*);
-        	real_dlsym  = (void*)__libc_dlsym(handler, "dlsym"); /* now, this will call dlsym() library function */
-		assert(real_dlsym);
-
-		if(verbose !=0)
-        		fprintf(stderr, "Finished initing dlsym handle\n");
-
 		/* init it all */
+		get_real_dlsym();
 		sqlfw_init();
 		oscfw_init();
 		xqfw_init();
 		appfw_ldap_init();
+		init = 1;
 	}
 
 	if(handle!=RTLD_NEXT && handle!=RTLD_DEFAULT)

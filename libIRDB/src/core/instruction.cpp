@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2014 - Zephyr Software LLC
+ *
+ * This file may be used and modified for non-commercial purposes as long as
+ * all copyright, permission, and nonwarranty notices are preserved.
+ * Redistribution is prohibited without prior written consent from Zephyr
+ * Software.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: Zephyr Software
+ * e-mail: jwd@zephyr-software.com
+ * URL   : http://www.zephyr-software.com/
+ *
+ */
+
 #include <all.hpp>
 #include <utils.hpp>
 #include <stdlib.h> 
@@ -63,7 +83,7 @@ int Instruction_t::Disassemble(DISASM &disasm) const
   	return instr_len;  
 }
 
-std::string Instruction_t::getDisassembly()
+std::string Instruction_t::getDisassembly() const
 {
   	DISASM disasm;
   	Disassemble(disasm);
@@ -92,7 +112,7 @@ bool Instruction_t::Assemble(string assembly)
      return false;
    }
 
-   asmFile<<NASM_BIT_WIDTH<<endl; // define to be 32
+   asmFile<<"BITS "<<std::dec<<FileIR_t::GetArchitectureBitWidth()<<endl; 
 
    asmFile<<assembly<<endl;
    asmFile.close();
@@ -241,4 +261,9 @@ bool Instruction_t::SetsStackPointer(DISASM* disasm)
 
 	return false;
 
+}
+
+InstructionCFGNodeSet_t& Instruction_t::GetIBTargets()
+{
+	return ibtargets;
 }

@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2013, 2014 - University of Virginia 
+ *
+ * This file may be used and modified for non-commercial purposes as long as 
+ * all copyright, permission, and nonwarranty notices are preserved.  
+ * Redistribution is prohibited without prior written consent from the University 
+ * of Virginia.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: University of Virginia
+ * e-mail: jwd@virginia.com
+ * URL   : http://www.cs.virginia.edu/
+ *
+ */
+
 #include "Rewrite_Utility.hpp"
 using namespace std;
 using namespace libIRDB;
@@ -24,7 +44,7 @@ Instruction_t* insertAssemblyBefore(FileIR_t* virp, Instruction_t* first, string
 	next->SetOriginalAddressID(first->GetOriginalAddressID());
 	//"Null" out the original address (it should be as if the instruction was not in the database).
 	first->SetOriginalAddressID(BaseObj_t::NOT_IN_DATABASE);
-
+	first->GetRelocations().clear();
 
 	virp->ChangeRegistryKey(first,next);
 	setInstructionAssembly(virp,first,assembly,next,target);
@@ -53,6 +73,7 @@ Instruction_t* insertDataBitsBefore(FileIR_t* virp, Instruction_t* first, string
 	next->SetOriginalAddressID(first->GetOriginalAddressID());
 	//"Null" out the original address (it should be as if the instruction was not in the database).
 	first->SetOriginalAddressID(BaseObj_t::NOT_IN_DATABASE);
+	first->GetRelocations().clear();
 
 	setInstructionDataBits(virp,first,dataBits,next,target);
 
@@ -113,6 +134,7 @@ void copyInstruction(Instruction_t* src, Instruction_t* dest)
 	dest->SetCallback(src->GetCallback());
 	dest->SetFallthrough(src->GetFallthrough());
 	dest->SetTarget(src->GetTarget());
+	dest->GetRelocations()=src->GetRelocations();
 }
 
 Instruction_t* allocateNewInstruction(FileIR_t* virp, db_id_t p_fileID,Function_t* func)
@@ -170,6 +192,19 @@ void setInstructionDataBits(FileIR_t* virp, Instruction_t *p_instr, string p_dat
 	virp->GetInstructions().insert(p_instr);
 }
 
+
+string getJumpDataBits()
+{
+	string dataBits;
+	dataBits.resize(5);
+	dataBits[0] = 0xe9;
+	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
+	dataBits[2] = 0x00; // value doesn't matter -- we will fill it in later
+	dataBits[3] = 0x00; // value doesn't matter -- we will fill it in later
+	dataBits[4] = 0x00; // value doesn't matter -- we will fill it in later
+	return dataBits;
+}
+
 // jns - jump not signed
 string getJnsDataBits()
 {
@@ -202,11 +237,28 @@ string getJnzDataBits()
 	return dataBits;	
 }
 
+// jecxz - jump ecx zero
+string getJecxzDataBits()
+{
+	string dataBits;
+	dataBits.resize(2);
+	dataBits[0] = 0xe3;
+	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
+
+	return dataBits;	
+}
+
 Instruction_t* getHandlerCode(FileIR_t* virp, Instruction_t* fallthrough, mitigation_policy policy)
 {
 	Instruction_t *handler_code ;
 	if(virp->GetArchitectureBitWidth()==32)
 	{
+#ifdef CGC
+		handler_code = allocateNewInstruction(virp,fallthrough);
+		setInstructionAssembly(virp,handler_code,"mov eax, 1",NULL,NULL);
+		Instruction_t* int80 = insertAssemblyAfter(virp,handler_code,"int 0x80",NULL);
+		int80->SetFallthrough(fallthrough);
+#else
 		handler_code = allocateNewInstruction(virp,fallthrough);
 		setInstructionAssembly(virp,handler_code,"pusha",NULL,NULL);
 		Instruction_t* pushf = insertAssemblyAfter(virp,handler_code,"pushf",NULL);
@@ -228,6 +280,7 @@ Instruction_t* getHandlerCode(FileIR_t* virp, Instruction_t* fallthrough, mitiga
 		Instruction_t *popf = insertAssemblyAfter(virp,callback,"popf",NULL);
 		Instruction_t *popa = insertAssemblyAfter(virp,popf,"popa",NULL);
 		popa->SetFallthrough(fallthrough);
+#endif
 		
 	}
 	else
@@ -272,3 +325,16 @@ Instruction_t* insertCanaryCheckBefore(FileIR_t* virp,Instruction_t *first, unsi
 	return next;
 
 }
+
+Relocation_t* createNewRelocation(FileIR_t* firp, Instruction_t* insn, string type, int offset)
+{
+        Relocation_t* reloc=new Relocation_t;
+        insn->GetRelocations().insert(reloc);
+        firp->GetRelocations().insert(reloc);
+
+	reloc->SetType(type);
+	reloc->SetOffset(offset);
+
+        return reloc;
+}
+

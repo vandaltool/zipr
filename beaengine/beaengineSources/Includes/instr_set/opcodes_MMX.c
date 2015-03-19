@@ -16,6 +16,8 @@
  *    You should have received a copy of the GNU Lesser General Public License
  *    along with BeaEngine.  If not, see <http://www.gnu.org/licenses/>. */
 
+#include <assert.h>
+
 void __bea_callspec__ emms_(PDISASM pMyDisasm)
 {
 	(*pMyDisasm).Instruction.Category = MMX_INSTRUCTION+STATE_MANAGEMENT;
@@ -46,7 +48,6 @@ void __bea_callspec__ movd_EP(PDISASM pMyDisasm)
     }
     /* ========== 0x66 */
     else if ((*pMyDisasm).Prefix.OperandSize == InUsePrefix) {            
-        GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         if (GV.REX.W_ == 1) {
             GV.MemDecoration = Arg1qword;
@@ -61,6 +62,7 @@ void __bea_callspec__ movd_EP(PDISASM pMyDisasm)
         }
         else {
             GV.MemDecoration = Arg1dword;
+            GV.OperandSize = GV.OriginalOperandSize;
             #ifndef BEA_LIGHT_DISASSEMBLY
                (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movd ");
             #endif
@@ -106,7 +108,6 @@ void __bea_callspec__ movd_PE(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = MMX_INSTRUCTION+DATA_TRANSFER;
     /* ========== 0x66 */
     if ((*pMyDisasm).Prefix.OperandSize == InUsePrefix) {            
-        GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         if (GV.REX.W_ == 1) {
             GV.MemDecoration = Arg2qword;
@@ -120,6 +121,7 @@ void __bea_callspec__ movd_PE(PDISASM pMyDisasm)
             GV.EIP_+= GV.DECALAGE_EIP+2;
         }
         else {
+       	    GV.OperandSize = GV.OriginalOperandSize;
             GV.MemDecoration = Arg2dword;
             #ifndef BEA_LIGHT_DISASSEMBLY
                (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movd ");
@@ -205,34 +207,42 @@ void __bea_callspec__ movq_PQ(PDISASM pMyDisasm)
  * ==================================================================== */
 void __bea_callspec__ movq_QP(PDISASM pMyDisasm)
 {
+        #ifndef BEA_LIGHT_DISASSEMBLY
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+        #endif
     (*pMyDisasm).Instruction.Category = MMX_INSTRUCTION+DATA_TRANSFER;
     /* ========= 0xf3 */
-    if (GV.PrefRepe == 1) {
+    if (GV.PrefRepe == 1 || (GV.VEX.has_vex && GV.VEX.implicit_prefixes==2)) {
+	assert(!GV.VEX.has_vex);
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         GV.MemDecoration = Arg1dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movdqu ");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "movdqu ");
         #endif
         GV.SSE_ = 1;
         ExGx(pMyDisasm);
         GV.SSE_ = 0;
     }
     /* ========== 0x66 */
-    else if ((*pMyDisasm).Prefix.OperandSize == InUsePrefix) {            
+    else if ((*pMyDisasm).Prefix.OperandSize == InUsePrefix || (GV.VEX.has_vex && GV.VEX.implicit_prefixes==1)) {            
         GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg1dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movdqa ");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "movdqa ");
         #endif
-        GV.SSE_ = 1;
+        GV.AVX_ = GV.VEX.length;
+        GV.SSE_ = !GV.VEX.length;
         ExGx(pMyDisasm);
+        GV.AVX_ = 0;
         GV.SSE_ = 0;
     }
     else {
+	assert(!GV.VEX.has_vex);
         GV.MemDecoration = Arg1qword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movq ");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "movq ");
         #endif
         GV.MMX_ = 1;
         ExGx(pMyDisasm);
@@ -481,11 +491,15 @@ void __bea_callspec__ paddb_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "paddb ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+	(void) strcat ((*pMyDisasm).Instruction.Mnemonic, "paddb ");
         #endif
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
+        GV.AVX_ = GV.VEX.length;
+        GV.SSE_ = !GV.VEX.length;
+        Vx_opt_GxEx(pMyDisasm);
         GV.SSE_ = 0;
+        GV.AVX_ = 0;
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -510,11 +524,15 @@ void __bea_callspec__ paddw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "paddw ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "paddw ");
         #endif
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
+        GV.AVX_ = GV.VEX.length;
+        GV.SSE_ = !GV.VEX.length;
+        Vx_opt_GxEx(pMyDisasm);
         GV.SSE_ = 0;
+        GV.AVX_ = 0;
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -539,11 +557,15 @@ void __bea_callspec__ paddd_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "paddd ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "paddd ");
         #endif
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
+        GV.AVX_ = GV.VEX.length;
+        GV.SSE_ = !GV.VEX.length;
+        Vx_opt_GxEx(pMyDisasm);
         GV.SSE_ = 0;
+        GV.AVX_ = 0;
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -568,11 +590,15 @@ void __bea_callspec__ paddsb_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "paddsb ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "paddsb ");
         #endif
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
+        GV.AVX_ = GV.VEX.length;
+        GV.SSE_ = !GV.VEX.length;
+        Vx_opt_GxEx(pMyDisasm);
         GV.SSE_ = 0;
+        GV.AVX_ = 0;
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -597,11 +623,15 @@ void __bea_callspec__ paddsw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "paddsw ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "paddsw ");
         #endif
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
+        GV.AVX_ = GV.VEX.length;
+        GV.SSE_ = !GV.VEX.length;
+        Vx_opt_GxEx(pMyDisasm);
         GV.SSE_ = 0;
+        GV.AVX_ = 0;
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -626,11 +656,15 @@ void __bea_callspec__ paddusb_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "paddusb ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "paddusb ");
         #endif
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
+        GV.AVX_ = GV.VEX.length;
+        GV.SSE_ = !GV.VEX.length;
+        Vx_opt_GxEx(pMyDisasm);
         GV.SSE_ = 0;
+        GV.AVX_ = 0;
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -655,11 +689,15 @@ void __bea_callspec__ paddusw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "paddusw ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "paddusw ");
         #endif
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
+        GV.AVX_ = GV.VEX.length;
+        GV.SSE_ = !GV.VEX.length;
+        Vx_opt_GxEx(pMyDisasm);
         GV.SSE_ = 0;
+        GV.AVX_ = 0;
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -684,13 +722,18 @@ void __bea_callspec__ pand_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pand ");
+	if(GV.VEX.has_vex)
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "pand ");
         #endif
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
+        GV.AVX_ = GV.VEX.length;
+        GV.SSE_ = !GV.VEX.length;
+        Vx_opt_GxEx(pMyDisasm);
         GV.SSE_ = 0;
+        GV.AVX_ = 0;
     }
     else {
+	if(GV.VEX.has_vex) FailDecode(pMyDisasm);
         GV.MemDecoration = Arg2qword;
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pand ");
@@ -712,11 +755,11 @@ void __bea_callspec__ pandn_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pandn ");
+	if(GV.VEX.has_vex)
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+        (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "pandn ");
         #endif
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
-        GV.SSE_ = 0;
+        Vx_opt_GxEx_vexlen(pMyDisasm);
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -927,12 +970,12 @@ void __bea_callspec__ pmulhw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmulhw ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "pmulhw ");
         #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
-        GV.SSE_ = 0;
+        Vx_opt_GxEx_vexlen(pMyDisasm);
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -958,12 +1001,12 @@ void __bea_callspec__ pmullw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmullw ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "pmullw ");
         #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
-        GV.SSE_ = 0;
+        Vx_opt_GxEx_vexlen(pMyDisasm);
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -989,12 +1032,12 @@ void __bea_callspec__ pmaddwd_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaddwd ");
+	if(GV.VEX.has_vex)
+           	(void) strcat ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "pmaddwd ");
         #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
-        GV.SSE_ = 0;
+        Vx_opt_GxEx_vexlen(pMyDisasm);
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -1020,12 +1063,12 @@ void __bea_callspec__ por_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "por ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "por ");
         #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
-        GV.SSE_ = 0;
+        Vx_opt_GxEx_vexlen(pMyDisasm);
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -1268,12 +1311,12 @@ void __bea_callspec__ psrad_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psrad ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "psrad ");
         #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
-        GV.SSE_ = 0;
+        Vx_opt_GxEx_vexlen(pMyDisasm);
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -1299,12 +1342,12 @@ void __bea_callspec__ psubb_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psubb ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "psubb ");
         #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
-        GV.SSE_ = 0;
+        Vx_opt_GxEx_vexlen(pMyDisasm);
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -1330,12 +1373,12 @@ void __bea_callspec__ psubw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psubw ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "psubw ");
         #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
-        GV.SSE_ = 0;
+        Vx_opt_GxEx_vexlen(pMyDisasm);
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -1361,12 +1404,12 @@ void __bea_callspec__ psubd_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psubd ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "psubd ");
         #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
-        GV.SSE_ = 0;
+        Vx_opt_GxEx_vexlen(pMyDisasm);
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -1392,12 +1435,12 @@ void __bea_callspec__ psubsb_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psubsb ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "psubsb ");
         #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
-        GV.SSE_ = 0;
+        Vx_opt_GxEx_vexlen(pMyDisasm);
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -1423,12 +1466,12 @@ void __bea_callspec__ psubsw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psubsw ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "psubsw ");
         #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
-        GV.SSE_ = 0;
+        Vx_opt_GxEx_vexlen(pMyDisasm);
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -1454,12 +1497,12 @@ void __bea_callspec__ psubusb_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psubusb ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "psubusb ");
         #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
-        GV.SSE_ = 0;
+        Vx_opt_GxEx_vexlen(pMyDisasm);
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -1485,12 +1528,12 @@ void __bea_callspec__ psubusw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psubusw ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "psubusw ");
         #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
-        GV.SSE_ = 0;
+        Vx_opt_GxEx_vexlen(pMyDisasm);
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -1516,12 +1559,12 @@ void __bea_callspec__ punpckhbw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "punpckhbw ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "punpckhbw ");
         #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
-        GV.SSE_ = 0;
+        Vx_opt_GxEx_vexlen(pMyDisasm);
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -1547,12 +1590,12 @@ void __bea_callspec__ punpckhwd_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "punpckhwd ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "punpckhwd ");
         #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
-        GV.SSE_ = 0;
+        Vx_opt_GxEx_vexlen(pMyDisasm);
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -1578,12 +1621,12 @@ void __bea_callspec__ punpckhdq_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "punpckhdq ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "punpckhdq ");
         #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
-        GV.SSE_ = 0;
+        Vx_opt_GxEx_vexlen(pMyDisasm);
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -1609,12 +1652,12 @@ void __bea_callspec__ punpcklbw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "punpcklbw ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "punpcklbw ");
         #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
-        GV.SSE_ = 0;
+        Vx_opt_GxEx_vexlen(pMyDisasm);
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -1640,12 +1683,12 @@ void __bea_callspec__ punpcklwd_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "punpcklwd ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "punpcklwd ");
         #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
-        GV.SSE_ = 0;
+        Vx_opt_GxEx_vexlen(pMyDisasm);
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -1671,12 +1714,12 @@ void __bea_callspec__ punpckldq_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "punpckldq ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "punpckldq ");
         #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
-        GV.SSE_ = 0;
+        Vx_opt_GxEx_vexlen(pMyDisasm);
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -1702,12 +1745,12 @@ void __bea_callspec__ pxor_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pxor ");
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "pxor ");
         #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
-        GV.SSE_ = 1;
-        GxEx(pMyDisasm);
-        GV.SSE_ = 0;
+        Vx_opt_GxEx_vexlen(pMyDisasm);
     }
     else {
         GV.MemDecoration = Arg2qword;

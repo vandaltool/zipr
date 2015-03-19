@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2013, 2014 - University of Virginia 
+ *
+ * This file may be used and modified for non-commercial purposes as long as 
+ * all copyright, permission, and nonwarranty notices are preserved.  
+ * Redistribution is prohibited without prior written consent from the University 
+ * of Virginia.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: University of Virginia
+ * e-mail: jwd@virginia.com
+ * URL   : http://www.cs.virginia.edu/
+ *
+ */
+
 #include <stdlib.h>
 #include <fstream>
 #include <libIRDB-core.hpp>
@@ -6,6 +26,8 @@
 #include "MEDS_AnnotationParser.hpp"
 #include "transformutils.h"
 #include "integertransform.hpp"
+#include "integertransform32.hpp"
+#include "integertransform64.hpp"
 
 // current convention
 #define BINARY_NAME "a.ncexe"
@@ -13,10 +35,11 @@
 #define SHARED_OBJECTS_DIR "shared_objects"
 
 using namespace std;
+using namespace libTransform;
 
 void usage()
 {
-	cerr << "Usage: integertransformdriver.exe <variant_id> <filtered_functions> <integer.warning.addresses> [--saturating-arithmetic] [--path-manip-detected]"<<endl;
+	cerr << "Usage: integertransformdriver.exe <variant_id> <filtered_functions> <integer.warning.addresses> [--saturating-arithmetic] [--path-manip-detected] [--instrument-idioms]"<<endl;
 }
 
 std::set<VirtualOffset> getInstructionWarnings(char *warningFilePath)
@@ -82,7 +105,18 @@ bool isPathManipDetected(int argc, char **argv)
 	return false;
 }
 
-main(int argc, char **argv)
+bool isInstrumentIdioms(int argc, char **argv)
+{
+	for (int i = 0; i < argc; ++i)
+	{
+		if (strncasecmp(argv[i], "--instrument-idioms", strlen("--instrument-idioms")) == 0)
+			return true;
+	}
+
+	return false;
+}
+
+int main(int argc, char **argv)
 {
 	if(argc < 4)
 	{
@@ -96,7 +130,6 @@ main(int argc, char **argv)
 	char *integerWarnings = argv[3];
 
 	VariantID_t *pidp=NULL;
-	FileIR_t *virp=NULL;
 
 	/* setup the interface to the sql server */
 	pqxxDB_t pqxx_interface;
@@ -106,7 +139,7 @@ main(int argc, char **argv)
 	assert(pidp->IsRegistered()==true);
 
 	bool one_success = false;
-    for(set<File_t*>::iterator it=pidp->GetFiles().begin();
+	for(set<File_t*>::iterator it=pidp->GetFiles().begin();
 	    it!=pidp->GetFiles().end();
 		++it)
 	{
@@ -145,20 +178,33 @@ main(int argc, char **argv)
 			// we need to display file IDs along with the PC to distinguish between various libs
 			std::set<VirtualOffset> warnings = getInstructionWarnings(integerWarnings); // keep track of instructions that should be instrumented as warnings (upon detection, print diagnostic & continue)
 
-			std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> annotations = annotationParser.getAnnotations();
+			MEDS_Annotations_t annotations = annotationParser.getAnnotations();
+
+			cout << "integer transform driver: found " << annotations.size() << " annotaitons" << endl;
 
 			// do the transformation
-			libTransform::IntegerTransform integerTransform(pidp, firp, &annotations, &filteredFunctions, &warnings);
-			integerTransform.setSaturatingArithmetic(isSaturatingArithmeticOn(argc, argv));
-			integerTransform.setPathManipulationDetected(isPathManipDetected(argc, argv));
-			integerTransform.setWarningsOnly(isWarningsOnly(argc, argv));
 
-			int exitcode = integerTransform.execute();
+			libTransform::IntegerTransform *intxform = NULL;
+			if(firp->GetArchitectureBitWidth()==64)
+			{
+				intxform = new IntegerTransform64(pidp, firp, &annotations, &filteredFunctions, &warnings);
+			}
+			else
+			{
+				intxform = new IntegerTransform32(pidp, firp, &annotations, &filteredFunctions, &warnings);
+			}
+
+			intxform->setSaturatingArithmetic(isSaturatingArithmeticOn(argc, argv));
+			intxform->setPathManipulationDetected(isPathManipDetected(argc, argv));
+			intxform->setWarningsOnly(isWarningsOnly(argc, argv));
+			intxform->setInstrumentIdioms(isInstrumentIdioms(argc, argv));
+
+			int exitcode = intxform->execute();
 			if (exitcode == 0)
 			{
 				one_success = true;
 				firp->WriteToDB();
-				integerTransform.logStats();
+				intxform->logStats();
 				delete firp;
 			}
 		}

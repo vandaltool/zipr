@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2013, 2014 - University of Virginia 
+ *
+ * This file may be used and modified for non-commercial purposes as long as 
+ * all copyright, permission, and nonwarranty notices are preserved.  
+ * Redistribution is prohibited without prior written consent from the University 
+ * of Virginia.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: University of Virginia
+ * e-mail: jwd@virginia.com
+ * URL   : http://www.cs.virginia.edu/
+ *
+ */
+
 #ifndef __PNSTACKLAYOUT
 #define __PNSTACKLAYOUT
 #include "PNRange.hpp"
@@ -13,10 +33,11 @@
 //attacker is trying to exceed the frame size, and the vulnerable buffer
 //is at the bottom of the stack, but moved by us to the top, the 
 //overflow might exceed our padding and corrupt other stack frames.  
-const int MIN_PADDING = 1000;
+const int MIN_PADDING = 100;
 const int MAX_PADDING = MIN_PADDING*2;
 const int RECURSIVE_MIN_PADDING = 64;
 const int RECURSIVE_MAX_PADDING = RECURSIVE_MAX_PADDING*2;
+
 
 class PNStackLayout
 {
@@ -79,7 +100,11 @@ public:
 	virtual int GetNewOffsetEBP(int ebp_offset) const;
 	virtual PNStackLayout GetCanaryLayout() const;
 	virtual std::vector<PNRange*> GetRanges() {return mem_objects;}
-	virtual bool IsCanarySafe() const {return stack_layout.is_canary_safe;}
+	virtual bool IsCanarySafe() const 
+	{
+		extern bool do_canaries;
+		return stack_layout.is_canary_safe && do_canaries;
+	}
 	virtual bool IsPaddingSafe()const {return stack_layout.is_padding_safe;}
 	virtual bool IsShuffleSafe() const ;
 	virtual bool IsP1() const;

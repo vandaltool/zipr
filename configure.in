@@ -1,0 +1,41 @@
+AC_INIT()
+
+AC_ARG_ENABLE([cgc], 	   [  --enable-cgc                defines CGC when compiling ])
+AC_ARG_ENABLE([debugging], [  --enable-debugging          enables -g when compiling, disables -O])
+
+
+OPTIMIZE=-O
+EXTRA_CXXFLAGS=
+CXX=g++
+LD=g++
+
+
+
+if test "$enable_cgc" = yes; then 
+	EXTRA_CXXFLAGS=-DCGC
+	BUILD_CGC="yes"
+fi
+
+if test "$enable_debugging" = yes; then 
+	OPTIMIZE=-g
+fi
+if test $(uname -s) = "SunOS" ; then 
+	LD="$(LD) -L /opt/csw/lib/"
+fi
+
+EXTRA_CXXFLAGS="$(EXTRA_CXXFLAGS) $(OPTIMIZE)"
+
+AC_SUBST(EXTRA_CXXFLAGS)
+AC_SUBST(BUILD_CGC)
+AC_SUBST(CXX)
+AC_SUBST(LD)
+
+AC_OUTPUT(tools/Makefile
+	tools/selective_cfi/Makefile
+	tools/watch_syscall/Makefile
+	tools/transforms/Makefile
+	tools/cgc_hlx/Makefile
+	libIRDB/src/syscall/Makefile
+	libIRDB/test/Makefile
+)
+

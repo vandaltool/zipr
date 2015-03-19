@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2013, 2014 - University of Virginia 
+ *
+ * This file may be used and modified for non-commercial purposes as long as 
+ * all copyright, permission, and nonwarranty notices are preserved.  
+ * Redistribution is prohibited without prior written consent from the University 
+ * of Virginia.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: University of Virginia
+ * e-mail: jwd@virginia.com
+ * URL   : http://www.cs.virginia.edu/
+ *
+ */
+
 #define _GNU_SOURCE
 #include <stdio.h>
 /*
@@ -99,42 +119,52 @@ int rcmd(char **ahost, int inport, const char *locuser,
 }
 
 
+// used for execl for example
+// goal: verify all flag options come from the same signature
 int oscfw_verify_args(char* const argv[])
 {
 	int is_verbose=getenv("APPFW_VERBOSE")!=0;
   	char taint[MAX_COMMAND_LENGTH];
+  	char cmd[MAX_COMMAND_LENGTH];
 	int i=0;
+
+#ifdef DEBUG
+	while(argv[i]!=NULL)
+	{
+		fprintf(stderr, "arg: %s\n", argv[i]);
+
+		i++;
+	}
+
+	i = 0;
+#endif
 	while(argv[i]!=NULL)
 	{
 		if(argv[i][0]=='-')
 		{
+			// e.g., we need to verify that: -lta originates from a single fragment
+			// 
+			// create a fake command consisting of just the flag
+			// mark all characters as security violations
+			// run it through appfw_establish_taint2
+			// and look at return value
+			//
+			//	cmd: -lta
+			//    taint: vvvv
+			//
+			// after appfw_establish_taint2, taint markings should be:
+			//    taint: bbbb
+	
 			int length = strlen(argv[i]);
-			matched_record** matched_signatures = appfw_allocate_matched_signatures(length);
 
-			appfw_establish_taint(argv[i], taint, matched_signatures,TRUE);
-			if(is_verbose)
-        			appfw_display_taint("Debugging OS Command", argv[i], taint);
+			strcpy(cmd, argv[i]);
+			appfw_taint_range(taint, APPFW_SECURITY_VIOLATION, 0, length);
+			int success = appfw_establish_taint_fast2(cmd, taint, FALSE, FALSE);
 
-			int j;
-			for(j=0;j<strlen(argv[i]);j++)
-			{
-                		if(taint[j]!=APPFW_BLESSED)
-				{
-					fprintf(stderr, "Failed argument check\n");
-					appfw_display_taint("OS Command Injection detected", argv[i], taint);
-					appfw_deallocate_matched_signatures(matched_signatures, length);
-					return 0;
-				}
-			}
-
-                        if (!appfw_is_from_same_signature(matched_signatures, 0, length-1))
-			{
-				appfw_taint_range(taint, APPFW_SECURITY_VIOLATION, 0, length);
+			if (!success)
 				appfw_display_taint("OS Command Injection detected (options): ", argv[i], taint);
-				return 0;
-			}
 
-			appfw_deallocate_matched_signatures(matched_signatures, length);
+			return success;
 		}
 		else 
 		{
@@ -172,13 +202,15 @@ int (*my_execve)(const char*,char*const[], char*const[])=NULL;
 int handle_execl(const char *file, char *const argv[], char *const envp[])
 {
   	char taint[MAX_COMMAND_LENGTH];
+	int cmd_verify, args_verify;
+
   	if (!my_execve)
     		my_execve = dlsym(RTLD_NEXT, "execve");
 	assert(my_execve);
 
   	oscfw_init(); // will do this automagically later
 
-  	if (within_osc_monitor || (oscfw_verify(file, taint) && oscfw_verify_args(argv)) || getenv("DEBUG_APPFW"))
+  	if (within_osc_monitor || ((cmd_verify = oscfw_verify(file, taint)) && (args_verify = oscfw_verify_args(argv))) || getenv("DEBUG_APPFW"))
   	{
 		if(getenv("APPFW_VERBOSE"))
 			fprintf(stderr, "Exec detected as OK\n");
@@ -189,8 +221,10 @@ int handle_execl(const char *file, char *const argv[], char *const envp[])
   	}
   	else
   	{
-
-    		fprintf(stderr, "Failed argument check for handle_execl\n");
+		if (!cmd_verify)
+	    		fprintf(stderr, "Failed argument check for handle_execl: command verification failed\n");
+		if (!args_verify)
+	    		fprintf(stderr, "Failed argument check for handle_execl: argument verification failed\n");
     		appfw_display_taint("OS Command Injection detected", file, taint);
     		return -1; // error code for rcmd
   	}

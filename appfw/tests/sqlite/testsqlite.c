@@ -18,6 +18,7 @@
 */
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "sqlite3.h"
 
@@ -32,13 +33,17 @@ static int callback(void *NotUsed, int argc, char **argv, char **azColName){
 
 int main(int argc, char *argv[]) 
 {
+   fprintf(stderr,"entering main\n");
    sqlite3 *db;
    char *database = "testdata";
    int rc;
    char *zErrMsg = 0;
    char *query_data = getenv("QUERY_DATA");
+
+   fprintf(stderr,"QUERY_DATA=[%s]\n", query_data);
 	
    /* Open Database */
+   fprintf(stderr,"about to open database\n");
    rc = sqlite3_open(database, &db);
    if( rc ){
       fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
@@ -47,13 +52,17 @@ int main(int argc, char *argv[])
     }
 
    /* create SQL query */
+   fprintf(stderr,"random stuff 1\n");
    char query[1024];
+   fprintf(stderr,"random stuff 2\n");
    char *fmtString = "SELECT * FROM users_1796 WHERE first LIKE '%s'";
+   fprintf(stderr,"random stuff 3\n");
    
-   /* No more buffer overflow */
+   fprintf(stderr,"about to specify query string: query_data[%s]\n", query_data);
    sprintf(query,fmtString,query_data);
    printf("%s\n", query);
 
+   fprintf(stderr,"about to execute query\n");
    /* Execute Query */
    rc = sqlite3_exec(db, query, callback, 0, &zErrMsg);
    if( rc!=SQLITE_OK ){

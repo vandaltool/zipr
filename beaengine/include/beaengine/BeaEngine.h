@@ -33,6 +33,23 @@ typedef struct {
 
 #pragma pack(1)
 typedef struct {
+   UInt8 has_vex; /* either vex found */
+   UInt8 has_vex2;  /* vex2, implies opcode_escape=1 */
+   UInt8 has_vex3;  /* vex3 */
+   UInt8 notR; /* equiv to rex.R */
+   UInt8 notX; /* equiv to rex.X */
+   UInt8 notB; /* equiv to rex.B */
+   UInt8 W; /* equiv to rex.W, for non-integer its considered an opcode extension  */
+   UInt8 notV; /* 4-bit additional specification of register */
+   UInt8 opcode_escape; /* escape to which opcode table?  1=0f, 2=0f38, 3=0f3a, other=reserved. */
+   UInt8 length; /* 0=128bit insn, 1=256bit insn. */
+   UInt8 implicit_prefixes; /* imply other prefix, 0=none, 1=0x66, 2=0xf3, 3=0xf2,  */
+} VEX_Struct  ;
+#pragma pack()
+
+
+#pragma pack(1)
+typedef struct {
    int Number;
    int NbUndefined;
    UInt8 LockPrefix;
@@ -49,6 +66,7 @@ typedef struct {
    UInt8 BranchTaken;
    UInt8 BranchNotTaken;
    REX_Struct REX;
+   VEX_Struct VEX;
    char alignment[2];
 } PREFIXINFO  ;
 #pragma pack()
@@ -125,6 +143,7 @@ typedef struct {
    Int32 BASE_;
    Int32 MMX_;
    Int32 SSE_;
+   Int32 AVX_;
    Int32 CR_;
    Int32 DR_;
    Int32 SEG_;
@@ -142,9 +161,11 @@ typedef struct {
    UInt32 SEGMENTREGS;
    UInt32 SEGMENTFS;
    Int32 third_arg;
+   Int32 forth_arg;
    Int32 TAB_;
    Int32 ERROR_OPCODE;
    REX_Struct REX;
+   VEX_Struct VEX;
    Int32 OutOfBlock;
 } InternalDatas;
 #pragma pack()
@@ -162,6 +183,7 @@ typedef struct _Disasm {
    ARGTYPE Argument1;
    ARGTYPE Argument2;
    ARGTYPE Argument3;
+   ARGTYPE Argument4;
    PREFIXINFO Prefix;
    InternalDatas Reserved_;
 } DISASM, *PDISASM, *LPDISASM;
@@ -201,6 +223,7 @@ enum INSTRUCTION_TYPE
   ILLEGAL_INSTRUCTION           = 0x20000000,
   AES_INSTRUCTION               = 0x40000000,
   CLMUL_INSTRUCTION             = (int)0x80000000,
+  AVX_INSTRUCTION		= 0x8000,	 /* no more space to go up, reduce space for particular types */
 
 
     DATA_TRANSFER = 0x1,
@@ -301,6 +324,7 @@ enum ARGUMENTS_TYPE
   SPECIAL_REG = 0x400000,
   MEMORY_MANAGEMENT_REG = 0x800000,
   SEGMENT_REG = 0x1000000,
+  AVX_REG = 0x2000000,
 
   RELATIVE_ = 0x4000000,
   ABSOLUTE_ = 0x8000000,

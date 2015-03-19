@@ -2,7 +2,7 @@ LIBAPPFW_DIR=../lib
 
 OPTIMIZE=@OPTIMIZE@
 
-INC=-I/usr/include/postgresql -I/usr/include/mysql -I/usr/include/libxml2
+INC=-I/usr/include/postgresql -I/usr/include/mysql -I/usr/include/libxml2 -I/usr/include/x86_64-linux-gnu/
 XQDEF=-DXQILLA_MAJOR_VER=`cat xqil_major` -DXQILLA_MINOR_VER=`cat xqil_minor`
 SQLDEF=-DSQLITE_OS_UNIX=1 -DSQLITE_THREADSAFE=0 -DSQLITE_DEBUG=0 -DSQLITE_OMIT_LOAD_EXTENSION -DSQLITE_4_BYTE_ALIGNED_MALLOC 
 CFLAGS=$(OPTIMIZE) $(INC) $(SQLDEF) $(XQDEF) -DSHOW_TAINT_MARKINGS  -fPIC
@@ -32,10 +32,12 @@ combined_sqlite3.c: appfw_sqlite3.c sqlfw.c
 
 xqil_major:
 	#apt-cache show libxqilla-dev|grep Filename|sed -e "s/.*dev_//" -e "s/\..*//" > xqil_major
+	#apt-cache show libxqilla-dev|grep Filename|sed -e "s/.*dev_//" -e "s/\..*//" |head -1 > xqil_major
 	echo 2 > xquil_major
 
 xqil_minor:
 	#apt-cache show libxqilla-dev|grep Filename|sed -e "s/.*dev_..//" -e "s/\..*//" > xqil_minor
+	#apt-cache show libxqilla-dev|grep Filename|sed -e "s/.*dev_..//" -e "s/\..*//" |head -1 > xqil_minor
 	echo 9 > xquil_major
 
 %.o32: %.c
@@ -52,11 +54,11 @@ xqil_minor:
 
 libappfw.so32:  $(OBJS32)
 	$(CXX) -m32 $(CFLAGS) -shared -fPIC $^ -ldl -o $@
-	cp $@ $(LIBAPPFW_DIR)/
+	cp $@ $(LIBAPPFW_DIR)/32/libappfw.so
 
 libappfw.so64:  $(OBJS64)
 	$(CXX) -m64 $(CFLAGS) -shared -fPIC $^ -ldl -o $@
-	cp $@ $(LIBAPPFW_DIR)/
+	cp $@ $(LIBAPPFW_DIR)/64/libappfw.so
 
 clean:
 	rm -fr *.o *.o32 *.o64 *.tmp *.so32 *.so64 *.so appfw_sqlite3.c appfw_sqlite3.h sqlite3.h sqlite-autoconf-3071300  xqil_major xqil_minor

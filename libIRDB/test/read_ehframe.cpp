@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2014 - Zephyr Software LLC
+ *
+ * This file may be used and modified for non-commercial purposes as long as
+ * all copyright, permission, and nonwarranty notices are preserved.
+ * Redistribution is prohibited without prior written consent from Zephyr
+ * Software.
+ *
+ * Please contact the authors for restrictions applying to commercial use.
+ *
+ * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+ * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: Zephyr Software
+ * e-mail: jwd@zephyr-software.com
+ * URL   : http://www.zephyr-software.com/
+ *
+ */
+
 
 
 #include <libIRDB-core.hpp>
@@ -467,7 +487,7 @@ void print_lsda_handlers(lsda_header_info* info, unsigned char* p)
 		     		<<"cs_action: "<< cs_action << endl;
 
 #ifndef TEST
-			bool possible_target(int p, uintptr_t at=0);
+			bool possible_target(uintptr_t p, uintptr_t at=0);
 
 			/* the landing pad is a possible target if an exception is thrown */ 
 			possible_target(cs_lp+info->Start);
@@ -706,27 +726,35 @@ void read_ehframe(FileIR_t* virp, ELFIO::elfio* elfiop)
 	}
 	cout<<"Found .eh_frame is section "<<std::dec<<eh_frame_index<<endl;
 
+	eh_frame_addr=(void*)elfiop->sections[eh_frame_index]->get_address();
+	int total_size=0;
+
 // 	char *p=&strtab[ sechdrs[secndx+1].sh_name];
 	const char *p=elfiop->sections[secndx+1]->get_name().c_str(); 
         if (strcmp(".gcc_except_table",p)!=0)
 	{
 		cout<<"Did not find .gcc_except_table immediately after .eh_frame\n";
-		return;
+		total_size=elfiop->sections[eh_frame_index]->get_size()+1;
 	}
-
-	eh_frame_addr=(void*)elfiop->sections[eh_frame_index]->get_address();
-	int total_size= 
+	else
+	{
+		total_size=
 		(elfiop->sections[eh_frame_index+1]->get_address()+
 		 elfiop->sections[eh_frame_index+1]->get_size()   ) - (uintptr_t)eh_frame_addr;
+	}
 	
 
 	// collect eh_frame and gcc_except_table into one memory region
-        eh_frame_data=(char*)malloc(total_size);
+        eh_frame_data=(char*)calloc(1,total_size);
 	memcpy(eh_frame_data,elfiop->sections[eh_frame_index]->get_data(),
 		elfiop->sections[eh_frame_index]->get_size());
-	memcpy(eh_frame_data+elfiop->sections[eh_frame_index]->get_size(),
-		elfiop->sections[eh_frame_index+1]->get_data(),
-		elfiop->sections[eh_frame_index+1]->get_size());
+
+        if (strcmp(".gcc_except_table",p)==0)
+	{
+		memcpy(eh_frame_data+elfiop->sections[eh_frame_index]->get_size(),
+			elfiop->sections[eh_frame_index+1]->get_data(),
+			elfiop->sections[eh_frame_index+1]->get_size());
+	}
 
 	uintptr_t offset;
 	eh_offset=offset=(uintptr_t)eh_frame_addr-(uintptr_t)eh_frame_data;

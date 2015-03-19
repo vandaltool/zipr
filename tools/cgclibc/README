@@ -1,0 +1,58 @@
+Identification of malloc() + other libc functions
+(not focussing on free right now)
+
+20150307
+
+Legend:
+Static M/F: static determination of candidates for malloc/free
+      +Dyn: add dynamic testing of malloc
+      +Dom: add simple dominator heuristic
+     +Clus: add clustering heuristic (malloc and free have to share a global)
+
+			Static  <==Static + Dyanmic==>
+Test name       Result  M/F	+Dyn	+Dom	+Clus	Comments
+-------------	------	-----   ----	-------	------  ---------
+CADET_00001	PASS	0/0 				No malloc/free
+EAGLE_00004_1	PASS	0/0 				No malloc/free
+EAGLE_00004_2	PASS	0/0 				No malloc/free
+EAGLE_00004_3	PASS	0/0 				No malloc/free
+KPRCA_00001	PASS	6/7	1/7	    		true malloc found
+KPRCA_00003	PASS	1/2				true malloc found
+KPRCA_00015  	PASS	1/2			  	true malloc found
+LUNGE_00002  	PASS	3/3	2/2	1/2		true malloc found
+LUNGE_00005_1  	PASS	6/2	1/2	    		true malloc found
+LUNGE_00005_2  	PASS	5/2	2/2	1/1		true malloc found
+LUNGE_00005_3  	PASS	4/2	2/2	1/1		true malloc found
+LUNGE_00005_4	PASS	5/2  	2/2	1/1		true malloc found
+LUNGE_00005_5	PASS	4/2  	2/2	1/1		true malloc found
+LUNGE_00005_6	PASS	4/2  	2/2	1/1		true malloc found
+NRFIN_00003	PASS  	2/0	0/0   			No malloc/free
+NRFIN_00010 	PASS	12/6    0/6	           	No malloc/free (uses allocate()/deallocate() directly)
+NRFIN_00013     PASS	4/0	0/0  			No malloc/free (uses allocate() directly)
+TNETS_00002  	PASS   	9/11	5/11	3/6  	1/1 	true malloc found
+YAN01_00001	PASS	0/0 		   		No malloc/free
+YAN01_00002	PASS	0/0 		   		No malloc/free
+YAN01_00003	PASS	0/0 	   			No malloc/free
+
+Example testing for functions besides malloc
+
+TNETS02 inference examples
+Some stats:
+#functions in TNETS02   : 94
+#libc functions to infer: 17
+cinderella run-time     : 10mns 30secs
+                          (6.7sec per function in TNETS02)
+
+libc functions successfully inferred:
+prince positive malloc malloc
+prince positive strdup strdup
+prince positive strlen strlen
+prince positive strlcpy strlcpy
+prince positive strlcat strlcat
+prince positive strcmp strcmp
+prince positive strncmp strncmp
+prince positive strchr strchr
+prince positive strtok strtok
+prince positive strspn strspn
+prince positive strcspn strcspn
+prince positive memset memset

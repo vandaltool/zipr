@@ -26,6 +26,7 @@ int __bea_callspec__ Disasm (PDISASM pMyDisasm) {
         if (!GV.OutOfBlock) {
             FixArgSizeForMemoryOperand(pMyDisasm);
             FixREXPrefixes(pMyDisasm);
+            FixVEXPrefixes(pMyDisasm);
             FillSegmentsRegisters(pMyDisasm);
             CompleteInstructionFields(pMyDisasm);
             #ifndef BEA_LIGHT_DISASSEMBLY
@@ -167,6 +168,11 @@ void __bea_callspec__ FixArgSizeForMemoryOperand (PDISASM pMyDisasm) {
 /* ====================================================================
  *
  * ==================================================================== */
+void __bea_callspec__ FixVEXPrefixes (PDISASM pMyDisasm) {
+	/* struct copy */
+	(*pMyDisasm).Prefix.VEX = GV.VEX;
+
+}
 void __bea_callspec__ FixREXPrefixes (PDISASM pMyDisasm) {
 
     (*pMyDisasm).Prefix.REX.W_ = GV.REX.W_;
@@ -461,6 +467,62 @@ void __bea_callspec__ GxEx(PDISASM pMyDisasm)
 /* ====================================================================
  *
  * ==================================================================== */
+void __bea_callspec__ VxGxEx(PDISASM pMyDisasm)
+{
+    int origOperandSize=GV.OperandSize;
+    GV.OperandSize=128+128*GV.AVX_;
+    V_reg(&(*pMyDisasm).Argument2, pMyDisasm);
+    GV.OperandSize=origOperandSize;
+    MOD_RM(&(*pMyDisasm).Argument3, pMyDisasm);
+    GV.third_arg=1;
+    Reg_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
+    GV.EIP_ += GV.DECALAGE_EIP+2;
+}
+
+
+void __bea_callspec__ Vx_opt_GxEx_vexlen(PDISASM pMyDisasm)
+{
+        GV.AVX_ = GV.VEX.length;
+        GV.SSE_ = !GV.VEX.length;
+        Vx_opt_GxEx(pMyDisasm);
+        GV.AVX_ = 0;
+        GV.SSE_ = 0;
+}
+
+void __bea_callspec__ Vx_opt_GxEx_vexlen_imm(PDISASM pMyDisasm)
+{
+	Vx_opt_GxEx_vexlen(pMyDisasm);
+	if(GV.VEX.has_vex)
+	{
+		L_imm(&pMyDisasm->Argument4,pMyDisasm);
+		GV.forth_arg=1;
+		
+	}
+	else
+	{
+		GV.third_arg=1;
+		L_imm(&pMyDisasm->Argument3,pMyDisasm);
+	}
+	
+}
+
+
+void __bea_callspec__ Vx_opt_GxEx(PDISASM pMyDisasm)
+{
+        if(GV.VEX.has_vex)
+        {
+                GV.MemDecoration+=100;
+                VxGxEx(pMyDisasm);
+		GV.third_arg=1;
+        }
+        else
+                GxEx(pMyDisasm);
+}
+
+
+/* ====================================================================
+ *
+ * ==================================================================== */
 void __bea_callspec__ GvEw(PDISASM pMyDisasm)
 {
     GV.MemDecoration = Arg2word;
@@ -477,6 +539,10 @@ void __bea_callspec__ GvEw(PDISASM pMyDisasm)
  * ==================================================================== */
 void __bea_callspec__ ALIb(PDISASM pMyDisasm)
 {
+	int reg_offset=0;
+	if(GV.REX.B_)
+		reg_offset=8;
+	
     long MyNumber;
     if (!Security(2, pMyDisasm)) return;
     GV.ImmediatSize = 8;
@@ -486,9 +552,12 @@ void __bea_callspec__ ALIb(PDISASM pMyDisasm)
     #endif
     (*pMyDisasm).Instruction.Immediat = MyNumber;
     #ifndef BEA_LIGHT_DISASSEMBLY
-       (void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8Bits[0]);
+       (void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8Bits[0+reg_offset]);
     #endif
-    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0;
+	if(GV.REX.B_)
+    		(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0;
+	else
+    		(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG8;
     (*pMyDisasm).Argument1.ArgSize = 8;
     (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
     (*pMyDisasm).Argument2.ArgSize = 8;
@@ -501,7 +570,10 @@ void __bea_callspec__ ALIb(PDISASM pMyDisasm)
 void __bea_callspec__ eAX_Iv(PDISASM pMyDisasm)
 {
     UInt32 MyNumber;
-    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0;
+	if(GV.REX.B_)
+    		(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0;
+	else
+    		(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG8;
     (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
     if (GV.OperandSize == 64) {
         if (!Security(5, pMyDisasm)) return;
@@ -801,17 +873,7 @@ void __bea_callspec__ BuildCompleteInstruction(PDISASM pMyDisasm)
     /* =============== if Arg1.IsMemoryType, add decoration-example == "dword ptr ds:[" */
     if ((GV.MemDecoration >0) && (GV.MemDecoration < 99)) {
         if (GV.SYNTAX_ == NasmSyntax) {
-	    if(
-		strstr((*pMyDisasm).Instruction.Mnemonic, "lea")==0 && 	        /* lea */
-		strstr((*pMyDisasm).Instruction.Mnemonic, "prefetchT0")==0 &&   /* prefetchT0 */
-		strstr((*pMyDisasm).Instruction.Mnemonic, "prefetchT1")==0 &&   /* prefetchT1 */
-		strstr((*pMyDisasm).Instruction.Mnemonic, "prefetchT2")==0 &&   /* prefetchT2 */
-		strstr((*pMyDisasm).Instruction.Mnemonic, "prefetchNTA")==0     /* prefetchNTA */
-	      )  
-	  {
-		/* don't get the nasm prefix for size */
-		(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, NasmPrefixes[GV.MemDecoration-1]);
-	  }
+	    (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, NasmPrefixes[GV.MemDecoration-1]);
             i = strlen((char*) &(*pMyDisasm).CompleteInstr);
             if ((GV.SEGMENTREGS != 0) || (GV.SEGMENTFS != 0)){
                 (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, "[");
@@ -876,14 +938,7 @@ void __bea_callspec__ BuildCompleteInstruction(PDISASM pMyDisasm)
     if ((GV.MemDecoration >100) && (GV.MemDecoration < 199)) {
         GV.MemDecoration -= 100;
 	   if (GV.SYNTAX_ == NasmSyntax) {
-     		if (
-		strstr((*pMyDisasm).Instruction.Mnemonic, "lea")==0 && 	        /* lea */
-		strstr((*pMyDisasm).Instruction.Mnemonic, "prefetchT0")==0 &&   /* prefetchT0 */
-		strstr((*pMyDisasm).Instruction.Mnemonic, "prefetchT1")==0 &&   /* prefetchT1 */
-		strstr((*pMyDisasm).Instruction.Mnemonic, "prefetchT2")==0 &&   /* prefetchT2 */
-		strstr((*pMyDisasm).Instruction.Mnemonic, "prefetchNTA")==0     /* prefetchNTA */
-	      )   
-            	(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, NasmPrefixes[GV.MemDecoration-1]);
+	    (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, NasmPrefixes[GV.MemDecoration-1]);
             i = strlen((char*) &(*pMyDisasm).CompleteInstr);
             if ((GV.SEGMENTREGS != 0) || (GV.SEGMENTFS != 0)){
                 (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, "[");
@@ -939,11 +994,90 @@ void __bea_callspec__ BuildCompleteInstruction(PDISASM pMyDisasm)
     }
 
 
-    /* =============== if Arg3.Exists */
-    if (GV.third_arg != 0) {
+    	/* =============== if Arg3.Exists */
+   	if (GV.third_arg != 0) 
+	{
+        	(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, ", ");
+        	i += 2;
+		if ((GV.MemDecoration >200) && (GV.MemDecoration < 299)) 
+    		{
+        		GV.MemDecoration -= 200;
+	    		(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, NasmPrefixes[GV.MemDecoration-1]);
+            		i = strlen((char*) &(*pMyDisasm).CompleteInstr);
+	   		if (GV.SYNTAX_ == NasmSyntax) 
+			{
+            			i = strlen((char*) &(*pMyDisasm).CompleteInstr);
+            			if ((GV.SEGMENTREGS != 0) || (GV.SEGMENTFS != 0))
+				{
+                			(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, "[");
+                			i++;
+                			if (GV.SEGMENTREGS != 0) 
+					{
+                    				(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, 
+							SegmentRegs[(*pMyDisasm).Argument3.SegmentReg]);
+                			}
+                			else 
+					{
+                    				(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, SegmentRegs[3]);
+                			}
+                			i = strlen((char*) &(*pMyDisasm).CompleteInstr);
+            			}
+            			else		 
+				{
+                			(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, "[");
+                			i++;
+            			}
+        		}
+        		else 
+			{
+            			if (GV.SYNTAX_ == MasmSyntax) 
+				{
+                			(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, MasmPrefixes[GV.MemDecoration-1]);
+                			i = strlen((char*) &(*pMyDisasm).CompleteInstr);
+            			}
+            			else 	
+				{
+                			(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, GoAsmPrefixes[GV.MemDecoration-1]);
+                			i = strlen((char*) &(*pMyDisasm).CompleteInstr);
+            			}
+            			if ((GV.SEGMENTREGS != 0) || (GV.SEGMENTFS != 0))
+				{
+                			if (GV.SEGMENTREGS != 0) 
+					{
+                    				(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, SegmentRegs[(*pMyDisasm).Argument3.SegmentReg]);
+                			}
+                			else 
+					{
+                    				(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, SegmentRegs[3]);
+                			}
+                			i = strlen((char*) &(*pMyDisasm).CompleteInstr);
+                			(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, "[");
+                			i++;
+            			}
+            			else 
+				{
+                			(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, "[");
+                			i++;
+            			}
+        		}
+        		/* =============== add Arg3.ArgMnemonic */
+        		(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, (char*) &(*pMyDisasm).Argument3.ArgMnemonic);
+        		i = strlen((char*) &(*pMyDisasm).CompleteInstr);
+        		(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, "]");
+        		i++;
+    		}
+		else
+		{
+        		(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, (char*) &(*pMyDisasm).Argument3.ArgMnemonic);
+        		i = strlen((char*) &(*pMyDisasm).CompleteInstr);
+		}
+    	}
+    /* =============== if Arg4.Exists */
+    if (GV.forth_arg != 0) {
         (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, ", ");
         i += 2;
-        (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, (char*) &(*pMyDisasm).Argument3.ArgMnemonic);
+        (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, (char*) &(*pMyDisasm).Argument4.ArgMnemonic);
+        i = strlen((char*) &(*pMyDisasm).CompleteInstr);
     }
 
 

@@ -65,16 +65,16 @@ clean:
 	rm -rf *.o *.tmp *.exe peasoup_executable_directory* test*.peasoup messages_to_tne.log ps_tne_logfile.txt testpg*.exe.sigs appfw.db 
 
 peasoup: all all.env
-	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg1.exe testpg1.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
-	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg2.exe testpg2.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
-	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg3.exe testpg3.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
-	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg4.exe testpg4.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg1.exe testpg1.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off --step twitchertransform=off
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg2.exe testpg2.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off --step twitchertransform=off
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg3.exe testpg3.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off --step twitchertransform=off
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg4.exe testpg4.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off --step twitchertransform=off
 	
 peasoup.env: all.env
-	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg1.env.exe testpg1.exe.env.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
-	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg2.env.exe testpg2.exe.env.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
-	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg.pstmt.exe testpg.pstmt.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
-	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg2.pstmt.exe testpg2.pstmt.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg1.env.exe testpg1.exe.env.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off --step twitchertransform=off
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg2.env.exe testpg2.exe.env.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off --step twitchertransform=off
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg.pstmt.exe testpg.pstmt.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off --step twitchertransform=off
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg2.pstmt.exe testpg2.pstmt.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off --step twitchertransform=off
 
 testpg.pstmt:
 	QUERY_DATA=1 LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testpg.pstmt.exe.sigs ./testpg.pstmt.exe

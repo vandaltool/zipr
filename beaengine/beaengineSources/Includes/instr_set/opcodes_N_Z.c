@@ -121,7 +121,7 @@ void __bea_callspec__ hint_nop(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+MISCELLANEOUS_INSTRUCTION;
     #ifndef BEA_LIGHT_DISASSEMBLY
-       (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "hint_nop ");
+       (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "nop ");
     #endif
     if (GV.OperandSize == 64) {
         GV.MemDecoration = Arg2qword;
