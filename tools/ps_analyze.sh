@@ -1,4 +1,4 @@
-#!/bin/bash   
+#!/bin/bash    
 #
 # ps_analyze.sh - analyze a program and transform it for peasoupification to prevent exploit.
 #
@@ -39,8 +39,7 @@ CONCOLIC_DIR=concolic.files_a.stratafied_0001
 intxform_warnings_only=0  # default: integer warnings only mode is off
 intxform_detect_fp=1      # default: detect benign false positives is on
                           #   but if determine_program is off, it's a no-op
-
-
+intxform_instrument_idioms=0  # default: do not instrument instructions marked as IDIOM by STARS
 
 
 # 
@@ -164,10 +163,18 @@ check_options()
 	# Note that we use `"$@"' to let each command-line parameter expand to a 
 	# separate word. The quotes around `$@' are essential!
 	# We need TEMP as the `eval set --' would nuke the return value of getopt.
-	TEMP=`getopt s:t:w: "$@"`
 
-# solaris does not support long option names
-# --long step-option: --long integer_warnings_only --long integer_detect_fp --long no_integer_detect_fp --long step: --long timeout: --long manual_test_script: --long manual_test_coverage_file: --long watchdog: 
+	short_opts="s:t:w:"
+	long_opts="--long step-option: --long integer_warnings_only --long integer_instrument_idioms --long integer_detect_fp --long no_integer_detect_fp --long step: --long timeout: --long manual_test_script: --long manual_test_coverage_file: --long watchdog: "
+
+
+	# solaris does not support long option names
+	if [ `uname -s` = "SunOS" ]; then
+		TEMP=`getopt $short_opts "$@"`
+	else
+		TEMP=`getopt -o $short_opts $long_opts -n 'ps_analyze.sh' -- "$@"`
+	fi
+
 
 	# error check #
 	if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit -1 ; fi
@@ -212,6 +219,11 @@ check_options()
 		--integer_detect_fp)
 			echo "integer transform: benign false positive detection enabled"
 			intxform_detect_fp=1
+			shift 
+			;;
+		--integer_instrument_idioms)
+			echo "integer transform: instrument idioms"
+			intxform_instrument_idioms=1
 			shift 
 			;;
 		-t|--timeout) 
@@ -617,11 +629,11 @@ perform_step create_binary_script 	mandatory $PEASOUP_HOME/tools/do_makepeasoupb
 perform_step heaprand 	 		pc_confine,double_free $PEASOUP_HOME/tools/update_env_var.sh STRATA_HEAPRAND 1
 perform_step controlled_exit none 		 	 $PEASOUP_HOME/tools/update_env_var.sh STRATA_CONTROLLED_EXIT 1
 perform_step detect_server  pc_confine  $PEASOUP_HOME/tools/update_env_var.sh STRATA_DETECT_SERVERS 1
-perform_step ibtc  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_IBTC 0
+#perform_step ibtc  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_IBTC 0
+#perform_step sieve  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_SIEVE 1
+#perform_step return_cache  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_RC 1
+#perform_step partial_inlining  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_PARTIAL_INLINING 0
 perform_step rekey  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_REKEY_AFTER 5000
-perform_step sieve  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_SIEVE 1
-perform_step return_cache  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_RC 1
-perform_step partial_inlining  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_PARTIAL_INLINING 0
 perform_step double_free heaprand $PEASOUP_HOME/tools/update_env_var.sh STRATA_DOUBLE_FREE 1
 perform_step pc_confine  none $PEASOUP_HOME/tools/update_env_var.sh STRATA_PC_CONFINE 1
 perform_step isr 	 pc_confine $PEASOUP_HOME/tools/update_env_var.sh STRATA_PC_CONFINE_XOR 1
@@ -782,6 +794,9 @@ if [ -z "$program" ]; then
    program="unknown"
 fi
 
+perform_step integertransform none $PEASOUP_HOME/tools/do_integertransform.sh $cloneid $program $CONCOLIC_DIR $INTEGER_TRANSFORM_TIMEOUT_VALUE $intxform_warnings_only $intxform_detect_fp $intxform_instrument_idioms
+#perform_step calc_conflicts none $SECURITY_TRANSFORMS_HOME/libIRDB/test/calc_conflicts.exe $cloneid a.ncexe
+
 perform_step integertransform meds_static,clone $PEASOUP_HOME/tools/do_integertransform.sh $cloneid $program $CONCOLIC_DIR $INTEGER_TRANSFORM_TIMEOUT_VALUE $intxform_warnings_only $intxform_detect_fp $intxform_instrument_idioms
 
 
@@ -811,6 +826,14 @@ perform_step fast_spri spasm $PEASOUP_HOME/tools/fast_spri.sh a.irdb.bspri a.ird
 # preLoaded_ILR step
 perform_step preLoaded_ILR1 fast_spri $STRATA_HOME/tools/preLoaded_ILR/generate_hashfiles.exe a.irdb.fbspri 
 perform_step preLoaded_ILR2 preLoaded_ILR1 $PEASOUP_HOME/tools/generate_relocfile.sh a.irdb.fbspri
+
+# copy TOCTOU tool here if it exists
+is_step_on toctou
+if [[ $? -eq 1 && -e $GRACE_HOME/ps_concurrency/toctou_tool/libtoctou_tool.so ]];
+then
+    cp $GRACE_HOME/ps_concurrency/toctou_tool/libtoctou_tool.so libtoctou_tool.so
+    $PEASOUP_HOME/tools/update_env_var.sh DO_TOCTOU 1
+fi
 
 #
 # create a report for all of ps_analyze.

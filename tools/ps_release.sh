@@ -76,7 +76,7 @@ if [ -d $1 ]; then
   verify_peasoup_dir $peasoup_dir
 else
   verify_peasoup_app $1
-  peasoup_dir=`grep ps_run $1 | cut -d' ' -f3`
+  peasoup_dir=`grep ps_run $1 | cut -d' ' -f2`
   verify_peasoup_dir $peasoup_dir
 fi
 
@@ -86,7 +86,7 @@ echo "Preparing directory for release: $peasoup_dir"
 cd $peasoup_dir
 
 files_to_keep="a.ncexe.annot 
-a.ncexe.sigs
+a.ncexe.sigs.orig
 a.stratafied 
 a.irdb.fbspri.reloc
 a.stratafied
@@ -118,10 +118,10 @@ remove_rest $files_to_keep
 #
 
 # directory has rwx for user only 
-chmod 700 .
+chmod 700 . a.ncexe.sigs.orig
 
 # non-executable files are read-only 
-chmod 400 a.irdb.fbspri.reloc a.ncexe.annot a.stratafied.data_dataListFile a.stratafied.data_hashFile a.stratafied.data_hash.ini a.stratafied.data_keyValueFile a.stratafied.data_libListFile a.stratafied.map_hashFile a.stratafied.map_hash.ini a.stratafied.map_keyValueFile a.stratafied.map_libListFile a.stratafied.term_map_hashFile a.stratafied.term_map_hash.ini a.stratafied.term_map_keyValueFile a.ncexe.sigs
+chmod 400 a.irdb.fbspri.reloc a.ncexe.annot a.stratafied.data_dataListFile a.stratafied.data_hashFile a.stratafied.data_hash.ini a.stratafied.data_keyValueFile a.stratafied.data_libListFile a.stratafied.map_hashFile a.stratafied.map_hash.ini a.stratafied.map_keyValueFile a.stratafied.map_libListFile a.stratafied.term_map_hashFile a.stratafied.term_map_hash.ini a.stratafied.term_map_keyValueFile 
 
 # executable files are r-x for user only 
 chmod 500 libappfw.so a.stratafied libstrata.so ps_run.sh

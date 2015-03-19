@@ -12,8 +12,9 @@ CONCOLIC_DIR=$3
 TIMEOUT=$4
 WARNINGS_ONLY=$5     # 0 or 1
 BENIGN_FP_DETECT=$6  # 0 or 1
+INSTRUMENT_IDIOMS=$7  # 0 or 1
 
-echo "intxform: cloneID=$CLONE_ID identifiedProg=$IDENTIFIED_PROG concolicDir=$CONCOLIC_DIR timeout=$TIMEOUT warningsOnly=$WARNINGS_ONLY benignFpDetect=$BENIGN_FP_DETECT"
+echo "intxform: cloneID=$CLONE_ID identifiedProg=$IDENTIFIED_PROG concolicDir=$CONCOLIC_DIR timeout=$TIMEOUT warningsOnly=$WARNINGS_ONLY benignFpDetect=$BENIGN_FP_DETECT instrumentIdioms=$INSTRUMENT_IDIOMS"
 
 # configuration variables
 LIBC_FILTER=$PEASOUP_HOME/tools/libc_functions.txt   # libc and other system library functions
@@ -89,6 +90,12 @@ if [ "$WARNINGS_ONLY" != "0" ]; then
   timeout $TIMEOUT $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE --warning
 else
   echo "intxform: saturating arithmetic is enabled"
-  timeout $TIMEOUT $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE --saturating-arithmetic 
+
+  if [ "$INSTRUMENT_IDIOMS" != "0" ]; then
+    echo "intxform: instrument idioms"
+    timeout $TIMEOUT $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE --saturating-arithmetic --instrument-idioms
+  else
+    timeout $TIMEOUT $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE --saturating-arithmetic 
+  fi
 fi
 

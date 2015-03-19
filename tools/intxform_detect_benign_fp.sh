@@ -32,7 +32,7 @@ echo "intxform(detect-benign-fp): transforming binary: cloneid=$CLONE_ID identif
 if [ -f $REGRESSION_TESTS ]; then
 	echo "intxform(detect-benign-fp): manual regression tests detected for $IDENTIFIED_PROG"
 else
-	echo "intxform(detect-benign-fp): no manual regression tests detected for $IDENTIFIED_PROG"
+	echo "intxform(detect-benign-fp): no manual regression tests detected for $IDENTIFIED_PROG in $REGRESSION_TESTS"
 	exit 1
 fi
 

@@ -19,10 +19,12 @@ echo "datapath=$current_dir" >> $peasoup_binary
 cat >> $peasoup_binary <<"EOF"
 
 if [ -f $datapath/diagnostics.out ]; then
-	len=`cat $datapath/diagnostics.out | wc -l` 
+	len=`/bin/cat $datapath/diagnostics.out | wc -l` 
 	if [ $len -gt 0 ]; then 
 
-	    head $datapath/diagnostics.out 
+        	# make output more concise
+	    	/bin/cat $datapath/diagnostics.out | uniq > tmp.$$
+		mv tmp.$$ $datapath/diagnostics.out
 	fi
 fi
 

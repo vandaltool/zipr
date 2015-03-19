@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 #
 # do_p1transform.sh <originalBinary> <MEDS annotationFile> <cloneId> <BED_script>
 #
@@ -261,7 +261,8 @@ touch $EXECUTED_ADDRESSES_CONCOLIC
 cat $EXECUTED_ADDRESSES_CONCOLIC >> $EXECUTED_ADDRESSES_FINAL
 
 # sanity filter, keep only well formed addresses
-cat $EXECUTED_ADDRESSES_FINAL | sed 's/\(.*0x.*\)/\1/' >tmp
+# also change a.stratafied to a.ncexe, which is the name for the main executable in IRDB
+cat $EXECUTED_ADDRESSES_FINAL | sed -e 's/\(.*0x.*\)/\1/' -e 's/^a\.stratafied+/a.ncexe+/' >tmp
 mv tmp $EXECUTED_ADDRESSES_FINAL
 
 sort $EXECUTED_ADDRESSES_FINAL | uniq > tmp
@@ -276,13 +277,15 @@ $SECURITY_TRANSFORMS_HOME/tools/cover/cover $CLONE_ID $EXECUTED_ADDRESSES_FINAL 
 
 touch $COVERAGE_FILE
 
-echo "$PEASOUP_HOME/tools/my_timeout.sh $TIMEOUT_VALUE $PN_BINARY --variant_id=$CLONE_ID --bed_script=$BED_SCRIPT --coverage_file=$COVERAGE_FILE --pn_threshold=$P1THRESHOLD --canaries=$DO_CANARIES --blacklist=$LIBC_FILTER  --shared_object_protection   --no_p1_validate --align_stack"
 
+command="$PEASOUP_HOME/tools/my_timeout.sh $TIMEOUT_VALUE $PN_BINARY --variant_id=$CLONE_ID --bed_script=$BED_SCRIPT \
+		--coverage_file=$COVERAGE_FILE --pn_threshold=$P1THRESHOLD \
+		--canaries=$DO_CANARIES --blacklist=$LIBC_FILTER  --shared_object_protection   --no_p1_validate --align_stack"
 
 if [ ! -z $DEBUG_P1 ]; then
-	gdb --args $PN_BINARY --variant_id=$CLONE_ID --bed_script=$BED_SCRIPT --coverage_file=$COVERAGE_FILE --pn_threshold=$P1THRESHOLD --canaries=$DO_CANARIES --blacklist=$LIBC_FILTER  --shared_object_protection   --no_p1_validate --align_stack
+	gdb --args                                      $command
 else
-	$PEASOUP_HOME/tools/my_timeout.sh $TIMEOUT_VALUE $PN_BINARY --variant_id=$CLONE_ID --bed_script=$BED_SCRIPT --coverage_file=$COVERAGE_FILE --pn_threshold=$P1THRESHOLD --canaries=$DO_CANARIES --blacklist=$LIBC_FILTER  --shared_object_protection   --no_p1_validate --align_stack
+	$command
 fi
 
 
