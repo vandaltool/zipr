@@ -4,7 +4,7 @@
 
 CC=gcc
 CXX=g++
-CFLAGS=-O -w
+CFLAGS=-O -w -fno-stack-protector
 CXXFLAGS=-O -w
 LD=gcc
 LDFLAGS=
@@ -19,7 +19,7 @@ create_binary_script=on
 heaprand=on
 double_free=on
 pc_confine=on
-isr=on
+isr=off
 meds_static=on
 pdb_register=on
 pdb_create_tables=on
@@ -35,6 +35,8 @@ generate_spri=on
 spasm=on
 concolic=on
 watchdog=on
+appfw=on
+ret_shadow_stack=off
 
 
 
@@ -71,6 +73,8 @@ all: env_check  ${exes}
 		--step spasm=${spasm}\
 		--step watchdog=${watchdog}\
 		--step concolic=${concolic}\
+		--step appfw=${appfw}\
+		--step ret_shadow_stack=${ret_shadow_stack}\
 
 
 .c.o:

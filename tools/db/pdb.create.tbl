@@ -9,28 +9,30 @@ CREATE TABLE doip
 
 CREATE TABLE variant_info
 (
-  schema_version_id 		integer DEFAULT 1,
-  variant_id       		SERIAL PRIMARY KEY,       
-  name             		text    NOT NULL CHECK (name <> ''),
+  schema_version_id     integer DEFAULT 1,
+  variant_id            SERIAL PRIMARY KEY,       
+  name                  text    NOT NULL CHECK (name <> ''),
   orig_variant_id  		integer DEFAULT -1,
-  doip_id                   	integer DEFAULT -1
+  doip_id               integer DEFAULT -1
 
 );
 
 CREATE TABLE file_info
 (
-  file_id          		SERIAL PRIMARY KEY,
-  orig_file_id     		integer DEFAULT -1,
-  url              		text NOT NULL CHECK (url <> ''),
-  hash             		text,
-  arch             		text,
-  type		   		text DEFAULT 'ELF-Static',
-  elfoid	   		OID,
-  address_table_name 		text,
-  function_table_name 		text,
-  instruction_table_name 	text,
-  relocs_table_name 		text,
-  doip_id          		integer DEFAULT -1
+  file_id                 SERIAL PRIMARY KEY,
+  orig_file_id            integer DEFAULT -1,
+  url                     text NOT NULL CHECK (url <> ''),
+  hash                    text,
+  arch                    text,
+  type                    text DEFAULT 'ELF-Static',
+  elfoid                  OID,
+  address_table_name      text,
+  function_table_name     text,
+  instruction_table_name  text,
+  ibtargets_table_name    text,
+  relocs_table_name       text,
+  types_table_name        text,
+  doip_id                 integer DEFAULT -1
 );
 
 CREATE TABLE variant_dependency

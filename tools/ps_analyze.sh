@@ -13,11 +13,27 @@ realpath() {
   /bin/pwd
 }
 
+
+##################################################################################
+# set default values for 
+##################################################################################
+
+initial_off_phases="isr ret_shadow_stack determine_program stats fill_in_safefr zipr installer watch_allocate cinderella cgc_hlx spawner concolic selective_cfi fptr_shadow concolic"
+
+##################################################################################
+
+
 ulimit -s unlimited
 
 # default watchdog value is 30 seconds
 watchdog_val=30
 errors=0
+
+# record statistics in database?
+record_stats=0
+
+# DEFAULT USER NAME
+USER=default
 
 # DEFAULT TIMEOUT VALUE
 INTEGER_TRANSFORM_TIMEOUT_VALUE=1800
@@ -28,7 +44,6 @@ PN_TIMEOUT_VALUE=21600
 # 
 # set default values for 
 #
-initial_off_phases="isr ret_shadow_stack determine_program add_confinement_section"
 
 #non-zero to use canaries in PN/P1, 0 to turn off canaries
 #DO_CANARIES=1
@@ -37,10 +52,13 @@ DO_CANARIES=on
 CONCOLIC_DIR=concolic.files_a.stratafied_0001
 
 intxform_warnings_only=0  # default: integer warnings only mode is off
-intxform_detect_fp=1      # default: detect benign false positives is on
+intxform_detect_fp=0      # default: detect benign false positives is on
                           #   but if determine_program is off, it's a no-op
 intxform_instrument_idioms=0  # default: do not instrument instructions marked as IDIOM by STARS
 
+# JOBID
+
+JOBID="$(basename $1).$$"
 
 # 
 # By default, big data approach is off
@@ -138,12 +156,21 @@ set_step_option()
 	option=`echo $1 | sed 's/.*:\(.*\)/\1/'`
 
 	case "$step" in
-       p1transform)
-           	set_p1transform_option $option
-            ;;
-		*) 	echo "Unrecognized --step-option: $step" 
-		 	exit -2 #What's the correct exit status?
-			;;
+		#
+		# please don't follow P1's example here, follow watch_allocate
+		#
+       		p1transform)
+           		set_p1transform_option $option
+            	;;
+		*) 	
+			#
+			# this sets step_options_$step to have the new option
+			# you can now, when writing your step, just add $step_options_<stepname> where you want the options passed to your step.
+			#
+			var="step_options_$step"
+			old_value="${!var}"
+			eval "step_options_$step='$old_value $option'"
+		;;
 	esac
 	
 }
@@ -165,7 +192,18 @@ check_options()
 	# We need TEMP as the `eval set --' would nuke the return value of getopt.
 
 	short_opts="s:t:w:"
-	long_opts="--long step-option: --long integer_warnings_only --long integer_instrument_idioms --long integer_detect_fp --long no_integer_detect_fp --long step: --long timeout: --long manual_test_script: --long manual_test_coverage_file: --long watchdog: "
+	long_opts="--long step-option: 
+		   --long integer_warnings_only 
+		   --long integer_instrument_idioms 
+		   --long integer_detect_fp 
+		   --long no_integer_detect_fp 
+		   --long step: 
+		   --long timeout: 
+		   --long id:  				
+		   --long name:	  			
+		   --long manual_test_script: 
+		   --long manual_test_coverage_file: 
+		   --long watchdog: "
 
 
 	# solaris does not support long option names
@@ -230,6 +268,14 @@ check_options()
 			set_timer $2 & TIMER_PID=$!
 			shift 2 
 			;;
+		--id) 
+			JOBID=$2
+			shift 2 
+			;;
+		--name) 
+			DB_PROGRAM_NAME=$2
+			shift 2 
+			;;
 		--) 	shift 
 			break 
 			;;
@@ -268,10 +314,18 @@ check_options()
 		fi
 	done
 
-	# turn off heaprand and double_free if twitcher is on for now
+	# turn off heaprand, signconv_func_monitor, and watchdog double_free if twitcher is on for now
 	is_step_on twitchertransform
 	if [[ $? = 1 && "$TWITCHER_HOME" != "" ]]; then
-		phases_off=" $phases_off heaprand=off double_free=off"
+		phases_off="$phases_off heaprand=off signconv_func_monitor=off watchdog=off double_free=off"
+	fi
+
+	#
+	# turn on/off recording of statistics
+	#
+	is_step_on stats
+	if [[ $? = 1 ]]; then
+		record_stats=1
 	fi
 }
 
@@ -281,7 +335,7 @@ check_options()
 #
 is_step_on()
 {
-	step=$1
+	local step=$1
 
 
 	echo "$phases_off"|egrep " $step=off" > /dev/null
@@ -339,6 +393,29 @@ stop_if_error()
 }
 
 #
+# Check dependencies
+#
+check_dependencies()
+{
+	# format is:  step1,step2,step3
+	local dependency_list=$1
+
+	# extract each step, make sure step is turned on
+	local steps=$(echo $dependency_list | tr "," "\n")
+	for s in $steps
+	do
+		if [[ "$s" != "none" && "$s" != "mandatory" ]]; then
+			is_step_on $s
+			if [ $? -eq 0 ]; then
+				return 0
+			fi
+		fi
+	done
+
+	return 1
+}
+
+#
 # Detect if this step of the computation is on, and execute it.
 #
 perform_step()
@@ -349,16 +426,35 @@ perform_step()
 	shift
 	command="$*"
 
+	logfile=logs/$step.log
+
 	is_step_on $step
 	if [ $? -eq 0 ]; then 
 		echo Skipping step $step. [dependencies=$mandatory]
 		return 0
 	fi
 
-	logfile=logs/$step.log
+	starttime=`$PS_DATE`
+
+	# optionally record stats
+	if [ $record_stats -eq 1 ]; then
+		$PEASOUP_HOME/tools/db/job_status_report.sh "$JOBID" "$step" "$stepnum" started "$starttime" inprogress
+	fi
+
+	if [[ "$mandatory" != "none" && "$mandatory" != "mandatory" ]]; then
+		check_dependencies $mandatory
+		if [ $? -eq 0 ]; then 
+			echo Skipping step $step because of failed dependencies. [dependencies=$mandatory] "*************************************************"
+			errors=1
+			if [ $record_stats -eq 1 ]; then
+				$PEASOUP_HOME/tools/db/job_status_report.sh "$JOBID" "$step" "$stepnum" completed "$starttime" error
+			fi
+			return 0
+		fi
+	fi
 
 	echo -n Performing step "$step" [dependencies=$mandatory] ...
-	starttime=`gdate --iso-8601=seconds`
+	starttime=`$PS_DATE`
 
 	# If verbose is on, tee to a file 
 	if [ ! -z "$DEBUG_STEPS" ]; then
@@ -371,13 +467,26 @@ perform_step()
 		$command > $logfile 2>&1 
 		command_exit=$?
 	fi
+
+	endtime=`$PS_DATE`
 	
 	echo "# ATTRIBUTE start_time=$starttime" >> $logfile
-	echo "# ATTRIBUTE end_time=`gdate --iso-8601=seconds`" >> $logfile
+	echo "# ATTRIBUTE end_time=$endtime" >> $logfile
 	echo "# ATTRIBUTE peasoup_step_name=$step" >> $logfile
 	echo "# ATTRIBUTE peasoup_step_number=$stepnum" >> $logfile
 	echo "# ATTRIBUTE peasoup_step_command=$command " >> $logfile
 	echo "# ATTRIBUTE peasoup_step_exitcode=$command_exit" >> $logfile
+
+	# report job status
+	if [ $command_exit -eq 0 ]; then
+		if [ $record_stats -eq 1 ]; then
+			$PEASOUP_HOME/tools/db/job_status_report.sh "$JOBID" "$step" "$stepnum" completed "$endtime" success $logfile
+		fi
+	else
+		if [ $record_stats -eq 1 ]; then
+			$PEASOUP_HOME/tools/db/job_status_report.sh "$JOBID" "$step" "$stepnum" completed "$endtime" error $logfile
+		fi
+	fi
 
 	is_step_error $step $command_exit
 	if [ $? -ne 0 ]; then
@@ -411,7 +520,7 @@ report_logs()
 	logfile=logs/ps_analyze.log
 
 	echo "# ATTRIBUTE start_time=$ps_starttime" >> $logfile
-	echo "# ATTRIBUTE end_time=`gdate --iso-8601=seconds`" >> $logfile
+	echo "# ATTRIBUTE end_time=$ps_endtime" >> $logfile
 	echo "# ATTRIBUTE peasoup_step_name=all_peasoup" >> $logfile
 
 	for i in $all_logs
@@ -516,7 +625,7 @@ error_threshold=0
 #
 # record when we started processing:
 #
-ps_starttime=`gdate --iso-8601=seconds`
+ps_starttime=$($PS_DATE)
 
 
 #
@@ -570,7 +679,8 @@ check_options $*
 # new program
 #
 name=`basename $orig_exe`
-newdir=peasoup_executable_directory.$name.$$
+#newdir=peasoup_executable_directory.$name.$$
+newdir=peasoup_executable_directory.$JOBID
 
 # create a working dir for all our files using the pid
 mkdir $newdir
@@ -593,10 +703,12 @@ fi
 # setup libstrata.so.  We'll setup two versions, one with symbols so we can debug, and a stripped, faster-loading version.
 # by default, use the faster version.  copy in the .symbosl version for debugging
 #
-cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.symbols
-cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.nosymbols
-gstrip $newdir/libstrata.so.nosymbols
-cp $newdir/libstrata.so.nosymbols $newdir/libstrata.so
+if [ -f $STRATA_HOME/lib/libstrata.so ]; then
+	cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.symbols
+	cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.nosymbols
+	$PS_STRIP $newdir/libstrata.so.nosymbols
+	cp $newdir/libstrata.so.nosymbols $newdir/libstrata.so
+fi
 
 
 adjust_lib_path 
@@ -682,9 +794,13 @@ perform_step concolic none $PEASOUP_HOME/tools/do_concolic.sh a -z $PEASOUP_UMBR
 #
 # get some simple info for the program
 #	
-DB_PROGRAM_NAME=`basename $orig_exe.$$ | sed "s/[^a-zA-Z0-9]/_/g"`
-DB_PROGRAM_NAME="psprog_$DB_PROGRAM_NAME"
+if [ -z $DB_PROGRAM_NAME ]; then
+	DB_PROGRAM_NAME=`basename $orig_exe.$$ | sed "s/[^a-zA-Z0-9]/_/g"`
+	DB_PROGRAM_NAME="psprog_$DB_PROGRAM_NAME"
+fi
 MD5HASH=`gmd5sum $newname.ncexe | cut -f1 -d' '`
+
+INSTALLER=`pwd`
 
 #
 # register the program
@@ -698,8 +814,18 @@ if [ $? = 1 ]; then
 	fi
 fi
 
+if [ $record_stats -eq 1 ]; then
+	$PEASOUP_HOME/tools/db/job_spec_register.sh "$JOBID" "$DB_PROGRAM_NAME" "$varid" 'submitted' "$ps_starttime"
+fi
+
+
+if [ $record_stats -eq 1 ]; then
+	$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'pending' "$ps_starttime"
+fi
+
 # build basic IR
 perform_step fill_in_cfg mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_cfg.exe $varid	
+perform_step fill_in_safefr mandatory $SECURITY_TRANSFORMS_HOME/tools/safefr/fill_in_safefr.exe $varid 
 perform_step fill_in_indtargs mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_indtargs.exe $varid 
 
 # finally create a clone so we can do some transforms 
@@ -720,13 +846,14 @@ perform_step fix_calls mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_call
 #gdb --args $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	
 
 
+
 # look for strings in the binary 
 perform_step find_strings none $SECURITY_TRANSFORMS_HOME/libIRDB/test/find_strings.exe $cloneid
 
 #
 # analyze binary for string signatures
 #
-perform_step appfw none $PEASOUP_HOME/tools/do_appfw.sh $arch_bits $newname.ncexe logs/find_strings.log
+perform_step appfw find_strings $PEASOUP_HOME/tools/do_appfw.sh $arch_bits $newname.ncexe logs/find_strings.log
 
 #
 # check signatures to determine if we know which program this is.
@@ -776,10 +903,24 @@ fi
 perform_step manual_test none $PEASOUP_HOME/tools/do_manualtests.sh $name $stratafied_exe $manual_test_script $manual_test_coverage_file
 
 #
-# remove the parts of the aannotation file not needed at runtime
+# remove the parts of the annotation file not needed at runtime
 #
 perform_step fast_annot preLoaded_ILR2 $PEASOUP_HOME/tools/fast_annot.sh
 
+#
+# cinderella: infer malloc and other libc functions
+#
+perform_step cinderella clone,fill_in_indtargs,fill_in_cfg,meds2pdb $PEASOUP_HOME/tools/do_cinderella.sh $cloneid
+
+#
+# For CGC, pad malloc
+#
+perform_step cgc_hlx cinderella $SECURITY_TRANSFORMS_HOME/tools/cgc_hlx/cgc_hlx.exe $cloneid
+
+#
+# Function pointer shadowing
+#
+perform_step fptr_shadow meds_static,clone $PEASOUP_HOME/tools/do_fptr_shadow.sh $cloneid
 
 #
 # Do P1/Pn transform.
@@ -812,45 +953,92 @@ if [[ "$TWITCHER_HOME" != "" && -d "$TWITCHER_HOME" ]]; then
 	perform_step twitchertransform none $TWITCHER_HOME/twitcher-transform/do_twitchertransform.sh $cloneid $program $CONCOLIC_DIR $TWITCHER_TRANSFORM_TIMEOUT_VALUE
 fi
 
+# watch syscalls
+perform_step watch_allocate clone,fill_in_indtargs,fill_in_cfg,meds2pdb $SECURITY_TRANSFORMS_HOME/tools/watch_syscall/watch_syscall.exe  --varid $cloneid $step_options_watch_allocate
+
 # only do ILR for main objects that aren't relocatable.  reloc. objects 
 # are still buggy for ILR
 if [ $($PEASOUP_HOME/tools/is_so.sh a.ncexe) = 0 ]; then
 	perform_step ilr none $SECURITY_TRANSFORMS_HOME/libIRDB/test/ilr.exe $cloneid 
 fi
 
+perform_step selective_cfi none $SECURITY_TRANSFORMS_HOME/tools/selective_cfi/selective_cfi.exe $cloneid 
+
 # generate aspri, and assemble it to bspri
 perform_step generate_spri mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $($PEASOUP_HOME/tools/is_so.sh a.ncexe) $cloneid a.irdb.aspri
-perform_step spasm mandatory $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri a.ncexe stratafier.o.exe libstrata.so.symbols 
+
+# hack to work with cgc file size restrictions.
+stratafier_file=`ls -1 *nostrip 2>/dev/null |head -1` 
+if [ "X$stratafier_file" = "X" ]; then 
+	stratafier_file=stratafier.o.exe
+fi
+perform_step spasm mandatory $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri a.ncexe $stratafier_file libstrata.so.symbols 
+
 perform_step fast_spri spasm $PEASOUP_HOME/tools/fast_spri.sh a.irdb.bspri a.irdb.fbspri 
 
 # preLoaded_ILR step
 perform_step preLoaded_ILR1 fast_spri $STRATA_HOME/tools/preLoaded_ILR/generate_hashfiles.exe a.irdb.fbspri 
 perform_step preLoaded_ILR2 preLoaded_ILR1 $PEASOUP_HOME/tools/generate_relocfile.sh a.irdb.fbspri
 
+
+# put a front end in front of a.stratafied which opens file 990 for strata to read.
+perform_step spawner stratafy_with_pc_confine  $PEASOUP_HOME/tools/do_spawner.sh 
+
+
+# zipr
+perform_step zipr clone,fill_in_indtargs,fill_in_cfg,meds2pdb $ZIPR_INSTALL/bin/zipr.exe -v $cloneid -c $ZIPR_INSTALL/bin/callbacks.exe -j $PS_OBJCOPY
+
 # copy TOCTOU tool here if it exists
-is_step_on toctou
-if [[ $? -eq 1 && -e $GRACE_HOME/ps_concurrency/toctou_tool/libtoctou_tool.so ]];
-then
-    cp $GRACE_HOME/ps_concurrency/toctou_tool/libtoctou_tool.so libtoctou_tool.so
-    $PEASOUP_HOME/tools/update_env_var.sh DO_TOCTOU 1
+if [[ "$CONCURRENCY_HOME/toctou_tool" != "" && -d "$CONCURRENCY_HOME/toctou_tool" ]]; then
+	perform_step toctou none $CONCURRENCY_HOME/do_toctou.sh
+fi
+
+if [[ "$CONCURRENCY_HOME/deadlock" != "" && -d "$CONCURRENCY_HOME/deadlock" ]]; then
+    # copy deadlock tool here if it exists
+	perform_step deadlock none $CONCURRENCY_HOME/do_deadlock.sh
+    # enable some jitter in the scheduling
+	perform_step schedperturb none $CONCURRENCY_HOME/do_schedperturb.sh
 fi
 
 #
 # create a report for all of ps_analyze.
 #
+ps_endtime=`$PS_DATE` 
 report_logs
+
 
 # go back to original directory
 cd - > /dev/null 2>&1
 
-cp $newdir/$name.sh $stratafied_exe
+#
+#select the output file name to use -- b.out.addseg if zipr is on.
+#
+is_step_on zipr
+zipr_on=$?
+if [ $zipr_on -eq 0 ]; then 
+	my_outfile=$newdir/$name.sh
+else
+	my_outfile=$newdir/b.out.addseg
+fi
+
+# copy output file into requested location.
+cp $my_outfile $stratafied_exe
+
+# make sure we only do this once there are no more updates to the peasoup_dir
+cd $newdir
+perform_step installer none $PEASOUP_HOME/tools/do_installer.sh $USER $DB_PROGRAM_NAME $JOBID $PWD
+cd - > /dev/null 2>&1
+
 
 # we're done; cancel timer
 if [ ! -z $TIMER_PID ]; then
 	kill -9 $TIMER_PID
 fi
 
-# return success if we created a script to invoke the pgm. 
+
+#
+# return success if we created a script to invoke the pgm and zipr is off. 
+#
 if [ -f $stratafied_exe ]; then 
 	if [ $errors = 1 ]; then
 		echo
@@ -858,8 +1046,24 @@ if [ -f $stratafied_exe ]; then
 		echo "*****************************"
 		echo "*Warning: Some steps failed!*"
 		echo "*****************************"
+		if [ $record_stats -eq 1 ]; then
+			$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'partial' "$ps_endtime" 
+		fi
+	else
+		if [ $record_stats -eq 1 ]; then
+			$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'success' "$ps_endtime" 
+		fi
 	fi
+
+
 	exit 0;
 else
+		echo "**************************************"
+		echo "*Error: failed to create output file!*"
+		echo "*    Cannot protect this program.    *"
+		echo "**************************************"
+	if [ $record_stats -eq 1 ]; then
+		$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'error' "$ps_endtime"
+	fi
 	exit 255;
 fi

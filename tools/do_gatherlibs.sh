@@ -3,8 +3,15 @@
 #
 # note:  no trailing slashes, as the comparison will fail.
 #
-safe_dir_list="/lib /lib/tls/i686/cmov /usr/lib /lib/i686/cmov /lib/i386-linux-gnu \
-	/usr/local/lib /usr/lib/i386-linux-gnu  /lib/x86_64-linux-gnu /lib64 /usr/lib/x86_64-linux-gnu /lib32"
+safe_dir_list="	/lib /lib/tls/i686/cmov 			\
+		/usr/lib /lib/i686/cmov 			\
+		/lib/i386-linux-gnu 				\
+		/usr/local/lib					\ 
+		/usr/lib/i386-linux-gnu 			\ 
+		/lib/x86_64-linux-gnu				\
+		/usr/lib/x86_64-linux-gnu /lib32		\
+		/lib/i386-linux-gnu/i686/cmov			\
+	"
 #safe_dir_list="/lib /usr/lib"
 
 # Add all library directories under /opt/stonesoup/dependencies if present

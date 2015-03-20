@@ -8,19 +8,31 @@ CREATE TABLE #ATN#
 (
   address_id         	SERIAL PRIMARY KEY,		-- key
   file_id            	integer REFERENCES file_info,	-- which file this address is part of
-  vaddress_offset    	integer,			-- the offset into the file
-  doip_id		integer DEFAULT -1 		-- the DOIP
+  vaddress_offset     integer,			-- the offset into the file
+  doip_id             integer DEFAULT -1 		-- the DOIP
 );
 
 CREATE TABLE #FTN#
 (
   function_id        	SERIAL PRIMARY KEY,		-- key
-  entry_point_id        integer, 			-- id of the address that is the entry point of this function. 
+  entry_point_id      integer, 			-- id of the address that is the entry point of this function. 
   name               	text,				-- name of this function
   stack_frame_size   	integer,			-- believed stack frame size
   out_args_region_size	integer,			-- believed out arg size
-  use_frame_pointer	boolean,			-- believed whether this function uses the FP
-  doip_id	   	integer DEFAULT -1 		-- the DOIP
+  use_frame_pointer	    boolean,			-- believed whether this function uses the FP
+  type_id               integer DEFAULT -1, -- id for the type that describes the function prototype
+  doip_id	          	integer DEFAULT -1 		-- the DOIP
+);
+
+CREATE TABLE #TYP#
+(
+  type_id            integer,     
+  type               integer DEFAULT 0,    -- possible types (0: UNKNOWN)
+  name               text DEFAULT '',      -- string representation of the type
+  ref_type_id        integer DEFAULT -1,   -- for aggregate types
+  pos                integer DEFAULT -1,   -- for aggregate types, position in aggregate
+  ref_type_id2       integer DEFAULT -1,   -- for func types
+  doip_id            integer DEFAULT -1    -- the DOIP
 );
 
 CREATE TABLE #ITN#
@@ -35,14 +47,20 @@ CREATE TABLE #ITN#
   callback                  text,			-- a callback registered for this instruction
   comment                   text,			-- a comment for human debugging
   ind_target_address_id	    integer DEFAULT -1,		-- is this instruction jumped to indirectly, if so, it's using this addr
-  doip_id		    integer DEFAULT -1 		-- the DOIP
+  doip_id		                integer DEFAULT -1 		-- the DOIP
+);
+
+CREATE TABLE #IBN#
+(
+  instruction_id          integer,    
+  target_instruction_id   integer
 );
 
 CREATE TABLE #RTN#
 (
-  reloc_id	    SERIAL PRIMARY KEY, -- id in the table
-  reloc_offset 	    integer,		-- how far into the instruction is the relocation
+  reloc_id	      SERIAL PRIMARY KEY, -- id in the table
+  reloc_offset 	  integer,		-- how far into the instruction is the relocation
   reloc_type	    text,		-- what type is the relocation.
-  instruction_id    integer,		-- the instruction for this reloc 
-  doip_id	    integer DEFAULT -1	-- the DOIP
+  instruction_id  integer,		-- the instruction for this reloc 
+  doip_id	        integer DEFAULT -1	-- the DOIP
 );
