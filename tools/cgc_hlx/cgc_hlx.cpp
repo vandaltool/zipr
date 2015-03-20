@@ -60,7 +60,7 @@ bool HLX_Instrument::padSize(Function_t* const p_func)
 	orig = insertAssemblyBefore(m_firp, entry, "mov eax, [esp+4]"); 
 	entry->SetComment("pad malloc/allocate sequence");
 	instr = insertAssemblyAfter(m_firp, entry, "shr eax, 4");
-	instr = insertAssemblyAfter(m_firp, instr, "add eax, 64");
+	instr = insertAssemblyAfter(m_firp, instr, "add eax, 128");
 	instr = insertAssemblyAfter(m_firp, instr, "add [esp+4], eax");
 	instr->SetFallthrough(orig);
 
