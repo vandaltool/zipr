@@ -4,7 +4,7 @@ all:	lib include/targ-config.h elfio bea
 	cd libMEDSannotation; make all
 	cd libtransform; make all
 	cd tools; make all
-	cd appfw; if   test ! -f Makefile -o Makefile.in -nt Makefile ; then ./configure ; fi ; make all
+	cd appfw; if   `which test` ! -f Makefile -o Makefile.in -nt Makefile ; then ./configure ; fi ; make all
 
 clean: elfio_clean
 	(cd beaengine; cmake -D CMAKE_C_COMPILER=`which gcc` -D CMAKE_CXX_COMPILER=`which g++` -D BEA_COMPILER=gnu .; make clean) || true
@@ -18,18 +18,18 @@ clean: elfio_clean
 	rm -f include/config.h
 
 #bea_dir=Linux.gnu.Debug
-bea_dir=$(uname -s).gnu.Debug
+bea_dir=`uname -s`.gnu.Debug
 
 bea:	
 	cd beaengine; cmake -DCMAKE_C_COMPILER=`which gcc` -D CMAKE_CXX_COMPILER=`which g++` -DBEA_COMPILER=gnu . -DCMAKE_C_FLAGS=-fPIC .; make all
-	if   test ! -f lib/libBeaEngine_s_d.a -o ./beaengine/lib/$(bea_dir)/libBeaEngine_s_d.a -nt lib/libBeaEngine_s_d.a ; then cp ./beaengine/lib/$(bea_dir)/libBeaEngine_s_d.a lib/libBeaEngine_s_d.a; fi
+	if   `which test` ! -f lib/libBeaEngine_s_d.a -o ./beaengine/lib/$(bea_dir)/libBeaEngine_s_d.a -nt lib/libBeaEngine_s_d.a ; then cp ./beaengine/lib/$(bea_dir)/libBeaEngine_s_d.a lib/libBeaEngine_s_d.a; fi
 
 
 
 ELFIO_DIR=third_party/ELFIO/elfio-2.2
 
 elfio: 	third_party/elfio-2.2.tar.gz
-	if  test ! -d $(ELFIO_DIR) ; then mkdir -p third_party/ELFIO; cd third_party/ELFIO; tar xpzvf ../elfio-2.2.tar.gz; cp ../elfio.hpp elfio-2.2/elfio/; fi
+	if  `which test` ! -d $(ELFIO_DIR) ; then mkdir -p third_party/ELFIO; cd third_party/ELFIO; $(PS_TAR) xpzvf ../elfio-2.2.tar.gz; cp ../elfio.hpp elfio-2.2/elfio/; fi
 	cd $(ELFIO_DIR); if [ ! -f Makefile ]; then ./configure --prefix=${SECURITY_TRANSFORMS_HOME};  fi; 
 	cd $(ELFIO_DIR); make all 
 	cd $(ELFIO_DIR); make install 

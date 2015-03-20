@@ -1,3 +1,7 @@
+
+CXX=@CXX@
+CC=@CC@
+
 CFLAGS=  -g 
 # -DUBUNTU -Wall -O3
 

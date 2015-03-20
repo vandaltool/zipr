@@ -824,7 +824,7 @@ std::map<db_id_t, Type_t*> FileIR_t::ReadTypesFromDB (TypeSet_t& types)
 
 						assert(agg);
 						// ref1 has the id of a basic type, look it up
-						Type_t *ref = tMap.at(ref1);
+						Type_t *ref = tMap[ref1];
 						assert(ref);
 						agg->AddAggregatedType(ref, pos);
 					}
@@ -861,8 +861,8 @@ std::map<db_id_t, Type_t*> FileIR_t::ReadTypesFromDB (TypeSet_t& types)
 					fn = new FuncType_t(tid, name);	
 					types.insert(fn);
 					tMap[tid] = fn;
-					assert(tMap.at(ref1)); // return type
-					assert(tMap.at(ref2)); // argument type (which is an aggregate)
+					assert(tMap[ref1]); // return type
+					assert(tMap[ref2]); // argument type (which is an aggregate)
 					fn->SetReturnType(tMap[ref1]);
 					AggregateType_t *args = dynamic_cast<AggregateType_t*>(tMap[ref2]);
 					assert(args);

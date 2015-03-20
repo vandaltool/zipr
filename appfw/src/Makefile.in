@@ -1,6 +1,8 @@
 LIBAPPFW_DIR=../lib
 
 OPTIMIZE=@OPTIMIZE@
+CC=@CC@
+CXX=@CXX@
 
 INC=-I/usr/include/postgresql -I/usr/include/mysql -I/usr/include/libxml2 -I/usr/include/x86_64-linux-gnu/
 XQDEF=-DXQILLA_MAJOR_VER=`cat xqil_major` -DXQILLA_MINOR_VER=`cat xqil_minor`
@@ -22,7 +24,7 @@ all: xqil_major xqil_minor
 
 
 appfw_sqlite3.c ./sqlite-autoconf-3071300/sqlite3.c ./sqlite-autoconf-3071300/sqlite3.h sqlite3.h:
-	gtar -zxvf ../../third_party/sqlite-autoconf-3071300.tar.gz --no-anchored --wildcards 'sqlite3.[ch]'
+	$PS_TAR -zxvf ../../third_party/sqlite-autoconf-3071300.tar.gz --no-anchored --wildcards 'sqlite3.[ch]'
 	cat ./sqlite-autoconf-3071300/sqlite3.c | sed "s/sqlite3/appfw_sqlite3/g" > appfw_sqlite3.c
 	cat ./sqlite-autoconf-3071300/sqlite3.h | sed "s/sqlite3/appfw_sqlite3/g" > appfw_sqlite3.h
 	cp ./sqlite-autoconf-3071300/sqlite3.h .

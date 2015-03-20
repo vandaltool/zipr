@@ -2525,7 +2525,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	if(FileIR_t::GetArchitectureBitWidth()==64)
 		esp_reg="rsp";
 
-	int max = PNRegularExpressions::MAX_MATCHES;
+	const int max = PNRegularExpressions::MAX_MATCHES;
 	//regmatch_t pmatch[max];
 	regmatch_t *pmatch=new regmatch_t[max]; // (regmatch_t*)malloc(max*sizeof(regmatch_t));
 	regmatch_t pmatch2[max];

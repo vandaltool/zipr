@@ -1,5 +1,5 @@
 all: setup_lib
-	cd src; make all
+	if test `uname -s` = Linux ; then cd src; make all; fi
 
 setup_lib:
 	-mkdir -p lib/32 lib/64 
