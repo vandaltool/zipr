@@ -573,7 +573,6 @@ tools/cover/Makefile -text
 tools/cover/cover.cpp -text
 tools/cover/coverage.cpp -text
 tools/cover/coverage.h -text
-tools/fix_rets/Makefile -text
 tools/fix_rets/Makefile.in -text
 tools/fix_rets/fix_rets.cpp -text
 tools/fix_rets/fix_rets.hpp -text
