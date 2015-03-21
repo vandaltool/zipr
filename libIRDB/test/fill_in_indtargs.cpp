@@ -1142,6 +1142,8 @@ main(int argc, char* argv[])
 		        pqxx::largeobject lo(elfoid);
         		lo.to_file(pqxx_interface.GetTransaction(),"readeh_tmp_file.exe");
 
+			jmptables.clear();
+
         		ELFIO::elfio*    elfiop=new ELFIO::elfio;
         		elfiop->load("readeh_tmp_file.exe");
 		
