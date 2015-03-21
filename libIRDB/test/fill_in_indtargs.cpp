@@ -58,13 +58,13 @@ set< pair< int, int> > ranges;
 map< Instruction_t* , set<Instruction_t*> > preds;
 
 // keep track of jmp tables
-map< Instruction_t*, set<uintptr_t> > jmptables;
+map< Instruction_t*, set<Instruction_t*> > jmptables;
 
 void check_for_PIC_switch_table32(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop, const set<int>& thunk_bases);
-void check_for_PIC_switch_table64(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop);
+void check_for_PIC_switch_table64(FileIR_t*, Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop);
 
 // get switch table structure, determine ib targets
-void handle_switch_table64(FileIR_t*, Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop);
+void check_for_nonPIC_switch_table64(FileIR_t*, Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop);
 
 void range(int start, int end)
 { 	
@@ -216,20 +216,20 @@ Instruction_t *lookupInstruction(FileIR_t *firp, uintptr_t virtual_offset)
 
 void mark_jmptables(FileIR_t *firp)
 {
-	map< Instruction_t*, set<uintptr_t> >::iterator it;
+	map< Instruction_t*, set<Instruction_t*> >::iterator it;
 	for (it = jmptables.begin(); it != jmptables.end(); ++it)
 	{
 		Instruction_t* instr = it->first;
-		set<uintptr_t> virtual_offset_set = it->second;
-		for (set<uintptr_t>::iterator j = virtual_offset_set.begin();
-			 j != virtual_offset_set.end();
+		set<Instruction_t*> instruction_targets = it->second;
+		for (set<Instruction_t*>::iterator j = instruction_targets.begin();
+			 j != instruction_targets.end();
 			 ++j)
 		{
-			uintptr_t vo = *j;
-			Instruction_t *ibtarget = lookupInstruction(firp, vo);
-			cout << "mark_jmptables(): 0x" << hex << instr->GetAddress()->GetVirtualOffset() << " add ib target 0x" << vo << dec << endl;
-			if (instr && ibtarget)
-				firp->GetIBTargets().AddTarget(instr, ibtarget);
+			Instruction_t *ibtarget = *j;
+
+			assert(instr && ibtarget);
+
+			firp->GetIBTargets().AddTarget(instr, ibtarget);
 		}
 	}
 }
@@ -274,8 +274,10 @@ void get_instruction_targets(FileIR_t *firp, ELFIO::elfio* elfiop, const set<int
                 assert(instr_len==insn->GetDataBits().size());
 
 		check_for_PIC_switch_table32(insn,disasm, elfiop, thunk_bases);
-		check_for_PIC_switch_table64(insn,disasm, elfiop);
-		handle_switch_table64(firp, insn,disasm, elfiop);
+		check_for_PIC_switch_table64(firp, insn,disasm, elfiop);
+
+		if (jmptables.count(insn) == 0)
+			check_for_nonPIC_switch_table64(firp, insn,disasm, elfiop);
 
 		/* other branches can't indicate an indirect branch target */
 		if(disasm.Instruction.BranchType)
@@ -599,7 +601,7 @@ cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< "
  * if so, see if we can trace back a few instructions to find a
  * the start of the table.
  */
-void check_for_PIC_switch_table64(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop)
+void check_for_PIC_switch_table64(FileIR_t* firp, Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop)
 {
 
         /* here's the pattern we're looking for */
@@ -631,6 +633,7 @@ DN:   0x4824e0: .long 0x4824e0-LN
         Instruction_t* I7=NULL;
         Instruction_t* I6=NULL;
         Instruction_t* I5=NULL;
+        Instruction_t* I1=NULL;
         // check if I8 is a jump
         if(strstr(disasm.Instruction.Mnemonic, "jmp")==NULL)
                 return;
@@ -692,6 +695,16 @@ DN:   0x4824e0: .long 0x4824e0-LN
 	if(!secdata)
 		return;
 
+	int table_size = 0;
+	if(backup_until("cmp", I1, I5))
+	{
+		DISASM d1;
+		I1->Disassemble(d1);
+		table_size = d1.Instruction.Immediat;
+
+	}
+
+	set<Instruction_t *> ibtargets;
         int offset=D1-pSec->get_address();
         int entry=0;
         do
@@ -711,11 +724,22 @@ DN:   0x4824e0: .long 0x4824e0-LN
                     << D1 << " table_entry:" << table_entry 
 		    << " target: "<< D1+table_entry << std::dec << endl;
 
+				Instruction_t *ibtarget = lookupInstruction(firp, D1+table_entry);
+				if (ibtarget)
+					ibtargets.insert(ibtarget);
+
                 offset+=sizeof(int);
                 entry++;
 
         } while (1);
 
+	
+	// valid jmp table? may or may not have default: in the switch
+	cout << "pic64: table size: " << table_size << " #entries: " << entry << " ibtargets.size: " << ibtargets.size() << endl;
+	if (table_size == ibtargets.size() || table_size == (ibtargets.size()-1)) {
+		cout << "pic64: valid jmp table detected" << endl;
+		jmptables[I8] = ibtargets;
+	}
 }
 
 /*
@@ -729,7 +753,7 @@ DN:   0x4824e0: .long 0x4824e0-LN
       40052f:   c7 45 f4 00 00 00 00    movl   $0x0,-0xc(%rbp)
       400536:   c7 45 f8 03 00 00 00    movl   $0x3,-0x8(%rbp)
 */
-void handle_switch_table64(FileIR_t* firp, Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop)
+void check_for_nonPIC_switch_table64(FileIR_t* firp, Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop)
 {
 	Instruction_t *I1 = NULL;
 	Instruction_t *I2 = NULL;
@@ -765,12 +789,11 @@ void handle_switch_table64(FileIR_t* firp, Instruction_t* insn, DISASM disasm, E
 	DISASM d4;
 	I4->Disassemble(d4);
 
-	// get the offset from the thunk
 	int table_offset=d4.Argument2.Memory.Displacement;
 	if(table_offset==0)
 		return;
 
-	cout<<hex<<"(nonPIC-64): Found switch dispatch at "<<I4->GetAddress()->GetVirtualOffset()<< " with table_offset="<<table_offset<<dec<<endl;
+	cout<<hex<<"(nonPIC-64): Found switch dispatch at 0x"<<hex<<I4->GetAddress()->GetVirtualOffset()<< " with table_offset="<<hex<<table_offset<<dec<<endl;
 
 	if(!backup_until("cmp", I1, I4))
 	{
@@ -805,19 +828,29 @@ void handle_switch_table64(FileIR_t* firp, Instruction_t* insn, DISASM disasm, E
     int offset=table_offset-pSec->get_address();
 	int i;
 
-	set<uintptr_t> ibtargets;
+	set<Instruction_t*> ibtargets;
 	for(i=0;i<table_size;++i)
 	{
 		if(offset+i*8+sizeof(int) > pSec->get_size())
+		{
+			cout << "jmp table outside of section range ==> invalid jmp table" << endl;
 			return;
+		}
 
 		const int *table_entry_ptr=(const int*)&(secdata[offset+i*8]);
 		uintptr_t table_entry=*table_entry_ptr;
 
+		Instruction_t *ibtarget = lookupInstruction(firp, table_entry);
+		if (!ibtarget) {
+				cout << "0x" << hex << table_entry << " is not an instruction, invalid jmp table" << endl;
+				return;
+		}
+
 		cout << "jmp table [" << i << "]: " << hex << table_entry << dec << endl;
-		ibtargets.insert(table_entry);
+		ibtargets.insert(ibtarget);
 	}
 
+	cout << "valid jmp table found" << endl;
 	jmptables[IJ] = ibtargets;
 
 	// got the full switch table, remove hellnode
