@@ -26,6 +26,7 @@ AC_SUBST(CXX)
 AC_SUBST(LD)
 
 AC_OUTPUT(tools/Makefile
+	tools/fix_rets/Makefile
 	tools/selective_cfi/Makefile
 	tools/watch_syscall/Makefile
 	tools/transforms/Makefile
