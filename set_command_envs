@@ -1,3 +1,10 @@
 export PS_OBJDUMP=`which objdump`
 export PS_OBJCOPY=`which objcopy`
 export PS_NM=`which nm`
+export PS_STRIP=`which strip`
+export PS_DATE="date --iso-8601=seconds"
+export PS_TAR=`which tar`
+export PS_MD5SUM=`which md5sum`
+export PS_TIMEOUT=`which timeout`
+export PS_GREP=`which grep`
+
