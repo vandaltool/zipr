@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/bash 
 
-grep -i -e " rl " -e " () " $1 > $1.reloc 
+$PS_GREP -i -e " rl " -e " () " $1 > $1.reloc 
 
