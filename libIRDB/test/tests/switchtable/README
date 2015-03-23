@@ -1,13 +1,19 @@
 to test:
 
-[x] multiple jmp tables in one binary
-[x] PIC, PIE
-[x] -O vs. non-optimized
-[x] library vs. non-library
-[x] 64 bit
-[ ] xpdf test
+[ ] 32,nonPIC,nonOptimized
+[ ] 32,nonPIC,optimized
+[ ] 32,PIC,nonOptimized
+[ ] 32,PIC,optimized
+[ ] 32,shared lib, nonOpt
+[ ] 32,shared lib, optimized
 
-[ ] 32 bit
+[ ] 64,nonPIC,nonOptimized
+[ ] 64,nonPIC,optimized
+[ ] 64,PIC,nonOptimized
+[ ] 64,PIC,optimized
+[ ] 64,shared lib, nonOpt
+[ ] 64,shared lib, optimized
+
 [ ] induce head-merge, and tail-merge in switch case
 
 [ ] call hell node
