@@ -37,6 +37,10 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+#ifndef PATH_MAX
+#define PATH_MAX 4096
+#endif
+
 
 
 #define MAX_JUMPS_TO_FOLLOW 100000

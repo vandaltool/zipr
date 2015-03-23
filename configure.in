@@ -46,6 +46,8 @@ AC_OUTPUT(tools/Makefile
 	tools/fptr_shadow/Makefile
 	tools/ret_shadow_stack/Makefile
 	tools/spasm/Makefile
+	libMEDSannotation/src/Makefile
+	libMEDSannotation/Makefile
 	libIRDB/src/syscall/Makefile
 	libIRDB/test/Makefile
 	libIRDB/Makefile

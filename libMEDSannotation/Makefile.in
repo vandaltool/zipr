@@ -1,6 +1,6 @@
 
-CC="cc -I/opt/csw/include"
-CXX="CC -I/opt/csw/include"
+CC=@CC@
+CXX=@CXX@
 
 all:
 	cd src;make CC=$(CC) CXX=$(CXX)

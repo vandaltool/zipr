@@ -258,7 +258,7 @@ libIRDB/test/rename_function.cpp -text
 libIRDB/test/unfix_calls.cpp -text
 libIRDB/test/unwind-pe.h -text
 libMEDSannotation/LICENSE.txt -text
-libMEDSannotation/Makefile -text
+libMEDSannotation/Makefile.in -text
 libMEDSannotation/include/FuncExitAnnotation.hpp -text
 libMEDSannotation/include/MEDS.hpp -text
 libMEDSannotation/include/MEDS_AnnotationBase.hpp -text
@@ -282,7 +282,7 @@ libMEDSannotation/src/MEDS_InstructionCheckAnnotation.cpp -text
 libMEDSannotation/src/MEDS_ProblemFuncAnnotation.cpp -text
 libMEDSannotation/src/MEDS_Register.cpp -text
 libMEDSannotation/src/MEDS_SafeFuncAnnotation.cpp -text
-libMEDSannotation/src/Makefile -text
+libMEDSannotation/src/Makefile.in -text
 libMEDSannotation/src/VirtualOffset.cpp -text
 libtransform/Makefile -text
 libtransform/include/Rewrite_Utility.hpp -text
