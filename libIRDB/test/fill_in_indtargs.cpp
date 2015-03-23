@@ -1003,7 +1003,7 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DISASM d
 		ibtargets.insert(ibtarget);
 	}
 
-	cout << "valid switch table found" << endl;
+	cout << "(non-PIC) valid switch table found" << endl;
 	jmptables[IJ] = ibtargets;
 }
 

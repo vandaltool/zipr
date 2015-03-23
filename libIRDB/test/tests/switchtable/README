@@ -1,11 +1,12 @@
 to test:
 
-[ ] 32,nonPIC,nonOptimized
-[ ] 32,nonPIC,optimized
-[ ] 32,PIC,nonOptimized
-[ ] 32,PIC,optimized
-[ ] 32,shared lib, nonOpt
-[ ] 32,shared lib, optimized
+[x] 32,nonPIC,nonOptimized
+[x] 32,nonPIC,optimized
+[x] 32,PIC,nonOptimized
+[x] 32,PIC,optimized
+[x] 32,shared lib, nonOpt
+[x] 32,shared lib, optimized
+[?] verify GetIBTargets() off Instruction_t*
 
 [ ] 64,nonPIC,nonOptimized
 [ ] 64,nonPIC,optimized
@@ -13,6 +14,7 @@ to test:
 [ ] 64,PIC,optimized
 [ ] 64,shared lib, nonOpt
 [ ] 64,shared lib, optimized
+[ ] verify GetIBTargets() off Instruction_t*
 
 [ ] induce head-merge, and tail-merge in switch case
 
