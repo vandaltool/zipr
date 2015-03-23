@@ -798,7 +798,7 @@ if [ -z $DB_PROGRAM_NAME ]; then
 	DB_PROGRAM_NAME=`basename $orig_exe.$$ | sed "s/[^a-zA-Z0-9]/_/g"`
 	DB_PROGRAM_NAME="psprog_$DB_PROGRAM_NAME"
 fi
-MD5HASH=`gmd5sum $newname.ncexe | cut -f1 -d' '`
+MD5HASH=`$PS_MD5SUM $newname.ncexe | cut -f1 -d' '`
 
 INSTALLER=`pwd`
 
@@ -934,9 +934,6 @@ perform_step p1transform meds_static,clone $PEASOUP_HOME/tools/do_p1transform.sh
 if [ -z "$program" ]; then
    program="unknown"
 fi
-
-perform_step integertransform none $PEASOUP_HOME/tools/do_integertransform.sh $cloneid $program $CONCOLIC_DIR $INTEGER_TRANSFORM_TIMEOUT_VALUE $intxform_warnings_only $intxform_detect_fp $intxform_instrument_idioms
-#perform_step calc_conflicts none $SECURITY_TRANSFORMS_HOME/libIRDB/test/calc_conflicts.exe $cloneid a.ncexe
 
 perform_step integertransform meds_static,clone $PEASOUP_HOME/tools/do_integertransform.sh $cloneid $program $CONCOLIC_DIR $INTEGER_TRANSFORM_TIMEOUT_VALUE $intxform_warnings_only $intxform_detect_fp $intxform_instrument_idioms
 

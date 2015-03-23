@@ -10,12 +10,12 @@ alias
 time=$1
 shift
 
-if gtimeout --help | ggrep --quiet -- "--signal=SIGNAL"
+if $PS_TIMEOUT --help | grep --quiet -- "--signal=SIGNAL"
 then
 
-	gtimeout --signal=sigusr1 $time "$@"
+	$PS_TIMEOUT --signal=sigusr1 $time "$@"
 
 else
-	gtimeout -10 $time "$@"
+	$PS_TIMEOUT -10 $time "$@"
 
 fi

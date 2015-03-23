@@ -70,7 +70,7 @@ if [ ! -f $FILENAME ]; then
   log_error "Could not find ELF file at: $FILENAME"
 fi
 
-MD5HASH=`digest -a md5 $FILENAME`
+MD5HASH=`$PS_MD5SUM $FILENAME| cut -f1 -d' '`
 
 #============================================
 # Update variant_info table
