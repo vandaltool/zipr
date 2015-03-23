@@ -6,7 +6,7 @@ to test:
 [x] 32,PIC,optimized
 [x] 32,shared lib, nonOpt
 [x] 32,shared lib, optimized
-[?] verify GetIBTargets() off Instruction_t*
+[x] verify GetIBTargets() off Instruction_t*
 
 [x] 64,nonPIC,nonOptimized
 [x] 64,nonPIC,optimized
