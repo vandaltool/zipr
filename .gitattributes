@@ -257,6 +257,7 @@ libIRDB/test/read_variantir.cpp -text
 libIRDB/test/rename_function.cpp -text
 libIRDB/test/tests/ibtarget/Makefile -text
 libIRDB/test/tests/ibtarget/README -text
+libIRDB/test/tests/ibtarget/icall.cpp -text
 libIRDB/test/tests/ibtarget/jmp.main.cpp -text
 libIRDB/test/tests/ibtarget/jmp.shared.cpp -text
 libIRDB/test/tests/ibtarget/jmp1.cpp -text
