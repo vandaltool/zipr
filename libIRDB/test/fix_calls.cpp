@@ -459,6 +459,29 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 	callinsn->SetFunction(insn->GetFunction());
 	callinsn->SetComment(insn->GetComment()+" Jump part");
 
+	// handle IB targets
+	//     insn is the old call instruction
+	// callinsn is the jmp part of the push/jump
+	InstructionCFGNodeSet_t nodes = insn->GetIBTargets();
+	InstructionCFGNodeSet_t::iterator it;
+	for (it = nodes.begin(); it != nodes.end(); ++it)
+	{
+		InstructionCFGNode_t *node = *it;
+		if (node->IsHellnode())
+		{
+			firp->GetIBTargets().AddHellnodeTarget(callinsn, node->GetHellnodeType());
+			firp->GetIBTargets().RemoveHellnodeTarget(insn, node->GetHellnodeType());
+		}
+		else
+		{
+			firp->GetIBTargets().AddTarget(callinsn, node->GetInstruction());
+			firp->GetIBTargets().RemoveTarget(insn, node);
+		}
+	}
+
+	// complete remove from map
+	firp->GetIBTargets().Remove(insn);
+
 	// We need the control transfer instruction to be from the orig program because 
 	// if for some reason it's fallthrough/target isn't in the DB, we need to correctly 
 	// emit fallthrough/target rules
@@ -527,7 +550,6 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 		firp->GetAddresses().insert(newaddr);
 	}
 
-	
 }
 
 
@@ -848,6 +870,9 @@ main(int argc, char* argv[])
 			fix_all_calls(firp,true,fix_all);
 			fix_other_pcrel(firp);
 			firp->WriteToDB();
+
+			cout << firp->GetIBTargets().toString() << endl;
+
 			cout<<"Done!"<<endl;
 			delete firp;
 

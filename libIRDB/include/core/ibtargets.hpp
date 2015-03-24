@@ -31,16 +31,17 @@ class IBTargets {
 		~IBTargets();
 
 		void AddTarget(Instruction_t* const instr, Instruction_t* const ibtarget);
+		void RemoveTarget(Instruction_t* const instr, InstructionCFGNode_t* const);
 		void AddHellnodeTarget(Instruction_t* const instr, ICFGHellnodeType = DEFAULT_ICFG_HELLNODE);
 		void RemoveHellnodeTarget(Instruction_t* const instr, ICFGHellnodeType = DEFAULT_ICFG_HELLNODE);
 
-//		InstructionCFGNodeSet_t& GetTargets(Instruction_t* const) { return m_ibtargets; }
+		void Remove(Instruction_t* const instr);
 
 		std::string WriteToDB(File_t *fid);
 		const std::string toString();
 
 	private:
-		IBTargetMap_t m_ibtargets; 
+		IBTargetMap_t m_ibtargets;  
 
 		// keep track of allocated nodes
 		std::map<ICFGHellnodeType, InstructionCFGNode_t*> m_hellnodeMap;

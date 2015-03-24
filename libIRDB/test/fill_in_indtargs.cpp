@@ -68,6 +68,9 @@ void check_for_PIC_switch_table64(FileIR_t*, Instruction_t* insn, DISASM disasm,
 void check_for_nonPIC_switch_table(FileIR_t*, Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop);
 void check_for_nonPIC_switch_table_pattern2(FileIR_t*, Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop);
 
+void check_for_indirect_jmps(FileIR_t* firp, Instruction_t* insn);
+void check_for_indirect_calls(FileIR_t* firp, Instruction_t* insn);
+
 void range(int start, int end)
 { 	
 	pair<int,int> foo(start,end);
@@ -283,6 +286,14 @@ void get_instruction_targets(FileIR_t *firp, ELFIO::elfio* elfiop, const set<int
 
 		if (jmptables.count(insn) == 0)
 			check_for_nonPIC_switch_table_pattern2(firp, insn,disasm, elfiop);
+
+		// assign hellnode type to indirect jmps that are not detected
+		// to be switch tables
+		if (jmptables.count(insn) == 0)
+			check_for_indirect_jmps(firp, insn);
+
+		// assign special hellnode type to indirect calls
+		check_for_indirect_calls(firp, insn);
 
 		/* other branches can't indicate an indirect branch target */
 		if(disasm.Instruction.BranchType)
@@ -1006,6 +1017,46 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DISASM d
 	cout << "(non-PIC) valid switch table found" << endl;
 	jmptables[IJ] = ibtargets;
 }
+
+
+void check_for_indirect_jmps(FileIR_t* firp, Instruction_t* insn)
+{
+	assert(firp && insn);
+
+	DISASM d;
+	insn->Disassemble(d);
+
+	if(strstr(d.Instruction.Mnemonic, "jmp")==NULL)
+		return;
+
+	if(d.Argument1.ArgType&CONSTANT_TYPE)
+		return;
+
+	if (getenv("IB_VERBOSE"))
+		cout << insn->getDisassembly() << " is an indirect call, assign to DEFAULT HELNNODE" << endl;
+
+	firp->GetIBTargets().AddHellnodeTarget(insn, DEFAULT_ICFG_HELLNODE);
+}
+
+void check_for_indirect_calls(FileIR_t* firp, Instruction_t* insn)
+{
+	assert(firp && insn);
+
+	DISASM d;
+	insn->Disassemble(d);
+
+	if (d.Instruction.BranchType!=CallType)
+		return;
+					
+	if(d.Argument1.ArgType&CONSTANT_TYPE)
+		return;
+
+	if (getenv("IB_VERBOSE"))
+		cout << insn->getDisassembly() << " is an indirect call, assign to CALL HELNNODE" << endl;
+
+	firp->GetIBTargets().AddHellnodeTarget(insn, CALL_ICFG_HELLNODE);
+}
+
 
 void calc_preds(FileIR_t* firp)
 {

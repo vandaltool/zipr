@@ -22,7 +22,10 @@
 #define _instruction_cfg_
 
 // Like Dante, we accomodate multiple layers of hell nodes
-typedef enum { DEFAULT_ICFG_HELLNODE = -1 } ICFGHellnodeType;
+// All values must be negative
+typedef enum { 
+	DEFAULT_ICFG_HELLNODE = -1,  
+	CALL_ICFG_HELLNODE = -2} ICFGHellnodeType;
 
 class InstructionCFGNode_t
 {

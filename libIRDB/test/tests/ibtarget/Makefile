@@ -5,8 +5,8 @@ OPT=-g -fPIE -fPIC
 #OPT=-O
 .SUFFIXES: .exe .cpp .peasoup
 
-PROGS=jmp1.exe jmp2.exe jmp.shared.exe
-PEASOUP_PROGS=jmp1.peasoup jmp2.peasoup jmp.shared.peasoup
+PROGS=jmp1.exe jmp2.exe jmp.shared.exe icall.exe
+PEASOUP_PROGS=jmp1.peasoup jmp2.peasoup jmp.shared.peasoup icall.peasoup
 
 all: $(PROGS)
 peasoup: $(PEASOUP_PROGS)

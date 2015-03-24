@@ -60,6 +60,27 @@ void IBTargets::AddTarget(Instruction_t* const instr, Instruction_t* const ibtar
 	instr->GetIBTargets().insert(ibtargetnode);
 }
 
+void IBTargets::RemoveTarget(Instruction_t* const instr, InstructionCFGNode_t* const node)
+{
+	if (m_ibtargets.find(instr) != m_ibtargets.end())
+	{
+		m_ibtargets[instr].erase(node); 
+		instr->GetIBTargets().erase(node);
+	}
+}
+
+void IBTargets::Remove(Instruction_t* const instr)
+{
+	if (m_ibtargets.find(instr) != m_ibtargets.end())
+	{
+		m_ibtargets.erase(instr);
+		instr->GetIBTargets().clear();
+
+		// need to mark entry so that we can clear from DB
+		// but need to make sure we don't clear if there's an entry
+	}
+}
+
 void IBTargets::AddHellnodeTarget(Instruction_t* const instr, ICFGHellnodeType hntype)
 {
 	assert(instr);
@@ -89,7 +110,10 @@ void IBTargets::RemoveHellnodeTarget(Instruction_t* const instr, ICFGHellnodeTyp
 	}
 }
 
+
 // @todo: allow finer stepping for striding?
+// @todo: need to make sure we erase stale data!!!
+// 
 string IBTargets::WriteToDB(File_t *fid)
 {
 	assert(fid);
@@ -143,7 +167,7 @@ const string IBTargets::toString()
 		Instruction_t* insn = it->first;
 		InstructionCFGNodeSet_t nodeset = it->second;
 
-		ss << "  Instr: " << hex << insn->GetAddress()->GetVirtualOffset() << " --> ";
+		ss << "  Instr: " << hex << insn->GetAddress()->GetVirtualOffset() << " [" << insn->getDisassembly() << "] --> ";
 
 		InstructionCFGNodeSet_t::iterator j;
 		for (j = nodeset.begin(); j != nodeset.end(); ++j)

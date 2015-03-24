@@ -16,8 +16,5 @@ to test:
 [x] 64,shared lib, optimized
 [x] verify GetIBTargets() off Instruction_t*
 
+[ ] make sure fix_calls copies the indirect branch targets
 [ ] induce head-merge, and tail-merge in switch case
-
-[ ] call hell node
-	fill_in_indtargs comes before fix_calls
-	make sure fix_calls copies the indirect branch targets
