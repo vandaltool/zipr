@@ -2,6 +2,7 @@
 AC_INIT(myconfig, version-0.1)
 
 AC_PROG_CC
+AC_PROG_CXX
 
 AC_ARG_ENABLE([debugging],              [  --enable-debugging                enable -g when compiling])
 
@@ -15,6 +16,8 @@ if test $(uname -s) = SunOS; then
 fi
 
 AC_SUBST(OPTIMIZE, $OPTIMIZE)
+AC_SUBST(CC, $CC)
+AC_SUBST(CXX, $CXX)
 
 AC_OUTPUT(Makefile)
 AC_OUTPUT(src/Makefile)
