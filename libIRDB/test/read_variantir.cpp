@@ -76,14 +76,31 @@ main(int argc, char* argv[])
 
 				ICFS_t::iterator ibtargets_it;
 
-				for (ibtargets_it = ibtargets->begin(); ibtargets_it != ibtargets->end(); ++ibtargets_it)
+				if (ibtargets->size() > 0)
+					cout<<"   indirect branch targets: ";
+
+				int count;
+				for (count = 0, ibtargets_it = ibtargets->begin(); ibtargets_it != ibtargets->end(); ++ibtargets_it, ++count)
 				{
 					Instruction_t* insn = *ibtargets_it;
 					assert(insn);
-					cout<<"   indirect branch target: " << std::hex << insn->GetAddress()->GetVirtualOffset() << dec << endl;
+					cout<< std::hex << insn->GetAddress()->GetVirtualOffset() << " ";
+					if (count >= 10) {
+						cout << "...";
+						break;
+					}
 				}
+				if (ibtargets->size() > 0)
+					cout << dec << endl;
 			}
 
+			for(ICFSSet_t::const_iterator it=firp->GetAllICFS().begin();
+				it != firp->GetAllICFS().end();
+				++it)
+			{
+				ICFS_t *icfs = *it;
+				cout << "icfs set id: " << icfs->GetBaseID() << "  #ibtargets: " << icfs->size() << endl;
+			}
 			delete firp;
 		}
 		delete pidp;

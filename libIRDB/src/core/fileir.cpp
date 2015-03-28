@@ -595,11 +595,13 @@ void FileIR_t::WriteToDB()
 	}
 	dbintr->IssueQuery(q);
 
-/* xxx
-	 xxxq = string("");
-	 xxxq = ibtargets.WriteToDB(fileptr);
-*/
-	dbintr->IssueQuery(q);
+	for (ICFSSet_t::iterator it = GetAllICFS().begin(); it != GetAllICFS().end(); ++it)
+	{
+		ICFS_t* icfs = *it;
+		assert(icfs);
+		string q = icfs->WriteToDB(fileptr);
+		dbintr->IssueQuery(q);
+	}
 }
 
 
@@ -913,6 +915,8 @@ void FileIR_t::ReadAllICFSFromDB(std::map<db_id_t,Instruction_t*> &addr2instMap,
 	std::string q= "select * from " + fileptr->icfs_table_name + " ; ";
 	dbintr->IssueQuery(q);
 
+cout << "ReadAllICFSFromDB(): A: query: " << q << endl;
+
 	while(!dbintr->IsDone())
 	{
 		db_id_t icfs_id = atoi(dbintr->GetResultColumn("icfs_id").c_str());
@@ -925,11 +929,15 @@ void FileIR_t::ReadAllICFSFromDB(std::map<db_id_t,Instruction_t*> &addr2instMap,
 				isComplete = true;
 		}
 
+cout << "icfs_id: " << icfs_id << " complete: " << isComplete << endl;
 		ICFS_t* icfs = new ICFS_t(icfs_id, isComplete);		
 		GetAllICFS().insert(icfs);
 
 		icfsMap[icfs_id] = icfs;
+		dbintr->MoveToNextRow();
 	}
+
+cout << "ReadAllICFSFromDB(): B" << endl;
 
 	ICFSSet_t all_icfs = GetAllICFS();
 
@@ -942,6 +950,7 @@ void FileIR_t::ReadAllICFSFromDB(std::map<db_id_t,Instruction_t*> &addr2instMap,
 		int icfsid = icfs->GetBaseID();
 		sprintf(query2,"select * from %s WHERE icfs_id = %d;", fileptr->icfs_map_table_name.c_str(), icfsid);
 		dbintr->IssueQuery(query2);
+cout << "ReadAllICFSFromDB(): icfsid: " << icfsid << " query: " << query2 << endl;
 		while(!dbintr->IsDone())
 		{
 			db_id_t address_id = atoi(dbintr->GetResultColumn("address_id").c_str());
@@ -952,9 +961,12 @@ void FileIR_t::ReadAllICFSFromDB(std::map<db_id_t,Instruction_t*> &addr2instMap,
 			//        these are allowed by the DB schema but we don't yet handle them
 			// if we encounter an unresolved address, we should mark the ICFS
 			//      as unresolved
+
+			dbintr->MoveToNextRow();
 		}					
 	}
 
+cout << "ReadAllICFSFromDB(): C: size unresolved: " << unresolvedICFS.size() << endl;
 	// backpatch all unresolved instruction -> ICFS
 	std::map<Instruction_t*, db_id_t>::iterator uit;
 	for (std::map<Instruction_t*, db_id_t>::iterator uit = unresolvedICFS.begin(); uit != unresolvedICFS.end(); ++uit)
@@ -970,39 +982,3 @@ void FileIR_t::ReadAllICFSFromDB(std::map<db_id_t,Instruction_t*> &addr2instMap,
 		unresolved->SetIBTargets(icfs);
 	}
 }
-
-/*
-void FileIR_t::ReadIBTargetsFromDB(std::map<db_id_t,Instruction_t*> &insnMap)
-{
-	std::string q= "select * from " + fileptr->ibtargets_table_name + " ; ";
-
-	dbintr->IssueQuery(q);
-
-	while(!dbintr->IsDone())
-	{
-		// instruction_id | target_instruction_id
-		// target_instruction_id < 0  HELLNODE encoding (only one for now)
-		db_id_t instr_id = atoi(dbintr->GetResultColumn("instruction_id").c_str());
-		db_id_t ibtarget_id = atoi(dbintr->GetResultColumn("target_instruction_id").c_str());
-
-		assert(instr_id >= 0);
-
-		Instruction_t* instruction = insnMap[instr_id];
-		assert(instruction);
-
-		Instruction_t* ibtarget = NULL;
-		if (ibtarget_id >= 0)
-		{
-			ibtarget = insnMap[ibtarget_id];
-			assert(ibtarget);
-		}
-			
-		if (ibtarget)
-			ibtargets.AddTarget(instruction, ibtarget);
-		else
-			ibtargets.AddHellnodeTarget(instruction, (ICFGHellnodeType)ibtarget_id);
-
-		dbintr->MoveToNextRow();
-	}
-}
-*/

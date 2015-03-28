@@ -36,16 +36,22 @@
 #include "beaengine/BeaEngine.h"
 #include "check_thunks.hpp"
 
+using namespace libIRDB;
+using namespace std;
+using namespace ELFIO;
+
+#define HELLNODE_ID 0
+#define INDIRECT_JMPS_ID 1
+int next_icfs_set_id = 2;
+
+ICFS_t* hellnode_tgts = NULL;
+ICFS_t* indirect_jmps = NULL;
 
 #define arch_ptr_bytes() (firp->GetArchitectureBitWidth()/8)
 
 int odd_target_count=0;
 int bad_target_count=0;
 int bad_fallthrough_count=0;
-
-using namespace libIRDB;
-using namespace std;
-using namespace ELFIO;
 
 bool is_possible_target(uintptr_t p, uintptr_t addr);
 
@@ -68,8 +74,9 @@ void check_for_PIC_switch_table64(FileIR_t*, Instruction_t* insn, DISASM disasm,
 void check_for_nonPIC_switch_table(FileIR_t*, Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop);
 void check_for_nonPIC_switch_table_pattern2(FileIR_t*, Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop);
 
-void check_for_indirect_jmps(FileIR_t* firp, Instruction_t* insn);
-void check_for_indirect_calls(FileIR_t* firp, Instruction_t* insn);
+void check_for_indirect_jmp(FileIR_t* const firp, Instruction_t* const insn);
+void check_for_indirect_call(FileIR_t* const firp, Instruction_t* const insn);
+void check_for_ret(FileIR_t* const firp, Instruction_t* const insn);
 
 void range(int start, int end)
 { 	
@@ -226,17 +233,14 @@ void mark_jmptables(FileIR_t *firp)
 	{
 		Instruction_t* instr = it->first;
 		set<Instruction_t*> instruction_targets = it->second;
-		for (set<Instruction_t*>::iterator j = instruction_targets.begin();
-			 j != instruction_targets.end();
-			 ++j)
-		{
-			Instruction_t *ibtarget = *j;
 
-			assert(instr && ibtarget);
+		assert(instruction_targets.size() > 0);
 
-			assert(0); // XXX wip
-//			firp->GetIBTargets().AddTarget(instr, ibtarget);
-		}
+		ICFS_t* new_icfs = new ICFS_t(next_icfs_set_id++, true);
+		*new_icfs = instruction_targets;
+		firp->GetAllICFS().insert(new_icfs);
+
+		cout << "jmp table: size: " << new_icfs->size() << endl;
 	}
 }
 
@@ -291,10 +295,11 @@ void get_instruction_targets(FileIR_t *firp, ELFIO::elfio* elfiop, const set<int
 		// assign hellnode type to indirect jmps that are not detected
 		// to be switch tables
 		if (jmptables.count(insn) == 0)
-			check_for_indirect_jmps(firp, insn);
+			check_for_indirect_jmp(firp, insn);
 
 		// assign special hellnode type to indirect calls
-		check_for_indirect_calls(firp, insn);
+		check_for_indirect_call(firp, insn);
+		check_for_ret(firp, insn);
 
 		/* other branches can't indicate an indirect branch target */
 		if(disasm.Instruction.BranchType)
@@ -1019,8 +1024,61 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DISASM d
 	jmptables[IJ] = ibtargets;
 }
 
+void icfs_init(FileIR_t* firp)
+{
+	assert(firp);
+	hellnode_tgts = new ICFS_t(HELLNODE_ID, false);
+	indirect_jmps = new ICFS_t(INDIRECT_JMPS_ID, false);
+	firp->GetAllICFS().insert(hellnode_tgts);
+	firp->GetAllICFS().insert(indirect_jmps);
+}
 
-void check_for_indirect_jmps(FileIR_t* firp, Instruction_t* insn)
+void icfs_set_indirect_jmps(FileIR_t* const firp, ICFS_t* const targets)
+{
+	assert(firp && targets);
+    for(
+       	FunctionSet_t::const_iterator it=firp->GetFunctions().begin();
+       	it!=firp->GetFunctions().end();
+        ++it
+        )
+    {
+        Function_t *func=*it;
+		if(!func->GetEntryPoint())
+			continue;
+		targets->insert(func->GetEntryPoint());
+	}
+}
+
+void icfs_set_hellnode_targets(FileIR_t* const firp, ICFS_t* const targets)
+{
+	assert(firp && targets);
+	for(
+		InstructionSet_t::const_iterator it=firp->GetInstructions().begin();
+			it!=firp->GetInstructions().end(); ++it)
+	{
+		Instruction_t* insn=*it;
+		if(insn->GetIndirectBranchTargetAddress())
+		{
+			targets->insert(insn);
+		}
+	}
+}
+
+
+void check_for_ret(FileIR_t* const firp, Instruction_t* const insn)
+{
+	assert(firp && insn);
+
+	DISASM d;
+	insn->Disassemble(d);
+
+	if(strstr(d.Instruction.Mnemonic, "ret")==NULL)
+		return;
+
+	insn->SetIBTargets(hellnode_tgts);
+}
+
+void check_for_indirect_jmp(FileIR_t* const firp, Instruction_t* const insn)
 {
 	assert(firp && insn);
 
@@ -1033,14 +1091,10 @@ void check_for_indirect_jmps(FileIR_t* firp, Instruction_t* insn)
 	if(d.Argument1.ArgType&CONSTANT_TYPE)
 		return;
 
-	if (getenv("IB_VERBOSE"))
-		cout << insn->getDisassembly() << " is an indirect call, assign to DEFAULT HELNNODE" << endl;
-
-	assert(0);
-//	firp->GetIBTargets().AddHellnodeTarget(insn, DEFAULT_ICFG_HELLNODE);
+	insn->SetIBTargets(hellnode_tgts);
 }
 
-void check_for_indirect_calls(FileIR_t* firp, Instruction_t* insn)
+void check_for_indirect_call(FileIR_t* const firp, Instruction_t* const insn)
 {
 	assert(firp && insn);
 
@@ -1053,11 +1107,7 @@ void check_for_indirect_calls(FileIR_t* firp, Instruction_t* insn)
 	if(d.Argument1.ArgType&CONSTANT_TYPE)
 		return;
 
-	if (getenv("IB_VERBOSE"))
-		cout << insn->getDisassembly() << " is an indirect call, assign to CALL HELNNODE" << endl;
-
-//	firp->GetIBTargets().AddHellnodeTarget(insn, CALL_ICFG_HELLNODE);
-	assert(0);
+	insn->SetIBTargets(indirect_jmps);
 }
 
 
@@ -1076,8 +1126,6 @@ void calc_preds(FileIR_t* firp)
                 if(insn->GetFallthrough());
                         preds[insn->GetFallthrough()].insert(insn);
         }
-
-
 }
 
 
@@ -1190,16 +1238,17 @@ void fill_in_indtargs(FileIR_t* firp, elfio* elfiop)
 	mark_targets(firp);
 
 	mark_jmptables(firp);
+	icfs_set_indirect_jmps(firp, indirect_jmps);
+	icfs_set_hellnode_targets(firp, hellnode_tgts);
 
-/*
-xxx XXX wip
-	if(getenv("IB_VERBOSE")!=NULL)
+	for(ICFSSet_t::const_iterator it=firp->GetAllICFS().begin();
+		it != firp->GetAllICFS().end();
+		++it)
 	{
-		cout << firp->GetIBTargets().toString() << endl;
+		ICFS_t *icfs = *it;
+		cout << dec << "icfs set id: " << icfs->GetBaseID() << "  #ibtargets: " << icfs->size() << endl;
 	}
-	*/
 }
-
 
 main(int argc, char* argv[])
 {
@@ -1225,18 +1274,19 @@ main(int argc, char* argv[])
 
 		cout<<"New Variant, after reading registration, is: "<<*pidp << endl;
 
-                for(set<File_t*>::iterator it=pidp->GetFiles().begin();
-                        it!=pidp->GetFiles().end();
-                        ++it
-                    )
-                {
-                        File_t* this_file=*it;
-                        assert(this_file);
+		for(set<File_t*>::iterator it=pidp->GetFiles().begin();
+			it!=pidp->GetFiles().end();
+			++it)
+		{
+			File_t* this_file=*it;
+			assert(this_file);
 
 			cout<<"Analyzing file "<<this_file->GetURL()<<endl;
 
 			// read the db  
 			firp=new FileIR_t(*pidp, this_file);
+
+			icfs_init(firp);
 
 			int elfoid=firp->GetFile()->GetELFOID();
 		        pqxx::largeobject lo(elfoid);
@@ -1256,7 +1306,10 @@ main(int argc, char* argv[])
 	
 			// write the DB back and commit our changes 
 			firp->WriteToDB();
+
 			delete firp;
+			delete indirect_jmps;
+			delete hellnode_tgts;
 		}
 
 		pqxx_interface.Commit();

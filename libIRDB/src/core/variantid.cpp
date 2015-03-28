@@ -221,12 +221,12 @@ File_t* VariantID_t::CloneFile(File_t* fptr)
         dbintr->IssueQuery(q);
 
         q="drop table ";
-        q+=icfs;
+        q+=icfsmap;
         q+=" ; ";
         dbintr->IssueQuery(q);
 
         q="drop table ";
-        q+=icfsmap;
+        q+=icfs;
         q+=" ; ";
         dbintr->IssueQuery(q);
 
