@@ -2,7 +2,7 @@
 LIB=../../lib/libIRDB-core.a
 
 
-OBJS=baseobj.o type.o variantid.o pqxxdb.o dbinterface.o function.o fileir.o file.o instruction.o ibtargets.o address.o generate_spri.o
+OBJS=baseobj.o type.o variantid.o pqxxdb.o dbinterface.o function.o fileir.o file.o instruction.o address.o generate_spri.o
 
 all: $(OBJS)
 

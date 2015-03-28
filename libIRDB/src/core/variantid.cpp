@@ -185,7 +185,8 @@ File_t* VariantID_t::CloneFile(File_t* fptr)
 	std::string atn="atnfid"+to_string(newfid);
 	std::string ftn="ftnfid"+to_string(newfid);
 	std::string itn="itnfid"+to_string(newfid);
-	std::string ibn="ibnfid"+to_string(newfid);
+	std::string icfs="icfsfid"+to_string(newfid);
+	std::string icfsmap="icfsmapfid"+to_string(newfid);
 	std::string rtn="rtnfid"+to_string(newfid);
 	std::string typ="typfid"+to_string(newfid);
 
@@ -195,8 +196,10 @@ File_t* VariantID_t::CloneFile(File_t* fptr)
 	q+=ftn;
 	q+="', instruction_table_name='";
 	q+=itn;
-	q+="', ibtargets_table_name='";
-	q+=ibn;
+	q+="', icfs_table_name='";
+	q+=icfs;
+	q+="', icfs_map_table_name='";
+	q+=icfsmap;
 	q+="', relocs_table_name='";
 	q+=rtn;
 	q+="', types_table_name='";
@@ -207,8 +210,7 @@ File_t* VariantID_t::CloneFile(File_t* fptr)
 	
         dbintr->IssueQuery(q);
 
-	File_t* newfile=new File_t(newfid, fptr->orig_fid, fptr->url, fptr->hash, fptr->arch, fptr->elfoid, 
-					atn, ftn, itn, ibn, rtn, typ, fptr->GetDoipID());
+	File_t* newfile=new File_t(newfid, fptr->orig_fid, fptr->url, fptr->hash, fptr->arch, fptr->elfoid, atn, ftn, itn, icfs, icfsmap, rtn, typ, fptr->GetDoipID());
 
 	newfile->CreateTables();
 
@@ -219,7 +221,12 @@ File_t* VariantID_t::CloneFile(File_t* fptr)
         dbintr->IssueQuery(q);
 
         q="drop table ";
-        q+=ibn;
+        q+=icfs;
+        q+=" ; ";
+        dbintr->IssueQuery(q);
+
+        q="drop table ";
+        q+=icfsmap;
         q+=" ; ";
         dbintr->IssueQuery(q);
 
@@ -259,9 +266,16 @@ File_t* VariantID_t::CloneFile(File_t* fptr)
         dbintr->IssueQuery(q);
 
         q="select * into ";
-        q+=ibn;
+        q+=icfs;
         q+=" from ";
-        q+=fptr->ibtargets_table_name;
+        q+=fptr->icfs_table_name;
+        q+=" ;";
+        dbintr->IssueQuery(q);
+
+        q="select * into ";
+        q+=icfsmap;
+        q+=" from ";
+        q+=fptr->icfs_map_table_name;
         q+=" ;";
         dbintr->IssueQuery(q);
 
@@ -367,7 +381,7 @@ File_t* VariantID_t::GetMainFile() const
 void VariantID_t::ReadFilesFromDB()
 {
 
-	std::string q= "select  file_info.orig_file_id, file_info.address_table_name, file_info.instruction_table_name, file_info.ibtargets_table_name,"
+	std::string q= "select  file_info.orig_file_id, file_info.address_table_name, file_info.instruction_table_name, file_info.icfs_table_name,file_info.icfs_map_table_name,"
 		" file_info.function_table_name, file_info.relocs_table_name, file_info.types_table_name, file_info.file_id, file_info.url, file_info.hash,"
 		" file_info.arch, file_info.type, file_info.elfoid, file_info.doip_id "
 		" from file_info,variant_dependency "
@@ -390,12 +404,13 @@ void VariantID_t::ReadFilesFromDB()
         	std::string atn=(BaseObj_t::dbintr->GetResultColumn("address_table_name"));
         	std::string ftn=(BaseObj_t::dbintr->GetResultColumn("function_table_name"));
         	std::string itn=(BaseObj_t::dbintr->GetResultColumn("instruction_table_name"));
-        	std::string ibn=(BaseObj_t::dbintr->GetResultColumn("ibtargets_table_name"));
+        	std::string icfs=(BaseObj_t::dbintr->GetResultColumn("icfs_table_name"));
+        	std::string icfs_map=(BaseObj_t::dbintr->GetResultColumn("icfs_map_table_name"));
         	std::string rtn=(BaseObj_t::dbintr->GetResultColumn("relocs_table_name"));
         	std::string typ=(BaseObj_t::dbintr->GetResultColumn("types_table_name"));
 
 
-		File_t *newfile=new File_t(file_id,orig_fid,url,hash,type,oid,atn,ftn,itn,ibn, rtn,typ,doipid);
+		File_t *newfile=new File_t(file_id,orig_fid,url,hash,type,oid,atn,ftn,itn,icfs,icfs_map,rtn,typ,doipid);
 
 std::cout<<"Found file "<<file_id<<"."<<std::endl;
 std::cout<<"  atn: " << atn << " ftn: " << ftn << " rtn: " << rtn << " typ: " << typ << std::endl;

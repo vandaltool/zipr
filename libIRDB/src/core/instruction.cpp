@@ -42,6 +42,7 @@ Instruction_t::Instruction_t() :
 	fallthrough=NULL;
 	target=NULL;
 	indTarg=NULL;
+	icfs=NULL;
 }
 
 Instruction_t::Instruction_t(db_id_t id, 
@@ -66,6 +67,7 @@ Instruction_t::Instruction_t(db_id_t id,
 	orig_address_id=orig_id;
 	fallthrough=NULL;
 	target=NULL;
+	icfs=NULL;
 }
 
 int Instruction_t::Disassemble(DISASM &disasm) const
@@ -173,6 +175,10 @@ string Instruction_t::WriteToDB(File_t *fid, db_id_t newid, bool p_withHeader)
 	if(target)
 		targ_id=target->GetBaseID();
 
+	db_id_t icfs_id=NOT_IN_DATABASE;
+	if (icfs)
+		icfs_id=icfs->GetBaseID();
+
 	db_id_t indirect_bt_id=NOT_IN_DATABASE;
 	if(indTarg)
 		indirect_bt_id=indTarg->GetBaseID();
@@ -181,7 +187,7 @@ string Instruction_t::WriteToDB(File_t *fid, db_id_t newid, bool p_withHeader)
 	
 	if (p_withHeader) 
 		q = string("insert into ")+fid->instruction_table_name +
-                string(" (instruction_id, address_id, parent_function_id, orig_address_id, fallthrough_address_id, target_address_id, data, callback, comment, ind_target_address_id, doip_id) VALUES ");
+                string(" (instruction_id, address_id, parent_function_id, orig_address_id, fallthrough_address_id, target_address_id, icfs_id, data, callback, comment, ind_target_address_id, doip_id) VALUES ");
 	else
 		q = ",";
 
@@ -196,6 +202,7 @@ string Instruction_t::WriteToDB(File_t *fid, db_id_t newid, bool p_withHeader)
                 string("'") + to_string(orig_address_id)         	+ string("', ") +
                 string("'") + to_string(ft_id)         			+ string("', ") +
                 string("'") + to_string(targ_id)         		+ string("', ") +
+                string("'") + to_string(icfs_id)         		+ string("', ") +
                 string("decode('") + hex_data.str()                     + string("', 'hex'), ") +
                 string("'") + callback                              	+ string("', ") +
                 string("'") + comment                              	+ string("', ") +
@@ -260,9 +267,4 @@ bool Instruction_t::SetsStackPointer(DISASM* disasm)
 
 	return false;
 
-}
-
-InstructionCFGNodeSet_t& Instruction_t::GetIBTargets()
-{
-	return ibtargets;
 }

@@ -234,7 +234,8 @@ void mark_jmptables(FileIR_t *firp)
 
 			assert(instr && ibtarget);
 
-			firp->GetIBTargets().AddTarget(instr, ibtarget);
+			assert(0); // XXX wip
+//			firp->GetIBTargets().AddTarget(instr, ibtarget);
 		}
 	}
 }
@@ -1035,7 +1036,8 @@ void check_for_indirect_jmps(FileIR_t* firp, Instruction_t* insn)
 	if (getenv("IB_VERBOSE"))
 		cout << insn->getDisassembly() << " is an indirect call, assign to DEFAULT HELNNODE" << endl;
 
-	firp->GetIBTargets().AddHellnodeTarget(insn, DEFAULT_ICFG_HELLNODE);
+	assert(0);
+//	firp->GetIBTargets().AddHellnodeTarget(insn, DEFAULT_ICFG_HELLNODE);
 }
 
 void check_for_indirect_calls(FileIR_t* firp, Instruction_t* insn)
@@ -1054,7 +1056,8 @@ void check_for_indirect_calls(FileIR_t* firp, Instruction_t* insn)
 	if (getenv("IB_VERBOSE"))
 		cout << insn->getDisassembly() << " is an indirect call, assign to CALL HELNNODE" << endl;
 
-	firp->GetIBTargets().AddHellnodeTarget(insn, CALL_ICFG_HELLNODE);
+//	firp->GetIBTargets().AddHellnodeTarget(insn, CALL_ICFG_HELLNODE);
+	assert(0);
 }
 
 
@@ -1188,10 +1191,13 @@ void fill_in_indtargs(FileIR_t* firp, elfio* elfiop)
 
 	mark_jmptables(firp);
 
+/*
+xxx XXX wip
 	if(getenv("IB_VERBOSE")!=NULL)
 	{
 		cout << firp->GetIBTargets().toString() << endl;
 	}
+	*/
 }
 
 

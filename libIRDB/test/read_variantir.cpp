@@ -71,21 +71,18 @@ main(int argc, char* argv[])
 			{
 				Instruction_t* insn=*it;
 				cout<<"Found insn at addr:" << std::hex << insn->GetAddress()->GetVirtualOffset() << " " << insn->getDisassembly() << endl;
-				InstructionCFGNodeSet_t ibtargets = insn->GetIBTargets();
-				InstructionCFGNodeSet_t::iterator ibtargets_it;
+				ICFS_t* ibtargets = insn->GetIBTargets();
+				if (!ibtargets) continue;
 
-				for (ibtargets_it = ibtargets.begin(); ibtargets_it != ibtargets.end(); ++ibtargets_it)
+				ICFS_t::iterator ibtargets_it;
+
+				for (ibtargets_it = ibtargets->begin(); ibtargets_it != ibtargets->end(); ++ibtargets_it)
 				{
-					InstructionCFGNode_t *node = *ibtargets_it;
-					assert(node);
-					if (node->IsHellnode())
-						cout<<"   indirect branch target: hellnode" << std::endl;
-					else
-						cout<<"   indirect branch target: " << std::hex << node->GetInstruction()->GetAddress()->GetVirtualOffset() << dec << endl;
+					Instruction_t* insn = *ibtargets_it;
+					assert(insn);
+					cout<<"   indirect branch target: " << std::hex << insn->GetAddress()->GetVirtualOffset() << dec << endl;
 				}
 			}
-
-			cout << firp->GetIBTargets().toString() << endl;
 
 			delete firp;
 		}

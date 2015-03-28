@@ -18,6 +18,7 @@
  *
  */
 
+DEPRECATED DO NOT USE
 #ifndef _ibtargets_
 #define _ibtargets_
 

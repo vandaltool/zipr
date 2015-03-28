@@ -18,6 +18,7 @@
  *
  */
 
+#ifdef DEPRECATED
 #include <all.hpp>
 #include <core/ibtargets.hpp>
 #include <utils.hpp>
@@ -188,3 +189,4 @@ const string IBTargets::toString()
 
 	return ss.str();
 }
+#endif
