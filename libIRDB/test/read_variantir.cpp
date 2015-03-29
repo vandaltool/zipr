@@ -106,7 +106,7 @@ main(int argc, char* argv[])
 				++it)
 			{
 				ICFS_t *icfs = *it;
-				cout << "icfs set id: " << icfs->GetBaseID() << "  #ibtargets: " << dec << icfs->size() << " | ";
+				cout << "icfs set id: " << icfs->GetBaseID() << " complete: " << icfs->IsComplete() << "  #ibtargets: " << dec << icfs->size() << " | ";
 				int count = 0;
 				for(ICFS_t::const_iterator it2=icfs->begin(); 
 					it2!=icfs->end(); ++it2, ++count)
