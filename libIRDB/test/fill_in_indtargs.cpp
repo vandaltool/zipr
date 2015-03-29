@@ -240,7 +240,9 @@ void mark_jmptables(FileIR_t *firp)
 		*new_icfs = instruction_targets;
 		firp->GetAllICFS().insert(new_icfs);
 
-		cout << "jmp table: size: " << new_icfs->size() << endl;
+		instr->SetIBTargets(new_icfs);
+
+		cout << "jmp table[" << new_icfs->GetBaseID() << "]: size: " << new_icfs->size() << endl;
 	}
 }
 
@@ -1088,10 +1090,15 @@ void check_for_indirect_jmp(FileIR_t* const firp, Instruction_t* const insn)
 	if(strstr(d.Instruction.Mnemonic, "jmp")==NULL)
 		return;
 
-	if(d.Argument1.ArgType&CONSTANT_TYPE)
-		return;
-
-	insn->SetIBTargets(hellnode_tgts);
+	if(d.Argument1.ArgType&REGISTER_TYPE)
+		insn->SetIBTargets(hellnode_tgts);
+	else if(d.Argument1.ArgType&MEMORY_TYPE &&
+			(!d.Argument1.ArgType&RELATIVE_))
+	{
+		insn->SetIBTargets(hellnode_tgts);
+	}
+	else
+		cout<<"Insn at "<<hex<<insn->GetAddress()->GetVirtualOffset()<<" looks like PIC code" << dec << endl;
 }
 
 void check_for_indirect_call(FileIR_t* const firp, Instruction_t* const insn)
@@ -1237,9 +1244,10 @@ void fill_in_indtargs(FileIR_t* firp, elfio* elfiop)
 	/* set the IR to have some instructions marked as IB targets */
 	mark_targets(firp);
 
-	mark_jmptables(firp);
 	icfs_set_indirect_jmps(firp, indirect_jmps);
 	icfs_set_hellnode_targets(firp, hellnode_tgts);
+
+	mark_jmptables(firp);
 
 	for(ICFSSet_t::const_iterator it=firp->GetAllICFS().begin();
 		it != firp->GetAllICFS().end();

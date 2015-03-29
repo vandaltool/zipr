@@ -70,10 +70,16 @@ main(int argc, char* argv[])
 				)
 			{
 				Instruction_t* insn=*it;
-				cout<<"Found insn at addr:" << std::hex << insn->GetAddress()->GetVirtualOffset() << " " << insn->getDisassembly() << endl;
-				ICFS_t* ibtargets = insn->GetIBTargets();
-				if (!ibtargets) continue;
+				cout<<"Found insn at addr:" << std::hex << insn->GetAddress()->GetVirtualOffset() << " " << insn->getDisassembly();
 
+				ICFS_t* ibtargets = insn->GetIBTargets();
+				if (ibtargets) 
+					cout << " ibtargets_id: " << ibtargets->GetBaseID() << endl;
+				else						
+					cout << endl;
+
+
+#ifdef foobar 
 				ICFS_t::iterator ibtargets_it;
 
 				if (ibtargets->size() > 0)
@@ -92,6 +98,7 @@ main(int argc, char* argv[])
 				}
 				if (ibtargets->size() > 0)
 					cout << dec << endl;
+#endif
 			}
 
 			for(ICFSSet_t::const_iterator it=firp->GetAllICFS().begin();
@@ -99,7 +106,20 @@ main(int argc, char* argv[])
 				++it)
 			{
 				ICFS_t *icfs = *it;
-				cout << "icfs set id: " << icfs->GetBaseID() << "  #ibtargets: " << icfs->size() << endl;
+				cout << "icfs set id: " << icfs->GetBaseID() << "  #ibtargets: " << dec << icfs->size() << " | ";
+				int count = 0;
+				for(ICFS_t::const_iterator it2=icfs->begin(); 
+					it2!=icfs->end(); ++it2, ++count)
+				{
+					Instruction_t* insn = *it2;
+					assert(insn);
+					cout<< std::hex << insn->GetAddress()->GetVirtualOffset() << " ";
+					if (count >= 10) {
+						cout << "...";
+						break;
+					}
+				}
+				cout << endl;
 			}
 			delete firp;
 		}
