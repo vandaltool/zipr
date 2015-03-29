@@ -242,7 +242,8 @@ void mark_jmptables(FileIR_t *firp)
 
 		instr->SetIBTargets(new_icfs);
 
-		cout << "jmp table[" << new_icfs->GetBaseID() << "]: size: " << new_icfs->size() << endl;
+		if(getenv("IB_VERBOSE")!=0)
+			cout << "jmp table[" << new_icfs->GetBaseID() << "]: size: " << new_icfs->size() << endl;
 	}
 }
 
