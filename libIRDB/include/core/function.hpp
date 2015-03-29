@@ -20,8 +20,6 @@
 
 #include "core/type.hpp"
 
-typedef        std::set<Instruction_t*> InstructionSet_t;
-
 // The basic Function of a variant.
 class Function_t : public BaseObj_t
 {

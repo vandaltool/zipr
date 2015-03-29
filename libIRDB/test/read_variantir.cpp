@@ -70,23 +70,57 @@ main(int argc, char* argv[])
 				)
 			{
 				Instruction_t* insn=*it;
-				cout<<"Found insn at addr:" << std::hex << insn->GetAddress()->GetVirtualOffset() << " " << insn->getDisassembly() << endl;
-				InstructionCFGNodeSet_t ibtargets = insn->GetIBTargets();
-				InstructionCFGNodeSet_t::iterator ibtargets_it;
+				cout<<"Found insn at addr:" << std::hex << insn->GetAddress()->GetVirtualOffset() << " " << insn->getDisassembly();
 
-				for (ibtargets_it = ibtargets.begin(); ibtargets_it != ibtargets.end(); ++ibtargets_it)
+				ICFS_t* ibtargets = insn->GetIBTargets();
+				if (ibtargets) 
+					cout << " ibtargets_id: " << ibtargets->GetBaseID() << endl;
+				else						
+					cout << endl;
+
+
+#ifdef foobar 
+				ICFS_t::iterator ibtargets_it;
+
+				if (ibtargets->size() > 0)
+					cout<<"   indirect branch targets: ";
+
+				int count;
+				for (count = 0, ibtargets_it = ibtargets->begin(); ibtargets_it != ibtargets->end(); ++ibtargets_it, ++count)
 				{
-					InstructionCFGNode_t *node = *ibtargets_it;
-					assert(node);
-					if (node->IsHellnode())
-						cout<<"   indirect branch target: hellnode" << std::endl;
-					else
-						cout<<"   indirect branch target: " << std::hex << node->GetInstruction()->GetAddress()->GetVirtualOffset() << dec << endl;
+					Instruction_t* insn = *ibtargets_it;
+					assert(insn);
+					cout<< std::hex << insn->GetAddress()->GetVirtualOffset() << " ";
+					if (count >= 10) {
+						cout << "...";
+						break;
+					}
 				}
+				if (ibtargets->size() > 0)
+					cout << dec << endl;
+#endif
 			}
 
-			cout << firp->GetIBTargets().toString() << endl;
-
+			for(ICFSSet_t::const_iterator it=firp->GetAllICFS().begin();
+				it != firp->GetAllICFS().end();
+				++it)
+			{
+				ICFS_t *icfs = *it;
+				cout << "icfs set id: " << icfs->GetBaseID() << " complete: " << icfs->IsComplete() << "  #ibtargets: " << dec << icfs->size() << " | ";
+				int count = 0;
+				for(ICFS_t::const_iterator it2=icfs->begin(); 
+					it2!=icfs->end(); ++it2, ++count)
+				{
+					Instruction_t* insn = *it2;
+					assert(insn);
+					cout<< std::hex << insn->GetAddress()->GetVirtualOffset() << " ";
+					if (count >= 10) {
+						cout << "...";
+						break;
+					}
+				}
+				cout << endl;
+			}
 			delete firp;
 		}
 		delete pidp;

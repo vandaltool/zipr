@@ -459,28 +459,9 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 	callinsn->SetFunction(insn->GetFunction());
 	callinsn->SetComment(insn->GetComment()+" Jump part");
 
-	// handle IB targets
-	//     insn is the old call instruction
-	// callinsn is the jmp part of the push/jump
-	InstructionCFGNodeSet_t nodes = insn->GetIBTargets();
-	InstructionCFGNodeSet_t::iterator it;
-	for (it = nodes.begin(); it != nodes.end(); ++it)
-	{
-		InstructionCFGNode_t *node = *it;
-		if (node->IsHellnode())
-		{
-			firp->GetIBTargets().AddHellnodeTarget(callinsn, node->GetHellnodeType());
-			firp->GetIBTargets().RemoveHellnodeTarget(insn, node->GetHellnodeType());
-		}
-		else
-		{
-			firp->GetIBTargets().AddTarget(callinsn, node->GetInstruction());
-			firp->GetIBTargets().RemoveTarget(insn, node);
-		}
-	}
-
-	// complete remove from map
-	firp->GetIBTargets().Remove(insn);
+	/* handle ib targets */
+	callinsn->SetIBTargets(insn->GetIBTargets());
+	insn->SetIBTargets(NULL);
 
 	// We need the control transfer instruction to be from the orig program because 
 	// if for some reason it's fallthrough/target isn't in the DB, we need to correctly 
@@ -535,7 +516,6 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 	insn->GetRelocations().insert(reloc);
 	firp->GetRelocations().insert(reloc);
 
-
 	/* If the fallthrough is not marked as indirectly branchable-to, then mark it so */
 	if(newindirtarg && !newindirtarg->GetIndirectBranchTargetAddress())
 	{
@@ -545,7 +525,7 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 		newaddr->SetFileID(newindirtarg->GetAddress()->GetFileID());
 		newaddr->SetVirtualOffset(newindirtarg->GetAddress()->GetVirtualOffset());
 
-		/* set the insturction and include this address in the list of addrs */
+		/* set the instruction and include this address in the list of addrs */
 		newindirtarg->SetIndirectBranchTargetAddress(newaddr);
 		firp->GetAddresses().insert(newaddr);
 	}
@@ -870,8 +850,6 @@ main(int argc, char* argv[])
 			fix_all_calls(firp,true,fix_all);
 			fix_other_pcrel(firp);
 			firp->WriteToDB();
-
-			cout << firp->GetIBTargets().toString() << endl;
 
 			cout<<"Done!"<<endl;
 			delete firp;

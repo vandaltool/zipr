@@ -95,6 +95,8 @@ FileIR_t::~FileIR_t()
 	{
 		delete *i;
 	}
+
+	// @todo: clear icfs_t
 }
   
 // DB operations
@@ -105,9 +107,13 @@ void FileIR_t::ReadFromDB()
 	std::map<db_id_t,Type_t*> typesMap = ReadTypesFromDB(types); 
 	std::map<db_id_t,AddressID_t*> 	addrMap=ReadAddrsFromDB();
 	std::map<db_id_t,Function_t*> 	funcMap=ReadFuncsFromDB(addrMap, typesMap);
-	std::map<db_id_t,Instruction_t*> 	insnMap=ReadInsnsFromDB(funcMap,addrMap);
 
-	ReadIBTargetsFromDB(insnMap);
+	std::map<db_id_t,Instruction_t*> addressToInstructionMap;
+	std::map<Instruction_t*, db_id_t> unresolvedICFS;
+
+	std::map<db_id_t,Instruction_t*> insnMap=ReadInsnsFromDB(funcMap,addrMap,addressToInstructionMap, unresolvedICFS);
+
+	ReadAllICFSFromDB(addressToInstructionMap, unresolvedICFS);
 	ReadRelocsFromDB(insnMap);
 
 	UpdateEntryPoints(insnMap);
@@ -338,7 +344,9 @@ std::map<db_id_t,AddressID_t*> FileIR_t::ReadAddrsFromDB
 std::map<db_id_t,Instruction_t*> FileIR_t::ReadInsnsFromDB 
 	(      
         std::map<db_id_t,Function_t*> &funcMap,
-        std::map<db_id_t,AddressID_t*> &addrMap
+        std::map<db_id_t,AddressID_t*> &addrMap,
+		std::map<db_id_t,Instruction_t*> &addressToInstructionMap,
+		std::map<Instruction_t*, db_id_t> &unresolvedICFS
         ) 
 {
 	std::map<db_id_t,Instruction_t*> idMap;
@@ -358,6 +366,7 @@ std::map<db_id_t,Instruction_t*> FileIR_t::ReadInsnsFromDB
 //  orig_address_id           integer REFERENCES #PROGNAME#_address,
 //  fallthrough_address_id    integer,
 //  target_address_id         integer,
+//  icfs_id                   integer,
 //  data                      bytea,
 //  callback                  text,
 //  comment                   text,
@@ -370,6 +379,7 @@ std::map<db_id_t,Instruction_t*> FileIR_t::ReadInsnsFromDB
 		db_id_t orig_address_id=atoi(dbintr->GetResultColumn("orig_address_id").c_str());
 		db_id_t fallthrough_address_id=atoi(dbintr->GetResultColumn("fallthrough_address_id").c_str());
 		db_id_t targ_address_id=atoi(dbintr->GetResultColumn("target_address_id").c_str());
+		db_id_t icfs_id=atoi(dbintr->GetResultColumn("icfs_id").c_str());
 		std::string data=(dbintr->GetResultColumn("data"));
 		std::string callback=(dbintr->GetResultColumn("callback"));
 		std::string comment=(dbintr->GetResultColumn("comment"));
@@ -397,7 +407,19 @@ std::map<db_id_t,Instruction_t*> FileIR_t::ReadInsnsFromDB
 		fallthroughs[instruction_id]=fallthrough_address_id;
 		targets[instruction_id]=targ_address_id;
 
+		addressToInstructionMap[aid] = newinsn;
 		insns.insert(newinsn);
+
+		if (icfs_id == NOT_IN_DATABASE)
+		{
+			newinsn->SetIBTargets(NULL);
+		}
+		else
+		{
+			// keep track of instructions for which we have not yet
+			// resolved the ICFS
+			unresolvedICFS[newinsn] = icfs_id;
+		}
 
 		dbintr->MoveToNextRow();
 	}
@@ -457,7 +479,8 @@ void FileIR_t::WriteToDB()
 	db_id_t j=-1;
 
 	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->instruction_table_name + string(" cascade;"));
-	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->ibtargets_table_name + string(" cascade;"));
+	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->icfs_table_name + string(" cascade;"));
+	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->icfs_map_table_name + string(" cascade;"));
 	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->function_table_name    + string(" cascade;"));
 	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->address_table_name     + string(" cascade;"));
 	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->relocs_table_name     + string(" cascade;"));
@@ -572,9 +595,13 @@ void FileIR_t::WriteToDB()
 	}
 	dbintr->IssueQuery(q);
 
-	q = string("");
-	q = ibtargets.WriteToDB(fileptr);
-	dbintr->IssueQuery(q);
+	for (ICFSSet_t::iterator it = GetAllICFS().begin(); it != GetAllICFS().end(); ++it)
+	{
+		ICFS_t* icfs = *it;
+		assert(icfs);
+		string q = icfs->WriteToDB(fileptr);
+		dbintr->IssueQuery(q);
+	}
 }
 
 
@@ -879,36 +906,72 @@ std::map<db_id_t, Type_t*> FileIR_t::ReadTypesFromDB (TypeSet_t& types)
 	return tMap;
 }
 
-void FileIR_t::ReadIBTargetsFromDB(std::map<db_id_t,Instruction_t*> &insnMap)
+void FileIR_t::ReadAllICFSFromDB(std::map<db_id_t,Instruction_t*> &addr2instMap,
+		std::map<Instruction_t*, db_id_t> &unresolvedICFS)
 {
-	std::string q= "select * from " + fileptr->ibtargets_table_name + " ; ";
+	std::map<db_id_t, ICFS_t*> icfsMap;
 
+	// retrieve all sets
+	std::string q= "select * from " + fileptr->icfs_table_name + " ; ";
 	dbintr->IssueQuery(q);
 
 	while(!dbintr->IsDone())
 	{
-		// instruction_id | target_instruction_id
-		// target_instruction_id < 0  HELLNODE encoding (only one for now)
-		db_id_t instr_id = atoi(dbintr->GetResultColumn("instruction_id").c_str());
-		db_id_t ibtarget_id = atoi(dbintr->GetResultColumn("target_instruction_id").c_str());
-
-		assert(instr_id >= 0);
-
-		Instruction_t* instruction = insnMap[instr_id];
-		assert(instruction);
-
-		Instruction_t* ibtarget = NULL;
-		if (ibtarget_id >= 0)
+		db_id_t icfs_id = atoi(dbintr->GetResultColumn("icfs_id").c_str());
+		bool isComplete=false;
+		string isCompleteString=dbintr->GetResultColumn("is_complete"); 
+		const char *isCompletestr=isCompleteString.c_str();
+		if (isCompleteString.size() > 0)
 		{
-			ibtarget = insnMap[ibtarget_id];
-			assert(ibtarget);
+			if (isCompletestr[0] == 't' || isCompletestr[0] == 'T' || isCompletestr[0] == '1' || isCompletestr[0] == 'y' || isCompletestr[0] == 'Y')
+				isComplete = true;
 		}
-			
-		if (ibtarget)
-			ibtargets.AddTarget(instruction, ibtarget);
-		else
-			ibtargets.AddHellnodeTarget(instruction, (ICFGHellnodeType)ibtarget_id);
 
+		ICFS_t* icfs = new ICFS_t(icfs_id, isComplete);		
+		GetAllICFS().insert(icfs);
+
+		icfsMap[icfs_id] = icfs;
 		dbintr->MoveToNextRow();
+	}
+
+	ICFSSet_t all_icfs = GetAllICFS();
+
+	// for each set, populate its members
+	for (ICFSSet_t::iterator it = all_icfs.begin(); it != all_icfs.end(); ++it)
+	{
+		char query2[2048];
+		ICFS_t *icfs = *it;
+		assert(icfs);
+		int icfsid = icfs->GetBaseID();
+		sprintf(query2,"select * from %s WHERE icfs_id = %d;", fileptr->icfs_map_table_name.c_str(), icfsid);
+		dbintr->IssueQuery(query2);
+		while(!dbintr->IsDone())
+		{
+			db_id_t address_id = atoi(dbintr->GetResultColumn("address_id").c_str());
+			Instruction_t* instruction = addr2instMap[address_id];
+			if (instruction)
+				icfs->insert(instruction);
+			// @todo: handle cross-file addresses
+			//        these are allowed by the DB schema but we don't yet handle them
+			// if we encounter an unresolved address, we should mark the ICFS
+			//      as unresolved
+
+			dbintr->MoveToNextRow();
+		}					
+	}
+
+	// backpatch all unresolved instruction -> ICFS
+	std::map<Instruction_t*, db_id_t>::iterator uit;
+	for (std::map<Instruction_t*, db_id_t>::iterator uit = unresolvedICFS.begin(); uit != unresolvedICFS.end(); ++uit)
+	{
+		Instruction_t* unresolved = uit->first;
+		db_id_t icfs_id = uit->second;
+
+		assert(unresolved);
+
+		ICFS_t *icfs = icfsMap[icfs_id];
+		assert(icfs);
+
+		unresolved->SetIBTargets(icfs);
 	}
 }

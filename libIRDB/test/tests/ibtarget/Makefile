@@ -1,8 +1,8 @@
 INCLUDES= -I../../../../include -I../../../include/ -I../../../../beaengine/include 
 #LIBS=-L ../../../lib/ -lIRDB-core -lIRDB-cfg -lIRDB-util -lpqxx -L ../../../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d 
 #OPT=-fPIE -fPIC -O
-OPT=-g -fPIE -fPIC
-#OPT=-O
+#OPT=-g -fPIE -fPIC
+OPT=-O
 .SUFFIXES: .exe .cpp .peasoup
 
 PROGS=jmp1.exe jmp2.exe jmp.shared.exe icall.exe
