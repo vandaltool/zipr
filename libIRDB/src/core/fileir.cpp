@@ -915,8 +915,6 @@ void FileIR_t::ReadAllICFSFromDB(std::map<db_id_t,Instruction_t*> &addr2instMap,
 	std::string q= "select * from " + fileptr->icfs_table_name + " ; ";
 	dbintr->IssueQuery(q);
 
-cout << "ReadAllICFSFromDB(): A: query: " << q << endl;
-
 	while(!dbintr->IsDone())
 	{
 		db_id_t icfs_id = atoi(dbintr->GetResultColumn("icfs_id").c_str());
@@ -929,15 +927,12 @@ cout << "ReadAllICFSFromDB(): A: query: " << q << endl;
 				isComplete = true;
 		}
 
-cout << "icfs_id: " << icfs_id << " complete: " << isComplete << endl;
 		ICFS_t* icfs = new ICFS_t(icfs_id, isComplete);		
 		GetAllICFS().insert(icfs);
 
 		icfsMap[icfs_id] = icfs;
 		dbintr->MoveToNextRow();
 	}
-
-cout << "ReadAllICFSFromDB(): B" << endl;
 
 	ICFSSet_t all_icfs = GetAllICFS();
 
@@ -950,7 +945,6 @@ cout << "ReadAllICFSFromDB(): B" << endl;
 		int icfsid = icfs->GetBaseID();
 		sprintf(query2,"select * from %s WHERE icfs_id = %d;", fileptr->icfs_map_table_name.c_str(), icfsid);
 		dbintr->IssueQuery(query2);
-cout << "ReadAllICFSFromDB(): icfsid: " << icfsid << " query: " << query2 << endl;
 		while(!dbintr->IsDone())
 		{
 			db_id_t address_id = atoi(dbintr->GetResultColumn("address_id").c_str());
@@ -966,7 +960,6 @@ cout << "ReadAllICFSFromDB(): icfsid: " << icfsid << " query: " << query2 << end
 		}					
 	}
 
-cout << "ReadAllICFSFromDB(): C: size unresolved: " << unresolvedICFS.size() << endl;
 	// backpatch all unresolved instruction -> ICFS
 	std::map<Instruction_t*, db_id_t>::iterator uit;
 	for (std::map<Instruction_t*, db_id_t>::iterator uit = unresolvedICFS.begin(); uit != unresolvedICFS.end(); ++uit)

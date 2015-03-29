@@ -1091,14 +1091,14 @@ void check_for_indirect_jmp(FileIR_t* const firp, Instruction_t* const insn)
 		return;
 
 	if(d.Argument1.ArgType&REGISTER_TYPE)
+	{
 		insn->SetIBTargets(hellnode_tgts);
+	}
 	else if(d.Argument1.ArgType&MEMORY_TYPE &&
 			(!d.Argument1.ArgType&RELATIVE_))
 	{
 		insn->SetIBTargets(hellnode_tgts);
 	}
-	else
-		cout<<"Insn at "<<hex<<insn->GetAddress()->GetVirtualOffset()<<" looks like PIC code" << dec << endl;
 }
 
 void check_for_indirect_call(FileIR_t* const firp, Instruction_t* const insn)
