@@ -59,9 +59,11 @@ int FixRets::execute()
 					cout << "Complete instruction: " << disasm.CompleteInstr << "-" << endl;
 					if (strcmp(disasm.CompleteInstr,"ret "))
 						continue;
-					/*
-					 * For 64-bit only at this point.
-					 */
+					if (insn->GetIndirectBranchTargetAddress())
+					{
+						cout << "Skipping ret fix because it's pinned." << endl;
+						continue;
+					}
 					Instruction_t *pop = NULL;
 					Instruction_t *ret = insn;
 					
