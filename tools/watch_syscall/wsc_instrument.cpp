@@ -616,6 +616,10 @@ bool	WSC_Instrument::add_segfault_checking(Instruction_t* insn)
 
 	bool success=true;
 
+	/* no CSO records, sandbox the instruction */
+	if (warning_records[insn].size() == 0)
+		return add_segfault_checking(insn, NULL);
+
 	for(CSO_WarningRecordSet_t::iterator it=warning_records[insn].begin();
 		it!=warning_records[insn].end();
 		++it

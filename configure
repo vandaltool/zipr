@@ -1699,7 +1699,7 @@ if test "$enable_debugging" = yes; then
 	OPTIMIZE=-g
 fi
 
-EXTRA_CXXFLAGS="$(EXTRA_CXXFLAGS) $(OPTIMIZE)"
+EXTRA_CXXFLAGS="$EXTRA_CXXFLAGS $OPTIMIZE"
 
 
 
