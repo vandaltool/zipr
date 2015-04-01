@@ -73,7 +73,7 @@ class BasicType_t : public Type_t
 {
 	public:
 		BasicType_t() : Type_t() {}	
-		BasicType_t(db_id_t id, IRDB_Type type, std::string name) : Type_t(id, type, name) {}
+		BasicType_t(db_id_t id, IRDB_Type type, std::string p_name) : Type_t(id, type, p_name) {}
 		virtual ~BasicType_t() {}
 
 		virtual bool IsBasicType() const { return true; }
@@ -86,7 +86,7 @@ class PointerType_t : public Type_t
 {
 	public:
 		PointerType_t() : Type_t() { SetTypeID(T_POINTER); referentType = NULL; }	
-		PointerType_t(db_id_t id, Type_t* ref, std::string name) : Type_t(id, T_POINTER, name) {
+		PointerType_t(db_id_t id, Type_t* ref, std::string p_name) : Type_t(id, T_POINTER, p_name) {
 			SetReferentType(ref);
 		}
 		virtual ~PointerType_t() {}
@@ -105,7 +105,7 @@ class AggregateType_t : public Type_t
 {
 	public:
 		AggregateType_t() : Type_t() { SetTypeID(T_AGGREGATE); }	
-		AggregateType_t(db_id_t id, std::string name) : Type_t(id, T_AGGREGATE, name) {}
+		AggregateType_t(db_id_t id, std::string p_name) : Type_t(id, T_AGGREGATE, p_name) {}
 		virtual ~AggregateType_t() {}
 		virtual bool IsAggregateType() const { return true; }
 
@@ -129,7 +129,7 @@ class FuncType_t : public Type_t
 {
 	public:
 		FuncType_t() : Type_t() { SetTypeID(T_FUNC); _init(); }	
-		FuncType_t(db_id_t id, std::string name) : Type_t(id, T_FUNC, name) { _init(); }
+		FuncType_t(db_id_t id, std::string p_name) : Type_t(id, T_FUNC, p_name) { _init(); }
 		virtual ~FuncType_t() {}
 
 		virtual bool IsFuncType() const { return true; }
