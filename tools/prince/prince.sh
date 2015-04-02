@@ -10,6 +10,12 @@ filename=$4              # file containing names of candidate functions in binar
 malloc=$5                # (optional) assume $4 is malloc
 
 tmp=$filename.tmp.$$
+binarycopy=$$.$(basename $binary)
+cp $binary $binarycopy
+binary=$binarycopy
+
+echo "binary copy is: $binary"
+
 prince_driver=$SECURITY_TRANSFORMS_HOME/tools/prince/prince_driver.exe
 
 tr -s '\r\n' ' ' < $filename | sed -e 's/ $/\n/' > $tmp
