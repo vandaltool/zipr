@@ -13,7 +13,7 @@
 # set default values for 
 ##################################################################################
 
-initial_off_phases="isr ret_shadow_stack determine_program stats fill_in_safefr zipr installer watch_allocate cinderella cgc_hlx spawner concolic selective_cfi fptr_shadow concolic"
+initial_off_phases="isr ret_shadow_stack determine_program stats fill_in_safefr zipr installer watch_allocate cinderella cgc_hlx sfuzz spawner concolic selective_cfi fptr_shadow concolic"
 
 ##################################################################################
 
@@ -878,6 +878,11 @@ perform_step manual_test none $PEASOUP_HOME/tools/do_manualtests.sh $name $strat
 # remove the parts of the annotation file not needed at runtime
 #
 perform_step fast_annot preLoaded_ILR2 $PEASOUP_HOME/tools/fast_annot.sh
+
+#
+# sfuzz: simple fuzzing to find crashes and record crashing instruction
+# 
+perform_step sfuzz none $PEASOUP_HOME/tools/do_sfuzz.sh $newname.ncexe $orig_exe
 
 #
 # cinderella: infer malloc and other libc functions
