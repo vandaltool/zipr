@@ -250,6 +250,7 @@ libIRDB/test/fix_calls.cpp -text
 libIRDB/test/generate_spri.cpp -text
 libIRDB/test/ilr.cpp -text
 libIRDB/test/list_programs.cpp -text
+libIRDB/test/pin_address.cpp -text
 libIRDB/test/print_variant.cpp -text
 libIRDB/test/read_ehframe.cpp -text
 libIRDB/test/read_variantir.cpp -text
