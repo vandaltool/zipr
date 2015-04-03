@@ -9,9 +9,8 @@ cgc_hlx.o: cgc_hlx.cpp cgc_hlx.hpp ../../libIRDB/include/libIRDB-core.hpp \
  ../../libIRDB/include/core/baseobj.hpp \
  ../../libIRDB/include/core/reloc.hpp \
  ../../libIRDB/include/core/address.hpp \
- ../../libIRDB/include/core/instructioncfg.hpp \
+ ../../libIRDB/include/core/icfs.hpp \
  ../../libIRDB/include/core/instruction.hpp \
- ../../libIRDB/include/core/ibtargets.hpp \
  ../../libIRDB/include/core/file.hpp \
  ../../libIRDB/include/core/function.hpp \
  ../../libIRDB/include/core/type.hpp \
@@ -33,9 +32,8 @@ cgc_hlx.hpp:
 ../../libIRDB/include/core/baseobj.hpp:
 ../../libIRDB/include/core/reloc.hpp:
 ../../libIRDB/include/core/address.hpp:
-../../libIRDB/include/core/instructioncfg.hpp:
+../../libIRDB/include/core/icfs.hpp:
 ../../libIRDB/include/core/instruction.hpp:
-../../libIRDB/include/core/ibtargets.hpp:
 ../../libIRDB/include/core/file.hpp:
 ../../libIRDB/include/core/function.hpp:
 ../../libIRDB/include/core/type.hpp:

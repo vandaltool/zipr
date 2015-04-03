@@ -54,11 +54,26 @@ class WSC_Instrument
                         ELFIO::dump::section_headers(std::cout,*elfiop);
                         ELFIO::dump::segment_headers(std::cout,*elfiop);
 
+			SetSandboxing(false);
+			SetPromiscuousSandboxing(false);
+			SetInputFiltering(false);
 
+			m_num_segfault_instrumentations = 0;
+			m_num_nullcheck_instrumentations = 0;
+			m_num_boundscheck_instrumentations = 0;
+			m_num_segfault_checking = 0;
 		} 
 		virtual ~WSC_Instrument() { delete elfiop; }
 		bool execute();
-		bool FindInstructionsToProtect(std::string s);
+		bool FindInstructionsToProtect(std::string s, int& num_instructions);
+
+		void SetSandboxing(bool doit) { m_doSandboxing = doit; }
+		bool DoSandboxing() const { return m_doSandboxing; }
+		void SetPromiscuousSandboxing(bool doit) { m_doPromiscuousSandboxing = doit; }
+		bool DoPromiscuousSandboxing() const { return m_doPromiscuousSandboxing; }
+		void SetInputFiltering(bool doit) { m_doInputFiltering = doit; }
+		bool DoInputFiltering() const { return m_doInputFiltering; }
+		std::ostream& displayStatistics(std::ostream&);
 
 	private:
 
@@ -85,13 +100,22 @@ class WSC_Instrument
 	private:
 		libIRDB::FileIR_t* firp;
 		libIRDB::Syscalls_t syscalls;
-                ELFIO::elfio*    elfiop;
+		ELFIO::elfio*    elfiop;
 		libIRDB::Instruction_t *last_startup_insn;
 
 		libIRDB::InstructionSet_t to_protect;
 		libIRDB::Instruction_t* fail_code;
 
 		CSO_WarningRecordMap_t warning_records;
+		bool m_doSandboxing;
+		bool m_doInputFiltering;
+		bool m_doPromiscuousSandboxing;
+
+		// statistics
+		int m_num_segfault_instrumentations;
+		int m_num_nullcheck_instrumentations;
+		int m_num_boundscheck_instrumentations;
+		int m_num_segfault_checking;
 };
 
 #endif

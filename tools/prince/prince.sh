@@ -10,11 +10,12 @@ filename=$4              # file containing names of candidate functions in binar
 malloc=$5                # (optional) assume $4 is malloc
 
 tmp=$filename.tmp.$$
+
+
+# prepend process id so that it's safer to use killall
 binarycopy=$$.$(basename $binary)
 cp $binary $binarycopy
 binary=$binarycopy
-
-echo "binary copy is: $binary"
 
 prince_driver=$SECURITY_TRANSFORMS_HOME/tools/prince/prince_driver.exe
 
@@ -47,8 +48,9 @@ do
 			echo "prince invalid $libc_function $function_to_test"
 		fi
 	fi
-	killall `basename $binary`
+	killall $binary
 done 
 
-killall `basename $binary`
+killall $binary
+rm $binary &> /dev/null
 echo "Done processing libc_function $libc_function with filename $filename"
