@@ -13,7 +13,7 @@
 # set default values for 
 ##################################################################################
 
-initial_off_phases="isr ret_shadow_stack determine_program stats fill_in_safefr zipr installer watch_allocate cinderella cgc_hlx sfuzz spawner concolic selective_cfi fptr_shadow concolic"
+initial_off_phases="isr ret_shadow_stack determine_program stats fill_in_safefr zipr installer watch_allocate cinderella cgc_hlx sfuzz spawner concolic selective_cfi fptr_shadow concolic input_filtering"
 
 ##################################################################################
 
@@ -881,8 +881,14 @@ perform_step fast_annot preLoaded_ILR2 $PEASOUP_HOME/tools/fast_annot.sh
 
 #
 # sfuzz: simple fuzzing to find crashes and record crashing instruction
+# @todo: 2nd arg is the benchmark name but we're currently passing in
+#        the binary in
 # 
-perform_step sfuzz none $PEASOUP_HOME/tools/do_sfuzz.sh $newname.ncexe $orig_exe
+perform_step sfuzz none $PEASOUP_HOME/tools/do_sfuzz.sh $newname.ncexe $orig_exe crash.cso
+# if crash found, feed the cso file to the watch allocate step
+if [ -f crash.cso  ]; then
+	step_options_watch_allocate="$step_options_watch_allocate --warning_file=crash.cso"
+fi
 
 #
 # cinderella: infer malloc and other libc functions
@@ -930,8 +936,11 @@ if [[ "$TWITCHER_HOME" != "" && -d "$TWITCHER_HOME" ]]; then
 	perform_step twitchertransform none $TWITCHER_HOME/twitcher-transform/do_twitchertransform.sh $cloneid $program $CONCOLIC_DIR $TWITCHER_TRANSFORM_TIMEOUT_VALUE
 fi
 
+# input filtering
+perform_step input_filtering clone,fill_in_indtargs,fill_in_cfg,meds2pdb $SECURITY_TRANSFORMS_HOME/tools/watch_syscall/watch_syscall.exe  --varid $cloneid --do_input_filtering $step_options_input_filtering
+
 # watch syscalls
-perform_step watch_allocate clone,fill_in_indtargs,fill_in_cfg,meds2pdb $SECURITY_TRANSFORMS_HOME/tools/watch_syscall/watch_syscall.exe  --varid $cloneid $step_options_watch_allocate
+perform_step watch_allocate clone,fill_in_indtargs,fill_in_cfg,meds2pdb $SECURITY_TRANSFORMS_HOME/tools/watch_syscall/watch_syscall.exe  --varid $cloneid --do_sandboxing $step_options_watch_allocate
 
 # only do ILR for main objects that aren't relocatable.  reloc. objects 
 # are still buggy for ILR

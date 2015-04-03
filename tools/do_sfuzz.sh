@@ -4,13 +4,13 @@
 
 binary=$1
 benchmark=$2
+cso_file=$3
 
 mkdir -p sfuzz/crashes
 
 seeds_dir=${PEASOUP_HOME}/tools/sfuzz/seed_inputs
 crash_dir=sfuzz/crashes
 crash_eip_file=sfuzz/crashing_eips 
-cso_file=sfuzz/crash.cso
 
 ${PEASOUP_HOME}/tools/sfuzz/replay_seed_inputs.sh ./$binary $seeds_dir $crash_dir $crash_eip_file
 
