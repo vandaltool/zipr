@@ -29,4 +29,10 @@ if [ ! $? -eq 0 ]; then
 	exit 1
 fi
 
+gdb $1 $2 --batch --ex "x/i \$eip" 2>&1 | grep -i "cannot access"
+if [ $? -eq 0 ]; then
+	echo "crashed but eip is bogus"
+	exit 1
+fi
+
 gdb $1 $2 --batch --ex "info registers eip" | grep eip | awk -F " " '{print $2;}'
