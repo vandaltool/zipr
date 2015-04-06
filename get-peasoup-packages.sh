@@ -13,7 +13,6 @@ BASE_PKGS="
   gcc-multilib
   g++-multilib
   realpath
-  libelf-dev
   libxqilla-dev
   libxerces-c-dev
   screen
