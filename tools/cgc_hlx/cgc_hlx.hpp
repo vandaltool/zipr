@@ -29,6 +29,7 @@ class HLX_Instrument
 	private:
 		libIRDB::Function_t* findFunction(std::string);
 		bool padSize(libIRDB::Function_t* const);
+		bool padSizeAllocate(libIRDB::Function_t* const, const int);
 
 	private:
 		libIRDB::FileIR_t* m_firp;

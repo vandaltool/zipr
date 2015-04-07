@@ -90,7 +90,7 @@ int parse_args(int p_argc, char* p_argv[])
 				do_input_filtering = true;
 				break;
 			case 'p':
-				do_promiscuous_sandboxing = false;
+				do_promiscuous_sandboxing = true;
 				break;
 			default:
 				return 1;
