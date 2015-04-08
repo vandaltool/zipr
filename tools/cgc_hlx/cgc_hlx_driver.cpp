@@ -14,23 +14,25 @@ using namespace libIRDB;
 
 void usage(char* name)
 {
-	cerr<<"Usage: "<<name<<" varid=<variant_id> [--do_malloc_padding=<padding_size>] [--do_allocate_padding=<padding_size>]\n"; 
+	cerr<<"Usage: "<<name<<" varid=<variant_id> [--do_malloc_padding=<padding_size>] [--shr_malloc_factor=<shr_malloc_factor>] [--do_allocate_padding=<padding_size>]\n"; 
 }
 
 int varid=0;
 bool enable_malloc_padding = false;
 bool enable_allocate_padding = false;
-int malloc_padding = 64;
-int allocate_padding = 4096;
+int malloc_padding = DEFAULT_MALLOC_PADDING;
+int shr_malloc_factor = DEFAULT_SHR_FACTOR; 
+int allocate_padding = DEFAULT_ALLOCATE_PADDING;
 
 int parse_args(int p_argc, char* p_argv[])
 {
 	int option = 0;
-	char options[] = "v:m:a:";
+	char options[] = "v:m:a:s";
 	struct option long_options[] = {
 		{"varid", required_argument, NULL, 'v'},
 		{"do_malloc_padding", required_argument, NULL, 'm'},
 		{"do_allocate_padding", required_argument, NULL, 'a'},
+		{"shr_malloc_factor", required_argument, NULL, 's'},
 		{NULL, no_argument, NULL, '\0'},         // end-of-array marker
 	};
 
@@ -54,6 +56,11 @@ int parse_args(int p_argc, char* p_argv[])
 			{
 				enable_malloc_padding = true;
 				malloc_padding=atoi(::optarg);	
+				break;
+			}
+			case 's':
+			{
+				shr_malloc_factor=atoi(::optarg);	
 				break;
 			}
 			case 'a':
@@ -105,7 +112,7 @@ int main(int argc, char **argv)
 			HLX_Instrument hlx(firp);
 
 			if (enable_malloc_padding)
-				hlx.enableMallocPadding(malloc_padding);
+				hlx.enableMallocPadding(malloc_padding, shr_malloc_factor);
 			if (enable_allocate_padding)
 				hlx.enableAllocatePadding(allocate_padding);
 

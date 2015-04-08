@@ -19,6 +19,10 @@
 
 #include <libIRDB-core.hpp>
 
+#define DEFAULT_MALLOC_PADDING 64
+#define DEFAULT_SHR_FACTOR 5
+#define DEFAULT_ALLOCATE_PADDING 4096
+
 class HLX_Instrument
 {
 	public:
@@ -28,11 +32,13 @@ class HLX_Instrument
 			m_enable_allocate_padding = false;
 			m_malloc_padding = 0;
 			m_allocate_padding = 0;
+			m_shr_factor = DEFAULT_SHR_FACTOR; 
 		}
 		virtual ~HLX_Instrument() {}
-		void enableMallocPadding(const int malloc_padding) {
+		void enableMallocPadding(const int malloc_padding, const int shr_factor=DEFAULT_SHR_FACTOR) {
 			m_enable_malloc_padding = true;
 			m_malloc_padding = malloc_padding;
+			m_shr_factor = shr_factor;
 		}
 		void enableAllocatePadding(const int allocate_padding) {
 			m_enable_allocate_padding = true;
@@ -43,11 +49,13 @@ class HLX_Instrument
 		bool allocatePaddingEnabled() const { return m_enable_allocate_padding; }
 		int getMallocPadding() const { return m_malloc_padding; }
 		int getAllocatePadding() const { return m_allocate_padding; }
+
+		int getShiftRightFactor() const { return m_shr_factor; }
 		bool execute();
 
 	private:
 		libIRDB::Function_t* findFunction(std::string);
-		bool padSize(libIRDB::Function_t* const, const int);
+		bool padSize(libIRDB::Function_t* const, const int padding, const int shr_factor = 0);
 
 	private:
 		libIRDB::FileIR_t* m_firp;
@@ -55,6 +63,7 @@ class HLX_Instrument
 		int m_malloc_padding; 
 		bool m_enable_allocate_padding; 
 		int m_allocate_padding; 
+		int m_shr_factor; // shift right factor (for malloc)
 };
 
 #endif
