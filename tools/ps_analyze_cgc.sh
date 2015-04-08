@@ -1,18 +1,19 @@
 #!/bin/sh 
 
+#
 # Default configuration for CGC Scored Event 2
 #
-# HLX :   Heap randomization
-# SLX :   Stack padding
-# SCFI:   Selective CFI
-# IF  :   Input filtering
-# SBX :   Sandbox crashing instructions (if sfuzz detects a crash)
+# HLX :   Heap padding (malloc_padding=size<<5 + 64 bytes, allocate_padding=4096 bytes)
+# SLX :   Stack padding (64 bytes)
+# SCFI:   Selective CFI (indirect branches)
+# IF  :   Input filtering (64 bytes max at a time for receive())
+# SBX :   Sandbox crashing instructions (only if sfuzz detects a crash)
 #
 
 export FIX_CALLS_FIX_ALL_CALLS=1
 
 $PEASOUP_HOME/tools/ps_analyze.sh $* 	\
-	--step spawner=on 		\
+	--step spawner=off 		\
 	--step appfw=off 		\
 	--step find_strings=off 	\
 	--step preLoaded_ILR1=off	\
@@ -21,6 +22,7 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	\
 	--step cinderella=on	\
 	--step cgc_hlx=on	\
 	--step-option cgc_hlx:--do_malloc_padding=64 \
+	--step-option cgc_hlx:--shr_malloc_factor=5 \
 	--step-option cgc_hlx:--do_allocate_padding=4096 \
 	--step heaprand=off	\
 	--step double_free=off	\
