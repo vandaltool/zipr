@@ -31,7 +31,7 @@ Function_t* HLX_Instrument::findFunction(string p_functionName)
 }
 
 // pad argument #1 of function, assume it's the size
-bool HLX_Instrument::padSize(Function_t* const p_func)
+bool HLX_Instrument::padSize(Function_t* const p_func, const int padding)
 {
 	assert(p_func);
 
@@ -39,11 +39,11 @@ bool HLX_Instrument::padSize(Function_t* const p_func)
 
 	if (!entry)
 	{
-		cerr << "function: " << p_func->GetName() << " has not entry point defined" << endl;
+		cerr << "function: " << p_func->GetName() << " has no entry point defined" << endl;
 		return false; 
 	}
 
-	cout << "padding function: " << p_func->GetName() << " at entry point: 0x" << hex << entry->GetAddress()->GetVirtualOffset() << dec << endl;
+	cout << "padding function: " << p_func->GetName() << " at: 0x" << hex << entry->GetAddress()->GetVirtualOffset() << dec << endl;
 
 	/*
 	* Pad by 1/16 (nb: CGC scoring function give a 10% allowance)      
@@ -58,37 +58,11 @@ bool HLX_Instrument::padSize(Function_t* const p_func)
 	Instruction_t* orig = NULL;
 
 	orig = insertAssemblyBefore(m_firp, entry, "mov eax, [esp+4]"); 
-	entry->SetComment("pad malloc sequence");
-	instr = insertAssemblyAfter(m_firp, entry, "shr eax, 5");
-	instr = insertAssemblyAfter(m_firp, instr, "add eax, 64");
-	instr = insertAssemblyAfter(m_firp, instr, "add [esp+4], eax");
-	instr->SetFallthrough(orig);
-
-	return true;
-}
-
-// pad argument #1 of function, assume it's the size
-bool HLX_Instrument::padSizeAllocate(Function_t* const p_func, const int padding_size)
-{
-	assert(p_func);
-
-	Instruction_t *entry = p_func->GetEntryPoint();
-
-	if (!entry)
-	{
-		cerr << "function: " << p_func->GetName() << " has not entry point defined" << endl;
-		return false; 
-	}
-
-	cout << "padding function: " << p_func->GetName() << " at entry point: 0x" << hex << entry->GetAddress()->GetVirtualOffset() << dec << "padding_size: " << padding_size << endl;
-
-	Instruction_t* instr = NULL;
-	Instruction_t* orig = NULL;
-
-	orig = insertAssemblyBefore(m_firp, entry, "mov eax, [esp+4]"); 
-	entry->SetComment("pad allocate sequence");
+	entry->SetComment("pad malloc/allocate sequence");
+//	instr = insertAssemblyAfter(m_firp, entry, "shr eax, 5");
 	char buf[1024];
-	sprintf(buf, "add eax, %d", padding_size);
+	sprintf(buf, "add eax, %d", padding); // in bytes
+	
 	instr = insertAssemblyAfter(m_firp, entry, buf);
 	instr = insertAssemblyAfter(m_firp, instr, "add [esp+4], eax");
 	instr->SetFallthrough(orig);
@@ -100,26 +74,40 @@ bool HLX_Instrument::execute()
 {
 	bool one_success=false;
 
-	Function_t *cinderella_malloc = findFunction(CINDERELLA_MALLOC);
-	Function_t *cinderella_allocate = findFunction(CINDERELLA_ALLOCATE);
-
-	if (cinderella_malloc)
+	if (mallocPaddingEnabled())
 	{
-		cout << "found " << CINDERELLA_MALLOC << endl;
-		if (padSize(cinderella_malloc))
+		Function_t *cinderella_malloc = findFunction(CINDERELLA_MALLOC);
+		if (cinderella_malloc)
 		{
-			one_success = true;
-			cout << CINDERELLA_MALLOC << " padded successfully" << endl;
+			cout << "found " << CINDERELLA_MALLOC << endl;
+			if (padSize(cinderella_malloc, getMallocPadding()))
+			{
+				one_success = true;
+				cout << CINDERELLA_MALLOC << " padded successfully: " << getMallocPadding() << " bytes" << endl;
+			}
+		}
+		else
+		{
+			cout << CINDERELLA_MALLOC << " not found" << endl;
 		}
 	}
 
-	if (cinderella_allocate)
+	if (allocatePaddingEnabled())
 	{
-		cout << "found " << CINDERELLA_ALLOCATE << endl;
-		if (padSizeAllocate(cinderella_allocate, 4096))
+		Function_t *cinderella_allocate = findFunction(CINDERELLA_ALLOCATE);
+
+		if (cinderella_allocate)
+		{	
+			cout << "found " << CINDERELLA_ALLOCATE << endl;
+			if (padSize(cinderella_allocate, getAllocatePadding()))
+			{
+				one_success = true;
+				cout << CINDERELLA_ALLOCATE << " padded successfully: " << getAllocatePadding() << " bytes" << endl;
+			}
+		}
+		else
 		{
-			one_success = true;
-			cout << CINDERELLA_ALLOCATE << " padded successfully" << endl;
+			cout << CINDERELLA_ALLOCATE << " not found" << endl;
 		}
 	}
 

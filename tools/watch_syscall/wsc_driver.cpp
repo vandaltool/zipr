@@ -51,7 +51,7 @@ bool do_promiscuous_sandboxing = false;
 int parse_args(int p_argc, char* p_argv[])
 {
 	int option = 0;
-	char options[] = "v:w:";
+	char options[] = "v:w:s:p:i";
 	struct option long_options[] = {
 		{"varid", required_argument, NULL, 'v'},
 		{"warning_file", required_argument, NULL, 'w'},
