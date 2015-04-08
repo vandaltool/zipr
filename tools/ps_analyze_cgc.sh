@@ -20,6 +20,8 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	\
 	--step sfuzz=on	\
 	--step cinderella=on	\
 	--step cgc_hlx=on	\
+	--step-option cgc_hlx:--do_malloc_padding=64 \
+	--step-option cgc_hlx:--do_allocate_padding=4096 \
 	--step heaprand=off	\
 	--step double_free=off	\
 	--step controlled_exit=off	\

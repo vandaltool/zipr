@@ -898,7 +898,7 @@ perform_step cinderella clone,fill_in_indtargs,fill_in_cfg,meds2pdb $PEASOUP_HOM
 #
 # For CGC, pad malloc
 #
-perform_step cgc_hlx cinderella $SECURITY_TRANSFORMS_HOME/tools/cgc_hlx/cgc_hlx.exe $cloneid
+perform_step cgc_hlx cinderella $SECURITY_TRANSFORMS_HOME/tools/cgc_hlx/cgc_hlx.exe --varid=$cloneid $step_options_cgc_hlx
 
 #
 # Function pointer shadowing
