@@ -6356,6 +6356,7 @@ tools/run_stratafied.tmpl.sh -text
 tools/set_dyna_link.sh -text
 tools/sfuzz/replay_seed_inputs.sh -text
 tools/sfuzz/seed_inputs/cgc_site_visit.pdf -text
+tools/sfuzz/seed_inputs/goog.csv -text
 tools/sfuzz/seed_inputs/gt.png -text
 tools/sfuzz/seed_inputs/hello.ogg -text
 tools/sfuzz/seed_inputs/hubble.jpg -text
