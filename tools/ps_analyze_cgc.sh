@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/bash
 
 #
 # Default configuration for CGC Scored Event 2
@@ -9,8 +9,21 @@
 # IF  :   Input filtering (64 bytes max at a time for receive())
 # SBX :   Sandbox crashing instructions (only if sfuzz detects a crash)
 #
+# To turn on sandboxing for crashing inputs that Grace finds:
+#   (1) generate a code-sonar warnings file, e.g., crash.cso
+#   (2) invoke this script with:  --step-option watch_allocate:--warning_file=<fully_qualified_path_of_crash.cso>
+#
 
 export FIX_CALLS_FIX_ALL_CALLS=1
+
+# by default simple fuzzing is on
+# but turn off sfuzz if warning file already specified on the command line
+SFUZZ="on"
+echo "$@" | grep "watch_allocate"  | grep "warning_file" &>/dev/null
+if [ $? -eq 0 ]; then
+	SFUZZ="off"
+	echo "Turning off simple fuzz as a warning_file has been specified for the watch_allocate step"
+fi
 
 $PEASOUP_HOME/tools/ps_analyze.sh $* 	\
 	--step spawner=off 		\
@@ -18,7 +31,7 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	\
 	--step find_strings=off 	\
 	--step preLoaded_ILR1=off	\
 	--step preLoaded_ILR2=off	\
-	--step sfuzz=on	\
+	--step sfuzz=$SFUZZ	\
 	--step cinderella=on	\
 	--step cgc_hlx=on	\
 	--step-option cgc_hlx:--do_malloc_padding=64 \
