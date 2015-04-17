@@ -13,33 +13,6 @@ LDFLAGS=
 
 exes=hanoi.protected hanoi_overrun.protected hanoi_heap_overrun.protected hanoi_stack_overrun.protected print_ptr.protected malloc.protected block_copy.protected hello.protected hanoi_overrun_tainted.protected hanoi_overrun_taintedenv.protected memcpy.protected cmd_args_005.protected dumbledore_stdin.protected dumbledore_cmd.protected dumbledore_file.protected 000.protected long.protected bad_purify.protected dumble_dll.protected
 
-ilr=on
-stratafy_with_pc_confine=on
-create_binary_script=on
-heaprand=on
-double_free=on
-pc_confine=on
-isr=off
-meds_static=on
-pdb_register=on
-pdb_create_tables=on
-meds2pdb=on
-fill_in_cfg=on
-fill_in_indtargs=on
-clone=on
-fix_calls=on
-p1transform=on
-integertransform=on
-ilr=on
-generate_spri=on
-spasm=on
-concolic=on
-watchdog=on
-appfw=on
-ret_shadow_stack=off
-
-
-
 all: env_check  ${exes}
 
 
@@ -51,31 +24,7 @@ all: env_check  ${exes}
 	${LD} ${LDFLAGS} $< -o $@ 
 
 .stock.protected:
-	${PEASOUP_HOME}/tools/ps_analyze.sh  $< $@ \
-		--step ilr=${ilr}\
-		--step stratafy_with_pc_confine=${stratafy_with_pc_confine}\
-		--step create_binary_script=${create_binary_script}\
-		--step heaprand=${heaprand}\
-		--step double_free=${double_free}\
-		--step pc_confine=${pc_confine}\
-		--step isr=${isr}\
-		--step meds_static=${meds_static}\
-		--step pdb_register=${pdb_register}\
-		--step pdb_create_tables=${pdb_create_tables}\
-		--step meds2pdb=${meds2pdb}\
-		--step fill_in_cfg=${fill_in_cfg}\
-		--step fill_in_indtargs=${fill_in_indtargs}\
-		--step clone=${clone}\
-		--step fix_calls=${fix_calls}\
-		--step p1transform=${p1transform}\
-		--step integertransform=${integertransform}\
-		--step generate_spri=${generate_spri}\
-		--step spasm=${spasm}\
-		--step watchdog=${watchdog}\
-		--step concolic=${concolic}\
-		--step appfw=${appfw}\
-		--step ret_shadow_stack=${ret_shadow_stack}\
-
+	${PEASOUP_HOME}/tools/ps_analyze.sh  $< $@ 
 
 .c.o:
 	${PEASOUP_HOME}/tools/ps_comp.sh $< 
