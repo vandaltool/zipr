@@ -230,6 +230,32 @@ static Instruction_t* addCallbackHandlerSequence
         return p_orig;
 }
 
+static Instruction_t* addCallbackHandlerSequence_ret_addr_param
+	(
+	  FileIR_t* firp,
+  	  Instruction_t *p_orig, 
+	  bool before,
+	  std::string p_detector
+	)
+{
+
+	if(before)
+		insertAssemblyBefore(firp,p_orig,"lea rsp, [rsp-128]");
+	else
+		assert(0); // add handling  for inserting lea after given insn
+
+        p_orig->SetComment("callback: " + p_detector);
+
+
+        Instruction_t* tmp  =insertAssemblyAfter(firp,p_orig,"push qword [rsp+128]");	// push ret addr for shadow stack callbacks
+        Instruction_t* call =insertAssemblyAfter(firp,tmp,"call 0");
+
+        ConvertCallToCallbackHandler64(firp, call, p_detector, 0); // 1 arg
+
+	insertAssemblyAfter(firp,call,"lea rsp, [rsp + 128 + 8]"); // no args for nwo 
+
+        return p_orig;
+}
 
 
 static void create_tls_reloc(FileIR_t* firp, Instruction_t* insn)
@@ -242,7 +268,7 @@ static void create_tls_reloc(FileIR_t* firp, Instruction_t* insn)
 }
 
 
-static 	bool add_rss_push(FileIR_t* firp, Instruction_t* insn)
+bool RSS_Instrument::add_rss_push(FileIR_t* firp, Instruction_t* insn)
 {
 
 	if(getenv("RSS_VERBOSE")!=NULL)
@@ -253,25 +279,31 @@ static 	bool add_rss_push(FileIR_t* firp, Instruction_t* insn)
 			<< " disasm="<<d.CompleteInstr <<endl;
 	}
 
-	/* this moves insn to a new instructiona fter insn, and then overwrites insn */
-	insertAssemblyBefore(firp,insn,"push rax");
-
-	/* now we insert after that insn */
-	Instruction_t* tmp=insertAssemblyAfter(firp,insn,"push rcx");
-	tmp=insertAssemblyAfter(firp,tmp,"mov rcx, [rsp+16]");	// load return address 
-	tmp=insertAssemblyAfter(firp,tmp,"mov rax, [fs:0x12345678] ");
-	create_tls_reloc(firp,tmp);
-	tmp=insertAssemblyAfter(firp,tmp,"mov [rax], rcx");
-	tmp=insertAssemblyAfter(firp,tmp,"lea rax, [rax+8]");
-	tmp=insertAssemblyAfter(firp,tmp,"mov [fs:0x12345678], rax ");
-	create_tls_reloc(firp,tmp);
-	tmp=insertAssemblyAfter(firp,tmp,"pop rcx");
-	tmp=insertAssemblyAfter(firp,tmp,"pop rax");
-
-
-	if(getenv("tss_print_stack")!=NULL)
-		addCallbackHandlerSequence (firp,tmp,true,"tss_print_stack");
+	if(do_zipr)
+	{
+		addCallbackHandlerSequence_ret_addr_param(firp,insn,true,"zipr_push_stack");
+	}
+	else
+	{
+		/* this moves insn to a new instructiona fter insn, and then overwrites insn */
+		insertAssemblyBefore(firp,insn,"push rax");
 	
+		/* now we insert after that insn */
+		Instruction_t* tmp=insertAssemblyAfter(firp,insn,"push rcx");
+		tmp=insertAssemblyAfter(firp,tmp,"mov rcx, [rsp+16]");	// load return address 
+		tmp=insertAssemblyAfter(firp,tmp,"mov rax, [fs:0x12345678] ");
+		create_tls_reloc(firp,tmp);
+		tmp=insertAssemblyAfter(firp,tmp,"mov [rax], rcx");
+		tmp=insertAssemblyAfter(firp,tmp,"lea rax, [rax+8]");
+		tmp=insertAssemblyAfter(firp,tmp,"mov [fs:0x12345678], rax ");
+		create_tls_reloc(firp,tmp);
+		tmp=insertAssemblyAfter(firp,tmp,"pop rcx");
+		tmp=insertAssemblyAfter(firp,tmp,"pop rax");
+	
+	
+		if(getenv("tss_print_stack")!=NULL)
+			addCallbackHandlerSequence (firp,tmp,true,"tss_print_stack");
+	}	
 
 	return true;
 
@@ -279,10 +311,8 @@ static 	bool add_rss_push(FileIR_t* firp, Instruction_t* insn)
 }
 
 
-static 	bool add_rss_pop(FileIR_t* firp, Instruction_t* insn)
+bool RSS_Instrument::add_rss_pop(FileIR_t* firp, Instruction_t* insn)
 {
-	Instruction_t *jmp_insn=NULL, *ret_to_app=NULL, *tmp=NULL, *pop_chk=NULL;
-	Instruction_t *jmp_insn2=NULL, *hlt_insn=NULL;
 
 	if(getenv("RSS_VERBOSE")!=NULL)
 	{
@@ -291,61 +321,69 @@ static 	bool add_rss_pop(FileIR_t* firp, Instruction_t* insn)
 		cout<<"Adding pop instrumentation at 0x"<<std::hex<<insn->GetAddress()->GetVirtualOffset()
 			<< " disasm="<<d.CompleteInstr <<endl;
 	}
-
-
-	/* this moves insn to a new instructiona fter insn, and then overwrites insn */
-	insertAssemblyBefore(firp,insn,"push rcx");
-
-	/* now we insert after that insn */
-	tmp=insertAssemblyAfter(firp,insn,"pushfq");
-	pop_chk=tmp=insertAssemblyAfter(firp,tmp,"mov rcx, [fs:0x12345678] "); create_tls_reloc(firp,tmp);
-	tmp=insertAssemblyAfter(firp,tmp,"lea rcx, [rcx-8]");
-	tmp=insertAssemblyAfter(firp,tmp,"mov [fs:0x12345678], rcx "); create_tls_reloc(firp,tmp);
-
-	/* if tss_print_stack is on, we want to zero the old location just for easy printing. */
-	/* doing so requires an extra register */
-	if(getenv("tss_print_stack")!=NULL)
+	if(do_zipr)
 	{
-		tmp=insertAssemblyAfter(firp,tmp,"push rax");
-		tmp=insertAssemblyAfter(firp,tmp,"mov rax, rcx");
+		addCallbackHandlerSequence_ret_addr_param(firp,insn,true,"zipr_pop_stack");
 	}
-
-	// load the old value 
-	tmp=insertAssemblyAfter(firp,tmp,"mov rcx, [rcx]");
-
-	/* if tss_print_stack is on, we want to zero the old location just for easy printing. */
-	if(getenv("tss_print_stack")!=NULL)
+	else
 	{
-		tmp=insertAssemblyAfter(firp,tmp,"mov dword [rax], 0");
-		tmp=insertAssemblyAfter(firp,tmp,"pop rax");
-	}
-	tmp=insertAssemblyAfter(firp,tmp,"sub rcx, [rsp+16]");
-	jmp_insn=tmp=insertDataBitsAfter(firp,tmp,getJecxzDataBits()); // jecxz L1
+		Instruction_t *jmp_insn=NULL, *ret_to_app=NULL, *tmp=NULL, *pop_chk=NULL;
+		Instruction_t *jmp_insn2=NULL, *hlt_insn=NULL;
 
-/* 
- * here we've failed the fast check, try the slow check for longjmp and exception handling.
- */
-	/* reload rcx */
-	tmp=insertAssemblyAfter(firp,tmp,"mov rcx, [fs:0x12345678] "); create_tls_reloc(firp,tmp);
-	tmp=insertAssemblyAfter(firp,tmp,"mov rcx, [rcx]");		// reload the TOS pointer
-	jmp_insn2=tmp=insertDataBitsAfter(firp,tmp,getJecxzDataBits()); // jecxz L2
-/*L2*/	hlt_insn=tmp=insertAssemblyAfter(firp,tmp,"hlt");
-/*L1*/	ret_to_app=
-	tmp=insertAssemblyAfter(firp,tmp,"popfq");
-	tmp=insertAssemblyAfter(firp,tmp,"pop rcx");
+		/* this moves insn to a new instructiona fter insn, and then overwrites insn */
+		insertAssemblyBefore(firp,insn,"push rcx");
 
-	/* link jump instruction to restore code */
-	jmp_insn->SetTarget(ret_to_app);
-
-	/* link jmp2 instruction to hlt if rcx is zero, and back to pop another value if non-zero */
-	jmp_insn2->SetTarget(hlt_insn);
-	jmp_insn2->SetFallthrough(pop_chk);
-
-
-	/* add a call to print_stack after the push */
-	if(getenv("tss_print_stack")!=NULL)
-		addCallbackHandlerSequence (firp,tmp,true,"tss_print_stack");
+		/* now we insert after that insn */
+		tmp=insertAssemblyAfter(firp,insn,"pushfq");
+		pop_chk=tmp=insertAssemblyAfter(firp,tmp,"mov rcx, [fs:0x12345678] "); create_tls_reloc(firp,tmp);
+		tmp=insertAssemblyAfter(firp,tmp,"lea rcx, [rcx-8]");
+		tmp=insertAssemblyAfter(firp,tmp,"mov [fs:0x12345678], rcx "); create_tls_reloc(firp,tmp);
 	
+		/* if tss_print_stack is on, we want to zero the old location just for easy printing. */
+		/* doing so requires an extra register */
+		if(getenv("tss_print_stack")!=NULL)
+		{
+			tmp=insertAssemblyAfter(firp,tmp,"push rax");
+			tmp=insertAssemblyAfter(firp,tmp,"mov rax, rcx");
+		}
+	
+		// load the old value 
+		tmp=insertAssemblyAfter(firp,tmp,"mov rcx, [rcx]");
+	
+		/* if tss_print_stack is on, we want to zero the old location just for easy printing. */
+		if(getenv("tss_print_stack")!=NULL)
+		{
+			tmp=insertAssemblyAfter(firp,tmp,"mov dword [rax], 0");
+			tmp=insertAssemblyAfter(firp,tmp,"pop rax");
+		}
+		tmp=insertAssemblyAfter(firp,tmp,"sub rcx, [rsp+16]");
+		jmp_insn=tmp=insertDataBitsAfter(firp,tmp,getJecxzDataBits()); // jecxz L1
+	
+		/* 
+ 		 * here we've failed the fast check, try the slow check for longjmp and exception handling.
+ 		 */
+		/* reload rcx */
+		tmp=insertAssemblyAfter(firp,tmp,"mov rcx, [fs:0x12345678] "); create_tls_reloc(firp,tmp);
+		tmp=insertAssemblyAfter(firp,tmp,"mov rcx, [rcx]");		// reload the TOS pointer
+		jmp_insn2=tmp=insertDataBitsAfter(firp,tmp,getJecxzDataBits()); // jecxz L2
+	/*L2*/	hlt_insn=tmp=insertAssemblyAfter(firp,tmp,"hlt");
+	/*L1*/	ret_to_app=
+		tmp=insertAssemblyAfter(firp,tmp,"popfq");
+		tmp=insertAssemblyAfter(firp,tmp,"pop rcx");
+	
+		/* link jump instruction to restore code */
+		jmp_insn->SetTarget(ret_to_app);
+	
+		/* link jmp2 instruction to hlt if rcx is zero, and back to pop another value if non-zero */
+		jmp_insn2->SetTarget(hlt_insn);
+		jmp_insn2->SetFallthrough(pop_chk);
+	
+	
+		/* add a call to print_stack after the push */
+		if(getenv("tss_print_stack")!=NULL)
+			addCallbackHandlerSequence (firp,tmp,true,"tss_print_stack");
+		
+	}
 	return true;
 }
 
@@ -388,7 +426,7 @@ static bool is_exit_instruction(Instruction_t *insn, MEDS_AnnotationParser *meds
 	return false;	
 }
 
-static bool add_rss_instrumentation(FileIR_t* firp, Function_t* func, MEDS_AnnotationParser *meds_ap)
+bool RSS_Instrument::add_rss_instrumentation(FileIR_t* firp, Function_t* func, MEDS_AnnotationParser *meds_ap)
 {
 	bool success=true;
 	if(func->GetEntryPoint()==NULL)

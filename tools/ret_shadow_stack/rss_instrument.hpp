@@ -23,20 +23,28 @@
 
 #include "MEDS_AnnotationParser.hpp"
 #include <libIRDB-core.hpp>
-
+#include <getopt.h>
 
 
 class RSS_Instrument
 {
 	public:
-		RSS_Instrument(libIRDB::FileIR_t *the_firp, MEDS_Annotation::MEDS_AnnotationParser* the_meds_ap) : firp(the_firp), meds_ap(the_meds_ap) { };
+		RSS_Instrument(libIRDB::FileIR_t *the_firp, MEDS_Annotation::MEDS_AnnotationParser* the_meds_ap, bool p_do_zipr) : 
+			firp(the_firp), meds_ap(the_meds_ap), do_zipr(p_do_zipr) { };
 		bool execute();
 
 		virtual ~RSS_Instrument() {}
 
 	private:
+		bool add_rss_push(libIRDB::FileIR_t* firp, libIRDB::Instruction_t* insn);
+		bool add_rss_pop(libIRDB::FileIR_t* firp, libIRDB::Instruction_t* insn);
+		bool add_rss_instrumentation(libIRDB::FileIR_t* firp, libIRDB::Function_t* func, MEDS_Annotation::MEDS_AnnotationParser *meds_ap);
+
+
+
 		libIRDB::FileIR_t* firp;
 		MEDS_Annotation::MEDS_AnnotationParser* meds_ap;
+		bool do_zipr;
 };
 
 #endif
