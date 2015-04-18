@@ -1808,8 +1808,17 @@ string Zipr_t::AddCallbacksToNewSegment(const string& tmpname, RangeAddress_t en
 	string tmpname3=tmpname+"3";	
 	printf("Setting strata library at: %p\n", (void*)end_of_new_space);
 	printf("Strata symbols are at %p+addr(symbol)\n", (void*)(end_of_new_space-callback_start_addr));
+#if 0
 	string cmd= string("$STRATAFIER/strata_to_data ")+
 		m_opts.GetCallbackFileName()+string(" ")+tmpname2+" "+to_hex_string(callback_start_addr);
+#else
+	/*
+		objcopy -O binary /home/jdh8d/umbrella/uvadev.peasoup/zipr_install/bin/callbacks.exe b.out.to_insert2
+	*/
+
+	string cmd=string("objcopy -O binary ")+ m_opts.GetCallbackFileName()+string(" ")+tmpname2;
+
+#endif
 	printf("Attempting: %s\n", cmd.c_str());
 	if(-1 == system(cmd.c_str()))
 	{
@@ -1839,11 +1848,20 @@ RangeAddress_t Zipr_t::PlopWithCallback(Instruction_t* insn, RangeAddress_t at)
 	}
 
 	// pop bogus ret addr
+	if(m_firp->GetArchitectureBitWidth()==64)
 	{
-	char bytes[]={(char)0x8d,(char)0x64,(char)0x24,(char)m_firp->GetArchitectureBitWidth()/0x08}; // lea esp, [esp+4]
-	memory_space.PlopBytes(at, bytes, sizeof(bytes)); 
-	at+=sizeof(bytes);
+		char bytes[]={(char)0x48,(char)0x8d,(char)0x64,(char)0x24,(char)m_firp->GetArchitectureBitWidth()/0x08}; // lea rsp, [rsp+8]
+		memory_space.PlopBytes(at, bytes, sizeof(bytes)); 
+		at+=sizeof(bytes);
 	}
+	else if(m_firp->GetArchitectureBitWidth()==32)
+	{
+		char bytes[]={(char)0x8d,(char)0x64,(char)0x24,(char)m_firp->GetArchitectureBitWidth()/0x08}; // lea esp, [esp+4]
+		memory_space.PlopBytes(at, bytes, sizeof(bytes)); 
+		at+=sizeof(bytes);
+	}
+	else
+		assert(0);
 
 	assert(CALLBACK_TRAMPOLINE_SIZE<=(at-originalAt));
 	return at;
@@ -1863,7 +1881,7 @@ static RangeAddress_t getSymbolAddress(const string &symbolFilename, const strin
 
         FILE *fp = popen(command.c_str(), "r");
 
-        fscanf(fp,"%s", address);
+        int res=fscanf(fp,"%s", address);
 	cerr<<"Looking for "<<symbol<<".  Address string is "<<address<<endl;
         string addressString = string(address);
         pclose(fp);
@@ -1872,7 +1890,7 @@ static RangeAddress_t getSymbolAddress(const string &symbolFilename, const strin
 
         //TODO: throw exception if address is not found.
         //for now assert the address string isn't empty
-        if(addressString.empty())
+        if(addressString.empty() || res==0)
         {
                 cerr<<"Cannot find symbol "<< symbol << " in " << symbolFilename << "."<<endl;
 		addressString="0x0";
