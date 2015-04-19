@@ -286,8 +286,12 @@ void get_instruction_targets(FileIR_t *firp, ELFIO::elfio* elfiop, const set<int
 
                 assert(instr_len==insn->GetDataBits().size());
 
-		check_for_PIC_switch_table32(firp, insn,disasm, elfiop, thunk_bases);
-		check_for_PIC_switch_table64(firp, insn,disasm, elfiop);
+		if (firp->GetArchitectureBitWidth()==32)
+			check_for_PIC_switch_table32(firp, insn,disasm, elfiop, thunk_bases);
+		else if (firp->GetArchitectureBitWidth()==64)
+			check_for_PIC_switch_table64(firp, insn,disasm, elfiop);
+		else
+			assert(0);
 
 		if (jmptables.count(insn) == 0)
 			check_for_nonPIC_switch_table(firp, insn,disasm, elfiop);
@@ -550,12 +554,15 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 		return;
 
 	int table_size = 0;
-	if (backup_until("cmp", Icmp, I3))
+	if (!backup_until("cmp", Icmp, I3))
 	{
-		DISASM dcmp;
-		Icmp->Disassemble(dcmp);
-		table_size = dcmp.Instruction.Immediat;
+		cout<<"pic32: could not find size of switch table"<<endl;
+		return;
 	}
+
+	DISASM dcmp;
+	Icmp->Disassemble(dcmp);
+	table_size = dcmp.Instruction.Immediat;
 
 	// grab the offset out of the lea.
 	DISASM d2;
@@ -748,12 +755,15 @@ DN:   0x4824e0: .long 0x4824e0-LN
 		return;
 
 	int table_size = 0;
-	if(backup_until("cmp", I1, I5))
+	if(!backup_until("cmp", I1, I5))
 	{
-		DISASM d1;
-		I1->Disassemble(d1);
-		table_size = d1.Instruction.Immediat;
+		cout<<"pic64: could not find size of switch table"<<endl;
+		return;
 	}
+
+	DISASM d1;
+	I1->Disassemble(d1);
+	table_size = d1.Instruction.Immediat;
 
 	set<Instruction_t *> ibtargets;
 	int offset=D1-pSec->get_address();
@@ -847,7 +857,7 @@ void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn,
 
 	if(!backup_until("cmp", I1, IJ))
 	{
-		cout<<hex<<"(nonPIC): could not find size of switch table"<<endl;
+		cout<<"(nonPIC): could not find size of switch table"<<endl;
 		return;
 	}
 
@@ -964,7 +974,7 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DISASM d
 
 	if(!backup_until("cmp", I1, I4))
 	{
-		cout<<hex<<"(nonPIC): could not find size of switch table"<<endl;
+		cout<<"(nonPIC): could not find size of switch table"<<endl;
 		return;
 	}
 
