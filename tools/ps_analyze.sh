@@ -194,6 +194,7 @@ check_options()
 		--long manual_test_script:  		\
 		--long manual_test_coverage_file:  	\
 		--long watchdog:  			\
+		--long backend:  			\
 		-n 'ps_analyze.sh' -- "$@"`
 
 	# error check #
@@ -203,66 +204,78 @@ check_options()
 	eval set -- "$TEMP"
 
 	while true ; do
+		echo "\$1 = $1"
 		case "$1" in
+			--backend)
+				if [ "X$2" = "Xzipr" ]; then
+					echo using Zipr backend
+					phases_off=" $phases_off generate_spri=off spasm=off fast_annot=off zipr=on\
+						preLoaded_ILR1=off  preLoaded_ILR2=off fast_spri=off "
+				elif [ "X$2" = "Xstrata" ]; then
+					echo using Strata backend
+					#  strata is default, do nothing.
+				fi
+            			shift 2
+			;;
 			--step-option)
-           	set_step_option $2
-            shift 2
-            ;;
-        -w|--watchdog)
-            # This is the watchdog value
-            watchdog_val=$2
-            shift 2
-            ;;
-		-s|--step) 
-			check_step_option $2
-			phases_off=" $phases_off $2 "
-			shift 2 
+           			set_step_option $2
+            			shift 2
+            		;;
+            		# This is the watchdog value
+        		-w|--watchdog)
+            			watchdog_val=$2
+            			shift 2
+            		;;
+			-s|--step) 
+				check_step_option $2
+				phases_off=" $phases_off $2 "
+				shift 2 
 			;;
-		--manual_test_script) 
-			manual_test_script=$2
-			shift 2 
+			--manual_test_script) 
+				manual_test_script=$2
+				shift 2 
 			;;
-		--manual_test_coverage_file) 
-			manual_test_coverage_file=$2
-			shift 2 
+			--manual_test_coverage_file) 
+				manual_test_coverage_file=$2
+				shift 2 
 			;;
-		--integer_warnings_only)
-			echo "integer transform: warnings only enabled"
-			intxform_warnings_only=1
-			shift 
+			--integer_warnings_only)
+				echo "integer transform: warnings only enabled"
+				intxform_warnings_only=1
+				shift 
 			;;
-		--no_integer_detect_fp)
-			echo "integer transform: benign false positive detection disabled"
-			intxform_detect_fp=0
-			shift 
+			--no_integer_detect_fp)
+				echo "integer transform: benign false positive detection disabled"
+				intxform_detect_fp=0
+				shift 
 			;;
-		--integer_detect_fp)
-			echo "integer transform: benign false positive detection enabled"
-			intxform_detect_fp=1
-			shift 
+			--integer_detect_fp)
+				echo "integer transform: benign false positive detection enabled"
+				intxform_detect_fp=1
+				shift 
 			;;
-		--integer_instrument_idioms)
-			echo "integer transform: instrument idioms"
-			intxform_instrument_idioms=1
-			shift 
+			--integer_instrument_idioms)
+				echo "integer transform: instrument idioms"
+				intxform_instrument_idioms=1
+				shift 
 			;;
-		-t|--timeout) 
-			set_timer $2 & TIMER_PID=$!
-			shift 2 
+			-t|--timeout) 
+				set_timer $2 & TIMER_PID=$!
+				shift 2 
 			;;
-		--id) 
-			JOBID=$2
-			shift 2 
+			--id) 
+				JOBID=$2
+				shift 2 
 			;;
-		--name) 
-			DB_PROGRAM_NAME=$2
-			shift 2 
+			--name) 
+				DB_PROGRAM_NAME=$2
+				shift 2 
 			;;
-		--) 	shift 
-			break 
+			--) 	shift 
+				break 
 			;;
-		*) 	echo "Internal error!" 
-		 	exit -2 
+			*) 	echo "Internal error!" 
+		 		exit -2 
 			;;
 		esac
 	done
@@ -877,7 +890,7 @@ perform_step manual_test none $PEASOUP_HOME/tools/do_manualtests.sh $name $strat
 #
 # remove the parts of the annotation file not needed at runtime
 #
-perform_step fast_annot preLoaded_ILR2 $PEASOUP_HOME/tools/fast_annot.sh
+perform_step fast_annot meds_static $PEASOUP_HOME/tools/fast_annot.sh
 
 #
 # sfuzz: simple fuzzing to find crashes and record crashing instruction
