@@ -250,7 +250,7 @@ static Instruction_t* addCallbackHandlerSequence_ret_addr_param
         Instruction_t* tmp  =insertAssemblyAfter(firp,p_orig,"push qword [rsp+128]");	// push ret addr for shadow stack callbacks
         Instruction_t* call =insertAssemblyAfter(firp,tmp,"call 0");
 
-        ConvertCallToCallbackHandler64(firp, call, p_detector, 0); // 1 arg
+        ConvertCallToCallbackHandler64(firp, call, p_detector, 1); // 1 arg
 
 	insertAssemblyAfter(firp,call,"lea rsp, [rsp + 128 + 8]"); // no args for nwo 
 
