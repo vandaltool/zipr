@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/bash -x
 #
 # Copyright (c) 2014 - Zephyr Software LLC
 #
@@ -70,7 +70,7 @@ if [ ! -f $FILENAME ]; then
   log_error "Could not find ELF file at: $FILENAME"
 fi
 
-MD5HASH=`md5sum $FILENAME | cut -f1 -d' '`
+MD5HASH=`$PS_MD5SUM $FILENAME| cut -f1 -d' '`
 
 #============================================
 # Update variant_info table

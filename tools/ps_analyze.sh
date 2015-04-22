@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash    
 #
 # ps_analyze.sh - analyze a program and transform it for peasoupification to prevent exploit.
 #
@@ -8,12 +8,17 @@
 #     peasoup_analyze.sh <original_binary> <new_binary> <options>
 #
 
+realpath() {
+  \cd "$1"
+  /bin/pwd
+}
+
 
 ##################################################################################
 # set default values for 
 ##################################################################################
 
-initial_off_phases="isr ret_shadow_stack determine_program stats fill_in_safefr zipr installer watch_allocate cinderella cgc_hlx sfuzz spawner concolic selective_cfi fptr_shadow concolic input_filtering"
+initial_off_phases="isr ret_shadow_stack determine_program stats fill_in_safefr zipr installer watch_allocate cinderella cgc_hlx sfuzz spawner concolic selective_cfi fptr_shadow concolic add_confinement_section input_filtering"
 
 ##################################################################################
 
@@ -35,6 +40,10 @@ INTEGER_TRANSFORM_TIMEOUT_VALUE=1800
 TWITCHER_TRANSFORM_TIMEOUT_VALUE=1800
 # Setting PN timeout to 6 hours for TNE. 
 PN_TIMEOUT_VALUE=21600
+
+# 
+# set default values for 
+#
 
 #non-zero to use canaries in PN/P1, 0 to turn off canaries
 #DO_CANARIES=1
@@ -181,21 +190,30 @@ check_options()
 	# Note that we use `"$@"' to let each command-line parameter expand to a 
 	# separate word. The quotes around `$@' are essential!
 	# We need TEMP as the `eval set --' would nuke the return value of getopt.
-	TEMP=`getopt -o s:t:w: 				\
-		--long step-option:  			\
-		--long integer_warnings_only  		\
-		--long integer_instrument_idioms  	\
-		--long integer_detect_fp  		\
-		--long no_integer_detect_fp  		\
-		--long step:  				\
-		--long timeout:	  			\
-		--long id:  				\
-		--long name:  				\
-		--long manual_test_script:  		\
-		--long manual_test_coverage_file:  	\
-		--long watchdog:  			\
-		--long backend:  			\
-		-n 'ps_analyze.sh' -- "$@"`
+	short_opts="s:t:w:"
+	long_opts="--long step-option: 
+		   --long integer_warnings_only 
+		   --long integer_instrument_idioms 
+		   --long integer_detect_fp 
+		   --long no_integer_detect_fp 
+		   --long step: 
+		   --long timeout: 
+		   --long id:  				
+		   --long name:	  			
+		   --long manual_test_script: 
+		   --long manual_test_coverage_file: 
+		   --long watchdog: 
+		   --long backend:  			
+		"
+
+
+	# solaris does not support long option names
+	if [ `uname -s` = "SunOS" ]; then
+		TEMP=`getopt $short_opts "$@"`
+	else
+		TEMP=`getopt -o $short_opts $long_opts -n 'ps_analyze.sh' -- "$@"`
+	fi
+
 
 	# error check #
 	if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit -1 ; fi
@@ -204,7 +222,6 @@ check_options()
 	eval set -- "$TEMP"
 
 	while true ; do
-		echo "\$1 = $1"
 		case "$1" in
 			--backend)
 				if [ "X$2" = "Xzipr" ]; then
@@ -332,8 +349,10 @@ is_step_on()
 {
 	local step=$1
 
-	echo $phases_off|egrep "$step=off" > /dev/null
-	if [ $? -eq 0 ] ; then
+
+	echo "$phases_off"|egrep " $step=off" > /dev/null
+	grep_res=$?
+	if [ $grep_res -eq 0 ] ; then
 		return 0
 	fi
 
@@ -427,7 +446,7 @@ perform_step()
 		return 0
 	fi
 
-	starttime=`date --iso-8601=seconds`
+	starttime=`$PS_DATE`
 
 	# optionally record stats
 	if [ $record_stats -eq 1 ]; then
@@ -447,6 +466,7 @@ perform_step()
 	fi
 
 	echo -n Performing step "$step" [dependencies=$mandatory] ...
+	starttime=`$PS_DATE`
 
 	# If verbose is on, tee to a file 
 	if [ ! -z "$DEBUG_STEPS" ]; then
@@ -460,7 +480,7 @@ perform_step()
 		command_exit=$?
 	fi
 
-	endtime=`date --iso-8601=seconds`
+	endtime=`$PS_DATE`
 	
 	echo "# ATTRIBUTE start_time=$starttime" >> $logfile
 	echo "# ATTRIBUTE end_time=$endtime" >> $logfile
@@ -617,7 +637,7 @@ error_threshold=0
 #
 # record when we started processing:
 #
-ps_starttime=`date --iso-8601=seconds`
+ps_starttime=$($PS_DATE)
 
 
 #
@@ -698,7 +718,7 @@ fi
 if [ -f $STRATA_HOME/lib/libstrata.so ]; then
 	cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.symbols
 	cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.nosymbols
-	strip $newdir/libstrata.so.nosymbols
+	$PS_STRIP $newdir/libstrata.so.nosymbols
 	cp $newdir/libstrata.so.nosymbols $newdir/libstrata.so
 fi
 
@@ -721,7 +741,9 @@ mkdir logs
 #
 # create a stratafied binary that does pc confinement.
 #
-perform_step stratafy_with_pc_confine mandatory sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh $newname.ncexe $newname.stratafied 
+perform_step stratafy_with_pc_confine strata_mandatory,linux_mandatory sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh $newname.ncexe $newname.stratafied 
+cp a.ncexe a.ncexe.orig
+perform_step add_confinement_section solaris_mandatory $STRATA_HOME/tools/pc_confinement/add_confinement_section.sh a.ncexe.orig a.ncexe
 
 #
 # Let's output the modified binary
@@ -788,7 +810,7 @@ if [ -z $DB_PROGRAM_NAME ]; then
 	DB_PROGRAM_NAME=`basename $orig_exe.$$ | sed "s/[^a-zA-Z0-9]/_/g"`
 	DB_PROGRAM_NAME="psprog_$DB_PROGRAM_NAME"
 fi
-MD5HASH=`md5sum $newname.ncexe | cut -f1 -d' '`
+MD5HASH=`$PS_MD5SUM $newname.ncexe | cut -f1 -d' '`
 
 INSTALLER=`pwd`
 
@@ -796,9 +818,12 @@ INSTALLER=`pwd`
 # register the program
 #
 perform_step pdb_register mandatory "$PEASOUP_HOME/tools/db/pdb_register.sh $DB_PROGRAM_NAME `pwd`" registered.id
-varid=`cat registered.id`
-if [ ! $varid -gt 0 ]; then
-	fail_gracefully "Failed to write Variant into database. Exiting early.  Is postgres running?  Can $PGUSER access the db?"
+is_step_on pdb_register
+if [ $? = 1 ]; then
+	varid=`cat registered.id`
+	if [ ! $varid -gt 0 ]; then
+		fail_gracefully "Failed to write Variant into database. Exiting early.  Is postgres running?  Can $PGUSER access the db?"
+	fi
 fi
 
 if [ $record_stats -eq 1 ]; then
@@ -817,13 +842,15 @@ perform_step fill_in_indtargs mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/f
 
 # finally create a clone so we can do some transforms 
 perform_step clone mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $varid clone.id
-cloneid=`cat clone.id`
-
-#	
-# we could skip this check and simplify ps_analyze if we say that cloning is necessary in is_step_error
-#
-if [ -z "$cloneid" -o  ! "$cloneid" -gt 0 ]; then
-	fail_gracefully "Failed to create variant.  Is postgres running properly?"
+is_step_on clone
+if [ $? = 1 ]; then
+	cloneid=`cat clone.id`
+	#	
+	# we could skip this check and simplify ps_analyze if we say that cloning is necessary in is_step_error
+	#
+	if [ -z "$cloneid" -o  ! "$cloneid" -gt 0 ]; then
+		fail_gracefully "Failed to create variant.  Is postgres running properly?"
+	fi
 fi
 
 # do the basic tranforms we're performing for peasoup 
@@ -892,6 +919,7 @@ perform_step manual_test none $PEASOUP_HOME/tools/do_manualtests.sh $name $strat
 #
 perform_step fast_annot meds_static $PEASOUP_HOME/tools/fast_annot.sh
 
+
 #
 # sfuzz: simple fuzzing to find crashes and record crashing instruction
 # @todo: 2nd arg is the benchmark name but we're currently passing in
@@ -930,12 +958,9 @@ perform_step p1transform meds_static,clone $PEASOUP_HOME/tools/do_p1transform.sh
 if [ -z "$program" ]; then
    program="unknown"
 fi
+
 perform_step integertransform meds_static,clone $PEASOUP_HOME/tools/do_integertransform.sh $cloneid $program $CONCOLIC_DIR $INTEGER_TRANSFORM_TIMEOUT_VALUE $intxform_warnings_only $intxform_detect_fp $intxform_instrument_idioms
 
-#
-# perform_calc -- get some stats about the DB
-#
-#perform_step calc_conflicts none $SECURITY_TRANSFORMS_HOME/libIRDB/test/calc_conflicts.exe $cloneid a.ncexe
 
 #
 # perform step to instrument pgm with return shadow stack
@@ -1002,7 +1027,7 @@ fi
 #
 # create a report for all of ps_analyze.
 #
-ps_endtime=`date --iso-8601=seconds` 
+ps_endtime=`$PS_DATE` 
 report_logs
 
 

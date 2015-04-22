@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/bash
 #
 # Copyright (c) 2014 - Zephyr Software LLC
 #

@@ -76,8 +76,14 @@ fi
 #STRATA_RC=0					
 #STRATA_PARTIAL_INLINING=1			
 
+if test `uname -s` = SunOS; then
+	command="$command LD_PRELOAD=$datapath/libstrata.so:$APP_LD_PRELOAD"
+else
+	command="$command LD_PRELOAD=\"$APP_LD_PRELOAD\""
+fi
+
+
 command="$command
-LD_PRELOAD=\"$APP_LD_PRELOAD\"
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$datapath
 PEASOUP_SCHEDULE_PERTURB=0
 STRATA_WATCHDOG=0
@@ -93,10 +99,10 @@ STRATA_REKEY_AFTER=0
 STRATA_PC_CONFINE_XOR_KEY_LENGTH=1024		
 STRATA_ANNOT_FILE=$datapath/a.ncexe.annot 
 STRATA_IS_SO=0
-STRATA_EXE_FILE=$datapath/a.stratafied
+STRATA_EXE_FILE=$datapath/a.ncexe
 SPAWNER_EXE_FILE=$datapath/spawned
 STRATA_MAX_WARNINGS=500000
-	exec -a $origbinpath $datapath/a.stratafied \"\$@\""
+	exec -a $origbinpath $datapath/a.ncexe \"\$@\""
 
 if [ "$DO_APPFW" = "1" ]; then
 #

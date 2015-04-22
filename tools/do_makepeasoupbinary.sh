@@ -22,18 +22,9 @@ if [ -f $datapath/diagnostics.out ]; then
 	len=`/bin/cat $datapath/diagnostics.out | wc -l` 
 	if [ $len -gt 0 ]; then 
 
-        # make output more concise
-#		/bin/wc -l $datapath/diagnostics.out
-#	    /bin/sort $datapath/diagnostics.out | uniq > tmp.$$
-	    /bin/cat $datapath/diagnostics.out | uniq > tmp.$$
+        	# make output more concise
+	    	/bin/cat $datapath/diagnostics.out | uniq > tmp.$$
 		mv tmp.$$ $datapath/diagnostics.out
-
-		#echo "--------------------------------------------------------"
-		#echo "-        PEASOUP DETECTED AND CONFINED ERRORS          -"
-		#echo "- (and possibly detected that some errors were benign) -"
-		#echo "-               (Summarized below)                     -"
-		#echo "--------------------------------------------------------"
-		#cat $datapath/diagnostics.out
 	fi
 fi
 
