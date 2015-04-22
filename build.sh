@@ -1,4 +1,11 @@
-#!/bin/sh
+#!/bin/bash
+
+
+if [ `uname -s` = 'SunOS' ]; then
+# SunOS == solaris == different compiler by default.
+	export CC="cc -I/opt/csw/include -L /opt/csw/lib/ -g"
+	export CXX="CC -I/opt/csw/include -L /opt/csw/lib/ -g"
+fi
 
 #sanity check
 if [ $SECURITY_TRANSFORMS_HOME"X" = "X" ]; then

@@ -29,9 +29,9 @@
 #include <assert.h>
 #include <string.h>
 
+#include "targ-config.h"
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
-#include "targ-config.h"
 
 using namespace libIRDB;
 using namespace std;
@@ -102,7 +102,7 @@ struct dwarf_cie
   uword length;
   sword CIE_id;
   ubyte version;
-  unsigned char augmentation[];
+  unsigned char augmentation[1];
 } __attribute__ ((packed, aligned (__alignof__ (void *))));
 
 
@@ -111,7 +111,7 @@ struct dwarf_fde
 {
   uword length;
   sword CIE_delta;
-  unsigned char pc_begin[];
+  unsigned char pc_begin[1];
 } __attribute__ ((packed, aligned (__alignof__ (void *))));
 
 
@@ -119,7 +119,7 @@ struct fde_vector
 {
   void *orig_data;
   size_t count;
-  struct dwarf_fde *array[];
+  struct dwarf_fde *array[1];
 };
 
 struct object

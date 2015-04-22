@@ -1,3 +1,5 @@
+#ifndef SOLARIS 
+
 /*
  * Copyright (c) 2013, 2014 - University of Virginia 
  *
@@ -141,3 +143,4 @@ ldap_stearch_st(LDAP *ld, LDAP_CONST char *base, int scope, LDAP_CONST char *fil
   }
 }
 
+#endif

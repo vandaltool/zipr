@@ -122,6 +122,8 @@ bea_tests/avx2.nasm -text
 bea_tests/dbea.c -text
 bea_tests/insns.s -text
 bea_tests/insns_avx.s -text
+beaengine/CMakeFiles/CMakeDetermineCompilerABI_C.bin -text
+beaengine/CMakeFiles/CMakeDetermineCompilerABI_CXX.bin -text
 beaengine/CMakeFiles/cmake.check_cache -text
 beaengine/CMakeFiles/progress.marks -text
 beaengine/CMakeLists.txt -text
@@ -175,7 +177,7 @@ beaengine/obj/Linux.gnu.Debug/beaengineSources/CMakeFiles/progress.marks -text
 include/i686/config.h -text
 include/x86_64/config.h -text
 libIRDB/LICENSE.txt -text
-libIRDB/Makefile -text
+libIRDB/Makefile.in -text
 libIRDB/include/cfg/BasicBlock.hpp -text
 libIRDB/include/cfg/CFG.hpp -text
 libIRDB/include/cfg/callgraph.hpp -text
@@ -202,7 +204,7 @@ libIRDB/include/syscall/syscall.hpp -text
 libIRDB/include/util/insn_preds.hpp -text
 libIRDB/include/utils.hpp -text
 libIRDB/install_libs.sh -text
-libIRDB/src/Makefile -text
+libIRDB/src/Makefile.in -text
 libIRDB/src/cfg/BasicBlock.cpp -text
 libIRDB/src/cfg/CFG.cpp -text
 libIRDB/src/cfg/Makefile -text
@@ -259,7 +261,7 @@ libIRDB/test/tests/ibtarget/jmp2.shared.cpp -text
 libIRDB/test/unfix_calls.cpp -text
 libIRDB/test/unwind-pe.h -text
 libMEDSannotation/LICENSE.txt -text
-libMEDSannotation/Makefile -text
+libMEDSannotation/Makefile.in -text
 libMEDSannotation/include/FuncExitAnnotation.hpp -text
 libMEDSannotation/include/MEDS.hpp -text
 libMEDSannotation/include/MEDS_AnnotationBase.hpp -text
@@ -283,7 +285,7 @@ libMEDSannotation/src/MEDS_InstructionCheckAnnotation.cpp -text
 libMEDSannotation/src/MEDS_ProblemFuncAnnotation.cpp -text
 libMEDSannotation/src/MEDS_Register.cpp -text
 libMEDSannotation/src/MEDS_SafeFuncAnnotation.cpp -text
-libMEDSannotation/src/Makefile -text
+libMEDSannotation/src/Makefile.in -text
 libMEDSannotation/src/VirtualOffset.cpp -text
 libtransform/Makefile -text
 libtransform/include/Rewrite_Utility.hpp -text
@@ -292,7 +294,7 @@ libtransform/include/integertransform32.hpp -text
 libtransform/include/integertransform64.hpp -text
 libtransform/include/leapattern.hpp -text
 libtransform/include/transform.hpp -text
-libtransform/src/Makefile -text
+libtransform/src/Makefile.in -text
 libtransform/src/Rewrite_Utility.cpp -text
 libtransform/src/integertransform.cpp -text
 libtransform/src/integertransform32.cpp -text
@@ -561,7 +563,7 @@ tools/cinderella/Makefile -text
 tools/cinderella/cinderella_prep.cpp -text
 tools/cinderella/cinderella_prep.hpp -text
 tools/cinderella/cinderella_prep_driver.cpp -text
-tools/cover/Makefile -text
+tools/cover/Makefile.in -text
 tools/cover/cover.cpp -text
 tools/cover/coverage.cpp -text
 tools/cover/coverage.h -text
@@ -570,7 +572,7 @@ tools/fix_rets/fix_rets.cpp -text
 tools/fix_rets/fix_rets.hpp -text
 tools/fix_rets/fix_rets_driver.cpp -text
 tools/fptr_shadow/LICENSE.txt -text
-tools/fptr_shadow/Makefile -text
+tools/fptr_shadow/Makefile.in -text
 tools/fptr_shadow/fptr_shadow_driver.cpp -text
 tools/fptr_shadow/fptr_shadow_instrument64.cpp -text
 tools/fptr_shadow/fptr_shadow_instrument64.hpp -text
@@ -585,7 +587,7 @@ tools/inferfn/Makefile -text
 tools/inferfn/inferfn.cpp -text
 tools/inferfn/inferfn.hpp -text
 tools/inferfn/inferfn_driver.cpp -text
-tools/meds2pdb/Makefile -text
+tools/meds2pdb/Makefile.in -text
 tools/meds2pdb/meds2pdb.cpp -text
 tools/memcover/General_Utility.cpp -text
 tools/memcover/General_Utility.hpp -text
@@ -596,18 +598,18 @@ tools/prince/prince.cpp -text
 tools/prince/prince.sh -text
 tools/prince/prince_driver.cpp -text
 tools/ret_shadow_stack/LICENSE.txt -text
-tools/ret_shadow_stack/Makefile -text
+tools/ret_shadow_stack/Makefile.in -text
 tools/ret_shadow_stack/rss_driver.cpp -text
 tools/ret_shadow_stack/rss_instrument.cpp -text
 tools/ret_shadow_stack/rss_instrument.hpp -text
 tools/safefr/LICENSE.txt -text
-tools/safefr/Makefile -text
+tools/safefr/Makefile.in -text
 tools/safefr/fill_in_safefr.cpp -text
 tools/selective_cfi/Makefile.in -text
 tools/selective_cfi/scfi_driver.cpp -text
 tools/selective_cfi/scfi_instr.cpp -text
 tools/selective_cfi/scfi_instr.hpp -text
-tools/spasm/Makefile -text
+tools/spasm/Makefile.in -text
 tools/spasm/ben_lib.cpp -text
 tools/spasm/ben_lib.h -text
 tools/spasm/do_nasm.sh -text
@@ -662,7 +664,7 @@ tools/watch_syscall/csowarn.hpp -text
 tools/watch_syscall/wsc_driver.cpp -text
 tools/watch_syscall/wsc_instrument.cpp -text
 tools/watch_syscall/wsc_instrument.hpp -text
-xform/Makefile -text
+xform/Makefile.in -text
 xform/all.h -text
 xform/aspri.h -text
 xform/bitvector.c -text

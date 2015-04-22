@@ -26,6 +26,7 @@
 #include <stdlib.h>
 #include <cctype>
 #include <assert.h>
+#include <libgen.h>
 
 #include "targ-config.h"
 

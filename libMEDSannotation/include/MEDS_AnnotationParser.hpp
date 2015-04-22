@@ -30,11 +30,11 @@
 namespace MEDS_Annotation
 {
 
-typedef std::multimap<VirtualOffset, MEDS_AnnotationBase*> MEDS_Annotations_t;
-typedef std::pair<VirtualOffset, MEDS_AnnotationBase*> MEDS_Annotations_Pair_t;
+typedef std::multimap<const VirtualOffset, MEDS_AnnotationBase*> MEDS_Annotations_t;
+typedef std::pair<const VirtualOffset, MEDS_AnnotationBase*> MEDS_Annotations_Pair_t;
 
-typedef std::multimap<std::string, MEDS_AnnotationBase*> MEDS_FuncAnnotations_t;
-typedef std::pair<std::string, MEDS_AnnotationBase*> MEDS_Annotations_FuncPair_t;
+typedef std::multimap<const std::string, MEDS_AnnotationBase*> MEDS_FuncAnnotations_t;
+typedef std::pair<const std::string, MEDS_AnnotationBase*> MEDS_Annotations_FuncPair_t;
 
 class MEDS_AnnotationParser
 {

@@ -1,3 +1,4 @@
+#ifndef SOLARIS
 /*
  * Copyright (c) 2013, 2014 - University of Virginia 
  *
@@ -28,6 +29,8 @@
 #include <libxml/xpath.h>
 #include <xqilla/xqilla-simple.hpp>
 #include <iostream>
+
+
 
 using namespace std;
 
@@ -118,3 +121,4 @@ XQQuery* XQilla::parse(unsigned short const* one, DynamicContext* two, unsigned 
 
 }
 
+#endif

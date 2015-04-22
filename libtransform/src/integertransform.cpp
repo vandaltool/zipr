@@ -22,6 +22,31 @@
 #include "integertransform.hpp"
 #include "leapattern.hpp"
 
+
+/*
+ * Find the first occurrence of find in s, ignore case.
+ */
+static char *
+my_strcasestr(const char* s, char *find)
+{
+        char c, sc;
+        size_t len;
+
+        if ((c = *find++) != 0) {
+                c = tolower((unsigned char)c);
+                len = strlen(find);
+                do {
+                        do {
+                                if ((sc = *s++) == 0)
+                                        return (NULL);
+                        } while ((char)tolower((unsigned char)sc) != c);
+                } while (strncasecmp(s, find, len) != 0);
+                s--;
+        }
+        return ((char *)s);
+}
+
+
 // 
 // For list of blacklisted functions, see: isBlacklisted()
 //
@@ -68,17 +93,22 @@ bool IntegerTransform::isBlacklisted(Function_t *func)
 	if (!func) return false;
 
 	const char *funcName = func->GetName().c_str();
-	return (strcasestr(funcName, "hash") ||
-		strcasestr(funcName, "compress") ||
-		strcasestr(funcName, "encode") ||
-		strcasestr(funcName, "decode") ||
-		strcasestr(funcName, "crypt") ||
-		strcasestr(funcName, "yyparse") ||
-		strcasestr(funcName, "yyerror") ||
-		strcasestr(funcName, "yydestruct") ||
-		strcasestr(funcName, "yyrestart") ||
-		strcasestr(funcName, "yylex") ||
-		strcasestr(funcName, "yy_"));
+	return (my_strcasestr(funcName, "hash") ||
+		my_strcasestr(funcName, "compress") ||
+		my_strcasestr(funcName, "encode") ||
+		my_strcasestr(funcName, "decode") ||
+		my_strcasestr(funcName, "crypt") ||
+		my_strcasestr(funcName, "yyparse") ||
+		my_strcasestr(funcName, "yyerror") ||
+		my_strcasestr(funcName, "yydestruct") ||
+		my_strcasestr(funcName, "yyrestart") ||
+		my_strcasestr(funcName, "yylex") ||
+		my_strcasestr(funcName, "yyparse") ||
+		my_strcasestr(funcName, "yyerror") ||
+		my_strcasestr(funcName, "yydestruct") ||
+		my_strcasestr(funcName, "yyrestart") ||
+		my_strcasestr(funcName, "yylex") ||
+		my_strcasestr(funcName, "yy_"));
 }
 
 void IntegerTransform::logStats()

@@ -25,10 +25,15 @@
 #include <map>
 #include <fstream>
 #include <elf.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+
 using namespace libIRDB;
 using namespace std;
 
 static map<Function_t*,db_id_t> entry_points;
+
+#undef EIP
 
 
 static void UpdateEntryPoints(std::map<db_id_t,Instruction_t*> 	&insnMap)
@@ -584,8 +589,8 @@ void FileIR_t::WriteToDB()
 		}
 
 		string r="";
-		std::set<Relocation_t*> relocs = (*i)->GetRelocations();
-		for(set<Relocation_t*>::iterator it=relocs.begin(); it!=relocs.end(); ++it)
+		std::set<Relocation_t*> irelocs = (*i)->GetRelocations();
+		for(set<Relocation_t*>::iterator it=irelocs.begin(); it!=irelocs.end(); ++it)
 		{
 			Relocation_t* reloc=*it;
 			r+=reloc->WriteToDB(fileptr,*i);
@@ -847,7 +852,7 @@ std::map<db_id_t, Type_t*> FileIR_t::ReadTypesFromDB (TypeSet_t& types)
 
 						assert(agg);
 						// ref1 has the id of a basic type, look it up
-						Type_t *ref = tMap.at(ref1);
+						Type_t *ref = tMap[ref1];
 						assert(ref);
 						agg->AddAggregatedType(ref, pos);
 					}
@@ -884,8 +889,8 @@ std::map<db_id_t, Type_t*> FileIR_t::ReadTypesFromDB (TypeSet_t& types)
 					fn = new FuncType_t(tid, name);	
 					types.insert(fn);
 					tMap[tid] = fn;
-					assert(tMap.at(ref1)); // return type
-					assert(tMap.at(ref2)); // argument type (which is an aggregate)
+					assert(tMap[ref1]); // return type
+					assert(tMap[ref2]); // argument type (which is an aggregate)
 					fn->SetReturnType(tMap[ref1]);
 					AggregateType_t *args = dynamic_cast<AggregateType_t*>(tMap[ref2]);
 					assert(args);

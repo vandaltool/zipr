@@ -1,6 +1,6 @@
 
 CC=@CXX@
-CFLAGS= @EXTRA_CXXFLAGS@ -Wall -Wno-unused-function
+CFLAGS= @EXTRA_CXXFLAGS@ 
 INCLUDE=-I. -I ../../include/ -I../include -I../xform -I../../beaengine/include -I../../libIRDB/include/ -I../../libMEDSannotation/include/ -I../libtransform/include/ -I../transforms
 LIBS=-L../../lib -lxform -lIRDB-core -lIRDB-cfg -lIRDB-util -lIRDB-syscall -lBeaEngine_s_d -lpqxx  -lMEDSannotation -ltransform ../transforms/Rewrite_Utility.o
 
@@ -21,7 +21,7 @@ all: $(program)
 	@#
 	@# build dependencies --  http://scottmcpeak.com/autodepend/autodepend.html
 	@#
-	$(CC) -MM $(INCLUDE) $(CFLAGS) $*.cpp > $*.d
+	@cpp -MM $(INCLUDE) $(CFLAGS) $*.cpp > $*.d
 	@cp -f $*.d $*.d.tmp
 	@sed -e 's/.*://' -e 's/\\$$//' < $*.d.tmp | fmt -1 | sed -e 's/^ *//' -e 's/$$/:/' >> $*.d
 	@rm -f $*.d.tmp

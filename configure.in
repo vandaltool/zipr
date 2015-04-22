@@ -9,6 +9,8 @@ EXTRA_CXXFLAGS=
 CXX=g++
 LD=g++
 
+
+
 if test "$enable_cgc" = yes; then 
 	EXTRA_CXXFLAGS=-DCGC
 	BUILD_CGC="yes"
@@ -17,12 +19,20 @@ fi
 if test "$enable_debugging" = yes; then 
 	OPTIMIZE=-g
 fi
+if test $(uname -s) = "SunOS" ; then 
+	LD="$LD -L/opt/csw/lib/"
+	CC="cc -I/opt/csw/include"
+	CXX="CC -I/opt/csw/include"
+	#CC="gcc -I/opt/csw/include"
+	#CXX="g++ -I/opt/csw/include"
+fi
 
 EXTRA_CXXFLAGS="$EXTRA_CXXFLAGS $OPTIMIZE"
 
 AC_SUBST(EXTRA_CXXFLAGS)
 AC_SUBST(BUILD_CGC)
 AC_SUBST(CXX)
+AC_SUBST(CC)
 AC_SUBST(LD)
 
 AC_OUTPUT(tools/Makefile
@@ -31,7 +41,19 @@ AC_OUTPUT(tools/Makefile
 	tools/watch_syscall/Makefile
 	tools/transforms/Makefile
 	tools/cgc_hlx/Makefile
+	tools/meds2pdb/Makefile
+	tools/cover/Makefile
+	tools/safefr/Makefile
+	tools/fptr_shadow/Makefile
+	tools/ret_shadow_stack/Makefile
+	tools/spasm/Makefile
+	libMEDSannotation/src/Makefile
+	libMEDSannotation/Makefile
 	libIRDB/src/syscall/Makefile
 	libIRDB/test/Makefile
+	libIRDB/Makefile
+	libIRDB/src/Makefile
+	xform/Makefile
+	libtransform/src/Makefile
 )
 

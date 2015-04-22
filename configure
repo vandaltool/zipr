@@ -584,6 +584,7 @@ PACKAGE_URL=
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
 LD
+CC
 CXX
 BUILD_CGC
 EXTRA_CXXFLAGS
@@ -1690,6 +1691,8 @@ EXTRA_CXXFLAGS=
 CXX=g++
 LD=g++
 
+
+
 if test "$enable_cgc" = yes; then
 	EXTRA_CXXFLAGS=-DCGC
 	BUILD_CGC="yes"
@@ -1697,6 +1700,13 @@ fi
 
 if test "$enable_debugging" = yes; then
 	OPTIMIZE=-g
+fi
+if test $(uname -s) = "SunOS" ; then
+	LD="$LD -L/opt/csw/lib/"
+	CC="cc -I/opt/csw/include"
+	CXX="CC -I/opt/csw/include"
+	#CC="gcc -I/opt/csw/include"
+	#CXX="g++ -I/opt/csw/include"
 fi
 
 EXTRA_CXXFLAGS="$EXTRA_CXXFLAGS $OPTIMIZE"
@@ -1706,7 +1716,8 @@ EXTRA_CXXFLAGS="$EXTRA_CXXFLAGS $OPTIMIZE"
 
 
 
-ac_config_files="$ac_config_files tools/Makefile tools/fix_rets/Makefile tools/selective_cfi/Makefile tools/watch_syscall/Makefile tools/transforms/Makefile tools/cgc_hlx/Makefile libIRDB/src/syscall/Makefile libIRDB/test/Makefile"
+
+ac_config_files="$ac_config_files tools/Makefile tools/fix_rets/Makefile tools/selective_cfi/Makefile tools/watch_syscall/Makefile tools/transforms/Makefile tools/cgc_hlx/Makefile tools/meds2pdb/Makefile tools/cover/Makefile tools/safefr/Makefile tools/fptr_shadow/Makefile tools/ret_shadow_stack/Makefile tools/spasm/Makefile libMEDSannotation/src/Makefile libMEDSannotation/Makefile libIRDB/src/syscall/Makefile libIRDB/test/Makefile libIRDB/Makefile libIRDB/src/Makefile xform/Makefile libtransform/src/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -2419,8 +2430,20 @@ do
     "tools/watch_syscall/Makefile") CONFIG_FILES="$CONFIG_FILES tools/watch_syscall/Makefile" ;;
     "tools/transforms/Makefile") CONFIG_FILES="$CONFIG_FILES tools/transforms/Makefile" ;;
     "tools/cgc_hlx/Makefile") CONFIG_FILES="$CONFIG_FILES tools/cgc_hlx/Makefile" ;;
+    "tools/meds2pdb/Makefile") CONFIG_FILES="$CONFIG_FILES tools/meds2pdb/Makefile" ;;
+    "tools/cover/Makefile") CONFIG_FILES="$CONFIG_FILES tools/cover/Makefile" ;;
+    "tools/safefr/Makefile") CONFIG_FILES="$CONFIG_FILES tools/safefr/Makefile" ;;
+    "tools/fptr_shadow/Makefile") CONFIG_FILES="$CONFIG_FILES tools/fptr_shadow/Makefile" ;;
+    "tools/ret_shadow_stack/Makefile") CONFIG_FILES="$CONFIG_FILES tools/ret_shadow_stack/Makefile" ;;
+    "tools/spasm/Makefile") CONFIG_FILES="$CONFIG_FILES tools/spasm/Makefile" ;;
+    "libMEDSannotation/src/Makefile") CONFIG_FILES="$CONFIG_FILES libMEDSannotation/src/Makefile" ;;
+    "libMEDSannotation/Makefile") CONFIG_FILES="$CONFIG_FILES libMEDSannotation/Makefile" ;;
     "libIRDB/src/syscall/Makefile") CONFIG_FILES="$CONFIG_FILES libIRDB/src/syscall/Makefile" ;;
     "libIRDB/test/Makefile") CONFIG_FILES="$CONFIG_FILES libIRDB/test/Makefile" ;;
+    "libIRDB/Makefile") CONFIG_FILES="$CONFIG_FILES libIRDB/Makefile" ;;
+    "libIRDB/src/Makefile") CONFIG_FILES="$CONFIG_FILES libIRDB/src/Makefile" ;;
+    "xform/Makefile") CONFIG_FILES="$CONFIG_FILES xform/Makefile" ;;
+    "libtransform/src/Makefile") CONFIG_FILES="$CONFIG_FILES libtransform/src/Makefile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac

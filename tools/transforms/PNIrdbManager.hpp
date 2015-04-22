@@ -29,8 +29,8 @@ class PNIrdbManager
 public:
 
     enum IRSource {
-        PEASOUP,
-        DWARF,
+        IRS_PEASOUP,
+        IRS_DWARF
     };
 
     PNIrdbManager(libIRDB::db_id_t variant_db_id);

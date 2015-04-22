@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <fstream>
 #include <libIRDB-core.hpp>
-// #include <libgen.h>
+#include <libgen.h>
 
 #include "MEDS_AnnotationParser.hpp"
 #include "fptr_shadow_instrument64.hpp"

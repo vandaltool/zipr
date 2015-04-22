@@ -120,7 +120,9 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 	//	 bool has_frame_pointer = false;
 
 	int max = PNRegularExpressions::MAX_MATCHES;
-	regmatch_t pmatch[max];
+//	regmatch_t pmatch[max];
+//	regmatch_t *pmatch=(regmatch_t*)malloc(max*sizeof(regmatch_t));
+	regmatch_t *pmatch=new regmatch_t[max];
 	memset(pmatch, 0,sizeof(regmatch_t) * max);	 
 
 	assert(out_args_size >=0);
@@ -134,6 +136,7 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 		++it
 		)
 */
+	string disasm_str;
 	//loop through fallthroughs of the entry (entry will be update on every iteration)
 	//until entry is null, or entry has left the function. 
 	while(entry != NULL && (entry->GetFunction()==func))
@@ -144,7 +147,6 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 
 		//Instruction_t* instr=*it;
 		Instruction_t* instr = entry;
-		string disasm_str;
 
 		DISASM disasm;
 		instr->Disassemble(disasm);
@@ -241,7 +243,7 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 						//find the indirect branch target instruction, and reset entry to this instruction, then continue execution of the loop. 
 
 						int target_addr_offset;
-						assert(str2int(target_addr_offset, matched.c_str())==SUCCESS);
+						assert(str2int(target_addr_offset, matched.c_str())==STR2_SUCCESS);
 
 						//TODO: it is better to make a map of ind branch targets, but this efficient enough for now. 
 						
@@ -303,7 +305,7 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 				matched = disasm_str.substr(pmatch[1].rm_so,mlen);
 				//extract K 
 				//stack_frame_size = strtol(matched.c_str(),NULL,0);
-				if(str2uint(stack_frame_size, matched.c_str())!= SUCCESS)
+				if(str2uint(stack_frame_size, matched.c_str())!= STR2_SUCCESS)
 				{
 					//If this occurs, then the found stack size is not a 
 					//constant integer, so it must be a register. 
@@ -368,7 +370,9 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 	//int out_args_size;
 
 	int max = PNRegularExpressions::MAX_MATCHES;
-	regmatch_t pmatch[max];
+	//regmatch_t pmatch[max];
+	regmatch_t *pmatch=new regmatch_t[max];
+	assert(pmatch);
 	memset(pmatch, 0,sizeof(regmatch_t) * max);	 
 	unsigned int stack_frame_size = 0;
 	unsigned int saved_regs_size = 0;
@@ -629,7 +633,7 @@ else
 			matched = disasm_str.substr(pmatch[1].rm_so,mlen);
 			//extract K 
 			unsigned int scheck;
-			if(str2uint(scheck, matched.c_str()) != SUCCESS)
+			if(str2uint(scheck, matched.c_str()) != STR2_SUCCESS)
 			{
 				//If this occurs, then the found stack size is not a 
 				//constant integer, so it must be a register.

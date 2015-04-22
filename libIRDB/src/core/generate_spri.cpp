@@ -30,6 +30,8 @@
 #include <string.h>
 #include <assert.h>
 
+#undef EIP
+
 using namespace libIRDB;
 using namespace std;
 

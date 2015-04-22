@@ -1,9 +1,9 @@
-#!/bin/bash 
+#!/bin/bash  
 
 cd lib; 
 for i in *; 
 do 
-	if [ ! -f ../../lib/$i -o $i -nt ../../lib/$i ]; then 
+	if test ! -f ../../lib/$i -o $i -nt ../../lib/$i ; then 
 		echo Installing $i
 		cp $i ../../lib/; 
 	fi

@@ -21,6 +21,29 @@
 #include "transform.hpp"
 #include "Rewrite_Utility.hpp"
 
+/*
+ * Find the first occurrence of find in s, ignore case.
+ */
+static char *
+my_strcasestr(const char* s, char *find)
+{
+	char c, sc;
+	size_t len;
+
+	if ((c = *find++) != 0) {
+		c = tolower((unsigned char)c);
+		len = strlen(find);
+		do {
+			do {
+				if ((sc = *s++) == 0)
+					return (NULL);
+			} while ((char)tolower((unsigned char)sc) != c);
+		} while (strncasecmp(s, find, len) != 0);
+		s--;
+	}
+	return ((char *)s);
+}
+
 #define OPTIMIZE_ASSEMBLY
 
 using namespace libTransform;
@@ -523,14 +546,14 @@ bool Transform::isMultiplyInstruction(Instruction_t *p_instruction)
 	std::string assembly = m_fileIR->LookupAssembly(p_instruction);
 	if (assembly.length() > 0)
 	{
-		return strcasestr(assembly.c_str(), "MUL") != NULL;
+		return my_strcasestr(assembly.c_str(), "MUL") != NULL;
 	}
 
 	DISASM disasm;
 	p_instruction->Disassemble(disasm);
 
 	// beaengine adds space at the end of the mnemonic string
-	return strcasestr(disasm.Instruction.Mnemonic, "MUL") != NULL;
+	return my_strcasestr(disasm.Instruction.Mnemonic, "MUL ") != NULL;
 }
 
 
@@ -545,14 +568,14 @@ bool Transform::isMovInstruction(Instruction_t *p_instruction)
 	std::string assembly = m_fileIR->LookupAssembly(p_instruction);
 	if (assembly.length() > 0)
 	{
-		return strcasestr(assembly.c_str(), "MOV") != NULL;
+		return my_strcasestr(assembly.c_str(), "MOV") != NULL;
 	}
 
 	DISASM disasm;
 	p_instruction->Disassemble(disasm);
 
 	// nb: beaengine adds space at the end of the mnemonic string
-	return strcasestr(disasm.Instruction.Mnemonic, "MOV") != NULL;
+	return my_strcasestr(disasm.Instruction.Mnemonic, "MOV") != NULL;
 }
 
 //
@@ -568,13 +591,13 @@ bool Transform::isAddSubNonEspInstruction(Instruction_t *p_instruction)
 	p_instruction->Disassemble(disasm);
 
 	// beaengine adds space at the end of the mnemonic string
-	if (strcasestr(disasm.Instruction.Mnemonic, "ADD "))
+	if (my_strcasestr(disasm.Instruction.Mnemonic, "ADD "))
 	{
 		return true;
 	}
-	else if (strcasestr(disasm.Instruction.Mnemonic, "SUB ")) 
+	else if (my_strcasestr(disasm.Instruction.Mnemonic, "SUB ")) 
 	{
-		if (strcasestr(disasm.Argument1.ArgMnemonic,"esp") &&
+		if (my_strcasestr(disasm.Argument1.ArgMnemonic,"esp") &&
 			(disasm.Argument2.ArgType & 0xFFFF0000 & (CONSTANT_TYPE | ABSOLUTE_)))
 		{
 			// optimization: filter out "sub esp, K"

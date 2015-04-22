@@ -3,10 +3,18 @@
 #include <set>
 #include <stdlib.h>
 
+
+
 #include "beaengine/BeaEngine.h"
 
-#include "rewriter.h"
 #include "all.h"
+#include "targ-config.h"
+#include "elfio/elfio.hpp"
+#include "elfio/elfio_dump.hpp"
+
+
+#include "rewriter.h"
+
 
 using namespace std;
 

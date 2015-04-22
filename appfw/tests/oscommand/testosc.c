@@ -44,6 +44,7 @@ int main(int argc, char *argv[], char* envp[])
 		}
 		case 3: //rcmd
 		{
+/*
 			char *host="none";
   			char command[2048];
   			sprintf(command, "/bin/ls %s", argv[2]);
@@ -51,13 +52,16 @@ int main(int argc, char *argv[], char* envp[])
 			
   			fprintf (stdout, "%s returned with code: %d\n", command, ret);
 			break;
+*/
 		}
 		case 4: 
 		{
+/*
 			FILE* fls=fopen("/bin/ls", "r");
 			argv[1]="/bin/ls";
 			fexecve(fileno(fls), &argv[1], envp2);
 			assert(0);
+*/
 		}
 		case 5: 
 		{
@@ -93,9 +97,11 @@ int main(int argc, char *argv[], char* envp[])
 		}
 		case 10: 
 		{
+/*
 			argv[1]=ls_string;
 			execvpe(ls_string,  &argv[1], envp2);
 			assert(0);
+*/
 		}
 		case 11: 
 		{
@@ -124,6 +130,7 @@ int main(int argc, char *argv[], char* envp[])
 		}
 		case 103: //rcmd
 		{
+/*
 			char *host="none";
   			char command[2048];
   			sprintf(command, "/usr/bin/env %s", argv[2]);
@@ -131,13 +138,16 @@ int main(int argc, char *argv[], char* envp[])
 			
   			fprintf (stdout, "%s returned with code: %d\n", command, ret);
 			break;
+*/
 		}
 		case 104: 
 		{
+/*
 			FILE* fls=fopen("/usr/bin/env", "r");
 			argv[1]="/bin/ls";
 			fexecve(fileno(fls), &argv[1], envp2);
 			assert(0);
+*/
 		}
 		case 105: 
 		{
@@ -173,9 +183,11 @@ int main(int argc, char *argv[], char* envp[])
 		}
 		case 110: 
 		{
+/*
 			argv[1]=env_string;
 			execvpe(env_string,  &argv[1], envp2);
 			assert(0);
+*/
 		}
 		case 111: 
 		{

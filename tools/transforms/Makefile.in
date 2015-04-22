@@ -16,8 +16,8 @@
 
 PROGS=p1transform.exe nulltransform.exe integertransformdriver.exe
 
-CC=g++
-CFLAGS= -g -Wall $(TWITCHER_FLAGS) @EXTRA_CXXFLAGS@ -fPIC
+CXX=@CXX@
+CXXFLAGS= -g $(TWITCHER_FLAGS) @EXTRA_CXXFLAGS@ -fPIC
 INCLUDE=-I. -I../../include -I../../xform -I../../beaengine/include -I../../libIRDB/include/ -I../../libMEDSannotation/include/ -I../../libtransform/include/
 LIBS=-L../../lib -lxform -lIRDB-core -lIRDB-cfg -lBeaEngine_s_d -lpqxx  -lMEDSannotation -ltransform
 
@@ -33,19 +33,19 @@ all: integertransformdriver.exe p1transform.exe pntransform.exe $(OBJS) $(PROGS)
 $(all_objs): *hpp
 
 .cpp.o: PNStackLayoutInference.hpp  *.hpp
-	$(CC) $(INCLUDE) $(CFLAGS)  -g -c $< 
+	$(CXX) $(INCLUDE) $(CXXFLAGS)  -g -c $< 
 
 .cpp.exe:   
-	$(CC) -g $< $(INCLUDE) $(LIBS) $(OBJS) -o $@
+	$(CXX) -g $< $(INCLUDE) $(LIBS) $(OBJS) -o $@
 
 clean:
 	rm -f *.o core $(PROGS)
 
 integertransformdriver.exe:  integertransformdriver.o transformutils.o ../../lib/*.a 
-	$(CC) $(CFLAGS) transformutils.o integertransformdriver.o $(INCLUDE) $(LIBS) -o integertransformdriver.exe
+	$(CXX) $(CXXFLAGS) transformutils.o integertransformdriver.o $(INCLUDE) $(LIBS) -o integertransformdriver.exe
 
 pntransform.exe:  $(all_objs) ../../lib/*.a 
-	$(CC) $(CFLAGS) $(all_objs) $(INCLUDE) $(LIBS) -o pntransform.exe
+	$(CXX) $(CXXFLAGS) $(all_objs) $(INCLUDE) $(LIBS) -o pntransform.exe
 
 p1transform.exe:  pntransform.exe
 	cp pntransform.exe p1transform.exe

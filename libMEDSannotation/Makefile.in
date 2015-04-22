@@ -1,0 +1,9 @@
+
+CC=@CC@
+CXX=@CXX@
+
+all:
+	cd src;make CC=$(CC) CXX=$(CXX)
+
+clean:
+	cd src; make clean

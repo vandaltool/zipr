@@ -58,17 +58,19 @@ typedef s_uint64_t 	   counter_t;
 #define NULL 0
 #endif
 
+namespace std {
 #include <elf.h>
+}
 
-typedef Elf32_Ehdr  IRDB_Elf_Ehdr;
-typedef Elf32_Shdr  IRDB_Elf_Shdr;
-typedef Elf32_Off   IRDB_Elf_Off;
-typedef Elf32_Half  IRDB_Elf_Half;
-typedef Elf32_Word  IRDB_Elf_Word;
-typedef Elf32_Addr  IRDB_Elf_Addr;
-typedef Elf32_Sym  IRDB_Elf_Sym;
-typedef Elf32_Rel  IRDB_Elf_Rel;
-typedef Elf32_Rela  IRDB_Elf_Rela;
+typedef std::Elf32_Ehdr  IRDB_Elf_Ehdr;
+typedef std::Elf32_Shdr  IRDB_Elf_Shdr;
+typedef std::Elf32_Off   IRDB_Elf_Off;
+typedef std::Elf32_Half  IRDB_Elf_Half;
+typedef std::Elf32_Word  IRDB_Elf_Word;
+typedef std::Elf32_Addr  IRDB_Elf_Addr;
+typedef std::Elf32_Sym  IRDB_Elf_Sym;
+typedef std::Elf32_Rel  IRDB_Elf_Rel;
+typedef std::Elf32_Rela  IRDB_Elf_Rela;
 #define IRDB_ELF_ST_TYPE ELF32_ST_TYPE
 
 

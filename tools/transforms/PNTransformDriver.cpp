@@ -30,11 +30,36 @@
 #include "globals.h"
 #include <libIRDB-cfg.hpp>
 
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <libgen.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
+#ifndef PATH_MAX
+#define PATH_MAX 4096
+#endif
+
+
 
 #define MAX_JUMPS_TO_FOLLOW 100000
 
 using namespace std;
 using namespace libIRDB;
+
+char* get_current_dir_name(void) 
+{
+  char* pwd = getenv("PWD");
+  char tmp[PATH_MAX];
+  struct stat a,b;
+  if (pwd && !stat(".",&a) && !stat(pwd,&b) &&
+      a.st_dev==b.st_dev && a.st_ino==b.st_ino)
+    return strdup(pwd);
+  if (getcwd(tmp,sizeof(tmp)))
+    return strdup(tmp);
+  return 0;
+}
 
 //TODO: this var is a hack for TNE
 extern map<Function_t*, set<Instruction_t*> > inserted_instr;
@@ -660,7 +685,7 @@ ELFIO::dump::section_headers(cout,*elfiop);
 				//TODO: basename is only used as a hack
 				//because of the way the url is stored in the db.
 				//The url should be fixed to be the absolute path. 
-				key=string(basename(key.c_str()));
+				key=string(basename((char*)key.c_str()));
 
 				if(key.empty())
 					continue;
@@ -816,12 +841,12 @@ bool	check_for_push_pop_coherence(Function_t *func)
 	// stack first.  Also handy as this allows "fixed" calls to be ignored.
 	// but, since exits with 0 pops aren't in the map, we don't need an explicit check for them.
 	for(
-		map<Instruction_t*,int>::const_iterator it=pop_count_per_exit.begin();
+		map<Instruction_t* ,int>::iterator it=pop_count_per_exit.begin();
 		it!=pop_count_per_exit.end();
 		++it
 	   )
 	{
-		pair<Instruction_t*,int> map_pair=*it;
+		pair<Instruction_t*const,int> map_pair=*it;
 		Instruction_t* insn=map_pair.first;
 		assert(insn);
 		DISASM d;
@@ -1537,7 +1562,7 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 	cerr<<"Functions to shuffle validate: "<<shuffle_validate_funcs.size()<<endl;
 	ShuffleValidation(shuffle_validate_funcs);
 
-	if(!Validate(NULL,string(basename(orig_virp->GetFile()->GetURL().c_str()))+"_accum"))
+	if(!Validate(NULL,string(basename((char*)orig_virp->GetFile()->GetURL().c_str()))+"_accum"))
 	{
 		cerr<<"TEST ERROR: File: "<<orig_virp->GetFile()->GetURL()<<" does not pass accumulation validation, ignoring the file for now."<<endl;
 
@@ -2225,7 +2250,7 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 	
 	//bool stack_alloc = false;
 	int max = PNRegularExpressions::MAX_MATCHES;
-	regmatch_t pmatch[max];
+	regmatch_t *pmatch=new regmatch_t[max]; 
 	memset(pmatch, 0,sizeof(regmatch_t) * max);
 
 
@@ -2264,7 +2289,7 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 				matched = disasm_str.substr(pmatch[1].rm_so,mlen);
 				//extract K 
 				unsigned int ssize;
-				if(str2uint(ssize, matched.c_str()) != SUCCESS)
+				if(str2uint(ssize, matched.c_str()) != STR2_SUCCESS)
 				{
 					//If this occurs, then the found stack size is not a 
 					//constant integer, so it must be a register. 
@@ -2452,7 +2477,8 @@ int PNTransformDriver::prologue_offset_to_actual_offset(ControlFlowGraph_t* cfg,
 			return offset;
 	
 		int max = PNRegularExpressions::MAX_MATCHES;
-		regmatch_t pmatch[max];
+		//regmatch_t pmatch[max];
+		regmatch_t *pmatch=new regmatch_t[max]; // (max*sizeof(regmatch_t));
 
 		/* check for a stack alloc */
                 if(regexec(&(pn_regex->regex_stack_alloc), d.CompleteInstr, 5, pmatch, 0)==0)
@@ -2465,7 +2491,7 @@ int PNTransformDriver::prologue_offset_to_actual_offset(ControlFlowGraph_t* cfg,
                                 matched = disasm_str.substr(pmatch[1].rm_so,mlen);
                                 //extract K
                                 unsigned int ssize;
-                                if(str2uint(ssize, matched.c_str()) != SUCCESS)
+                                if(str2uint(ssize, matched.c_str()) != STR2_SUCCESS)
                                 {
 					return offset;
                                 }
@@ -2503,8 +2529,9 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	if(FileIR_t::GetArchitectureBitWidth()==64)
 		esp_reg="rsp";
 
-	int max = PNRegularExpressions::MAX_MATCHES;
-	regmatch_t pmatch[max];
+	const int max = PNRegularExpressions::MAX_MATCHES;
+	//regmatch_t pmatch[max];
+	regmatch_t *pmatch=new regmatch_t[max]; // (regmatch_t*)malloc(max*sizeof(regmatch_t));
 	regmatch_t pmatch2[max];
 	memset(pmatch, 0,sizeof(regmatch_t) * max);
 	memset(pmatch2, 0,sizeof(regmatch_t) * max);
@@ -2575,7 +2602,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 			matched = disasm_str.substr(pmatch[1].rm_so,mlen);
 			//extract K 
 			unsigned int ssize;
-			if(str2uint(ssize, matched.c_str()) != SUCCESS)
+			if(str2uint(ssize, matched.c_str()) != STR2_SUCCESS)
 			{
 				//If this occurs, then the found stack size is not a 
 				//constant integer, so it must be a register. 
@@ -3081,7 +3108,7 @@ bool PNTransformDriver::WriteStackIRToDB()
     }
     else
     {
-        irdb_manager.DeleteSource(PNIrdbManager::PEASOUP);
+        irdb_manager.DeleteSource(PNIrdbManager::IRS_PEASOUP);
     }
 
     std::map< std::string,std::vector<PNStackLayout*> >::const_iterator it =
@@ -3101,7 +3128,7 @@ bool PNTransformDriver::WriteStackIRToDB()
                     layouts[laynum]->GetFunctionName(),
                     mem_objects[j]->GetOffset(),
                     mem_objects[j]->GetSize(),
-                    PNIrdbManager::PEASOUP);
+                    PNIrdbManager::IRS_PEASOUP);
 
                 // DEBUG
                 cerr<< "\tOffset = " << mem_objects[j]->GetOffset() << " Size = "<<mem_objects[j]->GetSize() << endl;

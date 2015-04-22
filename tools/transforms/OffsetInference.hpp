@@ -28,6 +28,7 @@
 
 class OffsetInference : public PNStackLayoutInference
 {
+
 protected:
 	std::map<libIRDB::Instruction_t*, bool> in_prologue;
 	std::map<libIRDB::Function_t*,PNStackLayout*> direct;
@@ -42,6 +43,7 @@ protected:
 	//	virtual void GetInstructions(std::vector<libIRDB::Instruction_t*> &instructions,libIRDB::BasicBlock_t *block,std::set<libIRDB::BasicBlock_t*> &block_set);
 	virtual StackLayout* SetupLayout(libIRDB::Function_t *func);
 public:
+	OffsetInference() : pn_regex(NULL) {}
 	virtual ~OffsetInference();
 	virtual PNStackLayout* GetPNStackLayout(libIRDB::Function_t *func);
 	virtual PNStackLayout* GetDirectAccessLayout(libIRDB::Function_t *func);
