@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <fstream>
 #include <libIRDB-core.hpp>
+#include <getopt.h>
 #include <libgen.h>
 
 #include "MEDS_AnnotationParser.hpp"
@@ -28,6 +29,7 @@
 #include "integertransform.hpp"
 #include "integertransform32.hpp"
 #include "integertransform64.hpp"
+#include "pointercheck64.hpp"
 
 // current convention
 #define BINARY_NAME "a.ncexe"
@@ -37,9 +39,67 @@
 using namespace std;
 using namespace libTransform;
 
+bool saturating_arithmetic = false;
+bool path_manip_detected = false; // deprecated
+bool instrument_idioms = false;
+bool warning_only = false;
+bool check_pointers = false;
+
 void usage()
 {
-	cerr << "Usage: integertransformdriver.exe <variant_id> <filtered_functions> <integer.warning.addresses> [--saturating-arithmetic] [--path-manip-detected] [--instrument-idioms]"<<endl;
+	cerr << "Usage: integertransformdriver.exe <variant_id> <filtered_functions> <integer.warning.addresses> [--saturate] [--instrument-idioms] [--check-pointers] [--warning]"<<endl;
+}
+
+int parse_args(int p_argc, char* p_argv[])
+{
+	int option = 0;
+	char options[] = "v:s:p:i";
+	struct option long_options[] = {
+		{"saturate", no_argument, NULL, 's'},
+		{"instrument-idioms", no_argument, NULL, 'i'},
+		{"warning", no_argument, NULL, 'w'},
+		{"check-pointers", no_argument, NULL, 'c'},
+		{NULL, no_argument, NULL, '\0'},         // end-of-array marker
+	};
+
+	while ((option = getopt_long(
+		p_argc,
+		p_argv,
+		options,
+		long_options,
+		NULL)) != -1)
+	{
+		switch (option)
+		{
+			case 's':
+			{
+				saturating_arithmetic = true;
+				printf("saturating arithmetic enabled\n");
+				break;
+			}
+			case 'i':
+			{
+				printf("instrument idioms enabled\n");
+				instrument_idioms = true;
+				break;
+			}
+			case 'w':
+			{
+				printf("warning only mode\n");
+				warning_only = true;
+				break;
+			}
+			case 'c':
+			{
+				printf("check pointers mode\n");
+				check_pointers = true;
+				break;
+			}
+			default:
+				return 1;
+		}
+	}
+	return 0;
 }
 
 std::set<VirtualOffset> getInstructionWarnings(char *warningFilePath)
@@ -72,50 +132,6 @@ std::set<VirtualOffset> getInstructionWarnings(char *warningFilePath)
 	return warnings;
 }
 
-bool isSaturatingArithmeticOn(int argc, char **argv)
-{
-	for (int i = 0; i < argc; ++i)
-	{
-		if (strncasecmp(argv[i], "--saturat", strlen("--saturat")) == 0)
-			return true;
-	}
-
-	return false;
-}
-
-bool isWarningsOnly(int argc, char **argv)
-{
-	for (int i = 0; i < argc; ++i)
-	{
-		if (strncasecmp(argv[i], "--warning", strlen("--warning")) == 0)
-			return true;
-	}
-
-	return false;
-}
-
-bool isPathManipDetected(int argc, char **argv)
-{
-	for (int i = 0; i < argc; ++i)
-	{
-		if (strncasecmp(argv[i], "--path-manip", strlen("--path-manip")) == 0)
-			return true;
-	}
-
-	return false;
-}
-
-bool isInstrumentIdioms(int argc, char **argv)
-{
-	for (int i = 0; i < argc; ++i)
-	{
-		if (strncasecmp(argv[i], "--instrument-idioms", strlen("--instrument-idioms")) == 0)
-			return true;
-	}
-
-	return false;
-}
-
 int main(int argc, char **argv)
 {
 	if(argc < 4)
@@ -128,6 +144,8 @@ int main(int argc, char **argv)
 	int variantID = atoi(argv[1]);
 	set<string> filteredFunctions = getFunctionList(argv[2]);
 	char *integerWarnings = argv[3];
+
+	parse_args(argc, argv);
 
 	VariantID_t *pidp=NULL;
 
@@ -180,26 +198,30 @@ int main(int argc, char **argv)
 
 			MEDS_Annotations_t annotations = annotationParser.getAnnotations();
 
-			cout << "integer transform driver: found " << annotations.size() << " annotaitons" << endl;
+			cout << "integer transform driver: found " << annotations.size() << " annotations" << endl;
 
 			// do the transformation
 
 			libTransform::IntegerTransform *intxform = NULL;
 			if(firp->GetArchitectureBitWidth()==64)
 			{
-				intxform = new IntegerTransform64(pidp, firp, &annotations, &filteredFunctions, &warnings);
+				if (check_pointers)
+					intxform = new PointerCheck64(pidp, firp, &annotations, &filteredFunctions, &warnings);
+				else
+					intxform = new IntegerTransform64(pidp, firp, &annotations, &filteredFunctions, &warnings);
 			}
 			else
 			{
 				intxform = new IntegerTransform32(pidp, firp, &annotations, &filteredFunctions, &warnings);
 			}
 
-			intxform->setSaturatingArithmetic(isSaturatingArithmeticOn(argc, argv));
-			intxform->setPathManipulationDetected(isPathManipDetected(argc, argv));
-			intxform->setWarningsOnly(isWarningsOnly(argc, argv));
-			intxform->setInstrumentIdioms(isInstrumentIdioms(argc, argv));
+			intxform->setSaturatingArithmetic(saturating_arithmetic);
+			intxform->setPathManipulationDetected(path_manip_detected);
+			intxform->setInstrumentIdioms(instrument_idioms);
+			intxform->setWarningsOnly(warning_only);
 
 			int exitcode = intxform->execute();
+
 			if (exitcode == 0)
 			{
 				one_success = true;

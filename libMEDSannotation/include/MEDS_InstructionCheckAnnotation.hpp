@@ -92,6 +92,8 @@ class MEDS_InstructionCheckAnnotation : public MEDS_AnnotationBase
 
 		// is idiom?
 		bool isIdiom() const { return m_isIdiom; }
+		int getIdiomNumber() const { return m_idiomNumber; }
+		void setIdiomNumber(int number) { m_idiomNumber = number; }
 
 		// get bitwidth
 		int getBitWidth() const { return m_bitWidth; }
@@ -139,6 +141,7 @@ class MEDS_InstructionCheckAnnotation : public MEDS_AnnotationBase
 		bool           m_isValid;
 		bool           m_flowsIntoCriticalSink;
 		bool           m_isIdiom;
+		int            m_idiomNumber;
 		MEDS_Annotation::Register::RegisterName       m_register;
 		MEDS_Annotation::Register::RegisterName       m_register2;
 		string         m_target;

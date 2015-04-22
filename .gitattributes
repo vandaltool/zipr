@@ -293,6 +293,7 @@ libtransform/include/integertransform.hpp -text
 libtransform/include/integertransform32.hpp -text
 libtransform/include/integertransform64.hpp -text
 libtransform/include/leapattern.hpp -text
+libtransform/include/pointercheck64.hpp -text
 libtransform/include/transform.hpp -text
 libtransform/src/Makefile.in -text
 libtransform/src/Rewrite_Utility.cpp -text
@@ -300,6 +301,7 @@ libtransform/src/integertransform.cpp -text
 libtransform/src/integertransform32.cpp -text
 libtransform/src/integertransform64.cpp -text
 libtransform/src/leapattern.cpp -text
+libtransform/src/pointercheck64.cpp -text
 libtransform/src/transform.cpp -text
 libtransform/tests/Makefile -text
 libtransform/tests/austin/array.c -text

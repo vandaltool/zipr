@@ -32,6 +32,8 @@ namespace libTransform
 using namespace std;
 using namespace libIRDB;
 
+const int IDIOM_POINTER_NUMERIC_WEAKNESS = 18;
+
 class IntegerTransform : public Transform
 {
 	public:
@@ -57,7 +59,6 @@ class IntegerTransform : public Transform
 		bool                      m_policyWarningsOnly;
 		bool                      m_pathManipulationDetected;
 		bool                      m_instrumentIdioms;
-//		std::multimap<VirtualOffset, MEDS_AnnotationBase> *m_annotations;
 		MEDS_Annotations_t *m_annotations;
 
 		unsigned m_numAnnotations; 

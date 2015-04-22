@@ -21,6 +21,8 @@
 #include <iostream>
 #include <cstdio>
 #include <string>
+#include <stdlib.h>
+#include <string.h>
 
 #include "MEDS_Register.hpp"
 #include "MEDS_InstructionCheckAnnotation.hpp"
@@ -68,6 +70,7 @@ void MEDS_InstructionCheckAnnotation::init()
 	m_objectSize = -1;
 	m_isEspOffset = false;
 	m_isEbpOffset = false;
+	m_idiomNumber = -1;
 }
 
 MEDS_InstructionCheckAnnotation::MEDS_InstructionCheckAnnotation(const std::string &p_rawInputLine)
@@ -135,9 +138,13 @@ void MEDS_InstructionCheckAnnotation::parse()
 	if (m_rawInputLine.find(MEDS_ANNOT_FLOWS_INTO_CRITICAL_SINK)!=string::npos)
 		m_flowsIntoCriticalSink = true;
 
-	if (m_rawInputLine.find(MEDS_ANNOT_IDIOM)!=string::npos)
+	int idiom_pos = m_rawInputLine.find(MEDS_ANNOT_IDIOM);
+	if (idiom_pos != string::npos)
+	{
+		idiom_pos += strlen(MEDS_ANNOT_IDIOM);
+		setIdiomNumber(atoi(m_rawInputLine.substr(idiom_pos).c_str()));
 		m_isIdiom = true;
-
+	}
 
 	// signed vs. unsigned
 	if (m_rawInputLine.find(MEDS_ANNOT_UNSIGNED)!=string::npos)

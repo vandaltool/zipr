@@ -36,7 +36,8 @@ class IntegerTransform32 : public IntegerTransform
 			MEDS_Annotations_t *p_annotations, set<std::string> *p_filteredFunctions, 
 				set<VirtualOffset> *p_warnings);
 
-		int execute();
+		virtual int execute();
+		virtual int executePointerInstrumentation() { assert(0); } // not yet implemented
 
 	private:
 		void handleOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);

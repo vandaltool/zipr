@@ -30,7 +30,6 @@
 #define INSTRUMENT_TRUNCATION
 #define INSTRUMENT_SIGNEDNESS
 
-
 using namespace libTransform;
 
 /**
@@ -305,7 +304,7 @@ void IntegerTransform64::handleSignedness(Instruction_t *p_instruction, const ME
 
 //
 // Saturation Policy
-//	        mul a, b                 ; <instruction to instrument>
+//	            mul a, b                 ; <instruction to instrument>
 //              jno <OrigNext>           ; if no overflows, jump to original fallthrough instruction
 //              mov a, MIN/MAX           ; policy = min-saturate (underflow) / max-saturate (overflow)
 //              of64/uf64 handler        ; call the callback handler (handle diagnostics)

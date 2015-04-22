@@ -3,7 +3,7 @@ CXX=@CXX@
 
 LIB=../lib/libtransform.a
 
-OBJS=Rewrite_Utility.o transform.o integertransform.o leapattern.o integertransform64.o integertransform32.o 
+OBJS=Rewrite_Utility.o transform.o integertransform.o leapattern.o integertransform64.o integertransform32.o pointercheck64.o
 
 all: $(OBJS)
 

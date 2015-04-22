@@ -32,13 +32,12 @@ using namespace libIRDB;
 class IntegerTransform64 : public IntegerTransform
 {
 	public:
-		IntegerTransform64(VariantID_t *, FileIR_t*, MEDS_Annotations_t *p_annotations, 
-			set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_warnings); 
+		IntegerTransform64(VariantID_t *, FileIR_t*, MEDS_Annotations_t *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_warnings); 
 
-		int execute();
+		virtual int execute();
 
 	protected:
-		Instruction_t* addCallbackHandlerSequence(Instruction_t *p_orig, Instruction_t *p_fallthrough, std::string p_detector, int p_policy);
+		virtual Instruction_t* addCallbackHandlerSequence(Instruction_t *p_orig, Instruction_t *p_fallthrough, std::string p_detector, int p_policy);
 		void handleOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
 		void handleUnderflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
 		void handleTruncation(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);

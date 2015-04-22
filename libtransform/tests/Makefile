@@ -30,19 +30,16 @@ all: env_check  ${exes}
 .PHONY: env_check 
 
 .o.exe: 
-#	${PEASOUP_HOME}/tools/ps_link.sh $< -o $@ 
 	gcc -g $< -o $@ 
 #	gcc -m32 $< -o $@ 
-	${PEASOUP_HOME}/tools/ps_analyze64.sh  $@ $@.peasoup --step ilr=off --step concolic=off --step p1transform=off --step isr=off --integer_instrument_idioms --step twitchertransform=off # --integer_warnings_only
+	${PEASOUP_HOME}/tools/ps_analyze.sh  $@ $@.peasoup --step ilr=off --step concolic=off --step p1transform=off --step isr=off --step integertransform=on --step-option integertransform:--instrument-idioms --step-option integertransform:--saturate --step twitchertransform=off 
 
 .c.o:
-	gcc -O2 -c $< 
+	gcc -c $< 
 #	gcc -c -m32 $< 
-#	${PEASOUP_HOME}/tools/ps_comp.sh $< 
 
 .cpp.o:
 	${PEASOUP_HOME}/tools/ps_comp++.sh $< 
-
 
 env_check:
 	@echo checking env vars; \
