@@ -51,11 +51,6 @@ PN_TIMEOUT_VALUE=21600
 DO_CANARIES=on
 CONCOLIC_DIR=concolic.files_a.stratafied_0001
 
-intxform_warnings_only=0  # default: integer warnings only mode is off
-intxform_detect_fp=0      # default: detect benign false positives is on
-                          #   but if determine_program is off, it's a no-op
-intxform_instrument_idioms=0  # default: do not instrument instructions marked as IDIOM by STARS
-
 # JOBID
 
 JOBID="$(basename $1).$$"
@@ -192,10 +187,6 @@ check_options()
 	# We need TEMP as the `eval set --' would nuke the return value of getopt.
 	short_opts="s:t:w:"
 	long_opts="--long step-option: 
-		   --long integer_warnings_only 
-		   --long integer_instrument_idioms 
-		   --long integer_detect_fp 
-		   --long no_integer_detect_fp 
 		   --long step: 
 		   --long timeout: 
 		   --long id:  				
@@ -205,7 +196,6 @@ check_options()
 		   --long watchdog: 
 		   --long backend:  			
 		"
-
 
 	# solaris does not support long option names
 	if [ `uname -s` = "SunOS" ]; then
@@ -255,26 +245,6 @@ check_options()
 			--manual_test_coverage_file) 
 				manual_test_coverage_file=$2
 				shift 2 
-			;;
-			--integer_warnings_only)
-				echo "integer transform: warnings only enabled"
-				intxform_warnings_only=1
-				shift 
-			;;
-			--no_integer_detect_fp)
-				echo "integer transform: benign false positive detection disabled"
-				intxform_detect_fp=0
-				shift 
-			;;
-			--integer_detect_fp)
-				echo "integer transform: benign false positive detection enabled"
-				intxform_detect_fp=1
-				shift 
-			;;
-			--integer_instrument_idioms)
-				echo "integer transform: instrument idioms"
-				intxform_instrument_idioms=1
-				shift 
 			;;
 			-t|--timeout) 
 				set_timer $2 & TIMER_PID=$!
@@ -856,9 +826,6 @@ fi
 # do the basic tranforms we're performing for peasoup 
 perform_step fix_calls mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	
 #gdb --args $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	
-
-
-
 # look for strings in the binary 
 perform_step find_strings none $SECURITY_TRANSFORMS_HOME/libIRDB/test/find_strings.exe $cloneid
 
@@ -959,8 +926,7 @@ if [ -z "$program" ]; then
    program="unknown"
 fi
 
-perform_step integertransform meds_static,clone $PEASOUP_HOME/tools/do_integertransform.sh $cloneid $program $CONCOLIC_DIR $INTEGER_TRANSFORM_TIMEOUT_VALUE $intxform_warnings_only $intxform_detect_fp $intxform_instrument_idioms
-
+perform_step integertransform meds_static,clone $PEASOUP_HOME/tools/do_integertransform.sh $cloneid $program $CONCOLIC_DIR $INTEGER_TRANSFORM_TIMEOUT_VALUE $step_options_integertransform
 
 #
 # perform step to instrument pgm with return shadow stack

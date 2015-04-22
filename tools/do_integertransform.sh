@@ -10,11 +10,12 @@ CLONE_ID=$1
 IDENTIFIED_PROG=$2
 CONCOLIC_DIR=$3
 TIMEOUT=$4
-WARNINGS_ONLY=$5     # 0 or 1
-BENIGN_FP_DETECT=$6  # 0 or 1
-INSTRUMENT_IDIOMS=$7  # 0 or 1
 
-echo "intxform: cloneID=$CLONE_ID identifiedProg=$IDENTIFIED_PROG concolicDir=$CONCOLIC_DIR timeout=$TIMEOUT warningsOnly=$WARNINGS_ONLY benignFpDetect=$BENIGN_FP_DETECT instrumentIdioms=$INSTRUMENT_IDIOMS"
+shift 4
+OPTIONS=$* 
+
+#echo "intxform: cloneID=$CLONE_ID identifiedProg=$IDENTIFIED_PROG concolicDir=$CONCOLIC_DIR timeout=$TIMEOUT warningsOnly=$WARNINGS_ONLY benignFpDetect=$BENIGN_FP_DETECT instrumentIdioms=$INSTRUMENT_IDIOMS options=$OPTIONS"
+echo "intxform: cloneID=$CLONE_ID identifiedProg=$IDENTIFIED_PROG concolicDir=$CONCOLIC_DIR timeout=$TIMEOUT options=$OPTIONS"
 
 # configuration variables
 LIBC_FILTER=$PEASOUP_HOME/tools/libc_functions.txt   # libc and other system library functions
@@ -30,7 +31,8 @@ touch $INTEGER_WARNINGS_FILE
 
 echo "intxform: transforming binary: cloneid=$CLONE_ID identifiedProg=$IDENTIFIED_PROG"
 
-if [ "$BENIGN_FP_DETECT" = "1" ]; then
+echo "$options" | grep "--benign-fp-detect" &> /dev/null 
+if [ $? -eq 0 ]; then
 	echo "INTXFORM: Detection of benign false positives turned on for recognized program: $IDENTIFIED_PROG"
 	if [ "$IDENTIFIED_PROG" != "" ]; then
 		echo "intxform: identifiedProg=$IDENTIFIED_PROG"
@@ -82,20 +84,10 @@ cd $TOP_DIR
 # Transform program but for each instruction present in the list above, use a "CONTINUE" policy to emit a warning (instead of the default CONTROLLED EXIT policy)
 echo "intxform: Final integer transform"
 
-echo "intxform: warnings_only: $WARNINGS_ONLY"
-
-if [ "$WARNINGS_ONLY" != "0" ]; then
-  echo "intxform: warning only mode"
-  $PEASOUP_HOME/tools/update_env_var.sh STRATA_MAX_WARNINGS 0
-  timeout $TIMEOUT $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE --warning
-else
-  echo "intxform: saturating arithmetic is enabled"
-
-  if [ "$INSTRUMENT_IDIOMS" != "0" ]; then
-    echo "intxform: instrument idioms"
-    timeout $TIMEOUT $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE --saturating-arithmetic --instrument-idioms
-  else
-    timeout $TIMEOUT $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE --saturating-arithmetic 
-  fi
+echo "$options" | grep "--warning" &> /dev/null 
+if [ $? -eq 0 ]; then
+	echo "intxform: warning only mode"
+	$PEASOUP_HOME/tools/update_env_var.sh STRATA_MAX_WARNINGS 0
 fi
 
+timeout $TIMEOUT $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE $OPTIONS
