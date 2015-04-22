@@ -446,27 +446,27 @@ void find_strings_in_data(FileIR_t* firp, elf_info_t& ei)
 		{
 		case SHT_REL:
 			if(arch_ptr_bytes()==4)
-				step = sizeof(std::Elf32_Rel);
+				step = sizeof(::Elf32_Rel);
 			else
-				step = sizeof(std::Elf64_Rel);
+				step = sizeof(::Elf64_Rel);
 			break;
 		case SHT_RELA:
 			if(arch_ptr_bytes()==4)
-				step = sizeof(std::Elf32_Rela);
+				step = sizeof(::Elf32_Rela);
 			else
-				step = sizeof(std::Elf64_Rela);
+				step = sizeof(::Elf64_Rela);
 			break;
 		case SHT_SYMTAB:
 		case SHT_DYNSYM:
 			if(arch_ptr_bytes()==4)
 			{
 				offset = sizeof(::Elf32_Word);
-				step = sizeof(std::Elf32_Sym);
+				step = sizeof(::Elf32_Sym);
 			}
 			else
 			{
 				offset = sizeof(::Elf64_Word);
-				step = sizeof(std::Elf64_Sym);
+				step = sizeof(::Elf64_Sym);
 			}
 			break;
 		default:
