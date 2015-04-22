@@ -18,7 +18,7 @@ realpath() {
 # set default values for 
 ##################################################################################
 
-initial_off_phases="isr ret_shadow_stack determine_program stats fill_in_safefr zipr installer watch_allocate cinderella cgc_hlx spawner concolic selective_cfi fptr_shadow concolic"
+initial_off_phases="isr ret_shadow_stack determine_program stats fill_in_safefr zipr installer watch_allocate cinderella cgc_hlx spawner concolic selective_cfi fptr_shadow concolic add_confinement_section"
 
 ##################################################################################
 
@@ -729,9 +729,9 @@ mkdir logs
 #
 # create a stratafied binary that does pc confinement.
 #
-perform_step stratafy_with_pc_confine mandatory sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh $newname.ncexe $newname.stratafied 
+perform_step stratafy_with_pc_confine strata_mandatory,linux_mandatory sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh $newname.ncexe $newname.stratafied 
 cp a.ncexe a.ncexe.orig
-perform_step add_confinement_section mandatory $STRATA_HOME/tools/pc_confinement/add_confinement_section.sh a.ncexe.orig a.ncexe
+perform_step add_confinement_section solaris_mandatory $STRATA_HOME/tools/pc_confinement/add_confinement_section.sh a.ncexe.orig a.ncexe
 
 #
 # Let's output the modified binary
