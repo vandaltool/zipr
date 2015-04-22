@@ -110,19 +110,19 @@ if [ "$DO_APPFW" = "1" ]; then
 #
 BACKTICK=0
 
-#addsigs () {
-#	local sig=$1
-#	# Make backticks separate strings
-#	if [[ "$sig" =~ "\`" ]]; then
-#		if [[ $BACKTICK == 0 ]]; then
-#			BACKTICK=1
-#			echo "\`" >> $datapath/a.ncexe.sigs.$$
-#		fi
-#		sig=$(echo $sig | tr '\`' ' ')
-#	fi
-#	# Split whitespace in arguments and add to sigs
-#	echo "$sig" | tr ' ' '\n' | /bin/grep -v '^[ \t]*$' >> $datapath/a.ncexe.sigs.$$
-#}
+addsigs () {
+	local sig=$1
+	# Make backticks separate strings
+	if [[ "$sig" =~ "\`" ]]; then
+		if [[ $BACKTICK == 0 ]]; then
+			BACKTICK=1
+			echo "\`" >> $datapath/a.ncexe.sigs.$$
+		fi
+		sig=$(echo $sig | tr '\`' ' ')
+	fi
+	# Split whitespace in arguments and add to sigs
+	echo "$sig" | tr ' ' '\n' | /bin/grep -v '^[ \t]*$' >> $datapath/a.ncexe.sigs.$$
+}
 
 cp $datapath/a.ncexe.sigs.orig $datapath/a.ncexe.sigs.$$
 # only trust command line inputs for files that are not setuid/setgid
