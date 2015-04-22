@@ -1,0 +1,20 @@
+to test:
+
+[x] 32,nonPIC,nonOptimized
+[x] 32,nonPIC,optimized
+[x] 32,PIC,nonOptimized
+[x] 32,PIC,optimized
+[x] 32,shared lib, nonOpt
+[x] 32,shared lib, optimized
+[x] verify GetIBTargets() off Instruction_t*
+
+[x] 64,nonPIC,nonOptimized
+[x] 64,nonPIC,optimized
+[x] 64,PIC,nonOptimized
+[x] 64,PIC,optimized
+[x] 64,shared lib, nonOpt
+[x] 64,shared lib, optimized
+[x] verify GetIBTargets() off Instruction_t*
+
+[ ] make sure fix_calls copies the indirect branch targets
+[ ] induce head-merge, and tail-merge in switch case

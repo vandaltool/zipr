@@ -502,7 +502,7 @@ Instruction_t* WSC_Instrument::GetFailCode()
 
 bool	WSC_Instrument::add_null_check(Instruction_t* insn, const CSO_WarningRecord_t *const wr)
 {
-
+	m_num_nullcheck_instrumentations;
 
 	DISASM d;
 	insn->Disassemble(d);
@@ -543,7 +543,7 @@ bool	WSC_Instrument::add_null_check(Instruction_t* insn, const CSO_WarningRecord
 
 bool	WSC_Instrument::add_bounds_check(Instruction_t* insn, const CSO_WarningRecord_t *const wr)
 {
-
+	m_num_boundscheck_instrumentations;
 
 	DISASM d;
 	insn->Disassemble(d);
@@ -616,6 +616,10 @@ bool	WSC_Instrument::add_segfault_checking(Instruction_t* insn)
 
 	bool success=true;
 
+	/* no CSO records, sandbox the instruction */
+	if (warning_records[insn].size() == 0 && DoPromiscuousSandboxing())
+		return add_segfault_checking(insn, NULL);
+
 	for(CSO_WarningRecordSet_t::iterator it=warning_records[insn].begin();
 		it!=warning_records[insn].end();
 		++it
@@ -629,7 +633,6 @@ bool	WSC_Instrument::add_segfault_checking(Instruction_t* insn)
 			success = success && add_null_check(insn, wr);
 		else if(wr->GetType()==CSOWE_TaintedDereference)
 			success = success && add_segfault_checking(insn, wr);
-		
 	}
 	return success;
 }
@@ -641,6 +644,8 @@ bool	WSC_Instrument::add_segfault_checking(Instruction_t* insn, const CSO_Warnin
 	insn->Disassemble(d);
 	char tmpbuf[100];
 	Instruction_t* callback=GetCallbackCode(), *tmp=insn;
+
+	m_num_segfault_instrumentations++;
 
 	cout<<"Adding callback to "<<d.CompleteInstr<<endl;
 
@@ -656,18 +661,21 @@ bool	WSC_Instrument::add_segfault_checking(Instruction_t* insn, const CSO_Warnin
 
 bool	WSC_Instrument::add_segfault_checking()
 {
-	int success=true;
+	bool success=true;
 	cout<<"Checking "<<to_protect.size()<< " instructions for protections "<<endl;
 	for(InstructionSet_t::iterator it=to_protect.begin();
 		it!=to_protect.end();
 		++it)
 	{
 		Instruction_t *insn=*it;
-		cout<<"Testing "<<insn->getDisassembly()<<endl;
+		cout<<"Testing "<<insn->GetAddress()->GetVirtualOffset() <<" " << insn->getDisassembly()<<endl;
 		DISASM d;
 		insn->Disassemble(d);
 		if(insn->GetBaseID()!=BaseObj_t::NOT_IN_DATABASE && needs_wsc_segfault_checking(insn,d))
-			success=success && add_segfault_checking(insn);
+		{
+			success = success && add_segfault_checking(insn);
+			m_num_segfault_checking++;
+		}
 	}
 
 	return success;
@@ -736,9 +744,10 @@ template<class T> void check_result(const T& t)
 		cerr<<"Failed in check_results with t="<<t<<endl;
 }
 
-bool WSC_Instrument::FindInstructionsToProtect(std::string filename)
+bool WSC_Instrument::FindInstructionsToProtect(std::string filename, int &num_instructions)
 {
 	bool success=true;
+	num_instructions = 0;
 
 	// no filename, skip this step
 	if(filename=="")
@@ -806,7 +815,7 @@ bool WSC_Instrument::FindInstructionsToProtect(std::string filename)
 		}
 		else
 		{
-			success=false;
+			success = false;
 			cerr<<"***************************************************************************************************************************"<<endl;
 			cerr<<"***************************************************************************************************************************"<<endl;
 			cerr<<"					Cannot find insn for addr "<<hex<<addr<<endl;
@@ -816,6 +825,7 @@ bool WSC_Instrument::FindInstructionsToProtect(std::string filename)
 		cout<<endl;
 	}
 	
+	num_instructions = to_protect.size();
 	return success;	
 }
 
@@ -837,16 +847,36 @@ libIRDB::Instruction_t* WSC_Instrument::FindInstruction(libIRDB::virtual_offset_
 	return NULL;	// can't find
 }
 
-
+std::ostream& WSC_Instrument::displayStatistics(std::ostream &os)
+{
+	os << "# ATTRIBUTE num_to_protect=" 
+		<< dec << to_protect.size() << std::endl;
+	os << "# ATTRIBUTE num_segfault_instrumentations=" 
+		<< dec << m_num_segfault_instrumentations << std::endl;
+	os << "# ATTRIBUTE num_segfault_checking=" 
+		<< dec << m_num_segfault_checking << std::endl;
+	os << "# ATTRIBUTE num_nullcheck_instrumentations="  
+		<< dec << m_num_nullcheck_instrumentations << std::endl;
+	os << "# ATTRIBUTE num_boundscheck_instrumentations="  
+		<< dec << m_num_boundscheck_instrumentations << std::endl;
+	return os;
+}
 
 bool WSC_Instrument::execute()
 {
 	bool success=true;
 
-	success = success && add_init_call();
-	success = success && add_allocation_instrumentation();
-	success = success && add_segfault_checking();
-	success = success && add_receive_limit();
+	if (DoSandboxing()) 
+	{
+		success = success && add_init_call();
+		success = success && add_allocation_instrumentation();
+		success = success && add_segfault_checking();
+	}
+
+	if (DoInputFiltering())
+	{
+		success = success && add_receive_limit();
+	}
 
 	return success;
 }

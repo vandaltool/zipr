@@ -38,17 +38,18 @@ class Instruction_t : public BaseObj_t
         db_id_t GetOriginalAddressID() const { return orig_address_id; } 
         Instruction_t* GetFallthrough() const { return fallthrough; } 
         Instruction_t* GetTarget() const { return target; } 
+		ICFS_t* GetIBTargets() const { return icfs; }
         std::string GetDataBits()  const { return data; } 
         std::string GetCallback()  const { return callback; } 
         std::string GetComment()   const { return comment; } 
 
-		InstructionCFGNodeSet_t& GetIBTargets(); 
   
         void SetAddress(AddressID_t* newaddr)  { my_address=newaddr; }
         void SetFunction(Function_t* func   )  { my_function=func;}
         void SetOriginalAddressID(db_id_t origid) { orig_address_id=origid; /* you shouldn't do this, unless you know what you're doing! */}
         void SetFallthrough(Instruction_t* i) { fallthrough=i; }
         void SetTarget(Instruction_t* i)      { target=i; }
+        void SetIBTargets(ICFS_t *p_icfs)     { icfs=p_icfs; }
         void SetDataBits(std::string orig)    { data=orig; }
         void SetCallback(std::string orig)    { callback=orig; }
         void SetComment(std::string orig)     { comment=orig; }
@@ -82,5 +83,5 @@ class Instruction_t : public BaseObj_t
         std::string     comment;
 		AddressID_t*    indTarg;
 		RelocationSet_t relocs;
-		InstructionCFGNodeSet_t ibtargets; // IB targets
+		ICFS_t*         icfs;
 };

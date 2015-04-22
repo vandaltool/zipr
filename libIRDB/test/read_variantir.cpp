@@ -32,15 +32,12 @@ main(int argc, char* argv[])
 
 	if(argc!=2)
 	{
-		cerr<<"Usage: create_variant <id>"<<endl;
+		cerr<<"Usage: read_variantir <id>"<<endl;
 		exit(-1);
 	}
 
 
-
-
 	VariantID_t *pidp=NULL;
-	FileIR_t * firp=NULL;
 	try 
 	{
 		/* setup the interface to the sql server */
@@ -52,44 +49,86 @@ main(int argc, char* argv[])
 		assert(pidp->IsRegistered()==true);
 
 		cout<<"New Variant, after reading registration, is: "<<*pidp << endl;
+		for(set<File_t*>::iterator it=pidp->GetFiles().begin();
+                        it!=pidp->GetFiles().end();
+                        ++it
+			)
+		{
+			File_t* this_file=*it;
+			assert(this_file);
 
-		// read the db  
-		firp=new FileIR_t(*pidp);
+			cout<<"Analyzing file "<<this_file->GetURL()<<endl;
+
+			// read the db  
+			FileIR_t* firp=new FileIR_t(*pidp, this_file);
+			assert(firp);
+
+			for(
+				set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
+				it!=firp->GetInstructions().end(); 
+				++it
+				)
+			{
+				Instruction_t* insn=*it;
+				cout<<"Found insn at addr:" << std::hex << insn->GetAddress()->GetVirtualOffset() << " " << insn->getDisassembly();
+
+				ICFS_t* ibtargets = insn->GetIBTargets();
+				if (ibtargets) 
+					cout << " ibtargets_id: " << ibtargets->GetBaseID() << endl;
+				else						
+					cout << endl;
 
 
+#ifdef foobar 
+				ICFS_t::iterator ibtargets_it;
+
+				if (ibtargets->size() > 0)
+					cout<<"   indirect branch targets: ";
+
+				int count;
+				for (count = 0, ibtargets_it = ibtargets->begin(); ibtargets_it != ibtargets->end(); ++ibtargets_it, ++count)
+				{
+					Instruction_t* insn = *ibtargets_it;
+					assert(insn);
+					cout<< std::hex << insn->GetAddress()->GetVirtualOffset() << " ";
+					if (count >= 10) {
+						cout << "...";
+						break;
+					}
+				}
+				if (ibtargets->size() > 0)
+					cout << dec << endl;
+#endif
+			}
+
+			for(ICFSSet_t::const_iterator it=firp->GetAllICFS().begin();
+				it != firp->GetAllICFS().end();
+				++it)
+			{
+				ICFS_t *icfs = *it;
+				cout << "icfs set id: " << icfs->GetBaseID() << " complete: " << icfs->IsComplete() << "  #ibtargets: " << dec << icfs->size() << " | ";
+				int count = 0;
+				for(ICFS_t::const_iterator it2=icfs->begin(); 
+					it2!=icfs->end(); ++it2, ++count)
+				{
+					Instruction_t* insn = *it2;
+					assert(insn);
+					cout<< std::hex << insn->GetAddress()->GetVirtualOffset() << " ";
+					if (count >= 10) {
+						cout << "...";
+						break;
+					}
+				}
+				cout << endl;
+			}
+			delete firp;
+		}
+		delete pidp;
 	}
 	catch (DatabaseError_t pnide)
 	{
 		cout<<"Unexpected database error: "<<pnide<<endl;
 		exit(-1);
-        }
-
-	assert(firp && pidp);
-
-	for(
-		set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
-		it!=firp->GetInstructions().end(); 
-		++it
-	   )
-	{
-		Instruction_t* insn=*it;
-		cout<<"Found insn at addr:" << std::hex << insn->GetAddress()->GetVirtualOffset() << " " << insn->getDisassembly() << endl;
-		InstructionCFGNodeSet_t ibtargets = insn->GetIBTargets();
-		InstructionCFGNodeSet_t::iterator ibtargets_it;
-
-		for (ibtargets_it = ibtargets.begin(); ibtargets_it != ibtargets.end(); ++ibtargets_it)
-		{
-			InstructionCFGNode_t *node = *ibtargets_it;
-			assert(node);
-			if (node->IsHellnode())
-				cout<<"   indirect branch target: hellnode" << std::endl;
-			else
-				cout<<"   indirect branch target: " << std::hex << node->GetInstruction()->GetAddress()->GetVirtualOffset() << dec << endl;
-		}
 	}
 
-	cout << firp->GetIBTargets().toString() << endl;;
-
-	delete firp;
-	delete pidp;
 }

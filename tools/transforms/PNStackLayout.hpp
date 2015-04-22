@@ -33,9 +33,10 @@
 //attacker is trying to exceed the frame size, and the vulnerable buffer
 //is at the bottom of the stack, but moved by us to the top, the 
 //overflow might exceed our padding and corrupt other stack frames.  
-const int MIN_PADDING = 100;
-const int MAX_PADDING = MIN_PADDING*2;
-const int RECURSIVE_MIN_PADDING = 64;
+const int MIN_PADDING = 64;
+const int MAX_PADDING = 64;
+//const int MAX_PADDING = MIN_PADDING*2;
+const int RECURSIVE_MIN_PADDING = 32;
 const int RECURSIVE_MAX_PADDING = RECURSIVE_MAX_PADDING*2;
 
 

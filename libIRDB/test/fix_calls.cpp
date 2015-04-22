@@ -459,6 +459,10 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 	callinsn->SetFunction(insn->GetFunction());
 	callinsn->SetComment(insn->GetComment()+" Jump part");
 
+	/* handle ib targets */
+	callinsn->SetIBTargets(insn->GetIBTargets());
+	insn->SetIBTargets(NULL);
+
 	// We need the control transfer instruction to be from the orig program because 
 	// if for some reason it's fallthrough/target isn't in the DB, we need to correctly 
 	// emit fallthrough/target rules
@@ -512,7 +516,6 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 	insn->GetRelocations().insert(reloc);
 	firp->GetRelocations().insert(reloc);
 
-
 	/* If the fallthrough is not marked as indirectly branchable-to, then mark it so */
 	if(newindirtarg && !newindirtarg->GetIndirectBranchTargetAddress())
 	{
@@ -522,12 +525,11 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 		newaddr->SetFileID(newindirtarg->GetAddress()->GetFileID());
 		newaddr->SetVirtualOffset(newindirtarg->GetAddress()->GetVirtualOffset());
 
-		/* set the insturction and include this address in the list of addrs */
+		/* set the instruction and include this address in the list of addrs */
 		newindirtarg->SetIndirectBranchTargetAddress(newaddr);
 		firp->GetAddresses().insert(newaddr);
 	}
 
-	
 }
 
 
@@ -848,6 +850,7 @@ main(int argc, char* argv[])
 			fix_all_calls(firp,true,fix_all);
 			fix_other_pcrel(firp);
 			firp->WriteToDB();
+
 			cout<<"Done!"<<endl;
 			delete firp;
 
