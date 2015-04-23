@@ -8,6 +8,7 @@ struct foobar {
   int y;
 };
 
+/*
 int foobar(struct foobar *myarray, struct foobar *(myarray2d[2][MAX_SIZE/2]))
 {
 	int i, j;
@@ -20,30 +21,34 @@ int foobar(struct foobar *myarray, struct foobar *(myarray2d[2][MAX_SIZE/2]))
 	}
 	return sum;
 }
+*/
 
 int main(int argc, char **argv)
 {
 	struct foobar myarray[MAX_SIZE];
-	struct foobar myarray2d[2][MAX_SIZE/2];
-	struct foobar* ptr = &myarray[0];
+//	struct foobar myarray2d[2][MAX_SIZE/2];
+	struct foobar* ptr = myarray;
 	int i;
-	int j;
-	int z = 100;
+	unsigned long long z = 100;
+	int index = 1;
 	
 	if (argc > 1)
-		z = atoi(argv[1]);
+		z = strtoull(argv[1], NULL, 10);
 
-	for (i = 0; i < MAX_SIZE; i++)
+	for (index = i = z * z; ; i*=z, i++)
 	{
-		ptr[i].x = i;
-		ptr[i].y = i+1;
+		printf("i = %d, index = %d\n", i, index);
+		index += z;
+		ptr[index].x = i;
 	}
 
+/*
 	for (i = 0; i < 2; ++i)
 	for (j = 0; j < z/2; ++j)
 		myarray2d[i][j] = ptr[i * 2 + j];
 
-	int x = foobar(&myarray, &myarray2d);
-	printf("x = %d\n", x);
+*/
+//	int x = foobar(&myarray, &myarray2d);
+//	printf("x = %d\n", x);
 	return 0;
 }

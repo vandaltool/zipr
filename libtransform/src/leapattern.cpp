@@ -73,13 +73,19 @@ LEAPattern::LEAPattern(const MEDS_InstructionCheckAnnotation& p_annotation)
 	if(regexec(&m_regex_reg_plus_reg, p_annotation.getTarget().c_str(), max, pmatch, 0)==0)
 	{
 		// pattern is of the form reg+reg, e.g.:   EDX+EAX
-		m_isRegPlusReg = true;
-		m_reg1 = Register::getRegister(p_annotation.getTarget().substr(0,3));
-		m_reg2 = Register::getRegister(p_annotation.getTarget().substr(4,3));
+		//                                         r8+rbp
+		//                                         r8+r9
+		//                                         rax+r9
+		string r1, r2;
+		extractOperands(p_annotation.getTarget(), r1, r2);
+		cerr << "leapattern: extract ops: " << r1 << " " << r2 << endl;
+		m_reg1 = Register::getRegister(r1);
+		m_reg2 = Register::getRegister(r2);
 
 		if (m_reg1 != Register::UNKNOWN && m_reg2 != Register::UNKNOWN)
 		{
 			countMatch++;
+			m_isRegPlusReg = true;
 			m_isValid = true;
 			cerr << "leapattern: reg+reg:" << Register::toString(m_reg1) << " " << Register::toString(m_reg2) << endl;  
 		}
@@ -89,13 +95,16 @@ LEAPattern::LEAPattern(const MEDS_InstructionCheckAnnotation& p_annotation)
 	{
 		// pattern is of the form reg*reg, e.g.:   EDX*EAX
 		// nb: is this even a valid pattern -- not used 
-		m_isRegPlusReg = true;
-		m_reg1 = Register::getRegister(p_annotation.getTarget().substr(0,3));
-		m_reg2 = Register::getRegister(p_annotation.getTarget().substr(4,3));
+		string r1, r2;
+		extractOperands(p_annotation.getTarget(), r1, r2);
+		m_reg1 = Register::getRegister(r1);
+		m_reg2 = Register::getRegister(r2);
+		cerr << "leapattern: extract ops: " << r1 << " " << r2 << endl;
 
 		if (m_reg1 != Register::UNKNOWN && m_reg2 != Register::UNKNOWN)
 		{
 			countMatch++;
+			m_isRegTimesReg = true;
 			m_isValid = true;
 			cerr << "leapattern: reg*reg:" << Register::toString(m_reg1) << " " << Register::toString(m_reg2) << endl;  
 		}
@@ -109,31 +118,36 @@ LEAPattern::LEAPattern(const MEDS_InstructionCheckAnnotation& p_annotation)
 		// pattern is of the form: reg+constant, e.g.: EDX+16
 		// pattern is of the form: reg+-constant, e.g.: EAX+-16
 		// note that constant value of annotation is in decimal (not hex)
-		m_isRegPlusConstant = true;
-		m_reg1 = Register::getRegister(p_annotation.getTarget().substr(0,3));
+		string r1, k;
+		extractOperands(p_annotation.getTarget(), r1, k);
+		m_reg1 = Register::getRegister(r1);
+		cerr << "leapattern: extract ops: " << r1 << " " << k << endl;
 
-		stringstream constantSS(p_annotation.getTarget().substr(4));
+		stringstream constantSS(k);
 		if (constantSS >> m_constant)
 		{
+			m_isRegPlusConstant = true;
 			m_isValid = true;
-		countMatch++;
-			cerr << "leapattern: reg+-constant: stream: " << p_annotation.getTarget().substr(4) << " constant: " << dec << m_constant << " annotation: " << p_annotation.toString() << endl;
+			countMatch++;
+			cerr << "leapattern: reg+-constant: stream: " << Register::toString(m_reg1) << " constant: " << dec << m_constant << " annotation: " << p_annotation.toString() << endl;
 		}
-
 	}
 	
 	if(regexec(&m_regex_reg_times_constant, p_annotation.getTarget().c_str(), max, pmatch, 0)==0)
 	{
 		// pattern is of the form: reg*constant, e.g.: EDX*4
 		// note that constant value of annotation is in decimal (not hex)
-		m_isRegTimesConstant = true;
-		m_reg1 = Register::getRegister(p_annotation.getTarget().substr(0,3));
-		stringstream constantSS(p_annotation.getTarget().substr(4));
+		string r1, k;
+		extractOperands(p_annotation.getTarget(), r1, k);
+		cerr << "leapattern: extract ops: " << r1 << " " << k << endl;
+		m_reg1 = Register::getRegister(r1);
+		stringstream constantSS(k);
 		if (constantSS >> m_constant)
 		{
-		countMatch++;
-		cerr << "leapattern: reg*constant: stream: " << p_annotation.getTarget().substr(4) << " constant: " << dec << m_constant << " annotation: " << p_annotation.toString() << endl;
+			countMatch++;
+			cerr << "leapattern: reg*constant: stream: " << p_annotation.getTarget().substr(4) << " constant: " << dec << m_constant << " annotation: " << p_annotation.toString() << endl;
 			m_isValid = true;
+			m_isRegTimesConstant = true;
 		}
 	}
 
@@ -182,4 +196,38 @@ Register::RegisterName LEAPattern::getRegister2() const
 int LEAPattern::getConstant() const
 {
 	return m_constant;
+}
+
+// assume is of the form:
+//       <operand><sign>[minus]<operand>
+// where <operand> is a register or constant,
+//       <sign> is * or +
+void LEAPattern::extractOperands(const string target, string& op1, string& op2)
+{
+	int multiplyPos = target.find('*');
+	int plusPos = target.find('+');
+	int minusPos = target.find('-');
+
+	int signPos = -1;
+	if (multiplyPos >= 0) signPos = multiplyPos;
+	if (plusPos >= 0) signPos = plusPos;
+
+	op1 = op2 = "";
+
+	if (signPos < 0) return;
+
+	int op1len = signPos;
+	int op2len;
+	
+	if (minusPos >= 0) 
+			op2len = target.size() - minusPos - 1;
+	else
+			op2len = target.size() - signPos - 1;
+
+	op1 = target.substr(0, op1len);
+
+	if (minusPos >= 0) 
+		op2 = target.substr(signPos+2, op2len); // e.g., rax+-5
+	else
+		op2 = target.substr(signPos+1, op2len);
 }

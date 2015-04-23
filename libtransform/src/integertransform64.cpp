@@ -321,10 +321,14 @@ bool IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction,
 		logMessage(__func__, p_annotation, "unknown target register");
 		return false;
 	}
-	else if (targetReg == Register::RSP || targetReg == Register::RBP ||
-		targetReg == Register::ESP || targetReg == Register::EBP)
+	else if (!instrumentSP() && (targetReg == Register::RSP || targetReg == Register::ESP)) 
 	{
-		logMessage(__func__, p_annotation, "target register is ESP/RSP or EBP/RBP: skip");
+		logMessage(__func__, "target register is esp/rsp -- skipping: ");
+		return false;
+	}
+	else if (!instrumentFP() && (targetReg == Register::RBP || targetReg == Register::EBP)) 
+	{
+		logMessage(__func__, "target register is ebp/rbp -- skipping: ");
 		return false;
 	}
 
@@ -387,11 +391,19 @@ bool IntegerTransform64::addOverflowCheckNoFlag(Instruction_t *p_instruction, co
 		return false;
 	}
 
-	if (leaPattern.getRegister1() == Register::UNKNOWN ||
-		leaPattern.getRegister1() == Register::RSP || leaPattern.getRegister1() == Register::RBP ||
-		leaPattern.getRegister1() == Register::ESP || leaPattern.getRegister1() == Register::EBP)
+	if (leaPattern.getRegister1() == Register::UNKNOWN)
 	{
-		logMessage(__func__, "destination register is unknown, r/esp or r/ebp -- skipping: ");
+		logMessage(__func__, "destination register is unknown -- skipping: ");
+		return false;
+	}
+	else if(!instrumentSP() && (leaPattern.getRegister1() == Register::RSP || leaPattern.getRegister1() == Register::ESP))
+	{
+		logMessage(__func__, "destination register is r/esp -- skipping: ");
+		return false;
+	}
+	else if(!instrumentFP() && (leaPattern.getRegister1() == Register::RBP || leaPattern.getRegister1() == Register::EBP))
+	{
+		logMessage(__func__, "destination register is r/ebp -- skipping: ");
 		return false;
 	}
 
@@ -406,10 +418,14 @@ bool IntegerTransform64::addOverflowCheckNoFlag(Instruction_t *p_instruction, co
 			logMessage(__func__, "lea reg reg pattern: error retrieving register: reg1: " + Register::toString(reg1) + " reg2: " + Register::toString(reg2) + " target: " + Register::toString(target));
 			return false;
 		}
-		else if (reg2 == Register::RSP || target == Register::RBP ||
-	           reg2 == Register::ESP || target == Register::EBP) 
+		else if (!instrumentSP() && (reg2 == Register::RSP || reg2 == Register::ESP || reg1 == Register::RSP || reg1 == Register::ESP )) 
 		{
-			logMessage(__func__, "source or target register is esp/rsp/ebp/rbp -- skipping: ");
+			logMessage(__func__, "source or target register is esp/rsp -- skipping: ");
+			return false;
+		}
+		else if (!instrumentFP() && (reg2 == Register::RBP || reg2 == Register::EBP || reg1 == Register::RBP || reg1 == Register::EBP )) 
+		{
+			logMessage(__func__, "source or target register is ebp/rbp -- skipping: ");
 			return false;
 		}
 		else
@@ -429,12 +445,17 @@ bool IntegerTransform64::addOverflowCheckNoFlag(Instruction_t *p_instruction, co
 
 		if (reg1 == Register::UNKNOWN || target == Register::UNKNOWN)
 		{
-			logMessage(__func__, "lea reg reg pattern: error retrieving register: reg1: " + Register::toString(reg1) + " target: " + Register::toString(target));
+			logMessage(__func__, "lea reg const pattern: error retrieving register: reg1: " + Register::toString(reg1) + " target: " + Register::toString(target));
 			return false;
 		}
-		else if (target == Register::RSP || target == Register::ESP || target == Register::EBP || target == Register::RBP) 
+		else if (!instrumentSP() && (target == Register::RSP || target == Register::ESP)) 
 		{
-			logMessage(__func__, "target register is esp/rsp/ebp/rbp -- skipping: ");
+			logMessage(__func__, "target register is esp/rsp -- skipping: ");
+			return false;
+		}
+		else if (!instrumentFP() && (target == Register::RBP || target == Register::EBP)) 
+		{
+			logMessage(__func__, "target register is ebp/rbp -- skipping: ");
 			return false;
 		}
 		else

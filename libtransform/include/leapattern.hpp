@@ -45,6 +45,9 @@ class LEAPattern {
 		int getConstant() const;
 
 	private:
+		void extractOperands(const string target, string& op1, string& op2);
+
+	private:
 		bool                     m_isValid;
 		bool                     m_isRegPlusReg;
 		bool                     m_isRegPlusConstant;

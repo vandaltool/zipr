@@ -52,6 +52,12 @@ class IntegerTransform : public Transform
 		bool isBlacklisted(Function_t *func);
 	
 	protected:
+		void setInstrumentSP(bool sp) { m_instrumentSP = sp; }
+		bool instrumentSP() const { return m_instrumentSP; } 
+		void setInstrumentFP(bool fp) { m_instrumentFP = fp; }
+		bool instrumentFP() const { return m_instrumentFP; } 
+
+	protected:
 		MEDS_Annotations_t* getAnnotations() { return m_annotations; }
 
 		std::set<VirtualOffset>*  m_benignFalsePositives;
@@ -83,6 +89,9 @@ class IntegerTransform : public Transform
 		unsigned m_numSignednessSkipped; 
 
 		unsigned m_numFP; 
+
+		bool m_instrumentSP;
+		bool m_instrumentFP;
 };
 
 }

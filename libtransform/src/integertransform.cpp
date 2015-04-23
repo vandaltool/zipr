@@ -86,6 +86,9 @@ set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_benignFalsePositive
 	m_numUnderflowsSkipped = 0;
 	m_numTruncationsSkipped = 0;
 	m_numSignednessSkipped = 0;
+
+	m_instrumentSP = false;
+	m_instrumentFP = false;
 }
 
 bool IntegerTransform::isBlacklisted(Function_t *func)
