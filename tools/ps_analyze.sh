@@ -18,10 +18,9 @@ realpath() {
 # set default values for 
 ##################################################################################
 
-initial_off_phases="isr ret_shadow_stack determine_program stats fill_in_safefr zipr installer watch_allocate cinderella cgc_hlx sfuzz spawner concolic selective_cfi fptr_shadow concolic add_confinement_section input_filtering"
+initial_on_phases="stratafy_with_pc_confine create_binary_script is_so gather_libraries meds_static pdb_register fill_in_cfg fill_in_safefr fill_in_indtargs clone fix_calls fast_spri generate_spri spasm"
 
 ##################################################################################
-
 
 ulimit -s unlimited
 
@@ -178,6 +177,18 @@ set_step_option()
 check_options()
 {
 
+	#
+	# turn on initial default set of phases
+	#
+	for phase in $initial_on_phases
+	do
+		echo $phases_spec|egrep "$phase=" > /dev/null
+		if [ ! $? -eq 0 ];
+		then
+			phases_spec="$phases_spec $phase=on"
+		fi
+	done
+
 	# 
 	# loop to process options.
 	# 
@@ -216,7 +227,7 @@ check_options()
 			--backend)
 				if [ "X$2" = "Xzipr" ]; then
 					echo using Zipr backend
-					phases_off=" $phases_off generate_spri=off spasm=off fast_annot=off zipr=on\
+					phases_spec=" $phases_spec stratafy_with_pc_confine=off generate_spri=off spasm=off fast_annot=off zipr=on\
 						preLoaded_ILR1=off  preLoaded_ILR2=off fast_spri=off "
 				elif [ "X$2" = "Xstrata" ]; then
 					echo using Strata backend
@@ -235,7 +246,7 @@ check_options()
             		;;
 			-s|--step) 
 				check_step_option $2
-				phases_off=" $phases_off $2 "
+				phases_spec=" $phases_spec $2 "
 				shift 2 
 			;;
 			--manual_test_script) 
@@ -268,9 +279,9 @@ check_options()
 	done
 
 #	if [ -z $manual_test_script ]; then
-#		phases_off=" $phases_off manual_test=off"
+#		phases_spec=" $phases_spec manual_test=off"
 #	else
-#		phases_off=" $phases_off manual_test=on"
+#		phases_spec=" $phases_spec manual_test=on"
 #	fi
 
 	# report errors if found
@@ -282,24 +293,25 @@ check_options()
 		exit -3;	
 	fi
 
-	for phase in $initial_off_phases
-	do
+#	for phase in $initial_off_phases
+#	do
 
 		# --step $phase=(on|off) not specified on the command line
 		# default policy is off
 		# to make the default policy on, get rid of this block of code
-		echo $phases_off|egrep "$phase=" > /dev/null
-		if [ ! $? -eq 0 ];
-		then
-			# by default it's off
-			phases_off="$phases_off $phase=off"
-		fi
-	done
+#		echo $phases_spec|egrep "$phase=" > /dev/null
+#		if [ ! $? -eq 0 ];
+#		then
+#			# by default it's off
+#			phases_spec="$phases_spec $phase=off"
+#		fi
+#	done
+
 
 	# turn off heaprand, signconv_func_monitor, and watchdog double_free if twitcher is on for now
 	is_step_on twitchertransform
 	if [[ $? = 1 && "$TWITCHER_HOME" != "" ]]; then
-		phases_off="$phases_off heaprand=off signconv_func_monitor=off watchdog=off double_free=off"
+		phases_spec="$phases_spec heaprand=off signconv_func_monitor=off watchdog=off double_free=off"
 	fi
 
 	#
@@ -319,15 +331,22 @@ is_step_on()
 {
 	local step=$1
 
-
-	echo "$phases_off"|egrep " $step=off" > /dev/null
+	# check for phases explicitly turned off
+	echo "$phases_spec"|egrep " $step=off" > /dev/null
 	grep_res=$?
 	if [ $grep_res -eq 0 ] ; then
 		return 0
 	fi
 
-	# for now, all steps are on unless explicitly set to off
-	return 1
+	# determine whether phase is on
+	echo "$phases_spec"|egrep " $step=on" > /dev/null
+	grep_res=$?
+	if [ $grep_res -eq 0 ] ; then
+		return 1
+	fi
+
+	# all steps are off unless explicitly set to on
+	return 0
 }
 
 #
@@ -711,9 +730,9 @@ mkdir logs
 #
 # create a stratafied binary that does pc confinement.
 #
-perform_step stratafy_with_pc_confine strata_mandatory,linux_mandatory sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh $newname.ncexe $newname.stratafied 
+perform_step stratafy_with_pc_confine none sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh $newname.ncexe $newname.stratafied 
 cp a.ncexe a.ncexe.orig
-perform_step add_confinement_section solaris_mandatory $STRATA_HOME/tools/pc_confinement/add_confinement_section.sh a.ncexe.orig a.ncexe
+perform_step add_confinement_section none $STRATA_HOME/tools/pc_confinement/add_confinement_section.sh a.ncexe.orig a.ncexe
 
 #
 # Let's output the modified binary
@@ -825,7 +844,6 @@ fi
 
 # do the basic tranforms we're performing for peasoup 
 perform_step fix_calls mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	
-#gdb --args $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	
 # look for strings in the binary 
 perform_step find_strings none $SECURITY_TRANSFORMS_HOME/libIRDB/test/find_strings.exe $cloneid
 
@@ -871,9 +889,9 @@ fi
 #At this point we will know if manual testing should be turned off automatically
 #i.e., we will know if a manual_test_script file exists.
 if [ -z $manual_test_script ]; then
-	phases_off=" $phases_off manual_test=off"
+	phases_spec=" $phases_spec manual_test=off"
 else
-	phases_off=" $phases_off manual_test=on"
+	phases_spec=" $phases_spec manual_test=on"
 fi
 
 #
@@ -901,7 +919,7 @@ fi
 #
 # cinderella: infer malloc and other libc functions
 #
-perform_step cinderella clone,fill_in_indtargs,fill_in_cfg,meds2pdb $PEASOUP_HOME/tools/do_cinderella.sh $cloneid
+perform_step cinderella clone,fill_in_indtargs,fill_in_cfg $PEASOUP_HOME/tools/do_cinderella.sh $cloneid
 
 #
 # For CGC, pad malloc
@@ -941,10 +959,10 @@ if [[ "$TWITCHER_HOME" != "" && -d "$TWITCHER_HOME" ]]; then
 fi
 
 # input filtering
-perform_step input_filtering clone,fill_in_indtargs,fill_in_cfg,meds2pdb $SECURITY_TRANSFORMS_HOME/tools/watch_syscall/watch_syscall.exe  --varid $cloneid --do_input_filtering $step_options_input_filtering
+perform_step input_filtering clone,fill_in_indtargs,fill_in_cfg $SECURITY_TRANSFORMS_HOME/tools/watch_syscall/watch_syscall.exe  --varid $cloneid --do_input_filtering $step_options_input_filtering
 
 # watch syscalls
-perform_step watch_allocate clone,fill_in_indtargs,fill_in_cfg,meds2pdb $SECURITY_TRANSFORMS_HOME/tools/watch_syscall/watch_syscall.exe  --varid $cloneid --do_sandboxing $step_options_watch_allocate
+perform_step watch_allocate clone,fill_in_indtargs,fill_in_cfg,pdb_register $SECURITY_TRANSFORMS_HOME/tools/watch_syscall/watch_syscall.exe  --varid $cloneid --do_sandboxing $step_options_watch_allocate
 
 # only do ILR for main objects that aren't relocatable.  reloc. objects 
 # are still buggy for ILR
@@ -976,7 +994,7 @@ perform_step spawner stratafy_with_pc_confine  $PEASOUP_HOME/tools/do_spawner.sh
 
 
 # zipr
-perform_step zipr clone,fill_in_indtargs,fill_in_cfg,meds2pdb $ZIPR_INSTALL/bin/zipr.exe -v $cloneid -c $ZIPR_INSTALL/bin/callbacks.exe -j $PS_OBJCOPY
+perform_step zipr clone,fill_in_indtargs,fill_in_cfg,pdb_register $ZIPR_INSTALL/bin/zipr.exe -v $cloneid -c $ZIPR_INSTALL/bin/callbacks.exe -j $PS_OBJCOPY
 
 # copy TOCTOU tool here if it exists
 if [[ "$CONCURRENCY_HOME/toctou_tool" != "" && -d "$CONCURRENCY_HOME/toctou_tool" ]]; then
