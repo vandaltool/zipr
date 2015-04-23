@@ -304,6 +304,7 @@ libtransform/src/leapattern.cpp -text
 libtransform/src/pointercheck64.cpp -text
 libtransform/src/transform.cpp -text
 libtransform/tests/Makefile -text
+libtransform/tests/Makefile.pointers -text
 libtransform/tests/austin/array.c -text
 libtransform/tests/austin/branch.c -text
 libtransform/tests/austin/malloc.c -text
@@ -320,6 +321,7 @@ libtransform/tests/false_positives/ls.err -text
 libtransform/tests/false_positives/ls.out -text
 libtransform/tests/false_positives/ls.shared.orig -text
 libtransform/tests/false_positives/ls.shared.orig.peasoup -text
+libtransform/tests/idiom18.c -text
 libtransform/tests/int16overflow.c -text
 libtransform/tests/int32overflow.c -text
 libtransform/tests/integer/addsuboverflow/Makefile -text
