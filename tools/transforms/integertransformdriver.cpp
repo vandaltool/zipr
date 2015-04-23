@@ -53,7 +53,7 @@ void usage()
 int parse_args(int p_argc, char* p_argv[])
 {
 	int option = 0;
-	char options[] = "v:s:p:i";
+	char options[] = "s:i:w:c";
 	struct option long_options[] = {
 		{"saturate", no_argument, NULL, 's'},
 		{"instrument-idioms", no_argument, NULL, 'i'},
