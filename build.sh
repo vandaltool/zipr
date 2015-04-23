@@ -19,7 +19,7 @@ cd $SECURITY_TRANSFORMS_HOME
 #echo "Build ELFIO library"
 #cd $SECURITY_TRANSFORMS_HOME/ELFIO-1.0.3
 # This is needed to generate the appropriate makefiles
-./configure --prefix=$SECURITY_TRANSFORMS_HOME
+#./configure --prefix=$SECURITY_TRANSFORMS_HOME
 
 # build dissassembler library -- makefile takes care of this now.
 #echo "Build BEA Engine library"
