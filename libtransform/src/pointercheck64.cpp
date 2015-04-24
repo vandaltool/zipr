@@ -35,9 +35,15 @@ Instruction_t* PointerCheck64::addCallbackHandlerSequence(Instruction_t *p_orig,
 {
 	if (p_policy == POLICY_EXIT)
 	{				
+/*
+		Instruction_t* i = addNewAssembly("hlt");
+		i->SetFallthrough(p_fallthrough); 
+		return i;
+*/
+
 		Instruction_t* exit_sequence = addNewAssembly("mov rax, 60");
 		Instruction_t* i = addNewAssembly(exit_sequence, "mov rdi, 25");
-		i = addNewAssembly(i, "sysenter");
+		i = addNewAssembly(i, "syscall");
 		i->SetFallthrough(p_fallthrough); 
 		return exit_sequence;
 	}

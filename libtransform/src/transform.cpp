@@ -1394,6 +1394,10 @@ Instruction_t* Transform::addNewAssembly(Instruction_t *p_instr, string p_asm)
 		newinstr->SetFallthrough(p_instr->GetFallthrough());
 		p_instr->SetFallthrough(newinstr);
 	}
+	else
+	{
+		newinstr->SetFallthrough(NULL);
+	}
 
 	return newinstr;
 }
