@@ -14,7 +14,7 @@ all: env_check  ${exes}
 .o.exe: 
 	gcc -g $< -o $@ 
 #	gcc -m32 $< -o $@ 
-	${PEASOUP_HOME}/tools/ps_analyze.sh  $@ $@.peasoup --step ilr=off --step concolic=off --step p1transform=off --step isr=off --step integertransform=on --step-option integertransform:--instrument-idioms --step-option integertransform:--check-pointers --step twitchertransform=off 
+	${PEASOUP_HOME}/tools/ps_analyze.sh  $@ $@.peasoup --step integertransform=on --step-option integertransform:--instrument-idioms --step-option integertransform:--check-pointers
 
 .c.o:
 	gcc -O2 -c $< 
