@@ -934,8 +934,7 @@ perform_step fptr_shadow meds_static,clone $PEASOUP_HOME/tools/do_fptr_shadow.sh
 #
 # Do P1/Pn transform.
 #
-perform_step p1transform meds_static,clone $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed.sh $PN_TIMEOUT_VALUE $DO_CANARIES
-
+perform_step p1transform meds_static,clone $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed.sh $PN_TIMEOUT_VALUE $DO_CANARIES $step_options_p1transform
 		
 #
 # Do integer transform.
