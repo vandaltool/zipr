@@ -193,9 +193,6 @@ void usage()
 	exit(-1);
 }
 
-// jdh -- moved this so it could be used in PNStackLayout.hpp.  Better to pass in the flag.
-bool do_canaries=true;
-
 int main(int argc, char **argv)
 {
 
@@ -263,11 +260,11 @@ int main(int argc, char **argv)
 		{
 			if(strcasecmp("on",optarg)==0)
 			{
-				do_canaries=true;
+				pn_options->setDoCanaries(true);
 			}
 			else if(strcasecmp("off",optarg)==0)
 			{
-				do_canaries=false;
+				pn_options->setDoCanaries(false);
 			}
 			else
 			{
@@ -348,6 +345,7 @@ int main(int argc, char **argv)
 	cout << "max_stack_padding: " << pn_options->getMaxStackPadding() << endl;
 	cout << "recursive_min_stack_padding: " << pn_options->getRecursiveMinStackPadding() << endl;
 	cout << "recursive_max_stack_padding: " << pn_options->getRecursiveMaxStackPadding() << endl;
+	cout << "canaries: " << pn_options->getDoCanaries() << endl;
 
 	//setup the interface to the sql server 
 	pqxxDB_t pqxx_interface;
@@ -407,7 +405,7 @@ int main(int argc, char **argv)
 
 		transform_driver.AddBlacklist(blackListOfFunctions);
 		transform_driver.AddOnlyValidateList(onlyValidateFunctions);
-		transform_driver.SetDoCanaries(do_canaries);
+		transform_driver.SetDoCanaries(pn_options->getDoCanaries());
 		transform_driver.SetDoAlignStack(align_stack);
 		transform_driver.SetCoverageMap(coverage_map);
 		transform_driver.SetCoverageThreshold(p1threshold);

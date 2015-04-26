@@ -25,6 +25,8 @@
 #include <string>
 #include <vector>
 #include <exception>
+#include <assert.h>
+#include "globals.h"
 
 //NOTE: padding adds a value between max and min, plus the frame size
 //I believe this was done to protect against a very large buffer 
@@ -103,8 +105,8 @@ public:
 	virtual std::vector<PNRange*> GetRanges() {return mem_objects;}
 	virtual bool IsCanarySafe() const 
 	{
-		extern bool do_canaries;
-		return stack_layout.is_canary_safe && do_canaries;
+		assert(pn_options);
+		return stack_layout.is_canary_safe && pn_options->getDoCanaries();
 	}
 	virtual bool IsPaddingSafe()const {return stack_layout.is_padding_safe;}
 	virtual bool IsShuffleSafe() const ;

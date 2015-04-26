@@ -24,28 +24,35 @@
 extern bool verbose_log;
 
 class PNOptions {
-  public:
-    PNOptions() {
-		min_stack_padding = 64;
-		max_stack_padding = 64;
-		recursive_min_stack_padding = 32;
-		recursive_max_stack_padding = 64;
-	}
+	public:
+	// default configuration parameters go here
+		PNOptions() {
+			min_stack_padding = 64;
+			max_stack_padding = 64;
+			recursive_min_stack_padding = 32;
+			recursive_max_stack_padding = 64;
+			do_canaries = true;
+		}
 
-	void setMinStackPadding(int val) { min_stack_padding = val; }
-	void setMaxStackPadding(int val) { max_stack_padding = val; }
-	void setRecursiveMinStackPadding(int val) { recursive_min_stack_padding = val; }
-	void setRecursiveMaxStackPadding(int val) { recursive_max_stack_padding = val; }
+		void setMinStackPadding(int val) { min_stack_padding = val; }
+		void setMaxStackPadding(int val) { max_stack_padding = val; }
+		void setRecursiveMinStackPadding(int val) { recursive_min_stack_padding = val; }
+		void setRecursiveMaxStackPadding(int val) { recursive_max_stack_padding = val; }
 
-	int getMinStackPadding() const { return min_stack_padding; }
-	int getMaxStackPadding() const { return max_stack_padding; }
-	int getRecursiveMinStackPadding() const { return recursive_min_stack_padding; }
-	int getRecursiveMaxStackPadding() const { return recursive_max_stack_padding; }
+		int getMinStackPadding() const { return min_stack_padding; }
+		int getMaxStackPadding() const { return max_stack_padding; }
+		int getRecursiveMinStackPadding() const { return recursive_min_stack_padding; }
+		int getRecursiveMaxStackPadding() const { return recursive_max_stack_padding; }
 
-    int min_stack_padding;
-    int max_stack_padding;
-    int recursive_min_stack_padding;
-    int recursive_max_stack_padding;
+		void setDoCanaries(bool canaries) { do_canaries = canaries; }
+		bool getDoCanaries() const { return do_canaries; }
+
+	private:
+		int min_stack_padding;
+		int max_stack_padding;
+		int recursive_min_stack_padding;
+		int recursive_max_stack_padding;
+		bool do_canaries;
 };
 
 extern PNOptions *pn_options;
