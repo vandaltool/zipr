@@ -341,6 +341,10 @@ int main(int argc, char **argv)
 		}
 	}
 
+	// sanity check padding
+	assert(pn_options->getMaxStackPadding() >= pn_options->getMinStackPadding());
+	assert(pn_options->getRecursiveMaxStackPadding() >= pn_options->getRecursiveMinStackPadding());
+
 	cout << "min_stack_padding: " << pn_options->getMinStackPadding() << endl;
 	cout << "max_stack_padding: " << pn_options->getMaxStackPadding() << endl;
 	cout << "recursive_min_stack_padding: " << pn_options->getRecursiveMinStackPadding() << endl;
