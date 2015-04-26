@@ -206,7 +206,10 @@ int main(int argc, char **argv)
 			if(firp->GetArchitectureBitWidth()==64)
 			{
 				if (check_pointers)
+				{
 					intxform = new PointerCheck64(pidp, firp, &annotations, &filteredFunctions, &warnings);
+					intxform->setInstrumentIdioms(true);
+				}
 				else
 					intxform = new IntegerTransform64(pidp, firp, &annotations, &filteredFunctions, &warnings);
 			}
