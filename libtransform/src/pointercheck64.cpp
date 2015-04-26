@@ -23,24 +23,11 @@ PointerCheck64::PointerCheck64(VariantID_t *p_variantID, FileIR_t *p_fileIR, MED
 {
 }
 
-//
-// p_orig          original instruction being instrumented
-// p_fallthrough   fallthrough once we're done with the callback handlers/detectors
-// p_detector      callback handler function to call
-// p_policy        instrumentation policy (e.g.: terminate, saturate, ...)
-// 
-// returns first instruction of callback handler sequence
-//
 Instruction_t* PointerCheck64::addCallbackHandlerSequence(Instruction_t *p_orig, Instruction_t *p_fallthrough, std::string p_detector, int p_policy)
 {
 	if (p_policy == POLICY_EXIT)
 	{				
-/*
-		Instruction_t* i = addNewAssembly("hlt");
-		i->SetFallthrough(p_fallthrough); 
-		return i;
-*/
-
+		// exit program
 		Instruction_t* exit_sequence = addNewAssembly("mov rax, 60");
 		Instruction_t* i = addNewAssembly(exit_sequence, "mov rdi, 25");
 		i = addNewAssembly(i, "syscall");
@@ -103,7 +90,7 @@ int PointerCheck64::execute()
 				{
 					MEDS_AnnotationBase *base_type=(it->second);
 					p_annotation = dynamic_cast<MEDS_InstructionCheckAnnotation*>(base_type);
-					if( p_annotation == NULL)
+					if(p_annotation == NULL)
 						continue;
 					annotation = *p_annotation;
 					if (!annotation.isValid()) 
@@ -127,12 +114,24 @@ int PointerCheck64::execute()
 					continue;
 				}
 
+				if (annotation.isIdiom() && !isInstrumentIdioms())
+				{
+					logMessage(__func__, "skip IDIOM");
+					m_numIdioms++;
+					continue;
+				}
+
 				// this idiom deals with pointers ==> unsigned
 				if (!annotation.isUnsigned())
 				{							
-					logMessage(__func__, "Warning: this idiom should only see unsigned annotations -- force to UNSIGNED");
-					annotation.setUnsigned();
+					logMessage(__func__, "Warning: only instrument UNSIGNED for this idiom -- skipping");
+					continue;
 				}
+
+/*
+				if (irdb_vo != 0x405104)
+					continue;
+*/
 
 				logMessage(__func__, annotation, "-- instruction: " + insn->getDisassembly());
 

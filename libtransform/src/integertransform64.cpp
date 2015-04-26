@@ -104,7 +104,7 @@ int IntegerTransform64::execute()
 
 			if (insn && insn->GetAddress())
 			{
-				int policy = POLICY_DEFAULT; //  default for now is exit -- no callback handlers yet
+				int policy = POLICY_DEFAULT; 
 
 				if (isSaturatingArithmetic())
 				{
@@ -339,10 +339,16 @@ bool IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction,
 	Instruction_t* next_i = p_instruction->GetFallthrough();
 	p_instruction->SetFallthrough(jncond_i); 
 
+	setAssembly(nop_i, "nop");  
+
 	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
+	{
 		policy_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+	}
 	else
+	{
 		policy_i = nop_i;
+	}
 
 	if (p_annotation.isSigned() || isMultiplyInstruction(p_instruction))
 	{
@@ -367,16 +373,16 @@ bool IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction,
 		//    then we want to sature to MIN_SIGNED_INT
 		
 		if (p_annotation.isUnderflow())
-               		addMinSaturation(policy_i, targetReg, p_annotation, nop_i); 
+			addMinSaturation(policy_i, targetReg, p_annotation, nop_i); 
 		else
-       	         	addMaxSaturation(policy_i, targetReg, p_annotation, nop_i);
+			addMaxSaturation(policy_i, targetReg, p_annotation, nop_i);
 	}
 
     std::string detector = p_annotation.isOverflow() ? OVERFLOW64_DETECTOR : UNDERFLOW64_DETECTOR;
 
-	setAssembly(nop_i, "nop");  
     Instruction_t* cb = addCallbackHandlerSequence(p_instruction, next_i, detector, p_policy);
 	nop_i->SetFallthrough(cb);
+	cb->SetComment("underflow callback/instrumentation");
 
 	return true;
 }
