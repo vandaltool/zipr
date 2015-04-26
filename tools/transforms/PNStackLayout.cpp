@@ -56,16 +56,15 @@ static bool CompareRangeDisplacedOffset(PNRange *a, PNRange *b)
 
 unsigned int PNStackLayout::GetRandomPadding(unsigned int obj_size)
 {
+	int min,max;
 
-	int max,min;
-
-	max = MAX_PADDING;
-	min = MIN_PADDING;
+	min = pn_options->getMinStackPadding();
+	max = pn_options->getMaxStackPadding();
 
 	if(stack_layout.is_recursive)
 	{
-		max = RECURSIVE_MAX_PADDING;
-		min = RECURSIVE_MIN_PADDING;
+		min = pn_options->getRecursiveMinStackPadding();
+		max = pn_options->getRecursiveMaxStackPadding();
 	}
 
 

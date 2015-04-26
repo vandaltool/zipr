@@ -42,11 +42,15 @@
 #include <cstdlib>
 #include <sstream>
 
+#include "globals.h"
+
 using namespace std;
 using namespace libIRDB;
 using namespace MEDS_Annotation;
 
 bool verbose_log = false;
+
+PNOptions *pn_options;
 
 enum
 {
@@ -61,7 +65,11 @@ enum
 	ALIGN_STACK_OPTION,
 	APRIORI_OPTION,
 	GROUND_TRUTH_OPTION,
-	SHARED_OBJECT_PROTECTION_OPTION
+	SHARED_OBJECT_PROTECTION_OPTION,
+	MIN_STACK_PAD_OPTION,
+	MAX_STACK_PAD_OPTION,
+	RECURSIVE_MIN_STACK_PAD_OPTION,
+	RECURSIVE_MAX_STACK_PAD_OPTION
 };
 
 
@@ -80,6 +88,10 @@ static struct option const long_options[] =
 	{"align_stack",no_argument,NULL,ALIGN_STACK_OPTION},
 	{"ground_truth",no_argument,NULL,GROUND_TRUTH_OPTION},
 	{"shared_object_protection",no_argument,NULL,SHARED_OBJECT_PROTECTION_OPTION},
+	{"min_stack_padding",required_argument, NULL, MIN_STACK_PAD_OPTION},
+	{"max_stack_padding",required_argument, NULL, MAX_STACK_PAD_OPTION},
+	{"recursive_min_stack_padding",required_argument, NULL, RECURSIVE_MIN_STACK_PAD_OPTION},
+	{"recursive_max_stack_padding",required_argument, NULL, RECURSIVE_MAX_STACK_PAD_OPTION},
 	{NULL, 0, NULL, 0}
 };
 
@@ -208,6 +220,9 @@ int main(int argc, char **argv)
 	double p1threshold=0.0;
 	bool do_ground_truth=false;
 
+	// global class to store options to Pn
+	pn_options = new PNOptions();
+	
 	while((c = getopt_long(argc, argv, "", long_options, NULL)) != -1)
 	{
 		switch(c)
@@ -286,6 +301,34 @@ int main(int argc, char **argv)
 			do_ground_truth=true;
 			break;
 		}
+		case MIN_STACK_PAD_OPTION:
+		{
+			int min_stack_padding = atoi(optarg);
+			if (min_stack_padding >= 0)
+				pn_options->setMinStackPadding(min_stack_padding);
+			break;
+		}
+		case MAX_STACK_PAD_OPTION:
+		{
+			int max_stack_padding = atoi(optarg);
+			if (max_stack_padding >= 0)
+				pn_options->setMaxStackPadding(max_stack_padding);
+			break;
+		}
+		case RECURSIVE_MIN_STACK_PAD_OPTION:
+		{
+			int recursive_min_stack_padding = atoi(optarg);
+			if (recursive_min_stack_padding >= 0)
+				pn_options->setRecursiveMinStackPadding(recursive_min_stack_padding);
+			break;
+		}
+		case RECURSIVE_MAX_STACK_PAD_OPTION:
+		{
+			int recursive_max_stack_padding = atoi(optarg);
+			if (recursive_max_stack_padding >= 0)
+				pn_options->setRecursiveMaxStackPadding(recursive_max_stack_padding);
+			break;
+		}
 		case '?':
 		{
 			//error message already printed by getopt_long
@@ -301,10 +344,14 @@ int main(int argc, char **argv)
 		}
 	}
 
+	cout << "min_stack_padding: " << pn_options->getMinStackPadding() << endl;
+	cout << "max_stack_padding: " << pn_options->getMaxStackPadding() << endl;
+	cout << "recursive_min_stack_padding: " << pn_options->getRecursiveMinStackPadding() << endl;
+	cout << "recursive_max_stack_padding: " << pn_options->getRecursiveMaxStackPadding() << endl;
+
 	//setup the interface to the sql server 
 	pqxxDB_t pqxx_interface;
 	BaseObj_t::SetInterface(&pqxx_interface);
-
 
 	try
 	{

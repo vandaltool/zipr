@@ -23,4 +23,31 @@
 
 extern bool verbose_log;
 
+class PNOptions {
+  public:
+    PNOptions() {
+		min_stack_padding = 64;
+		max_stack_padding = 64;
+		recursive_min_stack_padding = 32;
+		recursive_max_stack_padding = 64;
+	}
+
+	void setMinStackPadding(int val) { min_stack_padding = val; }
+	void setMaxStackPadding(int val) { max_stack_padding = val; }
+	void setRecursiveMinStackPadding(int val) { recursive_min_stack_padding = val; }
+	void setRecursiveMaxStackPadding(int val) { recursive_max_stack_padding = val; }
+
+	int getMinStackPadding() const { return min_stack_padding; }
+	int getMaxStackPadding() const { return max_stack_padding; }
+	int getRecursiveMinStackPadding() const { return recursive_min_stack_padding; }
+	int getRecursiveMaxStackPadding() const { return recursive_max_stack_padding; }
+
+    int min_stack_padding;
+    int max_stack_padding;
+    int recursive_min_stack_padding;
+    int recursive_max_stack_padding;
+};
+
+extern PNOptions *pn_options;
+
 #endif
