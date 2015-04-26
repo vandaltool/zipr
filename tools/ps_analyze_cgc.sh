@@ -45,6 +45,11 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	\
 	--step signconv_func_monitor=off	\
 	--step rekey=off	\
 	--step p1transform=on	\
+	--step-option p1transform:--min_stack_padding=64 \
+	--step-option p1transform:--max_stack_padding=64 \
+	--step-option p1transform:--recursive_min_stack_padding=32 \
+	--step-option p1transform:--recursive_max_stack_padding=32 \
+	--step-option p1transform:--canaries=off \
 	--step input_filtering=on	\
 	--step watch_allocate=on	\
 	--step integertransform=off	\

@@ -1,4 +1,4 @@
-#!/bin/bash    
+#!/bin/bash 
 #
 # ps_analyze.sh - analyze a program and transform it for peasoupification to prevent exploit.
 #
@@ -44,10 +44,6 @@ PN_TIMEOUT_VALUE=21600
 # set default values for 
 #
 
-#non-zero to use canaries in PN/P1, 0 to turn off canaries
-#DO_CANARIES=1
-#on for on and off for off
-DO_CANARIES=on
 CONCOLIC_DIR=concolic.files_a.stratafied_0001
 
 # JOBID
@@ -128,34 +124,12 @@ check_step_option()
 	
 }
 
-set_p1transform_option()
-{
-	option=`echo $1 | sed 's/\(.*\)=.*/\1/'`
-	val=`echo $1 | sed 's/.*=\(.*\)/\1/'`
-
-	case "$option" in
-		canaries)
-			DO_CANARIES=$val
-			;;
-		*) echo "Unrecognized p1transform option: $option\n"
-			exit -2 #What's the correct exit status?
-			;;
-	esac
-
-}
-
 set_step_option()
 {
 	step=`echo $1 | sed 's/\(.*\):.*/\1/'`
 	option=`echo $1 | sed 's/.*:\(.*\)/\1/'`
 
 	case "$step" in
-		#
-		# please don't follow P1's example here, follow watch_allocate
-		#
-       		p1transform)
-           		set_p1transform_option $option
-            	;;
 		*) 	
 			#
 			# this sets step_options_$step to have the new option
@@ -934,7 +908,7 @@ perform_step fptr_shadow meds_static,clone $PEASOUP_HOME/tools/do_fptr_shadow.sh
 #
 # Do P1/Pn transform.
 #
-perform_step p1transform meds_static,clone $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed.sh $PN_TIMEOUT_VALUE $DO_CANARIES $step_options_p1transform
+perform_step p1transform meds_static,clone $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed.sh $PN_TIMEOUT_VALUE $step_options_p1transform
 		
 #
 # Do integer transform.

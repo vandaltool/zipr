@@ -11,7 +11,10 @@ ORIGINAL_BINARY=$2
 MEDS_ANNOTATION_FILE=$3
 BED_SCRIPT=$4
 TIMEOUT_VALUE=$5
-DO_CANARIES=$6
+
+shift 5
+PN_OPTIONS=$*
+
 # Maximum length of time to spend replaying inputs to get coverage
 COVERAGE_REPLAY_TIMEOUT=600
 # Timeout per replayer run
@@ -38,7 +41,7 @@ P1THRESHOLD=0.75
 
 PN_BINARY=$SECURITY_TRANSFORMS_HOME/tools/transforms/p1transform.exe
 
-echo "P1: transforming binary: cloneid=$CLONE_ID bed_script=$BED_SCRIPT timeout_value=$TIMEOUT_VALUE"
+echo "P1: transforming binary: cloneid=$CLONE_ID bed_script=$BED_SCRIPT timeout_value=$TIMEOUT_VALUE options=$PN_OPTIONS"
 
 mkdir $P1_DIR
 
@@ -281,7 +284,7 @@ touch $COVERAGE_FILE
 c1="$PEASOUP_HOME/tools/my_timeout.sh $TIMEOUT_VALUE "
 c2="$PN_BINARY --variant_id=$CLONE_ID --bed_script=$BED_SCRIPT \
 		--coverage_file=$COVERAGE_FILE --pn_threshold=$P1THRESHOLD \
-		--canaries=$DO_CANARIES --blacklist=$LIBC_FILTER  --shared_object_protection   --no_p1_validate --align_stack"
+		--blacklist=$LIBC_FILTER  --shared_object_protection   --no_p1_validate --align_stack $PN_OPTIONS"
 
 if [ ! -z $DEBUG_P1 ]; then
 	gdb --args                                      $c2
