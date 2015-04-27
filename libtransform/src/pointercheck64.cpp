@@ -127,12 +127,7 @@ int PointerCheck64::execute()
 					logMessage(__func__, "Warning: only instrument UNSIGNED for this idiom -- skipping");
 					continue;
 				}
-
-/*
-				if (irdb_vo != 0x405104)
-					continue;
-*/
-
+ 
 				logMessage(__func__, annotation, "-- instruction: " + insn->getDisassembly());
 
 				if (annotation.isOverflow())
