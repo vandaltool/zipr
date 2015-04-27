@@ -378,9 +378,9 @@ bool IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction,
 			addMaxSaturation(policy_i, targetReg, p_annotation, nop_i);
 	}
 
-    std::string detector = p_annotation.isOverflow() ? OVERFLOW64_DETECTOR : UNDERFLOW64_DETECTOR;
+	std::string detector = p_annotation.isOverflow() ? OVERFLOW64_DETECTOR : UNDERFLOW64_DETECTOR;
 
-    Instruction_t* cb = addCallbackHandlerSequence(p_instruction, next_i, detector, p_policy);
+	Instruction_t* cb = addCallbackHandlerSequence(p_instruction, next_i, detector, p_policy);
 	nop_i->SetFallthrough(cb);
 	cb->SetComment("underflow callback/instrumentation");
 
