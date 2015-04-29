@@ -3,7 +3,7 @@ CXX=@CXX@
 CC=@CC@
 
 INCLUDES= -I ../../include -I../include/ -I../../beaengine/include 
-LIBS=-L ../lib/ -lIRDB-core -lIRDB-cfg -lIRDB-util -lpqxx -L ../../beaengine/lib/`uname -s`.gnu.Debug -lBeaEngine_s_d 
+LIBS=-L ../lib/ -lIRDB-core -lIRDB-cfg -lIRDB-util -lpqxx -L $(SECURITY_TRANSFORMS_HOME)/lib -lBeaEngine_s_d  -lpq
 OPT=-g @EXTRA_CXXFLAGS@
 .SUFFIXES: .exe .cpp 
 

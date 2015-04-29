@@ -6,7 +6,7 @@ CFLAGS=  -g
 # -DUBUNTU -Wall -O3
 
 INCLUDE=-I. -I../../include -I../../xform 
-LIBS=-L../../xform -lxform 
+LIBS=-L../../xform -lxform  -lpq
 
 .cpp.o .c.o:
 	$(CXX) $(CFLAGS) $(INCLUDE) -c $<

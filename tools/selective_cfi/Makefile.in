@@ -6,7 +6,7 @@ CXX=@CXX@
 CXXFLAGS= 
 INCLUDE=-I. -I../include -I../xform -I../../beaengine/include -I../../libIRDB/include/ -I../../libMEDSannotation/include/ -I../libtransform/include/ -I../transforms
 CXXFLAGS= @EXTRA_CXXFLAGS@ $(INCLUDE) 
-LIBS=-L../../lib -lxform -lIRDB-core -lIRDB-cfg -lBeaEngine_s_d -lpqxx  -lMEDSannotation -ltransform ../transforms/Rewrite_Utility.o
+LIBS=-L../../lib -lxform -lIRDB-core -lIRDB-cfg -lBeaEngine_s_d -lpqxx  -lMEDSannotation -ltransform ../transforms/Rewrite_Utility.o -lpq
 
 
 OBJS=scfi_driver.o scfi_instr.o

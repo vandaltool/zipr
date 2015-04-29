@@ -4,7 +4,7 @@ CC=@CC@
 CXX=@CXX@
 
 INCLUDES= -I $(SECURITY_TRANSFORMS_HOME)/include -I$(SECURITY_TRANSFORMS_HOME)/beaengine/include -I $(SECURITY_TRANSFORMS_HOME)/libIRDB/include/ -I$(SECURITY_TRANSFORMS_HOME)/libMEDSannotation/include/ 
-LIBS= -L$(SECURITY_TRANSFORMS_HOME)/lib -lIRDB-core -lIRDB-cfg -lpqxx -L $(SECURITY_TRANSFORMS_HOME)/beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -lMEDSannotation
+LIBS= -L$(SECURITY_TRANSFORMS_HOME)/lib -lIRDB-core -lIRDB-cfg -lpqxx -L $(SECURITY_TRANSFORMS_HOME)/beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -lMEDSannotation -lpq
 
 OPT=-g
 .SUFFIXES: .exe .cpp 

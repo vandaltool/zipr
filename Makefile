@@ -18,7 +18,7 @@ clean: elfio_clean
 	rm -f include/config.h
 
 #bea_dir=Linux.gnu.Debug
-bea_dir=`uname -s`.gnu.Debug
+bea_dir=*.gnu.Debug
 
 bea:	
 	cd beaengine; cmake -DCMAKE_C_COMPILER=`which gcc` -D CMAKE_CXX_COMPILER=`which g++` -DBEA_COMPILER=gnu . -DCMAKE_C_FLAGS=-fPIC .; make all

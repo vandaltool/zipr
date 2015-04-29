@@ -21,7 +21,7 @@ CC=@CC@
 
 CFLAGS= -g
 INCLUDE=-I. -I../../include -I../../xform -I../../beaengine/include -I../../libIRDB/include/
-LIBS=-L../../lib -L../../xform -lxform -lIRDB-core -lBeaEngine_s_d -lpqxx 
+LIBS=-L../../lib -L../../xform -lxform -lIRDB-core -lBeaEngine_s_d -lpqxx  -lpq
 OBJS=coverage.o
 
 .SUFFIXES: .o .c .cpp
