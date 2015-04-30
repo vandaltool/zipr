@@ -41,11 +41,11 @@ using namespace std;
 using namespace ELFIO;
 
 #define HELLNODE_ID 0
-#define INDIRECT_JMPS_ID 1
+#define INDIRECT_CALLS_ID 1
 int next_icfs_set_id = 2;
 
 ICFS_t* hellnode_tgts = NULL;
-ICFS_t* indirect_jmps = NULL;
+ICFS_t* indirect_calls = NULL;
 
 #define arch_ptr_bytes() (firp->GetArchitectureBitWidth()/8)
 
@@ -1244,12 +1244,12 @@ void icfs_init(FileIR_t* firp)
 {
 	assert(firp);
 	hellnode_tgts = new ICFS_t(HELLNODE_ID, false);
-	indirect_jmps = new ICFS_t(INDIRECT_JMPS_ID, false);
+	indirect_calls = new ICFS_t(INDIRECT_CALLS_ID, false); 
 	firp->GetAllICFS().insert(hellnode_tgts);
-	firp->GetAllICFS().insert(indirect_jmps);
+	firp->GetAllICFS().insert(indirect_calls);
 }
 
-void icfs_set_indirect_jmps(FileIR_t* const firp, ICFS_t* const targets)
+void icfs_set_indirect_calls(FileIR_t* const firp, ICFS_t* const targets)
 {
 	assert(firp && targets);
     for(
@@ -1328,7 +1328,7 @@ void check_for_indirect_call(FileIR_t* const firp, Instruction_t* const insn)
 	if(d.Argument1.ArgType&CONSTANT_TYPE)
 		return;
 
-	insn->SetIBTargets(indirect_jmps);
+	insn->SetIBTargets(indirect_calls);
 }
 
 
@@ -1451,7 +1451,7 @@ void fill_in_indtargs(FileIR_t* firp, elfio* elfiop)
 	/* set the IR to have some instructions marked as IB targets */
 	mark_targets(firp);
 
-	icfs_set_indirect_jmps(firp, indirect_jmps);
+	icfs_set_indirect_calls(firp, indirect_calls);
 	icfs_set_hellnode_targets(firp, hellnode_tgts);
 
 	mark_jmptables(firp);
@@ -1523,7 +1523,7 @@ main(int argc, char* argv[])
 			firp->WriteToDB();
 
 			delete firp;
-			delete indirect_jmps;
+			delete indirect_calls;
 			delete hellnode_tgts;
 		}
 
