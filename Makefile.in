@@ -9,6 +9,7 @@ all:
 
 install: all
 	cp src/zipr.exe $(bdir)/bin
+	if [ -f src/libzipr.a ]; then cp src/libzipr.a $(bdir)/lib; fi
 
 clean:
 	cd src;make clean

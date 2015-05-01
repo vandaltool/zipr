@@ -9,8 +9,9 @@ EXE=zipr.exe
 
 CXX=@CXX@
 CXXFLAGS=@CXXFLAGS@ @OPTIMIZE@
-LDFLAGS=-L$(SECURITY_TRANSFORMS_HOME)/lib -Wl,-E
-LIBS=-ldl -lpqxx -lpq -lIRDB-core -lBeaEngine_s_d -ltransform ${SECURITY_TRANSFORMS_HOME}/tools/transforms/Rewrite_Utility.o
+LDFLAGS=-L$(SECURITY_TRANSFORMS_HOME)/lib 
+IMPLIBS=@IMPLIBS@
+LIBS=${SECURITY_TRANSFORMS_HOME}/tools/transforms/Rewrite_Utility.o -ltransform -lIRDB-core -lBeaEngine_s_d -ldl -lpqxx -lpq 
 
 
 
@@ -20,7 +21,7 @@ all: $(EXE)
 -include $(OBJS:.o=.d)
 
 $(EXE): $(OBJS)
-	g++ $(LDFLAGS) $(OBJS) $(LIBS) -o $@
+	g++ $(LDFLAGS) $(OBJS) $(LIBS) $(IMPLIBS) -o $@
 
 %.o: %.cpp
 	$(CXX) -c  $(CXXFLAGS) $*.cpp
@@ -36,4 +37,4 @@ $(EXE): $(OBJS)
 
 
 clean:
-	rm -f $(OBJS) $(EXE) *.d *.o
+	rm -f $(OBJS) $(EXE) *.d *.o libzipr.a
