@@ -1717,7 +1717,7 @@ EXTRA_CXXFLAGS="$EXTRA_CXXFLAGS $OPTIMIZE"
 
 
 
-ac_config_files="$ac_config_files tools/Makefile tools/fix_rets/Makefile tools/selective_cfi/Makefile tools/watch_syscall/Makefile tools/transforms/Makefile tools/cgc_hlx/Makefile tools/meds2pdb/Makefile tools/cover/Makefile tools/safefr/Makefile tools/fptr_shadow/Makefile tools/ret_shadow_stack/Makefile tools/spasm/Makefile libMEDSannotation/src/Makefile libMEDSannotation/Makefile libIRDB/src/syscall/Makefile libIRDB/test/Makefile libIRDB/Makefile libIRDB/src/Makefile xform/Makefile libtransform/src/Makefile"
+ac_config_files="$ac_config_files tools/Makefile tools/fix_rets/Makefile tools/selective_cfi/Makefile tools/simple_cdi/Makefile tools/watch_syscall/Makefile tools/transforms/Makefile tools/cgc_hlx/Makefile tools/meds2pdb/Makefile tools/cover/Makefile tools/safefr/Makefile tools/fptr_shadow/Makefile tools/ret_shadow_stack/Makefile tools/spasm/Makefile libMEDSannotation/src/Makefile libMEDSannotation/Makefile libIRDB/src/syscall/Makefile libIRDB/test/Makefile libIRDB/Makefile libIRDB/src/Makefile xform/Makefile libtransform/src/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -2427,6 +2427,7 @@ do
     "tools/Makefile") CONFIG_FILES="$CONFIG_FILES tools/Makefile" ;;
     "tools/fix_rets/Makefile") CONFIG_FILES="$CONFIG_FILES tools/fix_rets/Makefile" ;;
     "tools/selective_cfi/Makefile") CONFIG_FILES="$CONFIG_FILES tools/selective_cfi/Makefile" ;;
+    "tools/simple_cdi/Makefile") CONFIG_FILES="$CONFIG_FILES tools/simple_cdi/Makefile" ;;
     "tools/watch_syscall/Makefile") CONFIG_FILES="$CONFIG_FILES tools/watch_syscall/Makefile" ;;
     "tools/transforms/Makefile") CONFIG_FILES="$CONFIG_FILES tools/transforms/Makefile" ;;
     "tools/cgc_hlx/Makefile") CONFIG_FILES="$CONFIG_FILES tools/cgc_hlx/Makefile" ;;
