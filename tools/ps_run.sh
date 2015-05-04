@@ -78,8 +78,10 @@ fi
 
 if test `uname -s` = SunOS; then
 	command="$command LD_PRELOAD=$datapath/libstrata.so:$APP_LD_PRELOAD"
+	exe=ncexe
 else
 	command="$command LD_PRELOAD=\"$APP_LD_PRELOAD\""
+	exe=stratafied
 fi
 
 
@@ -99,10 +101,10 @@ STRATA_REKEY_AFTER=0
 STRATA_PC_CONFINE_XOR_KEY_LENGTH=1024		
 STRATA_ANNOT_FILE=$datapath/a.ncexe.annot 
 STRATA_IS_SO=0
-STRATA_EXE_FILE=$datapath/a.ncexe
+STRATA_EXE_FILE=$datapath/a.$exe
 SPAWNER_EXE_FILE=$datapath/spawned
 STRATA_MAX_WARNINGS=500000
-	exec -a $origbinpath $datapath/a.ncexe \"\$@\""
+	exec -a $origbinpath $datapath/a.$exe \"\$@\""
 
 if [ "$DO_APPFW" = "1" ]; then
 #
