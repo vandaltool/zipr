@@ -18,7 +18,8 @@ export FIX_CALLS_FIX_ALL_CALLS=1
 
 # by default simple fuzzing is on
 # but turn off sfuzz if warning file already specified on the command line
-SFUZZ="on"
+#SFUZZ="on"
+SFUZZ="off"
 echo "$@" | grep "watch_allocate"  | grep "warning_file" &>/dev/null
 if [ $? -eq 0 ]; then
 	SFUZZ="off"
@@ -31,6 +32,7 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	\
 	--step find_strings=off 	\
 	--step preLoaded_ILR1=off	\
 	--step preLoaded_ILR2=off	\
+	--step cgc_protect_pov=on	\
 	--step sfuzz=$SFUZZ	\
 	--step cinderella=on	\
 	--step cgc_hlx=on	\
