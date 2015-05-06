@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Needed to build PEASOUP components
+# removing libelf for cgc as it causes a conflict  libelf-dev
 BASE_PKGS="
   bison
   flex
