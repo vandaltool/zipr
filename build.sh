@@ -13,20 +13,6 @@ if [ $SECURITY_TRANSFORMS_HOME"X" = "X" ]; then
         exit
 fi
 
-cd $SECURITY_TRANSFORMS_HOME
-
-# build ELF utility library
-#echo "Build ELFIO library"
-#cd $SECURITY_TRANSFORMS_HOME/ELFIO-1.0.3
-# This is needed to generate the appropriate makefiles
-#./configure --prefix=$SECURITY_TRANSFORMS_HOME
-
-# build dissassembler library -- makefile takes care of this now.
-#echo "Build BEA Engine library"
-#cd $SECURITY_TRANSFORMS_HOME/beaengine
-#cmake .
-# 
-
 # make everything
 cd $SECURITY_TRANSFORMS_HOME
 echo "Build transformer library + associated tools"
