@@ -953,6 +953,7 @@ fi
 
 perform_step selective_cfi none $SECURITY_TRANSFORMS_HOME/tools/selective_cfi/selective_cfi.exe $cloneid 
 perform_step simple_cdi none $SECURITY_TRANSFORMS_HOME/tools/simple_cdi/simple_cdi.exe $cloneid 
+perform_step c2e none $SECURITY_TRANSFORMS_HOME/tools/c2e/c2e_driver.exe $cloneid 
 
 # generate aspri, and assemble it to bspri
 perform_step generate_spri mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $($PEASOUP_HOME/tools/is_so.sh a.ncexe) $cloneid a.irdb.aspri
