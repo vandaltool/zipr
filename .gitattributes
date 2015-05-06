@@ -6334,7 +6334,6 @@ tools/ps_analyze.sh -text
 tools/ps_analyze4.sh -text
 tools/ps_analyze64.sh -text
 tools/ps_analyze_cgc.sh -text
-tools/ps_analyze_cgc_hlx.sh -text
 tools/ps_analyze_sol.sh -text
 tools/ps_comp++.sh -text
 tools/ps_comp.sh -text
