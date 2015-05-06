@@ -554,6 +554,7 @@ tools/cgc_hlx/cgc_hlx.cpp -text
 tools/cgc_hlx/cgc_hlx.hpp -text
 tools/cgc_hlx/cgc_hlx_driver.cpp -text
 tools/cgc_protect/cgc_protect_one.sh -text
+tools/cgc_protect/pov_to_cso.sh -text
 tools/cgclibc/Makefile -text
 tools/cgclibc/README -text
 tools/cgclibc/cgclibc.cpp -text
