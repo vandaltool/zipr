@@ -405,7 +405,7 @@ perform_step()
 
 	is_step_on $step
 	if [ $? -eq 0 ]; then 
-		echo Skipping step $step. [dependencies=$mandatory]
+		#echo Skipping step $step. [dependencies=$mandatory]
 		return 0
 	fi
 
@@ -953,7 +953,15 @@ fi
 
 perform_step selective_cfi none $SECURITY_TRANSFORMS_HOME/tools/selective_cfi/selective_cfi.exe $cloneid 
 perform_step simple_cdi none $SECURITY_TRANSFORMS_HOME/tools/simple_cdi/simple_cdi.exe $cloneid 
-perform_step c2e none $SECURITY_TRANSFORMS_HOME/tools/c2e/c2e_driver.exe $cloneid 
+
+# do plugins directory
+for i in $SECURITY_TRANSFORMS_HOME/plugins_install/*;
+do
+	stepname=`basename $i .exe`
+	this_step_options_name=step_options_$stepname
+	value="${!var}"
+	perform_step $stepname none $i $cloneid  $value
+done
 
 # generate aspri, and assemble it to bspri
 perform_step generate_spri mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $($PEASOUP_HOME/tools/is_so.sh a.ncexe) $cloneid a.irdb.aspri
