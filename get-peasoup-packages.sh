@@ -54,7 +54,10 @@ SQL_PKGS="sqlite3 libsqlite3-dev mysql-client mysql-server libmysqlclient-dev"
 # For LDAP
 LDAP_PKGS="ldap-utils slapd libldap2-dev"
 
-ALL_PKGS="$BASE_PKGS $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS $TEST_PKGS $SQL_PKGS $LDAP_PKGS"
+# Needed for afl/qemu mode
+AFL_PKGS="wget libglib2.0-dev"
+
+ALL_PKGS="$BASE_PKGS $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS $TEST_PKGS $SQL_PKGS $LDAP_PKGS $AFL_PKGS"
 
 
 if [[ "$PEASOUP_UMBRELLA_DIR" == "" ]]; then
@@ -63,10 +66,50 @@ if [[ "$PEASOUP_UMBRELLA_DIR" == "" ]]; then
 	exit 1
 fi
 
+function install_afl {
+	# download afl
+	current_dir=`pwd`
+	afl_dir=${current_dir}/afl_download.$$
+
+	# get the latest and greatest afl
+	wget http://lcamtuf.coredump.cx/afl/releases/afl-latest.tgz
+	
+	mkdir $afl_dir
+	tar -xzvf afl-latest.tgz -C $afl_dir
+
+	# build afl
+	cd $afl_dir/afl*
+	make
+
+	# build qemu support
+	cd qemu_mode
+	./build_qemu_support.sh
+
+	# install on the system
+	cd ..
+	sudo make install
+
+	# installed successfully and on the default path?
+	afl-fuzz | grep README
+	if [ $? -eq 0 ]; then
+		echo "AFL has been successfully installed"
+		rm -fr $afl_dir
+		rm ${current_dir}/afl-latest.tgz
+	else
+		echo "Something went wrong with the AFL installation"
+	fi
+
+	cd $current_dir
+}
+
 for arg in $@; do
     case $arg in
     all)
 	sudo apt-get -y install $ALL_PKGS
+	;;
+    afl)
+	sudo apt-get -y install $AFL_PKGS
+	install_afl
 	;;
     base)
 	sudo apt-get -y install $BASE_PKGS
@@ -94,3 +137,6 @@ for arg in $@; do
 	echo "  server-irdb, irdb, test, sql.";
     esac
 done
+
+
+
