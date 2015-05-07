@@ -9,7 +9,7 @@ LIBS=-L../../lib -lxform -lIRDB-core -lIRDB-cfg -lBeaEngine_s_d -lpqxx  -lMEDSan
 
 
 OBJS=c2e_driver.o c2e_instr.o
-programs=c2e_driver.exe
+programs=c2e.exe
 
 .SUFFIXES: .o .c .exe .cpp .hpp
 
@@ -38,4 +38,5 @@ $(programs): ../../lib/*.a
 
 $(programs):   $(OBJS)
 	$(CXX) $(CXXFLAGS) $^ $(INCLUDE) $(LIBS) -o $@
+	cp $@ ${SECURITY_TRANSFORMS_HOME}/plugins_install/
 
