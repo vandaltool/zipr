@@ -67,7 +67,18 @@ if [[ "$PEASOUP_UMBRELLA_DIR" == "" ]]; then
 fi
 
 function install_afl {
-	# download afl
+	if [ -z $AFL_PATH ]; then
+		echo "the AFL_PATH environment variable must be set"
+		return 1
+	fi
+
+	if [ -d "$AFL_PATH" ]; then
+		echo "###################################################"
+		echo "AFL is already installed at ${AFL_PATH}"
+		echo "Get rid of it and re-invoke installation script"
+		return 1
+	fi
+
 	current_dir=`pwd`
 	afl_dir=${current_dir}/afl_download.$$
 
@@ -77,24 +88,25 @@ function install_afl {
 	mkdir $afl_dir
 	tar -xzvf afl-latest.tgz -C $afl_dir
 
+	# put it in the right spot
+	mv $afl_dir/afl* $AFL_PATH
+
 	# build afl
-	cd $afl_dir/afl*
+	cd $AFL_PATH
 	make
 
 	# build qemu support
-	cd qemu_mode
+	cd $AFL_PATH/qemu_mode
 	./build_qemu_support.sh
-
-	# install on the system
-	cd ..
-	sudo make install
 
 	# installed successfully and on the default path?
 	afl-fuzz | grep README
 	if [ $? -eq 0 ]; then
+		echo "#######################################################"
 		echo "AFL has been successfully installed"
-		rm -fr $afl_dir
+		echo "#######################################################"
 		rm ${current_dir}/afl-latest.tgz
+		rmdir $afl_dir
 	else
 		echo "Something went wrong with the AFL installation"
 	fi
@@ -106,6 +118,7 @@ for arg in $@; do
     case $arg in
     all)
 	sudo apt-get -y install $ALL_PKGS
+	install_afl
 	;;
     afl)
 	sudo apt-get -y install $AFL_PKGS
