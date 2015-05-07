@@ -44,7 +44,7 @@ do
 done
 
 #
-# sandbox all uncovered faulting instructions
+# generate policy file for input to sandboxing step
 #
 if [ -f $CRASH_SITES ]; then
 	tmp=tmp.$$
