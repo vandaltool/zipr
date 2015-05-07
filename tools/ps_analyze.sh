@@ -955,9 +955,10 @@ perform_step selective_cfi none $SECURITY_TRANSFORMS_HOME/tools/selective_cfi/se
 perform_step simple_cdi none $SECURITY_TRANSFORMS_HOME/tools/simple_cdi/simple_cdi.exe $cloneid 
 
 # do plugins directory
-for i in $SECURITY_TRANSFORMS_HOME/plugins_install/*;
+for i in $SECURITY_TRANSFORMS_HOME/plugins_install/*.exe $SECURITY_TRANSFORMS_HOME/plugins_install/*.sh;
 do
 	stepname=`basename $i .exe`
+	stepname=`basename $stepname .sh`
 	this_step_options_name=step_options_$stepname
 	value="${!var}"
 	perform_step $stepname none $i $cloneid  $value
