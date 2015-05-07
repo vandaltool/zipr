@@ -827,9 +827,9 @@ perform_step find_strings none $SECURITY_TRANSFORMS_HOME/libIRDB/test/find_strin
 perform_step appfw find_strings $PEASOUP_HOME/tools/do_appfw.sh $arch_bits $newname.ncexe logs/find_strings.log
 
 #
-# cgc_protect_pov
+# protect_pov
 #
-perform_step cgc_protect_pov fill_in_indtargs $PEASOUP_HOME/tools/do_protect_pov.sh a.ncexe $name crash.cso $step_options_cgc_protect_pov
+perform_step protect_pov fill_in_indtargs $PEASOUP_HOME/tools/do_protect_pov.sh a.ncexe $name crash.cso $step_options_protect_pov
 if [ -f crash.cso  ]; then
 	step_options_watch_allocate="$step_options_watch_allocate --warning_file=crash.cso"
 fi
