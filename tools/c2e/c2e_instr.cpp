@@ -367,6 +367,10 @@ L1:	b8 00 00 00 00       	mov    $0x0,%eax
 
 bool Cgc2Elf_Instrument::add_c2e_instrumentation(libIRDB::Instruction_t* insn)
 {
+
+	assert(insn);
+	cout<<"Adding CGC->Elf instrumentation for "<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<endl;
+
 	Instruction_t* tmp=insn;
 	Instruction_t* termjmp=NULL, *terminsn=NULL;
 	Instruction_t* transmitjmp=NULL, *transmitinsn=NULL;
