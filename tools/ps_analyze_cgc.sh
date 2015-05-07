@@ -32,7 +32,6 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	\
 	--step find_strings=off 	\
 	--step preLoaded_ILR1=off	\
 	--step preLoaded_ILR2=off	\
-	--step cgc_protect_pov=on	\
 	--step sfuzz=$SFUZZ	\
 	--step cinderella=on	\
 	--step cgc_hlx=on	\
