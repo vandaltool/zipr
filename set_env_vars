@@ -19,7 +19,6 @@ export ZIPR_INSTALL=$PEASOUP_UMBRELLA_DIR/zipr_install
 export ZIPR_CALLBACKS=$PEASOUP_UMBRELLA_DIR/zipr_callbacks
 export ZIPR_SDK=$PEASOUP_UMBRELLA_DIR/zipr_sdk
 export ZIPR_SCFI_PLUGIN=$PEASOUP_UMBRELLA_DIR/zipr_scfi_plugin
-export AFL_PATH=$PEASOUP_UMBRELLA_DIR/afl
 
 export SECURITY_TRANSFORMS_HOME=$PEASOUP_UMBRELLA_DIR/security_transforms
 if [[ ! "$LD_LIBRARY_PATH" =~ (^|:)"$PEASOUP_UMBRELLA_DIR/lib:$PEASOUP_UMBRELLA_DIR/grace/concolic/bin:$STRATA/lib"(:|$) ]]
@@ -35,7 +34,7 @@ source $PEASOUP_UMBRELLA_DIR/irdb_vars
 
 export GRACE_HOME=$PEASOUP_UMBRELLA_DIR/grace
 export YICES_HOME=$GRACE_HOME/third-party/yices-sdk/1.0.34/linux32/bin
-export PATH=$PATH:$GRACE_HOME/concolic/bin:$YICES_HOME:$AFL_PATH
+export PATH=$PATH:$GRACE_HOME/concolic/bin:$YICES_HOME
 export SCONSFLAGS="exceptions=1 x86=1 tool=1 hprof=0 cpuprof=0 lm_required=false gen_lmi=0 offsite=1 irdb_path=$SECURITY_TRANSFORMS_HOME/libIRDB -j 2"
 
 #moving this to setenv vars, as it's not global and breaks our peasoup installation
