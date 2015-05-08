@@ -67,7 +67,7 @@ if [[ "$PEASOUP_UMBRELLA_DIR" == "" ]]; then
 fi
 
 function install_afl {
-        current_dir=`pwd`
+        current_dir=$HOME
 	afl_dir=${current_dir}/afl_download.$$
 
 	# get the latest and greatest afl
