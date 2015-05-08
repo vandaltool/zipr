@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 # Needed to build PEASOUP components
 # removing libelf for cgc as it causes a conflict  libelf-dev
@@ -67,19 +67,7 @@ if [[ "$PEASOUP_UMBRELLA_DIR" == "" ]]; then
 fi
 
 function install_afl {
-	if [ -z $AFL_PATH ]; then
-		echo "the AFL_PATH environment variable must be set"
-		return 1
-	fi
-
-	if [ -d "$AFL_PATH" ]; then
-		echo "###################################################"
-		echo "AFL is already installed at ${AFL_PATH}"
-		echo "Get rid of it and re-invoke installation script"
-		return 1
-	fi
-
-	current_dir=`pwd`
+        current_dir=`pwd`
 	afl_dir=${current_dir}/afl_download.$$
 
 	# get the latest and greatest afl
@@ -88,25 +76,26 @@ function install_afl {
 	mkdir $afl_dir
 	tar -xzvf afl-latest.tgz -C $afl_dir
 
-	# put it in the right spot
-	mv $afl_dir/afl* $AFL_PATH
-
 	# build afl
-	cd $AFL_PATH
+	cd $afl_dir/afl*
 	make
 
 	# build qemu support
-	cd $AFL_PATH/qemu_mode
+	cd qemu_mode
 	./build_qemu_support.sh
 
-	# installed successfully and on the default path?
+	# install on the system
+	cd ..
+	sudo make install
+
+	# installed successfully?
 	afl-fuzz | grep README
 	if [ $? -eq 0 ]; then
 		echo "#######################################################"
 		echo "AFL has been successfully installed"
 		echo "#######################################################"
 		rm ${current_dir}/afl-latest.tgz
-		rmdir $afl_dir
+		rm -fr $afl_dir
 	else
 		echo "Something went wrong with the AFL installation"
 	fi
