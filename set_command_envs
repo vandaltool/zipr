@@ -5,8 +5,10 @@ export PS_OBJCOPY=$cgc_tools_path-objcopy
 export PS_READELF=$cgc_tools_path-readcgc
 export PS_OBJDUMP=$cgc_tools_path-objdump
 export PS_NM=$cgc_tools_path-nm
-#export PS_STRIP=$cgc_tools_path-strip
 
+
+# strip is used for stripping symbols from strata, and doesn't need to point at the cgc version -- probably should clean this up
+export PS_STRIP=strip
 export PS_TIMEOUT=timeout
 export PS_GREP=grep
 export PS_TAR=tar
