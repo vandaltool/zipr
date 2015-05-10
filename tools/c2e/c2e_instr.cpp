@@ -268,6 +268,8 @@ Instruction_t* Cgc2Elf_Instrument::insertAllocate(Instruction_t* after)
 	char buf[100];
 	after=insertAssemblyAfter(firp, after, "push ebp");	 	// push ebp to save reg
 	after=insertAssemblyAfter(firp, after, "push edx");	 	// push (void **)addr
+	after=insertAssemblyAfter(firp, after, "push esi");	 	// save reg
+	after=insertAssemblyAfter(firp, after, "push edi");	 	// save reg
 
 	sprintf(buf, "mov eax, %d", SYS_mmap2);
 	after=insertAssemblyAfter(firp, after, buf);			// set eax to syscall #
@@ -284,11 +286,13 @@ Instruction_t* Cgc2Elf_Instrument::insertAllocate(Instruction_t* after)
 	after=insertAssemblyAfter(firp, after, "mov ebx,0");		// mov 0 to 1st param to mmap2  - mmap2(0,len,RWX,,PA,-1,0) 
 
 	after=insertAssemblyAfter(firp, after, "int 0x80");		// make syscall
+	after=insertAssemblyAfter(firp, after, "pop edi");	 	// restore reg
+	after=insertAssemblyAfter(firp, after, "pop esi");	 	// restore reg
 	after=insertAssemblyAfter(firp, after, "pop edx");	 	// pop (void**)addr
 	after=insertAssemblyAfter(firp, after, "pop ebp");	 	// pop ebp to restore reg
 	after=insertAssemblyAfter(firp, after, "cmp eax, -1");	 	// if return == -1
 	jmp2error=after=insertAssemblyAfter(firp, after, "je 0x0");	 // jmp to error
-	after=insertAssemblyAfter(firp, after, "cmp esi, 0");	 		// if tx_bytes == 0 
+	after=insertAssemblyAfter(firp, after, "cmp edx, 0");	 		// if addr == 0 
 	jmp2return=after=insertAssemblyAfter(firp, after, "je 0x0");	 	// jmp to success
 	after=insertAssemblyAfter(firp, after, "mov [edx], eax");			// store return value into readyfds
 	success=after=insertAssemblyAfter(firp, after, "mov eax, 0");	// return success
@@ -423,7 +427,7 @@ bool Cgc2Elf_Instrument::add_c2e_instrumentation(libIRDB::Instruction_t* insn)
 	deallocatejmp->SetTarget(randominsn);
 	randomjmp->SetTarget(failinsn);
 	
-	// nop
+	// convert orig. insn to nop.
 	string bits;  
 	bits.resize(1); 
 	bits[0]=0x90;
