@@ -432,6 +432,8 @@ bool Cgc2Elf_Instrument::add_c2e_instrumentation(libIRDB::Instruction_t* insn)
 	bits.resize(1); 
 	bits[0]=0x90;
 	old->SetDataBits(bits);
+
+	return true;
 }
 
 bool Cgc2Elf_Instrument::needs_c2e_instrumentation(libIRDB::Instruction_t* insn)
@@ -445,10 +447,11 @@ bool Cgc2Elf_Instrument::needs_c2e_instrumentation(libIRDB::Instruction_t* insn)
 bool Cgc2Elf_Instrument::instrument_ints()
 {
 	bool success=true;
+        InstructionSet_t  allinsns=firp->GetInstructions();
 
         // we do this in two passes.  first pass:  find instructions.
-        for(InstructionSet_t::iterator it=firp->GetInstructions().begin();
-                it!=firp->GetInstructions().end();
+        for(InstructionSet_t::iterator it=allinsns.begin();
+                it!=allinsns.end();
                 ++it)
         {
 		Instruction_t* insn=*it;
