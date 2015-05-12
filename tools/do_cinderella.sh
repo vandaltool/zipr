@@ -31,9 +31,15 @@ $SECURITY_TRANSFORMS_HOME/tools/cinderella/cinderella_prep.exe $cloneid
 $SECURITY_TRANSFORMS_HOME/tools/cgclibc/display_functions.exe $cloneid | grep "^function" | cut -d' ' -f2 > cinderella.functions.all 
 
 # produce a zipr'd version so that we can dynamically test behavior
-echo "Cinderella: Produce zipr'ed test version: id: $cloneid"
+echo "cinderella: Produce zipr'ed test version: id: $cloneid"
 $ZIPR_INSTALL/bin/zipr.exe -v $cloneid -c $ZIPR_INSTALL/bin/callbacks.cinderella.exe -j $PS_OBJCOPY
 mv b.out.addseg $TESTABLE
+if [ ! $? -eq 0 ];then
+  echo "cinderella: ERROR -- unable to weave in cinderella testing zipr callback"
+  exit 1
+fi
+
+echo "cinderella: testable: $TESTABLE"
 
 #----------------------------------------------------------------
 # We now have a Zipr'd binary in which we inserted a testing loop
