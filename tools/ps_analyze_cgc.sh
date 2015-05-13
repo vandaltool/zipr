@@ -16,26 +16,16 @@
 
 export FIX_CALLS_FIX_ALL_CALLS=1
 
-# by default simple fuzzing is on
-# but turn off sfuzz if warning file already specified on the command line
-#SFUZZ="on"
-SFUZZ="off"
-echo "$@" | grep "watch_allocate"  | grep "warning_file" &>/dev/null
-if [ $? -eq 0 ]; then
-	SFUZZ="off"
-	echo "Turning off simple fuzz as a warning_file has been specified for the watch_allocate step"
-fi
-
 $PEASOUP_HOME/tools/ps_analyze.sh $* 	\
 	--step spawner=off 		\
 	--step appfw=off 		\
 	--step find_strings=off 	\
 	--step preLoaded_ILR1=off	\
 	--step preLoaded_ILR2=off	\
-	--step sfuzz=$SFUZZ	\
+	--step sfuzz=on	\
 	--step cinderella=on	\
 	--step cgc_hlx=on	\
-	--step-option cgc_hlx:--do_malloc_padding=64 \
+	--step-option cgc_hlx:--do_malloc_padding=256 \
 	--step-option cgc_hlx:--shr_malloc_factor=5 \
 	--step-option cgc_hlx:--do_allocate_padding=4096 \
 	--step heaprand=off	\

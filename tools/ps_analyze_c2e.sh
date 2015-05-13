@@ -8,6 +8,3 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	   	\
 	--step c2e=on \
 
 cgc2elf $2
-
-
-# appfw was working?

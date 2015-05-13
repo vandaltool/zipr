@@ -892,11 +892,11 @@ perform_step fast_annot meds_static $PEASOUP_HOME/tools/fast_annot.sh
 # @todo: 2nd arg is the benchmark name but we're currently passing in
 #        the binary in
 # 
-perform_step sfuzz none $PEASOUP_HOME/tools/do_sfuzz.sh $newname.ncexe $orig_exe crash.cso
+perform_step sfuzz none $PEASOUP_HOME/tools/do_sfuzz.sh $newname.ncexe $orig_exe crash.sfuzz.cso
 # if crash found, feed the cso file to the watch allocate step
-#if [ -f crash.cso  ]; then
-#	step_options_watch_allocate="$step_options_watch_allocate --warning_file=crash.cso"
-#fi
+if [ -f crash.sfuzz.cso  ]; then
+	step_options_watch_allocate="$step_options_watch_allocate --warning_file=crash.sfuzz.cso"
+fi
 
 #
 # cinderella: infer malloc and other libc functions

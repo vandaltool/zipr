@@ -27,6 +27,7 @@ do
 			echo $eip >> $crash_eip_file			
 		fi
 
+                echo "EIP: $eip"
 	fi
 done
 
