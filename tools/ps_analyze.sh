@@ -829,9 +829,9 @@ perform_step appfw find_strings $PEASOUP_HOME/tools/do_appfw.sh $arch_bits $newn
 #
 # protect_pov
 #
-perform_step protect_pov fill_in_indtargs $PEASOUP_HOME/tools/do_protect_pov.sh a.ncexe $name crash.cso $step_options_protect_pov
-if [ -f crash.cso  ]; then
-	step_options_watch_allocate="$step_options_watch_allocate --warning_file=crash.cso"
+perform_step protect_pov fill_in_indtargs $PEASOUP_HOME/tools/do_protect_pov.sh a.ncexe $name crash.pov.cso $step_options_protect_pov
+if [ -f crash.pov.cso  ]; then
+	step_options_watch_allocate="$step_options_watch_allocate --warning_file=crash.pov.cso"
 fi
 
 #
