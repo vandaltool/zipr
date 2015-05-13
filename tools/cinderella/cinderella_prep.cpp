@@ -37,7 +37,7 @@ void CinderellaPrep::pinAllFunctionEntryPoints()
 		if (!fn) continue;
 		Instruction_t *insn = fn->GetEntryPoint();
 		
-		if(insn && insn->GetAddress())
+		if(insn && insn->GetAddress() && insn->GetAddress()->GetVirtualOffset() > 0)
 		{
 			insn->SetIndirectBranchTargetAddress(insn->GetAddress());
 printf("inferfn: pinning function entry point: %p\n", insn->GetAddress()->GetVirtualOffset());
