@@ -32,6 +32,7 @@ $SECURITY_TRANSFORMS_HOME/tools/cgclibc/display_functions.exe $cloneid | grep "^
 
 # produce a zipr'd version so that we can dynamically test behavior
 echo "cinderella: Produce zipr'ed test version: id: $cloneid"
+echo "cmd: $ZIPR_INSTALL/bin/zipr.exe -v $cloneid -c $ZIPR_INSTALL/bin/callbacks.cinderella.exe -j $PS_OBJCOPY"
 $ZIPR_INSTALL/bin/zipr.exe -v $cloneid -c $ZIPR_INSTALL/bin/callbacks.cinderella.exe -j $PS_OBJCOPY
 mv b.out.addseg $TESTABLE
 if [ ! $? -eq 0 ];then
