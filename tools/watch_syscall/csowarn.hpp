@@ -59,9 +59,10 @@ class CSO_WarningType_t
 				assert(0);
 		};
 
-		CSO_WarningEnum_t GetType() { return ty; }
+		CSO_WarningEnum_t GetType() const { return ty; }
 
 		bool operator==(const CSO_WarningEnum_t& we) const { return we==ty; }
+		bool operator==(const CSO_WarningType_t& wt) const { return wt.GetType()==ty; }
 
 	private:
 		CSO_WarningEnum_t  ty;

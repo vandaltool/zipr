@@ -668,7 +668,7 @@ bool	WSC_Instrument::add_segfault_checking()
 		++it)
 	{
 		Instruction_t *insn=*it;
-		cout<<"Testing "<<insn->GetAddress()->GetVirtualOffset() <<" " << insn->getDisassembly()<<endl;
+		cout<<"Testing "<<hex<<insn->GetAddress()->GetVirtualOffset() <<" " << insn->getDisassembly()<<endl;
 		DISASM d;
 		insn->Disassemble(d);
 		if(insn->GetBaseID()!=BaseObj_t::NOT_IN_DATABASE && needs_wsc_segfault_checking(insn,d))
@@ -744,85 +744,108 @@ template<class T> void check_result(const T& t)
 		cerr<<"Failed in check_results with t="<<t<<endl;
 }
 
-bool WSC_Instrument::FindInstructionsToProtect(std::string filename, int &num_instructions)
+bool WSC_Instrument::FindInstructionsToProtect(std::set<std::string> filenames, int &num_instructions)
 {
 	bool success=true;
 	num_instructions = 0;
 
 	// no filename, skip this step
-	if(filename=="")
+	if(filenames.size()==0)
 	{
 		cout<<"No filename provided for warnings, skipping selective application, applying to all instructions"<<endl;
 		return true;
 	}
 
-	ifstream fin(filename.c_str(), ios_base::in);
-	if(!fin)
-	{
-		cerr<<"Cannot open file: "<<filename<<endl;
-		exit(1);
-	}
+	std::set<std::string>::const_iterator it;
 
 	// forget what we've protected before, which might be everything.
 	to_protect.clear();
 
-	libIRDB::virtual_offset_t addr=0;
-	string line="";
-	size_t bufsize=0;
-	
-
-	/* read one line of the file at a time. */
-	while(getline(fin, line))
+	for (it = filenames.begin(); it != filenames.end(); ++it)
 	{
-		/* parse the line */
-		stringstream line_stream(line);
-		string bench="",addr_string="", bufsize_string="",type_string="";
-		check_result(getline(line_stream,bench, ','));
-		check_result(getline(line_stream,addr_string, ','));
-		check_result(getline(line_stream,bufsize_string, ','));
-		check_result(getline(line_stream,type_string, ','));
-
-		/* convert to strings to ints where approprriate */
-		stringstream addr_stream(addr_string);       check_result(addr_stream >> std::hex >> addr);
-
-		// bufsize may be empty
-		if(bufsize_string!="")
+		string filename = *it;
+		ifstream fin(filename.c_str(), ios_base::in);
+		if(!fin)
 		{
-			stringstream bufsize_stream(bufsize_string); check_result(bufsize_stream >> std::dec>> bufsize);
+			cerr<<"Cannot open file: "<<filename<<endl;
+			continue;
 		}
 
 
-		/* print results for sanity checking */
-		cout<<"Found CSO warning:  addr="<<hex<<addr<<" bufsize="<<dec<<bufsize
-		    <<" type="<<type_string<<" ";
-
-		CSO_WarningRecord_t wr;
-//		wr.SetType(CSO_WarningType_t(type_string));
-		wr.SetType(type_string);
-		wr.SetInstructionAddress(addr);
-		wr.SetBufferSize(bufsize);
-		
+		libIRDB::virtual_offset_t addr=0;
+		string line="";
+		size_t bufsize=0;
 	
-		/* lookup instruction */
-		Instruction_t* insn=FindInstruction(addr);
-		if(insn)
+		/* read one line of the file at a time. */
+		while(getline(fin, line))
 		{
-			/* add to set */
-			cout<<"insn= "<<insn->getDisassembly();
-			to_protect.insert(insn);
-			warning_records[insn].insert(new CSO_WarningRecord_t(wr));
+			if (line.size() == 0) continue;
+
+			/* parse the line */
+			stringstream line_stream(line);
+			string bench="",addr_string="", bufsize_string="",type_string="";
+			check_result(getline(line_stream,bench, ','));
+			check_result(getline(line_stream,addr_string, ','));
+			check_result(getline(line_stream,bufsize_string, ','));
+			check_result(getline(line_stream,type_string, ','));
+
+			/* convert to strings to ints where approprriate */
+			stringstream addr_stream(addr_string);       check_result(addr_stream >> std::hex >> addr);
+
+			// bufsize may be empty
+			if(bufsize_string!="")
+			{
+				stringstream bufsize_stream(bufsize_string); check_result(bufsize_stream >> std::dec>> bufsize);
+			}
+
+
+			/* print results for sanity checking */
+			cout<<"Found CSO warning:  addr="<<hex<<addr<<" bufsize="<<dec<<bufsize
+			    <<" type="<<type_string<<" ";
+
+			CSO_WarningRecord_t wr;
+//		wr.SetType(CSO_WarningType_t(type_string));
+			wr.SetType(type_string);
+			wr.SetInstructionAddress(addr);
+			wr.SetBufferSize(bufsize);
+	
+			/* lookup instruction */
+			Instruction_t* insn=FindInstruction(addr);
+			if(insn)
+			{
+				/* add to set */
+				cout<<"insn= "<<insn->getDisassembly();
+				to_protect.insert(insn);
 				
+				/* make sure we don't insert the same type 2x */
+				bool warningTypeAlreadyInserted = false;
+				for(CSO_WarningRecordSet_t::iterator it2=warning_records[insn].begin();
+					it2!=warning_records[insn].end();
+					++it2
+				   )
+				{
+					CSO_WarningRecord_t* currentwr=*it2;
+					if (currentwr && currentwr->GetType() == wr.GetType())
+					{
+						std::cerr << "Warning: record of type: " << type_string << " for address " << hex << addr << dec << " already found -- skip" << std::endl;
+						warningTypeAlreadyInserted = true;
+					}
+				}
+				
+				if (!warningTypeAlreadyInserted)
+					warning_records[insn].insert(new CSO_WarningRecord_t(wr));
+			}
+			else
+			{
+				success = false;
+				cerr<<"***************************************************************************************************************************"<<endl;
+				cerr<<"***************************************************************************************************************************"<<endl;
+				cerr<<"					Cannot find insn for addr "<<hex<<addr<<endl;
+				cerr<<"***************************************************************************************************************************"<<endl;
+				cerr<<"***************************************************************************************************************************"<<endl;
+			}
+			cout<<endl;
 		}
-		else
-		{
-			success = false;
-			cerr<<"***************************************************************************************************************************"<<endl;
-			cerr<<"***************************************************************************************************************************"<<endl;
-			cerr<<"					Cannot find insn for addr "<<hex<<addr<<endl;
-			cerr<<"***************************************************************************************************************************"<<endl;
-			cerr<<"***************************************************************************************************************************"<<endl;
-		}
-		cout<<endl;
 	}
 	
 	num_instructions = to_protect.size();

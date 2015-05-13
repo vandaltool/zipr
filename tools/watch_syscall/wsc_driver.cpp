@@ -43,7 +43,7 @@ void usage(char* name)
 
 
 int varid=0;
-string warning_filename="";
+std::set<string> warning_filename;
 bool do_sandboxing = false;
 bool do_input_filtering = false;
 bool do_promiscuous_sandboxing = false;
@@ -79,8 +79,9 @@ int parse_args(int p_argc, char* p_argv[])
 			}
 			case 'w':
 			{
-				warning_filename=string(::optarg);
-				cout<<"Using warning_file =  "<<warning_filename<<endl;
+				string f(::optarg);
+				cout<<"Using warning_file =  "<<f<<endl;
+				warning_filename.insert(f);
 				break;
 			}
 			case 's':

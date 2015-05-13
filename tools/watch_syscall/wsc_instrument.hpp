@@ -65,7 +65,7 @@ class WSC_Instrument
 		} 
 		virtual ~WSC_Instrument() { delete elfiop; }
 		bool execute();
-		bool FindInstructionsToProtect(std::string s, int& num_instructions);
+		bool FindInstructionsToProtect(std::set<std::string> s, int& num_instructions);
 
 		void SetSandboxing(bool doit) { m_doSandboxing = doit; }
 		bool DoSandboxing() const { return m_doSandboxing; }
