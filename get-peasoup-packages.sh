@@ -67,8 +67,9 @@ if [[ "$PEASOUP_UMBRELLA_DIR" == "" ]]; then
 fi
 
 function install_afl {
-        current_dir=$HOME
-	afl_dir=${current_dir}/afl_download.$$
+        home_dir=$HOME
+        current_dir=`pwd`
+	afl_dir=${home_dir}/afl_download.$$
 
 	# get the latest and greatest afl
 	wget http://lcamtuf.coredump.cx/afl/releases/afl-latest.tgz
