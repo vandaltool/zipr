@@ -13,6 +13,8 @@ CSO_FILE=$4      # output: CSO warning file suitable for sandboxing step
 
 log=tmp.log.$$
 
+cbtest=$CGC_UMBRELLA_DIR/scripts/techx-cb-test
+
 CRASH_SITES=tmp.crashes.$$
 
 # run cb-test on each POV invidually
@@ -27,12 +29,12 @@ do
 	core=${binary_dir}/core
 
 	sudo rm $core 2>/dev/null
-	sudo cb-test --debug --xml ${one_pov} --timeout 20 --directory ${binary_dir} --cb ${binary} --log $log 
+	sudo $cbtest --debug --xml ${one_pov} --timeout 20 --directory ${binary_dir} --cb ${binary} --log $log 
 	grep "core identified" $log
 	if [ $? -eq 0 ]; then
 		if [ -f $core ]; then
 			sudo chown `whoami` $core 
-			eip=`$PEASOUP_HOME/tools/extract_eip_from_core.sh ${CGC_BIN} $core`
+			eip=`timeout 20 $PEASOUP_HOME/tools/extract_eip_from_core.sh ${CGC_BIN} $core`
 			if [ $? -eq 0 ]; then
 				echo "$eip" >> $CRASH_SITES
 			fi
