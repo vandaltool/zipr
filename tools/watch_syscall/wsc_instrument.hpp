@@ -79,7 +79,8 @@ class WSC_Instrument
 
 		// main tasks
 		bool add_init_call();
-		bool add_wsc_instrumentation(libIRDB::Instruction_t *site);
+		bool add_wsc_dealloc_instrumentation(libIRDB::Instruction_t *site);
+		bool add_wsc_alloc_instrumentation(libIRDB::Instruction_t *site);
 		bool add_segfault_checking();
 		bool add_segfault_checking(libIRDB::Instruction_t*);
 		bool add_segfault_checking(libIRDB::Instruction_t* insn, const CSO_WarningRecord_t *const wr);

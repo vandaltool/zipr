@@ -228,8 +228,34 @@ static Instruction_t* addCallbackHandlerSequence
 }
 
 
+bool WSC_Instrument::add_wsc_dealloc_instrumentation(Instruction_t *site)
+{
 
-bool WSC_Instrument::add_wsc_instrumentation(Instruction_t *site)
+        string bits;
+        bits.resize(1);
+        bits[0]=0x90;
+        site->SetDataBits(bits);	 // convert site to nop instruction
+
+//cout<<"Found syscall to instrument "<<site->getDisassembly()<<endl;
+
+        virtual_offset_t postCallbackReturn = getAvailableAddress(firp);
+	char tmpbuf[100];
+        sprintf(tmpbuf,"push  0x%x", postCallbackReturn);
+
+	Instruction_t *tmp=site, *callback=NULL, *post_callback=NULL;
+        tmp=insertAssemblyAfter(firp,tmp,"pushf");
+        tmp=insertAssemblyAfter(firp,tmp,"pusha");
+        tmp=insertAssemblyAfter(firp,tmp,tmpbuf);	 // push <ret addr>
+        callback=tmp=insertAssemblyAfter(firp,tmp,"nop");
+        post_callback=tmp=insertAssemblyAfter(firp,tmp,"popa");
+        tmp=insertAssemblyAfter(firp,tmp,"popf");
+        tmp=insertAssemblyAfter(firp,tmp,"mov eax, 0");
+        post_callback->GetAddress()->SetVirtualOffset(postCallbackReturn);
+	callback->SetCallback("zipr_delayed_deallocate");
+	return true;
+}
+
+bool WSC_Instrument::add_wsc_alloc_instrumentation(Instruction_t *site)
 {
 
 //cout<<"Found syscall to instrument "<<site->getDisassembly()<<endl;
@@ -325,10 +351,10 @@ bool WSC_Instrument::add_allocation_instrumentation()
 		SyscallSite_t ss=*it;
 		Instruction_t *site=ss.GetSyscallSite();
 		SyscallNumber_t num=ss.GetSyscallNumber();
-		if(num==SNT_allocate)
-		{
-			success = success && add_wsc_instrumentation(site);
-		}
+		if(num==SNT_deallocate)
+			success = success && add_wsc_dealloc_instrumentation(site);
+		else if(num==SNT_allocate)
+			success = success && add_wsc_alloc_instrumentation(site);
 	}
 
 	/* return an exit code */
