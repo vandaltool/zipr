@@ -11,7 +11,9 @@ CGC_CSID=$2      # cgc name
 POV_DIR=$3       # directory containing POVs 
 CSO_FILE=$4      # output: CSO warning file suitable for sandboxing step
 POV_CRASH_SUMMARY_FILE=$5   # input/output: POV-->crash summary file
+CRASH_DIR=$6 # optional
 
+timeout=20
 local_crash_summary=tmp.crash.summary.$$
 log=tmp.log.$$
 
@@ -21,10 +23,14 @@ delimiter="###"
 
 CRASH_SITES=tmp.crashes.$$
 
+ulimit -c unlimited
+
 # copy the crash summary file locally
 cp $POV_CRASH_SUMMARY_FILE $local_crash_summary
 
 # run cb-test on each POV invidually
+if [ -d ${POV_DIR} ]; then
+
 for i in `ls ${POV_DIR}/*.xml`
 do
 	echo ""
@@ -56,13 +62,13 @@ do
 		sudo rm $core 2>/dev/null
 	fi
 
-	echo "sudo $cbtest --debug --xml ${one_pov} --timeout 20 --directory ${binary_dir} --cb ${binary} --log $log"
-	sudo $cbtest --debug --xml ${one_pov} --timeout 20 --directory ${binary_dir} --cb ${binary} --log $log 
+	echo "sudo $cbtest --debug --xml ${one_pov} --timeout $timeout --directory ${binary_dir} --cb ${binary} --log $log"
+	sudo $cbtest --debug --xml ${one_pov} --timeout $timeout --directory ${binary_dir} --cb ${binary} --log $log 
 	grep "core identified" $log
 	if [ $? -eq 0 ]; then
 		if [ -f $core ]; then
 			sudo chown `whoami` $core 
-			eip=`timeout 20 $PEASOUP_HOME/tools/extract_eip_from_core.sh ${CGC_BIN} $core`
+			eip=`timeout $timeout $PEASOUP_HOME/tools/extract_eip_from_core.sh ${CGC_BIN} $core`
 			if [ $? -eq 0 ]; then
 				echo "$eip" >> $CRASH_SITES
 				echo "${pov_base}${delimiter}${eip}" >> $local_crash_summary
@@ -77,9 +83,32 @@ do
 	else
 		echo "${pov_base}${delimiter}0x0" >> $local_crash_summary
 	fi
-
-
 done
+
+fi
+
+#
+# Extract crash sites from crashing input dir (if any)
+#
+if [ -d $CRASH_DIR ]; then
+	echo "crash directory was specified: $CRASH_DIR"
+	for i in `ls ${CRASH_DIR}/*`
+	do
+		rm core &> /dev/null
+		echo "cmd: timeout $timeout ${CGC_BIN} < $i &>/dev/null"
+#		timeout $timeout ${CGC_BIN} < "${i}" &>/dev/null
+		${CGC_BIN} < "${i}" &>/dev/null
+		if [ -f core ]; then
+			echo "core detected for: $i"
+			eip=`${PEASOUP_HOME}/tools/extract_eip_from_core.sh ${CGC_BIN} core`
+			if [ $? -eq 0 ]; then
+				echo $eip >> $CRASH_SITES
+			fi
+		else
+			echo "no core detected for: $i"
+		fi
+	done
+fi
 
 #
 # generate policy file for input to sandboxing step
