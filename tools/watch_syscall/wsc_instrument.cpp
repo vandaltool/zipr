@@ -673,7 +673,9 @@ bool	WSC_Instrument::add_segfault_checking(Instruction_t* insn, const CSO_Warnin
 
 	m_num_segfault_instrumentations++;
 
-	cout<<"Adding callback to "<<d.CompleteInstr<<endl;
+//	cout<<"Adding callback to "<<d.CompleteInstr<<endl;
+	if (insn->GetAddress())
+		cout<<"#ATTRIBUTE instrumented=0x"<<hex<<insn->GetAddress()->GetVirtualOffset() << ":sandboxed" << endl;
 
        	insertAssemblyBefore(firp,insn,"pusha");
        	sprintf(tmpbuf,"lea  eax, %s", get_memory_addr(d).c_str());
@@ -898,15 +900,15 @@ libIRDB::Instruction_t* WSC_Instrument::FindInstruction(libIRDB::virtual_offset_
 
 std::ostream& WSC_Instrument::displayStatistics(std::ostream &os)
 {
-	os << "# ATTRIBUTE num_to_protect=" 
+	os << "#ATTRIBUTE num_to_protect=" 
 		<< dec << to_protect.size() << std::endl;
-	os << "# ATTRIBUTE num_segfault_instrumentations=" 
+	os << "#ATTRIBUTE num_segfault_instrumentations=" 
 		<< dec << m_num_segfault_instrumentations << std::endl;
-	os << "# ATTRIBUTE num_segfault_checking=" 
+	os << "#ATTRIBUTE num_segfault_checking=" 
 		<< dec << m_num_segfault_checking << std::endl;
-	os << "# ATTRIBUTE num_nullcheck_instrumentations="  
+	os << "#ATTRIBUTE num_nullcheck_instrumentations="  
 		<< dec << m_num_nullcheck_instrumentations << std::endl;
-	os << "# ATTRIBUTE num_boundscheck_instrumentations="  
+	os << "#ATTRIBUTE num_boundscheck_instrumentations="  
 		<< dec << m_num_boundscheck_instrumentations << std::endl;
 	return os;
 }
