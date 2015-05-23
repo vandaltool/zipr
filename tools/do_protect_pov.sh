@@ -14,6 +14,7 @@
 # in the step options:
 #
 # --pov_dir=<fully_qualified_path_to_pov_dir>
+# --crash_dir=<fully_qualified_path_to_pov_dir>
 # --pov_crash_summary=<fully_qualified_path_to_crash_summary>
 # 
 
@@ -23,8 +24,8 @@ CRASH_CSO_FILE=$3
 
 shift 3
 
-short_opts="p:c:"
-long_opts="--long pov_dir: --long pov_crash_summary:"
+short_opts="p:c:d:"
+long_opts="--long pov_dir: --long pov_crash_summary: --long crash_dir:"
 
 TEMP=`getopt -o $short_opts $long_opts -n 'do_protect_pov.sh' -- "$@"`
 if [ ! $? -eq 0 ]; then
@@ -40,6 +41,10 @@ while true ; do
 			POV_DIR=$2
 			shift 2
 		;;
+		--crash_dir | d)
+			CRASH_DIR=$2
+			shift 2
+		;;
 		--pov_crash_summary | c)
 			POV_CRASH_SUMMARY=$2
 			shift 2
@@ -50,21 +55,39 @@ while true ; do
 	esac
 done
 
-echo "POV_DIR: $POV_DIR"
-echo "POV_CRASH_SUMMARY: $POV_CRASH_SUMMARY"
-
-if [ -z $POV_DIR ]; then
-	echo "ERROR: No POV directory was specified"
-	return 1
-fi
-
 if [ ! -f $POV_CRASH_SUMMARY ]; then
 	touch $POV_CRASH_SUMMARY
 fi
 
-echo "cmd: $SECURITY_TRANSFORMS_HOME/tools/cgc_protect/pov_to_cso.sh $ORIG $CGC_CSID $POV_DIR $CRASH_CSO_FILE $POV_CRASH_SUMMARY"
 
-$SECURITY_TRANSFORMS_HOME/tools/cgc_protect/pov_to_cso.sh $ORIG $CGC_CSID $POV_DIR $CRASH_CSO_FILE $POV_CRASH_SUMMARY
+TMP_DIR=tmp.dir.pov.crash.$$
+TMP_FILE=tmp.file.$$
+
+if [ -z $POV_DIR ]; then
+	mkdir $TMP_DIR
+	POV_DIR=`pwd`/$TMP_DIR
+fi
+
+if [ -z $CRASH_DIR ]; then
+	mkdir $TMP_DIR
+	CRASH_DIR=`pwd`/$TMP_DIR
+fi
+
+if [ -z $POV_CRASH_SUMMARY ]; then
+	touch $TMP_FILE
+	POV_CRASH_SUMMARY=`pwd`/$TMP_FILE
+fi
+
+echo "POV_DIR: $POV_DIR"
+echo "POV_CRASH_SUMMARY: $POV_CRASH_SUMMARY"
+echo "CRASH_DIR: $CRASH_DIR"
+
+echo "cmd: $SECURITY_TRANSFORMS_HOME/tools/cgc_protect/pov_to_cso.sh $ORIG $CGC_CSID $POV_DIR $CRASH_CSO_FILE $POV_CRASH_SUMMARY $CRASH_DIR"
+
+$SECURITY_TRANSFORMS_HOME/tools/cgc_protect/pov_to_cso.sh $ORIG $CGC_CSID $POV_DIR $CRASH_CSO_FILE $POV_CRASH_SUMMARY $CRASH_DIR
+
+rmdir $TMP_DIR &>/dev/null
+rm $TMP_FILE &>/dev/null
 
 exit 0
 
