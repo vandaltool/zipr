@@ -15,7 +15,7 @@ CRASH_DIR=$6 # optional
 
 timeout=20
 local_crash_summary=tmp.crash.summary.$$
-log=tmp.log.$$
+log=`pwd`/tmp.log.$$
 
 cbtest=$CGC_UMBRELLA_DIR/scripts/techx-cb-test
 
@@ -62,11 +62,12 @@ do
 		sudo rm $core 2>/dev/null
 	fi
 
-	echo "sudo $cbtest --debug --xml ${one_pov} --timeout $timeout --directory ${binary_dir} --cb ${binary} --log $log"
-	sudo $cbtest --debug --xml ${one_pov} --timeout $timeout --directory ${binary_dir} --cb ${binary} --log $log 
+	echo "sudo -E $cbtest --debug --xml ${one_pov} --timeout $timeout --directory ${binary_dir} --cb ${binary} --log $log"
+	sudo -E $cbtest --debug --xml ${one_pov} --timeout $timeout --directory ${binary_dir} --cb ${binary} --log $log 
 	grep "core identified" $log
 	if [ $? -eq 0 ]; then
 		if [ -f $core ]; then
+                        echo "pov_to_cso.sh: core file found"
 			sudo chown `whoami` $core 
 			eip=`timeout $timeout $PEASOUP_HOME/tools/extract_eip_from_core.sh ${CGC_BIN} $core`
 			if [ $? -eq 0 ]; then
@@ -78,6 +79,7 @@ do
 
 			sudo rm $core 2>/dev/null
 		else
+                        echo "pov_to_cso.sh: cannot find core file"
 			echo "${pov_base}${delimiter}0x0" >> $local_crash_summary
 		fi
 	else
