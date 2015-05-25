@@ -98,8 +98,7 @@ if [ -d $CRASH_DIR ]; then
 	do
 		rm core &> /dev/null
 		echo "cmd: timeout $timeout ${CGC_BIN} < $i &>/dev/null"
-#		timeout $timeout ${CGC_BIN} < "${i}" &>/dev/null
-		${CGC_BIN} < "${i}" &>/dev/null
+		timeout $timeout ${CGC_BIN} < "${i}" &>/dev/null
 		if [ -f core ]; then
 			echo "core detected for: $i"
 			eip=`${PEASOUP_HOME}/tools/extract_eip_from_core.sh ${CGC_BIN} core`
@@ -130,5 +129,6 @@ mv $local_crash_summary ${POV_CRASH_SUMMARY_FILE}
 
 sudo rm $log 2>/dev/null
 rm $CRASH_SITES 2>/dev/null
+killall `basename $CGC_BIN`
 
 exit 0
