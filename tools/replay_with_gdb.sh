@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 #
 # Run program under gdb
@@ -21,12 +21,12 @@ if [ ! -f $bin ]; then
 fi
 
 # look for segmentation fault
-gdb $1 --batch --ex "run < $2" --ex "info registers \$eip" > gdb.out 2>&1
+gdb $1 --batch --ex "run < $2" --ex "info registers \$eip" --ex "quit" > gdb.out 2>&1 < /dev/null
 grep -i segmentation gdb.out &>/dev/null 
 if [ $? -eq 0 ]; then
     eip=`grep eip gdb.out | awk -F " " '{print $2;}'`
     # does eip point to a valid instruction?
-    gdb $1 --batch --ex "x/i $eip" 2>&1 | grep -i "cannot access" &>/dev/null
+    gdb $1 --batch --ex "x/i $eip" -ex "quit" 2>&1 </dev/null | grep -i "cannot access" &>/dev/null
     if [ $? -eq 0 ]; then
        echo "crashed but eip $eip does not point to a valid instruction" 
        exit 1
