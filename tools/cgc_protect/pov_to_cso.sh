@@ -96,17 +96,31 @@ if [ -d $CRASH_DIR ]; then
 	echo "crash directory was specified: $CRASH_DIR"
 	for i in `ls ${CRASH_DIR}/*`
 	do
-		rm core &> /dev/null
-		echo "cmd: timeout $timeout ${CGC_BIN} < $i &>/dev/null"
-		timeout $timeout ${CGC_BIN} < "${i}" &>/dev/null
-		if [ -f core ]; then
-			echo "core detected for: $i"
-			eip=`${PEASOUP_HOME}/tools/extract_eip_from_core.sh ${CGC_BIN} core`
-			if [ $? -eq 0 ]; then
-				echo $eip >> $CRASH_SITES
+		# lookup crash input
+		crash_base=`basename ${i}`
+		tmp=`grep -F "${crash_base}${delimiter}" $local_crash_summary`
+		if [ $? -eq 0 ];then
+			eip=`echo $tmp | awk -F"${delimiter}" '{print $2}'`
+			echo $eip | grep "0x0"
+			if [ ! $? -eq 0 ]; then
+				echo "$eip" >> $CRASH_SITES
 			fi
+			echo "Found crash: ${crash_base} in cache -- eip = $eip"
+			continue
 		else
-			echo "no core detected for: $i"
+			echo "crashing input ${crash_base} not found in cache -- attempt to extract crashing instruction"
+		fi
+
+               
+		eip=`timeout $timeout ${PEASOUP_HOME}/tools/replay_with_gdb.sh ${CGC_BIN} ${i}`
+		if [ $? -eq 0 ]; then
+			# segmentation fault detected and valid eip
+			echo "detected valid crash site: $eip"
+			echo $eip >> $CRASH_SITES
+			echo "${crash_base}${delimiter}${eip}" >> $local_crash_summary
+		else
+			echo "no valid crash site detected: $eip"
+			echo "${crash_base}${delimiter}0x0" >> $local_crash_summary
 		fi
 	done
 fi
@@ -125,7 +139,8 @@ if [ -f $CRASH_SITES ]; then
 fi
 
 # mv crash summary file out
-mv $local_crash_summary ${POV_CRASH_SUMMARY_FILE}
+sort $local_crash_summary | uniq > tmp.$$
+mv tmp.$$ ${POV_CRASH_SUMMARY_FILE}
 
 sudo rm $log 2>/dev/null
 rm $CRASH_SITES 2>/dev/null
