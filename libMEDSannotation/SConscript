@@ -1,0 +1,32 @@
+import os
+
+Import('env')
+env.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
+
+lib="MEDSannotation"
+
+files=  '''
+	src/FuncExitAnnotation.cpp
+	src/MEDS_AnnotationParser.cpp
+	src/MEDS_FPTRShadowAnnotation.cpp
+	src/MEDS_FRSafeAnnotation.cpp
+	src/MEDS_FuncPrototypeAnnotation.cpp
+	src/MEDS_InstructionCheckAnnotation.cpp
+	src/MEDS_ProblemFuncAnnotation.cpp
+	src/MEDS_Register.cpp
+	src/MEDS_SafeFuncAnnotation.cpp
+	'''
+cpppath=''' 
+	./include/
+	'''
+
+CFLAGS="-fPIC  "
+
+env=env.Clone(CPPPATH=Split(cpppath), CFLAGS=CFLAGS)
+lib=env.Library(lib, Split(files))
+
+install=env.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
+env.Alias("install", "$SECURITY_TRANSFORMS_HOME/lib/")
+
+Default(install)
+

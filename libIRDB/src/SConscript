@@ -1,0 +1,13 @@
+import os
+
+Import('env')
+
+dirs='''
+	cfg  
+	core  
+	syscall  
+	util
+	'''
+
+for i in Split(dirs):
+	SConscript(os.path.join(i,"SConscript"))

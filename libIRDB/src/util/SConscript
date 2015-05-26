@@ -3,19 +3,23 @@ import os
 Import('env')
 env.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 
+
+libname="IRDB-util"
 files=  '''
-	./beaengineSources/BeaEngine.c
+	insn_preds.cpp
 	'''
 cpppath=''' 
-	./include/
-	./beaengineSources/Includes/
+	$SECURITY_TRANSFORMS_HOME/include/
+	$SECURITY_TRANSFORMS_HOME/libIRDB/include/
+	$SECURITY_TRANSFORMS_HOME/beaengine/include
+	$SECURITY_TRANSFORMS_HOME/beaengine/beaengineSources/Includes/
 	'''
 
-CFLAGS="-fPIC  -pedantic -ansi -pipe -fno-common -fshort-enums -g -Wall -W -Wextra -Wconversion -Wno-long-long -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings"
-CC="gcc"
+CFLAGS="-fPIC  -Wall -W -Wextra -Wconversion "
+CC="g++"
 
 env=env.Clone(CC=CC, CPPPATH=Split(cpppath), CFLAGS=CFLAGS)
-lib=env.Library("BeaEngine_s_d", Split(files))
+lib=env.Library(libname, Split(files))
 
 install=env.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
 env.Alias("install", "$SECURITY_TRANSFORMS_HOME/lib/")

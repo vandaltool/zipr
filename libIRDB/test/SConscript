@@ -1,0 +1,30 @@
+import os
+
+
+
+Import('env')
+env.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
+
+cpppath=''' 
+	 $SECURITY_TRANSFORMS_HOME/include 
+	 $SECURITY_TRANSFORMS_HOME/libIRDB/include 
+	 $SECURITY_TRANSFORMS_HOME/beaengine/include 
+	'''
+
+CFLAGS="-fPIC  "
+
+
+LIBPATH="$SECURITY_TRANSFORMS_HOME/lib"
+LIBS=Split("IRDB-core IRDB-cfg IRDB-util pqxx BeaEngine_s_d ")
+
+env=env.Clone(CPPPATH=Split(cpppath), CFLAGS=CFLAGS)
+env.Program("fill_in_indtargs.exe",  Split("read_ehframe.cpp fill_in_indtargs.cpp check_thunks.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
+
+
+pgms='''print_variant list_programs create_variant create_variantir read_variantir clone ilr 
+        drop_variant generate_spri fill_in_cfg fix_calls unfix_calls 
+        find_strings build_callgraph build_preds rename_function pin_address
+	'''
+for i in Split(pgms):
+	env.Program(i+".exe",  i+".cpp", LIBPATH=LIBPATH, LIBS=LIBS)
+	

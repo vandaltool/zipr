@@ -1,0 +1,36 @@
+import os
+
+Import('env')
+env.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
+
+lib="xform"
+
+files=  '''
+	instruction_descriptor.cpp
+	function_descriptor.cpp
+	elfreader.cpp
+	null_transform.cpp
+	rewriter.cpp
+	spri_alloc.c
+	gen_hash.c
+	constant_hash.c
+	funclist_hash.c
+	instrmap_hash.c
+	framerestore_hash.c
+	stackref_hash.c
+	'''
+cpppath=''' 
+	../beaengine/include/
+	../include/
+	'''
+
+CFLAGS="-fPIC  -DUBUNTU"
+
+env=env.Clone(CC="g++", CPPPATH=Split(cpppath), CFLAGS=CFLAGS)
+lib=env.Library(lib, Split(files))
+
+install=env.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
+env.Alias("install", "$SECURITY_TRANSFORMS_HOME/lib/")
+
+Default(install)
+
