@@ -5,9 +5,7 @@ seeds_dir=$2             # path of seed input directory
 crash_dir=$3             # where to copy any crashing inputs
 crash_eip_file=$4        # out: name of file where we output the crashing EIPs
 
-#seeds_dir=${PEASOUP_HOME}/tools/sfuzz/seed_inputs
-
-TIMEOUT=10
+TIMEOUT=20
 
 # make sure we can get a core file
 ulimit -c unlimited
@@ -18,17 +16,18 @@ ulimit -c unlimited
 for i in `ls $seeds_dir`
 do
 	input=${seeds_dir}/$i
-	rm core &> /dev/null
-	timeout $TIMEOUT $cgc_binary < $input
-	if [ -f core ]; then
-		cp $input $crash_dir
-		eip=`${PEASOUP_HOME}/tools/extract_eip_from_core.sh $cgc_binary core`
-		if [ $? -eq 0 ]; then
-			echo $eip >> $crash_eip_file			
-		fi
 
-                echo "EIP: $eip"
+	eip=`timeout $TIMEOUT ${PEASOUP_HOME}/tools/replay_with_gdb.sh ${cgc_binary} ${input}`
+	if [ $? -eq 0 ]; then
+		cp $input $crash_dir
+        	# segmentation fault detected and valid eip
+		echo "detected valid crash site: $eip"
+		echo $eip >> $crash_eip_file			
+	else
+		echo "no valid crash site detected: $eip"
 	fi
+
+	echo "EIP: $eip"
 done
 
 if [ -f $crash_eip_file ]; then

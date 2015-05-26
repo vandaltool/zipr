@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 # pre: we're in the peasoup subdir
 
@@ -23,9 +23,5 @@ cat $crash_eip_file
 while read -r LINE || [[ -n $LINE ]]; do
 echo "$benchmark,$LINE,,Tainted Dereference" >> $cso_file
 done < $crash_eip_file
-
-
-
-
 
 exit 0

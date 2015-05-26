@@ -33,6 +33,8 @@ if [ $? -eq 0 ]; then
     fi
     echo $eip
     exit 0
+else
+    cat gdb.out
 fi
 
 exit 1
