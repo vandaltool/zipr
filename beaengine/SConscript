@@ -1,0 +1,24 @@
+import os
+
+env=Environment()
+env.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
+
+files=  '''
+	./beaengineSources/BeaEngine.c
+	'''
+cpppath=''' 
+	./include/
+	./beaengineSources/Includes/
+	'''
+
+CFLAGS="-fPIC  -pedantic -ansi -pipe -fno-common -fshort-enums -g -Wall -W -Wextra -Wconversion -Wno-long-long -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings"
+CC="g++"
+
+env=env.Clone(CC=CC, CPPPATH=Split(cpppath), CFLAGS=CFLAGS)
+lib=env.Library("BeaEngine_s_d", Split(files))
+
+install=env.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
+env.Alias("install", "$SECURITY_TRANSFORMS_HOME/lib/")
+
+Default(install)
+
