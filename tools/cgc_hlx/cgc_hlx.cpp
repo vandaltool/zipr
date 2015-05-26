@@ -149,24 +149,17 @@ bool HLX_Instrument::execute()
 
 		if (cinderella_allocate)
 		{	
-			if (!cinderella_deallocate)
-			{
-				cerr << "error: found allocate() but not deallocate()" << endl;
-				return false;
-			}
-
 			cout << "found " << CINDERELLA_ALLOCATE << endl;
-			cout << "found " << CINDERELLA_DEALLOCATE << endl;
 
 			if (padSizeOnAllocation(cinderella_allocate, getAllocatePadding()))
 			{
-				success = false;
+				success = true;
 				cout << CINDERELLA_ALLOCATE << " padded successfully: " << getAllocatePadding() << " bytes" << endl;
 
-				if (padSizeOnDeallocation(cinderella_deallocate, getAllocatePadding()))
+				if (cinderella_deallocate && padSizeOnDeallocation(cinderella_deallocate, getAllocatePadding()))
 				{
+					cout << "found " << CINDERELLA_DEALLOCATE << endl;
 					cout << CINDERELLA_DEALLOCATE << " padded successfully: " << getAllocatePadding() << " bytes" << endl;
-					success = true;
 				}
 			}
 		}
