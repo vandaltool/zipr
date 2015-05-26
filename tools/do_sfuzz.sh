@@ -12,7 +12,7 @@ seeds_dir=${PEASOUP_HOME}/tools/sfuzz/seed_inputs
 crash_dir=sfuzz/crashes
 crash_eip_file=sfuzz/crashing_eips 
 
-${PEASOUP_HOME}/tools/sfuzz/replay_seed_inputs.sh ./$binary $seeds_dir $crash_dir $crash_eip_file
+timeout 30 ${PEASOUP_HOME}/tools/sfuzz/replay_seed_inputs.sh ./$binary $seeds_dir $crash_dir $crash_eip_file
 
 echo "Found the following crasheing EIPs:"
 cat $crash_eip_file
