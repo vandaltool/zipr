@@ -22,6 +22,9 @@ ORIG=$1
 CGC_CSID=$2
 CRASH_CSO_FILE=$3
 
+ulimit -a
+ulimit -c unlimited
+
 shift 3
 
 short_opts="p:c:d:"
@@ -58,7 +61,6 @@ done
 if [ ! -f $POV_CRASH_SUMMARY ]; then
 	touch $POV_CRASH_SUMMARY
 fi
-
 
 TMP_DIR=tmp.dir.pov.crash.$$
 TMP_FILE=tmp.file.$$

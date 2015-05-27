@@ -14,6 +14,7 @@ TMP=tmp.$$
 cinderella_malloc="cinderella::malloc"
 
 # infer CGC syscall wrappers
+echo "$SECURITY_TRANSFORMS_HOME/tools/cgclibc/infer_syscall_wrappers.exe $ORIG_VARIANT_ID"
 $SECURITY_TRANSFORMS_HOME/tools/cgclibc/infer_syscall_wrappers.exe $ORIG_VARIANT_ID 
 
 # clone so that we work off a copy
