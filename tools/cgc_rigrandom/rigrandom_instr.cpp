@@ -70,13 +70,11 @@ L1:	b8 00 00 00 00       	mov    $0x0,%eax
 	J2->SetFallthrough(L2);
 	J3->SetTarget(L1);
 
-
 	return after;
 }
 
 bool RigRandom_Instrument::add_rr_instrumentation(libIRDB::Instruction_t* insn)
 {
-
 	assert(insn);
 	cout<<"Adding CGC->Elf instrumentation for "<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<endl;
 
@@ -100,6 +98,8 @@ bool RigRandom_Instrument::add_rr_instrumentation(libIRDB::Instruction_t* insn)
 	bits.resize(1); 
 	bits[0]=0x90;
 	old->SetDataBits(bits);
+
+	return true;
 }
 
 bool RigRandom_Instrument::needs_rr_instrumentation(libIRDB::Instruction_t* insn)
