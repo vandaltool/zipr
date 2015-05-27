@@ -1,5 +1,5 @@
 DIRS=safefr transforms spasm meds2pdb cover ret_shadow_stack selective_cfi fptr_shadow fix_rets
-CGC_DIRS=cgclibc cinderella prince watch_syscall cgc_hlx c2e
+CGC_DIRS=cgclibc cinderella prince watch_syscall cgc_hlx c2e cgc_rigrandom
 
 BUILD_CGC=@BUILD_CGC@
 
