@@ -44,17 +44,26 @@ bool HLX_Instrument::padSizeOnAllocation(Function_t* const p_func, const int pad
 		return false; 
 	}
 
-	cout << "padding function: " << p_func->GetName() << " at: 0x" << hex << entry->GetAddress()->GetVirtualOffset() << dec << "padding: " << padding << " shr_factor: " << shr_factor << endl;
+	cout << "padding function: " << p_func->GetName() << " at: 0x" << hex << entry->GetAddress()->GetVirtualOffset() << dec << " padding: " << padding << " shr_factor: " << shr_factor << endl;
 
 	/*
-	* Pad by 1/16 (nb: CGC scoring function give a 10% allowance)      
+	*  mov eax, [esp+4]
+	*  shr eax, k
+	*  add eax, p
+	*  mov [esp+4], eax
 	*
-	*    eax <-- [esp + 4]      ; get the size (1st argument)
-	*    eax >>= 4              ; divide by 16 to get the padding
-	*    eax + 1                ; add 1 to padding in case the size < 16
-    *    add [esp+4], eax       ; add padding to size
+	*  e.g.: size: 256 malloc padding: 32, shift factor = 5
+	*     mov eax, [esp+4]    ; 256
+	*     shr eax, 5          ; size << 5               = 8
+	*     add eax, 32         ; size << 5 + 32          = 40
+	*     add [esp+4], eax    ; size = size + size << 5 + 32   = 256 + 40 = 296
+	*  
+	*  e.g.: size: 4096   padding: 4096  shift factor = 32 
+	*     mov eax, [esp+4]    ; 4096
+	*     shr eax, 32         ; size << 32               = 0
+	*     add eax, 4096       ; size << 32 + 4096        = 4096
+	*     add [esp+4], eax    ; size = size + size << 32 + 4096 = 8192
 	*/
-
 	Instruction_t* instr = NULL;
 	Instruction_t* orig = NULL;
 
@@ -76,7 +85,7 @@ bool HLX_Instrument::padSizeOnAllocation(Function_t* const p_func, const int pad
 	else
 		instr = insertAssemblyAfter(m_firp, entry, buf);
 
-	instr = insertAssemblyAfter(m_firp, instr, "mov [esp+4], eax");
+	instr = insertAssemblyAfter(m_firp, instr, "add [esp+4], eax");
 	instr->SetFallthrough(orig);
 
 	return true;
@@ -155,12 +164,13 @@ bool HLX_Instrument::execute()
 			{
 				success = true;
 				cout << CINDERELLA_ALLOCATE << " padded successfully: " << getAllocatePadding() << " bytes" << endl;
-
+#ifdef DO_NOT_USE
 				if (cinderella_deallocate && padSizeOnDeallocation(cinderella_deallocate, getAllocatePadding()))
 				{
 					cout << "found " << CINDERELLA_DEALLOCATE << endl;
 					cout << CINDERELLA_DEALLOCATE << " padded successfully: " << getAllocatePadding() << " bytes" << endl;
 				}
+#endif
 			}
 		}
 		else

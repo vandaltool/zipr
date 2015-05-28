@@ -20,7 +20,7 @@
 #include <libIRDB-core.hpp>
 
 #define DEFAULT_MALLOC_PADDING 64
-#define DEFAULT_SHR_FACTOR 5
+#define DEFAULT_SHR_FACTOR 32
 #define DEFAULT_ALLOCATE_PADDING 4096
 
 class HLX_Instrument
@@ -40,7 +40,7 @@ class HLX_Instrument
 			m_malloc_padding = malloc_padding;
 			m_shr_factor = shr_factor;
 		}
-		void enableAllocatePadding(const int allocate_padding) {
+		void enableAllocatePadding(const int allocate_padding, const int shr_factor=DEFAULT_SHR_FACTOR) {
 			m_enable_allocate_padding = true;
 			m_allocate_padding = allocate_padding;
 		}
