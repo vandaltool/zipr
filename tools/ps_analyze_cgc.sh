@@ -16,6 +16,7 @@
 
 export FIX_CALLS_FIX_ALL_CALLS=1
 
+
 $PEASOUP_HOME/tools/ps_analyze.sh $* 	\
 	--step spawner=off 		\
 	--step appfw=off 		\
@@ -25,9 +26,9 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	\
 	--step sfuzz=on	\
 	--step cinderella=on	\
 	--step cgc_hlx=on	\
-	--step-option cgc_hlx:--do_malloc_padding=256 \
-	--step-option cgc_hlx:--shr_malloc_factor=5 \
 	--step-option cgc_hlx:--do_allocate_padding=4096 \
+	--step-option cgc_hlx:--shr_malloc_factor=5 \
+	--step-option cgc_hlx:--do_malloc_padding=32 \
 	--step heaprand=off	\
 	--step double_free=off	\
 	--step controlled_exit=off	\
@@ -41,7 +42,7 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	\
 	--step-option p1transform:--recursive_min_stack_padding=32 \
 	--step-option p1transform:--recursive_max_stack_padding=32 \
 	--step-option p1transform:--canaries=off \
-	--step input_filtering=on	\
+	--step input_filtering=off	\
 	--step watch_allocate=on	\
 	--step integertransform=off	\
 	--step selective_cfi=on	\
