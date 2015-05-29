@@ -3,15 +3,14 @@
 #
 # Given a directory full of POVs, protect a singleton CB
 # by sandboxing the appropriate instructions 
-# 
 #
 
 CGC_BIN=$1       # input cgc binary
 CGC_CSID=$2      # cgc name
 POV_DIR=$3       # directory containing POVs 
 CSO_FILE=$4      # output: CSO warning file suitable for sandboxing step
-POV_CRASH_SUMMARY_FILE=$5   # input/output: POV-->crash summary file
-CRASH_DIR=$6 # optional
+POV_CRASH_SUMMARY_FILE=$5   # input/output: POV/raw inputs-->crash summary file
+CRASH_DIR=$6     # directory with raw crashing inputs
 
 timeout=20
 local_crash_summary=tmp.crash.summary.$$
@@ -110,7 +109,6 @@ if [ -d $CRASH_DIR ]; then
 		else
 			echo "crashing input ${crash_base} not found in cache -- attempt to extract crashing instruction"
 		fi
-
                
 		eip=`timeout $timeout ${PEASOUP_HOME}/tools/replay_with_gdb.sh ${CGC_BIN} ${i}`
 		if [ $? -eq 0 ]; then
@@ -125,9 +123,14 @@ if [ -d $CRASH_DIR ]; then
 	done
 fi
 
+# local_crash_summary should have a list of all potential crash sites
+# extract all the instructions to sandbox
+grep "${delimiter}" $local_crash_summary | awk -F"${delimiter}" '{print $2}' | sort | uniq >> $CRASH_SITES
+			
 #
 # generate policy file for input to sandboxing step
 #
+
 if [ -f $CRASH_SITES ]; then
 	tmp=tmp.$$
 	sort $CRASH_SITES | uniq > $tmp

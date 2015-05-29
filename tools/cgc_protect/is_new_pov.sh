@@ -1,6 +1,8 @@
 #!/bin/bash
 
 #
+# This script is invoked by crash_filter.py to determine whether a 
+# POV results in a new crashing instruction
 # 
 # Returns success (0) only if the POV results in a new crash point 
 # Returns > 0 otherwise
@@ -12,7 +14,7 @@ POV_PATH=$1       # fully qualified path for POV
 CRASH_SUMMARY=$2  # crash summary file
 CGC_BIN=$3        # input cgc binary (@todo: handle multi-cbs)
 
-cbtest=$CGC_UMBRELLA_DIR/scripts/techx-cb-test
+cbtest=${CGC_UMBRELLA_DIR}/scripts/techx-cb-test
 timeout=20
 delimiter="###"
 
@@ -23,7 +25,7 @@ binary=`basename $CGC_BIN`
 binary_dir=`dirname $CGC_BIN`
 core=${binary_dir}/core
 
-# lookup pov
+# if the pov is already in the crash summary file, then we've seen it before
 tmp=`grep -F "${pov_base}${delimiter}" ${CRASH_SUMMARY}`
 if [ $? -eq 0 ]; then
 	exit 2
@@ -34,6 +36,10 @@ if [ -f $core ]; then
 	sudo rm $core &>/dev/null
 fi
 
+# invoke techx-cb-test in an attempt to get a core file
+# @todo: input.py has already run the input... at some point we should just
+#        have input.py record the crashing instruction so that we don't have
+#        to re-run the pov here
 echo "sudo -E $cbtest --debug --xml ${POV_PATH} --timeout $timeout --directory ${binary_dir} --cb ${binary} --log $log"
 sudo -E $cbtest --debug --xml ${POV_PATH} --timeout $timeout --directory ${binary_dir} --cb ${binary} --log $log 
 grep "core identified" $log
@@ -47,6 +53,8 @@ if [ $? -eq 0 ]; then
 			if [ $? -eq 0 ]; then
 				exit 1
 			else
+				# new crash instruction, add to summary file
+				echo "${pov_base}${delimiter}${eip}" >> ${CRASH_SUMMARY}
 				exit 0
 			fi
 		else
