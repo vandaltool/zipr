@@ -133,7 +133,7 @@ grep "${delimiter}" $local_crash_summary | awk -F"${delimiter}" '{print $2}' | s
 
 if [ -f $CRASH_SITES ]; then
 	tmp=tmp.$$
-	sort $CRASH_SITES | uniq > $tmp
+	grep -v "0x0\$" $CRASH_SITES | sort | uniq > $tmp
 	mv $tmp $CRASH_SITES
 
 	while read -r LINE || [[ -n $LINE ]]; do
