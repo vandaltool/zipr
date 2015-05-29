@@ -51,7 +51,7 @@ if [ $? -eq 0 ]; then
 		if [ $? -eq 0 ]; then
 			tmp=`grep -F "${delimiter}$eip" ${CRASH_SUMMARY}`
 			if [ $? -eq 0 ]; then
-				# already in the crash summary
+				echo "${pov_base}${delimiter}${eip}" >> ${CRASH_SUMMARY}
 				exit 1
 			else
 				# new crash instruction, add to summary file
