@@ -12,6 +12,7 @@ CSO_FILE=$4      # output: CSO warning file suitable for sandboxing step
 POV_CRASH_SUMMARY_FILE=$5   # input/output: POV/raw inputs-->crash summary file
 CRASH_DIR=$6     # directory with raw crashing inputs
 INPUT_CRASH_SUMMARY_FILE=$7   # input/output: POV/raw inputs-->crash summary file
+CRASH_SITES=$8   # list of crash sites
 
 timeout=20
 local_crash_summary=tmp.crash.summary.$$
@@ -21,7 +22,6 @@ cbtest=$CGC_UMBRELLA_DIR/scripts/techx-cb-test
 
 delimiter="###"
 
-CRASH_SITES=tmp.crashes.$$
 
 ulimit -c unlimited
 
@@ -149,7 +149,7 @@ sort $local_crash_summary | uniq > tmp.$$
 mv tmp.$$ ${INPUT_CRASH_SUMMARY_FILE}
 
 sudo rm $log 2>/dev/null
-rm $CRASH_SITES 2>/dev/null
+#rm $CRASH_SITES 2>/dev/null
 killall `basename $CGC_BIN`
 
 exit 0
