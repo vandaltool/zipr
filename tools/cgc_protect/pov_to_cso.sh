@@ -11,6 +11,7 @@ POV_DIR=$3       # directory containing POVs
 CSO_FILE=$4      # output: CSO warning file suitable for sandboxing step
 POV_CRASH_SUMMARY_FILE=$5   # input/output: POV/raw inputs-->crash summary file
 CRASH_DIR=$6     # directory with raw crashing inputs
+INPUT_CRASH_SUMMARY_FILE=$7   # input/output: POV/raw inputs-->crash summary file
 
 timeout=20
 local_crash_summary=tmp.crash.summary.$$
@@ -26,8 +27,10 @@ ulimit -c unlimited
 
 # copy the crash summary file locally
 cp $POV_CRASH_SUMMARY_FILE $local_crash_summary
+cat $INPUT_CRASH_SUMMARY_FILE >> $local_crash_summary
 
 # run cb-test on each POV invidually
+# not used for CQE
 if [ -d ${POV_DIR} ]; then
 
 for i in `ls ${POV_DIR}/*.xml`
@@ -143,7 +146,7 @@ fi
 
 # mv crash summary file out
 sort $local_crash_summary | uniq > tmp.$$
-mv tmp.$$ ${POV_CRASH_SUMMARY_FILE}
+mv tmp.$$ ${INPUT_CRASH_SUMMARY_FILE}
 
 sudo rm $log 2>/dev/null
 rm $CRASH_SITES 2>/dev/null
