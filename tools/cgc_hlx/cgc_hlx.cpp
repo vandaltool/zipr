@@ -94,6 +94,7 @@ bool HLX_Instrument::padSizeOnAllocation(Function_t* const p_func, const int pad
 // pad argument #2 of function, assume it's the size
 bool HLX_Instrument::padSizeOnDeallocation(Function_t* const p_func, const int padding)
 {
+return true; // make sure deactivated for now
 	assert(p_func);
 
 	Instruction_t *entry = p_func->GetEntryPoint();
