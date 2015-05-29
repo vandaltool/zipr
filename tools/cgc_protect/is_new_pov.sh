@@ -51,6 +51,7 @@ if [ $? -eq 0 ]; then
 		if [ $? -eq 0 ]; then
 			tmp=`grep -F "${delimiter}$eip" ${CRASH_SUMMARY}`
 			if [ $? -eq 0 ]; then
+				# already in the crash summary
 				exit 1
 			else
 				# new crash instruction, add to summary file
@@ -58,13 +59,19 @@ if [ $? -eq 0 ]; then
 				exit 0
 			fi
 		else
+			# cannot extract eip
+			echo "${pov_base}${delimiter}0x0" >> ${CRASH_SUMMARY}
 			exit 1
 		fi
 
 		sudo rm $core &>/dev/null
 	else
+		# core file identified, but no core file found
+		echo "${pov_base}${delimiter}0x0" >> ${CRASH_SUMMARY}
 		exit 1
 	fi
 else
+	# no core file identified at all
+	echo "${pov_base}${delimiter}0x0" >> ${CRASH_SUMMARY}
 	exit 1
 fi
