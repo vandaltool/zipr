@@ -16,6 +16,7 @@
 # --pov_dir=<fully_qualified_path_to_pov_dir>
 # --crash_dir=<fully_qualified_path_to_pov_dir>
 # --pov_crash_summary=<fully_qualified_path_to_crash_summary>
+# --crash_summary=<fully_qualified_path_to_crash_summary>
 # 
 
 ORIG=$1
@@ -27,8 +28,8 @@ ulimit -c unlimited
 
 shift 3
 
-short_opts="p:c:d:"
-long_opts="--long pov_dir: --long pov_crash_summary: --long crash_dir:"
+short_opts="p:c:d:x:"
+long_opts="--long pov_dir: --long pov_crash_summary: --long crash_dir: --long crash_summary:"
 
 TEMP=`getopt -o $short_opts $long_opts -n 'do_protect_pov.sh' -- "$@"`
 if [ ! $? -eq 0 ]; then
@@ -50,6 +51,10 @@ while true ; do
 		;;
 		--pov_crash_summary | c)
 			POV_CRASH_SUMMARY=$2
+			shift 2
+		;;
+		--crash_summary | x)
+			CRASH_SUMMARY=$2
 			shift 2
 		;;
 		--) 	shift 
@@ -76,17 +81,22 @@ if [ -z $CRASH_DIR ]; then
 fi
 
 if [ -z $POV_CRASH_SUMMARY ]; then
-	touch $TMP_FILE
-	POV_CRASH_SUMMARY=`pwd`/$TMP_FILE
+	touch $TMP_FILE.pov.crash
+	POV_CRASH_SUMMARY=`pwd`/$TMP_FILE.pov.crash
+fi
+
+if [ -z $CRASH_SUMMARY ]; then
+	touch $TMP_FILE.crash
+	CRASH_SUMMARY=`pwd`/$TMP_FILE.crash
 fi
 
 echo "POV_DIR: $POV_DIR"
 echo "POV_CRASH_SUMMARY: $POV_CRASH_SUMMARY"
 echo "CRASH_DIR: $CRASH_DIR"
 
-echo "cmd: $SECURITY_TRANSFORMS_HOME/tools/cgc_protect/pov_to_cso.sh $ORIG $CGC_CSID $POV_DIR $CRASH_CSO_FILE $POV_CRASH_SUMMARY $CRASH_DIR"
+echo "cmd: $SECURITY_TRANSFORMS_HOME/tools/cgc_protect/pov_to_cso.sh $ORIG $CGC_CSID $POV_DIR $CRASH_CSO_FILE $POV_CRASH_SUMMARY $CRASH_DIR $CRASH_SUMMARY"
 
-$SECURITY_TRANSFORMS_HOME/tools/cgc_protect/pov_to_cso.sh $ORIG $CGC_CSID $POV_DIR $CRASH_CSO_FILE $POV_CRASH_SUMMARY $CRASH_DIR
+$SECURITY_TRANSFORMS_HOME/tools/cgc_protect/pov_to_cso.sh $ORIG $CGC_CSID $POV_DIR $CRASH_CSO_FILE $POV_CRASH_SUMMARY $CRASH_DIR $CRASH_SUMMARY
 
 rmdir $TMP_DIR &>/dev/null
 rm $TMP_FILE &>/dev/null
