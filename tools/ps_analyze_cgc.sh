@@ -3,11 +3,11 @@
 #
 # Default configuration for CGC Scored Event 2
 #
-# HLX :   Heap padding (malloc_padding=size<<5 + 64 bytes, allocate_padding=4096 bytes)
+# HLX :   Heap padding (malloc_padding=size<<5 + 32 bytes, allocate_padding=4096 bytes)
 # SLX :   Stack padding (64 bytes)
 # SCFI:   Selective CFI (indirect branches)
 # IF  :   Input filtering (64 bytes max at a time for receive())
-# SBX :   Sandbox crashing instructions (only if sfuzz detects a crash)
+# SBX :   Sandbox crashing instructions (only if detects a crash)
 #
 # To turn on sandboxing for crashing inputs that Grace finds:
 #   (1) generate a code-sonar warnings file, e.g., crash.cso
