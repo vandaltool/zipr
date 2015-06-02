@@ -135,8 +135,9 @@ grep "${delimiter}" $local_crash_summary | awk -F"${delimiter}" '{print $2}' | s
 #
 
 if [ -f $CRASH_SITES ]; then
+	# format: 0x<address_in_hex>
 	tmp=tmp.$$
-	grep -v "0x0\$" $CRASH_SITES | sort | uniq > $tmp
+	grep -v "0x0\$" $CRASH_SITES | egrep '^0x[a-fA-F0-9]+$' | sort | uniq > $tmp
 	mv $tmp $CRASH_SITES
 
 	while read -r LINE || [[ -n $LINE ]]; do
