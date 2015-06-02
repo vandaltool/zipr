@@ -10,6 +10,8 @@
 bin=$1
 input_file=$2
 
+timeout=60
+
 if [ ! -f $bin ]; then
 	echo "binary file: $bin does not exist"
 	exit 1
@@ -21,7 +23,7 @@ if [ ! -f $bin ]; then
 fi
 
 # look for segmentation fault
-gdb $1 --batch --ex "run < $2" --ex "info registers \$eip" --ex "quit" > gdb.out 2>&1 < /dev/null
+timeout $timeout gdb $1 --batch --ex "run < $2" --ex "info registers \$eip" --ex "quit" > gdb.out 2>&1 < /dev/null
 grep -i segmentation gdb.out &>/dev/null 
 if [ $? -eq 0 ]; then
     eip=`grep eip gdb.out | awk -F " " '{print $2;}'`
