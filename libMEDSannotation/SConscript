@@ -1,7 +1,8 @@
 import os
 
 Import('env')
-env.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
+myenv=env.Clone()
+myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 
 lib="MEDSannotation"
 
@@ -23,11 +24,9 @@ cpppath='''
 
 #CFLAGS="-fPIC  "
 
-env=env.Clone(CPPPATH=Split(cpppath))
-lib=env.Library(lib, Split(files))
+myenv=myenv.Clone(CPPPATH=Split(cpppath))
+lib=myenv.Library(lib, Split(files))
 
-install=env.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
-env.Alias("install", "$SECURITY_TRANSFORMS_HOME/lib/")
-
+install=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
 Default(install)
 

@@ -1,7 +1,8 @@
 import os
 
 Import('env')
-env.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
+myenv=env
+myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 
 
 libname="IRDB-core"
@@ -28,13 +29,11 @@ cpppath='''
 	$SECURITY_TRANSFORMS_HOME/beaengine/beaengineSources/Includes/
 	'''
 
-env['CCFLAGS'].append(Split("-Wall -W -Wextra -Wconversion "))
+myenv.Append(CCFLAGS=" -Wall -W -Wextra -Wconversion ")
 
-env=env.Clone(CPPPATH=Split(cpppath))
-lib=env.Library(libname, Split(files))
+myenv=myenv.Clone(CPPPATH=Split(cpppath))
+lib=myenv.Library(libname, Split(files))
 
-install=env.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
-env.Alias("install", "$SECURITY_TRANSFORMS_HOME/lib/")
-
+install=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
 Default(install)
 
