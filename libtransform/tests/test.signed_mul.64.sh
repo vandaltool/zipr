@@ -15,8 +15,8 @@
 # ATTRIBUTE ModDep=strata
 # ATTRIBUTE ModDep=diablo_toolchain
 # ATTRIBUTE ModDep=stratafier
-# ATTRIBUTE ModDep=idapro65
-# ATTRIBUTE ModDep=idapro65_sdk
+# ATTRIBUTE ModDep=idaproCur
+# ATTRIBUTE ModDep=idaproCur_sdk
 # ATTRIBUTE ModDep=peasoup_examples
 # ATTRIBUTE ModDep=security_transforms
 # ATTRIBUTE ModDep=SMPStaticAnalyzer

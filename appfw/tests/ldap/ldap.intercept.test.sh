@@ -15,8 +15,8 @@
 # ATTRIBUTE ModDep=strata
 # ATTRIBUTE ModDep=diablo_toolchain
 # ATTRIBUTE ModDep=stratafier
-# ATTRIBUTE ModDep=idapro61
-# ATTRIBUTE ModDep=idapro61_sdk
+# ATTRIBUTE ModDep=idaproCur
+# ATTRIBUTE ModDep=idaproCur_sdk
 # ATTRIBUTE TestsWhat=lang_C
 # ATTRIBUTE TestsWhat=strata
 # ATTRIBUTE TestsWhat=commandinjection
