@@ -12,6 +12,10 @@ cpppath='''
 	./include/
 	./beaengineSources/Includes/
 	'''
+
+#print 'myenv[cflags]='+str(myenv['CFLAGS'])
+#print 'myenv=\n'
+#print myenv.Dump()
 myenv=myenv.Clone(CPPPATH=Split(cpppath))
 lib=myenv.Library("BeaEngine_s_d", Split(files))
 

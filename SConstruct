@@ -5,9 +5,9 @@ import sys
 env=Environment()
 
 # default build options
-env.Replace(CFLAGS="-fPIC")
-env.Replace(CCFLAGS="-fPIC")
-env.Replace(LDFLAGS="-fPIC")
+env.Replace(CFLAGS="-fPIC -w ")
+env.Replace(CXXFLAGS="-fPIC -w ")
+env.Replace(LINKFLAGS="-fPIC -w ")
 
 # parse arguments
 env.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
@@ -18,11 +18,13 @@ env.Replace(debug=ARGUMENTS.get("debug",0))
 if int(env['debug']) == 1:
         print "Setting debug mode"
         env.Append(CFLAGS=" -g")
-        env.Append(CCFLAGS=" -g")
+        env.Append(CXXFLAGS=" -g")
+        env.Append(LINKFLAGS=" -g")
 else:
         print "Setting release mode"
         env.Append(CFLAGS=" -O3")
-        env.Append(CCFLAGS=" -O3")
+        env.Append(CXXFLAGS=" -O3")
+        env.Append(LINKFLAGS=" -O3")
 
 # set 32/64 bit build properly
 print  "env[64bit]="+str(env['do_64bit_build'])
@@ -31,13 +33,15 @@ if env['do_64bit_build'] is None:
 elif int(env['do_64bit_build']) == 1:
 	print 'Using 64-bit compilation size.'
         env.Append(CFLAGS=" -m64")
-        env.Append(CCFLAGS=" -m64")
-        env.Append(LDFLAGS=" -m64")
+        env.Append(CXXFLAGS=" -m64")
+        env.Append(LINKFLAGS=" -m64")
+        env.Append(SHLINKFLAGS=" -m64")
 else:
 	print 'Using 32-bit compilation size.'
         env.Append(CFLAGS=" -m32")
-        env.Append(CCFLAGS=" -m32")
-        env.Append(LDFLAGS=" -m32")
+        env.Append(CXXFLAGS=" -m32")
+        env.Append(LINKFLAGS=" -m32")
+        env.Append(SHLINKFLAGS=" -m32")
 
 
 Export('env')

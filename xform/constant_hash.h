@@ -33,7 +33,7 @@ typedef enum constant_hash_field constant_hash_field_t;
 extern Hashtable *constants_hash;
 struct constant_hash_key
 {
-        int pc;
+        app_iaddr_t pc;
         int the_const;
 	constant_hash_field_t field;
 };
