@@ -4,6 +4,7 @@
 /README -text
 /README.p1 -text
 /SConscript -text
+/SConstruct -text
 appfw/Makefile.in -text
 appfw/TODO -text
 appfw/configure -text
