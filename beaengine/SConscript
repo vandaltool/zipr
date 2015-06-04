@@ -11,10 +11,14 @@ cpppath='''
 	./beaengineSources/Includes/
 	'''
 
-CFLAGS="-fPIC  -pedantic -ansi -pipe -fno-common -fshort-enums -g -Wall -W -Wextra -Wconversion -Wno-long-long -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings"
-CC="gcc"
 
-env=env.Clone(CC=CC, CPPPATH=Split(cpppath), CFLAGS=CFLAGS)
+# inherit from above.
+#CFLAGS="-fPIC  -pedantic -ansi -pipe -fno-common -fshort-enums -g -Wall -W -Wextra -Wconversion -Wno-long-long -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings"
+#CC="gcc"
+#env=env.Clone(CC=CC, CPPPATH=Split(cpppath), CFLAGS=CFLAGS)
+
+
+env=env.Clone(CPPPATH=Split(cpppath))
 lib=env.Library("BeaEngine_s_d", Split(files))
 
 install=env.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)

@@ -21,9 +21,9 @@ cpppath='''
 	./include/
 	'''
 
-CFLAGS="-fPIC  "
+#CFLAGS="-fPIC  "
 
-env=env.Clone(CPPPATH=Split(cpppath), CFLAGS=CFLAGS)
+env=env.Clone(CPPPATH=Split(cpppath))
 lib=env.Library(lib, Split(files))
 
 install=env.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)

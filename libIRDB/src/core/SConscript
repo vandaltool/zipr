@@ -28,10 +28,9 @@ cpppath='''
 	$SECURITY_TRANSFORMS_HOME/beaengine/beaengineSources/Includes/
 	'''
 
-CFLAGS="-fPIC  -Wall -W -Wextra -Wconversion "
-CC="g++"
+env['CCFLAGS'].append(Split("-Wall -W -Wextra -Wconversion "))
 
-env=env.Clone(CC=CC, CPPPATH=Split(cpppath), CFLAGS=CFLAGS)
+env=env.Clone(CPPPATH=Split(cpppath))
 lib=env.Library(libname, Split(files))
 
 install=env.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)

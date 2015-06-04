@@ -15,9 +15,9 @@ cpppath='''
 	 $SECURITY_TRANSFORMS_HOME/tools/transforms 
 	'''
 
-CCFLAGS="-fPIC  -DCGC"
+env['CCFLAGS'].append("-DCGC")
 
-env=env.Clone(CPPPATH=Split(cpppath), CCFLAGS=CCFLAGS)
+env=env.Clone(CPPPATH=Split(cpppath))
 cgclibc=env.Object("cgclibc.cpp")
 files1=Split("cgclibc_driver.cpp")+cgclibc
 files2=Split("display_functions.cpp")+cgclibc 

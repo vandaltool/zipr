@@ -2,11 +2,7 @@ import shutil
 import os
 import tarfile
 
-
-
-env=Environment()
-Export('env')
-
+Import('env')
 
 if env.GetOption('clean'):
     if os.path.exists("third_party/ELFIO"):

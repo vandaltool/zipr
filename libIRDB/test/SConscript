@@ -12,13 +12,10 @@ cpppath='''
 	 $SECURITY_TRANSFORMS_HOME/beaengine/include 
 	'''
 
-CFLAGS="-fPIC  "
-
-
 LIBPATH="$SECURITY_TRANSFORMS_HOME/lib"
 LIBS=Split("IRDB-core IRDB-cfg IRDB-util pqxx BeaEngine_s_d ")
 
-env=env.Clone(CPPPATH=Split(cpppath), CFLAGS=CFLAGS)
+env=env.Clone(CPPPATH=Split(cpppath))
 pgm=env.Program("fill_in_indtargs.exe",  Split("read_ehframe.cpp fill_in_indtargs.cpp check_thunks.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
 install=env.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
 env.Alias("install", "$SECURITY_TRANSFORMS_HOME/bin/")
