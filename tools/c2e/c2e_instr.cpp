@@ -7,6 +7,7 @@
 
 // for mmap param
 #include <sys/mman.h>
+#include <bits/syscall.h>
 
 
 
@@ -271,7 +272,11 @@ Instruction_t* Cgc2Elf_Instrument::insertAllocate(Instruction_t* after)
 	after=insertAssemblyAfter(firp, after, "push esi");	 	// save reg
 	after=insertAssemblyAfter(firp, after, "push edi");	 	// save reg
 
+#ifdef SYS_mmap2
 	sprintf(buf, "mov eax, %d", SYS_mmap2);
+#else
+	assert(0);	// mmap2 required
+#endif
 	after=insertAssemblyAfter(firp, after, buf);			// set eax to syscall #
 
 

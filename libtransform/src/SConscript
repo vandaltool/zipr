@@ -1,0 +1,31 @@
+import os
+
+print "In libIRDB/tests/SConscript"
+
+
+Import('env')
+env.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
+
+files="integertransform32.cpp  integertransform64.cpp  integertransform.cpp  leapattern.cpp  pointercheck64.cpp  Rewrite_Utility.cpp  transform.cpp"
+
+cpppath='''
+         $SECURITY_TRANSFORMS_HOME/include
+         $SECURITY_TRANSFORMS_HOME/libIRDB/include
+         $SECURITY_TRANSFORMS_HOME/beaengine/include
+         $SECURITY_TRANSFORMS_HOME/libtransform/include
+         $SECURITY_TRANSFORMS_HOME/libMEDSannotation/include/
+        '''
+
+
+CFLAGS="-fPIC  "
+
+
+LIBPATH="$SECURITY_TRANSFORMS_HOME/lib"
+LIBS=Split("IRDB-core IRDB-cfg IRDB-util pqxx BeaEngine_s_d ")
+
+env=env.Clone(CPPPATH=Split(cpppath), CFLAGS=CFLAGS)
+lib=env.Library("transform",  Split(files), LIBPATH=LIBPATH, LIBS=LIBS)
+install=env.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
+env.Alias("install", "$SECURITY_TRANSFORMS_HOME/lib/")
+Default(install)
+

@@ -20,8 +20,8 @@ files=  '''
 	stackref_hash.c
 	'''
 cpppath=''' 
-	../beaengine/include/
-	../include/
+	$SECURITY_TRANSFORMS_HOME/beaengine/include/
+	$SECURITY_TRANSFORMS_HOME/include/
 	'''
 
 CFLAGS="-fPIC  -DUBUNTU"

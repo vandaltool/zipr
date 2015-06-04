@@ -1,0 +1,28 @@
+import os
+
+Import('env')
+
+dirs='''
+	transforms
+	c2e
+	cgc_hlx
+	cgclibc
+	cgc_rigrandom
+	cinderella
+	cover
+	fix_rets
+	fptr_shadow
+	inferfn
+	meds2pdb
+	memcover
+	prince
+	ret_shadow_stack
+	safefr
+	selective_cfi
+	simple_cdi
+	spasm
+	watch_syscall
+	'''
+
+for i in Split(dirs):
+	SConscript(os.path.join(i,"SConscript"))

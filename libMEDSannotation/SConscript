@@ -15,6 +15,7 @@ files=  '''
 	src/MEDS_ProblemFuncAnnotation.cpp
 	src/MEDS_Register.cpp
 	src/MEDS_SafeFuncAnnotation.cpp
+	src/VirtualOffset.cpp
 	'''
 cpppath=''' 
 	./include/

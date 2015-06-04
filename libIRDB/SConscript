@@ -2,5 +2,7 @@ import os
 
 Import('env')
 
+print "In libIRDB/SConscript"
+
 SConscript("src/SConscript")
 SConscript("test/SConscript")
