@@ -726,6 +726,8 @@ tools/transforms/Range.cpp -text
 tools/transforms/Range.hpp -text
 tools/transforms/Rewrite_Utility.cpp -text
 tools/transforms/Rewrite_Utility.hpp -text
+tools/transforms/SConscript -text
+tools/transforms/SConstruct -text
 tools/transforms/ScaledOffsetInference.cpp -text
 tools/transforms/ScaledOffsetInference.hpp -text
 tools/transforms/StackLayout.cpp -text

@@ -1,0 +1,47 @@
+import os
+
+Import('env')
+env.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
+
+
+libname="IRDB-util"
+files=  '''
+	insn_preds.cpp
+	'''
+cpppath=''' 
+	$SECURITY_TRANSFORMS_HOME/include/
+	$SECURITY_TRANSFORMS_HOME/libIRDB/include/
+	$SECURITY_TRANSFORMS_HOME/libMEDSannotation/include/
+	$SECURITY_TRANSFORMS_HOME/libtransform/include/
+	$SECURITY_TRANSFORMS_HOME/beaengine/include
+	$SECURITY_TRANSFORMS_HOME/beaengine/beaengineSources/Includes/
+	'''
+
+LIBS="xform IRDB-core IRDB-cfg BeaEngine_s_d pqxx  MEDSannotation transform"
+LIBPATH="$SECURITY_TRANSFORMS_HOME/lib"
+
+integer_files="transformutils.cpp integertransformdriver.cpp"
+
+env['CFLAGS'].append("-Wall")
+
+all_files="PNTransformDriver.cpp PNStackLayout.cpp PNRange.cpp Range.cpp OffsetInference.cpp DirectOffsetInference.cpp ScaledOffsetInference.cpp P1Inference.cpp PNRegularExpressions.cpp PNMain.cpp StackLayout.cpp General_Utility.cpp AnnotationBoundaryGenerator.cpp PrecedenceBoundaryInference.cpp PNIrdbManager.cpp"
+
+
+env=env.Clone(CPPPATH=Split(cpppath))
+ru_obj=env.Object("Rewrite_Utility.cpp");
+ru_lib=env.Library("rewrite", ru_obj);
+install=env.Install("$SECURITY_TRANSFORMS_HOME/lib/", ru_lib)
+Default(install)
+
+p1=env.Program("p1transform.exe", Split(all_files), LIBS=Split(LIBS)+ru_lib, LIBPATH=Split(LIBPATH))
+install=env.Install("$SECURITY_TRANSFORMS_HOME/bin/", p1)
+install=env.InstallAs("$SECURITY_TRANSFORMS_HOME/bin/pntransform.exe", p1)
+Default(install)
+install=env.InstallAs("pntransform.exe", p1)
+Default(install)
+
+intdr=env.Program("integertransformdriver.exe", Split(integer_files), LIBS=Split(LIBS)+ru_lib, LIBPATH=Split(LIBPATH))
+install=env.Install("$SECURITY_TRANSFORMS_HOME/bin/", intdr)
+Default(install)
+
+
