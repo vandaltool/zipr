@@ -1,5 +1,7 @@
 import os
 
+print 'cwd='+os.getcwd()
+
 
 
 Import('env')
@@ -15,7 +17,8 @@ cpppath='''
 
 #CFLAGS="-fPIC  "
 
-files=Glob("*.cpp")
+files=Glob( Dir('.').srcnode().abspath+"/*.cpp")
+
 
 pgm="rigrandom.exe"
 

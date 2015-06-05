@@ -16,7 +16,8 @@ cpppath='''
 
 #CFLAGS="-fPIC  "
 
-files=Glob("*.cpp")
+files=Glob( Dir('.').srcnode().abspath+"/*.cpp")
+
 
 pgm="cinderella_prep.exe"
 

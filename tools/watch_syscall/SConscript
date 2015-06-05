@@ -16,7 +16,8 @@ cpppath='''
 
 myenv.Append(CCFLAGS=" -DCGC")
 
-files=Glob("*.cpp")
+files=Glob( Dir('.').srcnode().abspath+"/*.cpp")
+
 
 pgm="watch_syscall.exe"
 

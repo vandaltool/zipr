@@ -6,11 +6,11 @@ myenv=env.Clone();
 myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 
 files=  '''
-	./beaengineSources/BeaEngine.c
+	$SECURITY_TRANSFORMS_HOME/beaengine/beaengineSources/BeaEngine.c
 	'''
 cpppath=''' 
-	./include/
-	./beaengineSources/Includes/
+	$SECURITY_TRANSFORMS_HOME/beaengine/include/
+	$SECURITY_TRANSFORMS_HOME/beaengine/beaengineSources/Includes/
 	'''
 
 #print 'myenv[cflags]='+str(myenv['CFLAGS'])

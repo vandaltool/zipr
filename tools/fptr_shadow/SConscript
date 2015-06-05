@@ -14,7 +14,8 @@ cpppath='''
 	 $SECURITY_TRANSFORMS_HOME/tools/transforms 
 	'''
 
-files=Glob("*.cpp")
+files=Glob( Dir('.').srcnode().abspath+"/*.cpp")
+
 
 pgm="fptr_shadow64.exe"
 

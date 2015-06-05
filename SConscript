@@ -25,8 +25,8 @@ else:
         assert os.path.isdir(ELFIO_DIR)
 
 
-print 'env='
-print env.Dump()
+#print 'env='
+#print env.Dump()
 libbea=SConscript("beaengine/SConscript", variant_dir='scons_build/beaengine')
 libMEDSannotation=SConscript("libMEDSannotation/SConscript", variant_dir='scons_build/libMEDSannotation')
 libxform=SConscript("xform/SConscript", variant_dir='scons_build/libxform')

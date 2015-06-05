@@ -15,7 +15,8 @@ cpppath='''
 	'''
 
 
-files=Glob("*.cpp")
+files=Glob( Dir('.').srcnode().abspath+"/*.cpp")
+
 
 pgm="fix_rets.exe"
 
