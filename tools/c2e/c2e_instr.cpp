@@ -231,9 +231,19 @@ Instruction_t* Cgc2Elf_Instrument::insertTransmit(Instruction_t* after, int sysn
 	return after; 
 }
 
-Instruction_t* Cgc2Elf_Instrument::insertReceive(Instruction_t* after) 
+Instruction_t* Cgc2Elf_Instrument::insertReceive(Instruction_t* after, bool force_stdin) 
 {  
-	return insertTransmit(after, SYS_read);
+	if (force_stdin)
+	{
+		// force read from file descriptor 0
+		after = insertAssemblyAfter(firp, after, "push ebx");		// save original fd
+		after = insertAssemblyAfter(firp, after, "xor ebx, ebx");	// fd = 0
+		after = insertTransmit(after, SYS_read);			// invoke SYS_read
+		after = insertAssemblyAfter(firp, after, "pop ebx");		// restore
+		return after;
+	}
+	else
+		return insertTransmit(after, SYS_read);
 }
 
 Instruction_t* Cgc2Elf_Instrument::insertFdwait(Instruction_t* after)
