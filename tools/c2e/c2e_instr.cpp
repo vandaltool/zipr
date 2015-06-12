@@ -353,7 +353,8 @@ L1:	b8 00 00 00 00       	mov    $0x0,%eax
 	after=insertAssemblyAfter(firp, after, "test ecx, ecx");
 	J1=after=insertAssemblyAfter(firp, after, "jle 0x0");
 	after=insertAssemblyAfter(firp, after, "mov eax, 0");
-	L3=after=insertAssemblyAfter(firp, after, "mov [ebx+eax], al");
+//	L3=after=insertAssemblyAfter(firp, after, "mov [ebx+eax], al");
+	L3=after=insertAssemblyAfter(firp, after, "mov byte [ebx+eax], -1"); // give afl a better chance
 	after=insertAssemblyAfter(firp, after, "add eax, 1");
 	after=insertAssemblyAfter(firp, after, "cmp eax, ecx");
 	J2=after=insertAssemblyAfter(firp, after, "jne 0x0");
