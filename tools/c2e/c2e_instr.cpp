@@ -231,21 +231,70 @@ Instruction_t* Cgc2Elf_Instrument::insertTransmit(Instruction_t* after, int sysn
 	return after; 
 }
 
-Instruction_t* Cgc2Elf_Instrument::insertReceive(Instruction_t* after, bool force_stdin) 
+Instruction_t* Cgc2Elf_Instrument::insertReadExitOnEOF(Instruction_t* after)
+{  
+	Instruction_t *jmp2return=NULL, *jmp2error=NULL, *success=NULL, *error=NULL;
+	char buf[100];
+	sprintf(buf, "mov eax, %d", SYS_read);
+	after=insertAssemblyAfter(firp, after, "push esi");	 	// push tx_bytes
+	after=insertAssemblyAfter(firp, after, buf);			// set eax to syscall #
+	after=insertAssemblyAfter(firp, after, "int 0x80");		// make syscall
+
+	after = insertAssemblyAfter(firp, after, "cmp eax, 0");
+	Instruction_t* jmp2terminate=insertAssemblyAfter(firp, after, "je 0x0");	 // jmp to terminate
+
+	after=insertAssemblyAfter(firp, jmp2terminate, "pop esi");	 	// pop tx_bytes
+	after=insertAssemblyAfter(firp, after, "cmp eax, -1");	 	// if return == -1
+	jmp2error=after=insertAssemblyAfter(firp, after, "je 0x0");	 // jmp to error
+	after=insertAssemblyAfter(firp, after, "cmp esi, 0");	 		// if tx_bytes == 0 
+	jmp2return=after=insertAssemblyAfter(firp, after, "je 0x0");	 	// jmp to success
+	after=insertAssemblyAfter(firp, after, "mov [esi], eax");			// store tx_bytes
+	success=after=insertAssemblyAfter(firp, after, "mov eax, 0");	// return success
+	error=after=insertAssemblyAfter(firp, after, "mov eax, 25");	// return error
+	after=insertAssemblyAfter(firp, after, "nop");			// sync point.
+
+	jmp2error->SetTarget(error);
+	jmp2return->SetTarget(success);
+	success->SetFallthrough(after);
+	
+        // terminate sequence
+        Instruction_t* n = addNewAssembly(firp, NULL, "nop"); 
+        n->SetFallthrough(after); // pick anything here, it doesn't matter as we're terminating
+	Instruction_t* term = insertTerminate(n);
+	jmp2terminate->SetTarget(n);
+
+	return after; 
+}
+
+Instruction_t* Cgc2Elf_Instrument::insertReceive(Instruction_t* after, bool force_stdin, bool exit_on_eof) 
 {  
 	if (force_stdin)
 	{
 		// force read from file descriptor 0
 		after = insertAssemblyAfter(firp, after, "push ebx");		// save original fd
 		after = insertAssemblyAfter(firp, after, "xor ebx, ebx");	// fd = 0
-		after = insertTransmit(after, SYS_read);			// invoke SYS_read
+		if (exit_on_eof)
+			after = insertReadExitOnEOF(after);
+		else
+			after = insertTransmit(after, SYS_read);
 		after = insertAssemblyAfter(firp, after, "pop ebx");		// restore
 		return after;
 	}
 	else
-		return insertTransmit(after, SYS_read);
+	{
+		if (exit_on_eof)
+			return insertReadExitOnEOF(after);
+		else
+			return insertTransmit(after, SYS_read);
+	}
 }
 
+// eax          ebx          ecx              edx               esi                        edi
+// int fdwait(int nfds, fd_set *readfds, fd_set *writefds, const struct timeval *timeout, int *readyfds)
+// int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout);
+
+// %ebx, %ecx, %edx, %esi, %edi, %ebp
+// force_no_timeout: set %edi to 0
 Instruction_t* Cgc2Elf_Instrument::insertFdwait(Instruction_t* after)
 {  
 	Instruction_t *jmp2return=NULL, *jmp2error=NULL, *success=NULL, *error=NULL;
