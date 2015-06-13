@@ -251,16 +251,16 @@ Instruction_t* Cgc2Elf_Instrument::insertFdwait(Instruction_t* after)
 	Instruction_t *jmp2return=NULL, *jmp2error=NULL, *success=NULL, *error=NULL;
 	char buf[100];
 	sprintf(buf, "mov eax, %d", SYS_select);
-	after=insertAssemblyAfter(firp, after, "push esi");	 	// push readyfds
+	after=insertAssemblyAfter(firp, after, "push edi");	 	// push readyfds
 	after=insertAssemblyAfter(firp, after, buf);			// set eax to syscall #
 	after=insertAssemblyAfter(firp, after, "mov edi, esi");		// mov 4th param to fdwait  - fdwait(...,timeout,...) 
 									// into 5th param to select - select(...,timeout,...)
 	after=insertAssemblyAfter(firp, after, "mov esi, 0");		// set 4th param to select to 0	
 	after=insertAssemblyAfter(firp, after, "int 0x80");		// make syscall
-	after=insertAssemblyAfter(firp, after, "pop esi");	 	// pop readyfds
+	after=insertAssemblyAfter(firp, after, "pop edi");	 	// pop readyfds
 	after=insertAssemblyAfter(firp, after, "cmp eax, -1");	 	// if return == -1
 	jmp2error=after=insertAssemblyAfter(firp, after, "je 0x0");	 // jmp to error
-	after=insertAssemblyAfter(firp, after, "cmp esi, 0");	 		// if tx_bytes == 0 
+	after=insertAssemblyAfter(firp, after, "cmp edi, 0");	 		// if tx_bytes == 0 
 	jmp2return=after=insertAssemblyAfter(firp, after, "je 0x0");	 	// jmp to success
 	after=insertAssemblyAfter(firp, after, "mov [esi], eax");			// store return value into readyfds
 	success=after=insertAssemblyAfter(firp, after, "mov eax, 0");	// return success

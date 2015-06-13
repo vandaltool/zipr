@@ -17,7 +17,7 @@ class Cgc2Elf_Instrument
 
 		libIRDB::Instruction_t* insertTerminate(libIRDB::Instruction_t* after) ;
 		libIRDB::Instruction_t* insertTransmit(libIRDB::Instruction_t* after, int sysno=SYS_write) ;
-		libIRDB::Instruction_t* insertReceive(libIRDB::Instruction_t* after, bool force_stdin=false) ;
+		libIRDB::Instruction_t* insertReceive(libIRDB::Instruction_t* after, bool force_stdin=true) ;
 		libIRDB::Instruction_t* insertFdwait(libIRDB::Instruction_t* after) ;
 		libIRDB::Instruction_t* insertAllocate(libIRDB::Instruction_t* after) ;
 		libIRDB::Instruction_t* insertDeallocate(libIRDB::Instruction_t* after) ;
