@@ -299,7 +299,7 @@ Instruction_t* Cgc2Elf_Instrument::insertFdwait(Instruction_t* after)
 {  
 	Instruction_t *jmp2return=NULL, *jmp2error=NULL, *success=NULL, *error=NULL;
 	char buf[100];
-	sprintf(buf, "mov eax, %d", SYS_select);
+	sprintf(buf, "mov eax, %d", 142 /* SYS_newselect -- not defined? */);
 	after=insertAssemblyAfter(firp, after, "push edi");	 	// push readyfds
 	after=insertAssemblyAfter(firp, after, buf);			// set eax to syscall #
 	after=insertAssemblyAfter(firp, after, "mov edi, esi");		// mov 4th param to fdwait  - fdwait(...,timeout,...) 
@@ -311,7 +311,7 @@ Instruction_t* Cgc2Elf_Instrument::insertFdwait(Instruction_t* after)
 	jmp2error=after=insertAssemblyAfter(firp, after, "je 0x0");	 // jmp to error
 	after=insertAssemblyAfter(firp, after, "cmp edi, 0");	 		// if tx_bytes == 0 
 	jmp2return=after=insertAssemblyAfter(firp, after, "je 0x0");	 	// jmp to success
-	after=insertAssemblyAfter(firp, after, "mov [esi], eax");			// store return value into readyfds
+	after=insertAssemblyAfter(firp, after, "mov [edi], eax");			// store return value into readyfds
 	success=after=insertAssemblyAfter(firp, after, "mov eax, 0");	// return success
 	error=after=insertAssemblyAfter(firp, after, "mov eax, 25");	// return error
 	after=insertAssemblyAfter(firp, after, "nop");			// sync point.
@@ -506,7 +506,7 @@ bool Cgc2Elf_Instrument::needs_c2e_instrumentation(libIRDB::Instruction_t* insn)
 	// instrument int instructions 
 	DISASM d;
 	insn->Disassemble(d);
-	return strstr(d.CompleteInstr,"int")!=0;
+	return strstr(d.CompleteInstr,"int 0x80")!=0;
 }
 
 bool Cgc2Elf_Instrument::instrument_ints()
