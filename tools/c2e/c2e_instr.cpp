@@ -12,6 +12,7 @@
 
 
 
+
 using namespace std;
 using namespace libIRDB;
 
@@ -206,15 +207,26 @@ Instruction_t* Cgc2Elf_Instrument::insertTerminate(Instruction_t* after)
 	return after; 
 }
 
-Instruction_t* Cgc2Elf_Instrument::insertTransmit(Instruction_t* after, int sysno)
+Instruction_t* Cgc2Elf_Instrument::insertTransmit(Instruction_t* after, int sysno, int force_fd)
 {  
 	Instruction_t *jmp2return=NULL, *jmp2error=NULL, *success=NULL, *error=NULL;
+	char fdbuf[100];
 	char buf[100];
 	sprintf(buf, "mov eax, %d", sysno);
+	if (force_fd >= 0)
+	{
+		sprintf(fdbuf, "mov ebx, %d", force_fd);
+		after=insertAssemblyAfter(firp, after, "push ebx");	// push old fd
+		after=insertAssemblyAfter(firp, after, fdbuf);	// force fd
+	}
 	after=insertAssemblyAfter(firp, after, "push esi");	 	// push tx_bytes
 	after=insertAssemblyAfter(firp, after, buf);			// set eax to syscall #
 	after=insertAssemblyAfter(firp, after, "int 0x80");		// make syscall
 	after=insertAssemblyAfter(firp, after, "pop esi");	 	// pop tx_bytes
+	if (force_fd >= 0)
+	{
+		after=insertAssemblyAfter(firp, after, "pop ebx");	// restore old fd
+	}
 	after=insertAssemblyAfter(firp, after, "cmp eax, -1");	 	// if return == -1
 	jmp2error=after=insertAssemblyAfter(firp, after, "je 0x0");	 // jmp to error
 	after=insertAssemblyAfter(firp, after, "cmp esi, 0");	 		// if tx_bytes == 0 
@@ -451,7 +463,6 @@ bool Cgc2Elf_Instrument::add_c2e_instrumentation(libIRDB::Instruction_t* insn)
 	Instruction_t* old=insn;
 	Instruction_t* failinsn=NULL;
 
-
 	old=insertAssemblyBefore(firp,tmp,"cmp eax, 1"); // terminate
 	terminsn=tmp;
         termjmp=tmp=insertAssemblyAfter(firp,tmp,"jne 0");
@@ -459,11 +470,14 @@ bool Cgc2Elf_Instrument::add_c2e_instrumentation(libIRDB::Instruction_t* insn)
 		tmp->SetFallthrough(old);
         transmitinsn=tmp=addNewAssembly(firp,NULL,"cmp eax, 2"); //transmit
         transmitjmp=tmp=insertAssemblyAfter(firp,tmp,"jne 0");
-		tmp=insertTransmit(tmp);
+		if (getForceWriteToStdout())
+			tmp=insertTransmit(tmp, SYS_write, getForceWriteFd()); // force output on fd=1
+		else
+			tmp=insertTransmit(tmp); 
 		tmp->SetFallthrough(old);
         receiveinsn=tmp=addNewAssembly(firp,NULL,"cmp eax, 3"); //receive
         receivejmp=tmp=insertAssemblyAfter(firp,tmp,"jne 0"); 
-		tmp=insertReceive(tmp);
+		tmp=insertReceive(tmp, getForceReadFromStdin(), getForceExitOnReadEOF());
 		tmp->SetFallthrough(old);
         fdwaitinsn=tmp=addNewAssembly(firp,NULL,"cmp eax, 4"); //fdwait
         fdwaitjmp=tmp=insertAssemblyAfter(firp,tmp,"jne 0");

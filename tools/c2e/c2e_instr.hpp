@@ -10,13 +10,27 @@
 class Cgc2Elf_Instrument
 {
 	public:
-		Cgc2Elf_Instrument(libIRDB::FileIR_t *the_firp) : firp(the_firp) {}
+		Cgc2Elf_Instrument(libIRDB::FileIR_t *the_firp) : firp(the_firp) {
+			forceReadFromStdin = false;
+			forceExitOnReadEOF = false;
+			forceWriteToStdout = false;
+			forceWriteFd = -1;
+		}
 		bool execute();
+
+		void setForceReadFromStdin(bool force) { forceReadFromStdin = force; }
+		void setForceExitOnReadEOF(bool force) { forceExitOnReadEOF = force; }
+		void setForceWriteToStdout(bool force, int fd = 1) { forceWriteToStdout = force; forceWriteFd = fd; }
+
+		bool getForceReadFromStdin() const { return forceReadFromStdin; }
+		bool getForceExitOnReadEOF() const { return forceExitOnReadEOF; }
+		bool getForceWriteToStdout() const { return forceWriteToStdout; }
+		int getForceWriteFd() const { return forceWriteFd; }
 
 	private:
 
 		libIRDB::Instruction_t* insertTerminate(libIRDB::Instruction_t* after) ;
-		libIRDB::Instruction_t* insertTransmit(libIRDB::Instruction_t* after, int sysno=SYS_write);
+		libIRDB::Instruction_t* insertTransmit(libIRDB::Instruction_t* after, int sysno=SYS_write, int force_fd=-1);
 		libIRDB::Instruction_t* insertReadExitOnEOF(libIRDB::Instruction_t* after);
 		libIRDB::Instruction_t* insertReceive(libIRDB::Instruction_t* after, bool force_stdin=true, bool forceExitOnEOF=true) ;
 		libIRDB::Instruction_t* insertFdwait(libIRDB::Instruction_t* after) ;
@@ -33,6 +47,10 @@ class Cgc2Elf_Instrument
 	
 		libIRDB::FileIR_t* firp;
 
+		bool forceReadFromStdin;
+		bool forceExitOnReadEOF;
+		bool forceWriteToStdout;
+		int forceWriteFd;
 
 };
 

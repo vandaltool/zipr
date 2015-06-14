@@ -12,6 +12,10 @@ using namespace libIRDB;
 #define BINARY_NAME "a.ncexe"
 #define SHARED_OBJECTS_DIR "shared_objects"
 
+// @todo: make these command line options
+bool forceExitOnReadEOF = true;  // cleanly terminate when EOF encountered
+bool forceReadFromStdin = true;  // force all reads from fd 0
+bool forceWriteToStdout = true;  // force all reads from fd 0
 
 void usage(char* name)
 {
@@ -55,7 +59,9 @@ int main(int argc, char **argv)
                 try
                 {
 			Cgc2Elf_Instrument c2ei(firp);
-
+			c2ei.setForceReadFromStdin(forceReadFromStdin);
+			c2ei.setForceExitOnReadEOF(forceExitOnReadEOF);
+			c2ei.setForceWriteToStdout(forceWriteToStdout);
 
 			int success= c2ei.execute();
 
