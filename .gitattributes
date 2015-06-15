@@ -229,7 +229,6 @@ libIRDB/src/core/function.cpp -text
 libIRDB/src/core/generate_spri.cpp -text
 libIRDB/src/core/icfs.cpp -text
 libIRDB/src/core/instruction.cpp -text
-libIRDB/src/core/instrution.cpp -text
 libIRDB/src/core/pqxxdb.cpp -text
 libIRDB/src/core/type.cpp -text
 libIRDB/src/core/variantid.cpp -text
