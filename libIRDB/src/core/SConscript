@@ -16,7 +16,6 @@ files=  '''
 	generate_spri.cpp
 	icfs.cpp
 	instruction.cpp
-	instrution.cpp
 	pqxxdb.cpp
 	type.cpp
 	variantid.cpp
