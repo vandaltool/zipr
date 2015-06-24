@@ -18,7 +18,7 @@ cpppath='''
 	$SECURITY_TRANSFORMS_HOME/beaengine/beaengineSources/Includes/
 	'''
 
-LIBS="xform IRDB-core IRDB-cfg BeaEngine_s_d pqxx  MEDSannotation transform"
+LIBS="xform IRDB-core IRDB-cfg BeaEngine_s_d pqxx  MEDSannotation transform pq"
 LIBPATH="$SECURITY_TRANSFORMS_HOME/lib"
 
 integer_files="transformutils.cpp integertransformdriver.cpp"
