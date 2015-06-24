@@ -22,7 +22,7 @@ initial_on_phases="stratafy_with_pc_confine create_binary_script is_so gather_li
 
 ##################################################################################
 
-ulimit -s unlimited
+ulimit -s unlimited > /dev/null 2>&1 || true
 
 # default watchdog value is 30 seconds
 watchdog_val=30
