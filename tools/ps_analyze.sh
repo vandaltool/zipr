@@ -984,6 +984,9 @@ perform_step preLoaded_ILR2 preLoaded_ILR1 $PEASOUP_HOME/tools/generate_relocfil
 # put a front end in front of a.stratafied which opens file 990 for strata to read.
 perform_step spawner stratafy_with_pc_confine  $PEASOUP_HOME/tools/do_spawner.sh 
 
+# put a front end in front of a.stratafied which opens file 990 for strata to read.
+perform_step get_pins spasm,fast_spri  $PEASOUP_HOME/tools/get_pins.sh 
+
 
 # zipr
 perform_step zipr clone,fill_in_indtargs,fill_in_cfg,pdb_register $ZIPR_INSTALL/bin/zipr.exe -v $cloneid -c $ZIPR_INSTALL/bin/callbacks.exe -j $PS_OBJCOPY
