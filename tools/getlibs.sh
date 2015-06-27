@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 orig_file=$1
 
@@ -15,14 +15,19 @@ remove_dups()
 resolve(){
 
 	#file=`ldconfig -p |grep "$1 ("|head  -1|sed "s/.*=>//"`
-	file=`ldd $orig_file |grep "$1 ("|sed -e "s/.*=>//" -e "s/(.*)//"`
-	if [ ! -z "$file" -a -e $file ]; then
-		echo -n
-		realpath $file
-	else
-		echo $1
+	file=`ldd $orig_file |grep "$1 ("|sed -e "s/.*=> *//" -e "s/(.*)//"`
+#echo file=\'$file\' 1>&2
+	if [ ! -z "$file" ]; then
+#echo not zero 1>&2
+		if [ -e $file ] ; then
+#echo found 1>&2
+			echo -n
+			realpath $file
+			return
+		fi
 	fi
-
+#echo not found 1>&2
+	echo $1
 }
 
 

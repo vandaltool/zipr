@@ -1,4 +1,4 @@
-#!/bin/bash  
+#!/bin/bash   -x
 
 #
 # note:  no trailing slashes, as the comparison will fail.
@@ -11,6 +11,8 @@ safe_dir_list="	/lib /lib/tls/i686/cmov 			\
 		/lib/x86_64-linux-gnu				\
 		/usr/lib/x86_64-linux-gnu /lib32		\
 		/lib/i386-linux-gnu/i686/cmov			\
+		/usr/lib64					\
+		/lib64						\
 	"
 #safe_dir_list="/lib /usr/lib"
 

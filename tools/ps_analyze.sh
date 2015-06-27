@@ -18,7 +18,7 @@ realpath() {
 # set default values for 
 ##################################################################################
 
-initial_on_phases="stratafy_with_pc_confine create_binary_script is_so gather_libraries meds_static pdb_register fill_in_cfg fill_in_safefr fill_in_indtargs clone fix_calls fast_spri generate_spri spasm"
+initial_on_phases="stratafy_with_pc_confine create_binary_script is_so gather_libraries meds_static pdb_register fill_in_cfg fill_in_indtargs clone fix_calls generate_spri spasm"
 
 ##################################################################################
 
