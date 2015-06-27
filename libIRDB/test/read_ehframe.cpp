@@ -41,9 +41,9 @@ using namespace std;
 
 
 
-void* eh_frame_addr;
-char* eh_frame_data;
-int eh_offset;
+void* eh_frame_addr=0;
+char* eh_frame_data=0;
+int eh_offset=0;
 
 typedef          int  sword;
 typedef unsigned int  uword;
@@ -573,6 +573,7 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
 {
   	struct dwarf_cie *last_cie = 0;
   	int encoding = ob->s.b.encoding;
+	cout<<"encoding="<<encoding<<endl;
   	_Unwind_Ptr base = base_from_object (ob->s.b.encoding, ob);
 	int saw_z=0; 
 	int lsda_encoding=DW_EH_PE_omit;
@@ -588,7 +589,10 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
 	
       		/* Skip CIEs.  */
       		if (this_fde->CIE_delta == 0)
+		{
+			cout<<"Skipping CIE"<<endl;
         		continue;
+		}
 
 		this_cie = get_cie (this_fde);
 
@@ -598,8 +602,10 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
 		extract_cie_info(this_cie, &saw_z, &lsda_encoding, &fde_encoding);
 
   		/* Locate augmentation for the fde.  */
-  		unsigned char* aug = (unsigned char *) this_fde + sizeof (*this_fde);
-  		aug += 2 * size_of_encoded_value (fde_encoding);
+  		unsigned char* aug = (unsigned char *) this_fde + 8; /* 4-bytes for FDE len, 4-bytes for FDE id. */
+
+		// 2x size of fde_encoding for pc_begin and pc_range */
+  		aug += 2* size_of_encoded_value (fde_encoding);
   		if (saw_z)
     		{
       			_uleb128_t i;
@@ -727,6 +733,7 @@ void read_ehframe(FileIR_t* virp, ELFIO::elfio* elfiop)
 	cout<<"Found .eh_frame is section "<<std::dec<<eh_frame_index<<endl;
 
 	eh_frame_addr=(void*)elfiop->sections[eh_frame_index]->get_address();
+	cout<<"Found .eh_frame section addr is "<<std::dec<<eh_frame_addr<<endl;
 	int total_size=0;
 
 // 	char *p=&strtab[ sechdrs[secndx+1].sh_name];
