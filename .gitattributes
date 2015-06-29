@@ -176,6 +176,7 @@ beaengine/include/beaengine/macros.h -text
 /configure.in -text
 /distclean.sh -text
 include/i686/config.h -text
+include/i86pc/config.h -text
 include/x86_64/config.h -text
 libIRDB/LICENSE.txt -text
 libIRDB/Makefile.in -text
