@@ -4,6 +4,9 @@
 /get-peasoup-packages.sh -text
 /irdb_vars -text
 /postgres_setup.sh -text
+scripts/IdaProServer/SMP-analyze.sh -text
+scripts/IdaProServer/collectIPSresults.sh -text
+scripts/IdaProServer/findso.pl -text
 /set_env_vars -text
 /start_dev.sh -text
 /svn.externals.solaris_dev -text
