@@ -1,5 +1,6 @@
 export PS_OBJDUMP=`which objdump`
 export PS_OBJCOPY=`which objcopy`
+export PS_READELF=`which readelf`
 export PS_NM=`which nm`
 export PS_STRIP=`which strip`
 export PS_DATE="date --iso-8601=seconds"
