@@ -695,7 +695,11 @@ void Rewriter::dissassemble()
       		disasm.EIP = (UIntPtr) getElfReader()->getInstructionBuffer(instr->getAddress());
       		disasm.VirtualAddr = instr->getAddress();
 
-      		int instr_len = Disasm(&disasm);
+      		int instr_len = 0;
+
+		/* maybe this isn't in a section so getInstructionBuffer returns 0 */
+		if(disasm.EIP)
+			instr_len=Disasm(&disasm);
 
 		if(instr_len>0)
 		{

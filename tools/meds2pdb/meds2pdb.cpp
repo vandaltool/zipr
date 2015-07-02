@@ -259,16 +259,38 @@ void update_functions(int fileID, const vector<wahoo::Function*> &functions  )
       	int outArgsRegionSize = f->getOutArgsRegionSize();
       	bool useFP = f->getUseFramePointer();
 	int insnid=-1; 	// NOT_IN_DATABASE
+
+/*
 	if(functionAddress!=0)	
 	{
 		assert(address_to_instructionid_map.find(functionAddress)!=address_to_instructionid_map.end());
 		insnid=address_to_instructionid_map[functionAddress];
 	}
-
     	query += "update " + functionTable;
 	query += " set entry_point_id = " + txn.quote(my_to_string(insnid));
     	query += " where function_id = " + txn.quote(my_to_string(function_id));
 	query += ";";
+*/
+
+	// if a function has a valid address, but the address isn't in the table...
+	if(functionAddress!=0 && 
+		address_to_instructionid_map.find(functionAddress)==address_to_instructionid_map.end())
+	{
+		// remove the function from the list of valid functions.
+		query+="delete from "+functionTable;
+		query+=" where function_id = " + txn.quote(my_to_string(function_id));
+		query += ";";
+		
+	}
+	else
+	{
+		if(functionAddress!=0)	
+			insnid=address_to_instructionid_map[functionAddress];
+    		query += "update " + functionTable;
+		query += " set entry_point_id = " + txn.quote(my_to_string(insnid));
+    		query += " where function_id = " + txn.quote(my_to_string(function_id));
+		query += ";";
+	}
 
     }
     txn.exec(query);
