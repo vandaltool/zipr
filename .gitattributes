@@ -6,11 +6,15 @@
 /SConscript -text
 /SConstruct -text
 appfw/Makefile.in -text
+appfw/SConscript -text
+appfw/SConstruct -text
 appfw/TODO -text
 appfw/configure -text
 appfw/configure.in -text
 appfw/src/Makefile.in -text
 appfw/src/Makefile.mac -text
+appfw/src/SConscript -text
+appfw/src/SConstruct -text
 appfw/src/appfw.cpp -text
 appfw/src/appfw.h -text
 appfw/src/appfw_ldap.c -text

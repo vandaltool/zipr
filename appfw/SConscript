@@ -1,0 +1,7 @@
+import os
+
+Import('env')
+
+SConscript("src/SConstruct")
+
+#SConscript("test/SConscript")
