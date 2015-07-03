@@ -1,14 +1,7 @@
-APPFW_LIB=$(SECURITY_TRANSFORMS_HOME)/appfw/lib/libappfw.so64
+APPFW_LIB=$(SECURITY_TRANSFORMS_HOME)/appfw/lib/64/libappfw.so
 generate_signatures=$(PEASOUP_HOME)/tools/generate_string_signatures.sh
 
-all: testmysql.exe testintercept.exe testintercept2.exe testintercept3.exe testintercept4.exe testintercept.pstmt.exe testtautology.exe
-
-testmoi.o: testmoi.c
-	gcc -I/usr/include/mysql -c testmoi.c
-
-testmoi.exe: testmoi.o
-	gcc testmoi.o -o testmoi.exe -lmysqlclient
-	$(generate_signatures) testmoi.exe
+all: testmysql.exe testintercept.exe testintercept2.exe testintercept3.exe testintercept4.exe testintercept.pstmt.exe testtautology.exe 
 
 testtautology.o: testtautology.c
 	gcc -I/usr/include/mysql -c testtautology.c
@@ -63,12 +56,11 @@ clean:
 	rm -rf *.o *.tmp *.exe peasoup_executable_directory* test*.peasoup messages_to_tne.log ps_tne_logfile.txt appfw.db *.sigs
 
 peasoup: all
-	$(PEASOUP_HOME)/tools/ps_analyze.sh testmoi.exe testmoi.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off --step twitchertransform=off --step toctou=off --step deadlock=off
-	$(PEASOUP_HOME)/tools/ps_analyze.sh testintercept.exe testintercept.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off --step twitchertransform=off
-	$(PEASOUP_HOME)/tools/ps_analyze.sh testintercept2.exe testintercept2.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off --step twitchertransform=off
-	$(PEASOUP_HOME)/tools/ps_analyze.sh testmysql.exe testmysql.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off --step twitchertransform=off
-	$(PEASOUP_HOME)/tools/ps_analyze.sh testintercept.pstmt.exe testintercept.pstmt.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off --step twitchertransform=off
-	$(PEASOUP_HOME)/tools/ps_analyze.sh testtautology.exe testtautology.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off --step twitchertransform=off
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testintercept.exe testintercept.exe.peasoup --step appfw=on
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testintercept2.exe testintercept2.exe.peasoup --step appfw=on
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testmysql.exe testmysql.exe.peasoup --step appfw=on
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testintercept.pstmt.exe testintercept.pstmt.exe.peasoup --step appfw=on
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testtautology.exe testtautology.exe.peasoup --step appfw=on
 	
 run: all
 #	QUERY_DATA="David' or '0'='0" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testmysql.exe.sigs ./testmysql.exe 
