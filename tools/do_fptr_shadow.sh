@@ -14,4 +14,4 @@ FPTR_ANNOT_FILE=a.ncexe.fptrannot
 cp /tmp/$FPTR_ANNOT_FILE .
 
 # weave-in calls to callback handlers for shadowing
-$SECURITY_TRANSFORMS_HOME/tools/fptr_shadow/fptr_shadow64.exe $CLONE_ID
+$SECURITY_TRANSFORMS_HOME/bin/fptr_shadow64.exe $CLONE_ID

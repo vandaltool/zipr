@@ -14,7 +14,7 @@ bspri=$3
 P1_DIR=p1.xform/$fname
 
 #generate the bspri code
-$SECURITY_TRANSFORMS_HOME/tools/spasm/spasm $aspri $bspri $TOP_LEVEL/a.ncexe $TOP_LEVEL/stratafier.o.exe $TOP_LEVEL/libstrata.so.symbols
+$SECURITY_TRANSFORMS_HOME/bin/spasm $aspri $bspri $TOP_LEVEL/a.ncexe $TOP_LEVEL/stratafier.o.exe $TOP_LEVEL/libstrata.so.symbols
 
 if [ $? -ne 0 ]; then
 	echo "Spasm failure in performing validation"

@@ -14,22 +14,22 @@ TMP=tmp.$$
 cinderella_malloc="cinderella::malloc"
 
 # infer CGC syscall wrappers
-echo "$SECURITY_TRANSFORMS_HOME/tools/cgclibc/infer_syscall_wrappers.exe $ORIG_VARIANT_ID"
-$SECURITY_TRANSFORMS_HOME/tools/cgclibc/infer_syscall_wrappers.exe $ORIG_VARIANT_ID 
+echo "$SECURITY_TRANSFORMS_HOME/bin/infer_syscall_wrappers.exe $ORIG_VARIANT_ID"
+$SECURITY_TRANSFORMS_HOME/bin/infer_syscall_wrappers.exe $ORIG_VARIANT_ID 
 
 # clone so that we work off a copy
-$SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $ORIG_VARIANT_ID clone.id
+$SECURITY_TRANSFORMS_HOME/bin/clone.exe $ORIG_VARIANT_ID clone.id
 cloneid=`cat clone.id`
 
 # prep the binary for testing
 #     pin all functions
 #     splice-in our testing loop into the target program
-$SECURITY_TRANSFORMS_HOME/tools/cinderella/cinderella_prep.exe $cloneid
+$SECURITY_TRANSFORMS_HOME/bin/cinderella_prep.exe $cloneid
 
 # get list of all functions in binary
 # for stripped binary, this will typically be of the form:
 #    sub_80004fde
-$SECURITY_TRANSFORMS_HOME/tools/cgclibc/display_functions.exe $cloneid | grep "^function" | cut -d' ' -f2 > cinderella.functions.all 
+$SECURITY_TRANSFORMS_HOME/bin/display_functions.exe $cloneid | grep "^function" | cut -d' ' -f2 > cinderella.functions.all 
 
 # produce a zipr'd version so that we can dynamically test behavior
 echo "cinderella: Produce zipr'ed test version: id: $cloneid"
@@ -64,8 +64,8 @@ do
 	if [ "$positive_id" = "1" ]; then
 		oldfn=`grep $fn cinderella.inferences.positive | cut -f4 -d' '`
 		newfn="cinderella::$fn"
-		echo "$SECURITY_TRANSFORMS_HOME/libIRDB/test/rename_function.exe $ORIG_VARIANT_ID $oldfn $newfn"
-		$SECURITY_TRANSFORMS_HOME/libIRDB/test/rename_function.exe $ORIG_VARIANT_ID $oldfn $newfn
+		echo "$SECURITY_TRANSFORMS_HOME/bin/rename_function.exe $ORIG_VARIANT_ID $oldfn $newfn"
+		$SECURITY_TRANSFORMS_HOME/bin/rename_function.exe $ORIG_VARIANT_ID $oldfn $newfn
 	fi
 done
 rm $TMP
@@ -79,7 +79,7 @@ rm $TMP
 #
 
 echo "CINDERELLA PASS1: simply intersect static + dynamic"
-$SECURITY_TRANSFORMS_HOME/tools/cgclibc/cgclibc.exe $ORIG_VARIANT_ID --positive-inferences cinderella.inferences.positive --negative-inferences cinderella.inferences.negative > cinderella.static.pass1
+$SECURITY_TRANSFORMS_HOME/bin/cgclibc.exe $ORIG_VARIANT_ID --positive-inferences cinderella.inferences.positive --negative-inferences cinderella.inferences.negative > cinderella.static.pass1
 count_malloc=`grep "^static positive malloc" cinderella.static.pass1 | wc -l`
 if [ "$count_malloc" = "0" ]; then
 	echo "No dynamic memory allocation in this program"
@@ -87,7 +87,7 @@ if [ "$count_malloc" = "0" ]; then
 elif [ "$count_malloc" = "1" ]; then
 	oldfn=`grep -i "positive malloc" cinderella.static.pass1 | cut -d' ' -f4` 
 	echo "CINDERELLA PASS1: rename detected malloc fn to cinderella::malloc"
-	$SECURITY_TRANSFORMS_HOME/libIRDB/test/rename_function.exe $ORIG_VARIANT_ID $oldfn $cinderella_malloc
+	$SECURITY_TRANSFORMS_HOME/bin/rename_function.exe $ORIG_VARIANT_ID $oldfn $cinderella_malloc
 	exit 0
 fi
 
@@ -107,14 +107,14 @@ fi
 #
 echo "CINDERELLA PASS2: intersect dynamic and static analyses for malloc / turn on --dominator"
 grep -i "positive malloc" cinderella.static.pass1 > $TMP
-$SECURITY_TRANSFORMS_HOME/tools/cgclibc/cgclibc.exe $ORIG_VARIANT_ID --positive-inferences $TMP --negative-inferences cinderella.inferences.negative --dominator > cinderella.static.pass2
+$SECURITY_TRANSFORMS_HOME/bin/cgclibc.exe $ORIG_VARIANT_ID --positive-inferences $TMP --negative-inferences cinderella.inferences.negative --dominator > cinderella.static.pass2
 count_malloc=`grep "^static positive malloc" cinderella.static.pass2 | wc -l`
 count_free=`grep "^static positive free" cinderella.static.pass2 | wc -l`
 
 if [ "$count_malloc" = "1" ]; then
 	oldfn=`grep -i "positive malloc" cinderella.static.pass2 | cut -d' ' -f4` 
 	echo "CINDERELLA PASS2: rename detected malloc fn to cinderella::malloc"
-	$SECURITY_TRANSFORMS_HOME/libIRDB/test/rename_function.exe $ORIG_VARIANT_ID $oldfn $cinderella_malloc
+	$SECURITY_TRANSFORMS_HOME/bin/rename_function.exe $ORIG_VARIANT_ID $oldfn $cinderella_malloc
 	exit 0
 fi
 
@@ -125,7 +125,7 @@ fi
 if [ "$count_malloc" != "1" ] || [ "$count_free" != "1" ] ; then
 	echo "CINDERELLA PASS3: with restrictions on malloc / turn on --dominator"
 	grep -i "positive malloc" cinderella.static.pass2 > $TMP
-	$SECURITY_TRANSFORMS_HOME/tools/cgclibc/cgclibc.exe $ORIG_VARIANT_ID --positive-inferences $TMP --negative-inferences cinderella.inferences.negative --dominator > cinderella.static.pass3
+	$SECURITY_TRANSFORMS_HOME/bin/cgclibc.exe $ORIG_VARIANT_ID --positive-inferences $TMP --negative-inferences cinderella.inferences.negative --dominator > cinderella.static.pass3
 	count_malloc=`grep "^static positive malloc" cinderella.static.pass3 | wc -l`
 	count_free=`grep "^static positive free" cinderella.static.pass3 | wc -l`
 fi
@@ -135,13 +135,13 @@ echo "CINDERELLA: PASS3: #mallocs: $count_malloc  #frees: $count_free"
 if [ "$count_malloc" = "1" ]; then
 	oldfn=`grep -i "positive malloc" cinderella.static.pass3 | cut -d' ' -f4` 
 	echo "CINDERELLA PASS3: rename detected malloc fn to cinderella::malloc"
-	$SECURITY_TRANSFORMS_HOME/libIRDB/test/rename_function.exe $ORIG_VARIANT_ID $oldfn $cinderella_malloc
+	$SECURITY_TRANSFORMS_HOME/bin/rename_function.exe $ORIG_VARIANT_ID $oldfn $cinderella_malloc
 	exit 0
 fi
 
 echo "CINDERELLA PASS3: with restrictions on malloc / turn on --dominator and --cluster"
 grep -i "positive malloc" cinderella.static.pass3 > $TMP
-$SECURITY_TRANSFORMS_HOME/tools/cgclibc/cgclibc.exe $ORIG_VARIANT_ID --positive-inferences $TMP --negative-inferences cinderella.inferences.negative --dominator --cluster > cinderella.static.pass4
+$SECURITY_TRANSFORMS_HOME/bin/cgclibc.exe $ORIG_VARIANT_ID --positive-inferences $TMP --negative-inferences cinderella.inferences.negative --dominator --cluster > cinderella.static.pass4
 count_malloc=`grep "^static positive malloc" cinderella.static.pass4 | wc -l`
 count_free=`grep "^static positive free" cinderella.static.pass4 | wc -l`
 
@@ -149,7 +149,7 @@ echo "CINDERELLA: PASS4: #mallocs: $count_malloc  #frees: $count_free"
 if [ "$count_malloc" = "1" ]; then
 	oldfn=`grep -i "positive malloc" cinderella.static.pass4 | cut -d' ' -f4` 
 	echo "CINDERELLA PASS4: rename detected malloc fn to cinderella::malloc"
-	$SECURITY_TRANSFORMS_HOME/libIRDB/test/rename_function.exe $ORIG_VARIANT_ID $oldfn $cinderella_malloc
+	$SECURITY_TRANSFORMS_HOME/bin/rename_function.exe $ORIG_VARIANT_ID $oldfn $cinderella_malloc
 	exit 0
 fi
 

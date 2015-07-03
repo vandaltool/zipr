@@ -39,7 +39,7 @@ BLACK_LIST=$P1_DIR/p1.filtered_out        # list of functions to blacklist
 COVERAGE_FILE=$P1_DIR/p1.coverage
 P1THRESHOLD=0.75
 
-PN_BINARY=$SECURITY_TRANSFORMS_HOME/tools/transforms/p1transform.exe
+PN_BINARY=$SECURITY_TRANSFORMS_HOME/bin/p1transform.exe
 
 echo "P1: transforming binary: cloneid=$CLONE_ID bed_script=$BED_SCRIPT timeout_value=$TIMEOUT_VALUE options=$PN_OPTIONS"
 
@@ -271,10 +271,10 @@ mv tmp $EXECUTED_ADDRESSES_FINAL
 sort $EXECUTED_ADDRESSES_FINAL | uniq > tmp
 mv tmp $EXECUTED_ADDRESSES_CONCOLIC
 
-echo "$SECURITY_TRANSFORMS_HOME/tools/cover/cover $CLONE_ID $EXECUTED_ADDRESSES_FINAL $COVERAGE_FILE"
+echo "$SECURITY_TRANSFORMS_HOME/bin/cover $CLONE_ID $EXECUTED_ADDRESSES_FINAL $COVERAGE_FILE"
 # produce coverage file
 #$PEASOUP_HOME/tools/cover.sh $ORIGINAL_BINARY $MEDS_ANNOTATION_FILE $EXECUTED_ADDRESSES_FINAL $LIBC_FILTER $COVERAGE_FILE $BLACK_LIST
-$SECURITY_TRANSFORMS_HOME/tools/cover/cover $CLONE_ID $EXECUTED_ADDRESSES_FINAL $COVERAGE_FILE
+$SECURITY_TRANSFORMS_HOME/bin/cover $CLONE_ID $EXECUTED_ADDRESSES_FINAL $COVERAGE_FILE
 
 #just in case something went wrong, touch the coverage file. An empty coverage file is permissible, but a missing one will cause PN to crash
 

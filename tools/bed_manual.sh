@@ -18,7 +18,7 @@ aspri=$2
 bspri=$3
 
 # generate the bspri code
-$SECURITY_TRANSFORMS_HOME/tools/spasm/spasm $aspri $bspri $PEASOUP_DIR/a.ncexe $PEASOUP_DIR/stratafier.o.exe $PEASOUP_DIR/libstrata.so.symbols
+$SECURITY_TRANSFORMS_HOME/bin/spasm $aspri $bspri $PEASOUP_DIR/a.ncexe $PEASOUP_DIR/stratafier.o.exe $PEASOUP_DIR/libstrata.so.symbols
 if [ ! $? -eq 0 ]; then
   echo "BED: spasm error -- exiting"
   exit 1

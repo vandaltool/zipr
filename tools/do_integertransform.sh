@@ -90,5 +90,5 @@ if [ $? -eq 0 ]; then
 	$PEASOUP_HOME/tools/update_env_var.sh STRATA_MAX_WARNINGS 0
 fi
 
-echo "intxform: cmd: timeout $TIMEOUT $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE $OPTIONS"
-timeout $TIMEOUT $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE $OPTIONS
+echo "intxform: cmd: timeout $TIMEOUT $SECURITY_TRANSFORMS_HOME/bin/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE $OPTIONS"
+timeout $TIMEOUT $SECURITY_TRANSFORMS_HOME/bin/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE $OPTIONS

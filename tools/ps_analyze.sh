@@ -799,12 +799,12 @@ if [ $record_stats -eq 1 ]; then
 fi
 
 # build basic IR
-perform_step fill_in_cfg mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_cfg.exe $varid	
-perform_step fill_in_safefr mandatory $SECURITY_TRANSFORMS_HOME/tools/safefr/fill_in_safefr.exe $varid 
-perform_step fill_in_indtargs mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_indtargs.exe $varid 
+perform_step fill_in_cfg mandatory $SECURITY_TRANSFORMS_HOME/bin/fill_in_cfg.exe $varid	
+perform_step fill_in_safefr mandatory $SECURITY_TRANSFORMS_HOME/bin/fill_in_safefr.exe $varid 
+perform_step fill_in_indtargs mandatory $SECURITY_TRANSFORMS_HOME/bin/fill_in_indtargs.exe $varid 
 
 # finally create a clone so we can do some transforms 
-perform_step clone mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $varid clone.id
+perform_step clone mandatory $SECURITY_TRANSFORMS_HOME/bin/clone.exe $varid clone.id
 is_step_on clone
 if [ $? = 1 ]; then
 	cloneid=`cat clone.id`
@@ -817,9 +817,9 @@ if [ $? = 1 ]; then
 fi
 
 # do the basic tranforms we're performing for peasoup 
-perform_step fix_calls mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	
+perform_step fix_calls mandatory $SECURITY_TRANSFORMS_HOME/bin/fix_calls.exe $cloneid	
 # look for strings in the binary 
-perform_step find_strings none $SECURITY_TRANSFORMS_HOME/libIRDB/test/find_strings.exe $cloneid
+perform_step find_strings none $SECURITY_TRANSFORMS_HOME/bin/find_strings.exe $cloneid
 
 #
 # analyze binary for string signatures
@@ -906,7 +906,7 @@ perform_step cinderella clone,fill_in_indtargs,fill_in_cfg $PEASOUP_HOME/tools/d
 #
 # For CGC, pad malloc
 #
-perform_step cgc_hlx cinderella $SECURITY_TRANSFORMS_HOME/tools/cgc_hlx/cgc_hlx.exe --varid=$cloneid $step_options_cgc_hlx
+perform_step cgc_hlx cinderella $SECURITY_TRANSFORMS_HOME/bin/cgc_hlx.exe --varid=$cloneid $step_options_cgc_hlx
 
 #
 # Function pointer shadowing
@@ -940,19 +940,19 @@ if [[ "$TWITCHER_HOME" != "" && -d "$TWITCHER_HOME" ]]; then
 fi
 
 # input filtering
-perform_step input_filtering clone,fill_in_indtargs,fill_in_cfg $SECURITY_TRANSFORMS_HOME/tools/watch_syscall/watch_syscall.exe  --varid $cloneid --do_input_filtering $step_options_input_filtering
+perform_step input_filtering clone,fill_in_indtargs,fill_in_cfg $SECURITY_TRANSFORMS_HOME/bin/watch_syscall.exe  --varid $cloneid --do_input_filtering $step_options_input_filtering
 
 # watch syscalls
-perform_step watch_allocate clone,fill_in_indtargs,fill_in_cfg,pdb_register $SECURITY_TRANSFORMS_HOME/tools/watch_syscall/watch_syscall.exe  --varid $cloneid --do_sandboxing $step_options_watch_allocate
+perform_step watch_allocate clone,fill_in_indtargs,fill_in_cfg,pdb_register $SECURITY_TRANSFORMS_HOME/bin/watch_syscall.exe  --varid $cloneid --do_sandboxing $step_options_watch_allocate
 
 # only do ILR for main objects that aren't relocatable.  reloc. objects 
 # are still buggy for ILR
 if [ $($PEASOUP_HOME/tools/is_so.sh a.ncexe) = 0 ]; then
-	perform_step ilr none $SECURITY_TRANSFORMS_HOME/libIRDB/test/ilr.exe $cloneid 
+	perform_step ilr none $SECURITY_TRANSFORMS_HOME/bin/ilr.exe $cloneid 
 fi
 
-perform_step selective_cfi none $SECURITY_TRANSFORMS_HOME/tools/selective_cfi/selective_cfi.exe $cloneid 
-perform_step simple_cdi none $SECURITY_TRANSFORMS_HOME/tools/simple_cdi/simple_cdi.exe $cloneid 
+perform_step selective_cfi none $SECURITY_TRANSFORMS_HOME/bin/selective_cfi.exe $cloneid 
+perform_step simple_cdi none $SECURITY_TRANSFORMS_HOME/bin/simple_cdi.exe $cloneid 
 
 # do plugins directory
 for i in $SECURITY_TRANSFORMS_HOME/plugins_install/*.exe $SECURITY_TRANSFORMS_HOME/plugins_install/*.sh;
@@ -965,14 +965,14 @@ do
 done
 
 # generate aspri, and assemble it to bspri
-perform_step generate_spri mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $($PEASOUP_HOME/tools/is_so.sh a.ncexe) $cloneid a.irdb.aspri
+perform_step generate_spri mandatory $SECURITY_TRANSFORMS_HOME/bin/generate_spri.exe $($PEASOUP_HOME/tools/is_so.sh a.ncexe) $cloneid a.irdb.aspri
 
 # hack to work with cgc file size restrictions.
 stratafier_file=`ls -1 *nostrip 2>/dev/null |head -1` 
 if [ "X$stratafier_file" = "X" ]; then 
 	stratafier_file=stratafier.o.exe
 fi
-perform_step spasm mandatory $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri a.ncexe $stratafier_file libstrata.so.symbols 
+perform_step spasm mandatory $SECURITY_TRANSFORMS_HOME/bin/spasm a.irdb.aspri a.irdb.bspri a.ncexe $stratafier_file libstrata.so.symbols 
 
 perform_step fast_spri spasm $PEASOUP_HOME/tools/fast_spri.sh a.irdb.bspri a.irdb.fbspri 
 

@@ -8,7 +8,7 @@
 #
 # $PEASOUP_HOME/tools/update_env_var.sh STRATA_SHADOW_STACK 1
 
-$SECURITY_TRANSFORMS_HOME/tools/ret_shadow_stack/ret_shadow_stack.exe $*
+$SECURITY_TRANSFORMS_HOME/bin/ret_shadow_stack.exe $*
 
 
 

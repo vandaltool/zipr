@@ -37,16 +37,16 @@ else
 fi
 
 echo "intxform(detect-benign-fp): Clone program"
-$SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $CLONE_ID clone.id
+$SECURITY_TRANSFORMS_HOME/bin/clone.exe $CLONE_ID clone.id
 tempcloneid=`cat clone.id`
 
 echo "intxform(detect-benign-fp): Integer transform on cloned copy"
-$SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $tempcloneid $LIBC_FILTER $INTEGER_WARNINGS_FILE --warning
+$SECURITY_TRANSFORMS_HOME/bin/integertransformdriver.exe $tempcloneid $LIBC_FILTER $INTEGER_WARNINGS_FILE --warning
 
 # generate aspri, and assemble it to bspri
 echo "intxform(detect-benign-fp): Generate temporary aspri --> bspri for integer transform"
-$SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $($PEASOUP_HOME/tools/is_so.sh a.ncexe) $tempcloneid $INTEGER_ASPRI
-$SECURITY_TRANSFORMS_HOME/tools/spasm/spasm $INTEGER_ASPRI $INTEGER_BSPRI a.ncexe stratafier.o.exe libstrata.so.symbols
+$SECURITY_TRANSFORMS_HOME/bin/generate_spri.exe $($PEASOUP_HOME/tools/is_so.sh a.ncexe) $tempcloneid $INTEGER_ASPRI
+$SECURITY_TRANSFORMS_HOME/bin/spasm $INTEGER_ASPRI $INTEGER_BSPRI a.ncexe stratafier.o.exe libstrata.so.symbols
 
 # generate script to run instrumented binary
 DETECTOR_BINARY=benignfp.detector

@@ -14,7 +14,7 @@ TIMEOUT_VALUE=600
 PIN_BENCH=`pwd`/pin_bench
 COVERAGE_RESULTS_DIR=`pwd`/manual_coverage_results/
 ACCUMULATED_COVERAGE_FILE=$COVERAGE_RESULTS_DIR/manual_coverage_results.out
-COVER_SCRIPT=$SECURITY_TRANSFORMS_HOME/tools/cover/cover
+COVER_SCRIPT=$SECURITY_TRANSFORMS_HOME/bin/cover
 
 echo "manual coverage script"
 
