@@ -182,6 +182,13 @@ beaengine/include/beaengine/macros.h -text
 include/i686/config.h -text
 include/i86pc/config.h -text
 include/x86_64/config.h -text
+libEXEIO/SConscript -text
+libEXEIO/SConstruct -text
+libEXEIO/include/exeio.h -text
+libEXEIO/include/exeio_elf.h -text
+libEXEIO/src/SConscript -text
+libEXEIO/src/SConstruct -text
+libEXEIO/src/exeio_src.cpp -text
 libIRDB/LICENSE.txt -text
 libIRDB/Makefile.in -text
 libIRDB/SConscript -text

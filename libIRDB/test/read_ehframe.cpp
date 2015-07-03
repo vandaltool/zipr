@@ -29,9 +29,12 @@
 #include <assert.h>
 #include <string.h>
 
+#include <exeio.h>
+
 #include "targ-config.h"
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
+
 
 using namespace libIRDB;
 using namespace std;
@@ -689,8 +692,13 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
   	return;
 }
 
-void read_ehframe(FileIR_t* virp, ELFIO::elfio* elfiop)
+void read_ehframe(FileIR_t* virp, EXEIO::exeio* exeiop)
 {
+	assert(exeiop);
+	ELFIO::elfio *elfiop=reinterpret_cast<ELFIO::elfio*>(exeiop->get_elfio());
+	if(!elfiop)
+		return;	// skip entire analysis for non-elf files as eh-frame is way different.
+
 	/* get first instruction */
 	Instruction_t* insn=*(virp->GetInstructions().begin());
 	assert(insn);

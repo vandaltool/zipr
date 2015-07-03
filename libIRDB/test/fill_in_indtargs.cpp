@@ -30,15 +30,13 @@
 // #include <elf.h>
 #include <ctype.h>
 
-#include "targ-config.h"
-#include "elfio/elfio.hpp"
-#include "elfio/elfio_dump.hpp"
+#include <exeio.h>
 #include "beaengine/BeaEngine.h"
 #include "check_thunks.hpp"
 
 using namespace libIRDB;
 using namespace std;
-using namespace ELFIO;
+using namespace EXEIO;
 
 #define HELLNODE_ID 0
 #define INDIRECT_CALLS_ID 1
@@ -66,15 +64,15 @@ map< Instruction_t* , set<Instruction_t*> > preds;
 // keep track of jmp tables
 map< Instruction_t*, set<Instruction_t*> > jmptables;
 
-void check_for_PIC_switch_table32_type2(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop, const set<int>& thunk_bases);
-void check_for_PIC_switch_table32_type3(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop, const set<int>& thunk_bases);
-void check_for_PIC_switch_table32(FileIR_t*, Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop, const set<int>& thunk_bases);
-void check_for_PIC_switch_table64(FileIR_t*, Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop);
+void check_for_PIC_switch_table32_type2(Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<int>& thunk_bases);
+void check_for_PIC_switch_table32_type3(Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<int>& thunk_bases);
+void check_for_PIC_switch_table32(FileIR_t*, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<int>& thunk_bases);
+void check_for_PIC_switch_table64(FileIR_t*, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop);
 
 // get switch table structure, determine ib targets
 // handle both 32 and 64 bit
-void check_for_nonPIC_switch_table(FileIR_t*, Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop);
-void check_for_nonPIC_switch_table_pattern2(FileIR_t*, Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop);
+void check_for_nonPIC_switch_table(FileIR_t*, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop);
+void check_for_nonPIC_switch_table_pattern2(FileIR_t*, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop);
 
 void check_for_indirect_jmp(FileIR_t* const firp, Instruction_t* const insn);
 void check_for_indirect_call(FileIR_t* const firp, Instruction_t* const insn);
@@ -181,11 +179,11 @@ bool is_possible_target(uintptr_t p, uintptr_t addr)
 
 }
 
-ELFIO::section*  find_section(int addr, ELFIO::elfio *elfiop)
+EXEIO::section*  find_section(int addr, EXEIO::exeio *elfiop)
 {
          for ( int i = 0; i < elfiop->sections.size(); ++i )
          {   
-                 ELFIO::section* pSec = elfiop->sections[i];
+                 EXEIO::section* pSec = elfiop->sections[i];
                  assert(pSec);
                  if(pSec->get_address() > addr)
                          continue;
@@ -273,7 +271,7 @@ void mark_targets(FileIR_t *firp)
 	}
 }
 
-void get_instruction_targets(FileIR_t *firp, ELFIO::elfio* elfiop, const set<int>& thunk_bases)
+void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<int>& thunk_bases)
 {
 
         for(
@@ -328,14 +326,13 @@ void get_instruction_targets(FileIR_t *firp, ELFIO::elfio* elfiop, const set<int
 
 void get_executable_bounds(FileIR_t *firp, const section* shdr)
 {
-	int flags = shdr->get_flags();
 
 	/* not a loaded section */
-	if( (flags & SHF_ALLOC) != SHF_ALLOC)
+	if( !shdr->isLoadable()) 
 		return;
 
 	/* loaded, and contains instruction, record the bounds */
-	if( (flags & SHF_EXECINSTR) != SHF_EXECINSTR)
+	if( !shdr->isExecutable() )
 		return;
 
 	int first=shdr->get_address();
@@ -348,18 +345,18 @@ void get_executable_bounds(FileIR_t *firp, const section* shdr)
 
 void infer_targets(FileIR_t *firp, section* shdr)
 {
-	int flags = shdr->get_flags();
+//	int flags = shdr->get_flags();
 
-	if( (flags & SHF_ALLOC) != SHF_ALLOC)
+	if( ! shdr->isLoadable()) // (flags & SHF_ALLOC) != SHF_ALLOC)
 		/* not a loaded section */
 		return;
 
-	if( (flags & SHF_EXECINSTR) == SHF_EXECINSTR)
+	if( shdr->isExecutable() ) //(flags & SHF_EXECINSTR) == SHF_EXECINSTR)
 		/* loaded, but contains instruction.  we'll look through the VariantIR for this section. */
 		return;
 
 	/* if the type is NOBITS, then there's no actual data to look through */
-	if(shdr->get_type()==SHT_NOBITS)
+	if(shdr->isBSS() ) // get_type()==SHT_NOBITS)
 		return;
 
 	const char* data=shdr->get_data() ; // C(char*)malloc(shdr->sh_size);
@@ -506,7 +503,7 @@ bool backup_until(const char* insn_type_regex, Instruction_t *& prev, Instructio
 /*
  * check_for_PIC_switch_table32 - look for switch tables in PIC code for 32-bit code.
  */
-void check_for_PIC_switch_table32(FileIR_t *firp, Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop, const set<int> &thunk_bases)
+void check_for_PIC_switch_table32(FileIR_t *firp, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<int> &thunk_bases)
 {
 #if 0
 
@@ -587,7 +584,7 @@ cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< "
 		int table_base=*it+table_offset;
 
 		// find the section with the data table
-        	ELFIO::section *pSec=find_section(table_base,elfiop);
+        	EXEIO::section *pSec=find_section(table_base,elfiop);
 		if(!pSec)
 			continue;
 
@@ -660,7 +657,7 @@ cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< "
 
 }
 
-void check_for_PIC_switch_table32_type2(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop, const set<int> &thunk_bases)
+void check_for_PIC_switch_table32_type2(Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<int> &thunk_bases)
 {
 #if 0
 
@@ -715,7 +712,7 @@ cout<<hex<<"Found (type2) switch dispatch at "<<I3->GetAddress()->GetVirtualOffs
 		int table_base=*it+table_offset;
 
 		// find the section with the data table
-        	ELFIO::section *pSec=find_section(table_base,elfiop);
+        	EXEIO::section *pSec=find_section(table_base,elfiop);
 		if(!pSec)
 			continue;
 
@@ -771,7 +768,7 @@ cout<<"Checking target base:" << std::hex << table_base+table_entry << ", " << t
 
 }
 
-void check_for_PIC_switch_table32_type3(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop, const set<int> &thunk_bases)
+void check_for_PIC_switch_table32_type3(Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<int> &thunk_bases)
 {
 #if 0
 
@@ -801,7 +798,7 @@ cout<<hex<<"Found (type3) switch dispatch at "<<I5->GetAddress()->GetVirtualOffs
 		
 	{
 		// find the section with the data table
-        	ELFIO::section *pSec=find_section(table_base,elfiop);
+        	EXEIO::section *pSec=find_section(table_base,elfiop);
 		if(!pSec)
 			return;
 
@@ -863,7 +860,7 @@ cout<<"Checking target base:" << std::hex << table_entry << ", " << table_base+i
  * if so, see if we can trace back a few instructions to find a
  * the start of the table.
  */
-void check_for_PIC_switch_table64(FileIR_t* firp, Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop)
+void check_for_PIC_switch_table64(FileIR_t* firp, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop)
 {
 
         /* here's the pattern we're looking for */
@@ -945,7 +942,7 @@ DN:   0x4824e0: .long 0x4824e0-LN
         int D1=strtol(disasm.Argument2.ArgMnemonic, NULL, 16);
 
         // find the section with the data table
-        ELFIO::section *pSec=find_section(D1,elfiop);
+        EXEIO::section *pSec=find_section(D1,elfiop);
 
         // sanity check there's a section
         if(!pSec)
@@ -1032,7 +1029,7 @@ DN:   0x4824e0: .long 0x4824e0-LN
 
 	nb: handles both 32 and 64 bit
 */
-void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop)
+void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop)
 {
 	Instruction_t *I1 = NULL;
 	Instruction_t *IJ = insn;
@@ -1075,7 +1072,7 @@ void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn,
 	cout<<"(nonPIC-pattern2): size of jmp table: "<< table_size << endl;
 
 	// find the section with the data table
-    ELFIO::section *pSec=find_section(table_offset,elfiop);
+    EXEIO::section *pSec=find_section(table_offset,elfiop);
 	if(!pSec)
 	{
 		return;
@@ -1133,7 +1130,7 @@ void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn,
 
 	nb: handles both 32 and 64 bit
 */
-void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop)
+void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop)
 {
 	Instruction_t *I1 = NULL;
 	Instruction_t *I2 = NULL;
@@ -1193,7 +1190,7 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DISASM d
 		cout<<"(nonPIC): size of jmp table: "<< table_size << endl;
 
 	// find the section with the data table
-	ELFIO::section *pSec=find_section(table_offset,elfiop);
+	EXEIO::section *pSec=find_section(table_offset,elfiop);
 	if(!pSec)
 	{
 		cout<<hex<<"(nonPIC): could not find jump table in section"<<endl;
@@ -1350,7 +1347,7 @@ void calc_preds(FileIR_t* firp)
 }
 
 
-void fill_in_indtargs(FileIR_t* firp, elfio* elfiop)
+void fill_in_indtargs(FileIR_t* firp, exeio* elfiop)
 {
 	if(getenv("IB_VERBOSE")!=0)
         	for(
@@ -1377,14 +1374,18 @@ void fill_in_indtargs(FileIR_t* firp, elfio* elfiop)
 
 	calc_preds(firp);
 
+#if 0
+/* info gotten from EXEIO class now. */
         ::Elf64_Off sec_hdr_off, sec_off;
         ::Elf_Half secnum, strndx, secndx;
         ::Elf_Word secsize;
 
         /* Read ELF header */
-        sec_hdr_off = elfiop->get_sections_offset();
-        secnum = elfiop->sections.size();
-        strndx = elfiop->get_section_name_str_index();
+        virtual_offset_t sec_hdr_off = elfiop->get_sections_offset();
+        virtual_offset_t strndx = elfiop->get_section_name_str_index();
+#endif
+        int secnum = elfiop->sections.size();
+	int secndx=0;
 
 	/* look through each section and record bounds */
         for (secndx=1; secndx<secnum; secndx++)
@@ -1415,7 +1416,7 @@ void fill_in_indtargs(FileIR_t* firp, elfio* elfiop)
 	cout<<"========================================="<<endl;
 
 	/* Read the exception handler frame so that those indirect branches are accounted for */
-	void read_ehframe(FileIR_t* firp, elfio* );
+	void read_ehframe(FileIR_t* firp, EXEIO::exeio* );
         read_ehframe(firp, elfiop);
 
 	cout<<"========================================="<<endl;
@@ -1509,11 +1510,11 @@ main(int argc, char* argv[])
 
 			jmptables.clear();
 
-        		ELFIO::elfio*    elfiop=new ELFIO::elfio;
+        		EXEIO::exeio*    elfiop=new EXEIO::exeio;
         		elfiop->load("readeh_tmp_file.exe");
 		
-        		ELFIO::dump::header(cout,*elfiop);
-        		ELFIO::dump::section_headers(cout,*elfiop);
+        		EXEIO::dump::header(cout,*elfiop);
+        		EXEIO::dump::section_headers(cout,*elfiop);
 
 
 			// find all indirect branch targets

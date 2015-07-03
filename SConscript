@@ -27,6 +27,7 @@ else:
 
 #print 'env='
 #print env.Dump()
+libEXEIO=SConscript("libEXEIO/SConscript", variant_dir='scons_build/libEXEIO')
 libbea=SConscript("beaengine/SConscript", variant_dir='scons_build/beaengine')
 libMEDSannotation=SConscript("libMEDSannotation/SConscript", variant_dir='scons_build/libMEDSannotation')
 libxform=SConscript("xform/SConscript", variant_dir='scons_build/libxform')

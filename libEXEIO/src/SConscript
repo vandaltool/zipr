@@ -1,0 +1,26 @@
+import os
+
+Import('env')
+myenv=env
+myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
+
+
+libname="EXEIO"
+files=  '''
+	exeio_src.cpp
+	'''
+
+cpppath=''' 
+	.
+	$SECURITY_TRANSFORMS_HOME/include/
+	$SECURITY_TRANSFORMS_HOME/libEXEIO/include
+	'''
+
+myenv.Append(CCFLAGS="-Wp,-w -Wall")
+
+myenv=myenv.Clone(CPPPATH=Split(cpppath))
+lib=myenv.Library(libname, Split(files))
+
+install=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
+Default(install)
+
