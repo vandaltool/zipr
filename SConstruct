@@ -13,7 +13,11 @@ env.Replace(LINKFLAGS="-fPIC -w ")
 env.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 env.Replace(do_64bit_build=ARGUMENTS.get("do_64bit_build",None))
 env.Replace(debug=ARGUMENTS.get("debug",0))
+env.Replace(build_appfw=ARGUMENTS.get("build_appfw", None))
 
+# by default, turn on build of appfw
+if env['build_appfw'] is None:
+	env['build_appfw'] = 1
 
 if int(env['debug']) == 1:
         print "Setting debug mode"
@@ -42,7 +46,6 @@ else:
         env.Append(CXXFLAGS=" -m32")
         env.Append(LINKFLAGS=" -m32")
         env.Append(SHLINKFLAGS=" -m32")
-
 
 Export('env')
 SConscript("SConscript", variant_dir='build')

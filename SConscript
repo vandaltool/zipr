@@ -33,4 +33,5 @@ libxform=SConscript("xform/SConscript", variant_dir='scons_build/libxform')
 libtransform=SConscript("libtransform/SConscript", variant_dir='scons_build/libtransform')
 libIRDB=SConscript("libIRDB/SConscript", variant_dir='scons_build/libIRDB')
 SConscript("tools/SConscript", variant_dir='scons_build/tools')
-SConscript("appfw/SConscript", variant_dir='scons_build/appfw')
+if int(env['build_appfw'])==1:
+	SConscript("appfw/SConscript", variant_dir='scons_build/appfw')
