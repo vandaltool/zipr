@@ -8,7 +8,7 @@ lightpeasoup: testsqlite.basic.lightpeasoup testsqlite.lightpeasoup testsqlite.p
 	$(PEASOUP_HOME)/tools/ps_analyze.sh $< $@ --step appfw=on
 
 .exe.peasoup:
-	$(PEASOUP_HOME)/tools/ps_analyze.sh $< $@ 
+	$(PEASOUP_HOME)/tools/ps_analyze.sh $< $@  --step appfw=on
 
 .o.exe:
 	gcc -g $< -lsqlite3 -o $@
