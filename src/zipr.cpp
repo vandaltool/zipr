@@ -724,16 +724,24 @@ void Zipr_t::ReservePinnedInstructions()
 			                   (char)0x00,(char)0x00, /* all these bytes but they */
 												 (char)0x00};           /* make counting easier (see*/
 												                        /* below). */
-			char lea_bytes_[]={(char)0x48,(char)0x8d, /* lea rsp, rsp-8 */
-			                  (char)0x64,(char)0x24,
-												(char)0x08};
-			char *lea_bytes = lea_bytes_;
-			int lea_bytes_size = sizeof(lea_bytes_);
+			char *lea_bytes = NULL;
+			int lea_bytes_size = 0;
+			char lea_bytes_64[]={(char)0x48,(char)0x8d, /* lea rsp, rsp+8 */
+			                     (char)0x64,(char)0x24,
+												   (char)0x08};
+			char lea_bytes_32[]={(char)0x8d,            /* lea esp, esp+4 */
+			                     (char)0x64,(char)0x24,
+												   (char)0x04};
 
-			if(m_firp->GetArchitectureBitWidth()!=64)
+			if(m_firp->GetArchitectureBitWidth()==64)
 			{
-				lea_bytes++;
-				lea_bytes_size--;
+				lea_bytes = lea_bytes_64;
+				lea_bytes_size = sizeof(lea_bytes_64);
+			}
+			else
+			{
+				lea_bytes = lea_bytes_32;
+				lea_bytes_size = sizeof(lea_bytes_32);
 			}
 
 			/*
