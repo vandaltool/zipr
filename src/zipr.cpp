@@ -679,12 +679,14 @@ void Zipr_t::ReservePinnedInstructions()
                 ++it
            )
 	{
+		char bytes[]={(char)0xeb,(char)0}; // jmp rel8
 		UnresolvedPinned_t up=*it;
-
 		Instruction_t* upinsn=up.GetInstruction();
-		RangeAddress_t addr=(unsigned)upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset();
+		RangeAddress_t addr=(unsigned)upinsn->GetIndirectBranchTargetAddress()
+		                                    ->GetVirtualOffset();
 
-		if(upinsn->GetIndirectBranchTargetAddress()->GetFileID()==BaseObj_t::NOT_IN_DATABASE)
+		if(upinsn->GetIndirectBranchTargetAddress()->GetFileID() ==
+		   BaseObj_t::NOT_IN_DATABASE)
 			continue;
 
 		/* sometimes, we need can't just put down a 2-byte jump into the old slot
@@ -707,18 +709,73 @@ void Zipr_t::ReservePinnedInstructions()
 			continue;
 		}
 
-		char bytes[]={(char)0xeb,(char)0}; // jmp rel8
-
-		if(m_opts.GetVerbose())
-		{
-			printf("Two-byte Pinning %p-%p.  fid=%d\n", 
-				(void*)addr, 
-				(void*)(addr+sizeof(bytes)-1),
-				upinsn->GetAddress()->GetFileID());
+		if (m_opts.GetVerbose()) {
+			printf("Working two byte pinning decision at %p for:\n", 
+					(void*)addr);
 			printf("%s\n", upinsn->GetComment().c_str());
 		}
 
-		two_byte_pins.insert(up);
+
+		if (FindPinnedInsnAtAddr(addr+1)) {
+			if (m_opts.GetVerbose())
+				printf("Cannot fit two byte pin; Using workaround.\n");
+			UnresolvedPinned_t cup = UnresolvedPinned_t(up.GetInstruction());
+			char push_bytes[]={(char)0x68,(char)0x00, /* We do not actually write */
+			                   (char)0x00,(char)0x00, /* all these bytes but they */
+												 (char)0x00};           /* make counting easier (see*/
+												                        /* below). */
+			char lea_bytes[]={(char)0x48,(char)0x8d,  /* lea rsp, rsp-8 */
+			                  (char)0x64,(char)0x24,
+												(char)0x08};
+
+			/*
+			 * The whole workaround pattern is:
+			 * 0x68 0xXX 0xXX 0xXX 0xXX (pushq imm)
+			 * lea rsp, rsp-8
+			 * 0xeb 0xXX (jmp)
+			 */
+
+			/*
+			 * Write the push opcode.
+			 */
+			memory_space[addr] = push_bytes[0];
+			memory_space.SplitFreeRange(addr);
+
+			/*
+			 * Only assert enough space for lea right now. We
+			 * check for the two byte space later.
+			 */
+			for (int i = 0; i<sizeof(lea_bytes); i++) {
+				assert(
+					memory_space.find(addr+sizeof(push_bytes)+i) == memory_space.end()
+				);
+				memory_space[addr+sizeof(push_bytes)+i] = lea_bytes[i];
+				memory_space.SplitFreeRange(addr+sizeof(push_bytes)+i);
+			}
+
+			addr += sizeof(push_bytes) + sizeof(lea_bytes);
+
+			if (m_opts.GetVerbose())
+				printf("Advanced addr to %p\n", (void*)addr);
+
+			/*
+			 * Insert a new UnresolveUnpinned_t that tells future
+			 * passes that we are going to use an updated address
+			 * to place this instruction.
+			 */
+			cup.SetUpdatedAddress(addr);
+			two_byte_pins.insert(cup);
+		} else {
+			if(m_opts.GetVerbose())
+			{
+				printf("Can fit two-byte pin (%p-%p).  fid=%d\n", 
+					(void*)addr,
+					(void*)(addr+sizeof(bytes)-1),
+					upinsn->GetAddress()->GetFileID());
+			}
+			two_byte_pins.insert(up);
+		}
+
 		for(int i=0;i<sizeof(bytes);i++)
 		{
 			assert(memory_space.find(addr+i) == memory_space.end() );
@@ -739,7 +796,21 @@ void Zipr_t::ExpandPinnedInstructions()
 	{
 		UnresolvedPinned_t up=*it;
 		Instruction_t* upinsn=up.GetInstruction();
-		RangeAddress_t addr=upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset();
+		RangeAddress_t addr=0;
+
+		/*
+		 * This is possible if we moved the address
+		 * forward because we had consecutive pinned
+		 * instructions and had to apply the workaround.
+		 */
+		if (up.HasUpdatedAddress())
+		{
+			addr = up.GetUpdatedAddress();
+		}
+		else
+		{
+			addr = upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset();
+		}
 
 		char bytes[]={(char)0xe9,(char)0,(char)0,(char)0,(char)0}; // jmp rel8
 		bool can_update=memory_space.AreBytesFree(addr+2,sizeof(bytes)-2);
