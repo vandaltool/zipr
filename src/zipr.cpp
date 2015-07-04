@@ -724,9 +724,17 @@ void Zipr_t::ReservePinnedInstructions()
 			                   (char)0x00,(char)0x00, /* all these bytes but they */
 												 (char)0x00};           /* make counting easier (see*/
 												                        /* below). */
-			char lea_bytes[]={(char)0x48,(char)0x8d,  /* lea rsp, rsp-8 */
+			char lea_bytes_[]={(char)0x48,(char)0x8d, /* lea rsp, rsp-8 */
 			                  (char)0x64,(char)0x24,
 												(char)0x08};
+			char *lea_bytes = lea_bytes_;
+			int lea_bytes_size = sizeof(lea_bytes_);
+
+			if(m_firp->GetArchitectureBitWidth()!=64)
+			{
+				lea_bytes++;
+				lea_bytes_size--;
+			}
 
 			/*
 			 * The whole workaround pattern is:
@@ -745,7 +753,7 @@ void Zipr_t::ReservePinnedInstructions()
 			 * Only assert enough space for lea right now. We
 			 * check for the two byte space later.
 			 */
-			for (int i = 0; i<sizeof(lea_bytes); i++) {
+			for (int i = 0; i<lea_bytes_size; i++) {
 				assert(
 					memory_space.find(addr+sizeof(push_bytes)+i) == memory_space.end()
 				);
@@ -753,7 +761,7 @@ void Zipr_t::ReservePinnedInstructions()
 				memory_space.SplitFreeRange(addr+sizeof(push_bytes)+i);
 			}
 
-			addr += sizeof(push_bytes) + sizeof(lea_bytes);
+			addr += sizeof(push_bytes) + lea_bytes_size;
 
 			if (m_opts.GetVerbose())
 				printf("Advanced addr to %p\n", (void*)addr);
