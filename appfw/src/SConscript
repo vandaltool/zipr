@@ -48,6 +48,7 @@ else:
     shutil.copy(os.path.join(source_dir, 'sqlite3.c'), os.path.join(target_dir, 'appfw_sqlite3.c'))
     shutil.copy(os.path.join(source_dir, 'sqlite3.h'), os.path.join(target_dir, 'appfw_sqlite3.h'))
 
+    shutil.copy(os.path.join(source_dir, 'sqlite3.h'), os.path.join(target_dir, 'sqlite3.h'))
     shutil.copy(os.path.join(source_dir, 'sqlite3.h'), os.path.join(target_dir, '..', 'sqlite3.h'))
 
     # need to do the sed replacement:  sqlite3.[ch] --> appfw_sqlite3.[ch]
