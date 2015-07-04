@@ -746,7 +746,7 @@ void Zipr_t::ReservePinnedInstructions()
 
 			/*
 			 * The whole workaround pattern is:
-			 * 0x68 0xXX 0xXX 0xXX 0xXX (pushq imm)
+			 * 0x68 0xXX 0xXX 0xXX 0xXX (push imm)
 			 * lea rsp, rsp-8
 			 * 0xeb 0xXX (jmp)
 			 */
@@ -759,7 +759,7 @@ void Zipr_t::ReservePinnedInstructions()
 
 			/*
 			 * Only assert enough space for lea right now. We
-			 * check for the two byte space later.
+			 * check for the two byte jump space later.
 			 */
 			for (int i = 0; i<lea_bytes_size; i++) {
 				assert(
