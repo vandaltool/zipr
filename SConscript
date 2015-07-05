@@ -11,6 +11,9 @@ if env.GetOption('clean'):
     if os.path.exists(os.environ['SECURITY_TRANSFORMS_HOME']+"/include/elfio"):
 	print 'Removing include/elfio'
     	shutil.rmtree(os.environ['SECURITY_TRANSFORMS_HOME']+"/include/elfio")
+    if os.path.exists(os.environ['SECURITY_TRANSFORMS_HOME']+"/include/targ-config.h"):
+	print 'Removing include/elfio'
+    	os.remove(os.environ['SECURITY_TRANSFORMS_HOME']+"/include/targ-config.h")
 else:
     ELFIO_DIR=os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/ELFIO/"
     if not os.path.exists(ELFIO_DIR):
@@ -20,9 +23,17 @@ else:
 	tgz.list(verbose=False)
         tgz.extractall(ELFIO_DIR)
     	shutil.copytree(ELFIO_DIR+"elfio-2.2/elfio", os.environ['SECURITY_TRANSFORMS_HOME']+"/include/elfio")
-	shutil.copy(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/elfio.hpp", os.environ['SECURITY_TRANSFORMS_HOME']+"/include/elfio/elfio.hpp")
+	shutil.copy(os.path.join(os.environ['SECURITY_TRANSFORMS_HOME'],"third_party","elfio.hpp"), 
+		    os.path.join(os.environ['SECURITY_TRANSFORMS_HOME'],"include","elfio","elfio.hpp"))
     else:
         assert os.path.isdir(ELFIO_DIR)
+
+    # check/install targ-config.h
+    if not os.path.isfile(os.environ['SECURITY_TRANSFORMS_HOME']+"/include/targ-config.h"):
+ 	(sysname, nodename, release, version, machine)=os.uname()
+	#print "uname=", sysname, " xx ", nodename, " xx ", release, " xx ", version, " xx ", machine
+	shutil.copy( os.path.join(os.environ['SECURITY_TRANSFORMS_HOME'],"include",machine,"config.h"), 
+		     os.path.join(os.environ['SECURITY_TRANSFORMS_HOME'],"include","targ-config.h"))
 
 
 #print 'env='

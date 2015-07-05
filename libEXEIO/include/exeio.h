@@ -44,6 +44,7 @@ namespace EXEIO
                         virtual execlass_t get_class() =0;
 			virtual virtual_offset_t get_entry() =0;
 			virtual void* get_elfio() { return NULL; }
+			virtual bool isDLL() =0;
 
 	};
 	
@@ -95,6 +96,7 @@ namespace EXEIO
 			virtual void dump_section_headers(std::ostream& stream) { assert(backend); backend->dump_section_headers(stream); }
                         virtual execlass_t get_class() { assert(backend); return backend->get_class(); }
 			virtual void* get_elfio() { assert(backend); return backend->get_elfio(); }
+			virtual bool isDLL() { assert(backend); return backend->isDLL(); }
 
 		private:
 			void Init() { backend=NULL; }

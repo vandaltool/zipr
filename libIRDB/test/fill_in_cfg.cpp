@@ -29,12 +29,7 @@
 #include <sys/mman.h>
 #include <ctype.h>
 
-#include "targ-config.h"
-
-#include "elfio/elfio.hpp"
-#include "elfio/elfio_dump.hpp"
-
-
+#include <exeio.h>
 
 #include "beaengine/BeaEngine.h"
 
@@ -44,7 +39,7 @@ int bad_fallthrough_count=0;
 
 using namespace libIRDB;
 using namespace std;
-using namespace ELFIO;
+using namespace EXEIO;
 
 set< pair<db_id_t,int> > missed_instructions;
 int failed_target_count=0;
@@ -221,7 +216,7 @@ File_t* find_file(FileIR_t* firp, db_id_t fileid)
 
 }
 
-ELFIO::elfio    elfiop;
+EXEIO::exeio    elfiop;
 
 void add_new_instructions(FileIR_t *firp)
 {
@@ -244,33 +239,33 @@ void add_new_instructions(FileIR_t *firp)
 
 
 
+#if 0
         	::Elf64_Off sec_hdr_off, sec_off;
         	::Elf_Half secnum, strndx, secndx;
         	::Elf_Word secsize;
 	
-		
-
-        	sec_hdr_off = elfiop.get_sections_offset();
-        	secnum = elfiop.sections.size(); 
-        	strndx = elfiop.get_section_name_str_index();
+#endif
+        	int secnum = elfiop.sections.size(); 
+		int secndx=0;
 
 		bool found=false;
 	
         	/* look through each section and find the missing target*/
         	for (secndx=1; secndx<secnum; secndx++)
 		{
-        		int flags = elfiop.sections[secndx]->get_flags();
+//        		int flags = elfiop.sections[secndx]->get_flags();
 
         		/* not a loaded section */
-        		if( (flags & SHF_ALLOC) != SHF_ALLOC)
+        		if( !elfiop.sections[secndx]->isLoadable()) // (flags & SHF_ALLOC) != SHF_ALLOC)
                 		continue;
 		
         		/* loaded, and contains instruction, record the bounds */
-        		if( (flags & SHF_EXECINSTR) != SHF_EXECINSTR)
+        		// if( (flags & SHF_EXECINSTR) != SHF_EXECINSTR)
+        		if( !elfiop.sections[secndx]->isExecutable()) 
                 		continue;
 		
-        		::Elf64_Addr first=elfiop.sections[secndx]->get_address();
-        		::Elf64_Addr second=elfiop.sections[secndx]->get_address()+elfiop.sections[secndx]->get_size();
+        		virtual_offset_t first=elfiop.sections[secndx]->get_address();
+        		virtual_offset_t second=elfiop.sections[secndx]->get_address()+elfiop.sections[secndx]->get_size();
 
 			/* is the missed instruction in this section */
 			if(first<=missed_address && missed_address<=second)
@@ -476,8 +471,8 @@ main(int argc, char* argv[])
                 	lo.to_file(pqxx_interface.GetTransaction(),"readeh_tmp_file.exe");
 
 			elfiop.load("readeh_tmp_file.exe");
-			ELFIO::dump::header(cout,elfiop);
-			ELFIO::dump::section_headers(cout,elfiop);
+			EXEIO::dump::header(cout,elfiop);
+			EXEIO::dump::section_headers(cout,elfiop);
 
 			fill_in_cfg(firp);
 

@@ -865,13 +865,12 @@ void check_for_PIC_switch_table64(FileIR_t* firp, Instruction_t* insn, DISASM di
 
         /* here's the pattern we're looking for */
 #if 0
-I1:   0x000000000044425a <+218>:        cmp    DWORD PTR [rax+0x8],0xd   // bounds checking code, 0xd cases.
+I1:   0x000000000044425a <+218>:        cmp    DWORD PTR [rax+0x8],0xd   // bounds checking code, 0xd cases. switch(i) has i stored in [rax+8] in this e.g.
 I2:   0x000000000044425e <+222>:        jbe    0x444320 <_gedit_tab_get_icon+416>
-
-<snip>
+<new bb>
 I3:   0x0000000000444264 <+228>:        mov    rdi,rbp // default case, also jumped to via indirect branch below
-<snip>
-I4:   0x0000000000444320 <+416>:        mov    edx,DWORD PTR [rax+0x8]
+<snip (doesn't fall through)>
+I4:   0x0000000000444320 <+416>:        mov    edx,DWORD PTR [rax+0x8]		# load from memory into index reg EDX.
 I5:   0x0000000000444323 <+419>:        lea    rax,[rip+0x3e1b6]        # 0x4824e0
 I6:   0x000000000044432a <+426>:        movsxd rdx,DWORD PTR [rax+rdx*4]
 I7:   0x000000000044432e <+430>:        add    rax,rdx  // OR: lea rax, [rdx+rax]
@@ -879,9 +878,9 @@ I8:   0x0000000000444331 <+433>:        jmp    rax      // relatively standard s
 
 
 D1:   0x4824e0: .long 0x4824e0-L1       // L1-LN are labels in the code where case statements start.
-D2:   0x4824e0: .long 0x4824e0-L2
+D2:   0x4824e4: .long 0x4824e0-L2
 ..
-DN:   0x4824e0: .long 0x4824e0-LN
+DN:   0x4824XX: .long 0x4824e0-LN
 #endif
 
 
@@ -1449,6 +1448,25 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop)
 	print_targets();
 	cout<<"========================================="<<endl;
 
+
+
+	FILE* dynsymfile = popen( "$PS_READELF --dyn-syms readeh_tmp_file.exe |grep 'FUNC    GLOBAL DEFAULT'"
+		"|grep -v 'FUNC    GLOBAL DEFAULT  UND' |sed 's/.*: *//'|cut -f1 -d' '", "r");
+
+	assert(dynsymfile);
+	virtual_offset_t target=0;
+	while( fscanf(dynsymfile, "%x", &target) != -1)
+	{
+		possible_target(target);
+	}
+	cout<<"========================================="<<endl;
+	cout<<"# ATTRIBUTE total_indirect_targets_pass7="<<std::dec<<targets.size()<<endl;
+	print_targets();
+	cout<<"========================================="<<endl;
+
+
+
+
 	/* set the IR to have some instructions marked as IB targets */
 	mark_targets(firp);
 
@@ -1511,7 +1529,9 @@ main(int argc, char* argv[])
 			jmptables.clear();
 
         		EXEIO::exeio*    elfiop=new EXEIO::exeio;
-        		elfiop->load("readeh_tmp_file.exe");
+        		elfiop->load((const char*)"readeh_tmp_file.exe");
+
+
 		
         		EXEIO::dump::header(cout,*elfiop);
         		EXEIO::dump::section_headers(cout,*elfiop);

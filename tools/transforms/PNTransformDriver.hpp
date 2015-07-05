@@ -24,8 +24,7 @@
 
 #include <vector>
 #include <set>
-#include "elfio/elfio.hpp"
-#include "elfio/elfio_dump.hpp"
+#include <exeio.h>
 #include "PNStackLayoutInference.hpp"
 #include "PNRegularExpressions.hpp"
 #include <csignal>
@@ -68,7 +67,7 @@ class PNTransformDriver
 
     	libIRDB::VariantID_t *pidp;
     	libIRDB::FileIR_t *orig_virp;
-	ELFIO::elfio* elfiop;
+	EXEIO::exeio* elfiop;
     	std::string BED_script;
     	int orig_progid;
     	bool do_canaries;

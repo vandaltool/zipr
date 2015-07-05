@@ -97,6 +97,9 @@ namespace EXEIO
 
 			virtual void* get_elfio() { return (void*)e; }
 
+                        virtual bool isDLL() { return e->get_type()!=ET_EXEC; }
+
+
 	
 		private:  
 			ELFIO::elfio* e;

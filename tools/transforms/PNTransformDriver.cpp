@@ -562,11 +562,11 @@ void PNTransformDriver::InitNewFileIR(File_t* this_file)
 	pqxx::largeobject lo(elfoid);
 	lo.to_file(pqxx_interface->GetTransaction(),"readeh_tmp_file.exe");
 
-	elfiop=new ELFIO::elfio;
-	elfiop->load("readeh_tmp_file.exe");
+	elfiop=new EXEIO::exeio;
+	elfiop->load((char*)"readeh_tmp_file.exe");
 	
-	ELFIO::dump::header(cout,*elfiop);
-	ELFIO::dump::section_headers(cout,*elfiop);
+	EXEIO::dump::header(cout,*elfiop);
+	EXEIO::dump::section_headers(cout,*elfiop);
 
 	//Calc preds is used for sanity checks.
 	//I believe it determines the predecessors of instructions
@@ -655,20 +655,6 @@ void PNTransformDriver::GenerateTransforms()
 
 			// read the db  
 			InitNewFileIR(this_file);
-#if 0
-orig_virp=new FileIR_t(*pidp,this_file);
-assert(orig_virp && pidp);
-int elfoid=firp->GetFile()->GetELFOID();
-pqxx::largeobject lo(elfoid);
-lo.to_file(pqxx_interface.GetTransaction(),"readeh_tmp_file.exe");
-
-ELFIO::elfio*    elfiop=new ELFIO::elfio;
-elfiop->load("readeh_tmp_file.exe");
-
-ELFIO::dump::header(cout,*elfiop);
-ELFIO::dump::section_headers(cout,*elfiop);
-#endif
-
 
 			map<string,double> file_coverage_map;
 
@@ -936,11 +922,11 @@ bool	check_for_bad_variadic_funcs(Function_t *func, const ControlFlowGraph_t* cf
 }
 
 
-static ELFIO::section*  find_section(unsigned int addr, ELFIO::elfio *elfiop)
+static EXEIO::section*  find_section(virtual_offset_t addr, EXEIO::exeio *elfiop)
 {
          for ( int i = 0; i < elfiop->sections.size(); ++i )
          {
-                 ELFIO::section* pSec = elfiop->sections[i];
+                 EXEIO::section* pSec = elfiop->sections[i];
                  assert(pSec);
                  if(pSec->get_address() > addr)
                          continue;
@@ -980,7 +966,7 @@ bool PNTransformDriver::check_jump_tables(Instruction_t* insn)
 
 	int displacement=d.Argument1.Memory.Displacement;
 
-	ELFIO::section* pSec=find_section(displacement,elfiop);
+	EXEIO::section* pSec=find_section(displacement,elfiop);
 
 	if(!pSec)
 		return true;	
@@ -995,7 +981,7 @@ bool PNTransformDriver::check_jump_tables(Instruction_t* insn)
 	set<int> jump_tab_entries;
 	for(int i=0;jump_tab_entries.size()<5;i++)
 	{
-		if(offset+i*4+sizeof(int) > pSec->get_size())
+		if(offset+i*4+sizeof(int) > (int) pSec->get_size())
 			break;
 
 		const int *table_entry_ptr=(const int*)&(secdata[offset+i*4]);
@@ -1162,7 +1148,7 @@ DN:   0x4824e0: .long 0x4824e0-LN
         int D1=strtol(disasm.Argument2.ArgMnemonic, NULL, 16);
 
         // find the section with the data table
-        ELFIO::section *pSec=find_section(D1,elfiop);
+        EXEIO::section *pSec=find_section(D1,elfiop);
 
         // sanity check there's a section
         if(!pSec)
@@ -1180,7 +1166,7 @@ DN:   0x4824e0: .long 0x4824e0-LN
         for(int i=0;table_entries.size()<5;i++)
         {
                 // check that we can still grab a word from this section
-                if(offset+sizeof(int) > pSec->get_size())
+                if(offset+sizeof(int) > (int)pSec->get_size())
                         break;
 
                 const int *table_entry_ptr=(const int*)&(secdata[offset]);
