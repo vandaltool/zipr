@@ -1,7 +1,7 @@
 import os
+import shutil
 
 Import('env')
 
-SConscript("src/SConstruct")
-
-#SConscript("test/SConscript")
+SConscript("src/SConscript.64", variant_dir='build64')
+SConscript("src/SConscript.32", variant_dir='build32')

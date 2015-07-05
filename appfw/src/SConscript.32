@@ -20,8 +20,6 @@ env.Replace(CCFLAGS="-m32")
 
 SQLITE3_DIR=os.path.join(os.environ['SECURITY_TRANSFORMS_HOME'], 'third_party/SQLITE3')
 
-print 'i am in cwd: ', os.getcwd()
-
 if env.GetOption('clean'):
     print 'option clean is turned on'
     if os.path.exists(SQLITE3_DIR):
@@ -33,28 +31,12 @@ if env.GetOption('clean'):
     if os.path.exists('combined_sqlite3.c'):
         os.remove('combined_sqlite3.c')
 else:
-    if not os.path.exists(SQLITE3_DIR):
-        os.makedirs(SQLITE3_DIR)     # make directory 
-        tgz=tarfile.open(os.path.join(os.environ['SECURITY_TRANSFORMS_HOME'], 'third_party/sqlite-autoconf-3071300.tar.gz'), "r:gz")
-        print 'Extracting needed files from sqlite3 tarball'
-        tgz.list(verbose=False)
-        tgz.extract('sqlite-autoconf-3071300/sqlite3.h', SQLITE3_DIR)
-        tgz.extract('sqlite-autoconf-3071300/sqlite3.c', SQLITE3_DIR)
-
     assert os.path.isdir(SQLITE3_DIR)
 
     source_dir = os.path.join(SQLITE3_DIR, 'sqlite-autoconf-3071300') 
     target_dir = os.getcwd()
     shutil.copy(os.path.join(source_dir, 'sqlite3.c'), os.path.join(target_dir, 'appfw_sqlite3.c'))
     shutil.copy(os.path.join(source_dir, 'sqlite3.h'), os.path.join(target_dir, 'appfw_sqlite3.h'))
-
-    print 'Copying sqlite3.h into: ' + os.path.join(target_dir, 'sqlite3.h')
-    shutil.copy(os.path.join(source_dir, 'sqlite3.h'), os.path.join(target_dir, 'sqlite3.h'))
-    print 'Copying sqlite3.h into: ' + os.path.abspath(os.path.join(target_dir, '..', 'sqlite3.h'))
-    shutil.copy(os.path.join(source_dir, 'sqlite3.h'), os.path.abspath(os.path.join(target_dir, '..', 'sqlite3.h')))
-
-    assert os.path.exists(os.path.abspath(os.path.join(target_dir, '..', 'sqlite3.h')))
-    assert os.path.exists(os.path.abspath(os.path.join(target_dir, 'sqlite3.h')))
 
     # need to do the sed replacement:  sqlite3.[ch] --> appfw_sqlite3.[ch]
     substitute_in_file(os.path.join(target_dir,'appfw_sqlite3.c'), 'sqlite3', 'appfw_sqlite3')
@@ -66,9 +48,6 @@ else:
     with open(combined_sqlite3_c, 'w') as fout:
        for line in fileinput.input(files=('appfw_sqlite3.c', sqlfw_c)):
            fout.write(line)
-
-    assert os.path.exists(os.path.abspath(os.path.join(target_dir, '..', 'sqlite3.h')))
-    assert os.path.exists(os.path.abspath(os.path.join(target_dir, 'sqlite3.h')))
 
 libname="appfw"
 
