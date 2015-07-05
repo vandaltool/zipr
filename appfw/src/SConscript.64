@@ -12,12 +12,11 @@ def substitute_in_file(file, search_pattern, replacement):
             source.write(re.sub(search_pattern, replacement, line))
 
 Import('env')
-env.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
-env.Replace(INSTALL_PATH_PREFIX="$SECURITY_TRANSFORMS_HOME/appfw/lib")
 
-if env['INSTALL_PATH_PREFIX'] is None:
-    print 'Undefined INSTALL_PATH_PREFIX'
-    assert False		 
+env.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
+env.Replace(CFLAGS="-m64")
+env.Replace(CCFLAGS="-m64")
+env.Replace(INSTALL_PATH_PREFIX="$SECURITY_TRANSFORMS_HOME/appfw/lib/64")
 
 SQLITE3_DIR=os.path.join(os.environ['SECURITY_TRANSFORMS_HOME'], 'third_party/SQLITE3')
 
@@ -49,8 +48,9 @@ else:
     shutil.copy(os.path.join(source_dir, 'sqlite3.c'), os.path.join(target_dir, 'appfw_sqlite3.c'))
     shutil.copy(os.path.join(source_dir, 'sqlite3.h'), os.path.join(target_dir, 'appfw_sqlite3.h'))
 
+    print 'Copying sqlite3.h into: ' + os.path.join(target_dir, 'sqlite3.h')
     shutil.copy(os.path.join(source_dir, 'sqlite3.h'), os.path.join(target_dir, 'sqlite3.h'))
-# sqlite3.h gets removed b/c it's moved into build32
+    print 'Copying sqlite3.h into: ' + os.path.abspath(os.path.join(target_dir, '..', 'sqlite3.h'))
     shutil.copy(os.path.join(source_dir, 'sqlite3.h'), os.path.abspath(os.path.join(target_dir, '..', 'sqlite3.h')))
 
     assert os.path.exists(os.path.abspath(os.path.join(target_dir, '..', 'sqlite3.h')))

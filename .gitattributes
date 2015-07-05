@@ -14,6 +14,8 @@ appfw/configure.in -text
 appfw/src/Makefile.in -text
 appfw/src/Makefile.mac -text
 appfw/src/SConscript -text
+appfw/src/SConscript.32 -text
+appfw/src/SConscript.64 -text
 appfw/src/SConstruct -text
 appfw/src/appfw.cpp -text
 appfw/src/appfw.h -text
