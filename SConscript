@@ -65,8 +65,12 @@ libtransform=SConscript("libtransform/SConscript", variant_dir='scons_build/libt
 libIRDB=SConscript("libIRDB/SConscript", variant_dir='scons_build/libIRDB')
 SConscript("tools/SConscript", variant_dir='scons_build/tools')
 
-build_appfw=ARGUMENTS.get("build_appfw", None)
-if build_appfw is None or int(build_appfw)==1:
-#    SConscript("appfw/src/SConscript", variant_dir='scons_build/appfw')
+# appfw
+if 'build_appfw' in env:
+    if int(env['build_appfw']) == 1:		 
+        SConscript("appfw/src/SConscript.64", variant_dir='scons_build/appfw.64')
+        SConscript("appfw/src/SConscript.32", variant_dir='scons_build/appfw.32')
+else:
     SConscript("appfw/src/SConscript.64", variant_dir='scons_build/appfw.64')
     SConscript("appfw/src/SConscript.32", variant_dir='scons_build/appfw.32')
+
