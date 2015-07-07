@@ -1571,6 +1571,7 @@ void Zipr_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)
 		}
 
 		default:
+			std::cerr << "insn_first_byte: 0x" << hex << (int)insn_first_byte << dec << std::endl;
 			assert(0);
 	}
 }
