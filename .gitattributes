@@ -1,6 +1,8 @@
 * text=auto !eol
 /LICENSE.txt -text
 /Makefile.in -text
+/SConscript -text
+/SConstruct -text
 /config.guess -text
 /config.sub -text
 /configure -text
@@ -15,6 +17,8 @@ include/zipr_opts.h -text
 include/zipr_stats.h -text
 /install-sh -text
 src/Makefile.in -text
+src/SConscript -text
+src/SConstruct -text
 src/main.cpp -text
 src/memory_space.cpp -text
 src/plugin_man.cpp -text
