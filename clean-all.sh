@@ -32,7 +32,7 @@ if [ ! "$SMPSA_HOME" ]; then
 fi
 cd $SMPSA_HOME
 ./configure
-make clean
+scons -c
 
 # security-transforms
 if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then 
@@ -40,8 +40,8 @@ if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then
     exit 1; 
 fi
 cd $SECURITY_TRANSFORMS_HOME
-make clean
+scons -c
 
 cd $ZIPR_HOME
-make clean
+scons -c
 

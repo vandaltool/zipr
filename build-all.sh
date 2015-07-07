@@ -47,8 +47,9 @@ if [ ! "$SMPSA_HOME" ]; then
     exit 1; 
 fi
 cd $SMPSA_HOME
-./configure
-make
+#./configure
+#make
+scons 
 
 # security-transforms
 if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then 
@@ -56,8 +57,9 @@ if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then
     exit 1; 
 fi
 cd $SECURITY_TRANSFORMS_HOME
-./configure
-./build.sh
+#./configure
+#./build.sh
+scons
 
 cd $PEASOUP_HOME
 make
@@ -68,7 +70,9 @@ make
 make install
 
 cd $ZIPR_HOME
-./configure --prefix=$ZIPR_INSTALL; make;  make install
+scons 
+# ./configure --prefix=$ZIPR_INSTALL; make;  make install
 
 cd $ZIPR_SCFI_PLUGIN
-./configure --prefix=$ZIPR_INSTALL; make;  make install
+scons
+#./configure --prefix=$ZIPR_INSTALL; make;  make install
