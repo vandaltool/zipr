@@ -38,10 +38,11 @@ Default(install)
 
 p1=myenv.Program("p1transform.exe", Split(all_files), LIBS=Split(LIBS)+ru_lib, LIBPATH=Split(LIBPATH))
 install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", p1)
+Default(install)
 install=myenv.InstallAs("$SECURITY_TRANSFORMS_HOME/bin/pntransform.exe", p1)
 Default(install)
-install=myenv.InstallAs("pntransform.exe", p1)
-Default(install)
+#install=myenv.InstallAs("p1transform.exe", p1)
+#Default(install)
 
 intdr=myenv.Program("integertransformdriver.exe", Split(integer_files), LIBS=Split(LIBS)+ru_lib, LIBPATH=Split(LIBPATH))
 install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", intdr)

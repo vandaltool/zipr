@@ -63,7 +63,9 @@ libMEDSannotation=SConscript("libMEDSannotation/SConscript", variant_dir='scons_
 libxform=SConscript("xform/SConscript", variant_dir='scons_build/libxform')
 libtransform=SConscript("libtransform/SConscript", variant_dir='scons_build/libtransform')
 libIRDB=SConscript("libIRDB/SConscript", variant_dir='scons_build/libIRDB')
-SConscript("tools/SConscript", variant_dir='scons_build/tools')
+
+if 'build_tools' not in env or env['build_tools'] is None or int(env['build_tools']) == 1:
+	SConscript("tools/SConscript", variant_dir='scons_build/tools')
 
 # appfw
 if 'build_appfw' in env:

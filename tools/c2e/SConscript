@@ -18,9 +18,9 @@ cpppath='''
 
 files=Glob( Dir('.').srcnode().abspath+"/*.cpp")
 
-print 'and the files are...'
-for file in files:
-	print file
+#print 'and the files are...'
+#for file in files:
+#	print file
 
 pgm="c2e.exe"
 

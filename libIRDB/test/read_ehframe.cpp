@@ -314,8 +314,8 @@ extract_cie_info (struct dwarf_cie *cie,
   unsigned char *aug = cie->augmentation;
   unsigned char *p = aug + strlen ((char *)aug) + 1;
   unsigned char *ret = NULL;
-  _uleb128_t utmp;
-  _sleb128_t stmp;
+  _uleb128_t utmp=0;
+  _sleb128_t stmp=0;
 
   /* g++ v2 "eh" has pointer immediately following augmentation string,
      so it must be handled first.  */
@@ -378,7 +378,7 @@ extract_cie_info (struct dwarf_cie *cie,
       /* "P" indicates a personality routine in the CIE augmentation.  */
       else if (aug[0] == 'P')
         {
-          _Unwind_Ptr personality;
+          _Unwind_Ptr personality=0;
 	  int personality_encoding=*p;
 
 
@@ -468,8 +468,8 @@ void print_lsda_handlers(lsda_header_info* info, unsigned char* p)
   	// Search the call-site table for the action associated with this IP.
   	while (((uintptr_t)p+(uintptr_t)eh_offset) < (uintptr_t)info->action_table)
     	{
-      		_Unwind_Ptr cs_start, cs_len, cs_lp;
-      		_uleb128_t cs_action;
+      		_Unwind_Ptr cs_start=0, cs_len=0, cs_lp=0;
+      		_uleb128_t cs_action=0;
 		
       		// Note that all call-site encodings are "absolute" displacements.
       		p = read_encoded_value (0, info->call_site_encoding, p, &cs_start);
@@ -512,9 +512,9 @@ int get_fde_encoding (struct dwarf_fde *f)
 
 unsigned char * parse_lsda_header (unsigned char *p, lsda_header_info *info, struct object *ob, fde* f)
 {
-  	_uleb128_t tmp;
-  	unsigned char lpstart_encoding;
-	int func;
+  	_uleb128_t tmp=0;
+  	unsigned char lpstart_encoding=0;
+	_Unwind_Ptr func=0;
 
   	info->Start = 0;
 /*
@@ -587,8 +587,8 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
     	{
 		count++;
 		cout<<"Examining FDE #"<<std::dec<<count<<endl;
-      		struct dwarf_cie *this_cie;
-      		_Unwind_Ptr pc_begin, pc_range;
+      		struct dwarf_cie *this_cie=NULL;
+      		_Unwind_Ptr pc_begin=0, pc_range=0;
 	
       		/* Skip CIEs.  */
       		if (this_fde->CIE_delta == 0)
@@ -611,7 +611,7 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
   		aug += 2* size_of_encoded_value (fde_encoding);
   		if (saw_z)
     		{
-      			_uleb128_t i;
+      			_uleb128_t i=0;
       			aug = read_uleb128 (aug, &i);
     		}
   		if (lsda_encoding != DW_EH_PE_omit)
@@ -621,6 +621,7 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
         		aug = read_encoded_value_with_base (lsda_encoding, 0, aug, &lsda);
 			cout<<"lsda at "<<std::hex << lsda <<endl;
 			lsda_header_info info;
+			memset(&info, 0, sizeof(info));
 			cout.flush();
 			unsigned char* lsda_p=parse_lsda_header ((unsigned char*)((uintptr_t)eh_frame_data+(uintptr_t)lsda-(uintptr_t)eh_frame_addr), &info, ob, this_fde);
 			print_lsda_handlers(&info, lsda_p); 
@@ -658,8 +659,8 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
         	}
       		else
         	{
-          		_Unwind_Ptr mask;
-          		unsigned char *p;
+          		_Unwind_Ptr mask=0;
+          		unsigned char *p=0;
 		
           		p = read_encoded_value_with_base (encoding, base,
                                             		this_fde->pc_begin, &pc_begin);

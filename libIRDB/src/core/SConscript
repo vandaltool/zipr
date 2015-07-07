@@ -31,8 +31,8 @@ cpppath='''
 myenv.Append(CCFLAGS=" -Wall -W -Wextra -Wconversion ")
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath))
-lib=myenv.Library(libname, Split(files))
+mylib=myenv.Library(libname, Split(files))
 
-install=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
+install=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", mylib)
 Default(install)
 

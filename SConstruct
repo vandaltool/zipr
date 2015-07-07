@@ -14,6 +14,7 @@ env.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 env.Replace(do_64bit_build=ARGUMENTS.get("do_64bit_build",None))
 env.Replace(debug=ARGUMENTS.get("debug",0))
 env.Replace(build_appfw=ARGUMENTS.get("build_appfw", None))
+env.Replace(build_tools=ARGUMENTS.get("build_tools", None))
 
 # by default, turn on build of appfw
 if env['build_appfw'] is None:
@@ -26,9 +27,9 @@ if int(env['debug']) == 1:
         env.Append(LINKFLAGS=" -g")
 else:
         print "Setting release mode"
-        env.Append(CFLAGS=" -O3")
-        env.Append(CXXFLAGS=" -O3")
-        env.Append(LINKFLAGS=" -O3")
+        env.Append(CFLAGS=" -O3 ")
+        env.Append(CXXFLAGS=" -O3 ")
+        env.Append(LINKFLAGS=" -O3 ")
 
 # set 32/64 bit build properly
 print  "env[64bit]="+str(env['do_64bit_build'])
