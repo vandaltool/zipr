@@ -83,6 +83,11 @@ int main(int argc, char* argv[])
 			cout<<"Analyzing file "<<this_file->GetURL()<<endl;
 			string this_file_name=options->GetOutputFileName(this_file);
 
+			// only do a.ncexe for now.
+			if(this_file->GetURL().find("a.ncexe")==string::npos)
+				continue;
+
+
                         // read the db
                         firp=new FileIR_t(*pidp, this_file);
 			assert(firp);
