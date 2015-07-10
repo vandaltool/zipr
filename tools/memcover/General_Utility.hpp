@@ -25,7 +25,7 @@
 #include <vector>
 #include <map>
 
-enum STR2NUM_ERROR { SUCCESS, OVERFLOW, UNDERFLOW, INCONVERTIBLE };
+typedef enum STR2NUM_ERROR_t { s2n_SUCCESS, s2n_OVERFLOW, s2n_UNDERFLOW, s2n_INCONVERTIBLE } STR2NUM_ERROR;
 STR2NUM_ERROR str2int (int &i, char const *s, int base = 0);
 STR2NUM_ERROR str2uint (unsigned int &i, char const *s, int base = 0);
 void trim(std::string &str);

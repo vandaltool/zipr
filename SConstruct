@@ -39,24 +39,32 @@ if 'build_cgc' in env and int(env['build_cgc']) == 1:
         env.Append(LINKFLAGS=" -DCGC ")
 
 
-
-
 # set 32/64 bit build properly
 print  "env[64bit]="+str(env['do_64bit_build'])
 if env['do_64bit_build'] is None:
 	print 'Defaulting to default compilation size.'
 elif int(env['do_64bit_build']) == 1:
 	print 'Using 64-bit compilation size.'
-        env.Append(CFLAGS=" -m64")
-        env.Append(CXXFLAGS=" -m64")
-        env.Append(LINKFLAGS=" -m64")
-        env.Append(SHLINKFLAGS=" -m64")
+        env.Append(CFLAGS=" -m64 ")
+        env.Append(CXXFLAGS=" -m64 ")
+        env.Append(LINKFLAGS=" -m64 ")
+        env.Append(SHLINKFLAGS=" -m64 ")
 else:
 	print 'Using 32-bit compilation size.'
-        env.Append(CFLAGS=" -m32")
-        env.Append(CXXFLAGS=" -m32")
-        env.Append(LINKFLAGS=" -m32")
-        env.Append(SHLINKFLAGS=" -m32")
+        env.Append(CFLAGS=" -m32 ")
+        env.Append(CXXFLAGS=" -m32 ")
+        env.Append(LINKFLAGS=" -m32 ")
+        env.Append(SHLINKFLAGS=" -m32 ")
+
+
+
+# add extra flag for solaris.
+(sysname, nodename, release, version, machine)=os.uname()
+if sysname == "SunOS":
+        env.Append(LINKFLAGS=" -L/opt/csw/lib ")
+        env.Append(CFLAGS=" -I/opt/csw/include ")
+        env.Append(CXXFLAGS=" -I/opt/csw/include ")
+
 
 Export('env')
 SConscript("SConscript", variant_dir='build')

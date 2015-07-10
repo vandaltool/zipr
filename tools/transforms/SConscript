@@ -24,8 +24,9 @@ LIBPATH="$SECURITY_TRANSFORMS_HOME/lib"
 
 integer_files="transformutils.cpp integertransformdriver.cpp"
 
-myenv.Append(CFLAGS="-Wall")
-myenv.Append(CCFLAGS="-Wall")
+# doesn't work on solaris.
+#myenv.Append(CFLAGS="-Wall")
+#myenv.Append(CCFLAGS="-Wall")
 
 all_files="PNTransformDriver.cpp PNStackLayout.cpp PNRange.cpp Range.cpp OffsetInference.cpp DirectOffsetInference.cpp ScaledOffsetInference.cpp P1Inference.cpp PNRegularExpressions.cpp PNMain.cpp StackLayout.cpp General_Utility.cpp AnnotationBoundaryGenerator.cpp PrecedenceBoundaryInference.cpp PNIrdbManager.cpp"
 

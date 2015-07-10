@@ -561,7 +561,7 @@ int main(int argc, char **argv)
     }
 
     int vid;
-    if(str2int(vid,argv[1]) != SUCCESS)
+    if(str2int(vid,argv[1]) != s2n_SUCCESS)
     {
 	cerr<<"Variant ID ("<<argv[1]<<") could not be parsed as an integer."<<endl;
 	exit(INPUT_ERR_NUM);

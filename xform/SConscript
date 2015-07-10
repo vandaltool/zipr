@@ -27,7 +27,7 @@ cpppath='''
 
 CFLAGS="-fPIC  -DUBUNTU"
 
-myenv=myenv.Clone(CC="g++", CPPPATH=Split(cpppath), CFLAGS=CFLAGS)
+myenv=myenv.Clone(CC="$CXX", CPPPATH=Split(cpppath), CFLAGS=CFLAGS)
 lib=myenv.Library(lib, Split(files))
 
 install=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)

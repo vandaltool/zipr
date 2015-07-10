@@ -117,7 +117,7 @@ void Callgraph_t::CreateNodes(libIRDB::FileIR_t *firp)
 	}
 }
 
-void Callgraph_t::AddFile(libIRDB::FileIR_t *firp)
+void Callgraph_t::AddFile(libIRDB::FileIR_t* const firp)
 {
 	// Create CG Nodes from functions
 	CreateNodes(firp);

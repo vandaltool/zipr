@@ -32,16 +32,16 @@ STR2NUM_ERROR str2int (int &i, char const *s, int base)
     errno = 0;
     l = strtol(s, &end, base);
     if ((errno == ERANGE && l == LONG_MAX) || l > INT_MAX) {
-        return OVERFLOW;
+        return s2n_OVERFLOW;
     }
     if ((errno == ERANGE && l == LONG_MIN) || l < INT_MIN) {
-        return UNDERFLOW;
+        return s2n_UNDERFLOW;
     }
     if (*s == '\0' || *end != '\0') {
-        return INCONVERTIBLE;
+        return s2n_INCONVERTIBLE;
     }
     i = l;
-    return SUCCESS;
+    return s2n_SUCCESS;
 }
 
 //TODO: what if the string represents a negative number? Currently
@@ -54,13 +54,13 @@ STR2NUM_ERROR str2uint (unsigned int &i, char const *s, int base)
     errno = 0;
     l = strtol(s, &end, base);
     if ((errno == ERANGE && l == ULONG_MAX) || l > UINT_MAX) {
-        return OVERFLOW;
+        return s2n_OVERFLOW;
     }
     if (*s == '\0' || *end != '\0') {
-        return INCONVERTIBLE;
+        return s2n_INCONVERTIBLE;
     }
     i = l;
-    return SUCCESS;
+    return s2n_SUCCESS;
 }
 
 void trim(string& str)
