@@ -4,18 +4,11 @@ Import('env')
 
 dirs='''
 	transforms
-	c2e
-	cgc_hlx
-	cgclibc
-	cgc_rigrandom
-	cinderella
 	cover
 	fix_rets
 	fptr_shadow
-	inferfn
 	meds2pdb
 	memcover
-	prince
 	ret_shadow_stack
 	safefr
 	selective_cfi
@@ -23,6 +16,21 @@ dirs='''
 	spasm
 	watch_syscall
 	'''
+cgc_dirs='''
+	c2e
+	cgc_hlx
+	cgclibc
+	cgc_rigrandom
+	cinderella
+	inferfn
+	prince
+	'''
+
 
 for i in Split(dirs):
 	SConscript(os.path.join(i,"SConscript"))
+
+
+if 'build_cgc' in env and int(env['build_cgc']) == 1:
+	for i in Split(cgc_dirs):
+		SConscript(os.path.join(i,"SConscript"))

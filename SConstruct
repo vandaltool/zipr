@@ -13,8 +13,9 @@ env.Replace(LINKFLAGS="-fPIC -w ")
 env.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 env.Replace(do_64bit_build=ARGUMENTS.get("do_64bit_build",None))
 env.Replace(debug=ARGUMENTS.get("debug",0))
-env.Replace(build_appfw=ARGUMENTS.get("build_appfw", None))
-env.Replace(build_tools=ARGUMENTS.get("build_tools", None))
+env.Replace(build_appfw=ARGUMENTS.get("build_appfw", 1))
+env.Replace(build_tools=ARGUMENTS.get("build_tools", 1))
+env.Replace(build_cgc=ARGUMENTS.get("build_cgc", 0))
 
 # by default, turn on build of appfw
 if env['build_appfw'] is None:
@@ -22,14 +23,23 @@ if env['build_appfw'] is None:
 
 if int(env['debug']) == 1:
         print "Setting debug mode"
-        env.Append(CFLAGS=" -g")
-        env.Append(CXXFLAGS=" -g")
-        env.Append(LINKFLAGS=" -g")
+        env.Append(CFLAGS=" -g ")
+        env.Append(CXXFLAGS=" -g ")
+        env.Append(LINKFLAGS=" -g ")
 else:
         print "Setting release mode"
         env.Append(CFLAGS=" -O3 ")
         env.Append(CXXFLAGS=" -O3 ")
         env.Append(LINKFLAGS=" -O3 ")
+
+if 'build_cgc' in env and int(env['build_cgc']) == 1:
+        print "Setting debug mode"
+        env.Append(CFLAGS=" -DCGC ")
+        env.Append(CXXFLAGS=" -DCGC ")
+        env.Append(LINKFLAGS=" -DCGC ")
+
+
+
 
 # set 32/64 bit build properly
 print  "env[64bit]="+str(env['do_64bit_build'])

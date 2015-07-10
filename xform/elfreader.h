@@ -6,8 +6,10 @@
 #include "targ-config.h"
 #include <assert.h>
 
-using namespace std;
-using namespace ELFIO;
+
+// doing this is very bad.
+// using namespace std;
+// using namespace ELFIO;
 
 class ElfReader 
 {
@@ -15,7 +17,7 @@ class ElfReader
     ElfReader(char *);
     virtual ~ElfReader();
 
-    string read(app_iaddr_t p_pc, unsigned p_numBytes);
+    std::string read(app_iaddr_t p_pc, unsigned p_numBytes);
     bool read(app_iaddr_t p_pc, unsigned p_numBytes, char* p_buf);
     char* getInstructionBuffer(app_iaddr_t p_pc);
 
@@ -26,8 +28,8 @@ class ElfReader
 
 
   private:
-    elfio*                       m_reader;
-    vector < const section* >    m_sections;
+    ELFIO::elfio*                       m_reader;
+    std::vector < const ELFIO::section* >    m_sections;
 
 };
 

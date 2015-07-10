@@ -28,6 +28,7 @@
 #include "elfreader.h"
 
 using namespace std;
+using namespace ELFIO;
 
 ElfReader::ElfReader(char *p_elfFile)
 {
