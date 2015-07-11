@@ -188,9 +188,13 @@ libEXEIO/SConscript -text
 libEXEIO/SConstruct -text
 libEXEIO/include/exeio.h -text
 libEXEIO/include/exeio_elf.h -text
+libEXEIO/include/exeio_pe.h -text
 libEXEIO/src/SConscript -text
 libEXEIO/src/SConstruct -text
 libEXEIO/src/exeio_src.cpp -text
+libEXEIO/test/SConscript -text
+libEXEIO/test/SConstruct -text
+libEXEIO/test/main.cpp -text
 libIRDB/LICENSE.txt -text
 libIRDB/Makefile.in -text
 libIRDB/SConscript -text

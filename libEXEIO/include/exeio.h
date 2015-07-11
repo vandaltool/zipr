@@ -12,7 +12,7 @@ namespace EXEIO
 {
 	class exeio_t; // forward decl
 
-	typedef enum { ELF64, ELF32 } execlass_t;
+	typedef enum { ELF64, ELF32, PE32, PE64 } execlass_t;
 
 	typedef int virtual_offset_t;
 
