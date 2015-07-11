@@ -55,8 +55,12 @@ else:
 		     os.path.join(os.environ['SECURITY_TRANSFORMS_HOME'],"include","targ-config.h"))
 
 
+
+env['BASE_IRDB_LIBS']="IRDB-core", "pqxx", "pq", "beaEngine_s_d", "EXEIO", "pebliss", "iconv"
+Export('env')
 #print 'env='
 #print env.Dump()
+libPEBLISS=SConscript("pebliss/trunk/pe_lib/SConscript", variant_dir='scons_build/libPEBLISS')
 libEXEIO=SConscript("libEXEIO/SConscript", variant_dir='scons_build/libEXEIO')
 libbea=SConscript("beaengine/SConscript", variant_dir='scons_build/beaengine')
 libMEDSannotation=SConscript("libMEDSannotation/SConscript", variant_dir='scons_build/libMEDSannotation')

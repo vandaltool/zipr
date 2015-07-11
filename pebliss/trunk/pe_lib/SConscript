@@ -45,15 +45,16 @@ files=  '''
 	version_info_editor.cpp
 	version_info_viewer.cpp
 	'''
+
 cpppath=''' 
 	.
 	'''
 
-myenv.Append(CCFLAGS=" -Wall -W -Wextra -Wconversion ")
+#myenv.Append(CCFLAGS=" -Wall -W -Wextra -Wconversion ")
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath))
 lib=myenv.Library(libname, Split(files))
 
-#install=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
-#Default(install)
+install=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
+Default(install)
 
