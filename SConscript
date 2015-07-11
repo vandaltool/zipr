@@ -62,8 +62,9 @@ else:
 env['BASE_IRDB_LIBS']="IRDB-core", "pqxx", "pq", "BeaEngine_s_d", "EXEIO", "pebliss"
 
 # pebliss requires iconv, which needs to be explicit on cygwin.
-if sysname == "Cygwin":
-	env['BASE_IRDB_LIBS'].append("iconv")
+if "CYGWIN" in sysname:
+	# add tuple of 1 item!
+	env['BASE_IRDB_LIBS']=env['BASE_IRDB_LIBS']+("iconv",)
 
 
 Export('env')
