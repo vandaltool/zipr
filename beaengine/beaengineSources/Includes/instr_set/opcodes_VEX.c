@@ -531,8 +531,30 @@ void vbrdcstss  (PDISASM pMyDisasm)
 /* vbroadcastsd -- shortened for table formatting reasons */
 void vbrdcstsd  (PDISASM pMyDisasm)
 {
-assert(pMyDisasm);
-assert(0);
+	int origOpSize=0;
+
+        (*pMyDisasm).Instruction.Category = AVX_INSTRUCTION+PACKED_BLENDING_INSTRUCTION;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "vbroadcastsd ");
+        #endif
+
+        if(!GV.VEX.has_vex)
+		FailDecode(pMyDisasm);
+
+	origOpSize=GV.OperandSize;
+	GV.OperandSize=256;
+
+	GV.AVX_=GV.VEX.length;
+	GV.SSE_=!GV.VEX.length;
+
+	GV.MemDecoration=Arg2dword;
+    	MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
+    	Reg_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
+    	GV.EIP_ += GV.DECALAGE_EIP+2;
+
+	GV.AVX_=0;
+	GV.SSE_=0;
+	GV.OperandSize=origOpSize;
 }
 
 /* 0f 3a 19 */

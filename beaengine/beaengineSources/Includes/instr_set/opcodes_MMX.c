@@ -214,15 +214,17 @@ void __bea_callspec__ movq_QP(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = MMX_INSTRUCTION+DATA_TRANSFER;
     /* ========= 0xf3 */
     if (GV.PrefRepe == 1 || (GV.VEX.has_vex && GV.VEX.implicit_prefixes==2)) {
-	assert(!GV.VEX.has_vex);
+//	assert(!GV.VEX.has_vex);
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         GV.MemDecoration = Arg1dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "movdqu ");
         #endif
-        GV.SSE_ = 1;
+        GV.AVX_ = GV.VEX.length;
+        GV.SSE_ = !GV.VEX.length;
         ExGx(pMyDisasm);
         GV.SSE_ = 0;
+        GV.AVX_ = 0;
     }
     /* ========== 0x66 */
     else if ((*pMyDisasm).Prefix.OperandSize == InUsePrefix || (GV.VEX.has_vex && GV.VEX.implicit_prefixes==1)) {            

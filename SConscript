@@ -4,6 +4,9 @@ import tarfile
 
 Import('env')
 
+(sysname, nodename, release, version, machine)=os.uname()
+
+
 if env.GetOption('clean'):
     if os.path.exists(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/ELFIO"):
         print 'Removing third_party/ELFIO'
@@ -49,14 +52,20 @@ else:
 
     # check/install targ-config.h
     if not os.path.isfile(os.environ['SECURITY_TRANSFORMS_HOME']+"/include/targ-config.h"):
- 	(sysname, nodename, release, version, machine)=os.uname()
 	#print "uname=", sysname, " xx ", nodename, " xx ", release, " xx ", version, " xx ", machine
 	shutil.copy( os.path.join(os.environ['SECURITY_TRANSFORMS_HOME'],"include",machine,"config.h"), 
 		     os.path.join(os.environ['SECURITY_TRANSFORMS_HOME'],"include","targ-config.h"))
 
 
 
-env['BASE_IRDB_LIBS']="IRDB-core", "pqxx", "pq", "beaEngine_s_d", "EXEIO", "pebliss", "iconv"
+# setup libraries needed for linking
+env['BASE_IRDB_LIBS']="IRDB-core", "pqxx", "pq", "BeaEngine_s_d", "EXEIO", "pebliss"
+
+# pebliss requires iconv, which needs to be explicit on cygwin.
+if sysname == "Cygwin":
+	env['BASE_IRDB_LIBS'].append("iconv")
+
+
 Export('env')
 #print 'env='
 #print env.Dump()
