@@ -1,7 +1,7 @@
 import os
 
 Import('env')
-myenv=env
+myenv=env.Clone()
 myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 
 
@@ -18,7 +18,7 @@ cpppath='''
 	'''
 
 #myenv.Append(CCFLAGS="-Wp,-w -Wall")
-myenv.Append(CCFLAGS="-w")
+myenv.Append(CCFLAGS=" -w ")
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath))
 lib=myenv.Library(libname, Split(files))

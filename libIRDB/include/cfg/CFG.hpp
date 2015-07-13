@@ -20,6 +20,8 @@
 
 
 
+typedef std::set<BasicBlock_t*> BasicBlockSet_t;
+
 class ControlFlowGraph_t
 {
 	public:
@@ -39,7 +41,7 @@ class ControlFlowGraph_t
 	/* friends */
 	public:
 		friend std::ostream& operator<<(std::ostream& os, const ControlFlowGraph_t& cfg);
-		std::set<BasicBlock_t*>&     GetBlocks()   { return blocks; }
+		BasicBlockSet_t& GetBlocks()   { return blocks; }
 };
 
 

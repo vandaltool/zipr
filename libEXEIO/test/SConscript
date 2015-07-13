@@ -1,7 +1,7 @@
 import os
 
 Import('env')
-myenv=env
+myenv=env.Clone()
 myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 
 
@@ -21,7 +21,7 @@ libpath='''
 	'''
 
 #myenv.Append(CCFLAGS="-Wp,-w -Wall")
-myenv.Append(CCFLAGS="-g")
+myenv.Append(CCFLAGS=" -g ")
 
 libs=   '''
 	EXEIO
