@@ -32,11 +32,11 @@
 COMPFLAGS="-w"
 
 if [ -z $IDAROOT ]; then
-  export IDAROOT=$IDAROOT65
+  export IDAROOT=$IDAROOTCUR
 fi
 
 if [ -z $IDASDK ]; then
-  export IDASDK=$IDASDK65
+  export IDASDK=$IDASDKCUR
 fi
 
 
