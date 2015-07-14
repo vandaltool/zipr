@@ -743,7 +743,7 @@ STRATA_PC_CONFINE_XOR=0
 #
 # copy the .so files for this exe into a working directory.
 #
-perform_step gather_libraries mandatory $PEASOUP_HOME/tools/do_gatherlibs.sh
+perform_step gather_libraries mandatory $PEASOUP_HOME/tools/do_gatherlibs.sh $step_options_gather_libraries
 
 
 #

@@ -1,6 +1,8 @@
-#!/bin/bash   -x
+#!/bin/bash   
+
 
 #
+# Default safe dir list.  Use options to override.
 # note:  no trailing slashes, as the comparison will fail.
 #
 safe_dir_list="	/lib /lib/tls/i686/cmov 			\
@@ -14,7 +16,52 @@ safe_dir_list="	/lib /lib/tls/i686/cmov 			\
 		/usr/lib64					\
 		/lib64						\
 	"
-#safe_dir_list="/lib /usr/lib"
+
+exe=$0
+
+
+# parse arguments
+while [[ $# > 0 ]]
+do
+	key="$1"
+
+	case "$key" in
+		--main_exe_only)
+			echo "Protecting no shared libraries, doing main exe only."
+			# skip 
+			exit 0 # no need to run the program
+			;;
+		--all)
+			echo "Protecting ALL shared libraries."
+			# nothing is safe.
+			safe_dir_list=""
+			;;
+		--safe)
+			# default is to use safe list.
+			echo "Using default safe list:"
+			echo "$safe_dir_list"
+			
+			;;
+		--safelist)
+			if [[ $# < 1 ]]; then
+				echo "--safelist needs an option"
+				exit 1 # reported error
+			fi
+			shift
+			safe_dir_list="$1"
+			echo "Using custom safe list:"
+			echo "$safe_dir_list"
+			;;
+		*|--usage)
+			echo "Usage: "
+			echo "  $exe { --main_exe_only | --all | --safe | --usage | --safelist 'list' }"
+			exit 1 # report error as we didnt parse all options, etc.
+			;;
+	esac
+	shift
+done
+
+
 
 # Add all library directories under /opt/stonesoup/dependencies if present
 if [ -d "/opt/stonesoup/dependencies" ]; then
