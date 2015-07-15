@@ -1,1 +1,8 @@
 * text=auto !eol
+/Makefile.in -text
+/SConscript -text
+/SConstruct -text
+/configure.in -text
+/install-sh -text
+/push64_relocs.cpp -text
+/push64_relocs.h -text
