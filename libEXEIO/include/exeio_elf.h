@@ -23,7 +23,7 @@ namespace EXEIO
 
 			bool isLoadable() const { return (s->get_flags() & SHF_ALLOC) == SHF_ALLOC; }
 			bool isExecutable() const { return (s->get_flags() & SHF_EXECINSTR) == SHF_EXECINSTR; }
-			bool isBSS() const { return (s->get_type() & SHT_NOBITS) == SHT_NOBITS; }
+			bool isBSS() const { return (s->get_type() == SHT_NOBITS); }
 			const char* get_data() const { return s->get_data(); }
 			std::string get_name() const { return s->get_name(); }
 			int get_size() const { return s->get_size(); }

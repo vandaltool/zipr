@@ -18,6 +18,7 @@
  *
  */
 
+int ptrsize=0;
 
 
 #include <libIRDB-core.hpp>
@@ -30,7 +31,6 @@
 #include <string.h>
 
 #include <exeio.h>
-
 #include "targ-config.h"
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
@@ -106,7 +106,7 @@ struct dwarf_cie
   sword CIE_id;
   ubyte version;
   unsigned char augmentation[1];
-} __attribute__ ((packed, aligned (__alignof__ (void *))));
+} __attribute__ ((packed, aligned (__alignof__ (void* ))));
 
 
 
@@ -115,7 +115,7 @@ struct dwarf_fde
   uword length;
   sword CIE_delta;
   unsigned char pc_begin[1];
-} __attribute__ ((packed, aligned (__alignof__ (void *))));
+} __attribute__ ((packed, aligned (__alignof__ (void* ))));
 
 
 struct fde_vector
@@ -323,7 +323,7 @@ extract_cie_info (struct dwarf_cie *cie,
     {
       void* eh_ptr = read_pointer (p);
 	cout<<"eh_ptr: "<< std::dec << eh_ptr<<endl;
-      p += sizeof (void *);
+      p += ptrsize;
       aug += 2;
     }
 
@@ -446,7 +446,7 @@ classify_object_over_fdes (struct object *ob, fde *this_fde)
          the encoding is smaller than a pointer a true NULL may not
          be representable.  Assume 0 in the representable bits is NULL.  */
       mask = size_of_encoded_value (encoding);
-      if (mask < sizeof (void *))
+      if (mask < ptrsize)
         mask = (((_Unwind_Ptr) 1) << (mask << 3)) - 1;
       else
         mask = -1;
@@ -608,7 +608,7 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
   		unsigned char* aug = (unsigned char *) this_fde + 8; /* 4-bytes for FDE len, 4-bytes for FDE id. */
 
 		// 2x size of fde_encoding for pc_begin and pc_range */
-  		aug += 2* size_of_encoded_value (fde_encoding);
+  		aug += 2 * size_of_encoded_value (fde_encoding);
   		if (saw_z)
     		{
       			_uleb128_t i=0;
@@ -679,7 +679,7 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
              		the encoding is smaller than a pointer a true NULL may not
              		be representable.  Assume 0 in the representable bits is NULL.  */
           		mask = size_of_encoded_value (encoding);
-          		if (mask < sizeof (void *))
+          		if (mask < ptrsize)
             			mask = (((_Unwind_Ptr) 1) << (mask << 3)) - 1;
           		else
             			mask = -1;
@@ -695,6 +695,11 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
 
 void read_ehframe(FileIR_t* virp, EXEIO::exeio* exeiop)
 {
+
+	ptrsize=virp->GetArchitectureBitWidth()/(8*sizeof(char));
+	// 64/8 = 8
+	// 32/8 = 4
+
 	assert(exeiop);
 	ELFIO::elfio *elfiop=reinterpret_cast<ELFIO::elfio*>(exeiop->get_elfio());
 	if(!elfiop)

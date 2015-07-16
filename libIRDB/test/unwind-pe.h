@@ -77,7 +77,7 @@ size_of_encoded_value (unsigned char encoding)
   switch (encoding & 0x07)
     {
     case DW_EH_PE_absptr:
-      return sizeof (void *);
+      return ptrsize;
     case DW_EH_PE_udata2:
       return 2;
     case DW_EH_PE_udata4:
@@ -204,17 +204,22 @@ read_encoded_value_with_base (unsigned char encoding, _Unwind_Ptr base,
   if (encoding == DW_EH_PE_aligned)
     {
       _Unwind_Internal_Ptr a = (_Unwind_Internal_Ptr) p;
-      a = (a + sizeof (void *) - 1) & - sizeof(void *);
+      a = (a + ptrsize - 1) & - ptrsize;
       result = *(_Unwind_Internal_Ptr *) a;
-      p = (unsigned char *) (_Unwind_Internal_Ptr) (a + sizeof (void *));
+      p = (unsigned char *) (_Unwind_Internal_Ptr) (a + ptrsize);
     }
   else
     {
       switch (encoding & 0x0f)
 	{
 	case DW_EH_PE_absptr:
-	  result = (_Unwind_Internal_Ptr) u->ptr;
-	  p += sizeof (void *);
+	  if(ptrsize==4)
+	  	result = (_Unwind_Internal_Ptr) u->u4;
+	  else if(ptrsize==8)
+	  	result = (_Unwind_Internal_Ptr) u->u8;
+	  else
+	 	assert(0);
+	  p += ptrsize;
 	  break;
 
 	case DW_EH_PE_uleb128:

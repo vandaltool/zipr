@@ -359,6 +359,9 @@ void infer_targets(FileIR_t *firp, section* shdr)
 	if(shdr->isBSS() ) // get_type()==SHT_NOBITS)
 		return;
 
+
+	cout<<"Checking section "<<shdr->get_name() <<endl;
+
 	const char* data=shdr->get_data() ; // C(char*)malloc(shdr->sh_size);
 
 	assert(arch_ptr_bytes()==4 || arch_ptr_bytes()==8);
