@@ -59,12 +59,12 @@ cleanup()
 	exit $exit_code
 }
 
-if [ ! -z $IDAROOT65 ]; then
-  export IDAROOT=$IDAROOT65
+if [ ! -z $IDAROOTCUR ]; then
+  export IDAROOT=$IDAROOTCUR
 fi
 
-if [ ! -z $IDASDK65 ]; then
-  export IDASDK=$IDASDK65
+if [ ! -z $IDASDKCUR ]; then
+  export IDASDK=$IDASDKCUR
 fi
 
 # suck in utils
