@@ -28,7 +28,7 @@ else:
         env.Append(CFLAGS=" -O3")
         env.Append(CXXFLAGS=" -O3")
         env.Append(LINKFLAGS=" -O3")
-env.Append(CXXFLAGS=" -std=c++0x")
+#env.Append(CXXFLAGS=" -std=c++0x")
 
 # set 32/64 bit build properly
 #print  "env[64bit]="+str(env['do_64bit_build'])

@@ -31,9 +31,7 @@
 #ifndef nonce_relocs_h
 #define nonce_relocs_h
 
-typedef std::pair<Instruction_t*, Instruction_t*> CallAddPair_t;
-typedef std::set<std::unique_ptr<CallAddPair_t>> CallAddPairs_t;
-
+typedef std::set<Instruction_t*> InstructionPtrSet_t;
 class Push64Relocs_t : public Zipr_SDK::ZiprPluginInterface_t
 {
 	public:
@@ -71,6 +69,8 @@ class Push64Relocs_t : public Zipr_SDK::ZiprPluginInterface_t
 		void UpdatePush64Adds();
 
 		// helpers
+		bool IsPcrelRelocation(libIRDB::Relocation_t *reloc);
+		libIRDB::Relocation_t* FindPcrelRelocation(libIRDB::Instruction_t* insn);
 		bool IsAdd64Relocation(libIRDB::Relocation_t *reloc);
 		libIRDB::Relocation_t* FindAdd64Relocation(libIRDB::Instruction_t* insn);
 		bool IsPush64Relocation(libIRDB::Relocation_t *reloc);
@@ -85,7 +85,7 @@ class Push64Relocs_t : public Zipr_SDK::ZiprPluginInterface_t
 		Zipr_SDK::InstructionLocationMap_t &final_insn_locations;
 
 		// local data.
-		CallAddPairs_t call_add_pairs;
+		InstructionPtrSet_t plopped_relocs;
 
 };
 
