@@ -333,15 +333,25 @@ void update_function_prototype(vector<wahoo::Function*> functions, char* annotFi
 {
 	populate_predefined_types();
 
+	MEDS_Annotations_t annotations;
+
+	ifstream annotationif(annotFile, ifstream::in);
+	if (annotationif.is_open())
+	{
+		MEDS_AnnotationParser annotationParser(annotationif);
+		annotations = annotationParser.getFuncPrototypeAnnotations();
+	}
+	else
+	{
+		cerr << "warning: cannot open: " << annotFile << endl;
+	}
+
+	cerr << "annotations size: " << annotations.size() << endl;
+	cerr << "functions size: " << functions.size() << endl;
+
 	connection conn;
 	work txn(conn);
 	txn.exec("SET client_encoding='LATIN1';");
-
-	ifstream annotationif(annotFile, ifstream::in);
-	assert(annotationif.is_open());
-
-	MEDS_AnnotationParser annotationParser(annotationif);
-	MEDS_Annotations_t annotations = annotationParser.getFuncPrototypeAnnotations();
 
 	for (int i = 0; i < functions.size(); i += STRIDE)
 	{  
