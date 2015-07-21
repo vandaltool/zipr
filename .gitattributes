@@ -27,6 +27,11 @@ src/zipr_options.cpp -text
 src/zipr_stats.cpp -text
 test/Makefile.in -text
 test/MemorySpace.cpp -text
+test/dylib/Makefile -text
+test/dylib/dylib.c -text
+test/dylib/dylib.h -text
+test/dylib/dylib_test.c -text
+test/dylib/math_test.c -text
 third_party/ELFIO/elfio-2.2/AUTHORS -text
 third_party/ELFIO/elfio-2.2/COPYING -text
 third_party/ELFIO/elfio-2.2/ChangeLog -text
