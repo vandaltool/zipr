@@ -57,8 +57,6 @@ if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then
     exit 1; 
 fi
 cd $SECURITY_TRANSFORMS_HOME
-#./configure
-#./build.sh
 scons
 
 cd $PEASOUP_HOME
@@ -71,8 +69,9 @@ make install
 
 cd $ZIPR_HOME
 scons 
-# ./configure --prefix=$ZIPR_INSTALL; make;  make install
 
 cd $ZIPR_SCFI_PLUGIN
 scons
-#./configure --prefix=$ZIPR_INSTALL; make;  make install
+
+cd $PEASOUP_UMBRELLA_DIR/zipr_push64_reloc_plugin
+scons
