@@ -1454,7 +1454,7 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop)
 
 	//FILE* dynsymfile = popen( "$PS_READELF --dyn-syms readeh_tmp_file.exe |grep 'FUNC    GLOBAL DEFAULT'"
 	//	"|grep -v 'FUNC    GLOBAL DEFAULT  UND' |sed 's/.*: *//'|cut -f1 -d' '", "r");
-	FILE *dynsymfile = popen("objdump -T readeh_tmp_file.exe | grep '^[0-9]\\+' | grep -v UND | awk '{print $1;}' | grep -v '^$'", "r");
+	FILE *dynsymfile = popen("$PS_OBJDUMP -T readeh_tmp_file.exe | $PS_GREP '^[0-9]\\+' | $PS_GREP -v UND | awk '{print $1;}' | $PS_GREP -v '^$'", "r");
 	assert(dynsymfile);
 	virtual_offset_t target=0;
 	while( fscanf(dynsymfile, "%x", &target) != -1)

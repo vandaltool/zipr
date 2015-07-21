@@ -22,7 +22,7 @@ files=Glob( Dir('.').srcnode().abspath+"/*.cpp")
 pgm="cinderella_prep.exe"
 
 LIBPATH="$SECURITY_TRANSFORMS_HOME/lib"
-LIBS=Split("$BASE_IRDB_LIBS IRDB-cfg IRDB-util rewrite MEDSannotation ") 
+LIBS=Split( env.subst('$BASE_IRDB_LIBS')+ " IRDB-cfg IRDB-util rewrite MEDSannotation ") 
 myenv=myenv.Clone(CPPPATH=Split(cpppath))
 pgm=myenv.Program(pgm,  files,  LIBPATH=LIBPATH, LIBS=LIBS)
 install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)

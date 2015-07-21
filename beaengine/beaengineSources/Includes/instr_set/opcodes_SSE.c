@@ -1,3 +1,4 @@
+
 /* Copyright 2006-2009, BeatriX
  * File coded by BeatriX
  *
@@ -4724,7 +4725,13 @@ void __bea_callspec__ ucomiss_VW(PDISASM pMyDisasm)
            (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "ucomiss ");
         #endif
     }
-        Vx_opt_GxEx_vexlen(pMyDisasm);
+        GV.SSE_ = 1;
+        GxEx(pMyDisasm);
+        GV.SSE_ = 0;
+
+// oddly, vucomisd (and vucomiss) use same args as ucomisd (and ucomiss).
+// the Vx version adds an extra argument after the GxEx, so we can't use it here.
+//        Vx_opt_GxEx_vexlen(pMyDisasm);
 }
 
 

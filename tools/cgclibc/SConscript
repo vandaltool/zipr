@@ -26,7 +26,7 @@ files3=Split("infer_syscall_wrappers.cpp")+cgclibc
 
 
 LIBPATH="$SECURITY_TRANSFORMS_HOME/lib"
-LIBS=Split("$BASE_IRDB_LIBS IRDB-cfg IRDB-syscall IRDB-util rewrite ")
+LIBS=Split(env.subst('$BASE_IRDB_LIBS')+ " IRDB-cfg IRDB-syscall IRDB-util rewrite ")
 
 pgm=myenv.Program("cgclibc.exe",  files1,  LIBPATH=LIBPATH, LIBS=LIBS)
 install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
