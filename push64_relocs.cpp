@@ -120,32 +120,46 @@ Relocation_t* Push64Relocs_t::FindPcrelRelocation(Instruction_t* insn)
 	return NULL;
 }
 
+#define PUSH_DATA_BITS_MAX_LEN 16
 void Push64Relocs_t::HandlePush64Relocation(Instruction_t *insn, Relocation_t *reloc)
 {
 	Instruction_t *add_insn = new Instruction_t;
 	AddressID_t *add_addr = new AddressID_t;
-	Instruction_t *jmp_insn = NULL;
-	virtual_offset_t next_addr = 0;
-	string databits = "";
+	Instruction_t *push_insn = NULL, *jmp_insn = NULL;
 	Relocation_t *add_reloc = new Relocation_t;
+	virtual_offset_t push_addr = 0;
+	string databits = "";
+	uint8_t push_data_bits[PUSH_DATA_BITS_MAX_LEN] = {0,};
+	int push_data_bits_len = 0;
 
 	plopped_relocs.insert(insn);	
 
+	push_insn = insn;
 	jmp_insn = insn->GetFallthrough();
 	assert(jmp_insn);
 
-	next_addr = insn->GetAddress()->GetVirtualOffset() + insn->GetDataBits().length();
-
+	push_data_bits_len = push_insn->GetDataBits().length();
+	assert(push_data_bits_len<PUSH_DATA_BITS_MAX_LEN);
+	memcpy(push_data_bits,
+	       (uint8_t*)push_insn->GetDataBits().c_str(),
+				 push_data_bits_len);
 	/*
-	 * Change the push64 to a call/add pair.
+	 * Because we know that this is a push instruction,
+	 * we know that the opcode is one byte.
+	 * The pushed value will start at the 1th offset.
 	 */
+	push_addr = *((virtual_offset_t*)(&push_data_bits[1]));
+
+	if (m_opts.GetVerbose())
+		cout << "push_addr: 0x" << std::hex << push_addr << endl;
+	assert(push_addr != 0);
 
 	/* 
 	 * Step 0: Add the add instruction and its address.
 	 */
-	add_addr->SetFileID(insn->GetAddress()->GetFileID());
+	add_addr->SetFileID(push_insn->GetAddress()->GetFileID());
 	add_insn->SetAddress(add_addr);
-	add_insn->SetFunction(insn->GetFunction());
+	add_insn->SetFunction(push_insn->GetFunction());
 	m_firp.GetAddresses().insert(add_addr);
 	m_firp.GetInstructions().insert(add_insn);
 
@@ -160,7 +174,7 @@ void Push64Relocs_t::HandlePush64Relocation(Instruction_t *insn, Relocation_t *r
 	databits[4] = 0x00;
 	insn->SetDataBits(databits);
 	insn->SetTarget(add_insn); // Comment
-	insn->SetComment(insn->GetComment()+" Thunk part");
+	insn->SetComment(push_insn->GetComment()+" Thunk part");
 		
 	/* 
 	 * Step 2: Create the add instruction.
@@ -179,7 +193,7 @@ void Push64Relocs_t::HandlePush64Relocation(Instruction_t *insn, Relocation_t *r
 	/*
 	 * Step 3: Put the relocation on the add instruction.
 	 */
-	add_reloc->SetOffset(next_addr);
+	add_reloc->SetOffset(push_addr);
 	add_reloc->SetType("add64");
 	add_insn->GetRelocations().insert(add_reloc);
 	m_firp.GetRelocations().insert(add_reloc);
@@ -196,34 +210,37 @@ void Push64Relocs_t::HandlePush64Relocation(Instruction_t *insn, Relocation_t *r
 
 void Push64Relocs_t::HandlePush64Relocs()
 {
-	int handled=0;
-	int insns=0;
-	int relocs=0;
+	int push64_relocations_count=0;
+	int pcrel_relocations_count=0;
 	// for each instruction 
 	InstructionSet_t::iterator iit = m_firp.GetInstructions().begin();
 	for(iit; iit!=m_firp.GetInstructions().end(); iit++)
 	{
 		Instruction_t *insn=*iit;
-		insns++;
 
-		Relocation_t* reloc=NULL;
+		Relocation_t *reloc=NULL;
 		if (reloc = FindPush64Relocation(insn))
 		{
 			if (m_opts.GetVerbose())
 				cout << "Found a Push64 relocation." << endl;
 			HandlePush64Relocation(insn,reloc);
-			handled++;
+			push64_relocations_count++;
 		}
 		else if (reloc = FindPcrelRelocation(insn))
 		{
 			if (m_opts.GetVerbose())
 				cout << "Found a pcrel relocation." << endl;
 			plopped_relocs.insert(insn);
-			handled++;
+			pcrel_relocations_count++;
 		}
 	}
 
-	cout<<"#ATTRIBUTE push64_relocations="<< std::dec<<handled<<endl;
+	cout<<"#ATTRIBUTE push64_relocations_count="
+	    <<std::dec<<push64_relocations_count
+			<<endl;
+	cout<<"#ATTRIBUTE pcrel_relocations_count="
+	    <<std::dec<<pcrel_relocations_count
+			<<endl;
 }
 
 
