@@ -1779,11 +1779,13 @@ void Zipr_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_add, R
 			perror(__FUNCTION__);
 		}
 
-		stratafier_cmd="$STRATAFIER/add_strata_segment";
+//		stratafier_cmd="$STRATAFIER/add_strata_segment";
+		stratafier_cmd="$STRATAFIER/move_segheaders";
 		if (m_opts.GetArchitecture() == 64) {
 			stratafier_cmd += "64";
 		}
-		stratafier_cmd += " " + rewritten_file+ " " + rewritten_file +".addseg";
+//		stratafier_cmd += " " + rewritten_file+ " " + rewritten_file +".addseg";
+		stratafier_cmd += " " + rewritten_file+ " " + rewritten_file +".addseg"+" .strata";
 		printf("Attempting: %s\n", stratafier_cmd.c_str());
 		if(-1 == system(stratafier_cmd.c_str()))
 		{
