@@ -1073,7 +1073,8 @@ void Zipr_t::PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)
 	{
 		case (char)0xe9:	/* 5byte jump */
 		{
-			assert(0);
+			RewritePCRelOffset(at_addr,to_addr,5,1);
+			break;
 		}
 		case (char)0xeb:	/* 2byte jump */
 		{
@@ -1182,8 +1183,8 @@ void Zipr_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Pa
 		 * If so, emit a jump to it and break.
 		 * TODO: Test and enable.
 		 */
-		if (false)
-		//if ((to_addr=final_insn_locations[to_insn]) != 0)
+		//if (false)
+		if ((to_addr=final_insn_locations[cur_insn]) != 0)
 		{
 			if(m_opts.GetVerbose())
 				printf("Fallthrough loop detected. "
@@ -1192,6 +1193,7 @@ void Zipr_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Pa
 				(void*)to_addr);
 			memory_space.PlopJump(cur_addr);
 			PatchJump(cur_addr, to_addr);
+			ApplyPatches(cur_insn);
 			cur_insn = NULL;
 			cur_addr+=5;
 			break;
