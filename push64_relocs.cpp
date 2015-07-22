@@ -65,57 +65,20 @@ Push64Relocs_t::Push64Relocs_t(MemorySpace_t *p_ms,
 {
 }
 
-bool Push64Relocs_t::IsAdd64Relocation(Relocation_t *reloc)
+bool Push64Relocs_t::IsRelocationWithType(Relocation_t *reloc,std::string type)
 {
-	return (reloc->GetType().find("add64") != std::string::npos);
+	return (reloc->GetType().find(type) != std::string::npos);
 }
 
 // would be nice to have a FindRelocation function that takes a parameterized type.
-Relocation_t* Push64Relocs_t::FindAdd64Relocation(Instruction_t* insn)
+Relocation_t* Push64Relocs_t::FindRelocationWithType(Instruction_t* insn, std::string type)
 {
 	Instruction_t* first_slow_path_insn=NULL;
 	RelocationSet_t::iterator rit = insn->GetRelocations().begin();
 	for(rit; rit!=insn->GetRelocations().end(); rit++)
 	{
 		Relocation_t *reloc=*rit;
-		if (IsAdd64Relocation(reloc))
-			return reloc;
-	}
-	return NULL;
-}
-
-
-bool Push64Relocs_t::IsPush64Relocation(Relocation_t *reloc)
-{
-	return (reloc->GetType().find("push64") != std::string::npos);
-}
-
-Relocation_t* Push64Relocs_t::FindPush64Relocation(Instruction_t* insn)
-{
-	Instruction_t* first_slow_path_insn=NULL;
-	RelocationSet_t::iterator rit = insn->GetRelocations().begin();
-	for(rit; rit!=insn->GetRelocations().end(); rit++)
-	{
-		Relocation_t *reloc=*rit;
-		if (IsPush64Relocation(reloc))
-			return reloc;
-	}
-	return NULL;
-}
-bool Push64Relocs_t::IsPcrelRelocation(Relocation_t *reloc)
-{
-	return (reloc->GetType().find("pcrel") != std::string::npos);
-}
-
-Relocation_t* Push64Relocs_t::FindPcrelRelocation(Instruction_t* insn)
-
-{
-	Instruction_t* first_slow_path_insn=NULL;
-	RelocationSet_t::iterator rit = insn->GetRelocations().begin();
-	for(rit; rit!=insn->GetRelocations().end(); rit++)
-	{
-		Relocation_t *reloc=*rit;
-		if (IsPcrelRelocation(reloc))
+		if (IsRelocationWithType(reloc, type))
 			return reloc;
 	}
 	return NULL;
@@ -223,10 +186,10 @@ void Push64Relocs_t::HandlePush64Relocs()
 		Instruction_t *insn=*iit;
 
 		Relocation_t *reloc=NULL;
-		if (reloc = FindPush64Relocation(insn))
+		if (reloc = FindPushRelocation(insn))
 		{
 			if (m_opts.GetVerbose())
-				cout << "Found a Push64 relocation." << endl;
+				cout << "Found a Push relocation:" << insn->getDisassembly()<<endl;
 			HandlePush64Relocation(insn,reloc);
 			push64_relocations_count++;
 		}
@@ -239,7 +202,7 @@ void Push64Relocs_t::HandlePush64Relocs()
 		}
 	}
 
-	cout<<"#ATTRIBUTE push64_relocations_count="
+	cout<<"#ATTRIBUTE push_relocations_count="
 	    <<std::dec<<push64_relocations_count
 			<<endl;
 	cout<<"#ATTRIBUTE pcrel_relocations_count="
@@ -257,7 +220,7 @@ void Push64Relocs_t::UpdatePush64Adds()
 	{
 		Relocation_t *reloc = NULL;
 		Instruction_t *insn = *insn_it;
-		if (reloc = FindPush64Relocation(insn))
+		if (reloc = FindPushRelocation(insn))
 		{
 // would consider updating this if statement to be a function call for simplicity/readability.
 			bool change_to_add = false;

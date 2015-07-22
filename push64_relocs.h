@@ -69,14 +69,48 @@ class Push64Relocs_t : public Zipr_SDK::ZiprPluginInterface_t
 		void HandlePush64Relocs();
 		void UpdatePush64Adds();
 
-		// helpers
-		bool IsPcrelRelocation(libIRDB::Relocation_t *reloc);
-		libIRDB::Relocation_t* FindPcrelRelocation(libIRDB::Instruction_t* insn);
-		bool IsAdd64Relocation(libIRDB::Relocation_t *reloc);
-		libIRDB::Relocation_t* FindAdd64Relocation(libIRDB::Instruction_t* insn);
-		bool IsPush64Relocation(libIRDB::Relocation_t *reloc);
-		libIRDB::Relocation_t* FindPush64Relocation(libIRDB::Instruction_t* insn);
+		// subsidiary workhorses 
 		void HandlePush64Relocation(libIRDB::Instruction_t* insn, libIRDB::Relocation_t *reloc);
+
+		// helpers
+		bool IsPcrelRelocation(libIRDB::Relocation_t *reloc)
+		{ return IsRelocationWithType(reloc,"pcrel"); }
+		bool IsAdd64Relocation(libIRDB::Relocation_t *reloc)
+		{ return IsRelocationWithType(reloc,"add64"); }
+		bool IsPush64Relocation(libIRDB::Relocation_t *reloc)
+		{ return IsRelocationWithType(reloc,"push64"); }
+		bool Is32BitRelocation(libIRDB::Relocation_t *reloc)
+		{ return IsRelocationWithType(reloc,"push64"); }
+
+		libIRDB::Relocation_t* FindPcrelRelocation(libIRDB::Instruction_t* insn)
+		{ return FindRelocationWithType(insn,"pcrel"); }
+		libIRDB::Relocation_t* FindAdd64Relocation(libIRDB::Instruction_t* insn)
+		{ return FindRelocationWithType(insn,"add64"); }
+		libIRDB::Relocation_t* FindPush64Relocation(libIRDB::Instruction_t* insn)
+		{ return FindRelocationWithType(insn,"push64"); }
+		libIRDB::Relocation_t* Find32BitRelocation(libIRDB::Instruction_t* insn)
+		{ return FindRelocationWithType(insn,"32-bit"); }
+
+		libIRDB::Relocation_t* FindPushRelocation(libIRDB::Instruction_t* insn)
+		{ 
+			libIRDB::Relocation_t* reloc=NULL;
+			if(reloc=FindPush64Relocation(insn))
+			{
+				assert(insn->GetDataBits()[0]==0x68);
+				return reloc; 
+			}
+			if(reloc=Find32BitRelocation(insn))
+			{
+				return reloc; 
+			}
+			return NULL;
+		}
+
+		bool IsRelocationWithType(libIRDB::Relocation_t *reloc, std::string type);
+		libIRDB::Relocation_t* FindRelocationWithType(libIRDB::Instruction_t* insn, std::string type);
+
+
+
 
 		// references to input
 		Zipr_SDK::MemorySpace_t &m_memory_space;	
