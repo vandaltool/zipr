@@ -995,15 +995,12 @@ tools/cookbook/SConscript -text
 tools/cookbook/SConstruct -text
 tools/cookbook/checkwhitelist.hpp -text
 tools/cookbook/checkwhitelistdriver.cpp -text
-tools/cookbook/cookbook.cpp -text
 tools/cookbook/cookbook.hpp -text
 tools/cookbook/functioncall.hpp -text
 tools/cookbook/functioncalldriver.cpp -text
-tools/cookbook/instructioncount.cpp -text
 tools/cookbook/instructioncount.hpp -text
 tools/cookbook/instructioncountdriver.cpp -text
 tools/cookbook/logdriver.cpp -text
-tools/cookbook/syscall.cpp -text
 tools/cookbook/syscall.hpp -text
 tools/cookbook/syscalldriver.cpp -text
 tools/cookbook/whitelist.hpp -text
