@@ -15,6 +15,7 @@ dirs='''
 	simple_cdi
 	spasm
 	watch_syscall
+	cookbook
 	'''
 cgc_dirs='''
 	c2e

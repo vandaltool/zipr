@@ -1,0 +1,43 @@
+import os
+
+Import('env')
+myenv=env.Clone()
+myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
+
+cpppath=''' 
+	 $SECURITY_TRANSFORMS_HOME/include 
+	 $SECURITY_TRANSFORMS_HOME/libIRDB/include 
+	 $SECURITY_TRANSFORMS_HOME/libMEDSannotation/include 
+	 $SECURITY_TRANSFORMS_HOME/beaengine/include 
+	 $SECURITY_TRANSFORMS_HOME/tools/transforms 
+	 $SECURITY_TRANSFORMS_HOME/libtransform/include
+	 ./
+	'''
+
+#CFLAGS="-fPIC  "
+
+pgms = {}
+ppgms = []
+
+pgms["instructioncountdriver.exe"] = (Dir('.').srcnode().abspath+"/x86_64_linux/instructioncount.cpp", Dir('.').srcnode().abspath+"/instructioncountdriver.cpp",Dir('.').srcnode().abspath+"/x86_64_linux/cookbook.cpp",)
+
+pgms["functioncalldriver.exe"] = (Dir('.').srcnode().abspath+"/x86_64_linux/functioncall.cpp", Dir('.').srcnode().abspath+"/functioncalldriver.cpp",Dir('.').srcnode().abspath+"/x86_64_linux/cookbook.cpp",)
+
+pgms["whitelistdriver.exe"] = (Dir('.').srcnode().abspath+"/x86_64_linux/whitelist.cpp", Dir('.').srcnode().abspath+"/whitelistdriver.cpp",Dir('.').srcnode().abspath+"/x86_64_linux/cookbook.cpp",)
+
+pgms["checkwhitelistdriver.exe"] = (Dir('.').srcnode().abspath+"/x86_64_linux/checkwhitelist.cpp", Dir('.').srcnode().abspath+"/checkwhitelistdriver.cpp",Dir('.').srcnode().abspath+"/x86_64_linux/cookbook.cpp",)
+
+pgms["logdriver.exe"] = (Dir('.').srcnode().abspath+"/logdriver.cpp",Dir('.').srcnode().abspath+"/x86_64_linux/cookbook.cpp",)
+
+pgms["syscalldriver.exe"] = (Dir('.').srcnode().abspath+"/x86_64_linux/syscall.cpp", Dir('.').srcnode().abspath+"/syscalldriver.cpp",Dir('.').srcnode().abspath+"/x86_64_linux/cookbook.cpp",)
+
+LIBPATH="$SECURITY_TRANSFORMS_HOME/lib"
+LIBS=Split( env.subst('$BASE_IRDB_LIBS')+ " xform IRDB-core IRDB-cfg IRDB-util pqxx BeaEngine_s_d rewrite transform MEDSannotation") 
+
+myenv=myenv.Clone(CPPPATH=Split(cpppath))
+
+for pgm in pgms.keys():
+	ppgms.append(myenv.Program(pgm,  pgms[pgm],  LIBPATH=LIBPATH, LIBS=LIBS))
+
+install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", ppgms)
+Default(install)
