@@ -124,6 +124,7 @@ stock_examples64/bzip2.stock -text
 stock_examples64/gedit.stock -text
 stock_examples64/grep.stock -text
 stock_examples64/less.stock -text
+stock_examples64/ls.win.exe -text
 stock_examples64/synaptic.stock -text
 stock_examples64/vita.pdf -text
 stock_examples64/xcalc.stock -text
