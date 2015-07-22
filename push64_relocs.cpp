@@ -36,6 +36,11 @@
 #include "Rewrite_Utility.hpp"
 #include "push64_relocs.h"
 
+using namespace libIRDB;
+using namespace std;
+using namespace Zipr_SDK;
+using namespace ELFIO;
+
 
 bool arg_has_relative(const ARGTYPE &arg)
 {
@@ -46,11 +51,6 @@ bool arg_has_relative(const ARGTYPE &arg)
 	
 	return false;
 }
-
-using namespace libIRDB;
-using namespace std;
-using namespace Zipr_SDK;
-using namespace ELFIO;
 
 Push64Relocs_t::Push64Relocs_t(MemorySpace_t *p_ms,
 	elfio *p_elfio,
@@ -70,6 +70,7 @@ bool Push64Relocs_t::IsAdd64Relocation(Relocation_t *reloc)
 	return (reloc->GetType().find("add64") != std::string::npos);
 }
 
+// would be nice to have a FindRelocation function that takes a parameterized type.
 Relocation_t* Push64Relocs_t::FindAdd64Relocation(Instruction_t* insn)
 {
 	Instruction_t* first_slow_path_insn=NULL;
@@ -166,6 +167,8 @@ void Push64Relocs_t::HandlePush64Relocation(Instruction_t *insn, Relocation_t *r
 	/* 
 	 * Step 1: Change the push to a call 0.
 	 */
+
+// this is OK, but could we consider the insn->Assemble() method for readability? 
 	databits.resize(5);
 	databits[0] = 0xe8;
 	databits[1] = 0x00;
@@ -179,6 +182,7 @@ void Push64Relocs_t::HandlePush64Relocation(Instruction_t *insn, Relocation_t *r
 	/* 
 	 * Step 2: Create the add instruction.
 	 */
+// this is OK, but could we consider the insn->Assemble() method for readability? 
 	databits = "";
 	databits.resize(7);
 	databits[0]=0x81;
@@ -255,6 +259,7 @@ void Push64Relocs_t::UpdatePush64Adds()
 		Instruction_t *insn = *insn_it;
 		if (reloc = FindPush64Relocation(insn))
 		{
+// would consider updating this if statement to be a function call for simplicity/readability.
 			bool change_to_add = false;
 			RangeAddress_t call_addr = 0;
 			RangeAddress_t add_addr = 0;
@@ -288,6 +293,9 @@ void Push64Relocs_t::UpdatePush64Adds()
 			 */
 			call_addr+=call->GetDataBits().length();
 
+
+// would this be simpler if we always used an add (or sub)
+// and just signed the sign of the value we are adding (or subbing)?
 			if (add_offset>call_addr)
 			{
 				change_to_add = true;
@@ -316,6 +324,7 @@ void Push64Relocs_t::UpdatePush64Adds()
 		}
 		else if (reloc = FindPcrelRelocation(insn))
 		{
+// would consider updating this if statement to be a function call for simplicity/readability.
 			uint8_t memory_offset = 0;
 			int32_t existing_offset = 0;
 			int32_t new_offset = 0;

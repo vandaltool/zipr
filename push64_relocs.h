@@ -28,18 +28,19 @@
  * E-mail: jwd@zephyr-software.com
  **************************************************************************/
 
-#ifndef nonce_relocs_h
-#define nonce_relocs_h
+#ifndef push_relocs_h
+#define push_relocs_h
 
-typedef std::set<Instruction_t*> InstructionPtrSet_t;
+#include <libIRDB-core.hpp>
+
 class Push64Relocs_t : public Zipr_SDK::ZiprPluginInterface_t
 {
 	public:
 		Push64Relocs_t(Zipr_SDK::MemorySpace_t *p_ms,
-		ELFIO::elfio *p_elfio,
-		libIRDB::FileIR_t *p_firp,
-		Zipr_SDK::Options_t *p_opts,
-		Zipr_SDK::InstructionLocationMap_t *p_fil);
+			ELFIO::elfio *p_elfio,
+			libIRDB::FileIR_t *p_firp,
+			Zipr_SDK::Options_t *p_opts,
+			Zipr_SDK::InstructionLocationMap_t *p_fil);
 		virtual void PinningBegin()
 		{
 		}
@@ -85,7 +86,7 @@ class Push64Relocs_t : public Zipr_SDK::ZiprPluginInterface_t
 		Zipr_SDK::InstructionLocationMap_t &final_insn_locations;
 
 		// local data.
-		InstructionPtrSet_t plopped_relocs;
+		libIRDB::InstructionSet_t plopped_relocs;
 
 };
 
