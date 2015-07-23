@@ -22,6 +22,7 @@ files=  '''
 	'''
 cpppath=''' 
 	$SECURITY_TRANSFORMS_HOME/beaengine/include/
+	$SECURITY_TRANSFORMS_HOME/libEXEIO/include/
 	$SECURITY_TRANSFORMS_HOME/include/
 	'''
 

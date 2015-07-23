@@ -18,7 +18,6 @@
  *
  */
 
-#include <string.h>
 #include "instruction_descriptor.h"
 #include "function_descriptor.h"
 
@@ -35,7 +34,6 @@ wahoo::Instruction::Instruction()
   m_stackRef = false;
   m_varStackRef = false;
   m_isVisited = false;
-//  m_data[0] = '\0';
   m_data = NULL;
 }
 
@@ -50,7 +48,6 @@ wahoo::Instruction::Instruction(app_iaddr_t p_address, int p_size, Function* p_f
   m_allocSite = false;
   m_deallocSite = false;
   m_stackRef = false;
- // m_data[0] = '\0';
   m_data = NULL;
 }
 
@@ -86,10 +83,3 @@ void wahoo::Instruction::markVarStackRef()
 { 
   m_varStackRef = true; 
 }
-
-/*
-void wahoo::Instruction::setData(void *data, int len) 
-{
-  memcpy(m_data, data, len);
-}
-*/

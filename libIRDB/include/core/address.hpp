@@ -18,10 +18,12 @@
  *
  */
 
+#include <stdint.h>
+
 //
 // An address in a variant.
 //
-typedef int virtual_offset_t;
+typedef uintptr_t virtual_offset_t;
 class AddressID_t : public BaseObj_t
 {
     public:

@@ -115,7 +115,6 @@ void insert_instructions(int fileID, vector<wahoo::Instruction*> instructions, v
 
       int address_id = next_address_id++;
 
-
       // insert into address table
       if (j != i) query += ",";
       query += "(";

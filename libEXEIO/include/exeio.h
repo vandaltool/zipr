@@ -14,8 +14,7 @@ namespace EXEIO
 
 	typedef enum { ELF64, ELF32, PE32, PE64 } execlass_t;
 
-	typedef int virtual_offset_t;
-
+	typedef uintptr_t virtual_offset_t;
 
 
 	// create type to match elfio
@@ -76,7 +75,7 @@ namespace EXEIO
 			exeio_t(char* filename) { Init(); load(filename); }
 			~exeio_t() { delete backend; }
 
-                        virtual void load(std::string filename) { load((char*)filename.c_str()); }
+            virtual void load(std::string filename) { load((char*)filename.c_str()); }
 
 			// load the file
 			virtual void load(char* fn);

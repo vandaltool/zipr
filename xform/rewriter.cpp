@@ -109,7 +109,7 @@ void Rewriter::readAnnotationFile(char p_filename[])
 		else
 			annot_type=size_type_u.type;
 
-//		fprintf(stderr,"main loop: addr 0x%x   scope: %s\n", addr, scope);
+//		fprintf(stderr,"main loop: addr 0x%p   scope: %s\n", addr, scope);
 
 		/* if the size > 0, then this is a declaration of a variable */
 		if(strcmp(type,"FUNC")==0)
@@ -230,7 +230,7 @@ void Rewriter::readAnnotationFile(char p_filename[])
 		}
 		else if(strcmp(type,"INSTR")==0)
 		{
-//fprintf(stderr, "At 0x%x, handling %s -- scope:%s\n", addr, type, scope);
+//fprintf(stderr, "INSTR: At %p, handling %s -- scope:%s\n", addr, type, scope);
 
 			/* optimizing annotation about not needing heavyweight metadata update */
 			/* ignore for now */
@@ -667,11 +667,11 @@ void Rewriter::readElfFile(char p_filename[])
 		objdump=strdup("objdump");
 	sprintf(buf, "%s -d --prefix-addresses %s | grep \"^[0-9]\"", objdump, p_filename);
 	FILE* pin=popen(buf, "r");
-	int addr;
+	app_iaddr_t addr;
 
 	assert(pin);
 
-	fscanf(pin, "%x", &addr);
+	fscanf(pin, "%p", &addr);
 	fgets(buf,sizeof(buf),pin);
 	do 
 	{
@@ -697,6 +697,8 @@ void Rewriter::dissassemble()
 
 	vector<wahoo::Instruction*> instructions=getAllInstructions(); 
 
+	fprintf(stderr, "Rewriter::disassemble(): number of instructions: %d\n", instructions.size());
+
     	for (int j = 0; j < instructions.size(); ++j)
     	{
       		wahoo::Instruction *instr = instructions[j];
@@ -707,10 +709,12 @@ void Rewriter::dissassemble()
 
       		disasm.Options = NasmSyntax + PrefixedNumeral;
 
-		if(getElfReader()->isElf64())
+		if(getElfReader()->isElf64() || getElfReader()->isPe64())
       			disasm.Archi = 64;
+		
 		else
       			disasm.Archi = 32;
+
 
       		disasm.EIP = (UIntPtr) getElfReader()->getInstructionBuffer(instr->getAddress());
       		disasm.VirtualAddr = instr->getAddress();
@@ -729,7 +733,7 @@ void Rewriter::dissassemble()
 		}
 		else
 		{
-			cerr<<"BeaEngine has decided that instrution at "<<hex
+			cerr<<"BeaEngine has decided that instruction at "<<hex
 				<<instr->getAddress()<<dec<<" is bogus."<<endl;
 			/* bogus intruction, remove it */
 			m_instructions[instr->getAddress()]=NULL;
@@ -872,33 +876,6 @@ map<wahoo::Function*, double> Rewriter::getFunctionCoverage(char *p_instructionF
 
     visitedInstructions.insert((app_iaddr_t) address);
   }
-
-/*
-
-  FILE *fp = fopen(p_instructionFile, "r");
-  if (!fp) {
-    cerr << "File containing instructions visited not found:" << p_instructionFile << endl;
-    return coverage;
-  }
-
-  cerr<<"func cover checkpoint2"<<endl;
-
-  set<app_iaddr_t> visitedInstructions;
-
-  while (!feof(fp))
-  {
-    int address = 0;
-    fscanf(fp, "%x\n", &address);
-
-    cerr<<"address = "<<address<<endl;
-
-    visitedInstructions.insert((app_iaddr_t) address);
-  }
-
-  cerr<<"func cover checkpoint3"<<endl;
-
-  fclose(fp);
-*/
 
   vector<wahoo::Instruction*> allInstructions = getAllInstructions();
 

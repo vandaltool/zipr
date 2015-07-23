@@ -17,7 +17,7 @@ namespace EXEIO
 	class exeio_pe_section_t : public exeio_section_t
 	{
 		public:
-			exeio_pe_section_t(const pe_bliss::section *the_s) : s(the_s) { assert(s); }
+			exeio_pe_section_t(const pe_bliss::section *the_s, const pe_bliss::pe_base *the_b) : s(the_s),b(the_b) { assert(s); assert(b);}
 
 			bool isLoadable() const { return s->readable(); }
 			bool isExecutable() const { return s->executable(); }
@@ -25,11 +25,15 @@ namespace EXEIO
 			const char* get_data() const  { return s->get_raw_data().c_str(); }
 			std::string get_name() const { return s->get_name(); }
 			int get_size() const  { return s->get_virtual_size(); }
-			EXEIO::virtual_offset_t get_address() const { return s->get_virtual_address(); }
+			EXEIO::virtual_offset_t get_address() const { 
+				EXEIO::virtual_offset_t base = b->get_image_base_64();
+				return base + s->get_virtual_address(); 
+			}
 			bool mightContainStrings() const { assert(0); }
 
 		private:
 			const pe_bliss::section *s;
+			const pe_bliss::pe_base *b;
 	};
 
 	class exeio_pe_backend_t : public exeio_backend_t
@@ -72,7 +76,7 @@ namespace EXEIO
 					it != pe_sections->end(); ++it)
                 		{
                         		const pe_bliss::section& s = *it; 
-					main->sections.add_section(new EXEIO::exeio_pe_section_t(&s));
+					main->sections.add_section(new EXEIO::exeio_pe_section_t(&s,e));
 				}
 
 	

@@ -54,6 +54,11 @@ static void UpdateEntryPoints(std::map<db_id_t,Instruction_t*> 	&insnMap)
 		
 }
 
+virtual_offset_t strtovo(std::string s)
+{
+        return strtoint<virtual_offset_t>(s);
+}
+
 // Create a Variant from the database
 FileIR_t::FileIR_t(const VariantID_t &newprogid, File_t* fid) : BaseObj_t(NULL)
 {
@@ -322,13 +327,13 @@ std::map<db_id_t,AddressID_t*> FileIR_t::ReadAddrsFromDB
 	{
 //   address_id            integer PRIMARY KEY,
 //  file_id               integer REFERENCES file_info,
-//  vaddress_offset       text,
+//  vaddress_offset       bigint,
 //  doip_id               integer DEFAULT -1
 
 
 		db_id_t aid=atoi(dbintr->GetResultColumn("address_id").c_str());
 		db_id_t file_id=atoi(dbintr->GetResultColumn("file_id").c_str());
-		int vaddr=atoi(dbintr->GetResultColumn("vaddress_offset").c_str());
+		virtual_offset_t vaddr=strtovo(dbintr->GetResultColumn("vaddress_offset"));
 		db_id_t doipid=atoi(dbintr->GetResultColumn("doip_id").c_str());
 
 		AddressID_t *newaddr=new AddressID_t(aid,file_id,vaddr);

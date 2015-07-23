@@ -19,12 +19,17 @@
  */
 
 
-
+#ifndef _IRDB_UTIL_
+#define _IRDB_UTIL_
 
 #include <sstream>
 #include <map>
 #include <algorithm>
 #include <set>
+#include <string>
+#include <iostream>
+#include <sstream>
+#include <stdint.h>
 
 template <class T>
 inline std::string to_string (const T& t)
@@ -74,3 +79,17 @@ inline S const& find_map_object( const std::map< T , S > &a_map, const T& key)
 
 	return (*it).second;
 }
+
+typedef uintptr_t virtual_offset_t;
+
+template<class T> T strtoint(std::string s)
+{
+        std::stringstream str(s);
+        T off;
+
+        str >> off;
+
+        return off;
+}
+
+#endif

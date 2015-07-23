@@ -22,20 +22,30 @@
 #include <string.h>
 #include "targ-config.h"
 
+#include <stdio.h>
+
+/*
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
 
+*/
 #include "elfreader.h"
 
 using namespace std;
-using namespace ELFIO;
+//using namespace ELFIO;
+using namespace EXEIO;
 
 ElfReader::ElfReader(char *p_elfFile)
 {
-    m_reader=new elfio;
-//    ELFIO::GetInstance()->CreateELFI( &m_reader );
+//    m_reader=new elfio;
+	m_reader=new EXEIO::exeio(p_elfFile);
+	assert(m_reader);
+
+	EXEIO::dump::header(cout, *m_reader);
+	EXEIO::dump::section_headers(cout, *m_reader);
 
     // Initialize it
+/*
     bool ok = m_reader->load( p_elfFile );
     if ( ! ok ) {
         std::cerr << "Can't open file" << std::endl;
@@ -64,6 +74,7 @@ ElfReader::ElfReader(char *p_elfFile)
 
     }
     std::cout << std::endl;
+*/
 }
 
 ElfReader::~ElfReader()
