@@ -8,7 +8,7 @@ CREATE TABLE #ATN#
 (
   address_id         	SERIAL PRIMARY KEY,		-- key
   file_id            	integer REFERENCES file_info,	-- which file this address is part of
-  vaddress_offset     integer,			-- the offset into the file
+  vaddress_offset     bigint,			-- the offset into the file
   doip_id             integer DEFAULT -1 		-- the DOIP
 );
 
