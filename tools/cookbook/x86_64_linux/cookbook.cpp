@@ -145,6 +145,7 @@ int CookbookTransform::execute()
 	 * for each function
 	 *  for each instruction
 	 */
+#ifndef NO_IDAPRO
 	for (
 		set<Function_t*>::const_iterator itf=getFileIR()->GetFunctions().begin();
 		itf!=getFileIR()->GetFunctions().end();
@@ -158,6 +159,15 @@ int CookbookTransform::execute()
 			++it
 			)
 		{
+#else
+	set<Instruction_t*> insns = getFileIR()->GetInstructions();
+	for (
+		set<Instruction_t*>::const_iterator it=insns.begin();
+		it!=insns.end();
+		++it
+		)
+	{
+#endif
 			Instruction_t* insn = *it;
 			unsigned char dbs[2] = {0,};
 
@@ -179,7 +189,9 @@ int CookbookTransform::execute()
 			 */
 			printf("%x %x:", dbs[0], dbs[1]);
 			cout << insn->GetComment() << endl;
+#ifndef NO_IDAPRO
 		}
+#endif
 	}
 	return 0;
 }

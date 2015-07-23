@@ -12,6 +12,7 @@ Functioncall::Functioncall(VariantID_t *p_variantID, FileIR_t *p_variantIR, set<
 
 int Functioncall::execute()
 {
+#ifndef NO_IDAPRO
 	for (
 		set<Function_t*>::const_iterator itf=getFileIR()->GetFunctions().begin();
 		itf!=getFileIR()->GetFunctions().end();
@@ -25,6 +26,15 @@ int Functioncall::execute()
 			++it
 			)
 		{
+#else
+	set<Instruction_t*> insns = getFileIR()->GetInstructions();
+	for (
+		set<Instruction_t*>::const_iterator it=insns.begin();
+		it!=insns.end();
+		++it
+		)
+	{
+#endif
 			Instruction_t* insn = *it;
 			if(insn /*&& insn->GetAddress()*/)
 			{
@@ -82,7 +92,9 @@ int Functioncall::execute()
 					}
 				}
 			}
+#ifndef NO_IDAPRO
 		}
+#endif
 	}
 	return 0;
 }

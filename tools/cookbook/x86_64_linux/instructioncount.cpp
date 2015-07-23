@@ -13,7 +13,7 @@ InstructionCount::InstructionCount(VariantID_t *p_variantID, FileIR_t *p_variant
 
 int InstructionCount::execute()
 {
-	
+#ifndef NO_IDAPRO
 	for(
 		set<Function_t*>::const_iterator itf=getFileIR()->GetFunctions().begin();
 		itf!=getFileIR()->GetFunctions().end();
@@ -26,6 +26,15 @@ int InstructionCount::execute()
 			it!=func->GetInstructions().end();
 			++it)
 		{
+#else
+	set<Instruction_t*> insns = getFileIR()->GetInstructions();
+	for (
+		set<Instruction_t*>::const_iterator it=insns.begin();
+		it!=insns.end();
+		++it
+		)
+	{
+#endif
 			Instruction_t* insn = *it;
 			if(insn&& insn->GetAddress())
 			{
@@ -110,7 +119,9 @@ int InstructionCount::execute()
 					rsp_restore->SetFallthrough(orig);
 				}
 			}
+#ifndef NO_IDAPRO
 		}
+#endif
 	}
 	return 0;
 }

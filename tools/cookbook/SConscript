@@ -15,6 +15,10 @@ cpppath='''
 	'''
 
 #CFLAGS="-fPIC  "
+CPPDEFINES = {}
+if os.environ.has_key('PS_NO_IDAPRO'):
+	print "Assuming that there is no IDA Pro available."
+	CPPDEFINES["NO_IDAPRO"] = 1
 
 pgms = {}
 ppgms = []
@@ -32,6 +36,7 @@ pgms["logdriver.exe"] = (Dir('.').srcnode().abspath+"/logdriver.cpp",)
 pgms["syscalldriver.exe"] = (Dir('.').srcnode().abspath+"/x86_64_linux/syscall.cpp", Dir('.').srcnode().abspath+"/syscalldriver.cpp")
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath))
+myenv.Append(CPPDEFINES=CPPDEFINES)
 
 cookbook_obj = myenv.Object(Dir('.').srcnode().abspath+"/x86_64_linux/cookbook.cpp")
 

@@ -12,6 +12,7 @@ Syscall::Syscall(VariantID_t *p_variantID, FileIR_t *p_variantIR, set<std::strin
 
 int Syscall::execute()
 {
+#ifndef NO_IDAPRO
 	for (
 		set<Function_t*>::const_iterator itf=getFileIR()->GetFunctions().begin();
 		itf!=getFileIR()->GetFunctions().end();
@@ -25,6 +26,15 @@ int Syscall::execute()
 			++it
 			)
 		{
+#else
+	set<Instruction_t*> insns = getFileIR()->GetInstructions();
+	for (
+		set<Instruction_t*>::const_iterator it=insns.begin();
+		it!=insns.end();
+		++it
+		)
+	{
+#endif
 			Instruction_t* insn = *it;
 			if(insn /*&& insn->GetAddress()*/)
 			{
@@ -53,11 +63,13 @@ int Syscall::execute()
 						 * Use CookbookTransform's convenience
 						 * method to add a callback before insn.
 						 */
-						addCookbookCallback(insn, syscall_callback);
+						addCookbookCallback(insn, syscall_callback, false);
 					}
 				}
 			}
+#ifndef NO_IDAPRO
 		}
+#endif
 	}
 	return 0;
 }
