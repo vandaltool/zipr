@@ -701,25 +701,38 @@ void FileIR_t::SetArchitecture()
 	{
 		archdesc->SetFileType(AD_ELF);
 	}
+	else if((e_ident[EI_MAG0]=='M') &&
+	   (e_ident[EI_MAG1]=='Z'))
+	{
+		archdesc->SetFileType(AD_PE);
+	}
 	else
 	{
-		cerr << "ELF magic number wrong:  is this an ELF file? " <<endl;
+		cerr << "File format magic number wrong:  is this an ELF, PE or CGC file? [" << e_ident[EI_MAG0] << " " << e_ident[EI_MAG1] << "]" << endl;
 		exit(-1);
 	}
 
 
-	switch(e_ident[4])
+	if (archdesc->GetFileType() == AD_PE)
 	{
-		case ELFCLASS32:
-			archdesc->SetBitWidth(32);
-			break;
-		case ELFCLASS64:
-			archdesc->SetBitWidth(64);
-			break;
-		case ELFCLASSNONE:
-		default:
-			cerr << "Unknown ELF class " <<endl;
-			exit(-1);
+		// just assume 64 bit for Windows, o/w could also extract from file
+		archdesc->SetBitWidth(64);
+	}
+	else
+	{
+		switch(e_ident[4])
+		{
+			case ELFCLASS32:
+				archdesc->SetBitWidth(32);
+				break;
+			case ELFCLASS64:
+				archdesc->SetBitWidth(64);
+				break;
+			case ELFCLASSNONE:
+			default:
+				cerr << "Unknown ELF class " <<endl;
+				exit(-1);
+		}
 	}
 }
 

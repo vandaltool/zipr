@@ -41,7 +41,7 @@ using namespace libIRDB;
 using namespace std;
 using namespace EXEIO;
 
-set< pair<db_id_t,int> > missed_instructions;
+set< pair<db_id_t,virtual_offset_t> > missed_instructions;
 int failed_target_count=0;
 
 pqxxDB_t pqxx_interface;
@@ -99,7 +99,7 @@ void set_fallthrough
 
 	/* get the address of the next instrution */
 	
-	int virtual_offset=insn->GetAddress()->GetVirtualOffset() + insn->GetDataBits().size();
+	virtual_offset_t virtual_offset=insn->GetAddress()->GetVirtualOffset() + insn->GetDataBits().size();
 
 	/* create a pair of offset/file */
 	pair<db_id_t,virtual_offset_t> p(insn->GetAddress()->GetFileID(),virtual_offset);
@@ -110,7 +110,8 @@ void set_fallthrough
 	/* sanity, note we may see odd control transfers to 0x0 */
 	if(fallthrough_insn==NULL &&   virtual_offset!=0)
 	{
-		cout<<"Cannot set fallthrough for "<<std::hex<<insn->GetAddress()->GetVirtualOffset()<<"."<<endl;
+		cout<<"Cannot set fallthrough for "<<std::hex<<insn->GetAddress()->GetVirtualOffset();
+		cout<< " : "<<insn->getDisassembly()<<endl;
 		bad_fallthrough_count++;
 	}
 
@@ -118,8 +119,7 @@ void set_fallthrough
 	if(fallthrough_insn!=0)
 		insn->SetFallthrough(fallthrough_insn);
 	else
-		missed_instructions.insert(pair<db_id_t,int>(insn->GetAddress()->GetFileID(),virtual_offset));
-
+		missed_instructions.insert(pair<db_id_t,virtual_offset_t>(insn->GetAddress()->GetFileID(),virtual_offset));
 }
 
 
@@ -148,7 +148,7 @@ void set_target
 //			disasm->Argument1.ArgMnemonic<<"."<<endl;
 
 		/* get the offset */
-		int virtual_offset=strtoul(disasm->Argument1.ArgMnemonic, NULL, 16);
+		virtual_offset_t virtual_offset=strtoul(disasm->Argument1.ArgMnemonic, NULL, 16);
 
 		/* create a pair of offset/file */
 		pair<db_id_t,virtual_offset_t> p(insn->GetAddress()->GetFileID(),virtual_offset);
@@ -162,7 +162,7 @@ void set_target
 			unsigned char first_byte=0;
 			if(insn->GetFallthrough())
 				first_byte=(insn->GetFallthrough()->GetDataBits().c_str())[0];
-			int jump_dist=virtual_offset-(insn->GetAddress()->GetVirtualOffset()+(insn->GetDataBits()).size());
+			virtual_offset_t jump_dist=virtual_offset-(insn->GetAddress()->GetVirtualOffset()+(insn->GetDataBits()).size());
 			if(	
 				// jump 1 byte forward
 				jump_dist == 1 &&
@@ -189,7 +189,7 @@ void set_target
 		if(target_insn!=0)
 			insn->SetTarget(target_insn);
 		else
-			missed_instructions.insert( pair<db_id_t,int>(insn->GetAddress()->GetFileID(),virtual_offset));
+			missed_instructions.insert( pair<db_id_t,virtual_offset_t>(insn->GetAddress()->GetFileID(),virtual_offset));
 
 	}
 }
@@ -222,13 +222,13 @@ void add_new_instructions(FileIR_t *firp)
 {
 	int found_instructions=0;
 	for(
-		set< pair<db_id_t,int> >::const_iterator it=missed_instructions.begin();
+		set< pair<db_id_t,virtual_offset_t> >::const_iterator it=missed_instructions.begin();
 		it!=missed_instructions.end(); 
 		++it
    	   )
 	{
 		/* get the address we've missed */
-		int missed_address=(*it).second;
+		virtual_offset_t missed_address=(*it).second;
 
 		/* get the address ID of the instruction that's missing the missed addressed */
 		db_id_t missed_fileid=(*it).first;
@@ -272,7 +272,7 @@ void add_new_instructions(FileIR_t *firp)
 			{
 				const char* data=elfiop.sections[secndx]->get_data();
 				// second=data?
-				int offset_into_section=missed_address-elfiop.sections[secndx]->get_address();
+				virtual_offset_t offset_into_section=missed_address-elfiop.sections[secndx]->get_address();
 	
 				/* disassemble the instruction */
 				DISASM disasm;
@@ -392,18 +392,18 @@ void fill_in_cfg(FileIR_t *firp)
 	/* keep trying this while we're resolving targets.  if at any point we fail to resolve a new target/fallthrough address, then we give up */
 	} while(missed_instructions.size()>failed_target_count);
 
-	cout<<"Caution: Was unable to find instructions for these addresses:"<<endl;
+	cout<<"Caution: Was unable to find instructions for these addresses:"<<hex<<endl;
 	for(
-		set< pair<db_id_t,int> >::const_iterator it=missed_instructions.begin();
+		set< pair<db_id_t,virtual_offset_t> >::const_iterator it=missed_instructions.begin();
 		it!=missed_instructions.end(); 
 		++it
    	   )
 	{
 		/* get the address we've missed */
-		int missed_address=(*it).second;
+		virtual_offset_t missed_address=(*it).second;
 		cout << missed_address << ", ";
 	}
-	cout<<endl;
+	cout<<dec<<endl;
 
 
 	/* set the base IDs for all instructions */

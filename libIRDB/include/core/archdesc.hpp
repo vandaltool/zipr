@@ -19,7 +19,7 @@
  */
 
 
-enum AD_FileType_t { AD_ELF, AD_CGC };
+enum AD_FileType_t { AD_ELF, AD_CGC, AD_PE };
 
 class ArchitectureDescription_t
 {
