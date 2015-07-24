@@ -1425,6 +1425,13 @@ void Transform::addCallbackHandler64(Instruction_t *p_orig, string p_callbackHan
 
 // x86-64
 // register callback handler sequence 
+//
+// This following note is slightly out of date.
+// We DO save flags here so that our callbacks are
+// able to look at register values using a reg_values_t.
+// HOWEVER, the caller of this function should still be sure
+// to save flags themselves.
+//
 // nb: strata semantics is that it does not save flags, so we don't bother
 //     saving/restoring flags either in the callback handler
 //     saving/restoring flags must be done outside of this routine
@@ -1454,6 +1461,7 @@ Instruction_t* Transform::registerCallbackHandler64(string p_callbackHandler, in
 	instr = addNewAssembly(instr, "push r13");
 	instr = addNewAssembly(instr, "push r14");
 	instr = addNewAssembly(instr, "push r15");
+	instr = addNewAssembly(instr, "pushf");
 
 	// handle the arguments (if any): rdi, rsi, rdx, rcx, r8, r9
 	// first arg starts at byte +144
@@ -1497,8 +1505,9 @@ Instruction_t* Transform::registerCallbackHandler64(string p_callbackHandler, in
 	postCallback->SetIndirectBranchTargetAddress(indTarg);
 
 	// restore registers
-	setAssembly(postCallback, "pop r15");           
-	instr = addNewAssembly(postCallback, "pop r14");
+	setAssembly(postCallback, "popf");           
+	instr = addNewAssembly(postCallback, "pop r15");
+	instr = addNewAssembly(instr, "pop r14");
 	instr = addNewAssembly(instr, "pop r13");
 	instr = addNewAssembly(instr, "pop r12");
 	instr = addNewAssembly(instr, "pop r11");
