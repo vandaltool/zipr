@@ -48,6 +48,8 @@ int InstructionCount::execute()
 					Instruction_t *start = NULL;
 					Instruction_t *rsp_save = NULL;
 					Instruction_t *rsp_restore = NULL;
+					Instruction_t *pushf = NULL;
+					Instruction_t *popf = NULL;
 					Instruction_t *orig = NULL;
 					Instruction_t *call = NULL;
 
@@ -58,7 +60,9 @@ int InstructionCount::execute()
 					 *
 					 * nop
 					 * [save the stack pointer]
+					 * [save the flags]
 					 * [invoke the callback]
+					 * [restore the flags]
 					 * [restore the stack pointer]
 					 * [original instruction]
 					 */
@@ -91,6 +95,14 @@ int InstructionCount::execute()
 					setAssembly(rsp_save, "lea rsp, [rsp-128]");
 
 					/*
+					 * Save the CPU flags.
+					 */
+					pushf = allocateNewInstruction(
+						insn->GetAddress()->GetFileID(), insn->GetFunction());
+					rsp_save->SetFallthrough(pushf);
+					setAssembly(pushf, "pushf");
+
+					/*
 					 * Call the callback.
 					 */
 					call = allocateNewInstruction(insn->GetAddress()->GetFileID(), 
@@ -100,22 +112,28 @@ int InstructionCount::execute()
 					addCallbackHandler64(call, count_instruction, 2);
 
 					/*
-					 * Chain the rsp save operation
-					 * to the call.
+					 * Chain the call operation
+					 * to the pushf.
 					 */
-					rsp_save->SetFallthrough(call);
+					pushf->SetFallthrough(call);
+
+					/*
+					 * Restore the CPU flags.
+					 */
+					popf = addNewAssembly(call, "popf");
+					call->SetFallthrough(popf);
 
 					/*
 					 * Restore rsp to its previous location.
 					 */
-					rsp_restore = addNewAssembly(call, "lea rsp, [rsp+128]");  
+					rsp_restore = addNewAssembly(popf, "lea rsp, [rsp+128]");  
 
 					/*
 					 * Finish the chain:
-					 * call -> rsp restore
+					 * popf -> rsp restore
 					 * rsp restore -> original instruction
 					 */
-					call->SetFallthrough(rsp_restore);
+					popf->SetFallthrough(rsp_restore);
 					rsp_restore->SetFallthrough(orig);
 				}
 			}

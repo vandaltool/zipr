@@ -15,6 +15,9 @@ void CookbookTransform::addCookbookCallback(Instruction_t *original,
 	Instruction_t *orig = NULL;
 	Instruction_t *call = NULL;
 	Instruction_t *push = NULL;
+	Instruction_t *rsp_unpush = NULL;
+	Instruction_t *save_flags = NULL;
+	Instruction_t *restore_flags = NULL;
 	char pushAsm[1024] = {0,};
 
 	/*
@@ -65,15 +68,22 @@ void CookbookTransform::addCookbookCallback(Instruction_t *original,
 	setAssembly(rsp_save, "lea rsp, [rsp-128]");
 
 	/*
-	 * Create a push 0x<value> instruction.
+	 * Push the flags onto the stack.
+	 */
+	save_flags = allocateNewInstruction(
+		original->GetAddress()->GetFileID(), original->GetFunction());
+	rsp_save->SetFallthrough(save_flags);
+	setAssembly(save_flags, "pushf");
+
+	/*
+	 * Create a push 0x<value> instruction
+	 * and link it to the pushf. We are pushing
+	 * the extra value that will end up being
+	 * the third parameter to the callback.
 	 */
 	sprintf(pushAsm, "push 0x%08x\n", extra);
-	/*
-	 * NB: addNewAssembly() sets rsp_save's
-	 * fallthrough address to the new instruction
-	 * by default.
-	 */
-	push = addNewAssembly(rsp_save, pushAsm);
+	push = addNewAssembly(save_flags, pushAsm);
+	save_flags->SetFallthrough(push);
 
 	/*
 	 * Call the callback.
@@ -82,27 +92,40 @@ void CookbookTransform::addCookbookCallback(Instruction_t *original,
 		original->GetFunction());
 	setAssembly(call, "call 0");
 	call->SetComment("call " + callback + " before original.");	
-	addCallbackHandler64(call, callback, 2);
+	/*
+	 * We are only setting up for one parameter
+	 * since the first two are automatically given.
+	 */
+	addCallbackHandler64(call, callback, 1);
 
 	/*
-	 * Chain the push operation
-	 * to the call.
+	 * Chain the call operation
+	 * to the push.
 	 */
 	push->SetFallthrough(call);
 
 	/*
-	 * Restore rsp to its previous location.
-	 * Jump over the 8 bytes we
-	 * used for the pointer to
-	 * extra.
+	 * 'Unpush' without wasting a register.
 	 */
-	rsp_restore = addNewAssembly(call, "lea rsp, [rsp+128+8]");
+	rsp_unpush = addNewAssembly(call, "lea rsp, [rsp+8]");
+	call->SetFallthrough(rsp_unpush);
+
+	/*
+	 * Restore the CPU flags to their saved values.
+	 */
+	restore_flags = addNewAssembly(rsp_unpush, "popf");
+	rsp_unpush->SetFallthrough(restore_flags);
+
+	/*
+	 * Restore rsp to its previous location.
+	 */
+	rsp_restore = addNewAssembly(restore_flags, "lea rsp, [rsp+128]");
 
 	/*
 	 * Finish the chain:
-	 * call -> rsp restore
+	 * restore flags -> rsp restore
 	 */
-	call->SetFallthrough(rsp_restore);
+	restore_flags->SetFallthrough(rsp_restore);
 
 	/*
 	 * The last step depends on whether
