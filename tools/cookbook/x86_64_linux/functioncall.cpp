@@ -68,19 +68,15 @@ int Functioncall::execute()
 						 */
 						Instruction_t *target = insn->GetTarget();
 						Function_t *function = target->GetFunction();
-						
+
 						if (function != NULL &&
 							/*
 							 * Use Function_t's GetName() function
 							 * to determine if the target function
 							 * is the one we want to hook.
 							 *
-							 * NB: The disassembler puts a . before
-							 * the actual function name. So, we
-							 * use the extended version of compare()
-							 * to compensate.
 							 */
-							!function->GetName().compare(1, strlen("write"), "write")
+							!function->GetName().compare("function1")
 							)
 						{
 							/*
