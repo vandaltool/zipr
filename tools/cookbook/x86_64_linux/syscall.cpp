@@ -63,7 +63,7 @@ int Syscall::execute()
 						 * Use CookbookTransform's convenience
 						 * method to add a callback before insn.
 						 */
-						addCookbookCallback(insn, syscall_callback, false);
+						addCookbookCallback(insn, syscall_callback);
 					}
 				}
 			}
