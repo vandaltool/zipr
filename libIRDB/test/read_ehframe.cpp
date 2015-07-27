@@ -490,7 +490,7 @@ void print_lsda_handlers(lsda_header_info* info, unsigned char* p)
 		     		<<"cs_action: "<< cs_action << endl;
 
 #ifndef TEST
-			bool possible_target(uintptr_t p, uintptr_t at=0);
+			bool possible_target(virtual_offset_t p, virtual_offset_t at=0);
 
 			/* the landing pad is a possible target if an exception is thrown */ 
 			possible_target(cs_lp+info->Start);
@@ -651,7 +651,7 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
 			cout<<"absptr pc_begin 0x"<<std::hex<<(pc_begin+offset)<<"\t";
 			cout<<"absptr pc_end 0x"<<std::hex<<(pc_begin+pc_range+offset)<<endl;
 #ifndef TEST
-			extern void range(int, int);
+			extern void range(virtual_offset_t, virtual_offset_t);
 			range(pc_begin,pc_begin+pc_range);
 #endif
           		if (pc_begin == 0)
@@ -670,7 +670,7 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
 			cout<<"!absptr pc_end 0x"<<std::hex<<(pc_begin+pc_range)<<endl;
 
 #ifndef TEST
-			extern void range(int, int);
+			extern void range(virtual_offset_t, virtual_offset_t);
 			range(pc_begin,pc_begin+pc_range);
 #endif
 

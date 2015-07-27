@@ -48,7 +48,8 @@ ElfReader::ElfReader(char *p_elfFile)
 /*
     bool ok = m_reader->load( p_elfFile );
     if ( ! ok ) {
-        std::cerr << "Can't open file" << std::endl;
+        std::cerr << "Can't open file:" << p_elfFile << std::endl;
+	assert(0);
 	exit(-1);
     }
 

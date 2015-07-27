@@ -45,7 +45,7 @@ using namespace std;
 /*
  * check_for_thunk_offsets - check non-function thunks for extra offsets 
  */
-void check_for_thunk_offsets(FileIR_t* firp, int thunk_base)
+void check_for_thunk_offsets(FileIR_t* firp, virtual_offset_t thunk_base)
 {
 
 
@@ -69,7 +69,7 @@ void check_for_thunk_offsets(FileIR_t* firp, int thunk_base)
 
 			string add_offset=string(d.Argument2.ArgMnemonic);
 
-			int addoff=strtol(add_offset.c_str(),NULL,16);
+			virtual_offset_t addoff=strtol(add_offset.c_str(),NULL,16);
 
 			/* bounds check gently */
 			if(0<addoff && addoff<100)
@@ -85,7 +85,7 @@ void check_for_thunk_offsets(FileIR_t* firp, int thunk_base)
 			if(d.Argument2.Memory.IndexRegister!=0)
 				continue;
 
-			int leaoff=d.Argument2.Memory.Displacement;
+			virtual_offset_t leaoff=d.Argument2.Memory.Displacement;
 
 			/* bounds check gently */
 			if(0<leaoff && leaoff<100)
@@ -102,10 +102,10 @@ void check_for_thunk_offsets(FileIR_t* firp, int thunk_base)
 void check_for_thunk_offsets(FileIR_t* firp, Instruction_t *thunk_insn, string reg, string offset)
 {
 
-	int thunk_base=thunk_insn->GetFallthrough()->GetAddress()->GetVirtualOffset()+
+	virtual_offset_t thunk_base=thunk_insn->GetFallthrough()->GetAddress()->GetVirtualOffset()+
 		strtol(offset.c_str(),NULL,16);
-	int thunk_call_addr=thunk_insn->GetAddress()->GetVirtualOffset();
-	int thunk_call_offset=strtol(offset.c_str(),NULL,16);
+	virtual_offset_t thunk_call_addr=thunk_insn->GetAddress()->GetVirtualOffset();
+	virtual_offset_t thunk_call_offset=strtol(offset.c_str(),NULL,16);
 
 	/* don't check inserted thunk addresses */
 	if(thunk_insn->GetAddress()->GetVirtualOffset()==0)
@@ -124,13 +124,13 @@ void check_func_for_thunk_offsets(Function_t *func, Instruction_t* thunk_insn,
 	string reg, string offset)
 {
 
-	bool possible_target(uintptr_t p, uintptr_t at=0);
+	bool possible_target(virtual_offset_t p, virtual_offset_t at=0);
 
 
-	int thunk_base=thunk_insn->GetFallthrough()->GetAddress()->GetVirtualOffset()+
+	virtual_offset_t thunk_base=thunk_insn->GetFallthrough()->GetAddress()->GetVirtualOffset()+
 		strtol(offset.c_str(),NULL,16);
-	int thunk_call_addr=thunk_insn->GetAddress()->GetVirtualOffset();
-	int thunk_call_offset=strtol(offset.c_str(),NULL,16);
+	virtual_offset_t thunk_call_addr=thunk_insn->GetAddress()->GetVirtualOffset();
+	virtual_offset_t thunk_call_offset=strtol(offset.c_str(),NULL,16);
 
 
 	/* don't check inserted thunk addresses */
@@ -156,7 +156,7 @@ void check_func_for_thunk_offsets(Function_t *func, Instruction_t* thunk_insn,
 
 			string add_offset=string(d.Argument2.ArgMnemonic);
 
-			int addoff=strtol(add_offset.c_str(),NULL,16);
+			virtual_offset_t addoff=strtol(add_offset.c_str(),NULL,16);
 
 			/* bounds check gently */
 			if(0<addoff && addoff<100)
@@ -175,7 +175,7 @@ void check_func_for_thunk_offsets(Function_t *func, Instruction_t* thunk_insn,
 			if(d.Argument2.Memory.IndexRegister!=0)
 				continue;
 
-			int leaoff=d.Argument2.Memory.Displacement;
+			virtual_offset_t leaoff=d.Argument2.Memory.Displacement;
 
 			/* bounds check gently */
 			if(0<leaoff && leaoff<100)
@@ -321,7 +321,7 @@ bool is_thunk_add(Instruction_t *insn, string reg, string &offset)
 
 	offset=string(d.Argument2.ArgMnemonic);
 
-	int intoff=strtol(offset.c_str(),NULL,16);
+	virtual_offset_t intoff=strtol(offset.c_str(),NULL,16);
 
 	/* bounds check gently */
 	if(0<intoff && intoff<100)
@@ -408,20 +408,20 @@ void check_non_funcs_for_thunks(FileIR_t *firp)
  *  If L1+k1+k2 is found, and points at a code address (outside this function?), mark it as an indirect branch target.
  * 
  */
-void check_for_thunks(FileIR_t* firp, const std::set<int>&  thunk_bases)
+void check_for_thunks(FileIR_t* firp, const std::set<virtual_offset_t>&  thunk_bases)
 {
 	/* thunk bases is the module start's found for this firp */
 
 	cout<<"Starting check for thunks"<<endl;
 
-	for(set<int>::iterator it=thunk_bases.begin(); it!=thunk_bases.end(); ++it)
+	for(set<virtual_offset_t>::iterator it=thunk_bases.begin(); it!=thunk_bases.end(); ++it)
 	{
-		int offset=*it;
+		virtual_offset_t offset=*it;
 		check_for_thunk_offsets(firp,offset);
 	}
 }
 
-void find_all_module_starts(FileIR_t* firp, set<int> &thunk_bases)
+void find_all_module_starts(FileIR_t* firp, set<virtual_offset_t> &thunk_bases)
 {
 	thunk_bases.clear();
 
@@ -445,7 +445,7 @@ void find_all_module_starts(FileIR_t* firp, set<int> &thunk_bases)
 			if(is_thunk_call(insn,reg) && 
 				is_thunk_add(insn->GetFallthrough(),reg,offset))
 			{
-				int thunk_base=insn->GetFallthrough()->GetAddress()->GetVirtualOffset()+ 
+				virtual_offset_t thunk_base=insn->GetFallthrough()->GetAddress()->GetVirtualOffset()+ 
 					strtol(offset.c_str(),NULL,16);
 				if(thunk_bases.find(thunk_base)==thunk_bases.end())
 					cout<<"Found new thunk at "<<insn->GetAddress()->GetVirtualOffset()<<" with base: "<<hex<<thunk_base<<endl;
@@ -456,7 +456,7 @@ void find_all_module_starts(FileIR_t* firp, set<int> &thunk_bases)
 			{
 				if(newinsn && is_thunk_add(newinsn,reg,offset))
 				{
-					int thunk_base=insn->GetFallthrough()->GetAddress()->GetVirtualOffset()+ 
+					virtual_offset_t thunk_base=insn->GetFallthrough()->GetAddress()->GetVirtualOffset()+ 
 						strtol(offset.c_str(),NULL,16);
 					if(thunk_bases.find(thunk_base)==thunk_bases.end())
 						cout<<"Found new thunk at "<<insn->GetAddress()->GetVirtualOffset()<<" with base: "<<hex<<thunk_base<<endl;

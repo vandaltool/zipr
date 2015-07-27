@@ -51,12 +51,12 @@ int odd_target_count=0;
 int bad_target_count=0;
 int bad_fallthrough_count=0;
 
-bool is_possible_target(uintptr_t p, uintptr_t addr);
+bool is_possible_target(virtual_offset_t p, virtual_offset_t addr);
 
-set< pair <int,int>  > bounds;
-set<int> targets;
+set< pair <virtual_offset_t,virtual_offset_t>  > bounds;
+set<virtual_offset_t> targets;
 
-set< pair< int, int> > ranges;
+set< pair< virtual_offset_t, virtual_offset_t> > ranges;
 
 // a way to map an instruction to its set of predecessors. 
 map< Instruction_t* , set<Instruction_t*> > preds;
@@ -64,9 +64,9 @@ map< Instruction_t* , set<Instruction_t*> > preds;
 // keep track of jmp tables
 map< Instruction_t*, set<Instruction_t*> > jmptables;
 
-void check_for_PIC_switch_table32_type2(Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<int>& thunk_bases);
-void check_for_PIC_switch_table32_type3(Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<int>& thunk_bases);
-void check_for_PIC_switch_table32(FileIR_t*, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<int>& thunk_bases);
+void check_for_PIC_switch_table32_type2(Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t>& thunk_bases);
+void check_for_PIC_switch_table32_type3(Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t>& thunk_bases);
+void check_for_PIC_switch_table32(FileIR_t*, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t>& thunk_bases);
 void check_for_PIC_switch_table64(FileIR_t*, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop);
 
 // get switch table structure, determine ib targets
@@ -78,23 +78,23 @@ void check_for_indirect_jmp(FileIR_t* const firp, Instruction_t* const insn);
 void check_for_indirect_call(FileIR_t* const firp, Instruction_t* const insn);
 void check_for_ret(FileIR_t* const firp, Instruction_t* const insn);
 
-void range(int start, int end)
+void range(virtual_offset_t start, virtual_offset_t end)
 { 	
-	pair<int,int> foo(start,end);
+	pair<virtual_offset_t,virtual_offset_t> foo(start,end);
 	ranges.insert(foo);
 }
 
-bool is_in_range(int p)
+bool is_in_range(virtual_offset_t p)
 {
 	for(
-		set< pair <int,int>  >::iterator it=ranges.begin();
+		set< pair <virtual_offset_t,virtual_offset_t>  >::iterator it=ranges.begin();
 		it!=ranges.end();
 		++it
 	   )
 	{
-		pair<int,int> bound=*it;
-		int start=bound.first;
-		int end=bound.second;
+		pair<virtual_offset_t,virtual_offset_t> bound=*it;
+		virtual_offset_t start=bound.first;
+		virtual_offset_t end=bound.second;
 		if(start<=p && p<=end)
 			return true;
 	}
@@ -132,14 +132,15 @@ void process_ranges(FileIR_t* firp)
 	}
 }
 
-bool possible_target(uintptr_t p, uintptr_t addr)
+bool possible_target(virtual_offset_t p, virtual_offset_t addr)
 {
-	if(p!=(int)p)
+/*	if(p!=(int)p)
 	{
 		if(getenv("IB_VERBOSE")!=NULL)
 			cout<<"Determined "<<hex<<p<<" cannot be a code pointer"<<endl;
 		return false;
 	}
+*/
 	if(is_possible_target(p,addr))
 	{
 		if(getenv("IB_VERBOSE")!=NULL)
@@ -155,21 +156,23 @@ bool possible_target(uintptr_t p, uintptr_t addr)
 	return false;
 }
 
-bool is_possible_target(uintptr_t p, uintptr_t addr)
+bool is_possible_target(virtual_offset_t p, virtual_offset_t addr)
 {
+/*
 	if(p!=(int)p)
 	{
 		return false;	// can't be a pointer if it's greater than 2gb. 
 	}
+*/
 	for(
-		set< pair <int,int>  >::iterator it=bounds.begin();
+		set< pair <virtual_offset_t,virtual_offset_t>  >::iterator it=bounds.begin();
 		it!=bounds.end();
 		++it
 	   )
 	{
-		pair<int,int> bound=*it;
-		int start=bound.first;
-		int end=bound.second;
+		pair<virtual_offset_t,virtual_offset_t> bound=*it;
+		virtual_offset_t start=bound.first;
+		virtual_offset_t end=bound.second;
 		if(start<=p && p<=end)
 		{
 			return true;
@@ -179,7 +182,7 @@ bool is_possible_target(uintptr_t p, uintptr_t addr)
 
 }
 
-EXEIO::section*  find_section(int addr, EXEIO::exeio *elfiop)
+EXEIO::section*  find_section(virtual_offset_t addr, EXEIO::exeio *elfiop)
 {
          for ( int i = 0; i < elfiop->sections.size(); ++i )
          {   
@@ -211,13 +214,13 @@ void handle_argument(ARGTYPE *arg, Instruction_t* insn)
 	}
 }
 
-Instruction_t *lookupInstruction(FileIR_t *firp, uintptr_t virtual_offset)
+Instruction_t *lookupInstruction(FileIR_t *firp, virtual_offset_t virtual_offset)
 {
 	for(set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
 		it!=firp->GetInstructions().end(); ++it)
         {
 			Instruction_t *insn=*it;
-			uintptr_t addr=insn->GetAddress()->GetVirtualOffset();
+			virtual_offset_t addr=insn->GetAddress()->GetVirtualOffset();
 
 			if (virtual_offset == addr)
 				return insn;
@@ -256,7 +259,7 @@ void mark_targets(FileIR_t *firp)
            )
         {
 		Instruction_t *insn=*it;
-		int addr=insn->GetAddress()->GetVirtualOffset();
+		virtual_offset_t addr=insn->GetAddress()->GetVirtualOffset();
 
 		/* lookup in the list of targets */
 		if(targets.find(addr)!=targets.end())
@@ -271,7 +274,7 @@ void mark_targets(FileIR_t *firp)
 	}
 }
 
-void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<int>& thunk_bases)
+void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<virtual_offset_t>& thunk_bases)
 {
 
         for(
@@ -282,7 +285,7 @@ void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<int
         {
                 Instruction_t *insn=*it;
                 DISASM disasm;
-                int instr_len = insn->Disassemble(disasm);
+                virtual_offset_t instr_len = insn->Disassemble(disasm);
 
                 assert(instr_len==insn->GetDataBits().size());
 
@@ -335,10 +338,10 @@ void get_executable_bounds(FileIR_t *firp, const section* shdr)
 	if( !shdr->isExecutable() )
 		return;
 
-	int first=shdr->get_address();
-	int second=shdr->get_address()+shdr->get_size();
+	virtual_offset_t first=shdr->get_address();
+	virtual_offset_t second=shdr->get_address()+shdr->get_size();
 
-	bounds.insert(pair<int,int>(first,second));
+	bounds.insert(pair<virtual_offset_t,virtual_offset_t>(first,second));
 
 
 }
@@ -374,7 +377,7 @@ void infer_targets(FileIR_t *firp, section* shdr)
 		if(arch_ptr_bytes()==4)
 			p=*(int*)&data[i];
 		else
-			p=*(uintptr_t*)&data[i];	// 64 or 32-bit depending on sizeof uintptr_t, may need porting for cross platform analysis.
+			p=*(virtual_offset_t*)&data[i];	// 64 or 32-bit depending on sizeof uintptr_t, may need porting for cross platform analysis.
 		possible_target(p, i+shdr->get_address());
 	}
 
@@ -385,12 +388,12 @@ void print_targets()
 {
 	int j=0;
 	for(
-		set<int>::iterator it=targets.begin();
+		set<virtual_offset_t>::iterator it=targets.begin();
 		it!=targets.end();
 		++it, j++
 	   )
 	{
-		int target=*it;
+		virtual_offset_t target=*it;
 	
 		cout<<std::hex<<target;
 		if(j%10 == 0)
@@ -506,7 +509,7 @@ bool backup_until(const char* insn_type_regex, Instruction_t *& prev, Instructio
 /*
  * check_for_PIC_switch_table32 - look for switch tables in PIC code for 32-bit code.
  */
-void check_for_PIC_switch_table32(FileIR_t *firp, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<int> &thunk_bases)
+void check_for_PIC_switch_table32(FileIR_t *firp, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
 {
 #if 0
 
@@ -574,17 +577,17 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 	I3->Disassemble(d2);
 
 	// get the offset from the thunk
-	int table_offset=d2.Argument2.Memory.Displacement;
+	virtual_offset_t table_offset=d2.Argument2.Memory.Displacement;
 	if(table_offset==0)
 		return;
 
 cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< " with table_offset="<<table_offset<<" and table_size="<<table_size<<endl;
 		
 	/* iterate over all thunk_bases/module_starts */
-	for(set<int>::iterator it=thunk_bases.begin(); it!=thunk_bases.end(); ++it)
+	for(set<virtual_offset_t>::iterator it=thunk_bases.begin(); it!=thunk_bases.end(); ++it)
 	{
-		int thunk_base=*it;
-		int table_base=*it+table_offset;
+		virtual_offset_t thunk_base=*it;
+		virtual_offset_t table_base=*it+table_offset;
 
 		// find the section with the data table
         	EXEIO::section *pSec=find_section(table_base,elfiop);
@@ -597,7 +600,7 @@ cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< "
 			continue;
 
 		// get the base offset into the section
-        	int offset=table_base-pSec->get_address();
+        	virtual_offset_t offset=table_base-pSec->get_address();
 		int i;
 		for(i=0;i<3;i++)
 		{
@@ -623,8 +626,8 @@ cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< "
                 		if(offset+i*4+sizeof(int) > pSec->get_size())
                         		break;
 	
-                		const int *table_entry_ptr=(const int*)&(secdata[offset+i*4]);
-                		int table_entry=*table_entry_ptr;
+                		const int32_t *table_entry_ptr=(const int32_t*)&(secdata[offset+i*4]);
+                		virtual_offset_t table_entry=*table_entry_ptr;
 	
 				if(getenv("IB_VERBOSE")!=0)
 					cout<<"Found switch table (thunk-relative) entry["<<dec<<i<<"], "<<hex<<thunk_base+table_entry<<endl;
@@ -660,7 +663,7 @@ cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< "
 
 }
 
-void check_for_PIC_switch_table32_type2(Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<int> &thunk_bases)
+void check_for_PIC_switch_table32_type2(Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
 {
 #if 0
 
@@ -702,17 +705,17 @@ I5:   0x809900e <text_handler+51>: jmp    ecx
 	I3->Disassemble(d2);
 
 	// get the offset from the thunk
-	int table_offset=d2.Argument2.Memory.Displacement;
+	virtual_offset_t table_offset=d2.Argument2.Memory.Displacement;
 	if(table_offset==0)
 		return;
 
 cout<<hex<<"Found (type2) switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< " with table_offset="<<table_offset<<endl;
 		
 	/* iterate over all thunk_bases/module_starts */
-	for(set<int>::iterator it=thunk_bases.begin(); it!=thunk_bases.end(); ++it)
+	for(set<virtual_offset_t>::iterator it=thunk_bases.begin(); it!=thunk_bases.end(); ++it)
 	{
-		int thunk_base=*it;
-		int table_base=*it+table_offset;
+		virtual_offset_t thunk_base=*it;
+		virtual_offset_t table_base=*it+table_offset;
 
 		// find the section with the data table
         	EXEIO::section *pSec=find_section(table_base,elfiop);
@@ -725,15 +728,15 @@ cout<<hex<<"Found (type2) switch dispatch at "<<I3->GetAddress()->GetVirtualOffs
 			continue;
 
 		// get the base offset into the section
-        	int offset=table_base-pSec->get_address();
+        	virtual_offset_t offset=table_base-pSec->get_address();
 		int i;
 		for(i=0;i<3;i++)
 		{
                 	if(offset+i*4+sizeof(int) > pSec->get_size())
                         	break;
 
-                	const int *table_entry_ptr=(const int*)&(secdata[offset+i*4]);
-                	int table_entry=*table_entry_ptr;
+                	const int32_t *table_entry_ptr=(const int32_t*)&(secdata[offset+i*4]);
+                	virtual_offset_t table_entry=*table_entry_ptr;
 
 cout<<"Checking target base:" << std::hex << table_base+table_entry << ", " << table_base+i*4<<endl;
 			if(!is_possible_target(table_base+table_entry,table_base+i*4))
@@ -750,8 +753,8 @@ cout<<"Checking target base:" << std::hex << table_base+table_entry << ", " << t
                 		if(offset+i*4+sizeof(int) > pSec->get_size())
                         		break;
 	
-                		const int *table_entry_ptr=(const int*)&(secdata[offset+i*4]);
-                		int table_entry=*table_entry_ptr;
+                		const int32_t *table_entry_ptr=(const int32_t*)&(secdata[offset+i*4]);
+                		virtual_offset_t table_entry=*table_entry_ptr;
 	
 				if(getenv("VERBOSE")!=0)
 					cout<<"Found switch table (thunk-relative) entry["<<dec<<i<<"], "<<hex<<table_base+table_entry<<endl;
@@ -771,7 +774,7 @@ cout<<"Checking target base:" << std::hex << table_base+table_entry << ", " << t
 
 }
 
-void check_for_PIC_switch_table32_type3(Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<int> &thunk_bases)
+void check_for_PIC_switch_table32_type3(Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
 {
 #if 0
 
@@ -793,7 +796,7 @@ void check_for_PIC_switch_table32_type3(Instruction_t* insn, DISASM disasm, EXEI
 		return;
 
 	// grab the table base out of the jmp.
-	int table_base=disasm.Argument1.Memory.Displacement;
+	virtual_offset_t table_base=disasm.Argument1.Memory.Displacement;
 	if(table_base==0)
 		return;
 
@@ -811,7 +814,7 @@ cout<<hex<<"Found (type3) switch dispatch at "<<I5->GetAddress()->GetVirtualOffs
 			return;
 
 		// get the base offset into the section
-        	int offset=table_base-pSec->get_address();
+        	virtual_offset_t offset=table_base-pSec->get_address();
 		int i;
 		for(i=0;i<3;i++)
 		{
@@ -819,7 +822,7 @@ cout<<hex<<"Found (type3) switch dispatch at "<<I5->GetAddress()->GetVirtualOffs
                         	return;
 
                 	const int *table_entry_ptr=(const int*)&(secdata[offset+i*4]);
-                	int table_entry=*table_entry_ptr;
+                	virtual_offset_t table_entry=*table_entry_ptr;
 
 cout<<"Checking target base:" << std::hex << table_entry << ", " << table_base+i*4<<endl;
 			if(!is_possible_target(table_entry,table_base+i*4))
@@ -837,7 +840,7 @@ cout<<"Checking target base:" << std::hex << table_entry << ", " << table_base+i
                         		return;
 	
                 		const int *table_entry_ptr=(const int*)&(secdata[offset+i*4]);
-                		int table_entry=*table_entry_ptr;
+                		virtual_offset_t table_entry=*table_entry_ptr;
 	
 				if(getenv("VERBOSE")!=0)
 					cout<<"Found switch table (thunk-relative) entry["<<dec<<i<<"], "<<hex<<table_entry<<endl;
@@ -941,7 +944,7 @@ DN:   0x4824XX: .long 0x4824e0-LN
         // instruction address (and include the instruction's size, etc.
         // but, fix_calls has already removed this oddity so we can relocate
         // the instruction.
-        int D1=strtol(disasm.Argument2.ArgMnemonic, NULL, 16);
+        virtual_offset_t D1=strtol(disasm.Argument2.ArgMnemonic, NULL, 16);
 
         // find the section with the data table
         EXEIO::section *pSec=find_section(D1,elfiop);
@@ -968,7 +971,7 @@ DN:   0x4824XX: .long 0x4824e0-LN
 	table_size = d1.Instruction.Immediat;
 
 	set<Instruction_t *> ibtargets;
-	int offset=D1-pSec->get_address();
+	virtual_offset_t offset=D1-pSec->get_address();
 	int entry=0;
 	do
 	{
@@ -977,7 +980,7 @@ DN:   0x4824XX: .long 0x4824e0-LN
 			break;
 
 		const int *table_entry_ptr=(const int*)&(secdata[offset]);
-		int table_entry=*table_entry_ptr;
+		virtual_offset_t table_entry=*table_entry_ptr;
 
 		if(!possible_target(D1+table_entry))
 			break;
@@ -1003,7 +1006,7 @@ DN:   0x4824XX: .long 0x4824e0-LN
 				cout << "      INVALID target" << endl;
 		}
 
-		offset+=sizeof(int);
+		offset+=sizeof(virtual_offset_t);
 		entry++;
 	} while (1);
 
@@ -1051,7 +1054,7 @@ void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn,
 		return;
 
 	// extract start of jmp table
-	int table_offset = disasm.Argument1.Memory.Displacement;
+	virtual_offset_t table_offset = disasm.Argument1.Memory.Displacement;
 	if(table_offset==0)
 		return;
 
@@ -1067,7 +1070,7 @@ void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn,
 	// make sure not off by one
 	DISASM d1;
 	I1->Disassemble(d1);
-	int table_size = d1.Instruction.Immediat;
+	virtual_offset_t table_size = d1.Instruction.Immediat;
 
 	if (table_size <= 0) return;
 
@@ -1086,7 +1089,7 @@ void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn,
 		return;
 
 	// get the base offset into the section
-    int offset=table_offset-pSec->get_address();
+    	virtual_offset_t offset=table_offset-pSec->get_address();
 	int i;
 
 	set<Instruction_t*> ibtargets;
@@ -1098,8 +1101,8 @@ void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn,
 			return;
 		}
 
-		const int *table_entry_ptr=(const int*)&(secdata[offset+i*arch_ptr_bytes()]);
-		uintptr_t table_entry=*table_entry_ptr;
+		const virtual_offset_t *table_entry_ptr=(const virtual_offset_t*)&(secdata[offset+i*arch_ptr_bytes()]);
+		virtual_offset_t table_entry=*table_entry_ptr;
 
 		Instruction_t *ibtarget = lookupInstruction(firp, table_entry);
 		if (!ibtarget) {
@@ -1167,7 +1170,7 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DISASM d
 	if (d4.Argument2.Memory.Scale < 4)
 		return;
 
-	int table_offset=d4.Argument2.Memory.Displacement;
+	virtual_offset_t table_offset=d4.Argument2.Memory.Displacement;
 	if(table_offset==0)
 		return;
 
@@ -1184,7 +1187,7 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DISASM d
 	// make sure not off by one
 	DISASM d1;
 	I1->Disassemble(d1);
-	int table_size = d1.Instruction.Immediat;
+	virtual_offset_t table_size = d1.Instruction.Immediat;
 
 	if (table_size <= 0) return;
 
@@ -1205,7 +1208,7 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DISASM d
 		return;
 
 	// get the base offset into the section
-	int offset=table_offset-pSec->get_address();
+	virtual_offset_t offset=table_offset-pSec->get_address();
 	int i;
 
 	if(getenv("IB_VERBOSE"))
@@ -1220,8 +1223,19 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DISASM d
 			return;
 		}
 
-		const int *table_entry_ptr=(const int*)&(secdata[offset+i*arch_ptr_bytes()]);
-		uintptr_t table_entry=*table_entry_ptr;
+		virtual_offset_t table_entry=0;
+		if (firp->GetArchitectureBitWidth()==32)
+		{
+			const int *table_entry_ptr=(const int*)&(secdata[offset+i*arch_ptr_bytes()]);
+			table_entry=*table_entry_ptr;
+		}
+		else if (firp->GetArchitectureBitWidth()==64)
+		{
+			const virtual_offset_t *table_entry_ptr=(const virtual_offset_t*)&(secdata[offset+i*arch_ptr_bytes()]);
+			table_entry=*table_entry_ptr;
+		}
+		else 
+			assert(0 && "Unknown arch size.");
 
 		Instruction_t *ibtarget = lookupInstruction(firp, table_entry);
 		if (!ibtarget) {
@@ -1365,7 +1379,7 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop)
 			
 		}
 
-	set<int> thunk_bases;
+	set<virtual_offset_t> thunk_bases;
 	find_all_module_starts(firp,thunk_bases);
 
 
@@ -1390,11 +1404,11 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop)
 	int secndx=0;
 
 	/* look through each section and record bounds */
-        for (secndx=1; secndx<secnum; secndx++)
+        for (secndx=0; secndx<secnum; secndx++)
 		get_executable_bounds(firp, elfiop->sections[secndx]);
 
 	/* look through each section and look for target possibilities */
-        for (secndx=1; secndx<secnum; secndx++)
+        for (secndx=0; secndx<secnum; secndx++)
 		infer_targets(firp, elfiop->sections[secndx]);
 
 	

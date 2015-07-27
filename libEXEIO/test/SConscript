@@ -4,6 +4,8 @@ Import('env')
 myenv=env.Clone()
 myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 
+(sysname, nodename, release, version, machine)=os.uname()
+
 
 libname="exeio_test"
 files=  '''
@@ -27,6 +29,8 @@ libs=   '''
 	EXEIO
 	pebliss
 	'''
+if "CYGWIN" in sysname:
+	libs = libs + " iconv"
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath), LIBS=Split(libs), LIBPATH=Split(libpath))
 pgm=myenv.Program(libname, Split(files))
