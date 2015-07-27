@@ -1400,7 +1400,7 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop)
 	
 	cout<<"========================================="<<endl;
 	cout<<"Targets from data sections are: " << endl;
-	cout<<"# ATTRIBUTE total_indirect_targets_pass1="<<std::dec<<targets.size()<<endl;
+	cout<<"#ATTRIBUTE total_indirect_targets_pass1="<<std::dec<<targets.size()<<endl;
 	print_targets();
 	cout<<"========================================="<<endl;
 
@@ -1413,7 +1413,7 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop)
 
 	cout<<"========================================="<<endl;
 	cout<<"All targets from data+instruction sections are: " << endl;
-	cout<<"# ATTRIBUTE total_indirect_targets_pass2="<<std::dec<<targets.size()<<endl;
+	cout<<"#ATTRIBUTE total_indirect_targets_pass2="<<std::dec<<targets.size()<<endl;
 	print_targets();
 	cout<<"========================================="<<endl;
 
@@ -1423,7 +1423,7 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop)
 
 	cout<<"========================================="<<endl;
 	cout<<"All targets from data+instruction+eh_header sections are: " << endl;
-	cout<<"# ATTRIBUTE total_indirect_targets_pass3="<<std::dec<<targets.size()<<endl;
+	cout<<"#ATTRIBUTE total_indirect_targets_pass3="<<std::dec<<targets.size()<<endl;
 	print_targets();
 	cout<<"========================================="<<endl;
 
@@ -1432,14 +1432,14 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop)
 	process_ranges(firp);
 	cout<<"========================================="<<endl;
 	cout<<"All targets from data+instruction+eh_header sections+eh_header_ranges are: " << endl;
-	cout<<"# ATTRIBUTE total_indirect_targets_pass4="<<std::dec<<targets.size()<<endl;
+	cout<<"#ATTRIBUTE total_indirect_targets_pass4="<<std::dec<<targets.size()<<endl;
 	print_targets();
 	cout<<"========================================="<<endl;
 
 	/* now process the ranges that have exception handling */
 	check_for_thunks(firp, thunk_bases);
 	cout<<"========================================="<<endl;
-	cout<<"# ATTRIBUTE total_indirect_targets_pass5="<<std::dec<<targets.size()<<endl;
+	cout<<"#ATTRIBUTE total_indirect_targets_pass5="<<std::dec<<targets.size()<<endl;
 	print_targets();
 	cout<<"========================================="<<endl;
 
@@ -1447,7 +1447,7 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop)
     	add_num_handle_fn_watches(firp);
 	/* now process the ranges that have exception handling */
 	cout<<"========================================="<<endl;
-	cout<<"# ATTRIBUTE total_indirect_targets_pass6="<<std::dec<<targets.size()<<endl;
+	cout<<"#ATTRIBUTE total_indirect_targets_pass6="<<std::dec<<targets.size()<<endl;
 	print_targets();
 	cout<<"========================================="<<endl;
 
@@ -1462,7 +1462,7 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop)
 		possible_target(target);
 	}
 	cout<<"========================================="<<endl;
-	cout<<"# ATTRIBUTE total_indirect_targets_pass7="<<std::dec<<targets.size()<<endl;
+	cout<<"#ATTRIBUTE total_indirect_targets_pass7="<<std::dec<<targets.size()<<endl;
 	print_targets();
 	cout<<"========================================="<<endl;
 
