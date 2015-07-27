@@ -575,9 +575,9 @@ bool RSS_Instrument::execute()
 		
 	}
 
-	cout << "#ATTRIBUTE safe_funcs=" <<std::dec<<safe_funcs<<endl;
-	cout << "#ATTRIBUTE problem_funcs=" <<problem_funcs<<endl;
-	cout << "#ATTRIBUTE instr_funcs=" <<instr_funcs<<endl;
+	cout << "# ATTRIBUTE safe_funcs=" <<std::dec<<safe_funcs<<endl;
+	cout << "# ATTRIBUTE problem_funcs=" <<problem_funcs<<endl;
+	cout << "# ATTRIBUTE instr_funcs=" <<instr_funcs<<endl;
 
 	/* return an exit code */
 	if(success)

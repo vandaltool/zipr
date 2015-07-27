@@ -289,8 +289,8 @@ bool SCFI_Instrument::mark_targets()
 			cout<<"Found indtarget  for "<<std::dec<<insn->GetBaseID()<<":"<<insn->GetComment()<<endl;
 		}
 	}
-	cout<<"#ATTRIBUTE ind_targets_found="<<std::dec<<ind_targets<<endl;
-	cout<<"#ATTRIBUTE targets_found="<<std::dec<<targets<<endl;
+	cout<<"# ATTRIBUTE ind_targets_found="<<std::dec<<ind_targets<<endl;
+	cout<<"# ATTRIBUTE targets_found="<<std::dec<<targets<<endl;
 	return true;
 }
 
@@ -460,7 +460,7 @@ bool SCFI_Instrument::instrument_jumps()
 	
 
 
-	cout<<"#ATTRIBUTE cfi_checks="<<std::dec<<cfi_checks<<endl;
+	cout<<"# ATTRIBUTE cfi_checks="<<std::dec<<cfi_checks<<endl;
 	return true;
 }
 
