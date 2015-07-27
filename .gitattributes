@@ -1043,6 +1043,11 @@ tools/fptr_shadow/test/sample.c -text
 tools/fptr_shadow/test/sample.fptrannot -text
 tools/fptr_shadow/test/sample_loop.c -text
 tools/fptr_shadow/test/sample_loop.fptrannot -text
+tools/hook_dynamic_call/SConscript -text
+tools/hook_dynamic_call/SConstruct -text
+tools/hook_dynamic_call/hook_dynamic_calls.cpp -text
+tools/hook_dynamic_call/hook_dynamic_calls.hpp -text
+tools/hook_dynamic_call/hook_dynamic_calls_driver.cpp -text
 tools/inferfn/Makefile -text
 tools/inferfn/SConscript -text
 tools/inferfn/SConstruct -text
