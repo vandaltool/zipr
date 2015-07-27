@@ -15,6 +15,7 @@ def extract_attribute(attribute_line):
 	return (line[0:equal_pos], line[equal_pos+1:])
 
 # get stats one file at a time
+stats = {}
 for log_file_path in sys.argv[1:]:
 	log_file = os.path.basename(log_file_path)
 
@@ -26,8 +27,7 @@ for log_file_path in sys.argv[1:]:
 
 	step_name= os.path.splitext(log_file)[0]
 
-	stats = {}
-	log_file_handle = open(log_file)
+	log_file_handle = open(log_file_path)
 	for line in log_file_handle:
 		line = line.rstrip()
 		if not line or line is None:
@@ -39,6 +39,7 @@ for log_file_path in sys.argv[1:]:
 				stats[step_name] = {}
 
 			stats[step_name][attribute_name] = attribute_value
-	if stats:
-		print json.dumps(stats)
+
+if stats:
+	print json.dumps(stats)
 	
