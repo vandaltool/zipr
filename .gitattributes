@@ -3201,6 +3201,7 @@ tools/empty.json -text
 tools/extract_eip_from_core.sh -text
 tools/fast_annot.sh -text
 tools/fast_spri.sh -text
+tools/gather_stats.py -text
 tools/generate_exe.sh -text
 tools/generate_io_baseline.sh -text
 tools/generate_relocfile.sh -text
