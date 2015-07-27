@@ -1017,6 +1017,12 @@ tools/cover/SConstruct -text
 tools/cover/cover.cpp -text
 tools/cover/coverage.cpp -text
 tools/cover/coverage.h -text
+tools/fix_canaries/SConscript -text
+tools/fix_canaries/SConstruct -text
+tools/fix_canaries/fix_canaries.cpp -text
+tools/fix_canaries/fix_canaries.hpp -text
+tools/fix_canaries/fix_canaries_driver.cpp -text
+tools/fix_canaries/fix_canaries_xor.cpp -text
 tools/fix_rets/Makefile.in -text
 tools/fix_rets/SConscript -text
 tools/fix_rets/SConstruct -text
