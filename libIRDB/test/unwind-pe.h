@@ -178,6 +178,9 @@ read_sleb128 (unsigned char *p, _sleb128_t *val)
 
 typedef unsigned _Unwind_Internal_Ptr __attribute__((__mode__(__pointer__)));
 
+_Unwind_Internal_Ptr deref_unwind_ptr(uintptr_t to_deref);
+
+
 
 /* Load an encoded value from memory at P.  The value is returned in VAL;
    The function returns P incremented past the value.  BASE is as given
@@ -201,11 +204,16 @@ read_encoded_value_with_base (unsigned char encoding, _Unwind_Ptr base,
   union unaligned *u = (union unaligned *) p;
   _Unwind_Internal_Ptr result;
 
+
+#define deref_unwind_ptr_in_memory(a) \
+		( ptrsize==4 ? (*(int32_t*)(a)) : (*(int64_t*)(a))  )
+
   if (encoding == DW_EH_PE_aligned)
     {
       _Unwind_Internal_Ptr a = (_Unwind_Internal_Ptr) p;
       a = (a + ptrsize - 1) & - ptrsize;
       result = *(_Unwind_Internal_Ptr *) a;
+      result = deref_unwind_ptr_in_memory(a);
       p = (unsigned char *) (_Unwind_Internal_Ptr) (a + ptrsize);
     }
   else
@@ -273,7 +281,10 @@ read_encoded_value_with_base (unsigned char encoding, _Unwind_Ptr base,
 	  result += ((encoding & 0x70) == DW_EH_PE_pcrel
 		     ? (_Unwind_Internal_Ptr) ((uintptr_t)u+(uintptr_t)eh_offset) : base);
 	  if (encoding & DW_EH_PE_indirect)
-	    result = *(_Unwind_Internal_Ptr *) ((uintptr_t)result-(uintptr_t)eh_offset);
+	  {
+		result=deref_unwind_ptr(result);
+	    	//result = *(_Unwind_Internal_Ptr *) ((uintptr_t)result-(uintptr_t)eh_offset);
+	  }
 	}
     }
 

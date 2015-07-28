@@ -44,9 +44,12 @@ using namespace std;
 
 
 
+ELFIO::elfio *elfiop=NULL;
 void* eh_frame_addr=0;
 char* eh_frame_data=0;
-int eh_offset=0;
+intptr_t eh_offset=0;
+
+
 
 typedef          int  sword;
 typedef unsigned int  uword;
@@ -157,6 +160,22 @@ struct object
 };
 
 #include "unwind-pe.h"
+
+_Unwind_Internal_Ptr deref_unwind_ptr(uintptr_t to_deref)
+{
+	int i;
+	for(i=0; i<elfiop->sections.size();i++)
+	{
+		if(elfiop->sections[i]->get_address()<=to_deref && 
+			to_deref + ptrsize <= elfiop->sections[i]->get_address() + elfiop->sections[i]->get_size() )
+		{
+			intptr_t offset=(to_deref-elfiop->sections[i]->get_address());
+			const char* data=elfiop->sections[i]->get_data();
+			return deref_unwind_ptr_in_memory(&data[offset]);
+		}
+	}
+	assert(0);
+}
 
 struct lsda_header_info
 {
@@ -701,7 +720,7 @@ void read_ehframe(FileIR_t* virp, EXEIO::exeio* exeiop)
 	// 32/8 = 4
 
 	assert(exeiop);
-	ELFIO::elfio *elfiop=reinterpret_cast<ELFIO::elfio*>(exeiop->get_elfio());
+	elfiop=reinterpret_cast<ELFIO::elfio*>(exeiop->get_elfio());
 	if(!elfiop)
 		return;	// skip entire analysis for non-elf files as eh-frame is way different.
 
