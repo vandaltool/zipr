@@ -1027,8 +1027,12 @@ fi
 # copy output file into requested location.
 cp $my_outfile $stratafied_exe
 
-# make sure we only do this once there are no more updates to the peasoup_dir
 cd $newdir
+
+# gather stats into JSON format
+python $PEASOUP_HOME/tools/gather_stats.py logs/*.log > logs/stats.json
+
+# make sure we only do this once there are no more updates to the peasoup_dir
 perform_step installer none $PEASOUP_HOME/tools/do_installer.sh $USER $DB_PROGRAM_NAME $JOBID $PWD
 cd - > /dev/null 2>&1
 

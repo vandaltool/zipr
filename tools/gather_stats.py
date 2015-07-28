@@ -27,18 +27,18 @@ for log_file_path in sys.argv[1:]:
 
 	step_name= os.path.splitext(log_file)[0]
 
-	log_file_handle = open(log_file_path)
-	for line in log_file_handle:
-		line = line.rstrip()
-		if not line or line is None:
-			continue
+	with open(log_file_path, 'r') as f:
+		for line in f:
+			line = line.rstrip()
+			if not line or line is None:
+				continue
 		
-		if re.search(ATTRIBUTE, line): 
-			(attribute_name, attribute_value) = extract_attribute(line.rstrip())
-			if not step_name in stats:
-				stats[step_name] = {}
+			if re.search(ATTRIBUTE, line): 
+				(attribute_name, attribute_value) = extract_attribute(line.rstrip())
+				if not step_name in stats:
+					stats[step_name] = {}
 
-			stats[step_name][attribute_name] = attribute_value
+				stats[step_name][attribute_name] = attribute_value
 
 if stats:
 	print json.dumps(stats)
