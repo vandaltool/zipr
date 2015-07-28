@@ -2,6 +2,7 @@
 
 # Needed to build PEASOUP components
 BASE_PKGS="
+  scons
   dwarfdump
   bison
   flex
