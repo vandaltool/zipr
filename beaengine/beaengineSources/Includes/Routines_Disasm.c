@@ -97,8 +97,10 @@ int __bea_callspec__ InitVariables (PDISASM pMyDisasm) {
 	(*pMyDisasm).Argument1.ArgType = NO_ARGUMENT;
 	(*pMyDisasm).Argument2.ArgType = NO_ARGUMENT;
 	(*pMyDisasm).Argument3.ArgType = NO_ARGUMENT;
+	(*pMyDisasm).Argument4.ArgType = NO_ARGUMENT;
     (*pMyDisasm).Argument2.AccessMode = READ;
     (*pMyDisasm).Argument3.AccessMode = READ;
+    (*pMyDisasm).Argument4.AccessMode = READ;
     (void) memset (&(*pMyDisasm).Instruction, 0, sizeof (INSTRTYPE));
     GV.TAB_ = (UInt32)(*pMyDisasm).Options & 0xff;
     GV.SYNTAX_ = (UInt32)(*pMyDisasm).Options & 0xff00;

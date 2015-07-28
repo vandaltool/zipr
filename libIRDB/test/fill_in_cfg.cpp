@@ -268,7 +268,7 @@ void add_new_instructions(FileIR_t *firp)
         		virtual_offset_t second=elfiop.sections[secndx]->get_address()+elfiop.sections[secndx]->get_size();
 
 			/* is the missed instruction in this section */
-			if(first<=missed_address && missed_address<=second)
+			if(first<=missed_address && missed_address<second)
 			{
 				const char* data=elfiop.sections[secndx]->get_data();
 				// second=data?
@@ -281,6 +281,7 @@ void add_new_instructions(FileIR_t *firp)
                 		disasm.Options = NasmSyntax + PrefixedNumeral;
                 		disasm.Archi = firp->GetArchitectureBitWidth();
                 		disasm.EIP = (UIntPtr) &data[offset_into_section];
+				disasm.SecurityBlock=elfiop.sections[secndx]->get_size()-offset_into_section;
                 		disasm.VirtualAddr = missed_address;
                 		int instr_len = Disasm(&disasm);
 
@@ -292,8 +293,12 @@ void add_new_instructions(FileIR_t *firp)
 				/* if we found the instruction, but can't disassemble it, then we skip out for now */
 				if(instr_len==OUT_OF_RANGE || instr_len==UNKNOWN_OPCODE)
 				{
+					if(getenv("VERBOSE_CFG"))
+						cout<<"Found invalid insn at "<<missed_address<<endl;
 					break;
 				}
+				else if(getenv("VERBOSE_CFG"))
+					cout<<"Found valid insn at "<<missed_address<<": "<<disasm.CompleteInstr<<endl;
 
 				/* intel instructions have a max size of 16 */
 				assert(1<=instr_len && instr_len<=16);
