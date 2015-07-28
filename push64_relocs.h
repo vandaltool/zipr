@@ -96,7 +96,6 @@ class Push64Relocs_t : public Zipr_SDK::ZiprPluginInterface_t
 			libIRDB::Relocation_t* reloc=NULL;
 			if(reloc=FindPush64Relocation(insn))
 			{
-				assert(insn->GetDataBits()[0]==0x68);
 				return reloc; 
 			}
 			if(reloc=Find32BitRelocation(insn))
