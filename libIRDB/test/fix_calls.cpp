@@ -336,9 +336,8 @@ static void convert_to_jump(Instruction_t* insn, int offset)
 	}
 
 
-	int op_index=0;
-	if((insn->GetDataBits()[0]&0xf0)==0x40)
-		op_index++;
+	/* skip over any prefixes */
+	int op_index=d.Prefix.Number;
 
 	// on the opcode.  assume no prefix here 	
 	switch((unsigned char)newbits[op_index])
