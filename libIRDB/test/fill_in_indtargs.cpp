@@ -1004,16 +1004,19 @@ DN:   0x4824XX: .long 0x4824e0-LN
 		{
 			if(getenv("IB_VERBOSE"))
 				cout << "      INVALID target" << endl;
+			break;
 		}
 
 		offset+=sizeof(virtual_offset_t);
 		entry++;
-	} while (1);
+	} while ( entry<=table_size);
 
 	
 	// valid switch table? may or may not have default: in the switch
 	// table size = 8, #entries: 9 b/c of default
 	cout << "pic64: table size: " << table_size << " #entries: " << entry << " ibtargets.size: " << ibtargets.size() << endl;
+
+	// note that there may be an off-by-one error here as table size depends on whether instruction I2 is a jb or jbe.
 	if (table_size == ibtargets.size() || table_size == (ibtargets.size()-1))
 	{
 		cout << "pic64: valid switch table detected" << endl;
