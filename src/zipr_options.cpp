@@ -50,8 +50,6 @@ ZiprOptions_t* ZiprOptions_t::parse_args(int p_argc, char* p_argv[])
 {
 	ZiprOptions_t *opt=new ZiprOptions_t;
 	opt->SetVerbose(true);
-	extern char *optarg;
-	extern int optind, opterr, optopt;
 	int option = 0;
 	char options[] = "!qz:o:v:c:j:m:";
 	struct option long_options[] = {

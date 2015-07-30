@@ -40,10 +40,10 @@ class Zipr_t
 		Zipr_t(libIRDB::FileIR_t* p_firp, ZiprOptions_t &p_opts) : 
 			m_firp(p_firp), 
 			m_opts(p_opts), 
-			memory_space(&p_opts), 
 			m_stats(NULL), 
 			elfiop(new ELFIO::elfio), 
 			start_of_new_space(0),
+			memory_space(&p_opts), 
 			plugman(&memory_space, elfiop, p_firp, (Zipr_SDK::Options_t*)&p_opts, &final_insn_locations)
 		{ 
 			bss_needed=0;

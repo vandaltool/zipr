@@ -500,9 +500,9 @@ bool Zipr_t::ShouldPinImmediately(Instruction_t *upinsn)
 	 */
 	{
 		if(m_opts.GetVerbose())
-			printf("Using pin_at_next_byte special case, adrs=%x,%x.\n",
-				upinsn_ibta->GetVirtualOffset(),
-				pin_at_next_byte->GetAddress()->GetVirtualOffset());
+			cout<<"Using pin_at_next_byte special case, addrs="<<
+				upinsn_ibta->GetVirtualOffset()<<","<<
+				pin_at_next_byte->GetAddress()->GetVirtualOffset()<<endl;
 		/*
 		 * Because upinsn is longer than 
 		 * 1 byte, we must be somehow
@@ -570,7 +570,7 @@ void Zipr_t::OptimizePinnedFallthroughs()
 			/*
 			 * Unreserve any reserved space for this instructions.
 			 */
-			for (int j = up.GetRange().GetStart(); j<up.GetRange().GetEnd(); j++)
+			for (unsigned int j = up.GetRange().GetStart(); j<up.GetRange().GetEnd(); j++)
 			{
 				memory_space.MergeFreeRange(j);
 			}
@@ -634,7 +634,7 @@ void Zipr_t::PreReserve2ByteJumpTargets()
 						(void*)(uintptr_t)upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset());
 
 					up.SetRange(Range_t(addr+i, addr+i+size));
-					for (int j = up.GetRange().GetStart(); j<up.GetRange().GetEnd(); j++)
+					for (unsigned int j = up.GetRange().GetStart(); j<up.GetRange().GetEnd(); j++)
 					{
 						memory_space.SplitFreeRange(j);
 					}
@@ -700,7 +700,7 @@ void Zipr_t::ReservePinnedInstructions()
 			if(m_opts.GetVerbose())
 				printf("Final pinning %p-%p.  fid=%d\n", (void*)addr, (void*)(addr+upinsn->GetDataBits().size()-1),
 				upinsn->GetAddress()->GetFileID());
-			for(int i=0;i<upinsn->GetDataBits().size();i++)
+			for(unsigned int i=0;i<upinsn->GetDataBits().size();i++)
 			{
 				memory_space[addr+i]=upinsn->GetDataBits()[i];
 				memory_space.SplitFreeRange(addr+i);
@@ -725,7 +725,7 @@ void Zipr_t::ReservePinnedInstructions()
 												 (char)0x00};           /* make counting easier (see*/
 												                        /* below). */
 			char *lea_bytes = NULL;
-			int lea_bytes_size = 0;
+			unsigned int lea_bytes_size = 0;
 			char lea_bytes_64[]={(char)0x48,(char)0x8d, /* lea rsp, rsp+8 */
 			                     (char)0x64,(char)0x24,
 												   (char)0x08};
@@ -761,7 +761,7 @@ void Zipr_t::ReservePinnedInstructions()
 			 * Only assert enough space for lea right now. We
 			 * check for the two byte jump space later.
 			 */
-			for (int i = 0; i<lea_bytes_size; i++) {
+			for (unsigned int i = 0; i<lea_bytes_size; i++) {
 				assert(
 					memory_space.find(addr+sizeof(push_bytes)+i) == memory_space.end()
 				);
@@ -792,7 +792,7 @@ void Zipr_t::ReservePinnedInstructions()
 			two_byte_pins.insert(up);
 		}
 
-		for(int i=0;i<sizeof(bytes);i++)
+		for(unsigned int i=0;i<sizeof(bytes);i++)
 		{
 			assert(memory_space.find(addr+i) == memory_space.end() );
 			memory_space[addr+i]=bytes[i];
@@ -839,7 +839,7 @@ void Zipr_t::ExpandPinnedInstructions()
 			/*
 			 * Unreserve those bytes that we reserved before!
 			 */
-			for (int j = up.GetRange().GetStart(); j<up.GetRange().GetEnd(); j++)
+			for (unsigned int j = up.GetRange().GetStart(); j<up.GetRange().GetEnd(); j++)
 			{
 				memory_space.MergeFreeRange(j);
 			}
@@ -890,7 +890,7 @@ void Zipr_t::Fix2BytePinnedInstructions()
 			/*
 			 * Always clear out the previously reserved space.
 			 */
-			for (int j = up.GetRange().GetStart(); j<up.GetRange().GetEnd(); j++)
+			for (unsigned int j = up.GetRange().GetStart(); j<up.GetRange().GetEnd(); j++)
 			{
 				memory_space.MergeFreeRange(j);
 			}
@@ -929,7 +929,7 @@ void Zipr_t::Fix2BytePinnedInstructions()
 				new_up.SetUpdatedAddress(up.GetRange().GetStart());
 
 				char bytes[]={(char)0xeb,(char)0}; // jmp rel8
-				for(int i=0;i<sizeof(bytes);i++)
+				for(unsigned int i=0;i<sizeof(bytes);i++)
 				{
 					assert(memory_space.find(up.GetRange().GetStart()+i) == memory_space.end() );
 					memory_space[up.GetRange().GetStart()+i]=bytes[i];
@@ -1008,7 +1008,7 @@ void Zipr_t::OptimizePinnedInstructions()
 #if 0
 void Zipr_t::PlopBytes(RangeAddress_t addr, const char the_byte[], int num)
 {
-	for(int i=0;i<num;i++)
+	for(unsigned int i=0;i<num;i++)
 	{
 		PlopByte(addr+i,the_byte[i]);
 	}
@@ -1024,7 +1024,7 @@ void Zipr_t::PlopByte(RangeAddress_t addr, char the_byte)
 void Zipr_t::PlopJump(RangeAddress_t addr)
 {
 	char bytes[]={(char)0xe9,(char)0,(char)0,(char)0,(char)0}; // jmp rel8
-	for(int i=0;i<sizeof(bytes);i++)        // don't check bytes 0-1, because they've got the short byte jmp
+	for(unsigned int i=0;i<sizeof(bytes);i++)        // don't check bytes 0-1, because they've got the short byte jmp
 	{
 		memory_space.PlopByte(addr+i,bytes[i]);
 	}
@@ -1401,8 +1401,8 @@ RangeAddress_t Zipr_t::PlopInstruction(Instruction_t* insn,RangeAddress_t addr)
 		abs_displacement = *displacement;
 		*displacement = abs_displacement - addr;
 
-		printf("absolute displacement: 0x%x\n", abs_displacement);
-		printf("relative displacement: 0x%x\n", *displacement);
+		cout<<"absolute displacement: "<< hex << abs_displacement<<endl;
+		cout<<"relative displacement: "<< hex << *displacement<<endl;
 
 		/*
 		 * Update the instruction with the relative displacement.
@@ -1537,44 +1537,72 @@ void Zipr_t::RewritePCRelOffset(RangeAddress_t from_addr,RangeAddress_t to_addr,
 
 void Zipr_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)
 {
-	char insn_first_byte=memory_space[from_addr];
-	char insn_second_byte=memory_space[from_addr+1];
+	unsigned char insn_first_byte=memory_space[from_addr];
+	unsigned char insn_second_byte=memory_space[from_addr+1];
 
 	switch(insn_first_byte)
 	{
-		case (char)0xF: // two byte escape
+		case (unsigned char)0xF: // two byte escape
 		{
-			assert( insn_second_byte==(char)0x80 ||	// should be a JCC 
-				insn_second_byte==(char)0x81 ||
-				insn_second_byte==(char)0x82 ||
-				insn_second_byte==(char)0x83 ||
-				insn_second_byte==(char)0x84 ||
-				insn_second_byte==(char)0x85 ||
-				insn_second_byte==(char)0x86 ||
-				insn_second_byte==(char)0x87 ||
-				insn_second_byte==(char)0x88 ||
-				insn_second_byte==(char)0x89 ||
-				insn_second_byte==(char)0x8a ||
-				insn_second_byte==(char)0x8b ||
-				insn_second_byte==(char)0x8c ||
-				insn_second_byte==(char)0x8d ||
-				insn_second_byte==(char)0x8e ||
-				insn_second_byte==(char)0x8f );
+			assert( insn_second_byte==(unsigned char)0x80 ||	// should be a JCC 
+				insn_second_byte==(unsigned char)0x81 ||
+				insn_second_byte==(unsigned char)0x82 ||
+				insn_second_byte==(unsigned char)0x83 ||
+				insn_second_byte==(unsigned char)0x84 ||
+				insn_second_byte==(unsigned char)0x85 ||
+				insn_second_byte==(unsigned char)0x86 ||
+				insn_second_byte==(unsigned char)0x87 ||
+				insn_second_byte==(unsigned char)0x88 ||
+				insn_second_byte==(unsigned char)0x89 ||
+				insn_second_byte==(unsigned char)0x8a ||
+				insn_second_byte==(unsigned char)0x8b ||
+				insn_second_byte==(unsigned char)0x8c ||
+				insn_second_byte==(unsigned char)0x8d ||
+				insn_second_byte==(unsigned char)0x8e ||
+				insn_second_byte==(unsigned char)0x8f );
 
 			RewritePCRelOffset(from_addr,to_addr,6,2);
 			break;
 		}
 
-		case (char)0xe8:	// call
-		case (char)0xe9:	// jmp
+		case (unsigned char)0xe8:	// call
+		case (unsigned char)0xe9:	// jmp
 		{
 			RewritePCRelOffset(from_addr,to_addr,5,1);
 			break;
 		}
 
+		case (unsigned char)0xf0: // lock
+		case (unsigned char)0xf2: // rep/repe
+		case (unsigned char)0xf3: // repne
+		case (unsigned char)0x2e: // cs override
+		case (unsigned char)0x36: // ss override
+		case (unsigned char)0x3e: // ds override
+		case (unsigned char)0x26: // es override
+		case (unsigned char)0x64: // fs override
+		case (unsigned char)0x65: // gs override
+		case (unsigned char)0x66: // operand size override
+		case (unsigned char)0x67: // address size override
+		{
+			cout << "found patch for instruction with prefix.  prefix is: "<<hex<<insn_first_byte<<".  Recursing at "<<from_addr+1<<dec<<endl;
+			// recurse at addr+1 if we find a prefix byte has been plopped.
+			return this->ApplyPatch(from_addr+1, to_addr);
+		}
 		default:
+		{
+			if(m_firp->GetArchitectureBitWidth()==64) /* 64-bit x86 machine  assumed */
+			{
+				/* check for REX prefix */
+				if((unsigned char)0x40 <= insn_first_byte  && insn_first_byte <= (unsigned char)0x4f)
+				{
+					cout << "found patch for instruction with prefix.  prefix is: "<<hex<<insn_first_byte<<".  Recursing at "<<from_addr+1<<dec<<endl;
+					// recurse at addr+1 if we find a prefix byte has been plopped.
+					return this->ApplyPatch(from_addr+1, to_addr);
+				}
+			}
 			std::cerr << "insn_first_byte: 0x" << hex << (int)insn_first_byte << dec << std::endl;
 			assert(0);
+		}
 	}
 }
 

@@ -38,7 +38,7 @@ class ZiprMemorySpace_t : public MemorySpace_t
 {
 	public:
 		ZiprMemorySpace_t(ZiprOptions_t *opts) :
-			m_opts(opts), max_plopped(0), min_plopped(-1)
+			free_ranges(), m_opts(opts), max_plopped(0), min_plopped(-1)
 		{ 
 		}
 
@@ -87,8 +87,8 @@ class ZiprMemorySpace_t : public MemorySpace_t
 		ZiprOptions_t *m_opts;
 
 	private:
-		RangeAddress_t min_plopped;
 		RangeAddress_t max_plopped;
+		RangeAddress_t min_plopped;
 };
 
 #endif
