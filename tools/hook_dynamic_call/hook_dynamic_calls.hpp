@@ -29,6 +29,7 @@ class HookDynamicCalls : public libTransform::Transform
 		~HookDynamicCalls();
 		void SetToHook(std::map<std::string,int> to_hook);
 	private:
+		bool GetPltCallTarget(libIRDB::Instruction_t *, virtual_offset_t &);
 		libIRDB::Instruction_t *add_instrumentation(libIRDB::Instruction_t *,unsigned long);
 		virtual_offset_t GetSymbolOffset(string &);
 		ELFIO::Elf64_Addr ReadAddressInSectionAtOffset(ELFIO::section *,ELFIO::Elf64_Off);

@@ -184,10 +184,11 @@ Instruction_t *HookDynamicCalls::add_instrumentation(Instruction_t *site,unsigne
 {
 	FileIR_t *firp = getFileIR();
 	virtual_offset_t postCallbackReturn = getAvailableAddress();
-	char pushRetBuf[100], movIdBuf[100], movRaxBuf[100];
+	char pushRetBuf[100], movIdBuf[100], movRaxBuf[100], movRspBuf[100];
 	sprintf(pushRetBuf,"push  0x%x", postCallbackReturn);
 	sprintf(movIdBuf,"mov rdi, 0x%x", id);
 	sprintf(movRaxBuf,"mov rsi, rax");
+	sprintf(movRspBuf,"mov rdx, rbp");
 
 	Instruction_t *tmp=site, *callback=NULL, *post_callback=NULL;
 
@@ -210,6 +211,7 @@ Instruction_t *HookDynamicCalls::add_instrumentation(Instruction_t *site,unsigne
 	tmp=insertAssemblyAfter(firp,tmp,"pushf");
 	tmp=insertAssemblyAfter(firp,tmp,movIdBuf);
 	tmp=insertAssemblyAfter(firp,tmp,movRaxBuf);
+	tmp=insertAssemblyAfter(firp,tmp,movRspBuf);
 	/*
 	 * The "bogus" return address that we push here
 	 * will be popped by the callback handler 
@@ -248,6 +250,88 @@ void HookDynamicCalls::SetToHook(map<string,int> to_hook)
 	m_to_hook = to_hook;
 }
 
+bool HookDynamicCalls::GetPltCallTarget(Instruction_t *insn,
+	virtual_offset_t &target_addr) {
+
+	section *got_plt_section = NULL;
+	Instruction_t *target = NULL;
+	virtual_offset_t target_target = 0;
+	string target_bits;
+	Elf64_Addr target_target_target;
+
+	LoadElf();
+	got_plt_section = m_elfiop->sections[".got.plt"];
+
+	/*
+	 * PLT entry:
+	 *
+	 * L0: jmp *CALL_FIXED (a)
+	 * L1: push CALL_FIXUP_IDX (b)
+	 * L2: jmp  CALL_FIXER_UPPER (c)
+	 * ...
+	 * FORK_FIXED: &L1 (d)
+	 */
+
+	/*
+	 * Is this an instruction with a target?
+	 * That's a must.
+	 */
+	if (!(target = insn->GetTarget()))
+		return false;
+
+	/*
+	 * a
+	 */
+	target_bits = target->GetDataBits();
+	
+	/*
+	 * Determine the type of the operand
+	 * based on the opcode. Is it relative?
+	 * Is it absolute?
+	 * 
+	 * target_target: CALL_FIXED 
+	 */
+	switch ((uint8_t)target_bits[0])
+	{
+		case 0xFF:
+			target_target = *((uint32_t*)&target_bits[2]) + target_bits.length();
+			break;
+		default:
+			cout << "Not a handled control instruction opcode." << endl;
+			break;
+	}
+	/*
+	 * target_target contains the target of
+	 * the target instruction, if one such
+	 * exists.
+	 */
+	if (!target_target)
+		return false;
+
+	cout << "target_target: 0x"
+	     << std::hex << target_target
+			 << endl;
+	/*
+	 * Dereference the address at the target of the
+	 * target to determine what /it/ points at.
+	 * I.e., *CALL_FIXED
+	 */
+	target_target_target = ReadAddressInSectionAtOffset(
+		got_plt_section,
+		target_target - got_plt_section->get_address());
+	cout << "target_target_target: 0x" 
+	     << std::hex << target_target_target
+			 << endl;
+
+	/*
+	 * Subtract 0x6 since that is the offset
+	 * from the start of the PLT entry to the
+	 * so-called second half (which starts at L1)
+	 */
+	target_addr = target_target_target - 0x6;
+	return true;
+}
+
 int HookDynamicCalls::execute()
 {
 	assert(m_to_hook.size() != 0);
@@ -264,16 +348,21 @@ int HookDynamicCalls::execute()
 		  ++it)
 		{
 			Instruction_t* insn = *it;
-			Instruction_t *target = NULL;
-			if (target = insn->GetTarget())
+			virtual_offset_t target;
+			/*
+			 * This is not quite done yet: Consider
+			 * redirects that are rewritten as push/jmp
+			 * combinations.
+			 */
+			if (GetPltCallTarget(insn, target))
 			{
+				cout << "target: " << std::hex << target << endl;
 				map<string,int>::iterator m_to_hook_iterator = m_to_hook.begin();
 				for (; m_to_hook_iterator != m_to_hook.end(); m_to_hook_iterator++)
 				{
 					string to_hook = m_to_hook_iterator->first;
 					int hook_id = m_to_hook_iterator->second;
-					if (target->GetAddress()->GetVirtualOffset() == 
-					    GetSymbolOffset(to_hook))
+					if (target == GetSymbolOffset(to_hook))
 					{
 						cout << "hooking " << to_hook << " call at 0x" 
 						     << std::hex << insn->GetAddress()->GetVirtualOffset()
@@ -284,5 +373,5 @@ int HookDynamicCalls::execute()
 			}
 		}
 	}
-	return true;
+	return false;
 }
