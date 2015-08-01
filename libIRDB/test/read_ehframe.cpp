@@ -1,3 +1,5 @@
+
+
 /*
  * Copyright (c) 2014 - Zephyr Software LLC
  *
@@ -47,6 +49,7 @@ using namespace std;
 ELFIO::elfio *elfiop=NULL;
 void* eh_frame_addr=0;
 char* eh_frame_data=0;
+int eh_frame_data_total_size;
 intptr_t eh_offset=0;
 
 
@@ -159,7 +162,68 @@ struct object
 
 };
 
+void * ptr_to_data_to_addr(uintptr_t data_addr);
+void * addr_to_ptr_to_data(uintptr_t to_deref);
+intptr_t addr_to_p_offset(uintptr_t addr);
+
+
 #include "unwind-pe.h"
+
+void * ptr_to_data_to_addr(uintptr_t data_addr)
+{
+	int i;
+	if(eh_frame_data<=(void*)data_addr && 
+		(void*)data_addr <= (void*)eh_frame_data+eh_frame_data_total_size)
+	{
+		intptr_t offset=((uintptr_t)data_addr-(uintptr_t)eh_frame_data);
+		const char* data=(const char*)(uintptr_t)eh_frame_addr;
+		return (void*)&data[offset];
+	}
+	for(i=0; i<elfiop->sections.size();i++)
+	{
+		if(elfiop->sections[i]->get_data()<=(void*)data_addr && 
+			(void*)data_addr < (void*)elfiop->sections[i]->get_data() + elfiop->sections[i]->get_size() )
+		{
+			intptr_t offset=((uintptr_t)data_addr-(uintptr_t)elfiop->sections[i]->get_data());
+			const char* data=(const char*)(uintptr_t)elfiop->sections[i]->get_address();
+			return (void*)&data[offset];
+		}
+	}
+	assert(0);
+}
+
+
+intptr_t addr_to_p_offset(uintptr_t to_deref)
+{
+	int i;
+	for(i=0; i<elfiop->sections.size();i++)
+	{
+		if(elfiop->sections[i]->get_address()<=to_deref && 
+			to_deref < elfiop->sections[i]->get_address() + elfiop->sections[i]->get_size() )
+		{
+			intptr_t offset=((uintptr_t)to_deref-(uintptr_t)elfiop->sections[i]->get_address());
+			const char* data=elfiop->sections[i]->get_data();
+			return (intptr_t)((uintptr_t)elfiop->sections[i]->get_address()- (uintptr_t)&data[offset]); 
+		}
+	}
+	assert(0);
+}
+
+void * addr_to_ptr_to_data(uintptr_t to_deref)
+{
+	int i;
+	for(i=0; i<elfiop->sections.size();i++)
+	{
+		if(elfiop->sections[i]->get_address()<=to_deref && 
+			to_deref < elfiop->sections[i]->get_address() + elfiop->sections[i]->get_size() )
+		{
+			intptr_t offset=((uintptr_t)to_deref-(uintptr_t)elfiop->sections[i]->get_address());
+			const char* data=elfiop->sections[i]->get_data();
+			return (void*)&data[offset];
+		}
+	}
+	assert(0);
+}
 
 _Unwind_Internal_Ptr deref_unwind_ptr(uintptr_t to_deref)
 {
@@ -484,8 +548,17 @@ classify_object_over_fdes (struct object *ob, fde *this_fde)
 
 void print_lsda_handlers(lsda_header_info* info, unsigned char* p)
 {
+	// change to lsda section;
+	uintptr_t p_addr=((uintptr_t)p+(uintptr_t)eh_offset);
+	p=(unsigned char*)addr_to_ptr_to_data((uintptr_t)p_addr);
+	uintptr_t action_table_in_data=(uintptr_t)addr_to_ptr_to_data((uintptr_t)info->action_table);
+//	intptr_t p_offset=(intptr_t)p-(intptr_t)ptr_to_addr_to_data_to_addr((uintptr_t)p);
   	// Search the call-site table for the action associated with this IP.
-  	while (((uintptr_t)p+(uintptr_t)eh_offset) < (uintptr_t)info->action_table)
+  	while (
+			((uintptr_t)p) <  (uintptr_t)action_table_in_data
+//		((uintptr_t)p+(uintptr_t)p_offset) <  (uintptr_t)info->action_table
+//		(uintptr_t)ptr_to_data_to_addr((uintptr_t)p) < (uintptr_t)info->action_table
+		)
     	{
       		_Unwind_Ptr cs_start=0, cs_len=0, cs_lp=0;
       		_uleb128_t cs_action=0;
@@ -509,7 +582,7 @@ void print_lsda_handlers(lsda_header_info* info, unsigned char* p)
 		     		<<"cs_action: "<< cs_action << endl;
 
 #ifndef TEST
-			bool possible_target(virtual_offset_t p, virtual_offset_t at=0);
+			bool possible_target(uintptr_t p, uintptr_t at=0);
 
 			/* the landing pad is a possible target if an exception is thrown */ 
 			possible_target(cs_lp+info->Start);
@@ -520,8 +593,6 @@ void print_lsda_handlers(lsda_header_info* info, unsigned char* p)
 #endif
 		}
     	}
-
-	
 }
 
 int get_fde_encoding (struct dwarf_fde *f)
@@ -567,6 +638,8 @@ which is set here:
   	if (info->ttype_encoding != DW_EH_PE_omit)
     	{
       		p = read_uleb128 (p, &tmp);
+		// this doesn't work
+      		//info->TType = (unsigned char*)ptr_to_data_to_addr((uintptr_t)(p + tmp));
       		info->TType = p + tmp + eh_offset;
     	}
   	else
@@ -582,6 +655,7 @@ which is set here:
 
   	p = read_uleb128 (p, &tmp);
   	info->action_table = p + tmp + eh_offset;
+  	//info->action_table = (unsigned char*)ptr_to_data_to_addr((uintptr_t)(p + tmp));
 	cout<<"Action table: "<<std::hex<<(uintptr_t)info->action_table<<endl;
 
   	return p;
@@ -605,7 +679,7 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
   	for (; ! last_fde (ob, this_fde); this_fde = next_fde (this_fde))
     	{
 		count++;
-		cout<<"Examining FDE #"<<std::dec<<count<<endl;
+		cout<<"Examining FDE #"<<std::dec<<count<<" at offset "<<hex<<(uintptr_t)this_fde-(uintptr_t)eh_frame_data<<endl;
       		struct dwarf_cie *this_cie=NULL;
       		_Unwind_Ptr pc_begin=0, pc_range=0;
 	
@@ -642,8 +716,15 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
 			lsda_header_info info;
 			memset(&info, 0, sizeof(info));
 			cout.flush();
-			unsigned char* lsda_p=parse_lsda_header ((unsigned char*)((uintptr_t)eh_frame_data+(uintptr_t)lsda-(uintptr_t)eh_frame_addr), &info, ob, this_fde);
+// change sections;
+uintptr_t save_eh_offset=eh_offset;
+eh_offset=addr_to_p_offset(lsda);
+			unsigned char* lsda_p=parse_lsda_header (
+				(unsigned char*)addr_to_ptr_to_data(lsda)
+//(unsigned char*)((uintptr_t)eh_frame_data+(uintptr_t)lsda-(uintptr_t)eh_frame_addr)
+				, &info, ob, this_fde);
 			print_lsda_handlers(&info, lsda_p); 
+eh_offset=save_eh_offset;
 			cout.flush();
     		}
 
@@ -771,6 +852,7 @@ void read_ehframe(FileIR_t* virp, EXEIO::exeio* exeiop)
 
 // 	char *p=&strtab[ sechdrs[secndx+1].sh_name];
 	const char *p=elfiop->sections[secndx+1]->get_name().c_str(); 
+#if 1
         if (strcmp(".gcc_except_table",p)!=0)
 	{
 		cout<<"Did not find .gcc_except_table immediately after .eh_frame\n";
@@ -782,8 +864,13 @@ void read_ehframe(FileIR_t* virp, EXEIO::exeio* exeiop)
 		(elfiop->sections[eh_frame_index+1]->get_address()+
 		 elfiop->sections[eh_frame_index+1]->get_size()   ) - (uintptr_t)eh_frame_addr;
 	}
+#else
+	total_size=elfiop->sections[eh_frame_index]->get_size()+1;
+#endif
+	eh_frame_data_total_size=total_size;
 	
-
+	
+#if 0
 	// collect eh_frame and gcc_except_table into one memory region
         eh_frame_data=(char*)calloc(1,total_size);
 	memcpy(eh_frame_data,elfiop->sections[eh_frame_index]->get_data(),
@@ -795,13 +882,17 @@ void read_ehframe(FileIR_t* virp, EXEIO::exeio* exeiop)
 			elfiop->sections[eh_frame_index+1]->get_data(),
 			elfiop->sections[eh_frame_index+1]->get_size());
 	}
+#else
+	eh_frame_data=(char*)elfiop->sections[eh_frame_index]->get_data();
+#endif
 
 	uintptr_t offset;
+//	careful with offset and eh_offset as it can only be used for eh_frame_data offsetting, not offsetting into other addrs.
 	eh_offset=offset=(uintptr_t)eh_frame_addr-(uintptr_t)eh_frame_data;
 
 
 	struct object ob;
-	register_frame_info(eh_frame_data,&ob);
+	register_frame_info( eh_frame_data, &ob);
 //classify_object_over_fdes (struct object *ob, fde *this_fde)
 	classify_object_over_fdes(&ob,ob.u.single);
 	linear_search_fdes (&ob,ob.u.single,offset); 

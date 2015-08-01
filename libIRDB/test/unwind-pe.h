@@ -279,7 +279,9 @@ read_encoded_value_with_base (unsigned char encoding, _Unwind_Ptr base,
       if (result != 0)
 	{
 	  result += ((encoding & 0x70) == DW_EH_PE_pcrel
-		     ? (_Unwind_Internal_Ptr) ((uintptr_t)u+(uintptr_t)eh_offset) : base);
+		     ? (_Unwind_Internal_Ptr) ptr_to_data_to_addr((uintptr_t)u) : base);
+//		     ? (_Unwind_Internal_Ptr) ((uintptr_t)u+(uintptr_t)eh_offset) : base);
+
 	  if (encoding & DW_EH_PE_indirect)
 	  {
 		result=deref_unwind_ptr(result);
