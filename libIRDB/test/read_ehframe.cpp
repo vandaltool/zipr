@@ -181,6 +181,9 @@ void * ptr_to_data_to_addr(uintptr_t data_addr)
 	}
 	for(i=0; i<elfiop->sections.size();i++)
 	{
+		// skip sections that aren't loaded.
+		if((elfiop->sections[i]->get_flags() & SHF_ALLOC) != SHF_ALLOC)
+			continue;
 		if(elfiop->sections[i]->get_data()<=(void*)data_addr && 
 			(void*)data_addr < (void*)elfiop->sections[i]->get_data() + elfiop->sections[i]->get_size() )
 		{
@@ -198,6 +201,9 @@ intptr_t addr_to_p_offset(uintptr_t to_deref)
 	int i;
 	for(i=0; i<elfiop->sections.size();i++)
 	{
+		// skip sections that aren't loaded.
+		if((elfiop->sections[i]->get_flags() & SHF_ALLOC) != SHF_ALLOC)
+			continue;
 		if(elfiop->sections[i]->get_address()<=to_deref && 
 			to_deref < elfiop->sections[i]->get_address() + elfiop->sections[i]->get_size() )
 		{
@@ -214,6 +220,9 @@ void * addr_to_ptr_to_data(uintptr_t to_deref)
 	int i;
 	for(i=0; i<elfiop->sections.size();i++)
 	{
+		// skip sections that aren't loaded.
+		if((elfiop->sections[i]->get_flags() & SHF_ALLOC) != SHF_ALLOC)
+			continue;
 		if(elfiop->sections[i]->get_address()<=to_deref && 
 			to_deref < elfiop->sections[i]->get_address() + elfiop->sections[i]->get_size() )
 		{
@@ -230,6 +239,9 @@ _Unwind_Internal_Ptr deref_unwind_ptr(uintptr_t to_deref)
 	int i;
 	for(i=0; i<elfiop->sections.size();i++)
 	{
+		// skip sections that aren't loaded.
+		if((elfiop->sections[i]->get_flags() & SHF_ALLOC) != SHF_ALLOC)
+			continue;
 		if(elfiop->sections[i]->get_address()<=to_deref && 
 			to_deref + ptrsize <= elfiop->sections[i]->get_address() + elfiop->sections[i]->get_size() )
 		{
@@ -446,7 +458,7 @@ extract_cie_info (struct dwarf_cie *cie,
       if (aug[0] == 'L')
         {
           *lsda_encoding = *p++;
-	cout<<"lsda encoding "<<std::dec<<*lsda_encoding<<endl;
+	cout<<"lsda encoding "<<std::hex<<*lsda_encoding<<endl;
           aug += 1;
         }
 
@@ -454,7 +466,7 @@ extract_cie_info (struct dwarf_cie *cie,
       else if (aug[0] == 'R')
         {
           *fde_encoding = *p++;
-	cout<<"fde encoding "<<std::dec<<*fde_encoding<<endl;
+	cout<<"fde encoding "<<std::hex<<*fde_encoding<<endl;
           aug += 1;
         }
 
@@ -680,13 +692,15 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
     	{
 		count++;
 		cout<<"Examining FDE #"<<std::dec<<count<<" at offset "<<hex<<(uintptr_t)this_fde-(uintptr_t)eh_frame_data<<endl;
+		cout<<"FDE (in memory) addr is: "<<std::hex<<this_fde<<endl;
+		cout<<"FDE (in file) addr is: "<<std::hex<<(uintptr_t)this_fde-(uintptr_t)eh_frame_data+(uintptr_t)eh_frame_addr<<endl;
       		struct dwarf_cie *this_cie=NULL;
       		_Unwind_Ptr pc_begin=0, pc_range=0;
 	
       		/* Skip CIEs.  */
       		if (this_fde->CIE_delta == 0)
 		{
-			cout<<"Skipping CIE"<<endl;
+			cout<<"Skipping FDE because it's a CIE"<<endl;
         		continue;
 		}
 
@@ -716,16 +730,22 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
 			lsda_header_info info;
 			memset(&info, 0, sizeof(info));
 			cout.flush();
-// change sections;
-uintptr_t save_eh_offset=eh_offset;
-eh_offset=addr_to_p_offset(lsda);
-			unsigned char* lsda_p=parse_lsda_header (
-				(unsigned char*)addr_to_ptr_to_data(lsda)
+	
+			// lsda might be 0, which means we shouldn't load it!
+			if(lsda != 0 ) 
+			{
+				// change sections;
+				uintptr_t save_eh_offset=eh_offset;
+				eh_offset=addr_to_p_offset(lsda);
+				unsigned char* lsda_p=parse_lsda_header (
+					(unsigned char*)addr_to_ptr_to_data(lsda)
+// broken because lsda may be in a different section.
 //(unsigned char*)((uintptr_t)eh_frame_data+(uintptr_t)lsda-(uintptr_t)eh_frame_addr)
-				, &info, ob, this_fde);
-			print_lsda_handlers(&info, lsda_p); 
-eh_offset=save_eh_offset;
-			cout.flush();
+					, &info, ob, this_fde);
+				print_lsda_handlers(&info, lsda_p); 
+				eh_offset=save_eh_offset;
+				cout.flush();
+			}
     		}
 
 	
