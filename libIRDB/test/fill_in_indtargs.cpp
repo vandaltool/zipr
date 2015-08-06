@@ -571,6 +571,8 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 	DISASM dcmp;
 	Icmp->Disassemble(dcmp);
 	table_size = dcmp.Instruction.Immediat;
+	if(table_size<=0)
+		return;
 
 	// grab the offset out of the lea.
 	DISASM d2;
@@ -969,6 +971,8 @@ DN:   0x4824XX: .long 0x4824e0-LN
 	DISASM d1;
 	I1->Disassemble(d1);
 	table_size = d1.Instruction.Immediat;
+	if (table_size <= 0)
+		return;
 
 	set<Instruction_t *> ibtargets;
 	virtual_offset_t offset=D1-pSec->get_address();
@@ -1191,7 +1195,6 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DISASM d
 	DISASM d1;
 	I1->Disassemble(d1);
 	virtual_offset_t table_size = d1.Instruction.Immediat;
-
 	if (table_size <= 0) return;
 
 	if(getenv("IB_VERBOSE"))
