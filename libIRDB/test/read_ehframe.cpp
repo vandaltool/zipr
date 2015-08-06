@@ -563,11 +563,13 @@ void print_lsda_handlers(lsda_header_info* info, unsigned char* p)
 	// change to lsda section;
 	uintptr_t p_addr=((uintptr_t)p+(uintptr_t)eh_offset);
 	p=(unsigned char*)addr_to_ptr_to_data((uintptr_t)p_addr);
-	uintptr_t action_table_in_data=(uintptr_t)addr_to_ptr_to_data((uintptr_t)info->action_table);
+	// use -1 in case info->action table represents the end of a section.
+	uintptr_t action_table_in_data=(uintptr_t)addr_to_ptr_to_data((uintptr_t)info->action_table-1);
 //	intptr_t p_offset=(intptr_t)p-(intptr_t)ptr_to_addr_to_data_to_addr((uintptr_t)p);
   	// Search the call-site table for the action associated with this IP.
   	while (
-			((uintptr_t)p) <  (uintptr_t)action_table_in_data
+			// use <= because we we used -1 3 lines above.
+			((uintptr_t)p) <=  (uintptr_t)action_table_in_data
 //		((uintptr_t)p+(uintptr_t)p_offset) <  (uintptr_t)info->action_table
 //		(uintptr_t)ptr_to_data_to_addr((uintptr_t)p) < (uintptr_t)info->action_table
 		)
