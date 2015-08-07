@@ -95,6 +95,9 @@ fail_gracefully()
 		kill -9 $TIMER_PID
 	fi
 	echo $1
+	echo
+	# display usage too.
+	usage
 	exit 255
 }
 
@@ -143,6 +146,32 @@ set_step_option()
 	
 }
 
+usage()
+{
+	echo "Protect an input program, generating a new executable."
+	echo "ps_analyze.sh <input> <output> <options>  "
+	echo 
+	echo "Where options can be any of"
+	echo "   --step <stepname>=(on|off) 		Turn the <stepname> step on or off"
+	echo "   -s <stepname>=(on|off)			Same as --step"
+	echo "   --step-option <stepname>:<option>	Pass additional option to step <stepname>"
+	echo "   --timeout				Specify a timeout for ps_analyze.sh."
+	echo "   -t					Same as --timeout"
+	echo "   --watchdog				Specify a watchdog timer for the protected program."
+	echo "   -w					Same as --watchdog"
+	echo "   --help					Print this page."
+	echo "   --usage				Same as --help"
+	echo "   -w					Same as --help"
+	echo "   --id <jobid>				Unsupported.  Ask an7s."
+	echo "   --name <dbname>			Unsupported.  Ask an7s."
+	echo "   --manual_test_script <scriptname>	Specify how to test to the program.  API documentation incomplete."
+	echo "   --manual_test_coverage_file <file>	Specify a profile for the program.  API documentation incomplete."
+	echo "   --backend <zipr|strata>		Specify the backend rewriting technology to use.  Default: Strata"
+	echo "   --stop_after <step>			Stop ps_analyze after completeling the specified step."
+	echo "   --stop_before <step>			Stop ps_analyze before starting the specified step."
+
+}
+
 
 
 #
@@ -170,7 +199,7 @@ check_options()
 	# Note that we use `"$@"' to let each command-line parameter expand to a 
 	# separate word. The quotes around `$@' are essential!
 	# We need TEMP as the `eval set --' would nuke the return value of getopt.
-	short_opts="s:t:w:"
+	short_opts="s:t:w:h"
 	long_opts="--long step-option: 
 		   --long step: 
 		   --long timeout: 
@@ -180,6 +209,10 @@ check_options()
 		   --long manual_test_coverage_file: 
 		   --long watchdog: 
 		   --long backend:  			
+		   --long help
+		   --long usage
+		   --long stop_after:
+		   --long stop_before:
 		"
 
 	# solaris does not support long option names
@@ -243,6 +276,18 @@ check_options()
 				DB_PROGRAM_NAME=$2
 				shift 2 
 			;;
+			-h|--help|--usage)
+				usage
+				exit 1
+			;;
+			--stop_before)
+				stop_before_step=$2
+				shift 2
+			;;
+			--stop_after)
+				stop_after_step=$2
+				shift 2
+			;;
 			--) 	shift 
 				break 
 			;;
@@ -252,12 +297,6 @@ check_options()
 		esac
 	done
 
-#	if [ -z $manual_test_script ]; then
-#		phases_spec=" $phases_spec manual_test=off"
-#	else
-#		phases_spec=" $phases_spec manual_test=on"
-#	fi
-
 	# report errors if found
 	if [ ! -z $1 ]; then
 		echo Unparsed parameters:
@@ -266,21 +305,6 @@ check_options()
 	if [ ! -z $1 ]; then
 		exit -3;	
 	fi
-
-#	for phase in $initial_off_phases
-#	do
-
-		# --step $phase=(on|off) not specified on the command line
-		# default policy is off
-		# to make the default policy on, get rid of this block of code
-#		echo $phases_spec|egrep "$phase=" > /dev/null
-#		if [ ! $? -eq 0 ];
-#		then
-#			# by default it's off
-#			phases_spec="$phases_spec $phase=off"
-#		fi
-#	done
-
 
 	# turn off heaprand, signconv_func_monitor, and watchdog double_free if twitcher is on for now
 	is_step_on twitchertransform
@@ -403,6 +427,12 @@ perform_step()
 
 	logfile=logs/$step.log
 
+	if [ "$step" = "$stop_before_step" ]; then 
+		echo "ps_analyze has been asked to stop before step $step."
+		echo "command is:  $command"
+		exit 1
+	fi
+
 	is_step_on $step
 	if [ $? -eq 0 ]; then 
 		#echo Skipping step $step. [dependencies=$mandatory]
@@ -483,6 +513,11 @@ perform_step()
 
 	all_logs="$all_logs $logfile"
 
+	if [ "$step" = "$stop_after_step" ]; then 
+		echo "ps_analyze has been asked to stop after step $step."
+		echo "command is:  $command"
+		exit 1
+	fi
 	return $command_exit
 }
 
