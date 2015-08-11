@@ -4952,7 +4952,7 @@ void __bea_callspec__ leave_(PDISASM pMyDisasm)
     #endif
     (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG4;
     (*pMyDisasm).Argument1.ArgSize = 32;
-    (*pMyDisasm).Argument2.ArgType = REGISTER_TYPE+SPECIAL_REG+REG5;
+    (*pMyDisasm).Argument2.ArgType = REGISTER_TYPE+GENERAL_REG+REG5;
     (*pMyDisasm).Argument2.ArgSize = 32;
     GV.EIP_++;
 }

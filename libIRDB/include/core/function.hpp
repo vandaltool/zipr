@@ -33,7 +33,7 @@ class Function_t : public BaseObj_t
 	InstructionSet_t& GetInstructions() { return my_insns; }
 
         int GetStackFrameSize() { return stack_frame_size; }
-        std::string GetName()	{ return name; }
+        const std::string& GetName() { return name; }
         int GetOutArgsRegionSize() {return out_args_region_size; }
 
         void SetStackFrameSize(int size) { stack_frame_size=size; }

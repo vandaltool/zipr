@@ -20,6 +20,7 @@
 
 #include <libIRDB-core.hpp>
 #include <iostream>
+#include <limits>
 #include <stdlib.h>
 #include <string.h>
 #include <map>
@@ -214,18 +215,24 @@ void handle_argument(ARGTYPE *arg, Instruction_t* insn)
 	}
 }
 
-Instruction_t *lookupInstruction(FileIR_t *firp, virtual_offset_t virtual_offset)
+
+static map<virtual_offset_t,Instruction_t*> lookupInstructionMap;
+void lookupInstruction_init(FileIR_t *firp)
 {
+	lookupInstructionMap.clear();
 	for(set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
 		it!=firp->GetInstructions().end(); ++it)
         {
-			Instruction_t *insn=*it;
-			virtual_offset_t addr=insn->GetAddress()->GetVirtualOffset();
-
-			if (virtual_offset == addr)
-				return insn;
+		Instruction_t *insn=*it;
+		virtual_offset_t addr=insn->GetAddress()->GetVirtualOffset();
+		lookupInstructionMap[addr]=insn;
 	}
+}
 
+Instruction_t *lookupInstruction(FileIR_t *firp, virtual_offset_t virtual_offset)
+{
+	if(lookupInstructionMap.find(virtual_offset)!=lookupInstructionMap.end())
+		return lookupInstructionMap[virtual_offset];
 	return NULL;
 }
 
@@ -291,7 +298,7 @@ void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<vir
 
 		check_for_PIC_switch_table32_type2(insn,disasm, elfiop, thunk_bases);
 		check_for_PIC_switch_table32_type3(insn,disasm, elfiop, thunk_bases);
-		check_for_PIC_switch_table64(firp,insn,disasm, elfiop);
+//		check_for_PIC_switch_table64(firp,insn,disasm, elfiop);
 		if (firp->GetArchitectureBitWidth()==32)
 			check_for_PIC_switch_table32(firp, insn,disasm, elfiop, thunk_bases);
 		else if (firp->GetArchitectureBitWidth()==64)
@@ -476,7 +483,7 @@ void add_num_handle_fn_watches(FileIR_t * firp)
 
 }
 
-bool backup_until(const char* insn_type_regex, Instruction_t *& prev, Instruction_t* orig)
+bool backup_until(const char* insn_type_regex, Instruction_t *& prev, Instruction_t* orig, bool recursive=false)
 {
 	DISASM disasm;
 	prev=orig;
@@ -489,17 +496,42 @@ bool backup_until(const char* insn_type_regex, Instruction_t *& prev, Instructio
 		// get the only item in the list.
 		prev=*(preds[prev].begin());
 
-       	// get I7's disassembly
-       	prev->Disassemble(disasm);
+       		// get I7's disassembly
+       		prev->Disassemble(disasm);
 
-       	// check it's the requested type
-       	if(regexec(&preg, disasm.Instruction.Mnemonic, 0, NULL, 0) == 0)
+       		// check it's the requested type
+       		if(regexec(&preg, disasm.CompleteInstr, 0, NULL, 0) == 0)
 		{
 			regfree(&preg);
 			return true;
 		}
 
 		// otherwise, try backing up again.
+	}
+	if(recursive)
+	{
+		Instruction_t* myprev=prev;
+		// can't just use prev because recursive call will update it.
+		for(InstructionSet_t::iterator it=preds[myprev].begin();
+			it!=preds[myprev].end(); ++it)
+		{
+			Instruction_t* pred=*it;
+       		
+			pred->Disassemble(disasm);
+       			// check it's the requested type
+       			if(regexec(&preg, disasm.CompleteInstr, 0, NULL, 0) == 0)
+			{
+				regfree(&preg);
+				return true;
+			}
+			if(backup_until(insn_type_regex, prev, pred))
+			{
+				regfree(&preg);
+				return true;
+			}
+			// reset for next call
+			prev=myprev;
+		}
 	}
 	regfree(&preg);
 	return false;
@@ -930,9 +962,41 @@ DN:   0x4824XX: .long 0x4824e0-LN
 	// backup and find the instruction that's an movsxd before I7
 	if(!backup_until("movsxd", I6, I7))
 		return;
+	
+	I6->Disassemble(disasm);
+	if( (disasm.Argument2.ArgType&MEMORY_TYPE)	 != MEMORY_TYPE)
+		return;
+
+
+	// 64-bit register names are OK here, because this pattern already won't apply to 32-bit code.
+	string base_reg="";
+	switch(disasm.Argument2.Memory.BaseRegister)
+	{
+		case REG0: base_reg="rax"; break;
+		case REG1: base_reg="rcx"; break;
+		case REG2: base_reg="rdx"; break;
+		case REG3: base_reg="rbx"; break;
+		case REG4: base_reg="rsp"; break;
+		case REG5: base_reg="rbp"; break;
+		case REG6: base_reg="rdi"; break;
+		case REG7: base_reg="rsi"; break;
+		case REG8: base_reg="r8"; break;
+		case REG9: base_reg="r9"; break;
+		case REG10: base_reg="r10"; break;
+		case REG11: base_reg="r11"; break;
+		case REG12: base_reg="r12"; break;
+		case REG13: base_reg="r13"; break;
+		case REG14: base_reg="r14"; break;
+		case REG15: base_reg="r15"; break;
+		default: assert(0);
+	}
+	string lea_string="lea ";
+	lea_string+=base_reg;
+	
 
 	// backup and find the instruction that's an lea before I6
-	if(!backup_until("lea", I5, I6))
+	// make sure we match the register, and allow recursion in the search.
+	if(!backup_until(lea_string.c_str(),I5, I6, true))
 		return;
 
 	I5->Disassemble(disasm);
@@ -965,14 +1029,20 @@ DN:   0x4824XX: .long 0x4824e0-LN
 	if(!backup_until("cmp", I1, I5))
 	{
 		cout<<"pic64: could not find size of switch table"<<endl;
-		return;
-	}
 
-	DISASM d1;
-	I1->Disassemble(d1);
-	table_size = d1.Instruction.Immediat;
-	if (table_size <= 0)
-		return;
+		// we set the table_size variable to max_int so that we can still do pinning, 
+		// but we won't do the switch identification.
+		table_size=std::numeric_limits<int>::max();
+	}
+	else
+	{
+		DISASM d1;
+		I1->Disassemble(d1);
+		table_size = d1.Instruction.Immediat;
+		if (table_size <= 0)
+			// set table_size to be very large, so we can still do pinning appropriately
+			table_size=std::numeric_limits<int>::max();
+	}
 
 	set<Instruction_t *> ibtargets;
 	virtual_offset_t offset=D1-pSec->get_address();
@@ -992,9 +1062,9 @@ DN:   0x4824XX: .long 0x4824e0-LN
 		if(getenv("IB_VERBOSE"))
 		{
 			cout<<"Found possible table entry, at: "<< std::hex << I8->GetAddress()->GetVirtualOffset()
-		    << " insn: " << disasm.CompleteInstr<< " d1: "
-                    << D1 << " table_entry:" << table_entry 
-		    << " target: "<< D1+table_entry << std::dec << endl;
+		    		<< " insn: " << disasm.CompleteInstr<< " d1: "
+                    		<< D1 << " table_entry:" << table_entry 
+		    		<< " target: "<< D1+table_entry << std::dec << endl;
 		}
 
 		Instruction_t *ibtarget = lookupInstruction(firp, D1+table_entry);
@@ -1018,7 +1088,7 @@ DN:   0x4824XX: .long 0x4824e0-LN
 	
 	// valid switch table? may or may not have default: in the switch
 	// table size = 8, #entries: 9 b/c of default
-	cout << "pic64: table size: " << table_size << " #entries: " << entry << " ibtargets.size: " << ibtargets.size() << endl;
+	cout << "pic64: detected table size (max_int means no found): 0x"<< hex << table_size << " #entries: 0x" << entry << " ibtargets.size: " << ibtargets.size() << endl;
 
 	// note that there may be an off-by-one error here as table size depends on whether instruction I2 is a jb or jbe.
 	if (table_size == ibtargets.size() || table_size == (ibtargets.size()-1))
@@ -1542,6 +1612,7 @@ main(int argc, char* argv[])
 			// read the db  
 			firp=new FileIR_t(*pidp, this_file);
 
+			lookupInstruction_init(firp);
 			icfs_init(firp);
 
 			int elfoid=firp->GetFile()->GetELFOID();

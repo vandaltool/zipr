@@ -4708,6 +4708,8 @@ void __bea_callspec__ ucomiss_VW(PDISASM pMyDisasm)
 	if(GV.VEX.has_vex)
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
 	#endif
+    (*pMyDisasm).Argument1.AccessMode = READ; 
+    (*pMyDisasm).Argument2.AccessMode = READ; 
     /* ========== 0x66 */
     if (pMyDisasm->Prefix.OperandSize == InUsePrefix) {
         GV.OperandSize = GV.OriginalOperandSize;
