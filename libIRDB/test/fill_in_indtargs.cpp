@@ -1080,8 +1080,7 @@ DN:   0x4824XX: .long 0x4824e0-LN
 				cout << "      INVALID target" << endl;
 			break;
 		}
-
-		offset+=sizeof(virtual_offset_t);
+		offset+=sizeof(int);
 		entry++;
 	} while ( entry<=table_size);
 
