@@ -22,6 +22,11 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <getopt.h>
+#include <algorithm>    // std::random_shuffle
+#include <vector>       // std::vector
+#include <ctime>        // std::time
+#include <cstdlib>      // std::rand, std::srand
+
 
 using namespace zipr;
 using namespace std;
@@ -56,7 +61,6 @@ void ZiprMemorySpace_t::SplitFreeRange(RangeAddress_t addr)
 }
 
 void ZiprMemorySpace_t::MergeFreeRange(RangeAddress_t addr)
-#if 1
 {
 	/*
 	 * Make a new range of one byte.
@@ -70,236 +74,65 @@ void ZiprMemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 	Range_t nr(addr, addr);
 	Range_t nrp1(addr+1, addr+1);
 	Range_t nrm1(addr-1, addr-1);
-	bool merged = false;
 	RangeSet_t::iterator itp1;
 	RangeSet_t::iterator itm1;
 
-//	for(;it!=free_ranges.end();++it)
-//	{
-		
-		itp1=free_ranges.find(nrp1);
-		itm1=free_ranges.find(nrm1);
-		Range_t r;
-		if(itp1!=free_ranges.end())
-		{
-			r=*itp1;
-			assert((addr+1) == r.GetStart());
-			/*
-			 * Make the beginning of this range
-			 * one byte smaller!
-			 */
-			Range_t nnr(addr, r.GetEnd());
-			if(m_opts != NULL && m_opts->GetVerbose())
-			{
-				printf("Expanded range:\n");
-				printf("from: %p to %p\n", (void*)r.GetStart(), (void*)r.GetEnd());
-				printf("to: %p to %p\n", (void*)nnr.GetStart(), (void*)nnr.GetEnd());
-			}
-			nr = nnr;
-			if(itm1!=free_ranges.end())
-			{
-				Range_t r2=*itm1;
-				nr.SetStart(r2.GetStart());	
-				free_ranges.erase(r2);
-			}
-			free_ranges.erase(r);
-		} 
-		else if(itm1!=free_ranges.end())	 // not addr+1 is still busy, so we don't merge against it.
-		{
-			r=*itm1;
-		
-			assert((addr-1) == r.GetEnd()) ;
-			/*
-			 * Make the end of this range one byte
-			 * bigger
-			 */
-			Range_t nnr(r.GetStart(), addr);
-			if(m_opts != NULL && m_opts->GetVerbose())
-			{
-				printf("Expanded range:\n");
-				printf("from: %p to %p\n", (void*)r.GetStart(), (void*)r.GetEnd());
-				printf("to: %p to %p\n", (void*)nnr.GetStart(), (void*)nnr.GetEnd());
-			}
-			nr = nnr;
-			free_ranges.erase(itm1);
-		}
-		else
-		{
-			// else both p1 and m1 are busy still, so we just insert nr
-		}
-
-		// insert NR and be done.
-		free_ranges.insert(nr);
-		return;
-//	}
-
-	/*
-	 * Correctness: 
-	 * Take a pass through and see if there are
-	 * free ranges that can now be merged. This
-	 * is important because it's possible that
-	 * we added the byte to the end of a range
-	 * where it could also have gone at the
-	 * beginning of another.
-	 */
-#if 0
-	for(it=free_ranges.begin();it!=free_ranges.end();++it)
+	itp1=free_ranges.find(nrp1);
+	itm1=free_ranges.find(nrm1);
+	Range_t r;
+	if(itp1!=free_ranges.end())
 	{
-		Range_t r = *it;
-		if ((
-				/*
-				 * <--r-->
-				 *    <--nr-->
-				 */
-				((r.GetEnd()+1) >= nr.GetStart() &&
-				r.GetEnd() <= nr.GetEnd()) ||
-				/*
-				 * <--nr-->
-				 *     <--r-->
-				 */
-				((nr.GetEnd()+1) >= r.GetStart() &&
-				nr.GetEnd() <= r.GetEnd())
-				) &&
-				/*
-				 * The ranges themselves are not
-				 * identical.
-				 */
-				(r.GetStart() != nr.GetStart() ||
-				r.GetEnd() != nr.GetEnd()))
+		r=*itp1;
+		assert((addr+1) == r.GetStart());
+		/*
+		 * Make the beginning of this range
+		 * one byte smaller!
+		 */
+		Range_t nnr(addr, r.GetEnd());
+		if(m_opts != NULL && m_opts->GetVerbose())
 		{
-			/*
-			 * merge.
-			 */
-			Range_t merged_range(std::min(r.GetStart(), nr.GetStart()), std::max(r.GetEnd(), nr.GetEnd()));
-			if(m_opts != NULL && m_opts->GetVerbose())
-			{
-				printf("Merged two ranges:\n");
-				printf("r:  %p to %p\n", (void*)r.GetStart(), (void*)r.GetEnd());
-				printf("nr: %p to %p\n", (void*)nr.GetStart(), (void*)nr.GetEnd());
-				printf("to: %p to %p\n", (void*)merged_range.GetStart(), (void*)merged_range.GetEnd());
-			}
-			free_ranges.erase(it);
-			free_ranges.insert(merged_range);
-			merged = true;
-			break;
+			printf("Expanded range:\n");
+			printf("from: %p to %p\n", (void*)r.GetStart(), (void*)r.GetEnd());
+			printf("to: %p to %p\n", (void*)nnr.GetStart(), (void*)nnr.GetEnd());
 		}
+		nr = nnr;
+		if(itm1!=free_ranges.end())
+		{
+			Range_t r2=*itm1;
+			nr.SetStart(r2.GetStart());	
+			free_ranges.erase(r2);
+		}
+		free_ranges.erase(r);
+	} 
+	else if(itm1!=free_ranges.end())	 // not addr+1 is still busy, so we don't merge against it.
+	{
+		r=*itm1;
+	
+		assert((addr-1) == r.GetEnd()) ;
+		/*
+		 * Make the end of this range one byte
+		 * bigger
+		 */
+		Range_t nnr(r.GetStart(), addr);
+		if(m_opts != NULL && m_opts->GetVerbose())
+		{
+			printf("Expanded range:\n");
+			printf("from: %p to %p\n", (void*)r.GetStart(), (void*)r.GetEnd());
+			printf("to: %p to %p\n", (void*)nnr.GetStart(), (void*)nnr.GetEnd());
+		}
+		nr = nnr;
+		free_ranges.erase(itm1);
+	}
+	else
+	{
+		// else both p1 and m1 are busy still, so we just insert nr
 	}
 
+	// insert NR and be done.
+	free_ranges.insert(nr);
+	return;
 
-	if (!merged)
-	{
-		free_ranges.insert(nr);
-	}
-#endif
 }
-#else
-{
-	/*
-	 * Make a new range of one byte.
-	 * 
-	 * Then, look to see whether or not it
-	 * can be merged with another range. 
-	 *
-	 * If not, add it as a one byte range.
-	 */
-
-	Range_t nr(addr, addr);
-	bool merged = false;
-	RangeSet_t::iterator it=free_ranges.begin();
-
-	for(;it!=free_ranges.end();++it)
-	{
-		Range_t r=*it;
-		if ((addr+1) == r.GetStart()) {
-			/*
-			 * Make the beginning of this range
-			 * one byte smaller!
-			 */
-			Range_t nnr(addr, r.GetEnd());
-			if(m_opts != NULL && m_opts->GetVerbose())
-			{
-				printf("Expanded range:\n");
-				printf("from: %p to %p\n", (void*)r.GetStart(), (void*)r.GetEnd());
-				printf("to: %p to %p\n", (void*)nnr.GetStart(), (void*)nnr.GetEnd());
-			}
-			nr = nnr;
-			free_ranges.erase(it);
-			break;
-		} else if ((addr-1) == r.GetEnd()) {
-			/*
-			 * Make the end of this range one byte
-			 * bigger
-			 */
-			Range_t nnr(r.GetStart(), addr);
-			if(m_opts != NULL && m_opts->GetVerbose())
-			{
-				printf("Expanded range:\n");
-				printf("from: %p to %p\n", (void*)r.GetStart(), (void*)r.GetEnd());
-				printf("to: %p to %p\n", (void*)nnr.GetStart(), (void*)nnr.GetEnd());
-			}
-			nr = nnr;
-			free_ranges.erase(it);
-			break;
-		}
-	}
-
-	/*
-	 * Correctness: 
-	 * Take a pass through and see if there are
-	 * free ranges that can now be merged. This
-	 * is important because it's possible that
-	 * we added the byte to the end of a range
-	 * where it could also have gone at the
-	 * beginning of another.
-	 */
-	for(it=free_ranges.begin();it!=free_ranges.end();++it)
-	{
-		Range_t r = *it;
-		if ((
-				/*
-				 * <--r-->
-				 *    <--nr-->
-				 */
-				((r.GetEnd()+1) >= nr.GetStart() &&
-				r.GetEnd() <= nr.GetEnd()) ||
-				/*
-				 * <--nr-->
-				 *     <--r-->
-				 */
-				((nr.GetEnd()+1) >= r.GetStart() &&
-				nr.GetEnd() <= r.GetEnd())
-				) &&
-				/*
-				 * The ranges themselves are not
-				 * identical.
-				 */
-				(r.GetStart() != nr.GetStart() ||
-				r.GetEnd() != nr.GetEnd()))
-		{
-			/*
-			 * merge.
-			 */
-			Range_t merged_range(std::min(r.GetStart(), nr.GetStart()), std::max(r.GetEnd(), nr.GetEnd()));
-			if(m_opts != NULL && m_opts->GetVerbose())
-			{
-				printf("Merged two ranges:\n");
-				printf("r:  %p to %p\n", (void*)r.GetStart(), (void*)r.GetEnd());
-				printf("nr: %p to %p\n", (void*)nr.GetStart(), (void*)nr.GetEnd());
-				printf("to: %p to %p\n", (void*)merged_range.GetStart(), (void*)merged_range.GetEnd());
-			}
-			free_ranges.erase(it);
-			free_ranges.insert(merged_range);
-			merged = true;
-			break;
-		}
-	}
-
-	if (!merged)
-	{
-		free_ranges.insert(nr);
-	}
-}
-#endif
 
 void ZiprMemorySpace_t::PrintMemorySpace(std::ostream &out)
 {
@@ -325,15 +158,24 @@ bool ZiprMemorySpace_t::IsValidRange(RangeSet_t::iterator it)
 
 Range_t ZiprMemorySpace_t::GetFreeRange(int size)
 {
+	vector<Range_t> v;
+	Range_t big_range;
 	for( RangeSet_t::iterator it=free_ranges.begin();
 		it!=free_ranges.end();
 		++it)
 	{
 		Range_t r=*it;
-		if(r.GetEnd() - r.GetStart() > size)
-			return r;
+		if(r.GetEnd()==(RangeAddress_t)-1)
+			big_range=r;;
+		if(r.GetEnd() - r.GetStart() > (unsigned) size)
+			v.push_back(r);
 	}
-	assert(0);// assume we find a big enough range.
+	if(v.size()==0)
+		return big_range;	
+
+	// choose random value to return.
+	int index=std::rand() % v.size();
+	return v[index];
 }
 
 // queries about free areas.

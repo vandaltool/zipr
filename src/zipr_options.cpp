@@ -22,6 +22,11 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <getopt.h>
+#include <ctime>        // std::time
+#include <iostream>
+#include <cstdlib>	// std::srand
+
+
 
 using namespace zipr;
 
@@ -51,7 +56,7 @@ ZiprOptions_t* ZiprOptions_t::parse_args(int p_argc, char* p_argv[])
 	ZiprOptions_t *opt=new ZiprOptions_t;
 	opt->SetVerbose(true);
 	int option = 0;
-	char options[] = "!qz:o:v:c:j:m:";
+	char options[] = "!qz:o:v:c:j:m:s:";
 	struct option long_options[] = {
 		{"verbose",     no_argument,       NULL, '!'},
 		{"quiet",       no_argument,       NULL, 'q'},
@@ -61,8 +66,12 @@ ZiprOptions_t* ZiprOptions_t::parse_args(int p_argc, char* p_argv[])
 		{"callbacks",   required_argument, NULL, 'c'},
 		{"objcopy",     required_argument, NULL, 'j'},
 		{"architecture",required_argument, NULL, 'm'},
+		{"seed",required_argument, NULL, 's'},
 		{NULL, no_argument, NULL, '\0'},	 // end-of-array marker
 	};
+
+	// set random seed for zipr to really random.
+	std::srand ( unsigned ( std::time(0) ) );
 
 	assert(opt);
 
@@ -145,6 +154,15 @@ ZiprOptions_t* ZiprOptions_t::parse_args(int p_argc, char* p_argv[])
 				}
 				printf("Error: Invalid architecture (%s); Must be 32 or 64. "
 					"Will use detection to determine architecture. \n", ::optarg);
+				break;
+			}
+			case 's':
+			{
+				char *valid = NULL;
+				long int seed = ::strtol(::optarg, &valid, 10);
+				if(*valid!='\0')
+					std::cerr<<"Seed value ("<< ::optarg << ") must be a base-10 integer."<<std::endl;
+				std::srand((unsigned)seed);
 				break;
 			}
 			case '?':
