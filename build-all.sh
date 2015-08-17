@@ -48,8 +48,6 @@ if [ ! "$SMPSA_HOME" ]; then
     exit 1; 
 fi
 cd $SMPSA_HOME
-#./configure
-#make
 scons
 
 # security-transforms
@@ -58,8 +56,6 @@ if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then
     exit 1; 
 fi
 cd $SECURITY_TRANSFORMS_HOME
-#./configure --enable-cgc --prefix=$SECURITY_TRANSFORMS_HOME
-#./build.sh
 scons build_cgc=1 build_appfw=0
 
 cd $PEASOUP_HOME
@@ -82,6 +78,8 @@ if [ -d $ZIPR_HOME ]; then
 	./configure --enable-cgc --prefix=$ZIPR_INSTALL; make;  make install
 fi
 
-cd $ZIPR_SCFI_PLUGIN
-./configure --enable-cgc --prefix=$ZIPR_INSTALL; make;  make install
+if [ -d $ZIPR_SCFI_PLUGIN ]; then 
+	cd $ZIPR_SCFI_PLUGIN
+	scons do_cgc=1
+fi
 
