@@ -9,7 +9,3 @@
 /set_ida_server -text
 /start_dev.sh -text
 /svn.externals.uva_dev -text
-zipr_large_only_plugin/SConscript -text
-zipr_large_only_plugin/SConstruct -text
-zipr_large_only_plugin/large_only.cpp -text
-zipr_large_only_plugin/large_only.h -text
