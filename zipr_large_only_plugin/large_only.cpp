@@ -58,15 +58,18 @@ void LargeOnly_t::RemoveSmallMemorySpaces(void)
 {
 	Range_t removableRange;
 	Range_t largeRange;
-	cout << "Starting to remove all small memory spaces." << endl;
+	if (m_opts.GetVerbose())
+		cout << "Starting to remove all small memory spaces." << endl;
 	while (m_memory_space.GetRangeCount() != 0)
 	{
 		removableRange = m_memory_space.GetFreeRange(0);
-		cout << "Removing: " << removableRange.GetStart() << " - " << removableRange.GetEnd() << endl;
 		if (removableRange.GetEnd() == -1)
 			largeRange = removableRange;
 		m_memory_space.RemoveFreeRange(removableRange);
-		cout << "Memory space size: " << m_memory_space.GetRangeCount() << endl;
+		if (m_opts.GetVerbose())
+			cout << "Memory space size: "
+			     << m_memory_space.GetRangeCount()
+			     << endl;
 	}
 	m_memory_space.AddFreeRange(largeRange);
 	if (m_opts.GetVerbose())
