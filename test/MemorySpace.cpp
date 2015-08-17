@@ -235,6 +235,58 @@ bool TestMergeFreeRange()
 	return true;
 }
 
+bool TestClearAllIteratively()
+{
+	Range_t removableRange;
+	ZiprOptions_t opts;
+	opts.SetVerbose(true);
+	ZiprMemorySpace_t m(&opts);
+
+	m.AddFreeRange(Range_t(256, 512));
+	m.AddFreeRange(Range_t(513, 1024));
+	m.AddFreeRange(Range_t(1025, 4096));
+	m.PrintMemorySpace(cout);
+	if (m.GetRangeCount() != 3)
+		return false;
+	while (m.GetRangeCount())
+	{
+		removableRange = m.GetFreeRange(0);
+		m.RemoveFreeRange(removableRange);
+	}	
+	m.PrintMemorySpace(cout);
+	return m.GetRangeCount() == 0;
+}
+
+bool TestClearSomeIteratively()
+{
+	Range_t removableRange;
+	ZiprOptions_t opts;
+	opts.SetVerbose(true);
+	ZiprMemorySpace_t m(&opts);
+
+	m.AddFreeRange(Range_t(256, 512));
+	m.AddFreeRange(Range_t(513, 1024));
+	m.AddFreeRange(Range_t(1025, 4096));
+	m.PrintMemorySpace(cout);
+	if (m.GetRangeCount() != 3)
+		return false;
+	/*
+	 * NB: This is not pretty -- we are assuming that
+	 * the "last" entry is the one that we want to 
+	 * keep. Test does good testing, but insert order
+	 * should not be changed.
+	 */
+	while (m.GetRangeCount() != 1)
+	{
+		removableRange = m.GetFreeRange(0);
+		if (removableRange.GetEnd() == 4096)
+			continue;
+		m.RemoveFreeRange(removableRange);
+	}	
+	m.PrintMemorySpace(cout);
+	return m.GetRangeCount() == 1;
+}
+
 int main(int argc, char *argv[])
 {
 	INVOKE(TestSplitMemorySpace);
@@ -243,4 +295,6 @@ int main(int argc, char *argv[])
 	INVOKE(TestBinarySearch);
 	INVOKE(TestBinarySearchMaxRange);
 	INVOKE(TestInsertRemoveFreeRange);
+	INVOKE(TestClearAllIteratively);
+	INVOKE(TestClearSomeIteratively);
 }
