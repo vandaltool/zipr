@@ -1527,7 +1527,7 @@ RangeAddress_t Zipr_t::PlopWithTarget(Instruction_t* insn, RangeAddress_t at)
 
 void Zipr_t::RewritePCRelOffset(RangeAddress_t from_addr,RangeAddress_t to_addr, int insn_length, int offset_pos)
 {
-	int new_offset=to_addr-from_addr-insn_length;
+	int new_offset=((unsigned int)to_addr)-((unsigned int)from_addr)-((unsigned int)insn_length);
 
 	memory_space[from_addr+offset_pos+0]=(new_offset>>0)&0xff;
 	memory_space[from_addr+offset_pos+1]=(new_offset>>8)&0xff;

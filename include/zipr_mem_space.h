@@ -48,6 +48,7 @@ class ZiprMemorySpace_t : public MemorySpace_t
 		std::set<Range_t>::iterator FindFreeRange(RangeAddress_t addr);
 		Range_t GetFreeRange(int size);
 		void AddFreeRange(Range_t newRange);
+		void RemoveFreeRange(Range_t newRange);
 
 		// queries about free areas.
 		bool AreBytesFree(RangeAddress_t addr, int num_bytes);

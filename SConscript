@@ -21,5 +21,4 @@ SConscript(sectrans_sconscript, variant_dir='scons_build/irdb_libs')
 #print 'env='
 #print env.Dump()
 SConscript("src/SConscript", variant_dir='scons_build/zipr')
-
-
+SConscript("test/SConscript")

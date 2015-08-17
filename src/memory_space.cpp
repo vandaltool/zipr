@@ -198,6 +198,11 @@ void ZiprMemorySpace_t::AddFreeRange(Range_t newRange)
 {
 	free_ranges.insert(Range_t(newRange.GetStart(), newRange.GetEnd()));
 }
+void ZiprMemorySpace_t::RemoveFreeRange(Range_t oldRange)
+{
+	free_ranges.erase(Range_t(oldRange.GetStart(), oldRange.GetEnd()));
+}
+
 int ZiprMemorySpace_t::GetRangeCount()
 {
 	return free_ranges.size();

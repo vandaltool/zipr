@@ -164,6 +164,28 @@ bool TestSort()
 
 	return true;
 }
+
+bool TestInsertRemoveFreeRange()
+{
+	ZiprOptions_t opts;
+	opts.SetVerbose(true);
+	ZiprMemorySpace_t m(&opts);
+	m.AddFreeRange(Range_t(256, 512));
+	m.AddFreeRange(Range_t(513, 1024));
+	m.AddFreeRange(Range_t(1025, 4096));
+	m.PrintMemorySpace(cout);
+	if (m.GetRangeCount() != 3)
+		return false;
+	m.RemoveFreeRange(Range_t(513, 1024));
+	if (m.GetRangeCount() != 2)
+		return false;
+	m.PrintMemorySpace(cout);
+	m.RemoveFreeRange(Range_t(256, 512));
+	m.RemoveFreeRange(Range_t(1025, 4096));
+	m.PrintMemorySpace(cout);
+	return (m.GetRangeCount() == 0);
+}
+
 bool TestMergeFreeRange()
 {
 	ZiprOptions_t opts;
@@ -220,4 +242,5 @@ int main(int argc, char *argv[])
 	INVOKE(TestSort);
 	INVOKE(TestBinarySearch);
 	INVOKE(TestBinarySearchMaxRange);
+	INVOKE(TestInsertRemoveFreeRange);
 }

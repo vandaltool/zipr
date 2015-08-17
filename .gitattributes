@@ -25,8 +25,8 @@ src/plugin_man.cpp -text
 src/zipr.cpp -text
 src/zipr_options.cpp -text
 src/zipr_stats.cpp -text
-test/Makefile.in -text
 test/MemorySpace.cpp -text
+test/SConstruct -text
 test/dylib/Makefile -text
 test/dylib/dylib.c -text
 test/dylib/dylib.h -text
