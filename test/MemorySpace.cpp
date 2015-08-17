@@ -257,6 +257,20 @@ bool TestClearAllIteratively()
 	return m.GetRangeCount() == 0;
 }
 
+bool TestEraseOneByter()
+{
+	Range_t removableRange;
+	ZiprOptions_t opts;
+	opts.SetVerbose(true);
+	ZiprMemorySpace_t m(&opts);
+
+	m.AddFreeRange(Range_t(512, 512));
+	m.AddFreeRange(Range_t(256, 300));
+	m.RemoveFreeRange(Range_t(512, 512));
+
+	return m.GetRangeCount() == 1;
+}
+
 bool TestClearSomeIteratively()
 {
 	Range_t removableRange;
@@ -264,7 +278,7 @@ bool TestClearSomeIteratively()
 	opts.SetVerbose(true);
 	ZiprMemorySpace_t m(&opts);
 
-	m.AddFreeRange(Range_t(256, 512));
+	m.AddFreeRange(Range_t(512, 512));
 	m.AddFreeRange(Range_t(513, 1024));
 	m.AddFreeRange(Range_t(1025, 4096));
 	m.PrintMemorySpace(cout);
@@ -282,7 +296,7 @@ bool TestClearSomeIteratively()
 		if (removableRange.GetEnd() == 4096)
 			continue;
 		m.RemoveFreeRange(removableRange);
-	}	
+	}
 	m.PrintMemorySpace(cout);
 	return m.GetRangeCount() == 1;
 }
@@ -297,4 +311,5 @@ int main(int argc, char *argv[])
 	INVOKE(TestInsertRemoveFreeRange);
 	INVOKE(TestClearAllIteratively);
 	INVOKE(TestClearSomeIteratively);
+	INVOKE(TestEraseOneByter);
 }
