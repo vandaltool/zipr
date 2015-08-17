@@ -17,9 +17,6 @@ env.Replace(build_appfw=ARGUMENTS.get("build_appfw", 1))
 env.Replace(build_tools=ARGUMENTS.get("build_tools", 1))
 env.Replace(build_cgc=ARGUMENTS.get("build_cgc", 0))
 
-# by default, turn on build of appfw
-if env['build_appfw'] is None:
-	env['build_appfw'] = 1
 
 if int(env['debug']) == 1:
         print "Setting debug mode"
@@ -37,6 +34,10 @@ if 'build_cgc' in env and int(env['build_cgc']) == 1:
         env.Append(CFLAGS=" -DCGC ")
         env.Append(CXXFLAGS=" -DCGC ")
         env.Append(LINKFLAGS=" -DCGC ")
+	print 'Turn off appfw as we are building CGC'
+	env['build_appfw'] = 0
+elif env['build_appfw'] is None: # by default, turn on build of appfw, unless cgc is on
+	env['build_appfw'] = 1
 
 
 # set 32/64 bit build properly
