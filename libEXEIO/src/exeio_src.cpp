@@ -29,6 +29,12 @@ void exeio::load(char* filename)
 	{
 		backend=new exeio_elf_backend_t;
 	}
+	// check for CGC magic number
+	else if(c0 == '\177' && c1=='C' && c2=='G' && c3=='C')
+	{
+		backend=new exeio_elf_backend_t;
+	}
+	// we assume it's ELF or PE.
 	// we assume it's ELF or PE.
 	else
 		backend=new exeio_pe_backend_t;
