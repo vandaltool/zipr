@@ -48,8 +48,9 @@ if [ ! "$SMPSA_HOME" ]; then
     exit 1; 
 fi
 cd $SMPSA_HOME
-./configure
-make
+#./configure
+#make
+scons
 
 # security-transforms
 if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then 
@@ -57,8 +58,9 @@ if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then
     exit 1; 
 fi
 cd $SECURITY_TRANSFORMS_HOME
-./configure --enable-cgc --prefix=$SECURITY_TRANSFORMS_HOME
-./build.sh
+#./configure --enable-cgc --prefix=$SECURITY_TRANSFORMS_HOME
+#./build.sh
+scons build_cgc=1 build_appfw=0
 
 cd $PEASOUP_HOME
 make
