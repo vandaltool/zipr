@@ -1186,28 +1186,38 @@ void Zipr_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Pa
 		//if (false)
 		if ((to_addr=final_insn_locations[cur_insn]) != 0)
 		{
-			if(m_opts.GetVerbose())
-				printf("Fallthrough loop detected. "
-				"Emitting jump from %p to %p.\n",
-				(void*)cur_addr,
-				(void*)to_addr);
-			memory_space.PlopJump(cur_addr);
-			PatchJump(cur_addr, to_addr);
-			ApplyPatches(cur_insn);
-			cur_insn = NULL;
-			cur_addr+=5;
-			break;
+			if(m_opts.GetNoReplop())
+			{
+				if(m_opts.GetVerbose())
+					printf("Fallthrough loop detected. "
+					"Emitting jump from %p to %p.\n",
+					(void*)cur_addr,
+					(void*)to_addr);
+				memory_space.PlopJump(cur_addr);
+				PatchJump(cur_addr, to_addr);
+				ApplyPatches(cur_insn);
+				cur_insn = NULL;
+				cur_addr+=5;
+				break;
+			}
+			else
+			{
+				if (m_opts.GetVerbose())
+					printf("Fallthrough loop detected "
+					       "but we are replopping at "
+					       "user command.\n");
+			}
 		}
-		else
-		{
-			if(m_opts.GetVerbose())
-				printf("Emitting %d:%s at %p until ", id, d.CompleteInstr, (void*)cur_addr);
-			cur_addr=PlopInstruction(cur_insn,cur_addr);
-			if(m_opts.GetVerbose())
-				printf("%p\n", (void*)cur_addr);
-			cur_insn=cur_insn->GetFallthrough();
-			insn_count++;
-		}
+		if(m_opts.GetVerbose())
+			printf("Emitting %d:%s at %p until ",
+				id, 
+				d.CompleteInstr,
+				(void*)cur_addr);
+		cur_addr=PlopInstruction(cur_insn,cur_addr);
+		if(m_opts.GetVerbose())
+			printf("%p\n", (void*)cur_addr);
+		cur_insn=cur_insn->GetFallthrough();
+		insn_count++;
 	}
 	if(cur_insn)
 	{

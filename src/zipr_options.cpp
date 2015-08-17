@@ -49,6 +49,8 @@ void ZiprOptions_t::print_usage(int p_argc, char *p_argv[])
 		"Enable verbose output. \n");
 	printf("\t-q\t\t--quiet: "
 		"Quiet the verbose output. \n");
+	printf("\t-r\t\t--replop: "
+		"Replop all dollops. \n");
 }
 
 ZiprOptions_t* ZiprOptions_t::parse_args(int p_argc, char* p_argv[])
@@ -56,10 +58,11 @@ ZiprOptions_t* ZiprOptions_t::parse_args(int p_argc, char* p_argv[])
 	ZiprOptions_t *opt=new ZiprOptions_t;
 	opt->SetVerbose(true);
 	int option = 0;
-	char options[] = "!qz:o:v:c:j:m:s:";
+	char options[] = "!qrz:o:v:c:j:m:s:";
 	struct option long_options[] = {
 		{"verbose",     no_argument,       NULL, '!'},
 		{"quiet",       no_argument,       NULL, 'q'},
+		{"replop",      no_argument,       NULL, 'r'},
 		{"optimize",    required_argument, NULL, 'z'},
 		{"output",      required_argument, NULL, 'o'},
 		{"variant",     required_argument, NULL, 'v'},
@@ -93,6 +96,11 @@ ZiprOptions_t* ZiprOptions_t::parse_args(int p_argc, char* p_argv[])
 			case 'q':
 			{
 				opt->SetVerbose(false);
+				break;
+			}
+			case 'r':
+			{
+				opt->SetNoReplop(false);
 				break;
 			}
 			case 'z':

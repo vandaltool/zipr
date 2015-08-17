@@ -46,6 +46,7 @@ class ZiprOptions_t : public Options_t
 			m_verbose=false; 
 			m_var_id=-1;
 			m_architecture=-1;
+			m_no_replop=true;
 		}
 
 		static ZiprOptions_t* parse_args(int p_argc, char* p_argv[]);
@@ -55,6 +56,7 @@ class ZiprOptions_t : public Options_t
 		std::string GetCallbackFileName() { return m_callbackname; }
 		int GetVariantID() { return m_var_id; }
 		int GetVerbose() { return m_verbose; }
+		int GetNoReplop() { return m_no_replop; }
 		int GetArchitecture();
 		std::string GetObjcopyPath() { return m_objcopy_path; };
 		
@@ -73,11 +75,17 @@ class ZiprOptions_t : public Options_t
 			m_verbose = verbose;
 		}
 
+		void SetNoReplop(bool no_replop)
+		{
+			m_no_replop = no_replop;
+		}
+
 	private:
 		std::string m_outname;
 		std::string m_callbackname;
 		std::string m_objcopy_path;
 		bool m_verbose;
+		bool m_no_replop;
 		int m_var_id;
 		int m_architecture;
 		int EnabledOptimizations[Optimizations_t::NumberOfOptimizations];
