@@ -951,8 +951,8 @@ DN:   0x4824XX: .long 0x4824e0-LN
 #endif
 
 
-        // for now, only trying to find I4-I8.  ideally finding I1 would let us know the size of the
-        // jump table.  We'll figure out N by trying targets until they fail to produce something valid.
+	// for now, only trying to find I4-I8.  ideally finding I1 would let us know the size of the
+	// jump table.  We'll figure out N by trying targets until they fail to produce something valid.
 
 	Instruction_t* I8=insn;
 	Instruction_t* I7=NULL;
@@ -1068,11 +1068,14 @@ DN:   0x4824XX: .long 0x4824e0-LN
 	}
 	if (found_leas.empty())
 	{
+		/*
+		 * TODO: Write this to warning.txt
+		 */
 		cout << "WARNING: No I5 candidates found!" << endl;
 	}
 
 	/*
-	 * CHeck each one that is returned.
+	 * Check each one that is returned.
 	 */
 	found_leas_it = found_leas.begin();
 	for (found_leas_it; found_leas_it != found_leas.end(); found_leas_it++) 
