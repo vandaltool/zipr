@@ -58,7 +58,7 @@ int main(int argc, char **argv)
         pidp=new VariantID_t(variantID);
         assert(pidp->IsRegistered()==true);
 
-	cout<<"ret_shadow_stack.exe started\n";
+	cout<<"selective_cfi.exe started\n";
 
         bool one_success = false;
         for(set<File_t*>::iterator it=pidp->GetFiles().begin();
