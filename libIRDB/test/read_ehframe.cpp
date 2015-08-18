@@ -512,6 +512,9 @@ classify_object_over_fdes (struct object *ob, fde *this_fde)
 
   for (; ! last_fde (ob, this_fde); this_fde = next_fde (this_fde))
     {
+	printf("analysis addr=%p\n", this_fde);
+	printf("pgm addr=%p\n", (uintptr_t)this_fde+(uintptr_t)eh_offset);
+	printf("offset=%p\n", (uintptr_t)this_fde+(uintptr_t)eh_offset-(uintptr_t)eh_frame_addr);
       struct dwarf_cie *this_cie;
       _Unwind_Ptr mask, pc_begin;
 
@@ -905,7 +908,12 @@ void read_ehframe(FileIR_t* virp, EXEIO::exeio* exeiop)
 			elfiop->sections[eh_frame_index+1]->get_size());
 	}
 #else
-	eh_frame_data=(char*)elfiop->sections[eh_frame_index]->get_data();
+	// calc the size needed to safely walk the EH frame data.  apparently walking assumes a null value in memory
+	// after the section is loaded (or properly using eh_frame_hdr, which we aren't doing)
+	//eh_frame_data=(char*)elfiop->sections[eh_frame_index]->get_data();
+	int newsize=elfiop->sections[eh_frame_index]->get_size()+4;
+	eh_frame_data=(char*)calloc(1,newsize);
+	memcpy(eh_frame_data, (void*)elfiop->sections[eh_frame_index]->get_data(), elfiop->sections[eh_frame_index]->get_size());
 #endif
 
 	uintptr_t offset;
