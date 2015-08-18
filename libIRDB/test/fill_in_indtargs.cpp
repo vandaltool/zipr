@@ -30,6 +30,7 @@
 #include <regex.h>
 // #include <elf.h>
 #include <ctype.h>
+#include <list>
 
 #include <exeio.h>
 #include "beaengine/BeaEngine.h"
@@ -483,6 +484,31 @@ void add_num_handle_fn_watches(FileIR_t * firp)
 
 }
 
+set<Instruction_t*> find_in_function(string needle, Function_t *haystack)
+{
+	DISASM disasm;
+	regex_t preg;
+	set<Instruction_t*>::const_iterator fit;
+	set<Instruction_t*> found_instructions;
+
+	assert(0 == regcomp(&preg, needle.c_str(), REG_EXTENDED));
+
+	fit = haystack->GetInstructions().begin();
+	for (fit; fit != haystack->GetInstructions().end(); fit++)
+	{
+		Instruction_t *candidate = *fit;
+		candidate->Disassemble(disasm);
+
+		// check it's the requested type
+		if(regexec(&preg, disasm.CompleteInstr, 0, NULL, 0) == 0)
+		{
+			found_instructions.insert(candidate);
+		}
+	}
+	regfree(&preg);
+	return found_instructions;
+}
+
 bool backup_until(const char* insn_type_regex, Instruction_t *& prev, Instruction_t* orig, bool recursive=false)
 {
 	DISASM disasm;
@@ -902,8 +928,7 @@ cout<<"Checking target base:" << std::hex << table_entry << ", " << table_base+i
  */
 void check_for_PIC_switch_table64(FileIR_t* firp, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop)
 {
-
-        /* here's the pattern we're looking for */
+/* here's the pattern we're looking for */
 #if 0
 I1:   0x000000000044425a <+218>:        cmp    DWORD PTR [rax+0x8],0xd   // bounds checking code, 0xd cases. switch(i) has i stored in [rax+8] in this e.g.
 I2:   0x000000000044425e <+222>:        jbe    0x444320 <_gedit_tab_get_icon+416>
@@ -911,6 +936,8 @@ I2:   0x000000000044425e <+222>:        jbe    0x444320 <_gedit_tab_get_icon+416
 I3:   0x0000000000444264 <+228>:        mov    rdi,rbp // default case, also jumped to via indirect branch below
 <snip (doesn't fall through)>
 I4:   0x0000000000444320 <+416>:        mov    edx,DWORD PTR [rax+0x8]		# load from memory into index reg EDX.
+
+THIS ONE
 I5:   0x0000000000444323 <+419>:        lea    rax,[rip+0x3e1b6]        # 0x4824e0
 I6:   0x000000000044432a <+426>:        movsxd rdx,DWORD PTR [rax+rdx*4]
 I7:   0x000000000044432e <+430>:        add    rax,rdx  // OR: lea rax, [rdx+rax]
@@ -927,39 +954,49 @@ DN:   0x4824XX: .long 0x4824e0-LN
         // for now, only trying to find I4-I8.  ideally finding I1 would let us know the size of the
         // jump table.  We'll figure out N by trying targets until they fail to produce something valid.
 
-        Instruction_t* I8=insn;
-        Instruction_t* I7=NULL;
-        Instruction_t* I6=NULL;
-        Instruction_t* I5=NULL;
-        Instruction_t* I1=NULL;
-        // check if I8 is a jump
-        if(strstr(disasm.Instruction.Mnemonic, "jmp")==NULL)
-                return;
+	Instruction_t* I8=insn;
+	Instruction_t* I7=NULL;
+	Instruction_t* I6=NULL;
+	Instruction_t* I5=NULL;
+	Instruction_t* I1=NULL;
+	// check if I8 is a jump
+	if(strstr(disasm.Instruction.Mnemonic, "jmp")==NULL)
+		return;
 
 	// return if it's a jump to a constant address, these are common
-        if(disasm.Argument1.ArgType&CONSTANT_TYPE)
+	if(disasm.Argument1.ArgType&CONSTANT_TYPE)
 		return;
 	// return if it's a jump to a memory address
-        if(disasm.Argument1.ArgType&MEMORY_TYPE)
+	if(disasm.Argument1.ArgType&MEMORY_TYPE)
 		return;
 
 	// has to be a jump to a register now
 
-	// backup and find the instruction that's an add or lea before I8 
+	/* 
+	 * This is the instruction that adds the table value
+	 * to the base address of the table. The result is 
+	 * the target address of the jump.
+	 *
+	 * Backup and find the instruction that's an add or lea before I8.
+	 * TODO: Should we check to make sure that the registers match?
+	 */
 	if(!backup_until("(add|lea)", I7, I8))
 		return;
 
-        I7->Disassemble(disasm);
+	I7->Disassemble(disasm);
 
-        // Check if lea instruction is being used as add (scale=1, disp=0)
-        if(strstr(disasm.Instruction.Mnemonic, "lea"))
-        {
-                if(!(disasm.Argument2.ArgType&MEMORY_TYPE))
-                if(!(disasm.Argument2.Memory.Scale == 1 && disasm.Argument2.Memory.Displacement == 0))
-                        return;
-        }
-
+	// Check if lea instruction is being used as add (scale=1, disp=0)
+	if(strstr(disasm.Instruction.Mnemonic, "lea"))
+	{
+		if(!(disasm.Argument2.ArgType&MEMORY_TYPE))
+		if(!(disasm.Argument2.Memory.Scale == 1 && disasm.Argument2.Memory.Displacement == 0))
+		return;
+	} 
 	// backup and find the instruction that's an movsxd before I7
+	/*
+	 * This instruction will contain the register names for
+	 * the index and the address of the base of the table
+	 */
 	if(!backup_until("movsxd", I6, I7))
 		return;
 	
@@ -969,6 +1006,10 @@ DN:   0x4824XX: .long 0x4824e0-LN
 
 
 	// 64-bit register names are OK here, because this pattern already won't apply to 32-bit code.
+	/*
+	 * base_reg is the register that holds the address
+	 * for the base of the jump table.
+	 */
 	string base_reg="";
 	switch(disasm.Argument2.Memory.BaseRegister)
 	{
@@ -978,8 +1019,8 @@ DN:   0x4824XX: .long 0x4824e0-LN
 		case REG3: base_reg="rbx"; break;
 		case REG4: base_reg="rsp"; break;
 		case REG5: base_reg="rbp"; break;
-		case REG6: base_reg="rdi"; break;
-		case REG7: base_reg="rsi"; break;
+		case REG6: base_reg="rsi"; break;
+		case REG7: base_reg="rdi"; break;
 		case REG8: base_reg="r8"; break;
 		case REG9: base_reg="r9"; break;
 		case REG10: base_reg="r10"; break;
@@ -994,106 +1035,149 @@ DN:   0x4824XX: .long 0x4824e0-LN
 	lea_string+=base_reg;
 	
 
-	// backup and find the instruction that's an lea before I6
-	// make sure we match the register, and allow recursion in the search.
-	if(!backup_until(lea_string.c_str(),I5, I6, true))
-		return;
+	/* 
+	 * This is the instruction that loads the address of the base
+	 * of the table into a register.
+	 *
+	 * backup and find the instruction that's an lea before I6;
+	 * make sure we match the register,
+	 * and allow recursion in the search (last parameter as true).
+	 *
+	 */
 
-	I5->Disassemble(disasm);
+	 /*
+	  * Convert to return set
+		*/
 
-        if(!(disasm.Argument2.ArgType&MEMORY_TYPE))
-                return;
-        if(!(disasm.Argument2.ArgType&RELATIVE_))
-                return;
-
-        // note that we'd normally have to add the displacement to the
-        // instruction address (and include the instruction's size, etc.
-        // but, fix_calls has already removed this oddity so we can relocate
-        // the instruction.
-        virtual_offset_t D1=strtol(disasm.Argument2.ArgMnemonic, NULL, 16);
-
-        // find the section with the data table
-        EXEIO::section *pSec=find_section(D1,elfiop);
-
-        // sanity check there's a section
-        if(!pSec)
-                return;
-
-        const char* secdata=pSec->get_data();
-
-	// if the section has no data, abort 
-	if(!secdata)
-		return;
-
-	int table_size = 0;
-	if(!backup_until("cmp", I1, I5))
+	set<Instruction_t*>::const_iterator found_leas_it;
+	set<Instruction_t*> found_leas;
+	
+	
+	if (I6->GetFunction())
 	{
-		cout<<"pic64: could not find size of switch table"<<endl;
-
-		// we set the table_size variable to max_int so that we can still do pinning, 
-		// but we won't do the switch identification.
-		table_size=std::numeric_limits<int>::max();
+		cout << "Using find_in_function method." << endl;
+		found_leas=find_in_function(lea_string,I6->GetFunction());
 	}
 	else
 	{
-		DISASM d1;
-		I1->Disassemble(d1);
-		table_size = d1.Instruction.Immediat;
-		if (table_size <= 0)
-			// set table_size to be very large, so we can still do pinning appropriately
-			table_size=std::numeric_limits<int>::max();
+		cout << "Using fallback method." << endl;
+		if (backup_until(lea_string.c_str(), I5, I6, true))
+		{
+			found_leas.insert(I5);
+		}
+	}
+	if (found_leas.empty())
+	{
+		cout << "WARNING: No I5 candidates found!" << endl;
 	}
 
-	set<Instruction_t *> ibtargets;
-	virtual_offset_t offset=D1-pSec->get_address();
-	int entry=0;
-	do
+	/*
+	 * CHeck each one that is returned.
+	 */
+	found_leas_it = found_leas.begin();
+	for (found_leas_it; found_leas_it != found_leas.end(); found_leas_it++) 
 	{
-		// check that we can still grab a word from this section
-		if(offset+sizeof(int) > pSec->get_size())
-			break;
+		Instruction_t *I5_cur = *found_leas_it;
+		I5_cur->Disassemble(disasm);
 
-		const int *table_entry_ptr=(const int*)&(secdata[offset]);
-		virtual_offset_t table_entry=*table_entry_ptr;
+		if(!(disasm.Argument2.ArgType&MEMORY_TYPE))
+			//return;
+			continue;
+		if(!(disasm.Argument2.ArgType&RELATIVE_))
+			//return;
+			continue;
 
-		if(!possible_target(D1+table_entry))
-			break;
+		// note that we'd normally have to add the displacement to the
+		// instruction address (and include the instruction's size, etc.
+		// but, fix_calls has already removed this oddity so we can relocate
+		// the instruction.
+		virtual_offset_t D1=strtol(disasm.Argument2.ArgMnemonic, NULL, 16);
 
-		if(getenv("IB_VERBOSE"))
+		// find the section with the data table
+		EXEIO::section *pSec=find_section(D1,elfiop);
+
+		// sanity check there's a section
+		if(!pSec)
+			//return;
+			continue;
+
+		const char* secdata=pSec->get_data();
+
+		// if the section has no data, abort 
+		if(!secdata)
+			//return;
+			continue;
+
+		int table_size = 0;
+		if(!backup_until("cmp", I1, I5_cur))
 		{
-			cout<<"Found possible table entry, at: "<< std::hex << I8->GetAddress()->GetVirtualOffset()
-		    		<< " insn: " << disasm.CompleteInstr<< " d1: "
-                    		<< D1 << " table_entry:" << table_entry 
-		    		<< " target: "<< D1+table_entry << std::dec << endl;
-		}
+			cout<<"pic64: could not find size of switch table"<<endl;
 
-		Instruction_t *ibtarget = lookupInstruction(firp, D1+table_entry);
-		if (ibtarget && ibtargets.size() <= table_size)
-		{
-			if(getenv("IB_VERBOSE"))
-				cout << "jmp table [" << entry << "]: " << hex << table_entry << dec << endl;
-			ibtargets.insert(ibtarget);
+			// we set the table_size variable to max_int so that we can still do pinning, 
+			// but we won't do the switch identification.
+			table_size=std::numeric_limits<int>::max();
 		}
 		else
 		{
-			if(getenv("IB_VERBOSE"))
-				cout << "      INVALID target" << endl;
-			break;
+			DISASM d1;
+			I1->Disassemble(d1);
+			table_size = d1.Instruction.Immediat;
+			if (table_size <= 0)
+				// set table_size to be very large, so we can still do pinning appropriately
+				table_size=std::numeric_limits<int>::max();
 		}
-		offset+=sizeof(int);
-		entry++;
-	} while ( entry<=table_size);
 
-	
-	// valid switch table? may or may not have default: in the switch
-	// table size = 8, #entries: 9 b/c of default
-	cout << "pic64: detected table size (max_int means no found): 0x"<< hex << table_size << " #entries: 0x" << entry << " ibtargets.size: " << ibtargets.size() << endl;
+		set<Instruction_t *> ibtargets;
+		virtual_offset_t offset=D1-pSec->get_address();
+		int entry=0;
+		do
+		{
+			// check that we can still grab a word from this section
+			if(offset+sizeof(int) > pSec->get_size())
+				break;
 
-	// note that there may be an off-by-one error here as table size depends on whether instruction I2 is a jb or jbe.
-	if (table_size == ibtargets.size() || table_size == (ibtargets.size()-1))
-	{
-		cout << "pic64: valid switch table detected" << endl;
-		jmptables[I8] = ibtargets;
+			const int *table_entry_ptr=(const int*)&(secdata[offset]);
+			virtual_offset_t table_entry=*table_entry_ptr;
+
+			if(!possible_target(D1+table_entry))
+				break;
+
+			if(getenv("IB_VERBOSE"))
+			{
+				cout<<"Found possible table entry, at: "<< std::hex << I8->GetAddress()->GetVirtualOffset()
+			    		<< " insn: " << disasm.CompleteInstr<< " d1: "
+			    		<< D1 << " table_entry:" << table_entry 
+			    		<< " target: "<< D1+table_entry << std::dec << endl;
+			}
+
+			Instruction_t *ibtarget = lookupInstruction(firp, D1+table_entry);
+			if (ibtarget && ibtargets.size() <= table_size)
+			{
+				if(getenv("IB_VERBOSE"))
+					cout << "jmp table [" << entry << "]: " << hex << table_entry << dec << endl;
+				ibtargets.insert(ibtarget);
+			}
+			else
+			{
+				if(getenv("IB_VERBOSE"))
+					cout << "      INVALID target" << endl;
+				break;
+			}
+			offset+=sizeof(int);
+			entry++;
+		} while ( entry<=table_size);
+
+		
+		// valid switch table? may or may not have default: in the switch
+		// table size = 8, #entries: 9 b/c of default
+		cout << "pic64: detected table size (max_int means no found): 0x"<< hex << table_size << " #entries: 0x" << entry << " ibtargets.size: " << ibtargets.size() << endl;
+
+		// note that there may be an off-by-one error here as table size depends on whether instruction I2 is a jb or jbe.
+		if (table_size == ibtargets.size() || table_size == (ibtargets.size()-1))
+		{
+			cout << "pic64: valid switch table detected" << endl;
+			jmptables[I8] = ibtargets;
+		}
 	}
 }
 
@@ -1438,7 +1522,7 @@ void calc_preds(FileIR_t* firp)
 }
 
 
-void fill_in_indtargs(FileIR_t* firp, exeio* elfiop)
+void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t> forced_pins)
 {
 	if(getenv("IB_VERBOSE")!=0)
         	for(
@@ -1487,8 +1571,14 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop)
 		infer_targets(firp, elfiop->sections[secndx]);
 
 	
+	std::list<virtual_offset_t>::iterator forced_iterator = forced_pins.begin();
+	for (; forced_iterator != forced_pins.end(); forced_iterator++)
+	{
+		possible_target(*forced_iterator);
+	}
+
 	cout<<"========================================="<<endl;
-	cout<<"Targets from data sections are: " << endl;
+	cout<<"Targets from data sections (and forces) are: " << endl;
 	cout<<"# ATTRIBUTE total_indirect_targets_pass1="<<std::dec<<targets.size()<<endl;
 	print_targets();
 	cout<<"========================================="<<endl;
@@ -1577,10 +1667,13 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop)
 
 main(int argc, char* argv[])
 {
+	int argc_iter = 2;
 
-	if(argc!=2)
+	std::list<virtual_offset_t> forced_pins;
+
+	if(argc<2)
 	{
-		cerr<<"Usage: fill_in_indtargs <id>"<<endl;
+		cerr<<"Usage: fill_in_indtargs <id> [addr,...]"<<endl;
 		exit(-1);
 	}
 
@@ -1594,6 +1687,17 @@ main(int argc, char* argv[])
 		BaseObj_t::SetInterface(&pqxx_interface);
 
 		pidp=new VariantID_t(atoi(argv[1]));
+
+		for (argc_iter = 2; argc_iter < argc; argc_iter++)
+		{
+			char *end_ptr;
+			virtual_offset_t offset = strtol(argv[argc_iter], &end_ptr, 0);
+			if (*end_ptr == '\0')
+			{
+				cout << "force pinning: 0x" << std::hex << offset << endl;
+				forced_pins.push_back(offset);
+			}
+		}
 
 		assert(pidp->IsRegistered()==true);
 
@@ -1630,7 +1734,7 @@ main(int argc, char* argv[])
 
 
 			// find all indirect branch targets
-			fill_in_indtargs(firp, elfiop);
+			fill_in_indtargs(firp, elfiop, forced_pins);
 	
 			// write the DB back and commit our changes 
 			firp->WriteToDB();
