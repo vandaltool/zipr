@@ -250,14 +250,22 @@ void HookDynamicCalls::SetToHook(map<string,int> to_hook)
 	m_to_hook = to_hook;
 }
 
+/* 
+* TODO:
+* We can rewrite this since when fix_calls changes 
+* a call to a push/jmp it already redirects through
+* the @plt entry. In other words, the jmp points to
+* the redirect and not to the name@plt.
+* Got it? Thought so.
+*/
 bool HookDynamicCalls::GetPltCallTarget(Instruction_t *insn,
 	virtual_offset_t &target_addr) {
 
 	section *got_plt_section = NULL;
-	Instruction_t *target = NULL;
-	virtual_offset_t target_target = 0;
-	string target_bits;
-	Elf64_Addr target_target_target;
+	Elf64_Addr target;
+	Instruction_t *control_instruction = NULL;
+	string control_instruction_bits;
+	DISASM d;
 
 	LoadElf();
 	got_plt_section = m_elfiop->sections[".got.plt"];
@@ -276,13 +284,11 @@ bool HookDynamicCalls::GetPltCallTarget(Instruction_t *insn,
 	 * Is this an instruction with a target?
 	 * That's a must.
 	 */
-	if (!(target = insn->GetTarget()))
+	if (!(control_instruction = insn->GetTarget()))
 		return false;
 
-	/*
-	 * a
-	 */
-	target_bits = target->GetDataBits();
+	control_instruction_bits = control_instruction->GetDataBits();
+	control_instruction->Disassemble(d);
 	
 	/*
 	 * Determine the type of the operand
@@ -291,45 +297,54 @@ bool HookDynamicCalls::GetPltCallTarget(Instruction_t *insn,
 	 * 
 	 * target_target: CALL_FIXED 
 	 */
-	switch ((uint8_t)target_bits[0])
+	switch ((uint8_t)control_instruction_bits[0])
 	{
 		case 0xFF:
-			target_target = *((uint32_t*)&target_bits[2]) + target_bits.length();
-			break;
+		{
+			virtual_offset_t indirect_address = 0;
+			Elf64_Addr dereferenced_indirect_address;
+			/*
+			 * Jmp indirect to an absolute address.
+			 */
+			cout << "control instruction: " << d.CompleteInstr << endl;
+			indirect_address = *((uint32_t*)&control_instruction_bits[2]) +
+			                   control_instruction_bits.length();
+			/*
+			 * indirect_address contains the address 
+			 * of the target of control instruction,
+			 * if one such exists.
+			 */
+			if (!indirect_address)
+				return false;
+
+			cout << "indirect_address: 0x"
+			     << std::hex << indirect_address
+					 << endl;
+			/*
+			 * Dereference the address at the target of the
+			 * target to determine what /it/ points at.
+			 * I.e., *CALL_FIXED
+			 */
+			dereferenced_indirect_address = ReadAddressInSectionAtOffset(
+				got_plt_section,
+				indirect_address - got_plt_section->get_address());
+			cout << "dereferenced_indirect_address: 0x" 
+			     << std::hex << dereferenced_indirect_address
+					 << endl;
+
+			/*
+			 * Subtract 0x6 since that is the offset
+			 * from the start of the PLT entry to the
+			 * so-called second half (which starts at L1)
+			 */
+			target_addr = dereferenced_indirect_address - 0x6;
+			return true;
+		}
 		default:
 			cout << "Not a handled control instruction opcode." << endl;
-			break;
+			return false;
 	}
-	/*
-	 * target_target contains the target of
-	 * the target instruction, if one such
-	 * exists.
-	 */
-	if (!target_target)
-		return false;
-
-	cout << "target_target: 0x"
-	     << std::hex << target_target
-			 << endl;
-	/*
-	 * Dereference the address at the target of the
-	 * target to determine what /it/ points at.
-	 * I.e., *CALL_FIXED
-	 */
-	target_target_target = ReadAddressInSectionAtOffset(
-		got_plt_section,
-		target_target - got_plt_section->get_address());
-	cout << "target_target_target: 0x" 
-	     << std::hex << target_target_target
-			 << endl;
-
-	/*
-	 * Subtract 0x6 since that is the offset
-	 * from the start of the PLT entry to the
-	 * so-called second half (which starts at L1)
-	 */
-	target_addr = target_target_target - 0x6;
-	return true;
+	return false;
 }
 
 int HookDynamicCalls::execute()
@@ -349,11 +364,6 @@ int HookDynamicCalls::execute()
 		{
 			Instruction_t* insn = *it;
 			virtual_offset_t target;
-			/*
-			 * This is not quite done yet: Consider
-			 * redirects that are rewritten as push/jmp
-			 * combinations.
-			 */
 			if (GetPltCallTarget(insn, target))
 			{
 				cout << "target: " << std::hex << target << endl;
