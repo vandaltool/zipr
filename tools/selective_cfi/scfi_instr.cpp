@@ -347,9 +347,39 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn)
 	if(firp->GetArchitectureBitWidth()==64)
 		reg="rcx";	// 64-bit reg.
 
+	string rspreg="esp";	// 32-bit reg 
+	if(firp->GetArchitectureBitWidth()==64)
+		rspreg="rsp";	// 64-bit reg.
+
+	string worddec="dword";	// 32-bit reg 
+	if(firp->GetArchitectureBitWidth()==64)
+		worddec="qword";	// 64-bit reg.
+
+	
+	DISASM d;
+	insn->Disassemble(d);
+	if(d.Argument1.ArgType!=NO_ARGUMENT)
+	{
+		unsigned int sp_adjust=d.Instruction.Immediat-firp->GetArchitectureBitWidth()/8;
+		cout<<"Found relateively rare ret_with_pop insn: "<<d.CompleteInstr<<endl;
+		char buf[30];
+		sprintf(buf, "pop %s [%s+%d]", worddec.c_str(), rspreg.c_str(), sp_adjust);
+		Instruction_t* newafter=insertAssemblyBefore(firp,insn,buf);
+
+		if(sp_adjust>0)
+		{
+			sprintf(buf, "lea %s, [%s+%d]", rspreg.c_str(), rspreg.c_str(), sp_adjust);
+			Instruction_t* newinsn=insertAssemblyAfter(firp,insn,buf);
+		}
+
+
+		// rewrite the "old" isntruction, as that's what insertAssemblyBefore returns
+		insn=newafter;
+	}
+		
+
 #ifdef CGC
 	// insert the pop/checking code.
-//	Instruction_t* after=insertAssemblyBefore(firp,insn,string("pop ")+reg);
 	Instruction_t* after=insn;
 
 	string jmpBits=getJumpDataBits();
