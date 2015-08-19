@@ -622,15 +622,18 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 	int table_size = 0;
 	if (!backup_until("cmp", Icmp, I3))
 	{
-		cout<<"pic32: could not find size of switch table"<<endl;
-		return;
+		cerr<<"pic32: could not find size of switch table"<<endl;
+		table_size=std::numeric_limits<int>::max();
+		// set table_size to be very large, so we can still do pinning appropriately
 	}
-
-	DISASM dcmp;
-	Icmp->Disassemble(dcmp);
-	table_size = dcmp.Instruction.Immediat;
-	if(table_size<=0)
-		return;
+	else
+	{
+		DISASM dcmp;
+		Icmp->Disassemble(dcmp);
+		table_size = dcmp.Instruction.Immediat;
+		if(table_size<=0)
+			table_size=std::numeric_limits<int>::max();
+	}
 
 	// grab the offset out of the lea.
 	DISASM d2;
@@ -704,10 +707,10 @@ cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< "
 
 			// valid switch table? may or may not have default: in the switch
 			// table size = 8, #entries: 9 b/c of default
-			cout << "pic32: table size: " << table_size << " ibtargets.size: " << ibtargets.size() << endl;
+			cout << "pic32 (base pattern): table size: " << table_size << " ibtargets.size: " << ibtargets.size() << endl;
 			if (table_size == ibtargets.size() || table_size == (ibtargets.size()-1))
 			{
-				cout << "pic32: valid switch table detected" << endl;
+				cout << "pic32 (base pattern): valid switch table detected" << endl;
 				jmptables[I5] = ibtargets;
 			}
 		}
@@ -805,8 +808,8 @@ cout<<"Checking target base:" << std::hex << table_base+table_entry << ", " << t
 		/* did we finish the loop or break out? */
 		if(i==3)
 		{
-			if(getenv("VERBOSE")!=0)
-				cout<<"Found switch table (thunk-relative) at "<<hex<<table_base+table_offset<<endl;
+			if(getenv("IB_VERBOSE")!=0)
+				cout<<"Found switch table (pic3, type2) (thunk-relative) at "<<hex<<table_base+table_offset<<endl;
 			// finished the loop.
 			for(i=0;true;i++)
 			{
@@ -816,7 +819,7 @@ cout<<"Checking target base:" << std::hex << table_base+table_entry << ", " << t
                 		const int32_t *table_entry_ptr=(const int32_t*)&(secdata[offset+i*4]);
                 		virtual_offset_t table_entry=*table_entry_ptr;
 	
-				if(getenv("VERBOSE")!=0)
+				if(getenv("IB_VERBOSE")!=0)
 					cout<<"Found switch table (thunk-relative) entry["<<dec<<i<<"], "<<hex<<table_base+table_entry<<endl;
 				if(!possible_target(table_base+table_entry,table_base+i*4))
 					break;
@@ -824,7 +827,7 @@ cout<<"Checking target base:" << std::hex << table_base+table_entry << ", " << t
 		}
 		else
 		{
-			if(getenv("VERBOSE")!=0)
+			if(getenv("IB_VERBOSE")!=0)
 				cout<<"Found that  "<<hex<<table_base+table_offset<<endl;
 		}
 
@@ -891,8 +894,8 @@ cout<<"Checking target base:" << std::hex << table_entry << ", " << table_base+i
 		/* did we finish the loop or break out? */
 		if(i==3)
 		{
-			if(getenv("VERBOSE")!=0)
-				cout<<"Found switch table (thunk-relative) at "<<hex<<table_base<<endl;
+			if(getenv("IB_VERBOSE")!=0)
+				cout<<"Found switch table (pic3, type3) (thunk-relative) at "<<hex<<table_base<<endl;
 			// finished the loop.
 			for(i=0;true;i++)
 			{
@@ -902,7 +905,7 @@ cout<<"Checking target base:" << std::hex << table_entry << ", " << table_base+i
                 		const int *table_entry_ptr=(const int*)&(secdata[offset+i*4]);
                 		virtual_offset_t table_entry=*table_entry_ptr;
 	
-				if(getenv("VERBOSE")!=0)
+				if(getenv("IB_VERBOSE")!=0)
 					cout<<"Found switch table (thunk-relative) entry["<<dec<<i<<"], "<<hex<<table_entry<<endl;
 				if(!possible_target(table_entry,table_base+i*4))
 					return;
@@ -910,7 +913,7 @@ cout<<"Checking target base:" << std::hex << table_entry << ", " << table_base+i
 		}
 		else
 		{
-			if(getenv("VERBOSE")!=0)
+			if(getenv("IB_VERBOSE")!=0)
 				cout<<"Found that  "<<hex<<table_base<<endl;
 		}
 

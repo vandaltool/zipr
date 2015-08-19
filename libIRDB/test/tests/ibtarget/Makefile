@@ -14,7 +14,7 @@ peasoup: $(PEASOUP_PROGS)
 $(PROGS): ../../../../lib/*
 
 .exe.peasoup: $<
-	LD_LIBRARY_PATH="$(LD_LIBRARY_PATH):." $(PEASOUP_HOME)/tools/ps_analyze.sh $< $@ --step integertransform=off --step p1transform=off --step ilr=off
+	LD_LIBRARY_PATH="$(LD_LIBRARY_PATH):." $(PEASOUP_HOME)/tools/ps_analyze.sh $< $@ --backend zipr --step meds_static=off
 
 .o.exe:  $< ../lib/libIRDB-core.a ../lib/libIRDB-cfg.a
 	g++ $< $(INCLUDES) $(LIBS) $(OPT)  -o $@
