@@ -40,5 +40,5 @@ if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then
     exit 1; 
 fi
 cd $SECURITY_TRANSFORMS_HOME
-make clean
+scons build_cgc=1 build_appfw=0 -c
 

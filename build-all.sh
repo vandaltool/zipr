@@ -75,7 +75,7 @@ make install
 
 if [ -d $ZIPR_HOME ]; then
 	cd $ZIPR_HOME
-	./configure --enable-cgc --prefix=$ZIPR_INSTALL; make;  make install
+	scons build_cgc=1 # ./configure --enable-cgc --prefix=$ZIPR_INSTALL; make;  make install
 fi
 
 if [ -d $ZIPR_SCFI_PLUGIN ]; then 
