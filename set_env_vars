@@ -42,3 +42,6 @@ export SCONSFLAGS="exceptions=1 x86=1 tool=1 hprof=0 cpuprof=0 lm_required=false
 #export SVN_USERNAME=$USER 
 
 . $PEASOUP_UMBRELLA_DIR/set_command_envs
+
+export PS=$PEASOUP_HOME/tools/ps_analyze.sh
+export PSCGC=$PEASOUP_HOME/tools/ps_analyze_cgc.sh
