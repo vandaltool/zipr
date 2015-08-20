@@ -1819,8 +1819,15 @@ void Zipr_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_add, R
 			perror(__FUNCTION__);
 		}
 
-//		stratafier_cmd="$STRATAFIER/add_strata_segment";
+#ifdef CGC
+		// doens't work with shared objects, but produces a smaller binary, use it for CGC. 
+		// ultimately we may do dynamic selection and/or a better tool
+		stratafier_cmd="$STRATAFIER/add_strata_segment";
+#else
+		//  move_segheaders is needed for shared objects.
 		stratafier_cmd="$STRATAFIER/move_segheaders";
+#endif
+
 		if (m_opts.GetArchitecture() == 64) {
 			stratafier_cmd += "64";
 		}
