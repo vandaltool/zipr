@@ -9,8 +9,8 @@
 /configure.in -text
 include/plugin_man.h -text
 include/unresolved.h -text
-include/zipr.h -text
 include/zipr_all.h -text
+include/zipr_impl.h -text
 include/zipr_mem_space.h -text
 include/zipr_optimizations.h -text
 include/zipr_opts.h -text

@@ -81,6 +81,21 @@ void ZiprPluginManager_t::CallbackLinkingEnd()
 	dispatch_to(CallbackLinkingEnd);
 }
 
+bool ZiprPluginManager_t::DoesPluginPlop(Instruction_t *insn, DLFunctionHandle_t &callback) 
+{
+	DLFunctionHandleSet_t::iterator it=m_handleList.begin();
+	for(m_handleList.begin();it!=m_handleList.end();++it)
+	{
+		ZiprPluginInterface_t* zpi=(ZiprPluginInterface_t*)*it;
+		if (zpi->WillPluginPlop(insn))
+		{
+			callback = zpi;
+			return true;
+		}
+	}
+	return false;
+}
+
 void ZiprPluginManager_t::open_plugins
                         (
                          Zipr_SDK::MemorySpace_t *p_ms,

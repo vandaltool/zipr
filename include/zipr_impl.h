@@ -28,16 +28,16 @@
  * E-mail: jwd@zephyr-software.com
  **************************************************************************/
 
-#ifndef zipr_h
-#define zipr_h
+#ifndef zipr_impl_h
+#define zipr_impl_h
 
 class ZiprOptions_t;
 class Stats_t;
 
-class Zipr_t
+class ZiprImpl_t : public Zipr_t
 {
 	public:
-		Zipr_t(libIRDB::FileIR_t* p_firp, ZiprOptions_t &p_opts) : 
+		ZiprImpl_t(libIRDB::FileIR_t* p_firp, ZiprOptions_t &p_opts) :
 			m_firp(p_firp), 
 			m_opts(p_opts), 
 			m_stats(NULL), 
@@ -55,6 +55,11 @@ class Zipr_t
 
 		void CreateBinaryFile(const std::string &name);
 
+		int DetermineWorstCaseInsnSize(libIRDB::Instruction_t*);
+		Zipr_SDK::RangeAddress_t PlopInstruction(libIRDB::Instruction_t* insn, Zipr_SDK::RangeAddress_t addr);
+		Zipr_SDK::RangeAddress_t PlopWithTarget(libIRDB::Instruction_t* insn, Zipr_SDK::RangeAddress_t at);
+		Zipr_SDK::RangeAddress_t PlopWithCallback(libIRDB::Instruction_t* insn, Zipr_SDK::RangeAddress_t at);
+
 	private:
 
 		// data for the stuff we're rewriting.
@@ -62,26 +67,22 @@ class Zipr_t
 		ZiprOptions_t& m_opts;
 		Stats_t *m_stats;
 
-		// phases of rewriting.
+		Zipr_SDK::RangeAddress_t _PlopInstruction(libIRDB::Instruction_t*, Zipr_SDK::RangeAddress_t);
+		int _DetermineWorstCaseInsnSize(libIRDB::Instruction_t* );
 		void FindFreeRanges(const std::string &name);
 		void AddPinnedInstructions();
-		void ResolvePinnedInstructions();
 		void ReservePinnedInstructions();
 		void PreReserve2ByteJumpTargets();
 		void ExpandPinnedInstructions();
 		void Fix2BytePinnedInstructions();
 		void OptimizePinnedInstructions();
 		void OptimizePinnedFallthroughs();
+		void AskPluginsAboutPlopping();
 		void PlopTheUnpinnedInstructions();
 		void UpdateCallbacks();
 		void PrintStats();
 		void RecordPinnedInsnAddrs();
 
-
-		// emiting instructions
-		RangeAddress_t PlopInstruction(libIRDB::Instruction_t* insn, RangeAddress_t addr);
-		RangeAddress_t PlopWithTarget(libIRDB::Instruction_t* insn, RangeAddress_t at);
-		RangeAddress_t PlopWithCallback(libIRDB::Instruction_t* insn, RangeAddress_t at);
 
 		// patching
 		void PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr);
@@ -91,8 +92,6 @@ class Zipr_t
 		void ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr);
 		void PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr);
 		void CallToNop(RangeAddress_t at_addr);
-
-
 
 		// outputing new .exe
 		void FillSection(ELFIO::section* sec, FILE* fexe);
@@ -147,6 +146,7 @@ class Zipr_t
 
 		ZiprPluginManager_t plugman;
 
+		std::map<libIRDB::Instruction_t*,DLFunctionHandle_t> plopping_plugins;
 };
 
 #endif
