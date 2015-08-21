@@ -68,7 +68,7 @@ static std::ifstream::pos_type filesize(const char* filename)
 }
 
 
-void Zipr_t::CreateBinaryFile(const std::string &name)
+void ZiprImpl_t::CreateBinaryFile(const std::string &name)
 {
 	m_stats = new Stats_t();
 
@@ -146,6 +146,15 @@ void Zipr_t::CreateBinaryFile(const std::string &name)
 //	NonceRelocs_t nr(memory_space,*elfiop, *m_firp, m_opts);
 //	nr.HandleNonceRelocs();
 
+
+	/*
+	 * Let's go through all the instructions
+	 * and determine if there are going to be
+	 * plugins that want to plop an instruction!
+	 */
+
+	AskPluginsAboutPlopping();
+
 	// now that pinning is done, start emitting unpinnned instructions, and patching where needed.
 	PlopTheUnpinnedInstructions();
 
@@ -196,7 +205,7 @@ static bool in_same_segment(ELFIO::section* sec1, ELFIO::section* sec2, ELFIO::e
 //
 // check if there's padding we can use between this section and the next section.
 //
-RangeAddress_t Zipr_t::extend_section(ELFIO::section *sec, ELFIO::section *next_sec)
+RangeAddress_t ZiprImpl_t::extend_section(ELFIO::section *sec, ELFIO::section *next_sec)
 {
 	RangeAddress_t start=sec->get_address();
 	RangeAddress_t end=sec->get_size()+start;
@@ -209,7 +218,7 @@ RangeAddress_t Zipr_t::extend_section(ELFIO::section *sec, ELFIO::section *next_
 	return end;
 }
 
-void Zipr_t::FindFreeRanges(const std::string &name)
+void ZiprImpl_t::FindFreeRanges(const std::string &name)
 {
 	/* use ELFIO to load the sections */
 //	elfiop=new ELFIO::elfio;
@@ -363,7 +372,7 @@ void Zipr_t::FindFreeRanges(const std::string &name)
 	start_of_new_space=new_free_page;
 }
 
-void Zipr_t::AddPinnedInstructions()
+void ZiprImpl_t::AddPinnedInstructions()
 {
 
         for(   
@@ -385,7 +394,7 @@ void Zipr_t::AddPinnedInstructions()
 
 #if 0
 
-Instruction_t *Zipr_t::FindPinnedInsnAtAddr(RangeAddress_t addr)
+Instruction_t *ZiprImpl_t::FindPinnedInsnAtAddr(RangeAddress_t addr)
 {
 	for(
 		set<Instruction_t*>::const_iterator it=m_firp->GetInstructions().begin();
@@ -410,7 +419,7 @@ Instruction_t *Zipr_t::FindPinnedInsnAtAddr(RangeAddress_t addr)
 	return NULL;
 }
 #else
-Instruction_t *Zipr_t::FindPinnedInsnAtAddr(RangeAddress_t addr)
+Instruction_t *ZiprImpl_t::FindPinnedInsnAtAddr(RangeAddress_t addr)
 {
         std::map<RangeAddress_t,libIRDB::Instruction_t*>::iterator it=m_InsnAtAddrs.find(addr);
         if(it!=m_InsnAtAddrs.end())
@@ -420,7 +429,7 @@ Instruction_t *Zipr_t::FindPinnedInsnAtAddr(RangeAddress_t addr)
 
 #endif
 
-void Zipr_t::RecordPinnedInsnAddrs()
+void ZiprImpl_t::RecordPinnedInsnAddrs()
 {
 #if 1
         for(
@@ -448,7 +457,7 @@ void Zipr_t::RecordPinnedInsnAddrs()
 }
 
 
-bool Zipr_t::ShouldPinImmediately(Instruction_t *upinsn)
+bool ZiprImpl_t::ShouldPinImmediately(Instruction_t *upinsn)
 {
 	DISASM d;
 	upinsn->Disassemble(d);
@@ -530,7 +539,7 @@ bool Zipr_t::ShouldPinImmediately(Instruction_t *upinsn)
 	return false;
 }
 
-void Zipr_t::OptimizePinnedFallthroughs()
+void ZiprImpl_t::OptimizePinnedFallthroughs()
 {
 	for(set<UnresolvedPinned_t>::const_iterator it=two_byte_pins.begin();
 		it!=two_byte_pins.end();
@@ -575,7 +584,7 @@ void Zipr_t::OptimizePinnedFallthroughs()
 				memory_space.MergeFreeRange(j);
 			}
 			up.SetRange(Range_t(0,0));
-			PlopInstruction(up_insn,up_ibta->GetVirtualOffset());
+			_PlopInstruction(up_insn,up_ibta->GetVirtualOffset());
 			two_byte_pins.erase(it++);
 		}
 		else
@@ -586,7 +595,7 @@ void Zipr_t::OptimizePinnedFallthroughs()
 	}
 }
 
-void Zipr_t::PreReserve2ByteJumpTargets()
+void ZiprImpl_t::PreReserve2ByteJumpTargets()
 {
 	for(set<UnresolvedPinned_t>::const_iterator it=two_byte_pins.begin();
 		it!=two_byte_pins.end();
@@ -666,7 +675,7 @@ void Zipr_t::PreReserve2ByteJumpTargets()
 	}
 }
 
-void Zipr_t::ReservePinnedInstructions()
+void ZiprImpl_t::ReservePinnedInstructions()
 {
 	set<UnresolvedPinned_t> reserved_pins;
 
@@ -801,7 +810,7 @@ void Zipr_t::ReservePinnedInstructions()
 	}
 }
 
-void Zipr_t::ExpandPinnedInstructions()
+void ZiprImpl_t::ExpandPinnedInstructions()
 {
 	/* now, all insns have 2-byte pins.  See which ones we can make 5-byte pins */
 	
@@ -865,7 +874,7 @@ void Zipr_t::ExpandPinnedInstructions()
 }
 
 
-void Zipr_t::Fix2BytePinnedInstructions()
+void ZiprImpl_t::Fix2BytePinnedInstructions()
 {
 	for(
 		set<UnresolvedPinned_t>::const_iterator it=two_byte_pins.begin();
@@ -957,7 +966,7 @@ void Zipr_t::Fix2BytePinnedInstructions()
 	}
 }
 
-void Zipr_t::OptimizePinnedInstructions()
+void ZiprImpl_t::OptimizePinnedInstructions()
 {
 
 	// should only be 5-byte pins by now.
@@ -1006,7 +1015,7 @@ void Zipr_t::OptimizePinnedInstructions()
 
 
 #if 0
-void Zipr_t::PlopBytes(RangeAddress_t addr, const char the_byte[], int num)
+void ZiprImpl_t::PlopBytes(RangeAddress_t addr, const char the_byte[], int num)
 {
 	for(unsigned int i=0;i<num;i++)
 	{
@@ -1014,14 +1023,14 @@ void Zipr_t::PlopBytes(RangeAddress_t addr, const char the_byte[], int num)
 	}
 }
 
-void Zipr_t::PlopByte(RangeAddress_t addr, char the_byte)
+void ZiprImpl_t::PlopByte(RangeAddress_t addr, char the_byte)
 {
 	if(memory_space.find(addr) == memory_space.end() )
 		memory_space.SplitFreeRange(addr);
 	memory_space[addr]=the_byte;
 }
 
-void Zipr_t::PlopJump(RangeAddress_t addr)
+void ZiprImpl_t::PlopJump(RangeAddress_t addr)
 {
 	char bytes[]={(char)0xe9,(char)0,(char)0,(char)0,(char)0}; // jmp rel8
 	for(unsigned int i=0;i<sizeof(bytes);i++)        // don't check bytes 0-1, because they've got the short byte jmp
@@ -1032,13 +1041,13 @@ void Zipr_t::PlopJump(RangeAddress_t addr)
 #endif
 
 
-void Zipr_t::CallToNop(RangeAddress_t at_addr)
+void ZiprImpl_t::CallToNop(RangeAddress_t at_addr)
 {
 	char bytes[]={(char)0x90,(char)0x90,(char)0x90,(char)0x90,(char)0x90}; // nop;nop;nop;nop;nop
 	memory_space.PlopBytes(at_addr,bytes,sizeof(bytes));
 }
 
-void Zipr_t::PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr)
+void ZiprImpl_t::PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr)
 {
 	uintptr_t off=to_addr-at_addr-5;
 
@@ -1063,7 +1072,7 @@ void Zipr_t::PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr)
 	}
 }
 
-void Zipr_t::PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)
+void ZiprImpl_t::PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)
 {
 	uintptr_t off=to_addr-at_addr-2;
 
@@ -1086,9 +1095,30 @@ void Zipr_t::PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)
 	}
 }
 
+int ZiprImpl_t::_DetermineWorstCaseInsnSize(Instruction_t* insn)
+{
+	std::map<Instruction_t*,DLFunctionHandle_t>::const_iterator plop_it;
+	int worst_case_size = 0;
+
+	plop_it = plopping_plugins.find(insn);
+	if (plop_it != plopping_plugins.end())
+	{
+		DLFunctionHandle_t handle = plop_it->second;
+		ZiprPluginInterface_t *zpi = dynamic_cast<ZiprPluginInterface_t*>(handle);
+		worst_case_size = zpi->WorstCaseInsnSize(insn,this);
+	}
+	else
+		worst_case_size = DetermineWorstCaseInsnSize(insn);
+
+	if (m_opts.GetVerbose())
+		cout << "Worst case size: " << worst_case_size << endl;
+
+	return worst_case_size;
+}
 
 #define CALLBACK_TRAMPOLINE_SIZE 9
-static int DetermineWorstCaseInsnSize(Instruction_t* insn)
+//static int DetermineWorstCaseInsnSize(Instruction_t* insn)
+int ZiprImpl_t::DetermineWorstCaseInsnSize(Instruction_t* insn)
 {
 
 	int required_size=0;
@@ -1151,9 +1181,9 @@ static int DetermineWorstCaseInsnSize(Instruction_t* insn)
 	return required_size+5;
 }
 
-void Zipr_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Patch_t &p)
+void ZiprImpl_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Patch_t &p)
 {
-	int req_size=DetermineWorstCaseInsnSize(uu.GetInstruction());
+	int req_size=_DetermineWorstCaseInsnSize(uu.GetInstruction());
 	Range_t r=memory_space.GetFreeRange(req_size);
 	int insn_count=0;
 	const char* truncated="not truncated.";
@@ -1171,7 +1201,7 @@ void Zipr_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Pa
 	/* while we still have an instruction, and we can fit that instruction,
 	 * plus a jump into the current free section, plop down instructions sequentially.
 	 */
-	while(cur_insn && fr_end>(cur_addr+DetermineWorstCaseInsnSize(cur_insn)))
+	while(cur_insn && fr_end>(cur_addr+_DetermineWorstCaseInsnSize(cur_insn)))
 	{
 		// some useful bits about how we might do real optimization for pinned instructions.
 		DISASM d;
@@ -1213,7 +1243,7 @@ void Zipr_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Pa
 				id, 
 				d.CompleteInstr,
 				(void*)cur_addr);
-		cur_addr=PlopInstruction(cur_insn,cur_addr);
+		cur_addr=_PlopInstruction(cur_insn,cur_addr);
 		if(m_opts.GetVerbose())
 			printf("%p\n", (void*)cur_addr);
 		cur_insn=cur_insn->GetFallthrough();
@@ -1239,10 +1269,34 @@ void Zipr_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Pa
 
 	if(m_opts.GetVerbose())
 		printf("Ending dollop.  size=%d, %s.  space_remaining=%lld, req'd=%d\n", insn_count, truncated,
-		(long long)(fr_end-cur_addr), cur_insn ? DetermineWorstCaseInsnSize(cur_insn) : -1 );
+		(long long)(fr_end-cur_addr), cur_insn ? _DetermineWorstCaseInsnSize(cur_insn) : -1 );
 }
 
-void Zipr_t::PlopTheUnpinnedInstructions()
+void ZiprImpl_t::AskPluginsAboutPlopping()
+{
+
+	for(set<Instruction_t*>::const_iterator it=m_firp->GetInstructions().begin();
+	    it!=m_firp->GetInstructions().end();
+	    ++it)
+	{
+		Instruction_t* insn=*it;
+		assert(insn);
+		DLFunctionHandle_t plopping_plugin;
+		if (plugman.DoesPluginPlop(insn, plopping_plugin))
+		{
+			ZiprPluginInterface_t *zipr_plopping_plugin =
+				dynamic_cast<ZiprPluginInterface_t*>(plopping_plugin);
+			if (m_opts.GetVerbose())
+				cout << zipr_plopping_plugin->ToString()
+				     << " will plop this instruction!"
+						 << endl;
+			plopping_plugins[insn] = plopping_plugin;
+			continue;
+		}
+	}
+}
+
+void ZiprImpl_t::PlopTheUnpinnedInstructions()
 {
 
 	// note that processing a patch may result in adding a new patch
@@ -1272,7 +1326,7 @@ void Zipr_t::PlopTheUnpinnedInstructions()
 	}
 }
 
-void Zipr_t::ApplyPatches(Instruction_t* to_insn)
+void ZiprImpl_t::ApplyPatches(Instruction_t* to_insn)
 {
 
 	// insn has been pinned to addr.
@@ -1317,7 +1371,7 @@ void Zipr_t::ApplyPatches(Instruction_t* to_insn)
 	patch_list.erase(p.first, p.second);
 }
 
-void Zipr_t::PatchInstruction(RangeAddress_t from_addr, Instruction_t* to_insn)
+void ZiprImpl_t::PatchInstruction(RangeAddress_t from_addr, Instruction_t* to_insn)
 {
 
 	// addr needs to go to insn, but insn has not yet been been pinned.
@@ -1351,7 +1405,32 @@ void Zipr_t::PatchInstruction(RangeAddress_t from_addr, Instruction_t* to_insn)
 #define IS_RELATIVE(A) \
 ((A.ArgType & MEMORY_TYPE) && (A.ArgType & RELATIVE_))
 
-RangeAddress_t Zipr_t::PlopInstruction(Instruction_t* insn,RangeAddress_t addr)
+RangeAddress_t ZiprImpl_t::_PlopInstruction(Instruction_t* insn,RangeAddress_t addr)
+{
+	RangeAddress_t updated_addr = 0;
+	std::map<Instruction_t*,DLFunctionHandle_t>::const_iterator plop_it;
+
+	plop_it = plopping_plugins.find(insn);
+	if (plop_it != plopping_plugins.end())
+	{
+		DLFunctionHandle_t handle = plop_it->second;
+		RangeAddress_t placed_address = 0;
+		ZiprPluginInterface_t *zpi = dynamic_cast<ZiprPluginInterface_t*>(handle);
+		updated_addr = zpi->PlopInstruction(insn, addr, placed_address, this);
+		if (m_opts.GetVerbose())
+			cout << "Placed address: " << std::hex << placed_address << endl;
+		final_insn_locations[insn] = placed_address;
+	}
+	else
+	{
+		final_insn_locations[insn] = addr;
+		updated_addr = PlopInstruction(insn, addr);
+	}
+	ApplyPatches(insn);
+	return updated_addr;
+}
+
+RangeAddress_t ZiprImpl_t::PlopInstruction(Instruction_t* insn,RangeAddress_t addr)
 {
 	assert(insn);
 	DISASM d;
@@ -1360,9 +1439,6 @@ RangeAddress_t Zipr_t::PlopInstruction(Instruction_t* insn,RangeAddress_t addr)
 	bool is_instr_relative = false;
 	string raw_data = insn->GetDataBits();
 	string orig_data = insn->GetDataBits();
-
-
-	final_insn_locations[insn]=addr;
 
 	is_instr_relative = IS_RELATIVE(d.Argument1) ||
 	                    IS_RELATIVE(d.Argument2) ||
@@ -1435,9 +1511,6 @@ RangeAddress_t Zipr_t::PlopInstruction(Instruction_t* insn,RangeAddress_t addr)
 		ret+=insn->GetDataBits().length();
 	}
 
-	// now that the insn is put down, adjust any patches that go here 
-	ApplyPatches(insn);
-
 	/* Reset the data bits for the instruction back to th
 	 * need to re-plop this instruction later.  we need t
 	 * so we can replop appropriately. 
@@ -1449,7 +1522,7 @@ RangeAddress_t Zipr_t::PlopInstruction(Instruction_t* insn,RangeAddress_t addr)
 }
 
 
-RangeAddress_t Zipr_t::PlopWithTarget(Instruction_t* insn, RangeAddress_t at)
+RangeAddress_t ZiprImpl_t::PlopWithTarget(Instruction_t* insn, RangeAddress_t at)
 {
 	RangeAddress_t ret=at;
 	if(insn->GetDataBits().length() >2) 
@@ -1535,7 +1608,7 @@ RangeAddress_t Zipr_t::PlopWithTarget(Instruction_t* insn, RangeAddress_t at)
 }
 
 
-void Zipr_t::RewritePCRelOffset(RangeAddress_t from_addr,RangeAddress_t to_addr, int insn_length, int offset_pos)
+void ZiprImpl_t::RewritePCRelOffset(RangeAddress_t from_addr,RangeAddress_t to_addr, int insn_length, int offset_pos)
 {
 	int new_offset=((unsigned int)to_addr)-((unsigned int)from_addr)-((unsigned int)insn_length);
 
@@ -1545,7 +1618,7 @@ void Zipr_t::RewritePCRelOffset(RangeAddress_t from_addr,RangeAddress_t to_addr,
 	memory_space[from_addr+offset_pos+3]=(new_offset>>24)&0xff;
 }
 
-void Zipr_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)
+void ZiprImpl_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)
 {
 	unsigned char insn_first_byte=memory_space[from_addr];
 	unsigned char insn_second_byte=memory_space[from_addr+1];
@@ -1617,7 +1690,7 @@ void Zipr_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)
 }
 
 
-void Zipr_t::FillSection(section* sec, FILE* fexe)
+void ZiprImpl_t::FillSection(section* sec, FILE* fexe)
 {
 	RangeAddress_t start=sec->get_address();
 	RangeAddress_t end=sec->get_size()+start;
@@ -1643,7 +1716,7 @@ void Zipr_t::FillSection(section* sec, FILE* fexe)
 	}
 }
 
-void Zipr_t::OutputBinaryFile(const string &name)
+void ZiprImpl_t::OutputBinaryFile(const string &name)
 {
 	assert(elfiop);
 //	ELFIO::dump::section_headers(cout,*elfiop);
@@ -1710,7 +1783,7 @@ void Zipr_t::OutputBinaryFile(const string &name)
 	FILE* to_insert=fopen(tmpname.c_str(),"w");
 
 	if(!to_insert)
-		perror( "void Zipr_t::OutputBinaryFile(const string &name)");
+		perror( "void ZiprImpl_t::OutputBinaryFile(const string &name)");
 
 	// first byte of this range is the last used byte.
 	std::set<Range_t>::iterator it=memory_space.FindFreeRange((RangeAddress_t) -1);
@@ -1741,7 +1814,7 @@ void Zipr_t::OutputBinaryFile(const string &name)
 }
 
 
-void Zipr_t::PrintStats()
+void ZiprImpl_t::PrintStats()
 {
 	m_stats->PrintStats(m_opts, cout);
 }
@@ -1794,7 +1867,7 @@ int find_magic_segment_index(ELFIO::elfio *elfiop)
 	return last_seg_index;
 }
 
-void Zipr_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_add, RangeAddress_t sec_start)
+void ZiprImpl_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_add, RangeAddress_t sec_start)
 {
 
 // from stratafy.pl
@@ -1935,7 +2008,7 @@ return 0;
 }
 
 
-string Zipr_t::AddCallbacksToNewSegment(const string& tmpname, RangeAddress_t end_of_new_space)
+string ZiprImpl_t::AddCallbacksToNewSegment(const string& tmpname, RangeAddress_t end_of_new_space)
 {
 	const RangeAddress_t callback_start_addr=GetCallbackStartAddr();
 
@@ -1973,7 +2046,7 @@ string Zipr_t::AddCallbacksToNewSegment(const string& tmpname, RangeAddress_t en
 	return tmpname3;
 }
 
-RangeAddress_t Zipr_t::PlopWithCallback(Instruction_t* insn, RangeAddress_t at)
+RangeAddress_t ZiprImpl_t::PlopWithCallback(Instruction_t* insn, RangeAddress_t at)
 {
 	RangeAddress_t originalAt = at;
 	// emit call <callback>
@@ -2042,7 +2115,7 @@ static RangeAddress_t getSymbolAddress(const string &symbolFilename, const strin
 }
 
 
-RangeAddress_t Zipr_t::FindCallbackAddress(RangeAddress_t end_of_new_space, RangeAddress_t start_addr, const string &callback)
+RangeAddress_t ZiprImpl_t::FindCallbackAddress(RangeAddress_t end_of_new_space, RangeAddress_t start_addr, const string &callback)
 {
 	if(callback_addrs.find(callback)==callback_addrs.end())
 	{
@@ -2061,7 +2134,7 @@ RangeAddress_t Zipr_t::FindCallbackAddress(RangeAddress_t end_of_new_space, Rang
 
 }
 
-void Zipr_t::UpdateCallbacks()
+void ZiprImpl_t::UpdateCallbacks()
 {
         // first byte of this range is the last used byte.
         set<Range_t>::iterator it=memory_space.FindFreeRange((RangeAddress_t) -1);

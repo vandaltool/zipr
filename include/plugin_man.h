@@ -1,4 +1,5 @@
-
+#ifndef plugin_man_h
+#define plugin_man_h
 
 typedef Zipr_SDK::ZiprPluginInterface_t* DLFunctionHandle_t;
 typedef std::set<DLFunctionHandle_t> DLFunctionHandleSet_t;
@@ -35,6 +36,8 @@ class ZiprPluginManager_t : public ZiprPluginInterface_t
         	virtual void CallbackLinkingBegin();
         	virtual void CallbackLinkingEnd();
 
+					virtual bool DoesPluginPlop(libIRDB::Instruction_t*,DLFunctionHandle_t&);
+
 	private:
 
 		Options_t *m_opts;
@@ -51,3 +54,4 @@ class ZiprPluginManager_t : public ZiprPluginInterface_t
 		DLFunctionHandleSet_t m_handleList;
 
 };
+#endif

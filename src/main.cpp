@@ -96,7 +96,7 @@ int main(int argc, char* argv[])
                         pqxx::largeobject lo(elfoid);
                         lo.to_file(pqxx_interface.GetTransaction(),this_file_name.c_str());
 
-			Zipr_t zip(firp,*options);
+			ZiprImpl_t zip(firp,*options);
 			zip.CreateBinaryFile(this_file_name);
 
                         // write the DB back and commit our changes
