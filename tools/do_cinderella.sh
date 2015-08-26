@@ -13,6 +13,14 @@ LIBC_SEARCH_SPEC=$PEASOUP_HOME/tools/cinderella.spec
 TMP=tmp.$$
 cinderella_malloc="cinderella::malloc"
 
+# $1 oldfn 
+# $2 newfn
+function emit_function_attribute {
+	if [ ! -z $1 ]; then
+		echo "# ATTRIBUTE function_inferred=${1},${2}"
+	fi
+}
+
 # infer CGC syscall wrappers
 echo "$SECURITY_TRANSFORMS_HOME/bin/infer_syscall_wrappers.exe $ORIG_VARIANT_ID"
 $SECURITY_TRANSFORMS_HOME/bin/infer_syscall_wrappers.exe $ORIG_VARIANT_ID 
@@ -66,6 +74,7 @@ do
 		newfn="cinderella::$fn"
 		echo "$SECURITY_TRANSFORMS_HOME/bin/rename_function.exe $ORIG_VARIANT_ID $oldfn $newfn"
 		$SECURITY_TRANSFORMS_HOME/bin/rename_function.exe $ORIG_VARIANT_ID $oldfn $newfn
+		emit_function_attribute $oldfn $newfn
 	fi
 done
 rm $TMP
@@ -88,6 +97,7 @@ elif [ "$count_malloc" = "1" ]; then
 	oldfn=`grep -i "positive malloc" cinderella.static.pass1 | cut -d' ' -f4` 
 	echo "CINDERELLA PASS1: rename detected malloc fn to cinderella::malloc"
 	$SECURITY_TRANSFORMS_HOME/bin/rename_function.exe $ORIG_VARIANT_ID $oldfn $cinderella_malloc
+	emit_function_attribute $oldfn $cinderella_malloc
 	exit 0
 fi
 
@@ -115,6 +125,7 @@ if [ "$count_malloc" = "1" ]; then
 	oldfn=`grep -i "positive malloc" cinderella.static.pass2 | cut -d' ' -f4` 
 	echo "CINDERELLA PASS2: rename detected malloc fn to cinderella::malloc"
 	$SECURITY_TRANSFORMS_HOME/bin/rename_function.exe $ORIG_VARIANT_ID $oldfn $cinderella_malloc
+	emit_function_attribute $oldfn $cinderella_malloc
 	exit 0
 fi
 
@@ -136,6 +147,7 @@ if [ "$count_malloc" = "1" ]; then
 	oldfn=`grep -i "positive malloc" cinderella.static.pass3 | cut -d' ' -f4` 
 	echo "CINDERELLA PASS3: rename detected malloc fn to cinderella::malloc"
 	$SECURITY_TRANSFORMS_HOME/bin/rename_function.exe $ORIG_VARIANT_ID $oldfn $cinderella_malloc
+	emit_function_attribute $oldfn $cinderella_malloc
 	exit 0
 fi
 
@@ -150,6 +162,7 @@ if [ "$count_malloc" = "1" ]; then
 	oldfn=`grep -i "positive malloc" cinderella.static.pass4 | cut -d' ' -f4` 
 	echo "CINDERELLA PASS4: rename detected malloc fn to cinderella::malloc"
 	$SECURITY_TRANSFORMS_HOME/bin/rename_function.exe $ORIG_VARIANT_ID $oldfn $cinderella_malloc
+	emit_function_attribute $oldfn $cinderella_malloc
 	exit 0
 fi
 
