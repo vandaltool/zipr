@@ -17,7 +17,7 @@ binarycopy=$$.$(basename $binary)
 cp $binary $binarycopy
 binary=$binarycopy
 
-prince_driver=$SECURITY_TRANSFORMS_HOME/tools/prince/prince_driver.exe
+prince_driver=$SECURITY_TRANSFORMS_HOME/bin/prince_driver.exe
 
 tr -s '\r\n' ' ' < $filename | sed -e 's/ $/\n/' > $tmp
 functions_to_test=`cat $tmp`
