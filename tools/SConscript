@@ -16,6 +16,7 @@ dirs='''
 	spasm
 	watch_syscall
 	cookbook
+	dump_map
 	'''
 cgc_dirs='''
 	c2e
