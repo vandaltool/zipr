@@ -111,7 +111,7 @@ void __bea_callspec__ nop_Ev(PDISASM pMyDisasm)
     }
     MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
     GV.EIP_ += GV.DECALAGE_EIP+2;
-    (*pMyDisasm).Argument2.AccessMode = 0;
+    (*pMyDisasm).Argument2.AccessMode = READ;
 }
 
 /* =======================================

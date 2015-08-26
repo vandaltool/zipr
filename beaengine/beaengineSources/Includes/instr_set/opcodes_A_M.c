@@ -4983,7 +4983,7 @@ void __bea_callspec__ lea_GvM(PDISASM pMyDisasm)
     if (GV.MOD_== 3) 
 	FailDecode(pMyDisasm);
 
-    (*pMyDisasm).Argument2.AccessMode = 0;
+    (*pMyDisasm).Argument2.AccessMode = READ;
 }
 
 /* =======================================
