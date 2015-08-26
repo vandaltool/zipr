@@ -27,6 +27,7 @@ ulimit -s unlimited > /dev/null 2>&1 || true
 # default watchdog value is 30 seconds
 watchdog_val=30
 errors=0
+warnings=0
 
 # record statistics in database?
 record_stats=0
@@ -506,6 +507,7 @@ perform_step()
 		errors=1
 	elif [ -f warning.txt ]; then
 		# report warning to user.
+		warnings=1
 		echo "Done.  Command had serious warnings! ***************************************"
 		cat warning.txt
 		# report warning in log file, line by line, as an attribute.
@@ -1006,7 +1008,7 @@ do
 	stepname=`basename $i .exe`
 	stepname=`basename $stepname .sh`
 	this_step_options_name=step_options_$stepname
-	value="${!var}"
+	value="${!this_step_options_name}"
 	perform_step $stepname none $i $cloneid  $value
 done
 
@@ -1096,20 +1098,31 @@ if [ -f $stratafied_exe ]; then
 	if [ $errors = 1 ]; then
 		echo
 		echo
-		echo "*****************************"
-		echo "*Warning: Some steps failed!*"
-		echo "*****************************"
+		echo "*******************************"
+		echo "* Warning: Some steps failed! *"
+		echo "*******************************"
 		if [ $record_stats -eq 1 ]; then
 			$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'partial' "$ps_endtime" 
 		fi
+		exit 2;
+	elif [ $warnings = 1 ]; then
+		echo
+		echo
+		echo "**********************************************"
+		echo "* Warning: Some steps had critical warnings! *"
+		echo "**********************************************"
+		if [ $record_stats -eq 1 ]; then
+			$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'partial' "$ps_endtime" 
+		fi
+		exit 1;
+	
 	else
 		if [ $record_stats -eq 1 ]; then
 			$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'success' "$ps_endtime" 
 		fi
+		exit 0;
 	fi
 
-
-	exit 0;
 else
 		echo "**************************************"
 		echo "*Error: failed to create output file!*"
