@@ -1992,11 +1992,17 @@ void __bea_callspec__ sahf_(PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ salc_(PDISASM pMyDisasm)
 {
+	// not a real insn or undocumented.
+	FailDecode(pMyDisasm);
+	return;
+
+#if 0
     (*pMyDisasm).Instruction.Category = UNDOCUMENTED_INSTRUCTION;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "salc ");
     #endif
     GV.EIP_++;
+#endif
 }
 
 

@@ -21,6 +21,13 @@
  * ==================================================================== */
 void __bea_callspec__ G7_(PDISASM pMyDisasm)
 {
+
+    if(GV.VEX.has_vex)
+    {
+        FailDecode(pMyDisasm);
+        return;
+    }
+
     (*pMyDisasm).Instruction.Category = SYSTEM_INSTRUCTION;
     GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
     GV.MOD_= ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 6) & 0x3;

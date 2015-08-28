@@ -23,6 +23,12 @@ void __bea_callspec__ G6_(PDISASM pMyDisasm)
 {
     Int32 OperandSizeOld = 0;
 
+    if(GV.VEX.has_vex)
+    {	
+	FailDecode(pMyDisasm);
+	return;
+    }
+
     (*pMyDisasm).Instruction.Category = SYSTEM_INSTRUCTION;
     OperandSizeOld = GV.OperandSize;
     GV.OperandSize = 16;
