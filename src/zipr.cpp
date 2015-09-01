@@ -988,7 +988,7 @@ void ZiprImpl_t::OptimizePinnedInstructions()
 		UnresolvedUnpinned_t uu(up.GetInstruction());
 		Patch_t	thepatch(addr,UncondJump_rel32);
 
-		patch_list.insert(pair<UnresolvedUnpinned_t,Patch_t>(uu,thepatch));
+		patch_list.insert(pair<const UnresolvedUnpinned_t,Patch_t>(uu,thepatch));
 		memory_space.PlopJump(addr);
 
 		DISASM d;
@@ -1255,7 +1255,7 @@ void ZiprImpl_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, cons
 		// the 'fragment' we are translating into the elf section.
 		UnresolvedUnpinned_t uu(cur_insn);
 		Patch_t thepatch(cur_addr,UncondJump_rel32);
-		patch_list.insert(pair<UnresolvedUnpinned_t,Patch_t>(uu,thepatch));
+		patch_list.insert(pair<const UnresolvedUnpinned_t,Patch_t>(uu,thepatch));
 		memory_space.PlopJump(cur_addr);
 		truncated="truncated due to lack of space.";
 		m_stats->total_tramp_space+=5;
@@ -1389,7 +1389,7 @@ void ZiprImpl_t::PatchInstruction(RangeAddress_t from_addr, Instruction_t* to_in
 		if(m_opts.GetVerbose())
 			printf("Instruction cannot be patch yet, as target is unknown.\n");
 
-		patch_list.insert(pair<UnresolvedUnpinned_t,Patch_t>(uu,thepatch));
+		patch_list.insert(pair<const  UnresolvedUnpinned_t,Patch_t>(uu,thepatch));
 	}
 	else
 	{
@@ -1786,7 +1786,7 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 		perror( "void ZiprImpl_t::OutputBinaryFile(const string &name)");
 
 	// first byte of this range is the last used byte.
-	std::set<Range_t>::iterator it=memory_space.FindFreeRange((RangeAddress_t) -1);
+	RangeSet_t::iterator it=memory_space.FindFreeRange((RangeAddress_t) -1);
 	assert(memory_space.IsValidRange(it));
 
 	RangeAddress_t end_of_new_space=it->GetStart();
@@ -2026,8 +2026,7 @@ string ZiprImpl_t::AddCallbacksToNewSegment(const string& tmpname, RangeAddress_
 		objcopy -O binary /home/jdh8d/umbrella/uvadev.peasoup/zipr_install/bin/callbacks.exe b.out.to_insert2
 	*/
 
-	string cmd=string("objcopy -O binary ")+ m_opts.GetCallbackFileName()+string(" ")+tmpname2;
-
+	string cmd= m_opts.GetObjcopyPath() + string(" -O binary ")+ m_opts.GetCallbackFileName()+string(" ")+tmpname2;
 #endif
 	printf("Attempting: %s\n", cmd.c_str());
 	if(-1 == system(cmd.c_str()))
@@ -2137,7 +2136,7 @@ RangeAddress_t ZiprImpl_t::FindCallbackAddress(RangeAddress_t end_of_new_space, 
 void ZiprImpl_t::UpdateCallbacks()
 {
         // first byte of this range is the last used byte.
-        set<Range_t>::iterator it=memory_space.FindFreeRange((RangeAddress_t) -1);
+	RangeSet_t::iterator it=memory_space.FindFreeRange((RangeAddress_t) -1);
         assert(memory_space.IsValidRange(it));
 
         RangeAddress_t end_of_new_space=it->GetStart();

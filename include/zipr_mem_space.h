@@ -45,7 +45,7 @@ class ZiprMemorySpace_t : public MemorySpace_t
 		// range operatations
 		void SplitFreeRange(RangeAddress_t addr);
 		void MergeFreeRange(RangeAddress_t addr);
-		std::set<Range_t>::iterator FindFreeRange(RangeAddress_t addr);
+		RangeSet_t::iterator FindFreeRange(RangeAddress_t addr);
 		Range_t GetFreeRange(int size);
 		void AddFreeRange(Range_t newRange);
 		void RemoveFreeRange(Range_t newRange);
@@ -53,7 +53,7 @@ class ZiprMemorySpace_t : public MemorySpace_t
 		// queries about free areas.
 		bool AreBytesFree(RangeAddress_t addr, int num_bytes);
 		bool IsByteFree(RangeAddress_t addr);
-		bool IsValidRange(std::set<Range_t>::iterator it);
+		bool IsValidRange(RangeSet_t::iterator it);
 
 		int GetRangeCount();
 
@@ -84,7 +84,8 @@ class ZiprMemorySpace_t : public MemorySpace_t
 		RangeAddress_t GetMaxPlopped() const { return max_plopped; }
 
 	protected:
-		std::set<Range_t, Range_tCompare> free_ranges;   // keep ordered
+		RangeSet_t  free_ranges; // keep ordered
+		// std::set<Range_t, Range_tCompare> free_ranges;   // keep ordered
 		ZiprOptions_t *m_opts;
 
 	private:

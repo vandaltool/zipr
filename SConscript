@@ -2,6 +2,8 @@ import shutil
 import os
 import tarfile
 
+(sysname, nodename, release, version, machine)=os.uname()
+
 Import('env')
 
 if 'do_cgc' in env and int(env['do_cgc']) == 1:
@@ -21,4 +23,6 @@ SConscript(sectrans_sconscript, variant_dir='scons_build/irdb_libs')
 #print 'env='
 #print env.Dump()
 SConscript("src/SConscript", variant_dir='scons_build/zipr')
-SConscript("test/SConscript")
+
+if sysname  != "SunOS":
+	SConscript("test/SConscript")
