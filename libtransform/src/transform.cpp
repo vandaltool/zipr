@@ -158,35 +158,35 @@ void Transform::addPushRegister(Instruction_t *p_instr, Register::RegisterName p
 	string dataBits;
 	dataBits.resize(1);
 
-	if (p_reg == Register::EAX || p_reg == Register::RAX)
+	if (p_reg == Register::rn_EAX || p_reg == Register::rn_RAX)
 	{
 		dataBits[0] = 0x50; 
 	} 
-	else if (p_reg == Register::EBX || p_reg == Register::RBX)
+	else if (p_reg == Register::rn_EBX || p_reg == Register::rn_RBX)
 	{
 		dataBits[0] = 0x53; 
 	} 
-	else if (p_reg == Register::ECX || p_reg == Register::RCX)
+	else if (p_reg == Register::rn_ECX || p_reg == Register::rn_RCX)
 	{
 		dataBits[0] = 0x51; 
 	}
-	else if (p_reg == Register::EDX || p_reg == Register::RDX)
+	else if (p_reg == Register::rn_EDX || p_reg == Register::rn_RDX)
 	{
 		dataBits[0] = 0x52; 
 	}
-	else if (p_reg == Register::ESI || p_reg == Register::RSI)
+	else if (p_reg == Register::rn_ESI || p_reg == Register::rn_RSI)
 	{
 		dataBits[0] = 0x56; 
 	}
-	else if (p_reg == Register::EDI || p_reg == Register::RDI)
+	else if (p_reg == Register::rn_EDI || p_reg == Register::rn_RDI)
 	{
 		dataBits[0] = 0x57; 
 	}
-	else if (p_reg == Register::EBP || p_reg == Register::RBP)
+	else if (p_reg == Register::rn_EBP || p_reg == Register::rn_RBP)
 	{
 		dataBits[0] = 0x55; 
 	}
-	else if (p_reg == Register::ESP || p_reg == Register::RSP)
+	else if (p_reg == Register::rn_ESP || p_reg == Register::rn_RSP)
 	{
 		dataBits[0] = 0x54; 
 	}
@@ -194,35 +194,35 @@ void Transform::addPushRegister(Instruction_t *p_instr, Register::RegisterName p
 	{
 		dataBits.resize(2);
 		dataBits[0] = 0x41;
-		if (p_reg == Register::R8)
+		if (p_reg == Register::rn_R8)
 		{
 			dataBits[1] = 0x50;
 		} 
-		else if (p_reg == Register::R9)
+		else if (p_reg == Register::rn_R9)
 		{
 			dataBits[1] = 0x51;
 		} 
-		else if (p_reg == Register::R10)
+		else if (p_reg == Register::rn_R10)
 		{
 			dataBits[1] = 0x52;
 		} 
-		else if (p_reg == Register::R11)
+		else if (p_reg == Register::rn_R11)
 		{
 			dataBits[1] = 0x53;
 		} 
-		else if (p_reg == Register::R12)
+		else if (p_reg == Register::rn_R12)
 		{
 			dataBits[1] = 0x54;
 		} 
-		else if (p_reg == Register::R13)
+		else if (p_reg == Register::rn_R13)
 		{
 			dataBits[1] = 0x55;
 		} 
-		else if (p_reg == Register::R14)
+		else if (p_reg == Register::rn_R14)
 		{
 			dataBits[1] = 0x56;
 		} 
-		else if (p_reg == Register::R15)
+		else if (p_reg == Register::rn_R15)
 		{
 			dataBits[1] = 0x57;
 		}
@@ -242,35 +242,35 @@ void Transform::addPopRegister(Instruction_t *p_instr, Register::RegisterName p_
 	string dataBits;
 	dataBits.resize(1);
 
-	if (p_reg == Register::EAX || p_reg == Register::RAX)
+	if (p_reg == Register::rn_EAX || p_reg == Register::rn_RAX)
 	{
 		dataBits[0] = 0x58; 
 	} 
-	else if (p_reg == Register::EBX || p_reg == Register::RBX)
+	else if (p_reg == Register::rn_EBX || p_reg == Register::rn_RBX)
 	{
 		dataBits[0] = 0x5b; 
 	} 
-	else if (p_reg == Register::ECX || p_reg == Register::RCX)
+	else if (p_reg == Register::rn_ECX || p_reg == Register::rn_RCX)
 	{
 		dataBits[0] = 0x59; 
 	}
-	else if (p_reg == Register::EDX || p_reg == Register::RDX)
+	else if (p_reg == Register::rn_EDX || p_reg == Register::rn_RDX)
 	{
 		dataBits[0] = 0x5a; 
 	}
-	else if (p_reg == Register::ESI || p_reg == Register::RSI)
+	else if (p_reg == Register::rn_ESI || p_reg == Register::rn_RSI)
 	{
 		dataBits[0] = 0x5e; 
 	}
-	else if (p_reg == Register::EDI || p_reg == Register::RDI)
+	else if (p_reg == Register::rn_EDI || p_reg == Register::rn_RDI)
 	{
 		dataBits[0] = 0x5f; 
 	}
-	else if (p_reg == Register::EBP || p_reg == Register::RBP)
+	else if (p_reg == Register::rn_EBP || p_reg == Register::rn_RBP)
 	{
 		dataBits[0] = 0x5d; 
 	}
-	else if (p_reg == Register::ESP || p_reg == Register::RSP)
+	else if (p_reg == Register::rn_ESP || p_reg == Register::rn_RSP)
 	{
 		dataBits[0] = 0x5c; 
 	}
@@ -278,35 +278,35 @@ void Transform::addPopRegister(Instruction_t *p_instr, Register::RegisterName p_
 	{
 		dataBits.resize(2);
 		dataBits[0] = 0x41;
-		if (p_reg == Register::R8)
+		if (p_reg == Register::rn_R8)
 		{
 			dataBits[1] = 0x58;
 		} 
-		else if (p_reg == Register::R9)
+		else if (p_reg == Register::rn_R9)
 		{
 			dataBits[1] = 0x59;
 		} 
-		else if (p_reg == Register::R10)
+		else if (p_reg == Register::rn_R10)
 		{
 			dataBits[1] = 0x5a;
 		} 
-		else if (p_reg == Register::R11)
+		else if (p_reg == Register::rn_R11)
 		{
 			dataBits[1] = 0x5b;
 		} 
-		else if (p_reg == Register::R12)
+		else if (p_reg == Register::rn_R12)
 		{
 			dataBits[1] = 0x5c;
 		} 
-		else if (p_reg == Register::R13)
+		else if (p_reg == Register::rn_R13)
 		{
 			dataBits[1] = 0x5d;
 		} 
-		else if (p_reg == Register::R14)
+		else if (p_reg == Register::rn_R14)
 		{
 			dataBits[1] = 0x5e;
 		} 
-		else if (p_reg == Register::R15)
+		else if (p_reg == Register::rn_R15)
 		{
 			dataBits[1] = 0x5f;
 		}
@@ -532,7 +532,7 @@ Register::RegisterName Transform::getTargetRegister(Instruction_t *p_instruction
 			return Register::getRegister(disasm.Argument3.ArgMnemonic);
 	}
 	else
-		return Register::UNKNOWN;
+		return Register::rn_UNKNOWN;
 }
 
 //
@@ -613,42 +613,42 @@ void Transform::addTestRegister8(Instruction_t *p_instr, Register::RegisterName 
 {
 	string dataBits;
 	dataBits.resize(2);
-	if (p_reg == Register::AL)
+	if (p_reg == Register::rn_AL)
 	{
 		dataBits[0] = 0x84;
 		dataBits[1] = 0xc0;
 	}
-	else if (p_reg == Register::BL)
+	else if (p_reg == Register::rn_BL)
 	{
 		dataBits[0] = 0x84;
 		dataBits[1] = 0xdb;
 	}
-	else if (p_reg == Register::CL)
+	else if (p_reg == Register::rn_CL)
 	{
 		dataBits[0] = 0x84;
 		dataBits[1] = 0xc9;
 	}
-	else if (p_reg == Register::DL)
+	else if (p_reg == Register::rn_DL)
 	{
 		dataBits[0] = 0x84;
 		dataBits[1] = 0xd2;
 	}
-	else if (p_reg == Register::AH)
+	else if (p_reg == Register::rn_AH)
 	{
 		dataBits[0] = 0x84;
 		dataBits[1] = 0xe4;
 	}
-	else if (p_reg == Register::BH)
+	else if (p_reg == Register::rn_BH)
 	{
 		dataBits[0] = 0x84;
 		dataBits[1] = 0xff;
 	}
-	else if (p_reg == Register::CH)
+	else if (p_reg == Register::rn_CH)
 	{
 		dataBits[0] = 0x84;
 		dataBits[1] = 0xed;
 	}
-	else if (p_reg == Register::DH)
+	else if (p_reg == Register::rn_DH)
 	{
 		dataBits[0] = 0x84;
 		dataBits[1] = 0xf6;
@@ -667,43 +667,43 @@ void Transform::addTestRegister16(Instruction_t *p_instr, Register::RegisterName
 {
 	string dataBits;
 	dataBits.resize(3);
-	if (p_reg == Register::AX)
+	if (p_reg == Register::rn_AX)
 	{
 		dataBits[0] = 0x66;
 		dataBits[1] = 0x85;
 		dataBits[2] = 0xc0;
 	}
-	else if (p_reg == Register::BX)
+	else if (p_reg == Register::rn_BX)
 	{
 		dataBits[0] = 0x66;
 		dataBits[1] = 0x85;
 		dataBits[2] = 0xdb;
 	}
-	else if (p_reg == Register::CX)
+	else if (p_reg == Register::rn_CX)
 	{
 		dataBits[0] = 0x66;
 		dataBits[1] = 0x85;
 		dataBits[2] = 0xc9;
 	}
-	else if (p_reg == Register::DX)
+	else if (p_reg == Register::rn_DX)
 	{
 		dataBits[0] = 0x66;
 		dataBits[1] = 0x85;
 		dataBits[2] = 0xd2;
 	}
-	else if (p_reg == Register::BP)
+	else if (p_reg == Register::rn_BP)
 	{
 		assert(0);
 	}
-	else if (p_reg == Register::SP)
+	else if (p_reg == Register::rn_SP)
 	{
 		assert(0);
 	}
-	else if (p_reg == Register::SI)
+	else if (p_reg == Register::rn_SI)
 	{
 		assert(0);
 	}
-	else if (p_reg == Register::DI)
+	else if (p_reg == Register::rn_DI)
 	{
 		assert(0);
 	}
@@ -722,42 +722,42 @@ void Transform::addTestRegister32(Instruction_t *p_instr, Register::RegisterName
 {
 	string dataBits;
 	dataBits.resize(2);
-	if (p_reg == Register::EAX)
+	if (p_reg == Register::rn_EAX)
 	{
 		dataBits[0] = 0x85;
 		dataBits[1] = 0xc0;
 	}
-	else if (p_reg == Register::EBX)
+	else if (p_reg == Register::rn_EBX)
 	{
 		dataBits[0] = 0x85;
 		dataBits[1] = 0xdb;
 	}
-	else if (p_reg == Register::ECX)
+	else if (p_reg == Register::rn_ECX)
 	{
 		dataBits[0] = 0x85;
 		dataBits[1] = 0xc9;
 	}
-	else if (p_reg == Register::EDX)
+	else if (p_reg == Register::rn_EDX)
 	{
 		dataBits[0] = 0x85;
 		dataBits[1] = 0xd2;
 	}
-	else if (p_reg == Register::ESI)
+	else if (p_reg == Register::rn_ESI)
 	{
 		dataBits[0] = 0x85;
 		dataBits[1] = 0xf6;
 	}
-	else if (p_reg == Register::EDI)
+	else if (p_reg == Register::rn_EDI)
 	{
 		dataBits[0] = 0x85;
 		dataBits[1] = 0xff;
 	}
-	else if (p_reg == Register::EBP)
+	else if (p_reg == Register::rn_EBP)
 	{
 		dataBits[0] = 0x85;
 		dataBits[1] = 0xed;
 	}
-	else if (p_reg == Register::ESP)
+	else if (p_reg == Register::rn_ESP)
 	{
 		dataBits[0] = 0x85;
 		dataBits[1] = 0xe4;
@@ -795,56 +795,56 @@ void Transform::addTestRegisterMask32(Instruction_t *p_instr, Register::Register
 	dataBits.resize(6); // all but EAX take 6 bytes
 	unsigned *tmp;
 
-	if (p_reg == Register::EAX)
+	if (p_reg == Register::rn_EAX)
 	{
 		dataBits.resize(5);
 		dataBits[0] = 0xa9;
 		tmp = (unsigned *) &dataBits[1];
 		*tmp = p_mask;
 	}
-	else if (p_reg == Register::EBX)
+	else if (p_reg == Register::rn_EBX)
 	{
 		dataBits[0] = 0xf7;
 		dataBits[1] = 0xc3;
 		tmp = (unsigned *) &dataBits[2];
 		*tmp = p_mask;
 	}
-	else if (p_reg == Register::ECX)
+	else if (p_reg == Register::rn_ECX)
 	{
 		dataBits[0] = 0xf7;
 		dataBits[1] = 0xc1;
 		tmp = (unsigned *) &dataBits[2];
 		*tmp = p_mask;
 	}
-	else if (p_reg == Register::EDX)
+	else if (p_reg == Register::rn_EDX)
 	{
 		dataBits[0] = 0xf7;
 		dataBits[1] = 0xc2;
 		tmp = (unsigned *) &dataBits[2];
 		*tmp = p_mask;
 	}
-	else if (p_reg == Register::ESI)
+	else if (p_reg == Register::rn_ESI)
 	{
 		dataBits[0] = 0xf7;
 		dataBits[1] = 0xc6;
 		tmp = (unsigned *) &dataBits[2];
 		*tmp = p_mask;
 	}
-	else if (p_reg == Register::EDI)
+	else if (p_reg == Register::rn_EDI)
 	{
 		dataBits[0] = 0xf7;
 		dataBits[1] = 0xc7;
 		tmp = (unsigned *) &dataBits[2];
 		*tmp = p_mask;
 	}
-	else if (p_reg == Register::EBP)
+	else if (p_reg == Register::rn_EBP)
 	{
 		dataBits[0] = 0xf7;
 		dataBits[1] = 0xc5;
 		tmp = (unsigned *) &dataBits[2];
 		*tmp = p_mask;
 	}
-	else if (p_reg == Register::ESP)
+	else if (p_reg == Register::rn_ESP)
 	{
 		dataBits[0] = 0xf7;
 		dataBits[1] = 0xc4;
@@ -872,7 +872,7 @@ void Transform::addCmpRegisterMask32(Instruction_t *p_instr, Register::RegisterN
 	string dataBits;
 	unsigned *tmp;
 
-	if (p_reg == Register::EAX)
+	if (p_reg == Register::rn_EAX)
 	{
       dataBits.resize(5); // EAX gets compact encoding
 		dataBits[0] = 0x3d;
@@ -885,27 +885,27 @@ void Transform::addCmpRegisterMask32(Instruction_t *p_instr, Register::RegisterN
      dataBits[0] = 0x81;
      tmp = (unsigned *) &dataBits[2];
      *tmp = p_mask;
-     if (p_reg == Register::EBX)
+     if (p_reg == Register::rn_EBX)
 	  {
        dataBits[1] = 0xfb;
      }
-     else if (p_reg == Register::ECX)
+     else if (p_reg == Register::rn_ECX)
      {
        dataBits[1] = 0xf9;
      }
-     else if (p_reg == Register::EDX)
+     else if (p_reg == Register::rn_EDX)
      {
        dataBits[1] = 0xfa;
      }
-     else if (p_reg == Register::EBP)
+     else if (p_reg == Register::rn_EBP)
      {
        dataBits[1] = 0xfd;
      }
-     else if (p_reg == Register::ESI)
+     else if (p_reg == Register::rn_ESI)
      {
        dataBits[1] = 0xfe;
      }
-     else if (p_reg == Register::EDI)
+     else if (p_reg == Register::rn_EDI)
      {
        dataBits[1] = 0xff;
      }
@@ -990,100 +990,100 @@ void Transform::addNot(Instruction_t *p_instr, Register::RegisterName p_reg, Ins
 	string dataBits;
 	dataBits.resize(2); 
 
-	if (p_reg == Register::EAX)
+	if (p_reg == Register::rn_EAX)
 	{
 		dataBits[0] = 0xf7;
 		dataBits[1] = 0xd0;
 	}
-	else if (p_reg == Register::EBX)
+	else if (p_reg == Register::rn_EBX)
 	{
 		dataBits[0] = 0xf7;
 		dataBits[1] = 0xd3;
 	}
-	else if (p_reg == Register::ECX)
+	else if (p_reg == Register::rn_ECX)
 	{
 		dataBits[0] = 0xf7;
 		dataBits[1] = 0xd1;
 	}
-	else if (p_reg == Register::EDX)
+	else if (p_reg == Register::rn_EDX)
 	{
 		dataBits[0] = 0xf7;
 		dataBits[1] = 0xd2;
 	}
-	else if (p_reg == Register::ESI)
+	else if (p_reg == Register::rn_ESI)
 	{
 		dataBits[0] = 0xf7;
 		dataBits[1] = 0xd6;
 	}
-	else if (p_reg == Register::EDI)
+	else if (p_reg == Register::rn_EDI)
 	{
 		dataBits[0] = 0xf7;
 		dataBits[1] = 0xd7;
 	}
-	else if (p_reg == Register::AX)
+	else if (p_reg == Register::rn_AX)
 	{
 		dataBits.resize(3); 
 		dataBits[0] = 0x66;
 		dataBits[1] = 0xf7;
 		dataBits[2] = 0xd0;
 	}
-	else if (p_reg == Register::BX)
+	else if (p_reg == Register::rn_BX)
 	{
 		dataBits.resize(3); 
 		dataBits[0] = 0x66;
 		dataBits[1] = 0xf7;
 		dataBits[2] = 0xd3;
 	}
-	else if (p_reg == Register::CX)
+	else if (p_reg == Register::rn_CX)
 	{
 		dataBits.resize(3); 
 		dataBits[0] = 0x66;
 		dataBits[1] = 0xf7;
 		dataBits[2] = 0xd1;
 	}
-	else if (p_reg == Register::DX)
+	else if (p_reg == Register::rn_DX)
 	{
 		dataBits.resize(3); 
 		dataBits[0] = 0x66;
 		dataBits[1] = 0xf7;
 		dataBits[2] = 0xd2;
 	}
-	else if (p_reg == Register::AL)
+	else if (p_reg == Register::rn_AL)
 	{
 		dataBits[0] = 0xf6;
 		dataBits[1] = 0xd0;
 	}
-	else if (p_reg == Register::BL)
+	else if (p_reg == Register::rn_BL)
 	{
 		dataBits[0] = 0xf6;
 		dataBits[1] = 0xd3;
 	}
-	else if (p_reg == Register::CL)
+	else if (p_reg == Register::rn_CL)
 	{
 		dataBits[0] = 0xf6;
 		dataBits[1] = 0xd1;
 	}
-	else if (p_reg == Register::DL)
+	else if (p_reg == Register::rn_DL)
 	{
 		dataBits[0] = 0xf6;
 		dataBits[1] = 0xd2;
 	}
-	else if (p_reg == Register::AH)
+	else if (p_reg == Register::rn_AH)
 	{
 		dataBits[0] = 0xf6;
 		dataBits[1] = 0xd4;
 	}
-	else if (p_reg == Register::BH)
+	else if (p_reg == Register::rn_BH)
 	{
 		dataBits[0] = 0xf6;
 		dataBits[1] = 0xd7;
 	}
-	else if (p_reg == Register::CH)
+	else if (p_reg == Register::rn_CH)
 	{
 		dataBits[0] = 0xf6;
 		dataBits[1] = 0xd5;
 	}
-	else if (p_reg == Register::DH)
+	else if (p_reg == Register::rn_DH)
 	{
 		dataBits[0] = 0xf6;
 		dataBits[1] = 0xd6;

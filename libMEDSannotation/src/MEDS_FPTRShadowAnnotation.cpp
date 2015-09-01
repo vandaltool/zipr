@@ -158,7 +158,7 @@ uintptr_t MEDS_FPTRShadowAnnotation::computeRIPAddress()
 
 	parseRegister(getExpression().c_str(), &reg, &offset);
 
-	if (reg == Register::RIP) 
+	if (reg == Register::rn_RIP) 
 	{
 		return getVirtualOffset().getOffset() + getInstructionSize() + offset;
 	}

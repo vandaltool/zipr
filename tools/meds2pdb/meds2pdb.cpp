@@ -1,3 +1,4 @@
+char temp;
 /*
  * Copyright (c) 2014 - Zephyr Software LLC
  *

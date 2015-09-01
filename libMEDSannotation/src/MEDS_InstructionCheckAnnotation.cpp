@@ -64,8 +64,8 @@ void MEDS_InstructionCheckAnnotation::init()
 	m_bitWidth = -1;
 	m_truncationFromWidth = -1;
 	m_truncationToWidth = -1;
-	m_register = Register::UNKNOWN;
-	m_register2 = Register::UNKNOWN;
+	m_register = Register::rn_UNKNOWN;
+	m_register2 = Register::rn_UNKNOWN;
 	m_stackOffset = -1;
 	m_objectSize = -1;
 	m_isEspOffset = false;

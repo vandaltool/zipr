@@ -259,7 +259,7 @@ void IntegerTransform32::addSignednessCheck(Instruction_t *p_instruction, const 
 	if (
 		!(p_annotation.getBitWidth() == 32 && Register::is32bit(p_annotation.getRegister())) && 
 		!(p_annotation.getBitWidth() == 16 && (Register::is16bit(p_annotation.getRegister()) ||
-			p_annotation.getRegister() == Register::ESI || p_annotation.getRegister() == Register::EDI || p_annotation.getRegister() == Register::EBP)) && 
+			p_annotation.getRegister() == Register::rn_ESI || p_annotation.getRegister() == Register::rn_EDI || p_annotation.getRegister() == Register::rn_EBP)) && 
 		!(p_annotation.getBitWidth() == 8 && Register::is8bit(p_annotation.getRegister())) 
 		)
 	{
@@ -294,7 +294,7 @@ void IntegerTransform32::addSignednessCheck(Instruction_t *p_instruction, const 
 		detector = string(SIGNEDNESS_DETECTOR_8);
 
 	// sanity filter
-	if (p_annotation.getRegister() == Register::UNKNOWN)
+	if (p_annotation.getRegister() == Register::rn_UNKNOWN)
 		p_policy = POLICY_DEFAULT;
 
 	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
@@ -385,9 +385,9 @@ void IntegerTransform32::addOverflowCheckNoFlag(Instruction_t *p_instruction, co
 		return;
 	}
 	
-	if (leaPattern.getRegister1() == Register::UNKNOWN ||
-		leaPattern.getRegister1() == Register::ESP ||
-		leaPattern.getRegister1() == Register::EBP)
+	if (leaPattern.getRegister1() == Register::rn_UNKNOWN ||
+		leaPattern.getRegister1() == Register::rn_ESP ||
+		leaPattern.getRegister1() == Register::rn_EBP)
 	{
 		logMessage(__func__, "destination register is unknown, esp or ebp -- skipping: ");
 		m_numOverflowsSkipped++;
@@ -400,13 +400,13 @@ void IntegerTransform32::addOverflowCheckNoFlag(Instruction_t *p_instruction, co
 		Register::RegisterName reg2 = leaPattern.getRegister2();
 		Register::RegisterName target = getTargetRegister(p_instruction);
 
-		if (reg1 == Register::UNKNOWN || reg2 == Register::UNKNOWN || target == Register::UNKNOWN)
+		if (reg1 == Register::rn_UNKNOWN || reg2 == Register::rn_UNKNOWN || target == Register::rn_UNKNOWN)
 		{
 			logMessage(__func__, "lea reg+reg pattern: error retrieving register: reg1: " + Register::toString(reg1) + " reg2: " + Register::toString(reg2) + " target: " + Register::toString(target));
 			m_numOverflowsSkipped++;
 			return;
 		}
-		else if (reg2 == Register::ESP) 
+		else if (reg2 == Register::rn_ESP) 
 		{
 			logMessage(__func__, "source register is esp -- skipping: ");
 			m_numOverflowsSkipped++;
@@ -429,7 +429,7 @@ void IntegerTransform32::addOverflowCheckNoFlag(Instruction_t *p_instruction, co
 			m_numOverflowsSkipped++;
 			return;
 		}
-		else if (reg1 == Register::UNKNOWN || target == Register::UNKNOWN)
+		else if (reg1 == Register::rn_UNKNOWN || target == Register::rn_UNKNOWN)
 		{
 			logMessage(__func__, "lea reg+constant pattern: error retrieving register: reg1: " + Register::toString(reg1) + " target: " + Register::toString(target));
 			m_numOverflowsSkipped++;
@@ -446,7 +446,7 @@ void IntegerTransform32::addOverflowCheckNoFlag(Instruction_t *p_instruction, co
 		int value = leaPattern.getConstant();
 		Register::RegisterName target = getTargetRegister(p_instruction);
 
-		if (reg1 == Register::UNKNOWN || target == Register::UNKNOWN)
+		if (reg1 == Register::rn_UNKNOWN || target == Register::rn_UNKNOWN)
 		{
 			logMessage(__func__, "lea reg*constant pattern: error retrieving register: reg1: " + Register::toString(reg1) + " target: " + Register::toString(target));
 			m_numOverflowsSkipped++;
@@ -1576,7 +1576,7 @@ void IntegerTransform32::addOverflowCheck(Instruction_t *p_instruction, const ME
 	assert(getFileIR() && p_instruction && p_instruction->GetFallthrough());
 	
 	Register::RegisterName targetReg = getTargetRegister(p_instruction);
-	if (targetReg == Register::UNKNOWN) 
+	if (targetReg == Register::rn_UNKNOWN) 
 	{
 		logMessage(__func__, "OVERFLOW UNKNOWN SIGN: unknown register -- skip instrumentation");
 		if (p_annotation.isUnderflow())
@@ -1710,7 +1710,7 @@ void IntegerTransform32::addUnderflowCheck(Instruction_t *p_instruction, const M
 	assert(getFileIR() && p_instruction);
 
 	Register::RegisterName targetReg = getTargetRegister(p_instruction);
-	if (targetReg == Register::UNKNOWN)
+	if (targetReg == Register::rn_UNKNOWN)
 	{
 		cerr << "IntegerTransform32::addUnderflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << "-- SKIP b/c no target registers" << endl;
 		m_numUnderflowsSkipped++;
@@ -2021,7 +2021,7 @@ void IntegerTransform32::addOverflowCheckUnknownSign(Instruction_t *p_instructio
 	assert(getFileIR() && p_instruction && p_instruction->GetFallthrough());
 
 	Register::RegisterName targetReg = getTargetRegister(p_instruction);
-	if (targetReg == Register::UNKNOWN)
+	if (targetReg == Register::rn_UNKNOWN)
 	{
 		cerr << "integertransform: OVERFLOW UNKNOWN SIGN: unknown register -- skip instrumentation" << endl;
 		m_numOverflowsSkipped++;

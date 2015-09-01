@@ -33,6 +33,9 @@
 #include <assert.h>
 #include <stdint.h>
 #include <algorithm>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 #include "elfio/elfio.hpp"
 
