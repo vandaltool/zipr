@@ -1,3 +1,5 @@
+#ifndef pebliss_pe_rebuilder_h
+#define pebliss_pe_rebuilder_h
 #pragma once
 #include <ostream>
 
@@ -9,3 +11,4 @@ class pe_base;
 //If save_bound_import == true, existing bound import directory will be saved correctly (because some compilers and bind.exe put it to PE headers)
 void rebuild_pe(pe_base& pe, std::ostream& out, bool strip_dos_header = false, bool change_size_of_headers = true, bool save_bound_import = true);
 }
+#endif

@@ -1,3 +1,5 @@
+#ifndef pebliss_resource_string_table_reader_h
+#define pebliss_resource_string_table_reader_h
 #pragma once
 #include <string>
 #include <map>
@@ -34,3 +36,4 @@ private:
 	static const resource_string_list parse_string_list(uint32_t id, const std::string& resource_data);
 };
 }
+#endif

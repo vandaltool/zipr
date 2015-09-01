@@ -1,3 +1,5 @@
+#ifndef pebliss_pe_exception_directory_h
+#define pebliss_pe_exception_directory_h
 #pragma once
 #include <vector>
 #include "pe_structures.h"
@@ -65,3 +67,4 @@ typedef std::vector<exception_entry> exception_entry_list;
 //Unwind opcodes are not listed, because their format and list are subject to change
 const exception_entry_list get_exception_directory_data(const pe_base& pe);
 }
+#endif

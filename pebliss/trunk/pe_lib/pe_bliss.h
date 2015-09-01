@@ -1,3 +1,5 @@
+#ifndef pebliss_pe_bliss_h
+#define pebliss_pe_bliss_h
 #pragma once
 #include "pe_base.h"
 #include "pe_rebuilder.h"
@@ -16,3 +18,4 @@
 #include "pe_properties_generic.h"
 #include "pe_checksum.h"
 #include "entropy.h"
+#endif

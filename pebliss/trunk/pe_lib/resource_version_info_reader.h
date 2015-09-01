@@ -1,3 +1,5 @@
+#ifndef pebliss_resource_version_info_reader_h
+#define pebliss_resource_version_info_reader_h
 #pragma once
 #include <map>
 #include "file_version_info.h"
@@ -44,3 +46,4 @@ private:
 	static void throw_incorrect_version_info();
 };
 }
+#endif

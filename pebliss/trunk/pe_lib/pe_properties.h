@@ -1,4 +1,8 @@
+#ifndef pebliss_pe_properties_h
+#define pebliss_pe_properties_h
 #pragma once
+#ifndef pebliss_props_h
+#define pebliss_props_h
 #include <memory>
 #include "pe_structures.h"
 
@@ -213,3 +217,5 @@ public:
 	virtual uint32_t get_needed_magic() const = 0;
 };
 }
+#endif
+#endif

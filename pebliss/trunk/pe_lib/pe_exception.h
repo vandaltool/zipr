@@ -1,4 +1,8 @@
+#ifndef pebliss_pe_exception_h
+#define pebliss_pe_exception_h
 #pragma once
+#ifndef pebliss_peexception_h
+#define pebliss_peexception_h
 #include <exception>
 #include <stdexcept>
 
@@ -107,3 +111,5 @@ private:
 	exception_id id_;
 };
 }
+#endif
+#endif

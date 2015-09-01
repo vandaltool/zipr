@@ -1,3 +1,5 @@
+#ifndef pebliss_resource_message_list_reader_h
+#define pebliss_resource_message_list_reader_h
 #pragma once
 #include "message_table.h"
 
@@ -26,3 +28,4 @@ private:
 	const pe_resource_viewer& res_;
 };
 }
+#endif

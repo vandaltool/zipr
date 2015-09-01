@@ -1,3 +1,5 @@
+#ifndef pebliss_pe_properties_generic_h
+#define pebliss_pe_properties_generic_h
 #include "pe_properties.h"
 
 namespace pe_bliss
@@ -254,3 +256,4 @@ typedef pe_types<pe_win::image_nt_headers64,
 typedef pe_properties_generic<pe_types_class_32> pe_properties_32;
 typedef pe_properties_generic<pe_types_class_64> pe_properties_64;
 }
+#endif

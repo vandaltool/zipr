@@ -1,3 +1,5 @@
+#ifndef pebliss_pe_dotnet_h
+#define pebliss_pe_dotnet_h
 #pragma once
 #include "pe_structures.h"
 #include "pe_base.h"
@@ -74,3 +76,4 @@ private:
 //If image is not native, throws an exception
 const basic_dotnet_info get_basic_dotnet_info(const pe_base& pe);
 }
+#endif

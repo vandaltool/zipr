@@ -1,3 +1,5 @@
+#ifndef pebliss_version_info_editor_h
+#define pebliss_version_info_editor_h
 #pragma once
 #include "version_info_types.h"
 #include "version_info_viewer.h"
@@ -56,3 +58,4 @@ namespace pe_bliss
 		translation_values_map& translations_edit_;
 	};
 }
+#endif

@@ -1,3 +1,5 @@
+#ifndef pebliss_resource_version_info_writer_h
+#define pebliss_resource_version_info_writer_h
 #pragma once
 #include "version_info_types.h"
 #include "file_version_info.h"
@@ -29,3 +31,4 @@ private:
 	pe_resource_manager& res_;
 };
 }
+#endif

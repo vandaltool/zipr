@@ -1,3 +1,5 @@
+#ifndef pebliss_pe_factory_h
+#define pebliss_pe_factory_h
 #pragma once
 #include <memory>
 #include <istream>
@@ -14,3 +16,4 @@ public:
 	static pe_base create_pe(std::istream& file, bool read_debug_raw_data = true);
 };
 }
+#endif

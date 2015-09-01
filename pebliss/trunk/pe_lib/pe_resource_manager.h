@@ -1,3 +1,5 @@
+#ifndef pebliss_pe_resource_manager_h
+#define pebliss_pe_resource_manager_h
 #pragma once
 #include <map>
 #include <sstream>
@@ -90,3 +92,4 @@ private:
 	bool remove_resource(const resource_directory::entry_finder& root_finder, const resource_directory::entry_finder& finder, uint32_t language);
 };
 }
+#endif

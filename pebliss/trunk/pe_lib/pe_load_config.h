@@ -1,3 +1,5 @@
+#ifndef pebliss_pe_load_config_h
+#define pebliss_pe_load_config_h
 #pragma once
 #include <vector>
 #include "pe_structures.h"
@@ -161,3 +163,4 @@ const image_directory rebuild_image_config(pe_base& pe, const image_config_info&
 template<typename PEClassType>
 const image_directory rebuild_image_config_base(pe_base& pe, const image_config_info& info, section& image_config_section, uint32_t offset_from_section_start = 0, bool write_se_handlers = true, bool write_lock_prefixes = true, bool save_to_pe_header = true, bool auto_strip_last_section = true);
 }
+#endif

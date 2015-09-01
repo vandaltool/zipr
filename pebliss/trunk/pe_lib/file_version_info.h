@@ -1,3 +1,5 @@
+#ifndef pebliss_file_version_info_h
+#define pebliss_file_version_info_h
 #pragma once
 #include <string>
 #include <map>
@@ -176,3 +178,4 @@ private:
 	uint32_t file_date_ms_, file_date_ls_;
 };
 }
+#endif

@@ -1,3 +1,5 @@
+#ifndef pebliss_pe_relocations_h
+#define pebliss_pe_relocations_h
 #pragma once
 #include <vector>
 #include "pe_structures.h"
@@ -99,3 +101,4 @@ void rebase_image(pe_base& pe, const relocation_table_list& tables, uint64_t new
 template<typename PEClassType>
 void rebase_image_base(pe_base& pe, const relocation_table_list& tables, uint64_t new_base);
 }
+#endif

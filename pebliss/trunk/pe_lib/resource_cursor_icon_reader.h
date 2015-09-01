@@ -1,3 +1,5 @@
+#ifndef pebliss_resource_cursor_icon_reader_h
+#define pebliss_resource_cursor_icon_reader_h
 #pragma once
 #include <string>
 #include "stdint_defs.h"
@@ -61,3 +63,4 @@ private:
 	static bool check_cursor_presence(const std::string& icon_group_resource_data, uint32_t cursor_id, std::string& cur_header_data, const std::string& raw_cursor_data);
 };
 }
+#endif

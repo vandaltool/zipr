@@ -1,3 +1,5 @@
+#ifndef pebliss_resource_bitmap_writer_h
+#define pebliss_resource_bitmap_writer_h
 #pragma once
 #include <string>
 #include "stdint_defs.h"
@@ -24,3 +26,4 @@ private:
 	pe_resource_manager& res_;
 };
 }
+#endif

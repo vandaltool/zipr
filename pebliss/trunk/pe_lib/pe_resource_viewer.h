@@ -1,3 +1,5 @@
+#ifndef pebliss_pe_resource_viewer_h
+#define pebliss_pe_resource_viewer_h
 #pragma once
 #include <map>
 #include <string>
@@ -130,3 +132,4 @@ protected:
 	};
 };
 }
+#endif

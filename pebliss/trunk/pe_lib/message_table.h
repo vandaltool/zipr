@@ -1,4 +1,9 @@
+#ifndef pebliss_message_table_h
+#define pebliss_message_table_h
 #pragma once
+#ifndef pe_bliss_message_table_h
+#define pe_bliss_message_table_h
+
 #include <string>
 #include <map>
 #include "stdint_defs.h"
@@ -33,3 +38,5 @@ private:
 	std::wstring unicode_str_;
 };
 }
+#endif
+#endif

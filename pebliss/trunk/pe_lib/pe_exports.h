@@ -1,3 +1,5 @@
+#ifndef pebliss_pe_exports_h
+#define pebliss_pe_exports_h
 #pragma once
 #include <vector>
 #include <string>
@@ -161,3 +163,4 @@ bool exported_ordinal_exists(uint16_t ordinal, const exported_functions_list& ex
 //Name ordinals in exported function don't matter, they will be recalculated
 const image_directory rebuild_exports(pe_base& pe, const export_info& info, exported_functions_list exports, section& exports_section, uint32_t offset_from_section_start = 0, bool save_to_pe_header = true, bool auto_strip_last_section = true);
 }
+#endif

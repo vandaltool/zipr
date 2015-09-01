@@ -1,3 +1,5 @@
+#ifndef pebliss_pe_bliss_resources_h
+#define pebliss_pe_bliss_resources_h
 #pragma once
 #include "file_version_info.h"
 #include "message_table.h"
@@ -13,3 +15,4 @@
 #include "resource_version_info_writer.h"
 #include "resource_string_table_reader.h"
 #include "resource_message_list_reader.h"
+#endif

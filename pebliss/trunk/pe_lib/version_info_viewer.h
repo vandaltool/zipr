@@ -1,3 +1,5 @@
+#ifndef pebliss_version_info_viewer_h
+#define pebliss_version_info_viewer_h
 #pragma once
 #include <map>
 #include <vector>
@@ -66,3 +68,4 @@ private:
 	const translation_values_map& translations_;
 };
 }
+#endif

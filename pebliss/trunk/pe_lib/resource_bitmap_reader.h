@@ -1,3 +1,5 @@
+#ifndef pebliss_resource_bitmap_reader_h
+#define pebliss_resource_bitmap_reader_h
 #pragma once
 #include <string>
 #include "stdint_defs.h"
@@ -27,3 +29,4 @@ private:
 	const pe_resource_viewer& res_;
 };
 }
+#endif

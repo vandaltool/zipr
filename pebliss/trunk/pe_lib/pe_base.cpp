@@ -489,7 +489,7 @@ section& pe_base::add_section(section s)
 	set_number_of_sections(static_cast<uint16_t>(sections_.size()));
 	//Recalculate virtual size of image
 	set_size_of_image(get_size_of_image() + s.get_aligned_virtual_size(get_section_alignment()));
-	//Return last section
+	//rETurn last section
 	return sections_.back();
 }
 

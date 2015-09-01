@@ -1,4 +1,9 @@
+#ifndef pebliss_pe_base_h
+#define pebliss_pe_base_h
 #pragma once
+#ifndef pebliss_pebase_h
+#define pebliss_pebase_h
+
 #include <string>
 #include <vector>
 #include <istream>
@@ -521,3 +526,5 @@ private:
 	section_list::iterator file_offset_to_section(uint32_t offset);
 };
 }
+#endif
+#endif

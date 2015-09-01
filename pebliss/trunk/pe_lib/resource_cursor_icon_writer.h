@@ -1,3 +1,5 @@
+#ifndef pebliss_resource_cursor_icon_writer_h
+#define pebliss_resource_cursor_icon_writer_h
 #pragma once
 #include <string>
 #include <vector>
@@ -71,3 +73,4 @@ private:
 	const std::vector<uint16_t> get_icon_or_cursor_free_id_list(pe_resource_manager::resource_type type, icon_place_mode mode, uint32_t count);
 };
 }
+#endif

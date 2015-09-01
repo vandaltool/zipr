@@ -1,4 +1,7 @@
+#ifndef pebliss_entropy_h
+#define pebliss_entropy_h
 #pragma once
+
 #include <istream>
 #include "pe_base.h"
 
@@ -28,3 +31,4 @@ private:
 	static double calculate_entropy(const uint32_t byte_count[256], std::streamoff total_length);
 };
 }
+#endif

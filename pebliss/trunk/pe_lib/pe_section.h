@@ -1,4 +1,9 @@
+#ifndef pebliss_pe_section_h
+#define pebliss_pe_section_h
 #pragma once
+#ifndef pebliss_section_h
+#define pebliss_section_h
+
 #include <string>
 #include <vector>
 #include "pe_structures.h"
@@ -135,3 +140,5 @@ private:
 
 typedef std::vector<section> section_list;
 }
+#endif
+#endif

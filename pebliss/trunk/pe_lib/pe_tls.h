@@ -1,3 +1,5 @@
+#ifndef pebliss_pe_tls_h
+#define pebliss_pe_tls_h
 #pragma once
 #include <memory>
 #include <istream>
@@ -99,3 +101,4 @@ const image_directory rebuild_tls(pe_base& pe, const tls_info& info, section& tl
 template<typename PEClassType>
 const image_directory rebuild_tls_base(pe_base& pe, const tls_info& info, section& tls_section, uint32_t offset_from_section_start = 0, bool write_tls_callbacks = true, bool write_tls_data = true, tls_data_expand_type expand = tls_data_expand_raw, bool save_to_pe_header = true, bool auto_strip_last_section = true);
 }
+#endif

@@ -1,4 +1,7 @@
+#ifndef pebliss_utils_h
+#define pebliss_utils_h
 #pragma once
+
 #include <istream>
 #include <string>
 #include "stdint_defs.h"
@@ -82,3 +85,4 @@ private:
 //Windows GUID comparison
 bool operator==(const pe_win::guid& guid1, const pe_win::guid& guid2);
 }
+#endif

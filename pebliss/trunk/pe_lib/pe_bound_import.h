@@ -1,3 +1,5 @@
+#ifndef pebliss_pe_bound_import_h
+#define pebliss_pe_bound_import_h
 #pragma once
 #include <vector>
 #include <string>
@@ -85,3 +87,4 @@ const bound_import_module_list get_bound_import_module_list(const pe_base& pe);/
 //auto_strip_last_section - if true and bound imports are placed in the last section, it will be automatically stripped
 const image_directory rebuild_bound_imports(pe_base& pe, const bound_import_module_list& imports, section& imports_section, uint32_t offset_from_section_start = 0, bool save_to_pe_header = true, bool auto_strip_last_section = true);
 }
+#endif

@@ -1,4 +1,9 @@
+#ifndef pebliss_pe_structures_h
+#define pebliss_pe_structures_h
 #pragma once
+#ifndef pe_struct_h
+#define pe_struct_h
+
 #include <string>
 #include <sstream>
 #include "stdint_defs.h"
@@ -237,7 +242,9 @@ const uint32_t vft_static_lib = 0x00000007L;
 
 const uint32_t message_resource_unicode = 0x0001;
 
+#ifndef SOLARIS
 #pragma pack(push, 1)
+#endif
 
 //Windows GUID structure
 struct guid
@@ -494,7 +501,9 @@ struct image_resource_data_entry
 	uint32_t Reserved;
 };
 
+#ifndef SOLARIS
 #pragma pack(push, 2)
+#endif
 struct bitmapfileheader
 {
 	uint16_t bfType;
@@ -503,7 +512,9 @@ struct bitmapfileheader
 	uint16_t bfReserved2;
 	uint32_t bfOffBits;
 };
+#ifndef SOLARIS
 #pragma pack(pop)
+#endif
 
 
 
@@ -590,7 +601,9 @@ struct version_info_block //(always aligned on 32-bit (DWORD) boundary)
 
 
 /// IMPORTS ///
+#ifndef SOLARIS
 #pragma pack(push, 8)
+#endif
 struct image_thunk_data64
 {
 	union
@@ -601,7 +614,9 @@ struct image_thunk_data64
 		uint64_t AddressOfData;    // PIMAGE_IMPORT_BY_NAME
 	} u1;
 };
+#ifndef SOLARIS
 #pragma pack(pop)
+#endif
 
 struct image_thunk_data32
 {
@@ -786,7 +801,9 @@ struct image_debug_directory
 };
 
 
+#ifndef SOLARIS
 #pragma pack(push, 2)
+#endif
 struct image_symbol
 {
 	union
@@ -805,7 +822,9 @@ struct image_symbol
 	uint8_t  StorageClass;
 	uint8_t  NumberOfAuxSymbols;
 };
+#ifndef SOLARIS
 #pragma pack(pop)
+#endif
 
 //CodeView Debug OMF signature. The signature at the end of the file is
 //a negative offset from the end of the file to another signature.  At
@@ -992,7 +1011,9 @@ struct image_load_config_directory64
 	uint64_t SEHandlerCount;
 };
 
+#ifndef SOLARIS
 #pragma pack(pop)
+#endif
 } //namespace pe_win
 
 #ifdef PE_BLISS_WINDOWS
@@ -1005,3 +1026,5 @@ typedef std::basic_string<unicode16_t> u16string;
 #endif
 
 } //namespace pe_bliss
+#endif
+#endif

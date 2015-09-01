@@ -1,3 +1,5 @@
+#ifndef pebliss_stdint_defs_h
+#define pebliss_stdint_defs_h
 #pragma once
 #ifdef _MSC_VER
 #if _MSC_VER < 1600
@@ -21,4 +23,5 @@ namespace pe_bliss
 #endif
 #else
 #include <stdint.h>
+#endif
 #endif

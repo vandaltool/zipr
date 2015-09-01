@@ -1,3 +1,5 @@
+#ifndef pebliss_resource_data_info_h
+#define pebliss_resource_data_info_h
 #pragma once
 #include <string>
 #include "stdint_defs.h"
@@ -25,3 +27,4 @@ private:
 	uint32_t codepage_;
 };
 }
+#endif

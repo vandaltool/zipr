@@ -1,3 +1,5 @@
+#ifndef pebliss_pe_imports_h
+#define pebliss_pe_imports_h
 #pragma once
 #include <vector>
 #include <string>
@@ -185,3 +187,4 @@ const image_directory rebuild_imports(pe_base& pe, const imported_functions_list
 template<typename PEClassType>
 const image_directory rebuild_imports_base(pe_base& pe, const imported_functions_list& imports, section& import_section, const import_rebuilder_settings& import_settings = import_rebuilder_settings());
 }
+#endif

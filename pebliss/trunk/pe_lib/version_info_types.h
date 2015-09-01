@@ -1,3 +1,5 @@
+#ifndef pebliss_version_info_types_h
+#define pebliss_version_info_types_h
 #pragma once
 #include <map>
 #include <string>
@@ -15,3 +17,4 @@ namespace pe_bliss
 	//Typedef for version info functions: Language - Character Set
 	typedef std::multimap<uint16_t, uint16_t> translation_values_map;
 }
+#endif

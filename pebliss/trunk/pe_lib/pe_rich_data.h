@@ -1,3 +1,5 @@
+#ifndef pebliss_pe_rich_data_h
+#define pebliss_pe_rich_data_h
 #pragma once
 #include <vector>
 #include "pe_structures.h"
@@ -35,3 +37,4 @@ typedef std::vector<rich_data> rich_data_list;
 //Returns a vector with rich data (stub overlay)
 const rich_data_list get_rich_data(const pe_base& pe);
 }
+#endif

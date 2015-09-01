@@ -1,3 +1,5 @@
+#ifndef pebliss_pe_debug_h
+#define pebliss_pe_debug_h
 #pragma once
 #include <vector>
 #include "pe_structures.h"
@@ -301,3 +303,4 @@ typedef std::vector<debug_info> debug_info_list;
 //Returns debug information list
 const debug_info_list get_debug_information(const pe_base& pe);
 }
+#endif

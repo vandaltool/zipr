@@ -1,4 +1,9 @@
+#ifndef pebliss_pe_resources_h
+#define pebliss_pe_resources_h
 #pragma once
+#ifndef peresource_h
+#define peresource_h
+
 #include <vector>
 #include <string>
 #include <set>
@@ -222,3 +227,5 @@ const resource_directory get_resources(const pe_base& pe);
 //number_of_id_entries and number_of_named_entries for resource directories are recalculated and not used
 const image_directory rebuild_resources(pe_base& pe, resource_directory& info, section& resources_section, uint32_t offset_from_section_start = 0, bool save_to_pe_header = true, bool auto_strip_last_section = true);
 }
+#endif
+#endif

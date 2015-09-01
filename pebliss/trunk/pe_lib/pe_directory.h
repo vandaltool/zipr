@@ -1,4 +1,9 @@
+#ifndef pebliss_pe_directory_h
+#define pebliss_pe_directory_h
 #pragma once
+#ifndef pedir_h
+#define pedir_h
+
 #include "stdint_defs.h"
 
 namespace pe_bliss
@@ -27,3 +32,5 @@ private:
 	uint32_t size_;
 };
 }
+#endif
+#endif
