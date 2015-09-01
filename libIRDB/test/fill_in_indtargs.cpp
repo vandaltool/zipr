@@ -1,3 +1,4 @@
+
 /*
  * Copyright (c) 2014 - Zephyr Software LLC
  *
@@ -31,6 +32,8 @@
 // #include <elf.h>
 #include <ctype.h>
 #include <list>
+#include <stdio.h>
+
 
 #include <exeio.h>
 #include "beaengine/BeaEngine.h"

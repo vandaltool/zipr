@@ -173,7 +173,7 @@ void * ptr_to_data_to_addr(uintptr_t data_addr)
 {
 	int i;
 	if(eh_frame_data<=(void*)data_addr && 
-		(void*)data_addr <= (void*)eh_frame_data+eh_frame_data_total_size)
+		(uintptr_t)data_addr <= (uintptr_t)eh_frame_data+(uintptr_t)eh_frame_data_total_size)
 	{
 		intptr_t offset=((uintptr_t)data_addr-(uintptr_t)eh_frame_data);
 		const char* data=(const char*)(uintptr_t)eh_frame_addr;
@@ -185,7 +185,7 @@ void * ptr_to_data_to_addr(uintptr_t data_addr)
 		if((elfiop->sections[i]->get_flags() & SHF_ALLOC) != SHF_ALLOC)
 			continue;
 		if(elfiop->sections[i]->get_data()<=(void*)data_addr && 
-			(void*)data_addr < (void*)elfiop->sections[i]->get_data() + elfiop->sections[i]->get_size() )
+			(uintptr_t)data_addr < (uintptr_t)elfiop->sections[i]->get_data() + (uintptr_t)elfiop->sections[i]->get_size() )
 		{
 			intptr_t offset=((uintptr_t)data_addr-(uintptr_t)elfiop->sections[i]->get_data());
 			const char* data=(const char*)(uintptr_t)elfiop->sections[i]->get_address();
