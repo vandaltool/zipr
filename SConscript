@@ -4,6 +4,9 @@ import tarfile
 
 Import('env')
 
+(sysname, nodename, release, version, machine)=os.uname()
+
+
 
 #print 'env='
 #print env.Dump()
@@ -48,7 +51,8 @@ libpath='''
 	$SECURITY_TRANSFORMS_HOME/lib
 	'''
 
-myenv.Append(CCFLAGS=" -Wall ")
+if sysname != "SunOS":
+	myenv.Append(CCFLAGS=" -Wall ")
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath), LIBS=Split(libs), LIBPATH=Split(libpath), SHLIBSUFFIX=".zpi", SHLIBPREFIX="")
 lib=myenv.SharedLibrary("push64_relocs", Split(files))

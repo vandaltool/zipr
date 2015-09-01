@@ -1,6 +1,10 @@
 import os
 import sys
 
+(sysname, nodename, release, version, machine)=os.uname()
+
+
+
 
 env=Environment()
 
@@ -28,24 +32,12 @@ else:
         env.Append(CFLAGS=" -O3")
         env.Append(CXXFLAGS=" -O3")
         env.Append(LINKFLAGS=" -O3")
-#env.Append(CXXFLAGS=" -std=c++0x")
 
-# set 32/64 bit build properly
-#print  "env[64bit]="+str(env['do_64bit_build'])
-#if env['do_64bit_build'] is None:
-#	print 'Defaulting to default compilation size.'
-#elif int(env['do_64bit_build']) == 1:
-#	print 'Using 64-bit compilation size.'
-#        env.Append(CFLAGS=" -m64")
-#        env.Append(CXXFLAGS=" -m64")
-#        env.Append(LINKFLAGS=" -m64")
-#        env.Append(SHLINKFLAGS=" -m64")
-#else:
-#	print 'Using 32-bit compilation size.'
-#        env.Append(CFLAGS=" -m32")
-#        env.Append(CXXFLAGS=" -m32")
-#        env.Append(LINKFLAGS=" -m32")
-#        env.Append(SHLINKFLAGS=" -m32")
+if sysname == "SunOS":
+        env.Append(LINKFLAGS=" -L/opt/csw/lib -DSOLARIS  ")
+        env.Append(CFLAGS=" -I/opt/csw/include -DSOLARIS ")
+        env.Append(CXXFLAGS=" -I/opt/csw/include -DSOLARIS  ")
+
 
 env['build_appfw']=0
 env['build_tools']=0
