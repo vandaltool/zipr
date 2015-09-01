@@ -55,7 +55,7 @@ void __bea_callspec__ addps_VW(PDISASM pMyDisasm)
         #endif
     /* ========= 0xf2 */
     if (GV.PrefRepne == 1 || (GV.VEX.has_vex && GV.VEX.implicit_prefixes==3)) {
-//	assert(!GV.VEX.has_vex);
+/*	assert(!GV.VEX.has_vex); */
         (*pMyDisasm).Prefix.RepnePrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2fword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+ARITHMETIC_INSTRUCTION;
@@ -66,7 +66,7 @@ void __bea_callspec__ addps_VW(PDISASM pMyDisasm)
     /* ========= 0xf3 */
     else if (GV.PrefRepe == 1|| (GV.VEX.has_vex && GV.VEX.implicit_prefixes==2)) {
 
-//	assert(!GV.VEX.has_vex);
+/*	assert(!GV.VEX.has_vex); */
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2dword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
@@ -1580,7 +1580,7 @@ void __bea_callspec__ movaps_WV(PDISASM pMyDisasm)
 	#endif
     /* ========== 0x66 */
     if ((*pMyDisasm).Prefix.OperandSize == InUsePrefix) {
-//	assert(!GV.VEX.has_vex);	 /* FIXME */
+/*	assert(!GV.VEX.has_vex);	*/ /* FIXME */
         GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg1dqword;
@@ -4731,9 +4731,9 @@ void __bea_callspec__ ucomiss_VW(PDISASM pMyDisasm)
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
 
-// oddly, vucomisd (and vucomiss) use same args as ucomisd (and ucomiss).
-// the Vx version adds an extra argument after the GxEx, so we can't use it here.
-//        Vx_opt_GxEx_vexlen(pMyDisasm);
+/* oddly, vucomisd (and vucomiss) use same args as ucomisd (and ucomiss).
+ the Vx version adds an extra argument after the GxEx, so we cant use it here.
+*/        Vx_opt_GxEx_vexlen(pMyDisasm);
 }
 
 

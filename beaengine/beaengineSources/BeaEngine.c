@@ -23,6 +23,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* solaris headers #define EIP to 14... 
+   this is insanity that I don't know how to fix besides doing an #undef.
+   note:  this type of insanity is why c++ uses namespaces and inline (template) functions,
+   and discourages macro definitions.
+ */
+#undef EIP
+
 #include "beaengine/BeaEngine.h"
 #include "Includes/protos.h"
 #include "Includes/internal_datas.h"

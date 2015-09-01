@@ -1992,7 +1992,7 @@ void __bea_callspec__ sahf_(PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ salc_(PDISASM pMyDisasm)
 {
-	// not a real insn or undocumented.
+	/* not a real insn or undocumented.*/
 	FailDecode(pMyDisasm);
 	return;
 

@@ -1566,7 +1566,7 @@ void __bea_callspec__ DE_(PDISASM pMyDisasm)
                 #ifndef BEA_LIGHT_DISASSEMBLY
                    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fdivrp ");
                 #endif
-		// flip flop access modes on fdivr
+		/* flip flop access modes on fdivr */
                 (*pMyDisasm).Argument1.AccessMode = READ;
                 (*pMyDisasm).Argument2.AccessMode = WRITE;
             }
@@ -1575,9 +1575,9 @@ void __bea_callspec__ DE_(PDISASM pMyDisasm)
                 #ifndef BEA_LIGHT_DISASSEMBLY
                    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fdivp ");
                 #endif
-		// these are defaults.
-                //(*pMyDisasm).Argument1.AccessMode = WRITE;
-                //(*pMyDisasm).Argument2.AccessMode = WRITE;
+		/* these are defaults. */
+                /*(*pMyDisasm).Argument1.AccessMode = WRITE; */
+                /*(*pMyDisasm).Argument2.AccessMode = WRITE; */
             }
             #ifndef BEA_LIGHT_DISASSEMBLY
                (void) strcpy ((*pMyDisasm).Argument2.ArgMnemonic, (*pRegistersFPU)[0]);

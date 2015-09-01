@@ -171,6 +171,14 @@ typedef struct {
 #pragma pack()
 
 /* ************** main structure ************ */
+
+/* some standard header files #define an EIP macro.  we undef it here as
+ * we assume (incorrectly) that you know what you're doing when you include 
+ * this header file.
+ */
+#undef EIP
+
+
 #pragma pack(1)
 typedef struct _Disasm {
    UIntPtr EIP;
@@ -292,7 +300,7 @@ enum BRANCH_TYPE
   JP = 6,
   JL = 7,
   JG = 8,
-  JB = 2,       /* JC == JB */
+  JB = 2,       /* JC == JB */
   JECXZ = 10,
   JmpType = 11,
   CallType = 12,
