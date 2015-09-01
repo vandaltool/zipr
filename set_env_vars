@@ -14,6 +14,9 @@ export STRATA=$PEASOUP_UMBRELLA_DIR/strata
 export STRATA_HOME=$STRATA
 export STRATA32=$PEASOUP_UMBRELLA_DIR/strata32
 export STRATA_HOME32=$STRATA32
+export ZIPR_HOME=$PEASOUP_UMBRELLA_DIR/zipr
+export ZIPR_SDK=$PEASOUP_UMBRELLA_DIR/zipr_sdk
+export ZIPR_INSTALL=$PEASOUP_UMBRELLA_DIR/zipr_install
 
 export SECURITY_TRANSFORMS_HOME=$PEASOUP_UMBRELLA_DIR/security_transforms
 if [[ ! "$LD_LIBRARY_PATH" =~ (^|:)"$PEASOUP_UMBRELLA_DIR/lib:$PEASOUP_UMBRELLA_DIR/grace/concolic/bin:$STRATA/lib"(:|$) ]]
@@ -49,7 +52,7 @@ alias nm=gnm
 
 # for solaris to use external pg databases and ida pro servers.
 export PGHOST=peasoup-datamanager.cs.virginia.edu
-export IDA_PRO_SERVER_HOST=192.168.184.135
+export IDA_PRO_SERVER_HOST=192.168.184.141
 export SMPSA_HOME=$PEASOUP_UMBRELLA_DIR/scripts/IdaProServer
 
 
@@ -67,6 +70,7 @@ export PS_DATE="gdate --iso-8601=seconds"
 export PS_STRIP=gstrip
 export PS_TIMEOUT=gtimeout
 export PS_OBJDUMP=gobjdump
+export PS_OBJCOPY=gobjcopy
 export PS_TAR=gtar
 export PS_MD5SUM=gmd5sum
 export PS_GREP=ggrep

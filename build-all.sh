@@ -12,8 +12,8 @@ fi
 
 # stratafier
 # not on solaris
-#cd $PEASOUP_UMBRELLA_DIR/stratafier
-#make
+cd $PEASOUP_UMBRELLA_DIR/stratafier
+make
 
 # strata
 if [ ! "$STRATA_HOME" ]; then 
@@ -44,15 +44,6 @@ else
 	make
 fi
 
-# smp-static-analyzer
-#not on solaris
-#if [ ! "$SMPSA_HOME" ]; then
-    #echo "SMPSA_HOME not set."; 
-    #exit 1; 
-#fi
-#cd $SMPSA_HOME
-#./configure
-#make
 
 # security-transforms
 if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then 
@@ -60,15 +51,8 @@ if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then
     exit 1; 
 fi
 cd $SECURITY_TRANSFORMS_HOME
-./build.sh || exit 1
+scons  build_appfw=0
 
 cd $PEASOUP_HOME
 make
-
-# grace
-#not on solaris
-#if [ ! "$GRACE_HOME" ]; then echo "GRACE_HOME not set."; exit 1; fi
-#cd $GRACE_HOME
-#concolic/build $SCONSFLAGS
-
 

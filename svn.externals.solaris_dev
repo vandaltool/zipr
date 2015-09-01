@@ -6,4 +6,9 @@ peasoup_examples     http://svn.zephyr-software.com/repos/peasoup_examples/trunk
 security_transforms  http://svn.zephyr-software.com/repos/security_transforms/trunk/
 SMPStaticAnalyzer    http://svn.zephyr-software.com/repos/SMPStaticAnalyzer/trunk/
 stratafier           http://svn.zephyr-software.com/repos/stratafier/trunk/
+zipr           	     http://svn.zephyr-software.com/repos/zipr/trunk/
+zipr_scfi_plugin     http://svn.zephyr-software.com/repos/zipr_scfi_plugin/trunk/
+zipr_install         http://svn.zephyr-software.com/repos/zipr_install/trunk/
+zipr_sdk             http://svn.zephyr-software.com/repos/zipr_sdk/trunk/
+zipr_push64_reloc_plugin     http://svn.zephyr-software.com/repos/zipr_push64_reloc_plugin/trunk
 
