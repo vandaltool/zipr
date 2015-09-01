@@ -58,17 +58,21 @@ else:
 
 
 
-# setup libraries needed for linking
-env['BASE_IRDB_LIBS']="IRDB-core", "pqxx", "pq", "BeaEngine_s_d", "EXEIO", "pebliss"
+env['BASE_IRDB_LIBS']="IRDB-core", "pqxx", "pq", "BeaEngine_s_d", "EXEIO"
+
+if sysname != "SunOS":
+	libPEBLISS=SConscript("pebliss/trunk/pe_lib/SConscript", variant_dir='scons_build/libPEBLISS')
+	# setup libraries needed for linking
+	env['BASE_IRDB_LIBS']="IRDB-core", "pqxx", "pq", "BeaEngine_s_d", "EXEIO", "pebliss"
 
 # pebliss requires iconv, which needs to be explicit on cygwin.
 if "CYGWIN" in sysname:
 	# add tuple of 1 item!
 	env['BASE_IRDB_LIBS']=env['BASE_IRDB_LIBS']+("iconv",)
 
-
 Export('env')
-libPEBLISS=SConscript("pebliss/trunk/pe_lib/SConscript", variant_dir='scons_build/libPEBLISS')
+
+
 libEXEIO=SConscript("libEXEIO/SConscript", variant_dir='scons_build/libEXEIO')
 libbea=SConscript("beaengine/SConscript", variant_dir='scons_build/beaengine')
 libMEDSannotation=SConscript("libMEDSannotation/SConscript", variant_dir='scons_build/libMEDSannotation')

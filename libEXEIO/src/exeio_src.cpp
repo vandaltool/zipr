@@ -8,8 +8,10 @@
 
 
 using namespace EXEIO;
-using namespace pe_bliss;
 using namespace std;
+#ifndef SOLARIS
+using namespace pe_bliss;
+#endif
 
 void exeio::load(char* filename)
 {
@@ -34,10 +36,14 @@ void exeio::load(char* filename)
 	{
 		backend=new exeio_elf_backend_t;
 	}
-	// we assume it's ELF or PE.
-	// we assume it's ELF or PE.
 	else
+#ifndef SOLARIS
+		// we assume it's PE.
 		backend=new exeio_pe_backend_t;
+#else
+		// don't build win support on solaris.
+		assert(0);
+#endif
 
 	backend->load(this, filename);
 

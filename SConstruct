@@ -2,7 +2,11 @@ import os
 import sys
 
 
+
+(sysname, nodename, release, version, machine)=os.uname()
+
 env=Environment()
+
 
 # default build options
 env.Replace(CFLAGS="-fPIC -w ")
@@ -60,11 +64,10 @@ else:
 
 
 # add extra flag for solaris.
-(sysname, nodename, release, version, machine)=os.uname()
 if sysname == "SunOS":
-        env.Append(LINKFLAGS=" -L/opt/csw/lib ")
-        env.Append(CFLAGS=" -I/opt/csw/include ")
-        env.Append(CXXFLAGS=" -I/opt/csw/include ")
+        env.Append(LINKFLAGS=" -L/opt/csw/lib -DSOLARIS  ")
+        env.Append(CFLAGS=" -I/opt/csw/include -DSOLARIS ")
+        env.Append(CXXFLAGS=" -I/opt/csw/include -DSOLARIS  ")
 
 
 Export('env')

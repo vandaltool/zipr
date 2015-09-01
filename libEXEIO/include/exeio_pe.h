@@ -1,6 +1,7 @@
 #ifndef EXEIO_PE_H
 #define EXEIO_PE_H
 
+#ifndef SOLARIS
 #include <iostream>
 #include <vector>
 #include <assert.h>
@@ -17,7 +18,8 @@ namespace EXEIO
 	class exeio_pe_section_t : public exeio_section_t
 	{
 		public:
-			exeio_pe_section_t(const pe_bliss::section *the_s, const pe_bliss::pe_base *the_b) : s(the_s),b(the_b) { assert(s); assert(b);}
+			exeio_pe_section_t(const pe_bliss::section *the_s, const pe_bliss::pe_base *the_b) 
+				: s(the_s),b(the_b) { assert(s); assert(b);}
 
 			bool isLoadable() const { return s->readable(); }
 			bool isExecutable() const { return s->executable(); }
@@ -144,5 +146,5 @@ namespace EXEIO
 	
 
 }
-
-#endif
+#endif // solaris
+#endif // exeio_pe_h
