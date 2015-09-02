@@ -156,6 +156,7 @@ usage()
 	echo "   --step <stepname>=(on|off) 		Turn the <stepname> step on or off"
 	echo "   -s <stepname>=(on|off)			Same as --step"
 	echo "   --step-option <stepname>:<option>	Pass additional option to step <stepname>"
+	echo "   -o <stepname>:<option>			Same as --step-option"
 	echo "   --timeout				Specify a timeout for ps_analyze.sh."
 	echo "   -t					Same as --timeout"
 	echo "   --watchdog				Specify a watchdog timer for the protected program."
@@ -168,6 +169,7 @@ usage()
 	echo "   --manual_test_script <scriptname>	Specify how to test to the program.  API documentation incomplete."
 	echo "   --manual_test_coverage_file <file>	Specify a profile for the program.  API documentation incomplete."
 	echo "   --backend <zipr|strata>		Specify the backend rewriting technology to use.  Default: Strata"
+	echo "   -b <zipr|strata>			same as --backend "
 	echo "   --stop_after <step>			Stop ps_analyze after completeling the specified step."
 	echo "   --stop_before <step>			Stop ps_analyze before starting the specified step."
 
@@ -200,7 +202,7 @@ check_options()
 	# Note that we use `"$@"' to let each command-line parameter expand to a 
 	# separate word. The quotes around `$@' are essential!
 	# We need TEMP as the `eval set --' would nuke the return value of getopt.
-	short_opts="s:t:w:h"
+	short_opts="s:t:w:b:o:h"
 	long_opts="--long step-option: 
 		   --long step: 
 		   --long timeout: 
@@ -232,7 +234,7 @@ check_options()
 
 	while true ; do
 		case "$1" in
-			--backend)
+			-b|--backend)
 				if [ "X$2" = "Xzipr" ]; then
 					echo using Zipr backend
 					phases_spec=" $phases_spec stratafy_with_pc_confine=off generate_spri=off spasm=off fast_annot=off zipr=on\
@@ -243,7 +245,7 @@ check_options()
 				fi
             			shift 2
 			;;
-			--step-option)
+			-o|--step-option)
            			set_step_option $2
             			shift 2
             		;;
