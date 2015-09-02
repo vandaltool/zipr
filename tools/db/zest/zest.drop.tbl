@@ -1,4 +1,4 @@
-DROP TABLE user;
+DROP TABLE users;
 DROP TABLE job_spec;
 DROP TABLE bundle_info;
 DROP TABLE bundle_spec;
