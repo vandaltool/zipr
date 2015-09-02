@@ -40,7 +40,8 @@ const u16string pe_utils::to_ucs2(const std::wstring& str)
 	const wchar_t* in_pos = str.c_str();
 	unicode16_t* out_pos = &ret[0];
 
-	size_t result = iconv(conv, const_cast<const char**>(reinterpret_cast<const char**>(&in_pos)), &inbytesleft, reinterpret_cast<char**>(&out_pos), &outbytesleft);
+	size_t result = iconv(conv, const_cast<char**>(reinterpret_cast<const char**>(&in_pos)), &inbytesleft, reinterpret_cast<char**>(&out_pos), &outbytesleft);
+
 	iconv_close(conv);
 	
 	if(result == static_cast<size_t>(-1))
@@ -66,7 +67,7 @@ const std::wstring pe_utils::from_ucs2(const u16string& str)
 	const unicode16_t* in_pos = str.c_str();
 	wchar_t* out_pos = &ret[0];
 
-	size_t result = iconv(conv, const_cast<const char**>(reinterpret_cast<const char**>(&in_pos)), &inbytesleft, reinterpret_cast<char**>(&out_pos), &outbytesleft);
+	size_t result = iconv(conv, const_cast<char**>(reinterpret_cast<const char**>(&in_pos)), &inbytesleft, reinterpret_cast<char**>(&out_pos), &outbytesleft);
 	iconv_close(conv);
 
 	if(result == static_cast<size_t>(-1))
