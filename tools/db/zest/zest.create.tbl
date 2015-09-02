@@ -1,0 +1,52 @@
+CREATE TABLE user
+(
+	user_id      text PRIMARY KEY,
+	name         text,
+	password     text
+);
+
+CREATE TABLE job_spec
+(
+	job_id             text PRIMARY KEY,
+	job_name           text,
+	user_id            integer DEFAULT -1,
+	submitted_ts       timestamp,
+	input_bundle_id	   integer DEFAULT -1,
+	output_bundle_id   integer DEFAULT -1,
+	start_ts           timestamp,
+	stop_ts	           timestamp,
+	configuration      text,
+	status             text
+);
+
+CREATE TABLE bundle_info
+(
+	bundle_id          integer PRIMARY KEY,
+	bundle_type        text
+);
+
+CREATE TABLE bundle_spec
+(
+	bundle_id          integer,
+	file_id            integer DEFAULT -1
+);
+
+CREATE TABLE file_info
+(
+	file_id            integer PRIMARY KEY,
+	type               text,
+	hash               text,
+	arch               text,
+	file_oid           OID
+);
+	
+CREATE TABLE job_status
+(
+	job_id      text,
+	step        text,
+	step_num    integer DEFAULT -1,
+	log         text,
+	start_ts    timestamp,
+	stop_ts     timestamp,
+	status      text
+);
