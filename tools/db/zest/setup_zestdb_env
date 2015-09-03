@@ -1,0 +1,4 @@
+export Z_PGPORT=5432
+export Z_PGUSER=zest
+export Z_PGDATABASE=zest
+export Z_PGHOST=127.0.0.1
