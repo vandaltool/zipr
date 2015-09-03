@@ -1,45 +1,44 @@
 CREATE TABLE users
 (
-	user_id      text PRIMARY KEY,
+	user_id      SERIAL PRIMARY KEY,
 	name         text,
 	password     text
 );
 
-CREATE TABLE job_spec
-(
-	job_id             text PRIMARY KEY,
-	job_name           text,
-	user_id            integer DEFAULT -1,
-	submitted_ts       timestamp,
-	input_bundle_id	   integer DEFAULT -1,
-	output_bundle_id   integer DEFAULT -1,
-	start_ts           timestamp,
-	stop_ts	           timestamp,
-	configuration      text,
-	status             text
-);
-
 CREATE TABLE bundle_info
 (
-	bundle_id          integer PRIMARY KEY,
+	bundle_id          SERIAL PRIMARY KEY,
 	bundle_type        text
-);
-
-CREATE TABLE bundle_spec
-(
-	bundle_id          integer,
-	file_id            integer DEFAULT -1
 );
 
 CREATE TABLE file_info
 (
-	file_id            integer PRIMARY KEY,
+	file_id            SERIAL PRIMARY KEY,
 	type               text,
 	hash               text,
 	arch               text,
 	file_oid           OID
 );
 	
+CREATE TABLE bundle_spec
+(
+	bundle_id          integer REFERENCES bundle_info,
+	file_id            integer REFERENCES file_info
+);
+
+CREATE TABLE job_spec
+(
+	job_id             SERIAL PRIMARY KEY,
+	job_name           text,
+	user_id            integer DEFAULT -1,
+	submitted_ts       timestamp without time zone DEFAULT timestamp 'now ( )' NOT NULL,
+	input_bundle_id	   integer REFERENCES bundle_info,
+	output_bundle_id   integer REFERENCES bundle_info,
+	start_ts           timestamp,
+	stop_ts	           timestamp,
+	configuration      text,
+	status             text
+);
 CREATE TABLE job_status
 (
 	job_id      text,
