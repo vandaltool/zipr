@@ -55,14 +55,17 @@ void FixCanaries::FindStartAddress()
 }
 
 Instruction_t *FixCanaries::add_instrumentation(Instruction_t *site,
-	const char *canary_register, const char *callback_name)
+	const char *canary_register, const char *callback_name, const char *lea)
 {
 	FileIR_t *firp = getFileIR();
 	virtual_offset_t postCallbackReturn = getAvailableAddress();
-	char pushRetBuf[100], movCanaryValueBuf[100], movfs0x28Buf[100];
+	char pushRetBuf[100], movCanaryValueBuf[100], movfs0x28Buf[100], setRdx[100];
 	sprintf(pushRetBuf,"push  0x%x", postCallbackReturn);
 	sprintf(movCanaryValueBuf,"mov rsi, %s", canary_register);
 	sprintf(movfs0x28Buf,"mov rdi, [fs:0x28]");
+
+	if (lea != NULL)
+		sprintf(setRdx,"lea rdx, [%s]", lea);
 
 	Instruction_t *tmp=site, *callback=NULL, *post_callback=NULL;
 
@@ -85,6 +88,10 @@ Instruction_t *FixCanaries::add_instrumentation(Instruction_t *site,
 	tmp=insertAssemblyAfter(firp,tmp,"pushf");
 	tmp=insertAssemblyAfter(firp,tmp,movfs0x28Buf);
 	tmp=insertAssemblyAfter(firp,tmp,movCanaryValueBuf);
+	if (lea != NULL)
+		tmp=insertAssemblyAfter(firp,tmp,setRdx);
+	else
+		tmp=insertAssemblyAfter(firp,tmp,"mov rdx, 0x0");
 	/*
 	 * The "bogus" return address that we push here
 	 * will be popped by the callback handler 
@@ -268,7 +275,7 @@ int FixCanaries::execute()
 						tmp_insn = add_instrumentation(
 							tmp_insn,
 							target_reg_name,
-							m_callback.c_str());
+							m_callback.c_str(), rsp_reg_and_offset);
 						tmp_insn->SetFallthrough(mov_insn);
 					}
 				

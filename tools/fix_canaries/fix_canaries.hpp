@@ -20,7 +20,7 @@ class FixCanaries : public libTransform::Transform
 		void set_verbose(bool v) { m_verbose = v; }
 		void set_callback(const std::string &);
 	private:
-		libIRDB::Instruction_t *add_instrumentation(libIRDB::Instruction_t *, const char *, const char *);
+		libIRDB::Instruction_t *add_instrumentation(libIRDB::Instruction_t *, const char *, const char *, const char *lea = NULL);
 		void LoadElf();
 		void FindStartAddress();
 		std::unique_ptr<ELFIO::elfio> m_elfiop;
