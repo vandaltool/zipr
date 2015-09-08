@@ -14,6 +14,7 @@ CREATE TABLE bundle_info
 CREATE TABLE file_info
 (
 	file_id            SERIAL PRIMARY KEY,
+    name               text,
 	type               text,
 	hash               text,
 	arch               text,
@@ -37,8 +38,10 @@ CREATE TABLE job_spec
 	start_ts           timestamp,
 	stop_ts	           timestamp,
 	configuration      text,
+	host               text,
 	status             text
 );
+
 CREATE TABLE job_status
 (
 	job_id      text,
