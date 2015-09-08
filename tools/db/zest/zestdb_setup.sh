@@ -55,7 +55,7 @@ sudo service postgresql restart
 
 #Create Database User and Table
 echo "creating role"
-echo "CREATE ROLE $Z_PGUSER WITH CREATEDB LOGIN NOSUPERUSER NOCREATEROLE PASSWORD $PASSWD" | sudo -u postgres psql
+echo "CREATE ROLE $Z_PGUSER WITH CREATEDB LOGIN NOSUPERUSER NOCREATEROLE PASSWORD '$PASSWD'" | sudo -u postgres psql
 
 echo "create database: $Z_PGDATABASE"
 sudo su -c "createdb -O $Z_PGUSER $Z_PGDATABASE" postgres
