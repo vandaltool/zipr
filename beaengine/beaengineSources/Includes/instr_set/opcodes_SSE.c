@@ -4733,7 +4733,7 @@ void __bea_callspec__ ucomiss_VW(PDISASM pMyDisasm)
 
 /* oddly, vucomisd (and vucomiss) use same args as ucomisd (and ucomiss).
  the Vx version adds an extra argument after the GxEx, so we cant use it here.
-*/        Vx_opt_GxEx_vexlen(pMyDisasm);
+        Vx_opt_GxEx_vexlen(pMyDisasm);*/
 }
 
 
