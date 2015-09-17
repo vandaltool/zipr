@@ -10,6 +10,7 @@ BASE_PKGS="
   openjdk-6-jre
   sharutils
   subversion
+  scons
   gcc-multilib
   g++-multilib
   realpath
