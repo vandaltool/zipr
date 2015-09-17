@@ -10,15 +10,13 @@ BASE_PKGS="
   openjdk-6-jre
   sharutils
   subversion
-  xdotool
   gcc-multilib
   g++-multilib
   realpath
-  libxqilla-dev
-  libxerces-c-dev
   screen
   libxml2-dev
   libstdc++6:i386
+  wget
   coreutils"
 # TODO: don't require i386 libraries if not running MEDS (eg using IDA server)
 
@@ -26,8 +24,7 @@ BASE_PKGS="
 CLIENT_IRDB_PKGS="
   postgresql-client
   pgadmin3
-  libpqxx3-dev
-  libmysqlclient-dev
+  libpqxx-dev
   cmake
   automake1.9"
 
@@ -49,15 +46,15 @@ TEST_PKGS="
   xvfb"
 
 # For handling SQL command injections
-SQL_PKGS="sqlite3 libsqlite3-dev mysql-client mysql-server libmysqlclient-dev"
+SQL_PKGS="sqlite3 libsqlite3-dev"
 
 # For LDAP
 LDAP_PKGS="ldap-utils slapd libldap2-dev"
 
 # Needed for afl/qemu mode
-AFL_PKGS="wget libglib2.0-dev"
+AFL_PKGS="libglib2.0-dev"
 
-ALL_PKGS="$BASE_PKGS $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS $TEST_PKGS $SQL_PKGS $LDAP_PKGS $AFL_PKGS"
+ALL_PKGS="$BASE_PKGS $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS $TEST_PKGS $SQL_PKGS $AFL_PKGS"
 
 
 if [[ "$PEASOUP_UMBRELLA_DIR" == "" ]]; then
