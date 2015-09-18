@@ -16,16 +16,16 @@ BASE_PKGS="
   realpath
   screen
   libxml2-dev
-  libstdc++6:i386
   wget
   coreutils"
+  #libstdc++6:i386
 # TODO: don't require i386 libraries if not running MEDS (eg using IDA server)
 
 # For clients of IRDB
 CLIENT_IRDB_PKGS="
   postgresql-client
   pgadmin3
-  libpqxx-dev
+  libpqxx3-dev
   cmake
   automake1.9"
 
