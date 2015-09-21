@@ -15,10 +15,12 @@ env.Replace(LINKFLAGS="-fPIC -w ")
 
 # parse arguments
 env.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
+env.Replace(SMPSA_HOME=os.environ['SMPSA_HOME'])
 env.Replace(do_64bit_build=ARGUMENTS.get("do_64bit_build",None))
 env.Replace(debug=ARGUMENTS.get("debug",0))
 env.Replace(build_appfw=ARGUMENTS.get("build_appfw", 1))
 env.Replace(build_tools=ARGUMENTS.get("build_tools", 1))
+env.Replace(build_stars=ARGUMENTS.get("build_stars", 1))
 env.Replace(build_cgc=ARGUMENTS.get("build_cgc", 0))
 
 

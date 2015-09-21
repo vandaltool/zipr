@@ -80,6 +80,13 @@ libxform=SConscript("xform/SConscript", variant_dir='scons_build/libxform')
 libtransform=SConscript("libtransform/SConscript", variant_dir='scons_build/libtransform')
 libIRDB=SConscript("libIRDB/SConscript", variant_dir='scons_build/libIRDB')
 
+if 'build_stars' in env and int(env['build_stars']) == 1:
+	stars_path=os.environ['SMPSA_HOME']
+	stars_sconscript=os.path.join(stars_path,"SConscript");
+	argenv=env.Clone()
+	Export('argenv')
+	libstars=SConscript(stars_sconscript, variant_dir='scons_build/stars')
+
 if 'build_tools' not in env or env['build_tools'] is None or int(env['build_tools']) == 1:
 	SConscript("tools/SConscript", variant_dir='scons_build/tools')
 
