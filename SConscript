@@ -84,6 +84,8 @@ if 'build_stars' in env and int(env['build_stars']) == 1:
 	stars_path=os.environ['SMPSA_HOME']
 	stars_sconscript=os.path.join(stars_path,"SConscript");
 	argenv=env.Clone()
+	ARGUMENTS['build_ida']=0
+	ARGUMENTS['build_irdb']=1
 	Export('argenv')
 	libstars=SConscript(stars_sconscript, variant_dir='scons_build/stars')
 
