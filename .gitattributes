@@ -3180,6 +3180,8 @@ tools/db/sample_pgms/slash_usr_bin/zjsdecode.strsig -text
 tools/db/sample_pgms/slash_usr_bin/zsh.strsig -text
 tools/db/sample_pgms/slash_usr_bin/zsoelim.strsig -text
 tools/db/sample_pgms/slash_usr_bin/zxpdf.strsig -text
+tools/db/zest/populate.sh -text
+tools/db/zest/populate.sql -text
 tools/db/zest/setup_zestdb_env -text
 tools/db/zest/zest.create.tbl -text
 tools/db/zest/zest.drop.tbl -text
