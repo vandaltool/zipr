@@ -24,6 +24,7 @@
 #include "VirtualOffset.hpp"
 
 using namespace std;
+using namespace MEDS_Annotation;
 
 VirtualOffset::VirtualOffset()
 {

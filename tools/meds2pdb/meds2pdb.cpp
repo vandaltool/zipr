@@ -339,7 +339,7 @@ void update_function_prototype(vector<wahoo::Function*> functions, char* annotFi
 	if (annotationif.is_open())
 	{
 		MEDS_AnnotationParser annotationParser(annotationif);
-		annotations = annotationParser.getFuncPrototypeAnnotations();
+		annotations = annotationParser.getAnnotations();
 	}
 	else
 	{
@@ -360,7 +360,7 @@ void update_function_prototype(vector<wahoo::Function*> functions, char* annotFi
 		{
 			if (j >= functions.size()) break;
 			wahoo::Function *f = functions[j];
-      		int function_id = f->getFunctionID();
+      			int function_id = f->getFunctionID();
 			app_iaddr_t functionAddress = f->getAddress();
 			VirtualOffset vo(functionAddress);
 

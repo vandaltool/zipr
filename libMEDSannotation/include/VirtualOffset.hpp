@@ -24,6 +24,9 @@
 #include <string>
 #include <sstream>
 
+namespace MEDS_Annotation
+{
+
 typedef unsigned long long ApplicationAddress;
 
 #define DEFAULT_LIBRARY_NAME "a.out"
@@ -50,5 +53,7 @@ class VirtualOffset
 		ApplicationAddress   m_offset;
 		std::string          m_libraryName;
 };
+
+}
 
 #endif

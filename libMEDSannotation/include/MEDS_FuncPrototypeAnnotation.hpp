@@ -82,13 +82,13 @@ class MEDS_Arg {
 //
 // Class to handle one function prototype annotations
 //
-class MEDS_FuncPrototypeAnnotation : public MEDS_FuncAnnotation
+class MEDS_FuncPrototypeAnnotation : public MEDS_AnnotationBase
 {
 	public:
 		MEDS_FuncPrototypeAnnotation() { init(); };
 		MEDS_FuncPrototypeAnnotation(const string &p_rawLine);
-		virtual ~MEDS_FuncPrototypeAnnotation(){}
-		virtual bool isFuncPrototypeAnnotation() const { return true; }
+		virtual ~MEDS_FuncPrototypeAnnotation() {}
+//		virtual bool isFuncPrototypeAnnotation() const { return true; }
 
 		virtual const string toString() const { return "func proto: " + m_rawInputLine; }
 

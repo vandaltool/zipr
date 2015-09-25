@@ -66,13 +66,7 @@ void MEDS_AnnotationParser::parseFile(istream &p_inputStream)
 			type * annot=new type(line); \
 			if (annot->isValid()) \
 			{ \
-				if(annot->isFuncPrototypeAnnotation()) \
-				{ \
-					MEDS_FuncPrototypeAnnotation* fpannot=dynamic_cast<MEDS_FuncPrototypeAnnotation*>(annot); \
-					assert(fpannot); \
-					m_func_prototype_annotations.insert(MEDS_Annotations_Pair_t(annot->getVirtualOffset(), annot)); \
-				} \
-				else if(annot->isFuncAnnotation()) \
+				if(annot->isFuncAnnotation()) \
 				{ \
 					MEDS_FuncAnnotation* fannot=dynamic_cast<MEDS_FuncAnnotation*>(annot); \
 					assert(fannot); \
