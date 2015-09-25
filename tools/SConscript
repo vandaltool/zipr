@@ -17,7 +17,6 @@ dirs='''
 	watch_syscall
 	cookbook
 	dump_map
-	kill_deads
 	'''
 cgc_dirs='''
 	c2e
