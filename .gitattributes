@@ -1058,12 +1058,6 @@ tools/inferfn/SConstruct -text
 tools/inferfn/inferfn.cpp -text
 tools/inferfn/inferfn.hpp -text
 tools/inferfn/inferfn_driver.cpp -text
-tools/kill_deads/Makefile.in -text
-tools/kill_deads/SConscript -text
-tools/kill_deads/SConstruct -text
-tools/kill_deads/kill_deads.cpp -text
-tools/kill_deads/kill_deads.hpp -text
-tools/kill_deads/kill_deads_driver.cpp -text
 tools/meds2pdb/Makefile.in -text
 tools/meds2pdb/SConscript -text
 tools/meds2pdb/SConstruct -text
