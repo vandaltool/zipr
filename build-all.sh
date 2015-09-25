@@ -12,7 +12,7 @@ fi
 
 # stratafier
 cd $PEASOUP_UMBRELLA_DIR/stratafier
-make
+make || exit
 
 # strata
 if [ ! "$STRATA_HOME" ]; then 
@@ -30,15 +30,16 @@ if [ `uname -m` = 'x86_64' ]; then
 		cp -R $STRATA $STRATA32
 	fi
 	cd $STRATA_HOME32
-	STRATA_HOME=$STRATA_HOME32 STRATA=$STRATA_HOME32 ./build -host=i386-linux
+	STRATA_HOME=$STRATA_HOME32 STRATA=$STRATA_HOME32 ./build -host=i386-linux || exit
 
 	# build x86-64 strata
 	cd $STRATA_HOME
-	./configure;make
+	./configure || exit
+	make || exit
 
 else
 	cd $STRATA_HOME
-	./build
+	./build || exit
 fi
 
 # smp-static-analyzer
@@ -47,9 +48,7 @@ if [ ! "$SMPSA_HOME" ]; then
     exit 1; 
 fi
 cd $SMPSA_HOME
-#./configure
-#make
-scons 
+scons  || exit
 
 # security-transforms
 if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then 
@@ -57,21 +56,24 @@ if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then
     exit 1; 
 fi
 cd $SECURITY_TRANSFORMS_HOME
-scons
+scons || exit
 
 cd $PEASOUP_HOME
-make
+make || exit
 
 cd $ZIPR_CALLBACKS
 ./configure --enable-p1 --prefix=$ZIPR_INSTALL
-make 
-make install
+make  || exit
+make install || exit
 
 cd $ZIPR_HOME
-scons 
+scons  || exit
 
 cd $ZIPR_SCFI_PLUGIN
-scons
+scons  || exit
 
 cd $PEASOUP_UMBRELLA_DIR/zipr_push64_reloc_plugin
-scons
+scons || exit
+
+cd $IRDB_TRANSFORMS
+scons || exit

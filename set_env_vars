@@ -4,8 +4,6 @@ export PEASOUP_UMBRELLA_DIR=`pwd`
 export STRATAFIER_OBJCOPY=$PEASOUP_UMBRELLA_DIR/binutils-2.19/binutils/objcopy
 export TOOLCHAIN=$PEASOUP_UMBRELLA_DIR/diablo_toolchain
 export PEASOUP_HOME=$PEASOUP_UMBRELLA_DIR/peasoup_examples
-export PIN_HOME=$PEASOUP_HOME/tools/pin
-export NICECAP_HOME=$PEASOUP_UMBRELLA_DIR/nicecap_example
 export SMPSA_HOME=$PEASOUP_UMBRELLA_DIR/SMPStaticAnalyzer
 export STRATAFIER=$PEASOUP_UMBRELLA_DIR/stratafier
 export IDAROOT=$PEASOUP_UMBRELLA_DIR/idaproCur
@@ -19,27 +17,9 @@ export ZIPR_INSTALL=$PEASOUP_UMBRELLA_DIR/zipr_install
 export ZIPR_CALLBACKS=$PEASOUP_UMBRELLA_DIR/zipr_callbacks
 export ZIPR_SDK=$PEASOUP_UMBRELLA_DIR/zipr_sdk
 export ZIPR_SCFI_PLUGIN=$PEASOUP_UMBRELLA_DIR/zipr_scfi_plugin
-
 export SECURITY_TRANSFORMS_HOME=$PEASOUP_UMBRELLA_DIR/security_transforms
-if [[ ! "$LD_LIBRARY_PATH" =~ (^|:)"$PEASOUP_UMBRELLA_DIR/lib:$PEASOUP_UMBRELLA_DIR/grace/concolic/bin:$STRATA/lib"(:|$) ]]
-then
-    export LD_LIBRARY_PATH=$PEASOUP_UMBRELLA_DIR/lib:$PEASOUP_UMBRELLA_DIR/grace/concolic/bin:$STRATA/lib:$LD_LIBRARY_PATH
-fi
-
-#Get IDAPRO to work with no errors
-#export TVHEADLESS=1
-# just not needed, and annoying as hell when trying to debug ida.
+export IRDB_TRANSFORMS=$PEASOUP_UMBRELLA_DIR/irdb_transforms
 
 source ./irdb_vars
-
-export GRACE_HOME=$PEASOUP_UMBRELLA_DIR/grace
-export YICES_HOME=$GRACE_HOME/third-party/yices-sdk/1.0.34/linux32/bin
-export PATH=$PATH:$GRACE_HOME/concolic/bin:$YICES_HOME
-export SCONSFLAGS="exceptions=1 x86=1 tool=1 hprof=0 cpuprof=0 lm_required=false gen_lmi=0 offsite=1 irdb_path=$SECURITY_TRANSFORMS_HOME/libIRDB -j 2"
-
-#moving this to setenv vars, as it's not global and breaks our peasoup installation
-# adjust to your SVN username
-#export SVN_USERNAME=$USER
-
-. $PEASOUP_UMBRELLA_DIR/set_command_envs
+source $PEASOUP_UMBRELLA_DIR/set_command_envs
 

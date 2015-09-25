@@ -14,34 +14,26 @@ fi
 cd $PEASOUP_UMBRELLA_DIR/stratafier
 make clean
 
-# strata
-if [ ! "$STRATA_HOME" ]; then 
-    echo "STRATA_HOME not set.";
-    exit 1; 
-fi
 cd $STRATA_HOME
 ./configure
 make clean
 cd $PEASOUP_UMBRELLA_DIR/
 rm -Rf strata32
 
-# smp-static-analyzer
-if [ ! "$SMPSA_HOME" ]; then
-    echo "SMPSA_HOME not set."; 
-    exit 1; 
-fi
 cd $SMPSA_HOME
-./configure
-scons -c
+scons -c || exit
 
-# security-transforms
-if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then 
-    echo "SECURITY_TRANSFORMS_HOME not set."; 
-    exit 1; 
-fi
 cd $SECURITY_TRANSFORMS_HOME
-scons -c
+scons -c || exit
+
+cd $IRDB_TRANSFORMS
+scons -c || exit
+
+cd $ZIPR_SCFI_PLUGIN
+scons  -c || exit
+
+cd $PEASOUP_UMBRELLA_DIR/zipr_push64_reloc_plugin
+scons -c || exit
 
 cd $ZIPR_HOME
-scons -c
-
+scons -c || exit
