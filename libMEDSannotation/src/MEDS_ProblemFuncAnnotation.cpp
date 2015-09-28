@@ -79,18 +79,26 @@ void MEDS_ProblemFuncAnnotation::parse()
 	setFuncName(func_name);
 	cout<<"Found problem func name='"<<func_name<<"'"<<endl;
 
-        if (m_rawInputLine.find("JUMPUNRESOLVED")!=string::npos)
+	if(!isValid()) matches(m_rawInputLine,"JUMPUNRSOLVED", pt_JumpUnresolved);
+	if(!isValid()) matches(m_rawInputLine,"CALLUNRSOLVED", pt_CallUnresolved);
+	if(!isValid()) matches(m_rawInputLine,"STACKANALYSIS", pt_BadStackAnalysis);
+	if(!isValid()) matches(m_rawInputLine,"BADRTLS", pt_BadRTLs);
+	if(!isValid()) 
 	{
-		if(getenv("VERBOSE"))
-			cout<<"Found JUMPUNRESOLVED problem annotation for "<<getFuncName() << endl;
-		markJumpUnresolved();	 
+		pt=pt_Unknown;
+		setValid();
 	}
-        else if (m_rawInputLine.find("CALLUNRESOLVED")!=string::npos)
-	{
-		if(getenv("VERBOSE"))
-			cout<<"Found CALLUNRESOLVED annotation for "<<getFuncName() << endl;
-		markCallUnresolved();	 
-	}
-
+	
 }
 
+bool MEDS_ProblemFuncAnnotation::matches(string line, string pattern, ProblemType prob_type)
+{
+	
+        if (line.find(pattern)!=string::npos)
+	{
+		if(getenv("VERBOSE"))
+			cout<<"Found "<<pattern<<" problem annotation for "<<getFuncName() << endl;
+		pt=prob_type;
+		setValid();
+	}
+}

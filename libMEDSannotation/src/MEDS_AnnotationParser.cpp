@@ -50,6 +50,37 @@ void MEDS_AnnotationParser::parseFile(const std::string &input_filename)
 	parseFile(infile);
 }
 
+
+
+template <class type> bool MEDS_AnnotationParser::add_if_valid(string line) 
+{
+	type * annot=new type(line); 
+	if (annot->isValid()) 
+	{ 
+		// note that this should _NOT_ be an if/else for every possible Annotation
+		// this _should_ list the major categorizations of annotations
+		// currently we have annotations that can be looked up by VirtualOffset and looked up by Function
+		if(annot->isFuncAnnotation()) 
+		{ 
+			MEDS_FuncAnnotation* fannot=dynamic_cast<MEDS_FuncAnnotation*>(annot); 
+			assert(fannot); 
+			string nam=fannot->getFuncName(); 
+			m_func_annotations.insert(MEDS_Annotations_FuncPair_t(nam, annot)); 
+		} 
+		else 
+		{ 
+			VirtualOffset vo = annot->getVirtualOffset(); 
+			m_annotations.insert(MEDS_Annotations_Pair_t(vo, annot)); 
+		} 
+		return true;
+	} 
+	else 
+	{ 
+		delete annot; 
+		return false;
+	} 
+}
+
 void MEDS_AnnotationParser::parseFile(istream &p_inputStream)
 {
 	string line;
@@ -61,38 +92,13 @@ void MEDS_AnnotationParser::parseFile(istream &p_inputStream)
 
 //cerr << "MEDS_AnnotationParser: line: " << line << endl;
 
-#define 	ADD_AND_CONTINUE_IF_VALID(type) \
-		{ \
-			type * annot=new type(line); \
-			if (annot->isValid()) \
-			{ \
-				if(annot->isFuncAnnotation()) \
-				{ \
-					MEDS_FuncAnnotation* fannot=dynamic_cast<MEDS_FuncAnnotation*>(annot); \
-					assert(fannot); \
-					string nam=fannot->getFuncName(); \
-					m_func_annotations.insert(MEDS_Annotations_FuncPair_t(nam, annot)); \
-				} \
-				else \
-				{ \
-					VirtualOffset vo = annot->getVirtualOffset(); \
-					m_annotations.insert(MEDS_Annotations_Pair_t(vo, annot)); \
-				} \
-				continue; \
-			} \
-			else \
-			{ \
-				delete annot; \
-			} \
-		}
-
-		ADD_AND_CONTINUE_IF_VALID(MEDS_FPTRShadowAnnotation);
-		ADD_AND_CONTINUE_IF_VALID(MEDS_InstructionCheckAnnotation);
-		ADD_AND_CONTINUE_IF_VALID(MEDS_FuncPrototypeAnnotation);
-		ADD_AND_CONTINUE_IF_VALID(MEDS_SafeFuncAnnotation);
-		ADD_AND_CONTINUE_IF_VALID(MEDS_ProblemFuncAnnotation);
-		ADD_AND_CONTINUE_IF_VALID(MEDS_FRSafeAnnotation);
-		ADD_AND_CONTINUE_IF_VALID(MEDS_FuncExitAnnotation);
+		if(add_if_valid<MEDS_FPTRShadowAnnotation>(line)) continue;
+		if(add_if_valid<MEDS_InstructionCheckAnnotation>(line)) continue;
+		if(add_if_valid<MEDS_FuncPrototypeAnnotation>(line)) continue;
+		if(add_if_valid<MEDS_SafeFuncAnnotation>(line)) continue;
+		if(add_if_valid<MEDS_ProblemFuncAnnotation>(line)) continue;
+		if(add_if_valid<MEDS_FRSafeAnnotation>(line)) continue;
+		if(add_if_valid<MEDS_FuncExitAnnotation>(line)) continue;
 
 //				cout<<"Found annotation: "<<annot->toString()<<endl;\
 		

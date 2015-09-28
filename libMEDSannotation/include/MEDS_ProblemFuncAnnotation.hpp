@@ -41,27 +41,34 @@ using namespace MEDS_Annotation;
 //
 class MEDS_ProblemFuncAnnotation : public MEDS_FuncAnnotation
 {
+
 	public:
+		enum ProblemType { pt_CallUnresolved, pt_JumpUnresolved, pt_BadStackAnalysis, pt_BadRTLs, pt_Unknown };
+
 		MEDS_ProblemFuncAnnotation() {};
 		MEDS_ProblemFuncAnnotation(const string &p_rawLine);
 		virtual ~MEDS_ProblemFuncAnnotation(){}
 
 		virtual const string toString() const { return "problem func: "+m_rawInputLine; }
 
-		virtual void markCallUnresolved() { m_call_unresolved = true; setValid(); }
-		virtual void markJumpUnresolved() { m_jump_unresolved = true; setValid(); }
-		virtual bool isCallUnresolved() { return m_call_unresolved; }
-		virtual bool isJumpUnresolved() { return m_jump_unresolved; }
+		virtual void markCallUnresolved() { pt = pt_CallUnresolved; setValid(); }
+		virtual void markJumpUnresolved() { pt = pt_JumpUnresolved; setValid(); }
+		virtual bool isCallUnresolved() { return pt==pt_CallUnresolved; }
+		virtual bool isJumpUnresolved() { return pt==pt_JumpUnresolved; }
+
+		ProblemType getProblemType() { return pt; }
+		void setProblemType( ProblemType _pt) { pt=_pt; }
 
 	private:
 		void init();
 		void parse();
+		bool matches(std::string line, string pattern, ProblemType prob_type);
 
 	private:
 		std::string m_rawInputLine;
 
-		bool m_call_unresolved;
-		bool m_jump_unresolved;
+		ProblemType pt;
+
 };
 
 }
