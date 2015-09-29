@@ -47,8 +47,8 @@ LEAPattern::LEAPattern(const MEDS_InstructionCheckAnnotation& p_annotation)
 	m_isRegPlusConstant = false;
 	m_isRegTimesConstant = false;
 	m_isRegTimesReg = false;
-	m_reg1 = Register::rn_UNKNOWN;
-	m_reg2 = Register::rn_UNKNOWN;
+	m_reg1 = rn_UNKNOWN;
+	m_reg2 = rn_UNKNOWN;
 	m_constant = 0;
 
     if(regcomp(&m_regex_reg_plus_reg ,"[eax|ebx|ecx|edx|esi|edi|ebp|rax|rbx|rcx|rdx|rbp|rsi|rdi|r8|r9|r10|r11|r12|r13|r14|r15]\\+[eax|ebx|ecx|edx|esi|edi|ebp|rax|rbx|rcx|rdx|rbp|rsi|rdi|r8|r9|r10|r11|r12|r13|r14|r15]", REG_EXTENDED | REG_ICASE) !=0)
@@ -82,7 +82,7 @@ LEAPattern::LEAPattern(const MEDS_InstructionCheckAnnotation& p_annotation)
 		m_reg1 = Register::getRegister(r1);
 		m_reg2 = Register::getRegister(r2);
 
-		if (m_reg1 != Register::rn_UNKNOWN && m_reg2 != Register::rn_UNKNOWN)
+		if (m_reg1 != rn_UNKNOWN && m_reg2 != rn_UNKNOWN)
 		{
 			countMatch++;
 			m_isRegPlusReg = true;
@@ -101,7 +101,7 @@ LEAPattern::LEAPattern(const MEDS_InstructionCheckAnnotation& p_annotation)
 		m_reg2 = Register::getRegister(r2);
 		cerr << "leapattern: extract ops: " << r1 << " " << r2 << endl;
 
-		if (m_reg1 != Register::rn_UNKNOWN && m_reg2 != Register::rn_UNKNOWN)
+		if (m_reg1 != rn_UNKNOWN && m_reg2 != rn_UNKNOWN)
 		{
 			countMatch++;
 			m_isRegTimesReg = true;
@@ -183,12 +183,12 @@ bool LEAPattern::isRegisterTimesConstant() const
 	return m_isRegTimesConstant;
 }
 
-Register::RegisterName LEAPattern::getRegister1() const
+RegisterName LEAPattern::getRegister1() const
 {
 	return m_reg1;
 }
 
-Register::RegisterName LEAPattern::getRegister2() const
+RegisterName LEAPattern::getRegister2() const
 {
 	return m_reg2;
 }

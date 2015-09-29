@@ -135,7 +135,7 @@ bool MEDS_FPTRShadowAnnotation::verifyCheckShadowExpression(const string& expres
 	return Register::isValidRegister(reg);
 }
 
-const Register::RegisterName MEDS_FPTRShadowAnnotation::getRegister() const
+const RegisterName MEDS_FPTRShadowAnnotation::getRegister() const
 {
 	// expected format; [reg]
 	return Register::getRegister(m_expression.substr(1, m_expression.size()-2));
@@ -151,14 +151,14 @@ bool MEDS_FPTRShadowAnnotation::isRIPRelative() const
 //     [rip-constant]
 uintptr_t MEDS_FPTRShadowAnnotation::computeRIPAddress()
 {
-	Register::RegisterName reg;
+	RegisterName reg;
 	int offset;
 	uintptr_t instructionAddress;
 	uintptr_t address;
 
 	parseRegister(getExpression().c_str(), &reg, &offset);
 
-	if (reg == Register::rn_RIP) 
+	if (reg == rn_RIP) 
 	{
 		return getVirtualOffset().getOffset() + getInstructionSize() + offset;
 	}
@@ -181,7 +181,7 @@ int MEDS_FPTRShadowAnnotation::parseRegisterOffset(const char *p_buf)
 }
 
 // e.g.: [rsp] [esp+12] [esp-12] 
-void MEDS_FPTRShadowAnnotation::parseRegister(const char *p_buf, Register::RegisterName *p_register, int *p_registerOffset)
+void MEDS_FPTRShadowAnnotation::parseRegister(const char *p_buf, RegisterName *p_register, int *p_registerOffset)
 {
 	int startReg = -1;
 	int endReg = -1;

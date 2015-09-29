@@ -315,18 +315,18 @@ bool IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction,
 	char tmpbuf[1024];
 
 	assert(getFileIR() && p_instruction && p_instruction->GetFallthrough());
-	Register::RegisterName targetReg = getTargetRegister(p_instruction);
-	if (targetReg == Register::rn_UNKNOWN)
+	RegisterName targetReg = getTargetRegister(p_instruction);
+	if (targetReg == rn_UNKNOWN)
 	{
 		logMessage(__func__, p_annotation, "unknown target register");
 		return false;
 	}
-	else if (!instrumentSP() && (targetReg == Register::rn_RSP || targetReg == Register::rn_ESP)) 
+	else if (!instrumentSP() && (targetReg == rn_RSP || targetReg == rn_ESP)) 
 	{
 		logMessage(__func__, "target register is esp/rsp -- skipping: ");
 		return false;
 	}
-	else if (!instrumentFP() && (targetReg == Register::rn_RBP || targetReg == Register::rn_EBP)) 
+	else if (!instrumentFP() && (targetReg == rn_RBP || targetReg == rn_EBP)) 
 	{
 		logMessage(__func__, "target register is ebp/rbp -- skipping: ");
 		return false;
@@ -397,17 +397,17 @@ bool IntegerTransform64::addOverflowCheckNoFlag(Instruction_t *p_instruction, co
 		return false;
 	}
 
-	if (leaPattern.getRegister1() == Register::rn_UNKNOWN)
+	if (leaPattern.getRegister1() == rn_UNKNOWN)
 	{
 		logMessage(__func__, "destination register is unknown -- skipping: ");
 		return false;
 	}
-	else if(!instrumentSP() && (leaPattern.getRegister1() == Register::rn_RSP || leaPattern.getRegister1() == Register::rn_ESP))
+	else if(!instrumentSP() && (leaPattern.getRegister1() == rn_RSP || leaPattern.getRegister1() == rn_ESP))
 	{
 		logMessage(__func__, "destination register is r/esp -- skipping: ");
 		return false;
 	}
-	else if(!instrumentFP() && (leaPattern.getRegister1() == Register::rn_RBP || leaPattern.getRegister1() == Register::rn_EBP))
+	else if(!instrumentFP() && (leaPattern.getRegister1() == rn_RBP || leaPattern.getRegister1() == rn_EBP))
 	{
 		logMessage(__func__, "destination register is r/ebp -- skipping: ");
 		return false;
@@ -415,21 +415,21 @@ bool IntegerTransform64::addOverflowCheckNoFlag(Instruction_t *p_instruction, co
 
 	if (leaPattern.isRegisterPlusRegister() || leaPattern.isRegisterTimesRegister())
 	{
-		Register::RegisterName reg1 = leaPattern.getRegister1();
-		Register::RegisterName reg2 = leaPattern.getRegister2();
-		Register::RegisterName target = getTargetRegister(p_instruction);
+		RegisterName reg1 = leaPattern.getRegister1();
+		RegisterName reg2 = leaPattern.getRegister2();
+		RegisterName target = getTargetRegister(p_instruction);
 
-		if (reg1 == Register::rn_UNKNOWN || reg2 == Register::rn_UNKNOWN || target == Register::rn_UNKNOWN)
+		if (reg1 == rn_UNKNOWN || reg2 == rn_UNKNOWN || target == rn_UNKNOWN)
 		{
 			logMessage(__func__, "lea reg reg pattern: error retrieving register: reg1: " + Register::toString(reg1) + " reg2: " + Register::toString(reg2) + " target: " + Register::toString(target));
 			return false;
 		}
-		else if (!instrumentSP() && (reg2 == Register::rn_RSP || reg2 == Register::rn_ESP || reg1 == Register::rn_RSP || reg1 == Register::rn_ESP )) 
+		else if (!instrumentSP() && (reg2 == rn_RSP || reg2 == rn_ESP || reg1 == rn_RSP || reg1 == rn_ESP )) 
 		{
 			logMessage(__func__, "source or target register is esp/rsp -- skipping: ");
 			return false;
 		}
-		else if (!instrumentFP() && (reg2 == Register::rn_RBP || reg2 == Register::rn_EBP || reg1 == Register::rn_RBP || reg1 == Register::rn_EBP )) 
+		else if (!instrumentFP() && (reg2 == rn_RBP || reg2 == rn_EBP || reg1 == rn_RBP || reg1 == rn_EBP )) 
 		{
 			logMessage(__func__, "source or target register is ebp/rbp -- skipping: ");
 			return false;
@@ -445,21 +445,21 @@ bool IntegerTransform64::addOverflowCheckNoFlag(Instruction_t *p_instruction, co
 	}
 	else if (leaPattern.isRegisterPlusConstant() || leaPattern.isRegisterTimesConstant())
 	{
-		Register::RegisterName reg1 = leaPattern.getRegister1();
+		RegisterName reg1 = leaPattern.getRegister1();
 		int k = leaPattern.getConstant();
-		Register::RegisterName target = getTargetRegister(p_instruction);
+		RegisterName target = getTargetRegister(p_instruction);
 
-		if (reg1 == Register::rn_UNKNOWN || target == Register::rn_UNKNOWN)
+		if (reg1 == rn_UNKNOWN || target == rn_UNKNOWN)
 		{
 			logMessage(__func__, "lea reg const pattern: error retrieving register: reg1: " + Register::toString(reg1) + " target: " + Register::toString(target));
 			return false;
 		}
-		else if (!instrumentSP() && (target == Register::rn_RSP || target == Register::rn_ESP)) 
+		else if (!instrumentSP() && (target == rn_RSP || target == rn_ESP)) 
 		{
 			logMessage(__func__, "target register is esp/rsp -- skipping: ");
 			return false;
 		}
-		else if (!instrumentFP() && (target == Register::rn_RBP || target == Register::rn_EBP)) 
+		else if (!instrumentFP() && (target == rn_RBP || target == rn_EBP)) 
 		{
 			logMessage(__func__, "target register is ebp/rbp -- skipping: ");
 			return false;
@@ -551,7 +551,7 @@ Instruction_t* IntegerTransform64::addCallbackHandlerSequence(Instruction_t *p_o
 //         saturateMax(r3)        ; optional saturation
 //            fallthrough-->originalNext
 //
-void IntegerTransform64::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName& p_reg1, const Register::RegisterName& p_reg2, const Register::RegisterName& p_reg3, int p_policy)
+void IntegerTransform64::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const RegisterName& p_reg1, const RegisterName& p_reg2, const RegisterName& p_reg3, int p_policy)
 {
 	assert(p_instruction && p_instruction->GetFallthrough());
 
@@ -683,7 +683,7 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_inst
 //         saturateMax(r3)        ; optional saturation
 //            fallthrough-->originalNext
 //
-void IntegerTransform64::addOverflowCheckNoFlag_RegTimesReg(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName& p_reg1, const Register::RegisterName& p_reg2, const Register::RegisterName& p_reg3, int p_policy)
+void IntegerTransform64::addOverflowCheckNoFlag_RegTimesReg(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const RegisterName& p_reg1, const RegisterName& p_reg2, const RegisterName& p_reg3, int p_policy)
 {
 	assert(p_instruction && p_instruction->GetFallthrough());
 
@@ -791,7 +791,7 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegTimesReg(Instruction_t *p_ins
 //         saturateMax(r3)        ; optional saturation
 //            fallthrough-->originalNext
 //
-void IntegerTransform64::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName& p_reg1, const int p_constant, const Register::RegisterName& p_reg3, int p_policy)
+void IntegerTransform64::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const RegisterName& p_reg1, const int p_constant, const RegisterName& p_reg3, int p_policy)
 {
 	assert(p_instruction && p_instruction->GetFallthrough());
 
@@ -943,7 +943,7 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p
 //         saturateMax(r3)        ; optional saturation
 //            fallthrough-->originalNext
 //
-void IntegerTransform64::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName& p_reg1, const int p_constant, const Register::RegisterName& p_reg3, int p_policy)
+void IntegerTransform64::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const RegisterName& p_reg1, const int p_constant, const RegisterName& p_reg3, int p_policy)
 {
 	assert(p_instruction && p_instruction->GetFallthrough());
 
@@ -1333,14 +1333,14 @@ bool IntegerTransform64::addTruncationCheck64(Instruction_t *p_instruction, cons
 		(p_annotation.getTruncationToWidth() == 32 || p_annotation.getTruncationToWidth() == 16 || p_annotation.getTruncationToWidth() == 8) &&
 		isMovInstruction(p_instruction));
 
-	std::set<Register::RegisterName> takenRegs;
+	std::set<RegisterName> takenRegs;
 	takenRegs.insert(p_annotation.getRegister()); 
 	takenRegs.insert(p_annotation.getRegister2());
-	takenRegs.insert(Register::rn_RSP); // don't mess with the stack pointer
-	takenRegs.insert(Register::rn_RBP); // don't mess with the frame pointer
-	Register::RegisterName borrowReg = Register::getFreeRegister64(takenRegs);
+	takenRegs.insert(rn_RSP); // don't mess with the stack pointer
+	takenRegs.insert(rn_RBP); // don't mess with the frame pointer
+	RegisterName borrowReg = Register::getFreeRegister64(takenRegs);
 
-	if (borrowReg == Register::rn_UNKNOWN)
+	if (borrowReg == rn_UNKNOWN)
 	{
 		logMessage(__func__, "Could not borrow a 64-bit register");
 		return false;
@@ -1654,7 +1654,7 @@ bool IntegerTransform64::addTruncationCheck64(Instruction_t *p_instruction, cons
 //
 bool IntegerTransform64::addSignednessCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
-	if (p_annotation.getRegister() == Register::rn_UNKNOWN)
+	if (p_annotation.getRegister() == rn_UNKNOWN)
 		return false;
 
 	string detector = p_annotation.isSigned() ? SIGNEDNESS64_DETECTOR_SIGNED : SIGNEDNESS64_DETECTOR_UNSIGNED;

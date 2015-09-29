@@ -19,13 +19,16 @@
  */
 
 #include <string>
+#include <sstream>
 #include <strings.h>
+#include <assert.h>
 
 #include "MEDS_Register.hpp"
 
 using namespace MEDS_Annotation;
+using namespace std;
 
-Register::RegisterName Register::getRegister(char *p_reg)
+RegisterName Register::getRegister(char *p_reg)
 {
 	return Register::getRegister(std::string(p_reg));
 }
@@ -35,7 +38,7 @@ bool Register::isValidRegister(std::string p_reg)
 	return getRegister(p_reg) != rn_UNKNOWN;
 }
 
-Register::RegisterName Register::getRegister(std::string p_reg)
+RegisterName Register::getRegister(std::string p_reg)
 {
 	if (strcasecmp(p_reg.c_str(), "EFLAGS") ==0)
 		return rn_EFLAGS;
@@ -184,7 +187,7 @@ Register::RegisterName Register::getRegister(std::string p_reg)
 		return rn_UNKNOWN;
 }
 
-bool Register::is8bit(Register::RegisterName p_reg)
+bool Register::is8bit(RegisterName p_reg)
 {
 	return p_reg == rn_AL || p_reg == rn_BL || p_reg == rn_CL || p_reg == rn_DL ||
 		p_reg == rn_AH || p_reg == rn_BH || p_reg == rn_CH || p_reg == rn_DH ||
@@ -193,7 +196,7 @@ bool Register::is8bit(Register::RegisterName p_reg)
 		p_reg == rn_R12B || p_reg == rn_R13B || p_reg == rn_R14B || p_reg == rn_R15B;
 }
 
-bool Register::is16bit(Register::RegisterName p_reg)
+bool Register::is16bit(RegisterName p_reg)
 {
 	return p_reg == rn_AX || p_reg == rn_BX || p_reg == rn_CX || p_reg == rn_DX ||
 		p_reg == rn_BP || p_reg == rn_SP || p_reg == rn_SI || p_reg == rn_DI ||
@@ -201,7 +204,7 @@ bool Register::is16bit(Register::RegisterName p_reg)
 		p_reg == rn_R12W || p_reg == rn_R13W || p_reg == rn_R14W || p_reg == rn_R15W;
 }
 
-bool Register::is32bit(Register::RegisterName p_reg)
+bool Register::is32bit(RegisterName p_reg)
 {
 	return p_reg == rn_EAX || p_reg == rn_EBX || p_reg == rn_ECX || p_reg == rn_EDX || 
 		p_reg == rn_ESI || p_reg == rn_EDI || p_reg == rn_ESP || p_reg == rn_EBP ||
@@ -209,7 +212,7 @@ bool Register::is32bit(Register::RegisterName p_reg)
 		p_reg == rn_R12D || p_reg == rn_R13D || p_reg == rn_R14D || p_reg == rn_R15D;
 }
 
-bool Register::is64bit(Register::RegisterName p_reg)
+bool Register::is64bit(RegisterName p_reg)
 {
 	return p_reg == rn_RAX || p_reg == rn_RBX || p_reg == rn_RCX || p_reg == rn_RDX || 
 		p_reg == rn_RSI || p_reg == rn_RDI || p_reg == rn_RBP || p_reg == rn_RSP ||
@@ -217,7 +220,7 @@ bool Register::is64bit(Register::RegisterName p_reg)
 		p_reg == rn_R12 || p_reg == rn_R13 || p_reg == rn_R14 || p_reg == rn_R15 || p_reg == rn_RIP;
 }
 
-std::string Register::toString(Register::RegisterName p_reg)
+std::string Register::toString(RegisterName p_reg)
 {
 	if (p_reg == rn_UNKNOWN) return std::string("UNKNOWN");
 
@@ -299,7 +302,7 @@ std::string Register::toString(Register::RegisterName p_reg)
 	else return std::string("UNEXPECTED REGISTER VALUE");
 }
 
-int Register::getBitWidth(Register::RegisterName p_reg)
+int Register::getBitWidth(RegisterName p_reg)
 {
 	switch (p_reg)
 	{
@@ -391,7 +394,7 @@ int Register::getBitWidth(Register::RegisterName p_reg)
 
 
 // favor registers R10..R15
-Register::RegisterName Register::getFreeRegister64(std::set<Register::RegisterName> p_taken)
+RegisterName Register::getFreeRegister64(const RegisterSet_t& p_taken)
 {
 
 #define ret_if_free4(a, b, c, d)\
@@ -420,3 +423,21 @@ Register::RegisterName Register::getFreeRegister64(std::set<Register::RegisterNa
 	ret_if_free5(rn_RBP, rn_EBP, rn_BP, rn_BPL, rn_BPH);
 	return rn_UNKNOWN;
 }
+
+string Register::readRegisterSet(const string &in, RegisterSet_t &out)
+{
+	size_t pos=in.find("ZZ");
+	string regname;
+	stringstream ss(in);
+
+	while ( ss>>regname )
+	{
+		if( regname=="ZZ")
+			return in.substr(pos+3);
+
+		out.insert(getRegister(regname));
+	}
+
+	assert(0 && "No terminator found for register list");
+}
+

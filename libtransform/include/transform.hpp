@@ -53,8 +53,8 @@ class Transform {
 		void addInstruction(Instruction_t *p_instr, string p_dataBits, Instruction_t *p_fallThrough, Instruction_t *p_target);
 		Instruction_t* carefullyInsertBefore(Instruction_t* &p_target, Instruction_t* &p_new);
 
-		void addPushRegister(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
-		void addPopRegister(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
+		void addPushRegister(Instruction_t *p_instr, RegisterName, Instruction_t *p_fallThrough);
+		void addPopRegister(Instruction_t *p_instr, RegisterName, Instruction_t *p_fallThrough);
 		void addPusha(Instruction_t *p_instr, Instruction_t *p_fallThrough);
 		void addPushf(Instruction_t *p_instr, Instruction_t *p_fallThrough);
 		void addPopa(Instruction_t *p_instr, Instruction_t *p_fallThrough);
@@ -63,9 +63,9 @@ class Transform {
 
 		void addCallbackHandler(string p_detector, Instruction_t *p_instrumented, Instruction_t *p_instr, Instruction_t *p_fallThrough, int p_policy, AddressID_t *addressOriginal = NULL);
 
-		void addTestRegister(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
-		void addTestRegisterMask(Instruction_t *p_instr, Register::RegisterName, unsigned p_mask, Instruction_t *p_fallThrough);
-		void addCmpRegisterMask(Instruction_t *p_instr, Register::RegisterName, unsigned p_mask, Instruction_t *p_fallThrough);
+		void addTestRegister(Instruction_t *p_instr, RegisterName, Instruction_t *p_fallThrough);
+		void addTestRegisterMask(Instruction_t *p_instr, RegisterName, unsigned p_mask, Instruction_t *p_fallThrough);
+		void addCmpRegisterMask(Instruction_t *p_instr, RegisterName, unsigned p_mask, Instruction_t *p_fallThrough);
 
 		void addJns(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target);
 		void addJz(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target);
@@ -75,13 +75,13 @@ class Transform {
 		void addJnc(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target);
 		void addJnz(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target);
 		void addJae(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target);
-		void addNot(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
+		void addNot(Instruction_t *p_instr, RegisterName, Instruction_t *p_fallThrough);
 		void addHlt(Instruction_t *p_instr, Instruction_t *p_fallThrough);
 
-		void addAddRegisters(Instruction_t *p_instr, Register::RegisterName p_regTgt, Register::RegisterName p_regSrc, Instruction_t *p_fallThrough);
-		void addAddRegisterConstant(Instruction_t *p_instr, Register::RegisterName p_regTgt, int p_constantValue, Instruction_t *p_fallThrough);
-		void addMulRegisterConstant(Instruction_t *p_instr, Register::RegisterName p_regTgt, int p_constantValue, Instruction_t *p_fallThrough);
-		void addMovRegisters(Instruction_t *p_instr, Register::RegisterName p_regTgt, Register::RegisterName p_regSrc, Instruction_t *p_fallThrough);
+		void addAddRegisters(Instruction_t *p_instr, RegisterName p_regTgt, RegisterName p_regSrc, Instruction_t *p_fallThrough);
+		void addAddRegisterConstant(Instruction_t *p_instr, RegisterName p_regTgt, int p_constantValue, Instruction_t *p_fallThrough);
+		void addMulRegisterConstant(Instruction_t *p_instr, RegisterName p_regTgt, int p_constantValue, Instruction_t *p_fallThrough);
+		void addMovRegisters(Instruction_t *p_instr, RegisterName p_regTgt, RegisterName p_regSrc, Instruction_t *p_fallThrough);
 
 		Instruction_t* allocateNewInstruction(db_id_t p_fileID=BaseObj_t::NOT_IN_DATABASE, Function_t* p_func=NULL);
 
@@ -94,24 +94,24 @@ class Transform {
 		bool isMultiplyInstruction(libIRDB::Instruction_t*);
 		bool isMovInstruction(libIRDB::Instruction_t*);
 		bool isAddSubNonEspInstruction(libIRDB::Instruction_t*);
-		Register::RegisterName getTargetRegister(libIRDB::Instruction_t*, int argNo = 1);
-		Instruction_t* addNewMaxSaturation(Instruction_t *p_prev, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation p_annotation);
-		void addMinSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough);
-		void addMaxSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough);
-		void addMovRegisterUnsignedConstant(Instruction_t *p_instr, Register::RegisterName p_regTgt, unsigned long p_constant, Instruction_t *p_fallThrough);
-		void addMovRegisterSignedConstant(Instruction_t *p_instr, Register::RegisterName p_regTgt, long int p_constant, Instruction_t *p_fallThrough);
-		void addAndRegister32Mask(Instruction_t *p_instr, Register::RegisterName p_regTgt, unsigned int p_mask, Instruction_t *p_fallThrough);
+		RegisterName getTargetRegister(libIRDB::Instruction_t*, int argNo = 1);
+		Instruction_t* addNewMaxSaturation(Instruction_t *p_prev, RegisterName p_reg, const MEDS_InstructionCheckAnnotation p_annotation);
+		void addMinSaturation(Instruction_t *p_instruction, RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough);
+		void addMaxSaturation(Instruction_t *p_instruction, RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough);
+		void addMovRegisterUnsignedConstant(Instruction_t *p_instr, RegisterName p_regTgt, unsigned long p_constant, Instruction_t *p_fallThrough);
+		void addMovRegisterSignedConstant(Instruction_t *p_instr, RegisterName p_regTgt, long int p_constant, Instruction_t *p_fallThrough);
+		void addAndRegister32Mask(Instruction_t *p_instr, RegisterName p_regTgt, unsigned int p_mask, Instruction_t *p_fallThrough);
 
 	protected:
 		void logMessage(const std::string &p_method, const std::string &p_msg);
 		void logMessage(const std::string &p_method, const MEDS_InstructionCheckAnnotation&, const std::string &p_msg);
 
 	private:
-		void addTestRegister8(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
-		void addTestRegister16(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
-		void addTestRegister32(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
-		void addTestRegisterMask32(Instruction_t *p_instr, Register::RegisterName, unsigned p_mask, Instruction_t *p_fallThrough);
-		void addCmpRegisterMask32(Instruction_t *p_instr, Register::RegisterName, unsigned p_mask, Instruction_t *p_fallThrough);
+		void addTestRegister8(Instruction_t *p_instr, RegisterName, Instruction_t *p_fallThrough);
+		void addTestRegister16(Instruction_t *p_instr, RegisterName, Instruction_t *p_fallThrough);
+		void addTestRegister32(Instruction_t *p_instr, RegisterName, Instruction_t *p_fallThrough);
+		void addTestRegisterMask32(Instruction_t *p_instr, RegisterName, unsigned p_mask, Instruction_t *p_fallThrough);
+		void addCmpRegisterMask32(Instruction_t *p_instr, RegisterName, unsigned p_mask, Instruction_t *p_fallThrough);
 		bool hasTargetRegister(libIRDB::Instruction_t*, int argNo = 1);
 
 		VariantID_t 		*m_variantID;

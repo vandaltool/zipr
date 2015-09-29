@@ -102,8 +102,8 @@ class MEDS_InstructionCheckAnnotation : public MEDS_AnnotationBase
 		int getTruncationToWidth() const { return m_truncationToWidth; }
 
 		// get register
-		MEDS_Annotation::Register::RegisterName getRegister() const { return m_register; }
-		MEDS_Annotation::Register::RegisterName getRegister2() const { return m_register2; }
+		MEDS_Annotation::RegisterName getRegister() const { return m_register; }
+		MEDS_Annotation::RegisterName getRegister2() const { return m_register2; }
 
 		const string getTarget() const { return m_target; }
 		const string getTarget2() const { return m_target2; }
@@ -142,8 +142,8 @@ class MEDS_InstructionCheckAnnotation : public MEDS_AnnotationBase
 		bool           m_flowsIntoCriticalSink;
 		bool           m_isIdiom;
 		int            m_idiomNumber;
-		MEDS_Annotation::Register::RegisterName       m_register;
-		MEDS_Annotation::Register::RegisterName       m_register2;
+		MEDS_Annotation::RegisterName       m_register;
+		MEDS_Annotation::RegisterName       m_register2;
 		string         m_target;
 		string         m_target2;
 };

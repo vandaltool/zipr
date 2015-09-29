@@ -40,8 +40,8 @@ class LEAPattern {
 		bool isRegisterTimesConstant() const; 
 		bool isRegisterTimesRegister() const; // not used
 
-		Register::RegisterName getRegister1() const;
-		Register::RegisterName getRegister2() const;
+		RegisterName getRegister1() const;
+		RegisterName getRegister2() const;
 		int getConstant() const;
 
 	private:
@@ -53,8 +53,8 @@ class LEAPattern {
 		bool                     m_isRegPlusConstant;
 		bool                     m_isRegTimesReg;
 		bool                     m_isRegTimesConstant;
-		Register::RegisterName   m_reg1;
-		Register::RegisterName   m_reg2;
+		RegisterName   m_reg1;
+		RegisterName   m_reg2;
 		int                      m_constant;
 
 		regex_t                  m_regex_reg_plus_reg;

@@ -52,7 +52,7 @@ class MEDS_FPTRShadowAnnotation : public MEDS_ShadowAnnotation
 		bool isRIPRelative() const;
 		uintptr_t computeRIPAddress();
 		
-		const Register::RegisterName getRegister() const;
+		const RegisterName getRegister() const;
 		const string& getExpression() const { return m_expression; }
 
 	private:
@@ -63,7 +63,7 @@ class MEDS_FPTRShadowAnnotation : public MEDS_ShadowAnnotation
 		}
 		bool verifyCheckShadowExpression(const string& expression);
 		int parseRegisterOffset(const char*);
-		void parseRegister(const char *p_buf, Register::RegisterName *p_register, int *p_registerOffset);
+		void parseRegister(const char *p_buf, RegisterName *p_register, int *p_registerOffset);
 
 	private:
 		string m_rawInputLine;

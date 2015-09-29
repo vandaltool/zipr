@@ -27,9 +27,10 @@
 namespace MEDS_Annotation 
 {
 
-class Register {
-public:
-  enum RegisterName { 
+
+
+enum RegisterName 
+{
 	rn_UNKNOWN, 
 	rn_EFLAGS, 
 	rn_RIP,
@@ -38,17 +39,27 @@ public:
 	rn_AX, rn_BX, rn_CX, rn_DX, rn_BP, rn_SP, rn_SI, rn_DI, rn_R8W, rn_R9W, rn_R10W, rn_R11W, rn_R12W, rn_R13W, rn_R14W, rn_R15W, 
 	rn_AH, rn_BH, rn_CH, rn_DH, rn_SIH, rn_DIH, rn_BPH, rn_SPH, /* 'H' versions of regs only exist for lower 8 regs */ 
 	rn_AL, rn_BL, rn_CL, rn_DL, rn_SIL, rn_DIL, rn_BPL, rn_SPL, rn_R8B, rn_R9B, rn_R10B, rn_R11B, rn_R12B, rn_R13B, rn_R14B, rn_R15B, 
-	};
-  static RegisterName getRegister(std::string);
-  static RegisterName getRegister(char *str);
-  static bool isValidRegister(std::string);
-  static bool is64bit(RegisterName);
-  static bool is32bit(RegisterName);
-  static bool is16bit(RegisterName);
-  static bool is8bit(RegisterName);
-  static int getBitWidth(RegisterName);
-  static std::string toString(RegisterName);
-  static RegisterName getFreeRegister64(std::set<Register::RegisterName> p_used);
+};
+
+typedef std::set<RegisterName> RegisterSet_t;
+
+
+class Register 
+{
+
+	public:
+  		static RegisterName getRegister(std::string);
+  		static RegisterName getRegister(char *str);
+  		static bool isValidRegister(std::string);
+  		static bool is64bit(RegisterName);
+  		static bool is32bit(RegisterName);
+  		static bool is16bit(RegisterName);
+  		static bool is8bit(RegisterName);
+  		static int getBitWidth(RegisterName);
+  		static std::string toString(RegisterName);
+  		static RegisterName getFreeRegister64(const RegisterSet_t &p_used);
+  		static std::string readRegisterSet(const std::string &in, RegisterSet_t &out);
+
 };
 
 }

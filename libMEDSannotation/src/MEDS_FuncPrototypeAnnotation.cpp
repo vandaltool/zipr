@@ -108,7 +108,7 @@ void MEDS_FuncPrototypeAnnotation::parse()
 		char regbuf[1024];
 		int meds_retType;
 		sscanf(m_rawInputLine.c_str(), "%*x %*d %*s %*s %s %d", regbuf, &meds_retType);
-		Register::RegisterName reg = Register::getRegister(regbuf);
+		RegisterName reg = Register::getRegister(regbuf);
 		MEDS_Arg marg(meds_retType, reg);
 		setReturnArg(marg);
 //		cout << "   adding return argument: " << Register::toString(reg) << " type: " << meds_retType << endl;
