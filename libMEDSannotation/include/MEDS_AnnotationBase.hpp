@@ -55,7 +55,6 @@ class MEDS_AnnotationBase
 		virtual void init() { m_isValid = false; m_size = 0; }
 
 		virtual bool isFuncAnnotation() const { return false; } // false by default 
-//		virtual bool isFuncPrototypeAnnotation() const { return false; } // false by default 
 
 	protected:
 		bool m_isValid;

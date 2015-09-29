@@ -29,6 +29,7 @@
 #include "MEDS_ProblemFuncAnnotation.hpp"
 #include "MEDS_FRSafeAnnotation.hpp"
 #include "MEDS_FPTRShadowAnnotation.hpp"
+#include "MEDS_DeadRegAnnotation.hpp"
 
 // @todo: multiple annotation per instruction
 
@@ -92,6 +93,7 @@ void MEDS_AnnotationParser::parseFile(istream &p_inputStream)
 
 //cerr << "MEDS_AnnotationParser: line: " << line << endl;
 
+		if(add_if_valid<MEDS_DeadRegAnnotation>(line)) continue;
 		if(add_if_valid<MEDS_FPTRShadowAnnotation>(line)) continue;
 		if(add_if_valid<MEDS_InstructionCheckAnnotation>(line)) continue;
 		if(add_if_valid<MEDS_FuncPrototypeAnnotation>(line)) continue;

@@ -300,6 +300,7 @@ libMEDSannotation/include/FuncExitAnnotation.hpp -text
 libMEDSannotation/include/MEDS.hpp -text
 libMEDSannotation/include/MEDS_AnnotationBase.hpp -text
 libMEDSannotation/include/MEDS_AnnotationParser.hpp -text
+libMEDSannotation/include/MEDS_DeadRegAnnotation.hpp -text
 libMEDSannotation/include/MEDS_FPTRShadowAnnotation.hpp -text
 libMEDSannotation/include/MEDS_FRSafeAnnotation.hpp -text
 libMEDSannotation/include/MEDS_FuncAnnotation.hpp -text
@@ -312,6 +313,7 @@ libMEDSannotation/include/MEDS_ShadowAnnotation.hpp -text
 libMEDSannotation/include/VirtualOffset.hpp -text
 libMEDSannotation/src/FuncExitAnnotation.cpp -text
 libMEDSannotation/src/MEDS_AnnotationParser.cpp -text
+libMEDSannotation/src/MEDS_DeadRegAnnotation.cpp -text
 libMEDSannotation/src/MEDS_FPTRShadowAnnotation.cpp -text
 libMEDSannotation/src/MEDS_FRSafeAnnotation.cpp -text
 libMEDSannotation/src/MEDS_FuncPrototypeAnnotation.cpp -text

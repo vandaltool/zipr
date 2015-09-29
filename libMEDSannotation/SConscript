@@ -10,6 +10,7 @@ files=  '''
 	src/FuncExitAnnotation.cpp
 	src/MEDS_AnnotationParser.cpp
 	src/MEDS_FPTRShadowAnnotation.cpp
+	src/MEDS_DeadRegAnnotation.cpp
 	src/MEDS_FRSafeAnnotation.cpp
 	src/MEDS_FuncPrototypeAnnotation.cpp
 	src/MEDS_InstructionCheckAnnotation.cpp
