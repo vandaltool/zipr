@@ -23,26 +23,31 @@
 
 extern bool verbose_log;
 
-class PNOptions {
+class PNOptions 
+{
 	public:
 	// default configuration parameters go here
 		PNOptions() {
+			// specify defaults;
 			min_stack_padding = 64;
 			max_stack_padding = 64;
 			recursive_min_stack_padding = 32;
 			recursive_max_stack_padding = 64;
 			do_canaries = true;
+			should_double_frame_size=true;
 		}
 
 		void setMinStackPadding(int val) { min_stack_padding = val; }
 		void setMaxStackPadding(int val) { max_stack_padding = val; }
 		void setRecursiveMinStackPadding(int val) { recursive_min_stack_padding = val; }
 		void setRecursiveMaxStackPadding(int val) { recursive_max_stack_padding = val; }
+		void setShouldDoubleFrameSize(bool val) { should_double_frame_size = val; }
 
 		int getMinStackPadding() const { return min_stack_padding; }
 		int getMaxStackPadding() const { return max_stack_padding; }
 		int getRecursiveMinStackPadding() const { return recursive_min_stack_padding; }
 		int getRecursiveMaxStackPadding() const { return recursive_max_stack_padding; }
+		bool getShouldDoubleFrameSize() const { return should_double_frame_size; }
 
 		void setDoCanaries(bool canaries) { do_canaries = canaries; }
 		bool getDoCanaries() const { return do_canaries; }
@@ -53,6 +58,7 @@ class PNOptions {
 		int recursive_min_stack_padding;
 		int recursive_max_stack_padding;
 		bool do_canaries;
+		bool should_double_frame_size;
 };
 
 extern PNOptions *pn_options;

@@ -69,7 +69,8 @@ enum
 	MIN_STACK_PAD_OPTION,
 	MAX_STACK_PAD_OPTION,
 	RECURSIVE_MIN_STACK_PAD_OPTION,
-	RECURSIVE_MAX_STACK_PAD_OPTION
+	RECURSIVE_MAX_STACK_PAD_OPTION,
+	SHOULD_DOUBLE_FRAME_SIZE_OPTION
 };
 
 
@@ -92,6 +93,7 @@ static struct option const long_options[] =
 	{"max_stack_padding",required_argument, NULL, MAX_STACK_PAD_OPTION},
 	{"recursive_min_stack_padding",required_argument, NULL, RECURSIVE_MIN_STACK_PAD_OPTION},
 	{"recursive_max_stack_padding",required_argument, NULL, RECURSIVE_MAX_STACK_PAD_OPTION},
+	{"should_double_frame_size",required_argument, NULL, SHOULD_DOUBLE_FRAME_SIZE_OPTION},
 	{NULL, 0, NULL, 0}
 };
 
@@ -325,6 +327,20 @@ int main(int argc, char **argv)
 			if (recursive_max_stack_padding >= 0)
 				pn_options->setRecursiveMaxStackPadding(recursive_max_stack_padding);
 			break;
+		}
+		case SHOULD_DOUBLE_FRAME_SIZE_OPTION:
+		{
+			if(strcasecmp("true",optarg)==0)
+				pn_options->setShouldDoubleFrameSize(true);
+			else if(strcasecmp("false",optarg)==0)
+				pn_options->setShouldDoubleFrameSize(false);
+			else
+			{
+				cout<<"Error:  should_double_frame_size option needs to be 'true' or 'false':  found "<<optarg<<endl;
+				usage();
+				exit(1);
+			}
+			break;	
 		}
 		case '?':
 		{
