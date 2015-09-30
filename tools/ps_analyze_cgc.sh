@@ -42,6 +42,7 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	\
 	--step-option p1transform:--recursive_min_stack_padding=32 \
 	--step-option p1transform:--recursive_max_stack_padding=32 \
 	--step-option p1transform:--canaries=off \
+	--step-option p1transform:--should_double_frame_size=false \
 	--step input_filtering=off	\
 	--step watch_allocate=on	\
 	--step integertransform=off	\
