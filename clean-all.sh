@@ -31,8 +31,7 @@ if [ ! "$SMPSA_HOME" ]; then
     exit 1; 
 fi
 cd $SMPSA_HOME
-./configure
-make clean
+scons -c
 
 # security-transforms
 if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then 
@@ -41,4 +40,23 @@ if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then
 fi
 cd $SECURITY_TRANSFORMS_HOME
 scons build_cgc=1 build_appfw=0 -c
+
+cd $PEASOUP_HOME
+make clean
+
+# build Cinderella callbacks
+cd $ZIPR_CALLBACKS
+./configure_for_cinderella --prefix=$ZIPR_INSTALL
+make clean
+
+if [ -d $ZIPR_HOME ]; then
+        cd $ZIPR_HOME
+        scons build_cgc=1 -c 
+fi
+
+if [ -d $ZIPR_SCFI_PLUGIN ]; then
+        cd $ZIPR_SCFI_PLUGIN
+        scons do_cgc=1 -c
+fi
+
 
