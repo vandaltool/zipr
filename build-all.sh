@@ -47,16 +47,18 @@ if [ ! "$SMPSA_HOME" ]; then
     echo "SMPSA_HOME not set."; 
     exit 1; 
 fi
-cd $SMPSA_HOME
-scons  || exit
 
 # security-transforms
 if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then 
     echo "SECURITY_TRANSFORMS_HOME not set."; 
     exit 1; 
 fi
+
 cd $SECURITY_TRANSFORMS_HOME
 scons || exit
+
+cd $SMPSA_HOME
+scons  || exit
 
 cd $PEASOUP_HOME
 make || exit
