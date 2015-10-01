@@ -21,6 +21,9 @@
 #ifndef __GLOBALS
 #define __GLOBALS
 
+#include <set>
+#include <string>
+
 extern bool verbose_log;
 
 class PNOptions 
@@ -34,6 +37,7 @@ class PNOptions
 			recursive_min_stack_padding = 32;
 			recursive_max_stack_padding = 64;
 			do_canaries = true;
+			do_selective_canaries = true;
 			should_double_frame_size=true;
 		}
 
@@ -52,13 +56,29 @@ class PNOptions
 		void setDoCanaries(bool canaries) { do_canaries = canaries; }
 		bool getDoCanaries() const { return do_canaries; }
 
+		void addSelectiveCanaryFunction(std::string func) { do_selective_canaries = true; canary_functions.insert(func);}
+		bool shouldCanaryFunction(std::string func) 
+		{ 	
+			if(do_selective_canaries)
+			{
+				bool notfound = (canary_functions.find(func)==canary_functions.end());
+				bool found=!notfound;
+				return found;
+			}
+			else
+				return getDoCanaries();
+		}
+
 	private:
 		int min_stack_padding;
 		int max_stack_padding;
 		int recursive_min_stack_padding;
 		int recursive_max_stack_padding;
 		bool do_canaries;
+		bool do_selective_canaries;
 		bool should_double_frame_size;
+
+		std::set<std::string> canary_functions;
 };
 
 extern PNOptions *pn_options;

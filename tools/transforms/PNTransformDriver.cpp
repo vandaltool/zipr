@@ -338,14 +338,6 @@ void PNTransformDriver::SetProtectSharedObjects(bool do_protection)
 
 bool PNTransformDriver::CanaryTransformHandler(PNStackLayout *layout, Function_t *func, bool validate)
 {
-	//TODO: hack for TNE: if not doing canaries, use padding transform handler instead
-/*
-  if(!do_canaries)
-  {
-  cerr<<"PNTransformDriver: canary transformations turned off, attempting padding transformation."<<endl;
-  return PaddingTransformHandler(layout, func, validate);	
-  }
-*/
 
 	bool success = false;
 
@@ -383,7 +375,10 @@ bool PNTransformDriver::CanaryTransformHandler(PNStackLayout *layout, Function_t
 
 			//TODO: I would like to set something in the data structures to indicate
 			//the canary is possible, but turned off. 
-			if(!do_canaries)
+
+// fixme jdh canaries per function?
+
+			if(!pn_options->shouldCanaryFunction(func->GetName()))
 			{
 				cerr<<"PNTransformDriver: canary transformations turned off, removing canary from transformation."<<endl;
 				undo(func);

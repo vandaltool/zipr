@@ -55,6 +55,8 @@ public:
 	virtual void InsertEBPOffset(int offset);
 	virtual int EBPToESP(int offset);
 
+	virtual std::string GetFunctionName() const { return function_name; };
+	virtual std::string GetLayoutName() const { return layout_name; };
 	virtual unsigned int GetAllocSize();
 	virtual unsigned int GetSavedRegsSize();
 	virtual unsigned int GetOutArgsRegionSize();

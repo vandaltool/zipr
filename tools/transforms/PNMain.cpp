@@ -70,7 +70,8 @@ enum
 	MAX_STACK_PAD_OPTION,
 	RECURSIVE_MIN_STACK_PAD_OPTION,
 	RECURSIVE_MAX_STACK_PAD_OPTION,
-	SHOULD_DOUBLE_FRAME_SIZE_OPTION
+	SHOULD_DOUBLE_FRAME_SIZE_OPTION,
+	SELECTIVE_CANARIES_OPTION
 };
 
 
@@ -94,6 +95,7 @@ static struct option const long_options[] =
 	{"recursive_min_stack_padding",required_argument, NULL, RECURSIVE_MIN_STACK_PAD_OPTION},
 	{"recursive_max_stack_padding",required_argument, NULL, RECURSIVE_MAX_STACK_PAD_OPTION},
 	{"should_double_frame_size",required_argument, NULL, SHOULD_DOUBLE_FRAME_SIZE_OPTION},
+	{"selective_canaries",required_argument, NULL, SELECTIVE_CANARIES_OPTION},
 	{NULL, 0, NULL, 0}
 };
 
@@ -341,6 +343,24 @@ int main(int argc, char **argv)
 				exit(1);
 			}
 			break;	
+		}
+		case SELECTIVE_CANARIES_OPTION:
+		{
+			string file=optarg;
+  			ifstream in(file.c_str());
+			string word;
+
+			if(!in) 
+			{
+				cout << "Cannot open input file: "<<file<<endl;;
+				usage();
+				exit(1);
+			}
+
+			while(in>>word)
+				pn_options->addSelectiveCanaryFunction(word);
+
+			break;
 		}
 		case '?':
 		{

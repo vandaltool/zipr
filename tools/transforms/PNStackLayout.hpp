@@ -106,7 +106,10 @@ public:
 	virtual bool IsCanarySafe() const 
 	{
 		assert(pn_options);
-		return stack_layout.is_canary_safe && pn_options->getDoCanaries();
+		return 
+			stack_layout.is_canary_safe && 		// detected as safe.
+			pn_options->getDoCanaries() && 		// and we're allowed to do canaries.
+			pn_options->shouldCanaryFunction(stack_layout.GetFunctionName());	// and we're allowed to do canaries on this function
 	}
 	virtual bool IsPaddingSafe()const {return stack_layout.is_padding_safe;}
 	virtual bool IsShuffleSafe() const ;
