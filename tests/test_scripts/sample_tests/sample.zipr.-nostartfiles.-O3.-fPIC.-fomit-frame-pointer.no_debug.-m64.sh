@@ -87,7 +87,7 @@ export PGPORT=5432
 export PGDATABASE=peasoup_$USER
 
 # path to source
-testloc=${PEASOUP_HOME}/test_scripts
+testloc=${PEASOUP_HOME}/tests/test_scripts
 
 # compile  
 # g++ -w $start_files $arch $opt $pic $fp $debug test.cpp foo.cpp
