@@ -102,6 +102,9 @@ g++ -w ${testloc}/$BENCHNAME.cpp  test.cpp $COMPFLAGS -o ${test_binary} || clean
 # sanity check the compile
 if [ ! -f ${test_binary} ]; then cleanup 3 "Failed to create ${test_binary}"; fi
 
+# make sure that the test_output directory exists
+mkdir -p test_output
+
 # run the un-analyzed binary and save for comparison
 ./${test_binary} 3 > test_output/${test_binary}.out
 
