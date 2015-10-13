@@ -26,7 +26,7 @@ class Rewriter
     void readAnnotationFile(char []);
     void readXrefsFile(char []);
     void readElfFile(char []);
-    ElfReader *getElfReader() { return m_elfReader; }
+    ElfReader *getElfReader() const { return m_elfReader; }
     FILE* getAsmSpri() { return m_spri; };
     void setAsmSpri(FILE *p_spri) { m_spri = p_spri; };
 
@@ -42,6 +42,10 @@ class Rewriter
   protected:
     map<app_iaddr_t, wahoo::Function*> m_functions;
     map<app_iaddr_t, wahoo::Instruction*> m_instructions;
+
+  private:
+    wahoo::Function*     ensureFunctionExists(const app_iaddr_t);
+    wahoo::Instruction*  ensureInstructionExists(const app_iaddr_t);
 
   private:
     ElfReader*    m_elfReader;   

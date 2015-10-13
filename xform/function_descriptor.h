@@ -15,29 +15,34 @@ class Function
 {
   public:
     Function();
+    Function(app_iaddr_t);
     Function(string, app_iaddr_t, int);
     ~Function();
 
-    string            getName() { return m_name; }
-    app_iaddr_t       getAddress() { return m_address; }
-    int               getSize() { return m_size; }
-    int               getFunctionID() { return m_functionID; }
+    string            getName() const { return m_name; }
+    void              setName(const string p_name) { m_name = p_name; }
+    app_iaddr_t       getAddress() const { return m_address; }
+    void              setAddress(const app_iaddr_t p_address) { m_address = p_address; }
+    int               getSize() const { return m_size; }
+    void              setSize(const int p_size) { m_size = p_size; }
+    int               getFunctionID() const { return m_functionID; }
     void              setFunctionID(const int id) { m_functionID = id; }
 
+	
     bool operator == (const Function &);
     bool operator == (const app_iaddr_t);
     bool operator != (const Function &);
     bool operator != (const app_iaddr_t);
 
-    bool isSafe() { return m_isSafe; }
+    bool isSafe() const { return m_isSafe; }
     void setSafe() { m_isSafe = true; }
     void setUnsafe() { m_isSafe = false; }
 
-    void setOutArgsRegionSize(int p_size) { m_outArgsRegionSize = p_size; }
-    int getOutArgsRegionSize() { return m_outArgsRegionSize; }
+    void setOutArgsRegionSize(const int p_size) { m_outArgsRegionSize = p_size; }
+    int getOutArgsRegionSize() const { return m_outArgsRegionSize; }
 
-    void setUseFramePointer(bool p_useFP) { m_useFP = p_useFP; }
-    bool getUseFramePointer() { return m_useFP; }
+    void setUseFramePointer(const bool p_useFP) { m_useFP = p_useFP; }
+    bool getUseFramePointer() const { return m_useFP; }
 
     void addInstruction(wahoo::Instruction *);
     void addStackAllocationInstruction(wahoo::Instruction *);
@@ -56,6 +61,8 @@ class Function
     double getInstructionCoverage(int*, int*);
 
   private:
+    void _init();
+
     int            m_functionID;
     string         m_name;
     app_iaddr_t    m_address;

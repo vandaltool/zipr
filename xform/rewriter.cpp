@@ -52,6 +52,28 @@ Rewriter::~Rewriter()
 {
 }
 
+wahoo::Function* Rewriter::ensureFunctionExists(const app_iaddr_t p_addr)
+{
+	if (m_functions.count(p_addr) > 0)
+		return m_functions[p_addr];
+
+    wahoo::Function *fn = new wahoo::Function(p_addr);
+	m_functions[p_addr] = fn;
+
+	return fn;
+}
+
+wahoo::Instruction* Rewriter::ensureInstructionExists(const app_iaddr_t p_addr)
+{
+	if (m_instructions.count(p_addr) > 0)
+		return m_instructions[p_addr];
+
+    wahoo::Instruction *instr = new wahoo::Instruction(p_addr);
+	m_instructions[p_addr] = instr;
+
+	return instr;
+}
+
 /*
 * Read MEDS annotation file and populate relevant hash table & data structures
 */
@@ -132,7 +154,10 @@ void Rewriter::readAnnotationFile(char p_filename[])
 //				fprintf(stderr, "Adding name=%s pc=%x to funclist hash table\n", flhk->name, flhv->pc);
 				Hashtable_put(funclists_hash, flhk, flhv);	
 
-				wahoo::Function *fn = new wahoo::Function(name, addr, size_type_u.size);
+				wahoo::Function *fn = ensureFunctionExists(addr);
+				fn->setAddress(addr);
+				fn->setSize(size_type_u.size);
+//				wahoo::Function *fn = new wahoo::Function(name, addr, size_type_u.size);
 				fgets(remainder, sizeof(remainder), fin);
 				if (strstr(remainder, "FUNC_SAFE"))
 					fn->setSafe();
@@ -146,7 +171,6 @@ void Rewriter::readAnnotationFile(char p_filename[])
 
 				line++;
 				continue;
-
 			}
 			else if(strcmp(scope,"FRAMERESTORE")==0)
 			{
@@ -249,6 +273,7 @@ void Rewriter::readAnnotationFile(char p_filename[])
 				stackref_hash_key_t sshk;
 				stackref_hash_value_t *sshv;
 				sshk.pc = addr;
+				ensureInstructionExists(addr);
 				m_instructions[addr]->setSize(size_type_u.size);
 				if (sshv = (stackref_hash_value_t*) Hashtable_get(stackrefs_hash, &sshk))
 				{
@@ -308,7 +333,8 @@ void Rewriter::readAnnotationFile(char p_filename[])
                     		Hashtable_put(instrmaps_hash,key,val); 
 
 				// rely on the fact that INST BELONGTO is the first INST annotation in a MEDS file (warning: but it is not required to be there)
-				assert(m_functions[func_addr]);
+//				assert(m_functions[func_addr]);
+				wahoo::Function *fn = ensureFunctionExists(func_addr);
 				wahoo::Instruction* instr = new wahoo::Instruction(addr, -1, m_functions[func_addr]);
 				m_instructions[addr] = instr;
 
@@ -320,14 +346,16 @@ void Rewriter::readAnnotationFile(char p_filename[])
 			{
 
               			assert(strcmp(scope,"LOCAL")==0);
+						ensureInstructionExists(addr);
 
+/*
                         	if (!m_instructions[addr])
                         	{
                                 	// unknown size, unknown function
                                 	wahoo::Instruction* instr = new wahoo::Instruction(addr, -1, NULL);
                                 	m_instructions[addr] = instr;
                         	}
-
+*/
 
                     		switch(annot_type)
                     		{
@@ -447,12 +475,15 @@ MEDS doesn't mark this as a stack reference
 			/* add to hashtable */
 			Hashtable_put(constants_hash, chk,chv);	
 	
+			ensureInstructionExists(addr);
+/*
 			if (!m_instructions[addr])
 			{
  				// unknown size, unknown function
 				wahoo::Instruction* instr = new wahoo::Instruction(addr, -1, NULL);
 				m_instructions[addr] = instr;
 			}
+*/
 
 //			fprintf(stderr,"@ 0x%x marking instruction as stack reference\n", addr);
 			m_instructions[addr]->markStackRef();
@@ -531,6 +562,8 @@ any esp access outside this region (esp + K) >= (esp + size) can be xformed
 					if (strstr(remainder,"OutArgsRegion"))
 					{
 //fprintf(stderr," found OutArgsRegion @ 0x%08x\n", addr);
+						ensureInstructionExists(addr);
+						assert(m_instructions[addr]->getFunction());
 						m_instructions[addr]->getFunction()->setOutArgsRegionSize(size_type_u.size);
 					}
 					line++;
@@ -552,7 +585,8 @@ any esp access outside this region (esp + K) >= (esp + size) can be xformed
 			if (addr - prevStackDeallocPC == 3 || addr - prevStackDeallocPC == 6)
 			{
 //				fprintf(stderr, "Detected nice stack deallocation instruction at 0x%x\n", prevStackDeallocPC);
-				assert(m_instructions[prevStackDeallocPC]);
+//				assert(m_instructions[prevStackDeallocPC]);
+				ensureInstructionExists(prevStackDeallocPC);
 				m_instructions[prevStackDeallocPC]->markDeallocSite();
 				m_instructions[prevStackDeallocPC]->setSize(addr - prevStackDeallocPC);
 			
@@ -560,7 +594,8 @@ any esp access outside this region (esp + K) >= (esp + size) can be xformed
 			// handle leave/ret
 			else if (addr - prevStackDeallocPC == 1)
 			{
-				assert(m_instructions[prevStackDeallocPC]);
+//				assert(m_instructions[prevStackDeallocPC]);
+				ensureInstructionExists(prevStackDeallocPC);
 				m_instructions[prevStackDeallocPC]->markDeallocSite();
 				m_instructions[prevStackDeallocPC]->setSize(1);
 			}
@@ -600,7 +635,7 @@ void Rewriter::readXrefsFile(char p_filename[])
 
         if(!fin)
         {
-                fprintf(stderr,"Cannot open xref enotation file %s\n", p_filename);
+                fprintf(stderr,"Cannot open xref annotation file %s\n", p_filename);
                 return;
         }
 
@@ -627,7 +662,8 @@ void Rewriter::readXrefsFile(char p_filename[])
 		assert(strcmp(scope,"XREF")==0);
 		fscanf(fin, "%s%s%s", ibt,fromib,dest);
 		assert(strcmp(ibt,"IBT")==0);
-		assert(strcmp(fromib,"FROMIB")==0 || strcmp(fromib,"FROMDATA")==0);
+		assert(strcmp(fromib,"FROMIB")==0 || strcmp(fromib,"FROMDATA")==0 
+			|| strcmp(fromib,"FROMUNKNOWN")==0);
 	
 		
       		wahoo::Instruction *instr = addr_to_insn_map[addr];

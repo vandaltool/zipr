@@ -23,7 +23,7 @@
 
 #include "function_descriptor.h"
 
-wahoo::Function::Function()
+void wahoo::Function::_init()
 {
   m_name = "";
   m_address = -1;
@@ -34,20 +34,27 @@ wahoo::Function::Function()
   m_functionID = -1;
 }
 
+wahoo::Function::Function()
+{
+  _init();
+}
+
+wahoo::Function::Function(app_iaddr_t p_start)
+{
+  _init();
+  setAddress(p_start);
+}
+
 wahoo::Function::Function(string p_name, app_iaddr_t p_start, int p_size)
 {
-  m_name = p_name;
-  m_address = p_start;
-  m_size = p_size;
-  m_isSafe = false;
-  m_useFP = false;
-  m_outArgsRegionSize = 0;
-  m_functionID = -1;
+  _init();
+  setName(p_name);
+  setAddress(p_start);
+  setSize(p_size);
 }
 
 wahoo::Function::~Function()
 {
-
 }
 
 bool wahoo::Function::operator == (const Function &other)

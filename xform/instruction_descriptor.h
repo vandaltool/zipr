@@ -15,7 +15,7 @@ class Function;
 class Instruction {
   public:
     Instruction();
-    Instruction(app_iaddr_t, int, Function* = NULL);
+    Instruction(app_iaddr_t, int p_size = -1, Function* = NULL);
     ~Instruction();
 
     void setSize(int p_size) { m_size = p_size; }
@@ -26,25 +26,25 @@ class Instruction {
     void markStackRef();
     void markVarStackRef();
 
-    app_iaddr_t     getAddress() { return m_address; }
-    app_iaddr_t     getIBTAddress() { return m_ibt_address; }
-    int             getSize() { return m_size; }
-    Function*       getFunction() { return m_function; }
-    string          getAsm() { return m_asm; }
+    app_iaddr_t     getAddress() const { return m_address; }
+    app_iaddr_t     getIBTAddress() const { return m_ibt_address; }
+    int             getSize() const { return m_size; }
+    Function*       getFunction() const { return m_function; }
+    string          getAsm() const { return m_asm; }
     void            setAsm(string p_str) { m_asm = p_str; }
     void            setData(void *dataPtr, int len);
-    unsigned char*  getData() { return m_data; }
+    unsigned char*  getData() const { return m_data; }
     void            setData(void *data) { m_data = (unsigned char*) data; }
     void     	    setIBTAddress(app_iaddr_t v) { m_ibt_address=v; }
 
-    bool isStackRef() { return m_stackRef; }
-    bool isVarStackRef() { return m_varStackRef; }
-    bool isAllocSite() { return m_allocSite; }
-    bool isDeallocSite() { return m_deallocSite; }
+    bool isStackRef() const { return m_stackRef; }
+    bool isVarStackRef() const { return m_varStackRef; }
+    bool isAllocSite() const { return m_allocSite; }
+    bool isDeallocSite() const { return m_deallocSite; }
 
     // keep track of whether instruction has been visited during execution
     void setVisited() { m_isVisited = true; }
-    bool isVisited() { return m_isVisited; }
+    bool isVisited() const { return m_isVisited; }
 
   private:
     app_iaddr_t     m_address;
