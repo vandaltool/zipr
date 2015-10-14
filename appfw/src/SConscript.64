@@ -78,15 +78,15 @@ cpppath += '''
 	/usr/include/libxml2
 	/usr/include/x86_64-linux-gnu
 	'''
+LIBS="dl"
 
 
 CFLAGS=" -fPIC -Wall -W -Wextra -Wconversion "
 CFLAGS+=" -DSQLITE_OS_UNIX=1 -DSQLITE_THREADSAFE=0 -DSQLITE_DEBUG=0 -DSQLITE_OMIT_LOAD_EXTENSION -DSQLITE_4_BYTE_ALIGNED_MALLOC " 
 CFLAGS+=" -DXQILLA_MAJOR_VER=2 -DXQILLA_MINOR_VER=9 "
 
-env=env.Clone(CPPPATH=Split(cpppath))
+env=env.Clone(CPPPATH=Split(cpppath), LIBS=Split(LIBS))
 env.Append(CCFLAGS=CFLAGS)
-env.Append(LINKFLAGS=env['CFLAGS'])
 
 lib=env.SharedLibrary(libname, Split(files_c + files_cpp))
 
