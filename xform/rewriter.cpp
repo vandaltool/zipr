@@ -157,6 +157,7 @@ void Rewriter::readAnnotationFile(char p_filename[])
 				wahoo::Function *fn = ensureFunctionExists(addr);
 				fn->setAddress(addr);
 				fn->setSize(size_type_u.size);
+				fn->setName(name);
 //				wahoo::Function *fn = new wahoo::Function(name, addr, size_type_u.size);
 				fgets(remainder, sizeof(remainder), fin);
 				if (strstr(remainder, "FUNC_SAFE"))
