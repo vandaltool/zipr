@@ -6243,7 +6243,16 @@ void __bea_callspec__ mov_EAX(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mov ");
     #endif
-    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0;
+
+	// set Argument1 dest reg to eax/rax or r8w/r8d
+    	if(
+		GV.REX.B_==1 || 	// has rex prefix to specify an extra bit for the EAX reg.
+		(GV.VEX.has_vex && GV.VEX.notB==0)	// or has a VEX prefix that does it.
+          )
+    		(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG8;
+	else
+    		(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0;
+
     (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
     if (GV.OperandSize == 64) {
         if (!Security(9, pMyDisasm)) return;
