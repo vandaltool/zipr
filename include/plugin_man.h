@@ -8,7 +8,6 @@ typedef Zipr_SDK::ZiprPluginInterface_t* (*GetPluginInterface_t)(
         Zipr_SDK::MemorySpace_t *p_ms,
         ELFIO::elfio *p_elfio,
         libIRDB::FileIR_t *p_firp,
-        Zipr_SDK::Options_t *p_opts,
         Zipr_SDK::InstructionLocationMap_t *p_fil
 	);
 
@@ -16,12 +15,13 @@ typedef Zipr_SDK::ZiprPluginInterface_t* (*GetPluginInterface_t)(
 class ZiprPluginManager_t : public ZiprPluginInterface_t
 {
 	public:
+		ZiprPluginManager_t() {}
 		ZiprPluginManager_t
 			(
         		 Zipr_SDK::MemorySpace_t *p_ms,
         		 ELFIO::elfio *p_elfio,
         		 libIRDB::FileIR_t *p_firp,
-        		 Zipr_SDK::Options_t *p_opts,
+        		 Zipr_SDK::ZiprOptions_t *p_opts,
         		 Zipr_SDK::InstructionLocationMap_t *p_fil
 			)
 			: m_opts(p_opts)
@@ -40,13 +40,13 @@ class ZiprPluginManager_t : public ZiprPluginInterface_t
 
 	private:
 
-		Options_t *m_opts;
+		ZiprOptions_t *m_opts;
 		void open_plugins
 			(
         		 Zipr_SDK::MemorySpace_t *p_ms,
         		 ELFIO::elfio *p_elfio,
         		 libIRDB::FileIR_t *p_firp,
-        		 Zipr_SDK::Options_t *p_opts,
+        		 Zipr_SDK::ZiprOptions_t *p_opts,
         		 Zipr_SDK::InstructionLocationMap_t *p_fil
 			);
 

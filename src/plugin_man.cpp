@@ -101,7 +101,7 @@ void ZiprPluginManager_t::open_plugins
                          Zipr_SDK::MemorySpace_t *p_ms,
                          ELFIO::elfio *p_elfio,
                          libIRDB::FileIR_t *p_firp,
-                         Zipr_SDK::Options_t *p_opts,
+                         Zipr_SDK::ZiprOptions_t *p_opts,
                          Zipr_SDK::InstructionLocationMap_t *p_fil
                         )
 {
@@ -150,14 +150,17 @@ void ZiprPluginManager_t::open_plugins
 			exit(1);
 		}
 
+		ZiprOptionsNamespace_t *global_ns = p_opts->Namespace("global");
 		GetPluginInterface_t GetPluginInterface=(GetPluginInterface_t)sym;
-		Zipr_SDK::ZiprPluginInterface_t *interface=(*GetPluginInterface)(p_ms,p_elfio,p_firp,p_opts,p_fil);
+		Zipr_SDK::ZiprPluginInterface_t *interface=(*GetPluginInterface)(p_ms,p_elfio,p_firp,p_fil);
+
 
 		if(!interface)
 		{
 			cerr<<"Failed to get interface from file ("<<name<<")"<<endl;
 			exit(1);
 		}
+		p_opts->AddNamespace(interface->RegisterOptions(global_ns));
 
 		m_handleList.insert(interface);
 		
