@@ -23,11 +23,13 @@ src/main.cpp -text
 src/memory_space.cpp -text
 src/plugin_man.cpp -text
 src/zipr.cpp -text
+src/zipr_new_options.cpp -text
 src/zipr_options.cpp -text
 src/zipr_stats.cpp -text
 test/MemorySpace.cpp -text
 test/SConscript -text
 test/SConstruct -text
+test/ZiprOptions.cpp -text
 test/dylib/Makefile -text
 test/dylib/dylib.c -text
 test/dylib/dylib.h -text
