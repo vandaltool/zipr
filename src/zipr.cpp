@@ -67,6 +67,36 @@ static std::ifstream::pos_type filesize(const char* filename)
    	return in.tellg();
 }
 
+ZiprOptionsNamespace_t *ZiprImpl_t::RegisterOptions(ZiprOptionsNamespace_t *global)
+{
+	ZiprOptionsNamespace_t *zipr_namespace = new ZiprOptionsNamespace_t("zipr");
+
+	m_variant.SetRequired(true);
+
+	m_verbose.SetDescription("Enable verbose output");
+	m_variant.SetDescription("Variant ID.");
+	m_output_filename.SetDescription("Output file name.");
+	m_architecture.SetDescription("Override default system "
+		"architecture detection");
+	m_replop.SetDescription("Replop all dollops.");
+	m_objcopy.SetDescription("Set the path of objcopy to use.");
+	m_callbacks.SetDescription("Set the path of the file "
+		"which contains any required callbacks.");
+	m_seed.SetDescription("Seed the random number generator with this value.");
+
+	zipr_namespace->AddOption(&m_output_filename);
+	zipr_namespace->AddOption(&m_callbacks);
+	zipr_namespace->AddOption(&m_architecture);
+	zipr_namespace->AddOption(&m_replop);
+	zipr_namespace->AddOption(&m_objcopy);
+	zipr_namespace->AddOption(&m_seed);
+
+	global->AddOption(&m_variant);
+	global->AddOption(&m_verbose);
+
+	zipr_namespace->MergeNamespace(memory_space.RegisterOptions(global));
+	return zipr_namespace;
+}
 
 void ZiprImpl_t::CreateBinaryFile(const std::string &name)
 {
@@ -91,6 +121,22 @@ void ZiprImpl_t::CreateBinaryFile(const std::string &name)
 	}
 #endif
 
+	if (m_architecture == 0)
+	{
+		if (m_verbose)
+			cout << "Doing architecture autodetection." << endl;
+		m_architecture.SetValue(libIRDB::FileIR_t::GetArchitectureBitWidth());
+		if (m_verbose)
+			cout << "Autodetected to " << (int)m_architecture << endl;
+	}
+
+	/*
+	 * Take the seed and initialize the random number
+	 * generator.
+	 */
+	std::srand((unsigned)m_seed);
+	if (m_verbose)
+		cout << "Seeded the random number generator with " << m_seed << "." << endl;
 
 	// create ranges, including extra range that's def. big enough.
 	FindFreeRanges(name);
@@ -105,10 +151,13 @@ void ZiprImpl_t::CreateBinaryFile(const std::string &name)
 
 	// Emit instruction immediately?
 
+	//TODO: Reenable after option parsing is fixed.
+#if 0
 	if (m_opts.IsEnabledOptimization(Optimizations_t::OptimizationFallthroughPinned))
 	{
 		OptimizePinnedFallthroughs();
 	}
+#endif
 
 	PreReserve2ByteJumpTargets();
 
@@ -254,7 +303,7 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 		RangeAddress_t start=sec->get_address();
 		RangeAddress_t end=sec->get_size()+start-1;
 
-		if(m_opts.GetVerbose())
+		if (m_verbose)
 			printf("Section %s:\n", sec->get_name().c_str());
 
 #ifdef CGC
@@ -299,11 +348,11 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 
 		}
 
-		if(m_opts.GetVerbose())
+		if (m_verbose)
 			printf("max_addr is %p, end is %p\n", (void*)max_addr, (void*)end);
 		if(start && end>max_addr)
 		{
-			if(m_opts.GetVerbose())
+			if (m_verbose)
 				printf("new max_addr is %p\n", (void*)max_addr);
 			max_addr=end;
 		}
@@ -316,7 +365,7 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 		{
 			assert(start>last_end);
 			last_end=end;
-			if(m_opts.GetVerbose())
+			if (m_verbose)
 				printf("Adding free range 0x%p to 0x%p\n", (void*)start,(void*)end);
 			memory_space.AddFreeRange(Range_t(start,end));
 		}
@@ -367,7 +416,7 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 #endif
 
 	memory_space.AddFreeRange(Range_t(new_free_page,(RangeAddress_t)-1));
-	if(m_opts.GetVerbose())
+	if (m_verbose)
 		printf("Adding (mysterious) free range 0x%p to EOF\n", (void*)new_free_page);
 	start_of_new_space=new_free_page;
 }
@@ -508,7 +557,7 @@ bool ZiprImpl_t::ShouldPinImmediately(Instruction_t *upinsn)
 	 * x+1 should become the entire lock command.
 	 */
 	{
-		if(m_opts.GetVerbose())
+		if (m_verbose)
 			cout<<"Using pin_at_next_byte special case, addrs="<<
 				upinsn_ibta->GetVirtualOffset()<<","<<
 				pin_at_next_byte->GetAddress()->GetVirtualOffset()<<endl;
@@ -570,7 +619,7 @@ void ZiprImpl_t::OptimizePinnedFallthroughs()
 			  (up_insn->GetCallback()=="") &&
 			  (!up_insn->GetTarget()))
 		{
-			if (m_opts.GetVerbose())
+			if (m_verbose)
 			{
 				cout<<"Emitting pinned instruction (0x"<<std::hex<<up_ibta->GetVirtualOffset()<< ") with pinned fallthrough next.\n";
 			}
@@ -626,13 +675,13 @@ void ZiprImpl_t::PreReserve2ByteJumpTargets()
 		 */
 		for(int size=5;size>0;size-=3) 
 		{
-			if(m_opts.GetVerbose())
+			if (m_verbose)
 				printf("Looking for %d-byte jump targets to pre-reserve.\n", size);
 			for(int i=120;i>=-120;i--)
 			{
 				if(memory_space.AreBytesFree(addr+i,size))
 				{
-					if(m_opts.GetVerbose())
+					if (m_verbose)
 						printf("Found location for 2-byte->%d-byte conversion "
 						"(%p-%p)->(%p-%p) (orig: %p)\n", 
 						size,
@@ -706,7 +755,7 @@ void ZiprImpl_t::ReservePinnedInstructions()
 		 */
 		if(ShouldPinImmediately(upinsn))
 		{
-			if(m_opts.GetVerbose())
+			if (m_verbose)
 				printf("Final pinning %p-%p.  fid=%d\n", (void*)addr, (void*)(addr+upinsn->GetDataBits().size()-1),
 				upinsn->GetAddress()->GetFileID());
 			for(unsigned int i=0;i<upinsn->GetDataBits().size();i++)
@@ -718,7 +767,7 @@ void ZiprImpl_t::ReservePinnedInstructions()
 			continue;
 		}
 
-		if (m_opts.GetVerbose()) {
+		if (m_verbose) {
 			printf("Working two byte pinning decision at %p for:\n", 
 					(void*)addr);
 			printf("%s\n", upinsn->GetComment().c_str());
@@ -726,7 +775,7 @@ void ZiprImpl_t::ReservePinnedInstructions()
 
 
 		if (FindPinnedInsnAtAddr(addr+1)) {
-			if (m_opts.GetVerbose())
+			if (m_verbose)
 				printf("Cannot fit two byte pin; Using workaround.\n");
 			UnresolvedPinned_t cup = UnresolvedPinned_t(up.GetInstruction());
 			char push_bytes[]={(char)0x68,(char)0x00, /* We do not actually write */
@@ -780,7 +829,7 @@ void ZiprImpl_t::ReservePinnedInstructions()
 
 			addr += sizeof(push_bytes) + lea_bytes_size;
 
-			if (m_opts.GetVerbose())
+			if (m_verbose)
 				printf("Advanced addr to %p\n", (void*)addr);
 
 			/*
@@ -791,7 +840,7 @@ void ZiprImpl_t::ReservePinnedInstructions()
 			cup.SetUpdatedAddress(addr);
 			two_byte_pins.insert(cup);
 		} else {
-			if(m_opts.GetVerbose())
+			if (m_verbose)
 			{
 				printf("Can fit two-byte pin (%p-%p).  fid=%d\n", 
 					(void*)addr,
@@ -841,7 +890,7 @@ void ZiprImpl_t::ExpandPinnedInstructions()
 		bool can_update=memory_space.AreBytesFree(addr+2,sizeof(bytes)-2);
 		if(can_update)
 		{
-			if(m_opts.GetVerbose())
+			if (m_verbose)
 				printf("Found %p can be updated to 5-byte jmp\n", (void*)addr);
 			memory_space.PlopJump(addr);
 
@@ -862,7 +911,7 @@ void ZiprImpl_t::ExpandPinnedInstructions()
 		else
 		{
 			++it;
-			if(m_opts.GetVerbose())
+			if (m_verbose)
 				printf("Found %p can NOT be updated to 5-byte jmp\n", (void*)addr);
 			m_stats->total_2byte_pins++;
 			m_stats->total_trampolines++;
@@ -906,7 +955,7 @@ void ZiprImpl_t::Fix2BytePinnedInstructions()
 
 			if (up.GetRange().Is5ByteRange()) 
 			{
-				if(m_opts.GetVerbose())
+				if (m_verbose)
 					printf("Using previously reserved spot of 2-byte->5-byte conversion "
 					"(%p-%p)->(%p-%p) (orig: %p)\n", 
 					(void*)addr,
@@ -946,7 +995,7 @@ void ZiprImpl_t::Fix2BytePinnedInstructions()
 					assert(!memory_space.IsByteFree(up.GetRange().GetStart()+i));
 				}
 
-				if(m_opts.GetVerbose())
+				if (m_verbose)
 					printf("Patching 2 byte to 2 byte: %p to %p (orig: %p)\n", 
 					(void*)addr,
 					(void*)up.GetRange().GetStart(),
@@ -1001,7 +1050,7 @@ void ZiprImpl_t::OptimizePinnedInstructions()
 		}
 		else
 		{
-			if(m_opts.GetVerbose())
+			if (m_verbose)
 				printf("Converting 5-byte pinned jump at %p-%p to patch to %d:%s\n", 
 				(void*)addr,(void*)(addr+4), uu.GetInstruction()->GetBaseID(), d.CompleteInstr);
 			m_stats->total_tramp_space+=5;
@@ -1110,7 +1159,7 @@ int ZiprImpl_t::_DetermineWorstCaseInsnSize(Instruction_t* insn)
 	else
 		worst_case_size = DetermineWorstCaseInsnSize(insn);
 
-	if (m_opts.GetVerbose())
+	if (m_verbose)
 		cout << "Worst case size: " << worst_case_size << endl;
 
 	return worst_case_size;
@@ -1193,7 +1242,7 @@ void ZiprImpl_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, cons
 	RangeAddress_t cur_addr=r.GetStart();
 	Instruction_t* cur_insn=uu.GetInstruction();
 
-	if(m_opts.GetVerbose())
+	if (m_verbose)
 		printf("Starting dollop with free range %p-%p\n", (void*)cur_addr, (void*)fr_end);
 
 
@@ -1216,9 +1265,10 @@ void ZiprImpl_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, cons
 		//if (false)
 		if ((to_addr=final_insn_locations[cur_insn]) != 0)
 		{
-			if(m_opts.GetNoReplop())
+			//if(m_opts.GetNoReplop())
+			if (!m_replop)
 			{
-				if(m_opts.GetVerbose())
+				if (m_verbose)
 					printf("Fallthrough loop detected. "
 					"Emitting jump from %p to %p.\n",
 					(void*)cur_addr,
@@ -1232,19 +1282,19 @@ void ZiprImpl_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, cons
 			}
 			else
 			{
-				if (m_opts.GetVerbose())
+				if (m_verbose)
 					printf("Fallthrough loop detected "
 					       "but we are replopping at "
 					       "user command.\n");
 			}
 		}
-		if(m_opts.GetVerbose())
+		if (m_verbose)
 			printf("Emitting %d:%s at %p until ",
 				id, 
 				d.CompleteInstr,
 				(void*)cur_addr);
 		cur_addr=_PlopInstruction(cur_insn,cur_addr);
-		if(m_opts.GetVerbose())
+		if (m_verbose)
 			printf("%p\n", (void*)cur_addr);
 		cur_insn=cur_insn->GetFallthrough();
 		insn_count++;
@@ -1267,7 +1317,7 @@ void ZiprImpl_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, cons
 	m_stats->total_dollop_instructions+=insn_count;
 	m_stats->total_dollop_space+=(cur_addr-fr_start);
 
-	if(m_opts.GetVerbose())
+	if (m_verbose)
 		printf("Ending dollop.  size=%d, %s.  space_remaining=%lld, req'd=%d\n", insn_count, truncated,
 		(long long)(fr_end-cur_addr), cur_insn ? _DetermineWorstCaseInsnSize(cur_insn) : -1 );
 }
@@ -1286,7 +1336,7 @@ void ZiprImpl_t::AskPluginsAboutPlopping()
 		{
 			ZiprPluginInterface_t *zipr_plopping_plugin =
 				dynamic_cast<ZiprPluginInterface_t*>(plopping_plugin);
-			if (m_opts.GetVerbose())
+			if (m_verbose)
 				cout << zipr_plopping_plugin->ToString()
 				     << " will plop this instruction!"
 						 << endl;
@@ -1311,7 +1361,7 @@ void ZiprImpl_t::PlopTheUnpinnedInstructions()
 		int id=uu.GetInstruction()->GetBaseID();
 		RangeAddress_t at=p.GetAddress();
 		
-		if(m_opts.GetVerbose())
+		if (m_verbose)
 			printf("Processing patch from %d:%s@%p\n",id,d.CompleteInstr,(void*)at);
 
 		// process the instruction.	
@@ -1359,7 +1409,7 @@ void ZiprImpl_t::ApplyPatches(Instruction_t* to_insn)
 		Patch_t p=mit->second;
 		RangeAddress_t from_addr=p.GetAddress();
 
-		if(m_opts.GetVerbose())
+		if (m_verbose)
 			printf("Found  a patch for  %p -> %p (%d:%s)\n", 
 			(void*)from_addr, (void*)to_addr, id,d.CompleteInstr);
 		// Patch instruction
@@ -1386,7 +1436,7 @@ void ZiprImpl_t::PatchInstruction(RangeAddress_t from_addr, Instruction_t* to_in
 	std::map<Instruction_t*,RangeAddress_t>::iterator it=final_insn_locations.find(to_insn);
 	if(it==final_insn_locations.end())
 	{
-		if(m_opts.GetVerbose())
+		if (m_verbose)
 			printf("Instruction cannot be patch yet, as target is unknown.\n");
 
 		patch_list.insert(pair<const  UnresolvedUnpinned_t,Patch_t>(uu,thepatch));
@@ -1395,7 +1445,7 @@ void ZiprImpl_t::PatchInstruction(RangeAddress_t from_addr, Instruction_t* to_in
 	{
 		RangeAddress_t to_addr=final_insn_locations[to_insn];
 		assert(to_addr!=0);
-		if(m_opts.GetVerbose())
+		if (m_verbose)
 			printf("Found a patch for %p -> %p\n", (void*)from_addr, (void*)to_addr); 
 		// Apply Patch
 		ApplyPatch(from_addr, to_addr);
@@ -1417,7 +1467,7 @@ RangeAddress_t ZiprImpl_t::_PlopInstruction(Instruction_t* insn,RangeAddress_t a
 		RangeAddress_t placed_address = 0;
 		ZiprPluginInterface_t *zpi = dynamic_cast<ZiprPluginInterface_t*>(handle);
 		updated_addr = zpi->PlopInstruction(insn, addr, placed_address, this);
-		if (m_opts.GetVerbose())
+		if (m_verbose)
 			cout << "Placed address: " << std::hex << placed_address << endl;
 		final_insn_locations[insn] = placed_address;
 	}
@@ -1695,7 +1745,7 @@ void ZiprImpl_t::FillSection(section* sec, FILE* fexe)
 	RangeAddress_t start=sec->get_address();
 	RangeAddress_t end=sec->get_size()+start;
 
-	if(m_opts.GetVerbose())
+	if (m_verbose)
 		printf("Dumping addrs %p-%p\n", (void*)start, (void*)end);
 	for(RangeAddress_t i=start;i<end;i++)
 	{
@@ -1708,7 +1758,7 @@ void ZiprImpl_t::FillSection(section* sec, FILE* fexe)
 			fwrite(&b,1,1,fexe);
 			if(i-start<200)// keep verbose output short enough.
 			{
-				if(m_opts.GetVerbose())
+				if (m_verbose)
 					printf("Writing byte %#2x at %p, fileoffset=%x\n", 
 						((unsigned)b)&0xff, (void*)i, file_off);
 			}
@@ -1801,7 +1851,7 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 		}
 		if(i-start_of_new_space<200)// keep verbose output short enough.
 		{
-			if(m_opts.GetVerbose())
+			if (m_verbose)
 				printf("Writing byte %#2x at %p, fileoffset=%llx\n", ((unsigned)b)&0xff, 
 				(void*)i, (long long)(i-start_of_new_space));
 		}
@@ -1816,7 +1866,9 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 
 void ZiprImpl_t::PrintStats()
 {
-	m_stats->PrintStats(m_opts, cout);
+	/* TODO:
+	*/
+	//m_stats->PrintStats(m_opts, cout);
 }
 
 template < typename T > std::string to_hex_string( const T& n )
@@ -1880,7 +1932,8 @@ void ZiprImpl_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_ad
 	if(use_stratafier_mode)
 	{
 		string objcopy_cmd = "", stratafier_cmd = "", sstrip_cmd;
-		objcopy_cmd= m_opts.GetObjcopyPath() + string(" --add-section .strata=")+bin_to_add+" "+
+		//objcopy_cmd= m_opts.GetObjcopyPath() + string(" --add-section .strata=")+bin_to_add+" "+
+		objcopy_cmd= string(m_objcopy) + string(" --add-section .strata=")+bin_to_add+" "+
 			string("--change-section-address .strata=")+to_string(sec_start)+" "+
 			string("--set-section-flags .strata=alloc,code ")+" "+
 			// --set-start $textoffset // set-start not needed, as we aren't changing the entry point.
@@ -1901,7 +1954,8 @@ void ZiprImpl_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_ad
 		stratafier_cmd="$STRATAFIER/move_segheaders";
 #endif
 
-		if (m_opts.GetArchitecture() == 64) {
+		//if (m_opts.GetArchitecture() == 64) {
+		if (m_architecture == 64) {
 			stratafier_cmd += "64";
 		}
 //		stratafier_cmd += " " + rewritten_file+ " " + rewritten_file +".addseg";
@@ -2012,7 +2066,8 @@ string ZiprImpl_t::AddCallbacksToNewSegment(const string& tmpname, RangeAddress_
 {
 	const RangeAddress_t callback_start_addr=GetCallbackStartAddr();
 
-	if(m_opts.GetCallbackFileName() == "" )
+	//if(m_opts.GetCallbackFileName() == "" )
+	if(m_callbacks == "" )
 		return tmpname;
 	string tmpname2=tmpname+"2";	
 	string tmpname3=tmpname+"3";	
@@ -2026,7 +2081,8 @@ string ZiprImpl_t::AddCallbacksToNewSegment(const string& tmpname, RangeAddress_
 		objcopy -O binary /home/jdh8d/umbrella/uvadev.peasoup/zipr_install/bin/callbacks.exe b.out.to_insert2
 	*/
 
-	string cmd= m_opts.GetObjcopyPath() + string(" -O binary ")+ m_opts.GetCallbackFileName()+string(" ")+tmpname2;
+	//string cmd= m_opts.GetObjcopyPath() + string(" -O binary ")+ m_opts.GetCallbackFileName()+string(" ")+tmpname2;
+	string cmd= string(m_objcopy) + string(" -O binary ")+string(m_callbacks)+string(" ")+tmpname2;
 #endif
 	printf("Attempting: %s\n", cmd.c_str());
 	if(-1 == system(cmd.c_str()))
@@ -2119,7 +2175,8 @@ RangeAddress_t ZiprImpl_t::FindCallbackAddress(RangeAddress_t end_of_new_space, 
 	if(callback_addrs.find(callback)==callback_addrs.end())
 	{
 
-		RangeAddress_t addr=getSymbolAddress(m_opts.GetCallbackFileName(),callback);
+		//RangeAddress_t addr=getSymbolAddress(m_opts.GetCallbackFileName(),callback);
+		RangeAddress_t addr=getSymbolAddress(m_callbacks,callback);
 
 		if(addr!=0)
 		{

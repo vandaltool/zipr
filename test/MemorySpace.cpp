@@ -38,9 +38,7 @@ printf(" fail\n"); \
 
 bool TestSplitMemorySpace()
 {
-	ZiprOptions_t opts;
-	opts.SetVerbose(true);
-	ZiprMemorySpace_t m(&opts);
+	ZiprMemorySpace_t m;
 
 	m.AddFreeRange(Range_t(500, 600));
 
@@ -54,9 +52,7 @@ bool TestSplitMemorySpace()
 bool TestBinarySearchMaxRange()
 {
 	std::set<Range_t>::iterator foundRange;
-	ZiprOptions_t opts;
-	opts.SetVerbose(true);
-	ZiprMemorySpace_t m(&opts);
+	ZiprMemorySpace_t m;
 	m.AddFreeRange(Range_t(256, (RangeAddress_t)-1));
 
 	m.SplitFreeRange(336);
@@ -79,9 +75,7 @@ bool TestBinarySearchMaxRange()
 bool TestBinarySearch()
 {
 	std::set<Range_t>::iterator foundRange;
-	ZiprOptions_t opts;
-	opts.SetVerbose(true);
-	ZiprMemorySpace_t m(&opts);
+	ZiprMemorySpace_t m;
 	m.AddFreeRange(Range_t(256, 512));
 
 	m.SplitFreeRange(300);
@@ -144,9 +138,7 @@ bool TestBinarySearch()
 }
 bool TestSort()
 {
-	ZiprOptions_t opts;
-	opts.SetVerbose(true);
-	ZiprMemorySpace_t m(&opts);
+	ZiprMemorySpace_t m;
 	m.AddFreeRange(Range_t(256, 512));
 
 	m.SplitFreeRange(300);
@@ -167,9 +159,7 @@ bool TestSort()
 
 bool TestInsertRemoveFreeRange()
 {
-	ZiprOptions_t opts;
-	opts.SetVerbose(true);
-	ZiprMemorySpace_t m(&opts);
+	ZiprMemorySpace_t m;
 	m.AddFreeRange(Range_t(256, 512));
 	m.AddFreeRange(Range_t(513, 1024));
 	m.AddFreeRange(Range_t(1025, 4096));
@@ -188,9 +178,7 @@ bool TestInsertRemoveFreeRange()
 
 bool TestMergeFreeRange()
 {
-	ZiprOptions_t opts;
-	opts.SetVerbose(true);
-	ZiprMemorySpace_t m(&opts);
+	ZiprMemorySpace_t m;
 	m.AddFreeRange(Range_t(256, 512));
 
 	m.SplitFreeRange(300);
@@ -238,9 +226,7 @@ bool TestMergeFreeRange()
 bool TestClearAllIteratively()
 {
 	Range_t removableRange;
-	ZiprOptions_t opts;
-	opts.SetVerbose(true);
-	ZiprMemorySpace_t m(&opts);
+	ZiprMemorySpace_t m;
 
 	m.AddFreeRange(Range_t(256, 512));
 	m.AddFreeRange(Range_t(513, 1024));
@@ -260,9 +246,7 @@ bool TestClearAllIteratively()
 bool TestEraseOneByter()
 {
 	Range_t removableRange;
-	ZiprOptions_t opts;
-	opts.SetVerbose(true);
-	ZiprMemorySpace_t m(&opts);
+	ZiprMemorySpace_t m;
 
 	m.AddFreeRange(Range_t(512, 512));
 	m.AddFreeRange(Range_t(256, 300));
@@ -274,9 +258,7 @@ bool TestEraseOneByter()
 bool TestClearSomeIteratively()
 {
 	Range_t removableRange;
-	ZiprOptions_t opts;
-	opts.SetVerbose(true);
-	ZiprMemorySpace_t m(&opts);
+	ZiprMemorySpace_t m;
 
 	m.AddFreeRange(Range_t(512, 512));
 	m.AddFreeRange(Range_t(513, 1024));

@@ -54,7 +54,6 @@ using namespace Zipr_SDK;
 #include <plugin_man.h>
 #include <zipr_impl.h>
 #include <zipr_optimizations.h>
-#include <zipr_opts.h>
 #include <zipr_stats.h>
 };
 

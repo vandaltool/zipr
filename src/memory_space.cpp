@@ -31,6 +31,11 @@
 using namespace zipr;
 using namespace std;
 
+ZiprOptionsNamespace_t *ZiprMemorySpace_t::RegisterOptions(ZiprOptionsNamespace_t *global) {
+	global->AddOption(&m_verbose);
+	return NULL;
+}
+
 void ZiprMemorySpace_t::SplitFreeRange(RangeAddress_t addr)
 {
 	RangeSet_t::iterator it=FindFreeRange(addr);
@@ -89,7 +94,7 @@ void ZiprMemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 		 * one byte smaller!
 		 */
 		Range_t nnr(addr, r.GetEnd());
-		if(m_opts != NULL && m_opts->GetVerbose())
+		if (m_verbose)
 		{
 			printf("Expanded range:\n");
 			printf("from: %p to %p\n", (void*)r.GetStart(), (void*)r.GetEnd());
@@ -114,7 +119,7 @@ void ZiprMemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 		 * bigger
 		 */
 		Range_t nnr(r.GetStart(), addr);
-		if(m_opts != NULL && m_opts->GetVerbose())
+		if (m_verbose)
 		{
 			printf("Expanded range:\n");
 			printf("from: %p to %p\n", (void*)r.GetStart(), (void*)r.GetEnd());

@@ -51,7 +51,9 @@ void Stats_t::PrintStats(ZiprOptions_t &opts, std::ostream &out)
 	/*
 	 * Optimizations
 	 */
-	if(opts.IsEnabledOptimization(Optimizations_t::OptimizationFallthroughPinned))
+	//if(opts.IsEnabledOptimization(Optimizations_t::OptimizationFallthroughPinned))
+	// TODO
+	if (false)
 	{
 		PrintStat(out, "Optimization: FallthroughPinned hit rate",
 			(double)Hits[Optimizations_t::OptimizationFallthroughPinned]/

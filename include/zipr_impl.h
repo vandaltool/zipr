@@ -31,26 +31,37 @@
 #ifndef zipr_impl_h
 #define zipr_impl_h
 
-class ZiprOptions_t;
+#include <random>
+#include <climits>
 class Stats_t;
 
 class ZiprImpl_t : public Zipr_t
 {
 	public:
-		ZiprImpl_t(libIRDB::FileIR_t* p_firp, ZiprOptions_t &p_opts) :
+		ZiprImpl_t(libIRDB::FileIR_t* p_firp, ZiprOptions_t *p_opts) :
 			m_firp(p_firp), 
-			m_opts(p_opts), 
 			m_stats(NULL), 
 			elfiop(new ELFIO::elfio), 
 			start_of_new_space(0),
-			memory_space(&p_opts), 
-			plugman(&memory_space, elfiop, p_firp, (Zipr_SDK::Options_t*)&p_opts, &final_insn_locations)
+			memory_space(),
+			m_output_filename("output", "b.out"),
+			m_callbacks("callbacks"),
+			m_objcopy("objcopy", "/usr/bin/objcopy"),
+			m_replop("replop", false),
+			m_verbose("verbose", true),
+			m_variant("variant"),
+			m_architecture("architecture"),
+			random_int_distribution(1,INT_MAX),
+			m_seed("seed", random_int_distribution(random_generator))
 		{ 
 			bss_needed=0;
 			use_stratafier_mode=false;
 
+			p_opts->AddNamespace(RegisterOptions(p_opts->Namespace("global")));
+			plugman = ZiprPluginManager_t(&memory_space, elfiop, p_firp, p_opts, &final_insn_locations);
+
 			// init  pinned addresses map.
-			RecordPinnedInsnAddrs();
+			//RecordPinnedInsnAddrs();
  		};
 
 		void CreateBinaryFile(const std::string &name);
@@ -60,11 +71,11 @@ class ZiprImpl_t : public Zipr_t
 		Zipr_SDK::RangeAddress_t PlopWithTarget(libIRDB::Instruction_t* insn, Zipr_SDK::RangeAddress_t at);
 		Zipr_SDK::RangeAddress_t PlopWithCallback(libIRDB::Instruction_t* insn, Zipr_SDK::RangeAddress_t at);
 
+		ZiprOptionsNamespace_t *RegisterOptions(ZiprOptionsNamespace_t *);
 	private:
 
 		// data for the stuff we're rewriting.
 		libIRDB::FileIR_t* m_firp;
-		ZiprOptions_t& m_opts;
 		Stats_t *m_stats;
 
 		Zipr_SDK::RangeAddress_t _PlopInstruction(libIRDB::Instruction_t*, Zipr_SDK::RangeAddress_t);
@@ -147,6 +158,15 @@ class ZiprImpl_t : public Zipr_t
 		ZiprPluginManager_t plugman;
 
 		std::map<libIRDB::Instruction_t*,DLFunctionHandle_t> plopping_plugins;
+
+		// Options
+		ZiprStringOption_t m_output_filename, m_callbacks, m_objcopy;
+		ZiprBooleanOption_t m_replop, m_verbose;
+		ZiprIntegerOption_t m_variant, m_architecture, m_seed;
+
+		// For default seed generation.
+		std::default_random_engine random_generator;
+		std::uniform_int_distribution<int> random_int_distribution;
 };
 
 #endif

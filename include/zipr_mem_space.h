@@ -31,16 +31,15 @@
 #ifndef memory_space_h
 #define memory_space_h
 
-class ZiprOptions_t;
-
 // a memory space _is_ a map of range addres to char, with additional functionality.
 class ZiprMemorySpace_t : public MemorySpace_t
 {
 	public:
-		ZiprMemorySpace_t(ZiprOptions_t *opts) :
-			free_ranges(), m_opts(opts), max_plopped(0), min_plopped(-1)
+		ZiprMemorySpace_t() :
+			free_ranges(), max_plopped(0), min_plopped(-1), m_verbose("verbose")
 		{ 
 		}
+
 
 		// range operatations
 		void SplitFreeRange(RangeAddress_t addr);
@@ -83,14 +82,16 @@ class ZiprMemorySpace_t : public MemorySpace_t
 		RangeAddress_t GetMinPlopped() const { return min_plopped; }
 		RangeAddress_t GetMaxPlopped() const { return max_plopped; }
 
+		ZiprOptionsNamespace_t *RegisterOptions(ZiprOptionsNamespace_t*);
+
 	protected:
 		RangeSet_t  free_ranges; // keep ordered
 		// std::set<Range_t, Range_tCompare> free_ranges;   // keep ordered
-		ZiprOptions_t *m_opts;
 
 	private:
 		RangeAddress_t max_plopped;
 		RangeAddress_t min_plopped;
+		ZiprBooleanOption_t m_verbose;
 };
 
 #endif
