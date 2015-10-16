@@ -47,15 +47,21 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-	ZiprOptions_t *options=ZiprOptions_t::parse_args(argc,argv);
+	ZiprOptions_t options = ZiprOptions_t(argc-1, argv+1);
+	ZiprIntegerOption_t variant_id("variant");
+	ZiprOptionsNamespace_t global_options(string("global"));
 
+	VariantID_t *pidp=NULL;
+	FileIR_t * firp=NULL;
 
-        VariantID_t *pidp=NULL;
-        FileIR_t * firp=NULL;
+	variant_id.SetDescription("Variant ID");
+	variant_id.SetRequired(true);
+	options.AddNamespace(&global_options);
+	global_options.AddOption(&variant_id);
 
-	if (options->GetVariantID() == -1)
-	{
-		ZiprOptions_t::print_usage(argc, argv);
+	options.Parse();
+	if (!variant_id.RequirementMet()) {
+		cout << variant_id.Description() << endl;
 		return 1;
 	}
 
@@ -65,7 +71,7 @@ int main(int argc, char* argv[])
                 pqxxDB_t pqxx_interface;
                 BaseObj_t::SetInterface(&pqxx_interface);
 
-                pidp=new VariantID_t(options->GetVariantID());
+                pidp=new VariantID_t(variant_id);
         	assert(pidp);
 
                 assert(pidp->IsRegistered()==true);
@@ -79,24 +85,32 @@ int main(int argc, char* argv[])
                 {
                         File_t* this_file=*it;
                         assert(this_file);
-
-			cout<<"Analyzing file "<<this_file->GetURL()<<endl;
-			string this_file_name=options->GetOutputFileName(this_file);
-
 			// only do a.ncexe for now.
 			if(this_file->GetURL().find("a.ncexe")==string::npos)
 				continue;
 
-
                         // read the db
                         firp=new FileIR_t(*pidp, this_file);
 			assert(firp);
+												ZiprImpl_t zip(firp, &options);
+
+												if (!options.Parse() || !options.RequirementsMet())
+												{
+													options.PrintUsage(cout);
+													exit(1);
+												}
+												options.PrintNamespaces();
+
+			string this_file_name=options.Namespace("zipr")->
+				OptionByKey("output")->
+				StringValue();
+
 
                         int elfoid=firp->GetFile()->GetELFOID();
                         pqxx::largeobject lo(elfoid);
                         lo.to_file(pqxx_interface.GetTransaction(),this_file_name.c_str());
 
-			ZiprImpl_t zip(firp,*options);
+			cout << "Calling CreateBinaryFile() with " << this_file_name << endl;
 			zip.CreateBinaryFile(this_file_name);
 
                         // write the DB back and commit our changes
