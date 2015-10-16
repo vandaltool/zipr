@@ -39,7 +39,6 @@ class Push64Relocs_t : public Zipr_SDK::ZiprPluginInterface_t
 		Push64Relocs_t(Zipr_SDK::MemorySpace_t *p_ms,
 			ELFIO::elfio *p_elfio,
 			libIRDB::FileIR_t *p_firp,
-			Zipr_SDK::Options_t *p_opts,
 			Zipr_SDK::InstructionLocationMap_t *p_fil);
 		virtual void PinningBegin()
 		{
@@ -64,6 +63,7 @@ class Push64Relocs_t : public Zipr_SDK::ZiprPluginInterface_t
 			UpdatePush64Adds(); 
 		}
 
+		virtual Zipr_SDK::ZiprOptionsNamespace_t *RegisterOptions(Zipr_SDK::ZiprOptionsNamespace_t *);
 	private:
 		// main workhorses
 		void HandlePush64Relocs();
@@ -115,11 +115,12 @@ class Push64Relocs_t : public Zipr_SDK::ZiprPluginInterface_t
 		Zipr_SDK::MemorySpace_t &m_memory_space;	
 		ELFIO::elfio&  m_elfio;
 		libIRDB::FileIR_t& m_firp;
-		Zipr_SDK::Options_t& m_opts;
 		Zipr_SDK::InstructionLocationMap_t &final_insn_locations;
 
 		// local data.
 		libIRDB::InstructionSet_t plopped_relocs;
+
+		Zipr_SDK::ZiprBooleanOption_t m_verbose;
 
 };
 

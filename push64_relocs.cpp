@@ -55,14 +55,17 @@ bool arg_has_relative(const ARGTYPE &arg)
 Push64Relocs_t::Push64Relocs_t(MemorySpace_t *p_ms,
 	elfio *p_elfio,
 	FileIR_t *p_firp,
-	Options_t *p_opts,
 	InstructionLocationMap_t *p_fil) :
 		m_memory_space(*p_ms), 
 		m_elfio(*p_elfio),
 		m_firp(*p_firp),
-		m_opts(*p_opts),
-		final_insn_locations(*p_fil)
+		final_insn_locations(*p_fil),
+		m_verbose("verbose")
 {
+}
+ZiprOptionsNamespace_t *Push64Relocs_t::RegisterOptions(ZiprOptionsNamespace_t *global) {
+	global->AddOption(&m_verbose);
+	return NULL;
 }
 
 bool Push64Relocs_t::IsRelocationWithType(Relocation_t *reloc,std::string type)
@@ -114,7 +117,7 @@ void Push64Relocs_t::HandlePush64Relocation(Instruction_t *insn, Relocation_t *r
 	 */
 	push_addr = *((virtual_offset_t*)(&push_data_bits[1]));
 
-	if (m_opts.GetVerbose())
+	if (m_verbose)
 		cout << "push_addr: 0x" << std::hex << push_addr << endl;
 	assert(push_addr != 0);
 
@@ -165,7 +168,7 @@ void Push64Relocs_t::HandlePush64Relocation(Instruction_t *insn, Relocation_t *r
 	add_insn->GetRelocations().insert(add_reloc);
 	m_firp.GetRelocations().insert(add_reloc);
 
-	if (m_opts.GetVerbose())
+	if (m_verbose)
 		cout << "Adding an add/sub with reloc offset 0x" 
 		     << std::hex << add_reloc->GetOffset() 
 				 << endl;
@@ -188,14 +191,14 @@ void Push64Relocs_t::HandlePush64Relocs()
 		Relocation_t *reloc=NULL;
 		if (reloc = FindPushRelocation(insn))
 		{
-			if (m_opts.GetVerbose())
+			if (m_verbose)
 				cout << "Found a Push relocation:" << insn->getDisassembly()<<endl;
 			HandlePush64Relocation(insn,reloc);
 			push64_relocations_count++;
 		}
 		else if (reloc = FindPcrelRelocation(insn))
 		{
-			if (m_opts.GetVerbose())
+			if (m_verbose)
 				cout << "Found a pcrel relocation." << endl;
 			plopped_relocs.insert(insn);
 			pcrel_relocations_count++;
@@ -213,7 +216,7 @@ void Push64Relocs_t::HandlePush64Relocs()
 
 void Push64Relocs_t::UpdatePush64Adds()
 {
-	if (m_opts.GetVerbose())
+	if (m_verbose)
 		cout << "UpdatePush64Adds()" << endl;
 	InstructionSet_t::iterator insn_it = plopped_relocs.begin();
 	for (insn_it; insn_it != plopped_relocs.end(); insn_it++)
@@ -241,7 +244,7 @@ void Push64Relocs_t::UpdatePush64Adds()
 
 			if (call_addr == 0 || add_addr == 0)
 			{
-				if (m_opts.GetVerbose())
+				if (m_verbose)
 					cout << "Call/Add pair not plopped?" << endl;
 				continue;
 			}
@@ -297,11 +300,11 @@ void Push64Relocs_t::UpdatePush64Adds()
 			int insn_bytes_len = 0;
 			DISASM d;
 			ARGTYPE *arg=NULL;
-			
+#if 1	
 			insn_addr = final_insn_locations[insn];
 			if (insn_addr == 0)
 			{
-				if (m_opts.GetVerbose())
+				if (m_verbose)
 					cout << "Skipping unplopped Pcrel relocation." << endl;
 				continue;
 			}
@@ -335,7 +338,7 @@ void Push64Relocs_t::UpdatePush64Adds()
 						 existing_offset_size);
 
 			new_offset = existing_offset-insn_addr; 
-			if (m_opts.GetVerbose())
+			if (m_verbose)
 				cout << "Relocating a pcrel relocation with 0x" 
 				     << std::hex << existing_offset
 						 << " existing offset at 0x" 
@@ -346,6 +349,7 @@ void Push64Relocs_t::UpdatePush64Adds()
 			m_memory_space.PlopBytes(insn_addr+memory_offset,
 			                         (const char*)&new_offset,
 															 existing_offset_size);
+#endif
 		}
 	}
 }
@@ -355,8 +359,7 @@ Zipr_SDK::ZiprPluginInterface_t* GetPluginInterface(
 	Zipr_SDK::MemorySpace_t *p_ms, 
 	ELFIO::elfio *p_elfio, 
 	libIRDB::FileIR_t *p_firp, 
-	Zipr_SDK::Options_t *p_opts,
 	Zipr_SDK::InstructionLocationMap_t *p_fil) 
 {
-	return new Push64Relocs_t(p_ms,p_elfio,p_firp,p_opts,p_fil);
+	return new Push64Relocs_t(p_ms,p_elfio,p_firp,p_fil);
 }

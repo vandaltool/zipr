@@ -54,6 +54,7 @@ libpath='''
 if sysname != "SunOS":
 	myenv.Append(CCFLAGS=" -Wall ")
 
+myenv.Append(CXXFLAGS=" -std=c++11 ")
 myenv=myenv.Clone(CPPPATH=Split(cpppath), LIBS=Split(libs), LIBPATH=Split(libpath), SHLIBSUFFIX=".zpi", SHLIBPREFIX="")
 lib=myenv.SharedLibrary("push64_relocs", Split(files))
 
