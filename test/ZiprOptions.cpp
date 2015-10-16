@@ -39,24 +39,30 @@ printf(" fail\n"); \
 
 int main(int argc, char *argv[])
 {
-	ZiprNewOptions_t options(argc-1, argv+1);
+	ZiprOptions_t options(argc-1, argv+1);
 
 	ZiprOptionsNamespace_t global_ns("global");
 	ZiprOptionsNamespace_t local_ns("local");
 
 	ZiprStringOption_t global_a_option("a");
-	ZiprBooleanOption_t local_b_option("b");
+	ZiprStringOption_t global_shadow_a_option("a");
+	ZiprBooleanOption_t local_b_option("b", true);
+	ZiprBooleanOption_t local_shadow_b_option("b");
 	ZiprBooleanOption_t local_c_option("c", false);
 	ZiprIntegerOption_t local_d_option("d", "55");
+	ZiprIntegerOption_t local_e_option("e");
 
 	local_b_option.SetRequired(true);
 	local_b_option.SetDescription("Set the B option.");
 	local_d_option.SetRequired(true);
 
 	global_ns.AddOption(&global_a_option);
+	global_ns.AddOption(&global_shadow_a_option);
 	local_ns.AddOption(&local_b_option);
+	local_ns.AddOption(&local_shadow_b_option);
 	local_ns.AddOption(&local_c_option);
 	local_ns.AddOption(&local_d_option);
+	local_ns.AddOption(&local_e_option);
 
 	options.AddNamespace(&global_ns);
 	options.AddNamespace(&local_ns);
@@ -70,18 +76,25 @@ int main(int argc, char *argv[])
 	}
 
 	options.PrintNamespaces();
+	cout << "global_shadow_a_option: " << global_shadow_a_option.Value() << endl;
+	cout << "local_shadow_b_option: " << local_shadow_b_option.StringValue() << endl;
 	if (global_a_option == "avl") {
 		cout << "global_a_option is avl." << endl;
 	} else {
 		cout << "global_a_option is NOT avl." << endl;
 	}
 
-	if (local_b_option == true) {
+	if (local_b_option) {
 		cout << "local_b_option is true." << endl;
 	} else {
 		cout << "local_b_option is false." << endl;
 	}
-	if (local_c_option == false) {
+	if (local_shadow_b_option) {
+		cout << "local_shadow_b_option is true." << endl;
+	} else {
+		cout << "local_shadow_b_option is false." << endl;
+	}
+	if (!local_c_option) {
 		cout << "local_c_option is false." << endl;
 	} else {
 		cout << "local_c_option is true." << endl;
@@ -89,4 +102,5 @@ int main(int argc, char *argv[])
 	if (local_d_option == 55) {
 		cout << "local_d_option is " << local_d_option.Value() << endl;
 	}
+	cout << "local_e_option: " << ((int)local_e_option) << endl;
 }

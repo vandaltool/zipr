@@ -24,7 +24,7 @@
 #include <cstddef>
 
 #ifndef IMPLEMENTATION_DEBUG
-#define IMPLEMENTATION_DEBUG 0
+#define IMPLEMENTATION_DEBUG 1
 #endif
 
 using namespace Zipr_SDK;
@@ -49,7 +49,16 @@ bool ZiprOptionsNamespace_t::RequirementsMet() {
 }
 
 void ZiprOptionsNamespace_t::AddOption(ZiprUntypedOption_t *option) {
-	insert(option);
+	ZiprUntypedOption_t *existing_option = OptionByKey(option->Key());
+	if (existing_option) {
+#if IMPLEMENTATION_DEBUG
+		cout << "Found an existing option. Adding an observer." << endl;
+#endif
+	existing_option->AddObserver(option);
+	}
+	else {
+		insert(option);
+	}
 }
 
 ZiprUntypedOption_t *ZiprOptionsNamespace_t::OptionByKey(string key) {
@@ -68,18 +77,18 @@ void ZiprOptionsNamespace_t::PrintUsage(int tabs, ostream &out) {
 	for (it; it != it_end; it++) {
 		string description = (*it)->Description();
 		{ int t = 0; for (; t<tabs; t++) cout << "\t"; }
-		out << Namespace() << ":" << description << endl;
+		out << "--" + Namespace() << ":" << description << endl;
 	}
 }
 
-void ZiprNewOptions_t::PrintUsage(ostream &out) {
+void ZiprOptions_t::PrintUsage(ostream &out) {
 	set<ZiprOptionsNamespace_t*>::const_iterator it = m_namespaces.begin();
 	set<ZiprOptionsNamespace_t*>::const_iterator it_end = m_namespaces.end();
 	for (it; it != it_end; it++)
 		(*it)->PrintUsage(1, out);
 }	
 
-bool ZiprNewOptions_t::RequirementsMet() {
+bool ZiprOptions_t::RequirementsMet() {
 	set<ZiprOptionsNamespace_t*>::const_iterator it = m_namespaces.begin();
 	set<ZiprOptionsNamespace_t*>::const_iterator it_end = m_namespaces.end();
 	for (it; it != it_end; it++)
@@ -88,14 +97,14 @@ bool ZiprNewOptions_t::RequirementsMet() {
 	return true;
 }
 
-ZiprNewOptions_t::ZiprNewOptions_t(int argc, char **argv) {
+ZiprOptions_t::ZiprOptions_t(int argc, char **argv) {
 	int i = 0;
 	for (i = 0; i<argc; i++) {
 		m_arguments.push_back(string(argv[i]));
 	}
 }
 
-bool ZiprNewOptions_t::Parse(ostream &warn) {
+bool ZiprOptions_t::Parse(ostream &error, ostream &warn) {
 	vector<string>::const_iterator it = m_arguments.begin();
 	vector<string>::const_iterator it_end = m_arguments.end();
 
@@ -129,12 +138,15 @@ bool ZiprNewOptions_t::Parse(ostream &warn) {
 		cout << "key: " << key << endl;
 #endif
 		if (!(option_ns = Namespace(ns))) {
-			warn << "Invalid namespace: " << ns << endl;
-			continue;
+			error << "Invalid namespace: " << ns << endl;
+			return false;
 		}
 		if (!(option_option = option_ns->OptionByKey(key))) {
-			warn << ns << " does not accept key " << key << endl;
-			continue;
+			error << "Error: namespace "
+			     << ns
+					 << " does not accept key "
+					 << key << endl;
+			return false;
 		}
 		/*
 		 * By default, options need and take values. Some, though,
@@ -144,8 +156,8 @@ bool ZiprNewOptions_t::Parse(ostream &warn) {
 		if (option_option->NeedsValue()) {
 			if ((it + 1) == it_end)
 			{
-				warn << ns << ":" << key << " is missing value." << endl;
-				continue;
+				error << ns << ":" << key << " is missing value." << endl;
+				return false;
 			}
 			option_option->SetValue(*(++it));
 		} else if (option_option->TakesValue()) {
@@ -167,7 +179,7 @@ bool ZiprNewOptions_t::Parse(ostream &warn) {
 	return true;
 }
 
-ZiprOptionsNamespace_t *ZiprNewOptions_t::Namespace(string ns) {
+ZiprOptionsNamespace_t *ZiprOptions_t::Namespace(string ns) {
 	set<ZiprOptionsNamespace_t*>::const_iterator it = m_namespaces.begin();
 	set<ZiprOptionsNamespace_t*>::const_iterator it_end = m_namespaces.end();
 	for (it; it != it_end; it++) {
@@ -177,11 +189,20 @@ ZiprOptionsNamespace_t *ZiprNewOptions_t::Namespace(string ns) {
 	return NULL;
 }
 
-void ZiprNewOptions_t::AddNamespace(ZiprOptionsNamespace_t *ns) {
-	m_namespaces.insert(ns);
+void ZiprOptions_t::AddNamespace(ZiprOptionsNamespace_t *ns) {
+	if (ns)
+		m_namespaces.insert(ns);
 }
 
-void ZiprNewOptions_t::PrintNamespaces() {
+void ZiprOptionsNamespace_t::MergeNamespace(ZiprOptionsNamespace_t *in) {
+	if (!in) return;
+	set<ZiprUntypedOption_t*>::const_iterator it = in->begin();
+	set<ZiprUntypedOption_t*>::const_iterator it_end = in->end();
+	for (it; it != it_end; it++)
+		AddOption(*it);
+}
+
+void ZiprOptions_t::PrintNamespaces() {
 	set<ZiprOptionsNamespace_t*>::const_iterator it = m_namespaces.begin();
 	set<ZiprOptionsNamespace_t*>::const_iterator it_end = m_namespaces.end();
 
