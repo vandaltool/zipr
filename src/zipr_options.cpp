@@ -18,182 +18,175 @@
  *
  */
 
-#include <zipr_all.h>
+#include <zipr_sdk.h>
 #include <unistd.h>
-#include <stdlib.h>
-#include <getopt.h>
-#include <ctime>        // std::time
 #include <iostream>
-#include <cstdlib>	// std::srand
+#include <cstddef>
 
+#ifndef IMPLEMENTATION_DEBUG
+#define IMPLEMENTATION_DEBUG 0
+#endif
 
+using namespace Zipr_SDK;
+using namespace std;
 
-using namespace zipr;
-
-void ZiprOptions_t::print_usage(int p_argc, char *p_argv[])
-{
-	printf("%s [options]\n", p_argv[0]);
-	printf("\t-v variant-id\t--variant variant-id: "
-		"Variant ID. Mandatory. Default: none.\n");
-	printf("\t-o file\t\t--output file: "
-		"Output file name. Optional. Default: b.out.\n");
-	printf("\t-z optimization\t--optimize optimization: "
-		"Enable an optimization. Repeatable. Optional. \n");
-	printf("\t-j path\t\t--objcopy path: "
-		"Set the path of objcopy to use. Optional. \n");
-	printf("\t-c callback.exe\t\t--path to callbacks file: "
-		"Set the path of the file which contains any required callacks.  Missing callbacks elided. \n");
-	printf("\t-m [32|64]\t--architecture [32|64]: "
-		"Override default system architecture detection.\n");
-	printf("\t-!\t\t--verbose: "
-		"Enable verbose output. \n");
-	printf("\t-q\t\t--quiet: "
-		"Quiet the verbose output. \n");
-	printf("\t-r\t\t--replop: "
-		"Replop all dollops. \n");
+void ZiprOptionsNamespace_t::PrintNamespace() {
+	ZiprOptionsNamespace_t::const_iterator it = begin();
+	ZiprOptionsNamespace_t::const_iterator it_end = end();
+	for (it; it != it_end; it++) {
+		cout << (*it)->Key() << ": " << (*it)->StringValue() << endl;
+	}
 }
 
-ZiprOptions_t* ZiprOptions_t::parse_args(int p_argc, char* p_argv[])
-{
-	ZiprOptions_t *opt=new ZiprOptions_t;
-	opt->SetVerbose(true);
-	int option = 0;
-	char options[] = "!qrz:o:v:c:j:m:s:";
-	struct option long_options[] = {
-		{"verbose",     no_argument,       NULL, '!'},
-		{"quiet",       no_argument,       NULL, 'q'},
-		{"replop",      no_argument,       NULL, 'r'},
-		{"optimize",    required_argument, NULL, 'z'},
-		{"output",      required_argument, NULL, 'o'},
-		{"variant",     required_argument, NULL, 'v'},
-		{"callbacks",   required_argument, NULL, 'c'},
-		{"objcopy",     required_argument, NULL, 'j'},
-		{"architecture",required_argument, NULL, 'm'},
-		{"seed",required_argument, NULL, 's'},
-		{NULL, no_argument, NULL, '\0'},	 // end-of-array marker
-	};
+bool ZiprOptionsNamespace_t::RequirementsMet() {
+	ZiprOptionsNamespace_t::const_iterator it = begin();
+	ZiprOptionsNamespace_t::const_iterator it_end = end();
+	for (it; it != it_end; it++) {
+		if (!(*it)->RequirementMet())
+			return false;
+	}
+	return true;
+}
 
-	// set random seed for zipr to really random.
-	std::srand ( unsigned ( std::time(0) ) );
+void ZiprOptionsNamespace_t::AddOption(ZiprUntypedOption_t *option) {
+	insert(option);
+}
 
-	assert(opt);
+ZiprUntypedOption_t *ZiprOptionsNamespace_t::OptionByKey(string key) {
+	ZiprOptionsNamespace_t::const_iterator it = begin();
+	ZiprOptionsNamespace_t::const_iterator it_end = end();
+	for (it; it != it_end; it++) {
+		if ((*it)->Key() == key)
+			return *it;
+	}
+	return NULL;
+}
 
-	while ((option = getopt_long(
-		p_argc, 
-		p_argv, 
-		options, 
-		long_options, 
-		NULL)) != -1)
-	{
-		printf("Found option %c\n", option);
-		switch (option) 	
-		{
-			case '!':
+void ZiprOptionsNamespace_t::PrintUsage(int tabs, ostream &out) {
+	ZiprOptionsNamespace_t::const_iterator it = begin();
+	ZiprOptionsNamespace_t::const_iterator it_end = end();
+	for (it; it != it_end; it++) {
+		string description = (*it)->Description();
+		{ int t = 0; for (; t<tabs; t++) cout << "\t"; }
+		out << Namespace() << ":" << description << endl;
+	}
+}
+
+void ZiprNewOptions_t::PrintUsage(ostream &out) {
+	set<ZiprOptionsNamespace_t*>::const_iterator it = m_namespaces.begin();
+	set<ZiprOptionsNamespace_t*>::const_iterator it_end = m_namespaces.end();
+	for (it; it != it_end; it++)
+		(*it)->PrintUsage(1, out);
+}	
+
+bool ZiprNewOptions_t::RequirementsMet() {
+	set<ZiprOptionsNamespace_t*>::const_iterator it = m_namespaces.begin();
+	set<ZiprOptionsNamespace_t*>::const_iterator it_end = m_namespaces.end();
+	for (it; it != it_end; it++)
+		if (!(*it)->RequirementsMet())
+			return false;
+	return true;
+}
+
+ZiprNewOptions_t::ZiprNewOptions_t(int argc, char **argv) {
+	int i = 0;
+	for (i = 0; i<argc; i++) {
+		m_arguments.push_back(string(argv[i]));
+	}
+}
+
+bool ZiprNewOptions_t::Parse(ostream &warn) {
+	vector<string>::const_iterator it = m_arguments.begin();
+	vector<string>::const_iterator it_end = m_arguments.end();
+
+	for (it; it != it_end; it++) {
+		string ns, key, argument = *it;
+		string::size_type location = 0;
+		ZiprOptionsNamespace_t *option_ns;
+		ZiprUntypedOption_t *option_option;
+
+		if (0 != (location = argument.find_first_of("--"))) {
+			warn << "Warning: " << argument << " does not start with --" << endl;
+			continue;
+		}
+#if IMPLEMENTATION_DEBUG
+		cout << "location: " << location << endl;
+#endif
+		argument = argument.substr(location+2, string::npos);
+		if (string::npos == (location = argument.find_first_of(":"))) {
+			warn << "Warning: " << argument << " going in global namespace." << endl;
+			ns = "global";
+			location = -1;
+		} else {
+			ns = argument.substr(0, location);
+		}
+#if IMPLEMENTATION_DEBUG
+		cout << "argument: " << argument << endl;
+#endif
+		key = argument.substr(location+1, string::npos);
+#if IMPLEMENTATION_DEBUG
+		cout << "ns: " << ns << endl;
+		cout << "key: " << key << endl;
+#endif
+		if (!(option_ns = Namespace(ns))) {
+			warn << "Invalid namespace: " << ns << endl;
+			continue;
+		}
+		if (!(option_option = option_ns->OptionByKey(key))) {
+			warn << ns << " does not accept key " << key << endl;
+			continue;
+		}
+		/*
+		 * By default, options need and take values. Some, though,
+		 * take values but don't need them. Finally, some neither
+		 * take nor need values.
+		 */
+		if (option_option->NeedsValue()) {
+			if ((it + 1) == it_end)
 			{
-				opt->SetVerbose(true);
-				break;
+				warn << ns << ":" << key << " is missing value." << endl;
+				continue;
 			}
-			case 'q':
-			{
-				opt->SetVerbose(false);
-				break;
+			option_option->SetValue(*(++it));
+		} else if (option_option->TakesValue()) {
+			/*
+			 * Check to see if the next argument starts with --.
+			 * If it does, we consider it the next option
+			 * and not the value to the previous option.
+			 */
+			if (((it+1) != it_end) && 
+			    (0 != (location = (*(it+1)).find_first_of("--")))) {
+				option_option->SetValue(*(++it));
+			} else {
+				option_option->Set();
 			}
-			case 'r':
-			{
-				opt->SetNoReplop(false);
-				break;
-			}
-			case 'z':
-			{
-				if (!strcmp("plopnotjump", ::optarg))
-				{
-					opt->EnableOptimization(
-						Optimizations_t::OptimizationPlopNotJump);
-				} 
-				else if (!strcmp("fallthroughpinned", ::optarg))
-				{
-					opt->EnableOptimization(
-						Optimizations_t::OptimizationFallthroughPinned);
-				}
-				else
-				{
-					printf("Warning: Unrecognized optimization: %s\n", ::optarg);
-				}
-				break;
-			}
-			case 'j':
-			{
-				printf("Found option -j %s\n", ::optarg);
-				opt->m_objcopy_path = std::string(::optarg);
-				break;
-			}
-			case 'o':
-			{
-				opt->m_outname = std::string(::optarg);
-				break;
-			}
-			case 'c':
-			{
-				opt->m_callbackname = std::string(::optarg);
-				break;
-			}
-			case 'v':
-			{
-				char *valid = NULL;
-				long int variant_id = ::strtol(::optarg, 
-								&valid, 
-								10); 
-				if (*valid == '\0') {
-					opt->m_var_id = variant_id;
-					break;
-				}
-				printf("Error: Invalid variant id (%s).\n", ::optarg);
-				break;
-			}
-			case 'm':
-			{
-				char *valid = NULL;
-				long int architecture = ::strtol(::optarg,
-								&valid,
-								10);
-				if (*valid == '\0' && (architecture == 32 || architecture == 64)) {
-					opt->m_architecture = architecture;
-					break;
-				}
-				printf("Error: Invalid architecture (%s); Must be 32 or 64. "
-					"Will use detection to determine architecture. \n", ::optarg);
-				break;
-			}
-			case 's':
-			{
-				char *valid = NULL;
-				long int seed = ::strtol(::optarg, &valid, 10);
-				if(*valid!='\0')
-					std::cerr<<"Seed value ("<< ::optarg << ") must be a base-10 integer."<<std::endl;
-				std::srand((unsigned)seed);
-				break;
-			}
-			case '?':
-			{
-				// getopt_long printed message
-				break;
-			}
-			default:
-			{
-				printf("Warning: Unrecognized option!\n");
-				break;
-			}
+		} else {
+			option_option->Set();
 		}
 	}
-	return opt;
+	return true;
 }
 
-int ZiprOptions_t::GetArchitecture() {
-	/*
-	 * If the user specified an architecture, return it.
-	 * Otherwise, return the one detected.
-	 */
-	if (m_architecture != -1)
-		return m_architecture;
-	return libIRDB::FileIR_t::GetArchitectureBitWidth();
+ZiprOptionsNamespace_t *ZiprNewOptions_t::Namespace(string ns) {
+	set<ZiprOptionsNamespace_t*>::const_iterator it = m_namespaces.begin();
+	set<ZiprOptionsNamespace_t*>::const_iterator it_end = m_namespaces.end();
+	for (it; it != it_end; it++) {
+		if ((*it)->Namespace() == ns)
+			return *it;
+	}
+	return NULL;
+}
+
+void ZiprNewOptions_t::AddNamespace(ZiprOptionsNamespace_t *ns) {
+	m_namespaces.insert(ns);
+}
+
+void ZiprNewOptions_t::PrintNamespaces() {
+	set<ZiprOptionsNamespace_t*>::const_iterator it = m_namespaces.begin();
+	set<ZiprOptionsNamespace_t*>::const_iterator it_end = m_namespaces.end();
+
+	for (it; it != it_end; it++) {
+		cout << (*it)->Namespace() << endl;
+		(*it)->PrintNamespace();
+	}
 }

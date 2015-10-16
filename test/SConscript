@@ -16,7 +16,7 @@ MemorySpaceFiles=  '''
 
 OptionFiles=  '''
 	ZiprOptions.cpp
-	../src/zipr_new_options.cpp
+	../src/zipr_options.cpp
 	'''
 
 # ELFIO needs to be first so we get the zipr version instead of the sectrans version.  the zipr version is modified to include get_offset.

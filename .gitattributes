@@ -13,7 +13,6 @@ include/zipr_all.h -text
 include/zipr_impl.h -text
 include/zipr_mem_space.h -text
 include/zipr_optimizations.h -text
-include/zipr_opts.h -text
 include/zipr_stats.h -text
 /install-sh -text
 src/Makefile.in -text
@@ -23,7 +22,6 @@ src/main.cpp -text
 src/memory_space.cpp -text
 src/plugin_man.cpp -text
 src/zipr.cpp -text
-src/zipr_new_options.cpp -text
 src/zipr_options.cpp -text
 src/zipr_stats.cpp -text
 test/MemorySpace.cpp -text
