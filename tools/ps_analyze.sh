@@ -1039,7 +1039,7 @@ perform_step get_pins spasm,fast_spri  $PEASOUP_HOME/tools/get_pins.sh
 
 
 # zipr
-perform_step zipr clone,fill_in_indtargs,fill_in_cfg,pdb_register $ZIPR_INSTALL/bin/zipr.exe -v $cloneid -c $ZIPR_INSTALL/bin/callbacks.exe -j $PS_OBJCOPY
+perform_step zipr clone,fill_in_indtargs,fill_in_cfg,pdb_register $ZIPR_INSTALL/bin/zipr.exe --variant $cloneid --zipr:callbacks $ZIPR_INSTALL/bin/callbacks.exe --zipr:objcopy $PS_OBJCOPY
 
 # copy TOCTOU tool here if it exists
 if [[ "$CONCURRENCY_HOME/toctou_tool" != "" && -d "$CONCURRENCY_HOME/toctou_tool" ]]; then
