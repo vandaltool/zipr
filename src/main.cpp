@@ -65,72 +65,64 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-        try
-        {
-                /* setup the interface to the sql server */
-                pqxxDB_t pqxx_interface;
-                BaseObj_t::SetInterface(&pqxx_interface);
+	try
+	{
+		/* setup the interface to the sql server */
+		pqxxDB_t pqxx_interface;
+		BaseObj_t::SetInterface(&pqxx_interface);
 
-                pidp=new VariantID_t(variant_id);
-        	assert(pidp);
+		pidp=new VariantID_t(variant_id);
+		assert(pidp);
 
-                assert(pidp->IsRegistered()==true);
+		assert(pidp->IsRegistered()==true);
 
-                cout<<"New Variant, after reading registration, is: "<<*pidp << endl;
+		cout<<"New Variant, after reading registration, is: "<<*pidp << endl;
 
-                for(set<File_t*>::iterator it=pidp->GetFiles().begin();
-                        it!=pidp->GetFiles().end();
-                        ++it
-                    )
-                {
-                        File_t* this_file=*it;
-                        assert(this_file);
+		for(set<File_t*>::iterator it=pidp->GetFiles().begin();
+		                           it!=pidp->GetFiles().end();
+		                         ++it
+		   )
+		{
+			File_t* this_file=*it;
+			assert(this_file);
 			// only do a.ncexe for now.
 			if(this_file->GetURL().find("a.ncexe")==string::npos)
 				continue;
 
-                        // read the db
-                        firp=new FileIR_t(*pidp, this_file);
+			// read the db
+			firp=new FileIR_t(*pidp, this_file);
 			assert(firp);
-												ZiprImpl_t zip(firp, &options);
+			ZiprImpl_t zip(firp, &options);
 
-												if (!options.Parse() || !options.RequirementsMet())
-												{
-													options.PrintUsage(cout);
-													exit(1);
-												}
-												options.PrintNamespaces();
+			if (!options.Parse() || !options.RequirementsMet())
+			{
+				options.PrintUsage(cout);
+				exit(1);
+			}
+			options.PrintNamespaces();
 
 			string this_file_name=options.Namespace("zipr")->
 				OptionByKey("output")->
 				StringValue();
 
 
-                        int elfoid=firp->GetFile()->GetELFOID();
-                        pqxx::largeobject lo(elfoid);
-                        lo.to_file(pqxx_interface.GetTransaction(),this_file_name.c_str());
+			int elfoid=firp->GetFile()->GetELFOID();
+			pqxx::largeobject lo(elfoid);
+			lo.to_file(pqxx_interface.GetTransaction(),this_file_name.c_str());
 
 			cout << "Calling CreateBinaryFile() with " << this_file_name << endl;
 			zip.CreateBinaryFile(this_file_name);
 
-                        // write the DB back and commit our changes
-                        delete firp;
-                }
+			// write the DB back and commit our changes
+			delete firp;
+		}
 
-                pqxx_interface.Commit();
-
-        }
-        catch (DatabaseError_t pnide)
-        {
-                cout<<"Unexpected database error: "<<pnide<<endl;
-                exit(-1);
-        }
-
-
-
-        delete pidp;
-
-
-
-
+		pqxx_interface.Commit();
+	}
+	catch (DatabaseError_t pnide)
+	{
+		cout<<"Unexpected database error: "<<pnide<<endl;
+		exit(-1);
+	}
+	delete pidp;
 }
