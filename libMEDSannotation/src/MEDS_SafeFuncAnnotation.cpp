@@ -85,7 +85,7 @@ void MEDS_SafeFuncAnnotation::parse()
         assert(func_end_pos!=string::npos);
         string func_name=m_rawInputLine.substr(func_name_start_pos, func_end_pos-func_name_start_pos);
 
-	cout<<"Found safe func name='"<<func_name<<"'"<<endl;
+	// cout<<"Found safe func name='"<<func_name<<"'"<<endl;
 
         // get offset
         setFuncName(func_name);
