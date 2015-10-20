@@ -68,11 +68,17 @@ cd $ZIPR_CALLBACKS
 make  || exit
 make install || exit
 
-cd $ZIPR_HOME
-scons  || exit
 
-cd $ZIPR_SCFI_PLUGIN
-scons  || exit
+if [ -d $ZIPR_HOME ]; 
+	cd $ZIPR_HOME
+	scons  || exit
+fi
+
+if [ -d $ZIPR_SCFI_PLUGIN ];
+then
+	cd $ZIPR_SCFI_PLUGIN
+	scons  || exit
+fi
 
 cd $PEASOUP_UMBRELLA_DIR/zipr_push64_reloc_plugin
 scons || exit
