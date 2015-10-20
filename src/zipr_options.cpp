@@ -77,7 +77,15 @@ void ZiprOptionsNamespace_t::PrintUsage(int tabs, ostream &out) {
 	for (it; it != it_end; it++) {
 		string description = (*it)->Description();
 		{ int t = 0; for (; t<tabs; t++) cout << "\t"; }
-		out << "--" + Namespace() << ":" << description << endl;
+		out << std::setw(2);
+		if (!(*it)->Required())
+			out << "[";
+		else
+			out << "";
+		out << "--" + Namespace() << ":" << description;
+		if (!(*it)->Required())
+			out << " ]";
+		out << endl;
 	}
 }
 
