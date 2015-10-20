@@ -48,8 +48,8 @@ bool ZiprOptionsNamespace_t::RequirementsMet() {
 	return true;
 }
 
-void ZiprOptionsNamespace_t::AddOption(ZiprUntypedOption_t *option) {
-	ZiprUntypedOption_t *existing_option = OptionByKey(option->Key());
+void ZiprOptionsNamespace_t::AddOption(ZiprOption_t *option) {
+	ZiprOption_t *existing_option = OptionByKey(option->Key());
 	if (existing_option) {
 #if IMPLEMENTATION_DEBUG
 		cout << "Found an existing option. Adding an observer." << endl;
@@ -61,7 +61,7 @@ void ZiprOptionsNamespace_t::AddOption(ZiprUntypedOption_t *option) {
 	}
 }
 
-ZiprUntypedOption_t *ZiprOptionsNamespace_t::OptionByKey(string key) {
+ZiprOption_t *ZiprOptionsNamespace_t::OptionByKey(string key) {
 	ZiprOptionsNamespace_t::const_iterator it = begin();
 	ZiprOptionsNamespace_t::const_iterator it_end = end();
 	for (it; it != it_end; it++) {
@@ -112,7 +112,7 @@ bool ZiprOptions_t::Parse(ostream &error, ostream &warn) {
 		string ns, key, argument = *it;
 		string::size_type location = 0;
 		ZiprOptionsNamespace_t *option_ns;
-		ZiprUntypedOption_t *option_option;
+		ZiprOption_t *option_option;
 
 		if (0 != (location = argument.find_first_of("--"))) {
 			warn << "Warning: " << argument << " does not start with --" << endl;
@@ -196,8 +196,8 @@ void ZiprOptions_t::AddNamespace(ZiprOptionsNamespace_t *ns) {
 
 void ZiprOptionsNamespace_t::MergeNamespace(ZiprOptionsNamespace_t *in) {
 	if (!in) return;
-	set<ZiprUntypedOption_t*>::const_iterator it = in->begin();
-	set<ZiprUntypedOption_t*>::const_iterator it_end = in->end();
+	set<ZiprOption_t*>::const_iterator it = in->begin();
+	set<ZiprOption_t*>::const_iterator it_end = in->end();
 	for (it; it != it_end; it++)
 		AddOption(*it);
 }
