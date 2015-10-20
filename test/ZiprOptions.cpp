@@ -44,13 +44,24 @@ int main(int argc, char *argv[])
 	ZiprOptionsNamespace_t global_ns("global");
 	ZiprOptionsNamespace_t local_ns("local");
 
+	cout << "Constructing ZiprStringOption_t('a')." << endl;
 	ZiprStringOption_t global_a_option("a");
+	cout << "Constructing ZiprStringOption_t('a')." << endl;
 	ZiprStringOption_t global_shadow_a_option("a");
+	cout << "Constructing ZiprBooleanOption_t('b', true)." << endl;
 	ZiprBooleanOption_t local_b_option("b", true);
+	cout << "Constructing ZiprBooleanOption_t('b')." << endl;
 	ZiprBooleanOption_t local_shadow_b_option("b");
+	cout << "Constructing ZiprBooleanOption_t('c', false)." << endl;
 	ZiprBooleanOption_t local_c_option("c", false);
+	cout << "Constructing ZiprStringOption_t('c', false)." << endl;
+	ZiprStringOption_t local_shadow_c_option("c");
+	cout << "Constructing ZiprIntegerOption_t('d', '55')." << endl;
 	ZiprIntegerOption_t local_d_option("d", "55");
+	cout << "Constructing ZiprIntegerOption_t('e')." << endl;
 	ZiprIntegerOption_t local_e_option("e");
+	cout << "Constructing ZiprIntegerOption_t('e')." << endl;
+	ZiprIntegerOption_t local_shadow_e_option("e");
 
 	local_b_option.SetRequired(true);
 	local_b_option.SetDescription("Set the B option.");
@@ -61,8 +72,10 @@ int main(int argc, char *argv[])
 	local_ns.AddOption(&local_b_option);
 	local_ns.AddOption(&local_shadow_b_option);
 	local_ns.AddOption(&local_c_option);
+	//local_ns.AddOption(&local_shadow_c_option);
 	local_ns.AddOption(&local_d_option);
 	local_ns.AddOption(&local_e_option);
+	local_ns.AddOption(&local_shadow_e_option);
 
 	options.AddNamespace(&global_ns);
 	options.AddNamespace(&local_ns);
@@ -103,4 +116,7 @@ int main(int argc, char *argv[])
 		cout << "local_d_option is " << local_d_option.Value() << endl;
 	}
 	cout << "local_e_option: " << ((int)local_e_option) << endl;
+	if (local_shadow_e_option == local_e_option) {
+		cout << "local_shadow_e_option == local_e_option" << endl;
+	}
 }
