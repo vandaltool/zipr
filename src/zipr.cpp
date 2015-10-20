@@ -1868,7 +1868,12 @@ void ZiprImpl_t::PrintStats()
 {
 	/* TODO:
 	*/
+	// do something like print stats as #ATTRIBUTES.
 	//m_stats->PrintStats(m_opts, cout);
+
+	// and dump a map file of where we placed instructions.  maybe guard with an option.
+	// default to dumping to zipr.map 
+	dump_map();
 }
 
 template < typename T > std::string to_hex_string( const T& n )
@@ -2215,4 +2220,34 @@ void ZiprImpl_t::UpdateCallbacks()
 		else
 			CallToNop(at);
 	}
+}
+
+void ZiprImpl_t::dump_map()
+{
+
+// std::map<libIRDB::Instruction_t*,RangeAddress_t> final_insn_locations
+	string filename="zipr.map";	// parameterize later.
+    	std::ofstream ofs(filename, std::ofstream::out);
+
+	ofs <<left<<setw(20)<<"ID"
+	    <<left<<setw(20)<<"OrigAddr"
+	    <<left<<setw(20)<<"NewAddr"
+	    <<left<<"Disassembly"<<endl;
+
+	for(std::map<libIRDB::Instruction_t*,RangeAddress_t>::iterator it=final_insn_locations.begin();
+		it!=final_insn_locations.end(); ++it)
+	{
+		Instruction_t* insn=it->first;
+		RangeAddress_t addr=it->second;
+
+		ofs << dec << setw(20)<<insn->GetBaseID()
+		    <<"0x"<<hex<<left<<setw(18)<<insn->GetAddress()->GetVirtualOffset()
+		    <<"0x"<<hex<<left<<setw(18)<<addr
+		    << left<<insn->getDisassembly()<<endl;
+
+		
+	}
+
+
+
 }

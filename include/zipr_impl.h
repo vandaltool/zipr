@@ -120,6 +120,8 @@ class ZiprImpl_t : public Zipr_t
 		// support
 		RangeAddress_t extend_section(ELFIO::section *sec, ELFIO::section *next_sec);
 
+		void dump_map();
+
 
 
 	private:
