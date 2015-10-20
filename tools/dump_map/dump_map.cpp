@@ -73,7 +73,7 @@ int main(int argc, char **argv)
 			{
 				Instruction_t* insn=*it;
 				assert(insn);
-				cout<<"\t0x"<<hex<<insn->GetBaseID()<<"\t"<<hex<<insn->GetAddress()->GetVirtualOffset()
+				cout<<"\t"<<dec<<insn->GetBaseID()<<"\t"<<hex<<insn->GetAddress()->GetVirtualOffset()
 				    <<"\t";
 				if(insn->GetFunction() && insn->GetFunction()->GetEntryPoint())
 					cout<<"0x"<<hex<<insn->GetFunction()->GetEntryPoint()->GetBaseID();
