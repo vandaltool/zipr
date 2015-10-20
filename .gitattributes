@@ -1,2 +1,4 @@
 * text=auto !eol
 bin/LICENSE.txt -text
+bin/zipr.exe -text
+plugins/nonce_relocs.zpi -text
