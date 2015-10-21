@@ -69,13 +69,12 @@ make  || exit
 make install || exit
 
 
-if [ -d $ZIPR_HOME ]; 
+if [ -d $ZIPR_HOME ];  then
 	cd $ZIPR_HOME
 	scons  || exit
 fi
 
-if [ -d $ZIPR_SCFI_PLUGIN ];
-then
+if [ -d $ZIPR_SCFI_PLUGIN ]; then
 	cd $ZIPR_SCFI_PLUGIN
 	scons  || exit
 fi
