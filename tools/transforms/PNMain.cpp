@@ -71,7 +71,9 @@ enum
 	RECURSIVE_MIN_STACK_PAD_OPTION,
 	RECURSIVE_MAX_STACK_PAD_OPTION,
 	SHOULD_DOUBLE_FRAME_SIZE_OPTION,
-	SELECTIVE_CANARIES_OPTION
+	SELECTIVE_CANARIES_OPTION,
+	SET_RANDOM_SEED,
+	SET_CANARY_VALUE
 };
 
 
@@ -96,6 +98,8 @@ static struct option const long_options[] =
 	{"recursive_max_stack_padding",required_argument, NULL, RECURSIVE_MAX_STACK_PAD_OPTION},
 	{"should_double_frame_size",required_argument, NULL, SHOULD_DOUBLE_FRAME_SIZE_OPTION},
 	{"selective_canaries",required_argument, NULL, SELECTIVE_CANARIES_OPTION},
+	{"random_seed",required_argument, NULL, SET_RANDOM_SEED},
+	{"canary_value",required_argument, NULL, SET_CANARY_VALUE},
 	{NULL, 0, NULL, 0}
 };
 
@@ -360,6 +364,20 @@ int main(int argc, char **argv)
 			while(in>>word)
 				pn_options->addSelectiveCanaryFunction(word);
 
+			break;
+		}
+		case SET_RANDOM_SEED:
+		{
+			int the_seed=atoi(optarg);
+			cout<<"Setting random seed to: "<<the_seed<<endl;
+			pn_options->setRandomSeed(the_seed);
+			break;
+		}
+		case SET_CANARY_VALUE:
+		{
+			int the_val=strtoul(optarg, NULL, 0);
+			cout<<"Setting canary value to: 0x"<<hex<<the_val<<endl;
+			pn_options->setCanaryValue(the_val);
 			break;
 		}
 		case '?':

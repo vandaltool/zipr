@@ -101,7 +101,8 @@ PNTransformDriver::PNTransformDriver(VariantID_t *pidp,string BED_script, pqxxDB
 {
 	//TODO: throw exception?
 	assert(pidp != NULL);
-	srand(time(NULL));
+
+	srand(pn_options->getRandomSeed());
 
 	//TODO: throw exception?
 	this->pidp = pidp;
@@ -2162,17 +2163,28 @@ bool PNTransformDriver::Validate(FileIR_t *virp, string name)
 unsigned int PNTransformDriver::GetRandomCanary()
 {
 
+	/* get a canary value from the options.  
+	 * assume the options package is returning a full 32-bits of entropy.
+	 */
+	return pn_options->getCanaryValue();
+
+#if 0
+/* note:  this code  is being careful to get a full 32-bits of entropy, and rand() is only promising 16-bits of entropy.
+ */
 	//TODO: check for bias.
 	stringstream canary;
 	canary.str("");
+
+	//canary<<hex<<pn_options->GetCanaryValue(); 
 	for(int i=0;i<8;i++)
 	{
-		canary<<hex<<(rand()%16);
+		canary<<hex<< (rand()%16);
 	}
 	unsigned int ret_val;
 	sscanf(canary.str().c_str(),"%x",&ret_val);
 
 	return ret_val;
+#endif
 }
 
 bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *func)
