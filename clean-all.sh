@@ -29,11 +29,15 @@ scons -c || exit
 cd $IRDB_TRANSFORMS
 scons -c || exit
 
-cd $ZIPR_SCFI_PLUGIN
-scons  -c || exit
+if [ -d $ZIPR_SCFI_PLUGIN ]; then
+	cd $ZIPR_SCFI_PLUGIN
+	scons  -c || exit
+fi
 
 cd $PEASOUP_UMBRELLA_DIR/zipr_push64_reloc_plugin
 scons -c || exit
 
-cd $ZIPR_HOME
-scons -c || exit
+if [ -d $ZIPR_HOME ]; then 
+	cd $ZIPR_HOME
+	scons -c || exit
+fi

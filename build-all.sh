@@ -63,13 +63,14 @@ scons  || exit
 cd $PEASOUP_HOME
 make || exit
 
-cd $ZIPR_CALLBACKS
-./configure --enable-p1 --prefix=$ZIPR_INSTALL
-make  || exit
-make install || exit
+if [ -d $ZIPR_CALLBACKS ]; then 
+	cd $ZIPR_CALLBACKS
+	./configure --enable-p1 --prefix=$ZIPR_INSTALL
+	make  || exit
+	make install || exit
+fi
 
-
-if [ -d $ZIPR_HOME ];  then
+if [ -d $ZIPR_HOME ]; then
 	cd $ZIPR_HOME
 	scons  || exit
 fi
