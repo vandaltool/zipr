@@ -1,4 +1,5 @@
 
+
 #include <string>
 #include <structured_diversity.h>
 #include <filebased.h>
@@ -70,7 +71,7 @@ FileBased_StructuredDiversity_t::FileBased_StructuredDiversity_t(string key, int
 }
 
 
-bool fexists(const char *filename) {
+static bool fexists(const char *filename) {
   ifstream ifile(filename);
   return ifile;
 }
