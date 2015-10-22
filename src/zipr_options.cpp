@@ -24,7 +24,7 @@
 #include <cstddef>
 
 #ifndef IMPLEMENTATION_DEBUG
-#define IMPLEMENTATION_DEBUG 1
+#define IMPLEMENTATION_DEBUG 0
 #endif
 
 using namespace Zipr_SDK;
