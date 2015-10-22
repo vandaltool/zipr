@@ -133,7 +133,8 @@ void ZiprPluginManager_t::open_plugins
 			cout<<"File ("<<name<<") does not have proper extension, skipping."<<endl;
 			continue; // try next file
 		}
-		cout<<"Attempting load of file ("<<name<<")."<<endl;
+		if (m_verbose)
+			cout<<"Attempting load of file ("<<name<<")."<<endl;
 
 		void* handle=dlopen(name.c_str(), RTLD_LAZY|RTLD_GLOBAL);
 		if(!handle)
