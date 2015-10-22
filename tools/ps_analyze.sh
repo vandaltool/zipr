@@ -130,21 +130,16 @@ check_step_option()
 
 set_step_option()
 {
-	step=`echo $1 | sed 's/\(.*\):.*/\1/'`
-	option=`echo $1 | sed 's/.*:\(.*\)/\1/'`
+	step=`echo $1 | cut -d: -f1` 
+	option=`echo $1 | cut -d: -f2-` 
 
-	case "$step" in
-		*) 	
-			#
-			# this sets step_options_$step to have the new option
-			# you can now, when writing your step, just add $step_options_<stepname> where you want the options passed to your step.
-			#
-			var="step_options_$step"
-			old_value="${!var}"
-			eval "step_options_$step='$old_value $option'"
-		;;
-	esac
-	
+	#
+	# this sets step_options_$step to have the new option
+	# you can now, when writing your step, just add $step_options_<stepname> where you want the options passed to your step.
+	#
+	var="step_options_$step"
+	old_value="${!var}"
+	eval "step_options_$step='$old_value $option'"
 }
 
 usage()
@@ -1039,7 +1034,7 @@ perform_step get_pins spasm,fast_spri  $PEASOUP_HOME/tools/get_pins.sh
 
 
 # zipr
-perform_step zipr clone,fill_in_indtargs,fill_in_cfg,pdb_register $ZIPR_INSTALL/bin/zipr.exe --variant $cloneid --zipr:callbacks $ZIPR_INSTALL/bin/callbacks.exe --zipr:objcopy $PS_OBJCOPY
+perform_step zipr clone,fill_in_indtargs,fill_in_cfg,pdb_register $ZIPR_INSTALL/bin/zipr.exe --variant $cloneid --zipr:callbacks $ZIPR_INSTALL/bin/callbacks.exe --zipr:objcopy $PS_OBJCOPY $step_options_zipr
 
 # copy TOCTOU tool here if it exists
 if [[ "$CONCURRENCY_HOME/toctou_tool" != "" && -d "$CONCURRENCY_HOME/toctou_tool" ]]; then

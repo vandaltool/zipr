@@ -81,6 +81,8 @@ MD5HASH=`$PS_MD5SUM $FILENAME| cut -f1 -d' '`
 # -c: run command
 
 
+
+echo PGDATABASE is $PGDATABASE
 PROGRAM_ID=`psql -q -t -c "INSERT INTO variant_info (schema_version_id,name) VALUES ('2', '$PROGRAM_NAME') RETURNING variant_id;" | sed "s/^[ \t]*//"`
 
 if [ ! $? -eq 0 ]; then
