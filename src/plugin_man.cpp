@@ -124,11 +124,16 @@ void ZiprPluginManager_t::open_plugins
 
     	while ((dirp = readdir(dp)) != NULL) 
 	{
-        	string name=dir+string(dirp->d_name);
+		string basename = string(dirp->d_name);
+		string name=dir+basename;
 		string zpi(".zpi");
-
 		string extension=name.substr(name.size() - zpi.length());
-		if(extension!=zpi)
+
+		// Automatically skip cwd and pwd entries.
+		if(basename == "." || basename == "..")
+			continue;
+
+		if (extension!=zpi)
 		{
 			cout<<"File ("<<name<<") does not have proper extension, skipping."<<endl;
 			continue; // try next file
