@@ -38,13 +38,15 @@ class Stats_t;
 class ZiprImpl_t : public Zipr_t
 {
 	public:
-		ZiprImpl_t(libIRDB::FileIR_t* p_firp, ZiprOptions_t *p_opts) :
-			m_firp(p_firp), 
-			m_stats(NULL), 
+		ZiprImpl_t(int argc, char **argv) :
+			m_stats(NULL),
+			m_firp(NULL),
+			m_error(false),
 			elfiop(new ELFIO::elfio), 
 			start_of_new_space(0),
 			memory_space(),
 			random_int_distribution(1,INT_MAX),
+			m_zipr_options(argc-1, argv+1),
 			m_output_filename("output", "b.out"),
 			m_callbacks("callbacks"),
 			m_objcopy("objcopy", "/usr/bin/objcopy"),
@@ -54,17 +56,14 @@ class ZiprImpl_t : public Zipr_t
 			m_architecture("architecture"),
 			m_seed("seed", random_int_distribution(random_generator))
 		{ 
-			bss_needed=0;
-			use_stratafier_mode=false;
-
-			p_opts->AddNamespace(RegisterOptions(p_opts->Namespace("global")));
-			plugman = ZiprPluginManager_t(&memory_space, elfiop, p_firp, p_opts, &final_insn_locations);
-
-			// init  pinned addresses map.
-			//RecordPinnedInsnAddrs();
+			Init();
  		};
+		~ZiprImpl_t();
 
-		void CreateBinaryFile(const std::string &name);
+		void CreateBinaryFile();
+		bool Error() {
+			return m_error;
+		}
 
 		int DetermineWorstCaseInsnSize(libIRDB::Instruction_t*);
 		Zipr_SDK::RangeAddress_t PlopInstruction(libIRDB::Instruction_t* insn, Zipr_SDK::RangeAddress_t addr);
@@ -74,9 +73,7 @@ class ZiprImpl_t : public Zipr_t
 		ZiprOptionsNamespace_t *RegisterOptions(ZiprOptionsNamespace_t *);
 	private:
 
-		// data for the stuff we're rewriting.
-		libIRDB::FileIR_t* m_firp;
-		Stats_t *m_stats;
+		void Init();
 
 		Zipr_SDK::RangeAddress_t _PlopInstruction(libIRDB::Instruction_t*, Zipr_SDK::RangeAddress_t);
 		int _DetermineWorstCaseInsnSize(libIRDB::Instruction_t* );
@@ -129,6 +126,17 @@ class ZiprImpl_t : public Zipr_t
 
 
 	private:
+		Stats_t *m_stats;
+
+		// data for the stuff we're rewriting.
+		libIRDB::FileIR_t* m_firp;
+		libIRDB::VariantID_t *m_variant_id;
+		libIRDB::pqxxDB_t m_pqxx_interface;
+		pqxx::largeobject *lo;
+
+
+		bool m_error;
+
 		// structures necessary for ZIPR algorithm.
 		std::set<UnresolvedUnpinned_t> unresolved_unpinned_addrs;
 		std::set<UnresolvedPinned_t> unresolved_pinned_addrs; 
@@ -171,6 +179,7 @@ class ZiprImpl_t : public Zipr_t
 		std::uniform_int_distribution<int> random_int_distribution;
 
 		// Options
+		ZiprOptions_t m_zipr_options;
 		ZiprStringOption_t m_output_filename, m_callbacks, m_objcopy;
 		ZiprBooleanOption_t m_replop, m_verbose;
 		ZiprIntegerOption_t m_variant, m_architecture, m_seed;

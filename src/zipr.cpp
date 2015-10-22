@@ -67,6 +67,67 @@ static std::ifstream::pos_type filesize(const char* filename)
    	return in.tellg();
 }
 
+void ZiprImpl_t::Init()
+{
+	bss_needed=0;
+	use_stratafier_mode=false;
+
+	m_zipr_options.AddNamespace(new ZiprOptionsNamespace_t("global"));
+	m_zipr_options.AddNamespace(RegisterOptions(m_zipr_options.Namespace("global")));
+
+	m_zipr_options.Parse();
+	if (m_variant.RequirementMet()) {
+		/* setup the interface to the sql server */
+		BaseObj_t::SetInterface(&m_pqxx_interface);
+
+		m_variant_id=new VariantID_t(m_variant);
+		assert(m_variant_id);
+		assert(m_variant_id->IsRegistered()==true);
+
+		if (m_verbose)
+			cout<<"New Variant, after reading registration, is: "<<*m_variant_id << endl;
+
+		for(set<File_t*>::iterator it=m_variant_id->GetFiles().begin();
+		                           it!=m_variant_id->GetFiles().end();
+		                         ++it
+		   )
+		{
+			File_t* this_file=*it;
+			assert(this_file);
+			// only do a.ncexe for now.
+			if(this_file->GetURL().find("a.ncexe")==string::npos)
+				continue;
+
+			// read the db
+			m_firp=new FileIR_t(*m_variant_id, this_file);
+			assert(m_firp);
+
+		}
+	}
+	plugman = ZiprPluginManager_t(&memory_space, elfiop, m_firp, &m_zipr_options, &final_insn_locations);
+
+	if (!m_zipr_options.RequirementsMet()) {
+		m_zipr_options.PrintUsage(cout);
+		m_error = true;
+		return;
+	}
+	// init  pinned addresses map.
+	//RecordPinnedInsnAddrs();
+}
+
+ZiprImpl_t::~ZiprImpl_t()
+{
+	delete m_firp;
+	try
+	{
+		m_pqxx_interface.Commit();
+	}
+	catch (DatabaseError_t pnide)
+	{
+		cout<<"Unexpected database error: "<<pnide<<endl;
+	}
+}
+
 ZiprOptionsNamespace_t *ZiprImpl_t::RegisterOptions(ZiprOptionsNamespace_t *global)
 {
 	ZiprOptionsNamespace_t *zipr_namespace = new ZiprOptionsNamespace_t("zipr");
@@ -98,9 +159,12 @@ ZiprOptionsNamespace_t *ZiprImpl_t::RegisterOptions(ZiprOptionsNamespace_t *glob
 	return zipr_namespace;
 }
 
-void ZiprImpl_t::CreateBinaryFile(const std::string &name)
+void ZiprImpl_t::CreateBinaryFile()
 {
 	m_stats = new Stats_t();
+
+	lo = new pqxx::largeobject(m_firp->GetFile()->GetELFOID());
+	lo->to_file(m_pqxx_interface.GetTransaction(),string(m_output_filename).c_str());
 
 /* have to figure this out.  we'll want to really strip the binary
  * but also remember the strings. 
@@ -139,7 +203,7 @@ void ZiprImpl_t::CreateBinaryFile(const std::string &name)
 		cout << "Seeded the random number generator with " << m_seed << "." << endl;
 
 	// create ranges, including extra range that's def. big enough.
-	FindFreeRanges(name);
+	FindFreeRanges(m_output_filename);
 
 	plugman.PinningBegin();
 
@@ -224,7 +288,7 @@ void ZiprImpl_t::CreateBinaryFile(const std::string &name)
 	m_stats->total_free_ranges = memory_space.GetRangeCount();
 
 	// write binary file to disk 
-	OutputBinaryFile(name);
+	OutputBinaryFile(m_output_filename);
 
 	// print relevant information
 	PrintStats();
