@@ -5,10 +5,7 @@ typedef Zipr_SDK::ZiprPluginInterface_t* DLFunctionHandle_t;
 typedef std::set<DLFunctionHandle_t> DLFunctionHandleSet_t;
 
 typedef Zipr_SDK::ZiprPluginInterface_t* (*GetPluginInterface_t)(
-        Zipr_SDK::MemorySpace_t *p_ms,
-        ELFIO::elfio *p_elfio,
-        libIRDB::FileIR_t *p_firp,
-        Zipr_SDK::InstructionLocationMap_t *p_fil
+	Zipr_SDK::Zipr_t*
 	);
 
 
@@ -21,20 +18,17 @@ class ZiprPluginManager_t : public ZiprPluginInterface_t
 
 		ZiprPluginManager_t
 			(
-        		 Zipr_SDK::MemorySpace_t *p_ms,
-        		 ELFIO::elfio *p_elfio,
-        		 libIRDB::FileIR_t *p_firp,
-        		 Zipr_SDK::ZiprOptions_t *p_opts,
-        		 Zipr_SDK::InstructionLocationMap_t *p_fil
+				Zipr_SDK::Zipr_t* zipr_obj,
+				Zipr_SDK::ZiprOptions_t *p_opts
 			)
 			:
-			m_verbose("verbose"),
-			m_opts(p_opts)
+				m_verbose("verbose"),
+				m_opts(p_opts)
 			{
 				ZiprOptionsNamespace_t *opts_global_ns = m_opts->Namespace("global");
 				if (opts_global_ns)
 					opts_global_ns->AddOption(&m_verbose);
-				open_plugins(p_ms,p_elfio,p_firp,p_opts,p_fil);
+				open_plugins(zipr_obj, p_opts);
 			}
 
         	virtual void PinningBegin();
@@ -46,17 +40,14 @@ class ZiprPluginManager_t : public ZiprPluginInterface_t
         	virtual void CallbackLinkingBegin();
         	virtual void CallbackLinkingEnd();
 
-					virtual bool DoesPluginPlop(libIRDB::Instruction_t*,DLFunctionHandle_t&);
+		virtual bool DoesPluginPlop(libIRDB::Instruction_t*,DLFunctionHandle_t&);
 
 	private:
 
 		void open_plugins
 			(
-        		 Zipr_SDK::MemorySpace_t *p_ms,
-        		 ELFIO::elfio *p_elfio,
-        		 libIRDB::FileIR_t *p_firp,
-        		 Zipr_SDK::ZiprOptions_t *p_opts,
-        		 Zipr_SDK::InstructionLocationMap_t *p_fil
+				Zipr_SDK::Zipr_t* zipr_obj,
+				Zipr_SDK::ZiprOptions_t *p_opts
 			);
 		ZiprBooleanOption_t m_verbose;
 		ZiprOptions_t *m_opts;

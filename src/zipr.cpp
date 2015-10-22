@@ -109,7 +109,7 @@ void ZiprImpl_t::Init()
 
 		}
 	}
-	plugman = ZiprPluginManager_t(&memory_space, elfiop, m_firp, &m_zipr_options, &final_insn_locations);
+	plugman = ZiprPluginManager_t(this, &m_zipr_options);
 
 	/*
 	 * Parse again now that the plugins registered something.

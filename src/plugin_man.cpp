@@ -98,11 +98,8 @@ bool ZiprPluginManager_t::DoesPluginPlop(Instruction_t *insn, DLFunctionHandle_t
 
 void ZiprPluginManager_t::open_plugins
                         (
-                         Zipr_SDK::MemorySpace_t *p_ms,
-                         ELFIO::elfio *p_elfio,
-                         libIRDB::FileIR_t *p_firp,
-                         Zipr_SDK::ZiprOptions_t *p_opts,
-                         Zipr_SDK::InstructionLocationMap_t *p_fil
+				Zipr_SDK::Zipr_t* zipr_obj,
+				Zipr_SDK::ZiprOptions_t *p_opts
                         )
 {
 	char* zinst=getenv("ZIPR_INSTALL");
@@ -157,9 +154,8 @@ void ZiprPluginManager_t::open_plugins
 		}
 
 		ZiprOptionsNamespace_t *global_ns = p_opts->Namespace("global");
-		GetPluginInterface_t GetPluginInterface=(GetPluginInterface_t)sym;
-		Zipr_SDK::ZiprPluginInterface_t *interface=(*GetPluginInterface)(p_ms,p_elfio,p_firp,p_fil);
-
+		GetPluginInterface_t my_GetPluginInterface=(GetPluginInterface_t)sym;
+		Zipr_SDK::ZiprPluginInterface_t *interface=(*my_GetPluginInterface)(zipr_obj);
 
 		if(!interface)
 		{
