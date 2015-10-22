@@ -106,17 +106,20 @@ ZiprOptions_t::ZiprOptions_t(int argc, char **argv) {
 	}
 }
 
-bool ZiprOptions_t::Parse(ostream &error, ostream &warn) {
+bool ZiprOptions_t::Parse(ostream *error, ostream *warn) {
 	vector<string>::const_iterator it, it_end = m_arguments.end();
+	bool success = true;
 
 	for (it = m_arguments.begin(); it != it_end; it++) {
 		string ns, key, argument = *it;
 		string::size_type location = 0;
 		ZiprOptionsNamespace_t *option_ns;
 		ZiprOption_t *option_option;
+		bool next_is_option_value = false;
 
 		if (0 != (location = argument.find_first_of("--"))) {
-			warn << "Warning: " << argument << " does not start with --" << endl;
+			if (warn)
+				*warn << "Warning: " << argument << " does not start with --" << endl;
 			continue;
 		}
 #if IMPLEMENTATION_DEBUG
@@ -124,7 +127,8 @@ bool ZiprOptions_t::Parse(ostream &error, ostream &warn) {
 #endif
 		argument = argument.substr(location+2, string::npos);
 		if (string::npos == (location = argument.find_first_of(":"))) {
-			warn << "Warning: " << argument << " going in global namespace." << endl;
+			if (warn)
+				*warn << "Warning: " << argument << " going in global namespace."<<endl;
 			ns = "global";
 			location = -1;
 		} else {
@@ -139,26 +143,39 @@ bool ZiprOptions_t::Parse(ostream &error, ostream &warn) {
 		cout << "key: " << key << endl;
 #endif
 		if (!(option_ns = Namespace(ns))) {
-			error << "Invalid namespace: " << ns << endl;
-			return false;
+			if (error)
+				*error << "Invalid namespace: " << ns << endl;
+			success = false;
+			continue;
+			//return false;
 		}
 		if (!(option_option = option_ns->OptionByKey(key))) {
-			error << "Error: namespace "
-			     << ns
-					 << " does not accept key "
-					 << key << endl;
-			return false;
+			if (error)
+				*error << "Error: namespace "
+				       << ns
+				       << " does not accept key "
+				       << key << endl;
+			success = false;
+			continue;
+			//return false;
 		}
 		/*
 		 * By default, options need and take values. Some, though,
 		 * take values but don't need them. Finally, some neither
 		 * take nor need values.
 		 */
+		if (((it+1) != it_end) &&
+		    (0 != (location = (*(it+1)).find_first_of("--")))) {
+			next_is_option_value = true;
+		}
 		if (option_option->NeedsValue()) {
-			if ((it + 1) == it_end)
+			if ((it + 1) == it_end || !next_is_option_value)
 			{
-				error << ns << ":" << key << " is missing value." << endl;
-				return false;
+				if (error)
+					*error << ns << ":" << key << " is missing value." << endl;
+				success = false;
+				continue;
+				//return false;
 			}
 			option_option->SetValue(*(++it));
 		} else if (option_option->TakesValue()) {
@@ -167,8 +184,7 @@ bool ZiprOptions_t::Parse(ostream &error, ostream &warn) {
 			 * If it does, we consider it the next option
 			 * and not the value to the previous option.
 			 */
-			if (((it+1) != it_end) && 
-			    (0 != (location = (*(it+1)).find_first_of("--")))) {
+			if (next_is_option_value) {
 				option_option->SetValue(*(++it));
 			} else {
 				option_option->Set();
@@ -177,7 +193,7 @@ bool ZiprOptions_t::Parse(ostream &error, ostream &warn) {
 			option_option->Set();
 		}
 	}
-	return true;
+	return success;
 }
 
 ZiprOptionsNamespace_t *ZiprOptions_t::Namespace(string ns) {
