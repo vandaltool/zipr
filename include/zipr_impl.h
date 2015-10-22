@@ -122,6 +122,10 @@ class ZiprImpl_t : public Zipr_t
 
 		void dump_map();
 
+                virtual Zipr_SDK::MemorySpace_t *GetMemorySpace() { return &memory_space; }
+                virtual ELFIO::elfio *GetELFIO() { return elfiop; }
+                virtual libIRDB::FileIR_t *GetFileIR() { return m_firp; }
+                virtual Zipr_SDK::InstructionLocationMap_t *GetLocationMap() { return &final_insn_locations; }
 
 
 	private:
@@ -138,7 +142,8 @@ class ZiprImpl_t : public Zipr_t
 		std::map<UnresolvedPinned_t,RangeAddress_t> five_byte_pins; 
 
 		// final mapping of instruction to address.
-		std::map<libIRDB::Instruction_t*,RangeAddress_t> final_insn_locations; 
+		// std::map<libIRDB::Instruction_t*,RangeAddress_t> 
+		Zipr_SDK::InstructionLocationMap_t final_insn_locations; 
 		std::map<RangeAddress_t,libIRDB::Instruction_t*> m_InsnAtAddrs; 
 
 		// unpatched callbacks

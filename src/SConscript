@@ -43,6 +43,7 @@ libs='''
 	pq 
 	dl 
 	EXEIO
+	StructDiv
 	'''
 
 libpath='''
