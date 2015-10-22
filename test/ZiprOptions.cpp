@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
 	options.AddNamespace(&global_ns);
 	options.AddNamespace(&local_ns);
 
-	options.Parse(cout);
+	options.Parse(&cout);
 
 	if (!options.RequirementsMet())
 	{

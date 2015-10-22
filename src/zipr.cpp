@@ -72,10 +72,15 @@ void ZiprImpl_t::Init()
 	bss_needed=0;
 	use_stratafier_mode=false;
 
+	ostream *error = &cout, *warn = NULL;
+
 	m_zipr_options.AddNamespace(new ZiprOptionsNamespace_t("global"));
 	m_zipr_options.AddNamespace(RegisterOptions(m_zipr_options.Namespace("global")));
 
-	m_zipr_options.Parse();
+	/*
+	 * Parse once to read the global and zipr options.
+	 */
+	m_zipr_options.Parse(NULL, NULL);
 	if (m_variant.RequirementMet()) {
 		/* setup the interface to the sql server */
 		BaseObj_t::SetInterface(&m_pqxx_interface);
@@ -105,6 +110,13 @@ void ZiprImpl_t::Init()
 		}
 	}
 	plugman = ZiprPluginManager_t(&memory_space, elfiop, m_firp, &m_zipr_options, &final_insn_locations);
+
+	/*
+	 * Parse again now that the plugins registered something.
+	 */
+	if (m_verbose)
+		warn = &cout;
+	m_zipr_options.Parse(error, warn);
 
 	if (!m_zipr_options.RequirementsMet()) {
 		m_zipr_options.PrintUsage(cout);
