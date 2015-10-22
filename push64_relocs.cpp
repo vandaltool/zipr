@@ -356,10 +356,11 @@ void Push64Relocs_t::UpdatePush64Adds()
 
 extern "C" 
 Zipr_SDK::ZiprPluginInterface_t* GetPluginInterface(
-	Zipr_SDK::MemorySpace_t *p_ms, 
-	ELFIO::elfio *p_elfio, 
-	libIRDB::FileIR_t *p_firp, 
-	Zipr_SDK::InstructionLocationMap_t *p_fil) 
+	Zipr_SDK::Zipr_t* zipr_object)
 {
+	Zipr_SDK::MemorySpace_t *p_ms=zipr_object->GetMemorySpace(); 
+	ELFIO::elfio *p_elfio=zipr_object->GetELFIO(); 
+	libIRDB::FileIR_t *p_firp=zipr_object->GetFileIR();
+	Zipr_SDK::InstructionLocationMap_t *p_fil=zipr_object->GetLocationMap(); 
 	return new Push64Relocs_t(p_ms,p_elfio,p_firp,p_fil);
 }
