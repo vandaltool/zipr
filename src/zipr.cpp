@@ -156,6 +156,7 @@ ZiprOptionsNamespace_t *ZiprImpl_t::RegisterOptions(ZiprOptionsNamespace_t *glob
 	m_callbacks.SetDescription("Set the path of the file "
 		"which contains any required callbacks.");
 	m_seed.SetDescription("Seed the random number generator with this value.");
+	m_seed.SetValue((int)time(NULL));
 
 	zipr_namespace->AddOption(&m_output_filename);
 	zipr_namespace->AddOption(&m_callbacks);
