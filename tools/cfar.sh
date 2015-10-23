@@ -31,10 +31,11 @@ do
 	sharepath_key="$seq:$variants:dir://$share_path "
 
 	# optoins for zipr's large_only plugin to help create non-overlapping code segments. 
-	large_only_options="--step-option zipr:--large_only:on --step-option zipr:true --step-option zipr:--large_only:variant --step-option zipr:$sharepath_key"
+	#large_only_options="--step-option zipr:--large_only:on --step-option zipr:true --step-option zipr:--large_only:variant --step-option zipr:$sharepath_key"
+	large_only_options="--step-option zipr:'--large_only:on true --large_only:variant $sharepath_key'"
 	
-	# optoins to p1 to create non-overlapping canary values.
-	p1options=" --step-option p1transform:--canary_value --step-option p1transform:0xFF0${seq}${seq}0FF --step-option p1transform:--random_seed --step-option p1transform:$anyseed "
+	# options to p1 to create non-overlapping canary values.
+	p1options=" --step-option p1transform:'--canary_value 0xFF0${seq}${seq}0FF --random_seed $anyseed'"
 
 	# invoke $PS.
 	cmd=" PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PEASOUP_HOME/tools/ps_analyze.sh $in $out.v$seq $@ $p1options $large_only_options > variant_output.$seq 2>&1 &"

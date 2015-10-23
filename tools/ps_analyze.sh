@@ -241,7 +241,7 @@ check_options()
             			shift 2
 			;;
 			-o|--step-option)
-           			set_step_option $2
+           			set_step_option "$2"
             			shift 2
             		;;
             		# This is the watchdog value
@@ -692,7 +692,7 @@ shift
 #
 # finish argument parsing
 #
-check_options $*
+check_options "$@"
 
 
 #
