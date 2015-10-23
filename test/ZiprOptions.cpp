@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 	cout << "global_shadow_a_option: " << global_shadow_a_option.Value() << endl;
 	cout << "local_shadow_b_option: " << local_shadow_b_option.StringValue() << endl;
 	if (global_a_option == "avl") {
-		cout << "global_a_option is avl." << endl;
+		cout << "global_a_option is avl (" << global_a_option.substr(0,1) << ")." << endl;
 	} else {
 		cout << "global_a_option is NOT avl." << endl;
 	}
