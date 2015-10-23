@@ -1869,9 +1869,6 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 		if( (sec->get_flags() & SHF_EXECINSTR) == 0)
 			continue;
 	
-		section* next_sec = NULL;
-		if(i+1<total_sections)
-			next_sec=rewrite_headers_elfiop->sections[i+1];
 #ifdef EXTEND_SECTIONS
 		extend_section(sec, next_sec);
 #endif
@@ -2027,20 +2024,15 @@ void ZiprImpl_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_ad
 			perror(__FUNCTION__);
 		}
 
-#ifdef CGC
-		// doens't work with shared objects, but produces a smaller binary, use it for CGC. 
-		// ultimately we may do dynamic selection and/or a better tool
-		stratafier_cmd="$STRATAFIER/add_strata_segment";
-#else
-		//  move_segheaders is needed for shared objects.
-		stratafier_cmd="$STRATAFIER/move_segheaders";
-#endif
+		if ( elfiop->get_type() == ET_EXEC )
+			stratafier_cmd="$STRATAFIER/add_strata_segment";
+		else
+			//  move_segheaders is needed for shared objects.
+			stratafier_cmd="$STRATAFIER/move_segheaders";
 
-		//if (m_opts.GetArchitecture() == 64) {
 		if (m_architecture == 64) {
 			stratafier_cmd += "64";
 		}
-//		stratafier_cmd += " " + rewritten_file+ " " + rewritten_file +".addseg";
 		stratafier_cmd += " " + rewritten_file+ " " + rewritten_file +".addseg"+" .strata";
 		printf("Attempting: %s\n", stratafier_cmd.c_str());
 		if(-1 == system(stratafier_cmd.c_str()))
@@ -2060,7 +2052,7 @@ void ZiprImpl_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_ad
 	else
 	{
 #ifndef CGC
-		assert(0); // stratafier mode available only for CGC
+		assert(0); // "not stratafier" mode available only for CGC
 #else
 		string cmd="";
 		string zeroes_file=rewritten_file+".zeroes";
@@ -2197,13 +2189,13 @@ RangeAddress_t ZiprImpl_t::PlopWithCallback(Instruction_t* insn, RangeAddress_t 
 	// pop bogus ret addr
 	if(m_firp->GetArchitectureBitWidth()==64)
 	{
-		char bytes[]={(char)0x48,(char)0x8d,(char)0x64,(char)0x24,(char)m_firp->GetArchitectureBitWidth()/0x08}; // lea rsp, [rsp+8]
+		char bytes[]={(char)0x48,(char)0x8d,(char)0x64,(char)0x24,(char)(m_firp->GetArchitectureBitWidth()/0x08)}; // lea rsp, [rsp+8]
 		memory_space.PlopBytes(at, bytes, sizeof(bytes)); 
 		at+=sizeof(bytes);
 	}
 	else if(m_firp->GetArchitectureBitWidth()==32)
 	{
-		char bytes[]={(char)0x8d,(char)0x64,(char)0x24,(char)m_firp->GetArchitectureBitWidth()/0x08}; // lea esp, [esp+4]
+		char bytes[]={(char)0x8d,(char)0x64,(char)0x24,(char)(m_firp->GetArchitectureBitWidth()/0x08)}; // lea esp, [esp+4]
 		memory_space.PlopBytes(at, bytes, sizeof(bytes)); 
 		at+=sizeof(bytes);
 	}

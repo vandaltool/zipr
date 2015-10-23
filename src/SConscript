@@ -53,7 +53,7 @@ libpath='''
 if sysname=="SunOS":
 	myenv.Append(LINKFLAGS=" -xldscope=global ")	# export all symbols
 else:
-	myenv.Append(CCFLAGS=" -Wall ")
+	myenv.Append(CCFLAGS=" -Wall -Wunused-function ")
 	myenv.Append(LINKFLAGS=" -Wl,-E ")	# export all symbols
 
 
