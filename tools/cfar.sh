@@ -32,7 +32,8 @@ do
 
 	# optoins for zipr's large_only plugin to help create non-overlapping code segments. 
 	#large_only_options="--step-option zipr:--large_only:on --step-option zipr:true --step-option zipr:--large_only:variant --step-option zipr:$sharepath_key"
-	large_only_options=(--step-option zipr:"--large_only:on true --large_only:variant $sharepath_key")
+	#large_only_options=(--step-option zipr:"--large_only:on true --large_only:variant $sharepath_key")
+	large_only_options=(--step-option zipr:"--large_only:variant $sharepath_key")
 	
 	# options to p1 to create non-overlapping canary values.
 	p1options=(--step-option p1transform:"--canary_value 0xFF0${seq}${seq}0FF --random_seed $anyseed")
