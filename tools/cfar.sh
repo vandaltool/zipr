@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 
 # parse first 3 parameters as fixed position params.
@@ -28,19 +28,24 @@ for seq in $(seq 0 $(expr $variants - 1) )
 do
 
 	# the path to the "shared memory" that cfar is using.
-	sharepath_key="$seq:$variants:dir://$share_path "
+	sharepath_key="$seq:$variants:dir://$share_path"
 
 	# optoins for zipr's large_only plugin to help create non-overlapping code segments. 
 	#large_only_options="--step-option zipr:--large_only:on --step-option zipr:true --step-option zipr:--large_only:variant --step-option zipr:$sharepath_key"
-	large_only_options="--step-option zipr:'--large_only:on true --large_only:variant $sharepath_key'"
+	large_only_options=(--step-option zipr:"--large_only:on true --large_only:variant $sharepath_key")
 	
 	# options to p1 to create non-overlapping canary values.
-	p1options=" --step-option p1transform:'--canary_value 0xFF0${seq}${seq}0FF --random_seed $anyseed'"
+	p1options=(--step-option p1transform:"--canary_value 0xFF0${seq}${seq}0FF --random_seed $anyseed")
+
+	cmd_line_options=( "$@" )
 
 	# invoke $PS.
-	cmd=" PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PEASOUP_HOME/tools/ps_analyze.sh $in $out.v$seq $@ $p1options $large_only_options > variant_output.$seq 2>&1 &"
-	echo $cmd
-	eval $cmd
+	#cmd=env PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PEASOUP_HOME/tools/ps_analyze.sh $in $out.v$seq ${cmd_line_options[@]}  ${p1options[@]} ${large_only_options[@]} "
+	#echo "$cmd"
+	#eval $cmd > variant_output.$seq 2>&1 &
+
+	echo PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PEASOUP_HOME/tools/ps_analyze.sh $in $out.v$seq "${cmd_line_options[@]}"  "${p1options[@]}" "${large_only_options[@]}" 
+	PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PEASOUP_HOME/tools/ps_analyze.sh $in $out.v$seq "${cmd_line_options[@]}"  "${p1options[@]}" "${large_only_options[@]}" > variant_output.$seq 2>&1 &
 
 	# remember the pid.
 	pids="$pids $!"
