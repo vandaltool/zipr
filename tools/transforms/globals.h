@@ -24,6 +24,9 @@
 #include <set>
 #include <string>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
+
 
 
 extern bool verbose_log;
@@ -41,7 +44,7 @@ class PNOptions
 			do_canaries = true;
 			do_selective_canaries = false;
 			should_double_frame_size=true;
-			random_seed=time(0);
+			random_seed=getpid();
 			canary_value=0;
 			canary_value_inited=false;
 		}
@@ -59,7 +62,7 @@ class PNOptions
 		int getRecursiveMinStackPadding() const { return recursive_min_stack_padding; }
 		int getRecursiveMaxStackPadding() const { return recursive_max_stack_padding; }
 		bool getShouldDoubleFrameSize() const { return should_double_frame_size; }
-		bool getRandomSeed() { return random_seed; }
+		int getRandomSeed() { return random_seed; }
 		int getCanaryValue() 	
 		{ 
 			if (canary_value_inited) 
@@ -92,7 +95,7 @@ class PNOptions
 		bool do_canaries;
 		bool do_selective_canaries;
 		bool should_double_frame_size;
-		bool random_seed;
+		int random_seed;
 		int canary_value;
 		bool canary_value_inited;
 

@@ -36,6 +36,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
+
 
 #include "elfio/elfio.hpp"
 
@@ -189,7 +192,7 @@ void a2bspri(const vector<string> &input,const string &outFilename, const string
 	if(getenv("SPASM_SEED"))
 		srand(atoi(getenv("SPASM_SEED")));
 	else	
-		srand(time(0));
+		srand(getpid());
 
 	/* make start at 0xff00000000000000 for x86-64 */
 	if(elfiop.get_class()==ELFCLASS64) 
