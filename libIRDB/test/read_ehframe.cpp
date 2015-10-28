@@ -209,7 +209,7 @@ intptr_t addr_to_p_offset(uintptr_t to_deref)
 		{
 			intptr_t offset=((uintptr_t)to_deref-(uintptr_t)elfiop->sections[i]->get_address());
 			const char* data=elfiop->sections[i]->get_data();
-			return (intptr_t)((uintptr_t)elfiop->sections[i]->get_address()- (uintptr_t)&data[offset]); 
+			return (intptr_t)(to_deref-(uintptr_t)&data[offset]); 
 		}
 	}
 	assert(0);
