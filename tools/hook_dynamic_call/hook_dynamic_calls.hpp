@@ -36,11 +36,15 @@ class HookDynamicCalls : public libTransform::Transform
 		void LoadPltIndexTable();
 		void MakeSymbolOffsetTable();
 		void LoadElf();
+		void CalculateIndirectTargets();
+		bool IsPushJumpCombo(Instruction_t *, Instruction_t *&);
+		bool IsStraightCall(Instruction_t *);
 		std::unique_ptr<ELFIO::elfio> m_elfiop;
 		std::unique_ptr<pqxx::largeobjectaccess> file_object;
 		ELFIO::Elf64_Addr *m_plt_addresses;
 		std::unique_ptr<std::map<std::string, ELFIO::Elf64_Addr>> m_symbol_offset_table;
 		std::map<std::string,int> m_to_hook;
+		std::map<virtual_offset_t, libIRDB::Instruction_t*> m_indtargs;
 
 };
 #endif

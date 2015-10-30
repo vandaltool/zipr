@@ -190,9 +190,14 @@ Instruction_t *HookDynamicCalls::add_instrumentation(Instruction_t *site,unsigne
 	sprintf(movRaxBuf,"mov rsi, rax");
 	sprintf(movRspBuf,"mov rdx, rbp");
 
-	Instruction_t *tmp=site, *callback=NULL, *post_callback=NULL;
+	Instruction_t *tmp=site,
+	              *callback=NULL,
+								*post_callback=NULL,
+								*fallthrough=NULL;
 
-	tmp=insertAssemblyAfter(firp,tmp,"push rsp");
+	fallthrough = site->GetFallthrough();
+
+	site=insertAssemblyBefore(firp,tmp,"push rsp");
 	tmp=insertAssemblyAfter(firp,tmp,"push rbp");
 	tmp=insertAssemblyAfter(firp,tmp,"push rdi");
 	tmp=insertAssemblyAfter(firp,tmp,"push rsi");
@@ -242,6 +247,8 @@ Instruction_t *HookDynamicCalls::add_instrumentation(Instruction_t *site,unsigne
 	tmp=insertAssemblyAfter(firp,tmp,"pop rbp");
 	tmp=insertAssemblyAfter(firp,tmp,"lea rsp, [rsp+8]");
 
+	tmp->SetFallthrough(site);
+
 	return tmp;
 }
 
@@ -250,14 +257,11 @@ void HookDynamicCalls::SetToHook(map<string,int> to_hook)
 	m_to_hook = to_hook;
 }
 
-/* 
-* TODO:
-* We can rewrite this since when fix_calls changes 
-* a call to a push/jmp it already redirects through
-* the @plt entry. In other words, the jmp points to
-* the redirect and not to the name@plt.
-* Got it? Thought so.
-*/
+/*
+ * The insn is a jump in a push/jump combination.
+ * If this is a dynamic call through the PLT, then
+ * the jump's target is going to be L0 (see below).
+ */
 bool HookDynamicCalls::GetPltCallTarget(Instruction_t *insn,
 	virtual_offset_t &target_addr) {
 
@@ -299,7 +303,7 @@ bool HookDynamicCalls::GetPltCallTarget(Instruction_t *insn,
 	 */
 	switch ((uint8_t)control_instruction_bits[0])
 	{
-		case 0xFF:
+		case 0xff:
 		{
 			virtual_offset_t indirect_address = 0;
 			Elf64_Addr dereferenced_indirect_address;
@@ -341,13 +345,15 @@ bool HookDynamicCalls::GetPltCallTarget(Instruction_t *insn,
 			return true;
 		}
 		default:
-			cout << "Not a handled control instruction opcode." << endl;
+			cout << "Not a handled control instruction opcode: 0x" 
+			     << std::hex << ((uint8_t)(control_instruction_bits[0])) - 0
+			     << endl;
 			return false;
 	}
 	return false;
 }
 
-int HookDynamicCalls::execute()
+void HookDynamicCalls::CalculateIndirectTargets()
 {
 	assert(m_to_hook.size() != 0);
 	for(
@@ -363,9 +369,115 @@ int HookDynamicCalls::execute()
 		  ++it)
 		{
 			Instruction_t* insn = *it;
-			virtual_offset_t target;
-			if (GetPltCallTarget(insn, target))
+			virtual_offset_t vo = 0;
+			if ((vo = insn->GetAddress()->GetVirtualOffset()))
 			{
+				cout << "Pairing 0x" << std::hex << vo << " with an instruction." << endl;
+				m_indtargs[vo] = insn;
+			}
+		}
+	}
+}
+
+inline bool HookDynamicCalls::IsStraightCall(Instruction_t *possible_call)
+{
+	string possible_call_bits = possible_call->GetDataBits();
+	return (uint8_t)possible_call_bits[0] == 0x00;
+}
+
+bool HookDynamicCalls::IsPushJumpCombo(Instruction_t *possible_start_of_combo, Instruction_t *&to_hook)
+{
+	/*
+	 * If the first instruction is a push
+	 * and the fallthrough is a jump,
+	 * return the address that is at the
+	 * address being pushed.
+	 */
+	Instruction_t *first = possible_start_of_combo;
+	Instruction_t *second = possible_start_of_combo->GetFallthrough();
+	string first_bits, second_bits;
+	virtual_offset_t pushed_offset;
+	DISASM first_d, second_d;
+
+	first_bits = first->GetDataBits();
+	first->Disassemble(first_d);
+	cout << "first: " << first_d.CompleteInstr << endl;
+
+	if (!second)
+		return false;
+	
+	second_bits = second->GetDataBits();
+	second->Disassemble(second_d);
+	cout << "second: " << second_d.CompleteInstr << endl;
+
+	if (((uint8_t)first_bits[0]) != 0x68)
+	{
+		cout << "First instruction is not a push." << endl;
+		/*
+		 * This is not a push.
+		 */
+		return false;
+	}
+
+	if (((uint8_t)second_bits[0]) != 0xe9)
+	{
+		cout << "Second instruction is not a jump." << endl;
+		/*
+		 * This is not a jmp.
+		 * (at least not the kind that we can handle!)
+		 */
+		return false;
+	}
+
+	pushed_offset = *(uint32_t*)&first_bits[1];
+	cout << "pushed_offset: " << std::hex << pushed_offset << endl;
+	to_hook = m_indtargs[pushed_offset];
+	return true;
+}
+
+int HookDynamicCalls::execute()
+{
+	assert(m_to_hook.size() != 0);
+	CalculateIndirectTargets();
+	for(
+	  set<Function_t*>::const_iterator itf=getFileIR()->GetFunctions().begin();
+	  itf!=getFileIR()->GetFunctions().end();
+	  ++itf
+	  )
+	{
+		Function_t* func=*itf;
+		for(
+		  set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
+		  it!=func->GetInstructions().end();
+		  //set<Instruction_t*>::const_iterator it=getFileIR()->GetInstructions().begin();
+		  //it!=getFileIR()->GetInstructions().end();
+		  ++it)
+		{
+			Instruction_t *insn = *it;
+			virtual_offset_t target = 0;
+			Instruction_t *insn_to_hook = NULL;
+
+			/*
+			 * Check to see if insn is the start of a push/jmp
+			 * combination. Or, it could be a straight call.
+			 */
+			if (IsPushJumpCombo(insn, insn_to_hook))
+			{
+				cout << "Found PushJump combination." << endl;
+				GetPltCallTarget(insn->GetFallthrough(),target);
+			}
+			else if (IsStraightCall(insn))
+			{
+				GetPltCallTarget(insn, target);
+				insn_to_hook = insn;
+			}
+
+			if (insn_to_hook != NULL && target != 0)
+			{
+				/*
+				 * In either case, to_hook is the one that we are going to instrument
+				 * and the target should match the function call we want to hook.
+				 */
 				cout << "target: " << std::hex << target << endl;
 				map<string,int>::iterator m_to_hook_iterator = m_to_hook.begin();
 				for (; m_to_hook_iterator != m_to_hook.end(); m_to_hook_iterator++)
@@ -377,11 +489,11 @@ int HookDynamicCalls::execute()
 						cout << "hooking " << to_hook << " call at 0x" 
 						     << std::hex << insn->GetAddress()->GetVirtualOffset()
 								 << endl;
-						add_instrumentation(insn, hook_id);
+						add_instrumentation(insn_to_hook, hook_id);
 					}
 				}
 			}
 		}
 	}
-	return false;
+	return true;
 }
