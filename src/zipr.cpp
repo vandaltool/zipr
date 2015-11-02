@@ -540,33 +540,6 @@ void ZiprImpl_t::AddPinnedInstructions()
 
 }
 
-#if 0
-
-Instruction_t *ZiprImpl_t::FindPinnedInsnAtAddr(RangeAddress_t addr)
-{
-	for(
-		set<Instruction_t*>::const_iterator it=m_firp->GetInstructions().begin();
-		it!=m_firp->GetInstructions().end();
-		++it
-	)
-	{
-		RangeAddress_t ibta_addr;
-		Instruction_t* insn=*it;
-		assert(insn);
-
-		if(!insn->GetIndirectBranchTargetAddress()) {
-			continue;
-		}
-		ibta_addr=(unsigned)insn->
-			GetIndirectBranchTargetAddress()->
-			GetVirtualOffset();
-
-		if (addr == ibta_addr)
-			return insn;
-	}
-	return NULL;
-}
-#else
 Instruction_t *ZiprImpl_t::FindPinnedInsnAtAddr(RangeAddress_t addr)
 {
         std::map<RangeAddress_t,libIRDB::Instruction_t*>::iterator it=m_InsnAtAddrs.find(addr);
@@ -575,11 +548,8 @@ Instruction_t *ZiprImpl_t::FindPinnedInsnAtAddr(RangeAddress_t addr)
         return NULL;
 }
 
-#endif
-
 void ZiprImpl_t::RecordPinnedInsnAddrs()
 {
-#if 1
         for(
                 set<Instruction_t*>::const_iterator it=m_firp->GetInstructions().begin();
                 it!=m_firp->GetInstructions().end();
@@ -601,7 +571,6 @@ void ZiprImpl_t::RecordPinnedInsnAddrs()
                 m_InsnAtAddrs[ibta_addr]=insn;
 
         }
-#endif
 }
 
 
