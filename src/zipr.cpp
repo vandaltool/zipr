@@ -30,6 +30,7 @@
 
 #include <zipr_all.h>
 #include <libIRDB-core.hpp>
+#include <Rewrite_Utility.hpp>
 #include <iostream>
 #include <stdlib.h>
 #include <string.h>
@@ -54,6 +55,24 @@ using namespace ELFIO;
 
 int find_magic_segment_index(ELFIO::elfio *elfiop);
 
+static Instruction_t* addNewAssembly(FileIR_t* firp, Instruction_t *p_instr, string p_asm)
+{
+        Instruction_t* newinstr;
+        if (p_instr)
+                newinstr = allocateNewInstruction(firp,p_instr->GetAddress()->GetFileID(), p_instr->GetFunction());
+        else
+                newinstr = allocateNewInstruction(firp,BaseObj_t::NOT_IN_DATABASE, NULL);
+
+        firp->RegisterAssembly(newinstr, p_asm);
+
+        if (p_instr)
+        {
+                newinstr->SetFallthrough(p_instr->GetFallthrough());
+                p_instr->SetFallthrough(newinstr);
+        }
+
+        return newinstr;
+}
 
 static std::ifstream::pos_type filesize(const char* filename)
 {
@@ -769,7 +788,8 @@ void ZiprImpl_t::PreReserve2ByteJumpTargets()
 						(void*)(addr+1),
 						(void*)(addr+i),
 						(void*)(addr+i+size),
-						(void*)(uintptr_t)upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset());
+						(upinsn->GetIndirectBranchTargetAddress() != NULL) ?
+						(void*)(uintptr_t)upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset() : 0x0);
 
 					up.SetRange(Range_t(addr+i, addr+i+size));
 					for (unsigned int j = up.GetRange().GetStart(); j<up.GetRange().GetEnd(); j++)
@@ -857,66 +877,51 @@ void ZiprImpl_t::ReservePinnedInstructions()
 		if (FindPinnedInsnAtAddr(addr+1)) {
 			if (m_verbose)
 				printf("Cannot fit two byte pin; Using workaround.\n");
-			UnresolvedPinned_t cup = UnresolvedPinned_t(up.GetInstruction());
-			char push_bytes[]={(char)0x68,(char)0x00, /* We do not actually write */
-			                   (char)0x00,(char)0x00, /* all these bytes but they */
-												 (char)0x00};           /* make counting easier (see*/
-												                        /* below). */
-			char *lea_bytes = NULL;
-			unsigned int lea_bytes_size = 0;
-			char lea_bytes_64[]={(char)0x48,(char)0x8d, /* lea rsp, rsp+8 */
-			                     (char)0x64,(char)0x24,
-												   (char)0x08};
-			char lea_bytes_32[]={(char)0x8d,            /* lea esp, esp+4 */
-			                     (char)0x64,(char)0x24,
-												   (char)0x04};
-
-			if(m_firp->GetArchitectureBitWidth()==64)
-			{
-				lea_bytes = lea_bytes_64;
-				lea_bytes_size = sizeof(lea_bytes_64);
-			}
-			else
-			{
-				lea_bytes = lea_bytes_32;
-				lea_bytes_size = sizeof(lea_bytes_32);
-			}
-
 			/*
 			 * The whole workaround pattern is:
 			 * 0x68 0xXX 0xXX 0xXX 0xXX (push imm)
 			 * lea rsp, rsp-8
 			 * 0xeb 0xXX (jmp)
+			 * 
+			 * We put the lea into the irdb and then
+			 * put down a pin with that as the target.
+			 * We put the original instruction as 
+			 * the fallthrough for the lea.
 			 */
+			char push_bytes[]={(char)0x68,(char)0x00, /* We do not actually write */
+			                   (char)0x00,(char)0x00, /* all these bytes but they */
+												 (char)0x00};           /* make counting easier (see*/
+												                        /* below). */
+			Instruction_t *lea_insn = NULL;
+
+			if(m_firp->GetArchitectureBitWidth()==64)
+				lea_insn = addNewAssembly(m_firp, NULL, "lea rsp, [rsp+8]");
+			else
+				lea_insn = addNewAssembly(m_firp, NULL, "lea esp, [esp+8]");
+
+			m_firp->AssembleRegistry();
+			lea_insn->SetFallthrough(upinsn);
 
 			/*
 			 * Write the push opcode.
+			 * Do NOT reserve any of the bytes in the imm value
+			 * since those are going to contain the two byte pin
+			 * to the adjacent pinned address.
 			 */
 			memory_space[addr] = push_bytes[0];
 			memory_space.SplitFreeRange(addr);
 
-			/*
-			 * Only assert enough space for lea right now. We
-			 * check for the two byte jump space later.
-			 */
-			for (unsigned int i = 0; i<lea_bytes_size; i++) {
-				assert(
-					memory_space.find(addr+sizeof(push_bytes)+i) == memory_space.end()
-				);
-				memory_space[addr+sizeof(push_bytes)+i] = lea_bytes[i];
-				memory_space.SplitFreeRange(addr+sizeof(push_bytes)+i);
-			}
-
-			addr += sizeof(push_bytes) + lea_bytes_size;
+			addr += sizeof(push_bytes);
 
 			if (m_verbose)
 				printf("Advanced addr to %p\n", (void*)addr);
 
 			/*
 			 * Insert a new UnresolveUnpinned_t that tells future
-			 * passes that we are going to use an updated address
+			 * loops that we are going to use an updated address
 			 * to place this instruction.
 			 */
+			UnresolvedPinned_t cup(lea_insn);
 			cup.SetUpdatedAddress(addr);
 			two_byte_pins.insert(cup);
 		} else {
@@ -932,6 +937,10 @@ void ZiprImpl_t::ReservePinnedInstructions()
 
 		for(unsigned int i=0;i<sizeof(bytes);i++)
 		{
+			/*
+			 * Assert because this could fail because we previously
+			 * reserved too much space for a push sled.
+			 */
 			assert(memory_space.find(addr+i) == memory_space.end() );
 			memory_space[addr+i]=bytes[i];
 			memory_space.SplitFreeRange(addr+i);
@@ -1042,7 +1051,8 @@ void ZiprImpl_t::Fix2BytePinnedInstructions()
 					(void*)(addr+1),
 					(void*)(up.GetRange().GetStart()),
 					(void*)(up.GetRange().GetEnd()),
-					(void*)(uintptr_t)upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset());
+					(upinsn->GetIndirectBranchTargetAddress() != NULL) ?
+					(void*)(uintptr_t)upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset() : 0x0);
 
 				five_byte_pins[up] = up.GetRange().GetStart();
 				memory_space.PlopJump(up.GetRange().GetStart());
