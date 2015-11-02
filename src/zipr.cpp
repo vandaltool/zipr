@@ -143,7 +143,7 @@ void ZiprImpl_t::Init()
 		return;
 	}
 	// init  pinned addresses map.
-	//RecordPinnedInsnAddrs();
+	RecordPinnedInsnAddrs();
 }
 
 ZiprImpl_t::~ZiprImpl_t()
