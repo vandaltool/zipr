@@ -1922,10 +1922,8 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 
 void ZiprImpl_t::PrintStats()
 {
-	/* TODO:
-	*/
 	// do something like print stats as #ATTRIBUTES.
-	//m_stats->PrintStats(m_opts, cout);
+	m_stats->PrintStats(cout);
 
 	// and dump a map file of where we placed instructions.  maybe guard with an option.
 	// default to dumping to zipr.map 
