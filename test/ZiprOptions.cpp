@@ -62,6 +62,10 @@ int main(int argc, char *argv[])
 	ZiprIntegerOption_t local_e_option("e");
 	cout << "Constructing ZiprIntegerOption_t('e')." << endl;
 	ZiprIntegerOption_t local_shadow_e_option("e");
+	cout << "Constructing ZiprDoubleOption_t('f')." << endl;
+	ZiprDoubleOption_t local_f_option("f");
+	cout << "Constructing ZiprDoubleOption_t('g', 2.4)." << endl;
+	ZiprDoubleOption_t local_g_option("g", 2.4);
 
 	local_b_option.SetRequired(true);
 	local_b_option.SetDescription("Set the B option.");
@@ -76,6 +80,8 @@ int main(int argc, char *argv[])
 	local_ns.AddOption(&local_d_option);
 	local_ns.AddOption(&local_e_option);
 	local_ns.AddOption(&local_shadow_e_option);
+	local_ns.AddOption(&local_f_option);
+	local_ns.AddOption(&local_g_option);
 
 	options.AddNamespace(&global_ns);
 	options.AddNamespace(&local_ns);
@@ -118,5 +124,17 @@ int main(int argc, char *argv[])
 	cout << "local_e_option: " << ((int)local_e_option) << endl;
 	if (local_shadow_e_option == local_e_option) {
 		cout << "local_shadow_e_option == local_e_option" << endl;
+	}
+	if (local_g_option == 2.5) {
+		cout << "local_g_option is 2.5!" << endl;
+	}
+	if (local_g_option != 2.5) {
+		cout << "local_g_option is NOT 2.5!" << endl;
+	}
+	if (local_g_option) {
+		cout << "local_g_option is!" << endl;
+	}
+	if (!local_g_option) {
+		cout << "local_g_option is NOT!" << endl;
 	}
 }
