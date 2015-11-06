@@ -887,7 +887,10 @@ tools/cfar_configs/cfar_probBilr_zipr.sh -text
 tools/cfar_configs/cfar_probIlr_strata.sh -text
 tools/cfar_configs/cfar_probP1_strata.sh -text
 tools/cfar_configs/cfar_probP1_zipr.sh -text
+tools/cfar_configs/cfar_structNoc_structP1Canaries_probBilr_zipr.sh -text
+tools/cfar_configs/cfar_structNoc_structP1Canaries_zipr.sh -text
 tools/cfar_configs/cfar_structNoc_zipr.sh -text
+tools/cfar_configs/cfar_structP1Canaries_zipr.sh -text
 tools/cinderella.spec -text
 tools/cover.sh -text
 tools/db/drop_my_tables.sh -text
