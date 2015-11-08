@@ -125,7 +125,7 @@ class Patch_t
 	public:
 		Patch_t(RangeAddress_t p_from_addr, UnresolvedType_t p_t) : from_addr(p_from_addr), type(p_t) {}
 
-		RangeAddress_t GetAddress() { return from_addr; }
+		RangeAddress_t GetAddress() const { return from_addr; }
 		UnresolvedType_t GetType() { return type; }
 
 	private:

@@ -52,6 +52,7 @@ using namespace Zipr_SDK;
 #include <unresolved.h>
 #include <zipr_mem_space.h>
 #include <plugin_man.h>
+#include <zipr_utils.h>
 #include <zipr_impl.h>
 #include <zipr_optimizations.h>
 #include <zipr_stats.h>

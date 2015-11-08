@@ -161,6 +161,20 @@ bool ZiprMemorySpace_t::IsValidRange(RangeSet_t::iterator it)
 	return it!=free_ranges.end();
 }
 
+Range_t ZiprMemorySpace_t::GetNearbyFreeRange(const RangeAddress_t hint)
+{
+	RangeSet_t::iterator result;
+	Range_t search(hint, hint+1);
+	/*
+	 * TODO: Not quite sure what to make of this.
+	 */
+	if (free_ranges.end() == (result = free_ranges.upper_bound(search))) {
+		cout << "Oops: GetNearbyFreeRange() is BAD" << endl;
+		return Range_t(0,0);
+	}
+	return *result;
+}
+
 Range_t ZiprMemorySpace_t::GetFreeRange(int size)
 {
 	vector<Range_t> v;

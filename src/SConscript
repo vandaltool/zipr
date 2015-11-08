@@ -18,6 +18,8 @@ files=  '''
 	zipr.cpp
 	zipr_options.cpp
 	zipr_stats.cpp
+	utils.cpp
+	dollop.cpp
 	'''
 
 # ELFIO needs to be first so we get the zipr version instead of the sectrans version.  the zipr version is modified to include get_offset.

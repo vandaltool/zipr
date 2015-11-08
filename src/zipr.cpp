@@ -1224,77 +1224,44 @@ int ZiprImpl_t::_DetermineWorstCaseInsnSize(Instruction_t* insn)
 	return worst_case_size;
 }
 
-#define CALLBACK_TRAMPOLINE_SIZE 9
 //static int DetermineWorstCaseInsnSize(Instruction_t* insn)
 int ZiprImpl_t::DetermineWorstCaseInsnSize(Instruction_t* insn)
 {
-
-	int required_size=0;
-
-	switch(insn->GetDataBits()[0])
-	{
-		case (char)0x71:
-		case (char)0x72:
-		case (char)0x73:
-		case (char)0x74:
-		case (char)0x75:
-		case (char)0x76:
-		case (char)0x77:
-		case (char)0x78:
-		case (char)0x79:
-		case (char)0x7a:
-		case (char)0x7b:
-		case (char)0x7c:
-		case (char)0x7d:
-		case (char)0x7e:
-		case (char)0x7f:
-		{
-			// two byte JCC -> 6byte JCC
-			required_size=6;
-			break;
-		}
-
-		case (char)0xeb:
-		{
-			// two byte JMP -> 5byte JMP
-			required_size=5;
-			break;
-		}
-
-		case (char)0xe0:
-		case (char)0xe1:
-		case (char)0xe2:
-		case (char)0xe3:
-		{
-			// loop, loopne, loopeq, jecxz
-			// convert to:
-			// <op> +5:
-			// jmp fallthrough
-			// +5: jmp target
-			// 2+5+5;
-			required_size=10;
-			break;
-		}
-		
-
-		default:
-		{
-			required_size=insn->GetDataBits().size();
-			if (insn->GetCallback()!="") required_size+=CALLBACK_TRAMPOLINE_SIZE;
-			break;
-		}
-	}
-	
-	// add an extra 5 for a "trampoline" in case we have to end this fragment early
-	return required_size+5;
+	return Utils::DetermineWorstCaseInsnSize(insn);
 }
 
 void ZiprImpl_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Patch_t &p)
 {
 	int req_size=_DetermineWorstCaseInsnSize(uu.GetInstruction());
-	Range_t r=memory_space.GetFreeRange(req_size);
+	Range_t r;
+	//Range_t r=memory_space.GetFreeRange(req_size);
+	//Range_t r=memory_space.GetNearbyFreeRange(p.GetAddress());
 	int insn_count=0;
 	const char* truncated="not truncated.";
+	bool placed = false;
+	DLFunctionHandle_t placer = NULL;
+
+	/*
+	 *
+	 */
+	if (plugman.DoesPluginPlace(p.GetAddress(), Dollop_t(uu.GetInstruction()), r, placer))
+	{
+		if (m_verbose)
+			cout << placer->ToString() << " placed this dollop." << endl;
+		placed = true;
+		if ((r.GetEnd()-r.GetStart()) < req_size) {
+			if (m_verbose)
+				printf("Bad GetNearbyFreeRange() result.\n");
+			placed = false;
+		}
+	}
+	if (!placed) {
+		cout << "Using default place locator." << endl;
+		r=memory_space.GetFreeRange(req_size);
+	}
+	/*
+	 *
+	 */
 
 	RangeAddress_t fr_end=r.GetEnd();
 	RangeAddress_t fr_start=r.GetStart();
@@ -2182,7 +2149,7 @@ RangeAddress_t ZiprImpl_t::PlopWithCallback(Instruction_t* insn, RangeAddress_t 
 	else
 		assert(0);
 
-	assert(CALLBACK_TRAMPOLINE_SIZE<=(at-originalAt));
+	assert(Utils::CALLBACK_TRAMPOLINE_SIZE<=(at-originalAt));
 	return at;
 }
 

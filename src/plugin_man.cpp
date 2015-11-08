@@ -81,6 +81,21 @@ void ZiprPluginManager_t::CallbackLinkingEnd()
 	dispatch_to(CallbackLinkingEnd);
 }
 
+bool ZiprPluginManager_t::DoesPluginPlace(const RangeAddress_t &jump, const Dollop_t &dollop, Range_t &place, DLFunctionHandle_t &placer)
+{
+	DLFunctionHandleSet_t::iterator it=m_handleList.begin();
+	for(m_handleList.begin();it!=m_handleList.end();++it)
+	{
+		ZiprPluginInterface_t* zpi=(ZiprPluginInterface_t*)*it;
+		if (Zipr_SDK::ZiprPreference::Must == zpi->PlopAddress(jump, dollop, place))
+		{
+			placer = zpi;
+			return true;
+		}
+	}
+	return false;
+}
+
 bool ZiprPluginManager_t::DoesPluginPlop(Instruction_t *insn, DLFunctionHandle_t &callback) 
 {
 	DLFunctionHandleSet_t::iterator it=m_handleList.begin();

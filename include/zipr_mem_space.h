@@ -46,6 +46,7 @@ class ZiprMemorySpace_t : public MemorySpace_t
 		void MergeFreeRange(RangeAddress_t addr);
 		RangeSet_t::iterator FindFreeRange(RangeAddress_t addr);
 		Range_t GetFreeRange(int size);
+		Range_t GetNearbyFreeRange(const RangeAddress_t hint);
 		void AddFreeRange(Range_t newRange);
 		void RemoveFreeRange(Range_t newRange);
 
