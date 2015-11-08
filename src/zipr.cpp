@@ -211,8 +211,8 @@ void ZiprImpl_t::CreateBinaryFile()
 		cerr<<"Cannot find $SECURITY_TRANSFORMS_HOME variable"<<endl;
 		exit(100);
 	}
-	string cmd=string("cp ")+name+" "+name+".stripped ; "+ sec_tran+"/third_party/ELFkickers-3.0a/sstrip/sstrip"
-		" "+name+".stripped";
+	string cmd=string("cp ")+m_output_filename+" "+m_output_filename+".stripped ; "+ sec_tran+"/third_party/ELFkickers-3.0a/sstrip/sstrip"
+		" "+m_output_filename+".stripped";
 	printf("Attempting: %s\n", cmd.c_str());
 	if(-1 == system(cmd.c_str()))
 	{
@@ -1817,8 +1817,13 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 			continue;
 		if( (sec->get_flags() & SHF_EXECINSTR) == 0)
 			continue;
-	
+
 #ifdef EXTEND_SECTIONS
+		section* next_sec = NULL;
+		if ((i+1)<total_sections)
+		{
+			next_sec = rewrite_headers_elfiop->sections[i+1];
+		}
 		extend_section(sec, next_sec);
 #endif
 	}
