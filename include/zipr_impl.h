@@ -76,7 +76,7 @@ class ZiprImpl_t : public Zipr_t
 		void Init();
 
 		Zipr_SDK::RangeAddress_t _PlopInstruction(libIRDB::Instruction_t*, Zipr_SDK::RangeAddress_t);
-		int _DetermineWorstCaseInsnSize(libIRDB::Instruction_t* );
+		size_t _DetermineWorstCaseInsnSize(libIRDB::Instruction_t* );
 		void FindFreeRanges(const std::string &name);
 		void AddPinnedInstructions();
 		void ReservePinnedInstructions();

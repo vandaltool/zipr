@@ -1203,10 +1203,10 @@ void ZiprImpl_t::PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)
 	}
 }
 
-int ZiprImpl_t::_DetermineWorstCaseInsnSize(Instruction_t* insn)
+size_t ZiprImpl_t::_DetermineWorstCaseInsnSize(Instruction_t* insn)
 {
 	std::map<Instruction_t*,DLFunctionHandle_t>::const_iterator plop_it;
-	int worst_case_size = 0;
+	size_t worst_case_size = 0;
 
 	plop_it = plopping_plugins.find(insn);
 	if (plop_it != plopping_plugins.end())
@@ -1232,7 +1232,7 @@ int ZiprImpl_t::DetermineWorstCaseInsnSize(Instruction_t* insn)
 
 void ZiprImpl_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Patch_t &p)
 {
-	int req_size=_DetermineWorstCaseInsnSize(uu.GetInstruction());
+	size_t req_size=_DetermineWorstCaseInsnSize(uu.GetInstruction());
 	Range_t r;
 	//Range_t r=memory_space.GetFreeRange(req_size);
 	//Range_t r=memory_space.GetNearbyFreeRange(p.GetAddress());
