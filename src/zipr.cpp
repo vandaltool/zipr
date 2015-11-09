@@ -1247,7 +1247,7 @@ void ZiprImpl_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, cons
 	if (plugman.DoesPluginPlace(p.GetAddress(), Dollop_t(uu.GetInstruction()), r, placer))
 	{
 		if (m_verbose)
-			cout << placer->ToString() << " placed this dollop." << endl;
+			cout << placer->ToString() << " placed this dollop between " << std::hex << r.GetStart() << " and " << std::hex << r.GetEnd() << endl;
 		placed = true;
 		if ((r.GetEnd()-r.GetStart()) < req_size) {
 			if (m_verbose)
