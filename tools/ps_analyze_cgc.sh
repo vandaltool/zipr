@@ -50,4 +50,4 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	\
 	--step fast_annot=off	\
 	--step spasm=off	\
 	--step ilr=off	\
-	--step zipr=on	\
+	--backend zipr
