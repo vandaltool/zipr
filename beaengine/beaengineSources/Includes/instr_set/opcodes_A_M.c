@@ -6335,7 +6335,16 @@ void __bea_callspec__ mov_ECX(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mov ");
     #endif
-    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG1;
+
+        // set Argument1 dest reg to eax/rax or r8w/r8d
+        if(
+                GV.REX.B_==1 ||         // has rex prefix to specify an extra bit for the EAX reg.
+                (GV.VEX.has_vex && GV.VEX.notB==0)      // or has a VEX prefix that does it.
+          )
+                (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG9;
+        else
+                (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG1;
+
     (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
     if (GV.OperandSize == 64) {
         if (!Security(9, pMyDisasm)) return;
@@ -6418,7 +6427,15 @@ void __bea_callspec__ mov_EDX(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mov ");
     #endif
-    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG2;
+        // set Argument1 dest reg to eax/rax or r8w/r8d
+        if(
+                GV.REX.B_==1 ||         // has rex prefix to specify an extra bit for the EAX reg.
+                (GV.VEX.has_vex && GV.VEX.notB==0)      // or has a VEX prefix that does it.
+          )
+                (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG10;
+        else
+                (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG2;
+
     (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
     if (GV.OperandSize == 64) {
         if (!Security(9, pMyDisasm)) return;
@@ -6501,7 +6518,14 @@ void __bea_callspec__ mov_EBX(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mov ");
     #endif
-    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG3;
+        // set Argument1 dest reg to eax/rax or r8w/r8d
+        if(
+                GV.REX.B_==1 ||         // has rex prefix to specify an extra bit for the EAX reg.
+                (GV.VEX.has_vex && GV.VEX.notB==0)      // or has a VEX prefix that does it.
+          )
+                (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG11;
+        else
+                (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG3;
     (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
     if (GV.OperandSize == 64) {
         if (!Security(9, pMyDisasm)) return;
@@ -6584,7 +6608,14 @@ void __bea_callspec__ mov_ESP(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mov ");
     #endif
-    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG4;
+        // set Argument1 dest reg to eax/rax or r8w/r8d
+        if(
+                GV.REX.B_==1 ||         // has rex prefix to specify an extra bit for the EAX reg.
+                (GV.VEX.has_vex && GV.VEX.notB==0)      // or has a VEX prefix that does it.
+          )
+                (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG12;
+        else
+                (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG4;
     (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
     if (GV.OperandSize == 64) {
         if (!Security(9, pMyDisasm)) return;
@@ -6667,7 +6698,14 @@ void __bea_callspec__ mov_EBP(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mov ");
     #endif
-    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG5;
+        // set Argument1 dest reg to eax/rax or r8w/r8d
+        if(
+                GV.REX.B_==1 ||         // has rex prefix to specify an extra bit for the EAX reg.
+                (GV.VEX.has_vex && GV.VEX.notB==0)      // or has a VEX prefix that does it.
+          )
+                (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG13;
+        else
+                (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG5;
     (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
     if (GV.OperandSize == 64) {
         if (!Security(9, pMyDisasm)) return;
@@ -6750,7 +6788,14 @@ void __bea_callspec__ mov_ESI(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mov ");
     #endif
-    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG6;
+        // set Argument1 dest reg to eax/rax or r8w/r8d
+        if(
+                GV.REX.B_==1 ||         // has rex prefix to specify an extra bit for the EAX reg.
+                (GV.VEX.has_vex && GV.VEX.notB==0)      // or has a VEX prefix that does it.
+          )
+                (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG14;
+        else
+                (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG6;
     (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
     if (GV.OperandSize == 64) {
         if (!Security(9, pMyDisasm)) return;
@@ -6833,7 +6878,14 @@ void __bea_callspec__ mov_EDI(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mov ");
     #endif
-    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG7;
+        // set Argument1 dest reg to eax/rax or r8w/r8d
+        if(
+                GV.REX.B_==1 ||         // has rex prefix to specify an extra bit for the EAX reg.
+                (GV.VEX.has_vex && GV.VEX.notB==0)      // or has a VEX prefix that does it.
+          )
+                (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG15;
+        else
+                (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG7;
     (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
     if (GV.OperandSize == 64) {
         if (!Security(9, pMyDisasm)) return;
