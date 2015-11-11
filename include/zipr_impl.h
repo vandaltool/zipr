@@ -31,7 +31,6 @@
 #ifndef zipr_impl_h
 #define zipr_impl_h
 
-#include <random>
 #include <climits>
 class Stats_t;
 
@@ -45,7 +44,6 @@ class ZiprImpl_t : public Zipr_t
 			elfiop(new ELFIO::elfio), 
 			start_of_new_space(0),
 			memory_space(),
-			random_int_distribution(1,INT_MAX),
 			m_zipr_options(argc-1, argv+1),
 			m_output_filename("output", "b.out"),
 			m_callbacks("callbacks"),
@@ -54,7 +52,7 @@ class ZiprImpl_t : public Zipr_t
 			m_verbose("verbose", true),
 			m_variant("variant"),
 			m_architecture("architecture"),
-			m_seed("seed", random_int_distribution(random_generator))
+			m_seed("seed", 0)
 		{ 
 			Init();
  		};
@@ -174,10 +172,6 @@ class ZiprImpl_t : public Zipr_t
 
 		std::map<libIRDB::Instruction_t*,DLFunctionHandle_t> plopping_plugins;
 		
-		// For default seed generation.
-		std::default_random_engine random_generator;
-		std::uniform_int_distribution<int> random_int_distribution;
-
 		// Options
 		ZiprOptions_t m_zipr_options;
 		ZiprStringOption_t m_output_filename, m_callbacks, m_objcopy;

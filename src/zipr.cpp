@@ -2248,7 +2248,7 @@ void ZiprImpl_t::dump_map()
 
 // std::map<libIRDB::Instruction_t*,RangeAddress_t> final_insn_locations
 	string filename="zipr.map";	// parameterize later.
-    	std::ofstream ofs(filename, std::ofstream::out);
+    	std::ofstream ofs(filename.c_str(), ios_base::out);
 
 	ofs <<left<<setw(20)<<"ID"
 	    <<left<<setw(20)<<"OrigAddr"

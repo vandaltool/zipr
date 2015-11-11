@@ -87,7 +87,7 @@ bool ZiprPluginManager_t::DoesPluginPlace(const RangeAddress_t &jump, const Doll
 	for(m_handleList.begin();it!=m_handleList.end();++it)
 	{
 		ZiprPluginInterface_t* zpi=(ZiprPluginInterface_t*)*it;
-		if (Zipr_SDK::ZiprPreference::Must == zpi->PlopAddress(jump, dollop, place))
+		if (Must == zpi->PlopAddress(jump, dollop, place))
 		{
 			placer = zpi;
 			return true;
