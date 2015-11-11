@@ -113,6 +113,10 @@ for arg in $@; do
 	install_afl
 	;;
     base)
+        # libpqxx-4.0
+        wget http://http.us.debian.org/debian/pool/main/libp/libpqxx/libpqxx-4.0_4.0.1+dfsg-3_i386.deb
+        sudo dpkg -i libpqxx-4.0_4.0.1+dfsg-3_i386.deb
+
 	sudo apt-get -y install $BASE_PKGS
 	;;
     client-irdb)
