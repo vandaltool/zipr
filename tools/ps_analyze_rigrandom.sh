@@ -11,5 +11,5 @@ argv=${@:1:$length}
 $PEASOUP_HOME/tools/ps_analyze.sh $argv 	   	\
 	--backend zipr	\
 	--step rigrandom=on \
-	--step-option $random_char \
+	--step-option rigrandom:$random_char \
 	--step gather_libraries=off \
