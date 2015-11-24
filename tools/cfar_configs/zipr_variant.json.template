@@ -1,0 +1,10 @@
+            "<<VARIANTNUM>>" : {
+                "exec" : {
+                    "alias" : [
+                        "/sbin/thttpd=/target_apps/<<EXE_NAME>>",
+                        "/etc/ld.so.cache=/etc/ld.so.cache"
+                        ]
+                }
+            }
+
+

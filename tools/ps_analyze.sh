@@ -163,6 +163,7 @@ usage()
 	echo "   --name <dbname>			Unsupported.  Ask an7s."
 	echo "   --manual_test_script <scriptname>	Specify how to test to the program.  API documentation incomplete."
 	echo "   --manual_test_coverage_file <file>	Specify a profile for the program.  API documentation incomplete."
+	echo "   --tempdir <dir>			Specify where the temporary analysis files are stored, default is peasoup_executable_directory.<exe>.<pid>"
 	echo "   --backend <zipr|strata>		Specify the backend rewriting technology to use.  Default: Strata"
 	echo "   -b <zipr|strata>			same as --backend "
 	echo "   --stop_after <step>			Stop ps_analyze after completeling the specified step."
@@ -207,6 +208,7 @@ check_options()
 		   --long manual_test_coverage_file: 
 		   --long watchdog: 
 		   --long backend:  			
+		   --long tempdir:  			
 		   --long help
 		   --long usage
 		   --long stop_after:
@@ -229,6 +231,14 @@ check_options()
 
 	while true ; do
 		case "$1" in
+			--tempdir)
+				tempdir_opt="$2"
+				if [ -e "$tempdir_opt"  ]; then
+					echo "$tempdir_opt already exists, cannot continue."
+					exit 1
+				fi
+            			shift 2
+				;;
 			-b|--backend)
 				if [ "X$2" = "Xzipr" ]; then
 					echo using Zipr backend
@@ -686,7 +696,7 @@ fi
 #
 # record the new program's name
 #
-stratafied_exe=$1
+export stratafied_exe=$1
 shift
 
 #
@@ -699,8 +709,15 @@ check_options "$@"
 # new program
 #
 name=`basename $orig_exe`
-#newdir=peasoup_executable_directory.$name.$$
-newdir=peasoup_executable_directory.$JOBID
+
+#
+# create a new working directory.  default to something that allows parallelism unless asked by the user.
+#
+if [ "X$tempdir_opt" != "X" ]; then
+	newdir="$tempdir_opt"
+else
+	newdir=peasoup_executable_directory.$JOBID
+fi
 
 # create a working dir for all our files using the pid
 mkdir $newdir

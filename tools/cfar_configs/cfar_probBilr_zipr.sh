@@ -1,3 +1,3 @@
 #!/bin/bash 
 
-$PEASOUP_HOME/tools/cfar.sh "$1" "$2" "$3" --backend zipr
+$PEASOUP_HOME/tools/cfar.sh "$1" "$2" "$3" --backend zipr --config_name $(basename $0 .sh|sed "s/cfar_//")
