@@ -192,6 +192,13 @@ void setInstructionDataBits(FileIR_t* virp, Instruction_t *p_instr, string p_dat
 	virp->GetInstructions().insert(p_instr);
 }
 
+string getRetDataBits()
+{
+	string dataBits;
+	dataBits.resize(1);
+	dataBits[0] = 0xc3;
+	return dataBits;
+}
 
 string getJumpDataBits()
 {

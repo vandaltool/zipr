@@ -301,15 +301,55 @@ static string change_to_push(Instruction_t *insn)
 {
 	string newbits=insn->GetDataBits();
 
-// fixme for REX insn.
+	DISASM d; 
+	insn->Disassemble(d);
 
-	unsigned char modregrm = (newbits[1]);
+	int opcode_offset=0;
+
+
+	// FIXME: assumes REX is only prefix on jmp insn.  
+	// does not assume rex exists.
+	if(d.Prefix.REX.state == InUsePrefix)
+		opcode_offset=1;
+
+	unsigned char modregrm = (newbits[1+opcode_offset]);
 	modregrm &= 0xc7;
 	modregrm |= 0x30;
-	newbits[0] = 0xFF;
-	newbits[1] = modregrm;
+	newbits[0+opcode_offset] = 0xFF;
+	newbits[1+opcode_offset] = modregrm;
 
         return newbits;
+}
+
+
+void mov_reloc(Instruction_t* from, Instruction_t* to, string type )
+{
+	for(
+		/* start */
+		RelocationSet_t::iterator it=from->GetRelocations().begin();
+
+		/* continue */
+		it!=from->GetRelocations().end();
+		
+		/* increment */
+		/* empty */
+	   )
+	{
+		Relocation_t* reloc=*it;
+
+		if(reloc->GetType()==type)
+		{
+			to->GetRelocations().insert(reloc);	
+	
+			// odd standards-conforming way to delete object while iterating.
+			from->GetRelocations().erase(it++);	
+		}
+		else
+		{
+			it++;
+		}
+	}
+		
 }
 
 
@@ -335,7 +375,18 @@ void SCFI_Instrument::AddJumpCFI(Instruction_t* insn)
 	after->SetTarget(after);
 	return;
 #else
-	cout<<"Warning, JUMPS not CFI's yet"<<endl;
+	string pushbits=change_to_push(insn);
+	cout<<"Converting ' "<<insn->getDisassembly()<<"' to '";
+	
+	Instruction_t* after=insertDataBitsBefore(firp,insn,pushbits); 
+	after->SetDataBits(getRetDataBits());
+	cout <<insn->getDisassembly()<<" + ret "<<endl ;
+
+	// move any pc-rel relocation bits to the push, which will access memory now 
+	mov_reloc(after,insn,"pcrel");
+
+	AddReturnCFI(after);
+	// cout<<"Warning, JUMPS not CFI's yet"<<endl;
 	return;
 #endif
 }
@@ -345,7 +396,7 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn)
 {
 	string reg="ecx";	// 32-bit reg 
 	if(firp->GetArchitectureBitWidth()==64)
-		reg="rcx";	// 64-bit reg.
+		reg="r11";	// 64-bit reg.
 
 	string rspreg="esp";	// 32-bit reg 
 	if(firp->GetArchitectureBitWidth()==64)
