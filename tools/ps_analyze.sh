@@ -244,6 +244,7 @@ check_options()
 					echo using Zipr backend
 					phases_spec=" $phases_spec stratafy_with_pc_confine=off generate_spri=off spasm=off fast_annot=off zipr=on\
 						preLoaded_ILR1=off  preLoaded_ILR2=off fast_spri=off "
+					step_options_gather_libraries="$step_options_gather_libraries --main_exe_only"
 				elif [ "X$2" = "Xstrata" ]; then
 					echo using Strata backend
 					#  strata is default, do nothing.
