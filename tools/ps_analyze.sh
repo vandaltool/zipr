@@ -719,6 +719,7 @@ if [ "X$tempdir_opt" != "X" ]; then
 else
 	newdir=peasoup_executable_directory.$JOBID
 fi
+export newdir
 
 # create a working dir for all our files using the pid
 mkdir $newdir

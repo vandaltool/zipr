@@ -1,0 +1,33 @@
+            "<<VARIANTNUM>>" : {
+                "exec" : {
+                        "env" : [
+                        "STRATA_LOG=detectors",
+                        "PEASOUP_SCHEDULE_PERTURB=0",
+                        "STRATA_WATCHDOG=0",
+                        "STRATA_NUM_HANDLE=0",
+                        "STRATA_DOUBLE_FREE=0",
+                        "STRATA_HEAPRAND=0",
+                        "STRATA_SHADOW_STACK=0",
+                        "STRATA_CONTROLLED_EXIT=0",
+                        "STRATA_DETECT_SERVERS=0",
+                        "STRATA_PC_CONFINE=0",
+                        "STRATA_PC_CONFINE_XOR=0",
+                        "STRATA_REKEY_AFTER=0",
+                        "STRATA_PC_CONFINE_XOR_KEY_LENGTH=1024",
+                        "STRATA_IS_SO=0",
+                        "STRATA_MAX_WARNINGS=500000"
+                        ],
+                    "alias" : [
+                        "/sbin/thttpd=/target_app_libs/<<PS_DIR>>/a.stratafied",
+                        "/usr/lib/libstrata.so=/target_app_libs/<<PS_DIR>>/libstrata.so",
+                        "/etc/ld.so.cache=/etc/ld.so.cache",
+                        "/variant_specific/a.irdb.fbspri=/target_app_libs/<<PS_DIR>>/a.irdb.fbspri",
+                        "/variant_specific/a.ncexe.annot=/target_app_libs/<<PS_DIR>>/a.ncexe.annot",
+                        "/variant_specific/diagnostics.out=/target_app_libs/<<PS_DIR>>/diagnostics.out",
+                        "/variant_specific/a.stratafied=/target_app_libs/<<PS_DIR>>/a.stratafied"
+                        ]
+                }
+            }
+
+
+

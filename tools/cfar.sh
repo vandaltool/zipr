@@ -63,13 +63,14 @@ done
 
 
 # add default options for cfar which asks ps_analyze to fill in a variant specification for what it did.
-new_cmd_line_options+=(--step generate_variant_config=on)
+# and also by default dump the IRDB mapping information, useful for debugging.
+new_cmd_line_options+=(--step generate_variant_config=on --step dump_map=on)
 
 #
 # figure out a place for ps_analyze to work so we can examine results.
 #
 outbase=$(basename $out)
-baseoutdir=$(dirname $out)/peasoup_executable_dir.$outbase.$config_name.$$
+baseoutdir=$(dirname $out)/peasoup_executable_dir.$outbase.$config_name
 
 # init some variables.
 share_path=/tmp
@@ -103,8 +104,8 @@ do
 	per_variant_options+=(--tempdir "$baseoutdir.v${seq}")
 
 	# invoke $PS.
-	echo PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PEASOUP_HOME/tools/ps_analyze.sh $in $out.v$seq "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" 
-	PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PEASOUP_HOME/tools/ps_analyze.sh $in $out.v$seq "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" > variant_output.$seq 2>&1 &
+	echo PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PEASOUP_HOME/tools/ps_analyze.sh $in $out.$config_name.v$seq "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" 
+	PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PEASOUP_HOME/tools/ps_analyze.sh $in $out.$config_name.v$seq "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" > variant_output.$seq 2>&1 &
 
 	# remember the pid.
 	pids="$pids $!"
@@ -140,4 +141,4 @@ else
 	echo "Successfully protected $variants variants, attempting to generate MVEE configuration files"
 fi
 
-$PEASOUP_HOME/tools/generate_mvee_config.sh  "$variants" "$out" "$baseoutdir" "$backend"
+$PEASOUP_HOME/tools/generate_mvee_config.sh  "$variants" "$out" "$baseoutdir" "$backend" "$config_name"
