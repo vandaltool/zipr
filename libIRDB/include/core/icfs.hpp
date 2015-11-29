@@ -21,7 +21,7 @@
 class Instruction_t;
 typedef std::set<Instruction_t*> InstructionSet_t;
 
-// Keep track of indirect control flow sets
+// Keep track of instruction control flow sets
 class ICFS_t : public InstructionSet_t, public BaseObj_t
 {
 	public:
