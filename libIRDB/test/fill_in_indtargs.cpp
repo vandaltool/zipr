@@ -43,8 +43,6 @@ using namespace libIRDB;
 using namespace std;
 using namespace EXEIO;
 
-#define HELLNODE_ID 0
-#define INDIRECT_CALLS_ID 1
 int next_icfs_set_id = 2;
 
 ICFS_t* hellnode_tgts = NULL;
@@ -247,6 +245,11 @@ void mark_jmptables(FileIR_t *firp)
 	{
 		Instruction_t* instr = it->first;
 		set<Instruction_t*> instruction_targets = it->second;
+
+		// ignore if instr already marked complete.
+		// FIXME: assert that fill_in_indtarg analysis matches already complete analysis.
+		if(instr->GetIBTargets() && instr->GetIBTargets()->IsComplete())
+			continue;
 
 		assert(instruction_targets.size() > 0);
 
@@ -1421,11 +1424,25 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DISASM d
 	jmptables[IJ] = ibtargets;
 }
 
+template <class T> T MAX(T a, T b) 
+{
+	return a>b ? a : b;
+}
+
 void icfs_init(FileIR_t* firp)
 {
+
+
 	assert(firp);
-	hellnode_tgts = new ICFS_t(HELLNODE_ID, false);
-	indirect_calls = new ICFS_t(INDIRECT_CALLS_ID, false); 
+	db_id_t max_id=0;
+	for(ICFSSet_t::iterator it=firp->GetAllICFS().begin(); it!=firp->GetAllICFS().end(); ++it)
+	{
+		max_id=MAX<db_id_t>(max_id, (*it)->GetBaseID());
+	}
+	next_icfs_set_id = max_id+1;
+	cerr<<"Found max ICFS id=="<<max_id<<endl;
+	hellnode_tgts = new ICFS_t(next_icfs_set_id++, false);
+	indirect_calls = new ICFS_t(next_icfs_set_id++, false); 
 	firp->GetAllICFS().insert(hellnode_tgts);
 	firp->GetAllICFS().insert(indirect_calls);
 }
@@ -1433,13 +1450,13 @@ void icfs_init(FileIR_t* firp)
 void icfs_set_indirect_calls(FileIR_t* const firp, ICFS_t* const targets)
 {
 	assert(firp && targets);
-    for(
-       	FunctionSet_t::const_iterator it=firp->GetFunctions().begin();
-       	it!=firp->GetFunctions().end();
-        ++it
-        )
-    {
-        Function_t *func=*it;
+    	for(
+       	    FunctionSet_t::const_iterator it=firp->GetFunctions().begin();
+       	    it!=firp->GetFunctions().end();
+            ++it
+           )
+    	{
+        	Function_t *func=*it;
 		if(!func->GetEntryPoint())
 			continue;
 		targets->insert(func->GetEntryPoint());
@@ -1472,6 +1489,10 @@ void check_for_ret(FileIR_t* const firp, Instruction_t* const insn)
 	if(strstr(d.Instruction.Mnemonic, "ret")==NULL)
 		return;
 
+	// already analysed by ida.
+	if(insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
+		return;
+
 	insn->SetIBTargets(hellnode_tgts);
 }
 
@@ -1487,11 +1508,17 @@ void check_for_indirect_jmp(FileIR_t* const firp, Instruction_t* const insn)
 
 	if(d.Argument1.ArgType&REGISTER_TYPE)
 	{
+		// already analysed by ida.
+		if(insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
+			return;
 		insn->SetIBTargets(hellnode_tgts);
 	}
 	else if(d.Argument1.ArgType&MEMORY_TYPE &&
 			(!d.Argument1.ArgType&RELATIVE_))
 	{
+		// already analysed by ida.
+		if(insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
+			return;
 		insn->SetIBTargets(hellnode_tgts);
 	}
 }
@@ -1507,6 +1534,10 @@ void check_for_indirect_call(FileIR_t* const firp, Instruction_t* const insn)
 		return;
 					
 	if(d.Argument1.ArgType&CONSTANT_TYPE)
+		return;
+
+	// already analysed by ida.
+	if(insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
 		return;
 
 	insn->SetIBTargets(indirect_calls);

@@ -41,6 +41,8 @@ string functionTable;
 string addressTable;
 string instructionTable;
 string typesTable;
+string icfsTable;
+string icfsMapTable;
 
 static const int STRIDE = 50;
 
@@ -56,6 +58,7 @@ inline std::string my_to_string (const T& t)
 int next_address_id=0;
 
 map<app_iaddr_t,int> address_to_instructionid_map;
+map<wahoo::Instruction*,int> instruction_to_addressid_map;
 
 // extract the file id from the md5 hash and the program name
 int get_file_id(char *progName, char *md5hash)
@@ -81,8 +84,63 @@ int get_file_id(char *progName, char *md5hash)
 }
 
 
+void insert_icfs(int fileID, const vector<wahoo::Instruction*>& instructions)
+{
+	using namespace wahoo;
+
+  	connection conn;
+  	work txn(conn);
+  	txn.exec("SET client_encoding='LATIN1';");
+
+	int next_icfs_id=0;
+
+  	for (int i = 0; i < instructions.size(); i ++)
+	{
+      		wahoo::Instruction *instruction = instructions[i];
+		assert(instruction);
+
+		const std::set<Instruction*> &ibts=instruction->getIBTs();
+		
+		if(ibts.size()==0)
+			continue;
+		cerr<<"Found fromIB=="<<instruction->getAddress()<<endl;
+    
+		string query = "INSERT INTO " + icfsTable;
+    		query += " (icfs_id,is_complete) VALUES ";
+      		query += "(";
+      		query += txn.quote(next_icfs_id) + ",";
+      		query += txn.quote(1);
+		query += ")";
+
+		string query2 = "INSERT INTO " + icfsMapTable;
+    		query2 += " (icfs_id,address_id) VALUES ";
+
+		for(set<Instruction*>::iterator it=ibts.begin(); it!=ibts.end(); it++)
+		{
+			cerr<<"Found toIBT=="<<(*it)->getAddress()<<endl;
+			if(it!=ibts.begin())
+				query2+=",";
+			int target_address_id=instruction_to_addressid_map[*it];
+      			query2 += "(";
+      			query2 += txn.quote(next_icfs_id) + ",";
+      			query2 += txn.quote(target_address_id);
+			query2 += ")";
+			
+		}
+		
+		query+=";";
+		query2+=";";
+    		txn.exec(query+query2);
+		next_icfs_id++;
+	}
+ 	cerr<<"Finished inserting ICFS into IR."<<endl; 
+	txn.commit();
+
+}
+
+
 // insert addresses & instructions into DB
-void insert_instructions(int fileID, vector<wahoo::Instruction*> instructions, vector<wahoo::Function*> functions)
+void insert_instructions(int fileID, const vector<wahoo::Instruction*> &instructions, const vector<wahoo::Function*> &functions)
 {
   cerr << "Inserting instructions in the DB"<<endl;
   connection conn;
@@ -115,6 +173,7 @@ void insert_instructions(int fileID, vector<wahoo::Instruction*> instructions, v
       address_to_instructionid_map[addr]=j;
 
       int address_id = next_address_id++;
+      instruction_to_addressid_map[instruction]=address_id;
 
       // insert into address table
       if (j != i) query += ",";
@@ -329,7 +388,7 @@ void populate_predefined_types()
 	txn.commit(); 
 }
 
-void update_function_prototype(vector<wahoo::Function*> functions, char* annotFile)
+void update_function_prototype(const vector<wahoo::Function*> &functions, char* annotFile)
 {
 	populate_predefined_types();
 
@@ -456,9 +515,9 @@ void update_function_prototype(vector<wahoo::Function*> functions, char* annotFi
 
 int main(int argc, char **argv)
 {
-  	if (argc != 10)
+  	if (argc != 12)
   	{
-    		cerr << "usage: " << argv[0] << " <annotations file> <info annotation file> <file id> <func tab name> <insn tab name> <addr tab name> <types tab name> <elf file> <STARSxref file>" << endl;
+    		cerr << "usage: " << argv[0] << " <annotations file> <info annotation file> <file id> <func tab name> <insn tab name> <addr tab name> <types tab name> <icfs table name> <icfs map table name> <elf file> <STARSxref file>" << endl;
     		return 1;
   	}
 
@@ -469,22 +528,30 @@ int main(int argc, char **argv)
   	char *myInstructionTable=argv[5];
   	char *myAddressTable=argv[6];
   	char *myTypesTable=argv[7];
-  	char *elfFile=argv[8];
-  	char *starsXrefFile=argv[9];
+  	char *myicfsTable=argv[8];
+  	char *myicfsMapTable=argv[9];
+  	char *elfFile=argv[10];
+  	char *starsXrefFile=argv[11];
 
 	cout<<"Annotation file: "<< annotFile<<endl;
 	cout<<"Info annotation file: "<< infoAnnotFile<<endl;
 	cout<<"File ID: "<< fid<<endl;
-	cout<<"FTN:: "<< myFunctionTable<<endl;
+	cout<<"FTN: "<< myFunctionTable<<endl;
 	cout<<"ITN: "<< myInstructionTable<<endl;
 	cout<<"ATN: "<< myAddressTable<<endl;
 	cout<<"TYP: "<< myTypesTable<<endl;
+	cout<<"ICFSTab: "<< myicfsTable<<endl;
+	cout<<"ICFSMapTab: "<< myicfsMapTable<<endl;
+	cout<<"elfFile: "<< elfFile<<endl;
+	cout<<"xrefFile: "<< starsXrefFile<<endl;
 
 	// set global vars for importing.
 	functionTable=myFunctionTable;
 	addressTable=myAddressTable;
 	instructionTable=myInstructionTable;
 	typesTable=myTypesTable;
+	icfsTable=myicfsTable;
+	icfsMapTable=myicfsMapTable;
 
   	Rewriter *rewriter = new Rewriter(elfFile, annotFile, starsXrefFile);
 
@@ -504,6 +571,7 @@ int main(int argc, char **argv)
   	insert_functions(fileID, functions);
   	insert_instructions(fileID, instructions, functions);
   	update_functions(fileID, functions);
+  	insert_icfs(fileID, instructions);
 
 	// add function prototype information to the IRDB
 	update_function_prototype(functions, infoAnnotFile);

@@ -2,6 +2,7 @@
 #define _instruction_h_
 
 #include <string>
+#include <set>
 
 #include "targ-config.h"
 
@@ -46,6 +47,10 @@ class Instruction {
     void setVisited() { m_isVisited = true; }
     bool isVisited() const { return m_isVisited; }
 
+    // include Indirect branch targets for insructions.
+    void addIBT(Instruction* insn) { ibts.insert(insn); }
+    const std::set<Instruction*>&  getIBTs() { return ibts; }
+
   private:
     app_iaddr_t     m_address;
     app_iaddr_t     m_ibt_address;
@@ -61,6 +66,9 @@ class Instruction {
     bool            m_varStackRef;
 
     bool            m_isVisited;
+
+    std::set<Instruction*> ibts;
+
 };
 
 }

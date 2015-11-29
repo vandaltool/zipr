@@ -652,16 +652,20 @@ void Rewriter::readXrefsFile(char p_filename[])
 	do
 	{
 
-
+		addr=0;
                 fscanf(fin, "%p %d\n", (void**)&addr, &size_type_u.size);
 
                 if(feof(fin))           // deal with blank lines at the EOF
                         break;
 		fscanf(fin, "%s%s", type,scope);
+                if(feof(fin))           // deal with blank lines at the EOF
+                        break;
 
 		assert(strcmp(type,"INSTR")==0);
 		assert(strcmp(scope,"XREF")==0);
-		fscanf(fin, "%s%s%s", ibt,fromib,dest);
+		fscanf(fin, "%s%s", ibt,fromib);
+                if(feof(fin))           // deal with blank lines at the EOF
+                        break;
 		assert(strcmp(ibt,"IBT")==0);
 		assert(strcmp(fromib,"FROMIB")==0 || strcmp(fromib,"FROMDATA")==0 
 			|| strcmp(fromib,"FROMUNKNOWN")==0);
@@ -672,11 +676,29 @@ void Rewriter::readXrefsFile(char p_filename[])
 		{
 			// cout<<"Setting IBT for addr "<<std::hex<<addr<<std::dec<<endl;
 			instr->setIBTAddress(addr);
+			if(strcmp(fromib,"FROMIB")==0)
+			{
+				// get the from point into memory.
+				app_iaddr_t from_addr = 0;
+				fscanf(fin, "%p\n", (void**)&from_addr);
+				if(feof(fin))           // deal with blank lines at the EOF
+					break;
+
+				// find that instruction
+				wahoo::Instruction *from_instr = addr_to_insn_map[from_addr];
+				assert(from_instr);
+			
+				// record in the IR listing.
+				from_instr->addIBT(instr);
+			}
 		}
 		else
 		{
-			cerr<<"Warning, instruction at "<<std::hex<<addr<<std::dec<<" not in db?"<<endl;
+			cerr<<"Error: instruction at "<<std::hex<<addr<<std::dec<<" not in db?"<<endl;
+			// assert(0);
 		}
+
+
 		
 		char remainder[2000];
 		fgets(remainder, sizeof(remainder), fin);
