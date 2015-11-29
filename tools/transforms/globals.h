@@ -37,10 +37,10 @@ class PNOptions
 	// default configuration parameters go here
 		PNOptions() {
 			// specify defaults;
-			min_stack_padding = 64;
-			max_stack_padding = 64;
-			recursive_min_stack_padding = 32;
-			recursive_max_stack_padding = 64;
+			min_stack_padding = 1000;
+			max_stack_padding = min_stack_padding*2;
+			recursive_min_stack_padding = 64;
+			recursive_max_stack_padding = recursive_min_stack_padding*2;
 			do_canaries = true;
 			do_selective_canaries = false;
 			should_double_frame_size=true;

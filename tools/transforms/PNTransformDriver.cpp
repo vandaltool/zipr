@@ -1400,6 +1400,7 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 		//Check if in blacklist
 		if(IsBlacklisted(func))
 		{
+			cout<<"Detected function is blacklisted: "<<func->GetName()<<endl;
 			continue;
 		}
 

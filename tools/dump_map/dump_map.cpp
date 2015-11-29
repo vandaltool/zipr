@@ -65,7 +65,7 @@ int main(int argc, char **argv)
                 	FileIR_t *firp = new FileIR_t(*pidp, this_file);
 	
 			cout<<"file: "<<this_file->GetURL()<<endl;
-			cout<<"\t"<<"ID\tAddress\tBelongTo\tDisassembly"<< endl;
+			cout<<"\t"<<"ID\tAddress\tFallthruID\tTargID\tBelongTo\tDisassembly"<< endl;
 
                 	assert(firp && pidp);
 
@@ -74,9 +74,11 @@ int main(int argc, char **argv)
 				Instruction_t* insn=*it;
 				assert(insn);
 				cout<<"\t"<<dec<<insn->GetBaseID()<<"\t"<<hex<<insn->GetAddress()->GetVirtualOffset()
-				    <<"\t";
+				    <<dec<<"\t";
+				cout<<(insn->GetTarget()  ? insn->GetTarget()->GetBaseID() : -1) << "\t";
+				cout<<(insn->GetFallthrough()  ? insn->GetFallthrough()->GetBaseID() : -1) << "\t";
 				if(insn->GetFunction() && insn->GetFunction()->GetEntryPoint())
-					cout<<"0x"<<hex<<insn->GetFunction()->GetEntryPoint()->GetBaseID();
+					cout<<dec<<insn->GetFunction()->GetEntryPoint()->GetBaseID();
 				else
 					cout<<"NoFunc";
 					
