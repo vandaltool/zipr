@@ -1,2 +1,2 @@
-send_response
 cfar_video_service_close
+send_response
