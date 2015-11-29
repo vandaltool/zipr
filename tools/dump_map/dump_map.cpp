@@ -73,8 +73,7 @@ int main(int argc, char **argv)
 			{
 				Instruction_t* insn=*it;
 				assert(insn);
-				cout<<dec<<insn->GetBaseID()<<"\t"<<hex<<insn->GetAddress()->GetVirtualOffset()
-				    <<dec<<"\t";
+				cout<<dec<<insn->GetBaseID()<<"\t"<<hex<<insn->GetAddress()->GetVirtualOffset();
 				
 				cout<<"\t"<<hex<<
 					(insn->GetIndirectBranchTargetAddress() ? 
