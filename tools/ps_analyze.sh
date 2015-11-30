@@ -995,6 +995,7 @@ perform_step integertransform meds_static,clone $PEASOUP_HOME/tools/do_integertr
 # perform step to instrument pgm with return shadow stack
 #
 perform_step ret_shadow_stack meds_static,clone $PEASOUP_HOME/tools/do_rss.sh --varid $cloneid  $step_options_ret_shadow_stack
+cp a.ncexe.annot a.ncexe.annot.full
 
 #
 # Do Twitcher transform step if twitcher is present
