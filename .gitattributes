@@ -2,6 +2,7 @@
 /build-all.sh -text
 /cfar_postgres_setup.sh -text
 /clean-all.sh -text
+genprog/svn.externals.config -text
 /get-peasoup-packages.sh -text
 /irdb_vars -text
 /postgres_setup.sh -text
