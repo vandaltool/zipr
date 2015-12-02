@@ -2250,20 +2250,23 @@ void ZiprImpl_t::dump_map()
 	string filename="zipr.map";	// parameterize later.
     	std::ofstream ofs(filename.c_str(), ios_base::out);
 
-	ofs <<left<<setw(20)<<"ID"
-	    <<left<<setw(20)<<"OrigAddr"
-	    <<left<<setw(20)<<"NewAddr"
+	ofs <<left<<setw(10)<<"ID"
+	    <<left<<setw(10)<<"OrigAddr"
+	    <<left<<setw(10)<<"IBTA"
+	    <<left<<setw(10)<<"NewAddr"
 	    <<left<<"Disassembly"<<endl;
 
 	for(std::map<libIRDB::Instruction_t*,RangeAddress_t>::iterator it=final_insn_locations.begin();
 		it!=final_insn_locations.end(); ++it)
 	{
 		Instruction_t* insn=it->first;
+		AddressID_t* ibta=insn->GetIndirectBranchTargetAddress();
 		RangeAddress_t addr=it->second;
 
-		ofs << dec << setw(20)<<insn->GetBaseID()
-		    <<"0x"<<hex<<left<<setw(18)<<insn->GetAddress()->GetVirtualOffset()
-		    <<"0x"<<hex<<left<<setw(18)<<addr
+		ofs << hex << setw(10)<<insn->GetBaseID()
+		    <<hex<<left<<setw(10)<<insn->GetAddress()->GetVirtualOffset()
+		    <<hex<<left<<setw(10)<< (ibta ? ibta->GetVirtualOffset() : 0)
+		    <<hex<<left<<setw(10)<<addr
 		    << left<<insn->getDisassembly()<<endl;
 
 		
