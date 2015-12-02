@@ -22,6 +22,7 @@
 #include <fstream>
 #include <libIRDB-core.hpp>
 #include <libgen.h>
+#include <iomanip>
 
 
 using namespace std;
@@ -65,7 +66,13 @@ int main(int argc, char **argv)
                 	FileIR_t *firp = new FileIR_t(*pidp, this_file);
 	
 			cout<<"file: "<<this_file->GetURL()<<endl;
-			cout<<"ID\tAddress\tIBTA\tFallthruID\tTargID\tBelongTo\tDisassembly"<< endl;
+			cout<<setw(9)<<"ID"<<" "
+			    <<setw(10)<<"Addr."<<" "
+			    <<setw(10)<<"IBTA"<<" "
+			    <<setw(9)<<"FT ID"<<" "
+			    <<setw(9)<<"TargID"<<" "
+			    <<setw(9)<<"Func"<<" "
+			    <<"Disassembly"<< endl;
 
                 	assert(firp && pidp);
 
@@ -73,22 +80,22 @@ int main(int argc, char **argv)
 			{
 				Instruction_t* insn=*it;
 				assert(insn);
-				cout<<dec<<insn->GetBaseID()<<"\t"<<hex<<insn->GetAddress()->GetVirtualOffset();
+				cout<<hex<<setw(9)<<insn->GetBaseID()<<" "<<hex<<setw(10)<<insn->GetAddress()->GetVirtualOffset();
 				
-				cout<<"\t"<<hex<<
+				cout<<" "<<hex<<setw(10)<<
 					(insn->GetIndirectBranchTargetAddress() ? 
 						insn->GetIndirectBranchTargetAddress()->GetVirtualOffset() :
 						0
 					)
-				    <<"\t";
-				cout<<(insn->GetTarget()  ? insn->GetTarget()->GetBaseID() : -1) << "\t";
-				cout<<(insn->GetFallthrough()  ? insn->GetFallthrough()->GetBaseID() : -1) << "\t";
+				    <<" ";
+				cout<<hex<<setw(9)<<(insn->GetFallthrough()  ? insn->GetFallthrough()->GetBaseID() : -1) << " ";
+				cout<<hex<<setw(9)<<(insn->GetTarget()  ? insn->GetTarget()->GetBaseID() : -1) << " ";
 				if(insn->GetFunction() && insn->GetFunction()->GetEntryPoint())
-					cout<<dec<<insn->GetFunction()->GetEntryPoint()->GetBaseID();
+					cout<<hex<<setw(9)<<insn->GetFunction()->GetEntryPoint()->GetBaseID();
 				else
-					cout<<"NoFunc";
+					cout<<setw(9)<<"NoFunc";
 					
-				cout<<"\t"<<insn->getDisassembly()<<endl;
+				cout<<" "<<insn->getDisassembly()<<endl;
 			}
 
 
