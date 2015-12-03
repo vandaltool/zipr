@@ -56,8 +56,9 @@ class UnresolvedInfo_t
 class UnresolvedUnpinned_t  : public UnresolvedInfo_t
 {
 	public:
-		UnresolvedUnpinned_t(libIRDB::Instruction_t* p_from) : from_instruction(p_from) {}
-		libIRDB::Instruction_t* GetInstruction() const { return from_instruction; }
+		UnresolvedUnpinned_t(libIRDB::Instruction_t* p_from) : from_instruction(p_from) 
+		{ assert(p_from); }
+		libIRDB::Instruction_t* GetInstruction() const { assert(from_instruction); return from_instruction; }
 	private:
 		libIRDB::Instruction_t *from_instruction;
 		
@@ -65,14 +66,26 @@ class UnresolvedUnpinned_t  : public UnresolvedInfo_t
 };
 
 inline bool operator< (const UnresolvedUnpinned_t& lhs, const UnresolvedUnpinned_t& rhs)
-{ return lhs.from_instruction->GetBaseID() < rhs.from_instruction->GetBaseID(); }
+{ 
+#if 0
+	if( lhs.from_instruction->GetBaseID()==libIRDB::BaseObj_t::NOT_IN_DATABASE &&
+		rhs.from_instruction->GetBaseID()==libIRDB::BaseObj_t::NOT_IN_DATABASE)
+	{
+		assert(0);
+	}
+	// return lhs.from_instruction->GetBaseID() < rhs.from_instruction->GetBaseID(); 
+#endif
+	assert(lhs.from_instruction);
+	assert(rhs.from_instruction);
+	return lhs.from_instruction < rhs.from_instruction; 
+}
 
 // instructions that need a pin, but don't yet have one
 class UnresolvedPinned_t : public UnresolvedInfo_t
 {
 	public:
-		UnresolvedPinned_t(libIRDB::Instruction_t* p_from) : from_instruction(p_from), m_range(0,0), m_updated_address(0) {}
-		UnresolvedPinned_t(libIRDB::Instruction_t* p_from, Range_t range) : from_instruction(p_from), m_range(range), m_updated_address(0) {}
+		UnresolvedPinned_t(libIRDB::Instruction_t* p_from) : from_instruction(p_from), m_range(0,0), m_updated_address(0) { assert(p_from); }
+		UnresolvedPinned_t(libIRDB::Instruction_t* p_from, Range_t range) : from_instruction(p_from), m_range(range), m_updated_address(0) { assert(p_from); }
 		libIRDB::Instruction_t* GetInstruction() const { return from_instruction; }
 
 		/*
@@ -116,7 +129,19 @@ class UnresolvedPinned_t : public UnresolvedInfo_t
 };
 
 inline bool operator< (const UnresolvedPinned_t& lhs, const UnresolvedPinned_t& rhs)
-{ return lhs.from_instruction->GetBaseID() < rhs.from_instruction->GetBaseID(); }
+{ 
+#if 0
+	if( lhs.from_instruction->GetBaseID()==libIRDB::BaseObj_t::NOT_IN_DATABASE &&
+		rhs.from_instruction->GetBaseID()==libIRDB::BaseObj_t::NOT_IN_DATABASE)
+	{
+		assert(0);
+	}
+	// return lhs.from_instruction->GetBaseID() < rhs.from_instruction->GetBaseID(); 
+#endif
+	assert(lhs.from_instruction);
+	assert(rhs.from_instruction);
+	return lhs.from_instruction < rhs.from_instruction; 
+}
 
 
 // an ELF location that needs patching when an Unresolved instrcution
