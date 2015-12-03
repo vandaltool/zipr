@@ -10,6 +10,10 @@ if [ "$PEASOUP_UMBRELLA_DIR" != "$FULL_BUILD_LOC" ]; then
     exit 1;
 fi
 
+if [ `basename $BUILD_LOC` == "cfar_umbrella" ]; then
+	cfar_mode="--enable-cfar"
+fi
+
 # stratafier
 cd $PEASOUP_UMBRELLA_DIR/stratafier
 make || exit
@@ -30,16 +34,16 @@ if [ `uname -m` = 'x86_64' ]; then
 		cp -R $STRATA $STRATA32
 	fi
 	cd $STRATA_HOME32
-	STRATA_HOME=$STRATA_HOME32 STRATA=$STRATA_HOME32 ./build -host=i386-linux || exit
+	STRATA_HOME=$STRATA_HOME32 STRATA=$STRATA_HOME32 ./build -host=i386-linux $cfar_mode || exit
 
 	# build x86-64 strata
 	cd $STRATA_HOME
-	./configure || exit
+	./configure $cfar_mode || exit
 	make || exit
 
 else
 	cd $STRATA_HOME
-	./build || exit
+	./build $cfar_mode || exit
 fi
 
 # smp-static-analyzer
