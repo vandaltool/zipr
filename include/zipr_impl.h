@@ -50,6 +50,7 @@ class ZiprImpl_t : public Zipr_t
 			m_objcopy("objcopy", "/usr/bin/objcopy"),
 			m_replop("replop", false),
 			m_verbose("verbose", true),
+			m_apply_nop("apply_nop", false),
 			m_variant("variant"),
 			m_architecture("architecture"),
 			m_seed("seed", 0)
@@ -96,6 +97,7 @@ class ZiprImpl_t : public Zipr_t
 		void PatchInstruction(RangeAddress_t addr, libIRDB::Instruction_t* insn);
 		void RewritePCRelOffset(RangeAddress_t from_addr,RangeAddress_t to_addr, int insn_length, int offset_pos);
 		void ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr);
+		void ApplyNopToPatch(RangeAddress_t addr);
 		void PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr);
 		void CallToNop(RangeAddress_t at_addr);
 
@@ -175,7 +177,7 @@ class ZiprImpl_t : public Zipr_t
 		// Options
 		ZiprOptions_t m_zipr_options;
 		ZiprStringOption_t m_output_filename, m_callbacks, m_objcopy;
-		ZiprBooleanOption_t m_replop, m_verbose;
+		ZiprBooleanOption_t m_replop, m_verbose, m_apply_nop;
 		ZiprIntegerOption_t m_variant, m_architecture, m_seed;
 
 };

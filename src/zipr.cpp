@@ -166,6 +166,7 @@ ZiprOptionsNamespace_t *ZiprImpl_t::RegisterOptions(ZiprOptionsNamespace_t *glob
 	m_variant.SetRequired(true);
 
 	m_verbose.SetDescription("Enable verbose output");
+	m_apply_nop.SetDescription("Apply NOP to patches that fallthrough.");
 	m_variant.SetDescription("Variant ID.");
 	m_output_filename.SetDescription("Output file name.");
 	m_architecture.SetDescription("Override default system "
@@ -189,6 +190,7 @@ ZiprOptionsNamespace_t *ZiprImpl_t::RegisterOptions(ZiprOptionsNamespace_t *glob
 
 	global->AddOption(&m_variant);
 	global->AddOption(&m_verbose);
+	global->AddOption(&m_apply_nop);
 
 	zipr_namespace->MergeNamespace(memory_space.RegisterOptions(global));
 	return zipr_namespace;
@@ -1441,6 +1443,10 @@ void ZiprImpl_t::ApplyPatches(Instruction_t* to_insn)
 		// Patch instruction
 		//
 		ApplyPatch(from_addr, to_addr);
+		if ((from_addr + 5) == to_addr) {
+			cout << "NOP conversion applicable." << endl;
+			ApplyNopToPatch(from_addr);
+		}
 	}
 
 	// removing resolved patches
@@ -1692,6 +1698,29 @@ void ZiprImpl_t::RewritePCRelOffset(RangeAddress_t from_addr,RangeAddress_t to_a
 	memory_space[from_addr+offset_pos+1]=(new_offset>>8)&0xff;
 	memory_space[from_addr+offset_pos+2]=(new_offset>>16)&0xff;
 	memory_space[from_addr+offset_pos+3]=(new_offset>>24)&0xff;
+}
+
+void ZiprImpl_t::ApplyNopToPatch(RangeAddress_t addr)
+{
+	/*
+	 * TODO: Add assertion that this is really a patch.
+	 */
+	if (!m_apply_nop)
+	{
+		if (m_verbose)
+			cout << "Skipping chance to apply nop to fallthrough patch." << endl;
+		return;
+	}
+	assert(true);
+
+	/*
+	 * 0F 1F 44 00 00H
+	 */
+	memory_space[addr] = (unsigned char)0x0F;
+	memory_space[addr+1] = (unsigned char)0x1F;
+	memory_space[addr+2] = (unsigned char)0x44;
+	memory_space[addr+3] = (unsigned char)0x00;
+	memory_space[addr+4] = (unsigned char)0x00;
 }
 
 void ZiprImpl_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)
