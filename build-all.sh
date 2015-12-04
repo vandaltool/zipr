@@ -28,17 +28,24 @@ if [ `uname -m` = 'x86_64' ]; then
 	# build 32-bit strata
 	if [ ! -d $STRATA_HOME32 ] ; then 
 		cd $STRATA
-		make clean distclean
+		if [ -f Makefile ] ; then
+			make clean distclean
+		fi
 		cd $PEASOUP_UMBRELLA_DIR
 		echo Creating strata 32-bit build directory
 		cp -R $STRATA $STRATA32
 	fi
+	
 	cd $STRATA_HOME32
 	STRATA_HOME=$STRATA_HOME32 STRATA=$STRATA_HOME32 ./build -host=i386-linux $cfar_mode || exit
 
 	# build x86-64 strata
 	cd $STRATA_HOME
-	./configure $cfar_mode || exit
+	if [ -f Makefile -a Makefile -nt configure -a Makefile -nt Makefile.in ]; then
+		echo Skipping Strata reconfigure step
+	else
+		./configure $cfar_mode || exit
+	fi
 	make || exit
 
 else
@@ -92,3 +99,13 @@ scons || exit
 
 cd $IRDB_TRANSFORMS
 scons || exit
+
+
+
+if [ `basename $BUILD_LOC` == "cfar_umbrella" ]; then
+	mkdir -p lib
+	cd DieHard/src
+	make linux-gcc-x86-64
+	cd $PEASOUP_UMBRELLA_DIR
+	cp DieHard/src/libdiehard.so lib
+fi

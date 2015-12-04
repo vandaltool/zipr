@@ -14,9 +14,13 @@ fi
 cd $PEASOUP_UMBRELLA_DIR/stratafier
 make clean
 
+# clean main strata
 cd $STRATA_HOME
 ./configure
 make clean
+rm Makefile
+
+# clean strata32 if exists.
 cd $PEASOUP_UMBRELLA_DIR/
 rm -Rf strata32
 
