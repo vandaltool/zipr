@@ -783,6 +783,7 @@ bool	check_for_push_pop_coherence(Function_t *func)
 
 	// keep a map that keeps the count of pops for each function exit.
 	map<Instruction_t*, int> pop_count_per_exit;
+	map<Instruction_t*, bool> found_leave_per_exit;
 
 	// now, look for pops, and fill in that map.
 	for(
@@ -794,7 +795,13 @@ bool	check_for_push_pop_coherence(Function_t *func)
 		Instruction_t* insn=*it;
 		DISASM d;
 		insn->Disassemble(d);
-		if(strstr(d.CompleteInstr,"pop")!=NULL || strstr(d.CompleteInstr,"leave")!=NULL)
+		if(strstr(d.CompleteInstr,"leave")!=NULL)
+		{
+			Instruction_t *exit_insn=find_exit_insn(insn,func);
+			if(exit_insn)
+				found_leave_per_exit[exit_insn]=true;
+		}
+		if(strstr(d.CompleteInstr,"pop")!=NULL)
 		{
 			Instruction_t *exit_insn=find_exit_insn(insn,func);
 
@@ -837,7 +844,7 @@ bool	check_for_push_pop_coherence(Function_t *func)
 //cerr<<"Found "<<map_pair.second<<" pops in exit: \""<< d.CompleteInstr <<"\" func:"<<func->GetName()<<endl;
 
 		// do the check
-		if(prologue_pushes != map_pair.second)
+		if(prologue_pushes != map_pair.second && found_leave_per_exit[insn]==false)
 		{
 			cerr<<"Sanitizing function "<<func->GetName()<<" because pushes don't match pops for an exit"<<endl;
 			return false;
