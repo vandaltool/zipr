@@ -43,6 +43,11 @@ if [ "$DO_APPFW" = "1" ]; then
 	APP_LD_PRELOAD="$datapath/libappfw.so:$APP_LD_PRELOAD"
 fi
 
+DO_DIEHARD=0
+if [ "$DO_DIEHARD" = "1" ]; then 
+	APP_LD_PRELOAD="$datapath/libheaprand.so:$APP_LD_PRELOAD"
+fi
+
 DO_TWITCHER=0
 if [ "$DO_TWITCHER" = "1" ]; then
 	if [ -z $TWITCHER_LOG ]; then

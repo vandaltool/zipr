@@ -14,6 +14,7 @@ structured_p1_canaries=0
 structured_noc=0
 config_name="unspecified"
 backend="strata"
+use_diehard=0
 
 cmd_line_options=( "$@" )
 declare -a new_cmd_line_options
@@ -30,6 +31,9 @@ do
 	# this option is for cfar, handle it and remove it from the ps_analyze arguments.
 	if [ "$i" == "--structured_p1_canaries" ]; then 	
 		structured_p1_canaries=1
+	# this option is for cfar, handle it and remove it from the ps_analyze arguments.
+	elif [ "$i" == "--diehard" ]; then 	
+		use_diehard=1
 	# this option is for cfar, handle it and remove it from the ps_analyze arguments.
 	elif [ "$i" == "--structured_noc" ]; then 	
 		structured_noc=1
@@ -141,4 +145,4 @@ else
 	echo "Successfully protected $variants variants, attempting to generate MVEE configuration files"
 fi
 
-$PEASOUP_HOME/tools/generate_mvee_config.sh  "$variants" "$out" "$baseoutdir" "$backend" "$config_name"
+$PEASOUP_HOME/tools/generate_mvee_config.sh  "$variants" "$out" "$baseoutdir" "$backend" "$config_name" "$use_diehard"

@@ -2,7 +2,8 @@
                 "exec" : {
                     "alias" : [
                         "/sbin/thttpd=/target_apps/<<EXE_NAME>>",
-                        "/etc/ld.so.cache=/etc/ld.so.cache"
+                        "/etc/ld.so.cache=/etc/ld.so.cache",
+			"/variant_specific/libheaprand.so=/target_app_libs/<<PS_DIR>>/libheaprand.so"
                         ]
                 }
             }

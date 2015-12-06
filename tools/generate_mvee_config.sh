@@ -7,6 +7,7 @@ outfile="$2"
 tempdir="$3"
 backend="$4"
 config="$5"
+use_diehard="$6"
 
 json=${outfile}.${config}.json
 
@@ -31,9 +32,15 @@ do
 
 done
 
+if [ $use_diehard ]; then
+	json_contents="${json_contents//<<ENV>>/\"LD_PRELOAD=\/variant_specific\/libheaprand.so\",<<ENV>>}"
+fi
+
 # remove variant_config marker.
 json_contents="${json_contents//,<<VARIANT_CONFIG>>/}"
 json_contents="${json_contents//,<<VARIANT_LIST>>/}"
+json_contents="${json_contents//,<<ENV>>/}"
+json_contents="${json_contents//<<ENV>>/}"
 
 echo "$json_contents" > $json
 
