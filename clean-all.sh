@@ -48,3 +48,6 @@ if [ -d $ZIPR_HOME ]; then
 	cd $ZIPR_HOME
 	scons -c || exit
 fi
+
+cd $PEASOUP_UMBRELLA_DIR
+./clean_diehard.sh

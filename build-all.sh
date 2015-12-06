@@ -10,7 +10,7 @@ if [ "$PEASOUP_UMBRELLA_DIR" != "$FULL_BUILD_LOC" ]; then
     exit 1;
 fi
 
-if [ `basename $BUILD_LOC` == "cfar_umbrella" ]; then
+if [ `basename $FULL_BUILD_LOC` == "cfar_umbrella" ]; then
 	cfar_mode="--enable-cfar"
 fi
 
@@ -101,11 +101,16 @@ cd $IRDB_TRANSFORMS
 scons || exit
 
 
-
-if [ `basename $BUILD_LOC` == "cfar_umbrella" ]; then
-	mkdir -p lib
-	cd DieHard/src
-	make linux-gcc-x86-64
-	cd $PEASOUP_UMBRELLA_DIR
-	cp DieHard/src/libdiehard.so lib
+cd $PEASOUP_UMBRELLA_DIR
+if [ -d DieHard ]; then
+	./build_diehard.sh
 fi
+
+cd $PEASOUP_UMBRELLA_DIR
+
+
+echo
+echo
+echo  "Overall build complete."
+echo
+echo

@@ -1,7 +1,9 @@
 * text=auto !eol
 /build-all.sh -text
+/build_diehard.sh -text
 /cfar_postgres_setup.sh -text
 /clean-all.sh -text
+/clean_diehard.sh -text
 /get-peasoup-packages.sh -text
 /irdb_vars -text
 /postgres_setup.sh -text
