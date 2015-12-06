@@ -9,16 +9,33 @@ fi
 
 if [ $backend = "zipr" ]; then
 	echo Found zipr backend.
-	exe=$(basename $stratafied_exe)
-	cat $PEASOUP_HOME/tools/cfar_configs/zipr_variant.json.template| sed "s/<<EXE_NAME>>/$exe/" > variant_config.json
+
+	template=$PEASOUP_HOME/tools/cfar_configs/zipr_variant.json.template;
+
 
 
 elif [ $backend = "strata" ]; then
 
 	echo "Found strata backend."
+	template=$PEASOUP_HOME/tools/cfar_configs/strata_variant.json.template
+
+else
+	echo Unknown backend.
+	exit 1
+fi
+
+
+# calc stuffs needed.
+base_peasoup_dir=$(basename $newdir)
+exe=$(basename $stratafied_exe)
+
+# get and fill in template.
+cp $template variant_config.json
+sed -i "s/<<EXE_NAME>>/$exe/"  variant_config.json
+sed -i "s|<<PS_DIR>>|$base_peasoup_dir|" variant_config.json
 
 #
-# note that these are all hard-coded in the config file right now.
+# note that these are all hard-coded in the config files right now.
 # plan:  mine these values out of ps_run.sh and replace in config file.
 #
 #"STRATA_LOG=detectors",
@@ -37,13 +54,4 @@ elif [ $backend = "strata" ]; then
 #"STRATA_IS_SO=0",
 #"STRATA_MAX_WARNINGS=500000"
 
-	base_peasoup_dir=$(basename $newdir)
-
-	cat $PEASOUP_HOME/tools/cfar_configs/strata_variant.json.template| sed "s|<<PS_DIR>>|$base_peasoup_dir|" > variant_config.json
-	exit 0
-
-else
-	echo Unknown backend.
-	exit 1
-fi
-
+exit 0
