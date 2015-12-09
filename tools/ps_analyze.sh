@@ -818,6 +818,7 @@ perform_step gather_libraries mandatory $PEASOUP_HOME/tools/do_gatherlibs.sh $st
 #
 perform_step meds_static mandatory $PEASOUP_HOME/tools/do_idapro.sh
 touch a.ncexe.annot
+cp a.ncexe.annot a.ncexe.annot.full
 # this check is extraneous now.
 #if [ ! -f $newname.ncexe.annot  ] ; then 
 #	fail_gracefully "idapro step failed, exiting early.  Is IDAPRO installed? "
@@ -998,7 +999,6 @@ perform_step integertransform meds_static,clone $PEASOUP_HOME/tools/do_integertr
 # perform step to instrument pgm with return shadow stack
 #
 perform_step ret_shadow_stack meds_static,clone $PEASOUP_HOME/tools/do_rss.sh --varid $cloneid  $step_options_ret_shadow_stack
-cp a.ncexe.annot a.ncexe.annot.full
 
 #
 # Do Twitcher transform step if twitcher is present
