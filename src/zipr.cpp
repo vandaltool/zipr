@@ -55,6 +55,21 @@ using namespace ELFIO;
 
 int find_magic_segment_index(ELFIO::elfio *elfiop);
 
+template < typename T > std::string to_hex_string( const T& n )
+{
+	std::ostringstream stm ;
+	stm << std::hex<< "0x"<< n ;
+	return stm.str() ;
+}
+
+template < typename T > std::string to_string( const T& n )
+{
+	std::ostringstream stm ;
+	stm << n ;
+	return stm.str() ;
+}
+
+
 static Instruction_t* addNewAssembly(FileIR_t* firp, Instruction_t *p_instr, string p_asm)
 {
         Instruction_t* newinstr;
@@ -74,6 +89,7 @@ static Instruction_t* addNewAssembly(FileIR_t* firp, Instruction_t *p_instr, str
         return newinstr;
 }
 
+#ifdef CGC
 static std::ifstream::pos_type filesize(const char* filename)
 {
     	std::ifstream in(filename, std::ifstream::ate | std::ifstream::binary);
@@ -85,6 +101,7 @@ static std::ifstream::pos_type filesize(const char* filename)
 	}
    	return in.tellg();
 }
+#endif
 
 void ZiprImpl_t::Init()
 {
@@ -262,7 +279,7 @@ void ZiprImpl_t::CreateBinaryFile()
 
 	PreReserve2ByteJumpTargets();
 
-	// expand 2-byte pins into 4-byte pins
+	// expand 2-byte pins into 5-byte pins
 	ExpandPinnedInstructions();
 
 	while (!two_byte_pins.empty()) 
@@ -795,6 +812,178 @@ void ZiprImpl_t::PreReserve2ByteJumpTargets()
 	}
 }
 
+static int ceildiv(int a, int b)
+{
+	return 	(a+b-1)/b;
+}
+
+
+Instruction_t* ZiprImpl_t::Emit68Sled(RangeAddress_t addr, int sled_size, int sled_number, Instruction_t* next_sled)
+{
+	// find out the sled's output points (either top_of_sled for a miss)
+	// or good_to_go for a hit
+	Instruction_t *good_to_go=FindPinnedInsnAtAddr(addr+sled_number);
+	// if there isn't one, we don't need a sled for this case.
+	if(!good_to_go)
+		return next_sled;
+
+
+	const uint32_t push_lookup[]={0x68686868, 0x90686868, 0x90906868,0x90909068, 0x90909090};
+	const int number_of_pushed_values=ceildiv(sled_size-sled_number, 5);
+	vector<uint32_t> pushed_values(number_of_pushed_values);
+
+	// first pushed value is variable depending on the sled's index
+	pushed_values[0]=push_lookup[4-((sled_size-sled_number-1)%5)];
+	// other case values are all 0x68686868
+	for(int i=1;i<number_of_pushed_values;i++)
+	{
+		pushed_values[i]=0x68686868;
+	}
+
+	/* 
+	 * Emit something that looks like:
+	 * 	if ( *(tos+0*stack_push_size)!=pushed_values[0] )
+	 * 			jmp next_sled; //missed
+	 * 	if ( *(tos+1*stack_push_size)!=pushed_values[1] )
+	 * 			jmp next_sled; //missed
+	 * 		...
+	 * 	if ( *(tos+number_of_pushed_values*stack_push_size-1)!=pushed_values[number_of_pushed_values-1] )
+	 * 			jmp next_sled; //missed
+	 * 	lea rsp, [rsp+push_size]
+	 * 	jmp dollop's translation	// found
+	*/
+
+	string stack_reg="rsp";
+	string decoration="qword";
+	if(m_firp->GetArchitectureBitWidth()!=64)
+	{
+		decoration="dword";
+		string stack_reg="esp";
+	}
+	const int stack_push_size=m_firp->GetArchitectureBitWidth()/8;
+
+	string lea_string=string("lea ")+stack_reg+", ["+stack_reg+"+" + to_string(stack_push_size*number_of_pushed_values)+"]"; 
+	Instruction_t *lea=addNewAssembly(m_firp, NULL, lea_string);
+	lea->SetFallthrough(good_to_go);
+
+	Instruction_t *old_cmp=lea;
+
+	for(int i=0;i<number_of_pushed_values;i++)
+	{
+		string cmp_str="cmp "+decoration+" ["+stack_reg+"+ "+to_string(i*stack_push_size)+"], "+to_string(pushed_values[i]);
+		Instruction_t* cmp=addNewAssembly(m_firp, NULL, cmp_str); 
+		Instruction_t *jne=addNewAssembly(m_firp, NULL, "jne 0"); 
+		cmp->SetFallthrough(jne);
+		jne->SetTarget(next_sled);
+		jne->SetFallthrough(old_cmp);
+
+		cout<<"Adding 68-sled bit:  "+cmp_str+", jne 0 for sled at 0x"<<hex<<addr<<" entry="<<dec<<sled_number<<endl;
+
+		old_cmp=cmp;
+	}
+
+	// now that all the cmp/jmp's are insert, we are done with this sled.
+	return old_cmp;
+}
+
+Instruction_t* ZiprImpl_t::Emit68Sled(RangeAddress_t addr, int sled_size)
+{
+
+	Instruction_t *top_of_sled=addNewAssembly(m_firp, NULL, "hlt"); 
+
+	for(int i=sled_size-1;i>=0; i--)
+	{
+		top_of_sled=Emit68Sled(addr, sled_size, i, top_of_sled);
+	}
+	return top_of_sled;
+
+}
+
+RangeAddress_t ZiprImpl_t::Do68Sled(RangeAddress_t addr)
+{
+	char bytes[]={(char)0xeb,(char)0}; // jmp rel8
+	const int nop_overhead=4;	// space for nops.
+	const int jmp_overhead=2;	// space for nops.
+	const int sled_size=Calc68SledSize(addr);
+	cout<<"Adding 68-sled at 0x"<<hex<<addr<<" size="<<dec<<sled_size<<endl;
+
+	for(int i=0;i<sled_size;i++)
+	{
+		cout<<"Adding 68 at "<<hex<<addr+i<<" for sled at 0x"<<hex<<addr<<endl;
+		assert(memory_space.find(addr+i) == memory_space.end() );
+		memory_space[addr+i]=0x68;	// push opcode and/or data depending on the sled.
+		memory_space.SplitFreeRange(addr+i);
+	}
+	for(int i=0;i<nop_overhead;i++)
+	{
+		cout<<"Adding 90 at "<<hex<<addr+sled_size+i<<" for sled at 0x"<<hex<<addr<<endl;
+		assert(memory_space.find(addr+sled_size+i) == memory_space.end() );
+		memory_space[addr+sled_size+i]=0x90;	// push opcode and/or data depending on the sled.
+		memory_space.SplitFreeRange(addr+sled_size+i);
+	}
+
+	Instruction_t* sled_disambiguation=Emit68Sled(addr, sled_size);
+
+	cout<<"Pin for 68-sled  at 0x"<<hex<<addr<<" is "<<hex<<(addr+sled_size+nop_overhead)<<endl;
+
+	// reserve the bytes for the jump at the end of the sled.  The 68's and 90's are already reserved.
+	for(unsigned int i=0;i<jmp_overhead;i++)
+	{
+		assert(memory_space.find(addr+sled_size+nop_overhead+i) == memory_space.end() );
+		memory_space[addr+sled_size+nop_overhead+i]=bytes[i];
+		memory_space.SplitFreeRange(addr+sled_size+nop_overhead+i);
+	}
+	UnresolvedPinned_t cup(sled_disambiguation);
+	cup.SetUpdatedAddress(addr+sled_size+nop_overhead);
+	two_byte_pins.insert(cup);
+
+	return addr+sled_size+nop_overhead+jmp_overhead;
+}
+
+
+int ZiprImpl_t::Calc68SledSize(RangeAddress_t addr)
+{
+	const int sled_overhead=6;
+	int sled_size=0;
+	while(true)
+	{
+		int i=0;
+		for(i=0;i<sled_overhead;i++)
+		{
+			if(FindPinnedInsnAtAddr(addr+sled_size+i))
+			{
+				break;
+			}
+		}
+		// if i==sled_overhead, that means that we found 6 bytes in a row free
+		// in the previous loop.  Thus, we can end the 68 sled.
+		// if i<sled_overhead, we found a in-use byte, and the sled must continue.
+		if(i==sled_overhead)
+		{
+			assert(sled_size>2);
+			return sled_size;
+		}
+
+		// try a sled that's 1 bigger.
+		sled_size+=1;
+
+	}
+
+	// cannot reach here?
+	assert(0);
+
+}
+
+bool ZiprImpl_t::IsPinFreeZone(RangeAddress_t addr, int size)
+{
+	for(int i=0;i<size;i++)
+		if(FindPinnedInsnAtAddr(addr+i)!=NULL)
+			return false;
+	return true;
+}
+
+
+
 void ZiprImpl_t::ReservePinnedInstructions()
 {
 	set<UnresolvedPinned_t> reserved_pins;
@@ -803,7 +992,7 @@ void ZiprImpl_t::ReservePinnedInstructions()
 	/* first, for each pinned instruction, try to put down a jump for the pinned instruction
  	 */
         for(   
-		set<UnresolvedPinned_t>::const_iterator it=unresolved_pinned_addrs.begin();
+		set<UnresolvedPinned_t,pin_sorter_t>::const_iterator it=unresolved_pinned_addrs.begin();
                 it!=unresolved_pinned_addrs.end();
                 ++it
            )
@@ -845,9 +1034,52 @@ void ZiprImpl_t::ReservePinnedInstructions()
 		}
 
 
-		if (FindPinnedInsnAtAddr(addr+1)) {
+		// if the byte at x+1 is free, we can try a 2-byte jump (which may end up being converted to a 5-byte jump later).
+		if (FindPinnedInsnAtAddr(addr+1)==NULL)
+		{
 			if (m_verbose)
-				printf("Cannot fit two byte pin; Using workaround.\n");
+			{
+				printf("Can fit two-byte pin (%p-%p).  fid=%d\n", 
+					(void*)addr,
+					(void*)(addr+sizeof(bytes)-1),
+					upinsn->GetAddress()->GetFileID());
+			}
+		
+			/*
+			 * Assert that the space is free.  We already checked that it should be 
+			 * with the FindPinnedInsnAtAddr, but just to be safe.
+			 */
+			for(unsigned int i=0;i<sizeof(bytes);i++)
+			{
+				assert(memory_space.find(addr+i) == memory_space.end() );
+				memory_space[addr+i]=bytes[i];
+				memory_space.SplitFreeRange(addr+i);
+			}
+			// insert the 2-byte pin to be patched later.
+			two_byte_pins.insert(up);
+		}
+		// this is the case where there are two+ pinned bytes in a row start.
+		// check and implement the 2-in-a-row test
+		// The way this work is to put down this instruction:
+		// 68  --opcode for push 4-byte immed (addr+0)
+		// ww				      (addr+1)
+		// xx				      (addr+2)
+		// yy				      (addr+3)
+		// zz				      (addr+4)
+		// jmp L1		              (addr+5 to addr+6)
+		// ...
+		// L1: lea rsp, [rsp+8]
+		//     jmp dollop(addr)
+		// where ww,xx are un-specified here (later, they will become a 2-byte jump for the pin at addr+1, which will 
+		// be handled in other parts of the code.)  However, at a minimum, the bytes for the jmp l1 need to be free
+		// and there is little flexibility on the 68 byte, which specifies that ww-zz are an operand to the push.
+		// Thus, the jump is at a fixed location.   So, bytes addr+5 and addr+6 must be free.  Also, for the sake of simplicity,
+		// we will check that xx, yy and zz are free so that later handling of addr+1 is uncomplicated.
+		// This technique is refered to as a "push disambiguator" or sometimes a "push sled" for short.
+		else if (IsPinFreeZone(addr+2,5)) 
+		{
+			if (m_verbose)
+				printf("Cannot fit two byte pin; Using 2-in-a-row workaround.\n");
 			/*
 			 * The whole workaround pattern is:
 			 * 0x68 0xXX 0xXX 0xXX 0xXX (push imm)
@@ -860,15 +1092,15 @@ void ZiprImpl_t::ReservePinnedInstructions()
 			 * the fallthrough for the lea.
 			 */
 			char push_bytes[]={(char)0x68,(char)0x00, /* We do not actually write */
-			                   (char)0x00,(char)0x00, /* all these bytes but they */
-												 (char)0x00};           /* make counting easier (see*/
-												                        /* below). */
+					   (char)0x00,(char)0x00, /* all these bytes but they */
+					   (char)0x00};           /* make counting easier (see*/
+					   		          /* below). */
 			Instruction_t *lea_insn = NULL;
 
 			if(m_firp->GetArchitectureBitWidth()==64)
 				lea_insn = addNewAssembly(m_firp, NULL, "lea rsp, [rsp+8]");
 			else
-				lea_insn = addNewAssembly(m_firp, NULL, "lea esp, [esp+8]");
+				lea_insn = addNewAssembly(m_firp, NULL, "lea esp, [esp+4]");
 
 			m_firp->AssembleRegistry();
 			lea_insn->SetFallthrough(upinsn);
@@ -884,6 +1116,14 @@ void ZiprImpl_t::ReservePinnedInstructions()
 
 			addr += sizeof(push_bytes);
 
+			// reserve the bytes for the jump at the end of the push.
+			for(unsigned int i=0;i<sizeof(bytes);i++)
+			{
+				assert(memory_space.find(addr+i) == memory_space.end() );
+				memory_space[addr+i]=bytes[i];
+				memory_space.SplitFreeRange(addr+i);
+			}
+
 			if (m_verbose)
 				printf("Advanced addr to %p\n", (void*)addr);
 
@@ -895,27 +1135,62 @@ void ZiprImpl_t::ReservePinnedInstructions()
 			UnresolvedPinned_t cup(lea_insn);
 			cup.SetUpdatedAddress(addr);
 			two_byte_pins.insert(cup);
-		} else {
-			if (m_verbose)
-			{
-				printf("Can fit two-byte pin (%p-%p).  fid=%d\n", 
-					(void*)addr,
-					(void*)(addr+sizeof(bytes)-1),
-					upinsn->GetAddress()->GetFileID());
-			}
-			two_byte_pins.insert(up);
-		}
-
-		for(unsigned int i=0;i<sizeof(bytes);i++)
+		} 
+		// If, those bytes aren't free, we will default to a "68 sled".
+		// the main concept for a 68 sled is that all bytes will be 68 until we get to an opening where we can "nop out" of 
+		// the sled, re-sync the instruction stream, and inspect the stack to see what happened.  Here is an example with 7 pins in a row.
+		// 0x8000: 68
+		// 0x8001: 68
+		// 0x8002: 68
+		// 0x8003: 68
+		// 0x8004: 68
+		// 0x8005: 68
+		// 0x8006: 68
+		// 0x8007: 90
+		// 0x8008: 90
+		// 0x8009: 90
+		// 0x800a: 90
+		// <resync stream>:  at this point regardless of where (between 0x8000-0x8006 the program transfered control,
+		// execution will resynchronize.  For example, if we jump to 0x8000, the stream will be 
+		//	push 68686868
+		//	push 68909090
+		//	nop
+		//	<resync>
+		// But if we jump to  0x8006, our stream will be:
+		// 	push 90909090
+		// 	<resync>
+		// Note that the top of stack will contain 68909090,68686868 if we jumped to 0x8000, but 0x90909090 if we jumped to 0x8006
+		// After we resync, we have to inspect the TOS elements to see which instruction we jumped to.
+		else if (FindPinnedInsnAtAddr(addr+1))
 		{
-			/*
-			 * Assert because this could fail because we previously
-			 * reserved too much space for a push sled.
-			 */
-			assert(memory_space.find(addr+i) == memory_space.end() );
-			memory_space[addr+i]=bytes[i];
-			memory_space.SplitFreeRange(addr+i);
+			RangeAddress_t end_of_sled=Do68Sled(addr);
+
+			// skip over some entries until we get passed the sled.
+			while (true)
+			{
+				// get this entry
+				UnresolvedPinned_t up=*it;
+				Instruction_t* upinsn=up.GetInstruction();
+				RangeAddress_t addr=(unsigned)upinsn->GetIndirectBranchTargetAddress()
+		                                    ->GetVirtualOffset();
+
+				// is the entry within the sled?
+				if(addr>=end_of_sled)
+					// nope, skip out of this while loop
+					break;
+				// inc the iterator so the for loop will continue at the right place.
+				++it;
+			}
+			// back up one, because the last  one still needs to be processed.
+			--it;
+
+			// resolve any new instructions added for the sled.
+			m_firp->AssembleRegistry();
 		}
+		else
+			assert(0); // impossible to reach, right?
+	
+
 	}
 }
 
@@ -1346,8 +1621,12 @@ void ZiprImpl_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, cons
 	m_stats->total_dollop_space+=(cur_addr-fr_start);
 
 	if (m_verbose)
-		printf("Ending dollop.  size=%d, %s.  space_remaining=%lld, req'd=%d\n", insn_count, truncated,
-		(long long)(fr_end-cur_addr), cur_insn ? _DetermineWorstCaseInsnSize(cur_insn) : -1 );
+	{
+		cout<<"Ending dollop.  size=" <<dec<< insn_count <<", " <<truncated <<
+			".  space_remaining="<< (fr_end-cur_addr) << ", req'd="<<
+			(cur_insn ? _DetermineWorstCaseInsnSize(cur_insn) : -1)
+			<<endl;
+	}
 }
 
 void ZiprImpl_t::AskPluginsAboutPlopping()
@@ -1929,20 +2208,6 @@ void ZiprImpl_t::PrintStats()
 	// and dump a map file of where we placed instructions.  maybe guard with an option.
 	// default to dumping to zipr.map 
 	dump_map();
-}
-
-template < typename T > std::string to_hex_string( const T& n )
-{
-	std::ostringstream stm ;
-	stm << std::hex<< "0x"<< n ;
-	return stm.str() ;
-}
-
-template < typename T > std::string to_string( const T& n )
-{
-	std::ostringstream stm ;
-	stm << n ;
-	return stm.str() ;
 }
 
 

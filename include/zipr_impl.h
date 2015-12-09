@@ -36,6 +36,7 @@ class Stats_t;
 
 class ZiprImpl_t : public Zipr_t
 {
+
 	public:
 		ZiprImpl_t(int argc, char **argv) :
 			m_stats(NULL),
@@ -113,6 +114,17 @@ class ZiprImpl_t : public Zipr_t
 		RangeAddress_t FindCallbackAddress(RangeAddress_t end_of_new_space,RangeAddress_t start_addr, const std::string &callback);
 		libIRDB::Instruction_t *FindPinnedInsnAtAddr(RangeAddress_t addr);
 		bool ShouldPinImmediately(libIRDB::Instruction_t *upinsn);
+		bool IsPinFreeZone(RangeAddress_t addr, int size);
+
+		// routines to deal with a "68 sled"
+		int Calc68SledSize(RangeAddress_t addr);
+		RangeAddress_t Do68Sled(RangeAddress_t addr);
+		libIRDB::Instruction_t* Emit68Sled(RangeAddress_t addr, int sled_size);
+		libIRDB::Instruction_t* Emit68Sled(RangeAddress_t addr, int sled_size, int sled_number, libIRDB::Instruction_t* next_sled);
+
+
+
+
 
 		// support
 		RangeAddress_t extend_section(ELFIO::section *sec, ELFIO::section *next_sec);
@@ -137,9 +149,24 @@ class ZiprImpl_t : public Zipr_t
 
 		bool m_error;
 
+		class pin_sorter_t 
+		{
+			public:
+				bool operator() (const UnresolvedPinned_t& p1, const UnresolvedPinned_t& p2)
+				{
+					assert(p1.GetInstruction());
+					assert(p2.GetInstruction());
+					assert(p1.GetInstruction()->GetIndirectBranchTargetAddress());
+					assert(p2.GetInstruction()->GetIndirectBranchTargetAddress());
+
+					return p1.GetInstruction()->GetIndirectBranchTargetAddress()->GetVirtualOffset() < 
+						p2.GetInstruction()->GetIndirectBranchTargetAddress()->GetVirtualOffset() ;
+				}
+		};
+
 		// structures necessary for ZIPR algorithm.
 		std::set<UnresolvedUnpinned_t> unresolved_unpinned_addrs;
-		std::set<UnresolvedPinned_t> unresolved_pinned_addrs; 
+		std::set<UnresolvedPinned_t,pin_sorter_t> unresolved_pinned_addrs; 
 		std::multimap<UnresolvedUnpinned_t,Patch_t> patch_list;
 
 		// map of where bytes will actually go.
