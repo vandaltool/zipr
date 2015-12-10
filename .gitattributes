@@ -976,6 +976,11 @@ tools/c2e/SConstruct -text
 tools/c2e/c2e_driver.cpp -text
 tools/c2e/c2e_instr.cpp -text
 tools/c2e/c2e_instr.hpp -text
+tools/cgc_buffrecv/SConscript -text
+tools/cgc_buffrecv/SConstruct -text
+tools/cgc_buffrecv/buffrecv_driver.cpp -text
+tools/cgc_buffrecv/buffrecv_instrument.cpp -text
+tools/cgc_buffrecv/buffrecv_instrument.hpp -text
 tools/cgc_hlx/Makefile.in -text
 tools/cgc_hlx/SConscript -text
 tools/cgc_hlx/SConstruct -text
