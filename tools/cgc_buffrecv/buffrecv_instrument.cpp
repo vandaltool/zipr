@@ -72,7 +72,7 @@ bool BuffRecv_Instrument::_add_buffered_receive_instrumentation(Instruction_t *s
         callback=tmp=insertAssemblyAfter(firp,tmp,"nop");
         post_callback=tmp=insertAssemblyAfter(firp,tmp,"popa");
         tmp=insertAssemblyAfter(firp,tmp,"popf");
-        tmp=insertAssemblyAfter(firp,tmp,"mov eax, 0");
+//        tmp=insertAssemblyAfter(firp,tmp,"mov eax, 0");
         post_callback->GetAddress()->SetVirtualOffset(postCallbackReturn);
 	callback->SetCallback("buffered_receive");
 	return true;
@@ -92,8 +92,8 @@ bool BuffRecv_Instrument::add_buffered_receive_instrumentation()
 		SyscallNumber_t num=ss.GetSyscallNumber();
 		if(num==SNT_receive) 
 		{
-			cout << "Found RECEIVE syscall - @todo: implement: " << site->getDisassembly() << " " << hex << site->GetAddress()->GetVirtualOffset() << dec << endl;
-//			success = success && add_buffered_receive_instrumentation(site);
+			cout << "Found RECEIVE syscall - instrument: " << site->getDisassembly() << " " << hex << site->GetAddress()->GetVirtualOffset() << dec << endl;
+			success = success && _add_buffered_receive_instrumentation(site);
 		}
 	}
 
