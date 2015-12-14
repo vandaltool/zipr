@@ -4,6 +4,6 @@
 
 namespace Utils {
 	extern size_t CALLBACK_TRAMPOLINE_SIZE;
-	int DetermineWorstCaseInsnSize(libIRDB::Instruction_t*);
+	int DetermineWorstCaseInsnSize(libIRDB::Instruction_t*, bool account_for_jump = true);
 }
 #endif

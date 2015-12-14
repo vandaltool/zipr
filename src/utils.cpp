@@ -4,7 +4,7 @@ namespace zipr {
 namespace Utils {
 size_t CALLBACK_TRAMPOLINE_SIZE=9;
 using namespace libIRDB;
-int DetermineWorstCaseInsnSize(Instruction_t* insn)
+int DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_for_jump)
 {
 
 	int required_size=0;
@@ -64,7 +64,10 @@ int DetermineWorstCaseInsnSize(Instruction_t* insn)
 	}
 	
 	// add an extra 5 for a "trampoline" in case we have to end this fragment early
-	return required_size+5;
+	if (account_for_jump)
+		return required_size+5;
+	else
+		return required_size;
 }
 }
 }
