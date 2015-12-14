@@ -11,6 +11,7 @@ namespace zipr {
 	Dollop_t *ZiprDollopManager_t::AddNewDollop(Instruction_t *start) {
 		Dollop_t *new_dollop = NULL;
 		Dollop_t *existing_dollop = GetContainingDollop(start);
+
 		/*
 		 * This is the target dollop *only*
 		 * if the target instruction is the first instruction.
@@ -80,19 +81,52 @@ namespace zipr {
 		m_dollops.push_back(dollop);
 	}
 
-	void ZiprDollopManager_t::UpdateTargets(Dollop_t *dollop) {
+	bool ZiprDollopManager_t::UpdateTargets(Dollop_t *dollop) {
 		list<DollopEntry_t*>::iterator it, it_end;
-		for (it = dollop->begin(), it_end = dollop->end();
-		     it != it_end;
-				 it++) {
-			DollopEntry_t *entry = *it;
-			if (entry->Instruction() &&
-			    entry->Instruction()->GetTarget()) {
+		bool changed = false;
+		bool local_changed = false;
+		do {
+			local_changed = false;
+			for (it = dollop->begin(), it_end = dollop->end();
+			     it != it_end;
+					 /* nop */) {
+				DollopEntry_t *entry = *it;
+				it++;
+				if (entry->Instruction() &&
+				    entry->Instruction()->GetTarget()) {
+					Dollop_t *new_target=AddNewDollop(entry->Instruction()->GetTarget());
 
-				entry->TargetDollop(AddNewDollop(entry->Instruction()->GetTarget()));
+					/*
+					 * In the case there is a change, we have to restart.
+					 * The dollop that we are updating could itself have
+					 * contained the target and the call would have
+					 * split this dollop. That makes the iterator go
+					 * haywire.
+					 */
+					if (new_target != entry->TargetDollop()) {
+						entry->TargetDollop(new_target);
+						changed = local_changed = true;
+						break;
+					}
+				}
 			}
-		}
-		return;
+		} while (local_changed);
+		return changed;
+	}
+
+	void ZiprDollopManager_t::UpdateAllTargets(void) {
+		std::list<Dollop_t *>::const_iterator it, it_end;
+		bool changed = false;
+		do {
+			changed = false;
+			for (it = m_dollops.begin(), it_end = m_dollops.end();
+		     it != m_dollops.end();
+				 /* nop */) {
+				Dollop_t *entry = *it;
+				it++;
+				changed |= UpdateTargets(entry);
+			}
+		} while (changed);
 	}
 
 	std::ostream &operator<<(std::ostream &out, const ZiprDollopManager_t &dollop_man) {

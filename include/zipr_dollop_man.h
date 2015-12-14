@@ -54,7 +54,8 @@ class ZiprDollopManager_t {
 			return m_patches_to_dollops.at(target);
 		}
 		void PrintDollopPatches(const std::ostream &);
-		void UpdateTargets(Dollop_t *);
+		bool UpdateTargets(Dollop_t *);
+		void UpdateAllTargets();
 		friend std::ostream &operator<<(std::ostream &out, const ZiprDollopManager_t &dollop_man);
 	private:
 		std::list<Dollop_t*> m_dollops;
