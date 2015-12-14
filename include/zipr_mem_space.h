@@ -73,9 +73,10 @@ class ZiprMemorySpace_t : public MemorySpace_t
 		{
 			min_plopped=std::min(addr,min_plopped);
 			max_plopped=std::max(addr,max_plopped);
-        		if(this->find(addr) == this->end() )
-                		this->SplitFreeRange(addr);
-        		(*this)[addr]=the_byte;
+
+			if(this->find(addr) == this->end() )
+				this->SplitFreeRange(addr);
+			(*this)[addr]=the_byte;
 		}
 		void PlopJump(RangeAddress_t addr)
 		{
