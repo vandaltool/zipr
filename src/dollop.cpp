@@ -9,6 +9,7 @@ namespace Zipr_SDK {
 		Instruction_t *loop = NULL;
 
 		m_size = 0;
+		m_fallthrough_dollop = NULL;
 
 		if (start == NULL)
 			return;
@@ -74,6 +75,10 @@ namespace Zipr_SDK {
 			return NULL;
 
 		new_dollop = new Dollop_t();
+
+		new_dollop->Fallthrough(m_fallthrough_dollop);
+		m_fallthrough_dollop = new_dollop;
+
 		/*
 		 * 2. Remove them from this one
 		 */
@@ -125,12 +130,15 @@ namespace Zipr_SDK {
 	}
 	std::ostream &operator<<(std::ostream &out, const Dollop_t &d) {
 		std::list<DollopEntry_t*>::const_iterator it, it_end;
+		Dollop_t *fallthrough = NULL;
 
 		for (it = d.begin(), it_end = d.end();
 		     it != it_end;
 				 it++) {
 			out << std::hex << *(*it) << std::endl;
 		}
+		if (fallthrough = d.Fallthrough())
+			out << "Fallthrough: " << std::hex << fallthrough << std::endl;
 		return out;
 	}
 
