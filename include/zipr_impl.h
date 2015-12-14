@@ -66,11 +66,9 @@ class ZiprImpl_t : public Zipr_t
 		}
 
 		int DetermineWorstCaseInsnSize(libIRDB::Instruction_t*, bool account_for_jump = true);
-		Zipr_SDK::RangeAddress_t PlopInstruction(libIRDB::Instruction_t* insn, Zipr_SDK::RangeAddress_t addr);
 		Zipr_SDK::RangeAddress_t PlopDollopEntry(DollopEntry_t *);
-		Zipr_SDK::RangeAddress_t PlopWithTarget(libIRDB::Instruction_t* insn, Zipr_SDK::RangeAddress_t at);
 		Zipr_SDK::RangeAddress_t PlopWithTarget(DollopEntry_t*);
-		Zipr_SDK::RangeAddress_t PlopWithCallback(libIRDB::Instruction_t* insn, Zipr_SDK::RangeAddress_t at);
+		Zipr_SDK::RangeAddress_t PlopWithCallback(DollopEntry_t*);
 
 		ZiprOptionsNamespace_t *RegisterOptions(ZiprOptionsNamespace_t *);
 	private:
