@@ -56,7 +56,7 @@ libpath='''
 	'''
 
 myenv.Append(CCFLAGS=" -Wall ")
-myenv.Append(CXXFLAGS=" -g -O0 ")
+myenv.Append(CXXFLAGS=" -std=c++11 -g -O0 ")
 myenv.Append(LINKFLAGS=" -Wl,-E ")	# export all symbols
 
 

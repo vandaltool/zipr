@@ -1,12 +1,22 @@
 #include <zipr_all.h>
+#include <iostream>
 
 namespace Zipr_SDK {
 	using namespace libIRDB;
 	using namespace zipr;
 	Dollop_t::Dollop_t(Instruction_t *start)
 	{
+		Instruction_t *loop = NULL;
 		m_start = start;
 		m_size = CalculateWorstCaseSize();
+
+		if (start == NULL)
+			return;
+
+		loop = start;
+		do {
+			push_back(new DollopEntry_t(loop));
+		} while (NULL != (loop = loop->GetFallthrough()));
 	}
 
 	size_t Dollop_t::CalculateWorstCaseSize()
@@ -38,6 +48,89 @@ namespace Zipr_SDK {
 	}
 
 	Dollop_t *Dollop_t::Split(libIRDB::Instruction_t *split_point) {
-		return new Dollop_t(NULL);
+		/*
+		 * 1. Find the matching dollop entry.
+		 */
+		DollopEntry_t query(split_point);
+		std::list<DollopEntry_t *>::iterator de_split_point, de_it;
+		Dollop_t *new_dollop = NULL;
+
+		de_split_point = find_if(begin(),end(),
+			[&query](const DollopEntry_t *p) {
+				std::cout << "Checking "
+				          << std::hex << query.Instruction() << " ?= "
+									<< std::hex << p->Instruction() << "." << std::endl;
+				return query == *p;
+			});
+		/*
+		 * No matching split point. Just return NULL.
+		 */
+		if (de_split_point == end())
+			return NULL;
+
+		new_dollop = new Dollop_t();
+		/*
+		 * 2. Remove them from this one
+		 */
+		de_it = de_split_point;
+		while (de_it != end()) {
+		/*
+		 * 3. Move them to a new one
+		 */
+			DollopEntry_t *to_remove = *de_it, *to_add = NULL;
+			std::list<DollopEntry_t*>::iterator to_remove_it = de_it;
+
+			de_it++;
+
+			new_dollop->push_back(to_add=new DollopEntry_t(to_remove->Instruction()));
+			erase(to_remove_it);
+			delete to_remove;
+		}
+		/*
+		 * 4. Return the new one
+		 */
+		return new_dollop;
+	}
+
+	DollopEntry_t::DollopEntry_t(libIRDB::Instruction_t *insn) {
+		/*
+		 * NB: This does not link if the insn has a target.
+		 */
+		m_instruction = insn;
+		m_target_dollop = NULL;
+	}
+
+	bool DollopEntry_t::operator==(const DollopEntry_t &comp) {
+		std::cout << "operator==s being invoked "
+		          << "(" << std::hex << m_instruction
+		          << ", " << std::hex << comp.m_instruction
+							<< ") "
+		          << "(" << std::hex << m_target_dollop
+		          << ", " << std::hex << comp.m_target_dollop
+							<< ") "
+							<< std::endl;
+		return comp.m_instruction == m_instruction &&
+		       comp.m_target_dollop == m_target_dollop;
+	}
+	bool DollopEntry_t::operator!=(const DollopEntry_t &comp) {
+		return !operator==(comp);
+	}
+	Dollop_t *Dollop_t::CreateNewDollop(libIRDB::Instruction_t *start) {
+		return new Zipr_SDK::Dollop_t(start);
+	}
+	std::ostream &operator<<(std::ostream &out, const Dollop_t &d) {
+		std::list<DollopEntry_t*>::const_iterator it, it_end;
+
+		for (it = d.begin(), it_end = d.end();
+		     it != it_end;
+				 it++) {
+			out << std::hex << (*it)->Instruction() << ",";
+		}
+		return out;
+	}
+
+	std::ostream &operator<<(std::ostream &out, const DollopPatch_t &p) {
+		out << std::hex << &p << ":" << std::hex << p.Target();
+		return out;
 	}
 }

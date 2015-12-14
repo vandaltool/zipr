@@ -37,21 +37,29 @@ class ZiprDollopManager_t {
 	public:
 		ZiprDollopManager_t() {}
 		void AddDollop(Dollop_t *dollop);
-		Zipr_SDK::Dollop_t *GetContainingDollop(libIRDB::Instruction_t *insn) {
-			try {
-				return m_insn_to_dollop.at(insn);
-			} catch (const std::out_of_range &oor) {
-				return NULL;
-			}
+		Zipr_SDK::Dollop_t *AddNewDollop(libIRDB::Instruction_t *start);
+		Zipr_SDK::Dollop_t *GetContainingDollop(libIRDB::Instruction_t *insn);
+		size_t Size() {
+			return m_dollops.size();
 		}
-
-		static Zipr_SDK::Dollop_t *CreateDollop(libIRDB::Instruction_t *start) {
-			return new Zipr_SDK::Dollop_t(start);
+		void AddDollopPatch(Zipr_SDK::DollopPatch_t *new_patch) {
+			m_patches_to_dollops[new_patch->Target()].push_back(new_patch);
 		}
+		std::list<DollopPatch_t*> PatchesToDollop(Dollop_t *target) {
+			/*
+			 * FIXME: This will throw an exception if target is
+			 * not already in the list. [] fixes that but allocates.
+			 * Decide what to do.
+			 */
+			return m_patches_to_dollops.at(target);
+		}
+		void PrintDollopPatches(const std::ostream &);
 
 	private:
 		std::map<libIRDB::Instruction_t*,Dollop_t*> m_insn_to_dollop;
 		std::list<Dollop_t*> m_dollops;
+		std::list<DollopPatch_t*> m_patches;
+		std::map<Dollop_t*, std::list<DollopPatch_t*>> m_patches_to_dollops;
 };
 
 #endif
