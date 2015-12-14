@@ -7,7 +7,6 @@ namespace Zipr_SDK {
 	Dollop_t::Dollop_t(Instruction_t *start)
 	{
 		Instruction_t *loop = NULL;
-		m_start = start;
 		m_size = CalculateWorstCaseSize();
 
 		if (start == NULL)
@@ -22,7 +21,10 @@ namespace Zipr_SDK {
 	size_t Dollop_t::CalculateWorstCaseSize()
 	{
 		size_t dollop_size = 0;
-		Instruction_t *cur_insn = m_start;
+		Instruction_t *cur_insn = NULL;
+		if (front())
+			cur_insn = front()->Instruction();
+
 		while (cur_insn != NULL)
 		{
 			/*
@@ -124,13 +126,18 @@ namespace Zipr_SDK {
 		for (it = d.begin(), it_end = d.end();
 		     it != it_end;
 				 it++) {
-			out << std::hex << (*it)->Instruction() << ",";
+			out << std::hex << *(*it) << std::endl;
 		}
 		return out;
 	}
 
 	std::ostream &operator<<(std::ostream &out, const DollopPatch_t &p) {
 		out << std::hex << &p << ":" << std::hex << p.Target();
+		return out;
+	}
+	std::ostream &operator<<(std::ostream &out, const DollopEntry_t &p) {
+		out << "Instruction: " << std::hex << p.Instruction() << std::endl;
+		out << "Target Dollop: " << std::hex << p.TargetDollop() << std::endl;
 		return out;
 	}
 }
