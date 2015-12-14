@@ -27,6 +27,7 @@ using namespace Zipr_SDK;
 
 #define INVOKE(a) \
 bool __ ## a ## _result = false; \
+printf("Invoking " #a ":\n"); \
 __ ## a ## _result = a(); \
 printf(#a ":"); \
 if (__ ## a ## _result) \
@@ -118,6 +119,77 @@ bool TestDollopPatchDollopManager(void) {
 	return true;
 }
 
+bool TestUpdateTargetsDollopManager(void) {
+	bool success = true;
+	ZiprDollopManager_t dollop_man;
+	Dollop_t *a, *c;
+	Dollop_t *original_insn_d_container = NULL;
+	Dollop_t *updated_insn_d_container = NULL;
+
+	libIRDB::Instruction_t *insn_a = new libIRDB::Instruction_t();
+	libIRDB::Instruction_t *insn_b = new libIRDB::Instruction_t();
+	libIRDB::Instruction_t *insn_c = new libIRDB::Instruction_t();
+	libIRDB::Instruction_t *insn_d = new libIRDB::Instruction_t();
+
+	/*
+	 * a targets c
+	 * c targets d (which will ultimately create a new dollop)
+	 * a->b
+	 * c->d
+	 *
+	 * A: a, b
+	 * C: c, d
+	 */
+
+	insn_a->SetFallthrough(insn_b);
+	insn_c->SetFallthrough(insn_d);
+
+	insn_a->SetTarget(insn_c);
+	insn_b->SetTarget(insn_d);
+
+	a = Dollop_t::CreateNewDollop(insn_a);
+	c = Dollop_t::CreateNewDollop(insn_c);
+
+	cout << "&a: " << std::hex << a << endl;
+	cout << "&c: " << std::hex << c << endl;
+
+	dollop_man.AddDollop(a);
+	dollop_man.AddDollop(c);
+
+	original_insn_d_container = dollop_man.GetContainingDollop(insn_d);
+
+	success &= (original_insn_d_container == c);
+
+	cout << "Before UpdateTargets([ac])" << endl;
+
+	cout << dollop_man << endl;
+/*
+	cout << "A: " << endl;
+	cout << (*a) << endl;
+	cout << "C: " << endl;
+	cout << (*c) << endl;
+*/
+
+	dollop_man.UpdateTargets(a);
+	dollop_man.UpdateTargets(c);
+
+	cout << "After UpdateTargets([ac])" << endl;
+
+	cout << dollop_man << endl;
+/*
+	cout << "A: " << endl;
+	cout << (*a) << endl;
+	cout << "C: " << endl;
+	cout << (*c) << endl;
+*/
+	updated_insn_d_container = dollop_man.GetContainingDollop(insn_d);
+	return c->GetDollopEntryCount() == 1 &&
+	       a->GetDollopEntryCount() == 2 &&
+				 dollop_man.Size() == 3 &&
+				 updated_insn_d_container != original_insn_d_container &&
+				 success;
+}
+
 bool TestDollopPatchMapDollopManager(void) {
 	bool success = true;
 	ZiprDollopManager_t dollop_man;
@@ -201,7 +273,7 @@ bool TestDollopEntryEquals(void) {
 	b = new DollopEntry_t(insn_b);
 	c = new DollopEntry_t(insn_a);
 	d = new DollopEntry_t(insn_a);
-	d->SetTargetDollop((Dollop_t*)0x5000);
+	d->TargetDollop((Dollop_t*)0x5000);
 
 	return *a != *b &&
 	       *b != *c &&
@@ -222,5 +294,6 @@ int main(int argc, char *argv[])
 	INVOKE(TestDollopPatch);
 	INVOKE(TestDollopPatchDollopManager);
 	INVOKE(TestDollopPatchMapDollopManager);
+	INVOKE(TestUpdateTargetsDollopManager);
 	return 0;
 }
