@@ -9,9 +9,40 @@ using namespace libIRDB;
 namespace zipr {
 
 	Dollop_t *ZiprDollopManager_t::AddNewDollop(Instruction_t *start) {
-		Dollop_t *new_dollop = Dollop_t::CreateNewDollop(start);
-		AddDollop(new_dollop);
-		return new_dollop;
+		Dollop_t *new_dollop = NULL;
+		Dollop_t *existing_dollop = GetContainingDollop(start);
+		/*
+		 * This is the target dollop *only*
+		 * if the target instruction is the first instruction.
+		 */
+		if (existing_dollop)
+		{
+			/*
+			 * There is a target dollop. But, do we need to split it?
+			 */
+			if (existing_dollop->GetDollopEntryCount() &&
+			    existing_dollop->front()->Instruction() == start) {
+				/*
+				 * Just return the existing dollop.
+				 */
+				return existing_dollop;
+			}
+			else {
+				/*
+				 * Split at this dollop to make a new one!
+				 */
+				AddDollop(new_dollop = existing_dollop->Split(start));
+				return new_dollop;
+			}
+		}
+		else {
+			/*
+			 * There is no target dollop. Let's create one!
+			 */
+			new_dollop = Dollop_t::CreateNewDollop(start);
+			AddDollop(new_dollop);
+			return new_dollop;
+		}
 	}
 
 	void ZiprDollopManager_t::PrintDollopPatches(const ostream &out) {
@@ -57,45 +88,13 @@ namespace zipr {
 			DollopEntry_t *entry = *it;
 			if (entry->Instruction() &&
 			    entry->Instruction()->GetTarget()) {
-				/*
-				 * Update target.
-				 */
-				Dollop_t *target_dollop = GetContainingDollop(entry
-				                                              ->Instruction()
-																											->GetTarget());
-				/*
-				 * This is the target dollop *only*
-				 * if the target instruction is the first instruction.
-				 */
-				if (target_dollop)
-				{
-					/*
-					 * There is a target dollop. But, do we need to split it?
-					 */
-					if (target_dollop->GetDollopEntryCount() &&
-					    target_dollop->front()->Instruction() == entry->Instruction()->GetTarget()) {
-						/*
-						 * Just update the target.
-						 */
-						entry->TargetDollop(target_dollop);
-					}
-					else {
-						/*
-						 * Split at this dollop to make a new one!
-						 */
-						AddDollop(target_dollop->Split(entry->Instruction()->GetTarget()));
-					}
-				}
-				else {
-					/*
-					 * There is no target dollop. Let's create one!
-					 */
-					AddNewDollop(entry->Instruction()->GetTarget());
-				}
+
+				entry->TargetDollop(AddNewDollop(entry->Instruction()->GetTarget()));
 			}
 		}
 		return;
 	}
+
 	std::ostream &operator<<(std::ostream &out, const ZiprDollopManager_t &dollop_man) {
 		std::list<Dollop_t *>::const_iterator it, it_end;
 

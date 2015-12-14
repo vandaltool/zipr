@@ -119,6 +119,46 @@ bool TestDollopPatchDollopManager(void) {
 	return true;
 }
 
+bool TestAddNewDollopSplitsExistingDollop(void) {
+	bool success = true;
+	ZiprDollopManager_t dollop_man;
+	Dollop_t *a, *b;
+
+	libIRDB::Instruction_t *insn_a = new libIRDB::Instruction_t();
+	libIRDB::Instruction_t *insn_b = new libIRDB::Instruction_t();
+	libIRDB::Instruction_t *insn_c = new libIRDB::Instruction_t();
+	libIRDB::Instruction_t *insn_d = new libIRDB::Instruction_t();
+
+	/*
+	 * a targets c
+	 * c targets d (which will ultimately create a new dollop)
+	 * a->b->c->d
+	 *
+	 * A: a, b, c, d
+	 */
+
+	insn_a->SetFallthrough(insn_b);
+	insn_b->SetFallthrough(insn_c);
+	insn_c->SetFallthrough(insn_d);
+
+	a = Dollop_t::CreateNewDollop(insn_a);
+	dollop_man.AddDollop(a);
+	success = (a->GetDollopEntryCount() == 4) && dollop_man.Size() == 1;
+
+
+	cout << "Before AddNewDollop()." << endl;
+	cout << dollop_man << endl;
+
+	b = dollop_man.AddNewDollop(insn_c);
+
+	cout << "After AddNewDollop()." << endl;
+	cout << dollop_man << endl;
+	return success &&
+	       a->GetDollopEntryCount() == 2 &&
+	       b->GetDollopEntryCount() == 2 &&
+				 dollop_man.Size() == 2;
+}
+
 bool TestUpdateTargetsDollopManager(void) {
 	bool success = true;
 	ZiprDollopManager_t dollop_man;
@@ -295,5 +335,6 @@ int main(int argc, char *argv[])
 	INVOKE(TestDollopPatchDollopManager);
 	INVOKE(TestDollopPatchMapDollopManager);
 	INVOKE(TestUpdateTargetsDollopManager);
+	INVOKE(TestAddNewDollopSplitsExistingDollop);
 	return 0;
 }
