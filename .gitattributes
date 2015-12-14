@@ -32,6 +32,7 @@ src/zipr_stats.cpp -text
 test/MemorySpace.cpp -text
 test/SConscript -text
 test/SConstruct -text
+test/ZiprDollop.cpp -text
 test/ZiprOptions.cpp -text
 test/dylib/Makefile -text
 test/dylib/dylib.c -text
