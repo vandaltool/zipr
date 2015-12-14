@@ -87,14 +87,13 @@ namespace Zipr_SDK {
 		/*
 		 * 3. Move them to a new one
 		 */
-			DollopEntry_t *to_remove = *de_it, *to_add = NULL;
-			std::list<DollopEntry_t*>::iterator to_remove_it = de_it;
+			DollopEntry_t *to_move = *de_it;
+			std::list<DollopEntry_t*>::iterator moved_it = de_it;
 
 			de_it++;
 
-			new_dollop->push_back(to_add=new DollopEntry_t(to_remove->Instruction()));
-			erase(to_remove_it);
-			delete to_remove;
+			new_dollop->push_back(to_move);
+			erase(moved_it);
 		}
 		/*
 		 * 4. Return the new one
