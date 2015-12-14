@@ -95,6 +95,9 @@ namespace Zipr_SDK {
 			new_dollop->push_back(to_move);
 			erase(moved_it);
 		}
+		new_dollop->m_size = new_dollop->CalculateWorstCaseSize();
+		m_size = CalculateWorstCaseSize();
+
 		/*
 		 * 4. Return the new one
 		 */
