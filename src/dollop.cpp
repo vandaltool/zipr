@@ -7,7 +7,8 @@ namespace Zipr_SDK {
 	Dollop_t::Dollop_t(Instruction_t *start)
 	{
 		Instruction_t *loop = NULL;
-		m_size = CalculateWorstCaseSize();
+
+		m_size = 0;
 
 		if (start == NULL)
 			return;
@@ -16,6 +17,8 @@ namespace Zipr_SDK {
 		do {
 			push_back(new DollopEntry_t(loop));
 		} while (NULL != (loop = loop->GetFallthrough()));
+
+		m_size = CalculateWorstCaseSize();
 	}
 
 	size_t Dollop_t::CalculateWorstCaseSize()
@@ -62,7 +65,7 @@ namespace Zipr_SDK {
 				std::cout << "Checking "
 				          << std::hex << query.Instruction() << " ?= "
 									<< std::hex << p->Instruction() << "." << std::endl;
-				return query == *p;
+				return query.Instruction() == p->Instruction();
 			});
 		/*
 		 * No matching split point. Just return NULL.
