@@ -65,9 +65,11 @@ class ZiprImpl_t : public Zipr_t
 			return m_error;
 		}
 
-		int DetermineWorstCaseInsnSize(libIRDB::Instruction_t*);
+		int DetermineWorstCaseInsnSize(libIRDB::Instruction_t*, bool account_for_jump = true);
 		Zipr_SDK::RangeAddress_t PlopInstruction(libIRDB::Instruction_t* insn, Zipr_SDK::RangeAddress_t addr);
+		Zipr_SDK::RangeAddress_t PlopDollopEntry(DollopEntry_t *);
 		Zipr_SDK::RangeAddress_t PlopWithTarget(libIRDB::Instruction_t* insn, Zipr_SDK::RangeAddress_t at);
+		Zipr_SDK::RangeAddress_t PlopWithTarget(DollopEntry_t*);
 		Zipr_SDK::RangeAddress_t PlopWithCallback(libIRDB::Instruction_t* insn, Zipr_SDK::RangeAddress_t at);
 
 		ZiprOptionsNamespace_t *RegisterOptions(ZiprOptionsNamespace_t *);
@@ -76,19 +78,216 @@ class ZiprImpl_t : public Zipr_t
 		void Init();
 
 		Zipr_SDK::RangeAddress_t _PlopInstruction(libIRDB::Instruction_t*, Zipr_SDK::RangeAddress_t);
-		size_t _DetermineWorstCaseInsnSize(libIRDB::Instruction_t* );
+		Zipr_SDK::RangeAddress_t _PlopDollopEntry(DollopEntry_t*);
+		size_t _DetermineWorstCaseInsnSize(libIRDB::Instruction_t*, bool account_for_jump = true);
+		/*
+		 * FindFreeRanges()
+		 *
+		 * Input: Nothing
+		 * Output: Nothing
+		 * Uses: elfio
+		 * Effects: memory_space
+		 *
+		 * Adds available memory ranges to memory space.
+		 * It also adds the "large" section.
+		 */
 		void FindFreeRanges(const std::string &name);
+
+		/*
+		 * AddPinnedInstructions()
+		 *
+		 * Input: None
+		 * Output: Output
+		 * Uses: IRDB
+		 * Effects: unresolved_pinned_addrs
+		 *
+		 * Creates a set of addresses of unresolved pins.
+		 */
 		void AddPinnedInstructions();
+		/*
+		 * ReservePinnedInstructions()
+		 *
+		 * Input: None
+		 * Output: None
+		 * Uses: unresolved_pinned_addrs, memory_space
+		 * Effects: two_byte_pins
+		 *
+		 * Builds up two_byte_pins, a set of addresses of
+		 * two byte memory ranges that correspond to pinned
+		 * addresses.
+		 *
+		 * This function also handles cases where space for
+		 * two byte pins do not exist at pinned addresses and
+		 * puts in the appropriate workaround code.
+		 *
+		 */
 		void ReservePinnedInstructions();
+		/*
+		 * PreReserve2ByteJumpTargets()
+		 *
+		 * Input: None
+		 * Output: None
+		 * Uses: two_byte_pins, memory_space
+		 * Effects: two_byte_pins, memory_space
+		 *
+		 * Reserves nearby space (2/5 bytes) within
+		 * range of two byte pins. Each two byte pin
+		 * will have either two or five nearby bytes
+		 * reserved by the end of this loop.
+		 *
+		 */
 		void PreReserve2ByteJumpTargets();
+
+		/*
+		 * ExpandPinnedInstructions()
+		 *
+		 * Input: None
+		 * Output: Output
+		 * Uses: two_byte_pins, memory_space
+		 * Effects: memory_space, five_byte_pins
+		 *
+		 * Turn reserved two byte pins into five
+		 * byte pins where space allows. All new
+		 * five byte pin locations are added to
+		 * five_byte_pins. Those two byte pins
+		 * that cannot be expanded are readded
+		 * to two_byte_pins.
+		 *
+		 */
 		void ExpandPinnedInstructions();
+		/*
+		 * Fix2BytePinnedInstructions()
+		 *
+		 * Input: None
+		 * Output: None
+		 * Uses: two_byte_pins, memory_space
+		 * Effects: five_byte_pins, memory_space,
+		 *          two_byte_pins
+		 *
+		 * Look at the pre-reserved space for each
+		 * remaining two byte pin. If the prereserved
+		 * space is five bytes, then we make the two
+		 * byte pin point to the five byte space and
+		 * make the five byte pin point to the insn
+		 * (and add it to the list of five byte pins).
+		 * However, if the prereserved space is only
+		 * two bytes, then we make the existing two
+		 * byte pin point to the preserved two byte
+		 * pin and add it back to the list of two
+		 * byte pins.
+		 *
+		 */
 		void Fix2BytePinnedInstructions();
+
+		/*
+		 * OptimizedPinnedInstructions()
+		 *
+		 * Input:
+		 * Output:
+		 * Effects:
+		 *
+		 *
+		 *
+		 */
 		void OptimizePinnedInstructions();
+		/*
+		 * CreateDollops()
+		 *
+		 * Input: None
+		 * Output: None
+		 * Uses: five_byte_pins, memory_space
+		 * Effects: m_dollop_mgr, five_byte_pins
+		 *
+		 * Creates all the dollops starting with
+		 * those pointed to by the five byte pins.
+		 */
+		void CreateDollops();
+		void PlaceDollops();
+		void WriteDollops();
+		void UpdatePins();
+
+		/*
+		 * OptimizePinnedFallthrough()
+		 *
+		 * Input: None
+		 * Output: None
+		 * Uses: five_byte_pins
+		 * Effects: patch_list, five_byte_pins
+		 *
+		 * Iterates through all five byte pin spaces
+		 * and converts them to patches to their
+		 * target instructions. Those patches are
+		 * added to patch_list and removed from
+		 * five_byte_pins. At the end of the function,
+		 * five_byte_pins *should* be empty.
+		 *
+		 */
 		void OptimizePinnedFallthroughs();
+
+		/*
+		 * ()
+		 *
+		 * Input:
+		 * Output:
+		 * Effects:
+		 *
+		 *
+		 *
+		 */
 		void AskPluginsAboutPlopping();
+
+		/*
+		 * PlopTheUnpinnedInstructions()
+		 *
+		 * Input: None
+		 * Output: None
+		 * Uses patch_list
+		 * Effects: patch_list
+		 *
+		 * Iterates through all the patches and
+		 * plops down the target instructions.
+		 * Dynamically adds patches to patch_list
+		 * as necessary (when it plops an instruction
+		 * that jumps to another place that is not
+		 * already plopped or that needs to be
+		 * replopped).
+		 *
+		 */
 		void PlopTheUnpinnedInstructions();
+
+		/*
+		 * ()
+		 *
+		 * Input:
+		 * Output:
+		 * Effects:
+		 *
+		 *
+		 *
+		 */
 		void UpdateCallbacks();
+
+		/*
+		 * ()
+		 *
+		 * Input:
+		 * Output:
+		 * Effects:
+		 *
+		 *
+		 *
+		 */
 		void PrintStats();
+		/*
+		 * RecordPinnedInsnAddrs()
+		 *
+		 * Input: None
+		 * Output: None
+		 * Effects: m_InsnAtAddrs
+		 *
+		 * Builds a map of pinned addresses -> insns
+		 * used by FindPinnedInsnsAtAddr.
+		 */
 		void RecordPinnedInsnAddrs();
 
 
@@ -175,6 +374,8 @@ class ZiprImpl_t : public Zipr_t
 		// structures to pinned things.
 		std::set<UnresolvedPinned_t> two_byte_pins; 
 		std::map<UnresolvedPinned_t,RangeAddress_t> five_byte_pins; 
+
+		ZiprDollopManager_t m_dollop_mgr;
 
 		// final mapping of instruction to address.
 		// std::map<libIRDB::Instruction_t*,RangeAddress_t> 
