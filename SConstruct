@@ -8,7 +8,7 @@ env=Environment()
 
 # default build options
 env.Replace(CFLAGS=" -fPIC ")
-env.Replace(CXXFLAGS="-fPIC ")
+env.Replace(CXXFLAGS=" -std=c++11 -fPIC ")
 env.Replace(LINKFLAGS=" -fPIC ")
 
 # parse arguments
