@@ -43,6 +43,7 @@ class ZiprMemorySpace_t : public MemorySpace_t
 
 		// range operatations
 		void SplitFreeRange(RangeAddress_t addr);
+		void SplitFreeRange(Range_t split_from);
 		void MergeFreeRange(RangeAddress_t addr);
 		RangeSet_t::iterator FindFreeRange(RangeAddress_t addr);
 		Range_t GetFreeRange(int size);
