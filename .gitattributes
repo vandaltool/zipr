@@ -10,6 +10,7 @@
 include/plugin_man.h -text
 include/unresolved.h -text
 include/zipr_all.h -text
+include/zipr_dollop_man.h -text
 include/zipr_impl.h -text
 include/zipr_mem_space.h -text
 include/zipr_optimizations.h -text
@@ -25,6 +26,7 @@ src/memory_space.cpp -text
 src/plugin_man.cpp -text
 src/utils.cpp -text
 src/zipr.cpp -text
+src/zipr_dollop_man.cpp -text
 src/zipr_options.cpp -text
 src/zipr_stats.cpp -text
 test/MemorySpace.cpp -text

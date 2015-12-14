@@ -36,4 +36,8 @@ namespace Zipr_SDK {
 		}
 		return dollop_size;
 	}
+
+	Dollop_t *Dollop_t::Split(libIRDB::Instruction_t *split_point) {
+		return new Dollop_t(NULL);
+	}
 }

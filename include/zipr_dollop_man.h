@@ -28,35 +28,30 @@
  * E-mail: jwd@zephyr-software.com
  **************************************************************************/
 
-#ifndef zipr_all_h
-#define zipr_all_h
+#ifndef zipr_dollop_man_h
+#define zipr_dollop_man_h 
 
-#include <stdlib.h>
-#include <stdint.h>
-#include <set>
-#include <list>
-#include <map>
-#include <libIRDB-core.hpp>
-#include <algorithm>
+#include <dollop.h>
 
-#include "elfio/elfio.hpp"
-#include "elfio/elfio_dump.hpp"
+class ZiprDollopManager_t {
+	public:
+		ZiprDollopManager_t() {}
+		void AddDollop(Dollop_t *dollop);
+		Zipr_SDK::Dollop_t *GetContainingDollop(libIRDB::Instruction_t *insn) {
+			try {
+				return m_insn_to_dollop.at(insn);
+			} catch (const std::out_of_range &oor) {
+				return NULL;
+			}
+		}
 
-#include <zipr_sdk.h>
+		static Zipr_SDK::Dollop_t *CreateDollop(libIRDB::Instruction_t *start) {
+			return new Zipr_SDK::Dollop_t(start);
+		}
 
-namespace zipr
-{
-
-using namespace Zipr_SDK;
-
-#include <unresolved.h>
-#include <zipr_mem_space.h>
-#include <plugin_man.h>
-#include <zipr_dollop_man.h>
-#include <zipr_utils.h>
-#include <zipr_impl.h>
-#include <zipr_optimizations.h>
-#include <zipr_stats.h>
+	private:
+		std::map<libIRDB::Instruction_t*,Dollop_t*> m_insn_to_dollop;
+		std::list<Dollop_t*> m_dollops;
 };
 
 #endif
