@@ -1830,17 +1830,19 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntry(DollopEntry_t *entry)
 	if(entry->TargetDollop())
 	{
 		if (m_verbose)
-			cout << "Plopping at " << std::hex << entry->Place() 
+			cout << "Plopping at " << std::hex << entry->Place()
 			     << " with target " << std::hex << entry->TargetDollop()->Place()
 					 << endl;
 		ret=PlopWithTarget(entry);
 	}
-#if 0
-	else if(insn->GetCallback()!="")
+	else if(entry->Instruction()->GetCallback()!="")
 	{
-		ret=PlopWithCallback(insn,addr);
+		if (m_verbose)
+			cout << "Plopping at " << std::hex << entry->Place()
+			     << " with callback to " << entry->Instruction()->GetCallback()
+					 << endl;
+		ret=PlopWithCallback(entry);
 	}
-#endif
 	else
 	{
 		memory_space.PlopBytes(addr,
