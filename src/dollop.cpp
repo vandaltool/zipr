@@ -17,7 +17,12 @@ namespace Zipr_SDK {
 		loop = start;
 		do {
 			push_back(new DollopEntry_t(loop));
-		} while (NULL != (loop = loop->GetFallthrough()));
+		} while ((NULL != (loop = loop->GetFallthrough())) &&
+			/*
+			 * If this is a pinned instruction, we want to stop!
+			 */
+		         (NULL == loop->GetIndirectBranchTargetAddress())
+						);
 
 		m_size = CalculateWorstCaseSize();
 	}

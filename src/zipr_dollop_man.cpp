@@ -8,7 +8,7 @@ using namespace libIRDB;
 
 namespace zipr {
 
-	Dollop_t *ZiprDollopManager_t::AddNewDollop(Instruction_t *start) {
+	Dollop_t *ZiprDollopManager_t::AddNewDollops(Instruction_t *start) {
 		Dollop_t *new_dollop = NULL;
 		Dollop_t *existing_dollop = GetContainingDollop(start);
 
@@ -32,7 +32,7 @@ namespace zipr {
 				/*
 				 * Split at this dollop to make a new one!
 				 */
-				AddDollop(new_dollop = existing_dollop->Split(start));
+				AddDollops(new_dollop = existing_dollop->Split(start));
 				return new_dollop;
 			}
 		}
@@ -40,9 +40,31 @@ namespace zipr {
 			/*
 			 * There is no target dollop. Let's create one!
 			 */
-			new_dollop = Dollop_t::CreateNewDollop(start);
-			AddDollop(new_dollop);
-			return new_dollop;
+			Dollop_t *original_new_dollop = NULL, *previous_dollop = NULL;
+			Instruction_t *fallthrough = NULL;
+			original_new_dollop = new_dollop = Dollop_t::CreateNewDollop(start);
+
+			while (fallthrough = new_dollop->back()->Instruction()->GetFallthrough())
+			{
+				/*
+				 * Look FIRST for a containing dollop.
+				 */
+				Dollop_t *existing_dollop = GetContainingDollop(fallthrough);
+				if (existing_dollop)
+				{
+					new_dollop->Fallthrough(existing_dollop);
+					break;
+				}
+				/*
+				 * Otherwise, create a new dollop from the fallthrough
+				 * and link them together.
+				 */
+				previous_dollop = new_dollop;
+				new_dollop = Dollop_t::CreateNewDollop(fallthrough);
+				previous_dollop->Fallthrough(new_dollop);
+			}
+			AddDollops(original_new_dollop);
+			return original_new_dollop;
 		}
 	}
 
@@ -63,6 +85,15 @@ namespace zipr {
 			return NULL;
 		}
 		return NULL;
+	}
+
+	void ZiprDollopManager_t::AddDollops(Dollop_t *dollop_head) {
+		Dollop_t *dollop = dollop_head;
+		while (dollop != NULL)
+		{
+			AddDollop(dollop);
+			dollop = dollop->Fallthrough();
+		}
 	}
 
 	void ZiprDollopManager_t::AddDollop(Dollop_t *dollop) {
@@ -94,7 +125,7 @@ namespace zipr {
 				it++;
 				if (entry->Instruction() &&
 				    entry->Instruction()->GetTarget()) {
-					Dollop_t *new_target=AddNewDollop(entry->Instruction()->GetTarget());
+					Dollop_t *new_target=AddNewDollops(entry->Instruction()->GetTarget());
 
 					/*
 					 * In the case there is a change, we have to restart.

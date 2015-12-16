@@ -36,8 +36,8 @@
 class ZiprDollopManager_t {
 	public:
 		ZiprDollopManager_t() {}
-		void AddDollop(Dollop_t *dollop);
-		Zipr_SDK::Dollop_t *AddNewDollop(libIRDB::Instruction_t *start);
+		void AddDollops(Dollop_t *dollop_head);
+		Zipr_SDK::Dollop_t *AddNewDollops(libIRDB::Instruction_t *start);
 		Zipr_SDK::Dollop_t *GetContainingDollop(libIRDB::Instruction_t *insn);
 		size_t Size() {
 			return m_dollops.size();
@@ -64,6 +64,7 @@ class ZiprDollopManager_t {
 		}
 		friend std::ostream &operator<<(std::ostream &out, const ZiprDollopManager_t &dollop_man);
 	private:
+		void AddDollop(Dollop_t *dollop);
 		std::list<Dollop_t*> m_dollops;
 		std::map<libIRDB::Instruction_t*,Dollop_t*> m_insn_to_dollop;
 		std::list<DollopPatch_t*> m_patches;

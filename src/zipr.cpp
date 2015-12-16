@@ -1402,7 +1402,9 @@ void ZiprImpl_t::PlaceDollops()
 				                         );
 				last_de_fits = (std::next(dit,1)==dit_end) /* last */ &&
 				               (placement.GetEnd()>=(cur_addr+ /* fits */
-							_DetermineWorstCaseInsnSize(dollop_entry->Instruction(), false))
+							_DetermineWorstCaseInsnSize(dollop_entry->Instruction(),
+							                            to_place->Fallthrough() != NULL))
+							                            /* with or without fallthrough */
 							         );
 
 				if (de_and_fallthrough_fit || last_de_fits)
@@ -1430,7 +1432,7 @@ void ZiprImpl_t::PlaceDollops()
 				 * Split the dollop where we stopped being able to place it.
 				 */
 				Dollop_t *split_dollop = to_place->Split((*dit)->Instruction());
-				m_dollop_mgr.AddDollop(split_dollop);
+				m_dollop_mgr.AddDollops(split_dollop);
 
 				if (m_verbose)
 					cout << "Split a dollop because it didn't fit. Fallthrough to "
@@ -1498,7 +1500,8 @@ void ZiprImpl_t::CreateDollops()
 	{
 		UnresolvedPinned_t up=(*it).first;
 
-		m_dollop_mgr.AddNewDollop(up.GetInstruction());
+		Instruction_t *start_insn = up.GetInstruction();
+		m_dollop_mgr.AddNewDollops(start_insn);
 	}
 	m_dollop_mgr.UpdateAllTargets();
 	if (m_verbose)
@@ -1686,6 +1689,9 @@ void ZiprImpl_t::UpdatePins()
 		if (m_verbose)
 			cout << "Patching pin at " << std::hex << patch_addr << " to "
 			     << std::hex << target_addr << ": " << d.CompleteInstr << endl;
+		assert(target_dollop_entry_instruction != NULL &&
+		       target_dollop_entry_instruction == uu.GetInstruction());
+
 
 		PatchJump(patch_addr, target_addr);
 

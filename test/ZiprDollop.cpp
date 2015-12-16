@@ -46,7 +46,7 @@ bool TestGetContainingDollopNoFallthrough() {
 	Dollop_t *dollop_a = NULL;
 
 	dollop_a = Dollop_t::CreateNewDollop(insn_a);
-	dollop_man.AddDollop(dollop_a);
+	dollop_man.AddDollops(dollop_a);
 
 	return dollop_man.GetContainingDollop(insn_b) == NULL &&
 	       dollop_man.GetContainingDollop(insn_a) == dollop_a;
@@ -61,7 +61,7 @@ bool TestGetContainingDollopFallthrough(void) {
 	insn_a->SetFallthrough(insn_b);
 
 	dollop_a = Dollop_t::CreateNewDollop(insn_a);
-	dollop_man.AddDollop(dollop_a);
+	dollop_man.AddDollops(dollop_a);
 
 	return dollop_man.GetContainingDollop(insn_b) == dollop_a &&
 	       dollop_man.GetContainingDollop(insn_a) == dollop_a;
@@ -73,8 +73,8 @@ bool TestGetContainingDollop(void) {
 	libIRDB::Instruction_t *insn_b = new libIRDB::Instruction_t();
 	Dollop_t *dollop_a = Dollop_t::CreateNewDollop(insn_a);
 	Dollop_t *dollop_b = Dollop_t::CreateNewDollop(insn_b);
-	dollop_man.AddDollop(dollop_a);
-	dollop_man.AddDollop(dollop_b);
+	dollop_man.AddDollops(dollop_a);
+	dollop_man.AddDollops(dollop_b);
 	return dollop_man.GetContainingDollop(insn_a) == dollop_a &&
 	       dollop_man.GetContainingDollop(insn_b) == dollop_b;
 }
@@ -82,7 +82,7 @@ bool TestGetContainingDollop(void) {
 bool TestAddDollopEntry(void) {
 	ZiprDollopManager_t dollop_man;
 	libIRDB::Instruction_t *insn = new libIRDB::Instruction_t();
-	dollop_man.AddDollop(Dollop_t::CreateNewDollop(insn));
+	dollop_man.AddDollops(Dollop_t::CreateNewDollop(insn));
 	return 1 == dollop_man.Size();
 }
 
@@ -142,16 +142,16 @@ bool TestAddNewDollopSplitsExistingDollop(void) {
 	insn_c->SetFallthrough(insn_d);
 
 	a = Dollop_t::CreateNewDollop(insn_a);
-	dollop_man.AddDollop(a);
+	dollop_man.AddDollops(a);
 	success = (a->GetDollopEntryCount() == 4) && dollop_man.Size() == 1;
 
 
-	cout << "Before AddNewDollop()." << endl;
+	cout << "Before AddNewDollops()." << endl;
 	cout << dollop_man << endl;
 
-	b = dollop_man.AddNewDollop(insn_c);
+	b = dollop_man.AddNewDollops(insn_c);
 
-	cout << "After AddNewDollop()." << endl;
+	cout << "After AddNewDollops()." << endl;
 	cout << dollop_man << endl;
 	return success &&
 	       a->GetDollopEntryCount() == 2 &&
@@ -193,8 +193,8 @@ bool TestUpdateTargetsDollopManager(void) {
 	cout << "&a: " << std::hex << a << endl;
 	cout << "&c: " << std::hex << c << endl;
 
-	dollop_man.AddDollop(a);
-	dollop_man.AddDollop(c);
+	dollop_man.AddDollops(a);
+	dollop_man.AddDollops(c);
 
 	original_insn_d_container = dollop_man.GetContainingDollop(insn_d);
 
@@ -247,8 +247,8 @@ bool TestDollopPatchMapDollopManager(void) {
 	patch_aa.Target(dollop_a);
 	patch_c.Target(dollop_c);
 
-	dollop_man.AddDollop(dollop_a);
-	dollop_man.AddDollop(dollop_c);
+	dollop_man.AddDollops(dollop_a);
+	dollop_man.AddDollops(dollop_c);
 
 	dollop_man.AddDollopPatch(&patch_a);
 	dollop_man.AddDollopPatch(&patch_aa);
