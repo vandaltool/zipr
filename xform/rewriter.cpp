@@ -113,7 +113,7 @@ void Rewriter::readAnnotationFile(char p_filename[])
 
 	do 
 	{
-		fscanf(fin, "%p %d\n", (void**)&addr, &size_type_u.size);
+		fscanf(fin, "%p%d", (void**)&addr, &size_type_u.size);
 
 		if(feof(fin))		// deal with blank lines at the EOF
 			break;
@@ -186,7 +186,7 @@ void Rewriter::readAnnotationFile(char p_filename[])
 						break;
 			
 					reg_num=atoi(zz);
-					fscanf(fin,"%d %d", &reg_offset, &reg_type);
+					fscanf(fin,"%d%d", &reg_offset, &reg_type);
 					assert(reg_num==reg);
 					frame_restore_hash_add_reg_restore(addr,reg_num,reg_offset,reg_type);
 					reg++;
@@ -445,7 +445,7 @@ MEDS doesn't mark this as a stack reference
 			assert(strcmp(scope,"STACK")==0 || strcmp(scope,"GLOBAL")==0);
 
 			/* remaining params are <const> <field> <real_const_if_global> <comment> */ 
-			fscanf(fin, "%d %s", &the_const, field);
+			fscanf(fin, "%d%s", &the_const, field);
 			if( 	strcmp(type,"PTRIMMEDESP2")==0 || 
 				strcmp(type,"PTRIMMEDABSOLUTE")==0
 			  )
@@ -653,7 +653,7 @@ void Rewriter::readXrefsFile(char p_filename[])
 	{
 
 		addr=0;
-                fscanf(fin, "%p %d\n", (void**)&addr, &size_type_u.size);
+                fscanf(fin, "%p%d", (void**)&addr, &size_type_u.size);
 
                 if(feof(fin))           // deal with blank lines at the EOF
                         break;
@@ -663,39 +663,51 @@ void Rewriter::readXrefsFile(char p_filename[])
 
 		assert(strcmp(type,"INSTR")==0);
 		assert(strcmp(scope,"XREF")==0);
-		fscanf(fin, "%s%s", ibt,fromib);
+		fscanf(fin, "%s", ibt);
                 if(feof(fin))           // deal with blank lines at the EOF
                         break;
-		assert(strcmp(ibt,"IBT")==0);
-		assert(strcmp(fromib,"FROMIB")==0 || strcmp(fromib,"FROMDATA")==0 
-			|| strcmp(fromib,"FROMUNKNOWN")==0);
 	
-		
-      		wahoo::Instruction *instr = addr_to_insn_map[addr];
-		if(instr)
+		// check for instr xref ibt 	
+		if(string("IBT")==string(ibt))
 		{
-			// cout<<"Setting IBT for addr "<<std::hex<<addr<<std::dec<<endl;
-			instr->setIBTAddress(addr);
-			if(strcmp(fromib,"FROMIB")==0)
-			{
-				// get the from point into memory.
-				app_iaddr_t from_addr = 0;
-				fscanf(fin, "%p\n", (void**)&from_addr);
-				if(feof(fin))           // deal with blank lines at the EOF
-					break;
+			fscanf(fin, "%s", fromib);
+			if(feof(fin))           // deal with blank lines at the EOF
+				break;
 
-				// find that instruction
-				wahoo::Instruction *from_instr = addr_to_insn_map[from_addr];
-				assert(from_instr);
-			
-				// record in the IR listing.
-				from_instr->addIBT(instr);
+			assert(strcmp(fromib,"FROMIB")==0 || strcmp(fromib,"FROMDATA")==0 
+				|| strcmp(fromib,"FROMUNKNOWN")==0);
+
+			wahoo::Instruction *instr = addr_to_insn_map[addr];
+			if(instr)
+			{
+				// cout<<"Setting IBT for addr "<<std::hex<<addr<<std::dec<<endl;
+				instr->setIBTAddress(addr);
+				if(strcmp(fromib,"FROMIB")==0)
+				{
+					// get the from point into memory.
+					app_iaddr_t from_addr = 0;
+					fscanf(fin, "%p", (void**)&from_addr);
+					if(feof(fin))           // deal with blank lines at the EOF
+						break;
+
+					// find that instruction
+					wahoo::Instruction *from_instr = addr_to_insn_map[from_addr];
+					assert(from_instr);
+				
+					// record in the IR listing.
+					from_instr->addIBT(instr);
+				}
+			}
+			else
+			{
+				cerr<<"Error: instruction at "<<std::hex<<addr<<std::dec<<" not in db?"<<endl;
+				// assert(0);
 			}
 		}
-		else
+		// check for instr xref fromib 	
+		else if(string("FROMIB")==string(ibt))
 		{
-			cerr<<"Error: instruction at "<<std::hex<<addr<<std::dec<<" not in db?"<<endl;
-			// assert(0);
+			cerr<<"FROMIB line ignored for now."<<endl;
 		}
 
 
@@ -707,10 +719,6 @@ void Rewriter::readXrefsFile(char p_filename[])
 
 	} while(!feof(fin));
 	fclose(fin);
-
-
-
-
 
 
 }
