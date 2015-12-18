@@ -50,7 +50,7 @@ int DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_for_jump)
 			// jmp fallthrough
 			// +5: jmp target
 			// 2+5+5;
-			required_size=10;
+			required_size=12;
 			break;
 		}
 		
