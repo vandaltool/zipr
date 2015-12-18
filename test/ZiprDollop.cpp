@@ -274,6 +274,26 @@ bool TestDollopPatchMapDollopManager(void) {
 	return success;
 }
 
+bool TestDollopFallthroughDollopEntry(void) {
+	Dollop_t *a;
+	DollopEntry_t *aa, *bb;
+
+	a = new Dollop_t();
+
+	libIRDB::Instruction_t *insn_a = new libIRDB::Instruction_t();
+	libIRDB::Instruction_t *insn_b = new libIRDB::Instruction_t();
+	
+	aa = new DollopEntry_t(insn_a, a);
+	bb = new DollopEntry_t(insn_b, a);
+
+	a->push_back(aa);
+	a->push_back(bb);
+
+	return bb == a->FallthroughDollopEntry(aa) &&
+	       NULL == a->FallthroughDollopEntry(bb) &&
+	       NULL == a->FallthroughDollopEntry(NULL);
+}
+
 bool TestDollopSplit(void) {
 	Dollop_t *a, *b;
 
@@ -309,10 +329,10 @@ bool TestDollopEntryEquals(void) {
 	libIRDB::Instruction_t *insn_a = new libIRDB::Instruction_t();
 	libIRDB::Instruction_t *insn_b = new libIRDB::Instruction_t();
 
-	a = new DollopEntry_t(insn_a);
-	b = new DollopEntry_t(insn_b);
-	c = new DollopEntry_t(insn_a);
-	d = new DollopEntry_t(insn_a);
+	a = new DollopEntry_t(insn_a, NULL);
+	b = new DollopEntry_t(insn_b, NULL);
+	c = new DollopEntry_t(insn_a, NULL);
+	d = new DollopEntry_t(insn_a, NULL);
 	d->TargetDollop((Dollop_t*)0x5000);
 
 	return *a != *b &&
@@ -336,5 +356,6 @@ int main(int argc, char *argv[])
 	INVOKE(TestDollopPatchMapDollopManager);
 	INVOKE(TestUpdateTargetsDollopManager);
 	INVOKE(TestAddNewDollopSplitsExistingDollop);
+	INVOKE(TestDollopFallthroughDollopEntry);
 	return 0;
 }
