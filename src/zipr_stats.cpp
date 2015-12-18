@@ -25,15 +25,7 @@
 #include <iostream>
 
 using namespace zipr;
-
-static void PrintStat(std::ostream &out, std::string description, int value)
-{
-	out << description << ": " << std::dec << value << std::endl;
-}
-static void PrintStat(std::ostream &out, std::string description, double value)
-{
-	out << description << ": " << std::dec << value << std::endl;
-}
+using namespace zipr::Utils;
 
 void Stats_t::PrintStats(std::ostream &out)
 {

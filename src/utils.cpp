@@ -2,6 +2,12 @@
 
 namespace zipr {
 namespace Utils {
+
+void PrintStat(std::ostream &out, std::string description, double value)
+{
+	out << description << ": " << std::dec << value << std::endl;
+}
+
 size_t CALLBACK_TRAMPOLINE_SIZE=9;
 using namespace libIRDB;
 int DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_for_jump)
