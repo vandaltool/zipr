@@ -302,18 +302,8 @@ void ZiprImpl_t::CreateBinaryFile()
 		}
 	}
 
-
-	/*
-	 * FIXME: We will need to call AskPluginsAboutPlopping
-	 * before we call this. Each Dollop calculates its 
-	 * worst case size and assumes that is accurate. 
-	 */
-	CreateDollops();
-
-
 	// Convert all 5-byte pins into full fragments
 	OptimizePinnedInstructions();
-
 
 	// tell plugins we are done pinning.
 	plugman.PinningEnd();
@@ -327,6 +317,8 @@ void ZiprImpl_t::CreateBinaryFile()
 	 * plugins that want to plop an instruction!
 	 */
 	AskPluginsAboutPlopping();
+
+	CreateDollops();
 
 	PlaceDollops();
 
@@ -1532,24 +1524,18 @@ void ZiprImpl_t::PlaceDollops()
 
 void ZiprImpl_t::CreateDollops()
 {
-
-	// should only be 5-byte pins by now.
-
-	assert(two_byte_pins.size()==0);
-	map<UnresolvedPinned_t,RangeAddress_t>::iterator it, it_end;
-
-	for(it=five_byte_pins.begin(), it_end=five_byte_pins.end();
-			it!=it_end;
-			it++)
+	multimap<const UnresolvedUnpinned_t,Patch_t>::const_iterator pin_it,
+	                                                             pin_it_end;
+	for (pin_it = patch_list.begin(), pin_it_end = patch_list.end();
+	     pin_it != pin_it_end;
+			 pin_it++)
 	{
-		UnresolvedPinned_t up=(*it).first;
-
-		Instruction_t *start_insn = up.GetInstruction();
-		m_dollop_mgr.AddNewDollops(start_insn);
+		UnresolvedUnpinned_t uu = (*pin_it).first;
+		m_dollop_mgr.AddNewDollops(uu.GetInstruction());
 	}
 	m_dollop_mgr.UpdateAllTargets();
 	if (m_verbose)
-		cout << "Created " << std::dec << m_dollop_mgr.Size() << " dollops." << endl;
+		cout << "Created " <<std::dec<< m_dollop_mgr.Size() << " dollops." << endl;
 }
 
 void ZiprImpl_t::OptimizePinnedInstructions()
