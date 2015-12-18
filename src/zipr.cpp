@@ -1404,7 +1404,7 @@ void ZiprImpl_t::PlaceDollops()
 		}
 
 		cur_addr = placement.GetStart();
-		has_fallthrough = (to_place->Fallthrough() != NULL);
+		has_fallthrough = (to_place->FallthroughDollop() != NULL);
 
 		if (m_verbose)
 		{
@@ -1448,7 +1448,7 @@ void ZiprImpl_t::PlaceDollops()
 			last_de_fits = (std::next(dit,1)==dit_end) /* last */ &&
 			               (placement.GetEnd()>=(cur_addr+ /* fits */
 						_DetermineWorstCaseInsnSize(dollop_entry->Instruction(),
-						                            to_place->Fallthrough() != NULL))
+						                            to_place->FallthroughDollop() != NULL))
 						                            /* with or without fallthrough */
 						         );
 
@@ -1491,7 +1491,7 @@ void ZiprImpl_t::PlaceDollops()
 				     << std::hex << split_dollop << "." << endl;
 		}
 
-		if (fallthrough = to_place->Fallthrough())
+		if (fallthrough = to_place->FallthroughDollop())
 		{
 			Instruction_t *patch = addNewAssembly(m_firp, NULL, "jmp qword 5");
 			DollopEntry_t *patch_de = new DollopEntry_t(patch, to_place);

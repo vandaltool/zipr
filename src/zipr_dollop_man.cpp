@@ -52,7 +52,7 @@ namespace zipr {
 				Dollop_t *existing_dollop = GetContainingDollop(fallthrough);
 				if (existing_dollop)
 				{
-					new_dollop->Fallthrough(existing_dollop);
+					new_dollop->FallthroughDollop(existing_dollop);
 					break;
 				}
 				/*
@@ -61,7 +61,7 @@ namespace zipr {
 				 */
 				previous_dollop = new_dollop;
 				new_dollop = Dollop_t::CreateNewDollop(fallthrough);
-				previous_dollop->Fallthrough(new_dollop);
+				previous_dollop->FallthroughDollop(new_dollop);
 			}
 			AddDollops(original_new_dollop);
 			return original_new_dollop;
@@ -92,7 +92,7 @@ namespace zipr {
 		while (dollop != NULL)
 		{
 			AddDollop(dollop);
-			dollop = dollop->Fallthrough();
+			dollop = dollop->FallthroughDollop();
 		}
 	}
 

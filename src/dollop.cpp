@@ -81,7 +81,7 @@ namespace Zipr_SDK {
 
 		new_dollop = new Dollop_t();
 
-		new_dollop->Fallthrough(m_fallthrough_dollop);
+		new_dollop->FallthroughDollop(m_fallthrough_dollop);
 		m_fallthrough_dollop = new_dollop;
 
 		/*
@@ -147,7 +147,7 @@ namespace Zipr_SDK {
 				 it++) {
 			out << std::hex << *(*it) << std::endl;
 		}
-		if (fallthrough = d.Fallthrough())
+		if (fallthrough = d.FallthroughDollop())
 			out << "Fallthrough: " << std::hex << fallthrough << std::endl;
 		return out;
 	}
