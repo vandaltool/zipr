@@ -16,7 +16,7 @@ namespace Zipr_SDK {
 
 		loop = start;
 		do {
-			push_back(new DollopEntry_t(loop));
+			push_back(new DollopEntry_t(loop, this));
 		} while ((NULL != (loop = loop->GetFallthrough())) &&
 			/*
 			 * If this is a pinned instruction, we want to stop!
@@ -62,7 +62,7 @@ namespace Zipr_SDK {
 		/*
 		 * 1. Find the matching dollop entry.
 		 */
-		DollopEntry_t query(split_point);
+		DollopEntry_t query(split_point, NULL);
 		std::list<DollopEntry_t *>::iterator de_split_point, de_it;
 		Dollop_t *new_dollop = NULL;
 
@@ -97,6 +97,7 @@ namespace Zipr_SDK {
 
 			de_it++;
 
+			to_move->MemberOfDollop(new_dollop);
 			new_dollop->push_back(to_move);
 			erase(moved_it);
 		}
@@ -109,12 +110,14 @@ namespace Zipr_SDK {
 		return new_dollop;
 	}
 
-	DollopEntry_t::DollopEntry_t(libIRDB::Instruction_t *insn) {
+	DollopEntry_t::DollopEntry_t(libIRDB::Instruction_t *insn,Dollop_t *member_of)
+	{
 		/*
 		 * NB: This does not link if the insn has a target.
 		 */
 		m_instruction = insn;
 		m_target_dollop = NULL;
+		m_member_of_dollop = member_of;
 	}
 
 	bool DollopEntry_t::operator==(const DollopEntry_t &comp) {

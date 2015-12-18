@@ -1494,7 +1494,7 @@ void ZiprImpl_t::PlaceDollops()
 		if (fallthrough = to_place->Fallthrough())
 		{
 			Instruction_t *patch = addNewAssembly(m_firp, NULL, "jmp qword 5");
-			DollopEntry_t *patch_de = new DollopEntry_t(patch);
+			DollopEntry_t *patch_de = new DollopEntry_t(patch, to_place);
 
 			m_firp->AssembleRegistry();
 
