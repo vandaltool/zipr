@@ -1990,12 +1990,17 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntryWithTarget(
 			// jmp fallthrough
 			// +5: jmp target
 			char bytes[]={0,0x5};
-			bytes[0]=insn->GetDataBits()[0];		
+			DollopEntry_t *fallthrough_de = NULL;
+
+			fallthrough_de = entry->MemberOfDollop()->FallthroughDollopEntry(entry);
+			assert(fallthrough_de && fallthrough_de->IsPlaced());
+
+			bytes[0]=insn->GetDataBits()[0];
 			memory_space.PlopBytes(ret,bytes, sizeof(bytes));
 			ret+=sizeof(bytes);
 
 			memory_space.PlopJump(ret);
-			PatchInstruction(ret, insn->GetFallthrough());	
+			ApplyPatch(ret, fallthrough_de->Place());
 			ret+=5;
 
 			memory_space.PlopJump(ret);
