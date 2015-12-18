@@ -1317,6 +1317,9 @@ void ZiprImpl_t::WriteDollops()
 		list<DollopEntry_t*>::const_iterator dit, dit_end;
 		Dollop_t *dollop_to_write = *it;
 
+		if (!dollop_to_write->IsPlaced())
+			continue;
+
 		for (dit = dollop_to_write->begin(), dit_end = dollop_to_write->end();
 		     dit != dit_end;
 				 dit++)
@@ -1334,156 +1337,205 @@ void ZiprImpl_t::WriteDollops()
 
 void ZiprImpl_t::PlaceDollops()
 {
-	list<Dollop_t*>::const_iterator it, it_end;
-	bool changed = false;
-	do
+	list<Dollop_t*> placement_queue;
+	multimap<const UnresolvedUnpinned_t,Patch_t>::const_iterator pin_it,
+	                                                             pin_it_end;
+	/*
+	 * Build up initial placement q with destinations of
+	 * pins.
+	 */
+	for (pin_it = patch_list.begin(), pin_it_end = patch_list.end();
+	     pin_it != pin_it_end;
+			 pin_it++)
 	{
-		changed = false;
-		for (it = m_dollop_mgr.dollops_begin(),
-		     it_end = m_dollop_mgr.dollops_end();
-		     it != it_end;
-				 it++)
+		Dollop_t *target_dollop = NULL;
+		UnresolvedUnpinned_t uu = (*pin_it).first;
+		Instruction_t *target_insn = NULL;
+
+		target_insn = uu.GetInstruction();
+		target_dollop = m_dollop_mgr.GetContainingDollop(target_insn);
+		assert(target_dollop);
+
+		placement_queue.push_back(target_dollop);
+	}
+
+	while (!placement_queue.empty())
+	{
+		Dollop_t *to_place = NULL;
+		size_t minimum_valid_req_size = 0;
+		Range_t placement;
+		DLFunctionHandle_t placer = NULL;
+		bool placed = false;
+		list<DollopEntry_t*>::const_iterator dit, dit_end;
+		RangeAddress_t cur_addr;
+		bool has_fallthrough = false;
+		Dollop_t *fallthrough = NULL;
+
+		to_place = placement_queue.front();
+		placement_queue.pop_front();
+
+		if (to_place->IsPlaced())
+			continue;
+
+		minimum_valid_req_size = _DetermineWorstCaseInsnSize(to_place->
+		                                                     front()->
+																												 Instruction());
+		/*
+		 * Ask the plugin manager if there are any plugins
+		 * that want to tell us where to place this dollop.
+		 */
+#if 0
+		if (plugman.DoesPluginPlace(/* TODO: Figure out what to pass here. */
+		                            to_place,
+																placement,
+																placer))
+#endif
+		if (0)
 		{
-			if ((*it)->IsPlaced())
-				continue;
-			/*
-			 * TODO: Deal with plugins that want to tell me where to place
-			 * the dollop.
-			 */
-			Range_t placement;
-			bool has_fallthrough = false;
-			list<DollopEntry_t*>::const_iterator dit, dit_end;
-			Dollop_t *to_place = *it;
-			RangeAddress_t cur_addr;
+			placed = true;
 
+			if (m_verbose)
+				cout << placer->ToString() << " placed this dollop between " 
+				     << std::hex << placement.GetStart() << " and " 
+						 << std::hex << placement.GetEnd()
+						 << endl;
+
+			if ((placement.GetEnd()-placement.GetStart()) < minimum_valid_req_size){
+				if (m_verbose)
+					cout << "Bad GetNearbyFreeRange() result." << endl;
+				placed = false;
+			}
+		}
+		if (!placed) {
+			cout << "Using default place locator." << endl;
 			placement = memory_space.GetFreeRange(to_place->GetSize());
-			cur_addr = placement.GetStart();
-			has_fallthrough = (to_place->Fallthrough() != NULL);
-			Dollop_t *fallthrough = NULL;
+		}
 
-			if (m_verbose)
-			{
-				cout << "Placing " << std::dec << to_place->GetSize() << " dollop in "
-				     << std::dec << (placement.GetEnd() - placement.GetStart()) 
-						 << " hole." << endl
-						 << "Dollop " << ((has_fallthrough) ? "has " : "does not have ")
-						 << "a fallthrough" << endl;
-			}
+		cur_addr = placement.GetStart();
+		has_fallthrough = (to_place->Fallthrough() != NULL);
 
-			assert(to_place->GetSize() != 0);
+		if (m_verbose)
+		{
+			cout << "Placing " << std::dec << to_place->GetSize() << " dollop in "
+			     << std::dec << (placement.GetEnd() - placement.GetStart()) 
+					 << " hole." << endl
+					 << "Dollop " << ((has_fallthrough) ? "has " : "does not have ")
+					 << "a fallthrough" << endl;
+		}
 
-			to_place->Place(placement.GetStart());
+		assert(to_place->GetSize() != 0);
 
-			for (dit = to_place->begin(), dit_end = to_place->end();
-			     dit != dit_end;
-					 dit++)
-			{
-				DollopEntry_t *dollop_entry = *dit;
-				/*
-				 * There are several ways that a dollop could end:
-				 * 1. There is no more fallthrough (handled above with
-				 * the iterator through the dollop entries)
-				 * 2. There is no more room in this range.
-				 *    a. Must account for a link between split dollops
-				 *    b. Must account for a possible fallthrough.
-				 * So, we can put this dollop entry here if any of 
-				 * the following are true:
-				 * 1. There is enough room for the instruction AND fallthrough.
-				 *    Call this the de_and_fallthrough_fit case. 
-				 * 2. There is enough room for the instruction AND it's the
-				 *    last instruction in the dollop AND there is no
-				 *    fallthrough.
-				 *    Call this the last_de_fits case.
-				 */
-				bool de_and_fallthrough_fit = false;
-				bool last_de_fits = false;
-				de_and_fallthrough_fit = (placement.GetEnd()>= /* fits */
-				     (cur_addr+_DetermineWorstCaseInsnSize(dollop_entry->Instruction()))
-				                         );
-				last_de_fits = (std::next(dit,1)==dit_end) /* last */ &&
-				               (placement.GetEnd()>=(cur_addr+ /* fits */
-							_DetermineWorstCaseInsnSize(dollop_entry->Instruction(),
-							                            to_place->Fallthrough() != NULL))
-							                            /* with or without fallthrough */
-							         );
+		to_place->Place(placement.GetStart());
 
-				if (de_and_fallthrough_fit || last_de_fits)
-				{
-					if (m_verbose) {
-						DISASM d;
-						dollop_entry->Instruction()->Disassemble(d);
-						cout << std::hex << cur_addr << ": " << d.CompleteInstr << endl;
-					}
-					dollop_entry->Place(cur_addr);
-					cur_addr+=_DetermineWorstCaseInsnSize(dollop_entry->Instruction(),
-					                                      false);
-				}
-				else
-				{
-					/*
-					 * We cannot fit all the instructions. Let's quit early.
-					 */
-					break;
-				}
-			}
-			if (dit != dit_end)
-			{
-				/*
-				 * Split the dollop where we stopped being able to place it.
-				 */
-				Dollop_t *split_dollop = to_place->Split((*dit)->Instruction());
-				m_dollop_mgr.AddDollops(split_dollop);
-
-				if (m_verbose)
-					cout << "Split a dollop because it didn't fit. Fallthrough to "
-					     << std::hex << split_dollop << "." << endl;
-
-				changed = true;
-			}
-
-			if (fallthrough = to_place->Fallthrough())
-			{
-				Instruction_t *patch = addNewAssembly(m_firp, NULL, "jmp qword 5");
-				DollopEntry_t *patch_de = new DollopEntry_t(patch);
-
-				m_firp->AssembleRegistry();
-
-				patch_de->TargetDollop(fallthrough);
-				patch_de->Place(cur_addr);
-				cur_addr+=_DetermineWorstCaseInsnSize(patch_de->Instruction(),
-				                                      false);
-				
-				to_place->push_back(patch_de);
-				if (m_verbose)
-				{
-					cout << "Added jump (at " << std::hex << patch_de->Place() << ") "
-					     << "to fallthrough dollop (" << std::hex 
-					     << fallthrough << ")." << endl;
-				}
-			}
-
+		for (dit = to_place->begin(), dit_end = to_place->end();
+		     dit != dit_end;
+				 dit++)
+		{
+			DollopEntry_t *dollop_entry = *dit;
 			/*
-			 * Reserve the range that we just used.
+			 * There are several ways that a dollop could end:
+			 * 1. There is no more fallthrough (handled above with
+			 * the iterator through the dollop entries)
+			 * 2. There is no more room in this range.
+			 *    a. Must account for a link between split dollops
+			 *    b. Must account for a possible fallthrough.
+			 * So, we can put this dollop entry here if any of
+			 * the following are true:
+			 * 1. There is enough room for the instruction AND fallthrough.
+			 *    Call this the de_and_fallthrough_fit case.
+			 * 2. There is enough room for the instruction AND it's the
+			 *    last instruction in the dollop AND there is no
+			 *    fallthrough.
+			 *    Call this the last_de_fits case.
 			 */
-			if (m_verbose)
-				cout << "Reserving " << std::hex << placement.GetStart()
-				     << ", " << std::hex << cur_addr << "." << endl;
-			memory_space.SplitFreeRange(Range_t(placement.GetStart(), cur_addr));
-			for (RangeAddress_t i = placement.GetStart();
-			     i<cur_addr;
-					 i++)
-			{
-				memory_space[i] = 0x0;
-			}
+			bool de_and_fallthrough_fit = false;
+			bool last_de_fits = false;
+			de_and_fallthrough_fit = (placement.GetEnd()>= /* fits */
+			     (cur_addr+_DetermineWorstCaseInsnSize(dollop_entry->Instruction()))
+			                         );
+			last_de_fits = (std::next(dit,1)==dit_end) /* last */ &&
+			               (placement.GetEnd()>=(cur_addr+ /* fits */
+						_DetermineWorstCaseInsnSize(dollop_entry->Instruction(),
+						                            to_place->Fallthrough() != NULL))
+						                            /* with or without fallthrough */
+						         );
 
-			if (changed)
+			if (de_and_fallthrough_fit || last_de_fits)
 			{
-				if (m_verbose)
-					cout << "Had to split a dollop. Restarting." << endl;
+				if (m_verbose) {
+					DISASM d;
+					dollop_entry->Instruction()->Disassemble(d);
+					cout << std::hex << cur_addr << ": " << d.CompleteInstr << endl;
+				}
+				dollop_entry->Place(cur_addr);
+				cur_addr+=_DetermineWorstCaseInsnSize(dollop_entry->Instruction(),
+				                                      false);
+				if (dollop_entry->TargetDollop())
+				{
+					if (m_verbose)
+						cout << "Adding " << std::hex << dollop_entry->TargetDollop()
+						     << " to placement queue." << endl;
+					placement_queue.push_back(dollop_entry->TargetDollop());
+				}
+			}
+			else
+			{
+				/*
+				 * We cannot fit all the instructions. Let's quit early.
+				 */
 				break;
 			}
 		}
-	} while (changed);
+		if (dit != dit_end)
+		{
+			/*
+			 * Split the dollop where we stopped being able to place it.
+			 */
+			Dollop_t *split_dollop = to_place->Split((*dit)->Instruction());
+			m_dollop_mgr.AddDollops(split_dollop);
+
+			if (m_verbose)
+				cout << "Split a dollop because it didn't fit. Fallthrough to "
+				     << std::hex << split_dollop << "." << endl;
+		}
+
+		if (fallthrough = to_place->Fallthrough())
+		{
+			Instruction_t *patch = addNewAssembly(m_firp, NULL, "jmp qword 5");
+			DollopEntry_t *patch_de = new DollopEntry_t(patch);
+
+			m_firp->AssembleRegistry();
+
+			patch_de->TargetDollop(fallthrough);
+			patch_de->Place(cur_addr);
+			cur_addr+=_DetermineWorstCaseInsnSize(patch_de->Instruction(),
+			                                      false);
+
+			to_place->push_back(patch_de);
+			if (m_verbose)
+			{
+				cout << "Added jump (at " << std::hex << patch_de->Place() << ") "
+				     << "to fallthrough dollop (" << std::hex 
+				     << fallthrough << ")." << endl;
+			}
+
+			placement_queue.push_back(fallthrough);
+		}
+
+		/*
+		 * Reserve the range that we just used.
+		 */
+		if (m_verbose)
+			cout << "Reserving " << std::hex << placement.GetStart()
+			     << ", " << std::hex << cur_addr << "." << endl;
+		memory_space.SplitFreeRange(Range_t(placement.GetStart(), cur_addr));
+		for (RangeAddress_t i = placement.GetStart();
+		     i<cur_addr;
+				 i++)
+		{
+			memory_space[i] = 0x0;
+		}
+	}
 }
 
 void ZiprImpl_t::CreateDollops()
