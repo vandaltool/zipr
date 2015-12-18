@@ -2,6 +2,7 @@
 #include <iostream>
 
 using namespace zipr;
+using namespace zipr::Utils;
 using namespace std;
 using namespace Zipr_SDK;
 using namespace libIRDB;
@@ -94,6 +95,7 @@ namespace zipr {
 			AddDollop(dollop);
 			dollop = dollop->FallthroughDollop();
 		}
+		m_refresh_stats = true;
 	}
 
 	void ZiprDollopManager_t::AddDollop(Dollop_t *dollop) {
@@ -110,6 +112,7 @@ namespace zipr {
 		 * Push the actual dollop onto the list of dollops.
 		 */
 		m_dollops.push_back(dollop);
+		m_refresh_stats = true;
 	}
 
 	bool ZiprDollopManager_t::UpdateTargets(Dollop_t *dollop) {
@@ -171,5 +174,39 @@ namespace zipr {
 			out << *entry << std::endl;
 		}
 		return out;
+	}
+
+	void ZiprDollopManager_t::CalculateStats()
+	{
+		m_truncated_dollops = 0;
+		m_total_dollop_entries = 0;
+		m_total_dollops = Size();
+
+		std::list<Dollop_t*>::iterator dollop_it, dollop_it_end;
+		for (dollop_it = m_dollops.begin(), dollop_it_end = m_dollops.end();
+		     dollop_it != m_dollops.end();
+				 dollop_it++)
+		{
+			Dollop_t *dollop = *dollop_it;
+			m_total_dollop_entries += dollop->GetDollopEntryCount();
+			if (dollop->WasTruncated())
+				m_truncated_dollops++;
+		}
+		m_refresh_stats = false;
+	}
+
+	void ZiprDollopManager_t::PrintStats(std::ostream &out)
+	{
+		if (m_refresh_stats)
+			CalculateStats();
+
+		PrintStat(out, "Total dollops", m_total_dollops);
+		//PrintStat(out, "Total dollop size", total_dollop_space);
+		PrintStat(out, "Total dollop entries", m_total_dollop_entries);
+		PrintStat(out, "Truncated dollops", m_truncated_dollops);
+		PrintStat(out, "Avg dollop entries per dollop",
+			(double)m_total_dollop_entries/(double)m_total_dollops);
+		PrintStat(out, "Truncated dollop fraction",
+			(double)m_truncated_dollops/(double)m_total_dollops);
 	}
 }

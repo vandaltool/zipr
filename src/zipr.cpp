@@ -2276,6 +2276,7 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 void ZiprImpl_t::PrintStats()
 {
 	// do something like print stats as #ATTRIBUTES.
+	m_dollop_mgr.PrintStats(cout);
 	m_stats->PrintStats(cout);
 
 	// and dump a map file of where we placed instructions.  maybe guard with an option.
