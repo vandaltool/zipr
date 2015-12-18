@@ -1310,10 +1310,6 @@ void ZiprImpl_t::WriteDollops()
 	     it != it_end;
 			 it++)
 	{
-		/*
-		 * TODO: Deal with plugins that want to tell me where to place
-		 * the dollop.
-		 */
 		list<DollopEntry_t*>::const_iterator dit, dit_end;
 		Dollop_t *dollop_to_write = *it;
 
@@ -1384,13 +1380,9 @@ void ZiprImpl_t::PlaceDollops()
 		 * Ask the plugin manager if there are any plugins
 		 * that want to tell us where to place this dollop.
 		 */
-#if 0
-		if (plugman.DoesPluginPlace(/* TODO: Figure out what to pass here. */
-		                            to_place,
-																placement,
-																placer))
-#endif
-		if (0)
+		if (plugman.DoesPluginAddress(to_place,
+		                              placement,
+		                              placer))
 		{
 			placed = true;
 
@@ -1671,7 +1663,7 @@ size_t ZiprImpl_t::_DetermineWorstCaseInsnSize(Instruction_t* insn, bool account
 	{
 		DLFunctionHandle_t handle = plop_it->second;
 		ZiprPluginInterface_t *zpi = dynamic_cast<ZiprPluginInterface_t*>(handle);
-		worst_case_size = zpi->WorstCaseInsnSize(insn,this);
+		worst_case_size = zpi->WorstCaseInsnSize(insn,account_for_jump,this);
 	}
 	else
 		worst_case_size = DetermineWorstCaseInsnSize(insn, account_for_jump);
@@ -1782,11 +1774,11 @@ void ZiprImpl_t::PatchInstruction(RangeAddress_t from_addr, Instruction_t* to_in
 	}
 }
 
-RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t* entry)
+RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t *entry)
 {
 	Instruction_t *insn = entry->Instruction();
+	RangeAddress_t addr = entry->Place();
 	RangeAddress_t updated_addr;
-#if 0
 	std::map<Instruction_t*,DLFunctionHandle_t>::const_iterator plop_it;
 
 	plop_it = plopping_plugins.find(insn);
@@ -1795,16 +1787,15 @@ RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t* entry)
 		DLFunctionHandle_t handle = plop_it->second;
 		RangeAddress_t placed_address = 0;
 		ZiprPluginInterface_t *zpi = dynamic_cast<ZiprPluginInterface_t*>(handle);
-		updated_addr = zpi->PlopInstruction(insn, addr, placed_address, this);
+		updated_addr = zpi->PlopDollopEntry(entry, placed_address, this);
 		if (m_verbose)
 			cout << "Placed address: " << std::hex << placed_address << endl;
 		final_insn_locations[insn] = placed_address;
 	}
 	else
-#endif
 	{
-		final_insn_locations[insn] = entry->Place();
-		updated_addr = PlopDollopEntry(entry);
+		final_insn_locations[insn] = addr;
+		updated_addr = PlopDollopEntry(entry, addr);
 	}
 	return updated_addr;
 }
@@ -1812,16 +1803,20 @@ RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t* entry)
 #define IS_RELATIVE(A) \
 ((A.ArgType & MEMORY_TYPE) && (A.ArgType & RELATIVE_))
 
-RangeAddress_t ZiprImpl_t::PlopDollopEntry(DollopEntry_t *entry)
+RangeAddress_t ZiprImpl_t::PlopDollopEntry(
+	DollopEntry_t *entry,
+	RangeAddress_t override_place)
 {
 	Instruction_t *insn = entry->Instruction();
-	RangeAddress_t addr = entry->Place();
-	RangeAddress_t ret = addr;
+	RangeAddress_t ret = entry->Place(), addr = entry->Place();
 	bool is_instr_relative = false;
 	string raw_data, orig_data; 
 	DISASM d;
 
 	assert(insn);
+
+	if (override_place != 0)
+		addr = ret = override_place;
 
 	insn->Disassemble(d);
 
@@ -1888,18 +1883,18 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntry(DollopEntry_t *entry)
 	if(entry->TargetDollop())
 	{
 		if (m_verbose)
-			cout << "Plopping at " << std::hex << entry->Place()
+			cout << "Plopping at " << std::hex << addr
 			     << " with target " << std::hex << entry->TargetDollop()->Place()
 					 << endl;
-		ret=PlopWithTarget(entry);
+		ret=PlopDollopEntryWithTarget(entry, addr);
 	}
 	else if(entry->Instruction()->GetCallback()!="")
 	{
 		if (m_verbose)
-			cout << "Plopping at " << std::hex << entry->Place()
+			cout << "Plopping at " << std::hex << addr
 			     << " with callback to " << entry->Instruction()->GetCallback()
 					 << endl;
-		ret=PlopWithCallback(entry);
+		ret=PlopDollopEntryWithCallback(entry, addr);
 	}
 	else
 	{
@@ -1917,11 +1912,21 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntry(DollopEntry_t *entry)
 	return ret;
 }
 
-RangeAddress_t ZiprImpl_t::PlopWithTarget(DollopEntry_t *entry)
+RangeAddress_t ZiprImpl_t::PlopDollopEntryWithTarget(
+	DollopEntry_t *entry,
+	RangeAddress_t override_place)
 {
 	Instruction_t *insn = entry->Instruction();
-	RangeAddress_t ret=entry->Place();
-	RangeAddress_t target_addr = entry->TargetDollop()->Place();
+	RangeAddress_t target_addr, addr, ret;
+
+	assert(entry->TargetDollop());
+
+	addr = entry->Place();
+	target_addr = entry->TargetDollop()->Place();
+	ret = addr;
+
+	if (override_place != 0)
+		addr = ret = override_place;
 
 	if(insn->GetDataBits().length() >2) 
 	{
@@ -2000,11 +2005,48 @@ RangeAddress_t ZiprImpl_t::PlopWithTarget(DollopEntry_t *entry)
 			return ret;
 			
 		}
-		
 
 		default:
 			assert(0);
 	}
+}
+
+RangeAddress_t ZiprImpl_t::PlopDollopEntryWithCallback(
+	DollopEntry_t *entry,
+	RangeAddress_t override_place)
+{
+	RangeAddress_t at = entry->Place(), originalAt = entry->Place();
+	Instruction_t *insn = entry->Instruction();
+
+	if (override_place != 0)
+		at = originalAt = override_place;
+
+	// emit call <callback>
+	{
+	char bytes[]={(char)0xe8,(char)0,(char)0,(char)0,(char)0}; // call rel32
+	memory_space.PlopBytes(at, bytes, sizeof(bytes));
+	unpatched_callbacks.insert(pair<Instruction_t*,RangeAddress_t>(insn,at));
+	at+=sizeof(bytes);
+	}
+
+	// pop bogus ret addr
+	if(m_firp->GetArchitectureBitWidth()==64)
+	{
+		char bytes[]={(char)0x48,(char)0x8d,(char)0x64,(char)0x24,(char)(m_firp->GetArchitectureBitWidth()/0x08)}; // lea rsp, [rsp+8]
+		memory_space.PlopBytes(at, bytes, sizeof(bytes));
+		at+=sizeof(bytes);
+	}
+	else if(m_firp->GetArchitectureBitWidth()==32)
+	{
+		char bytes[]={(char)0x8d,(char)0x64,(char)0x24,(char)(m_firp->GetArchitectureBitWidth()/0x08)}; // lea esp, [esp+4]
+		memory_space.PlopBytes(at, bytes, sizeof(bytes));
+		at+=sizeof(bytes);
+	}
+	else
+		assert(0);
+
+	assert(Utils::CALLBACK_TRAMPOLINE_SIZE<=(at-originalAt));
+	return at;
 }
 
 void ZiprImpl_t::RewritePCRelOffset(RangeAddress_t from_addr,RangeAddress_t to_addr, int insn_length, int offset_pos)
@@ -2457,38 +2499,6 @@ string ZiprImpl_t::AddCallbacksToNewSegment(const string& tmpname, RangeAddress_
 		return tmpname;
 	}
 	return tmpname3;
-}
-
-RangeAddress_t ZiprImpl_t::PlopWithCallback(DollopEntry_t *entry)
-{
-	RangeAddress_t at = entry->Place(), originalAt = entry->Place();
-	Instruction_t *insn = entry->Instruction();
-	// emit call <callback>
-	{
-	char bytes[]={(char)0xe8,(char)0,(char)0,(char)0,(char)0}; // call rel32
-	memory_space.PlopBytes(at, bytes, sizeof(bytes));
-	unpatched_callbacks.insert(pair<Instruction_t*,RangeAddress_t>(insn,at));
-	at+=sizeof(bytes);
-	}
-
-	// pop bogus ret addr
-	if(m_firp->GetArchitectureBitWidth()==64)
-	{
-		char bytes[]={(char)0x48,(char)0x8d,(char)0x64,(char)0x24,(char)(m_firp->GetArchitectureBitWidth()/0x08)}; // lea rsp, [rsp+8]
-		memory_space.PlopBytes(at, bytes, sizeof(bytes));
-		at+=sizeof(bytes);
-	}
-	else if(m_firp->GetArchitectureBitWidth()==32)
-	{
-		char bytes[]={(char)0x8d,(char)0x64,(char)0x24,(char)(m_firp->GetArchitectureBitWidth()/0x08)}; // lea esp, [esp+4]
-		memory_space.PlopBytes(at, bytes, sizeof(bytes));
-		at+=sizeof(bytes);
-	}
-	else
-		assert(0);
-
-	assert(Utils::CALLBACK_TRAMPOLINE_SIZE<=(at-originalAt));
-	return at;
 }
 
 // horrible code, rewrite in C++ please!
