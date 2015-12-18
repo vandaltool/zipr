@@ -10,6 +10,7 @@ namespace Zipr_SDK {
 
 		m_size = 0;
 		m_fallthrough_dollop = NULL;
+		m_was_truncated = false;
 
 		if (start == NULL)
 			return;

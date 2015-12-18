@@ -1478,6 +1478,8 @@ void ZiprImpl_t::PlaceDollops()
 			Dollop_t *split_dollop = to_place->Split((*dit)->Instruction());
 			m_dollop_mgr.AddDollops(split_dollop);
 
+			to_place->WasTruncated(true);
+
 			if (m_verbose)
 				cout << "Split a dollop because it didn't fit. Fallthrough to "
 				     << std::hex << split_dollop << "." << endl;
