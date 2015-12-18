@@ -58,6 +58,17 @@ namespace Zipr_SDK {
 		return dollop_size;
 	}
 
+	DollopEntry_t *Dollop_t::FallthroughDollopEntry(DollopEntry_t *entry) const
+	{
+		list<DollopEntry_t *>::const_iterator found_entry;
+
+		found_entry = std::find(begin(), end(), entry);
+		if (found_entry != end() && std::next(found_entry) != end())
+			return *(std::next(found_entry));
+		else
+			return NULL;
+	}
+
 	Dollop_t *Dollop_t::Split(libIRDB::Instruction_t *split_point) {
 		/*
 		 * 1. Find the matching dollop entry.
