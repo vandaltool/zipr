@@ -109,7 +109,7 @@ void insert_icfs(int fileID, const vector<wahoo::Instruction*>& instructions)
     		query += " (icfs_id,is_complete) VALUES ";
       		query += "(";
       		query += txn.quote(next_icfs_id) + ",";
-      		query += txn.quote(1);
+      		query += txn.quote(instruction->isIbComplete());
 		query += ")";
 
 		string query2 = "INSERT INTO " + icfsMapTable;
@@ -117,7 +117,7 @@ void insert_icfs(int fileID, const vector<wahoo::Instruction*>& instructions)
 
 		for(set<Instruction*>::iterator it=ibts.begin(); it!=ibts.end(); it++)
 		{
-			cerr<<"Found toIBT=="<<(*it)->getAddress()<<endl;
+			cerr<<"  Found toIBT=="<<(*it)->getAddress()<<endl;
 			if(it!=ibts.begin())
 				query2+=",";
 			int target_address_id=instruction_to_addressid_map[*it];

@@ -194,7 +194,7 @@ void set_target
 	}
 }
 
-File_t* find_file(FileIR_t* firp, db_id_t fileid)
+static File_t* find_file(FileIR_t* firp, db_id_t fileid)
 {
 #if 0
 	set<File_t*> &files=firp->GetFiles();

@@ -700,8 +700,9 @@ void Rewriter::readXrefsFile(char p_filename[])
 			}
 			else
 			{
-				cerr<<"Error: instruction at "<<std::hex<<addr<<std::dec<<" not in db?"<<endl;
-				// assert(0);
+				wahoo::Instruction *instr = addr_to_insn_map[addr];
+				assert(instr);
+				instr->markIbComplete();
 			}
 		}
 		// check for instr xref fromib 	

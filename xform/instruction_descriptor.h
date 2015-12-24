@@ -50,6 +50,8 @@ class Instruction {
     // include Indirect branch targets for insructions.
     void addIBT(Instruction* insn) { ibts.insert(insn); }
     const std::set<Instruction*>&  getIBTs() { return ibts; }
+    void markIbComplete(bool complete=true) { m_ib_complete=complete; }
+    bool isIbComplete() { return m_ib_complete; }
 
   private:
     app_iaddr_t     m_address;
@@ -68,6 +70,7 @@ class Instruction {
     bool            m_isVisited;
 
     std::set<Instruction*> ibts;
+    bool m_ib_complete;
 
 };
 

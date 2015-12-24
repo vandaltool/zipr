@@ -266,7 +266,7 @@ struct lsda_header_info
 
 
 
-File_t* find_file(FileIR_t* virp, db_id_t fileid)
+static File_t* find_file(FileIR_t* virp, db_id_t fileid)
 {
 #if 0
         set<File_t*> &files=virp->GetFiles();
@@ -830,19 +830,6 @@ void read_ehframe(FileIR_t* virp, EXEIO::exeio* exeiop)
 	if(!elfiop)
 		return;	// skip entire analysis for non-elf files as eh-frame is way different.
 
-	/* get first instruction */
-	Instruction_t* insn=*(virp->GetInstructions().begin());
-	assert(insn);
-
-	/* get its file ID */
-	db_id_t fileid=insn->GetAddress()->GetFileID();
-
-	/* find the file in the IR */
-	File_t* filep=find_file(virp,fileid);
-	assert(filep);
-
-	/* get the OID of the file */
-	int elfoid=filep->GetELFOID();
 
 	int secndx=0;
 	int secnum=elfiop->sections.size(); 

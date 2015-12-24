@@ -29,12 +29,46 @@
 #include <assert.h>
 #include <string.h>
 #include <elf.h>
+#include <set>
+#include <exeio.h>
 
 
 
 using namespace libIRDB;
 using namespace std;
+using namespace EXEIO;
 
+
+
+class Range_t
+{
+        public:
+                Range_t(virtual_offset_t p_s, virtual_offset_t p_e) : m_start(p_s), m_end(p_e) { }
+                Range_t() : m_start(0), m_end(0) { }
+
+                virtual virtual_offset_t GetStart() const { return m_start; }
+                virtual virtual_offset_t GetEnd() const { return m_end; }
+                virtual void SetStart(virtual_offset_t s) { m_start=s; }
+                virtual void SetEnd(virtual_offset_t e) { m_end=e; }
+
+        protected:
+
+                virtual_offset_t m_start, m_end;
+};
+
+struct Range_tCompare
+{
+        bool operator() (const Range_t &first, const Range_t &second) const
+        {
+                return first.GetEnd() < second.GetStart();
+        }
+};
+
+typedef std::set<Range_t, Range_tCompare> RangeSet_t;
+
+
+
+RangeSet_t eh_frame_ranges;
 long long no_target_insn=0;
 long long target_not_in_function=0;
 long long call_to_not_entry=0;
@@ -45,6 +79,10 @@ pqxxDB_t pqxx_interface;
 
 
 void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, UIntPtr offset);
+
+/* Read the exception handler frame so that those indirect branches are accounted for */
+void read_ehframe(FileIR_t* firp, EXEIO::exeio* );
+
 
 
 bool check_entry(bool &found, ControlFlowGraph_t* cfg)
@@ -115,8 +153,19 @@ bool call_needs_fix(Instruction_t* insn)
 	/* if the location after the call is marked as an IBT, then 
 	 * this location might be used for walking the stack 
   	 */
+// this used to work because fill_in_indirects would mark IBTs 
+// while reading the ehframe, which perfectly corresponds to when
+// we need to fix calls due to eh_frame.  However, now STARS also marks
+// return points as IBTs, so we need to re-parse the ehframe and use that instead.
+#if 0
 	if(fallthru->GetIndirectBranchTargetAddress()!=NULL)
 		return true;
+#else
+	virtual_offset_t addr=fallthru->GetAddress()->GetVirtualOffset();
+	RangeSet_t::iterator rangeiter=eh_frame_ranges.find(Range_t(addr,addr));
+	if(rangeiter != eh_frame_ranges.end())	// found an eh_frame addr entry for this call
+		return true;
+#endif
 
 
 	Function_t* func=target->GetFunction();
@@ -554,7 +603,7 @@ bool is_call(Instruction_t* insn)
 	return (disasm.Instruction.BranchType==CallType);
 }
 
-File_t* find_file(FileIR_t* firp, db_id_t fileid)
+static File_t* find_file(FileIR_t* firp, db_id_t fileid)
 {
 #if 0
         set<File_t*> &files=firp->GetFiles();
@@ -846,6 +895,15 @@ main(int argc, char* argv[])
 	
 			assert(firp && pidp);
 	
+			eh_frame_ranges.clear();
+                        int elfoid=firp->GetFile()->GetELFOID();
+                        pqxx::largeobject lo(elfoid);
+                        lo.to_file(pqxx_interface.GetTransaction(),"readeh_tmp_file.exe");
+                        EXEIO::exeio*    elfiop=new EXEIO::exeio;
+                        elfiop->load((const char*)"readeh_tmp_file.exe");
+                        EXEIO::dump::header(cout,*elfiop);
+                        EXEIO::dump::section_headers(cout,*elfiop);
+        		read_ehframe(firp, elfiop);
 			fix_all_calls(firp,true,fix_all);
 			fix_other_pcrel(firp);
 			firp->WriteToDB();
@@ -865,10 +923,21 @@ main(int argc, char* argv[])
 		exit(-1);
         }
 
-
-
-
 	delete pidp;
 }
 
+
+
+
+
+
+void range(virtual_offset_t a, virtual_offset_t b)
+{
+	eh_frame_ranges.insert(Range_t(a,b));
+}
+
+bool possible_target(uintptr_t p, uintptr_t at=0)
+{
+	// used for LDSA
+}
 

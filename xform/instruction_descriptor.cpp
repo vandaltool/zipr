@@ -35,6 +35,7 @@ wahoo::Instruction::Instruction()
   m_varStackRef = false;
   m_isVisited = false;
   m_data = NULL;
+  m_ib_complete=false;
 }
 
 wahoo::Instruction::Instruction(app_iaddr_t p_address, int p_size, Function* p_func)
