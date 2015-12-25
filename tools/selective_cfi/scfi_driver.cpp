@@ -46,6 +46,12 @@ int main(int argc, char **argv)
                 exit(1);
         }
 
+	if(!getenv("FIX_CALLS_FIX_ALL_CALLS"))
+	{
+		cerr<<"FIX_CALLS_FIX_ALL_CALLS should be set."<<endl;
+                exit(1);
+	}
+
         string programName(argv[0]);
         int variantID = atoi(argv[1]);
 
