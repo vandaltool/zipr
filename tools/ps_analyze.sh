@@ -1019,9 +1019,6 @@ if [ $($PEASOUP_HOME/tools/is_so.sh a.ncexe) = 0 ]; then
 	perform_step ilr none $SECURITY_TRANSFORMS_HOME/bin/ilr.exe $cloneid 
 fi
 
-perform_step selective_cfi none $SECURITY_TRANSFORMS_HOME/bin/selective_cfi.exe $cloneid 
-perform_step simple_cdi none $SECURITY_TRANSFORMS_HOME/bin/simple_cdi.exe $cloneid 
-
 # do plugins directory
 for i in $SECURITY_TRANSFORMS_HOME/plugins_install/*.exe $SECURITY_TRANSFORMS_HOME/plugins_install/*.sh;
 do
