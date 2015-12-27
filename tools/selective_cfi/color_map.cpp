@@ -1,0 +1,83 @@
+
+#include "color_map.hpp"
+
+using namespace std;
+using namespace libIRDB;
+
+
+bool ColoredInstructionNonces_t::create()
+{
+	UniqueICFSSet_t unique_icfs;
+
+	assert(firp);
+	const ICFSSet_t& all_icfs=firp->GetAllICFS();
+	for(ICFSSet_t::iterator it=all_icfs.begin(); it!=all_icfs.end(); ++it)
+	{
+		ICFS_t* p=*it;
+		assert(p);
+		unique_icfs.insert( *p );
+	}
+
+	ColoredSlotValue_t v;
+	for(UniqueICFSSet_t::iterator it=unique_icfs.begin(); it!=unique_icfs.end(); ++it)
+	{
+		const ICFS_t& the_icfs=*it;
+
+		for(int slot_no=0; ; slot_no++)
+		{
+			// check if we need to allocate a new slot
+			if(slot_no<slots_used.size())
+			{
+				// skip any slots that are full.
+				if(!slots_used[slot_no].CanReserve())
+					goto next_slot;
+			}
+			else
+			{
+				// allocate slot
+				slots_used.push_back(ColoredSlotAllocator_t(slot_no,slot_values));
+			}
+
+			// check if any of the targets for this branch already have a slot filled.
+			for(ICFS_t::iterator it2=the_icfs.begin(); it2!=the_icfs.end(); ++it2)
+			{
+				Instruction_t* target=*it2;
+				if(color_assignments[target][slot_no].IsValid())
+					goto next_slot;
+			}
+
+			// if we get here, the slot is valid for all targets, we can reserve it.
+			v=slots_used[slot_no].Reserve();
+
+			// and record the reservation for each target.
+			slot_assignments[the_icfs]=v;
+			for(ICFS_t::iterator it2=the_icfs.begin(); it2!=the_icfs.end(); ++it2)
+			{
+				Instruction_t* target=*it2;
+				color_assignments[target][slot_no]=v;
+				cout<<"Setting [slot][color] for "<<target->GetBaseID()<<":"<<target->getDisassembly()
+				    <<"=["<<v.GetPosition()<<"]["<<hex<<v.GetNonceValue()<<dec<<"]"<<endl;
+			}
+
+			// and we're done with this ICFS
+			break;
+
+
+			// inc the slot no and try again.
+			next_slot:
+				// try next;
+				; // neded statement for compiler to accept 
+		}
+
+	}
+
+	// output stats
+	cout<<"#ATTRIBUTE slots_used="<<slots_used.size()<<endl;
+	for(int slot_no=0; slot_no<slots_used.size(); slot_no++)
+	{
+		cout<<"#ATTRIBUTE used_slot"<<slot_no<<"="<<slots_used[slot_no].SlotsUsed()<<endl;
+	}
+
+	return true;
+}
+

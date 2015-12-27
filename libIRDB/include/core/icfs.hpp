@@ -33,21 +33,9 @@ class ICFS_t : public InstructionSet_t, public BaseObj_t
 		}
 		std::string WriteToDB(File_t *fid);
 		 
-		ICFS_t& operator=(const InstructionSet_t &other) 
+		void SetTargets(const InstructionSet_t &other) 
 		{
-			if (this == &other)
-				return *this;
-
-			this->clear();
-
-			for (InstructionSet_t::const_iterator it = other.begin();
-				 it != other.end(); ++it)
-			{
-				this->insert(*it);				
-			}
-
-			return *this;
-			
+			InstructionSet_t::operator=(other);
 		}
 		void SetComplete(bool complete) { is_complete = complete; }
 		bool IsComplete() const { return is_complete; }			

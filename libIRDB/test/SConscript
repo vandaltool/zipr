@@ -20,7 +20,11 @@ print LIBS
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath))
 ehframe=myenv.Object("read_ehframe.cpp");
+
 pgm=myenv.Program("fill_in_indtargs.exe",  ehframe+Split("fill_in_indtargs.cpp check_thunks.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
+install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
+Default(install)
+
 pgm=myenv.Program("fix_calls.exe",  ehframe+Split("fix_calls.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
 install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
 Default(install)

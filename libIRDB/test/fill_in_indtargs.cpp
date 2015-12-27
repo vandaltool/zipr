@@ -62,10 +62,10 @@ set<virtual_offset_t> targets;
 set< pair< virtual_offset_t, virtual_offset_t> > ranges;
 
 // a way to map an instruction to its set of predecessors. 
-map< Instruction_t* , set<Instruction_t*> > preds;
+map< Instruction_t* , InstructionSet_t > preds;
 
 // keep track of jmp tables
-map< Instruction_t*, set<Instruction_t*> > jmptables;
+map< Instruction_t*, InstructionSet_t > jmptables;
 
 void check_for_PIC_switch_table32_type2(Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t>& thunk_bases);
 void check_for_PIC_switch_table32_type3(Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t>& thunk_bases);
@@ -240,11 +240,11 @@ Instruction_t *lookupInstruction(FileIR_t *firp, virtual_offset_t virtual_offset
 
 void mark_jmptables(FileIR_t *firp)
 {
-	map< Instruction_t*, set<Instruction_t*> >::iterator it;
+	map< Instruction_t*, InstructionSet_t >::iterator it;
 	for (it = jmptables.begin(); it != jmptables.end(); ++it)
 	{
 		Instruction_t* instr = it->first;
-		set<Instruction_t*> instruction_targets = it->second;
+		const InstructionSet_t &instruction_targets = it->second;
 
 		// ignore if instr already marked complete.
 		// FIXME: assert that fill_in_indtarg analysis matches already complete analysis.
@@ -254,7 +254,7 @@ void mark_jmptables(FileIR_t *firp)
 		assert(instruction_targets.size() > 0);
 
 		ICFS_t* new_icfs = new ICFS_t(next_icfs_set_id++, true);
-		*new_icfs = instruction_targets;
+		new_icfs->SetTargets(instruction_targets);
 		firp->GetAllICFS().insert(new_icfs);
 
 		instr->SetIBTargets(new_icfs);
@@ -1457,8 +1457,15 @@ void icfs_set_indirect_calls(FileIR_t* const firp, ICFS_t* const targets)
            )
     	{
         	Function_t *func=*it;
+
+		// no entry point, doesn't count
 		if(!func->GetEntryPoint())
 			continue;
+
+		// if it's no an indirectly called function, it doesn't count
+		if(!func->GetEntryPoint()->GetIndirectBranchTargetAddress())
+			continue;
+
 		targets->insert(func->GetEntryPoint());
 	}
 }
@@ -1489,6 +1496,7 @@ void check_for_ret(FileIR_t* const firp, Instruction_t* const insn)
 	if(strstr(d.Instruction.Mnemonic, "ret")==NULL)
 		return;
 
+
 	// already analysed by ida.
 	if(insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
 		return;
@@ -1496,9 +1504,16 @@ void check_for_ret(FileIR_t* const firp, Instruction_t* const insn)
 	insn->SetIBTargets(hellnode_tgts);
 }
 
+// find any indirect jumps in the pgm and mark them as having a hell node ICFS if they don't
+// already have a complete ICFS.
 void check_for_indirect_jmp(FileIR_t* const firp, Instruction_t* const insn)
 {
+	cout<<"In check_for_indirect_jmp, whta?!"<<endl;
 	assert(firp && insn);
+
+	// already analysed by ida.
+	if(insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
+		return;
 
 	DISASM d;
 	insn->Disassemble(d);
@@ -1508,17 +1523,10 @@ void check_for_indirect_jmp(FileIR_t* const firp, Instruction_t* const insn)
 
 	if(d.Argument1.ArgType&REGISTER_TYPE)
 	{
-		// already analysed by ida.
-		if(insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
-			return;
 		insn->SetIBTargets(hellnode_tgts);
 	}
-	else if(d.Argument1.ArgType&MEMORY_TYPE &&
-			(!d.Argument1.ArgType&RELATIVE_))
+	else if(d.Argument1.ArgType&MEMORY_TYPE)
 	{
-		// already analysed by ida.
-		if(insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
-			return;
 		insn->SetIBTargets(hellnode_tgts);
 	}
 }

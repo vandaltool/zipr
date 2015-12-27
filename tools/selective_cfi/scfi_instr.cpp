@@ -22,7 +22,9 @@
 #include "utils.hpp"
 #include "scfi_instr.hpp"
 #include "Rewrite_Utility.hpp"
+#include "color_map.hpp"
 #include <stdlib.h>
+#include <memory>
 
 
 
@@ -252,11 +254,25 @@ bool SCFI_Instrument::needs_scfi_instrumentation(Instruction_t* insn)
 
 }
 
+unsigned int SCFI_Instrument::GetNonceOffset(Instruction_t* insn)
+{
+	if(color_map)
+	{
+		assert(insn->GetIBTargets());
+		return color_map->GetColorOfIB(insn).GetPosition() * GetNonceSize(insn);
+	}
+	return GetNonceSize(insn);
+}
 
-unsigned int SCFI_Instrument::GetNonce(Instruction_t* insn)
+NonceValueType_t SCFI_Instrument::GetNonce(Instruction_t* insn)
 {
 	/* in time we look up the nonce category for this insn */
 	/* for now, it's just f4 as the nonce */
+	if(color_map)
+	{
+		assert(insn->GetIBTargets());
+		return color_map->GetColorOfIB(insn).GetNonceValue();
+	}
 	return 0xf4;
 }
 
@@ -280,13 +296,34 @@ bool SCFI_Instrument::mark_targets()
 		{
 			ind_targets++;
 			string type;
-			type="cfi_nonce=";
-			type+=to_string(GetNonce(insn));
+			if(do_coloring)
+			{
+				ColoredSlotValues_t v=color_map->GetColorsOfIBT(insn);
+				int size=1;
+				for(int i=0;i<v.size();i++)
+				{
+					if(!v[i].IsValid())
+						continue;
+					int position=v[i].GetPosition();
+					NonceValueType_t noncevalue=v[i].GetNonceValue();
+					type=string("cfi_nonce=(pos=") +  to_string(position) + ",nv="
+						+ to_string(noncevalue) + ",sz="+ to_string(size)+ ")";
+					Relocation_t* reloc=create_reloc(insn);
+					reloc->SetOffset(-position*size);
+					reloc->SetType(type);
+					cout<<"Created reloc='"+type+"' for "<<std::dec<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<endl;
+				}
+			}
+			else
+			{
+				type="cfi_nonce=";
+				type+=to_string(GetNonce(insn));
 
-			Relocation_t* reloc=create_reloc(insn);
-			reloc->SetOffset(-GetNonceSize(insn));
-			reloc->SetType(type);
-			cout<<"Found indtarget  for "<<std::dec<<insn->GetBaseID()<<":"<<insn->GetComment()<<endl;
+				Relocation_t* reloc=create_reloc(insn);
+				reloc->SetOffset(-GetNonceOffset(insn));
+				reloc->SetType(type);
+				cout<<"Found nonce="+type+"  for "<<std::dec<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<endl;
+			}
 		}
 	}
 	cout<<"# ATTRIBUTE ind_targets_found="<<std::dec<<ind_targets<<endl;
@@ -355,17 +392,20 @@ void mov_reloc(Instruction_t* from, Instruction_t* to, string type )
 
 void SCFI_Instrument::AddJumpCFI(Instruction_t* insn)
 {
+	ColoredSlotValue_t v2;
+	if(insn->GetIBTargets() && color_map)
+		v2=color_map->GetColorOfIB(insn);
+	ColoredSlotValue_t *v=&v2;
 	string reg="ecx";	// 32-bit reg 
 	if(firp->GetArchitectureBitWidth()==64)
 		reg="rcx";	// 64-bit reg.
-#ifdef CGC
-	// insert the pop/checking code.
 
 	string pushbits=change_to_push(insn);
-
 	cout<<"Converting ' "<<insn->getDisassembly()<<"' to '";
 	Instruction_t* after=insertDataBitsBefore(firp,insn,pushbits); 
-	cout<<insn->getDisassembly()<<"'"<<endl;
+#ifdef CGC
+	// insert the pop/checking code.
+	cout<<insn->getDisassembly()<<"+jmp slowpath'"<<endl;
 
 	string jmpBits=getJumpDataBits();
         after->SetDataBits(jmpBits);
@@ -375,25 +415,33 @@ void SCFI_Instrument::AddJumpCFI(Instruction_t* insn)
 	after->SetTarget(after);
 	return;
 #else
-	string pushbits=change_to_push(insn);
-	cout<<"Converting ' "<<insn->getDisassembly()<<"' to '";
 	
-	Instruction_t* after=insertDataBitsBefore(firp,insn,pushbits); 
 	after->SetDataBits(getRetDataBits());
-	cout <<insn->getDisassembly()<<" + ret "<<endl ;
+	cout <<insn->getDisassembly()<<" + ret' "<<endl ;
 
 	// move any pc-rel relocation bits to the push, which will access memory now 
 	mov_reloc(after,insn,"pcrel");
+	after->SetIBTargets(insn->GetIBTargets());
+	insn->SetIBTargets(NULL);
 
-	AddReturnCFI(after);
+	AddReturnCFI(after,v);
 	// cout<<"Warning, JUMPS not CFI's yet"<<endl;
 	return;
 #endif
 }
 
 
-void SCFI_Instrument::AddReturnCFI(Instruction_t* insn)
+void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 {
+
+	ColoredSlotValue_t v2; 
+	if(v==NULL && color_map)
+	{
+		v2=color_map->GetColorOfIB(insn);
+		v=&v2;
+	}
+
+
 	string reg="ecx";	// 32-bit reg 
 	if(firp->GetArchitectureBitWidth()==64)
 		reg="r11";	// 64-bit reg.
@@ -420,14 +468,23 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn)
 		if(sp_adjust>0)
 		{
 			sprintf(buf, "lea %s, [%s+%d]", rspreg.c_str(), rspreg.c_str(), sp_adjust);
-			Instruction_t* newinsn=insertAssemblyAfter(firp,insn,buf);
 		}
-
 
 		// rewrite the "old" isntruction, as that's what insertAssemblyBefore returns
 		insn=newafter;
 	}
 		
+	int size=1;
+	string slow_cfi_path_reloc_string="slow_cfi_path=(1,0xf4,1)";
+	if( v && v->IsValid())
+	{
+		slow_cfi_path_reloc_string="slow_cfi_path=("+ to_string(v->GetPosition()) +","
+			                  + to_string(v->GetNonceValue())+","+ to_string(size) +")";
+	}
+	cout<<"Cal'd (unused) slow-path cfi reloc as: "<<slow_cfi_path_reloc_string<<endl;
+// fixme:  would like to mark a slow path per nonce type using the variables calc'd above.
+	
+	
 
 #ifdef CGC
 	// insert the pop/checking code.
@@ -446,6 +503,7 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn)
 
 	string decoration="";
 	int nonce_size=GetNonceSize(insn);
+	int nonce_offset=GetNonceOffset(insn);
 	unsigned int nonce=GetNonce(insn);
 	Instruction_t* jne=NULL, *tmp=NULL;
 	
@@ -484,6 +542,7 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn)
 	jne->SetTarget(jne);	// needed so spri/spasm/irdb don't freak out about missing target for new insn.
 	Relocation_t* reloc=create_reloc(jne);
 	reloc->SetType("slow_cfi_path");
+// fixme: record nonce value for each slot.
 	reloc->SetOffset(0);
 
 	return;
@@ -494,7 +553,7 @@ bool SCFI_Instrument::instrument_jumps()
 {
 	int cfi_checks=0;
 
-	// we do this in two passes.  first pass:  find instructions.
+	// for each instruction
 	for(InstructionSet_t::iterator it=firp->GetInstructions().begin();
 		it!=firp->GetInstructions().end();
 		++it)
@@ -551,10 +610,22 @@ bool SCFI_Instrument::execute()
 
 	bool success=true;
 
+	if(do_coloring)
+	{
+		color_map=new ColoredInstructionNonces_t(firp); 
+		assert(color_map);
+		success = success && color_map->build();
+	
+	}
+	
 	success = success && instrument_jumps();	// to handle moving of relocs properly if
 							// an insn is both a IBT and a IB,
 							// we instrument first, then add relocs for targets
 	success = success && mark_targets();
+
+
+	delete color_map;
+	color_map=NULL;
 
 	return success;
 }

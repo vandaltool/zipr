@@ -35,12 +35,12 @@ using namespace libIRDB;
 
 void usage(char* name)
 {
-	cerr<<"Usage: "<<name<<" <variant_id>\n"; 
+	cerr<<"Usage: "<<name<<" <variant_id> (--color|--no-color)\n"; 
 }
 
 int main(int argc, char **argv)
 {
-        if(argc != 2)
+        if(argc < 2)
         {
                 usage(argv[0]);
                 exit(1);
@@ -50,6 +50,15 @@ int main(int argc, char **argv)
 	{
 		cerr<<"FIX_CALLS_FIX_ALL_CALLS should be set."<<endl;
                 exit(1);
+	}
+
+	bool do_coloring=false;
+	for(int  i=0;i<argc;i++)
+	{
+		if(string(argv[i])=="--color")
+			do_coloring=true;
+		else if(string(argv[i])=="--no-color")
+			do_coloring=false;
 	}
 
         string programName(argv[0]);
@@ -80,7 +89,7 @@ int main(int argc, char **argv)
 
                 try
                 {
-			SCFI_Instrument scfii(firp);
+			SCFI_Instrument scfii(firp, do_coloring);
 
 
 			int success=scfii.execute();

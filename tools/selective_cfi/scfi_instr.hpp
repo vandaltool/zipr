@@ -22,13 +22,15 @@
 #define scfi_instrument_hpp
 
 #include <libIRDB-core.hpp>
+#include "color_map.hpp"
 
 
 
 class SCFI_Instrument
 {
 	public:
-		SCFI_Instrument(libIRDB::FileIR_t *the_firp) : firp(the_firp) {}
+		SCFI_Instrument(libIRDB::FileIR_t *the_firp, bool p_do_coloring=true) 
+			: firp(the_firp), do_coloring(p_do_coloring), color_map(NULL) {}
 		bool execute();
 
 	private:
@@ -47,19 +49,22 @@ class SCFI_Instrument
 		bool needs_scfi_instrumentation(libIRDB::Instruction_t* insn);
 
 		// return instrumentation
-		void  AddReturnCFI(libIRDB::Instruction_t* insn);
+		void  AddReturnCFI(libIRDB::Instruction_t* insn, ColoredSlotValue_t *v=NULL);
 		// jump instrumentation
 		void AddJumpCFI(libIRDB::Instruction_t* insn);
 
 
 		// Nonce Manipulation.
-		unsigned int GetNonce(libIRDB::Instruction_t* insn);
+		NonceValueType_t GetNonce(libIRDB::Instruction_t* insn);
 		unsigned int GetNonceSize(libIRDB::Instruction_t* insn);
+		unsigned int GetNonceOffset(libIRDB::Instruction_t*);
 
 
 
 	
 		libIRDB::FileIR_t* firp;
+		bool do_coloring;
+		ColoredInstructionNonces_t *color_map;
 
 
 };
