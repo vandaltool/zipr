@@ -259,7 +259,7 @@ unsigned int SCFI_Instrument::GetNonceOffset(Instruction_t* insn)
 	if(color_map)
 	{
 		assert(insn->GetIBTargets());
-		return color_map->GetColorOfIB(insn).GetPosition() * GetNonceSize(insn);
+		return (color_map->GetColorOfIB(insn).GetPosition()+1) * GetNonceSize(insn);
 	}
 	return GetNonceSize(insn);
 }
@@ -305,6 +305,12 @@ bool SCFI_Instrument::mark_targets()
 					if(!v[i].IsValid())
 						continue;
 					int position=v[i].GetPosition();
+
+					// convert the colored "slot" into a position in the code.
+					position++;
+					position*=size;
+					position = - position;
+
 					NonceValueType_t noncevalue=v[i].GetNonceValue();
 					type=string("cfi_nonce=(pos=") +  to_string(position) + ",nv="
 						+ to_string(noncevalue) + ",sz="+ to_string(size)+ ")";
@@ -475,11 +481,13 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 	}
 		
 	int size=1;
+	int position=0;
 	string slow_cfi_path_reloc_string="slow_cfi_path=(1,0xf4,1)";
 	if( v && v->IsValid())
 	{
 		slow_cfi_path_reloc_string="slow_cfi_path=("+ to_string(v->GetPosition()) +","
 			                  + to_string(v->GetNonceValue())+","+ to_string(size) +")";
+		size=v->GetPosition();
 	}
 	cout<<"Cal'd (unused) slow-path cfi reloc as: "<<slow_cfi_path_reloc_string<<endl;
 // fixme:  would like to mark a slow path per nonce type using the variables calc'd above.
@@ -531,7 +539,7 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 	// insert the pop/checking code.
 	insertAssemblyBefore(firp,insn,string("pop ")+reg);
 	tmp=insertAssemblyAfter(firp,insn,string("cmp ")+decoration+
-		" ["+reg+"-"+to_string(nonce_size)+"], "+to_string(nonce));
+		" ["+reg+"-"+to_string(nonce_offset)+"], "+to_string(nonce));
     jne=tmp=insertAssemblyAfter(firp,tmp,"jne 0");
 
 	// convert the ret instruction to a jmp ecx
