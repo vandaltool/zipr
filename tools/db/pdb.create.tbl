@@ -43,3 +43,4 @@ CREATE TABLE variant_dependency
   doip_id          integer DEFAULT -1
 );
 
+CREATE TYPE icfs_analysis_result AS ENUM ('icfs_analysis_incomplete', 'icfs_analysis_module_complete', 'icfs_analysis_complete');

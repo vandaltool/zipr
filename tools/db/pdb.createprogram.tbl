@@ -64,7 +64,7 @@ CREATE TABLE #RTN#
 CREATE TABLE #ICFS#
 (
   icfs_id	      SERIAL PRIMARY KEY, -- set id
-  is_complete     boolean DEFAULT FALSE
+  icfs_status     icfs_analysis_result DEFAULT 'icfs_analysis_incomplete'
 );
 
 -- map set id to addresses
