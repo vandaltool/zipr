@@ -6843,7 +6843,6 @@ tools/pin/source/tools/pintool.tscons-extension -text
 tools/pn_spec_always_only_validate.txt -text
 tools/ps_analyze-ilronly.sh -text
 tools/ps_analyze-lib.sh -text
-tools/ps_analyze.fptr.sh -text
 tools/ps_analyze.sh -text
 tools/ps_analyze4.sh -text
 tools/ps_analyze64.sh -text
