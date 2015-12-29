@@ -62,3 +62,6 @@ echo dropping bonus tabs
 psql -t -q -c "$droptabs" || true
 
 psql -f $PEASOUP_HOME/tools/db/job.drop.tbl
+
+echo dropping types
+psql -t -q -c "DROP TYPE icfs_analysis_result;"
