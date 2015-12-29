@@ -45,6 +45,7 @@ Instruction_t* insertAssemblyBefore(FileIR_t* virp, Instruction_t* first, string
 	//"Null" out the original address (it should be as if the instruction was not in the database).
 	first->SetOriginalAddressID(BaseObj_t::NOT_IN_DATABASE);
 	first->GetRelocations().clear();
+	first->SetIBTargets(NULL);
 
 	virp->ChangeRegistryKey(first,next);
 	setInstructionAssembly(virp,first,assembly,next,target);
@@ -134,6 +135,7 @@ void copyInstruction(Instruction_t* src, Instruction_t* dest)
 	dest->SetCallback(src->GetCallback());
 	dest->SetFallthrough(src->GetFallthrough());
 	dest->SetTarget(src->GetTarget());
+	dest->SetIBTargets(src->GetIBTargets()); 
 	dest->GetRelocations()=src->GetRelocations();
 }
 

@@ -290,6 +290,7 @@ libIRDB/test/tests/ibtarget/jmp.shared.cpp -text
 libIRDB/test/tests/ibtarget/jmp1.cpp -text
 libIRDB/test/tests/ibtarget/jmp2.cpp -text
 libIRDB/test/tests/ibtarget/jmp2.shared.cpp -text
+libIRDB/test/tests/ibtarget/validate_ibts.sh -text
 libIRDB/test/unfix_calls.cpp -text
 libIRDB/test/unwind-pe.h -text
 libMEDSannotation/LICENSE.txt -text

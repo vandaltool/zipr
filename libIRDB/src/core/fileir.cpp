@@ -941,16 +941,9 @@ void FileIR_t::ReadAllICFSFromDB(std::map<db_id_t,Instruction_t*> &addr2instMap,
 	while(!dbintr->IsDone())
 	{
 		db_id_t icfs_id = atoi(dbintr->GetResultColumn("icfs_id").c_str());
-		bool isComplete=false;
-		string isCompleteString=dbintr->GetResultColumn("is_complete"); 
-		const char *isCompletestr=isCompleteString.c_str();
-		if (isCompleteString.size() > 0)
-		{
-			if (isCompletestr[0] == 't' || isCompletestr[0] == 'T' || isCompletestr[0] == '1' || isCompletestr[0] == 'y' || isCompletestr[0] == 'Y')
-				isComplete = true;
-		}
+		string statusString=dbintr->GetResultColumn("icfs_status"); 
 
-		ICFS_t* icfs = new ICFS_t(icfs_id, isComplete);		
+		ICFS_t* icfs = new ICFS_t(icfs_id, statusString);		
 		GetAllICFS().insert(icfs);
 
 		icfsMap[icfs_id] = icfs;
@@ -972,8 +965,11 @@ void FileIR_t::ReadAllICFSFromDB(std::map<db_id_t,Instruction_t*> &addr2instMap,
 		{
 			db_id_t address_id = atoi(dbintr->GetResultColumn("address_id").c_str());
 			Instruction_t* instruction = addr2instMap[address_id];
-			if (instruction)
+			if (instruction) 
+			{
 				icfs->insert(instruction);
+			}
+
 			// @todo: handle cross-file addresses
 			//        these are allowed by the DB schema but we don't yet handle them
 			// if we encounter an unresolved address, we should mark the ICFS

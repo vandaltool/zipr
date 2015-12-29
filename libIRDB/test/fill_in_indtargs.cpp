@@ -29,11 +29,9 @@
 #include <sys/mman.h>
 #include <sys/types.h>
 #include <regex.h>
-// #include <elf.h>
 #include <ctype.h>
 #include <list>
 #include <stdio.h>
-
 
 #include <exeio.h>
 #include "beaengine/BeaEngine.h"
@@ -253,7 +251,7 @@ void mark_jmptables(FileIR_t *firp)
 
 		assert(instruction_targets.size() > 0);
 
-		ICFS_t* new_icfs = new ICFS_t(next_icfs_set_id++, true);
+		ICFS_t* new_icfs = new ICFS_t(next_icfs_set_id++, ICFS_Analysis_Complete);
 		new_icfs->SetTargets(instruction_targets);
 		firp->GetAllICFS().insert(new_icfs);
 
@@ -261,6 +259,57 @@ void mark_jmptables(FileIR_t *firp)
 
 		if(getenv("IB_VERBOSE")!=0)
 			cout << "jmp table[" << new_icfs->GetBaseID() << "]: size: " << new_icfs->size() << endl;
+	}
+}
+
+bool allTargetsIndirectlyCalledFunctions(Instruction_t *instr)
+{
+	if (!instr->GetIBTargets())
+		return false;
+
+	ICFS_t *targets = instr->GetIBTargets();
+	for(set<Instruction_t*>::const_iterator it=targets->begin();
+		it!=targets->end(); ++it)
+	{
+		Instruction_t *insn = *it;
+		if (!insn->GetFunction())
+			return false;
+		else if (!insn->GetFunction()->GetEntryPoint())
+			return false;
+		/* NB: current API assumes only 1 entry point per function */
+		else if (insn->GetFunction()->GetEntryPoint() != insn)
+			return false;
+	}
+
+	return true;
+}
+
+/*
+	 pre: some ib targets may be incomplete 
+	post: all icfs are either module_complete or complete 
+*/
+void patch_icfs(FileIR_t *firp)
+{
+	for (set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
+		it!=firp->GetInstructions().end(); 
+		++it)
+	{
+		Instruction_t* instr = *it;
+
+		if(instr->GetIBTargets() && !(
+			instr->GetIBTargets()->IsComplete() ||
+			instr->GetIBTargets()->IsModuleComplete()) )
+		{
+			assert(instr->GetIBTargets()->IsIncomplete());
+
+			if (allTargetsIndirectlyCalledFunctions(instr)) {
+				cerr << "ib targets for: " << instr->getDisassembly() << " reassigned to indirectcalls node" << endl;
+				instr->SetIBTargets(indirect_calls);
+			} else {
+				cerr << "ib targets for: " << instr->getDisassembly() << " reassigned to hellnode" << endl;
+				instr->SetIBTargets(hellnode_tgts);
+			}
+		}
 	}
 }
 
@@ -1431,8 +1480,6 @@ template <class T> T MAX(T a, T b)
 
 void icfs_init(FileIR_t* firp)
 {
-
-
 	assert(firp);
 	db_id_t max_id=0;
 	for(ICFSSet_t::iterator it=firp->GetAllICFS().begin(); it!=firp->GetAllICFS().end(); ++it)
@@ -1441,8 +1488,8 @@ void icfs_init(FileIR_t* firp)
 	}
 	next_icfs_set_id = max_id+1;
 	cerr<<"Found max ICFS id=="<<max_id<<endl;
-	hellnode_tgts = new ICFS_t(next_icfs_set_id++, false);
-	indirect_calls = new ICFS_t(next_icfs_set_id++, false); 
+	hellnode_tgts = new ICFS_t(next_icfs_set_id++, ICFS_Analysis_Module_Complete);
+	indirect_calls = new ICFS_t(next_icfs_set_id++, ICFS_Analysis_Module_Complete); 
 	firp->GetAllICFS().insert(hellnode_tgts);
 	firp->GetAllICFS().insert(indirect_calls);
 }
@@ -1495,7 +1542,6 @@ void check_for_ret(FileIR_t* const firp, Instruction_t* const insn)
 
 	if(strstr(d.Instruction.Mnemonic, "ret")==NULL)
 		return;
-
 
 	// already analysed by ida.
 	if(insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
@@ -1704,12 +1750,14 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t>
 
 	mark_jmptables(firp);
 
+	patch_icfs(firp);
+
 	for(ICFSSet_t::const_iterator it=firp->GetAllICFS().begin();
 		it != firp->GetAllICFS().end();
 		++it)
 	{
 		ICFS_t *icfs = *it;
-		cout << dec << "icfs set id: " << icfs->GetBaseID() << "  #ibtargets: " << icfs->size() << endl;
+		cout << dec << "icfs set id: " << icfs->GetBaseID() << "  #ibtargets: " << icfs->size() << " analysis status: " << icfs->GetAnalysisStatus() << endl;
 	}
 }
 

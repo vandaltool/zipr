@@ -631,6 +631,7 @@ void Rewriter::readXrefsFile(char p_filename[])
 		addr_to_insn_map[instr->getAddress()]=instr;
 	}
 
+	set<app_iaddr_t> completeIBT;
 
         FILE* fin=fopen(p_filename, "r");
 
@@ -698,20 +699,25 @@ void Rewriter::readXrefsFile(char p_filename[])
 					from_instr->addIBT(instr);
 				}
 			}
-			else
-			{
-				wahoo::Instruction *instr = addr_to_insn_map[addr];
-				assert(instr);
-				instr->markIbComplete();
-			}
 		}
 		// check for instr xref fromib 	
 		else if(string("FROMIB")==string(ibt))
 		{
-			cerr<<"FROMIB line ignored for now."<<endl;
+			// annotations can come in any order so the COMPLETE annotation for IB targets
+			// can come before/after the targets themselves
+			// in this loop, just keep track of instructions w/ complete targets
+			// 4004b6      1 INSTR XREF FROMIB COMPLETE      1
+			char complete[200];
+			fscanf(fin, "%s", complete);
+
+			if(strcmp(complete,"COMPLETE")==0) 
+			{
+				completeIBT.insert(addr);
+			}
+
+			if(feof(fin))           // deal with blank lines at the EOF
+				break;
 		}
-
-
 		
 		char remainder[2000];
 		fgets(remainder, sizeof(remainder), fin);
@@ -719,9 +725,17 @@ void Rewriter::readXrefsFile(char p_filename[])
 	
 
 	} while(!feof(fin));
+
+	// let's backpatch all IB instructions with complete targets
+	set<app_iaddr_t>::const_iterator it;
+	for (it = completeIBT.begin(); it != completeIBT.end(); ++it)
+	{
+		wahoo::Instruction *instr = addr_to_insn_map[*it];
+		assert(instr);
+		instr->markIbComplete();
+	}
+
 	fclose(fin);
-
-
 }
 
 /*

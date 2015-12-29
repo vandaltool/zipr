@@ -1,4 +1,3 @@
-char temp;
 /*
  * Copyright (c) 2014 - Zephyr Software LLC
  *
@@ -96,20 +95,25 @@ void insert_icfs(int fileID, const vector<wahoo::Instruction*>& instructions)
 
   	for (int i = 0; i < instructions.size(); i ++)
 	{
-      		wahoo::Instruction *instruction = instructions[i];
+     		wahoo::Instruction *instruction = instructions[i];
 		assert(instruction);
 
 		const std::set<Instruction*> &ibts=instruction->getIBTs();
 		
 		if(ibts.size()==0)
 			continue;
-		cerr<<"Found fromIB=="<<instruction->getAddress()<<endl;
+		cerr<<"Found fromIB=="<<hex<<instruction->getAddress()<<endl;
     
 		string query = "INSERT INTO " + icfsTable;
-    		query += " (icfs_id,is_complete) VALUES ";
+    		query += " (icfs_id,icfs_status) VALUES ";
       		query += "(";
       		query += txn.quote(next_icfs_id) + ",";
-      		query += txn.quote(instruction->isIbComplete());
+
+		if (instruction->isIbComplete())
+   	   		query += txn.quote(ICFS_ANALYSIS_COMPLETE_STR);
+		else
+   	   		query += txn.quote(ICFS_ANALYSIS_INCOMPLETE_STR);
+
 		query += ")";
 
 		string query2 = "INSERT INTO " + icfsMapTable;
@@ -117,7 +121,7 @@ void insert_icfs(int fileID, const vector<wahoo::Instruction*>& instructions)
 
 		for(set<Instruction*>::iterator it=ibts.begin(); it!=ibts.end(); it++)
 		{
-			cerr<<"  Found toIBT=="<<(*it)->getAddress()<<endl;
+			cerr<<"  Found toIBT=="<<hex<<(*it)->getAddress()<<endl;
 			if(it!=ibts.begin())
 				query2+=",";
 			int target_address_id=instruction_to_addressid_map[*it];
@@ -127,10 +131,22 @@ void insert_icfs(int fileID, const vector<wahoo::Instruction*>& instructions)
 			query2 += ")";
 			
 		}
-		
+
+		// update icfs_id entry in instruction
+		app_iaddr_t instruction_id = address_to_instructionid_map[instruction->getAddress()];
+		string query3 = "UPDATE " + instructionTable;
+    		query3 += " SET icfs_id=";
+			query3 += txn.quote(next_icfs_id);
+			query3 += " WHERE instruction_id=";
+			query3 += txn.quote(instruction_id);
+
 		query+=";";
 		query2+=";";
-    		txn.exec(query+query2);
+		query3+=";";
+
+    	txn.exec(query+query2+query3);
+
+		cerr<<query+query2+query3<<endl;
 		next_icfs_id++;
 	}
  	cerr<<"Finished inserting ICFS into IR."<<endl; 
@@ -571,6 +587,7 @@ int main(int argc, char **argv)
   	insert_functions(fileID, functions);
   	insert_instructions(fileID, instructions, functions);
   	update_functions(fileID, functions);
+
   	insert_icfs(fileID, instructions);
 
 	// add function prototype information to the IRDB

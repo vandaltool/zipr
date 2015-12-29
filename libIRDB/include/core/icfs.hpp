@@ -21,27 +21,50 @@
 class Instruction_t;
 typedef std::set<Instruction_t*> InstructionSet_t;
 
+typedef enum ICFS_Analysis_Status_t { ICFS_Analysis_Incomplete, ICFS_Analysis_Module_Complete, ICFS_Analysis_Complete } ICFS_Analysis_Status_t; 
+
+// these must match the allowed values for type icfs_analysis_result in Postgres DB
+#define ICFS_ANALYSIS_INCOMPLETE_STR "icfs_analysis_incomplete"
+#define ICFS_ANALYSIS_MODULE_COMPLETE_STR "icfs_analysis_module_complete"
+#define ICFS_ANALYSIS_COMPLETE_STR "icfs_analysis_complete"
+
 // Keep track of instruction control flow sets
 class ICFS_t : public InstructionSet_t, public BaseObj_t
 {
 	public:
-		ICFS_t(): BaseObj_t(NULL), is_complete(false) {}
-		ICFS_t(db_id_t set_id, bool p_is_complete = false) : BaseObj_t(NULL)
-		{
-			SetBaseID(set_id);
-			SetComplete(p_is_complete);	
-		}
+		ICFS_t(): BaseObj_t(NULL), m_icfs_analysis_status(ICFS_Analysis_Incomplete) {}
+		ICFS_t(db_id_t p_set_id, const ICFS_Analysis_Status_t p_status = ICFS_Analysis_Incomplete);
+		ICFS_t(db_id_t p_set_id, const std::string);
 		std::string WriteToDB(File_t *fid);
 		 
+		ICFS_t& operator=(const InstructionSet_t &p_other);
 		void SetTargets(const InstructionSet_t &other) 
 		{
 			InstructionSet_t::operator=(other);
 		}
-		void SetComplete(bool complete) { is_complete = complete; }
-		bool IsComplete() const { return is_complete; }			
+
+		bool IsIncomplete() const {
+			return GetAnalysisStatus() == ICFS_Analysis_Incomplete;
+		}
+
+		bool IsComplete() const {
+			return GetAnalysisStatus() == ICFS_Analysis_Complete;
+		}
+
+		bool IsModuleComplete() const {
+			return GetAnalysisStatus() == ICFS_Analysis_Module_Complete;
+		}
+
+		void SetAnalysisStatus(const ICFS_Analysis_Status_t p_status) {
+			m_icfs_analysis_status = p_status;
+		}
+
+		ICFS_Analysis_Status_t GetAnalysisStatus() const { 
+			return m_icfs_analysis_status;
+		}
 
 	private:
-		bool is_complete;
+		ICFS_Analysis_Status_t m_icfs_analysis_status;
 };
 
 typedef std::set<ICFS_t*> ICFSSet_t;

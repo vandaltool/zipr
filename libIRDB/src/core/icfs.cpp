@@ -24,19 +24,60 @@
 using namespace libIRDB;
 using namespace std;
 
+static string getICFSAnalysisStatus(const ICFS_Analysis_Status_t p_status) {
+	// strings must match DB definition
+	switch (p_status) {
+		case ICFS_Analysis_Incomplete:
+			return string("icfs_analysis_incomplete");
+			break;
+		case ICFS_Analysis_Module_Complete:
+			return string("icfs_analysis_module_complete");
+			break;
+		case ICFS_Analysis_Complete:
+			return string("icfs_analysis_complete");
+			break;
+		default:
+			return string("icfs_analysis_incomplete");
+			break;
+	}
+
+	std::cerr << "error: unknown ICFS analysis status: " << p_status << std::endl;
+	assert(0);
+}
+
+ICFS_t::ICFS_t(db_id_t p_set_id, const ICFS_Analysis_Status_t p_status) : BaseObj_t(NULL)
+{
+	SetBaseID(p_set_id);
+	SetAnalysisStatus(p_status);	
+}
+
+ICFS_t::ICFS_t(db_id_t p_set_id, const string p_statusString) : BaseObj_t(NULL)
+{
+	SetBaseID(p_set_id);
+	if (p_statusString == "icfs_analysis_incomplete") {
+		SetAnalysisStatus(ICFS_Analysis_Incomplete);	
+	} else if (p_statusString == "icfs_analysis_module_complete") {
+		SetAnalysisStatus(ICFS_Analysis_Module_Complete);	
+	} else if (p_statusString == "icfs_analysis_complete") {
+		SetAnalysisStatus(ICFS_Analysis_Complete);	
+	} else {
+		std::cerr << "error: unknown ICFS analysis status string: " << p_statusString << std::endl;
+		assert(0);
+	}
+}
+
 string ICFS_t::WriteToDB(File_t *fid)
 {
 	assert(fid);
 
 	db_id_t icfs_id = GetBaseID();
 
-	// one of the many postgres encoding of boolean values
-	string complete = IsComplete() ? "t" : "f"; 
+	string analysis_status = getICFSAnalysisStatus(GetAnalysisStatus());
 
 	string q=string("insert into ") + fid->icfs_table_name + 
-		string(" (icfs_id, is_complete) VALUES (") + 
+		string(" (icfs_id, icfs_status) VALUES (") + 
 		string("'") + to_string(icfs_id) + string("', ") + 
-		string("'") + complete + string("'); ") ;
+		string("'") + analysis_status + string("'); ") ;
 
 	for (InstructionSet_t::const_iterator it = this->begin(); 
 		it != this->end(); ++it)
