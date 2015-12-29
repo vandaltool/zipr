@@ -74,7 +74,7 @@ class ColoredInstructionNonces_t
 {
 	public:
 		ColoredInstructionNonces_t(libIRDB::FileIR_t *the_firp)
-			: firp(the_firp) { }
+			: firp(the_firp), slot_size(1), slot_values(255) { }
 
 		ColoredSlotValues_t  GetColorsOfIBT (libIRDB::Instruction_t* i) 
 		{ return color_assignments[i]; }
@@ -95,8 +95,8 @@ class ColoredInstructionNonces_t
 		libIRDB::FileIR_t* firp;
 
 		// used to describe how big a nonce slot is.  for now, 1 byte.
-		const int slot_size=1;
-		const int slot_values=255;
+		const int slot_size;
+		const int slot_values;
 
 		// information for each slot we've used.
 		std::vector<ColoredSlotAllocator_t> slots_used;
