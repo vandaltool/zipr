@@ -977,11 +977,6 @@ perform_step cinderella clone,fill_in_indtargs,fill_in_cfg $PEASOUP_HOME/tools/d
 perform_step cgc_hlx cinderella $SECURITY_TRANSFORMS_HOME/bin/cgc_hlx.exe --varid=$cloneid $step_options_cgc_hlx
 
 #
-# Function pointer shadowing
-#
-perform_step fptr_shadow meds_static,clone $PEASOUP_HOME/tools/do_fptr_shadow.sh $cloneid
-
-#
 # Do P1/Pn transform.
 #
 perform_step p1transform meds_static,clone $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed.sh $PN_TIMEOUT_VALUE $step_options_p1transform
