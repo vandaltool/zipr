@@ -3692,7 +3692,6 @@ tools/db/zest/zestdb_teardown.sh -text
 tools/do_appfw.sh -text
 tools/do_cinderella.sh -text
 tools/do_concolic.sh -text
-tools/do_fptr_shadow.sh -text
 tools/do_gatherlibs.sh -text
 tools/do_idapro.sh -text
 tools/do_installer.sh -text
