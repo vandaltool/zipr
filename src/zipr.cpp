@@ -1515,12 +1515,6 @@ void ZiprImpl_t::PlaceDollops()
 			cout << "Reserving " << std::hex << placement.GetStart()
 			     << ", " << std::hex << cur_addr << "." << endl;
 		memory_space.SplitFreeRange(Range_t(placement.GetStart(), cur_addr));
-		for (RangeAddress_t i = placement.GetStart();
-		     i<cur_addr;
-				 i++)
-		{
-			memory_space[i] = 0x0;
-		}
 	}
 }
 
