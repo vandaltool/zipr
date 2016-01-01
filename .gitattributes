@@ -34,6 +34,7 @@ test/SConscript -text
 test/SConstruct -text
 test/ZiprDollop.cpp -text
 test/ZiprOptions.cpp -text
+test/ZiprRange.cpp -text
 test/dylib/Makefile -text
 test/dylib/dylib.c -text
 test/dylib/dylib.h -text

@@ -14,6 +14,12 @@ MemorySpaceFiles=  '''
 	../src/zipr_options.cpp
 	'''
 
+RangeFiles=  '''
+	ZiprRange.cpp
+	../src/memory_space.cpp
+	../src/zipr_options.cpp
+	'''
+
 OptionFiles=  '''
 	ZiprOptions.cpp
 	../src/zipr_options.cpp
@@ -56,8 +62,9 @@ libpath='''
 	'''
 
 myenv.Append(CCFLAGS=" -Wall ")
-myenv.Append(CXXFLAGS=" -std=c++11 -g -O0 ")
-myenv.Append(LINKFLAGS=" -Wl,-E ")	# export all symbols
+myenv.Append(CXXFLAGS=" -pg -std=c++11 -g -O0 ")
+#myenv.Append(CXXFLAGS=" -pg -g -O0 ")
+myenv.Append(LINKFLAGS="  -pg -Wl,-E ")	# export all symbols
 
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath), LIBS=Split(libs), LIBPATH=Split(libpath))
@@ -65,8 +72,10 @@ myenv=myenv.Clone(CPPPATH=Split(cpppath), LIBS=Split(libs), LIBPATH=Split(libpat
 #print 'myenv='
 #print myenv.Dump()
 
+Range=myenv.Program("Range.exe", Split(RangeFiles))
 MemorySpace=myenv.Program("MemorySpace.exe", Split(MemorySpaceFiles))
 Options=myenv.Program("Options.exe", Split(OptionFiles))
 Dollop=myenv.Program("Dollop.exe", Split(DollopFiles))
-Default([MemorySpace, Options, Dollop])
+#Default([MemorySpace, Options, Dollop, Range])
+Default([Range])
 
