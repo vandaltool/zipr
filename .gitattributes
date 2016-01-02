@@ -1073,6 +1073,7 @@ tools/hook_dynamic_call/SConstruct -text
 tools/hook_dynamic_call/hook_dynamic_calls.cpp -text
 tools/hook_dynamic_call/hook_dynamic_calls.hpp -text
 tools/hook_dynamic_call/hook_dynamic_calls_driver.cpp -text
+tools/ibtcheck/ibtcheck.py -text
 tools/inferfn/Makefile -text
 tools/inferfn/SConscript -text
 tools/inferfn/SConstruct -text
