@@ -38,6 +38,11 @@ if [ -d $ZIPR_SCFI_PLUGIN ]; then
 	scons  -c || exit
 fi
 
+if [ -d $ZIPR_CALLBACKS ]; then 
+	cd $ZIPR_CALLBACKS
+	make clean
+fi
+
 cd $PEASOUP_UMBRELLA_DIR/zipr_large_only_plugin/
 scons -c || exit
 
