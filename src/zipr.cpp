@@ -1489,10 +1489,17 @@ void ZiprImpl_t::PlaceDollops()
 
 		if (fallthrough = to_place->FallthroughDollop())
 		{
-			Instruction_t *patch = addNewAssembly(m_firp, NULL, "jmp qword 5");
+			string patch_jump_string;
+			Instruction_t *patch = addNewAssembly(m_firp, NULL, "jmp qword 0");
 			DollopEntry_t *patch_de = new DollopEntry_t(patch, to_place);
 
-//			m_firp->AssembleRegistry();
+			patch_jump_string.resize(5);
+			patch_jump_string[0] = (char)0xe9;
+			patch_jump_string[1] = (char)0x00;
+			patch_jump_string[2] = (char)0x00;
+			patch_jump_string[3] = (char)0x00;
+			patch_jump_string[4] = (char)0x00;
+			patch->SetDataBits(patch_jump_string);
 
 			patch_de->TargetDollop(fallthrough);
 			patch_de->Place(cur_addr);
@@ -1518,7 +1525,6 @@ void ZiprImpl_t::PlaceDollops()
 			     << ", " << std::hex << cur_addr << "." << endl;
 		memory_space.SplitFreeRange(Range_t(placement.GetStart(), cur_addr));
 	}
-			m_firp->AssembleRegistry();
 }
 
 void ZiprImpl_t::CreateDollops()
