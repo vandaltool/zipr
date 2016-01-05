@@ -1300,7 +1300,7 @@ void ZiprImpl_t::WriteDollops()
 	for (it = m_dollop_mgr.dollops_begin(),
 	     it_end = m_dollop_mgr.dollops_end();
 	     it != it_end;
-			 it++)
+	     it++)
 	{
 		list<DollopEntry_t*>::const_iterator dit, dit_end;
 		Dollop_t *dollop_to_write = *it;
@@ -1310,7 +1310,7 @@ void ZiprImpl_t::WriteDollops()
 
 		for (dit = dollop_to_write->begin(), dit_end = dollop_to_write->end();
 		     dit != dit_end;
-				 dit++)
+		     dit++)
 		{
 			RangeAddress_t start, end, should_end;
 			DollopEntry_t *entry_to_write = *dit;
@@ -1334,7 +1334,7 @@ void ZiprImpl_t::PlaceDollops()
 	 */
 	for (pin_it = patch_list.begin(), pin_it_end = patch_list.end();
 	     pin_it != pin_it_end;
-			 pin_it++)
+	     pin_it++)
 	{
 		Dollop_t *target_dollop = NULL;
 		UnresolvedUnpinned_t uu = (*pin_it).first;
@@ -1413,7 +1413,7 @@ void ZiprImpl_t::PlaceDollops()
 
 		for (dit = to_place->begin(), dit_end = to_place->end();
 		     dit != dit_end;
-				 dit++)
+		     dit++)
 		{
 			DollopEntry_t *dollop_entry = *dit;
 			/*
@@ -1533,7 +1533,7 @@ void ZiprImpl_t::CreateDollops()
 	                                                             pin_it_end;
 	for (pin_it = patch_list.begin(), pin_it_end = patch_list.end();
 	     pin_it != pin_it_end;
-			 pin_it++)
+	     pin_it++)
 	{
 		UnresolvedUnpinned_t uu = (*pin_it).first;
 		m_dollop_mgr.AddNewDollops(uu.GetInstruction());
