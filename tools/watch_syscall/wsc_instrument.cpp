@@ -920,9 +920,17 @@ bool WSC_Instrument::is_memory_read_operation(libIRDB::Instruction_t* insn)
 	if( ((d.Argument1.ArgType & REGISTER_TYPE) == REGISTER_TYPE) &&
 	   ((d.Argument2.ArgType & MEMORY_TYPE) == MEMORY_TYPE) )
 	{
+		// ignore push/pops
+		if(string(d.Instruction.Mnemonic) == string("push "))
+			return false;
+		if(string(d.Instruction.Mnemonic) == string("pop "))
+			return false;
+		if(string(d.Instruction.Mnemonic) == string("lea "))
+			return false;
+
 		// 1st arg is a register
 		// 2nd argument is of memory type
-std::cerr << "Found memory read operation: " << std::string(d.CompleteInstr) << std::endl;
+std::cerr << "Found memory read operation: " << hex << "0x" << insn->GetAddress()->GetVirtualOffset() << ": " << std::string(d.CompleteInstr) << std::endl;
 		return true;
 	}
 	
