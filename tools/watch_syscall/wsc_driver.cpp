@@ -45,6 +45,7 @@ void usage(char* name)
 int varid=0;
 std::set<string> warning_filename;
 bool do_sandboxing = false;
+bool do_reverse_sandboxing = false;
 bool do_input_filtering = false;
 bool do_promiscuous_sandboxing = false;
 
@@ -56,6 +57,7 @@ int parse_args(int p_argc, char* p_argv[])
 		{"varid", required_argument, NULL, 'v'},
 		{"warning_file", required_argument, NULL, 'w'},
 		{"do_sandboxing", no_argument, NULL, 's'},
+		{"do_reverse_sandboxing", no_argument, NULL, 'r'},
 		{"do_promiscuous_sandboxing", no_argument, NULL, 'p'},
 		{"do_input_filtering", no_argument, NULL, 'i'},
 		{NULL, no_argument, NULL, '\0'},         // end-of-array marker
@@ -84,6 +86,9 @@ int parse_args(int p_argc, char* p_argv[])
 				warning_filename.insert(f);
 				break;
 			}
+			case 'r':
+				do_reverse_sandboxing = true;
+				break;
 			case 's':
 				do_sandboxing = true;
 				break;
@@ -145,6 +150,7 @@ int main(int argc, char **argv)
 			WSC_Instrument wsci(firp);
 
 			wsci.SetSandboxing(do_sandboxing);
+			wsci.SetReverseSandboxing(do_reverse_sandboxing);
 			wsci.SetPromiscuousSandboxing(do_promiscuous_sandboxing);
 			wsci.SetInputFiltering(do_input_filtering);
 

@@ -888,7 +888,7 @@ libIRDB::Instruction_t* WSC_Instrument::FindInstruction(libIRDB::virtual_offset_
 	   )
 	{
 		Instruction_t* insn=*it;
-		if( insn->GetAddress()->GetVirtualOffset()==addr)
+		if(insn->GetAddress()->GetVirtualOffset()==addr)
 			return insn;
 		if(insn->GetIndirectBranchTargetAddress() && 
 			insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()==addr)
@@ -913,6 +913,40 @@ std::ostream& WSC_Instrument::displayStatistics(std::ostream &os)
 	return os;
 }
 
+bool WSC_Instrument::is_memory_read_operation(libIRDB::Instruction_t* insn)
+{
+	DISASM d;
+	insn->Disassemble(d);
+	if( ((d.Argument1.ArgType & REGISTER_TYPE) == REGISTER_TYPE) &&
+	   ((d.Argument2.ArgType & MEMORY_TYPE) == MEMORY_TYPE) )
+	{
+		// 1st arg is a register
+		// 2nd argument is of memory type
+std::cerr << "Found memory read operation: " << std::string(d.CompleteInstr) << std::endl;
+		return true;
+	}
+	
+	return false;
+}
+
+bool WSC_Instrument::add_reverse_sandboxing(libIRDB::Instruction_t* insn) 
+{
+}
+
+bool WSC_Instrument::add_reverse_sandboxing() {
+	for(InstructionSet_t::iterator it=firp->GetInstructions().begin();
+		it!=firp->GetInstructions().end();
+		++it
+	   )
+	{
+		Instruction_t* insn=*it;
+		if (is_memory_read_operation(insn)) 
+		{
+			add_reverse_sandboxing(insn);
+		}
+	}
+}
+
 bool WSC_Instrument::execute()
 {
 	bool success=true;
@@ -922,6 +956,11 @@ bool WSC_Instrument::execute()
 		success = success && add_init_call();
 		success = success && add_allocation_instrumentation();
 		success = success && add_segfault_checking();
+	}
+
+	if (DoReverseSandboxing()) 
+	{
+		success = success && add_reverse_sandboxing();
 	}
 
 	if (DoInputFiltering())

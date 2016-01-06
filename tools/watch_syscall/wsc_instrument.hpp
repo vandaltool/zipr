@@ -55,6 +55,7 @@ class WSC_Instrument
                         ELFIO::dump::segment_headers(std::cout,*elfiop);
 
 			SetSandboxing(false);
+			SetReverseSandboxing(false);
 			SetPromiscuousSandboxing(false);
 			SetInputFiltering(false);
 
@@ -69,6 +70,8 @@ class WSC_Instrument
 
 		void SetSandboxing(bool doit) { m_doSandboxing = doit; }
 		bool DoSandboxing() const { return m_doSandboxing; }
+		void SetReverseSandboxing(bool doit) { m_doReverseSandboxing = doit; }
+		bool DoReverseSandboxing() const { return m_doReverseSandboxing; }
 		void SetPromiscuousSandboxing(bool doit) { m_doPromiscuousSandboxing = doit; }
 		bool DoPromiscuousSandboxing() const { return m_doPromiscuousSandboxing; }
 		void SetInputFiltering(bool doit) { m_doInputFiltering = doit; }
@@ -90,6 +93,9 @@ class WSC_Instrument
 		bool add_receive_limit();
 		bool add_bounds_check(libIRDB::Instruction_t* insn, const CSO_WarningRecord_t *const wr);
 		bool add_null_check(libIRDB::Instruction_t* insn, const CSO_WarningRecord_t *const wr);
+		bool is_memory_read_operation(libIRDB::Instruction_t* insn);
+		bool add_reverse_sandboxing(libIRDB::Instruction_t* insn);
+		bool add_reverse_sandboxing();
 
 		// helpers.
 		libIRDB::Instruction_t* GetCallbackCode();
@@ -109,6 +115,7 @@ class WSC_Instrument
 
 		CSO_WarningRecordMap_t warning_records;
 		bool m_doSandboxing;
+		bool m_doReverseSandboxing;
 		bool m_doInputFiltering;
 		bool m_doPromiscuousSandboxing;
 
