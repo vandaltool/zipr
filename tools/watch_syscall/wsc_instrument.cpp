@@ -377,8 +377,18 @@ static const ARGTYPE* FindMemoryArgument(const DISASM &d)
 }
 
 
-bool WSC_Instrument::needs_wsc_segfault_checking(Instruction_t* insn, const DISASM& d)
+bool WSC_Instrument::needs_wsc_segfault_checking(Instruction_t* insn, const DISASM& d, bool readOnly)
 {
+	/* lea's and nops don't access memory */
+	if(strstr(d.CompleteInstr,"lea") || strstr(d.CompleteInstr,"nop") )
+		return false;
+
+	const ARGTYPE *mem=FindMemoryArgument(d);	
+	if(!mem)
+		return false;
+
+	if (readOnly && mem->AccessMode != READ) 
+		return false;
 
 	// start, for now, by instrumenting one insn we know faults
 	// movsx  ecx,BYTE PTR [ebp+ecx*1-0x54]
@@ -388,14 +398,6 @@ bool WSC_Instrument::needs_wsc_segfault_checking(Instruction_t* insn, const DISA
 		return true;
 	if(strstr(d.CompleteInstr,"[ebp+ecx-"))
 		return true;
-
-	/* lea's and nops don't access memory */
-	if(strstr(d.CompleteInstr,"lea") || strstr(d.CompleteInstr,"nop") )
-		return false;
-
-	const ARGTYPE *mem=FindMemoryArgument(d);	
-	if(!mem)
-		return false;
 
 	/* if there's indexing happening, we need to check, even if it's on the stack */
 	if(mem->Memory.IndexRegister!=0)
@@ -675,7 +677,15 @@ bool	WSC_Instrument::add_segfault_checking(Instruction_t* insn, const CSO_Warnin
 
 	if (DoReverseSandboxing()) 	
 	{
-std::cerr << "Reverse sandboxing: " << hex << "0x" << insn->GetAddress()->GetVirtualOffset() << ": " << std::string(d.CompleteInstr) << std::endl;
+		if(string(d.Instruction.Mnemonic) == string("call "))
+			return true;
+		if(string(d.Instruction.Mnemonic) == string("jmp "))
+			return true;
+		if(string(d.Instruction.Mnemonic) == string("cmp "))
+			return true;
+		
+std::cout << "Reverse sandboxing: " << hex << "0x" << insn->GetAddress()->GetVirtualOffset() << ": " << std::string(d.CompleteInstr) << std::endl;
+	const ARGTYPE* arg=FindMemoryArgument(d);
 		return true;
 	}
 	else
@@ -707,7 +717,8 @@ bool	WSC_Instrument::add_segfault_checking()
 		cout<<"Testing "<<hex<<insn->GetAddress()->GetVirtualOffset() <<" " << insn->getDisassembly()<<endl;
 		DISASM d;
 		insn->Disassemble(d);
-		if(insn->GetBaseID()!=BaseObj_t::NOT_IN_DATABASE && needs_wsc_segfault_checking(insn,d))
+
+		if(insn->GetBaseID()!=BaseObj_t::NOT_IN_DATABASE && needs_wsc_segfault_checking(insn,d,DoReverseSandboxing()))
 		{
 			success = success && add_segfault_checking(insn);
 			m_num_segfault_checking++;
@@ -919,48 +930,6 @@ std::ostream& WSC_Instrument::displayStatistics(std::ostream &os)
 	os << "# ATTRIBUTE num_boundscheck_instrumentations="  
 		<< dec << m_num_boundscheck_instrumentations << std::endl;
 	return os;
-}
-
-bool WSC_Instrument::is_memory_read_operation(libIRDB::Instruction_t* insn)
-{
-	DISASM d;
-	insn->Disassemble(d);
-	if( ((d.Argument1.ArgType & REGISTER_TYPE) == REGISTER_TYPE) &&
-	   ((d.Argument2.ArgType & MEMORY_TYPE) == MEMORY_TYPE) )
-	{
-		// ignore push/pops
-		if(string(d.Instruction.Mnemonic) == string("push "))
-			return false;
-		if(string(d.Instruction.Mnemonic) == string("pop "))
-			return false;
-		if(string(d.Instruction.Mnemonic) == string("lea "))
-			return false;
-
-		// 1st arg is a register
-		// 2nd argument is of memory type
-std::cerr << "Found memory read operation: " << hex << "0x" << insn->GetAddress()->GetVirtualOffset() << ": " << std::string(d.CompleteInstr) << std::endl;
-		return true;
-	}
-	
-	return false;
-}
-
-bool WSC_Instrument::add_reverse_sandboxing(libIRDB::Instruction_t* insn) 
-{
-}
-
-bool WSC_Instrument::add_reverse_sandboxing() {
-	for(InstructionSet_t::iterator it=firp->GetInstructions().begin();
-		it!=firp->GetInstructions().end();
-		++it
-	   )
-	{
-		Instruction_t* insn=*it;
-		if (is_memory_read_operation(insn)) 
-		{
-			add_reverse_sandboxing(insn);
-		}
-	}
 }
 
 bool WSC_Instrument::execute()
