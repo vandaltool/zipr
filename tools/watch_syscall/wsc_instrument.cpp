@@ -673,17 +673,25 @@ bool	WSC_Instrument::add_segfault_checking(Instruction_t* insn, const CSO_Warnin
 
 	m_num_segfault_instrumentations++;
 
+	if (DoReverseSandboxing()) 	
+	{
+std::cerr << "Reverse sandboxing: " << hex << "0x" << insn->GetAddress()->GetVirtualOffset() << ": " << std::string(d.CompleteInstr) << std::endl;
+		return true;
+	}
+	else
+	{
 //	cout<<"Adding callback to "<<d.CompleteInstr<<endl;
-	if (insn->GetAddress())
-		cout<<"# ATTRIBUTE instrumented=0x"<<hex<<insn->GetAddress()->GetVirtualOffset() << ":sandboxed" << endl;
+		if (insn->GetAddress())
+			cout<<"# ATTRIBUTE instrumented=0x"<<hex<<insn->GetAddress()->GetVirtualOffset() << ":sandboxed" << endl;
 
-       	insertAssemblyBefore(firp,insn,"pusha");
-       	sprintf(tmpbuf,"lea  eax, %s", get_memory_addr(d).c_str());
-       	tmp=insertAssemblyAfter(firp,tmp,tmpbuf);	 // lea addr,  [ expression ]
-       	tmp=insertAssemblyAfter(firp,tmp,"call 0x0", callback);
-       	tmp=insertAssemblyAfter(firp,tmp,"popa");
+	       	insertAssemblyBefore(firp,insn,"pusha");
+	       	sprintf(tmpbuf,"lea  eax, %s", get_memory_addr(d).c_str());
+	       	tmp=insertAssemblyAfter(firp,tmp,tmpbuf);	 // lea addr,  [ expression ]
+       		tmp=insertAssemblyAfter(firp,tmp,"call 0x0", callback);
+	       	tmp=insertAssemblyAfter(firp,tmp,"popa");
 
-	return true;
+		return true;
+	}
 }
 
 
@@ -968,7 +976,7 @@ bool WSC_Instrument::execute()
 
 	if (DoReverseSandboxing()) 
 	{
-		success = success && add_reverse_sandboxing();
+		success = success && add_segfault_checking();
 	}
 
 	if (DoInputFiltering())
