@@ -67,23 +67,30 @@ if __name__ == "__main__":
 
 	violations = {}
 
+	line_no = -1
 	to_check = -1L
 	for line in args.trace_file:
+		line_no+=1
 
 		if not line.startswith('0x'):
 			continue
 
-		cols = line.split(':')
-		
-		# handle 2 formats:
-		# 0x004000f0: push %r11
-		# 0x004000f0 <address> <some_function_here+xxx>: push %r11
-		instr = cols[0].split(' ')[0]
-		instr = long(instr, 16)
+		try:
+			cols = line.split(':')
+			if len(cols) > 0:
+				# handle 2 formats:
+				# 0x004000f0: push %r11
+				# 0x004000f0 <address> <some_function_here+xxx>: push %r11
+				instr = cols[0].split(' ')[0]
+				instr = long(instr, 16)
+			else:
+				instr = long(cols[0], 16)
+		except:
+			print 'warning: parse error on line: ', line_no, ' ', line
 
 		if to_check >= 0:
 			if not instr in ibtargets[to_check]['targets']:
-#				print 'Detected ibtarget violation at ', hex(to_check), ' --> ', hex(instr), '(', len(ibtargets[to_check]['targets']), ')', convert_to_hex(ibtargets[to_check]['targets'])	
+				print 'Detected ibtarget violation at ', hex(to_check), ' --> ', hex(instr), '(', len(ibtargets[to_check]['targets']), ')', convert_to_hex(ibtargets[to_check]['targets'])	
 				if not to_check in violations:
 					violations[to_check] = Set()
 				violations[to_check].add(instr)
@@ -94,10 +101,6 @@ if __name__ == "__main__":
 				ibtargets[to_check]['covered'].add(instr)
 					
 			to_check = -1L
-
-		# @todo: other source of indirect control flow transfer
-		if not 'retq' in line:
-			continue
 
 		# did STARS mark complete?
 		# if yes check the next instruction
@@ -113,9 +116,6 @@ if __name__ == "__main__":
 		if 'covered' in ibtargets[src_instr]:
 			icfs_coverage_count += 1
 			ibtargets_covered += len(ibtargets[src_instr]['covered'])
-#			print 'icfs coverage: #targets_visited', len(ibtargets[src_instr]['covered']), '/', len(ibtargets[src_instr]['targets'])
-
-#	print ibtargets
 
 	if len(violations) > 0:
 		print '==========================================='
@@ -124,9 +124,9 @@ if __name__ == "__main__":
 	else:
 		print 'No ICFS violations detected'
 
-	print '#icfs_covered: ', icfs_coverage_count, '/', len(ibtargets), ' icfs_coverage: ', icfs_coverage_count * 1.0 / len(ibtargets)
+	print '#icfs_covered: ', icfs_coverage_count, '/', len(ibtargets), ' ratio: ', icfs_coverage_count * 1.0 / len(ibtargets)
 
-	print '#ibtargets_covered: ', ibtargets_covered, '/', total_ibtargets, ' ibtargets_coverage', 1.0*ibtargets_covered / total_ibtargets
+	print '#ibtargets_covered: ', ibtargets_covered, '/', total_ibtargets, ' ratio: ', 1.0*ibtargets_covered / total_ibtargets
 
 	if len(violations) > 0:
 		exit(1)

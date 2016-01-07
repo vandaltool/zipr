@@ -1,6 +1,8 @@
 #!/bin/bash 
 # analyze cal program
 
+PIN_HOME=~/pin-2.14-71313-gcc.4.4.7-linux
+
 PROG=/usr/bin/cal
 PROG_BASE=$(basename ${PROG})
 TMPDIR=peasoup.${PROG_BASE}.tmp
@@ -17,17 +19,22 @@ FIX_CALLS_FIX_ALL_CALLS=1 $PEASOUP_HOME/tools/ps_analyze.sh $PROG $PROG_SCFI --b
 cp ${TMPDIR}/a.ncexe.STARSxrefs $XREFS
 
 # invoke QEMU to get trace rm $TRACE_FILE
-touch $TRACE_FILE
 
 # arguments for cal
-ARGS=("" "-h" "-bogus" "2000" "-w 2000" "-3 2001" "1 2000" "1 1999" "-j 2000" "-J 2000" "-S 1000" "-M 1015" "-J -o 12 9999" "-e -p -y 2000" "-M -y -B9 -A5 2000" "-S -y -B10 -A10 2000" "-1" "-A-20 -B-5 1000"  "-w -m 3 1111" "-N 2000" "-N -w 2000" "-N -3 2001" "-N 1 2000" "-N 1 1999" "-N -j 2000" "-N -J 2000" "-N -S 1000" "-N -M 1015" "-N -J -o 12 9999" "-N -e -p -y 2000" "-N -M -y -B9 -A5 2000" "-N -S -y -B10 -A10 2000" "-N -1" "-N -A-20 -B-5 1000"  "-N -w -m 3 1111" "-N -y 1999 -m 3" "-N -y -b")
+ARGS=("" "-h" "-bogus" "2000" "-w 2000" "-3 5 2001" "1 2000" "1 1999" "-j 2000" "-J 2000" "-S 1000" "-M 1015" "-J -o 12 9999" "-e -p -y 2000" "-M -y -B9 -A5 2000" "-S -y -B10 -A10 2000" "-1" "-A-20 -B-5 1000"  "-w -m 3 1111" "-N 2000" "-N -w 2000" "-N -3 8 2001" "-N 1 2000" "-N 1 1999" "-N -j 2000" "-N -J 2000" "-N -S 1000" "-N -M 1015" "-N -J -o 12 9999" "-N -e -p -y 2000" "-N -M -y -B9 -A5 2000" "-N -S -y -B10 -A10 2000" "-N -1" "-N -A-20 -B-5 1000"  "-N -w -m 3 1111" "-N -y 1999 -m 3" "-N -y -b" "-N -s GB 2000")
 
 for ix in ${!ARGS[*]}
 do
 	echo "args: ${ARGS[$ix]}" > ${TRACE_FILE}.${ix}
-	qemu-x86_64 -singlestep -d in_asm $PROG ${ARGS[$ix]} >/dev/null 2>> tmp.$$
-	grep "0x" tmp.$$ >> ${TRACE_FILE}.${ix}
-	rm tmp.$$
+
+# QEMU
+#	qemu-x86_64 -singlestep -d in_asm $PROG ${ARGS[$ix]} >/dev/null 2>> tmp.$$
+#	grep "0x" tmp.$$ >> ${TRACE_FILE}.${ix}
+#	rm tmp.$$
+
+# PIN version
+	$PIN_HOME/pin -injection child -t $PIN_HOME/source/tools/ManualExamples/obj-intel64/itrace.so -- ${PROG} ${ARGS[$ix]} 
+	cat itrace.out >> ${TRACE_FILE}.${ix}
 
 	${PROG} ${ARGS[$ix]} >tmp.orig.out 2>tmp.orig.err
 	./${PROG_SCFI} ${ARGS[$ix]} >tmp.cfi.out 2>tmp.cfi.err
@@ -40,8 +47,13 @@ do
 done
 
 # check IB Targets traced against spec in STARS xref file
+if [ -e $TRACE_FILE ]; then
+	rm $TRACE_FILE
+fi
+touch $TRACE_FILE
+
 TRACE_FAILED=""
-for t in `ls ${TRACE_FILE}*`
+for t in `ls ${TRACE_FILE}.*`
 do
 	cat $t >> $TRACE_FILE
 	args=$(head -1 $t)
@@ -56,7 +68,7 @@ do
 done
 
 echo
-echo "Aggregate Statistics"
+echo "Aggregate Statistics (please be patient)"
 python ibtcheck.py $XREFS $TRACE_FILE
 
 if [ ! -z "$TRACE_FAILED" ]; then
