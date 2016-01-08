@@ -192,6 +192,13 @@ tests/nginx/tests/test1.sh -text
 tests/nginx/tests/test2.sh -text
 tests/nginx/tests/test3.sh -text
 tests/nginx/tests/test4.sh -text
+tests/tar/data/dir1/dir2/readme -text
+tests/tar/data/dir1/hello2 -text
+tests/tar/data/dir1/yo2.xls -text
+tests/tar/data/hello1 -text
+tests/tar/data/test.tar -text
+tests/tar/data/yo.txt -text
+tests/tar/test_script.sh -text
 tests/tcpdump/gen_test.sh -text
 tests/tcpdump/tcpd_tests/.failed -text
 tests/tcpdump/tcpd_tests/.passed -text
