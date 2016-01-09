@@ -2,7 +2,7 @@
 TEST_LIB=$PEASOUP_HOME/tests/manual_test_lib.sh
 
 #used for filtering program names from output.
-ORIG_NAME=zsh
+ORIG_NAME=tcpdump
 
 #must import the library here, as it depends on some of the above variables
 . $TEST_LIB

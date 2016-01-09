@@ -62,7 +62,7 @@ report_failure()
         echo "FAILURE Message:  $1"
     fi
 
-	killall a.stratafied
+	killall a.stratafied 2>/dev/null
 	#ignore the results, and continue. 
 	if [[ ! -z "$IGNORE_RESULTS" ]]; then
 		return
