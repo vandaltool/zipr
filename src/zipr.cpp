@@ -1325,7 +1325,7 @@ void ZiprImpl_t::WriteDollops()
 
 void ZiprImpl_t::PlaceDollops()
 {
-	list<Dollop_t*> placement_queue;
+	list<pair<Dollop_t*, RangeAddress_t>> placement_queue;
 	multimap<const UnresolvedUnpinned_t,Patch_t>::const_iterator pin_it,
 	                                                             pin_it_end;
 	/*
@@ -1344,12 +1344,14 @@ void ZiprImpl_t::PlaceDollops()
 		target_dollop = m_dollop_mgr.GetContainingDollop(target_insn);
 		assert(target_dollop);
 
-		placement_queue.push_back(target_dollop);
+		placement_queue.push_back(pair<Dollop_t*,RangeAddress_t>(target_dollop,0));
 	}
 
 	while (!placement_queue.empty())
 	{
+		pair<Dollop_t*, RangeAddress_t> pq_entry;
 		Dollop_t *to_place = NULL;
+		RangeAddress_t from_address;
 		size_t minimum_valid_req_size = 0;
 		Range_t placement;
 		DLFunctionHandle_t placer = NULL;
@@ -1359,8 +1361,11 @@ void ZiprImpl_t::PlaceDollops()
 		bool has_fallthrough = false;
 		Dollop_t *fallthrough = NULL;
 
-		to_place = placement_queue.front();
+		pq_entry = placement_queue.front();
 		placement_queue.pop_front();
+
+		to_place = pq_entry.first;
+		from_address = pq_entry.second;
 
 		if (to_place->IsPlaced())
 			continue;
@@ -1373,6 +1378,7 @@ void ZiprImpl_t::PlaceDollops()
 		 * that want to tell us where to place this dollop.
 		 */
 		if (plugman.DoesPluginAddress(to_place,
+		                              from_address,
 		                              placement,
 		                              placer))
 		{
@@ -1461,7 +1467,9 @@ void ZiprImpl_t::PlaceDollops()
 					if (m_verbose)
 						cout << "Adding " << std::hex << dollop_entry->TargetDollop()
 						     << " to placement queue." << endl;
-					placement_queue.push_back(dollop_entry->TargetDollop());
+					placement_queue.push_back(pair<Dollop_t*, RangeAddress_t>(
+							dollop_entry->TargetDollop(),
+							cur_addr));
 				}
 			}
 			else
@@ -1514,7 +1522,9 @@ void ZiprImpl_t::PlaceDollops()
 				     << fallthrough << ")." << endl;
 			}
 
-			placement_queue.push_back(fallthrough);
+			placement_queue.push_back(pair<Dollop_t*, RangeAddress_t>(
+					fallthrough,
+					cur_addr));
 		}
 
 		/*
