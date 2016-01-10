@@ -194,6 +194,9 @@ tests/nginx/tests/test3.sh -text
 tests/nginx/tests/test4.sh -text
 tests/objdump/test_script.sh -text
 tests/readelf/test_script.sh -text
+tests/sort/data/data.txt -text
+tests/sort/data/random.txt -text
+tests/sort/test_script.sh -text
 tests/tar/data/dir1/dir2/readme -text
 tests/tar/data/dir1/hello2 -text
 tests/tar/data/dir1/yo2.xls -text
