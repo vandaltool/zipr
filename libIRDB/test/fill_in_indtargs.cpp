@@ -1594,7 +1594,8 @@ void check_for_indirect_call(FileIR_t* const firp, Instruction_t* const insn)
 	if(insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
 		return;
 
-	insn->SetIBTargets(indirect_calls);
+	insn->SetIBTargets(hellnode_tgts);
+//	insn->SetIBTargets(indirect_calls);
 }
 
 

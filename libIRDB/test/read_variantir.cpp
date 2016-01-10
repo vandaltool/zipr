@@ -74,31 +74,9 @@ main(int argc, char* argv[])
 
 				ICFS_t* ibtargets = insn->GetIBTargets();
 				if (ibtargets) 
-					cout << " ibtargets_id: " << ibtargets->GetBaseID() << endl;
+					cout << " ibtargets_id: " << dec << ibtargets->GetBaseID() << endl;
 				else						
 					cout << endl;
-
-
-#ifdef foobar 
-				ICFS_t::iterator ibtargets_it;
-
-				if (ibtargets->size() > 0)
-					cout<<"   indirect branch targets: ";
-
-				int count;
-				for (count = 0, ibtargets_it = ibtargets->begin(); ibtargets_it != ibtargets->end(); ++ibtargets_it, ++count)
-				{
-					Instruction_t* insn = *ibtargets_it;
-					assert(insn);
-					cout<< std::hex << insn->GetAddress()->GetVirtualOffset() << " ";
-					if (count >= 10) {
-						cout << "...";
-						break;
-					}
-				}
-				if (ibtargets->size() > 0)
-					cout << dec << endl;
-#endif
 			}
 
 			for(ICFSSet_t::const_iterator it=firp->GetAllICFS().begin();

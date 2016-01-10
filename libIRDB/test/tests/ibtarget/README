@@ -18,3 +18,4 @@ to test:
 
 [ ] make sure fix_calls copies the indirect branch targets
 [ ] induce head-merge, and tail-merge in switch case
+
