@@ -53,12 +53,22 @@ int main(int argc, char **argv)
 	}
 
 	bool do_coloring=false;
+	bool do_jumps=true;
+	bool do_rets=true;
 	for(int  i=0;i<argc;i++)
 	{
 		if(string(argv[i])=="--color")
 			do_coloring=true;
 		else if(string(argv[i])=="--no-color")
 			do_coloring=false;
+		else if(string(argv[i])=="--protect-jumps")
+			do_jumps=true;
+		else if(string(argv[i])=="--no-protect-jumps")
+			do_jumps=false;
+		else if(string(argv[i])=="--protect-rets")
+			do_rets=true;
+		else if(string(argv[i])=="--no-protect-rets")
+			do_rets=false;
 	}
 
         string programName(argv[0]);
@@ -89,7 +99,7 @@ int main(int argc, char **argv)
 
                 try
                 {
-			SCFI_Instrument scfii(firp, do_coloring);
+			SCFI_Instrument scfii(firp, do_coloring, do_jumps, do_rets);
 
 
 			int success=scfii.execute();

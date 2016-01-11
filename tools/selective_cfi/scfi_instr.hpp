@@ -29,8 +29,15 @@
 class SCFI_Instrument
 {
 	public:
-		SCFI_Instrument(libIRDB::FileIR_t *the_firp, bool p_do_coloring=true) 
-			: firp(the_firp), do_coloring(p_do_coloring), color_map(NULL) {}
+		SCFI_Instrument(libIRDB::FileIR_t *the_firp, 
+				bool p_do_coloring=true,
+				bool p_do_jumps=true,
+				bool p_do_rets=true) 
+			: firp(the_firp), 
+			  do_coloring(p_do_coloring), 
+			  do_jumps(p_do_jumps), 
+			  do_rets(p_do_rets), 
+			  color_map(NULL) {}
 		bool execute();
 
 	private:
@@ -64,6 +71,8 @@ class SCFI_Instrument
 	
 		libIRDB::FileIR_t* firp;
 		bool do_coloring;
+		bool do_jumps;
+		bool do_rets;
 		ColoredInstructionNonces_t *color_map;
 
 

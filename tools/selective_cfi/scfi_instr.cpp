@@ -398,6 +398,9 @@ void mov_reloc(Instruction_t* from, Instruction_t* to, string type )
 
 void SCFI_Instrument::AddJumpCFI(Instruction_t* insn)
 {
+	if(!do_jumps)
+		return;
+	assert(do_rets);
 	ColoredSlotValue_t v2;
 	if(insn->GetIBTargets() && color_map)
 		v2=color_map->GetColorOfIB(insn);
@@ -440,6 +443,8 @@ void SCFI_Instrument::AddJumpCFI(Instruction_t* insn)
 void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 {
 
+	if(!do_rets)
+		return;
 	ColoredSlotValue_t v2; 
 	if(v==NULL && color_map)
 	{
