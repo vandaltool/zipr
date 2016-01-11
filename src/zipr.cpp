@@ -1338,13 +1338,20 @@ void ZiprImpl_t::PlaceDollops()
 	{
 		Dollop_t *target_dollop = NULL;
 		UnresolvedUnpinned_t uu = (*pin_it).first;
+		Patch_t patch = (*pin_it).second;
 		Instruction_t *target_insn = NULL;
 
 		target_insn = uu.GetInstruction();
 		target_dollop = m_dollop_mgr.GetContainingDollop(target_insn);
 		assert(target_dollop);
 
-		placement_queue.push_back(pair<Dollop_t*,RangeAddress_t>(target_dollop,0));
+		placement_queue.push_back(pair<Dollop_t*,RangeAddress_t>(target_dollop,patch.GetAddress()));
+		if (m_verbose) {
+			cout << "Original: " << std::hex << target_insn->
+			                                    GetAddress()->
+			                                    GetVirtualOffset() << " "
+			     << "vs. Patch: " << std::hex << patch.GetAddress() << endl;
+		}
 	}
 
 	while (!placement_queue.empty())
