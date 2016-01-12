@@ -88,7 +88,8 @@ class WSC_Instrument
 		bool add_segfault_checking(libIRDB::Instruction_t*);
 		bool add_segfault_checking(libIRDB::Instruction_t* insn, const CSO_WarningRecord_t *const wr);
 		bool add_allocation_instrumentation();
-		bool needs_wsc_segfault_checking(libIRDB::Instruction_t*, const DISASM&, bool readMemAccessModeOnly = false);
+		bool needs_wsc_segfault_checking(libIRDB::Instruction_t*, const DISASM&);
+		bool needs_reverse_sandboxing(libIRDB::Instruction_t*, const DISASM&);
 		bool add_receive_limit(libIRDB::Instruction_t* site);
 		bool add_receive_limit();
 		bool add_bounds_check(libIRDB::Instruction_t* insn, const CSO_WarningRecord_t *const wr);

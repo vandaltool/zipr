@@ -36,6 +36,7 @@ typedef enum
 	CSOWE_TaintedDereference,
 	CSOWE_UnreasonableSizeArgument,
 	CSOWE_UseAfterFree,
+	CSOWE_ReverseSandboxing,
 	CSOWE_Default,
 	CSOWE_Last
 } CSO_WarningEnum_t;
@@ -69,6 +70,8 @@ class CSO_WarningType_t
 				ty=CSOWE_ShiftAmountExceedsBitWidth;
 			else if(_type_string=="Tainted Dereference")
 				ty=CSOWE_TaintedDereference;
+			else if(_type_string=="Reverse Sandboxing")
+				ty=CSOWE_ReverseSandboxing;
 			else if(_type_string=="Unreasonable Size Argument")
 				ty=CSOWE_UnreasonableSizeArgument;
 			else if(_type_string=="Use After Free")

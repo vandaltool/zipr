@@ -18,6 +18,7 @@
  *
  */
 
+// @todo: need to work on sandboxing vs. reverse sandboxing logic
 
 #include "wsc_instrument.hpp"
 #include "Rewrite_Utility.hpp"
@@ -376,8 +377,119 @@ static const ARGTYPE* FindMemoryArgument(const DISASM &d)
 	return NULL;
 }
 
+static UInt64 getGeneralRegisterNo(UInt64 argType)
+{
+	if ((argType & (REGISTER_TYPE | GENERAL_REG)) != (REGISTER_TYPE | GENERAL_REG))
+		return -1;
 
-bool WSC_Instrument::needs_wsc_segfault_checking(Instruction_t* insn, const DISASM& d, bool readOnly)
+	argType &= (~REGISTER_TYPE);
+	argType &= (~GENERAL_REG);
+
+	return argType;
+}
+
+static string regToRegstring(size_t regno)
+{
+	switch(regno)
+	{
+		case REG0: return "eax";
+		case REG1: return "ecx";
+		case REG2: return "edx";
+		case REG3: return "ebx";
+		case REG4: return "esp";
+		case REG5: return "ebp";
+		case REG6: return "esi";
+		case REG7: return "edi";
+		default: assert(0);
+	}
+}
+
+bool WSC_Instrument::needs_reverse_sandboxing(Instruction_t* insn, const DISASM& d)
+{
+	// for now reuse old segfault policy
+	// @todo: later, if we don't trust esp or ebp
+	//    check ebp at the next write 
+	//    
+	//     push ebp
+	//	mov ebp <- esp
+	//     for ...
+	//          [esp +/- K]
+	//          [ebp +/- K]
+	//
+	//	mov esp <- ebp
+	//	pop ebp            (check here)
+	//	ret
+	if (!needs_wsc_segfault_checking(insn, d))
+		return false;
+	
+	const ARGTYPE *mem=FindMemoryArgument(d);	
+	if(!mem)
+		return false;
+
+	if ((mem->AccessMode&READ)!=READ)
+	{
+		cout << "\tskip - not READ memory " << endl;
+		return false;
+	}
+
+	if(string(d.Instruction.Mnemonic) == string("call "))
+	{
+		cout << "\tskip - CALL" << endl;
+		return false;
+	}
+	if(string(d.Instruction.Mnemonic) == string("jmp "))
+	{
+		cout << "\tskip - jmp" << endl;
+		return false;
+	}
+	if(string(d.Instruction.Mnemonic) == string("cmp "))
+	{
+		cout << "\tskip - cmp" << endl;
+		return false;
+	}
+	if(strstr(d.CompleteInstr,"byte ["))
+	{
+		cout << "\tskip - byte [memory]" << endl;
+		return false;
+	}
+	
+	if(((d.Instruction.Category & FPU_INSTRUCTION) == FPU_INSTRUCTION) ||
+	((d.Instruction.Category & MMX_INSTRUCTION) == MMX_INSTRUCTION) ||
+	((d.Instruction.Category & SSE_INSTRUCTION) == SSE_INSTRUCTION) ||
+	((d.Instruction.Category & SSE2_INSTRUCTION) == SSE2_INSTRUCTION) ||
+	((d.Instruction.Category & SSE3_INSTRUCTION) == SSE3_INSTRUCTION) ||
+	((d.Instruction.Category & SSSE3_INSTRUCTION) == SSSE3_INSTRUCTION) ||
+	((d.Instruction.Category & SSE41_INSTRUCTION) == SSE41_INSTRUCTION) ||
+	((d.Instruction.Category & SSE42_INSTRUCTION) == SSE42_INSTRUCTION))
+	{
+		cout << "\tskip - FPU, MMX, SSE" << endl;
+		return false;
+	}
+
+	if((d.Argument1.ArgType & REGISTER_TYPE) != REGISTER_TYPE)
+	{
+		cout << "\tskip - arg1 not a register" << endl;
+		return false;
+	}
+/*
+	if((d.Argument1.ArgType & SSE_REG) == SSE_REG)
+		return false;
+*/
+	if((d.Argument2.ArgType & MEMORY_TYPE) != MEMORY_TYPE)
+	{
+		cout << "\tskip - arg2 not memory typ" << endl;
+		return false;
+	}
+	if (regToRegstring(getGeneralRegisterNo(d.Argument1.ArgType)) == "esp")
+	{
+		cout << "\tskip - target register is esp" << endl;
+		return false;
+	}
+
+	return true;
+}
+
+bool WSC_Instrument::needs_wsc_segfault_checking(Instruction_t* insn, const DISASM& d)
 {
 	/* lea's and nops don't access memory */
 	if(strstr(d.CompleteInstr,"lea") || strstr(d.CompleteInstr,"nop") )
@@ -385,9 +497,6 @@ bool WSC_Instrument::needs_wsc_segfault_checking(Instruction_t* insn, const DISA
 
 	const ARGTYPE *mem=FindMemoryArgument(d);	
 	if(!mem)
-		return false;
-
-	if (readOnly && mem->AccessMode != READ) 
 		return false;
 
 	// start, for now, by instrumenting one insn we know faults
@@ -405,15 +514,24 @@ bool WSC_Instrument::needs_wsc_segfault_checking(Instruction_t* insn, const DISA
 
 	/* esp+<optional_scale>+<disp> is OK */
 	if(mem->Memory.BaseRegister==REG4)
+	{
+		cout << "\tskip - base register REG4" << endl;
 		return false;
+	}
 
 	/* ebp+<optional scale>+disp  is OK if there's a base pointer */
 	if(mem->Memory.BaseRegister==REG5 && insn->GetFunction() && insn->GetFunction()->GetUseFramePointer())
+	{
+		cout << "\tskip - base register REG5 and uses frame pointer" << endl;
 		return false;
+	}
 
 	/* if there's no base reg, it must be an [<disp>] address, which is OK. */
 	if(mem->Memory.BaseRegister==0)
+	{
+		cout << "\tskip - memory address has no base register" << endl;
 		return false;
+	}
 
 	/* else, there's a non-stack base reg, so we should check */ 
 	return true;
@@ -499,31 +617,19 @@ static bool has_index_register(Instruction_t* i)
 	
 }
 
-static string regToRegstring(size_t regno)
-{
-	switch(regno)
-	{
-		case REG0: return "eax";
-		case REG1: return "ecx";
-		case REG2: return "edx";
-		case REG3: return "ebx";
-		case REG4: return "esp";
-		case REG5: return "ebp";
-		case REG6: return "esi";
-		case REG7: return "edi";
-		default: assert(0);
-	}
-}
-
 Instruction_t* WSC_Instrument::GetFailCode()
 {
 	Instruction_t* tmp=NULL;
 	if(!fail_code)
 	{
-		fail_code=tmp=addNewAssembly(firp,NULL,"mov eax, 1");
+/*
+		fail_code=addNewAssembly(firp,NULL,"hlt"); // for CFE, ok to hlt
+		fail_code->SetFallthrough(fail_code);      // hope that's ok to have bogus fallthrough to self
+							   // 20160112 -- actually not ok at all, zipr barfs on it
+*/
+		fail_code=tmp=addNewAssembly(firp,NULL,"mov eax, 1");                 // terminate
 		          tmp=insertAssemblyAfter(firp,tmp,"int 0x80");
 		          tmp=insertAssemblyAfter(firp,tmp,"jmp 0x0", fail_code);
-		
 	}
 	return fail_code;
 }
@@ -661,10 +767,62 @@ bool	WSC_Instrument::add_segfault_checking(Instruction_t* insn)
 			success = success && add_null_check(insn, wr);
 		else if(wr->GetType()==CSOWE_TaintedDereference)
 			success = success && add_segfault_checking(insn, wr);
+		else if(wr->GetType()==CSOWE_ReverseSandboxing)
+			success = success && add_segfault_checking(insn, wr);
 	}
 	return success;
 }
 
+static string getFreeGeneralRegister32(const DISASM& d)
+{
+	if (!strstr("eax", d.CompleteInstr) &&
+ 	    !strstr("ax", d.CompleteInstr) &&
+ 	    !strstr("ah", d.CompleteInstr) &&
+ 	    !strstr("al", d.CompleteInstr))
+	{
+		return string("eax");
+	}
+	else if (
+	    !strstr("ebx", d.CompleteInstr) &&
+ 	    !strstr("bx", d.CompleteInstr) &&
+ 	    !strstr("bh", d.CompleteInstr) &&
+ 	    !strstr("bl", d.CompleteInstr))
+	{
+		return string("ebx");
+	}
+	else if (
+	    !strstr("ecx", d.CompleteInstr) &&
+ 	    !strstr("cx", d.CompleteInstr) &&
+ 	    !strstr("ch", d.CompleteInstr) &&
+ 	    !strstr("cl", d.CompleteInstr))
+	{
+		return string("ecx");
+	}
+	else if (
+	    !strstr("edx", d.CompleteInstr) &&
+ 	    !strstr("dx", d.CompleteInstr) &&
+ 	    !strstr("dh", d.CompleteInstr) &&
+ 	    !strstr("dl", d.CompleteInstr))
+	{
+		return string("edx");
+	}
+	else if (
+	    !strstr("esi", d.CompleteInstr) &&
+ 	    !strstr("si", d.CompleteInstr))
+	{
+		return string("esi");
+	}
+	else if (
+	    !strstr("edi", d.CompleteInstr) &&
+ 	    !strstr("di", d.CompleteInstr))
+	{
+		return string("edi");
+	}
+	else
+	{
+		return string("");
+	}
+}
 
 bool	WSC_Instrument::add_segfault_checking(Instruction_t* insn, const CSO_WarningRecord_t *const wr)
 {
@@ -673,24 +831,51 @@ bool	WSC_Instrument::add_segfault_checking(Instruction_t* insn, const CSO_Warnin
 	char tmpbuf[100];
 	Instruction_t* callback=GetCallbackCode(), *tmp=insn;
 
-	m_num_segfault_instrumentations++;
-
 	if (DoReverseSandboxing()) 	
 	{
-		if(string(d.Instruction.Mnemonic) == string("call "))
-			return true;
-		if(string(d.Instruction.Mnemonic) == string("jmp "))
-			return true;
-		if(string(d.Instruction.Mnemonic) == string("cmp "))
-			return true;
-		
-std::cout << "Reverse sandboxing: " << hex << "0x" << insn->GetAddress()->GetVirtualOffset() << ": " << std::string(d.CompleteInstr) << std::endl;
-	const ARGTYPE* arg=FindMemoryArgument(d);
+		string memory_addr = get_memory_addr(d);
+		string freeReg = getFreeGeneralRegister32(d); // @todo: get a dead register from STARS
+		if (freeReg.size() == 0)
+			return false;
+
+		m_num_segfault_instrumentations++;
+
+// @todo: optimize code sequence based on STARS annot
+// push reg          ; save register for now
+// pushf             ; save flags for now
+
+// lea reg, [ebx]    ; load memory content into register eax
+
+// shr reg, 12       ; shift right 12 bits
+// cmp reg, 4347c    ; are we loading from the protected page
+// je L1:
+// popf              ; restore flags
+// pop reg           ; restore reg
+// mov eax, [ebx]    ; original instruction
+// L1: hlt               ; terminate
+
+	       	sprintf(tmpbuf,"push %s", freeReg.c_str());                     // push reg
+	       	insertAssemblyBefore(firp,insn,tmpbuf);
+		tmp = insertAssemblyAfter(firp,tmp,"pushf");                            // pushf
+	       	sprintf(tmpbuf,"lea %s, %s", freeReg.c_str(), memory_addr.c_str());    
+		tmp = insertAssemblyAfter(firp,tmp,tmpbuf);                             // lea reg, [memory]
+	       	sprintf(tmpbuf,"shr %s, 12", freeReg.c_str());
+		tmp = insertAssemblyAfter(firp,tmp,tmpbuf);                             // shr reg, 12
+	       	sprintf(tmpbuf,"cmp %s, 0x4347c", freeReg.c_str());
+		tmp = insertAssemblyAfter(firp,tmp,tmpbuf);                             // cmp reg, 0x4347c
+		tmp = insertAssemblyAfter(firp,tmp,"je 0", GetFailCode());                            // je L1
+		tmp = insertAssemblyAfter(firp,tmp,"popf");                             // popf
+	       	sprintf(tmpbuf,"pop %s", freeReg.c_str());
+		tmp = insertAssemblyAfter(firp,tmp,tmpbuf);                             // pop reg
+		// implicit link back to original fallthrough?
+		cout << "Reverse sandboxing: success: " << hex << insn->GetAddress()->GetVirtualOffset() << " : " << d.CompleteInstr << endl;
 		return true;
 	}
 	else
 	{
 //	cout<<"Adding callback to "<<d.CompleteInstr<<endl;
+		m_num_segfault_instrumentations++;
+
 		if (insn->GetAddress())
 			cout<<"# ATTRIBUTE instrumented=0x"<<hex<<insn->GetAddress()->GetVirtualOffset() << ":sandboxed" << endl;
 
@@ -708,7 +893,7 @@ std::cout << "Reverse sandboxing: " << hex << "0x" << insn->GetAddress()->GetVir
 bool	WSC_Instrument::add_segfault_checking()
 {
 	bool success=true;
-	cout<<"Checking "<<to_protect.size()<< " instructions for protections "<<endl;
+	cout<<"Checking "<<dec<<to_protect.size()<< " instructions for protections "<<endl;
 	for(InstructionSet_t::iterator it=to_protect.begin();
 		it!=to_protect.end();
 		++it)
@@ -718,10 +903,16 @@ bool	WSC_Instrument::add_segfault_checking()
 		DISASM d;
 		insn->Disassemble(d);
 
-		if(insn->GetBaseID()!=BaseObj_t::NOT_IN_DATABASE && needs_wsc_segfault_checking(insn,d,DoReverseSandboxing()))
+		if(insn->GetBaseID()!=BaseObj_t::NOT_IN_DATABASE) 
 		{
-			success = success && add_segfault_checking(insn);
-			m_num_segfault_checking++;
+			// mutually exclusive mode -- one or the other for now
+			if ((DoReverseSandboxing() && needs_reverse_sandboxing(insn,d)) ||
+				(!DoReverseSandboxing() && needs_wsc_segfault_checking(insn,d)))
+			{
+				bool one_success = add_segfault_checking(insn);
+				success = success && one_success;
+				m_num_segfault_checking++;
+			}
 		}
 	}
 
@@ -730,9 +921,7 @@ bool	WSC_Instrument::add_segfault_checking()
 
 bool WSC_Instrument::add_receive_limit(Instruction_t* site)
 {
-
-
-	int receive_limit=64;
+	int receive_limit=64; // @todo: coordinate value w/ buffered receives
 
 	for(CSO_WarningRecordSet_t::iterator it=warning_records[site].begin();
 		it!=warning_records[site].end();
