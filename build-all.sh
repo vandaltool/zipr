@@ -111,6 +111,6 @@ cd $PEASOUP_UMBRELLA_DIR
 
 echo
 echo
-echo  "Overall build complete."
+echo  "peasoup/cfar_umbrella Overall build complete."
 echo
 echo
