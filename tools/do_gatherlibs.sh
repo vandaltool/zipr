@@ -19,6 +19,8 @@ safe_dir_list="	/lib /lib/tls/i686/cmov 			\
 
 exe=$0
 
+these=""
+
 
 # parse arguments
 while [[ $# > 0 ]]
@@ -42,6 +44,15 @@ do
 			echo "$safe_dir_list"
 			
 			;;
+		--protectthese)
+			if [[ $# < 1 ]]; then
+				echo "--protectthese needs an option"
+				exit 1 # reported error
+			fi
+			shift
+			these="$1"
+			echo "Protecting these files: $1"
+			;;
 		--safelist)
 			if [[ $# < 1 ]]; then
 				echo "--safelist needs an option"
@@ -54,7 +65,7 @@ do
 			;;
 		*|--usage)
 			echo "Usage: "
-			echo "  $exe { --main_exe_only | --all | --safe | --usage | --safelist 'list' }"
+			echo "  $exe { --main_exe_only | --all | --safe | --usage | --safelist 'path1 path2 ...' | --protectthese 'lib1.so lib2.so ...'}"
 			exit 1 # report error as we didnt parse all options, etc.
 			;;
 	esac
@@ -84,6 +95,21 @@ is_safe()
 mkdir shared_objects
 rm -f shared_libs
 touch shared_libs
+
+
+if [ X"$these" != "X" ]; then
+	for i in $these
+	do
+		if [ ! -f $i ]; then
+			echo Missing library file $i
+			exit 255
+		fi
+		cp $i shared_objects
+		echo `basename $i` >> shared_libs
+	done
+	# after copying all libraries, we're done.  we were told explicitly what to protect
+	exit 0
+fi
 
 libs=`$PEASOUP_HOME/tools/getlibs.sh a.ncexe`
 

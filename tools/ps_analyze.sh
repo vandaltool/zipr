@@ -41,6 +41,8 @@ TWITCHER_TRANSFORM_TIMEOUT_VALUE=1800
 # Setting PN timeout to 6 hours for TNE. 
 PN_TIMEOUT_VALUE=21600
 
+export backend=strata
+
 # 
 # set default values for 
 #
@@ -242,11 +244,13 @@ check_options()
 			-b|--backend)
 				if [ "X$2" = "Xzipr" ]; then
 					echo using Zipr backend
+					export backend="zipr"
 					phases_spec=" $phases_spec stratafy_with_pc_confine=off generate_spri=off spasm=off fast_annot=off zipr=on\
 						preLoaded_ILR1=off  preLoaded_ILR2=off fast_spri=off "
 					step_options_gather_libraries="$step_options_gather_libraries --main_exe_only"
 				elif [ "X$2" = "Xstrata" ]; then
 					echo using Strata backend
+					export backend="strata"
 					#  strata is default, do nothing.
 				fi
             			shift 2
@@ -785,8 +789,6 @@ perform_step heaprand 	 		pc_confine,double_free $PEASOUP_HOME/tools/update_env_
 perform_step controlled_exit none 		 	 $PEASOUP_HOME/tools/update_env_var.sh STRATA_CONTROLLED_EXIT 1
 perform_step detect_server  pc_confine  $PEASOUP_HOME/tools/update_env_var.sh STRATA_DETECT_SERVERS 1
 perform_step diehard  none  $PEASOUP_HOME/tools/update_env_var.sh DO_DIEHARD 1
-#perform_step return_cache  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_RC 1
-#perform_step partial_inlining  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_PARTIAL_INLINING 0
 perform_step rekey  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_REKEY_AFTER 5000
 perform_step double_free heaprand $PEASOUP_HOME/tools/update_env_var.sh STRATA_DOUBLE_FREE 1
 perform_step pc_confine  none $PEASOUP_HOME/tools/update_env_var.sh STRATA_PC_CONFINE 1
