@@ -1406,7 +1406,12 @@ void ZiprImpl_t::PlaceDollops()
 		}
 		if (!placed) {
 			cout << "Using default place locator." << endl;
-			placement = memory_space.GetFreeRange(to_place->GetSize());
+			/*
+			 * TODO: Re-enable this ONCE we figure out why the dollop
+			 * sizes are not being recalculated correctly.
+			 */
+			//placement = memory_space.GetFreeRange(to_place->GetSize());
+			placement = memory_space.GetFreeRange(minimum_valid_req_size);
 		}
 
 		cur_addr = placement.GetStart();
