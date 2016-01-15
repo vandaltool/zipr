@@ -134,6 +134,7 @@ tests/bunzip2 -text
 tests/bzip2/data/compression_input1 -text
 tests/bzip2/data/decompression_input1 -text
 tests/bzip2/test_script.sh -text
+tests/cal/test_script.sh -text
 tests/egrep/data/data1.txt -text
 tests/egrep/data/data2.txt -text
 tests/egrep/data/khadafy.lines -text
@@ -398,6 +399,7 @@ tests/tcpdump/tcpd_tests/spb_bpduv4.pcap -text
 tests/tcpdump/tcpd_tests/zmtp1.out -text
 tests/tcpdump/tcpd_tests/zmtp1.pcap -text
 tests/tcpdump/test_script.sh -text
+tests/test_cmds.sh -text
 tests/test_scripts/foo.cpp -text
 tests/test_scripts/foo_tests/foo.strata.no_startfile.-O.-fPIC.-fomit-frame-pointer.-g.-m32.sh -text
 tests/test_scripts/foo_tests/foo.strata.no_startfile.-O.-fPIC.-fomit-frame-pointer.-g.-m64.sh -text
