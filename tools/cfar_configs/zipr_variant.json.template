@@ -1,10 +1,11 @@
             "<<VARIANTNUM>>" : {
                 "exec" : {
                     "alias" : [
-                        "/sbin/thttpd=/target_apps/<<EXE_NAME>>",
+                        "/variant_specific/main_exe=/<<EXEPATH>>/<<EXE_NAME>>",
 			"/dev/cfar_urandom=/dev/urandom",
                         "/etc/ld.so.cache=/etc/ld.so.cache",
-			"/variant_specific/libheaprand.so=/target_app_libs/<<PS_DIR>>/libheaprand.so"
+			"/variant_specific/libheaprand.so=/<<EXEPATH>>/<<PS_DIR>>/libheaprand.so"
+			,<<LIBS>>
                         ]
                 }
             }

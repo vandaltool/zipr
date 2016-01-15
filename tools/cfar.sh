@@ -1,6 +1,18 @@
 #!/bin/bash
 
 
+is_so()
+{
+	file $1 | egrep "LSB *shared object" > /dev/null
+
+	if [ $? = 0 ]; then
+		echo 1
+	else
+		echo 0
+	fi
+}
+
+
 # parse first 3 parameters as fixed position params.
 variants=$1
 in=$2
@@ -74,7 +86,21 @@ new_cmd_line_options+=(--step generate_variant_config=on --step dump_map=on)
 # figure out a place for ps_analyze to work so we can examine results.
 #
 outbase=$(basename $out)
-baseoutdir=$(dirname $out)/peasoup_executable_dir.$outbase.$config_name
+
+echo "is_so returns: $(is_so $in)"
+
+if  [ $(is_so $in) = 0 ]; then
+	baseoutdir=${out}/target_apps/${in}/${config_name}
+else 
+	baseoutdir=${out}/target_app_libs/${in}/${config_name}
+fi
+
+if [ -d $baseoutdir ]; then
+	echo "Directory $baseoutdir already exists."
+	echo "Skipping duplicate work."
+	exit 3
+fi
+
 
 # init some variables.
 share_path=/tmp
@@ -90,9 +116,11 @@ anyseed=$$
 # create a copy of ps_analyze for each variant we want to create.
 for seq in $(seq 0 $(expr $variants - 1) )
 do
-	# optoins for zipr's large_only plugin to help create non-overlapping code segments. 
+	# setup an array to pass hold variant-specific options. 
 	declare -a per_variant_options
 	per_variant_options=()
+
+	# options for zipr's large_only plugin to help create non-overlapping code segments. 
 	if [ $structured_noc  -eq 1 ]; then
 		# the path to the "shared memory" that cfar is using.
 		sharepath_key="$seq:$variants:dir://$share_path"
@@ -101,15 +129,16 @@ do
 	
 	# options to p1 to create non-overlapping canary values.
 	if [ $structured_p1_canaries  -eq 1 ]; then
-		per_variant_options+=(--step-option p1transform:"--canary_value 0xFF0${seq}${seq}0FF --random_seed $anyseed")
+		per_variant_options+=(--step-option p1transform:"--canary_value 0x100${seq}${seq}000 --random_seed $anyseed")
 	fi
 
 	# add in options for output directory.
-	per_variant_options+=(--tempdir "$baseoutdir.v${seq}")
+	per_variant_options+=(--tempdir "$baseoutdir/v${seq}/peasoup_executable_dir")
+	mkdir -p "$baseoutdir/v${seq}"
 
 	# invoke $PS.
-	echo PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PEASOUP_HOME/tools/ps_analyze.sh $in $out.$config_name.v$seq "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" 
-	PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PEASOUP_HOME/tools/ps_analyze.sh $in $out.$config_name.v$seq "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" > variant_output.$seq 2>&1 &
+	echo PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PEASOUP_HOME/tools/ps_analyze.sh $in $baseoutdir/v${seq}/$in "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" 
+	PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PEASOUP_HOME/tools/ps_analyze.sh $in $baseoutdir/v${seq}/$in "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" > $baseoutdir/v${seq}/variant_output.txt 2>&1 &
 
 	# remember the pid.
 	pids="$pids $!"
@@ -145,4 +174,5 @@ else
 	echo "Successfully protected $variants variants, attempting to generate MVEE configuration files"
 fi
 
-$PEASOUP_HOME/tools/generate_mvee_config.sh  "$variants" "$out" "$baseoutdir" "$backend" "$config_name" "$use_diehard"
+#echo "Attempting: $PEASOUP_HOME/tools/generate_mvee_config.sh  \"$variants\" \"$out\" \"$baseoutdir\" \"$backend\" \"$config_name\" \"$use_diehard\" "
+#$PEASOUP_HOME/tools/generate_mvee_config.sh  "$variants" "$out" "$baseoutdir" "$backend" "$config_name" "$use_diehard"

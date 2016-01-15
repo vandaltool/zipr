@@ -24,6 +24,11 @@ json_contents=$(<$json)
 
 for seq in $(seq 0 $(expr $variants - 1))
 do
+#-	variant_config_contents=$(<$tempdir.v${seq}/variant_config.json)
+#-	variant_name="variant_v${seq}"
+#+	variant_config_contents=$(<$tempdir/v${seq}/peasoup_executable_dir/variant_config.json)
+#+	variant_name="$config_${seq}"
+
 	variant_config_contents=$(<$tempdir.v${seq}/variant_config.json)
 	variant_name="variant_v${seq}"
 	updated_config="${variant_config_contents//<<VARIANTNUM>>/$variant_name}"
