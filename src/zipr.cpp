@@ -1323,9 +1323,24 @@ void ZiprImpl_t::WriteDollops()
 	}
 }
 
+class placement_queue_comp
+{
+	public:
+	bool operator ()(const pair<Dollop_t*,RangeAddress_t> &a,
+	                 const pair<Dollop_t*,RangeAddress_t> &b) 
+	{
+		if((a.first)->front()->Instruction()->GetAddress()->GetVirtualOffset()==0||
+		   (b.first)->front()->Instruction()->GetAddress()->GetVirtualOffset()==0)
+			return (a.second<b.second);
+		return (a.first)->front()->Instruction()->GetAddress()->GetVirtualOffset()<
+		       (b.first)->front()->Instruction()->GetAddress()->GetVirtualOffset();
+	}
+};
+
 void ZiprImpl_t::PlaceDollops()
 {
-	list<pair<Dollop_t*, RangeAddress_t>> placement_queue;
+	set<pair<Dollop_t*,RangeAddress_t>, placement_queue_comp> placement_queue;
+	//list<pair<Dollop_t*, RangeAddress_t>> placement_queue;
 	multimap<const UnresolvedUnpinned_t,Patch_t>::const_iterator pin_it,
 	                                                             pin_it_end;
 	/*
@@ -1345,7 +1360,8 @@ void ZiprImpl_t::PlaceDollops()
 		target_dollop = m_dollop_mgr.GetContainingDollop(target_insn);
 		assert(target_dollop);
 
-		placement_queue.push_back(pair<Dollop_t*,RangeAddress_t>(target_dollop,patch.GetAddress()));
+		//placement_queue.push_back(pair<Dollop_t*,RangeAddress_t>(target_dollop,patch.GetAddress()));
+		placement_queue.insert(pair<Dollop_t*,RangeAddress_t>(target_dollop,patch.GetAddress()));
 		if (m_verbose) {
 			cout << "Original: " << std::hex << target_insn->
 			                                    GetAddress()->
@@ -1369,11 +1385,19 @@ void ZiprImpl_t::PlaceDollops()
 		Dollop_t *fallthrough = NULL;
 		bool continue_placing = false;
 
-		pq_entry = placement_queue.front();
-		placement_queue.pop_front();
+		//pq_entry = placement_queue.front();
+		pq_entry = *(placement_queue.begin());
+		//placement_queue.pop_front();
+		placement_queue.erase(placement_queue.begin());
 
 		to_place = pq_entry.first;
 		from_address = pq_entry.second;
+
+		if (m_verbose)
+			cout << "Original starting address: " << std::hex
+			     << to_place->front()->Instruction()->GetAddress()->GetVirtualOffset()
+					 << endl;
+
 
 		if (to_place->IsPlaced())
 			continue;
@@ -1492,7 +1516,7 @@ void ZiprImpl_t::PlaceDollops()
 						if (m_verbose)
 							cout << "Adding " << std::hex << dollop_entry->TargetDollop()
 							     << " to placement queue." << endl;
-						placement_queue.push_back(pair<Dollop_t*, RangeAddress_t>(
+						placement_queue.insert(pair<Dollop_t*, RangeAddress_t>(
 								dollop_entry->TargetDollop(),
 								cur_addr));
 					}
@@ -1570,7 +1594,7 @@ void ZiprImpl_t::PlaceDollops()
 						     << "to fallthrough dollop (" << std::hex 
 						     << fallthrough << ")." << endl;
 
-					placement_queue.push_back(pair<Dollop_t*, RangeAddress_t>(
+					placement_queue.insert(pair<Dollop_t*, RangeAddress_t>(
 							fallthrough,
 							cur_addr));
 					/*
