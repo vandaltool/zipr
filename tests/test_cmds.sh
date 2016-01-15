@@ -1,5 +1,4 @@
 orig_progs="bzip2 cal du egrep fgrep grep ls objdump readelf sort tar tcpdump touch"
-orig_progs="cal du grep "
 
 if [ -d tmp_test_area ]; then
 	rm -fr tmp_test_area
