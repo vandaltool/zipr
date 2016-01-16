@@ -35,7 +35,7 @@ using namespace libIRDB;
 
 void usage(char* name)
 {
-	cerr<<"Usage: "<<name<<" <variant_id> (--color|--no-color)\n"; 
+	cerr<<"Usage: "<<name<<" <variant_id> [--color|--no-color] [--protect-jumps|--no-protect-jumps] [--protect-rets|--no-protect-rets]\ndefault: --no-color --protect-jumps --protect-rets\n"; 
 }
 
 int main(int argc, char **argv)
