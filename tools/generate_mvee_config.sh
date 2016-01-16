@@ -116,8 +116,8 @@ check_opts()
 sanity_check()
 {
 
-	main_exe=$(/bin/ls $dir/target_apps/)
-	libraries=$(/bin/ls $dir/target_app_libs/)
+	main_exe=$(/bin/ls -F $dir/target_apps/ |egrep "/$"|sed "s|/$||" )
+	libraries=$(/bin/ls $dir/target_app_libs/ |grep -v "^lib$")
 	configs=$(/bin/ls $dir/target_apps/$main_exe/)
 	echo Found application=\"$main_exe\"
 	echo Found libraries=\"$libraries\"
@@ -183,7 +183,7 @@ finalize_json()
 
 
 	variants="$total_variants"
-	outfile="$dir/$main_exe.conf"
+	outfile="$dir/target_apps/$main_exe.conf"
 	backend="zipr"	 # doesn't work with strata yet
 	json=${outfile}
 

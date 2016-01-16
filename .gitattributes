@@ -903,6 +903,7 @@ tools/bed.sh -text
 tools/bed_blackbox.sh -text
 tools/bed_manual.sh -text
 tools/cfar.sh -text
+tools/cfar_configs/cfar_probBilr_probP1_zipr.sh -text
 tools/cfar_configs/cfar_probBilr_zipr.sh -text
 tools/cfar_configs/cfar_probIlr_strata.sh -text
 tools/cfar_configs/cfar_probP1_strata.sh -text

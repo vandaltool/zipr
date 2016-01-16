@@ -11,10 +11,10 @@
     "variant" : {
         "global" : {
             "exec" : {
-                "path" : "/variant_specific/mainexe",
+                "path" : "/variant_specific/main_exe",
                 "argv" : [ <<ARGS>> ], 
                 "env" : [
-                        <<ENV>>
+			"LD_LIBRARY_PATH=/target_app_libs/",<<ENV>>
 			]
 
 	
