@@ -87,12 +87,10 @@ new_cmd_line_options+=(--step generate_variant_config=on --step dump_map=on)
 #
 outbase=$(basename $out)
 
-echo "is_so returns: $(is_so $in)"
-
 if  [ $(is_so $in) = 0 ]; then
-	baseoutdir=${out}/target_apps/${in}/${config_name}
+	baseoutdir=${out}/target_apps/dh-${in}/${config_name}
 else 
-	baseoutdir=${out}/target_app_libs/${in}/${config_name}
+	baseoutdir=${out}/target_app_libs/dh-${in}/${config_name}
 fi
 
 if [ -d $baseoutdir ]; then
@@ -171,8 +169,10 @@ if [ $ok != 1 ] ; then
 	echo
 	exit 1
 else
-	echo "Successfully protected $variants variants, attempting to generate MVEE configuration files"
+	echo "Successfully protected $variants variants" 
 fi
+
+#, attempting to generate MVEE configuration files"
 
 #echo "Attempting: $PEASOUP_HOME/tools/generate_mvee_config.sh  \"$variants\" \"$out\" \"$baseoutdir\" \"$backend\" \"$config_name\" \"$use_diehard\" "
 #$PEASOUP_HOME/tools/generate_mvee_config.sh  "$variants" "$out" "$baseoutdir" "$backend" "$config_name" "$use_diehard"

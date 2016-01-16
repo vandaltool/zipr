@@ -116,9 +116,9 @@ check_opts()
 sanity_check()
 {
 
-	main_exe=$(/bin/ls -F $dir/target_apps/ |egrep "/$"|sed "s|/$||" )
-	libraries=$(/bin/ls $dir/target_app_libs/ |grep -v "^lib$")
-	configs=$(/bin/ls $dir/target_apps/$main_exe/)
+	main_exe=$(/bin/ls -F $dir/target_apps/ |egrep "/$"|sed "s|/$||"|sed "s/^dh-//" )
+	libraries=$(/bin/ls $dir/target_app_libs/ |grep -v "^dh-lib$"|sed "s/^dh-//")
+	configs=$(/bin/ls $dir/target_apps/dh-$main_exe/)
 	echo Found application=\"$main_exe\"
 	echo Found libraries=\"$libraries\"
 	echo Found configurations=\"$configs\"
@@ -137,8 +137,8 @@ sanity_check()
 	for config in $configs; do
 		for lib in $libraries; do
 		
-			if [ ! -d $dir/target_app_libs/$lib/$config ]; then 
-				echo "Found that $dir/target_app_libs/$lib/$config is missing."
+			if [ ! -d $dir/target_app_libs/dh-$lib/$config ]; then 
+				echo "Found that $dir/target_app_libs/dh-$lib/$config is missing."
 				echo "Malformed input.  Aborting...."
 			fi
 		done
@@ -149,7 +149,7 @@ sanity_check()
 	total_variants=0
 	
 	for config in $configs; do
-		for variant_dir in $dir/target_apps/$main_exe/$config/v[0-9]*/
+		for variant_dir in $dir/target_apps/dh-$main_exe/$config/v[0-9]*/
 		do
 			variant_json_arr[$total_variants]="$variant_dir/peasoup_executable_dir/variant_config.json"
 			variant_config_arr[$total_variants]="$config"
@@ -162,8 +162,8 @@ sanity_check()
 
 			for lib in $libraries; do
 				varNum=$(basename $variant_dir)
-				if [ ! -d $dir/target_app_libs/$lib/$config/$varNum ]; then
-					echo "Found that $dir/target_app_libs/$lib/$config/$varNum is missing"
+				if [ ! -d $dir/target_app_libs/dh-$lib/$config/$varNum ]; then
+					echo "Found that $dir/target_app_libs/dh-$lib/$config/$varNum is missing"
 					exit 3
 				fi
 			done
@@ -236,11 +236,11 @@ finalize_json()
 		for lib in $libraries
 		do
 			# echo adding lib $lib
-			lib_dir="/target_app_libs/$lib/$config/$var_num_dir"
+			lib_dir="/target_app_libs/dh-$lib/$config/$var_num_dir"
 	
 			# note the weird $'\n' is bash's way to encode a new line.
 			# set line=  ,\n"alias=file" -- but the bash is ugly, and I can't do better.
-			line=",  "$'\n\t\t\t'"  \"/variant_specific/$lib=$lib_dir/$lib\" "
+			line=",  "$'\n\t\t\t'"  \"/usr/lib/$lib=$lib_dir/$lib\" "
 			variant_config_contents="${variant_config_contents//,<<LIBS>>/$line,<<LIBS>>}"
 	
 		done
@@ -258,9 +258,18 @@ finalize_json()
 
 	done
 
-	if [ "x"$use_diehard  = "x--diehard" ]; then
-		json_contents="${json_contents//<<ENV>>/\"LD_PRELOAD=\/variant_specific\/libheaprand.so\",<<ENV>>}"
+	if [ $server = "Apache" ]; then
+		ld_preload_var="/thread_libs/libgetpid.so "
 	fi
+	if [ "x"$use_diehard  = "x--diehard" ]; then
+		ld_preload_var="/variant_specific/libheaprand.so $ld_preload_var"
+
+	fi
+	# remove leading/trailing spaces.
+	ld_preload_var=${ld_preload_var%% }
+	ld_preload_var=${ld_preload_var## }
+
+	json_contents="${json_contents//<<ENV>>/\"LD_PRELOAD=$ld_preload_var\",<<ENV>>}"
 
 	# remove variant_config marker.
 	json_contents="${json_contents//,<<VARIANT_CONFIG>>/}"
