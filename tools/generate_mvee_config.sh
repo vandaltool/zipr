@@ -23,7 +23,7 @@ check_opts()
 {
 
 	args="\"-k\", \"start\""
-	server="Apache"
+	server="APACHE"
 	class="None"
 	use_diehard="--nodiehard"
 
@@ -110,6 +110,8 @@ check_opts()
 		echo "Specifying a directory is necessary"
 		exit 3;
 	fi	
+
+	server=${server^^} # uppercase the server setting.
 }
 
 
@@ -258,7 +260,7 @@ finalize_json()
 
 	done
 
-	if [ $server = "Apache" ]; then
+	if [ $server = "APACHE" ]; then
 		ld_preload_var="/thread_libs/libgetpid.so "
 	fi
 	if [ "x"$use_diehard  = "x--diehard" ]; then
