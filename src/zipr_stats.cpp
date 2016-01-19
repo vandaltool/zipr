@@ -25,29 +25,10 @@
 #include <iostream>
 
 using namespace zipr;
-
-static void PrintStat(std::ostream &out, std::string description, int value)
-{
-	out << description << ": " << std::dec << value << std::endl;
-}
-static void PrintStat(std::ostream &out, std::string description, double value)
-{
-	out << description << ": " << std::dec << value << std::endl;
-}
+using namespace zipr::Utils;
 
 void Stats_t::PrintStats(std::ostream &out)
 {
-	PrintStat(out, "Total dollops", total_dollops);
-	PrintStat(out, "Total dollop size", total_dollop_space);
-	PrintStat(out, "Total dollop instructions",total_dollop_instructions);
-	PrintStat(out, "Truncated dollops",truncated_dollops);
-	PrintStat(out, "Ave dollop size",
-		(double)total_dollop_space/(double)total_dollops);
-	PrintStat(out, "Ave dollop instructions",
-		(double)total_dollop_instructions/(double)total_dollops);
-	PrintStat(out, "Truncated dollop fraction",
-		(double)truncated_dollops/(double)total_dollops);
-
 	/*
 	 * Optimizations
 	 */

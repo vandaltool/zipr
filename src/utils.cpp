@@ -2,9 +2,15 @@
 
 namespace zipr {
 namespace Utils {
+
+void PrintStat(std::ostream &out, std::string description, double value)
+{
+	out << description << ": " << std::dec << value << std::endl;
+}
+
 size_t CALLBACK_TRAMPOLINE_SIZE=9;
 using namespace libIRDB;
-int DetermineWorstCaseInsnSize(Instruction_t* insn)
+int DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_for_jump)
 {
 
 	int required_size=0;
@@ -50,7 +56,7 @@ int DetermineWorstCaseInsnSize(Instruction_t* insn)
 			// jmp fallthrough
 			// +5: jmp target
 			// 2+5+5;
-			required_size=10;
+			required_size=12;
 			break;
 		}
 		
@@ -64,7 +70,10 @@ int DetermineWorstCaseInsnSize(Instruction_t* insn)
 	}
 	
 	// add an extra 5 for a "trampoline" in case we have to end this fragment early
-	return required_size+5;
+	if (account_for_jump)
+		return required_size+5;
+	else
+		return required_size;
 }
 }
 }

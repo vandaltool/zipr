@@ -36,6 +36,17 @@ ZiprOptionsNamespace_t *ZiprMemorySpace_t::RegisterOptions(ZiprOptionsNamespace_
 	return NULL;
 }
 
+void ZiprMemorySpace_t::SplitFreeRange(Range_t split_from)
+{
+	RangeAddress_t counter, end;
+	for (counter = split_from.GetStart(), end = split_from.GetEnd();
+	     counter!=end;
+			 counter++)
+	{
+		SplitFreeRange(counter);
+	}
+}
+
 void ZiprMemorySpace_t::SplitFreeRange(RangeAddress_t addr)
 {
 	RangeSet_t::iterator it=FindFreeRange(addr);

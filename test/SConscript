@@ -14,9 +14,22 @@ MemorySpaceFiles=  '''
 	../src/zipr_options.cpp
 	'''
 
+RangeFiles=  '''
+	ZiprRange.cpp
+	../src/memory_space.cpp
+	../src/zipr_options.cpp
+	'''
+
 OptionFiles=  '''
 	ZiprOptions.cpp
 	../src/zipr_options.cpp
+	'''
+
+DollopFiles= '''
+	ZiprDollop.cpp
+	../src/zipr_dollop_man.cpp
+	../src/dollop.cpp
+	../src/utils.cpp
 	'''
 
 # ELFIO needs to be first so we get the zipr version instead of the sectrans version.  the zipr version is modified to include get_offset.
@@ -49,8 +62,9 @@ libpath='''
 	'''
 
 myenv.Append(CCFLAGS=" -Wall ")
-myenv.Append(CXXFLAGS=" -g -O0 ")
-myenv.Append(LINKFLAGS=" -Wl,-E ")	# export all symbols
+myenv.Append(CXXFLAGS=" -pg -std=c++0x -g -O0 ")
+#myenv.Append(CXXFLAGS=" -pg -g -O0 ")
+myenv.Append(LINKFLAGS="  -pg -Wl,-E ")	# export all symbols
 
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath), LIBS=Split(libs), LIBPATH=Split(libpath))
@@ -58,7 +72,10 @@ myenv=myenv.Clone(CPPPATH=Split(cpppath), LIBS=Split(libs), LIBPATH=Split(libpat
 #print 'myenv='
 #print myenv.Dump()
 
+Range=myenv.Program("Range.exe", Split(RangeFiles))
 MemorySpace=myenv.Program("MemorySpace.exe", Split(MemorySpaceFiles))
 Options=myenv.Program("Options.exe", Split(OptionFiles))
-Default([MemorySpace, Options])
+Dollop=myenv.Program("Dollop.exe", Split(DollopFiles))
+#Default([MemorySpace, Options, Dollop, Range])
+Default([Range])
 
