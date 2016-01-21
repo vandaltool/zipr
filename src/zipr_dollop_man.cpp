@@ -41,18 +41,73 @@ namespace zipr {
 			/*
 			 * There is no target dollop. Let's create one!
 			 */
+			std::list<DollopEntry_t*>::iterator it, it_end;
 			Dollop_t *original_new_dollop = NULL, *previous_dollop = NULL;
 			Instruction_t *fallthrough = NULL;
 			original_new_dollop = new_dollop = Dollop_t::CreateNewDollop(start);
 
+			for (it = new_dollop->begin(), it_end = new_dollop->end();
+			     it != it_end;
+					 it++)
+			{
+				Dollop_t *containing_dollop = GetContainingDollop((*it)->Instruction());
+				if (containing_dollop) 
+				{
+					Dollop_t *fallthrough_dollop = NULL;
+					if (true)
+						cout << "Found an instruction in a new dollop that "
+						     << "is already in a dollop: " << std::hex
+								 << (*it)->Instruction()->GetAddress()->GetVirtualOffset()
+								 << endl;
+					/*
+					 * Delete the overlapping instructions.
+					 */
+					new_dollop->erase(it, it_end);
+
+					/*
+					 * Reliably get a pointer to the containing dollop.
+					 */
+					fallthrough_dollop = AddNewDollops((*it)->Instruction());
+
+					/*
+					 * Link this dollop to that one.
+					 */
+					new_dollop->FallthroughDollop(fallthrough_dollop);
+
+					/*
+					 * Put the new dollop in!
+					 */
+					AddDollop(new_dollop);
+
+					return new_dollop;
+				}
+			}
+			/*
+			 * This is to handle the case where
+			 * we stopped creating a dollop because
+			 * the next instruction is pinned. We do
+			 * not want to forget about the remaining
+			 * entries here. So, we attempt to link
+			 * to those, where possible.
+			 */
 			while (fallthrough = new_dollop->back()->Instruction()->GetFallthrough())
 			{
 				/*
 				 * Look FIRST for a containing dollop.
+				 *
+				 * TODO: We *assert* that we do not have
+				 * to check whether or not the fallthrough
+				 * instruction is at the top of the stack.
+				 * This is because we are only at this case
+				 * when the dollop construction ended because
+				 * the fallthrough is pinned. This implicitly
+				 * means that it is the first instruction
+				 * in the containing dollop.
 				 */
 				Dollop_t *existing_dollop = GetContainingDollop(fallthrough);
 				if (existing_dollop)
 				{
+					assert(existing_dollop->front()->Instruction() == fallthrough);
 					new_dollop->FallthroughDollop(existing_dollop);
 					break;
 				}
