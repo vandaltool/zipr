@@ -143,6 +143,7 @@ void Push64Relocs_t::HandlePush64Relocation(Instruction_t *insn, Relocation_t *r
 	databits[4] = 0x00;
 	insn->SetDataBits(databits);
 	insn->SetTarget(add_insn); // Comment
+	insn->SetFallthrough(NULL);
 	insn->SetComment(push_insn->GetComment()+" Thunk part");
 		
 	/* 
