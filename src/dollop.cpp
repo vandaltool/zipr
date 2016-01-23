@@ -31,30 +31,14 @@ namespace Zipr_SDK {
 	size_t Dollop_t::CalculateWorstCaseSize()
 	{
 		size_t dollop_size = 0;
-		Instruction_t *cur_insn = NULL;
-		if (front())
-			cur_insn = front()->Instruction();
+		list<DollopEntry_t*>::const_iterator it, it_end;
 
-		while (cur_insn != NULL)
+		for (it = begin(), it_end = end();
+		     it != it_end;
+		     it++)
 		{
-			/*
-			 * TODO: Take into consideration the dollop might
-			 * be MUCH shorter if it is going to jump to a 
-			 * previously placed dollop at this insn.
-			 */
-	#if 0
-			if ((to_addr=final_insn_locations[cur_insn]) != 0)
-			{
-				if (!m_replop)
-				{
-					if (m_verbose)
-						printf("Fallthrough loop detected. ");
-					break;
-				}
-			}
-	#endif
+			Instruction_t *cur_insn = (*it)->Instruction();
 			dollop_size += Utils::DetermineWorstCaseInsnSize(cur_insn);
-			cur_insn=cur_insn->GetFallthrough();
 		}
 		return dollop_size;
 	}
