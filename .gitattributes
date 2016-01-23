@@ -135,6 +135,13 @@ tests/bzip2/data/compression_input1 -text
 tests/bzip2/data/decompression_input1 -text
 tests/bzip2/test_script.sh -text
 tests/cal/test_script.sh -text
+tests/du/data/dir1/dir2/readme -text
+tests/du/data/dir1/hello2 -text
+tests/du/data/dir1/yo2.xls -text
+tests/du/data/hello1 -text
+tests/du/data/test.tar -text
+tests/du/data/yo.txt -text
+tests/du/test_script.sh -text
 tests/egrep/data/data1.txt -text
 tests/egrep/data/data2.txt -text
 tests/egrep/data/khadafy.lines -text
