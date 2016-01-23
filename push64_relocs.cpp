@@ -151,14 +151,15 @@ void Push64Relocs_t::HandlePush64Relocation(Instruction_t *insn, Relocation_t *r
 	 */
 // this is OK, but could we consider the insn->Assemble() method for readability? 
 	databits = "";
-	databits.resize(7);
-	databits[0]=0x81;
-	databits[1]=0x2c;	
-	databits[2]=0x24;
-	databits[3]=0xff;
+	databits.resize(8);
+	databits[0]=0x48;
+	databits[1]=0x81;
+	databits[2]=0x2c;	
+	databits[3]=0x24;
 	databits[4]=0xff;
 	databits[5]=0xff;
 	databits[6]=0xff;
+	databits[7]=0xff;
 	add_insn->SetDataBits(databits);
 
 	/*
@@ -285,9 +286,9 @@ void Push64Relocs_t::UpdatePush64Adds()
 			if (change_to_add)
 			{
 				char add = (char)0x04;
-				m_memory_space.PlopBytes(add_addr+1, (const char*)&add, 1);
+				m_memory_space.PlopBytes(add_addr+2, (const char*)&add, 1);
 			}
-			m_memory_space.PlopBytes(add_addr+3, (const char*)&relocated_value, 4);
+			m_memory_space.PlopBytes(add_addr+4, (const char*)&relocated_value, 4);
 		}
 		else if (reloc = FindPcrelRelocation(insn))
 		{
