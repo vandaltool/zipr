@@ -56,8 +56,7 @@ SQL_PKGS="sqlite3 libsqlite3-dev mysql-client mysql-server libmysqlclient-dev"
 # For LDAP
 LDAP_PKGS="ldap-utils slapd libldap2-dev"
 
-ALL_PKGS="$BASE_PKGS $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS $TEST_PKGS"
-# $SQL_PKGS $LDAP_PKGS"
+ALL_PKGS="$BASE_PKGS $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS $TEST_PKGS $SQL_PKGS $LDAP_PKGS"
 
 
 if [[ "$PEASOUP_UMBRELLA_DIR" == "" ]]; then
