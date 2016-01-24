@@ -7,6 +7,8 @@ build_only=0
 for config in $configs
 do
 
+echo "----------------------------------"
+echo "TEST CONFIGURATION: $config"
 progs_pass=""
 progs_fail=""
 progs_fail_peasoup=""
@@ -60,7 +62,6 @@ do
 
 	if [ ! $? -eq 0 ]; then
 		echo "TEST ($config) ${prog}: FAILED to peasoupify"
-		progs_fail="$progs_fail $prog"
 		progs_fail_peasoup="$progs_fail_peasoup $prog"
 	fi
 
