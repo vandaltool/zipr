@@ -153,7 +153,19 @@ namespace zipr {
 		m_refresh_stats = true;
 	}
 
+
+
+
+	/* TODO: Write a test case for the new conditional push_back. Make
+	 * sure to test whether or not the instruction-to-dollop map
+	 * is properly updated in all cases.
+	 */
 	void ZiprDollopManager_t::AddDollop(Dollop_t *dollop) {
+		/*
+		 * We always want to update the isntruction-to-dollop map.
+		 * However, we might not always want to push it on to the
+		 * list of dollops -- it might already be there!
+		 */
 		/*
 		 * Populate/update the instruction-to-dollop map.
 		 */
@@ -164,9 +176,11 @@ namespace zipr {
 			m_insn_to_dollop[(*it)->Instruction()] = dollop;
 		}
 		/*
-		 * Push the actual dollop onto the list of dollops.
+		 * Push the actual dollop onto the list of dollops
+		 * if it's not already there.
 		 */
-		m_dollops.push_back(dollop);
+		if (m_dollops.end()==std::find(m_dollops.begin(), m_dollops.end(), dollop))
+			m_dollops.push_back(dollop);
 		m_refresh_stats = true;
 	}
 
