@@ -1597,6 +1597,8 @@ void ZiprImpl_t::PlaceDollops()
 					placement_queue.insert(pair<Dollop_t*, RangeAddress_t>(
 							fallthrough,
 							cur_addr));
+					
+					m_stats->total_did_not_coalesce++;
 					/*
 					 * Quit the do-while-true loop that is placing
 					 * as many dollops in-a-row as possible.
@@ -1613,6 +1615,7 @@ void ZiprImpl_t::PlaceDollops()
 					 */
 					to_place = fallthrough;
 					continue_placing = true;
+					m_stats->total_did_coalesce++;
 				}
 			}
 		} while (continue_placing); /*

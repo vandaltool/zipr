@@ -39,6 +39,8 @@ class Stats_t
 			total_tramp_space = 0;
 			total_other_space = 0;
 			total_free_ranges = 0;
+			total_did_coalesce = 0;
+			total_did_not_coalesce = 0;
 		};
 
 		void PrintStats(std::ostream &out);
@@ -57,6 +59,8 @@ class Stats_t
 		int total_tramp_space;
 		int total_other_space;
 		int total_free_ranges;
+		int total_did_coalesce;
+		int total_did_not_coalesce;
 
 		/*
 		 * Optimization stats tracking.

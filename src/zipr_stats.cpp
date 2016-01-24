@@ -48,4 +48,6 @@ void Stats_t::PrintStats(std::ostream &out)
 	PrintStat(out, "Total trampoline space pins", total_tramp_space);
 	PrintStat(out, "Other space", total_other_space);
 	PrintStat(out, "Total free ranges", total_free_ranges);
+	PrintStat(out, "    Coalesced", total_did_coalesce);
+	PrintStat(out, "Not Coalesced", total_did_not_coalesce);
 }
