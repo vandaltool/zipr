@@ -1384,6 +1384,7 @@ void ZiprImpl_t::PlaceDollops()
 		bool has_fallthrough = false;
 		Dollop_t *fallthrough = NULL;
 		bool continue_placing = false;
+		bool am_coalescing = false;
 
 		//pq_entry = placement_queue.front();
 		pq_entry = *(placement_queue.begin());
@@ -1543,9 +1544,13 @@ void ZiprImpl_t::PlaceDollops()
 				m_dollop_mgr.AddDollops(split_dollop);
 
 				to_place->WasTruncated(true);
+				if (am_coalescing)
+					m_stats->truncated_dollops_during_coalesce++;
 
 				if (m_verbose)
-					cout << "Split a dollop because it didn't fit. Fallthrough to "
+					cout << "Split a " 
+					     << ((am_coalescing) ? "coalesced " : " ")
+							 << "dollop because it didn't fit. Fallthrough to "
 					     << std::hex << split_dollop << "." << endl;
 			}
 
@@ -1616,6 +1621,7 @@ void ZiprImpl_t::PlaceDollops()
 					to_place = fallthrough;
 					continue_placing = true;
 					m_stats->total_did_coalesce++;
+					am_coalescing = true;
 				}
 			}
 		} while (continue_placing); /*

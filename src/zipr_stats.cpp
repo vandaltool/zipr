@@ -50,4 +50,5 @@ void Stats_t::PrintStats(std::ostream &out)
 	PrintStat(out, "Total free ranges", total_free_ranges);
 	PrintStat(out, "    Coalesced", total_did_coalesce);
 	PrintStat(out, "Not Coalesced", total_did_not_coalesce);
+	PrintStat(out, "Truncated During Coalesced", truncated_dollops_during_coalesce);
 }
