@@ -60,14 +60,14 @@ namespace zipr {
 								 << (*it)->Instruction()->GetAddress()->GetVirtualOffset()
 								 << endl;
 					/*
-					 * Delete the overlapping instructions.
-					 */
-					new_dollop->erase(it, it_end);
-
-					/*
 					 * Reliably get a pointer to the containing dollop.
 					 */
 					fallthrough_dollop = AddNewDollops((*it)->Instruction());
+
+					/*
+					 * Delete the overlapping instructions.
+					 */
+					new_dollop->erase(it, it_end);
 
 					/*
 					 * Link this dollop to that one.
