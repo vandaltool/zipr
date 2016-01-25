@@ -57,7 +57,8 @@ namespace zipr {
 					if (true)
 						cout << "Found an instruction in a new dollop that "
 						     << "is already in a dollop: " << std::hex
-								 << (*it)->Instruction()->GetAddress()->GetVirtualOffset()
+								 << ((NULL!=(*it)->Instruction()->GetAddress()) ?
+								    (*it)->Instruction()->GetAddress()->GetVirtualOffset():0x0)
 								 << endl;
 					/*
 					 * Reliably get a pointer to the containing dollop.
