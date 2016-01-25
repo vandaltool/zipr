@@ -39,6 +39,11 @@ else \
 printf(" fail\n"); \
 }
 
+/*
+ * Test whether creating dollop from an instruction
+ * with no fallthrough properly excludes the remaining
+ * instructions.
+ */
 bool TestGetContainingDollopNoFallthrough() {
 	ZiprDollopManager_t dollop_man;
 	libIRDB::Instruction_t *insn_a = new libIRDB::Instruction_t();
@@ -52,6 +57,11 @@ bool TestGetContainingDollopNoFallthrough() {
 	       dollop_man.GetContainingDollop(insn_a) == dollop_a;
 }
 
+/*
+ * Test whether creating a dollop from an instruction
+ * with a fallthrough properly contains the linked
+ * instructions.
+ */
 bool TestGetContainingDollopFallthrough(void) {
 	ZiprDollopManager_t dollop_man;
 	libIRDB::Instruction_t *insn_a = new libIRDB::Instruction_t();
@@ -67,6 +77,11 @@ bool TestGetContainingDollopFallthrough(void) {
 	       dollop_man.GetContainingDollop(insn_a) == dollop_a;
 }
 
+/*
+ * Test whether GetContainingDollop works
+ * properly when there is more than one
+ * dollop in the manager.
+ */
 bool TestGetContainingDollop(void) {
 	ZiprDollopManager_t dollop_man;
 	libIRDB::Instruction_t *insn_a = new libIRDB::Instruction_t();
@@ -79,6 +94,10 @@ bool TestGetContainingDollop(void) {
 	       dollop_man.GetContainingDollop(insn_b) == dollop_b;
 }
 
+/*
+ * Sanity check whether adding a dollop to the
+ * dollop manager actually works.
+ */
 bool TestAddDollopEntry(void) {
 	ZiprDollopManager_t dollop_man;
 	libIRDB::Instruction_t *insn = new libIRDB::Instruction_t();
@@ -119,6 +138,11 @@ bool TestDollopPatchDollopManager(void) {
 	return true;
 }
 
+/*
+ * Test whether adding a new dollop that starts
+ * with an instruction already in a dollop splits
+ * the existing dollop.
+ */
 bool TestAddNewDollopSplitsExistingDollop(void) {
 	bool success = true;
 	ZiprDollopManager_t dollop_man;
@@ -211,6 +235,11 @@ bool TestUpdateTargetsDollopManager(void) {
 */
 
 	dollop_man.UpdateTargets(a);
+	/* UpdateTargets(c) will notice that d is a target that is
+	 * not at the head of a dollop. It will subsequently create
+	 * a new dollop from that instruction by splitting
+	 * the existing dollop.
+	 */
 	dollop_man.UpdateTargets(c);
 
 	cout << "After UpdateTargets([ac])" << endl;
@@ -343,6 +372,76 @@ bool TestDollopEntryEquals(void) {
 				 *a != *d;
 }
 
+/*
+ * Test whether or not 
+ * 1. dollops created from overlapping
+ * instructions are correctly split
+ * 2. whether or not the dollop manager realizes
+ * that dollops might be getting readded
+ * 3. whether or not dollop entries are reassigned
+ * to the proper containing dollops.
+ *
+ * Instruction layout:
+ * e\
+ * b->c->d
+ * a/
+ *
+ * Ultimate (correct) dollop layout: 
+ * B_fallthrough: bf
+ * A: a,
+ * B: b,
+ * E: e,
+ * Anon: c->d
+ * A->Anon
+ * B->Anon
+ * C->Anon
+ * Anon->B_fallthrough
+ */
+bool TestCreateDollopsFromOverlappingInstructions(void) {
+	bool success = true;
+	ZiprDollopManager_t dollop_man;
+	Dollop_t *a, *b, *e, *b_fallthrough;
+
+	libIRDB::Instruction_t *insn_a = new libIRDB::Instruction_t();
+	libIRDB::Instruction_t *insn_b = new libIRDB::Instruction_t();
+	libIRDB::Instruction_t *insn_bf= new libIRDB::Instruction_t();
+	libIRDB::Instruction_t *insn_c = new libIRDB::Instruction_t();
+	libIRDB::Instruction_t *insn_d = new libIRDB::Instruction_t();
+	libIRDB::Instruction_t *insn_e = new libIRDB::Instruction_t();
+
+	insn_a->SetFallthrough(insn_c);
+	insn_b->SetFallthrough(insn_c);
+	insn_e->SetFallthrough(insn_c);
+	insn_c->SetFallthrough(insn_d);
+
+	b_fallthrough = Dollop_t::CreateNewDollop(insn_bf);
+	b = Dollop_t::CreateNewDollop(insn_b);
+	b->FallthroughDollop(b_fallthrough);
+	dollop_man.AddDollops(b);
+	cout << "b (before transforming): " << endl << *b << endl;
+	success = (dollop_man.Size() == 2 && b->FallthroughDollop() == b_fallthrough);
+
+	a = dollop_man.AddNewDollops(insn_a);
+	e = dollop_man.AddNewDollops(insn_e);
+
+	cout << "a->FallthroughDollop(): " 
+	     << std::hex << a->FallthroughDollop() << endl;
+	cout << "b->FallthroughDollop(): " 
+	     << std::hex << a->FallthroughDollop() << endl;
+	cout << "e->FallthroughDollop(): " 
+	     << std::hex << e->FallthroughDollop() << endl;
+	cout << "Common tail: " << endl << *(b->FallthroughDollop()) << endl;
+	cout << "# of Dollops: " << dollop_man.Size() << endl;
+
+	return success &&
+	       dollop_man.Size() == 5 &&
+	       dollop_man.GetContainingDollop(insn_b) == b &&
+	       dollop_man.GetContainingDollop(insn_a) == a &&
+	       a->FallthroughDollop() == b->FallthroughDollop() &&
+				 dollop_man.GetContainingDollop(insn_c)->FallthroughDollop() ==
+				 b_fallthrough;
+}
+
 int main(int argc, char *argv[])
 {
 	INVOKE(TestAddDollopEntry);
@@ -357,5 +456,6 @@ int main(int argc, char *argv[])
 	INVOKE(TestUpdateTargetsDollopManager);
 	INVOKE(TestAddNewDollopSplitsExistingDollop);
 	INVOKE(TestDollopFallthroughDollopEntry);
+	INVOKE(TestCreateDollopsFromOverlappingInstructions);
 	return 0;
 }

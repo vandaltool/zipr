@@ -76,6 +76,6 @@ Range=myenv.Program("Range.exe", Split(RangeFiles))
 MemorySpace=myenv.Program("MemorySpace.exe", Split(MemorySpaceFiles))
 Options=myenv.Program("Options.exe", Split(OptionFiles))
 Dollop=myenv.Program("Dollop.exe", Split(DollopFiles))
-#Default([MemorySpace, Options, Dollop, Range])
-Default([Range])
+Default([MemorySpace, Options, Dollop, Range])
+#Default([Range])
 
