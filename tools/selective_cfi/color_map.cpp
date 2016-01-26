@@ -72,11 +72,14 @@ bool ColoredInstructionNonces_t::create()
 	}
 
 	// output stats
-	cout<<"#ATTRIBUTE slots_used="<<slots_used.size()<<endl;
+	cout<<"# ATTRIBUTE slots_used="<<slots_used.size()<<endl;
+	int total_slots = 0;
 	for(int slot_no=0; slot_no<slots_used.size(); slot_no++)
 	{
-		cout<<"#ATTRIBUTE used_slot"<<slot_no<<"="<<slots_used[slot_no].SlotsUsed()<<endl;
+		cout<<"# ATTRIBUTE used_slot"<<slot_no<<"="<<slots_used[slot_no].SlotsUsed()<<endl;
+		total_slots += slots_used[slot_no].SlotsUsed();
 	}
+	cout<<"# ATTRIBUTE total_slots="<<total_slots<<endl;
 
 	return true;
 }
