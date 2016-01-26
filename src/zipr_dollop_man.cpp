@@ -64,16 +64,19 @@ namespace zipr {
 					 * Reliably get a pointer to the containing dollop.
 					 */
 					fallthrough_dollop = AddNewDollops((*it)->Instruction());
+					
+					/*
+					 * Link this dollop to that one. Do this before
+					 * removing the entries because RemoveDollopEntries()
+					 * will recalculate the size and needs to know about
+					 * the updated fallthrough dollop!
+					 */
+					new_dollop->FallthroughDollop(fallthrough_dollop);
 
 					/*
 					 * Delete the overlapping instructions.
 					 */
-					new_dollop->erase(it, it_end);
-
-					/*
-					 * Link this dollop to that one.
-					 */
-					new_dollop->FallthroughDollop(fallthrough_dollop);
+					new_dollop->RemoveDollopEntries(it, it_end);
 
 					/*
 					 * Put the new dollop in!

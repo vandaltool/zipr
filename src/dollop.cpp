@@ -38,8 +38,13 @@ namespace Zipr_SDK {
 		     it++)
 		{
 			Instruction_t *cur_insn = (*it)->Instruction();
-			dollop_size += Utils::DetermineWorstCaseInsnSize(cur_insn);
+			dollop_size += Utils::DetermineWorstCaseInsnSize(cur_insn, false);
 		}
+
+		if (m_fallthrough_dollop || (back() && 
+		                             back()->Instruction() && 
+																 back()->Instruction()->GetFallthrough()))
+			dollop_size += Utils::TRAMPOLINE_SIZE;
 		return dollop_size;
 	}
 
@@ -104,6 +109,13 @@ namespace Zipr_SDK {
 		 * 4. Return the new one
 		 */
 		return new_dollop;
+	}
+
+	void Dollop_t::RemoveDollopEntries(
+		std::list<DollopEntry_t*>::iterator first_to_remove, 
+		std::list<DollopEntry_t*>::iterator last_to_remove) {
+		erase(first_to_remove, last_to_remove);
+		m_size = CalculateWorstCaseSize();
 	}
 
 	DollopEntry_t::DollopEntry_t(libIRDB::Instruction_t *insn,Dollop_t *member_of)

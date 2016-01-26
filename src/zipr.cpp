@@ -1454,6 +1454,7 @@ void ZiprImpl_t::PlaceDollops()
 		assert(to_place->GetSize() != 0);
 
 		do {
+			bool fits_entirely = false;
 			/*
 			 * TODO: From here, we want to place the dollop
 			 * that we just got a placement for, and subsequently
@@ -1467,6 +1468,7 @@ void ZiprImpl_t::PlaceDollops()
 
 			to_place->Place(cur_addr);
 
+			fits_entirely = (to_place->GetSize() <= (placement.GetEnd()-cur_addr));
 			for (dit = to_place->begin(), dit_end = to_place->end();
 			     dit != dit_end;
 			     dit++)
@@ -1500,7 +1502,11 @@ void ZiprImpl_t::PlaceDollops()
 							                            /* with or without fallthrough */
 							         );
 
-				if (de_and_fallthrough_fit || last_de_fits)
+				if (m_verbose)
+					cout << "de_and_fallthrough_fit: " << de_and_fallthrough_fit << endl
+					     << "last_de_fits          : " << last_de_fits << endl
+					     << "fits_entirely         : " << fits_entirely << endl;
+				if (de_and_fallthrough_fit || last_de_fits || fits_entirely)
 				{
 #if 0
 					if (m_verbose) {
@@ -1772,7 +1778,8 @@ size_t ZiprImpl_t::_DetermineWorstCaseInsnSize(Instruction_t* insn, bool account
 		worst_case_size = DetermineWorstCaseInsnSize(insn, account_for_jump);
 
 	if (m_verbose)
-		cout << "Worst case size: " << worst_case_size << endl;
+		cout << "Worst case size" << ((account_for_jump) ? " (including jump)" : "")
+		     << ": " << worst_case_size << endl;
 
 	return worst_case_size;
 }

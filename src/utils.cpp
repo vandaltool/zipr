@@ -9,6 +9,7 @@ void PrintStat(std::ostream &out, std::string description, double value)
 }
 
 size_t CALLBACK_TRAMPOLINE_SIZE=9;
+size_t TRAMPOLINE_SIZE=5;
 using namespace libIRDB;
 int DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_for_jump)
 {
@@ -71,7 +72,7 @@ int DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_for_jump)
 	
 	// add an extra 5 for a "trampoline" in case we have to end this fragment early
 	if (account_for_jump)
-		return required_size+5;
+		return required_size+TRAMPOLINE_SIZE;
 	else
 		return required_size;
 }
