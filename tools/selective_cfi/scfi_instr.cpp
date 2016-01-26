@@ -25,6 +25,7 @@
 #include "color_map.hpp"
 #include <stdlib.h>
 #include <memory>
+#include <math.h>
 
 
 
@@ -471,7 +472,7 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 	if(d.Argument1.ArgType!=NO_ARGUMENT)
 	{
 		unsigned int sp_adjust=d.Instruction.Immediat-firp->GetArchitectureBitWidth()/8;
-		cout<<"Found relateively rare ret_with_pop insn: "<<d.CompleteInstr<<endl;
+		cout<<"Found relatively rare ret_with_pop insn: "<<d.CompleteInstr<<endl;
 		char buf[30];
 		sprintf(buf, "pop %s [%s+%d]", worddec.c_str(), rspreg.c_str(), sp_adjust);
 		Instruction_t* newafter=insertAssemblyBefore(firp,insn,buf);
@@ -562,9 +563,42 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 #endif
 }
 
+static void display_histogram(std::ostream& out, std::string attr_label, std::map<int,int> & p_map)
+{
+	if (p_map.size()) 
+	{
+		out<<"# ATTRIBUTE " << attr_label << "=";
+		out<<"{ibt_size:count,";
+		bool first_time=true;
+		for (map<int,int>::iterator it = p_map.begin(); 
+			it != p_map.end(); ++it)
+		{
+			if (!first_time)
+				out << ",";
+			out << it->first << ":" << it->second;
+			first_time = false;
+		}
+		out<<"}"<<endl;
+	}
+}
+
 bool SCFI_Instrument::instrument_jumps() 
 {
 	int cfi_checks=0;
+	int cfi_branch_jmp_checks=0;
+	int cfi_branch_jmp_complete=0;
+	int cfi_branch_call_checks=0;
+	int cfi_branch_call_complete=0;
+	int cfi_branch_ret_checks=0;
+	int cfi_branch_ret_complete=0;
+	int ibt_complete=0;
+	double cfi_branch_jmp_complete_ratio = NAN;
+	double cfi_branch_ret_complete_ratio = NAN;
+
+	std::map<int, int> jmps;
+	std::map<int, int> rets;
+
+	// build histogram of target sizes
 
 	// for each instruction
 	for(InstructionSet_t::iterator it=firp->GetInstructions().begin();
@@ -590,6 +624,12 @@ bool SCFI_Instrument::instrument_jumps()
 				if((d.Argument1.ArgType&MEMORY_TYPE)==MEMORY_TYPE)
 				{
 					cfi_checks++;
+					cfi_branch_jmp_checks++;
+					if (insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
+					{
+						cfi_branch_jmp_complete++;
+						jmps[insn->GetIBTargets()->size()]++;
+					}
 					AddJumpCFI(insn);
 				}
 				break;
@@ -599,9 +639,19 @@ bool SCFI_Instrument::instrument_jumps()
 				{
 					// not yet implemented.	
 					assert(0); // fix calls should conver these to jumps
+					cfi_branch_call_checks++;
+					if (insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
+						cfi_branch_call_complete++;
+					cfi_checks++;
 				}
 				break;
 			case  RetType: 
+				cfi_branch_ret_checks++;
+				if (insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
+				{
+					cfi_branch_ret_complete++;
+					rets[insn->GetIBTargets()->size()]++;
+				}
 				cfi_checks++;
 				AddReturnCFI(insn);
 				break;
@@ -611,9 +661,39 @@ bool SCFI_Instrument::instrument_jumps()
 		}
 	}
 	
+	cout<<"# ATTRIBUTE cfi_jmp_checks="<<std::dec<<cfi_branch_jmp_checks<<endl;
+	cout<<"# ATTRIBUTE cfi_jmp_complete="<<std::dec<<cfi_branch_jmp_complete<<endl;
 
+	display_histogram(cout, "cfi_jmp_complete_histogram", jmps);
+
+/*
+	cout<<"# ATTRIBUTE cfi_branch_call_checks="<<std::dec<<cfi_branch_call_checks<<endl;
+	cout<<"# ATTRIBUTE cfi_branch_call_complete="<<std::dec<<cfi_branch_call_complete<<endl;
+*/
+	cout<<"# ATTRIBUTE cfi_ret_checks="<<std::dec<<cfi_branch_ret_checks<<endl;
+	cout<<"# ATTRIBUTE cfi_ret_complete="<<std::dec<<cfi_branch_ret_complete<<endl;
+	display_histogram(cout, "cfi_ret_complete_histogram", rets);
 
 	cout<<"# ATTRIBUTE cfi_checks="<<std::dec<<cfi_checks<<endl;
+	ibt_complete = cfi_branch_jmp_complete + cfi_branch_call_complete + cfi_branch_ret_complete;
+	cout<<"# ATTRIBUTE ibt_complete="<<std::dec<<ibt_complete<<endl;
+
+	if (cfi_branch_jmp_checks > 0) 
+		cfi_branch_jmp_complete_ratio = (double)cfi_branch_jmp_complete / cfi_branch_jmp_checks;
+
+	if (cfi_branch_ret_checks > 0) 
+		cfi_branch_ret_complete_ratio = (double)cfi_branch_ret_complete / cfi_branch_ret_checks;
+
+	double cfi_branch_complete_ratio = NAN;
+	if (ibt_complete > 0)
+		cfi_branch_complete_ratio = (double) cfi_checks / ibt_complete;
+	
+
+	cout << "# ATTRIBUTE cfi_jmp_complete_ratio=" << cfi_branch_jmp_complete_ratio << endl;
+
+	cout << "# ATTRIBUTE cfi_ret_complete_ratio=" << cfi_branch_ret_complete_ratio << endl;
+	cout << "# ATTRIBUTE cfi_complete_ratio=" << cfi_branch_ret_complete_ratio << endl;
+
 	return true;
 }
 
