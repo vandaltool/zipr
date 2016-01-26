@@ -130,6 +130,7 @@ stock_examples64/vita.pdf -text
 stock_examples64/xcalc.stock -text
 stock_examples64/xedit.stock -text
 stock_examples64/xeyes.stock -text
+tests/Makefile -text
 tests/bunzip2 -text
 tests/bzip2/data/compression_input1 -text
 tests/bzip2/data/decompression_input1 -text
