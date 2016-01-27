@@ -184,6 +184,19 @@ std::pair<RangeSet_t::const_iterator,RangeSet_t::const_iterator>
 		result, free_ranges.end());
 }
 
+Range_t ZiprMemorySpace_t::GetLargeRange(void)
+{
+	for( RangeSet_t::iterator it=free_ranges.begin();
+		it!=free_ranges.end();
+		++it)
+	{
+		Range_t r=*it;
+		if(r.GetEnd()==(RangeAddress_t)-1)
+			return r;
+	}
+	return Range_t(0,0);
+}
+
 Range_t ZiprMemorySpace_t::GetFreeRange(int size)
 {
 	vector<Range_t> v;

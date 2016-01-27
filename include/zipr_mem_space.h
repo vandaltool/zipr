@@ -51,6 +51,7 @@ class ZiprMemorySpace_t : public MemorySpace_t
 			GetNearbyFreeRanges(const RangeAddress_t hint, size_t count = 0);
 		void AddFreeRange(Range_t newRange);
 		void RemoveFreeRange(Range_t newRange);
+		Range_t GetLargeRange(void);
 
 		// queries about free areas.
 		bool AreBytesFree(RangeAddress_t addr, int num_bytes);
