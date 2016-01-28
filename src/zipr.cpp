@@ -1599,6 +1599,8 @@ void ZiprImpl_t::PlaceDollops()
 					                                      false);
 
 					to_place->push_back(patch_de);
+					to_place->FallthroughPatched(true);
+
 					if (m_verbose)
 						cout << "Not coalescing"
 						     << string((fallthrough->IsPlaced()) ?
@@ -1622,6 +1624,7 @@ void ZiprImpl_t::PlaceDollops()
 				{
 					if (m_verbose)
 						cout << "Coalescing fallthrough dollop." << endl;
+					to_place->WasCoalesced(true);
 					/*
 					 * Fallthrough is not placed and there is enough room to
 					 * put (at least some of) it right below the previous one.
