@@ -235,6 +235,15 @@ bool ZiprMemorySpace_t::IsByteFree(RangeAddress_t addr)
 	return false;
 }
 
+void ZiprMemorySpace_t::AddFreeRange(Range_t newRange, bool original)
+{
+	if (original)
+	{
+		original_free_ranges.insert(Range_t(newRange.GetStart(),newRange.GetEnd()));
+	}
+	AddFreeRange(newRange);
+}
+
 void ZiprMemorySpace_t::AddFreeRange(Range_t newRange)
 {
 	free_ranges.insert(Range_t(newRange.GetStart(), newRange.GetEnd()));

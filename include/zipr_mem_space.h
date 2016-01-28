@@ -36,7 +36,11 @@ class ZiprMemorySpace_t : public MemorySpace_t
 {
 	public:
 		ZiprMemorySpace_t() :
-			free_ranges(), max_plopped(0), min_plopped(-1), m_verbose("verbose")
+			free_ranges(),
+			original_free_ranges(),
+			max_plopped(0),
+			min_plopped(-1),
+			m_verbose("verbose")
 		{ 
 		}
 
@@ -50,6 +54,7 @@ class ZiprMemorySpace_t : public MemorySpace_t
 		std::pair<RangeSet_t::const_iterator,RangeSet_t::const_iterator>
 			GetNearbyFreeRanges(const RangeAddress_t hint, size_t count = 0);
 		void AddFreeRange(Range_t newRange);
+		void AddFreeRange(Range_t newRange, bool original);
 		void RemoveFreeRange(Range_t newRange);
 		Range_t GetLargeRange(void);
 
@@ -59,6 +64,7 @@ class ZiprMemorySpace_t : public MemorySpace_t
 		bool IsValidRange(RangeSet_t::iterator it);
 
 		int GetRangeCount();
+		RangeSet_t GetOriginalFreeRanges() const { return original_free_ranges; }
 
 		void PrintMemorySpace(std::ostream &out);
 
@@ -92,6 +98,7 @@ class ZiprMemorySpace_t : public MemorySpace_t
 
 	protected:
 		RangeSet_t  free_ranges; // keep ordered
+		RangeSet_t  original_free_ranges; // keep ordered
 		// std::set<Range_t, Range_tCompare> free_ranges;   // keep ordered
 
 	private:

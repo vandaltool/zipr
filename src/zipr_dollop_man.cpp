@@ -1,5 +1,6 @@
 #include <zipr_all.h>
 #include <iostream>
+#include <cstdlib>
 
 using namespace zipr;
 using namespace zipr::Utils;
@@ -281,5 +282,122 @@ namespace zipr {
 			(double)m_total_dollop_entries/(double)m_total_dollops);
 		PrintStat(out, "Truncated dollop fraction",
 			(double)m_truncated_dollops/(double)m_total_dollops);
+	}
+
+#define LINE_LENGTH 32
+#define PRINT_LINE_HEADER(x) \
+	map_output << endl << std::hex << (x) << ": ";
+
+	void ZiprDollopManager_t::PrintPlacementMap(
+		const ZiprMemorySpace_t &memory_space,
+		const std::string &map_filename)
+	{
+		RangeSet_t original_ranges = memory_space.GetOriginalFreeRanges();
+		RangeSet_t::const_iterator range_it, range_it_end;
+		ofstream map_output(map_filename.c_str(), std::ofstream::out);
+
+		if (!map_output.is_open())
+			return;
+		/*
+		 * Loop through the original ranges.
+		 */
+		for (range_it=original_ranges.begin(), range_it_end=original_ranges.end();
+		     range_it != range_it_end;
+				 range_it++)
+		{
+			/*
+			 * Now loop through the dollops and
+			 * record those contained in this range.
+			 */
+			list<Dollop_t*>::const_iterator dollop_it, dollop_it_end;
+			Range_t current_range = *range_it;
+			map<RangeAddress_t, Dollop_t*> dollops_in_range;
+			map<RangeAddress_t, Dollop_t*>::const_iterator dollops_in_range_it,
+			                                               dollops_in_range_end;
+			RangeAddress_t previous_dollop_end = 0;
+			Dollop_t *dollop_to_print = NULL;
+
+			for (dollop_it = m_dollops.begin(), dollop_it_end = m_dollops.end();
+			     dollop_it != dollop_it_end;
+					 dollop_it++)
+			{
+				Dollop_t *dollop = (*dollop_it);
+				if (current_range.GetStart() <= dollop->Place() &&
+				    current_range.GetEnd() >= dollop->Place())
+					dollops_in_range[dollop->Place()] = dollop;
+			}
+			
+			map_output << "==========" << endl;
+			map_output << "Range: 0x" << std::hex << current_range.GetStart()
+			           << " - 0x" << std::hex << current_range.GetEnd() 
+								 << endl;
+			
+			previous_dollop_end = current_range.GetStart();
+			unsigned byte_print_counter = 0;
+			for (dollops_in_range_it = dollops_in_range.begin(),
+			     dollops_in_range_end = dollops_in_range.end();
+			     dollops_in_range_it != dollops_in_range_end;
+					 dollops_in_range_it++)
+			{
+				dollop_to_print = (*dollops_in_range_it).second;
+				if (previous_dollop_end < dollop_to_print->Place())
+				{
+					for (unsigned i=0;i<(dollop_to_print->Place()-previous_dollop_end);i++)
+					{
+						if (!((byte_print_counter) % LINE_LENGTH)) 
+							PRINT_LINE_HEADER((current_range.GetStart()+byte_print_counter))
+						map_output << "_";
+						byte_print_counter++;
+					}
+#if 0
+					map_output << "0x" << std::hex << previous_dollop_end
+					           << " - 0x" <<std::hex <<(dollop_to_print->Place())
+					           << ": (" << std::dec 
+					           << (dollop_to_print->Place() - previous_dollop_end)
+					           << ") EMPTY" << endl;
+#endif
+				}
+				for (unsigned i=0;i<(dollop_to_print->GetSize());i++)
+				{
+					if (!((byte_print_counter) % LINE_LENGTH))
+						PRINT_LINE_HEADER((current_range.GetStart()+byte_print_counter))
+					map_output << "X";
+					byte_print_counter++;
+				}
+#if 0
+				map_output << "0x" << std::hex << dollop_to_print->Place()
+				           << " - 0x" << std::hex
+									 <<(dollop_to_print->Place()+dollop_to_print->GetSize())
+									 << ": (" << std::dec << dollop_to_print->GetSize()
+									 << ") "
+									 << endl;
+
+#endif
+				previous_dollop_end = dollop_to_print->Place() + 
+				                      dollop_to_print->GetSize();
+			}
+
+			if (dollop_to_print && current_range.GetEnd() != (RangeAddress_t)-1 &&
+			   (previous_dollop_end < current_range.GetEnd())) 
+			{
+				for (unsigned i=0;i<(current_range.GetEnd() - previous_dollop_end);i++)
+				{
+					if (!((byte_print_counter) % LINE_LENGTH))
+						PRINT_LINE_HEADER((current_range.GetStart()+byte_print_counter))
+					map_output << "_";
+					byte_print_counter++;
+				}
+#if 0
+				map_output << "0x" << std::hex << dollop_to_print->Place()
+				           << " - 0x" << std::hex
+				           <<(dollop_to_print->Place()+dollop_to_print->GetSize())
+				           << ": (" << std::dec 
+				           << (current_range.GetEnd() - previous_dollop_end)
+				           << ") EMPTY" << endl;
+#endif
+			}
+			map_output << endl;
+		}
+		map_output.close();
 	}
 }

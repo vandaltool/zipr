@@ -485,7 +485,7 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 			last_end=end;
 			if (m_verbose)
 				printf("Adding free range 0x%p to 0x%p\n", (void*)start,(void*)end);
-			memory_space.AddFreeRange(Range_t(start,end));
+			memory_space.AddFreeRange(Range_t(start,end), true);
 		}
 	}
 
@@ -533,7 +533,7 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 	}
 #endif
 
-	memory_space.AddFreeRange(Range_t(new_free_page,(RangeAddress_t)-1));
+	memory_space.AddFreeRange(Range_t(new_free_page,(RangeAddress_t)-1), true);
 	if (m_verbose)
 		printf("Adding (mysterious) free range 0x%p to EOF\n", (void*)new_free_page);
 	start_of_new_space=new_free_page;
@@ -2399,6 +2399,7 @@ void ZiprImpl_t::PrintStats()
 {
 	// do something like print stats as #ATTRIBUTES.
 	m_dollop_mgr.PrintStats(cout);
+	m_dollop_mgr.PrintPlacementMap(memory_space, "dollop.map");
 	m_stats->PrintStats(cout);
 
 	// and dump a map file of where we placed instructions.  maybe guard with an option.
