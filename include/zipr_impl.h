@@ -54,7 +54,8 @@ class ZiprImpl_t : public Zipr_t
 			m_apply_nop("apply_nop", false),
 			m_variant("variant"),
 			m_architecture("architecture"),
-			m_seed("seed", 0)
+			m_seed("seed", 0),
+			m_dollop_map_filename("dollop_map_filename", "dollop.map")
 		{ 
 			Init();
  		};
@@ -413,6 +414,7 @@ class ZiprImpl_t : public Zipr_t
 		ZiprStringOption_t m_output_filename, m_callbacks, m_objcopy;
 		ZiprBooleanOption_t m_replop, m_verbose, m_apply_nop;
 		ZiprIntegerOption_t m_variant, m_architecture, m_seed;
+		ZiprStringOption_t m_dollop_map_filename;
 
 };
 

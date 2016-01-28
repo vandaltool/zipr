@@ -193,6 +193,7 @@ ZiprOptionsNamespace_t *ZiprImpl_t::RegisterOptions(ZiprOptionsNamespace_t *glob
 	m_callbacks.SetDescription("Set the path of the file "
 		"which contains any required callbacks.");
 	m_seed.SetDescription("Seed the random number generator with this value.");
+	m_dollop_map_filename.SetDescription("Specify filename to save dollop map.");
 
 	// our pid is a fine default value -- had issues with time(NULL) as two copies of zipr from 
 	// were getting the same time(NULL) return value since we invoked them in parallel.
@@ -204,6 +205,7 @@ ZiprOptionsNamespace_t *ZiprImpl_t::RegisterOptions(ZiprOptionsNamespace_t *glob
 	zipr_namespace->AddOption(&m_replop);
 	zipr_namespace->AddOption(&m_objcopy);
 	zipr_namespace->AddOption(&m_seed);
+	zipr_namespace->AddOption(&m_dollop_map_filename);
 
 	global->AddOption(&m_variant);
 	global->AddOption(&m_verbose);
@@ -2399,7 +2401,7 @@ void ZiprImpl_t::PrintStats()
 {
 	// do something like print stats as #ATTRIBUTES.
 	m_dollop_mgr.PrintStats(cout);
-	m_dollop_mgr.PrintPlacementMap(memory_space, "dollop.map");
+	m_dollop_mgr.PrintPlacementMap(memory_space, m_dollop_map_filename);
 	m_stats->PrintStats(cout);
 
 	// and dump a map file of where we placed instructions.  maybe guard with an option.
