@@ -4,7 +4,12 @@
 namespace Zipr_SDK {
 	using namespace libIRDB;
 	using namespace zipr;
-	Dollop_t::Dollop_t(Instruction_t *start) : Dollop_t()
+	Dollop_t::Dollop_t(Instruction_t *start) :
+		m_size(0),
+		m_fallthrough_dollop(NULL),
+		m_fallthrough_patched(false),
+		m_coalesced(false),
+		m_was_truncated(false)
 	{
 		Instruction_t *loop = NULL;
 
