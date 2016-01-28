@@ -4,13 +4,9 @@
 namespace Zipr_SDK {
 	using namespace libIRDB;
 	using namespace zipr;
-	Dollop_t::Dollop_t(Instruction_t *start)
+	Dollop_t::Dollop_t(Instruction_t *start) : Dollop_t()
 	{
 		Instruction_t *loop = NULL;
-
-		m_size = 0;
-		m_fallthrough_dollop = NULL;
-		m_was_truncated = false;
 
 		if (start == NULL)
 			return;
@@ -41,9 +37,10 @@ namespace Zipr_SDK {
 			dollop_size += Utils::DetermineWorstCaseInsnSize(cur_insn, false);
 		}
 
-		if (m_fallthrough_dollop || (back() && 
+		if ((m_fallthrough_dollop || (back() && 
 		                             back()->Instruction() && 
-																 back()->Instruction()->GetFallthrough()))
+																 back()->Instruction()->GetFallthrough())) &&
+		    (!m_fallthrough_patched && !m_coalesced))
 			dollop_size += Utils::TRAMPOLINE_SIZE;
 		return dollop_size;
 	}
@@ -57,6 +54,18 @@ namespace Zipr_SDK {
 			return *(std::next(found_entry));
 		else
 			return NULL;
+	}
+
+	void Dollop_t::WasCoalesced(bool coalesced)
+	{
+		m_coalesced = coalesced;
+		m_size = CalculateWorstCaseSize();
+	}
+
+	void Dollop_t::FallthroughPatched(bool patched)
+	{
+		m_fallthrough_patched = patched;
+		m_size = CalculateWorstCaseSize();
 	}
 
 	Dollop_t *Dollop_t::Split(libIRDB::Instruction_t *split_point) {
