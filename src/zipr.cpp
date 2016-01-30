@@ -322,7 +322,11 @@ void ZiprImpl_t::CreateBinaryFile()
 
 	CreateDollops();
 
+	plugman.DollopBegin();
+
 	PlaceDollops();
+
+	plugman.DollopEnd();
 
 	WriteDollops();
 
