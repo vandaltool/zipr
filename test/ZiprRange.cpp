@@ -71,6 +71,7 @@ bool TestRangeSpeed() {
 		placement = m.GetFreeRange(d->Size());
 
 		found_start = placement.GetStart();
+		found_start++;
 	}
 
 	return true;

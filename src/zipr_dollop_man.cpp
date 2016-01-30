@@ -95,7 +95,9 @@ namespace zipr {
 			 * entries here. So, we attempt to link
 			 * to those, where possible.
 			 */
-			while (fallthrough = new_dollop->back()->Instruction()->GetFallthrough())
+			while ((fallthrough = new_dollop->back()
+			                                ->Instruction()
+			                                ->GetFallthrough()) != NULL)
 			{
 				/*
 				 * Look FIRST for a containing dollop.

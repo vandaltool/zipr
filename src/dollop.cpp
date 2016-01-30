@@ -169,7 +169,7 @@ namespace Zipr_SDK {
 				 it++) {
 			out << std::hex << *(*it) << std::endl;
 		}
-		if (fallthrough = d.FallthroughDollop())
+		if ((fallthrough = d.FallthroughDollop()) != NULL)
 			out << "Fallthrough: " << std::hex << fallthrough << std::endl;
 		return out;
 	}

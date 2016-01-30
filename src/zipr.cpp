@@ -1572,7 +1572,7 @@ void ZiprImpl_t::PlaceDollops()
 			 * this one!
 			 */
 
-			if (fallthrough = to_place->FallthroughDollop())
+			if ((fallthrough = to_place->FallthroughDollop()) != NULL)
 			{
 				size_t fallthrough_wcis = _DetermineWorstCaseInsnSize(fallthrough->
 				                                                      front()->
