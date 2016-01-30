@@ -33,7 +33,7 @@
 
 #include <dollop.h>
 
-class ZiprDollopManager_t {
+class ZiprDollopManager_t : public DollopManager_t {
 	public:
 		ZiprDollopManager_t() : m_refresh_stats(true) {}
 		void AddDollops(Dollop_t *dollop_head);
@@ -64,7 +64,7 @@ class ZiprDollopManager_t {
 		}
 		friend std::ostream &operator<<(std::ostream &out, const ZiprDollopManager_t &dollop_man);
 		void PrintStats(std::ostream &out);
-		void PrintPlacementMap(const ZiprMemorySpace_t &memory_space,
+		void PrintPlacementMap(const MemorySpace_t &memory_space,
 		                       const std::string &map_filename);
 	private:
 		void AddDollop(Dollop_t *dollop);

@@ -289,9 +289,10 @@ namespace zipr {
 	map_output << endl << std::hex << (x) << ": ";
 
 	void ZiprDollopManager_t::PrintPlacementMap(
-		const ZiprMemorySpace_t &memory_space,
+		const MemorySpace_t &_memory_space,
 		const std::string &map_filename)
 	{
+		const ZiprMemorySpace_t &memory_space = static_cast<const ZiprMemorySpace_t &>(_memory_space);
 		RangeSet_t original_ranges = memory_space.GetOriginalFreeRanges();
 		RangeSet_t::const_iterator range_it, range_it_end;
 		ofstream map_output(map_filename.c_str(), std::ofstream::out);

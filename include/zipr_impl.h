@@ -338,6 +338,7 @@ class ZiprImpl_t : public Zipr_t
 		void dump_map();
 
                 virtual Zipr_SDK::MemorySpace_t *GetMemorySpace() { return &memory_space; }
+		virtual Zipr_SDK::DollopManager_t *GetDollopManager() { return &m_dollop_mgr; }
                 virtual ELFIO::elfio *GetELFIO() { return elfiop; }
                 virtual libIRDB::FileIR_t *GetFileIR() { return m_firp; }
                 virtual Zipr_SDK::InstructionLocationMap_t *GetLocationMap() { return &final_insn_locations; }
