@@ -124,12 +124,6 @@ appfw/tests/xquery/xpath_test/passwrd_xml.xml -text
 appfw/tests/xquery/xquery_test/Makefile -text
 appfw/tests/xquery/xquery_test/XQuery_Injection.cpp -text
 appfw/tests/xquery/xquery_test/passwrd_xml.xml -text
-bea_tests/Makefile -text
-bea_tests/avx1.nasm -text
-bea_tests/avx2.nasm -text
-bea_tests/dbea.c -text
-bea_tests/insns.s -text
-bea_tests/insns_avx.s -text
 beaengine/CMakeFiles/CMakeDetermineCompilerABI_C.bin -text
 beaengine/CMakeFiles/CMakeDetermineCompilerABI_CXX.bin -text
 beaengine/CMakeFiles/cmake.check_cache -text
@@ -177,6 +171,12 @@ beaengine/include/beaengine/BeaEngine.h -text
 beaengine/include/beaengine/basic_types.h -text
 beaengine/include/beaengine/export.h -text
 beaengine/include/beaengine/macros.h -text
+beaengine/jdh_tests/Makefile -text
+beaengine/jdh_tests/avx1.nasm -text
+beaengine/jdh_tests/avx2.nasm -text
+beaengine/jdh_tests/dbea.c -text
+beaengine/jdh_tests/insns.s -text
+beaengine/jdh_tests/insns_avx.s -text
 /build.sh -text
 /configure -text
 /configure.in -text
