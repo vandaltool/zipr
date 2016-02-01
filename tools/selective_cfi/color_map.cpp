@@ -23,7 +23,7 @@ bool ColoredInstructionNonces_t::create()
 	{
 		const ICFS_t& the_icfs=*it;
 
-		for(int slot_no=0; ; slot_no++)
+		for(int slot_no=0; /* loop until break */ ; slot_no++)
 		{
 			// check if we need to allocate a new slot
 			if(slot_no<slots_used.size())
@@ -70,6 +70,26 @@ bool ColoredInstructionNonces_t::create()
 		}
 
 	}
+
+#if 1 /* debug code */
+	UniqueICFSSet_t used_icfs;
+	for(InstructionSet_t::iterator it=firp->GetInstructions().begin(); it!=firp->GetInstructions().end(); ++it)
+	{
+		Instruction_t* insn=*it;
+		if(insn->GetIBTargets())
+		{
+			v=GetColorOfIB(insn);
+			cout<<"IB assigned [slot][color] for "<<insn->GetBaseID()<<":"<<insn->getDisassembly()
+			    <<"=["<<v.GetPosition()<<"]["<<hex<<v.GetNonceValue()<<dec<<"]"<<endl;
+
+			used_icfs.insert(*insn->GetIBTargets());
+	
+		}
+	}
+
+	cout<<"# ATTRIBUTE Unique_Used_ICFS_size="<<dec<<used_icfs.size()<<endl;
+	cout<<"# ATTRIBUTE Unique_ICFS_size="<<dec<<unique_icfs.size()<<endl;
+#endif
 
 	// output stats
 	cout<<"# ATTRIBUTE slots_used="<<slots_used.size()<<endl;

@@ -420,6 +420,7 @@ void SCFI_Instrument::AddJumpCFI(Instruction_t* insn)
 	string jmpBits=getJumpDataBits();
         after->SetDataBits(jmpBits);
         after->SetComment(insn->getDisassembly()+" ; scfi");
+	assert(!do_common_slow_path); /* fixme:  this defaults to the slow_cfi path.  need to color accordingly */
 	createNewRelocation(firp,after,"slow_cfi_path",0);
 	after->SetFallthrough(NULL);
 	after->SetTarget(after);
@@ -488,14 +489,24 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 		
 	int size=1;
 	int position=0;
-	string slow_cfi_path_reloc_string="slow_cfi_path=(1,0xf4,1)";
-	if( v && v->IsValid())
+	string slow_cfi_path_reloc_string;
+	if(do_coloring && !do_common_slow_path)
 	{
-		slow_cfi_path_reloc_string="slow_cfi_path=("+ to_string(v->GetPosition()) +","
-			                  + to_string(v->GetNonceValue())+","+ to_string(size) +")";
-		size=v->GetPosition();
+		slow_cfi_path_reloc_string="slow_cfi_path=(pos=-1,nv=244,sz=1)";
+		if( v && v->IsValid())
+		{
+			slow_cfi_path_reloc_string="slow_cfi_path=(pos=-"+ to_string(v->GetPosition()+1) +",nv="
+						  + to_string(v->GetNonceValue())+",sz="+ to_string(size) +")";
+			size=v->GetPosition();
+		}
 	}
-	cout<<"Cal'd (unused) slow-path cfi reloc as: "<<slow_cfi_path_reloc_string<<endl;
+	else
+	{
+		slow_cfi_path_reloc_string="slow_cfi_path";
+	}
+
+	
+	cout<<"Cal'd slow-path cfi reloc as: "<<slow_cfi_path_reloc_string<<endl;
 // fixme:  would like to mark a slow path per nonce type using the variables calc'd above.
 	
 	
@@ -508,7 +519,7 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 	
         after->SetDataBits(jmpBits);
         after->SetComment(insn->getDisassembly()+" ; scfi");
-	createNewRelocation(firp,after,"slow_cfi_path",0);
+	createNewRelocation(firp,after,slow_cfi_path_reloc_string,0);
 	after->SetFallthrough(NULL);
 	after->SetTarget(after);
 	return;
@@ -555,9 +566,9 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 	// set the jne's target to itself, and create a reloc that zipr/strata will have to resolve.
 	jne->SetTarget(jne);	// needed so spri/spasm/irdb don't freak out about missing target for new insn.
 	Relocation_t* reloc=create_reloc(jne);
-	reloc->SetType("slow_cfi_path");
-// fixme: record nonce value for each slot.
+	reloc->SetType(slow_cfi_path_reloc_string); 
 	reloc->SetOffset(0);
+	cout<<"Setting slow path for: "<<slow_cfi_path_reloc_string<<endl;
 
 	return;
 #endif

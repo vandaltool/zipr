@@ -89,7 +89,4 @@ if 'build_appfw' in env:
     if int(env['build_appfw']) == 1:		 
         SConscript("appfw/src/SConscript.64", variant_dir='scons_build/appfw.64')
         SConscript("appfw/src/SConscript.32", variant_dir='scons_build/appfw.32')
-else:
-    SConscript("appfw/src/SConscript.64", variant_dir='scons_build/appfw.64')
-    SConscript("appfw/src/SConscript.32", variant_dir='scons_build/appfw.32')
 

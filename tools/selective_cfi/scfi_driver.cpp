@@ -35,7 +35,13 @@ using namespace libIRDB;
 
 void usage(char* name)
 {
-	cerr<<"Usage: "<<name<<" <variant_id> [--color|--no-color] [--protect-jumps|--no-protect-jumps] [--protect-rets|--no-protect-rets]\ndefault: --no-color --protect-jumps --protect-rets\n"; 
+	cerr<<" Usage: "<<name<<" <variant_id>  \n"
+"		[--color|--no-color]  \n"
+"		[--protect-jumps|--no-protect-jumps]  \n"
+"		[--protect-rets|--no-protect-rets] \n"
+"		[ --common-slow-path | --no-common-slow-path ] \n"
+" \n"
+"default: --no-color --protect-jumps --protect-rets --common-slow-path\n"; 
 }
 
 int main(int argc, char **argv)
@@ -53,22 +59,57 @@ int main(int argc, char **argv)
 	}
 
 	bool do_coloring=false;
+	bool do_common_slow_path=true;
 	bool do_jumps=true;
 	bool do_rets=true;
-	for(int  i=0;i<argc;i++)
+	for(int  i=2;i<argc;i++)
 	{
 		if(string(argv[i])=="--color")
+		{
+			cout<<"Using coloring..."<<endl;
 			do_coloring=true;
+		}
 		else if(string(argv[i])=="--no-color")
+		{
+			cout<<"Not using coloring..."<<endl;
 			do_coloring=false;
+		}
 		else if(string(argv[i])=="--protect-jumps")
+		{
+			cout<<"protecting jumps..."<<endl;
 			do_jumps=true;
+		}
 		else if(string(argv[i])=="--no-protect-jumps")
+		{
+			cout<<"Not protecting jumps..."<<endl;
 			do_jumps=false;
+		}
 		else if(string(argv[i])=="--protect-rets")
+		{
+			cout<<"protecting returns..."<<endl;
 			do_rets=true;
+		}
 		else if(string(argv[i])=="--no-protect-rets")
+		{
+			cout<<"Not protecting returns..."<<endl;
 			do_rets=false;
+		}
+		else if(string(argv[i])=="--common-slow-path")
+		{
+			cout<<"Using common slow path..."<<endl;
+			do_common_slow_path=true;
+		}
+		else if(string(argv[i])=="--no-common-slow-path")
+		{
+			cout<<"Not using common slow path..."<<endl;
+			do_common_slow_path=false;
+		}
+		else
+		{
+			cerr<<"Unknown option: "<< argv[i] << endl;
+			usage(argv[0]);
+			exit(1);
+		}
 	}
 
         string programName(argv[0]);
@@ -99,7 +140,7 @@ int main(int argc, char **argv)
 
                 try
                 {
-			SCFI_Instrument scfii(firp, do_coloring, do_jumps, do_rets);
+			SCFI_Instrument scfii(firp, do_coloring, do_common_slow_path, do_jumps, do_rets);
 
 
 			int success=scfii.execute();

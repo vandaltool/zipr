@@ -50,7 +50,7 @@ class ColoredSlotValue_t
 class ColoredSlotAllocator_t
 {
 	public:
-		ColoredSlotAllocator_t(int sn, int mv) : slot_number(sn), used(0), max_value(mv) { }
+		ColoredSlotAllocator_t(int sn, int mv) : slot_number(sn), used(1), max_value(mv) { }
 
 		bool CanReserve() const { return used < max_value; }
 		ColoredSlotValue_t Reserve() 
