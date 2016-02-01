@@ -374,19 +374,19 @@ bool SimpleCDI_Instrument::convert_ibs()
 void SimpleCDI_Instrument::display_stats(std::ostream &out)
 {
 	float fraction = NAN;
-	out << "# ATTRIBUTES complete_ibts=" << dec << num_complete_ibts << endl;
-	out << "# ATTRIBUTES num_returns=" << num_returns << endl;
+	out << "# ATTRIBUTE complete_ibts=" << dec << num_complete_ibts << endl;
+	out << "# ATTRIBUTE num_returns=" << num_returns << endl;
 	if (num_complete_returns>0)
 		fraction = (float)num_complete_returns/num_returns;
-	out << "# ATTRIBUTES num_complete_returns=" << num_complete_returns << endl;
-	out << "# ATTRIBUTES complete_returns_fraction=" << fraction << endl;
-	out << "# ATTRIBUTES single_target_set_jumps=" << single_target_set_jumps << endl;
-	out << "# ATTRIBUTES single_target_set_returns=" << single_target_set_returns << endl;
+	out << "# ATTRIBUTE num_complete_returns=" << num_complete_returns << endl;
+	out << "# ATTRIBUTE complete_returns_fraction=" << fraction << endl;
+	out << "# ATTRIBUTE single_target_set_jumps=" << single_target_set_jumps << endl;
+	out << "# ATTRIBUTE single_target_set_returns=" << single_target_set_returns << endl;
 
 	fraction = NAN;
 	if (num_complete_ibts > 0)
 		fraction = (float)(single_target_set_returns)/num_returns;
-	out << "# ATTRIBUTES single_target_set_return_fraction=" << fraction << endl;
+	out << "# ATTRIBUTE single_target_set_return_fraction=" << fraction << endl;
 }
 
 /* CDI: control data isolation */
