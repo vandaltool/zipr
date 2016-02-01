@@ -19,12 +19,12 @@
  */
 
 
+#include <stdlib.h>
+#include <cmath>
+
 #include "utils.hpp"
 #include "scdi_instr.hpp"
 #include "Rewrite_Utility.hpp"
-#include <stdlib.h>
-
-
 
 using namespace std;
 using namespace libIRDB;
@@ -215,6 +215,7 @@ static Instruction_t* addCallbackHandlerSequence
 bool SimpleCDI_Instrument::add_scdi_instrumentation(Instruction_t* insn)
 {
 	bool success=true;
+
 	if(getenv("SimpleCDI_VERBOSE")!=NULL)
 	{
 		cout<<"Found that "<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<" can be converted to CDI"<<endl;
@@ -224,8 +225,47 @@ bool SimpleCDI_Instrument::add_scdi_instrumentation(Instruction_t* insn)
 	DISASM d;
 	insn->Disassemble(d);
 
-	// not handling ret yet.
-	assert(string(d.CompleteInstr)!=string("ret"));
+	if(getenv("SimpleCDI_VERBOSE")!=NULL && ibts)
+	{
+		cout <<"["<<string(d.CompleteInstr)<<"] [" << string(d.Instruction.Mnemonic)<< "] IBTargets size: " << ibts->size() << " analysis_status: " << ibts->GetAnalysisStatus() << endl;
+	}
+
+	// only handle ret if complete && ib target size == 1
+
+	// @todo: for debugging, hlt
+	// @todo: can handle size == 2 with just one cmp
+	if (string(d.Instruction.Mnemonic) == string("ret ")) 
+	{
+		// instrumentation must be coordinated with needs_scdi_instrumentation()
+		if (ibts && ibts->IsComplete() && ibts->size() == 1)
+		{
+			Instruction_t *return_site = NULL;
+			for(ICFS_t::iterator it=ibts->begin(); it!=ibts->end(); ++it)
+			{
+				return_site=*it; 
+			}
+
+			Instruction_t *ret;
+			if (firp->GetArchitectureBitWidth() == 64)
+				ret = insertAssemblyBefore(firp,insn,"lea rsp, [rsp+8]");
+			else if (firp->GetArchitectureBitWidth() == 32)
+				ret = insertAssemblyBefore(firp,insn,"lea esp, [esp+4]");
+			else
+				assert(0);
+	
+			ret->Assemble("jmp 0");
+			ret->SetFallthrough(NULL);
+			ret->SetTarget(return_site);
+
+			cout<<hex<<insn->GetAddress()->GetVirtualOffset();
+			cout<<": Converted ret into a direct jmp: "<<insn->getDisassembly();
+			cout<<"   jmp back to: "<<ret->GetTarget()->GetAddress()->GetVirtualOffset()<<": "<<ret->GetTarget()->getDisassembly()<<dec<<endl;
+			single_target_set_returns++;
+			return true;
+		}
+	}
+
+	assert(strstr("ret ", d.Instruction.Mnemonic)==NULL);
 	
 	// pre-instrument
 	// push reg
@@ -269,15 +309,48 @@ bool SimpleCDI_Instrument::add_scdi_instrumentation(Instruction_t* insn)
 
 bool SimpleCDI_Instrument::needs_scdi_instrumentation(Instruction_t* insn)
 {
+	DISASM d;
+	insn->Disassemble(d);
+
+	bool isReturn = false;
+
+	if (string(d.Instruction.Mnemonic) == string("ret "))
+		isReturn = true;
+
+
+	if (isReturn)
+		num_returns++;
+
 	ICFS_t* ibts=insn->GetIBTargets();
 	if(!ibts)
 		return false;
 
+	if (ibts->IsComplete() && ibts->size() > 0)
+	{
+		num_complete_ibts++;
+		if (isReturn)
+			num_complete_returns++;
+	}
+
+	if (string(d.Instruction.Mnemonic) == string("ret "))
+	{
+		if (ibts->IsComplete() && ibts->size() == 1)
+			return true;
+		else 
+			return false;
+	}
+
+/*
+	if (ibts->IsComplete() && ibts->size() <= 2)
+		return true;
+*/
+
+/*
 	if(ibts->IsComplete() && ibts->size() >0 )
 		return true;
+*/
 
 	return false;
-
 }
 
 bool SimpleCDI_Instrument::convert_ibs()
@@ -298,14 +371,33 @@ bool SimpleCDI_Instrument::convert_ibs()
 	return success;
 }
 
+void SimpleCDI_Instrument::display_stats(std::ostream &out)
+{
+	float fraction = NAN;
+	out << "# ATTRIBUTES complete_ibts=" << dec << num_complete_ibts << endl;
+	out << "# ATTRIBUTES num_returns=" << num_returns << endl;
+	if (num_complete_returns>0)
+		fraction = (float)num_complete_returns/num_returns;
+	out << "# ATTRIBUTES num_complete_returns=" << num_complete_returns << endl;
+	out << "# ATTRIBUTES complete_returns_fraction=" << fraction << endl;
+	out << "# ATTRIBUTES single_target_set_jumps=" << single_target_set_jumps << endl;
+	out << "# ATTRIBUTES single_target_set_returns=" << single_target_set_returns << endl;
 
+	fraction = NAN;
+	if (num_complete_ibts > 0)
+		fraction = (float)(single_target_set_returns)/num_returns;
+	out << "# ATTRIBUTES single_target_set_return_fraction=" << fraction << endl;
+}
 
+/* CDI: control data isolation */
 bool SimpleCDI_Instrument::execute()
 {
 
 	bool success=true;
 
 	success = success && convert_ibs();
+
+	display_stats(cout);
 
 	return success;
 }

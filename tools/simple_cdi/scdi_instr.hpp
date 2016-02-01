@@ -21,14 +21,19 @@
 #ifndef scdi_instrument_hpp
 #define scdi_instrument_hpp
 
+#include <iostream>
 #include <libIRDB-core.hpp>
-
 
 
 class SimpleCDI_Instrument
 {
 	public:
-		SimpleCDI_Instrument(libIRDB::FileIR_t *the_firp) : firp(the_firp) {}
+		SimpleCDI_Instrument(libIRDB::FileIR_t *the_firp) : firp(the_firp), 
+			single_target_set_jumps(0),
+			single_target_set_returns(0),
+			num_complete_ibts(0),
+			num_returns(0),
+			num_complete_returns(0) {}
 		bool execute();
 
 	private:
@@ -37,10 +42,15 @@ class SimpleCDI_Instrument
 		bool add_scdi_instrumentation(libIRDB::Instruction_t* insn);
 		bool needs_scdi_instrumentation(libIRDB::Instruction_t* insn);
 		bool convert_ibs();
+		void display_stats(std::ostream &out);
 	
 		libIRDB::FileIR_t* firp;
 
-
+		int single_target_set_jumps;
+		int single_target_set_returns;
+		int num_complete_ibts;
+		int num_returns;
+		int num_complete_returns;
 };
 
 #endif
