@@ -176,7 +176,7 @@ std::pair<RangeSet_t::const_iterator,RangeSet_t::const_iterator>
 	ZiprMemorySpace_t::GetNearbyFreeRanges(const RangeAddress_t hint,size_t count)
 {
 	Range_t search(hint, hint+1);
-	RangeSet_t::const_iterator result = free_ranges.upper_bound(search);
+	RangeSet_t::const_iterator result = free_ranges.lower_bound(search);
 	/*
 	 * TODO: Not quite sure what to make of this.
 	 */

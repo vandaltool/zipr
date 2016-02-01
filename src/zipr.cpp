@@ -1429,7 +1429,8 @@ void ZiprImpl_t::PlaceDollops()
 						 << std::hex << placement.GetEnd()
 						 << endl;
 
-			if ((placement.GetEnd()-placement.GetStart()) < minimum_valid_req_size){
+			if ((placement.GetEnd()-placement.GetStart()) < minimum_valid_req_size &&
+			    placement.GetEnd()-placement.GetStart() < to_place->GetSize()) {
 				if (m_verbose)
 					cout << "Bad GetNearbyFreeRange() result." << endl;
 				placed = false;
