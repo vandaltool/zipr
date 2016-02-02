@@ -486,6 +486,8 @@ void FileIR_t::WriteToDB()
 	/* assign each item a unique ID */
 	SetBaseIDS();
 
+	CleanupICFS();
+
 	db_id_t j=-1;
 
 	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->instruction_table_name + string(" cascade;"));
@@ -993,4 +995,118 @@ void FileIR_t::ReadAllICFSFromDB(std::map<db_id_t,Instruction_t*> &addr2instMap,
 
 		unresolved->SetIBTargets(icfs);
 	}
+}
+
+void FileIR_t::GarbageCollectICFS()
+{
+	std::set<ICFS_t*> used_icfs;
+
+	for(set<Instruction_t*>::const_iterator it=this->GetInstructions().begin();
+		it!=this->GetInstructions().end();
+   		++it)
+	{
+		Instruction_t* instr=*it;
+		if(instr && instr->GetIBTargets())
+		{ 
+			used_icfs.insert(instr->GetIBTargets());
+		}
+	}
+
+	int unused_icfs = this->GetAllICFS().size() - used_icfs.size();
+	if (unused_icfs > 0)
+	{
+		cerr << "FileIR_t::GarbageCollectICFS(): WARNING: " << dec << unused_icfs << " unused ICFS found. ";
+		cerr << "Deleting before committing to IRDB" << endl;
+	}
+
+	ICFSSet_t to_erase;
+	for(ICFSSet_t::const_iterator it=this->GetAllICFS().begin();
+		it != this->GetAllICFS().end();
+		++it)
+	{
+		ICFS_t* icfs = *it;
+		if (used_icfs.count(icfs) == 0)
+		{
+			to_erase.insert(icfs);
+		}
+	}
+
+	for(ICFSSet_t::const_iterator it=to_erase.begin();
+		it != to_erase.end();
+		++it)
+	{
+		ICFS_t* icfs = *it;
+		this->GetAllICFS().erase(icfs);
+	}
+
+}
+
+void FileIR_t::DedupICFS()
+{
+	std::set<ICFS_t> unique_icfs;
+
+	ICFSSet_t& all_icfs=this->GetAllICFS();
+
+	// detect duplicate icfs
+	ICFSSet_t duplicates;
+	std::pair<std::set<ICFS_t>::iterator,bool> ret;
+	for(ICFSSet_t::iterator it=all_icfs.begin(); it!=all_icfs.end(); ++it)
+	{
+		ICFS_t* p=*it;
+		assert(p);
+		ret = unique_icfs.insert( *p );
+		if (!ret.second) {
+			duplicates.insert(p);
+		}
+	}
+
+	if (duplicates.size() > 0)
+	{
+		cerr << "FileIR_t::DedupICFS(): WARNING: " << dec << duplicates.size() << " duplicate ICFS out of " << all_icfs.size() << " total ICFS";
+		cerr << ". De-duplicating before committing to IRDB" << endl;
+	}
+
+	// remove duplicate icfs
+	for(ICFSSet_t::const_iterator it=duplicates.begin(); it!=duplicates.end(); ++it)
+	{
+		ICFS_t* icfs = *it;
+		all_icfs.erase(icfs);
+	}
+
+	// build duplicate icfs map
+	std::map<ICFS_t*, ICFS_t*> duplicate_map;
+	for(ICFSSet_t::const_iterator it=duplicates.begin(); it!=duplicates.end(); ++it)
+	{
+		ICFS_t* icfs = *it;
+		for(ICFSSet_t::iterator it=all_icfs.begin(); it!=all_icfs.end(); ++it)
+		{
+			ICFS_t* t = *it;
+
+			assert(t);
+			if (*icfs == *t)
+			{
+				duplicate_map[icfs] = t;
+				cerr << "FileIR_t::DedupICFS(): remap: icfs id " << icfs->GetBaseID() << " --> icsf id " << t->GetBaseID() << endl;
+				break;
+			}
+		}
+	}
+
+	// reassign ibtargets 
+	for(set<Instruction_t*>::const_iterator it=this->GetInstructions().begin();
+		it!=this->GetInstructions().end();
+   		++it)
+	{
+		Instruction_t* instr=*it;
+		if(instr->GetIBTargets() && duplicate_map[instr->GetIBTargets()])
+		{ 
+			instr->SetIBTargets(duplicate_map[instr->GetIBTargets()]);
+		}
+	}
+}
+
+void FileIR_t::CleanupICFS()
+{
+	GarbageCollectICFS();
+	DedupICFS();
 }

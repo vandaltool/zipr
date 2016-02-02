@@ -80,7 +80,6 @@ class FileIR_t : public BaseObj_t
 	#define ASM_REG_MAX_SIZE 500000
 
 	typedef std::map<Instruction_t*,std::string> registry_type;
-// xxx	typedef std::map<Instruction_t*,InstructionCFGNode_t*> ICFGNodeMap_t;
 
 	// a pointer to the original variants IR, NULL means not yet loaded.
 	FileIR_t* orig_variant_ir_p;
@@ -119,5 +118,9 @@ class FileIR_t : public BaseObj_t
 	std::map<db_id_t, Type_t*> ReadTypesFromDB(TypeSet_t& types);
 	void ReadAllICFSFromDB(std::map<db_id_t,Instruction_t*> &addr2insnMap,
 		std::map<Instruction_t*, db_id_t> &unresolvedICFS);
+
+	void CleanupICFS();
+	void GarbageCollectICFS();
+	void DedupICFS();
 };
 

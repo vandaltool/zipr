@@ -41,10 +41,9 @@ using namespace libIRDB;
 using namespace std;
 using namespace EXEIO;
 
-int next_icfs_set_id = 2;
-
+int next_icfs_set_id = 0;
 ICFS_t* hellnode_tgts = NULL;
-ICFS_t* indirect_calls = NULL;
+//ICFS_t* indirect_calls = NULL;
 
 #define arch_ptr_bytes() (firp->GetArchitectureBitWidth()/8)
 
@@ -256,9 +255,7 @@ void mark_jmptables(FileIR_t *firp)
 		firp->GetAllICFS().insert(new_icfs);
 
 		instr->SetIBTargets(new_icfs);
-
-		if(getenv("IB_VERBOSE")!=0)
-			cout << "jmp table[" << new_icfs->GetBaseID() << "]: size: " << new_icfs->size() << endl;
+		cout << "new icfs: jmp table[" << new_icfs->GetBaseID() << "]: size: " << new_icfs->size() << endl;
 	}
 }
 
@@ -302,13 +299,15 @@ void patch_icfs(FileIR_t *firp)
 		{
 			assert(instr->GetIBTargets()->IsIncomplete());
 
+/*
 			if (allTargetsIndirectlyCalledFunctions(instr)) {
 				cerr << "ib targets for: " << instr->getDisassembly() << " reassigned to indirectcalls node" << endl;
 				instr->SetIBTargets(indirect_calls);
 			} else {
-				cerr << "ib targets for: " << instr->getDisassembly() << " reassigned to hellnode" << endl;
+*/
+				cerr << "incomplete ib targets for: " << instr->getDisassembly() << " reassigned to hellnode" << endl;
 				instr->SetIBTargets(hellnode_tgts);
-			}
+//			}
 		}
 	}
 }
@@ -1489,9 +1488,11 @@ void icfs_init(FileIR_t* firp)
 	next_icfs_set_id = max_id+1;
 	cerr<<"Found max ICFS id=="<<max_id<<endl;
 	hellnode_tgts = new ICFS_t(next_icfs_set_id++, ICFS_Analysis_Module_Complete);
-	indirect_calls = new ICFS_t(next_icfs_set_id++, ICFS_Analysis_Module_Complete); 
+//	indirect_calls = new ICFS_t(next_icfs_set_id++, ICFS_Analysis_Module_Complete); 
 	firp->GetAllICFS().insert(hellnode_tgts);
-	firp->GetAllICFS().insert(indirect_calls);
+	cout << "new icfs: hellnode targets" << endl;
+	cout<<"icfs_init: size of ICFS set"<<firp->GetAllICFS().size()<<endl;
+//	firp->GetAllICFS().insert(indirect_calls);
 }
 
 void icfs_set_indirect_calls(FileIR_t* const firp, ICFS_t* const targets)
@@ -1741,12 +1742,10 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t>
 	cout<<"========================================="<<endl;
 
 
-
-
 	/* set the IR to have some instructions marked as IB targets */
 	mark_targets(firp);
 
-	icfs_set_indirect_calls(firp, indirect_calls);
+//	icfs_set_indirect_calls(firp, indirect_calls);
 	icfs_set_hellnode_targets(firp, hellnode_tgts);
 
 	mark_jmptables(firp);
@@ -1832,12 +1831,12 @@ main(int argc, char* argv[])
 
 			// find all indirect branch targets
 			fill_in_indtargs(firp, elfiop, forced_pins);
-	
+			
 			// write the DB back and commit our changes 
 			firp->WriteToDB();
 
 			delete firp;
-			delete indirect_calls;
+//			delete indirect_calls;
 			delete hellnode_tgts;
 		}
 
