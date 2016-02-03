@@ -104,6 +104,10 @@ void wahoo::Instruction::setIbProvenance(char *p_provenance)
 	{
 		m_ib_provenance = IB_PROVENANCE_INDIRECT_CALL;
 	}
+	else if (provenance == "COMPUTEDGOTOHEURISTIC") 
+	{
+		m_ib_provenance = IB_PROVENANCE_COMPUTED_GOTO;
+	}
 	else if (provenance == "UNKNOWN") 
 	{
 		m_ib_provenance = IB_PROVENANCE_UNKNOWN;
