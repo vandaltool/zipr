@@ -36,6 +36,7 @@ wahoo::Instruction::Instruction()
   m_isVisited = false;
   m_data = NULL;
   m_ib_complete=false;
+  m_ib_provenance = IB_PROVENANCE_UNKNOWN;
 }
 
 wahoo::Instruction::Instruction(app_iaddr_t p_address, int p_size, Function* p_func)
@@ -50,6 +51,8 @@ wahoo::Instruction::Instruction(app_iaddr_t p_address, int p_size, Function* p_f
   m_deallocSite = false;
   m_stackRef = false;
   m_data = NULL;
+  m_ib_complete=false;
+  m_ib_provenance = IB_PROVENANCE_UNKNOWN;
 }
 
 wahoo::Instruction::~Instruction()
@@ -83,4 +86,30 @@ void wahoo::Instruction::markStackRef()
 void wahoo::Instruction::markVarStackRef() 
 { 
   m_varStackRef = true; 
+}
+
+void wahoo::Instruction::setIbProvenance(char *p_provenance) 
+{ 
+	std::string provenance(p_provenance);
+
+	if (provenance == "RETURNTARGET") 
+	{
+		m_ib_provenance = IB_PROVENANCE_RETURN;
+	}
+	else if (provenance == "SWITCHTABLE") 
+	{
+		m_ib_provenance = IB_PROVENANCE_SWITCH_TABLE;
+	}
+	else if (provenance == "INDIRCALL") 
+	{
+		m_ib_provenance = IB_PROVENANCE_INDIRECT_CALL;
+	}
+	else if (provenance == "UNKNOWN") 
+	{
+		m_ib_provenance = IB_PROVENANCE_UNKNOWN;
+	}
+	else
+	{
+		m_ib_provenance = IB_PROVENANCE_UNKNOWN;
+	}
 }

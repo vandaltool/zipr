@@ -669,6 +669,16 @@ void Rewriter::readXrefsFile(char p_filename[])
                         break;
 	
 		// check for instr xref ibt 	
+/*
+            4280c0      1 INSTR XREF IBT FROMIB             426558 RETURNTARGET
+            426614      1 INSTR XREF IBT FROMIB             426580 RETURNTARGET
+            4280c0      1 INSTR XREF IBT FROMIB             426580 RETURNTARGET
+            4269d2      1 INSTR XREF IBT FROMIB             42689c RETURNTARGET
+            4432bd      1 INSTR XREF IBT FROMIB             42689c RETURNTARGET
+            447d4f      1 INSTR XREF IBT FROMIB             42689c RETURNTARGET
+            42689c      1 INSTR XREF FROMIB COMPLETE      3 RETURNTARGET
+*/
+
 		if(string("IBT")==string(ibt))
 		{
 			fscanf(fin, "%s", fromib);
@@ -685,9 +695,10 @@ void Rewriter::readXrefsFile(char p_filename[])
 				instr->setIBTAddress(addr);
 				if(strcmp(fromib,"FROMIB")==0)
 				{
+					char provenance[200];
 					// get the from point into memory.
 					app_iaddr_t from_addr = 0;
-					fscanf(fin, "%p", (void**)&from_addr);
+					fscanf(fin, "%p %s", (void**)&from_addr, provenance);
 					if(feof(fin))           // deal with blank lines at the EOF
 						break;
 
@@ -697,6 +708,7 @@ void Rewriter::readXrefsFile(char p_filename[])
 				
 					// record in the IR listing.
 					from_instr->addIBT(instr);
+					from_instr->setIbProvenance(provenance);
 				}
 			}
 		}
@@ -706,17 +718,21 @@ void Rewriter::readXrefsFile(char p_filename[])
 			// annotations can come in any order so the COMPLETE annotation for IB targets
 			// can come before/after the targets themselves
 			// in this loop, just keep track of instructions w/ complete targets
-			// 4004b6      1 INSTR XREF FROMIB COMPLETE      1
+			// 4004b6      1 INSTR XREF FROMIB COMPLETE      1   <provenance>
 			char complete[200];
 			fscanf(fin, "%s", complete);
+			if(feof(fin))           // deal with blank lines at the EOF
+				break;
 
 			if(strcmp(complete,"COMPLETE")==0) 
 			{
+				char provenance[200];
+				int num_targets;
 				completeIBT.insert(addr);
+				fscanf(fin, "%d %s", &num_targets, provenance);
+				if(feof(fin))           // deal with blank lines at the EOF
+					break;
 			}
-
-			if(feof(fin))           // deal with blank lines at the EOF
-				break;
 		}
 		
 		char remainder[2000];

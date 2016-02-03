@@ -13,6 +13,8 @@ namespace wahoo {
 
 class Function;
 
+enum IBProvenance { IB_PROVENANCE_UNKNOWN, IB_PROVENANCE_RETURN, IB_PROVENANCE_SWITCH_TABLE, IB_PROVENANCE_INDIRECT_CALL };
+
 class Instruction {
   public:
     Instruction();
@@ -52,6 +54,9 @@ class Instruction {
     const std::set<Instruction*>&  getIBTs() { return ibts; }
     void markIbComplete(bool complete=true) { m_ib_complete=complete; }
     bool isIbComplete() { return m_ib_complete; }
+    void setIbProvenance(char *);
+    void setIbProvenance(const IBProvenance p_provenance) { m_ib_provenance = p_provenance; }
+    IBProvenance getIbProvenance() const { return m_ib_provenance; }
 
   private:
     app_iaddr_t     m_address;
@@ -59,7 +64,6 @@ class Instruction {
     int             m_size;
     Function*       m_function;
     string          m_asm;
-//    unsigned char m_data[128];
     unsigned char*  m_data;
 
     bool            m_allocSite;
@@ -71,7 +75,7 @@ class Instruction {
 
     std::set<Instruction*> ibts;
     bool m_ib_complete;
-
+    IBProvenance m_ib_provenance;
 };
 
 }
