@@ -13,7 +13,7 @@ namespace wahoo {
 
 class Function;
 
-enum IBProvenance { IB_PROVENANCE_UNKNOWN, IB_PROVENANCE_RETURN, IB_PROVENANCE_SWITCH_TABLE, IB_PROVENANCE_INDIRECT_CALL, IB_PROVENANCE_COMPUTED_GOTO };
+enum IBTProvenance { IBT_PROVENANCE_UNKNOWN, IBT_PROVENANCE_RETURN, IBT_PROVENANCE_SWITCH_TABLE, IBT_PROVENANCE_INDIRECT_CALL, IBT_PROVENANCE_COMPUTED_GOTO, IBT_PROVENANCE_CODE_ADDRESS_TAKEN, IBT_PROVENANCE_UNREACHABLE_BLOCK, IBT_PROVENANCE_DATA_SEGMENT };
 
 class Instruction {
   public:
@@ -54,9 +54,9 @@ class Instruction {
     const std::set<Instruction*>&  getIBTs() { return ibts; }
     void markIbComplete(bool complete=true) { m_ib_complete=complete; }
     bool isIbComplete() { return m_ib_complete; }
-    void setIbProvenance(char *);
-    void setIbProvenance(const IBProvenance p_provenance) { m_ib_provenance = p_provenance; }
-    IBProvenance getIbProvenance() const { return m_ib_provenance; }
+    void setIBTProvenance(char *);
+    void setIBTProvenance(const IBTProvenance p_provenance) { m_ibt_provenance = p_provenance; }
+    IBTProvenance getIBTProvenance() const { return m_ibt_provenance; }
 
   private:
     app_iaddr_t     m_address;
@@ -75,7 +75,7 @@ class Instruction {
 
     std::set<Instruction*> ibts;
     bool m_ib_complete;
-    IBProvenance m_ib_provenance;
+    IBTProvenance m_ibt_provenance;
 };
 
 }

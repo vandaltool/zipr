@@ -36,7 +36,7 @@ wahoo::Instruction::Instruction()
   m_isVisited = false;
   m_data = NULL;
   m_ib_complete=false;
-  m_ib_provenance = IB_PROVENANCE_UNKNOWN;
+  m_ibt_provenance = IBT_PROVENANCE_UNKNOWN;
 }
 
 wahoo::Instruction::Instruction(app_iaddr_t p_address, int p_size, Function* p_func)
@@ -52,7 +52,7 @@ wahoo::Instruction::Instruction(app_iaddr_t p_address, int p_size, Function* p_f
   m_stackRef = false;
   m_data = NULL;
   m_ib_complete=false;
-  m_ib_provenance = IB_PROVENANCE_UNKNOWN;
+  m_ibt_provenance = IBT_PROVENANCE_UNKNOWN;
 }
 
 wahoo::Instruction::~Instruction()
@@ -88,32 +88,44 @@ void wahoo::Instruction::markVarStackRef()
   m_varStackRef = true; 
 }
 
-void wahoo::Instruction::setIbProvenance(char *p_provenance) 
+void wahoo::Instruction::setIBTProvenance(char *p_provenance) 
 { 
 	std::string provenance(p_provenance);
 
 	if (provenance == "RETURNTARGET") 
 	{
-		m_ib_provenance = IB_PROVENANCE_RETURN;
+		m_ibt_provenance = IBT_PROVENANCE_RETURN;
 	}
 	else if (provenance == "SWITCHTABLE") 
 	{
-		m_ib_provenance = IB_PROVENANCE_SWITCH_TABLE;
+		m_ibt_provenance = IBT_PROVENANCE_SWITCH_TABLE;
 	}
 	else if (provenance == "INDIRCALL") 
 	{
-		m_ib_provenance = IB_PROVENANCE_INDIRECT_CALL;
+		m_ibt_provenance = IBT_PROVENANCE_INDIRECT_CALL;
 	}
 	else if (provenance == "COMPUTEDGOTOHEURISTIC") 
 	{
-		m_ib_provenance = IB_PROVENANCE_COMPUTED_GOTO;
+		m_ibt_provenance = IBT_PROVENANCE_COMPUTED_GOTO;
+	}
+	else if (provenance == "CODEADDRESSTAKEN") 
+	{
+		m_ibt_provenance = IBT_PROVENANCE_CODE_ADDRESS_TAKEN;
+	}
+	else if (provenance == "UNREACHABLEBLOCK") 
+	{
+		m_ibt_provenance = IBT_PROVENANCE_UNREACHABLE_BLOCK;
+	}
+	else if (provenance == "DATASEGMENT") 
+	{
+		m_ibt_provenance = IBT_PROVENANCE_DATA_SEGMENT;
 	}
 	else if (provenance == "UNKNOWN") 
 	{
-		m_ib_provenance = IB_PROVENANCE_UNKNOWN;
+		m_ibt_provenance = IBT_PROVENANCE_UNKNOWN;
 	}
 	else
 	{
-		m_ib_provenance = IB_PROVENANCE_UNKNOWN;
+		m_ibt_provenance = IBT_PROVENANCE_UNKNOWN;
 	}
 }

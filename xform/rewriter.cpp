@@ -677,6 +677,7 @@ void Rewriter::readXrefsFile(char p_filename[])
             4432bd      1 INSTR XREF IBT FROMIB             42689c RETURNTARGET
             447d4f      1 INSTR XREF IBT FROMIB             42689c RETURNTARGET
             42689c      1 INSTR XREF FROMIB COMPLETE      3 RETURNTARGET
+
 */
 
 		if(string("IBT")==string(ibt))
@@ -692,15 +693,13 @@ void Rewriter::readXrefsFile(char p_filename[])
 			if(instr)
 			{
 				// cout<<"Setting IBT for addr "<<std::hex<<addr<<std::dec<<endl;
+				char provenance[200];
 				instr->setIBTAddress(addr);
 				if(strcmp(fromib,"FROMIB")==0)
 				{
-					char provenance[200];
 					// get the from point into memory.
 					app_iaddr_t from_addr = 0;
 					fscanf(fin, "%p %s", (void**)&from_addr, provenance);
-					if(feof(fin))           // deal with blank lines at the EOF
-						break;
 
 					// find that instruction
 					wahoo::Instruction *from_instr = addr_to_insn_map[from_addr];
@@ -708,8 +707,24 @@ void Rewriter::readXrefsFile(char p_filename[])
 				
 					// record in the IR listing.
 					from_instr->addIBT(instr);
-					from_instr->setIbProvenance(provenance);
+
+					// set provenance info
+					instr->setIBTProvenance(provenance);
 				}
+				else if(strcmp(fromib,"FROMUNKNOWN")==0)
+				{
+            		// 8049234      3 INSTR XREF IBT FROMUNKNOWN UNREACHABLEBLOCK
+					// COMPUTEDGOTOHEURISTIC | CODEADDRESSTAKEN | UNREACHABLEBLOCK
+					fscanf(fin, "%s", provenance);
+					instr->setIBTProvenance(provenance);
+				}
+				else if(strcmp(fromib,"FROMDATA")==0)
+				{
+					instr->setIBTProvenance("DATASEGMENT");
+				}
+
+				if(feof(fin))           // deal with blank lines at the EOF
+					break;
 			}
 		}
 		// check for instr xref fromib 	
