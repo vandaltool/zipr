@@ -283,6 +283,46 @@ bool TestClearSomeIteratively()
 	return m.GetRangeCount() == 1;
 }
 
+bool TestGetNearbyFreeRanges()
+{
+	ZiprMemorySpace_t m;
+	int result_count = 0;
+	pair<RangeSet_t::const_iterator, RangeSet_t::const_iterator> result;
+	RangeSet_t::const_iterator result_it, result_it_end;	
+
+	m.AddFreeRange(Range_t(512, 512));
+	m.AddFreeRange(Range_t(513, 1024));
+	m.AddFreeRange(Range_t(1025, 4096));
+
+	m.PrintMemorySpace(cout);
+
+	result = m.GetNearbyFreeRanges(RangeAddress_t(1000));
+	for (result_it = result.first, result_it_end = result.second;
+	     result_it != result_it_end;
+			 result_it++, result_count++) {}
+	return result_count == 2;
+}
+
+bool TestCopyConstructor()
+{
+	ZiprMemorySpace_t m, n;
+
+	m.AddFreeRange(Range_t(512, 512));
+	m.AddFreeRange(Range_t(513, 1024));
+	m.AddFreeRange(Range_t(1025, 4096));
+
+
+	n = m;
+	n.AddFreeRange(Range_t(8192, 16384));
+
+	cout << "m: " << endl;
+	m.PrintMemorySpace(cout);
+	cout << "n: " << endl;
+	n.PrintMemorySpace(cout);
+
+	return true;
+}
+
 int main(int argc, char *argv[])
 {
 	INVOKE(TestSplitMemorySpace);
@@ -294,4 +334,6 @@ int main(int argc, char *argv[])
 	INVOKE(TestClearAllIteratively);
 	INVOKE(TestClearSomeIteratively);
 	INVOKE(TestEraseOneByter);
+	INVOKE(TestGetNearbyFreeRanges);
+	INVOKE(TestCopyConstructor);
 }
