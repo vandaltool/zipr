@@ -14,10 +14,13 @@
                 "path" : "/variant_specific/main_exe",
                 "argv" : [ <<ARGS>> ], 
                 "env" : [
-			"LD_LIBRARY_PATH=/target_app_libs/",<<ENV>>
+			"LD_LIBRARY_PATH=",<<ENV>>
 			]
 
 	
+            },
+            "settings": {
+                "aslr_mode": 1
             }
         },
         "specs" : {

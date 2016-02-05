@@ -11,7 +11,8 @@ Usage:
 	generate_mvee_config.sh 
 
 	[(--diehard|--no-diehard)]
-	--dir <path_to_variants>
+	--indir <path_to_variants>
+	--outdir <path_to_variants>
 	[--args <arguments string in json format> ]
 	[--server <servername>
 	[--class <atd class>
@@ -35,7 +36,8 @@ check_opts()
         short_opts="h"
         long_opts="--long diehard
                    --long nodiehard
-                   --long dir:
+                   --long indir:
+                   --long outdir:
                    --long args:
                    --long server:
                    --long class: 
@@ -61,9 +63,14 @@ check_opts()
                                 usage;
                                 exit 1
                         ;;
-                        --dir)
-				echo "Setting dir = $2"
-                                dir="$2"
+                        --indir)
+				echo "Setting indir = $2"
+                                indir="$2"
+                                shift 2
+			;;
+                        --outdir)
+				echo "Setting outdir = $2"
+                                outdir="$2"
                                 shift 2
 			;;
                         --args)
@@ -106,7 +113,7 @@ check_opts()
                 exit 3;
         fi
 
-	if [ "x$dir" = "x" ]; then
+	if [ "x$indir" = "x" ]; then
 		echo "Specifying a directory is necessary"
 		exit 3;
 	fi	
@@ -118,9 +125,9 @@ check_opts()
 sanity_check()
 {
 
-	main_exe=$(/bin/ls -F $dir/target_apps/ |egrep "/$"|sed "s|/$||"|sed "s/^dh-//" )
-	libraries=$(/bin/ls $dir/target_app_libs/ |grep -v "^dh-lib$"|sed "s/^dh-//")
-	configs=$(/bin/ls $dir/target_apps/dh-$main_exe/)
+	main_exe=$(/bin/ls -F $indir/target_apps/ |egrep "/$"|sed "s|/$||"|sed "s/^dh-//" )
+	libraries=$(/bin/ls $indir/target_app_libs/ |grep -v "^dh-lib$"|sed "s/^dh-//")
+	configs=$(/bin/ls $indir/target_apps/dh-$main_exe/)
 	echo Found application=\"$main_exe\"
 	echo Found libraries=\"$libraries\"
 	echo Found configurations=\"$configs\"
@@ -129,7 +136,7 @@ sanity_check()
 	# sanity check that there's only one application.
 	if [ $(echo $main_exe|wc -w) -ne 1 ]; then
 
-		echo "Found zero or more than one app in $dir/target_apps/"
+		echo "Found zero or more than one app in $indir/target_apps/"
 		echo "Malformed input.  Aborting...."
 		exit 3
 	fi
@@ -139,8 +146,8 @@ sanity_check()
 	for config in $configs; do
 		for lib in $libraries; do
 		
-			if [ ! -d $dir/target_app_libs/dh-$lib/$config ]; then 
-				echo "Found that $dir/target_app_libs/dh-$lib/$config is missing."
+			if [ ! -d $indir/target_app_libs/dh-$lib/$config ]; then 
+				echo "Found that $indir/target_app_libs/dh-$lib/$config is missing."
 				echo "Malformed input.  Aborting...."
 			fi
 		done
@@ -151,7 +158,7 @@ sanity_check()
 	total_variants=0
 	
 	for config in $configs; do
-		for variant_dir in $dir/target_apps/dh-$main_exe/$config/v[0-9]*/
+		for variant_dir in $indir/target_apps/dh-$main_exe/$config/v[0-9]*/
 		do
 			variant_json_arr[$total_variants]="$variant_dir/peasoup_executable_dir/variant_config.json"
 			variant_config_arr[$total_variants]="$config"
@@ -164,8 +171,8 @@ sanity_check()
 
 			for lib in $libraries; do
 				varNum=$(basename $variant_dir)
-				if [ ! -d $dir/target_app_libs/dh-$lib/$config/$varNum ]; then
-					echo "Found that $dir/target_app_libs/dh-$lib/$config/$varNum is missing"
+				if [ ! -d $indir/target_app_libs/dh-$lib/$config/$varNum ]; then
+					echo "Found that $indir/target_app_libs/dh-$lib/$config/$varNum is missing"
 					exit 3
 				fi
 			done
@@ -183,9 +190,11 @@ sanity_check()
 finalize_json()
 {
 
+	mkdir $outdir/global
+
 
 	variants="$total_variants"
-	outfile="$dir/target_apps/$main_exe.conf"
+	outfile="$outdir/monitor.conf"
 	backend="zipr"	 # doesn't work with strata yet
 	json=${outfile}
 
@@ -202,6 +211,13 @@ finalize_json()
 
 	for seq in $(seq 0 $(expr $total_variants - 1))
 	do
+
+		new_variant_dir="$outdir/variant$(expr $seq + 1 )"
+		new_variant_dir_ts="/target_apps/variant$(expr $seq + 1 )"
+		mkdir $new_variant_dir
+		mkdir $new_variant_dir/extra 2>/dev/null || true
+		mkdir $new_variant_dir/resources 2>/dev/null || true
+
 		config=${variant_config_arr[$seq]}
 		variant_json=${variant_json_arr[$seq]}
 
@@ -215,15 +231,21 @@ finalize_json()
 			exit 4
 		fi
 
+		
+
+
 		# start with ps_dir
 		ps_dir=$(dirname $variant_json)
 
 		# get path to exe
-		exe_dir=$(dirname $ps_dir)
+		full_exe_dir=$(dirname $ps_dir)
+
 
 
 		# remove host's portion of the path to get path on target
-		exe_dir=$(echo $exe_dir|sed "s/^$dir//")
+		exe_dir=$(echo $full_exe_dir|sed "s/^$indir//")
+
+		cp -R $full_exe_dir $new_variant_dir/bin
 
 		# echo "exe_dir=$exe_dir"
 
@@ -239,10 +261,14 @@ finalize_json()
 		do
 			# echo adding lib $lib
 			lib_dir="/target_app_libs/dh-$lib/$config/$var_num_dir"
+
+			mkdir -p $new_variant_dir/lib 2>/dev/null || true
+			cp  $indir/$lib_dir/$lib $new_variant_dir/lib
+			cp -R $indir/$lib_dir/peasoup_executable_dir $new_variant_dir/lib/peasoup_executable_dir.$lib.$config
 	
 			# note the weird $'\n' is bash's way to encode a new line.
 			# set line=  ,\n"alias=file" -- but the bash is ugly, and I can't do better.
-			line=",  "$'\n\t\t\t'"  \"/usr/lib/$lib=$lib_dir/$lib\" "
+			line=",  "$'\n\t\t\t'"  \"/usr/lib/$lib=$new_variant_dir_ts/lib/$lib\" "
 			variant_config_contents="${variant_config_contents//,<<LIBS>>/$line,<<LIBS>>}"
 	
 		done
@@ -250,7 +276,7 @@ finalize_json()
 
 
 		variant_name="variant_${seq}"
-		variant_config_contents="${variant_config_contents//<<EXEPATH>>/$exe_dir}"
+		variant_config_contents="${variant_config_contents//<<EXEPATH>>/$new_variant_dir_ts\/bin}"
 		variant_config_contents="${variant_config_contents//<<VARIANTNUM>>/$variant_name}"
 		json_contents="${json_contents//<<VARIANT_CONFIG>>/$variant_config_contents,<<VARIANT_CONFIG>>}"
 		json_contents="${json_contents//<<VARIANT_LIST>>/\"$variant_name\",<<VARIANT_LIST>>}"
