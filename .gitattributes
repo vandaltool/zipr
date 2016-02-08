@@ -923,6 +923,7 @@ tools/cfar_configs/cfar_structNoc_structP1Canaries_probBilr_zipr.sh -text
 tools/cfar_configs/cfar_structNoc_structP1Canaries_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_structNoc_structP1Canaries_zipr.sh -text
 tools/cfar_configs/cfar_structNoc_zipr.sh -text
+tools/cfar_configs/cfar_structNos_structNoc_structP1Canaries_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_structP1Canaries_zipr.sh -text
 tools/cfar_configs/strata_all.json.template -text
 tools/cfar_configs/strata_variant.json.template -text
