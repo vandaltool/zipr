@@ -33,6 +33,13 @@ FileBased_StructuredDiversity_t::FileBased_StructuredDiversity_t(string key, int
 	assert(varid>=0 && varid<total_variants);
 
 #if defined(__linux__)
+	char* uname = getenv("USER");
+	if(!uname) {
+		uname = getenv("USERNAME");
+	}
+	if(!uname) {
+		uname = getlogin();
+	}
 	// assume p_config, which previously started with "dir://" already has the protocol stripped.
 	m_shared_dir=p_config;
 
@@ -52,7 +59,7 @@ FileBased_StructuredDiversity_t::FileBased_StructuredDiversity_t(string key, int
 	{
 		// dir exists,
 		// remove any old Barriers file for my variant..
-		string base_filespec=m_shared_dir+"/Barriers_"+GetKey()+"_*_"+toString(GetVariantID())+".*";
+		string base_filespec=m_shared_dir+"/Barriers_"+uname+"_"+GetKey()+"_*_"+toString(GetVariantID())+".*";
 		string rm_cmd="/bin/rm -f "+base_filespec;
 		int res=system(rm_cmd.c_str());
 		if(res!=0)
@@ -78,7 +85,17 @@ static bool fexists(const char *filename) {
 
 vector<string> FileBased_StructuredDiversity_t::DoBarrier(string value)
 {
-	string base_filename=m_shared_dir+"/Barriers_"+GetKey()+"_"+toString(m_barrier_count)+"_"+toString(GetVariantID());
+	char* uname = getenv("USER");
+	if(!uname) {
+		uname = getenv("USERNAME");
+	}
+#if defined(__linux__)
+	if(!uname) {
+		uname = getlogin();
+	}
+#endif
+	assert(uname);
+	string base_filename=m_shared_dir+"/Barriers_"+uname+"_"+GetKey()+"_"+toString(m_barrier_count)+"_"+toString(GetVariantID());
 	string data_filename=base_filename+".data";
 	string done_filename=base_filename+".done";
 
