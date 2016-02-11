@@ -22,6 +22,7 @@
 
 #include <libIRDB-core.hpp>
 #include <iostream>
+#include <fstream>
 #include <stdlib.h>
 #include <string.h>
 #include <map>
@@ -239,12 +240,6 @@ void add_new_instructions(FileIR_t *firp)
 
 
 
-#if 0
-        	::Elf64_Off sec_hdr_off, sec_off;
-        	::Elf_Half secnum, strndx, secndx;
-        	::Elf_Word secsize;
-	
-#endif
         	int secnum = elfiop.sections.size(); 
 		int secndx=0;
 
@@ -253,14 +248,11 @@ void add_new_instructions(FileIR_t *firp)
         	/* look through each section and find the missing target*/
         	for (secndx=1; secndx<secnum; secndx++)
 		{
-//        		int flags = elfiop.sections[secndx]->get_flags();
-
         		/* not a loaded section */
-        		if( !elfiop.sections[secndx]->isLoadable()) // (flags & SHF_ALLOC) != SHF_ALLOC)
+        		if( !elfiop.sections[secndx]->isLoadable()) 
                 		continue;
 		
         		/* loaded, and contains instruction, record the bounds */
-        		// if( (flags & SHF_EXECINSTR) != SHF_EXECINSTR)
         		if( !elfiop.sections[secndx]->isExecutable()) 
                 		continue;
 		
@@ -432,6 +424,68 @@ void fill_in_cfg(FileIR_t *firp)
 }
 
 
+void fill_in_scoops(FileIR_t *firp)
+{
+	int secnum = elfiop.sections.size();
+	int secndx=0;
+
+	/* look through each section */
+	for (secndx=1; secndx<secnum; secndx++)
+	{
+		/* not a loaded section, try next section */
+		if(elfiop.sections[secndx]->isLoadable()) 
+		{
+			cout<<"Skipping scoop for section (not loadable) "<<elfiop.sections[secndx]->get_name()<<endl;
+			continue;
+		}
+
+        	if(elfiop.sections[secndx]->isWriteable() && elfiop.sections[secndx]->isExecutable()) 
+		{
+			ofstream fout("warning.txt");
+			fout<<"Found that section "<<elfiop.sections[secndx]->get_name()<<" is both writeable and executable.  Program is inherently unsafe!"<<endl;
+		}
+
+		/* executable sections handled by other bits. */
+        	if(elfiop.sections[secndx]->isExecutable()) 
+		{
+			cout<<"Skipping scoop for section (executable) "<<elfiop.sections[secndx]->get_name()<<endl;
+                	continue;
+		}
+
+		/* name */
+		string name=elfiop.sections[secndx]->get_name();
+
+		/* start address */
+		AddressID_t *startaddr=new AddressID_t();
+		assert(startaddr);
+		startaddr->SetVirtualOffset( elfiop.sections[secndx]->get_address());
+		startaddr->SetFileID(firp->GetFile()->GetBaseID());
+		firp->GetAddresses().insert(startaddr);
+
+		/* end */
+		AddressID_t *endaddr=new AddressID_t();
+		assert(endaddr);
+		endaddr->SetVirtualOffset( elfiop.sections[secndx]->get_address() + elfiop.sections[secndx]->get_size());
+		endaddr->SetFileID(firp->GetFile()->GetBaseID());
+		firp->GetAddresses().insert(endaddr);
+
+		Type_t *chunk_type=NULL; /* FIXME -- need to figure out the type system for schoops, but NULL should remain valid */
+
+		/* permissions */
+		int permissions= 
+			( elfiop.sections[secndx]->isReadable() << 2 ) | 
+			( elfiop.sections[secndx]->isWriteable() << 1 ) | 
+			( elfiop.sections[secndx]->isExecutable() << 0 ) ;
+
+		DataScoop_t *newscoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, name, startaddr, endaddr, NULL, permissions);
+		assert(newscoop);
+		firp->GetDataScoops().insert(newscoop);
+
+		cout<<"Allocated new scoop for section "<<name<<endl;
+
+	}
+
+}
 
 main(int argc, char* argv[])
 {
@@ -480,6 +534,7 @@ main(int argc, char* argv[])
 			EXEIO::dump::section_headers(cout,elfiop);
 
 			fill_in_cfg(firp);
+			fill_in_scoops(firp);
 
 			// write the DB back and commit our changes 
 			firp->WriteToDB();
