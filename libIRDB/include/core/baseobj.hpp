@@ -41,7 +41,7 @@ class BaseObj_t
         void SetDoipID(doip_t *dp) { doip=dp; }
         void SetBaseID(db_id_t id) {base_id=id; }
 
-		static const db_id_t NOT_IN_DATABASE;
+	static const db_id_t NOT_IN_DATABASE;
 
     protected:
         static DBinterface_t *dbintr;

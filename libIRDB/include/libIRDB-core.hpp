@@ -50,6 +50,7 @@ class Instruction_t; // forward decl for many classes
 #include <core/variantid.hpp>
 #include <core/archdesc.hpp>
 #include <core/type.hpp>
+#include <core/scoop.hpp>
 #include <core/fileir.hpp>
 #include <core/pqxxdb.hpp>
 

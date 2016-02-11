@@ -497,6 +497,7 @@ void FileIR_t::WriteToDB()
 	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->address_table_name     + string(" cascade;"));
 	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->relocs_table_name     + string(" cascade;"));
 	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->types_table_name     + string(" cascade;"));
+	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->scoop_table_name     + string(" cascade;"));
 
 	/* and now that everything has an ID, let's write to the DB */
 
