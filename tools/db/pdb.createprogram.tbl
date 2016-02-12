@@ -6,22 +6,22 @@
 
 CREATE TABLE #ATN#
 (
-  address_id         	SERIAL PRIMARY KEY,		-- key
-  file_id            	integer REFERENCES file_info,	-- which file this address is part of
-  vaddress_offset     bigint,			-- the offset into the file
-  doip_id             integer DEFAULT -1 		-- the DOIP
+  address_id         SERIAL PRIMARY KEY,		-- key
+  file_id            integer REFERENCES file_info,	-- which file this address is part of
+  vaddress_offset    bigint,				-- the offset into the file
+  doip_id            integer DEFAULT -1 		-- the DOIP
 );
 
 CREATE TABLE #FTN#
 (
-  function_id        	SERIAL PRIMARY KEY,		-- key
-  entry_point_id      integer, 			-- id of the address that is the entry point of this function. 
-  name               	text,				-- name of this function
-  stack_frame_size   	integer,			-- believed stack frame size
-  out_args_region_size	integer,			-- believed out arg size
-  use_frame_pointer	    boolean,			-- believed whether this function uses the FP
-  type_id               integer DEFAULT -1, -- id for the type that describes the function prototype
-  doip_id	          	integer DEFAULT -1 		-- the DOIP
+  function_id        		SERIAL PRIMARY KEY,	-- key
+  entry_point_id     		integer, 		-- id of the address that is the entry point of this function. 
+  name               		text,			-- name of this function
+  stack_frame_size   		integer,		-- believed stack frame size
+  out_args_region_size		integer,		-- believed out arg size
+  use_frame_pointer	    	boolean,		-- believed whether this function uses the FP
+  type_id               	integer DEFAULT -1, 	-- id for the type that describes the function prototype
+  doip_id	          	integer DEFAULT -1 	-- the DOIP
 );
 
 CREATE TABLE #TYP#
@@ -32,7 +32,17 @@ CREATE TABLE #TYP#
   ref_type_id        integer DEFAULT -1,   -- for aggregate types
   pos                integer DEFAULT -1,   -- for aggregate types, position in aggregate
   ref_type_id2       integer DEFAULT -1,   -- for func types
-  doip_id            integer DEFAULT -1    -- the DOIP
+  doip_id            integer DEFAULT -1   -- the DOIP
+);
+
+CREATE TABLE #DTN#
+(
+  scoop_id     	     SERIAL PRIMARY KEY,	-- key
+  name               text DEFAULT '',    	-- string representation of the type
+  type_id            integer,     		-- the type of the data, as an index into the table table.
+  start_address_id   integer, 			-- address id for start.
+  end_address_id     integer,			-- address id for end
+  permissions        integer     		-- in umask format (bitmask for rwx)
 );
 
 CREATE TABLE #ITN#
@@ -43,12 +53,12 @@ CREATE TABLE #ITN#
   orig_address_id           integer,			-- where did this instruction come from in the orig pgm.
   fallthrough_address_id    integer DEFAULT -1,		-- the fallthrough address (if can fall through)
   target_address_id         integer DEFAULT -1,		-- the target address (if direct) 
-  icfs_id                   integer DEFAULT -1,  -- ICFS set id
+  icfs_id                   integer DEFAULT -1,  	-- ICFS set id
   data                      bytea,			-- the actual bytes of the instruction 
   callback                  text,			-- a callback registered for this instruction
   comment                   text,			-- a comment for human debugging
   ind_target_address_id	    integer DEFAULT -1,		-- is this instruction jumped to indirectly, if so, it's using this addr
-  doip_id		                integer DEFAULT -1 		-- the DOIP
+  doip_id		    integer DEFAULT -1 		-- the DOIP
 );
 
 CREATE TABLE #RTN#

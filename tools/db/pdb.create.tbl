@@ -33,6 +33,7 @@ CREATE TABLE file_info
   icfs_map_table_name     text,
   relocs_table_name       text,
   types_table_name        text,
+  scoop_table_name        text,
   doip_id                 integer DEFAULT -1
 );
 
