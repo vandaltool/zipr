@@ -29,6 +29,7 @@ done
 
 
 functables=`psql -t -q -c "select function_table_name from file_info"`
+scooptables=`psql -t -q -c "select function_table_name from file_info"`
 insntables=`psql -t -q -c "select instruction_table_name from file_info"`
 icfstables=`psql -t -q -c "select icfs_table_name from file_info"`
 icfsmaptables=`psql -t -q -c "select icfs_map_table_name from file_info"`
@@ -42,7 +43,7 @@ othertables="variant_dependency variant_info file_info doip"
 droptabs=""
 dropcnt=0
 
-for  i in $insntables $icfstables $icfsmaptables $addrtables $functables $relocstables $typestables $grace_inpttables $grace_covgtables $othertables
+for  i in $insntables $icfstables $icfsmaptables $addrtables $functables $relocstables $typestables $grace_inpttables $grace_covgtables $othertables $scooptables
 do
 
 	echo Dropping table $i..." "
@@ -64,4 +65,4 @@ psql -t -q -c "$droptabs" || true
 psql -f $PEASOUP_HOME/tools/db/job.drop.tbl
 
 echo dropping types
-psql -t -q -c "DROP TYPE icfs_analysis_result;"
+psql -t -q -c "DROP TYPE icfs_analysis_result cascade;"
