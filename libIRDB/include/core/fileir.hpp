@@ -42,6 +42,7 @@ class FileIR_t : public BaseObj_t
 	InstructionSet_t& GetInstructions() { return insns; }
 	AddressSet_t&     GetAddresses() { return addrs; }
 	RelocationSet_t&  GetRelocations() { return relocs; }
+	DataScoopSet_t&  GetDataScoops() { return scoops; }
 	ICFSSet_t&        GetAllICFS() { return icfs_set; }
 
 	// generate the spri rules into the output file, fout.
@@ -93,12 +94,18 @@ class FileIR_t : public BaseObj_t
 	AddressSet_t      addrs;
 	RelocationSet_t   relocs;
 	TypeSet_t         types;
+	DataScoopSet_t    scoops;
 	VariantID_t       progid;
 	ICFSSet_t         icfs_set;
 	File_t*           fileptr;
 
 	std::map<db_id_t,AddressID_t*> ReadAddrsFromDB();
 	std::map<db_id_t,Function_t*> ReadFuncsFromDB
+	(
+		std::map<db_id_t,AddressID_t*> &addrMap,
+		std::map<db_id_t,Type_t*> &typeMap
+	);
+	void ReadScoopsFromDB
 	(
 		std::map<db_id_t,AddressID_t*> &addrMap,
 		std::map<db_id_t,Type_t*> &typeMap

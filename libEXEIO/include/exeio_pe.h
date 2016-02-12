@@ -23,6 +23,8 @@ namespace EXEIO
 
 			bool isLoadable() const { return s->readable(); }
 			bool isExecutable() const { return s->executable(); }
+			bool isWriteable() const { return s->writeable(); }
+			bool isReadable() const { return s->readable(); }
 			bool isBSS() const  { return s->empty(); }
 			const char* get_data() const  { return s->get_raw_data().c_str(); }
 			std::string get_name() const { return s->get_name(); }

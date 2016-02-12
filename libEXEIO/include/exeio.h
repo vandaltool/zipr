@@ -23,6 +23,8 @@ namespace EXEIO
 		public: 
 			virtual bool isLoadable() const =0;
 			virtual bool isExecutable() const =0;
+			virtual bool isWriteable() const =0;
+			virtual bool isReadable() const =0;
 			virtual bool isBSS() const =0;
 			virtual const char* get_data() const =0;
 			virtual std::string get_name() const =0;

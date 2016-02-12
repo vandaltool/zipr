@@ -215,6 +215,7 @@ libIRDB/include/core/icfs.hpp -text
 libIRDB/include/core/instruction.hpp -text
 libIRDB/include/core/pqxxdb.hpp -text
 libIRDB/include/core/reloc.hpp -text
+libIRDB/include/core/scoop.hpp -text
 libIRDB/include/core/type.hpp -text
 libIRDB/include/core/variantid.hpp -text
 libIRDB/include/libIRDB-cfg.hpp -text

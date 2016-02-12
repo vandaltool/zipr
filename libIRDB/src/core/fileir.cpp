@@ -117,6 +117,7 @@ void FileIR_t::ReadFromDB()
 	std::map<db_id_t,Type_t*> typesMap = ReadTypesFromDB(types); 
 	std::map<db_id_t,AddressID_t*> 	addrMap=ReadAddrsFromDB();
 	std::map<db_id_t,Function_t*> 	funcMap=ReadFuncsFromDB(addrMap, typesMap);
+	ReadScoopsFromDB(addrMap, typesMap);
 
 	std::map<db_id_t,Instruction_t*> addressToInstructionMap;
 	std::map<Instruction_t*, db_id_t> unresolvedICFS;
@@ -497,6 +498,7 @@ void FileIR_t::WriteToDB()
 	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->address_table_name     + string(" cascade;"));
 	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->relocs_table_name     + string(" cascade;"));
 	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->types_table_name     + string(" cascade;"));
+	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->scoop_table_name     + string(" cascade;"));
 
 	/* and now that everything has an ID, let's write to the DB */
 
@@ -614,6 +616,13 @@ void FileIR_t::WriteToDB()
 		string q = icfs->WriteToDB(fileptr);
 		dbintr->IssueQuery(q);
 	}
+	for(DataScoopSet_t::const_iterator it=scoops.begin(); it!=scoops.end(); ++it)
+	{
+		DataScoop_t* scoop = *it;
+		assert(scoop);
+		string q = scoop->WriteToDB(fileptr,j);
+		dbintr->IssueQuery(q);
+	}
 }
 
 
@@ -630,6 +639,10 @@ void FileIR_t::SetBaseIDS()
 	for(std::set<Instruction_t*>::const_iterator i=insns.begin(); i!=insns.end(); ++i)
 		j=MAX(j,(*i)->GetBaseID());
 	for(std::set<Relocation_t*>::const_iterator i=relocs.begin(); i!=relocs.end(); ++i)
+		j=MAX(j,(*i)->GetBaseID());
+	for(std::set<Type_t*>::const_iterator i=types.begin(); i!=types.end(); ++i)
+		j=MAX(j,(*i)->GetBaseID());
+	for(DataScoopSet_t::const_iterator i=scoops.begin(); i!=scoops.end(); ++i)
 		j=MAX(j,(*i)->GetBaseID());
 
 	/* increment past the max ID so we don't duplicate */
@@ -649,6 +662,9 @@ void FileIR_t::SetBaseIDS()
 		if((*i)->GetBaseID()==NOT_IN_DATABASE)
 			(*i)->SetBaseID(j++);
 	for(std::set<Type_t*>::const_iterator i=types.begin(); i!=types.end(); ++i)
+		if((*i)->GetBaseID()==NOT_IN_DATABASE)
+			(*i)->SetBaseID(j++);
+	for(DataScoopSet_t::const_iterator i=scoops.begin(); i!=scoops.end(); ++i)
 		if((*i)->GetBaseID()==NOT_IN_DATABASE)
 			(*i)->SetBaseID(j++);
 }
@@ -1110,3 +1126,46 @@ void FileIR_t::CleanupICFS()
 	GarbageCollectICFS();
 	DedupICFS();
 }
+
+void FileIR_t::ReadScoopsFromDB
+        (
+                std::map<db_id_t,AddressID_t*> &addrMap,
+                std::map<db_id_t,Type_t*> &typeMap
+        )
+{
+/*
+  scoop_id           SERIAL PRIMARY KEY,        -- key
+  name               text DEFAULT '',           -- string representation of the type
+  type_id            integer,                   -- the type of the data, as an index into the table table.
+  start_address_id   integer,                   -- address id for start.
+  end_address_id     integer,                   -- address id for end
+  permissions        integer                    -- in umask format (bitmask for rwx)
+
+ */
+
+        std::string q= "select * from " + fileptr->scoop_table_name + " ; ";
+
+        dbintr->IssueQuery(q);
+
+        while(!dbintr->IsDone())
+        {
+
+                db_id_t sid=atoi(dbintr->GetResultColumn("scoop_id").c_str());
+                std::string name=dbintr->GetResultColumn("name");
+                db_id_t type_id=atoi(dbintr->GetResultColumn("type_id").c_str());
+		Type_t *type=typeMap[type_id];
+                db_id_t start_id=atoi(dbintr->GetResultColumn("start_address_id").c_str());
+		AddressID_t* start_addr=addrMap[start_id];
+                db_id_t end_id=atoi(dbintr->GetResultColumn("end_address_id").c_str());
+		AddressID_t* end_addr=addrMap[end_id];
+                int permissions=atoi(dbintr->GetResultColumn("permissions").c_str());
+
+		DataScoop_t* newscoop=new DataScoop_t(sid,name,start_addr,end_addr,type,permissions);
+		assert(newscoop);
+		GetDataScoops().insert(newscoop);
+		dbintr->MoveToNextRow();
+	}
+
+	return;
+}
+

@@ -18,6 +18,7 @@ files=  '''
 	instruction.cpp
 	pqxxdb.cpp
 	type.cpp
+	scoop.cpp
 	variantid.cpp
 	'''
 cpppath=''' 
