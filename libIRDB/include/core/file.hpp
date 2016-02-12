@@ -60,6 +60,7 @@ class File_t : public BaseObj_t
         friend class AggregateType_t;
         friend class FuncType_t;
         friend class ICFS_t;
+	friend class DataScoop_t;
 //        friend class IBTargets;
 
     private:

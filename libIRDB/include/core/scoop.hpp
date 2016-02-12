@@ -63,6 +63,8 @@ class DataScoop_t : public BaseObj_t
 		void ClearWriteable() { permissions &= ~permissions_w; }
 		void ClearExecuteable() { permissions &= ~permissions_x; }
 
+                std::string WriteToDB(File_t *fid, db_id_t newid);
+
 	private:
 		const int permissions_r=4;
 		const int permissions_w=2;
