@@ -11,6 +11,29 @@ void PrintStat(std::ostream &out, std::string description, double value)
 size_t CALLBACK_TRAMPOLINE_SIZE=9;
 size_t TRAMPOLINE_SIZE=5;
 using namespace libIRDB;
+
+size_t DetermineWorstCaseDollopSizeInclFallthrough(Dollop_t *dollop)
+{	
+	size_t fallthroughs_wcds = 0;
+
+	for (Dollop_t *fallthrough_it = dollop;
+	     fallthrough_it != NULL;
+			 fallthrough_it = fallthrough_it->FallthroughDollop())
+	{
+		fallthroughs_wcds += fallthrough_it->GetSize();
+		/*
+		 * For every dollop that we consolidate,
+		 * we will lose TRAMPOLINE_SIZE bytes by
+		 * not having to jump to the fallthrough.
+		 * That space is included in GetSize()
+		 * result, so we subtract it here.
+		 */
+		if (fallthrough_it->FallthroughDollop())
+			fallthroughs_wcds -= Utils::TRAMPOLINE_SIZE;
+	}
+	return fallthroughs_wcds;
+}
+
 int DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_for_jump)
 {
 
