@@ -1583,9 +1583,10 @@ void ZiprImpl_t::PlaceDollops()
 				if (m_verbose)
 					cout << "Determining whether to coalesce: "
 					     << "Remaining: " << std::dec << remaining_size
-							 << " vs Needed: " << std::dec << std::min(fallthrough_wcis,fallthrough_wcds) << endl;
-				if ((remaining_size < fallthrough_wcis || fallthrough->IsPlaced()) &&
-				    !(remaining_size<=fallthrough_wcds))
+							 << " vs Needed: " << std::dec 
+							 << std::min(fallthrough_wcis,fallthrough_wcds) << endl;
+				if (remaining_size < std::min(fallthrough_wcis,fallthrough_wcds) ||
+				    fallthrough->IsPlaced())
 				{
 
 					string patch_jump_string;
