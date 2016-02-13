@@ -180,7 +180,9 @@ bool TestAddNewDollopSplitsExistingDollop(void) {
 	return success &&
 	       a->GetDollopEntryCount() == 2 &&
 	       b->GetDollopEntryCount() == 2 &&
-				 dollop_man.Size() == 2;
+				 dollop_man.Size() == 2 &&
+				 a->FallthroughDollop() == b &&
+				 b->FallbackDollop() == a;
 }
 
 bool TestUpdateTargetsDollopManager(void) {
@@ -349,7 +351,8 @@ bool TestDollopSplit(void) {
 	cout << "Dollop B: " << endl;
 	cout << *b << endl;
 
-	return a->GetDollopEntryCount() == 1 && b->GetDollopEntryCount() == 4;
+	return a->GetDollopEntryCount() == 1 && b->GetDollopEntryCount() == 4 &&
+	       a->FallthroughDollop() == b && b->FallbackDollop() == a;
 }
 
 bool TestDollopEntryEquals(void) {

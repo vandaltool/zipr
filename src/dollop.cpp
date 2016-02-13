@@ -7,6 +7,7 @@ namespace Zipr_SDK {
 	Dollop_t::Dollop_t(Instruction_t *start) :
 		m_size(0),
 		m_fallthrough_dollop(NULL),
+		m_fallback_dollop(NULL),
 		m_fallthrough_patched(false),
 		m_coalesced(false),
 		m_was_truncated(false)
@@ -96,6 +97,18 @@ namespace Zipr_SDK {
 
 		new_dollop = new Dollop_t();
 
+		/*
+		 * Set fallthrough and fallback dollop pointers.
+		 *    ----- ----
+		 *    |   | |   |
+		 * this - new - fallthrough
+		 *              |
+		 *         |-----
+		 */
+		if (m_fallthrough_dollop)
+			m_fallthrough_dollop->FallbackDollop(new_dollop);
+		new_dollop->FallbackDollop(this);
+
 		new_dollop->FallthroughDollop(m_fallthrough_dollop);
 		m_fallthrough_dollop = new_dollop;
 
@@ -162,13 +175,15 @@ namespace Zipr_SDK {
 	}
 	std::ostream &operator<<(std::ostream &out, const Dollop_t &d) {
 		std::list<DollopEntry_t*>::const_iterator it, it_end;
-		Dollop_t *fallthrough = NULL;
+		Dollop_t *fallthrough = NULL, *fallback = NULL;
 
 		for (it = d.begin(), it_end = d.end();
 		     it != it_end;
 				 it++) {
 			out << std::hex << *(*it) << std::endl;
 		}
+		if ((fallback = d.FallbackDollop()) != NULL)
+			out << "Fallback: " << std::hex << fallback << std::endl;
 		if ((fallthrough = d.FallthroughDollop()) != NULL)
 			out << "Fallthrough: " << std::hex << fallthrough << std::endl;
 		return out;

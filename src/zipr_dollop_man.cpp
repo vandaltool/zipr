@@ -73,6 +73,7 @@ namespace zipr {
 					 * the updated fallthrough dollop!
 					 */
 					new_dollop->FallthroughDollop(fallthrough_dollop);
+					fallthrough_dollop->FallbackDollop(new_dollop);
 
 					/*
 					 * Delete the overlapping instructions.
@@ -116,6 +117,7 @@ namespace zipr {
 				{
 					assert(existing_dollop->front()->Instruction() == fallthrough);
 					new_dollop->FallthroughDollop(existing_dollop);
+					existing_dollop->FallbackDollop(new_dollop);
 					break;
 				}
 				/*
@@ -125,6 +127,7 @@ namespace zipr {
 				previous_dollop = new_dollop;
 				new_dollop = Dollop_t::CreateNewDollop(fallthrough);
 				previous_dollop->FallthroughDollop(new_dollop);
+				new_dollop->FallbackDollop(previous_dollop);
 			}
 			AddDollops(original_new_dollop);
 			return original_new_dollop;

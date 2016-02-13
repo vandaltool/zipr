@@ -36,12 +36,25 @@
 class ZiprDollopManager_t : public DollopManager_t {
 	public:
 		ZiprDollopManager_t() : m_refresh_stats(true) {}
+
+		/*
+		 * Adders.
+		 */
 		void AddDollops(Dollop_t *dollop_head);
 		Zipr_SDK::Dollop_t *AddNewDollops(libIRDB::Instruction_t *start);
+
+		/*
+		 * Getters.
+		 */
 		Zipr_SDK::Dollop_t *GetContainingDollop(libIRDB::Instruction_t *insn);
+
 		size_t Size() {
 			return m_dollops.size();
 		}
+
+		/*
+		 * Patch functions.
+		 */
 		void AddDollopPatch(Zipr_SDK::DollopPatch_t *new_patch) {
 			m_patches_to_dollops[new_patch->Target()].push_back(new_patch);
 		}
@@ -53,29 +66,51 @@ class ZiprDollopManager_t : public DollopManager_t {
 			 */
 			return m_patches_to_dollops.at(target);
 		}
-		void PrintDollopPatches(const std::ostream &);
+
+		/*
+		 * Dollop target update functions.
+		 */
 		bool UpdateTargets(Dollop_t *);
 		void UpdateAllTargets();
+
+		/*
+		 * Iteration functions.
+		 */
 		std::list<Dollop_t*>::const_iterator dollops_begin() {
 			return m_dollops.begin();
 		}
 		std::list<Dollop_t*>::const_iterator dollops_end() {
 			return m_dollops.end();
 		}
-		friend std::ostream &operator<<(std::ostream &out, const ZiprDollopManager_t &dollop_man);
+
+		/*
+		 * Printing/output functions.
+		 */
+		void PrintDollopPatches(const std::ostream &);
+		friend std::ostream &operator<<(std::ostream &out,
+		                                const ZiprDollopManager_t &dollop_man);
 		void PrintStats(std::ostream &out);
 		void PrintPlacementMap(const MemorySpace_t &memory_space,
 		                       const std::string &map_filename);
 	private:
+		/*
+		 * Helper functions.
+		 */
 		void AddDollop(Dollop_t *dollop);
 		void CalculateStats();
 
+		/*
+		 * Support variables.
+		 */
 		std::list<Dollop_t*> m_dollops;
 		std::map<libIRDB::Instruction_t*,Dollop_t*> m_insn_to_dollop;
 		std::list<DollopPatch_t*> m_patches;
 		std::map<Dollop_t*, std::list<DollopPatch_t*>> m_patches_to_dollops;
-		bool m_refresh_stats;
 
+		/*
+		 * Statistics.
+		 */
+		bool m_refresh_stats;
 		size_t m_total_dollop_space, m_total_dollop_entries;
 		unsigned int m_total_dollops, m_truncated_dollops;
 };
