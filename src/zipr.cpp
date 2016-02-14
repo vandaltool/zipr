@@ -1409,9 +1409,11 @@ void ZiprImpl_t::PlaceDollops()
 		if (to_place->IsPlaced())
 			continue;
 
-		minimum_valid_req_size = _DetermineWorstCaseInsnSize(to_place->
-		                                                     front()->
-																												 Instruction());
+		minimum_valid_req_size = std::min(
+			_DetermineWorstCaseInsnSize(to_place->
+		                              front()->
+			                            Instruction()),
+			Utils::DetermineWorstCaseDollopSizeInclFallthrough(to_place));
 		/*
 		 * Ask the plugin manager if there are any plugins
 		 * that want to tell us where to place this dollop.
@@ -1429,8 +1431,8 @@ void ZiprImpl_t::PlaceDollops()
 						 << std::hex << placement.GetEnd()
 						 << endl;
 
-			if ((placement.GetEnd()-placement.GetStart()) < minimum_valid_req_size &&
-			    placement.GetEnd()-placement.GetStart() < to_place->GetSize()) {
+			if ((placement.GetEnd()-placement.GetStart()) < minimum_valid_req_size)
+			{
 				if (m_verbose)
 					cout << "Bad GetNearbyFreeRange() result." << endl;
 				placed = false;
