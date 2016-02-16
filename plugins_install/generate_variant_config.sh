@@ -31,8 +31,8 @@ exe=$(basename $stratafied_exe)
 
 # get and fill in template.
 cp $template variant_config.json
-sed -i "s/<<EXE_NAME>>/$exe/"  variant_config.json
-sed -i "s|<<PS_DIR>>|$base_peasoup_dir|" variant_config.json
+sed -i "s/<<EXE_NAME>>/$exe/g"  variant_config.json
+sed -i "s|<<PS_DIR>>|$base_peasoup_dir|g" variant_config.json
 
 #
 # note that these are all hard-coded in the config files right now.
