@@ -114,18 +114,28 @@ void FileIR_t::ReadFromDB()
 {
 	entry_points.clear();
 
+	std::map<db_id_t,BaseObj_t*> objMap;
+
 	std::map<db_id_t,Type_t*> typesMap = ReadTypesFromDB(types); 
 	std::map<db_id_t,AddressID_t*> 	addrMap=ReadAddrsFromDB();
 	std::map<db_id_t,Function_t*> 	funcMap=ReadFuncsFromDB(addrMap, typesMap);
-	ReadScoopsFromDB(addrMap, typesMap);
+	std::map<db_id_t,DataScoop_t*>  scoopMap=ReadScoopsFromDB(addrMap, typesMap);
+
 
 	std::map<db_id_t,Instruction_t*> addressToInstructionMap;
 	std::map<Instruction_t*, db_id_t> unresolvedICFS;
 
 	std::map<db_id_t,Instruction_t*> insnMap=ReadInsnsFromDB(funcMap,addrMap,addressToInstructionMap, unresolvedICFS);
 
+
 	ReadAllICFSFromDB(addressToInstructionMap, unresolvedICFS);
-	ReadRelocsFromDB(insnMap);
+
+
+	// put the scoops+instructions into the object map.
+	// if relocs end up on other objects, we'll need to add them to.  for now only insns/scoops.
+	objMap.insert(insnMap.begin(), insnMap.end());
+	objMap.insert(scoopMap.begin(), scoopMap.end());
+	ReadRelocsFromDB(objMap);
 
 	UpdateEntryPoints(insnMap);
 }
@@ -452,7 +462,7 @@ std::map<db_id_t,Instruction_t*> FileIR_t::ReadInsnsFromDB
 
 void FileIR_t::ReadRelocsFromDB
 	(
-		std::map<db_id_t,Instruction_t*> 	&insnMap
+		std::map<db_id_t,BaseObj_t*> 	&objMap
 	)
 {
 	std::string q= "select * from " + fileptr->relocs_table_name + " ; ";
@@ -465,12 +475,15 @@ void FileIR_t::ReadRelocsFromDB
                 std::string reloc_type=(dbintr->GetResultColumn("reloc_type"));
                 db_id_t instruction_id=atoi(dbintr->GetResultColumn("instruction_id").c_str());
                 db_id_t doipid=atoi(dbintr->GetResultColumn("doip_id").c_str());
+                db_id_t wrt_id=atoi(dbintr->GetResultColumn("wrt_id").c_str());
 
-		Relocation_t *reloc=new Relocation_t(reloc_id,reloc_offset,reloc_type);
 
-		assert(insnMap[instruction_id]!=NULL);
+		BaseObj_t* wrt_obj=objMap[wrt_id];
+		Relocation_t *reloc=new Relocation_t(reloc_id,reloc_offset,reloc_type,wrt_obj);
 
-		insnMap[instruction_id]->GetRelocations().insert(reloc);
+		assert(objMap[instruction_id]!=NULL);
+
+		objMap[instruction_id]->GetRelocations().insert(reloc);
 		relocs.insert(reloc);
 
 		dbintr->MoveToNextRow();
@@ -1127,7 +1140,7 @@ void FileIR_t::CleanupICFS()
 	DedupICFS();
 }
 
-void FileIR_t::ReadScoopsFromDB
+std::map<db_id_t,DataScoop_t*> FileIR_t::ReadScoopsFromDB
         (
                 std::map<db_id_t,AddressID_t*> &addrMap,
                 std::map<db_id_t,Type_t*> &typeMap
@@ -1142,6 +1155,8 @@ void FileIR_t::ReadScoopsFromDB
   permissions        integer                    -- in umask format (bitmask for rwx)
 
  */
+
+	std::map<db_id_t,DataScoop_t*> scoopMap;
 
         std::string q= "select * from " + fileptr->scoop_table_name + " ; ";
 
@@ -1164,8 +1179,10 @@ void FileIR_t::ReadScoopsFromDB
 		assert(newscoop);
 		GetDataScoops().insert(newscoop);
 		dbintr->MoveToNextRow();
+
+		scoopMap[sid]=newscoop;
 	}
 
-	return;
+	return scoopMap;
 }
 

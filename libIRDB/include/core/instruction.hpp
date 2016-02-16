@@ -65,8 +65,6 @@ class Instruction_t : public BaseObj_t
 
 		bool IsFunctionExit() const;
 
-		RelocationSet_t& GetRelocations() { return relocs; }
-
 		static bool SetsStackPointer(DISASM *disasm);
 		static bool SetsStackPointer(ARGTYPE* arg);
 
@@ -82,6 +80,5 @@ class Instruction_t : public BaseObj_t
 		std::string	 callback;	// name of callback handler (if any)
 		std::string	 comment;
 		AddressID_t*	indTarg;
-		RelocationSet_t relocs;
 		ICFS_t*		 icfs;
 };

@@ -20,9 +20,15 @@
 
 
 #include <stdint.h>
+#include <set>
 
 typedef uintptr_t virtual_offset_t;
 typedef int db_id_t;
+
+
+class Relocation_t;
+typedef std::set<Relocation_t*> RelocationSet_t;
+
 
 
 // A base class for something that all objects have, for now just a DOIP.
@@ -43,11 +49,15 @@ class BaseObj_t
 
 	static const db_id_t NOT_IN_DATABASE;
 
+	virtual RelocationSet_t& GetRelocations() { return relocs; }
+
+
     protected:
         static DBinterface_t *dbintr;
 
     private:
         doip_t* doip;
         db_id_t base_id;    // -1 means not yet in the DB.
+        RelocationSet_t relocs;
 };
 

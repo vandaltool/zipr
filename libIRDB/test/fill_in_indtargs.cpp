@@ -353,7 +353,6 @@ void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<vir
 
 		check_for_PIC_switch_table32_type2(insn,disasm, elfiop, thunk_bases);
 		check_for_PIC_switch_table32_type3(insn,disasm, elfiop, thunk_bases);
-//		check_for_PIC_switch_table64(firp,insn,disasm, elfiop);
 		if (firp->GetArchitectureBitWidth()==32)
 			check_for_PIC_switch_table32(firp, insn,disasm, elfiop, thunk_bases);
 		else if (firp->GetArchitectureBitWidth()==64)
@@ -694,7 +693,7 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 	I3->Disassemble(d2);
 
 	// get the offset from the thunk
-	virtual_offset_t table_offset=d2.Argument2.Memory.Displacement;
+	virtual_offset_t table_offset=d2.Instruction.AddrValue;
 	if(table_offset==0)
 		return;
 
@@ -822,7 +821,7 @@ I5:   0x809900e <text_handler+51>: jmp    ecx
 	I3->Disassemble(d2);
 
 	// get the offset from the thunk
-	virtual_offset_t table_offset=d2.Argument2.Memory.Displacement;
+	virtual_offset_t table_offset=d2.Instruction.AddrValue;
 	if(table_offset==0)
 		return;
 
@@ -913,65 +912,85 @@ void check_for_PIC_switch_table32_type3(Instruction_t* insn, DISASM disasm, EXEI
 		return;
 
 	// grab the table base out of the jmp.
-	virtual_offset_t table_base=disasm.Argument1.Memory.Displacement;
+	virtual_offset_t table_base=disasm.Instruction.AddrValue;
 	if(table_base==0)
 		return;
 
-cout<<hex<<"Found (type3) switch dispatch at "<<I5->GetAddress()->GetVirtualOffset()<< " with table_base="<<table_base<<endl;
+
+	/* could be jmp [reg1+addr], jmp [reg2*k+addr], jmp [reg1+reg2*k+addr], or jmp [addr] */ 
+	if(getenv("IB_VERBOSE")!=0)
+		cout<<hex<<"Found (type3) candidate for switch dispatch for '"<<disasm.CompleteInstr<<"' at "<<I5->GetAddress()->GetVirtualOffset()<< " with table_base="<<table_base<<endl;
 		
+
+	// find the section with the data table
+	EXEIO::section *pSec=find_section(table_base,elfiop);
+	if(!pSec)
+		return;
+
+	// if the section has no data, abort 
+	const char* secdata=pSec->get_data();
+	if(!secdata)
+		return;
+
+
+	// get the base offset into the section
+	virtual_offset_t offset=table_base-pSec->get_address();
+	int i;
+	for(i=0;i<3;i++)
 	{
-		// find the section with the data table
-        	EXEIO::section *pSec=find_section(table_base,elfiop);
-		if(!pSec)
+		if(offset+i*4+sizeof(int) > pSec->get_size())
 			return;
 
-		// if the section has no data, abort 
-        	const char* secdata=pSec->get_data();
-		if(!secdata)
+		const int *table_entry_ptr=(const int*)&(secdata[offset+i*4]);
+		virtual_offset_t table_entry=*table_entry_ptr;
+
+		if(getenv("IB_VERBOSE")!=0)
+			cout<<"Checking target base:" << std::hex << table_entry << ", " << table_base+i*4<<endl;
+		if(!is_possible_target(table_entry,table_base+i*4))
+		{
+			cout<<hex<<"Found (type3) candidate for switch dispatch for '"<<disasm.CompleteInstr<<"' at "<<I5->GetAddress()->GetVirtualOffset()<< " with table_base="<<table_base<<endl;
+			cout<<"Found table_entry "<<hex<<table_entry<<" is not valid\n"<<endl;
+			return;	
+		}
+
+		/* if there's no base register and no index reg, */
+		/* then this jmp can't have more than one valid table entry */
+		if( disasm.Argument1.Memory.BaseRegister==0 && disasm.Argument1.Memory.IndexRegister==0 ) 
+		{
+			/* but the table can have 1 valid entry. */
+			possible_target(table_entry,table_base+0*4);
+			cout<<hex<<"Found  constant-memory dispatch ("<<disasm.CompleteInstr<<"') at "<<I5->GetAddress()->GetVirtualOffset()<< endl;
 			return;
-
-		// get the base offset into the section
-        	virtual_offset_t offset=table_base-pSec->get_address();
-		int i;
-		for(i=0;i<3;i++)
-		{
-                	if(offset+i*4+sizeof(int) > pSec->get_size())
-                        	return;
-
-                	const int *table_entry_ptr=(const int*)&(secdata[offset+i*4]);
-                	virtual_offset_t table_entry=*table_entry_ptr;
-
-cout<<"Checking target base:" << std::hex << table_entry << ", " << table_base+i*4<<endl;
-			if(!is_possible_target(table_entry,table_base+i*4))
-				return;	
 		}
-		/* did we finish the loop or break out? */
-		if(i==3)
+	}
+
+
+	cout<<hex<<"Found (type3) switch dispatch at "<<I5->GetAddress()->GetVirtualOffset()<< " with table_base="<<table_base<<endl;
+
+	/* did we finish the loop or break out? */
+	if(i==3)
+	{
+		if(getenv("IB_VERBOSE")!=0)
+			cout<<"Found switch table (pic3, type3) (thunk-relative) at "<<hex<<table_base<<endl;
+		// finished the loop.
+		for(i=0;true;i++)
 		{
+			if(offset+i*4+sizeof(int) > pSec->get_size())
+				return;
+
+			const int *table_entry_ptr=(const int*)&(secdata[offset+i*4]);
+			virtual_offset_t table_entry=*table_entry_ptr;
+
 			if(getenv("IB_VERBOSE")!=0)
-				cout<<"Found switch table (pic3, type3) (thunk-relative) at "<<hex<<table_base<<endl;
-			// finished the loop.
-			for(i=0;true;i++)
-			{
-                		if(offset+i*4+sizeof(int) > pSec->get_size())
-                        		return;
-	
-                		const int *table_entry_ptr=(const int*)&(secdata[offset+i*4]);
-                		virtual_offset_t table_entry=*table_entry_ptr;
-	
-				if(getenv("IB_VERBOSE")!=0)
-					cout<<"Found switch table (thunk-relative) entry["<<dec<<i<<"], "<<hex<<table_entry<<endl;
-				if(!possible_target(table_entry,table_base+i*4))
-					return;
-			}
+				cout<<"Found switch table (thunk-relative) entry["<<dec<<i<<"], "<<hex<<table_entry<<endl;
+			if(!possible_target(table_entry,table_base+i*4))
+				return;
 		}
-		else
-		{
-			if(getenv("IB_VERBOSE")!=0)
-				cout<<"Found that  "<<hex<<table_base<<endl;
-		}
-
-		// now, try next thunk base 
+	}
+	else
+	{
+		if(getenv("IB_VERBOSE")!=0)
+			cout<<"Found that  "<<hex<<table_base<<endl;
 	}
 
 
@@ -1274,7 +1293,7 @@ void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn,
 		return;
 
 	// extract start of jmp table
-	virtual_offset_t table_offset = disasm.Argument1.Memory.Displacement;
+	virtual_offset_t table_offset = disasm.Instruction.AddrValue;
 	if(table_offset==0)
 		return;
 
@@ -1390,7 +1409,7 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DISASM d
 	if (d4.Argument2.Memory.Scale < 4)
 		return;
 
-	virtual_offset_t table_offset=d4.Argument2.Memory.Displacement;
+	virtual_offset_t table_offset=d4.Instruction.AddrValue;
 	if(table_offset==0)
 		return;
 
@@ -1555,7 +1574,6 @@ void check_for_ret(FileIR_t* const firp, Instruction_t* const insn)
 // already have a complete ICFS.
 void check_for_indirect_jmp(FileIR_t* const firp, Instruction_t* const insn)
 {
-	cout<<"In check_for_indirect_jmp, whta?!"<<endl;
 	assert(firp && insn);
 
 	// already analysed by ida.

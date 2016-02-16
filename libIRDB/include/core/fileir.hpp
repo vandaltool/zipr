@@ -105,7 +105,7 @@ class FileIR_t : public BaseObj_t
 		std::map<db_id_t,AddressID_t*> &addrMap,
 		std::map<db_id_t,Type_t*> &typeMap
 	);
-	void ReadScoopsFromDB
+	std::map<db_id_t,DataScoop_t*> ReadScoopsFromDB
 	(
 		std::map<db_id_t,AddressID_t*> &addrMap,
 		std::map<db_id_t,Type_t*> &typeMap
@@ -119,7 +119,7 @@ class FileIR_t : public BaseObj_t
 	);
 	void ReadRelocsFromDB
 	(
-		std::map<db_id_t,Instruction_t*>		&insnMap
+		std::map<db_id_t,BaseObj_t*>		&insnMap
 	);
 
 	std::map<db_id_t, Type_t*> ReadTypesFromDB(TypeSet_t& types);

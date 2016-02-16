@@ -76,6 +76,7 @@ class DataScoop_t : public BaseObj_t
 		libIRDB::Type_t* type;
 		int permissions;
 
+
 };
 
 typedef std::set<DataScoop_t*> DataScoopSet_t;
