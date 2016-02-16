@@ -26,6 +26,7 @@ check_opts()
 	args="\"-k\", \"start\""
 	server="APACHE"
 	class="None"
+	backend="zipr"	 	
 	use_diehard="--nodiehard"
 
 
@@ -42,6 +43,8 @@ check_opts()
                    --long server:
                    --long class: 
                    --long help
+                   --long zipr
+                   --long strata
                 "
 
         # solaris does not support long option names
@@ -88,6 +91,16 @@ check_opts()
                                 server="$2"
                                 shift 2
 			;;
+                        --strata)
+				echo "Setting backend = zipr"
+                                backend="strata"
+                                shift
+			;;
+                        --zipr)
+				echo "Setting backend = zipr"
+                                backend="zipr"
+                                shift
+			;;
                         --diehard|--nodiehard)
 				echo "Setting diehard = $1"
 				use_diehard="$1"
@@ -126,7 +139,9 @@ sanity_check()
 {
 
 	main_exe=$(/bin/ls -F $indir/target_apps/ |egrep "/$"|sed "s|/$||"|sed "s/^dh-//" )
-	libraries=$(/bin/ls $indir/target_app_libs/ |grep -v "^dh-lib$"|sed "s/^dh-//")
+	if [ -d $indir/target_app_libs ]; then
+		libraries=$(/bin/ls $indir/target_app_libs/ |grep -v "^dh-lib$"|sed "s/^dh-//")
+	fi
 	configs=$(/bin/ls $indir/target_apps/dh-$main_exe/)
 	echo Found application=\"$main_exe\"
 	echo Found libraries=\"$libraries\"
@@ -195,7 +210,6 @@ finalize_json()
 
 	variants="$total_variants"
 	outfile="$outdir/monitor.conf"
-	backend="zipr"	 # doesn't work with strata yet
 	json=${outfile}
 
 	if [ "$backend" = 'zipr' ]; then

@@ -1,7 +1,6 @@
             "<<VARIANTNUM>>" : {
                 "exec" : {
                         "env" : [
-                        "STRATA_LOG=detectors",
                         "PEASOUP_SCHEDULE_PERTURB=0",
                         "STRATA_WATCHDOG=0",
                         "STRATA_NUM_HANDLE=0",
@@ -10,21 +9,41 @@
                         "STRATA_SHADOW_STACK=0",
                         "STRATA_CONTROLLED_EXIT=0",
                         "STRATA_DETECT_SERVERS=0",
-                        "STRATA_PC_CONFINE=0",
+                        "STRATA_PC_CONFINE=1",
                         "STRATA_PC_CONFINE_XOR=0",
                         "STRATA_REKEY_AFTER=0",
                         "STRATA_PC_CONFINE_XOR_KEY_LENGTH=1024",
                         "STRATA_IS_SO=0",
-                        "STRATA_MAX_WARNINGS=500000"
+                        "STRATA_MAX_WARNINGS=500000",
+                        "STRATA_SPRI_FILE=/variant_specific/a.irdb.fbspri",
+                        "STRATA_ANNOT_FILE=/variant_specific/a.ncexe.annot",
+                        "STRATA_OUTPUT_FILE=/variant_specific/diagnostics.out",
+                        "STRATA_EXE_FILE=/variant_specific/a.stratafied",
+                        "SPAWNER_EXE_FILE=/variant_specific/spawned"
+                        ,<<ENV>>
+
                         ],
                     "alias" : [
-                        "/sbin/thttpd=/target_app_libs/<<PS_DIR>>/a.stratafied",
-                        "/usr/lib/libstrata.so=/target_app_libs/<<PS_DIR>>/libstrata.so",
+                        "/dev/zero=/dev/zero",
+                        "/proc/self/maps=/proc/self/maps",
+                        "/sbin/thttpd=<<EXEPATH>>/<<PS_DIR>>/a.stratafied",
+                        "/usr/lib/libstrata.so=<<EXEPATH>>/<<PS_DIR>>/libstrata.so",
+                        "<<EXEPATH>>/<<PS_DIR>>/libstrata.so=<<EXEPATH>>/<<PS_DIR>>/libstrata.so",
+                        "/variant_specific/a.irdb.fbspri=<<EXEPATH>>/<<PS_DIR>>/a.irdb.fbspri",
+                        "/variant_specific/a.ncexe.annot=<<EXEPATH>>/<<PS_DIR>>/a.ncexe.annot",
+                        "/variant_specific/diagnostics.out=<<EXEPATH>>/<<PS_DIR>>/diagnostics.out",
+                        "/variant_specific/a.stratafied=<<EXEPATH>>/<<PS_DIR>>/a.stratafied",
+                        "<<EXEPATH>>/<<PS_DIR>>/a.stratafied=<<EXEPATH>>/<<PS_DIR>>/a.stratafied",
+                        "/variant_specific/spawned=<<EXEPATH>>/<<PS_DIR>>/spawned",
                         "/etc/ld.so.cache=/etc/ld.so.cache",
-                        "/variant_specific/a.irdb.fbspri=/target_app_libs/<<PS_DIR>>/a.irdb.fbspri",
-                        "/variant_specific/a.ncexe.annot=/target_app_libs/<<PS_DIR>>/a.ncexe.annot",
-                        "/variant_specific/diagnostics.out=/target_app_libs/<<PS_DIR>>/diagnostics.out",
-                        "/variant_specific/a.stratafied=/target_app_libs/<<PS_DIR>>/a.stratafied"
+			"/lib/x86_64-linux-gnu/libcrypt.so.1=/lib/x86_64-linux-gnu/libcrypt.so.1",
+			"/lib/x86_64-linux-gnu/libc.so.6=/lib/x86_64-linux-gnu/libc.so.6",
+			"/lib64/ld-linux-x86-64.so.2=/lib64/ld-linux-x86-64.so.2",
+			"/lib/x86_64-linux-gnu/ld-2.19.so=/lib/x86_64-linux-gnu/ld-2.19.so",
+			"/lib/x86_64-linux-gnu/libc-2.19.so=/lib/x86_64-linux-gnu/libc-2.19.so",
+			"/lib/x86_64-linux-gnu/libcrypt-2.19.so=/lib/x86_64-linux-gnu/libcrypt-2.19.so",
+			"/lib/x86_64-linux-gnu/libnss_nis.so.2=/lib/x86_64-linux-gnu/libnss_nis.so.2"
+
                         ]
                 }
             }
