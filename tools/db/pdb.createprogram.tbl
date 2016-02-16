@@ -63,18 +63,19 @@ CREATE TABLE #ITN#
 
 CREATE TABLE #RTN#
 (
-  reloc_id	      SERIAL PRIMARY KEY, -- id in the table
-  reloc_offset 	  integer,		-- how far into the instruction is the relocation
-  reloc_type	    text,		-- what type is the relocation.
-  instruction_id  integer,		-- the instruction for this reloc 
-  doip_id	        integer DEFAULT -1	-- the DOIP
+	reloc_id	      	SERIAL PRIMARY KEY, 	-- id in the table
+	reloc_offset 	  	integer DEFAULT 0,	-- how far into the object/instruction is the relocation
+	reloc_type	    	text DEFAULT '',	-- what type is the relocation.
+	instruction_id  	integer DEFAULT -1,	-- the object/instruction for this reloc, field name is anachronistic. 
+	wrt_id  		integer DEFAULT -1,	-- the object that this reloc is with respect to.
+	doip_id	        	integer DEFAULT -1	-- the DOIP
 );
 
 -- keep track of indirect control flow sets (ibtargets)
 CREATE TABLE #ICFS#
 (
-  icfs_id	      SERIAL PRIMARY KEY, -- set id
-  icfs_status     icfs_analysis_result DEFAULT 'icfs_analysis_incomplete'
+	icfs_id		SERIAL PRIMARY KEY, 						-- set id
+	icfs_status	icfs_analysis_result DEFAULT 'icfs_analysis_incomplete'
 );
 
 -- map set id to addresses
