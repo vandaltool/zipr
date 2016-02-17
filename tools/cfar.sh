@@ -24,6 +24,7 @@ shift
 
 structured_p1_canaries=0
 structured_noc=0
+structured_nos=0
 config_name="unspecified"
 backend="strata"
 use_diehard=0
@@ -49,6 +50,9 @@ do
 	# this option is for cfar, handle it and remove it from the ps_analyze arguments.
 	elif [ "$i" == "--structured_noc" ]; then 	
 		structured_noc=1
+	# this option is for cfar, handle it and remove it from the ps_analyze arguments.
+	elif [ "$i" == "--structured_nos" ]; then 	
+		structured_nos=1
 	# this option is for cfar, handle it and remove it from the ps_analyze arguments.
 	elif [ "$i" == "--config_name" ]; then 	
 		seq=$(expr $seq + 1)
@@ -123,6 +127,11 @@ do
 		# the path to the "shared memory" that cfar is using.
 		sharepath_key="$seq:$variants:dir://$share_path"
 		per_variant_options+=(--step-option zipr:"--large_only:variant $sharepath_key")
+	fi
+
+	if [ $structured_nos  -eq 1 ]; then
+		sharepath_key="$seq:$variants:dir://$share_path"
+		per_variant_options+=(--step-option non_overlapping_stack:"--mode structured --barrier $sharepath_key")
 	fi
 	
 	# options to p1 to create non-overlapping canary values.
