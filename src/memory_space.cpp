@@ -197,6 +197,26 @@ Range_t ZiprMemorySpace_t::GetLargeRange(void)
 	return Range_t(0,0);
 }
 
+bool ZiprMemorySpace_t::SortRangeBySize(const Range_t &a, const Range_t &b)
+{
+	return (a.GetEnd() - a.GetStart()) <= (b.GetEnd() - b.GetStart());
+}
+
+std::list<Range_t> ZiprMemorySpace_t::GetFreeRanges(size_t size)
+{
+	list<Range_t> result;
+	for( RangeSet_t::iterator it=free_ranges.begin();
+		it!=free_ranges.end();
+		++it)
+	{
+		Range_t r=*it;
+		if(r.GetEnd() - r.GetStart() >= (unsigned) size)
+			result.push_back(r);
+	}
+	result.sort(SortRangeBySize);
+	return result;
+}
+
 Range_t ZiprMemorySpace_t::GetFreeRange(int size)
 {
 	vector<Range_t> v;
