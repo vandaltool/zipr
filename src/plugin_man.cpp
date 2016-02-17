@@ -81,13 +81,13 @@ void ZiprPluginManager_t::CallbackLinkingEnd()
 	dispatch_to(CallbackLinkingEnd);
 }
 
-bool ZiprPluginManager_t::DoesPluginAddress(const Dollop_t *dollop, const RangeAddress_t &source, Range_t &place, DLFunctionHandle_t &placer)
+bool ZiprPluginManager_t::DoesPluginAddress(const Dollop_t *dollop, const RangeAddress_t &source, Range_t &place, bool &coalesce, DLFunctionHandle_t &placer)
 {
 	DLFunctionHandleSet_t::iterator it=m_handleList.begin();
 	for(m_handleList.begin();it!=m_handleList.end();++it)
 	{
 		ZiprPluginInterface_t* zpi=(ZiprPluginInterface_t*)*it;
-		if (Must == zpi->AddressDollop(dollop, source, place))
+		if (Must == zpi->AddressDollop(dollop, source, place, coalesce))
 		{
 			placer = zpi;
 			return true;
@@ -105,6 +105,21 @@ bool ZiprPluginManager_t::DoesPluginPlop(Instruction_t *insn, DLFunctionHandle_t
 		if (zpi->WillPluginPlop(insn))
 		{
 			callback = zpi;
+			return true;
+		}
+	}
+	return false;
+}
+
+bool ZiprPluginManager_t::DoesPluginRetargetPin(const RangeAddress_t &patch_addr, const Dollop_t *target_dollop, RangeAddress_t &target_address, DLFunctionHandle_t &patcher) 
+{
+	DLFunctionHandleSet_t::iterator it=m_handleList.begin();
+	for(m_handleList.begin();it!=m_handleList.end();++it)
+	{
+		ZiprPluginInterface_t* zpi=(ZiprPluginInterface_t*)*it;
+		if (Must == zpi->RetargetPin(patch_addr, target_dollop, target_address))
+		{
+			patcher = zpi;
 			return true;
 		}
 	}

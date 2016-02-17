@@ -42,7 +42,9 @@ class ZiprPluginManager_t : public ZiprPluginInterface_t
 
 		virtual bool DoesPluginPlop(libIRDB::Instruction_t*,DLFunctionHandle_t&);
 
-		virtual bool DoesPluginAddress(const Dollop_t *, const RangeAddress_t &, Range_t &, DLFunctionHandle_t &);
+		virtual bool DoesPluginAddress(const Dollop_t *, const RangeAddress_t &, Range_t &, bool &coalesce, DLFunctionHandle_t &);
+		virtual bool DoesPluginRetargetPin(const RangeAddress_t &, const Dollop_t *, RangeAddress_t &, DLFunctionHandle_t &) ;
+
 	private:
 
 		void open_plugins
