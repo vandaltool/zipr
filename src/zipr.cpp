@@ -1391,6 +1391,7 @@ void ZiprImpl_t::PlaceDollops()
 		Dollop_t *fallthrough = NULL;
 		bool continue_placing = false;
 		bool am_coalescing = false;
+		bool allowed_coalescing = true;
 
 		//pq_entry = placement_queue.front();
 		pq_entry = *(placement_queue.begin());
@@ -1421,6 +1422,7 @@ void ZiprImpl_t::PlaceDollops()
 		if (plugman.DoesPluginAddress(to_place,
 		                              from_address,
 		                              placement,
+		                              allowed_coalescing,
 		                              placer))
 		{
 			placed = true;
@@ -1446,6 +1448,13 @@ void ZiprImpl_t::PlaceDollops()
 			 */
 			//placement = memory_space.GetFreeRange(to_place->GetSize());
 			placement = memory_space.GetFreeRange(minimum_valid_req_size);
+
+			/*
+			 * Reset allowed_coalescing because DoesPluginAddress
+			 * may have reset it and we may have rejected the results
+			 * of that addressing.
+			 */
+			allowed_coalescing = true;
 		}
 
 		cur_addr = placement.GetStart();
@@ -1616,7 +1625,8 @@ void ZiprImpl_t::PlaceDollops()
 							 << " vs Needed: " << std::dec 
 							 << std::min(fallthrough_wcis,fallthroughs_wcds) << endl;
 				if (remaining_size < std::min(fallthrough_wcis,fallthroughs_wcds) ||
-				    fallthrough->IsPlaced())
+				    fallthrough->IsPlaced() ||
+						!allowed_coalescing)
 				{
 
 					string patch_jump_string;
@@ -1642,8 +1652,10 @@ void ZiprImpl_t::PlaceDollops()
 					if (m_verbose)
 						cout << "Not coalescing"
 						     << string((fallthrough->IsPlaced()) ?
-								    " because fallthrough is placed; " : "; ")
-						     << "Added jump (at " << std::hex << patch_de->Place() << ") "
+								    " because fallthrough is placed" : "")
+						     << string((!allowed_coalescing) ?
+								    " because I am not allowed" : "")
+						     << "; Added jump (at " << std::hex << patch_de->Place() << ") "
 						     << "to fallthrough dollop (" << std::hex 
 						     << fallthrough << ")." << endl;
 
@@ -1870,6 +1882,7 @@ void ZiprImpl_t::UpdatePins()
 		RangeAddress_t patch_addr, target_addr;
 		target_dollop = m_dollop_mgr.GetContainingDollop(uu.GetInstruction());
 		assert(target_dollop != NULL);
+		DLFunctionHandle_t patcher = NULL;
 
 		target_dollop_entry = target_dollop->front();
 		assert(target_dollop_entry != NULL);
@@ -1883,12 +1896,30 @@ void ZiprImpl_t::UpdatePins()
 		patch_addr = p.GetAddress();
 		target_addr = target_dollop_entry->Place();
 
-		if (m_verbose)
-			cout << "Patching pin at " << std::hex << patch_addr << " to "
-			     << std::hex << target_addr << ": " << d.CompleteInstr << endl;
-		assert(target_dollop_entry_instruction != NULL &&
-		       target_dollop_entry_instruction == uu.GetInstruction());
+		if (plugman.DoesPluginRetargetPin(patch_addr, target_dollop, target_addr, patcher))
+		{
+			if (m_verbose)
+			{
+				cout << "Patching retargeted pin at " << std::hex<<patch_addr << " to "
+				     << patcher->ToString() << "-assigned address: "
+						 << std::hex << target_addr << endl;
+			}
+		}
+		else
+		{
+			/*
+			 * Even though DoesPluginRetargetPin() returned something other than
+			 * Must, it could have still changed target_address. So, we have to
+			 * reset it here, just in case.
+			 */
+			target_addr = target_dollop_entry->Place();
 
+			if (m_verbose)
+				cout << "Patching pin at " << std::hex << patch_addr << " to "
+				     << std::hex << target_addr << ": " << d.CompleteInstr << endl;
+			assert(target_dollop_entry_instruction != NULL &&
+			       target_dollop_entry_instruction == uu.GetInstruction());
+		}
 
 		PatchJump(patch_addr, target_addr);
 
@@ -2067,7 +2098,8 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntry(
 
 RangeAddress_t ZiprImpl_t::PlopDollopEntryWithTarget(
 	DollopEntry_t *entry,
-	RangeAddress_t override_place)
+	RangeAddress_t override_place,
+	RangeAddress_t override_target)
 {
 	Instruction_t *insn = entry->Instruction();
 	RangeAddress_t target_addr, addr, ret;
@@ -2080,6 +2112,9 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntryWithTarget(
 
 	if (override_place != 0)
 		addr = ret = override_place;
+
+	if (override_target != 0)
+		target_addr = override_target;
 
 	if(insn->GetDataBits().length() >2) 
 	{
