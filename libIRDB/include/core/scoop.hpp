@@ -66,9 +66,9 @@ class DataScoop_t : public BaseObj_t
                 std::string WriteToDB(File_t *fid, db_id_t newid);
 
 	private:
-		const int permissions_r=4;
-		const int permissions_w=2;
-		const int permissions_x=1;
+		const static int permissions_r=4;
+		const static int permissions_w=2;
+		const static int permissions_x=1;
 
 		std::string name;
 		libIRDB::AddressID_t* start;
