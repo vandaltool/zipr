@@ -42,7 +42,8 @@ CREATE TABLE #DTN#
   type_id            integer,     		-- the type of the data, as an index into the table table.
   start_address_id   integer, 			-- address id for start.
   end_address_id     integer,			-- address id for end
-  permissions        integer     		-- in umask format (bitmask for rwx)
+  permissions        integer,     		-- in umask format (bitmask for rwx)
+  data               bytea			-- the actual bytes of the scoop 
 );
 
 CREATE TABLE #ITN#
