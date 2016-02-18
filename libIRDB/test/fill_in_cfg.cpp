@@ -469,7 +469,13 @@ void fill_in_scoops(FileIR_t *firp)
 		endaddr->SetFileID(firp->GetFile()->GetBaseID());
 		firp->GetAddresses().insert(endaddr);
 
-		Type_t *chunk_type=NULL; /* FIXME -- need to figure out the type system for schoops, but NULL should remain valid */
+		string the_contents;
+		the_contents.resize(elfiop.sections[secndx]->get_size()); 
+		// deal with .bss segments that are 0 init'd.
+		if (elfiop.sections[secndx]->get_data()) 
+			the_contents.assign(elfiop.sections[secndx]->get_data(),elfiop.sections[secndx]->get_size());
+
+		Type_t *chunk_type=NULL; /* FIXME -- need to figure out the type system for scoops, but NULL should remain valid */
 
 		/* permissions */
 		int permissions= 
@@ -477,7 +483,7 @@ void fill_in_scoops(FileIR_t *firp)
 			( elfiop.sections[secndx]->isWriteable() << 1 ) | 
 			( elfiop.sections[secndx]->isExecutable() << 0 ) ;
 
-		DataScoop_t *newscoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, name, startaddr, endaddr, NULL, permissions);
+		DataScoop_t *newscoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, name, startaddr, endaddr, NULL, permissions, the_contents);
 		assert(newscoop);
 		firp->GetDataScoops().insert(newscoop);
 

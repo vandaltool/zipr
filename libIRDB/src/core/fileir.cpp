@@ -1174,8 +1174,9 @@ std::map<db_id_t,DataScoop_t*> FileIR_t::ReadScoopsFromDB
                 db_id_t end_id=atoi(dbintr->GetResultColumn("end_address_id").c_str());
 		AddressID_t* end_addr=addrMap[end_id];
                 int permissions=atoi(dbintr->GetResultColumn("permissions").c_str());
+                std::string contents=dbintr->GetResultColumn("data");
 
-		DataScoop_t* newscoop=new DataScoop_t(sid,name,start_addr,end_addr,type,permissions);
+		DataScoop_t* newscoop=new DataScoop_t(sid,name,start_addr,end_addr,type,permissions,contents);
 		assert(newscoop);
 		GetDataScoops().insert(newscoop);
 		dbintr->MoveToNextRow();
