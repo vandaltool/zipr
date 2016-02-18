@@ -13,8 +13,18 @@
 #   (1) generate a code-sonar warnings file, e.g., crash.cso
 #   (2) invoke this script with:  --step-option watch_allocate:--warning_file=<fully_qualified_path_of_crash.cso>
 #
+# Steps:
+#    p1transform
+#    selective_cfi
 
-export FIX_CALLS_FIX_ALL_CALLS=1
+# for selective_cfi, turn on env. var
+SCFI=off
+case $* in 
+   *selective_cfi=on* ) 
+       export FIX_CALLS_FIX_ALL_CALLS=1
+       SCFI=on
+       echo "SCFI is on -- turn on FIX_CALLS_FIX_ALL_CALLS=1";;
+esac
 
 $PEASOUP_HOME/tools/ps_analyze.sh $* 	\
 	--step spawner=off 		\
@@ -45,7 +55,7 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	\
 	--step input_filtering=off	\
 	--step watch_allocate=off	\
 	--step integertransform=off	\
-	--step selective_cfi=on	\
+	--step selective_cfi=$SCFI	\
 	--step fast_spri=off	\
 	--step fast_annot=off	\
 	--step spasm=off	\
