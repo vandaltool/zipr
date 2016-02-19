@@ -420,7 +420,7 @@ void SCFI_Instrument::AddJumpCFI(Instruction_t* insn)
 	string jmpBits=getJumpDataBits();
         after->SetDataBits(jmpBits);
         after->SetComment(insn->getDisassembly()+" ; scfi");
-	assert(!do_common_slow_path); /* fixme:  this defaults to the slow_cfi path.  need to color accordingly */
+	assert(do_common_slow_path); /* fixme:  this defaults to the slow_cfi path.  need to color accordingly */
 	createNewRelocation(firp,after,"slow_cfi_path",0);
 	after->SetFallthrough(NULL);
 	after->SetTarget(after);
