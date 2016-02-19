@@ -1664,6 +1664,13 @@ void ZiprImpl_t::PlaceDollops()
 							cur_addr));
 					
 					m_stats->total_did_not_coalesce++;
+
+					/*
+					 * Since we inserted a new instruction, we should
+					 * check to see whether a plugin wants to plop it.
+					 */
+					AskPluginsAboutPlopping(patch_de->Instruction());
+
 					/*
 					 * Quit the do-while-true loop that is placing
 					 * as many dollops in-a-row as possible.
@@ -1845,15 +1852,8 @@ int ZiprImpl_t::DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_for
 	return Utils::DetermineWorstCaseInsnSize(insn, account_for_jump);
 }
 
-void ZiprImpl_t::AskPluginsAboutPlopping()
+bool ZiprImpl_t::AskPluginsAboutPlopping(Instruction_t *insn)
 {
-
-	for(set<Instruction_t*>::const_iterator it=m_firp->GetInstructions().begin();
-	    it!=m_firp->GetInstructions().end();
-	    ++it)
-	{
-		Instruction_t* insn=*it;
-		assert(insn);
 		DLFunctionHandle_t plopping_plugin;
 		if (plugman.DoesPluginPlop(insn, plopping_plugin))
 		{
@@ -1864,8 +1864,21 @@ void ZiprImpl_t::AskPluginsAboutPlopping()
 				     << " will plop this instruction!"
 						 << endl;
 			plopping_plugins[insn] = plopping_plugin;
-			continue;
+			return true;
 		}
+		return false;
+}
+
+void ZiprImpl_t::AskPluginsAboutPlopping()
+{
+
+	for(set<Instruction_t*>::const_iterator it=m_firp->GetInstructions().begin();
+	    it!=m_firp->GetInstructions().end();
+	    ++it)
+	{
+		Instruction_t* insn=*it;
+		assert(insn);
+		AskPluginsAboutPlopping(insn);
 	}
 }
 

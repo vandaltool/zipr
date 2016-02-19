@@ -243,6 +243,7 @@ class ZiprImpl_t : public Zipr_t
 		 *
 		 */
 		void AskPluginsAboutPlopping();
+		bool AskPluginsAboutPlopping(libIRDB::Instruction_t *);
 
 		/*
 		 * PlopTheUnpinnedInstructions()
