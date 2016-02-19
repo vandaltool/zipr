@@ -53,7 +53,7 @@ create_test()
 	
 	# adjust for empty values
 	if [ "${my_startfile}" = "none" ]; then 
-		disp_start="no_startfile"; 
+		disp_start="startfile"; 
 		actual_start=" "
 	fi
 
