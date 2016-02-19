@@ -138,7 +138,7 @@ update_file_info()
 	create_table ${pn}_address ${pn}_function ${pn}_instruction ${pn}_icfs ${pn}_icfs_map ${pn}_relocs ${pn}_types ${pn}_data
 
 	echo Importing $fn.annot into IRDB via meds2pdb 
-	$SECURITY_TRANSFORMS_HOME/bin/meds2pdb ${fn}.annot ${fn}.infoannot $FILE_ID ${pn}_function ${pn}_instruction ${pn}_address ${pn}_types  ${pn}_icfs ${pn}_icfs_map $fn ${fn}.STARSxrefs || exit 1
+	$SECURITY_TRANSFORMS_HOME/bin/meds2pdb ${fn}.annot ${fn}.infoannot $FILE_ID ${pn}_function ${pn}_instruction ${pn}_address ${pn}_types  ${pn}_icfs ${pn}_icfs_map $fn || exit 1
 }
 
 
