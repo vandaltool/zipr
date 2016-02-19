@@ -33,11 +33,14 @@ class ICFS_t : public InstructionSet_t, public BaseObj_t
 {
 	public:
 		ICFS_t(): BaseObj_t(NULL), m_icfs_analysis_status(ICFS_Analysis_Incomplete) {}
+		ICFS_t(const ICFS_Analysis_Status_t p_status) : BaseObj_t(NULL), m_icfs_analysis_status(p_status) {}
 		ICFS_t(db_id_t p_set_id, const ICFS_Analysis_Status_t p_status = ICFS_Analysis_Incomplete);
 		ICFS_t(db_id_t p_set_id, const std::string);
 		std::string WriteToDB(File_t *fid);
 		 
-		ICFS_t& operator=(const InstructionSet_t &p_other);
+
+		// this is bad -- you loose data with this operator=.
+
 		void SetTargets(const InstructionSet_t &other) 
 		{
 			InstructionSet_t::operator=(other);

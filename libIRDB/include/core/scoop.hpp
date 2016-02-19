@@ -30,29 +30,35 @@ class DataScoop_t : public BaseObj_t
 				libIRDB::AddressID_t* p_start,
 				libIRDB::AddressID_t* p_end,
 				libIRDB::Type_t* p_type,
-				int p_permissions) 
+				int p_permissions, 
+				std::string p_contents)
 			:
 				BaseObj_t(NULL),
 				name(p_name),
 				start(p_start),
 				end(p_end),
 				type(p_type),
-				permissions(p_permissions)
+				permissions(p_permissions),
+				contents(p_contents)
 		{
+			assert(start && end);
 			SetBaseID(id);
 		}
 
 		std::string GetName() const { return name; }
+		std::string GetContents() const { return contents; }
 		libIRDB::AddressID_t* GetStart() const { return start; }
 		libIRDB::AddressID_t* GetEnd() const { return end; }
 		libIRDB::Type_t* GetType() const { return type; }
+		libIRDB::virtual_offset_t GetSize() { assert(start && end); return end->GetVirtualOffset() - start->GetVirtualOffset() ; }
 		bool isReadable() const  { return (permissions & permissions_r) == permissions_r; }
 		bool isWriteable() const { return (permissions & permissions_w) == permissions_w; };
 		bool isExecuteable() const { return (permissions & permissions_x) == permissions_x; };
 
 		void SetName(const std::string &n) { name=n; }
-		void SetStart( libIRDB::AddressID_t* addr) { start=addr; }
-		void SetEnd( libIRDB::AddressID_t* addr ) { end=addr; }
+		void SetContents(const std::string &n) { contents=n; }
+		void SetStart( libIRDB::AddressID_t* addr) { assert(addr); start=addr; }
+		void SetEnd( libIRDB::AddressID_t* addr ) { assert(addr); end=addr; }
 		void SetType( libIRDB::Type_t*  t) { type=t; }
 
 		void SetReadable() { permissions |= permissions_r; }
@@ -75,6 +81,7 @@ class DataScoop_t : public BaseObj_t
 		libIRDB::AddressID_t* end;
 		libIRDB::Type_t* type;
 		int permissions;
+		std::string contents;
 
 
 };

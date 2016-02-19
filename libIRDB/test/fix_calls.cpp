@@ -32,6 +32,7 @@
 #include <set>
 #include <exeio.h>
 
+#include "fill_in_indtargs.hpp"
 
 
 using namespace libIRDB;
@@ -936,7 +937,7 @@ void range(virtual_offset_t a, virtual_offset_t b)
 	eh_frame_ranges.insert(Range_t(a,b));
 }
 
-bool possible_target(uintptr_t p, uintptr_t at=0)
+bool possible_target(uintptr_t p, uintptr_t at, ibt_provenance_t prov)
 {
 	// used for LDSA
 }

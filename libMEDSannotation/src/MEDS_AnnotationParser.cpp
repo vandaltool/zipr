@@ -30,6 +30,8 @@
 #include "MEDS_FRSafeAnnotation.hpp"
 #include "MEDS_FPTRShadowAnnotation.hpp"
 #include "MEDS_DeadRegAnnotation.hpp"
+#include "MEDS_IBAnnotation.hpp"
+#include "MEDS_IBTAnnotation.hpp"
 
 // @todo: multiple annotation per instruction
 
@@ -91,7 +93,6 @@ void MEDS_AnnotationParser::parseFile(istream &p_inputStream)
 		getline(p_inputStream, line);
 		if (line.empty()) continue;
 
-//cerr << "MEDS_AnnotationParser: line: " << line << endl;
 
 		if(add_if_valid<MEDS_DeadRegAnnotation>(line)) continue;
 		if(add_if_valid<MEDS_FPTRShadowAnnotation>(line)) continue;
@@ -101,8 +102,9 @@ void MEDS_AnnotationParser::parseFile(istream &p_inputStream)
 		if(add_if_valid<MEDS_ProblemFuncAnnotation>(line)) continue;
 		if(add_if_valid<MEDS_FRSafeAnnotation>(line)) continue;
 		if(add_if_valid<MEDS_FuncExitAnnotation>(line)) continue;
+		if(add_if_valid<MEDS_IBAnnotation>(line)) continue;
+		if(add_if_valid<MEDS_IBTAnnotation>(line)) continue;
 
-//				cout<<"Found annotation: "<<annot->toString()<<endl;\
 		
 	}
 }

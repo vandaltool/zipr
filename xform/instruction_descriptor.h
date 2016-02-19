@@ -13,7 +13,6 @@ namespace wahoo {
 
 class Function;
 
-enum IBTProvenance { IBT_PROVENANCE_UNKNOWN, IBT_PROVENANCE_RETURN, IBT_PROVENANCE_SWITCH_TABLE, IBT_PROVENANCE_INDIRECT_CALL, IBT_PROVENANCE_COMPUTED_GOTO, IBT_PROVENANCE_CODE_ADDRESS_TAKEN, IBT_PROVENANCE_UNREACHABLE_BLOCK, IBT_PROVENANCE_DATA_SEGMENT };
 
 class Instruction {
   public:
@@ -30,7 +29,6 @@ class Instruction {
     void markVarStackRef();
 
     app_iaddr_t     getAddress() const { return m_address; }
-    app_iaddr_t     getIBTAddress() const { return m_ibt_address; }
     int             getSize() const { return m_size; }
     Function*       getFunction() const { return m_function; }
     string          getAsm() const { return m_asm; }
@@ -38,7 +36,6 @@ class Instruction {
     void            setData(void *dataPtr, int len);
     unsigned char*  getData() const { return m_data; }
     void            setData(void *data) { m_data = (unsigned char*) data; }
-    void     	    setIBTAddress(app_iaddr_t v) { m_ibt_address=v; }
 
     bool isStackRef() const { return m_stackRef; }
     bool isVarStackRef() const { return m_varStackRef; }
@@ -49,18 +46,8 @@ class Instruction {
     void setVisited() { m_isVisited = true; }
     bool isVisited() const { return m_isVisited; }
 
-    // include Indirect branch targets for insructions.
-    void addIBT(Instruction* insn) { ibts.insert(insn); }
-    const std::set<Instruction*>&  getIBTs() { return ibts; }
-    void markIbComplete(bool complete=true) { m_ib_complete=complete; }
-    bool isIbComplete() { return m_ib_complete; }
-    void setIBTProvenance(char *);
-    void setIBTProvenance(const IBTProvenance p_provenance) { m_ibt_provenance = p_provenance; }
-    IBTProvenance getIBTProvenance() const { return m_ibt_provenance; }
-
   private:
     app_iaddr_t     m_address;
-    app_iaddr_t     m_ibt_address;
     int             m_size;
     Function*       m_function;
     string          m_asm;
@@ -73,9 +60,6 @@ class Instruction {
 
     bool            m_isVisited;
 
-    std::set<Instruction*> ibts;
-    bool m_ib_complete;
-    IBTProvenance m_ibt_provenance;
 };
 
 }

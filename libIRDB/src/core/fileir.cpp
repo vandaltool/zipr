@@ -657,6 +657,8 @@ void FileIR_t::SetBaseIDS()
 		j=MAX(j,(*i)->GetBaseID());
 	for(DataScoopSet_t::const_iterator i=scoops.begin(); i!=scoops.end(); ++i)
 		j=MAX(j,(*i)->GetBaseID());
+	for(ICFSSet_t::const_iterator i=icfs_set.begin(); i!=icfs_set.end(); ++i)
+		j=MAX(j,(*i)->GetBaseID());
 
 	/* increment past the max ID so we don't duplicate */
 	j++;
@@ -678,6 +680,9 @@ void FileIR_t::SetBaseIDS()
 		if((*i)->GetBaseID()==NOT_IN_DATABASE)
 			(*i)->SetBaseID(j++);
 	for(DataScoopSet_t::const_iterator i=scoops.begin(); i!=scoops.end(); ++i)
+		if((*i)->GetBaseID()==NOT_IN_DATABASE)
+			(*i)->SetBaseID(j++);
+	for(ICFSSet_t::const_iterator i=icfs_set.begin(); i!=icfs_set.end(); ++i)
 		if((*i)->GetBaseID()==NOT_IN_DATABASE)
 			(*i)->SetBaseID(j++);
 }
@@ -1174,8 +1179,9 @@ std::map<db_id_t,DataScoop_t*> FileIR_t::ReadScoopsFromDB
                 db_id_t end_id=atoi(dbintr->GetResultColumn("end_address_id").c_str());
 		AddressID_t* end_addr=addrMap[end_id];
                 int permissions=atoi(dbintr->GetResultColumn("permissions").c_str());
+                std::string contents=dbintr->GetResultColumn("data");
 
-		DataScoop_t* newscoop=new DataScoop_t(sid,name,start_addr,end_addr,type,permissions);
+		DataScoop_t* newscoop=new DataScoop_t(sid,name,start_addr,end_addr,type,permissions,contents);
 		assert(newscoop);
 		GetDataScoops().insert(newscoop);
 		dbintr->MoveToNextRow();

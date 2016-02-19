@@ -83,78 +83,6 @@ int get_file_id(char *progName, char *md5hash)
 }
 
 
-void insert_icfs(int fileID, const vector<wahoo::Instruction*>& instructions)
-{
-	using namespace wahoo;
-
-  	connection conn;
-  	work txn(conn);
-  	txn.exec("SET client_encoding='LATIN1';");
-
-	int next_icfs_id=0;
-
-  	for (int i = 0; i < instructions.size(); i ++)
-	{
-     		wahoo::Instruction *instruction = instructions[i];
-		assert(instruction);
-
-		const std::set<Instruction*> &ibts=instruction->getIBTs();
-		
-		if(ibts.size()==0)
-			continue;
-		cerr<<"Found fromIB=="<<hex<<instruction->getAddress()<<endl;
-    
-		string query = "INSERT INTO " + icfsTable;
-    		query += " (icfs_id,icfs_status) VALUES ";
-      		query += "(";
-      		query += txn.quote(next_icfs_id) + ",";
-
-		if (instruction->isIbComplete())
-   	   		query += txn.quote(ICFS_ANALYSIS_COMPLETE_STR);
-		else
-   	   		query += txn.quote(ICFS_ANALYSIS_INCOMPLETE_STR);
-
-		query += ")";
-
-		string query2 = "INSERT INTO " + icfsMapTable;
-    		query2 += " (icfs_id,address_id) VALUES ";
-
-		for(set<Instruction*>::iterator it=ibts.begin(); it!=ibts.end(); it++)
-		{
-			cerr<<"  Found toIBT=="<<hex<<(*it)->getAddress()<<endl;
-			if(it!=ibts.begin())
-				query2+=",";
-			int target_address_id=instruction_to_addressid_map[*it];
-      			query2 += "(";
-      			query2 += txn.quote(next_icfs_id) + ",";
-      			query2 += txn.quote(target_address_id);
-			query2 += ")";
-			
-		}
-
-		// update icfs_id entry in instruction
-		app_iaddr_t instruction_id = address_to_instructionid_map[instruction->getAddress()];
-		string query3 = "UPDATE " + instructionTable;
-    		query3 += " SET icfs_id=";
-			query3 += txn.quote(next_icfs_id);
-			query3 += " WHERE instruction_id=";
-			query3 += txn.quote(instruction_id);
-
-		query+=";";
-		query2+=";";
-		query3+=";";
-
-    	txn.exec(query+query2+query3);
-
-		cerr<<query+query2+query3<<endl;
-		next_icfs_id++;
-	}
- 	cerr<<"Finished inserting ICFS into IR."<<endl; 
-	txn.commit();
-
-}
-
-
 // insert addresses & instructions into DB
 void insert_instructions(int fileID, const vector<wahoo::Instruction*> &instructions, const vector<wahoo::Function*> &functions)
 {
@@ -176,15 +104,13 @@ void insert_instructions(int fileID, const vector<wahoo::Instruction*> &instruct
     query += " (address_id, file_id, vaddress_offset) VALUES ";
 
     string query2 = "INSERT INTO " + instructionTable;
-    query2 += " (instruction_id,address_id, ind_target_address_id, parent_function_id, orig_address_id, data, comment) VALUES ";
+    query2 += " (instruction_id,address_id, parent_function_id, orig_address_id, data, comment) VALUES ";
 
     for (int j = i; j < i + STRIDE; ++j)
     {
       if (j >= instructions.size()) break;
       wahoo::Instruction *instruction = instructions[j];
       app_iaddr_t   addr = instruction->getAddress();
-
-      int ind_target_address=instruction->getIBTAddress();
 
       address_to_instructionid_map[addr]=j;
 
@@ -200,20 +126,6 @@ void insert_instructions(int fileID, const vector<wahoo::Instruction*> &instruct
       query += txn.quote(string(buf));
       query += ")";
 
-      if(ind_target_address!=0)
-      {
-        query += ",";
-	ind_target_address= next_address_id++;
-        query += "(";
-        query += txn.quote(ind_target_address) + ",";
-        query += txn.quote(fileID) + ",";
-        sprintf(buf,"%lld", (long long)addr);
-        query += txn.quote(string(buf));
-        query += ")";
-      }
-      else 
-	ind_target_address=-1;
-
       int parent_function_id = -1;
       if (instruction->getFunction())
       {
@@ -226,7 +138,6 @@ void insert_instructions(int fileID, const vector<wahoo::Instruction*> &instruct
       query2 += "(";
       query2 += txn.quote(my_to_string(j)) + ",";
       query2 += txn.quote(address_id) + ","; // the address id
-      query2 += txn.quote(ind_target_address) + ","; // the IBT address id
       query2 += txn.quote(parent_function_id) + ","; 
       query2 += txn.quote(orig_address_id) + ","; 
 
@@ -531,9 +442,9 @@ void update_function_prototype(const vector<wahoo::Function*> &functions, char* 
 
 int main(int argc, char **argv)
 {
-  	if (argc != 12)
+  	if (argc != 11)
   	{
-    		cerr << "usage: " << argv[0] << " <annotations file> <info annotation file> <file id> <func tab name> <insn tab name> <addr tab name> <types tab name> <icfs table name> <icfs map table name> <elf file> <STARSxref file>" << endl;
+    		cerr << "usage: " << argv[0] << " <annotations file> <info annotation file> <file id> <func tab name> <insn tab name> <addr tab name> <types tab name> <icfs table name> <icfs map table name> <elf file>" << endl;
     		return 1;
   	}
 
@@ -547,7 +458,6 @@ int main(int argc, char **argv)
   	char *myicfsTable=argv[8];
   	char *myicfsMapTable=argv[9];
   	char *elfFile=argv[10];
-  	char *starsXrefFile=argv[11];
 
 	cout<<"Annotation file: "<< annotFile<<endl;
 	cout<<"Info annotation file: "<< infoAnnotFile<<endl;
@@ -559,7 +469,6 @@ int main(int argc, char **argv)
 	cout<<"ICFSTab: "<< myicfsTable<<endl;
 	cout<<"ICFSMapTab: "<< myicfsMapTable<<endl;
 	cout<<"elfFile: "<< elfFile<<endl;
-	cout<<"xrefFile: "<< starsXrefFile<<endl;
 
 	// set global vars for importing.
 	functionTable=myFunctionTable;
@@ -569,7 +478,7 @@ int main(int argc, char **argv)
 	icfsTable=myicfsTable;
 	icfsMapTable=myicfsMapTable;
 
-  	Rewriter *rewriter = new Rewriter(elfFile, annotFile, starsXrefFile);
+  	Rewriter *rewriter = new Rewriter(elfFile, annotFile);
 
   	int fileID = atoi(fid);
 	if(fileID<=0)
@@ -587,8 +496,6 @@ int main(int argc, char **argv)
   	insert_functions(fileID, functions);
   	insert_instructions(fileID, instructions, functions);
   	update_functions(fileID, functions);
-
-  	insert_icfs(fileID, instructions);
 
 	// add function prototype information to the IRDB
 	update_function_prototype(functions, infoAnnotFile);
