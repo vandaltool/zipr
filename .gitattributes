@@ -260,7 +260,6 @@ libIRDB/src/util/Makefile -text
 libIRDB/src/util/SConscript -text
 libIRDB/src/util/SConstruct -text
 libIRDB/src/util/insn_preds.cpp -text
-libIRDB/test/Makefile.in -text
 libIRDB/test/SConscript -text
 libIRDB/test/SConstruct -text
 libIRDB/test/build_callgraph.cpp -text
@@ -274,6 +273,7 @@ libIRDB/test/create_variantir.cpp -text
 libIRDB/test/drop_variant.cpp -text
 libIRDB/test/fill_in_cfg.cpp -text
 libIRDB/test/fill_in_indtargs.cpp -text
+libIRDB/test/fill_in_indtargs.hpp -text
 libIRDB/test/find_strings.cpp -text
 libIRDB/test/fix_calls.cpp -text
 libIRDB/test/generate_spri.cpp -text
@@ -308,12 +308,15 @@ libMEDSannotation/include/MEDS_FPTRShadowAnnotation.hpp -text
 libMEDSannotation/include/MEDS_FRSafeAnnotation.hpp -text
 libMEDSannotation/include/MEDS_FuncAnnotation.hpp -text
 libMEDSannotation/include/MEDS_FuncPrototypeAnnotation.hpp -text
+libMEDSannotation/include/MEDS_IBAnnotation.hpp -text
+libMEDSannotation/include/MEDS_IBTAnnotation.hpp -text
 libMEDSannotation/include/MEDS_InstructionCheckAnnotation.hpp -text
 libMEDSannotation/include/MEDS_ProblemFuncAnnotation.hpp -text
 libMEDSannotation/include/MEDS_Register.hpp -text
 libMEDSannotation/include/MEDS_SafeFuncAnnotation.hpp -text
 libMEDSannotation/include/MEDS_ShadowAnnotation.hpp -text
 libMEDSannotation/include/VirtualOffset.hpp -text
+libMEDSannotation/include/libMEDSAnnotation.h -text
 libMEDSannotation/src/FuncExitAnnotation.cpp -text
 libMEDSannotation/src/MEDS_AnnotationParser.cpp -text
 libMEDSannotation/src/MEDS_DeadRegAnnotation.cpp -text

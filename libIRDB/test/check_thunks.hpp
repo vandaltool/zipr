@@ -29,8 +29,5 @@ void find_all_module_starts(libIRDB::FileIR_t* firp, std::set<libIRDB::virtual_o
 void check_for_thunks(libIRDB::FileIR_t* firp, const std::set<libIRDB::virtual_offset_t>& thunk_bases);
 
 
-bool possible_target(libIRDB::virtual_offset_t p, libIRDB::virtual_offset_t at=0);
-
-
 #endif
 

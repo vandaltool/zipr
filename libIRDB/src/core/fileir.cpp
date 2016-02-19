@@ -657,6 +657,8 @@ void FileIR_t::SetBaseIDS()
 		j=MAX(j,(*i)->GetBaseID());
 	for(DataScoopSet_t::const_iterator i=scoops.begin(); i!=scoops.end(); ++i)
 		j=MAX(j,(*i)->GetBaseID());
+	for(ICFSSet_t::const_iterator i=icfs_set.begin(); i!=icfs_set.end(); ++i)
+		j=MAX(j,(*i)->GetBaseID());
 
 	/* increment past the max ID so we don't duplicate */
 	j++;
@@ -678,6 +680,9 @@ void FileIR_t::SetBaseIDS()
 		if((*i)->GetBaseID()==NOT_IN_DATABASE)
 			(*i)->SetBaseID(j++);
 	for(DataScoopSet_t::const_iterator i=scoops.begin(); i!=scoops.end(); ++i)
+		if((*i)->GetBaseID()==NOT_IN_DATABASE)
+			(*i)->SetBaseID(j++);
+	for(ICFSSet_t::const_iterator i=icfs_set.begin(); i!=icfs_set.end(); ++i)
 		if((*i)->GetBaseID()==NOT_IN_DATABASE)
 			(*i)->SetBaseID(j++);
 }

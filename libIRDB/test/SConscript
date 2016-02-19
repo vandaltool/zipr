@@ -8,12 +8,13 @@ myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 cpppath=''' 
 	 $SECURITY_TRANSFORMS_HOME/include 
 	 $SECURITY_TRANSFORMS_HOME/libIRDB/include 
+	 $SECURITY_TRANSFORMS_HOME/libMEDSannotation/include 
 	 $SECURITY_TRANSFORMS_HOME/libEXEIO/include 
 	 $SECURITY_TRANSFORMS_HOME/beaengine/include 
 	'''
 
 LIBPATH="$SECURITY_TRANSFORMS_HOME/lib"
-LIBS=Split( env.subst('$BASE_IRDB_LIBS')+ " IRDB-cfg IRDB-util")
+LIBS=Split( env.subst('$BASE_IRDB_LIBS')+ " IRDB-cfg IRDB-util MEDSannotation")
 
 print "The libs for libIRDB/tests are:"
 print LIBS

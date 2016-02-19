@@ -38,6 +38,9 @@ int ptrsize=0;
 #include "elfio/elfio_dump.hpp"
 
 
+#include "fill_in_indtargs.hpp"
+
+
 using namespace libIRDB;
 using namespace std;
 
@@ -512,9 +515,9 @@ classify_object_over_fdes (struct object *ob, fde *this_fde)
 
   for (; ! last_fde (ob, this_fde); this_fde = next_fde (this_fde))
     {
-	printf("analysis addr=%p\n", this_fde);
-	printf("pgm addr=%p\n", (uintptr_t)this_fde+(uintptr_t)eh_offset);
-	printf("offset=%p\n", (uintptr_t)this_fde+(uintptr_t)eh_offset-(uintptr_t)eh_frame_addr);
+//	printf("analysis addr=%p\n", this_fde);
+//	printf("pgm addr=%p\n", (uintptr_t)this_fde+(uintptr_t)eh_offset);
+//	printf("offset=%p\n", (uintptr_t)this_fde+(uintptr_t)eh_offset-(uintptr_t)eh_frame_addr);
       struct dwarf_cie *this_cie;
       _Unwind_Ptr mask, pc_begin;
 
@@ -599,13 +602,12 @@ void print_lsda_handlers(lsda_header_info* info, unsigned char* p)
 		     		<<"cs_action: "<< cs_action << endl;
 
 #ifndef TEST
-			bool possible_target(uintptr_t p, uintptr_t at=0);
 
 			/* the landing pad is a possible target if an exception is thrown */ 
-			possible_target(cs_lp+info->Start);
+			possible_target(cs_lp+info->Start, 0, ibt_provenance_t::ibtp_eh_frame);
 
 			/* and the return address is a possible oddity if it's used for walking the stack */
-			possible_target(cs_len+cs_start+info->Start);
+			possible_target(cs_len+cs_start+info->Start, 0, ibt_provenance_t::ibtp_eh_frame);
 
 #endif
 		}

@@ -38,14 +38,13 @@
 
 using namespace std;
 
-Rewriter::Rewriter(char *p_elfPath, char *p_annotationFilePath, char* p_xrefFilePath)
+Rewriter::Rewriter(char *p_elfPath, char *p_annotationFilePath)
 {
   m_elfReader = new ElfReader(p_elfPath);
 
   // parse file and build up all the data structures
   readAnnotationFile(p_annotationFilePath);
   readElfFile(p_elfPath);
-  readXrefsFile(p_xrefFilePath);
 }
 
 Rewriter::~Rewriter()
@@ -620,154 +619,6 @@ after_loop:
 	dissassemble();
 }
 
-void Rewriter::readXrefsFile(char p_filename[])
-{
-	vector<wahoo::Instruction*> instructions=getAllInstructions(); 
-	map<app_iaddr_t,wahoo::Instruction*> addr_to_insn_map;
-    	for (int j = 0; j < instructions.size(); ++j)
-    	{
-      		wahoo::Instruction *instr = instructions[j];
-		assert(instr);
-		addr_to_insn_map[instr->getAddress()]=instr;
-	}
-
-	set<app_iaddr_t> completeIBT;
-
-        FILE* fin=fopen(p_filename, "r");
-
-        if(!fin)
-        {
-                fprintf(stderr,"Cannot open xref annotation file %s\n", p_filename);
-                return;
-        }
-
-	int line=0;
-
-	app_iaddr_t addr = 0;
-	union { int size, type;} size_type_u;
-	char type[200];
-	char scope[200];
-	char ibt[200];
-	char fromib[200];
-	char dest[200];
-	do
-	{
-
-		addr=0;
-                fscanf(fin, "%p%d", (void**)&addr, &size_type_u.size);
-
-                if(feof(fin))           // deal with blank lines at the EOF
-                        break;
-		fscanf(fin, "%s%s", type,scope);
-                if(feof(fin))           // deal with blank lines at the EOF
-                        break;
-
-		assert(strcmp(type,"INSTR")==0);
-		assert(strcmp(scope,"XREF")==0);
-		fscanf(fin, "%s", ibt);
-                if(feof(fin))           // deal with blank lines at the EOF
-                        break;
-	
-		// check for instr xref ibt 	
-/*
-            4280c0      1 INSTR XREF IBT FROMIB             426558 RETURNTARGET
-            426614      1 INSTR XREF IBT FROMIB             426580 RETURNTARGET
-            4280c0      1 INSTR XREF IBT FROMIB             426580 RETURNTARGET
-            4269d2      1 INSTR XREF IBT FROMIB             42689c RETURNTARGET
-            4432bd      1 INSTR XREF IBT FROMIB             42689c RETURNTARGET
-            447d4f      1 INSTR XREF IBT FROMIB             42689c RETURNTARGET
-            42689c      1 INSTR XREF FROMIB COMPLETE      3 RETURNTARGET
-
-*/
-
-		if(string("IBT")==string(ibt))
-		{
-			fscanf(fin, "%s", fromib);
-			if(feof(fin))           // deal with blank lines at the EOF
-				break;
-
-			assert(strcmp(fromib,"FROMIB")==0 || strcmp(fromib,"FROMDATA")==0 
-				|| strcmp(fromib,"FROMUNKNOWN")==0);
-
-			wahoo::Instruction *instr = addr_to_insn_map[addr];
-			if(instr)
-			{
-				// cout<<"Setting IBT for addr "<<std::hex<<addr<<std::dec<<endl;
-				char provenance[200];
-				instr->setIBTAddress(addr);
-				if(strcmp(fromib,"FROMIB")==0)
-				{
-					// get the from point into memory.
-					app_iaddr_t from_addr = 0;
-					fscanf(fin, "%p %s", (void**)&from_addr, provenance);
-
-					// find that instruction
-					wahoo::Instruction *from_instr = addr_to_insn_map[from_addr];
-					assert(from_instr);
-				
-					// record in the IR listing.
-					from_instr->addIBT(instr);
-
-					// set provenance info
-					instr->setIBTProvenance(provenance);
-				}
-				else if(strcmp(fromib,"FROMUNKNOWN")==0)
-				{
-            		// 8049234      3 INSTR XREF IBT FROMUNKNOWN UNREACHABLEBLOCK
-					// COMPUTEDGOTOHEURISTIC | CODEADDRESSTAKEN | UNREACHABLEBLOCK
-					fscanf(fin, "%s", provenance);
-					instr->setIBTProvenance(provenance);
-				}
-				else if(strcmp(fromib,"FROMDATA")==0)
-				{
-					instr->setIBTProvenance("DATASEGMENT");
-				}
-
-				if(feof(fin))           // deal with blank lines at the EOF
-					break;
-			}
-		}
-		// check for instr xref fromib 	
-		else if(string("FROMIB")==string(ibt))
-		{
-			// annotations can come in any order so the COMPLETE annotation for IB targets
-			// can come before/after the targets themselves
-			// in this loop, just keep track of instructions w/ complete targets
-			// 4004b6      1 INSTR XREF FROMIB COMPLETE      1   <provenance>
-			char complete[200];
-			fscanf(fin, "%s", complete);
-			if(feof(fin))           // deal with blank lines at the EOF
-				break;
-
-			if(strcmp(complete,"COMPLETE")==0) 
-			{
-				char provenance[200];
-				int num_targets;
-				completeIBT.insert(addr);
-				fscanf(fin, "%d %s", &num_targets, provenance);
-				if(feof(fin))           // deal with blank lines at the EOF
-					break;
-			}
-		}
-		
-		char remainder[2000];
-		fgets(remainder, sizeof(remainder), fin);
-		line++;
-	
-
-	} while(!feof(fin));
-
-	// let's backpatch all IB instructions with complete targets
-	set<app_iaddr_t>::const_iterator it;
-	for (it = completeIBT.begin(); it != completeIBT.end(); ++it)
-	{
-		wahoo::Instruction *instr = addr_to_insn_map[*it];
-		assert(instr);
-		instr->markIbComplete();
-	}
-
-	fclose(fin);
-}
 
 /*
 * Read MEDS annotation file and populate relevant hash table & data structures

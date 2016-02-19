@@ -34,6 +34,7 @@
 #include <elf.h>
 
 #include "check_thunks.hpp"
+#include "fill_in_indtargs.hpp"
 
 
 using namespace libIRDB;
@@ -75,7 +76,7 @@ void check_for_thunk_offsets(FileIR_t* firp, virtual_offset_t thunk_base)
 			if(0<addoff && addoff<100)
 				continue;
 
-			possible_target(thunk_base+addoff);
+			possible_target(thunk_base+addoff, 0, ibt_provenance_t::ibtp_text);
 		}
 		else if(string(d.Instruction.Mnemonic)==string("lea "))
 		{
@@ -92,7 +93,7 @@ void check_for_thunk_offsets(FileIR_t* firp, virtual_offset_t thunk_base)
 				continue;
 			
 			/* record that there's a possible target here */
-			possible_target(thunk_base+leaoff);
+			possible_target(thunk_base+leaoff, 0, ibt_provenance_t::ibtp_text);
 			
 		}
 			
@@ -124,7 +125,6 @@ void check_func_for_thunk_offsets(Function_t *func, Instruction_t* thunk_insn,
 	string reg, string offset)
 {
 
-	bool possible_target(virtual_offset_t p, virtual_offset_t at=0);
 
 
 	virtual_offset_t thunk_base=thunk_insn->GetFallthrough()->GetAddress()->GetVirtualOffset()+
@@ -165,7 +165,7 @@ void check_func_for_thunk_offsets(Function_t *func, Instruction_t* thunk_insn,
 			/* record that there's a possible target here */
 // 			cout <<"Possible thunk target (add): call:"<<thunk_call_addr<<" offset:"<<thunk_call_offset
 //			     <<" addoff: " << addoff << " total: "<< (thunk_base+addoff)<<endl;
-			possible_target(thunk_base+addoff);
+			possible_target(thunk_base+addoff, 0, ibt_provenance_t::ibtp_text);
 		}
 		else if(string(d.Instruction.Mnemonic)==string("lea "))
 		{
@@ -184,7 +184,7 @@ void check_func_for_thunk_offsets(Function_t *func, Instruction_t* thunk_insn,
 			/* record that there's a possible target here */
 // 			cout <<"Possible thunk target (lea): call:"<<thunk_call_addr<<" offset:"<<thunk_call_offset
 // 			     <<" leaoff: " << leaoff << " total: "<< (thunk_base+leaoff)<<endl;
-			possible_target(thunk_base+leaoff);
+			possible_target(thunk_base+leaoff, 0, ibt_provenance_t::ibtp_text);
 			
 		}
 			

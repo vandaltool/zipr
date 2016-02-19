@@ -21,6 +21,7 @@
 
 #include <libIRDB-core.hpp>
 #include <iostream>
+#include <fstream>
 #include <limits>
 #include <stdlib.h>
 #include <string.h>
@@ -36,54 +37,84 @@
 #include <exeio.h>
 #include "beaengine/BeaEngine.h"
 #include "check_thunks.hpp"
+#include "fill_in_indtargs.hpp"
+#include "libMEDSAnnotation.h"
 
 using namespace libIRDB;
 using namespace std;
 using namespace EXEIO;
+using namespace MEDS_Annotation;
 
-int next_icfs_set_id = 0;
-ICFS_t* hellnode_tgts = NULL;
-//ICFS_t* indirect_calls = NULL;
-
+/*
+ * defines 
+ */
 #define arch_ptr_bytes() (firp->GetArchitectureBitWidth()/8)
 
-int odd_target_count=0;
-int bad_target_count=0;
-int bad_fallthrough_count=0;
+/* 
+ * global variables 
+ */
 
-bool is_possible_target(virtual_offset_t p, virtual_offset_t addr);
+//
+// record the ICFS for each branch, these can come from switch tables
+// 
+map<Instruction_t*, ICFS_t> icfs_maps;
 
+// the bounds of the executable sections in the pgm.
 set< pair <virtual_offset_t,virtual_offset_t>  > bounds;
-set<virtual_offset_t> targets;
 
+// the set of (possible) targets we've found.
+map<virtual_offset_t,ibt_provenance_t> targets;
+
+// the set of ranges represented by the eh_frame section, could be empty for non-elf files.
 set< pair< virtual_offset_t, virtual_offset_t> > ranges;
 
-// a way to map an instruction to its set of predecessors. 
+// a way to map an instruction to its set of (direct) predecessors. 
 map< Instruction_t* , InstructionSet_t > preds;
 
 // keep track of jmp tables
-map< Instruction_t*, InstructionSet_t > jmptables;
+map< Instruction_t*, ICFS_t > jmptables;
 
-void check_for_PIC_switch_table32_type2(Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t>& thunk_bases);
-void check_for_PIC_switch_table32_type3(Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t>& thunk_bases);
-void check_for_PIC_switch_table32(FileIR_t*, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t>& thunk_bases);
-void check_for_PIC_switch_table64(FileIR_t*, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop);
+// a map of virtual offset -> instruction for quick access.
+map<virtual_offset_t,Instruction_t*> lookupInstructionMap;
 
-// get switch table structure, determine ib targets
-// handle both 32 and 64 bit
-void check_for_nonPIC_switch_table(FileIR_t*, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop);
-void check_for_nonPIC_switch_table_pattern2(FileIR_t*, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop);
 
-void check_for_indirect_jmp(FileIR_t* const firp, Instruction_t* const insn);
-void check_for_indirect_call(FileIR_t* const firp, Instruction_t* const insn);
-void check_for_ret(FileIR_t* const firp, Instruction_t* const insn);
+/*
+ * Forward prototypes 
+ */
 
+
+static void check_for_PIC_switch_table32_type2(Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t>& thunk_bases);
+static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t>& thunk_bases);
+static void check_for_PIC_switch_table32(FileIR_t*, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t>& thunk_bases);
+static void check_for_PIC_switch_table64(FileIR_t*, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop);
+static void check_for_nonPIC_switch_table(FileIR_t*, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop);
+static void check_for_nonPIC_switch_table_pattern2(FileIR_t*, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop);
+
+extern void read_ehframe(FileIR_t* firp, EXEIO::exeio* );
+
+
+
+
+template <class T> T MAX(T a, T b) 
+{
+	return a>b ? a : b;
+}
+
+
+/*
+ * range - record a new eh_frame range into the ranges global variable.
+ *   this is called from read_ehframe.
+ */
 void range(virtual_offset_t start, virtual_offset_t end)
 { 	
 	pair<virtual_offset_t,virtual_offset_t> foo(start,end);
 	ranges.insert(foo);
 }
 
+
+/*   
+ * is_in_range - determine if an address is referenced by the eh_frame section 
+ */
 bool is_in_range(virtual_offset_t p)
 {
 	for(
@@ -101,8 +132,14 @@ bool is_in_range(virtual_offset_t p)
 	return false;
 }
 
+/*
+ * process_range - go through each instruction.  if it's a call, check to see if the return address is in a range.  if so, mark it as a possible target.
+ */
 void process_ranges(FileIR_t* firp)
 {
+#if 0
+Do we still want to do this?  doesn't fix_calls read the eh_frame itself now and deal with this appropriately ?
+
         for(
                 set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
                 it!=firp->GetInstructions().end();
@@ -111,14 +148,6 @@ void process_ranges(FileIR_t* firp)
 	{
                 Instruction_t *insn=*it;
                 DISASM disasm;
-#if 0
-                memset(&disasm, 0, sizeof(DISASM));
-
-                disasm.Options = NasmSyntax + PrefixedNumeral;
-                disasm.Archi = 32;
-                disasm.EIP = (UIntPtr) insn->GetDataBits().c_str();
-                disasm.VirtualAddr = insn->GetAddress()->GetVirtualOffset();
-#endif
                 int instr_len = insn->Disassemble(disasm);
 
                 assert(instr_len==insn->GetDataBits().size());
@@ -130,9 +159,10 @@ void process_ranges(FileIR_t* firp)
                         	possible_target(disasm.VirtualAddr+instr_len);
                 }
 	}
+#endif
 }
 
-bool possible_target(virtual_offset_t p, virtual_offset_t addr)
+bool possible_target(virtual_offset_t p, virtual_offset_t from_addr, ibt_provenance_t prov)
 {
 /*	if(p!=(int)p)
 	{
@@ -141,16 +171,16 @@ bool possible_target(virtual_offset_t p, virtual_offset_t addr)
 		return false;
 	}
 */
-	if(is_possible_target(p,addr))
+	if(is_possible_target(p,from_addr))
 	{
 		if(getenv("IB_VERBOSE")!=NULL)
 		{
-			if(addr!=0)
-				cout<<"Found IB target address 0x"<<std::hex<<p<<" at 0x"<<addr<<std::dec<<endl;
+			if(from_addr!=0)
+				cout<<"Found IB target address 0x"<<std::hex<<p<<" at 0x"<<from_addr<<std::dec<<endl;
 			else
 				cout<<"Found IB target address 0x"<<std::hex<<p<<" from unknown location"<<endl;
 		}
-		targets.insert(p);
+		targets[p].add(prov);
 		return true;
 	}
 	return false;
@@ -207,15 +237,14 @@ void handle_argument(ARGTYPE *arg, Instruction_t* insn)
 			assert(insn);
 			assert(insn->GetAddress());
 			possible_target(arg->Memory.Displacement+insn->GetAddress()->GetVirtualOffset()+
-				insn->GetDataBits().length());
+				insn->GetDataBits().length(), ibt_provenance_t::ibtp_text);
 		}
 		else
-			possible_target(arg->Memory.Displacement);
+			possible_target(arg->Memory.Displacement, ibt_provenance_t::ibtp_text);
 	}
 }
 
 
-static map<virtual_offset_t,Instruction_t*> lookupInstructionMap;
 void lookupInstruction_init(FileIR_t *firp)
 {
 	lookupInstructionMap.clear();
@@ -233,83 +262,6 @@ Instruction_t *lookupInstruction(FileIR_t *firp, virtual_offset_t virtual_offset
 	if(lookupInstructionMap.find(virtual_offset)!=lookupInstructionMap.end())
 		return lookupInstructionMap[virtual_offset];
 	return NULL;
-}
-
-void mark_jmptables(FileIR_t *firp)
-{
-	map< Instruction_t*, InstructionSet_t >::iterator it;
-	for (it = jmptables.begin(); it != jmptables.end(); ++it)
-	{
-		Instruction_t* instr = it->first;
-		const InstructionSet_t &instruction_targets = it->second;
-
-		// ignore if instr already marked complete.
-		// FIXME: assert that fill_in_indtarg analysis matches already complete analysis.
-		if(instr->GetIBTargets() && instr->GetIBTargets()->IsComplete())
-			continue;
-
-		assert(instruction_targets.size() > 0);
-
-		ICFS_t* new_icfs = new ICFS_t(next_icfs_set_id++, ICFS_Analysis_Complete);
-		new_icfs->SetTargets(instruction_targets);
-		firp->GetAllICFS().insert(new_icfs);
-
-		instr->SetIBTargets(new_icfs);
-		cout << "new icfs: jmp table[" << new_icfs->GetBaseID() << "]: size: " << new_icfs->size() << endl;
-	}
-}
-
-bool allTargetsIndirectlyCalledFunctions(Instruction_t *instr)
-{
-	if (!instr->GetIBTargets())
-		return false;
-
-	ICFS_t *targets = instr->GetIBTargets();
-	for(set<Instruction_t*>::const_iterator it=targets->begin();
-		it!=targets->end(); ++it)
-	{
-		Instruction_t *insn = *it;
-		if (!insn->GetFunction())
-			return false;
-		else if (!insn->GetFunction()->GetEntryPoint())
-			return false;
-		/* NB: current API assumes only 1 entry point per function */
-		else if (insn->GetFunction()->GetEntryPoint() != insn)
-			return false;
-	}
-
-	return true;
-}
-
-/*
-	 pre: some ib targets may be incomplete 
-	post: all icfs are either module_complete or complete 
-*/
-void patch_icfs(FileIR_t *firp)
-{
-	for (set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
-		it!=firp->GetInstructions().end(); 
-		++it)
-	{
-		Instruction_t* instr = *it;
-
-		if(instr->GetIBTargets() && !(
-			instr->GetIBTargets()->IsComplete() ||
-			instr->GetIBTargets()->IsModuleComplete()) )
-		{
-			assert(instr->GetIBTargets()->IsIncomplete());
-
-/*
-			if (allTargetsIndirectlyCalledFunctions(instr)) {
-				cerr << "ib targets for: " << instr->getDisassembly() << " reassigned to indirectcalls node" << endl;
-				instr->SetIBTargets(indirect_calls);
-			} else {
-*/
-				cerr << "incomplete ib targets for: " << instr->getDisassembly() << " reassigned to hellnode" << endl;
-				instr->SetIBTargets(hellnode_tgts);
-//			}
-		}
-	}
 }
 
 void mark_targets(FileIR_t *firp)
@@ -352,7 +304,8 @@ void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<vir
                 assert(instr_len==insn->GetDataBits().size());
 
 		check_for_PIC_switch_table32_type2(insn,disasm, elfiop, thunk_bases);
-		check_for_PIC_switch_table32_type3(insn,disasm, elfiop, thunk_bases);
+		check_for_PIC_switch_table32_type3(firp,insn,disasm, elfiop, thunk_bases);
+
 		if (firp->GetArchitectureBitWidth()==32)
 			check_for_PIC_switch_table32(firp, insn,disasm, elfiop, thunk_bases);
 		else if (firp->GetArchitectureBitWidth()==64)
@@ -366,25 +319,16 @@ void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<vir
 		if (jmptables.count(insn) == 0)
 			check_for_nonPIC_switch_table_pattern2(firp, insn,disasm, elfiop);
 
-		// assign hellnode type to indirect jmps that are not detected
-		// to be switch tables
-		if (jmptables.count(insn) == 0)
-			check_for_indirect_jmp(firp, insn);
-
-		// assign special hellnode type to indirect calls
-		check_for_indirect_call(firp, insn);
-		check_for_ret(firp, insn);
-
 		/* other branches can't indicate an indirect branch target */
 		if(disasm.Instruction.BranchType)
 			continue;
 
 		/* otherwise, any immediate is a possible branch target */
-		possible_target(disasm.Instruction.Immediat);
-
+		possible_target(disasm.Instruction.Immediat,ibt_provenance_t::ibtp_text);
 		handle_argument(&disasm.Argument1, insn);
 		handle_argument(&disasm.Argument2, insn);
 		handle_argument(&disasm.Argument3, insn);
+		handle_argument(&disasm.Argument4, insn);
 	}
 }
 
@@ -439,7 +383,29 @@ void infer_targets(FileIR_t *firp, section* shdr)
 			p=*(int*)&data[i];
 		else
 			p=*(virtual_offset_t*)&data[i];	// 64 or 32-bit depending on sizeof uintptr_t, may need porting for cross platform analysis.
-		possible_target(p, i+shdr->get_address());
+
+
+
+		ibt_provenance_t prov;
+		if(shdr->get_name()==".init_array")
+			prov=ibt_provenance_t::ibtp_initarray;
+		else if(shdr->get_name()==".fini_array")
+			prov=ibt_provenance_t::ibtp_finiarray;
+		else if(shdr->get_name()==".got.plt")
+			prov=ibt_provenance_t::ibtp_gotplt;
+		else if(shdr->get_name()==".got")
+			prov=ibt_provenance_t::ibtp_got;
+		else if(shdr->get_name()==".dynsym")
+			prov=ibt_provenance_t::ibtp_dynsym;
+		else if(shdr->get_name()==".symtab")
+			prov=ibt_provenance_t::ibtp_symtab;
+		else if( ! shdr->isWriteable()) 
+			prov=ibt_provenance_t::ibtp_data;
+		else
+			prov=ibt_provenance_t::ibtp_rodata;
+
+		possible_target(p, i+shdr->get_address(), prov);
+
 	}
 
 }
@@ -449,12 +415,12 @@ void print_targets()
 {
 	int j=0;
 	for(
-		set<virtual_offset_t>::iterator it=targets.begin();
+		map<virtual_offset_t,ibt_provenance_t>::iterator it=targets.begin();
 		it!=targets.end();
 		++it, j++
 	   )
 	{
-		virtual_offset_t target=*it;
+		virtual_offset_t target=it->first;
 	
 		cout<<std::hex<<target;
 		if(j%10 == 0)
@@ -464,77 +430,6 @@ void print_targets()
 	}
 
 	cout<<endl;
-}
-
-/* 
- *
- * add_num_handle_fn_watches - 
- *
- *  This function is a quick and dirty way to ensure that 
- *  certain function call watches are not interfered with by ILR
- *  This is done by marking the functions of interest as indirect targets
- *  so that they receive a spri rule of the form <original_addr> -> <newaddr>
- * 
- *  Current function list:  
- *      fread, fread_unlocked, 
- *      fwrite, fwrite_unlocked, 
- *      strncpy, strncat, strncmp, strxfrm
- *      memcpy, memmove, memcmp, memchr, memrchr, memset
- *      wcsncpy, wcsncat, wcsncmp, wcsxfrm
- *      wmemcpy, wmemmove, wmemcmp, wmemchr, memset
- *
- */
-void add_num_handle_fn_watches(FileIR_t * firp)
-{
-    	/* Loop over the set of functions */
-    for(
-       	set<Function_t*>::const_iterator it=firp->GetFunctions().begin();
-       	it!=firp->GetFunctions().end();
-        ++it
-        )
-    {
-        Function_t *func=*it;
-        char *funcname=(char *)func->GetName().c_str();
-	if(!func->GetEntryPoint())
-		continue;
-        virtual_offset_t the_offset=func->GetEntryPoint()->GetAddress()->GetVirtualOffset();
-
-        /* macro to facilitate the checking */
-#define CHECK_FN(fname)                         \
-        if(strcmp(#fname, funcname)==0)         \
-        {                                       \
-            possible_target(the_offset);        \
-        }
-
-        /* 
-         * if one that we want to watch, 
-         * mark it as a possible target 
-         */
-        CHECK_FN(fread);
-        CHECK_FN(_IO_fread);
-        CHECK_FN(fread_unlocked);
-        CHECK_FN(fwrite);
-        CHECK_FN(_IO_fwrite);
-        CHECK_FN(fwrite_unlocked);
-        CHECK_FN(strncpy);
-        CHECK_FN(strncmp);
-        CHECK_FN(strxfrm);
-        CHECK_FN(memcpy);
-        CHECK_FN(memmove);
-        CHECK_FN(memcmp);
-        CHECK_FN(memchr);
-        CHECK_FN(memrchr);
-        CHECK_FN(memset);
-        CHECK_FN(wcsncpy);
-        CHECK_FN(wcsxfrm);
-        CHECK_FN(wmemcpy);
-        CHECK_FN(wmemmove);
-        CHECK_FN(wmemcmp);
-        CHECK_FN(wmemchr);
-        CHECK_FN(wmemset);
-        
-    }
-
 }
 
 set<Instruction_t*> find_in_function(string needle, Function_t *haystack)
@@ -620,8 +515,10 @@ bool backup_until(const char* insn_type_regex, Instruction_t *& prev, Instructio
 /*
  * check_for_PIC_switch_table32 - look for switch tables in PIC code for 32-bit code.
  */
-void check_for_PIC_switch_table32(FileIR_t *firp, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
+static void check_for_PIC_switch_table32(FileIR_t *firp, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
 {
+
+	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type1;
 #if 0
 
 /* here's typical code */
@@ -748,7 +645,7 @@ cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< "
 				if(getenv("IB_VERBOSE")!=0)
 					cout<<"Found switch table (thunk-relative) entry["<<dec<<i<<"], "<<hex<<thunk_base+table_entry<<endl;
 
-				if(!possible_target(thunk_base+table_entry,table_base+i*4))
+				if(!possible_target(thunk_base+table_entry,table_base+i*4,prov))
 					break;
 
 				Instruction_t *ibtarget = lookupInstruction(firp, thunk_base+table_entry);
@@ -764,7 +661,9 @@ cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< "
 			if (table_size == ibtargets.size() || table_size == (ibtargets.size()-1))
 			{
 				cout << "pic32 (base pattern): valid switch table detected" << endl;
-				jmptables[I5] = ibtargets;
+				jmptables[I5].SetTargets(ibtargets);
+				jmptables[I5].SetAnalysisStatus(ICFS_Analysis_Complete);
+			
 			}
 		}
 		else
@@ -779,8 +678,9 @@ cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< "
 
 }
 
-void check_for_PIC_switch_table32_type2(Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
+static void check_for_PIC_switch_table32_type2(Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
 {
+	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type2;
 #if 0
 
 /* here's typical code */
@@ -854,7 +754,7 @@ cout<<hex<<"Found (type2) switch dispatch at "<<I3->GetAddress()->GetVirtualOffs
                 	const int32_t *table_entry_ptr=(const int32_t*)&(secdata[offset+i*4]);
                 	virtual_offset_t table_entry=*table_entry_ptr;
 
-cout<<"Checking target base:" << std::hex << table_base+table_entry << ", " << table_base+i*4<<endl;
+// cout<<"Checking target base:" << std::hex << table_base+table_entry << ", " << table_base+i*4<<endl;
 			if(!is_possible_target(table_base+table_entry,table_base+i*4))
 				break;	
 		}
@@ -874,7 +774,7 @@ cout<<"Checking target base:" << std::hex << table_base+table_entry << ", " << t
 	
 				if(getenv("IB_VERBOSE")!=0)
 					cout<<"Found switch table (thunk-relative) entry["<<dec<<i<<"], "<<hex<<table_base+table_entry<<endl;
-				if(!possible_target(table_base+table_entry,table_base+i*4))
+				if(!possible_target(table_base+table_entry,table_base+i*4,prov))
 					break;
 			}
 		}
@@ -890,8 +790,9 @@ cout<<"Checking target base:" << std::hex << table_base+table_entry << ", " << t
 
 }
 
-void check_for_PIC_switch_table32_type3(Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
+static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
 {
+	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type3;
 #if 0
 
 /* here's typical code */
@@ -917,11 +818,6 @@ void check_for_PIC_switch_table32_type3(Instruction_t* insn, DISASM disasm, EXEI
 		return;
 
 
-	/* could be jmp [reg1+addr], jmp [reg2*k+addr], jmp [reg1+reg2*k+addr], or jmp [addr] */ 
-	if(getenv("IB_VERBOSE")!=0)
-		cout<<hex<<"Found (type3) candidate for switch dispatch for '"<<disasm.CompleteInstr<<"' at "<<I5->GetAddress()->GetVirtualOffset()<< " with table_base="<<table_base<<endl;
-		
-
 	// find the section with the data table
 	EXEIO::section *pSec=find_section(table_base,elfiop);
 	if(!pSec)
@@ -946,26 +842,43 @@ void check_for_PIC_switch_table32_type3(Instruction_t* insn, DISASM disasm, EXEI
 
 		if(getenv("IB_VERBOSE")!=0)
 			cout<<"Checking target base:" << std::hex << table_entry << ", " << table_base+i*4<<endl;
-		if(!is_possible_target(table_entry,table_base+i*4))
-		{
-			cout<<hex<<"Found (type3) candidate for switch dispatch for '"<<disasm.CompleteInstr<<"' at "<<I5->GetAddress()->GetVirtualOffset()<< " with table_base="<<table_base<<endl;
-			cout<<"Found table_entry "<<hex<<table_entry<<" is not valid\n"<<endl;
-			return;	
-		}
 
 		/* if there's no base register and no index reg, */
 		/* then this jmp can't have more than one valid table entry */
 		if( disasm.Argument1.Memory.BaseRegister==0 && disasm.Argument1.Memory.IndexRegister==0 ) 
 		{
 			/* but the table can have 1 valid entry. */
-			possible_target(table_entry,table_base+0*4);
-			cout<<hex<<"Found  constant-memory dispatch ("<<disasm.CompleteInstr<<"') at "<<I5->GetAddress()->GetVirtualOffset()<< endl;
+			if(pSec->get_name()==".got.plt")
+			{	
+
+
+	                        Instruction_t *ibtarget = lookupInstruction(firp, table_entry);
+				if(ibtarget)
+				{
+					jmptables[I5].insert(ibtarget);
+					jmptables[I5].SetAnalysisStatus(ICFS_Analysis_Complete);
+					possible_target(table_entry,table_base+0*4, ibt_provenance_t::ibtp_gotplt);
+					cout<<hex<<"Found  plt dispatch ("<<disasm.CompleteInstr<<"') at "<<I5->GetAddress()->GetVirtualOffset()<< endl;
+					return;
+				}
+			}
+			if(pSec->isWriteable())
+				possible_target(table_entry,table_base+0*4, ibt_provenance_t::ibtp_data);
+			else
+				possible_target(table_entry,table_base+0*4, ibt_provenance_t::ibtp_rodata);
+			cout<<hex<<"Found  constant-memory dispatch from non- .got.plt location ("<<disasm.CompleteInstr<<"') at "<<I5->GetAddress()->GetVirtualOffset()<< endl;
 			return;
+		}
+		if(!is_possible_target(table_entry,table_base+i*4))
+		{
+			cout<<hex<<"Found (type3) candidate for switch dispatch for '"<<disasm.CompleteInstr<<"' at "<<I5->GetAddress()->GetVirtualOffset()<< " with table_base="<<table_base<<endl;
+			cout<<"Found table_entry "<<hex<<table_entry<<" is not valid\n"<<endl;
+			return;	
 		}
 	}
 
 
-	cout<<hex<<"Found (type3) switch dispatch at "<<I5->GetAddress()->GetVirtualOffset()<< " with table_base="<<table_base<<endl;
+	cout<<hex<<"Definitely found (type3) switch dispatch at "<<I5->GetAddress()->GetVirtualOffset()<< " with table_base="<<table_base<<endl;
 
 	/* did we finish the loop or break out? */
 	if(i==3)
@@ -983,7 +896,7 @@ void check_for_PIC_switch_table32_type3(Instruction_t* insn, DISASM disasm, EXEI
 
 			if(getenv("IB_VERBOSE")!=0)
 				cout<<"Found switch table (thunk-relative) entry["<<dec<<i<<"], "<<hex<<table_entry<<endl;
-			if(!possible_target(table_entry,table_base+i*4))
+			if(!possible_target(table_entry,table_base+i*4,prov))
 				return;
 		}
 	}
@@ -1002,8 +915,9 @@ void check_for_PIC_switch_table32_type3(Instruction_t* insn, DISASM disasm, EXEI
  * if so, see if we can trace back a few instructions to find a
  * the start of the table.
  */
-void check_for_PIC_switch_table64(FileIR_t* firp, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop)
+static void check_for_PIC_switch_table64(FileIR_t* firp, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop)
 {
+	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type4;
 /* here's the pattern we're looking for */
 #if 0
 I1:   0x000000000044425a <+218>:        cmp    DWORD PTR [rax+0x8],0xd   // bounds checking code, 0xd cases. switch(i) has i stored in [rax+8] in this e.g.
@@ -1218,7 +1132,7 @@ DN:   0x4824XX: .long 0x4824e0-LN
 			const int *table_entry_ptr=(const int*)&(secdata[offset]);
 			virtual_offset_t table_entry=*table_entry_ptr;
 
-			if(!possible_target(D1+table_entry))
+			if(!possible_target(D1+table_entry, 0/* from addr unknown */,prov))
 				break;
 
 			if(getenv("IB_VERBOSE"))
@@ -1255,7 +1169,8 @@ DN:   0x4824XX: .long 0x4824e0-LN
 		if (table_size == ibtargets.size() || table_size == (ibtargets.size()-1))
 		{
 			cout << "pic64: valid switch table detected" << endl;
-			jmptables[I8] = ibtargets;
+			jmptables[I8].SetTargets(ibtargets);
+			jmptables[I8].SetAnalysisStatus(ICFS_Analysis_Complete);
 		}
 	}
 }
@@ -1273,8 +1188,9 @@ DN:   0x4824XX: .long 0x4824e0-LN
 
 	nb: handles both 32 and 64 bit
 */
-void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop)
+static void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop)
 {
+	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type5;
 	Instruction_t *I1 = NULL;
 	Instruction_t *IJ = insn;
 
@@ -1316,7 +1232,7 @@ void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn,
 	cout<<"(nonPIC-pattern2): size of jmp table: "<< table_size << endl;
 
 	// find the section with the data table
-    EXEIO::section *pSec=find_section(table_offset,elfiop);
+    	EXEIO::section *pSec=find_section(table_offset,elfiop);
 	if(!pSec)
 	{
 		return;
@@ -1342,6 +1258,7 @@ void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn,
 
 		const virtual_offset_t *table_entry_ptr=(const virtual_offset_t*)&(secdata[offset+i*arch_ptr_bytes()]);
 		virtual_offset_t table_entry=*table_entry_ptr;
+		possible_target(table_entry,0,prov);
 
 		Instruction_t *ibtarget = lookupInstruction(firp, table_entry);
 		if (!ibtarget) {
@@ -1357,7 +1274,8 @@ void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn,
 
 	cout << "(non-PIC) valid switch table found" << endl;
 
-	jmptables[IJ] = ibtargets;
+	jmptables[IJ].SetTargets(ibtargets);
+	jmptables[IJ].SetAnalysisStatus(ICFS_Analysis_Complete);
 }
 
 
@@ -1374,8 +1292,9 @@ void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn,
 
 	nb: handles both 32 and 64 bit
 */
-void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop)
+static void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop)
 {
+	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type6;
 	Instruction_t *I1 = NULL;
 	Instruction_t *I2 = NULL;
 	Instruction_t *I4 = NULL;
@@ -1475,6 +1394,7 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DISASM d
 		else 
 			assert(0 && "Unknown arch size.");
 
+		possible_target(table_entry, 0 /* from addr unknown */, prov);
 		Instruction_t *ibtarget = lookupInstruction(firp, table_entry);
 		if (!ibtarget) {
 			if(getenv("IB_VERBOSE"))
@@ -1488,135 +1408,9 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DISASM d
 	}
 
 	cout << "(non-PIC) valid switch table found" << endl;
-	jmptables[IJ] = ibtargets;
+	jmptables[IJ].SetTargets(ibtargets);
+	jmptables[IJ].SetAnalysisStatus(ICFS_Analysis_Complete);
 }
-
-template <class T> T MAX(T a, T b) 
-{
-	return a>b ? a : b;
-}
-
-void icfs_init(FileIR_t* firp)
-{
-	assert(firp);
-	db_id_t max_id=0;
-	for(ICFSSet_t::iterator it=firp->GetAllICFS().begin(); it!=firp->GetAllICFS().end(); ++it)
-	{
-		max_id=MAX<db_id_t>(max_id, (*it)->GetBaseID());
-	}
-	next_icfs_set_id = max_id+1;
-	cerr<<"Found max ICFS id=="<<max_id<<endl;
-	hellnode_tgts = new ICFS_t(next_icfs_set_id++, ICFS_Analysis_Module_Complete);
-//	indirect_calls = new ICFS_t(next_icfs_set_id++, ICFS_Analysis_Module_Complete); 
-	firp->GetAllICFS().insert(hellnode_tgts);
-	cout << "new icfs: hellnode targets" << endl;
-	cout<<"icfs_init: size of ICFS set"<<firp->GetAllICFS().size()<<endl;
-//	firp->GetAllICFS().insert(indirect_calls);
-}
-
-void icfs_set_indirect_calls(FileIR_t* const firp, ICFS_t* const targets)
-{
-	assert(firp && targets);
-    	for(
-       	    FunctionSet_t::const_iterator it=firp->GetFunctions().begin();
-       	    it!=firp->GetFunctions().end();
-            ++it
-           )
-    	{
-        	Function_t *func=*it;
-
-		// no entry point, doesn't count
-		if(!func->GetEntryPoint())
-			continue;
-
-		// if it's no an indirectly called function, it doesn't count
-		if(!func->GetEntryPoint()->GetIndirectBranchTargetAddress())
-			continue;
-
-		targets->insert(func->GetEntryPoint());
-	}
-}
-
-void icfs_set_hellnode_targets(FileIR_t* const firp, ICFS_t* const targets)
-{
-	assert(firp && targets);
-	for(
-		InstructionSet_t::const_iterator it=firp->GetInstructions().begin();
-			it!=firp->GetInstructions().end(); ++it)
-	{
-		Instruction_t* insn=*it;
-		if(insn->GetIndirectBranchTargetAddress())
-		{
-			targets->insert(insn);
-		}
-	}
-}
-
-
-void check_for_ret(FileIR_t* const firp, Instruction_t* const insn)
-{
-	assert(firp && insn);
-
-	DISASM d;
-	insn->Disassemble(d);
-
-	if(strstr(d.Instruction.Mnemonic, "ret")==NULL)
-		return;
-
-	// already analysed by ida.
-	if(insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
-		return;
-
-	insn->SetIBTargets(hellnode_tgts);
-}
-
-// find any indirect jumps in the pgm and mark them as having a hell node ICFS if they don't
-// already have a complete ICFS.
-void check_for_indirect_jmp(FileIR_t* const firp, Instruction_t* const insn)
-{
-	assert(firp && insn);
-
-	// already analysed by ida.
-	if(insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
-		return;
-
-	DISASM d;
-	insn->Disassemble(d);
-
-	if(strstr(d.Instruction.Mnemonic, "jmp")==NULL)
-		return;
-
-	if(d.Argument1.ArgType&REGISTER_TYPE)
-	{
-		insn->SetIBTargets(hellnode_tgts);
-	}
-	else if(d.Argument1.ArgType&MEMORY_TYPE)
-	{
-		insn->SetIBTargets(hellnode_tgts);
-	}
-}
-
-void check_for_indirect_call(FileIR_t* const firp, Instruction_t* const insn)
-{
-	assert(firp && insn);
-
-	DISASM d;
-	insn->Disassemble(d);
-
-	if (d.Instruction.BranchType!=CallType)
-		return;
-					
-	if(d.Argument1.ArgType&CONSTANT_TYPE)
-		return;
-
-	// already analysed by ida.
-	if(insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
-		return;
-
-	insn->SetIBTargets(hellnode_tgts);
-//	insn->SetIBTargets(indirect_calls);
-}
-
 
 void calc_preds(FileIR_t* firp)
 {
@@ -1636,43 +1430,478 @@ void calc_preds(FileIR_t* firp)
 }
 
 
-void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t> forced_pins)
+void handle_ib_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBAnnotation* p_ib_annotation)
 {
-	if(getenv("IB_VERBOSE")!=0)
-        	for(
-                	set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
-                	it!=firp->GetInstructions().end();
-                	++it
-           	)
+	if(p_ib_annotation->IsComplete())
+	{
+		jmptables[insn].SetAnalysisStatus(ICFS_Analysis_Complete);
+	}
+}
+void handle_ibt_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBTAnnotation* p_ibt_annotation)
+{
+/*
+ * ibt_prov reason codes
+ *              static const provtype_t ibtp_stars_ret=1<<11;
+ *              static const provtype_t ibtp_stars_switch=1<<12;
+ *              static const provtype_t ibtp_stars_data=1<<13;
+ *              static const provtype_t ibtp_stars_unknown=1<<14;
+ *              static const provtype_t ibtp_stars_addressed=1<<15;
+ *              static const provtype_t ibtp_stars_unreachable=1<<15;
+ */
+/* meds annotations
+ *                typedef enum { SWITCH, RET, DATA, UNREACHABLE, ADDRESSED, UNKNOWN } ibt_reason_code_t;
+ */
+	switch(p_ibt_annotation->GetReason())
+	{
+		case MEDS_IBTAnnotation::SWITCH:
 		{
-			Instruction_t* insn=*it;
-			if(insn->GetIndirectBranchTargetAddress())
-				cout<<"Insn at "<<insn->GetAddress()->GetVirtualOffset()<<" already has ibt "<<
-					insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()<<endl;
-			
+			possible_target((EXEIO::virtual_offset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
+				0,ibt_provenance_t::ibtp_stars_switch);
+			libIRDB::virtual_offset_t  addr=(libIRDB::virtual_offset_t)p_ibt_annotation->GetXrefAddr();
+			Instruction_t* fromib=lookupInstruction(firp, addr);
+			Instruction_t* ibt=lookupInstruction(firp, p_ibt_annotation->getVirtualOffset().getOffset());
+			if(fromib && ibt)
+			{
+				jmptables[fromib].insert(ibt);
+			}
+			else
+			{
+				cout<<"Warning:  cannot find source or dest for switch icfs."<<endl;
+			}
+			break;
+		}
+		case MEDS_IBTAnnotation::RET:
+		{
+			/* we are not going to mark return points as IBTs yet.  that's fix-calls job */
+			// possible_target((EXEIO::virtual_offset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
+			// 	0,ibt_provenance_t::ibtp_stars_ret);
+
+
+			libIRDB::virtual_offset_t  fromaddr=(libIRDB::virtual_offset_t)p_ibt_annotation->GetXrefAddr();
+			Instruction_t* fromib=lookupInstruction(firp, fromaddr);
+			libIRDB::virtual_offset_t  toaddr=p_ibt_annotation->getVirtualOffset().getOffset();
+			Instruction_t* ibt=lookupInstruction(firp, toaddr);
+			if(fromib && ibt)
+			{
+				jmptables[fromib].insert(ibt);
+			}
+			else
+			{
+				cout<<"Warning:  cannot find source ("<<hex<<fromaddr<<") or dest ("<<hex<<toaddr<<") for ret icfs."<<endl;
+			}
+			break;
+		}
+		case MEDS_IBTAnnotation::DATA:
+		{
+			possible_target((EXEIO::virtual_offset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
+				0,ibt_provenance_t::ibtp_stars_data);
+			break;
+		}
+		case MEDS_IBTAnnotation::UNREACHABLE:
+		{
+			possible_target((EXEIO::virtual_offset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
+				0,ibt_provenance_t::ibtp_stars_unreachable);
+			break;
+		}
+		case MEDS_IBTAnnotation::ADDRESSED:
+		{
+			possible_target((EXEIO::virtual_offset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
+				0,ibt_provenance_t::ibtp_stars_addressed);
+			break;
+		}
+		case MEDS_IBTAnnotation::UNKNOWN:
+		{
+			possible_target((EXEIO::virtual_offset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
+				0,ibt_provenance_t::ibtp_stars_unknown);
+			break;
+		}
+		default:
+		{
+			assert(0); // unexpected ibt annotation.
+		}
+	}
+
+
+}
+
+void read_stars_xref_file(FileIR_t* firp)
+{
+
+	string BINARY_NAME="a.ncexe";
+	string SHARED_OBJECTS_DIR="shared_objects";
+
+	string fileBasename = basename((char*)firp->GetFile()->GetURL().c_str());
+	int ibs=0;
+	int ibts=0;
+
+	MEDS_AnnotationParser annotationParser;
+	string annotationFilename;
+	// need to map filename to integer annotation file produced by STARS
+	// this should be retrieved from the IRDB but for now, we use files to store annotations
+	// convention from within the peasoup subdirectory is:
+	//      a.ncexe.infoannot
+	//      shared_objects/<shared-lib-filename>.infoannot
+	if (fileBasename==BINARY_NAME) 
+		annotationFilename = BINARY_NAME;
+	else
+		annotationFilename = SHARED_OBJECTS_DIR + "/" + fileBasename ;
+
+	annotationParser.parseFile(annotationFilename+".STARSxrefs");
+
+        for(
+                set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
+                it!=firp->GetInstructions().end();
+                ++it
+           )
+	{
+		Instruction_t* insn=*it;
+		virtual_offset_t irdb_vo = insn->GetAddress()->GetVirtualOffset();
+		VirtualOffset vo(irdb_vo);
+
+		/* find it in the annotations */
+        	pair<MEDS_Annotations_t::iterator,MEDS_Annotations_t::iterator> ret;
+		ret = annotationParser.getAnnotations().equal_range(vo);
+		MEDS_IBAnnotation* p_ib_annotation;
+		MEDS_IBTAnnotation* p_ibt_annotation;
+
+		/* for each annotation for this instruction */
+		for (MEDS_Annotations_t::iterator ait = ret.first; ait != ret.second; ++ait)
+		{
+			/* is this annotation a funcSafe annotation? */
+			p_ib_annotation=dynamic_cast<MEDS_IBAnnotation*>(ait->second);
+			if(p_ib_annotation && p_ib_annotation->isValid())
+			{
+				ibs++;
+				handle_ib_annot(firp,insn,p_ib_annotation);
+			}
+			p_ibt_annotation=dynamic_cast<MEDS_IBTAnnotation*>(ait->second);
+			if(p_ibt_annotation && p_ibt_annotation->isValid())
+			{
+				ibts++;
+				handle_ibt_annot(firp,insn,p_ibt_annotation);
+			}
+		}
+	}
+
+	cout<<"Found "<<ibs<<" ibs and "<<ibts<<" ibts in the STARSxref file."<<endl;
+
+}
+
+void process_dynsym(FileIR_t* firp)
+{
+	FILE *dynsymfile = popen("$PS_OBJDUMP -T readeh_tmp_file.exe | $PS_GREP '^[0-9]\\+' | $PS_GREP -v UND | awk '{print $1;}' | $PS_GREP -v '^$'", "r");
+	assert(dynsymfile);
+	virtual_offset_t target=0;
+	while( fscanf(dynsymfile, "%x", &target) != -1)
+	{
+		possible_target(target,0,ibt_provenance_t::ibtp_dynsym);
+	}
+}
+
+
+ICFS_t* setup_hellnode(FileIR_t* firp, ibt_provenance_t allowed, ibt_provenance_t warn)
+{
+	ICFS_t* hn=new ICFS_t(ICFS_Analysis_Module_Complete);
+
+        for(
+                set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
+                it!=firp->GetInstructions().end();
+                ++it
+           )
+	{
+		Instruction_t* insn=*it;
+		if(insn->GetIndirectBranchTargetAddress() == NULL)
+			continue;
+
+		ibt_provenance_t prov=targets[insn->GetAddress()->GetVirtualOffset()];
+
+		if(prov.isPartiallySet(allowed))
+		{
+			hn->insert(insn);
+		}
+		else if(prov.isPartiallySet(warn))
+		{
+			std::ofstream ofs ("warning.txt", std::ofstream::out);
+			ofs<<"Sanity issue:  STARS marked something as an IBT that FII didn't find.  Please debug."<<endl;
 		}
 
+
+	}
+
+	return hn;
+}
+
+ICFS_t* setup_call_hellnode(FileIR_t* firp)
+{
+	ibt_provenance_t allowed=
+		ibt_provenance_t::ibtp_data |
+		ibt_provenance_t::ibtp_text |
+		ibt_provenance_t::ibtp_stars_addressed |
+		ibt_provenance_t::ibtp_unknown |
+		ibt_provenance_t::ibtp_stars_unreachable |
+		ibt_provenance_t::ibtp_rodata |
+	 	ibt_provenance_t::ibtp_initarray |	// .init loops through the init_array, and calls them
+	 	ibt_provenance_t::ibtp_finiarray |	// .fini loops through the fini_array, and calls them
+		ibt_provenance_t::ibtp_user;
+
+	ibt_provenance_t warn=
+		ibt_provenance_t::ibtp_stars_unknown |	 // couldn't parse stars annotation's reason code
+		ibt_provenance_t::ibtp_got;		// warn if we found something in zero-init'd got.
+
+
+// would like to sanity check better.
+//		ibt_provenance_t::ibtp_stars_data |	// warn if stars reports it's in data, but !allowed.
+
+	/*
+	 * these aren't good enough reasons for a call instruction to transfer somewhere.
+	 * ibt_provenance_t::ibtp_eh_frame	// only libc should xfer.
+	 * ibt_provenance_t::ibtp_gotplt	// only an analyzed jump should xfer.
+	 * ibt_provenance_t::ibtp_entrypoint	// only ld.so or kernel should xfer.
+	 * ibt_provenance_t::ibtp_texttoprintf	// shouldn't xfer if addr passed to printf.
+	 * ibt_provenance_t::ibtp_dynsym		// symbol resolved to other module, this module should xfer directly. 
+	 * ibt_provenance_t::ibtp_symtab		// user info only.
+	 * ibt_provenance_t::ibtp_stars_ret	// stars says a return goes here, calls shouldn't.
+	 * ibt_provenance_t::ibtp_stars_switch	// stars says switch target.
+	 * ibt_provenance_t::ibtp_switchtable_type1	// FII switch targets.
+	 * ibt_provenance_t::ibtp_switchtable_type2
+	 * ibt_provenance_t::ibtp_switchtable_type3
+	 * ibt_provenance_t::ibtp_switchtable_type4
+	 * ibt_provenance_t::ibtp_switchtable_type5
+	 * ibt_provenance_t::ibtp_switchtable_type6
+	 * ibt_provenance_t::ibtp_switchtable_type7
+	 * ibt_provenance_t::ibtp_switchtable_type8
+	 * ibt_provenance_t::ibtp_switchtable_type9
+	 * ibt_provenance_t::ibtp_switchtable_type10
+	 */
+
+	return setup_hellnode(firp,allowed,warn);
+
+}
+
+ICFS_t* setup_jmp_hellnode(FileIR_t* firp)
+{
+	ibt_provenance_t allowed=
+		ibt_provenance_t::ibtp_data |
+		ibt_provenance_t::ibtp_text |
+		ibt_provenance_t::ibtp_stars_addressed |
+		ibt_provenance_t::ibtp_unknown |
+		ibt_provenance_t::ibtp_stars_unreachable |
+		ibt_provenance_t::ibtp_rodata |
+		ibt_provenance_t::ibtp_gotplt |
+		ibt_provenance_t::ibtp_user;
+
+	ibt_provenance_t warn=
+		ibt_provenance_t::ibtp_stars_unknown |	 // couldn't parse stars annotation's reason code
+		ibt_provenance_t::ibtp_got;		// warn if we found something in zero-init'd got.
+
+//		ibt_provenance_t::ibtp_stars_data |	// warn if stars reports it's in data, but !allowed.
+
+	/* 
+	 * these aren't good enough reasons for a jmp instruction to transfer somewhere.
+	 * ibt_provenance_t::ibtp_eh_frame	// only libc should xfer.
+	 * ibt_provenance_t::ibtp_initarray	// only ld.so should xfer.
+	 * ibt_provenance_t::ibtp_finiarray	// only ld.so should xfer.
+	 * ibt_provenance_t::ibtp_entrypoint	// only ld.so or kernel should xfer.
+	 * ibt_provenance_t::ibtp_texttoprintf	// shouldn't xfer if addr passed to printf.
+	 * ibt_provenance_t::ibtp_dynsym		// symbol resolved to other module, this module should xfer directly. 
+	 * ibt_provenance_t::ibtp_symtab		// user info only.
+	 * ibt_provenance_t::ibtp_stars_ret	// stars says a return goes here, calls shouldn't.
+	 * ibt_provenance_t::ibtp_stars_switch	// stars says switch target.
+	 * ibt_provenance_t::ibtp_switchtable_type1	// FII switch targets.
+	 * ibt_provenance_t::ibtp_switchtable_type2
+	 * ibt_provenance_t::ibtp_switchtable_type3
+	 * ibt_provenance_t::ibtp_switchtable_type4
+	 * ibt_provenance_t::ibtp_switchtable_type5
+	 * ibt_provenance_t::ibtp_switchtable_type6
+	 * ibt_provenance_t::ibtp_switchtable_type7
+	 * ibt_provenance_t::ibtp_switchtable_type8
+	 * ibt_provenance_t::ibtp_switchtable_type9
+	 * ibt_provenance_t::ibtp_switchtable_type10
+	 */
+
+	return setup_hellnode(firp,allowed,warn);
+
+}
+
+
+ICFS_t* setup_ret_hellnode(FileIR_t* firp)
+{
+	ibt_provenance_t allowed=
+		ibt_provenance_t::ibtp_stars_ret |	// stars says a return goes here, and this return isn't analyzeable.
+		ibt_provenance_t::ibtp_unknown |
+		ibt_provenance_t::ibtp_stars_unreachable |
+		ibt_provenance_t::ibtp_user;
+
+	ibt_provenance_t warn=
+		ibt_provenance_t::ibtp_stars_unknown |	 // couldn't parse stars annotation's reason code
+		ibt_provenance_t::ibtp_got;		// warn if we found something in zero-init'd got.
+
+
+
+// would like to sanity check better.
+//		ibt_provenance_t::ibtp_stars_data |	// warn if stars reports it's in data, but !allowed.
+
+
+	/*
+	 * these aren't good enough reasons for a ret instruction to transfer somewhere.
+	 * ibt_provenance_t::ibtp_eh_frame	// only libc should xfer.
+	 * ibt_provenance_t::ibtp_initarray	// only ld.so should xfer.
+	 * ibt_provenance_t::ibtp_finiarray	// only ld.so should xfer.
+	 * ibt_provenance_t::ibtp_entrypoint	// only ld.so or kernel should xfer.
+	 * ibt_provenance_t::ibtp_texttoprintf	// shouldn't xfer if addr passed to printf.
+	 * ibt_provenance_t::ibtp_dynsym		// symbol resolved to other module, this module should xfer directly. 
+	 * ibt_provenance_t::ibtp_symtab		// user info only.
+	 * ibt_provenance_t::ibtp_stars_ret	// stars says a return goes here, calls shouldn't.
+	 * ibt_provenance_t::ibtp_stars_switch	// stars says switch target.
+	 * ibt_provenance_t::ibtp_switchtable_type1	// FII switch targets.
+	 * ibt_provenance_t::ibtp_switchtable_type2
+	 * ibt_provenance_t::ibtp_switchtable_type3
+	 * ibt_provenance_t::ibtp_switchtable_type4
+	 * ibt_provenance_t::ibtp_switchtable_type5
+	 * ibt_provenance_t::ibtp_switchtable_type6
+	 * ibt_provenance_t::ibtp_switchtable_type7
+	 * ibt_provenance_t::ibtp_switchtable_type8
+	 * ibt_provenance_t::ibtp_switchtable_type9
+	 * ibt_provenance_t::ibtp_switchtable_type10
+	 * ibt_provenance_t::ibtp_data  	// returns likely shouldn't be used to jump to data or addressed text chunks.  may need to relax later.
+	 * ibt_provenance_t::ibtp_text  
+	 * ibt_provenance_t::ibtp_stars_addressed  
+	 * ibt_provenance_t::ibtp_rodata  
+	 * ibt_provenance_t::ibtp_gotplt  
+	 */
+
+	ICFS_t* ret_hell_node=setup_hellnode(firp,allowed,warn);
+
+
+	// add unmarked return points.  fix_calls will deal with whether they need to be pinned or not later.
+        for(
+		InstructionSet_t::const_iterator it=firp->GetInstructions().begin();
+                it!=firp->GetInstructions().end();
+                ++it
+           )
+	{
+		Instruction_t* insn=*it;
+		DISASM d;
+		insn->Disassemble(d);
+		if(string("call ")==d.Instruction.Mnemonic && insn->GetFallthrough())
+		{
+			ret_hell_node->insert(insn->GetFallthrough());
+		}
+	}
+
+	return ret_hell_node;
+
+}
+
+void print_icfs(FileIR_t* firp)
+{
+	cout<<"Printing ICFS sets."<<endl;
+        for(
+		InstructionSet_t::const_iterator it=firp->GetInstructions().begin();
+                it!=firp->GetInstructions().end();
+                ++it
+           )
+	{
+		Instruction_t* insn=*it;
+		ICFS_t *icfs=insn->GetIBTargets();
+
+		// not an IB
+		if(!icfs)
+			continue;
+
+		cout<<hex<<insn->GetAddress()->GetVirtualOffset()<<" -> ";
+
+		for(ICFS_t::const_iterator icfsit=icfs->begin(); icfsit!=icfs->end(); ++icfsit)
+		{
+			Instruction_t* target=*icfsit;
+			cout<<hex<<target->GetAddress()->GetVirtualOffset()<<" ";
+		}
+		cout<<endl;
+	}
+}
+
+void setup_icfs(FileIR_t* firp)
+{
+	// setup calls, jmps and ret hell nodes.
+	ICFS_t *call_hell = setup_call_hellnode(firp);
+	firp->GetAllICFS().insert(call_hell);
+
+	ICFS_t *jmp_hell = setup_jmp_hellnode(firp);
+	firp->GetAllICFS().insert(jmp_hell);
+
+	ICFS_t *ret_hell = setup_ret_hellnode(firp);
+	firp->GetAllICFS().insert(ret_hell);
+
+
+	// for each instruction 
+        for(
+                set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
+                it!=firp->GetInstructions().end();
+                ++it
+           )
+	{
+
+		// if we already got it complete (via stars or FII)
+		Instruction_t* insn=*it;
+		if(jmptables[insn].IsComplete())
+		{
+cout<<"jump table complete for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
+			// get the strcuture into the IRDB	
+			ICFS_t* nn=new ICFS_t(jmptables[insn]);
+			firp->GetAllICFS().insert(nn);
+			insn->SetIBTargets(nn);
+
+			// that's all we need to do
+			continue;
+		}
+
+		// disassemble the instruction, and figure out which type of hell node we need.
+		DISASM d;
+		insn->Disassemble(d);
+		if(string("ret ")==d.Instruction.Mnemonic)
+		{
+cout<<"using ret hell node for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
+			insn->SetIBTargets(ret_hell);
+		}
+		else if ( (string("call ")==d.Instruction.Mnemonic) && ((d.Argument1.ArgType&0xffff0000&CONSTANT_TYPE)!=CONSTANT_TYPE))
+		{
+cout<<"using call hell node for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
+			// indirect call 
+			insn->SetIBTargets(call_hell);
+		}
+		else if ( (string("jmp ")==d.Instruction.Mnemonic) && ((d.Argument1.ArgType&0xffff0000&CONSTANT_TYPE)!=CONSTANT_TYPE))
+		{
+cout<<"using jmp hell node for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
+			// indirect jmp 
+			insn->SetIBTargets(jmp_hell);
+		}
+
+	}
+
+	if(getenv("IB_VERBOSE")!=NULL)
+		print_icfs(firp);
+}
+
+
+
+
+/*
+ * fill_in_indtargs - main driver routine for 
+ */
+void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t> forced_pins)
+{
 	set<virtual_offset_t> thunk_bases;
 	find_all_module_starts(firp,thunk_bases);
-
 
 	// reset global vars
 	bounds.clear();
 	ranges.clear();
 	targets.clear();
+	jmptables.clear();
+	lookupInstruction_init(firp);
 
 	calc_preds(firp);
 
-#if 0
-/* info gotten from EXEIO class now. */
-        ::Elf64_Off sec_hdr_off, sec_off;
-        ::Elf_Half secnum, strndx, secndx;
-        ::Elf_Word secsize;
-
-        /* Read ELF header */
-        virtual_offset_t sec_hdr_off = elfiop->get_sections_offset();
-        virtual_offset_t strndx = elfiop->get_section_name_str_index();
-#endif
         int secnum = elfiop->sections.size();
 	int secndx=0;
 
@@ -1685,99 +1914,45 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t>
 		infer_targets(firp, elfiop->sections[secndx]);
 
 	
+	/* should move to separate function */
 	std::list<virtual_offset_t>::iterator forced_iterator = forced_pins.begin();
 	for (; forced_iterator != forced_pins.end(); forced_iterator++)
 	{
-		possible_target(*forced_iterator);
+		possible_target(*forced_iterator, 0, ibt_provenance_t::ibtp_user);
 	}
-
-	cout<<"========================================="<<endl;
-	cout<<"Targets from data sections (and forces) are: " << endl;
-	cout<<"# ATTRIBUTE total_indirect_targets_pass1="<<std::dec<<targets.size()<<endl;
-	print_targets();
-	cout<<"========================================="<<endl;
 
 	/* look through the instructions in the program for targets */
 	get_instruction_targets(firp, elfiop, thunk_bases);
 
 	/* mark the entry point as a target */
-	possible_target(elfiop->get_entry()); 
-
-
-	cout<<"========================================="<<endl;
-	cout<<"All targets from data+instruction sections are: " << endl;
-	cout<<"# ATTRIBUTE total_indirect_targets_pass2="<<std::dec<<targets.size()<<endl;
-	print_targets();
-	cout<<"========================================="<<endl;
+	possible_target(elfiop->get_entry(),0,ibt_provenance_t::ibtp_entrypoint); 
 
 	/* Read the exception handler frame so that those indirect branches are accounted for */
-	void read_ehframe(FileIR_t* firp, EXEIO::exeio* );
+	/* then now process the ranges and mark IBTs as necessarthat have exception handling */
         read_ehframe(firp, elfiop);
-
-	cout<<"========================================="<<endl;
-	cout<<"All targets from data+instruction+eh_header sections are: " << endl;
-	cout<<"# ATTRIBUTE total_indirect_targets_pass3="<<std::dec<<targets.size()<<endl;
-	print_targets();
-	cout<<"========================================="<<endl;
-
-
-	/* now process the ranges that have exception handling */
 	process_ranges(firp);
-	cout<<"========================================="<<endl;
-	cout<<"All targets from data+instruction+eh_header sections+eh_header_ranges are: " << endl;
-	cout<<"# ATTRIBUTE total_indirect_targets_pass4="<<std::dec<<targets.size()<<endl;
-	print_targets();
-	cout<<"========================================="<<endl;
-
-	/* now process the ranges that have exception handling */
+	
+	/* now, find the .GOT addr and process any pc-rel things for x86-32 ibts. */
 	check_for_thunks(firp, thunk_bases);
+
+	/* now deal with dynsym pins */
+	process_dynsym(firp);
+
+	/* import info from stars */
+	read_stars_xref_file(firp);
+
 	cout<<"========================================="<<endl;
-	cout<<"# ATTRIBUTE total_indirect_targets_pass5="<<std::dec<<targets.size()<<endl;
+	cout<<"# ATTRIBUTE total_indirect_targets="<<std::dec<<targets.size()<<endl;
 	print_targets();
 	cout<<"========================================="<<endl;
 
-    	/* Add functions containing unsigned int params to the list */
-    	add_num_handle_fn_watches(firp);
-	/* now process the ranges that have exception handling */
-	cout<<"========================================="<<endl;
-	cout<<"# ATTRIBUTE total_indirect_targets_pass6="<<std::dec<<targets.size()<<endl;
-	print_targets();
-	cout<<"========================================="<<endl;
-
-
-	//FILE* dynsymfile = popen( "$PS_READELF --dyn-syms readeh_tmp_file.exe |grep 'FUNC    GLOBAL DEFAULT'"
-	//	"|grep -v 'FUNC    GLOBAL DEFAULT  UND' |sed 's/.*: *//'|cut -f1 -d' '", "r");
-	FILE *dynsymfile = popen("$PS_OBJDUMP -T readeh_tmp_file.exe | $PS_GREP '^[0-9]\\+' | $PS_GREP -v UND | awk '{print $1;}' | $PS_GREP -v '^$'", "r");
-	assert(dynsymfile);
-	virtual_offset_t target=0;
-	while( fscanf(dynsymfile, "%x", &target) != -1)
-	{
-		possible_target(target);
-	}
-	cout<<"========================================="<<endl;
-	cout<<"# ATTRIBUTE total_indirect_targets_pass7="<<std::dec<<targets.size()<<endl;
-	print_targets();
-	cout<<"========================================="<<endl;
-
-
-	/* set the IR to have some instructions marked as IB targets */
+	/* set the IR to have some instructions marked as IB targets, and deal with the ICFS */
 	mark_targets(firp);
 
-//	icfs_set_indirect_calls(firp, indirect_calls);
-	icfs_set_hellnode_targets(firp, hellnode_tgts);
-
-	mark_jmptables(firp);
-
-	patch_icfs(firp);
-
-	for(ICFSSet_t::const_iterator it=firp->GetAllICFS().begin();
-		it != firp->GetAllICFS().end();
-		++it)
-	{
-		ICFS_t *icfs = *it;
-		cout << dec << "icfs set id: " << icfs->GetBaseID() << "  #ibtargets: " << icfs->size() << " analysis status: " << icfs->GetAnalysisStatus() << endl;
-	}
+	// try to setup an ICFS for every IB.
+	setup_icfs(firp);
 }
+
 
 main(int argc, char* argv[])
 {
@@ -1789,6 +1964,17 @@ main(int argc, char* argv[])
 	{
 		cerr<<"Usage: fill_in_indtargs <id> [addr,...]"<<endl;
 		exit(-1);
+	}
+	/* parse argumnets */
+	for (argc_iter = 2; argc_iter < argc; argc_iter++)
+	{
+		char *end_ptr;
+		virtual_offset_t offset = strtol(argv[argc_iter], &end_ptr, 0);
+		if (*end_ptr == '\0')
+		{
+			cout << "force pinning: 0x" << std::hex << offset << endl;
+			forced_pins.push_back(offset);
+		}
 	}
 
 	VariantID_t *pidp=NULL;
@@ -1802,16 +1988,6 @@ main(int argc, char* argv[])
 
 		pidp=new VariantID_t(atoi(argv[1]));
 
-		for (argc_iter = 2; argc_iter < argc; argc_iter++)
-		{
-			char *end_ptr;
-			virtual_offset_t offset = strtol(argv[argc_iter], &end_ptr, 0);
-			if (*end_ptr == '\0')
-			{
-				cout << "force pinning: 0x" << std::hex << offset << endl;
-				forced_pins.push_back(offset);
-			}
-		}
 
 		assert(pidp->IsRegistered()==true);
 
@@ -1829,23 +2005,13 @@ main(int argc, char* argv[])
 			// read the db  
 			firp=new FileIR_t(*pidp, this_file);
 
-			lookupInstruction_init(firp);
-			icfs_init(firp);
 
+			// read the executeable file
 			int elfoid=firp->GetFile()->GetELFOID();
 		        pqxx::largeobject lo(elfoid);
         		lo.to_file(pqxx_interface.GetTransaction(),"readeh_tmp_file.exe");
-
-			jmptables.clear();
-
         		EXEIO::exeio*    elfiop=new EXEIO::exeio;
         		elfiop->load((const char*)"readeh_tmp_file.exe");
-
-
-		
-        		EXEIO::dump::header(cout,*elfiop);
-        		EXEIO::dump::section_headers(cout,*elfiop);
-
 
 			// find all indirect branch targets
 			fill_in_indtargs(firp, elfiop, forced_pins);
@@ -1854,8 +2020,6 @@ main(int argc, char* argv[])
 			firp->WriteToDB();
 
 			delete firp;
-//			delete indirect_calls;
-			delete hellnode_tgts;
 		}
 
 		pqxx_interface.Commit();
