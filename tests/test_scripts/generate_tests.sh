@@ -189,6 +189,6 @@ done	# backends
 #
 # svn add to the repo, but wait for user to verify/commit
 #
-echo "I'm adding these files to the respository.  Please verify them and commit as you see fit."
+echo "I've created these files.  Please verify them and commit as you see fit."
 echo $added_files
 #svn add $added_files

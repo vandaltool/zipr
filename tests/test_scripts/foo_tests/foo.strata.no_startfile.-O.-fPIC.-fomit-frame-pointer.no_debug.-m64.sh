@@ -97,7 +97,7 @@ testloc=${PEASOUP_HOME}/tests/test_scripts
 test_binary=orig.$$
 analyzed_binary=${test_binary}.strata
 
-g++ -w ${testloc}/$BENCHNAME.cpp  test.cpp $COMPFLAGS -o ${test_binary} || cleanup 2 "g++ failed"
+g++ -w ${testloc}/$BENCHNAME.cpp  ${testloc}/test.cpp $COMPFLAGS -o ${test_binary} || cleanup 2 "g++ failed"
 
 # sanity check the compile
 if [ ! -f ${test_binary} ]; then cleanup 3 "Failed to create ${test_binary}"; fi
