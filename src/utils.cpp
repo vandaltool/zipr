@@ -12,24 +12,22 @@ size_t CALLBACK_TRAMPOLINE_SIZE=9;
 size_t TRAMPOLINE_SIZE=5;
 using namespace libIRDB;
 
-bool IsDollopInclFallthroughUnplaced(Dollop_t *dollop)
-{
-	
-	for (Dollop_t *fallthrough_it = dollop;
-	     fallthrough_it != NULL;
-			 fallthrough_it = fallthrough_it->FallthroughDollop())
-		if (fallthrough_it->IsPlaced())
-			return false;
-	return true;
-}
 size_t DetermineWorstCaseDollopSizeInclFallthrough(Dollop_t *dollop)
 {	
 	size_t fallthroughs_wcds = 0;
-
-	for (Dollop_t *fallthrough_it = dollop;
+	Dollop_t *fallthrough_it = NULL; 
+	for (fallthrough_it = dollop;
 	     fallthrough_it != NULL;
 			 fallthrough_it = fallthrough_it->FallthroughDollop())
 	{
+		if (fallthrough_it->IsPlaced())
+			/*
+			 * We are going to stop calculating when
+			 * we see that we'll hit a dollop that
+			 * is already placed.
+			 */
+			break;
+
 		fallthroughs_wcds += fallthrough_it->GetSize();
 		/*
 		 * For every dollop that we consolidate,
@@ -41,6 +39,15 @@ size_t DetermineWorstCaseDollopSizeInclFallthrough(Dollop_t *dollop)
 		if (fallthrough_it->FallthroughDollop())
 			fallthroughs_wcds -= Utils::TRAMPOLINE_SIZE;
 	}
+	/*
+	 * If there is a fallthrough_it, that means
+	 * that the fallthrough dollop would not be
+	 * placed again. Instead, we would jump to 
+	 * it. So, we add back in a trampoline.
+	 */
+	if (fallthrough_it)
+		fallthroughs_wcds += Utils::TRAMPOLINE_SIZE;
+
 	return fallthroughs_wcds;
 }
 

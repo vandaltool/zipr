@@ -17,12 +17,5 @@ namespace Utils {
 	 * space to accomodate for the fallthroughs.
 	 */
 	size_t DetermineWorstCaseDollopSizeInclFallthrough(Dollop_t *dollop);
-
-	/** \brief Is a dollop and all its fallthroughs unplaced?
-	 *
-	 * Return true if _dollop_ and each of its fallthrough 
-	 * dollops are unplaced. Return false otherwise.
-	 */
-	bool IsDollopInclFallthroughUnplaced(Dollop_t *dollop);
 }
 #endif

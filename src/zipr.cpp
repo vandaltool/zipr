@@ -1474,7 +1474,8 @@ void ZiprImpl_t::PlaceDollops()
 		do {
 			bool fits_entirely = false;
 			bool all_fallthroughs_fit = false;
-			bool any_fallthrough_placed = false;
+			size_t wcds = 0;
+
 			/*
 			 * TODO: From here, we want to place the dollop
 			 * that we just got a placement for, and subsequently
@@ -1489,12 +1490,12 @@ void ZiprImpl_t::PlaceDollops()
 			/*
 			 * Calculate before we place this dollop.
 			 */
-			any_fallthrough_placed=!Utils::IsDollopInclFallthroughUnplaced(to_place);
+			wcds = Utils::DetermineWorstCaseDollopSizeInclFallthrough(to_place);
 
 			to_place->Place(cur_addr);
 
 			fits_entirely = (to_place->GetSize() <= (placement.GetEnd()-cur_addr));
-			all_fallthroughs_fit = (Utils::DetermineWorstCaseDollopSizeInclFallthrough(to_place) <= (placement.GetEnd()-cur_addr));
+			all_fallthroughs_fit = (wcds <= (placement.GetEnd()-cur_addr));
 
 			for (dit = to_place->begin(), dit_end = to_place->end();
 			     dit != dit_end;
@@ -1520,9 +1521,11 @@ void ZiprImpl_t::PlaceDollops()
 				 *    within the space allotted.
 				 *    Call this the fits_entirely case.
 				 * 4. The dollop and all of its fallthroughs will fit
-				 *    and none of those fallthrough dollops are already
-				 *    placed. Call this the all_fallthroughs_fit case and
-				 *    combine it with any_fallthrough_placed.
+				 *    "[A]ll of its fallthoughs will fit" encompasses
+				 *    the possibility that one of those is already 
+				 *    placed -- we use the trampoline size at that point.
+				 *    See DetermineWorstCaseDollopSizeInclFallthrough().
+				 *    Call this the all_fallthroughs_fit case.
 				 */
 				bool de_and_fallthrough_fit = false;
 				bool last_de_fits = false;
@@ -1540,12 +1543,11 @@ void ZiprImpl_t::PlaceDollops()
 					cout << "de_and_fallthrough_fit: " << de_and_fallthrough_fit << endl
 					     << "last_de_fits          : " << last_de_fits << endl
 					     << "fits_entirely         : " << fits_entirely << endl
-					     << "all_fallthroughs_fit  : " << all_fallthroughs_fit << endl
-					     << "any_fallthrough_placed: " << any_fallthrough_placed << endl;
+					     << "all_fallthroughs_fit  : " << all_fallthroughs_fit << endl;
 				if (de_and_fallthrough_fit ||
 				    last_de_fits ||
 						fits_entirely ||
-						(all_fallthroughs_fit && !any_fallthrough_placed))
+						all_fallthroughs_fit)
 				{
 #if 0
 					if (m_verbose) {
@@ -1634,6 +1636,15 @@ void ZiprImpl_t::PlaceDollops()
 					     << "Remaining: " << std::dec << remaining_size
 							 << " vs Needed: " << std::dec 
 							 << std::min(fallthrough_wcis,fallthroughs_wcds) << endl;
+				/*
+				 * TODO: Consider the case where the fallthroughs are
+				 * not all unplaced but that fallthrough_wcds calculated
+				 * a smaller needed size than we have remaining (implies
+				 * that it will fit) but later we want to jump to one of
+				 * those dollops and we may overrun our space? This might
+				 * be handled appropriately in the second pass through
+				 * above but it's something that we have to think more about.
+				 */
 				if (remaining_size < std::min(fallthrough_wcis,fallthroughs_wcds) ||
 				    fallthrough->IsPlaced() ||
 						!allowed_coalescing)
