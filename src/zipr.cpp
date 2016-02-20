@@ -1474,6 +1474,7 @@ void ZiprImpl_t::PlaceDollops()
 		do {
 			bool fits_entirely = false;
 			bool all_fallthroughs_fit = false;
+			bool any_fallthrough_placed = false;
 			/*
 			 * TODO: From here, we want to place the dollop
 			 * that we just got a placement for, and subsequently
@@ -1485,10 +1486,16 @@ void ZiprImpl_t::PlaceDollops()
 			 */
 			continue_placing = false;
 
+			/*
+			 * Calculate before we place this dollop.
+			 */
+			any_fallthrough_placed=!Utils::IsDollopInclFallthroughUnplaced(to_place);
+
 			to_place->Place(cur_addr);
 
 			fits_entirely = (to_place->GetSize() <= (placement.GetEnd()-cur_addr));
 			all_fallthroughs_fit = (Utils::DetermineWorstCaseDollopSizeInclFallthrough(to_place) <= (placement.GetEnd()-cur_addr));
+
 			for (dit = to_place->begin(), dit_end = to_place->end();
 			     dit != dit_end;
 			     dit++)
@@ -1512,8 +1519,10 @@ void ZiprImpl_t::PlaceDollops()
 				 * 3. This dollop has no fallthrough and fits entirely
 				 *    within the space allotted.
 				 *    Call this the fits_entirely case.
-				 * 4. The dollop and all of its fallthroughs will fit.
-				 *    Call this the all_fallthroughs_fit case.
+				 * 4. The dollop and all of its fallthroughs will fit
+				 *    and none of those fallthrough dollops are already
+				 *    placed. Call this the all_fallthroughs_fit case and
+				 *    combine it with any_fallthrough_placed.
 				 */
 				bool de_and_fallthrough_fit = false;
 				bool last_de_fits = false;
@@ -1531,11 +1540,12 @@ void ZiprImpl_t::PlaceDollops()
 					cout << "de_and_fallthrough_fit: " << de_and_fallthrough_fit << endl
 					     << "last_de_fits          : " << last_de_fits << endl
 					     << "fits_entirely         : " << fits_entirely << endl
-					     << "all_fallthroughs_fit  : " << all_fallthroughs_fit << endl;
+					     << "all_fallthroughs_fit  : " << all_fallthroughs_fit << endl
+					     << "any_fallthrough_placed: " << any_fallthrough_placed << endl;
 				if (de_and_fallthrough_fit ||
 				    last_de_fits ||
 						fits_entirely ||
-						all_fallthroughs_fit)
+						(all_fallthroughs_fit && !any_fallthrough_placed))
 				{
 #if 0
 					if (m_verbose) {

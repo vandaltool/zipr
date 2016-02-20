@@ -12,6 +12,16 @@ size_t CALLBACK_TRAMPOLINE_SIZE=9;
 size_t TRAMPOLINE_SIZE=5;
 using namespace libIRDB;
 
+bool IsDollopInclFallthroughUnplaced(Dollop_t *dollop)
+{
+	
+	for (Dollop_t *fallthrough_it = dollop;
+	     fallthrough_it != NULL;
+			 fallthrough_it = fallthrough_it->FallthroughDollop())
+		if (fallthrough_it->IsPlaced())
+			return false;
+	return true;
+}
 size_t DetermineWorstCaseDollopSizeInclFallthrough(Dollop_t *dollop)
 {	
 	size_t fallthroughs_wcds = 0;
