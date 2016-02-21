@@ -34,6 +34,7 @@
 #include <climits>
 class Stats_t;
 
+
 class ZiprImpl_t : public Zipr_t
 {
 
@@ -313,6 +314,8 @@ class ZiprImpl_t : public Zipr_t
 		// outputing new .exe
 		void FillSection(ELFIO::section* sec, FILE* fexe);
 		void OutputBinaryFile(const std::string &name);
+		libIRDB::DataScoop_t* FindScoop(const RangeAddress_t &addr);
+		void WriteScoop(ELFIO::section* sec, std::FILE* fexe);
 
 
 		// helpers.
@@ -344,6 +347,7 @@ class ZiprImpl_t : public Zipr_t
                 virtual ELFIO::elfio *GetELFIO() { return elfiop; }
                 virtual libIRDB::FileIR_t *GetFileIR() { return m_firp; }
                 virtual Zipr_SDK::InstructionLocationMap_t *GetLocationMap() { return &final_insn_locations; }
+		virtual Zipr_SDK::PlacementQueue_t* GetPlacementQueue() { return &placement_queue; }  
 
 
 	private:
@@ -404,6 +408,7 @@ class ZiprImpl_t : public Zipr_t
 		RangeAddress_t start_of_new_space;
 
 		ZiprMemorySpace_t memory_space;
+		Zipr_SDK::PlacementQueue_t placement_queue;
 
 	        RangeAddress_t bss_needed;
 		bool use_stratafier_mode;
@@ -418,6 +423,8 @@ class ZiprImpl_t : public Zipr_t
 		ZiprBooleanOption_t m_replop, m_verbose, m_apply_nop;
 		ZiprIntegerOption_t m_variant, m_architecture, m_seed;
 		ZiprStringOption_t m_dollop_map_filename;
+
+
 
 };
 

@@ -67,14 +67,6 @@ class UnresolvedUnpinned_t  : public UnresolvedInfo_t
 
 inline bool operator< (const UnresolvedUnpinned_t& lhs, const UnresolvedUnpinned_t& rhs)
 { 
-#if 0
-	if( lhs.from_instruction->GetBaseID()==libIRDB::BaseObj_t::NOT_IN_DATABASE &&
-		rhs.from_instruction->GetBaseID()==libIRDB::BaseObj_t::NOT_IN_DATABASE)
-	{
-		assert(0);
-	}
-	// return lhs.from_instruction->GetBaseID() < rhs.from_instruction->GetBaseID(); 
-#endif
 	assert(lhs.from_instruction);
 	assert(rhs.from_instruction);
 	return lhs.from_instruction < rhs.from_instruction; 
@@ -130,14 +122,6 @@ class UnresolvedPinned_t : public UnresolvedInfo_t
 
 inline bool operator< (const UnresolvedPinned_t& lhs, const UnresolvedPinned_t& rhs)
 { 
-#if 0
-	if( lhs.from_instruction->GetBaseID()==libIRDB::BaseObj_t::NOT_IN_DATABASE &&
-		rhs.from_instruction->GetBaseID()==libIRDB::BaseObj_t::NOT_IN_DATABASE)
-	{
-		assert(0);
-	}
-	// return lhs.from_instruction->GetBaseID() < rhs.from_instruction->GetBaseID(); 
-#endif
 	assert(lhs.from_instruction);
 	assert(rhs.from_instruction);
 	return lhs.from_instruction < rhs.from_instruction; 

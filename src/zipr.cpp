@@ -1329,6 +1329,7 @@ void ZiprImpl_t::WriteDollops()
 	}
 }
 
+#if 0
 class placement_queue_comp
 {
 	public:
@@ -1342,10 +1343,13 @@ class placement_queue_comp
 		       (b.first)->front()->Instruction()->GetAddress()->GetVirtualOffset();
 	}
 };
+#endif
 
 void ZiprImpl_t::PlaceDollops()
 {
-	set<pair<Dollop_t*,RangeAddress_t>, placement_queue_comp> placement_queue;
+	int count_pins=0;
+
+//	set<pair<Dollop_t*,RangeAddress_t>, placement_queue_comp> placement_queue;
 	//list<pair<Dollop_t*, RangeAddress_t>> placement_queue;
 	multimap<const UnresolvedUnpinned_t,Patch_t>::const_iterator pin_it,
 	                                                             pin_it_end;
@@ -1374,7 +1378,11 @@ void ZiprImpl_t::PlaceDollops()
 			                                    GetVirtualOffset() << " "
 			     << "vs. Patch: " << std::hex << patch.GetAddress() << endl;
 		}
+		count_pins++;
 	}
+
+	cout<<"#ATTRIBUTE pins_detected="<<dec<<count_pins<<endl;
+	cout<<"#ATTRIBUTE placement_queue_size="<<dec<<placement_queue.size()<<endl;
 
 	while (!placement_queue.empty())
 	{
@@ -1411,9 +1419,7 @@ void ZiprImpl_t::PlaceDollops()
 			continue;
 
 		minimum_valid_req_size = std::min(
-			_DetermineWorstCaseInsnSize(to_place->
-		                              front()->
-			                            Instruction()),
+			_DetermineWorstCaseInsnSize(to_place-> front()-> Instruction()),
 			Utils::DetermineWorstCaseDollopSizeInclFallthrough(to_place));
 		/*
 		 * Ask the plugin manager if there are any plugins
@@ -1875,19 +1881,19 @@ int ZiprImpl_t::DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_for
 
 bool ZiprImpl_t::AskPluginsAboutPlopping(Instruction_t *insn)
 {
-		DLFunctionHandle_t plopping_plugin;
-		if (plugman.DoesPluginPlop(insn, plopping_plugin))
-		{
-			ZiprPluginInterface_t *zipr_plopping_plugin =
-				dynamic_cast<ZiprPluginInterface_t*>(plopping_plugin);
-			if (m_verbose)
-				cout << zipr_plopping_plugin->ToString()
-				     << " will plop this instruction!"
-						 << endl;
-			plopping_plugins[insn] = plopping_plugin;
-			return true;
-		}
-		return false;
+	DLFunctionHandle_t plopping_plugin;
+	if (plugman.DoesPluginPlop(insn, plopping_plugin))
+	{
+		ZiprPluginInterface_t *zipr_plopping_plugin =
+			dynamic_cast<ZiprPluginInterface_t*>(plopping_plugin);
+		if (m_verbose)
+			cout << zipr_plopping_plugin->ToString()
+			     << " will plop this instruction!"
+					 << endl;
+		plopping_plugins[insn] = plopping_plugin;
+		return true;
+	}
+	return false;
 }
 
 void ZiprImpl_t::AskPluginsAboutPlopping()
@@ -2381,6 +2387,58 @@ void ZiprImpl_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)
 }
 
 
+DataScoop_t* ZiprImpl_t::FindScoop(const RangeAddress_t &addr)
+{
+	for(
+		DataScoopSet_t::iterator it=m_firp->GetDataScoops().begin(); 
+		it!=m_firp->GetDataScoops().end();
+		++it
+	   )
+	{
+		DataScoop_t* scoop=*it;
+		if(scoop->GetStart()->GetVirtualOffset() <= addr &&
+			addr < scoop->GetEnd()->GetVirtualOffset() )
+		{
+			return scoop;
+		}
+	}
+	return NULL;
+}
+
+void ZiprImpl_t::WriteScoop(section* sec, FILE* fexe)
+{
+	RangeAddress_t start=sec->get_address();
+	RangeAddress_t end=sec->get_size()+start;
+	for(RangeAddress_t i=start;i<end;i++)
+	{
+		DataScoop_t* scoop=FindScoop(i);
+		if(!scoop)
+			continue;
+
+		const string &the_contents=scoop->GetContents();
+		char  b=the_contents[i-scoop->GetStart()->GetVirtualOffset()];
+
+		if( sec->get_type()  ==  SHT_NOBITS )
+		{
+			assert(b==0);	// cannot write non-zero's to NOBITS sections.
+
+			// and we can't do the write, because the sec. isn't in the binary.
+			continue;
+		}
+
+		int file_off=sec->get_offset()+i-start;
+		fseek(fexe, file_off, SEEK_SET);
+		fwrite(&b,1,1,fexe);
+		if(i-start<200)// keep verbose output short enough.
+		{
+			if (m_verbose)
+				printf("Writing scoop byte %#2x at %p, fileoffset=%x\n",
+					((unsigned)b)&0xff, (void*)i, file_off);
+		}
+
+	}
+}
+
 void ZiprImpl_t::FillSection(section* sec, FILE* fexe)
 {
 	RangeAddress_t start=sec->get_address();
@@ -2465,9 +2523,9 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
                 if( (sec->get_flags() & SHF_ALLOC) == 0 )
                         continue;
                 if( (sec->get_flags() & SHF_EXECINSTR) == 0)
-                        continue;
-	
-		FillSection(sec, fexe);
+			WriteScoop(sec, fexe);
+		else
+			FillSection(sec, fexe);
         }
 	fclose(fexe);
 
