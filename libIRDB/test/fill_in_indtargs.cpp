@@ -1019,7 +1019,9 @@ DN:   0x4824XX: .long 0x4824e0-LN
 		case REG13: base_reg="r13"; break;
 		case REG14: base_reg="r14"; break;
 		case REG15: base_reg="r15"; break;
-		default: assert(0);
+		default: 
+			// no base register;
+			return;
 	}
 	string lea_string="lea ";
 	lea_string+=base_reg;
@@ -1883,6 +1885,64 @@ cout<<"using jmp hell node for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<e
 }
 
 
+void unpin_init_array(FileIR_t *firp)
+{
+	for(
+		DataScoopSet_t::iterator it=firp->GetDataScoops().begin();
+		it!=firp->GetDataScoops().end();
+		++it
+	   )
+	{
+		// 4 or 8 
+		int ptrsize=firp->GetArchitectureBitWidth()/8;
+
+		DataScoop_t* scoop=*it;
+		const char *scoop_contents=scoop->GetContents().c_str();
+		if(scoop->GetName()==".init_array")
+		{
+			for(int i=0; i+ptrsize <= scoop->GetSize() ; i+=ptrsize)
+			{
+				virtual_offset_t vo;
+				if(ptrsize==4)
+					/* get int, 4 bytes */
+					vo=(virtual_offset_t)*(int*)&scoop_contents[i];
+				else if(ptrsize==8)
+					/* get long long, 8 bytes */
+					vo=(virtual_offset_t)*(long long*)&scoop_contents[i];
+				else
+					assert(0);	
+
+
+				Instruction_t* insn=lookupInstruction(firp,vo);
+
+
+				cout<<"Unpinning entry at offset "<<dec<<i<<endl;
+				// these asserts are probably overkill, but want them for sanity checking for now.
+				assert(insn);
+				assert(targets.find(vo)!=targets.end());
+				assert(targets[vo].areOnlyTheseSet(
+					ibt_provenance_t::ibtp_initarray | ibt_provenance_t::ibtp_stars_data));
+				// when/if they fail, convert to if and guard the reloc creation.
+
+				Relocation_t* nr=new Relocation_t();
+				assert(nr);
+				nr->SetType("init_array_entry");
+				nr->SetOffset(i);
+				nr->SetWRT(insn);
+
+				// add reloc to IR.
+				firp->GetRelocations().insert(nr);
+				scoop->GetRelocations().insert(nr);
+			}
+		}
+	}
+}
+
+void unpin_well_analyzed_ibts(FileIR_t *firp)
+{
+	unpin_init_array(firp);
+}
+
 
 
 /*
@@ -1951,6 +2011,9 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t>
 
 	// try to setup an ICFS for every IB.
 	setup_icfs(firp);
+
+
+	unpin_well_analyzed_ibts(firp);
 }
 
 

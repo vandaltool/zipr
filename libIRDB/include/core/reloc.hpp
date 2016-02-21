@@ -32,7 +32,7 @@ class Relocation_t : public BaseObj_t
 
         Relocation_t(db_id_t reloc_id) : BaseObj_t(NULL) { assert(0);}          // read from DB       
         void WriteToDB() { assert(0); }   // writes to DB ID is not -1.
-        std::string WriteToDB(File_t* fid, Instruction_t* insn);    // writes to DB, ID is not -1.
+        std::string WriteToDB(File_t* fid, BaseObj_t* insn);    // writes to DB, ID is not -1.
 
 	void SetOffset(int off) { offset=off;}
 	int GetOffset() { return offset; }

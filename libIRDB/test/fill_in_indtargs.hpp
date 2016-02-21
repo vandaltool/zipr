@@ -95,12 +95,15 @@ class ibt_provenance_t
 		static const provtype_t ibtp_unknown=1<<28;	// completely unknown
 		static const provtype_t ibtp_got=1<<29;	// got is 0 init'd, shouldn't see this one.
 
-		void add(provtype_t t) { value |=t; }
-		void add(ibt_provenance_t t) { value |=t.value; }
-		bool isFullySet(provtype_t t) { return (value&t) == t; }
-		bool isFullySet(ibt_provenance_t t) { return (value&t.value) == t.value; }
-		bool isPartiallySet(provtype_t t) { return (value&t) != 0; }
-		bool isPartiallySet(ibt_provenance_t t) { return (value&t.value) != 0; }
+		void add(const provtype_t t) { value |=t; }
+		void add(const ibt_provenance_t t) { value |=t.value; }
+		bool isFullySet(const provtype_t t) const { return (value&t) == t; }
+		bool isFullySet(const ibt_provenance_t t) const { return (value&t.value) == t.value; }
+		bool isPartiallySet(const provtype_t t) const { return (value&t) != 0; }
+		bool isPartiallySet(const ibt_provenance_t t) const { return (value&t.value) != 0; }
+
+		bool areOnlyTheseSet(const provtype_t t) const { return (value&~t) == 0; }
+		bool areOnlyTheseSet(const ibt_provenance_t t) const { return (value&~t.value) == 0; }
 
 	private:
 

@@ -478,7 +478,7 @@ void FileIR_t::ReadRelocsFromDB
                 db_id_t wrt_id=atoi(dbintr->GetResultColumn("wrt_id").c_str());
 
 
-		BaseObj_t* wrt_obj=objMap[wrt_id];
+		BaseObj_t* wrt_obj=objMap[wrt_id];	 // might be null.
 		Relocation_t *reloc=new Relocation_t(reloc_id,reloc_offset,reloc_type,wrt_obj);
 
 		assert(objMap[instruction_id]!=NULL);
@@ -634,7 +634,15 @@ void FileIR_t::WriteToDB()
 		DataScoop_t* scoop = *it;
 		assert(scoop);
 		string q = scoop->WriteToDB(fileptr,j);
+
+                const std::set<Relocation_t*> &the_relocs = scoop->GetRelocations();
+                for(set<Relocation_t*>::const_iterator rit=the_relocs.begin(); rit!=the_relocs.end(); ++rit)
+                {
+                        Relocation_t* reloc=*rit;
+                        q+=reloc->WriteToDB(fileptr,scoop);
+                }
 		dbintr->IssueQuery(q);
+
 	}
 }
 
@@ -687,16 +695,18 @@ void FileIR_t::SetBaseIDS()
 			(*i)->SetBaseID(j++);
 }
 
-std::string Relocation_t::WriteToDB(File_t* fid, Instruction_t* myinsn)
+std::string Relocation_t::WriteToDB(File_t* fid, BaseObj_t* myinsn)
 {
 	string q;
+	db_id_t wrt_id=wrt_obj ? wrt_obj->GetBaseID() : BaseObj_t::NOT_IN_DATABASE;
         q ="insert into " + fid->relocs_table_name;
-	q+="(reloc_id,reloc_offset,reloc_type,instruction_id,doip_id) "+
+	q+="(reloc_id,reloc_offset,reloc_type,instruction_id,wrt_id,doip_id) "+
                 string(" VALUES (") +
                 string("'") + to_string(GetBaseID())          + string("', ") +
                 string("'") + to_string(offset)               + string("', ") +
                 string("'") + (type)                          + string("', ") +
                 string("'") + to_string(myinsn->GetBaseID())  + string("', ") +
+                string("'") + to_string(wrt_id)  + string("', ") +
                 string("'") + to_string(GetDoipID())          + string("') ; ") ;
 	return q;	
 }
