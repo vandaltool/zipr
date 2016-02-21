@@ -1928,7 +1928,7 @@ void unpin_elf_tables(FileIR_t *firp)
 				  )
 				{
 					// when/if they fail, convert to if and guard the reloc creation.
-					cout<<"Unpinning entry at offset "<<dec<<i<<endl;
+					cout<<"Unpinning entry at offset "<<dec<<i<<". vo="<<hex<<vo<<endl;
 
 					Relocation_t* nr=new Relocation_t();
 					assert(nr);
@@ -1941,7 +1941,7 @@ void unpin_elf_tables(FileIR_t *firp)
 					scoop->GetRelocations().insert(nr);
 				}
 				else
-					cout<<"Skipping unpin due to other references."<<dec<<i<<endl;
+					cout<<"Skipping init/fini unpin for "<<hex<<vo<<" due to other references."<<dec<<i<<endl;
 			}
 		}
 		else if(scoop->GetName()==".dynsym")
@@ -2010,11 +2010,11 @@ void unpin_elf_tables(FileIR_t *firp)
 					assert(targets.find(vo)!=targets.end());
 
 					// check that the ibt is only ref'd by .dynsym (and STARS, which is ambigulous
-					// about which section :w
+					// about which section 
 					if(targets[vo].areOnlyTheseSet(
 						ibt_provenance_t::ibtp_dynsym | ibt_provenance_t::ibtp_stars_data))
 					{
-						cout<<"Unpinning .dynsym entry no "<<dec<<table_entry_no<<endl;
+						cout<<"Unpinning .dynsym entry no "<<dec<<table_entry_no<<". vo="<<hex<<vo<<endl;
 
 						// when/if these asserts fail, convert to if and guard the reloc creation.
 
@@ -2029,7 +2029,7 @@ void unpin_elf_tables(FileIR_t *firp)
 						scoop->GetRelocations().insert(nr);
 					}
 					else
-						cout<<"Skipping unpin due to other references."<<dec<<i<<endl;
+						cout<<"Skipping .dynsm unpin for "<<hex<<vo<<" due to other references."<<dec<<i<<endl;
 				}
 			}
 		}
