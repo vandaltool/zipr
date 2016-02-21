@@ -28,7 +28,7 @@ if 'do_cgc' in env and int(env['do_cgc']) == 1:
 
 
 files=  '''
-	push64_relocs.cpp
+	unpin.cpp
 	'''
 
 # ELFIO needs to be first so we get the zipr version instead of the sectrans version.  the zipr version is modified to include get_offset.
@@ -56,7 +56,7 @@ if sysname != "SunOS":
 
 myenv.Append(CXXFLAGS=" -std=c++11 ")
 myenv=myenv.Clone(CPPPATH=Split(cpppath), LIBS=Split(libs), LIBPATH=Split(libpath), SHLIBSUFFIX=".zpi", SHLIBPREFIX="")
-lib=myenv.SharedLibrary("push64_relocs", Split(files))
+lib=myenv.SharedLibrary("unpin", Split(files))
 
 install=myenv.Install("$ZIPR_INSTALL/plugins/", lib)
 Default(install)

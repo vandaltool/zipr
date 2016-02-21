@@ -1,5 +1,4 @@
 * text=auto !eol
-/Makefile.in -text
 /SConscript -text
 /SConstruct -text
 /configure.in -text
