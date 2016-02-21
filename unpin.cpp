@@ -66,10 +66,17 @@ void Unpin_t::DoUnpin()
 				// getWRT returns an BaseObj, but this reloc type expects an instruction
 				// safe cast and check.
 				assert(insn);
-				assert(insn->GetIndirectBranchTargetAddress());
 
-				cout<<"Unpin::Found data_to_insn_ptr relocation for pinned insn at "<<hex<<
-					insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()<<endl;
+
+				if(insn->GetIndirectBranchTargetAddress())
+				{
+					cout<<"Unpin::Found data_to_insn_ptr relocation for pinned insn at "<<hex<<
+						insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()<<endl;
+				}
+				else
+				{
+					cout<<"Unpin::Warn: unpin found non-IBTA to unpin.  probably it's unpinned twice.  continuing anyhow."<<endl;
+				}
 	
 				int found=false;
 				for(

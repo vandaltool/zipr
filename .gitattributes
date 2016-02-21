@@ -3,7 +3,5 @@
 /SConstruct -text
 /configure.in -text
 /install-sh -text
-/push64_relocs.cpp -text
-/push64_relocs.h -text
 /unpin.cpp -text
 /unpin.h -text
