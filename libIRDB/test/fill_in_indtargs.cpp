@@ -33,6 +33,7 @@
 #include <ctype.h>
 #include <list>
 #include <stdio.h>
+#include <elf.h>
 
 #include <exeio.h>
 #include "beaengine/BeaEngine.h"
@@ -1885,7 +1886,7 @@ cout<<"using jmp hell node for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<e
 }
 
 
-void unpin_init_array(FileIR_t *firp)
+void unpin_elf_tables(FileIR_t *firp)
 {
 	for(
 		DataScoopSet_t::iterator it=firp->GetDataScoops().begin();
@@ -1898,7 +1899,7 @@ void unpin_init_array(FileIR_t *firp)
 
 		DataScoop_t* scoop=*it;
 		const char *scoop_contents=scoop->GetContents().c_str();
-		if(scoop->GetName()==".init_array")
+		if(scoop->GetName()==".init_array" || scoop->GetName()==".fini_array")
 		{
 			for(int i=0; i+ptrsize <= scoop->GetSize() ; i+=ptrsize)
 			{
@@ -1921,12 +1922,14 @@ void unpin_init_array(FileIR_t *firp)
 				assert(insn);
 				assert(targets.find(vo)!=targets.end());
 				assert(targets[vo].areOnlyTheseSet(
-					ibt_provenance_t::ibtp_initarray | ibt_provenance_t::ibtp_stars_data));
+					ibt_provenance_t::ibtp_initarray | 
+					ibt_provenance_t::ibtp_finiarray | 
+					ibt_provenance_t::ibtp_stars_data));
 				// when/if they fail, convert to if and guard the reloc creation.
 
 				Relocation_t* nr=new Relocation_t();
 				assert(nr);
-				nr->SetType("init_array_entry");
+				nr->SetType("data_to_insn_ptr");
 				nr->SetOffset(i);
 				nr->SetWRT(insn);
 
@@ -1935,12 +1938,99 @@ void unpin_init_array(FileIR_t *firp)
 				scoop->GetRelocations().insert(nr);
 			}
 		}
+		else if(scoop->GetName()==".dynsym")
+		{
+			Elf64_Sym  *sym64=NULL;
+			Elf32_Sym  *sym32=NULL;
+			int ptrsize=0;
+			int symsize=0;
+			const char* scoop_contents=scoop->GetContents().c_str();
+			switch(firp->GetArchitectureBitWidth())
+			{	
+				case 64:
+					ptrsize=8;
+					symsize=sizeof(Elf64_Sym);
+					break;	
+				case 32:
+					ptrsize=4;
+					symsize=sizeof(Elf32_Sym);
+					break;	
+				default:
+					assert(0);
+				
+			}
+			int table_entry_no=0;
+			for(int i=0;i+symsize<scoop->GetSize(); i+=symsize, table_entry_no++)
+			{
+				int addr_offset=0;
+				virtual_offset_t vo=0;
+				int st_info_field=0;
+				int shndx=0;
+				switch(ptrsize)
+				{
+					case 4:
+					{
+						sym32=(Elf32_Sym*)&scoop_contents[i];
+						addr_offset=(uintptr_t)&(sym32->st_value)-(uintptr_t)sym32;
+						vo=sym32->st_value;
+						st_info_field=sym32->st_info;
+						shndx=sym32->st_shndx;
+						break;
+					}
+					case 8:
+					{
+						sym64=(Elf64_Sym*)&scoop_contents[i];
+						addr_offset=(uintptr_t)&(sym64->st_value)-(uintptr_t)sym64;
+						vo=sym64->st_value;
+						st_info_field=sym64->st_info;
+						shndx=sym64->st_shndx;
+						break;
+						break;
+					}
+					default:
+						assert(0);
+				}
+
+				// this is good for both 32- and 64-bit.
+				int type=ELF32_ST_TYPE(st_info_field);
+
+				if(shndx!=SHN_UNDEF && type==STT_FUNC)
+				{
+					Instruction_t* insn=lookupInstruction(firp,vo);
+
+
+					cout<<"Unpinning .dynsym entry no "<<dec<<table_entry_no<<endl;
+					// these asserts are probably overkill, but want them for sanity checking for now.
+					assert(insn);
+					assert(targets.find(vo)!=targets.end());
+
+					// check that the ibt is only ref'd by .dynsym (and STARS, which is ambigulous
+					// about which section :w
+					if(targets[vo].areOnlyTheseSet(
+						ibt_provenance_t::ibtp_dynsym | ibt_provenance_t::ibtp_stars_data))
+					{
+
+						// when/if these asserts fail, convert to if and guard the reloc creation.
+
+						Relocation_t* nr=new Relocation_t();
+						assert(nr);
+						nr->SetType("data_to_insn_ptr");
+						nr->SetOffset(i+addr_offset);
+						nr->SetWRT(insn);
+
+						// add reloc to IR.
+						firp->GetRelocations().insert(nr);
+						scoop->GetRelocations().insert(nr);
+					}
+				}
+			}
+		}
 	}
 }
 
 void unpin_well_analyzed_ibts(FileIR_t *firp)
 {
-	unpin_init_array(firp);
+	unpin_elf_tables(firp);
 }
 
 
