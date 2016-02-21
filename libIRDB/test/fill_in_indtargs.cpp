@@ -1917,25 +1917,31 @@ void unpin_elf_tables(FileIR_t *firp)
 				Instruction_t* insn=lookupInstruction(firp,vo);
 
 
-				cout<<"Unpinning entry at offset "<<dec<<i<<endl;
 				// these asserts are probably overkill, but want them for sanity checking for now.
 				assert(insn);
 				assert(targets.find(vo)!=targets.end());
-				assert(targets[vo].areOnlyTheseSet(
+
+				if( targets[vo].areOnlyTheseSet(
 					ibt_provenance_t::ibtp_initarray | 
 					ibt_provenance_t::ibtp_finiarray | 
-					ibt_provenance_t::ibtp_stars_data));
-				// when/if they fail, convert to if and guard the reloc creation.
+					ibt_provenance_t::ibtp_stars_data)
+				  )
+				{
+					// when/if they fail, convert to if and guard the reloc creation.
+					cout<<"Unpinning entry at offset "<<dec<<i<<endl;
 
-				Relocation_t* nr=new Relocation_t();
-				assert(nr);
-				nr->SetType("data_to_insn_ptr");
-				nr->SetOffset(i);
-				nr->SetWRT(insn);
+					Relocation_t* nr=new Relocation_t();
+					assert(nr);
+					nr->SetType("data_to_insn_ptr");
+					nr->SetOffset(i);
+					nr->SetWRT(insn);
 
-				// add reloc to IR.
-				firp->GetRelocations().insert(nr);
-				scoop->GetRelocations().insert(nr);
+					// add reloc to IR.
+					firp->GetRelocations().insert(nr);
+					scoop->GetRelocations().insert(nr);
+				}
+				else
+					cout<<"Skipping unpin due to other references."<<dec<<i<<endl;
 			}
 		}
 		else if(scoop->GetName()==".dynsym")
@@ -1999,7 +2005,6 @@ void unpin_elf_tables(FileIR_t *firp)
 					Instruction_t* insn=lookupInstruction(firp,vo);
 
 
-					cout<<"Unpinning .dynsym entry no "<<dec<<table_entry_no<<endl;
 					// these asserts are probably overkill, but want them for sanity checking for now.
 					assert(insn);
 					assert(targets.find(vo)!=targets.end());
@@ -2009,6 +2014,7 @@ void unpin_elf_tables(FileIR_t *firp)
 					if(targets[vo].areOnlyTheseSet(
 						ibt_provenance_t::ibtp_dynsym | ibt_provenance_t::ibtp_stars_data))
 					{
+						cout<<"Unpinning .dynsym entry no "<<dec<<table_entry_no<<endl;
 
 						// when/if these asserts fail, convert to if and guard the reloc creation.
 
@@ -2022,6 +2028,8 @@ void unpin_elf_tables(FileIR_t *firp)
 						firp->GetRelocations().insert(nr);
 						scoop->GetRelocations().insert(nr);
 					}
+					else
+						cout<<"Skipping unpin due to other references."<<dec<<i<<endl;
 				}
 			}
 		}
