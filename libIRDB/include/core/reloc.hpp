@@ -24,13 +24,14 @@ class Relocation_t : public BaseObj_t
     public:
 
         // create new item.
-        Relocation_t() : BaseObj_t(NULL), offset(0)  {}	// new reloc w/no data
+        Relocation_t() : BaseObj_t(NULL), offset(0), wrt_obj(NULL)  {}	// new reloc w/no data
 
 	// a reloc read from the DB 
         Relocation_t(db_id_t reloc_id, int _offset, std::string _type, BaseObj_t* p_wrt_obj=NULL) :
 		BaseObj_t(NULL), offset(_offset), type(_type), wrt_obj(p_wrt_obj) { SetBaseID(reloc_id); }
 
-        Relocation_t(db_id_t reloc_id) : BaseObj_t(NULL) { assert(0);}          // read from DB       
+        Relocation_t(db_id_t reloc_id) : BaseObj_t(NULL), type(""), wrt_obj(NULL) { assert(0);}          // read from DB       
+
         void WriteToDB() { assert(0); }   // writes to DB ID is not -1.
         std::string WriteToDB(File_t* fid, BaseObj_t* insn);    // writes to DB, ID is not -1.
 
