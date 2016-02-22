@@ -977,6 +977,11 @@ third_party/sqlite-autoconf-3071300.tar.gz -text
 tools/Makefile.in -text
 tools/SConscript -text
 tools/SConstruct -text
+tools/absolutify/SConscript -text
+tools/absolutify/SConstruct -text
+tools/absolutify/absolutify.cpp -text
+tools/absolutify/absolutify.hpp -text
+tools/absolutify/absolutify_driver.cpp -text
 tools/c2e/Makefile.in -text
 tools/c2e/SConscript -text
 tools/c2e/SConstruct -text
