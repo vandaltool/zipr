@@ -98,6 +98,16 @@ void do_ilr(VariantID_t *pidp, FileIR_t* firp)
 		newaddressset.insert(newaddr);
 	}
 
+	for(
+		DataScoopSet_t::const_iterator it=firp->GetDataScoops().begin();
+		it!=firp->GetDataScoops().end(); 
+		++it
+	   )
+	{
+		newaddressset.insert((*it)->GetStart());
+		newaddressset.insert((*it)->GetEnd());
+	}
+
 	firp->GetAddresses()=newaddressset;
 
 
