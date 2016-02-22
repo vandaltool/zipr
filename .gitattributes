@@ -1084,6 +1084,11 @@ tools/hook_dynamic_call/SConstruct -text
 tools/hook_dynamic_call/hook_dynamic_calls.cpp -text
 tools/hook_dynamic_call/hook_dynamic_calls.hpp -text
 tools/hook_dynamic_call/hook_dynamic_calls_driver.cpp -text
+tools/hook_start/SConscript -text
+tools/hook_start/SConstruct -text
+tools/hook_start/hook_start.cpp -text
+tools/hook_start/hook_start.hpp -text
+tools/hook_start/hook_start_driver.cpp -text
 tools/ibtcheck/Makefile -text
 tools/ibtcheck/ibtcheck.py -text
 tools/ibtcheck/test_cal.sh -text
