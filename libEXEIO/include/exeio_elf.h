@@ -24,8 +24,10 @@ namespace EXEIO
 			bool isLoadable() const { return (s->get_flags() & SHF_ALLOC) == SHF_ALLOC; }
 			bool isExecutable() const { return (s->get_flags() & SHF_EXECINSTR) == SHF_EXECINSTR; }
 			bool isWriteable() const { return (s->get_flags() & SHF_WRITE) == SHF_WRITE; }
+                        bool isThreadLocal() const { return (s->get_flags() & SHF_TLS) == SHF_TLS; }
 			bool isReadable() const { return isLoadable(); }
 			bool isBSS() const { return (s->get_type() == SHT_NOBITS); }
+
 			const char* get_data() const { return s->get_data(); }
 			std::string get_name() const { return s->get_name(); }
 			int get_size() const { return s->get_size(); }

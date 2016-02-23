@@ -112,7 +112,7 @@ vector<string> FileBased_StructuredDiversity_t::DoBarrier(string value)
 
 	for(int i=0;i<GetNumberOfVariants();i++)
 	{
-		string var_base_filename=m_shared_dir+"/Barriers_"+GetKey()+"_"+toString(m_barrier_count)+"_"+toString(i);
+		string var_base_filename=m_shared_dir+"/Barriers_"+uname+"_"+GetKey()+"_"+toString(m_barrier_count)+"_"+toString(i);
 		string var_data_filename=var_base_filename+".data";
 		string var_done_filename=var_base_filename+".done";
 

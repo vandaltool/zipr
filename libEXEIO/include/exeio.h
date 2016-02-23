@@ -26,6 +26,7 @@ namespace EXEIO
 			virtual bool isWriteable() const =0;
 			virtual bool isReadable() const =0;
 			virtual bool isBSS() const =0;
+			virtual bool isThreadLocal() const { return false; }
 			virtual const char* get_data() const =0;
 			virtual std::string get_name() const =0;
 			virtual int get_size() const =0;

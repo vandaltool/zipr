@@ -134,44 +134,15 @@ bool is_in_range(virtual_offset_t p)
 }
 
 /*
- * process_range - go through each instruction.  if it's a call, check to see if the return address is in a range.  if so, mark it as a possible target.
+ * process_range -  do nothing now -- fix calls deals with this.
  */
 void process_ranges(FileIR_t* firp)
 {
-#if 0
-Do we still want to do this?  doesn't fix_calls read the eh_frame itself now and deal with this appropriately ?
 
-        for(
-                set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
-                it!=firp->GetInstructions().end();
-                ++it
-           )
-	{
-                Instruction_t *insn=*it;
-                DISASM disasm;
-                int instr_len = insn->Disassemble(disasm);
-
-                assert(instr_len==insn->GetDataBits().size());
-
-                /* calls indicate an indirect target, pc+sizeof(instruction) */
-                if(disasm.Instruction.BranchType==CallType)
-                {
-			if(is_in_range(disasm.VirtualAddr+instr_len))
-                        	possible_target(disasm.VirtualAddr+instr_len);
-                }
-	}
-#endif
 }
 
 bool possible_target(virtual_offset_t p, virtual_offset_t from_addr, ibt_provenance_t prov)
 {
-/*	if(p!=(int)p)
-	{
-		if(getenv("IB_VERBOSE")!=NULL)
-			cout<<"Determined "<<hex<<p<<" cannot be a code pointer"<<endl;
-		return false;
-	}
-*/
 	if(is_possible_target(p,from_addr))
 	{
 		if(getenv("IB_VERBOSE")!=NULL)
@@ -289,6 +260,118 @@ void mark_targets(FileIR_t *firp)
 	}
 }
 
+
+bool IsParameterWrite(FileIR_t *firp,Instruction_t* insn, string& output_dst)
+{
+	DISASM d;
+	insn->Disassemble(d);
+	if(d.Argument1.AccessMode!=WRITE)
+	{
+		return false;
+	}
+
+	/* 64 bit machines use regs to pass parameters */
+	if(firp->GetArchitectureBitWidth()==64)
+	{
+		// if it's a register
+		if((d.Argument1.ArgType&REGISTER_TYPE)==REGISTER_TYPE)
+		{
+			int regno=(d.Argument1.ArgType)&0xFFFF;
+			switch(regno)
+			{
+				case REG7:	// rdi
+				case REG6:	// rsi
+				case REG2:	// rdx
+				case REG1:	// rcx
+				case REG8:	// r8
+				case REG9:	// r9
+					output_dst=d.Argument1.ArgMnemonic;
+					return true;
+
+				// other regsiters == no.
+				default:
+					return false;
+			}
+
+		}
+	}
+
+	// not a register or not 64-bit.  check for [esp+k]
+
+
+	// check for memory type
+	if((d.Argument1.ArgType&MEMORY_TYPE)!=MEMORY_TYPE)
+		return false;
+
+	// check that base reg is esp.
+	if(d.Argument1.Memory.BaseRegister != REG4)
+		return false;
+
+	// check that there's no index reg
+	if(d.Argument1.Memory.IndexRegister != 0)
+		return false;
+
+	// get k out of [esp + k ]
+	unsigned int k=d.Argument1.Memory.Displacement;
+
+	// check that we know the frame layout.
+	if(insn->GetFunction() == NULL)
+		return false;
+
+	if(k < insn->GetFunction()->GetOutArgsRegionSize())
+	{
+		output_dst=d.Argument1.ArgMnemonic;
+		return true;
+	}
+
+	// return we didn't find a memory of the right type
+	return false;
+}
+
+
+bool CallToPrintfFollows(FileIR_t *firp, Instruction_t* insn, const string& arg_str)
+{
+	for(Instruction_t* ptr=insn->GetFallthrough(); ptr!=NULL; ptr=ptr->GetFallthrough())
+	{
+		DISASM d;
+		ptr->Disassemble(d);
+		if(d.Instruction.Mnemonic == string("call "))
+		{
+			// check we have a target
+			if(ptr->GetTarget()==NULL)
+				return false;
+
+			// check the target has a function 
+			if(ptr->GetTarget()->GetFunction()==NULL)
+				return false;
+
+			// check if we're calling printf.
+			if(ptr->GetTarget()->GetFunction()->GetName().find("printf")==string::npos)
+				return false;
+
+			// found it
+			return true;
+		}
+
+		// found reference to argstring, assume it's a write and exit
+		if(string(d.CompleteInstr).find(arg_str)!= string::npos)
+			return false;
+	}
+
+	return false;
+}
+
+bool texttoprintf(FileIR_t *firp,Instruction_t* insn)
+{
+	string dst="";
+	// note that dst is an output parameter of IsParameterWrite and an input parameter to CallFollows
+	if(IsParameterWrite(firp,insn, dst) && CallToPrintfFollows(firp,insn,dst))
+	{
+		return true;
+	}
+	return false;
+}
+
 void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<virtual_offset_t>& thunk_bases)
 {
 
@@ -324,12 +407,20 @@ void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<vir
 		if(disasm.Instruction.BranchType)
 			continue;
 
-		/* otherwise, any immediate is a possible branch target */
-		possible_target(disasm.Instruction.Immediat,ibt_provenance_t::ibtp_text);
-		handle_argument(&disasm.Argument1, insn);
-		handle_argument(&disasm.Argument2, insn);
-		handle_argument(&disasm.Argument3, insn);
-		handle_argument(&disasm.Argument4, insn);
+		if(!texttoprintf(firp,insn))
+		{
+			/* otherwise, any immediate is a possible branch target */
+			possible_target(disasm.Instruction.Immediat,0,ibt_provenance_t::ibtp_text);
+			handle_argument(&disasm.Argument1, insn);
+			handle_argument(&disasm.Argument2, insn);
+			handle_argument(&disasm.Argument3, insn);
+			handle_argument(&disasm.Argument4, insn);
+		}
+		else
+		{
+			cout<<"Skipping analysis of '"<<disasm.CompleteInstr<<"' because texttoprintf found at "
+				<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
+		}
 	}
 }
 
