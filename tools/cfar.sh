@@ -105,7 +105,7 @@ fi
 
 
 # init some variables.
-share_path=/tmp
+share_path=/tmp/$(whoami)
 pids=
 
 # remove any old data xfers.
@@ -162,7 +162,11 @@ for i in $pids;
 do
 	wait $i
 	exit_code=$?
-	if [ $exit_code != 0 ]; then
+	if [ $exit_code == 0 ]; then
+		echo "Protection process went well!  Exit_code: $exit_code."
+	elif [ $exit_code == 1 ]; then
+		echo "Protection process had warnings.  Exit_code: $exit_code."
+	else
 		echo "Protection process $i failed with excode code: $exit_code."
 		ok=0
 	fi
