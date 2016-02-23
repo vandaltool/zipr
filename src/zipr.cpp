@@ -2407,6 +2407,10 @@ DataScoop_t* ZiprImpl_t::FindScoop(const RangeAddress_t &addr)
 
 void ZiprImpl_t::WriteScoop(section* sec, FILE* fexe)
 {
+	// skip any nobits/tls sections.  
+	if ( (sec->get_flags() & SHF_TLS) == SHF_TLS && sec->get_type()  ==  SHT_NOBITS )
+		return;
+
 	RangeAddress_t start=sec->get_address();
 	RangeAddress_t end=sec->get_size()+start;
 	for(RangeAddress_t i=start;i<end;i++)

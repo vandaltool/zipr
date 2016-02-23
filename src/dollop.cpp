@@ -84,9 +84,9 @@ namespace Zipr_SDK {
 
 		de_split_point = find_if(begin(),end(),
 			[&query](const DollopEntry_t *p) {
-				std::cout << "Checking "
-				          << std::hex << query.Instruction() << " ?= "
-									<< std::hex << p->Instruction() << "." << std::endl;
+//				std::cout << "Checking "
+//				          << std::hex << query.Instruction() << " ?= "
+//									<< std::hex << p->Instruction() << "." << std::endl;
 				return query.Instruction() == p->Instruction();
 			});
 		/*
