@@ -525,7 +525,7 @@ perform_step()
 		# report warning in log file, line by line, as an attribute.
 		while IFS= read -r line; do
 			echo
-			echo -n "# ATTRIBUTE peasoup_serious_warning_text=\"$line\""  >> $logfile
+			echo "# ATTRIBUTE peasoup_serious_warning_text=\"$line\""  >> $logfile
 		done < "warning.txt"
 		# remove warning.txt so we don't report these warnings again.
 		rm -f warning.txt
