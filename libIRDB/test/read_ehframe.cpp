@@ -409,98 +409,110 @@ extract_cie_info (struct dwarf_cie *cie,
 		int *lsda_encoding,
 		int *fde_encoding)
 {
-  unsigned char *aug = cie->augmentation;
-  unsigned char *p = aug + strlen ((char *)aug) + 1;
-  unsigned char *ret = NULL;
-  _uleb128_t utmp=0;
-  _sleb128_t stmp=0;
+	unsigned char *aug = cie->augmentation;
+	unsigned char *p = aug + strlen ((char *)aug) + 1;
+	unsigned char *ret = NULL;
+	_uleb128_t utmp=0;
+	_sleb128_t stmp=0;
 
-  /* g++ v2 "eh" has pointer immediately following augmentation string,
-     so it must be handled first.  */
-  if (aug[0] == 'e' && aug[1] == 'h')
-    {
-      void* eh_ptr = read_pointer (p);
-	cout<<"eh_ptr: "<< std::dec << eh_ptr<<endl;
-      p += ptrsize;
-      aug += 2;
-    }
-
-  /* Immediately following the augmentation are the code and
-     data alignment and return address column.  */
-  p = read_uleb128 (p, &utmp);
-	cout<<"code align: "<< std::dec << utmp<<endl;
-  p = read_sleb128 (p, &stmp);
-	cout<<"data align: "<< std::dec << stmp<<endl;
-  if (cie->version == 1)
+	/* g++ v2 "eh" has pointer immediately following augmentation string,
+	so it must be handled first.  */
+	if (aug[0] == 'e' && aug[1] == 'h')
 	{
-    	int ret_col= *p++;
-	cout<<"ret_col: "<< std::dec << ret_col<<endl;
+		void* eh_ptr = read_pointer (p);
+		if(getenv("EH_VERBOSE"))
+			cout<<"eh_ptr: "<< std::dec << eh_ptr<<endl;
+		p += ptrsize;
+		aug += 2;
 	}
-  else
-    {
-      p = read_uleb128 (p, &utmp);
-	cout<<"ret_col: "<< std::dec << utmp<<endl;
-    }
+
+	/* Immediately following the augmentation are the code and
+	 * data alignment and return address column.  */
+  	p = read_uleb128 (p, &utmp);
+	if(getenv("EH_VERBOSE"))
+		cout<<"code align: "<< std::dec << utmp<<endl;
+  	p = read_sleb128 (p, &stmp);
+	if(getenv("EH_VERBOSE"))
+		cout<<"data align: "<< std::dec << stmp<<endl;
+  	if (cie->version == 1)
+	{
+    		int ret_col= *p++;
+		if(getenv("EH_VERBOSE"))
+			cout<<"ret_col: "<< std::dec << ret_col<<endl;
+	}
+  	else
+    	{
+      		p = read_uleb128 (p, &utmp);
+		if(getenv("EH_VERBOSE"))
+			cout<<"ret_col: "<< std::dec << utmp<<endl;
+    	}
 
   /* If the augmentation starts with 'z', then a uleb128 immediately
      follows containing the length of the augmentation field following
      the size.  */
-  if (*aug == 'z')
-    {
-      p = read_uleb128 (p, &utmp);
-      ret = p + utmp;
-	*saw_z=1;
-	cout<<"Saw z, length: "<<utmp<<endl;
-      ++aug;
-    }
+  	if (*aug == 'z')
+    	{
+      		p = read_uleb128 (p, &utmp);
+      		ret = p + utmp;
+		*saw_z=1;
+		if(getenv("EH_VERBOSE"))
+			cout<<"Saw z, length: "<<utmp<<endl;
+      		++aug;
+    	}
 
   /* Iterate over recognized augmentation subsequences.  */
-  while (*aug != '\0')
-    {
-      /* "L" indicates a byte showing how the LSDA pointer is encoded.  */
-      if (aug[0] == 'L')
-        {
-          *lsda_encoding = *p++;
-	cout<<"lsda encoding "<<std::hex<<*lsda_encoding<<endl;
-          aug += 1;
-        }
+  	while (*aug != '\0')
+	{
+		/* "L" indicates a byte showing how the LSDA pointer is encoded.  */
+		if (aug[0] == 'L')
+		{
+			*lsda_encoding = *p++;
+			if(getenv("EH_VERBOSE"))
+				cout<<"lsda encoding "<<std::hex<<*lsda_encoding<<endl;
+			aug += 1;
+		}
 
-      /* "R" indicates a byte indicating how FDE addresses are encoded.  */
-      else if (aug[0] == 'R')
-        {
-          *fde_encoding = *p++;
-	cout<<"fde encoding "<<std::hex<<*fde_encoding<<endl;
-          aug += 1;
-        }
+		/* "R" indicates a byte indicating how FDE addresses are encoded.  */
+		else if (aug[0] == 'R')
+		{
+			*fde_encoding = *p++;
+			if(getenv("EH_VERBOSE"))
+				cout<<"fde encoding "<<std::hex<<*fde_encoding<<endl;
+			aug += 1;
+		}
 
-      /* "P" indicates a personality routine in the CIE augmentation.  */
-      else if (aug[0] == 'P')
-        {
-          _Unwind_Ptr personality=0;
-	  int personality_encoding=*p;
+		/* "P" indicates a personality routine in the CIE augmentation.  */
+		else if (aug[0] == 'P')
+		{
+			_Unwind_Ptr personality=0;
+			int personality_encoding=*p;
 
 
-          p = read_encoded_value_with_base(*p, 0, p + 1, &personality);
+			p = read_encoded_value_with_base(*p, 0, p + 1, &personality);
 
-          cout << "encoding personality = " << std::hex << personality_encoding << endl;
-          cout << "fs->personality = " << std::hex << personality << endl;
-          aug += 1;
-        }
+			if(getenv("EH_VERBOSE"))
+			{
+				cout << "encoding personality = " << std::hex << personality_encoding << endl;
+				cout << "fs->personality = " << std::hex << personality << endl;
+			}
+			aug += 1;
+		}
 
-      /* "S" indicates a signal frame.  */
-      else if (aug[0] == 'S')
-        {
-          cout << "fs->signal_frame = 1 " <<  endl;
-          aug += 1;
-        }
+		/* "S" indicates a signal frame.  */
+		else if (aug[0] == 'S')
+		{
+			if(getenv("EH_VERBOSE"))
+				cout << "fs->signal_frame = 1 " <<  endl;
+			aug += 1;
+		}
 
-      /* Otherwise we have an unknown augmentation string.
-         Bail unless we saw a 'z' prefix.  */
-      else
-        return ret;
-    }
+		/* Otherwise we have an unknown augmentation string.
+		Bail unless we saw a 'z' prefix.  */
+		else
+			return ret;
+	}
 
-  return ret ? ret : p;
+  	return ret ? ret : p;
 }
 
 
@@ -560,8 +572,11 @@ classify_object_over_fdes (struct object *ob, fde *this_fde)
         ob->pc_begin = (void *) pc_begin;
     }
 
-	cout<<"Count is "<<count<<endl;
-  return count;
+
+	if(getenv("EH_VERBOSE"))
+		cout<<"Count is "<<count<<endl;
+
+  	return count;
 }
 
 void print_lsda_handlers(lsda_header_info* info, unsigned char* p)
@@ -592,14 +607,17 @@ void print_lsda_handlers(lsda_header_info* info, unsigned char* p)
 		if(cs_lp!=0)
 		{
 
-			cout 	<<"cs_start: "<< cs_start  << "\t"
-		     		<<"cs_len: "<< cs_len << "\t"
-		     		<<"cs_lp: "<< cs_lp << "\t"
-		     		<<"cs_action: "<< cs_action << endl;
-			cout 	<<"cs_start+info->Start: "<< cs_start+info->Start << "\t"
-		     		<<"cs_len+cs_start+info->Start: "<< cs_len+cs_start+info->Start << "\t"
-		     		<<"cs_lp+info->LPstart: "<< cs_lp +info->LPStart<< "\t"
-		     		<<"cs_action: "<< cs_action << endl;
+			if(getenv("EH_VERBOSE"))
+			{
+				cout 	<<"cs_start: "<< cs_start  << "\t"
+					<<"cs_len: "<< cs_len << "\t"
+					<<"cs_lp: "<< cs_lp << "\t"
+					<<"cs_action: "<< cs_action << endl;
+				cout 	<<"cs_start+info->Start: "<< cs_start+info->Start << "\t"
+					<<"cs_len+cs_start+info->Start: "<< cs_len+cs_start+info->Start << "\t"
+					<<"cs_lp+info->LPstart: "<< cs_lp +info->LPStart<< "\t"
+					<<"cs_action: "<< cs_action << endl;
+			}
 
 #ifndef TEST
 
@@ -641,7 +659,8 @@ which is set here:
                                     f->pc_begin, (_Unwind_Ptr*)&func);
 
 	info->Start=func;
-	cout<<"info->Start set to "<<std::hex << (uintptr_t)info->Start << endl;
+	if(getenv("EH_VERBOSE"))
+		cout<<"info->Start set to "<<std::hex << (uintptr_t)info->Start << endl;
 
 
   	// Find @LPStart, the base to which landing pad offsets are relative.
@@ -650,7 +669,9 @@ which is set here:
     		p = read_encoded_value_with_base (lpstart_encoding, 0, p, &info->LPStart);
   	else
     		info->LPStart = info->Start;
-	cout<<"LPStart : "<<std::hex<<info->LPStart<<endl;
+
+	if(getenv("EH_VERBOSE"))
+		cout<<"LPStart : "<<std::hex<<info->LPStart<<endl;
 
   	// Find @TType, the base of the handler and exception spec type data.
   	info->ttype_encoding = *p++;
@@ -664,18 +685,21 @@ which is set here:
   	else
     		info->TType = 0;
 
-	cout<<"ttype : "<<std::hex<<((uintptr_t)(info->TType))<<endl;
+	if(getenv("EH_VERBOSE"))
+		cout<<"ttype : "<<std::hex<<((uintptr_t)(info->TType))<<endl;
 
   	// The encoding and length of the call-site table; the action table
   	// immediately follows.
   	info->call_site_encoding = *p++;
 
-	cout<<"Call site encoding   " << std::hex << (uintptr_t)info->call_site_encoding << endl;
+	if(getenv("EH_VERBOSE"))
+		cout<<"Call site encoding   " << std::hex << (uintptr_t)info->call_site_encoding << endl;
 
   	p = read_uleb128 (p, &tmp);
   	info->action_table = p + tmp + eh_offset;
   	//info->action_table = (unsigned char*)ptr_to_data_to_addr((uintptr_t)(p + tmp));
-	cout<<"Action table: "<<std::hex<<(uintptr_t)info->action_table<<endl;
+	if(getenv("EH_VERBOSE"))
+		cout<<"Action table: "<<std::hex<<(uintptr_t)info->action_table<<endl;
 
   	return p;
 }
@@ -698,16 +722,20 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
   	for (; ! last_fde (ob, this_fde); this_fde = next_fde (this_fde))
     	{
 		count++;
-		cout<<"Examining FDE #"<<std::dec<<count<<" at offset "<<hex<<(uintptr_t)this_fde-(uintptr_t)eh_frame_data<<endl;
-		cout<<"FDE (in memory) addr is: "<<std::hex<<this_fde<<endl;
-		cout<<"FDE (in file) addr is: "<<std::hex<<(uintptr_t)this_fde-(uintptr_t)eh_frame_data+(uintptr_t)eh_frame_addr<<endl;
+		if(getenv("EH_VERBOSE"))
+		{
+			cout<<"Examining FDE #"<<std::dec<<count<<" at offset "<<hex<<(uintptr_t)this_fde-(uintptr_t)eh_frame_data<<endl;
+			cout<<"FDE (in memory) addr is: "<<std::hex<<this_fde<<endl;
+			cout<<"FDE (in file) addr is: "<<std::hex<<(uintptr_t)this_fde-(uintptr_t)eh_frame_data+(uintptr_t)eh_frame_addr<<endl;
+		}
       		struct dwarf_cie *this_cie=NULL;
       		_Unwind_Ptr pc_begin=0, pc_range=0;
 	
       		/* Skip CIEs.  */
       		if (this_fde->CIE_delta == 0)
 		{
-			cout<<"Skipping FDE because it's a CIE"<<endl;
+			if(getenv("EH_VERBOSE"))
+				cout<<"Skipping FDE because it's a CIE"<<endl;
         		continue;
 		}
 
@@ -767,7 +795,8 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
               			last_cie = this_cie;
               			encoding = get_cie_encoding (this_cie);
               			base = base_from_object (encoding, ob);
-				cout<<"Base from object (mixed encoding?)="<<std::hex<<base<<endl;
+				if(getenv("EH_VERBOSE"))
+					cout<<"Base from object (mixed encoding?)="<<std::hex<<base<<endl;
             		}
         	}
 		
@@ -775,8 +804,11 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
         	{
           		pc_begin = ((_Unwind_Ptr *) this_fde->pc_begin)[0];
           		pc_range = ((_Unwind_Ptr *) this_fde->pc_begin)[1];
-			cout<<"absptr pc_begin 0x"<<std::hex<<(pc_begin+offset)<<"\t";
-			cout<<"absptr pc_end 0x"<<std::hex<<(pc_begin+pc_range+offset)<<endl;
+			if(getenv("EH_VERBOSE"))
+			{
+				cout<<"absptr pc_begin 0x"<<std::hex<<(pc_begin+offset)<<"\t";
+				cout<<"absptr pc_end 0x"<<std::hex<<(pc_begin+pc_range+offset)<<endl;
+			}
 #ifndef TEST
 			extern void range(virtual_offset_t, virtual_offset_t);
 			range(pc_begin,pc_begin+pc_range);
@@ -793,8 +825,11 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
                                             		this_fde->pc_begin, &pc_begin);
           		read_encoded_value_with_base (encoding & 0x0F, 0, p, &pc_range);
 
-			cout<<"!absptr pc_begin 0x"<<std::hex<<(pc_begin)<<"\t";
-			cout<<"!absptr pc_end 0x"<<std::hex<<(pc_begin+pc_range)<<endl;
+			if(getenv("EH_VERBOSE"))
+			{
+				cout<<"!absptr pc_begin 0x"<<std::hex<<(pc_begin)<<"\t";
+				cout<<"!absptr pc_end 0x"<<std::hex<<(pc_begin+pc_range)<<endl;
+			}
 
 #ifndef TEST
 			extern void range(virtual_offset_t, virtual_offset_t);
@@ -815,7 +850,9 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
             			continue;
         	}
     	}
-	cout<<"Found "<<std::dec<<count<< " FDE's"<<endl;
+
+	if(getenv("EH_VERBOSE"))
+		cout<<"Found "<<std::dec<<count<< " FDE's"<<endl;
 
   	return;
 }

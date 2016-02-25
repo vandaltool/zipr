@@ -950,7 +950,8 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 					jmptables[I5].insert(ibtarget);
 					jmptables[I5].SetAnalysisStatus(ICFS_Analysis_Complete);
 					possible_target(table_entry,table_base+0*4, ibt_provenance_t::ibtp_gotplt);
-					cout<<hex<<"Found  plt dispatch ("<<disasm.CompleteInstr<<"') at "<<I5->GetAddress()->GetVirtualOffset()<< endl;
+					if(getenv("IB_VERBOSE")!=0)
+						cout<<hex<<"Found  plt dispatch ("<<disasm.CompleteInstr<<"') at "<<I5->GetAddress()->GetVirtualOffset()<< endl;
 					return;
 				}
 			}
@@ -958,13 +959,17 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 				possible_target(table_entry,table_base+0*4, ibt_provenance_t::ibtp_data);
 			else
 				possible_target(table_entry,table_base+0*4, ibt_provenance_t::ibtp_rodata);
-			cout<<hex<<"Found  constant-memory dispatch from non- .got.plt location ("<<disasm.CompleteInstr<<"') at "<<I5->GetAddress()->GetVirtualOffset()<< endl;
+			if(getenv("IB_VERBOSE")!=0)
+				cout<<hex<<"Found  constant-memory dispatch from non- .got.plt location ("<<disasm.CompleteInstr<<"') at "<<I5->GetAddress()->GetVirtualOffset()<< endl;
 			return;
 		}
 		if(!is_possible_target(table_entry,table_base+i*4))
 		{
-			cout<<hex<<"Found (type3) candidate for switch dispatch for '"<<disasm.CompleteInstr<<"' at "<<I5->GetAddress()->GetVirtualOffset()<< " with table_base="<<table_base<<endl;
-			cout<<"Found table_entry "<<hex<<table_entry<<" is not valid\n"<<endl;
+			if(getenv("IB_VERBOSE")!=0)
+			{
+				cout<<hex<<"Found (type3) candidate for switch dispatch for '"<<disasm.CompleteInstr<<"' at "<<I5->GetAddress()->GetVirtualOffset()<< " with table_base="<<table_base<<endl;
+				cout<<"Found table_entry "<<hex<<table_entry<<" is not valid\n"<<endl;
+			}
 			return;	
 		}
 	}
@@ -1693,7 +1698,7 @@ void process_dynsym(FileIR_t* firp)
 }
 
 
-ICFS_t* setup_hellnode(FileIR_t* firp, ibt_provenance_t allowed, ibt_provenance_t warn)
+ICFS_t* setup_hellnode(FileIR_t* firp, ibt_provenance_t allowed)
 {
 	ICFS_t* hn=new ICFS_t(ICFS_Analysis_Module_Complete);
 
@@ -1713,13 +1718,6 @@ ICFS_t* setup_hellnode(FileIR_t* firp, ibt_provenance_t allowed, ibt_provenance_
 		{
 			hn->insert(insn);
 		}
-		else if(prov.isPartiallySet(warn))
-		{
-			std::ofstream ofs ("warning.txt", std::ofstream::out);
-			ofs<<"Sanity issue:  STARS marked something as an IBT that FII didn't find.  Please debug."<<endl;
-		}
-
-
 	}
 
 	return hn;
@@ -1737,10 +1735,6 @@ ICFS_t* setup_call_hellnode(FileIR_t* firp)
 	 	ibt_provenance_t::ibtp_initarray |	// .init loops through the init_array, and calls them
 	 	ibt_provenance_t::ibtp_finiarray |	// .fini loops through the fini_array, and calls them
 		ibt_provenance_t::ibtp_user;
-
-	ibt_provenance_t warn=
-		ibt_provenance_t::ibtp_stars_unknown |	 // couldn't parse stars annotation's reason code
-		ibt_provenance_t::ibtp_got;		// warn if we found something in zero-init'd got.
 
 
 // would like to sanity check better.
@@ -1768,7 +1762,7 @@ ICFS_t* setup_call_hellnode(FileIR_t* firp)
 	 * ibt_provenance_t::ibtp_switchtable_type10
 	 */
 
-	return setup_hellnode(firp,allowed,warn);
+	return setup_hellnode(firp,allowed);
 
 }
 
@@ -1783,10 +1777,6 @@ ICFS_t* setup_jmp_hellnode(FileIR_t* firp)
 		ibt_provenance_t::ibtp_rodata |
 		ibt_provenance_t::ibtp_gotplt |
 		ibt_provenance_t::ibtp_user;
-
-	ibt_provenance_t warn=
-		ibt_provenance_t::ibtp_stars_unknown |	 // couldn't parse stars annotation's reason code
-		ibt_provenance_t::ibtp_got;		// warn if we found something in zero-init'd got.
 
 //		ibt_provenance_t::ibtp_stars_data |	// warn if stars reports it's in data, but !allowed.
 
@@ -1813,7 +1803,7 @@ ICFS_t* setup_jmp_hellnode(FileIR_t* firp)
 	 * ibt_provenance_t::ibtp_switchtable_type10
 	 */
 
-	return setup_hellnode(firp,allowed,warn);
+	return setup_hellnode(firp,allowed);
 
 }
 
@@ -1825,11 +1815,6 @@ ICFS_t* setup_ret_hellnode(FileIR_t* firp)
 		ibt_provenance_t::ibtp_unknown |
 		ibt_provenance_t::ibtp_stars_unreachable |
 		ibt_provenance_t::ibtp_user;
-
-	ibt_provenance_t warn=
-		ibt_provenance_t::ibtp_stars_unknown |	 // couldn't parse stars annotation's reason code
-		ibt_provenance_t::ibtp_got;		// warn if we found something in zero-init'd got.
-
 
 
 // would like to sanity check better.
@@ -1864,7 +1849,7 @@ ICFS_t* setup_ret_hellnode(FileIR_t* firp)
 	 * ibt_provenance_t::ibtp_gotplt  
 	 */
 
-	ICFS_t* ret_hell_node=setup_hellnode(firp,allowed,warn);
+	ICFS_t* ret_hell_node=setup_hellnode(firp,allowed);
 
 
 	// add unmarked return points.  fix_calls will deal with whether they need to be pinned or not later.
@@ -1916,6 +1901,23 @@ void print_icfs(FileIR_t* firp)
 
 void setup_icfs(FileIR_t* firp)
 {
+
+	/* setup some IBT categories for warning checking */
+        ibt_provenance_t non_stars_data=
+                ibt_provenance_t::ibtp_text |
+                ibt_provenance_t::ibtp_eh_frame |
+                ibt_provenance_t::ibtp_gotplt |
+                ibt_provenance_t::ibtp_initarray |
+                ibt_provenance_t::ibtp_finiarray |
+                ibt_provenance_t::ibtp_data |
+                ibt_provenance_t::ibtp_dynsym |
+                ibt_provenance_t::ibtp_symtab |
+                ibt_provenance_t::ibtp_rodata |
+                ibt_provenance_t::ibtp_unknown;
+        ibt_provenance_t stars_data=ibt_provenance_t::ibtp_stars_data ;
+
+
+
 	// setup calls, jmps and ret hell nodes.
 	ICFS_t *call_hell = setup_call_hellnode(firp);
 	firp->GetAllICFS().insert(call_hell);
@@ -1937,9 +1939,23 @@ void setup_icfs(FileIR_t* firp)
 
 		// if we already got it complete (via stars or FII)
 		Instruction_t* insn=*it;
+
+		// warning check
+		ibt_provenance_t prov=targets[insn->GetAddress()->GetVirtualOffset()];
+
+		if(prov.isPartiallySet(stars_data) && !prov.isPartiallySet(non_stars_data))
+		{
+			ofstream fout("warning.txt", ofstream::out | ofstream::app);
+			fout<<"STARS found an IBT in data that FII wasn't able to classify at "<<hex<<insn->GetAddress()->GetVirtualOffset()<<"."<<endl;
+		}
+
+
+
+
 		if(jmptables[insn].IsComplete())
 		{
-cout<<"jump table complete for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
+			if(getenv("IB_VERBOSE")!=0)
+				cout<<"jump table complete for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
 			// get the strcuture into the IRDB	
 			ICFS_t* nn=new ICFS_t(jmptables[insn]);
 			firp->GetAllICFS().insert(nn);
@@ -1954,18 +1970,21 @@ cout<<"jump table complete for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<e
 		insn->Disassemble(d);
 		if(string("ret ")==d.Instruction.Mnemonic)
 		{
-cout<<"using ret hell node for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
+			if(getenv("IB_VERBOSE")!=0)
+				cout<<"using ret hell node for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
 			insn->SetIBTargets(ret_hell);
 		}
 		else if ( (string("call ")==d.Instruction.Mnemonic) && ((d.Argument1.ArgType&0xffff0000&CONSTANT_TYPE)!=CONSTANT_TYPE))
 		{
-cout<<"using call hell node for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
+			if(getenv("IB_VERBOSE")!=0)
+				cout<<"using call hell node for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
 			// indirect call 
 			insn->SetIBTargets(call_hell);
 		}
 		else if ( (string("jmp ")==d.Instruction.Mnemonic) && ((d.Argument1.ArgType&0xffff0000&CONSTANT_TYPE)!=CONSTANT_TYPE))
 		{
-cout<<"using jmp hell node for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
+			if(getenv("IB_VERBOSE")!=0)
+				cout<<"using jmp hell node for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
 			// indirect jmp 
 			insn->SetIBTargets(jmp_hell);
 		}
@@ -2019,7 +2038,8 @@ void unpin_elf_tables(FileIR_t *firp)
 				  )
 				{
 					// when/if they fail, convert to if and guard the reloc creation.
-					cout<<"Unpinning entry at offset "<<dec<<i<<". vo="<<hex<<vo<<endl;
+					if(getenv("IB_VERBOSE")!=0)
+						cout<<"Unpinning entry at offset "<<dec<<i<<". vo="<<hex<<vo<<endl;
 
 					Relocation_t* nr=new Relocation_t();
 					assert(nr);
@@ -2032,7 +2052,10 @@ void unpin_elf_tables(FileIR_t *firp)
 					scoop->GetRelocations().insert(nr);
 				}
 				else
-					cout<<"Skipping init/fini unpin for "<<hex<<vo<<" due to other references."<<dec<<i<<endl;
+				{
+					if(getenv("IB_VERBOSE")!=0)
+						cout<<"Skipping init/fini unpin for "<<hex<<vo<<" due to other references."<<dec<<i<<endl;
+				}
 			}
 		}
 		else if(scoop->GetName()==".dynsym")
@@ -2105,7 +2128,8 @@ void unpin_elf_tables(FileIR_t *firp)
 					if(targets[vo].areOnlyTheseSet(
 						ibt_provenance_t::ibtp_dynsym | ibt_provenance_t::ibtp_stars_data))
 					{
-						cout<<"Unpinning .dynsym entry no "<<dec<<table_entry_no<<". vo="<<hex<<vo<<endl;
+						if(getenv("IB_VERBOSE")!=0)
+							cout<<"Unpinning .dynsym entry no "<<dec<<table_entry_no<<". vo="<<hex<<vo<<endl;
 
 						// when/if these asserts fail, convert to if and guard the reloc creation.
 
@@ -2120,7 +2144,10 @@ void unpin_elf_tables(FileIR_t *firp)
 						scoop->GetRelocations().insert(nr);
 					}
 					else
-						cout<<"Skipping .dynsm unpin for "<<hex<<vo<<" due to other references."<<dec<<i<<endl;
+					{
+						if(getenv("IB_VERBOSE")!=0)
+							cout<<"Skipping .dynsm unpin for "<<hex<<vo<<" due to other references."<<dec<<i<<endl;
+					}
 				}
 			}
 		}
