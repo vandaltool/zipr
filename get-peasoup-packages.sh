@@ -1,5 +1,11 @@
 #!/bin/bash
 
+#
+# in case your OS doesn't support i386 packages.
+#
+#dpkg --add-architecture i386
+#sudo apt-get update
+
 # Needed to build PEASOUP components
 BASE_PKGS="
   scons
