@@ -39,8 +39,6 @@ using namespace MEDS_Annotation;
 
    0x4006ca   7    INSTR FPTRSHADOW  {memory addressing expression} SHADOWID <id>
 
-0x8098f00     e.g. INSTR FPTRSHADOW 0x8089f00  note absence of brackets
-
 0x80487a0[RBX]
 0x8047aa0[RBX+RCX]
 0x8098f80[RAX+RDX*2] (NOTE: could be *4 or *8 instead of *2)
@@ -52,6 +50,12 @@ using namespace MEDS_Annotation;
 [R13+72]
 [R12*4]
 [R14*2-12]
+
+           805829d      3 INSTR FPTRCHECK  [EBP-40] SHADOWID 5
+           8057fa7      3 INSTR FPTRSHADOW  [EAX+8] SHADOWID 5
+           80822aa      7 INSTR FPTRSHADOW  0 SHADOWID 6
+           80822cc      3 INSTR FPTRSHADOW  EAX SHADOWID 6
+           480faa      9 INSTR FPTRSHADOW  4721886 SHADOWID 75
 */
 
 MEDS_FPTRShadowAnnotation::MEDS_FPTRShadowAnnotation() : MEDS_ShadowAnnotation()
@@ -80,7 +84,6 @@ void MEDS_FPTRShadowAnnotation::parse()
 	if (!isDefineShadowId() && !isCheckShadowId())
 	{
 		/* invalid annotation */
-//		cerr<<"Found invalid FPTR SHADOW annotation: " << m_rawInputLine<<endl;
 		setInvalid();	
 		return;
 	}
@@ -94,7 +97,7 @@ void MEDS_FPTRShadowAnnotation::parse()
 	int instrSize;
 
 	// 804b3a6      5 INSTR FPTRSHADOW  [esp+12] SHADOWID 7
-    // 804c941      5 INSTR FPTRCHECK  [rdx] SHADOWID 7
+	// 804c941      5 INSTR FPTRCHECK  [rdx] SHADOWID 7
 	sscanf(m_rawInputLine.c_str(), "%*x %d %*s %*s %s SHADOWID %d", &instrSize, buf, &shadowId);
 
 	setInstructionSize(instrSize);
@@ -128,17 +131,69 @@ void MEDS_FPTRShadowAnnotation::parse()
 	setValid();	
 }
 
+// 8057fa7      3 INSTR FPTRSHADOW  [EAX+8] SHADOWID 5
+// 80822aa      7 INSTR FPTRSHADOW  0 SHADOWID 6
+// 80822cc      3 INSTR FPTRSHADOW  EAX SHADOWID 6
+// 8480faa      9 INSTR FPTRSHADOW  4721886 SHADOWID 75
 bool MEDS_FPTRShadowAnnotation::verifyCheckShadowExpression(const string& expression)
 {
-	// register expression is of the form: [reg]
-	string reg = m_expression.substr(1, expression.size()-2);
-	return Register::isValidRegister(reg);
+	return isMemoryExpression() || isRegister() || isConstant();
 }
 
+//           80822aa      7 INSTR FPTRSHADOW  0 SHADOWID 6
+bool MEDS_FPTRShadowAnnotation::isConstant() const
+{
+	if (isRegister() || isMemoryExpression()) return false;
+
+	long long val = 0;
+	std::stringstream ss(getExpression());
+	ss >> val;
+	return !ss.bad();
+}
+
+long long MEDS_FPTRShadowAnnotation::getConstantValue(bool &p_valid) const
+{
+	p_valid = false;
+	if (!isConstant())
+		return 0;
+
+	long long val = 0;
+	std::stringstream ss(getExpression());
+	ss >> val;
+	p_valid = !ss.bad();
+	return val;
+}
+
+//           80822cc      3 INSTR FPTRSHADOW  EAX SHADOWID 6
+bool MEDS_FPTRShadowAnnotation::isRegister() const
+{
+	return Register::getRegister(getExpression()) != rn_UNKNOWN;
+}
+
+//  805829d      3 INSTR FPTRCHECK  [EBP-40] SHADOWID 5
+bool MEDS_FPTRShadowAnnotation::isMemoryExpression() const
+{
+	return m_expression[0]=='[' && m_expression[m_expression.size()-1]==']';
+}
+
+
+// FIXME: deprecate?
 const RegisterName MEDS_FPTRShadowAnnotation::getRegister() const
 {
-	// expected format; [reg]
-	return Register::getRegister(m_expression.substr(1, m_expression.size()-2));
+	if (isRegister())
+	{
+		return Register::getRegister(getExpression());
+	}
+	else if (isMemoryExpression())
+	{
+		// expected format [reg]
+		// @todo: THIS IS NOW WRONG
+		return Register::getRegister(m_expression.substr(1, m_expression.size()-2));
+	}
+	else
+	{
+		return rn_UNKNOWN;
+	}
 }
 
 bool MEDS_FPTRShadowAnnotation::isRIPRelative() const

@@ -15,7 +15,8 @@ $(PROGS): ../../../../lib/*
 
 .exe.protected: $<
 #	FIX_CALLS_FIX_ALL_CALLS=1 LD_LIBRARY_PATH="$(LD_LIBRARY_PATH):." $(PEASOUP_HOME)/tools/ps_analyze.sh $< $@ --backend zipr --step selective_cfi=on 
-	FIX_CALLS_FIX_ALL_CALLS=1 LD_LIBRARY_PATH="$(LD_LIBRARY_PATH):." $(PEASOUP_HOME)/tools/ps_analyze.sh $< $@ --backend zipr --step selective_cfi=on --step-option selective_cfi:--color
+#	FIX_CALLS_FIX_ALL_CALLS=1 LD_LIBRARY_PATH="$(LD_LIBRARY_PATH):." $(PEASOUP_HOME)/tools/ps_analyze.sh $< $@ --backend zipr --step selective_cfi=on --step-option selective_cfi:--color
+	FIX_CALLS_FIX_ALL_CALLS=1 LD_LIBRARY_PATH="$(LD_LIBRARY_PATH):." $(PEASOUP_HOME)/tools/ps_analyze.sh $< $@ --backend zipr 
 #	LD_LIBRARY_PATH="$(LD_LIBRARY_PATH):." $(PEASOUP_HOME)/tools/ps_analyze.sh $< $@ --backend zipr --stop_after pdb_register
 
 .o.exe:  $< ../lib/libIRDB-core.a ../lib/libIRDB-cfg.a

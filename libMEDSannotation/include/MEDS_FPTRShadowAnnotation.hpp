@@ -41,6 +41,13 @@ using namespace MEDS_Annotation;
 //
 // Class to handle one MEDS limited function pointer shadow annotation
 //
+// Examples:
+//    8057fa7      3 INSTR FPTRSHADOW  [EAX+8] SHADOWID 5
+//    805829d      3 INSTR FPTRCHECK  [EBP-40] SHADOWID 5
+//    80822aa      7 INSTR FPTRSHADOW  0 SHADOWID 6
+//    80822cc      3 INSTR FPTRSHADOW  EAX SHADOWID 6
+//    8480faa      9 INSTR FPTRSHADOW  4721886 SHADOWID 75
+//
 class MEDS_FPTRShadowAnnotation : public MEDS_ShadowAnnotation
 {
 	public:
@@ -52,6 +59,12 @@ class MEDS_FPTRShadowAnnotation : public MEDS_ShadowAnnotation
 		bool isRIPRelative() const;
 		uintptr_t computeRIPAddress();
 		
+                bool isConstant() const;
+                long long getConstantValue(bool&) const;
+
+                bool isRegister() const;
+                bool isMemoryExpression() const;
+
 		const RegisterName getRegister() const;
 		const string& getExpression() const { return m_expression; }
 
