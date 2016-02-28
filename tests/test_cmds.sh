@@ -1,8 +1,19 @@
+#!/bin/bash
+
 # specify configs here
-configs="zipr scfi scfi.color scfi.color.nojmps kill_deads"
+configs="zipr scdi scfi scfi.color scfi.color.nojmps kill_deads"
+configs="scfi.color"
+configs="scfi.color.nojmps"
+configs="scfi.color scfi.color.nojmps"
+configs="shadow"
+
 # specify programs to test
-orig_progs="bzip2 cal du grep ls objdump readelf sort tar tcpdump touch"
+orig_progs="tcpdump bzip2 cal du grep ls objdump readelf sort tar touch"
+#orig_progs="bzip2"
+#orig_progs="gedit"
 build_only=0
+
+export IB_VERBOSE=1
 
 for config in $configs
 do
@@ -54,6 +65,12 @@ do
 		kill_deads)
 			$PEASOUP_HOME/tools/ps_analyze.sh `which $prog` $protected --backend zipr --step kill_deads=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 		;;
+		scdi)
+			SimpleCDI_VERBOSE=1 $PEASOUP_HOME/tools/ps_analyze.sh `which $prog` $protected --backend zipr --step simple_cdi=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
+		shadow)
+			$PEASOUP_HOME/tools/ps_analyze.sh `which $prog` $protected --backend zipr --step fptr_shadow=on --step-option "zipr:--zipr:callbacks $ZIPR_INSTALL/bin/callbacks.datashadow.exe" --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
 		*)
 			echo "Unknown configuration requested"
 			continue
@@ -69,7 +86,7 @@ do
 		continue
 	fi
 
-	echo "TEST $config ${prog}: Running tests..."
+	echo "TEST ($config) ${prog}: Running tests..."
 	timeout 300 ../$prog/test_script.sh `which $prog` ./$protected > test_${prog}.log 2>&1
 	if [ $? -eq 0 ]; then
 		echo "TEST ($config) ${prog}: PASS"
