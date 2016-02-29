@@ -1955,7 +1955,10 @@ void setup_icfs(FileIR_t* firp)
 		if(jmptables[insn].IsComplete())
 		{
 			if(getenv("IB_VERBOSE")!=0)
-				cout<<"jump table complete for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
+			{
+				cout<<"IB complete for "<<hex<<insn->GetAddress()->GetVirtualOffset()
+					<<":"<<insn->getDisassembly()<<endl;
+			}
 			// get the strcuture into the IRDB	
 			ICFS_t* nn=new ICFS_t(jmptables[insn]);
 			firp->GetAllICFS().insert(nn);
@@ -2184,7 +2187,7 @@ void unpin_elf_tables(FileIR_t *firp)
 		int count=it->second;
 		cout<<"#ATTRIBUTE missed_unpin_count_"<<name<<"="<<dec<<count<<endl;
 	}
-	cout<<"#ATTRIBUTE total_elftable_unpins="<<dec<<total_unpins<<endl;
+	cout<<"#ATTRIBUTE total_elftable_unpins="<<dec<<total_elftable_unpins<<endl;
 
 }
 
