@@ -97,6 +97,9 @@ scons || exit
 cd $PEASOUP_UMBRELLA_DIR/zipr_push64_reloc_plugin
 scons || exit
 
+cd $PEASOUP_UMBRELLA_DIR/zipr_unpin_plugin
+scons || exit
+
 cd $IRDB_TRANSFORMS
 scons || exit
 
