@@ -948,7 +948,7 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 				if(ibtarget)
 				{
 					jmptables[I5].insert(ibtarget);
-					jmptables[I5].SetAnalysisStatus(ICFS_Analysis_Complete);
+					jmptables[I5].SetAnalysisStatus(ICFS_Analysis_Module_Complete);
 					possible_target(table_entry,table_base+0*4, ibt_provenance_t::ibtp_gotplt);
 					if(getenv("IB_VERBOSE")!=0)
 						cout<<hex<<"Found  plt dispatch ("<<disasm.CompleteInstr<<"') at "<<I5->GetAddress()->GetVirtualOffset()<< endl;
@@ -1998,6 +1998,9 @@ void setup_icfs(FileIR_t* firp)
 
 void unpin_elf_tables(FileIR_t *firp)
 {
+	map<string,int> unpin_counts;
+	map<string,int> missed_unpins;
+
 	for(
 		DataScoopSet_t::iterator it=firp->GetDataScoops().begin();
 		it!=firp->GetDataScoops().end();
@@ -2009,9 +2012,15 @@ void unpin_elf_tables(FileIR_t *firp)
 
 		DataScoop_t* scoop=*it;
 		const char *scoop_contents=scoop->GetContents().c_str();
-		if(scoop->GetName()==".init_array" || scoop->GetName()==".fini_array")
+		if(scoop->GetName()==".init_array" || scoop->GetName()==".fini_array" || scoop->GetName()==".got.plt")
 		{
-			for(int i=0; i+ptrsize <= scoop->GetSize() ; i+=ptrsize)
+			int start_offset=0;
+			if(scoop->GetName()==".got.plt")
+			{
+				// .got.plt has a start index of 4 pointers into the section.
+				start_offset=4*ptrsize;
+			}
+			for(int i=start_offset; i+ptrsize <= scoop->GetSize() ; i+=ptrsize)
 			{
 				virtual_offset_t vo;
 				if(ptrsize==4)
@@ -2034,12 +2043,15 @@ void unpin_elf_tables(FileIR_t *firp)
 				if( targets[vo].areOnlyTheseSet(
 					ibt_provenance_t::ibtp_initarray | 
 					ibt_provenance_t::ibtp_finiarray | 
+					ibt_provenance_t::ibtp_gotplt | 
 					ibt_provenance_t::ibtp_stars_data)
 				  )
 				{
 					// when/if they fail, convert to if and guard the reloc creation.
 					if(getenv("IB_VERBOSE")!=0)
 						cout<<"Unpinning entry at offset "<<dec<<i<<". vo="<<hex<<vo<<endl;
+					
+					unpin_counts[scoop->GetName()]++;
 
 					Relocation_t* nr=new Relocation_t();
 					assert(nr);
@@ -2055,6 +2067,7 @@ void unpin_elf_tables(FileIR_t *firp)
 				{
 					if(getenv("IB_VERBOSE")!=0)
 						cout<<"Skipping init/fini unpin for "<<hex<<vo<<" due to other references."<<dec<<i<<endl;
+					missed_unpins[scoop->GetName()]++;
 				}
 			}
 		}
@@ -2133,6 +2146,7 @@ void unpin_elf_tables(FileIR_t *firp)
 
 						// when/if these asserts fail, convert to if and guard the reloc creation.
 
+						unpin_counts[scoop->GetName()]++;
 						Relocation_t* nr=new Relocation_t();
 						assert(nr);
 						nr->SetType("data_to_insn_ptr");
@@ -2147,11 +2161,31 @@ void unpin_elf_tables(FileIR_t *firp)
 					{
 						if(getenv("IB_VERBOSE")!=0)
 							cout<<"Skipping .dynsm unpin for "<<hex<<vo<<" due to other references."<<dec<<i<<endl;
+						missed_unpins[scoop->GetName()]++;
 					}
 				}
 			}
 		}
 	}
+
+	int total_elftable_unpins=0;
+
+	// print unpin stats.
+	for(map<string,int>::iterator it=unpin_counts.begin(); it!=unpin_counts.end(); ++it)
+	{
+		string name=it->first;
+		int count=it->second;
+		cout<<"#ATTRIBUTE unpin_count_"<<name<<"="<<dec<<count<<endl;
+		total_elftable_unpins++;
+	}
+	for(map<string,int>::iterator it=missed_unpins.begin(); it!=missed_unpins.end(); ++it)
+	{
+		string name=it->first;
+		int count=it->second;
+		cout<<"#ATTRIBUTE missed_unpin_count_"<<name<<"="<<dec<<count<<endl;
+	}
+	cout<<"#ATTRIBUTE total_elftable_unpins="<<dec<<total_unpins<<endl;
+
 }
 
 void unpin_well_analyzed_ibts(FileIR_t *firp)
