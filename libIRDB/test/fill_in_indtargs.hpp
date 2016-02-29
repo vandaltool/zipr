@@ -119,3 +119,25 @@ class ibt_provenance_t
 bool is_possible_target(virtual_offset_t p, virtual_offset_t addr);
 bool possible_target(virtual_offset_t p, virtual_offset_t from_addr, ibt_provenance_t prov=ibt_provenance_t::ibtp_unknown);
 
+
+class fii_icfs : public ICFS_t
+{
+	public:
+		// get/set table start
+		virtual_offset_t GetTableStart() {return table_start; }
+		void SetTableStart(virtual_offset_t s) {table_start=s; }
+
+		// get/set switch type
+		ibt_provenance_t GetSwitchType() { return switch_type; }
+		void AddSwitchType(const ibt_provenance_t& p) { switch_type.add(p); }
+
+		// get/set table size
+		int GetTableSize() { return table_size; }
+		void SetTableSize(int s) { table_size=s; }
+	private:
+
+		virtual_offset_t table_start;
+		ibt_provenance_t switch_type;
+		int table_size;
+
+};

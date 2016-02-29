@@ -73,7 +73,7 @@ set< pair< virtual_offset_t, virtual_offset_t> > ranges;
 map< Instruction_t* , InstructionSet_t > preds;
 
 // keep track of jmp tables
-map< Instruction_t*, ICFS_t > jmptables;
+map< Instruction_t*, fii_icfs > jmptables;
 
 // a map of virtual offset -> instruction for quick access.
 map<virtual_offset_t,Instruction_t*> lookupInstructionMap;
@@ -387,6 +387,7 @@ void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<vir
 
                 assert(instr_len==insn->GetDataBits().size());
 
+		// work for both 32- and 64-bit.
 		check_for_PIC_switch_table32_type2(insn,disasm, elfiop, thunk_bases);
 		check_for_PIC_switch_table32_type3(firp,insn,disasm, elfiop, thunk_bases);
 
@@ -397,11 +398,8 @@ void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<vir
 		else
 			assert(0);
 
-		if (jmptables.count(insn) == 0)
-			check_for_nonPIC_switch_table(firp, insn,disasm, elfiop);
-
-		if (jmptables.count(insn) == 0)
-			check_for_nonPIC_switch_table_pattern2(firp, insn,disasm, elfiop);
+		check_for_nonPIC_switch_table(firp, insn,disasm, elfiop);
+		check_for_nonPIC_switch_table_pattern2(firp, insn,disasm, elfiop);
 
 		/* other branches can't indicate an indirect branch target */
 		if(disasm.Instruction.BranchType)
@@ -491,7 +489,7 @@ void infer_targets(FileIR_t *firp, section* shdr)
 			prov=ibt_provenance_t::ibtp_dynsym;
 		else if(shdr->get_name()==".symtab")
 			prov=ibt_provenance_t::ibtp_symtab;
-		else if( ! shdr->isWriteable()) 
+		else if(shdr->isWriteable()) 
 			prov=ibt_provenance_t::ibtp_data;
 		else
 			prov=ibt_provenance_t::ibtp_rodata;
@@ -752,7 +750,7 @@ cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< "
 			cout << "pic32 (base pattern): table size: " << table_size << " ibtargets.size: " << ibtargets.size() << endl;
 			if (table_size == ibtargets.size() || table_size == (ibtargets.size()-1))
 			{
-				cout << "pic32 (base pattern): valid switch table detected" << endl;
+				cout << "pic32 (base pattern): valid switch table detected ibtp_switchtable_type1" << endl;
 				jmptables[I5].SetTargets(ibtargets);
 				jmptables[I5].SetAnalysisStatus(ICFS_Analysis_Complete);
 			
@@ -882,14 +880,18 @@ cout<<hex<<"Found (type2) switch dispatch at "<<I3->GetAddress()->GetVirtualOffs
 
 }
 
+
+/*
+ * Detects this type of switch:
+ *
+ * 	  0x809900e <text_handler+51>: jmp    [eax*4 + 0x8088208]
+ *
+ * nb: also works for 64-bit.
+ */
 static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
 {
+	int ptrsize=firp->GetArchitectureBitWidth()/8;
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type3;
-#if 0
-
-/* here's typical code */
-	   0x809900e <text_handler+51>: jmp    [eax*4 + 0x8088208]
-#endif
 
         Instruction_t* I5=insn;
         // check if I5 is a jump
@@ -904,8 +906,14 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
         if(disasm.Argument1.Memory.Displacement==0)
 		return;
 
+        if(disasm.Argument1.Memory.Scale!=ptrsize)
+		return;
+
 	// grab the table base out of the jmp.
-	virtual_offset_t table_base=disasm.Instruction.AddrValue;
+	virtual_offset_t table_base=disasm.Argument1.Memory.Displacement;
+        if((disasm.Argument1.ArgType&RELATIVE_))
+		table_base+=insn->GetDataBits().size()+insn->GetAddress()->GetVirtualOffset();
+
 	if(table_base==0)
 		return;
 
@@ -921,19 +929,34 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 		return;
 
 
+
+
+
 	// get the base offset into the section
 	virtual_offset_t offset=table_base-pSec->get_address();
 	int i;
 	for(i=0;i<3;i++)
 	{
-		if(offset+i*4+sizeof(int) > pSec->get_size())
+		if(offset+i*ptrsize+ptrsize > pSec->get_size())
 			return;
 
-		const int *table_entry_ptr=(const int*)&(secdata[offset+i*4]);
-		virtual_offset_t table_entry=*table_entry_ptr;
+		const void *table_entry_ptr=(const int*)&(secdata[offset+i*ptrsize]);
+
+		virtual_offset_t table_entry=0;
+		switch(ptrsize)
+		{
+			case 4:
+				table_entry=(virtual_offset_t)*(int*)table_entry_ptr;
+				break;
+			case 8:
+				table_entry=(virtual_offset_t)*(int**)table_entry_ptr;
+				break;
+			default:
+				assert(0);
+		}
 
 		if(getenv("IB_VERBOSE")!=0)
-			cout<<"Checking target base:" << std::hex << table_entry << ", " << table_base+i*4<<endl;
+			cout<<"Checking target base:" << std::hex << table_entry << ", " << table_base+i*ptrsize<<endl;
 
 		/* if there's no base register and no index reg, */
 		/* then this jmp can't have more than one valid table entry */
@@ -949,21 +972,21 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 				{
 					jmptables[I5].insert(ibtarget);
 					jmptables[I5].SetAnalysisStatus(ICFS_Analysis_Module_Complete);
-					possible_target(table_entry,table_base+0*4, ibt_provenance_t::ibtp_gotplt);
+					possible_target(table_entry,table_base+0*ptrsize, ibt_provenance_t::ibtp_gotplt);
 					if(getenv("IB_VERBOSE")!=0)
 						cout<<hex<<"Found  plt dispatch ("<<disasm.CompleteInstr<<"') at "<<I5->GetAddress()->GetVirtualOffset()<< endl;
 					return;
 				}
 			}
 			if(pSec->isWriteable())
-				possible_target(table_entry,table_base+0*4, ibt_provenance_t::ibtp_data);
+				possible_target(table_entry,table_base+0*ptrsize, ibt_provenance_t::ibtp_data);
 			else
-				possible_target(table_entry,table_base+0*4, ibt_provenance_t::ibtp_rodata);
+				possible_target(table_entry,table_base+0*ptrsize, ibt_provenance_t::ibtp_rodata);
 			if(getenv("IB_VERBOSE")!=0)
 				cout<<hex<<"Found  constant-memory dispatch from non- .got.plt location ("<<disasm.CompleteInstr<<"') at "<<I5->GetAddress()->GetVirtualOffset()<< endl;
 			return;
 		}
-		if(!is_possible_target(table_entry,table_base+i*4))
+		if(!is_possible_target(table_entry,table_base+i*ptrsize))
 		{
 			if(getenv("IB_VERBOSE")!=0)
 			{
@@ -981,20 +1004,37 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 	if(i==3)
 	{
 		if(getenv("IB_VERBOSE")!=0)
-			cout<<"Found switch table (pic3, type3) (thunk-relative) at "<<hex<<table_base<<endl;
+			cout<<"Found switch table (type3)  at "<<hex<<table_base<<endl;
+		jmptables[insn].AddSwitchType(prov);
+		jmptables[insn].SetTableStart(table_base);
 		// finished the loop.
 		for(i=0;true;i++)
 		{
-			if(offset+i*4+sizeof(int) > pSec->get_size())
+			if(offset+i*ptrsize+ptrsize > pSec->get_size())
 				return;
 
-			const int *table_entry_ptr=(const int*)&(secdata[offset+i*4]);
-			virtual_offset_t table_entry=*table_entry_ptr;
+			const void *table_entry_ptr=(const int*)&(secdata[offset+i*ptrsize]);
 
+			virtual_offset_t table_entry=0;
+			switch(ptrsize)
+			{
+				case 4:
+					table_entry=(virtual_offset_t)*(int*)table_entry_ptr;
+					break;
+				case 8:
+					table_entry=(virtual_offset_t)*(int**)table_entry_ptr;
+					break;
+				default:
+					assert(0);
+			}
+
+			if(!possible_target(table_entry,table_base+i*ptrsize,prov))
+				return;
 			if(getenv("IB_VERBOSE")!=0)
 				cout<<"Found switch table (thunk-relative) entry["<<dec<<i<<"], "<<hex<<table_entry<<endl;
-			if(!possible_target(table_entry,table_base+i*4,prov))
-				return;
+
+			// make table bigger.
+			jmptables[insn].SetTableSize(i);
 		}
 	}
 	else
@@ -1002,8 +1042,6 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 		if(getenv("IB_VERBOSE")!=0)
 			cout<<"Found that  "<<hex<<table_base<<endl;
 	}
-
-
 }
 
 
@@ -1267,7 +1305,7 @@ DN:   0x4824XX: .long 0x4824e0-LN
 		// note that there may be an off-by-one error here as table size depends on whether instruction I2 is a jb or jbe.
 		if (table_size == ibtargets.size() || table_size == (ibtargets.size()-1))
 		{
-			cout << "pic64: valid switch table detected" << endl;
+			cout << "pic64: valid switch table detected ibtp_switchtable_type4" << endl;
 			jmptables[I8].SetTargets(ibtargets);
 			jmptables[I8].SetAnalysisStatus(ICFS_Analysis_Complete);
 		}
@@ -1371,7 +1409,7 @@ static void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t
 		ibtargets.insert(ibtarget);
 	}
 
-	cout << "(non-PIC) valid switch table found" << endl;
+	cout << "(non-PIC) valid switch table found - ibtp_switchtable_type5" << endl;
 
 	jmptables[IJ].SetTargets(ibtargets);
 	jmptables[IJ].SetAnalysisStatus(ICFS_Analysis_Complete);
@@ -1506,7 +1544,7 @@ static void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, D
 		ibtargets.insert(ibtarget);
 	}
 
-	cout << "(non-PIC) valid switch table found" << endl;
+	cout << "(non-PIC) valid switch table found - prov=ibt_provenance_t::ibtp_switchtable_type6" << endl;
 	jmptables[IJ].SetTargets(ibtargets);
 	jmptables[IJ].SetAnalysisStatus(ICFS_Analysis_Complete);
 }
@@ -2191,9 +2229,130 @@ void unpin_elf_tables(FileIR_t *firp)
 
 }
 
+DataScoop_t* find_scoop(FileIR_t *firp, const virtual_offset_t &vo)
+{
+	for(
+		DataScoopSet_t::iterator it=firp->GetDataScoops().begin();
+		it!=firp->GetDataScoops().end();
+		++it
+	   )
+	{
+		DataScoop_t* s=*it;
+		if( s->GetStart()->GetVirtualOffset()<=vo && vo<s->GetEnd()->GetVirtualOffset() )
+			return s;
+	}
+	return NULL;
+}
+
+void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* scoop)
+{
+	int type3_unpins=0;
+	int type3_pins=0;
+
+	assert(firp && insn && scoop);
+
+	// switch check
+	// could be dangerous if the IBT is found in rodata section,
+	// but then also used for a switch.  this is unlikely.
+	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type3 |	 // found as switch
+		ibt_provenance_t::ibtp_stars_switch |  	// found as stars switch
+		ibt_provenance_t::ibtp_rodata;		// found in rodata.
+
+	// ptr size
+	int ptrsize=firp->GetArchitectureBitWidth()/8;
+
+	// offset from start of scoop
+	virtual_offset_t scoop_off=jmptables[insn].GetTableStart() - scoop->GetStart()->GetVirtualOffset();
+
+	// scoop contents
+	const char *scoop_contents=scoop->GetContents().c_str();
+
+
+	for(int i=0; i<jmptables[insn].GetTableSize(); i++)
+	{
+
+		// grab the value out of the scoop
+		virtual_offset_t table_entry=0;		
+		switch(ptrsize)
+		{
+			case 4:
+				table_entry=(virtual_offset_t)*(int*)&scoop_contents[scoop_off];
+				break;
+			case 8:
+				table_entry=(virtual_offset_t)*(int**)&scoop_contents[scoop_off];
+				break;
+			default:
+				assert(0);
+		}
+
+		type3_pins++;
+		// verify we have an instruction.
+		Instruction_t* ibt=lookupInstruction(firp,table_entry);
+		if(ibt)
+		{
+			// which isn't otherwise addressed.
+			if(targets[table_entry].areOnlyTheseSet(prov))
+			{
+				Relocation_t* nr=new Relocation_t();
+				assert(nr);
+				nr->SetType("data_to_insn_ptr");
+				nr->SetOffset(scoop_off);
+				nr->SetWRT(ibt);
+				// add reloc to IR.
+				firp->GetRelocations().insert(nr);
+				scoop->GetRelocations().insert(nr);
+				type3_unpins++;
+			}
+		}
+		scoop_off+=ptrsize;
+		
+		
+	}
+
+	cout<<"#ATTRIBUTE switch_type3_pins="<<type3_pins<<endl;
+	cout<<"#ATTRIBUTE switch_type3_unpins="<<type3_unpins<<endl;
+}
+
+void unpin_switches(FileIR_t *firp)
+{
+	// for each instruction 
+        for(
+                set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
+                it!=firp->GetInstructions().end();
+                ++it
+	   )
+
+        {
+		// check for an insn.
+		Instruction_t* insn=*it;
+		assert(insn);
+
+		// if we didn't find a jmptable for this insn, try again.
+		if(jmptables.find(insn) == jmptables.end())
+			continue;
+
+		// sanity check we have a good switch 
+		if(insn->GetIBTargets()==NULL) continue;
+
+		// sanity check we have a good switch 
+		if(insn->GetIBTargets()->GetAnalysisStatus()!=ICFS_Analysis_Complete) continue;
+
+		// find the scoop, try next if we fail.
+		DataScoop_t* scoop=find_scoop(firp,jmptables[insn].GetTableStart());
+		if(!scoop) continue;
+
+		if(jmptables[insn].GetSwitchType().areOnlyTheseSet(ibt_provenance_t::ibtp_switchtable_type3))
+		{
+			unpin_type3_switchtable(firp,insn,scoop);
+		}
+		
+        }
+}
+
 void unpin_well_analyzed_ibts(FileIR_t *firp)
 {
 	unpin_elf_tables(firp);
+	unpin_switches(firp);
 }
 
 
