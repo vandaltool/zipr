@@ -1,7 +1,5 @@
 * text=auto !eol
 /SConscript -text
 /SConstruct -text
-/configure.in -text
-/install-sh -text
 /unpin.cpp -text
 /unpin.h -text

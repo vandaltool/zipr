@@ -43,6 +43,9 @@ using namespace ELFIO;
 
 void Unpin_t::DoUnpin()
 {
+	int unpins=0;
+	int missed_unpins=0;
+
 	for(
 		DataScoopSet_t::iterator it=zo->GetFileIR()->GetDataScoops().begin();
 		it!=zo->GetFileIR()->GetDataScoops().end();
@@ -97,9 +100,11 @@ void Unpin_t::DoUnpin()
 				if(found)
 				{
 					cout<<"Unpin::Not unpinning because CFI is requesting a nonce."<<endl;
+					missed_unpins++;
 				}
 				else
 				{
+					unpins++;
 					insn->SetIndirectBranchTargetAddress(NULL);
 
 					PlacementQueue_t* pq=zo->GetPlacementQueue();
@@ -113,6 +118,9 @@ void Unpin_t::DoUnpin()
 			}
 		}
 	}
+
+	cout<<"#ATTRIBUTE unpin_total_unpins="<<dec<<unpins<<endl;
+	cout<<"#ATTRIBUTE unpin_missed_unpins="<<dec<<missed_unpins<<endl;
 }
 
 void Unpin_t::UpdateScoops()
