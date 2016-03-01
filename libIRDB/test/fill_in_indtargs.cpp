@@ -928,12 +928,53 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 	if(!secdata)
 		return;
 
-
-
-
-
 	// get the base offset into the section
 	virtual_offset_t offset=table_base-pSec->get_address();
+
+
+	// check to see if stars already marked this complete.
+	// if so, just figure out the table size
+	if(jmptables[insn].GetAnalysisStatus()==ICFS_Analysis_Complete)
+	{
+		// we already know it's a type3, we can just record the type and table base.
+		jmptables[insn].AddSwitchType(prov);
+		jmptables[insn].SetTableStart(table_base);
+
+		// try to determine the table size using the complete set of targets.
+		int i=0;
+		for(i=0;true;i++)
+		{
+			
+			if(offset+i*ptrsize+ptrsize > pSec->get_size())
+				return;
+
+			const void *table_entry_ptr=(const int*)&(secdata[offset+i*ptrsize]);
+
+			virtual_offset_t table_entry=0;
+			switch(ptrsize)
+			{
+				case 4:
+					table_entry=(virtual_offset_t)*(int*)table_entry_ptr;
+					break;
+				case 8:
+					table_entry=(virtual_offset_t)*(int**)table_entry_ptr;
+					break;
+				default:
+					assert(0);
+			}
+
+			Instruction_t* ibt=lookupInstruction(firp,table_entry);
+			// if we didn't find an instruction or the insn isn't in our set, stop looking, we've found the table size
+			if(ibt==NULL || jmptables[insn].find(ibt) == jmptables[insn].end())
+				break;
+		}
+		jmptables[insn].SetTableSize(i);
+		if(getenv("IB_VERVBOSE"))
+			cout<<"Found already complete, setting base to "<<hex<<table_base<<" and size to "<<dec<<i<<endl;
+		return;
+	}
+	
+
 	int i;
 	for(i=0;i<3;i++)
 	{
@@ -1028,13 +1069,16 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 					assert(0);
 			}
 
-			if(!possible_target(table_entry,table_base+i*ptrsize,prov))
+			Instruction_t* ibt=lookupInstruction(firp,table_entry);
+			if(!possible_target(table_entry,table_base+i*ptrsize,prov) || ibt==NULL)
 				return;
 			if(getenv("IB_VERBOSE")!=0)
 				cout<<"Found switch table (thunk-relative) entry["<<dec<<i<<"], "<<hex<<table_entry<<endl;
 
 			// make table bigger.
 			jmptables[insn].SetTableSize(i);
+			jmptables[insn].insert(ibt);
+			jmptables[insn].SetAnalysisStatus(ICFS_Analysis_Complete);
 		}
 	}
 	else
@@ -1800,7 +1844,10 @@ ICFS_t* setup_call_hellnode(FileIR_t* firp)
 	 * ibt_provenance_t::ibtp_switchtable_type10
 	 */
 
-	return setup_hellnode(firp,allowed);
+	ICFS_t* ret=setup_hellnode(firp,allowed);
+
+	cout<<"#ATTRIBUTE call_hellnode_size="<<dec<<ret->size()<<endl;
+	return ret;
 
 }
 
@@ -1841,7 +1888,9 @@ ICFS_t* setup_jmp_hellnode(FileIR_t* firp)
 	 * ibt_provenance_t::ibtp_switchtable_type10
 	 */
 
-	return setup_hellnode(firp,allowed);
+	ICFS_t* ret=setup_hellnode(firp,allowed);
+	cout<<"#ATTRIBUTE jmp_hellnode_size="<<dec<<ret->size()<<endl;
+	return ret;
 
 }
 
@@ -1888,7 +1937,7 @@ ICFS_t* setup_ret_hellnode(FileIR_t* firp)
 	 */
 
 	ICFS_t* ret_hell_node=setup_hellnode(firp,allowed);
-
+	cout<<"#ATTRIBUTE basicret_hellnode_size="<<dec<<ret_hell_node->size()<<endl;
 
 	// add unmarked return points.  fix_calls will deal with whether they need to be pinned or not later.
         for(
@@ -1906,8 +1955,8 @@ ICFS_t* setup_ret_hellnode(FileIR_t* firp)
 		}
 	}
 
+	cout<<"#ATTRIBUTE fullret_hellnode_size="<<dec<<ret_hell_node->size()<<endl;
 	return ret_hell_node;
-
 }
 
 void print_icfs(FileIR_t* firp)
@@ -1939,6 +1988,7 @@ void print_icfs(FileIR_t* firp)
 
 void setup_icfs(FileIR_t* firp)
 {
+	int total_ibta_set=0;
 
 	/* setup some IBT categories for warning checking */
         ibt_provenance_t non_stars_data=
@@ -1977,6 +2027,10 @@ void setup_icfs(FileIR_t* firp)
 
 		// if we already got it complete (via stars or FII)
 		Instruction_t* insn=*it;
+
+		if(insn->GetIndirectBranchTargetAddress()!=NULL)
+			total_ibta_set++;
+			
 
 		// warning check
 		ibt_provenance_t prov=targets[insn->GetAddress()->GetVirtualOffset()];
@@ -2031,6 +2085,8 @@ void setup_icfs(FileIR_t* firp)
 		}
 
 	}
+
+	cout<<"#ATTRIBUTE total_ibtas_set="<<dec<<total_ibta_set<<endl;
 
 	if(getenv("IB_VERBOSE")!=NULL)
 		print_icfs(firp);
@@ -2090,7 +2146,7 @@ void unpin_elf_tables(FileIR_t *firp)
 				{
 					// when/if they fail, convert to if and guard the reloc creation.
 					if(getenv("IB_VERBOSE")!=0)
-						cout<<"Unpinning entry at offset "<<dec<<i<<". vo="<<hex<<vo<<endl;
+						cout<<"Unpinning init/fini entry at offset "<<dec<<i<<". vo="<<hex<<vo<<endl;
 					
 					unpin_counts[scoop->GetName()]++;
 
@@ -2244,12 +2300,20 @@ DataScoop_t* find_scoop(FileIR_t *firp, const virtual_offset_t &vo)
 	return NULL;
 }
 
+// stats for unpinning.
+int type3_unpins=0;
+int type3_pins=0;
+
 void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* scoop)
 {
-	int type3_unpins=0;
-	int type3_pins=0;
 
 	assert(firp && insn && scoop);
+
+	set<Instruction_t*> switch_targs;
+
+	if(getenv("IB_VERBOSE"))
+		cout<<"Unpinning type3 switch, dispatch is "<<hex<<insn->GetAddress()->GetVirtualOffset()<<":"<<insn->getDisassembly()<<endl; 
+
 
 	// switch check
 	// could be dangerous if the IBT is found in rodata section,
@@ -2257,6 +2321,9 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type3 |	 // found as switch
 		ibt_provenance_t::ibtp_stars_switch |  	// found as stars switch
 		ibt_provenance_t::ibtp_rodata;		// found in rodata.
+
+	ibt_provenance_t newprov=ibt_provenance_t::ibtp_switchtable_type3 |	 // found as switch
+		ibt_provenance_t::ibtp_stars_switch ;  	// found as stars switch
 
 	// ptr size
 	int ptrsize=firp->GetArchitectureBitWidth()/8;
@@ -2285,7 +2352,6 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 				assert(0);
 		}
 
-		type3_pins++;
 		// verify we have an instruction.
 		Instruction_t* ibt=lookupInstruction(firp,table_entry);
 		if(ibt)
@@ -2293,6 +2359,8 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 			// which isn't otherwise addressed.
 			if(targets[table_entry].areOnlyTheseSet(prov))
 			{
+				if(getenv("IB_VERBOSE"))
+					cout<<"Unpinning switch for ibt="<<hex<<table_entry<<endl;
 				Relocation_t* nr=new Relocation_t();
 				assert(nr);
 				nr->SetType("data_to_insn_ptr");
@@ -2301,7 +2369,10 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 				// add reloc to IR.
 				firp->GetRelocations().insert(nr);
 				scoop->GetRelocations().insert(nr);
-				type3_unpins++;
+
+				// remove rodata reference for hell nodes.
+				targets[table_entry]=newprov;
+				switch_targs.insert(ibt);
 			}
 		}
 		scoop_off+=ptrsize;
@@ -2309,12 +2380,17 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 		
 	}
 
-	cout<<"#ATTRIBUTE switch_type3_pins="<<type3_pins<<endl;
-	cout<<"#ATTRIBUTE switch_type3_unpins="<<type3_unpins<<endl;
+	type3_unpins+=switch_targs.size();
+	type3_pins+=jmptables[insn].size();
+
 }
 
 void unpin_switches(FileIR_t *firp)
 {
+	// re-init stats for this file.
+	type3_unpins=0;
+	type3_pins=0;
+
 	// for each instruction 
         for(
                 set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
@@ -2347,6 +2423,8 @@ void unpin_switches(FileIR_t *firp)
 		}
 		
         }
+	cout<<"#ATTRIBUTE switch_type3_pins="<<dec<<type3_pins<<endl;
+	cout<<"#ATTRIBUTE switch_type3_unpins="<<dec<<type3_unpins<<endl;
 }
 
 void unpin_well_analyzed_ibts(FileIR_t *firp)
@@ -2381,10 +2459,12 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t>
         for (secndx=0; secndx<secnum; secndx++)
 		get_executable_bounds(firp, elfiop->sections[secndx]);
 
+	/* import info from stars */
+	read_stars_xref_file(firp);
+
 	/* look through each section and look for target possibilities */
         for (secndx=0; secndx<secnum; secndx++)
 		infer_targets(firp, elfiop->sections[secndx]);
-
 	
 	/* should move to separate function */
 	std::list<virtual_offset_t>::iterator forced_iterator = forced_pins.begin();
@@ -2410,22 +2490,22 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t>
 	/* now deal with dynsym pins */
 	process_dynsym(firp);
 
-	/* import info from stars */
-	read_stars_xref_file(firp);
+
+	/* set the IR to have some instructions marked as IB targets, and deal with the ICFS */
+	mark_targets(firp);
 
 	cout<<"========================================="<<endl;
 	cout<<"# ATTRIBUTE total_indirect_targets="<<std::dec<<targets.size()<<endl;
 	print_targets();
 	cout<<"========================================="<<endl;
 
-	/* set the IR to have some instructions marked as IB targets, and deal with the ICFS */
-	mark_targets(firp);
+	// do unpinning of well analyzed ibts.
+	unpin_well_analyzed_ibts(firp);
 
 	// try to setup an ICFS for every IB.
 	setup_icfs(firp);
 
 
-	unpin_well_analyzed_ibts(firp);
 }
 
 

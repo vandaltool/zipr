@@ -1,45 +1,49 @@
 import os
 
 
+
 Import('env')
 myenv=env.Clone()
 myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 
-cpppath=''' 
-	 $SECURITY_TRANSFORMS_HOME/include 
-	 $SECURITY_TRANSFORMS_HOME/libIRDB/include 
-	 $SECURITY_TRANSFORMS_HOME/libMEDSannotation/include 
-	 $SECURITY_TRANSFORMS_HOME/libEXEIO/include 
-	 $SECURITY_TRANSFORMS_HOME/beaengine/include 
-	'''
 
-LIBPATH="$SECURITY_TRANSFORMS_HOME/lib"
-LIBS=Split( env.subst('$BASE_IRDB_LIBS')+ " IRDB-cfg IRDB-util MEDSannotation")
+if 'build_tools' not in myenv or myenv['build_tools'] is None or int(myenv['build_tools']) == 1:
 
-print "The libs for libIRDB/tests are:"
-print LIBS
+	cpppath=''' 
+		 $SECURITY_TRANSFORMS_HOME/include 
+		 $SECURITY_TRANSFORMS_HOME/libIRDB/include 
+		 $SECURITY_TRANSFORMS_HOME/libMEDSannotation/include 
+		 $SECURITY_TRANSFORMS_HOME/libEXEIO/include 
+		 $SECURITY_TRANSFORMS_HOME/beaengine/include 
+		'''
 
-myenv=myenv.Clone(CPPPATH=Split(cpppath))
-ehframe=myenv.Object("read_ehframe.cpp");
+	LIBPATH="$SECURITY_TRANSFORMS_HOME/lib"
+	LIBS=Split( env.subst('$BASE_IRDB_LIBS')+ " IRDB-cfg IRDB-util MEDSannotation")
 
-pgm=myenv.Program("fill_in_indtargs.exe",  ehframe+Split("fill_in_indtargs.cpp check_thunks.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
-install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
-Default(install)
+	print "The libs for libIRDB/tests are:"
+	print LIBS
 
-pgm=myenv.Program("fix_calls.exe",  ehframe+Split("fix_calls.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
-install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
-Default(install)
+	myenv=myenv.Clone(CPPPATH=Split(cpppath))
+	ehframe=myenv.Object("read_ehframe.cpp");
 
-
-pgms='''print_variant list_programs create_variant create_variantir read_variantir clone ilr 
-        drop_variant generate_spri fill_in_cfg unfix_calls 
-        find_strings build_callgraph build_preds rename_function pin_address
-	'''
-for i in Split(pgms):
-	print "Registering pgm: "+ i
-	pgm=myenv.Program(target=i+".exe",  source=Split(i+".cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
+	pgm=myenv.Program("fill_in_indtargs.exe",  ehframe+Split("fill_in_indtargs.cpp check_thunks.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
 	install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
 	Default(install)
 
-	
-	
+	pgm=myenv.Program("fix_calls.exe",  ehframe+Split("fix_calls.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
+	install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
+	Default(install)
+
+
+	pgms='''print_variant list_programs create_variant create_variantir read_variantir clone ilr 
+		drop_variant generate_spri fill_in_cfg unfix_calls 
+		find_strings build_callgraph build_preds rename_function pin_address
+		'''
+	for i in Split(pgms):
+		print "Registering pgm: "+ i
+		pgm=myenv.Program(target=i+".exe",  source=Split(i+".cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
+		install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
+		Default(install)
+
+		
+		
