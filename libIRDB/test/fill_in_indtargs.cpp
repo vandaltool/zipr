@@ -969,8 +969,11 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 				break;
 		}
 		jmptables[insn].SetTableSize(i);
-		if(getenv("IB_VERVBOSE"))
-			cout<<"Found already complete, setting base to "<<hex<<table_base<<" and size to "<<dec<<i<<endl;
+		if(getenv("IB_VERBOSE"))
+		{
+			cout<<"Found type3 at "<<hex<<insn->GetAddress()->GetVirtualOffset()
+			    <<"already complete, setting base to "<<hex<<table_base<<" and size to "<<dec<<i<<endl;
+		}
 		return;
 	}
 	
@@ -2499,11 +2502,11 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t>
 	print_targets();
 	cout<<"========================================="<<endl;
 
-	// do unpinning of well analyzed ibts.
-	unpin_well_analyzed_ibts(firp);
-
 	// try to setup an ICFS for every IB.
 	setup_icfs(firp);
+
+	// do unpinning of well analyzed ibts.
+	unpin_well_analyzed_ibts(firp);
 
 
 }
