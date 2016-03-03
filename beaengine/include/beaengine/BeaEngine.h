@@ -104,7 +104,7 @@ typedef struct {
 typedef struct  {
    Int32 Category;
    Int32 Opcode;
-   char Mnemonic[16];
+   char Mnemonic[20];
    Int32 BranchType;
    EFLStruct Flags;
    UInt64 AddrValue;
