@@ -107,9 +107,9 @@ void ZiprMemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 		Range_t nnr(addr, r.GetEnd());
 		if (m_verbose)
 		{
-			printf("Expanded range:\n");
-			printf("from: %p to %p\n", (void*)r.GetStart(), (void*)r.GetEnd());
-			printf("to: %p to %p\n", (void*)nnr.GetStart(), (void*)nnr.GetEnd());
+			printf("Expanded range: ");
+			printf("from: (%p - %p) ", (void*)r.GetStart(), (void*)r.GetEnd());
+			printf("to: (%p - %p) \n", (void*)nnr.GetStart(), (void*)nnr.GetEnd());
 		}
 		nr = nnr;
 		if(itm1!=free_ranges.end())
@@ -132,9 +132,9 @@ void ZiprMemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 		Range_t nnr(r.GetStart(), addr);
 		if (m_verbose)
 		{
-			printf("Expanded range:\n");
-			printf("from: %p to %p\n", (void*)r.GetStart(), (void*)r.GetEnd());
-			printf("to: %p to %p\n", (void*)nnr.GetStart(), (void*)nnr.GetEnd());
+			printf("Expanded range: ");
+			printf("from: (%p - %p) ", (void*)r.GetStart(), (void*)r.GetEnd());
+			printf("to: (%p - %p) \n", (void*)nnr.GetStart(), (void*)nnr.GetEnd());
 		}
 		nr = nnr;
 		free_ranges.erase(itm1);
@@ -230,6 +230,10 @@ Range_t ZiprMemorySpace_t::GetFreeRange(int size)
 			big_range=r;;
 		if(r.GetEnd() - r.GetStart() >= (unsigned) size)
 			v.push_back(r);
+
+		// that's enough randomization
+		if(v.size() > 100)
+			break;
 	}
 	if(v.size()==0)
 		return big_range;	

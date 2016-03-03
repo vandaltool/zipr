@@ -33,6 +33,12 @@
 
 #include <dollop.h>
 
+
+typedef		std::set<Dollop_t*> DollopList_t;
+typedef		std::map<libIRDB::Instruction_t*,Dollop_t*>  InsnToDollopMap_t;
+typedef		std::list<DollopPatch_t*>  DollopPatchList_t;
+typedef		std::map<Dollop_t*, DollopPatchList_t > DollopToDollopPatchListMap_t;
+
 class ZiprDollopManager_t : public DollopManager_t {
 	public:
 		ZiprDollopManager_t() : m_refresh_stats(true) {}
@@ -76,10 +82,10 @@ class ZiprDollopManager_t : public DollopManager_t {
 		/*
 		 * Iteration functions.
 		 */
-		std::list<Dollop_t*>::const_iterator dollops_begin() {
+		DollopList_t::iterator dollops_begin() {
 			return m_dollops.begin();
 		}
-		std::list<Dollop_t*>::const_iterator dollops_end() {
+		DollopList_t::iterator dollops_end() {
 			return m_dollops.end();
 		}
 
@@ -102,10 +108,10 @@ class ZiprDollopManager_t : public DollopManager_t {
 		/*
 		 * Support variables.
 		 */
-		std::list<Dollop_t*> m_dollops;
-		std::map<libIRDB::Instruction_t*,Dollop_t*> m_insn_to_dollop;
-		std::list<DollopPatch_t*> m_patches;
-		std::map<Dollop_t*, std::list<DollopPatch_t*>> m_patches_to_dollops;
+		DollopList_t m_dollops;
+		InsnToDollopMap_t m_insn_to_dollop;
+		DollopPatchList_t m_patches;
+		DollopToDollopPatchListMap_t m_patches_to_dollops;
 
 		/*
 		 * Statistics.

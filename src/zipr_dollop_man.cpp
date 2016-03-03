@@ -145,12 +145,20 @@ namespace zipr {
 	}
 
 	Dollop_t *ZiprDollopManager_t::GetContainingDollop(libIRDB::Instruction_t *insn) {
+#if 0
 		try {
 			return m_insn_to_dollop.at(insn);
 		} catch (const std::out_of_range &oor) {
 			return NULL;
 		}
 		return NULL;
+#else
+		InsnToDollopMap_t::iterator it=m_insn_to_dollop.find(insn);
+		if(it!=m_insn_to_dollop.end())
+			return it->second;
+		return NULL;
+			
+#endif
 	}
 
 	void ZiprDollopManager_t::AddDollops(Dollop_t *dollop_head) {
@@ -179,7 +187,7 @@ namespace zipr {
 		/*
 		 * Populate/update the instruction-to-dollop map.
 		 */
-		list<DollopEntry_t*>::const_iterator it, it_end;
+		std::list<DollopEntry_t*>::iterator it, it_end;
 		for (it = dollop->begin(), it_end = dollop->end();
 		     it != it_end;
 				 it++) {
@@ -189,8 +197,14 @@ namespace zipr {
 		 * Push the actual dollop onto the list of dollops
 		 * if it's not already there.
 		 */
+#if 0		
 		if (m_dollops.end()==std::find(m_dollops.begin(), m_dollops.end(), dollop))
 			m_dollops.push_back(dollop);
+#else
+			m_dollops.insert(dollop);
+
+#endif
+	
 		m_refresh_stats = true;
 	}
 
@@ -198,8 +212,11 @@ namespace zipr {
 		list<DollopEntry_t*>::iterator it, it_end;
 		bool changed = false;
 		bool local_changed = false;
+		int local_changed_count=0;
+		int and_count=0;
 		do {
 			local_changed = false;
+			local_changed_count++;
 			for (it = dollop->begin(), it_end = dollop->end();
 			     it != it_end;
 					 /* nop */) {
@@ -208,6 +225,7 @@ namespace zipr {
 				if (entry->Instruction() &&
 				    entry->Instruction()->GetTarget()) {
 					Dollop_t *new_target=AddNewDollops(entry->Instruction()->GetTarget());
+					and_count++;
 
 					/*
 					 * In the case there is a change, we have to restart.
@@ -223,27 +241,34 @@ namespace zipr {
 					}
 				}
 			}
-		} while (local_changed);
+			
+		} while (false); // while (local_changed);
 		return changed;
 	}
 
 	void ZiprDollopManager_t::UpdateAllTargets(void) {
-		std::list<Dollop_t *>::const_iterator it, it_end;
+		DollopList_t::iterator it, it_end;
 		bool changed = false;
+		int changed_count=0;
+		int update_count=0;
 		do {
 			changed = false;
-			for (it = m_dollops.begin(), it_end = m_dollops.end();
-		     it != m_dollops.end();
-				 /* nop */) {
+			for (it = m_dollops.begin(), it_end = m_dollops.end(); it != m_dollops.end(); /* nop */) 
+			{
 				Dollop_t *entry = *it;
 				it++;
 				changed |= UpdateTargets(entry);
+				update_count++;
+				if((update_count%1000000) == 0 )
+					cout<<"number of dollops="<<dec<<m_dollops.size()<<".  "<<dec<<update_count<<" iterations attempted."<<endl;
 			}
+			changed_count++;
 		} while (changed);
+		cout<<"All Targets updated.  changed_count="<<dec<<changed_count<<". Update_count="<<update_count<<"."<<endl;
 	}
 
 	std::ostream &operator<<(std::ostream &out, const ZiprDollopManager_t &dollop_man) {
-		std::list<Dollop_t *>::const_iterator it, it_end;
+		DollopList_t::iterator it, it_end;
 
 		for (it = dollop_man.m_dollops.begin(), it_end = dollop_man.m_dollops.end();
 		     it != it_end;
@@ -261,7 +286,7 @@ namespace zipr {
 		m_total_dollop_entries = 0;
 		m_total_dollops = Size();
 
-		std::list<Dollop_t*>::iterator dollop_it, dollop_it_end;
+		DollopList_t::iterator dollop_it, dollop_it_end;
 		for (dollop_it = m_dollops.begin(), dollop_it_end = m_dollops.end();
 		     dollop_it != m_dollops.end();
 				 dollop_it++)
@@ -315,7 +340,7 @@ namespace zipr {
 			 * Now loop through the dollops and
 			 * record those contained in this range.
 			 */
-			list<Dollop_t*>::const_iterator dollop_it, dollop_it_end;
+			DollopList_t::iterator dollop_it, dollop_it_end;
 			Range_t current_range = *range_it;
 			map<RangeAddress_t, Dollop_t*> dollops_in_range;
 			map<RangeAddress_t, Dollop_t*>::const_iterator dollops_in_range_it,

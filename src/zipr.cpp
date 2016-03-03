@@ -711,8 +711,9 @@ void ZiprImpl_t::PreReserve2ByteJumpTargets()
 		 */
 		for(int size=5;size>0;size-=3) 
 		{
-			if (m_verbose)
-				printf("Looking for %d-byte jump targets to pre-reserve.\n", size);
+
+			//if (m_verbose)
+			//	printf("Looking for %d-byte jump targets to pre-reserve.\n", size);
 			for(int i=120;i>=-120;i--)
 			{
 				if(memory_space.AreBytesFree(addr+i,size))
@@ -977,8 +978,7 @@ void ZiprImpl_t::ReservePinnedInstructions()
 		}
 
 		if (m_verbose) {
-			printf("Working two byte pinning decision at %p for:\n", 
-					(void*)addr);
+			printf("Working two byte pinning decision at %p for: ", (void*)addr);
 			printf("%s\n", upinsn->GetComment().c_str());
 		}
 
@@ -986,6 +986,7 @@ void ZiprImpl_t::ReservePinnedInstructions()
 		// if the byte at x+1 is free, we can try a 2-byte jump (which may end up being converted to a 5-byte jump later).
 		if (FindPinnedInsnAtAddr(addr+1)==NULL)
 		{
+			/* so common it's not worth printing 
 			if (m_verbose)
 			{
 				printf("Can fit two-byte pin (%p-%p).  fid=%d\n", 
@@ -993,6 +994,7 @@ void ZiprImpl_t::ReservePinnedInstructions()
 					(void*)(addr+sizeof(bytes)-1),
 					upinsn->GetAddress()->GetFileID());
 			}
+			*/
 		
 			/*
 			 * Assert that the space is free.  We already checked that it should be 
@@ -1302,7 +1304,7 @@ void ZiprImpl_t::Fix2BytePinnedInstructions()
 
 void ZiprImpl_t::WriteDollops()
 {
-	list<Dollop_t*>::const_iterator it, it_end;
+	DollopList_t::iterator it, it_end;
 	for (it = m_dollop_mgr.dollops_begin(),
 	     it_end = m_dollop_mgr.dollops_end();
 	     it != it_end;
@@ -1329,22 +1331,6 @@ void ZiprImpl_t::WriteDollops()
 	}
 }
 
-#if 0
-class placement_queue_comp
-{
-	public:
-	bool operator ()(const pair<Dollop_t*,RangeAddress_t> &a,
-	                 const pair<Dollop_t*,RangeAddress_t> &b) 
-	{
-		if((a.first)->front()->Instruction()->GetAddress()->GetVirtualOffset()==0||
-		   (b.first)->front()->Instruction()->GetAddress()->GetVirtualOffset()==0)
-			return (a.second<b.second);
-		return (a.first)->front()->Instruction()->GetAddress()->GetVirtualOffset()<
-		       (b.first)->front()->Instruction()->GetAddress()->GetVirtualOffset();
-	}
-};
-#endif
-
 void ZiprImpl_t::PlaceDollops()
 {
 	int count_pins=0;
@@ -1370,7 +1356,6 @@ void ZiprImpl_t::PlaceDollops()
 		target_dollop = m_dollop_mgr.GetContainingDollop(target_insn);
 		assert(target_dollop);
 
-		//placement_queue.push_back(pair<Dollop_t*,RangeAddress_t>(target_dollop,patch.GetAddress()));
 		placement_queue.insert(pair<Dollop_t*,RangeAddress_t>(target_dollop,patch.GetAddress()));
 		if (m_verbose) {
 			cout << "Original: " << std::hex << target_insn->
@@ -1738,16 +1723,21 @@ void ZiprImpl_t::CreateDollops()
 {
 	multimap<const UnresolvedUnpinned_t,Patch_t>::const_iterator pin_it,
 	                                                             pin_it_end;
+	int dollop_count=0;
+	cout<<"Attempting to create "<<patch_list.size()<<" dollops for the pins.";
 	for (pin_it = patch_list.begin(), pin_it_end = patch_list.end();
 	     pin_it != pin_it_end;
 	     pin_it++)
 	{
 		UnresolvedUnpinned_t uu = (*pin_it).first;
 		m_dollop_mgr.AddNewDollops(uu.GetInstruction());
+
+		if((dollop_count++ % 100) == 0)
+			cout<<"."<<flush;
 	}
+	cout<<"Done!  Updating all Targets"<<endl;
 	m_dollop_mgr.UpdateAllTargets();
-	if (m_verbose)
-		cout << "Created " <<std::dec<< m_dollop_mgr.Size() << " dollops." << endl;
+	cout << "Created " <<std::dec<< m_dollop_mgr.Size() << " total dollops." << endl;
 }
 
 void ZiprImpl_t::OptimizePinnedInstructions()
