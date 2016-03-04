@@ -972,7 +972,7 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 		if(getenv("IB_VERBOSE"))
 		{
 			cout<<"Found type3 at "<<hex<<insn->GetAddress()->GetVirtualOffset()
-			    <<"already complete, setting base to "<<hex<<table_base<<" and size to "<<dec<<i<<endl;
+			    <<" already complete, setting base to "<<hex<<table_base<<" and size to "<<dec<<i<<endl;
 		}
 		return;
 	}
@@ -1794,10 +1794,16 @@ ICFS_t* setup_hellnode(FileIR_t* firp, ibt_provenance_t allowed)
            )
 	{
 		Instruction_t* insn=*it;
+
+		/*
 		if(insn->GetIndirectBranchTargetAddress() == NULL)
 			continue;
+		*/
 
 		ibt_provenance_t prov=targets[insn->GetAddress()->GetVirtualOffset()];
+
+		if(prov.isEmpty())
+			continue;
 
 		if(prov.isPartiallySet(allowed))
 		{
@@ -1904,6 +1910,7 @@ ICFS_t* setup_ret_hellnode(FileIR_t* firp)
 		ibt_provenance_t::ibtp_stars_ret |	// stars says a return goes here, and this return isn't analyzeable.
 		ibt_provenance_t::ibtp_unknown |
 		ibt_provenance_t::ibtp_stars_unreachable |
+		ibt_provenance_t::ibtp_ret |	// instruction after a call
 		ibt_provenance_t::ibtp_user;
 
 
@@ -1942,6 +1949,14 @@ ICFS_t* setup_ret_hellnode(FileIR_t* firp)
 	ICFS_t* ret_hell_node=setup_hellnode(firp,allowed);
 	cout<<"#ATTRIBUTE basicret_hellnode_size="<<dec<<ret_hell_node->size()<<endl;
 
+	cout<<"#ATTRIBUTE fullret_hellnode_size="<<dec<<ret_hell_node->size()<<endl;
+	return ret_hell_node;
+}
+
+
+void mark_return_points(FileIR_t* firp)
+{
+
 	// add unmarked return points.  fix_calls will deal with whether they need to be pinned or not later.
         for(
 		InstructionSet_t::const_iterator it=firp->GetInstructions().begin();
@@ -1954,13 +1969,11 @@ ICFS_t* setup_ret_hellnode(FileIR_t* firp)
 		insn->Disassemble(d);
 		if(string("call ")==d.Instruction.Mnemonic && insn->GetFallthrough())
 		{
-			ret_hell_node->insert(insn->GetFallthrough());
+			targets[insn->GetFallthrough()->GetAddress()->GetVirtualOffset()].add(ibt_provenance_t::ibtp_ret);
 		}
 	}
-
-	cout<<"#ATTRIBUTE fullret_hellnode_size="<<dec<<ret_hell_node->size()<<endl;
-	return ret_hell_node;
 }
+
 
 void print_icfs(FileIR_t* firp)
 {
@@ -2091,7 +2104,7 @@ void setup_icfs(FileIR_t* firp)
 
 	cout<<"#ATTRIBUTE total_ibtas_set="<<dec<<total_ibta_set<<endl;
 
-	if(getenv("IB_VERBOSE")!=NULL)
+	if(getenv("ICFS_VERBOSE")!=NULL)
 		print_icfs(firp);
 }
 
@@ -2148,8 +2161,8 @@ void unpin_elf_tables(FileIR_t *firp)
 				  )
 				{
 					// when/if they fail, convert to if and guard the reloc creation.
-					if(getenv("IB_VERBOSE")!=0)
-						cout<<"Unpinning init/fini entry at offset "<<dec<<i<<". vo="<<hex<<vo<<endl;
+					if(getenv("UNPIN_VERBOSE")!=0)
+						cout<<"Unpinning "<<scoop->GetName()<<" entry at offset "<<dec<<i<<". vo="<<hex<<vo<<endl;
 					
 					unpin_counts[scoop->GetName()]++;
 
@@ -2165,8 +2178,8 @@ void unpin_elf_tables(FileIR_t *firp)
 				}
 				else
 				{
-					if(getenv("IB_VERBOSE")!=0)
-						cout<<"Skipping init/fini unpin for "<<hex<<vo<<" due to other references."<<dec<<i<<endl;
+					if(getenv("UNPIN_VERBOSE")!=0)
+						cout<<"Skipping "<<scoop->GetName()<<" unpin for "<<hex<<vo<<" due to other references."<<dec<<i<<endl;
 					missed_unpins[scoop->GetName()]++;
 				}
 			}
@@ -2241,7 +2254,7 @@ void unpin_elf_tables(FileIR_t *firp)
 					if(targets[vo].areOnlyTheseSet(
 						ibt_provenance_t::ibtp_dynsym | ibt_provenance_t::ibtp_stars_data))
 					{
-						if(getenv("IB_VERBOSE")!=0)
+						if(getenv("UNPIN_VERBOSE")!=0)
 							cout<<"Unpinning .dynsym entry no "<<dec<<table_entry_no<<". vo="<<hex<<vo<<endl;
 
 						// when/if these asserts fail, convert to if and guard the reloc creation.
@@ -2259,7 +2272,7 @@ void unpin_elf_tables(FileIR_t *firp)
 					}
 					else
 					{
-						if(getenv("IB_VERBOSE")!=0)
+						if(getenv("UNPIN_VERBOSE")!=0)
 							cout<<"Skipping .dynsm unpin for "<<hex<<vo<<" due to other references."<<dec<<i<<endl;
 						missed_unpins[scoop->GetName()]++;
 					}
@@ -2314,7 +2327,7 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 
 	set<Instruction_t*> switch_targs;
 
-	if(getenv("IB_VERBOSE"))
+	if(getenv("UNPIN_VERBOSE"))
 		cout<<"Unpinning type3 switch, dispatch is "<<hex<<insn->GetAddress()->GetVirtualOffset()<<":"<<insn->getDisassembly()<<endl; 
 
 
@@ -2362,8 +2375,8 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 			// which isn't otherwise addressed.
 			if(targets[table_entry].areOnlyTheseSet(prov))
 			{
-				if(getenv("IB_VERBOSE"))
-					cout<<"Unpinning switch for ibt="<<hex<<table_entry<<endl;
+				if(getenv("UNPIN_VERBOSE"))
+					cout<<"Unpinning switch for ibt="<<hex<<table_entry<<", scoop_off="<<scoop_off<<endl;
 				Relocation_t* nr=new Relocation_t();
 				assert(nr);
 				nr->SetType("data_to_insn_ptr");
@@ -2430,10 +2443,41 @@ void unpin_switches(FileIR_t *firp)
 	cout<<"#ATTRIBUTE switch_type3_unpins="<<dec<<type3_unpins<<endl;
 }
 
+void print_unpins(FileIR_t *firp)
+{
+	// don't print if not asked for this type of verbose 
+	if(getenv("UNPIN_VERBOSE") == NULL)
+		return;
+
+	for(
+		DataScoopSet_t::iterator it=firp->GetDataScoops().begin();
+		it!=firp->GetDataScoops().end();
+		++it
+	   )
+	{
+		DataScoop_t* scoop=*it;
+		assert(scoop);
+		for(
+			RelocationSet_t::iterator rit=scoop->GetRelocations().begin();
+			rit!=scoop->GetRelocations().end();
+			++rit
+		   )
+		{
+			Relocation_t* reloc=*rit;
+			assert(reloc);
+			cout<<"Found relocation in "<<scoop->GetName()<<" of type "<<reloc->GetType()<<" at offset "<<hex<<reloc->GetOffset()<<endl;
+		}
+	}
+
+
+}
+
+
 void unpin_well_analyzed_ibts(FileIR_t *firp)
 {
 	unpin_elf_tables(firp);
 	unpin_switches(firp);
+	print_unpins(firp);
 }
 
 
@@ -2493,9 +2537,12 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t>
 	/* now deal with dynsym pins */
 	process_dynsym(firp);
 
+	/* mark any instructions after a call instruction */
+	mark_return_points(firp);
 
 	/* set the IR to have some instructions marked as IB targets, and deal with the ICFS */
 	mark_targets(firp);
+	
 
 	cout<<"========================================="<<endl;
 	cout<<"# ATTRIBUTE total_indirect_targets="<<std::dec<<targets.size()<<endl;

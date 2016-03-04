@@ -94,6 +94,7 @@ class ibt_provenance_t
 		static const provtype_t ibtp_rodata=1<<27;
 		static const provtype_t ibtp_unknown=1<<28;	// completely unknown
 		static const provtype_t ibtp_got=1<<29;	// got is 0 init'd, shouldn't see this one.
+		static const provtype_t ibtp_ret=1<<30;	// insn after a call
 
 		void add(const provtype_t t) { value |=t; }
 		void add(const ibt_provenance_t t) { value |=t.value; }
@@ -104,6 +105,7 @@ class ibt_provenance_t
 
 		bool areOnlyTheseSet(const provtype_t t) const { return (value&~t) == 0; }
 		bool areOnlyTheseSet(const ibt_provenance_t t) const { return (value&~t.value) == 0; }
+		bool isEmpty() const { return value==0; }
 
 	private:
 
