@@ -6,7 +6,7 @@ chmod og-rw $HOME/.pgpass
 
 #Allow remote access to PostGres
 sudo su -c "printf \"\nhost \t all \t all \t 127.0.0.1/16 \t md5\nhostssl  all \t all \t 127.0.0.1/16 \t md5\n\" >> /etc/postgresql/9.1/main/pg_hba.conf"
-printf "\nlisten_addresses = '*'\n" | sudo tee -a /etc/postgresql/9.1/main/postgresql.conf > /dev/null
+printf "\nlisten_addresses = '*'\n" | sudo tee -a /etc/postgresql/9.4/main/postgresql.conf > /dev/null
 
 #Restart PostGres
 sudo service postgresql restart

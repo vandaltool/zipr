@@ -7,7 +7,6 @@ BASE_PKGS="
   flex
   g++
   nasm
-  openjdk-6-jre
   sharutils
   subversion
   scons
@@ -17,7 +16,9 @@ BASE_PKGS="
   screen
   libxml2-dev
   wget
+  scons
   coreutils"
+#  openjdk-6-jre
   #libstdc++6:i386
 # TODO: don't require i386 libraries if not running MEDS (eg using IDA server)
 
@@ -55,7 +56,8 @@ LDAP_PKGS="ldap-utils slapd libldap2-dev"
 # Needed for afl/qemu mode
 AFL_PKGS="libglib2.0-dev"
 
-ALL_PKGS="$BASE_PKGS $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS $TEST_PKGS $SQL_PKGS $AFL_PKGS"
+#ALL_PKGS="$BASE_PKGS $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS $TEST_PKGS $SQL_PKGS $AFL_PKGS"
+ALL_PKGS="$BASE_PKGS $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS $TEST_PKGS $SQL_PKGS"
 
 
 if [[ "$PEASOUP_UMBRELLA_DIR" == "" ]]; then
@@ -105,8 +107,7 @@ function install_afl {
 for arg in $@; do
     case $arg in
     all)
-	sudo apt-get -y install $ALL_PKGS
-	install_afl
+	sudo apt-get --force-yes -y install $ALL_PKGS
 	;;
     afl)
 	sudo apt-get -y install $AFL_PKGS
