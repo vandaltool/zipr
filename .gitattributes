@@ -1114,6 +1114,10 @@ tools/prince/SConstruct -text
 tools/prince/prince.cpp -text
 tools/prince/prince.sh -text
 tools/prince/prince_driver.cpp -text
+tools/print_cfi_stats/Makefile.in -text
+tools/print_cfi_stats/SConscript -text
+tools/print_cfi_stats/SConstruct -text
+tools/print_cfi_stats/print_cfi_stats_driver.cpp -text
 tools/ret_shadow_stack/LICENSE.txt -text
 tools/ret_shadow_stack/Makefile.in -text
 tools/ret_shadow_stack/SConscript -text

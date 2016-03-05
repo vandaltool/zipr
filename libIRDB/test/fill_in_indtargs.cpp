@@ -555,10 +555,13 @@ bool backup_until(const char* insn_type_regex, Instruction_t *& prev, Instructio
 
 	assert(0 == regcomp(&preg, insn_type_regex, REG_EXTENDED));
 
-	while(preds[prev].size()==1)
+	int max=10000;
+
+	while(preds[prev].size()==1 && max-- > 0)
 	{
 		// get the only item in the list.
 		prev=*(preds[prev].begin());
+	
 
        		// get I7's disassembly
        		prev->Disassemble(disasm);
@@ -1730,7 +1733,14 @@ void read_stars_xref_file(FileIR_t* firp)
 	else
 		annotationFilename = SHARED_OBJECTS_DIR + "/" + fileBasename ;
 
-	annotationParser.parseFile(annotationFilename+".STARSxrefs");
+	try
+	{
+		annotationParser.parseFile(annotationFilename+".STARSxrefs");
+	}
+	catch (const string &s)
+	{
+		cout<<"Warning:  annotation parser reports error: "<<s<<endl;
+	}
 
         for(
                 set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();

@@ -17,6 +17,7 @@ dirs='''
 	watch_syscall
 	cookbook
 	dump_map
+	print_cfi_stats
 	'''
 cgc_dirs='''
 	c2e

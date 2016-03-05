@@ -25,9 +25,6 @@ string DataScoop_t::WriteToDB(File_t *fid, db_id_t newid)
 	db_id_t type_id=(GetType() ? GetType()->GetBaseID() : BaseObj_t::NOT_IN_DATABASE);
 
         ostringstream hex_data;
-        hex_data << setfill('0') << hex;;
-        for (size_t i = 0; i < contents.length(); ++i)
-                hex_data << setw(2) << (int)(contents[i]&0xff);
 
 
         string q=string("insert into ")+fid->scoop_table_name +
@@ -38,7 +35,19 @@ string DataScoop_t::WriteToDB(File_t *fid, db_id_t newid)
                 string("'") + to_string(type_id) + string("', ") +
                 string("'") + to_string(GetStart()->GetBaseID()) + string("', ") +
                 string("'") + to_string(GetEnd()->GetBaseID()) + string("', ") +
-                string("decode('") + hex_data.str() + string("', 'hex'), ") +
+                string("decode('");
+
+        hex_data << setfill('0') << hex;
+        for (size_t i = 0; i < contents.length(); ++i)
+	{
+                hex_data << setw(2) << (int)(contents[i]&0xff);
+		q+=hex_data.str();
+		hex_data.str("");	// reset to empty
+		hex_data.clear();
+	}
+		
+
+	q+=     string("', 'hex'), ") +
                 string("'") + to_string(permissions) + string("'); ") ;
 
 	return q;
