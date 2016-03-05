@@ -451,6 +451,11 @@ void fill_in_scoops(FileIR_t *firp)
 			cout<<"Skipping scoop for section (executable) "<<elfiop.sections[secndx]->get_name()<<endl;
                 	continue;
 		}
+        	if(elfiop.sections[secndx]->isBSS())
+		{
+			cout<<"Skipping bss section: "<<elfiop.sections[secndx]->get_name()<<endl;
+                	continue;
+		}
         	if(elfiop.sections[secndx]->isThreadLocal())
 		{
 			cout<<"Skipping tls section (executable) "<<elfiop.sections[secndx]->get_name()<<endl;
