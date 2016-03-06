@@ -131,7 +131,7 @@ int FixCanaries::execute()
 
 	LoadElf();
 	FindStartAddress();
-
+#if 0
 	for(
 	  set<Function_t*>::const_iterator itf=getFileIR()->GetFunctions().begin();
 	  itf!=getFileIR()->GetFunctions().end();
@@ -139,9 +139,12 @@ int FixCanaries::execute()
 	  )
 	{
 		Function_t* func=*itf;
+#endif
 		for(
-		  set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
-		  it!=func->GetInstructions().end();
+//		  set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
+		  set<Instruction_t*>::const_iterator it=getFileIR()->GetInstructions().begin();
+//			it!=func->GetInstructions().end();
+		  it!=getFileIR()->GetInstructions().end();
 		  ++it)
 		{
 			DISASM d;
@@ -464,6 +467,8 @@ int FixCanaries::execute()
 				}
 			} 
 		}
+#if 0
 	}
+#endif
 	return true;
 }
