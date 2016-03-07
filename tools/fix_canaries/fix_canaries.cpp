@@ -171,9 +171,14 @@ int FixCanaries::execute()
 				DISASM md;
 				Instruction_t *mov_insn;
 
-				char *target_reg_name = NULL, *target_sreg_name = NULL;
+				bool numeric_register = false;
+
+				int i = 0;
+
+				char *target_reg_name = NULL;
 				uint16_t target_reg_value = 0;
 				char target_ereg_name[256] = {0,};
+				char target_sreg_name[256] = {0,};
 
 				char *rsp_sreg_name = NULL, *rsp_reg_and_offset = NULL;
 				char rsp_reg_name[256] = {0,};
@@ -191,11 +196,33 @@ int FixCanaries::execute()
 				target_reg_value = d.Argument1.ArgType & 0xFFFF;
 				target_reg_name = d.Argument1.ArgMnemonic;
 
-				strcpy(target_ereg_name, target_reg_name);
-				target_ereg_name[0] = 'e';
+				/*
+				 * Two cases here: 
+				 * 1: There is rax,rcx,rdx, etc.
+				 * 2: There is r12, r11, etc.
+				 */
+				i = 0;
+				while (target_reg_name[i] != '\0') {
+					if (((int)target_reg_name[i]) >= ((int)'0') && 
+					    ((int)target_reg_name[i]) <= ((int)'9'))
+					{
+						numeric_register = true;
+						break;
+					}
+					i++;
+				}
+				if (!numeric_register)
+				{
+					strcpy(target_ereg_name, target_reg_name);
+					strcpy(target_sreg_name, target_reg_name+1);
+					target_ereg_name[0] = 'e';
+				} else {
+					strcpy(target_ereg_name, target_reg_name);
+					strcpy(target_sreg_name, target_reg_name);
+					strcat(target_ereg_name, "d");
+					strcat(target_sreg_name, "w");
+				}
 
-				target_sreg_name = target_reg_name + 1;
-			
 				fs_displacement = d.Argument2.Memory.Displacement;
 
 				mov_insn->Disassemble(md);
@@ -349,7 +376,7 @@ int FixCanaries::execute()
 				uint16_t target_reg_value = 0;
 				char *target_reg_name = NULL;
 				char target_ereg_name[256] = {0,};
-				char *target_sreg_name = NULL;
+				char target_sreg_name[256] = {0,};
 
 				char *rsp_reg_and_offset = NULL;
 				char rsp_reg_name[256] = {0,};
@@ -394,19 +421,46 @@ int FixCanaries::execute()
 						Instruction_t *tmp_insn;
 						int64_t fs_displacement = 0;
 						int i = 0;
+						bool numeric_register = false;
 				
 						rsp_reg_and_offset = d.Argument2.ArgMnemonic;
 						strcpy(rsp_reg_name, rsp_reg_and_offset);
+						i = 0;
 						while (rsp_reg_name[i] != '\0' &&
 					       rsp_reg_name[i] != '+' &&
 					       rsp_reg_name[i] != '-') i++; 
 						rsp_reg_name[i] = '\0';
 						rsp_sreg_name = rsp_reg_name + 1;
 
-						strcpy(target_ereg_name, target_reg_name);
-						target_ereg_name[0] = 'e';
-						target_sreg_name = target_reg_name + 1;
-
+						/*
+						 * Two cases here: 
+						 * 1: There is rax,rcx,rdx, etc.
+						 * 2: There is r12, r11, etc.
+						 * 
+						 * See (above) for additional description
+						 * of how we are handling this.
+						 */
+						i = 0;
+						while (target_reg_name[i] != '\0') {
+							if (((int)target_reg_name[i]) >= ((int)'0') && 
+							    ((int)target_reg_name[i]) <= ((int)'9'))
+							{
+								numeric_register = true;
+								break;
+							}
+							i++;
+						}
+						if (!numeric_register)
+						{
+							strcpy(target_ereg_name, target_reg_name);
+							strcpy(target_sreg_name, target_reg_name+1);
+							target_ereg_name[0] = 'e';
+						} else {
+							strcpy(target_ereg_name, target_reg_name);
+							strcpy(target_sreg_name, target_reg_name);
+							strcat(target_ereg_name, "d");
+							strcat(target_sreg_name, "w");
+						}
 						fs_displacement = xd.Argument2.Memory.Displacement;
 						
 						if (m_verbose == true) {
