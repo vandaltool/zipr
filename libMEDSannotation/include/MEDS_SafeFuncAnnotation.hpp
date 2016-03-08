@@ -42,7 +42,7 @@ using namespace MEDS_Annotation;
 class MEDS_SafeFuncAnnotation : public MEDS_FuncAnnotation
 {
 	public:
-		MEDS_SafeFuncAnnotation() {};
+		MEDS_SafeFuncAnnotation() {m_safe_func=false;}
 		MEDS_SafeFuncAnnotation(const string &p_rawLine);
 		virtual ~MEDS_SafeFuncAnnotation(){}
 

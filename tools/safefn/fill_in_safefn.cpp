@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - Zephyr Software
+ * Copyright (c) 2016 - Zephyr Software
  *
  * This file may be used and modified for non-commercial purposes as long as
  * all copyright, permission, and nonwarranty notices are preserved.
@@ -43,18 +43,13 @@ using namespace MEDS_Annotation;
 
 static void add_annotations(FileIR_t* firp)
 {
+	int num_safe_functions = 0;
 	char *fileBasename = basename((char*)firp->GetFile()->GetURL().c_str());
 
 	cout<<"Adding FR annotations to "<<firp->GetFile()->GetURL()<<endl;
 
-
 	MEDS_AnnotationParser annotationParser;
 	string annotationFilename;
-	// need to map filename to integer annotation file produced by STARS
-	// this should be retrieved from the IRDB but for now, we use files to store annotations
-	// convention from within the peasoup subdirectory is:
-	//      a.ncexe.infoannot
-	//      shared_objects/<shared-lib-filename>.infoannot
 	if (strcmp(fileBasename, BINARY_NAME) == 0)
 		annotationFilename = string(BINARY_NAME);
 	else   
@@ -64,8 +59,7 @@ static void add_annotations(FileIR_t* firp)
 	annotationParser.parseFile(annotationFilename+".annot.full");
 
 	// now, look through each instruction and match the insn to the annotation.
-
-       	cout<< "Annot size is "<<std::dec<< annotationParser.getAnnotations().size() << endl;
+	cout<< "Annot size is "<<std::dec<< annotationParser.getAnnotations().size() << endl;
 
 	for(set<Instruction_t*>::iterator it=firp->GetInstructions().begin();
 		it!=firp->GetInstructions().end();
@@ -101,9 +95,12 @@ static void add_annotations(FileIR_t* firp)
 				reloc->SetType("stars::safefn");
         		insn->GetRelocations().insert(reloc);
         		firp->GetRelocations().insert(reloc);
+				num_safe_functions++;
 			}
 		}
 	}
+
+	cout << "# ATTRIBUTE num_safe_functions=" << dec << num_safe_functions << endl;
 }
 
 
