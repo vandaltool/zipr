@@ -51,6 +51,7 @@ class ZiprMemorySpace_t : public MemorySpace_t
 		void MergeFreeRange(RangeAddress_t addr);
 		RangeSet_t::iterator FindFreeRange(RangeAddress_t addr);
 		Range_t GetFreeRange(int size);
+		Range_t GetInfiniteFreeRange();
 		std::list<Range_t> GetFreeRanges(size_t size = 0);
 		std::pair<RangeSet_t::const_iterator,RangeSet_t::const_iterator>
 			GetNearbyFreeRanges(const RangeAddress_t hint, size_t count = 0);

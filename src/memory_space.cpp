@@ -217,6 +217,20 @@ std::list<Range_t> ZiprMemorySpace_t::GetFreeRanges(size_t size)
 	return result;
 }
 
+Range_t ZiprMemorySpace_t::GetInfiniteFreeRange()
+{
+	vector<Range_t> v;
+	Range_t big_range;
+	for( RangeSet_t::iterator it=free_ranges.begin();
+		it!=free_ranges.end();
+		++it)
+	{
+		Range_t r=*it;
+		if(r.GetEnd()==(RangeAddress_t)-1)
+			return r;
+	}
+}
+
 Range_t ZiprMemorySpace_t::GetFreeRange(int size)
 {
 	vector<Range_t> v;

@@ -547,6 +547,8 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 
 void ZiprImpl_t::AddPinnedInstructions()
 {
+	// find the big chunk of free memory in case we need it for unassigned pins.
+	virtual_offset_t next_pin_addr=memory_space.GetInfiniteFreeRange().GetStart();
 
         for(   
                 set<Instruction_t*>::const_iterator it=m_firp->GetInstructions().begin();
@@ -559,6 +561,13 @@ void ZiprImpl_t::AddPinnedInstructions()
 
 		if(!insn->GetIndirectBranchTargetAddress())
 			continue;
+
+		// deal with unassigned IBTAs.
+		if(insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()==0)
+		{
+			insn->GetIndirectBranchTargetAddress()->SetVirtualOffset(next_pin_addr);
+			next_pin_addr+=5;// sizeof pin
+		}
 
 		unresolved_pinned_addrs.insert(UnresolvedPinned_t(insn));
 	}
