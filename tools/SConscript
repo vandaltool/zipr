@@ -10,7 +10,6 @@ dirs='''
 	memcover
 	ret_shadow_stack
 	safefr
-	safefn
 	selective_cfi
 	simple_cdi
 	spasm
