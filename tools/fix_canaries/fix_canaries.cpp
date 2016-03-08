@@ -397,7 +397,7 @@ int FixCanaries::execute()
 				    (d.Argument2.Memory.BaseRegister == 0x10 ||
 				     d.Argument2.Memory.BaseRegister == 0x20
 						) &&
-						d.Argument1.ArgType & REGISTER_TYPE) {
+						((d.Argument1.ArgType & 0xFFFF0000)==(REGISTER_TYPE+GENERAL_REG))) {
 
 					target_reg_value = d.Argument1.ArgType & 0xFFFF;
 					target_reg_name = d.Argument1.ArgMnemonic;
