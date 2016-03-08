@@ -164,31 +164,24 @@ long long MEDS_FPTRShadowAnnotation::getConstantValue(bool &p_valid) const
 	return val;
 }
 
-//           80822cc      3 INSTR FPTRSHADOW  EAX SHADOWID 6
+// 80822cc      3 INSTR FPTRSHADOW  EAX SHADOWID 6
 bool MEDS_FPTRShadowAnnotation::isRegister() const
 {
 	return Register::getRegister(getExpression()) != rn_UNKNOWN;
 }
 
-//  805829d      3 INSTR FPTRCHECK  [EBP-40] SHADOWID 5
+// 805829d      3 INSTR FPTRCHECK  [EBP-40] SHADOWID 5
 bool MEDS_FPTRShadowAnnotation::isMemoryExpression() const
 {
-	return m_expression[0]=='[' && m_expression[m_expression.size()-1]==']';
+	return (m_expression.find('[') != std::string::npos &&
+	    m_expression.find(']') != std::string::npos);
 }
 
-
-// FIXME: deprecate?
 const RegisterName MEDS_FPTRShadowAnnotation::getRegister() const
 {
 	if (isRegister())
 	{
 		return Register::getRegister(getExpression());
-	}
-	else if (isMemoryExpression())
-	{
-		// expected format [reg]
-		// @todo: THIS IS NOW WRONG
-		return Register::getRegister(m_expression.substr(1, m_expression.size()-2));
 	}
 	else
 	{
@@ -255,7 +248,6 @@ void MEDS_FPTRShadowAnnotation::parseRegister(const char *p_buf, RegisterName *p
 		}
 	}
 
-cout << "analyzing: " << p_buf << endl;
 	if (signPos >= 0)
 		endReg = signPos - 1;
 	if (startReg >= 0 && endReg >= startReg)
