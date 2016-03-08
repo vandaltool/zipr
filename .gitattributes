@@ -1111,6 +1111,11 @@ tools/ret_shadow_stack/SConstruct -text
 tools/ret_shadow_stack/rss_driver.cpp -text
 tools/ret_shadow_stack/rss_instrument.cpp -text
 tools/ret_shadow_stack/rss_instrument.hpp -text
+tools/safefn/LICENSE.txt -text
+tools/safefn/Makefile.in -text
+tools/safefn/SConscript -text
+tools/safefn/SConstruct -text
+tools/safefn/fill_in_safefn.cpp -text
 tools/safefr/LICENSE.txt -text
 tools/safefr/Makefile.in -text
 tools/safefr/SConscript -text
