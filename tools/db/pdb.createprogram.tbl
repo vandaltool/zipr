@@ -20,6 +20,7 @@ CREATE TABLE #FTN#
   stack_frame_size   		integer,		-- believed stack frame size
   out_args_region_size		integer,		-- believed out arg size
   use_frame_pointer	    	boolean,		-- believed whether this function uses the FP
+  is_safe					boolean DEFAULT FALSE,		-- believed whether this function is safe
   type_id               	integer DEFAULT -1, 	-- id for the type that describes the function prototype
   doip_id	          	integer DEFAULT -1 	-- the DOIP
 );
