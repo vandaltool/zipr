@@ -39,9 +39,10 @@ void usage(char* name)
 "		[--color|--no-color]  \n"
 "		[--protect-jumps|--no-protect-jumps]  \n"
 "		[--protect-rets|--no-protect-rets] \n"
+"		[--protect-safefn|--no-protect-safefn]  \n"
 "		[ --common-slow-path | --no-common-slow-path ] \n"
 " \n"
-"default: --no-color --protect-jumps --protect-rets --common-slow-path\n"; 
+"default: --no-color --protect-jumps --protect-rets --no-protect-safefn --common-slow-path\n"; 
 }
 
 int main(int argc, char **argv)
@@ -62,6 +63,7 @@ int main(int argc, char **argv)
 	bool do_common_slow_path=true;
 	bool do_jumps=true;
 	bool do_rets=true;
+	bool do_safefn=false;
 	for(int  i=2;i<argc;i++)
 	{
 		if(string(argv[i])=="--color")
@@ -93,6 +95,16 @@ int main(int argc, char **argv)
 		{
 			cout<<"Not protecting returns..."<<endl;
 			do_rets=false;
+		}
+		else if(string(argv[i])=="--protect-safefn")
+		{
+			cout<<"protecting safe functions..."<<endl;
+			do_safefn=true;
+		}
+		else if(string(argv[i])=="--no-protect-safefn")
+		{
+			cout<<"Not protecting safe functions..."<<endl;
+			do_safefn=false;
 		}
 		else if(string(argv[i])=="--common-slow-path")
 		{
@@ -140,7 +152,7 @@ int main(int argc, char **argv)
 
                 try
                 {
-			SCFI_Instrument scfii(firp, do_coloring, do_common_slow_path, do_jumps, do_rets);
+			SCFI_Instrument scfii(firp, do_coloring, do_common_slow_path, do_jumps, do_rets, do_safefn);
 
 
 			int success=scfii.execute();

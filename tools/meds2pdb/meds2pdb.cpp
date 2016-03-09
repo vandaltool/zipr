@@ -189,7 +189,7 @@ void insert_functions(int fileID, const vector<wahoo::Function*> &functions  )
   for (int i = 0; i < functions.size(); i += STRIDE)
   {  
     string query = "INSERT INTO " + functionTable;
-    query += " (function_id, name, stack_frame_size, out_args_region_size, use_frame_pointer) VALUES ";
+    query += " (function_id, name, stack_frame_size, out_args_region_size, use_frame_pointer, is_safe) VALUES ";
 
 
     for (int j = i; j < i + STRIDE; ++j)
@@ -205,6 +205,7 @@ void insert_functions(int fileID, const vector<wahoo::Function*> &functions  )
 
       int outArgsRegionSize = f->getOutArgsRegionSize();
       bool useFP = f->getUseFramePointer();
+      bool isSafe = f->isSafe();
 
       if (j != i) query += ",";
       query += "(";
@@ -212,7 +213,8 @@ void insert_functions(int fileID, const vector<wahoo::Function*> &functions  )
       query += txn.quote(functionName) + ",";
       query += txn.quote(functionFrameSize) + ",";
       query += txn.quote(outArgsRegionSize) + ",";
-      query += txn.quote(useFP) + ")";
+      query += txn.quote(useFP) + ",";
+      query += txn.quote(isSafe) + ")";
 
     }
 

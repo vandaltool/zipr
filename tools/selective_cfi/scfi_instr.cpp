@@ -217,7 +217,10 @@ Relocation_t* SCFI_Instrument::FindRelocation(Instruction_t* insn, string type)
         return NULL;
 }
 
-
+bool SCFI_Instrument::isSafeFunction(Instruction_t* insn)
+{
+	return (insn && insn->GetFunction() && insn->GetFunction()->IsSafe());
+}
 
 
 Relocation_t* SCFI_Instrument::create_reloc(Instruction_t* insn)
@@ -602,6 +605,8 @@ bool SCFI_Instrument::instrument_jumps()
 	int cfi_branch_call_complete=0;
 	int cfi_branch_ret_checks=0;
 	int cfi_branch_ret_complete=0;
+	int	cfi_safefn_jmp_skipped=0;
+	int	cfi_safefn_ret_skipped=0;
 	int ibt_complete=0;
 	double cfi_branch_jmp_complete_ratio = NAN;
 	double cfi_branch_ret_complete_ratio = NAN;
@@ -625,6 +630,8 @@ bool SCFI_Instrument::instrument_jumps()
 		if(FindRelocation(insn,"cf::safe"))
 			continue;
 
+		bool safefn = isSafeFunction(insn);
+
 		DISASM d;
 		insn->Disassemble(d);
 
@@ -634,13 +641,20 @@ bool SCFI_Instrument::instrument_jumps()
 			case  JmpType:
 				if((d.Argument1.ArgType&MEMORY_TYPE)==MEMORY_TYPE)
 				{
-					cfi_checks++;
-					cfi_branch_jmp_checks++;
 					if (insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
 					{
 						cfi_branch_jmp_complete++;
 						jmps[insn->GetIBTargets()->size()]++;
 					}
+
+					if (!do_safefn && safefn)
+					{
+						cfi_safefn_jmp_skipped++;
+						continue;
+					}
+
+					cfi_checks++;
+					cfi_branch_jmp_checks++;
 					AddJumpCFI(insn);
 				}
 				break;
@@ -656,14 +670,22 @@ bool SCFI_Instrument::instrument_jumps()
 					cfi_checks++;
 				}
 				break;
+
 			case  RetType: 
-				cfi_branch_ret_checks++;
 				if (insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
 				{
 					cfi_branch_ret_complete++;
 					rets[insn->GetIBTargets()->size()]++;
 				}
+
+				if (!do_safefn && safefn)
+				{
+					cfi_safefn_ret_skipped++;
+					continue;
+				}
+
 				cfi_checks++;
+				cfi_branch_ret_checks++;
 				AddReturnCFI(insn);
 				break;
 
@@ -673,7 +695,7 @@ bool SCFI_Instrument::instrument_jumps()
 	}
 	
 	cout<<"# ATTRIBUTE cfi_jmp_checks="<<std::dec<<cfi_branch_jmp_checks<<endl;
-	cout<<"# ATTRIBUTE cfi_jmp_complete="<<std::dec<<cfi_branch_jmp_complete<<endl;
+	cout<<"# ATTRIBUTE cfi_jmp_complete="<<cfi_branch_jmp_complete<<endl;
 
 	display_histogram(cout, "cfi_jmp_complete_histogram", jmps);
 
@@ -704,6 +726,9 @@ bool SCFI_Instrument::instrument_jumps()
 
 	cout << "# ATTRIBUTE cfi_ret_complete_ratio=" << cfi_branch_ret_complete_ratio << endl;
 	cout << "# ATTRIBUTE cfi_complete_ratio=" << cfi_branch_ret_complete_ratio << endl;
+
+	cout<<"# ATTRIBUTE cfi_safefn_jmp_skipped="<<cfi_safefn_jmp_skipped<<endl;
+	cout<<"# ATTRIBUTE cfi_safefn_ret_skipped="<<cfi_safefn_ret_skipped<<endl;
 
 	return true;
 }

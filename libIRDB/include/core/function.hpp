@@ -28,7 +28,7 @@ class Function_t : public BaseObj_t
 	Function_t() : BaseObj_t(NULL) {}	// create a new function not in the db 
 
 	// create a function that's already in the DB  
-	Function_t(db_id_t id, std::string name, int size, int oa_size, bool use_fp, FuncType_t *, Instruction_t *entry);	
+	Function_t(db_id_t id, std::string name, int size, int oa_size, bool use_fp, bool is_safe, FuncType_t *, Instruction_t *entry);	
 
 	InstructionSet_t& GetInstructions() { return my_insns; }
 
@@ -48,6 +48,9 @@ class Function_t : public BaseObj_t
         bool GetUseFramePointer() const { return use_fp; }
         void SetUseFramePointer(bool useFP) { use_fp = useFP; }
 
+        void SetSafe(bool safe) { is_safe = safe; }
+        bool IsSafe() const { return is_safe; }
+
 	void SetType(FuncType_t *t) { function_type = t; }
 	FuncType_t* GetType() const { return function_type; }
 
@@ -60,6 +63,7 @@ class Function_t : public BaseObj_t
         std::string name;
         int out_args_region_size;
         bool use_fp;
+        bool is_safe;
 	FuncType_t *function_type;
 };
 

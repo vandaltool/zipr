@@ -25,7 +25,7 @@
 using namespace libIRDB;
 using namespace std;
 
-Function_t::Function_t(db_id_t id, std::string myname, int size, int oa_size, bool useFP, FuncType_t *fn_type, Instruction_t* entry)
+Function_t::Function_t(db_id_t id, std::string myname, int size, int oa_size, bool useFP, bool isSafe, FuncType_t *fn_type, Instruction_t* entry)
 	: BaseObj_t(NULL), entry_point(entry)
 {
 	SetBaseID(id);
@@ -33,6 +33,7 @@ Function_t::Function_t(db_id_t id, std::string myname, int size, int oa_size, bo
 	stack_frame_size=size;	
 	out_args_region_size=oa_size;
     use_fp = useFP;
+    SetSafe(isSafe);
 	function_type = fn_type;
 }
 
@@ -52,7 +53,7 @@ string Function_t::WriteToDB(File_t *fid, db_id_t newid)
 		function_type_id = GetType()->GetBaseID();	 
 
 	string q=string("insert into ")+fid->function_table_name + 
-		string(" (function_id, entry_point_id, name, stack_frame_size, out_args_region_size, use_frame_pointer, type_id, doip_id) ")+
+		string(" (function_id, entry_point_id, name, stack_frame_size, out_args_region_size, use_frame_pointer, is_safe, type_id, doip_id) ")+
 		string(" VALUES (") + 
 		string("'") + to_string(GetBaseID()) 		  + string("', ") + 
 		string("'") + to_string(entryid) 		  + string("', ") + 
@@ -60,6 +61,7 @@ string Function_t::WriteToDB(File_t *fid, db_id_t newid)
 		string("'") + to_string(stack_frame_size) 	  + string("', ") + 
 	        string("'") + to_string(out_args_region_size) 	  + string("', ") + 
 	        string("'") + to_string(use_fp) 		  + string("', ") + 
+	        string("'") + to_string(is_safe) 		  + string("', ") + 
 	        string("'") + to_string(function_type_id) 	  + string("', ") + 
 		string("'") + to_string(GetDoipID()) 		  + string("') ; ") ;
 

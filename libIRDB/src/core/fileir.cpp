@@ -284,7 +284,7 @@ std::map<db_id_t,Function_t*> FileIR_t::ReadFuncsFromDB
 
 	while(!dbintr->IsDone())
 	{
-// function_id | file_id | name | stack_frame_size | out_args_region_size | use_frame_pointer | doip_id
+// function_id | file_id | name | stack_frame_size | out_args_region_size | use_frame_pointer | is_safe | doip_id
 
 		db_id_t fid=atoi(dbintr->GetResultColumn("function_id").c_str());
 		db_id_t entry_point_id=atoi(dbintr->GetResultColumn("entry_point_id").c_str());
@@ -293,13 +293,22 @@ std::map<db_id_t,Function_t*> FileIR_t::ReadFuncsFromDB
 		int oasize=atoi(dbintr->GetResultColumn("out_args_region_size").c_str());
 		db_id_t function_type_id=atoi(dbintr->GetResultColumn("type_id").c_str());
 // postgresql encoding of boolean can be 'true', '1', 'T', 'y'
-                bool useFP=false;
+		bool useFP=false;
+		bool isSafe=false;
 		string useFPString=dbintr->GetResultColumn("use_frame_pointer"); 
+		string isSafeString=dbintr->GetResultColumn("is_safe"); 
 		const char *useFPstr=useFPString.c_str();
-                if (strlen(useFPstr) > 0)
+		const char *isSafestr=isSafeString.c_str();
+		if (strlen(useFPstr) > 0)
 		{
 			if (useFPstr[0] == 't' || useFPstr[0] == 'T' || useFPstr[0] == '1' || useFPstr[0] == 'y' || useFPstr[0] == 'Y')
 				useFP = true;
+		}
+
+		if (strlen(isSafestr) > 0)
+		{
+			if (isSafestr[0] == 't' || isSafestr[0] == 'T' || isSafestr[0] == '1' || isSafestr[0] == 'y' || isSafestr[0] == 'Y')
+				isSafe = true;
 		}
 
 		db_id_t doipid=atoi(dbintr->GetResultColumn("doip_id").c_str());
@@ -307,7 +316,7 @@ std::map<db_id_t,Function_t*> FileIR_t::ReadFuncsFromDB
 		FuncType_t* fnType = NULL;
 		if (typesMap.count(function_type_id) > 0)
 			fnType = dynamic_cast<FuncType_t*>(typesMap[function_type_id]);
-		Function_t *newfunc=new Function_t(fid,name,sfsize,oasize,useFP,fnType, NULL); 
+		Function_t *newfunc=new Function_t(fid,name,sfsize,oasize,useFP,isSafe,fnType, NULL); 
 		entry_points[newfunc]=entry_point_id;
 		
 //std::cout<<"Found function "<<name<<"."<<std::endl;

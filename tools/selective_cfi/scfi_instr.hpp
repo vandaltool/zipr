@@ -33,12 +33,14 @@ class SCFI_Instrument
 				bool p_do_coloring=true,
 				bool p_do_common_slow_path=true,
 				bool p_do_jumps=true,
-				bool p_do_rets=true) 
+				bool p_do_rets=true,
+				bool p_do_safefn=true) 
 			: firp(the_firp), 
 			  do_coloring(p_do_coloring), 
 			  do_common_slow_path(p_do_common_slow_path), 
 			  do_jumps(p_do_jumps), 
 			  do_rets(p_do_rets), 
+			  do_safefn(p_do_safefn), 
 			  color_map(NULL) {}
 		bool execute();
 
@@ -52,6 +54,7 @@ class SCFI_Instrument
 		// helper
 		libIRDB::Relocation_t* create_reloc(libIRDB::Instruction_t* insn);
 		libIRDB::Relocation_t* FindRelocation(libIRDB::Instruction_t* insn, std::string type);
+		bool isSafeFunction(libIRDB::Instruction_t* insn);
 
 		// add instrumentation
 		bool add_scfi_instrumentation(libIRDB::Instruction_t* insn);
@@ -76,6 +79,7 @@ class SCFI_Instrument
 		bool do_common_slow_path;
 		bool do_jumps;
 		bool do_rets;
+		bool do_safefn;
 		ColoredInstructionNonces_t *color_map;
 
 
