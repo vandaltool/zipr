@@ -630,6 +630,7 @@ bool SCFI_Instrument::instrument_jumps()
 		if(FindRelocation(insn,"cf::safe"))
 			continue;
 
+		// FIXME: should we only skip CFI checks on returns?
 		bool safefn = isSafeFunction(insn);
 
 		DISASM d;
@@ -647,11 +648,14 @@ bool SCFI_Instrument::instrument_jumps()
 						jmps[insn->GetIBTargets()->size()]++;
 					}
 
+/*
+    @FIXME @TODO Take care of indirect jumps
 					if (!do_safefn && safefn)
 					{
 						cfi_safefn_jmp_skipped++;
 						continue;
 					}
+*/
 
 					cfi_checks++;
 					cfi_branch_jmp_checks++;
