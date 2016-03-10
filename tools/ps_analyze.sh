@@ -887,14 +887,14 @@ if [ $? = 1 ]; then
 fi
 
 # do the basic tranforms we're performing for peasoup 
-perform_step fix_calls mandatory $SECURITY_TRANSFORMS_HOME/bin/fix_calls.exe $cloneid	
+perform_step fix_calls mandatory $SECURITY_TRANSFORMS_HOME/bin/fix_calls.exe $cloneid	$step_options_fix_calls
 # look for strings in the binary 
-perform_step find_strings none $SECURITY_TRANSFORMS_HOME/bin/find_strings.exe $cloneid
+perform_step find_strings none $SECURITY_TRANSFORMS_HOME/bin/find_strings.exe $cloneid $step_options_find_strings
 
 #
 # analyze binary for string signatures
 #
-perform_step appfw find_strings $PEASOUP_HOME/tools/do_appfw.sh $arch_bits $newname.ncexe logs/find_strings.log
+perform_step appfw find_strings $PEASOUP_HOME/tools/do_appfw.sh $arch_bits $newname.ncexe logs/find_strings.log $step_optoins_appfw
 
 #
 # protect_pov
