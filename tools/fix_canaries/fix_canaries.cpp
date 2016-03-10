@@ -263,6 +263,9 @@ int FixCanaries::execute()
 						cout << "\tdisplacement: 0x"<<std::hex<<rsp_displacement <<endl;
 					}
 
+					/*
+					 * Move canary reference value into register.
+					 */
 					sprintf(asm_buffer, "mov %s, [fs:0x%x]\n",
 						target_reg_name,
 						fs_displacement);
@@ -270,13 +273,37 @@ int FixCanaries::execute()
 						cout << "asm_buffer: " << asm_buffer;
 					setAssembly(insn, asm_buffer);
 					memset(asm_buffer, 0, sizeof(asm_buffer));
-					
+
+					/*
+					 * target register has 
+					 * xxxxxxxxxxxxaaaa
+					 * where aaaa is 16 bits of stack address
+					 * and x...x is canary value.
+					 */
+				
+					/*
+					 * Calculate the difference between the stack pointer
+					 * (the lowest 16 bits, actually!) and the previously 
+					 * saved stack pointer (lower 16 bits of target register, 
+					 * accessed through its 16-bit name).
+					 */
 					sprintf(asm_buffer, "sub %s, %s\n", target_sreg_name, rsp_sreg_name);
 					if (m_verbose == true)
 						cout << "asm_buffer: " << asm_buffer;
 					tmp_insn = addNewAssembly(insn, asm_buffer);
 					memset(asm_buffer, 0, sizeof(asm_buffer));
-			
+
+					/*
+					 * target register contains the offset from current
+					 * stack pointer to the location of the canary
+					 * above us. 
+					 */
+
+					/*
+					 * But, we need to be careful because we aren't actually
+					 * now at the top of the stack with rsp. It's been adjusted
+					 * by the size of the locals. Adjust based on that.
+					 */
 					if (rsp_displacement<0) {
 						abs_rsp_displacement = rsp_displacement*-1;
 						displacement_operation = "add";
@@ -292,7 +319,10 @@ int FixCanaries::execute()
 						cout << "asm_buffer: " << asm_buffer;
 					tmp_insn = addNewAssembly(tmp_insn, asm_buffer);
 					memset(asm_buffer, 0, sizeof(asm_buffer));
-				
+			
+					/*
+					 * Finally, put the canary value on to the stack.
+					 */
 					sprintf(asm_buffer, "mov [%s], %s\n",
 						rsp_reg_and_offset,
 						target_reg_name);
@@ -310,7 +340,14 @@ int FixCanaries::execute()
 					}
 				
 					/*
-					 * Put the current location on the stack.
+					 * Save canary+top of stack back to canary
+					 * reference value.
+					 */
+
+					/*
+					 * Keep all of the canary reference value
+					 * except for the 16 bits that hold the
+					 * top of stack value.
 					 */
 					sprintf(asm_buffer, "mov %s, 0xFFFFFFFFFFFF0000\n", target_reg_name);
 					if (m_verbose == true)
@@ -325,7 +362,12 @@ int FixCanaries::execute()
 						cout << "asm_buffer: " << asm_buffer;
 					tmp_insn = addNewAssembly(tmp_insn, asm_buffer);
 					memset(asm_buffer, 0, sizeof(asm_buffer));
-					
+
+					/*
+					 * Put the top of into those empty 16 bits. Use
+					 * an add here and the 16-bit name of the target
+					 * register to do it easily.
+					 */
 					sprintf(asm_buffer, "add %s, %s\n", target_sreg_name, rsp_sreg_name);
 					if (m_verbose == true)
 						cout << "asm_buffer: " << asm_buffer;
@@ -348,6 +390,10 @@ int FixCanaries::execute()
 					tmp_insn = addNewAssembly(tmp_insn, asm_buffer);
 					memset(asm_buffer, 0, sizeof(asm_buffer));
 
+					/*
+					 * Now, deposit that value back into the
+					 * canary reference value.
+					 */
 					sprintf(asm_buffer, "mov [fs:0x%x], %s\n",
 						fs_displacement,
 						target_sreg_name);
@@ -480,6 +526,10 @@ int FixCanaries::execute()
 							     << rsp_sreg_name << endl;
 						}
 
+						/*
+						 * Get the canary from the stack and put it in
+						 * the target register.
+						 */
 						sprintf(asm_buffer, "mov %s, [%s]\n",
 							target_reg_name,
 							rsp_reg_and_offset);
@@ -487,7 +537,12 @@ int FixCanaries::execute()
 							cout << "asm_buffer: " << asm_buffer;
 						setAssembly(insn, asm_buffer);
 						memset(asm_buffer, 0, sizeof(asm_buffer));
-						
+
+						/*
+						 * Jump back to the previous top of stack
+						 * using canary reference value
+						 * and store that in the lower 16 of the target.
+						 */
 						sprintf(asm_buffer, "add %s, [fs:0x%x]\n",
 							target_sreg_name,
 							fs_displacement);
@@ -495,7 +550,11 @@ int FixCanaries::execute()
 							cout << "asm_buffer: " << asm_buffer;
 						tmp_insn = addNewAssembly(insn, asm_buffer);
 						memset(asm_buffer, 0, sizeof(asm_buffer));
-						
+					
+						/*
+						 * Move just those updated 16 bits back into 
+						 * the canary reference buffer.
+						 */
 						sprintf(asm_buffer, "mov [fs:0x%x], %s\n",
 							fs_displacement, target_sreg_name);
 						if (m_verbose == true)
@@ -510,6 +569,14 @@ int FixCanaries::execute()
 								m_callback.c_str());
 							tmp_insn->SetFallthrough(xor_insn);
 						}	
+
+						/*
+						 * Since this code did not touch the upper
+						 * 64-16 bits of the canary value on the
+						 * stack or the canary reference value, 
+						 * any tampering should be evident through
+						 * an xor.
+						 */
 						sprintf(asm_buffer, "xor %s, [fs:0x%x]\n",
 							target_reg_name,
 							fs_displacement);
