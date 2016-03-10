@@ -217,7 +217,7 @@ static File_t* find_file(FileIR_t* firp, db_id_t fileid)
 
 }
 
-EXEIO::exeio    elfiop;
+EXEIO::exeio    *elfiop=NULL;
 
 void add_new_instructions(FileIR_t *firp)
 {
@@ -240,7 +240,7 @@ void add_new_instructions(FileIR_t *firp)
 
 
 
-        	int secnum = elfiop.sections.size(); 
+        	int secnum = elfiop->sections.size(); 
 		int secndx=0;
 
 		bool found=false;
@@ -249,22 +249,22 @@ void add_new_instructions(FileIR_t *firp)
         	for (secndx=1; secndx<secnum; secndx++)
 		{
         		/* not a loaded section */
-        		if( !elfiop.sections[secndx]->isLoadable()) 
+        		if( !elfiop->sections[secndx]->isLoadable()) 
                 		continue;
 		
         		/* loaded, and contains instruction, record the bounds */
-        		if( !elfiop.sections[secndx]->isExecutable()) 
+        		if( !elfiop->sections[secndx]->isExecutable()) 
                 		continue;
 		
-        		virtual_offset_t first=elfiop.sections[secndx]->get_address();
-        		virtual_offset_t second=elfiop.sections[secndx]->get_address()+elfiop.sections[secndx]->get_size();
+        		virtual_offset_t first=elfiop->sections[secndx]->get_address();
+        		virtual_offset_t second=elfiop->sections[secndx]->get_address()+elfiop->sections[secndx]->get_size();
 
 			/* is the missed instruction in this section */
 			if(first<=missed_address && missed_address<second)
 			{
-				const char* data=elfiop.sections[secndx]->get_data();
+				const char* data=elfiop->sections[secndx]->get_data();
 				// second=data?
-				virtual_offset_t offset_into_section=missed_address-elfiop.sections[secndx]->get_address();
+				virtual_offset_t offset_into_section=missed_address-elfiop->sections[secndx]->get_address();
 	
 				/* disassemble the instruction */
 				DISASM disasm;
@@ -273,7 +273,7 @@ void add_new_instructions(FileIR_t *firp)
                 		disasm.Options = NasmSyntax + PrefixedNumeral;
                 		disasm.Archi = firp->GetArchitectureBitWidth();
                 		disasm.EIP = (UIntPtr) &data[offset_into_section];
-				disasm.SecurityBlock=elfiop.sections[secndx]->get_size()-offset_into_section;
+				disasm.SecurityBlock=elfiop->sections[secndx]->get_size()-offset_into_section;
                 		disasm.VirtualAddr = missed_address;
                 		int instr_len = Disasm(&disasm);
 
@@ -426,72 +426,72 @@ void fill_in_cfg(FileIR_t *firp)
 
 void fill_in_scoops(FileIR_t *firp)
 {
-	int secnum = elfiop.sections.size();
+	int secnum = elfiop->sections.size();
 	int secndx=0;
 
 	/* look through each section */
 	for (secndx=1; secndx<secnum; secndx++)
 	{
 		/* not a loaded section, try next section */
-		if(!elfiop.sections[secndx]->isLoadable()) 
+		if(!elfiop->sections[secndx]->isLoadable()) 
 		{
-			cout<<"Skipping scoop for section (not loadable) "<<elfiop.sections[secndx]->get_name()<<endl;
+			cout<<"Skipping scoop for section (not loadable) "<<elfiop->sections[secndx]->get_name()<<endl;
 			continue;
 		}
 
-        	if(elfiop.sections[secndx]->isWriteable() && elfiop.sections[secndx]->isExecutable()) 
+        	if(elfiop->sections[secndx]->isWriteable() && elfiop->sections[secndx]->isExecutable()) 
 		{
 			ofstream fout("warning.txt");
-			fout<<"Found that section "<<elfiop.sections[secndx]->get_name()<<" is both writeable and executable.  Program is inherently unsafe!"<<endl;
+			fout<<"Found that section "<<elfiop->sections[secndx]->get_name()<<" is both writeable and executable.  Program is inherently unsafe!"<<endl;
 		}
 
 		/* executable sections handled by other bits. */
-        	if(elfiop.sections[secndx]->isExecutable()) 
+        	if(elfiop->sections[secndx]->isExecutable()) 
 		{
-			cout<<"Skipping scoop for section (executable) "<<elfiop.sections[secndx]->get_name()<<endl;
+			cout<<"Skipping scoop for section (executable) "<<elfiop->sections[secndx]->get_name()<<endl;
                 	continue;
 		}
-        	if(elfiop.sections[secndx]->isBSS())
+        	if(elfiop->sections[secndx]->isBSS())
 		{
-			cout<<"Skipping bss section: "<<elfiop.sections[secndx]->get_name()<<endl;
+			cout<<"Skipping bss section: "<<elfiop->sections[secndx]->get_name()<<endl;
                 	continue;
 		}
-        	if(elfiop.sections[secndx]->isThreadLocal())
+        	if(elfiop->sections[secndx]->isThreadLocal())
 		{
-			cout<<"Skipping tls section (executable) "<<elfiop.sections[secndx]->get_name()<<endl;
+			cout<<"Skipping tls section (executable) "<<elfiop->sections[secndx]->get_name()<<endl;
                 	continue;
 		}
 
 		/* name */
-		string name=elfiop.sections[secndx]->get_name();
+		string name=elfiop->sections[secndx]->get_name();
 
 		/* start address */
 		AddressID_t *startaddr=new AddressID_t();
 		assert(startaddr);
-		startaddr->SetVirtualOffset( elfiop.sections[secndx]->get_address());
+		startaddr->SetVirtualOffset( elfiop->sections[secndx]->get_address());
 		startaddr->SetFileID(firp->GetFile()->GetBaseID());
 		firp->GetAddresses().insert(startaddr);
 
 		/* end */
 		AddressID_t *endaddr=new AddressID_t();
 		assert(endaddr);
-		endaddr->SetVirtualOffset( elfiop.sections[secndx]->get_address() + elfiop.sections[secndx]->get_size());
+		endaddr->SetVirtualOffset( elfiop->sections[secndx]->get_address() + elfiop->sections[secndx]->get_size());
 		endaddr->SetFileID(firp->GetFile()->GetBaseID());
 		firp->GetAddresses().insert(endaddr);
 
 		string the_contents;
-		the_contents.resize(elfiop.sections[secndx]->get_size()); 
+		the_contents.resize(elfiop->sections[secndx]->get_size()); 
 		// deal with .bss segments that are 0 init'd.
-		if (elfiop.sections[secndx]->get_data()) 
-			the_contents.assign(elfiop.sections[secndx]->get_data(),elfiop.sections[secndx]->get_size());
+		if (elfiop->sections[secndx]->get_data()) 
+			the_contents.assign(elfiop->sections[secndx]->get_data(),elfiop->sections[secndx]->get_size());
 
 		Type_t *chunk_type=NULL; /* FIXME -- need to figure out the type system for scoops, but NULL should remain valid */
 
 		/* permissions */
 		int permissions= 
-			( elfiop.sections[secndx]->isReadable() << 2 ) | 
-			( elfiop.sections[secndx]->isWriteable() << 1 ) | 
-			( elfiop.sections[secndx]->isExecutable() << 0 ) ;
+			( elfiop->sections[secndx]->isReadable() << 2 ) | 
+			( elfiop->sections[secndx]->isWriteable() << 1 ) | 
+			( elfiop->sections[secndx]->isExecutable() << 0 ) ;
 
 		DataScoop_t *newscoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, name, startaddr, endaddr, NULL, permissions, the_contents);
 		assert(newscoop);
@@ -538,6 +538,7 @@ main(int argc, char* argv[])
 
 			// read the db  
 			firp=new FileIR_t(*pidp, this_file);
+			assert(firp);
 
 			/* get the OID of the file */
 			int elfoid=this_file->GetELFOID();
@@ -545,9 +546,11 @@ main(int argc, char* argv[])
 			pqxx::largeobject lo(elfoid);
                 	lo.to_file(pqxx_interface.GetTransaction(),"readeh_tmp_file.exe");
 
-			elfiop.load("readeh_tmp_file.exe");
-			EXEIO::dump::header(cout,elfiop);
-			EXEIO::dump::section_headers(cout,elfiop);
+			elfiop=new EXEIO::exeio;
+			assert(elfiop);
+			elfiop->load("readeh_tmp_file.exe");
+			EXEIO::dump::header(cout,*elfiop);
+			EXEIO::dump::section_headers(cout,*elfiop);
 
 			fill_in_cfg(firp);
 			fill_in_scoops(firp);
@@ -555,6 +558,9 @@ main(int argc, char* argv[])
 			// write the DB back and commit our changes 
 			firp->WriteToDB();
 			delete firp;
+			delete elfiop;
+			firp=NULL;
+			elfiop=NULL;
 
 		}
 
@@ -568,8 +574,9 @@ main(int argc, char* argv[])
 		exit(-1);
         }
 
-	assert(firp && pidp);
+	assert(pidp);
 
 
 	delete pidp;
+	pidp=NULL;
 }
