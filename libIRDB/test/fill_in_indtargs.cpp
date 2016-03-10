@@ -250,12 +250,15 @@ void mark_targets(FileIR_t *firp)
 		/* lookup in the list of targets */
 		if(targets.find(addr)!=targets.end())
 		{
-			AddressID_t* newaddr = new AddressID_t;
-			newaddr->SetFileID(insn->GetAddress()->GetFileID());
-			newaddr->SetVirtualOffset(insn->GetAddress()->GetVirtualOffset());
-			
-			insn->SetIndirectBranchTargetAddress(newaddr);
-			firp->GetAddresses().insert(newaddr);
+			if (!targets[addr].areOnlyTheseSet(ibt_provenance_t::ibtp_ret))
+			{
+				AddressID_t* newaddr = new AddressID_t;
+				newaddr->SetFileID(insn->GetAddress()->GetFileID());
+				newaddr->SetVirtualOffset(insn->GetAddress()->GetVirtualOffset());
+				
+				insn->SetIndirectBranchTargetAddress(newaddr);
+				firp->GetAddresses().insert(newaddr);
+			}
 		}
 	}
 }
