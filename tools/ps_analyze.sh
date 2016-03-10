@@ -141,7 +141,8 @@ set_step_option()
 	#
 	var="step_options_$step"
 	old_value="${!var}"
-	eval "step_options_$step='$old_value $option'"
+	new_value="$old_value $option"
+	eval "step_options_$step=\"$new_value\""
 }
 
 usage()

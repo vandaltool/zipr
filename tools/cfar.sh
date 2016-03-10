@@ -144,11 +144,13 @@ do
 	mkdir -p "$baseoutdir/v${seq}"
 
 	# invoke $PS.
-	echo PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PEASOUP_HOME/tools/ps_analyze.sh $in $baseoutdir/v${seq}/$in "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" 
+	#echo "PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PEASOUP_HOME/tools/ps_analyze.sh $in $baseoutdir/v${seq}/$in " "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" 
+	set -x
 	PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PEASOUP_HOME/tools/ps_analyze.sh $in $baseoutdir/v${seq}/$in "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" > $baseoutdir/v${seq}/variant_output.txt 2>&1 &
 
 	# remember the pid.
 	pids="$pids $!"
+	set +x
 
 done
 

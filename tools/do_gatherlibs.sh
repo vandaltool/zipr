@@ -50,8 +50,13 @@ do
 				exit 1 # reported error
 			fi
 			shift
-			these="$1"
-			echo "Protecting these files: $1"
+
+			while  [[ "$#" > 0 ]] && [[ "$1" != "-*" ]]; 
+			do
+				these="$these $1"
+				echo "Protecting file: $1"
+				shift
+			done
 			;;
 		--safelist)
 			if [[ $# < 1 ]]; then
@@ -97,11 +102,12 @@ rm -f shared_libs
 touch shared_libs
 
 
-if [ X"$these" != "X" ]; then
+if [ "X$these" != "X" ]; then
 	for i in $these
 	do
 		if [ ! -f $i ]; then
-			echo Missing library file $i
+			echo "Missing library file $i" 
+			echo "Missing library file $i" > warning.txt
 			exit 255
 		fi
 		cp $i shared_objects

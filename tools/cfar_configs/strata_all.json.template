@@ -16,6 +16,7 @@
 		"env" : [
 			"TRATA_LOG=detectors,builder_enters",
 			"STRATA_TRACING=0",
+			"LD_LIBRARY_PATH=/target_apps/variant1/bin/peasoup_executable_dir/shared_objects",
 			<<ENV>>
 		]
             },
