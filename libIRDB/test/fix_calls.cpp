@@ -71,10 +71,12 @@ typedef std::set<Range_t, Range_tCompare> RangeSet_t;
 
 RangeSet_t eh_frame_ranges;
 long long no_target_insn=0;
+long long no_fallthrough_insn=0;
 long long target_not_in_function=0;
 long long call_to_not_entry=0;
 long long thunk_check=0;
 long long found_pattern=0;
+long long in_ehframe=0;
 
 pqxxDB_t pqxx_interface;
 
@@ -127,6 +129,7 @@ bool call_needs_fix(Instruction_t* insn)
 		if(string("safefr") == reloc->GetType())
 			return false;
 	}
+
 	Instruction_t *target=insn->GetTarget();
 	Instruction_t *fallthru=insn->GetFallthrough();
 	DISASM disasm;
@@ -149,7 +152,10 @@ bool call_needs_fix(Instruction_t* insn)
 
 	/* no fallthrough instruction, something is odd here */
 	if(!fallthru)
+	{
+		no_fallthrough_insn++;
 		return true;
+	}
 
 	/* if the location after the call is marked as an IBT, then 
 	 * this location might be used for walking the stack 
@@ -165,7 +171,10 @@ bool call_needs_fix(Instruction_t* insn)
 	virtual_offset_t addr=fallthru->GetAddress()->GetVirtualOffset();
 	RangeSet_t::iterator rangeiter=eh_frame_ranges.find(Range_t(addr,addr));
 	if(rangeiter != eh_frame_ranges.end())	// found an eh_frame addr entry for this call
+	{
+		in_ehframe++;
 		return true;
+	}
 #endif
 
 
@@ -698,10 +707,20 @@ void fix_all_calls(FileIR_t* firp, bool print_stats, bool fix_all)
 		cout << "# ATTRIBUTE fixed_ratio="<<std::dec<<(fixed_calls/((float)(not_fixed_calls+fixed_calls)))<<endl;
 		cout << "# ATTRIBUTE remaining_ratio="<<std::dec<<(not_fixed_calls/((float)(not_fixed_calls+fixed_calls+not_calls)))<<endl;
 		cout << "# ATTRIBUTE no_target_insn="<<std::dec<< no_target_insn << endl;
+		cout << "# ATTRIBUTE no_fallthrough_insn="<<std::dec<< no_fallthrough_insn << endl;
 		cout << "# ATTRIBUTE target_not_in_function="<<std::dec<< target_not_in_function << endl;
 		cout << "# ATTRIBUTE call_to_not_entry="<<std::dec<< call_to_not_entry << endl;
 		cout << "# ATTRIBUTE thunk_check="<<std::dec<< thunk_check << endl;
 		cout << "# ATTRIBUTE found_pattern="<<std::dec<< found_pattern << endl;
+		cout << "# ATTRIBUTE in_ehframe="<<std::dec<< in_ehframe << endl;
+		no_target_insn=0;
+		no_fallthrough_insn=0;
+		target_not_in_function=0;
+		call_to_not_entry=0;
+		thunk_check=0;
+		found_pattern=0;
+		in_ehframe=0;
+		
 	}
 }
 
@@ -848,22 +867,41 @@ main(int argc, char* argv[])
 {
 
 	bool fix_all=false;
+	bool do_eh_frame=true;
 
-	if(argc!=2 && argc !=3)
+	if(argc<2)
 	{
-		cerr<<"Usage: fix_calls <id> (--fix-all) "<<endl;
+		cerr<<"Usage: fix_calls <id> [--fix-all | --no-fix-all ] [--eh-frame | --no-ehframe] "<<endl;
+		cerr<<" --eh-frame " << endl;
+		cerr<<" --no-eh-frame 		Use (or dont) the eh-frame section to be compatible with exception handling." << endl;
+		cerr<<" --fix-all " << endl;
+		cerr<<" --no-fix-all 		Convert (or don't) all calls to push/jmp pairs."<<endl;
 		exit(-1);
 	}
 
-	if(argc==3)
+	for(int argc_iter=2; argc_iter<argc; argc_iter++)
 	{
-		if(strcmp("--fix-all", argv[2])!=0)
+		if(strcmp("--fix-all", argv[argc_iter])==0)
 		{
-			cerr<<"Unrecognized option: "<<argv[2]<<endl;
-			exit(-1);
+			fix_all=true;
+		}
+		else if(strcmp("--no-fix-all", argv[argc_iter])==0)
+		{
+			fix_all=false;
+		}
+		else if(strcmp("--eh-frame", argv[argc_iter])==0)
+		{
+			do_eh_frame=true;
+		}
+		else if(strcmp("--no-eh-frame", argv[argc_iter])==0)
+		{
+			do_eh_frame=false;
 		}
 		else
-			fix_all=true;
+		{
+			cerr<<"Unrecognized option: "<<argv[argc_iter]<<endl;
+			exit(-1);
+		}
 	}
 	if(getenv("FIX_CALLS_FIX_ALL_CALLS"))
 		fix_all=true;
@@ -904,7 +942,10 @@ main(int argc, char* argv[])
                         elfiop->load((const char*)"readeh_tmp_file.exe");
                         EXEIO::dump::header(cout,*elfiop);
                         EXEIO::dump::section_headers(cout,*elfiop);
-        		read_ehframe(firp, elfiop);
+			// do eh_frame reading as required. 
+			if(do_eh_frame)
+        			read_ehframe(firp, elfiop);
+
 			fix_all_calls(firp,true,fix_all);
 			fix_other_pcrel(firp);
 			firp->WriteToDB();
