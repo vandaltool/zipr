@@ -58,4 +58,10 @@ if [ -d $ZIPR_HOME ]; then
 fi
 
 cd $PEASOUP_UMBRELLA_DIR
-./clean_diehard.sh
+
+if [ -d DieHard ]; then
+	cd DieHard
+	./clean_diehard.sh
+fi
+
+cd $PEASOUP_UMBRELLA_DIR
