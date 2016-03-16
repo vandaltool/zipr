@@ -2220,6 +2220,16 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntryWithTarget(
 			DollopEntry_t *fallthrough_de = NULL;
 
 			fallthrough_de = entry->MemberOfDollop()->FallthroughDollopEntry(entry);
+
+			/*
+			 * This means that we have a fallthrough for this dollop entry
+			 * that is actually the fallthrough of the dollop! Wowser.
+			 * TODO: Before doing this, check to make sure that _entry_ 
+			 * is the last of the dollop. 
+			 */
+			if (!fallthrough_de)
+				fallthrough_de = entry->MemberOfDollop()->FallthroughDollop()->front();
+
 			assert(fallthrough_de && fallthrough_de->IsPlaced());
 
 			bytes[0]=insn->GetDataBits()[0];
