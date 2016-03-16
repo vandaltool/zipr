@@ -25,10 +25,13 @@
                         ],
                     "alias" : [
                         "/dev/zero=/dev/zero",
+                        "/dev/cfar_urandom=/dev/urandom",
                         "/proc/self/maps=/proc/self/maps",
+                        "/variant_specific/libheaprand.so=<<EXEPATH>>/<<PS_DIR>>/libheaprand.so",
                         "/sbin/thttpd=<<EXEPATH>>/<<PS_DIR>>/a.stratafied",
                         "/usr/lib/libstrata.so=<<EXEPATH>>/<<PS_DIR>>/libstrata.so",
                         "<<EXEPATH>>/<<PS_DIR>>/libstrata.so=<<EXEPATH>>/<<PS_DIR>>/libstrata.so",
+                        "<<EXEPATH>>/<<PS_DIR>>/libheaprand.so=<<EXEPATH>>/<<PS_DIR>>/libheaprand.so",
                         "/variant_specific/a.irdb.fbspri=<<EXEPATH>>/<<PS_DIR>>/a.irdb.fbspri",
                         "/variant_specific/a.ncexe.annot=<<EXEPATH>>/<<PS_DIR>>/a.ncexe.annot",
                         "/variant_specific/diagnostics.out=<<EXEPATH>>/<<PS_DIR>>/diagnostics.out",
