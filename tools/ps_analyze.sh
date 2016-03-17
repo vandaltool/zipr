@@ -130,6 +130,7 @@ check_step_option()
 	
 }
 
+
 set_step_option()
 {
 	step=`echo $1 | cut -d: -f1` 
@@ -169,8 +170,8 @@ usage()
 	echo "   --tempdir <dir>			Specify where the temporary analysis files are stored, default is peasoup_executable_directory.<exe>.<pid>"
 	echo "   --backend <zipr|strata>		Specify the backend rewriting technology to use.  Default: Strata"
 	echo "   -b <zipr|strata>			same as --backend "
-	echo "   --stop_after <step>			Stop ps_analyze after completeling the specified step."
-	echo "   --stop_before <step>			Stop ps_analyze before starting the specified step."
+	echo "   --stop-after <step>			Stop ps_analyze after completeling the specified step."
+	echo "   --stop-before <step>			Stop ps_analyze before starting the specified step."
 
 }
 
@@ -214,8 +215,8 @@ check_options()
 		   --long tempdir:  			
 		   --long help
 		   --long usage
-		   --long stop_after:
-		   --long stop_before:
+		   --long stop-after:
+		   --long stop-before:
 		"
 
 	# solaris does not support long option names
@@ -294,11 +295,11 @@ check_options()
 				usage
 				exit 1
 			;;
-			--stop_before)
+			--stop-before)
 				stop_before_step=$2
 				shift 2
 			;;
-			--stop_after)
+			--stop-after)
 				stop_after_step=$2
 				shift 2
 			;;
@@ -428,6 +429,33 @@ check_dependencies()
 	return 1
 }
 
+check_steps_completed()
+{
+	#echo "Checking steps: $phases_spec"
+	for step_spec in $phases_spec
+	do
+		# if step is on.
+		if [ $(basename "$step_spec" =off) = "$step_spec" ]; then
+			# didn't find =off 
+			step_name=$(basename $step_spec =on)
+			#echo "step name is: $step_name"
+		
+			echo "$performed_steps" | egrep "$step_name" > /dev/null
+			grep_res=$?
+			if [ $grep_res -ne 0 ] ; then
+				echo "*********************************************************"
+				echo "*********************************************************"
+				echo "  Warning! Step requested, but not performed: $step_name "
+				echo "*********************************************************"
+				echo "*********************************************************"
+				warnings=1
+			fi
+			
+		fi
+		
+	done
+}
+
 #
 # Detect if this step of the computation is on, and execute it.
 #
@@ -438,6 +466,8 @@ perform_step()
 	mandatory=$1
 	shift
 	command="$*"
+
+	performed_steps="$performed_steps $step"
 
 	logfile=logs/$step.log
 
@@ -1105,6 +1135,7 @@ if [ ! -z $TIMER_PID ]; then
 	kill -9 $TIMER_PID
 fi
 
+check_steps_completed
 
 #
 # return success if we created a script to invoke the pgm and zipr is off. 
