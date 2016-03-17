@@ -914,9 +914,11 @@ tools/cfar.sh -text
 tools/cfar_configs/cfar_probBilr_probP1_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_probBilr_probP1_zipr.sh -text
 tools/cfar_configs/cfar_probBilr_zipr.sh -text
+tools/cfar_configs/cfar_probIlr_probP1_probHeaprand_probNos_strata.sh -text
 tools/cfar_configs/cfar_probIlr_probP1_probHeaprand_strata.sh -text
 tools/cfar_configs/cfar_probIlr_probP1_strata.sh -text
 tools/cfar_configs/cfar_probIlr_strata.sh -text
+tools/cfar_configs/cfar_probIlr_structP1Canaries_probHeaprand_probNos_strata.sh -text
 tools/cfar_configs/cfar_probIlr_structP1Canaries_probHeaprand_strata.sh -text
 tools/cfar_configs/cfar_probIlr_structP1Canaries_strata.sh -text
 tools/cfar_configs/cfar_probNos_probBilr_probP1_probHeaprand_zipr.sh -text
