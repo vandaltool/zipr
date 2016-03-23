@@ -110,6 +110,11 @@ if [ -d DieHard ]; then
 fi
 
 cd $PEASOUP_UMBRELLA_DIR
+if [ -d non_overlapping_stack ]; then
+	make -C non_overlapping_stack
+fi
+
+cd $PEASOUP_UMBRELLA_DIR
 
 
 echo

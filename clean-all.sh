@@ -64,4 +64,8 @@ if [ -d DieHard ]; then
 	./clean_diehard.sh
 fi
 
+if [ -d non_overlapping_heap ]; then
+	make -C non_overlapping_heap clean
+fi
+
 cd $PEASOUP_UMBRELLA_DIR

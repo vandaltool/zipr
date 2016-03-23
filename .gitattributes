@@ -5,6 +5,8 @@
 /clean-all.sh -text
 /get-peasoup-packages.sh -text
 /irdb_vars -text
+non_overlapping_heap/Makefile -text
+non_overlapping_heap/noh.c -text
 /postgres_setup.sh -text
 /set_command_envs -text
 /set_env_vars -text
