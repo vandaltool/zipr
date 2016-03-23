@@ -788,6 +788,9 @@ if [ -f $PEASOUP_UMBRELLA_DIR/DieHard/src/libdiehard.so ]; then
 	cp $PEASOUP_UMBRELLA_DIR/DieHard/src/libdiehard.so $newdir/libheaprand.so
 fi
 
+if [ -f $PEASOUP_UMBRELLA_DIR/non_overlapping_heap.so ]; then
+	cp $PEASOUP_UMBRELLA_DIR/non_overlapping_heap/noh.so $newdir/noh.so
+fi
 
 adjust_lib_path 
 

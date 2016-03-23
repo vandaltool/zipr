@@ -10,7 +10,8 @@ usage()
 Usage:
 	generate_mvee_config.sh 
 
-	[(--diehard|--no-diehard)]
+	[(--diehard|--nodiehard)]
+	[(--structnoh|--nostructnoh)]
 	--indir <path_to_variants>
 	--outdir <path_to_variants>
 	[--args <arguments string in json format> ]
@@ -28,6 +29,7 @@ check_opts()
 	class="None"
 	backend="zipr"	 	
 	use_diehard="--nodiehard"
+	use_structnoh="--nostructnoh"
 
 
 
@@ -37,6 +39,8 @@ check_opts()
         short_opts="h"
         long_opts="--long diehard
                    --long nodiehard
+		   --long structnoh
+		   --long nostructnoh
                    --long indir:
                    --long outdir:
                    --long args:
@@ -105,6 +109,11 @@ check_opts()
 				echo "Setting diehard = $1"
 				use_diehard="$1"
                                 shift 1
+			;;
+			--structnoh|--nostructnoh)
+				echo "Setting structnoh = $1"
+				use_structnoh="$1"
+				shift 1
 			;;
                         --)
                                 shift
@@ -292,6 +301,7 @@ finalize_json()
 		variant_name="variant_${seq}"
 		variant_config_contents="${variant_config_contents//<<EXEPATH>>/$new_variant_dir_ts\/bin}"
 		variant_config_contents="${variant_config_contents//<<VARIANTNUM>>/$variant_name}"
+		variant_config_contents="${variant_config_contents//<<VARIANTINDEX>>/$seq}"
 		json_contents="${json_contents//<<VARIANT_CONFIG>>/$variant_config_contents,<<VARIANT_CONFIG>>}"
 		json_contents="${json_contents//<<VARIANT_LIST>>/\"$variant_name\",<<VARIANT_LIST>>}"
 
@@ -307,6 +317,10 @@ finalize_json()
 		ld_preload_var="/variant_specific/libheaprand.so $ld_preload_var"
 
 	fi
+	if [ "x"$use_structnoh = "x--structnoh" ]; then
+		ld_preload_var="/variant_specific/noh.so $ld_preload_var"
+		json_contents="${json_contents//<<ENV>>/\"NUMVARIANTS=$total_variants\",<<ENV>>}"
+	fi
 	# remove leading/trailing spaces.
 	ld_preload_var=${ld_preload_var%% }
 	ld_preload_var=${ld_preload_var## }
@@ -319,6 +333,7 @@ finalize_json()
 	json_contents="${json_contents//,<<ENV>>/}"
 	json_contents="${json_contents//<<ENV>>/}"
 	json_contents="${json_contents//,<<LIBS>>/}"
+	json_contents="${json_contents//<<LIBS>>/}"
 	json_contents="${json_contents//<<CLASS>>/$class}"
 	json_contents="${json_contents//<<SERVER>>/$server}"
 	json_contents="${json_contents//<<ARGS>>/$args}"

@@ -4,9 +4,12 @@
                         "/variant_specific/main_exe=<<EXEPATH>>/<<EXE_NAME>>",
 			"/dev/cfar_urandom=/dev/urandom",
                         "/etc/ld.so.cache=/etc/ld.so.cache",
-			"/variant_specific/libheaprand.so=<<EXEPATH>>/<<PS_DIR>>/libheaprand.so"
-			,<<LIBS>>
-                        ]
+			"/variant_specific/libheaprand.so=<<EXEPATH>>/<<PS_DIR>>/libheaprand.so",
+			"/variant_specific/noh.so=<<EXEPATH>>/<<PS_DIR>>/noh.so",<<LIBS>>
+                        ],
+                    "env" : [
+			"VARIANTINDEX=<<VARIANTINDEX>>"
+			]
                 }
             }
 
