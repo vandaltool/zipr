@@ -110,8 +110,8 @@ if [ -d DieHard ]; then
 fi
 
 cd $PEASOUP_UMBRELLA_DIR
-if [ -d non_overlapping_stack ]; then
-	make -C non_overlapping_stack
+if [ -d non_overlapping_heap ]; then
+	make -C non_overlapping_heap
 fi
 
 cd $PEASOUP_UMBRELLA_DIR
