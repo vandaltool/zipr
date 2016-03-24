@@ -10,14 +10,14 @@ usage()
 Usage:
 	generate_mvee_config.sh 
 
-	[(--diehard|--nodiehard)]
-	[(--structnoh|--nostructnoh)]
-	--indir <path_to_variants>
-	--outdir <path_to_variants>
-	[--args <arguments string in json format> ]
-	[--server <servername>
-	[--class <atd class>
-	[(--help | h )]
+		--indir <path_to_variants>
+		--outdir <path_to_variants>
+		[--args <arguments string in json format> ]
+		[--server <servername>
+		[--class <atd class>
+		[(--diehard|--nodiehard)]
+		[(--structnoh|--nostructnoh)]
+		[(--help | h )]
 "
 }
 
