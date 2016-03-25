@@ -7,6 +7,8 @@
 /irdb_vars -text
 non_overlapping_heap/Makefile -text
 non_overlapping_heap/noh.c -text
+non_overlapping_heap/tests/Makefile -text
+non_overlapping_heap/tests/tester.c -text
 /postgres_setup.sh -text
 /set_command_envs -text
 /set_env_vars -text

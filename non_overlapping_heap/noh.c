@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <fcntl.h>
 
 /*
  * The approach to getting non-overlapping heaps here is pretty simple - instead
@@ -25,37 +26,93 @@
  * which would require significantly more extensive analysis to catch and handle
  * properly (and in many cases wouldn't be doable statically without solving the
  * halting problem).
+ *
+ * There's four modes that this mmap function defined here uses. The first mode,
+ * which is slightly more complex, is for times when _init isn't run before mmap
+ * is called for the first time. This happens in cases where an LD_PRELOADed .so
+ * library calls mmap during its _init routine, such as in libheaprand.so. Since
+ * it is extremely difficult/impossible to guarantee that we run first, and also
+ * because dlsym requires mmap itself (and therefore deadlocks/infinite loops if
+ * it's being used from inside an mmap call).
+ *
+ * The second mode, which is, in contrast, extremely simple, is for when an mmap
+ * call has arguments that imply that our normal diversification technique would
+ * cause improper program behavior. This is essentially just a pass-through mode
+ * to the original glibc mmap, or our direct syscall of mmap in pre-init cases.
+ *
+ * The third mode is the normal diversification mode. This is pretty much just a
+ * wrapper for the other mmaps that allocates a larger region, uses mprotect and
+ * some math to disable all but a variant-indexed-part of it, and sends back the
+ * pointer to the remaining part of the region. This ensures that every version,
+ * regardless of index, doesn't overlap with any other version in this mode.
+ *
+ * The final mode is the probabalistic diversification mode. This mode, like the
+ * deterministic non-overlapping-heap mode, allocates additional memory regions.
+ * However, it selects the sub-region at pseudo-random, making it less likely an
+ * address will be mapped the same way in multiple variants. This is really just
+ * a fallback, though, since it's likely that a good number will overlap.
  */
 
 int nthisvar = 0;
 int nnumvar  = 1;
-void* initializedvariables = NULL;
+int randfd   = 0;
+int pagesize = 0;
+
+// yeah, it's a lot of extra allocation, but it's all virtual allocations that are immediately
+// paged out - not actually a problem long-term in a 64-bit address space (generally)
+#define PROB_NUM_VARIANTS 64
 
 extern void* mmap(void*, size_t, int, int, int, off_t);
-//extern void* mmap64(void*, size_t, int, int, int, off64_t);
 
 void* (*orig_mmap)(void*, size_t, int, int ,int, off_t) = NULL;
-//void* (*orig_mmap64)(void*, size_t, int, int ,int, off64_t) = NULL;
 
 
 void _init(void) {
 	orig_mmap = (void*(*)(void*, size_t, int, int, int, off_t)) dlsym(RTLD_NEXT, "mmap");
-	//orig_mmap64 = (void*(*)(void*, size_t, int, int, int, off64_t)) dlsym(RTLD_DEFAULT, "mmap64");
 	char* sthisvar = getenv("VARIANTINDEX"); // 0-based variant index
 	char* snumvar  = getenv("NUMVARIANTS");  // total number of variants running
 	if(!sthisvar || !snumvar) {
-		printf("didn't find environment arguments for structnoh, disabling...\n");
+		// run in probabalistic mode, since we didn't find the arguments for proper indexing
+		randfd = open("/dev/cfar_urandom",O_RDONLY);
+		if(randfd != 0) {
+			nthisvar = 0;
+			nnumvar = PROB_NUM_VARIANTS;
+		} else {
+			// if we don't have our randomness source, and we don't have structured info, just behave as normal mmap
+			// (with the two extra mprotect calls, so syscall alignment is preserved)
+			randfd = 0;
+			nthisvar = 0;
+			nnumvar = 1;
+		}
 	} else {
 		nthisvar = atoi(sthisvar);
 		nnumvar  = atoi(snumvar);
-		initializedvariables = (void*)1;
 	}
+}
+
+// rounding up to alignments is important and useful
+size_t rounduptomultiple(size_t length, int roundto) {
+	size_t remainder = length % roundto;
+	if(remainder == 0) {
+		return length;
+	}
+	return length + roundto - remainder;
+}
+
+// we need page alignment for a few things - mmap works much better with it
+size_t rounduptopagemultiple(size_t length) {
+	if(pagesize == 0) {
+		pagesize = getpagesize();
+	}
+	return rounduptomultiple(length, pagesize);
 }
 
 void* mmap(void* address, size_t length, int protect, int flags, int filedes, off_t offset) {
 	bool is_diversified = false;
-	size_t originallength = length;
+	//size_t originallength = length;
+	size_t alignedlength = length;
 	void* new_mapping = MAP_FAILED;
+	printf("entering mmap call\n");
 	if(
 			(address && (flags & MAP_FIXED))	// must use normal mmap, since the program is now guaranteed the destination address or failure
 			|| (flags & MAP_SHARED)			// we're sharing between multiple programs, which is complex enough as it is - alignment is important, and we'd have to do funky stuff to ensure non-overlappingness with this regardless
@@ -65,15 +122,23 @@ void* mmap(void* address, size_t length, int protect, int flags, int filedes, of
 		// don't modify the arguments - we unfortunately can't touch this much, since it's going to be mapped in a way that we can't nicely diversify (yet)
 	} else {
 		is_diversified = true;
-
+		if(randfd != 0) {
+			// we're in probabalistic mode
+			uint32_t target = 0;
+			read(randfd, &target, 4);
+			nthisvar = (int)(target % PROB_NUM_VARIANTS);
+		}
 #if defined(MAP_ALIGN)
-	// gotta round up to the next barrier, but this only matters on solaris (in theory)
-	// support it as soon as it actually comes up
-#error "MAP_ALIGN IS NOT YET SUPPORTED - IF YOU RUN INTO THIS CONGRATS, YOU HAVE SURPRISED ME"
+		// gotta round up to the next barrier, but this only matters on solaris (in theory)
+		// support it as soon as it actually comes up
+		length = rounduptomultiple(length, address);
 #endif
 		// we want to allocate a bit more space - this is so that each variant gets its own part of the allocated segment, in a non-overlapping fashion
-		length = length * nnumvar;
+		// let's keep page alignment the same
+		alignedlength = rounduptopagemultiple(length);
+		length = alignedlength * nnumvar;
 	}
+
 	// ok, now we need to actually do the call
 	if(orig_mmap == NULL) {
 		/*
@@ -112,24 +177,17 @@ void* mmap(void* address, size_t length, int protect, int flags, int filedes, of
 		// it's actually been initialized, so use the original glibc/other mmap implementation - let's hope it plays nice with the hacky stuff above
 		new_mapping = orig_mmap(address, length, protect, flags, filedes, offset);
 	}
-	if(new_mapping == MAP_FAILED) {
+
+	// now that we've done the call, handle the result and return
+	if(new_mapping == MAP_FAILED || !is_diversified) {
 		// it failed, and if we were to retry, it would diverge anyway - just return the failure
+		// alternatively, we had to do just a normal mmap, so just return the pointer
 		return new_mapping;
 	}
-	if(is_diversified) {
-		// we got the extra memory, now return the right part
-		return new_mapping + originallength * nthisvar;
-	} else {
-		// we had to do just a normal mmap, so just return the pointer
-		return new_mapping;
-	}
+
+	// in the event that we got the memory and such, mprotect the other portions so that they won't be able to be accesssed improperly
+	mprotect(new_mapping, alignedlength * nthisvar, PROT_NONE);
+	mprotect(new_mapping + alignedlength * (nthisvar+1), alignedlength * (nnumvar - (nthisvar + 1)), PROT_NONE);
+	printf("returning new mapping at %p\n", new_mapping + alignedlength * nthisvar);
+	return new_mapping + alignedlength * nthisvar;
 }
-/*void* mmap64(void* address, size_t length, int protect, int flags, int filedes, off64_t offset) {
-	printf("FOOBAR64\n");
-	if(orig_mmap64 == NULL) {
-		// this is only going to come up in dlsym, I think, don't worry about it too much...
-		return bad_decision_64;
-		orig_mmap64 = (void*(*)(void*, size_t, int, int, int, off64_t)) dlsym(RTLD_DEFAULT, "mmap64");
-	}
-	return orig_mmap64(address, length, protect, flags, filedes, offset);
-}*/
