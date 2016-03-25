@@ -112,7 +112,9 @@ void* mmap(void* address, size_t length, int protect, int flags, int filedes, of
 	//size_t originallength = length;
 	size_t alignedlength = length;
 	void* new_mapping = MAP_FAILED;
+#ifdef DEBUG
 	printf("entering mmap call\n");
+#endif
 	if(
 			(address && (flags & MAP_FIXED))	// must use normal mmap, since the program is now guaranteed the destination address or failure
 			|| (flags & MAP_SHARED)			// we're sharing between multiple programs, which is complex enough as it is - alignment is important, and we'd have to do funky stuff to ensure non-overlappingness with this regardless
@@ -188,6 +190,8 @@ void* mmap(void* address, size_t length, int protect, int flags, int filedes, of
 	// in the event that we got the memory and such, mprotect the other portions so that they won't be able to be accesssed improperly
 	mprotect(new_mapping, alignedlength * nthisvar, PROT_NONE);
 	mprotect(new_mapping + alignedlength * (nthisvar+1), alignedlength * (nnumvar - (nthisvar + 1)), PROT_NONE);
+#ifdef DEBUG
 	printf("returning new mapping at %p\n", new_mapping + alignedlength * nthisvar);
+#endif
 	return new_mapping + alignedlength * nthisvar;
 }

@@ -9,7 +9,6 @@ noh.so: noh.o
 noh.o: noh.c
 	$(CC) $(CFLAGS) noh.c
 test:
-	LD_PRELOAD="./noh.so" ls
-	LD_PRELOAD="./noh.so ../DieHard/src/libheaprand.so" ls
+	make -C tests test
 clean:
 	rm *.so *.o
