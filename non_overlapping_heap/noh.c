@@ -171,7 +171,9 @@ void* mmap(void* address, size_t length, int protect, int flags, int filedes, of
 			uint32_t target = 0;
 			read(randfd, &target, 4);
 			nthisvar = (int)(target % PROB_NUM_VARIANTS);
+#ifdef DEBUG
 			printf("using randomization, is at %i/%i\n",nthisvar,nnumvar);
+#endif
 		}
 		// branch on whether this is a file-backed allocation or not
 		if (flags & MAP_ANONYMOUS) {
