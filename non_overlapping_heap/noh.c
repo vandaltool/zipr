@@ -107,40 +107,8 @@ size_t rounduptopagemultiple(size_t length) {
 	return rounduptomultiple(length, pagesize);
 }
 
-void* mmap(void* address, size_t length, int protect, int flags, int filedes, off_t offset) {
-	bool is_diversified = false;
-	//size_t originallength = length;
-	size_t alignedlength = length;
-	void* new_mapping = MAP_FAILED;
-#ifdef DEBUG
-	printf("entering mmap call\n");
-#endif
-	if(
-			(address && (flags & MAP_FIXED))	// must use normal mmap, since the program is now guaranteed the destination address or failure
-			|| (flags & MAP_SHARED)			// we're sharing between multiple programs, which is complex enough as it is - alignment is important, and we'd have to do funky stuff to ensure non-overlappingness with this regardless
-			|| ((!flags) & MAP_ANONYMOUS)		// we're mapping a file, so the kernel needs to know the actual location
-	  ) {
-		//return orig_mmap(address, length, protect, flags, filedes, offset);
-		// don't modify the arguments - we unfortunately can't touch this much, since it's going to be mapped in a way that we can't nicely diversify (yet)
-	} else {
-		is_diversified = true;
-		if(randfd != 0) {
-			// we're in probabalistic mode
-			uint32_t target = 0;
-			read(randfd, &target, 4);
-			nthisvar = (int)(target % PROB_NUM_VARIANTS);
-		}
-#if defined(MAP_ALIGN)
-		// gotta round up to the next barrier, but this only matters on solaris (in theory)
-		// support it as soon as it actually comes up
-		length = rounduptomultiple(length, address);
-#endif
-		// we want to allocate a bit more space - this is so that each variant gets its own part of the allocated segment, in a non-overlapping fashion
-		// let's keep page alignment the same
-		alignedlength = rounduptopagemultiple(length);
-		length = alignedlength * nnumvar;
-	}
-
+// the non-diversified part of the mapping - this basically acts as a call to mmap that works in a couple of odd additional contexts
+void* actually_mmap(void* address, size_t length, int protect, int flags, int filedes, off_t offset) {
 	// ok, now we need to actually do the call
 	if(orig_mmap == NULL) {
 		/*
@@ -171,27 +139,80 @@ void* mmap(void* address, size_t length, int protect, int flags, int filedes, of
 			return MAP_FAILED;
 		}
 #ifdef SYS_mmap2
-		new_mapping = (void*)syscall(SYS_mmap2, address, length, protect, flags, filedes, offset/UNIT);
+		return (void*)syscall(SYS_mmap2, address, length, protect, flags, filedes, offset/UNIT);
 #else
-		new_mapping = (void*)syscall(SYS_mmap, address, length, protect, flags, filedes, offset);
+		return (void*)syscall(SYS_mmap, address, length, protect, flags, filedes, offset);
 #endif
 	} else {
 		// it's actually been initialized, so use the original glibc/other mmap implementation - let's hope it plays nice with the hacky stuff above
-		new_mapping = orig_mmap(address, length, protect, flags, filedes, offset);
+		return orig_mmap(address, length, protect, flags, filedes, offset);
 	}
+}
 
-	// now that we've done the call, handle the result and return
-	if(new_mapping == MAP_FAILED || !is_diversified) {
-		// it failed, and if we were to retry, it would diverge anyway - just return the failure
-		// alternatively, we had to do just a normal mmap, so just return the pointer
-		return new_mapping;
-	}
-
-	// in the event that we got the memory and such, mprotect the other portions so that they won't be able to be accesssed improperly
-	mprotect(new_mapping, alignedlength * nthisvar, PROT_NONE);
-	mprotect(new_mapping + alignedlength * (nthisvar+1), alignedlength * (nnumvar - (nthisvar + 1)), PROT_NONE);
+void* mmap(void* address, size_t length, int protect, int flags, int filedes, off_t offset) {
 #ifdef DEBUG
-	printf("returning new mapping at %p\n", new_mapping + alignedlength * nthisvar);
+	printf("entering mmap call\n");
 #endif
-	return new_mapping + alignedlength * nthisvar;
+	// figure out what index we are in a randomized context
+
+	if(
+			(flags & MAP_FIXED)	// must use normal mmap, since the program is now guaranteed the destination address or failure
+			|| (flags & MAP_SHARED)			// we're sharing between multiple programs, which is complex enough as it is - alignment is important, and we'd have to do funky stuff to ensure non-overlappingness with this regardless
+	  ) {
+		// don't modify the arguments - we unfortunately can't touch this much, since it's going to be mapped in a way that we can't nicely diversify (yet)
+		return actually_mmap(address, length, protect, flags, filedes, offset);
+	} else {
+		// we're diversified now - do fancier stuff
+		size_t alignedlength = length;
+		void* new_mapping = MAP_FAILED;
+		// get the nthisvar for this run
+		if(randfd != 0) {
+			// we're in probabalistic mode
+			uint32_t target = 0;
+			read(randfd, &target, 4);
+			nthisvar = (int)(target % PROB_NUM_VARIANTS);
+			printf("using randomization, is at %i/%i\n",nthisvar,nnumvar);
+		}
+		// branch on whether this is a file-backed allocation or not
+		if (flags & MAP_ANONYMOUS) {
+			// if it's a non-file mapping, just allocate a larger area, and then use part of that
+#if defined(MAP_ALIGN)
+			// gotta round up to the next barrier, but this only matters on solaris (in theory)
+			// support it as soon as it actually comes up
+			length = rounduptomultiple(length, address);
+#endif
+			// we want to allocate a bit more space - this is so that each variant gets its own part of the allocated segment, in a non-overlapping fashion
+			// let's keep page alignment the same
+			alignedlength = rounduptopagemultiple(length);
+			length = alignedlength * nnumvar;
+			new_mapping = actually_mmap(address, length, protect, flags, filedes, offset);
+
+			// now that we've done the call, handle the result and return
+			if(new_mapping == MAP_FAILED) {
+				// it failed, and if we were to retry, it would diverge anyway - just return the failure
+				// alternatively, we had to do just a normal mmap, so just return the pointer
+				return new_mapping;
+			}
+
+			// in the event that we got the memory and such, mprotect the other portions so that they won't be able to be accesssed improperly
+			mprotect(new_mapping, alignedlength * nthisvar, PROT_NONE);
+			mprotect(new_mapping + alignedlength * (nthisvar+1), alignedlength * (nnumvar - (nthisvar + 1)), PROT_NONE);
+#ifdef DEBUG
+			printf("returning new mapping at %p\n", new_mapping + alignedlength * nthisvar);
+#endif
+			return new_mapping + alignedlength * nthisvar;
+		} else {
+			// for file mappings, handle them by repeated allocation of the required size and selection of the currect index
+			int i=0;
+			for(i=0; i < nnumvar; i++) {
+				if(i == nthisvar) {
+					new_mapping = actually_mmap(address, length, protect, flags, filedes, offset);
+				} else {
+					// ignored
+					actually_mmap(address, length, PROT_NONE, flags | MAP_ANONYMOUS, -1, 0);
+				}
+			}
+			return new_mapping;
+		}
+	}
 }
