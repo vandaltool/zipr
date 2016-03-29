@@ -10,14 +10,15 @@ usage()
 Usage:
 	generate_mvee_config.sh 
 
-		--indir <path_to_variants>
-		--outdir <path_to_variants>
-		[--args <arguments string in json format> ]
-		[--server <servername>
-		[--class <atd class>
-		[(--diehard|--nodiehard)]
-		[(--structnoh|--nostructnoh)]
-		[(--help | h )]
+	[(--diehard|--nodiehard)]
+	[(--structnoh|--nostructnoh)]
+	[(--nol|--nonol)]
+	--indir <path_to_variants>
+	--outdir <path_to_variants>
+	[--args <arguments string in json format> ]
+	[--server <servername>
+	[--class <atd class>
+	[(--help | h )]
 "
 }
 
@@ -30,6 +31,7 @@ check_opts()
 	backend="zipr"	 	
 	use_diehard="--nodiehard"
 	use_structnoh="--nostructnoh"
+	use_nol="--nonol"
 
 
 
@@ -41,6 +43,8 @@ check_opts()
                    --long nodiehard
 		   --long structnoh
 		   --long nostructnoh
+		   --long nol
+		   --long nonol
                    --long indir:
                    --long outdir:
                    --long args:
@@ -113,6 +117,11 @@ check_opts()
 			--structnoh|--nostructnoh)
 				echo "Setting structnoh = $1"
 				use_structnoh="$1"
+				shift 1
+			;;
+			--nol|--nonol)
+				echo "Setting nol = $1"
+				use_nol="$1"
 				shift 1
 			;;
                         --)
@@ -295,6 +304,10 @@ finalize_json()
 			variant_config_contents="${variant_config_contents//,<<LIBS>>/$line,<<LIBS>>}"
 	
 		done
+		if [ "x"$use_nol = "x--nol" ]; then
+			line=",  "$'\n\t\t\t'"  \"/lib64/ld-linux-x86-64.so.2=/target_lib_dir/ld-linux-x86-64.so.2.nol\" "
+			variant_config_contents="${variant_config_contents//,<<LIBS>>/$line,<<LIBS>>}"
+		fi
 
 
 
@@ -320,6 +333,11 @@ finalize_json()
 	if [ "x"$use_structnoh = "x--structnoh" ]; then
 		ld_preload_var="/variant_specific/noh.so $ld_preload_var"
 		json_contents="${json_contents//<<ENV>>/\"NUMVARIANTS=$total_variants\",<<ENV>>}"
+	fi
+	if [ "x"$use_nol = "x--nol" ]; then
+		if [ -f $PEASOUP_UMBRELLA_DIR/non_overlapping_libraries/ld-linux-x86-64.so.2 ]; then
+			cp $PEASOUP_UMBRELLA_DIR/non_overlapping_libraries/ld-linux-x86-64.so.2 $indir/target_app_libs/ld-linux-x86-64.so.2.nol
+		fi
 	fi
 	# remove leading/trailing spaces.
 	ld_preload_var=${ld_preload_var%% }
