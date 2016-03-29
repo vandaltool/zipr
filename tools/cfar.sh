@@ -16,6 +16,7 @@ is_so()
 # parse first 3 parameters as fixed position params.
 variants=$1
 in=$2
+in_base=`basename $in`
 out=$3
 shift
 shift
@@ -92,9 +93,9 @@ new_cmd_line_options+=(--step generate_variant_config=on --step dump_map=on)
 outbase=$(basename $out)
 
 if  [ $(is_so $in) = 0 ]; then
-	baseoutdir=${out}/target_apps/dh-${in}/${config_name}
+	baseoutdir=${out}/target_apps/dh-${in_base}/${config_name}
 else 
-	baseoutdir=${out}/target_app_libs/dh-${in}/${config_name}
+	baseoutdir=${out}/target_app_libs/dh-${in_base}/${config_name}
 fi
 
 if [ -d $baseoutdir ]; then
@@ -144,9 +145,9 @@ do
 	mkdir -p "$baseoutdir/v${seq}"
 
 	# invoke $PS.
-	#echo "PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PEASOUP_HOME/tools/ps_analyze.sh $in $baseoutdir/v${seq}/$in " "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" 
+	#echo "PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PEASOUP_HOME/tools/ps_analyze.sh $in $baseoutdir/v${seq}/${in_base} " "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" 
 	set -x
-	PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PEASOUP_HOME/tools/ps_analyze.sh $in $baseoutdir/v${seq}/$in "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" > $baseoutdir/v${seq}/variant_output.txt 2>&1 &
+	PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PEASOUP_HOME/tools/ps_analyze.sh $in $baseoutdir/v${seq}/${in_base} "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" > $baseoutdir/v${seq}/variant_output.txt 2>&1 &
 
 	# remember the pid.
 	pids="$pids $!"
