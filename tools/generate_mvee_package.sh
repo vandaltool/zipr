@@ -310,11 +310,11 @@ finalize_json()
 		if [ "x"$use_nol = "x--enablenol" ]; then
 			line=",  "$'\n\t\t\t'"  \"/lib64/ld-linux-x86-64.so.2=/<<EXEPATH>>/peasoup_executable_dir/ld-linux-x86-64.so.2.nol\" "
 			variant_config_contents="${variant_config_contents//,<<LIBS>>/$line,<<LIBS>>}"
-			variant_config_contents="${variant_config_contents//,<<LDLIB>>/$line,<<LDLIB>>}"
+			variant_config_contents="${variant_config_contents//<<LDLIB>>/$line,<<LDLIB>>}"
 		else
 			# strata workarounds...
 			line=",  "$'\n\t\t\t'"  \"/lib64/ld-linux-x86-64.so.2=/lib64/ld-linux-x86-64.so.2.nol\" "
-			variant_config_contents="${variant_config_contents//,<<LDLIB>>/$line,<<LDLIB>>}"
+			variant_config_contents="${variant_config_contents//<<LDLIB>>/$line,<<LDLIB>>}"
 		fi
 
 		# handle structured nol/noh
