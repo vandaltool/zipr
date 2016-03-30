@@ -319,17 +319,16 @@ finalize_json()
 
 		# handle structured nol/noh
 		echo $total_variants > $new_variant_dir/nolnoh_config
-		for line in "${s_nolnoh[@]}"
-		do
-			echo "doing stuff for line $line and vars $seq $config"
-			vartag=$(echo $line|cut -d" " -f1)
-			varindex=$(echo $line|cut -d" " -f2)
-			if [ $seq = $varindex ] && [ $vartag = $config ]; then
-				#variant_config_contents="${variant_config_contents//<<ENV>>/VARIANTINDEX=$seq,<<ENV>>}"
-				echo $seq >> $new_variant_dir/nolnoh_config
-				break
-			fi
-		done
+		if [[ $config == *"structNol"* ]] ; then
+			echo $seq >> $new_variant_dir/nolnoh_config
+                        if [[ $config != *"structNoh"* ]] ; then
+                                echo "nol/noh structrued on turned on/off together, err "
+                                exit 1
+                        fi
+                elif [[ $config == *"structNoh"* ]] ; then
+                        echo "nol/noh structrued on turned on/off together, err "
+                        exit 1
+                fi
 
 
 		variant_name="variant_${seq}"
