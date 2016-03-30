@@ -19,8 +19,7 @@
                         "STRATA_ANNOT_FILE=/variant_specific/a.ncexe.annot",
                         "STRATA_OUTPUT_FILE=/variant_specific/diagnostics.out",
                         "STRATA_EXE_FILE=/variant_specific/a.stratafied",
-                        "SPAWNER_EXE_FILE=/variant_specific/spawned",
-                        "VARIANTINDEX=<<VARIANTINDEX>>"
+                        "SPAWNER_EXE_FILE=/variant_specific/spawned"
                         ,<<ENV>>
 
                         ],
@@ -44,7 +43,6 @@
                         "/etc/ld.so.cache=/etc/ld.so.cache",
 			"/lib/x86_64-linux-gnu/libcrypt.so.1=/lib/x86_64-linux-gnu/libcrypt.so.1",
 			"/lib/x86_64-linux-gnu/libc.so.6=/lib/x86_64-linux-gnu/libc.so.6",
-			"/lib64/ld-linux-x86-64.so.2=/lib64/ld-linux-x86-64.so.2",
 			"/lib/x86_64-linux-gnu/ld-2.19.so=/lib/x86_64-linux-gnu/ld-2.19.so",
 			"/lib/x86_64-linux-gnu/libc-2.19.so=/lib/x86_64-linux-gnu/libc-2.19.so",
 			"/lib/x86_64-linux-gnu/libcrypt-2.19.so=/lib/x86_64-linux-gnu/libcrypt-2.19.so",
@@ -52,7 +50,8 @@
 			"/lib/x86_64-linux-gnu/libpcre.so.3=/lib/x86_64-linux-gnu/libpcre.so.3",
 			"/lib/x86_64-linux-gnu/libpcre.so.3.13.1=/lib/x86_64-linux-gnu/libpcre.so.3.13.1",
 			"/lib/x86_64-linux-gnu/libpthread.so.0=/lib/x86_64-linux-gnu/libpthread.so.0",
-			"/lib/x86_64-linux-gnu/libpthread-2.19.so=/lib/x86_64-linux-gnu/libpthread-2.19.so"
+			"/lib/x86_64-linux-gnu/libpthread-2.19.so=/lib/x86_64-linux-gnu/libpthread-2.19.so",
+			"/variant_specific/nolnoh_config=<<VARIANTDIR>>/nolnoh_config",<<LDLIB>>
                         ]
                 }
             }

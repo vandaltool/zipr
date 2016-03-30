@@ -792,6 +792,10 @@ if [ -f $PEASOUP_UMBRELLA_DIR/non_overlapping_heap/noh.so ]; then
 	cp $PEASOUP_UMBRELLA_DIR/non_overlapping_heap/noh.so $newdir/noh.so
 fi
 
+if [ -f $PEASOUP_UMBRELLA_DIR/non_overlapping_libraries/ld-linux-x86-64.so.2 ]; then
+	cp $PEASOUP_UMBRELLA_DIR/non_overlapping_libraries/ld-linux-x86-64.so.2 $newdir/ld-linux-x86-64.so.2.nol
+fi
+
 adjust_lib_path 
 
 

@@ -11,8 +11,8 @@ Usage:
 	generate_mvee_config.sh 
 
 	[(--diehard|--nodiehard)]
-	[(--structnoh|--nostructnoh)]
-	[(--nol|--nonol)]
+	[(--enablenoh|--disablenoh)]
+	[(--enablenol|--disablenol)]
 	--indir <path_to_variants>
 	--outdir <path_to_variants>
 	[--args <arguments string in json format> ]
@@ -30,8 +30,8 @@ check_opts()
 	class="None"
 	backend="zipr"	 	
 	use_diehard="--nodiehard"
-	use_structnoh="--nostructnoh"
-	use_nol="--nonol"
+	use_noh="--disablenoh"
+	use_nol="--disablenol"
 
 
 
@@ -41,10 +41,10 @@ check_opts()
         short_opts="h"
         long_opts="--long diehard
                    --long nodiehard
-		   --long structnoh
-		   --long nostructnoh
-		   --long nol
-		   --long nonol
+		   --long enablenoh
+		   --long disablenoh
+		   --long enablenol
+		   --long disablenol
                    --long indir:
                    --long outdir:
                    --long args:
@@ -114,12 +114,12 @@ check_opts()
 				use_diehard="$1"
                                 shift 1
 			;;
-			--structnoh|--nostructnoh)
-				echo "Setting structnoh = $1"
-				use_structnoh="$1"
+			--enablenoh|--disablenoh)
+				echo "Setting noh = $1"
+				use_noh="$1"
 				shift 1
 			;;
-			--nol|--nonol)
+			--enablenol|--disablenol)
 				echo "Setting nol = $1"
 				use_nol="$1"
 				shift 1
@@ -222,6 +222,8 @@ sanity_check()
 
 finalize_json()
 {
+	# grab the nol/noh stuff
+	readarray s_nolnoh < $indir/structured_nolnoh
 
 	mkdir $outdir/global
 
@@ -304,17 +306,37 @@ finalize_json()
 			variant_config_contents="${variant_config_contents//,<<LIBS>>/$line,<<LIBS>>}"
 	
 		done
-		if [ "x"$use_nol = "x--nol" ]; then
-			line=",  "$'\n\t\t\t'"  \"/lib64/ld-linux-x86-64.so.2=/target_lib_dir/ld-linux-x86-64.so.2.nol\" "
+
+		if [ "x"$use_nol = "x--enablenol" ]; then
+			line=",  "$'\n\t\t\t'"  \"/lib64/ld-linux-x86-64.so.2=/<<EXEPATH>>/peasoup_executable_dir/ld-linux-x86-64.so.2.nol\" "
 			variant_config_contents="${variant_config_contents//,<<LIBS>>/$line,<<LIBS>>}"
+			variant_config_contents="${variant_config_contents//,<<LDLIB>>/$line,<<LDLIB>>}"
+		else
+			# strata workarounds...
+			line=",  "$'\n\t\t\t'"  \"/lib64/ld-linux-x86-64.so.2=/lib64/ld-linux-x86-64.so.2.nol\" "
+			variant_config_contents="${variant_config_contents//,<<LDLIB>>/$line,<<LDLIB>>}"
 		fi
 
+		# handle structured nol/noh
+		echo $total_variants > $new_variant_dir/nolnoh_config
+		for line in "${s_nolnoh[@]}"
+		do
+			echo "doing stuff for line $line and vars $seq $config"
+			vartag=$(echo $line|cut -d" " -f1)
+			varindex=$(echo $line|cut -d" " -f2)
+			if [ $seq = $varindex ] && [ $vartag = $config ]; then
+				#variant_config_contents="${variant_config_contents//<<ENV>>/VARIANTINDEX=$seq,<<ENV>>}"
+				echo $seq >> $new_variant_dir/nolnoh_config
+				break
+			fi
+		done
 
 
 		variant_name="variant_${seq}"
 		variant_config_contents="${variant_config_contents//<<EXEPATH>>/$new_variant_dir_ts\/bin}"
 		variant_config_contents="${variant_config_contents//<<VARIANTNUM>>/$variant_name}"
 		variant_config_contents="${variant_config_contents//<<VARIANTINDEX>>/$seq}"
+		variant_config_contents="${variant_config_contents//<<VARIANTDIR>>/$new_variant_dir_ts}"
 		json_contents="${json_contents//<<VARIANT_CONFIG>>/$variant_config_contents,<<VARIANT_CONFIG>>}"
 		json_contents="${json_contents//<<VARIANT_LIST>>/\"$variant_name\",<<VARIANT_LIST>>}"
 
@@ -330,14 +352,9 @@ finalize_json()
 		ld_preload_var="/variant_specific/libheaprand.so $ld_preload_var"
 
 	fi
-	if [ "x"$use_structnoh = "x--structnoh" ]; then
+	if [ "x"$use_noh = "x--enablenoh" ]; then
 		ld_preload_var="/variant_specific/noh.so $ld_preload_var"
-		json_contents="${json_contents//<<ENV>>/\"NUMVARIANTS=$total_variants\",<<ENV>>}"
-	fi
-	if [ "x"$use_nol = "x--nol" ]; then
-		if [ -f $PEASOUP_UMBRELLA_DIR/non_overlapping_libraries/ld-linux-x86-64.so.2 ]; then
-			cp $PEASOUP_UMBRELLA_DIR/non_overlapping_libraries/ld-linux-x86-64.so.2 $indir/target_app_libs/ld-linux-x86-64.so.2.nol
-		fi
+		#json_contents="${json_contents//<<ENV>>/\"NUMVARIANTS=$total_variants\",<<ENV>>}"
 	fi
 	# remove leading/trailing spaces.
 	ld_preload_var=${ld_preload_var%% }
@@ -352,6 +369,8 @@ finalize_json()
 	json_contents="${json_contents//<<ENV>>/}"
 	json_contents="${json_contents//,<<LIBS>>/}"
 	json_contents="${json_contents//<<LIBS>>/}"
+	json_contents="${json_contents//,<<LDLIB>>/}"
+	json_contents="${json_contents//<<LDLIB>>/}"
 	json_contents="${json_contents//<<CLASS>>/$class}"
 	json_contents="${json_contents//<<SERVER>>/$server}"
 	json_contents="${json_contents//<<ARGS>>/$args}"

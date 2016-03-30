@@ -5,11 +5,9 @@
 			"/dev/cfar_urandom=/dev/urandom",
                         "/etc/ld.so.cache=/etc/ld.so.cache",
 			"/variant_specific/libheaprand.so=<<EXEPATH>>/<<PS_DIR>>/libheaprand.so",
-			"/variant_specific/noh.so=<<EXEPATH>>/<<PS_DIR>>/noh.so",<<LIBS>>
-                        ],
-                    "env" : [
-			"VARIANTINDEX=<<VARIANTINDEX>>"
-			]
+			"/variant_specific/noh.so=<<EXEPATH>>/<<PS_DIR>>/noh.so",
+			"/variant_specific/nolnoh_config=<<VARIANTDIR>>/nolnoh_config",<<LIBS>>
+                        ]
                 }
             }
 
