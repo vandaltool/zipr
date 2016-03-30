@@ -222,9 +222,6 @@ sanity_check()
 
 finalize_json()
 {
-	# grab the nol/noh stuff
-	readarray s_nolnoh < $indir/structured_nolnoh
-
 	mkdir $outdir/global
 
 
