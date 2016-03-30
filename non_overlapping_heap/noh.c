@@ -66,27 +66,90 @@ extern void* mmap(void*, size_t, int, int, int, off_t);
 
 void* (*orig_mmap)(void*, size_t, int, int ,int, off_t) = NULL;
 
+int get_config_vars(void) {
+	int fd = open("/variant_specific/nolnoh_config",O_RDONLY);
+	if(fd == -1)
+		return -1;
+	int bufsize = 17;
+	char buf[bufsize];
+	int i;
+	for(i=0;i<bufsize;i++) {
+		buf[i]='\0';
+	}
+	ssize_t nr = read(fd, buf, bufsize-1);
+	if(nr == 0) {
+		// we read 0 of the tokens from the file, since we read absolutely nothing
+		close(fd);
+		return 0;
+	}
+	nnumvar = atoi(buf);
+	// note that this currently caps at 512 variants, increase this number if necessary to support more
+	if(nnumvar <= 0 || nnumvar > 512) {
+		// wasn't a valid value
+		nnumvar = 0;
+		close(fd);
+		return 0;
+	}
+	int mode = 0;
+	// get the second number
+	for(i=0;i<bufsize;i++) {
+		if(buf[i] == '\0') {
+			close(fd);
+			return 1;
+		}
+		if(buf[i] == ' ' || buf[i] == '\t' || buf[i] == '\r' || buf[i] == '\n') {
+			mode = 1;
+		}
+		if(mode == 1 && buf[i] >= '0' && buf[i] <= '9') {
+			nthisvar = atoi(buf+i);
+			// now sanity check it
+			if(nthisvar >= nnumvar || nthisvar < 0) {
+				nthisvar = 0;
+				close(fd);
+				return 1;
+			}
+			close(fd);
+			return 2;
+		}
+	}
+	// we reached the end of the string in an unexpected manner; just say that the thing we have works
+	close(fd);
+	return 1;
+}
 
 void _init(void) {
 	orig_mmap = (void*(*)(void*, size_t, int, int, int, off_t)) dlsym(RTLD_NEXT, "mmap");
-	char* sthisvar = getenv("VARIANTINDEX"); // 0-based variant index
-	char* snumvar  = getenv("NUMVARIANTS");  // total number of variants running
-	if(!sthisvar || !snumvar) {
-		// run in probabalistic mode, since we didn't find the arguments for proper indexing
-		randfd = open("/dev/cfar_urandom",O_RDONLY);
+	int parsed = get_config_vars();
+	if(parsed <= 0) {
+		//neither nnumvar nor nthivar are set
+		// if we don't know how many variants, try doing randomization of up to 64
+		if(randfd == 0) {
+			// run in probabalistic mode, since we didn't find the arguments for proper indexing
+			randfd = open("/dev/cfar_urandom",O_RDONLY);
+		}
+		// we're either going to use nthisvar in the ultimate failsafe mode where we don't do the randomization, or we're going to ignore it; either way, it's 0
+		nthisvar = 0;
+		// now check if it's still 0, or if it actually set up properly this time
 		if(randfd != 0) {
-			nthisvar = 0;
+			// we don't use nthisvar, just nnumvar and a random choice
 			nnumvar = PROB_NUM_VARIANTS;
 		} else {
 			// if we don't have our randomness source, and we don't have structured info, just behave as normal mmap
 			// (with the two extra mprotect calls, so syscall alignment is preserved)
-			randfd = 0;
-			nthisvar = 0;
 			nnumvar = 1;
 		}
-	} else {
-		nthisvar = atoi(sthisvar);
-		nnumvar  = atoi(snumvar);
+	} else if (parsed == 1) {
+		//nnumvar is set, but not nthisvar
+		// if we don't know how many variants, try doing randomization of up to 64
+		if(randfd == 0) {
+			// run in probabalistic mode, since we didn't find the arguments for proper indexing
+			randfd = open("/dev/cfar_urandom",O_RDONLY);
+		}
+		// we're either going to use nthisvar in the ultimate failsafe mode where we don't do the randomization, or we're going to ignore it; either way, it's 0
+		nthisvar = 0;
+		// if randfd is still 0, we just default to the safe case; in any case, we're done here
+	} else if (parsed == 2) {
+		//nthisvar and nnumvar have been set, we're done here
 	}
 }
 
