@@ -100,7 +100,7 @@ check_opts()
                                 shift 2
 			;;
                         --strata)
-				echo "Setting backend = zipr"
+				echo "Setting backend = strata"
                                 backend="strata"
                                 shift
 			;;
@@ -305,9 +305,20 @@ finalize_json()
 		done
 
 		if [ "x"$use_nol = "x--enablenol" ]; then
-			line=",  "$'\n\t\t\t'"  \"/lib64/ld-linux-x86-64.so.2=/<<EXEPATH>>/peasoup_executable_dir/ld-linux-x86-64.so.2.nol\" "
+			line=",  "$'\n\t\t\t'"  \"/<<EXEPATH>>/peasoup_executable_dir/ld-linux-x86-64.so.2.nol=/<<EXEPATH>>/peasoup_executable_dir/ld-linux-x86-64.so.2.nol\" "
 			variant_config_contents="${variant_config_contents//,<<LIBS>>/$line,<<LIBS>>}"
 			variant_config_contents="${variant_config_contents//,<<LDLIB>>/$line,<<LDLIB>>}"
+			binname=""
+			# ok, now we need the binary name
+			echo "trying patch"
+			if [ "$backend" = 'zipr' ]; then
+				echo $(echo $variant_config_contents | grep main_exe | sed -e "s/.*\(main_exe[^,]*\),.*/\1/g")
+				binname=$(echo $variant_config_contents | grep main_exe | sed -e "s/.*\(main_exe[^,]*\),.*/\1/g" | sed -e "s/.*\/\([a-zA-Z0-9.]*\)\".*/\1/")
+				echo "$new_variant_dir/bin/$binname"
+				$PEASOUP_UMBRELLA_DIR/non_overlapping_libraries/patchelf --set-interpreter $new_variant_dir_ts/bin/peasoup_executable_dir/ld-linux-x86-64.so.2.nol $new_variant_dir/bin/$binname
+			elif [ "$backend" = 'strata' ]; then
+				$PEASOUP_UMBRELLA_DIR/non_overlapping_libraries/patchelf --set-interpreter $new_variant_dir_ts/bin/peasoup_executable_dir/ld-linux-x86-64.so.2.nol $new_variant_dir/bin/peasoup_executable_directory/a.stratafied
+			fi
 		else
 			# strata workarounds...
 			line=",  "$'\n\t\t\t'"  \"/lib64/ld-linux-x86-64.so.2=/lib64/ld-linux-x86-64.so.2.nol\" "
