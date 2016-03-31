@@ -317,7 +317,7 @@ finalize_json()
 				echo "$new_variant_dir/bin/$binname"
 				$PEASOUP_UMBRELLA_DIR/non_overlapping_libraries/patchelf --set-interpreter $new_variant_dir_ts/bin/peasoup_executable_dir/ld-linux-x86-64.so.2.nol $new_variant_dir/bin/$binname
 			elif [ "$backend" = 'strata' ]; then
-				$PEASOUP_UMBRELLA_DIR/non_overlapping_libraries/patchelf --set-interpreter $new_variant_dir_ts/bin/peasoup_executable_dir/ld-linux-x86-64.so.2.nol $new_variant_dir/bin/peasoup_executable_directory/a.stratafied
+				$PEASOUP_UMBRELLA_DIR/non_overlapping_libraries/patchelf --set-interpreter $new_variant_dir_ts/bin/peasoup_executable_dir/ld-linux-x86-64.so.2.nol $new_variant_dir/bin/peasoup_executable_dir/a.stratafied
 			fi
 		else
 			# strata workarounds...
