@@ -120,6 +120,13 @@ int get_config_vars(void) {
 void _init(void) {
 	orig_mmap = (void*(*)(void*, size_t, int, int, int, off_t)) dlsym(RTLD_NEXT, "mmap");
 	int parsed = get_config_vars();
+#ifdef DEBUG
+#ifdef MVEE_SAFE
+	printf("parsed was X\n");
+#else
+	printf("parsed was %i\n",parsed);
+#endif
+#endif
 	if(parsed <= 0) {
 		//neither nnumvar nor nthivar are set
 		// if we don't know how many variants, try doing randomization of up to 64
@@ -151,6 +158,9 @@ void _init(void) {
 	} else if (parsed == 2) {
 		//nthisvar and nnumvar have been set, we're done here
 	}
+#ifdef DEBUG
+	printf("finished _init\n");
+#endif
 }
 
 // rounding up to alignments is important and useful
@@ -222,6 +232,9 @@ void* mmap(void* address, size_t length, int protect, int flags, int filedes, of
 			(flags & MAP_FIXED)	// must use normal mmap, since the program is now guaranteed the destination address or failure
 			|| (flags & MAP_SHARED)			// we're sharing between multiple programs, which is complex enough as it is - alignment is important, and we'd have to do funky stuff to ensure non-overlappingness with this regardless
 	  ) {
+#ifdef DEBUG
+		printf("non-modified path\n");
+#endif
 		// don't modify the arguments - we unfortunately can't touch this much, since it's going to be mapped in a way that we can't nicely diversify (yet)
 		return actually_mmap(address, length, protect, flags, filedes, offset);
 	} else {
@@ -229,17 +242,31 @@ void* mmap(void* address, size_t length, int protect, int flags, int filedes, of
 		size_t alignedlength = length;
 		void* new_mapping = MAP_FAILED;
 		// get the nthisvar for this run
-		if(randfd != 0) {
+		if(randfd != 0 && randfd != -1) {
+#ifdef DEBUG
+#ifdef MVEE_SAFE
+			printf("using randomization, is at X/X\n");
+#else
+			printf("using randomization, is at %i/%i\n",nthisvar,nnumvar);
+#endif
+#endif
 			// we're in probabalistic mode
 			uint32_t target = 0;
 			read(randfd, &target, 4);
-			nthisvar = (int)(target % PROB_NUM_VARIANTS);
+			nthisvar = (int)(target % nnumvar);
 #ifdef DEBUG
-			printf("using randomization, is at %i/%i\n",nthisvar,nnumvar);
+#ifdef MVEE_SAFE
+			printf("chose X/X\n");
+#else
+			printf("chose %i/%i\n",nthisvar,nnumvar);
+#endif
 #endif
 		}
 		// branch on whether this is a file-backed allocation or not
 		if (flags & MAP_ANONYMOUS) {
+#ifdef DEBUG
+			printf("using anonymous mapping path\n");
+#endif
 			// if it's a non-file mapping, just allocate a larger area, and then use part of that
 #if defined(MAP_ALIGN)
 			// gotta round up to the next barrier, but this only matters on solaris (in theory)
@@ -263,10 +290,17 @@ void* mmap(void* address, size_t length, int protect, int flags, int filedes, of
 			mprotect(new_mapping, alignedlength * nthisvar, PROT_NONE);
 			mprotect(new_mapping + alignedlength * (nthisvar+1), alignedlength * (nnumvar - (nthisvar + 1)), PROT_NONE);
 #ifdef DEBUG
+#ifdef MVEE_SAFE
+			printf("returning new mapping at X\n");
+#else
 			printf("returning new mapping at %p\n", new_mapping + alignedlength * nthisvar);
+#endif
 #endif
 			return new_mapping + alignedlength * nthisvar;
 		} else {
+#ifdef DEBUG
+			printf("performing tricky file mapping approach\n");
+#endif
 			// for file mappings, handle them by repeated allocation of the required size and selection of the currect index
 			int i=0;
 			for(i=0; i < nnumvar; i++) {
