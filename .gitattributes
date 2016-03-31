@@ -11,7 +11,10 @@ non_overlapping_heap/tests/Makefile -text
 non_overlapping_heap/tests/inputfile -text
 non_overlapping_heap/tests/test1.c -text
 non_overlapping_heap/tests/test2.c -text
+non_overlapping_libraries/Notes -text
+non_overlapping_libraries/eglibc-2.19-debian-ubuntu-base.tar.gz -text
 non_overlapping_libraries/ld-linux-x86-64.so.2 -text
+non_overlapping_libraries/nol_eglibc-2.19.patch -text
 non_overlapping_libraries/patchelf -text
 /postgres_setup.sh -text
 /set_command_envs -text

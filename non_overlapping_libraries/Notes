@@ -1,0 +1,42 @@
+Hello there!
+
+This is the file set for the non-overlapping libraries implementation. The core
+concept behind this pass is to modify ld-linux.so for the target binary, so the
+load process for the libraries can take advantage of the full non-overlapping-x
+concept to prevent exploitable addressees from being common.
+
+Patching ld means that we end up having to do a build in the context of glibc6.
+This is somewhat of a drag - it's not a very fast thing to build, and plenty of
+odd things happen in the various contexts in which it works. In order to ensure
+that you can build and patch glibc later, I've included, along with the library
+binary, the source code for eglibc-2.19 and the patch that can be applied to it
+to make the binary. To build, untar and enter the eglibc-2.19 directory, and do
+the command "make -f debian/rules build -j 16" (replace 16 with something which
+makes sense for your system - I've run it with up to 64 without problems). This
+will generate the target binary in build-tree/amd64-libc/elf/.
+
+Next comes the issue of using it in the MVEE properly. Unfortunately for us, we
+cannot use the existing alias infrastructure to override ld.so for a binary. It
+is suspected that this is due to the actual loading of the ld binary being done
+by the kernel, and thereby avoiding the alias machinery. In any case, we cannot
+simply replace the library blob. Instead, we need to use patchelf, which should
+handle changing the interpreter section of your target binary's ELF headers. In
+doing this, we can target each variant at a different ld.so. Unfortunately, the
+different ld.sos have to all be extremely similar (you can't mix no-nol and nol
+ld.sos), since they still need to have the same syscall usage patterns. For the
+diversity to happen in the memory mapping, nol uses a set of config files. This
+file, defined to be at "/variant_specific/nolnoh_config" (but aliased by config
+generation to be in each variant's directory). Each config contains at most two
+integers - [numvariants [variantindex]]. If neither is provided, nol assumes 64
+variants - this is a sort of fallback mode, in case the config file doesn't get
+generated. The base config file for each variant contains just the total number
+of variants. In this case, nol randomly chooses a variant index for each __mmap
+call overridden in ld, but limits it to that number of variants total, allowing
+for probabalistic and structured variants to be run together. When both numbers
+are specified in the config file, ld uses that exact variant index in every one
+of the allocations, allowing for the provable guarantees to be established.
+
+The use of a config file is a bit at odds with the design of other mvee bits. I
+only did so because, unfortunately, getting the environment variables for info,
+while normally good, is not possible in the very early stages of the loader. In
+this case, we have almost nothing initialized, mapped, or loaded yet.
