@@ -305,7 +305,7 @@ finalize_json()
 		done
 
 		if [ "x"$use_nol = "x--enablenol" ]; then
-			line=",  "$'\n\t\t\t'"  \"/<<EXEPATH>>/peasoup_executable_dir/ld-linux-x86-64.so.2.nol=/<<EXEPATH>>/peasoup_executable_dir/ld-linux-x86-64.so.2.nol\" "
+			line=",  "$'\n\t\t\t'"  \"<<EXEPATH>>/peasoup_executable_dir/ld-linux-x86-64.so.2.nol=<<EXEPATH>>/peasoup_executable_dir/ld-linux-x86-64.so.2.nol\" "
 			variant_config_contents="${variant_config_contents//,<<LIBS>>/$line,<<LIBS>>}"
 			variant_config_contents="${variant_config_contents//,<<LDLIB>>/$line,<<LDLIB>>}"
 			binname=""
