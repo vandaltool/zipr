@@ -12,6 +12,7 @@ non_overlapping_heap/tests/inputfile -text
 non_overlapping_heap/tests/test1.c -text
 non_overlapping_heap/tests/test2.c -text
 non_overlapping_libraries/ld-linux-x86-64.so.2 -text
+non_overlapping_libraries/patchelf -text
 /postgres_setup.sh -text
 /set_command_envs -text
 /set_env_vars -text
