@@ -229,6 +229,8 @@ Range_t ZiprMemorySpace_t::GetInfiniteFreeRange()
 		if(r.GetEnd()==(RangeAddress_t)-1)
 			return r;
 	}
+	assert(false);
+	return Range_t(0,0);
 }
 
 Range_t ZiprMemorySpace_t::GetFreeRange(int size)
