@@ -111,6 +111,21 @@ bool ZiprPluginManager_t::DoesPluginPlop(Instruction_t *insn, DLFunctionHandle_t
 	return false;
 }
 
+bool ZiprPluginManager_t::DoesPluginRetargetCallback(const RangeAddress_t &callback_addr, const DollopEntry_t *callback_entry, RangeAddress_t &target_address, DLFunctionHandle_t &patcher)
+{
+	DLFunctionHandleSet_t::iterator it=m_handleList.begin();
+	for(m_handleList.begin();it!=m_handleList.end();++it)
+	{
+		ZiprPluginInterface_t* zpi=(ZiprPluginInterface_t*)*it;
+		if(Must==zpi->RetargetCallback(callback_addr,callback_entry,target_address))
+		{
+			patcher = zpi;
+			return true;
+		}
+	}
+	return false;
+}
+
 bool ZiprPluginManager_t::DoesPluginRetargetPin(const RangeAddress_t &patch_addr, const Dollop_t *target_dollop, RangeAddress_t &target_address, DLFunctionHandle_t &patcher) 
 {
 	DLFunctionHandleSet_t::iterator it=m_handleList.begin();

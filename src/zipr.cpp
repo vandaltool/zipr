@@ -1413,7 +1413,7 @@ void ZiprImpl_t::PlaceDollops()
 			continue;
 
 		minimum_valid_req_size = std::min(
-			_DetermineWorstCaseInsnSize(to_place-> front()-> Instruction()),
+			_DetermineWorstCaseInsnSize(to_place->front()->Instruction()),
 			Utils::DetermineWorstCaseDollopSizeInclFallthrough(to_place));
 		/*
 		 * Ask the plugin manager if there are any plugins
@@ -1535,7 +1535,7 @@ void ZiprImpl_t::PlaceDollops()
 				last_de_fits = (std::next(dit,1)==dit_end) /* last */ &&
 				               (placement.GetEnd()>=(cur_addr+ /* fits */
 							_DetermineWorstCaseInsnSize(dollop_entry->Instruction(),
-							                            to_place->FallthroughDollop() != NULL))
+							                            to_place->FallthroughDollop()!=NULL))
 							                            /* with or without fallthrough */
 							         );
 
@@ -2267,7 +2267,7 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntryWithCallback(
 	{
 	char bytes[]={(char)0xe8,(char)0,(char)0,(char)0,(char)0}; // call rel32
 	memory_space.PlopBytes(at, bytes, sizeof(bytes));
-	unpatched_callbacks.insert(pair<Instruction_t*,RangeAddress_t>(insn,at));
+	unpatched_callbacks.insert(pair<DollopEntry_t*,RangeAddress_t>(entry,at));
 	at+=sizeof(bytes);
 	}
 
@@ -2860,24 +2860,39 @@ RangeAddress_t ZiprImpl_t::FindCallbackAddress(RangeAddress_t end_of_new_space, 
 
 void ZiprImpl_t::UpdateCallbacks()
 {
-        // first byte of this range is the last used byte.
-	RangeSet_t::iterator it=memory_space.FindFreeRange((RangeAddress_t) -1);
-        assert(memory_space.IsValidRange(it));
+	// first byte of this range is the last used byte.
+	RangeSet_t::iterator range_it=memory_space.FindFreeRange((RangeAddress_t) -1);
+	assert(memory_space.IsValidRange(range_it));
 
-        RangeAddress_t end_of_new_space=it->GetStart();
+	RangeAddress_t end_of_new_space=range_it->GetStart();
 	RangeAddress_t start_addr=GetCallbackStartAddr();
 
-	for( std::set<std::pair<libIRDB::Instruction_t*,RangeAddress_t> >::iterator it=unpatched_callbacks.begin();
-		it!=unpatched_callbacks.end();
-		++it
+	set<std::pair<DollopEntry_t*,RangeAddress_t> >::iterator it, it_end;
+
+	for(it=unpatched_callbacks.begin(), it_end=unpatched_callbacks.end();
+	    it!=it_end;
+	    it++
 	   )
 	{
-		Instruction_t *insn=it->first;
+		DollopEntry_t *entry=it->first;
+		Instruction_t *insn = entry->Instruction();
 		RangeAddress_t at=it->second;
 		RangeAddress_t to=FindCallbackAddress(end_of_new_space,start_addr,insn->GetCallback());
+		DLFunctionHandle_t patcher = NULL;
+
+		if (plugman.DoesPluginRetargetCallback(at, entry, to, patcher))
+		{
+			if (m_verbose)
+			{
+				cout << "Patching retargeted callback at " << std::hex << at << " to "
+				     << patcher->ToString() << "-assigned address: "
+						 << std::hex << to << endl;
+			}
+		}
+
 		if(to)
 		{
-			cout<<"Patching callback "<< insn->GetCallback()<<"at "<<std::hex<<at<<" to jump to "<<to<<endl;
+			cout<<"Patching callback "<< insn->GetCallback()<<" at "<<std::hex<<at<<" to jump to "<<to<<endl;
 			PatchCall(at,to);
 		}
 		else

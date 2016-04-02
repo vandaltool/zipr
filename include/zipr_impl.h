@@ -397,7 +397,7 @@ class ZiprImpl_t : public Zipr_t
 		std::map<RangeAddress_t,libIRDB::Instruction_t*> m_InsnAtAddrs; 
 
 		// unpatched callbacks
-		std::set<std::pair<libIRDB::Instruction_t*,RangeAddress_t> > unpatched_callbacks; 
+		std::set<std::pair<Zipr_SDK::DollopEntry_t*,RangeAddress_t> > unpatched_callbacks; 
 
 		std::map<std::string,RangeAddress_t> callback_addrs;
 
