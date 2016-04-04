@@ -437,12 +437,40 @@ void __bea_callspec__ Addr_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             if (GV.ImmediatSize == 8) {
                 MyNumber += 1;
             }
-            if ((*pMyDisasm).Instruction.Opcode >= 0x0F3800) {      /* add two bytes if opcode is a 3-bytes */
-                MyNumber +=2;
-            }
-            else if ((*pMyDisasm).Instruction.Opcode >= 0x0100) {   /* add one byte if opcode is a 2-bytes */
-                MyNumber +=1;
-            }
+	    if ((*pMyDisasm).Instruction.Opcode >= 0x0F3800) {      /* add two bytes if opcode is a 3-bytes */
+		MyNumber +=2;
+	    }
+	    else if ((*pMyDisasm).Instruction.Opcode >= 0x0100) {   /* add one byte if opcode is a 2-bytes */
+		MyNumber +=1;
+	    }
+
+	    // vex prefixes cause the above code to over count.  so we subtract off the number of bytes of implicit instructin opcode.
+  	    if(GV.VEX.has_vex2) 
+	    {
+		// two byte vix has 0xf always implicit
+		MyNumber -=1;
+	    }
+  	    if(GV.VEX.has_vex3)
+	    {
+		switch(GV.VEX.opcode_escape)
+		{
+			case 1: // 0x0f implicit prefix
+			{
+				MyNumber -=1;
+				break;
+			}
+			case 2: // 0x0f38 implicit prefix
+			case 3: // 0x0f3a implicit prefix
+			{
+				MyNumber -=2;
+				break;
+			}
+			default:
+				FailDecode(pMyDisasm);
+				return;
+		}
+	    }
+
             CalculateRelativeAddress(&MyAddress, (Int64)MyNumber, pMyDisasm);
             (*pMyDisasm).Instruction.AddrValue = MyAddress;
             #ifndef BEA_LIGHT_DISASSEMBLY

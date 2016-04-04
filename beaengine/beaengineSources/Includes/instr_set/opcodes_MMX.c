@@ -166,34 +166,43 @@ void __bea_callspec__ movd_PE(PDISASM pMyDisasm)
  * ==================================================================== */
 void __bea_callspec__ movq_PQ(PDISASM pMyDisasm)
 {
+        #ifndef BEA_LIGHT_DISASSEMBLY
+	if(GV.VEX.has_vex)
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+        #endif
     (*pMyDisasm).Instruction.Category = MMX_INSTRUCTION+DATA_TRANSFER;
     /* ========= 0xf3 */
-    if (GV.PrefRepe == 1) {
+    if (GV.PrefRepe == 1  || (GV.VEX.has_vex && GV.VEX.implicit_prefixes==2)) {
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movdqu ");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "movdqu ");
         #endif
-        GV.SSE_ = 1;
+
+        GV.AVX_ = GV.VEX.length;
+        GV.SSE_ = !GV.VEX.length;
         GxEx(pMyDisasm);
+        GV.AVX_ = 0;
         GV.SSE_ = 0;
     }
     /* ========== 0x66 */
-    else if ((*pMyDisasm).Prefix.OperandSize == InUsePrefix) {            
+    else if ((*pMyDisasm).Prefix.OperandSize == InUsePrefix  || (GV.VEX.has_vex && GV.VEX.implicit_prefixes==1)) {            
         GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movdqa ");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "movdqa ");
         #endif
-        GV.SSE_ = 1;
+        GV.AVX_ = GV.VEX.length;
+        GV.SSE_ = !GV.VEX.length;
         GxEx(pMyDisasm);
+        GV.AVX_ = 0;
         GV.SSE_ = 0;
     }
     else {
         GV.MemDecoration = Arg2qword;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movq ");
+           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "movq ");
         #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);

@@ -155,6 +155,8 @@ void __bea_callspec__ HandleVex3(PDISASM pMyDisasm)
 	UInt8 byte1=0, byte2=0;
 	if(GV.REX.state) FailDecode(pMyDisasm);
 
+	GV.NB_PREFIX+=3;
+
 	assert(pMyDisasm);
     	if (!Security(4, pMyDisasm)) return;
 
@@ -228,8 +230,11 @@ void __bea_callspec__ HandleVex2(PDISASM pMyDisasm)
 {
 	UInt8 byte1=0;
 	assert(pMyDisasm);
-    	if (!Security(3, pMyDisasm)) return;
+
+    	if (!Security(2, pMyDisasm)) return;
 	if(GV.REX.state) FailDecode(pMyDisasm);
+
+	GV.NB_PREFIX+=2;
 
 	GV.VEX.has_vex=1; /* TRUE */
 	GV.VEX.has_vex2=1;
