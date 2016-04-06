@@ -20,6 +20,7 @@ export ZIPR_CALLBACKS=$PEASOUP_UMBRELLA_DIR/zipr_callbacks
 export ZIPR_SDK=$PEASOUP_UMBRELLA_DIR/zipr_sdk
 export ZIPR_SCFI_PLUGIN=$PEASOUP_UMBRELLA_DIR/zipr_scfi_plugin
 export TEST_HARNESS_HOME=$PEASOUP_UMBRELLA_DIR/test_harness_main
+export DAFFY_HOME=$PEASOUP_UMBRELLA_DIR/daffy
 
 export SECURITY_TRANSFORMS_HOME=$PEASOUP_UMBRELLA_DIR/security_transforms
 if [[ ! "$LD_LIBRARY_PATH" =~ (^|:)"$PEASOUP_UMBRELLA_DIR/lib:$PEASOUP_UMBRELLA_DIR/grace/concolic/bin:$STRATA/lib"(:|$) ]]
