@@ -26,5 +26,8 @@ echo "cd .." >> $HOME/.bashrc
 # set up the irdb
 ./postgres_setup.sh 2>&1 | tee pgsetup.output
 
+# setup Daffy
+$DAFFY_HOME/setup.sh
+
 # reboot machine to start up the GNOME Desktop environment
 sudo reboot

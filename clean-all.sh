@@ -59,4 +59,6 @@ if [ -d $ZIPR_SCFI_PLUGIN ]; then
         scons do_cgc=1 -c
 fi
 
+cd $DAFFY_HOME
+make clean
 

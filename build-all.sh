@@ -87,3 +87,7 @@ if [ -d $ZIPR_SCFI_PLUGIN ]; then
 	scons do_cgc=1
 fi
 
+# build daffy
+cd $DAFFY_HOME
+make
+
