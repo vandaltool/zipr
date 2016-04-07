@@ -6,13 +6,19 @@ import re
 import json
 
 ATTRIBUTE='# ATTRIBUTE'
+ATTRIBUTE2='#ATTRIBUTE'
 
 # extract attribute key and value from attribute line
-# format:    # ATTRIBUTE key=value
+# format:    # ATTRIBUTE key=value 
+# format:    #ATTRIBUTE key=value
 def extract_attribute(attribute_line):
-	line = attribute_line[len(ATTRIBUTE):].lstrip()
+	line=''
+	if ATTRIBUTE in attribute_line:
+		line = attribute_line[len(ATTRIBUTE):].lstrip()
+	else if ATTRIBUTE2 in attribute_line:
+		line = attribute_line[len(ATTRIBUTE2):].lstrip()
 	equal_pos = line.find('=')
-	return (line[0:equal_pos], line[equal_pos+1:])
+	return (line[0:equal_pos].rstrip(), line[equal_pos+1:].lstrip())
 
 # get stats one file at a time
 stats = {}
