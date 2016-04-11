@@ -15,7 +15,7 @@ def extract_attribute(attribute_line):
 	line=''
 	if ATTRIBUTE in attribute_line:
 		line = attribute_line[len(ATTRIBUTE):].lstrip()
-	else if ATTRIBUTE2 in attribute_line:
+	elif ATTRIBUTE2 in attribute_line:
 		line = attribute_line[len(ATTRIBUTE2):].lstrip()
 	equal_pos = line.find('=')
 	return (line[0:equal_pos].rstrip(), line[equal_pos+1:].lstrip())
