@@ -24,5 +24,5 @@ myenv=myenv.Clone(CPPPATH=Split(cpppath))
 myenv.Append(CPPFLAGS=CPPFLAGS)
 
 pgm=myenv.Program(target="hook_dynamic_calls.exe", source=Split("hook_dynamic_calls.cpp hook_dynamic_calls_driver.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
-install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
+install=myenv.Install("$SECURITY_TRANSFORMS_HOME/plugins_install/", pgm)
 Default(install)
