@@ -8,6 +8,7 @@
 /postgres_setup.sh -text
 /set_command_envs -text
 /set_env_vars -text
+/set_ida_server -text
 /start_dev.sh -text
 /svn.externals.cgc_dev -text
 /svn.externals.uva_dev -text
