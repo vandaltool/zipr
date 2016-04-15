@@ -10,5 +10,4 @@ zipr_callbacks       http://svn.zephyr-software.com/repos/zipr_callbacks/trunk/
 zipr_install         http://svn.zephyr-software.com/repos/zipr_install/branches/cgc_dev/
 zipr_sdk             http://svn.zephyr-software.com/repos/zipr_sdk/trunk/
 daffy                http://svn.zephyr-software.com/repos/daffy/trunk/
-
-
+IdaProServer         http://svn.zephyr-software.com/repos/IdaProServer/branches/cgc_dev/
