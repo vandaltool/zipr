@@ -1653,15 +1653,6 @@ void ZiprImpl_t::PlaceDollops()
 					     << "Remaining: " << std::dec << remaining_size
 							 << " vs Needed: " << std::dec 
 							 << std::min(fallthrough_wcis,fallthroughs_wcds) << endl;
-				/*
-				 * TODO: Consider the case where the fallthroughs are
-				 * not all unplaced but that fallthrough_wcds calculated
-				 * a smaller needed size than we have remaining (implies
-				 * that it will fit) but later we want to jump to one of
-				 * those dollops and we may overrun our space? This might
-				 * be handled appropriately in the second pass through
-				 * above but it's something that we have to think more about.
-				 */
 				if (remaining_size < std::min(fallthrough_wcis,fallthroughs_wcds) ||
 				    fallthrough->IsPlaced() ||
 						!allowed_coalescing)
