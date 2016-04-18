@@ -1526,9 +1526,14 @@ void ZiprImpl_t::PlaceDollops()
 				 *    placed -- we use the trampoline size at that point.
 				 *    See DetermineWorstCaseDollopSizeInclFallthrough().
 				 *    Call this the all_fallthroughs_fit case.
+				 * 5. All fallthroughs fit but we are not allowed to 
+				 *    coalesce and we are out of space for the jump to 
+				 *    the fallthrough. 
+				 *    Call this the disallowed_override case
 				 */
 				bool de_and_fallthrough_fit = false;
 				bool last_de_fits = false;
+				bool disallowed_override = true;
 				de_and_fallthrough_fit = (placement.GetEnd()>= /* fits */
 				     (cur_addr+_DetermineWorstCaseInsnSize(dollop_entry->Instruction()))
 				                         );
@@ -1538,16 +1543,28 @@ void ZiprImpl_t::PlaceDollops()
 							                            to_place->FallthroughDollop()!=NULL))
 							                            /* with or without fallthrough */
 							         );
+				disallowed_override = !allowed_coalescing && 
+				                      !fits_entirely && 
+															 all_fallthroughs_fit && 
+				                       ((placement.GetEnd() - 
+				                        (cur_addr + 
+				                         _DetermineWorstCaseInsnSize(
+				                           dollop_entry->Instruction(),
+				                           false)
+				                         ) < Utils::TRAMPOLINE_SIZE
+				                        )
+				                       );
 
 				if (m_verbose)
 					cout << "de_and_fallthrough_fit: " << de_and_fallthrough_fit << endl
 					     << "last_de_fits          : " << last_de_fits << endl
 					     << "fits_entirely         : " << fits_entirely << endl
-					     << "all_fallthroughs_fit  : " << all_fallthroughs_fit << endl;
-				if (de_and_fallthrough_fit ||
+					     << "all_fallthroughs_fit  : " << all_fallthroughs_fit << endl
+					     << "disallowed_override   : " << disallowed_override << endl;
+				if ((de_and_fallthrough_fit ||
 				    last_de_fits ||
 						fits_entirely ||
-						all_fallthroughs_fit)
+						all_fallthroughs_fit) && !disallowed_override)
 				{
 #if 0
 					if (m_verbose) {
