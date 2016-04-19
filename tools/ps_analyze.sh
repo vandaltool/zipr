@@ -704,8 +704,12 @@ stepnum=0
 # Check for proper environment variables and files that are necessary to peasoupify a program.
 #
 check_environ_vars PEASOUP_HOME SMPSA_HOME STRATA_HOME SECURITY_TRANSFORMS_HOME IDAROOT
-check_files $PEASOUP_HOME/tools/getsyms.sh $SMPSA_HOME/SMP-analyze.sh  $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh 
+check_files $PEASOUP_HOME/tools/getsyms.sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh 
 
+if [ ! -x $SMPSA_HOME/SMP-analyze.sh ] &&  [ ! -x $SMPSA_HOME/SMP-analyze.sh ] ; then
+	echo "SMP-analyze script (local or remote) not found"
+	exit 1
+fi
 
 #
 # Check/parse options
@@ -856,7 +860,7 @@ perform_step gather_libraries mandatory $PEASOUP_HOME/tools/do_gatherlibs.sh $st
 #
 # Running IDA Pro static analysis phase ...
 #
-perform_step meds_static mandatory $PEASOUP_HOME/tools/do_idapro.sh
+perform_step meds_static mandatory $PEASOUP_HOME/tools/do_idapro.sh $name
 touch a.ncexe.annot
 cp a.ncexe.annot a.ncexe.annot.full
 # this check is extraneous now.

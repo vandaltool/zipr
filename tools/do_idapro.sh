@@ -1,15 +1,20 @@
-#!/bin/bash 
+#!/bin/bash  -x
 
 analyze_file()
 {
 	file=$1
-	echo STARS Analyzing $file
-
+	target_name=$2
 
 	#
 	# This line is added to turn off screen output to display
 	#
-	case "$IDAROOT" in
+	if [ ! -z "$IDA_PRO_SERVER_HOST" ]; then
+		echo "STARS (Remote on ${IDA_PRO_SERVER_HOST}) Analyzing $file target is: $target_name"
+		$PEASOUP_UMBRELLA_DIR/IdaProServer/SMP-analyze.sh $file 
+	else
+		echo STARS Analyzing $file target is: $target_name
+
+		case "$IDAROOT" in
     		*idapro5* )
         		echo "IDA 5.* detected."
         		$SMPSA_HOME/SMP-analyze.sh $file
@@ -22,7 +27,8 @@ analyze_file()
 		*)
 			echo Cannot detect IDA version: $IDAROOT
 			exit 1
-	esac
+		esac
+	fi
 
 	lines=`cat $file.annot | wc -l`
 
@@ -42,12 +48,22 @@ analyze_file()
 
 }
 
-analyze_file a.ncexe
-cd shared_objects
+if [ ! -z $1 ]; then
+	TARGET_NAME=$1	
+else
+	TARGET_NAME=a.ncexe
+fi
 
-for i in `cat ../shared_libs`; do
-	analyze_file $i
-done
+analyze_file a.ncexe $TARGET_NAME
 
-cd -
+if [ -d shared_objects ]; then
+	cd shared_objects
+
+	for i in `cat ../shared_libs`; do
+		analyze_file $i $i
+	done
+
+	cd -
+fi
+
 exit 0
