@@ -102,7 +102,12 @@ if [ -d "${PEASOUP_UMBRELLA_DIR}/zipr_unpin_plugin" ]; then
 	scons do_cgc=1
 fi
 
-# build daffy
-cd $DAFFY_HOME
-make
+# build daffy (32 bit only)
+uname -a | grep i686
+if [ $? -eq 0 ]; then
+	if [ -d "$DAFFY_HOME" ]; then
+		cd $DAFFY_HOME
+		make
+	fi
+fi
 

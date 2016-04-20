@@ -74,6 +74,8 @@ if [ -d "${PEASOUP_UMBRELLA_DIR}/zipr_unpin_plugin" ]; then
 fi
 
 # clean daffy
-cd $DAFFY_HOME
-make clean
+if [ -d "$DAFFY_HOME" ]; then
+	cd $DAFFY_HOME
+	make clean
+fi
 

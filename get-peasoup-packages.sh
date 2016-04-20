@@ -22,6 +22,8 @@ BASE_PKGS="
   #libstdc++6:i386
 # TODO: don't require i386 libraries if not running MEDS (eg using IDA server)
 
+IDA_SERVER="gcc-multilib g++-multilib"
+
 # For clients of IRDB
 CLIENT_IRDB_PKGS="
   postgresql-client
@@ -130,6 +132,9 @@ for arg in $@; do
     irdb)
 	sudo apt-get -y install $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS
 	;;
+    ida-server)
+	sudo apt-get -y install $IDA_SERVER
+	;;
     test)
 	sudo apt-get -y install $TEST_PKGS
 	;;
@@ -141,7 +146,7 @@ for arg in $@; do
 	;;
     *)
 	echo "$arg not recognized. Recognized args: all, base, client-irdb,";
-	echo "  server-irdb, irdb, test, sql.";
+	echo "  server-irdb, ida-server, irdb, test, sql.";
     esac
 done
 
