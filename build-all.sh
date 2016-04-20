@@ -87,6 +87,21 @@ if [ -d $ZIPR_SCFI_PLUGIN ]; then
 	scons do_cgc=1
 fi
 
+# build trace plugin
+if [ -d "${PEASOUP_UMBRELLA_DIR}/zipr_trace_plugin" ]; then
+	cd ${PEASOUP_UMBRELLA_DIR}/zipr_trace_plugin/libtrace
+	scons
+	cd ${PEASOUP_UMBRELLA_DIR}/zipr_trace_plugin
+	scons do_cgc=1
+	cp ${PEASOUP_UMBRELLA_DIR}/zipr_trace_plugin/libtrace/libtrace.so ${ZIPR_INSTALL}/lib
+fi
+
+# build unpin plugin
+if [ -d "${PEASOUP_UMBRELLA_DIR}/zipr_unpin_plugin" ]; then
+	cd ${PEASOUP_UMBRELLA_DIR}/zipr_unpin_plugin
+	scons do_cgc=1
+fi
+
 # build daffy
 cd $DAFFY_HOME
 make

@@ -24,14 +24,11 @@ export TEST_HARNESS_HOME=$PEASOUP_UMBRELLA_DIR/test_harness_main
 export DAFFY_HOME=$PEASOUP_UMBRELLA_DIR/daffy
 
 export SECURITY_TRANSFORMS_HOME=$PEASOUP_UMBRELLA_DIR/security_transforms
-if [[ ! "$LD_LIBRARY_PATH" =~ (^|:)"$PEASOUP_UMBRELLA_DIR/lib:$PEASOUP_UMBRELLA_DIR/grace/concolic/bin:$STRATA/lib"(:|$) ]]
+export LD_LIBRARY_PATH="$ZIPR_INSTALL/lib:$LD_LIBRARY_PATH"
+if [[ ! "$LD_LIBRARY_PATH" =~ (^|:)"$PEASOUP_UMBRELLA_DIR/lib:$STRATA/lib"(:|$) ]]
 then
-    export LD_LIBRARY_PATH=$PEASOUP_UMBRELLA_DIR/lib:$PEASOUP_UMBRELLA_DIR/grace/concolic/bin:$STRATA/lib:$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=$PEASOUP_UMBRELLA_DIR/lib:$STRATA/lib:$LD_LIBRARY_PATH
 fi
-
-#Get IDAPRO to work with no errors
-# just not needed.
-#export TVHEADLESS=1
 
 source $PEASOUP_UMBRELLA_DIR/irdb_vars
 

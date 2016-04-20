@@ -44,7 +44,7 @@ scons build_cgc=1 build_appfw=0 -c
 cd $PEASOUP_HOME
 make clean
 
-# build Cinderella callbacks
+# clean Cinderella callbacks
 cd $ZIPR_CALLBACKS
 ./configure_for_cinderella --prefix=$ZIPR_INSTALL
 make clean
@@ -59,6 +59,21 @@ if [ -d $ZIPR_SCFI_PLUGIN ]; then
         scons do_cgc=1 -c
 fi
 
+# clean trace plugin
+if [ -d "${PEASOUP_UMBRELLA_DIR}/zipr_trace_plugin" ]; then
+	cd ${PEASOUP_UMBRELLA_DIR}/zipr_trace_plugin/libtrace
+	scons -c
+	cd ${PEASOUP_UMBRELLA_DIR}/zipr_trace_plugin
+	scons do_cgc=1 -c
+fi
+
+# clean unpin plugin
+if [ -d "${PEASOUP_UMBRELLA_DIR}/zipr_unpin_plugin" ]; then
+	cd ${PEASOUP_UMBRELLA_DIR}/zipr_unpin_plugin
+	scons do_cgc=1 -c
+fi
+
+# clean daffy
 cd $DAFFY_HOME
 make clean
 

@@ -3,10 +3,10 @@
 # FIXME: stash this config file on the share somewhere
 
 # gray-34 for now
-#export IDA_PRO_SERVER_HOST=172.16.8.44
-export IDA_PRO_SERVER_HOST=10.0.0.2
+export IDA_PRO_SERVER_HOST=172.16.8.44
+#export IDA_PRO_SERVER_HOST=10.0.0.2
 export IDA_PRO_SERVER_USER=techx
 #IDA_PRO_SERVER_PORT=22
 #export SMPSA_HOME=$PEASOUP_UMBRELLA_DIR/IdaProServer
-export SMPSA_PLUGIN=$IDAROOT/plugins/SMPStaticAnalyzer.plx
+export SMPSA_PLUGIN=$IDAROOT/plugins/SMPStaticAnalyzer.plx64
 
