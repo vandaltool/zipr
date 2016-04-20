@@ -5,6 +5,7 @@
 /get-peasoup-packages.sh -text
 /irdb_vars -text
 /irdb_vars.gt -text
+/postgres_hard_reset.sh -text
 /postgres_setup.sh -text
 /set_command_envs -text
 /set_env_vars -text
