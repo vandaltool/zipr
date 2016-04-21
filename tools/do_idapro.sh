@@ -8,11 +8,19 @@ analyze_file()
 	#
 	# This line is added to turn off screen output to display
 	#
+	rc=1
 	if [ ! -z "$IDA_PRO_SERVER_HOST" ]; then
 		echo "STARS (Remote on ${IDA_PRO_SERVER_HOST}) Analyzing $file target is: $target_name"
 		$PEASOUP_UMBRELLA_DIR/IdaProServer/SMP-analyze.sh $file 
-	else
-		echo STARS Analyzing $file target is: $target_name
+		rc=$?
+
+		if [ ! $rc -eq 0 ]; then
+			echo "STARS (Remote) failure..."
+		fi
+	fi
+
+	if [ ! $rc -eq 0 ]; then
+		echo "STARS (Local) Analyzing $file target is: $target_name"
 
 		case "$IDAROOT" in
     		*idapro5* )
