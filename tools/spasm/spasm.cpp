@@ -58,8 +58,9 @@ static string insertRedirectRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:
 static string instructionRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+([*][*])[[:blank:]]+.*$";
 static string callbackRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+([(][)])[[:blank:]]+.*$";
 static string relocRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+([r][l])[[:blank:]]+.*$";
+static string ibtlRegex = "^[[:blank:]]*([a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+([I][L])[[:blank:]]+.*$";
 
-static regex_t coPattern, erPattern, orPattern, irPattern, insPattern, cbPattern, rlPattern;
+static regex_t coPattern, erPattern, orPattern, irPattern, insPattern, cbPattern, rlPattern, ibtlPattern;
 
 
 //TODO: if I am getting rid of the requirement for 0x address prefixes, make sure comments reflec this
@@ -241,7 +242,8 @@ void a2bspri(const vector<string> &input,const string &outFilename, const string
   regfree(&coPattern);
   regfree(&insPattern);
   regfree(&rlPattern);
-*/
+  regfree(&ibtlPattern);
+  */
 
 }
 
@@ -258,7 +260,8 @@ static void initSpasmLines(const string &inputFile)
 	} 
 
 	COMPILE_REGEX(rlPattern,relocRegex);
-	COMPILE_REGEX(coPattern,commentOnlyRegex);
+	COMPILE_REGEX(ibtlPattern, ibtlRegex);
+	COMPILE_REGEX(coPattern, commentOnlyRegex);
 	COMPILE_REGEX(erPattern,entryRedirectRegex);
 	COMPILE_REGEX(orPattern,otherRedirectRegex);
 	COMPILE_REGEX(irPattern,insertRedirectRegex);
@@ -322,7 +325,8 @@ static bool getNextSpasmLine(spasmline_t &spasmline)
 			regexec(&irPattern,line.c_str(),5,pmatch,0)==0 || 
 			regexec(&insPattern,line.c_str(),5,pmatch,0)==0 || 
 			regexec(&cbPattern, line.c_str(),5,pmatch,0)==0 ||
-			regexec(&rlPattern, line.c_str(),5,pmatch,0)==0)
+			regexec(&ibtlPattern, line.c_str(), 5, pmatch, 0) == 0 ||
+			regexec(&rlPattern, line.c_str(), 5, pmatch, 0) == 0)
 	{
 		int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;
 		spasmline.address = line.substr(pmatch[1].rm_so,mlen);
@@ -413,8 +417,8 @@ static void assemble(const string &assemblyFile, int bits)
 
 	while(getNextSpasmLine(sline))
 	{
-		// skip comments and relocations */
-		if(sline.commentOnly || (sline.op.compare("rl")==0))
+		// skip comments, relocations and indirect branch target limitations */
+		if (sline.commentOnly || (sline.op.compare("rl") == 0) || (sline.op.compare("IL") == 0))
 			continue;
 
 		string assemblyLine = "";
@@ -742,10 +746,10 @@ static void printSPRI(const string &symbolFilename, const string &outFileName)
 		//If the address is a symbol, replace with resolved symbol address
 		//a symbol is not '.' or a <base> + <offset> pattern. At this point
 		//we have already weeded out all instructions that use a non-symbolic
-		//address so we only check for '.'.
-		if(address[0] != '.')
+		//address (i.e. base+offset) so we only check for '.'.
+		if (address[0] != '.')
 		{
-			if(symMap.find(address) == symMap.end())
+			if (symMap.find(address) == symMap.end())
 			{
 				stringstream ss;
 				ss <<sline.lineNum;
@@ -753,7 +757,7 @@ static void printSPRI(const string &symbolFilename, const string &outFileName)
 				throw SpasmException("ERROR: unresolved symbol " + address + " for symbol defined on aspri line " + ss.str()); 
 			}
 
-			if(comments.empty())
+			if (comments.empty())
 				comments = "#";
 			else
 				comments += " ; ";
@@ -767,19 +771,21 @@ static void printSPRI(const string &symbolFilename, const string &outFileName)
 		{			 
 			spriline = string(vpcstr+" ");
 		}
-		
-		spriline += op+" ";
 
-		// handle relocations
-		if(op.compare("rl") == 0)
+		// Append the operator to the LHS string.
+		spriline += (op + " ");
+
+		// handle relocations and Indirect Branch Target Limitations
+		bool IBTLop = (op.compare("IL") == 0);
+		if (op.compare("rl") == 0)
 		{
 			spriline += rhs;
-			spriline += "\t"+comments;
-			outFile<<spriline<<endl;
+			spriline += ("\t" + comments);
+			outFile << spriline << endl;
 			continue;
 		}
 
-		//grabing bin can only happen here since the above "rl" check does not use any assembly
+		//grabbing bin can only happen here since the above "rl" check does not use any assembly
 		//checking after results in buffer overrun of bin. It is assumed from this point on
 		//that all operators require binary in the bin, whether or not it is actually used 
 		//to generate the spri for its corresponding spri line. 
@@ -790,6 +796,7 @@ static void printSPRI(const string &symbolFilename, const string &outFileName)
 		pop_bin_cnt++;
 
 		// handle callback handlers
+		bool TerminatingRedirectOp = (op.compare("-|") == 0);  // need to deprecate this operator
 		if (op.compare("()") == 0)
 		{
 			incSize = 1;
@@ -800,39 +807,49 @@ static void printSPRI(const string &symbolFilename, const string &outFileName)
 		}
 		//terminating and non-terminating redirects may have symbols on the right hand side
 		//resolve them.
-		else if(op.compare("->") == 0 ||  op.compare("-|") ==0)
+		else if (op.compare("->") == 0 || TerminatingRedirectOp || IBTLop)
 		{
-			//If the current disassembled instruction is not nop, then something is out of sync
-			stringstream ss;
-			ss <<sline.lineNum;
-			if(binLine.hex_str.compare("1 90") !=0)
-				throw SpasmException(string("ERROR: Bug detected in getSPRI, bin out of sync with spasm lines. ") +
-									 "Expected a place holder nop (1 90) for a SPRI redirect, but found " + binLine.hex_str +". " +
-									 "Sync error occurs on line " + ss.str() + " of the SPASM input file");
+			if (IBTLop) {
+				// We are parsing:  Label1 IL Label2.
+				//  The Label1 was in address and was xformed to SymMap[address] above.
+				// We will skip the special-case code for -> and -| lines.
+				;
+			}
+			else
+			{
+				//If the current disassembled instruction is not nop, then something is out of sync
+				stringstream ss;
+				ss << sline.lineNum;
+				if (binLine.hex_str.compare("1 90") != 0)
+				    throw SpasmException(string("ERROR: Bug detected in getSPRI, bin out of sync with spasm lines. ") +
+				    "Expected a place holder nop (1 90) for a SPRI redirect, but found " + binLine.hex_str + ". " +
+				    "Sync error occurs on line " + ss.str() + " of the SPASM input file");
 
-			//non-entry point redirects require one byte of memory
-			incSize = 1;
-
-			if(rhs.find("+") != string::npos || rhs[0] == '0')
+				//non-entry point redirects require one byte of memory
+				incSize = 1;
+			}
+			if (rhs.find("+") != string::npos || rhs[0] == '0')
+			{
 				spriline += rhs;
+			}
 			//else the rhs must be a label
 			else 
 			{
 				if(symMap.find(rhs) == symMap.end())
 				{
 					stringstream ss;
-					ss <<sline.lineNum;
+					ss << sline.lineNum;
 					throw SpasmException("ERROR: unresolved symbol " + rhs + " for symbol referenced on aspri line " + ss.str()); 
 				}
 
-				if(comments.empty())
+				if (comments.empty())
 					comments = "#";
 				else
 					comments += " ; ";
 				
 				comments += "dest addr = <" + rhs + ">";
 
-				spriline += symMap[rhs]+" ";
+				spriline += symMap[rhs] + " ";
 			}		
 		}
 		else

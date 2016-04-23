@@ -120,7 +120,7 @@ static void update_label_offset(FileIR_t *firp)
 {
 	int max=0;
 	for(set<Instruction_t*>::iterator it=firp->GetInstructions().begin();
-            it!=firp->GetInstructions().end();
+	    it!=firp->GetInstructions().end();
 	    ++it)
 	{
 		Instruction_t *insn=*it;
@@ -205,9 +205,9 @@ static string better_qualify_address(FileIR_t* fileIRp, AddressID_t* addr)
 		return qualify_address(fileIRp,off);
 
 	/* having a file not in the DB means we're int he spridd address space */
-        stringstream s;
-        s<<"spridd+0x"<<std::hex<<off;
-        return s.str();
+	stringstream s;
+	s<<"spridd+0x"<<std::hex<<off;
+	return s.str();
 		
 }
 
@@ -281,9 +281,9 @@ bool convert_jump_for_64bit(Instruction_t* newinsn, string &final, string &emit_
 void emit_jump(FileIR_t* fileIRp, ostream& fout, DISASM& disasm, Instruction_t* newinsn, Instruction_t *old_insn, string & original_target, string &emit_later)
 {
 
-        string label=labelfy(newinsn);
-        string complete_instr=string(disasm.CompleteInstr);
-        string address_string=string(disasm.Argument1.ArgMnemonic);
+	string label=labelfy(newinsn);
+	string complete_instr=string(disasm.CompleteInstr);
+	string address_string=string(disasm.Argument1.ArgMnemonic);
 	bool converted=false;
 
 
@@ -329,24 +329,24 @@ void emit_jump(FileIR_t* fileIRp, ostream& fout, DISASM& disasm, Instruction_t* 
 			if(converted)
 			{
 				/* jumps have a 1-byte opcode */
- 				string reloc=get_relocation_string(fileIRp, fout,0,"64-bit",newinsn);
+				string reloc=get_relocation_string(fileIRp, fout,0,"64-bit",newinsn);
 				emit_later=emit_later+"da_"+reloc;
 			}
 			// if we're jumping to an absolute address vrs a label, we will need a relocation for this jump instruction
 			else if(
- 		   	   disasm.Instruction.Opcode==0xeb || 	 // jmp with 8-bit addr  -- should be recompiled to 32-bit
- 		   	   disasm.Instruction.Opcode==0xe8 || 	 // jmp with 32-bit addr 
-		   	   disasm.Instruction.Opcode==0xe9 	 // call with 32-bit addr
+			   disasm.Instruction.Opcode==0xeb || 	 // jmp with 8-bit addr  -- should be recompiled to 32-bit
+			   disasm.Instruction.Opcode==0xe8 || 	 // jmp with 32-bit addr 
+			   disasm.Instruction.Opcode==0xe9 	 // call with 32-bit addr
 
 			)
 			{
 				/* jumps have a 1-byte opcode */
- 				emit_relocation(fileIRp, fout,1,"32-bit",newinsn);
+				emit_relocation(fileIRp, fout,1,"32-bit",newinsn);
 			}
 			else
 			{
 				/* other jcc'often use a 2-byte opcode for far jmps (which is what spri will emit) */
- 				emit_relocation(fileIRp, fout,2,"32-bit",newinsn);
+				emit_relocation(fileIRp, fout,2,"32-bit",newinsn);
 			}
 		}
 	}
@@ -357,16 +357,16 @@ void emit_jump(FileIR_t* fileIRp, ostream& fout, DISASM& disasm, Instruction_t* 
 // needs relocation info.
 		if(complete_instr.compare("call 0x00000000")==0 ||
 		   complete_instr.compare("jmp 0x00000000")==0
- 		  )
+		  )
 		{
 			// just ignore these bogus instructions.
 		}
 		else
 		{
 			if(
-		   	   disasm.Instruction.Opcode==0xeb || 	 // jmp with 8-bit addr 
-		   	   disasm.Instruction.Opcode==0xe8 || 	 // jmp with 32-bit addr 
-		   	   disasm.Instruction.Opcode==0xe9 	 // call with 32-bit addr
+			   disasm.Instruction.Opcode==0xeb || 	 // jmp with 8-bit addr 
+			   disasm.Instruction.Opcode==0xe8 || 	 // jmp with 32-bit addr 
+			   disasm.Instruction.Opcode==0xe9 	 // call with 32-bit addr
 			  )
 			{
 				emit_relocation(fileIRp, fout,1,"32-bit",newinsn);
@@ -424,7 +424,7 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 	string complete_instr=string(disasm.CompleteInstr);
 	string address_string=string(disasm.Argument1.ArgMnemonic);
 
-        /* Emit any callback functions */
+	/* Emit any callback functions */
 	if (!newinsn->GetCallback().empty())
 	{
 		fout << "\t"+label+"\t () " << newinsn->GetCallback() << " # acts as a call <callback> insn" << endl;
@@ -445,17 +445,17 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 	}
 
 	/* if it's a branch instruction, we have extra work to do */
-        else if(
-                (disasm.Instruction.BranchType!=0) &&                  // it is a branch
-                (disasm.Instruction.BranchType!=RetType) &&            // and not a return
-                (disasm.Argument1.ArgType & CONSTANT_TYPE)!=0          // and has a constant argument type 1
-          )
+	else if(
+		(disasm.Instruction.BranchType!=0) &&                  // it is a branch
+		(disasm.Instruction.BranchType!=RetType) &&            // and not a return
+		(disasm.Argument1.ArgType & CONSTANT_TYPE)!=0          // and has a constant argument type 1
+	  )
 	{
 		emit_jump(fileIRp, fout, disasm,newinsn,old_insn, original_target, emit_later);
 	}
 	else
 	{
-		/* no target, just emit the instrution */
+		/* no target, just emit the instruction */
 
 		/* beaEngine kinda sucks and does some non-nasmness. */
 		
@@ -528,6 +528,19 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 	{
 		Relocation_t* this_reloc=*it;
 		emit_relocation(fileIRp, fout, this_reloc->GetOffset(),this_reloc->GetType(), newinsn);
+	}
+
+	ICFS_t *IB_targets = newinsn->GetIBTargets();
+	if (NULL != IB_targets) 
+	{
+		if (IB_targets->IsComplete())
+		{
+			// Iterate through all IB targets and produce SPRI rules for IBTL (IB Target Limitation).
+			for (InstructionSet_t::iterator TargIter = IB_targets->begin(); TargIter != IB_targets->end(); ++TargIter)
+			{
+			    fout << "\t" << labelfy(newinsn) << " IL " << labelfy(*TargIter) << endl;
+			}
+		}
 	}
 
 	return original_target;
@@ -636,7 +649,7 @@ static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& f
 			// use the better qualify address to check for file matches.
 			fout << "# because has indir "<<endl;
 			fout << better_qualify_address(fileIRp,newinsn->GetIndirectBranchTargetAddress()) 
-		     	     <<" -> ."<<endl;
+			     <<" -> ."<<endl;
 		}
 
 		/* i don't understand this part.  hopefully this is right */
@@ -654,8 +667,8 @@ static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& f
 		if (ibts.find(*old_insn->GetAddress()) == ibts.end() && !redirected_ibt && !redirected_addr)
 		{
 
-		   	// with ILR turned off, we don't try to redirect to 0
-		   	if(with_ilr)
+			// with ILR turned off, we don't try to redirect to 0
+			if(with_ilr)
 			{	
 				fout << "# eliding, no indirect targets"<<endl;
 				fout << qualified_addressify(fileIRp, newinsn) <<" -> 0x0 " <<endl; 
@@ -663,7 +676,7 @@ static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& f
 			else
 			{
 				fout << "# skipping elide because ilr is off (in this module) and "
-				        "no indirect targets, but emitting a rule anyhow"<<endl;
+					"no indirect targets, but emitting a rule anyhow"<<endl;
 				fout << qualified_addressify(fileIRp, newinsn) <<" ->  ."  << endl;
 			}
 			
@@ -734,7 +747,7 @@ static void generate_insn_to_insn_maps(FileIR_t *fileIRp, FileIR_t *orig_fileIRp
 	 * we do it in two steps.  the first step is to make a map from ids in the original code 
 	 * to instructions in the original code 
 	 * the second step is to is to create the final mapping using the first map 
- 	 */
+	 */
 
 	map<db_id_t,Instruction_t*> idMap;
 
@@ -799,7 +812,7 @@ void FileIR_t::GenerateSPRI(ostream &fout, bool with_ilr)
 		++it
 	   )
 	{
-                        File_t* the_file=*it;
+			File_t* the_file=*it;
 
 			if(the_file->GetBaseID()==fileptr->orig_fid)
 			{
