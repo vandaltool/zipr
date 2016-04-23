@@ -29,13 +29,10 @@
 # Expiration of SBIR Data Rights Period __16-JUNE-2021______.
 #
 
+ANALYSIS_DIR=$1  # fully-qualified path for peasoup_executable_directory_XXX
+PROG=$2          # cat.protected
 
-USER=$1          # user name
-PROG=$2          # cat_1324
-JOBID=$3         # cat.1324
-ANALYSIS_DIR=$4  # fully-qualified path for peasoup_executable_directory_XXX
-
-USER_DOWNLOAD_DIR=/tmp/zest/$USER/download
+USER_DOWNLOAD_DIR=/tmp/zest_protected/download/$$
 
 INSTALLER_SCRIPT=$PROG.install.sh
 
@@ -64,5 +61,10 @@ ln -s $ANALYSIS_DIR analysis_dir
 cd $USER_DOWNLOAD_DIR
 tar -hcvf $PROG.tar $INSTALLER_DIR
 gzip $PROG.tar
-mv $PROG.tar.gz $PROG.tgz
+mv $PROG.tar.gz "${ANALYSIS_DIR}/${PROG}.tgz"
+
+# cleanup
+#if [ ! -z $USER_DOWNLOAD_DIR ]; then
+#	rm -fr "$USER_DOWNLOAD_DIR"
+#fi
 

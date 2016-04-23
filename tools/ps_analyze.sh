@@ -32,9 +32,6 @@ warnings=0
 # record statistics in database?
 record_stats=0
 
-# DEFAULT USER NAME
-USER=default
-
 # DEFAULT TIMEOUT VALUE
 INTEGER_TRANSFORM_TIMEOUT_VALUE=1800
 TWITCHER_TRANSFORM_TIMEOUT_VALUE=1800
@@ -1137,7 +1134,7 @@ cd $newdir
 python $PEASOUP_HOME/tools/gather_stats.py logs/*.log > logs/stats.json
 
 # make sure we only do this once there are no more updates to the peasoup_dir
-perform_step installer none $PEASOUP_HOME/tools/do_installer.sh $USER $DB_PROGRAM_NAME $JOBID $PWD $step_options_installer
+perform_step installer none $PEASOUP_HOME/tools/do_installer.sh $PWD $protected_exe 
 
 cd - > /dev/null 2>&1
 
