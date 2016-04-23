@@ -30,19 +30,14 @@
 #
 
 
-USER=$1          # not used yet
-PROG=$2          # cat
-JOBID=$3         # 1324
+USER=$1          # user name
+PROG=$2          # cat_1324
+JOBID=$3         # cat.1324
 ANALYSIS_DIR=$4  # fully-qualified path for peasoup_executable_directory_XXX
 
 USER_DOWNLOAD_DIR=/tmp/zest/$USER/download
 
 INSTALLER_SCRIPT=$PROG.install.sh
-
-INSTALLER="/download/$JOBID.tgz"
-
-# scrub the peasoup directory before making a tarball
-$PEASOUP_HOME/tools/ps_scrub.sh $ANALYSIS_DIR
 
 # tarball format:
 #   cat.installer/cat.install.sh
@@ -51,6 +46,9 @@ ANALYSIS_LOCAL_DIR=$(dirname $ANALYSIS_DIR)
 INSTALLER_DIR=$PROG.installer
 
 mkdir -p $USER_DOWNLOAD_DIR/$INSTALLER_DIR 2>/dev/null
+
+# scrub the peasoup directory before making a tarball
+$PEASOUP_HOME/tools/ps_scrub.sh $ANALYSIS_DIR
 
 # get rid of any previous tarballs
 cd $USER_DOWNLOAD_DIR/$INSTALLER_DIR
@@ -64,9 +62,7 @@ ln -s $ANALYSIS_DIR analysis_dir
 
 # make the tarball
 cd $USER_DOWNLOAD_DIR
-tar -hcvf $JOBID.tar $INSTALLER_DIR
-gzip $JOBID.tar
-mv $JOBID.tar.gz $JOBID.tgz
+tar -hcvf $PROG.tar $INSTALLER_DIR
+gzip $PROG.tar
+mv $PROG.tar.gz $PROG.tgz
 
-# update the database
-$PEASOUP_HOME/tools/db/job_spec_update_installer.sh $JOBID $INSTALLER

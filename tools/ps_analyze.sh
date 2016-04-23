@@ -736,7 +736,7 @@ fi
 #
 # record the new program's name
 #
-export stratafied_exe=$1
+export protected_exe=$1
 shift
 
 #
@@ -805,7 +805,7 @@ adjust_lib_path
 
 
 # make sure we overwrite out output file one way or another
-rm -f $stratafied_exe
+rm -f $protected_exe
 
 # and switch to that dir
 cd $newdir
@@ -882,8 +882,8 @@ perform_step concolic none $PEASOUP_HOME/tools/do_concolic.sh a -z $PEASOUP_UMBR
 # get some simple info for the program
 #	
 if [ -z $DB_PROGRAM_NAME ]; then
-	DB_PROGRAM_NAME=`basename $orig_exe.$$ | sed "s/[^a-zA-Z0-9]/_/g"`
-	DB_PROGRAM_NAME="psprog_$DB_PROGRAM_NAME"
+#	DB_PROGRAM_NAME=`basename $orig_exe | sed "s/[^a-zA-Z0-9]/_/g"`
+	DB_PROGRAM_NAME=`basename $protected_exe | sed "s/[^a-zA-Z0-9]/_/g"`
 fi
 MD5HASH=`$PS_MD5SUM $newname.ncexe | cut -f1 -d' '`
 
@@ -991,7 +991,7 @@ fi
 #
 # Run script to setup manual tests
 #
-perform_step manual_test none $PEASOUP_HOME/tools/do_manualtests.sh $name $stratafied_exe $manual_test_script $manual_test_coverage_file
+perform_step manual_test none $PEASOUP_HOME/tools/do_manualtests.sh $name $protected_exe $manual_test_script $manual_test_coverage_file
 
 #
 # remove the parts of the annotation file not needed at runtime
@@ -1129,7 +1129,7 @@ else
 fi
 
 # copy output file into requested location.
-cp $my_outfile $stratafied_exe
+cp $my_outfile $protected_exe
 
 cd $newdir
 
@@ -1137,7 +1137,8 @@ cd $newdir
 python $PEASOUP_HOME/tools/gather_stats.py logs/*.log > logs/stats.json
 
 # make sure we only do this once there are no more updates to the peasoup_dir
-perform_step installer none $PEASOUP_HOME/tools/do_installer.sh $USER $DB_PROGRAM_NAME $JOBID $PWD
+perform_step installer none $PEASOUP_HOME/tools/do_installer.sh $USER $DB_PROGRAM_NAME $JOBID $PWD $step_options_installer
+
 cd - > /dev/null 2>&1
 
 
@@ -1151,7 +1152,7 @@ check_steps_completed
 #
 # return success if we created a script to invoke the pgm and zipr is off. 
 #
-if [ -f $stratafied_exe ]; then 
+if [ -f $protected_exe ]; then 
 	if [ $errors = 1 ]; then
 		echo
 		echo
