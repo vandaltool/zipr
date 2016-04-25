@@ -18,7 +18,7 @@ realpath() {
 # set default values for 
 ##################################################################################
 
-initial_on_phases="stratafy_with_pc_confine create_binary_script is_so gather_libraries meds_static pdb_register fill_in_cfg fill_in_indtargs clone fix_calls generate_spri spasm fast_annot fast_spri"
+initial_on_phases="stratafy_with_pc_confine create_binary_script is_so gather_libraries meds_static pdb_register fill_in_cfg fill_in_indtargs clone fix_calls generate_spri spasm fast_annot fast_spri preLoaded_ILR1 preLoaded_ILR2"
 
 ##################################################################################
 
@@ -114,7 +114,7 @@ adjust_lib_path()
 
 
 	# also, add newdir to the ld-library path for analysis.
-	LD_LIBRARY_PATH=$NEWPATH:$PWD/$newdir
+	export LD_LIBRARY_PATH=$NEWPATH:$PWD/$newdir
 }
 
 check_step_option()
@@ -244,8 +244,9 @@ check_options()
 				if [ "X$2" = "Xzipr" ]; then
 					echo using Zipr backend
 					export backend="zipr"
-					phases_spec=" $phases_spec stratafy_with_pc_confine=off generate_spri=off spasm=off fast_annot=off zipr=on\
-						preLoaded_ILR1=off  preLoaded_ILR2=off fast_spri=off "
+					phases_spec=" $phases_spec stratafy_with_pc_confine=off generate_spri=off spasm=off fast_annot=off zipr=on preLoaded_ILR1=off  preLoaded_ILR2=off fast_spri=off "
+					phases_spec=${phases_spec/preLoaded_ILR1=on/}
+					phases_spec=${phases_spec/preLoaded_ILR2=on/}
 					step_options_gather_libraries="$step_options_gather_libraries --main_exe_only"
 				elif [ "X$2" = "Xstrata" ]; then
 					echo using Strata backend
