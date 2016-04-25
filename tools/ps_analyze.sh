@@ -835,6 +835,7 @@ perform_step pc_confine  none $PEASOUP_HOME/tools/update_env_var.sh STRATA_PC_CO
 perform_step isr 	 pc_confine $PEASOUP_HOME/tools/update_env_var.sh STRATA_PC_CONFINE_XOR 1
 perform_step watchdog 	 signconv_func_monitor $PEASOUP_HOME/tools/update_env_var.sh STRATA_WATCHDOG $watchdog_val
 perform_step is_so 	 mandatory $PEASOUP_HOME/tools/update_env_var.sh STRATA_IS_SO $($PEASOUP_HOME/tools/is_so.sh a.ncexe)
+perform_step ibtl  ilr $PEASOUP_HOME/tools/update_env_var.sh STRATA_IBTL 1
 
 # turn on sign conversion function monitoring
 perform_step signconv_func_monitor heaprand $PEASOUP_HOME/tools/update_env_var.sh STRATA_NUM_HANDLE 1
