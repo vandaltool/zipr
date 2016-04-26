@@ -445,22 +445,26 @@ void fill_in_scoops(FileIR_t *firp)
 			fout<<"Found that section "<<elfiop->sections[secndx]->get_name()<<" is both writeable and executable.  Program is inherently unsafe!"<<endl;
 		}
 
+#if 0
 		/* executable sections handled by other bits. */
         	if(elfiop->sections[secndx]->isExecutable()) 
 		{
 			cout<<"Skipping scoop for section (executable) "<<elfiop->sections[secndx]->get_name()<<endl;
                 	continue;
 		}
+		// we decided to skip BSS for a bad reason.  trying again.
         	if(elfiop->sections[secndx]->isBSS())
 		{
 			cout<<"Skipping bss section: "<<elfiop->sections[secndx]->get_name()<<endl;
                 	continue;
 		}
+		// we decided to skip tls for a bad reason.  trying again.
         	if(elfiop->sections[secndx]->isThreadLocal())
 		{
 			cout<<"Skipping tls section (executable) "<<elfiop->sections[secndx]->get_name()<<endl;
                 	continue;
 		}
+#endif
 
 		/* name */
 		string name=elfiop->sections[secndx]->get_name();
