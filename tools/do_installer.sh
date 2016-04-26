@@ -52,16 +52,25 @@ cd $USER_DOWNLOAD_DIR/$INSTALLER_DIR
 rm -fr *.tar *.tgz *peasoup* *instal* *analysis*
 
 # make install script
-cp $PEASOUP_HOME/tools/ps_install.sh $PROG.install.sh
-chmod +x $PROG.install.sh
+installer_name=${PROG}.installer.sh
+cp $PEASOUP_HOME/tools/ps_install.sh ${ANALYSIS_DIR}/${installer_name}
+chmod +x ${ANALYSIS_DIR}/${installer_name}
+
+# create self-extracting archive/installer
+makeself --notemp ${ANALYSIS_DIR} ${PROG}.installer "Self-extracting installer for ${PROG}" ./${installer_name}
+
+mv ${PROG}.installer ${ANALYSIS_DIR}
+
 # link to analysis dir
-ln -s $ANALYSIS_DIR analysis_dir
+#ln -s $ANALYSIS_DIR analysis_dir
+
+# create self installing archive
 
 # make the tarball
-cd $USER_DOWNLOAD_DIR
-tar -hcvf $PROG.tar $INSTALLER_DIR
-gzip $PROG.tar
-mv $PROG.tar.gz "${ANALYSIS_DIR}/${PROG}.tgz"
+#cd $USER_DOWNLOAD_DIR
+#tar -hcvf $PROG.tar $INSTALLER_DIR
+#gzip $PROG.tar
+#mv $PROG.tar.gz "${ANALYSIS_DIR}/${PROG}.zar"
 
 # cleanup
 #if [ ! -z $USER_DOWNLOAD_DIR ]; then
