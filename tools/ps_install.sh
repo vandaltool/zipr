@@ -40,7 +40,9 @@ echo "Type any key to continue"
 read anykey
 
 # in case it's not there yet
-mkdir -p $INSTALL_DIR
+if [ ! -d "$INSTALL_DIR" ]; then
+	mkdir -p $INSTALL_DIR 
+fi
 
 chmod +x ./a.stratafied
 
@@ -49,20 +51,42 @@ if [ -d "$INSTALL_DIR/${PROG}_analysis" ]; then
 	rm -fr "$INSTALL_DIR/${PROG}_analysis"
 fi
 
+# copy the peasoup dir
 cp -r . $INSTALL_DIR/${PROG}_analysis
-#mv analysis_dir $INSTALL_DIR/${PROG}_analysis
 echo "$INSTALL_DIR/${PROG}_analysis/ps_run.sh $INSTALL_DIR/${PROG}_analysis \"\$0\" \"\$@\"" > $INSTALL_DIR/$PROG
 chmod +x $INSTALL_DIR/$PROG
 
-create_desktop_shortcut ${PROG} ${INSTALL_DIR}/${PROG}
+# if X11 applications detected, create desktop shortcut
+ldd ./a.ncexe.orig | grep X11 >/dev/null 2>&1
 if [ $? -eq 0 ]; then
-	echo Desktop shortcut succesfully created in $DESKTOP_ZEPHYR_DIR
-else
-	echo Could not create desktop shortcut in $DESKTOP_ZEPHYR_DIR
+	create_desktop_shortcut ${PROG} ${INSTALL_DIR}/${PROG}
+	if [ $? -eq 0 ]; then
+		echo X application detected - desktop shortcut succesfully created in $DESKTOP_ZEPHYR_DIR
+	else
+		echo Could not create desktop shortcut in $DESKTOP_ZEPHYR_DIR
+	fi
 fi
 
-echo ""
 echo ================================================================
 echo "Installation complete"
 echo ================================================================
+
+# cleanup 
+
+#
+# note that we are in the archive
+#
+
+# save current dir
+current_dir=$(pwd)
+
+# remove files in the current directory
+rm -r * 
+
+# get out of current dir so that we can erase it
+cd /tmp
+rmdir "${current_dir}"
+
+# remove temporary installer
+rm -f /tmp/${PROG}.installer
 
