@@ -27,7 +27,8 @@ BASE_PKGS="
   screen
   libxml2-dev
   libstdc++6:i386
-  coreutils"
+  coreutils
+  makeself"
 # TODO: don't require i386 libraries if not running MEDS (eg using IDA server)
 
 # For clients of IRDB
