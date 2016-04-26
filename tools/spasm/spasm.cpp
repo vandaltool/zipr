@@ -58,7 +58,7 @@ static string insertRedirectRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:
 static string instructionRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+([*][*])[[:blank:]]+.*$";
 static string callbackRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+([(][)])[[:blank:]]+.*$";
 static string relocRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+([r][l])[[:blank:]]+.*$";
-static string ibtlRegex = "^[[:blank:]]*([a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+([I][L])[[:blank:]]+.*$";
+static string ibtlRegex = "^[[:blank:]]*([a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+([I][L])[[:blank:]]+([a-zA-Z][a-zA-Z0-9_]*).*$";
 
 static regex_t coPattern, erPattern, orPattern, irPattern, insPattern, cbPattern, rlPattern, ibtlPattern;
 
@@ -671,7 +671,7 @@ static void printSPRI(const string &symbolFilename, const string &outFileName)
 
 	spasmline_t sline;
 
-	while(getNextSpasmLine(sline))
+	while (getNextSpasmLine(sline))
 	{
 		int incSize = 0;
 
@@ -784,6 +784,29 @@ static void printSPRI(const string &symbolFilename, const string &outFileName)
 			outFile << spriline << endl;
 			continue;
 		}
+		else if (IBTLop)
+		{
+		    // We are parsing:  Label1 IL Label2.
+		    //  The Label1 was in address and was xformed to SymMap[address] above.
+		    if (symMap.find(rhs) == symMap.end())
+		    {
+			stringstream ss;
+			ss << sline.lineNum;
+			throw SpasmException("ERROR: unresolved symbol " + rhs + " for symbol referenced on aspri line " + ss.str());
+		    }
+
+		    if (comments.empty())
+			comments = "#";
+		    else
+			comments += " ; ";
+
+		    comments += "dest addr = <" + rhs + ">";
+
+		    spriline += symMap[rhs] + " ";
+		    spriline += ("\t" + comments);
+		    outFile << spriline << endl;
+		    continue;
+		}
 
 		//grabbing bin can only happen here since the above "rl" check does not use any assembly
 		//checking after results in buffer overrun of bin. It is assumed from this point on
@@ -807,27 +830,19 @@ static void printSPRI(const string &symbolFilename, const string &outFileName)
 		}
 		//terminating and non-terminating redirects may have symbols on the right hand side
 		//resolve them.
-		else if (op.compare("->") == 0 || TerminatingRedirectOp || IBTLop)
+		else if (op.compare("->") == 0 || TerminatingRedirectOp)
 		{
-			if (IBTLop) {
-				// We are parsing:  Label1 IL Label2.
-				//  The Label1 was in address and was xformed to SymMap[address] above.
-				// We will skip the special-case code for -> and -| lines.
-				;
-			}
-			else
-			{
-				//If the current disassembled instruction is not nop, then something is out of sync
-				stringstream ss;
-				ss << sline.lineNum;
-				if (binLine.hex_str.compare("1 90") != 0)
-				    throw SpasmException(string("ERROR: Bug detected in getSPRI, bin out of sync with spasm lines. ") +
-				    "Expected a place holder nop (1 90) for a SPRI redirect, but found " + binLine.hex_str + ". " +
-				    "Sync error occurs on line " + ss.str() + " of the SPASM input file");
+			//If the current disassembled instruction is not nop, then something is out of sync
+			stringstream ss;
+			ss << sline.lineNum;
+			if (binLine.hex_str.compare("1 90") != 0)
+			    throw SpasmException(string("ERROR: Bug detected in getSPRI, bin out of sync with spasm lines. ") +
+			    "Expected a place holder nop (1 90) for a SPRI redirect, but found " + binLine.hex_str + ". " +
+			    "Sync error occurs on line " + ss.str() + " of the SPASM input file");
 
-				//non-entry point redirects require one byte of memory
-				incSize = 1;
-			}
+			//non-entry point redirects require one byte of memory
+			incSize = 1;
+
 			if (rhs.find("+") != string::npos || rhs[0] == '0')
 			{
 				spriline += rhs;
