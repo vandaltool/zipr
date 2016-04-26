@@ -54,26 +54,15 @@ cp -r . $INSTALL_DIR/${PROG}_analysis
 echo "$INSTALL_DIR/${PROG}_analysis/ps_run.sh $INSTALL_DIR/${PROG}_analysis \"\$0\" \"\$@\"" > $INSTALL_DIR/$PROG
 chmod +x $INSTALL_DIR/$PROG
 
-echo "Create desktop shortcut (yes|no)?"
-read answer
-case "$answer" in 
-	y|yes)
-		create_desktop_shortcut ${PROG} ${INSTALL_DIR}/${PROG}
-		if [ $? -eq 0 ]; then
-			echo Desktop shortcut succesfully created in $DESKTOP_ZEPHYR_DIR
-		else
-			echo Could not create desktop shortcut in $DESKTOP_ZEPHYR_DIR
-		fi
-		;;
-	*)
-		echo No desktop shortcut created
-		;;
-esac
+create_desktop_shortcut ${PROG} ${INSTALL_DIR}/${PROG}
+if [ $? -eq 0 ]; then
+	echo Desktop shortcut succesfully created in $DESKTOP_ZEPHYR_DIR
+else
+	echo Could not create desktop shortcut in $DESKTOP_ZEPHYR_DIR
+fi
 
-echo ""
-echo "Installation complete"
 echo ""
 echo ================================================================
-echo "Type any key to continue"
+echo "Installation complete"
+echo ================================================================
 
-read anykey
