@@ -530,6 +530,7 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 		emit_relocation(fileIRp, fout, this_reloc->GetOffset(),this_reloc->GetType(), newinsn);
 	}
 
+#if 1
 	ICFS_t *IB_targets = newinsn->GetIBTargets();
 	if (NULL != IB_targets) 
 	{
@@ -542,6 +543,7 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 			}
 		}
 	}
+#endif
 
 	return original_target;
 
