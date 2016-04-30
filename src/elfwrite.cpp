@@ -5,6 +5,7 @@
 #include <iostream>
 #include <stdlib.h> 
 #include <string.h>
+#include <algorithm>
 #include <map>
 #include <assert.h>
 #include <sys/mman.h>
@@ -28,11 +29,14 @@ using namespace ELFIO;
 #define PAGE_SIZE 4096
 #endif
 
+
+#if 0
 template <class T> static T page_align(T& in)
 {
 
 	return in&~(PAGE_SIZE-1);
 }
+#endif
 
 
 void ElfWriter::Write(const ELFIO::elfio *elfiop, FileIR_t* firp, const string &out_file, const string &infile)
@@ -44,11 +48,12 @@ void ElfWriter::Write(const ELFIO::elfio *elfiop, FileIR_t* firp, const string &
 
 	CreatePagemap(elfiop, firp, out_file);
 	CreateSegmap(elfiop, firp, out_file);
+	//SortSegmap();
 	virtual_offset_t min_addr=DetectMinAddr(elfiop, firp, out_file);
 
 	LoadEhdr(fin);
 	LoadPhdrs(fin);
-	CreateNewPhdrs();
+	CreateNewPhdrs(min_addr);
 	CreateNewEhdr();
 
 
@@ -129,6 +134,23 @@ void ElfWriter::CreatePagemap(const ELFIO::elfio *elfiop, FileIR_t* firp, const 
 
 	}
 }
+
+void ElfWriter::SortSegmap()
+{
+	// do one interation of a bubble sort to move the segement with the largest bss last.
+	for (unsigned int i=0; i<segvec.size()-1;i++)
+	{
+		int this_bss_size=segvec[i]->memsz-segvec[i]->filesz;
+		int next_bss_size=segvec[i+1]->memsz-segvec[i+1]->filesz;
+
+		if(this_bss_size > next_bss_size)
+		{
+			std::swap(segvec[i],segvec[i+1]);
+		}
+
+	}
+}
+
 void ElfWriter::CreateSegmap(const ELFIO::elfio *elfiop, FileIR_t* firp, const string &out_file)
 {
 	// init some segment vars.

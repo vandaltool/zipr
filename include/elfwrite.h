@@ -64,29 +64,44 @@ class ElfWriter
 		virtual void LoadEhdr(FILE* fin)=0;
 		virtual void LoadPhdrs(FILE* fin)=0;
 		virtual void CreateNewEhdr()=0;
-		virtual void CreateNewPhdrs()=0;
+		virtual void CreateNewPhdrs(libIRDB::virtual_offset_t min_addr)=0;
 		virtual void WriteElf(FILE* fout)=0;
 	
 
 		PageMap_t pagemap;
 		LoadSegmentVector_t segvec;
 
+		template <class T> static T page_align(T& in)
+		{
+
+			return in&~(PAGE_SIZE-1);
+		}
+
+
+
 	private:
 		libIRDB::virtual_offset_t DetectMinAddr(const ELFIO::elfio *elfiop, libIRDB::FileIR_t* firp, const std::string &out_file);
 		void CreatePagemap(const ELFIO::elfio *elfiop, libIRDB::FileIR_t* firp, const std::string &out_file);
 		void CreateSegmap(const ELFIO::elfio *elfiop, libIRDB::FileIR_t* firp, const std::string &out_file);
+		void SortSegmap();
+
 		
 };
 
-class ElfWriter64 : public ElfWriter
+
+// 
+
+
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr>
+class ElfWriterImpl : public ElfWriter
 {
 	public:
 
-		ElfWriter64() { } 
+		ElfWriterImpl() { } 
 	
 	protected:
-		int GetFileHeaderSize()  { return sizeof(ELFIO::Elf64_Ehdr); } 
-		int GetSegHeaderSize()  { return sizeof(ELFIO::Elf64_Phdr); } 
+		int GetFileHeaderSize()  { return sizeof(T_Elf_Ehdr); } 
+		int GetSegHeaderSize()  { return sizeof(T_Elf_Phdr); } 
 		void LoadEhdr(FILE* fin) 
 		{
 			fseek(fin,0,SEEK_SET);
@@ -110,22 +125,24 @@ class ElfWriter64 : public ElfWriter
 			new_ehdr.e_phoff=sizeof(new_ehdr);
 			new_ehdr.e_shstrndx=0;
 		}
-		void CreateNewPhdrs() 
+		void CreateNewPhdrs(libIRDB::virtual_offset_t min_addr) 
 		{
 
+			// create a load segments into the new header list.
 			// assume hdr and phdrs are on first page.
 			unsigned int fileoff=0x1000;
 			for(unsigned int i=0;i<segvec.size();i++)
 			{
-				ELFIO::Elf64_Phdr newphdr=
-					{  /* p_type */ PT_LOAD, 
-					   /* p_flags */(ELFIO::Elf_Word)segvec[i]->m_perms,      
-					   /* p_offset */fileoff,     
-					   /* p_vaddr */(ELFIO::Elf64_Addr)segvec[i]->start_page, 
-					   /* p_paddr */(ELFIO::Elf64_Addr)segvec[i]->start_page, 
-					   /* p_filesz */(ELFIO::Elf_Xword)segvec[i]->filesz, 
-					   /* p_memsz */(ELFIO::Elf_Xword)segvec[i]->memsz, 
-					   /* p_align */0x1000   };
+				T_Elf_Phdr newphdr;
+				memset(&newphdr,0,sizeof(newphdr));
+			   	newphdr.p_type = PT_LOAD; 
+			   	newphdr.p_flags = (ELFIO::Elf_Word)segvec[i]->m_perms;      
+			   	newphdr.p_offset = fileoff;     
+			   	newphdr.p_vaddr = (T_Elf_Addr)segvec[i]->start_page; 
+			   	newphdr.p_paddr = (T_Elf_Addr)segvec[i]->start_page; 
+			   	newphdr.p_filesz = (ELFIO::Elf_Xword)segvec[i]->filesz; 
+			   	newphdr.p_memsz = (ELFIO::Elf_Xword)segvec[i]->memsz; 
+			   	newphdr.p_align=  0x1000;
 
 				new_phdrs.push_back(newphdr);
 
@@ -133,16 +150,19 @@ class ElfWriter64 : public ElfWriter
 				fileoff+=segvec[i]->filesz;
 			}
 
+
+			// go through orig. phdrs any copy any that aren't of type pt_load or pt_hdr
 			for(unsigned int i=0;i<phdrs.size();i++)
 			{
 				// skip any load sections, the irdb tells us what to load.
 				if(phdrs[i].p_type == PT_LOAD)
 					continue;
 
+				// skip phdr section.
 				if(phdrs[i].p_type == PT_PHDR)
 					continue;
 
-				ELFIO::Elf64_Phdr newphdr=phdrs[i];
+				T_Elf_Phdr newphdr=phdrs[i];
 
 				// find offset in loadable segment
 				// using segvec.size() instead of new_phdrs size to search for segments in the new list.
@@ -158,27 +178,31 @@ class ElfWriter64 : public ElfWriter
 				new_phdrs.push_back(newphdr);
 			}
 
-			// specify a load section for the new program's header and phdr
-			ELFIO::Elf64_Phdr newheaderphdr=
-				{  /* p_type */ PT_LOAD,
-				   /* p_flags */(ELFIO::Elf_Word)4,
-				   /* p_offset */0,
-				   /* p_vaddr */(ELFIO::Elf64_Addr)0x40000-PAGE_SIZE,
-				   /* p_paddr */(ELFIO::Elf64_Addr)0x40000-PAGE_SIZE,
-				   /* p_filesz */(ELFIO::Elf_Xword)PAGE_SIZE,
-				   /* p_memsz */(ELFIO::Elf_Xword)PAGE_SIZE,
-				   /* p_align */0x1000   };
 
+			// specify a load section for the new program's header and phdr
+			T_Elf_Phdr newheaderphdr;
+			memset(&newheaderphdr,0,sizeof(newheaderphdr));
+			newheaderphdr.p_type = PT_LOAD;
+			newheaderphdr.p_flags =(ELFIO::Elf_Word)4;
+			newheaderphdr.p_offset =0;
+			newheaderphdr.p_vaddr =(T_Elf_Addr)page_align(min_addr)-PAGE_SIZE;
+			newheaderphdr.p_paddr =(T_Elf_Addr)page_align(min_addr)-PAGE_SIZE;
+			newheaderphdr.p_filesz =(ELFIO::Elf_Xword)PAGE_SIZE;
+			newheaderphdr.p_memsz =(ELFIO::Elf_Xword)PAGE_SIZE;
+			newheaderphdr.p_align =0x1000;
+
+			// create the new phdr
 			new_phdrs.insert(new_phdrs.begin(),newheaderphdr);
-			ELFIO::Elf64_Phdr newphdrphdr=
-				{  /* p_type */ PT_PHDR,
-				   /* p_flags */(ELFIO::Elf_Word)4,
-				   /* p_offset */64,
-				   /* p_vaddr */(ELFIO::Elf64_Addr)0x40000-PAGE_SIZE+64,
-				   /* p_paddr */(ELFIO::Elf64_Addr)0x40000-PAGE_SIZE+64,
-				   /* p_filesz */(ELFIO::Elf_Xword)(new_phdrs.size()+1)*GetSegHeaderSize(),
-				   /* p_memsz */(ELFIO::Elf_Xword)(new_phdrs.size()+1)*GetSegHeaderSize(),
-				   /* p_align */0x1000   };
+			T_Elf_Phdr newphdrphdr;
+			memset(&newphdrphdr,0,sizeof(newphdrphdr));
+			newphdrphdr.p_type = PT_PHDR;
+			newphdrphdr.p_flags =(ELFIO::Elf_Word)4;
+			newphdrphdr.p_offset =64;
+			newphdrphdr.p_vaddr =(T_Elf_Addr)page_align(min_addr)-PAGE_SIZE+sizeof(T_Elf_Ehdr);
+			newphdrphdr.p_paddr =(T_Elf_Addr)page_align(min_addr)-PAGE_SIZE+sizeof(T_Elf_Ehdr);
+			newphdrphdr.p_filesz =(ELFIO::Elf_Xword)(new_phdrs.size()+1)*GetSegHeaderSize();
+			newphdrphdr.p_memsz =(ELFIO::Elf_Xword)(new_phdrs.size()+1)*GetSegHeaderSize();
+			newphdrphdr.p_align =0x1000;
 			new_phdrs.push_back(newphdrphdr);
 
 		}
@@ -205,7 +229,24 @@ class ElfWriter64 : public ElfWriter
 					for(unsigned int j=0;j<new_phdrs[i].p_filesz;j+=PAGE_SIZE)
 					{
 						const PageData_t &page=pagemap[new_phdrs[i].p_vaddr+j];
-						fwrite(page.data.data(), PAGE_SIZE, 1, fout);
+
+						// is it the last page?
+						if(j+PAGE_SIZE < new_phdrs[i].p_filesz)
+						{
+							fwrite(page.data.data(), PAGE_SIZE, 1, fout);
+						}
+						else
+						{
+							// don't write 0's at end of last page 
+							int k=0;
+							for (k=PAGE_SIZE;k>0;k--)
+							{
+								if(page.data[k]!=0)
+									break;
+							}
+							std::cout<<"optimizing last page write to size k="<<std::hex<<k<<std::endl;
+							fwrite(page.data.data(), k+1, 1, fout);
+						}
 				
 					}
 				}
@@ -214,27 +255,14 @@ class ElfWriter64 : public ElfWriter
 
 	private:
 
-		ELFIO::Elf64_Ehdr ehdr;
-		ELFIO::Elf64_Ehdr new_ehdr;
-		std::vector<ELFIO::Elf64_Phdr> phdrs;
-		std::vector<ELFIO::Elf64_Phdr> new_phdrs;
+		T_Elf_Ehdr ehdr;
+		T_Elf_Ehdr new_ehdr;
+		std::vector<T_Elf_Phdr> phdrs;
+		std::vector<T_Elf_Phdr> new_phdrs;
 };
 
-class ElfWriter32 : public ElfWriter
-{
-	public:
-
-		ElfWriter32() { } 
-	
-	protected:
-		int GetFileHeaderSize()  { return sizeof(ELFIO::Elf32_Ehdr); } 
-		int GetSegHeaderSize()  { return sizeof(ELFIO::Elf32_Phdr); } 
-		void LoadEhdr(FILE* fin) {}
-		void LoadPhdrs(FILE* fin) {}
-		virtual void CreateNewEhdr() {}
-		void CreateNewPhdrs() {}
-		void WriteElf(FILE* fout) {}
-};
+typedef class ElfWriterImpl<ELFIO::Elf64_Ehdr, ELFIO::Elf64_Phdr, ELFIO::Elf64_Addr> ElfWriter64;
+typedef class ElfWriterImpl<ELFIO::Elf32_Ehdr, ELFIO::Elf32_Phdr, ELFIO::Elf32_Addr> ElfWriter32;
 
 
 

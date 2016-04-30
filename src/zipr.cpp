@@ -1336,7 +1336,7 @@ void ZiprImpl_t::WriteDollops()
 			start = entry_to_write->Place();
 			end = _PlopDollopEntry(entry_to_write);
 			should_end = start + _DetermineWorstCaseInsnSize(entry_to_write->Instruction(), false);
-			assert(end == should_end);
+			assert(end <= should_end);
 		}
 	}
 }
@@ -2627,6 +2627,8 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 	// create the output file in a totally different way using elfwriter. later we may 
 	// use this instead of the old way.
 
+
+	string elfwriter_filename="c.out";
 	ElfWriter *ew=NULL;
 	if(m_firp->GetArchitectureBitWidth()==64)
 	{
@@ -2638,8 +2640,11 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 	}
 	else assert(0);
 
-	ew->Write(elfiop,m_firp,"c.out", "a.ncexe");
+	ew->Write(elfiop,m_firp,elfwriter_filename, "a.ncexe");
 	delete ew;
+	string chmod_cmd=string("chmod +x "); 
+	chmod_cmd=chmod_cmd+elfwriter_filename;
+	system(chmod_cmd.c_str());
 }
 
 
