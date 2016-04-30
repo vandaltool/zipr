@@ -672,6 +672,43 @@ check_for_bad_funcs()
 	done
 }
 
+compatcheck()
+{
+	infile=$1
+
+	if [ ! -f $infile ]; then
+		echo File not found: $infile
+		usage
+		exit 2
+	fi
+
+	file $1 |egrep  "ELF.*executable" > /dev/null 2>&1 
+	if [ $? = 0 ]; then
+		echo Detected ELF file...
+		return
+	fi
+	file $1 |egrep  "ELF.*shared object" > /dev/null 2>&1 
+	if [ $? = 0 ]; then
+		echo Detected ELF shared object...
+		return
+	fi
+	file $1 |egrep  "CGC.*executable" > /dev/null 2>&1 
+	if [ $? = 0 ]; then
+		echo Detected CGCEF file...
+		return
+	fi
+
+
+	echo ------------------------
+	echo "Input file ($infile) failed compatability check.  Cannot protect this file:"
+	file $infile
+	echo ------------------------
+	usage
+	exit 2
+
+}
+
+
 #
 # turn on debugging output if it's requested.
 #
@@ -742,6 +779,11 @@ shift
 #
 check_options "$@"
 
+
+#
+# check for input file existance and file type
+#
+compatcheck $orig_exe
 
 #
 # new program
@@ -842,7 +884,7 @@ perform_step signconv_func_monitor heaprand $PEASOUP_HOME/tools/update_env_var.s
 
 
 #
-# turn off runtime prrotections for BED. turn off runtime prrotections for BED. turn off runtime prrotections for BED.
+# turn off runtime protections for BED. turn off runtime prrotections for BED. turn off runtime prrotections for BED.
 #
 STRATA_DOUBLE_FREE=0
 STRATA_HEAPRAND=0
