@@ -239,7 +239,7 @@ class ElfWriterImpl : public ElfWriter
 						{
 							// don't write 0's at end of last page 
 							int k=0;
-							for (k=PAGE_SIZE;k>0;k--)
+							for (k=PAGE_SIZE-1;k>=0;k--)
 							{
 								if(page.data[k]!=0)
 									break;
