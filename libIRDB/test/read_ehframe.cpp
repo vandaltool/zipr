@@ -583,6 +583,12 @@ void print_lsda_handlers(lsda_header_info* info, unsigned char* p)
 {
 	// change to lsda section;
 	uintptr_t p_addr=((uintptr_t)p+(uintptr_t)eh_offset);
+
+	// if the action table is size 0, avoid calling addr_to_ptr_to_data on it, because it may assert, 
+	// and we wouldn't do anything (except 0 iterations of the loop below) with the results anyhow.
+	if(p_addr == (uintptr_t)info->action_table)
+		return;
+
 	p=(unsigned char*)addr_to_ptr_to_data((uintptr_t)p_addr);
 	// use -1 in case info->action table represents the end of a section.
 	uintptr_t action_table_in_data=(uintptr_t)addr_to_ptr_to_data((uintptr_t)info->action_table-1);
@@ -591,8 +597,6 @@ void print_lsda_handlers(lsda_header_info* info, unsigned char* p)
   	while (
 			// use <= because we we used -1 3 lines above.
 			((uintptr_t)p) <=  (uintptr_t)action_table_in_data
-//		((uintptr_t)p+(uintptr_t)p_offset) <  (uintptr_t)info->action_table
-//		(uintptr_t)ptr_to_data_to_addr((uintptr_t)p) < (uintptr_t)info->action_table
 		)
     	{
       		_Unwind_Ptr cs_start=0, cs_len=0, cs_lp=0;
@@ -774,8 +778,6 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
 				eh_offset=addr_to_p_offset(lsda);
 				unsigned char* lsda_p=parse_lsda_header (
 					(unsigned char*)addr_to_ptr_to_data(lsda)
-// broken because lsda may be in a different section.
-//(unsigned char*)((uintptr_t)eh_frame_data+(uintptr_t)lsda-(uintptr_t)eh_frame_addr)
 					, &info, ob, this_fde);
 				print_lsda_handlers(&info, lsda_p); 
 				eh_offset=save_eh_offset;
