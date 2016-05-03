@@ -1,29 +1,18 @@
 #!/bin/bash
 
 #
-# Default configuration for CGC Scored Event 2
+# Default configuration for CFE:
+#  - SCFI
 #
-# HLX :   Heap padding (malloc_padding=size<<5 + 32 bytes, allocate_padding=4096 bytes)
-# SLX :   Stack padding (64 bytes)
-# SCFI:   Selective CFI (indirect branches)
-# IF  :   Input filtering (64 bytes max at a time for receive())
-# SBX :   Sandbox crashing instructions (only if detects a crash)
-#
-# To turn on sandboxing for crashing inputs that Grace finds:
-#   (1) generate a code-sonar warnings file, e.g., crash.cso
-#   (2) invoke this script with:  --step-option watch_allocate:--warning_file=<fully_qualified_path_of_crash.cso>
-#
-# Steps:
-#    p1transform
-#    selective_cfi
 
 # for selective_cfi, turn on env. var
 SCFI=off
-case $* in 
+case "$*" in 
    *selective_cfi=on* ) 
-       export FIX_CALLS_FIX_ALL_CALLS=1
-       SCFI=on
-       echo "SCFI is on -- turn on FIX_CALLS_FIX_ALL_CALLS=1";;
+	export FIX_CALLS_FIX_ALL_CALLS=1
+	SCFI=on
+	echo "SCFI is on -- turn on FIX_CALLS_FIX_ALL_CALLS=1"
+	;;
 esac
 
 $PEASOUP_HOME/tools/ps_analyze.sh $* 	\
@@ -60,4 +49,5 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	\
 	--step fast_annot=off	\
 	--step spasm=off	\
 	--step ilr=off	\
+	--step-option zipr:--output=elfwriter \
 	--backend zipr

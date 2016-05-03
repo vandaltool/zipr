@@ -1167,6 +1167,10 @@ if [ $zipr_on -eq 0 ]; then
 	my_outfile=$newdir/$name.sh
 else
 	my_outfile=$newdir/b.out.addseg
+	case "$step_options_zipr" in
+		*output=elfwriter*)
+			my_outfile=$newdir/c.out
+	esac
 fi
 
 # copy output file into requested location.
