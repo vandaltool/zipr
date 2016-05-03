@@ -57,6 +57,7 @@ class ZiprImpl_t : public Zipr_t
 			m_architecture("architecture"),
 			m_seed("seed", 0),
 			m_dollop_map_filename("dollop_map_filename", "dollop.map")
+
 		{ 
 			Init();
  		};
@@ -389,6 +390,7 @@ class ZiprImpl_t : public Zipr_t
 		std::set<UnresolvedPinned_t> two_byte_pins; 
 		std::map<UnresolvedPinned_t,RangeAddress_t> five_byte_pins; 
 
+		// a manager for all dollops
 		ZiprDollopManager_t m_dollop_mgr;
 
 		// final mapping of instruction to address.

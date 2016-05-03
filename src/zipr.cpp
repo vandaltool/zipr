@@ -163,6 +163,8 @@ void ZiprImpl_t::Init()
 	RecordPinnedInsnAddrs();
 }
 
+
+
 ZiprImpl_t::~ZiprImpl_t()
 {
 	delete m_firp;
@@ -219,8 +221,15 @@ void ZiprImpl_t::CreateBinaryFile()
 {
 	m_stats = new Stats_t();
 
+
+	/* load the elfiop for the orig. binary */
 	lo = new pqxx::largeobject(m_firp->GetFile()->GetELFOID());
 	lo->to_file(m_pqxx_interface.GetTransaction(),string(m_output_filename).c_str());
+
+	/* use ELFIO to load the sections */
+	assert(elfiop);
+	elfiop->load(m_output_filename);
+	ELFIO::dump::section_headers(cout,*elfiop);
 
 /* have to figure this out.  we'll want to really strip the binary
  * but also remember the strings. 
@@ -393,14 +402,6 @@ RangeAddress_t ZiprImpl_t::extend_section(ELFIO::section *sec, ELFIO::section *n
 
 void ZiprImpl_t::FindFreeRanges(const std::string &name)
 {
-	/* use ELFIO to load the sections */
-//	elfiop=new ELFIO::elfio;
-
-	assert(elfiop);
-	elfiop->load(name);
-//	ELFIO::dump::header(cout,*elfiop);
-	ELFIO::dump::section_headers(cout,*elfiop);
-
 	RangeAddress_t last_end=0;
 	RangeAddress_t max_addr=0;
 
@@ -1335,7 +1336,7 @@ void ZiprImpl_t::WriteDollops()
 			start = entry_to_write->Place();
 			end = _PlopDollopEntry(entry_to_write);
 			should_end = start + _DetermineWorstCaseInsnSize(entry_to_write->Instruction(), false);
-			assert(end == should_end);
+			assert(end <= should_end);
 		}
 	}
 }
@@ -2266,7 +2267,6 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntryWithCallback(
 	RangeAddress_t override_place)
 {
 	RangeAddress_t at = entry->Place(), originalAt = entry->Place();
-	Instruction_t *insn = entry->Instruction();
 
 	if (override_place != 0)
 		at = originalAt = override_place;
@@ -2460,19 +2460,44 @@ void ZiprImpl_t::WriteScoop(section* sec, FILE* fexe)
 	}
 }
 
+static bool InScoop(virtual_offset_t addr, DataScoop_t* scoop)
+{
+	if(scoop->GetStart()->GetVirtualOffset()==0)
+		return false;
+
+	// check before
+	if(addr < scoop->GetStart()->GetVirtualOffset())
+		return false;
+	if(scoop->GetEnd()->GetVirtualOffset()<addr)
+		return false;
+	return true;
+
+}
+
 void ZiprImpl_t::FillSection(section* sec, FILE* fexe)
 {
 	RangeAddress_t start=sec->get_address();
 	RangeAddress_t end=sec->get_size()+start;
+	DataScoop_t* scoop=NULL;
 
 	if (m_verbose)
 		printf("Dumping addrs %p-%p\n", (void*)start, (void*)end);
 	for(RangeAddress_t i=start;i<end;i++)
 	{
+		if(scoop==NULL || InScoop(i,scoop))
+		{
+			scoop=FindScoop(i);
+		}
+
 		if(!memory_space.IsByteFree(i))
 		{
 			// get byte and write it into exe.
 			char  b=memory_space[i];
+		
+			// update related scoop, if there is one 
+			if(scoop)
+				scoop->GetContents()[i-scoop->GetStart()->GetVirtualOffset()]=b;
+
 			int file_off=sec->get_offset()+i-start;
 			fseek(fexe, file_off, SEEK_SET);
 			fwrite(&b,1,1,fexe);
@@ -2557,11 +2582,24 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 	if(!to_insert)
 		perror( "void ZiprImpl_t::OutputBinaryFile(const string &name)");
 
-	// first byte of this range is the last used byte.
+
+	// find end of textra space.
 	RangeSet_t::iterator it=memory_space.FindFreeRange((RangeAddress_t) -1);
 	assert(memory_space.IsValidRange(it));
-
 	RangeAddress_t end_of_new_space=it->GetStart();
+
+	// first byte of this range is the last used byte.
+	AddressID_t *textra_start=new AddressID_t();
+	textra_start->SetVirtualOffset(start_of_new_space);
+	m_firp->GetAddresses().insert(textra_start);
+	AddressID_t *textra_end=new AddressID_t();
+	textra_end->SetVirtualOffset(end_of_new_space);
+	m_firp->GetAddresses().insert(textra_end);
+	string textra_contents;
+	textra_contents.resize(end_of_new_space-start_of_new_space);
+	DataScoop_t* textra_scoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, ".textra", textra_start, textra_end, NULL, 5, textra_contents);
+	m_firp->GetDataScoops().insert(textra_scoop);
+
 
 	printf("Dumping addrs %p-%p\n", (void*)start_of_new_space, (void*)end_of_new_space);
 	for(RangeAddress_t i=start_of_new_space;i<end_of_new_space;i++)
@@ -2577,12 +2615,36 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 				printf("Writing byte %#2x at %p, fileoffset=%llx\n", ((unsigned)b)&0xff, 
 				(void*)i, (long long)(i-start_of_new_space));
 		}
+		textra_scoop->GetContents()[i-start_of_new_space]=b;
 		fwrite(&b,1,1,to_insert);
 	}
 	fclose(to_insert);
 
 	callback_file_name = AddCallbacksToNewSegment(tmpname,end_of_new_space);
 	InsertNewSegmentIntoExe(name,callback_file_name,start_of_new_space);
+
+
+	// create the output file in a totally different way using elfwriter. later we may 
+	// use this instead of the old way.
+
+
+	string elfwriter_filename="c.out";
+	ElfWriter *ew=NULL;
+	if(m_firp->GetArchitectureBitWidth()==64)
+	{
+		ew=new ElfWriter64();
+	}
+	else if(m_firp->GetArchitectureBitWidth()==32)
+	{
+		ew=new ElfWriter32();
+	}
+	else assert(0);
+
+	ew->Write(elfiop,m_firp,elfwriter_filename, "a.ncexe");
+	delete ew;
+	string chmod_cmd=string("chmod +x "); 
+	chmod_cmd=chmod_cmd+elfwriter_filename;
+	system(chmod_cmd.c_str());
 }
 
 
