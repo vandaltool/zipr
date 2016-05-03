@@ -152,8 +152,8 @@ main(int argc, char* argv[])
                         assert(this_file);
 
 			// ilr isnt working for shared libs yet. 
-			if(this_file!=pidp->GetMainFile())
-				continue;
+			// if(this_file!=pidp->GetMainFile())
+			// 	continue;
 
 			// read the db  
 			firp=new FileIR_t(*pidp,this_file);
