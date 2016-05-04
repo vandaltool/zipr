@@ -461,7 +461,7 @@ static void convert_to_jump(Instruction_t* insn, int offset)
 /* 
  * fix_call - convert call to push/jump.
  */
-void fix_call(Instruction_t* insn, FileIR_t *firp)
+void fix_call(Instruction_t* insn, FileIR_t *firp, bool can_unpin)
 {
 	/* record the possibly new indirect branch target if this call gets fixed */
 	Instruction_t* newindirtarg=insn->GetFallthrough();
@@ -571,6 +571,8 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 		reloc->SetOffset(0);
 		reloc->SetType("push64");
 	}
+
+
 	insn->GetRelocations().insert(reloc);
 	firp->GetRelocations().insert(reloc);
 
@@ -586,6 +588,10 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 		/* set the instruction and include this address in the list of addrs */
 		newindirtarg->SetIndirectBranchTargetAddress(newaddr);
 		firp->GetAddresses().insert(newaddr);
+	
+		// if we're marking this as an IBTA, determine whether we can unpin it or not 
+		if(can_unpin)
+			reloc->SetWRT(newindirtarg);
 	}
 
 }
@@ -676,11 +682,15 @@ void fix_all_calls(FileIR_t* firp, bool print_stats, bool fix_all)
 
 		if(is_call(insn)) 
 		{
-			if(fix_all || call_needs_fix(insn) || 
-				(getenv("FIX_CALL_LIMIT") && not_fixed_calls>=atoi(getenv("FIX_CALL_LIMIT"))))
+			if( call_needs_fix(insn) )
 			{
 				fixed_calls++;
-				fix_call(insn, firp);
+				fix_call(insn, firp, false);
+			}
+			else if ( fix_all || (getenv("FIX_CALL_LIMIT") && not_fixed_calls>=atoi(getenv("FIX_CALL_LIMIT"))))
+			{
+				fixed_calls++;
+				fix_call(insn, firp, true);
 			}
 			else
 			{
