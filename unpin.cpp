@@ -41,7 +41,109 @@ using namespace std;
 using namespace Zipr_SDK;
 using namespace ELFIO;
 
+static bool has_cfi_reloc(Instruction_t* insn)
+{
+	for(
+		RelocationSet_t::iterator rit2=insn->GetRelocations().begin(); 
+		rit2!=insn->GetRelocations().end();
+		rit2++
+	   )
+	{
+
+		/* check for a nonce relocation */
+		if ( (*rit2) -> GetType().find("cfi_nonce") != string::npos )
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+static bool should_cfi_pin(Instruction_t* insn)
+{
+	// add command line option that:
+	// 	1) return false if !has_cfi_reloc(insn)
+	// 	2) return true if option is on.
+	return false;
+}
+
+
 void Unpin_t::DoUnpin()
+{
+	DoUnpinForScoops();
+	DoUnpinForFixedCalls();
+}
+
+
+// scan instructions and process instruction relocs that can be unpinned.
+void Unpin_t::DoUnpinForFixedCalls()
+{
+	int unpins=0;
+	int missed_unpins=0;
+
+	for(
+		InstructionSet_t::iterator it=zo->GetFileIR()->GetInstructions().begin();
+		it!=zo->GetFileIR()->GetInstructions().end();
+		++it
+	   )
+	{
+		Instruction_t* from_insn=*it;
+
+		for(
+			RelocationSet_t::iterator rit=from_insn->GetRelocations().begin(); 
+			rit!=from_insn->GetRelocations().end();
+			rit++
+		   )
+		{
+			Relocation_t* reloc=*rit;
+
+			
+			// this probably won't work on shared objects.
+			// complicated with the push64-reloc plugin also rewriting these things?
+			if(reloc->GetType()==string("32-bit") || reloc->GetType()==string("push64"))
+			{
+				// skip if there's no WRT, that means it's unpinned for something besides a fixed call.
+				if(reloc->GetWRT()==NULL)
+					continue;
+
+				// getWRT returns an BaseObj, but this reloc type expects an instruction
+				// safe cast and check.
+				Instruction_t* wrt_insn=dynamic_cast<Instruction_t*>(reloc->GetWRT());
+				assert(wrt_insn);
+				if(should_cfi_pin(wrt_insn))
+					continue;
+
+
+				if(wrt_insn->GetIndirectBranchTargetAddress())
+				{
+					cout<<"Unpin::Found "<<reloc->GetType()<<" relocation for pinned insn at "<<hex<<
+						wrt_insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()<<endl;
+				}
+				else
+				{
+					cout<<"Unpin::Warn: unpin found non-IBTA to unpin.  probably it's unpinned twice.  continuing anyhow."<<endl;
+				}
+	
+				unpins++;
+				wrt_insn->SetIndirectBranchTargetAddress(NULL);
+
+				PlacementQueue_t* pq=zo->GetPlacementQueue();
+				assert(pq);
+
+				// create a new dollop for the unpinned IBT
+				// and add it to the placement queue.
+				Dollop_t *newDoll=zo->GetDollopManager()->AddNewDollops(wrt_insn);
+				pq->insert(std::pair<Dollop_t*,RangeAddress_t>(newDoll, 0));
+			}
+		}
+	}
+
+	cout<<"#ATTRIBUTE insn_unpin_total_unpins="<<dec<<unpins<<endl;
+	cout<<"#ATTRIBUTE insn_unpin_missed_unpins="<<dec<<missed_unpins<<endl;
+}
+
+
+void Unpin_t::DoUnpinForScoops()
 {
 	int unpins=0;
 	int missed_unpins=0;
@@ -73,28 +175,15 @@ void Unpin_t::DoUnpin()
 
 				if(insn->GetIndirectBranchTargetAddress())
 				{
-					cout<<"Unpin::Found data_to_insn_ptr relocation for pinned insn at "<<hex<<
+					cout<<"Unpin::Found data_to_insn_ptr relocation for pinned insn:"<<dec<<insn->GetBaseID()<<" at "<<hex<<
 						insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()<<endl;
 				}
 				else
 				{
-					cout<<"Unpin::Warn: unpin found non-IBTA to unpin.  probably it's unpinned twice.  continuing anyhow."<<endl;
+					cout<<"Unpin::Warn: unpin found non-IBTA to unpin for insn:"<<dec<<insn->GetBaseID()<<".  probably it's unpinned twice.  continuing anyhow."<<endl;
 				}
 	
-				int found=false;
-				for(
-					RelocationSet_t::iterator rit2=insn->GetRelocations().begin(); 
-					rit2!=insn->GetRelocations().end();
-					rit2++
-				   )
-				{
-
-					/* check for a nonce relocation */
-					if ( (*rit2) -> GetType().find("cfi_nonce") != string::npos )
-					{
-						found=true;
-					}
-				}
+				int found=should_cfi_pin(insn);
 
 				/* don't unpin if we found one */
 				if(found)
@@ -119,11 +208,93 @@ void Unpin_t::DoUnpin()
 		}
 	}
 
-	cout<<"#ATTRIBUTE unpin_total_unpins="<<dec<<unpins<<endl;
-	cout<<"#ATTRIBUTE unpin_missed_unpins="<<dec<<missed_unpins<<endl;
+	cout<<"#ATTRIBUTE scoop_unpin_total_unpins="<<dec<<unpins<<endl;
+	cout<<"#ATTRIBUTE scoop_unpin_missed_unpins="<<dec<<missed_unpins<<endl;
 }
 
-void Unpin_t::UpdateScoops()
+void Unpin_t::DoUpdate()
+{
+	DoUpdateForScoops();
+	DoUpdateForFixedCalls();
+}
+
+
+// scan for instructions that were placed, and now need an update.
+void Unpin_t::DoUpdateForFixedCalls()
+{
+	int unpins=0;
+	int missed_unpins=0;
+
+	for(
+		InstructionSet_t::iterator it=zo->GetFileIR()->GetInstructions().begin();
+		it!=zo->GetFileIR()->GetInstructions().end();
+		++it
+	   )
+	{
+		Instruction_t* from_insn=*it;
+
+		for(
+			RelocationSet_t::iterator rit=from_insn->GetRelocations().begin(); 
+			rit!=from_insn->GetRelocations().end();
+			rit++
+		   )
+		{
+			Relocation_t* reloc=*rit;
+
+			
+			// this probably won't work on shared objects.
+			// complicated with the push64-reloc plugin also rewriting these things?
+			if(reloc->GetType()==string("32-bit") || reloc->GetType()==string("push64"))
+			{
+				// skip if there's no WRT, that means it's unpinned for something besides a fixed call.
+				if(reloc->GetWRT()==NULL)
+					continue;
+
+				// getWRT returns an BaseObj, but this reloc type expects an instruction
+				// safe cast and check.
+				Instruction_t* wrt_insn=dynamic_cast<Instruction_t*>(reloc->GetWRT());
+				assert(wrt_insn);
+				if(should_cfi_pin(wrt_insn)) 
+					continue;
+
+				Zipr_SDK::InstructionLocationMap_t &locMap=*(zo->GetLocationMap());
+				libIRDB::virtual_offset_t wrt_insn_location=locMap[wrt_insn];
+				libIRDB::virtual_offset_t from_insn_location=locMap[from_insn];
+
+				// expecting a 32-bit push, length=5
+				assert(from_insn->GetDataBits()[0]==0x68);
+				assert(from_insn->GetDataBits().size()==5);
+				// down and upcast to ensure we fit in 31-bits.
+				assert(wrt_insn_location == (libIRDB::virtual_offset_t)(int)wrt_insn_location);
+				assert(sizeof(int)==4); // paranoid.
+
+				unsigned char newpush[5];
+				newpush[0]=0x68;
+				*(int*)&newpush[1]=(int)wrt_insn_location;
+
+				cout<<"Unpin::Updating insn:"
+					<<dec<<from_insn->GetBaseID()<<"@"<<hex<<from_insn_location<<" to point at "
+					<<dec<<wrt_insn ->GetBaseID()<<"@"<<hex<<wrt_insn_location <<endl;
+
+				MemorySpace_t &ms=*zo->GetMemorySpace();
+				for(unsigned int i=0;i<from_insn->GetDataBits().size();i++)
+				{ 
+					unsigned char newbyte=newpush[i];
+					unsigned char oldbyte= ms[from_insn_location+i];
+					ms[from_insn_location+i]=newbyte;
+
+					//cout<<"Updating push["<<i<<"] from "<<hex<<oldbyte<<" to "<<newbyte<<endl;
+				}
+
+			}
+		}
+	}
+
+	cout<<"#ATTRIBUTE insn_unpin_total_unpins="<<dec<<unpins<<endl;
+	cout<<"#ATTRIBUTE insn_unpin_missed_unpins="<<dec<<missed_unpins<<endl;
+}
+
+void Unpin_t::DoUpdateForScoops()
 {
 	for(
 		DataScoopSet_t::iterator it=zo->GetFileIR()->GetDataScoops().begin();
@@ -154,20 +325,7 @@ void Unpin_t::UpdateScoops()
 
 				cout<<"Unpin::Unpinned data_to_insn_ptr insn moved to "<<hex<<newLoc<<endl;
 
-				int found=false;
-				for(
-					RelocationSet_t::iterator rit2=insn->GetRelocations().begin(); 
-					rit2!=insn->GetRelocations().end();
-					rit2++
-				   )
-				{
-
-					/* check for a nonce relocation */
-					if ( (*rit2) -> GetType().find("cfi_nonce") != string::npos )
-					{
-						found=true;
-					}
-				}
+				int found=should_cfi_pin(insn);
 
 				/* don't unpin if we found one */
 				if(found)

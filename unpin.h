@@ -43,7 +43,7 @@ class Unpin_t : public Zipr_SDK::ZiprPluginInterface_t
 		}
 		virtual void CallbackLinkingEnd()
 		{
-			UpdateScoops();
+			DoUpdate();
 		}
 
 		virtual Zipr_SDK::ZiprOptionsNamespace_t *RegisterOptions(Zipr_SDK::ZiprOptionsNamespace_t *) { return NULL; }
@@ -51,8 +51,12 @@ class Unpin_t : public Zipr_SDK::ZiprPluginInterface_t
 
 		// workhorses 
 		void DoUnpin();
-		void UpdateScoops();
+		void DoUnpinForScoops();
+		void DoUnpinForFixedCalls();
 
+		void DoUpdate();
+		void DoUpdateForScoops();
+		void DoUpdateForFixedCalls();
 
 		Zipr_SDK::Zipr_t* zo;
 
