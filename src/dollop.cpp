@@ -4,13 +4,14 @@
 namespace Zipr_SDK {
 	using namespace libIRDB;
 	using namespace zipr;
-	Dollop_t::Dollop_t(Instruction_t *start) :
+	Dollop_t::Dollop_t(Instruction_t *start, Zipr_SDK::DollopManager_t *mgr) :
 		m_size(0),
 		m_fallthrough_dollop(NULL),
 		m_fallback_dollop(NULL),
 		m_fallthrough_patched(false),
 		m_coalesced(false),
-		m_was_truncated(false)
+		m_was_truncated(false),
+		m_dollop_mgr(mgr)
 	{
 		Instruction_t *loop = NULL;
 
@@ -40,7 +41,13 @@ namespace Zipr_SDK {
 		     it++)
 		{
 			Instruction_t *cur_insn = (*it)->Instruction();
-			dollop_size += Utils::DetermineWorstCaseInsnSize(cur_insn, false);
+			if (m_dollop_mgr != NULL)
+				dollop_size += m_dollop_mgr->DetermineWorstCaseInsnSize(cur_insn);
+			else
+			{
+				assert(false);
+				dollop_size += Utils::DetermineWorstCaseInsnSize(cur_insn, false);
+			}
 		}
 
 		if ((m_fallthrough_dollop || (back() && 
@@ -96,6 +103,8 @@ namespace Zipr_SDK {
 			return NULL;
 
 		new_dollop = new Dollop_t();
+
+		new_dollop->SetDollopManager(m_dollop_mgr);
 
 		/*
 		 * Set fallthrough and fallback dollop pointers.
@@ -167,12 +176,16 @@ namespace Zipr_SDK {
 		return comp.m_instruction == m_instruction &&
 		       comp.m_target_dollop == m_target_dollop;
 	}
+
 	bool DollopEntry_t::operator!=(const DollopEntry_t &comp) {
 		return !operator==(comp);
 	}
-	Dollop_t *Dollop_t::CreateNewDollop(libIRDB::Instruction_t *start) {
-		return new Zipr_SDK::Dollop_t(start);
+
+	Dollop_t *Dollop_t::CreateNewDollop(libIRDB::Instruction_t *start,
+	                                    Zipr_SDK::DollopManager_t *mgr) {
+		return new Zipr_SDK::Dollop_t(start, mgr);
 	}
+
 	std::ostream &operator<<(std::ostream &out, const Dollop_t &d) {
 		std::list<DollopEntry_t*>::const_iterator it, it_end;
 		Dollop_t *fallthrough = NULL, *fallback = NULL;
@@ -193,6 +206,7 @@ namespace Zipr_SDK {
 		out << std::hex << &p << ":" << std::hex << p.Target();
 		return out;
 	}
+
 	std::ostream &operator<<(std::ostream &out, const DollopEntry_t &p) {
 		out << "Instruction: " << std::hex << p.Instruction() << std::endl;
 		out << "Target Dollop: " << std::hex << p.TargetDollop() << std::endl;

@@ -41,7 +41,8 @@ typedef		std::map<Dollop_t*, DollopPatchList_t > DollopToDollopPatchListMap_t;
 
 class ZiprDollopManager_t : public DollopManager_t {
 	public:
-		ZiprDollopManager_t() : m_refresh_stats(true) {}
+		ZiprDollopManager_t() : m_refresh_stats(true), m_zipr(NULL) {}
+		ZiprDollopManager_t(Zipr_SDK::Zipr_t *zipr) : m_refresh_stats(true), m_zipr(zipr) {}
 
 		/*
 		 * Adders.
@@ -98,6 +99,11 @@ class ZiprDollopManager_t : public DollopManager_t {
 		void PrintStats(std::ostream &out);
 		void PrintPlacementMap(const MemorySpace_t &memory_space,
 		                       const std::string &map_filename);
+	
+		/*
+		 * Helper functions.
+		 */
+		int DetermineWorstCaseInsnSize(libIRDB::Instruction_t *insn);
 	private:
 		/*
 		 * Helper functions.
@@ -119,5 +125,7 @@ class ZiprDollopManager_t : public DollopManager_t {
 		bool m_refresh_stats;
 		size_t m_total_dollop_space, m_total_dollop_entries;
 		unsigned int m_total_dollops, m_truncated_dollops;
+
+		Zipr_SDK::Zipr_t *m_zipr;
 };
 #endif

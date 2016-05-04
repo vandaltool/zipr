@@ -339,6 +339,8 @@ void ZiprImpl_t::CreateBinaryFile()
 
 	WriteDollops();
 
+	ReplopDollopEntriesWithTargets();
+
 	UpdatePins();
 
 	// tell plugins we are done plopping and about to link callbacks.
@@ -1337,7 +1339,23 @@ void ZiprImpl_t::WriteDollops()
 			end = _PlopDollopEntry(entry_to_write);
 			should_end = start + _DetermineWorstCaseInsnSize(entry_to_write->Instruction(), false);
 			assert(end <= should_end);
+			if (entry_to_write->TargetDollop())
+				m_des_to_replop.push_back(entry_to_write);
 		}
+	}
+}
+
+void ZiprImpl_t::ReplopDollopEntriesWithTargets()
+{
+	for (DollopEntry_t *entry_to_write : m_des_to_replop)
+	{
+		Instruction_t *src_insn = NULL;
+		RangeAddress_t src_insn_addr;
+
+		src_insn = entry_to_write->Instruction();
+
+		src_insn_addr = final_insn_locations[src_insn];
+		PlopDollopEntry(entry_to_write, src_insn_addr);
 	}
 }
 
@@ -1696,12 +1714,6 @@ void ZiprImpl_t::PlaceDollops()
 					m_stats->total_did_not_coalesce++;
 
 					/*
-					 * Since we inserted a new instruction, we should
-					 * check to see whether a plugin wants to plop it.
-					 */
-					AskPluginsAboutPlopping(patch_de->Instruction());
-
-					/*
 					 * Quit the do-while-true loop that is placing
 					 * as many dollops in-a-row as possible.
 					 */
@@ -1859,6 +1871,11 @@ void ZiprImpl_t::PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)
 	}
 }
 
+int ZiprImpl_t::PluginDetermineWorstCaseInsnSize(Instruction_t *insn, bool account_for_jump)
+{
+	return (int)_DetermineWorstCaseInsnSize(insn, account_for_jump);
+}
+
 size_t ZiprImpl_t::_DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_for_jump)
 {
 	std::map<Instruction_t*,DLFunctionHandle_t>::const_iterator plop_it;
@@ -1881,7 +1898,6 @@ size_t ZiprImpl_t::_DetermineWorstCaseInsnSize(Instruction_t* insn, bool account
 	return worst_case_size;
 }
 
-//static int DetermineWorstCaseInsnSize(Instruction_t* insn)
 int ZiprImpl_t::DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_for_jump)
 {
 	return Utils::DetermineWorstCaseInsnSize(insn, account_for_jump);
@@ -1944,6 +1960,9 @@ void ZiprImpl_t::UpdatePins()
 		patch_addr = p.GetAddress();
 		target_addr = target_dollop_entry->Place();
 
+		if (final_insn_locations.end() != final_insn_locations.find(target_dollop_entry->Instruction()))
+			target_addr = final_insn_locations[target_dollop_entry->Instruction()];
+
 		if (plugman.DoesPluginRetargetPin(patch_addr, target_dollop, target_addr, patcher))
 		{
 			if (m_verbose)
@@ -1961,6 +1980,9 @@ void ZiprImpl_t::UpdatePins()
 			 * reset it here, just in case.
 			 */
 			target_addr = target_dollop_entry->Place();
+
+			if (final_insn_locations.end() != final_insn_locations.find(target_dollop_entry->Instruction()))
+				target_addr = final_insn_locations[target_dollop_entry->Instruction()];
 
 			if (m_verbose)
 				cout << "Patching pin at " << std::hex << patch_addr << " to "
@@ -2114,11 +2136,17 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntry(
 
 	if(entry->TargetDollop())
 	{
+		RangeAddress_t target_address = 0;
+		Instruction_t *target_insn = entry->TargetDollop()->front()->Instruction();
+	
+		if (final_insn_locations.end() != final_insn_locations.find(target_insn))
+			target_address = final_insn_locations[target_insn];
+
 		if (m_verbose)
 			cout << "Plopping at " << std::hex << addr
-			     << " with target " << std::hex << entry->TargetDollop()->Place()
+			     << " with target " << std::hex << ((target_address != 0) ? target_address : entry->TargetDollop()->Place())
 					 << endl;
-		ret=PlopDollopEntryWithTarget(entry, addr);
+		ret=PlopDollopEntryWithTarget(entry, addr, target_address);
 	}
 	else if(entry->Instruction()->GetCallback()!="")
 	{

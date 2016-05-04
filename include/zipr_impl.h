@@ -43,6 +43,7 @@ class ZiprImpl_t : public Zipr_t
 			m_stats(NULL),
 			m_firp(NULL),
 			m_error(false),
+			m_dollop_mgr(this),
 			elfiop(new ELFIO::elfio), 
 			start_of_new_space(0),
 			memory_space(),
@@ -57,7 +58,6 @@ class ZiprImpl_t : public Zipr_t
 			m_architecture("architecture"),
 			m_seed("seed", 0),
 			m_dollop_map_filename("dollop_map_filename", "dollop.map")
-
 		{ 
 			Init();
  		};
@@ -67,7 +67,24 @@ class ZiprImpl_t : public Zipr_t
 		bool Error() {
 			return m_error;
 		}
+		/*
+		 * PluginDetermineWorstCaseInsnSize
+		 * 
+		 * Determine the worst case instruction size
+		 * and account for the possibility that a plugin
+		 * may be plopping this instruction and want
+		 * to do some calculations.
+		 */
+		int PluginDetermineWorstCaseInsnSize(libIRDB::Instruction_t *insn, bool account_for_jump = true);
 
+		/*
+		 * DetermineWorstCaseInsnSize
+		 * 
+		 * Determine the worst case instruction size
+		 * but do not account for the possibility that a plugin
+		 * may be plopping this instruction and want
+		 * to do some calculations.
+		 */
 		int DetermineWorstCaseInsnSize(libIRDB::Instruction_t*, bool account_for_jump = true);
 
 		Zipr_SDK::RangeAddress_t PlopDollopEntry(
@@ -216,6 +233,7 @@ class ZiprImpl_t : public Zipr_t
 		void WriteDollops();
 		void UpdatePins();
 
+		void ReplopDollopEntriesWithTargets();
 		/*
 		 * OptimizePinnedFallthrough()
 		 *
@@ -426,8 +444,7 @@ class ZiprImpl_t : public Zipr_t
 		ZiprIntegerOption_t m_variant, m_architecture, m_seed;
 		ZiprStringOption_t m_dollop_map_filename;
 
-
-
+		std::list<DollopEntry_t *> m_des_to_replop;
 };
 
 #endif

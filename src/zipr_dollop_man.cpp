@@ -45,7 +45,7 @@ namespace zipr {
 			std::list<DollopEntry_t*>::iterator it, it_end;
 			Dollop_t *original_new_dollop = NULL, *previous_dollop = NULL;
 			Instruction_t *fallthrough = NULL;
-			original_new_dollop = new_dollop = Dollop_t::CreateNewDollop(start);
+			original_new_dollop = new_dollop = Dollop_t::CreateNewDollop(start,this);
 
 			for (it = new_dollop->begin(), it_end = new_dollop->end();
 			     it != it_end;
@@ -125,13 +125,20 @@ namespace zipr {
 				 * and link them together.
 				 */
 				previous_dollop = new_dollop;
-				new_dollop = Dollop_t::CreateNewDollop(fallthrough);
+				new_dollop = Dollop_t::CreateNewDollop(fallthrough, this);
 				previous_dollop->FallthroughDollop(new_dollop);
 				new_dollop->FallbackDollop(previous_dollop);
 			}
 			AddDollops(original_new_dollop);
 			return original_new_dollop;
 		}
+	}
+
+	int ZiprDollopManager_t::DetermineWorstCaseInsnSize(libIRDB::Instruction_t *insn) {
+		if (m_zipr != NULL)
+			return m_zipr->PluginDetermineWorstCaseInsnSize(insn, false);
+		else
+			return Utils::DetermineWorstCaseInsnSize(insn, false);
 	}
 
 	void ZiprDollopManager_t::PrintDollopPatches(const ostream &out) {
