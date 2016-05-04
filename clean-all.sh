@@ -73,6 +73,14 @@ if [ -d "${PEASOUP_UMBRELLA_DIR}/zipr_unpin_plugin" ]; then
 	scons do_cgc=1 -c
 fi
 
+# clean ZIPR install
+if [ -d "${PEASOUP_UMBRELLA_DIR}/zipr_install" ]; then
+	cd ${PEASOUP_UMBRELLA_DIR}/zipr_install
+	rm bin/*
+	rm lib/*
+	rm plugins/*
+fi
+
 # clean daffy
 if [ -d "$DAFFY_HOME" ]; then
 	cd $DAFFY_HOME
