@@ -95,6 +95,8 @@ instructions that leave the upper half of the register unchanged, for reasons of
 
 #include <assert.h>
 
+#define TRUE 1
+#define FALSE 0
 
 static void finish_vex(PDISASM pMyDisasm)
 {
@@ -360,6 +362,51 @@ void L_reg(ARGTYPE* arg, PDISASM pMyDisasm)
 	GV.EIP_++;
 }
 
+
+void FourOpFMAW0(PDISASM pMyDisasm)
+{
+	if(!GV.VEX.has_vex)
+		FailDecode(pMyDisasm);
+
+	GV.MemDecoration=Arg3fword;
+	GV.AVX_=GV.VEX.length;
+	GV.SSE_=!GV.VEX.length;
+
+	V_reg(&(*pMyDisasm).Argument2, pMyDisasm);
+    	MOD_RM(&(*pMyDisasm).Argument3, pMyDisasm);
+    	Reg_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
+    	GV.EIP_ += GV.DECALAGE_EIP+2;
+	L_reg(&(*pMyDisasm).Argument4, pMyDisasm);
+
+	GV.AVX_=0;
+	GV.SSE_=0;
+
+	GV.third_arg=1;
+	GV.forth_arg=1;
+}
+
+void FourOpFMAW1(PDISASM pMyDisasm)
+{
+	if(!GV.VEX.has_vex)
+		FailDecode(pMyDisasm);
+
+	GV.MemDecoration=Arg4fword;
+	GV.AVX_=GV.VEX.length;
+	GV.SSE_=!GV.VEX.length;
+
+	V_reg(&(*pMyDisasm).Argument2, pMyDisasm);
+    	MOD_RM(&(*pMyDisasm).Argument4, pMyDisasm);
+    	Reg_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
+    	GV.EIP_ += GV.DECALAGE_EIP+2;
+	L_reg(&(*pMyDisasm).Argument3, pMyDisasm);
+
+	GV.AVX_=0;
+	GV.SSE_=0;
+
+	GV.third_arg=1;
+	GV.forth_arg=1;
+}
+
 void VxHxWxLx(PDISASM pMyDisasm)
 {
 	if(!GV.VEX.has_vex)
@@ -388,8 +435,6 @@ void VyHyWyLy(PDISASM pMyDisasm)
 
 	GV.third_arg=1;
 	GV.forth_arg=1;
-
-
 }
 
 /*
@@ -625,9 +670,303 @@ void vpermilps1 (PDISASM pMyDisasm)
 		FailDecode(pMyDisasm);
 }
 
+
+void xmm_xmm_xmmmem(PDISASM pMyDisasm, const char* opcode)
+{
+
+	(*pMyDisasm).Instruction.Category = AVX_INSTRUCTION;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+        if(GV.VEX.has_vex)
+        {
+                (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+        }
+	(void) strcat ((*pMyDisasm).Instruction.Mnemonic, opcode);
+	if (GV.VEX.has_vex && GV.VEX.W==0)
+	{
+		// packed single or single-to-single if w=0
+		(void) strcat ((*pMyDisasm).Instruction.Mnemonic, "s");
+	}
+	else
+	{
+		// packed double or single-to-double if w=0
+		(void) strcat ((*pMyDisasm).Instruction.Mnemonic, "d");
+	}
+	(void) strcat ((*pMyDisasm).Instruction.Mnemonic, " ");
+	#endif
+
+	GV.MemDecoration=Arg3fword;
+	GV.AVX_=GV.VEX.length;
+	GV.SSE_=!GV.VEX.length;
+	MOD_RM(&(*pMyDisasm).Argument3, pMyDisasm);
+	V_reg( &(*pMyDisasm).Argument2, pMyDisasm);
+	Reg_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
+	GV.EIP_ += GV.DECALAGE_EIP+2;
+	GV.third_arg=1;
+	GV.AVX_=0;
+	GV.SSE_=0;
+}
+
 /* 0f 3a 04 */
 void vpermilps2 (PDISASM pMyDisasm)
 {
 	assert(pMyDisasm); /* avoids warning */
 	assert(0);
 }
+
+void FMA_3op(PDISASM pMyDisasm, const char* opcode, int allow_ymms)
+{
+	if (GV.VEX.has_vex && GV.VEX.length==1 && !allow_ymms)
+	{
+		FailDecode(pMyDisasm);
+		return;
+	}
+	xmm_xmm_xmmmem(pMyDisasm, opcode);
+}
+
+#if 0
+/* 0f 38 99 */
+void fmadd132sd(PDISASM pMyDisasm)
+{
+	if(GV.VEX.has_vex && GV.VEX.length==0 && GV.VEX.implicit_prefixes==1 /* 66 */ && GV.VEX.W==1)
+	{
+		xmm_xmm_xmmmem(pMyDisasm, "fmadd132sd");
+	}
+	else if(GV.VEX.has_vex && GV.VEX.length==0 && GV.VEX.implicit_prefixes==1 /* 66 */ && GV.VEX.W==0)
+	{
+		xmm_xmm_xmmmem(pMyDisasm, "fmadd132ss");
+	}
+	else
+		FailDecode(pMyDisasm);
+}
+
+/* 0f 38 a9 */
+void fmadd213sd(PDISASM pMyDisasm)
+{
+	if(GV.VEX.has_vex && GV.VEX.length==0 && GV.VEX.implicit_prefixes==1 /* 66 */ && GV.VEX.W==1)
+	{
+		xmm_xmm_xmmmem(pMyDisasm, "fmadd213sd");
+	}
+	else if(GV.VEX.has_vex && GV.VEX.length==0 && GV.VEX.implicit_prefixes==1 /* 66 */ && GV.VEX.W==0)
+	{
+		xmm_xmm_xmmmem(pMyDisasm, "fmadd213ss");
+	}
+	else
+		FailDecode(pMyDisasm);
+}
+/* 0f 38 b9 */
+void fmadd231sd(PDISASM pMyDisasm)
+{
+	if(GV.VEX.has_vex && GV.VEX.length==0 && GV.VEX.implicit_prefixes==1 /* 66 */ && GV.VEX.W==1)
+	{
+		xmm_xmm_xmmmem(pMyDisasm, "fmadd231sd");
+	}
+	else if(GV.VEX.has_vex && GV.VEX.length==0 && GV.VEX.implicit_prefixes==1 /* 66 */ && GV.VEX.W==0)
+	{
+		xmm_xmm_xmmmem(pMyDisasm, "fmadd231ss");
+	}
+	else
+		FailDecode(pMyDisasm);
+}
+#endif
+
+void fmadd132p(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, TRUE); }
+void fmadd213p(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, TRUE); }
+void fmadd231p(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, TRUE); }
+void fmaddsub132p(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, TRUE); }
+void fmaddsub213p(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, TRUE); }
+void fmaddsub231p(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, TRUE); }
+void fmsub132p(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, TRUE); }
+void fmsub213p(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, TRUE); }
+void fmsub231p(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, TRUE); }
+void fmsubadd132p(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, TRUE); }
+void fmsubadd213p(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, TRUE); }
+void fmsubadd231p(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, TRUE); }
+void fnmadd132p(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, TRUE); }
+void fnmadd213p(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, TRUE); }
+void fnmadd231p(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, TRUE); }
+void fnmsub132p(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, TRUE); }
+void fnmsub213p(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, TRUE); }
+void fnmsub231p(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, TRUE); }
+
+void fmadd132s(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, FALSE); }
+void fmadd213s(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, FALSE); }
+void fmadd231s(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, FALSE); }
+void fmsub132s(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, FALSE); }
+void fmsub213s(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, FALSE); }
+void fmsub231s(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, FALSE); }
+void fnmadd132s(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, FALSE); }
+void fnmadd213s(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, FALSE); }
+void fnmadd231s(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, FALSE); }
+void fnmsub132s(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, FALSE); }
+void fnmsub213s(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, FALSE); }
+void fnmsub231s(PDISASM pMyDisasm) { FMA_3op(pMyDisasm, __func__, FALSE); }
+
+
+
+
+
+
+
+//  **************************
+//  AMD 4-op FMA instructions
+//  **************************
+
+void FourOpFMA(PDISASM pMyDisasm, const char* opcode, int allow_ymms)
+{
+        #ifndef BEA_LIGHT_DISASSEMBLY
+        if(GV.VEX.has_vex)
+        {
+                (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
+        }
+	(void) strcat ((*pMyDisasm).Instruction.Mnemonic, opcode);
+	(void) strcat ((*pMyDisasm).Instruction.Mnemonic, " ");
+	#endif
+
+	// mmmmmm==0x3 to get to this function, see opcode comment above func.
+	if(GV.VEX.has_vex && GV.VEX.length==0 && GV.VEX.implicit_prefixes==1 /* 66 */ && GV.VEX.W==0)
+	{
+		FourOpFMAW0(pMyDisasm);
+	}
+	else if(GV.VEX.has_vex && GV.VEX.length==0 && GV.VEX.implicit_prefixes==1 /* 66 */ && GV.VEX.W==1)
+	{
+		FourOpFMAW1(pMyDisasm);
+	}
+	else if(GV.VEX.has_vex && GV.VEX.length==1 && allow_ymms && GV.VEX.implicit_prefixes==1 /* 66 */ && GV.VEX.W==0)
+	{
+		FourOpFMAW0(pMyDisasm);
+	}
+	else if(GV.VEX.has_vex && GV.VEX.length==1 && allow_ymms && GV.VEX.implicit_prefixes==1 /* 66 */ && GV.VEX.W==1)
+	{
+		FourOpFMAW0(pMyDisasm);
+	}
+	else
+		FailDecode(pMyDisasm);
+
+}
+
+
+/* 0f 3a 69 */
+void vfmaddpd(PDISASM pMyDisasm)
+{
+	FourOpFMA(pMyDisasm,"fmaddpd", TRUE);
+}
+
+/* 0f 3a 68 */
+void vfmaddps(PDISASM pMyDisasm)
+{
+	FourOpFMA(pMyDisasm,"fmaddps", TRUE);
+}
+
+/* 0f 3a 6b */
+void vfmaddsd(PDISASM pMyDisasm)
+{
+	FourOpFMA(pMyDisasm,"fmaddsd", FALSE);
+}
+
+/* 0f 3a 6a */
+void vfmaddss(PDISASM pMyDisasm)
+{
+	FourOpFMA(pMyDisasm,"fmaddss", FALSE);
+}
+
+/* 0f 3a 5d */
+void vfmaddsubpd(PDISASM pMyDisasm)
+{
+	FourOpFMA(pMyDisasm,"fmaddsubpd", TRUE);
+}
+
+/* 0f 3a 5c */
+void vfmaddsubps(PDISASM pMyDisasm)
+{
+	FourOpFMA(pMyDisasm,"fmaddsubps", TRUE);
+}
+
+
+/* 0f 3a 5f */
+void vfmsubaddpd(PDISASM pMyDisasm)
+{
+	FourOpFMA(pMyDisasm,"fmsubaddpd", TRUE);
+}
+
+/* 0f 3a 5e */
+void vfmsubaddps(PDISASM pMyDisasm)
+{
+	FourOpFMA(pMyDisasm,"fmsubaddps", TRUE);
+}
+
+
+/* 0f 3a 6d */
+void vfmsubpd(PDISASM pMyDisasm)
+{
+	FourOpFMA(pMyDisasm,"fmsubpd", TRUE);
+}
+
+/* 0f 3a 6c */
+void vfmsubps(PDISASM pMyDisasm)
+{
+	FourOpFMA(pMyDisasm,"fmsubpd", TRUE);
+}
+
+/* 0f 3a 6f */
+void vfmsubsd(PDISASM pMyDisasm)
+{
+	FourOpFMA(pMyDisasm,"fmsubsd", FALSE);
+
+}
+
+/* 0f 3a 6e */
+void vfmsubss(PDISASM pMyDisasm)
+{
+	FourOpFMA(pMyDisasm,"fmsubss", FALSE);
+
+}
+
+/* 0f 3a 79 */
+void vfnmaddpd(PDISASM pMyDisasm)
+{
+	FourOpFMA(pMyDisasm,"fnmaddpd", TRUE);
+}
+
+/* 0f 3a 78 */
+void vfnmaddps(PDISASM pMyDisasm)
+{
+	FourOpFMA(pMyDisasm,"fnmaddps", TRUE);
+}
+
+/* 0f 3a 7b */
+void vfnmaddsd(PDISASM pMyDisasm)
+{
+	FourOpFMA(pMyDisasm,"fnmaddsd", FALSE);
+}
+
+/* 0f 3a 7a */
+void vfnmaddss(PDISASM pMyDisasm)
+{
+	FourOpFMA(pMyDisasm,"fnmaddss", FALSE);
+}
+
+/* 0f 3a 7d */
+void vfnmsubpd(PDISASM pMyDisasm)
+{
+	FourOpFMA(pMyDisasm,"fnmsubpd", TRUE);
+}
+
+/* 0f 3a 7c */
+void vfnmsubps(PDISASM pMyDisasm)
+{
+	FourOpFMA(pMyDisasm,"fnmsubps", TRUE);
+}
+
+/* 0f 3a 7f */
+void vfnmsubsd(PDISASM pMyDisasm)
+{
+	FourOpFMA(pMyDisasm,"fnmsubsd", FALSE);
+}
+
+/* 0f 3a 7e */
+void vfnmsubss(PDISASM pMyDisasm)
+{
+	FourOpFMA(pMyDisasm,"fnmsubss", FALSE);
+}
+
+

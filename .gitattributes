@@ -175,6 +175,8 @@ beaengine/jdh_tests/Makefile -text
 beaengine/jdh_tests/avx1.nasm -text
 beaengine/jdh_tests/avx2.nasm -text
 beaengine/jdh_tests/dbea.c -text
+beaengine/jdh_tests/fma_amd.nasm -text
+beaengine/jdh_tests/fma_intel.nasm -text
 beaengine/jdh_tests/insns.s -text
 beaengine/jdh_tests/insns_avx.s -text
 /build.sh -text

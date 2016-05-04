@@ -729,9 +729,69 @@ void vinsrtf128 (PDISASM pMyDisasm);
 void vperm2f128 (PDISASM pMyDisasm);
 void vpermilps1 (PDISASM pMyDisasm);
 void vpermilps2 (PDISASM pMyDisasm);
+void fmadd132sd(PDISASM pMyDisasm);
+void fmadd213sd(PDISASM pMyDisasmd);
+void fmadd231sd(PDISASM pMyDisasmd);
+
+
+// amd 4-op fma's
+void vfmaddpd(PDISASM pMyDisasm);
+void vfmaddps(PDISASM pMyDisasm);
+void vfmaddsd(PDISASM pMyDisasm);
+void vfmaddss(PDISASM pMyDisasm);
+
+void vfmaddsubpd(PDISASM pMyDisasm);
+void vfmaddsubps(PDISASM pMyDisasm);
+
+void vfmsubaddpd(PDISASM pMyDisasm);
+void vfmsubaddps(PDISASM pMyDisasm);
+
+void vfmsubpd(PDISASM pMyDisasm);
+void vfmsubps(PDISASM pMyDisasm);
+void vfmsubsd(PDISASM pMyDisasm);
+void vfmsubss(PDISASM pMyDisasm);
+
+void vfnmaddpd(PDISASM pMyDisasm);
+void vfnmaddps(PDISASM pMyDisasm);
+void vfnmaddsd(PDISASM pMyDisasm);
+void vfnmaddss(PDISASM pMyDisasm);
+
+void vfnmsubpd(PDISASM pMyDisasm);
+void vfnmsubps(PDISASM pMyDisasm);
+void vfnmsubsd(PDISASM pMyDisasm);
+void vfnmsubss(PDISASM pMyDisasm);
 
 
 
+// intel 3-op fma's
+void fmadd132p(PDISASM pMyDisasm);
+void fmadd213p(PDISASM pMyDisasm);
+void fmadd231p(PDISASM pMyDisasm);
+void fmaddsub132p(PDISASM pMyDisasm);
+void fmaddsub213p(PDISASM pMyDisasm);
+void fmaddsub231p(PDISASM pMyDisasm);
+void fmsub132p(PDISASM pMyDisasm);
+void fmsub213p(PDISASM pMyDisasm);
+void fmsub231p(PDISASM pMyDisasm);
+void fmsubadd132p(PDISASM pMyDisasm);
+void fmsubadd213p(PDISASM pMyDisasm);
+void fmsubadd231p(PDISASM pMyDisasm);
+void fnmadd132p(PDISASM pMyDisasm);
+void fnmadd213p(PDISASM pMyDisasm);
+void fnmadd231p(PDISASM pMyDisasm);
+void fnmsub132p(PDISASM pMyDisasm);
+void fnmsub213p(PDISASM pMyDisasm);
+void fnmsub231p(PDISASM pMyDisasm);
 
-
-
+void fmadd132s(PDISASM pMyDisasm);
+void fmadd213s(PDISASM pMyDisasm);
+void fmadd231s(PDISASM pMyDisasm);
+void fmsub132s(PDISASM pMyDisasm);
+void fmsub213s(PDISASM pMyDisasm);
+void fmsub231s(PDISASM pMyDisasm);
+void fnmadd132s(PDISASM pMyDisasm);
+void fnmadd213s(PDISASM pMyDisasm);
+void fnmadd231s(PDISASM pMyDisasm);
+void fnmsub132s(PDISASM pMyDisasm);
+void fnmsub213s(PDISASM pMyDisasm);
+void fnmsub231s(PDISASM pMyDisasm);

@@ -55,6 +55,16 @@
 #define     Arg3oword       209
 #define     Arg3yword       210
 
+#define     Arg4byte        301
+#define     Arg4word        302
+#define     Arg4dword       303
+#define     Arg4qword       304
+#define     Arg4multibytes  305
+#define     Arg4tbyte       306
+#define     Arg4fword       307
+#define     Arg4dqword      308
+#define     Arg4oword       309
+#define     Arg4yword       310
 
 EFLStruct EFLAGS_TABLE[] = {
     {UN_, UN_, UN_, MO_, UN_, MO_, 0  , 0  , 0  , 0  , 0, 0},  /* 0-AAA */
