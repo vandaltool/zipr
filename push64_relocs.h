@@ -45,6 +45,11 @@ class Push64Relocs_t : public Zipr_SDK::ZiprPluginInterface_t
 		}
 		virtual void PinningEnd()
 		{ 
+			if(m_elfio.get_type()==ET_EXEC)
+			{
+				cout<<"Push64_reloc: elide PinningEnd as type==ET_EXEC"<<endl;
+				return;
+			}
 			cout<<"Push64Plugin: Ending  pinning, applying push64 relocs."<<endl;
 			HandlePush64Relocs(); 
 		}
@@ -59,6 +64,11 @@ class Push64Relocs_t : public Zipr_SDK::ZiprPluginInterface_t
 		}
 		virtual void CallbackLinkingEnd()
 		{
+			if(m_elfio.get_type()==ET_EXEC)
+			{
+				cout<<"Push64_reloc: elide CallbackLinkingEnd as type==ET_EXEC"<<endl;
+				return;
+			}
 			cout<<"Push64Plugin: CBLinkEnd, updating adds."  <<endl;
 			UpdatePush64Adds(); 
 		}
