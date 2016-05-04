@@ -161,7 +161,7 @@ class ElfWriterImpl : public ElfWriter
 				// skip phdr section.
 				if(phdrs[i].p_type == PT_PHDR)
 					continue;
-
+				
 				T_Elf_Phdr newphdr=phdrs[i];
 
 				// find offset in loadable segment
@@ -174,6 +174,7 @@ class ElfWriterImpl : public ElfWriter
 						break;
 					}
 				}
+
 				// update offset
 				new_phdrs.push_back(newphdr);
 			}

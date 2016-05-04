@@ -31,6 +31,11 @@ namespace Zipr_SDK {
 		m_size = CalculateWorstCaseSize();
 	}
 
+	void Dollop_t::ReCalculateWorstCaseSize()
+	{
+		m_size = CalculateWorstCaseSize();
+	}
+
 	size_t Dollop_t::CalculateWorstCaseSize()
 	{
 		size_t dollop_size = 0;

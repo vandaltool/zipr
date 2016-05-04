@@ -1431,6 +1431,8 @@ void ZiprImpl_t::PlaceDollops()
 		if (to_place->IsPlaced())
 			continue;
 
+		to_place->ReCalculateWorstCaseSize();
+
 		minimum_valid_req_size = std::min(
 			_DetermineWorstCaseInsnSize(to_place->front()->Instruction()),
 			Utils::DetermineWorstCaseDollopSizeInclFallthrough(to_place));
@@ -1505,6 +1507,8 @@ void ZiprImpl_t::PlaceDollops()
 			 * Assume that we will stop placing after this dollop.
 			 */
 			continue_placing = false;
+		
+			to_place->ReCalculateWorstCaseSize();
 
 			/*
 			 * Calculate before we place this dollop.
@@ -1512,6 +1516,8 @@ void ZiprImpl_t::PlaceDollops()
 			wcds = Utils::DetermineWorstCaseDollopSizeInclFallthrough(to_place);
 
 			to_place->Place(cur_addr);
+
+			cout << "to_place->GetSize(): " << to_place->GetSize() << endl;
 
 			fits_entirely = (to_place->GetSize() <= (placement.GetEnd()-cur_addr));
 			all_fallthroughs_fit = (wcds <= (placement.GetEnd()-cur_addr));
@@ -1574,22 +1580,25 @@ void ZiprImpl_t::PlaceDollops()
 				                        )
 				                       );
 
+#if 1
 				if (m_verbose)
 					cout << "de_and_fallthrough_fit: " << de_and_fallthrough_fit << endl
 					     << "last_de_fits          : " << last_de_fits << endl
 					     << "fits_entirely         : " << fits_entirely << endl
 					     << "all_fallthroughs_fit  : " << all_fallthroughs_fit << endl
 					     << "disallowed_override   : " << disallowed_override << endl;
+#endif
 				if ((de_and_fallthrough_fit ||
 				    last_de_fits ||
 						fits_entirely ||
 						all_fallthroughs_fit) && !disallowed_override)
 				{
-#if 0
+#if 1
 					if (m_verbose) {
 						DISASM d;
 						dollop_entry->Instruction()->Disassemble(d);
-						cout << std::hex << cur_addr << ": " << d.CompleteInstr << endl;
+						cout << std::hex << dollop_entry->Instruction()->GetBaseID() 
+						     << ":" << d.CompleteInstr << endl;
 					}
 #endif
 					dollop_entry->Place(cur_addr);
@@ -1891,9 +1900,11 @@ size_t ZiprImpl_t::_DetermineWorstCaseInsnSize(Instruction_t* insn, bool account
 	else
 		worst_case_size = DetermineWorstCaseInsnSize(insn, account_for_jump);
 
+#if 1
 	if (m_verbose)
 		cout << "Worst case size" << ((account_for_jump) ? " (including jump)" : "")
 		     << ": " << worst_case_size << endl;
+#endif
 
 	return worst_case_size;
 }
@@ -1911,9 +1922,11 @@ bool ZiprImpl_t::AskPluginsAboutPlopping(Instruction_t *insn)
 		ZiprPluginInterface_t *zipr_plopping_plugin =
 			dynamic_cast<ZiprPluginInterface_t*>(plopping_plugin);
 		if (m_verbose)
+		{
 			cout << zipr_plopping_plugin->ToString()
-			     << " will plop this instruction!"
-					 << endl;
+			     << " will plop "<<dec<<insn->GetBaseID() << ":"
+			     << insn->getDisassembly() << endl;
+		}
 		plopping_plugins[insn] = plopping_plugin;
 		return true;
 	}
