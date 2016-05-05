@@ -157,6 +157,10 @@ class ElfWriterImpl : public ElfWriter
 			{
 				libIRDB::virtual_offset_t page=page_align(addr+i);
 				libIRDB::virtual_offset_t page_offset=addr+i-page;
+			
+				// page not allocated yet, go ahead and call this byte free.
+				if(pagemap.find(page) == pagemap.end())
+					continue;
 
 				if(pagemap.at(page).inuse[page_offset])
 					return false;
@@ -219,21 +223,27 @@ class ElfWriterImpl : public ElfWriter
 
 			// find segment
 			int new_phdr_segment_index=locate_segment_index(new_phdr_addr);
+
+			// if there's no segment for the start, we'll have to allocate a page anyhow.  just use the _Preallocate routine.
 			if(new_phdr_segment_index==-1)
 				return false;
 
 
+			// i can't even convience a multiple-page phdr.
 			assert(phdr_size<PAGE_SIZE);
-			// verify that the segment jjjjjjjjjjjjjjjj
+
+			// verify that the segment can be extended.
 			int pages_to_extend=false;	// extend the segment by a page.
 			for(unsigned int i=0;i<phdr_size; i++)
 			{
+				libIRDB::virtual_offset_t this_addr=new_phdr_addr+i;
+				libIRDB::virtual_offset_t this_page=page_align(this_addr);
 				// find segment for phdr+i
-				int seg=locate_segment_index(new_phdr_addr+i);
+				int seg=locate_segment_index(this_addr);
 
 				// if it's not allocated, we ran off the end of the segment.  
 				// if we're also at the first byte of a page, extend the segment by a page.
-				if(seg==-1 && page_align(new_phdr_addr+i)==new_phdr_addr+i)
+				if(seg==-1 && this_page==this_addr )
 					pages_to_extend++;
 
 				// this should be safe because the new page can't be in a segment already.
@@ -242,10 +252,23 @@ class ElfWriterImpl : public ElfWriter
 
 				if(seg == new_phdr_segment_index)
 					continue;
-				// uh oh, we found that the phdr would fit cross segment boundaries.	
+				// uh oh, we found that the phdr would cross into the next segment 
 				return false;
 			}
+
+			// if we get here, we've found a spot for the PHDR.
+
+			// mark the bytes of the pages as readable, and in-use.
+			for(unsigned int i=0;i<phdr_size; i++)
+			{
+				libIRDB::virtual_offset_t this_addr=new_phdr_addr+i;
+				libIRDB::virtual_offset_t this_page=page_align(this_addr);
+				libIRDB::virtual_offset_t this_offset=this_addr-this_page;
+				pagemap[this_page].inuse[this_offset]=true;
+				pagemap[this_page].union_permissions(0x4); // add read permission
+			}
 			segvec[new_phdr_segment_index]->filesz+=(PAGE_SIZE*pages_to_extend);
+			segvec[new_phdr_segment_index]->memsz+=(PAGE_SIZE*pages_to_extend);
 
 			unsigned int fileoff=count_filesz_to_seg(new_phdr_segment_index);
 			fileoff+=(new_phdr_addr-segvec[new_phdr_segment_index]->start_page);
