@@ -50,39 +50,14 @@ void ElfWriter::Write(const ELFIO::elfio *elfiop, FileIR_t* firp, const string &
 	CreateSegmap(elfiop, firp, out_file);
 	//SortSegmap();
 	virtual_offset_t min_addr=DetectMinAddr(elfiop, firp, out_file);
+	virtual_offset_t max_addr=DetectMaxAddr(elfiop, firp, out_file);
 
 	LoadEhdr(fin);
 	LoadPhdrs(fin);
-	CreateNewPhdrs(min_addr);
-	CreateNewEhdr();
+	CreateNewPhdrs(min_addr,max_addr);
 
 
 	WriteElf(fout);
-
-	// cannot do shared objects (yet)
-	// to-do:  allow phdrs to go after segments.
-	// to-do: check to see if ehdrs/phdrs fit on the first page of the exe for space saving
-	if(min_addr<PAGE_SIZE)
-		return;
-
-
-
-	virtual_offset_t file_header_page_addr=0;
-#if 0
-	if(page_align(min_addr)+GetFileHeaderSize() + GetSegHeadersSize() < min_addr)
-		file_header_page_addr=page_align(min_addr);	
-	else 
-		file_header_page_addr=page_align(min_addr)-PAGE_SIZE;	
-#else
-	// always pre-allocate a page.
-	file_header_page_addr=page_align(min_addr)-PAGE_SIZE;	
-#endif
-
-	
-
-	
-
-		
 
 }
 
@@ -98,6 +73,21 @@ virtual_offset_t ElfWriter::DetectMinAddr(const ELFIO::elfio *elfiop, FileIR_t* 
 
 	}
 	return min_addr;
+
+}
+
+virtual_offset_t ElfWriter::DetectMaxAddr(const ELFIO::elfio *elfiop, FileIR_t* firp, const string &out_file)
+{
+	virtual_offset_t max_addr=(*(firp->GetDataScoops().begin()))->GetEnd()->GetVirtualOffset();
+	for(DataScoopSet_t::iterator it=firp->GetDataScoops().begin(); it!=firp->GetDataScoops().end(); ++it)
+	{
+		DataScoop_t* scoop=*it;
+
+		if(scoop->GetEnd()->GetVirtualOffset() > max_addr)
+			max_addr=scoop->GetStart()->GetVirtualOffset();
+
+	}
+	return max_addr;
 
 }
 
@@ -121,14 +111,19 @@ void ElfWriter::CreatePagemap(const ELFIO::elfio *elfiop, FileIR_t* firp, const 
 
 		for(virtual_offset_t i=page_align(start_addr); i<end_addr; i+=PAGE_SIZE)
 		{
-			cout<<"Writing scoop "<<scoop->GetName()<<" to page: "<<hex<<i<<", perms="<<scoop->getRawPerms()<<endl;
+			cout<<"Writing scoop "<<scoop->GetName()<<" to page: "<<hex<<i<<", perms="<<scoop->getRawPerms()
+			    << " start="<<hex<< scoop->GetStart()->GetVirtualOffset()
+			    << " end="<<hex<< scoop->GetEnd()->GetVirtualOffset() <<endl;
 			pagemap[i].union_permissions(scoop->getRawPerms());
 			for(int j=0;j<PAGE_SIZE;j++)
 			{
 				// get the data out of the scoop and put it into the page map.
 				virtual_offset_t offset=i-start_addr+j;
 				if(offset<scoop->GetContents().size())
+				{
 					pagemap[i].data[j]=scoop->GetContents()[ offset ]; 
+					pagemap[i].inuse[j]=true;
+				}
 			}
 		}
 
