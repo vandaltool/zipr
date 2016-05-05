@@ -14,3 +14,4 @@
 /start_dev.sh -text
 /svn.externals.cgc_dev -text
 /svn.externals.uva_dev -text
+/update-all.sh -text
