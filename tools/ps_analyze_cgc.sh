@@ -10,8 +10,8 @@ SCFI=off
 case "$*" in 
    *selective_cfi=on* ) 
 	export FIX_CALLS_FIX_ALL_CALLS=1
-	SCFI=on
 	echo "SCFI is on -- turn on FIX_CALLS_FIX_ALL_CALLS=1"
+	SCFI=on
 	;;
 esac
 
@@ -49,5 +49,4 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	\
 	--step fast_annot=off	\
 	--step spasm=off	\
 	--step ilr=off	\
-	--step-option zipr:--output=elfwriter \
 	--backend zipr
