@@ -331,6 +331,8 @@ void ZiprImpl_t::CreateBinaryFile()
 
 	CreateDollops();
 
+	RecalculateDollopSizes();
+
 	plugman.DollopBegin();
 
 	PlaceDollops();
@@ -1755,6 +1757,18 @@ void ZiprImpl_t::PlaceDollops()
 			cout << "Reserving " << std::hex << placement.GetStart()
 			     << ", " << std::hex << cur_addr << "." << endl;
 		memory_space.SplitFreeRange(Range_t(placement.GetStart(), cur_addr));
+	}
+}
+
+void ZiprImpl_t::RecalculateDollopSizes()
+{
+	auto dollop_it = m_dollop_mgr.dollops_begin();
+	auto dollop_it_end = m_dollop_mgr.dollops_end();
+	for (dollop_it, dollop_it_end;
+	     dollop_it != dollop_it_end;
+			 dollop_it++)
+	{
+		(*dollop_it)->ReCalculateWorstCaseSize();
 	}
 }
 

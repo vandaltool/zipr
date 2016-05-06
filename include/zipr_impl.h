@@ -233,6 +233,8 @@ class ZiprImpl_t : public Zipr_t
 		void WriteDollops();
 		void UpdatePins();
 
+		void RecalculateDollopSizes();
+
 		void ReplopDollopEntriesWithTargets();
 		/*
 		 * OptimizePinnedFallthrough()
