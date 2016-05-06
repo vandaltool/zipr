@@ -15,7 +15,7 @@ case "$*" in
 	;;
 esac
 
-$PEASOUP_HOME/tools/ps_analyze.sh $* 	\
+$PEASOUP_HOME/tools/ps_analyze.sh "$@" 	\
 	--step spawner=off 		\
 	--step appfw=off 		\
 	--step find_strings=off 	\
