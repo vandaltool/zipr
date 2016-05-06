@@ -34,14 +34,16 @@ class SCFI_Instrument
 				bool p_do_common_slow_path=true,
 				bool p_do_jumps=true,
 				bool p_do_rets=true,
-				bool p_do_safefn=true) 
+				bool p_do_safefn=true,
+				uint32_t p_clampmask=0xffffffff) 
 			: firp(the_firp), 
 			  do_coloring(p_do_coloring), 
 			  do_common_slow_path(p_do_common_slow_path), 
 			  do_jumps(p_do_jumps), 
 			  do_rets(p_do_rets), 
 			  do_safefn(p_do_safefn), 
-			  color_map(NULL) {}
+			  color_map(NULL),
+			  clampmask(p_clampmask) {}
 		bool execute();
 
 	private:
@@ -81,8 +83,7 @@ class SCFI_Instrument
 		bool do_rets;
 		bool do_safefn;
 		ColoredInstructionNonces_t *color_map;
-
-
+		uint32_t clampmask;
 };
 
 #endif

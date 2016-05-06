@@ -36,11 +36,12 @@ using namespace libIRDB;
 void usage(char* name)
 {
 	cerr<<" Usage: "<<name<<" <variant_id>  \n"
-"		[--color|--no-color]  \n"
-"		[--protect-jumps|--no-protect-jumps]  \n"
-"		[--protect-rets|--no-protect-rets] \n"
-"		[--protect-safefn|--no-protect-safefn]  \n"
-"		[ --common-slow-path | --no-common-slow-path ] \n"
+"		[--clamp-mask <mask>]   			-- In hex, defaults to 0xffffffff\n"
+"		[--color|--no-color]  				-- defaults to no-color\n"
+"		[--protect-jumps|--no-protect-jumps]  		-- defaults to protect-jumps \n"
+"		[--protect-rets|--no-protect-rets] 		-- defaults to protect-rets \n"
+"		[--protect-safefn|--no-protect-safefn]  	-- defaults to no-protect-safefn\n"
+"		[ --common-slow-path | --no-common-slow-path ]  -- defaults to common-slow-path\n"
 " \n"
 "default: --no-color --protect-jumps --protect-rets --no-protect-safefn --common-slow-path\n"; 
 }
@@ -59,6 +60,7 @@ int main(int argc, char **argv)
                 exit(1);
 	}
 
+	uint32_t clampmask=(uint32_t)-1;
 	bool do_coloring=false;
 	bool do_common_slow_path=true;
 	bool do_jumps=true;
@@ -66,7 +68,24 @@ int main(int argc, char **argv)
 	bool do_safefn=false;
 	for(int  i=2;i<argc;i++)
 	{
-		if(string(argv[i])=="--color")
+		if(string(argv[i])=="--clamp-mask")
+		{
+			if(i<argc)
+			{
+	
+				i++;
+				clampmask=strtol(argv[i], NULL, 0); // interpret argv[i] as a variable base string
+				cout<<"Using clamp mask = "<<hex<<clampmask<<endl;
+			}
+			else
+			{
+				cerr<<"--clamp-mask must take a (hex) value"<<endl;
+				usage(argv[0]);
+				exit(1);
+			}
+		
+		}
+		else if(string(argv[i])=="--color")
 		{
 			cout<<"Using coloring..."<<endl;
 			do_coloring=true;
@@ -152,8 +171,7 @@ int main(int argc, char **argv)
 
                 try
                 {
-			SCFI_Instrument scfii(firp, do_coloring, do_common_slow_path, do_jumps, do_rets, do_safefn);
-
+			SCFI_Instrument scfii(firp, do_coloring, do_common_slow_path, do_jumps, do_rets, do_safefn, clampmask);
 
 			int success=scfii.execute();
 
