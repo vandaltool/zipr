@@ -2092,7 +2092,7 @@ void setup_icfs(FileIR_t* firp)
 		// disassemble the instruction, and figure out which type of hell node we need.
 		DISASM d;
 		insn->Disassemble(d);
-		if(string("ret ")==d.Instruction.Mnemonic)
+		if(string("ret ")==d.Instruction.Mnemonic || string("retn ")==d.Instruction.Mnemonic)
 		{
 			if(getenv("IB_VERBOSE")!=0)
 				cout<<"using ret hell node for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
