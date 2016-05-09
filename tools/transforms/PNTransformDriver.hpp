@@ -30,6 +30,7 @@
 #include <csignal>
 #include "Rewrite_Utility.hpp"
 #include <libIRDB-cfg.hpp>
+#include "canary.h"
 
 
 //TODO: I should use the types defined by beaengine
@@ -37,13 +38,6 @@
 //#define JmpType 11
 //#define CallType 12
 
-
-struct canary
-{
-    unsigned int canary_val;
-    int ret_offset;//Should be negative, the value to subtract from esp if esp is at ret addr
-    int esp_offset;
-};
 
 struct finalize_record
 {
@@ -133,6 +127,7 @@ class PNTransformDriver
 	virtual PNStackLayout* Get_Next_Layout(validation_record &vr);
 
     	virtual void Print_Report();
+    	virtual void Print_Map();
     	virtual bool CanaryTransformHandler(PNStackLayout *layout, libIRDB::Function_t *func,bool validate);
     	virtual bool PaddingTransformHandler(PNStackLayout *layout, libIRDB::Function_t *func,bool validate);
     	virtual bool LayoutRandTransformHandler(PNStackLayout *layout, libIRDB::Function_t *func, bool validate);

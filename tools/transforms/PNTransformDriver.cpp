@@ -703,6 +703,7 @@ void PNTransformDriver::GenerateTransforms()
 
 	cerr<<"############################Final Report############################"<<endl;
 	Print_Report();
+	Print_Map();
 }
 
 // count_prologue_pushes -
@@ -2393,6 +2394,11 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 		}
 	}
 
+
+	orig_layout->SetCanaries(canaries);
+	orig_layout->SetBaseID(func->GetBaseID());
+	orig_layout->SetEntryID(func->GetEntryPoint()->GetBaseID());
+
 	return true;
 }
 
@@ -3149,4 +3155,32 @@ bool PNTransformDriver::WriteStackIRToDB()
 void sigusr1Handler(int signum)
 {
 	PNTransformDriver::timeExpired = true;
+}
+
+void PNTransformDriver::Print_Map()
+{
+
+	map<string, vector<PNStackLayout*> >::const_iterator it;
+
+	string exe_uri = orig_virp->GetFile()->GetURL();
+	string map_uri = exe_uri.substr(14, exe_uri.size() - 21).append("p1.map");
+
+	ofstream map_file;
+	map_file.open(map_uri.c_str());
+
+	cerr << "p1 map uri: " << map_uri << endl;
+
+	map_file << "LAYOUT" << ";FUNCTION"<< ";FRAME_ALLOC_SIZE" << ";ALTERED_FRAME_SIZE" << ";SAVED_REG_SIZE" << ";OUT_ARGS_SIZE" << 
+		";NUM_MEM_OBJ" << ";PADDED" << ";SHUFFLED" << ";CANARY_SAFE" << ";CANARY" << ";FUNC_BASE_ID" << ";FUNC_ENTRY_ID" << "\n";
+
+	for(it = transformed_history.begin(); it != transformed_history.end(); it++)
+	{
+		for(unsigned int i=0;i<it->second.size();i++)
+		{
+			map_file << "" << it->second[i]->ToMapEntry() << endl;
+		}
+
+	}
+
+	map_file.close();
 }

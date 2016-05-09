@@ -69,6 +69,7 @@ public:
 	virtual std::vector<Range> GetRanges() { return mem_objects; }
 	//TODO: why is this public
 	virtual unsigned int GetClosestIndex(int loc) const;
+
 	friend class PNStackLayout;
 };
 

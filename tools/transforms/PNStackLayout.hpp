@@ -27,6 +27,7 @@
 #include <exception>
 #include <assert.h>
 #include "globals.h"
+#include "canary.h"
 
 //NOTE: padding adds a value between max and min, plus the frame size
 //I believe this was done to protect against a very large buffer 
@@ -63,6 +64,10 @@ protected:
 	StackLayout stack_layout;
 	unsigned int altered_alloc_size;
 
+	std::vector<canary> canaries;
+	int base_id;
+	int entry_id;
+
 	
 	virtual void AddCanaryPadding();
 
@@ -96,6 +101,7 @@ public:
 	virtual unsigned int GetAlteredAllocSize() const;
 	virtual unsigned int GetSavedRegsSize() const;
 	virtual std::string ToString() const;
+	virtual std::string ToMapEntry() const;
 	virtual std::string GetLayoutName() const;
 	virtual std::string GetFunctionName() const;
 	virtual unsigned int GetOutArgsSize() const;
@@ -125,6 +131,10 @@ public:
 	//This previously was a protected func, moved out for TNE,
 	//to support dynamic array padding, the name is a bit confusing. 
 	virtual unsigned int GetRandomPadding(unsigned int obj_size=0);
+
+	virtual void SetCanaries(std::vector<canary> can_vec) { canaries = can_vec; }
+	virtual void SetBaseID(int new_id) { base_id = new_id; }
+	virtual void SetEntryID(int new_id) { entry_id = new_id; }
 };
 
 #endif

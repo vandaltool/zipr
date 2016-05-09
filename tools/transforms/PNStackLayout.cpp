@@ -122,6 +122,9 @@ PNStackLayout::PNStackLayout(StackLayout stack_layout) : stack_layout(stack_layo
 		PNRange *pn_obj = new PNRange(stack_layout.mem_objects[i]);
 		mem_objects.push_back(pn_obj);
 	}
+
+	base_id = 0;
+	entry_id = 0;
 }
 
 PNStackLayout::PNStackLayout(const PNStackLayout &stack_layout): stack_layout(stack_layout.stack_layout)
@@ -139,6 +142,9 @@ PNStackLayout::PNStackLayout(const PNStackLayout &stack_layout): stack_layout(st
 		PNRange *pn_obj = new PNRange(*stack_layout.mem_objects[i]);
 		mem_objects.push_back(pn_obj);
 	}
+
+	base_id = 0;
+	entry_id = 0;
 }
 
 PNStackLayout::~PNStackLayout()
@@ -693,4 +699,45 @@ void PNStackLayout::ResetLayout()
 	{
 		mem_objects[i]->Reset();
 	}
+}
+
+string PNStackLayout::ToMapEntry() const
+{
+	stringstream ss;
+	
+	ss << "" << stack_layout.layout_name << ";" << stack_layout.function_name << ";" << stack_layout.frame_alloc_size << ";" <<
+		altered_alloc_size << ";" << stack_layout.saved_regs_size << ";" << stack_layout.out_args_size << ";" << mem_objects.size() << ";";
+ 
+	if(isPadded)
+		ss << "true";
+	else
+		ss << "false";
+
+	ss << ";";
+
+	if(isShuffled)
+		ss << "true";
+	else
+		ss << "false";
+
+	ss << ";";
+	if(this->IsCanarySafe())
+		ss << "true";
+	else
+		ss << "false";
+
+	ss << ";";
+
+	if(canaries.size() > 0) 
+		ss << std::hex << canaries[0].canary_val;
+	else
+		ss << 0;
+
+	ss << ";";
+	/*asj5b - add func id*/
+	ss << std::hex << base_id;
+	ss << ";";
+	ss << std::hex << entry_id;
+
+	return ss.str();
 }
