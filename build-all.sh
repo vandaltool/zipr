@@ -103,19 +103,8 @@ scons || exit
 cd $IRDB_TRANSFORMS
 scons || exit
 
-cd $PEASOUP_UMBRELLA_DIR
-if [ -d DieHard ]; then
-	cd DieHard
-	./build_diehard.sh
-fi
 
 cd $PEASOUP_UMBRELLA_DIR
-if [ -d non_overlapping_heap ]; then
-	make -C non_overlapping_heap
-fi
-
-cd $PEASOUP_UMBRELLA_DIR
-
 
 echo
 echo
