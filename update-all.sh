@@ -6,5 +6,4 @@ do
 		svn update
 		popd
 	fi
-
 done
