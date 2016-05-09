@@ -315,9 +315,9 @@ finalize_json()
 				echo $(echo $variant_config_contents | grep main_exe | sed -e "s/.*\(main_exe[^,]*\),.*/\1/g")
 				binname=$(echo $variant_config_contents | grep main_exe | sed -e "s/.*\(main_exe[^,]*\),.*/\1/g" | sed -e "s/.*\/\([a-zA-Z0-9.]*\)\".*/\1/")
 				echo "$new_variant_dir/bin/$binname"
-				$PEASOUP_UMBRELLA_DIR/non_overlapping_libraries/patchelf --set-interpreter $new_variant_dir_ts/bin/peasoup_executable_dir/ld-linux-x86-64.so.2.nol $new_variant_dir/bin/$binname
+				$CFAR_HOME/non_overlapping_libraries/patchelf --set-interpreter $new_variant_dir_ts/bin/peasoup_executable_dir/ld-linux-x86-64.so.2.nol $new_variant_dir/bin/$binname
 			elif [ "$backend" = 'strata' ]; then
-				$PEASOUP_UMBRELLA_DIR/non_overlapping_libraries/patchelf --set-interpreter $new_variant_dir_ts/bin/peasoup_executable_dir/ld-linux-x86-64.so.2.nol $new_variant_dir/bin/peasoup_executable_dir/a.stratafied
+				$CFAR_HOME/non_overlapping_libraries/patchelf --set-interpreter $new_variant_dir_ts/bin/peasoup_executable_dir/ld-linux-x86-64.so.2.nol $new_variant_dir/bin/peasoup_executable_dir/a.stratafied
 			fi
 		else
 			# strata workarounds...

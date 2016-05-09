@@ -828,16 +828,16 @@ if [ -f $STRATA_HOME/lib/libstrata.so ]; then
 	cp $newdir/libstrata.so.nosymbols $newdir/libstrata.so
 fi
 
-if [ -f $PEASOUP_UMBRELLA_DIR/DieHard/src/libdiehard.so ]; then
-	cp $PEASOUP_UMBRELLA_DIR/DieHard/src/libdiehard.so $newdir/libheaprand.so
+if [ -f $CFAR_HOME/DieHard/src/libdiehard.so ]; then
+	cp $CFAR_HOME/DieHard/src/libdiehard.so $newdir/libheaprand.so
 fi
 
-if [ -f $PEASOUP_UMBRELLA_DIR/non_overlapping_heap/noh.so ]; then
-	cp $PEASOUP_UMBRELLA_DIR/non_overlapping_heap/noh.so $newdir/noh.so
+if [ -f $CFAR_HOME/non_overlapping_heap/noh.so ]; then
+	cp $CFAR_HOME/non_overlapping_heap/noh.so $newdir/noh.so
 fi
 
-if [ -f $PEASOUP_UMBRELLA_DIR/non_overlapping_libraries/ld-linux-x86-64.so.2 ]; then
-	cp $PEASOUP_UMBRELLA_DIR/non_overlapping_libraries/ld-linux-x86-64.so.2 $newdir/ld-linux-x86-64.so.2.nol
+if [ -f $CFAR_HOME/non_overlapping_libraries/ld-linux-x86-64.so.2 ]; then
+	cp $CFAR_HOME/non_overlapping_libraries/ld-linux-x86-64.so.2 $newdir/ld-linux-x86-64.so.2.nol
 fi
 
 adjust_lib_path 
