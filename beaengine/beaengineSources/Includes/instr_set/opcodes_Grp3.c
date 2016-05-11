@@ -69,7 +69,7 @@ void __bea_callspec__ G3_Eb(PDISASM pMyDisasm)
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
         GV.OperandSize = 32;
         GV.EIP_ += GV.DECALAGE_EIP+2;
-        (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0+REG2;
+        (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0;
         (*pMyDisasm).Argument1.ArgSize = 8;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = REGISTER_TYPE+GENERAL_REG+REG0;
         FillFlags(pMyDisasm, 70);
