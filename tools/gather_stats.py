@@ -39,7 +39,7 @@ for log_file_path in sys.argv[1:]:
 			if not line or line is None:
 				continue
 		
-			if re.search(ATTRIBUTE, line): 
+			if re.search(ATTRIBUTE, line) or re.search(ATTRIBUTE2, line): 
 				(attribute_name, attribute_value) = extract_attribute(line.rstrip())
 				if not step_name in stats:
 					stats[step_name] = {}
