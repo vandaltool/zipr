@@ -583,8 +583,10 @@ report_logs()
 {
 	logfile=logs/ps_analyze.log
 
+	myhost=$(hostname)
 	echo "# ATTRIBUTE start_time=$ps_starttime" >> $logfile
 	echo "# ATTRIBUTE end_time=$ps_endtime" >> $logfile
+	echo "# ATTRIBUTE hostname=$myhost" >> $logfile
 	echo "# ATTRIBUTE peasoup_step_name=all_peasoup" >> $logfile
 
 	for i in $all_logs
