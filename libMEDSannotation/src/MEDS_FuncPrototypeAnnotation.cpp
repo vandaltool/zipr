@@ -83,6 +83,7 @@ void MEDS_FuncPrototypeAnnotation::parse()
 		int numargs = 0;
 		char buf[MAX_BUF_SIZE];
 		strncpy(buf, m_rawInputLine.c_str(), MAX_BUF_SIZE-1);
+		buf[MAX_BUF_SIZE-1] = '\0';
 		sscanf(buf, "%*x %*d %*s %*s %d %*s", &numargs);
 		for (int i = 0; i < numargs; ++i)
 		{
