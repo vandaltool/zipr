@@ -58,7 +58,7 @@ static string insertRedirectRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:
 static string instructionRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+([*][*])[[:blank:]]+.*$";
 static string callbackRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+([(][)])[[:blank:]]+.*$";
 static string relocRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+([r][l])[[:blank:]]+.*$";
-static string ibtlRegex = "^[[:blank:]]*([a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+([I][L])[[:blank:]]+([a-zA-Z][a-zA-Z0-9_]*).*$";
+static string ibtlRegex = "^[[:blank:]]*([a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+([I][L])[[:blank:]]+.*$";
 
 static regex_t coPattern, erPattern, orPattern, irPattern, insPattern, cbPattern, rlPattern, ibtlPattern;
 
@@ -786,24 +786,30 @@ static void printSPRI(const string &symbolFilename, const string &outFileName)
 		}
 		else if (IBTLop)
 		{
-		    // We are parsing:  Label1 IL Label2.
+		    // We are parsing:  Label1 IL Label2, or Label1 IL file+offset.
 		    //  The Label1 was in address and was xformed to SymMap[address] above.
-		    if (symMap.find(rhs) == symMap.end())
-		    {
-			stringstream ss;
-			ss << sline.lineNum;
-			throw SpasmException("ERROR: unresolved symbol " + rhs + " for symbol referenced on aspri line " + ss.str());
-		    }
+			if (rhs.find("+") != string::npos) {
+				// Parsing: Label1 IL file+offset
+				spriline += rhs;
+			}
+			else {
+				if (symMap.find(rhs) == symMap.end())
+				{
+					stringstream ss;
+					ss << sline.lineNum;
+					throw SpasmException("ERROR: unresolved symbol " + rhs + " for symbol referenced on aspri line " + ss.str());
+				}
 
-		    if (comments.empty())
-			comments = "#";
-		    else
-			comments += " ; ";
+				if (comments.empty())
+					comments = "#";
+				else
+					comments += " ; ";
 
-		    comments += "dest addr = <" + rhs + ">";
+				comments += "dest addr = <" + rhs + ">";
 
-		    spriline += symMap[rhs] + " ";
-		    spriline += ("\t" + comments);
+				spriline += symMap[rhs] + " ";
+				spriline += ("\t" + comments);
+			}
 		    outFile << spriline << endl;
 		    continue;
 		}

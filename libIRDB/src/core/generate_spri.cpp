@@ -530,7 +530,6 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 		emit_relocation(fileIRp, fout, this_reloc->GetOffset(),this_reloc->GetType(), newinsn);
 	}
 
-#if 1
 	ICFS_t *IB_targets = newinsn->GetIBTargets();
 	if (NULL != IB_targets) 
 	{
@@ -539,11 +538,10 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 			// Iterate through all IB targets and produce SPRI rules for IBTL (IB Target Limitation).
 			for (InstructionSet_t::iterator TargIter = IB_targets->begin(); TargIter != IB_targets->end(); ++TargIter)
 			{
-			    fout << "\t" << labelfy(newinsn) << " IL " << labelfy(*TargIter) << endl;
+			    fout << "\t" << labelfy(newinsn) << " IL " << qualified_labelfy(fileIRp, *TargIter) << endl;
 			}
 		}
 	}
-#endif
 
 	return original_target;
 
