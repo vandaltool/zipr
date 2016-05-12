@@ -171,6 +171,8 @@ void MEDS_InstructionCheckAnnotation::parse()
 		m_isInfiniteLoop = true;
 	}
 
+	const int maxbufsize = m_rawInputLine.size()*2;
+
 	// get bit width information for overflow & underflow
 	if (m_isOverflow || m_isUnderflow)
 	{
@@ -180,8 +182,8 @@ void MEDS_InstructionCheckAnnotation::parse()
 	// 80483d5      3 INSTR CHECK UNDERFLOW SIGNED 16  CX ZZ sub     cx, ax
     // 804d51d      2 INSTR CHECK OVERFLOW UNSIGNED 32  EBX ZZ add     ebx, eax
 
-
-		char buf[1024] = "";
+		char buf[maxbufsize]; bzero(buf, maxbufsize);
+		
 		sscanf(m_rawInputLine.c_str(), "%*s %*d %*s %*s %*s %*s %d %s", &m_bitWidth, buf);
 		m_target = string(buf);
 		if (m_isNoFlag)
@@ -191,8 +193,8 @@ void MEDS_InstructionCheckAnnotation::parse()
 	}
 	else if (m_isTruncation) // get bid width from/to information for truncation
 	{
-		char buf[1024] = "";
-		char buf2[1024] = "";
+		char buf[maxbufsize]; bzero(buf, maxbufsize);
+		char buf2[maxbufsize]; bzero(buf2, maxbufsize);
 		// [ADDR] [SIZE] INSTR CHECK TRUNCATION UNKNOWNSIGN 32 EAX 16 AX ZZ mov     [esp+2Ah], ax
 		sscanf(m_rawInputLine.c_str(), "%*s %*d %*s %*s %*s %*s %d %s %d %s", &m_truncationFromWidth, buf, &m_truncationToWidth, buf2);
 
@@ -210,7 +212,7 @@ void MEDS_InstructionCheckAnnotation::parse()
 	} 
 	else if (m_isSignedness)
 	{
-		char buf[1024] = "";
+		char buf[maxbufsize]; bzero(buf, maxbufsize);
 		// [ADDR] [SIZE] INSTR CHECK SIGNEDNESS SIGNED 16 AX ZZ mov     [esp+28h], ax
 		// [ADDR] [SIZE] INSTR CHECK SIGNEDNESS UNSIGNED 16 AX ZZ mov   [esp+28h], ax
 		sscanf(m_rawInputLine.c_str(), "%*s %*d %*s %*s %*s %*s %d %s", &m_bitWidth, buf);
@@ -224,7 +226,7 @@ void MEDS_InstructionCheckAnnotation::parse()
 		// 8048293 3 INSTR MEMSET STACKOFFSET_ESP 12 SIZE 24 ZZ call memset
 		if (m_rawInputLine.find("STACKOFFSET")!=string::npos)
 		{
-			char buf[1024] = "";
+			char buf[maxbufsize]; bzero(buf, maxbufsize);
 			sscanf(m_rawInputLine.c_str(), "%*s %*d %*s %*s %*s %d %*s %d", &m_stackOffset, &m_objectSize);
 			if (m_rawInputLine.find("STACKOFFSET_EBP")!=string::npos)
 			{

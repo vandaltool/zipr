@@ -28,8 +28,6 @@
 #include "MEDS_Register.hpp"
 #include "MEDS_FuncPrototypeAnnotation.hpp"
 
-#define MAX_BUF_SIZE 16000
-
 using namespace std;
 using namespace MEDS_Annotation;
 
@@ -77,13 +75,15 @@ void MEDS_FuncPrototypeAnnotation::parse()
 	VirtualOffset vo(m_rawInputLine);
 	m_virtualOffset = vo;
 
+	const int maxbufsize = m_rawInputLine.size()*2;
+
 	if (about_inargs)
 	{
 // 4046e0     71 FUNC INARGS    4  ARG0 1 ARG1 0 ARG2 0 ARG3 0
 		int numargs = 0;
-		char buf[MAX_BUF_SIZE];
-		strncpy(buf, m_rawInputLine.c_str(), MAX_BUF_SIZE-1);
-		buf[MAX_BUF_SIZE-1] = '\0';
+		char buf[maxbufsize]; bzero(buf, maxbufsize);
+		strncpy(buf, m_rawInputLine.c_str(), maxbufsize-1);
+		buf[maxbufsize-1] = '\0';
 		sscanf(buf, "%*x %*d %*s %*s %d %*s", &numargs);
 		for (int i = 0; i < numargs; ++i)
 		{
@@ -92,7 +92,7 @@ void MEDS_FuncPrototypeAnnotation::parse()
 			char *zarg = strstr(buf, arg);
 			if (zarg)
 			{
-				char tmp[MAX_BUF_SIZE];
+				char tmp[maxbufsize];
 				int meds_type;
 				sscanf(tmp,"%*s %d %*s", &meds_type);
 				MEDS_Arg marg(meds_type);
@@ -108,7 +108,7 @@ void MEDS_FuncPrototypeAnnotation::parse()
 	else if (about_return)
 	{
 		// 404740    697 FUNC RETURNTYPE RAX 1
-		char regbuf[MAX_BUF_SIZE];
+		char regbuf[maxbufsize]; bzero(regbuf, maxbufsize);
 		int meds_retType;
 		sscanf(m_rawInputLine.c_str(), "%*x %*d %*s %*s %s %d", regbuf, &meds_retType);
 		RegisterName reg = Register::getRegister(regbuf);
