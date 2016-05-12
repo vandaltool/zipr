@@ -290,8 +290,6 @@ void Unpin_t::DoUpdateForFixedCalls()
 		}
 	}
 
-	cout<<"#ATTRIBUTE insn_unpin_total_unpins="<<dec<<unpins<<endl;
-	cout<<"#ATTRIBUTE insn_unpin_missed_unpins="<<dec<<missed_unpins<<endl;
 }
 
 void Unpin_t::DoUpdateForScoops()
