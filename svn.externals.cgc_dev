@@ -11,3 +11,4 @@ zipr_install         http://svn.zephyr-software.com/repos/zipr_install/branches/
 zipr_sdk             http://svn.zephyr-software.com/repos/zipr_sdk/trunk/
 daffy                http://svn.zephyr-software.com/repos/daffy/trunk/
 IdaProServer         http://svn.zephyr-software.com/repos/IdaProServer/branches/cgc_dev/
+cgc_wahoo_challenges http://svn.zephyr-software.com/repos/cgc_wahoo_challenges/trunk
