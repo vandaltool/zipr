@@ -25,6 +25,17 @@ class DataScoop_t : public BaseObj_t
 {
 
 	public:
+		DataScoop_t()
+			:
+				BaseObj_t(NULL),
+				name(),
+				start(NULL),
+				end(NULL),
+				type(NULL),
+				permissions(0),
+				contents()
+		{}
+	
 		DataScoop_t( 	libIRDB::db_id_t id,
 				std::string p_name,
 				libIRDB::AddressID_t* p_start,
@@ -56,6 +67,7 @@ class DataScoop_t : public BaseObj_t
 		bool isWriteable() const { return (permissions & permissions_w) == permissions_w; };
 		bool isExecuteable() const { return (permissions & permissions_x) == permissions_x; };
 		int  getRawPerms() const { return permissions; }
+		int  setRawPerms(int newperms) { permissions=newperms; }
 
 		void SetName(const std::string &n) { name=n; }
 		void SetContents(const std::string &n) { contents=n; }

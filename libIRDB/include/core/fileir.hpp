@@ -74,6 +74,13 @@ class FileIR_t : public BaseObj_t
 		static int GetArchitectureBitWidth();
 		void SetArchitecture();
 
+		// Lookup a scoop by address
+		DataScoop_t* FindScoop(const libIRDB::virtual_offset_t &addr);
+
+		void SplitScoop(DataScoop_t *tosplit, const libIRDB::virtual_offset_t &addr, size_t size, 
+				DataScoop_t* &before,DataScoop_t* &containing, DataScoop_t* &after);
+
+
 	private:
 
 		static ArchitectureDescription_t *archdesc;

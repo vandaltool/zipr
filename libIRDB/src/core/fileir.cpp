@@ -1211,3 +1211,137 @@ std::map<db_id_t,DataScoop_t*> FileIR_t::ReadScoopsFromDB
 	return scoopMap;
 }
 
+
+// Lookup a scoop by address
+DataScoop_t* FileIR_t::FindScoop(const libIRDB::virtual_offset_t &addr)
+{
+	for(DataScoopSet_t::iterator it=scoops.begin(); it!=scoops.end(); ++it)
+	{
+		// we're doing <= in both comparisons here intentionally.
+		// scoop addresses are the start/end address are inclusive
+		// so that start+size-1 == end.
+		if( (*it)->GetStart()->GetVirtualOffset() <= addr && addr <= (*it)->GetEnd()->GetVirtualOffset() )
+			return *it;
+	}
+	return NULL;
+}
+
+
+void FileIR_t::SplitScoop(
+		DataScoop_t *tosplit, 
+		const libIRDB::virtual_offset_t &addr, 
+		size_t size, 
+		DataScoop_t* &before,
+		DataScoop_t* &containing, 
+		DataScoop_t* &after
+	)
+{
+
+	// init output params.
+	before=containing=after=NULL;
+
+
+	if(tosplit->GetStart()->GetVirtualOffset() == addr &&
+		tosplit->GetEnd()->GetVirtualOffset() == addr+size-1)
+	{
+		// no split necessary
+		containing=tosplit;
+		return;
+	}
+
+	bool needs_before = addr!=tosplit->GetStart()->GetVirtualOffset();
+	bool needs_after = addr+size-1 != tosplit->GetEnd()->GetVirtualOffset();
+
+
+	if(needs_before)
+	{
+		// setup before
+		AddressID_t* before_start=NULL;
+	
+		before_start=new AddressID_t;
+		before_start->SetFileID(tosplit->GetStart()->GetFileID());
+		before_start->SetVirtualOffset(tosplit->GetStart()->GetVirtualOffset());
+
+		AddressID_t* before_end=new AddressID_t;
+		before_end->SetFileID(tosplit->GetStart()->GetFileID());
+		before_end->SetVirtualOffset(addr-1);
+
+		before=new DataScoop_t;
+		before->SetName(tosplit->GetName()+"3");
+		before->SetStart(before_start);
+		before->SetEnd(before_end);
+		before->setRawPerms(tosplit->getRawPerms());
+		before->GetContents().resize(before_end->GetVirtualOffset() - before_start->GetVirtualOffset());
+
+		// copy bytes
+		for(virtual_offset_t i=before_start->GetVirtualOffset() ; i< before_end->GetVirtualOffset(); i++)
+			before->GetContents()[i-before_start->GetVirtualOffset()] = tosplit->GetContents()[i-tosplit->GetStart()->GetVirtualOffset()];
+	
+
+		GetAddresses().insert(before_start);
+		GetAddresses().insert(before_end);
+		GetDataScoops().insert(before);
+	}
+
+	// setup containing
+	AddressID_t* containing_start=new AddressID_t;
+	containing_start->SetFileID(tosplit->GetStart()->GetFileID());
+	containing_start->SetVirtualOffset(addr);
+
+	AddressID_t* containing_end=new AddressID_t;
+	containing_end->SetFileID(tosplit->GetStart()->GetFileID());
+	containing_end->SetVirtualOffset(addr+size-1);
+
+	containing=new DataScoop_t;
+	containing->SetName(tosplit->GetName()+"3");
+	containing->SetStart(containing_start);
+	containing->SetEnd(containing_end);
+	containing->setRawPerms(tosplit->getRawPerms());
+	containing->GetContents().resize(containing_end->GetVirtualOffset() - containing_start->GetVirtualOffset());
+	// copy bytes
+	for(virtual_offset_t i=containing_start->GetVirtualOffset() ; i< containing_end->GetVirtualOffset(); i++)
+		containing->GetContents()[i-containing_start->GetVirtualOffset()] = tosplit->GetContents()[i-tosplit->GetStart()->GetVirtualOffset()];
+
+	GetAddresses().insert(containing_start);
+	GetAddresses().insert(containing_end);
+	GetDataScoops().insert(containing);
+		
+
+	if(needs_after)
+	{
+		// setup after
+		AddressID_t* after_start=new AddressID_t;
+		after_start->SetFileID(tosplit->GetStart()->GetFileID());
+		after_start->SetVirtualOffset(addr+size);
+
+		AddressID_t* after_end=new AddressID_t;
+		after_end->SetFileID(tosplit->GetStart()->GetFileID());
+		after_end->SetVirtualOffset(tosplit->GetEnd()->GetVirtualOffset());
+
+		after=new DataScoop_t;
+		after->SetName(tosplit->GetName()+"3");
+		after->SetStart(after_start);
+		after->SetEnd(after_end);
+		after->setRawPerms(tosplit->getRawPerms());
+		after->GetContents().resize(after_end->GetVirtualOffset() - after_start->GetVirtualOffset());
+		// copy bytes
+		for(virtual_offset_t i=after_start->GetVirtualOffset() ; i < after_end->GetVirtualOffset(); i++)
+			after->GetContents()[i-after_start->GetVirtualOffset()] = tosplit->GetContents()[i-tosplit->GetStart()->GetVirtualOffset()];
+
+		GetAddresses().insert(after_start);
+		GetAddresses().insert(after_end);
+		GetDataScoops().insert(after);
+	}
+	
+
+	GetAddresses().erase(tosplit->GetStart());
+	GetAddresses().erase(tosplit->GetEnd());
+	GetDataScoops().erase(tosplit);
+
+	delete tosplit->GetStart();
+	delete tosplit->GetEnd();
+	delete tosplit;
+
+	return;
+}
+
