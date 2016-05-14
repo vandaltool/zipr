@@ -1752,9 +1752,12 @@ void __bea_callspec__ DF_(PDISASM pMyDisasm)
                 (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+FPUCONTROL;
                 #ifndef BEA_LIGHT_DISASSEMBLY
                    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fnstsw ");
+                   (void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers16Bits[0]);
                 #endif
             (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0;
             (*pMyDisasm).Argument1.ArgSize = 16;
+            (*pMyDisasm).Argument2.ArgType = REGISTER_TYPE+FPU_REG;
+            (*pMyDisasm).Argument2.ArgSize = 16;
 
             }
             else if ((MyMODRM & 0xf) >=8) {
