@@ -1764,7 +1764,7 @@ void ZiprImpl_t::RecalculateDollopSizes()
 {
 	auto dollop_it = m_dollop_mgr.dollops_begin();
 	auto dollop_it_end = m_dollop_mgr.dollops_end();
-	for (dollop_it, dollop_it_end;
+	for ( ;
 	     dollop_it != dollop_it_end;
 			 dollop_it++)
 	{
