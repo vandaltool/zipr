@@ -445,13 +445,13 @@ void fill_in_scoops(FileIR_t *firp)
 			fout<<"Found that section "<<elfiop->sections[secndx]->get_name()<<" is both writeable and executable.  Program is inherently unsafe!"<<endl;
 		}
 
-#if 0
-		/* executable sections handled by other bits. */
+		/* executable sections handled by zipr/spri. */
         	if(elfiop->sections[secndx]->isExecutable()) 
 		{
 			cout<<"Skipping scoop for section (executable) "<<elfiop->sections[secndx]->get_name()<<endl;
                 	continue;
 		}
+#if 0
 		// we decided to skip BSS for a bad reason.  trying again.
         	if(elfiop->sections[secndx]->isBSS())
 		{

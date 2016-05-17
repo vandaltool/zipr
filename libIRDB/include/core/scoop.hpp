@@ -67,7 +67,7 @@ class DataScoop_t : public BaseObj_t
 		bool isWriteable() const { return (permissions & permissions_w) == permissions_w; };
 		bool isExecuteable() const { return (permissions & permissions_x) == permissions_x; };
 		int  getRawPerms() const { return permissions; }
-		int  setRawPerms(int newperms) { permissions=newperms; }
+		void  setRawPerms(int newperms) { permissions=newperms; }
 
 		void SetName(const std::string &n) { name=n; }
 		void SetContents(const std::string &n) { contents=n; }

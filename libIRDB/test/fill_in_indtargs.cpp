@@ -323,7 +323,7 @@ bool IsParameterWrite(FileIR_t *firp,Instruction_t* insn, string& output_dst)
 
 	if(k < insn->GetFunction()->GetOutArgsRegionSize())
 	{
-		output_dst=d.Argument1.ArgMnemonic;
+		output_dst=string("[")+d.Argument1.ArgMnemonic+string("]");
 		return true;
 	}
 
