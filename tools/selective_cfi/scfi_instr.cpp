@@ -416,6 +416,19 @@ void SCFI_Instrument::AddJumpCFI(Instruction_t* insn)
 	string pushbits=change_to_push(insn);
 	cout<<"Converting ' "<<insn->getDisassembly()<<"' to '";
 	Instruction_t* after=insertDataBitsBefore(firp,insn,pushbits); 
+#ifdef CGC
+	// insert the pop/checking code.
+	cout<<insn->getDisassembly()<<"+jmp slowpath'"<<endl;
+
+	string jmpBits=getJumpDataBits();
+        after->SetDataBits(jmpBits);
+        after->SetComment(insn->getDisassembly()+" ; scfi");
+	assert(do_common_slow_path); /* fixme:  this defaults to the slow_cfi path.  need to color accordingly */
+	createNewRelocation(firp,after,"slow_cfi_path",0);
+	after->SetFallthrough(NULL);
+	after->SetTarget(after);
+	return;
+#else
 	
 	after->SetDataBits(getRetDataBits());
 	cout <<insn->getDisassembly()<<" + ret' "<<endl ;
@@ -428,6 +441,7 @@ void SCFI_Instrument::AddJumpCFI(Instruction_t* insn)
 	AddReturnCFI(after,v);
 	// cout<<"Warning, JUMPS not CFI's yet"<<endl;
 	return;
+#endif
 }
 
 
@@ -500,6 +514,21 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 	
 	
 
+#ifdef CGC
+	// insert the pop/checking code.
+	Instruction_t* after=insn;
+
+	string jmpBits=getJumpDataBits();
+	
+        after->SetDataBits(jmpBits);
+        after->SetComment(insn->getDisassembly()+" ; scfi");
+	createNewRelocation(firp,after,slow_cfi_path_reloc_string,0);
+	after->SetFallthrough(NULL);
+	after->SetTarget(after);
+	return;
+	
+#else
+
 	string decoration="";
 	int nonce_size=GetNonceSize(insn);
 	int nonce_offset=GetNonceOffset(insn);
@@ -537,13 +566,6 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 	cout<<"Converting "<<dec<<tmp->GetFallthrough()->GetBaseID()<<":"<<tmp->GetFallthrough()->getDisassembly()<<"to jmp+reg"<<endl;
 	setInstructionAssembly(firp,tmp->GetFallthrough(), string("jmp ")+reg, NULL,NULL);
 
-	// insert before jmp reg instruction a clamp, if one is specified.
-	if(clampmask!=0xffffffff)
-	{
-		string clamp_str="and "+reg+", "+to_string(clampmask);
-		insertAssemblyBefore(firp,tmp->GetFallthrough(),clamp_str);
-	}
-
 	// set the jne's target to itself, and create a reloc that zipr/strata will have to resolve.
 	jne->SetTarget(jne);	// needed so spri/spasm/irdb don't freak out about missing target for new insn.
 	Relocation_t* reloc=create_reloc(jne);
@@ -552,6 +574,7 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 	cout<<"Setting slow path for: "<<slow_cfi_path_reloc_string<<endl;
 
 	return;
+#endif
 }
 
 static void display_histogram(std::ostream& out, std::string attr_label, std::map<int,int> & p_map)
