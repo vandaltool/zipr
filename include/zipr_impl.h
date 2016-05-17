@@ -120,6 +120,30 @@ class ZiprImpl_t : public Zipr_t
 		 */
 		void FindFreeRanges(const std::string &name);
 
+		/* 
+		 * Input: A map of section addresses to integers in order of address
+		 * Output:  A new scoop with RX perms for each allocatable/executable series-of-segments.
+		 * Uses: elfio
+		 * Effects: libIRDB IR.
+ 	         *
+		 * Creates a scoop for the executable instructions in the IR.
+		 */
+		void CreateExecutableScoops(const std::map<RangeAddress_t, int> &ordered_sections);
+
+        
+	
+		/* 
+		 * Input: the libIRDB IR, memory_space
+		 * Output:  a revised version of the IR taking memory into account 
+		 * Uses: libIRDB IR
+		 * Effects: libIRDB IR.
+ 	         *
+		 * Creates a scoop for the executable instructions in the IR.
+		 */
+		void UpdateScoops();
+
+
+
 		/*
 		 * AddPinnedInstructions()
 		 *

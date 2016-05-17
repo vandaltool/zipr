@@ -53,6 +53,12 @@ using namespace zipr;
 using namespace ELFIO;
 
 
+inline uintptr_t page_round_up(uintptr_t x)
+{
+	const int page_size=4096;
+	return  ( (((uintptr_t)(x)) + page_size-1)  & (~(page_size-1)) );
+}
+
 int find_magic_segment_index(ELFIO::elfio *elfiop);
 
 template < typename T > std::string to_hex_string( const T& n )
@@ -89,6 +95,7 @@ static Instruction_t* addNewAssembly(FileIR_t* firp, Instruction_t *p_instr, str
         return newinstr;
 }
 
+#ifdef support_stratafier_mode
 #ifdef CGC
 static std::ifstream::pos_type filesize(const char* filename)
 {
@@ -101,6 +108,7 @@ static std::ifstream::pos_type filesize(const char* filename)
 	}
    	return in.tellg();
 }
+#endif
 #endif
 
 void ZiprImpl_t::Init()
@@ -234,6 +242,7 @@ void ZiprImpl_t::CreateBinaryFile()
 /* have to figure this out.  we'll want to really strip the binary
  * but also remember the strings. 
  */
+#ifdef support_stratafier_mode
 #ifdef CGC
 	char* sec_tran=getenv("SECURITY_TRANSFORMS_HOME");
 	if(sec_tran==NULL)
@@ -248,6 +257,7 @@ void ZiprImpl_t::CreateBinaryFile()
 	{
 		perror(__FUNCTION__);
 	}
+#endif
 #endif
 
 	if (m_architecture == 0)
@@ -360,6 +370,9 @@ void ZiprImpl_t::CreateBinaryFile()
 
 	m_stats->total_free_ranges = memory_space.GetRangeCount();
 
+	// Update any scoops that were written by Zipr.
+	UpdateScoops();
+
 	// write binary file to disk 
 	OutputBinaryFile(m_output_filename);
 
@@ -404,9 +417,83 @@ RangeAddress_t ZiprImpl_t::extend_section(ELFIO::section *sec, ELFIO::section *n
 	return end;
 }
 
+void ZiprImpl_t::CreateExecutableScoops(const std::map<RangeAddress_t, int> &ordered_sections)
+{
+	int count=1;
+	for(std::map<RangeAddress_t, int>::const_iterator it = ordered_sections.begin();
+		it!=ordered_sections.end();
+		) 
+	{
+		section* sec = elfiop->sections[it->second];
+		assert(sec);
+
+		// skip non-exec and non-alloc sections.
+		if( (sec->get_flags() & SHF_ALLOC) ==0 || (sec->get_flags() & SHF_EXECINSTR) ==0 )
+		{
+			++it;
+			continue;
+		}
+
+		// setup start of scoop.
+		AddressID_t *text_start=new AddressID_t();
+		text_start->SetVirtualOffset(sec->get_address());
+		m_firp->GetAddresses().insert(text_start);
+
+		// keep going until no more executable sections.
+		while(1)
+		{
+			sec = elfiop->sections[it->second];
+
+			// skip non-alloc sections.
+			if( (sec->get_flags() & SHF_ALLOC) ==0)
+			{
+				++it;
+				continue;
+			}
+			// stop if not executable.
+			if( (sec->get_flags() & SHF_EXECINSTR) ==0 )
+				break;
+
+			// try next 
+			++it;
+			if(it==ordered_sections.end())
+				break;
+		}
+
+
+		// setup end of scoop address
+		AddressID_t *text_end=new AddressID_t();
+
+#if 1
+		text_end->SetVirtualOffset(sec->get_address()-1);
+#else
+		// two cases for end-of-scoop 
+		if(it==ordered_sections.end())
+			// 1 ) this is the last section
+			text_end->SetVirtualOffset(page_round_up(sec->get_address()+sec->get_size()-1)-1);
+		else
+			// 2 ) another section gets in the way.
+			text_end->SetVirtualOffset(sec->get_address()-1);
+#endif
+		// insert into IR
+		m_firp->GetAddresses().insert(text_end);
+
+
+		// setup a scoop for this section.
+		// zero init is OK, after zipring we'll update with the right bytes.
+		string text_contents;
+		text_contents.resize(text_end->GetVirtualOffset() - text_start->GetVirtualOffset());
+		DataScoop_t* text_scoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, string(".zipr_text_")+to_string(count++), text_start, text_end, NULL, 5, text_contents);
+		m_firp->GetDataScoops().insert(text_scoop);
+	
+		cout<<"Adding scoop "<<text_scoop->GetName()<<hex<<" at "<<hex<<text_start->GetVirtualOffset()<<" - "<<text_end->GetVirtualOffset()<<endl;
+		memory_space.AddFreeRange(Range_t(text_start->GetVirtualOffset(),text_end->GetVirtualOffset()), true);
+	}
+}
+
+
 void ZiprImpl_t::FindFreeRanges(const std::string &name)
 {
-	RangeAddress_t last_end=0;
 	RangeAddress_t max_addr=0;
 
 	std::map<RangeAddress_t, int> ordered_sections;
@@ -421,7 +508,12 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 		section* sec = elfiop->sections[i];
 		assert(sec);
 		ordered_sections.insert(std::pair<RangeAddress_t,int>(sec->get_address(), i));
+
+
 	}
+
+
+	CreateExecutableScoops(ordered_sections);
 
 	std::map<RangeAddress_t, int>::iterator it = ordered_sections.begin();
 	for (;it!=ordered_sections.end();) 
@@ -432,6 +524,7 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 		RangeAddress_t start=sec->get_address();
 		RangeAddress_t end=sec->get_size()+start-1;
 
+#ifdef support_stratafier_mode
 		if (m_verbose)
 			printf("Section %s:\n", sec->get_name().c_str());
 
@@ -452,30 +545,8 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 
 
 
-
+#endif
 		++it;
-		if (false)
-		//if ((++it) != ordered_sections.end())
-		{
-			/*
-			 * TODO: This works. However, the updated
-			 * section size is not properly handled
-			 * in OutputBinaryFile. So, it is disabled
-			 * until that is handled.
-			 */
-			section *next_section = elfiop->sections[it->second];
-
-			printf("Using %s as the next section (%p).\n", 
-				next_section->get_name().c_str(), 
-				(void*)next_section->get_address());
-			printf("Modifying the section end. Was %p.", (void*)end);
-
-			end = next_section->get_address() - 1;
-			sec->set_size(end - start);
-			
-			printf(". Is %p.\n", (void*)end);
-
-		}
 
 		if (m_verbose)
 			printf("max_addr is %p, end is %p\n", (void*)max_addr, (void*)end);
@@ -490,6 +561,7 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 			continue;
 
 
+#ifdef support_stratafier_mode
 		if((sec->get_flags() & SHF_EXECINSTR))
 		{
 			assert(start>last_end);
@@ -498,17 +570,16 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 				printf("Adding free range 0x%p to 0x%p\n", (void*)start,(void*)end);
 			memory_space.AddFreeRange(Range_t(start,end), true);
 		}
+#endif
 	}
 
-#define PAGE_SIZE 4096
-#define PAGE_ROUND_UP(x) ( (((uintptr_t)(x)) + PAGE_SIZE-1)  & (~(PAGE_SIZE-1)) )
 
 	// now that we've looked at the sections, add a (mysterious) extra section in case we need to overflow 
 	// the sections existing in the ELF.
-// skip round up?  not needed if callbacks are PIC/PIE.
+#ifdef support_stratafier_mode
 #ifndef CGC
-	RangeAddress_t new_free_page=PAGE_ROUND_UP(max_addr);
-	use_stratafier_mode = true;
+	RangeAddress_t new_free_page=page_round_up(max_addr);
+ 	use_stratafier_mode = true;
 #else
 	int i=find_magic_segment_index(elfiop);
 	RangeAddress_t bytes_remaining_in_file=(RangeAddress_t)filesize((name+".stripped").c_str())-(RangeAddress_t)elfiop->segments[i]->get_offset();
@@ -543,6 +614,11 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 		}
 	}
 #endif
+#else // support_stratafier_mode
+	RangeAddress_t new_free_page=page_round_up(max_addr);
+#endif
+
+
 
 	memory_space.AddFreeRange(Range_t(new_free_page,(RangeAddress_t)-1), true);
 	if (m_verbose)
@@ -2549,10 +2625,6 @@ void ZiprImpl_t::FillSection(section* sec, FILE* fexe)
 			// get byte and write it into exe.
 			char  b=memory_space[i];
 		
-			// update related scoop, if there is one 
-			if(scoop)
-				scoop->GetContents()[i-scoop->GetStart()->GetVirtualOffset()]=b;
-
 			int file_off=sec->get_offset()+i-start;
 			fseek(fexe, file_off, SEEK_SET);
 			fwrite(&b,1,1,fexe);
@@ -2569,6 +2641,8 @@ void ZiprImpl_t::FillSection(section* sec, FILE* fexe)
 void ZiprImpl_t::OutputBinaryFile(const string &name)
 {
 	assert(elfiop);
+
+#ifdef support_stratafier_mode
 //	ELFIO::dump::section_headers(cout,*elfiop);
 
 	string callback_file_name;
@@ -2637,7 +2711,9 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 	if(!to_insert)
 		perror( "void ZiprImpl_t::OutputBinaryFile(const string &name)");
 
+#endif // support_stratafier_mode
 
+// for elfwriter
 	// find end of textra space.
 	RangeSet_t::iterator it=memory_space.FindFreeRange((RangeAddress_t) -1);
 	assert(memory_space.IsValidRange(it));
@@ -2671,12 +2747,17 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 				(void*)i, (long long)(i-start_of_new_space));
 		}
 		textra_scoop->GetContents()[i-start_of_new_space]=b;
+#ifdef support_stratafier_mode
 		fwrite(&b,1,1,to_insert);
+#endif
 	}
+
+#ifdef support_stratafier_mode
 	fclose(to_insert);
 
 	callback_file_name = AddCallbacksToNewSegment(tmpname,end_of_new_space);
 	InsertNewSegmentIntoExe(name,callback_file_name,start_of_new_space);
+#endif
 
 
 	// create the output file in a totally different way using elfwriter. later we may 
@@ -3057,3 +3138,25 @@ void ZiprImpl_t::dump_map()
 
 
 }
+
+void ZiprImpl_t::UpdateScoops()
+{
+	for(
+		DataScoopSet_t::iterator it=m_firp->GetDataScoops().begin(); 
+		it!=m_firp->GetDataScoops().end();
+		++it
+	   )
+	{
+		DataScoop_t* scoop=*it;
+
+		if(!scoop->isExecuteable())
+			continue;
+		for(virtual_offset_t i=scoop->GetStart()->GetVirtualOffset() ; i<= scoop->GetEnd()->GetVirtualOffset(); i++ )
+		{
+			if( ! memory_space.IsByteFree(i) )
+				scoop->GetContents()[i-scoop->GetStart()->GetVirtualOffset()]=memory_space[i];
+		}
+	}
+	return;
+}
+

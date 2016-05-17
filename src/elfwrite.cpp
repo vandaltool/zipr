@@ -119,7 +119,7 @@ void ElfWriter::CreatePagemap(const ELFIO::elfio *elfiop, FileIR_t* firp, const 
 			{
 				// get the data out of the scoop and put it into the page map.
 				virtual_offset_t offset=i-start_addr+j;
-				if(offset<scoop->GetContents().size())
+				if(0<= offset && offset<scoop->GetContents().size())
 				{
 					pagemap[i].data[j]=scoop->GetContents()[ offset ]; 
 					pagemap[i].inuse[j]=true;
@@ -238,15 +238,29 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs(const libIR
 {
 	
 	if(CreateNewPhdrs_GapAllocate(min_addr, max_addr))
+	{
+		cout<<"ElfWriter Success with GapAllocate"<<endl;
 		return;
+	}
 	else if(CreateNewPhdrs_FirstPageAllocate(min_addr, max_addr))
+	{
+		cout<<"ElfWriter Success with FirstPageAllocate"<<endl;
 		return;
+	}
 	else if(CreateNewPhdrs_PreAllocate(min_addr, max_addr))
+	{
+		cout<<"ElfWriter Success with PreAllocate"<<endl;
 		return;
+	}
 	else if(CreateNewPhdrs_PostAllocate(min_addr, max_addr))
+	{
+		cout<<"ElfWriter Success with PostAllocate"<<endl;
 		return;
+	}
 	else
+	{
 		assert(0);
+	}
 	
 }
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr>
@@ -404,6 +418,7 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs_PreAllocate
 	libIRDB::virtual_offset_t new_phdr_addr=(T_Elf_Addr)page_align(min_addr)-PAGE_SIZE+sizeof(T_Elf_Ehdr);
 	return CreateNewPhdrs_internal(min_addr,max_addr,0x1000,true, sizeof(T_Elf_Ehdr), new_phdr_addr);
 }
+
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr>
 bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs_internal(
 	const libIRDB::virtual_offset_t &min_addr, 
@@ -506,6 +521,7 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs_internal(
 	new_ehdr.e_shstrndx=0;
 	return true;
 }
+
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr>
 void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::WriteElf(FILE* fout)
 {
