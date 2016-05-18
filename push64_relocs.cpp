@@ -290,6 +290,8 @@ void Push64Relocs_t::UpdatePush64Adds()
 			}
 			m_memory_space.PlopBytes(add_addr+4, (const char*)&relocated_value, 4);
 		}
+		// handle basic pcrel relocations.
+		// zipr_unpin_plugin handles pcrel + WRT
 		else if (reloc = FindPcrelRelocation(insn))
 		{
 // would consider updating this if statement to be a function call for simplicity/readability.
