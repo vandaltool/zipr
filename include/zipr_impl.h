@@ -393,6 +393,7 @@ class ZiprImpl_t : public Zipr_t
                 virtual libIRDB::FileIR_t *GetFileIR() { return m_firp; }
                 virtual Zipr_SDK::InstructionLocationMap_t *GetLocationMap() { return &final_insn_locations; }
 		virtual Zipr_SDK::PlacementQueue_t* GetPlacementQueue() { return &placement_queue; }  
+		virtual Zipr_SDK::RangeAddress_t PlaceUnplacedScoops(Zipr_SDK::RangeAddress_t max);
 
 
 	private:
@@ -471,6 +472,25 @@ class ZiprImpl_t : public Zipr_t
 		ZiprStringOption_t m_dollop_map_filename;
 
 		std::list<DollopEntry_t *> m_des_to_replop;
+
+
+                template <class T> static T page_align(const T& in)
+		{
+			const T PAGE_SIZE=4096;
+			return align_by(in,PAGE_SIZE);
+		}
+                template <class T> static T align_up_to(const T& in, const T &by)
+		{
+			return align_by(in+by-1,by);
+		}
+                template <class T> static T align_by(const T& in, const T &by)
+                {
+			// assert power of 2.
+			assert( (by & (by - 1)) == 0 ); 
+                        return in&~(by-1);
+                }
+
+
 };
 
 #endif

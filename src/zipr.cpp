@@ -492,6 +492,51 @@ void ZiprImpl_t::CreateExecutableScoops(const std::map<RangeAddress_t, int> &ord
 }
 
 
+RangeAddress_t ZiprImpl_t::PlaceUnplacedScoops(RangeAddress_t max_addr)
+{
+	map<int,DataScoopSet_t> scoops_by_perms;
+
+	for(
+		DataScoopSet_t::iterator dit=m_firp->GetDataScoops().begin(); 
+		dit!=m_firp->GetDataScoops().end();
+		++dit
+	   )
+	{
+		DataScoop_t* scoop=*dit;
+
+		// check if placed.
+		if(scoop->GetStart()->GetVirtualOffset()==0)
+			scoops_by_perms[scoop->getRawPerms()].insert(scoop);
+	}
+
+
+
+	
+	for(map<int,DataScoopSet_t>::iterator pit=scoops_by_perms.begin(); pit!=scoops_by_perms.end(); ++pit)
+	{
+		// start by rounding up to a page boundary so that page perms don't get unioned.
+		max_addr=page_round_up(max_addr);
+		for( DataScoopSet_t::iterator dit=pit->second.begin(); dit!=pit->second.end(); ++dit)
+		{
+			DataScoop_t* scoop=*dit;
+			max_addr=align_up_to(max_addr,(RangeAddress_t)16);	// 16 byte align.
+			scoop->GetStart()->SetVirtualOffset(scoop->GetStart()->GetVirtualOffset()+max_addr);
+			scoop->GetEnd()->SetVirtualOffset(scoop->GetEnd()->GetVirtualOffset()+max_addr);
+
+			// update so we actually place things at diff locations.
+			max_addr=scoop->GetEnd()->GetVirtualOffset()+1;
+
+			cout<<"Placing scoop "<<scoop->GetName()<<" at "
+			    <<hex<<scoop->GetStart()->GetVirtualOffset()<<"-"
+			    <<hex<<scoop->GetEnd()->GetVirtualOffset()<<endl;
+		}
+	}
+	
+	
+
+	return max_addr;
+}
+
 void ZiprImpl_t::FindFreeRanges(const std::string &name)
 {
 	RangeAddress_t max_addr=0;
@@ -515,6 +560,8 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 
 	CreateExecutableScoops(ordered_sections);
 
+
+	// scan sections for a max-addr.
 	std::map<RangeAddress_t, int>::iterator it = ordered_sections.begin();
 	for (;it!=ordered_sections.end();) 
 	{ 
@@ -524,28 +571,6 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 		RangeAddress_t start=sec->get_address();
 		RangeAddress_t end=sec->get_size()+start-1;
 
-#ifdef support_stratafier_mode
-		if (m_verbose)
-			printf("Section %s:\n", sec->get_name().c_str());
-
-#ifdef CGC
-#define EXTEND_SECTIONS 
-#endif
-
-#ifdef EXTEND_SECTIONS
-
-		std::map<RangeAddress_t, int>::iterator next_sec_it = it;
-		++next_sec_it;
-		if(next_sec_it!=ordered_sections.end())
-		{
-			section* next_sec = elfiop->sections[next_sec_it->second];
-			end=extend_section(sec,next_sec);
-		}
-#endif
-
-
-
-#endif
 		++it;
 
 		if (m_verbose)
@@ -561,62 +586,29 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 			continue;
 
 
-#ifdef support_stratafier_mode
-		if((sec->get_flags() & SHF_EXECINSTR))
-		{
-			assert(start>last_end);
-			last_end=end;
-			if (m_verbose)
-				printf("Adding free range 0x%p to 0x%p\n", (void*)start,(void*)end);
-			memory_space.AddFreeRange(Range_t(start,end), true);
-		}
-#endif
 	}
 
+	// scan scoops for a max-addr.
+	for(
+		DataScoopSet_t::iterator it=m_firp->GetDataScoops().begin(); 
+		it!=m_firp->GetDataScoops().end();
+		++it
+	   )
+	{
+		DataScoop_t* scoop=*it;
+		RangeAddress_t  end=scoop->GetEnd()->GetVirtualOffset();
+
+		if(end >= max_addr)
+		{
+			max_addr=end+1;
+		}
+	}
+
+	max_addr=PlaceUnplacedScoops(max_addr);
 
 	// now that we've looked at the sections, add a (mysterious) extra section in case we need to overflow 
 	// the sections existing in the ELF.
-#ifdef support_stratafier_mode
-#ifndef CGC
 	RangeAddress_t new_free_page=page_round_up(max_addr);
- 	use_stratafier_mode = true;
-#else
-	int i=find_magic_segment_index(elfiop);
-	RangeAddress_t bytes_remaining_in_file=(RangeAddress_t)filesize((name+".stripped").c_str())-(RangeAddress_t)elfiop->segments[i]->get_offset();
-	RangeAddress_t bytes_in_seg=elfiop->segments[i]->get_memory_size();
-	RangeAddress_t new_free_page=-1;
-
-	if(bytes_remaining_in_file>=bytes_in_seg)
-	{
-		cout<<"Note: Found that segment can be extended for free because bss_needed==0"<<endl;
-		bss_needed=0;
-		new_free_page=elfiop->segments[i]->get_virtual_address()+bytes_remaining_in_file;
-
-		// the end of the file has to be loadable into the bss segment.
-		assert(bytes_remaining_in_file==elfiop->segments[i]->get_file_size());
-	}
-	else
-	{
-/* experimentally, we add 2 pages using the "add_strata_segment" method. */
-/* the "bss_needed" method works pretty well unless there is significantly more than 8k of bss space */
-#define BSS_NEEDED_THRESHOLD 8096
-		bss_needed=bytes_in_seg-bytes_remaining_in_file;
-
-		if(bss_needed < BSS_NEEDED_THRESHOLD)
-		{
-			new_free_page=elfiop->segments[i]->get_virtual_address()+bytes_in_seg;
-			cout<<"Note: Found that segment can be extended with penalty bss_needed=="<<std::dec<<bss_needed<<endl;
-		}
-		else
-		{
-			new_free_page=PAGE_ROUND_UP(max_addr);
-			use_stratafier_mode=true;
-		}
-	}
-#endif
-#else // support_stratafier_mode
-	RangeAddress_t new_free_page=page_round_up(max_addr);
-#endif
 
 
 
@@ -3117,6 +3109,7 @@ void ZiprImpl_t::dump_map()
 	    <<left<<setw(10)<<"OrigAddr"
 	    <<left<<setw(10)<<"IBTA"
 	    <<left<<setw(10)<<"NewAddr"
+	    <<left<<setw(10)<<"FuncID"
 	    <<left<<"Disassembly"<<endl;
 
 	for(std::map<libIRDB::Instruction_t*,RangeAddress_t>::iterator it=final_insn_locations.begin();
@@ -3130,6 +3123,7 @@ void ZiprImpl_t::dump_map()
 		    <<hex<<left<<setw(10)<<insn->GetAddress()->GetVirtualOffset()
 		    <<hex<<left<<setw(10)<< (ibta ? ibta->GetVirtualOffset() : 0)
 		    <<hex<<left<<setw(10)<<addr
+		    <<hex<<left<<setw(10)<<( insn->GetFunction() ? insn->GetFunction()->GetBaseID() : -1 )
 		    << left<<insn->getDisassembly()<<endl;
 
 		
@@ -3144,18 +3138,67 @@ void ZiprImpl_t::UpdateScoops()
 	for(
 		DataScoopSet_t::iterator it=m_firp->GetDataScoops().begin(); 
 		it!=m_firp->GetDataScoops().end();
-		++it
 	   )
 	{
 		DataScoop_t* scoop=*it;
 
 		if(!scoop->isExecuteable())
+		{
+			++it;
 			continue;
+		}
+
+		virtual_offset_t first_valid_address=0;
+		virtual_offset_t last_valid_address=0;
 		for(virtual_offset_t i=scoop->GetStart()->GetVirtualOffset() ; i<= scoop->GetEnd()->GetVirtualOffset(); i++ )
 		{
 			if( ! memory_space.IsByteFree(i) )
+			{
+				// record beginning if not already recorded.
+				if(first_valid_address==0)
+					first_valid_address=i;
+
+				// update the scoop
 				scoop->GetContents()[i-scoop->GetStart()->GetVirtualOffset()]=memory_space[i];
+
+				// record that this address was valid.
+				last_valid_address=i;
+
+			}
 		}
+
+
+		if(last_valid_address==0 || first_valid_address==0)
+		{
+			assert(first_valid_address==0);
+			assert(last_valid_address==0);
+			m_firp->GetAddresses().erase(scoop->GetStart());
+			m_firp->GetAddresses().erase(scoop->GetEnd());
+
+			// erase and move to next element.
+			it=m_firp->GetDataScoops().erase(it);
+
+			// remove addresses and scoop
+			delete scoop->GetStart();
+			delete scoop->GetEnd();
+			delete scoop;
+			scoop=NULL;
+			
+			
+		}
+		else
+		{
+			if(scoop->GetStart()->GetVirtualOffset() != first_valid_address || scoop->GetEnd()->GetVirtualOffset() != last_valid_address)
+				cout<<"Shrinking scoop "<<scoop->GetName()<<" to "<<hex<<first_valid_address<<"-"<<last_valid_address<<endl;
+			else
+				cout<<"Leaving scoop "<<scoop->GetName()<<" alone. "<<endl;
+			assert(first_valid_address!=0);
+			assert(last_valid_address!=0);
+			scoop->GetStart()->SetVirtualOffset(first_valid_address);
+			scoop->GetEnd()->SetVirtualOffset(last_valid_address);
+			++it;
+		}
+
 	}
 	return;
 }
