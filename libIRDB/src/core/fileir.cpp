@@ -1332,6 +1332,34 @@ void FileIR_t::SplitScoop(
 		GetAddresses().insert(after_end);
 		GetDataScoops().insert(after);
 	}
+
+
+	// since tosplit is going away, we need to move every relocation from the 
+	// tosplit scoop into one of the others.  Iterate through each and 
+	// adjust the reloc's offset accordingly before inserting into the correct scoop's reloc set.
+	while(!tosplit->GetRelocations().empty())
+	{
+		Relocation_t* reloc=*(tosplit->GetRelocations().begin());
+		tosplit->GetRelocations().erase(tosplit->GetRelocations().begin());
+
+		virtual_offset_t reloc_start=reloc->GetOffset()+tosplit->GetStart()->GetVirtualOffset();
+
+		if(reloc_start < containing->GetStart()->GetVirtualOffset() )
+		{
+			before->GetRelocations().insert(reloc);
+		}
+		else if(reloc_start > containing->GetEnd()->GetVirtualOffset() )
+		{
+			reloc->SetOffset(reloc_start-after->GetStart()->GetVirtualOffset());
+			after->GetRelocations().insert(reloc);
+		}
+		else
+		{
+			reloc->SetOffset(reloc_start-containing->GetStart()->GetVirtualOffset());
+			containing->GetRelocations().insert(reloc);
+		}
+	
+	}
 	
 
 	GetAddresses().erase(tosplit->GetStart());

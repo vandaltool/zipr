@@ -479,7 +479,7 @@ void fill_in_scoops(FileIR_t *firp)
 		/* end */
 		AddressID_t *endaddr=new AddressID_t();
 		assert(endaddr);
-		endaddr->SetVirtualOffset( elfiop->sections[secndx]->get_address() + elfiop->sections[secndx]->get_size());
+		endaddr->SetVirtualOffset( elfiop->sections[secndx]->get_address() + elfiop->sections[secndx]->get_size()-1);
 		endaddr->SetFileID(firp->GetFile()->GetBaseID());
 		firp->GetAddresses().insert(endaddr);
 

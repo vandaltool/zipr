@@ -38,6 +38,8 @@ class BaseObj_t
     public:
         BaseObj_t(doip_t* doip);
 
+	virtual ~BaseObj_t() { /* management of doips is explicit */ }
+
         static void SetInterface(DBinterface_t *dbintr);
         static DBinterface_t* GetInterface() {return dbintr;}
 

@@ -56,6 +56,8 @@ class DataScoop_t : public BaseObj_t
 			SetBaseID(id);
 		}
 
+		virtual ~DataScoop_t() { /* management of addresses and types is explicit */ } 
+
 		std::string GetName() const { return name; }
 		std::string GetContents() const { return contents; }
 		std::string &GetContents() { return contents; }

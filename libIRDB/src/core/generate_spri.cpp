@@ -553,7 +553,7 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 static bool needs_spri_rule(Instruction_t* newinsn,Instruction_t* oldinsn)
 {
 	// check if this is an inserted instruction 
-	if(newinsn->GetOriginalAddressID()==-1)
+	if(newinsn->GetOriginalAddressID()==BaseObj_t::NOT_IN_DATABASE)
 		return true;
 
 	assert(oldinsn);
