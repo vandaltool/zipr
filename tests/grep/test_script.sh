@@ -55,7 +55,6 @@ run_basic_test 120 -E '[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:
 run_basic_test 120 -E '2{2}' $DATA_DIR/data1.txt 
 run_basic_test 120 -E 'h{1}' $DATA_DIR/data1.txt 
 run_basic_test 120 -E 'co{1,2}l' $DATA_DIR/data1.txt 
-run_basic_test 120 -E 'c{3,}' $DATA_DIR/data1.txt 
 run_basic_test 120 -v "[[:digit:]]\{2\}[ -]\?[[:digit:]]\{10\}" $DATA_DIR/data1.txt 
 run_basic_test 120 "[[:digit:]]\{2\}[ -]\?[[:digit:]]\{10\}" $DATA_DIR/data1.txt 
 run_basic_test 120 --include="dat*" "^\.[0-9]" -R $DATA_DIR
@@ -80,6 +79,12 @@ printf 'foo\nbar\n' | run_test_prog_only 120 -z -q 'foo[[:space:]]\+bar'
 printf 'foo\nbar\n' | run_bench_prog_only 120 -z -q 'foo[[:space:]]\+bar'
 compare_std_results
 
+# figure out failing tests
+# checking for -E extended regex
+echo "abababccccccd" | run_test_prog_only 120 -E -e 'c{3}'
+echo "abababccccccd" | run_bench_prog_only 120 -E -e 'c{3}'
+compare_std_results
+
 #
 # From regression tests shipped with grep
 #
@@ -98,10 +103,6 @@ echo "123" | run_test_prog_only 120 -e '[' -e ']'
 echo "123" | run_bench_prog_only 120 -e '[' -e ']' 
 compare_std_results
 
-# checking for -E extended regex
-echo "abababccccccd" | run_test_prog_only 120 -E -e 'c{3}'
-echo "abababccccccd" | run_bench_prog_only 120 -E -e 'c{3}'
-compare_std_results
 
 # checking for basic regex
 echo "abababccccccd" | run_test_prog_only 120 -G -e 'c\{3\}'
@@ -143,6 +144,8 @@ compare_std_results
 run_test_prog_only 120 -v --context=5 'quick' - < $DATA_DIR/data1.txt
 run_bench_prog_only 120 -v --context=5 'quick' - < $DATA_DIR/data1.txt
 compare_std_results
+
+run_basic_test 120 -E 'c{3,}' $DATA_DIR/data1.txt 
 
 cleanup
 

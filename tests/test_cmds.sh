@@ -1,16 +1,28 @@
 #!/bin/bash
 
 # specify configs here
-configs="zipr scdi scfi scfi.color scfi.color.nojmps kill_deads"
-configs="scfi.color"
-configs="scfi.color.nojmps"
-configs="scfi.color scfi.color.nojmps"
-configs="shadow"
+#configs="zipr scdi scfi scfi.color scfi.color.nojmps kill_deads"
+#configs="scfi.color"
+#configs="scfi.color.nojmps"
+#configs="scfi.color scfi.color.nojmps"
+#configs="shadow"
+#configs="shadow.scfi"
+#configs="scfi.shadow shadow.scfi"
+#configs="scfi"
+#configs="shadow"
+configs="kill_deads"
+#configs="ibtl"
+#configs="killdeads_strata"
+#configs="ibtl ibtl_p1"
 
 # specify programs to test
-orig_progs="tcpdump bzip2 cal du grep ls objdump readelf sort tar touch"
+#orig_progs="ncal bzip2 du grep ls objdump readelf sort tar touch tcpdump"
 #orig_progs="bzip2"
 #orig_progs="gedit"
+#orig_progs="gimp"
+#orig_progs="openssl"
+#orig_progs="tcpdump sort touch"
+orig_progs="grep"
 build_only=0
 
 export IB_VERBOSE=1
@@ -71,6 +83,23 @@ do
 		shadow)
 			$PEASOUP_HOME/tools/ps_analyze.sh `which $prog` $protected --backend zipr --step fptr_shadow=on --step-option "zipr:--zipr:callbacks $ZIPR_INSTALL/bin/callbacks.datashadow.exe" --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 		;;
+		shadow.scfi)
+			FIX_CALLS_FIX_ALL_CALLS=1 $PEASOUP_HOME/tools/ps_analyze.sh `which $prog` $protected --backend zipr --step fptr_shadow=on --step selective_cfi=on --step-option "zipr:--zipr:callbacks $ZIPR_INSTALL/bin/callbacks.datashadow.exe" --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
+		scfi.shadow)
+			echo "make copy of fptr_shadow.exe --> shadow.exe to force the shadow step to occur after the scfi step"
+			cp $SECURITY_TRANSFORMS_HOME/plugins_install/fptr_shadow.exe $SECURITY_TRANSFORMS_HOME/plugins_install/shadow.exe
+			FIX_CALLS_FIX_ALL_CALLS=1 $PEASOUP_HOME/tools/ps_analyze.sh `which $prog` $protected --backend zipr --step shadow=on --step selective_cfi=on --step-option "zipr:--zipr:callbacks $ZIPR_INSTALL/bin/callbacks.datashadow.exe" --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
+		killdeads_strata)
+			$PEASOUP_HOME/tools/ps_analyze.sh `which $prog` $protected --backend strata --step ibtl=on --step ilr=on --step kill_deads=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
+		ibtl)
+			$PEASOUP_HOME/tools/ps_analyze.sh `which $prog` $protected --backend strata --step ibtl=on --step ilr=on --step pc_confine=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
+		ibtl_p1)
+			$PEASOUP_HOME/tools/ps_analyze.sh `which $prog` $protected --backend strata --step ibtl=on --step ilr=on --step pc_confine=on --step p1transform=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
 		*)
 			echo "Unknown configuration requested"
 			continue
@@ -80,6 +109,8 @@ do
 	if [ ! $? -eq 0 ]; then
 		echo "TEST ($config) ${prog}: FAILED to peasoupify"
 		progs_fail_peasoup="$progs_fail_peasoup $prog"
+    else
+		progs_pass_peasoup="$progs_pass_peasoup $prog"
 	fi
 
 	if [ $build_only -eq 1 ]; then
@@ -99,6 +130,7 @@ done
 
 echo "================================================"
 echo "TEST SUMMARY PASS ($config): $progs_pass"
+echo "TEST SUMMARY PASS ($config) (ps_analyze): $progs_pass_peasoup"
 echo "TEST SUMMARY FAIL ($config): $progs_fail"
 echo "TEST SUMMARY FAIL ($config) (ps_analyze): $progs_fail_peasoup"
 
