@@ -35,11 +35,36 @@
 #include "utils.hpp"
 #include "Rewrite_Utility.hpp"
 #include "unpin.h"
+#include <memory>
+#include <inttypes.h>
+
 
 using namespace libIRDB;
 using namespace std;
 using namespace Zipr_SDK;
 using namespace ELFIO;
+
+
+static bool arg_has_memory(const ARGTYPE &arg)
+{
+        /* if it's relative memory, watch out! */
+        if(arg.ArgType&MEMORY_TYPE)
+                return true;
+
+        return false;
+}
+
+static std::string findAndReplace(const std::string& in_str, const std::string& oldStr, const std::string& newStr)
+{
+        std::string str=in_str;
+        size_t pos = 0;
+        while((pos = str.find(oldStr, pos)) != std::string::npos)
+        {
+                str.replace(pos, oldStr.length(), newStr);
+                pos += newStr.length();
+        }
+        return str;
+}
 
 static bool has_cfi_reloc(Instruction_t* insn)
 {
@@ -215,15 +240,16 @@ void Unpin_t::DoUnpinForScoops()
 void Unpin_t::DoUpdate()
 {
 	DoUpdateForScoops();
-	DoUpdateForFixedCalls();
+	DoUpdateForInstructions();
 }
 
-
 // scan for instructions that were placed, and now need an update.
-void Unpin_t::DoUpdateForFixedCalls()
+void Unpin_t::DoUpdateForInstructions()
 {
 	int unpins=0;
 	int missed_unpins=0;
+	MemorySpace_t &ms=*zo->GetMemorySpace();
+	Zipr_SDK::InstructionLocationMap_t &locMap=*(zo->GetLocationMap());
 
 	for(
 		InstructionSet_t::iterator it=zo->GetFileIR()->GetInstructions().begin();
@@ -232,6 +258,19 @@ void Unpin_t::DoUpdateForFixedCalls()
 	   )
 	{
 		Instruction_t* from_insn=*it;
+                DISASM disasm;
+                from_insn->Disassemble(disasm);
+
+                // find memory arg.
+                ARGTYPE* the_arg=NULL;
+                if(arg_has_memory(disasm.Argument1))
+                        the_arg=&disasm.Argument1;
+                if(arg_has_memory(disasm.Argument2))
+                        the_arg=&disasm.Argument2;
+                if(arg_has_memory(disasm.Argument3))
+                        the_arg=&disasm.Argument3;
+                if(arg_has_memory(disasm.Argument4))
+                        the_arg=&disasm.Argument4;
 
 		for(
 			RelocationSet_t::iterator rit=from_insn->GetRelocations().begin(); 
@@ -257,7 +296,6 @@ void Unpin_t::DoUpdateForFixedCalls()
 				if(should_cfi_pin(wrt_insn)) 
 					continue;
 
-				Zipr_SDK::InstructionLocationMap_t &locMap=*(zo->GetLocationMap());
 				libIRDB::virtual_offset_t wrt_insn_location=locMap[wrt_insn];
 				libIRDB::virtual_offset_t from_insn_location=locMap[from_insn];
 
@@ -276,17 +314,101 @@ void Unpin_t::DoUpdateForFixedCalls()
 					<<dec<<from_insn->GetBaseID()<<"@"<<hex<<from_insn_location<<" to point at "
 					<<dec<<wrt_insn ->GetBaseID()<<"@"<<hex<<wrt_insn_location <<endl;
 
-				MemorySpace_t &ms=*zo->GetMemorySpace();
+
+			}
+			// instruction has a pcrel memory operand.
+			else if(reloc->GetType()==string("pcrel") && reloc->GetWRT()!=NULL)
+			{
+
+				DataScoop_t* wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
+				assert(wrt);
+				virtual_offset_t rel_addr1=the_arg->Memory.Displacement;
+				rel_addr1+=from_insn->GetDataBits().size();
+
+				int disp_offset=the_arg->Memory.DisplacementAddr-disasm.EIP;
+				int disp_size=the_arg->Memory.DisplacementSize;
+				libIRDB::virtual_offset_t from_insn_location=locMap[from_insn];
+				assert(disp_size==4);
+				assert(0<disp_offset && disp_offset<=from_insn->GetDataBits().size() - disp_size);
+
+                                unsigned int new_disp=rel_addr1 + wrt->GetStart()->GetVirtualOffset() 
+					- from_insn->GetDataBits().size()-from_insn_location;
+                                from_insn->SetDataBits(from_insn->GetDataBits().replace(disp_offset, disp_size, (char*)&new_disp, disp_size));
+
+				// update the instruction in the memory space.
 				for(unsigned int i=0;i<from_insn->GetDataBits().size();i++)
 				{ 
-					unsigned char newbyte=newpush[i];
-					unsigned char oldbyte= ms[from_insn_location+i];
+					unsigned char newbyte=from_insn->GetDataBits()[i];
+					ms[from_insn_location+i]=newbyte;
+				}
+                		DISASM disasm2;
+				//from_insn->GetAddress()->SetVirtualOffset(from_insn_location);
+                		from_insn->Disassemble(disasm2);	// just disassemble it from_insn_location so the disassembly is right.
+				//from_insn->GetAddress()->SetVirtualOffset(0);
+			
+				cout<<"unpin:pcrel:new_disp="<<hex<<new_disp<<endl;
+				cout<<"unpin:pcrel:new_insn_addr="<<hex<<from_insn_location<<endl;
+				cout<<"unpin:pcrel:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.CompleteInstr
+			 	    <<" to "<<disasm2.CompleteInstr<<" for scoop: "<<wrt->GetName()<<endl;
+			}
+			// instruction has a absolute  memory operand that needs it's displacement updated.
+			else if(reloc->GetType()==string("absoluteptr_to_scoop"))
+			{
+
+				DataScoop_t* wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
+				assert(wrt);
+				virtual_offset_t rel_addr1=the_arg->Memory.Displacement;
+
+				int disp_offset=the_arg->Memory.DisplacementAddr-disasm.EIP;
+				int disp_size=the_arg->Memory.DisplacementSize;
+				assert(disp_size==4);
+				assert(0<disp_offset && disp_offset<=from_insn->GetDataBits().size() - disp_size);
+				assert(reloc->GetWRT());
+
+                                unsigned int new_disp=the_arg->Memory.Displacement + wrt->GetStart()->GetVirtualOffset();
+                                from_insn->SetDataBits(from_insn->GetDataBits().replace(disp_offset, disp_size, (char*)&new_disp, disp_size));
+				// update the instruction in the memory space.
+				libIRDB::virtual_offset_t from_insn_location=locMap[from_insn];
+				for(unsigned int i=0;i<from_insn->GetDataBits().size();i++)
+				{ 
+					unsigned char newbyte=from_insn->GetDataBits()[i];
+					ms[from_insn_location+i]=newbyte;
+
+					//cout<<"Updating push["<<i<<"] from "<<hex<<oldbyte<<" to "<<newbyte<<endl;
+				}
+                		DISASM disasm2;
+                		from_insn->Disassemble(disasm2);
+				cout<<"unpin:absptr_to_scoop:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.CompleteInstr
+			 	    <<" to "<<disasm2.CompleteInstr<<" for scoop: "<<wrt->GetName()<<endl;
+			}
+			// instruction has an immediate that needs an update.
+			else if(reloc->GetType()==string("immedptr_to_scoop"))
+			{
+				DataScoop_t* wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
+				assert(wrt);
+
+        			virtual_offset_t rel_addr2=disasm.Instruction.Immediat;
+				virtual_offset_t new_addr = rel_addr2 + wrt->GetStart()->GetVirtualOffset();
+
+                                from_insn->SetDataBits(from_insn->GetDataBits().replace(from_insn->GetDataBits().size()-4, 4, (char*)&new_addr, 4));
+
+				libIRDB::virtual_offset_t from_insn_location=locMap[from_insn];
+				for(unsigned int i=0;i<from_insn->GetDataBits().size();i++)
+				{ 
+					unsigned char newbyte=from_insn->GetDataBits()[i];
 					ms[from_insn_location+i]=newbyte;
 
 					//cout<<"Updating push["<<i<<"] from "<<hex<<oldbyte<<" to "<<newbyte<<endl;
 				}
 
+                		DISASM disasm2;
+                		from_insn->Disassemble(disasm2);
+				cout<<"unpin:immedptr_to_scoop:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.CompleteInstr
+			 	    <<" to "<<disasm2.CompleteInstr<<" for scoop: "<<wrt->GetName()<<endl;
+
+
 			}
+
 		}
 	}
 
@@ -294,6 +416,7 @@ void Unpin_t::DoUpdateForFixedCalls()
 
 void Unpin_t::DoUpdateForScoops()
 {
+	unsigned int byte_width=zo->GetFileIR()->GetArchitectureBitWidth()/8;
 	for(
 		DataScoopSet_t::iterator it=zo->GetFileIR()->GetDataScoops().begin();
 		it!=zo->GetFileIR()->GetDataScoops().end();
@@ -353,6 +476,39 @@ void Unpin_t::DoUpdateForScoops()
 						scoop_contents[reloff+i]=addr[i];
 				}
 				
+			}
+			else if(reloc->GetType()==string("dataptr_to_scoop"))
+			{
+				DataScoop_t *wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
+				assert(wrt);
+
+				virtual_offset_t val_to_patch=0;
+                		const char* data=scoop_contents.c_str();
+
+				if(byte_width==4)
+					val_to_patch=*(int*)&data[reloc->GetOffset()];
+				else if(byte_width==8)
+					val_to_patch=*(long long*)&data[reloc->GetOffset()];
+				else
+					assert(0);
+
+				// wrt scoop should be placed.
+				assert(wrt->GetStart()->GetVirtualOffset() !=0 );
+				virtual_offset_t new_val_to_patch=val_to_patch + wrt->GetStart()->GetVirtualOffset();
+
+                                if(byte_width==4)
+                                {
+                                        unsigned int intnewval=(unsigned int)new_val_to_patch;     // 64->32 narrowing OK. 
+                                        scoop_contents.replace(reloc->GetOffset(), byte_width, (char*)&intnewval, byte_width);
+                                }
+                                else if(byte_width==8)
+                                {
+                                        scoop_contents.replace(reloc->GetOffset(), byte_width, (char*)&new_val_to_patch, byte_width);
+                                }
+                                else
+                                        assert(0);
+
+				cout<<"Patched "<<scoop->GetName()<<"+"<<hex<<reloc->GetOffset()<<" to value "<<hex<<new_val_to_patch<<endl;
 			}
 		}
 		scoop->SetContents(scoop_contents);

@@ -56,7 +56,7 @@ class Unpin_t : public Zipr_SDK::ZiprPluginInterface_t
 
 		void DoUpdate();
 		void DoUpdateForScoops();
-		void DoUpdateForFixedCalls();
+		void DoUpdateForInstructions();
 
 		Zipr_SDK::Zipr_t* zo;
 
