@@ -42,7 +42,7 @@ void usage(char* name)
 "		[--protect-safefn|--no-protect-safefn]  \n"
 "		[ --common-slow-path | --no-common-slow-path ] \n"
 " \n"
-"default: --no-color --protect-jumps --protect-rets --no-protect-safefn --common-slow-path\n"; 
+"default: --no-color --protect-jumps --protect-rets --protect-safefn --common-slow-path\n"; 
 }
 
 int main(int argc, char **argv)
@@ -63,7 +63,7 @@ int main(int argc, char **argv)
 	bool do_common_slow_path=true;
 	bool do_jumps=true;
 	bool do_rets=true;
-	bool do_safefn=false;
+	bool do_safefn=true;
 	for(int  i=2;i<argc;i++)
 	{
 		if(string(argv[i])=="--color")
