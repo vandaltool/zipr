@@ -195,10 +195,11 @@ void a2bspri(const vector<string> &input,const string &outFilename, const string
 	else	
 		srand(getpid());
 
-	/* make start at 0xff00000000000000 for x86-64 */
+	/* make start at FF0xxxxxxxxxxxxxxxxx for x86-64 */
 	if(elfiop.get_class()==ELFCLASS64) 
 	{
 		bits=64;
+      vpc += (rand() & 0x000fffff);
 		vpc<<=32;
 		vpc += rand();
 	}
