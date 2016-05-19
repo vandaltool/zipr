@@ -191,6 +191,7 @@ void Push64Relocs_t::HandlePush64Relocs()
 		Instruction_t *insn=*iit;
 
 		Relocation_t *reloc=NULL;
+		// caution, side effect in if statement.
 		if (reloc = FindPushRelocation(insn))
 		{
 			if (m_verbose)
@@ -198,6 +199,7 @@ void Push64Relocs_t::HandlePush64Relocs()
 			HandlePush64Relocation(insn,reloc);
 			push64_relocations_count++;
 		}
+		// caution, side effect in if statement.
 		else if (reloc = FindPcrelRelocation(insn))
 		{
 			if (m_verbose)
@@ -225,6 +227,7 @@ void Push64Relocs_t::UpdatePush64Adds()
 	{
 		Relocation_t *reloc = NULL;
 		Instruction_t *insn = *insn_it;
+		// caution, side effect in if statement.
 		if (reloc = FindPushRelocation(insn))
 		{
 // would consider updating this if statement to be a function call for simplicity/readability.
@@ -292,7 +295,8 @@ void Push64Relocs_t::UpdatePush64Adds()
 		}
 		// handle basic pcrel relocations.
 		// zipr_unpin_plugin handles pcrel + WRT
-		else if (reloc = FindPcrelRelocation(insn))
+		// caution, side effect in if statement.
+		else if ( (reloc = FindPcrelRelocation(insn)) != NULL && reloc->GetWRT()==NULL)
 		{
 // would consider updating this if statement to be a function call for simplicity/readability.
 			uint8_t memory_offset = 0;
