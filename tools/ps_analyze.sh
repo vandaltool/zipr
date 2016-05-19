@@ -865,6 +865,11 @@ cp a.ncexe a.ncexe.orig
 perform_step add_confinement_section none $STRATA_HOME/tools/pc_confinement/add_confinement_section.sh a.ncexe.orig a.ncexe
 
 #
+# CGC CRCX elide
+#
+perform_step cgc_optimize_start none $DAFFY_HOME/dead_code_ident/optimize_start.sh a.ncexe
+
+#
 # Let's output the modified binary
 # This binary will really be a shell script that calls the newly stratafied binary
 #
