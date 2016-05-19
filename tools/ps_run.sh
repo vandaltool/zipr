@@ -108,6 +108,7 @@ STRATA_ANNOT_FILE=$datapath/a.ncexe.annot
 STRATA_IS_SO=0
 STRATA_IBTL=0
 STRATA_EXE_FILE=$datapath/a.$exe
+STRATA_COMM=$(basename $origbinpath)
 SPAWNER_EXE_FILE=$datapath/spawned
 STRATA_MAX_WARNINGS=500000
 	exec -a $origbinpath $datapath/a.$exe \"\$@\""
