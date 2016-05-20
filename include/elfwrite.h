@@ -54,6 +54,7 @@ class ElfWriter
 	typedef std::map<libIRDB::virtual_offset_t, PageData_t> PageMap_t;
 
 	public: 
+		ElfWriter(libIRDB::FileIR_t* firp) : m_firp(firp) { }
 		virtual ~ElfWriter() {}
 		void Write(const ELFIO::elfio *elfiop, libIRDB::FileIR_t* firp, const std::string &out_file, const std::string &infile);
 
@@ -79,6 +80,8 @@ class ElfWriter
 
 
 
+	protected:
+		libIRDB::FileIR_t* m_firp;
 	private:
 		libIRDB::virtual_offset_t DetectMinAddr(const ELFIO::elfio *elfiop, libIRDB::FileIR_t* firp, const std::string &out_file);
 		libIRDB::virtual_offset_t DetectMaxAddr(const ELFIO::elfio *elfiop, libIRDB::FileIR_t* firp, const std::string &out_file);
@@ -86,6 +89,7 @@ class ElfWriter
 		void CreatePagemap(const ELFIO::elfio *elfiop, libIRDB::FileIR_t* firp, const std::string &out_file);
 		void CreateSegmap(const ELFIO::elfio *elfiop, libIRDB::FileIR_t* firp, const std::string &out_file);
 		void SortSegmap();
+
 
 		
 };
@@ -99,7 +103,7 @@ class ElfWriterImpl : public ElfWriter
 {
 	public:
 
-		ElfWriterImpl() { } 
+		ElfWriterImpl(libIRDB::FileIR_t* firp) : ElfWriter(firp) { } 
 	
 	protected:
 		int GetFileHeaderSize()  { return sizeof(T_Elf_Ehdr); } 
@@ -122,8 +126,9 @@ class ElfWriterImpl : public ElfWriter
 			const size_t phdr_map_offset,
 			libIRDB::virtual_offset_t new_phdr_addr
 			);
+		libIRDB::DataScoop_t* find_scoop_by_name(const std::string& name, libIRDB::FileIR_t* );
+		void update_phdr_for_scoop_sections(libIRDB::FileIR_t* );
 		void WriteElf(FILE* fout);
-
 	private:
 		unsigned int DetermineMaxPhdrSize();
 

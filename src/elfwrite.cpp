@@ -419,6 +419,77 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs_PreAllocate
 	return CreateNewPhdrs_internal(min_addr,max_addr,0x1000,true, sizeof(T_Elf_Ehdr), new_phdr_addr);
 }
 
+
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr>
+DataScoop_t* ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::find_scoop_by_name(const string& name, FileIR_t* firp)
+{
+	for(DataScoopSet_t::iterator it=firp->GetDataScoops().begin(); it!=firp->GetDataScoops().end(); ++it)
+	{
+		DataScoop_t* scoop=*it;
+		if(scoop->GetName()==name)
+			return scoop;
+	}
+
+	return NULL;
+}
+
+
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr>
+void  ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::update_phdr_for_scoop_sections(FileIR_t* firp)
+{
+	// look at each header.
+	for(auto i=0;i<new_phdrs.size(); i++)
+	{
+
+		// this struct is a table/constant for mapping PT_names to section names.
+		struct pt_type_to_sec_name_t
+		{
+			int pt_type;
+			const char* sec_name;
+		}	pt_type_to_sec_name[] = 
+		{
+			{PT_INTERP, ".interp"},
+			{PT_DYNAMIC, ".dynamic"},
+			{PT_NOTE, ".note.ABI-tag"},
+			{PT_GNU_EH_FRAME, ".eh_frame_hdr"},
+			{PT_GNU_RELRO, ".init_array"}
+		};
+
+		// check if a type of header listed above.
+		for(auto k=0;k<(sizeof(pt_type_to_sec_name)/sizeof(pt_type_to_sec_name_t)); k++)
+		{
+			// check if a type of header listed above.
+			if(new_phdrs[i].p_type==pt_type_to_sec_name[k].pt_type)
+			{
+				// grab the name from the const table..
+				// and find the scoop
+				DataScoop_t* scoop=find_scoop_by_name(pt_type_to_sec_name[k].sec_name, firp);
+
+				if(scoop)
+				{
+					new_phdrs[i].p_vaddr=scoop->GetStart()->GetVirtualOffset();
+					new_phdrs[i].p_paddr=scoop->GetStart()->GetVirtualOffset();
+					new_phdrs[i].p_filesz= scoop->GetEnd()->GetVirtualOffset() - scoop->GetStart()->GetVirtualOffset() + 1;
+					new_phdrs[i].p_memsz = scoop->GetEnd()->GetVirtualOffset() - scoop->GetStart()->GetVirtualOffset() + 1;
+
+					new_phdrs[i].p_offset=0;
+					for(auto j=0;j<new_phdrs.size(); j++)
+					{
+						if( new_phdrs[j].p_vaddr<= new_phdrs[i].p_vaddr && 
+						    new_phdrs[i].p_vaddr < new_phdrs[j].p_vaddr+new_phdrs[j].p_filesz)
+						{
+							new_phdrs[i].p_offset=new_phdrs[j].p_offset + new_phdrs[i].p_vaddr - new_phdrs[j].p_vaddr;
+						}
+					}
+					assert(new_phdrs[i].p_offset!=0);
+				}
+			}	
+		}
+	}
+	return;
+}
+
+
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr>
 bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs_internal(
 	const libIRDB::virtual_offset_t &min_addr, 
@@ -519,6 +590,8 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs_internal(
 	new_ehdr.e_phnum=new_phdrs.size();
 	// new_ehdr.e_phoff=sizeof(new_ehdr);
 	new_ehdr.e_shstrndx=0;
+
+	update_phdr_for_scoop_sections(m_firp);
 	return true;
 }
 

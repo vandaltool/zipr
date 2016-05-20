@@ -2760,11 +2760,11 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 	ElfWriter *ew=NULL;
 	if(m_firp->GetArchitectureBitWidth()==64)
 	{
-		ew=new ElfWriter64();
+		ew=new ElfWriter64(m_firp);
 	}
 	else if(m_firp->GetArchitectureBitWidth()==32)
 	{
-		ew=new ElfWriter32();
+		ew=new ElfWriter32(m_firp);
 	}
 	else assert(0);
 
