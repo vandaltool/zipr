@@ -81,6 +81,12 @@ if [ -d "${PEASOUP_UMBRELLA_DIR}/zipr_install" ]; then
 	rm plugins/*
 fi
 
+# clean irdb_transform
+if [ -d $IRDB_TRANSFORMS ]; then
+	cd $IRDB_TRANSFORMS
+	scons  -c
+fi
+
 # clean daffy
 if [ -d "$DAFFY_HOME" ]; then
 	cd $DAFFY_HOME
