@@ -591,7 +591,14 @@ void fix_call(Instruction_t* insn, FileIR_t *firp, bool can_unpin)
 	
 		// if we're marking this as an IBTA, determine whether we can unpin it or not 
 		if(can_unpin)
+		{
+			if(getenv("VERBOSE_FIX_CALLS"))
+			{
+				cout<<"Setting unpin for type="<< reloc->GetType()<< " address="
+				    <<hex<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<endl;
+			}
 			reloc->SetWRT(newindirtarg);
+		}
 	}
 
 }
@@ -985,7 +992,7 @@ main(int argc, char* argv[])
 
 void range(virtual_offset_t a, virtual_offset_t b)
 {
-	eh_frame_ranges.insert(Range_t(a,b));
+	eh_frame_ranges.insert(Range_t(a,b-1));
 }
 
 bool possible_target(uintptr_t p, uintptr_t at, ibt_provenance_t prov)
