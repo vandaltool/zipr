@@ -31,6 +31,10 @@ class InstructionPredecessors_t
 	InstructionPredecessors_t(const FileIR_t* f=NULL) {Init(); if(f) AddFile(f);}
 	virtual void AddFile(const FileIR_t* );
 
+	InstructionSet_t& operator[] (const Instruction_t* i)  
+		{
+			return pred_map[i];
+		}
 	const InstructionSet_t& operator[] (const Instruction_t* i)  const
 		{ 
 			PredMap_t::const_iterator it=pred_map.find(i);
