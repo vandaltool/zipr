@@ -29,6 +29,14 @@ using namespace std;
 
 
 
+void InstructionPredecessors_t::AddPreds(const Instruction_t* before, const InstructionSet_t& afterset)
+{
+	for(InstructionSet_t::const_iterator it=afterset.begin(); it!=afterset.end(); ++it)
+	{
+		pred_map[*it].insert((libIRDB::Instruction_t*)before);
+	}
+}
+
 void InstructionPredecessors_t::AddPred(const Instruction_t* before, const Instruction_t* after)
 {
 	assert(before);
@@ -50,6 +58,9 @@ void InstructionPredecessors_t::AddFile(const FileIR_t* firp2)
 		Instruction_t* insn=*it;
 		AddPred(insn, insn->GetTarget());
 		AddPred(insn, insn->GetFallthrough());
-	}
 
+		if(insn->GetIBTargets())
+			AddPreds(insn, *insn->GetIBTargets());
+		
+	}
 }

@@ -40,6 +40,7 @@ namespace EXEIO
 	class exeio_backend_t
 	{
 		public:
+			virtual ~exeio_backend_t() { }
 			virtual void dump_header(std::ostream& stream) =0;
 			virtual void dump_section_headers(std::ostream& stream) =0;
 			virtual void load(exeio_t* main, char* filename) =0;
@@ -76,7 +77,7 @@ namespace EXEIO
 			// constructors
 			exeio_t()  { Init(); }
 			exeio_t(char* filename) { Init(); load(filename); }
-			~exeio_t() { delete backend; }
+			virtual ~exeio_t() { delete backend; }
 
             virtual void load(std::string filename) { load((char*)filename.c_str()); }
 

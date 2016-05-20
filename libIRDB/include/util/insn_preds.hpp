@@ -46,6 +46,7 @@ class InstructionPredecessors_t
 	private:
 
 	virtual void AddPred(const Instruction_t* before, const Instruction_t* after);
+	virtual void AddPreds(const Instruction_t* before, const InstructionSet_t& after);
 
 	PredMap_t pred_map;
 };
