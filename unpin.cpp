@@ -314,6 +314,12 @@ void Unpin_t::DoUpdateForInstructions()
 					<<dec<<from_insn->GetBaseID()<<"@"<<hex<<from_insn_location<<" to point at "
 					<<dec<<wrt_insn ->GetBaseID()<<"@"<<hex<<wrt_insn_location <<endl;
 
+				for(unsigned int i=0;i<from_insn->GetDataBits().size();i++)
+				{ 
+					unsigned char newbyte=newpush[i];
+					ms[from_insn_location+i]=newbyte;
+				}
+
 
 			}
 			// instruction has a pcrel memory operand.
