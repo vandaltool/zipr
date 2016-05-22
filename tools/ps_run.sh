@@ -81,7 +81,7 @@ fi
 #STRATA_RC=0					
 #STRATA_PARTIAL_INLINING=1			
 
-if test `uname -s` = SunOS; then
+if test `/bin/uname -s` = SunOS; then
 	command="$command LD_PRELOAD=$datapath/libstrata.so:$APP_LD_PRELOAD"
 	exe=ncexe
 else
