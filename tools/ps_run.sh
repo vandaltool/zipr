@@ -108,7 +108,7 @@ STRATA_ANNOT_FILE=$datapath/a.ncexe.annot
 STRATA_IS_SO=0
 STRATA_IBTL=0
 STRATA_EXE_FILE=$datapath/a.$exe
-STRATA_COMM=$(basename $origbinpath)
+STRATA_COMM=$(/usr/bin/basename $origbinpath)
 SPAWNER_EXE_FILE=$datapath/spawned
 STRATA_MAX_WARNINGS=500000
 	exec -a $origbinpath $datapath/a.$exe \"\$@\""
@@ -133,7 +133,7 @@ addsigs () {
 	echo "$sig" | tr ' ' '\n' | /bin/grep -v '^[ \t]*$' >> $datapath/a.ncexe.sigs.$$
 }
 
-cp $datapath/a.ncexe.sigs.orig $datapath/a.ncexe.sigs.$$
+/bin/cp $datapath/a.ncexe.sigs.orig $datapath/a.ncexe.sigs.$$
 # only trust command line inputs for files that are not setuid/setgid
 if [ ! -g a.ncexe -a ! -u a.ncexe ]; then
 	echo $datapath/a.stratafied >> $datapath/a.ncexe.sigs.$$
@@ -185,9 +185,10 @@ elif [ -f $datapath/a.irdb.bspri ]; then
 	command="STRATA_SPRI_FILE=$datapath/a.irdb.bspri $command"
 fi
 
-
-if [ ! -z $VERBOSE ]; then
+ 
+if [ ! -z $ZEST_VERBOSE ]; then
 	echo $command
 fi
+
 
 eval $command

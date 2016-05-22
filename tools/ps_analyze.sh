@@ -873,7 +873,7 @@ perform_step cgc_optimize_start none $DAFFY_HOME/dead_code_ident/optimize_start.
 # Let's output the modified binary
 # This binary will really be a shell script that calls the newly stratafied binary
 #
-perform_step create_binary_script 	mandatory $PEASOUP_HOME/tools/do_makepeasoupbinary.sh $name 
+perform_step create_binary_script 	mandatory $PEASOUP_HOME/tools/do_makepeasoupbinary2.sh $name 
 perform_step heaprand 	 		pc_confine,double_free $PEASOUP_HOME/tools/update_env_var.sh STRATA_HEAPRAND 1
 perform_step controlled_exit none 		 	 $PEASOUP_HOME/tools/update_env_var.sh STRATA_CONTROLLED_EXIT 1
 perform_step detect_server  pc_confine  $PEASOUP_HOME/tools/update_env_var.sh STRATA_DETECT_SERVERS 1
