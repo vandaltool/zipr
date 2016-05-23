@@ -1409,6 +1409,9 @@ void ZiprImpl_t::WriteDollops()
 			end = _PlopDollopEntry(entry_to_write);
 			should_end = start + _DetermineWorstCaseInsnSize(entry_to_write->Instruction(), false);
 			assert(end <= should_end);
+			/*
+			 * TODO: Document why this has to be done.
+			 */
 			if (entry_to_write->TargetDollop())
 				m_des_to_replop.push_back(entry_to_write);
 		}
@@ -1425,7 +1428,7 @@ void ZiprImpl_t::ReplopDollopEntriesWithTargets()
 		src_insn = entry_to_write->Instruction();
 
 		src_insn_addr = final_insn_locations[src_insn];
-		PlopDollopEntry(entry_to_write, src_insn_addr);
+		_PlopDollopEntry(entry_to_write, src_insn_addr);
 	}
 }
 
@@ -1483,6 +1486,7 @@ void ZiprImpl_t::PlaceDollops()
 		bool continue_placing = false;
 		bool am_coalescing = false;
 		bool allowed_coalescing = true;
+		bool initial_placement_abuts = false;
 
 		//pq_entry = placement_queue.front();
 		pq_entry = *(placement_queue.begin());
@@ -1524,7 +1528,43 @@ void ZiprImpl_t::PlaceDollops()
 						 << std::hex << placement.GetEnd()
 						 << endl;
 
-			if ((placement.GetEnd()-placement.GetStart()) < minimum_valid_req_size)
+			/*
+			 * Check if the size that we got back is enough to hold
+			 * at least a little bit of what we wanted. 
+			 *
+			 * (1) We want to make sure that there is enough room for at least
+			 * the first instruction of the dollop and space for a jump
+			 * to the remainder of the dollop. 
+			 * 
+			 * (2) However, it's possible that the entirety of this dollop, plus
+			 * any fallthroughs are going to fit. So, we need to check that 
+			 * possibility too. 
+			 *
+			 * (3) Then there's the possibility that the dollop *has* a fallthrough
+			 * but that the fallthrough is actually abutting the end of the
+			 * dollop in which case we elide (I hate that term) the fallthrough
+			 * jump.
+			 *
+			 * TODO: Consider that allowed_coalescing may invalidate the
+			 * possibility of the validity of the placement in (2).
+			 */
+			initial_placement_abuts = to_place->FallthroughDollop() && 
+			                          to_place->FallthroughDollop()->
+			                          front()->
+			                          Instruction()->
+			                          GetIndirectBranchTargetAddress() && 
+			                          to_place->FallthroughDollop()->
+			                                    front()->
+			                                    Instruction()->
+			                                    GetIndirectBranchTargetAddress()->
+			                                    GetVirtualOffset() == 
+			                         (placement.GetStart() + to_place->GetSize() - 5);
+			if (initial_placement_abuts)
+				cout << "initial_placement_abuts: " << initial_placement_abuts << endl;
+
+			if (((placement.GetEnd()-placement.GetStart()) < minimum_valid_req_size)&&
+			    !initial_placement_abuts
+			   )
 			{
 				if (m_verbose)
 					cout << "Bad GetNearbyFreeRange() result." << endl;
@@ -1558,6 +1598,37 @@ void ZiprImpl_t::PlaceDollops()
 					 << " hole." << endl
 					 << "Dollop " << ((has_fallthrough) ? "has " : "does not have ")
 					 << "a fallthrough" << endl;
+		}
+
+		if (to_place->front()->Instruction()->GetIndirectBranchTargetAddress() &&
+		    cur_addr == to_place->
+				            front()->
+										Instruction()->
+										GetIndirectBranchTargetAddress()->
+										GetVirtualOffset()
+		   )
+		{
+			/*
+			 * We have placed this dollop at the location where
+			 * its first instruction was pinned in memory.
+			 */
+			if (m_verbose)
+				cout << "Placed atop its own pin!" << endl;
+
+			for (unsigned int j = cur_addr; j<(cur_addr+5); j++)
+			{
+				memory_space.MergeFreeRange(j);
+			}
+
+			/*
+			 * Remove the replaced pin from the patch list.
+			 */
+			UnresolvedUnpinned_t uu(to_place->front()->Instruction());
+			Patch_t emptypatch(cur_addr, UncondJump_rel32);
+
+			auto found_patch = patch_list.find(uu);
+			assert(found_patch != patch_list.end());
+			patch_list.erase(found_patch);
 		}
 
 		assert(to_place->GetSize() != 0);
@@ -1621,10 +1692,15 @@ void ZiprImpl_t::PlaceDollops()
 				 *    placed -- we use the trampoline size at that point.
 				 *    See DetermineWorstCaseDollopSizeInclFallthrough().
 				 *    Call this the all_fallthroughs_fit case.
-				 * 5. All fallthroughs fit but we are not allowed to 
+				 * 5. NOT (All fallthroughs fit but we are not allowed to 
 				 *    coalesce and we are out of space for the jump to 
-				 *    the fallthrough. 
+				 *    the fallthrough.)
 				 *    Call this the disallowed_override case
+				 * 6. There is enough room for this instruction AND it is
+				 *    the last entry of this dollop AND the dollop has a
+				 *    fallthrough AND that fallthrough is to a pin that
+				 *    immediately follows this instruction in memory.
+				 *    Call this initial_placement_abuts (calculated above).
 				 */
 				bool de_and_fallthrough_fit = false;
 				bool last_de_fits = false;
@@ -1652,15 +1728,17 @@ void ZiprImpl_t::PlaceDollops()
 
 #if 1
 				if (m_verbose)
-					cout << "de_and_fallthrough_fit: " << de_and_fallthrough_fit << endl
-					     << "last_de_fits          : " << last_de_fits << endl
-					     << "fits_entirely         : " << fits_entirely << endl
-					     << "all_fallthroughs_fit  : " << all_fallthroughs_fit << endl
-					     << "disallowed_override   : " << disallowed_override << endl;
+					cout << "de_and_fallthrough_fit : " << de_and_fallthrough_fit << endl
+					     << "last_de_fits           : " << last_de_fits << endl
+					     << "fits_entirely          : " << fits_entirely << endl
+					     << "all_fallthroughs_fit   : " << all_fallthroughs_fit << endl
+					     << "initial_placement_abuts: " << initial_placement_abuts << endl
+					     << "disallowed_override    : " << disallowed_override << endl;
 #endif
 				if ((de_and_fallthrough_fit ||
 				    last_de_fits ||
 						fits_entirely ||
+						initial_placement_abuts ||
 						all_fallthroughs_fit) && !disallowed_override)
 				{
 #if 1
@@ -1724,7 +1802,33 @@ void ZiprImpl_t::PlaceDollops()
 			if ((fallthrough = to_place->FallthroughDollop()) != NULL)
 			{
 				size_t fallthroughs_wcds, fallthrough_wcis, remaining_size;
-			
+
+				/*
+				 * We do not care about the fallthrough dollop if its 
+				 * first instruction is pinned AND the last entry of this
+				 * dollop abuts that pin.
+				 */
+				if ((fallthrough->
+				     front()->
+				     Instruction()->
+				     GetIndirectBranchTargetAddress()
+				    ) &&
+				    (cur_addr == fallthrough->
+				                 front()->
+				                 Instruction()->
+				                 GetIndirectBranchTargetAddress()->
+				                 GetVirtualOffset()
+				    )
+				   )
+				{
+					if (m_verbose)
+						cout << "Dollop had a fallthrough dollop and "
+						     << "was placed abutting the fallthrough " 
+						     << "dollop's pinned first instruction. "
+						     << endl;
+					break;
+				}
+					
 				/*
 				 * We could fit the entirety of the dollop (and
 				 * fallthroughs) ...
@@ -1789,7 +1893,12 @@ void ZiprImpl_t::PlaceDollops()
 					placement_queue.insert(pair<Dollop_t*, RangeAddress_t>(
 							fallthrough,
 							cur_addr));
-					
+					/*
+					 * Since we inserted a new instruction, we should
+					 * check to see whether a plugin wants to plop it.
+					 */
+					AskPluginsAboutPlopping(patch_de->Instruction());
+
 					m_stats->total_did_not_coalesce++;
 
 					/*
@@ -1958,6 +2067,11 @@ void ZiprImpl_t::PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)
 
 			assert(!memory_space.IsByteFree(at_addr+1));
 			memory_space[at_addr+1]=(char)off;
+			break;
+		}
+		default:
+		{
+			assert(false);
 		}
 	}
 }
@@ -2123,12 +2237,15 @@ void ZiprImpl_t::PatchInstruction(RangeAddress_t from_addr, Instruction_t* to_in
 	}
 }
 
-RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t *entry)
+RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t *entry, RangeAddress_t override_address)
 {
 	Instruction_t *insn = entry->Instruction();
 	RangeAddress_t addr = entry->Place();
 	RangeAddress_t updated_addr;
 	std::map<Instruction_t*,DLFunctionHandle_t>::const_iterator plop_it;
+
+	if (override_address != 0)
+		addr = override_address;
 
 	plop_it = plopping_plugins.find(insn);
 	if (plop_it != plopping_plugins.end())

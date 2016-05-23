@@ -105,7 +105,7 @@ class ZiprImpl_t : public Zipr_t
 
 		void Init();
 
-		Zipr_SDK::RangeAddress_t _PlopDollopEntry(DollopEntry_t*);
+		Zipr_SDK::RangeAddress_t _PlopDollopEntry(DollopEntry_t*, Zipr_SDK::RangeAddress_t override_address=0);
 		size_t _DetermineWorstCaseInsnSize(libIRDB::Instruction_t*, bool account_for_jump = true);
 		/*
 		 * FindFreeRanges()
