@@ -13,6 +13,7 @@
 #include <iostream>   // std::cout
 #include <string>     // std::string, std::to_string
 #include <fstream>
+#include <elf.h>
     
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"

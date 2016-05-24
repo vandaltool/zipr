@@ -2994,7 +2994,7 @@ void ZiprImpl_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_ad
 	{
 #ifndef CGC
 		assert(0); // "not stratafier" mode available only for CGC
-#else
+#elif support_stratafier_mode
 		string cmd="";
 		string zeroes_file=rewritten_file+".zeroes";
 		cout<<"Note: bss_needed=="<<std::dec<<bss_needed<<endl;
@@ -3052,7 +3052,7 @@ void ZiprImpl_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_ad
 		
 		
 		ELFIO::Elf32_Shdr myseg_header;
-#endif	// #else from #ifndef CGC
+#endif	// #elif support_stratafier_mode from #ifndef CGC
 	}
 
 	chmod_cmd=string("chmod +x ")+rewritten_file+".addseg";
