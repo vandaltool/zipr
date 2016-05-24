@@ -60,7 +60,8 @@ cd $SECURITY_TRANSFORMS_HOME
 scons -j2 build_cgc=1 build_appfw=0
 
 cd $SMPSA_HOME
-scons -j2
+scons -j2 build_irdb=0 build_ida=1 do_64bit_analysis=1 debug=0 do_sccp=0 numeric_error_annots=0
+
 
 cd $PEASOUP_HOME
 make -j2
