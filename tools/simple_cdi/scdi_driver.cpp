@@ -35,7 +35,7 @@ using namespace libIRDB;
 
 void usage(char* name)
 {
-	cerr<<"Usage: "<<name<<" <variant_id>\n"; 
+	cerr<<"Usage: "<<name<<" <variant_id> --threshold <return_set_threshold> (default=1)\n"; 
 }
 
 int main(int argc, char **argv)
@@ -48,6 +48,9 @@ int main(int argc, char **argv)
 
         string programName(argv[0]);
         int variantID = atoi(argv[1]);
+	int threshold = 1;
+
+	// FIXME: implement getting threshold value from arguments
 
         VariantID_t *pidp=NULL;
 
@@ -74,8 +77,7 @@ int main(int argc, char **argv)
 
                 try
                 {
-			SimpleCDI_Instrument scdii(firp);
-
+			SimpleCDI_Instrument scdii(firp, threshold);
 
 			int success=scdii.execute();
 

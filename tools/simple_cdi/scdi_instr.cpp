@@ -230,11 +230,7 @@ bool SimpleCDI_Instrument::add_scdi_instrumentation(Instruction_t* insn)
 		cout <<"["<<string(d.CompleteInstr)<<"] [" << string(d.Instruction.Mnemonic)<< "] IBTargets size: " << ibts->size() << " analysis_status: " << ibts->GetAnalysisStatus() << endl;
 	}
 
-	// only handle ret if complete && ib target size == 1
-
-	// @todo: for debugging, hlt
-	// @todo: can handle size == 2 with just one cmp
-	if (string(d.Instruction.Mnemonic) == string("ret ")) 
+	if (is_return(insn))
 	{
 		// instrumentation must be coordinated with needs_scdi_instrumentation()
 		if (ibts && ibts->IsComplete() && ibts->size() == 1)
@@ -266,6 +262,7 @@ bool SimpleCDI_Instrument::add_scdi_instrumentation(Instruction_t* insn)
 	}
 
 	assert(strstr("ret ", d.Instruction.Mnemonic)==NULL);
+	assert(strstr("retn ", d.Instruction.Mnemonic)==NULL);
 	
 	// pre-instrument
 	// push reg
@@ -306,17 +303,27 @@ bool SimpleCDI_Instrument::add_scdi_instrumentation(Instruction_t* insn)
 	return success;
 }
 
-
-bool SimpleCDI_Instrument::needs_scdi_instrumentation(Instruction_t* insn)
+bool SimpleCDI_Instrument::is_return(Instruction_t* insn)
 {
-	DISASM d;
-	insn->Disassemble(d);
+	if (insn) 
+	{
+		DISASM d;
+		insn->Disassemble(d);
+		return string(d.Instruction.Mnemonic) == string("ret "); 
 
-	bool isReturn = false;
+		// FIXME: handle retn immd, but this means the instrumentation should pop/lea immd
+	/*	return (string(d.Instruction.Mnemonic) == string("ret ") ||
+		    string(d.Instruction.Mnemonic) == string("retn "));
+	*/
+	}
 
-	if (string(d.Instruction.Mnemonic) == string("ret "))
-		isReturn = true;
+	return false;
+}
 
+// only complete returns need to be instrumented
+bool SimpleCDI_Instrument::needs_scdi_instrumentation(Instruction_t* insn, int target_size_threshold)
+{
+	const bool isReturn = is_return(insn);
 
 	if (isReturn)
 		num_returns++;
@@ -332,23 +339,18 @@ bool SimpleCDI_Instrument::needs_scdi_instrumentation(Instruction_t* insn)
 			num_complete_returns++;
 	}
 
-	if (string(d.Instruction.Mnemonic) == string("ret "))
+	if (isReturn)
 	{
-		if (ibts->IsComplete() && ibts->size() == 1)
-			return true;
+		if (ibts->IsComplete())
+		{
+			if (target_set_threshold < 0)
+				return true;
+			else 
+				return ibts->size() <= target_size_threshold;
+		}
 		else 
 			return false;
 	}
-
-/*
-	if (ibts->IsComplete() && ibts->size() <= 2)
-		return true;
-*/
-
-/*
-	if(ibts->IsComplete() && ibts->size() >0 )
-		return true;
-*/
 
 	return false;
 }
@@ -363,9 +365,8 @@ bool SimpleCDI_Instrument::convert_ibs()
                 ++it)
         {
 		Instruction_t* insn=*it;
-		if(needs_scdi_instrumentation(insn))
+		if(needs_scdi_instrumentation(insn, target_set_threshold))
 			success = success && add_scdi_instrumentation(insn);
-			
 	}
 
 	return success;
@@ -374,6 +375,7 @@ bool SimpleCDI_Instrument::convert_ibs()
 void SimpleCDI_Instrument::display_stats(std::ostream &out)
 {
 	float fraction = NAN;
+	out << "# ATTRIBUTE target_set_threshold=" << dec << target_set_threshold << endl;
 	out << "# ATTRIBUTE complete_ibts=" << dec << num_complete_ibts << endl;
 	out << "# ATTRIBUTE num_returns=" << num_returns << endl;
 	if (num_complete_returns>0)
