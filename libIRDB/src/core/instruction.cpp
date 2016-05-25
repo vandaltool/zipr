@@ -242,7 +242,7 @@ bool Instruction_t::SetsStackPointer(ARGTYPE* arg)
 {
 	if((arg->AccessMode & WRITE ) == 0)
 		return false;
-	int access_type=arg->ArgType & 0xFFFF0000;
+	int access_type=arg->ArgType;
 
 	if(access_type==REGISTER_TYPE + GENERAL_REG +REG4)
 		return true;
