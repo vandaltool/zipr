@@ -30,4 +30,4 @@ echo "cd .." >> $HOME/.bashrc
 $DAFFY_HOME/setup.sh
 
 # reboot machine to start up the GNOME Desktop environment
-sudo reboot
+#sudo reboot
