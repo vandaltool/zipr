@@ -240,7 +240,7 @@ bool Instruction_t::IsFunctionExit() const
 
 bool Instruction_t::SetsStackPointer(ARGTYPE* arg)
 {
-	if(arg->AccessMode!=WRITE)
+	if((arg->AccessMode & WRITE ) == 0)
 		return false;
 	int access_type=arg->ArgType & 0xFFFF0000;
 

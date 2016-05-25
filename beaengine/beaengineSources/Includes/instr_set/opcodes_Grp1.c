@@ -23,6 +23,7 @@ void __bea_callspec__ G1_EbIb(PDISASM pMyDisasm)
 {
     GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
     EbIb(pMyDisasm);
+    (*pMyDisasm).Argument1.AccessMode = READ|WRITE;
     if (GV.REGOPCODE == 0) {
         if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
             (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
@@ -125,6 +126,7 @@ void __bea_callspec__ G1_EvIv(PDISASM pMyDisasm)
 {
     GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
     EvIv(pMyDisasm);
+    (*pMyDisasm).Argument1.AccessMode = READ|WRITE;
     if (GV.REGOPCODE == 0) {
         if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
             (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
@@ -214,6 +216,7 @@ void __bea_callspec__ G1_EvIb(PDISASM pMyDisasm)
 {
     GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
     EvIb(pMyDisasm, 1);
+    (*pMyDisasm).Argument1.AccessMode = READ|WRITE;
     if (GV.REGOPCODE == 0) {
         if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
             (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;

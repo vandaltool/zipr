@@ -315,6 +315,7 @@ bool SCFI_Instrument::mark_targets()
 					position*=size;
 					position = - position;
 
+					// cfi_nonce=(pos=-1,nv=0x33,sz=1)
 					NonceValueType_t noncevalue=v[i].GetNonceValue();
 					type=string("cfi_nonce=(pos=") +  to_string(position) + ",nv="
 						+ to_string(noncevalue) + ",sz="+ to_string(size)+ ")";
@@ -326,6 +327,7 @@ bool SCFI_Instrument::mark_targets()
 			}
 			else
 			{
+				// cfi_nonce=f4.
 				type="cfi_nonce=";
 				type+=to_string(GetNonce(insn));
 
