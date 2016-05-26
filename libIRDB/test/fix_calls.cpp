@@ -77,9 +77,11 @@ long long call_to_not_entry=0;
 long long thunk_check=0;
 long long found_pattern=0;
 long long in_ehframe=0;
+long long no_fix_for_ib=0;
 
 pqxxDB_t pqxx_interface;
 
+bool opt_fix_icalls = true;
 
 void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, UIntPtr offset);
 
@@ -103,16 +105,37 @@ bool check_entry(bool &found, ControlFlowGraph_t* cfg)
 		DISASM disasm;
 		Instruction_t* insn=*it;
 		insn->Disassemble(disasm);
-		if(Instruction_t::SetsStackPointer(&disasm))
+			if(getenv("VERBOSE_FIX_CALLS"))
+		if(Instruction_t::SetsStackPointer(&disasm)) {
 			return false;
+		} else {
+			if(getenv("VERBOSE_FIX_CALLS"))
+			{
+				virtual_offset_t addr = 0;
+				if (insn->GetAddress())
+					addr = insn->GetAddress()->GetVirtualOffset();
+				cout<<"check_entry: does not set stack pointer?"<< " address="
+				    <<hex<<addr<<": "<<insn->getDisassembly()<<endl;
+			}
+		}
 
 		if(strstr(disasm.CompleteInstr, "[esp]"))
 		{
 			found=true;
+			if(getenv("VERBOSE_FIX_CALLS"))
+			{
+				virtual_offset_t addr = 0;
+				if (insn->GetAddress())
+					addr = insn->GetAddress()->GetVirtualOffset();
+				cout<<"Needs fix (check_entry): [esp]"<< " address="
+				    <<hex<<addr<<": "<<insn->getDisassembly()<<endl;
+			}
 			return true;
 		}
 		
 	}
+
+
 	return false;
 }
 
@@ -134,36 +157,28 @@ bool call_needs_fix(Instruction_t* insn)
 	Instruction_t *fallthru=insn->GetFallthrough();
 	DISASM disasm;
 
-	string pattern;;
+	string pattern;
 
-	/* if the target isn't in the IR */
-	if(!target)
-	{
-		/* call 0's aren't to real locations */
-		insn->Disassemble(disasm);
-		if(strcmp(disasm.CompleteInstr, "call 0x00000000")==0)
-		{
-			return false;
-		}
-		no_target_insn++;
-		/* then we need to fix it */
-		return true;
-	}
-
-	/* no fallthrough instruction, something is odd here */
-	if(!fallthru)
-	{
-		no_fallthrough_insn++;
-		return true;
-	}
-
-	/* if the location after the call is marked as an IBT, then 
-	 * this location might be used for walking the stack 
-  	 */
 // this used to work because fill_in_indirects would mark IBTs 
 // while reading the ehframe, which perfectly corresponds to when
 // we need to fix calls due to eh_frame.  However, now STARS also marks
 // return points as IBTs, so we need to re-parse the ehframe and use that instead.
+
+	/* no fallthrough instruction, something is odd here */
+	if(!fallthru)
+	{
+		if(getenv("VERBOSE_FIX_CALLS"))
+		{
+			virtual_offset_t addr = 0;
+			if (insn->GetAddress())
+				addr = insn->GetAddress()->GetVirtualOffset();
+			cout<<"Needs fix: No fallthrough"<< " address="
+			    <<hex<<addr<<": "<<insn->getDisassembly()<<endl;
+		}
+		no_fallthrough_insn++;
+		return true;
+	}
+
 #if 0
 	if(fallthru->GetIndirectBranchTargetAddress()!=NULL)
 		return true;
@@ -177,12 +192,54 @@ bool call_needs_fix(Instruction_t* insn)
 	}
 #endif
 
+	if (!opt_fix_icalls && insn->GetIBTargets() && insn->GetIBTargets()->size() > 0) 
+	{
+		no_fix_for_ib++;
+		return false;
+	}
+
+	/* if the target isn't in the IR */
+	if(!target)
+	{
+		/* call 0's aren't to real locations */
+		insn->Disassemble(disasm);
+		if(strcmp(disasm.CompleteInstr, "call 0x00000000")==0)
+		{
+			return false;
+		}
+		no_target_insn++;
+
+		if(getenv("VERBOSE_FIX_CALLS"))
+		{
+			virtual_offset_t addr = 0;
+			if (insn->GetAddress())
+				addr = insn->GetAddress()->GetVirtualOffset();
+			cout<<"Needs fix: No target instruction"<< " address="
+			    <<hex<<addr<<": "<<insn->getDisassembly()<<endl;
+		}
+		/* then we need to fix it */
+		return true;
+	}
+
+
+	/* if the location after the call is marked as an IBT, then 
+	 * this location might be used for walking the stack 
+  	 */
+
 
 	Function_t* func=target->GetFunction();
 
 	/* if there's no function for this instruction */
 	if(!func)
 	{
+		if(getenv("VERBOSE_FIX_CALLS"))
+		{
+			virtual_offset_t addr = 0;
+			if (insn->GetAddress())
+				addr = insn->GetAddress()->GetVirtualOffset();
+			cout<<"Needs fix: Target not in a function"<< " address="
+			    <<hex<<addr<<": "<<insn->getDisassembly()<<endl;
+		}
 		target_not_in_function++;
 		/* we need to fix it */
 		return true;
@@ -210,7 +267,18 @@ bool call_needs_fix(Instruction_t* insn)
 	if(found)
 	{
 		if(ret)
+		{
+			if(getenv("VERBOSE_FIX_CALLS"))
+			{
+				virtual_offset_t addr = 0;
+				if (insn->GetAddress())
+					addr = insn->GetAddress()->GetVirtualOffset();
+				cout<<"Needs fix: (via check_entry) Thunk detected"<< " address="
+				    <<hex<<addr<<": "<<insn->getDisassembly()<<endl;
+			}
 			thunk_check++;
+		}
+
 		return ret;
 	}
 
@@ -242,6 +310,14 @@ bool call_needs_fix(Instruction_t* insn)
 		if(strstr(disasm.CompleteInstr, pattern.c_str())!=NULL) 
 		{
 			found_pattern++;
+			if(getenv("VERBOSE_FIX_CALLS"))
+			{
+				virtual_offset_t addr = 0;
+				if (insn->GetAddress())
+					addr = insn->GetAddress()->GetVirtualOffset();
+				cout<<"Needs fix: Found pattern"<< " address="
+				    <<hex<<addr<<": "<<insn->getDisassembly()<<endl;
+			}
 			/* then we need to fix this callsite */ 
 			return true;
 		}
@@ -730,6 +806,7 @@ void fix_all_calls(FileIR_t* firp, bool print_stats, bool fix_all)
 		cout << "# ATTRIBUTE thunk_check="<<std::dec<< thunk_check << endl;
 		cout << "# ATTRIBUTE found_pattern="<<std::dec<< found_pattern << endl;
 		cout << "# ATTRIBUTE in_ehframe="<<std::dec<< in_ehframe << endl;
+		cout << "# ATTRIBUTE no_fix_for_ib="<<std::dec<< no_fix_for_ib << endl;
 		no_target_insn=0;
 		no_fallthrough_insn=0;
 		target_not_in_function=0;
@@ -737,7 +814,7 @@ void fix_all_calls(FileIR_t* firp, bool print_stats, bool fix_all)
 		thunk_check=0;
 		found_pattern=0;
 		in_ehframe=0;
-		
+		no_fix_for_ib=0;
 	}
 }
 
@@ -835,7 +912,7 @@ void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, UIntPtr virt_offset)
 
 		insn->Disassemble(disasm);
 		if(getenv("VERBOSE_FIX_CALLS"))
-			cout<<" Coverted to: "<<disasm.CompleteInstr<<endl;
+			cout<<" Converted to: "<<disasm.CompleteInstr<<endl;
 	}
 }
 
@@ -893,6 +970,8 @@ main(int argc, char* argv[])
 		cerr<<" --no-eh-frame 		Use (or dont) the eh-frame section to be compatible with exception handling." << endl;
 		cerr<<" --fix-all " << endl;
 		cerr<<" --no-fix-all 		Convert (or don't) all calls to push/jmp pairs."<<endl;
+		cerr<<" --fix-icalls 		Convert (or don't) indirect calls."<<endl;
+		cerr<<" --no-fix-icalls 	Convert (or don't) indirect calls."<<endl;
 		exit(-1);
 	}
 
@@ -913,6 +992,14 @@ main(int argc, char* argv[])
 		else if(strcmp("--no-eh-frame", argv[argc_iter])==0)
 		{
 			do_eh_frame=false;
+		}
+		else if(strcmp("--fix-icalls", argv[argc_iter])==0)
+		{
+			opt_fix_icalls = true;
+		}
+		else if(strcmp("--no-fix-icalls", argv[argc_iter])==0)
+		{
+			opt_fix_icalls = false;
 		}
 		else
 		{

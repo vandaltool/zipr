@@ -252,6 +252,7 @@ bool SimpleCDI_Instrument::add_scdi_instrumentation(Instruction_t* insn)
 			ret->Assemble("jmp 0");
 			ret->SetFallthrough(NULL);
 			ret->SetTarget(return_site);
+			ret->SetIBTargets(NULL);
 
 			cout<<hex<<insn->GetAddress()->GetVirtualOffset();
 			cout<<": Converted ret into a direct jmp: "<<insn->getDisassembly();
