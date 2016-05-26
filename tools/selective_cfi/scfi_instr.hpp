@@ -22,7 +22,10 @@
 #define scfi_instrument_hpp
 
 #include <libIRDB-core.hpp>
+#include <libIRDB-util.hpp>
 #include "color_map.hpp"
+#include <iostream>
+#include <iomanip>
 
 
 
@@ -32,16 +35,28 @@ class SCFI_Instrument
 		SCFI_Instrument(libIRDB::FileIR_t *the_firp, 
 				bool p_do_coloring=true,
 				bool p_do_common_slow_path=true,
-				bool p_do_jumps=true,
+				bool p_do_jumps=false,
+				bool p_do_calls=true,
 				bool p_do_rets=true,
 				bool p_do_safefn=true) 
 			: firp(the_firp), 
 			  do_coloring(p_do_coloring), 
 			  do_common_slow_path(p_do_common_slow_path), 
 			  do_jumps(p_do_jumps), 
+			  do_calls(p_do_calls), 
 			  do_rets(p_do_rets), 
 			  do_safefn(p_do_safefn), 
-			  color_map(NULL) {}
+			  color_map(NULL) 
+		{ 
+			std::cout<<std::boolalpha;
+			std::cout<<"#ATTRIBUTE do_coloring="<<p_do_coloring<<std::endl;
+			std::cout<<"#ATTRIBUTE do_common_slow_path="<<p_do_common_slow_path<<std::endl;
+			std::cout<<"#ATTRIBUTE do_jumps="<<p_do_jumps<<std::endl;
+			std::cout<<"#ATTRIBUTE do_calls="<<p_do_calls<<std::endl;
+			std::cout<<"#ATTRIBUTE do_rets="<<p_do_rets<<std::endl;
+			std::cout<<"#ATTRIBUTE do_safefn="<<p_do_safefn<<std::endl;
+			preds.AddFile(the_firp); 
+		}
 		bool execute();
 
 	private:
@@ -55,6 +70,10 @@ class SCFI_Instrument
 		libIRDB::Relocation_t* create_reloc(libIRDB::Instruction_t* insn);
 		libIRDB::Relocation_t* FindRelocation(libIRDB::Instruction_t* insn, std::string type);
 		bool isSafeFunction(libIRDB::Instruction_t* insn);
+		bool is_jmp_a_fixed_call(libIRDB::Instruction_t* insn);
+		bool is_plt_style_jmp(libIRDB::Instruction_t* insn);
+
+
 
 		// add instrumentation
 		bool add_scfi_instrumentation(libIRDB::Instruction_t* insn);
@@ -72,12 +91,14 @@ class SCFI_Instrument
 		unsigned int GetNonceOffset(libIRDB::Instruction_t*);
 
 
-
+		// predecessors of instructions.
+		libIRDB::InstructionPredecessors_t preds;
 	
 		libIRDB::FileIR_t* firp;
 		bool do_coloring;
 		bool do_common_slow_path;
 		bool do_jumps;
+		bool do_calls;
 		bool do_rets;
 		bool do_safefn;
 		ColoredInstructionNonces_t *color_map;

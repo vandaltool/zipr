@@ -404,8 +404,6 @@ void mov_reloc(Instruction_t* from, Instruction_t* to, string type )
 
 void SCFI_Instrument::AddJumpCFI(Instruction_t* insn)
 {
-	if(!do_jumps)
-		return;
 	assert(do_rets);
 	ColoredSlotValue_t v2;
 	if(insn->GetIBTargets() && color_map)
@@ -598,6 +596,32 @@ static void display_histogram(std::ostream& out, std::string attr_label, std::ma
 	}
 }
 
+bool SCFI_Instrument::is_plt_style_jmp(Instruction_t* insn) 
+{
+	DISASM d;
+	insn->Disassemble(d);
+	if((d.Argument1.ArgType&MEMORY_TYPE)==MEMORY_TYPE)
+	{
+		if(d.Argument1.Memory.BaseRegister == 0 && d.Argument1.Memory.IndexRegister == 0)  
+			return true;
+		return false;
+	}
+	return false;
+}
+
+bool SCFI_Instrument::is_jmp_a_fixed_call(Instruction_t* insn) 
+{
+	if(preds[insn].size()!=1)
+		return false;
+
+	Instruction_t* pred=*(preds[insn].begin());
+	assert(pred);
+
+	if(pred->GetDataBits()[0]==0x68)
+		return true;
+	return false;
+}
+
 bool SCFI_Instrument::instrument_jumps() 
 {
 	int cfi_checks=0;
@@ -607,12 +631,14 @@ bool SCFI_Instrument::instrument_jumps()
 	int cfi_branch_call_complete=0;
 	int cfi_branch_ret_checks=0;
 	int cfi_branch_ret_complete=0;
-	int	cfi_safefn_jmp_skipped=0;
-	int	cfi_safefn_ret_skipped=0;
+	int cfi_safefn_jmp_skipped=0;
+	int cfi_safefn_ret_skipped=0;
 	int ibt_complete=0;
 	double cfi_branch_jmp_complete_ratio = NAN;
+	double cfi_branch_call_complete_ratio = NAN;
 	double cfi_branch_ret_complete_ratio = NAN;
 
+	std::map<int, int> calls;
 	std::map<int, int> jmps;
 	std::map<int, int> rets;
 
@@ -642,27 +668,48 @@ bool SCFI_Instrument::instrument_jumps()
 		switch(d.Instruction.BranchType)
 		{
 			case  JmpType:
-				if((d.Argument1.ArgType&MEMORY_TYPE)==MEMORY_TYPE)
+				if((d.Argument1.ArgType&CONSTANT_TYPE)!=CONSTANT_TYPE)
 				{
-					if (insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
+					bool is_fixed_call=is_jmp_a_fixed_call(insn);
+					bool is_plt_style=is_plt_style_jmp(insn);
+					bool is_any_call_style = (is_fixed_call || is_plt_style);
+					if(do_jumps && !is_any_call_style)
 					{
-						cfi_branch_jmp_complete++;
-						jmps[insn->GetIBTargets()->size()]++;
-					}
+						if (insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
+						{
+							cfi_branch_jmp_complete++;
+							jmps[insn->GetIBTargets()->size()]++;
+						}
 
-/*
-    @FIXME @TODO Take care of indirect jumps
-					if (!do_safefn && safefn)
+						cfi_checks++;
+						cfi_branch_jmp_checks++;
+
+						AddJumpCFI(insn);
+					}
+					else if(do_calls && is_any_call_style)
 					{
-						cfi_safefn_jmp_skipped++;
-						continue;
-					}
-*/
+						if (insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
+						{
+							cfi_branch_call_complete++;
+							calls[insn->GetIBTargets()->size()]++;
+						}
 
-					cfi_checks++;
-					cfi_branch_jmp_checks++;
-					AddJumpCFI(insn);
+						cfi_checks++;
+						cfi_branch_call_checks++;
+
+						AddJumpCFI(insn);
+					}
+					else 
+					{	
+						cout<<"Eliding protection for "<<insn->getDisassembly()<<std::boolalpha
+							<<" is_fixed_call="<<is_fixed_call
+							<<" is_plt_style="<<is_plt_style
+							<<" is_any_call_style="<<is_any_call_style
+							<<" do_jumps="<<do_jumps
+							<<" do_calls="<<do_calls<<endl;
+					}
 				}
+	
 				break;
 
 			case  CallType:
@@ -702,13 +749,12 @@ bool SCFI_Instrument::instrument_jumps()
 	
 	cout<<"# ATTRIBUTE cfi_jmp_checks="<<std::dec<<cfi_branch_jmp_checks<<endl;
 	cout<<"# ATTRIBUTE cfi_jmp_complete="<<cfi_branch_jmp_complete<<endl;
-
 	display_histogram(cout, "cfi_jmp_complete_histogram", jmps);
 
-/*
 	cout<<"# ATTRIBUTE cfi_branch_call_checks="<<std::dec<<cfi_branch_call_checks<<endl;
 	cout<<"# ATTRIBUTE cfi_branch_call_complete="<<std::dec<<cfi_branch_call_complete<<endl;
-*/
+	display_histogram(cout, "cfi_call_complete_histogram", calls);
+
 	cout<<"# ATTRIBUTE cfi_ret_checks="<<std::dec<<cfi_branch_ret_checks<<endl;
 	cout<<"# ATTRIBUTE cfi_ret_complete="<<std::dec<<cfi_branch_ret_complete<<endl;
 	display_histogram(cout, "cfi_ret_complete_histogram", rets);
@@ -720,6 +766,9 @@ bool SCFI_Instrument::instrument_jumps()
 	if (cfi_branch_jmp_checks > 0) 
 		cfi_branch_jmp_complete_ratio = (double)cfi_branch_jmp_complete / cfi_branch_jmp_checks;
 
+	if (cfi_branch_call_checks > 0) 
+		cfi_branch_call_complete_ratio = (double)cfi_branch_call_complete / cfi_branch_call_checks;
+
 	if (cfi_branch_ret_checks > 0) 
 		cfi_branch_ret_complete_ratio = (double)cfi_branch_ret_complete / cfi_branch_ret_checks;
 
@@ -729,7 +778,7 @@ bool SCFI_Instrument::instrument_jumps()
 	
 
 	cout << "# ATTRIBUTE cfi_jmp_complete_ratio=" << cfi_branch_jmp_complete_ratio << endl;
-
+	cout << "# ATTRIBUTE cfi_call_complete_ratio=" << cfi_branch_call_complete_ratio << endl;
 	cout << "# ATTRIBUTE cfi_ret_complete_ratio=" << cfi_branch_ret_complete_ratio << endl;
 	cout << "# ATTRIBUTE cfi_complete_ratio=" << cfi_branch_ret_complete_ratio << endl;
 

@@ -38,6 +38,7 @@ void usage(char* name)
 	cerr<<" Usage: "<<name<<" <variant_id>  \n"
 "		[--color|--no-color]  \n"
 "		[--protect-jumps|--no-protect-jumps]  \n"
+"		[--protect-calls|--no-protect-calls]  \n"
 "		[--protect-rets|--no-protect-rets] \n"
 "		[--protect-safefn|--no-protect-safefn]  \n"
 "		[ --common-slow-path | --no-common-slow-path ] \n"
@@ -61,7 +62,8 @@ int main(int argc, char **argv)
 
 	bool do_coloring=false;
 	bool do_common_slow_path=true;
-	bool do_jumps=true;
+	bool do_jumps=false;
+	bool do_calls=true;
 	bool do_rets=true;
 	bool do_safefn=true;
 	for(int  i=2;i<argc;i++)
@@ -75,6 +77,16 @@ int main(int argc, char **argv)
 		{
 			cout<<"Not using coloring..."<<endl;
 			do_coloring=false;
+		}
+		else if(string(argv[i])=="--protect-calls")
+		{
+			cout<<"protecting calls..."<<endl;
+			do_calls=true;
+		}
+		else if(string(argv[i])=="--no-protect-calls")
+		{
+			cout<<"Not protecting calls..."<<endl;
+			do_calls=false;
 		}
 		else if(string(argv[i])=="--protect-jumps")
 		{
@@ -152,7 +164,7 @@ int main(int argc, char **argv)
 
                 try
                 {
-			SCFI_Instrument scfii(firp, do_coloring, do_common_slow_path, do_jumps, do_rets, do_safefn);
+			SCFI_Instrument scfii(firp, do_coloring, do_common_slow_path, do_jumps, do_calls, do_rets, do_safefn);
 
 
 			int success=scfii.execute();
