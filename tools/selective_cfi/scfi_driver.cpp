@@ -43,7 +43,7 @@ void usage(char* name)
 "		[--protect-safefn|--no-protect-safefn]  \n"
 "		[ --common-slow-path | --no-common-slow-path ] \n"
 " \n"
-"default: --no-color --protect-jumps --protect-rets --protect-safefn --common-slow-path\n"; 
+"default: --no-color --protect-jumps --protect-calls --protect-rets --protect-safefn --common-slow-path\n"; 
 }
 
 int main(int argc, char **argv)
