@@ -1139,7 +1139,6 @@ perform_step spawner stratafy_with_pc_confine  $PEASOUP_HOME/tools/do_spawner.sh
 # put a front end in front of a.stratafied which opens file 990 for strata to read.
 perform_step get_pins spasm,fast_spri  $PEASOUP_HOME/tools/get_pins.sh 
 
-
 # zipr
 perform_step zipr clone,fill_in_indtargs,fill_in_cfg,pdb_register $ZIPR_INSTALL/bin/zipr.exe --variant $cloneid --zipr:objcopy $PS_OBJCOPY $step_options_zipr
 
@@ -1156,16 +1155,6 @@ if [[ "$CONCURRENCY_HOME/deadlock" != "" && -d "$CONCURRENCY_HOME/deadlock" ]]; 
 fi
 
 #
-# create a report for all of ps_analyze.
-#
-ps_endtime=`$PS_DATE` 
-report_logs
-
-
-# go back to original directory
-cd - > /dev/null 2>&1
-
-#
 #select the output file name to use -- b.out.addseg if zipr is on.
 #
 is_step_on zipr
@@ -1175,6 +1164,21 @@ if [ $zipr_on -eq 0 ]; then
 else
 	my_outfile=$newdir/c.out
 fi
+
+# AT 
+perform_step cgc_at_string none $DAFFY_HOME/anti_tamper/string_table_trick.sh $(basename $my_outfile)
+
+#
+# create a report for all of ps_analyze.
+#
+ps_endtime=`$PS_DATE` 
+report_logs
+
+
+# go back to original directory
+cd - > /dev/null 2>&1
+
+
 
 # copy output file into requested location.
 cp $my_outfile $protected_exe
