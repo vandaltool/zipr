@@ -55,13 +55,11 @@ if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then
 fi
 
 
-
 cd $SECURITY_TRANSFORMS_HOME
 scons -j2 build_cgc=1 build_appfw=0
 
 cd $SMPSA_HOME
 scons -j2 build_irdb=1 build_ida=1 do_64bit_analysis=1 debug=0 do_sccp=0 numeric_error_annots=0
-
 
 cd $PEASOUP_HOME
 make -j2
@@ -80,7 +78,7 @@ make install
 
 if [ -d $ZIPR_HOME ]; then
 	cd $ZIPR_HOME
-	scons -j2 build_cgc=1 # ./configure --enable-cgc --prefix=$ZIPR_INSTALL; make;  make install
+	scons -j2 do_cgc=1 # ./configure --enable-cgc --prefix=$ZIPR_INSTALL; make;  make install
 fi
 
 if [ -d $ZIPR_SCFI_PLUGIN ]; then 
