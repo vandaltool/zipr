@@ -298,6 +298,19 @@ bool SCFI_Instrument::mark_targets()
 		Instruction_t* insn=*it;
 		if(insn->GetIndirectBranchTargetAddress())
 		{
+
+			// make sure there are no fallthroughs to nonces.
+			for(InstructionSet_t::iterator pred_it=preds[insn].begin(); pred_it!=preds[insn].end(); ++pred_it)
+			{
+				Instruction_t* the_pred=*pred_it;
+				if(the_pred->GetFallthrough()==insn)
+				{
+					Instruction_t* jmp=addNewAssembly(firp,NULL, "jmp 0x0");
+					the_pred->SetFallthrough(jmp);
+					jmp->SetTarget(insn);
+				}
+			}
+
 			ind_targets++;
 			string type;
 			if(do_coloring)
