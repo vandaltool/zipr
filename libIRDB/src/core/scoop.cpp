@@ -28,7 +28,7 @@ string DataScoop_t::WriteToDB(File_t *fid, db_id_t newid)
 
 
         string q=string("insert into ")+fid->scoop_table_name +
-                string(" (scoop_id, name, type_id, start_address_id, end_address_id, data, permissions) ")+
+                string(" (scoop_id, name, type_id, start_address_id, end_address_id, data, permissions, relro) ")+
                 string(" VALUES (") +
                 string("'") + to_string(GetBaseID()) + string("', ") +
                 string("'") + GetName()  + string("', ") +
@@ -48,7 +48,8 @@ string DataScoop_t::WriteToDB(File_t *fid, db_id_t newid)
 		
 
 	q+=     string("', 'hex'), ") +
-                string("'") + to_string(permissions) + string("'); ") ;
+                string("'") + to_string(permissions) + string("', ") + 
+                string("'") + to_string(is_relro) + string("'); ") ;
 
 	return q;
 }

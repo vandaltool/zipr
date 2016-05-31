@@ -497,7 +497,7 @@ void fill_in_scoops(FileIR_t *firp)
 			( elfiop->sections[secndx]->isWriteable() << 1 ) | 
 			( elfiop->sections[secndx]->isExecutable() << 0 ) ;
 
-		DataScoop_t *newscoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, name, startaddr, endaddr, NULL, permissions, the_contents);
+		DataScoop_t *newscoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, name, startaddr, endaddr, NULL, permissions, false, the_contents);
 		assert(newscoop);
 		firp->GetDataScoops().insert(newscoop);
 

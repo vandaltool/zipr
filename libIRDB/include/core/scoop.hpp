@@ -33,6 +33,7 @@ class DataScoop_t : public BaseObj_t
 				end(NULL),
 				type(NULL),
 				permissions(0),
+				is_relro(false),
 				contents()
 		{}
 	
@@ -42,6 +43,7 @@ class DataScoop_t : public BaseObj_t
 				libIRDB::AddressID_t* p_end,
 				libIRDB::Type_t* p_type,
 				int p_permissions, 
+				bool p_is_relro, 
 				std::string p_contents)
 			:
 				BaseObj_t(NULL),
@@ -50,6 +52,7 @@ class DataScoop_t : public BaseObj_t
 				end(p_end),
 				type(p_type),
 				permissions(p_permissions),
+				is_relro(p_is_relro),
 				contents(p_contents)
 		{
 			assert(start && end);
@@ -68,6 +71,7 @@ class DataScoop_t : public BaseObj_t
 		bool isReadable() const  { return (permissions & permissions_r) == permissions_r; }
 		bool isWriteable() const { return (permissions & permissions_w) == permissions_w; };
 		bool isExecuteable() const { return (permissions & permissions_x) == permissions_x; };
+		bool isRelRo() const { return is_relro; };
 		int  getRawPerms() const { return permissions; }
 		void  setRawPerms(int newperms) { permissions=newperms; }
 
@@ -80,10 +84,12 @@ class DataScoop_t : public BaseObj_t
 		void SetReadable() { permissions |= permissions_r; }
 		void SetWriteable() { permissions |= permissions_w; }
 		void SetExecuteable() { permissions |= permissions_x; }
+		void SetRelRo() { is_relro = true; }
 
 		void ClearReadable() { permissions &= ~permissions_r; }
 		void ClearWriteable() { permissions &= ~permissions_w; }
 		void ClearExecuteable() { permissions &= ~permissions_x; }
+		void ClearRelRo() { is_relro=false; }
 
                 std::string WriteToDB(File_t *fid, db_id_t newid);
 
@@ -97,6 +103,7 @@ class DataScoop_t : public BaseObj_t
 		libIRDB::AddressID_t* end;
 		libIRDB::Type_t* type;
 		int permissions;
+		bool is_relro;
 		std::string contents;
 
 
