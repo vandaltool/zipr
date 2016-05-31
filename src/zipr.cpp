@@ -483,7 +483,7 @@ void ZiprImpl_t::CreateExecutableScoops(const std::map<RangeAddress_t, int> &ord
 		// zero init is OK, after zipring we'll update with the right bytes.
 		string text_contents;
 		text_contents.resize(text_end->GetVirtualOffset() - text_start->GetVirtualOffset());
-		DataScoop_t* text_scoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, string(".zipr_text_")+to_string(count++), text_start, text_end, NULL, 5, text_contents);
+		DataScoop_t* text_scoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, string(".zipr_text_")+to_string(count++), text_start, text_end, NULL, 5, false, text_contents);
 		m_firp->GetDataScoops().insert(text_scoop);
 	
 		cout<<"Adding scoop "<<text_scoop->GetName()<<hex<<" at "<<hex<<text_start->GetVirtualOffset()<<" - "<<text_end->GetVirtualOffset()<<endl;
@@ -494,6 +494,8 @@ void ZiprImpl_t::CreateExecutableScoops(const std::map<RangeAddress_t, int> &ord
 
 RangeAddress_t ZiprImpl_t::PlaceUnplacedScoops(RangeAddress_t max_addr)
 {
+	max_addr=plugman.PlaceScoopsBegin(max_addr);
+
 	map<int,DataScoopSet_t> scoops_by_perms;
 
 	for(
@@ -508,9 +510,6 @@ RangeAddress_t ZiprImpl_t::PlaceUnplacedScoops(RangeAddress_t max_addr)
 		if(scoop->GetStart()->GetVirtualOffset()==0)
 			scoops_by_perms[scoop->getRawPerms()].insert(scoop);
 	}
-
-
-
 	
 	for(map<int,DataScoopSet_t>::iterator pit=scoops_by_perms.begin(); pit!=scoops_by_perms.end(); ++pit)
 	{
@@ -533,6 +532,7 @@ RangeAddress_t ZiprImpl_t::PlaceUnplacedScoops(RangeAddress_t max_addr)
 	}
 	
 	
+	max_addr=plugman.PlaceScoopsEnd(max_addr);
 
 	return max_addr;
 }
@@ -2837,7 +2837,7 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 	m_firp->GetAddresses().insert(textra_end);
 	string textra_contents;
 	textra_contents.resize(end_of_new_space-start_of_new_space);
-	DataScoop_t* textra_scoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, ".textra", textra_start, textra_end, NULL, 5, textra_contents);
+	DataScoop_t* textra_scoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, ".textra", textra_start, textra_end, NULL, 5, false, textra_contents);
 	m_firp->GetDataScoops().insert(textra_scoop);
 
 

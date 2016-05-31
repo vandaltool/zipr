@@ -52,6 +52,13 @@ for(DLFunctionHandleSet_t::iterator it=m_handleList.begin(); it!=m_handleList.en
 	ZiprPluginInterface_t* zpi=(ZiprPluginInterface_t*)*it; \
 	zpi->func(); \
 } 
+
+#define dispatch_to_with_var(func, var) \
+for(DLFunctionHandleSet_t::iterator it=m_handleList.begin(); it!=m_handleList.end();++it) \
+{ \
+	ZiprPluginInterface_t* zpi=(ZiprPluginInterface_t*)*it; \
+	var=zpi->func(var); \
+} 
  
 void ZiprPluginManager_t::PinningBegin()
 {
@@ -80,6 +87,21 @@ void ZiprPluginManager_t::CallbackLinkingEnd()
 {
 	dispatch_to(CallbackLinkingEnd);
 }
+
+RangeAddress_t ZiprPluginManager_t::PlaceScoopsBegin(const RangeAddress_t max_addr)
+{
+	RangeAddress_t ret=max_addr;
+	dispatch_to_with_var(PlaceScoopsBegin,ret);
+	return ret;
+}
+
+RangeAddress_t ZiprPluginManager_t::PlaceScoopsEnd(const RangeAddress_t max_addr)
+{
+	RangeAddress_t ret=max_addr;
+	dispatch_to_with_var(PlaceScoopsEnd,ret);
+	return ret;
+}
+
 
 bool ZiprPluginManager_t::DoesPluginAddress(const Dollop_t *dollop, const RangeAddress_t &source, Range_t &place, bool &coalesce, DLFunctionHandle_t &placer)
 {

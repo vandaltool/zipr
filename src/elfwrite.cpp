@@ -453,7 +453,7 @@ void  ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::update_phdr_for_scoop_sec
 			{PT_DYNAMIC, ".dynamic"},
 			{PT_NOTE, ".note.ABI-tag"},
 			{PT_GNU_EH_FRAME, ".eh_frame_hdr"},
-			{PT_GNU_RELRO, ".init_array"}
+//			{PT_GNU_RELRO, ".init_array"}
 		};
 
 		// check if a type of header listed above.
@@ -528,12 +528,16 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs_internal(
 	// go through orig. phdrs any copy any that aren't of type pt_load or pt_hdr
 	for(unsigned int i=0;i<phdrs.size();i++)
 	{
-		// skip any load sections, the irdb tells us what to load.
+		// skip any load headers, the irdb tells us what to load.
 		if(phdrs[i].p_type == PT_LOAD)
 			continue;
 
-		// skip phdr section.
+		// skip phdr header.
 		if(phdrs[i].p_type == PT_PHDR)
+			continue;
+
+		// skip RELRO header, we're relocating stuff and wil have to create 1 or more.
+		if(phdrs[i].p_type == PT_GNU_RELRO)
 			continue;
 		
 		T_Elf_Phdr newphdr=phdrs[i];

@@ -40,11 +40,18 @@ class ZiprPluginManager_t : public ZiprPluginInterface_t
         	virtual void CallbackLinkingBegin();
         	virtual void CallbackLinkingEnd();
 
+		virtual RangeAddress_t PlaceScoopsBegin(const RangeAddress_t max_addr);
+		virtual RangeAddress_t PlaceScoopsEnd(const RangeAddress_t max_addr);
+
 		virtual bool DoesPluginPlop(libIRDB::Instruction_t*,DLFunctionHandle_t&);
 
 		virtual bool DoesPluginAddress(const Dollop_t *, const RangeAddress_t &, Range_t &, bool &coalesce, DLFunctionHandle_t &);
 		virtual bool DoesPluginRetargetCallback(const RangeAddress_t &, const DollopEntry_t *, RangeAddress_t &, DLFunctionHandle_t &) ;
 		virtual bool DoesPluginRetargetPin(const RangeAddress_t &, const Dollop_t *, RangeAddress_t &, DLFunctionHandle_t &) ;
+
+
+
+
 
 	private:
 
