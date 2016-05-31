@@ -31,7 +31,8 @@ using namespace libIRDB;
 static set<Instruction_t*> FindBlockStarts(Function_t* func) 
 {
 
-	set<Instruction_t*> targets;
+	InstructionSet_t targets;
+	InstructionSet_t found_fallthrough_to;
 
 	if(func->GetEntryPoint())
 		/* the entry point of the function is a target instruction for this CFG */
@@ -40,7 +41,7 @@ static set<Instruction_t*> FindBlockStarts(Function_t* func)
 	/* for each instruction, decide if it's a block start based on whether or not 
 	 * it can be indirectly branched to.  Also mark direct targets as block starts.
 	 */
-	for(set<Instruction_t*>::iterator it=func->GetInstructions().begin();
+	for(InstructionSet_t::iterator it=func->GetInstructions().begin();
 		it!=func->GetInstructions().end();
 		++it
 	   )
@@ -65,6 +66,14 @@ static set<Instruction_t*> FindBlockStarts(Function_t* func)
 		/* there is a target, and a failthrough, and the fallthrough is in this function */
 		if(target && ft && is_in_container(func->GetInstructions(), ft))
 			targets.insert(ft);
+
+		// we already found a fallthrough to ft, so we have 2+ fallthroughs to ft.  mark it as a control flow merge.
+		if( ft && is_in_container(found_fallthrough_to, ft))
+			targets.insert(ft);
+		
+		// if there is a ft, mark that we've seen it now.	
+		if(ft)
+			found_fallthrough_to.insert(ft);
 		
 	}
 
