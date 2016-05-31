@@ -765,15 +765,19 @@ void fix_all_calls(FileIR_t* firp, bool print_stats, bool fix_all)
 
 		if(is_call(insn)) 
 		{
-			if( call_needs_fix(insn) )
+			if( call_needs_fix(insn) )	// fixing is necessary + unpinning not possible.
 			{
 				fixed_calls++;
 				fix_call(insn, firp, false);
 			}
+			// we've been asked to fix all calls for funsies/cfi
+			// (and a bit about debugging fix-calls that's not important for anyone but jdh.
 			else if ( fix_all || (getenv("FIX_CALL_LIMIT") && not_fixed_calls>=atoi(getenv("FIX_CALL_LIMIT"))))
 			{
+				// if we make it here, we know that it was not 100% necessary to fix the call
+				// but we've been asked to anyhow.	
 				fixed_calls++;
-				fix_call(insn, firp, true);
+				fix_call(insn, firp, true /* true here indicates that the call can have an unpin reloc -- anh to add option in 3 minutes */);
 			}
 			else
 			{
