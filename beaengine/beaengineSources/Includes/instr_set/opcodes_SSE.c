@@ -1985,7 +1985,7 @@ void __bea_callspec__ movups_VW(PDISASM pMyDisasm)
     /* ========= 0xf2 */
     if (GV.PrefRepne == 1 || (GV.VEX.has_vex && GV.VEX.implicit_prefixes==3)) {
         (*pMyDisasm).Prefix.RepnePrefix = MandatoryPrefix;
-        GV.MemDecoration = Arg2dqword;
+        GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "movsd ");
@@ -1994,7 +1994,7 @@ void __bea_callspec__ movups_VW(PDISASM pMyDisasm)
     /* ========= 0xf3 */
     else if (GV.PrefRepe == 1 || (GV.VEX.has_vex && GV.VEX.implicit_prefixes==2)) {
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
-        GV.MemDecoration = Arg2fword;
+        GV.MemDecoration = Arg2dword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "movss ");
@@ -2038,7 +2038,7 @@ void __bea_callspec__ movups_WV(PDISASM pMyDisasm)
     /* ========= 0xf2 */
     if (GV.PrefRepne == 1) {
         (*pMyDisasm).Prefix.RepnePrefix = MandatoryPrefix;
-        GV.MemDecoration = Arg1dqword;
+        GV.MemDecoration = Arg1qword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "movsd ");
@@ -2047,7 +2047,7 @@ void __bea_callspec__ movups_WV(PDISASM pMyDisasm)
     /* ========= 0xf3 */
     else if (GV.PrefRepe == 1) {
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
-        GV.MemDecoration = Arg1fword;
+        GV.MemDecoration = Arg1dword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "movss ");
