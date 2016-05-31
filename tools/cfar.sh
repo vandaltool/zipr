@@ -25,6 +25,7 @@ shift
 
 structured_p1_canaries=0
 structured_noc=0
+structured_nog=0
 structured_nos=0
 config_name="unspecified"
 backend="strata"
@@ -51,6 +52,9 @@ do
 	# this option is for cfar, handle it and remove it from the ps_analyze arguments.
 	elif [ "$i" == "--structured_noc" ]; then 	
 		structured_noc=1
+	# this option is for cfar, handle it and remove it from the ps_analyze arguments.
+	elif [ "$i" == "--structured_nog" ]; then 	
+		structured_nog=1
 	# this option is for cfar, handle it and remove it from the ps_analyze arguments.
 	elif [ "$i" == "--structured_nos" ]; then 	
 		structured_nos=1
@@ -124,7 +128,7 @@ do
 	per_variant_options=()
 
 	# options for zipr's large_only plugin to help create non-overlapping code segments. 
-	if [ $structured_noc  -eq 1 ]; then
+	if [ $structured_noc  -eq 1  -o  $structured_nog -eq 1 ]; then
 		# the path to the "shared memory" that cfar is using.
 		sharepath_key="$seq:$variants:dir://$share_path"
 		per_variant_options+=(--step-option zipr:"--large_only:variant $sharepath_key")
