@@ -18,7 +18,7 @@ class ElfWriter
 	{
 		
 		public: 	
-			PageData_t() : m_perms(0), data(PAGE_SIZE), inuse(PAGE_SIZE) { }
+			PageData_t() : m_perms(0), is_relro(false), data(PAGE_SIZE), inuse(PAGE_SIZE) { }
 
 			void union_permissions(int p_perms) { m_perms|=p_perms; }
 
@@ -33,6 +33,7 @@ class ElfWriter
 			}
 
 		int m_perms;
+		bool is_relro;
 
 		std::vector<unsigned char> data;
 		std::vector<bool> inuse;
@@ -40,7 +41,7 @@ class ElfWriter
 	class LoadSegment_t
 	{
 		public:
-			LoadSegment_t() :filesz(0), memsz(0), filepos(0), start_page(0) { }
+			LoadSegment_t() :filesz(0), memsz(0), filepos(0), start_page(0), m_perms(0) { }
 
 		unsigned int filesz; 
 		unsigned int memsz; 

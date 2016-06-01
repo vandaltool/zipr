@@ -116,6 +116,7 @@ void ElfWriter::CreatePagemap(const ELFIO::elfio *elfiop, FileIR_t* firp, const 
 			    << " start="<<hex<< scoop->GetStart()->GetVirtualOffset()
 			    << " end="<<hex<< scoop->GetEnd()->GetVirtualOffset() <<endl;
 			pagemap[i].union_permissions(scoop->getRawPerms());
+			pagemap[i].is_relro |= scoop->isRelRo();
 			for(int j=0;j<PAGE_SIZE;j++)
 			{
 				// get the data out of the scoop and put it into the page map.
@@ -453,7 +454,6 @@ void  ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::update_phdr_for_scoop_sec
 			{PT_DYNAMIC, ".dynamic"},
 			{PT_NOTE, ".note.ABI-tag"},
 			{PT_GNU_EH_FRAME, ".eh_frame_hdr"},
-//			{PT_GNU_RELRO, ".init_array"}
 		};
 
 		// check if a type of header listed above.
@@ -501,6 +501,8 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs_internal(
 	libIRDB::virtual_offset_t new_phdr_addr
 	) 
 {
+	
+
 	// create a load segments into the new header list.
 	// assume hdr are on first page.
 	unsigned int fileoff=first_seg_file_offset;
@@ -522,6 +524,7 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs_internal(
 
 		// advance file pointer.
 		fileoff+=segvec[i]->filesz;
+
 	}
 
 
@@ -587,6 +590,48 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs_internal(
 	newphdrphdr.p_align =0x1000;
 	new_phdrs.insert(new_phdrs.begin(),newphdrphdr);
 
+
+	std::vector<T_Elf_Phdr> relro_phdrs;
+	for_each(new_phdrs.begin(), new_phdrs.end(), [&](const T_Elf_Phdr& phdr)
+	{
+		if(phdr.p_type==PT_LOAD)
+		{
+			auto do_relro=[this,phdr,&relro_phdrs](const virtual_offset_t start, const virtual_offset_t end)
+			{
+				if(!pagemap[start].is_relro)
+					return;
+
+				cout<<"Creating relro for "<<hex<<start<<"-"<<end<<endl;
+
+				T_Elf_Phdr relro_phdr=phdr;
+				relro_phdr.p_type=PT_GNU_RELRO;
+				relro_phdr.p_memsz=end-start+1;
+				relro_phdr.p_filesz=end-start+1;
+				relro_phdr.p_vaddr=start;
+				relro_phdr.p_paddr=start;
+				relro_phdr.p_offset= phdr.p_offset+start-phdr.p_vaddr;
+				relro_phdr.p_flags=4;
+
+				relro_phdrs.push_back(relro_phdr);
+			};
+
+			bool prev_relro=pagemap[phdr.p_vaddr].is_relro;
+			virtual_offset_t prev_i=phdr.p_vaddr, i=0;
+			for(i=phdr.p_vaddr; i<phdr.p_vaddr+phdr.p_memsz;i+=PAGE_SIZE)
+			{
+				if(prev_relro != pagemap[i].is_relro)
+				{
+					do_relro(prev_i, i-PAGE_SIZE-1);
+					prev_i=i;
+					prev_relro=pagemap[i].is_relro;
+					
+				}
+			}
+			do_relro(prev_i, i-PAGE_SIZE-1);
+		}
+	});
+	new_phdrs.insert(new_phdrs.end(), relro_phdrs.begin(), relro_phdrs.end());
+
 	// record the new ehdr.
 	new_ehdr=ehdr;
 	new_ehdr.e_phoff=phdr_map_offset;
@@ -597,6 +642,8 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs_internal(
 	new_ehdr.e_shstrndx=0;
 
 	update_phdr_for_scoop_sections(m_firp);
+
+
 	return true;
 }
 
@@ -673,7 +720,7 @@ unsigned int ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::DetermineMaxPhdrSi
 	}
 
 	// add a phdr for each segment that needs a mapping
-	phdr_count+=segvec.size();
+	phdr_count+=segvec.size()*2; 	// each entry in the segvec may need a relro header.
 	
 	// add 2 more sections that 1) of type PT_PHDR, and 2) a possible PT_LOAD section to load the phdr.
 	// worst case is we allocate an entire new page for it.

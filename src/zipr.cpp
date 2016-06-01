@@ -508,7 +508,7 @@ RangeAddress_t ZiprImpl_t::PlaceUnplacedScoops(RangeAddress_t max_addr)
 
 		// check if placed.
 		if(scoop->GetStart()->GetVirtualOffset()==0)
-			scoops_by_perms[scoop->getRawPerms()].insert(scoop);
+			scoops_by_perms[scoop->isRelRo() << 16 | scoop->getRawPerms()].insert(scoop);
 	}
 	
 	for(map<int,DataScoopSet_t>::iterator pit=scoops_by_perms.begin(); pit!=scoops_by_perms.end(); ++pit)
