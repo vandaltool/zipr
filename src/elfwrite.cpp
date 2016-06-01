@@ -621,13 +621,13 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs_internal(
 			{
 				if(prev_relro != pagemap[i].is_relro)
 				{
-					do_relro(prev_i, i-PAGE_SIZE-1);
+					do_relro(prev_i, i-1);
 					prev_i=i;
 					prev_relro=pagemap[i].is_relro;
 					
 				}
 			}
-			do_relro(prev_i, i-PAGE_SIZE-1);
+			do_relro(prev_i, i-1);
 		}
 	});
 	new_phdrs.insert(new_phdrs.end(), relro_phdrs.begin(), relro_phdrs.end());
