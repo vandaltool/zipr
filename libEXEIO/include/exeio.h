@@ -79,7 +79,7 @@ namespace EXEIO
 			exeio_t(char* filename) { Init(); load(filename); }
 			virtual ~exeio_t() { delete backend; }
 
-            virtual void load(std::string filename) { load((char*)filename.c_str()); }
+			virtual void load(std::string filename) { load((char*)filename.c_str()); }
 
 			// load the file
 			virtual void load(char* fn);

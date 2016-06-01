@@ -31,12 +31,16 @@
 #include <ctype.h>
 
 #include <exeio.h>
+#include "elfio/elfio.hpp"
+#include "elfio/elfio_dump.hpp"
+
 
 #include "beaengine/BeaEngine.h"
 
 int odd_target_count=0;
 int bad_target_count=0;
 int bad_fallthrough_count=0;
+EXEIO::exeio    *elfiop=NULL;
 
 using namespace libIRDB;
 using namespace std;
@@ -217,7 +221,6 @@ static File_t* find_file(FileIR_t* firp, db_id_t fileid)
 
 }
 
-EXEIO::exeio    *elfiop=NULL;
 
 void add_new_instructions(FileIR_t *firp)
 {
@@ -423,6 +426,47 @@ void fill_in_cfg(FileIR_t *firp)
 
 }
 
+static bool is_in_relro_segment(const int secndx)
+{
+	ELFIO::elfio *real_elfiop = reinterpret_cast<ELFIO::elfio*>(elfiop->get_elfio()); 
+	if(!real_elfiop)
+		return false;
+
+	int segnum = real_elfiop->segments.size();
+	int segndx=0;
+
+	virtual_offset_t sec_start=(virtual_offset_t)(elfiop->sections[secndx]->get_address());
+	virtual_offset_t sec_end=(virtual_offset_t)(elfiop->sections[secndx]->get_address() + elfiop->sections[segndx]->get_size() - 1 );
+
+	/* look through each section */
+	for (int segndx=1; segndx<segnum; segndx++)
+	{
+		ELFIO::Elf_Word type=real_elfiop->segments[segndx]->get_type();
+#ifndef PT_GNU_RELRO
+#define PT_GNU_RELRO    0x6474e552      /* Read-only after relocation */
+#endif
+
+		if(type==PT_GNU_RELRO)
+		{
+			virtual_offset_t seg_start=(virtual_offset_t)(real_elfiop->segments[segndx]->get_virtual_address());
+			virtual_offset_t seg_end=(virtual_offset_t)(real_elfiop->segments[segndx]->get_virtual_address() + real_elfiop->segments[segndx]->get_memory_size() - 1 );
+
+			// check if start lies within 
+			if(seg_start <= sec_start  && sec_start <= seg_end)
+				return true;
+
+			// check if end lies within 
+			if(seg_start <= sec_end  && sec_end <= seg_end)
+				return true;
+			
+			// check if crosses
+			if(sec_start < seg_start  && seg_end < sec_end)
+				return true;
+		}
+	}
+
+	return false;
+}
 
 void fill_in_scoops(FileIR_t *firp)
 {
@@ -497,7 +541,8 @@ void fill_in_scoops(FileIR_t *firp)
 			( elfiop->sections[secndx]->isWriteable() << 1 ) | 
 			( elfiop->sections[secndx]->isExecutable() << 0 ) ;
 
-		DataScoop_t *newscoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, name, startaddr, endaddr, NULL, permissions, false, the_contents);
+		bool is_relro=is_in_relro_segment(secndx);
+		DataScoop_t *newscoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, name, startaddr, endaddr, NULL, permissions, is_relro, the_contents);
 		assert(newscoop);
 		firp->GetDataScoops().insert(newscoop);
 

@@ -1272,7 +1272,7 @@ void FileIR_t::SplitScoop(
 		before->SetStart(before_start);
 		before->SetEnd(before_end);
 		before->setRawPerms(tosplit->getRawPerms());
-		before->GetContents().resize(before_end->GetVirtualOffset() - before_start->GetVirtualOffset());
+		before->GetContents().resize(before_end->GetVirtualOffset() - before_start->GetVirtualOffset()+1);
 
 		// copy bytes
 		for(virtual_offset_t i=before_start->GetVirtualOffset() ; i< before_end->GetVirtualOffset(); i++)
@@ -1298,7 +1298,7 @@ void FileIR_t::SplitScoop(
 	containing->SetStart(containing_start);
 	containing->SetEnd(containing_end);
 	containing->setRawPerms(tosplit->getRawPerms());
-	containing->GetContents().resize(containing_end->GetVirtualOffset() - containing_start->GetVirtualOffset());
+	containing->GetContents().resize(containing_end->GetVirtualOffset() - containing_start->GetVirtualOffset()+1);
 	// copy bytes
 	for(virtual_offset_t i=containing_start->GetVirtualOffset() ; i< containing_end->GetVirtualOffset(); i++)
 		containing->GetContents()[i-containing_start->GetVirtualOffset()] = tosplit->GetContents()[i-tosplit->GetStart()->GetVirtualOffset()];
@@ -1324,7 +1324,7 @@ void FileIR_t::SplitScoop(
 		after->SetStart(after_start);
 		after->SetEnd(after_end);
 		after->setRawPerms(tosplit->getRawPerms());
-		after->GetContents().resize(after_end->GetVirtualOffset() - after_start->GetVirtualOffset());
+		after->GetContents().resize(after_end->GetVirtualOffset() - after_start->GetVirtualOffset()+1);
 		// copy bytes
 		for(virtual_offset_t i=after_start->GetVirtualOffset() ; i < after_end->GetVirtualOffset(); i++)
 			after->GetContents()[i-after_start->GetVirtualOffset()] = tosplit->GetContents()[i-tosplit->GetStart()->GetVirtualOffset()];
