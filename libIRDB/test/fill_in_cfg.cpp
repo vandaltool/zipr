@@ -436,7 +436,7 @@ static bool is_in_relro_segment(const int secndx)
 	int segndx=0;
 
 	virtual_offset_t sec_start=(virtual_offset_t)(elfiop->sections[secndx]->get_address());
-	virtual_offset_t sec_end=(virtual_offset_t)(elfiop->sections[secndx]->get_address() + elfiop->sections[segndx]->get_size() - 1 );
+	virtual_offset_t sec_end=(virtual_offset_t)(elfiop->sections[secndx]->get_address() + elfiop->sections[secndx]->get_size() - 1 );
 
 	/* look through each section */
 	for (int segndx=1; segndx<segnum; segndx++)
@@ -546,7 +546,10 @@ void fill_in_scoops(FileIR_t *firp)
 		assert(newscoop);
 		firp->GetDataScoops().insert(newscoop);
 
-		cout<<"Allocated new scoop for section "<<name<<endl;
+		cout<<"Allocated new scoop for section "<<name
+		    <<"("<<hex<<startaddr->GetVirtualOffset()<<"-"
+		    <<hex<<endaddr->GetVirtualOffset()<<")"
+		    <<" perms="<<permissions<<" relro="<<boolalpha<<is_relro<<endl;
 
 	}
 
