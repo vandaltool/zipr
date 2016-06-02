@@ -66,10 +66,10 @@ if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then
 fi
 
 cd $SECURITY_TRANSFORMS_HOME
-scons || exit
+scons -j 3|| exit
 
 cd $SMPSA_HOME
-scons  || exit
+scons  -j 3|| exit
 
 cd $PEASOUP_HOME
 make || exit
@@ -83,25 +83,25 @@ fi
 
 if [ -d $ZIPR_HOME ]; then
 	cd $ZIPR_HOME
-	scons  || exit
+	scons  -j 3|| exit
 fi
 
 if [ -d $ZIPR_SCFI_PLUGIN ]; then
 	cd $ZIPR_SCFI_PLUGIN
-	scons  || exit
+	scons  -j 3|| exit
 fi
 
 cd $PEASOUP_UMBRELLA_DIR/zipr_large_only_plugin/
-scons || exit
+scons -j 3|| exit
 
 cd $PEASOUP_UMBRELLA_DIR/zipr_push64_reloc_plugin
-scons || exit
+scons -j 3|| exit
 
 cd $PEASOUP_UMBRELLA_DIR/zipr_unpin_plugin
-scons || exit
+scons -j 3|| exit
 
 cd $IRDB_TRANSFORMS
-scons || exit
+scons -j 3|| exit
 
 
 cd $PEASOUP_UMBRELLA_DIR
