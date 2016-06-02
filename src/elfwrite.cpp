@@ -632,6 +632,21 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs_internal(
 	});
 	new_phdrs.insert(new_phdrs.end(), relro_phdrs.begin(), relro_phdrs.end());
 
+#ifdef CGC
+// 
+// Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
+// LOAD           0x000f20 0x00000000 0x00000000 0x00000 0x00000       0x1000 (edited)
+	// create 0-size headre
+	std::cout<<"New phdrs at: "<<std::hex<<new_phdr_addr<<std::endl;
+	T_Elf_Phdr aqphdr;
+	memset(&aqphdr,0,sizeof(aqphdr));
+	aqphdr.p_type = PT_LOAD;
+	aqphdr.p_flags =(ELFIO::Elf_Word)4;
+	aqphdr.p_offset =phdr_map_offset; // ???
+	aqphdr.p_align =0x1000;
+	new_phdrs.insert(new_phdrs.begin(),aqphdr);
+#endif
+
 	// record the new ehdr.
 	new_ehdr=ehdr;
 	new_ehdr.e_phoff=phdr_map_offset;
