@@ -641,8 +641,7 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs_internal(
 	T_Elf_Phdr aqphdr;
 	memset(&aqphdr,0,sizeof(aqphdr));
 	aqphdr.p_type = PT_LOAD;
-	aqphdr.p_flags =(ELFIO::Elf_Word)4;
-	aqphdr.p_offset =phdr_map_offset; // ???
+	aqphdr.p_offset =phdr_map_offset; 
 	aqphdr.p_align =0x1000;
 	new_phdrs.insert(new_phdrs.begin(),aqphdr);
 #endif
