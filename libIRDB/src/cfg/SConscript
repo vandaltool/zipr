@@ -8,7 +8,7 @@ myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 
 libname="IRDB-cfg"
 files=  '''
-	BasicBlock.cpp  callgraph.cpp  CFG.cpp
+	BasicBlock.cpp  callgraph.cpp  CFG.cpp domgraph.cpp
 	'''
 cpppath=''' 
 	$SECURITY_TRANSFORMS_HOME/include/
@@ -18,6 +18,7 @@ cpppath='''
 	'''
 
 #myenv.Append(CCFLAGS=" -Wall -W -Wextra -Wconversion ")
+myenv.Append(CCFLAGS=" -Wall -W -Wextra -Wconversion -std=c++11")
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath))
 lib=myenv.Library(libname, Split(files))

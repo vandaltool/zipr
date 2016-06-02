@@ -36,6 +36,7 @@ namespace libIRDB
 #include <cfg/BasicBlock.hpp>
 #include <cfg/CFG.hpp>
 #include <cfg/callgraph.hpp>
+#include <cfg/domgraph.hpp>
 
 };
 

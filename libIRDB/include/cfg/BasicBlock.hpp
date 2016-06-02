@@ -36,9 +36,15 @@ class BasicBlock_t
 		BasicBlockSet_t&     GetPredecessors() { return predecessors; }
 		BasicBlockSet_t&     GetSuccessors()   { return successors; }
 		BasicBlockSet_t&     GetIndirectTargets() { return indirect_targets; }
-
 		BasicBlock_t* GetFallthrough();
 		BasicBlock_t* GetTarget();
+
+		// for const correctness if you aren't modifying.
+		const InstructionVector_t& GetInstructions() const { return instructions; }
+		const BasicBlockSet_t&     GetPredecessors() const { return predecessors; }
+		const BasicBlockSet_t&     GetSuccessors()   const { return successors; }
+		const BasicBlockSet_t&     GetIndirectTargets() const { return indirect_targets; }
+
 		bool EndsInBranch();
 		bool EndsInIndirectBranch();
 		bool EndsInConditionalBranch();

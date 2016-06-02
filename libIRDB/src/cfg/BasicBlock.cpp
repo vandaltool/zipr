@@ -69,6 +69,35 @@ void BasicBlock_t::BuildBlock
 			successors.insert(target_block);
 		}
 
+		/* This is also the end of the block if this is a function exit instruction */
+		if(insn->IsFunctionExit()) 
+		{
+			is_exit_block=true;
+		}
+
+		// handle fixed-call fallthroughs.
+		for_each(insn->GetRelocations().begin(), insn->GetRelocations().end(), [this,&insn2block_map](Relocation_t* reloc)
+		{
+			/* and has a reloc that's a pcrel with a WRT object */ 
+			if( reloc->GetType()==string("fix_call_fallthrough")) 
+			{
+				assert(reloc->GetWRT()!=NULL);
+				Instruction_t* fix_call_fallthrough_insn=dynamic_cast<Instruction_t*>(reloc->GetWRT());
+				assert(fix_call_fallthrough_insn);
+
+				// this block has a fallthrough to the return block.
+				if(is_in_container(insn2block_map,fix_call_fallthrough_insn))
+				{
+					BasicBlock_t* fix_call_fallthrough_blk=find_map_object(insn2block_map,fix_call_fallthrough_insn);
+					successors.insert(fix_call_fallthrough_blk);
+					fix_call_fallthrough_blk->GetPredecessors().insert(this);
+				}
+
+				is_exit_block=false;
+			}
+		});
+
+
 		/* if there's a fallthrough block, insert it into the appropriate sets */
 		if(ft_block)
 		{
@@ -81,15 +110,33 @@ void BasicBlock_t::BuildBlock
 			break;
 
 		/* or if there is a fallthrough block already built */
-		if(target_insn || ft_block)
+		if(ft_block)
 			break;
 
-		/* This is also the end of the block if this is a function exit instruction */
-		if(insn->IsFunctionExit()) 
+		/* check for a fallthrough out of the function */
+		if(ft_insn && !is_in_container(func->GetInstructions(),ft_insn))
 			break;
+
 
 		/* otherwise, move to the fallthrough */
 		insn=ft_insn;
+	}
+
+	// deal with IB targets for the end of the block
+
+	insn=instructions[instructions.size()-1]; // get last instruction.
+	assert(insn);
+	if(insn->GetIBTargets())
+	{
+		for_each(insn->GetIBTargets()->begin(), insn->GetIBTargets()->end(), [this,&insn2block_map,func](Instruction_t* target)
+		{
+			if(is_in_container(insn2block_map,target) && target!=func->GetEntryPoint())	// don't link calls to the entry block.
+			{
+				BasicBlock_t* target_block=find_map_object(insn2block_map,target);
+				target_block->GetPredecessors().insert(this);
+				successors.insert(target_block);
+			}
+		});
 	}
 	
 }

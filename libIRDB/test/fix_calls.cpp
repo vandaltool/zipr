@@ -677,6 +677,15 @@ void fix_call(Instruction_t* insn, FileIR_t *firp, bool can_unpin)
 		}
 	}
 
+
+	// mark in the IR what the fallthrough of this insn is.
+	Relocation_t* fix_call_reloc=new Relocation_t(); 
+	fix_call_reloc->SetOffset(0);
+	fix_call_reloc->SetType("fix_call_fallthrough");
+	fix_call_reloc->SetWRT(newindirtarg);
+	callinsn->GetRelocations().insert(fix_call_reloc);
+	firp->GetRelocations().insert(fix_call_reloc);
+
 }
 
 

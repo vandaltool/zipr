@@ -204,6 +204,7 @@ libIRDB/SConstruct -text
 libIRDB/include/cfg/BasicBlock.hpp -text
 libIRDB/include/cfg/CFG.hpp -text
 libIRDB/include/cfg/callgraph.hpp -text
+libIRDB/include/cfg/domgraph.hpp -text
 libIRDB/include/core/address.hpp -text
 libIRDB/include/core/archdesc.hpp -text
 libIRDB/include/core/baseobj.hpp -text

@@ -139,7 +139,18 @@ void ControlFlowGraph_t::Build(Function_t* func)
 ostream& libIRDB::operator<<(ostream& os, const ControlFlowGraph_t& cfg)
 {
 	int i=0;
+
+	map<BasicBlock_t*,int> blk_numbers;
+	for(
+		set<BasicBlock_t*>::const_iterator it=cfg.blocks.begin();
+		it!=cfg.blocks.end();
+		++it
+	   )
+	{
+			blk_numbers[*it]=i++;
+	}
 	
+
 	for(
 		set<BasicBlock_t*>::const_iterator it=cfg.blocks.begin();
 		it!=cfg.blocks.end();
@@ -152,11 +163,21 @@ ostream& libIRDB::operator<<(ostream& os, const ControlFlowGraph_t& cfg)
 			os<<"**** Entry    ";
 		else
 			os<<"---- NotEntry ";
-		os<<"block "<<std::dec<<i<<endl;
-		i++;
-
+		os<<"block "<<std::dec<<blk_numbers[block]<<endl;
+		os<<"Successors: ";
+		for_each(block->GetSuccessors().begin(), block->GetSuccessors().end(), [&](BasicBlock_t* succ)
+		{
+			os<<blk_numbers[succ]<<", ";
+			
+		});
+		os<<endl;
+		os<<"Predecessors: ";
+		for_each(block->GetPredecessors().begin(), block->GetPredecessors().end(), [&](BasicBlock_t* pred)
+		{
+			os<<blk_numbers[pred]<<", ";
+		});
+		os<<endl;
 		os << *block;
-		
 	}
 
 	return os;
