@@ -112,7 +112,7 @@ class AggregateType_t : public Type_t
 		void AddAggregatedType(Type_t *t, int pos);
 		virtual int GetNumAggregatedTypes() const { return refTypes.size(); } 
 		Type_t* GetAggregatedType(unsigned int pos) const { 
-			return (pos >= 0 && pos < (unsigned int)refTypes.size()) ? refTypes.at(pos) : NULL;
+			return (pos < (unsigned int)refTypes.size()) ? refTypes.at(pos) : NULL;
 		}
 
 		std::string toString() {
