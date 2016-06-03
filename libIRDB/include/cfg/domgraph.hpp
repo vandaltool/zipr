@@ -17,6 +17,8 @@ class DominatorGraph_t
 		const BasicBlockSet_t& GetDominators(const BasicBlock_t* node) const { return dom_graph.at(node); }
 		const BasicBlockSet_t& GetPostDominators(const BasicBlock_t* node) const { return post_dom_graph.at(node); }
 
+		bool HasWarnings() const { return warn; }
+
 
 		// get the immeidate (post) dominators for a node 
 		const BasicBlock_t* GetImmediateDominator(const BasicBlock_t* node)  const
@@ -40,6 +42,8 @@ class DominatorGraph_t
 		BlockToBlockMap_t post_idom_graph;
 
 		const ControlFlowGraph_t& cfg;	// a reference to our cfg.
+
+		bool warn;
 
                 friend std::ostream& operator<<(std::ostream& os, const DominatorGraph_t& cfg);
 	

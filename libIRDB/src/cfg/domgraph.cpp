@@ -11,7 +11,7 @@ using namespace libIRDB;
 
 // constructor 
 DominatorGraph_t::DominatorGraph_t(const ControlFlowGraph_t* p_cfg, bool needs_postdoms, bool needs_idoms)
-	: cfg(*p_cfg)
+	: cfg(*p_cfg), warn(false)
 {
 
 
@@ -273,7 +273,8 @@ BlockToBlockMap_t DominatorGraph_t::Idom_Comp(const BasicBlockSet_t& N, const Do
 	{
 		//IDom(n) = <only element in>Tmp(n)
 		IDom[n]= *(Tmp[n].begin());
-		assert(Tmp[n].size()<=1);	// should only be one idominator.
+		if(Tmp[n].size()!=1)	// should only be one idominator.
+			warn=true;
 	});
 	return IDom;
 } // IDom_Comp
