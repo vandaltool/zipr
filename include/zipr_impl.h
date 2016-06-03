@@ -346,6 +346,13 @@ class ZiprImpl_t : public Zipr_t
 		void RecordPinnedInsnAddrs();
 
 
+		// zipr has some internal assumptions that multiple fallthroughs to the same instruction
+		// are problematic.  this function adjusts the IR such that no multiple fallthroughs
+		// exist by adding direct jump instructions where necessary to eliminate multiple fallthroughs.
+		void  FixMultipleFallthroughs();
+
+
+
 		// patching
 		void PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr);
 		void ApplyPatches(libIRDB::Instruction_t* insn);

@@ -277,6 +277,9 @@ void ZiprImpl_t::CreateBinaryFile()
 	if (m_verbose)
 		cout << "Seeded the random number generator with " << m_seed << "." << endl;
 
+
+	FixMultipleFallthroughs();
+
 	// create ranges, including extra range that's def. big enough.
 	FindFreeRanges(m_output_filename);
 
@@ -3320,3 +3323,41 @@ void ZiprImpl_t::UpdateScoops()
 	return;
 }
 
+
+
+void  ZiprImpl_t::FixMultipleFallthroughs()
+{
+	int count=0;
+	map<Instruction_t*, InstructionSet_t> fallthrough_from;
+	for_each(m_firp->GetInstructions().begin(), m_firp->GetInstructions().end(), 
+		[&fallthrough_from](Instruction_t* insn)
+	{
+		Instruction_t* ft=insn->GetFallthrough();
+		if(ft)
+			fallthrough_from[ft].insert(insn);
+	});
+
+	for_each(fallthrough_from.begin(), fallthrough_from.end(), [&](const pair<Instruction_t*, InstructionSet_t>& p)
+	{
+		Instruction_t* ft=p.first;
+		if(p.second.size()>1)
+		{
+			// skip the first one, because something can fallthrough, just not everything.
+			for_each(next(p.second.begin()), p.second.end(), [&](Instruction_t* from)
+			{
+			
+				Instruction_t* newjmp=addNewAssembly(m_firp, NULL, "jmp 0");
+				count++;
+
+				newjmp->SetTarget(ft);
+				from->SetFallthrough(newjmp);
+
+			});
+		};
+	});
+
+	// after we've inserted all the jumps, assemble them.
+	m_firp->AssembleRegistry();
+
+	cout<<"#ATTRIBUTE zipr::jumps_inserted_for_multiple_fallthroughs="<<dec<<count<<endl;
+}
