@@ -105,7 +105,6 @@ bool check_entry(bool &found, ControlFlowGraph_t* cfg)
 		DISASM disasm;
 		Instruction_t* insn=*it;
 		insn->Disassemble(disasm);
-			if(getenv("VERBOSE_FIX_CALLS"))
 		if(Instruction_t::SetsStackPointer(&disasm)) {
 			return false;
 		} else {
