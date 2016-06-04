@@ -1021,7 +1021,11 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 				if(ibtarget)
 				{
 					jmptables[I5].insert(ibtarget);
+#ifdef CGC
+					jmptables[I5].SetAnalysisStatus(ICFS_Analysis_Complete);
+#else
 					jmptables[I5].SetAnalysisStatus(ICFS_Analysis_Module_Complete);
+#endif
 					possible_target(table_entry,table_base+0*ptrsize, ibt_provenance_t::ibtp_gotplt);
 					if(getenv("IB_VERBOSE")!=0)
 						cout<<hex<<"Found  plt dispatch ("<<disasm.CompleteInstr<<"') at "<<I5->GetAddress()->GetVirtualOffset()<< endl;
@@ -1798,7 +1802,11 @@ void process_dynsym(FileIR_t* firp)
 
 ICFS_t* setup_hellnode(FileIR_t* firp, ibt_provenance_t allowed)
 {
+#ifdef CGC
+	ICFS_t* hn=new ICFS_t(ICFS_Analysis_Complete);
+#else
 	ICFS_t* hn=new ICFS_t(ICFS_Analysis_Module_Complete);
+#endif
 
         for(
                 set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
