@@ -31,15 +31,6 @@ using namespace ELFIO;
 #endif
 
 
-#if 0
-template <class T> static T page_align(T& in)
-{
-
-	return in&~(PAGE_SIZE-1);
-}
-#endif
-
-
 void ElfWriter::Write(const ELFIO::elfio *elfiop, FileIR_t* firp, const string &out_file, const string &infile)
 {
 
@@ -59,6 +50,9 @@ void ElfWriter::Write(const ELFIO::elfio *elfiop, FileIR_t* firp, const string &
 
 
 	WriteElf(fout);
+
+	if( m_write_sections ) 
+		AddSections(fout);
 
 }
 
@@ -121,7 +115,7 @@ void ElfWriter::CreatePagemap(const ELFIO::elfio *elfiop, FileIR_t* firp, const 
 			{
 				// get the data out of the scoop and put it into the page map.
 				virtual_offset_t offset=i-start_addr+j;
-				if(0<= offset && offset<scoop->GetContents().size())
+				if(offset<scoop->GetContents().size())
 				{
 					pagemap[i].data[j]=scoop->GetContents()[ offset ]; 
 					pagemap[i].inuse[j]=true;
@@ -219,14 +213,15 @@ void ElfWriter::CreateSegmap(const ELFIO::elfio *elfiop, FileIR_t* firp, const s
 
 
 
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr>
-void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::LoadEhdr(FILE* fin) 
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
+void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr, T_Elf_Shdr>::LoadEhdr(FILE* fin) 
 {
 	fseek(fin,0,SEEK_SET);
 	fread(&ehdr,sizeof(ehdr), 1, fin);
 };
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr>
-void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::LoadPhdrs(FILE* fin) 
+
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
+void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::LoadPhdrs(FILE* fin) 
 {
 	fseek(fin,ehdr.e_phoff,SEEK_SET);
 	phdrs.resize(ehdr.e_phnum);
@@ -235,8 +230,10 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::LoadPhdrs(FILE* fin)
 		fread(&phdrs[i], sizeof(phdrs[i]), 1, fin);
 	}
 };
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr>
-void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs(const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr) 
+
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
+void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::CreateNewPhdrs(
+	const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr) 
 {
 	
 	if(CreateNewPhdrs_GapAllocate(min_addr, max_addr))
@@ -265,14 +262,18 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs(const libIR
 	}
 	
 }
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr>
-bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs_PostAllocate(const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr) 
+
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
+bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::CreateNewPhdrs_PostAllocate(
+	const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr) 
 {
 	// post allocation not enabled, yet.
 	return false;
 }
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr>
-bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs_FirstPageAllocate(const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr) 
+
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
+bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::CreateNewPhdrs_FirstPageAllocate(
+	const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr) 
 {
 	// check to see if there's room on the first page for 
 	unsigned int phdr_size=DetermineMaxPhdrSize();
@@ -284,8 +285,10 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs_FirstPageAl
 	// then convert this to a return false to avoid assertion until he fixes it;
 	assert(0);
 }
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr>
-bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::readonly_space_at(const libIRDB::virtual_offset_t addr, const unsigned int size)
+
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
+bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr, T_Elf_Shdr>::readonly_space_at(
+	const libIRDB::virtual_offset_t addr, const unsigned int size)
 {
 	for(unsigned int i=0;i<size;i++)
 	{
@@ -305,8 +308,9 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::readonly_space_at(const li
 	}
 	return true;
 }
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr>
-int ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::locate_segment_index(const libIRDB::virtual_offset_t addr)
+
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
+int ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::locate_segment_index(const libIRDB::virtual_offset_t addr)
 {
 	// segment's are sorted by address.
 	for(unsigned int i=0;i<segvec.size();i++)
@@ -325,8 +329,9 @@ int ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::locate_segment_index(const 
 	}
 	return -1;
 }
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr>
-unsigned int ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::count_filesz_to_seg(unsigned int seg)
+
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
+unsigned int ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::count_filesz_to_seg(unsigned int seg)
 {
 	unsigned int filesz=0;
 	// segment's are sorted by address.
@@ -336,8 +341,10 @@ unsigned int ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::count_filesz_to_se
 	}
 	return filesz;
 }
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr>
-bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs_GapAllocate(const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr) 
+
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
+bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::CreateNewPhdrs_GapAllocate(
+	const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr) 
 {
 	/* for shared objects, we need the PHDR file offset to be equal to the  
 	 * memory offset because the kernel passes base_address+Ehdr::ph_off via
@@ -414,16 +421,16 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs_GapAllocate
 
 }
 
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr>
-bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs_PreAllocate(const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr) 
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
+bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::CreateNewPhdrs_PreAllocate(
+	const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr) 
 {
 	libIRDB::virtual_offset_t new_phdr_addr=(T_Elf_Addr)page_align(min_addr)-PAGE_SIZE+sizeof(T_Elf_Ehdr);
 	return CreateNewPhdrs_internal(min_addr,max_addr,0x1000,true, sizeof(T_Elf_Ehdr), new_phdr_addr);
 }
 
-
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr>
-DataScoop_t* ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::find_scoop_by_name(const string& name, FileIR_t* firp)
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
+DataScoop_t* ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::find_scoop_by_name(const string& name, FileIR_t* firp)
 {
 	for(DataScoopSet_t::iterator it=firp->GetDataScoops().begin(); it!=firp->GetDataScoops().end(); ++it)
 	{
@@ -435,9 +442,8 @@ DataScoop_t* ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::find_scoop_by_name
 	return NULL;
 }
 
-
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr>
-void  ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::update_phdr_for_scoop_sections(FileIR_t* firp)
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
+void  ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::update_phdr_for_scoop_sections(FileIR_t* firp)
 {
 	// look at each header.
 	for(auto i=0;i<new_phdrs.size(); i++)
@@ -491,8 +497,8 @@ void  ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::update_phdr_for_scoop_sec
 }
 
 
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr>
-bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs_internal(
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
+bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::CreateNewPhdrs_internal(
 	const libIRDB::virtual_offset_t &min_addr, 
 	const libIRDB::virtual_offset_t &max_addr,
 	const int &first_seg_file_offset,
@@ -661,8 +667,8 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::CreateNewPhdrs_internal(
 	return true;
 }
 
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr>
-void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::WriteElf(FILE* fout)
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
+void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::WriteElf(FILE* fout)
 {
 	assert(fout);
 
@@ -715,8 +721,8 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::WriteElf(FILE* fout)
 	fwrite(new_phdrs.data(), sizeof(new_phdrs[0]), new_phdrs.size(), fout);
 }
 
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr>
-unsigned int ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::DetermineMaxPhdrSize()
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
+unsigned int ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::DetermineMaxPhdrSize()
 {
 	unsigned int phdr_count=0;
 	/* count phdr's that aren't pt_load or pt_phdr */
@@ -743,8 +749,138 @@ unsigned int ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr>::DetermineMaxPhdrSi
 	return phdr_count*sizeof(T_Elf_Phdr);
 }
 
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
+void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::AddSections(FILE* fout)
+{
+	fseek(fout,0,SEEK_END);
+	long cur_file_pos=ftell(fout);
+
+	/*
+struct {
+    Elf64_Word st_name;
+    unsigned char st_info;
+    unsigned char st_other;
+    Elf64_Section st_shndx;
+    Elf64_Addr st_value;
+    Elf64_Xword st_size;
+} Elf64_Sym
+struct {
+    Elf32_Word st_name;
+    Elf32_Addr st_value;
+    Elf32_Word st_size;
+    unsigned char st_info;
+    unsigned char st_other;
+    Elf32_Section st_shndx;
+} Elf32_Sym
+
+	typedef struct {
+		Elf32_Word sh_name;	 // index into str table
+		Elf32_Word sh_type;	// sht_progbits, sht, sht_strtab, sht_symtab, 
+		Elf32_Word sh_flags;	// permissios
+		Elf32_Addr sh_addr;	// scoop->GetStart()
+		Elf32_Off sh_offset;	// correlate to a segment.
+		Elf32_Word sh_size;	// GetStart-GetEnd
+		Elf32_Word sh_link;	
+		Elf32_Word sh_info;
+		Elf32_Word sh_addralign;
+		Elf32_Word sh_entsize;
+	} Elf32_Shdr
+	 */
+	
+
+	StringTable_t strtab;
+	map<DataScoop_t*,size_t> file_positions;
+	vector<T_Elf_Shdr> shdrs;
+
+	// add each scoop name to the string table
+	for_each(m_firp->GetDataScoops().begin(), m_firp->GetDataScoops().end(), [&](DataScoop_t* scoop)
+	{
+		strtab.AddString(scoop->GetName());
+	});
+
+
+	string zipr_symtab=".scoop_symtab";
+	strtab.AddString(zipr_symtab);
+	string null_symtab="NULL";
+	strtab.AddString(null_symtab);
+
+
+	// locate a file offset for each scoop by examining the output phdrs.
+	for_each(m_firp->GetDataScoops().begin(), m_firp->GetDataScoops().end(), [&](DataScoop_t* scoop)
+	{
+		auto finder=find_if(new_phdrs.begin(), new_phdrs.end(), [scoop](const T_Elf_Phdr& phdr)
+		{
+			return (phdr.p_vaddr <= scoop->GetStart()->GetVirtualOffset() && 
+				scoop->GetStart()->GetVirtualOffset() < phdr.p_vaddr+phdr.p_memsz);
+	 	});
+		// assert we found it.
+		assert(finder!=new_phdrs.end());
+		const T_Elf_Phdr& phdr=*finder;
+
+		size_t filepos=phdr.p_offset + (scoop->GetStart()->GetVirtualOffset()-phdr.p_vaddr);
+		file_positions[scoop]=filepos;
+	});
+
+	T_Elf_Shdr null_shdr;
+	memset(&null_shdr,0,sizeof(null_shdr));
+	null_shdr.sh_type=SHT_NULL;
+	null_shdr. sh_name =strtab.location(null_symtab);
+
+	shdrs.push_back(null_shdr);
+
+	// for each scoop, pushback an shdr
+	for_each(m_firp->GetDataScoops().begin(), m_firp->GetDataScoops().end(), [&](DataScoop_t* scoop)
+	{
+
+		T_Elf_Shdr shdr;
+		shdr. sh_name =strtab.location(scoop->GetName());
+		shdr. sh_type = SHT_PROGBITS;	// sht_progbits, sht, sht_strtab, sht_symtab, ...
+		shdr. sh_flags = SHF_ALLOC; // scoop->getRawPerms();
+		if(scoop->isExecuteable())
+			shdr. sh_flags |= SHF_EXECINSTR; 
+		if(scoop->isWriteable())
+			shdr. sh_flags |= SHF_WRITE; 
+		shdr. sh_addr = scoop->GetStart()->GetVirtualOffset();
+		shdr. sh_offset =file_positions[scoop];
+		shdr. sh_size = scoop->GetEnd()->GetVirtualOffset() - scoop->GetStart()->GetVirtualOffset();
+		shdr. sh_link = SHN_UNDEF;	
+		shdr. sh_info = 0 ;
+		shdr. sh_addralign= 0 ; // scoop->GetAlign(); doesn't exist?
+		shdr. sh_entsize =0 ;
+	
+		shdrs.push_back(shdr);
+	});
+
+	T_Elf_Shdr symtab_shdr;
+	symtab_shdr. sh_name =strtab.location(zipr_symtab);
+	symtab_shdr. sh_type = SHT_STRTAB;	
+	symtab_shdr. sh_flags = 0;
+	symtab_shdr. sh_addr = 0;
+	symtab_shdr. sh_offset = cur_file_pos;
+	symtab_shdr. sh_size = strtab.size();
+	symtab_shdr. sh_link = SHN_UNDEF;	
+	symtab_shdr. sh_info = 0;
+	symtab_shdr. sh_addralign=0;
+	symtab_shdr. sh_entsize =0;
+	shdrs.push_back(symtab_shdr);
+
+	strtab.Write(fout);
+
+	long shdr_file_pos=ftell(fout);
+	
+	fwrite(shdrs.data(), sizeof(T_Elf_Shdr), shdrs.size(), fout);
+
+	new_ehdr.e_shentsize=sizeof(T_Elf_Shdr);
+	new_ehdr.e_shnum=shdrs.size();
+	new_ehdr.e_shstrndx=shdrs.size()-1;	// symtab was added last.
+	new_ehdr.e_shoff=shdr_file_pos;
+
+	// rewrite the file header so that sections are listed.
+	fseek(fout,0,SEEK_SET);
+	fwrite(&new_ehdr, sizeof(new_ehdr),1,fout);
+}
 
 //  explicit instantation of methods for 32- and 64-bit classes.
-template class ElfWriterImpl<ELFIO::Elf64_Ehdr, ELFIO::Elf64_Phdr, ELFIO::Elf64_Addr>;
-template class ElfWriterImpl<ELFIO::Elf32_Ehdr, ELFIO::Elf32_Phdr, ELFIO::Elf32_Addr>;
+template class ElfWriterImpl<ELFIO::Elf64_Ehdr, ELFIO::Elf64_Phdr, ELFIO::Elf64_Addr, ELFIO::Elf64_Shdr>;
+template class ElfWriterImpl<ELFIO::Elf32_Ehdr, ELFIO::Elf32_Phdr, ELFIO::Elf32_Addr, ELFIO::Elf32_Shdr>;
 

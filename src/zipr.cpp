@@ -192,6 +192,8 @@ ZiprOptionsNamespace_t *ZiprImpl_t::RegisterOptions(ZiprOptionsNamespace_t *glob
 
 	m_variant.SetRequired(true);
 
+
+	m_add_sections.SetDescription("Enable writing of section headers using elfwriter.");
 	m_verbose.SetDescription("Enable verbose output");
 	m_apply_nop.SetDescription("Apply NOP to patches that fallthrough.");
 	m_variant.SetDescription("Variant ID.");
@@ -220,6 +222,7 @@ ZiprOptionsNamespace_t *ZiprImpl_t::RegisterOptions(ZiprOptionsNamespace_t *glob
 	global->AddOption(&m_variant);
 	global->AddOption(&m_verbose);
 	global->AddOption(&m_apply_nop);
+	global->AddOption(&m_add_sections);
 
 	zipr_namespace->MergeNamespace(memory_space.RegisterOptions(global));
 	return zipr_namespace;
@@ -2880,11 +2883,11 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 	ElfWriter *ew=NULL;
 	if(m_firp->GetArchitectureBitWidth()==64)
 	{
-		ew=new ElfWriter64(m_firp);
+		ew=new ElfWriter64(m_firp, m_add_sections);
 	}
 	else if(m_firp->GetArchitectureBitWidth()==32)
 	{
-		ew=new ElfWriter32(m_firp);
+		ew=new ElfWriter32(m_firp, m_add_sections);
 	}
 	else assert(0);
 

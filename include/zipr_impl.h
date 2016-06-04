@@ -54,6 +54,7 @@ class ZiprImpl_t : public Zipr_t
 			m_replop("replop", false),
 			m_verbose("verbose", true),
 			m_apply_nop("apply_nop", false),
+			m_add_sections("add-sections", false),
 			m_variant("variant"),
 			m_architecture("architecture"),
 			m_seed("seed", 0),
@@ -474,7 +475,7 @@ class ZiprImpl_t : public Zipr_t
 		// Options
 		ZiprOptions_t m_zipr_options;
 		ZiprStringOption_t m_output_filename, m_callbacks, m_objcopy;
-		ZiprBooleanOption_t m_replop, m_verbose, m_apply_nop;
+		ZiprBooleanOption_t m_replop, m_verbose, m_apply_nop, m_add_sections;
 		ZiprIntegerOption_t m_variant, m_architecture, m_seed;
 		ZiprStringOption_t m_dollop_map_filename;
 
