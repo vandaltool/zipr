@@ -22,9 +22,9 @@ class DominatorGraph_t
 
 		// get the immeidate (post) dominators for a node 
 		const BasicBlock_t* GetImmediateDominator(const BasicBlock_t* node)  const
-		{ auto it=idom_graph.find(node); return (it!=idom_graph.end()) ? it->second : NULL; }
+		{ BlockToBlockMap_t::const_iterator it=idom_graph.find(node); return (it!=idom_graph.end()) ? it->second : NULL; }
 		const BasicBlock_t* GetImmediatePostDominators(const BasicBlock_t* node)  const
-		{ auto it=post_idom_graph.find(node); return (it!=post_idom_graph.end()) ? it->second : NULL; }
+		{ BlockToBlockMap_t::const_iterator it=post_idom_graph.find(node); return (it!=post_idom_graph.end()) ? it->second : NULL; }
 
 
 	private:
