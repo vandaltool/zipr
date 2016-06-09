@@ -10,6 +10,8 @@ void PrintStat(std::ostream &out, std::string description, double value)
 
 size_t CALLBACK_TRAMPOLINE_SIZE=9;
 size_t TRAMPOLINE_SIZE=5;
+size_t SHORT_PIN_SIZE=2;
+size_t LONG_PIN_SIZE=5;
 using namespace libIRDB;
 
 size_t DetermineWorstCaseDollopSizeInclFallthrough(Dollop_t *dollop)
