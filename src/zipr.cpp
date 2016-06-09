@@ -488,7 +488,7 @@ void ZiprImpl_t::CreateExecutableScoops(const std::map<RangeAddress_t, int> &ord
 		// setup a scoop for this section.
 		// zero init is OK, after zipring we'll update with the right bytes.
 		string text_contents;
-		text_contents.resize(text_end->GetVirtualOffset() - text_start->GetVirtualOffset());
+		text_contents.resize(text_end->GetVirtualOffset() - text_start->GetVirtualOffset()+1);
 		DataScoop_t* text_scoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, string(".zipr_text_")+to_string(count++), text_start, text_end, NULL, 5, false, text_contents);
 		m_firp->GetDataScoops().insert(text_scoop);
 	

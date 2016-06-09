@@ -213,15 +213,15 @@ void ElfWriter::CreateSegmap(const ELFIO::elfio *elfiop, FileIR_t* firp, const s
 
 
 
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
-void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr, T_Elf_Shdr>::LoadEhdr(FILE* fin) 
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
+void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr, T_Elf_Shdr, T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::LoadEhdr(FILE* fin) 
 {
 	fseek(fin,0,SEEK_SET);
 	fread(&ehdr,sizeof(ehdr), 1, fin);
 };
 
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
-void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::LoadPhdrs(FILE* fin) 
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
+void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr, T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::LoadPhdrs(FILE* fin) 
 {
 	fseek(fin,ehdr.e_phoff,SEEK_SET);
 	phdrs.resize(ehdr.e_phnum);
@@ -231,8 +231,8 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::LoadPhdrs(FILE*
 	}
 };
 
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
-void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::CreateNewPhdrs(
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
+void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr, T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::CreateNewPhdrs(
 	const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr) 
 {
 	
@@ -263,16 +263,16 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::CreateNewPhdrs(
 	
 }
 
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
-bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::CreateNewPhdrs_PostAllocate(
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
+bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::CreateNewPhdrs_PostAllocate(
 	const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr) 
 {
 	// post allocation not enabled, yet.
 	return false;
 }
 
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
-bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::CreateNewPhdrs_FirstPageAllocate(
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
+bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::CreateNewPhdrs_FirstPageAllocate(
 	const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr) 
 {
 	// check to see if there's room on the first page for 
@@ -286,8 +286,8 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::CreateNewPhdrs_
 	assert(0);
 }
 
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
-bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr, T_Elf_Shdr>::readonly_space_at(
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
+bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr, T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::readonly_space_at(
 	const libIRDB::virtual_offset_t addr, const unsigned int size)
 {
 	for(unsigned int i=0;i<size;i++)
@@ -309,8 +309,8 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr, T_Elf_Shdr>::readonly_space
 	return true;
 }
 
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
-int ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::locate_segment_index(const libIRDB::virtual_offset_t addr)
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
+int ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::locate_segment_index(const libIRDB::virtual_offset_t addr)
 {
 	// segment's are sorted by address.
 	for(unsigned int i=0;i<segvec.size();i++)
@@ -330,8 +330,8 @@ int ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::locate_segment_i
 	return -1;
 }
 
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
-unsigned int ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::count_filesz_to_seg(unsigned int seg)
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
+unsigned int ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::count_filesz_to_seg(unsigned int seg)
 {
 	unsigned int filesz=0;
 	// segment's are sorted by address.
@@ -342,8 +342,8 @@ unsigned int ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::count_f
 	return filesz;
 }
 
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
-bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::CreateNewPhdrs_GapAllocate(
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
+bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::CreateNewPhdrs_GapAllocate(
 	const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr) 
 {
 	/* for shared objects, we need the PHDR file offset to be equal to the  
@@ -421,16 +421,16 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::CreateNewPhdrs_
 
 }
 
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
-bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::CreateNewPhdrs_PreAllocate(
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
+bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::CreateNewPhdrs_PreAllocate(
 	const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr) 
 {
 	libIRDB::virtual_offset_t new_phdr_addr=(T_Elf_Addr)page_align(min_addr)-PAGE_SIZE+sizeof(T_Elf_Ehdr);
 	return CreateNewPhdrs_internal(min_addr,max_addr,0x1000,true, sizeof(T_Elf_Ehdr), new_phdr_addr);
 }
 
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
-DataScoop_t* ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::find_scoop_by_name(const string& name, FileIR_t* firp)
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
+DataScoop_t* ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::find_scoop_by_name(const string& name, FileIR_t* firp)
 {
 	for(DataScoopSet_t::iterator it=firp->GetDataScoops().begin(); it!=firp->GetDataScoops().end(); ++it)
 	{
@@ -442,28 +442,28 @@ DataScoop_t* ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::find_sc
 	return NULL;
 }
 
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
-void  ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::update_phdr_for_scoop_sections(FileIR_t* firp)
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
+void  ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::update_phdr_for_scoop_sections(FileIR_t* firp)
 {
 	// look at each header.
-	for(auto i=0;i<new_phdrs.size(); i++)
+	for(unsigned i=0;i<new_phdrs.size(); i++)
 	{
 
 		// this struct is a table/constant for mapping PT_names to section names.
 		struct pt_type_to_sec_name_t
 		{
-			int pt_type;
+			unsigned int pt_type;
 			const char* sec_name;
 		}	pt_type_to_sec_name[] = 
 		{
 			{PT_INTERP, ".interp"},
 			{PT_DYNAMIC, ".dynamic"},
 			{PT_NOTE, ".note.ABI-tag"},
-			{PT_GNU_EH_FRAME, ".eh_frame_hdr"},
+			{PT_GNU_EH_FRAME, ".eh_frame_hdr"}
 		};
 
 		// check if a type of header listed above.
-		for(auto k=0;k<(sizeof(pt_type_to_sec_name)/sizeof(pt_type_to_sec_name_t)); k++)
+		for(unsigned k=0;k<(sizeof(pt_type_to_sec_name)/sizeof(pt_type_to_sec_name_t)); k++)
 		{
 			// check if a type of header listed above.
 			if(new_phdrs[i].p_type==pt_type_to_sec_name[k].pt_type)
@@ -480,7 +480,7 @@ void  ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::update_phdr_fo
 					new_phdrs[i].p_memsz = scoop->GetEnd()->GetVirtualOffset() - scoop->GetStart()->GetVirtualOffset() + 1;
 
 					new_phdrs[i].p_offset=0;
-					for(auto j=0;j<new_phdrs.size(); j++)
+					for(unsigned j=0;j<new_phdrs.size(); j++)
 					{
 						if( new_phdrs[j].p_vaddr<= new_phdrs[i].p_vaddr && 
 						    new_phdrs[i].p_vaddr < new_phdrs[j].p_vaddr+new_phdrs[j].p_filesz)
@@ -497,8 +497,8 @@ void  ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::update_phdr_fo
 }
 
 
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
-bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::CreateNewPhdrs_internal(
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
+bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::CreateNewPhdrs_internal(
 	const libIRDB::virtual_offset_t &min_addr, 
 	const libIRDB::virtual_offset_t &max_addr,
 	const int &first_seg_file_offset,
@@ -668,8 +668,8 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::CreateNewPhdrs_
 	return true;
 }
 
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
-void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::WriteElf(FILE* fout)
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
+void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::WriteElf(FILE* fout)
 {
 	assert(fout);
 
@@ -722,8 +722,8 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::WriteElf(FILE* 
 	fwrite(new_phdrs.data(), sizeof(new_phdrs[0]), new_phdrs.size(), fout);
 }
 
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
-unsigned int ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::DetermineMaxPhdrSize()
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
+unsigned int ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::DetermineMaxPhdrSize()
 {
 	unsigned int phdr_count=0;
 	/* count phdr's that aren't pt_load or pt_phdr */
@@ -750,44 +750,12 @@ unsigned int ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::Determi
 	return phdr_count*sizeof(T_Elf_Phdr);
 }
 
-template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr>
-void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr>::AddSections(FILE* fout)
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
+void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::AddSections(FILE* fout)
 {
 	fseek(fout,0,SEEK_END);
 	long cur_file_pos=ftell(fout);
 
-	/*
-struct {
-    Elf64_Word st_name;
-    unsigned char st_info;
-    unsigned char st_other;
-    Elf64_Section st_shndx;
-    Elf64_Addr st_value;
-    Elf64_Xword st_size;
-} Elf64_Sym
-struct {
-    Elf32_Word st_name;
-    Elf32_Addr st_value;
-    Elf32_Word st_size;
-    unsigned char st_info;
-    unsigned char st_other;
-    Elf32_Section st_shndx;
-} Elf32_Sym
-
-	typedef struct {
-		Elf32_Word sh_name;	 // index into str table
-		Elf32_Word sh_type;	// sht_progbits, sht, sht_strtab, sht_symtab, 
-		Elf32_Word sh_flags;	// permissios
-		Elf32_Addr sh_addr;	// scoop->GetStart()
-		Elf32_Off sh_offset;	// correlate to a segment.
-		Elf32_Word sh_size;	// GetStart-GetEnd
-		Elf32_Word sh_link;	
-		Elf32_Word sh_info;
-		Elf32_Word sh_addralign;
-		Elf32_Word sh_entsize;
-	} Elf32_Shdr
-	 */
-	
 
 	StringTable_t strtab;
 	map<DataScoop_t*,size_t> file_positions;
@@ -829,13 +797,56 @@ struct {
 
 	shdrs.push_back(null_shdr);
 
+	struct section_type_map_t
+	{	
+		string name;
+		unsigned int type;
+		unsigned int sh_ent_size;
+		string link;
+	} section_type_map[]={
+		{".init_array",   SHT_INIT_ARRAY,	0, 			"" },
+		{".fini_array",   SHT_FINI_ARRAY,	0, 			"" },
+		{".dynamic", 	  SHT_DYNAMIC,		sizeof(T_Elf_Dyn),	".dynstr"},
+		{".note.ABI-tag", SHT_NOTE,		0,  			""},
+		{".note.gnu.build-id", SHT_NOTE,	0,  			""},
+		{".gnu.hash",     SHT_GNU_HASH,		0,  			".dynsym"},
+		{".dynsym",       SHT_DYNSYM, 		sizeof(T_Elf_Sym),  	".dynstr"},
+		{".dynstr",       SHT_STRTAB, 		0, 		  	""},
+		{".shstrtab",     SHT_STRTAB, 		0, 		  	""},
+		{".symtab",       SHT_SYMTAB, 		sizeof(T_Elf_Sym),  	""},
+		{".strtab",       SHT_STRTAB, 		0, 		  	""},
+		{".rel.dyn",      SHT_REL,    		sizeof(T_Elf_Rel),  	""},
+		{".rela.dyn",     SHT_RELA,   		sizeof(T_Elf_Rela), 	".dynsym"},
+		{".rel.plt",      SHT_REL,    		sizeof(T_Elf_Rel),  	".dynsym"},
+		{".rela.plt",     SHT_RELA,   		sizeof(T_Elf_Rela), 	".dynsym"},
+		{".gnu.version",  SHT_GNU_versym,    	2, 			".dynsym"},
+		{".gnu.version_r",SHT_GNU_verneed,    	0,		  	".dynstr"},
+		{".rela.dyn coalesced w/.rela.plt",     SHT_RELA,   		sizeof(T_Elf_Rela), 	".dynsym"}
+	};
+
+
 	// for each scoop, pushback an shdr
 	for_each(m_firp->GetDataScoops().begin(), m_firp->GetDataScoops().end(), [&](DataScoop_t* scoop)
 	{
 
 		T_Elf_Shdr shdr;
 		shdr. sh_name =strtab.location(scoop->GetName());
-		shdr. sh_type = SHT_PROGBITS;	// sht_progbits, sht, sht_strtab, sht_symtab, ...
+
+		auto it=find_if(begin(section_type_map), end(section_type_map), [&scoop](const section_type_map_t &sm)	
+				{
+					return scoop->GetName()==sm.name;
+				});
+		if(end(section_type_map) != it)
+		{
+			cout<<"Setting ent-size for "<<scoop->GetName()<<" to "<<dec<<it->sh_ent_size<<endl;
+			shdr. sh_type = it->type;	// sht_progbits, sht, sht_strtab, sht_symtab, ...
+			shdr. sh_entsize = it->sh_ent_size;	
+		}
+		else
+		{
+			shdr. sh_type = SHT_PROGBITS;	// sht_progbits, sht, sht_strtab, sht_symtab, ...
+			shdr. sh_entsize = 0;
+		}
 		shdr. sh_flags = SHF_ALLOC; // scoop->getRawPerms();
 		if(scoop->isExecuteable())
 			shdr. sh_flags |= SHF_EXECINSTR; 
@@ -843,14 +854,36 @@ struct {
 			shdr. sh_flags |= SHF_WRITE; 
 		shdr. sh_addr = scoop->GetStart()->GetVirtualOffset();
 		shdr. sh_offset =file_positions[scoop];
-		shdr. sh_size = scoop->GetEnd()->GetVirtualOffset() - scoop->GetStart()->GetVirtualOffset();
+		shdr. sh_size = scoop->GetEnd()->GetVirtualOffset() - scoop->GetStart()->GetVirtualOffset() + 1;
 		shdr. sh_link = SHN_UNDEF;	
 		shdr. sh_info = 0 ;
 		shdr. sh_addralign= 0 ; // scoop->GetAlign(); doesn't exist?
-		shdr. sh_entsize =0 ;
 	
 		shdrs.push_back(shdr);
 	});
+	auto scoop_it=m_firp->GetDataScoops().begin();
+	for(unsigned int i=1; i<shdrs.size(); i++)	 // skip null shdr
+	{
+ 		T_Elf_Shdr & shdr = shdrs[i];
+		auto map_it=find_if(begin(section_type_map), end(section_type_map), [&scoop_it](const section_type_map_t &sm)	
+			{
+				return (*scoop_it)->GetName()==sm.name;
+			});
+		if(end(section_type_map) != map_it && map_it->link!="")
+		{
+			auto link_it=m_firp->GetDataScoops().begin();
+			for(unsigned int j=1; j<shdrs.size(); j++) // skip null shdr
+			{
+				if((*link_it)->GetName() == map_it->link)
+				{
+					shdr.sh_link=j;
+					break;
+				}
+				link_it++;
+			}
+		}
+		scoop_it++;
+	}
 
 	T_Elf_Shdr symtab_shdr;
 	symtab_shdr. sh_name =strtab.location(zipr_symtab);
@@ -882,6 +915,6 @@ struct {
 }
 
 //  explicit instantation of methods for 32- and 64-bit classes.
-template class ElfWriterImpl<ELFIO::Elf64_Ehdr, ELFIO::Elf64_Phdr, ELFIO::Elf64_Addr, ELFIO::Elf64_Shdr>;
-template class ElfWriterImpl<ELFIO::Elf32_Ehdr, ELFIO::Elf32_Phdr, ELFIO::Elf32_Addr, ELFIO::Elf32_Shdr>;
+template class ElfWriterImpl<ELFIO::Elf64_Ehdr, ELFIO::Elf64_Phdr, ELFIO::Elf64_Addr, ELFIO::Elf64_Shdr, ELFIO::Elf64_Sym, ELFIO::Elf64_Rel, ELFIO::Elf64_Rela, ELFIO::Elf64_Dyn>;
+template class ElfWriterImpl<ELFIO::Elf32_Ehdr, ELFIO::Elf32_Phdr, ELFIO::Elf32_Addr, ELFIO::Elf32_Shdr, ELFIO::Elf32_Sym, ELFIO::Elf32_Rel, ELFIO::Elf32_Rela, ELFIO::Elf32_Dyn>;
 
