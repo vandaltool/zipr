@@ -1416,7 +1416,10 @@ void ZiprImpl_t::WriteDollops()
 			should_end = start + _DetermineWorstCaseInsnSize(entry_to_write->Instruction(), false);
 			assert(end <= should_end);
 			/*
-			 * TODO: Document why this has to be done.
+			 * Build up a list of those dollop entries that we have
+			 * just written that have a target. See comment above 
+			 * ReplopDollopEntriesWithTargets() for the reason that
+			 * we have to do this.
 			 */
 			if (entry_to_write->TargetDollop())
 				m_des_to_replop.push_back(entry_to_write);
@@ -1424,6 +1427,22 @@ void ZiprImpl_t::WriteDollops()
 	}
 }
 
+/*
+ * We have to potentially replop dollop entries with targets
+ * because:
+ *
+ * A plugin that writes dollop entries may put the instructions
+ * NOT in the first position. This is particularly common in CFI:
+ *
+ * 0x...01: f4
+ * 0x...02: INSN
+ *
+ * However, the writer cannot know every place where that happens
+ * until after the entire WriteDollops() function has completed.
+ * So, we go back and do another pass here once we know all those
+ * actual instruction addresses (which are completely and fully
+ * assigned during the call to _PlopDollopEntry.).
+ */
 void ZiprImpl_t::ReplopDollopEntriesWithTargets()
 {
 	for (DollopEntry_t *entry_to_write : m_des_to_replop)
@@ -1492,7 +1511,11 @@ void ZiprImpl_t::PlaceDollops()
 		bool continue_placing = false;
 		bool am_coalescing = false;
 		bool allowed_coalescing = true;
-		bool initial_placement_abuts = false;
+		bool initial_placement_abuts_pin = false;
+		bool initial_placement_abuts_fallthrough = false;
+		bool fits_entirely = false;
+		RangeAddress_t fallthrough_dollop_place;
+		bool fallthrough_has_preplacement = false;
 
 		//pq_entry = placement_queue.front();
 		pq_entry = *(placement_queue.begin());
@@ -1547,29 +1570,80 @@ void ZiprImpl_t::PlaceDollops()
 			 * possibility too. 
 			 *
 			 * (3) Then there's the possibility that the dollop *has* a fallthrough
-			 * but that the fallthrough is actually abutting the end of the
-			 * dollop in which case we elide (I hate that term) the fallthrough
-			 * jump.
+			 * but that the fallthrough is actually pinned and 
+			 * that pin is abutting the end of the dollop in which 
+			 * case we elide (I hate that term) the fallthrough jump.
+			 *
+			 * (4) Then there's the possibility that the dollop has a 
+			 * fallthrough but that the fallthrough is actually abutting
+			 * the beginning of it's fallthrough dollop in which case we elide
+			 * (still hate that term) the fallthrough jump. Very similar
+			 * to case (3).
 			 *
 			 * TODO: Consider that allowed_coalescing may invalidate the
 			 * possibility of the validity of the placement in (2).
 			 */
-			initial_placement_abuts = to_place->FallthroughDollop() && 
-			                          to_place->FallthroughDollop()->
-			                          front()->
-			                          Instruction()->
-			                          GetIndirectBranchTargetAddress() && 
-			                          to_place->FallthroughDollop()->
-			                                    front()->
-			                                    Instruction()->
-			                                    GetIndirectBranchTargetAddress()->
-			                                    GetVirtualOffset() == 
+			initial_placement_abuts_pin = to_place->FallthroughDollop() && 
+			                              to_place->FallthroughDollop()->
+			                              front()->
+			                              Instruction()->
+			                              GetIndirectBranchTargetAddress() && 
+			                              to_place->FallthroughDollop()->
+			                                        front()->
+			                                        Instruction()->
+			                                        GetIndirectBranchTargetAddress()->
+			                                        GetVirtualOffset() == 
 			                         (placement.GetStart() + to_place->GetSize() - 5);
-			if (initial_placement_abuts)
-				cout << "initial_placement_abuts: " << initial_placement_abuts << endl;
+			if (to_place->FallthroughDollop()) 
+			{
+				if (to_place->FallthroughDollop()->IsPlaced())
+				{
+					fallthrough_dollop_place = to_place->FallthroughDollop()->Place();
+					fallthrough_has_preplacement = true;
+				}
+				else
+				{
+					Range_t fallthrough_placement;
+					bool fallthrough_allowed_coalescing = false;
+					DLFunctionHandle_t fallthrough_placer = NULL;
+					/*
+					 * Prospectively get the place for this dollop. That way 
+					 * we can determine whether or not we need to use a fallthrough!
+					 */
+					if (plugman.DoesPluginAddress(to_place->FallthroughDollop(),
+		                                    from_address,
+		                                    fallthrough_placement,
+		                                    fallthrough_allowed_coalescing,
+		                                    fallthrough_placer))
+					{
+						fallthrough_dollop_place = fallthrough_placement.GetStart();
+						fallthrough_has_preplacement = true;
+					}
+				}
+			}
+			initial_placement_abuts_fallthrough = to_place->FallthroughDollop() &&
+			                                      fallthrough_has_preplacement &&
+																						fallthrough_dollop_place == 
+			                         (placement.GetStart() + to_place->GetSize() - 5);
+
+
+			fits_entirely = (to_place->GetSize() <= 
+			                (placement.GetEnd()-placement.GetStart()));
+
+			if (m_verbose)
+			{
+				cout << "initial_placement_abuts_pin        : "
+				     <<initial_placement_abuts_pin << endl
+				     << "initial_placement_abuts_fallthrough: " 
+				     << initial_placement_abuts_fallthrough << endl
+				     << "fits_entirely                      : " 
+				     << fits_entirely << endl;
+			}
 
 			if (((placement.GetEnd()-placement.GetStart()) < minimum_valid_req_size)&&
-			    !initial_placement_abuts
+			    !(initial_placement_abuts_pin || 
+					  initial_placement_abuts_fallthrough ||
+						fits_entirely)
 			   )
 			{
 				if (m_verbose)
@@ -1577,6 +1651,7 @@ void ZiprImpl_t::PlaceDollops()
 				placed = false;
 			}
 		}
+
 		if (!placed) {
 			cout << "Using default place locator." << endl;
 			/*
@@ -1636,14 +1711,44 @@ void ZiprImpl_t::PlaceDollops()
 			assert(found_patch != patch_list.end());
 			patch_list.erase(found_patch);
 		}
+		/*
+		 * Handle the case where the placer put us atop the fallthrough
+		 * link from it's FallbackDollop()
+		 */
+		else if (to_place->FallbackDollop() &&
+		    to_place->FallbackDollop()->IsPlaced() &&
+				(to_place->FallbackDollop()->Place() +
+				 to_place->FallbackDollop()->GetSize() - 5) ==
+		    placement.GetStart())
+		{
+			/*
+			 * We have placed this dollop at the location where
+			 * the fallthrough jump to this dollop was placed.
+			 */
+			if (m_verbose)
+				cout << "Placed atop its own fallthrough!" << endl;
+#if 0
+			for (unsigned int j = cur_addr; j<(cur_addr+5); j++)
+			{
+				memory_space.MergeFreeRange(j);
+			}
+#endif
+		}
 
 		assert(to_place->GetSize() != 0);
 
 		do {
-			bool fits_entirely = false;
 			bool all_fallthroughs_fit = false;
 			size_t wcds = 0;
 
+			if (am_coalescing)
+			{
+				/*
+				 * Only reset this if we are on a 
+				 * second, third, fourth ... go-round.
+				 */
+				fits_entirely = false;
+			}
 			/*
 			 * TODO: From here, we want to place the dollop
 			 * that we just got a placement for, and subsequently
@@ -1698,9 +1803,10 @@ void ZiprImpl_t::PlaceDollops()
 				 *    placed -- we use the trampoline size at that point.
 				 *    See DetermineWorstCaseDollopSizeInclFallthrough().
 				 *    Call this the all_fallthroughs_fit case.
-				 * 5. NOT (All fallthroughs fit but we are not allowed to 
-				 *    coalesce and we are out of space for the jump to 
-				 *    the fallthrough.)
+				 * 5. NOT (All fallthroughs fit is the only way that we are
+				 *    allowed to proceed placing this dollop but we are not 
+				 *    allowed to coalesce and we are out of space for the 
+				 *    jump to the fallthrough.)
 				 *    Call this the disallowed_override case
 				 * 6. There is enough room for this instruction AND it is
 				 *    the last entry of this dollop AND the dollop has a
@@ -1721,7 +1827,12 @@ void ZiprImpl_t::PlaceDollops()
 							                            /* with or without fallthrough */
 							         );
 				disallowed_override = !allowed_coalescing && 
-				                      !fits_entirely && 
+				                      !(de_and_fallthrough_fit ||
+															  fits_entirely ||
+															  last_de_fits ||
+															  initial_placement_abuts_pin ||
+															  initial_placement_abuts_fallthrough
+															 ) && 
 															 all_fallthroughs_fit && 
 				                       ((placement.GetEnd() - 
 				                        (cur_addr + 
@@ -1734,17 +1845,29 @@ void ZiprImpl_t::PlaceDollops()
 
 #if 1
 				if (m_verbose)
-					cout << "de_and_fallthrough_fit : " << de_and_fallthrough_fit << endl
-					     << "last_de_fits           : " << last_de_fits << endl
-					     << "fits_entirely          : " << fits_entirely << endl
-					     << "all_fallthroughs_fit   : " << all_fallthroughs_fit << endl
-					     << "initial_placement_abuts: " << initial_placement_abuts << endl
-					     << "disallowed_override    : " << disallowed_override << endl;
+					cout << "de_and_fallthrough_fit             : " 
+					     << de_and_fallthrough_fit << endl
+					     << "last_de_fits                       : " 
+							 << last_de_fits << endl
+					     << "fits_entirely                      : " 
+							 << fits_entirely << endl
+					     << "all_fallthroughs_fit               : " 
+							 << all_fallthroughs_fit << endl
+					     << "initial_placement_abuts_pin        : " 
+							 << initial_placement_abuts_pin << endl
+					     << "initial_placement_abuts_fallthrough: " 
+							 << initial_placement_abuts_fallthrough << endl
+					     << "initial_placement_abuts_pin        : " 
+							 << initial_placement_abuts_pin << endl
+					     << "disallowed_override                : " 
+							 << disallowed_override << endl;
 #endif
+
 				if ((de_and_fallthrough_fit ||
 				    last_de_fits ||
 						fits_entirely ||
-						initial_placement_abuts ||
+						initial_placement_abuts_fallthrough ||
+						initial_placement_abuts_pin ||
 						all_fallthroughs_fit) && !disallowed_override)
 				{
 #if 1
@@ -1805,7 +1928,8 @@ void ZiprImpl_t::PlaceDollops()
 			 * this one!
 			 */
 
-			if ((fallthrough = to_place->FallthroughDollop()) != NULL)
+			if ((fallthrough = to_place->FallthroughDollop()) != NULL &&
+			    !to_place->WasCoalesced())
 			{
 				size_t fallthroughs_wcds, fallthrough_wcis, remaining_size;
 
@@ -1832,6 +1956,49 @@ void ZiprImpl_t::PlaceDollops()
 						     << "was placed abutting the fallthrough " 
 						     << "dollop's pinned first instruction. "
 						     << endl;
+					/*
+					 * Because the fallthrough dollop is pinned, we
+					 * know that it is already in the placement q. That's
+					 * the reason that we do not have to add it here. See
+					 * below for a contrast.
+					 */
+					m_stats->total_did_not_coalesce++;
+					break;
+				}
+
+				/*
+				 * If the fallthrough is placed and it is immediately after
+				 * this instruction, then we don't want to write anything else!
+				 *
+				 * TODO: This calculation is only valid if we are NOT coalescing.
+				 * We need to change this condition or reset some of the variables
+				 * so that we do not rely on !am_coalescing as a condition.
+				 * Actually, we should make it work correctly -- ie, make sure that
+				 * even if we do coaelesce something its fallthrough could
+				 * be preplaced ...
+				 */
+				if (!am_coalescing &&
+				    to_place->FallthroughDollop() &&
+				    fallthrough_has_preplacement &&
+						fallthrough_dollop_place == cur_addr)
+				{
+					if (m_verbose)
+						cout << "Dollop had a fallthrough dollop and "
+						     << "was placed abutting the fallthrough "
+						     << "dollop's first instruction. "
+						     << endl;
+					/*
+					 * We are not coalescing, but we want to make sure that
+					 * the fallthrough does get placed if zipr hasn't already
+					 * done so. See above for a contrast.
+					 */
+					if (!to_place->FallthroughDollop()->IsPlaced())
+					{
+						placement_queue.insert(pair<Dollop_t*, RangeAddress_t>(
+								to_place->FallthroughDollop(),
+								cur_addr));
+					}
+					m_stats->total_did_not_coalesce++;
 					break;
 				}
 					
