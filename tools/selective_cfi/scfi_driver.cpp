@@ -42,8 +42,9 @@ void usage(char* name)
 "		[--protect-rets|--no-protect-rets] \n"
 "		[--protect-safefn|--no-protect-safefn]  \n"
 "		[ --common-slow-path | --no-common-slow-path ] \n"
+"		[ --multimodule | --no-multimodule ] \n"
 " \n"
-"default: --no-color --protect-jumps --protect-calls --protect-rets --protect-safefn --common-slow-path\n"; 
+"default: --no-color --protect-jumps --protect-calls --protect-rets --protect-safefn --common-slow-path --no-multimodule\n"; 
 }
 
 int main(int argc, char **argv)
@@ -54,11 +55,14 @@ int main(int argc, char **argv)
                 exit(1);
         }
 
+#if 0
+// CFI step is asserting with error message if a call is found.
 	if(!getenv("FIX_CALLS_FIX_ALL_CALLS"))
 	{
 		cerr<<"FIX_CALLS_FIX_ALL_CALLS should be set."<<endl;
                 exit(1);
 	}
+#endif
 
 	bool do_coloring=false;
 	bool do_common_slow_path=true;
@@ -66,6 +70,7 @@ int main(int argc, char **argv)
 	bool do_calls=true;
 	bool do_rets=true;
 	bool do_safefn=true;
+	bool do_multimodule=false;
 	for(int  i=2;i<argc;i++)
 	{
 		if(string(argv[i])=="--color")
@@ -118,6 +123,16 @@ int main(int argc, char **argv)
 			cout<<"Not protecting safe functions..."<<endl;
 			do_safefn=false;
 		}
+		else if(string(argv[i])=="--no-multimodule")
+		{
+			cout<<"Not adding multimodule support..."<<endl;
+			do_multimodule=false;
+		}
+		else if(string(argv[i])=="--multimodule")
+		{
+			cout<<"Adding multimodule support ..."<<endl;
+			do_multimodule=true;
+		}
 		else if(string(argv[i])=="--common-slow-path")
 		{
 			cout<<"Using common slow path..."<<endl;
@@ -164,7 +179,7 @@ int main(int argc, char **argv)
 
                 try
                 {
-			SCFI_Instrument scfii(firp, do_coloring, do_common_slow_path, do_jumps, do_calls, do_rets, do_safefn);
+			SCFI_Instrument scfii(firp, do_coloring, do_common_slow_path, do_jumps, do_calls, do_rets, do_safefn, do_multimodule);
 
 
 			int success=scfii.execute();

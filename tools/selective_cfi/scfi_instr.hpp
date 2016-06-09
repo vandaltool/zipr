@@ -38,7 +38,9 @@ class SCFI_Instrument
 				bool p_do_jumps=false,
 				bool p_do_calls=true,
 				bool p_do_rets=true,
-				bool p_do_safefn=true) 
+				bool p_do_safefn=true,
+				bool p_do_multimodule=false
+			) 
 			: firp(the_firp), 
 			  do_coloring(p_do_coloring), 
 			  do_common_slow_path(p_do_common_slow_path), 
@@ -46,6 +48,7 @@ class SCFI_Instrument
 			  do_calls(p_do_calls), 
 			  do_rets(p_do_rets), 
 			  do_safefn(p_do_safefn), 
+			  do_multimodule(p_do_multimodule), 
 			  color_map(NULL) 
 		{ 
 			std::cout<<std::boolalpha;
@@ -55,11 +58,26 @@ class SCFI_Instrument
 			std::cout<<"#ATTRIBUTE do_calls="<<p_do_calls<<std::endl;
 			std::cout<<"#ATTRIBUTE do_rets="<<p_do_rets<<std::endl;
 			std::cout<<"#ATTRIBUTE do_safefn="<<p_do_safefn<<std::endl;
+			std::cout<<"#ATTRIBUTE do_multimodule="<<p_do_multimodule<<std::endl;
 			preds.AddFile(the_firp); 
 		}
 		bool execute();
 
 	private:
+
+		// helpers for adding GOT entries and symbols for multi-module cfi	
+		template<typename T_Elf_Sym, typename T_Elf_Rela, typename T_Elf_Dyn, int reloc_type, int rela_shift, int B>
+		bool add_dl_support();
+
+		template<typename T_Elf_Sym, typename T_Elf_Rela, typename T_Elf_Dyn, int reloc_type, int rela_shift, int B>
+		bool add_libdl_as_needed_support();
+
+		template<typename T_Elf_Sym, typename T_Elf_Rela, typename T_Elf_Dyn, int reloc_type, int rela_shift, int ptrsize>
+		bool add_got_entries();
+
+		template<typename T_Elf_Sym, typename T_Elf_Rela, typename T_Elf_Dyn, int reloc_type, int rela_shift, int ptrsize>
+		libIRDB::Instruction_t* find_runtime_resolve(libIRDB::DataScoop_t* gotplt_scoop);
+
 
 
 		// find instrumentation points.
@@ -101,6 +119,7 @@ class SCFI_Instrument
 		bool do_calls;
 		bool do_rets;
 		bool do_safefn;
+		bool do_multimodule;
 		ColoredInstructionNonces_t *color_map;
 
 

@@ -67,7 +67,7 @@ class DataScoop_t : public BaseObj_t
 		libIRDB::AddressID_t* GetStart() const { return start; }
 		libIRDB::AddressID_t* GetEnd() const { return end; }
 		libIRDB::Type_t* GetType() const { return type; }
-		libIRDB::virtual_offset_t GetSize() { assert(start && end); return end->GetVirtualOffset() - start->GetVirtualOffset() ; }
+		libIRDB::virtual_offset_t GetSize() { assert(start && end); return end->GetVirtualOffset() - start->GetVirtualOffset() + 1 ; }
 		bool isReadable() const  { return (permissions & permissions_r) == permissions_r; }
 		bool isWriteable() const { return (permissions & permissions_w) == permissions_w; };
 		bool isExecuteable() const { return (permissions & permissions_x) == permissions_x; };
