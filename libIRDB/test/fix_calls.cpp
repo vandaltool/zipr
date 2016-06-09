@@ -81,11 +81,7 @@ long long no_fix_for_ib=0;
 
 pqxxDB_t pqxx_interface;
 
-#ifdef CGC
-bool opt_fix_icalls = false;
-#else
 bool opt_fix_icalls = true;
-#endif
 
 void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, UIntPtr offset);
 
