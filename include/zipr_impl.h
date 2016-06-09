@@ -102,19 +102,6 @@ class ZiprImpl_t : public Zipr_t
 			RangeAddress_t override_place = 0);
 
 		ZiprOptionsNamespace_t *RegisterOptions(ZiprOptionsNamespace_t *);
-
-		/*
-		 * ()
-		 *
-		 * Input:
-		 * Output:
-		 * Effects:
-		 *
-		 *
-		 *
-		 */
-		void AskPluginsAboutPlopping();
-		bool AskPluginsAboutPlopping(libIRDB::Instruction_t *);
 	private:
 
 		void Init();
@@ -291,6 +278,20 @@ class ZiprImpl_t : public Zipr_t
 		 *
 		 */
 		void OptimizePinnedFallthroughs();
+
+		/*
+		 * ()
+		 *
+		 * Input:
+		 * Output:
+		 * Effects:
+		 *
+		 *
+		 *
+		 */
+		void AskPluginsAboutPlopping();
+		bool AskPluginsAboutPlopping(libIRDB::Instruction_t *);
+
 		/*
 		 * PlopTheUnpinnedInstructions()
 		 *
