@@ -81,7 +81,11 @@ long long no_fix_for_ib=0;
 
 pqxxDB_t pqxx_interface;
 
+#ifdef CGC
+bool opt_fix_icalls = false;
+#else
 bool opt_fix_icalls = true;
+#endif
 
 void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, UIntPtr offset);
 
@@ -193,6 +197,7 @@ bool call_needs_fix(Instruction_t* insn)
 
 	if (!opt_fix_icalls && insn->GetIBTargets() && insn->GetIBTargets()->size() > 0) 
 	{
+		/* do not fix indirect calls */
 		no_fix_for_ib++;
 		return false;
 	}
