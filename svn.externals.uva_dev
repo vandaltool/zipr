@@ -15,4 +15,5 @@ zipr_install         http://svn.zephyr-software.com/repos/zipr_install/branches/
 zipr_scfi_plugin     http://svn.zephyr-software.com/repos/zipr_scfi_plugin/trunk/
 zipr_trace_plugin     http://svn.zephyr-software.com/repos/zipr_trace_plugin/trunk/
 zipr_unpin_plugin     http://svn.zephyr-software.com/repos/zipr_unpin_plugin/trunk/
+zipr_relax_plugin     http://svn.zephyr-software.com/repos/zipr_relax_plugin/trunk/
 irdb_transforms      http://svn.zephyr-software.com/repos/irdb_transforms/trunk

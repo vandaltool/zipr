@@ -73,6 +73,12 @@ if [ -d "${PEASOUP_UMBRELLA_DIR}/zipr_unpin_plugin" ]; then
 	scons do_cgc=1 -c
 fi
 
+# clean relax plugin
+if [ -d "${PEASOUP_UMBRELLA_DIR}/zipr_relax_plugin" ]; then
+	cd ${PEASOUP_UMBRELLA_DIR}/zipr_relax_plugin
+	scons do_cgc=1 -c
+fi
+
 # clean ZIPR install
 if [ -d "${PEASOUP_UMBRELLA_DIR}/zipr_install" ]; then
 	cd ${PEASOUP_UMBRELLA_DIR}/zipr_install

@@ -101,6 +101,12 @@ if [ -d "${PEASOUP_UMBRELLA_DIR}/zipr_unpin_plugin" ]; then
 	scons do_cgc=1
 fi
 
+# build relax plugin
+if [ -d "${PEASOUP_UMBRELLA_DIR}/zipr_relax_plugin" ]; then
+	cd ${PEASOUP_UMBRELLA_DIR}/zipr_relax_plugin
+	scons do_cgc=1
+fi
+
 # build irdb_transform
 if [ -d $IRDB_TRANSFORMS ]; then
 	cd $IRDB_TRANSFORMS
