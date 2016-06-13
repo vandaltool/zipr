@@ -48,6 +48,7 @@ namespace EXEIO
 			virtual virtual_offset_t get_entry() =0;
 			virtual void* get_elfio() { return NULL; }
 			virtual bool isDLL() =0;
+			virtual bool isDynamicallyLinked() { return true; }
 
 	};
 	
@@ -100,6 +101,7 @@ namespace EXEIO
                         virtual execlass_t get_class() { assert(backend); return backend->get_class(); }
 			virtual void* get_elfio() { assert(backend); return backend->get_elfio(); }
 			virtual bool isDLL() { assert(backend); return backend->isDLL(); }
+			virtual bool isDynamicallyLinked() { assert(backend); return backend->isDynamicallyLinked(); }
 
 		private:
 			void Init() { backend=NULL; }

@@ -59,8 +59,9 @@ void InstructionPredecessors_t::AddFile(const FileIR_t* firp2)
 		AddPred(insn, insn->GetTarget());
 		AddPred(insn, insn->GetFallthrough());
 
-		if(insn->GetIBTargets())
-			AddPreds(insn, *insn->GetIBTargets());
+		// if we have a complete list, then explicitly add them.
+	        if(insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
+        	      	AddPreds(insn, *insn->GetIBTargets());
 		
 	}
 }

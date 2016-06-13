@@ -103,6 +103,20 @@ namespace EXEIO
 
                         virtual bool isDLL() { return e->get_type()!=ET_EXEC; }
 
+                        virtual bool isDynamicallyLinked() 
+			{ 
+				assert(e);
+				for(int i=0;i<e->segments.size(); ++i)
+				{
+					if( e->segments[i]->get_type()==PT_INTERP || e->segments[i]->get_type()==PT_DYNAMIC)
+						return true; 
+			
+				}
+				return false; 
+		
+			}
+
+
 
 	
 		private:  

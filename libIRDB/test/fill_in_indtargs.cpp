@@ -1800,13 +1800,9 @@ void process_dynsym(FileIR_t* firp)
 }
 
 
-ICFS_t* setup_hellnode(FileIR_t* firp, ibt_provenance_t allowed)
+ICFS_t* setup_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop, ibt_provenance_t allowed)
 {
-#ifdef CGC
-	ICFS_t* hn=new ICFS_t(ICFS_Analysis_Complete);
-#else
 	ICFS_t* hn=new ICFS_t(ICFS_Analysis_Module_Complete);
-#endif
 
         for(
                 set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
@@ -1832,10 +1828,13 @@ ICFS_t* setup_hellnode(FileIR_t* firp, ibt_provenance_t allowed)
 		}
 	}
 
+	if(hn->size() < 1000 && !elfiop->isDynamicallyLinked())
+		hn->SetAnalysisStatus(ICFS_Analysis_Complete);
+
 	return hn;
 }
 
-ICFS_t* setup_call_hellnode(FileIR_t* firp)
+ICFS_t* setup_call_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop)
 {
 	ibt_provenance_t allowed=
 		ibt_provenance_t::ibtp_data |
@@ -1874,14 +1873,14 @@ ICFS_t* setup_call_hellnode(FileIR_t* firp)
 	 * ibt_provenance_t::ibtp_switchtable_type10
 	 */
 
-	ICFS_t* ret=setup_hellnode(firp,allowed);
+	ICFS_t* ret=setup_hellnode(firp,elfiop,allowed);
 
 	cout<<"#ATTRIBUTE call_hellnode_size="<<dec<<ret->size()<<endl;
 	return ret;
 
 }
 
-ICFS_t* setup_jmp_hellnode(FileIR_t* firp)
+ICFS_t* setup_jmp_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop)
 {
 	ibt_provenance_t allowed=
 		ibt_provenance_t::ibtp_data |
@@ -1918,14 +1917,14 @@ ICFS_t* setup_jmp_hellnode(FileIR_t* firp)
 	 * ibt_provenance_t::ibtp_switchtable_type10
 	 */
 
-	ICFS_t* ret=setup_hellnode(firp,allowed);
+	ICFS_t* ret=setup_hellnode(firp,elfiop,allowed);
 	cout<<"#ATTRIBUTE jmp_hellnode_size="<<dec<<ret->size()<<endl;
 	return ret;
 
 }
 
 
-ICFS_t* setup_ret_hellnode(FileIR_t* firp)
+ICFS_t* setup_ret_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop)
 {
 	ibt_provenance_t allowed=
 		ibt_provenance_t::ibtp_stars_ret |	// stars says a return goes here, and this return isn't analyzeable.
@@ -1967,7 +1966,7 @@ ICFS_t* setup_ret_hellnode(FileIR_t* firp)
 	 * ibt_provenance_t::ibtp_gotplt  
 	 */
 
-	ICFS_t* ret_hell_node=setup_hellnode(firp,allowed);
+	ICFS_t* ret_hell_node=setup_hellnode(firp,elfiop,allowed);
 	cout<<"#ATTRIBUTE basicret_hellnode_size="<<dec<<ret_hell_node->size()<<endl;
 
 	cout<<"#ATTRIBUTE fullret_hellnode_size="<<dec<<ret_hell_node->size()<<endl;
@@ -2023,7 +2022,7 @@ void print_icfs(FileIR_t* firp)
 	}
 }
 
-void setup_icfs(FileIR_t* firp)
+void setup_icfs(FileIR_t* firp, EXEIO::exeio* elfiop)
 {
 	int total_ibta_set=0;
 
@@ -2044,13 +2043,13 @@ void setup_icfs(FileIR_t* firp)
 
 
 	// setup calls, jmps and ret hell nodes.
-	ICFS_t *call_hell = setup_call_hellnode(firp);
+	ICFS_t *call_hell = setup_call_hellnode(firp,elfiop);
 	firp->GetAllICFS().insert(call_hell);
 
-	ICFS_t *jmp_hell = setup_jmp_hellnode(firp);
+	ICFS_t *jmp_hell = setup_jmp_hellnode(firp,elfiop);
 	firp->GetAllICFS().insert(jmp_hell);
 
-	ICFS_t *ret_hell = setup_ret_hellnode(firp);
+	ICFS_t *ret_hell = setup_ret_hellnode(firp,elfiop);
 	firp->GetAllICFS().insert(ret_hell);
 
 
@@ -2571,7 +2570,7 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t>
 	cout<<"========================================="<<endl;
 
 	// try to setup an ICFS for every IB.
-	setup_icfs(firp);
+	setup_icfs(firp, elfiop);
 
 	// do unpinning of well analyzed ibts.
 	unpin_well_analyzed_ibts(firp);
