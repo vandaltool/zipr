@@ -29,6 +29,7 @@ class InstructionPredecessors_t
 
 	public:
 	InstructionPredecessors_t(const FileIR_t* f=NULL) {Init(); if(f) AddFile(f);}
+        virtual ~InstructionPredecessors_t() {;}
 	virtual void AddFile(const FileIR_t* );
 
 	InstructionSet_t& operator[] (const Instruction_t* i)  
