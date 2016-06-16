@@ -5,16 +5,9 @@
         "class" : "<<CLASS>>",
         "description" : "n/a"
     },
-    "monitor" : {
-        "dump_variant_core" : true,
-        "detach_variants": true,
-        "checkpoint": {
-                "interval": 30,
-                "refresh_period": 0,
-                "refresh_command": "/vagrant/emt/raven/criu/plugins/refresh.sh "
-        }
 
-    },
+	<<MONITOR>>
+
     "variant" : {
         "global" : {
             "exec" : {

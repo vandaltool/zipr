@@ -1,0 +1,48 @@
+    "cr": {
+        "checkpoint": {
+            "criu": {
+                "exec": {
+                    "argv": [
+                        "--tcp-established",
+                        "--ext-unix-sk",
+                        "-v4",
+                        "--raven-files",
+                        "/testing/results/thttpd.log"
+                    ],
+                    "path": "/usr/sbin/criu"
+                }
+            },
+            "dump": {
+                "top_dir": "/testing/results/images"
+            },
+            "monitor": {
+                "exec": {
+                    "path": "tools/cr_dump.py"
+                },
+                "timeout": 20
+            }
+        },
+        "restore": {
+            "criu": {
+                "exec": {
+                    "argv": [
+                        "--tcp-established",
+                        "--ext-unix-sk",
+                        "-v4",
+                        "--raven-files",
+                        "/testing/results/thttpd.log"
+                    ],
+                    "path": "/usr/sbin/criu"
+                }
+            },
+            "dump": {
+                "top_dir": "/testing/results/images"
+            },
+            "monitor": {
+                "exec": {
+                    "path": "tools/cr_restore.py"
+                },
+                "timeout": 20
+            }
+        }
+    },

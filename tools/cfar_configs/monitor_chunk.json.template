@@ -1,0 +1,5 @@
+    "monitor" : {
+        "dump_variant_core" : true,
+        "detach_variants": false
+    },
+

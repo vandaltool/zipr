@@ -10,6 +10,7 @@ usage()
 Usage:
 	generate_mvee_config.sh 
 
+	[(--include-cr|--noinclude-cr)]
 	[(--diehard|--nodiehard)]
 	[(--enablenoh|--disablenoh)]
 	[(--enablenol|--disablenol)]
@@ -32,6 +33,7 @@ check_opts()
 	use_diehard="--nodiehard"
 	use_noh="--disablenoh"
 	use_nol="--disablenol"
+	use_includecr="--noinclude-cr"
 
 
 
@@ -45,6 +47,8 @@ check_opts()
 		   --long disablenoh
 		   --long enablenol
 		   --long disablenol
+		   --long include-cr
+		   --long noinclude-cr
                    --long indir:
                    --long outdir:
                    --long args:
@@ -112,6 +116,11 @@ check_opts()
                         --diehard|--nodiehard)
 				echo "Setting diehard = $1"
 				use_diehard="$1"
+                                shift 1
+			;;
+                        --include-cr|--noinclude-cr)
+				echo "Setting include-cr = $1"
+				use_includecr="$1"
                                 shift 1
 			;;
 			--enablenoh|--disablenoh)
@@ -371,6 +380,25 @@ finalize_json()
 	ld_preload_var=${ld_preload_var## }
 
 	json_contents="${json_contents//<<ENV>>/\"LD_PRELOAD=$ld_preload_var\",<<ENV>>}"
+
+	# if we're supposed to include checkpoint/restore lines in the file
+	if [ "x"$includecr = "--include-cr" ]; then
+		# grab the appropriate contents for cp/rest and monitor settings.
+		cr_contents=$(cat $PEASOUP_HOME/tools/cfar_configs/cr_chunk.json.template)
+		monitor_contents=$(cat $PEASOUP_HOME/tools/cfar_configs/monitor_chunk_with_cr.json.template)
+
+		echo setting monitor chunk to: $monitor_contents
+		json_contents="${json_contents//<<CR>>/$cr_contents}"
+		json_contents="${json_contents//<<MONITOR>>/$monitor_contents}"
+	else
+		# grab the appropriate contents monitor settings and remove c/r marker
+		monitor_contents=$(cat $PEASOUP_HOME/tools/cfar_configs/monitor_chunk.json.template)
+		echo setting monitor chunk to: $monitor_contents
+		json_contents="${json_contents//<<CR>>/}"
+		json_contents="${json_contents//<<MONITOR>>/$monitor_contents}"
+	fi
+
+	# substittue in the right settings for the monitor settings.
 
 	# remove variant_config marker.
 	json_contents="${json_contents//,<<VARIANT_CONFIG>>/}"
