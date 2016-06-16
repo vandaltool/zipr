@@ -78,8 +78,10 @@ void BasicBlock_t::BuildBlock
 		// handle fixed-call fallthroughs.
 		for_each(insn->GetRelocations().begin(), insn->GetRelocations().end(), [this,&insn2block_map](Relocation_t* reloc)
 		{
-			/* and has a reloc that's a pcrel with a WRT object */ 
-			if( reloc->GetType()==string("fix_call_fallthrough")) 
+			// and has a reloc that's a pcrel with a WRT object 
+			// possible for a call to have a null fallthrouth (and consequently null WRT)
+			// becauase the call may be the last insn in a section, etc.
+			if( reloc->GetType()==string("fix_call_fallthrough") && reloc->GetWRT()!=NULL) 
 			{
 				assert(reloc->GetWRT()!=NULL);
 				Instruction_t* fix_call_fallthrough_insn=dynamic_cast<Instruction_t*>(reloc->GetWRT());

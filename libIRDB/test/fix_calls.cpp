@@ -1092,7 +1092,13 @@ main(int argc, char* argv[])
 
 void range(virtual_offset_t a, virtual_offset_t b)
 {
-	eh_frame_ranges.insert(Range_t(a,b-1));
+	// non-zero sized fde
+	assert(a<b);
+
+	RangeSet_t::iterator rangeiter=eh_frame_ranges.find(Range_t(a+1,a+1));
+	assert(rangeiter==eh_frame_ranges.end());
+
+	eh_frame_ranges.insert(Range_t(a+1,b));	// ranges are interpreted as (a,b]
 }
 
 bool possible_target(uintptr_t p, uintptr_t at, ibt_provenance_t prov)

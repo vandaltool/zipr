@@ -27,7 +27,7 @@ fi
 
 # calc stuffs needed.
 base_peasoup_dir=$(basename $newdir)
-exe=$(basename $stratafied_exe)
+exe=$(basename $protected_exe)
 
 # get and fill in template.
 cp $template variant_config.json
