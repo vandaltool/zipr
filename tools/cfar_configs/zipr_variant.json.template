@@ -8,11 +8,11 @@
 			"/variant_specific/noh.so=<<EXEPATH>>/<<PS_DIR>>/noh.so",<<LIBS>>
                         ],
                     "env" : [
-			"VARIANTINDEX=<<VARIANTINDEX>>"
+                        <<ENV>>
 			]
                 },
                 "marshaling" : {
-                     "code_map" : "<<EXEPATH>>/peasoup_executable_dir/zipr.map"
+                     "code_map" : "<<EXEPATH>>/<<PS_DIR>>/zipr.map"
                 }
             }
 

@@ -352,15 +352,18 @@ finalize_json()
 
 	done
 
+	# copy libpthread_exit.so 
+	cp $CFAR_HOME/pthread_exit/libpthread_exit.so $outdir/global/
+
 	if [ $server = "APACHE" ]; then
-		ld_preload_var="/thread_libs/libgetpid.so "
+		ld_preload_var="/thread_libs/libgetpid.so:/thread_libs/libprimaryleads.so:/target_apps/global/libpthread_exit.so"
 	fi
 	if [ "x"$use_diehard  = "x--diehard" ]; then
-		ld_preload_var="/variant_specific/libheaprand.so $ld_preload_var"
+		ld_preload_var="/variant_specific/libheaprand.so:$ld_preload_var"
 
 	fi
 	if [ "x"$use_noh = "x--enablenoh" ]; then
-		ld_preload_var="/variant_specific/noh.so $ld_preload_var"
+		ld_preload_var="/variant_specific/noh.so:$ld_preload_var"
 		#json_contents="${json_contents//<<ENV>>/\"NUMVARIANTS=$total_variants\",<<ENV>>}"
 	fi
 	# remove leading/trailing spaces.
