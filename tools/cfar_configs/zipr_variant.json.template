@@ -12,7 +12,8 @@
 			]
                 },
                 "marshaling" : {
-                     "code_map" : "<<EXEPATH>>/<<PS_DIR>>/zipr.map"
+                     "code_map" : "<<EXEPATH>>/<<PS_DIR>>/zipr.map",
+		     "p1_map" : "<<EXEPATH>>/<<PS_DIR>>/p1.map"
                 }
             }
 
