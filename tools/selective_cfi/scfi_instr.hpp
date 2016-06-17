@@ -39,7 +39,8 @@ class SCFI_Instrument
 				bool p_do_calls=true,
 				bool p_do_rets=true,
 				bool p_do_safefn=true,
-				bool p_do_multimodule=false
+				bool p_do_multimodule=false,
+				bool p_do_exe_nonce_for_call=false
 			) 
 			: firp(the_firp), 
 			  do_coloring(p_do_coloring), 
@@ -49,7 +50,11 @@ class SCFI_Instrument
 			  do_rets(p_do_rets), 
 			  do_safefn(p_do_safefn), 
 			  do_multimodule(p_do_multimodule), 
-			  color_map(NULL) 
+			  do_exe_nonce_for_call(p_do_exe_nonce_for_call), 
+			  color_map(NULL),
+			  ExecutableNonceValue("\x90", 1),
+			  ret_shared(NULL)
+
 		{ 
 			std::cout<<std::boolalpha;
 			std::cout<<"#ATTRIBUTE do_coloring="<<p_do_coloring<<std::endl;
@@ -60,6 +65,12 @@ class SCFI_Instrument
 			std::cout<<"#ATTRIBUTE do_safefn="<<p_do_safefn<<std::endl;
 			std::cout<<"#ATTRIBUTE do_multimodule="<<p_do_multimodule<<std::endl;
 			preds.AddFile(the_firp); 
+
+			if(do_exe_nonce_for_call && p_do_coloring)
+			{
+				std::cerr<<"Cannot do coloring+exe_nonce_for_call!"<<std::endl;
+				exit(1);
+			}
 		}
 		bool execute();
 
@@ -99,9 +110,16 @@ class SCFI_Instrument
 
 		// return instrumentation
 		void  AddReturnCFI(libIRDB::Instruction_t* insn, ColoredSlotValue_t *v=NULL);
+		void  AddReturnCFIForExeNonce(libIRDB::Instruction_t* insn, ColoredSlotValue_t *v=NULL);
+
 		// jump instrumentation
 		void AddJumpCFI(libIRDB::Instruction_t* insn);
 
+		// call instrumentation with executable nonce
+		void AddCallCFIWithExeNonce(libIRDB::Instruction_t* insn);
+
+		// for all calls
+		void AddExecutableNonce(libIRDB::Instruction_t* insn);
 
 		// Nonce Manipulation.
 		NonceValueType_t GetNonce(libIRDB::Instruction_t* insn);
@@ -120,9 +138,12 @@ class SCFI_Instrument
 		bool do_rets;
 		bool do_safefn;
 		bool do_multimodule;
+		bool do_exe_nonce_for_call;
 		ColoredInstructionNonces_t *color_map;
 
+		libIRDB::Instruction_t *ret_shared;
 
+		std::string ExecutableNonceValue;
 };
 
 #endif

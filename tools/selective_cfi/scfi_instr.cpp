@@ -67,6 +67,25 @@ static Instruction_t* addNewAssembly(FileIR_t* firp, Instruction_t *p_instr, str
         return newinstr;
 }
 
+static Instruction_t* addNewDatabits(FileIR_t* firp, Instruction_t *p_instr, string p_bits)
+{
+        Instruction_t* newinstr;
+        if (p_instr)
+                newinstr = allocateNewInstruction(firp,p_instr->GetAddress()->GetFileID(), p_instr->GetFunction());
+        else   
+                newinstr = allocateNewInstruction(firp,BaseObj_t::NOT_IN_DATABASE, NULL);
+
+        newinstr->SetDataBits(p_bits);
+
+        if (p_instr)
+        {
+                newinstr->SetFallthrough(p_instr->GetFallthrough());
+                p_instr->SetFallthrough(newinstr);
+        }
+
+        return newinstr;
+}
+
 
 static Instruction_t* registerCallbackHandler64(FileIR_t* firp, Instruction_t *p_orig, string p_callbackHandler, int p_numArgs)
 {
@@ -473,6 +492,134 @@ void SCFI_Instrument::AddJumpCFI(Instruction_t* insn)
 }
 
 
+void SCFI_Instrument::AddCallCFIWithExeNonce(Instruction_t* insn)
+{
+	// make a stub to call
+
+	// the stub is:
+	//	push [target]
+	// 	jmp slow
+	string pushbits=change_to_push(insn);
+	Instruction_t* stub=addNewDatabits(firp,NULL,pushbits);
+	stub->SetComment(insn->GetComment()+" cfi stuf");
+	
+
+	string jmpBits=getJumpDataBits();
+	Instruction_t* jmp=insertDataBitsAfter(firp, stub, jmpBits);
+
+	assert(stub->GetFallthrough()==jmp);
+
+	// create a reloc so the stub goes to the slow path, eventually
+	createNewRelocation(firp,jmp,"slow_cfi_path",0);
+	jmp->SetFallthrough(NULL);
+	jmp->SetTarget(jmp);	// looks like infinite loop, but will go to slow apth
+
+	// convert the indirct call to a direct call to the stub.
+	string call_bits=insn->GetDataBits();
+	call_bits.resize(5);
+	call_bits[0]=0xe8;
+	insn->SetTarget(stub);
+	insn->SetDataBits(call_bits);
+	insn->SetComment("Direct call to cfi stub");
+
+
+}
+
+void SCFI_Instrument::AddExecutableNonce(Instruction_t* insn)
+{
+	insertDataBitsAfter(firp, insn, ExecutableNonceValue, NULL);
+}
+
+
+void SCFI_Instrument::AddReturnCFIForExeNonce(Instruction_t* insn, ColoredSlotValue_t *v)
+{
+	assert(!do_coloring);
+
+	if(!do_rets)
+		return;
+
+	string reg="ecx";	// 32-bit reg 
+	if(firp->GetArchitectureBitWidth()==64)
+		reg="r11";	// 64-bit reg.
+
+	string rspreg="esp";	// 32-bit reg 
+	if(firp->GetArchitectureBitWidth()==64)
+		rspreg="rsp";	// 64-bit reg.
+
+	string worddec="dword";	// 32-bit reg 
+	if(firp->GetArchitectureBitWidth()==64)
+		worddec="qword";	// 64-bit reg.
+
+	
+	DISASM d;
+	insn->Disassemble(d);
+	if(d.Argument1.ArgType!=NO_ARGUMENT)
+	{
+		unsigned int sp_adjust=d.Instruction.Immediat-firp->GetArchitectureBitWidth()/8;
+		cout<<"Found relatively rare ret_with_pop insn: "<<d.CompleteInstr<<endl;
+		char buf[30];
+		sprintf(buf, "pop %s [%s+%d]", worddec.c_str(), rspreg.c_str(), sp_adjust);
+		Instruction_t* newafter=insertAssemblyBefore(firp,insn,buf);
+
+		if(sp_adjust>0)
+		{
+			sprintf(buf, "lea %s, [%s+%d]", rspreg.c_str(), rspreg.c_str(), sp_adjust);
+		}
+
+		// rewrite the "old" isntruction, as that's what insertAssemblyBefore returns
+		insn=newafter;
+	}
+		
+#ifdef CGC
+#if 0
+	ret -> jmp shared
+
+	shared: 
+		mov reg <- [ rsp ] 
+		cmp [reg], exe_nonce_value
+		jne ret_slow
+		ret
+	ret_slow:	
+		pop ecx
+		jmp slow  // with cfi_slow-path nonce.
+
+#endif
+
+	string jmpBits=getJumpDataBits();
+
+#ifndef CGC
+	assert(0); // not ported to non-cgc mode
+#endif
+	if(!ret_shared)
+	{
+        	string clamp_str="and "+worddec+"["+rspreg+"], 0x7fffffff";
+		Instruction_t* tmp=NULL;
+		ret_shared=
+#ifdef CGC
+        	tmp=addNewAssembly(firp,tmp,clamp_str); // FIXME???
+		tmp=addNewAssembly(firp, tmp, "mov "+reg+", ["+rspreg+"]");
+#else
+		tmp=addNewAssembly(firp, "mov "+reg+", ["+rspreg+"]");
+#endif
+// fixme:  get value from ExecutableNonceString -- somewhat challening
+		tmp=addNewAssembly(firp, tmp, "cmp byte ["+reg+"], 0x90");
+		tmp=addNewAssembly(firp, tmp, "jne 0");
+		createNewRelocation(firp,tmp,"slow_cfi_path",0);
+		tmp->SetTarget(tmp);
+		tmp=addNewAssembly(firp, tmp, "ret");
+
+	}
+	
+        insn->SetDataBits(jmpBits);
+	insn->SetTarget(ret_shared);
+
+	return;
+#else
+	assert(0);
+#endif
+	
+}
+
 void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 {
 
@@ -684,7 +831,7 @@ bool SCFI_Instrument::instrument_jumps()
 		if(insn->GetBaseID()==BaseObj_t::NOT_IN_DATABASE)
 			continue;
 
-		if(string(d.Instruction.Mnemonic)==string("call "))
+		if(string(d.Instruction.Mnemonic)==string("call ") && !do_exe_nonce_for_call)
 		{
                 	cerr<<"Fatal Error: Found call instruction!"<<endl;
                 	cerr<<"FIX_CALLS_FIX_ALL_CALLS=1 should be set in the environment, or"<<endl;
@@ -750,14 +897,11 @@ bool SCFI_Instrument::instrument_jumps()
 				break;
 
 			case  CallType:
-				if((d.Argument1.ArgType&MEMORY_TYPE)==MEMORY_TYPE)
+				AddExecutableNonce(insn);	// for all calls
+				if((d.Argument1.ArgType&CONSTANT_TYPE)!=CONSTANT_TYPE)
 				{
-					// not yet implemented.	
-					assert(0); // fix calls should conver these to jumps
-					cfi_branch_call_checks++;
-					if (insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
-						cfi_branch_call_complete++;
-					cfi_checks++;
+					// for indirect calls.
+					AddCallCFIWithExeNonce(insn);
 				}
 				break;
 
@@ -776,7 +920,11 @@ bool SCFI_Instrument::instrument_jumps()
 
 				cfi_checks++;
 				cfi_branch_ret_checks++;
-				AddReturnCFI(insn);
+
+				if(do_exe_nonce_for_call)
+					AddReturnCFIForExeNonce(insn);
+				else
+					AddReturnCFI(insn);
 				break;
 
 			default:

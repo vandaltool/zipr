@@ -43,8 +43,9 @@ void usage(char* name)
 "		[--protect-safefn|--no-protect-safefn]  \n"
 "		[ --common-slow-path | --no-common-slow-path ] \n"
 "		[ --multimodule | --no-multimodule ] \n"
+"		[--exe-nonce-for-call|--no-exe-nonce-for-call]  \n"
 " \n"
-"default: --no-color --protect-jumps --protect-calls --protect-rets --protect-safefn --common-slow-path --no-multimodule\n"; 
+"default: --no-color --protect-jumps --protect-calls --protect-rets --protect-safefn --common-slow-path --no-multimodule --no-exe-nonce-for-call\n"; 
 }
 
 int main(int argc, char **argv)
@@ -71,6 +72,7 @@ int main(int argc, char **argv)
 	bool do_rets=true;
 	bool do_safefn=true;
 	bool do_multimodule=false;
+	bool do_exe_nonce_for_call=false;
 	for(int  i=2;i<argc;i++)
 	{
 		if(string(argv[i])=="--color")
@@ -133,6 +135,16 @@ int main(int argc, char **argv)
 			cout<<"Adding multimodule support ..."<<endl;
 			do_multimodule=true;
 		}
+		else if(string(argv[i])=="--no-exe-nonce-for-call")
+		{
+			cout<<"Not adding exe-nonce-for-call support..."<<endl;
+			do_exe_nonce_for_call=false;
+		}
+		else if(string(argv[i])=="--exe-nonce-for-call")
+		{
+			cout<<"Adding exe-nonce-for-call support ..."<<endl;
+			do_exe_nonce_for_call=true;
+		}
 		else if(string(argv[i])=="--common-slow-path")
 		{
 			cout<<"Using common slow path..."<<endl;
@@ -179,7 +191,7 @@ int main(int argc, char **argv)
 
                 try
                 {
-			SCFI_Instrument scfii(firp, do_coloring, do_common_slow_path, do_jumps, do_calls, do_rets, do_safefn, do_multimodule);
+			SCFI_Instrument scfii(firp, do_coloring, do_common_slow_path, do_jumps, do_calls, do_rets, do_safefn, do_multimodule, do_exe_nonce_for_call);
 
 
 			int success=scfii.execute();
