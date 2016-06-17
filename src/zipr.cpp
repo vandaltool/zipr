@@ -3025,39 +3025,42 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 	assert(memory_space.IsValidRange(it));
 	RangeAddress_t end_of_new_space=it->GetStart();
 
-	// first byte of this range is the last used byte.
-	AddressID_t *textra_start=new AddressID_t();
-	textra_start->SetVirtualOffset(start_of_new_space);
-	m_firp->GetAddresses().insert(textra_start);
-	AddressID_t *textra_end=new AddressID_t();
-	textra_end->SetVirtualOffset(end_of_new_space);
-	m_firp->GetAddresses().insert(textra_end);
-	string textra_contents;
-	textra_contents.resize(end_of_new_space-start_of_new_space);
-	DataScoop_t* textra_scoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, ".textra", textra_start, textra_end, NULL, 5, false, textra_contents);
-	m_firp->GetDataScoops().insert(textra_scoop);
-
-
-	printf("Dumping addrs %p-%p\n", (void*)start_of_new_space, (void*)end_of_new_space);
-	for(RangeAddress_t i=start_of_new_space;i<end_of_new_space;i++)
+	if(start_of_new_space != end_of_new_space )
 	{
-		char b=0;
-		if(!memory_space.IsByteFree(i))
-		{
-			b=memory_space[i];
-		}
-		if(i-start_of_new_space<200)// keep verbose output short enough.
-		{
-			if (m_verbose)
-				printf("Writing byte %#2x at %p, fileoffset=%llx\n", ((unsigned)b)&0xff, 
-				(void*)i, (long long)(i-start_of_new_space));
-		}
-		textra_scoop->GetContents()[i-start_of_new_space]=b;
-#ifdef support_stratafier_mode
-		fwrite(&b,1,1,to_insert);
-#endif
-	}
 
+		// first byte of this range is the last used byte.
+		AddressID_t *textra_start=new AddressID_t();
+		textra_start->SetVirtualOffset(start_of_new_space);
+		m_firp->GetAddresses().insert(textra_start);
+		AddressID_t *textra_end=new AddressID_t();
+		textra_end->SetVirtualOffset(end_of_new_space);
+		m_firp->GetAddresses().insert(textra_end);
+		string textra_contents;
+		textra_contents.resize(end_of_new_space-start_of_new_space);
+		DataScoop_t* textra_scoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, ".textra", textra_start, textra_end, NULL, 5, false, textra_contents);
+		m_firp->GetDataScoops().insert(textra_scoop);
+
+		printf("Dumping addrs %p-%p\n", (void*)start_of_new_space, (void*)end_of_new_space);
+		for(RangeAddress_t i=start_of_new_space;i<end_of_new_space;i++)
+		{
+			char b=0;
+			if(!memory_space.IsByteFree(i))
+			{
+				b=memory_space[i];
+			}
+			if(i-start_of_new_space<200)// keep verbose output short enough.
+			{
+				if (m_verbose)
+					printf("Writing byte %#2x at %p, fileoffset=%llx\n", ((unsigned)b)&0xff, 
+					(void*)i, (long long)(i-start_of_new_space));
+			}
+			textra_scoop->GetContents()[i-start_of_new_space]=b;
+	#ifdef support_stratafier_mode
+			fwrite(&b,1,1,to_insert);
+	#endif
+		}
+
+	}
 #ifdef support_stratafier_mode
 	fclose(to_insert);
 
