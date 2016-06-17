@@ -2,18 +2,7 @@
 
 #
 # Default configuration for CFE:
-#  - SCFI
 #
-
-# for selective_cfi, turn on env. var
-SCFI=off
-case "$*" in 
-   *selective_cfi=on* ) 
-	export FIX_CALLS_FIX_ALL_CALLS=1
-	echo "SCFI is on -- turn on FIX_CALLS_FIX_ALL_CALLS=1"
-	SCFI=on
-	;;
-esac
 
 $PEASOUP_HOME/tools/ps_analyze.sh "$@" 	\
 	--step spawner=off 		\
@@ -44,7 +33,6 @@ $PEASOUP_HOME/tools/ps_analyze.sh "$@" 	\
 	--step input_filtering=off	\
 	--step watch_allocate=off	\
 	--step integertransform=off	\
-	--step selective_cfi=$SCFI	\
 	--step fast_spri=off	\
 	--step fast_annot=off	\
 	--step spasm=off	\
