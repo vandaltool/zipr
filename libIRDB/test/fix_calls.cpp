@@ -78,10 +78,12 @@ long long thunk_check=0;
 long long found_pattern=0;
 long long in_ehframe=0;
 long long no_fix_for_ib=0;
+long long no_fix_for_safefn=0;
 
 pqxxDB_t pqxx_interface;
 
 bool opt_fix_icalls = true;
+bool opt_fix_safefn = true;
 
 void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, UIntPtr offset);
 
@@ -131,9 +133,7 @@ bool check_entry(bool &found, ControlFlowGraph_t* cfg)
 			}
 			return true;
 		}
-		
 	}
-
 
 	return false;
 }
@@ -250,7 +250,7 @@ bool call_needs_fix(Instruction_t* insn)
 	ControlFlowGraph_t* cfg=new ControlFlowGraph_t(func);
 
 	assert(cfg->GetEntry());
-
+	
 	/* if the call instruction isn't to a function entry point */
 	if(cfg->GetEntry()->GetInstructions()[0]!=target)
 	{
@@ -711,6 +711,34 @@ bool is_call(Instruction_t* insn)
 	return (disasm.Instruction.BranchType==CallType);
 }
 
+bool can_skip_safe_function(Instruction_t *call_insn) 
+{
+	if (!call_insn)
+		return false;
+	if (!is_call(call_insn))
+		return false;
+	Instruction_t *target=call_insn->GetTarget();
+	if (!target)
+		return false;
+	Function_t* func=target->GetFunction();
+	if (!func)
+		return false;
+
+	/* if the call instruction isn't to a function entry point */
+	ControlFlowGraph_t* cfg=new ControlFlowGraph_t(func);
+	if(cfg->GetEntry()->GetInstructions()[0]!=target)
+	{
+		return false;
+	}
+
+	if (func->IsSafe())
+	{
+		cout << "Function " << func->GetName() << " is safe" << endl;
+	}
+
+	return func->IsSafe();
+}
+
 static File_t* find_file(FileIR_t* firp, db_id_t fileid)
 {
 #if 0
@@ -783,10 +811,24 @@ void fix_all_calls(FileIR_t* firp, bool print_stats, bool fix_all)
 			// (and a bit about debugging fix-calls that's not important for anyone but jdh.
 			else if ( fix_all || (getenv("FIX_CALL_LIMIT") && not_fixed_calls>=atoi(getenv("FIX_CALL_LIMIT"))))
 			{
-				// if we make it here, we know that it was not 100% necessary to fix the call
-				// but we've been asked to anyhow.	
-				fixed_calls++;
-				fix_call(insn, firp, true /* true here indicates that the call can have an unpin reloc -- anh to add option in 3 minutes */);
+				bool fix_me = true;
+				if (!opt_fix_safefn && can_skip_safe_function(insn))
+				{
+					fix_me = false;
+					no_fix_for_safefn++;
+				}
+
+				if(fix_me)
+				{
+					// if we make it here, we know that it was not 100% necessary to fix the call
+					// but we've been asked to anyhow.	
+					fixed_calls++;
+					fix_call(insn, firp, true /* true here indicates that the call can have an unpin reloc -- anh to add option in 3 minutes */);
+				}
+				else
+				{
+					not_fixed_calls++;
+				}
 			}
 			else
 			{
@@ -820,6 +862,7 @@ void fix_all_calls(FileIR_t* firp, bool print_stats, bool fix_all)
 		cout << "# ATTRIBUTE found_pattern="<<std::dec<< found_pattern << endl;
 		cout << "# ATTRIBUTE in_ehframe="<<std::dec<< in_ehframe << endl;
 		cout << "# ATTRIBUTE no_fix_for_ib="<<std::dec<< no_fix_for_ib << endl;
+		cout << "# ATTRIBUTE no_fix_for_safefn="<<std::dec<< no_fix_for_safefn << endl;
 		no_target_insn=0;
 		no_fallthrough_insn=0;
 		target_not_in_function=0;
@@ -1013,6 +1056,14 @@ main(int argc, char* argv[])
 		else if(strcmp("--no-fix-icalls", argv[argc_iter])==0)
 		{
 			opt_fix_icalls = false;
+		}
+		else if(strcmp("--fix-safefn", argv[argc_iter])==0)
+		{
+			opt_fix_safefn = true;
+		}
+		else if(strcmp("--no-fix-safefn", argv[argc_iter])==0)
+		{
+			opt_fix_safefn = false;
 		}
 		else
 		{

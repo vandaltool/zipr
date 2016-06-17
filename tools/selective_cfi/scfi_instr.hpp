@@ -48,7 +48,7 @@ class SCFI_Instrument
 			  do_jumps(p_do_jumps), 
 			  do_calls(p_do_calls), 
 			  do_rets(p_do_rets), 
-			  do_safefn(p_do_safefn), 
+			  protect_safefn(p_do_safefn), 
 			  do_multimodule(p_do_multimodule), 
 			  do_exe_nonce_for_call(p_do_exe_nonce_for_call), 
 			  color_map(NULL),
@@ -99,6 +99,7 @@ class SCFI_Instrument
 		libIRDB::Relocation_t* create_reloc(libIRDB::Instruction_t* insn);
 		libIRDB::Relocation_t* FindRelocation(libIRDB::Instruction_t* insn, std::string type);
 		bool isSafeFunction(libIRDB::Instruction_t* insn);
+		bool isCallToSafeFunction(libIRDB::Instruction_t* insn);
 		bool is_jmp_a_fixed_call(libIRDB::Instruction_t* insn);
 		bool is_plt_style_jmp(libIRDB::Instruction_t* insn);
 
@@ -136,8 +137,9 @@ class SCFI_Instrument
 		bool do_jumps;
 		bool do_calls;
 		bool do_rets;
-		bool do_safefn;
 		bool do_multimodule;
+		bool protect_safefn;
+
 		bool do_exe_nonce_for_call;
 		ColoredInstructionNonces_t *color_map;
 

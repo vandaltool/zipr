@@ -246,6 +246,23 @@ bool SCFI_Instrument::isSafeFunction(Instruction_t* insn)
 	return (insn && insn->GetFunction() && insn->GetFunction()->IsSafe());
 }
 
+bool SCFI_Instrument::isCallToSafeFunction(Instruction_t* insn)
+{
+	if (insn && insn->GetTarget() && insn->GetTarget()->GetFunction())
+	{
+		if(getenv("SCFI_VERBOSE")!=NULL)
+		{
+			if (insn->GetTarget()->GetFunction()->IsSafe())
+			{
+				cout << "Function " << insn->GetTarget()->GetFunction()->GetName() << " is deemed safe" << endl;
+			}
+		}
+
+		return insn->GetTarget()->GetFunction()->IsSafe();
+	}
+
+	return false;
+}
 
 Relocation_t* SCFI_Instrument::create_reloc(Instruction_t* insn)
 {
@@ -255,11 +272,6 @@ Relocation_t* SCFI_Instrument::create_reloc(Instruction_t* insn)
 
 	return reloc;
 }
-
-
-
-
-
 
 bool SCFI_Instrument::add_scfi_instrumentation(Instruction_t* insn)
 {
@@ -271,10 +283,6 @@ bool SCFI_Instrument::add_scfi_instrumentation(Instruction_t* insn)
 
 	return success;
 }
-
-
-
-
 
 bool SCFI_Instrument::needs_scfi_instrumentation(Instruction_t* insn)
 {
@@ -808,6 +816,7 @@ bool SCFI_Instrument::instrument_jumps()
 	int cfi_branch_ret_complete=0;
 	int cfi_safefn_jmp_skipped=0;
 	int cfi_safefn_ret_skipped=0;
+	int cfi_safefn_call_skipped=0;
 	int ibt_complete=0;
 	double cfi_branch_jmp_complete_ratio = NAN;
 	double cfi_branch_call_complete_ratio = NAN;
@@ -831,7 +840,7 @@ bool SCFI_Instrument::instrument_jumps()
 		if(insn->GetBaseID()==BaseObj_t::NOT_IN_DATABASE)
 			continue;
 
-		if(string(d.Instruction.Mnemonic)==string("call ") && !do_exe_nonce_for_call)
+		if(string(d.Instruction.Mnemonic)==string("call ") && (protect_safefn && !do_exe_nonce_for_call))
 		{
                 	cerr<<"Fatal Error: Found call instruction!"<<endl;
                 	cerr<<"FIX_CALLS_FIX_ALL_CALLS=1 should be set in the environment, or"<<endl;
@@ -839,15 +848,11 @@ bool SCFI_Instrument::instrument_jumps()
 			exit(1);
 		}
 
-
 		// if marked safe
 		if(FindRelocation(insn,"cf::safe"))
 			continue;
 
-		// FIXME: should we only skip CFI checks on returns?
 		bool safefn = isSafeFunction(insn);
-
-
 	
 		switch(d.Instruction.BranchType)
 		{
@@ -880,7 +885,7 @@ bool SCFI_Instrument::instrument_jumps()
 
 						cfi_checks++;
 						cfi_branch_call_checks++;
-
+						
 						AddJumpCFI(insn);
 					}
 					else 
@@ -897,6 +902,17 @@ bool SCFI_Instrument::instrument_jumps()
 				break;
 
 			case  CallType:
+				// should only see calls if we are not CFI'ing safe functions
+				// be sure to use with: --no-fix-safefn in fixcalls
+				//    (1) --no-fix-safefn in fixcalls leaves call as call (instead of push/jmp)
+				//    (2) and here, we don't plop down a nonce
+				//    see (3) below where we don't instrument returns for safe functions
+				if (!protect_safefn && isCallToSafeFunction(insn))
+				{
+					cfi_safefn_ret_skipped++;
+					continue;
+				}
+
 				AddExecutableNonce(insn);	// for all calls
 				if((d.Argument1.ArgType&CONSTANT_TYPE)!=CONSTANT_TYPE)
 				{
@@ -912,7 +928,8 @@ bool SCFI_Instrument::instrument_jumps()
 					rets[insn->GetIBTargets()->size()]++;
 				}
 
-				if (!do_safefn && safefn)
+				// (3) and here, we don't instrument returns for safe function
+				if (!protect_safefn && safefn)
 				{
 					cfi_safefn_ret_skipped++;
 					continue;
@@ -969,6 +986,7 @@ bool SCFI_Instrument::instrument_jumps()
 
 	cout<<"# ATTRIBUTE cfi_safefn_jmp_skipped="<<cfi_safefn_jmp_skipped<<endl;
 	cout<<"# ATTRIBUTE cfi_safefn_ret_skipped="<<cfi_safefn_ret_skipped<<endl;
+	cout<<"# ATTRIBUTE cfi_safefn_call_skipped="<<cfi_safefn_call_skipped<<endl;
 
 	return true;
 }
