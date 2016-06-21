@@ -902,15 +902,21 @@ bool SCFI_Instrument::instrument_jumps()
 				break;
 
 			case  CallType:
+
 				// should only see calls if we are not CFI'ing safe functions
 				// be sure to use with: --no-fix-safefn in fixcalls
 				//    (1) --no-fix-safefn in fixcalls leaves call as call (instead of push/jmp)
 				//    (2) and here, we don't plop down a nonce
 				//    see (3) below where we don't instrument returns for safe functions
-				if (!protect_safefn && isCallToSafeFunction(insn))
+				if (!protect_safefn)
 				{
-					cfi_safefn_ret_skipped++;
-					continue;
+					bool isDirectCall = (d.Argument1.ArgType&CONSTANT_TYPE)==CONSTANT_TYPE;
+
+					if (safefn || (isDirectCall && isCallToSafeFunction(insn)))
+					{
+						cfi_safefn_call_skipped++;
+						continue
+					}
 				}
 
 				AddExecutableNonce(insn);	// for all calls
