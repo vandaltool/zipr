@@ -20,6 +20,7 @@ export ZIPR_SCFI_PLUGIN=$PEASOUP_UMBRELLA_DIR/zipr_scfi_plugin
 export SECURITY_TRANSFORMS_HOME=$PEASOUP_UMBRELLA_DIR/security_transforms
 export IRDB_TRANSFORMS=$PEASOUP_UMBRELLA_DIR/irdb_transforms
 export PS=$PEASOUP_HOME/tools/ps_analyze.sh
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PEASOUP_UMBRELLA_DIR/zipr_trace_plugin/libtrace
 
 source ./irdb_vars
 source $PEASOUP_UMBRELLA_DIR/set_command_envs
