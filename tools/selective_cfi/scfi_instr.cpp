@@ -915,7 +915,7 @@ bool SCFI_Instrument::instrument_jumps()
 					if (safefn || (isDirectCall && isCallToSafeFunction(insn)))
 					{
 						cfi_safefn_call_skipped++;
-						continue
+						continue;
 					}
 				}
 
