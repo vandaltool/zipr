@@ -535,7 +535,8 @@ void SCFI_Instrument::AddCallCFIWithExeNonce(Instruction_t* insn)
 
 void SCFI_Instrument::AddExecutableNonce(Instruction_t* insn)
 {
-	insertDataBitsAfter(firp, insn, ExecutableNonceValue, NULL);
+// this is now done by the nonce plugin's PlopDollopEntry routine.
+//	insertDataBitsAfter(firp, insn, ExecutableNonceValue, NULL);
 }
 
 

@@ -139,8 +139,8 @@ class SCFI_Instrument
 		bool do_rets;
 		bool do_multimodule;
 		bool protect_safefn;
-
 		bool do_exe_nonce_for_call;
+
 		ColoredInstructionNonces_t *color_map;
 
 		libIRDB::Instruction_t *ret_shared;
