@@ -1292,7 +1292,7 @@ void __bea_callspec__ DD_(PDISASM pMyDisasm)
             #ifndef BEA_LIGHT_DISASSEMBLY
                (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fnstsw ");
             #endif
-            (*pMyDisasm).Argument2.ArgType = REGISTER_TYPE+FPU_REG;
+            (*pMyDisasm).Argument2.ArgType = REGISTER_TYPE+FPU_REG+REG0;
             (*pMyDisasm).Argument2.ArgSize = 16;
         }
         else {
@@ -1756,7 +1756,7 @@ void __bea_callspec__ DF_(PDISASM pMyDisasm)
                 #endif
             (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0;
             (*pMyDisasm).Argument1.ArgSize = 16;
-            (*pMyDisasm).Argument2.ArgType = REGISTER_TYPE+FPU_REG;
+            (*pMyDisasm).Argument2.ArgType = REGISTER_TYPE+FPU_REG+REG0;
             (*pMyDisasm).Argument2.ArgSize = 16;
 
             }
