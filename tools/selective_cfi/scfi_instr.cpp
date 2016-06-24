@@ -449,11 +449,20 @@ void mov_reloc(Instruction_t* from, Instruction_t* to, string type )
 
 static void move_relocs(Instruction_t* from, Instruction_t* to)
 {
-	for_each(from->GetRelocations().begin(), from->GetRelocations().end(), [&to](Relocation_t* reloc)
+	for(auto it=from->GetRelocations().begin(); it!=from->GetRelocations().end(); ) 
 	{
-		to->GetRelocations().insert(reloc);
-	});
-	from->GetRelocations().clear();
+		auto current=it++;
+		Relocation_t* reloc=*current;
+		if(reloc->GetType()=="fix_call_fallthrough")
+		{
+			// don't move it.
+		}
+		else
+		{
+			to->GetRelocations().insert(reloc);
+			from->GetRelocations().erase(current);
+		}
+	}
 }
 
 void SCFI_Instrument::AddJumpCFI(Instruction_t* insn)
@@ -482,6 +491,8 @@ void SCFI_Instrument::AddJumpCFI(Instruction_t* insn)
 	createNewRelocation(firp,after,"slow_cfi_path",0);
 	after->SetFallthrough(NULL);
 	after->SetTarget(after);
+	after->SetIBTargets(NULL); // lose information about ib targets.
+	insn->SetIBTargets(NULL); // lose information about ib targets.
 	return;
 #else
 	
@@ -509,7 +520,7 @@ void SCFI_Instrument::AddCallCFIWithExeNonce(Instruction_t* insn)
 	// 	jmp slow
 	string pushbits=change_to_push(insn);
 	Instruction_t* stub=addNewDatabits(firp,NULL,pushbits);
-	stub->SetComment(insn->GetComment()+" cfi stuf");
+	stub->SetComment(insn->GetComment()+" cfi stub");
 	
 
 	string jmpBits=getJumpDataBits();
@@ -529,7 +540,7 @@ void SCFI_Instrument::AddCallCFIWithExeNonce(Instruction_t* insn)
 	insn->SetTarget(stub);
 	insn->SetDataBits(call_bits);
 	insn->SetComment("Direct call to cfi stub");
-
+	insn->SetIBTargets(NULL);	// lose info about branch targets.
 
 }
 
