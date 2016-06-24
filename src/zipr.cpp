@@ -1497,15 +1497,15 @@ void ZiprImpl_t::PlaceDollops()
 
 	while (!placement_queue.empty())
 	{
-		pair<Dollop_t*, RangeAddress_t> pq_entry;
+		pair<Dollop_t*, RangeAddress_t> pq_entry(NULL,NULL);
 		Dollop_t *to_place = NULL;
-		RangeAddress_t from_address;
+		RangeAddress_t from_address =0;
 		size_t minimum_valid_req_size = 0;
-		Range_t placement;
+		Range_t placement = {0,0};
 		DLFunctionHandle_t placer = NULL;
 		bool placed = false;
 		list<DollopEntry_t*>::const_iterator dit, dit_end;
-		RangeAddress_t cur_addr;
+		RangeAddress_t cur_addr = 0 ;
 		bool has_fallthrough = false;
 		Dollop_t *fallthrough = NULL;
 		bool continue_placing = false;
@@ -1514,7 +1514,7 @@ void ZiprImpl_t::PlaceDollops()
 		bool initial_placement_abuts_pin = false;
 		bool initial_placement_abuts_fallthrough = false;
 		bool fits_entirely = false;
-		RangeAddress_t fallthrough_dollop_place;
+		RangeAddress_t fallthrough_dollop_place = 0;
 		bool fallthrough_has_preplacement = false;
 
 		//pq_entry = placement_queue.front();
