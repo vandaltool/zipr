@@ -2918,6 +2918,7 @@ void __bea_callspec__ int_(PDISASM pMyDisasm)
        (void) CopyFormattedNumber(pMyDisasm, (char*) (*pMyDisasm).Argument1.ArgMnemonic, "%.2X",(Int64) *((UInt8*)(UIntPtr) (GV.EIP_+1)));
     #endif
     (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+ABSOLUTE_;
+    (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Argument1.ArgSize = 8;
     GV.EIP_+=2;
     FillFlags(pMyDisasm, 42);
