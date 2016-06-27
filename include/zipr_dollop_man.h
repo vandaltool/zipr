@@ -103,7 +103,7 @@ class ZiprDollopManager_t : public DollopManager_t {
 		/*
 		 * Helper functions.
 		 */
-		int DetermineWorstCaseInsnSize(libIRDB::Instruction_t *insn);
+		size_t DetermineWorstCaseDollopEntrySize(DollopEntry_t *entry);
 	private:
 		/*
 		 * Helper functions.

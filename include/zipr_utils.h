@@ -8,7 +8,7 @@ namespace Utils {
 	extern size_t LONG_PIN_SIZE;
 	extern size_t SHORT_PIN_SIZE;
 	void PrintStat(std::ostream &out, std::string description, double value);
-	int DetermineWorstCaseInsnSize(libIRDB::Instruction_t*, bool account_for_jump = true);
+	size_t DetermineWorstCaseInsnSize(libIRDB::Instruction_t*, bool account_for_jump = true);
 
 	/** \brief Calculate entire size of a dollop 
 	 *         and it's fallthroughs.

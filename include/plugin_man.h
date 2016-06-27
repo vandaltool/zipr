@@ -2,7 +2,7 @@
 #define plugin_man_h
 
 typedef Zipr_SDK::ZiprPluginInterface_t* DLFunctionHandle_t;
-typedef std::set<DLFunctionHandle_t> DLFunctionHandleSet_t;
+typedef std::vector<DLFunctionHandle_t> DLFunctionHandleSet_t;
 
 typedef Zipr_SDK::ZiprPluginInterface_t* (*GetPluginInterface_t)(
 	Zipr_SDK::Zipr_t*
@@ -43,7 +43,7 @@ class ZiprPluginManager_t : public ZiprPluginInterface_t
 		virtual RangeAddress_t PlaceScoopsBegin(const RangeAddress_t max_addr);
 		virtual RangeAddress_t PlaceScoopsEnd(const RangeAddress_t max_addr);
 
-		virtual bool DoesPluginPlop(libIRDB::Instruction_t*,DLFunctionHandle_t&);
+		virtual bool DoPluginsPlop(libIRDB::Instruction_t*,std::list<DLFunctionHandle_t>&);
 
 		virtual bool DoesPluginAddress(const Dollop_t *, const RangeAddress_t &, Range_t &, bool &coalesce, DLFunctionHandle_t &);
 		virtual bool DoesPluginRetargetCallback(const RangeAddress_t &, const DollopEntry_t *, RangeAddress_t &, DLFunctionHandle_t &) ;

@@ -134,11 +134,11 @@ namespace zipr {
 		}
 	}
 
-	int ZiprDollopManager_t::DetermineWorstCaseInsnSize(libIRDB::Instruction_t *insn) {
+	size_t ZiprDollopManager_t::DetermineWorstCaseDollopEntrySize(DollopEntry_t *entry) {
 		if (m_zipr != NULL)
-			return m_zipr->PluginDetermineWorstCaseInsnSize(insn, false);
+			return m_zipr->DetermineWorstCaseDollopEntrySize(entry, false);
 		else
-			return Utils::DetermineWorstCaseInsnSize(insn, false);
+			return Utils::DetermineWorstCaseInsnSize(entry->Instruction(), false);
 	}
 
 	void ZiprDollopManager_t::PrintDollopPatches(const ostream &out) {

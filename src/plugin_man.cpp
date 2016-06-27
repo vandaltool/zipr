@@ -59,6 +59,20 @@ for(DLFunctionHandleSet_t::iterator it=m_handleList.begin(); it!=m_handleList.en
 	ZiprPluginInterface_t* zpi=(ZiprPluginInterface_t*)*it; \
 	var=zpi->func(var); \
 } 
+
+/*
+ * sort_plugins_by_name()
+ *
+ * Use this function as the comparator for sorting
+ * the plugins by the name that they return in their
+ * ToString() method. Sorting plugins by name is
+ * useful when trying to debug problems that depend
+ * on specific ordering.
+ */
+bool sort_plugins_by_name(DLFunctionHandle_t a, DLFunctionHandle_t b)
+{
+	return a->ToString() < b->ToString();
+}
  
 void ZiprPluginManager_t::PinningBegin()
 {
@@ -118,19 +132,20 @@ bool ZiprPluginManager_t::DoesPluginAddress(const Dollop_t *dollop, const RangeA
 	return false;
 }
 
-bool ZiprPluginManager_t::DoesPluginPlop(Instruction_t *insn, DLFunctionHandle_t &callback) 
+bool ZiprPluginManager_t::DoPluginsPlop(Instruction_t *insn, std::list<DLFunctionHandle_t> &callbacks) 
 {
+	bool a_plugin_does_plop = false;
 	DLFunctionHandleSet_t::iterator it=m_handleList.begin();
 	for(m_handleList.begin();it!=m_handleList.end();++it)
 	{
 		ZiprPluginInterface_t* zpi=(ZiprPluginInterface_t*)*it;
 		if (zpi->WillPluginPlop(insn))
 		{
-			callback = zpi;
-			return true;
+			callbacks.push_back(zpi);
+			a_plugin_does_plop = true;
 		}
 	}
-	return false;
+	return a_plugin_does_plop;
 }
 
 bool ZiprPluginManager_t::DoesPluginRetargetCallback(const RangeAddress_t &callback_addr, const DollopEntry_t *callback_entry, RangeAddress_t &target_address, DLFunctionHandle_t &patcher)
@@ -231,9 +246,12 @@ void ZiprPluginManager_t::open_plugins
 		}
 		p_opts->AddNamespace(interface->RegisterOptions(global_ns));
 
-		m_handleList.insert(interface);
+		m_handleList.push_back(interface);
 		
     	}
     	closedir(dp);
+
+			std::sort(m_handleList.begin(), m_handleList.end(), sort_plugins_by_name);
+
     	return;
 }

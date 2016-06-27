@@ -53,7 +53,7 @@ size_t DetermineWorstCaseDollopSizeInclFallthrough(Dollop_t *dollop)
 	return fallthroughs_wcds;
 }
 
-int DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_for_jump)
+size_t DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_for_jump)
 {
 
 	int required_size=0;

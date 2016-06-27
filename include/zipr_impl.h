@@ -69,14 +69,14 @@ class ZiprImpl_t : public Zipr_t
 			return m_error;
 		}
 		/*
-		 * PluginDetermineWorstCaseInsnSize
+		 * DetermineWorstCaseDollopEntrySize
 		 * 
-		 * Determine the worst case instruction size
+		 * Determine the worst case dollop entry size.
 		 * and account for the possibility that a plugin
 		 * may be plopping this instruction and want
 		 * to do some calculations.
 		 */
-		int PluginDetermineWorstCaseInsnSize(libIRDB::Instruction_t *insn, bool account_for_jump = true);
+		size_t DetermineWorstCaseDollopEntrySize(DollopEntry_t *entry, bool account_for_jump = true);
 
 		/*
 		 * DetermineWorstCaseInsnSize
@@ -86,7 +86,7 @@ class ZiprImpl_t : public Zipr_t
 		 * may be plopping this instruction and want
 		 * to do some calculations.
 		 */
-		int DetermineWorstCaseInsnSize(libIRDB::Instruction_t*, bool account_for_jump = true);
+		size_t DetermineWorstCaseInsnSize(libIRDB::Instruction_t*, bool account_for_jump = true);
 
 		Zipr_SDK::RangeAddress_t PlopDollopEntry(
 			DollopEntry_t *,
@@ -469,7 +469,8 @@ class ZiprImpl_t : public Zipr_t
 
 		ZiprPluginManager_t plugman;
 
-		std::map<libIRDB::Instruction_t*,DLFunctionHandle_t> plopping_plugins;
+		std::map<libIRDB::Instruction_t*,
+		         std::unique_ptr<std::list<DLFunctionHandle_t>>> plopping_plugins;
 		
 		// Options
 		ZiprOptions_t m_zipr_options;

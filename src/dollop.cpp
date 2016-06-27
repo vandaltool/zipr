@@ -47,7 +47,7 @@ namespace Zipr_SDK {
 		{
 			Instruction_t *cur_insn = (*it)->Instruction();
 			if (m_dollop_mgr != NULL)
-				dollop_size += m_dollop_mgr->DetermineWorstCaseInsnSize(cur_insn);
+				dollop_size += m_dollop_mgr->DetermineWorstCaseDollopEntrySize(*it);
 			else
 			{
 				assert(false);

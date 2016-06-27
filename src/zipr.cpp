@@ -1413,7 +1413,7 @@ void ZiprImpl_t::WriteDollops()
 
 			start = entry_to_write->Place();
 			end = _PlopDollopEntry(entry_to_write);
-			should_end = start + _DetermineWorstCaseInsnSize(entry_to_write->Instruction(), false);
+			should_end = start + DetermineWorstCaseDollopEntrySize(entry_to_write, false);
 			assert(end <= should_end);
 			/*
 			 * Build up a list of those dollop entries that we have
@@ -1537,7 +1537,7 @@ void ZiprImpl_t::PlaceDollops()
 		to_place->ReCalculateWorstCaseSize();
 
 		minimum_valid_req_size = std::min(
-			_DetermineWorstCaseInsnSize(to_place->front()->Instruction()),
+			DetermineWorstCaseDollopEntrySize(to_place->front()),
 			Utils::DetermineWorstCaseDollopSizeInclFallthrough(to_place));
 		/*
 		 * Ask the plugin manager if there are any plugins
@@ -1842,11 +1842,11 @@ void ZiprImpl_t::PlaceDollops()
 				bool last_de_fits = false;
 				bool disallowed_override = true;
 				de_and_fallthrough_fit = (placement.GetEnd()>= /* fits */
-				     (cur_addr+_DetermineWorstCaseInsnSize(dollop_entry->Instruction()))
+				     (cur_addr+DetermineWorstCaseDollopEntrySize(dollop_entry))
 				                         );
 				last_de_fits = (std::next(dit,1)==dit_end) /* last */ &&
 				               (placement.GetEnd()>=(cur_addr+ /* fits */
-							_DetermineWorstCaseInsnSize(dollop_entry->Instruction(),
+							DetermineWorstCaseDollopEntrySize(dollop_entry,
 							                            to_place->FallthroughDollop()!=NULL))
 							                            /* with or without fallthrough */
 							         );
@@ -1860,8 +1860,8 @@ void ZiprImpl_t::PlaceDollops()
 															 all_fallthroughs_fit && 
 				                       ((placement.GetEnd() - 
 				                        (cur_addr + 
-				                         _DetermineWorstCaseInsnSize(
-				                           dollop_entry->Instruction(),
+				                         DetermineWorstCaseDollopEntrySize(
+				                           dollop_entry,
 				                           false)
 				                         ) < Utils::TRAMPOLINE_SIZE
 				                        )
@@ -1903,7 +1903,7 @@ void ZiprImpl_t::PlaceDollops()
 					}
 #endif
 					dollop_entry->Place(cur_addr);
-					cur_addr+=_DetermineWorstCaseInsnSize(dollop_entry->Instruction(),
+					cur_addr+=DetermineWorstCaseDollopEntrySize(dollop_entry,
 					                                      false);
 					if (dollop_entry->TargetDollop())
 					{
@@ -2035,9 +2035,8 @@ void ZiprImpl_t::PlaceDollops()
 				/*
 				 * ... or maybe we just want to start the next dollop.
 				 */
-				fallthrough_wcis = _DetermineWorstCaseInsnSize(fallthrough->
-				                                               front()->
-				                                               Instruction());
+				fallthrough_wcis=DetermineWorstCaseDollopEntrySize(fallthrough->
+				                                               front());
 				remaining_size = placement.GetEnd() - cur_addr;
 
 				/*
@@ -2071,8 +2070,7 @@ void ZiprImpl_t::PlaceDollops()
 
 					patch_de->TargetDollop(fallthrough);
 					patch_de->Place(cur_addr);
-					cur_addr+=_DetermineWorstCaseInsnSize(patch_de->Instruction(),
-					                                      false);
+					cur_addr+=DetermineWorstCaseDollopEntrySize(patch_de, false);
 
 					to_place->push_back(patch_de);
 					to_place->FallthroughPatched(true);
@@ -2273,54 +2271,92 @@ void ZiprImpl_t::PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)
 	}
 }
 
-int ZiprImpl_t::PluginDetermineWorstCaseInsnSize(Instruction_t *insn, bool account_for_jump)
+size_t ZiprImpl_t::DetermineWorstCaseDollopEntrySize(DollopEntry_t *entry, bool account_for_jump)
 {
-	return (int)_DetermineWorstCaseInsnSize(insn, account_for_jump);
+	std::map<Instruction_t*,unique_ptr<list<DLFunctionHandle_t>>>::const_iterator plop_it;
+	size_t padding = 0;
+	size_t wcis = _DetermineWorstCaseInsnSize(entry->Instruction(), account_for_jump);
+
+	plop_it = plopping_plugins.find(entry->Instruction());
+	if (plop_it != plopping_plugins.end())
+	{
+		for (auto handle : *(plop_it->second))
+		{
+			ZiprPluginInterface_t *zpi = dynamic_cast<ZiprPluginInterface_t*>(handle);
+			padding += zpi->InsnPaddingSize(entry->Instruction(),this);
+		}
+	}
+
+	if (m_verbose)
+	{
+		cout << "Adding padding of " << padding << "." << endl;
+		cout << "WCDES of " << std::hex << entry << ":" << std::dec << wcis+padding << endl;
+	}
+
+	return wcis+padding;
 }
 
 size_t ZiprImpl_t::_DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_for_jump)
 {
-	std::map<Instruction_t*,DLFunctionHandle_t>::const_iterator plop_it;
+	std::map<Instruction_t*,unique_ptr<list<DLFunctionHandle_t>>>::const_iterator plop_it;
 	size_t worst_case_size = 0;
+	size_t default_worst_case_size = 0;
+
+	default_worst_case_size = DetermineWorstCaseInsnSize(insn, account_for_jump);
 
 	plop_it = plopping_plugins.find(insn);
 	if (plop_it != plopping_plugins.end())
 	{
-		DLFunctionHandle_t handle = plop_it->second;
-		ZiprPluginInterface_t *zpi = dynamic_cast<ZiprPluginInterface_t*>(handle);
-		worst_case_size = zpi->WorstCaseInsnSize(insn,account_for_jump,this);
+		for (auto handle : *(plop_it->second))
+		{
+			ZiprPluginInterface_t *zpi = dynamic_cast<ZiprPluginInterface_t*>(handle);
+			worst_case_size = std::max(zpi->WorstCaseInsnSize(insn,
+			                                                  account_for_jump,
+			                                                  this),
+			                           worst_case_size);
+		}
 	}
 	else
-		worst_case_size = DetermineWorstCaseInsnSize(insn, account_for_jump);
+	{
+		worst_case_size = default_worst_case_size;
+	}
 
 #if 1
 	if (m_verbose)
-		cout << "Worst case size" << ((account_for_jump) ? " (including jump)" : "")
+		cout << "Worst case size" 
+		     << ((account_for_jump) ? " (including jump)" : "")
 		     << ": " << worst_case_size << endl;
 #endif
 
 	return worst_case_size;
 }
 
-int ZiprImpl_t::DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_for_jump)
+size_t ZiprImpl_t::DetermineWorstCaseInsnSize(Instruction_t *insn, bool account_for_jump)
 {
 	return Utils::DetermineWorstCaseInsnSize(insn, account_for_jump);
 }
 
 bool ZiprImpl_t::AskPluginsAboutPlopping(Instruction_t *insn)
 {
-	DLFunctionHandle_t plopping_plugin;
-	if (plugman.DoesPluginPlop(insn, plopping_plugin))
+	/*
+	 * Plopping plugins should hold a set.
+	 */
+	unique_ptr<list<DLFunctionHandle_t>> found_plopping_plugins = 
+	unique_ptr<list<DLFunctionHandle_t>>(new std::list<DLFunctionHandle_t>());
+
+	if (plugman.DoPluginsPlop(insn, *found_plopping_plugins))
 	{
-		ZiprPluginInterface_t *zipr_plopping_plugin =
-			dynamic_cast<ZiprPluginInterface_t*>(plopping_plugin);
 		if (m_verbose)
-		{
-			cout << zipr_plopping_plugin->ToString()
-			     << " will plop "<<dec<<insn->GetBaseID() << ":"
-			     << insn->getDisassembly() << endl;
-		}
-		plopping_plugins[insn] = plopping_plugin;
+			for (auto pp : *found_plopping_plugins)
+			{
+				ZiprPluginInterface_t *zipr_plopping_plugin =
+					dynamic_cast<ZiprPluginInterface_t*>(pp);
+				cout << zipr_plopping_plugin->ToString()
+				     << " will plop "<<dec<<insn->GetBaseID() << ":"
+				     << insn->getDisassembly() << endl;
+			}
+
+		plopping_plugins[insn] = std::move(found_plopping_plugins);
 		return true;
 	}
 	return false;
@@ -2437,28 +2473,39 @@ void ZiprImpl_t::PatchInstruction(RangeAddress_t from_addr, Instruction_t* to_in
 RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t *entry, RangeAddress_t override_address)
 {
 	Instruction_t *insn = entry->Instruction();
-	RangeAddress_t addr = entry->Place();
-	RangeAddress_t updated_addr;
-	std::map<Instruction_t*,DLFunctionHandle_t>::const_iterator plop_it;
+	size_t insn_wcis = _DetermineWorstCaseInsnSize(insn, false);
+	RangeAddress_t updated_addr = 0;
+	RangeAddress_t placed_address = entry->Place();
+
+	map<Instruction_t*,unique_ptr<std::list<DLFunctionHandle_t>>>::const_iterator plop_it;
 
 	if (override_address != 0)
-		addr = override_address;
-
+		placed_address = override_address;
+	
 	plop_it = plopping_plugins.find(insn);
 	if (plop_it != plopping_plugins.end())
 	{
-		DLFunctionHandle_t handle = plop_it->second;
-		RangeAddress_t placed_address = 0;
-		ZiprPluginInterface_t *zpi = dynamic_cast<ZiprPluginInterface_t*>(handle);
-		updated_addr = zpi->PlopDollopEntry(entry, placed_address, this);
-		if (m_verbose)
-			cout << "Placed address: " << std::hex << placed_address << endl;
+		for (auto pp : *(plop_it->second))
+		{
+			DLFunctionHandle_t handle = pp;
+			ZiprPluginInterface_t *zpi = dynamic_cast<ZiprPluginInterface_t*>(handle);
+			updated_addr = std::max(zpi->PlopDollopEntry(entry,
+			                                             placed_address,
+																									 insn_wcis,
+																									 this),
+			                        updated_addr);
+			if (m_verbose)
+				cout << zpi->ToString() << " placed entry " 
+				     << std::hex << entry 
+						 << " at address: " << std::hex << placed_address 
+						 << endl;
+		}
 		final_insn_locations[insn] = placed_address;
 	}
 	else
 	{
-		final_insn_locations[insn] = addr;
-		updated_addr = PlopDollopEntry(entry, addr);
+		final_insn_locations[insn] = placed_address;
+		updated_addr = PlopDollopEntry(entry, placed_address);
 	}
 	return updated_addr;
 }
