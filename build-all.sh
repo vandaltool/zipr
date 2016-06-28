@@ -56,7 +56,7 @@ fi
 
 
 cd $SECURITY_TRANSFORMS_HOME
-scons -j2 build_cgc=1 build_appfw=0
+scons -j2 build_cgc=1 build_appfw=0 do_cgc=1 
 
 cd $SMPSA_HOME
 scons -j2 build_irdb=1 build_ida=1 do_64bit_analysis=1 debug=0 do_sccp=0 numeric_error_annots=0
@@ -78,12 +78,12 @@ make install
 
 if [ -d $ZIPR_HOME ]; then
 	cd $ZIPR_HOME
-	scons -j2 do_cgc=1 # ./configure --enable-cgc --prefix=$ZIPR_INSTALL; make;  make install
+	scons -j2 do_cgc=1 build_cgc=1 # ./configure --enable-cgc --prefix=$ZIPR_INSTALL; make;  make install
 fi
 
 if [ -d $ZIPR_SCFI_PLUGIN ]; then 
 	cd $ZIPR_SCFI_PLUGIN
-	scons -j2 do_cgc=1
+	scons -j2 do_cgc=1 build_cgc=1 
 fi
 
 # build trace plugin
@@ -91,20 +91,20 @@ if [ -d "${PEASOUP_UMBRELLA_DIR}/zipr_trace_plugin" ]; then
 	cd ${PEASOUP_UMBRELLA_DIR}/zipr_trace_plugin/libtrace
 	scons
 	cd ${PEASOUP_UMBRELLA_DIR}/zipr_trace_plugin
-	scons do_cgc=1
+	scons do_cgc=1 build_cgc=1 
 	cp ${PEASOUP_UMBRELLA_DIR}/zipr_trace_plugin/libtrace/libtrace.so ${ZIPR_INSTALL}/lib
 fi
 
 # build unpin plugin
 if [ -d "${PEASOUP_UMBRELLA_DIR}/zipr_unpin_plugin" ]; then
 	cd ${PEASOUP_UMBRELLA_DIR}/zipr_unpin_plugin
-	scons do_cgc=1
+	scons do_cgc=1 build_cgc=1 
 fi
 
 # build relax plugin
 if [ -d "${PEASOUP_UMBRELLA_DIR}/zipr_relax_plugin" ]; then
 	cd ${PEASOUP_UMBRELLA_DIR}/zipr_relax_plugin
-	scons do_cgc=1
+	scons do_cgc=1 build_cgc=1 
 fi
 
 # build irdb_transform
