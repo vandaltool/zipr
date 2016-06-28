@@ -2274,7 +2274,7 @@ void ZiprImpl_t::PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)
 size_t ZiprImpl_t::DetermineWorstCaseDollopEntrySize(DollopEntry_t *entry, bool account_for_jump)
 {
 	std::map<Instruction_t*,unique_ptr<list<DLFunctionHandle_t>>>::const_iterator plop_it;
-	size_t padding = 0;
+	size_t opening_size = 0, closing_size = 0;
 	size_t wcis = _DetermineWorstCaseInsnSize(entry->Instruction(), account_for_jump);
 
 	plop_it = plopping_plugins.find(entry->Instruction());
@@ -2283,17 +2283,20 @@ size_t ZiprImpl_t::DetermineWorstCaseDollopEntrySize(DollopEntry_t *entry, bool 
 		for (auto handle : *(plop_it->second))
 		{
 			ZiprPluginInterface_t *zpi = dynamic_cast<ZiprPluginInterface_t*>(handle);
-			padding += zpi->InsnPaddingSize(entry->Instruction(),this);
+			opening_size += zpi->DollopEntryOpeningSize(entry, this);
+			closing_size += zpi->DollopEntryClosingSize(entry, this);
 		}
 	}
 
 	if (m_verbose)
 	{
-		cout << "Adding padding of " << padding << "." << endl;
-		cout << "WCDES of " << std::hex << entry << ":" << std::dec << wcis+padding << endl;
+		cout << "Adding opening size of " << opening_size << "." << endl;
+		cout << "Adding closing size of " << closing_size << "." << endl;
+		cout << "WCDES of " << std::hex << entry << ":" 
+		     << std::dec << wcis+opening_size+closing_size << endl;
 	}
 
-	return wcis+padding;
+	return wcis+opening_size+closing_size;
 }
 
 size_t ZiprImpl_t::_DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_for_jump)
@@ -2476,6 +2479,7 @@ RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t *entry, RangeAddress_t
 	size_t insn_wcis = _DetermineWorstCaseInsnSize(insn, false);
 	RangeAddress_t updated_addr = 0;
 	RangeAddress_t placed_address = entry->Place();
+	bool placed_insn = false;
 
 	map<Instruction_t*,unique_ptr<std::list<DLFunctionHandle_t>>>::const_iterator plop_it;
 
@@ -2487,26 +2491,37 @@ RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t *entry, RangeAddress_t
 	{
 		for (auto pp : *(plop_it->second))
 		{
+			bool pp_placed_insn = false;
 			DLFunctionHandle_t handle = pp;
 			ZiprPluginInterface_t *zpi = dynamic_cast<ZiprPluginInterface_t*>(handle);
 			updated_addr = std::max(zpi->PlopDollopEntry(entry,
 			                                             placed_address,
 																									 insn_wcis,
+																									 pp_placed_insn,
 																									 this),
 			                        updated_addr);
 			if (m_verbose)
 				cout << zpi->ToString() << " placed entry " 
 				     << std::hex << entry 
 						 << " at address: " << std::hex << placed_address 
+						 << " " << (pp_placed_insn ? "and placed" : "but did not place")
+						 << " the instruction."
 						 << endl;
+		
+			placed_insn |= pp_placed_insn;
 		}
-		final_insn_locations[insn] = placed_address;
 	}
-	else
+
+	/*
+	 * If no plugin actually placed the instruction,
+	 * then we are going to do it ourselves.
+	 */
+	if (!placed_insn)
 	{
-		final_insn_locations[insn] = placed_address;
 		updated_addr = PlopDollopEntry(entry, placed_address);
 	}
+
+	final_insn_locations[insn] = placed_address;
 	return updated_addr;
 }
 
