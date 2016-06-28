@@ -39,7 +39,7 @@ if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then
     exit 1; 
 fi
 cd $SECURITY_TRANSFORMS_HOME
-scons build_cgc=1 build_appfw=0 -c
+scons build_cgc=1 build_cgc=1 build_appfw=0 -c
 
 cd $PEASOUP_HOME
 make clean
@@ -51,12 +51,12 @@ make clean
 
 if [ -d $ZIPR_HOME ]; then
         cd $ZIPR_HOME
-        scons build_cgc=1 -c 
+        scons build_cgc=1 build_cgc=1 -c 
 fi
 
 if [ -d $ZIPR_SCFI_PLUGIN ]; then
         cd $ZIPR_SCFI_PLUGIN
-        scons do_cgc=1 -c
+        scons do_cgc=1 build_cgc=1 -c
 fi
 
 # clean trace plugin
@@ -64,19 +64,19 @@ if [ -d "${PEASOUP_UMBRELLA_DIR}/zipr_trace_plugin" ]; then
 	cd ${PEASOUP_UMBRELLA_DIR}/zipr_trace_plugin/libtrace
 	scons -c
 	cd ${PEASOUP_UMBRELLA_DIR}/zipr_trace_plugin
-	scons do_cgc=1 -c
+	scons do_cgc=1 build_cgc=1 -c
 fi
 
 # clean unpin plugin
 if [ -d "${PEASOUP_UMBRELLA_DIR}/zipr_unpin_plugin" ]; then
 	cd ${PEASOUP_UMBRELLA_DIR}/zipr_unpin_plugin
-	scons do_cgc=1 -c
+	scons do_cgc=1 build_cgc=1 -c
 fi
 
 # clean relax plugin
 if [ -d "${PEASOUP_UMBRELLA_DIR}/zipr_relax_plugin" ]; then
 	cd ${PEASOUP_UMBRELLA_DIR}/zipr_relax_plugin
-	scons do_cgc=1 -c
+	scons do_cgc=1 build_cgc=1 -c
 fi
 
 # clean ZIPR install
