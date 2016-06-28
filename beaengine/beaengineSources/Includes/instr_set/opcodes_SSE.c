@@ -4714,14 +4714,14 @@ void __bea_callspec__ ucomiss_VW(PDISASM pMyDisasm)
     if (pMyDisasm->Prefix.OperandSize == InUsePrefix) {
         GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
-        GV.MemDecoration = Arg2fword;
+        GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+COMPARISON_INSTRUCTION;
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "ucomisd ");
         #endif
     }
     else {
-        GV.MemDecoration = Arg2dqword;
+        GV.MemDecoration = Arg2dword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+COMPARISON_INSTRUCTION;
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "ucomiss ");
