@@ -1413,7 +1413,8 @@ void ZiprImpl_t::WriteDollops()
 
 			start = entry_to_write->Place();
 			end = _PlopDollopEntry(entry_to_write);
-			should_end = start + DetermineWorstCaseDollopEntrySize(entry_to_write, false);
+			should_end = start +
+			             DetermineWorstCaseDollopEntrySize(entry_to_write, false);
 			assert(end <= should_end);
 			/*
 			 * Build up a list of those dollop entries that we have
@@ -1537,7 +1538,7 @@ void ZiprImpl_t::PlaceDollops()
 		to_place->ReCalculateWorstCaseSize();
 
 		minimum_valid_req_size = std::min(
-			DetermineWorstCaseDollopEntrySize(to_place->front()),
+			DetermineWorstCaseDollopEntrySize(to_place->front(), true),
 			Utils::DetermineWorstCaseDollopSizeInclFallthrough(to_place));
 		/*
 		 * Ask the plugin manager if there are any plugins
@@ -1842,7 +1843,7 @@ void ZiprImpl_t::PlaceDollops()
 				bool last_de_fits = false;
 				bool disallowed_override = true;
 				de_and_fallthrough_fit = (placement.GetEnd()>= /* fits */
-				     (cur_addr+DetermineWorstCaseDollopEntrySize(dollop_entry))
+				     (cur_addr+DetermineWorstCaseDollopEntrySize(dollop_entry, true))
 				                         );
 				last_de_fits = (std::next(dit,1)==dit_end) /* last */ &&
 				               (placement.GetEnd()>=(cur_addr+ /* fits */
@@ -2036,7 +2037,8 @@ void ZiprImpl_t::PlaceDollops()
 				 * ... or maybe we just want to start the next dollop.
 				 */
 				fallthrough_wcis=DetermineWorstCaseDollopEntrySize(fallthrough->
-				                                               front());
+				                                                   front(),
+																													 true);
 				remaining_size = placement.GetEnd() - cur_addr;
 
 				/*
@@ -2148,21 +2150,27 @@ void ZiprImpl_t::CreateDollops()
 {
 	multimap<const UnresolvedUnpinned_t,Patch_t>::const_iterator pin_it,
 	                                                             pin_it_end;
-	int dollop_count=0;
-	cout<<"Attempting to create "<<patch_list.size()<<" dollops for the pins.";
+	if (m_verbose)
+		cout<< "Attempting to create "
+		    << patch_list.size()
+				<< " dollops for the pins."
+				<< endl;
+
 	for (pin_it = patch_list.begin(), pin_it_end = patch_list.end();
 	     pin_it != pin_it_end;
 	     pin_it++)
 	{
 		UnresolvedUnpinned_t uu = (*pin_it).first;
 		m_dollop_mgr.AddNewDollops(uu.GetInstruction());
-
-		if((dollop_count++ % 100) == 0)
-			cout<<"."<<flush;
 	}
-	cout<<"Done!  Updating all Targets"<<endl;
+	if (m_verbose)
+		cout << "Done creating dollops for the pins! Updating all Targets" << endl;
+
 	m_dollop_mgr.UpdateAllTargets();
-	cout << "Created " <<std::dec<< m_dollop_mgr.Size() << " total dollops." << endl;
+
+	if (m_verbose)
+		cout << "Created " <<std::dec << m_dollop_mgr.Size() 
+		     << " total dollops." << endl;
 }
 
 void ZiprImpl_t::OptimizePinnedInstructions()
@@ -2271,11 +2279,11 @@ void ZiprImpl_t::PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)
 	}
 }
 
-size_t ZiprImpl_t::DetermineWorstCaseDollopEntrySize(DollopEntry_t *entry, bool account_for_jump)
+size_t ZiprImpl_t::DetermineWorstCaseDollopEntrySize(DollopEntry_t *entry, bool account_for_fallthrough)
 {
 	std::map<Instruction_t*,unique_ptr<list<DLFunctionHandle_t>>>::const_iterator plop_it;
 	size_t opening_size = 0, closing_size = 0;
-	size_t wcis = _DetermineWorstCaseInsnSize(entry->Instruction(), account_for_jump);
+	size_t wcis = DetermineWorstCaseInsnSize(entry->Instruction(), account_for_fallthrough);
 
 	plop_it = plopping_plugins.find(entry->Instruction());
 	if (plop_it != plopping_plugins.end())
@@ -2299,13 +2307,13 @@ size_t ZiprImpl_t::DetermineWorstCaseDollopEntrySize(DollopEntry_t *entry, bool 
 	return wcis+opening_size+closing_size;
 }
 
-size_t ZiprImpl_t::_DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_for_jump)
+size_t ZiprImpl_t::DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_for_fallthrough)
 {
 	std::map<Instruction_t*,unique_ptr<list<DLFunctionHandle_t>>>::const_iterator plop_it;
 	size_t worst_case_size = 0;
 	size_t default_worst_case_size = 0;
 
-	default_worst_case_size = DetermineWorstCaseInsnSize(insn, account_for_jump);
+	default_worst_case_size = Utils::DetermineWorstCaseInsnSize(insn, account_for_fallthrough);
 
 	plop_it = plopping_plugins.find(insn);
 	if (plop_it != plopping_plugins.end())
@@ -2314,7 +2322,7 @@ size_t ZiprImpl_t::_DetermineWorstCaseInsnSize(Instruction_t* insn, bool account
 		{
 			ZiprPluginInterface_t *zpi = dynamic_cast<ZiprPluginInterface_t*>(handle);
 			worst_case_size = std::max(zpi->WorstCaseInsnSize(insn,
-			                                                  account_for_jump,
+			                                                  account_for_fallthrough,
 			                                                  this),
 			                           worst_case_size);
 		}
@@ -2324,19 +2332,21 @@ size_t ZiprImpl_t::_DetermineWorstCaseInsnSize(Instruction_t* insn, bool account
 		worst_case_size = default_worst_case_size;
 	}
 
+	if (worst_case_size == 0)
+	{
+		if (m_verbose)
+			cout << "Asked plugins about WCIS, but none responded." << endl;
+		worst_case_size = default_worst_case_size;
+	}
+
 #if 1
 	if (m_verbose)
 		cout << "Worst case size" 
-		     << ((account_for_jump) ? " (including jump)" : "")
+		     << ((account_for_fallthrough) ? " (including jump)" : "")
 		     << ": " << worst_case_size << endl;
 #endif
 
 	return worst_case_size;
-}
-
-size_t ZiprImpl_t::DetermineWorstCaseInsnSize(Instruction_t *insn, bool account_for_jump)
-{
-	return Utils::DetermineWorstCaseInsnSize(insn, account_for_jump);
 }
 
 bool ZiprImpl_t::AskPluginsAboutPlopping(Instruction_t *insn)
@@ -2476,7 +2486,7 @@ void ZiprImpl_t::PatchInstruction(RangeAddress_t from_addr, Instruction_t* to_in
 RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t *entry, RangeAddress_t override_address)
 {
 	Instruction_t *insn = entry->Instruction();
-	size_t insn_wcis = _DetermineWorstCaseInsnSize(insn, false);
+	size_t insn_wcis = DetermineWorstCaseInsnSize(insn, false);
 	RangeAddress_t updated_addr = 0;
 	RangeAddress_t placed_address = entry->Place();
 	bool placed_insn = false;

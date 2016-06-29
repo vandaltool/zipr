@@ -76,17 +76,7 @@ class ZiprImpl_t : public Zipr_t
 		 * may be plopping this instruction and want
 		 * to do some calculations.
 		 */
-		size_t DetermineWorstCaseDollopEntrySize(DollopEntry_t *entry, bool account_for_jump = true);
-
-		/*
-		 * DetermineWorstCaseInsnSize
-		 * 
-		 * Determine the worst case instruction size
-		 * but do not account for the possibility that a plugin
-		 * may be plopping this instruction and want
-		 * to do some calculations.
-		 */
-		size_t DetermineWorstCaseInsnSize(libIRDB::Instruction_t*, bool account_for_jump = true);
+		size_t DetermineWorstCaseDollopEntrySize(DollopEntry_t *entry, bool account_for_trampoline);
 
 		Zipr_SDK::RangeAddress_t PlopDollopEntry(
 			DollopEntry_t *,
@@ -120,7 +110,7 @@ class ZiprImpl_t : public Zipr_t
 		void Init();
 
 		Zipr_SDK::RangeAddress_t _PlopDollopEntry(DollopEntry_t*, Zipr_SDK::RangeAddress_t override_address=0);
-		size_t _DetermineWorstCaseInsnSize(libIRDB::Instruction_t*, bool account_for_jump = true);
+
 		/*
 		 * FindFreeRanges()
 		 *
@@ -352,6 +342,15 @@ class ZiprImpl_t : public Zipr_t
 		void  FixMultipleFallthroughs();
 
 
+		/*
+		 * DetermineWorstCaseInsnSize
+		 * 
+		 * Determine the worst case instruction size
+		 * but do not account for the possibility that a plugin
+		 * may be plopping this instruction and want
+		 * to do some calculations.
+		 */
+		size_t DetermineWorstCaseInsnSize(libIRDB::Instruction_t*, bool account_for_trampoline);
 
 		// patching
 		void PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr);
