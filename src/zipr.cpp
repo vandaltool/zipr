@@ -2291,8 +2291,8 @@ size_t ZiprImpl_t::DetermineWorstCaseDollopEntrySize(DollopEntry_t *entry, bool 
 		for (auto handle : *(plop_it->second))
 		{
 			ZiprPluginInterface_t *zpi = dynamic_cast<ZiprPluginInterface_t*>(handle);
-			opening_size += zpi->DollopEntryOpeningSize(entry, this);
-			closing_size += zpi->DollopEntryClosingSize(entry, this);
+			opening_size += zpi->DollopEntryOpeningSize(entry);
+			closing_size += zpi->DollopEntryClosingSize(entry);
 		}
 	}
 
@@ -2321,10 +2321,9 @@ size_t ZiprImpl_t::DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_
 		for (auto handle : *(plop_it->second))
 		{
 			ZiprPluginInterface_t *zpi = dynamic_cast<ZiprPluginInterface_t*>(handle);
-			worst_case_size = std::max(zpi->WorstCaseInsnSize(insn,
-			                                                  account_for_fallthrough,
-			                                                  this),
-			                           worst_case_size);
+			worst_case_size =std::max(zpi->WorstCaseInsnSize(insn,
+			                                                 account_for_fallthrough),
+			                          worst_case_size);
 		}
 	}
 	else
@@ -2507,8 +2506,7 @@ RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t *entry, RangeAddress_t
 			updated_addr = std::max(zpi->PlopDollopEntry(entry,
 			                                             placed_address,
 																									 insn_wcis,
-																									 pp_placed_insn,
-																									 this),
+																									 pp_placed_insn),
 			                        updated_addr);
 			if (m_verbose)
 				cout << zpi->ToString() << " placed entry " 
