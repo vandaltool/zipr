@@ -1193,14 +1193,6 @@ tools/transforms/nulltransform.cpp -text
 tools/transforms/sample_meds_int.annot -text
 tools/transforms/transformutils.cpp -text
 tools/transforms/transformutils.h -text
-tools/watch_syscall/LICENSE.txt -text
-tools/watch_syscall/Makefile.in -text
-tools/watch_syscall/SConscript -text
-tools/watch_syscall/SConstruct -text
-tools/watch_syscall/csowarn.hpp -text
-tools/watch_syscall/wsc_driver.cpp -text
-tools/watch_syscall/wsc_instrument.cpp -text
-tools/watch_syscall/wsc_instrument.hpp -text
 xform/Makefile.in -text
 xform/SConscript -text
 xform/SConstruct -text
