@@ -13,7 +13,6 @@ dirs='''
 	selective_cfi
 	simple_cdi
 	spasm
-	watch_syscall
 	cookbook
 	dump_map
 	print_cfi_stats
