@@ -675,6 +675,11 @@ bool	WSC_Instrument::add_null_check(Instruction_t* insn, const CSO_WarningRecord
 	return true;
 }
 
+bool	WSC_Instrument::add_clamp(Instruction_t* insn, const CSO_WarningRecord_t *const wr)
+{
+	assert(0); // todo
+}
+
 bool	WSC_Instrument::add_bounds_check(Instruction_t* insn, const CSO_WarningRecord_t *const wr)
 {
 	m_num_boundscheck_instrumentations;
@@ -769,6 +774,55 @@ bool	WSC_Instrument::add_segfault_checking(Instruction_t* insn)
 			success = success && add_segfault_checking(insn, wr);
 		else if(wr->GetType()==CSOWE_ReverseSandboxing)
 			success = success && add_segfault_checking(insn, wr);
+	}
+	return success;
+}
+
+static int can_lower_bounds_check(Instruction_t* insn, const CSO_WarningRecord_t *const wr) 
+{
+	return has_index_register(insn);
+}
+
+static int can_upper_bounds_check(Instruction_t* insn, const CSO_WarningRecord_t *const wr) 
+{
+	return can_lower_bounds_check(insn,wr) && wr->GetBufferSize()!=0;
+}
+
+bool	WSC_Instrument::add_smart_checking(Instruction_t* insn)
+{
+	assert(insn);
+	DISASM d;
+	insn->Disassemble(d);
+
+	bool success=true;
+
+	/* no CSO records, sandbox the instruction */
+	if (warning_records[insn].size() == 0 && DoPromiscuousSandboxing())
+		assert(0); // promiscuous mode and smart mode not compatible.
+
+	for(CSO_WarningRecordSet_t::iterator it=warning_records[insn].begin();
+		it!=warning_records[insn].end();
+		++it
+	   )
+	{
+		CSO_WarningRecord_t* wr=*it;
+		assert(wr);
+		if(wr->GetType()==CSOWE_BufferOverrun)
+		{
+			if(can_upper_bounds_check(insn,wr))
+				success = success && add_bounds_check(insn, wr);
+			else
+				success = success && add_clamp(insn,wr);
+		}
+		else if(wr->GetType()==CSOWE_BufferUnderrun)
+		{
+			if(can_lower_bounds_check(insn,wr))
+				success = success && add_bounds_check(insn, wr);
+			else
+				success = success && add_clamp(insn,wr);
+		}
+		else 
+			assert(0); // not sure how to do this.
 	}
 	return success;
 }
@@ -906,11 +960,19 @@ bool	WSC_Instrument::add_segfault_checking()
 		if(insn->GetBaseID()!=BaseObj_t::NOT_IN_DATABASE) 
 		{
 			// mutually exclusive mode -- one or the other for now
-			if ((DoReverseSandboxing() && needs_reverse_sandboxing(insn,d)) ||
-				(!DoReverseSandboxing() && needs_wsc_segfault_checking(insn,d)))
+			if (DoReverseSandboxing() && needs_reverse_sandboxing(insn,d))
 			{
-				bool one_success = add_segfault_checking(insn);
-				success = success && one_success;
+				success = success && add_segfault_checking(insn);
+				m_num_segfault_checking++;
+			}
+			else if(DoSandboxing() && needs_wsc_segfault_checking(insn,d) )
+			{
+				success = success && add_segfault_checking(insn);
+				m_num_segfault_checking++;
+			}
+			else if (DoSmartMode() && needs_reverse_sandboxing(insn,d))
+			{
+				success = success && add_smart_checking(insn);
 				m_num_segfault_checking++;
 			}
 		}
@@ -1121,26 +1183,27 @@ std::ostream& WSC_Instrument::displayStatistics(std::ostream &os)
 	return os;
 }
 
+
 bool WSC_Instrument::execute()
 {
 	bool success=true;
 
+
+	// sandboxing requires hooking start and allocs
 	if (DoSandboxing()) 
 	{
 		success = success && add_init_call();
 		success = success && add_allocation_instrumentation();
-		success = success && add_segfault_checking();
 	}
 
-	if (DoReverseSandboxing()) 
-	{
+	// if any type of sandboxing is enable, add the checks
+	if (DoSandboxing() || DoReverseSandboxing() || DoSmartMode())
 		success = success && add_segfault_checking();
-	}
 
+
+	// if input filtering is enabled, add receive limitations
 	if (DoInputFiltering())
-	{
 		success = success && add_receive_limit();
-	}
 
 	return success;
 }

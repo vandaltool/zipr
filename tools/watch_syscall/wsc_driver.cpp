@@ -38,7 +38,14 @@ using namespace libIRDB;
 
 void usage(char* name)
 {
-	cerr<<"Usage: "<<name<<" --varid=<variant_id> --warn --warning_file=<file>\n"; 
+	cerr<<"Usage: "<<name<<" "<<endl
+		<<"--varid <varid>	 		specify the variant ID in the IRDB"<<endl
+		<<"--warning_file <cso file>		specify a list of warnings from codesonar (or other sources) -- csv format, .cso extension"<<endl
+		<<"--do_sandboxing			do callback-based sandboxing of instructions listed in warning file (or no sandboxing for insns not listed in cso file)"<<endl
+		<<"--do_reverse_sandboxing		do faster sandboxing that stops an insn from accessing the flags page.  "<<endl
+		<<"--do_promiscuous_sandboxing 		sandbox (or reverse sandbox) instructions not listed in cso file"<<endl
+		<<"--do_input_filtering			add a 64-byte limit to cgc recieve call  buffer sizes."<<endl
+		<<"--do_smart_cgc_sandboxing		do bounds checking or sandboxing on .cso listed insns (or all insns with promiscuous mode)"<<endl;
 }
 
 
@@ -48,18 +55,20 @@ bool do_sandboxing = false;
 bool do_reverse_sandboxing = false;
 bool do_input_filtering = false;
 bool do_promiscuous_sandboxing = false;
+bool do_smart = false;
 
 int parse_args(int p_argc, char* p_argv[])
 {
 	int option = 0;
 	char options[] = "v:w:s:p:i:r";
 	struct option long_options[] = {
-		{"varid", required_argument, NULL, 'v'},
-		{"warning_file", required_argument, NULL, 'w'},
-		{"do_sandboxing", no_argument, NULL, 's'},
-		{"do_reverse_sandboxing", no_argument, NULL, 'r'},
-		{"do_promiscuous_sandboxing", no_argument, NULL, 'p'},
-		{"do_input_filtering", no_argument, NULL, 'i'},
+		{"varid", required_argument, NULL, 'v'},			// specify the variant ID in the IRDB
+		{"warning_file", required_argument, NULL, 'w'},			// specify a list of warnings from codesonar (or other sources) -- csv format, .cso extension
+		{"do_sandboxing", no_argument, NULL, 's'},			// do callback-based sandboxing of instructions listed in warning file (or no sandboxing for insns not listed in cso file)
+		{"do_reverse_sandboxing", no_argument, NULL, 'r'},		// do faster sandboxing that stops an insn from accessing the flags page.  
+		{"do_promiscuous_sandboxing", no_argument, NULL, 'p'},		// sandbox (or reverse sandbox) instructions not listed in cso file
+		{"do_input_filtering", no_argument, NULL, 'i'},			// add a 64-byte limit to cgc recieve call  buffer sizes.
+		{"do_smart_cgc_sandboxing", no_argument, NULL, 'c'},		// do bounds checking or sandboxing on .cso listed insns (or all insns with promiscuous mode)
 		{NULL, no_argument, NULL, '\0'},         // end-of-array marker
 	};
 
@@ -97,6 +106,9 @@ int parse_args(int p_argc, char* p_argv[])
 				break;
 			case 'p':
 				do_promiscuous_sandboxing = true;
+				break;
+			case 'c':
+				do_smart = true;
 				break;
 			default:
 				return 1;
@@ -153,6 +165,7 @@ int main(int argc, char **argv)
 			wsci.SetReverseSandboxing(do_reverse_sandboxing);
 			wsci.SetPromiscuousSandboxing(do_promiscuous_sandboxing);
 			wsci.SetInputFiltering(do_input_filtering);
+			wsci.SetSmartMode(do_smart);
 
 			int numInstructions = 0;
 			cso_file_success = wsci.FindInstructionsToProtect(warning_filename, numInstructions);

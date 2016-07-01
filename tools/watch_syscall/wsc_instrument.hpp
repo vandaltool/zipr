@@ -58,6 +58,7 @@ class WSC_Instrument
 			SetReverseSandboxing(false);
 			SetPromiscuousSandboxing(false);
 			SetInputFiltering(false);
+			SetSmartMode(false);
 
 			m_num_segfault_instrumentations = 0;
 			m_num_nullcheck_instrumentations = 0;
@@ -76,6 +77,8 @@ class WSC_Instrument
 		bool DoPromiscuousSandboxing() const { return m_doPromiscuousSandboxing; }
 		void SetInputFiltering(bool doit) { m_doInputFiltering = doit; }
 		bool DoInputFiltering() const { return m_doInputFiltering; }
+		void SetSmartMode(bool doit) { m_doSmart = doit; }
+		bool DoSmartMode() const { return m_doSmart; }
 		std::ostream& displayStatistics(std::ostream&);
 
 	private:
@@ -85,6 +88,7 @@ class WSC_Instrument
 		bool add_wsc_dealloc_instrumentation(libIRDB::Instruction_t *site);
 		bool add_wsc_alloc_instrumentation(libIRDB::Instruction_t *site);
 		bool add_segfault_checking();
+		bool add_smart_checking(libIRDB::Instruction_t*);
 		bool add_segfault_checking(libIRDB::Instruction_t*);
 		bool add_segfault_checking(libIRDB::Instruction_t* insn, const CSO_WarningRecord_t *const wr);
 		bool add_allocation_instrumentation();
@@ -93,6 +97,7 @@ class WSC_Instrument
 		bool add_receive_limit(libIRDB::Instruction_t* site);
 		bool add_receive_limit();
 		bool add_bounds_check(libIRDB::Instruction_t* insn, const CSO_WarningRecord_t *const wr);
+		bool add_clamp(libIRDB::Instruction_t* insn, const CSO_WarningRecord_t *const wr);
 		bool add_null_check(libIRDB::Instruction_t* insn, const CSO_WarningRecord_t *const wr);
 
 		// helpers.
@@ -116,6 +121,7 @@ class WSC_Instrument
 		bool m_doReverseSandboxing;
 		bool m_doInputFiltering;
 		bool m_doPromiscuousSandboxing;
+		bool m_doSmart;
 
 		// statistics
 		int m_num_segfault_instrumentations;
