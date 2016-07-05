@@ -71,6 +71,9 @@ FileBased_StructuredDiversity_t::FileBased_StructuredDiversity_t(string key, int
 		
 		
 	}
+	cout<<"Initing shared path: "<<m_shared_dir<<endl<<"Contents:"<<endl;
+	string ls_cmd="ls "+m_shared_dir;
+	system(ls_cmd.c_str());
 #else
 	assert(0); // filesystem sharing not implement on non-linux platforms yet
 #endif
@@ -101,12 +104,18 @@ vector<string> FileBased_StructuredDiversity_t::DoBarrier(string value)
 
 	vector<string> vres;
 
+	cout<<"Writing shared (base) filename: "<<base_filename<<endl;
 
-	ofstream data_file(data_filename.c_str());
+
+	ofstream data_file(data_filename.c_str()); 
+	if(!data_file) 
+		assert(0);
 	data_file<<value;
 	data_file.close();
 
-	ofstream done_file(done_filename.c_str());
+	ofstream done_file(done_filename.c_str()); 
+	if(!done_file) 
+		assert(0);
 	done_file<<1;
 	done_file.close();
 
@@ -115,6 +124,8 @@ vector<string> FileBased_StructuredDiversity_t::DoBarrier(string value)
 		string var_base_filename=m_shared_dir+"/Barriers_"+uname+"_"+GetKey()+"_"+toString(m_barrier_count)+"_"+toString(i);
 		string var_data_filename=var_base_filename+".data";
 		string var_done_filename=var_base_filename+".done";
+
+		cout<<"Waiting for shared (base) filename: "<<var_base_filename<<endl;
 
 		while(!fexists(var_done_filename.c_str()))
 			sleep(1);
