@@ -911,6 +911,8 @@ tools/bed.sh -text
 tools/bed_blackbox.sh -text
 tools/bed_manual.sh -text
 tools/cfar.sh -text
+tools/cfar_configs/cfar_partProbNog_probNol_probNoh_probNos_probBilr_probP1_probHeaprand_zipr.sh -text
+tools/cfar_configs/cfar_partStructNog_structNol_structNoh_structNos_structNoc_structP1Canaries_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_probBilr_probP1_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_probBilr_probP1_zipr.sh -text
 tools/cfar_configs/cfar_probBilr_zipr.sh -text
@@ -922,6 +924,7 @@ tools/cfar_configs/cfar_probIlr_structP1Canaries_probHeaprand_probNos_strata.sh 
 tools/cfar_configs/cfar_probIlr_structP1Canaries_probHeaprand_strata.sh -text
 tools/cfar_configs/cfar_probIlr_structP1Canaries_probHeaprand_structNos_strata.sh -text
 tools/cfar_configs/cfar_probIlr_structP1Canaries_strata.sh -text
+tools/cfar_configs/cfar_probNog_probNol_probNoh_probNos_probBilr_probP1_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_probNoh_probIlr_probP1_probHeaprand_probNos_strata.sh -text
 tools/cfar_configs/cfar_probNoh_probNos_probBilr_probP1_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_probNol_probNoh_probIlr_probP1_probHeaprand_probNos_strata.sh -text
@@ -936,6 +939,7 @@ tools/cfar_configs/cfar_structNoc_structP1Canaries_probBilr_zipr.sh -text
 tools/cfar_configs/cfar_structNoc_structP1Canaries_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_structNoc_structP1Canaries_zipr.sh -text
 tools/cfar_configs/cfar_structNoc_zipr.sh -text
+tools/cfar_configs/cfar_structNog_structNol_structNoh_structNos_structNoc_structP1Canaries_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_structNoh_probIlr_structP1Canaries_probHeaprand_structNos_strata.sh -text
 tools/cfar_configs/cfar_structNoh_structNos_structNoc_structP1Canaries_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_structNol_structNoh_probIlr_structP1Canaries_probHeaprand_structNos_strata.sh -text
