@@ -1300,7 +1300,7 @@ void FileIR_t::SplitScoop(
 	containing->setRawPerms(tosplit->getRawPerms());
 	containing->GetContents().resize(containing_end->GetVirtualOffset() - containing_start->GetVirtualOffset()+1);
 	// copy bytes
-	for(virtual_offset_t i=containing_start->GetVirtualOffset() ; i< containing_end->GetVirtualOffset(); i++)
+	for(virtual_offset_t i=containing_start->GetVirtualOffset() ; i <= containing_end->GetVirtualOffset(); i++)
 		containing->GetContents()[i-containing_start->GetVirtualOffset()] = tosplit->GetContents()[i-tosplit->GetStart()->GetVirtualOffset()];
 
 	GetAddresses().insert(containing_start);

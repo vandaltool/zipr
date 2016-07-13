@@ -238,7 +238,7 @@ char SegmentRegs[7][4] = {
 /* =====================================================
  * AT&T Suffixes
  * ===================================================== */
-char ATSuffixes[10][4] = {
+char ATSuffixes[][4] = {
     "b ",     /* GV.MemDecoration == 1 */
     "w ",     /* GV.MemDecoration == 2 */
     "l ",     /* GV.MemDecoration == 3 */
@@ -255,7 +255,7 @@ char ATSuffixes[10][4] = {
  * MASM Prefixes for MemoryType
  * ===================================================== */
 
-char MasmPrefixes[10][16] = {
+char MasmPrefixes[][16] = {
     "byte ptr ",        /* GV.MemDecoration == 1 */
     "word ptr ",        /* GV.MemDecoration == 2 */
     "dword ptr ",       /* GV.MemDecoration == 3 */
@@ -271,7 +271,7 @@ char MasmPrefixes[10][16] = {
 /* =====================================================
  * NASM Prefixes for MemoryType
  * ===================================================== */
-char NasmPrefixes[10][8] = {
+char NasmPrefixes[][8] = {
     "byte ",      /* GV.MemDecoration == 1 */
     "word ",      /* GV.MemDecoration == 2 */
     "dword ",     /* GV.MemDecoration == 3 */
@@ -289,7 +289,7 @@ char NasmPrefixes[10][8] = {
 /* =====================================================
  * GOASM Prefixes for MemoryType
  * ===================================================== */
-char GoAsmPrefixes[10][4] = {
+char GoAsmPrefixes[][4] = {
     "b ",     /* GV.MemDecoration == 1 */
     "w ",     /* GV.MemDecoration == 2 */
     "d ",     /* GV.MemDecoration == 3 */

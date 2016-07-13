@@ -135,6 +135,7 @@ typedef struct {
    Int32 OriginalOperandSize;
    Int32 OperandSize;
    Int32 MemDecoration;
+   Int32 ElideMemDecoration:1;
    Int32 AddressSize;
    Int32 MOD_;
    Int32 RM_;

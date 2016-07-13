@@ -925,7 +925,8 @@ void __bea_callspec__ BuildCompleteInstruction(PDISASM pMyDisasm)
     /* =============== if Arg1.IsMemoryType, add decoration-example == "dword ptr ds:[" */
     if ((GV.MemDecoration >0) && (GV.MemDecoration < 99)) {
         if (GV.SYNTAX_ == NasmSyntax) {
-	    (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, NasmPrefixes[GV.MemDecoration-1]);
+            if (GV.ElideMemDecoration == 0 )
+	    	(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, NasmPrefixes[GV.MemDecoration-1]);
             i = strlen((char*) &(*pMyDisasm).CompleteInstr);
             if ((GV.SEGMENTREGS != 0) || (GV.SEGMENTFS != 0)){
                 (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, "[");
@@ -990,7 +991,8 @@ void __bea_callspec__ BuildCompleteInstruction(PDISASM pMyDisasm)
     if ((GV.MemDecoration >100) && (GV.MemDecoration < 199)) {
         GV.MemDecoration -= 100;
 	   if (GV.SYNTAX_ == NasmSyntax) {
-	    (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, NasmPrefixes[GV.MemDecoration-1]);
+            if (GV.ElideMemDecoration == 0 )
+	        (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, NasmPrefixes[GV.MemDecoration-1]);
             i = strlen((char*) &(*pMyDisasm).CompleteInstr);
             if ((GV.SEGMENTREGS != 0) || (GV.SEGMENTFS != 0)){
                 (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, "[");
@@ -1054,7 +1056,8 @@ void __bea_callspec__ BuildCompleteInstruction(PDISASM pMyDisasm)
 		if ((GV.MemDecoration >200) && (GV.MemDecoration < 299)) 
     		{
         		GV.MemDecoration -= 200;
-	    		(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, NasmPrefixes[GV.MemDecoration-1]);
+            		if (GV.ElideMemDecoration == 0 )
+	    			(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, NasmPrefixes[GV.MemDecoration-1]);
             		i = strlen((char*) &(*pMyDisasm).CompleteInstr);
 	   		if (GV.SYNTAX_ == NasmSyntax) 
 			{
@@ -1132,7 +1135,8 @@ void __bea_callspec__ BuildCompleteInstruction(PDISASM pMyDisasm)
 		if ((GV.MemDecoration >300) && (GV.MemDecoration <3299)) 
     		{
         		GV.MemDecoration -= 300;
-	    		(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, NasmPrefixes[GV.MemDecoration-1]);
+            		if (GV.ElideMemDecoration == 0 )
+	    			(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, NasmPrefixes[GV.MemDecoration-1]);
             		i = strlen((char*) &(*pMyDisasm).CompleteInstr);
 	   		if (GV.SYNTAX_ == NasmSyntax) 
 			{
