@@ -281,7 +281,7 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 		return false;
 	// this is an uncommon case -- we are typically adding
 	// segments and so the segment map won't fit on the first page.
-	// if this assertion hits, email hiser@virginia.edu and attack input pgm,
+	// if this assertion hits, email hiser@virginia.edu and attach your input pgm,
 	// then convert this to a return false to avoid assertion until he fixes it;
 	assert(0);
 }
@@ -351,6 +351,10 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 	 * the auxv array to ld.so.  Where ld.so then uses that as an address.
 	 */
 
+	// gap allocate assumes there's space on the first page for the EHdrs.  If there's not, 
+	// try pre-allocating.
+	if(page_align(min_addr)+sizeof(T_Elf_Ehdr) >= min_addr)
+		return false;
 
 	// first, find the first free space that's big enough.
 	unsigned int phdr_size=DetermineMaxPhdrSize();
