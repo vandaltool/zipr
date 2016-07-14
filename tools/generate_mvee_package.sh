@@ -319,13 +319,18 @@ finalize_json()
 			variant_config_contents="${variant_config_contents//,<<LDLIB>>/$line,<<LDLIB>>}"
 			binname=""
 			# ok, now we need the binary name
-			echo "trying patch"
 			if [ "$backend" = 'zipr' ]; then
-				echo $(echo $variant_config_contents | grep main_exe | sed -e "s/.*\(main_exe[^,]*\),.*/\1/g")
-				binname=$(echo $variant_config_contents | grep main_exe | sed -e "s/.*\(main_exe[^,]*\),.*/\1/g" | sed -e "s/.*\/\([a-zA-Z0-9.]*\)\".*/\1/")
-				echo "$new_variant_dir/bin/$binname"
-				$CFAR_HOME/non_overlapping_libraries/patchelf --set-interpreter $new_variant_dir_ts/bin/peasoup_executable_dir/ld-linux-x86-64.so.2.nol $new_variant_dir/bin/$binname
+				# unfortunately, the new way of doing all this relies on the new interp being shorter than the old one, so we need to do this:
+				cp $new_variant_dir/peasoup_executable_dir/ld-linux-x86-64.so.2.nol $outdir/ld-nol.so
+				# Remove? This is the old patchelf-based interpreter changing.
+				# it's now done by a zipr step
+				#echo $(echo $variant_config_contents | grep main_exe | sed -e "s/.*\(main_exe[^,]*\),.*/\1/g")
+				#binname=$(echo $variant_config_contents | grep main_exe | sed -e "s/.*\(main_exe[^,]*\),.*/\1/g" | sed -e "s/.*\/\([a-zA-Z0-9.]*\)\".*/\1/")
+				#echo "$new_variant_dir/bin/$binname"
+				#$CFAR_HOME/non_overlapping_libraries/patchelf --set-interpreter $new_variant_dir_ts/bin/peasoup_executable_dir/ld-linux-x86-64.so.2.nol $new_variant_dir/bin/$binname
 			elif [ "$backend" = 'strata' ]; then
+				# this is still on patchelf due to changing that being complex
+				echo "trying patch"
 				$CFAR_HOME/non_overlapping_libraries/patchelf --set-interpreter $new_variant_dir_ts/bin/peasoup_executable_dir/ld-linux-x86-64.so.2.nol $new_variant_dir/bin/peasoup_executable_dir/a.stratafied
 			fi
 		else
