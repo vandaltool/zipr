@@ -321,7 +321,7 @@ finalize_json()
 			# ok, now we need the binary name
 			if [ "$backend" = 'zipr' ]; then
 				# unfortunately, the new way of doing all this relies on the new interp being shorter than the old one, so we need to do this:
-				cp $new_variant_dir/peasoup_executable_dir/ld-linux-x86-64.so.2.nol $outdir/ld-nol.so
+				cp $new_variant_dir/bin/peasoup_executable_dir/ld-linux-x86-64.so.2.nol $outdir/ld-nol.so
 				# Remove? This is the old patchelf-based interpreter changing.
 				# it's now done by a zipr step
 				#echo $(echo $variant_config_contents | grep main_exe | sed -e "s/.*\(main_exe[^,]*\),.*/\1/g")
