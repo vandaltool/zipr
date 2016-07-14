@@ -89,6 +89,10 @@ class SCFI_Instrument
 		template<typename T_Elf_Sym, typename T_Elf_Rela, typename T_Elf_Dyn, int reloc_type, int rela_shift, int ptrsize>
 		libIRDB::Instruction_t* find_runtime_resolve(libIRDB::DataScoop_t* gotplt_scoop);
 
+		template<typename T_Elf_Sym, typename T_Elf_Rela, typename T_Elf_Dyn, int reloc_type, int rela_shift, int ptrsize>
+		void add_got_entry(const std::string& name);
+
+
 
 
 		// find instrumentation points.
