@@ -5,7 +5,8 @@
 			"/dev/cfar_urandom=/dev/urandom",
                         "/etc/ld.so.cache=/etc/ld.so.cache",
 			"/variant_specific/libheaprand.so=<<EXEPATH>>/<<PS_DIR>>/libheaprand.so",
-			"/variant_specific/noh.so=<<EXEPATH>>/<<PS_DIR>>/noh.so",<<LIBS>>
+			"/variant_specific/noh.so=<<EXEPATH>>/<<PS_DIR>>/noh.so",
+			"/variant_specific/nolnoh_config=<<VARIANTDIR>>/nolnoh_config",<<LIBS>>
                         ],
                     "env" : [
                         <<ENV>>
@@ -13,7 +14,9 @@
                 },
                 "marshaling" : {
                      "code_map" : "<<EXEPATH>>/<<PS_DIR>>/zipr.map",
-		     "p1_map" : "<<EXEPATH>>/<<PS_DIR>>/p1.map"
+		     "p1_map" : "<<EXEPATH>>/<<PS_DIR>>/p1.map",
+		     "initial_dump_dir" : "<<EXEPATH>>/initial_dump_dir"
+	
                 }
             }
 

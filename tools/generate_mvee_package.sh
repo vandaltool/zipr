@@ -232,6 +232,11 @@ sanity_check()
 finalize_json()
 {
 	mkdir $outdir/global
+	mkdir $outdir/marshaling
+	mkdir $outdir/marshaling/emt
+	cp $CFAR_EMT_PLUGINS/dh_plugins.jar $outdir/marshaling/
+	cp $CFAR_EMT_PLUGINS/refresh.sh $outdir/marshaling/
+	tar -xzf $CFAR_APOGEE_DOWNLOADS_DIR/build-emt.tar.gz -C $outdir/marshaling/emt --strip-components=1
 
 
 	variants="$total_variants"
@@ -325,7 +330,7 @@ finalize_json()
 				# Remove? This is the old patchelf-based interpreter changing.
 				# it's now done by a zipr step
 				#echo $(echo $variant_config_contents | grep main_exe | sed -e "s/.*\(main_exe[^,]*\),.*/\1/g")
-				#binname=$(echo $variant_config_contents | grep main_exe | sed -e "s/.*\(main_exe[^,]*\),.*/\1/g" | sed -e "s/.*\/\([a-zA-Z0-9.]*\)\".*/\1/")
+				#binname=$(echo $variant_config_contents | grep main_exe | sed -e "s/.*\(main_exe[^,]*\),.*/\1/g" | sed -e "s/.*\/\([_a-zA-Z0-9.]*\)\".*/\1/")
 				#echo "$new_variant_dir/bin/$binname"
 				#$CFAR_HOME/non_overlapping_libraries/patchelf --set-interpreter $new_variant_dir_ts/bin/peasoup_executable_dir/ld-linux-x86-64.so.2.nol $new_variant_dir/bin/$binname
 			elif [ "$backend" = 'strata' ]; then
@@ -341,15 +346,15 @@ finalize_json()
 
 		# handle structured nol/noh
 		echo $total_variants > $new_variant_dir/nolnoh_config
-		if [[ $config == *"structNol"* ]] ; then
+		echo config is $config
+		if [[ $config == *"structNol"* ]] || [[  $config == *"structNoh"* ]] ; then
 			echo $seq >> $new_variant_dir/nolnoh_config
-                        if [[ $config != *"structNoh"* ]] ; then
-                                echo "nol/noh structrued on turned on/off together, err "
+                        if [[ $config == *"probNoh"* ]] || [[  $config == *"probNol"* ]] ; then
+				echo
+                                echo "Cannot have structNol with probNoh or structNoh with probNol.  Fatal error. "
+				echo
                                 exit 1
                         fi
-                elif [[ $config == *"structNoh"* ]] ; then
-                        echo "nol/noh structrued on turned on/off together, err "
-                        exit 1
                 fi
 
 
@@ -386,19 +391,21 @@ finalize_json()
 
 	json_contents="${json_contents//<<ENV>>/\"LD_PRELOAD=$ld_preload_var\",<<ENV>>}"
 
-	# if we're supposed to include checkpoint/restore lines in the file
-	if [ "x"$includecr = "--include-cr" ]; then
+	# if we are supposed to include checkpoint/restore lines in the file
+	if [ "x"$use_includecr = "x--include-cr" ]; then
+		echo "Including C/R support."
 		# grab the appropriate contents for cp/rest and monitor settings.
 		cr_contents=$(cat $PEASOUP_HOME/tools/cfar_configs/cr_chunk.json.template)
 		monitor_contents=$(cat $PEASOUP_HOME/tools/cfar_configs/monitor_chunk_with_cr.json.template)
 
-		echo setting monitor chunk to: $monitor_contents
+		#echo setting monitor chunk to: $monitor_contents
 		json_contents="${json_contents//<<CR>>/$cr_contents}"
 		json_contents="${json_contents//<<MONITOR>>/$monitor_contents}"
 	else
+		echo "Not doing C/R support."
 		# grab the appropriate contents monitor settings and remove c/r marker
 		monitor_contents=$(cat $PEASOUP_HOME/tools/cfar_configs/monitor_chunk.json.template)
-		echo setting monitor chunk to: $monitor_contents
+		#echo setting monitor chunk to: $monitor_contents
 		json_contents="${json_contents//<<CR>>/}"
 		json_contents="${json_contents//<<MONITOR>>/$monitor_contents}"
 	fi

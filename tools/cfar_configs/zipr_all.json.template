@@ -19,9 +19,10 @@
 	
             },
             "marshaling":{
-                "class_path" : "/vagrant/emt/plugins.jar",
-                "class_name" : "raven.criu.plugin.Zipr",
-                "process_map" : "process_map.json"
+                "class_path" : "/target_apps/marshaling/dh_plugins.jar",
+                "class_name" : "Zipr",
+                "process_map" : "process_map.json",
+		"launcher" : "/emt/emt.bash"
             },
             "settings": {
                 "aslr_mode": 1
