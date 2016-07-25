@@ -2,7 +2,6 @@
 /build-all.sh -text
 /cgc_setup.sh -text
 /clean-all.sh -text
-/compare.sh -text
 /copy_peasoup.sh -text
 /get-peasoup-packages.sh -text
 /irdb_vars -text
