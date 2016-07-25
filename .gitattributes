@@ -954,6 +954,7 @@ tools/cfar_configs/strata_variant.json.template -text
 tools/cfar_configs/zipr_all.json.template -text
 tools/cfar_configs/zipr_variant.json.template -text
 tools/cinderella.spec -text
+tools/compare.sh -text
 tools/cover.sh -text
 tools/db/drop_my_tables.sh -text
 tools/db/job.create.tbl -text
