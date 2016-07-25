@@ -16,7 +16,7 @@ echo $RCB_RESULT
 if [ $BASE_RESULT -ne $RCB_RESULT ]; then
 	exit 1
 fi
-if [ $BASE_OUTPUT -ne $RCB_OUTPUT ]; then
+if [ "$BASE_OUTPUT" != "$RCB_OUTPUT" ]; then
 	exit 1
 fi
 exit 0
