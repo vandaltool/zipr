@@ -16,8 +16,10 @@ echo "First base cb run:" $BASE_RESULT
 echo "Second base cb run:" $BASE_RESULT2
 echo "Replacement cb run:" $RCB_RESULT
 
-if [ $BASE_RESULT -ne $RCB_RESULT ]; then
-	exit 1
+if [ $BASE_RESULT -eq $BASE_RESULT2 ]; then
+	if [ $BASE_RESULT -ne $RCB_RESULT ]; then
+		exit 1
+	fi
 fi
 if [ "$BASE_OUTPUT" == "$BASE_OUTPUT2" ]; then
 	if [ "$BASE_OUTPUT" != "$RCB_OUTPUT" ]; then
