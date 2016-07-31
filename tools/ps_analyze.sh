@@ -1169,7 +1169,7 @@ fi
 perform_step cgc_at_string none $DAFFY_HOME/anti_tamper/string_table_trick.sh $(basename $my_outfile)
 
 # Basic sanity check to make sure protected CB is ok
-perform_step cgc_sanity_check none $PEASOUP_HOME/tools/cgc_sanity_check.sh a.ncexe $(basename $my_outfile)
+perform_step cgc_sanity_check none $PEASOUP_HOME/tools/cgc_sanity_check.sh $PWD/a.ncexe ${PWD}/$(basename $my_outfile)
 
 #
 # create a report for all of ps_analyze.
