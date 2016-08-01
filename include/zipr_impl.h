@@ -80,7 +80,8 @@ class ZiprImpl_t : public Zipr_t
 
 		Zipr_SDK::RangeAddress_t PlopDollopEntry(
 			DollopEntry_t *,
-			RangeAddress_t override_place = 0);
+			RangeAddress_t override_place = 0,
+			RangeAddress_t override_target = 0);
 
 		Zipr_SDK::RangeAddress_t PlopDollopEntryWithTarget(
 			DollopEntry_t *,

@@ -2488,7 +2488,23 @@ RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t *entry, RangeAddress_t
 	size_t insn_wcis = DetermineWorstCaseInsnSize(insn, false);
 	RangeAddress_t updated_addr = 0;
 	RangeAddress_t placed_address = entry->Place();
+	RangeAddress_t target_address = 0;
 	bool placed_insn = false;
+
+	if (entry->TargetDollop() && entry->TargetDollop()->front())
+	{
+		auto target_address_iter = final_insn_locations.find(entry->
+		                                                     TargetDollop()->
+		                                                     front()->
+		                                                     Instruction());
+		if (target_address_iter != final_insn_locations.end())
+		{
+			target_address = target_address_iter->second;
+			if (m_verbose)
+				cout << "Found an updated target address location: "
+				     << std::hex << target_address << endl;
+		}
+	}	
 
 	map<Instruction_t*,unique_ptr<std::list<DLFunctionHandle_t>>>::const_iterator plop_it;
 
@@ -2505,6 +2521,7 @@ RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t *entry, RangeAddress_t
 			ZiprPluginInterface_t *zpi = dynamic_cast<ZiprPluginInterface_t*>(handle);
 			updated_addr = std::max(zpi->PlopDollopEntry(entry,
 			                                             placed_address,
+			                                             target_address,
 																									 insn_wcis,
 																									 pp_placed_insn),
 			                        updated_addr);
@@ -2526,7 +2543,7 @@ RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t *entry, RangeAddress_t
 	 */
 	if (!placed_insn)
 	{
-		updated_addr = PlopDollopEntry(entry, placed_address);
+		updated_addr = PlopDollopEntry(entry, placed_address, target_address);
 	}
 
 	final_insn_locations[insn] = placed_address;
@@ -2538,7 +2555,8 @@ RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t *entry, RangeAddress_t
 
 RangeAddress_t ZiprImpl_t::PlopDollopEntry(
 	DollopEntry_t *entry,
-	RangeAddress_t override_place)
+	RangeAddress_t override_place,
+	RangeAddress_t override_target)
 {
 	Instruction_t *insn = entry->Instruction();
 	RangeAddress_t ret = entry->Place(), addr = entry->Place();
@@ -2617,9 +2635,19 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntry(
 	{
 		RangeAddress_t target_address = 0;
 		Instruction_t *target_insn = entry->TargetDollop()->front()->Instruction();
-	
-		if (final_insn_locations.end() != final_insn_locations.find(target_insn))
-			target_address = final_insn_locations[target_insn];
+
+		if (override_target != 0)
+		{	
+			if (final_insn_locations.end() != final_insn_locations.find(target_insn))
+				target_address = final_insn_locations[target_insn];
+		}
+		else
+		{
+			if (m_verbose)
+				cout << "Plopping with overriden target: " 
+				     << std::hex << override_target << endl;
+			target_address = override_target;
+		}
 
 		if (m_verbose)
 			cout << "Plopping at " << std::hex << addr
