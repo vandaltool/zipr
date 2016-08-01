@@ -2530,12 +2530,6 @@ RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t *entry, RangeAddress_t
 	}
 
 	final_insn_locations[insn] = placed_address;
-	if (entry->Place() != placed_address && m_verbose)
-		cout << "RePlace() entry " << std::hex << entry
-		     << " at " << placed_address
-		     << " instead of " << entry->Place() << endl;
-	entry->RePlace(placed_address);
-
 	return updated_addr;
 }
 
