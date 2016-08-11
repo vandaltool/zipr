@@ -971,6 +971,7 @@ third_party/ELFkickers-3.0a/sstrip/README -text
 third_party/ELFkickers-3.0a/sstrip/sstrip -text
 third_party/ELFkickers-3.0a/sstrip/sstrip.1 -text
 third_party/ELFkickers-3.0a/sstrip/sstrip.c -text
+third_party/LICENSE.txt -text
 third_party/README -text
 third_party/beaengine166.tar.gz -text
 third_party/beaengine175.tar.gz -text
