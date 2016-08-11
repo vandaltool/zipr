@@ -27,7 +27,7 @@ echo "cd .." >> $HOME/.bashrc
 ./postgres_setup.sh 2>&1 | tee pgsetup.output
 
 # setup Daffy
-$DAFFY_HOME/setup.sh
+$DAFFY_HOME/setup_cgc.sh
 
 # reboot machine to start up the GNOME Desktop environment
 #sudo reboot
