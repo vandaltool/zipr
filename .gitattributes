@@ -1,4 +1,5 @@
 * text=auto !eol
+/LICENSE.txt -text
 /build-all.sh -text
 /cgc_setup.sh -text
 /clean-all.sh -text
