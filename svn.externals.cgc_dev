@@ -1,8 +1,7 @@
-security_transforms  http://svn.zephyr-software.com/repos/security_transforms/trunk/
-peasoup_examples     http://svn.zephyr-software.com/repos/peasoup_examples/trunk/
-zipr_callbacks       http://svn.zephyr-software.com/repos/zipr_callbacks/trunk/
-zipr_install         http://svn.zephyr-software.com/repos/zipr_install/branches/cgc_dev/
-zipr_sdk             http://svn.zephyr-software.com/repos/zipr_sdk/trunk/
+zipr_sdk             http://svn.zephyr-software.com/repos/zipr_sdk/branches/cgc-sw-deliverables/
+peasoup_examples     http://svn.zephyr-software.com/repos/peasoup_examples/branches/cgc-sw-deliverables/
+zipr_callbacks       http://svn.zephyr-software.com/repos/zipr_callbacks/branches/cgc-sw-deliverables/
+zipr_install         http://svn.zephyr-software.com/repos/zipr_install/branches/cgc-sw-deliverables/
 irdb_transforms      http://svn.zephyr-software.com/repos/irdb_transforms/branches/cgc-sw-deliverables/
 cgc_wahoo_challenges http://svn.zephyr-software.com/repos/cgc_wahoo_challenges/branches/cgc-sw-deliverables/
 daffy                http://svn.zephyr-software.com/repos/daffy/branches/cgc-sw-deliverables/
@@ -10,4 +9,7 @@ IdaProServer         http://svn.zephyr-software.com/repos/IdaProServer/branches/
 diablo_toolchain     http://svn.zephyr-software.com/repos/diablo_toolchain/branches/cgc-sw-deliverables/
 strata               http://svn.zephyr-software.com/repos/strata/branches/cgc-sw-deliverables/
 stratafier           http://svn.zephyr-software.com/repos/stratafier/branches/cgc-sw-deliverables/
-SMPStaticAnalyzer    http://svn.zephyr-software.com/repos/SMPStaticAnalyzer/cgc-sw-deliverables/
+SMPStaticAnalyzer    http://svn.zephyr-software.com/repos/SMPStaticAnalyzer/branches/cgc-sw-deliverables/
+security_transforms  http://svn.zephyr-software.com/repos/zipr_install/branches/cgc-sw-deliverables/
+zipr_relax_plugin    http://svn.zephyr-software.com/repos/zipr_relax_plugin/branches/cgc-sw-deliverables/
+zipr_locality_plugin http://svn.zephyr-software.com/repos/zipr_locality_plugin/branches/cgc-sw-deliverables/
