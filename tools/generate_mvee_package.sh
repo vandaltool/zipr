@@ -19,13 +19,15 @@ Usage:
 	[--args <arguments string in json format> ]
 	[--server <servername>
 	[--class <atd class>
+	[--mainexe <exe base name>
 	[(--help | h )]
 "
 }
 
 check_opts()
 {
-
+	echo args="$@"
+	# defaults
 	args="\"-k\", \"start\""
 	server="APACHE"
 	class="None"
@@ -34,6 +36,7 @@ check_opts()
 	use_noh="--disablenoh"
 	use_nol="--disablenol"
 	use_includecr="--noinclude-cr"
+	mainexe_opt="" # look in target_apps and find exactly one thing.
 
 
 
@@ -57,6 +60,7 @@ check_opts()
                    --long help
                    --long zipr
                    --long strata
+                   --long mainexe:
                 "
 
         # solaris does not support long option names
@@ -74,6 +78,11 @@ check_opts()
 
         while true ; do
                 case "$1" in
+                        --mainexe)
+				echo "Setting mainexe = $2"
+				mainexe_opt="$2"
+                                shift 2
+			;;
                         --help|-h)
                                 usage;
                                 exit 1
@@ -164,73 +173,109 @@ check_opts()
 
 sanity_check()
 {
-
-	main_exe=$(/bin/ls -F $indir/target_apps/ |egrep "/$"|sed "s|/$||"|sed "s/^dh-//" )
-	if [ -d $indir/target_app_libs ]; then
-		libraries=$(/bin/ls $indir/target_app_libs/ |grep -v "^dh-lib$"|sed "s/^dh-//")
-	fi
-	configs=$(/bin/ls $indir/target_apps/dh-$main_exe/)
-	echo Found application=\"$main_exe\"
-	echo Found libraries=\"$libraries\"
-	echo Found configurations=\"$configs\"
-
-
-	# sanity check that there's only one application.
-	if [ $(echo $main_exe|wc -w) -ne 1 ]; then
-
-		echo "Found zero or more than one app in $indir/target_apps/"
-		echo "Malformed input.  Aborting...."
-		exit 3
-	fi
-
-
-	# sanity check that the configs in the main app match the configs for the libraries.
-	for config in $configs; do
-		for lib in $libraries; do
-		
-			if [ ! -d $indir/target_app_libs/dh-$lib/$config ]; then 
-				echo "Found that $indir/target_app_libs/dh-$lib/$config is missing."
-				echo "Malformed input.  Aborting...."
-			fi
-		done
-	done
-
-
 	# count the number of variants that will be in the system, and sanity check that each library has those same variants.
 	total_variants=0
-	
-	for config in $configs; do
-		for variant_dir in $indir/target_apps/dh-$main_exe/$config/v[0-9]*/
-		do
-			variant_json_arr[$total_variants]="$variant_dir/peasoup_executable_dir/variant_config.json"
-			variant_config_arr[$total_variants]="$config"
-			total_variants=$(expr $total_variants + 1)
-			if [ ! -f $variant_json ]; then
-				echo "Variant configuration file ($variant_json) missingi."
-				exit 3
-			fi
-			variant_jsons="$variant_jsons $variant_json"
+	total_variant_sets=0
 
+	var_sets=$(ls $indir)
+	for vs_dir in $var_sets
+	do
+		vs_top_dir=$indir/$vs_dir
+		total_variant_sets=$(expr $total_variant_sets + 1)
+
+		if [[ "X$mainexe_opt" = "X" ]]; then
+			echo "Trying to infer exe name."
+			if [ -d $vs_top_dir/target_apps ]; then
+				main_exe=$(/bin/ls -F $vs_top_dir/target_apps/ |egrep "/$"|sed "s|/$||"|sed "s/^dh-//" )
+			else
+				echo
+				echo "Error:  main executable not found in $vs_top_dir/target_apps.  Please use --mainexe      ************************"
+				exit 1
+			fi
+		else
+			if [ -d $vs_top_dir/target_apps/dh-$mainexe_opt ]; then
+				main_exe=$mainexe_opt
+			elif [ -d $vs_top_dir/target_app_libs/dh-$mainexe_opt ]; then
+				main_exe=$mainexe_opt
+			else
+				echo
+				echo "Error:  main executable not found in $vs_top_dir/target_apps or $vs_top_dir/target_app_libs.  Please fix --mainexe      ************************"
+				exit 1
+			fi
+		fi
+
+
+
+		if [ -d $vs_top_dir/target_app_libs ]; then
+			libraries=$(/bin/ls $vs_top_dir/target_app_libs/ |grep -v "^dh-lib$" |sed "s/dh-$main_exe//" |sed "s/^dh-//")
+		fi
+		configs=$(/bin/ls $vs_top_dir/target_app*/dh-$main_exe/)
+		echo "For variant $vs_dir:"
+		echo "	Found application=\"$main_exe\""
+		echo "	Found libraries=\"$libraries\""
+		echo "	Found configurations="\"$configs\"
+
+
+		# sanity check that there's only one application.
+		if [ $(echo $main_exe|wc -w) -ne 1 ]; then
+
+			echo "Found zero or more than one app in $vs_top_dir/target_apps/"
+			echo "Malformed input.  Aborting...."
+			exit 3
+		fi
+
+
+		# sanity check that the configs in the main app match the configs for the libraries.
+		for config in $configs; do
 			for lib in $libraries; do
-				varNum=$(basename $variant_dir)
-				if [ ! -d $indir/target_app_libs/dh-$lib/$config/$varNum ]; then
-					echo "Found that $indir/target_app_libs/dh-$lib/$config/$varNum is missing"
-					exit 3
+			
+				if [ ! -d $vs_top_dir/target_app_libs/dh-$lib/$config ]; then 
+					echo "Found that $vs_top_dir/target_app_libs/dh-$lib/$config is missing."
+					echo "Malformed input.  Aborting...."
 				fi
 			done
-		
-			
 		done
+
+
+		# reset		
+		variants_per_vs=0
+
+		for config in $configs; do
+			for variant_dir in $vs_top_dir/target_app*/dh-$main_exe/$config/v[0-9]*/
+			do
+				total_variants=$(expr $total_variants + 1)
+				variants_per_vs=$(expr $variants_per_vs + 1)
+				variant_json_arr[$total_variants]="$variant_dir/peasoup_executable_dir/variant_config.json"
+				variant_config_arr[$total_variants]="$config"
+				if [ ! -f $variant_json ]; then
+					echo "Variant configuration file ($variant_json) missing."
+					exit 3
+				fi
+				variant_jsons="$variant_jsons $variant_json"
+
+				for lib in $libraries; do
+					varNum=$(basename $variant_dir)
+					if [ ! -d $vs_top_dir/target_app_libs/dh-$lib/$config/$varNum ]; then
+						echo "Found that $vs_top_dir/target_app_libs/dh-$lib/$config/$varNum is missing"
+						exit 3
+					fi
+				done
+			
+				
+			done
+		done
+		echo "For variant set $var_dir:"
+		echo " Found a total of $variants_per_vs to run in parallel."
 	done
 
-	echo "Found a total of $total_variants to run in parallel."
-	echo "Sanity checks complete.  Let's do this..."
+	echo " Sanity checks complete.  Let's do this.... "
 }
 
 
 
 finalize_json()
 {
+	mkdir -p $outdir
 	mkdir $outdir/global
 	mkdir $outdir/marshaling
 	mkdir $outdir/marshaling/emt
@@ -254,121 +299,126 @@ finalize_json()
 
 	json_contents=$(<$json)
 
-	for seq in $(seq 0 $(expr $total_variants - 1))
+	for vs in $(seq 1 $total_variant_sets)
 	do
+		vs_json_contents=" \"vs-$vs\" : [ <<VARIANT_LIST>> ]"
 
-		new_variant_dir="$outdir/variant$(expr $seq + 1 )"
-		new_variant_dir_ts="/target_apps/variant$(expr $seq + 1 )"
-		mkdir $new_variant_dir
-		mkdir $new_variant_dir/extra 2>/dev/null || true
-		mkdir $new_variant_dir/resources 2>/dev/null || true
-
-		config=${variant_config_arr[$seq]}
-		variant_json=${variant_json_arr[$seq]}
-
-		#echo seq=$seq
-		#echo config=$config
-		#echo variant_json=$variant_json
-		echo "Including variant $seq."
-
-		if [ ! -f $variant_json ]; then
-			echo wtf
-			exit 4
-		fi
-
-		
-
-
-		# start with ps_dir
-		ps_dir=$(dirname $variant_json)
-
-		# get path to exe
-		full_exe_dir=$(dirname $ps_dir)
-
-
-
-		# remove host's portion of the path to get path on target
-		exe_dir=$(echo $full_exe_dir|sed "s/^$indir//")
-
-		cp -R $full_exe_dir $new_variant_dir/bin
-
-		# echo "exe_dir=$exe_dir"
-
-		# get the variant number for this config (e.g., get "v0" or "v1")
-		var_num_dir=$(basename $exe_dir)
-
-
-		# read variant config
-		variant_config_contents=$(<$variant_json)
-
-		# fill in any libraries that the variants should refer to
-		for lib in $libraries
+		for seq in $(seq 1 $variants_per_vs )
 		do
-			# echo adding lib $lib
-			lib_dir="/target_app_libs/dh-$lib/$config/$var_num_dir"
 
-			mkdir -p $new_variant_dir/lib 2>/dev/null || true
-			cp  $indir/$lib_dir/$lib $new_variant_dir/lib
-			cp -R $indir/$lib_dir/peasoup_executable_dir $new_variant_dir/lib/peasoup_executable_dir.$lib.$config
-	
-			# note the weird $'\n' is bash's way to encode a new line.
-			# set line=  ,\n"alias=file" -- but the bash is ugly, and I can't do better.
-			line=",  "$'\n\t\t\t'"  \"/usr/lib/$lib=$new_variant_dir_ts/lib/$lib\" "
-			variant_config_contents="${variant_config_contents//,<<LIBS>>/$line,<<LIBS>>}"
-	
-		done
+			new_variant_dir="$outdir/vs-$vs/variant-$seq"
+			new_variant_dir_ts="/target_apps/vs-$vs/variant-$seq"
+			mkdir -p $new_variant_dir
+			mkdir $new_variant_dir/extra 2>/dev/null || true
+			mkdir $new_variant_dir/resources 2>/dev/null || true
 
-		if [ "x"$use_nol = "x--enablenol" ]; then
-			line=",  "$'\n\t\t\t'"  \"<<EXEPATH>>/peasoup_executable_dir/ld-linux-x86-64.so.2.nol=<<EXEPATH>>/peasoup_executable_dir/ld-linux-x86-64.so.2.nol\" "
-			variant_config_contents="${variant_config_contents//,<<LIBS>>/$line,<<LIBS>>}"
-			variant_config_contents="${variant_config_contents//,<<LDLIB>>/$line,<<LDLIB>>}"
-			binname=""
-			# ok, now we need the binary name
-			if [ "$backend" = 'zipr' ]; then
-				# unfortunately, the new way of doing all this relies on the new interp being shorter than the old one, so we need to do this:
-				cp $new_variant_dir/bin/peasoup_executable_dir/ld-linux-x86-64.so.2.nol $outdir/ld-nol.so
-				# Remove? This is the old patchelf-based interpreter changing.
-				# it's now done by a zipr step
-				#echo $(echo $variant_config_contents | grep main_exe | sed -e "s/.*\(main_exe[^,]*\),.*/\1/g")
-				#binname=$(echo $variant_config_contents | grep main_exe | sed -e "s/.*\(main_exe[^,]*\),.*/\1/g" | sed -e "s/.*\/\([_a-zA-Z0-9.]*\)\".*/\1/")
-				#echo "$new_variant_dir/bin/$binname"
-				#$CFAR_HOME/non_overlapping_libraries/patchelf --set-interpreter $new_variant_dir_ts/bin/peasoup_executable_dir/ld-linux-x86-64.so.2.nol $new_variant_dir/bin/$binname
-			elif [ "$backend" = 'strata' ]; then
-				# this is still on patchelf due to changing that being complex
-				echo "trying patch"
-				$CFAR_HOME/non_overlapping_libraries/patchelf --set-interpreter $new_variant_dir_ts/bin/peasoup_executable_dir/ld-linux-x86-64.so.2.nol $new_variant_dir/bin/peasoup_executable_dir/a.stratafied
+			config=${variant_config_arr[$seq]}
+			variant_json=${variant_json_arr[$seq]}
+
+			#echo seq=$seq
+			#echo config=$config
+			#echo variant_json=$variant_json
+			echo "Including variant $seq."
+
+			if [ ! -f $variant_json ]; then
+				echo "wtf, $variant_json missing?"
+				exit 4
 			fi
-		else
-			# strata workarounds...
-			line=",  "$'\n\t\t\t'"  \"/lib64/ld-linux-x86-64.so.2=/lib64/ld-linux-x86-64.so.2.nol\" "
-			variant_config_contents="${variant_config_contents//<<LDLIB>>/$line,<<LDLIB>>}"
-		fi
 
-		# handle structured nol/noh
-		echo $total_variants > $new_variant_dir/nolnoh_config
-		echo config is $config
-		if [[ $config == *"structNol"* ]] || [[  $config == *"structNoh"* ]] ; then
-			echo $seq >> $new_variant_dir/nolnoh_config
-                        if [[ $config == *"probNoh"* ]] || [[  $config == *"probNol"* ]] ; then
-				echo
-                                echo "Cannot have structNol with probNoh or structNoh with probNol.  Fatal error. "
-				echo
-                                exit 1
-                        fi
-                fi
+			
 
 
-		variant_name="variant_${seq}"
-		variant_config_contents="${variant_config_contents//<<EXEPATH>>/$new_variant_dir_ts\/bin}"
-		variant_config_contents="${variant_config_contents//<<VARIANTNUM>>/$variant_name}"
-		variant_config_contents="${variant_config_contents//<<VARIANTINDEX>>/$seq}"
-		variant_config_contents="${variant_config_contents//<<VARIANTDIR>>/$new_variant_dir_ts}"
-		json_contents="${json_contents//<<VARIANT_CONFIG>>/$variant_config_contents,<<VARIANT_CONFIG>>}"
-		json_contents="${json_contents//<<VARIANT_LIST>>/\"$variant_name\",<<VARIANT_LIST>>}"
+			# start with ps_dir
+			ps_dir=$(dirname $variant_json)
+
+			# get path to exe
+			full_exe_dir=$(dirname $ps_dir)
 
 
-		seq=$(expr $seq + 1)
 
+			# remove host's portion of the path to get path on target
+			exe_dir=$(echo $full_exe_dir|sed "s/^$indir//")
+
+			cp -R $full_exe_dir $new_variant_dir/bin
+
+			# echo "exe_dir=$exe_dir"
+
+			# get the variant number for this config (e.g., get "v0" or "v1")
+			var_num_dir=$(basename $exe_dir)
+
+
+			# read variant config
+			variant_config_contents=$(<$variant_json)
+
+			# fill in any libraries that the variants should refer to
+			for lib in $libraries
+			do
+				# echo adding lib $lib
+				lib_dir="/vs-$vs/target_app_libs/dh-$lib/$config/$var_num_dir"
+
+				mkdir -p $new_variant_dir/lib 2>/dev/null || true
+				cp  $indir/$lib_dir/$lib $new_variant_dir/lib
+				cp -R $indir/$lib_dir/peasoup_executable_dir $new_variant_dir/lib/peasoup_executable_dir.$lib.$config
+		
+				# note the weird $'\n' is bash's way to encode a new line.
+				# set line=  ,\n"alias=file" -- but the bash is ugly, and I can't do better.
+				line=",  "$'\n\t\t\t'"  \"/usr/lib/$lib=$new_variant_dir_ts/lib/$lib\" "
+				variant_config_contents="${variant_config_contents//,<<LIBS>>/$line,<<LIBS>>}"
+		
+			done
+
+			if [ "x"$use_nol = "x--enablenol" ]; then
+				line=",  "$'\n\t\t\t'"  \"<<EXEPATH>>/peasoup_executable_dir/ld-linux-x86-64.so.2.nol=<<EXEPATH>>/peasoup_executable_dir/ld-linux-x86-64.so.2.nol\" "
+				variant_config_contents="${variant_config_contents//,<<LIBS>>/$line,<<LIBS>>}"
+				variant_config_contents="${variant_config_contents//,<<LDLIB>>/$line,<<LDLIB>>}"
+				binname=""
+				# ok, now we need the binary name
+				if [ "$backend" = 'zipr' ]; then
+					# unfortunately, the new way of doing all this relies on the new interp being shorter than the old one, so we need to do this:
+					cp $new_variant_dir/bin/peasoup_executable_dir/ld-linux-x86-64.so.2.nol $outdir/ld-nol.so
+				elif [ "$backend" = 'strata' ]; then
+					# this is still on patchelf due to changing that being complex
+					echo "trying patch"
+					$CFAR_HOME/non_overlapping_libraries/patchelf --set-interpreter $new_variant_dir_ts/bin/peasoup_executable_dir/ld-linux-x86-64.so.2.nol $new_variant_dir/bin/peasoup_executable_dir/a.stratafied
+				fi
+			else
+				# strata workarounds...
+				line=",  "$'\n\t\t\t'"  \"/lib64/ld-linux-x86-64.so.2=/lib64/ld-linux-x86-64.so.2.nol\" "
+				variant_config_contents="${variant_config_contents//<<LDLIB>>/$line,<<LDLIB>>}"
+			fi
+
+			# handle structured nol/noh
+			echo $total_variants > $new_variant_dir/nolnoh_config
+			echo config is $config
+			if [[ $config == *"structNol"* ]] || [[  $config == *"structNoh"* ]] ; then
+				echo $seq >> $new_variant_dir/nolnoh_config
+				if [[ $config == *"probNoh"* ]] || [[  $config == *"probNol"* ]] ; then
+					echo
+					echo "Cannot have structNol with probNoh or structNoh with probNol.  Fatal error. "
+					echo
+					exit 1
+				fi
+			fi
+
+
+			variant_name="variant_${vs}_${seq}"
+			variant_config_contents="${variant_config_contents//<<EXEPATH>>/$new_variant_dir_ts\/bin}"
+			variant_config_contents="${variant_config_contents//<<VARIANTNUM>>/$variant_name}"
+			variant_config_contents="${variant_config_contents//<<VARIANTINDEX>>/$seq}"
+			variant_config_contents="${variant_config_contents//<<VARIANTDIR>>/$new_variant_dir_ts}"
+			json_contents="${json_contents//<<VARIANT_CONFIG>>/$variant_config_contents,<<VARIANT_CONFIG>>}"
+
+			# only put variant set 1 in the default set.
+			if [[ $vs = 1 ]]; then
+				json_contents="${json_contents//<<VARIANT_LIST>>/\"$variant_name\",<<VARIANT_LIST>>}"
+			fi
+			vs_json_contents="${vs_json_contents//<<VARIANT_LIST>>/\"$variant_name\",<<VARIANT_LIST>>}"
+
+
+			seq=$(expr $seq + 1)
+
+		done
+		json_contents="${json_contents//<<VARIANT_SETS>>/$vs_json_contents,<<VARIANT_SETS>>}"
 	done
 
 	# copy libpthread_exit.so 
@@ -415,6 +465,7 @@ finalize_json()
 	# remove variant_config marker.
 	json_contents="${json_contents//,<<VARIANT_CONFIG>>/}"
 	json_contents="${json_contents//,<<VARIANT_LIST>>/}"
+	json_contents="${json_contents//,<<VARIANT_SETS>>/}"
 	json_contents="${json_contents//,<<ENV>>/}"
 	json_contents="${json_contents//<<ENV>>/}"
 	json_contents="${json_contents//,<<LIBS>>/}"
@@ -425,7 +476,7 @@ finalize_json()
 	json_contents="${json_contents//<<SERVER>>/$server}"
 	json_contents="${json_contents//<<ARGS>>/$args}"
 
-	echo "$json_contents" > $json
+	echo "$json_contents" |json_pp > $json
 
 	echo "Finalized $json as atd config."
 }

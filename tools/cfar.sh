@@ -192,7 +192,3 @@ else
 	echo "Successfully protected $variants variants" 
 fi
 
-#, attempting to generate MVEE configuration files"
-
-#echo "Attempting: $PEASOUP_HOME/tools/generate_mvee_config.sh  \"$variants\" \"$out\" \"$baseoutdir\" \"$backend\" \"$config_name\" \"$use_diehard\" "
-#$PEASOUP_HOME/tools/generate_mvee_config.sh  "$variants" "$out" "$baseoutdir" "$backend" "$config_name" "$use_diehard"

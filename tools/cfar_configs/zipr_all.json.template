@@ -34,7 +34,7 @@
         "sets" : {
             "default" : [
 		<<VARIANT_LIST>>
-		]
+		],<<VARIANT_SETS>>
         }
     }
 }
