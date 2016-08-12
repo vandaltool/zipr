@@ -10,6 +10,6 @@ diablo_toolchain     http://svn.zephyr-software.com/repos/diablo_toolchain/branc
 strata               http://svn.zephyr-software.com/repos/strata/branches/cgc-sw-deliverables/
 stratafier           http://svn.zephyr-software.com/repos/stratafier/branches/cgc-sw-deliverables/
 SMPStaticAnalyzer    http://svn.zephyr-software.com/repos/SMPStaticAnalyzer/branches/cgc-sw-deliverables/
-security_transforms  http://svn.zephyr-software.com/repos/zipr_install/branches/cgc-sw-deliverables/
+security_transforms  http://svn.zephyr-software.com/repos/security_transforms/branches/cgc-sw-deliverables/
 zipr_relax_plugin    http://svn.zephyr-software.com/repos/zipr_relax_plugin/branches/cgc-sw-deliverables/
 zipr_locality_plugin http://svn.zephyr-software.com/repos/zipr_locality_plugin/branches/cgc-sw-deliverables/
