@@ -1130,6 +1130,25 @@ D1:   0x4824e0: .long 0x4824e0-L1       // L1-LN are labels in the code where ca
 D2:   0x4824e4: .long 0x4824e0-L2
 ..
 DN:   0x4824XX: .long 0x4824e0-LN
+
+
+
+
+Alternate version:
+
+   	0x00000000000b939d <+25>:	cmp    DWORD PTR [rbp-0x4],0xf
+   	0x00000000000b93a1 <+29>:	ja     0xb94a1 <worker_query+285>
+   	0x00000000000b93a7 <+35>:	mov    eax,DWORD PTR [rbp-0x4]
+   	0x00000000000b93aa <+38>:	lea    rdx,[rax*4+0x0]
+I5-1   	0x00000000000b93b2 <+46>:	lea    rax,[rip+0x1f347]        # 0xd8700
+I6-2    0x00000000000b93b9 <+53>:	mov    eax,DWORD PTR [rdx+rax*1] 
+I6      0x00000000000b93bc <+56>:	movsxd rdx,eax
+I5-2   	0x00000000000b93bf <+59>:	lea    rax,[rip+0x1f33a]        # 0xd8700
+   	0x00000000000b93c6 <+66>:	add    rax,rdx
+   	0x00000000000b93c9 <+69>:	jmp    rax
+
+Since I6 doesn't access memory, do another backup until with to verify a 
+
 #endif
 
 
@@ -1171,8 +1190,9 @@ DN:   0x4824XX: .long 0x4824e0-LN
 	if(strstr(disasm.Instruction.Mnemonic, "lea"))
 	{
 		if(!(disasm.Argument2.ArgType&MEMORY_TYPE))
+			return;
 		if(!(disasm.Argument2.Memory.Scale == 1 && disasm.Argument2.Memory.Displacement == 0))
-		return;
+			return;
 	} 
 	// backup and find the instruction that's an movsxd before I7
 	/*
@@ -1181,43 +1201,44 @@ DN:   0x4824XX: .long 0x4824e0-LN
 	 */
 	if(!backup_until("movsxd", I6, I7))
 		return;
+
+	string lea_string="lea ";
 	
 	I6->Disassemble(disasm);
-	if( (disasm.Argument2.ArgType&MEMORY_TYPE)	 != MEMORY_TYPE)
-		return;
-
-
-	// 64-bit register names are OK here, because this pattern already won't apply to 32-bit code.
-	/*
-	 * base_reg is the register that holds the address
-	 * for the base of the jump table.
-	 */
-	string base_reg="";
-	switch(disasm.Argument2.Memory.BaseRegister)
+	if( (disasm.Argument2.ArgType&MEMORY_TYPE)	 == MEMORY_TYPE)
 	{
-		case REG0: base_reg="rax"; break;
-		case REG1: base_reg="rcx"; break;
-		case REG2: base_reg="rdx"; break;
-		case REG3: base_reg="rbx"; break;
-		case REG4: base_reg="rsp"; break;
-		case REG5: base_reg="rbp"; break;
-		case REG6: base_reg="rsi"; break;
-		case REG7: base_reg="rdi"; break;
-		case REG8: base_reg="r8"; break;
-		case REG9: base_reg="r9"; break;
-		case REG10: base_reg="r10"; break;
-		case REG11: base_reg="r11"; break;
-		case REG12: base_reg="r12"; break;
-		case REG13: base_reg="r13"; break;
-		case REG14: base_reg="r14"; break;
-		case REG15: base_reg="r15"; break;
-		default: 
-			// no base register;
-			return;
-	}
-	string lea_string="lea ";
-	lea_string+=base_reg;
-	
+		// try to be smarter for memory types.
+
+		// 64-bit register names are OK here, because this pattern already won't apply to 32-bit code.
+		/*
+		 * base_reg is the register that holds the address
+		 * for the base of the jump table.
+		 */
+		string base_reg="";
+		switch(disasm.Argument2.Memory.BaseRegister)
+		{
+			case REG0: base_reg="rax"; break;
+			case REG1: base_reg="rcx"; break;
+			case REG2: base_reg="rdx"; break;
+			case REG3: base_reg="rbx"; break;
+			case REG4: base_reg="rsp"; break;
+			case REG5: base_reg="rbp"; break;
+			case REG6: base_reg="rsi"; break;
+			case REG7: base_reg="rdi"; break;
+			case REG8: base_reg="r8"; break;
+			case REG9: base_reg="r9"; break;
+			case REG10: base_reg="r10"; break;
+			case REG11: base_reg="r11"; break;
+			case REG12: base_reg="r12"; break;
+			case REG13: base_reg="r13"; break;
+			case REG14: base_reg="r14"; break;
+			case REG15: base_reg="r15"; break;
+			default: 
+				// no base register;
+				return;
+		}
+		lea_string+=base_reg;
+	}	
 
 	/* 
 	 * This is the instruction that loads the address of the base
