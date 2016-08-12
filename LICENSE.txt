@@ -1,1 +1,3 @@
 See individual subdirectories and files for licensing information
+
+Third-party software retain their licenses

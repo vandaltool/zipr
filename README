@@ -1,0 +1,8 @@
+You must get your own license of IDA Pro
+https://www.hex-rays.com/products/ida/
+
+Once you've installed IRA Pro, run the IDA pro GUI tools and accept the license terms
+
+You should then move IDA Pro in a directory called: idaproCur
+You should install the IDA Pro SDK in a directory called: idaproCur_sdk
+

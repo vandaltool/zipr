@@ -1,5 +1,6 @@
 * text=auto !eol
 /LICENSE.txt -text
+/README -text
 /build-all.sh -text
 /cgc_setup.sh -text
 /clean-all.sh -text
@@ -14,5 +15,4 @@
 /set_ida_server -text
 /start_dev.sh -text
 /svn.externals.cgc_dev -text
-/svn.externals.uva_dev -text
 /update-all.sh -text
