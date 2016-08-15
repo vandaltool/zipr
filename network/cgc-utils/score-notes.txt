@@ -1,0 +1,40 @@
+be in 
+~/techx_share/scripts/cloud/control
+
+from the head node.
+
+./stop_workers.sh
+./clean_logs.sh
+
+you can always still use clean_logs.sh and print_jobs.sh from the original NFS scripts directory
+
+./start_workers.sh (back in cloud/control)
+
+/techx_share/cgc-sample-challenges/sets/will
+
+edit protect_all.sh (if I need to change the protection configuration)
+
+then to score, use 
+
+score_all.sh
+
+and then 
+
+use 
+
+./print_cb.sh config.zipr
+
+To rebuild the tools, use the following commands:
+
+build on a builder vm
+
+and stay on the vm and then to push out a build from the builder vm, you can go to 
+
+/techx_share/utils/pushout_techx_to_share.sh
+
+and now back on a head node, use 
+./update_32.sh 
+
+and this takes a little bit of time. It is serial, so when output stops, we know that everything is where it needs to be.
+
+

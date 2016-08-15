@@ -1,0 +1,19 @@
+use crash;
+
+drop table if exists crash;
+
+create table crash (
+	crash_time timestamp not null default CURRENT_TIMESTAMP,
+	cbid char(255) not null,
+	csid char(100) not null,
+	original bool not null,
+	team smallint not null,
+	/*
+	 * group is a reserved word in mysql,
+	 * so we have to name this something else.
+	 */
+	grp varchar(4096) not null,
+	cbpath varchar(4096) not null,
+	filename varchar(4096) not null,
+	contents mediumblob
+);

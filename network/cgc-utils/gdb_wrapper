@@ -1,0 +1,4 @@
+#!/bin/bash
+
+gdbserver host:5001 $@
+#echo "This is a test" "$@"

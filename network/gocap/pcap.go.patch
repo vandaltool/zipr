@@ -1,0 +1,32 @@
+diff --git a/pcap/pcap.go b/pcap/pcap.go
+index e475895..6fa3617 100644
+--- a/pcap/pcap.go
++++ b/pcap/pcap.go
+@@ -228,7 +228,7 @@ func OpenLive(device string, snaplen int32, promisc bool, timeout time.Duration)
+ }
+ 
+ // OpenOffline opens a file and returns its contents as a *Handle.
+-func OpenOffline(file string) (handle *Handle, err error) {
++func OpenOffline(file string, blockforever bool) (handle *Handle, err error) {
+ 	buf := (*C.char)(C.calloc(errorBufferSize, 1))
+ 	defer C.free(unsafe.Pointer(buf))
+ 	cf := C.CString(file)
+@@ -238,7 +238,7 @@ func OpenOffline(file string) (handle *Handle, err error) {
+ 	if cptr == nil {
+ 		return nil, errors.New(C.GoString(buf))
+ 	}
+-	return &Handle{cptr: cptr}, nil
++	return &Handle{cptr: cptr, blockForever: blockforever}, nil
+ }
+ 
+ // NextError is the return code from a call to Next.
+@@ -326,6 +326,9 @@ func (p *Handle) getNextBufPtrLocked(ci *gopacket.CaptureInfo) error {
+ 		if p.blockForever && result == NextErrorTimeoutExpired {
+ 			continue
+ 		}
++		if p.blockForever && result == NextErrorNoMorePackets {
++			continue
++		}
+ 		break
+ 	}
+ 	if result != NextErrorOk {

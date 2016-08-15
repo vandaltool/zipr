@@ -1,0 +1,6 @@
+define step-check
+	while 1
+		continue
+		shell /usr/share/cgc-sample-challenges/iterative_output.sh /tmp/smaps/ cat /proc/$arg0/smaps
+	end	
+end

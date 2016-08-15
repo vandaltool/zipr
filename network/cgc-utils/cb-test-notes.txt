@@ -1,0 +1,8 @@
+As part of 
+
+cb-test  --xml_dir poller/for-release/ --directory bin --log build/NRFIN_00032.zipr-for-release.txt --cb NRFIN_00032_zipr --pcap pcap/NRFIN_00032_poll.pcap --debug
+
+the following two things are invoked:
+
+cb-server --insecure -p 2945 -m 1 -d bin -t 15 --debug NRFIN_00032_zipr
+cb-replay --host 127.232.35.141 --port 2945 --timeout 15 --debug poller/for-release/GEN_00000.xml

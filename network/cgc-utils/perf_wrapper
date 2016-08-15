@@ -1,0 +1,3 @@
+#!/bin/bash
+
+perf_3.16 record --call-graph dwarf -d -e minor-faults --freq=24000 -c1 -R -o /tmp/output.trace $@

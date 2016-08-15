@@ -1,0 +1,11 @@
+use pcap;
+
+drop table if exists pcap;
+create table pcap (
+	message_time timestamp not null default CURRENT_TIMESTAMP,
+	cbid char(10) not null,
+	conversation int not null,
+	side enum('Client','Server') not null,
+	message int not null,
+	contents mediumblob
+);
