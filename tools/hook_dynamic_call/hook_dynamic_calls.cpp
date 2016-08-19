@@ -68,6 +68,8 @@ void HookDynamicCalls::LoadPltIndexTable()
 {
 	section *rela_plt_section = NULL;
 	section *got_plt_section = NULL;
+	section *plt_section = NULL;
+
 	int i = 0;
 	Elf_Xword entry_index = 0;
 	Elf64_Addr value = 0, offset = 0;
@@ -81,7 +83,13 @@ void HookDynamicCalls::LoadPltIndexTable()
 
 	rela_plt_section = m_elfiop->sections[".rela.plt"];
 	got_plt_section = m_elfiop->sections[".got.plt"];
-	assert(rela_plt_section && got_plt_section);
+
+	if (got_plt_section)
+		plt_section = got_plt_section;
+	else
+		plt_section = rela_plt_section;
+
+	//assert(rela_plt_section && plt_section);
 
 	pRsa.reset(new relocation_section_accessor(*m_elfiop, rela_plt_section));
 	m_plt_addresses = (Elf64_Addr*)calloc(pRsa->get_entries_num()+1, sizeof(Elf64_Addr));
@@ -99,9 +107,9 @@ void HookDynamicCalls::LoadPltIndexTable()
 			Elf64_Addr plt_address = 0;
 			Elf64_Off got_plt_offset = 0;
 
-			got_plt_offset = offset - got_plt_section->get_address();
+			got_plt_offset = offset - plt_section->get_address();
 			plt_address = ReadAddressInSectionAtOffset(
-				got_plt_section,
+				plt_section,
 				got_plt_offset);
 			m_plt_addresses[entry_index] = plt_address - plt_second_half_offset;
 		}
@@ -266,6 +274,8 @@ bool HookDynamicCalls::GetPltCallTarget(Instruction_t *insn,
 	virtual_offset_t &target_addr) {
 
 	section *got_plt_section = NULL;
+	section *rela_plt_section = NULL;
+	section *plt_section = NULL;
 	Elf64_Addr target;
 	Instruction_t *control_instruction = NULL;
 	string control_instruction_bits;
@@ -273,6 +283,12 @@ bool HookDynamicCalls::GetPltCallTarget(Instruction_t *insn,
 
 	LoadElf();
 	got_plt_section = m_elfiop->sections[".got.plt"];
+	rela_plt_section = m_elfiop->sections[".rela.plt"];
+
+	if (got_plt_section)
+		plt_section = got_plt_section;
+	else
+		plt_section = rela_plt_section;
 
 	/*
 	 * PLT entry:
@@ -330,8 +346,8 @@ bool HookDynamicCalls::GetPltCallTarget(Instruction_t *insn,
 			 * I.e., *CALL_FIXED
 			 */
 			dereferenced_indirect_address = ReadAddressInSectionAtOffset(
-				got_plt_section,
-				indirect_address - got_plt_section->get_address());
+				plt_section,
+				indirect_address - plt_section->get_address());
 			cout << "dereferenced_indirect_address: 0x" 
 			     << std::hex << dereferenced_indirect_address
 					 << endl;
