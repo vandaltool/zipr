@@ -221,7 +221,7 @@ void Push64Relocs_t::HandlePush64Relocs()
 void Push64Relocs_t::UpdatePush64Adds()
 {
 	if (m_verbose)
-		cout << "UpdatePush64Adds()" << endl;
+		cout << "push64:UpdatePush64Adds()" << endl;
 	InstructionSet_t::iterator insn_it = plopped_relocs.begin();
 	for (insn_it; insn_it != plopped_relocs.end(); insn_it++)
 	{
@@ -234,6 +234,7 @@ void Push64Relocs_t::UpdatePush64Adds()
 			bool change_to_add = false;
 			RangeAddress_t call_addr = 0;
 			RangeAddress_t add_addr = 0;
+			RangeAddress_t wrt_addr = 0;
 			int add_offset = 0;
 			uint32_t relocated_value = 0;
 			Instruction_t *call = NULL, *add = NULL;
@@ -246,16 +247,19 @@ void Push64Relocs_t::UpdatePush64Adds()
 
 			call_addr = final_insn_locations[call];
 			add_addr = final_insn_locations[add];
+			Instruction_t* wrt_insn=dynamic_cast<Instruction_t*>(reloc->GetWRT());
+			if(wrt_insn)
+				wrt_addr=final_insn_locations[wrt_insn];
 
 			if (call_addr == 0 || add_addr == 0)
 			{
 				if (m_verbose)
-					cout << "Call/Add pair not plopped?" << endl;
+					cout << "push64:Call/Add pair not plopped?" << endl;
 				continue;
 			}
 
 			add_reloc = FindAdd64Relocation(add);
-			assert(add_reloc && "Add in Call/Add pair must have relocation.");
+			assert(add_reloc && "push64:Add in Call/Add pair must have relocation.");
 
 			add_offset = add_reloc->GetOffset();
 
@@ -270,19 +274,26 @@ void Push64Relocs_t::UpdatePush64Adds()
 			if (add_offset>call_addr)
 			{
 				change_to_add = true;
-				relocated_value = add_offset-call_addr;
+				if(wrt_insn)
+					relocated_value= wrt_addr - call_addr;
+				else
+					relocated_value = add_offset - call_addr;
 			}
 			else
+			// never covert it, a sub with a negative value is just fine.
 			{
-				relocated_value = call_addr-add_offset;
+				if(wrt_insn)
+					relocated_value= call_addr - wrt_addr;
+				else
+					relocated_value = call_addr - add_offset;
 			}
 
-			cout << "Relocating a(n) "<< ((change_to_add) ? "add":"sub") << " from " 
+			cout << "Push64:Relocating a(n) "<< ((change_to_add) ? "add":"sub") << " from " 
 			     << std::hex << call_addr 
 					 << " at "
 					 << std::hex << add_addr
 					 << endl
-			     << "Using 0x" << std::hex << relocated_value 
+			     << "push64:Using 0x" << std::hex << relocated_value 
 			     << " as the updated offset." << endl
 					 << "Using 0x" << std::hex << add_offset 
 					 << " as the base offset." << endl;
@@ -313,7 +324,7 @@ void Push64Relocs_t::UpdatePush64Adds()
 			if (insn_addr == 0)
 			{
 				if (m_verbose)
-					cout << "Skipping unplopped Pcrel relocation." << endl;
+					cout << "push64:Skipping unplopped Pcrel relocation." << endl;
 				continue;
 			}
 			assert(insn_addr != 0);
