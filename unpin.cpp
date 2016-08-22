@@ -299,27 +299,66 @@ void Unpin_t::DoUpdateForInstructions()
 				libIRDB::virtual_offset_t wrt_insn_location=locMap[wrt_insn];
 				libIRDB::virtual_offset_t from_insn_location=locMap[from_insn];
 
-				// expecting a 32-bit push, length=5
-				assert(from_insn->GetDataBits()[0]==0x68);
-				assert(from_insn->GetDataBits().size()==5);
-				// down and upcast to ensure we fit in 31-bits.
-				assert(wrt_insn_location == (libIRDB::virtual_offset_t)(int)wrt_insn_location);
-				assert(sizeof(int)==4); // paranoid.
+				// 32-bit code and main executables just push a full 32-bit addr.
+                        	if(zo->GetELFIO()->get_type()==ET_EXEC)
+				{
+// not handled in push64_relocs which is disabled for shared objects.
+					// expecting a 32-bit push, length=5
+					assert(from_insn->GetDataBits()[0]==0x68);
+					assert(from_insn->GetDataBits().size()==5);
+					// down and upcast to ensure we fit in 31-bits.
+					assert(wrt_insn_location == (libIRDB::virtual_offset_t)(int)wrt_insn_location);
+					assert(sizeof(int)==4); // paranoid.
 
-				unsigned char newpush[5];
-				newpush[0]=0x68;
-				*(int*)&newpush[1]=(int)wrt_insn_location;
+					unsigned char newpush[5];
+					newpush[0]=0x68;
+					*(int*)&newpush[1]=(int)wrt_insn_location;
 
-				cout<<"Unpin::Updating insn:"
-					<<dec<<from_insn->GetBaseID()<<"@"<<hex<<from_insn_location<<" to point at "
-					<<dec<<wrt_insn ->GetBaseID()<<"@"<<hex<<wrt_insn_location <<endl;
+					cout<<"Unpin::Updating push32/push64-exe insn:"
+						<<dec<<from_insn->GetBaseID()<<"@"<<hex<<from_insn_location<<" to point at "
+						<<dec<<wrt_insn ->GetBaseID()<<"@"<<hex<<wrt_insn_location <<endl;
 
-				for(unsigned int i=0;i<from_insn->GetDataBits().size();i++)
-				{ 
-					unsigned char newbyte=newpush[i];
-					ms[from_insn_location+i]=newbyte;
+					for(unsigned int i=0;i<from_insn->GetDataBits().size();i++)
+					{ 
+						unsigned char newbyte=newpush[i];
+						ms[from_insn_location+i]=newbyte;
+					}
 				}
+				// shared object
+				// gets a call/sub [$rsp], const pair.
+                        	else 
+				{
+// handled in push64_relocs which is required for shared objects.
+#if 0
+					auto call_insn=from_insn;
+					auto sub_insn=call_insn->GetTarget();
+					libIRDB::virtual_offset_t sub_insn_location=locMap[sub_insn];
 
+					assert(sub_insn);
+					auto subbits=sub_insn->GetDataBits();
+
+					// must be sub [$rsp], const
+					assert( subbits[0]==(char)0x48 && subbits[1]==(char)0x81 && 
+					        subbits[2]==(char)0x2c && subbits[3]==(char)0x24); 
+					unsigned char newoffset[sizeof(int)]={};
+					// grab old offset from memory space
+					for(unsigned int i=0;i<from_insn->GetDataBits().size();i++)
+						newoffset[i]=ms[sub_insn_location+4+i];
+
+					// update it.
+					*(unsigned int*)newoffset += wrt_insn_location;
+
+					// write memory space.
+					for(unsigned int i=0;i<sizeof(int); i++)
+						ms[sub_insn_location+4+i]=newoffset[i];
+
+					cout<<"Unpin::Updating push64-so insn:"
+						<<dec<<from_insn->GetBaseID()<<"@"<<hex<<from_insn_location<<" to point at "
+						<<dec<<wrt_insn ->GetBaseID()<<"@"<<hex<<wrt_insn_location <<endl;
+
+	
+#endif
+				}
 
 			}
 			// instruction has a pcrel memory operand.
@@ -430,6 +469,8 @@ void Unpin_t::DoUpdateForScoops()
 	   )
 	{
 		DataScoop_t* scoop=*it;
+		assert(scoop->GetEnd()->GetVirtualOffset() - scoop->GetStart()->GetVirtualOffset()+1 == scoop->GetSize());
+		assert(scoop->GetContents().size() == scoop->GetSize());
 		string scoop_contents=scoop->GetContents();
 
 		for(
@@ -450,7 +491,7 @@ void Unpin_t::DoUpdateForScoops()
 				Zipr_SDK::InstructionLocationMap_t &locMap=*(zo->GetLocationMap());
 				libIRDB::virtual_offset_t newLoc=locMap[insn];
 
-				cout<<"Unpin::Unpinned data_to_insn_ptr insn moved to "<<hex<<newLoc<<endl;
+				cout<<"Unpin::Unpinned data_to_insn_ptr reloc with offset="<<hex<<reloc->GetOffset()<<".  Insn moved to "<<hex<<newLoc<<endl;
 
 				int found=should_cfi_pin(insn);
 
