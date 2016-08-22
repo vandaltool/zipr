@@ -158,6 +158,45 @@ Instruction_t* allocateNewInstruction(FileIR_t* virp, db_id_t p_fileID,Function_
 	return instr;
 }
 
+Instruction_t* addNewAssembly(FileIR_t* firp, Instruction_t *p_instr, string p_asm)
+{
+        Instruction_t* newinstr;
+        if (p_instr)
+                newinstr = allocateNewInstruction(firp,p_instr->GetAddress()->GetFileID(), p_instr->GetFunction());
+        else
+                newinstr = allocateNewInstruction(firp,BaseObj_t::NOT_IN_DATABASE, NULL);
+
+        firp->RegisterAssembly(newinstr, p_asm);
+
+        if (p_instr)
+        {
+                newinstr->SetFallthrough(p_instr->GetFallthrough());
+                p_instr->SetFallthrough(newinstr);
+        }
+
+        return newinstr;
+}
+
+Instruction_t* addNewDatabits(FileIR_t* firp, Instruction_t *p_instr, string p_bits)
+{
+        Instruction_t* newinstr;
+        if (p_instr)
+                newinstr = allocateNewInstruction(firp,p_instr->GetAddress()->GetFileID(), p_instr->GetFunction());
+        else
+                newinstr = allocateNewInstruction(firp,BaseObj_t::NOT_IN_DATABASE, NULL);
+
+        newinstr->SetDataBits(p_bits);
+
+        if (p_instr)
+        {
+                newinstr->SetFallthrough(p_instr->GetFallthrough());
+                p_instr->SetFallthrough(newinstr);
+        }
+
+        return newinstr;
+}
+
+
 Instruction_t* allocateNewInstruction(FileIR_t* virp, Instruction_t *template_instr)
 {
 	Function_t *func = template_instr->GetFunction();

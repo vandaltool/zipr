@@ -69,7 +69,8 @@ virtual_offset_t getAvailableAddress(FileIR_t *p_virp)
 
 
 
-
+#if 0
+// moved to Rewrite_Utility.cpp
 static Instruction_t* addNewAssembly(FileIR_t* firp, Instruction_t *p_instr, string p_asm)
 {
         Instruction_t* newinstr;
@@ -88,6 +89,7 @@ static Instruction_t* addNewAssembly(FileIR_t* firp, Instruction_t *p_instr, str
 
         return newinstr;
 }
+#endif
 
 
 static Instruction_t* registerCallbackHandler64(FileIR_t* firp, Instruction_t *p_orig, string p_callbackHandler, int p_numArgs)

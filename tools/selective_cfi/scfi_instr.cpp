@@ -48,6 +48,8 @@ virtual_offset_t getAvailableAddress(FileIR_t *p_virp)
 
 
 
+#if 0
+// moved to Rewrite_Utility.cpp
 static Instruction_t* addNewAssembly(FileIR_t* firp, Instruction_t *p_instr, string p_asm)
 {
         Instruction_t* newinstr;
@@ -66,7 +68,6 @@ static Instruction_t* addNewAssembly(FileIR_t* firp, Instruction_t *p_instr, str
 
         return newinstr;
 }
-
 static Instruction_t* addNewDatabits(FileIR_t* firp, Instruction_t *p_instr, string p_bits)
 {
         Instruction_t* newinstr;
@@ -85,6 +86,7 @@ static Instruction_t* addNewDatabits(FileIR_t* firp, Instruction_t *p_instr, str
 
         return newinstr;
 }
+#endif
 
 
 static Instruction_t* registerCallbackHandler64(FileIR_t* firp, Instruction_t *p_orig, string p_callbackHandler, int p_numArgs)
@@ -595,13 +597,11 @@ void SCFI_Instrument::AddReturnCFIForExeNonce(Instruction_t* insn, ColoredSlotVa
 	ret -> jmp shared
 
 	shared: 
+		and [rsp], 0x7ffffffff
 		mov reg <- [ rsp ] 
 		cmp [reg], exe_nonce_value
-		jne ret_slow
+		jne slow
 		ret
-	ret_slow:	
-		pop ecx
-		jmp slow  // with cfi_slow-path nonce.
 
 #endif
 
@@ -1039,22 +1039,25 @@ static unsigned int  add_to_scoop(const string &str, DataScoop_t* scoop)
 	return oldend+1;
 };
 
-
 template<int ptrsize>
-static unsigned int prefix_scoop(const string &str, DataScoop_t* scoop, FileIR_t* firp) 
+static void insert_into_scoop_at(const string &str, DataScoop_t* scoop, FileIR_t* firp, const unsigned int at) 
 {
 	// assert that this scoop is unpinned.  may need to enable --step move_globals --step-option move_globals:--cfi
 	assert(scoop->GetStart()->GetVirtualOffset()==0);
 	int len=str.length();
-	scoop->SetContents(str+scoop->GetContents());
+	string new_scoop_contents=scoop->GetContents();
+	new_scoop_contents.insert(at,str);
+	scoop->SetContents(new_scoop_contents);
+
 	virtual_offset_t oldend=scoop->GetEnd()->GetVirtualOffset();
 	virtual_offset_t newend=oldend+len;
 	scoop->GetEnd()->SetVirtualOffset(newend);
 
 	// update each reloc to point to the new location.
-	for_each(scoop->GetRelocations().begin(), scoop->GetRelocations().end(), [str](Relocation_t* reloc)
+	for_each(scoop->GetRelocations().begin(), scoop->GetRelocations().end(), [str,at](Relocation_t* reloc)
 	{
-		reloc->SetOffset(reloc->GetOffset()+str.size());
+		if(reloc->GetOffset()>=at)
+			reloc->SetOffset(reloc->GetOffset()+str.size());
 		
 	});
 
@@ -1068,10 +1071,10 @@ static unsigned int prefix_scoop(const string &str, DataScoop_t* scoop, FileIR_t
 	});
 
 	// for each scoop
-	for_each(firp->GetDataScoops().begin(), firp->GetDataScoops().end(), [&str,scoop,firp](DataScoop_t* scoop_to_update)
+	for_each(firp->GetDataScoops().begin(), firp->GetDataScoops().end(), [&str,scoop,firp,at](DataScoop_t* scoop_to_update)
 	{
 		// for each relocation for that scoop
-		for_each(scoop_to_update->GetRelocations().begin(), scoop_to_update->GetRelocations().end(), [&str,scoop,firp,scoop_to_update](Relocation_t* reloc)
+		for_each(scoop_to_update->GetRelocations().begin(), scoop_to_update->GetRelocations().end(), [&str,scoop,firp,scoop_to_update,at](Relocation_t* reloc)
 		{
 			// if it's a reloc that's wrt scoop
 			DataScoop_t* wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
@@ -1088,7 +1091,8 @@ static unsigned int prefix_scoop(const string &str, DataScoop_t* scoop, FileIR_t
 						case 4:
 						{
 							unsigned int val=*((unsigned int*)&contents.c_str()[reloc->GetOffset()]); 
-							val +=str.size();
+							if(val>=at)
+								val +=str.size();
 							contents.replace(reloc->GetOffset(), ptrsize, (const char*)&val, ptrsize);
 							break;
 						
@@ -1096,7 +1100,8 @@ static unsigned int prefix_scoop(const string &str, DataScoop_t* scoop, FileIR_t
 						case 8:
 						{
 							unsigned long long val=*((long long*)&contents.c_str()[reloc->GetOffset()]); 
-							val +=str.size();
+							if(val>=at)
+								val +=str.size();
 							contents.replace(reloc->GetOffset(), ptrsize, (const char*)&val, ptrsize);
 							break;
 
@@ -1111,8 +1116,12 @@ static unsigned int prefix_scoop(const string &str, DataScoop_t* scoop, FileIR_t
 		});
 		
 	});
+};
 
-	return oldend+1;
+template<int ptrsize>
+static void prefix_scoop(const string &str, DataScoop_t* scoop, FileIR_t* firp) 
+{
+	insert_into_scoop_at<ptrsize>(str,scoop,firp,0);
 };
 
 
@@ -1166,7 +1175,7 @@ void SCFI_Instrument::add_got_entry(const std::string& name)
 	AddressID_t* start_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, firp->GetFile()->GetBaseID(), 0);
 	AddressID_t* end_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, firp->GetFile()->GetBaseID(), ptrsize-1);
 	DataScoop_t* external_func_addr_scoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE,
-		"zest_cfi_added_"+name, start_addr,end_addr, NULL, 6, true, new_got_entry_str);
+		name, start_addr,end_addr, NULL, 6, true, new_got_entry_str);
 
 	firp->GetAddresses().insert(start_addr);
 	firp->GetAddresses().insert(end_addr);
@@ -1183,14 +1192,30 @@ void SCFI_Instrument::add_got_entry(const std::string& name)
 	string dl_sym_str((const char*)&dl_sym, sizeof(T_Elf_Sym));
 	unsigned int dl_pos=add_to_scoop(dl_sym_str,dynsym_scoop);
 
-	// add reloc to binary
+	// find the rela count.  can't insert before that.
+	int rela_count=0;
+	for(int i=0;i+sizeof(T_Elf_Dyn)<dynamic_scoop->GetSize(); i+=sizeof(T_Elf_Dyn))
+	{
+		T_Elf_Dyn &dyn_entry=*(T_Elf_Dyn*)&dynamic_scoop->GetContents().c_str()[i];
+		if(dyn_entry.d_tag==DT_RELACOUNT)	 // diff than rela size.
+		{
+			// add to the size
+			rela_count=dyn_entry.d_un.d_val;
+			break;
+		}
+	}
+
+	// create the new reloc 
 	T_Elf_Rela dl_rel;
 	memset(&dl_rel,0,sizeof(dl_rel));
 	dl_rel.r_info= ((dl_pos/sizeof(T_Elf_Sym))<<rela_shift) | reloc_type;
 	string dl_rel_str((const char*)&dl_rel, sizeof(dl_rel));
-	unsigned dl_rel_pos=prefix_scoop<ptrsize>(dl_rel_str, relscoop, firp);
 
-	Relocation_t* dl_reloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE,  0+((uintptr_t)&dl_rel.r_offset -(uintptr_t)&dl_rel), "dataptr_to_scoop", external_func_addr_scoop);
+// need to fixup relocs
+	unsigned int at=rela_count*sizeof(T_Elf_Rela);
+	insert_into_scoop_at<ptrsize>(dl_rel_str, relscoop, firp, at);
+
+	Relocation_t* dl_reloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE,  at+((uintptr_t)&dl_rel.r_offset -(uintptr_t)&dl_rel), "dataptr_to_scoop", external_func_addr_scoop);
 	relscoop->GetRelocations().insert(dl_reloc);
 	firp->GetRelocations().insert(dl_reloc);
 
@@ -1202,9 +1227,13 @@ void SCFI_Instrument::add_got_entry(const std::string& name)
 		if(dyn_entry.d_tag==DT_RELASZ)
 			// add to the size
 			dyn_entry.d_un.d_val+=sizeof(T_Elf_Rela);
-		if(dyn_entry.d_tag==DT_RELA)
+
+		// we insert the zest_cfi_dispatch symbol after the relative relocs.
+		// but we need to adjust the start if there are no relative relocs.
+		if(at == 0  && dyn_entry.d_tag==DT_RELA)
 			// subtract from the start.
 			dyn_entry.d_un.d_val-=sizeof(T_Elf_Rela);
+
 	}
 }
 
@@ -1226,10 +1255,10 @@ bool SCFI_Instrument::add_got_entries()
 
 
 	// add necessary GOT entries.
-	add_got_entry<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>("printf");
-	add_got_entry<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>("dladdr");
-	add_got_entry<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>("dlopen");
-	add_got_entry<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>("dlsym");
+	add_got_entry<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>("zest_cfi_dispatch");
+//	add_got_entry<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>("dlopen");
+//	add_got_entry<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>("printf");
+//	add_got_entry<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>("dlsym");
 
 
 	// also add a zest cfi "function" that's exported so dlsym can find it.
@@ -1294,7 +1323,7 @@ bool SCFI_Instrument::add_libdl_as_needed_support()
 	assert(relaplt_scoop != NULL || relplt_scoop!=NULL); // can't have neither
 
 
-	auto libld_str_pos=add_to_scoop(string("libdl.so")+'\0', dynstr_scoop);
+	auto libld_str_pos=add_to_scoop(string("libzestcfi.so")+'\0', dynstr_scoop);
 
 
 	// a new dt_needed entry for libdl.so
