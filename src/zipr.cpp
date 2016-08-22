@@ -75,7 +75,7 @@ template < typename T > std::string to_string( const T& n )
 	return stm.str() ;
 }
 
-
+#if 0
 static Instruction_t* addNewAssembly(FileIR_t* firp, Instruction_t *p_instr, string p_asm)
 {
         Instruction_t* newinstr;
@@ -94,6 +94,8 @@ static Instruction_t* addNewAssembly(FileIR_t* firp, Instruction_t *p_instr, str
 
         return newinstr;
 }
+
+#endif
 
 #ifdef support_stratafier_mode
 #ifdef CGC
