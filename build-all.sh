@@ -14,6 +14,11 @@ if [ `basename $FULL_BUILD_LOC` == "cfar_umbrella" ]; then
 	cfar_mode="--enable-cfar"
 fi
 
+mkdir -p $ZEST_RUNTIME/lib32
+mkdir -p $ZEST_RUNTIME/lib64
+mkdir $ZEST_RUNTIME/bin
+mkdir $ZEST_RUNTIME/sbin
+
 # stratafier
 cd $PEASOUP_UMBRELLA_DIR/stratafier
 make || exit
