@@ -200,12 +200,12 @@ void Unpin_t::DoUnpinForScoops()
 
 				if(insn->GetIndirectBranchTargetAddress())
 				{
-					cout<<"Unpin::Found data_to_insn_ptr relocation for pinned insn:"<<dec<<insn->GetBaseID()<<" at "<<hex<<
-						insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()<<endl;
+					cout<<"Unpin::Found data_to_insn_ptr relocation for pinned insn:"<<hex<<insn->GetBaseID()<<":"
+						<<insn->getDisassembly()<<" at "<<hex<< insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()<<endl;
 				}
 				else
 				{
-					cout<<"Unpin::Warn: unpin found non-IBTA to unpin for insn:"<<dec<<insn->GetBaseID()<<".  probably it's unpinned twice.  continuing anyhow."<<endl;
+					cout<<"Unpin::Warn: unpin found non-IBTA to unpin for insn:"<<hex<<insn->GetBaseID()<<".  probably it's unpinned twice.  continuing anyhow."<<endl;
 				}
 	
 				int found=should_cfi_pin(insn);
@@ -315,8 +315,8 @@ void Unpin_t::DoUpdateForInstructions()
 					*(int*)&newpush[1]=(int)wrt_insn_location;
 
 					cout<<"Unpin::Updating push32/push64-exe insn:"
-						<<dec<<from_insn->GetBaseID()<<"@"<<hex<<from_insn_location<<" to point at "
-						<<dec<<wrt_insn ->GetBaseID()<<"@"<<hex<<wrt_insn_location <<endl;
+					    <<dec<<from_insn->GetBaseID()<<":"<<from_insn->getDisassembly()<<"@"<<hex<<from_insn_location<<" to point at "
+					    <<dec<<wrt_insn ->GetBaseID()<<":"<<wrt_insn ->getDisassembly()<<"@"<<hex<<wrt_insn_location <<endl;
 
 					for(unsigned int i=0;i<from_insn->GetDataBits().size();i++)
 					{ 
@@ -491,7 +491,9 @@ void Unpin_t::DoUpdateForScoops()
 				Zipr_SDK::InstructionLocationMap_t &locMap=*(zo->GetLocationMap());
 				libIRDB::virtual_offset_t newLoc=locMap[insn];
 
-				cout<<"Unpin::Unpinned data_to_insn_ptr reloc with offset="<<hex<<reloc->GetOffset()<<".  Insn moved to "<<hex<<newLoc<<endl;
+				cout<<"Unpin::Unpinned data_to_insn_ptr insn ("<<hex<<insn->GetBaseID()<<":"
+				    <<insn->getDisassembly()<<") with offset="<<hex<<reloc->GetOffset()
+				    <<".  Insn moved to "<<hex<<newLoc<<endl;
 
 				int found=should_cfi_pin(insn);
 
