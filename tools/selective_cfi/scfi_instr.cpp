@@ -1285,6 +1285,17 @@ bool SCFI_Instrument::add_got_entries()
 	firp->GetRelocations().insert(zestcfi_reloc);
 
 
+	// update strtabsz after got/etc entries are added.
+	for(int i=0;i+sizeof(T_Elf_Dyn)<dynamic_scoop->GetSize(); i+=sizeof(T_Elf_Dyn))
+	{
+		T_Elf_Dyn &dyn_entry=*(T_Elf_Dyn*)&dynamic_scoop->GetContents().c_str()[i];
+		if(dyn_entry.d_tag==DT_STRSZ)
+		{
+			dyn_entry.d_un.d_val=dynstr_scoop->GetContents().size();
+		}
+	}
+
+
 	return true;
 }
 

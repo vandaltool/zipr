@@ -13,9 +13,9 @@ cpppath='''
 cfiles=Glob( Dir('.').srcnode().abspath+"/*.cpp")+Glob( Dir('.').srcnode().abspath+"/*.c")
 nasmfiles64=Glob( Dir('.').srcnode().abspath+"/*64.s")
 
-CXXFLAGS = " -nostdlib -fno-exceptions -Wall -fPIC -g "
-CFLAGS = " -nostdlib -fno-exceptions -Wall -fPIC -g "
-LDFLAGS = " -nostdlib -fno-exceptions -Wall -fPIC -g "
+CXXFLAGS = " -nostdlib -fno-exceptions -Wall -fPIC -O "
+CFLAGS = " -nostdlib -fno-exceptions -Wall -fPIC -O "
+LDFLAGS = " -nostdlib -fno-exceptions -Wall -fPIC -O "
 AS = "nasm"
 
 myenv.Replace(AS = AS)
