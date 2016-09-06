@@ -12,6 +12,7 @@ Usage:
 
 	[(--include-cr|--noinclude-cr)]
 	[(--diehard|--nodiehard)]
+	[(--libtwitcher|--nolibtwitcher)]
 	[(--enablenoh|--disablenoh)]
 	[(--enablenol|--disablenol)]
 	--indir <path_to_variants>
@@ -33,6 +34,7 @@ check_opts()
 	class="None"
 	backend="zipr"	 	
 	use_diehard="--nodiehard"
+	use_libtwitcher="--nolibtwitcher"
 	use_noh="--disablenoh"
 	use_nol="--disablenol"
 	use_includecr="--noinclude-cr"
@@ -44,7 +46,10 @@ check_opts()
         # separate word. The quotes around `$@' are essential!
         # We need TEMP as the `eval set --' would nuke the return value of getopt.
         short_opts="h"
-        long_opts="--long diehard
+        long_opts="
+		   --long libtwitcher
+                   --long nolibtwitcher
+		   --long diehard
                    --long nodiehard
 		   --long enablenoh
 		   --long disablenoh
@@ -125,6 +130,11 @@ check_opts()
                         --diehard|--nodiehard)
 				echo "Setting diehard = $1"
 				use_diehard="$1"
+                                shift 1
+			;;
+                        --libtwitcher|--nolibtwitcher)
+				echo "Setting libtwitcher = $1"
+				use_libtwitcher="$1"
                                 shift 1
 			;;
                         --include-cr|--noinclude-cr)
@@ -427,7 +437,7 @@ finalize_json()
 	if [ $server = "APACHE" ]; then
 		ld_preload_var="/thread_libs/libgetpid.so:/thread_libs/libprimaryleads.so:/target_apps/global/libpthread_exit.so"
 	fi
-	if [ "x"$use_diehard  = "x--diehard" ]; then
+	if [ "x"$use_diehard  = "x--diehard" -o  "x"$use_libtwitcher  = "x--libtwitcher" ]; then
 		ld_preload_var="/variant_specific/libheaprand.so:$ld_preload_var"
 
 	fi

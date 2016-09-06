@@ -830,17 +830,6 @@ if [ -f $STRATA_HOME/lib/libstrata.so ]; then
 	cp $newdir/libstrata.so.nosymbols $newdir/libstrata.so
 fi
 
-if [ -f $CFAR_HOME/DieHard/src/libdiehard.so ]; then
-	cp $CFAR_HOME/DieHard/src/libdiehard.so $newdir/libheaprand.so
-fi
-
-if [ -f $CFAR_HOME/non_overlapping_heap/noh.so ]; then
-	cp $CFAR_HOME/non_overlapping_heap/noh.so $newdir/noh.so
-fi
-
-if [ -f $CFAR_HOME/non_overlapping_libraries/ld-linux-x86-64.so.2 ]; then
-	cp $CFAR_HOME/non_overlapping_libraries/ld-linux-x86-64.so.2 $newdir/ld-linux-x86-64.so.2.nol
-fi
 
 adjust_lib_path 
 
@@ -856,6 +845,13 @@ check_for_bad_funcs $newname.ncexe
 
 # next, create a location for our log files
 mkdir logs 	
+
+
+# copy in some shared libraries if requested.
+perform_step 	diehard none cp $CFAR_HOME/DieHard/src/libdiehard.so libheaprand.so
+perform_step 	libtwitcher none cp $GT_COLLAB_HOME/downloads/libtwitcher.so libheaprand.so
+perform_step	noh none cp $CFAR_HOME/non_overlapping_heap/noh.so noh.so
+perform_step	nol none cp $CFAR_HOME/non_overlapping_libraries/ld-linux-x86-64.so.2 ld-linux-x86-64.so.2.nol
 
 #
 # create a stratafied binary that does pc confinement.
