@@ -1867,11 +1867,11 @@ void ZiprImpl_t::PlaceDollops()
 				                           dollop_entry,
 				                           false)
 				                         ) < Utils::TRAMPOLINE_SIZE
-				                        )
-				                       );
+				                        ));
 
-#if 1
 				if (m_verbose)
+				{
+#if 0
 					cout << "de_and_fallthrough_fit             : " 
 					     << de_and_fallthrough_fit << endl
 					     << "last_de_fits                       : " 
@@ -1888,7 +1888,19 @@ void ZiprImpl_t::PlaceDollops()
 							 << initial_placement_abuts_pin << endl
 					     << "disallowed_override                : " 
 							 << disallowed_override << endl;
+#else
+					cout << "Placement stats: " 
+					     << de_and_fallthrough_fit               << ", "
+							 << last_de_fits                         << ", "
+							 << fits_entirely                        << ", "
+							 << all_fallthroughs_fit                 << ", "
+							 << initial_placement_abuts_pin          << ", "
+							 << initial_placement_abuts_fallthrough  << ", "
+							 << initial_placement_abuts_pin          << ", "
+							 << disallowed_override                  << endl;
+
 #endif
+				}
 
 				if ((de_and_fallthrough_fit ||
 				    last_de_fits ||
@@ -2300,10 +2312,15 @@ size_t ZiprImpl_t::DetermineWorstCaseDollopEntrySize(DollopEntry_t *entry, bool 
 
 	if (m_verbose)
 	{
+#if 0
 		cout << "Adding opening size of " << opening_size << "." << endl;
 		cout << "Adding closing size of " << closing_size << "." << endl;
 		cout << "WCDES of " << std::hex << entry << ":" 
 		     << std::dec << wcis+opening_size+closing_size << endl;
+#else
+		cout << "Open/close/wcdes for "<<hex<<entry<<": " << dec << opening_size 
+		     <<"/" << closing_size << "/" << wcis+opening_size+closing_size << endl;
+#endif
 	}
 
 	return wcis+opening_size+closing_size;

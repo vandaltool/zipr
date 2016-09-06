@@ -30,6 +30,13 @@ using namespace ELFIO;
 #define PAGE_SIZE 4096
 #endif
 
+static inline uintptr_t page_round_up(uintptr_t x)
+{
+        const int page_size=PAGE_SIZE;
+        return  ( (((uintptr_t)(x)) + page_size-1)  & (~(page_size-1)) );
+}
+
+
 
 void ElfWriter::Write(const ELFIO::elfio *elfiop, FileIR_t* firp, const string &out_file, const string &infile)
 {
@@ -104,7 +111,7 @@ void ElfWriter::CreatePagemap(const ELFIO::elfio *elfiop, FileIR_t* firp, const 
 			continue;
 		}
 
-		for(virtual_offset_t i=page_align(start_addr); i<end_addr; i+=PAGE_SIZE)
+		for(virtual_offset_t i=page_align(start_addr); i<=end_addr; i+=PAGE_SIZE)
 		{
 			cout<<"Writing scoop "<<scoop->GetName()<<" to page: "<<hex<<i<<", perms="<<scoop->getRawPerms()
 			    << " start="<<hex<< scoop->GetStart()->GetVirtualOffset()
@@ -377,8 +384,9 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 		return false;
 
 
-	// i can't even convience a multiple-page phdr.
-	assert(phdr_size<PAGE_SIZE);
+	// a multiple-page phdr can't be gap allocated.
+	if(phdr_size>=PAGE_SIZE)
+		return false;
 
 	// verify that the segment can be extended.
 	int pages_to_extend=false;	// extend the segment by a page.
@@ -429,8 +437,9 @@ template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr
 bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::CreateNewPhdrs_PreAllocate(
 	const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr) 
 {
-	libIRDB::virtual_offset_t new_phdr_addr=(T_Elf_Addr)page_align(min_addr)-PAGE_SIZE+sizeof(T_Elf_Ehdr);
-	return CreateNewPhdrs_internal(min_addr,max_addr,0x1000,true, sizeof(T_Elf_Ehdr), new_phdr_addr);
+	unsigned int phdr_size=page_round_up(DetermineMaxPhdrSize());
+	libIRDB::virtual_offset_t new_phdr_addr=(T_Elf_Addr)page_align(min_addr)-phdr_size+sizeof(T_Elf_Ehdr);
+	return CreateNewPhdrs_internal(min_addr,max_addr,phdr_size,true, sizeof(T_Elf_Ehdr), new_phdr_addr);
 }
 
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
@@ -555,6 +564,9 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 		
 		T_Elf_Phdr newphdr=phdrs[i];
 
+		if(phdrs[i].p_type == PT_GNU_STACK)
+			newphdr.p_flags &= ~PF_X; // turn off executable stack.
+
 		// find offset in loadable segment
 		// using segvec.size() instead of new_phdrs size to search for segments in the new list.
 		for(unsigned int j=0;j<segvec.size();j++)
@@ -572,18 +584,43 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 
 	if(add_pt_load_for_phdr)
 	{
+		const T_Elf_Addr min_phdr_size=(new_phdrs.size()+1 ) * sizeof(T_Elf_Phdr);
+		const T_Elf_Addr phdr_size=page_round_up(min_phdr_size);
+
 		// specify a load section for the new program's header and phdr
 		T_Elf_Phdr newheaderphdr;
 		memset(&newheaderphdr,0,sizeof(newheaderphdr));
 		newheaderphdr.p_type = PT_LOAD;
 		newheaderphdr.p_flags =(ELFIO::Elf_Word)4;
 		newheaderphdr.p_offset =0;
-		newheaderphdr.p_vaddr =(T_Elf_Addr)page_align(min_addr)-PAGE_SIZE;
-		newheaderphdr.p_paddr =(T_Elf_Addr)page_align(min_addr)-PAGE_SIZE;
-		newheaderphdr.p_filesz =(ELFIO::Elf_Xword)PAGE_SIZE;
-		newheaderphdr.p_memsz =(ELFIO::Elf_Xword)PAGE_SIZE;
+		newheaderphdr.p_vaddr =(T_Elf_Addr)page_align(new_phdr_addr);
+		newheaderphdr.p_paddr =(T_Elf_Addr)page_align(new_phdr_addr);
+		newheaderphdr.p_filesz =(ELFIO::Elf_Xword)phdr_size;
+		newheaderphdr.p_memsz =(ELFIO::Elf_Xword)phdr_size;
 		newheaderphdr.p_align =0x1000;
 		new_phdrs.insert(new_phdrs.begin(),newheaderphdr);
+
+		auto size=newheaderphdr.p_vaddr+newheaderphdr.p_memsz; 
+		auto start_addr=newheaderphdr.p_vaddr;
+		for(virtual_offset_t i=page_align(newheaderphdr.p_vaddr); i<newheaderphdr.p_vaddr+newheaderphdr.p_memsz; i+=PAGE_SIZE)
+		{
+			cout<<"Updating pagemap for new phdr. To page: "<<hex<<i<<", perms="<<newheaderphdr.p_flags
+			    << " start="<<hex<< newheaderphdr.p_vaddr
+			    << " end="<<hex<< size << endl;
+			pagemap[i].union_permissions(newheaderphdr.p_vaddr+newheaderphdr.p_memsz);
+			pagemap[i].is_relro |= false;
+			for(int j=0;j<PAGE_SIZE;j++)
+			{
+				// get the data out of the scoop and put it into the page map.
+				if(start_addr <= i+j && i+j < start_addr + size)
+				{
+					pagemap[i].data[j]=0xf4; // don't update, phdrs are written separately.  we just need space 
+								 // in the map.
+					pagemap[i].inuse[j]=true;
+				}
+			}
+		}
+
 	}
 
 	// create the new phdr phdr
@@ -602,6 +639,7 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 
 
 	std::vector<T_Elf_Phdr> relro_phdrs;
+#if 0
 	for_each(new_phdrs.begin(), new_phdrs.end(), [&](const T_Elf_Phdr& phdr)
 	{
 		if(phdr.p_type==PT_LOAD)
@@ -641,6 +679,7 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 			do_relro(prev_i, i-1);
 		}
 	});
+#endif
 	new_phdrs.insert(new_phdrs.end(), relro_phdrs.begin(), relro_phdrs.end());
 
 #ifdef CGC
