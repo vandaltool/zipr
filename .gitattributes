@@ -1134,9 +1134,11 @@ tools/selective_cfi/color_map.hpp -text
 tools/selective_cfi/scfi_driver.cpp -text
 tools/selective_cfi/scfi_instr.cpp -text
 tools/selective_cfi/scfi_instr.hpp -text
+tools/selective_cfi/zest_cfi_runtime/SConscript -text
 tools/selective_cfi/zest_cfi_runtime/SConscript32 -text
 tools/selective_cfi/zest_cfi_runtime/SConscript64 -text
 tools/selective_cfi/zest_cfi_runtime/SConstruct -text
+tools/selective_cfi/zest_cfi_runtime/dispatch.c -text
 tools/selective_cfi/zest_cfi_runtime/zest_dispatch64.s -text
 tools/simple_cdi/Makefile.in -text
 tools/simple_cdi/SConscript -text
