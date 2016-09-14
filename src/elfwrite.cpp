@@ -564,8 +564,12 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 		
 		T_Elf_Phdr newphdr=phdrs[i];
 
+// figure out how to make this an xform/step in $PS.
+// instead of always doing it.
+#if 0
 		if(phdrs[i].p_type == PT_GNU_STACK)
 			newphdr.p_flags &= ~PF_X; // turn off executable stack.
+#endif
 
 		// find offset in loadable segment
 		// using segvec.size() instead of new_phdrs size to search for segments in the new list.
