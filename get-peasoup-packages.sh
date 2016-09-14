@@ -37,6 +37,7 @@ CLIENT_IRDB_PKGS="
   pgadmin3
   libpqxx3-dev
   libmysqlclient-dev
+  scons
   cmake
   automake1.9"
 
