@@ -4,7 +4,7 @@
         "checkpoint": {
                 "interval": 0,
                 "refresh_period": 0,
-                "refresh_command": "/target_apps/marshaling/refresh.py "
+                "refresh_command": "/target_apps/marshaling/refresh.sh "
         },
 	"divergence": {
 		"actions": [ "RECOVER" ],

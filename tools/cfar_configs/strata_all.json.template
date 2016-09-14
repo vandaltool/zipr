@@ -22,7 +22,7 @@
             },
             "settings" : {
                 "COMMENT" : "We are disabling NR_rt_sigprocmask(14), __NR_getpid(39), gettimeofday(96),__NR_gettid(186)",
-                "disable_syscall_xcheck" : "14,39,96,186",
+                "disable_syscall_xcheck" : "14,39,96,186,3",
                 "aslr_mode" : 1
             }
         },

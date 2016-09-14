@@ -25,7 +25,8 @@
 		"launcher" : "/emt/emt.bash"
             },
             "settings": {
-                "aslr_mode": 1
+                "aslr_mode": 1,
+  		"disable_syscall_xcheck": "3"
             }
         },
         "specs" : {
