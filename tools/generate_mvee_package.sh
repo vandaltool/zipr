@@ -290,8 +290,9 @@ finalize_json()
 	mkdir $outdir/marshaling
 	cp $CFAR_EMT_PLUGINS/dh_plugins.jar $outdir/marshaling/
 	cp $CFAR_EMT_PLUGINS/refresh.py $outdir/marshaling/
+	cp $CFAR_EMT_PLUGINS/refresh.sh $outdir/marshaling/
 	#tar -xzf $CFAR_APOGEE_DOWNLOADS_DIR/build-emt.tar.gz -C $outdir/marshaling/emt --strip-components=1
-	cp -R $CFAR_EMT_DIR $outdir/marshaling/emt
+	cp -R $CFAR_DIST_EMT_DIR $outdir/marshaling/emt
 
 
 	variants="$total_variants"
