@@ -915,9 +915,11 @@ tools/cfar_configs/cfar_partProbNog_probNol_probNoh_probNos_probBilr_probP1_prob
 tools/cfar_configs/cfar_partStructNog_structNol_structNoh_structNos_structNoc_structP1Canaries_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_probBilr_libtwitcher_zipr.sh -text
 tools/cfar_configs/cfar_probBilr_probHeaprand_zipr.sh -text
+tools/cfar_configs/cfar_probBilr_probNoh_zipr.sh -text
 tools/cfar_configs/cfar_probBilr_probNos_probNol_zipr.sh -text
 tools/cfar_configs/cfar_probBilr_probNos_zipr.sh -text
 tools/cfar_configs/cfar_probBilr_probP1_probHeaprand_zipr.sh -text
+tools/cfar_configs/cfar_probBilr_probP1_probNos_probNol_probNoh_zipr.sh -text
 tools/cfar_configs/cfar_probBilr_probP1_probNos_probNol_zipr.sh -text
 tools/cfar_configs/cfar_probBilr_probP1_zipr.sh -text
 tools/cfar_configs/cfar_probBilr_zipr.sh -text
@@ -941,10 +943,12 @@ tools/cfar_configs/cfar_probP1_strata.sh -text
 tools/cfar_configs/cfar_probP1_zipr.sh -text
 tools/cfar_configs/cfar_structNoc_probP1_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_structNoc_probP1_zipr.sh -text
+tools/cfar_configs/cfar_structNoc_structNoh_zipr.sh -text
 tools/cfar_configs/cfar_structNoc_structNos_structNol_zipr.sh -text
 tools/cfar_configs/cfar_structNoc_structNos_zipr.sh -text
 tools/cfar_configs/cfar_structNoc_structP1Canaries_probBilr_zipr.sh -text
 tools/cfar_configs/cfar_structNoc_structP1Canaries_probHeaprand_zipr.sh -text
+tools/cfar_configs/cfar_structNoc_structP1Canaries_structNos_structNol_structNoh_zipr.sh -text
 tools/cfar_configs/cfar_structNoc_structP1Canaries_structNos_structNol_zipr.sh -text
 tools/cfar_configs/cfar_structNoc_structP1Canaries_zipr.sh -text
 tools/cfar_configs/cfar_structNoc_zipr.sh -text
