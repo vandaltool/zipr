@@ -429,7 +429,10 @@ std::map<db_id_t,Instruction_t*> FileIR_t::ReadInsnsFromDB
 			data, callback, comment, indTarg, doipid);
 	
 		if(funcMap[parent_func_id])
+		{
 			funcMap[parent_func_id]->GetInstructions().insert(newinsn);
+			newinsn->SetFunction(funcMap[parent_func_id]);
+		}
 
 //std::cout<<"Found address "<<aid<<"."<<std::endl;
 
