@@ -24,6 +24,7 @@ shift
 
 
 structured_p1_canaries=0
+structured_stack_stamp=0
 structured_noc=0
 structured_nog=0
 structured_nos=0
@@ -46,6 +47,8 @@ do
 	# this option is for cfar, handle it and remove it from the ps_analyze arguments.
 	if [ "$i" == "--structured_p1_canaries" ]; then 	
 		structured_p1_canaries=1
+	elif [ "$i" == "--structured_stack_stamp" ]; then 	
+		structured_stack_stamp=1
 	# this option is for cfar, handle it and remove it from the ps_analyze arguments.
 	elif [ "$i" == "--diehard" ]; then 	
 		use_diehard=1
@@ -142,6 +145,18 @@ do
 	# options to p1 to create non-overlapping canary values.
 	if [ $structured_p1_canaries  -eq 1 ]; then
 		per_variant_options+=(--step-option p1transform:"--canary_value 0x100${seq}${seq}000 --random_seed $anyseed")
+	fi
+
+	# options to stack_stamp to create non-overlapping stamps
+	if [ $structured_stack_stamp  -eq 1 ]; then
+		# check even/odd status of variant number.
+		if [ $(expr ${seq} % 2) = 0 ]; then
+			# even variants get a5 * 4.  this is 01010101... in binary.
+			per_variant_options+=(--step-option stack_stamp:"--stamp-value 0xa5a5a5a5")
+		else
+			# even variants get 5a * 4.  this is 10101010... in binary.
+			per_variant_options+=(--step-option stack_stamp:"--stamp-value 0x5a5a5a5a")
+		fi
 	fi
 
 	# add in options for output directory.

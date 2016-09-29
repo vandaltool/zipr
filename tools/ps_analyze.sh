@@ -169,6 +169,8 @@ usage()
 	echo "   -b <zipr|strata>			same as --backend "
 	echo "   --stop-after <step>			Stop ps_analyze after completeling the specified step."
 	echo "   --stop-before <step>			Stop ps_analyze before starting the specified step."
+	echo "   --dump-after <step>			Dump IR after completeling the specified step."
+	echo "   --dump-before <step>			Dump IR before starting the specified step."
 
 }
 
@@ -214,6 +216,8 @@ check_options()
 		   --long usage
 		   --long stop-after:
 		   --long stop-before:
+		   --long dump-after:
+		   --long dump-before:
 		"
 
 	# solaris does not support long option names
@@ -242,14 +246,14 @@ check_options()
 				;;
 			-b|--backend)
 				if [ "X$2" = "Xzipr" ]; then
-					echo using Zipr backend
+					echo "Using Zipr backend."
 					export backend="zipr"
 					phases_spec=" $phases_spec stratafy_with_pc_confine=off generate_spri=off spasm=off fast_annot=off zipr=on preLoaded_ILR1=off  preLoaded_ILR2=off fast_spri=off "
 					phases_spec=${phases_spec/preLoaded_ILR1=on/}
 					phases_spec=${phases_spec/preLoaded_ILR2=on/}
 					step_options_gather_libraries="$step_options_gather_libraries --main_exe_only"
 				elif [ "X$2" = "Xstrata" ]; then
-					echo using Strata backend
+					echo "Using Strata backend."
 					export backend="strata"
 					#  strata is default, do nothing.
 				fi
@@ -299,6 +303,14 @@ check_options()
 			;;
 			--stop-after)
 				stop_after_step=$2
+				shift 2
+			;;
+			--dump-before)
+				dump_before_step=$2
+				shift 2
+			;;
+			--dump-after)
+				dump_after_step=$2
 				shift 2
 			;;
 			--) 	shift 
@@ -474,6 +486,10 @@ perform_step()
 		echo "command is:  $command"
 		exit 1
 	fi
+	if [ "$step" = "$dump_before_step" ]; then 
+		echo " ---- ps_analyze has been asked to dump before step $step."
+		$SECURITY_TRANSFORMS_HOME/plugins_install/dump_map.exe $cloneid > logs/dump_before.log
+	fi
 
 	is_step_on $step
 	if [ $? -eq 0 ]; then 
@@ -571,6 +587,10 @@ perform_step()
 		echo "ps_analyze has been asked to stop after step $step."
 		echo "command is:  $command"
 		exit 1
+	fi
+	if [ "$step" = "$dump_after_step" ]; then 
+		echo " ---- ps_analyze has been asked to dump after step $step."
+		$SECURITY_TRANSFORMS_HOME/plugins_install/dump_map.exe $cloneid > logs/dump_after.log
 	fi
 	return $command_exit
 }
@@ -686,17 +706,17 @@ compatcheck()
 
 	file $1 |egrep  "ELF.*executable" > /dev/null 2>&1 
 	if [ $? = 0 ]; then
-		echo Detected ELF file...
+		echo Detected ELF file.
 		return
 	fi
 	file $1 |egrep  "ELF.*shared object" > /dev/null 2>&1 
 	if [ $? = 0 ]; then
-		echo Detected ELF shared object...
+		echo Detected ELF shared object.
 		return
 	fi
 	file $1 |egrep  "CGC.*executable" > /dev/null 2>&1 
 	if [ $? = 0 ]; then
-		echo Detected CGCEF file...
+		echo Detected CGCEF file.
 		return
 	fi
 

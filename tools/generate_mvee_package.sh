@@ -190,6 +190,7 @@ sanity_check()
 	var_sets=$(ls $indir)
 	for vs_dir in $var_sets
 	do
+echo vs_dir=$vs_dir
 		vs_top_dir=$indir/$vs_dir
 		total_variant_sets=$(expr $total_variant_sets + 1)
 
@@ -220,9 +221,9 @@ sanity_check()
 			libraries=$(/bin/ls $vs_top_dir/target_app_libs/ |grep -v "^dh-lib$" |sed "s/dh-$main_exe//" |sed "s/^dh-//")
 		fi
 		configs=$(/bin/ls $vs_top_dir/target_app*/dh-$main_exe/)
-		echo "For variant $vs_dir:"
+		echo "For variant set $vs_dir:"
 		echo "	Found application=\"$main_exe\""
-		echo "	Found libraries=\"$libraries\""
+		echo "	Found libraries=\"$(echo $libraries)\""
 		echo "	Found configurations="\"$configs\"
 
 
@@ -274,11 +275,12 @@ sanity_check()
 				
 			done
 		done
-		echo "For variant set $var_dir:"
-		echo " Found a total of $variants_per_vs to run in parallel."
+		echo "	Found a total of $variants_per_vs to run in parallel."
 	done
 
-	echo " Sanity checks complete.  Let's do this.... "
+	echo "-------------------------------------------"
+	echo "Sanity checks complete.  Let's do this.... "
+	echo "-------------------------------------------"
 }
 
 
@@ -316,6 +318,7 @@ finalize_json()
 
 		for seq in $(seq 1 $variants_per_vs )
 		do
+			echo "Including variant $seq."
 
 			new_variant_dir="$outdir/vs-$vs/variant-$seq"
 			new_variant_dir_ts="/target_apps/vs-$vs/variant-$seq"
@@ -326,10 +329,48 @@ finalize_json()
 			config=${variant_config_arr[$seq]}
 			variant_json=${variant_json_arr[$seq]}
 
+
+			# sanity check that nol/noh configuration settings match the config name.
+			echo "	config is $config"
+			if [[ $config == *"Noh"* ]]  || [[ $config == *"phase1"* ]] ; then
+				if [[ $use_noh == "--enablenoh" ]] ; then
+					echo "	noh settings match."
+				else
+					echo
+					echo "--enablenoh setting does not match, config is Noh, use_noh is off"
+					exit 1
+				fi
+			else 
+				if [[ $use_noh == "--disablenoh" ]] ; then
+					echo "	noh settings match."
+				else
+					echo
+					echo "--enablenoh setting does not match, config is not noh, use_noh is on"
+					exit 1
+				fi
+			fi
+
+			if [[ $config == *"Nol"* ]]  || [[ $config == *"phase1"* ]] ; then
+				if [[ $use_nol == "--enablenol" ]] ; then
+					echo "	--enablenol settings match."
+				else
+					echo
+					echo "--enablenol setting does not match"
+					exit 1
+				fi
+			else 
+				if [[ $use_nol == "--disablenol" ]] ; then
+					echo "	--enablenol settings match."
+				else
+					echo
+					echo "--enablenol setting does not match"
+					exit 1
+				fi
+			fi
+
 			#echo seq=$seq
 			#echo config=$config
 			#echo variant_json=$variant_json
-			echo "Including variant $seq."
 
 			if [ ! -f $variant_json ]; then
 				echo "wtf, $variant_json missing?"
@@ -345,11 +386,18 @@ finalize_json()
 			# get path to exe
 			full_exe_dir=$(dirname $ps_dir)
 
+			# get path to exe
+			struct_set_dir=$(dirname $full_exe_dir)
+
+			# figure out how many variants in the structured set.
+			struct_set_size=$(ls $struct_set_dir |wc -l)
+			struct_set_no=$(basename $full_exe_dir |sed "s/v//")
 
 
 			# remove host's portion of the path to get path on target
 			exe_dir=$(echo $full_exe_dir|sed "s/^$indir//")
 
+			echo "	variant coming from $full_exe_dir "
 			cp -R $full_exe_dir $new_variant_dir/bin
 
 			# echo "exe_dir=$exe_dir"
@@ -399,17 +447,22 @@ finalize_json()
 			fi
 
 			# handle structured nol/noh
-			echo $total_variants > $new_variant_dir/nolnoh_config
-			echo config is $config
-			if [[ $config == *"structNol"* ]] || [[  $config == *"structNoh"* ]] ; then
-				echo $seq >> $new_variant_dir/nolnoh_config
+			echo "	config is $config"
+			if [[ $config == *"struct"* ]] || [[  $config == *"struct"* ]] ; then
+				echo $struct_set_size > $new_variant_dir/nolnoh_config
+				echo $struct_set_no >> $new_variant_dir/nolnoh_config
+				echo "	Struct noh/nol is enabled: $struct_set_no / $struct_set_size "
 				if [[ $config == *"probNoh"* ]] || [[  $config == *"probNol"* ]] ; then
 					echo
 					echo "Cannot have structNol with probNoh or structNoh with probNol.  Fatal error. "
 					echo
 					exit 1
 				fi
+			else
+				echo $total_variants > $new_variant_dir/nolnoh_config
+				echo "	Struct Noh/nol is disabled."
 			fi
+	
 
 
 			variant_name="variant_${vs}_${seq}"
