@@ -365,8 +365,9 @@ void Unpin_t::DoUpdateForInstructions()
 			else if(reloc->GetType()==string("pcrel") && reloc->GetWRT()!=NULL)
 			{
 
-				DataScoop_t* wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
-				assert(wrt);
+				BaseObj_t* bo_wrt=reloc->GetWRT();
+				DataScoop_t* scoop_wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
+				Instruction_t* insn_wrt=dynamic_cast<Instruction_t*>(reloc->GetWRT());
 				virtual_offset_t rel_addr1=the_arg->Memory.Displacement;
 				rel_addr1+=from_insn->GetDataBits().size();
 
@@ -376,25 +377,39 @@ void Unpin_t::DoUpdateForInstructions()
 				assert(disp_size==4);
 				assert(0<disp_offset && disp_offset<=from_insn->GetDataBits().size() - disp_size);
 
-                                unsigned int new_disp=rel_addr1 + wrt->GetStart()->GetVirtualOffset() 
-					- from_insn->GetDataBits().size()-from_insn_location;
-                                from_insn->SetDataBits(from_insn->GetDataBits().replace(disp_offset, disp_size, (char*)&new_disp, disp_size));
+				libIRDB::virtual_offset_t to_addr=0xdeadbeef; // noteable value that shouldn't be used.
+				string convert_string;
 
+				assert(bo_wrt);
+				if(scoop_wrt)
+				{
+					to_addr=scoop_wrt->GetStart()->GetVirtualOffset();
+					convert_string=string("scoop ")+scoop_wrt->GetName();
+				}
+				else if(insn_wrt)
+				{
+					to_addr=locMap[insn_wrt];
+					convert_string=string("insn ")+to_string(insn_wrt->GetBaseID())+
+					               ":"+insn_wrt->getDisassembly();
+				}
+				else assert(0);
+					
+				int new_disp=rel_addr1 + to_addr - from_insn->GetDataBits().size()-from_insn_location;
+	
+				from_insn->SetDataBits(from_insn->GetDataBits().replace(disp_offset, 
+					disp_size, (char*)&new_disp, disp_size));
 				// update the instruction in the memory space.
 				for(unsigned int i=0;i<from_insn->GetDataBits().size();i++)
 				{ 
 					unsigned char newbyte=from_insn->GetDataBits()[i];
 					ms[from_insn_location+i]=newbyte;
 				}
-                		DISASM disasm2;
-				//from_insn->GetAddress()->SetVirtualOffset(from_insn_location);
-                		from_insn->Disassemble(disasm2);	// just disassemble it from_insn_location so the disassembly is right.
-				//from_insn->GetAddress()->SetVirtualOffset(0);
-			
+				DISASM disasm2;
+				from_insn->Disassemble(disasm2);	
 				cout<<"unpin:pcrel:new_disp="<<hex<<new_disp<<endl;
 				cout<<"unpin:pcrel:new_insn_addr="<<hex<<from_insn_location<<endl;
 				cout<<"unpin:pcrel:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.CompleteInstr
-			 	    <<" to "<<disasm2.CompleteInstr<<" for scoop: "<<wrt->GetName()<<endl;
+					<<" to "<<disasm2.CompleteInstr<<" wrt "<< convert_string <<endl;
 			}
 			// instruction has a absolute  memory operand that needs it's displacement updated.
 			else if(reloc->GetType()==string("absoluteptr_to_scoop"))
