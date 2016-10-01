@@ -26,6 +26,7 @@
 #include "color_map.hpp"
 #include <iostream>
 #include <iomanip>
+#include <memory>
 
 
 
@@ -51,9 +52,9 @@ class SCFI_Instrument
 			  protect_safefn(p_do_safefn), 
 			  do_multimodule(p_do_multimodule), 
 			  do_exe_nonce_for_call(p_do_exe_nonce_for_call), 
-			  color_map(NULL),
 			  ExecutableNonceValue("\x90", 1),
-			  ret_shared(NULL)
+			  ret_shared(NULL),
+			  zestcfi_function_entry(NULL)
 
 		{ 
 			std::cout<<std::boolalpha;
@@ -145,9 +146,10 @@ class SCFI_Instrument
 		bool protect_safefn;
 		bool do_exe_nonce_for_call;
 
-		ColoredInstructionNonces_t *color_map;
+		std::unique_ptr<ColoredInstructionNonces_t> color_map;
 
 		libIRDB::Instruction_t *ret_shared;
+		libIRDB::Instruction_t *zestcfi_function_entry;
 
 		std::string ExecutableNonceValue;
 };

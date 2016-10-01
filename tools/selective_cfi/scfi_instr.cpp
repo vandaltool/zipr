@@ -48,47 +48,6 @@ virtual_offset_t getAvailableAddress(FileIR_t *p_virp)
 
 
 
-#if 0
-// moved to Rewrite_Utility.cpp
-static Instruction_t* addNewAssembly(FileIR_t* firp, Instruction_t *p_instr, string p_asm)
-{
-        Instruction_t* newinstr;
-        if (p_instr)
-                newinstr = allocateNewInstruction(firp,p_instr->GetAddress()->GetFileID(), p_instr->GetFunction());
-        else   
-                newinstr = allocateNewInstruction(firp,BaseObj_t::NOT_IN_DATABASE, NULL);
-
-        firp->RegisterAssembly(newinstr, p_asm);
-
-        if (p_instr)
-        {
-                newinstr->SetFallthrough(p_instr->GetFallthrough());
-                p_instr->SetFallthrough(newinstr);
-        }
-
-        return newinstr;
-}
-static Instruction_t* addNewDatabits(FileIR_t* firp, Instruction_t *p_instr, string p_bits)
-{
-        Instruction_t* newinstr;
-        if (p_instr)
-                newinstr = allocateNewInstruction(firp,p_instr->GetAddress()->GetFileID(), p_instr->GetFunction());
-        else   
-                newinstr = allocateNewInstruction(firp,BaseObj_t::NOT_IN_DATABASE, NULL);
-
-        newinstr->SetDataBits(p_bits);
-
-        if (p_instr)
-        {
-                newinstr->SetFallthrough(p_instr->GetFallthrough());
-                p_instr->SetFallthrough(newinstr);
-        }
-
-        return newinstr;
-}
-#endif
-
-
 static Instruction_t* registerCallbackHandler64(FileIR_t* firp, Instruction_t *p_orig, string p_callbackHandler, int p_numArgs)
 {
 
@@ -288,6 +247,7 @@ bool SCFI_Instrument::add_scfi_instrumentation(Instruction_t* insn)
 
 bool SCFI_Instrument::needs_scfi_instrumentation(Instruction_t* insn)
 {
+assert(0);
 	return false;
 
 }
@@ -849,6 +809,16 @@ bool SCFI_Instrument::instrument_jumps()
 		DISASM d;
 		insn->Disassemble(d);
 
+
+		// we always have to protect the zestcfi dispatcher, that we just added.
+		if(zestcfi_function_entry==insn)
+		{
+			cout<<"Protecting zestcfi function for external entrances"<<endl;
+			cfi_checks++;
+			AddJumpCFI(insn);
+			continue;
+		}
+
 		if(insn->GetBaseID()==BaseObj_t::NOT_IN_DATABASE)
 			continue;
 
@@ -866,9 +836,11 @@ bool SCFI_Instrument::instrument_jumps()
 
 		bool safefn = isSafeFunction(insn);
 	
+		
 		switch(d.Instruction.BranchType)
 		{
 			case  JmpType:
+			{
 				if((d.Argument1.ArgType&CONSTANT_TYPE)!=CONSTANT_TYPE)
 				{
 					bool is_fixed_call=is_jmp_a_fixed_call(insn);
@@ -912,8 +884,9 @@ bool SCFI_Instrument::instrument_jumps()
 				}
 	
 				break;
-
+			}
 			case  CallType:
+			{
 
 				// should only see calls if we are not CFI'ing safe functions
 				// be sure to use with: --no-fix-safefn in fixcalls
@@ -938,8 +911,9 @@ bool SCFI_Instrument::instrument_jumps()
 					AddCallCFIWithExeNonce(insn);
 				}
 				break;
-
+			}
 			case  RetType: 
+			{
 				if (insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
 				{
 					cfi_branch_ret_complete++;
@@ -962,8 +936,11 @@ bool SCFI_Instrument::instrument_jumps()
 					AddReturnCFI(insn);
 				break;
 
+			}
 			default:
+			{
 				break;
+			}
 		}
 	}
 	
@@ -978,6 +955,10 @@ bool SCFI_Instrument::instrument_jumps()
 	cout<<"# ATTRIBUTE cfi_ret_checks="<<std::dec<<cfi_branch_ret_checks<<endl;
 	cout<<"# ATTRIBUTE cfi_ret_complete="<<std::dec<<cfi_branch_ret_complete<<endl;
 	display_histogram(cout, "cfi_ret_complete_histogram", rets);
+
+
+	// 0 or 1 checks.
+	cout<<"# ATTRIBUTE multimodule_checks="<< (unsigned int)(zestcfi_function_entry!=NULL) <<endl;
 
 	cout<<"# ATTRIBUTE cfi_checks="<<std::dec<<cfi_checks<<endl;
 	ibt_complete = cfi_branch_jmp_complete + cfi_branch_call_complete + cfi_branch_ret_complete;
@@ -1256,9 +1237,6 @@ bool SCFI_Instrument::add_got_entries()
 
 	// add necessary GOT entries.
 	add_got_entry<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>("zest_cfi_dispatch");
-//	add_got_entry<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>("dlopen");
-//	add_got_entry<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>("printf");
-//	add_got_entry<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>("dlsym");
 
 
 	// also add a zest cfi "function" that's exported so dlsym can find it.
@@ -1275,12 +1253,22 @@ bool SCFI_Instrument::add_got_entries()
 
 	// add "function" for zestcfi"
 	// for now, return that the target is allowed.  the nonce plugin will have to have a slow path for this later.
-	Instruction_t* zestcfi_function=addNewAssembly(firp,NULL,"mov eax, 1");
-	Instruction_t* zestcfi_ret=addNewAssembly(firp,NULL,"ret");
-	zestcfi_function->SetFallthrough(zestcfi_ret);
+	assert(firp->GetArchitectureBitWidth()==64); // fixme for 32-bit, should jmp to ecx.
+	zestcfi_function_entry=addNewAssembly(firp,NULL,"jmp r11");
+
+	// this jump can target any IBT in the module.
+	ICFS_t *newicfs=new ICFS_t;
+	for_each(firp->GetAllICFS().begin(), firp->GetAllICFS().end(), [&](ICFS_t* oldicfs)
+	{
+		newicfs->insert(oldicfs->begin(), oldicfs->end());
+	});
+	zestcfi_function_entry->SetIBTargets(newicfs);
+	firp->GetAllICFS().insert(newicfs);
+	firp->AssembleRegistry();
+	
 
 	// add a relocation so that the zest_cfi "function"  gets pointed to by the symbol
-	Relocation_t* zestcfi_reloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE,  zestcfi_pos+((uintptr_t)&zestcfi_sym.st_value - (uintptr_t)&zestcfi_sym), "data_to_insn_ptr", zestcfi_function);
+	Relocation_t* zestcfi_reloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE,  zestcfi_pos+((uintptr_t)&zestcfi_sym.st_value - (uintptr_t)&zestcfi_sym), "data_to_insn_ptr", zestcfi_function_entry);
 	dynsym_scoop->GetRelocations().insert(zestcfi_reloc);
 	firp->GetRelocations().insert(zestcfi_reloc);
 
@@ -1303,7 +1291,7 @@ template<typename T_Elf_Sym, typename T_Elf_Rela, typename T_Elf_Dyn, int reloc_
 bool SCFI_Instrument::add_libdl_as_needed_support()
 {
 	DataScoopSet_t::iterator it;
-        // use this to determine whether a scoop has a given name.
+	// use this to determine whether a scoop has a given name.
 
 	auto dynamic_scoop=find_scoop(firp,".dynamic");
 	auto gotplt_scoop=find_scoop(firp,".got.plt");
@@ -1406,9 +1394,22 @@ bool SCFI_Instrument::execute()
 
 	bool success=true;
 
+	// this adds an instruction that needs instrumenting by future phases.
+	// do not move later.
+	if(do_multimodule)
+	{
+		if(firp->GetArchitectureBitWidth()==64)
+			success = success && add_dl_support<ELFIO::Elf64_Sym, ELFIO::Elf64_Rela, ELFIO::Elf64_Dyn, R_X86_64_GLOB_DAT, 32, 8>();
+		else
+			success = success && add_dl_support<ELFIO::Elf32_Sym, ELFIO::Elf32_Rel, ELFIO::Elf32_Dyn, R_386_GLOB_DAT, 8, 4>();
+	}
+
+
+	// this selects colors and is used in instrument jumps.
+	// do not move later.
 	if(do_coloring)
 	{
-		color_map=new ColoredInstructionNonces_t(firp); 
+		color_map.reset(new ColoredInstructionNonces_t(firp)); 
 		assert(color_map);
 		success = success && color_map->build();
 	
@@ -1417,21 +1418,8 @@ bool SCFI_Instrument::execute()
 	success = success && instrument_jumps();	// to handle moving of relocs properly if
 							// an insn is both a IBT and a IB,
 							// we instrument first, then add relocs for targets
-	success = success && mark_targets();
 
-	if(do_multimodule)
-	{
-		const int R_386_JUMP_SLOT=7;
-		if(firp->GetArchitectureBitWidth()==64)
-			success = success && add_dl_support<ELFIO::Elf64_Sym, ELFIO::Elf64_Rela, ELFIO::Elf64_Dyn, R_X86_64_GLOB_DAT, 32, 8>();
-		else
-			success = success && add_dl_support<ELFIO::Elf32_Sym, ELFIO::Elf32_Rel, ELFIO::Elf32_Dyn, R_386_GLOB_DAT, 8, 4>();
-	}
-		
-
-
-	delete color_map;
-	color_map=NULL;
+	success = success && mark_targets();		// put relocs on all targets so that the backend can put nonces in place.
 
 	return success;
 }

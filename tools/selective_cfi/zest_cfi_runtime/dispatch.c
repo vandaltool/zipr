@@ -9,6 +9,11 @@
 #define strcmp Zest_Strcmp
 #define strlen Zest_Strlen
 
+// typedef for a function pointer because the syntax is otherwise insane, unreadable and unwriteable.
+typedef void (*zestcfi_func_ptr_t)(ElfW(Addr)) ;
+
+#define DEBUG 0
+
 
 static int strcmp(const char *s1, const char *s2)
 {
@@ -27,7 +32,18 @@ static size_t strlen( const char *str )
 
 static void write_str(const char* out)
 {
+#if DEBUG
 	write(2,out,strlen(out));
+#endif
+}
+
+static void write_ptr(const void* out)
+{
+#if DEBUG
+	char buf[20];	
+	sprintf(buf,"%p", out);
+	write_str(buf);
+#endif
 }
 
 static int ptload_for_target_exists(const struct dl_phdr_info *info, 
@@ -160,18 +176,23 @@ int dl_iterate_phdr_callback (struct dl_phdr_info *info, size_t size, void *data
 }
 
 
-void zest_cfi_dispatch_c(ElfW(Addr) target)
+zestcfi_func_ptr_t* zest_cfi_dispatch_c(ElfW(Addr) target)
 {
-	typedef void (*zestcfi_func_ptr_t)(ElfW(Addr)) ;
+	write_ptr(target);
+	write_str(" -- ");
+
 	ElfW(Addr) zestcfi_addr=target;
 	int res=dl_iterate_phdr(dl_iterate_phdr_callback,(void*)&zestcfi_addr);
 
 	if(res==0)
+	{
 		write_str("Could not find zestcfi for target library.  Allowing control transfer.\n");
+		return NULL;
+	}
 	else
 	{
 		write_str("Found zest-cfi_dispatcher.  Control transfer will be checked.\n");
 		zestcfi_func_ptr_t zest_cfi_ptr = (zestcfi_func_ptr_t) zestcfi_addr;
-		(*zest_cfi_ptr)(target);
+		return zestcfi_addr;
 	}
 }
