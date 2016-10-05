@@ -75,18 +75,18 @@ main()
 	protect
 	get_correct
 
-#	test dude.exe libfoo.so.orig libdude.so.orig		# unprotected - should pass!
-#	test dude.exe libfoo.so.cfi libdude.so.orig		
-#	test dude.exe libfoo.so.orig libdude.so.cfi		
-#	test dude.exe.cfi libfoo.so.orig libdude.so.orig	
-#	test dude.exe.cfi libfoo.so.cfi libdude.so.orig		
-#	test dude.exe.cfi libfoo.so.orig libdude.so.cfi		
-
+	test dude.exe libfoo.so.orig libdude.so.orig		# unprotected - should pass!
+	test dude.exe libfoo.so.cfi libdude.so.orig		
+	test dude.exe libfoo.so.orig libdude.so.cfi		
 	test dude.exe libfoo.so.cfi libdude.so.cfi		
-#	test dude.exe.cfi libfoo.so.cfi libdude.so.cfi		
+
+	test dude.exe.cfi libfoo.so.orig libdude.so.orig	
+	test dude.exe.cfi libfoo.so.cfi libdude.so.orig		
+	test dude.exe.cfi libfoo.so.orig libdude.so.cfi		
+	test dude.exe.cfi libfoo.so.cfi libdude.so.cfi		
 
 	report
-#	clean
+	clean
 }
 
 passes=0 
