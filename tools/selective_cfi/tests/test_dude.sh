@@ -43,6 +43,7 @@ build()
 	gcc -o libfoo.so libfoo.c -w -shared -fPIC
 	gcc -o libdude.so libdude.c -w -shared -fPIC
 	gcc -o dude.exe dude.c -w -L. -ldude -lfoo
+	gcc -o dude.exe.pie dude.c -fPIC -fpie -pie -w -L. -ldude -lfoo
 	mv libfoo.so libfoo.so.orig
 	mv libdude.so libdude.so.orig
 }
@@ -50,16 +51,20 @@ build()
 
 protect()
 {
-	do_coloring_cfi ./dude.exe ./dude.exe.cfi
+	do_cfi ./dude.exe ./dude.exe.cfi
 	do_cfi ./libfoo.so.orig ./libfoo.so.cfi
 	do_cfi ./libdude.so.orig ./libdude.so.cfi
+
+	do_coloring_cfi ./dude.exe ./dude.exe.cfi.color
+	do_coloring_cfi ./libfoo.so.orig ./libfoo.so.cfi.color
+	do_coloring_cfi ./libdude.so.orig ./libdude.so.cfi.color
 }
 
 clean()
 {
 	rm out
 	rm correct
-	rm -Rf dude.exe peasoup_exe* libfoo.so libfoo.so.orig libfoo.so.cfi libdude.so.* foo.cfi dude.exe.cfi
+	rm -Rf dude.exe* peasoup_exe* libfoo.so libfoo.so.orig libfoo.so.cfi libdude.so.* 
 }
 
 report ()
@@ -77,13 +82,39 @@ main()
 
 	test dude.exe libfoo.so.orig libdude.so.orig		# unprotected - should pass!
 	test dude.exe libfoo.so.cfi libdude.so.orig		
+	test dude.exe libfoo.so.cfi.color libdude.so.orig		
 	test dude.exe libfoo.so.orig libdude.so.cfi		
-	test dude.exe libfoo.so.cfi libdude.so.cfi		
+	test dude.exe libfoo.so.orig libdude.so.cfi.color		
+	test dude.exe libfoo.so.cfi libdude.so.cfi
+	test dude.exe libfoo.so.cfi libdude.so.cfi.color
+	test dude.exe libfoo.so.cfi.color libdude.so.cfi
 
 	test dude.exe.cfi libfoo.so.orig libdude.so.orig	
 	test dude.exe.cfi libfoo.so.cfi libdude.so.orig		
+	test dude.exe.cfi libfoo.so.cfi.color libdude.so.orig		
 	test dude.exe.cfi libfoo.so.orig libdude.so.cfi		
-	test dude.exe.cfi libfoo.so.cfi libdude.so.cfi		
+	test dude.exe.cfi libfoo.so.orig libdude.so.cfi.color		
+	test dude.exe.cfi libfoo.so.cfi libdude.so.cfi
+	test dude.exe.cfi libfoo.so.cfi libdude.so.cfi.color
+	test dude.exe.cfi libfoo.so.cfi.color libdude.so.cfi
+
+	test dude.exe.cfi.color libfoo.so.orig libdude.so.orig	
+	test dude.exe.cfi.color libfoo.so.cfi libdude.so.orig		
+	test dude.exe.cfi.color libfoo.so.cfi.color libdude.so.orig		
+	test dude.exe.cfi.color libfoo.so.orig libdude.so.cfi		
+	test dude.exe.cfi.color libfoo.so.orig libdude.so.cfi.color		
+	test dude.exe.cfi.color libfoo.so.cfi libdude.so.cfi
+	test dude.exe.cfi.color libfoo.so.cfi libdude.so.cfi.color
+	test dude.exe.cfi.color libfoo.so.cfi.color libdude.so.cfi
+
+	test dude.exe.pie libfoo.so.orig libdude.so.orig		# unprotected - should pass!
+	test dude.exe.pie libfoo.so.cfi libdude.so.orig		
+	test dude.exe.pie libfoo.so.cfi.color libdude.so.orig		
+	test dude.exe.pie libfoo.so.orig libdude.so.cfi		
+	test dude.exe.pie libfoo.so.orig libdude.so.cfi.color		
+	test dude.exe.pie libfoo.so.cfi libdude.so.cfi
+	test dude.exe.pie libfoo.so.cfi libdude.so.cfi.color
+	test dude.exe.pie libfoo.so.cfi.color libdude.so.cfi
 
 	report
 	clean
