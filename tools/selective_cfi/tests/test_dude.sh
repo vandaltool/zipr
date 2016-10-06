@@ -64,7 +64,7 @@ clean()
 {
 	rm out
 	rm correct
-	rm -Rf dude.exe* peasoup_exe* libfoo.so libfoo.so.orig libfoo.so.cfi libdude.so.* 
+	rm -Rf dude.exe* peasoup_exe* lib*.so*
 }
 
 report ()
