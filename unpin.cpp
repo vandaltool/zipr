@@ -200,15 +200,18 @@ void Unpin_t::DoUnpinForScoops()
 
 				if(insn->GetIndirectBranchTargetAddress())
 				{
-					cout<<"Unpin::Found data_to_insn_ptr relocation for pinned insn:"<<hex<<insn->GetBaseID()<<":"
-						<<insn->getDisassembly()<<" at "<<hex<< insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()<<endl;
+					cout<<"Unpin::Found data_to_insn_ptr relocation for pinned insn:"
+					    <<hex<<insn->GetBaseID()<<":" <<insn->getDisassembly()<<" at "
+					    <<hex<< insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()<<endl;
 				}
 				else
 				{
-					cout<<"Unpin::Warn: unpin found non-IBTA to unpin for insn:"<<hex<<insn->GetBaseID()<<".  probably it's unpinned twice.  continuing anyhow."<<endl;
+					cout<<"Unpin::Warn: unpin found non-IBTA to unpin for insn:"
+					    <<hex<<insn->GetBaseID()<<":" <<insn->getDisassembly()
+					    <<".  probably it's unpinned twice.  continuing anyhow."<<endl;
 				}
 	
-				int found=should_cfi_pin(insn);
+				bool found=should_cfi_pin(insn);
 
 				/* don't unpin if we found one */
 				if(found)
@@ -510,7 +513,7 @@ void Unpin_t::DoUpdateForScoops()
 				    <<insn->getDisassembly()<<") with offset="<<hex<<reloc->GetOffset()
 				    <<".  Insn moved to "<<hex<<newLoc<<endl;
 
-				int found=should_cfi_pin(insn);
+				bool found=should_cfi_pin(insn);
 
 				/* don't unpin if we found one */
 				if(found)
