@@ -36,6 +36,9 @@ test()
 		echo "=== out ==="
 		cat out
 		echo "======"
+		echo "exiting"
+		clean
+		exit 1
 	else
 		passes=$(expr $passes + 1 )
 		echo test passed.
@@ -84,40 +87,110 @@ main()
 	build
 	protect
 
-# passing test cases
+	test fib.exe 2 libfib.so.orig libfib2.so.orig
+	test fib.exe 3 libfib.so.orig libfib2.so.orig
+	test fib.exe 4 libfib.so.orig libfib2.so.orig
+	test fib.exe 5 libfib.so.orig libfib2.so.orig
+
+	test fib.exe 2 libfib.so.cfi libfib2.so.orig
+	test fib.exe 3 libfib.so.cfi libfib2.so.orig
+	test fib.exe 4 libfib.so.cfi libfib2.so.orig
+	test fib.exe 5 libfib.so.cfi libfib2.so.orig
+
+	test fib.exe 2 libfib.so.orig libfib2.so.cfi
+	test fib.exe 3 libfib.so.orig libfib2.so.cfi
+	test fib.exe 4 libfib.so.orig libfib2.so.cfi
+	test fib.exe 5 libfib.so.orig libfib2.so.cfi
+
+	test fib.exe 2 libfib.so.cfi libfib2.so.cfi
+	test fib.exe 3 libfib.so.cfi libfib2.so.cfi
+	test fib.exe 4 libfib.so.cfi libfib2.so.cfi
+	test fib.exe 5 libfib.so.cfi libfib2.so.cfi
+
 	test fib.exe.cfi 2 libfib.so.orig libfib2.so.orig
 	test fib.exe.cfi 3 libfib.so.orig libfib2.so.orig
 	test fib.exe.cfi 4 libfib.so.orig libfib2.so.orig
+	test fib.exe.cfi 5 libfib.so.orig libfib2.so.orig
 
 	test fib.exe.cfi 2 libfib.so.cfi libfib2.so.orig
 	test fib.exe.cfi 3 libfib.so.cfi libfib2.so.orig
 	test fib.exe.cfi 4 libfib.so.cfi libfib2.so.orig
+	test fib.exe.cfi 5 libfib.so.cfi libfib2.so.orig
 
 	test fib.exe.cfi 2 libfib.so.orig libfib2.so.cfi
 	test fib.exe.cfi 3 libfib.so.orig libfib2.so.cfi
 	test fib.exe.cfi 4 libfib.so.orig libfib2.so.cfi
+	test fib.exe.cfi 5 libfib.so.orig libfib2.so.cfi
 
 	test fib.exe.cfi 2 libfib.so.cfi libfib2.so.cfi
 	test fib.exe.cfi 3 libfib.so.cfi libfib2.so.cfi
 	test fib.exe.cfi 4 libfib.so.cfi libfib2.so.cfi
+	test fib.exe.cfi 5 libfib.so.cfi libfib2.so.cfi
 
 	test fib.exe.cfi.color 2 libfib.so.orig libfib2.so.orig
 	test fib.exe.cfi.color 3 libfib.so.orig libfib2.so.orig
 	test fib.exe.cfi.color 4 libfib.so.orig libfib2.so.orig
+	test fib.exe.cfi.color 5 libfib.so.orig libfib2.so.orig
 
 	test fib.exe.cfi.color 2 libfib.so.cfi libfib2.so.orig
 	test fib.exe.cfi.color 3 libfib.so.cfi libfib2.so.orig
 	test fib.exe.cfi.color 4 libfib.so.cfi libfib2.so.orig
+	test fib.exe.cfi.color 5 libfib.so.cfi libfib2.so.orig
 
 	test fib.exe.cfi.color 2 libfib.so.orig libfib2.so.cfi
+	test fib.exe.cfi.color 3 libfib.so.orig libfib2.so.cfi
 	test fib.exe.cfi.color 4 libfib.so.orig libfib2.so.cfi
+	test fib.exe.cfi.color 5 libfib.so.orig libfib2.so.cfi
 
 	test fib.exe.cfi.color 2 libfib.so.cfi libfib2.so.cfi
-	test fib.exe.cfi.color 4 libfib.so.cfi libfib2.so.cfi
-
-# failing test cases
-	test fib.exe.cfi.color 3 libfib.so.orig libfib2.so.cfi
 	test fib.exe.cfi.color 3 libfib.so.cfi libfib2.so.cfi
+	test fib.exe.cfi.color 4 libfib.so.cfi libfib2.so.cfi
+	test fib.exe.cfi.color 5 libfib.so.cfi libfib2.so.cfi
+
+	test fib.exe 2 libfib.so.cfi.color libfib2.so.orig
+	test fib.exe 3 libfib.so.cfi.color libfib2.so.orig
+	test fib.exe 4 libfib.so.cfi.color libfib2.so.orig
+	test fib.exe 5 libfib.so.cfi.color libfib2.so.orig
+
+	test fib.exe 2 libfib.so.orig libfib2.so.cfi.color
+	test fib.exe 3 libfib.so.orig libfib2.so.cfi.color
+	test fib.exe 4 libfib.so.orig libfib2.so.cfi.color
+	test fib.exe 5 libfib.so.orig libfib2.so.cfi.color
+
+	test fib.exe 2 libfib.so.cfi.color libfib2.so.cfi.color
+	test fib.exe 3 libfib.so.cfi.color libfib2.so.cfi.color
+	test fib.exe 4 libfib.so.cfi.color libfib2.so.cfi.color
+	test fib.exe 5 libfib.so.cfi.color libfib2.so.cfi.color
+
+	test fib.exe.cfi 2 libfib.so.cfi.color libfib2.so.orig
+	test fib.exe.cfi 3 libfib.so.cfi.color libfib2.so.orig
+	test fib.exe.cfi 4 libfib.so.cfi.color libfib2.so.orig
+	test fib.exe.cfi 5 libfib.so.cfi.color libfib2.so.orig
+
+	test fib.exe.cfi 2 libfib.so.orig libfib2.so.cfi.color
+	test fib.exe.cfi 3 libfib.so.orig libfib2.so.cfi.color
+	test fib.exe.cfi 4 libfib.so.orig libfib2.so.cfi.color
+	test fib.exe.cfi 5 libfib.so.orig libfib2.so.cfi.color
+
+	test fib.exe.cfi 2 libfib.so.cfi.color libfib2.so.cfi.color
+	test fib.exe.cfi 3 libfib.so.cfi.color libfib2.so.cfi.color
+	test fib.exe.cfi 4 libfib.so.cfi.color libfib2.so.cfi.color
+	test fib.exe.cfi 5 libfib.so.cfi.color libfib2.so.cfi.color
+
+	test fib.exe.cfi.color 2 libfib.so.cfi.color libfib2.so.orig
+	test fib.exe.cfi.color 3 libfib.so.cfi.color libfib2.so.orig
+	test fib.exe.cfi.color 4 libfib.so.cfi.color libfib2.so.orig
+	test fib.exe.cfi.color 5 libfib.so.cfi.color libfib2.so.orig
+
+	test fib.exe.cfi.color 2 libfib.so.orig libfib2.so.cfi.color
+	test fib.exe.cfi.color 3 libfib.so.orig libfib2.so.cfi.color
+	test fib.exe.cfi.color 4 libfib.so.orig libfib2.so.cfi.color
+	test fib.exe.cfi.color 5 libfib.so.orig libfib2.so.cfi.color
+
+	test fib.exe.cfi.color 2 libfib.so.cfi.color libfib2.so.cfi.color
+	test fib.exe.cfi.color 3 libfib.so.cfi.color libfib2.so.cfi.color
+	test fib.exe.cfi.color 4 libfib.so.cfi.color libfib2.so.cfi.color
+	test fib.exe.cfi.color 5 libfib.so.cfi.color libfib2.so.cfi.color
 
 	report
 	clean
