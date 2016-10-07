@@ -1258,9 +1258,10 @@ bool SCFI_Instrument::add_got_entries()
 
 	// this jump can target any IBT in the module.
 	ICFS_t *newicfs=new ICFS_t;
-	for_each(firp->GetAllICFS().begin(), firp->GetAllICFS().end(), [&](ICFS_t* oldicfs)
+	for_each(firp->GetInstructions().begin(), firp->GetInstructions().end(), [&](Instruction_t* insn)
 	{
-		newicfs->insert(oldicfs->begin(), oldicfs->end());
+		if(insn->GetIndirectBranchTargetAddress() != NULL )
+			newicfs->insert(insn);
 	});
 	zestcfi_function_entry->SetIBTargets(newicfs);
 	firp->GetAllICFS().insert(newicfs);
