@@ -36,7 +36,7 @@ record_stats=0
 INTEGER_TRANSFORM_TIMEOUT_VALUE=1800
 TWITCHER_TRANSFORM_TIMEOUT_VALUE=1800
 # Setting PN timeout to 6 hours for TNE. 
-PN_TIMEOUT_VALUE=21600
+# PN_TIMEOUT_VALUE=21600
 
 export backend=strata
 
@@ -595,6 +595,78 @@ perform_step()
 	return $command_exit
 }
 
+do_plugins()
+{
+
+	builtin_steps="
+		stratafy_with_pc_confine
+		create_binary_script
+		is_so
+		gather_libraries
+		meds_static
+		pdb_register
+		fill_in_cfg
+		fill_in_indtargs
+		clone
+		fix_calls
+		generate_spri
+		spasm
+		fast_annot
+		fast_spri
+		preLoaded_ILR1
+		preLoaded_ILR2
+		manual_test
+		zipr
+	"
+
+	for i in $phases_spec
+	do
+		stepname=$i
+		stepname=$(basename $stepname =on)
+		stepname=$(basename $stepname =off)
+		
+		echo $builtin_steps | grep $stepname  > /dev/null 2> /dev/null 
+	
+		if [ $? = 0 ]; then
+			# skip builtin steps so we don't get errors.
+			continue;
+		fi
+
+		# get step options
+		this_step_options_name=step_options_$stepname
+		value="${!this_step_options_name}"
+
+		plugin_path=$SECURITY_TRANSFORMS_HOME/plugins_install/
+		
+		# invoke .exe or .sh as a plugin step.
+		if [ -x $plugin_path/$stepname.exe ]; then
+			perform_step $stepname none $plugin_path/$stepname.exe  $cloneid  $value
+		elif [ -x $plugin_path/$stepname.sh ]; then
+			perform_step $stepname none $plugin_path/$stepname.sh $cloneid  $value
+		else
+			echo "*********************************************************"
+			echo "*********************************************************"
+			echo "  Warning! Step requested, but not performed: $stepname "
+			echo "*********************************************************"
+			echo "*********************************************************"
+			warnings=1
+		fi
+	done
+		
+
+# old style -- scan plugins in alphabetical order.
+#	# do plugins directory
+#	for i in $SECURITY_TRANSFORMS_HOME/plugins_install/*.exe $SECURITY_TRANSFORMS_HOME/plugins_install/*.sh;
+#	do
+#		stepname=`basename $i .exe`
+#		stepname=`basename $stepname .sh`
+#		this_step_options_name=step_options_$stepname
+#		value="${!this_step_options_name}"
+#		perform_step $stepname none $i $cloneid  $value
+#	done
+
+}
+
 
 #
 # create a log for ps_analyze
@@ -1087,7 +1159,7 @@ perform_step cgc_hlx cinderella $SECURITY_TRANSFORMS_HOME/bin/cgc_hlx.exe --vari
 #
 # Do P1/Pn transform.
 #
-perform_step p1transform meds_static,clone $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed.sh $PN_TIMEOUT_VALUE $step_options_p1transform
+#perform_step p1transform meds_static,clone $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed.sh $PN_TIMEOUT_VALUE $step_options_p1transform
 		
 #
 # Do integer transform.
@@ -1116,21 +1188,11 @@ perform_step input_filtering clone,fill_in_indtargs,fill_in_cfg $SECURITY_TRANSF
 # watch syscalls
 perform_step watch_allocate clone,fill_in_indtargs,fill_in_cfg,pdb_register $SECURITY_TRANSFORMS_HOME/bin/watch_syscall.exe  --varid $cloneid --do_sandboxing $step_options_watch_allocate
 
-# only do ILR for main objects that aren't relocatable.  reloc. objects 
-# are still buggy for ILR
-if [ $($PEASOUP_HOME/tools/is_so.sh a.ncexe) = 0 ]; then
-	perform_step ilr none $SECURITY_TRANSFORMS_HOME/bin/ilr.exe $cloneid 
-fi
-
-# do plugins directory
-for i in $SECURITY_TRANSFORMS_HOME/plugins_install/*.exe $SECURITY_TRANSFORMS_HOME/plugins_install/*.sh;
-do
-	stepname=`basename $i .exe`
-	stepname=`basename $stepname .sh`
-	this_step_options_name=step_options_$stepname
-	value="${!this_step_options_name}"
-	perform_step $stepname none $i $cloneid  $value
-done
+#
+# check for any steps turned on by the --step option that aren't explicitly mentioned.
+# if found, run the step as a plugin to $PS
+#
+do_plugins
 
 # generate aspri, and assemble it to bspri
 perform_step generate_spri mandatory $SECURITY_TRANSFORMS_HOME/bin/generate_spri.exe $($PEASOUP_HOME/tools/is_so.sh a.ncexe) $cloneid a.irdb.aspri
