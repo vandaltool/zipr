@@ -16,6 +16,7 @@ get_correct()
 	cp libfib.so.orig libfib.so
 	cp libfib2.so.orig libfib2.so
 	./fib.exe $1 > correct
+	echo $? >> correct
 }
 
 test()
@@ -27,7 +28,7 @@ test()
 	cp $3 libfib.so  
 	cp $4 libfib2.so  
 	./$1 $n > out 
-
+	echo $? >> out
 
 	cmp out correct
 	if [ $? = 1 ]; then

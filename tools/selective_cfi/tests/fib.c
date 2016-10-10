@@ -19,6 +19,8 @@ main(int argc, char **argv)
 	else
 		f = fib(x);
 	printf("Fibonacci(%d) = %d\n", x, f);
+
+	return f;
 }
 
 fib_main(int f) {

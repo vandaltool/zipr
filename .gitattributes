@@ -847,6 +847,7 @@ pebliss/trunk/tests/tests_utils/tests_utils.vcxproj -text
 pebliss/trunk/tests/tests_utils/tests_utils.vcxproj.filters -text
 plugins_install/generate_variant_config.sh -text
 plugins_install/output_spec.sh -text
+plugins_install/p1transform.sh -text
 plugins_install/test.exe -text
 plugins_install/test.sh -text
 third_party/ELFkickers-3.0a.tar.gz -text
