@@ -21,6 +21,7 @@ Usage:
 	[--server <servername>
 	[--class <atd class>
 	[--mainexe <exe base name>
+	[--extra_preloads "<preloads>" ]
 	[(--help | h )]
 "
 }
@@ -66,6 +67,7 @@ check_opts()
                    --long zipr
                    --long strata
                    --long mainexe:
+                   --long extra_preloads:
                 "
 
         # solaris does not support long option names
@@ -83,6 +85,11 @@ check_opts()
 
         while true ; do
                 case "$1" in
+                        --extra_preloads)
+				echo "Setting preloads = $2"
+				extra_preloads="$2"
+                                shift 2
+			;;
                         --mainexe)
 				echo "Setting mainexe = $2"
 				mainexe_opt="$2"
@@ -190,7 +197,6 @@ sanity_check()
 	var_sets=$(ls $indir)
 	for vs_dir in $var_sets
 	do
-echo vs_dir=$vs_dir
 		vs_top_dir=$indir/$vs_dir
 		total_variant_sets=$(expr $total_variant_sets + 1)
 
@@ -312,12 +318,15 @@ finalize_json()
 
 	json_contents=$(<$json)
 
+	total_variants=0
 	for vs in $(seq 1 $total_variant_sets)
 	do
 		vs_json_contents=" \"vs-$vs\" : [ <<VARIANT_LIST>> ]"
 
 		for seq in $(seq 1 $variants_per_vs )
 		do
+			total_variants=$(expr $total_variants + 1)
+
 			echo "Including variant $seq."
 
 			new_variant_dir="$outdir/vs-$vs/variant-$seq"
@@ -326,8 +335,9 @@ finalize_json()
 			mkdir $new_variant_dir/extra 2>/dev/null || true
 			mkdir $new_variant_dir/resources 2>/dev/null || true
 
-			config=${variant_config_arr[$seq]}
-			variant_json=${variant_json_arr[$seq]}
+			config=${variant_config_arr[$total_variants]}
+			variant_json=${variant_json_arr[$total_variants]}
+
 
 
 			# sanity check that nol/noh configuration settings match the config name.
@@ -489,7 +499,7 @@ finalize_json()
 	cp $CFAR_HOME/pthread_exit/libpthread_exit.so $outdir/global/
 
 	if [ $server = "APACHE" ]; then
-		ld_preload_var="/thread_libs/libgetpid.so:/thread_libs/libprimaryleads.so:/target_apps/global/libpthread_exit.so"
+		ld_preload_var="/thread_libs/libgetpid.so:/target_apps/global/libpthread_exit.so"
 	fi
 	if [ "x"$use_diehard  = "x--diehard" -o  "x"$use_libtwitcher  = "x--libtwitcher" ]; then
 		ld_preload_var="/variant_specific/libheaprand.so:$ld_preload_var"
@@ -502,6 +512,7 @@ finalize_json()
 	# remove leading/trailing spaces.
 	ld_preload_var=${ld_preload_var%% }
 	ld_preload_var=${ld_preload_var## }
+	ld_preload_var="${ld_preload_var}:$extra_preloads"
 
 	json_contents="${json_contents//<<ENV>>/\"LD_PRELOAD=$ld_preload_var\",<<ENV>>}"
 

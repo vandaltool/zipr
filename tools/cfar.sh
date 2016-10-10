@@ -30,7 +30,6 @@ structured_nog=0
 structured_nos=0
 config_name="unspecified"
 backend="strata"
-use_diehard=0
 
 cmd_line_options=( "$@" )
 declare -a new_cmd_line_options
@@ -49,9 +48,6 @@ do
 		structured_p1_canaries=1
 	elif [ "$i" == "--structured_stack_stamp" ]; then 	
 		structured_stack_stamp=1
-	# this option is for cfar, handle it and remove it from the ps_analyze arguments.
-	elif [ "$i" == "--diehard" ]; then 	
-		use_diehard=1
 	# this option is for cfar, handle it and remove it from the ps_analyze arguments.
 	elif [ "$i" == "--structured_noc" ]; then 	
 		structured_noc=1
