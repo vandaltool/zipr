@@ -55,8 +55,9 @@ bool ColoredInstructionNonces_t::create()
 			{
 				Instruction_t* target=*it2;
 				color_assignments[target][slot_no]=v;
-				cout<<"Setting [slot][color] for "<<target->GetBaseID()<<":"<<target->getDisassembly()
-				    <<"=["<<v.GetPosition()<<"]["<<hex<<v.GetNonceValue()<<dec<<"]"<<endl;
+				cout<<"Setting slot[-"<<hex<<v.GetPosition()<<"]=color["<<hex<<v.GetNonceValue()<<dec<<"]"
+				    << " for "<<hex<<target->GetBaseID()<<":"<<target->getDisassembly()
+				    << endl;
 			}
 
 			// and we're done with this ICFS
@@ -79,8 +80,8 @@ bool ColoredInstructionNonces_t::create()
 		if(insn->GetIBTargets())
 		{
 			v=GetColorOfIB(insn);
-			cout<<"IB assigned [slot][color] for "<<insn->GetBaseID()<<":"<<insn->getDisassembly()
-			    <<"=["<<v.GetPosition()<<"]["<<hex<<v.GetNonceValue()<<dec<<"]"<<endl;
+			cout<<"IB assigned " <<"slot[-"<<v.GetPosition()<<"]=color["<<hex<<v.GetNonceValue()<<dec<<"]"
+			    << " for "<<insn->GetBaseID()<<":"<<insn->getDisassembly() << endl;
 
 			used_icfs.insert(*insn->GetIBTargets());
 	

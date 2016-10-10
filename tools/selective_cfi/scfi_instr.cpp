@@ -1375,7 +1375,7 @@ bool SCFI_Instrument::add_libdl_as_needed_support()
 		index++;
 	}
 
-
+#if 0
 	cout<<".dynamic contents after scfi update:"<<hex<<endl;
 	const string &dynstr_contents=dynamic_scoop->GetContents();
 	for(unsigned int i=0;i<dynstr_contents.size(); i+=16)
@@ -1383,6 +1383,7 @@ bool SCFI_Instrument::add_libdl_as_needed_support()
 		cout<<*(long long*) &dynstr_contents.c_str()[i] <<" "
 		    <<*(long long*) &dynstr_contents.c_str()[i+8] <<endl;
 	}
+#endif
 
 	return true;
 
