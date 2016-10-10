@@ -1863,6 +1863,7 @@ ICFS_t* setup_call_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop)
 		ibt_provenance_t::ibtp_stars_addressed |
 		ibt_provenance_t::ibtp_unknown |
 		ibt_provenance_t::ibtp_stars_unreachable |
+	 	ibt_provenance_t::ibtp_dynsym |		// symbol resolved to other module, this module should xfer directly, but could still plt 
 		ibt_provenance_t::ibtp_rodata |
 	 	ibt_provenance_t::ibtp_initarray |	// .init loops through the init_array, and calls them
 	 	ibt_provenance_t::ibtp_finiarray |	// .fini loops through the fini_array, and calls them
@@ -1878,7 +1879,6 @@ ICFS_t* setup_call_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop)
 	 * ibt_provenance_t::ibtp_gotplt	// only an analyzed jump should xfer.
 	 * ibt_provenance_t::ibtp_entrypoint	// only ld.so or kernel should xfer.
 	 * ibt_provenance_t::ibtp_texttoprintf	// shouldn't xfer if addr passed to printf.
-	 * ibt_provenance_t::ibtp_dynsym		// symbol resolved to other module, this module should xfer directly. 
 	 * ibt_provenance_t::ibtp_symtab		// user info only.
 	 * ibt_provenance_t::ibtp_stars_ret	// stars says a return goes here, calls shouldn't.
 	 * ibt_provenance_t::ibtp_stars_switch	// stars says switch target.
@@ -1909,6 +1909,7 @@ ICFS_t* setup_jmp_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop)
 		ibt_provenance_t::ibtp_stars_addressed |
 		ibt_provenance_t::ibtp_unknown |
 		ibt_provenance_t::ibtp_stars_unreachable |
+	 	ibt_provenance_t::ibtp_dynsym |		// symbol resolved to other module, this module should xfer directly. but that's not true, may still plt.
 		ibt_provenance_t::ibtp_rodata |
 		ibt_provenance_t::ibtp_gotplt |
 		ibt_provenance_t::ibtp_user;
@@ -1922,7 +1923,6 @@ ICFS_t* setup_jmp_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop)
 	 * ibt_provenance_t::ibtp_finiarray	// only ld.so should xfer.
 	 * ibt_provenance_t::ibtp_entrypoint	// only ld.so or kernel should xfer.
 	 * ibt_provenance_t::ibtp_texttoprintf	// shouldn't xfer if addr passed to printf.
-	 * ibt_provenance_t::ibtp_dynsym		// symbol resolved to other module, this module should xfer directly. 
 	 * ibt_provenance_t::ibtp_symtab		// user info only.
 	 * ibt_provenance_t::ibtp_stars_ret	// stars says a return goes here, calls shouldn't.
 	 * ibt_provenance_t::ibtp_stars_switch	// stars says switch target.

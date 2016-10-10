@@ -329,7 +329,7 @@ bool SCFI_Instrument::mark_targets()
 					Relocation_t* reloc=create_reloc(insn);
 					reloc->SetOffset(-position*size);
 					reloc->SetType(type);
-					cout<<"Created reloc='"+type+"' for "<<std::dec<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<endl;
+					cout<<"Created reloc='"+type+"' for "<<std::hex<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<endl;
 				}
 			}
 			else
@@ -341,7 +341,7 @@ bool SCFI_Instrument::mark_targets()
 				Relocation_t* reloc=create_reloc(insn);
 				reloc->SetOffset(-GetNonceOffset(insn));
 				reloc->SetType(type);
-				cout<<"Found nonce="+type+"  for "<<std::dec<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<endl;
+				cout<<"Found nonce="+type+"  for "<<std::hex<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<endl;
 			}
 		}
 	}
@@ -718,7 +718,7 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
     jne=tmp=insertAssemblyAfter(firp,tmp,"jne 0");
 
 	// convert the ret instruction to a jmp ecx
-	cout<<"Converting "<<dec<<tmp->GetFallthrough()->GetBaseID()<<":"<<tmp->GetFallthrough()->getDisassembly()<<"to jmp+reg"<<endl;
+	cout<<"Converting "<<hex<<tmp->GetFallthrough()->GetBaseID()<<":"<<tmp->GetFallthrough()->getDisassembly()<<"to jmp+reg"<<endl;
 	setInstructionAssembly(firp,tmp->GetFallthrough(), string("jmp ")+reg, NULL,NULL);
 
 	// set the jne's target to itself, and create a reloc that zipr/strata will have to resolve.
