@@ -25,7 +25,7 @@ initial_on_phases="stratafy_with_pc_confine create_binary_script is_so gather_li
 ulimit -s unlimited > /dev/null 2>&1 || true
 
 # default watchdog value is 30 seconds
-watchdog_val=30
+#watchdog_val=30
 errors=0
 warnings=0
 
@@ -264,10 +264,10 @@ check_options()
             			shift 2
             		;;
             		# This is the watchdog value
-        		-w|--watchdog)
-            			watchdog_val=$2
-            			shift 2
-            		;;
+#        		-w|--watchdog)
+#            			watchdog_val=$2
+#            			shift 2
+#            		;;
 			-s|--step) 
 				check_step_option $2
 				phases_spec=" $phases_spec $2 "
@@ -445,14 +445,12 @@ check_steps_completed()
 	for step_spec in $phases_spec
 	do
 		# if step is on.
-		if [ $(basename "$step_spec" =off) = "$step_spec" ]; then
-			# didn't find =off 
-			step_name=$(basename $step_spec =on)
-			#echo "step name is: $step_name"
-		
-			echo "$performed_steps" | egrep "$step_name" > /dev/null
-			grep_res=$?
-			if [ $grep_res -ne 0 ] ; then
+		sn=$step_sepc
+		sn=$(basename $sn =on)
+		sn=$(basename $sn =off)
+		is_step_on $sn
+		if [ $? = 1 ]; then
+			if [ ! -f logs/$sn.log ] ; then
 				echo "*********************************************************"
 				echo "*********************************************************"
 				echo "  Warning! Step requested, but not performed: $step_name "
@@ -599,9 +597,6 @@ do_plugins()
 {
 
 	builtin_steps="
-		stratafy_with_pc_confine
-		create_binary_script
-		is_so
 		gather_libraries
 		meds_static
 		pdb_register
@@ -609,14 +604,14 @@ do_plugins()
 		fill_in_indtargs
 		clone
 		fix_calls
+		manual_test
+		zipr
 		generate_spri
+		preLoaded_ILR1
+		preLoaded_ILR2
 		spasm
 		fast_annot
 		fast_spri
-		preLoaded_ILR1
-		preLoaded_ILR2
-		manual_test
-		zipr
 	"
 
 	for i in $phases_spec
@@ -630,6 +625,11 @@ do_plugins()
 		if [ $? = 0 ]; then
 			# skip builtin steps so we don't get errors.
 			continue;
+		fi
+		is_step_on $stepname
+		if [ $? = 0 ]; then
+			# if step isn't on, don't do it.
+			continue
 		fi
 
 		# get step options
@@ -940,42 +940,42 @@ mkdir logs
 
 
 # copy in some shared libraries if requested.
-perform_step 	diehard none cp $CFAR_HOME/DieHard/src/libdiehard.so libheaprand.so
-perform_step 	libtwitcher none cp $GT_COLLAB_HOME/downloads/libtwitcher.so libheaprand.so
-perform_step	noh none cp $CFAR_HOME/non_overlapping_heap/noh.so noh.so
-perform_step	nol none cp $CFAR_HOME/non_overlapping_libraries/ld-linux-x86-64.so.2 ld-linux-x86-64.so.2.nol
+#perform_step 	diehard none cp $CFAR_HOME/DieHard/src/libdiehard.so libheaprand.so
+#perform_step diehard  none  $PEASOUP_HOME/tools/update_env_var.sh DO_DIEHARD 1
+#perform_step 	libtwitcher none cp $GT_COLLAB_HOME/downloads/libtwitcher.so libheaprand.so
+#perform_step	noh none cp $CFAR_HOME/non_overlapping_heap/noh.so noh.so
+#perform_step	nol none cp $CFAR_HOME/non_overlapping_libraries/ld-linux-x86-64.so.2 ld-linux-x86-64.so.2.nol
 
 #
 # create a stratafied binary that does pc confinement.
 #
-perform_step stratafy_with_pc_confine none sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh $newname.ncexe $newname.stratafied 
-cp a.ncexe a.ncexe.orig
-perform_step add_confinement_section none $STRATA_HOME/tools/pc_confinement/add_confinement_section.sh a.ncexe.orig a.ncexe
+#perform_step stratafy_with_pc_confine none sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh $newname.ncexe $newname.stratafied 
+#cp a.ncexe a.ncexe.orig
+#perform_step add_confinement_section none $STRATA_HOME/tools/pc_confinement/add_confinement_section.sh a.ncexe.orig a.ncexe
 
 #
 # CGC CRCX elide
 #
-perform_step cgc_optimize_start none $DAFFY_HOME/dead_code_ident/optimize_start.sh a.ncexe
+#perform_step cgc_optimize_start none $DAFFY_HOME/dead_code_ident/optimize_start.sh a.ncexe
 
 #
 # Let's output the modified binary
 # This binary will really be a shell script that calls the newly stratafied binary
 #
-perform_step create_binary_script 	mandatory $PEASOUP_HOME/tools/do_makepeasoupbinary2.sh $name 
-perform_step heaprand 	 		pc_confine,double_free $PEASOUP_HOME/tools/update_env_var.sh STRATA_HEAPRAND 1
-perform_step controlled_exit none 		 	 $PEASOUP_HOME/tools/update_env_var.sh STRATA_CONTROLLED_EXIT 1
-perform_step detect_server  pc_confine  $PEASOUP_HOME/tools/update_env_var.sh STRATA_DETECT_SERVERS 1
-perform_step diehard  none  $PEASOUP_HOME/tools/update_env_var.sh DO_DIEHARD 1
-perform_step rekey  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_REKEY_AFTER 5000
-perform_step double_free heaprand $PEASOUP_HOME/tools/update_env_var.sh STRATA_DOUBLE_FREE 1
-perform_step pc_confine  none $PEASOUP_HOME/tools/update_env_var.sh STRATA_PC_CONFINE 1
-perform_step isr 	 pc_confine $PEASOUP_HOME/tools/update_env_var.sh STRATA_PC_CONFINE_XOR 1
-perform_step watchdog 	 signconv_func_monitor $PEASOUP_HOME/tools/update_env_var.sh STRATA_WATCHDOG $watchdog_val
-perform_step is_so 	 mandatory $PEASOUP_HOME/tools/update_env_var.sh STRATA_IS_SO $($PEASOUP_HOME/tools/is_so.sh a.ncexe)
-perform_step ibtl  ilr $PEASOUP_HOME/tools/update_env_var.sh STRATA_IBTL 1
+#perform_step create_binary_script 	mandatory $PEASOUP_HOME/tools/do_makepeasoupbinary2.sh $name 
+#perform_step heaprand 	 		pc_confine,double_free $PEASOUP_HOME/tools/update_env_var.sh STRATA_HEAPRAND 1
+#perform_step controlled_exit none 		 	 $PEASOUP_HOME/tools/update_env_var.sh STRATA_CONTROLLED_EXIT 1
+#perform_step detect_server  pc_confine  $PEASOUP_HOME/tools/update_env_var.sh STRATA_DETECT_SERVERS 1
+#perform_step rekey  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_REKEY_AFTER 5000
+#perform_step double_free heaprand $PEASOUP_HOME/tools/update_env_var.sh STRATA_DOUBLE_FREE 1
+#perform_step pc_confine  none $PEASOUP_HOME/tools/update_env_var.sh STRATA_PC_CONFINE 1
+#perform_step isr 	 pc_confine $PEASOUP_HOME/tools/update_env_var.sh STRATA_PC_CONFINE_XOR 1
+#perform_step watchdog 	 signconv_func_monitor $PEASOUP_HOME/tools/update_env_var.sh STRATA_WATCHDOG $watchdog_val
+#perform_step is_so 	 mandatory $PEASOUP_HOME/tools/update_env_var.sh STRATA_IS_SO $($PEASOUP_HOME/tools/is_so.sh a.ncexe)
+#perform_step ibtl  ilr $PEASOUP_HOME/tools/update_env_var.sh STRATA_IBTL 1
 
 # turn on sign conversion function monitoring
-perform_step signconv_func_monitor heaprand $PEASOUP_HOME/tools/update_env_var.sh STRATA_NUM_HANDLE 1
+#perform_step signconv_func_monitor heaprand $PEASOUP_HOME/tools/update_env_var.sh STRATA_NUM_HANDLE 1
 
 
 #
@@ -1008,7 +1008,7 @@ cp a.ncexe.annot a.ncexe.annot.full
 #
 # Run concolic engine
 #
-perform_step concolic none $PEASOUP_HOME/tools/do_concolic.sh a -z $PEASOUP_UMBRELLA_DIR/grace.conf
+#perform_step concolic none $PEASOUP_HOME/tools/do_concolic.sh a -z $PEASOUP_UMBRELLA_DIR/grace.conf
 
 ##
 ## Populate IR Database
@@ -1238,7 +1238,7 @@ fi
 is_step_on zipr
 zipr_on=$?
 if [ $zipr_on -eq 0 ]; then 
-	my_outfile=$newdir/$name.sh
+	my_outfile=$newdir/a.sh
 else
 	my_outfile=$newdir/c.out
 fi
