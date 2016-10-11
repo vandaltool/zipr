@@ -2,6 +2,19 @@
 
 extern int fib();
 extern int fib2();
+extern int fibp(int n, int (*)(int,int));
+
+int add(int n1, int n2)
+{
+	if (n1 == 0)
+		return n2;
+	else if (n2 == 0)
+		return n1;
+	else if (n1 == 2)
+		return add(1, add(1, n2));
+	else
+		return n1 + add(0, n2);
+}
 
 main(int argc, char **argv)
 {
@@ -16,6 +29,8 @@ main(int argc, char **argv)
 		f = fib2(x);
 	else if (x == 4)
 		f = fib_simple(x);
+	else if (x == 5)
+		f = fibp(x, &add);
 	else
 		f = fib(x);
 	printf("Fibonacci(%d) = %d\n", x, f);
@@ -24,14 +39,14 @@ main(int argc, char **argv)
 }
 
 fib_main(int f) {
-	if (f <= 1)
+	if (f <= 2)
 		return 1;
 	else
 		return fib_simple(f-1) + fib_main(f-2);
 }
 
 fib_simple(int f) {
-	if (f <= 1)
+	if (f <= 2)
 		return 1;
 	else
 		return fib_simple(f-1) + fib_simple(f-2);
