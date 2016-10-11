@@ -100,14 +100,13 @@ static ElfW(Addr) find_symtab_entry(const char* tofind, const ElfW(Sym) *symtab,
 	// we've probably exceeded the symbol table's size.
 	for(i=1; 1 ; i++)
 	{
-
 		// note:  st_name is ElfW(Word) which maps to uint32_t or uint64_t depending on architecture.
 		// thus, no lower bound check is necessary bcause it has to be >=0.
 		if(symtab[i].st_name>=strtabsz)
 			return 0;
 
 		const char* symstring=strtab+symtab[i].st_name;
-#if 0
+#if DEBUG
 		write_str("Checking symbol: ");
 		write_str(symstring);
 		write_str("\n");
@@ -141,6 +140,10 @@ int dl_iterate_phdr_callback (struct dl_phdr_info *info, size_t size, void *data
 	}
 
 	const ElfW(Sym) *symtab=(ElfW(Sym)*)find_dynamic_entry(info,DT_SYMTAB, dynamic_start);
+	// apparently some modules don't have a reloc for their symtab pointer properly entry.
+	if(!ptload_for_target_exists(info, phdr_start, phnum, (ElfW(Addr))symtab))
+		symtab=(ElfW(Addr))symtab+(ElfW(Addr))info->dlpi_addr;
+
 	if(!symtab) 
 	{
 		write_str("Couldn't find symtab start. ");
@@ -148,6 +151,9 @@ int dl_iterate_phdr_callback (struct dl_phdr_info *info, size_t size, void *data
 	}
 
 	const char* strtab=(const char*)find_dynamic_entry(info,DT_STRTAB, dynamic_start);
+	// apparently some modules don't have a reloc for their symtab pointer properly entry.
+	if(!ptload_for_target_exists(info, phdr_start, phnum, (ElfW(Addr))strtab))
+		strtab=(ElfW(Addr))strtab+(ElfW(Addr))info->dlpi_addr;
 	if(!strtab) 
 	{
 		write_str("Couldn't find strtab start. ");
