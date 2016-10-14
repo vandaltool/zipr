@@ -3,11 +3,17 @@
 do_cfi()
 {
 	$PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all --step-option zipr:"--add-sections false"
+	if [ ! $? -eq 0 ]; then
+		echo "do_cfi(): failed to protect"
+	fi
 }
 
 do_coloring_cfi()
 {
 	$PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all --step-option selective_cfi:--color  --step-option zipr:"--add-sections false"
+	if [ ! $? -eq 0 ]; then
+		echo "do_coloring_cfi(): failed to protect"
+	fi
 }
 
 
@@ -36,16 +42,17 @@ test()
 
 build()
 {
-	gcc -o libfoo.so libfoo.c -w -shared -fPIC
-	gcc -o foo.exe foo.c -w -L. -lfoo
-	mv libfoo.so libfoo.so.orig
+	gcc -o libc_driver.exe libc_driver.c -w 
+
+	libcpath=$(ldd libc_driver.exe|grep libc.so.6|sed "s/.*=>//"|sed "s/(.*//")
+	echo libc=$libcpath
+	cp $libcpath libc.so.6.orig
 }
 
 
 protect()
 {
-	do_coloring_cfi ./foo.exe ./foo.exe.cfi
-	do_cfi ./libfoo.so.orig ./libfoo.so.cfi
+	do_cfi libc.so.6.orig libc-2.19.so.cfi
 }
 
 clean()
@@ -66,12 +73,8 @@ main()
 {
 	build
 	protect
-	get_correct
-	test foo.exe libfoo.so.orig 		# unprotected - should pass!
-	test foo.exe.cfi libfoo.so.orig		# main exe
-	test foo.exe libfoo.so.cfi		# shared lib only
-	test foo.exe.cfi libfoo.so.cfi		# both protected
-	report
+#	get_correct
+#	report
 #	clean
 }
 

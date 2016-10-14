@@ -1158,6 +1158,7 @@ tools/selective_cfi/scfi_instr.hpp -text
 tools/selective_cfi/tests/dude.c -text
 tools/selective_cfi/tests/fib.c -text
 tools/selective_cfi/tests/foo.c -text
+tools/selective_cfi/tests/libc_driver.c -text
 tools/selective_cfi/tests/libdude.c -text
 tools/selective_cfi/tests/libfib.c -text
 tools/selective_cfi/tests/libfib2.c -text
@@ -1166,6 +1167,7 @@ tools/selective_cfi/tests/pow.c -text
 tools/selective_cfi/tests/test_dude.sh -text
 tools/selective_cfi/tests/test_fib.sh -text
 tools/selective_cfi/tests/test_foo.sh -text
+tools/selective_cfi/tests/test_libc.sh -text
 tools/selective_cfi/tests/test_pow.sh -text
 tools/selective_cfi/zest_cfi_runtime/SConscript -text
 tools/selective_cfi/zest_cfi_runtime/SConscript32 -text
