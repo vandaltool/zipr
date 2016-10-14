@@ -59,7 +59,7 @@ clean()
 {
 	rm out
 	rm correct
-	rm -Rf foo.exe peasoup_exe* libfoo.so libfoo.so.orig libfoo.so.cfi foo.cfi foo.exe.cfi
+	rm -Rf *.orig *libc*.exe *libc.*cfi
 }
 
 report ()
@@ -75,7 +75,7 @@ main()
 	protect
 #	get_correct
 #	report
-#	clean
+	clean
 }
 
 passes=0 
