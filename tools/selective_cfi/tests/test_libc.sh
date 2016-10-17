@@ -1,4 +1,6 @@
-#!/bin/bash 
+#!/bin/bash
+
+libcpath=""
 
 do_cfi()
 {
@@ -19,13 +21,13 @@ do_coloring_cfi()
 
 get_correct()
 {
-	cp libfoo.so.orig libfoo.so
-	./foo.exe > correct
+	echo "get_correct()"
+	cp libc.so.6.orig libc.so.6
+	LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH ./libc_driver.exe > correct
 }
 
 test()
 {
-	
 	cp $2 libfoo.so  
 	./$1 > out 
 
@@ -59,7 +61,7 @@ clean()
 {
 	rm out
 	rm correct
-	rm -Rf *.orig *libc*.exe *libc.*cfi
+	rm -Rf *.orig *libc*.exe *libc.*cfi *peasoup_exec*
 }
 
 report ()
