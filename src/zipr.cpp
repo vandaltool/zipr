@@ -427,7 +427,7 @@ RangeAddress_t ZiprImpl_t::extend_section(ELFIO::section *sec, ELFIO::section *n
 
 void ZiprImpl_t::CreateExecutableScoops(const std::map<RangeAddress_t, int> &ordered_sections)
 {
-	int count=1;
+	int count=0;
 	for(std::map<RangeAddress_t, int>::const_iterator it = ordered_sections.begin();
 		it!=ordered_sections.end();
 		) 
@@ -490,8 +490,12 @@ void ZiprImpl_t::CreateExecutableScoops(const std::map<RangeAddress_t, int> &ord
 		// setup a scoop for this section.
 		// zero init is OK, after zipring we'll update with the right bytes.
 		string text_contents;
+		string text_name=string(".zipr_text_")+to_string(count++);
+		if(count==1)
+			text_name=".text"; // use the name .text first.
+
 		text_contents.resize(text_end->GetVirtualOffset() - text_start->GetVirtualOffset()+1);
-		DataScoop_t* text_scoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, string(".zipr_text_")+to_string(count++), text_start, text_end, NULL, 5, false, text_contents);
+		DataScoop_t* text_scoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, text_name,  text_start, text_end, NULL, 5, false, text_contents);
 		m_firp->GetDataScoops().insert(text_scoop);
 	
 		cout<<"Adding scoop "<<text_scoop->GetName()<<hex<<" at "<<hex<<text_start->GetVirtualOffset()<<" - "<<text_end->GetVirtualOffset()<<endl;
