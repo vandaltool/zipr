@@ -20,7 +20,7 @@
             },
             "marshaling":{
                 "class_path" : "/target_apps/marshaling/dh_plugins.jar",
-                "class_name" : "Zipr",
+                "class_name" : "DoubleHelix",
                 "process_map" : "process_map.json",
 		"launcher" : "/emt/emt.bash"
             },

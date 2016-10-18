@@ -942,6 +942,7 @@ tools/cfar_configs/cfar_probNos_probBilr_probP1_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_probNos_structNoc_structP1Canaries_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_probP1_strata.sh -text
 tools/cfar_configs/cfar_probP1_zipr.sh -text
+tools/cfar_configs/cfar_scfi_zipr.sh -text
 tools/cfar_configs/cfar_structNoc_probP1_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_structNoc_probP1_zipr.sh -text
 tools/cfar_configs/cfar_structNoc_structNoh_zipr.sh -text
