@@ -57,8 +57,8 @@ using namespace EXEIO;
 
 class ibt_provenance_t
 {
-	typedef unsigned int provtype_t;
 	public:
+		typedef unsigned int provtype_t;
 
 		ibt_provenance_t() : value(0) { };
 

@@ -200,7 +200,7 @@ EXEIO::section*  find_section(virtual_offset_t addr, EXEIO::exeio *elfiop)
 	return NULL;
 }
 
-void handle_argument(ARGTYPE *arg, Instruction_t* insn)
+void handle_argument(ARGTYPE *arg, Instruction_t* insn, ibt_provenance_t::provtype_t pt = ibt_provenance_t::ibtp_text)
 {
 	if( (arg->ArgType&MEMORY_TYPE) == MEMORY_TYPE ) 
 	{
@@ -209,10 +209,12 @@ void handle_argument(ARGTYPE *arg, Instruction_t* insn)
 			assert(insn);
 			assert(insn->GetAddress());
 			possible_target(arg->Memory.Displacement+insn->GetAddress()->GetVirtualOffset()+
-				insn->GetDataBits().length(), ibt_provenance_t::ibtp_text);
+				insn->GetDataBits().length(), insn->GetAddress()->GetVirtualOffset(), pt);
 		}
 		else
-			possible_target(arg->Memory.Displacement, ibt_provenance_t::ibtp_text);
+		{
+			possible_target(arg->Memory.Displacement, insn->GetAddress()->GetVirtualOffset(), pt);
+		}
 	}
 }
 
@@ -250,7 +252,19 @@ void mark_targets(FileIR_t *firp)
 		/* lookup in the list of targets */
 		if(targets.find(addr)!=targets.end())
 		{
-			if (!targets[addr].areOnlyTheseSet(ibt_provenance_t::ibtp_ret))
+			bool isret=targets[addr].areOnlyTheseSet(ibt_provenance_t::ibtp_ret);
+			bool isprintf=targets[addr].areOnlyTheseSet(ibt_provenance_t::ibtp_stars_data|ibt_provenance_t::ibtp_texttoprintf);
+			if (isret)
+			{
+				if(getenv("IB_VERBOSE")!=NULL)
+					cout<<"Skipping pin for ret at "<<hex<<addr<<endl;
+			}
+			else if(isprintf)
+			{
+				if(getenv("IB_VERBOSE")!=NULL)
+					cout<<"Skipping pin for text to printf at "<<hex<<addr<<endl;
+			}
+			else
 			{
 				AddressID_t* newaddr = new AddressID_t;
 				newaddr->SetFileID(insn->GetAddress()->GetFileID());
@@ -408,20 +422,22 @@ void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<vir
 		if(disasm.Instruction.BranchType)
 			continue;
 
+		ibt_provenance_t::provtype_t prov=0;
 		if(!texttoprintf(firp,insn))
 		{
-			/* otherwise, any immediate is a possible branch target */
-			possible_target(disasm.Instruction.Immediat,0,ibt_provenance_t::ibtp_text);
-			handle_argument(&disasm.Argument1, insn);
-			handle_argument(&disasm.Argument2, insn);
-			handle_argument(&disasm.Argument3, insn);
-			handle_argument(&disasm.Argument4, insn);
+			prov=ibt_provenance_t::ibtp_text;
 		}
 		else
 		{
-			cout<<"Skipping analysis of '"<<disasm.CompleteInstr<<"' because texttoprintf found at "
-				<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
+			cout<<"TextToPrintf analysis of '"<<disasm.CompleteInstr<<"' successful at " <<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
+			prov=ibt_provenance_t::ibtp_texttoprintf;
 		}
+		/* otherwise, any immediate is a possible branch target */
+		possible_target(disasm.Instruction.Immediat,0, prov);
+		handle_argument(&disasm.Argument1, insn, prov);
+		handle_argument(&disasm.Argument2, insn, prov);
+		handle_argument(&disasm.Argument3, insn, prov);
+		handle_argument(&disasm.Argument4, insn, prov);
 	}
 }
 
@@ -2051,6 +2067,7 @@ void setup_icfs(FileIR_t* firp, EXEIO::exeio* elfiop)
         ibt_provenance_t non_stars_data=
                 ibt_provenance_t::ibtp_text |
                 ibt_provenance_t::ibtp_eh_frame |
+                ibt_provenance_t::ibtp_texttoprintf |
                 ibt_provenance_t::ibtp_gotplt |
                 ibt_provenance_t::ibtp_initarray |
                 ibt_provenance_t::ibtp_finiarray |
@@ -2092,15 +2109,14 @@ void setup_icfs(FileIR_t* firp, EXEIO::exeio* elfiop)
 		// warning check
 		ibt_provenance_t prov=targets[insn->GetAddress()->GetVirtualOffset()];
 
+		// stars calls it data, but printw arning if we didn't find it in data or as a printf addr.
 		if(prov.isPartiallySet(stars_data) && !prov.isPartiallySet(non_stars_data))
 		{
 			ofstream fout("warning.txt", ofstream::out | ofstream::app);
 			fout<<"STARS found an IBT in data that FII wasn't able to classify at "<<hex<<insn->GetAddress()->GetVirtualOffset()<<"."<<endl;
 		}
 
-
-
-
+		// create icfs for complete jump tables.
 		if(jmptables[insn].IsComplete())
 		{
 			if(getenv("IB_VERBOSE")!=0)
