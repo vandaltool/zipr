@@ -75,9 +75,9 @@ main()
 {
 	build
 	protect
-#	get_correct
-#	report
-	clean
+	get_correct
+	report
+#	clean
 }
 
 passes=0 

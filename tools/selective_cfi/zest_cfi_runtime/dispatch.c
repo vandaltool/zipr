@@ -188,7 +188,7 @@ zestcfi_func_ptr_t* zest_cfi_dispatch_c(ElfW(Addr) target)
 	write_str(" -- ");
 
 	ElfW(Addr) zestcfi_addr=target;
-	int res=dl_iterate_phdr(dl_iterate_phdr_callback,(void*)&zestcfi_addr);
+	int res=zestcfi__dl_iterate_phdr(dl_iterate_phdr_callback,(void*)&zestcfi_addr);
 
 	if(res==0)
 	{
