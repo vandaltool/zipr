@@ -10,7 +10,7 @@ do_cfi()
 	fi
 }
 
-do_coloring_cfi()
+do_cfi_color()
 {
 	$PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all --step-option selective_cfi:--color  --step-option zipr:"--add-sections false"
 	if [ ! $? -eq 0 ]; then
@@ -22,14 +22,16 @@ do_coloring_cfi()
 get_correct()
 {
 	echo "get_correct()"
-	cp libc.so.6.orig libc.so.6
-	LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH ./libc_driver.exe > correct
+	./libc_driver.exe $* > correct 
 }
 
 test()
 {
-	cp $2 libfoo.so  
-	./$1 > out 
+	libc=$2
+	pgm=$1
+	shift 2
+
+	LD_PRELOAD=$2 ./$pgm $* > out 
 
 	cmp out correct
 	if [ $? = 1 ]; then
@@ -55,6 +57,9 @@ build()
 protect()
 {
 	do_cfi libc.so.6.orig libc-2.19.so.cfi
+	do_cfi libc_driver.exe libc_driver.exe.cfi
+	do_cfi_color libc.so.6.orig libc-2.19.so.colorcfi
+	do_cfi_color libc_driver.exe libc_driver.exe.colorcfi
 }
 
 clean()
@@ -76,8 +81,18 @@ main()
 	build
 	protect
 	get_correct
+	test libc_driver.exe 		libc.so.6.orig
+	test libc_driver.exe.cfi 	libc.so.6.orig
+	test libc_driver.exe.colorcfi 	libc.so.6.orig
+	test libc_driver.exe 		libc.so.6.cfi
+	test libc_driver.exe.cfi 	libc.so.6.cfi
+	test libc_driver.exe.colorcfi 	libc.so.6.cfi
+	test libc_driver.exe		libc.so.6.colorcfi
+	test libc_driver.exe.cfi	libc.so.6.colorcfi
+	test libc_driver.exe.colorcfi	libc.so.6.colorcfi
+
 	report
-#	clean
+	clean
 }
 
 passes=0 
