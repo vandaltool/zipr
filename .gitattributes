@@ -940,6 +940,7 @@ tools/cfar_configs/cfar_probNol_probNoh_probIlr_probP1_probHeaprand_probNos_stra
 tools/cfar_configs/cfar_probNol_probNoh_probNos_probBilr_probP1_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_probNos_probBilr_probP1_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_probNos_structNoc_structP1Canaries_probHeaprand_zipr.sh -text
+tools/cfar_configs/cfar_probP1FloatingCanary_zipr.sh -text
 tools/cfar_configs/cfar_probP1_strata.sh -text
 tools/cfar_configs/cfar_probP1_zipr.sh -text
 tools/cfar_configs/cfar_scfi_zipr.sh -text
@@ -964,6 +965,7 @@ tools/cfar_configs/cfar_structNol_structNoh_probIlr_structP1Canaries_probHeapran
 tools/cfar_configs/cfar_structNol_structNoh_structNos_structNoc_structP1Canaries_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_structNos_structNoc_structP1Canaries_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_structP1Canaries_zipr.sh -text
+tools/cfar_configs/cfar_structP1FloatingCanary_zipr.sh -text
 tools/cfar_configs/cr_chunk.json.template -text
 tools/cfar_configs/monitor_chunk.json.template -text
 tools/cfar_configs/monitor_chunk_with_cr.json.template -text
