@@ -54,7 +54,7 @@ class PNOptions
 		void setRecursiveMinStackPadding(int val) { recursive_min_stack_padding = val; }
 		void setRecursiveMaxStackPadding(int val) { recursive_max_stack_padding = val; }
 		void setShouldDoubleFrameSize(bool val) { should_double_frame_size = val; }
-		void setRandomSeed(bool val) { random_seed = val; }
+		void setRandomSeed(int val) { random_seed = val; }
 		void setCanaryValue(int val) { canary_value = val; canary_value_inited=true; }
 
 		int getMinStackPadding() const { return min_stack_padding; }
