@@ -3163,11 +3163,12 @@ void PNTransformDriver::Print_Map()
 	map<string, vector<PNStackLayout*> >::const_iterator it;
 
 	string exe_uri = orig_virp->GetFile()->GetURL();
-	string map_uri = exe_uri.substr(14, exe_uri.size() - 21).append("p1.map");
+	string map_uri = "p1.map";
 
 	ofstream map_file;
 	map_file.open(map_uri.c_str());
 
+	cerr << "exe_uri: " << exe_uri << endl;
 	cerr << "p1 map uri: " << map_uri << endl;
 
 	map_file << "LAYOUT" << ";FUNCTION"<< ";FRAME_ALLOC_SIZE" << ";ALTERED_FRAME_SIZE" << ";SAVED_REG_SIZE" << ";OUT_ARGS_SIZE" << 
