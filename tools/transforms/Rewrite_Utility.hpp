@@ -74,6 +74,7 @@ Instruction_t* getHandlerCode(FileIR_t* virp, Instruction_t* fallthrough, mitiga
 //Returns the pointer for the copied "first" instruction, which is at the
 //end of the canary check block of instructions. 
 Instruction_t* insertCanaryCheckBefore(FileIR_t* virp,Instruction_t *first, unsigned int canary_val, int ret_offset, Instruction_t *fail_code); 
+Instruction_t* insertCanaryZeroAfter(FileIR_t* virp, Instruction_t *first, int esp_offset, Instruction_t *fail_code);
 
 Relocation_t* createNewRelocation(FileIR_t* firp, Instruction_t* insn, string type, int offset);
 

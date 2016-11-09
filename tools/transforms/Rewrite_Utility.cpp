@@ -352,10 +352,12 @@ Instruction_t* insertCanaryCheckBefore(FileIR_t* virp,Instruction_t *first, unsi
 
 	ss<<"cmp dword ["<<sp_reg;
 
+	bool esp_neg=false;
 	if(esp_offset <0)
 	{
 		ss<<"-";
 		esp_offset = esp_offset*-1;
+		esp_neg=true;
 	}
 	else
 		ss<<"+";
@@ -364,14 +366,46 @@ Instruction_t* insertCanaryCheckBefore(FileIR_t* virp,Instruction_t *first, unsi
 
 	//Insert the cmp before 
 	Instruction_t* next = insertAssemblyBefore(virp,first,ss.str());
+
 	//Then insert the jmp after the compare. 
 	//The fallthrough of the inserted jmp will be a copy of the original
 	//instruction, still pointed to by "first".
 	insertDataBitsAfter(virp,first,getJnzDataBits(),fail_code);
 	first->SetComment("Canary Check: "+first->GetComment());
 
+	//TODO: move canary zero to option 
+	if(esp_neg)
+		esp_offset *= -1;
+	insertCanaryZeroAfter(virp,first,esp_offset,fail_code); 
+
 	return next;
 
+}
+
+Instruction_t* insertCanaryZeroAfter(FileIR_t* virp, Instruction_t *first, int esp_offset, Instruction_t *fail_code)
+{
+	stringstream ss;
+	const char *sp_reg="esp";
+        if(virp->GetArchitectureBitWidth()==64)
+                sp_reg="rsp";
+
+        ss<<"mov dword ["<<sp_reg;
+
+        if(esp_offset <0)
+        {
+                ss<<"-";
+                esp_offset = esp_offset*-1;
+        }
+        else
+                ss<<"+";
+
+        ss<<"0x"<<hex<<esp_offset<<"], 0x0";
+
+        //Insert the cmp before 
+        Instruction_t* next = insertAssemblyAfter(virp,first,ss.str());
+        first->SetComment("Canary Zero: "+first->GetComment());
+
+        return next;
 }
 
 Relocation_t* createNewRelocation(FileIR_t* firp, Instruction_t* insn, string type, int offset)
