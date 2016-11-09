@@ -104,3 +104,10 @@ for arg in $@; do
 	echo "  server-irdb, irdb, test, sql.";
     esac
 done
+
+echo "Getting irdb_transforms packages."
+cd irdb_transforms
+sudo get-packages.sh
+cd $PEASOUP_UMBRELLA_DIR
+
+echo Peasoup packages complete.
