@@ -75,7 +75,16 @@ void ZiprMemorySpace_t::SplitFreeRange(RangeAddress_t addr)
 		free_ranges.insert(Range_t(addr+1, r.GetEnd()));
 	}
 }
-
+void ZiprMemorySpace_t::MergeFreeRange(Range_t range)
+{
+	RangeAddress_t counter, end;
+	for (counter = range.GetStart(), end = range.GetEnd();
+	     counter!=end;
+			 counter++)
+	{
+		MergeFreeRange(counter);
+	}
+}
 void ZiprMemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 {
 	/*
