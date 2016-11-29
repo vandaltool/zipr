@@ -73,7 +73,8 @@ enum
 	SHOULD_DOUBLE_FRAME_SIZE_OPTION,
 	SELECTIVE_CANARIES_OPTION,
 	SET_RANDOM_SEED,
-	SET_CANARY_VALUE
+	SET_CANARY_VALUE,
+	SET_FLOATING_CANARY_OPTION
 };
 
 
@@ -100,6 +101,7 @@ static struct option const long_options[] =
 	{"selective_canaries",required_argument, NULL, SELECTIVE_CANARIES_OPTION},
 	{"random_seed",required_argument, NULL, SET_RANDOM_SEED},
 	{"canary_value",required_argument, NULL, SET_CANARY_VALUE},
+	{"floating_canary",no_argument, NULL, SET_FLOATING_CANARY_OPTION},
 	{NULL, 0, NULL, 0}
 };
 
@@ -221,6 +223,7 @@ int main(int argc, char **argv)
 	char *only_validate=NULL;
 	bool validate_p1=true;
 	bool align_stack=false;
+	bool floating_canary=false;
 	bool shared_object_protection=false;
 	double p1threshold=0.0;
 	bool do_ground_truth=false;
@@ -369,7 +372,7 @@ int main(int argc, char **argv)
 		case SET_RANDOM_SEED:
 		{
 			int the_seed=atoi(optarg);
-			cout<<"Setting random seed to: "<<the_seed<<endl;
+			cout<<"Setting random seed to: "<<dec<<the_seed<<endl;
 			pn_options->setRandomSeed(the_seed);
 			break;
 		}
@@ -378,6 +381,11 @@ int main(int argc, char **argv)
 			int the_val=strtoul(optarg, NULL, 0);
 			cout<<"Setting canary value to: 0x"<<hex<<the_val<<endl;
 			pn_options->setCanaryValue(the_val);
+			break;
+		}
+		case SET_FLOATING_CANARY_OPTION:
+		{
+			floating_canary = true;
 			break;
 		}
 		case '?':
@@ -464,6 +472,7 @@ int main(int argc, char **argv)
 		transform_driver.AddBlacklist(blackListOfFunctions);
 		transform_driver.AddOnlyValidateList(onlyValidateFunctions);
 		transform_driver.SetDoCanaries(pn_options->getDoCanaries());
+		transform_driver.SetDoFloatingCanary(floating_canary);
 		transform_driver.SetDoAlignStack(align_stack);
 		transform_driver.SetCoverageMap(coverage_map);
 		transform_driver.SetCoverageThreshold(p1threshold);

@@ -739,5 +739,12 @@ string PNStackLayout::ToMapEntry() const
 	ss << ";";
 	ss << std::hex << entry_id;
 
+        /* add canary offset */
+	ss << ";";
+	if(canaries.size() > 0) 
+		ss << std::dec << canaries[0].floating_offset;
+	else
+		ss << 0;
+
 	return ss.str();
 }

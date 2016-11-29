@@ -110,6 +110,7 @@ PNTransformDriver::PNTransformDriver(VariantID_t *pidp,string BED_script, pqxxDB
 	orig_virp = NULL;
 	this->BED_script = BED_script;
 	do_canaries = true;
+	do_floating_canary = false;
 	do_align = false;
 	no_validation_level = -1;
 	coverage_threshold = -1;
@@ -173,6 +174,11 @@ void PNTransformDriver::SetDoCanaries(bool do_canaries)
 		cerr<<"************************************************************"<<endl;
 		cerr<<"************************************************************"<<endl;
 	}
+}
+
+void PNTransformDriver::SetDoFloatingCanary(bool do_floating_canary)
+{
+	this->do_floating_canary = do_floating_canary;
 }
 
 void PNTransformDriver::SetDoAlignStack(bool align_stack)
@@ -2224,9 +2230,28 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 
 	for(unsigned int i=0;i<mem_objects.size();i++)
 	{
-
 		canary c;
+
+		int floating_canary_offset = 0;
+
+		if (do_floating_canary)
+		{
+			// nb: get_saved_reg_size is 4 or 8 depending on architecture
+			int reg_size = get_saved_reg_size();
+			floating_canary_offset = (rand() % (layout->GetAlteredAllocSize() - layout->GetOriginalAllocSize() - reg_size));
+			floating_canary_offset -= (floating_canary_offset % reg_size);
+			assert(floating_canary_offset >= 0);
+			c.floating_offset = floating_canary_offset;
+		}
+		else 
+		{
+			c.floating_offset = 0;
+		}
+
 		c.esp_offset = mem_objects[i]->GetOffset() + mem_objects[i]->GetDisplacement() + mem_objects[i]->GetSize();
+		c.esp_offset += floating_canary_offset;
+
+		assert(c.esp_offset >= 0);
 
 		//TODO: make this random
 		c.canary_val = GetRandomCanary();
@@ -2234,18 +2259,19 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 		//bytes to frame pointer or return address (depending on if a frame
 		//pointer is used) from the stack pointer
 		c.ret_offset = (layout->GetAlteredAllocSize()+layout->GetSavedRegsSize());
-		//if frame pointer is used, add 4 bytes to get to the return address
+		//if frame pointer is used, add 4/8 bytes to get to the return address
 		if(layout->HasFramePointer())
 			c.ret_offset += get_saved_reg_size(); 	
 
 		//Now with the total size, subtract off the esp offset to the canary
 		c.ret_offset = c.ret_offset - c.esp_offset;
+
 		//The number should be positive, but we want negative so 
 		//convert to negative
 		c.ret_offset = c.ret_offset*-1;
 	
 		if(verbose_log)
-			cerr << "c.canary_val = " << c.canary_val << "	c.ret_offset = " <<	 c.ret_offset << endl;
+			cerr << "c.canary_val = " << hex << c.canary_val << "	c.ret_offset = " << dec << c.ret_offset << "  c.esp_offset = " << c.esp_offset << "  floating canary offset = " << floating_canary_offset << " (max: " << layout->GetAlteredAllocSize()-layout->GetOriginalAllocSize()<< ")" << endl;
 
 		canaries.push_back(c);
 	}
@@ -2336,6 +2362,8 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 					instr->SetComment("Canary Setup Entry: "+ss.str());
 				else
 					instr->SetComment("Canary Setup: "+ss.str());
+				if(verbose_log)
+					cerr<<"PNTransformDriver: canary setup = "<<ss<<endl;		
 			}
 		}
 		else if(regexec(&(pn_regex->regex_ret), disasm_str.c_str(),5,pmatch,0)==0)
@@ -3172,7 +3200,7 @@ void PNTransformDriver::Print_Map()
 	cerr << "p1 map uri: " << map_uri << endl;
 
 	map_file << "LAYOUT" << ";FUNCTION"<< ";FRAME_ALLOC_SIZE" << ";ALTERED_FRAME_SIZE" << ";SAVED_REG_SIZE" << ";OUT_ARGS_SIZE" << 
-		";NUM_MEM_OBJ" << ";PADDED" << ";SHUFFLED" << ";CANARY_SAFE" << ";CANARY" << ";FUNC_BASE_ID" << ";FUNC_ENTRY_ID" << "\n";
+		";NUM_MEM_OBJ" << ";PADDED" << ";SHUFFLED" << ";CANARY_SAFE" << ";CANARY" << ";FUNC_BASE_ID" << ";FUNC_ENTRY_ID" << ";CANARY_FLOATING_OFFSET" << "\n";
 
 	for(it = transformed_history.begin(); it != transformed_history.end(); it++)
 	{
