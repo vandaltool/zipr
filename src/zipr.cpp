@@ -428,6 +428,9 @@ RangeAddress_t ZiprImpl_t::extend_section(ELFIO::section *sec, ELFIO::section *n
 void ZiprImpl_t::CreateExecutableScoops(const std::map<RangeAddress_t, int> &ordered_sections)
 {
 	int count=0;
+	/*
+	 * For each section, ...
+	 */
 	for(std::map<RangeAddress_t, int>::const_iterator it = ordered_sections.begin();
 		it!=ordered_sections.end();
 		) 
@@ -447,7 +450,10 @@ void ZiprImpl_t::CreateExecutableScoops(const std::map<RangeAddress_t, int> &ord
 		text_start->SetVirtualOffset(sec->get_address());
 		m_firp->GetAddresses().insert(text_start);
 
-		// keep going until no more executable sections.
+		/*
+		 * ... walk the subsequent sections and coalesce as many as possible
+		 * into a single executable address range.
+		 */
 		while(1)
 		{
 			sec = elfiop->sections[it->second];
@@ -468,21 +474,17 @@ void ZiprImpl_t::CreateExecutableScoops(const std::map<RangeAddress_t, int> &ord
 				break;
 		}
 
-
 		// setup end of scoop address
 		AddressID_t *text_end=new AddressID_t();
 
-#if 1
-		text_end->SetVirtualOffset(sec->get_address()-1);
-#else
 		// two cases for end-of-scoop 
-		if(it==ordered_sections.end())
+		if (it==ordered_sections.end())
 			// 1 ) this is the last section
 			text_end->SetVirtualOffset(page_round_up(sec->get_address()+sec->get_size()-1)-1);
 		else
 			// 2 ) another section gets in the way.
 			text_end->SetVirtualOffset(sec->get_address()-1);
-#endif
+
 		// insert into IR
 		m_firp->GetAddresses().insert(text_end);
 
