@@ -1164,6 +1164,7 @@ tools/selective_cfi/tests/libfib.c -text
 tools/selective_cfi/tests/libfib2.c -text
 tools/selective_cfi/tests/libfoo.c -text
 tools/selective_cfi/tests/pow.c -text
+tools/selective_cfi/tests/test_coreutils.sh -text
 tools/selective_cfi/tests/test_dude.sh -text
 tools/selective_cfi/tests/test_fib.sh -text
 tools/selective_cfi/tests/test_foo.sh -text
