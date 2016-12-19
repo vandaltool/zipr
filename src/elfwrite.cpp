@@ -113,17 +113,21 @@ void ElfWriter::CreatePagemap(const ELFIO::elfio *elfiop, FileIR_t* firp, const 
 
 		for(virtual_offset_t i=page_align(start_addr); i<=end_addr; i+=PAGE_SIZE)
 		{
-			cout<<"Writing scoop "<<scoop->GetName()<<" to page: "<<hex<<i<<", perms="<<scoop->getRawPerms()
-			    << " start="<<hex<< scoop->GetStart()->GetVirtualOffset()
-			    << " end="<<hex<< scoop->GetEnd()->GetVirtualOffset() <<endl;
+			//cout<<"Writing scoop "<<scoop->GetName()<<" to page: "<<hex<<i<<", perms="<<scoop->getRawPerms()
+			//    << " start="<<hex<< scoop->GetStart()->GetVirtualOffset()
+			//    << " end="<<hex<< scoop->GetEnd()->GetVirtualOffset() <<endl;
 			pagemap[i].union_permissions(scoop->getRawPerms());
 			pagemap[i].is_relro |= scoop->isRelRo();
 			for(int j=0;j<PAGE_SIZE;j++)
 			{
+				if(i+j < start_addr)
+					continue;
+
 				// get the data out of the scoop and put it into the page map.
-				virtual_offset_t offset=i-start_addr+j;
+				virtual_offset_t offset=i+j-start_addr;
 				if(offset<scoop->GetContents().size())
 				{
+					cout<<"Updating page["<<hex<<i<<"+"<<j<<"("<<(i+j)<<")]="<<hex<<(int)scoop->GetContents()[ offset ]<<endl; 
 					pagemap[i].data[j]=scoop->GetContents()[ offset ]; 
 					pagemap[i].inuse[j]=true;
 				}
