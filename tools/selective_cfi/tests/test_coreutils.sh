@@ -15,10 +15,10 @@ check_fail()
 do_nocfi()
 {
 	if [ -e $2 ]; then
-		echo -n "$2 exists ... "
+		echo -n "$(basename $2) exists ... "
 		return
 	fi
-	echo -n "$2 build  ... "
+	echo -n "$(basename $2) ... "
         $PS $1 $2 --backend zipr > $2.ps_output 2>&1
 	check_fail $1 $2 $?
 }
@@ -26,10 +26,10 @@ do_nocfi()
 do_cfi()
 {
 	if [ -e $2 ]; then
-		echo -n "$2 exists ... "
+		echo -n "$(basename $2) exists ... "
 		return
 	fi
-	echo -n "$2 build  ... "
+	echo -n "$(basename $2) ... "
         $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all --step-option zipr:"--add-sections false" > $2.ps_output 2>&1
 	check_fail $1 $2 $?
 }
@@ -37,10 +37,10 @@ do_cfi()
 do_coloring_cfi()
 {
 	if [ -e $2 ]; then
-		echo -n "$2 exists ... "
+		echo -n "$(basename $2) exists ... "
 		return
 	fi
-	echo -n "$2 build  ... "
+	echo -n "$(basename $2) ... "
         $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all --step-option selective_cfi:--color  --step-option zipr:"--add-sections false"> $2.ps_output 2>&1
 	check_fail $1 $2 $?
 
@@ -129,7 +129,7 @@ protect()
 {
 	for exe in $exes
 	do
-		echo -n "Protecting $exe ... "
+		echo -n "Protecting $(basename $exe) ... "
 		do_nocfi $exe.orig $exe.nocfi
 		do_cfi $exe.orig $exe.cfi
 		do_coloring_cfi $exe.orig $exe.colorcfi
@@ -155,17 +155,20 @@ test_coreutils()
 		install_set $ext
 		cd $utils_dir
 		echo -n "Testing $ext ... "
+		SECONDS=0
 		make check > ../$outfile 2>&1 
+		duration=$SECONDS
+		echo "Elapsed time: $(($duration / 60)) minutes and $(($duration % 60)) "\
+			"seconds ($duration seconds total)." >> ../$outfile
+		
 		echo "Done!"
 		cd $start_dir
 	fi
 
 	echo
 	echo Results for $ext
-	# grep -A4 yesno.sh $outfile |tail -4 | 
 	tail -100 $outfile | sed -n  '/==================/,/=====================/p'| sed "s/^/	/"
-
-
+	tail -1 $outfile| sed "s/^/	/"
 
 }
 
