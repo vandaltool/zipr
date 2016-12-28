@@ -4,6 +4,15 @@ default rel
 
 extern zest_cfi_dispatch_c
 
+%define cfi_dispatch_translation_cache_entries 128
+
+section .tls alloc write align=8 tls
+
+global translation_cache_src
+translation_cache_src:  times cfi_dispatch_translation_cache_entries dq 0 
+translation_cache_targ: times cfi_dispatch_translation_cache_entries dq 0 
+
+
 section .text
 global zest_cfi_dispatch:function
 zest_cfi_dispatch:
@@ -13,26 +22,24 @@ zest_cfi_dispatch:
 	pushf
 	push rax
 	push rcx
-	push rdx
-	push rsi
-	push rdi
-	push r8
-	push r9
-	push r10
-	push r11
-	mov rdi, r11	; r11 is the cfi reg for x86-64, copy it to rdi for C-calling convention.
-	call zest_cfi_dispatch_c wrt ..plt
-	; rax has the address of zest_cfi in the target module.
-	pop r11
-	pop r10
-	pop r9
-	pop r8
-	pop rdi
-	pop rsi
-	pop rdx
 
-	; we haven't restored all the registers here.  we leave rax and rcx to help issue the transfer.
+	; check translation cache.
+	mov   rax,[rel translation_cache_src wrt ..gottpoff] 
+	
+	; rax contains tls address of translation_cache_src
 
+	; hash target 
+	mov   rcx, r11
+	and   rcx, ((cfi_dispatch_translation_cache_entries) -1)
+
+	cmp r11, [fs:rax+rcx*8]
+	jne enter_c_code
+
+allow_xfer_fast:
+	mov rax, [fs:rax+rcx*8+cfi_dispatch_translation_cache_entries*8]
+		
+
+decide_to_check:
 	; decide if we need to check the transfer, or if it's allowed.
 	; checking the xfer is done if the target module has a zest_cfi symbol.
 	; rax contains the address, if the symbol exists.
@@ -57,3 +64,39 @@ allow_xfer:
 	popf
 	lea rsp, [rsp+128]
 	jmp r11
+
+
+
+
+enter_c_code:
+	push rdx
+	push rsi
+	push rdi
+	push r8
+	push r9
+	push r10
+	push r11
+	mov rdi, r11	; r11 is the cfi reg for x86-64, copy it to rdi for C-calling convention.
+	call zest_cfi_dispatch_c wrt ..plt
+	; rax has the address of zest_cfi in the target module.
+	pop r11
+	pop r10
+	pop r9
+	pop r8
+	pop rdi
+	pop rsi
+	pop rdx
+
+	
+	; rax contains tls address of translation_cache_src
+
+	; hash target 
+	mov rcx, r11
+	and rcx, ((cfi_dispatch_translation_cache_entries) -1)
+	lea rcx, [rcx*8]
+	add rcx, [rel translation_cache_src wrt ..gottpoff] 
+	mov [fs:rcx], r11
+	mov [fs:rcx+cfi_dispatch_translation_cache_entries*8], rax
+
+	; resume computation
+	jmp decide_to_check
