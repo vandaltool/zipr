@@ -1171,6 +1171,7 @@ Since I6 doesn't access memory, do another backup until with to verify a
 	// for now, only trying to find I4-I8.  ideally finding I1 would let us know the size of the
 	// jump table.  We'll figure out N by trying targets until they fail to produce something valid.
 
+	string table_index_str, cmp_str;
 	Instruction_t* I8=insn;
 	Instruction_t* I7=NULL;
 	Instruction_t* I6=NULL;
@@ -1195,9 +1196,16 @@ Since I6 doesn't access memory, do another backup until with to verify a
 	 * the target address of the jump.
 	 *
 	 * Backup and find the instruction that's an add or lea before I8.
-	 * TODO: Should we check to make sure that the registers match?
 	 */
-	if(!backup_until("(add|lea)", I7, I8))
+	table_index_str = "(add ";
+	table_index_str += disasm.Argument1.ArgMnemonic;
+	table_index_str += "|lea ";
+	table_index_str += disasm.Argument1.ArgMnemonic;
+	table_index_str += ")";
+
+	cmp_str = string("cmp ") + disasm.Argument1.ArgMnemonic;
+
+	if(!backup_until(table_index_str.c_str(), I7, I8))
 		return;
 
 	I7->Disassemble(disasm);
@@ -1333,7 +1341,7 @@ Since I6 doesn't access memory, do another backup until with to verify a
 			continue;
 
 		int table_size = 0;
-		if(!backup_until("cmp", I1, I5_cur))
+		if(!backup_until(cmp_str.c_str(), I1, I8))
 		{
 			cout<<"pic64: could not find size of switch table"<<endl;
 
