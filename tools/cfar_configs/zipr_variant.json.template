@@ -2,6 +2,7 @@
                 "exec" : {
                     "alias" : [
                         "/variant_specific/main_exe=<<EXEPATH>>/<<EXE_NAME>>",
+                        "/variant_specific/heap_map=<<EXEPATH>>/<<PS_DIR>>/heap.map",
 			"/dev/cfar_urandom=/dev/urandom",
                         "/etc/ld.so.cache=/etc/ld.so.cache",
 			"/variant_specific/libheaprand.so=<<EXEPATH>>/<<PS_DIR>>/libheaprand.so",
@@ -13,7 +14,8 @@
 			]
                 },
                 "marshaling" : {
-                     "code_map" : "<<EXEPATH>>/<<PS_DIR>>/zipr.map",
+		     "code_map" : "<<EXEPATH>>/<<PS_DIR>>/zipr.map",
+                     "heap_map" : "<<EXEPATH>>/<<PS_DIR>>/heap.map",
 		     "p1_map" : "<<EXEPATH>>/<<PS_DIR>>/p1.map",
 		     "initial_dump_dir" : "<<EXEPATH>>/initial_dump_dir"
 	

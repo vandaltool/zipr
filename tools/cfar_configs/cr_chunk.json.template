@@ -16,6 +16,7 @@
                 "top_dir": "/testing/results/images"
             },
             "monitor": {
+		<<PRECHECKPOINTCMD>>,
                 "exec": {
                     "path": "tools/cr_dump.py"
                 },

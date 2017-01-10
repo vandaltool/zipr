@@ -296,11 +296,17 @@ finalize_json()
 	mkdir -p $outdir
 	mkdir $outdir/global
 	mkdir $outdir/marshaling
-	cp $CFAR_EMT_PLUGINS/dh_plugins.jar $outdir/marshaling/
-	cp $CFAR_EMT_PLUGINS/refresh.py $outdir/marshaling/
-	cp $CFAR_EMT_PLUGINS/refresh.sh $outdir/marshaling/
-	#tar -xzf $CFAR_APOGEE_DOWNLOADS_DIR/build-emt.tar.gz -C $outdir/marshaling/emt --strip-components=1
+
+	# copy jar, python, and bash scripts into package.
+	cp $CFAR_EMT_PLUGINS/*.jar $outdir/marshaling/
+	cp $CFAR_EMT_PLUGINS/*.py $outdir/marshaling/
+	cp $CFAR_EMT_PLUGINS/*.sh $outdir/marshaling/
+
+	# copy distribution.
 	cp -R $CFAR_DIST_EMT_DIR $outdir/marshaling/emt
+
+	# get any changes from the uva branch
+	cp $CFAR_EMT_DIR/*.jar $outdir/marshaling/emt
 
 
 	variants="$total_variants"
@@ -312,7 +318,7 @@ finalize_json()
 	elif [ "$backend" = 'strata' ]; then
 		cp $PEASOUP_HOME/tools/cfar_configs/strata_all.json.template $json
 	else
-		echo unknown backend: $backend
+		echo "unknown backend: $backend"
 		exit 1
 	fi
 
@@ -520,12 +526,21 @@ finalize_json()
 	if [ "x"$use_includecr = "x--include-cr" ]; then
 		echo "Including C/R support."
 		# grab the appropriate contents for cp/rest and monitor settings.
+		pre_checkpoint_cmd_contents=$(cat $PEASOUP_HOME/tools/cfar_configs/pre_checkpoint_cmd.json.template)
 		cr_contents=$(cat $PEASOUP_HOME/tools/cfar_configs/cr_chunk.json.template)
 		monitor_contents=$(cat $PEASOUP_HOME/tools/cfar_configs/monitor_chunk_with_cr.json.template)
 
 		#echo setting monitor chunk to: $monitor_contents
 		json_contents="${json_contents//<<CR>>/$cr_contents}"
 		json_contents="${json_contents//<<MONITOR>>/$monitor_contents}"
+
+		# if doing heap marshaling, use the precheckpoint cmd
+		if [ "x"$use_diehard  = "x--diehard" ]; then
+			json_contents="${json_contents//<<PRECHECKPOINTCMD>>/$pre_checkpoint_cmd_contents}"
+		# else remove it
+		else
+			json_contents="${json_contents//<<PRECHECKPOINTCMD>>/}"
+		fi
 	else
 		echo "Not doing C/R support."
 		# grab the appropriate contents monitor settings and remove c/r marker

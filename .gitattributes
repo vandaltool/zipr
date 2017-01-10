@@ -972,6 +972,7 @@ tools/cfar_configs/cfar_structP1FloatingCanary_zipr.sh -text
 tools/cfar_configs/cr_chunk.json.template -text
 tools/cfar_configs/monitor_chunk.json.template -text
 tools/cfar_configs/monitor_chunk_with_cr.json.template -text
+tools/cfar_configs/pre_checkpoint_cmd.json.template -text
 tools/cfar_configs/strata_all.json.template -text
 tools/cfar_configs/strata_variant.json.template -text
 tools/cfar_configs/zipr_all.json.template -text

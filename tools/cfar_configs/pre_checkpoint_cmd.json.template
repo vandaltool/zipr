@@ -1,0 +1,2 @@
+
+        "post_checkpoint_command" : "/target_apps/marshaling/heap_dump.sh "
