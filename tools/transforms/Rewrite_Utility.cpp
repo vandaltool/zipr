@@ -387,9 +387,14 @@ Instruction_t* insertCanaryZeroAfter(FileIR_t* virp, Instruction_t *first, int e
 	stringstream ss;
 	const char *sp_reg="esp";
         if(virp->GetArchitectureBitWidth()==64)
+	{
                 sp_reg="rsp";
-
-        ss<<"mov dword ["<<sp_reg;
+        	ss<<"mov qword ["<<sp_reg; // clear all 64-bits
+	}
+	else
+	{
+        	ss<<"mov dword ["<<sp_reg;
+	}
 
         if(esp_offset <0)
         {

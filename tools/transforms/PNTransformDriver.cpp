@@ -2207,10 +2207,17 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 	ControlFlowGraph_t cfg(func);
 	
 	string esp_reg;
+	string word_dec;
 	if(FileIR_t::GetArchitectureBitWidth()==32)
+	{
 		esp_reg="esp";
+		word_dec="dword";
+	}
 	else
+	{
 		esp_reg="rsp";
+		word_dec="qword";
+	}
 
 	if(verbose_log)
 		cout<<"PNTransformDriver: CanaryRewrite: Rewriting function named "<<func->GetName()<<endl;
@@ -2356,7 +2363,8 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 			for(unsigned int i=0;i<canaries.size();i++)
 			{
 				ss.str("");
-				ss<<"mov dword ["<<esp_reg<<"+0x"<<hex<<canaries[i].esp_offset<<"], 0x"<<hex<<canaries[i].canary_val;
+				ss<<"mov "<<word_dec<<" ["<<esp_reg<<"+0x"<<hex<<canaries[i].esp_offset
+				  <<"], 0x"<<hex<<canaries[i].canary_val;
 				instr = insertAssemblyAfter(virp,instr,ss.str());
 				if(i==0)
 					instr->SetComment("Canary Setup Entry: "+ss.str());
