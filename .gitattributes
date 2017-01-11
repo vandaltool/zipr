@@ -935,6 +935,7 @@ tools/cfar_configs/cfar_probIlr_structP1Canaries_strata.sh -text
 tools/cfar_configs/cfar_probNog_phase1_zipr.sh -text
 tools/cfar_configs/cfar_probNog_probNol_probNoh_probNos_probBilr_probP1_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_probNog_probSS_phase1_zipr.sh -text
+tools/cfar_configs/cfar_probNog_probSS_probDS_phase1_zipr.sh -text
 tools/cfar_configs/cfar_probNoh_probIlr_probP1_probHeaprand_probNos_strata.sh -text
 tools/cfar_configs/cfar_probNoh_probNos_probBilr_probP1_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_probNol_probNoh_probIlr_probP1_probHeaprand_probNos_strata.sh -text
