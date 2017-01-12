@@ -431,13 +431,25 @@ finalize_json()
 				# echo adding lib $lib
 				lib_dir="/vs-$vs/target_app_libs/dh-$lib/$config/$var_num_dir"
 
-				mkdir -p $new_variant_dir/lib 2>/dev/null || true
-				cp  $indir/$lib_dir/$lib $new_variant_dir/lib
-				cp -R $indir/$lib_dir/peasoup_executable_dir $new_variant_dir/lib/peasoup_executable_dir.$lib.$config
+
+				if [ "$main_exe" ==  "$lib" ]; then
+					#cp -R $indir/$lib_dir/peasoup_executable_dir $new_variant_dir/lib/peasoup_executable_dir.$lib.$config
+					mkdir -p $new_variant_dir/lib/peasoup_executable_dir.$lib.$config
+					cp -R $indir/$lib_dir/peasoup_executable_dir/*.so $new_variant_dir/lib/peasoup_executable_dir.$lib.$config/
+					cp -R $indir/$lib_dir/peasoup_executable_dir/*config $new_variant_dir/lib/peasoup_executable_dir.$lib.$config/
+				fi
 		
 				# note the weird $'\n' is bash's way to encode a new line.
 				# set line=  ,\n"alias=file" -- but the bash is ugly, and I can't do better.
-				line=",  "$'\n\t\t\t'"  \"/usr/lib/$lib=$new_variant_dir_ts/lib/$lib\" "
+				if [[ $lib == mod* ]]; then
+					mkdir -p $new_variant_dir/modules 2>/dev/null || true
+					cp  $indir/$lib_dir/$lib $new_variant_dir/modules
+					line=",  "$'\n\t\t\t'"  \"/testing/content/apache_support/modules/$lib=$new_variant_dir_ts/modules/$lib\" "
+				else
+					mkdir -p $new_variant_dir/lib 2>/dev/null || true
+					cp  $indir/$lib_dir/$lib $new_variant_dir/lib
+					line=",  "$'\n\t\t\t'"  \"/usr/lib/$lib=$new_variant_dir_ts/lib/$lib\" "
+				fi
 				variant_config_contents="${variant_config_contents//,<<LIBS>>/$line,<<LIBS>>}"
 		
 			done
