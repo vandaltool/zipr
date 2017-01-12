@@ -526,6 +526,9 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 {
 	
 
+	std::cout<<"Assigning phdr to address "<<std::hex<<new_phdr_addr<<std::endl;
+	std::cout<<"Assigning first seg to a file offset that's at least: "<<std::hex<<first_seg_file_offset<<std::endl;
+
 	// create a load segments into the new header list.
 	// assume hdr are on first page.
 	unsigned int fileoff=first_seg_file_offset;
@@ -536,7 +539,7 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 		thisphdr.p_type = PT_LOAD; 
 		thisphdr.p_flags = (ELFIO::Elf_Word)segvec[i]->m_perms;      
 		thisphdr.p_offset = fileoff;     
-		std::cout<<"Assigning load[i].ph_offset="<<std::hex<<fileoff<<std::endl;
+		std::cout<<"Assigning load["<<dec<<i<<"].ph_offset="<<std::hex<<fileoff<<std::endl;
 		thisphdr.p_vaddr = (T_Elf_Addr)segvec[i]->start_page; 
 		thisphdr.p_paddr = (T_Elf_Addr)segvec[i]->start_page; 
 		thisphdr.p_filesz = (ELFIO::Elf_Xword)segvec[i]->filesz; 
@@ -551,7 +554,7 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 	}
 
 
-	// go through orig. phdrs any copy any that aren't of type pt_load or pt_hdr
+	// go through orig. phdrs any copy and that aren't of a type we are re-createing.
 	for(unsigned int i=0;i<phdrs.size();i++)
 	{
 		// skip any load headers, the irdb tells us what to load.
