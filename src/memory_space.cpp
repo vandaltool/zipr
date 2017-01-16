@@ -91,7 +91,7 @@ void ZiprMemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 	 * Make a new range of one byte.
 	 * 
 	 * Then, look to see whether or not it
-	 * can be merged with another range. 
+	 * can be merged with another range.
 	 *
 	 * If not, add it as a one byte range.
 	 */
@@ -121,12 +121,29 @@ void ZiprMemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 			printf("to: (%p - %p) \n", (void*)nnr.GetStart(), (void*)nnr.GetEnd());
 		}
 		nr = nnr;
+		/*
+		 * There is the possibility that we just expanded down and we
+		 * now abut the end of a smaller free one.
+		 */
 		if(itm1!=free_ranges.end())
 		{
 			Range_t r2=*itm1;
+			if (m_verbose)
+			{
+				printf("Expanded range: ");
+				printf("from: (%p - %p) ", (void*)nr.GetStart(), (void*)nr.GetEnd());
+				printf("to: (%p - %p) \n", (void*)r2.GetStart(), (void*)nnr.GetEnd());
+			}
 			nr.SetStart(r2.GetStart());	
 			free_ranges.erase(r2);
+			
 		}
+		/*
+		 * Handling the analagous secondary merge case
+		 * does not need to be handled here -- that 
+		 * would have been taken care of in the 1st 
+		 * conditional (just using opposite terms).
+		 */
 		free_ranges.erase(r);
 	} 
 	else if(itm1!=free_ranges.end())	 // not addr+1 is still busy, so we don't merge against it.
