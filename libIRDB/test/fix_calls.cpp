@@ -1143,6 +1143,11 @@ main(int argc, char* argv[])
 
 void range(virtual_offset_t a, virtual_offset_t b)
 {
+	// we've found examples of ranges being 0 sized, and it's a bit weird what that means.
+	// it applies to 0 instructions?
+	// skip it, it's likely an invalid FDE.
+	if(a==b)
+		return; 
 	// non-zero sized fde
 	assert(a<b);
 
