@@ -915,7 +915,7 @@ fi
 # setup libstrata.so.  We'll setup two versions, one with symbols so we can debug, and a stripped, faster-loading version.
 # by default, use the faster version.  copy in the .symbosl version for debugging
 #
-if [ -f $STRATA_HOME/lib/libstrata.so ]; then
+if [ -f $STRATA_HOME/lib/libstrata.so  -a $backend = "strata" ]; then
 	cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.symbols
 	cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.nosymbols
 	$PS_STRIP $newdir/libstrata.so.nosymbols
