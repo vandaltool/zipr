@@ -551,6 +551,7 @@ finalize_json()
 			json_contents="${json_contents//<<PRECHECKPOINTCMD>>/$pre_checkpoint_cmd_contents}"
 		# else remove it
 		else
+			json_contents="${json_contents//<<PRECHECKPOINTCMD>>,/}"
 			json_contents="${json_contents//<<PRECHECKPOINTCMD>>/}"
 		fi
 	else
