@@ -681,17 +681,17 @@ report_logs()
 	echo "# ATTRIBUTE hostname=$myhost" >> $logfile
 	echo "# ATTRIBUTE peasoup_step_name=all_peasoup" >> $logfile
 
-	for i in $all_logs
-	do
-		stepname=`basename $i .log`
-		echo >> $logfile
-		echo ------------------------------------------------------- >> $logfile
-		echo ----- From $i ------------------- >> $logfile
-		echo ------------------------------------------------------- >> $logfile
-		cat $i |sed "s/^# ATTRIBUTE */# ATTRIBUTE ps_$i_/" >> $logfile
-		echo ------------------------------------------------------- >> $logfile
-		echo >> $logfile
-	done
+#	for i in $all_logs
+#	do
+#		stepname=`basename $i .log`
+#		echo >> $logfile
+#		echo ------------------------------------------------------- >> $logfile
+#		echo ----- From $i ------------------- >> $logfile
+#		echo ------------------------------------------------------- >> $logfile
+#		cat $i |sed "s/^# ATTRIBUTE */# ATTRIBUTE ps_$i_/" >> $logfile
+#		echo ------------------------------------------------------- >> $logfile
+#		echo >> $logfile
+#	done
 }
 
 
