@@ -180,6 +180,38 @@ clean()
 	
 }
 
+get_size_results()
+{
+	echo "---------------------------------------------"
+	echo "Size of files are: "
+	echo "---------------------------------------------"
+
+	for exe in $exes
+	do
+		cp $exe.orig $exe.stripped
+		strip $exe.stripped
+	done
+
+	extensions="$*"
+	echo Executable $extensions
+	for exe in $exes
+	do
+		echo -n "$(basename $exe)	"
+		
+		for ext in $extensions
+		do
+			if [ ! $exe.$ext ]; then 
+				echo -n "N/A	"
+			else
+				size=$(stat --printf="%s" $exe.$ext)
+				echo -n "$size	"
+			fi
+		done
+		echo
+	done
+	echo
+}
+
 main()
 {
 	start_dir=$(pwd)
@@ -192,6 +224,7 @@ main()
 	test_coreutils nocfi
 	test_coreutils cfi
 	test_coreutils colorcfi
+	get_size_results orig stripped nocfi cfi colorcfi
 
 
 	echo "Protection failures:  $failures"

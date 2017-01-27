@@ -1170,6 +1170,7 @@ tools/selective_cfi/tests/test_fib.sh -text
 tools/selective_cfi/tests/test_foo.sh -text
 tools/selective_cfi/tests/test_libc.sh -text
 tools/selective_cfi/tests/test_pow.sh -text
+tools/selective_cfi/tests/test_spec.sh -text
 tools/selective_cfi/zest_cfi_runtime/SConscript -text
 tools/selective_cfi/zest_cfi_runtime/SConscript32 -text
 tools/selective_cfi/zest_cfi_runtime/SConscript64 -text
