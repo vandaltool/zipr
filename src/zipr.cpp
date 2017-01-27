@@ -1895,6 +1895,18 @@ void ZiprImpl_t::PlaceDollops()
 					     << "disallowed_override                : " 
 							 << disallowed_override << endl;
 #else
+					struct custom_bool : numpunct<char>
+					{
+						protected:
+						string do_truename() const override { return "t" ; }
+						string do_falsename() const override { return "f" ; }
+					};
+					static struct custom_bool *cb=new custom_bool;
+
+					// set cout to print t/f
+					cout.imbue( { cout.getloc(), cb } );
+
+
 					cout << "Placement stats: " 
 					     << de_and_fallthrough_fit               << ", "
 							 << last_de_fits                         << ", "
@@ -1903,7 +1915,7 @@ void ZiprImpl_t::PlaceDollops()
 							 << initial_placement_abuts_pin          << ", "
 							 << initial_placement_abuts_fallthrough  << ", "
 							 << initial_placement_abuts_pin          << ", "
-							 << disallowed_override                  << endl;
+							 << disallowed_override                  << noboolalpha << endl;
 
 #endif
 				}
@@ -2324,8 +2336,10 @@ size_t ZiprImpl_t::DetermineWorstCaseDollopEntrySize(DollopEntry_t *entry, bool 
 		cout << "WCDES of " << std::hex << entry << ":" 
 		     << std::dec << wcis+opening_size+closing_size << endl;
 #else
-		cout << "Open/close/wcdes for "<<hex<<entry<<": " << dec << opening_size 
-		     <<"/" << closing_size << "/" << wcis+opening_size+closing_size << endl;
+		// if we need these, please add additional levels of verbose logging!
+		// this log line accounts for 80% of a 744mb log file.
+		//cout << "Open/close/wcdes for "<<hex<<entry<<": " << dec << opening_size 
+		//     <<"/" << closing_size << "/" << wcis+opening_size+closing_size << endl;
 #endif
 	}
 
@@ -2363,7 +2377,9 @@ size_t ZiprImpl_t::DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_
 		worst_case_size = default_worst_case_size;
 	}
 
-#if 1
+#if 0
+// if you need this log, please implement a more-verbose logging option
+// this log line accounts for 80% of a 744mb log file.
 	if (m_verbose)
 		cout << "Worst case size" 
 		     << ((account_for_fallthrough) ? " (including jump)" : "")
