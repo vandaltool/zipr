@@ -92,6 +92,8 @@ class DataScoop_t : public BaseObj_t
 		void ClearRelRo() { is_relro=false; }
 
                 std::string WriteToDB(File_t *fid, db_id_t newid);
+		std::string WriteToDBRange(File_t *fid, db_id_t newid, int start, int end, std::string table_name);
+
 
 	private:
 		const static int permissions_r=4;

@@ -189,6 +189,7 @@ File_t* VariantID_t::CloneFile(File_t* fptr)
 	std::string icfsmap="icfsmapfid"+to_string(newfid);
 	std::string rtn="rtnfid"+to_string(newfid);
 	std::string dtn="dtnfid"+to_string(newfid);
+	std::string dtn_part2="dtnfid"+to_string(newfid)+"_part2";
 	std::string typ="typfid"+to_string(newfid);
 
 	q ="update file_info set address_table_name='";
@@ -258,6 +259,11 @@ File_t* VariantID_t::CloneFile(File_t* fptr)
         q+=" ; ";
         dbintr->IssueQuery(q);
 
+        q="drop table ";
+        q+=dtn_part2;
+        q+=" ; ";
+        dbintr->IssueQuery(q);
+
         // next issue SQL to clone each table
         q="select * into ";
         q+=atn;
@@ -315,6 +321,12 @@ File_t* VariantID_t::CloneFile(File_t* fptr)
         q+=" ;";
         dbintr->IssueQuery(q);
 
+        q="select * into ";
+        q+=dtn_part2;
+        q+=" from ";
+        q+=fptr->scoop_table_name+"_part2";
+        q+=" ;";
+        dbintr->IssueQuery(q);
 
 	// update the variant dependency table to represent the deep clone 
 	q =     "update variant_dependency set file_id='" + 

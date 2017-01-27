@@ -18,7 +18,6 @@
  *
  */
 
-
 #include <all.hpp>
 #include <utils.hpp>
 #include <cstdlib>
@@ -32,6 +31,9 @@ using namespace libIRDB;
 using namespace std;
 
 static map<Function_t*,db_id_t> entry_points;
+
+#define SCOOP_CHUNK_SIZE (10*1024*1024)  /* 10 mb  */
+
 
 #undef EIP
 
@@ -516,14 +518,15 @@ void FileIR_t::WriteToDB()
 
 	db_id_t j=-1;
 
-	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->instruction_table_name + string(" cascade;"));
-	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->icfs_table_name + string(" cascade;"));
-	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->icfs_map_table_name + string(" cascade;"));
-	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->function_table_name    + string(" cascade;"));
-	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->address_table_name     + string(" cascade;"));
-	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->relocs_table_name     + string(" cascade;"));
-	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->types_table_name     + string(" cascade;"));
-	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->scoop_table_name     + string(" cascade;"));
+	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->instruction_table_name 	+ string(" cascade;"));
+	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->icfs_table_name 		+ string(" cascade;"));
+	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->icfs_map_table_name 	+ string(" cascade;"));
+	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->function_table_name    	+ string(" cascade;"));
+	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->address_table_name     	+ string(" cascade;"));
+	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->relocs_table_name     	+ string(" cascade;"));
+	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->types_table_name     	+ string(" cascade;"));
+	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->scoop_table_name     	+ string(" cascade;"));
+	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->scoop_table_name+"_part2"+ string(" cascade;"));
 
 	/* and now that everything has an ID, let's write to the DB */
 
@@ -629,8 +632,8 @@ void FileIR_t::WriteToDB()
 			Relocation_t* reloc=*it;
 			r+=reloc->WriteToDB(fileptr,*i);
 		}
-
-		dbintr->IssueQuery(r);
+		if(r!="")
+			dbintr->IssueQuery(r);
 	}
 	dbintr->IssueQuery(q);
 
@@ -646,14 +649,17 @@ void FileIR_t::WriteToDB()
 		DataScoop_t* scoop = *it;
 		assert(scoop);
 		string q = scoop->WriteToDB(fileptr,j);
+		dbintr->IssueQuery(q);
 
+		q="";
                 const std::set<Relocation_t*> &the_relocs = scoop->GetRelocations();
                 for(set<Relocation_t*>::const_iterator rit=the_relocs.begin(); rit!=the_relocs.end(); ++rit)
                 {
                         Relocation_t* reloc=*rit;
                         q+=reloc->WriteToDB(fileptr,scoop);
                 }
-		dbintr->IssueQuery(q);
+		if(q!="")
+			dbintr->IssueQuery(q);
 
 	}
 }
@@ -1185,10 +1191,32 @@ std::map<db_id_t,DataScoop_t*> FileIR_t::ReadScoopsFromDB
 
 	std::map<db_id_t,DataScoop_t*> scoopMap;
 
-        std::string q= "select * from " + fileptr->scoop_table_name + " ; ";
+	//std::map<db_id_t,string> bonus_contents;
+	//
+	// read part 2 of the scoops.
+        //std::string q= "select * from " + fileptr->scoop_table_name + "_part2 ; ";
+        //dbintr->IssueQuery(q);
+        //while(!dbintr->IsDone())
+	//{
+        //        db_id_t sid=atoi(dbintr->GetResultColumn("scoop_id").c_str());
+	//	bonus_contents[sid]=dbintr->GetResultColumn("data");
+	//	dbintr->MoveToNextRow();
+	//}
 
+
+
+	// read part 1 of the scoops, and merge in the part 2s
+	// scoop_id           SERIAL PRIMARY KEY,        -- key
+	// name               text DEFAULT '',           -- string representation of the type
+	// type_id            integer,                   -- the type of the data, as an index into the table table.
+	// start_address_id   integer,                   -- address id for start.
+	// end_address_id     integer,                   -- address id for end
+	// permissions        integer,                   -- in umask format (bitmask for rwx)
+	// relro              bit,                       -- is this scoop a relro scoop (i.e., is r/w until relocs are done).
+	// data               bytea                      -- the actual bytes of the scoop
+
+        string q= "select scoop_id,name,type_id,start_address_id,end_address_id,permissions,relro from " + fileptr->scoop_table_name + " ; ";
         dbintr->IssueQuery(q);
-
         while(!dbintr->IsDone())
         {
 
@@ -1202,15 +1230,66 @@ std::map<db_id_t,DataScoop_t*> FileIR_t::ReadScoopsFromDB
 		AddressID_t* end_addr=addrMap[end_id];
                 int permissions=atoi(dbintr->GetResultColumn("permissions").c_str());
                 bool is_relro=atoi(dbintr->GetResultColumn("relro").c_str()) != 0 ;
-                std::string contents=dbintr->GetResultColumn("data");
 
-		DataScoop_t* newscoop=new DataScoop_t(sid,name,start_addr,end_addr,type,permissions,is_relro,contents);
+		DataScoop_t* newscoop=new DataScoop_t(sid,name,start_addr,end_addr,type,permissions,is_relro,"");
 		assert(newscoop);
 		GetDataScoops().insert(newscoop);
 		dbintr->MoveToNextRow();
 
 		scoopMap[sid]=newscoop;
 	}
+
+	for(DataScoopSet_t::iterator it=GetDataScoops().begin(); it!=GetDataScoops().end(); ++it)
+	{
+		DataScoop_t* scoop=*it;
+
+        	q= "select length(data) from " + fileptr->scoop_table_name + " where scoop_id='"+to_string(scoop->GetBaseID())+"'; ";
+        	dbintr->IssueQuery(q);
+		if(!dbintr->IsDone())
+		{
+			int data_len=atoi(dbintr->GetResultColumn("length").c_str());
+			for(int i=0;i<data_len;i+=SCOOP_CHUNK_SIZE)
+			{
+				string start_pos=to_string(i);
+				string len_to_get=to_string(SCOOP_CHUNK_SIZE);
+				string field="substr(data,"+start_pos+","+len_to_get+")";
+				q= "select "+field+" from " + fileptr->scoop_table_name + " where scoop_id='"+to_string(scoop->GetBaseID())+"'; ";
+				dbintr->IssueQuery(q);
+
+				scoop->GetContents()+=dbintr->GetResultColumn("substr");
+
+			}
+		}
+
+
+		// read part 2 from db
+        	q= "select length(data) from " + fileptr->scoop_table_name + "_part2 where scoop_id='"+to_string(scoop->GetBaseID())+"'; ";
+        	dbintr->IssueQuery(q);
+		if(!dbintr->IsDone())
+		{
+			int part2_len=atoi(dbintr->GetResultColumn("length").c_str());
+			for(int i=0;i<part2_len; i+=SCOOP_CHUNK_SIZE)
+			{
+				string start_pos=to_string(i);
+				string len_to_get=to_string(SCOOP_CHUNK_SIZE);
+				string field="substr(data,"+start_pos+","+len_to_get+")";
+				q= "select "+field+" from " + fileptr->scoop_table_name + "_part2 where scoop_id='"+to_string(scoop->GetBaseID())+"'; ";
+				dbintr->IssueQuery(q);
+
+				scoop->GetContents()+=dbintr->GetResultColumn("substr");
+
+			}
+		}
+	}
+	for(	DataScoopSet_t::const_iterator it=GetDataScoops().begin();
+		it!=GetDataScoops().end();
+		++it
+	   )
+	{
+		DataScoop_t* scoop=*it;
+		assert(scoop->GetContents().size() == scoop->GetSize());
+	}
+
 
 	return scoopMap;
 }

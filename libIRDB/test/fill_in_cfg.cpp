@@ -18,8 +18,6 @@
  *
  */
 
-
-
 #include <libIRDB-core.hpp>
 #include <iostream>
 #include <fstream>
