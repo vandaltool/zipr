@@ -393,6 +393,12 @@ class eh_program_insn_t
 						print_uleb_operand(pos,data,max);
 						cout<<endl;
 						break;
+					case DW_CFA_def_cfa_sf:
+						cout<<"				def_cfa_sf ";
+						print_uleb_operand(pos,data,max);
+						print_sleb_operand(pos,data,max);
+						cout<<endl;
+						break;
 
 					case DW_CFA_def_cfa_expression:
 					{
@@ -415,13 +421,38 @@ class eh_program_insn_t
 						pos+=uleb2;
 						break;
 					}
-
-
-
-					/* Dwarf 2.1 */
-					case DW_CFA_offset_extended_sf:
-					case DW_CFA_def_cfa_sf:
+					case DW_CFA_val_expression:
+					{
+						auto uleb1=uint64_t(0);
+						auto uleb2=uint64_t(0);
+						if(eh_frame_util_t<ptrsize>::read_uleb128(uleb1, pos, data, max))
+							return ;
+						if(eh_frame_util_t<ptrsize>::read_uleb128(uleb2, pos, data, max))
+							return ;
+						cout<<"                              val_expression "<<dec<<uleb1<<" "<<uleb2<<endl;
+						pos+=uleb2;
+						break;
+					}
 					case DW_CFA_def_cfa_offset_sf:
+					{
+						auto leb=int64_t(0);
+						if(eh_frame_util_t<ptrsize>::read_sleb128(leb, pos, data, max))
+							return ;
+						cout<<"					def_cfa_offset_sf "<<dec<<leb;
+						break;
+					}
+					case DW_CFA_offset_extended_sf:
+					{
+						auto uleb1=uint64_t(0);
+						auto sleb2=int64_t(0);
+						if(eh_frame_util_t<ptrsize>::read_uleb128(uleb1, pos, data, max))
+							return ;
+						if(eh_frame_util_t<ptrsize>::read_sleb128(sleb2, pos, data, max))
+							return ;
+						cout<<"                              offset_extended_sf "<<dec<<uleb1<<" "<<sleb2<<endl;
+						break;
+					}
+
 
 					/* SGI/MIPS specific */
 					case DW_CFA_MIPS_advance_loc8:
@@ -448,6 +479,16 @@ class eh_program_insn_t
 		auto uleb=uint64_t(0xdeadbeef);
 		eh_frame_util_t<ptrsize>::read_uleb128(uleb, pos, data, max);
 		cout<<" "<<dec<<uleb;
+	}
+
+	static void print_sleb_operand(
+		uint32_t pos, 
+		const uint8_t* const data, 
+		const uint32_t max) 
+	{
+		auto leb=int64_t(0xdeadbeef);
+		eh_frame_util_t<ptrsize>::read_sleb128(leb, pos, data, max);
+		cout<<" "<<dec<<leb;
 	}
 
 	bool parse_insn(
@@ -533,6 +574,16 @@ class eh_program_insn_t
 							return true;
 						break;
 					}
+					case DW_CFA_def_cfa_sf:
+					{
+						uint64_t leb1=0;
+						int64_t leb2=0;
+						if(eh_frame_util_t<ptrsize>::read_uleb128(leb1, pos, data, max))
+							return true;
+						if(eh_frame_util_t<ptrsize>::read_sleb128(leb2, pos, data, max))
+							return true;
+						break;
+					}
 
 					case DW_CFA_def_cfa_expression:
 					{
@@ -543,6 +594,7 @@ class eh_program_insn_t
 						break;
 					}
 					case DW_CFA_expression:
+    					case DW_CFA_val_expression:
 					{
 						uint64_t uleb1=0, uleb2=0;
 						if(eh_frame_util_t<ptrsize>::read_uleb128(uleb1, pos, data, max))
@@ -552,13 +604,27 @@ class eh_program_insn_t
 						pos+=uleb2;
 						break;
 					}
-
-
-
-					/* Dwarf 2.1 */
-					case DW_CFA_offset_extended_sf:
-					case DW_CFA_def_cfa_sf:
 					case DW_CFA_def_cfa_offset_sf:
+					{
+						auto leb=int64_t(0);
+						if(eh_frame_util_t<ptrsize>::read_sleb128(leb, pos, data, max))
+							return true;
+						break;
+					}
+					case DW_CFA_offset_extended_sf:
+					{
+						auto uleb1=uint64_t(0);
+						auto sleb2=int64_t(0);
+						if(eh_frame_util_t<ptrsize>::read_uleb128(uleb1, pos, data, max))
+							return true;
+						if(eh_frame_util_t<ptrsize>::read_sleb128(sleb2, pos, data, max))
+							return true;
+						break;
+					}
+					/* Dwarf 2.1 */
+    					case DW_CFA_val_offset:
+    					case DW_CFA_val_offset_sf:
+
 
 					/* SGI/MIPS specific */
 					case DW_CFA_MIPS_advance_loc8:
@@ -568,11 +634,13 @@ class eh_program_insn_t
 					case DW_CFA_GNU_negative_offset_extended:
 					default:
 						// Unhandled opcode cannot xform this eh-frame
+						cout<<"No decoder for opcode "<<+opcode<<endl;
 						return true;
 				}
 				break;
 			}
 			default:
+				cout<<"No decoder for opcode "<<+opcode<<endl;
 				return true;
 		}
 
@@ -754,7 +822,12 @@ class cie_contents_t : eh_frame_util_t<ptrsize>
 		{
 			if(this->read_type(personality_encoding, position, eh_frame_scoop_data, max))
 				return true;
-			if(this->read_type_with_encoding(personality_encoding, personality, position, eh_frame_scoop_data, max, eh_addr))
+
+			// indirect is OK as a personality encoding, but we don't need to go that far.
+			// we just need to record what's in the CIE, regardless of whether it's the actual
+			// personality routine or it's the pointer to the personality routine.
+			auto personality_encoding_sans_indirect = personality_encoding&(~DW_EH_PE_indirect);
+			if(this->read_type_with_encoding(personality_encoding_sans_indirect, personality, position, eh_frame_scoop_data, max, eh_addr))
 				return true;
 		}
 
@@ -876,9 +949,10 @@ class lsda_type_table_entry_t: private eh_frame_util_t<ptrsize>
 		)
 	{
 		auto size=uint32_t(0);
-		switch(tt_encoding)
+		switch(tt_encoding & 0xf) // get just the size field
 		{
 			case DW_EH_PE_udata4:
+			case DW_EH_PE_sdata4:
 				size=4;
 				break;
 			default:
@@ -1122,7 +1196,8 @@ class lsda_t : private eh_frame_util_t<ptrsize>
 			for(int i=1;i<=max_tt_entry;i++)
 			{
 				lsda_type_table_entry_t <ptrsize> ltte;
-				if(ltte.parse(type_table_encoding, type_table_pos, i, data, max, data_addr ))
+				auto type_table_encoding_sans_indirect = type_table_encoding&(~DW_EH_PE_indirect);
+				if(ltte.parse(type_table_encoding_sans_indirect, type_table_pos, i, data, max, data_addr ))
 					return true;
 				type_table.push_back(ltte);
 			}
