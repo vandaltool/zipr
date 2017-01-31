@@ -2685,6 +2685,7 @@ main(int argc, char* argv[])
 
 			// find all indirect branch targets
 			fill_in_indtargs(firp, elfiop, forced_pins);
+			split_eh_frame(firp);
 			
 			// write the DB back and commit our changes 
 			firp->WriteToDB();

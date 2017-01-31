@@ -143,3 +143,6 @@ class fii_icfs : public ICFS_t
 		int table_size;
 
 };
+
+void split_eh_frame(FileIR_t* firp);
+

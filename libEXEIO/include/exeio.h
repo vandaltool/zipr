@@ -62,7 +62,6 @@ namespace EXEIO
 			{
 				the_sections.push_back(sec);
 			}
-
 		private:
 		
 			std::vector<exeio_section_t*> the_sections;

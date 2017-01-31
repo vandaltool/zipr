@@ -24,9 +24,11 @@ if 'build_tools' not in myenv or myenv['build_tools'] is None or int(myenv['buil
 	print LIBS
 
 	myenv=myenv.Clone(CPPPATH=Split(cpppath))
+
+	myenv.Append(CCFLAGS=" -std=c++11 ")
 	ehframe=myenv.Object("read_ehframe.cpp");
 
-	pgm=myenv.Program("fill_in_indtargs.exe",  ehframe+Split("fill_in_indtargs.cpp check_thunks.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
+	pgm=myenv.Program("fill_in_indtargs.exe",  ehframe+Split("split_eh_frame.cpp fill_in_indtargs.cpp check_thunks.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
 	install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
 	Default(install)
 
