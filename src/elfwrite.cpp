@@ -293,7 +293,7 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 		return false;
 	// this is an uncommon case -- we are typically adding
 	// segments and so the segment map won't fit on the first page.
-	// if this assertion hits, email hiser@virginia.edu and attach your input pgm,
+	// if this assertion hits, email jdhiser@gmail.com and attach your input pgm,
 	// then convert this to a return false to avoid assertion until he fixes it;
 	assert(0);
 }
@@ -389,12 +389,14 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 		return false;
 
 
+	// we've seen multi-page phdrs with NogOF (non-overlapping globals with overflow protection)
+	// and PreAllocate fails on PIE exe's and .so's, so let's try a bit harder to GapAllocate.
 	// a multiple-page phdr can't be gap allocated.
-	if(phdr_size>=PAGE_SIZE)
-		return false;
+	//if(phdr_size>=PAGE_SIZE)
+	//	return false;
 
 	// verify that the segment can be extended.
-	int pages_to_extend=false;	// extend the segment by a page.
+	int pages_to_extend=0;	// extend the segment by a page.
 	for(unsigned int i=0;i<phdr_size; i++)
 	{
 		libIRDB::virtual_offset_t this_addr=new_phdr_addr+i;
@@ -443,7 +445,13 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 	const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr) 
 {
 	unsigned int phdr_size=page_round_up(DetermineMaxPhdrSize());
-	libIRDB::virtual_offset_t new_phdr_addr=(T_Elf_Addr)page_align(min_addr)-phdr_size+sizeof(T_Elf_Ehdr);
+	auto total_header_size=phdr_size+sizeof(T_Elf_Ehdr);
+	auto aligned_min_addr=page_align(min_addr);
+
+	if(total_header_size > aligned_min_addr)
+		return false;
+
+	libIRDB::virtual_offset_t new_phdr_addr=(T_Elf_Addr)page_align(min_addr)-total_header_size;
 	return CreateNewPhdrs_internal(min_addr,max_addr,phdr_size,true, sizeof(T_Elf_Ehdr), new_phdr_addr);
 }
 
