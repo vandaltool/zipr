@@ -35,7 +35,7 @@ BASE_PKGS="
 CLIENT_IRDB_PKGS="
   postgresql-client
   pgadmin3
-  libpqxx3-dev
+  libpqxx-dev
   libmysqlclient-dev
   scons
   cmake
@@ -73,31 +73,39 @@ if [[ "$PEASOUP_UMBRELLA_DIR" == "" ]]; then
 	exit 1
 fi
 
+
+install_packs()
+{
+	for i in $*
+	do
+		sudo apt-get install $i -y
+	done
+}
 for arg in $@; do
     case $arg in
     all)
-	sudo apt-get install $ALL_PKGS
+	install_packs $ALL_PKGS
 	;;
     base)
-	sudo apt-get install $BASE_PKGS
+	install_packs $BASE_PKGS
 	;;
     client-irdb)
-	sudo apt-get install $CLIENT_IRDB_PKGS
+	install_packs $CLIENT_IRDB_PKGS
 	;;
     server-irdb)
-	sudo apt-get install $SERVER_IRDB_PKGS
+	install_packs $SERVER_IRDB_PKGS
 	;;
     irdb)
-	sudo apt-get install $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS
+	install_packs $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS
 	;;
     test)
-	sudo apt-get install $TEST_PKGS
+	install_packs $TEST_PKGS
 	;;
-	sql)
-	sudo apt-get install $SQL_PKGS
+    sql)
+	install_packs $SQL_PKGS
 	;;
-	ldap)
-	sudo apt-get install $LDAP_PKGS
+    ldap)
+	install_packs $LDAP_PKGS
 	;;
     *)
 	echo "$arg not recognized. Recognized args: all, base, client-irdb,";
@@ -107,7 +115,7 @@ done
 
 echo "Getting irdb_transforms packages."
 cd irdb_transforms
-sudo get-packages.sh
+sudo ./get-packages.sh
 cd $PEASOUP_UMBRELLA_DIR
 
 echo Peasoup packages complete.
