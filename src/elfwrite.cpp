@@ -270,6 +270,7 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr, T_Elf_Sym, T_Elf
 	}
 	else
 	{
+		cout<<"ElfWriter cannot find a place in the program for the PHDRS."<<endl;
 		assert(0);
 	}
 	
@@ -444,15 +445,18 @@ template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr
 bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::CreateNewPhdrs_PreAllocate(
 	const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr) 
 {
-	unsigned int phdr_size=page_round_up(DetermineMaxPhdrSize());
+	auto phdr_size=DetermineMaxPhdrSize();
+	auto aligned_phdr_size=page_round_up(phdr_size);
 	auto total_header_size=phdr_size+sizeof(T_Elf_Ehdr);
-	auto aligned_min_addr=page_align(min_addr);
+	//auto aligned_min_addr=page_align(min_addr);
 
-	if(total_header_size > aligned_min_addr)
+
+	/* check to see if it will fit in the address space above the first pinned address */
+	if(total_header_size > min_addr)
 		return false;
 
 	libIRDB::virtual_offset_t new_phdr_addr=(T_Elf_Addr)page_align(min_addr)-total_header_size;
-	return CreateNewPhdrs_internal(min_addr,max_addr,phdr_size,true, sizeof(T_Elf_Ehdr), new_phdr_addr);
+	return CreateNewPhdrs_internal(min_addr,max_addr,aligned_phdr_size,true, sizeof(T_Elf_Ehdr), new_phdr_addr);
 }
 
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
