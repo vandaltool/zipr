@@ -21,6 +21,7 @@ export SECURITY_TRANSFORMS_HOME=$PEASOUP_UMBRELLA_DIR/security_transforms
 export IRDB_TRANSFORMS=$PEASOUP_UMBRELLA_DIR/irdb_transforms
 export PS=$PEASOUP_HOME/tools/ps_analyze.sh
 export ZEST_RUNTIME=$PEASOUP_UMBRELLA_DIR/zest_runtime
+export DAFFY_HOME=$PEASOUP_UMBRELLA_DIR/daffy
 
 source ./irdb_vars
 source $PEASOUP_UMBRELLA_DIR/set_command_envs
