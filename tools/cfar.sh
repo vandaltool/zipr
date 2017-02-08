@@ -104,7 +104,7 @@ fi
 if [ -d $baseoutdir ]; then
 	echo "Directory $baseoutdir already exists."
 	echo "Skipping duplicate work."
-	exit 3
+	exit 0
 fi
 
 
@@ -187,7 +187,7 @@ do
 	elif [ $exit_code == 1 ]; then
 		echo "Protection process had warnings.  Exit_code: $exit_code."
 	else
-		echo "Protection process $i failed with excode code: $exit_code."
+		echo "Protection process $i failed with exit code: $exit_code."
 		ok=0
 	fi
 done
@@ -200,7 +200,7 @@ if [ $ok != 1 ] ; then
 	echo "Some variants failed"
 	echo
 	echo
-	exit 1
+	exit 2
 else
 	echo "Successfully protected $variants variants" 
 fi
