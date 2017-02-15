@@ -60,6 +60,7 @@ size_t DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_for_jump)
 
 	switch(insn->GetDataBits()[0])
 	{
+		case (char)0x70:
 		case (char)0x71:
 		case (char)0x72:
 		case (char)0x73:
