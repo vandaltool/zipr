@@ -541,7 +541,7 @@ class eh_program_insn_t
 					case DW_CFA_GNU_args_size:
 					case DW_CFA_def_cfa_offset:
 					{
-						uint64_t uleb=0;
+						auto uleb=uint64_t(0);
 						if(eh_frame_util_t<ptrsize>::read_uleb128(uleb, pos, data, max))
 							return true;
 						break;
@@ -567,7 +567,8 @@ class eh_program_insn_t
 					case DW_CFA_register:
 					case DW_CFA_def_cfa:
 					{
-						uint64_t uleb1=1, uleb2=0;
+						auto uleb1=uint64_t(1);
+						auto uleb2=uint64_t(0);
 						if(eh_frame_util_t<ptrsize>::read_uleb128(uleb1, pos, data, max))
 							return true;
 						if(eh_frame_util_t<ptrsize>::read_uleb128(uleb2, pos, data, max))
@@ -576,8 +577,8 @@ class eh_program_insn_t
 					}
 					case DW_CFA_def_cfa_sf:
 					{
-						uint64_t leb1=0;
-						int64_t leb2=0;
+						auto leb1=uint64_t(0);
+						auto leb2=int64_t(0);
 						if(eh_frame_util_t<ptrsize>::read_uleb128(leb1, pos, data, max))
 							return true;
 						if(eh_frame_util_t<ptrsize>::read_sleb128(leb2, pos, data, max))
@@ -587,7 +588,7 @@ class eh_program_insn_t
 
 					case DW_CFA_def_cfa_expression:
 					{
-						uint64_t uleb=0;
+						auto uleb=uint64_t(0);
 						if(eh_frame_util_t<ptrsize>::read_uleb128(uleb, pos, data, max))
 							return true;
 						pos+=uleb;	
@@ -596,7 +597,8 @@ class eh_program_insn_t
 					case DW_CFA_expression:
     					case DW_CFA_val_expression:
 					{
-						uint64_t uleb1=0, uleb2=0;
+						auto uleb1=uint64_t(0);
+						auto uleb2=uint64_t(0);
 						if(eh_frame_util_t<ptrsize>::read_uleb128(uleb1, pos, data, max))
 							return true;
 						if(eh_frame_util_t<ptrsize>::read_uleb128(uleb2, pos, data, max))
@@ -685,7 +687,7 @@ class eh_program_t
 		auto pos=program_start_position;
 		while(pos < max_program_pos)
 		{
-			uint8_t opcode;
+			auto opcode=uint8_t(0);
 			if(eh_frame_util_t<ptrsize>::read_type(opcode,pos,data,max))
 				return true;
 			eh_program_insn_t<ptrsize> eh_insn;
