@@ -1690,9 +1690,11 @@ void handle_ibt_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBTAnnotation* p_
 /* meds annotations
  *                typedef enum { SWITCH, RET, DATA, UNREACHABLE, ADDRESSED, UNKNOWN } ibt_reason_code_t;
  */
+	cout<<"at handl_ibt with addr="<<hex<<insn->GetAddress()->GetVirtualOffset()<<" code="<<p_ibt_annotation->GetReason()<<endl;
 	switch(p_ibt_annotation->GetReason())
 	{
 		case MEDS_IBTAnnotation::SWITCH:
+		case MEDS_IBTAnnotation::INDIRCALL:
 		{
 			possible_target((EXEIO::virtual_offset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
 				0,ibt_provenance_t::ibtp_stars_switch);
@@ -1701,11 +1703,13 @@ void handle_ibt_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBTAnnotation* p_
 			Instruction_t* ibt=lookupInstruction(firp, p_ibt_annotation->getVirtualOffset().getOffset());
 			if(fromib && ibt)
 			{
+				if(getenv("IB_VERBOSE")!=NULL)
+					cout<<hex<<"Adding call/switch icfs: "<<fromib->GetAddress()->GetVirtualOffset()<<"->"<<ibt->GetAddress()->GetVirtualOffset()<<endl;
 				jmptables[fromib].insert(ibt);
 			}
 			else
 			{
-				cout<<"Warning:  cannot find source or dest for switch icfs."<<endl;
+				cout<<"Warning:  cannot find source or dest for call/switch icfs."<<endl;
 			}
 			break;
 		}
@@ -1722,6 +1726,8 @@ void handle_ibt_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBTAnnotation* p_
 			Instruction_t* ibt=lookupInstruction(firp, toaddr);
 			if(fromib && ibt)
 			{
+				if(getenv("IB_VERBOSE")!=NULL)
+					cout<<hex<<"Adding ret icfs: "<<fromib->GetAddress()->GetVirtualOffset()<<"->"<<ibt->GetAddress()->GetVirtualOffset()<<endl;
 				jmptables[fromib].insert(ibt);
 			}
 			else
@@ -1734,24 +1740,32 @@ void handle_ibt_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBTAnnotation* p_
 		{
 			possible_target((EXEIO::virtual_offset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
 				0,ibt_provenance_t::ibtp_stars_data);
+			if(getenv("IB_VERBOSE")!=NULL)
+				cout<<hex<<"detected stars data ibt at"<<p_ibt_annotation->getVirtualOffset().getOffset()<<endl;
 			break;
 		}
 		case MEDS_IBTAnnotation::UNREACHABLE:
 		{
 			possible_target((EXEIO::virtual_offset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
 				0,ibt_provenance_t::ibtp_stars_unreachable);
+			if(getenv("IB_VERBOSE")!=NULL)
+				cout<<hex<<"detected stars unreachable ibt at"<<p_ibt_annotation->getVirtualOffset().getOffset()<<endl;
 			break;
 		}
 		case MEDS_IBTAnnotation::ADDRESSED:
 		{
 			possible_target((EXEIO::virtual_offset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
 				0,ibt_provenance_t::ibtp_stars_addressed);
+			if(getenv("IB_VERBOSE")!=NULL)
+				cout<<hex<<"detected stars addresssed ibt at"<<p_ibt_annotation->getVirtualOffset().getOffset()<<endl;
 			break;
 		}
 		case MEDS_IBTAnnotation::UNKNOWN:
 		{
 			possible_target((EXEIO::virtual_offset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
 				0,ibt_provenance_t::ibtp_stars_unknown);
+			if(getenv("IB_VERBOSE")!=NULL)
+				cout<<hex<<"detected stars unknown ibt at"<<p_ibt_annotation->getVirtualOffset().getOffset()<<endl;
 			break;
 		}
 		default:

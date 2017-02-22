@@ -37,8 +37,9 @@ using namespace MEDS_Annotation;
 class MEDS_IBTAnnotation : public MEDS_AnnotationBase
 {
 	public:
-		typedef enum { SWITCH, RET, DATA, UNREACHABLE, ADDRESSED, UNKNOWN } ibt_reason_code_t;
+		typedef enum { SWITCH, RET, DATA, UNREACHABLE, ADDRESSED, INDIRCALL, UNKNOWN } ibt_reason_code_t;
 
+		MEDS_IBTAnnotation()=delete;
 		MEDS_IBTAnnotation( const string& p_rawLine) 
 			: xref_addr(0), reason(UNKNOWN)
 		{ 
@@ -78,17 +79,20 @@ class MEDS_IBTAnnotation : public MEDS_AnnotationBase
 			if(string("FROMIB") == from_type)
 			{
 				stream >> hex >> xref_addr;
+				cout<<"fromib: '"<<p_rawLine<<"'"<<endl;
 			}
 			else if(string("FROMDATA") == from_type)
 			{
 				stream >> hex >> xref_addr;
 				reason=DATA;
+				cout<<"fromdata: '"<<p_rawLine<<"'"<<endl;
 				return;
 			}
 			else if(string("FROMUNKNOWN") == from_type)
 			{
 				// no other fields for from UNKNOWN
 				xref_addr=0;
+				cout<<"fromunknown: '"<<p_rawLine<<"'"<<endl;
 			}
 
 			string reason_code;
@@ -104,8 +108,13 @@ class MEDS_IBTAnnotation : public MEDS_AnnotationBase
 			{ reason=UNREACHABLE; }
 			else if(string("CODEADDRESSTAKEN") == reason_code)
 			{ reason=ADDRESSED; }
+			else if(string("INDIRCALL") == reason_code)
+			{ reason=INDIRCALL; }
 			else
 			{ reason=UNKNOWN; }
+
+			if(reason==UNKNOWN) 
+				cout<<"unknown reason code: '"<<reason_code<<"'"<<endl;
 				
 		}
 

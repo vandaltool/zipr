@@ -17,6 +17,8 @@ cpppath='''
 
 files=Glob( Dir('.').srcnode().abspath+"/*.cpp")
 
+myenv.Append(CPPFLAGS="-std=c++11")
+
 
 pgm="dump_map.exe"
 

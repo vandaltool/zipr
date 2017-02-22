@@ -23,6 +23,7 @@
 #include <libIRDB-core.hpp>
 #include <libgen.h>
 #include <iomanip>
+#include <algorithm>
 
 
 using namespace std;
@@ -33,6 +34,21 @@ void usage(char* name)
 	cerr<<"Usage: "<<name<<" <variant_id>\n"; 
 }
 
+
+void dump_icfs(Instruction_t* insn)
+{
+	if(insn->GetIBTargets()==NULL)	
+		return;	
+	
+	cout<<"\tComplete: "<<boolalpha<<insn->GetIBTargets()->IsComplete()<<endl;
+	cout<<"\tModComplete: "<<boolalpha<<insn->GetIBTargets()->IsModuleComplete()<<endl;
+	cout<<"\tTargets: "<<boolalpha<<insn->GetIBTargets()->IsModuleComplete()<<endl;
+	for_each(insn->GetIBTargets()->begin(), insn->GetIBTargets()->end(), [&](const Instruction_t* targ)
+	{
+		cout<<"\t"<<targ->GetBaseID()<<":"<<targ->getDisassembly()<<endl;
+	});
+}
+
 int main(int argc, char **argv)
 {
         if(argc != 2)
@@ -40,6 +56,12 @@ int main(int argc, char **argv)
                 usage(argv[0]);
                 exit(1);
         }
+
+	auto dump_icfs_flag=(unsigned long long)-1; 
+	auto dump_icfs_str=getenv("DUMP_ICFS");
+	if(dump_icfs_str)
+		dump_icfs_flag=strtoull(dump_icfs_str,NULL,0);
+		
 
         string programName(argv[0]);
         int variantID = atoi(argv[1]);
@@ -53,7 +75,7 @@ int main(int argc, char **argv)
         pidp=new VariantID_t(variantID);
         assert(pidp->IsRegistered()==true);
 
-	cout<<"ret_shadow_stack.exe started\n";
+
 
         bool one_success = false;
         for(set<File_t*>::iterator it=pidp->GetFiles().begin();
@@ -96,6 +118,9 @@ int main(int argc, char **argv)
 					cout<<setw(9)<<"NoFunc";
 					
 				cout<<" "<<insn->getDisassembly()<<endl;
+	
+				if(dump_icfs_flag == insn->GetBaseID())
+					dump_icfs(insn);
 			}
 
 
