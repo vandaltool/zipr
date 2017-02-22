@@ -4,6 +4,8 @@
         "server" : "<<SERVER>>",
         "class" : "<<CLASS>>",
         "description" : "n/a"
+        "performer" : "UVA-DoubleHelix"
+        "family" : "DynamicBinaryRewriting"
     },
 
 	<<MONITOR>>
