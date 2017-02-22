@@ -3852,6 +3852,7 @@ tools/ps_tne_scripts_p2/analyze -text
 tools/ps_tne_scripts_p2/execute -text
 tools/ps_validate.sh -text
 tools/ps_validate_ss.deprecated.sh -text
+tools/ps_zipr.sh -text
 tools/replay_with_gdb.sh -text
 tools/run_one_test.sh -text
 tools/run_stratafied.tmpl.sh -text
