@@ -68,7 +68,7 @@ string Function_t::WriteToDB(File_t *fid, db_id_t newid)
 	return q;
 }
 
-int Function_t::GetNumArguments()
+int Function_t::GetNumArguments() const
 {
 	if (!function_type) return -1;
 	AggregateType_t *argtype = function_type->GetArgumentsType();

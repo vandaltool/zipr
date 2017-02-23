@@ -31,10 +31,11 @@ class Function_t : public BaseObj_t
 	Function_t(db_id_t id, std::string name, int size, int oa_size, bool use_fp, bool is_safe, FuncType_t *, Instruction_t *entry);	
 
 	InstructionSet_t& GetInstructions() { return my_insns; }
+	const InstructionSet_t& GetInstructions() const { return my_insns; }
 
-        int GetStackFrameSize() { return stack_frame_size; }
-        const std::string& GetName() { return name; }
-        int GetOutArgsRegionSize() {return out_args_region_size; }
+        int GetStackFrameSize() const { return stack_frame_size; }
+        const std::string& GetName() const { return name; }
+        int GetOutArgsRegionSize() const { return out_args_region_size; }
 
         void SetStackFrameSize(int size) { stack_frame_size=size; }
         void SetName(std::string newname)	 { name=newname; }
@@ -54,7 +55,7 @@ class Function_t : public BaseObj_t
 	void SetType(FuncType_t *t) { function_type = t; }
 	FuncType_t* GetType() const { return function_type; }
 
-	int GetNumArguments();
+	int GetNumArguments() const;
 
     private:
 	Instruction_t *entry_point;

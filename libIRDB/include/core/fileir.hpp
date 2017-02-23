@@ -39,11 +39,17 @@ class FileIR_t : public BaseObj_t
 
 		// accessors and mutators in one
 		FunctionSet_t&    GetFunctions() { return funcs; }
+		const FunctionSet_t&    GetFunctions() const { return funcs; }
 		InstructionSet_t& GetInstructions() { return insns; }
+		const InstructionSet_t& GetInstructions() const { return insns; }
 		AddressSet_t&     GetAddresses() { return addrs; }
+		const AddressSet_t&     GetAddresses() const { return addrs; }
 		RelocationSet_t&  GetRelocations() { return relocs; }
+		const RelocationSet_t&  GetRelocations() const { return relocs; }
 		DataScoopSet_t&  GetDataScoops() { return scoops; }
+		const DataScoopSet_t&  GetDataScoops() const { return scoops; }
 		ICFSSet_t&        GetAllICFS() { return icfs_set; }
+		const ICFSSet_t&        GetAllICFS() const { return icfs_set; }
 
 		// generate the spri rules into the output file, fout.
 		void GenerateSPRI(std::ostream &fout, bool with_ilr=false);
@@ -53,7 +59,7 @@ class FileIR_t : public BaseObj_t
 
 		void SetBaseIDS();
 
-		File_t* GetFile() { return fileptr; }
+		File_t* GetFile() const { return fileptr; }
 
 		// Used for modifying a large number of instructions. AssembleRegistry
 		// assembles the assembly isntructions for each registered instruction
