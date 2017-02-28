@@ -159,7 +159,6 @@ usage()
 	echo "   -w					Same as --watchdog"
 	echo "   --help					Print this page."
 	echo "   --usage				Same as --help"
-	echo "   -w					Same as --help"
 	echo "   --id <jobid>				Unsupported.  Ask an7s."
 	echo "   --name <dbname>			Unsupported.  Ask an7s."
 	echo "   --manual_test_script <scriptname>	Specify how to test to the program.  API documentation incomplete."
