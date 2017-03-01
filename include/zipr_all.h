@@ -49,6 +49,7 @@ namespace zipr
 
 using namespace Zipr_SDK;
 
+#include <sled.h>
 #include <unresolved.h>
 #include <zipr_mem_space.h>
 #include <plugin_man.h>

@@ -1,6 +1,7 @@
 * text=auto !eol
 /LICENSE.txt -text
 /Makefile.in -text
+/README.sleds.txt -text
 /SConscript -text
 /SConstruct -text
 /config.guess -text
@@ -9,6 +10,7 @@
 /configure.in -text
 include/elfwrite.h -text
 include/plugin_man.h -text
+include/sled.h -text
 include/unresolved.h -text
 include/zipr_all.h -text
 include/zipr_dollop_man.h -text

@@ -376,21 +376,25 @@ class ZiprImpl_t : public Zipr_t
 		std::string AddCallbacksToNewSegment(const std::string& tmpname, RangeAddress_t end_of_new_space);
 		RangeAddress_t FindCallbackAddress(RangeAddress_t end_of_new_space,RangeAddress_t start_addr, const std::string &callback);
 		libIRDB::Instruction_t *FindPinnedInsnAtAddr(RangeAddress_t addr);
+		libIRDB::Instruction_t *FindPatchTargetAtAddr(RangeAddress_t addr);
 		bool ShouldPinImmediately(libIRDB::Instruction_t *upinsn);
 		bool IsPinFreeZone(RangeAddress_t addr, int size);
 
 		// routines to deal with a "68 sled"
-		int Calc68SledSize(RangeAddress_t addr);
+		int Calc68SledSize(RangeAddress_t addr, size_t sled_overhead=6);
 		RangeAddress_t Do68Sled(RangeAddress_t addr);
-		libIRDB::Instruction_t* Emit68Sled(RangeAddress_t addr, int sled_size);
-		libIRDB::Instruction_t* Emit68Sled(RangeAddress_t addr, int sled_size, int sled_number, libIRDB::Instruction_t* next_sled);
-
-
-
-
-
+		void Update68Sled(Sled_t, Sled_t &);
+		libIRDB::Instruction_t* Emit68Sled(Sled_t sled);
+		libIRDB::Instruction_t* Emit68Sled(RangeAddress_t addr, Sled_t sled, libIRDB::Instruction_t* next_sled);
+		/*
+		 * The goal here is to simply clear out chain entries
+		 * that may be in the way. This will not clear out 
+		 * previously added PUSHs.
+		 */
+		void Clear68SledArea(Sled_t sled);
+		void InsertJumpPoints68SledArea(Sled_t &sled);
 		// support
-		RangeAddress_t extend_section(ELFIO::section *sec, ELFIO::section *next_sec);
+		RangeAddress_t extend_section(ELFIO::section *sec,ELFIO::section *next_sec);
 
 		void dump_map();
 
@@ -430,6 +434,8 @@ class ZiprImpl_t : public Zipr_t
 				}
 		};
 
+		std::set<Sled_t> m_sleds;
+
 		// structures necessary for ZIPR algorithm.
 		std::set<UnresolvedUnpinned_t> unresolved_unpinned_addrs;
 		std::set<UnresolvedPinned_t,pin_sorter_t> unresolved_pinned_addrs; 
@@ -448,7 +454,9 @@ class ZiprImpl_t : public Zipr_t
 		// final mapping of instruction to address.
 		// std::map<libIRDB::Instruction_t*,RangeAddress_t> 
 		Zipr_SDK::InstructionLocationMap_t final_insn_locations; 
-		std::map<RangeAddress_t,libIRDB::Instruction_t*> m_InsnAtAddrs; 
+		std::map<RangeAddress_t,std::pair<libIRDB::Instruction_t*, size_t> > m_InsnSizeAtAddrs; 
+		std::map<RangeAddress_t, bool> m_AddrInSled;
+		std::map<RangeAddress_t,UnresolvedUnpinnedPatch_t> m_PatchAtAddrs; 
 
 		// unpatched callbacks
 		std::set<std::pair<Zipr_SDK::DollopEntry_t*,RangeAddress_t> > unpatched_callbacks; 
@@ -464,7 +472,7 @@ class ZiprImpl_t : public Zipr_t
 		ZiprMemorySpace_t memory_space;
 		Zipr_SDK::PlacementQueue_t placement_queue;
 
-	        RangeAddress_t bss_needed;
+		RangeAddress_t bss_needed;
 		bool use_stratafier_mode;
 
 		ZiprPluginManager_t plugman;

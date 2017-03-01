@@ -50,28 +50,6 @@ class UnresolvedInfo_t
 	private:
 };
 
-
-
-// instructions that can float to any address, but don't yet have one
-class UnresolvedUnpinned_t  : public UnresolvedInfo_t
-{
-	public:
-		UnresolvedUnpinned_t(libIRDB::Instruction_t* p_from) : from_instruction(p_from) 
-		{ assert(p_from); }
-		libIRDB::Instruction_t* GetInstruction() const { assert(from_instruction); return from_instruction; }
-	private:
-		libIRDB::Instruction_t *from_instruction;
-		
-	friend bool operator< (const UnresolvedUnpinned_t& lhs, const UnresolvedUnpinned_t& rhs);
-};
-
-inline bool operator< (const UnresolvedUnpinned_t& lhs, const UnresolvedUnpinned_t& rhs)
-{ 
-	assert(lhs.from_instruction);
-	assert(rhs.from_instruction);
-	return lhs.from_instruction < rhs.from_instruction; 
-}
-
 // instructions that need a pin, but don't yet have one
 class UnresolvedPinned_t : public UnresolvedInfo_t
 {
@@ -98,7 +76,7 @@ class UnresolvedPinned_t : public UnresolvedInfo_t
 		 * through the program based on a chain
 		 * of two-byte calls.
 		 */
-		bool HasUpdatedAddress()
+		bool HasUpdatedAddress() const
 		{
 			return m_updated_address != 0;
 		};
@@ -106,7 +84,7 @@ class UnresolvedPinned_t : public UnresolvedInfo_t
 		{
 			m_updated_address = address;
 		};
-		RangeAddress_t GetUpdatedAddress()
+		RangeAddress_t GetUpdatedAddress() const
 		{
 			return m_updated_address;
 		};
@@ -127,7 +105,6 @@ inline bool operator< (const UnresolvedPinned_t& lhs, const UnresolvedPinned_t& 
 	return lhs.from_instruction < rhs.from_instruction; 
 }
 
-
 // an ELF location that needs patching when an Unresolved instrcution
 class Patch_t
 {
@@ -136,11 +113,43 @@ class Patch_t
 
 		RangeAddress_t GetAddress() const { return from_addr; }
 		UnresolvedType_t GetType() { return type; }
+		void SetType(UnresolvedType_t p_t) { type = p_t; }
+		size_t GetSize() { 
+			switch (type) {
+				case UncondJump_rel8:
+					return 2;
+				case UncondJump_rel32:
+					return 5;
+				default:
+					return 0;
+			}
+		}
 
 	private:
 		RangeAddress_t from_addr;
 		UnresolvedType_t type;
 };
 
+// instructions that can float to any address, but don't yet have one
+class UnresolvedUnpinned_t  : public UnresolvedInfo_t
+{
+	public:
+		UnresolvedUnpinned_t(UnresolvedPinned_t up) : from_instruction(up.GetInstruction()) {}
+		UnresolvedUnpinned_t(libIRDB::Instruction_t* p_from) : from_instruction(p_from) 
+		{ assert(p_from); }
+		libIRDB::Instruction_t* GetInstruction() const { assert(from_instruction); return from_instruction; }
+	private:
+		libIRDB::Instruction_t *from_instruction;
+		
+	friend bool operator< (const UnresolvedUnpinned_t& lhs, const UnresolvedUnpinned_t& rhs);
+};
 
+inline bool operator< (const UnresolvedUnpinned_t& lhs, const UnresolvedUnpinned_t& rhs)
+{ 
+	assert(lhs.from_instruction);
+	assert(rhs.from_instruction);
+	return lhs.from_instruction < rhs.from_instruction; 
+}
+
+typedef std::pair<UnresolvedUnpinned_t, Patch_t> UnresolvedUnpinnedPatch_t;
 #endif
