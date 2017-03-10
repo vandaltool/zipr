@@ -36,7 +36,7 @@
 class Unpin_t : public Zipr_SDK::ZiprPluginInterface_t
 {
 	public:
-		Unpin_t( Zipr_SDK::Zipr_t* zipr_object) : zo(zipr_object) { };
+		Unpin_t( Zipr_SDK::Zipr_t* zipr_object) : zo(zipr_object), m_verbose("verbose") { };
 		virtual void PinningBegin()
 		{
 			DoUnpin();
@@ -46,7 +46,7 @@ class Unpin_t : public Zipr_SDK::ZiprPluginInterface_t
 			DoUpdate();
 		}
 
-		virtual Zipr_SDK::ZiprOptionsNamespace_t *RegisterOptions(Zipr_SDK::ZiprOptionsNamespace_t *) { return NULL; }
+		virtual Zipr_SDK::ZiprOptionsNamespace_t *RegisterOptions(Zipr_SDK::ZiprOptionsNamespace_t *);
 	private:
 
 		// workhorses 
@@ -60,6 +60,7 @@ class Unpin_t : public Zipr_SDK::ZiprPluginInterface_t
 
 		Zipr_SDK::Zipr_t* zo;
 
+		Zipr_SDK::ZiprBooleanOption_t m_verbose;
 };
 
 #endif

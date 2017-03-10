@@ -92,6 +92,11 @@ static bool should_cfi_pin(Instruction_t* insn)
 	return false;
 }
 
+ZiprOptionsNamespace_t *Unpin_t::RegisterOptions(ZiprOptionsNamespace_t *global) 
+{
+	global->AddOption(&m_verbose);
+	return NULL;
+}
 
 void Unpin_t::DoUnpin()
 {
@@ -303,7 +308,7 @@ void Unpin_t::DoUpdateForInstructions()
 				libIRDB::virtual_offset_t from_insn_location=locMap[from_insn];
 
 				// 32-bit code and main executables just push a full 32-bit addr.
-                        	if(zo->GetELFIO()->get_type()==ET_EXEC)
+				if(zo->GetELFIO()->get_type()==ET_EXEC)
 				{
 // not handled in push64_relocs which is disabled for shared objects.
 					// expecting a 32-bit push, length=5
@@ -329,7 +334,7 @@ void Unpin_t::DoUpdateForInstructions()
 				}
 				// shared object
 				// gets a call/sub [$rsp], const pair.
-                        	else 
+				else 
 				{
 // handled in push64_relocs which is required for shared objects.
 #if 0
@@ -471,7 +476,57 @@ void Unpin_t::DoUpdateForInstructions()
 
 
 			}
+			else if(reloc->GetType()==string("callback_to_scoop"))
+			{
+				DataScoop_t *wrt = dynamic_cast<DataScoop_t*>(reloc->GetWRT());
+				int offset = reloc->GetOffset();
+				char bytes[]={(char)0x48,
+				              (char)0x8d,
+				              (char)0x64,
+				              (char)0x24,
+				              (char)(64/0x08)}; // lea rsp, [rsp+8]
+				uintptr_t call_addr = 0x0, at = 0x0;
+				uint32_t target_addr = 0x0;
 
+				if (m_verbose)
+					cout << "The call insn is " 
+					     << from_insn->GetDataBits().length() << " bytes long." << endl;
+				
+				call_addr = locMap[from_insn];
+				target_addr = wrt->GetStart()->GetVirtualOffset() + offset;
+			
+				if (m_verbose) {
+					cout << "Unpin::callback_to_scoop: target_addr "
+					     << std::hex << target_addr << endl;
+					cout << "Unpin::callback_to_scoop: call_addr " 
+					     << std::hex << call_addr << endl;
+				}
+
+				/*
+				 * Adjust the target address relative to the position 
+				 * of the instruction.
+				 */
+				target_addr -= (call_addr + from_insn->GetDataBits().length());
+
+				/*
+				 * Update the call instruction.
+				 */
+				at = call_addr + 1;
+				ms.PlopBytes(call_addr+1, (const char *)&target_addr, 4);
+
+				/*
+				 * Now, put down the bogus pop.
+				 */
+				at = call_addr + from_insn->GetDataBits().length();
+				ms.PlopBytes(at, bytes, sizeof(bytes));
+
+				/*
+				 * Turn off the following flags so that this
+				 * is left alone when it is being plopped.
+				 */
+				from_insn->SetTarget(NULL);
+				from_insn->SetCallback("");
+			}
 		}
 	}
 
