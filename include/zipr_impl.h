@@ -475,6 +475,8 @@ class ZiprImpl_t : public Zipr_t
 		RangeAddress_t bss_needed;
 		bool use_stratafier_mode;
 
+		libIRDB::DataScoopSet_t m_zipr_scoops;
+
 		ZiprPluginManager_t plugman;
 
 		std::map<libIRDB::Instruction_t*,

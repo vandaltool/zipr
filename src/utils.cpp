@@ -8,7 +8,7 @@ void PrintStat(std::ostream &out, std::string description, double value)
 	out << description << ": " << std::dec << value << std::endl;
 }
 
-size_t CALLBACK_TRAMPOLINE_SIZE=9;
+size_t CALLBACK_TRAMPOLINE_SIZE=10;
 size_t TRAMPOLINE_SIZE=5;
 size_t SHORT_PIN_SIZE=2;
 size_t LONG_PIN_SIZE=5;
@@ -108,7 +108,7 @@ size_t DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_for_jump)
 		default:
 		{
 			required_size=insn->GetDataBits().size();
-			if (insn->GetCallback()!="") required_size+=CALLBACK_TRAMPOLINE_SIZE;
+			if (insn->GetCallback()!="") required_size=CALLBACK_TRAMPOLINE_SIZE;
 			break;
 		}
 	}

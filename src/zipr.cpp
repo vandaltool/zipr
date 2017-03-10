@@ -499,6 +499,7 @@ void ZiprImpl_t::CreateExecutableScoops(const std::map<RangeAddress_t, int> &ord
 		m_firp->GetDataScoops().insert(text_scoop);
 	
 		cout<<"Adding scoop "<<text_scoop->GetName()<<hex<<" at "<<hex<<text_start->GetVirtualOffset()<<" - "<<text_end->GetVirtualOffset()<<endl;
+		m_zipr_scoops.insert(text_scoop);
 		memory_space.AddFreeRange(Range_t(text_start->GetVirtualOffset(),text_end->GetVirtualOffset()), true);
 	}
 }
@@ -621,7 +622,6 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 	// now that we've looked at the sections, add a (mysterious) extra section in case we need to overflow 
 	// the sections existing in the ELF.
 	RangeAddress_t new_free_page=page_round_up(max_addr);
-
 
 
 	memory_space.AddFreeRange(Range_t(new_free_page,(RangeAddress_t)-1), true);
@@ -4149,8 +4149,8 @@ void ZiprImpl_t::dump_map()
 void ZiprImpl_t::UpdateScoops()
 {
 	for(
-		DataScoopSet_t::iterator it=m_firp->GetDataScoops().begin(); 
-		it!=m_firp->GetDataScoops().end();
+		DataScoopSet_t::iterator it=m_zipr_scoops.begin(); 
+		it!=m_zipr_scoops.end();
 	   )
 	{
 		DataScoop_t* scoop=*it;
@@ -4160,6 +4160,7 @@ void ZiprImpl_t::UpdateScoops()
 			++it;
 			continue;
 		}
+		assert(m_zipr_scoops.find(scoop)!=m_zipr_scoops.end());
 
 		virtual_offset_t first_valid_address=0;
 		virtual_offset_t last_valid_address=0;
