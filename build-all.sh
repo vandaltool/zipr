@@ -16,8 +16,8 @@ fi
 
 mkdir -p $ZEST_RUNTIME/lib32
 mkdir -p $ZEST_RUNTIME/lib64
-mkdir $ZEST_RUNTIME/bin
-mkdir $ZEST_RUNTIME/sbin
+mkdir -p $ZEST_RUNTIME/bin
+mkdir -p $ZEST_RUNTIME/sbin
 
 # stratafier
 cd $PEASOUP_UMBRELLA_DIR/stratafier
