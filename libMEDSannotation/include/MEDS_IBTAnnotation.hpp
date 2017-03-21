@@ -79,20 +79,20 @@ class MEDS_IBTAnnotation : public MEDS_AnnotationBase
 			if(string("FROMIB") == from_type)
 			{
 				stream >> hex >> xref_addr;
-				cout<<"fromib: '"<<p_rawLine<<"'"<<endl;
+				//cout<<"fromib: '"<<p_rawLine<<"'"<<endl;
 			}
 			else if(string("FROMDATA") == from_type)
 			{
 				stream >> hex >> xref_addr;
 				reason=DATA;
-				cout<<"fromdata: '"<<p_rawLine<<"'"<<endl;
+				//cout<<"fromdata: '"<<p_rawLine<<"'"<<endl;
 				return;
 			}
 			else if(string("FROMUNKNOWN") == from_type)
 			{
 				// no other fields for from UNKNOWN
 				xref_addr=0;
-				cout<<"fromunknown: '"<<p_rawLine<<"'"<<endl;
+				//cout<<"fromunknown: '"<<p_rawLine<<"'"<<endl;
 			}
 
 			string reason_code;

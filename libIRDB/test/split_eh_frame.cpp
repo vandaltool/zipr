@@ -259,7 +259,7 @@ class eh_program_insn_t
 {
 	public: 
 
-	void print() const
+	void print(uint64_t &pc) const
 	{
 		// make sure uint8_t is an unsigned char.	
 		static_assert(std::is_same<unsigned char, uint8_t>::value, "uint8_t is not unsigned char");
@@ -276,7 +276,8 @@ class eh_program_insn_t
 			case 1:
 			{
 				// case DW_CFA_advance_loc:
-				cout<<"				cfa_advance_loc "<<dec<<+opcode_lower6<<endl;
+				pc+=opcode_lower6;
+				cout<<"				cfa_advance_loc "<<dec<<+opcode_lower6<<" to "<<hex<<pc<<endl;
 				break;
 			}
 			case 2:
@@ -358,21 +359,21 @@ class eh_program_insn_t
 					case DW_CFA_advance_loc1:
 					{
 						auto loc=*(uint8_t*)(&data[pos]);
-						cout<<"                             advance_loc1 "<<+loc<<endl;
+						cout<<"				advance_loc1 "<<+loc<<endl;
 						break;
 					}
 
 					case DW_CFA_advance_loc2:
 					{
 						auto loc=*(uint16_t*)(&data[pos]);
-						cout<<"                             advance_loc1 "<<+loc<<endl;
+						cout<<"				advance_loc1 "<<+loc<<endl;
 						break;
 					}
 
 					case DW_CFA_advance_loc4:
 					{
 						auto loc=*(uint32_t*)(&data[pos]);
-						cout<<"                             advance_loc1 "<<+loc<<endl;
+						cout<<"				advance_loc1 "<<+loc<<endl;
 						break;
 					}
 					case DW_CFA_offset_extended:
@@ -405,7 +406,7 @@ class eh_program_insn_t
 						auto uleb=uint64_t(0);
 						if(eh_frame_util_t<ptrsize>::read_uleb128(uleb, pos, data, max))
 							return ;
-						cout<<"					def_cfa_expression "<<dec<<uleb;
+						cout<<"				def_cfa_expression "<<dec<<uleb<<endl;
 						pos+=uleb;		// doing this old school for now, as we aren't printing the expression.
 						break;
 					}
@@ -655,8 +656,6 @@ class eh_program_insn_t
 		return false;
 	}
 
-
-
 	private:
 
 	vector<uint8_t> program_bytes;
@@ -668,12 +667,13 @@ class eh_program_t
 	public:
 	void push_insn(const eh_program_insn_t<ptrsize> &i) { instructions.push_back(i); }
 
-	void print() const
+	void print(const uint64_t start_addr=0) const
 	{
+		auto pc=start_addr;
 		cout << "			Program:                  " << endl ;
 		for_each(instructions.begin(), instructions.end(), [&](const eh_program_insn_t<ptrsize>& i)
 		{ 
-			i.print();
+			i.print(pc);
 		});
 	}
 
@@ -718,7 +718,7 @@ class cie_contents_t : eh_frame_util_t<ptrsize>
 	uint8_t cie_version;
 	string augmentation;
 	uint64_t code_alignment_factor;
-	uint64_t data_alignment_factor;
+	int64_t data_alignment_factor;
 	uint64_t return_address_register_column;
 	uint64_t augmentation_data_length;
 	uint8_t personality_encoding;
@@ -884,8 +884,11 @@ class cie_contents_t : eh_frame_util_t<ptrsize>
 		eh_pgm.print();
 		
 	}
+	void build_ir(Instruction_t* insn) const
+	{
+		eh_pgm.print();
+	}
 };
-
 
 template <int ptrsize>
 class lsda_call_site_action_t : private eh_frame_util_t<ptrsize>
@@ -924,6 +927,7 @@ class lsda_call_site_action_t : private eh_frame_util_t<ptrsize>
 		cout<<"					"<<action<<endl;
 	}
 };
+
 template <int ptrsize>
 bool operator< (const lsda_call_site_action_t <ptrsize> &lhs, const lsda_call_site_action_t <ptrsize> &rhs)
 { 	
@@ -935,14 +939,18 @@ class lsda_type_table_entry_t: private eh_frame_util_t<ptrsize>
 {
 	private:
 	uint64_t pointer_to_typeinfo;
+	uint64_t tt_encoding;
 
 	public:
 	lsda_type_table_entry_t() : 
-		pointer_to_typeinfo(0)
+		pointer_to_typeinfo(0), tt_encoding(0)
 	{}
 
+	uint64_t GetTypeInfoPointer() const { return pointer_to_typeinfo; }
+	uint64_t GetEncoding() const { return tt_encoding; }
+
 	bool parse(
-		const uint64_t tt_encoding, 	
+		const uint64_t p_tt_encoding, 	
 		const uint64_t tt_pos, 	
 		const uint64_t index,
 		const uint8_t* const data, 
@@ -950,6 +958,7 @@ class lsda_type_table_entry_t: private eh_frame_util_t<ptrsize>
 		const uint64_t data_addr
 		)
 	{
+		tt_encoding=p_tt_encoding;
 		auto size=uint32_t(0);
 		switch(tt_encoding & 0xf) // get just the size field
 		{
@@ -1044,8 +1053,8 @@ class lsda_call_site_t : private eh_frame_util_t<ptrsize>
 			return true;
 
 		if(action == 0)
-		{ /* no action table */ }
-		else
+		{ /* no action table -- means no cleanup is needed, just unwinding. */ }
+		else if( action > 0 )
 		{
 			action_table_offset=action-1;
 			action_table_addr=action_table_start_addr+action-1;
@@ -1061,7 +1070,16 @@ class lsda_call_site_t : private eh_frame_util_t<ptrsize>
 				action_table.push_back(lcsa);
 				
 			}
-		
+		}
+		else if( action < 0 )
+		{
+			assert(0); // a negative value in "action" indicates a negative type filter.
+			           // this indicates a null-terminated list of types in the type table.
+			           // as there's no example of this, assert for now.
+		}
+		else
+		{
+			assert(0); // how is this possible?
 		}
 	
 		return false;
@@ -1084,6 +1102,52 @@ class lsda_call_site_t : private eh_frame_util_t<ptrsize>
 		{
 			p.print();
 		});
+	}
+
+	bool appliesTo(const Instruction_t* insn) const
+	{
+		assert(insn && insn->GetAddress());
+		auto insn_addr=insn->GetAddress()->GetVirtualOffset();
+
+		return ( call_site_addr <=insn_addr && insn_addr<call_site_end_addr );
+	}
+
+	void build_ir(Instruction_t* insn, const vector<lsda_type_table_entry_t <ptrsize> > &type_table) const
+	{
+		assert(appliesTo(insn));
+		cout<<"landing pad addr : 0x"<<hex<<landing_pad_addr<<endl;
+		if(action_table.size() == 0 ) 
+		{
+			cout<<"Destructors to call, but no exceptions to catch"<<endl;
+		}
+		else
+		{
+			for_each(action_table.begin(), action_table.end(), [&](const lsda_call_site_action_t<ptrsize>& p)
+			{
+				const auto action=p.GetAction();
+				if(action==0)
+				{
+					cout<<"Cleanup only (no catches) ."<<endl;
+				}
+				else if(action>0)
+				{
+					const auto index=action - 1;
+					cout<<"Catch for type:  ";
+
+					// the type table reveral was done during parsing, type table is right-side-up now.
+					type_table.at(index).print();
+				}
+				else if(action<0)
+				{
+					assert(0); // see note in parse_lcs about actions < 0.
+				}
+				else
+				{
+					cout<<"What? :"<< action <<endl;
+					exit(1);
+				}
+			});
+		}
 	}
 };
 
@@ -1235,6 +1299,22 @@ class lsda_t : private eh_frame_util_t<ptrsize>
 			p.print();
 		});
 	}
+	void build_ir(Instruction_t* insn) const
+	{
+		auto cs_it=find_if(call_site_table.begin(), call_site_table.end(), [&](const lsda_call_site_t<ptrsize>& p)
+		{
+			return p.appliesTo(insn);
+		});
+
+		if(cs_it!= call_site_table.end())
+		{
+			cs_it->build_ir(insn, type_table);
+		}
+		else
+		{
+			// no call site table entry for this instruction.
+		}
+	}
 };
 
 
@@ -1266,6 +1346,14 @@ class fde_contents_t : eh_frame_util_t<ptrsize>
 		fde_range_len(0),
 		lsda_addr(0)
 	{}
+
+	bool appliesTo(const Instruction_t* insn) const
+	{
+		assert(insn && insn->GetAddress());
+		auto insn_addr=insn->GetAddress()->GetVirtualOffset();
+
+		return ( fde_start_addr<=insn_addr && insn_addr<fde_end_addr );
+	}
 
 	cie_contents_t<ptrsize> GetCIE() const { return cie_info; }
 	eh_program_t<ptrsize> GetProgram() const { return eh_pgm; }
@@ -1347,13 +1435,21 @@ class fde_contents_t : eh_frame_util_t<ptrsize>
 		cout<<"		FDE End addr:		"<<hex<<fde_end_addr<<endl;
 		cout<<"		FDE len:		"<<dec<<fde_range_len<<endl;
 		cout<<"		FDE LSDA:		"<<hex<<lsda_addr<<endl;
-		eh_pgm.print();
+		eh_pgm.print(fde_start_addr);
 		if(GetCIE().GetLSDAEncoding()!= DW_EH_PE_omit)
 			lsda.print();
 		else
 			cout<<"		No LSDA for this FDE."<<endl;
 	}
 
+	void build_ir(Instruction_t* insn) const
+	{
+		// assert this is the right FDE.
+		assert( fde_start_addr<= insn->GetAddress()->GetVirtualOffset() && insn->GetAddress()->GetVirtualOffset() <= fde_end_addr);
+
+		eh_pgm.print(fde_start_addr);
+		lsda.build_ir(insn);
+	}
 
 };
 
@@ -1492,6 +1588,46 @@ class split_eh_frame_t
 			p.print();
 		});
 	}
+
+	void build_ir() const
+	{
+		//print();
+		for_each(firp->GetInstructions().begin(), firp->GetInstructions().end(), [&](Instruction_t* i)
+		{
+			build_ir(i);
+		});
+	}
+
+	// find the right cie and fde, and build the IR from those for this instruction.
+	void build_ir(Instruction_t* insn) const
+	{
+		auto fie_it=find_if(fdes.begin(), fdes.end(), [&](const fde_contents_t<ptrsize>  &p)
+		{
+			return p.appliesTo(insn);
+		});
+
+		if(fie_it!=fdes.end())
+		{
+
+			if(getenv("EHIR_VERBOSE")!=NULL)
+			{
+				cout<<hex<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<" -> "<<endl;
+				//fie_it->GetCIE().print();
+				//fie_it->print();
+			}
+			
+			// build the IR from the FDE.
+			fie_it->GetCIE().build_ir(insn);
+			fie_it->build_ir(insn);
+		}
+		else
+		{
+			if(getenv("EHIR_VERBOSE")!=NULL)
+				cout<<hex<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<" has no FDE "<<endl;
+		}
+		
+	}
+
 };
 
 void split_eh_frame(FileIR_t* firp)
@@ -1501,13 +1637,13 @@ void split_eh_frame(FileIR_t* firp)
 	{
 		split_eh_frame_t<8> eh_frame_splitter(firp);
 		found_err=eh_frame_splitter.execute();
-		eh_frame_splitter.print();
+		eh_frame_splitter.build_ir();
 	}
 	else
 	{
 		split_eh_frame_t<4> eh_frame_splitter(firp);
 		found_err=eh_frame_splitter.execute();
-		eh_frame_splitter.print();
+		eh_frame_splitter.build_ir();
 	}
 	assert(!found_err);
 }

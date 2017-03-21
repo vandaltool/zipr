@@ -1690,7 +1690,7 @@ void handle_ibt_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBTAnnotation* p_
 /* meds annotations
  *                typedef enum { SWITCH, RET, DATA, UNREACHABLE, ADDRESSED, UNKNOWN } ibt_reason_code_t;
  */
-	cout<<"at handl_ibt with addr="<<hex<<insn->GetAddress()->GetVirtualOffset()<<" code="<<p_ibt_annotation->GetReason()<<endl;
+	//cout<<"at handl_ibt with addr="<<hex<<insn->GetAddress()->GetVirtualOffset()<<" code="<<p_ibt_annotation->GetReason()<<endl;
 	switch(p_ibt_annotation->GetReason())
 	{
 		case MEDS_IBTAnnotation::SWITCH:

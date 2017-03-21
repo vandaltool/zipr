@@ -27,22 +27,25 @@ class Relocation_t : public BaseObj_t
         Relocation_t() : BaseObj_t(NULL), offset(0), wrt_obj(NULL)  {}	// new reloc w/no data
 
 	// a reloc read from the DB 
-        Relocation_t(db_id_t reloc_id, int _offset, std::string _type, BaseObj_t* p_wrt_obj=NULL) :
-		BaseObj_t(NULL), offset(_offset), type(_type), wrt_obj(p_wrt_obj) { SetBaseID(reloc_id); }
+        Relocation_t(db_id_t reloc_id, int _offset, std::string _type, BaseObj_t* p_wrt_obj=NULL, int32_t p_addend=0) :
+		BaseObj_t(NULL), offset(_offset), type(_type), wrt_obj(p_wrt_obj), addend(p_addend) { SetBaseID(reloc_id); }
 
-        Relocation_t(db_id_t reloc_id) : BaseObj_t(NULL), type(""), wrt_obj(NULL) { assert(0);}          // read from DB       
+        Relocation_t(db_id_t reloc_id) : BaseObj_t(NULL), type(""), wrt_obj(NULL), addend(0) { assert(0);}          // read from DB       
 
         void WriteToDB() { assert(0); }   // writes to DB ID is not -1.
         std::string WriteToDB(File_t* fid, BaseObj_t* insn);    // writes to DB, ID is not -1.
 
 	void SetOffset(int off) { offset=off;}
-	int GetOffset() { return offset; }
+	int GetOffset() const { return offset; }
 	void SetType(std::string ty) { type=ty;}
-	std::string GetType() { return type; }
+	std::string GetType() const { return type; }
+
+	void SetAddend(uint32_t p_addend) { addend=p_addend;}
+	uint32_t GetAddend() const { return addend; }
 
 	/* get and set "with respect to" field */
 	void SetWRT(libIRDB::BaseObj_t* WRT) { wrt_obj=WRT;}
-	libIRDB::BaseObj_t* GetWRT() { return wrt_obj; }
+	libIRDB::BaseObj_t* GetWRT() const { return wrt_obj; }
 
         friend class FileIR_t;
         friend class Function_t;
@@ -56,4 +59,5 @@ class Relocation_t : public BaseObj_t
 				// possible values:  32-bit, pcrel
 
 	BaseObj_t* wrt_obj;
+	int32_t addend;
 };

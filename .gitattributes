@@ -211,6 +211,7 @@ libIRDB/include/core/baseobj.hpp -text
 libIRDB/include/core/basetypes.hpp -text
 libIRDB/include/core/dbinterface.hpp -text
 libIRDB/include/core/doip.hpp -text
+libIRDB/include/core/eh.hpp -text
 libIRDB/include/core/file.hpp -text
 libIRDB/include/core/fileir.hpp -text
 libIRDB/include/core/function.hpp -text

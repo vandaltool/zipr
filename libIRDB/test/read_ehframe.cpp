@@ -495,6 +495,7 @@ extract_cie_info (struct dwarf_cie *cie,
 				cout << "encoding personality = " << std::hex << personality_encoding << endl;
 				cout << "fs->personality = " << std::hex << personality << endl;
 			}
+			possible_target(personality, 0, ibt_provenance_t::ibtp_eh_frame);
 			aug += 1;
 		}
 
