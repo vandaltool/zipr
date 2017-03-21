@@ -82,6 +82,7 @@ CREATE TABLE #RTN#
 	reloc_offset 	  	integer DEFAULT 0,	-- how far into the object/instruction is the relocation
 	reloc_type	    	text DEFAULT '',	-- what type is the relocation.
 	instruction_id  	integer DEFAULT -1,	-- the object/instruction for this reloc, field name is anachronistic. 
+	addend  		integer DEFAULT 0,	-- the addend for this relocation in case it's hard to store the addend in the relocated object.
 	wrt_id  		integer DEFAULT -1,	-- the object that this reloc is with respect to.
 	doip_id	        	integer DEFAULT -1	-- the DOIP
 );
