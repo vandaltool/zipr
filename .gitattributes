@@ -17,6 +17,7 @@ c++_examples/newdelete3.cpp -text
 c++_examples/newdelete4.cpp -text
 c++_examples/newdelete5.cpp -text
 c++_examples/newdelete6.cpp -text
+c++_examples/simple_throw.cpp -text
 c++_examples/throw.cpp -text
 cgc_spri/Makefile -text
 cgc_spri/spawn_with_spri_open.c -text
@@ -939,6 +940,7 @@ tools/cfar_configs/cfar_probNog_probSS_probDS_phase1_zipr.sh -text
 tools/cfar_configs/cfar_probNoh_probIlr_probP1_probHeaprand_probNos_strata.sh -text
 tools/cfar_configs/cfar_probNoh_probNos_probBilr_probP1_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_probNol_probNoh_probIlr_probP1_probHeaprand_probNos_strata.sh -text
+tools/cfar_configs/cfar_probNol_probNoh_probNos_probBilr_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_probNol_probNoh_probNos_probBilr_probP1_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_probNos_probBilr_probP1_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_probNos_structNoc_structP1Canaries_probHeaprand_zipr.sh -text
@@ -963,10 +965,12 @@ tools/cfar_configs/cfar_structNogOF_phase1_zipr.sh -text
 tools/cfar_configs/cfar_structNogOF_structSS_phase1_zipr.sh -text
 tools/cfar_configs/cfar_structNogOF_structSS_probDS_phase1_zipr.sh -text
 tools/cfar_configs/cfar_structNog_phase1_zipr.sh -text
+tools/cfar_configs/cfar_structNog_structNol_structNoh_structNos_structNoc_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_structNog_structNol_structNoh_structNos_structNoc_structP1Canaries_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_structNoh_probIlr_structP1Canaries_probHeaprand_structNos_strata.sh -text
 tools/cfar_configs/cfar_structNoh_structNos_structNoc_structP1Canaries_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_structNol_structNoh_probIlr_structP1Canaries_probHeaprand_structNos_strata.sh -text
+tools/cfar_configs/cfar_structNol_structNoh_structNos_structNoc_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_structNol_structNoh_structNos_structNoc_structP1Canaries_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_structNos_structNoc_structP1Canaries_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_structP1Canaries_zipr.sh -text

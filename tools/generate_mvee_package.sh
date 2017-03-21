@@ -417,10 +417,10 @@ finalize_json()
 			mkdir -p $new_variant_dir/bin
 			mkdir -p $new_variant_dir/bin/peasoup_executable_dir/
 			cp $full_exe_dir/$main_exe $new_variant_dir/bin
-			cp $full_exe_dir/peasoup_executable_dir/*.so $new_variant_dir/bin/peasoup_executable_dir
-			cp $full_exe_dir/peasoup_executable_dir/*.map $new_variant_dir/bin/peasoup_executable_dir
-			cp $full_exe_dir/peasoup_executable_dir/*json $new_variant_dir/bin/peasoup_executable_dir
-			cp $full_exe_dir/peasoup_executable_dir/*nol $new_variant_dir/bin/peasoup_executable_dir
+			cp $full_exe_dir/peasoup_executable_dir/*.so $new_variant_dir/bin/peasoup_executable_dir 2> /dev/null 
+			cp $full_exe_dir/peasoup_executable_dir/*.map $new_variant_dir/bin/peasoup_executable_dir 2> /dev/null 
+			cp $full_exe_dir/peasoup_executable_dir/*json $new_variant_dir/bin/peasoup_executable_dir 2> /dev/null 
+			cp $full_exe_dir/peasoup_executable_dir/*nol $new_variant_dir/bin/peasoup_executable_dir 2> /dev/null 
 
 			# echo "exe_dir=$exe_dir"
 
