@@ -3793,6 +3793,8 @@ tools/do_protect_pov.sh -text
 tools/do_rss.sh -text
 tools/do_sfuzz.sh -text
 tools/do_spawner.sh -text
+tools/eh_frame_tools/eh_frame.ls -text
+tools/eh_frame_tools/eh_to_bin.sh -text
 tools/eh_frame_tools/sample.eh.s -text
 tools/empty.json -text
 tools/extract_eip_from_core.sh -text
