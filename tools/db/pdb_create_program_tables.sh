@@ -34,7 +34,9 @@ icfs_map=$5
 rtn=$6
 typ=$7
 dtn=$8
-file=$9
+ehpgms=$9
+ehcss=${10}
+file=${11}
 
 echo Creating tables $atn, $ftn, $itn, $icfs, $icfs_map, $rtn, $typ, and $dtn.
 
@@ -47,6 +49,8 @@ cat $PEASOUP_HOME/tools/db/pdb.createprogram.tbl |  \
                 sed "s/#ICFS#/$icfs/g" | \
                 sed "s/#ICFS_MAP#/$icfs_map/g" | \
                 sed "s/#RTN#/$rtn/g" | \
+                sed "s/#EHPGM#/$ehpgms/g" | \
+                sed "s/#EHCS#/$ehcss/g" | \
                 sed "s/#TYP#/$typ/g"  \
                 > $DB_SCRIPT
 

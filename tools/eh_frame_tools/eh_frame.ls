@@ -11,4 +11,9 @@ SECTIONS
 	{
 		*(eh_frame)
 	}
+
+	gcc_except_table : 
+	{
+		*(gcc_except_table)
+	}
 }

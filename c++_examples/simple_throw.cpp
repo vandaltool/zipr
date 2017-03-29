@@ -5,9 +5,11 @@ using namespace std;
 
 int bar()
 {
-	if(getenv("THROW_INT")!=NULL)
+	if(getenv("THROW_CHAR")!=NULL)
+		throw char(4);
+	else if(getenv("THROW_INT")!=NULL)
 		throw int(3);
-	else if(getenv("THROW_float")!=NULL)
+	else if(getenv("THROW_FLOAT")!=NULL)
 		throw float(3.14);
 	else 
 		return 0;
@@ -15,7 +17,18 @@ int bar()
 
 int foo()
 {
-	return bar();
+	int ret=0;
+	try 
+	{
+		ret=bar();
+	}
+	catch(char c)
+	{
+		cout<<"foo caught char:" << +c << endl;
+		return c;
+	}
+	cout<<"No throw!"<<endl;
+	return ret;
 
 }
 main()
@@ -27,11 +40,11 @@ main()
 	}
 	catch(int s)
 	{
-		cout<<"caught int:" << s << endl;
+		cout<<"main caught int:" << s << endl;
 	}
 	catch(...)
 	{
-		cout<<"caught unnamed"<<endl;
+		cout<<"main caught unnamed"<<endl;
 	}
 
 	return 1;

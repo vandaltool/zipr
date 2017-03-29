@@ -69,6 +69,8 @@ CREATE TABLE #ITN#
   fallthrough_address_id    integer DEFAULT -1,		-- the fallthrough address (if can fall through)
   target_address_id         integer DEFAULT -1,		-- the target address (if direct) 
   icfs_id                   integer DEFAULT -1,  	-- ICFS set id
+  ehpgm_id                  integer DEFAULT -1,  	-- id of EhProgram object (may be NOT_IN_DATABASE).
+  ehcss_id                  integer DEFAULT -1,  	-- id of EhCallSite object (may be NOT_IN_DATABASE).
   data                      bytea,			-- the actual bytes of the instruction 
   callback                  text,			-- a callback registered for this instruction
   comment                   text,			-- a comment for human debugging
@@ -101,4 +103,21 @@ CREATE TABLE #ICFS_MAP#
   icfs_id	      integer REFERENCES #ICFS#(icfs_id),
   address_id      integer,
   UNIQUE(icfs_id,address_id)   
+);
+
+CREATE TABLE #EHPGM#
+(
+	eh_pgm_id	integer,	-- id of this object.
+	caf		integer,	-- code alignment factor.
+	daf		integer,	-- data alignment factor
+	ptrsize		integer,	-- size of a pointer, 4 or 8.
+	cie_program	text,		-- for the cie, the bytes that make up a cie program, encoded as hex with commas separating instructions.
+	fde_program	text		-- for the fde, bytes as above
+);
+
+CREATE TABLE #EHCS#
+(
+	ehcs_id		integer,	-- id of this object.
+	tt_encoding	integer,	-- the encoding of the type table.
+	lp_insn_id	integer 	-- the landing pad instruction's id.
 );
