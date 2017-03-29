@@ -22,6 +22,7 @@
 #define libIRDB_core
 
 #include <string>
+#include <vector>
 #include <set>
 #include <assert.h>
 #include <string.h>
@@ -51,6 +52,7 @@ class Instruction_t; // forward decl for many classes
 #include <core/archdesc.hpp>
 #include <core/type.hpp>
 #include <core/scoop.hpp>
+#include <core/eh.hpp>
 #include <core/fileir.hpp>
 #include <core/pqxxdb.hpp>
 

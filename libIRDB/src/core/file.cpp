@@ -35,12 +35,15 @@ File_t::File_t(const db_id_t &myfile_id, const db_id_t &my_orig_fid, const std::
 	       const std::string &myhash, const std::string &myarch, const int &myoid, 
 	       const std::string &atn, const std::string &ftn, const std::string &itn, const std::string &icfs, 
                const std::string &icfs_map, const std::string &rtn, const std::string &typ, const std::string &scoop, 
+               const std::string &ehpgms, const std::string &ehcss, 
 	       const db_id_t &mydoipid) 
 	:
 	BaseObj_t(NULL), url(myurl), hash(myhash), arch(myarch), elfoid(myoid),
 	address_table_name(atn), function_table_name(ftn), instruction_table_name(itn), 
   	icfs_table_name(icfs), icfs_map_table_name(icfs_map), relocs_table_name(rtn), 
-	types_table_name(typ), scoop_table_name(scoop), orig_fid(my_orig_fid)
+	types_table_name(typ), scoop_table_name(scoop), 
+	ehpgm_table_name(ehpgms), ehcss_table_name(ehcss), 
+	orig_fid(my_orig_fid)
 {
 	SetBaseID(myfile_id);
 }
@@ -63,6 +66,8 @@ void File_t::CreateTables()
 		relocs_table_name+" "+
 		types_table_name+" "+
 		scoop_table_name+" "+
+		ehpgm_table_name+" "+
+		ehcss_table_name+" "+
 		tmpfile;
 
 	system(command.c_str());

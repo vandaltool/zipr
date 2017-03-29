@@ -9,6 +9,7 @@
 #include <assert.h>
 #include <elf.h>
 #include <algorithm>
+#include <memory>
 
 #include <exeio.h>
 #include "beaengine/BeaEngine.h"
@@ -19,6 +20,8 @@
 using namespace std;
 using namespace EXEIO;
 using namespace libIRDB;
+
+typedef map<virtual_offset_t, Instruction_t*> OffsetMap_t;
 
 template <int ptrsize>
 class eh_frame_util_t
@@ -259,7 +262,7 @@ class eh_program_insn_t
 {
 	public: 
 
-	void print(uint64_t &pc) const
+	void print(uint64_t &pc, int64_t caf=1) const
 	{
 		// make sure uint8_t is an unsigned char.	
 		static_assert(std::is_same<unsigned char, uint8_t>::value, "uint8_t is not unsigned char");
@@ -276,7 +279,7 @@ class eh_program_insn_t
 			case 1:
 			{
 				// case DW_CFA_advance_loc:
-				pc+=opcode_lower6;
+				pc+=(opcode_lower6*caf);
 				cout<<"				cfa_advance_loc "<<dec<<+opcode_lower6<<" to "<<hex<<pc<<endl;
 				break;
 			}
@@ -359,21 +362,24 @@ class eh_program_insn_t
 					case DW_CFA_advance_loc1:
 					{
 						auto loc=*(uint8_t*)(&data[pos]);
-						cout<<"				advance_loc1 "<<+loc<<endl;
+						pc+=(loc*caf);
+						cout<<"				advance_loc1 "<<+loc<<" to " <<pc << endl;
 						break;
 					}
 
 					case DW_CFA_advance_loc2:
 					{
 						auto loc=*(uint16_t*)(&data[pos]);
-						cout<<"				advance_loc1 "<<+loc<<endl;
+						pc+=(loc*caf);
+						cout<<"				advance_loc2 "<<+loc<<" to " <<pc << endl;
 						break;
 					}
 
 					case DW_CFA_advance_loc4:
 					{
 						auto loc=*(uint32_t*)(&data[pos]);
-						cout<<"				advance_loc1 "<<+loc<<endl;
+						pc+=(loc*caf);
+						cout<<"				advance_loc4 "<<+loc<<" to " <<pc << endl;
 						break;
 					}
 					case DW_CFA_offset_extended:
@@ -656,10 +662,109 @@ class eh_program_insn_t
 		return false;
 	}
 
+	bool isNop() const 
+	{
+		auto data=program_bytes.data();
+		auto opcode=program_bytes[0];
+		auto opcode_upper2=(uint8_t)(opcode >> 6);
+		auto opcode_lower6=(uint8_t)(opcode & (0x3f));
+		switch(opcode_upper2)
+		{
+			case 0:
+			{
+				switch(opcode_lower6)
+				{
+				
+					case DW_CFA_nop:
+						return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	bool Advance(uint64_t &cur_addr, uint64_t CAF) const 
+	{ 
+		// make sure uint8_t is an unsigned char.	
+		static_assert(std::is_same<unsigned char, uint8_t>::value, "uint8_t is not unsigned char");
+
+		auto data=program_bytes.data();
+		auto opcode=program_bytes[0];
+		auto opcode_upper2=(uint8_t)(opcode >> 6);
+		auto opcode_lower6=(uint8_t)(opcode & (0x3f));
+		auto pos=uint32_t(1);
+		auto max=program_bytes.size();
+
+		switch(opcode_upper2)
+		{
+			case 1:
+			{
+				// case DW_CFA_advance_loc:
+				cur_addr+=(opcode_lower6*CAF);
+				return true;
+			}
+			case 0:
+			{
+				switch(opcode_lower6)
+				{
+					case DW_CFA_set_loc:
+					{
+						assert(0);
+/*
+						auto arg=uintptr_t(0xDEADBEEF);
+						switch(ptrsize)
+						{
+							case 4:
+								arg=*(uint32_t*)data[pos]; break;
+							case 8:
+								arg=*(uint64_t*)data[pos]; break;
+						}
+						cout<<"				set_loc "<<hex<<arg<<endl;
+						break;
+*/	
+						return true;
+					}
+					case DW_CFA_advance_loc1:
+					{
+						auto loc=*(uint8_t*)(&data[pos]);
+						cur_addr+=(opcode_lower6*CAF);
+						return true;
+					}
+
+					case DW_CFA_advance_loc2:
+					{
+						auto loc=*(uint16_t*)(&data[pos]);
+						cur_addr+=(opcode_lower6*CAF);
+						return true;
+					}
+
+					case DW_CFA_advance_loc4:
+					{
+						auto loc=*(uint32_t*)(&data[pos]);
+						cur_addr+=(opcode_lower6*CAF);
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	const vector<uint8_t>& GetBytes() const { return program_bytes; }
+	vector<uint8_t>& GetBytes() { return program_bytes; }
+
+
+
 	private:
 
 	vector<uint8_t> program_bytes;
 };
+
+template <int ptrsize>
+bool operator<(const eh_program_insn_t<ptrsize>& a, const eh_program_insn_t<ptrsize>& b)
+{
+	return a.GetBytes() < b.GetBytes(); 
+}
 
 template <int ptrsize>
 class eh_program_t
@@ -704,9 +809,17 @@ class eh_program_t
 		//cout<<endl;
 		return false;
 	}
+	const vector<eh_program_insn_t <ptrsize> >& GetInstructions() const { return instructions; }
+	vector<eh_program_insn_t <ptrsize> >& GetInstructions() { return instructions; }
 	private:
 	vector<eh_program_insn_t <ptrsize> > instructions;
 };
+
+template <int ptrsize>
+bool operator<(const eh_program_t<ptrsize>& a, const eh_program_t<ptrsize>& b)
+{
+	return a.GetInstructions() < b.GetInstructions(); 
+}
 
 template <int ptrsize>
 class cie_contents_t : eh_frame_util_t<ptrsize>
@@ -744,6 +857,9 @@ class cie_contents_t : eh_frame_util_t<ptrsize>
 		fde_encoding(0)
 	{}
 	
+	const eh_program_t<ptrsize>& GetProgram() const { return eh_pgm; }
+	uint64_t GetCAF() const { return code_alignment_factor; }
+	int64_t GetDAF() const { return data_alignment_factor; }
 
 	string GetAugmentation() const { return augmentation; }
 	uint8_t GetLSDAEncoding() const { return lsda_encoding;}
@@ -886,7 +1002,8 @@ class cie_contents_t : eh_frame_util_t<ptrsize>
 	}
 	void build_ir(Instruction_t* insn) const
 	{
-		eh_pgm.print();
+		// nothing to do?  built up one level.
+		//eh_pgm.print();
 	}
 };
 
@@ -983,7 +1100,6 @@ class lsda_type_table_entry_t: private eh_frame_util_t<ptrsize>
 
 	
 };
-
 
 template <int ptrsize>
 class lsda_call_site_t : private eh_frame_util_t<ptrsize>
@@ -1112,9 +1228,21 @@ class lsda_call_site_t : private eh_frame_util_t<ptrsize>
 		return ( call_site_addr <=insn_addr && insn_addr<call_site_end_addr );
 	}
 
-	void build_ir(Instruction_t* insn, const vector<lsda_type_table_entry_t <ptrsize> > &type_table) const
+	void build_ir(Instruction_t* insn, const vector<lsda_type_table_entry_t <ptrsize> > &type_table, const uint8_t& tt_encoding, const OffsetMap_t& om, FileIR_t* firp) const
 	{
 		assert(appliesTo(insn));
+
+		// find landing pad instruction.
+		auto lp_insn=(Instruction_t*)NULL;
+		auto lp_it=om.find(landing_pad_addr);
+		if(lp_it!=om.end())
+			lp_insn=lp_it->second;
+
+		// create the callsite.
+		auto new_ehcs = new EhCallSite_t(BaseObj_t::NOT_IN_DATABASE, tt_encoding, lp_insn);
+		firp->GetAllEhCallSites().insert(new_ehcs);
+		insn->SetEhCallSite(new_ehcs);
+
 		cout<<"landing pad addr : 0x"<<hex<<landing_pad_addr<<endl;
 		if(action_table.size() == 0 ) 
 		{
@@ -1127,15 +1255,30 @@ class lsda_call_site_t : private eh_frame_util_t<ptrsize>
 				const auto action=p.GetAction();
 				if(action==0)
 				{
+					auto newreloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, 0, "type_table_entry", NULL, 0);
+					new_ehcs->GetRelocations().insert(newreloc);
+					firp->GetRelocations().insert(newreloc);
 					cout<<"Cleanup only (no catches) ."<<endl;
 				}
 				else if(action>0)
 				{
 					const auto index=action - 1;
-					cout<<"Catch for type:  ";
-
+					//cout<<"Catch for type:  ";
 					// the type table reveral was done during parsing, type table is right-side-up now.
-					type_table.at(index).print();
+					//type_table.at(index).print();
+					auto wrt=(DataScoop_t*)NULL; 
+					assert(index<type_table.size());
+					if(type_table.at(index).GetTypeInfoPointer()!=0)
+					{
+						wrt=firp->FindScoop(type_table.at(index).GetTypeInfoPointer());
+						assert(wrt);
+					}
+					auto offset=0;
+					if(wrt!=NULL) 
+						type_table.at(index).GetTypeInfoPointer()-wrt->GetStart()->GetVirtualOffset();
+					auto newreloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, offset, "type_table_entry", wrt, 0);
+					new_ehcs->GetRelocations().insert(newreloc);
+					firp->GetRelocations().insert(newreloc);
 				}
 				else if(action<0)
 				{
@@ -1170,6 +1313,8 @@ class lsda_t : private eh_frame_util_t<ptrsize>
 	vector<lsda_type_table_entry_t <ptrsize> > type_table;
 
 	public:
+
+	uint8_t GetTTEncoding() const { return type_table_encoding; }
 	
 	lsda_t() :
 		landing_pad_base_encoding(0),
@@ -1299,7 +1444,7 @@ class lsda_t : private eh_frame_util_t<ptrsize>
 			p.print();
 		});
 	}
-	void build_ir(Instruction_t* insn) const
+	void build_ir(Instruction_t* insn, const OffsetMap_t& om, FileIR_t* firp) const
 	{
 		auto cs_it=find_if(call_site_table.begin(), call_site_table.end(), [&](const lsda_call_site_t<ptrsize>& p)
 		{
@@ -1308,7 +1453,7 @@ class lsda_t : private eh_frame_util_t<ptrsize>
 
 		if(cs_it!= call_site_table.end())
 		{
-			cs_it->build_ir(insn, type_table);
+			cs_it->build_ir(insn, type_table, GetTTEncoding(), om, firp);
 		}
 		else
 		{
@@ -1347,6 +1492,7 @@ class fde_contents_t : eh_frame_util_t<ptrsize>
 		lsda_addr(0)
 	{}
 
+
 	bool appliesTo(const Instruction_t* insn) const
 	{
 		assert(insn && insn->GetAddress());
@@ -1355,8 +1501,13 @@ class fde_contents_t : eh_frame_util_t<ptrsize>
 		return ( fde_start_addr<=insn_addr && insn_addr<fde_end_addr );
 	}
 
-	cie_contents_t<ptrsize> GetCIE() const { return cie_info; }
-	eh_program_t<ptrsize> GetProgram() const { return eh_pgm; }
+	uint64_t GetFDEStartAddress() const { return fde_start_addr; }
+
+	const cie_contents_t<ptrsize>& GetCIE() const { return cie_info; }
+	cie_contents_t<ptrsize>& GetCIE() { return cie_info; }
+
+	const eh_program_t<ptrsize>& GetProgram() const { return eh_pgm; }
+	eh_program_t<ptrsize>& GetProgram() { return eh_pgm; }
 
 	bool parse_fde(
 		const uint32_t &fde_position, 
@@ -1442,63 +1593,43 @@ class fde_contents_t : eh_frame_util_t<ptrsize>
 			cout<<"		No LSDA for this FDE."<<endl;
 	}
 
-	void build_ir(Instruction_t* insn) const
+	void build_ir(Instruction_t* insn, const OffsetMap_t &om, FileIR_t* firp) const
 	{
 		// assert this is the right FDE.
 		assert( fde_start_addr<= insn->GetAddress()->GetVirtualOffset() && insn->GetAddress()->GetVirtualOffset() <= fde_end_addr);
 
-		eh_pgm.print(fde_start_addr);
-		lsda.build_ir(insn);
+		//eh_pgm.print(fde_start_addr);
+		if(lsda_addr!=0)
+			lsda.build_ir(insn,om,firp);
 	}
 
 };
 
+class split_eh_frame_t 
+{
+	public:
+
+		virtual bool parse()=0;
+		virtual void build_ir() const =0;
+};
+
 template <int ptrsize>
-class split_eh_frame_t
+class split_eh_frame_impl_t : public split_eh_frame_t
 {
 	private: 
-
 
 	FileIR_t* firp;
 	DataScoop_t* eh_frame_scoop;
 	DataScoop_t* eh_frame_hdr_scoop;
 	DataScoop_t* gcc_except_table_scoop;
-	map<virtual_offset_t,const Instruction_t*> offset_to_insn_map;
+	OffsetMap_t offset_to_insn_map;
 	vector<cie_contents_t <ptrsize> > cies;
 	vector<fde_contents_t <ptrsize> > fdes;
 
-	public:
-
-	split_eh_frame_t(FileIR_t* p_firp)
-		: firp(p_firp),
-		  eh_frame_scoop(NULL),
-		  eh_frame_hdr_scoop(NULL),
-		  gcc_except_table_scoop(NULL)
-	{
-		assert(firp!=NULL);
-
-		// function to find a scoop by name.
-		auto lookup_scoop_by_name=[&](const string &name) -> DataScoop_t* 
-		{
-			auto scoop_it=find_if(firp->GetDataScoops().begin(), firp->GetDataScoops().end(), [name](DataScoop_t* scoop)
-			{
-				return scoop->GetName()==name;
-			});
-
-			if(scoop_it!=firp->GetDataScoops().end())
-				return *scoop_it;
-			return NULL;
-		};
-
-		eh_frame_scoop=lookup_scoop_by_name(".eh_frame");
-		eh_frame_hdr_scoop=lookup_scoop_by_name(".eh_frame_hdr");
-		gcc_except_table_scoop=lookup_scoop_by_name(".gcc_except_table");
-
-	}
 
 	bool init_offset_map()
 	{
-		for_each(firp->GetInstructions().begin(), firp->GetInstructions().end(), [&](const Instruction_t* i)
+		for_each(firp->GetInstructions().begin(), firp->GetInstructions().end(), [&](Instruction_t* i)
 		{
 			offset_to_insn_map[i->GetAddress()->GetVirtualOffset()]=i;
 		});
@@ -1562,7 +1693,36 @@ class split_eh_frame_t
 		return false;
 	}
 
-	bool execute()
+	public:
+
+	split_eh_frame_impl_t(FileIR_t* p_firp)
+		: firp(p_firp),
+		  eh_frame_scoop(NULL),
+		  eh_frame_hdr_scoop(NULL),
+		  gcc_except_table_scoop(NULL)
+	{
+		assert(firp!=NULL);
+
+		// function to find a scoop by name.
+		auto lookup_scoop_by_name=[&](const string &name) -> DataScoop_t* 
+		{
+			auto scoop_it=find_if(firp->GetDataScoops().begin(), firp->GetDataScoops().end(), [name](DataScoop_t* scoop)
+			{
+				return scoop->GetName()==name;
+			});
+
+			if(scoop_it!=firp->GetDataScoops().end())
+				return *scoop_it;
+			return NULL;
+		};
+
+		eh_frame_scoop=lookup_scoop_by_name(".eh_frame");
+		eh_frame_hdr_scoop=lookup_scoop_by_name(".eh_frame_hdr");
+		gcc_except_table_scoop=lookup_scoop_by_name(".gcc_except_table");
+
+	}
+
+	bool parse()
 	{
 		if(eh_frame_scoop==NULL)
 			return true; // no frame info in this binary
@@ -1591,59 +1751,175 @@ class split_eh_frame_t
 
 	void build_ir() const
 	{
-		//print();
-		for_each(firp->GetInstructions().begin(), firp->GetInstructions().end(), [&](Instruction_t* i)
-		{
-			build_ir(i);
-		});
-	}
+		auto reusedpgms=size_t(0);
+		struct EhProgramComparator_t { 
+			bool operator() (const EhProgram_t* a, const EhProgram_t* b) { return *a < *b; } 
+		};
 
-	// find the right cie and fde, and build the IR from those for this instruction.
-	void build_ir(Instruction_t* insn) const
-	{
-		auto fie_it=find_if(fdes.begin(), fdes.end(), [&](const fde_contents_t<ptrsize>  &p)
-		{
-			return p.appliesTo(insn);
-		});
+		// this is used to avoid adding duplicate entries to the program's IR, it allows a lookup by value
+		// instead of the IR's set which allows duplicates.
+		auto eh_program_cache = set<EhProgram_t*, EhProgramComparator_t>();
 
-		if(fie_it!=fdes.end())
+		// find the right cie and fde, and build the IR from those for this instruction.
+		auto build_ir_insn=[&](Instruction_t* insn) -> void
 		{
-
-			if(getenv("EHIR_VERBOSE")!=NULL)
+			auto fie_it=find_if(fdes.begin(), fdes.end(), [&](const fde_contents_t<ptrsize>  &p)
 			{
-				cout<<hex<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<" -> "<<endl;
-				//fie_it->GetCIE().print();
-				//fie_it->print();
+				return p.appliesTo(insn);
+			});
+
+			if(fie_it!=fdes.end())
+			{
+
+				if(getenv("EHIR_VERBOSE")!=NULL)
+				{
+					cout<<hex<<insn->GetAddress()->GetVirtualOffset()<<":"
+					    <<insn->GetBaseID()<<":"<<insn->getDisassembly()<<" -> "<<endl;
+					//fie_it->GetCIE().print();
+					//fie_it->print();
+				}
+
+				const auto fde_addr=fie_it->GetFDEStartAddress();
+				const auto caf=fie_it->GetCIE().GetCAF(); 
+				const auto daf=fie_it->GetCIE().GetDAF(); 
+				const auto insn_addr=insn->GetAddress()->GetVirtualOffset();
+
+				auto import_pgm = [&](EhProgramListing_t& out_pgm, const eh_program_t<ptrsize> in_pgm) -> void
+				{
+					auto cur_addr=fde_addr;
+					for(const auto & insn : in_pgm.GetInstructions())
+					{
+						if(insn.Advance(cur_addr, caf))
+						{	
+							if(cur_addr > insn_addr)
+								break;
+						}
+						else if(insn.isNop())
+						{
+							// skip nops 
+						}
+						else
+						{
+							string to_push(insn.GetBytes().begin(),insn.GetBytes().end());
+							out_pgm.push_back(to_push);
+						}
+
+					}
+					if(getenv("EHIR_VERBOSE")!=NULL)
+					{
+						cout<<"\tPgm has insn_count="<<out_pgm.size()<<endl;
+					}
+				}; 
+
+				// build an eh program on the stack;
+
+				EhProgram_t ehpgm(BaseObj_t::NOT_IN_DATABASE,caf,daf,ptrsize);
+				import_pgm(ehpgm.GetCIEProgram(), fie_it->GetCIE().GetProgram());
+				import_pgm(ehpgm.GetFDEProgram(), fie_it->GetProgram());
+
+
+				if(getenv("EHIR_VERBOSE")!=NULL)
+					ehpgm.print();
+				// see if we've already built this one.
+				auto ehpgm_it = eh_program_cache.find(&ehpgm) ;
+				if(ehpgm_it != eh_program_cache.end())
+				{
+					// yes, use the cached program.
+					insn->SetEhProgram(*ehpgm_it);
+					if(getenv("EHIR_VERBOSE")!=NULL)
+						cout<<"Re-using existing Program!"<<endl;
+					reusedpgms++;
+				}
+				else /* doesn't yet exist! */
+				{
+					
+					// allocate in the heap so we can give it to the IR.
+					if(getenv("EHIR_VERBOSE")!=NULL)
+						cout<<"Allocating new Program!"<<endl;
+					EhProgram_t* newehpgm=new EhProgram_t(ehpgm); // copy constructor
+
+					// add to the IR
+					firp->GetAllEhPrograms().insert(newehpgm);
+
+					// record for this insn
+					insn->SetEhProgram(newehpgm);
+
+					// update cache.
+					eh_program_cache.insert(newehpgm);
+				}
+				
+				// build the IR from the FDE.
+				fie_it->GetCIE().build_ir(insn);
+				fie_it->build_ir(insn, offset_to_insn_map,firp);
+			}
+			else
+			{
+				if(getenv("EHIR_VERBOSE")!=NULL)
+				{
+					cout<<hex<<insn->GetAddress()->GetVirtualOffset()<<":"
+					    <<insn->GetBaseID()<<":"<<insn->getDisassembly()<<" has no FDE "<<endl;
+				}
 			}
 			
-			// build the IR from the FDE.
-			fie_it->GetCIE().build_ir(insn);
-			fie_it->build_ir(insn);
-		}
-		else
-		{
-			if(getenv("EHIR_VERBOSE")!=NULL)
-				cout<<hex<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<" has no FDE "<<endl;
-		}
-		
-	}
+		};
 
+		//for_each(firp->GetInstructions().begin(), firp->GetInstructions().end(), [&](Instruction_t* i)
+		//{
+		//	build_ir_insn(i);
+		//});
+		for(Instruction_t* i : firp->GetInstructions())
+		{
+			build_ir_insn(i);
+		}
+
+		cout<<"#ATTRIBUTE total_eh_programs_created="<<dec<<firp->GetAllEhPrograms().size()<<endl;
+		cout<<"#ATTRIBUTE total_eh_programs_reused="<<dec<<reusedpgms<<endl;
+		cout<<"#ATTRIBUTE total_eh_programs="<<dec<<firp->GetAllEhPrograms().size()+reusedpgms<<endl;
+
+
+		auto remove_reloc=[&](Relocation_t* r) -> void
+		{
+			firp->GetRelocations().erase(r);
+			delete r;
+		};
+
+		auto remove_address=[&](AddressID_t* a) -> void
+		{
+			firp->GetAddresses().erase(a);
+			for(auto &r : a->GetRelocations()) remove_reloc(r);
+			for(auto &r : firp->GetRelocations()) assert(r->GetWRT() != a);
+			delete a;	
+		};
+
+		auto remove_scoop=[&] (DataScoop_t* s) -> void 
+		{ 
+			firp->GetDataScoops().erase(s);
+			remove_address(s->GetStart());
+			remove_address(s->GetEnd());
+			for(auto &r : s->GetRelocations()) remove_reloc(r);
+			for(auto &r : firp->GetRelocations()) assert(r->GetWRT() != s);
+			delete s;
+		};
+
+		// will put back in a min, removing for commit
+		//remove_scoop(eh_frame_scoop);
+		//remove_scoop(eh_frame_hdr_scoop);
+		//remove_scoop(gcc_except_table_scoop);
+	
+	}
 };
 
 void split_eh_frame(FileIR_t* firp)
 {
 	auto found_err=false;
+	//auto eh_frame_splitter=(unique_ptr<split_eh_frame_t>)NULL;
+	auto eh_frame_splitter=unique_ptr<split_eh_frame_t>((nullptr_t)NULL);
 	if( firp->GetArchitectureBitWidth()==64)
-	{
-		split_eh_frame_t<8> eh_frame_splitter(firp);
-		found_err=eh_frame_splitter.execute();
-		eh_frame_splitter.build_ir();
-	}
+		eh_frame_splitter.reset(new split_eh_frame_impl_t<8>(firp));
 	else
-	{
-		split_eh_frame_t<4> eh_frame_splitter(firp);
-		found_err=eh_frame_splitter.execute();
-		eh_frame_splitter.build_ir();
-	}
+		eh_frame_splitter.reset(new split_eh_frame_impl_t<4>(firp));
+	found_err=eh_frame_splitter->parse();
+	eh_frame_splitter->build_ir();
+
 	assert(!found_err);
 }

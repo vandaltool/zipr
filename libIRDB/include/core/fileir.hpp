@@ -40,16 +40,27 @@ class FileIR_t : public BaseObj_t
 		// accessors and mutators in one
 		FunctionSet_t&    GetFunctions() { return funcs; }
 		const FunctionSet_t&    GetFunctions() const { return funcs; }
+
 		InstructionSet_t& GetInstructions() { return insns; }
 		const InstructionSet_t& GetInstructions() const { return insns; }
+
 		AddressSet_t&     GetAddresses() { return addrs; }
 		const AddressSet_t&     GetAddresses() const { return addrs; }
+
 		RelocationSet_t&  GetRelocations() { return relocs; }
 		const RelocationSet_t&  GetRelocations() const { return relocs; }
+
 		DataScoopSet_t&  GetDataScoops() { return scoops; }
 		const DataScoopSet_t&  GetDataScoops() const { return scoops; }
+
 		ICFSSet_t&        GetAllICFS() { return icfs_set; }
 		const ICFSSet_t&        GetAllICFS() const { return icfs_set; }
+
+		EhProgramSet_t&        GetAllEhPrograms() { return eh_pgms; }
+		const EhProgramSet_t&        GetAllEhPrograms() const { return eh_pgms; }
+
+		EhCallSiteSet_t&        GetAllEhCallSites() { return eh_css; }
+		const EhCallSiteSet_t&        GetAllEhCallSites() const { return eh_css; }
 
 		// generate the spri rules into the output file, fout.
 		void GenerateSPRI(std::ostream &fout, bool with_ilr=false);
@@ -111,25 +122,40 @@ class FileIR_t : public BaseObj_t
 		VariantID_t       progid;
 		ICFSSet_t         icfs_set;
 		File_t*           fileptr;
+		EhProgramSet_t    eh_pgms;
+		EhCallSiteSet_t   eh_css;
 
 		std::map<db_id_t,AddressID_t*> ReadAddrsFromDB();
+		std::map<db_id_t,EhProgram_t*> ReadEhPgmsFromDB();
+		
+		std::map<db_id_t,EhCallSite_t*> ReadEhCallSitesFromDB
+		(
+			std::map<EhCallSite_t*,db_id_t> &unresolvedEhCssLandingPads
+		);
+
 		std::map<db_id_t,Function_t*> ReadFuncsFromDB
 		(
 			std::map<db_id_t,AddressID_t*> &addrMap,
-			std::map<db_id_t,Type_t*> &typeMap
+			std::map<db_id_t,Type_t*> &typeMap,
+			std::map<Function_t*,db_id_t> &entry_points
 		);
+
 		std::map<db_id_t,DataScoop_t*> ReadScoopsFromDB
 		(
 			std::map<db_id_t,AddressID_t*> &addrMap,
 			std::map<db_id_t,Type_t*> &typeMap
 		);
+
 		std::map<db_id_t,Instruction_t*> ReadInsnsFromDB 
 		(	
-			std::map<db_id_t,Function_t*> &funcMap,
-			std::map<db_id_t,AddressID_t*> &addrMap,
+			const std::map<db_id_t,Function_t*> &funcMap,
+			const std::map<db_id_t,AddressID_t*> &addrMap,
+			const std::map<db_id_t,EhProgram_t*> &ehpgmMap,
+			const std::map<db_id_t,EhCallSite_t*> &ehcsMap,
 			std::map<db_id_t,Instruction_t*> &addressToInstructionMap,
 			std::map<Instruction_t*, db_id_t> &unresolvedICFS
 		);
+
 		void ReadRelocsFromDB
 		(
 			std::map<db_id_t,BaseObj_t*>		&insnMap

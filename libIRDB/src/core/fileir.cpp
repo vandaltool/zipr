@@ -30,7 +30,6 @@
 using namespace libIRDB;
 using namespace std;
 
-static map<Function_t*,db_id_t> entry_points;
 
 #define SCOOP_CHUNK_SIZE (10*1024*1024)  /* 10 mb  */
 
@@ -38,7 +37,9 @@ static map<Function_t*,db_id_t> entry_points;
 #undef EIP
 
 
-static void UpdateEntryPoints(std::map<db_id_t,Instruction_t*> 	&insnMap)
+static void UpdateEntryPoints(
+	const std::map<db_id_t,Instruction_t*> 	&insnMap,
+	const map<Function_t*,db_id_t>& entry_points)
 {
 	/* for each function, look up the instruction that's the entry point */
 	for(	map<Function_t*,db_id_t>::const_iterator it=entry_points.begin();
@@ -49,14 +50,28 @@ static void UpdateEntryPoints(std::map<db_id_t,Instruction_t*> 	&insnMap)
 		Function_t* func=(*it).first;
 		db_id_t func_entry_id=(*it).second;
 
-		assert(func_entry_id==-1 || insnMap[func_entry_id]);
-		func->SetEntryPoint(insnMap[func_entry_id]);
+		assert(func_entry_id==-1 || insnMap.at(func_entry_id));
+		func->SetEntryPoint(insnMap.at(func_entry_id));
 //		cout<<"Function named "<<func->GetName()<< " getting entry point set to "<<insnMap[func_entry_id]->GetComment()<<"."<<endl;
 	}
 		
 }
 
-virtual_offset_t strtovo(std::string s)
+static void UpdateUnresolvedEhCallSites(
+	const std::map<db_id_t,Instruction_t*> 	&insnMap,
+	const std::map<EhCallSite_t*,db_id_t> & unresolvedEhcss)
+{
+	for(const auto &i : unresolvedEhcss)
+	{
+		const auto& ehcs=i.first; 
+		const auto& insnid=i.second;
+		const auto& insn=insnMap.at(insnid);
+		assert(insn);
+		ehcs->SetLandingPad(insn);
+	}
+}
+
+static virtual_offset_t strtovo(std::string s)
 {
         return strtoint<virtual_offset_t>(s);
 }
@@ -114,32 +129,32 @@ FileIR_t::~FileIR_t()
 // DB operations
 void FileIR_t::ReadFromDB()
 {
-	entry_points.clear();
+	auto entry_points=map<Function_t*,db_id_t>();
+	auto unresolvedICFS=std::map<Instruction_t*, db_id_t>();
+	auto unresolvedEhCallSites=std::map<EhCallSite_t*,db_id_t>();
+	auto objMap=std::map<db_id_t,BaseObj_t*>();
+	auto addressToInstructionMap=std::map<db_id_t,Instruction_t*>();
 
-	std::map<db_id_t,BaseObj_t*> objMap;
-
-	std::map<db_id_t,Type_t*> typesMap = ReadTypesFromDB(types); 
-	std::map<db_id_t,AddressID_t*> 	addrMap=ReadAddrsFromDB();
-	std::map<db_id_t,Function_t*> 	funcMap=ReadFuncsFromDB(addrMap, typesMap);
-	std::map<db_id_t,DataScoop_t*>  scoopMap=ReadScoopsFromDB(addrMap, typesMap);
-
-
-	std::map<db_id_t,Instruction_t*> addressToInstructionMap;
-	std::map<Instruction_t*, db_id_t> unresolvedICFS;
-
-	std::map<db_id_t,Instruction_t*> insnMap=ReadInsnsFromDB(funcMap,addrMap,addressToInstructionMap, unresolvedICFS);
+	auto ehpgmMap 	= ReadEhPgmsFromDB(); 
+	auto ehcsMap 	= ReadEhCallSitesFromDB(unresolvedEhCallSites); 
+	auto typesMap 	= ReadTypesFromDB(types); 
+	auto addrMap	= ReadAddrsFromDB();
+	auto funcMap	= ReadFuncsFromDB(addrMap, typesMap,entry_points);
+	auto scoopMap	= ReadScoopsFromDB(addrMap, typesMap);
+	auto insnMap	= ReadInsnsFromDB(funcMap,addrMap,ehpgmMap,ehcsMap,addressToInstructionMap, unresolvedICFS);
 
 
 	ReadAllICFSFromDB(addressToInstructionMap, unresolvedICFS);
 
-
-	// put the scoops+instructions into the object map.
-	// if relocs end up on other objects, we'll need to add them to.  for now only insns/scoops.
+	// put the scoops, instructions, and eh call sites into the object map.
+	// if relocs end up on other objects, we'll need to add them to.  for now only these things.
 	objMap.insert(insnMap.begin(), insnMap.end());
 	objMap.insert(scoopMap.begin(), scoopMap.end());
+	objMap.insert(ehcsMap.begin(), ehcsMap.end());
 	ReadRelocsFromDB(objMap);
 
-	UpdateEntryPoints(insnMap);
+	UpdateEntryPoints(insnMap,entry_points);
+	UpdateUnresolvedEhCallSites(insnMap,unresolvedEhCallSites);
 }
 
 
@@ -275,12 +290,13 @@ std::string FileIR_t::LookupAssembly(Instruction_t *instr)
 std::map<db_id_t,Function_t*> FileIR_t::ReadFuncsFromDB
 	(
         	std::map<db_id_t,AddressID_t*> &addrMap,
-			std::map<db_id_t,Type_t*> &typesMap
+		std::map<db_id_t,Type_t*> &typesMap,
+		map<Function_t*,db_id_t> &entry_points
 	)
 {
-	std::map<db_id_t,Function_t*> idMap;
+	auto idMap=std::map<db_id_t,Function_t*> ();
 
-	std::string q= "select * from " + fileptr->function_table_name + " ; ";
+	auto q=std::string("select * from ") + fileptr->function_table_name + " ; ";
 
 	dbintr->IssueQuery(q);
 
@@ -334,6 +350,127 @@ std::map<db_id_t,Function_t*> FileIR_t::ReadFuncsFromDB
 }
 
 
+std::map<db_id_t,EhCallSite_t*> FileIR_t::ReadEhCallSitesFromDB
+	(
+		map<EhCallSite_t*,db_id_t> &unresolvedEhCssLandingPads // output arg.
+	)
+{
+	auto ehcsMap=std::map<db_id_t,EhCallSite_t*>();
+
+	std::string q= "select * from " + fileptr->GetEhCallSiteTableName() + " ; ";
+
+	for(dbintr->IssueQuery(q); !dbintr->IsDone(); dbintr->MoveToNextRow())
+	{
+		/* 
+		 * ehcs_id         integer,        -- id of this object.
+		 * tt_encoding     integer,        -- the encoding of the type table.
+		 * lp_insn_id      integer         -- the landing pad instruction's id.
+		 */
+
+
+		const auto eh_cs_id=atoi(dbintr->GetResultColumn("ehcs_id").c_str());
+		const auto tt_encoding=atoi(dbintr->GetResultColumn("tt_encoding").c_str());
+		const auto lp_insn_id=atoi(dbintr->GetResultColumn("lp_insn_id").c_str());
+
+		auto newEhCs=new EhCallSite_t(eh_cs_id,tt_encoding,NULL); // create the call site with an unresolved LP
+		eh_css.insert(newEhCs);					  // record that it exists.
+		ehcsMap[eh_cs_id]=newEhCs;				  // record the map for when we read instructions.
+		if(lp_insn_id != BaseObj_t::NOT_IN_DATABASE)
+			unresolvedEhCssLandingPads[newEhCs]=lp_insn_id;		  // note that the LP is unresolved
+	}
+
+	return ehcsMap;
+}
+
+std::map<db_id_t,EhProgram_t*> FileIR_t::ReadEhPgmsFromDB()
+{
+	auto idMap = std::map<db_id_t,EhProgram_t*>();
+
+	auto q=std::string("select * from ") + fileptr->ehpgm_table_name + " ; ";
+	dbintr->IssueQuery(q);
+
+	auto decode_pgm=[](const string& encoded_pgm, EhProgramListing_t& decoded_pgm)
+	{
+
+		auto split=[](const string& str, const string& delim, EhProgramListing_t& tokens) -> void
+		{
+			auto prev = size_t(0);
+			auto pos = size_t(0);
+			do
+			{
+				pos = str.find(delim, prev);
+				if (pos == string::npos) pos = str.length();
+				string token = str.substr(prev, pos-prev);
+				if (!token.empty()) tokens.push_back(token);
+				prev = pos + delim.length();
+			}
+			while (pos < str.length() && prev < str.length());
+		};
+
+		auto decode_in_place=[](string& to_decode) -> void
+		{
+			auto charToHex=[](uint8_t value) -> uint8_t
+			{
+				if (value >= '0' && value <= '9') return value - '0';
+				else if (value >= 'A' && value <= 'F') return value - 'A' + 10;
+				else if (value >= 'a' && value <= 'f') return value - 'a' + 10;
+				assert(false);
+			};
+
+
+			auto out=string("");
+			while(to_decode.size() > 0)
+			{
+				// to-decode should have pairs of characters that represent individual bytes.
+				assert(to_decode.size() >= 2);
+				auto val =  uint8_t ( charToHex(to_decode[0])*16  + charToHex(to_decode[1]) ); 
+				out += val;
+				to_decode.erase(0,2);
+			}
+
+			to_decode=out;
+		};
+
+		split(encoded_pgm, ",", decoded_pgm);
+
+		// decode each one
+		for(auto& i : decoded_pgm)
+			decode_in_place(i);
+		
+		
+	};
+
+	while(!dbintr->IsDone())
+	{
+		/* 
+		 * eh_pgm_id       integer,
+		 * caf             integer,
+		 * daf             integer,
+		 * ptrsize         integer,
+		 * cie_program     text,
+		 * fde_program     text
+		 */
+
+
+		const auto eh_pgm_id=atoi(dbintr->GetResultColumn("eh_pgm_id").c_str());
+		const auto caf=atoi(dbintr->GetResultColumn("caf").c_str());
+		const auto daf=atoi(dbintr->GetResultColumn("daf").c_str());
+		const auto ptrsize=atoi(dbintr->GetResultColumn("ptrsize").c_str());
+		const auto& encoded_cie_program = dbintr->GetResultColumn("cie_program");
+		const auto& encoded_fde_program = dbintr->GetResultColumn("fde_program");
+
+		auto new_ehpgm=new EhProgram_t(eh_pgm_id, caf, daf, ptrsize);
+		decode_pgm(encoded_cie_program, new_ehpgm->GetCIEProgram());
+		decode_pgm(encoded_fde_program, new_ehpgm->GetFDEProgram());
+
+		idMap[eh_pgm_id]=new_ehpgm;
+		eh_pgms.insert(new_ehpgm);
+		dbintr->MoveToNextRow();
+	}
+
+	return idMap;
+}
+
 std::map<db_id_t,AddressID_t*> FileIR_t::ReadAddrsFromDB  
 	(
 	) 
@@ -375,10 +512,12 @@ std::map<db_id_t,AddressID_t*> FileIR_t::ReadAddrsFromDB
 
 std::map<db_id_t,Instruction_t*> FileIR_t::ReadInsnsFromDB 
 	(      
-        std::map<db_id_t,Function_t*> &funcMap,
-        std::map<db_id_t,AddressID_t*> &addrMap,
-		std::map<db_id_t,Instruction_t*> &addressToInstructionMap,
-		std::map<Instruction_t*, db_id_t> &unresolvedICFS
+        const std::map<db_id_t,Function_t*> &funcMap,
+        const std::map<db_id_t,AddressID_t*> &addrMap,
+        const std::map<db_id_t,EhProgram_t*> &ehpgmMap,
+        const std::map<db_id_t,EhCallSite_t*> &ehcsMap,
+	std::map<db_id_t,Instruction_t*> &addressToInstructionMap,
+	std::map<Instruction_t*, db_id_t> &unresolvedICFS
         ) 
 {
 	std::map<db_id_t,Instruction_t*> idMap;
@@ -412,6 +551,8 @@ std::map<db_id_t,Instruction_t*> FileIR_t::ReadInsnsFromDB
 		db_id_t fallthrough_address_id=atoi(dbintr->GetResultColumn("fallthrough_address_id").c_str());
 		db_id_t targ_address_id=atoi(dbintr->GetResultColumn("target_address_id").c_str());
 		db_id_t icfs_id=atoi(dbintr->GetResultColumn("icfs_id").c_str());
+		db_id_t eh_pgm_id=atoi(dbintr->GetResultColumn("ehpgm_id").c_str());
+		db_id_t eh_cs_id=atoi(dbintr->GetResultColumn("ehcss_id").c_str());
 		std::string data=(dbintr->GetResultColumn("data"));
 		std::string callback=(dbintr->GetResultColumn("callback"));
 		std::string comment=(dbintr->GetResultColumn("comment"));
@@ -420,20 +561,26 @@ std::map<db_id_t,Instruction_t*> FileIR_t::ReadInsnsFromDB
 
 		std::string isIndStr=(dbintr->GetResultColumn("ind_target_address_id"));
 
-                AddressID_t* indTarg = NULL;
+                auto indTarg=(AddressID_t*)NULL;
 		if (indirect_branch_target_address_id != NOT_IN_DATABASE) 
-			indTarg = addrMap[indirect_branch_target_address_id];
+			indTarg = addrMap.at(indirect_branch_target_address_id);
+
+		auto parent_func=(Function_t*)NULL;
+		if(parent_func_id!= NOT_IN_DATABASE) parent_func=funcMap.at(parent_func_id);
 
 		Instruction_t *newinsn=new Instruction_t(instruction_id,
-			addrMap[aid],
-			funcMap[parent_func_id],
+			addrMap.at(aid),
+			parent_func,
 			orig_address_id,
 			data, callback, comment, indTarg, doipid);
+
+		if(eh_pgm_id != NOT_IN_DATABASE) newinsn->SetEhProgram(ehpgmMap.at(eh_pgm_id));
+		if(eh_cs_id != NOT_IN_DATABASE) newinsn->SetEhCallSite(ehcsMap.at(eh_cs_id));
 	
-		if(funcMap[parent_func_id])
+		if(parent_func)
 		{
-			funcMap[parent_func_id]->GetInstructions().insert(newinsn);
-			newinsn->SetFunction(funcMap[parent_func_id]);
+			parent_func->GetInstructions().insert(newinsn);
+			newinsn->SetFunction(funcMap.at(parent_func_id));
 		}
 
 //std::cout<<"Found address "<<aid<<"."<<std::endl;
@@ -528,6 +675,8 @@ void FileIR_t::WriteToDB()
 	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->types_table_name     	+ string(" cascade;"));
 	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->scoop_table_name     	+ string(" cascade;"));
 	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->scoop_table_name+"_part2"+ string(" cascade;"));
+	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->ehpgm_table_name     	+ string(" cascade;"));
+	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->ehcss_table_name     	+ string(" cascade;"));
 
 	/* and now that everything has an ID, let's write to the DB */
 
@@ -663,6 +812,17 @@ void FileIR_t::WriteToDB()
 			dbintr->IssueQuery(q);
 
 	}
+	for(const auto& i : eh_pgms)
+	{
+		string q = i->WriteToDB(fileptr);
+		dbintr->IssueQuery(q);
+	}
+	for(const auto& i : eh_css)
+	{
+		string q = i->WriteToDB(fileptr);
+		dbintr->IssueQuery(q);
+	}
+
 }
 
 
@@ -672,63 +832,56 @@ void FileIR_t::SetBaseIDS()
 
 	/* find the highest database ID */
 	db_id_t j=0;
-	for(std::set<Function_t*>::const_iterator i=funcs.begin(); i!=funcs.end(); ++i)
+	for(auto i=funcs.begin(); i!=funcs.end(); ++i)
 		j=MAX(j,(*i)->GetBaseID());
-	for(std::set<AddressID_t*>::const_iterator i=addrs.begin(); i!=addrs.end(); ++i)
+	for(auto i=addrs.begin(); i!=addrs.end(); ++i)
 		j=MAX(j,(*i)->GetBaseID());
-	for(std::set<Instruction_t*>::const_iterator i=insns.begin(); i!=insns.end(); ++i)
+	for(auto i=insns.begin(); i!=insns.end(); ++i)
 		j=MAX(j,(*i)->GetBaseID());
-	for(std::set<Relocation_t*>::const_iterator i=relocs.begin(); i!=relocs.end(); ++i)
+	for(auto i=relocs.begin(); i!=relocs.end(); ++i)
 		j=MAX(j,(*i)->GetBaseID());
-	for(std::set<Type_t*>::const_iterator i=types.begin(); i!=types.end(); ++i)
+	for(auto i=types.begin(); i!=types.end(); ++i)
 		j=MAX(j,(*i)->GetBaseID());
-	for(DataScoopSet_t::const_iterator i=scoops.begin(); i!=scoops.end(); ++i)
+	for(auto i=scoops.begin(); i!=scoops.end(); ++i)
 		j=MAX(j,(*i)->GetBaseID());
-	for(ICFSSet_t::const_iterator i=icfs_set.begin(); i!=icfs_set.end(); ++i)
+	for(auto i=icfs_set.begin(); i!=icfs_set.end(); ++i)
+		j=MAX(j,(*i)->GetBaseID());
+	for(auto i=eh_pgms.begin(); i!=eh_pgms.end(); ++i)
+		j=MAX(j,(*i)->GetBaseID());
+	for(auto i=eh_css.begin(); i!=eh_css.end(); ++i)
 		j=MAX(j,(*i)->GetBaseID());
 
 	/* increment past the max ID so we don't duplicate */
 	j++;
 
 	/* for anything that's not yet in the DB, assign an ID to it */
-	for(std::set<Function_t*>::const_iterator i=funcs.begin(); i!=funcs.end(); ++i)
+	for(auto i=funcs.begin(); i!=funcs.end(); ++i)
 		if((*i)->GetBaseID()==NOT_IN_DATABASE)
 			(*i)->SetBaseID(j++);
-	for(std::set<AddressID_t*>::const_iterator i=addrs.begin(); i!=addrs.end(); ++i)
+	for(auto i=addrs.begin(); i!=addrs.end(); ++i)
 		if((*i)->GetBaseID()==NOT_IN_DATABASE)
 			(*i)->SetBaseID(j++);
-	for(std::set<Instruction_t*>::const_iterator i=insns.begin(); i!=insns.end(); ++i)
+	for(auto i=insns.begin(); i!=insns.end(); ++i)
 		if((*i)->GetBaseID()==NOT_IN_DATABASE)
 			(*i)->SetBaseID(j++);
-	for(std::set<Relocation_t*>::const_iterator i=relocs.begin(); i!=relocs.end(); ++i)
+	for(auto i=relocs.begin(); i!=relocs.end(); ++i)
 		if((*i)->GetBaseID()==NOT_IN_DATABASE)
 			(*i)->SetBaseID(j++);
-	for(std::set<Type_t*>::const_iterator i=types.begin(); i!=types.end(); ++i)
+	for(auto i=types.begin(); i!=types.end(); ++i)
 		if((*i)->GetBaseID()==NOT_IN_DATABASE)
 			(*i)->SetBaseID(j++);
-	for(DataScoopSet_t::const_iterator i=scoops.begin(); i!=scoops.end(); ++i)
+	for(auto i=scoops.begin(); i!=scoops.end(); ++i)
 		if((*i)->GetBaseID()==NOT_IN_DATABASE)
 			(*i)->SetBaseID(j++);
-	for(ICFSSet_t::const_iterator i=icfs_set.begin(); i!=icfs_set.end(); ++i)
+	for(auto i=icfs_set.begin(); i!=icfs_set.end(); ++i)
 		if((*i)->GetBaseID()==NOT_IN_DATABASE)
 			(*i)->SetBaseID(j++);
-}
-
-std::string Relocation_t::WriteToDB(File_t* fid, BaseObj_t* myinsn)
-{
-	string q;
-	db_id_t wrt_id=wrt_obj ? wrt_obj->GetBaseID() : BaseObj_t::NOT_IN_DATABASE;
-        q ="insert into " + fid->relocs_table_name;
-	q+="(reloc_id,reloc_offset,reloc_type,instruction_id,wrt_id,addend,doip_id) "+
-                string(" VALUES (") +
-                string("'") + to_string(GetBaseID())          + string("', ") +
-                string("'") + to_string(offset)               + string("', ") +
-                string("'") + (type)                          + string("', ") +
-                string("'") + to_string(myinsn->GetBaseID())  + string("', ") +
-                string("'") + to_string(wrt_id)  + string("', ") +
-                string("'") + to_string(addend)  + string("', ") +
-                string("'") + to_string(GetDoipID())          + string("') ; ") ;
-	return q;	
+	for(auto i=eh_pgms.begin(); i!=eh_pgms.end(); ++i)
+		if((*i)->GetBaseID()==NOT_IN_DATABASE)
+			(*i)->SetBaseID(j++);
+	for(auto i=eh_css.begin(); i!=eh_css.end(); ++i)
+		if((*i)->GetBaseID()==NOT_IN_DATABASE)
+			(*i)->SetBaseID(j++);
 }
 
 int FileIR_t::GetArchitectureBitWidth()

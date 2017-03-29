@@ -19,6 +19,8 @@
  */
 
 class Function_t; // forward decls.
+class EhProgram_t; // forward decls.
+class EhCallSite_t; // forward decls.
 
 #define MAX_INSN_SIZE 32	// x86 really declares this as 16, but we'll allow 
 				// for bigger instructions, maybe from other machines?
@@ -42,6 +44,8 @@ class Instruction_t : public BaseObj_t
 		std::string GetDataBits()  const { return data; } 
 		std::string GetCallback()  const { return callback; } 
 		std::string GetComment()   const { return comment; } 
+		EhProgram_t* GetEhProgram() const { return eh_pgm; }
+		EhCallSite_t* GetEhCallSite_t() const { return eh_cs; }
 
   
 		void SetAddress(AddressID_t* newaddr)  { my_address=newaddr; }
@@ -53,6 +57,8 @@ class Instruction_t : public BaseObj_t
 		void SetDataBits(std::string orig)	{ data=orig; }
 		void SetCallback(std::string orig)	{ callback=orig; }
 		void SetComment(std::string orig)	 { comment=orig; }
+		void SetEhProgram(EhProgram_t* orig)	 { eh_pgm=orig; }
+		void SetEhCallSite(EhCallSite_t* orig)	 { eh_cs=orig; }
 
 		AddressID_t* GetIndirectBranchTargetAddress()		{ return indTarg; }
 		void SetIndirectBranchTargetAddress(AddressID_t* myIndTarg) { indTarg=myIndTarg; }
@@ -81,4 +87,6 @@ class Instruction_t : public BaseObj_t
 		std::string	 comment;
 		AddressID_t*	indTarg;
 		ICFS_t*		 icfs;
+		EhProgram_t*	 eh_pgm;
+		EhCallSite_t*	 eh_cs;
 };

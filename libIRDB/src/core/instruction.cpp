@@ -34,16 +34,18 @@ Instruction_t::Instruction_t() :
 	BaseObj_t(NULL), 
 	data(""),
 	callback(""),
-	comment("")
+	comment(""),
+	my_address(NULL),
+	my_function(NULL),
+	orig_address_id(NOT_IN_DATABASE),
+	fallthrough(NULL),
+	target(NULL),
+	indTarg(NULL),
+	icfs(NULL),
+	eh_pgm(NULL),
+	eh_cs(NULL)
 {
 	SetBaseID(NOT_IN_DATABASE);
-	my_address=NULL;
-	my_function=NULL;
-	orig_address_id=NOT_IN_DATABASE;
-	fallthrough=NULL;
-	target=NULL;
-	indTarg=NULL;
-	icfs=NULL;
 }
 
 Instruction_t::Instruction_t(db_id_t id, 
@@ -60,15 +62,17 @@ Instruction_t::Instruction_t(db_id_t id,
 	data(thedata),
 	callback(my_callback),
 	comment(my_comment),
-	indTarg(my_indTarg)
+	indTarg(my_indTarg),
+	my_address(addr),
+	my_function(func),
+	orig_address_id(orig_id),
+	fallthrough(NULL),
+	target(NULL),
+	icfs(NULL),
+	eh_pgm(NULL),
+	eh_cs(NULL)
 {
 	SetBaseID(id);
-	my_address=addr;
-	my_function=func;
-	orig_address_id=orig_id;
-	fallthrough=NULL;
-	target=NULL;
-	icfs=NULL;
 }
 
 int Instruction_t::Disassemble(DISASM &disasm) const
@@ -164,31 +168,33 @@ string Instruction_t::WriteToDB(File_t *fid, db_id_t newid, bool p_withHeader)
 	if(GetBaseID()==NOT_IN_DATABASE)
 		SetBaseID(newid);
 
-	db_id_t func_id=NOT_IN_DATABASE;
-	if(my_function)
-		func_id=my_function->GetBaseID();
+	auto func_id=NOT_IN_DATABASE;
+	if(my_function) func_id=my_function->GetBaseID();
 
-	db_id_t ft_id=NOT_IN_DATABASE;
-	if(fallthrough)
-		ft_id=fallthrough->GetBaseID();
+	auto ft_id=NOT_IN_DATABASE;
+	if(fallthrough) ft_id=fallthrough->GetBaseID();
 
-	db_id_t targ_id=NOT_IN_DATABASE;
-	if(target)
-		targ_id=target->GetBaseID();
+	auto targ_id=NOT_IN_DATABASE;
+	if(target) targ_id=target->GetBaseID();
 
-	db_id_t icfs_id=NOT_IN_DATABASE;
-	if (icfs)
-		icfs_id=icfs->GetBaseID();
+	auto icfs_id=NOT_IN_DATABASE;
+	if (icfs) icfs_id=icfs->GetBaseID();
 
-	db_id_t indirect_bt_id=NOT_IN_DATABASE;
-	if(indTarg)
-		indirect_bt_id=indTarg->GetBaseID();
+	auto indirect_bt_id=NOT_IN_DATABASE;
+	if(indTarg) indirect_bt_id=indTarg->GetBaseID();
+
+	auto eh_pgm_id=NOT_IN_DATABASE;
+	if(eh_pgm) eh_pgm_id=eh_pgm->GetBaseID();
+
+	auto eh_css_id=NOT_IN_DATABASE;
+	if(eh_cs) eh_css_id=eh_cs->GetBaseID();
 
 	string q;
 	
 	if (p_withHeader) 
 		q = string("insert into ")+fid->instruction_table_name +
-                string(" (instruction_id, address_id, parent_function_id, orig_address_id, fallthrough_address_id, target_address_id, icfs_id, data, callback, comment, ind_target_address_id, doip_id) VALUES ");
+                string(" (instruction_id, address_id, parent_function_id, orig_address_id, fallthrough_address_id, "
+		       "target_address_id, icfs_id, data, callback, comment, ind_target_address_id, ehpgm_id, ehcss_id, doip_id) VALUES ");
 	else
 		q = ",";
 
@@ -197,7 +203,7 @@ string Instruction_t::WriteToDB(File_t *fid, db_id_t newid, bool p_withHeader)
 	for (size_t i = 0; i < data.length(); ++i)
 		hex_data << setw(2) << (int)(data[i]&0xff);
 	
-	q += string("('") + to_string(GetBaseID())            	+ string("', ") +
+	q += string("('") + to_string(GetBaseID())            		+ string("', ") +
                 string("'") + to_string(my_address->GetBaseID())   	+ string("', ") +
                 string("'") + to_string(func_id)            		+ string("', ") +
                 string("'") + to_string(orig_address_id)         	+ string("', ") +
@@ -208,6 +214,8 @@ string Instruction_t::WriteToDB(File_t *fid, db_id_t newid, bool p_withHeader)
                 string("'") + callback                              	+ string("', ") +
                 string("'") + comment                              	+ string("', ") +
                 string("'") + to_string(indirect_bt_id)                 + string("', ") +
+                string("'") + to_string(eh_pgm_id)                 	+ string("', ") +
+                string("'") + to_string(eh_css_id)                 	+ string("', ") +
                 string("'") + to_string(GetDoipID())            	+ string("')  ") ;
 
 	return q;
