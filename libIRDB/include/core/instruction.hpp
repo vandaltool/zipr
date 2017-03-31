@@ -45,7 +45,7 @@ class Instruction_t : public BaseObj_t
 		std::string GetCallback()  const { return callback; } 
 		std::string GetComment()   const { return comment; } 
 		EhProgram_t* GetEhProgram() const { return eh_pgm; }
-		EhCallSite_t* GetEhCallSite_t() const { return eh_cs; }
+		EhCallSite_t* GetEhCallSite() const { return eh_cs; }
 
   
 		void SetAddress(AddressID_t* newaddr)  { my_address=newaddr; }

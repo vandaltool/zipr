@@ -247,6 +247,7 @@ libIRDB/src/core/address.cpp -text
 libIRDB/src/core/all.hpp -text
 libIRDB/src/core/baseobj.cpp -text
 libIRDB/src/core/dbinterface.cpp -text
+libIRDB/src/core/eh.cpp -text
 libIRDB/src/core/file.cpp -text
 libIRDB/src/core/fileir.cpp -text
 libIRDB/src/core/function.cpp -text
@@ -254,6 +255,7 @@ libIRDB/src/core/generate_spri.cpp -text
 libIRDB/src/core/icfs.cpp -text
 libIRDB/src/core/instruction.cpp -text
 libIRDB/src/core/pqxxdb.cpp -text
+libIRDB/src/core/reloc.cpp -text
 libIRDB/src/core/scoop.cpp -text
 libIRDB/src/core/type.cpp -text
 libIRDB/src/core/variantid.cpp -text
