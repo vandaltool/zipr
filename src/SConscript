@@ -4,7 +4,7 @@ import os
 
 
 Import('env')
-myenv=env
+myenv=env.Clone()
 myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 myenv.Replace(ZIPR_HOME=os.environ['ZIPR_HOME'])
 myenv.Replace(ZIPR_SDK=os.environ['ZIPR_SDK'])
@@ -22,6 +22,7 @@ files=  '''
 	dollop.cpp
 	zipr_dollop_man.cpp
 	elfwrite.cpp
+	ehwrite.cpp
 	'''
 
 # ELFIO needs to be first so we get the zipr version instead of the sectrans version.  the zipr version is modified to include get_offset.

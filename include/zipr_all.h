@@ -59,6 +59,7 @@ using namespace Zipr_SDK;
 #include <zipr_optimizations.h>
 #include <zipr_stats.h>
 #include <elfwrite.h>
+#include <ehwrite.h>
 };
 
 #endif

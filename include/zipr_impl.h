@@ -398,6 +398,8 @@ class ZiprImpl_t : public Zipr_t
 
 		void dump_map();
 
+	public: 
+
                 virtual Zipr_SDK::MemorySpace_t *GetMemorySpace() { return &memory_space; }
 		virtual Zipr_SDK::DollopManager_t *GetDollopManager() { return &m_dollop_mgr; }
                 virtual ELFIO::elfio *GetELFIO() { return elfiop; }
@@ -405,6 +407,8 @@ class ZiprImpl_t : public Zipr_t
                 virtual Zipr_SDK::InstructionLocationMap_t *GetLocationMap() { return &final_insn_locations; }
 		virtual Zipr_SDK::PlacementQueue_t* GetPlacementQueue() { return &placement_queue; }  
 		virtual Zipr_SDK::RangeAddress_t PlaceUnplacedScoops(Zipr_SDK::RangeAddress_t max);
+ 		virtual void RelayoutEhInfo();
+
 
 
 	private:

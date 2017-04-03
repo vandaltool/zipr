@@ -927,7 +927,7 @@ void ZiprImpl_t::PreReserve2ByteJumpTargets()
 				 *    b. If i has prereserved space associated with it, we
 				 *       we clear that space.
 				 */
-				printf("Warning: No location for near jump reserved at 0x%x.\n", addr);
+				cout<<"Warning: No location for near jump reserved at 0x"<<hex<<addr<<"."<<endl;
 
 				/*
 				 * The first thing that we have to do is to tell
@@ -948,7 +948,8 @@ void ZiprImpl_t::PreReserve2ByteJumpTargets()
 				for (RangeAddress_t i = addr; i<end_of_sled; i++)
 				{
 					Instruction_t *found_pinned_insn = NULL;
-					if (found_pinned_insn = FindPinnedInsnAtAddr(i))
+					found_pinned_insn = FindPinnedInsnAtAddr(i);
+					if (found_pinned_insn)
 					{
 						/*
 						 * TODO: Continue from here. Continue implementing the above
@@ -1286,7 +1287,7 @@ RangeAddress_t ZiprImpl_t::Do68Sled(RangeAddress_t addr)
 	/*
 	 * Put down the sled.
 	 */
-	for(size_t i=0;i<sled_size;i++)
+	for(auto i=0;i<sled_size;i++)
 	{
 		if (m_verbose)
 			cout << "Adding 68 at "
@@ -1428,7 +1429,7 @@ int ZiprImpl_t::Calc68SledSize(RangeAddress_t addr, size_t sled_overhead)
 	int sled_size=0;
 	while(true)
 	{
-		int i=0;
+		auto i=(size_t)0;
 		for(i=0;i<sled_overhead;i++)
 		{
 			if (FindPinnedInsnAtAddr(addr+sled_size+i))
@@ -3765,6 +3766,11 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 #endif
 
 
+	// now that the textra scoop has been crated and setup, we have the info we need to 
+	// re-generate the eh information.
+	RelayoutEhInfo(); 
+
+
 	// create the output file in a totally different way using elfwriter. later we may 
 	// use this instead of the old way.
 
@@ -4254,4 +4260,31 @@ void  ZiprImpl_t::FixMultipleFallthroughs()
 	m_firp->AssembleRegistry();
 
 	cout<<"#ATTRIBUTE zipr::jumps_inserted_for_multiple_fallthroughs="<<dec<<count<<endl;
+}
+
+
+void  ZiprImpl_t::RelayoutEhInfo()
+{
+	const auto found_eh_ir_it = find_if( 
+		m_firp->GetInstructions().begin(), 
+		m_firp->GetInstructions().end(),
+	 	[](const Instruction_t* i)
+			{ 
+				return (i->GetEhProgram()!=NULL || i->GetEhCallSite()!=NULL);
+			} 
+		);
+
+	// do nothing if we didn't find any IR.
+	if(found_eh_ir_it==m_firp->GetInstructions().end())
+		return;
+		
+	auto eh = (EhWriter_t *)NULL;
+	if(m_firp->GetArchitectureBitWidth()==64)
+		eh=new EhWriterImpl_t<8>(*this);
+	else if(m_firp->GetArchitectureBitWidth()==32)
+		eh=new EhWriterImpl_t<4>(*this);
+	else
+		assert(0);
+
+	eh->GenerateNewEhInfo();
 }

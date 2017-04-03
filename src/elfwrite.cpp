@@ -663,47 +663,6 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 
 
 	std::vector<T_Elf_Phdr> relro_phdrs;
-#if 0
-	for_each(new_phdrs.begin(), new_phdrs.end(), [&](const T_Elf_Phdr& phdr)
-	{
-		if(phdr.p_type==PT_LOAD)
-		{
-			//auto do_relro=[&this,phdr,&relro_phdrs](const virtual_offset_t start, const virtual_offset_t end)
-			auto do_relro=[&](virtual_offset_t start, virtual_offset_t end)
-			{
-				if(! (pagemap.at(start)).is_relro)
-					return;
-
-				cout<<"Creating relro for "<<hex<<start<<"-"<<end<<endl;
-
-				T_Elf_Phdr relro_phdr=phdr;
-				relro_phdr.p_type=PT_GNU_RELRO;
-				relro_phdr.p_memsz=end-start+1;
-				relro_phdr.p_filesz=end-start+1;
-				relro_phdr.p_vaddr=start;
-				relro_phdr.p_paddr=start;
-				relro_phdr.p_offset= phdr.p_offset+start-phdr.p_vaddr;
-				relro_phdr.p_flags=4;
-
-				relro_phdrs.push_back(relro_phdr);
-			};
-
-			bool prev_relro=pagemap[phdr.p_vaddr].is_relro;
-			virtual_offset_t prev_i=phdr.p_vaddr, i=0;
-			for(i=phdr.p_vaddr; i<phdr.p_vaddr+phdr.p_memsz;i+=PAGE_SIZE)
-			{
-				if(prev_relro != pagemap.at(i).is_relro)
-				{
-					do_relro(prev_i, i-1);
-					prev_i=i;
-					prev_relro=pagemap.at(i).is_relro;
-					
-				}
-			}
-			do_relro(prev_i, i-1);
-		}
-	});
-#endif
 	new_phdrs.insert(new_phdrs.end(), relro_phdrs.begin(), relro_phdrs.end());
 
 #ifdef CGC

@@ -1,6 +1,6 @@
 
-#ifndef ElfWriter_h
-#define ElfWriter_h
+#ifndef EhWriter_h
+#define EhWriter_h
 
 #include <vector>
 #include <map>
