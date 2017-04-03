@@ -146,11 +146,12 @@ void FileIR_t::ReadFromDB()
 
 	ReadAllICFSFromDB(addressToInstructionMap, unresolvedICFS);
 
-	// put the scoops, instructions, and eh call sites into the object map.
+	// put the scoops, instructions, ehpgms, eh call sites into the object map.
 	// if relocs end up on other objects, we'll need to add them to.  for now only these things.
 	objMap.insert(insnMap.begin(), insnMap.end());
 	objMap.insert(scoopMap.begin(), scoopMap.end());
 	objMap.insert(ehcsMap.begin(), ehcsMap.end());
+	objMap.insert(ehpgmMap.begin(), ehpgmMap.end());
 	ReadRelocsFromDB(objMap);
 
 	UpdateEntryPoints(insnMap,entry_points);
@@ -455,11 +456,12 @@ std::map<db_id_t,EhProgram_t*> FileIR_t::ReadEhPgmsFromDB()
 		const auto eh_pgm_id=atoi(dbintr->GetResultColumn("eh_pgm_id").c_str());
 		const auto caf=atoi(dbintr->GetResultColumn("caf").c_str());
 		const auto daf=atoi(dbintr->GetResultColumn("daf").c_str());
+		const auto rr=atoi(dbintr->GetResultColumn("return_register").c_str());
 		const auto ptrsize=atoi(dbintr->GetResultColumn("ptrsize").c_str());
 		const auto& encoded_cie_program = dbintr->GetResultColumn("cie_program");
 		const auto& encoded_fde_program = dbintr->GetResultColumn("fde_program");
 
-		auto new_ehpgm=new EhProgram_t(eh_pgm_id, caf, daf, ptrsize);
+		auto new_ehpgm=new EhProgram_t(eh_pgm_id, caf, daf, rr, ptrsize);
 		decode_pgm(encoded_cie_program, new_ehpgm->GetCIEProgram());
 		decode_pgm(encoded_fde_program, new_ehpgm->GetFDEProgram());
 
@@ -816,13 +818,27 @@ void FileIR_t::WriteToDB()
 	{
 		string q = i->WriteToDB(fileptr);
 		dbintr->IssueQuery(q);
+
+		string r="";
+		for(auto& reloc : i->GetRelocations())
+		{
+			r+=reloc->WriteToDB(fileptr,i);
+		}
+		if(r!="")
+			dbintr->IssueQuery(r);
 	}
 	for(const auto& i : eh_css)
 	{
 		string q = i->WriteToDB(fileptr);
 		dbintr->IssueQuery(q);
+		string r="";
+		for(auto& reloc : i->GetRelocations())
+		{
+			r+=reloc->WriteToDB(fileptr,i);
+		}
+		if(r!="")
+			dbintr->IssueQuery(r);
 	}
-
 }
 
 

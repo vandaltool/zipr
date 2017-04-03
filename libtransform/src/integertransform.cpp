@@ -27,7 +27,7 @@
  * Find the first occurrence of find in s, ignore case.
  */
 static char *
-my_strcasestr(const char* s, char *find)
+my_strcasestr(const char* s, const char *find)
 {
         char c, sc;
         size_t len;

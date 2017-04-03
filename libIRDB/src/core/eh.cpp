@@ -32,9 +32,9 @@ using namespace std;
 
 bool libIRDB::operator<(const EhProgram_t&a, const EhProgram_t&b)
 {
-        return  tie(a.cie_program,a.fde_program,a.code_alignment_factor,a.data_alignment_factor,a.ptrsize)
+        return  tie(a.cie_program,a.fde_program,a.code_alignment_factor,a.data_alignment_factor,a.return_register, a.ptrsize)
                 <
-                tie(b.cie_program,b.fde_program,b.code_alignment_factor,b.data_alignment_factor,b.ptrsize);
+                tie(b.cie_program,b.fde_program,b.code_alignment_factor,b.data_alignment_factor,b.return_register, b.ptrsize);
 }
 
 
@@ -95,11 +95,12 @@ std::string EhProgram_t::WriteToDB(File_t* fid)    // writes to DB, ID is not -1
 
 	string q;
 	q ="insert into " + fid->GetEhProgramTableName();
-	q+="(eh_pgm_id,caf,daf,ptrsize,cie_program,fde_program) "+
+	q+="(eh_pgm_id,caf,daf,return_register,ptrsize,cie_program,fde_program) "+
 		string(" VALUES (") +
 		string("'") + to_string(GetBaseID())          + string("', ") +
-		string("'") + to_string(code_alignment_factor)               + string("', ") +
-		string("'") + to_string(data_alignment_factor)               + string("', ") +
+		string("'") + to_string(+code_alignment_factor)               + string("', ") +
+		string("'") + to_string(+data_alignment_factor)               + string("', ") +
+		string("'") + to_string(+return_register)               + string("', ") +
 		string("'") + to_string(+ptrsize)               + string("', ") +
 		string("'") + encoded_cie_program               + string("', ") +
 		string("'") + encoded_fde_program               + string("') ; ");

@@ -30,7 +30,7 @@ class Relocation_t : public BaseObj_t
         Relocation_t(db_id_t reloc_id, int _offset, std::string _type, BaseObj_t* p_wrt_obj=NULL, int32_t p_addend=0) :
 		BaseObj_t(NULL), offset(_offset), type(_type), wrt_obj(p_wrt_obj), addend(p_addend) { SetBaseID(reloc_id); }
 
-        Relocation_t(db_id_t reloc_id) : BaseObj_t(NULL), type(""), wrt_obj(NULL), addend(0) { assert(0);}          // read from DB       
+//        Relocation_t(db_id_t reloc_id) : BaseObj_t(NULL), type(""), wrt_obj(NULL), addend(0) { assert(0);}          // read from DB       
 
         void WriteToDB() { assert(0); }   // writes to DB ID is not -1.
         std::string WriteToDB(File_t* fid, BaseObj_t* insn);    // writes to DB, ID is not -1.

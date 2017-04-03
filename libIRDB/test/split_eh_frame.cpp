@@ -727,21 +727,21 @@ class eh_program_insn_t
 					case DW_CFA_advance_loc1:
 					{
 						auto loc=*(uint8_t*)(&data[pos]);
-						cur_addr+=(opcode_lower6*CAF);
+						cur_addr+=(loc*CAF);
 						return true;
 					}
 
 					case DW_CFA_advance_loc2:
 					{
 						auto loc=*(uint16_t*)(&data[pos]);
-						cur_addr+=(opcode_lower6*CAF);
+						cur_addr+=(loc*CAF);
 						return true;
 					}
 
 					case DW_CFA_advance_loc4:
 					{
 						auto loc=*(uint32_t*)(&data[pos]);
-						cur_addr+=(opcode_lower6*CAF);
+						cur_addr+=(loc*CAF);
 						return true;
 					}
 				}
@@ -860,6 +860,8 @@ class cie_contents_t : eh_frame_util_t<ptrsize>
 	const eh_program_t<ptrsize>& GetProgram() const { return eh_pgm; }
 	uint64_t GetCAF() const { return code_alignment_factor; }
 	int64_t GetDAF() const { return data_alignment_factor; }
+	uint64_t GetPersonality() const { return personality; }
+	uint64_t GetReturnRegister() const { return return_address_register_column; }
 
 	string GetAugmentation() const { return augmentation; }
 	uint8_t GetLSDAEncoding() const { return lsda_encoding;}
@@ -1273,12 +1275,18 @@ class lsda_call_site_t : private eh_frame_util_t<ptrsize>
 						wrt=firp->FindScoop(type_table.at(index).GetTypeInfoPointer());
 						assert(wrt);
 					}
-					auto offset=0;
+					const auto offset=0;
+					auto addend=0;
 					if(wrt!=NULL) 
-						type_table.at(index).GetTypeInfoPointer()-wrt->GetStart()->GetVirtualOffset();
-					auto newreloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, offset, "type_table_entry", wrt, 0);
+						addend=type_table.at(index).GetTypeInfoPointer()-wrt->GetStart()->GetVirtualOffset();
+					auto newreloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, offset, "type_table_entry", wrt, addend);
 					new_ehcs->GetRelocations().insert(newreloc);
 					firp->GetRelocations().insert(newreloc);
+
+					if(wrt==NULL)
+						cout<<"Catch all in action table"<<endl;
+					else
+						cout<<"Catch for type at "<<wrt->GetName()<<"+0x"<<hex<<addend<<"."<<endl;
 				}
 				else if(action<0)
 				{
@@ -1751,14 +1759,18 @@ class split_eh_frame_impl_t : public split_eh_frame_t
 
 	void build_ir() const
 	{
+		typedef pair<EhProgram_t*,uint64_t> whole_pgm_t;
+
 		auto reusedpgms=size_t(0);
 		struct EhProgramComparator_t { 
-			bool operator() (const EhProgram_t* a, const EhProgram_t* b) { return *a < *b; } 
+//			bool operator() (const EhProgram_t* a, const EhProgram_t* b) { return *a < *b; } 
+			bool operator() (const whole_pgm_t& a, const whole_pgm_t& b) 
+			{ return tie(*a.first, a.second) < tie(*b.first,b.second); } 
 		};
 
 		// this is used to avoid adding duplicate entries to the program's IR, it allows a lookup by value
 		// instead of the IR's set which allows duplicates.
-		auto eh_program_cache = set<EhProgram_t*, EhProgramComparator_t>();
+		auto eh_program_cache = set<whole_pgm_t, EhProgramComparator_t>();
 
 		// find the right cie and fde, and build the IR from those for this instruction.
 		auto build_ir_insn=[&](Instruction_t* insn) -> void
@@ -1782,6 +1794,8 @@ class split_eh_frame_impl_t : public split_eh_frame_t
 				const auto fde_addr=fie_it->GetFDEStartAddress();
 				const auto caf=fie_it->GetCIE().GetCAF(); 
 				const auto daf=fie_it->GetCIE().GetDAF(); 
+				const auto return_reg=fie_it->GetCIE().GetReturnRegister(); 
+				const auto personality=fie_it->GetCIE().GetPersonality(); 
 				const auto insn_addr=insn->GetAddress()->GetVirtualOffset();
 
 				auto import_pgm = [&](EhProgramListing_t& out_pgm, const eh_program_t<ptrsize> in_pgm) -> void
@@ -1813,7 +1827,7 @@ class split_eh_frame_impl_t : public split_eh_frame_t
 
 				// build an eh program on the stack;
 
-				EhProgram_t ehpgm(BaseObj_t::NOT_IN_DATABASE,caf,daf,ptrsize);
+				auto ehpgm=EhProgram_t(BaseObj_t::NOT_IN_DATABASE,caf,daf,return_reg, ptrsize);
 				import_pgm(ehpgm.GetCIEProgram(), fie_it->GetCIE().GetProgram());
 				import_pgm(ehpgm.GetFDEProgram(), fie_it->GetProgram());
 
@@ -1821,11 +1835,11 @@ class split_eh_frame_impl_t : public split_eh_frame_t
 				if(getenv("EHIR_VERBOSE")!=NULL)
 					ehpgm.print();
 				// see if we've already built this one.
-				auto ehpgm_it = eh_program_cache.find(&ehpgm) ;
+				auto ehpgm_it = eh_program_cache.find(whole_pgm_t(&ehpgm, personality)) ;
 				if(ehpgm_it != eh_program_cache.end())
 				{
 					// yes, use the cached program.
-					insn->SetEhProgram(*ehpgm_it);
+					insn->SetEhProgram(ehpgm_it->first);
 					if(getenv("EHIR_VERBOSE")!=NULL)
 						cout<<"Re-using existing Program!"<<endl;
 					reusedpgms++;
@@ -1833,19 +1847,44 @@ class split_eh_frame_impl_t : public split_eh_frame_t
 				else /* doesn't yet exist! */
 				{
 					
-					// allocate in the heap so we can give it to the IR.
 					if(getenv("EHIR_VERBOSE")!=NULL)
 						cout<<"Allocating new Program!"<<endl;
-					EhProgram_t* newehpgm=new EhProgram_t(ehpgm); // copy constructor
 
-					// add to the IR
+					// allocate a new pgm in the heap so we can give it to the IR.
+					auto newehpgm=new EhProgram_t(ehpgm); // copy constructor
+					assert(newehpgm);
 					firp->GetAllEhPrograms().insert(newehpgm);
+
+					// allocate a relocation for the personality and give it to the IR.	
+					auto personality_scoop=firp->FindScoop(personality);
+					auto personality_insn_it=offset_to_insn_map.find(personality);
+					auto personality_insn=personality_insn_it==offset_to_insn_map.end() ? (Instruction_t*)NULL : personality_insn_it->second;
+					auto personality_obj = personality_scoop ? (BaseObj_t*)personality_scoop : (BaseObj_t*)personality_insn;
+					auto addend= personality_scoop ? personality - personality_scoop->GetStart()->GetVirtualOffset() : 0;
+					auto newreloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, 0, "personality", personality_obj, addend);
+					assert(personality==0 || personality_obj!=NULL);
+					assert(newreloc);	
+
+					if(personality_obj==NULL)
+						cout<<"Null personality obj: 0x"<<hex<<personality<<endl;
+					else if(personality_scoop)
+						cout<<"Found personality scoop: 0x"<<hex<<personality<<" -> "
+						    <<personality_scoop->GetName()<<"+0x"<<hex<<addend<<endl;
+					else if(personality_insn)
+						cout<<"Found personality insn: 0x"<<hex<<personality<<" -> "
+						    <<personality_insn->GetBaseID()<<":"<<personality_insn->getDisassembly()<<endl;
+					else
+						assert(0);
+
+					newehpgm->GetRelocations().insert(newreloc);
+					firp->GetRelocations().insert(newreloc);
+
 
 					// record for this insn
 					insn->SetEhProgram(newehpgm);
 
 					// update cache.
-					eh_program_cache.insert(newehpgm);
+					eh_program_cache.insert(whole_pgm_t(newehpgm,personality));
 				}
 				
 				// build the IR from the FDE.
@@ -1862,19 +1901,6 @@ class split_eh_frame_impl_t : public split_eh_frame_t
 			}
 			
 		};
-
-		//for_each(firp->GetInstructions().begin(), firp->GetInstructions().end(), [&](Instruction_t* i)
-		//{
-		//	build_ir_insn(i);
-		//});
-		for(Instruction_t* i : firp->GetInstructions())
-		{
-			build_ir_insn(i);
-		}
-
-		cout<<"#ATTRIBUTE total_eh_programs_created="<<dec<<firp->GetAllEhPrograms().size()<<endl;
-		cout<<"#ATTRIBUTE total_eh_programs_reused="<<dec<<reusedpgms<<endl;
-		cout<<"#ATTRIBUTE total_eh_programs="<<dec<<firp->GetAllEhPrograms().size()+reusedpgms<<endl;
 
 
 		auto remove_reloc=[&](Relocation_t* r) -> void
@@ -1901,10 +1927,20 @@ class split_eh_frame_impl_t : public split_eh_frame_t
 			delete s;
 		};
 
+		for(Instruction_t* i : firp->GetInstructions())
+		{
+			build_ir_insn(i);
+		}
+
+		cout<<"#ATTRIBUTE total_eh_programs_created="<<dec<<firp->GetAllEhPrograms().size()<<endl;
+		cout<<"#ATTRIBUTE total_eh_programs_reused="<<dec<<reusedpgms<<endl;
+		cout<<"#ATTRIBUTE total_eh_programs="<<dec<<firp->GetAllEhPrograms().size()+reusedpgms<<endl;
+
+
 		// will put back in a min, removing for commit
-		//remove_scoop(eh_frame_scoop);
-		//remove_scoop(eh_frame_hdr_scoop);
-		//remove_scoop(gcc_except_table_scoop);
+		remove_scoop(eh_frame_scoop);
+		remove_scoop(eh_frame_hdr_scoop);
+		remove_scoop(gcc_except_table_scoop);
 	
 	}
 };

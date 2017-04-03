@@ -26,8 +26,13 @@ class EhProgram_t : public BaseObj_t
 {
 	public:
 
-	EhProgram_t(db_id_t id, const uint64_t caf, const int64_t daf, const uint8_t p_ptrsize)
-		: BaseObj_t(NULL), code_alignment_factor(caf), data_alignment_factor(daf), ptrsize(p_ptrsize) 
+	EhProgram_t(db_id_t id, const uint64_t caf, const int64_t daf, const uint8_t rr, const uint8_t p_ptrsize)
+		: 
+		BaseObj_t(NULL), 
+		code_alignment_factor(caf), 
+		data_alignment_factor(daf), 
+		return_register(rr), 
+		ptrsize(p_ptrsize) 
 	{ SetBaseID(id); }
 
 
@@ -43,6 +48,9 @@ class EhProgram_t : public BaseObj_t
         int64_t GetDataAlignmentFactor() const { return data_alignment_factor; }
         void SetDataAlignmentFactor(const int64_t daf) { data_alignment_factor=daf; }
 
+        int64_t GetReturnRegNumber() const { return return_register; }
+        void SetReturnRegNumber(const int64_t rr) { return_register=rr; }
+
         std::string WriteToDB(File_t* fid);    // writes to DB, ID is not -1.
 
 
@@ -52,21 +60,15 @@ class EhProgram_t : public BaseObj_t
 
 	private:
 
-
 	EhProgramListing_t cie_program;
 	EhProgramListing_t fde_program;
-        uint64_t code_alignment_factor;
-        int64_t data_alignment_factor;
+        uint8_t code_alignment_factor;
+        int8_t data_alignment_factor;
+        int8_t return_register;
 	uint8_t ptrsize; // needed for interpreting programs
 
 };
 bool operator<(const EhProgram_t&a, const EhProgram_t&b);
-
-/*
-struct EhProgramComparator_t {
-	bool operator() (const EhProgram_t* a, const EhProgram_t* b) { return *a < *b; }
-};
-*/
 
 typedef std::set<EhProgram_t*> EhProgramSet_t;
 

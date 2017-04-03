@@ -872,6 +872,13 @@ void read_ehframe(FileIR_t* virp, EXEIO::exeio* exeiop)
 	if(!elfiop)
 		return;	// skip entire analysis for non-elf files as eh-frame is way different.
 
+	const auto eh_frame_it=find_if(virp->GetDataScoops().begin(), virp->GetDataScoops().end(),
+		[](const DataScoop_t* scoop) { return scoop->GetName()==".eh_frame"; });
+
+	// either no eh_frame in the elf file, or fill_in_indtargs removed it because
+	// it was asked to import the EH IR. 
+	if(eh_frame_it==virp->GetDataScoops().end())
+		return;
 
 	int secndx=0;
 	int secnum=elfiop->sections.size(); 

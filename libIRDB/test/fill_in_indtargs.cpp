@@ -2640,17 +2640,32 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t>
 
 main(int argc, char* argv[])
 {
-	int argc_iter = 2;
-
-	std::list<virtual_offset_t> forced_pins;
+	auto argc_iter = (int)2;
+	auto split_eh_frame_opt=false;
+	auto forced_pins=std::list<virtual_offset_t> ();
 
 	if(argc<2)
 	{
-		cerr<<"Usage: fill_in_indtargs <id> [addr,...]"<<endl;
+		cerr<<"Usage: fill_in_indtargs <id> [--split-eh-frame] [addr,...]"<<endl;
 		exit(-1);
 	}
-	/* parse argumnets */
-	for (argc_iter = 2; argc_iter < argc; argc_iter++)
+
+	// parse dash-style options.
+	while(argc_iter < argc && argv[argc_iter][0]=='-')
+	{
+		if(string(argv[argc_iter])=="--split-eh-frame")
+		{
+			split_eh_frame_opt=true;
+			argc_iter++;
+		}
+		else
+		{
+			cerr<<"Unknown option: "<<argv[argc_iter]<<endl;
+			exit(2);
+		}
+	}
+	// parse addr argumnets 
+	for (; argc_iter < argc; argc_iter++)
 	{
 		char *end_ptr;
 		virtual_offset_t offset = strtol(argv[argc_iter], &end_ptr, 0);
@@ -2699,7 +2714,8 @@ main(int argc, char* argv[])
 
 			// find all indirect branch targets
 			fill_in_indtargs(firp, elfiop, forced_pins);
-			split_eh_frame(firp);
+			if(split_eh_frame_opt)
+				split_eh_frame(firp);
 			
 			// write the DB back and commit our changes 
 			firp->WriteToDB();
