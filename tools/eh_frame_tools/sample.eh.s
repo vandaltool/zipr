@@ -23,14 +23,17 @@
 eh_frame_hdr_start:
 	.byte 1 	  	# version
 	.byte 0x10 | 0x0B 	# encoding for pointer to eh-frame -- DH_EH_PE_pcrel (0x10) | DH_EH_PE_sdata4 (0x0B)
-	.byte 0x03 		# encoding for ; of entries in eh-frame-hdr  -- BDH_EH_PE_udata4 (0x03)
-	.byte 0x10 | 0x0B 	# encoding for pointers (to fdes) held in the eh-frame-hdr header  -- DH_EH_PE_pcrel | DH_EH_PE_sdata4
+	.byte 0x03 		# encoding for ; of entries in eh-frame-hdr  -- DH_EH_PE_udata4 (0x03)
+	.byte 0x30 | 0x0B 	# encoding for pointers (to fdes) held in the eh-frame-hdr header  -- DH_EH_PE_datarel (0x30) | DH_EH_PE_sdata4 (0x0b)
 	.int Lfde_table - . 	# pointer to fde_table, encoded as an sdata4, pcrel
-	.byte (eh_frame_table_end-eh_frame_table)/4	# number of FDEs in the header.
+	.int (eh_frame_table_end-eh_frame_table)/8	# number of FDEs in the header.
 	.align 4
 eh_frame_table:
-	.int Lfde1 - . # fde pointers
-	.int Lfde2 - .
+	# an entry in the table is {offset to fde start , offset fde itself }, encoded as datarel|sdata4
+	.int fde1_start_addr - eh_frame_hdr_start
+	.int Lfde1 - eh_frame_hdr_start 
+	.int fde1_start_addr - eh_frame_hdr_start
+	.int Lfde2 - eh_frame_hdr_start
 eh_frame_table_end:
 
 
@@ -48,9 +51,9 @@ Lcie1:
 	.sleb128 -8		# data alignment factor
 	.uleb128 16		# return address reg.
 
-Lcie1_aug_data_start:
 	# encode the Z (length)
 	.sleb128 Lcie1_aug_data_end-Lcie1_aug_data_start # Z -- handle length field
+Lcie1_aug_data_start:
 
 	#encode the P (personality encoding + personality routine)
 	.byte 0x80 | 0x10 | 0x0B 	#  personality pointer encoding DH_EH_PE_indirect (0x80) | pcrel | sdata4

@@ -247,7 +247,7 @@ check_options()
 				if [ "X$2" = "Xzipr" ]; then
 					echo "Using Zipr backend."
 					export backend="zipr"
-					phases_spec=" $phases_spec stratafy_with_pc_confine=off generate_spri=off spasm=off fast_annot=off zipr=on preLoaded_ILR1=off  preLoaded_ILR2=off fast_spri=off "
+					phases_spec=" $phases_spec stratafy_with_pc_confine=off generate_spri=off spasm=off fast_annot=off zipr=on preLoaded_ILR1=off  preLoaded_ILR2=off fast_spri=off create_binary_script=off is_so=off"
 					phases_spec=${phases_spec/preLoaded_ILR1=on/}
 					phases_spec=${phases_spec/preLoaded_ILR2=on/}
 					step_options_gather_libraries="$step_options_gather_libraries --main_exe_only"
@@ -938,45 +938,6 @@ check_for_bad_funcs $newname.ncexe
 mkdir logs 	
 
 
-# copy in some shared libraries if requested.
-#perform_step 	diehard none cp $CFAR_HOME/DieHard/src/libdiehard.so libheaprand.so
-#perform_step diehard  none  $PEASOUP_HOME/tools/update_env_var.sh DO_DIEHARD 1
-#perform_step 	libtwitcher none cp $GT_COLLAB_HOME/downloads/libtwitcher.so libheaprand.so
-#perform_step	noh none cp $CFAR_HOME/non_overlapping_heap/noh.so noh.so
-#perform_step	nol none cp $CFAR_HOME/non_overlapping_libraries/ld-linux-x86-64.so.2 ld-linux-x86-64.so.2.nol
-
-#
-# create a stratafied binary that does pc confinement.
-#
-#perform_step stratafy_with_pc_confine none sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh $newname.ncexe $newname.stratafied 
-#cp a.ncexe a.ncexe.orig
-#perform_step add_confinement_section none $STRATA_HOME/tools/pc_confinement/add_confinement_section.sh a.ncexe.orig a.ncexe
-
-#
-# CGC CRCX elide
-#
-#perform_step cgc_optimize_start none $DAFFY_HOME/dead_code_ident/optimize_start.sh a.ncexe
-
-#
-# Let's output the modified binary
-# This binary will really be a shell script that calls the newly stratafied binary
-#
-#perform_step create_binary_script 	mandatory $PEASOUP_HOME/tools/do_makepeasoupbinary2.sh $name 
-#perform_step heaprand 	 		pc_confine,double_free $PEASOUP_HOME/tools/update_env_var.sh STRATA_HEAPRAND 1
-#perform_step controlled_exit none 		 	 $PEASOUP_HOME/tools/update_env_var.sh STRATA_CONTROLLED_EXIT 1
-#perform_step detect_server  pc_confine  $PEASOUP_HOME/tools/update_env_var.sh STRATA_DETECT_SERVERS 1
-#perform_step rekey  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_REKEY_AFTER 5000
-#perform_step double_free heaprand $PEASOUP_HOME/tools/update_env_var.sh STRATA_DOUBLE_FREE 1
-#perform_step pc_confine  none $PEASOUP_HOME/tools/update_env_var.sh STRATA_PC_CONFINE 1
-#perform_step isr 	 pc_confine $PEASOUP_HOME/tools/update_env_var.sh STRATA_PC_CONFINE_XOR 1
-#perform_step watchdog 	 signconv_func_monitor $PEASOUP_HOME/tools/update_env_var.sh STRATA_WATCHDOG $watchdog_val
-#perform_step is_so 	 mandatory $PEASOUP_HOME/tools/update_env_var.sh STRATA_IS_SO $($PEASOUP_HOME/tools/is_so.sh a.ncexe)
-#perform_step ibtl  ilr $PEASOUP_HOME/tools/update_env_var.sh STRATA_IBTL 1
-
-# turn on sign conversion function monitoring
-#perform_step signconv_func_monitor heaprand $PEASOUP_HOME/tools/update_env_var.sh STRATA_NUM_HANDLE 1
-
-
 #
 # turn off runtime protections for BED. turn off runtime prrotections for BED. turn off runtime prrotections for BED.
 #
@@ -1048,7 +1009,7 @@ fi
 # build basic IR
 perform_step fill_in_cfg mandatory $SECURITY_TRANSFORMS_HOME/bin/fill_in_cfg.exe $varid	
 perform_step fill_in_safefr mandatory $SECURITY_TRANSFORMS_HOME/bin/fill_in_safefr.exe $varid 
-perform_step fill_in_indtargs mandatory $SECURITY_TRANSFORMS_HOME/bin/fill_in_indtargs.exe $varid 
+perform_step fill_in_indtargs mandatory $SECURITY_TRANSFORMS_HOME/bin/fill_in_indtargs.exe $varid $step_options_fill_in_indtargs
 
 # finally create a clone so we can do some transforms 
 perform_step clone mandatory $SECURITY_TRANSFORMS_HOME/bin/clone.exe $varid clone.id

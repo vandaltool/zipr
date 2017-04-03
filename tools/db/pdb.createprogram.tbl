@@ -110,6 +110,7 @@ CREATE TABLE #EHPGM#
 	eh_pgm_id	integer,	-- id of this object.
 	caf		integer,	-- code alignment factor.
 	daf		integer,	-- data alignment factor
+	return_register	integer,	-- dwarf return register.
 	ptrsize		integer,	-- size of a pointer, 4 or 8.
 	cie_program	text,		-- for the cie, the bytes that make up a cie program, encoded as hex with commas separating instructions.
 	fde_program	text		-- for the fde, bytes as above
