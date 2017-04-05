@@ -371,9 +371,10 @@ std::map<db_id_t,EhCallSite_t*> FileIR_t::ReadEhCallSitesFromDB
 
 		const auto eh_cs_id=atoi(dbintr->GetResultColumn("ehcs_id").c_str());
 		const auto tt_encoding=atoi(dbintr->GetResultColumn("tt_encoding").c_str());
+		const auto has_cleanup=(bool)atoi(dbintr->GetResultColumn("has_cleanup").c_str());
 		const auto lp_insn_id=atoi(dbintr->GetResultColumn("lp_insn_id").c_str());
 
-		auto newEhCs=new EhCallSite_t(eh_cs_id,tt_encoding,NULL); // create the call site with an unresolved LP
+		auto newEhCs=new EhCallSite_t(eh_cs_id,tt_encoding,NULL, has_cleanup); // create the call site with an unresolved LP
 		eh_css.insert(newEhCs);					  // record that it exists.
 		ehcsMap[eh_cs_id]=newEhCs;				  // record the map for when we read instructions.
 		if(lp_insn_id != BaseObj_t::NOT_IN_DATABASE)

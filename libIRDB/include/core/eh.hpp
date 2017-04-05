@@ -76,8 +76,11 @@ class EhCallSite_t : public BaseObj_t
 {
 	public:
 
-	EhCallSite_t(const db_id_t id, const uint64_t enc=0, Instruction_t* lp=NULL)  :
-		BaseObj_t(NULL), tt_encoding(enc), landing_pad(lp)
+	EhCallSite_t(const db_id_t id, const uint64_t enc=0, Instruction_t* lp=NULL, const bool &p_has_cleanup=false)  :
+		BaseObj_t(NULL), 
+		tt_encoding(enc), 
+		landing_pad(lp),
+		has_cleanup(p_has_cleanup)
 	{ SetBaseID(id); }
 
 	uint64_t GetTTEncoding() const { return tt_encoding; }
@@ -86,12 +89,16 @@ class EhCallSite_t : public BaseObj_t
 	Instruction_t* GetLandingPad() const { return landing_pad; }
 	void SetLandingPad(Instruction_t* lp) { landing_pad=lp; }
 
+	bool GetHasCleanup() const { return has_cleanup; }
+	void SetHasCleanup(bool p_has_cleanup=true) { has_cleanup=p_has_cleanup; }
+
         std::string WriteToDB(File_t* fid);    // writes to DB, ID is not -1.
 
 	private:
 
 	uint64_t tt_encoding;
 	Instruction_t* landing_pad;
+	bool has_cleanup;
 };
 
 typedef std::set<EhCallSite_t*> EhCallSiteSet_t;

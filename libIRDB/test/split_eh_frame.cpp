@@ -261,6 +261,11 @@ template <int ptrsize>
 class eh_program_insn_t 
 {
 	public: 
+	
+	eh_program_insn_t() { }
+	eh_program_insn_t(const string &s) 
+		: program_bytes(s.begin(), next(s.begin(), s.size()))
+	{ }
 
 	void print(uint64_t &pc, int64_t caf=1) const
 	{
@@ -664,10 +669,10 @@ class eh_program_insn_t
 
 	bool isNop() const 
 	{
-		auto data=program_bytes.data();
-		auto opcode=program_bytes[0];
-		auto opcode_upper2=(uint8_t)(opcode >> 6);
-		auto opcode_lower6=(uint8_t)(opcode & (0x3f));
+		const auto data=program_bytes.data();
+		const auto opcode=program_bytes[0];
+		const auto opcode_upper2=(uint8_t)(opcode >> 6);
+		const auto opcode_lower6=(uint8_t)(opcode & (0x3f));
 		switch(opcode_upper2)
 		{
 			case 0:
@@ -677,6 +682,44 @@ class eh_program_insn_t
 				
 					case DW_CFA_nop:
 						return true;
+				}
+			}
+		}
+		return false;
+	}
+	bool isRestoreState() const 
+	{
+		const auto data=program_bytes.data();
+		const auto opcode=program_bytes[0];
+		const auto opcode_upper2=(uint8_t)(opcode >> 6);
+		const auto opcode_lower6=(uint8_t)(opcode & (0x3f));
+		switch(opcode_upper2)
+		{
+			case 0:
+			{
+				switch(opcode_lower6)
+				{
+					case DW_CFA_restore_state:
+						return true;	
+				}
+			}
+		}
+		return false;
+	}
+	bool isRememberState() const 
+	{
+		const auto data=program_bytes.data();
+		const auto opcode=program_bytes[0];
+		const auto opcode_upper2=(uint8_t)(opcode >> 6);
+		const auto opcode_lower6=(uint8_t)(opcode & (0x3f));
+		switch(opcode_upper2)
+		{
+			case 0:
+			{
+				switch(opcode_lower6)
+				{
+					case DW_CFA_remember_state:
+						return true;	
 				}
 			}
 		}
@@ -1059,6 +1102,7 @@ class lsda_type_table_entry_t: private eh_frame_util_t<ptrsize>
 	private:
 	uint64_t pointer_to_typeinfo;
 	uint64_t tt_encoding;
+	uint64_t tt_encoding_size;
 
 	public:
 	lsda_type_table_entry_t() : 
@@ -1067,6 +1111,7 @@ class lsda_type_table_entry_t: private eh_frame_util_t<ptrsize>
 
 	uint64_t GetTypeInfoPointer() const { return pointer_to_typeinfo; }
 	uint64_t GetEncoding() const { return tt_encoding; }
+	uint64_t GetTTEncodingSize() const { return tt_encoding_size; }
 
 	bool parse(
 		const uint64_t p_tt_encoding, 	
@@ -1078,17 +1123,16 @@ class lsda_type_table_entry_t: private eh_frame_util_t<ptrsize>
 		)
 	{
 		tt_encoding=p_tt_encoding;
-		auto size=uint32_t(0);
 		switch(tt_encoding & 0xf) // get just the size field
 		{
 			case DW_EH_PE_udata4:
 			case DW_EH_PE_sdata4:
-				size=4;
+				tt_encoding_size=4;
 				break;
 			default:
 				assert(0);
 		}
-		auto act_pos=uint32_t(tt_pos+(-index*size));
+		auto act_pos=uint32_t(tt_pos+(-index*tt_encoding_size));
 		if(this->read_type_with_encoding(tt_encoding, pointer_to_typeinfo, act_pos, data, max, data_addr))
 			return true;
 
@@ -1248,6 +1292,7 @@ class lsda_call_site_t : private eh_frame_util_t<ptrsize>
 		cout<<"landing pad addr : 0x"<<hex<<landing_pad_addr<<endl;
 		if(action_table.size() == 0 ) 
 		{
+			new_ehcs->SetHasCleanup();
 			cout<<"Destructors to call, but no exceptions to catch"<<endl;
 		}
 		else
@@ -1257,9 +1302,12 @@ class lsda_call_site_t : private eh_frame_util_t<ptrsize>
 				const auto action=p.GetAction();
 				if(action==0)
 				{
-					auto newreloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, 0, "type_table_entry", NULL, 0);
-					new_ehcs->GetRelocations().insert(newreloc);
-					firp->GetRelocations().insert(newreloc);
+					// NO!  This means that the type table has a 0, which means catch all.	
+					// an action table entry of 0 means that it has a cleanup, but not a catch all.
+					//auto newreloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, 0, "type_table_entry", NULL, 0);
+					//new_ehcs->GetRelocations().insert(newreloc);
+					//firp->GetRelocations().insert(newreloc);
+					new_ehcs->SetHasCleanup();
 					cout<<"Cleanup only (no catches) ."<<endl;
 				}
 				else if(action>0)
@@ -1275,7 +1323,7 @@ class lsda_call_site_t : private eh_frame_util_t<ptrsize>
 						wrt=firp->FindScoop(type_table.at(index).GetTypeInfoPointer());
 						assert(wrt);
 					}
-					const auto offset=0;
+					const auto offset=index*type_table.at(index).GetTTEncodingSize();
 					auto addend=0;
 					if(wrt!=NULL) 
 						addend=type_table.at(index).GetTypeInfoPointer()-wrt->GetStart()->GetVirtualOffset();
@@ -1284,7 +1332,7 @@ class lsda_call_site_t : private eh_frame_util_t<ptrsize>
 					firp->GetRelocations().insert(newreloc);
 
 					if(wrt==NULL)
-						cout<<"Catch all in action table"<<endl;
+						cout<<"Catch all in type table"<<endl;
 					else
 						cout<<"Catch for type at "<<wrt->GetName()<<"+0x"<<hex<<addend<<"."<<endl;
 				}
@@ -1811,6 +1859,25 @@ class split_eh_frame_impl_t : public split_eh_frame_t
 						else if(insn.isNop())
 						{
 							// skip nops 
+						}
+						else if(insn.isRestoreState())
+						{
+							// if a restore state happens, pop back out any instructions until
+							// we find the corresponding remember_state
+							while(1)
+							{
+								if(out_pgm.size()==0)
+								{
+									// unmatched remember state
+									cerr<<"Error in CIE/FDE program:  unmatched restore_state command"<<endl;
+									break;
+								}
+								const auto back_str=out_pgm.back();
+								out_pgm.pop_back();
+								const auto back_insn=eh_program_insn_t<ptrsize>(back_str);
+								if(back_insn.isRememberState())
+									break;
+							}
 						}
 						else
 						{

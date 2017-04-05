@@ -117,10 +117,11 @@ std::string EhCallSite_t::WriteToDB(File_t* fid)    // writes to DB, ID is not -
 		landing_pad_id=landing_pad->GetBaseID();
 
 	q ="insert into " + fid->GetEhCallSiteTableName();
-	q+="(ehcs_id,tt_encoding,lp_insn_id) "+
+	q+="(ehcs_id,tt_encoding,has_cleanup,lp_insn_id) "+
 		string(" VALUES (") +
 		string("'") + to_string(GetBaseID())         + string("', ") +
 		string("'") + to_string(+tt_encoding)        + string("', ") +
+		string("'") + to_string(+has_cleanup)        + string("', ") +
 		string("'") + to_string(landing_pad_id)      + string("') ;");
 	return q;
 }
