@@ -18,6 +18,7 @@ c++_examples/newdelete4.cpp -text
 c++_examples/newdelete5.cpp -text
 c++_examples/newdelete6.cpp -text
 c++_examples/simple_throw.cpp -text
+c++_examples/testit.sh -text
 c++_examples/throw.cpp -text
 cgc_spri/Makefile -text
 cgc_spri/spawn_with_spri_open.c -text

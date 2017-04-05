@@ -120,5 +120,6 @@ CREATE TABLE #EHCS#
 (
 	ehcs_id		integer,	-- id of this object.
 	tt_encoding	integer,	-- the encoding of the type table.
+	has_cleanup	integer,	-- whether this callsite has cleanups, even if the type table is empty.
 	lp_insn_id	integer 	-- the landing pad instruction's id.
 );
