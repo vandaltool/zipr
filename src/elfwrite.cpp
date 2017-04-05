@@ -781,6 +781,8 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 {
 	fseek(fout,0,SEEK_END);
 	long cur_file_pos=ftell(fout);
+	fseek(fout,cur_file_pos+1,SEEK_SET);
+	cur_file_pos=ftell(fout);
 
 
 	StringTable_t strtab;
@@ -924,10 +926,12 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 	symtab_shdr. sh_entsize =0;
 	shdrs.push_back(symtab_shdr);
 
+	cout<<"Writing strtab at filepos="<<hex<<cur_file_pos<<endl;
 	strtab.Write(fout);
 
 	long shdr_file_pos=ftell(fout);
 	
+	cout<<"Writing section headers at filepos="<<hex<<shdr_file_pos<<endl;
 	fwrite(shdrs.data(), sizeof(T_Elf_Shdr), shdrs.size(), fout);
 
 	new_ehdr.e_shentsize=sizeof(T_Elf_Shdr);

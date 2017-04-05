@@ -222,6 +222,49 @@ EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::LSDArepresen
 	extend(insn);
 }
 
+
+
+static const auto RelocsEqual=[](const Relocation_t* a, const Relocation_t* b) -> bool
+{
+	return 
+		forward_as_tuple(a->GetType(), a->GetOffset(), a->GetWRT(), a->GetAddend()) == 
+		forward_as_tuple(b->GetType(), b->GetOffset(), b->GetWRT(), b->GetAddend());
+};
+
+template <int ptrsize>
+bool EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::canExtend(Instruction_t* insn) const
+{
+	if(insn->GetEhCallSite() == NULL)
+		return true;
+
+	const auto tt_encoding = insn->GetEhCallSite()->GetTTEncoding();
+	// no type table
+	if(tt_encoding==0xff) // DW_EH_PE_omit
+	{
+		// but there's relocs for the type table,
+		// this is a conflict.
+		if(insn->GetEhCallSite()->GetRelocations().size() > 0 ) 
+			return false;
+	}
+	assert(tt_encoding==0x3 || tt_encoding==0xff); // DW_EH_PE_udata4 or omit
+	const auto tt_entry_size=4;
+
+	const auto mismatch_tt_entry = find_if(
+		insn->GetEhCallSite()->GetRelocations().begin(),
+		insn->GetEhCallSite()->GetRelocations().end(),
+		[&](const Relocation_t* candidate_reloc)
+			{
+				const auto tt_index=candidate_reloc->GetOffset()/tt_entry_size;
+				if(tt_index>=type_table.size())
+					return false;
+				return !RelocsEqual(candidate_reloc, type_table.at(tt_index));
+			}
+		);
+
+	// return true if we found no mismatches
+	return (mismatch_tt_entry == insn->GetEhCallSite()->GetRelocations().end());
+}
+
 template <int ptrsize>
 void EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::extend(Instruction_t* insn)
 {
@@ -261,10 +304,27 @@ void EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::extend(
 		// for now, this is the only supported reloc type on a EhCallSite 
 		assert(reloc->GetType()=="type_table_entry");
 		cs.actions.insert(reloc);
-		auto tt_it=find(type_table.begin(),type_table.end(), reloc);
+		auto tt_it=find_if(type_table.begin(),type_table.end(), 
+			[reloc](const Relocation_t* candidate) { return RelocsEqual(candidate,reloc); });
 		if(tt_it==type_table.end())
-			type_table.push_back(reloc);	
+		{
+			const auto tt_encoding = insn->GetEhCallSite()->GetTTEncoding();
+			assert(tt_encoding==0x3); // DW_EH_PE_udata4
+			const auto tt_entry_size=4;
+			const auto tt_index= reloc->GetOffset()/tt_entry_size;
+			if(tt_index>=type_table.size())
+				type_table.resize(tt_index+1);
+			assert(type_table.at(tt_index)==NULL || RelocsEqual(type_table.at(tt_index),reloc));	
+			type_table[tt_index]=reloc;	
+		}
 	}
+
+	// if the instruction has a cleanup, and there are other entries in the action table
+	// add a NULL to the action table to indicate we need to insert a cleanup indicator.
+	// if the cs.actions.size()==0, then we won't need any action list, and we can just set the "pointer"
+	// to the action table entry to be "NULL"
+	if(insn->GetEhCallSite()->GetHasCleanup() && cs.actions.size()>0)
+		cs.actions.insert(NULL);
 
 	// non-duplciating insert into the action table
 	auto at_it=find(action_table.begin(),action_table.end(), cs.actions);
@@ -297,6 +357,10 @@ bool EhWriterImpl_t<ptrsize>::FDErepresentation_t::canExtend(Instruction_t* insn
 
 	if(end_addr + new_fde_thresh < insn_addr)
 		return false;
+
+	assert(cie);
+	if(!cie->canSupport(insn))
+		return false; // can't change the CIE.
 
 	return pgm.canExtend(insn->GetEhProgram()->GetFDEProgram()) && 
 		lsda.canExtend(insn);
@@ -337,11 +401,11 @@ void EhWriterImpl_t<ptrsize>::BuildFDEs()
 		insn_in_order[this_pair.second]=this_pair.first;
 
 
-	// build the fdes (and cies/lsdas for this insn, starting with a null fde in case none exist
+	// build the fdes (and cies/lsdas) for this insn, starting with a null fde in case none exist
 	auto current_fde=(FDErepresentation_t*)NULL;
 	auto insns_with_frame=0;
 
-//	for_each instruction in program order
+	// for_each instruction in program order
 	for(const auto& this_pair : insn_in_order)
 	{
 		const auto &this_insn=this_pair.second;
@@ -413,39 +477,142 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 	const auto output_lsda=[&](const FDErepresentation_t* fde, ostream& out, const uint32_t lsda_num) -> void
 	{
 		const auto lsda=&fde->lsda;
-
-		const auto output_action=[&](const set<Relocation_t*> acts, const uint32_t act_num) -> void
+		out<<"LSDA"<<dec<<lsda_num<<":"<<endl;
+		if(!lsda->exists())
 		{
-			const auto zero_it=find_if(acts.begin(), acts.end(), [](const Relocation_t* act) { return act->GetWRT()==NULL; });
-			const auto has_zero=(zero_it!=acts.end());
+			return;
+		}
+
+		// the encoding of the landing pad is done in two parts:
+		// landing_pad=landing_pad_base+landing_pad_offset.
+		// typically, the landing_pad_base is omitted and the fde->start_addr is used instead.  
+		// However, sometimes the fde->start_addr is equal to the landing_pad,
+		// which would make the landing_pad_offset 0.
+		// but a landing_pad offset of 0 indicates no landing pad.
+		// To avoid this situation, we first detect it,
+		// then arbitrarily pick (and encode) a landing_pad_base that's
+		// not equal to any landing paad in the call site list.
+		const auto calc_landing_pad_base=[&]() -> uint64_t
+		{
+			// look for a landing pad that happens to match the fde->start_addr
+			const auto lp_base_conflict_it=find_if(
+				lsda->callsite_table.begin(),
+				lsda->callsite_table.end(),
+				[&](const typename FDErepresentation_t::LSDArepresentation_t::call_site_t& candidate)
+				{
+					if(candidate.landing_pad==NULL)
+						return false;
+					const auto lp_addr=zipr_obj.GetLocationMap()->at(candidate.landing_pad);
+					return (lp_addr==fde->start_addr);
+				});
+
+			// if not found, there's no need to adjust the landing pad base address.
+			if(lp_base_conflict_it==lsda->callsite_table.end())
+				return fde->start_addr;
+
+			// we pick an arbitrary landing_pad base by taking the min of all
+			// landing pads (and the fde_start addr), and subtracting 1.
+			const auto min_cs_entry_it=min_element(
+				lsda->callsite_table.begin(),
+				lsda->callsite_table.end(),
+				[&](const typename FDErepresentation_t::LSDArepresentation_t::call_site_t& a , const typename FDErepresentation_t::LSDArepresentation_t::call_site_t &b)
+				{
+					const auto lp_a=a.landing_pad;
+					const auto lp_b=b.landing_pad;
+					if(lp_a && lp_b)
+					{
+						const auto lp_addr_a=zipr_obj.GetLocationMap()->at(lp_a);
+						const auto lp_addr_b=zipr_obj.GetLocationMap()->at(lp_b);
+						return lp_addr_a<lp_addr_b;
+					}
+					if(!lp_a && lp_b)
+						return false;
+					if(!lp_b && lp_a)
+						return true;
+					return false;
+				});
+			const auto &min_cs_entry=*min_cs_entry_it;
+			const auto min_lp_addr=zipr_obj.GetLocationMap()->at(min_cs_entry.landing_pad);
+			const auto min_addr=min(min_lp_addr,fde->start_addr);
+			return min_addr-1;
+	
+		};
+
+		const auto landing_pad_base=calc_landing_pad_base();
+
+		// how to output actions
+		const auto output_action=[&](const set<Relocation_t*> action_reloc_set, const uint32_t act_num) -> void
+		{
+			// determine if cleanup is requested.
+			const auto cleanup_it=find(action_reloc_set.begin(), action_reloc_set.end(), (Relocation_t*)NULL);
+			const auto has_cleanup=(cleanup_it!=action_reloc_set.end());
+
+			// determine if catch all is requested.
+			const auto catch_all_it=find_if(action_reloc_set.begin(), action_reloc_set.end(), 
+				[&](const Relocation_t* reloc) { return reloc && reloc->GetWRT()==NULL; });
+			const auto has_catch_all=(catch_all_it!=action_reloc_set.end());
 
 			// counter for the element in this action table entry.
-			auto act_entry_num=acts.size()-1;
+			auto act_entry_num=action_reloc_set.size()-1;
 
-			if(has_zero)
+			// sanity
+			if(has_cleanup && has_catch_all)
+				// what?
+				assert(0);
+
+			// emit any cleanup first.
+			if(has_cleanup)
 			{
-				const auto zero_reloc=*zero_it;
-				const auto tt_it=find(lsda->type_table.begin(), lsda->type_table.end(), zero_reloc);
-				assert(tt_it != lsda->type_table.end());
-				const auto tt_index=tt_it-lsda->type_table.begin();
+				// has to be first	
+				assert(act_entry_num==action_reloc_set.size()-1);
+
+				// output entry.
 				out<<"LSDA"<<dec<<lsda_num<<"_act"<<act_num<<"_start_entry"<<act_entry_num<<":"<<endl;
-				out<<"	.uleb128 "<<dec<<1+tt_index<<endl;        
-				out<<"	.uleb128 0 "<<endl;
+				out<<"	.uleb128 0 #cleanup"<<endl;
+
+				out<<"	.uleb128 0 "<<endl; // always comes last in this action_table set
 				act_entry_num--;
 
 			}
-
-			for(const auto& act : acts)
+			if(has_catch_all)
 			{
-				// do nothing for a 
-				if(act->GetWRT()==NULL)	continue;
+				const auto catch_all_reloc=*catch_all_it;
+				const auto tt_it=find_if(lsda->type_table.begin(), lsda->type_table.end(), 
+					[&](const Relocation_t* candidate) { return RelocsEqual(candidate, catch_all_reloc); });
+				assert(tt_it != lsda->type_table.end());
+				const auto tt_index=tt_it-lsda->type_table.begin();
 
-				const auto tt_it=find(lsda->type_table.begin(), lsda->type_table.end(), act);
+				out<<"LSDA"<<dec<<lsda_num<<"_act"<<act_num<<"_start_entry"<<act_entry_num<<":"<<endl;
+				out<<"	.uleb128 "<<dec<<1+tt_index<<endl;        
+			
+				if(act_entry_num==action_reloc_set.size()-1)
+					out<<"	.uleb128 0 "<<endl;
+				else
+					out<<"	.uleb128  LSDA"<<lsda_num<<"_act"<<act_num<<"_start_entry"<<act_entry_num+1<<" - . "<<endl;
+				act_entry_num--;
+			}
+
+			for(const auto& action_reloc : action_reloc_set)
+			{
+				// indicates has_cleanup -- taken care of specially above.
+				if(action_reloc==NULL)
+				{
+					continue; 
+				}
+
+				// which indicates has catch all -- taken care of specially above.
+				if(action_reloc->GetWRT()==NULL)
+				{
+					continue;
+				}
+
+				const auto tt_it=find_if(lsda->type_table.begin(), lsda->type_table.end(), 
+					[action_reloc](const Relocation_t* candidate) { return RelocsEqual(action_reloc,candidate); } );
 				assert(tt_it != lsda->type_table.end());
 				const auto tt_index=tt_it-lsda->type_table.begin();
 				out<<"LSDA"<<dec<<lsda_num<<"_act"<<act_num<<"_start_entry"<<act_entry_num<<""<<":"<<endl;
 				out<<"	.uleb128 "<<dec<<1+tt_index<<endl;        
-				if(act_entry_num==acts.size()-1)
+				if(act_entry_num==action_reloc_set.size()-1)
 					out<<"	.uleb128 0 "<<endl;
 				else
 					out<<"	.uleb128  LSDA"<<lsda_num<<"_act"<<act_num<<"_start_entry"<<act_entry_num+1<<" - . "<<endl;
@@ -469,7 +636,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 			{
 				const auto lp_addr=zipr_obj.GetLocationMap()->at(cs.landing_pad);
 				out<<"	# 3) the landing pad, or 0 if none exists."<<endl;
-				out<<"	.uleb128 0x"<<hex<<lp_addr<<" - 0x"<<hex<<fde->start_addr<<endl;
+				out<<"	.uleb128 0x"<<hex<<lp_addr<<" - 0x"<<hex<<landing_pad_base<<endl;
 			}
 			else
 			{
@@ -479,7 +646,8 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 			if(cs.actions.size() > 0 )
 			{
 				out<<"	# 4) index into action table + 1 -- 0 indicates unwind only"<<endl;
-				out<<"	.uleb128 1 + LSDA"<<dec<<lsda_num<<"_act"<<cs.action_table_index<<"_start_entry0 - LSDA"<<dec<<lsda_num<<"_action_tab_start"<<endl;
+				out<<"	.uleb128 1 + LSDA"<<dec<<lsda_num<<"_act"
+				   <<cs.action_table_index<<"_start_entry0 - LSDA"<<dec<<lsda_num<<"_action_tab_start"<<endl;
 			}
 			else
 			{
@@ -490,68 +658,90 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 
 		};
 
-		out<<"LSDA"<<dec<<lsda_num<<":"<<endl;
-		if(!lsda->exists())
+		const auto output_header=[&]()
 		{
-			return;
-		}
-		out<<""<<endl;
-		out<<"        # 1) encoding of next field "<<endl;
-		out<<"        .byte 0xff # DW_EH_PE_omit (0xff)"<<endl;
-		out<<""<<endl;
-		out<<"        # 2) landing pad base, if omitted, use FDE start addr"<<endl;
-		out<<"        # .<fdebasetype> <fdebase> -- omitted.  "<<endl;
-		out<<""<<endl;
-		out<<"        # 3) encoding of type table entries"<<endl;
-		out<<"        .byte 0x3  # DW_EH_PE_udata4"<<endl;
-		out<<""<<endl;
-		out<<"        # 4) type table pointer -- always a uleb128"<<endl;
-		out<<"        .uleb128 LSDA"<<lsda_num<<"_type_table_end - LSDA"<<lsda_num<<"_tt_ptr_end"<<endl;
-		out<<"LSDA"<<lsda_num<<"_tt_ptr_end:"<<endl;
-		out<<""<<endl;
-		out<<"        # 5) call site table encoding"<<endl;
-		out<<"        .byte 0x1 # DW_EH_PE_uleb128 "<<endl;
-		out<<""<<endl;
-		out<<"        # 6) the length of the call site table"<<endl;
-		out<<"        .uleb128 LSDA"<<lsda_num<<"_cs_tab_end-LSDA"<<lsda_num<<"_cs_tab_start"<<endl;
-		out<<"LSDA"<<lsda_num<<"_cs_tab_start:"<<endl;
-
-
-		// output call site table
-		auto cs_num=0;
-		for(const auto & cs : lsda->callsite_table)
-		{
-			output_callsite(cs,cs_num++);
-		}
-		out<<"LSDA"<<dec<<lsda_num<<"_cs_tab_end:"<<endl;
-
-		// output action table
-		out<<"LSDA"<<dec<<lsda_num<<"_action_tab_start:"<<endl;
-		auto act_num=0;
-		for(const auto & act : lsda->action_table)
-		{
-			output_action(act,act_num++);
-		}
-		out<<"LSDA"<<dec<<lsda_num<<"_action_tab_end:"<<endl;
-
-
-		out<<"LSDA"<<dec<<lsda_num<<"_type_table_start:"<<endl;
-		for_each( lsda->type_table.rbegin(), lsda->type_table.rend(),  [&](const Relocation_t* reloc)
-		{
-			if(reloc->GetWRT()==NULL)
+			if(landing_pad_base==fde->start_addr)
 			{
-				out<<"	.int 0x0"<<endl;
+				out<<"        # 1) encoding of next field "<<endl;
+				out<<"        .byte 0xff # DW_EH_PE_omit (0xff)"<<endl;
+				out<<""<<endl;
+				out<<"        # 2) landing pad base, if omitted, use FDE start addr"<<endl;
+				out<<"        # .<fdebasetype> <fdebase> -- omitted.  "<<endl;
 			}
 			else
 			{
-				const auto scoop=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
-				assert(scoop);
-				const auto final_addr=scoop->GetStart()->GetVirtualOffset() + reloc->GetAddend();
-				out<<"	.int 0x"<<hex<<final_addr<<endl;
-				
+				out<<"        # 1) encoding of next field "<<endl;
+				out<<"        .byte 0x1b # DW_EH_PE_pcrel (0x10) |sdata4 (0xb)"<<endl;
+				out<<""<<endl;
+				out<<"        # 2) landing pad base, if omitted, use FDE start addr"<<endl;
+				out<<"        .int  0x"<<hex<<landing_pad_base<<"- . # as pcrel|sdata4 .  "<<endl;
 			}
-		});
-		out<<"LSDA"<<dec<<lsda_num<<"_type_table_end:"<<endl;
+			out<<""<<endl;
+			out<<"        # 3) encoding of type table entries"<<endl;
+			out<<"        .byte 0x3  # DW_EH_PE_udata4"<<endl;
+			out<<""<<endl;
+			out<<"        # 4) type table pointer -- always a uleb128"<<endl;
+			out<<"        .uleb128 LSDA"<<lsda_num<<"_type_table_end - LSDA"<<lsda_num<<"_tt_ptr_end"<<endl;
+			out<<"LSDA"<<lsda_num<<"_tt_ptr_end:"<<endl;
+			out<<""<<endl;
+			out<<"        # 5) call site table encoding"<<endl;
+			out<<"        .byte 0x1 # DW_EH_PE_uleb128 "<<endl;
+			out<<""<<endl;
+			out<<"        # 6) the length of the call site table"<<endl;
+			out<<"        .uleb128 LSDA"<<lsda_num<<"_cs_tab_end-LSDA"<<lsda_num<<"_cs_tab_start"<<endl;
+			out<<"LSDA"<<lsda_num<<"_cs_tab_start:"<<endl;
+		};
+
+		const auto output_call_site_table=[&]()
+		{
+			// output call site table
+			auto cs_num=0;
+			for(const auto & cs : lsda->callsite_table)
+			{
+				output_callsite(cs,cs_num++);
+			}
+			out<<"LSDA"<<dec<<lsda_num<<"_cs_tab_end:"<<endl;
+		};
+		const auto output_action_table=[&]()
+		{
+			// output action table
+			out<<"LSDA"<<dec<<lsda_num<<"_action_tab_start:"<<endl;
+			auto act_num=0;
+			for(const auto & act : lsda->action_table)
+			{
+				output_action(act,act_num++);
+			}
+			out<<"LSDA"<<dec<<lsda_num<<"_action_tab_end:"<<endl;
+		};
+
+		const auto output_type_table=[&]()
+		{
+			out<<"LSDA"<<dec<<lsda_num<<"_type_table_start:"<<endl;
+			for_each( lsda->type_table.rbegin(), lsda->type_table.rend(),  [&](const Relocation_t* reloc)
+			{
+				if(reloc->GetWRT()==NULL)
+				{
+					// indicates a catch all
+					out<<"	.int 0x0"<<endl;
+				}
+				else
+				{
+					// indicates a catch of a paritcular type
+					const auto scoop=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
+					assert(scoop);
+					const auto final_addr=scoop->GetStart()->GetVirtualOffset() + reloc->GetAddend();
+					out<<"	.int 0x"<<hex<<final_addr<<endl;
+					
+				}
+			});
+			out<<"LSDA"<<dec<<lsda_num<<"_type_table_end:"<<endl;
+		};
+
+		output_header();
+		output_call_site_table();
+		output_action_table();
+		output_type_table();
+
 	};
 	const auto output_cie=[&](const CIErepresentation_t* cie, ostream& out) -> void
 	{
@@ -757,17 +947,17 @@ void EhWriterImpl_t<ptrsize>::ScoopifyEhOutput()
 
 	auto to_scoop=[&](const string &secname)->void
 	{
-		auto sec=ehframe_exe_elfio.sections[secname];
+		const auto &sec=ehframe_exe_elfio.sections[secname];
 
 		// if sec is missing, don't scoopify.
 
 		if(sec==NULL) return;
-		auto data=string(sec->get_data(), sec->get_size());
-		auto start_vo=sec->get_address();
-		auto start_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, BaseObj_t::NOT_IN_DATABASE, start_vo);
-		auto end_vo=sec->get_address()+sec->get_size()-1;
-		auto end_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, BaseObj_t::NOT_IN_DATABASE, end_vo);
-		auto new_scoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, secname, start_addr,end_addr,NULL,4,false,data);
+		const auto data=string(sec->get_data(), sec->get_size());
+		const auto start_vo=sec->get_address();
+		const auto start_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, BaseObj_t::NOT_IN_DATABASE, start_vo);
+		const auto end_vo=sec->get_address()+sec->get_size()-1;
+		const auto end_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, BaseObj_t::NOT_IN_DATABASE, end_vo);
+		const auto new_scoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, secname, start_addr,end_addr,NULL,4,false,data);
 
 		zipr_obj.GetFileIR()->GetAddresses().insert(start_addr);
 		zipr_obj.GetFileIR()->GetAddresses().insert(end_addr);

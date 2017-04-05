@@ -68,7 +68,7 @@ class EhWriterImpl_t : public EhWriter_t
 			public:
 			LSDArepresentation_t(libIRDB::Instruction_t* insn);
 			void extend(libIRDB::Instruction_t* insn);
-			bool canExtend(libIRDB::Instruction_t* insn) const { (void)insn; return true; }
+			bool canExtend(libIRDB::Instruction_t* insn) const;
 			bool exists()  const  { return callsite_table.size() > 0; }
 
 			struct call_site_t
