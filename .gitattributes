@@ -2,6 +2,10 @@
 /LICENSE.txt -text
 /Makefile -text
 c++_examples/Makefile -text
+c++_examples/derived2_throw.cpp -text
+c++_examples/derived3_throw.cpp -text
+c++_examples/derived4_throw.cpp -text
+c++_examples/derived_throw.cpp -text
 c++_examples/hanoi++.cpp -text
 c++_examples/newdel.cpp -text
 c++_examples/newdel_broke1.cpp -text
