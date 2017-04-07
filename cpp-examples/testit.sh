@@ -47,8 +47,9 @@ doit_meta()
 
 			doit $src $option 
 			doit $src $option -fPIC 
-			doit $src $option -fPIC -fPIE 
-			doit $src $option -fPIC -fPIE -fomit-frame-pointer
+			doit $src $option -fPIC -fomit-frame-pointer
+			doit $src $option -fPIC  -pie
+			doit $src $option -fPIC -fomit-frame-pointer -pie
 }
 
 main()
