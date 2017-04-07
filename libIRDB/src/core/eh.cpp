@@ -110,18 +110,56 @@ std::string EhProgram_t::WriteToDB(File_t* fid)    // writes to DB, ID is not -1
 
 std::string EhCallSite_t::WriteToDB(File_t* fid)    // writes to DB, ID is not -1.
 {
+	const auto vec_to_string=[](const vector<int> &v)
+	{
+		stringstream s;
+		for(const auto &e : v)
+		{
+			s<<dec<<e<<" ";
+		}
+		
+		return s.str();
+	};
 	string q;
+
+	
 
 	auto landing_pad_id=BaseObj_t::NOT_IN_DATABASE;
 	if(landing_pad != NULL)
 		landing_pad_id=landing_pad->GetBaseID();
 
+	const auto ttov_str=vec_to_string(ttov);
+
 	q ="insert into " + fid->GetEhCallSiteTableName();
-	q+="(ehcs_id,tt_encoding,has_cleanup,lp_insn_id) "+
+	q+="(ehcs_id,tt_encoding,ttov,lp_insn_id) "+
 		string(" VALUES (") +
 		string("'") + to_string(GetBaseID())         + string("', ") +
 		string("'") + to_string(+tt_encoding)        + string("', ") +
-		string("'") + to_string(+has_cleanup)        + string("', ") +
+		string("'") + ttov_str        + string("', ") +
 		string("'") + to_string(landing_pad_id)      + string("') ;");
 	return q;
 }
+
+bool EhCallSite_t::GetHasCleanup() const 
+{
+	const auto ttov_it=find(ttov.begin(), ttov.end(), 0);
+	return ttov_it!=ttov.end();
+}
+
+void EhCallSite_t::SetHasCleanup(bool p_has_cleanup) 
+{
+	if(p_has_cleanup)
+	{
+		if(!GetHasCleanup())
+			ttov.push_back(0);
+	}
+	else
+	{
+		if(GetHasCleanup())
+		{
+			const auto ttov_it=find(ttov.begin(), ttov.end(), 0);
+			ttov.erase(ttov_it);
+		}
+	}
+}
+

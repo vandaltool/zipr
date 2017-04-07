@@ -1123,6 +1123,9 @@ class lsda_type_table_entry_t: private eh_frame_util_t<ptrsize>
 		)
 	{
 		tt_encoding=p_tt_encoding;
+		const auto tt_encoding_sans_indirect = tt_encoding&(~DW_EH_PE_indirect);
+		const auto tt_encoding_sans_indir_sans_pcrel = tt_encoding_sans_indirect & (~DW_EH_PE_pcrel);
+		const auto has_pcrel = (tt_encoding & DW_EH_PE_pcrel) == DW_EH_PE_pcrel;
 		switch(tt_encoding & 0xf) // get just the size field
 		{
 			case DW_EH_PE_udata4:
@@ -1132,9 +1135,14 @@ class lsda_type_table_entry_t: private eh_frame_util_t<ptrsize>
 			default:
 				assert(0);
 		}
+		const auto orig_act_pos=uint32_t(tt_pos+(-index*tt_encoding_size));
 		auto act_pos=uint32_t(tt_pos+(-index*tt_encoding_size));
-		if(this->read_type_with_encoding(tt_encoding, pointer_to_typeinfo, act_pos, data, max, data_addr))
+		if(this->read_type_with_encoding(tt_encoding_sans_indir_sans_pcrel, pointer_to_typeinfo, act_pos, data, max, data_addr))
 			return true;
+
+		// check if there's a 0 in the field
+		if(pointer_to_typeinfo != 0 && has_pcrel)
+			pointer_to_typeinfo += orig_act_pos + data_addr;
 
 		return false;
 	}
@@ -1300,6 +1308,7 @@ class lsda_call_site_t : private eh_frame_util_t<ptrsize>
 			for_each(action_table.begin(), action_table.end(), [&](const lsda_call_site_action_t<ptrsize>& p)
 			{
 				const auto action=p.GetAction();
+				new_ehcs->GetTTOrderVector().push_back(action);
 				if(action==0)
 				{
 					// NO!  This means that the type table has a 0, which means catch all.	
@@ -1463,8 +1472,7 @@ class lsda_t : private eh_frame_util_t<ptrsize>
 			for(int i=1;i<=max_tt_entry;i++)
 			{
 				lsda_type_table_entry_t <ptrsize> ltte;
-				auto type_table_encoding_sans_indirect = type_table_encoding&(~DW_EH_PE_indirect);
-				if(ltte.parse(type_table_encoding_sans_indirect, type_table_pos, i, data, max, data_addr ))
+				if(ltte.parse(type_table_encoding, type_table_pos, i, data, max, data_addr ))
 					return true;
 				type_table.push_back(ltte);
 			}
@@ -1836,7 +1844,7 @@ class split_eh_frame_impl_t : public split_eh_frame_t
 					cout<<hex<<insn->GetAddress()->GetVirtualOffset()<<":"
 					    <<insn->GetBaseID()<<":"<<insn->getDisassembly()<<" -> "<<endl;
 					//fie_it->GetCIE().print();
-					//fie_it->print();
+					fie_it->print();
 				}
 
 				const auto fde_addr=fie_it->GetFDEStartAddress();

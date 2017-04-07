@@ -71,16 +71,16 @@ class EhProgram_t : public BaseObj_t
 bool operator<(const EhProgram_t&a, const EhProgram_t&b);
 
 typedef std::set<EhProgram_t*> EhProgramSet_t;
+typedef std::vector<int> TTOrderVector_t;
 
 class EhCallSite_t : public BaseObj_t
 {
 	public:
 
-	EhCallSite_t(const db_id_t id, const uint64_t enc=0, Instruction_t* lp=NULL, const bool &p_has_cleanup=false)  :
+	EhCallSite_t(const db_id_t id, const uint64_t enc=0, Instruction_t* lp=NULL) : 
 		BaseObj_t(NULL), 
 		tt_encoding(enc), 
-		landing_pad(lp),
-		has_cleanup(p_has_cleanup)
+		landing_pad(lp)
 	{ SetBaseID(id); }
 
 	uint64_t GetTTEncoding() const { return tt_encoding; }
@@ -89,8 +89,11 @@ class EhCallSite_t : public BaseObj_t
 	Instruction_t* GetLandingPad() const { return landing_pad; }
 	void SetLandingPad(Instruction_t* lp) { landing_pad=lp; }
 
-	bool GetHasCleanup() const { return has_cleanup; }
-	void SetHasCleanup(bool p_has_cleanup=true) { has_cleanup=p_has_cleanup; }
+	bool GetHasCleanup() const ;
+	void SetHasCleanup(bool p_has_cleanup=true) ;
+
+	TTOrderVector_t& GetTTOrderVector() { return ttov; }
+	const TTOrderVector_t& GetTTOrderVector() const { return ttov; }
 
         std::string WriteToDB(File_t* fid);    // writes to DB, ID is not -1.
 
@@ -98,7 +101,7 @@ class EhCallSite_t : public BaseObj_t
 
 	uint64_t tt_encoding;
 	Instruction_t* landing_pad;
-	bool has_cleanup;
+	TTOrderVector_t ttov;
 };
 
 typedef std::set<EhCallSite_t*> EhCallSiteSet_t;
