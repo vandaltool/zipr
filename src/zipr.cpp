@@ -2229,7 +2229,7 @@ void ZiprImpl_t::PlaceDollops()
 		}
 
 		if (!placed) {
-			cout << "Using default place locator." << endl;
+			// cout << "Using default place locator." << endl;
 			/*
 			 * TODO: Re-enable this ONCE we figure out why the dollop
 			 * sizes are not being recalculated correctly.
@@ -2351,7 +2351,7 @@ void ZiprImpl_t::PlaceDollops()
 
 			to_place->Place(cur_addr);
 
-			cout << "to_place->GetSize(): " << to_place->GetSize() << endl;
+			// cout << "to_place->GetSize(): " << to_place->GetSize() << endl;
 
 			fits_entirely = (to_place->GetSize() <= (placement.GetEnd()-cur_addr));
 			all_fallthroughs_fit = (wcds <= (placement.GetEnd()-cur_addr));
@@ -3220,8 +3220,11 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntry(
 		abs_displacement = *displacement;
 		*displacement = abs_displacement - addr;
 
-		cout<<"absolute displacement: "<< hex << abs_displacement<<endl;
-		cout<<"relative displacement: "<< hex << *displacement<<endl;
+		if(m_verbose)
+		{
+			cout<<"absolute displacement: "<< hex << abs_displacement<<endl;
+			cout<<"relative displacement: "<< hex << *displacement<<endl;
+		}
 
 		/*
 		 * Update the instruction with the relative displacement.

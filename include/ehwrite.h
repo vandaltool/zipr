@@ -77,11 +77,12 @@ class EhWriterImpl_t : public EhWriter_t
 				libIRDB::Instruction_t* cs_insn_end;
 				libIRDB::Instruction_t* landing_pad;
 				int action_table_index;
-				std::set<libIRDB::Relocation_t*> actions;
+				libIRDB::TTOrderVector_t actions;
 			};
 			std::vector<call_site_t> callsite_table;
-			std::vector<std::set<libIRDB::Relocation_t*> > action_table;
+			std::vector<libIRDB::TTOrderVector_t> action_table;
 			std::vector<libIRDB::Relocation_t*> type_table;
+			uint64_t tt_encoding;
 
 		};
 

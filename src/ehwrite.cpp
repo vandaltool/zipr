@@ -218,7 +218,11 @@ bool EhWriterImpl_t<ptrsize>::EhProgramListingManip_t::isAdvanceDirective(const 
 
 template <int ptrsize>
 EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::LSDArepresentation_t(Instruction_t* insn)
+	// if there are call sites, use the call site encoding.  if not, set to omit for initializer.
+	//  extend/canExtend should be able to extend an omit to a non-omit.
+	: tt_encoding( insn->GetEhCallSite() ? insn->GetEhCallSite()->GetTTEncoding() : 0xff)
 {
+		
 	extend(insn);
 }
 
@@ -226,6 +230,10 @@ EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::LSDArepresen
 
 static const auto RelocsEqual=[](const Relocation_t* a, const Relocation_t* b) -> bool
 {
+	if(a==NULL && b==NULL)
+		return true;
+	if(a==NULL || b==NULL)
+		return false;
 	return 
 		forward_as_tuple(a->GetType(), a->GetOffset(), a->GetWRT(), a->GetAddend()) == 
 		forward_as_tuple(b->GetType(), b->GetOffset(), b->GetWRT(), b->GetAddend());
@@ -237,16 +245,20 @@ bool EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::canExte
 	if(insn->GetEhCallSite() == NULL)
 		return true;
 
-	const auto tt_encoding = insn->GetEhCallSite()->GetTTEncoding();
+	const auto insn_tt_encoding = insn->GetEhCallSite()->GetTTEncoding();
+
 	// no type table
-	if(tt_encoding==0xff) // DW_EH_PE_omit
+	if(tt_encoding==0xff || insn_tt_encoding==0xff) // DW_EH_PE_omit (0xff)
 	{
-		// but there's relocs for the type table,
-		// this is a conflict.
-		if(insn->GetEhCallSite()->GetRelocations().size() > 0 ) 
-			return false;
+		// no encoding issues.
 	}
-	assert(tt_encoding==0x3 || tt_encoding==0xff); // DW_EH_PE_udata4 or omit
+	// check if tt encodings match.
+	else if(insn_tt_encoding!=tt_encoding)
+		return true;
+
+	assert((tt_encoding&0xf)==0x3 || 	// encoding contains DW_EH_PE_udata4 
+	       (tt_encoding)==0xff || 		// or is exactly DW_EH_PE_omit
+ 	       (tt_encoding&0xf)==0xb ); 	// or encoding contains DW_EH_PE_sdata4
 	const auto tt_entry_size=4;
 
 	const auto mismatch_tt_entry = find_if(
@@ -257,7 +269,11 @@ bool EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::canExte
 				const auto tt_index=candidate_reloc->GetOffset()/tt_entry_size;
 				if(tt_index>=type_table.size())
 					return false;
-				return !RelocsEqual(candidate_reloc, type_table.at(tt_index));
+				const auto &tt_entry=type_table.at(tt_index);
+	
+				if(tt_entry==NULL) // entry is empty, so no conflict
+					return false;
+				return !RelocsEqual(candidate_reloc, tt_entry);
 			}
 		);
 
@@ -272,6 +288,8 @@ void EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::extend(
 	if(insn->GetEhCallSite() == NULL)
 		return;
 
+	const auto insn_tt_encoding = insn->GetEhCallSite()->GetTTEncoding();
+
 	// FIXME: optimization possibilty:  see if the last call site in the table
 	// has the same set of catch-types + landing_pad and is "close enough" to this insn.
 	// if so, combine.  
@@ -284,6 +302,24 @@ void EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::extend(
 	cs.cs_insn_start=insn;
 	cs.cs_insn_end=insn;
 	cs.landing_pad=insn->GetEhCallSite()->GetLandingPad();
+
+	if(tt_encoding == 0xff /* omit */)
+	{
+		/* existing is omit, use new encoding */
+		tt_encoding=insn_tt_encoding;
+	}
+	else if(insn_tt_encoding == 0xff /* omit */)
+	{
+		/* new encoding is omit, use current tt encoding */
+	}
+	else if(tt_encoding == insn_tt_encoding)
+	{
+		/* encodings match, -- do nothing */
+	}
+	else
+		assert(0); // canExtend failure?
+	
+		
 
 
 	// go through the relocations on the eh call site and 
@@ -303,13 +339,13 @@ void EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::extend(
 
 		// for now, this is the only supported reloc type on a EhCallSite 
 		assert(reloc->GetType()=="type_table_entry");
-		cs.actions.insert(reloc);
 		auto tt_it=find_if(type_table.begin(),type_table.end(), 
-			[reloc](const Relocation_t* candidate) { return RelocsEqual(candidate,reloc); });
+			[reloc](const Relocation_t* candidate) { return candidate!=NULL && RelocsEqual(candidate,reloc); });
 		if(tt_it==type_table.end())
 		{
 			const auto tt_encoding = insn->GetEhCallSite()->GetTTEncoding();
-			assert(tt_encoding==0x3); // DW_EH_PE_udata4
+			assert((tt_encoding&0xf)==0x3 ||  // encoding contains DW_EH_PE_udata4
+			       (tt_encoding&0xf)==0xb); // encoding contains DW_EH_PE_sdata4
 			const auto tt_entry_size=4;
 			const auto tt_index= reloc->GetOffset()/tt_entry_size;
 			if(tt_index>=type_table.size())
@@ -319,14 +355,8 @@ void EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::extend(
 		}
 	}
 
-	// if the instruction has a cleanup, and there are other entries in the action table
-	// add a NULL to the action table to indicate we need to insert a cleanup indicator.
-	// if the cs.actions.size()==0, then we won't need any action list, and we can just set the "pointer"
-	// to the action table entry to be "NULL"
-	if(insn->GetEhCallSite()->GetHasCleanup() && cs.actions.size()>0)
-		cs.actions.insert(NULL);
+	cs.actions=insn->GetEhCallSite()->GetTTOrderVector();
 
-	// non-duplciating insert into the action table
 	auto at_it=find(action_table.begin(),action_table.end(), cs.actions);
 	if(at_it==action_table.end())
 	{
@@ -541,7 +571,25 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 		const auto landing_pad_base=calc_landing_pad_base();
 
 		// how to output actions
-		const auto output_action=[&](const set<Relocation_t*> action_reloc_set, const uint32_t act_num) -> void
+		const auto output_action=[&](const libIRDB::TTOrderVector_t &act, const uint32_t act_num) -> void
+		{
+			const auto &ttov=act;
+			const auto biggest_ttov_index=ttov.size()-1;
+			auto act_entry_num=biggest_ttov_index;
+
+			for(int i=act_entry_num; i>=0; i--)
+			{
+				out<<"LSDA"<<dec<<lsda_num<<"_act"<<act_num<<"_start_entry"<<act_entry_num<<""<<":"<<endl;
+				out<<"	.uleb128 "<<dec<<ttov.at(act_entry_num)<<endl;        
+				if(act_entry_num==biggest_ttov_index)
+					out<<"	.uleb128 0 "<<endl;
+				else
+					out<<"	.uleb128  LSDA"<<lsda_num<<"_act"<<act_num<<"_start_entry"<<act_entry_num+1<<" - . "<<endl;
+				act_entry_num--;
+			}
+		};
+
+#if 0
 		{
 			// determine if cleanup is requested.
 			const auto cleanup_it=find(action_reloc_set.begin(), action_reloc_set.end(), (Relocation_t*)NULL);
@@ -578,7 +626,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 			{
 				const auto catch_all_reloc=*catch_all_it;
 				const auto tt_it=find_if(lsda->type_table.begin(), lsda->type_table.end(), 
-					[&](const Relocation_t* candidate) { return RelocsEqual(candidate, catch_all_reloc); });
+					[&](const Relocation_t* candidate) { return candidate && RelocsEqual(candidate, catch_all_reloc); });
 				assert(tt_it != lsda->type_table.end());
 				const auto tt_index=tt_it-lsda->type_table.begin();
 
@@ -607,7 +655,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 				}
 
 				const auto tt_it=find_if(lsda->type_table.begin(), lsda->type_table.end(), 
-					[action_reloc](const Relocation_t* candidate) { return RelocsEqual(action_reloc,candidate); } );
+					[action_reloc](const Relocation_t* candidate) { return candidate!=NULL && RelocsEqual(action_reloc,candidate); } );
 				assert(tt_it != lsda->type_table.end());
 				const auto tt_index=tt_it-lsda->type_table.begin();
 				out<<"LSDA"<<dec<<lsda_num<<"_act"<<act_num<<"_start_entry"<<act_entry_num<<""<<":"<<endl;
@@ -620,6 +668,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 			}
         		//out<<"	.equ  LSDA"<<lsda_num<<"_act"<<act_num<<"_start,  LSDA"<<lsda_num<<"_act"<<act_num<<"_start_entry0"<<endl;
 		};
+#endif
 
 
 		const auto output_callsite=[&](const typename FDErepresentation_t::LSDArepresentation_t::call_site_t &cs, const uint32_t cs_num) -> void
@@ -658,7 +707,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 
 		};
 
-		const auto output_header=[&]()
+		const auto output_lsda_header=[&]()
 		{
 			if(landing_pad_base==fde->start_addr)
 			{
@@ -678,18 +727,25 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 			}
 			out<<""<<endl;
 			out<<"        # 3) encoding of type table entries"<<endl;
-			out<<"        .byte 0x3  # DW_EH_PE_udata4"<<endl;
+			out<<"        .byte 0x"<<hex<<lsda->tt_encoding<<"  # DW_EH_PE_udata4"<<endl;
 			out<<""<<endl;
 			out<<"        # 4) type table pointer -- always a uleb128"<<endl;
-			out<<"        .uleb128 LSDA"<<lsda_num<<"_type_table_end - LSDA"<<lsda_num<<"_tt_ptr_end"<<endl;
-			out<<"LSDA"<<lsda_num<<"_tt_ptr_end:"<<endl;
+			if(lsda->tt_encoding==0xff) /* omit */
+			{
+				out<<"        # .uleb128 LSDAptr omitted"<< endl;
+			}
+			else
+			{
+				out<<"        .uleb128 LSDA"<<dec<<lsda_num<<"_type_table_end - LSDA"<<lsda_num<<"_tt_ptr_end"<<endl;
+			}
+			out<<"LSDA"<<dec<<lsda_num<<"_tt_ptr_end:"<<endl;
 			out<<""<<endl;
 			out<<"        # 5) call site table encoding"<<endl;
 			out<<"        .byte 0x1 # DW_EH_PE_uleb128 "<<endl;
 			out<<""<<endl;
 			out<<"        # 6) the length of the call site table"<<endl;
-			out<<"        .uleb128 LSDA"<<lsda_num<<"_cs_tab_end-LSDA"<<lsda_num<<"_cs_tab_start"<<endl;
-			out<<"LSDA"<<lsda_num<<"_cs_tab_start:"<<endl;
+			out<<"        .uleb128 LSDA"<<dec<<lsda_num<<"_cs_tab_end-LSDA"<<dec<<lsda_num<<"_cs_tab_start"<<endl;
+			out<<"LSDA"<<dec<<lsda_num<<"_cs_tab_start:"<<endl;
 		};
 
 		const auto output_call_site_table=[&]()
@@ -719,10 +775,15 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 			out<<"LSDA"<<dec<<lsda_num<<"_type_table_start:"<<endl;
 			for_each( lsda->type_table.rbegin(), lsda->type_table.rend(),  [&](const Relocation_t* reloc)
 			{
-				if(reloc->GetWRT()==NULL)
+				if(reloc==NULL)
 				{
-					// indicates a catch all
-					out<<"	.int 0x0"<<endl;
+					// indicates a catch all or empty type table entry
+					out<<"	.int 0x0 # not used!"<<endl;
+				}
+				else if(reloc->GetWRT()==NULL)
+				{
+					// indicates a catch all or empty type table entry
+					out<<"	.int 0x0 # catch all "<<endl;
 				}
 				else
 				{
@@ -730,14 +791,17 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 					const auto scoop=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
 					assert(scoop);
 					const auto final_addr=scoop->GetStart()->GetVirtualOffset() + reloc->GetAddend();
-					out<<"	.int 0x"<<hex<<final_addr<<endl;
+					if(((lsda->tt_encoding)&0x10) == 0x10) // if encoding contains pcrel (0x10).
+						out<<"	.int 0x"<<hex<<final_addr<<" - . "<<endl;
+					else
+						out<<"	.int 0x"<<hex<<final_addr<<endl;
 					
 				}
 			});
 			out<<"LSDA"<<dec<<lsda_num<<"_type_table_end:"<<endl;
 		};
 
-		output_header();
+		output_lsda_header();
 		output_call_site_table();
 		output_action_table();
 		output_type_table();

@@ -717,7 +717,7 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 				const PageData_t &page=pagemap[new_phdrs[i].p_vaddr+j];
 
 				// is it the last page?
-				if(j+PAGE_SIZE < new_phdrs[i].p_filesz)
+				if(j+PAGE_SIZE < new_phdrs[i].p_filesz || m_write_sections )
 				{
 					fwrite(page.data.data(), PAGE_SIZE, 1, fout);
 				}
@@ -781,8 +781,6 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 {
 	fseek(fout,0,SEEK_END);
 	long cur_file_pos=ftell(fout);
-	fseek(fout,cur_file_pos+1,SEEK_SET);
-	cur_file_pos=ftell(fout);
 
 
 	StringTable_t strtab;
