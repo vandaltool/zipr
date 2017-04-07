@@ -860,7 +860,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 		}
 		out<<""<<endl;
 		out<<"        # encode L (lsda encoding) "<<endl;
-		out<<"        .byte  0x03     # LSDA encoding (udata4 -- or maybe later pcrel|sdata4 ? )"<<endl;
+		out<<"        .byte  0x1b     # LSDA encoding (pcrel|sdata4)"<<endl;
 		out<<""<<endl;
 		out<<"        # encode R (FDE encoding) "<<endl;
 		out<<"        .byte  0x10 | 0x0B      # FDE encoding (pcrel | sdata4)"<<endl;
@@ -897,7 +897,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 		out<<"Lfde"<<fde_num<<"_aug_data_start:"<<endl;
 		out<<"        #encode L (LSDA) "<<endl;
 		if(fde->hasLsda())
-			out<<"        .int LSDA"<<fde_num<<"      # LSDA hard coded here"<<endl;	 
+			out<<"        .int LSDA"<<fde_num<<" - .    # LSDA hard coded here (as pcrel+sdata4)"<<endl;	 
 		else
 			out<<"        .int 0      # no LSDA "<<endl;	 
 		out<<"Lfde"<<fde_num<<"_aug_data_end:"<<endl;

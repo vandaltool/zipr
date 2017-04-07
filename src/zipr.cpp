@@ -1521,6 +1521,7 @@ void ZiprImpl_t::ReservePinnedInstructions()
 				memory_space.SplitFreeRange(addr+i);
 				m_stats->total_other_space++;
 			}
+			final_insn_locations[upinsn] = addr;
 			continue;
 		}
 
