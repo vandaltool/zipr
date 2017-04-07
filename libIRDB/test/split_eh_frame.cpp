@@ -1994,6 +1994,8 @@ class split_eh_frame_impl_t : public split_eh_frame_t
 
 		auto remove_scoop=[&] (DataScoop_t* s) -> void 
 		{ 
+			if(s==NULL)
+				return;
 			firp->GetDataScoops().erase(s);
 			remove_address(s->GetStart());
 			remove_address(s->GetEnd());
