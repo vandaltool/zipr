@@ -84,18 +84,23 @@ static bool has_cfi_reloc(Instruction_t* insn)
 	return false;
 }
 
-static bool should_cfi_pin(Instruction_t* insn)
+bool Unpin_t::should_cfi_pin(Instruction_t* insn)
 {
 	// add command line option that:
 	// 	1) return false if !has_cfi_reloc(insn)
 	// 	2) return true if option is on.
-	return false;
+	return m_should_cfi_pin;
 }
 
-ZiprOptionsNamespace_t *Unpin_t::RegisterOptions(ZiprOptionsNamespace_t *global) 
+ZiprOptionsNamespace_t *Unpin_t::RegisterOptions(ZiprOptionsNamespace_t *global)
 {
+	ZiprOptionsNamespace_t *unpin_ns = new ZiprOptionsNamespace_t("unpin");
 	global->AddOption(&m_verbose);
-	return NULL;
+
+	m_should_cfi_pin.SetDescription("Pin CFI instructions.");
+	unpin_ns->AddOption(&m_should_cfi_pin);
+
+	return unpin_ns;
 }
 
 void Unpin_t::DoUnpin()
@@ -245,6 +250,37 @@ void Unpin_t::DoUnpinForScoops()
 	cout<<"#ATTRIBUTE scoop_unpin_missed_unpins="<<dec<<missed_unpins<<endl;
 }
 
+Zipr_SDK::ZiprPreference Unpin_t::RetargetCallback(
+	const RangeAddress_t &callback_address,
+	const DollopEntry_t *callback_entry,
+	RangeAddress_t &target_address)
+{
+	MemorySpace_t &ms=*zo->GetMemorySpace();
+	Instruction_t *insn = callback_entry->Instruction();
+	Zipr_SDK::InstructionLocationMap_t &locMap=*(zo->GetLocationMap());
+	for(
+		RelocationSet_t::iterator rit=insn->GetRelocations().begin();
+		rit!=insn->GetRelocations().end();
+		rit++
+		)
+	{
+		Relocation_t *reloc = *rit;
+		if (reloc->GetType()==string("callback_to_scoop"))
+		{
+			DataScoop_t *wrt = dynamic_cast<DataScoop_t*>(reloc->GetWRT());
+			int addend = reloc->GetAddend();
+
+			target_address = wrt->GetStart()->GetVirtualOffset() + addend;
+		
+			if (m_verbose) {
+				cout << "Unpin::callback_to_scoop: target_addr "
+				     << std::hex << target_address << endl;
+			}
+		}
+	}
+	return Must;
+}
+
 void Unpin_t::DoUpdate()
 {
 	DoUpdateForScoops();
@@ -287,8 +323,6 @@ void Unpin_t::DoUpdateForInstructions()
 		   )
 		{
 			Relocation_t* reloc=*rit;
-
-			
 			// this probably won't work on shared objects.
 			// complicated with the push64-reloc plugin also rewriting these things?
 			if(reloc->GetType()==string("32-bit") || reloc->GetType()==string("push64"))
@@ -474,12 +508,11 @@ void Unpin_t::DoUpdateForInstructions()
 				cout<<"unpin:immedptr_to_scoop:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.CompleteInstr
 			 	    <<" to "<<disasm2.CompleteInstr<<" for scoop: "<<wrt->GetName()<<endl;
 
-
 			}
 			else if(reloc->GetType()==string("callback_to_scoop"))
 			{
 				DataScoop_t *wrt = dynamic_cast<DataScoop_t*>(reloc->GetWRT());
-				int offset = reloc->GetOffset();
+				int addend = reloc->GetAddend();
 				char bytes[]={(char)0x48,
 				              (char)0x8d,
 				              (char)0x64,
@@ -493,30 +526,16 @@ void Unpin_t::DoUpdateForInstructions()
 					     << from_insn->GetDataBits().length() << " bytes long." << endl;
 				
 				call_addr = locMap[from_insn];
-				target_addr = wrt->GetStart()->GetVirtualOffset() + offset;
 			
 				if (m_verbose) {
-					cout << "Unpin::callback_to_scoop: target_addr "
-					     << std::hex << target_addr << endl;
 					cout << "Unpin::callback_to_scoop: call_addr " 
 					     << std::hex << call_addr << endl;
 				}
 
 				/*
-				 * Adjust the target address relative to the position 
-				 * of the instruction.
-				 */
-				target_addr -= (call_addr + from_insn->GetDataBits().length());
-
-				/*
-				 * Update the call instruction.
+				 * Put down the bogus pop.
 				 */
 				at = call_addr + 1;
-				ms.PlopBytes(call_addr+1, (const char *)&target_addr, 4);
-
-				/*
-				 * Now, put down the bogus pop.
-				 */
 				at = call_addr + from_insn->GetDataBits().length();
 				ms.PlopBytes(at, bytes, sizeof(bytes));
 
@@ -529,7 +548,6 @@ void Unpin_t::DoUpdateForInstructions()
 			}
 		}
 	}
-
 }
 
 void Unpin_t::DoUpdateForScoops()

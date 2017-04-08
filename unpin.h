@@ -32,11 +32,13 @@
 #define unpin_h
 
 #include <libIRDB-core.hpp>
+#include <zipr_sdk.h>
+#include <zipr_all.h>
 
 class Unpin_t : public Zipr_SDK::ZiprPluginInterface_t
 {
 	public:
-		Unpin_t( Zipr_SDK::Zipr_t* zipr_object) : zo(zipr_object), m_verbose("verbose") { };
+		Unpin_t( Zipr_SDK::Zipr_t* zipr_object) : zo(zipr_object), m_verbose("verbose"), m_should_cfi_pin("should_cfi_pin", false) { };
 		virtual void PinningBegin()
 		{
 			DoUnpin();
@@ -47,7 +49,13 @@ class Unpin_t : public Zipr_SDK::ZiprPluginInterface_t
 		}
 
 		virtual Zipr_SDK::ZiprOptionsNamespace_t *RegisterOptions(Zipr_SDK::ZiprOptionsNamespace_t *);
+
+		Zipr_SDK::ZiprPreference RetargetCallback(
+			const Zipr_SDK::RangeAddress_t &callback_address,
+			const Zipr_SDK::DollopEntry_t *callback_entry,
+			Zipr_SDK::RangeAddress_t &target_address);
 	private:
+		bool should_cfi_pin(Instruction_t* insn);
 
 		// workhorses 
 		void DoUnpin();
@@ -61,6 +69,7 @@ class Unpin_t : public Zipr_SDK::ZiprPluginInterface_t
 		Zipr_SDK::Zipr_t* zo;
 
 		Zipr_SDK::ZiprBooleanOption_t m_verbose;
+		Zipr_SDK::ZiprBooleanOption_t m_should_cfi_pin;
 };
 
 #endif
