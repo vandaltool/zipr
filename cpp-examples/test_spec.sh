@@ -125,12 +125,12 @@ main()
 {
 	start_dir=$(pwd)
 	setup
-	#run_test baseline $SPEC/config/ubuntu14.04lts-64bit.cfg
-	#PSOPTS="--backend zipr"  run_test zipr     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	run_test baseline $SPEC/config/ubuntu14.04lts-64bit.cfg
+	PSOPTS="--backend zipr"  run_test zipr     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
 	PSOPTS="--backend zipr --step-option fill_in_indtargs:--split-eh-frame "  run_test split     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
-	#PSOPTS="--backend zipr --step-option fill_in_indtargs:--split-eh-frame --step-option fix_calls:--no-fix-icalls "  run_test split_no-fix-icalls     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	PSOPTS="--backend zipr --step-option fill_in_indtargs:--split-eh-frame --step-option fix_calls:--no-fix-icalls "  run_test split-no-fix-icalls     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
 
-	get_raw_results baseline 
+	get_raw_results baseline  zipr split split-no-fix-icalls
 
 }
 
