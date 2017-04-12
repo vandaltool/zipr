@@ -1,6 +1,15 @@
 * text=auto !eol
 /LICENSE.txt -text
 /Makefile -text
+ada-examples/e_c17_p1.ada -text
+ada-examples/e_c17_p2.ada -text
+ada-examples/e_c17_p3.ada -text
+ada-examples/e_c17_p4.ada -text
+ada-examples/e_c17_p6.ada -text
+ada-examples/except5.adb -text
+ada-examples/stuff.adb -text
+ada-examples/stuff.ads -text
+ada-examples/testit.sh -text
 cgc_spri/Makefile -text
 cgc_spri/spawn_with_spri_open.c -text
 chopzero_src/Makefile -text
