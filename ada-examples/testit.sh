@@ -43,6 +43,11 @@ testit()
 	fi
 }
 
+clean ()
+{
+	rm -Rf xxx peasoup* *prot
+}
+
 doit()
 {
 	pgm=$1
@@ -52,6 +57,8 @@ doit()
 	$PSZ $pgm.exe $pgm.prot $ps_opts
 
 	testit $pgm.exe $pgm.prot
+
+	clean 
 
 	
 }
