@@ -52,10 +52,12 @@ Instruction_t *HookStart::add_instrumentation(Instruction_t *site)
 			 movRaxBuf[100],
 			 movRspBuf[100],
 			 movRetBuf[100];
-	sprintf(pushRetBuf,"push  0x%lx", postCallbackReturn);
+	sprintf(pushRetBuf,"push qword 0x%lx", postCallbackReturn);
 	sprintf(movIdBuf,"mov rdi, 0x0");
 	sprintf(movRaxBuf,"mov rsi, rax");
 	sprintf(movRspBuf,"mov rdx, rsp");
+
+	cout << "postCallbackReturn: " << std::hex << postCallbackReturn << endl;
 
 	zipr_reloc->SetType("zipr_value");
 
@@ -97,7 +99,8 @@ Instruction_t *HookStart::add_instrumentation(Instruction_t *site)
 	 */
 	tmp=insertAssemblyAfter(firp,tmp,pushRetBuf);	 // push <ret addr>
 
-	callback=tmp=insertAssemblyAfter(firp,tmp,"nop");
+	callback=tmp=insertAssemblyAfter(firp,tmp,"call 0");
+	callback->SetTarget(callback);
 	callback->SetCallback(m_callback_name);
 
 	post_callback=tmp=insertAssemblyAfter(firp,tmp,"popf");
