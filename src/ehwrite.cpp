@@ -161,16 +161,72 @@ bool EhWriterImpl_t<ptrsize>::EhProgramListingManip_t::canExtend(const EhProgram
 template <int ptrsize>
 void EhWriterImpl_t<ptrsize>::EhProgramListingManip_t::extend(const uint64_t inc_amt, const EhProgramListingManip_t &other)
 {
+	if(size() > 0 && isAdvanceDirective(at(size()-1)))
+	{
+		auto &last_insn=at(size()-1);
+		auto old_inc_amt=(int)0;
+		auto old_size=(int)0;
+		switch(last_insn[0])
+		{
+			case DW_CFA_advance_loc1: old_size=1; break;
+			case DW_CFA_advance_loc2: old_size=2; break;
+			case DW_CFA_advance_loc4: old_size=4; break;
+		}
+		for(auto i=0;i<old_size;i++)
+			((char*)(&old_inc_amt))[i]=last_insn[i+1];
 
-	// make an advance directive
-	string ehinsn;
-	ehinsn.resize(5);
-	ehinsn[0]=DW_CFA_advance_loc4;
-	for(auto i=0;i<4;i++)
-		ehinsn[i+1]=((const char*)(&inc_amt))[i];
+		auto new_inc_amt=old_inc_amt+inc_amt;
+		auto opcode=(char)0;
+		auto new_size=(int)0;
+		if(new_inc_amt<=255)
+		{
+			new_size=1;
+			opcode=DW_CFA_advance_loc1;
+		}
+		else if(new_inc_amt<=65535)
+		{
+			new_size=2;
+			opcode=DW_CFA_advance_loc2;
+		}
+		else
+		{
+			new_size=4;
+			opcode=DW_CFA_advance_loc4;
+		}
+		last_insn.resize(1+new_size);
+		last_insn[0]=opcode;
+		for(auto i=0;i<new_size;i++)
+			last_insn[i+1]=((const char*)(&new_inc_amt))[i];
+	}
+	else
+	{	
+		auto new_size=(int)0;
+		auto opcode=(char)0;
+		if(inc_amt<=255)
+		{
+			new_size=1;
+			opcode=DW_CFA_advance_loc1;
+		}
+		else if(inc_amt<=65535)
+		{
+			new_size=2;
+			opcode=DW_CFA_advance_loc2;
+		}
+		else
+		{
+			new_size=4;
+			opcode=DW_CFA_advance_loc4;
+		}
+		// make an advance directive
+		string ehinsn;
+		ehinsn.resize(1+new_size);
+		ehinsn[0]=opcode;
+		for(auto i=0;i<new_size;i++)
+			ehinsn[i+1]=((const char*)(&inc_amt))[i];
 
-	// add it with this->push_back()
-	this->push_back(ehinsn);
+		// add it with this->push_back()
+		this->push_back(ehinsn);
+	}
 
 	// add elements from other[merge_index]-other[other.size()]
 	auto merge_index=getMergeIndex(other);
@@ -184,7 +240,7 @@ void EhWriterImpl_t<ptrsize>::EhProgramListingManip_t::extend(const uint64_t inc
 }
 
 template <int ptrsize>
-bool EhWriterImpl_t<ptrsize>::EhProgramListingManip_t::isAdvanceDirective(const string &s)
+bool EhWriterImpl_t<ptrsize>::EhProgramListingManip_t::isAdvanceDirective(const string &s) const
 {
 	// make sure uint8_t is an unsigned char.       
 	static_assert(std::is_same<unsigned char, uint8_t>::value, "uint8_t is not unsigned char");
@@ -486,8 +542,11 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 	auto output_program=[&](const EhProgramListingManip_t& p, ostream & out) 
 	{
 		auto flags=out.flags();//save flags
-		for(const auto &s : p)
+		for(auto i=0; i < p.size() ; i ++ ) 
 		{		
+			const auto &s = p[i];
+			if(i==p.size()-1 && p.isAdvanceDirective(s))	/* no need to output last insn if it's an advance */
+				break;
 			out<<"       .byte ";
 			auto first=true;
 			for(const auto &c : s)

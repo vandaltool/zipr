@@ -25,9 +25,9 @@ class EhWriterImpl_t : public EhWriter_t
 		EhProgramListingManip_t(const libIRDB::EhProgramListing_t &pgm) : libIRDB::EhProgramListing_t(pgm) { }
 		bool canExtend(const EhProgramListingManip_t &other);
 		void extend(const uint64_t inc_amt, const EhProgramListingManip_t &other);
+		bool isAdvanceDirective(const std::string &s) const;
 		private:
 		int getMergeIndex(const EhProgramListingManip_t &other);
-		bool isAdvanceDirective(const std::string &s);
 
 		static const int DW_CFA_advance_loc1 = 0x02;
 		static const int DW_CFA_advance_loc2 = 0x03;
