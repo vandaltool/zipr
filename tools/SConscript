@@ -16,6 +16,7 @@ dirs='''
 	cookbook
 	dump_map
 	print_cfi_stats
+	hook_start
 	'''
 cgc_dirs='''
 	c2e
