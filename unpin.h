@@ -33,7 +33,6 @@
 
 #include <libIRDB-core.hpp>
 #include <zipr_sdk.h>
-#include <zipr_all.h>
 
 class Unpin_t : public Zipr_SDK::ZiprPluginInterface_t
 {
