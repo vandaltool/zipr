@@ -956,7 +956,7 @@ perform_step gather_libraries mandatory $PEASOUP_HOME/tools/do_gatherlibs.sh $st
 #
 # Running IDA Pro static analysis phase ...
 #
-perform_step meds_static mandatory $PEASOUP_HOME/tools/do_idapro.sh $name
+perform_step meds_static mandatory $PEASOUP_HOME/tools/do_idapro.sh $name $step_options_meds_static
 touch a.ncexe.annot
 cp a.ncexe.annot a.ncexe.annot.full
 # this check is extraneous now.
