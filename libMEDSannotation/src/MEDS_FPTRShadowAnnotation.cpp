@@ -78,7 +78,13 @@ void MEDS_FPTRShadowAnnotation::parse()
 	if (m_rawInputLine.find(MEDS_ANNOT_FPTRSHADOW)!=string::npos)
 		setDefineShadowId();
 
+	if (m_rawInputLine.find(MEDS_ANNOT_ARGSHADOW)!=string::npos)
+		setDefineShadowId();
+
 	if (m_rawInputLine.find(MEDS_ANNOT_FPTRCHECK)!=string::npos)
+		setCheckShadowId();
+
+	if (m_rawInputLine.find(MEDS_ANNOT_ARGCHECK)!=string::npos)
 		setCheckShadowId();
 
 	if (!isDefineShadowId() && !isCheckShadowId())

@@ -37,6 +37,8 @@ using namespace MEDS_Annotation;
 
 #define MEDS_ANNOT_FPTRSHADOW "FPTRSHADOW"
 #define MEDS_ANNOT_FPTRCHECK "FPTRCHECK"
+#define MEDS_ANNOT_ARGSHADOW "ARGSHADOW"
+#define MEDS_ANNOT_ARGCHECK "ARGCHECK"
 
 //
 // Class to handle one MEDS limited function pointer shadow annotation
@@ -54,7 +56,7 @@ class MEDS_FPTRShadowAnnotation : public MEDS_ShadowAnnotation
 		MEDS_FPTRShadowAnnotation();
 		MEDS_FPTRShadowAnnotation(const string& p_rawLine);
 		virtual ~MEDS_FPTRShadowAnnotation() {}
-		virtual const string toString() const { return "fptr shadow: " + m_rawInputLine; }
+		virtual const string toString() const { return "fptr/arg shadow: " + m_rawInputLine; }
 
 		bool isRIPRelative() const;
 		uintptr_t computeRIPAddress();
