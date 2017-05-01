@@ -70,6 +70,8 @@ class MEDS_FPTRShadowAnnotation : public MEDS_ShadowAnnotation
 		const RegisterName getRegister() const;
 		const string& getExpression() const { return m_expression; }
 
+		const bool isFunctionPointerShadow() const { return m_functionPointerShadow; }
+		const bool isCriticalArgumentShadow() const { return m_criticalArgumentShadow; }
 	private:
 		void parse();
 		void setExpression(const string p_expression) { 
@@ -80,9 +82,14 @@ class MEDS_FPTRShadowAnnotation : public MEDS_ShadowAnnotation
 		int parseRegisterOffset(const char*);
 		void parseRegister(const char *p_buf, RegisterName *p_register, int *p_registerOffset);
 
+		void setFunctionPointerShadow(const bool p_val) { m_functionPointerShadow = p_val; }
+		void setCriticalArgumentShadow(const bool p_val) { m_criticalArgumentShadow = p_val; }
+
 	private:
 		string m_rawInputLine;
 		string m_expression;
+		bool m_functionPointerShadow;
+		bool m_criticalArgumentShadow;
 };
 
 }

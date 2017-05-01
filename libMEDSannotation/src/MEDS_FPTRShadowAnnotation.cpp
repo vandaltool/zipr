@@ -61,11 +61,15 @@ using namespace MEDS_Annotation;
 MEDS_FPTRShadowAnnotation::MEDS_FPTRShadowAnnotation() : MEDS_ShadowAnnotation()
 {
 	setInvalid();	
+	setCriticalArgumentShadow(false);
+	setFunctionPointerShadow(false);
 }
 
 MEDS_FPTRShadowAnnotation::MEDS_FPTRShadowAnnotation(const string &p_rawLine) : MEDS_ShadowAnnotation()
 {
 	setInvalid();	
+	setCriticalArgumentShadow(false);
+	setFunctionPointerShadow(false);
 	m_rawInputLine=p_rawLine;
 	parse();
 }
@@ -79,10 +83,16 @@ void MEDS_FPTRShadowAnnotation::parse()
 		setDefineShadowId();
 
 	if (m_rawInputLine.find(MEDS_ANNOT_ARGSHADOW)!=string::npos)
+	{
+		setCriticalArgumentShadow(true);
 		setDefineShadowId();
+	}
 
 	if (m_rawInputLine.find(MEDS_ANNOT_FPTRCHECK)!=string::npos)
+	{
+		setFunctionPointerShadow(true);
 		setCheckShadowId();
+	}
 
 	if (m_rawInputLine.find(MEDS_ANNOT_ARGCHECK)!=string::npos)
 		setCheckShadowId();
