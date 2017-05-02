@@ -835,6 +835,16 @@ bool SCFI_Instrument::instrument_jumps()
 			continue;
 
 		bool safefn = isSafeFunction(insn);
+
+		if (safefn) {
+			if (insn->GetFunction())
+				cerr << insn->GetFunction()->GetName() << " is safe" << endl;
+		}
+
+		if (insn->GetFunction())
+			cerr<<"Looking at: "<<insn->getDisassembly()<< " from func: " << insn->GetFunction()->GetName() << endl;
+		else
+			cerr<<"Looking at: "<<insn->getDisassembly()<< " but no associated function" << endl;
 	
 		
 		switch(d.Instruction.BranchType)
@@ -914,6 +924,10 @@ bool SCFI_Instrument::instrument_jumps()
 			}
 			case  RetType: 
 			{
+				if (insn->GetFunction())
+					cerr << "found ret type  protect_safefn: " << protect_safefn << "  safefn: " << safefn <<  " function: " << insn->GetFunction()->GetName() << endl;
+				else
+					cerr << "found ret type  protect_safefn: " << protect_safefn << "  safefn: " << safefn << " no functions associated with instruction!! wtf???" << endl;
 				if (insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
 				{
 					cfi_branch_ret_complete++;
@@ -923,6 +937,7 @@ bool SCFI_Instrument::instrument_jumps()
 				// (3) and here, we don't instrument returns for safe function
 				if (!protect_safefn && safefn)
 				{
+					cerr << "Skip ret instructions in function: " << insn->GetFunction()->GetName() << endl;
 					cfi_safefn_ret_skipped++;
 					continue;
 				}
