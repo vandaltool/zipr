@@ -334,10 +334,21 @@ Instruction_t* getHandlerCode(FileIR_t* virp, Instruction_t* fallthrough, mitiga
 	else
 	{
 		assert(virp->GetArchitectureBitWidth()==64);
-		handler_code= allocateNewInstruction(virp,fallthrough);
-		setInstructionAssembly(virp,handler_code,"hlt",NULL,NULL);
-		handler_code->SetComment("hlt ; Make this into a callback: jdh@getHandlerCode");
-		handler_code->SetFallthrough(fallthrough);
+		if (policy == P_CONTROLLED_EXIT) 
+		{
+			handler_code = allocateNewInstruction(virp,fallthrough);
+			setInstructionAssembly(virp,handler_code,"mov rdi, 189",NULL,NULL);
+			Instruction_t* syscall_num = insertAssemblyAfter(virp,handler_code,"mov rax, 60",NULL);
+			Instruction_t* syscall_i = insertAssemblyAfter(virp,syscall_num,"syscall",NULL);
+			syscall_i->SetFallthrough(fallthrough);
+		}
+		else
+		{
+			handler_code= allocateNewInstruction(virp,fallthrough);
+			setInstructionAssembly(virp,handler_code,"hlt",NULL,NULL);
+			handler_code->SetComment("hlt ; Make this into a callback: jdh@getHandlerCode");
+			handler_code->SetFallthrough(fallthrough);
+		}
 	}
 
 	return handler_code;

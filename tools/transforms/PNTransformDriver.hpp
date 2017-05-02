@@ -100,6 +100,8 @@ class PNTransformDriver
     	// write stack objects to IRDB
     	bool write_stack_ir_to_db;
 
+	mitigation_policy m_mitigation_policy;
+
 	// a way to map an instruction to it's set of predecessors. 
   	std::map< Instruction_t* , set<Instruction_t*> > preds;
 
@@ -182,6 +184,9 @@ public:
 
     	virtual void GenerateTransforms();
     	virtual void SetWriteStackIrToDb(bool setting) { write_stack_ir_to_db = setting; }
+
+		inline virtual mitigation_policy GetMitigationPolicy() const { return m_mitigation_policy; }
+		virtual void SetMitigationPolicy(mitigation_policy policy) { m_mitigation_policy = policy; }
 };
 
 #endif

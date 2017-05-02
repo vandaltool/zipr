@@ -115,7 +115,7 @@ PNTransformDriver::PNTransformDriver(VariantID_t *pidp,string BED_script, pqxxDB
 	no_validation_level = -1;
 	coverage_threshold = -1;
 	do_shared_object_protection = false;
-
+	m_mitigation_policy = P_CONTROLLED_EXIT;
 }
 
 PNTransformDriver::~PNTransformDriver()
@@ -2388,7 +2388,7 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 			//This could probably be done once, but having the original instruction
 			//allows me to produce messages that indicate more precisely where
 			//the overflow occurred. 
-			Instruction_t *handler_code = getHandlerCode(virp,instr,P_CONTROLLED_EXIT);
+			Instruction_t *handler_code = getHandlerCode(virp,instr,GetMitigationPolicy());
 
 			//insert canary checks
 			//
@@ -2412,7 +2412,7 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 			//This could probably be done once, but having the original instruction
 			//allows me to produce messages that indicate more precisely where
 			//the overflow occurred. 
-			Instruction_t *handler_code = getHandlerCode(virp,instr,P_CONTROLLED_EXIT);
+			Instruction_t *handler_code = getHandlerCode(virp,instr,GetMitigationPolicy());
 
 			//insert canary checks
 			//
