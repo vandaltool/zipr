@@ -43,8 +43,10 @@ if [ -d $ZIPR_CALLBACKS ]; then
 	make clean
 fi
 
-cd $PEASOUP_UMBRELLA_DIR/zipr_large_only_plugin/
-scons -c || exit
+if [ -d "$PEASOUP_UMBRELLA_DIR/zipr_large_only_plugin/" ]; then
+	cd $PEASOUP_UMBRELLA_DIR/zipr_large_only_plugin/
+	scons -c || exit
+fi
 
 cd $PEASOUP_UMBRELLA_DIR/zipr_push64_reloc_plugin
 scons -c || exit
