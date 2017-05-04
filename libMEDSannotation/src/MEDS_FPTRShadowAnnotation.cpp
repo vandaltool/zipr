@@ -80,7 +80,10 @@ void MEDS_FPTRShadowAnnotation::parse()
 		return;
 
 	if (m_rawInputLine.find(MEDS_ANNOT_FPTRSHADOW)!=string::npos)
+	{
+		setFunctionPointerShadow(true);
 		setDefineShadowId();
+	}
 
 	if (m_rawInputLine.find(MEDS_ANNOT_ARGSHADOW)!=string::npos)
 	{
@@ -95,7 +98,10 @@ void MEDS_FPTRShadowAnnotation::parse()
 	}
 
 	if (m_rawInputLine.find(MEDS_ANNOT_ARGCHECK)!=string::npos)
+	{
+		setCriticalArgumentShadow(true);
 		setCheckShadowId();
+	}
 
 	if (!isDefineShadowId() && !isCheckShadowId())
 	{
