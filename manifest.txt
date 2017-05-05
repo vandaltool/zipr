@@ -1,0 +1,5 @@
+directory bin zipr
+directory lib zipr
+directory plugins zipr
+
+
