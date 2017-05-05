@@ -90,3 +90,8 @@ if 'build_appfw' in env:
         SConscript("appfw/src/SConscript.64", variant_dir='scons_build/appfw.64')
         SConscript("appfw/src/SConscript.32", variant_dir='scons_build/appfw.32')
 
+pedi = Command( target = "./testoutput",
+		source = "./SConscript",
+                action = os.environ['PEDI_HOME']+"/pedi -m manifest.txt " )
+Default( pedi )
+
