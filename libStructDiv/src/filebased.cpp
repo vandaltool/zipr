@@ -83,7 +83,7 @@ FileBased_StructuredDiversity_t::FileBased_StructuredDiversity_t(string key, int
 
 static bool fexists(const char *filename) {
   ifstream ifile(filename);
-  return ifile;
+  return (NULL != ifile);
 }
 
 vector<string> FileBased_StructuredDiversity_t::DoBarrier(string value)
