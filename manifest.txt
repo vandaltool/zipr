@@ -1,0 +1,11 @@
+
+submanifest security_transforms/manifest.txt
+submanifest peasoup_examples/manifest.txt
+submanifest idaproCur/manifest.txt
+submanifest SMPStaticAnalyzer/manifest.txt
+submanifest zipr_install/manifest.txt
+submanifest stratafier/manifest.txt
+file set_command_envs ps
+file set_env_vars ps
+file set_ida_server ps
+file irdb_vars ps

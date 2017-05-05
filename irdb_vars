@@ -1,4 +1,12 @@
-export PGHOST=127.0.0.1
-export PGUSER=$USER
-export PGPORT=5432
-export PGDATABASE=peasoup_$USER
+if [ -z $PGHOST ]; then 
+	export PGHOST=127.0.0.1
+fi
+if [ -z $PGUSER ]; then 
+	export PGUSER=$USER
+fi
+if [ -z $PGPORT ]; then 
+	export PGPORT=5432
+fi
+if [ -z $PGDATABASE ]; then 
+	export PGDATABASE=peasoup_$USER
+fi

@@ -5,6 +5,7 @@
 /clean-all.sh -text
 /get-peasoup-packages.sh -text
 /irdb_vars -text
+/manifest.txt -text
 /postgres_setup.sh -text
 /set_command_envs -text
 /set_env_vars -text

@@ -1,6 +1,7 @@
 
 
 export PEASOUP_UMBRELLA_DIR=`pwd`
+export PEDI_HOME=$PEASOUP_UMBRELLA_DIR/pedi
 export STRATAFIER_OBJCOPY=$PEASOUP_UMBRELLA_DIR/binutils-2.19/binutils/objcopy
 export TOOLCHAIN=$PEASOUP_UMBRELLA_DIR/diablo_toolchain
 export PEASOUP_HOME=$PEASOUP_UMBRELLA_DIR/peasoup_examples
@@ -19,10 +20,14 @@ export ZIPR_SDK=$PEASOUP_UMBRELLA_DIR/zipr_sdk
 export ZIPR_SCFI_PLUGIN=$PEASOUP_UMBRELLA_DIR/zipr_scfi_plugin
 export SECURITY_TRANSFORMS_HOME=$PEASOUP_UMBRELLA_DIR/security_transforms
 export IRDB_TRANSFORMS=$PEASOUP_UMBRELLA_DIR/irdb_transforms
-export PS=$PEASOUP_HOME/tools/ps_analyze.sh
-export PSZ=$PEASOUP_HOME/tools/ps_zipr.sh 
 export ZEST_RUNTIME=$PEASOUP_UMBRELLA_DIR/zest_runtime
 export DAFFY_HOME=$PEASOUP_UMBRELLA_DIR/daffy
+
+if [ -z $PS_INSTALL ]; then
+	export PS_INSTALL=$PEASOUP_UMBRELLA_DIR/installed
+fi
+export PS=$PS_INSTALL/peasoup_examples/tools/ps_analyze.sh
+export PSZ=$PS_INSTALL/peasoup_examples/tools/ps_zipr.sh 
 
 source ./irdb_vars
 source $PEASOUP_UMBRELLA_DIR/set_command_envs

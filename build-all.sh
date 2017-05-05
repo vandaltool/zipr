@@ -19,6 +19,10 @@ mkdir -p $ZEST_RUNTIME/lib64
 mkdir -p $ZEST_RUNTIME/bin
 mkdir -p $ZEST_RUNTIME/sbin
 
+if [ ! -f manifest.txt.config ]; then
+	$PEDI_HOME/pedi --setup -m manifest.txt -l ida -l ida_key -l ps -l zipr -l stratafier -l stars -i $PS_INSTALL
+fi
+
 # stratafier
 cd $PEASOUP_UMBRELLA_DIR/stratafier
 make || exit
@@ -110,6 +114,8 @@ scons -j 3|| exit
 
 
 cd $PEASOUP_UMBRELLA_DIR
+
+$PEDI_HOME/pedi -m manifest.txt 
 
 echo
 echo

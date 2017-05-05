@@ -17,3 +17,4 @@ zipr_large_only_plugin     	http://svn.zephyr-software.com/repos/zipr_large_only
 zipr_push64_reloc_plugin     	http://svn.zephyr-software.com/repos/zipr_push64_reloc_plugin/trunk
 daffy            		http://svn.zephyr-software.com/repos/daffy/trunk/
 IdaProServer         		http://svn.zephyr-software.com/repos/IdaProServer/trunk/
+pedi         			http://svn.zephyr-software.com/repos/pedi/trunk/
