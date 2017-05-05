@@ -131,6 +131,7 @@ examples/memcpy.c -text
 examples/myhanoi.c -text
 examples/print_ptr.c -text
 examples/recover_example.c -text
+/manifest.txt -text
 stock_examples/Makefile -text
 stock_examples/bzip2.stock -text
 stock_examples/xpdf.stock -text
@@ -3874,6 +3875,7 @@ tools/ps_tne_scripts_p2/analyze -text
 tools/ps_tne_scripts_p2/execute -text
 tools/ps_validate.sh -text
 tools/ps_validate_ss.deprecated.sh -text
+tools/ps_wrapper.source -text
 tools/ps_zipr.sh -text
 tools/replay_with_gdb.sh -text
 tools/run_one_test.sh -text

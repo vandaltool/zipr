@@ -8,6 +8,8 @@
 #     peasoup_analyze.sh <original_binary> <new_binary> <options>
 #
 
+source $(dirname $0)/ps_wrapper.source $0
+
 realpath() {
   \cd "$1"
   /bin/pwd
@@ -403,7 +405,7 @@ stop_if_error()
 			return 1;
 		;;
 		# DB operations are necessary 
-		pdb_register|clone|fix_calls|fill_in_indtargs|spasm|fast_spri|generate_spri|spasm|stratafy_with_pc_confine)
+		pdb_register|clone|fix_calls|fill_in_cfg|fill_in_indtargs|spasm|fast_spri|generate_spri|spasm|stratafy_with_pc_confine)
 			return 2;
 		;;
 		gather_libraries)
@@ -831,8 +833,9 @@ stepnum=0
 #
 # Check for proper environment variables and files that are necessary to peasoupify a program.
 #
-check_environ_vars PEASOUP_HOME SMPSA_HOME STRATA_HOME SECURITY_TRANSFORMS_HOME IDAROOT
-check_files $PEASOUP_HOME/tools/getsyms.sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh 
+check_environ_vars PEASOUP_HOME SMPSA_HOME SECURITY_TRANSFORMS_HOME IDAROOT
+
+
 
 if [ ! -x $SMPSA_HOME/SMP-analyze.sh ] &&  [ ! -x $SMPSA_HOME/SMP-analyze.sh ] ; then
 	echo "SMP-analyze script (local or remote) not found"
@@ -908,6 +911,18 @@ if [ $? = 0 ]; then
 	arch_bits=32
 else
 	arch_bits=64
+fi
+
+
+if [ $backend = "strata" ]; then
+	check_envron_vars STRATA_HOME 
+	check_files $PEASOUP_HOME/tools/getsyms.sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh 
+elif [ $backend = "zipr" ]; then
+	check_environ_vars ZIPR_INSTALL
+	check_files $ZIPR_INSTALL/bin/zipr.exe
+else
+	echo "Unknown backend!"
+	exit 1
 fi
 
 #
