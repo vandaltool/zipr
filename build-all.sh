@@ -20,6 +20,9 @@ mkdir -p $ZEST_RUNTIME/bin
 mkdir -p $ZEST_RUNTIME/sbin
 
 if [ ! -f manifest.txt.config ]; then
+	if [ ! -d "$PS_INSTALL" ]; then
+		mkdir "$PS_INSTALL"
+	fi
 	$PEDI_HOME/pedi --setup -m manifest.txt -l ida -l ida_key -l ps -l zipr -l stratafier -l stars -i $PS_INSTALL
 fi
 

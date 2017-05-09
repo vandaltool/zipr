@@ -59,5 +59,13 @@ if [ -d $ZIPR_HOME ]; then
 	scons -c || exit
 fi
 
+
 cd $PEASOUP_UMBRELLA_DIR
+
+# clean up installation
+$PEDI_HOME/pedi -c -m manifest.txt
+if [ -d "$PS_INSTALL" ]; then
+	echo "removing $PS_INSTALL"
+	rm -fr "$PS_INSTALL"
+fi
 
