@@ -441,3 +441,84 @@ string Register::readRegisterSet(const string &in, RegisterSet_t &out)
 	assert(0 && "No terminator found for register list");
 }
 
+RegisterName Register::promoteTo64(const RegisterName p_reg)
+{
+	if (is64bit(p_reg))
+		return p_reg;
+
+	switch (p_reg)
+	{
+		case rn_AL:				
+		case rn_AH:				
+		case rn_AX:				
+		case rn_EAX:
+			return rn_RAX;
+		case rn_BL:				
+		case rn_BH:				
+		case rn_BX:				
+		case rn_EBX:
+			return rn_RBX;
+		case rn_CL:				
+		case rn_CH:				
+		case rn_CX:				
+		case rn_ECX:
+			return rn_RCX;
+		case rn_DL:				
+		case rn_DH:				
+		case rn_DX:				
+		case rn_EDX:
+			return rn_RDX;
+		case rn_DIL:
+		case rn_DI:				
+		case rn_EDI:
+			return rn_RDI;
+		case rn_SIL:
+		case rn_SI:				
+		case rn_ESI:
+			return rn_RSI;
+		case rn_BPL:
+		case rn_BP:				
+		case rn_EBP:
+			return rn_RBP;
+		case rn_SPL:
+		case rn_SP:				
+		case rn_ESP:
+			return rn_RSP;
+		case rn_R8B:
+		case rn_R8W:
+		case rn_R8D:
+			return rn_R8;
+		case rn_R9B:
+		case rn_R9W:
+		case rn_R9D:
+			return rn_R9;
+		case rn_R10B:
+		case rn_R10W:
+		case rn_R10D:
+			return rn_R10;
+		case rn_R11B:
+		case rn_R11W:
+		case rn_R11D:
+			return rn_R11;
+		case rn_R12B:
+		case rn_R12W:
+		case rn_R12D:
+			return rn_R12;
+		case rn_R13B:
+		case rn_R13W:
+		case rn_R13D:
+			return rn_R13;
+		case rn_R14B:
+		case rn_R14W:
+		case rn_R14D:
+			return rn_R14;
+		case rn_R15B:
+		case rn_R15W:
+		case rn_R15D:
+			return rn_R15;
+
+		default:
+			return rn_UNKNOWN;
+			break;
+	}
+}

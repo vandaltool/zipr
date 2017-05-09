@@ -59,6 +59,7 @@ class Register
   		static std::string toString(RegisterName);
   		static RegisterName getFreeRegister64(const RegisterSet_t &p_used);
   		static std::string readRegisterSet(const std::string &in, RegisterSet_t &out);
+		static RegisterName promoteTo64(const RegisterName p_reg);
 
 };
 
