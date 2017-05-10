@@ -1207,6 +1207,7 @@ tools/transforms/AnnotationBoundaryGenerator.cpp -text
 tools/transforms/AnnotationBoundaryGenerator.hpp -text
 tools/transforms/DirectOffsetInference.cpp -text
 tools/transforms/DirectOffsetInference.hpp -text
+tools/transforms/EhUpdater.cpp -text
 tools/transforms/EhUpdater.hpp -text
 tools/transforms/General_Utility.cpp -text
 tools/transforms/General_Utility.hpp -text
