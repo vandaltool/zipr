@@ -2250,7 +2250,7 @@ void ZiprImpl_t::PlaceDollops()
 		}
 
 		cur_addr = placement.GetStart();
-		cout << "Adjusting cur_addr to " << std::hex << cur_addr << " at A." << endl;
+		//cout << "Adjusting cur_addr to " << std::hex << cur_addr << " at A." << endl;
 		has_fallthrough = (to_place->FallthroughDollop() != NULL);
 
 		if (m_verbose)
@@ -2492,7 +2492,7 @@ void ZiprImpl_t::PlaceDollops()
 					dollop_entry->Place(cur_addr);
 					cur_addr+=DetermineWorstCaseDollopEntrySize(dollop_entry,
 					                                      false);
-					cout << "Adjusting cur_addr to " << std::hex << cur_addr << " at B." << endl;
+					//cout << "Adjusting cur_addr to " << std::hex << cur_addr << " at B." << endl;
 					if (dollop_entry->TargetDollop())
 					{
 						if (m_verbose)
@@ -2660,7 +2660,7 @@ void ZiprImpl_t::PlaceDollops()
 					patch_de->TargetDollop(fallthrough);
 					patch_de->Place(cur_addr);
 					cur_addr+=DetermineWorstCaseDollopEntrySize(patch_de, false);
-					cout << "Adjusting cur_addr to " << std::hex << cur_addr << " at C." << endl;
+					//cout << "Adjusting cur_addr to " << std::hex << cur_addr << " at C." << endl;
 
 					to_place->push_back(patch_de);
 					to_place->FallthroughPatched(true);
