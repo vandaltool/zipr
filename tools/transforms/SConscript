@@ -6,9 +6,6 @@ myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 
 
 libname="IRDB-util"
-files=  '''
-	insn_preds.cpp
-	'''
 cpppath=''' 
 	$SECURITY_TRANSFORMS_HOME/include/
 	$SECURITY_TRANSFORMS_HOME/libIRDB/include/
@@ -28,7 +25,9 @@ integer_files="transformutils.cpp integertransformdriver.cpp"
 #myenv.Append(CFLAGS="-Wall")
 #myenv.Append(CCFLAGS="-Wall")
 
-all_files="PNTransformDriver.cpp PNStackLayout.cpp PNRange.cpp Range.cpp OffsetInference.cpp DirectOffsetInference.cpp ScaledOffsetInference.cpp P1Inference.cpp PNRegularExpressions.cpp PNMain.cpp StackLayout.cpp General_Utility.cpp AnnotationBoundaryGenerator.cpp PrecedenceBoundaryInference.cpp PNIrdbManager.cpp"
+myenv.Append(CXXFLAGS = " -std=c++11 ")
+
+all_files="PNTransformDriver.cpp PNStackLayout.cpp PNRange.cpp Range.cpp OffsetInference.cpp DirectOffsetInference.cpp ScaledOffsetInference.cpp P1Inference.cpp PNRegularExpressions.cpp PNMain.cpp StackLayout.cpp General_Utility.cpp AnnotationBoundaryGenerator.cpp PrecedenceBoundaryInference.cpp PNIrdbManager.cpp EhUpdater.cpp"
 
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath))

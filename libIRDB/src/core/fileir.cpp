@@ -1626,6 +1626,35 @@ void FileIR_t::SplitScoop(
 		}
 	
 	}
+
+	/* look at each relocation in the IR */
+	for(auto & r : GetRelocations())
+	{
+		if(r->GetWRT()==tosplit)
+		{
+			const auto &addend=r->GetAddend();
+			const auto containing_start_offset=(containing -> GetStart()->GetVirtualOffset() - 
+				tosplit->GetStart()->GetVirtualOffset());
+			const auto containing_end_offset=containing_start_offset+containing->GetSize();
+			if(needs_before && addend<before->GetSize())
+			{
+				r->SetWRT(before);
+			}
+			else if( addend < containing_end_offset)
+			{
+				r->SetWRT(containing);
+				r->SetAddend(addend-containing_start_offset);
+			}
+			else 		
+			{
+				assert(needs_after);
+				const auto after_start_offset=(after -> GetStart()->GetVirtualOffset() - 
+					tosplit->GetStart()->GetVirtualOffset());
+				r->SetWRT(after);
+				r->SetAddend(addend-after_start_offset);
+			}
+		}
+	}
 	
 
 	GetAddresses().erase(tosplit->GetStart());

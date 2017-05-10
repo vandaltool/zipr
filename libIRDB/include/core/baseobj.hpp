@@ -52,6 +52,7 @@ class BaseObj_t
 	static const db_id_t NOT_IN_DATABASE;
 
 	virtual RelocationSet_t& GetRelocations() { return relocs; }
+	virtual const RelocationSet_t& GetRelocations() const { return relocs; }
 
 
     protected:

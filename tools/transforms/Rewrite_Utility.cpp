@@ -137,6 +137,8 @@ void copyInstruction(Instruction_t* src, Instruction_t* dest)
 	dest->SetTarget(src->GetTarget());
 	dest->SetIBTargets(src->GetIBTargets()); 
 	dest->GetRelocations()=src->GetRelocations();
+	dest->SetEhProgram(src->GetEhProgram());
+	dest->SetEhCallSite(src->GetEhCallSite());
 }
 
 Instruction_t* allocateNewInstruction(FileIR_t* virp, db_id_t p_fileID,Function_t* func)
@@ -356,6 +358,7 @@ Instruction_t* getHandlerCode(FileIR_t* virp, Instruction_t* fallthrough, mitiga
 
 Instruction_t* insertCanaryCheckBefore(FileIR_t* virp,Instruction_t *first, unsigned int canary_val, int esp_offset, Instruction_t *fail_code)
 {
+	auto do_zero=(first->getDisassembly().find("ret")!=string::npos);
 	stringstream ss;
 	const char *sp_reg="esp";
 	if(virp->GetArchitectureBitWidth()==64)
@@ -387,7 +390,9 @@ Instruction_t* insertCanaryCheckBefore(FileIR_t* virp,Instruction_t *first, unsi
 	//TODO: move canary zero to option 
 	if(esp_neg)
 		esp_offset *= -1;
-	insertCanaryZeroAfter(virp,first,esp_offset,fail_code); 
+
+	if(do_zero)
+		insertCanaryZeroAfter(virp,first,esp_offset,fail_code); 
 
 	return next;
 

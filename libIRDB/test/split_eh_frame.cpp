@@ -299,7 +299,7 @@ class eh_program_insn_t
 			}
 			case 3:
 			{
-				// case DW_CFA_offset:
+				// case DW_CFA_restore (register #):
 				cout<<"				cfa_restore"<<endl;
 				break;
 			}

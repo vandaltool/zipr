@@ -89,6 +89,7 @@ class PNTransformDriver
 	int bad_variadic_func_sanitized;
 	int jump_table_sanitized;
   	int pic_jump_table_sanitized;
+  	int eh_sanitized;
     	int total_funcs;
 	int dynamic_frames;
     	std::vector<std::string> not_transformable;
@@ -131,7 +132,7 @@ class PNTransformDriver
 
     	virtual void Print_Report();
     	virtual void Print_Map();
-    	virtual bool CanaryTransformHandler(PNStackLayout *layout, libIRDB::Function_t *func,bool validate);
+//    	virtual bool CanaryTransformHandler(PNStackLayout *layout, libIRDB::Function_t *func,bool validate);
     	virtual bool PaddingTransformHandler(PNStackLayout *layout, libIRDB::Function_t *func,bool validate);
     	virtual bool LayoutRandTransformHandler(PNStackLayout *layout, libIRDB::Function_t *func, bool validate);
     	virtual void GenerateTransformsInit();

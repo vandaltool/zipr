@@ -26,6 +26,20 @@ class EhProgram_t : public BaseObj_t
 {
 	public:
 
+	EhProgram_t(const EhProgram_t& orig)
+		: 
+		BaseObj_t(NULL)
+	{
+		cie_program=orig.cie_program;
+		fde_program=orig.fde_program;
+		code_alignment_factor=orig.code_alignment_factor;
+		data_alignment_factor=orig.data_alignment_factor;
+		return_register=orig.return_register;
+		ptrsize=orig.ptrsize;
+		SetBaseID(BaseObj_t::NOT_IN_DATABASE);
+		GetRelocations()=orig.GetRelocations();
+		
+	}
 	EhProgram_t(db_id_t id, const uint64_t caf, const int64_t daf, const uint8_t rr, const uint8_t p_ptrsize)
 		: 
 		BaseObj_t(NULL), 

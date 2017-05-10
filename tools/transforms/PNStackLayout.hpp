@@ -108,7 +108,7 @@ public:
 	virtual int GetNewOffsetESP(int ebp_offset) const;
 	virtual int GetNewOffsetEBP(int ebp_offset) const;
 	virtual PNStackLayout GetCanaryLayout() const;
-	virtual std::vector<PNRange*> GetRanges() {return mem_objects;}
+	virtual std::vector<PNRange*> GetRanges() const  {return mem_objects;}
 	virtual bool IsCanarySafe() const 
 	{
 		assert(pn_options);

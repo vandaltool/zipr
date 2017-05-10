@@ -29,6 +29,7 @@
 #include <cmath>
 #include "globals.h"
 #include <libIRDB-cfg.hpp>
+#include "EhUpdater.hpp"
 
 #include <fcntl.h>
 #include <sys/types.h>
@@ -36,6 +37,7 @@
 #include <libgen.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+
 
 #ifndef PATH_MAX
 #define PATH_MAX 4096
@@ -236,182 +238,6 @@ void PNTransformDriver::SetProtectSharedObjects(bool do_protection)
 }
 
 
-/*
-  void PNTransformDriver::GenerateTransforms2(FileIR_t *virp,vector<Function_t*> funcs,string BED_script, int progid)
-  {
-  for(int i=0;i<funcs.size();++i)
-  {
-  //transform all with
-	
-  vector<PNStackLayout*> layouts = GenerateInferences(funcs[i], 0);
-	
-  if(layouts.size() == 0)
-  continue;
-	
-  sort(layouts.begin(),layouts.end(),CompareBoundaryNumbers);
-	
-  if(layouts[0]->CanShuffle())
-  {
-  layouts[0]->Shuffle();
-  }
-	
-  //just for now padd too
-  layouts[0]->AddPadding();
-	
-  if(!Rewrite(layouts[0],funcs[i]))
-  {
-  //I need to undo instead but right now undo will undo everything
-  assert(false);
-  }  
-  }
-	
-  //TODO: right now I am passing the first func just to test this out, change validate to accept a string
-  if(!Validate(virp,funcs[0],BED_script,progid))
-  {
-  undo(undo_list,funcs[0]);
-	
-  if(funcs.size()>1)
-  {
-  vector<Function_t*> left;
-  vector<Function_t*> right;
-		
-  left.insert(left.begin(),funcs.begin(),funcs.begin()+(funcs.size()/2));
-  right.insert(right.begin(),funcs.begin()+(funcs.size()/2),funcs.end());
-		
-  GenerateTransforms2(virp,left,BED_script,progid);
-  GenerateTransforms2(virp,right,BED_script,progid);
-  }
-  else
-  {
-  vector<PNStackLayout*> layouts = GenerateInferences(funcs[0],0);
-		
-  if(layouts.size() == 0)
-  return;
-		
-  sort(layouts.begin(),layouts.end(),CompareBoundaryNumbers);
-		
-  //TODO: I should not have to use the first inference at this point
-  for(int i=0;i<layouts.size();++i)
-  {
-  if(layouts[i]->CanShuffle())
-  {
-  layouts[i]->Shuffle();
-  }
-		
-  //just for now padd too
-  layouts[i]->AddPadding();
-		
-  if(!Rewrite(layouts[i],funcs[0]))
-  {
-  //I need to undo instead but right now undo will undo everything
-  assert(false);
-  }  
-  else if(!Validate(virp,funcs[0],BED_script,progid))
-  {
-  undo(undo_list,funcs[0]);
-  continue;
-  }
-  }
-  }
-  }
-  else
-  {
-  cerr<<"Validated "<<funcs.size()<<" functions"<<endl;
-  virp->WriteToDB();
-  undo_list.clear();
-  }
-
-  //Call a recursive function that takes in the number of total funcs, and attempts a 
-  //transform and validation
-  //Divide into N regions, initial N is total_funcs
-  //for each division, transform all functions, then validate.
-  //if validation succeeds, commit
-  //if validation fails, divide N by 2 (if N is odd add one first)
-  //Attemp transform for those divisions, when completley validated, continue on
-
-  //recursive_validate(virp,total_funcs,BED_script, progid)
-  //The problem is undoing only part of the undo list
-  //when all validate, attempt transform again, only shuffling
-  //when that validates add padding, 
-  //You must remember the most aggressive transform that did not fail in some previous
-  //run for each function, never use a more aggressive transform.
-
-  //use a map to hold a pnstack layout for every function
-  //after validation, loop through all functions again, and use these pnstack layouts
-  //if the layout fails, how do I know which transform to pick next?
-  //Perhaps another map listing the perferences of transforms?
-  }
-*/
-
-bool PNTransformDriver::CanaryTransformHandler(PNStackLayout *layout, Function_t *func, bool validate)
-{
-
-	bool success = false;
-
-	if(!validate) 
-		cerr<<"PNTransformDriver: Function "<<func->GetName()<<" is flagged to be transformed without validation"<<endl;
-
-	cerr<<"PNTransformDriver: Function "<<func->GetName()<<" is canary safe, attempting canary rewrite"<<endl;
-
-	layout->Shuffle();
-	layout->AddRandomPadding(do_align);
-
-	if(!Canary_Rewrite(layout,func))
-	{
-		//Experimental code
-		undo(func);
-
-		//TODO: error message
-		cerr<<"PNTransformDriver: canary_rewrite failure"<<endl;
-	}
-	else
-	{
-		//if(!Validate(new_virp,targ_func))
-		if(validate && !Validate(orig_virp,func->GetName()))
-		{
-			//Experimental code
-			undo(func);
-
-			//TODO: error message
-			cerr<<"PNTransformDriver: canary validation failure, rolling back"<<endl;
-		}
-		else
-		{
-			cerr<<"PNTransformDriver: Final Transformation Success: "<<layout->ToString()<<endl;
-			cerr<<"PNTransformDriver: Canary rewrite and validation successful."<<endl;
-
-			//TODO: I would like to set something in the data structures to indicate
-			//the canary is possible, but turned off. 
-
-// fixme jdh canaries per function?
-
-			if(!pn_options->shouldCanaryFunction(func->GetName()))
-			{
-				cerr<<"PNTransformDriver: canary transformations turned off, removing canary from transformation."<<endl;
-				undo(func);
-				Sans_Canary_Rewrite(layout,func);
-			}
-
-//			transformed_history[layout->GetLayoutName()].push_back(layout);
-
-			// finalize_record fr;
-			// fr.layout = layout;
-			// fr.func = func;
-			// fr.firp = orig_virp;
-			// finalization_registry.push_back(fr);
-			// undo(func);
-
-			success = true;
-			//TODO: message
-
-		}
-	}
-
-	//reset_undo(func->GetName());
-
-	return success;
-}
-
 bool PNTransformDriver::PaddingTransformHandler(PNStackLayout *layout, Function_t *func, bool validate)
 {
 	bool success = false;
@@ -546,6 +372,7 @@ void PNTransformDriver::GenerateTransformsInit()
 	jump_table_sanitized = 0;
 	bad_variadic_func_sanitized = 0;
 	pic_jump_table_sanitized = 0;
+	eh_sanitized = 0;
 	dynamic_frames = 0;
 	high_coverage_count = low_coverage_count = no_coverage_count = validation_count = 0;
 	not_transformable.clear();
@@ -761,7 +588,7 @@ Instruction_t* find_exit_insn(Instruction_t *insn, Function_t *func)
 	{
 		DISASM d;
 		prev->Disassemble(d);
-		if(strstr(d.CompleteInstr,"ret")!=NULL) // return ret.
+		if(strstr(d.CompleteInstr,"ret ")!=NULL) // return ret.
 			return prev;
 		return NULL; // indirect branch 
 	}
@@ -1270,6 +1097,18 @@ void PNTransformDriver::SanitizeFunctions()
 			      continue;
 			    }    
 			}
+			// if it's not already sanitized
+			if(sanitized.find(func)==sanitized.end())
+			{
+				if(instr->GetEhCallSite() && 
+				   instr->GetEhCallSite()->GetLandingPad() && 
+				   instr->GetEhCallSite()->GetLandingPad()->GetFunction()!=func) 
+				{
+			      		eh_sanitized++;
+					sanitized.insert(func);
+					continue;
+				}
+			}
 		}
 
 		// if it's not already sanitized
@@ -1294,7 +1133,6 @@ void PNTransformDriver::SanitizeFunctions()
 				continue;
 			}
 		}
-
 	}
 	//TODO: print sanitized list. 
 
@@ -2024,6 +1862,7 @@ void PNTransformDriver::Print_Report()
 	cerr<<"Blacklisted Functions \t\t"<<blacklist_funcs<<endl;
 	cerr<<"Sanitized Functions \t\t"<<sanitized_funcs<<endl;
 	cerr<<"Push/Pop Sanitized Functions \t\t"<<push_pop_sanitized_funcs<<endl;
+	cerr<<"EH-land-pad-not-in-func Sanitized Functions \t\t"<<eh_sanitized<<endl;
 	cerr<<"Bad Variadic Sanitized Functions \t\t"<<push_pop_sanitized_funcs<<endl;
 	cerr<<"Jump table Sanitized Functions \t\t"<<jump_table_sanitized<<endl;
 	cerr<<"PIC Jump table Sanitized Functions \t\t"<<jump_table_sanitized<<endl;
@@ -2435,6 +2274,10 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 	orig_layout->SetBaseID(func->GetBaseID());
 	orig_layout->SetEntryID(func->GetEntryPoint()->GetBaseID());
 
+	EhUpdater_t eh_update(orig_virp, func, layout);
+	if(!eh_update.execute())
+		return false;
+
 	return true;
 }
 
@@ -2464,6 +2307,9 @@ bool PNTransformDriver::Sans_Canary_Rewrite(PNStackLayout *layout, Function_t *f
 		if(!Instruction_Rewrite(layout,instr,&cfg))
 			return false;
 	}
+	EhUpdater_t eh_update(orig_virp, func, layout);
+	if(!eh_update.execute())
+		return false;
 
 	return true;
 }
@@ -3110,6 +2956,7 @@ void PNTransformDriver::undo(Function_t *func)
 	{
 		orig_virp->UnregisterAssembly(*it);
 		orig_virp->GetInstructions().erase(*it);
+		func->GetInstructions().erase(*it);
 		delete *it;
 	}
 
