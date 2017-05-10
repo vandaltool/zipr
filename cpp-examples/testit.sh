@@ -22,13 +22,15 @@ compare()
 doit()
 {
 	src=$1
-	shift
-	options=$*
+	options="$2"
+	psopts="$3"
 
-	echo "Trying $src with options: $options "
+	echo  "------------------------------------------------------"
+	echo "Trying $src with options: $options"
+	echo "And psflags=$psflags "
 	g++ -w $options $src 
 	rm -Rf peasoup_executable_direc*
-	EHIR_VERBOSE=1 $PSZ ./a.out ./xxx --step-option fill_in_indtargs:--split-eh-frame --step-option zipr:'--add-sections true' 	
+	EHIR_VERBOSE=1 $PSZ ./a.out ./xxx --step-option fill_in_indtargs:--split-eh-frame --step-option zipr:'--add-sections true' 	$psopts
 
 	compare
 
@@ -42,14 +44,14 @@ doit()
 doit_meta()
 {
 	src=$1
-	shift
-	option=$*
+	option="$2"
+	psopts="$3"
 
-			doit $src $option 
-			doit $src $option -fPIC 
-			doit $src $option -fPIC -fomit-frame-pointer
-			doit $src $option -fPIC  -pie
-			doit $src $option -fPIC -fomit-frame-pointer -pie
+	doit $src "$option  " "$psopts"
+	doit $src "$option -fPIC " "$psopts"
+	doit $src "$option -fPIC -fomit-frame-pointer" "$psopts"
+	doit $src "$option -fPIC  -pie" "$psopts"
+	doit $src "$option -fPIC -fomit-frame-pointer -pie" "$psopts"
 }
 
 main()
@@ -57,11 +59,11 @@ main()
 
 	for src in $src_files
 	do
-		doit_meta $src "-O0"
-		doit_meta $src "-O1"
-		doit_meta $src "-O2"
-		doit_meta $src "-O3"
-		doit_meta $src "-Os"
+		for option in -O0 -O1 -O2 -O3 -Os -Og
+		do
+			doit_meta $src "$option" ""
+			doit_meta $src "$option" "--step p1transform=on"
+		done
 	done
 }
 

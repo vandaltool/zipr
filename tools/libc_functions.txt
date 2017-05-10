@@ -1,2 +1,4 @@
 cfar_video_service_close
 send_response
+__gnat_end_handler
+
