@@ -1,4 +1,6 @@
 #!/bin/bash 
+source $(dirname $0)/../ps_wrapper.source $0
+
 
 if [ ! -z $NO_FLOAT ];
 then

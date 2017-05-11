@@ -1,4 +1,6 @@
 #!/bin/bash 
+source $(dirname $0)/../ps_wrapper.source $0
+
 
 #
 # The calling script is responsible for setting up the options for duck_season

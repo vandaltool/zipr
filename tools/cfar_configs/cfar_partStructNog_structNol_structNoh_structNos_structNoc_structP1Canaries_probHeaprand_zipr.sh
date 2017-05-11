@@ -1,4 +1,6 @@
 #!/bin/bash 
+source $(dirname $0)/../ps_wrapper.source $0
+
 
 file $2|grep "ELF 64-bit LSB  executable" > /dev/null
 if [ $? = 0 ]; then

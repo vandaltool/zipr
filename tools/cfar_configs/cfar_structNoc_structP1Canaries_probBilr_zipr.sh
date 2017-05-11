@@ -1,4 +1,6 @@
 #!/bin/bash 
+source $(dirname $0)/../ps_wrapper.source $0
+
 
 echo NOC+Bilr generates working binaries, but Bilr is not yet applied.  Avoid this config for now.
 exit 1

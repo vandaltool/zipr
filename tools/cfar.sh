@@ -1,5 +1,6 @@
-#!/bin/bash
+#!/bin/bash -x
 
+source $(dirname $0)/ps_wrapper.source $0
 
 is_so()
 {
@@ -162,9 +163,9 @@ do
 	myin=$(echo $in|sed "s/<<VARNUM>>/$seq/g")
 
 	# invoke $PS.
-	#echo "PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PEASOUP_HOME/tools/ps_analyze.sh $in $baseoutdir/v${seq}/${in_base} " "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" 
+	#echo "PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PS $in $baseoutdir/v${seq}/${in_base} " "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" 
 	set -x
-	PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PEASOUP_HOME/tools/ps_analyze.sh $myin $baseoutdir/v${seq}/${in_base} "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" > $baseoutdir/v${seq}/variant_output.txt 2>&1 &
+	PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PS $myin $baseoutdir/v${seq}/${in_base} "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" > $baseoutdir/v${seq}/variant_output.txt 2>&1 &
 
 	# remember the pid.
 	pids="$pids $!"
