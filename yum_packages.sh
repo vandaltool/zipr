@@ -10,6 +10,7 @@ glibc-devel.i686
 glibc-devel
 jsoncpp
 jsoncpp-devel
+perl-JSON-PP
 "
 
 groups="Development Tools"
