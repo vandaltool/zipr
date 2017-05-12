@@ -3894,6 +3894,7 @@ tools/signatures/sqlite.sigs -text
 tools/test_controller.sh -text
 tools/update_env_var.sh -text
 tools/validate.sh -text
+tools/vgt.sh -text
 tools/zanalyze.sh -text
 tools/zipr_ce.sh -text
 web_server/.lighttpdpassword -text

@@ -411,7 +411,7 @@ finalize_json()
 
 
 			# remove host's portion of the path to get path on target
-			exe_dir=$(echo $full_exe_dir|sed "s/^$indir//")
+			exe_dir=$(echo $full_exe_dir|sed "s|^$indir||")
 
 			echo "	variant coming from $full_exe_dir "
 			mkdir -p $new_variant_dir/bin
@@ -500,7 +500,7 @@ finalize_json()
 
 
 			variant_name="variant_${vs}_${seq}"
-			variant_config_contents="${variant_config_contents//<<EXEPATH>>/$new_variant_dir_ts\/bin}"
+			variant_config_contents="${variant_config_contents//<<EXEPATH>>/$new_variant_dir_ts/bin}"
 			variant_config_contents="${variant_config_contents//<<VARIANTNUM>>/$variant_name}"
 			variant_config_contents="${variant_config_contents//<<VARIANTINDEX>>/$seq}"
 			variant_config_contents="${variant_config_contents//<<VARIANTDIR>>/$new_variant_dir_ts}"
@@ -585,6 +585,7 @@ finalize_json()
 	json_contents="${json_contents//<<SERVER>>/$server}"
 	json_contents="${json_contents//<<ARGS>>/$args}"
 
+	echo "$json_contents" > $json.ugly
 	echo "$json_contents" |json_pp > $json
 
 	echo "Finalized $json as atd config."

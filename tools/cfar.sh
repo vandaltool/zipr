@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 source $(dirname $0)/ps_wrapper.source $0
 
