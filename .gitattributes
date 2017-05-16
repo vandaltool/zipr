@@ -24,6 +24,7 @@ centos_files/postgresql-contrib-9.2.18-1.el7.x86_64.rpm -text svneol=unset#appli
 centos_files/postgresql-devel-9.2.18-1.el7.x86_64.rpm -text svneol=unset#application/x-rpm
 centos_files/postgresql-libs-9.2.18-1.el7.x86_64.rpm -text svneol=unset#application/x-rpm
 centos_files/postgresql-server-9.2.18-1.el7.x86_64.rpm -text svneol=unset#application/x-rpm
+centos_files/redhat-lsb-core-4.1-27.el7.centos.1.i686.rpm -text svneol=unset#application/x-rpm
 centos_files/redhat-lsb-submod-security-4.1-27.el7.centos.1.i686.rpm -text svneol=unset#application/x-rpm
 centos_files/sclo-subversion19-scons-2.3.4-3.el7.noarch.rpm -text svneol=unset#application/x-rpm
 centos_files/screen-4.1.0-0.23.20120314git3c2946.el7_2.x86_64.rpm -text svneol=unset#application/x-rpm
