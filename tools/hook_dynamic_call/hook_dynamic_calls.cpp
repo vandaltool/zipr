@@ -8,11 +8,11 @@ using namespace libTransform;
 using namespace ELFIO;
 using namespace libIRDB;
 
-HookDynamicCalls::HookDynamicCalls(FileIR_t *p_variantIR) :
+HookDynamicCalls::HookDynamicCalls(FileIR_t *p_variantIR, bool use_call) :
 	Transform(NULL, p_variantIR, NULL),
-	m_plt_addresses(NULL)
+	m_plt_addresses(NULL),
+	m_use_call(use_call)
 {
-	
 }
 
 HookDynamicCalls::~HookDynamicCalls() 
@@ -188,9 +188,10 @@ virtual_offset_t HookDynamicCalls::GetSymbolOffset(string &symbol)
 	return address;
 }
 
-Instruction_t *HookDynamicCalls::add_instrumentation(Instruction_t *site,unsigned long id)
+Instruction_t *HookDynamicCalls::add_instrumentation(Instruction_t *site,unsigned long id, bool use_call)
 {
 	FileIR_t *firp = getFileIR();
+	Relocation_t *zipr_reloc = new Relocation_t;
 	virtual_offset_t postCallbackReturn = getAvailableAddress();
 	char pushRetBuf[100], movIdBuf[100], movRaxBuf[100], movRspBuf[100];
 	sprintf(pushRetBuf,"push  0x%x", postCallbackReturn);
@@ -202,6 +203,8 @@ Instruction_t *HookDynamicCalls::add_instrumentation(Instruction_t *site,unsigne
 	              *callback=NULL,
 								*post_callback=NULL,
 								*fallthrough=NULL;
+
+	zipr_reloc->SetType("zipr_value");
 
 	fallthrough = site->GetFallthrough();
 
@@ -223,6 +226,13 @@ Instruction_t *HookDynamicCalls::add_instrumentation(Instruction_t *site,unsigne
 	tmp=insertAssemblyAfter(firp,tmp,"push r15");
 	tmp=insertAssemblyAfter(firp,tmp,"pushf");
 	tmp=insertAssemblyAfter(firp,tmp,movIdBuf);
+	/*
+	 * Add a relocation here so a later step 
+	 * can change the value that goes in the first
+	 * parameter to the callback function.
+	 */
+	tmp->GetRelocations().insert(zipr_reloc);
+
 	tmp=insertAssemblyAfter(firp,tmp,movRaxBuf);
 	tmp=insertAssemblyAfter(firp,tmp,movRspBuf);
 	/*
@@ -232,7 +242,14 @@ Instruction_t *HookDynamicCalls::add_instrumentation(Instruction_t *site,unsigne
 	 */
 	tmp=insertAssemblyAfter(firp,tmp,pushRetBuf);	 // push <ret addr>
 
-	callback=tmp=insertAssemblyAfter(firp,tmp,"nop");
+	if (use_call)
+	{
+		callback=tmp=insertAssemblyAfter(firp,tmp,"call 0");
+		callback->SetTarget(callback);
+	}
+	else
+		callback=tmp=insertAssemblyAfter(firp,tmp,"nop");
+
 	callback->SetCallback("zipr_hook_dynamic_callback");
 
 	post_callback=tmp=insertAssemblyAfter(firp,tmp,"popf");
@@ -321,6 +338,16 @@ bool HookDynamicCalls::GetPltCallTarget(Instruction_t *insn,
 	{
 		case 0xff:
 		{
+			/*
+			 * Make sure that the opcode extension to this instruction
+			 * actually indicates that this is a jump instruction:
+			 * http://ref.x86asm.net/coder64.html#xFF
+			 */
+			if (((((uint8_t)control_instruction_bits[1]) & 0x38) >> 3) != 0x4)
+			{
+				return false;
+			}
+
 			virtual_offset_t indirect_address = 0;
 			Elf64_Addr dereferenced_indirect_address;
 			/*
@@ -505,7 +532,7 @@ int HookDynamicCalls::execute()
 						cout << "hooking " << to_hook << " call at 0x" 
 						     << std::hex << insn->GetAddress()->GetVirtualOffset()
 								 << endl;
-						add_instrumentation(insn_to_hook, hook_id);
+						add_instrumentation(insn_to_hook, hook_id, m_use_call);
 					}
 				}
 			}

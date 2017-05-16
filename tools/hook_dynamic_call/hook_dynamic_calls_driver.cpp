@@ -10,7 +10,7 @@ using namespace libIRDB;
 
 void usage(char* name)
 {
-	cerr<<"Usage: "<<name<<" <variant_id> [<call> <id>]\n"; 
+	cerr<<"Usage: "<<name<<" <variant_id> <use call> [<call> <id>]\n"; 
 }
 
 int main(int argc, char **argv)
@@ -19,12 +19,13 @@ int main(int argc, char **argv)
 	VariantID_t *pidp=NULL;
 	int variantID;
 	string programName;
+	bool use_call = false;
 
 	string call_name = "";
 	int call_id = 0;
 	map<string, int> to_hook;
 
-	if(argc < 2)
+	if(argc < 3)
 	{
 		usage(argv[0]);
 		exit(1);
@@ -32,7 +33,10 @@ int main(int argc, char **argv)
 
 	programName = string(argv[0]);
 	variantID = atoi(argv[1]);
-	argv+=2;
+	if (!strcmp(argv[2], "true"))
+		use_call = true;
+
+	argv+=3;
 
 	while (*argv) {
 		if (call_name.length() == 0)
@@ -97,7 +101,7 @@ int main(int argc, char **argv)
 
 		try
 		{
-			HookDynamicCalls hookdynamic(firp);
+			HookDynamicCalls hookdynamic(firp, use_call);
 			hookdynamic.SetToHook(to_hook);
 
 			int success=hookdynamic.execute();

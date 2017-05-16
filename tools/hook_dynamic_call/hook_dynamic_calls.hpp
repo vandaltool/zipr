@@ -24,13 +24,13 @@ class Finally
 class HookDynamicCalls : public libTransform::Transform
 {
 	public:
-		HookDynamicCalls(FileIR_t*p_variantIR);
+		HookDynamicCalls(FileIR_t*p_variantIR, bool use_call = false);
 		int execute();
 		~HookDynamicCalls();
 		void SetToHook(std::map<std::string,int> to_hook);
 	private:
 		bool GetPltCallTarget(libIRDB::Instruction_t *, virtual_offset_t &);
-		libIRDB::Instruction_t *add_instrumentation(libIRDB::Instruction_t *,unsigned long);
+		libIRDB::Instruction_t *add_instrumentation(libIRDB::Instruction_t *,unsigned long, bool use_call=false);
 		virtual_offset_t GetSymbolOffset(string &);
 		ELFIO::Elf64_Addr ReadAddressInSectionAtOffset(ELFIO::section *,ELFIO::Elf64_Off);
 		void LoadPltIndexTable();
@@ -45,6 +45,6 @@ class HookDynamicCalls : public libTransform::Transform
 		std::unique_ptr<std::map<std::string, ELFIO::Elf64_Addr>> m_symbol_offset_table;
 		std::map<std::string,int> m_to_hook;
 		std::map<virtual_offset_t, libIRDB::Instruction_t*> m_indtargs;
-
+		bool m_use_call;
 };
 #endif
