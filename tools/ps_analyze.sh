@@ -132,8 +132,14 @@ check_step_option()
 
 set_step_option()
 {
-	step=`echo $1 | cut -d: -f1` 
-	option=`echo $1 | cut -d: -f2-` 
+	step=`echo "$1" | cut -d: -f1` 
+	option=`echo "$1" | cut -s -d: -f2-` 
+
+	# echo "Found step-option for '$step':'$option'"
+	if [[ -z "$option" ]]; then
+		echo "Cannot parse step:option pair out of '$1'"
+		exit 2
+	fi
 
 	#
 	# this sets step_options_$step to have the new option

@@ -20,7 +20,7 @@
                 "exec": {
                     "path": "tools/cr_dump.py"
                 },
-                "timeout": 200
+                "timeout": 2000
             }
         },
         "restore": {
@@ -43,7 +43,7 @@
                 "exec": {
                     "path": "tools/cr_restore.py"
                 },
-                "timeout": 200
+                "timeout": 2000
             }
         }
     },
