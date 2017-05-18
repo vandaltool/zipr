@@ -9,3 +9,5 @@ file set_command_envs ps
 file set_env_vars ps
 file set_ida_server ps
 file irdb_vars ps
+file yum_packages.sh centos
+directory centos_files centos

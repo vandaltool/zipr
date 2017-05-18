@@ -23,11 +23,16 @@ export IRDB_TRANSFORMS=$PEASOUP_UMBRELLA_DIR/irdb_transforms
 export ZEST_RUNTIME=$PEASOUP_UMBRELLA_DIR/zest_runtime
 export DAFFY_HOME=$PEASOUP_UMBRELLA_DIR/daffy
 
-if [ -z $PS_INSTALL ]; then
-	export PS_INSTALL=$PEASOUP_UMBRELLA_DIR/installed
+if [ -z "$PS_INSTALL" -o -f manifest.txt ]; then 
+	if [ -z $PS_INSTALL ]; then
+		export PS_INSTALL=$PEASOUP_UMBRELLA_DIR/installed
+	fi
+	export PS=$PS_INSTALL/peasoup_examples/tools/ps_analyze.sh
+	export PSZ=$PS_INSTALL/peasoup_examples/tools/ps_zipr.sh 
+else
+	export PS=$PEASOUP_UMBRELLA_DIR/peasoup_examples/tools/ps_analyze.sh
+	export PSZ=$PEASOUP_UMBRELLA_DIR/peasoup_examples/tools/ps_zipr.sh 
 fi
-export PS=$PS_INSTALL/peasoup_examples/tools/ps_analyze.sh
-export PSZ=$PS_INSTALL/peasoup_examples/tools/ps_zipr.sh 
 
 source ./irdb_vars
 source $PEASOUP_UMBRELLA_DIR/set_command_envs
