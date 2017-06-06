@@ -16,7 +16,7 @@
                 "path" : "/variant_specific/main_exe",
                 "argv" : [ <<ARGS>> ], 
                 "env" : [
-			"LD_LIBRARY_PATH=",<<ENV>>
+			"LD_LIBRARY_PATH=/usr/lib",<<ENV>>
 			]
 
 	

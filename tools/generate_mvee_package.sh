@@ -421,6 +421,8 @@ finalize_json()
 			cp $full_exe_dir/peasoup_executable_dir/*.map $new_variant_dir/bin/peasoup_executable_dir 2> /dev/null 
 			cp $full_exe_dir/peasoup_executable_dir/*json $new_variant_dir/bin/peasoup_executable_dir 2> /dev/null 
 			cp $full_exe_dir/peasoup_executable_dir/*nol $new_variant_dir/bin/peasoup_executable_dir 2> /dev/null 
+			cp $full_exe_dir/peasoup_executable_dir/ld-nol.so.ubuntu $new_variant_dir/bin/peasoup_executable_dir 2> /dev/null
+			cp $full_exe_dir/peasoup_executable_dir/ld-nol.so.centos $new_variant_dir/bin/peasoup_executable_dir 2> /dev/null
 
 			# echo "exe_dir=$exe_dir"
 
@@ -468,7 +470,8 @@ finalize_json()
 				# ok, now we need the binary name
 				if [ "$backend" = 'zipr' ]; then
 					# unfortunately, the new way of doing all this relies on the new interp being shorter than the old one, so we need to do this:
-					cp $new_variant_dir/bin/peasoup_executable_dir/ld-linux-x86-64.so.2.nol $outdir/ld-nol.so
+					cp $new_variant_dir/bin/peasoup_executable_dir/ld-nol.so.ubuntu $outdir/global/
+					cp $new_variant_dir/bin/peasoup_executable_dir/ld-nol.so.centos $outdir/global/
 				elif [ "$backend" = 'strata' ]; then
 					# this is still on patchelf due to changing that being complex
 					echo "trying patch"
@@ -519,8 +522,10 @@ finalize_json()
 		json_contents="${json_contents//<<VARIANT_SETS>>/$vs_json_contents,<<VARIANT_SETS>>}"
 	done
 
-	# copy libpthread_exit.so 
+	# copy libpthread_exit.so and fix_loader
 	cp $CFAR_HOME/pthread_exit/libpthread_exit.so $outdir/global/
+	cp $CFAR_HOME/non_overlapping_libraries/fix_loader.sh $outdir/global/
+
 
 	if [ $server = "APACHE" ]; then
 		ld_preload_var="/thread_libs/libgetpid.so:/target_apps/global/libpthread_exit.so"

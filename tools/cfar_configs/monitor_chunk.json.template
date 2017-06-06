@@ -1,5 +1,10 @@
     "monitor" : {
         "dump_variant_core" : true,
-        "detach_variants": false
+        "detach_variants": false,
+        "pre_launch_command": "$(dirname %c)/global/fix_loader.sh %c",
+        "divergence": {
+                "actions": [ "SHUTDOWN" ]
+        }
+
     },
 

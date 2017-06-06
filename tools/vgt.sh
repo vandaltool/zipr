@@ -424,7 +424,7 @@ find_temp_dir()
 find_output_dir()
 {
 	if [[ -z "$output_package" ]]; then
-		finaldir="$(echo ${input_package}|sed "s:-:_:")-${config_label}-UVATA1-$(date "+%d_%m_%Y")"
+		finaldir="$(echo ${input_package}|sed "s:-:_:g")-${config_label}-UVATA1-$(date "+%d_%m_%Y")"
 	else
 		finaldir="$output_package"
 	fi

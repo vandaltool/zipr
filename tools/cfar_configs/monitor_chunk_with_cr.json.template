@@ -1,14 +1,14 @@
     "monitor" : {
         "dump_variant_core" : true,
         "detach_variants": true,
+        "pre_launch_command": "$(dirname %c)/global/fix_loader.sh %c",
         "checkpoint": {
                 "interval": 0,
                 "refresh_period": 0,
                 "refresh_command": "/target_apps/marshaling/refresh.sh "
         },
 	"divergence": {
-		"actions": [ "RECOVER" ],
-		"initial_dump_dir": "/target_apps/marshaling/initial_dump_dir"
+		"actions": [ "RECOVER" ]
 	}
 
     },
