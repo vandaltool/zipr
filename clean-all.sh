@@ -48,6 +48,9 @@ if [ -d "$PEASOUP_UMBRELLA_DIR/zipr_large_only_plugin/" ]; then
 	scons -c || exit
 fi
 
+cd $PEASOUP_UMBRELLA_DIR/zipr_relax_plugin/
+scons -c || exit
+
 cd $PEASOUP_UMBRELLA_DIR/zipr_push64_reloc_plugin
 scons -c || exit
 
