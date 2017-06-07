@@ -1,19 +1,21 @@
 #!/bin/bash
 
-benchmarks="
-	400.perlbench
-	403.gcc
-	445.gobmk
-	450.soplex
-	453.povray
-	458.sjeng
-	464.h264ref
-	465.tonto
-	471.omnetpp
-	481.wrf
-	482.sphinx3
-	483.xalancbmk
-	"
+# the bad boys
+#benchmarks="
+#	400.perlbench
+#	403.gcc
+#	445.gobmk
+#	450.soplex
+#	453.povray
+#	458.sjeng
+#	464.h264ref
+#	465.tonto
+#	471.omnetpp
+#	481.wrf
+#	482.sphinx3
+#	483.xalancbmk
+#	"
+benchmarks=all
 number=1
 
 setup()
