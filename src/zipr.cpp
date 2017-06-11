@@ -3082,6 +3082,9 @@ void ZiprImpl_t::PatchInstruction(RangeAddress_t from_addr, Instruction_t* to_in
 	{
 		RangeAddress_t to_addr=final_insn_locations[to_insn];
 		assert(to_addr!=0);
+		/*
+		 * TODO: This debugging output is not really exactly correct.
+		 */
 		if (m_verbose)
 			printf("Found a patch for %p -> %p\n", (void*)from_addr, (void*)to_addr); 
 		// Apply Patch
