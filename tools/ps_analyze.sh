@@ -921,7 +921,7 @@ fi
 
 
 if [ $backend = "strata" ]; then
-	check_envron_vars STRATA_HOME 
+	check_environ_vars STRATA_HOME 
 	check_files $PEASOUP_HOME/tools/getsyms.sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh 
 elif [ $backend = "zipr" ]; then
 	check_environ_vars ZIPR_INSTALL
