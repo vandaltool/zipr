@@ -289,10 +289,44 @@ sanity_check()
 	echo "-------------------------------------------"
 }
 
+copy_stuff()
+{
+	in=$1
+	out=$2
+	exe=$3
+	target_path=$4
+	is_main=$5
+	echo -n "	Copying  files for $exe ... "
+
+	mkdir -p $out 2> /dev/null
+
+	if [[ $is_main ]] ; then
+		cp $in/*.so 		$out/ 2> /dev/null 
+		cp $in/*json 		$out/ 2> /dev/null 
+		cp $in/*nol 		$out/ 2> /dev/null 
+		cp $in/ld-nol.so.ubuntu $out/ 2> /dev/null
+		cp $in/ld-nol.so.centos $out/ 2> /dev/null
+	fi
+	cp $in/*.map 		$out/ 2> /dev/null 
+
+	new_val="\"$exe\" : \"$target_path/zipr.map\" ";
+	variant_config_contents="${variant_config_contents//<<CODE_MAP>>/$new_val, <<CODE_MAP>>}"
+
+	new_val="\"$exe\" : \"$target_path/scoop.map\" ";
+	variant_config_contents="${variant_config_contents//<<SCOOP_MAP>>/$new_val, <<SCOOP_MAP>>}"
+
+	new_val="\"$exe\" : \"$target_path/p1.map\" ";
+	variant_config_contents="${variant_config_contents//<<P1_MAP>>/$new_val, <<P1_MAP>>}"
+
+	echo  "Done!"
+
+}
+
 
 
 finalize_json()
 {
+	# make directories
 	mkdir -p $outdir
 	mkdir $outdir/global
 	mkdir $outdir/marshaling
@@ -309,10 +343,13 @@ finalize_json()
 	cp $CFAR_EMT_DIR/*.jar $outdir/marshaling/emt
 
 
+	# shorthand for certain things. 
 	variants="$total_variants"
 	outfile="$outdir/monitor.conf"
 	json=${outfile}
 
+
+	# get the tempalte and put it in place.
 	if [ "$backend" = 'zipr' ]; then
 		cp $PEASOUP_HOME/tools/cfar_configs/zipr_all.json.template $json
 	elif [ "$backend" = 'strata' ]; then
@@ -322,35 +359,52 @@ finalize_json()
 		exit 1
 	fi
 
+	# read the template and put it into a variable
 	json_contents=$(<$json)
 
+	# count how many variants we create in total.
 	total_variants=0
+
+	# for each variant set
 	for vs in $(seq 1 $total_variant_sets)
 	do
+
+		# initialize the vs_json_contents variable.
+		# to hold the initial list for the variant set description.
 		vs_json_contents=" \"vs-$vs\" : [ <<VARIANT_LIST>> ]"
 
+		# for each varjiant in the variant set.
 		for seq in $(seq 1 $variants_per_vs )
 		do
+
+			# update count.
 			total_variants=$(expr $total_variants + 1)
 
-			echo "Including variant $seq."
-
-			new_variant_dir="$outdir/vs-$vs/variant-$seq"
-			new_variant_dir_ts="/target_apps/vs-$vs/variant-$seq"
-			mkdir -p $new_variant_dir
-			mkdir $new_variant_dir/extra 2>/dev/null || true
-			mkdir $new_variant_dir/resources 2>/dev/null || true
-
+			# read in the configuration name and the contents of the variant's json file that was memorized
+			# during the sanity checking.
 			config=${variant_config_arr[$total_variants]}
 			variant_json=${variant_json_arr[$total_variants]}
 
 
+			# update user we're starting a new variant.
+			echo "Including variant $seq (variant_$vs_$seq) of type $config."
 
+			# calculate where the variantw ill go on both the generation box and the output box.
+			new_variant_dir="$outdir/vs-$vs/variant-$seq"
+			new_variant_dir_ts="/target_apps/vs-$vs/variant-$seq"
+
+			# make the appropriate subdirs.	
+			mkdir -p $new_variant_dir
+			mkdir $new_variant_dir/extra 2>/dev/null || true
+			mkdir $new_variant_dir/resources 2>/dev/null || true
+
+			#
 			# sanity check that nol/noh configuration settings match the config name.
-			echo "	config is $config"
+			#
 			if [[ $config == *"Noh"* ]]  || [[ $config == *"phase1"* ]] ; then
 				if [[ $use_noh == "--enablenoh" ]] ; then
-					echo "	noh settings match."
+					#echo "	noh settings match."
+					echo -n 
 				else
 					echo
 					echo "--enablenoh setting does not match, config is Noh, use_noh is off"
@@ -358,17 +412,18 @@ finalize_json()
 				fi
 			else 
 				if [[ $use_noh == "--disablenoh" ]] ; then
-					echo "	noh settings match."
+					#echo "	noh settings match."
+					echo -n 
 				else
 					echo
 					echo "--enablenoh setting does not match, config is not noh, use_noh is on"
 					exit 1
 				fi
 			fi
-
 			if [[ $config == *"Nol"* ]]  || [[ $config == *"phase1"* ]] ; then
 				if [[ $use_nol == "--enablenol" ]] ; then
-					echo "	--enablenol settings match."
+					#echo "	--enablenol settings match."
+					echo -n 
 				else
 					echo
 					echo "--enablenol setting does not match"
@@ -376,7 +431,8 @@ finalize_json()
 				fi
 			else 
 				if [[ $use_nol == "--disablenol" ]] ; then
-					echo "	--enablenol settings match."
+					#echo "	--enablenol settings match."
+					echo -n 
 				else
 					echo
 					echo "--enablenol setting does not match"
@@ -388,8 +444,9 @@ finalize_json()
 			#echo config=$config
 			#echo variant_json=$variant_json
 
+			# make sure we have a .json file.
 			if [ ! -f $variant_json ]; then
-				echo "wtf, $variant_json missing?"
+				echo "Error $variant_json missing.  Did protection process fail?"
 				exit 4
 			fi
 
@@ -413,16 +470,20 @@ finalize_json()
 			# remove host's portion of the path to get path on target
 			exe_dir=$(echo $full_exe_dir|sed "s|^$indir||")
 
-			echo "	variant coming from $full_exe_dir "
+			# update user.
+			echo "	Found variant at $full_exe_dir "
+
+			# read variant config
+			variant_config_contents=$(<$variant_json)
+
+			# create output for main exe
 			mkdir -p $new_variant_dir/bin
 			mkdir -p $new_variant_dir/bin/peasoup_executable_dir/
 			cp $full_exe_dir/$main_exe $new_variant_dir/bin
-			cp $full_exe_dir/peasoup_executable_dir/*.so $new_variant_dir/bin/peasoup_executable_dir 2> /dev/null 
-			cp $full_exe_dir/peasoup_executable_dir/*.map $new_variant_dir/bin/peasoup_executable_dir 2> /dev/null 
-			cp $full_exe_dir/peasoup_executable_dir/*json $new_variant_dir/bin/peasoup_executable_dir 2> /dev/null 
-			cp $full_exe_dir/peasoup_executable_dir/*nol $new_variant_dir/bin/peasoup_executable_dir 2> /dev/null 
-			cp $full_exe_dir/peasoup_executable_dir/ld-nol.so.ubuntu $new_variant_dir/bin/peasoup_executable_dir 2> /dev/null
-			cp $full_exe_dir/peasoup_executable_dir/ld-nol.so.centos $new_variant_dir/bin/peasoup_executable_dir 2> /dev/null
+
+			# new_variant_dir_ts="/target_apps/vs-$vs/variant-$seq"
+			copy_stuff $full_exe_dir/peasoup_executable_dir $new_variant_dir/bin/peasoup_executable_dir $main_exe $new_variant_dir_ts/bin/peasoup_executable_dir 1
+				
 
 			# echo "exe_dir=$exe_dir"
 
@@ -430,8 +491,6 @@ finalize_json()
 			var_num_dir=$(basename $exe_dir)
 
 
-			# read variant config
-			variant_config_contents=$(<$variant_json)
 
 			# fill in any libraries that the variants should refer to
 			for lib in $libraries
@@ -453,10 +512,12 @@ finalize_json()
 					mkdir -p $new_variant_dir/modules 2>/dev/null || true
 					cp  $indir/$lib_dir/$lib $new_variant_dir/modules
 					line=",  "$'\n\t\t\t'"  \"/testing/content/apache_support/modules/$lib=$new_variant_dir_ts/modules/$lib\" "
+					copy_stuff $indir/$lib_dir/peasoup_executable_dir $new_variant_dir/modules/$lib-peasoup_executable_dir $lib $new_variant_dir_ts/modules/$lib-peasoup_executable_dir 0
 				else
 					mkdir -p $new_variant_dir/lib 2>/dev/null || true
 					cp  $indir/$lib_dir/$lib $new_variant_dir/lib
 					line=",  "$'\n\t\t\t'"  \"/usr/lib/$lib=$new_variant_dir_ts/lib/$lib\" "
+					copy_stuff $indir/$lib_dir/peasoup_executable_dir $new_variant_dir/lib/$lib-peasoup_executable_dir $lib $new_variant_dir_ts/lib/$lib-peasoup_executable_dir 0
 				fi
 				variant_config_contents="${variant_config_contents//,<<LIBS>>/$line,<<LIBS>>}"
 		
@@ -484,7 +545,7 @@ finalize_json()
 			fi
 
 			# handle structured nol/noh
-			echo "	config is $config"
+			# echo "	config is $config"
 			if [[ $config == *"struct"* ]] || [[  $config == *"struct"* ]] ; then
 				echo $struct_set_size > $new_variant_dir/nolnoh_config
 				echo $struct_set_no >> $new_variant_dir/nolnoh_config
@@ -497,7 +558,7 @@ finalize_json()
 				fi
 			else
 				echo $total_variants > $new_variant_dir/nolnoh_config
-				echo "	Struct Noh/nol is disabled."
+				# echo "	Struct Noh/nol is disabled."
 			fi
 	
 
@@ -576,7 +637,7 @@ finalize_json()
 
 	# substittue in the right settings for the monitor settings.
 
-	# remove variant_config marker.
+	# remove variant_config placeholders
 	json_contents="${json_contents//,<<VARIANT_CONFIG>>/}"
 	json_contents="${json_contents//,<<VARIANT_LIST>>/}"
 	json_contents="${json_contents//,<<VARIANT_SETS>>/}"
@@ -589,6 +650,12 @@ finalize_json()
 	json_contents="${json_contents//<<CLASS>>/$class}"
 	json_contents="${json_contents//<<SERVER>>/$server}"
 	json_contents="${json_contents//<<ARGS>>/$args}"
+	json_contents="${json_contents//, <<CODE_MAP>>/}"
+	json_contents="${json_contents//<<CODE_MAP>>/}"
+	json_contents="${json_contents//, <<SCOOP_MAP>>/}"
+	json_contents="${json_contents//<<SCOOP_MAP>>/}"
+	json_contents="${json_contents//, <<P1_MAP>>/}"
+	json_contents="${json_contents//<<P1_MAP>>/}"
 
 	echo "$json_contents" > $json.ugly
 	echo "$json_contents" |json_pp > $json

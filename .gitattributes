@@ -950,6 +950,7 @@ tools/cfar_configs/cfar_probIlr_structP1Canaries_probHeaprand_strata.sh -text
 tools/cfar_configs/cfar_probIlr_structP1Canaries_probHeaprand_structNos_strata.sh -text
 tools/cfar_configs/cfar_probIlr_structP1Canaries_strata.sh -text
 tools/cfar_configs/cfar_probNog_phase1_zipr.sh -text
+tools/cfar_configs/cfar_probNog_probBilr_zipr.sh -text
 tools/cfar_configs/cfar_probNog_probNol_probNoh_probNos_probBilr_probP1_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_probNog_probSS_phase1_zipr.sh -text
 tools/cfar_configs/cfar_probNog_probSS_probDS_phase1_zipr.sh -text
@@ -999,6 +1000,7 @@ tools/cfar_configs/strata_all.json.template -text
 tools/cfar_configs/strata_variant.json.template -text
 tools/cfar_configs/zipr_all.json.template -text
 tools/cfar_configs/zipr_variant.json.template -text
+tools/cfar_configs/zipr_variant.json.template.sav -text
 tools/cgc_sanity_check.sh -text
 tools/cinderella.spec -text
 tools/cover.sh -text
@@ -3894,7 +3896,6 @@ tools/signatures/sqlite.sigs -text
 tools/test_controller.sh -text
 tools/update_env_var.sh -text
 tools/validate.sh -text
-tools/vgt.sh -text
 tools/zanalyze.sh -text
 tools/zipr_ce.sh -text
 web_server/.lighttpdpassword -text

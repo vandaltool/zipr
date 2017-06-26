@@ -1,7 +1,7 @@
     "monitor" : {
         "dump_variant_core" : true,
         "detach_variants": true,
-        "pre_launch_command": "$(dirname %c)/global/fix_loader.sh %c",
+        "pre_launch_command": "/target_apps/global/fix_loader.sh /target_apps/monitor.conf",
         "checkpoint": {
                 "interval": 0,
                 "refresh_period": 0,
