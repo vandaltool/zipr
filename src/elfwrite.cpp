@@ -229,7 +229,8 @@ template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr
 void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr, T_Elf_Shdr, T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::LoadEhdr(FILE* fin) 
 {
 	fseek(fin,0,SEEK_SET);
-	fread(&ehdr,sizeof(ehdr), 1, fin);
+	auto res=fread(&ehdr,sizeof(ehdr), 1, fin);
+	assert(res==1);
 };
 
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
@@ -239,7 +240,8 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr, T_Elf_Sym, T_Elf
 	phdrs.resize(ehdr.e_phnum);
 	for(unsigned int i=0;i<phdrs.size();i++)
 	{
-		fread(&phdrs[i], sizeof(phdrs[i]), 1, fin);
+		auto res=fread(&phdrs[i], sizeof(phdrs[i]), 1, fin);
+		assert(res==1);
 	}
 };
 

@@ -3806,7 +3806,8 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 	delete ew;
 	string chmod_cmd=string("chmod +x "); 
 	chmod_cmd=chmod_cmd+elfwriter_filename;
-	system(chmod_cmd.c_str());
+	auto res=system(chmod_cmd.c_str());
+	assert(res!=-1);
 }
 
 
@@ -3819,7 +3820,8 @@ void ZiprImpl_t::PrintStats()
 
 	// and dump a map file of where we placed instructions.  maybe guard with an option.
 	// default to dumping to zipr.map 
-	dump_map();
+	dump_scoop_map();
+	dump_instruction_map();
 }
 
 
@@ -4096,9 +4098,6 @@ void ZiprImpl_t::UpdateCallbacks()
 	RangeSet_t::iterator range_it=memory_space.FindFreeRange((RangeAddress_t) -1);
 	assert(memory_space.IsValidRange(range_it));
 
-	RangeAddress_t end_of_new_space=range_it->GetStart();
-	RangeAddress_t start_addr=GetCallbackStartAddr();
-
 	set<std::pair<DollopEntry_t*,RangeAddress_t> >::iterator it, it_end;
 
 	for(it=unpatched_callbacks.begin(), it_end=unpatched_callbacks.end();
@@ -4134,10 +4133,28 @@ void ZiprImpl_t::UpdateCallbacks()
 	}
 }
 
-void ZiprImpl_t::dump_map()
+void ZiprImpl_t::dump_scoop_map()
 {
+	string filename="scoop.map";	// parameterize later.
+    	std::ofstream ofs(filename.c_str(), ios_base::out);
+	ofs <<left<<setw(10)<<"ID"
+	    <<left<<setw(10)<<"StartAddr"
+	    <<left<<setw(10)<<"Size"
+	    <<left<<setw(10)<<"Perms"
+	    <<left<<setw(10)<<"Name"<<endl;
 
-// std::map<libIRDB::Instruction_t*,RangeAddress_t> final_insn_locations
+	for(const auto &scoop : m_firp->GetDataScoops())
+	{
+		ofs << hex << setw(10)<<scoop->GetBaseID()
+		    <<hex<<left<<setw(10)<<scoop->GetStart()->GetVirtualOffset()
+		    <<hex<<left<<setw(10)<< scoop->GetSize()
+		    <<hex<<left<<setw(10)<< scoop->getRawPerms()
+		    <<hex<<left<<setw(10)<< scoop->GetName()
+		    << endl;
+	}
+}
+void ZiprImpl_t::dump_instruction_map()
+{
 	string filename="zipr.map";	// parameterize later.
     	std::ofstream ofs(filename.c_str(), ios_base::out);
 
@@ -4164,9 +4181,6 @@ void ZiprImpl_t::dump_map()
 
 		
 	}
-
-
-
 }
 
 void ZiprImpl_t::UpdateScoops()
