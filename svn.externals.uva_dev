@@ -15,6 +15,7 @@ zipr_scfi_plugin     		http://svn.zephyr-software.com/repos/zipr_scfi_plugin/tru
 zipr_unpin_plugin     		http://svn.zephyr-software.com/repos/zipr_unpin_plugin/trunk
 zipr_large_only_plugin     	http://svn.zephyr-software.com/repos/zipr_large_only_plugin/trunk
 zipr_relax_plugin     		http://svn.zephyr-software.com/repos/zipr_relax_plugin/trunk
+zipr_trace_plugin     		http://svn.zephyr-software.com/repos/zipr_trace_plugin/trunk
 zipr_push64_reloc_plugin     	http://svn.zephyr-software.com/repos/zipr_push64_reloc_plugin/trunk
 daffy            		http://svn.zephyr-software.com/repos/daffy/trunk/
 IdaProServer         		http://svn.zephyr-software.com/repos/IdaProServer/trunk/

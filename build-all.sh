@@ -104,8 +104,13 @@ fi
 cd $PEASOUP_UMBRELLA_DIR/zipr_large_only_plugin/
 scons -j 3|| exit
 
-cd $PEASOUP_UMBRELLA_DIR/zipr_relax_plugin/
-scons -j 3|| exit
+if [ -e zipr ] ; then
+	cd $PEASOUP_UMBRELLA_DIR/zipr_relax_plugin/
+	scons -j 3|| exit
+
+	cd $PEASOUP_UMBRELLA_DIR/zipr_trace_plugin/
+	scons -j 3|| exit
+fi
 
 cd $PEASOUP_UMBRELLA_DIR/zipr_push64_reloc_plugin
 scons -j 3|| exit
