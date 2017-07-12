@@ -1199,7 +1199,7 @@ perform_step spawner stratafy_with_pc_confine  $PEASOUP_HOME/tools/do_spawner.sh
 perform_step get_pins spasm,fast_spri  $PEASOUP_HOME/tools/get_pins.sh 
 
 # zipr
-perform_step zipr clone,fill_in_indtargs,fill_in_cfg,pdb_register $ZIPR_INSTALL/bin/zipr.exe --variant $cloneid --zipr:objcopy $PS_OBJCOPY $step_options_zipr
+perform_step zipr clone,fill_in_indtargs,fill_in_cfg,pdb_register env LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ZIPR_INSTALL/lib $ZIPR_INSTALL/bin/zipr.exe --variant $cloneid --zipr:objcopy $PS_OBJCOPY $step_options_zipr
 
 # copy TOCTOU tool here if it exists
 if [[ "$CONCURRENCY_HOME/toctou_tool" != "" && -d "$CONCURRENCY_HOME/toctou_tool" ]]; then

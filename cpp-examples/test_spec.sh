@@ -15,7 +15,11 @@
 #	482.sphinx3
 #	483.xalancbmk
 #	"
-benchmarks=all
+
+# all
+benchmarks="400.perlbench 401.bzip2 403.gcc 410.bwaves 416.gamess 429.mcf 433.milc 434.zeusmp 435.gromacs 436.cactusADM 437.leslie3d 444.namd 445.gobmk 450.soplex 453.povray 454.calculix 456.hmmer 458.sjeng 459.GemsFDTD 462.libquantum 464.h264ref 465.tonto 470.lbm 471.omnetpp 473.astar 481.wrf 482.sphinx3 483.xalancbmk"
+
+
 number=1
 
 setup()
@@ -41,11 +45,18 @@ run_test()
 	config=$2
 	cd $SPEC
 	if [ ! -d result.$config_name ]; then
+		dropdb $PGDATABASE
+		createdb $PGDATABASE
+		$PEASOUP_HOME/tools/db/pdb_setup.sh
 		rm -Rf result/*
 		runspec  --action scrub --config $config $benchmarks
 		runspec  --action validate --config $config -n $number $benchmarks 
 		cp benchspec/CPU2006/*/exe/* result
 		mv result result.$config_name
+		for bench in $benchmarks
+		do
+			mv benchspec/CPU2006/$bench/run/build*/peasoup*/logs result.$config_name/$bench.log
+		done
 	fi
 
 }
@@ -53,8 +64,19 @@ run_test()
 get_size_result()
 {
 	bench=$1
-	size=$(stat --printf="%s" $bench)
-	echo -n $size
+	if [ -e $bench ]; then
+		size=$(stat --printf="%s" $bench)
+		#echo -n "$size"
+		#LC_ALL= numfmt --grouping $size
+		LC_ALL= printf "%'d" $size
+		#LC_NUMERIC=en_US printf "%'d" $size
+		#LC_NUMERIC=en_US printf "%'f" $size
+		#LC_NUMERIC=en_US printf "%'.f" $size
+		#LC_NUMERIC=en_US printf "%'10.10f" $size
+		#LC_NUMERIC=en_US /usr/bin/printf "%'d" $size
+	else
+		echo -n "N/A"
+	fi
 }
 
 get_result()
@@ -110,12 +132,14 @@ get_raw_results()
 	echo benchmark $configs
 	for bench in $SPEC/result.$config/*_base.amd64-m64-gcc42-nn
 	do
-		echo -n "$(basename $bench _base.amd64-m64-gcc42-nn) 	"
+		printf "%-20s"  $(basename $bench _base.amd64-m64-gcc42-nn)
 		for config in $*
 		do
 			file="$SPEC/result.$config/$(basename $bench)"
-			get_size_result $file 
-			echo -n "	"
+			res=$(get_size_result $file)
+
+			printf "%15s" $res
+			#echo -n "$res	"
 		done
 		echo
 	done
@@ -125,14 +149,23 @@ get_raw_results()
 
 main()
 {
+	trace_flags=" --step-option zipr:--traceplacement:on --step-option zipr:true"
+	relax_flags=" --step-option zipr:--relax:on --step-option zipr:true"
+	split_flgas="--step-option fill_in_indtargs:--split-eh-frame "
+	icall_flags="--step-option fix_calls:--no-fix-icalls "
 	start_dir=$(pwd)
 	setup
 	run_test baseline $SPEC/config/ubuntu14.04lts-64bit.cfg
 	PSOPTS="--backend zipr"  run_test zipr     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
-	PSOPTS="--backend zipr --step-option fill_in_indtargs:--split-eh-frame "  run_test split     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
-	PSOPTS="--backend zipr --step-option fill_in_indtargs:--split-eh-frame --step-option fix_calls:--no-fix-icalls "  run_test split-no-fix-icalls     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	PSOPTS="--backend zipr $trace_flags "  run_test zipr-trace     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	PSOPTS="--backend zipr $relax_flags "  run_test zipr-relax     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	PSOPTS="--backend zipr $split_flags "  run_test split     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	PSOPTS="--backend zipr $split_flags $trace_flags "  run_test split-trace     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	PSOPTS="--backend zipr $split_flags $trace_flags "  run_test split-relax     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	PSOPTS="--backend zipr $split_flags $icall_flags "  run_test split-no-fix-icalls     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	PSOPTS="--backend zipr $split_flags $icall_flags $trace_flags "  run_test split-no-fix-icalls-trace     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
 
-	get_raw_results baseline  zipr split split-no-fix-icalls
+	get_raw_results baseline  zipr zipr-trace zipr-relax split split-trace split-no-fix-icalls split-no-fix-icalls-trace
 
 }
 
