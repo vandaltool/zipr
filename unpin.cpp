@@ -100,6 +100,12 @@ ZiprOptionsNamespace_t *Unpin_t::RegisterOptions(ZiprOptionsNamespace_t *global)
 	m_should_cfi_pin.SetDescription("Pin CFI instructions.");
 	unpin_ns->AddOption(&m_should_cfi_pin);
 
+	m_on.SetDescription("Turn unpin plugin on/off.");
+	unpin_ns->AddOption(&m_on);
+
+	m_max_unpins.SetDescription("Set how many unpins are allowed, useful for debugging.");
+	unpin_ns->AddOption(&m_max_unpins);
+
 	return unpin_ns;
 }
 
@@ -113,8 +119,10 @@ void Unpin_t::DoUnpin()
 // scan instructions and process instruction relocs that can be unpinned.
 void Unpin_t::DoUnpinForFixedCalls()
 {
-	int unpins=0;
-	int missed_unpins=0;
+	if(m_max_unpins != -1 && unpins>=m_max_unpins)
+		return;
+	auto insn_unpins=0;
+	auto missed_unpins=0;
 
 	for(
 		InstructionSet_t::iterator it=zo->GetFileIR()->GetInstructions().begin();
@@ -159,7 +167,6 @@ void Unpin_t::DoUnpinForFixedCalls()
 					cout<<"Unpin::Warn: unpin found non-IBTA to unpin.  probably it's unpinned twice.  continuing anyhow."<<endl;
 				}
 	
-				unpins++;
 				wrt_insn->SetIndirectBranchTargetAddress(NULL);
 
 				PlacementQueue_t* pq=zo->GetPlacementQueue();
@@ -169,19 +176,27 @@ void Unpin_t::DoUnpinForFixedCalls()
 				// and add it to the placement queue.
 				Dollop_t *newDoll=zo->GetDollopManager()->AddNewDollops(wrt_insn);
 				pq->insert(std::pair<Dollop_t*,RangeAddress_t>(newDoll, 0));
+
+				
+				unpins++;
+				insn_unpins++;
+				if(m_max_unpins != -1 && unpins>=m_max_unpins)
+					return;
 			}
 		}
 	}
 
-	cout<<"#ATTRIBUTE insn_unpin_total_unpins="<<dec<<unpins<<endl;
+	cout<<"#ATTRIBUTE insn_unpin_total_unpins="<<dec<<insn_unpins<<endl;
 	cout<<"#ATTRIBUTE insn_unpin_missed_unpins="<<dec<<missed_unpins<<endl;
 }
 
 
 void Unpin_t::DoUnpinForScoops()
 {
-	int unpins=0;
-	int missed_unpins=0;
+	if(m_max_unpins != -1 && unpins>=m_max_unpins)
+		return;
+	auto missed_unpins=0;
+	auto scoop_unpins=0;
 
 	for(
 		DataScoopSet_t::iterator it=zo->GetFileIR()->GetDataScoops().begin();
@@ -231,7 +246,6 @@ void Unpin_t::DoUnpinForScoops()
 				}
 				else
 				{
-					unpins++;
 					insn->SetIndirectBranchTargetAddress(NULL);
 
 					PlacementQueue_t* pq=zo->GetPlacementQueue();
@@ -241,12 +255,17 @@ void Unpin_t::DoUnpinForScoops()
 					// and add it to the placement queue.
 					Dollop_t *newDoll=zo->GetDollopManager()->AddNewDollops(insn);
 					pq->insert(std::pair<Dollop_t*,RangeAddress_t>(newDoll, 0));
+
+					unpins++;
+					scoop_unpins++;
+					if(m_max_unpins != -1 && unpins>=m_max_unpins)
+						return;
 				}
 			}
 		}
 	}
 
-	cout<<"#ATTRIBUTE scoop_unpin_total_unpins="<<dec<<unpins<<endl;
+	cout<<"#ATTRIBUTE scoop_unpin_total_unpins="<<dec<<scoop_unpins<<endl;
 	cout<<"#ATTRIBUTE scoop_unpin_missed_unpins="<<dec<<missed_unpins<<endl;
 }
 
@@ -255,6 +274,13 @@ Zipr_SDK::ZiprPreference Unpin_t::RetargetCallback(
 	const DollopEntry_t *callback_entry,
 	RangeAddress_t &target_address)
 {
+	if(!m_on) return Zipr_SDK::ZiprPluginInterface_t::RetargetCallback(callback_address, callback_entry, target_address);
+
+	unpins++;// unpinning a call to a scoop.
+	if(m_max_unpins != -1 && unpins>=m_max_unpins)
+		return Zipr_SDK::ZiprPluginInterface_t::RetargetCallback(callback_address, callback_entry, target_address);
+
+
 	MemorySpace_t &ms=*zo->GetMemorySpace();
 	Instruction_t *insn = callback_entry->Instruction();
 	Zipr_SDK::InstructionLocationMap_t &locMap=*(zo->GetLocationMap());
