@@ -2210,7 +2210,7 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 				else
 					instr->SetComment("Canary Setup: "+ss.str());
 				if(verbose_log)
-					cerr<<"PNTransformDriver: canary setup = "<<ss<<endl;		
+					cerr << "PNTransformDriver: canary setup = " << ss.str() << endl;		
 			}
 		}
 		else if(regexec(&(pn_regex->regex_ret), disasm_str.c_str(),5,pmatch,0)==0)
