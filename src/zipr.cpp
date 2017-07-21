@@ -75,44 +75,6 @@ template < typename T > std::string to_string( const T& n )
 	return stm.str() ;
 }
 
-#if 0
-static Instruction_t* addNewAssembly(FileIR_t* firp, Instruction_t *p_instr, string p_asm)
-{
-        Instruction_t* newinstr;
-        if (p_instr)
-                newinstr = allocateNewInstruction(firp,p_instr->GetAddress()->GetFileID(), p_instr->GetFunction());
-        else
-                newinstr = allocateNewInstruction(firp,BaseObj_t::NOT_IN_DATABASE, NULL);
-
-        firp->RegisterAssembly(newinstr, p_asm);
-
-        if (p_instr)
-        {
-                newinstr->SetFallthrough(p_instr->GetFallthrough());
-                p_instr->SetFallthrough(newinstr);
-        }
-
-        return newinstr;
-}
-
-#endif
-
-#ifdef support_stratafier_mode
-#ifdef CGC
-static std::ifstream::pos_type filesize(const char* filename)
-{
-    	std::ifstream in(filename, std::ifstream::ate | std::ifstream::binary);
-
-	if(!in.is_open())
-	{
-		cerr<<"Cannot open file: "<<filename<<endl;
-		throw string("Cannot open file\n");
-	}
-   	return in.tellg();
-}
-#endif
-#endif
-
 void ZiprImpl_t::Init()
 {
 	bss_needed=0;
@@ -242,27 +204,6 @@ void ZiprImpl_t::CreateBinaryFile()
 	elfiop->load(m_output_filename);
 	ELFIO::dump::section_headers(cout,*elfiop);
 
-/* have to figure this out.  we'll want to really strip the binary
- * but also remember the strings. 
- */
-#ifdef support_stratafier_mode
-#ifdef CGC
-	char* sec_tran=getenv("SECURITY_TRANSFORMS_HOME");
-	if(sec_tran==NULL)
-	{
-		cerr<<"Cannot find $SECURITY_TRANSFORMS_HOME variable"<<endl;
-		exit(100);
-	}
-	string cmd=string("cp ")+m_output_filename+" "+m_output_filename+".stripped ; "+ sec_tran+"/third_party/ELFkickers-3.0a/sstrip/sstrip"
-		" "+m_output_filename+".stripped";
-	printf("Attempting: %s\n", cmd.c_str());
-	if(-1 == system(cmd.c_str()))
-	{
-		perror(__FUNCTION__);
-	}
-#endif
-#endif
-
 	if (m_architecture == 0)
 	{
 		if (m_verbose)
@@ -335,9 +276,6 @@ void ZiprImpl_t::CreateBinaryFile()
 	// tell plugins we are done pinning.
 	plugman.PinningEnd();
 
-//	NonceRelocs_t nr(memory_space,*elfiop, *m_firp, m_opts);
-//	nr.HandleNonceRelocs();
-
 	/*
 	 * Let's go through all the instructions
 	 * and determine if there are going to be
@@ -370,9 +308,6 @@ void ZiprImpl_t::CreateBinaryFile()
 
 	// ask plugman to inform the plugins we are done linking callbacks
 	plugman.CallbackLinkingEnd();
-
-	// tell the Nonce class to update it's range of high/low addrs if it used any.
-//	nr.UpdateAddrRanges(final_insn_locations);
 
 	m_stats->total_free_ranges = memory_space.GetRangeCount();
 
