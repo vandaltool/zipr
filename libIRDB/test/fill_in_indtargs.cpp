@@ -23,6 +23,7 @@
 #include <iostream>
 #include <fstream>
 #include <limits>
+#include <string>
 #include <stdlib.h>
 #include <string.h>
 #include <map>
@@ -77,6 +78,8 @@ map< Instruction_t*, fii_icfs > jmptables;
 
 // a map of virtual offset -> instruction for quick access.
 map<virtual_offset_t,Instruction_t*> lookupInstructionMap;
+
+static long total_unpins=0;
 
 
 /*
@@ -2188,7 +2191,7 @@ void setup_icfs(FileIR_t* firp, EXEIO::exeio* elfiop)
 }
 
 
-void unpin_elf_tables(FileIR_t *firp)
+void unpin_elf_tables(FileIR_t *firp, int do_unpin_opt)
 {
 	map<string,int> unpin_counts;
 	map<string,int> missed_unpins;
@@ -2239,10 +2242,22 @@ void unpin_elf_tables(FileIR_t *firp)
 					ibt_provenance_t::ibtp_stars_data)
 				  )
 				{
+					total_unpins++;
+					if(do_unpin_opt != -1)
+					{
+						if(total_unpins > do_unpin_opt) 
+						{
+							cout<<"Aborting unpin process mid elf table."<<endl;
+							return;
+						}
+						cout<<"Attempting unpin #"<<total_unpins<<"."<<endl;
+					}
+
 					// when/if they fail, convert to if and guard the reloc creation.
 					if(getenv("UNPIN_VERBOSE")!=0)
 						cout<<"Unpinning "<<scoop->GetName()<<" entry at offset "<<dec<<i<<". vo="<<hex<<vo<<endl;
-					
+
+
 					unpin_counts[scoop->GetName()]++;
 
 					Relocation_t* nr=new Relocation_t();
@@ -2333,8 +2348,20 @@ void unpin_elf_tables(FileIR_t *firp)
 					if(targets[vo].areOnlyTheseSet(
 						ibt_provenance_t::ibtp_dynsym | ibt_provenance_t::ibtp_stars_data))
 					{
+						total_unpins++;
+						if(do_unpin_opt != -1)
+						{
+							if(total_unpins > do_unpin_opt) 
+							{
+								cout<<"Aborting unpin process mid elf table."<<endl;
+								return;
+							}
+							cout<<"Attempting unpin #"<<total_unpins<<"."<<endl;
+						}
+
 						if(getenv("UNPIN_VERBOSE")!=0)
 							cout<<"Unpinning .dynsym entry no "<<dec<<table_entry_no<<". vo="<<hex<<vo<<endl;
+
 
 						// when/if these asserts fail, convert to if and guard the reloc creation.
 
@@ -2399,7 +2426,7 @@ DataScoop_t* find_scoop(FileIR_t *firp, const virtual_offset_t &vo)
 int type3_unpins=0;
 int type3_pins=0;
 
-void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* scoop)
+void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* scoop, int do_unpin_opt)
 {
 
 	assert(firp && insn && scoop);
@@ -2454,8 +2481,17 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 			// which isn't otherwise addressed.
 			if(targets[table_entry].areOnlyTheseSet(prov))
 			{
+				total_unpins++;
+				if(do_unpin_opt != -1 && total_unpins > do_unpin_opt) 
+				{
+					cout<<"Aborting unpin process mid switch table."<<endl;
+					return;
+				}
+
 				if(getenv("UNPIN_VERBOSE"))
 					cout<<"Unpinning switch for ibt="<<hex<<table_entry<<", scoop_off="<<scoop_off<<endl;
+
+
 				Relocation_t* nr=new Relocation_t();
 				assert(nr);
 				nr->SetType("data_to_insn_ptr");
@@ -2480,7 +2516,7 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 
 }
 
-void unpin_switches(FileIR_t *firp)
+void unpin_switches(FileIR_t *firp, int do_unpin_opt)
 {
 	// re-init stats for this file.
 	type3_unpins=0;
@@ -2514,7 +2550,12 @@ void unpin_switches(FileIR_t *firp)
 
 		if(jmptables[insn].GetSwitchType().areOnlyTheseSet(ibt_provenance_t::ibtp_switchtable_type3))
 		{
-			unpin_type3_switchtable(firp,insn,scoop);
+			unpin_type3_switchtable(firp,insn,scoop, do_unpin_opt);
+		}
+		if(do_unpin_opt != -1 && total_unpins > do_unpin_opt) 
+		{
+			cout<<"Aborting unpin after switch table."<<endl;
+			return;
 		}
 		
         }
@@ -2552,10 +2593,10 @@ void print_unpins(FileIR_t *firp)
 }
 
 
-void unpin_well_analyzed_ibts(FileIR_t *firp)
+void unpin_well_analyzed_ibts(FileIR_t *firp, int do_unpin_opt)
 {
-	unpin_elf_tables(firp);
-	unpin_switches(firp);
+	unpin_elf_tables(firp, do_unpin_opt);
+	unpin_switches(firp, do_unpin_opt);
 	print_unpins(firp);
 }
 
@@ -2564,7 +2605,7 @@ void unpin_well_analyzed_ibts(FileIR_t *firp)
 /*
  * fill_in_indtargs - main driver routine for 
  */
-void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t> forced_pins)
+void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t> forced_pins, int do_unpin_opt)
 {
 	set<virtual_offset_t> thunk_bases;
 	find_all_module_starts(firp,thunk_bases);
@@ -2632,8 +2673,8 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t>
 	setup_icfs(firp, elfiop);
 
 	// do unpinning of well analyzed ibts.
-	unpin_well_analyzed_ibts(firp);
-
+	if(do_unpin_opt!=-1) 
+		unpin_well_analyzed_ibts(firp, do_unpin_opt);
 
 }
 
@@ -2642,18 +2683,50 @@ main(int argc, char* argv[])
 {
 	auto argc_iter = (int)2;
 	auto split_eh_frame_opt=false;
+	auto do_unpin_opt=-1;
 	auto forced_pins=std::list<virtual_offset_t> ();
 
 	if(argc<2)
 	{
-		cerr<<"Usage: fill_in_indtargs <id> [--split-eh-frame] [addr,...]"<<endl;
+		cerr<<"Usage: fill_in_indtargs <id> [--[no-]split-eh-frame] [--[no-]unpin] [addr,...]"<<endl;
 		exit(-1);
 	}
 
 	// parse dash-style options.
 	while(argc_iter < argc && argv[argc_iter][0]=='-')
 	{
-		if(string(argv[argc_iter])=="--split-eh-frame")
+		if(string(argv[argc_iter])=="--no-unpin")
+		{
+			do_unpin_opt=-1;
+			argc_iter++;
+		}
+		else if(string(argv[argc_iter])=="--unpin")
+		{
+			do_unpin_opt = numeric_limits<decltype(do_unpin_opt)>::max() ;
+			argc_iter++;
+		}
+		else if(string(argv[argc_iter])=="--max-unpin" || string(argv[argc_iter])=="--max-unpins")
+		{
+			argc_iter++;
+			auto arg_as_str=argv[argc_iter];
+			argc_iter++;
+
+			try { 
+				do_unpin_opt = stoul(arg_as_str,NULL,0);
+			}
+			catch (invalid_argument ia)
+			{
+				cerr<<"In --max-unpin, cannot convert "<<arg_as_str<<" to unsigned"<<endl;
+				exit(1);
+			}
+			
+		}
+		else if(string(argv[argc_iter])=="--no-split-eh-frame")
+		{
+			split_eh_frame_opt=false;
+			argc_iter++;
+		}
+		else if(string(argv[argc_iter])=="--split-eh-frame")
 		{
 			split_eh_frame_opt=true;
 			argc_iter++;
@@ -2713,7 +2786,7 @@ main(int argc, char* argv[])
         		elfiop->load((const char*)"readeh_tmp_file.exe");
 
 			// find all indirect branch targets
-			fill_in_indtargs(firp, elfiop, forced_pins);
+			fill_in_indtargs(firp, elfiop, forced_pins, do_unpin_opt);
 			if(split_eh_frame_opt)
 				split_eh_frame(firp);
 			
