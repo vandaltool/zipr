@@ -29,6 +29,7 @@ structured_stack_stamp=0
 structured_noc=0
 structured_nog=0
 structured_nos=0
+structured_ds=0
 config_name="unspecified"
 backend="strata"
 
@@ -58,6 +59,9 @@ do
 	# this option is for cfar, handle it and remove it from the ps_analyze arguments.
 	elif [ "$i" == "--structured_nos" ]; then 	
 		structured_nos=1
+	# this option is for cfar, handle it and remove it from the ps_analyze arguments.
+	elif [ "$i" == "--structured_ds" ]; then 	
+		structured_ds=1
 	# this option is for cfar, handle it and remove it from the ps_analyze arguments.
 	elif [ "$i" == "--config_name" ]; then 	
 		seq=$(expr $seq + 1)
@@ -142,6 +146,11 @@ do
 	# options to p1 to create non-overlapping canary values.
 	if [ $structured_p1_canaries  -eq 1 ]; then
 		per_variant_options+=(--step-option p1transform:"--canary_value 0x100${seq}${seq}000 --random_seed $anyseed")
+	fi
+
+	if [ $structured_ds -eq 1 ]; then
+		sharepath_key="$seq:$variants:dir://$share_path"
+		per_variant_options+=(--step-option duck_season:"--barrier $sharepath_key")
 	fi
 
 	# options to stack_stamp to create non-overlapping stamps
