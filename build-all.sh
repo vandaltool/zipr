@@ -121,6 +121,10 @@ scons -j 3|| exit
 cd $IRDB_TRANSFORMS
 scons -j 3|| exit
 
+if [ -d $DAFFY_HOME ]; then
+	cd $DAFFY_HOME
+	./setup_cfar.sh
+fi
 
 cd $PEASOUP_UMBRELLA_DIR
 
