@@ -29,6 +29,10 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <cstdlib>
+#include <iterator>
+#include <functional>
+#include <utility>
 #include <stdint.h>
 
 template <class T>
@@ -82,7 +86,7 @@ inline S const& find_map_object( const std::map< T , S > &a_map, const T& key)
 
 typedef uintptr_t virtual_offset_t;
 
-template<class T> T strtoint(std::string s)
+template<class T> inline T strtoint(std::string s)
 {
         std::stringstream str(s);
         T off;
@@ -91,5 +95,29 @@ template<class T> T strtoint(std::string s)
 
         return off;
 }
+
+// nb: relies on srand() being previously set 
+template <typename IterType, typename Funct>
+inline Funct for_randomOrder_each(const IterType &b, const IterType & e, const Funct &callback)
+{
+       std::map<int,const typename std::iterator_traits<IterType>::value_type *> m;
+       for_each(b,e, [&](const typename std::iterator_traits<IterType>::value_type & o)
+       {
+               while(true)
+               {
+                       int rn=rand();
+                       if(m.find(rn)==m.end())
+                       {
+                               m[rn]=&o;
+                               break;
+                       }
+               }
+       });
+       for_each(m.begin(), m.end(), [&](const std::pair<int,const typename std::iterator_traits<IterType>::value_type *> &p)
+       {
+               callback(*p.second);
+       });
+}
+
 
 #endif
