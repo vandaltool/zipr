@@ -50,6 +50,12 @@ run_test()
 		$PEASOUP_HOME/tools/db/pdb_setup.sh
 		rm -Rf result/*
 		runspec  --action scrub --config $config $benchmarks
+
+		echo
+		echo "**************************************************************************"
+		echo "Starting test of $config_name"
+		echo "**************************************************************************"
+		echo
 		runspec  --action validate --config $config -n $number $benchmarks 
 		cp benchspec/CPU2006/*/exe/* result
 		mv result result.$config_name
@@ -68,14 +74,15 @@ get_size_result()
 		size=$(stat --printf="%s" $bench)
 		#echo -n "$size"
 		#LC_ALL= numfmt --grouping $size
-		LC_ALL= printf "%'d" $size
+		#LC_ALL= printf "%'d" $size
 		#LC_NUMERIC=en_US printf "%'d" $size
 		#LC_NUMERIC=en_US printf "%'f" $size
 		#LC_NUMERIC=en_US printf "%'.f" $size
 		#LC_NUMERIC=en_US printf "%'10.10f" $size
 		#LC_NUMERIC=en_US /usr/bin/printf "%'d" $size
+		echo $size
 	else
-		echo -n "N/A"
+		echo -n "0"
 	fi
 }
 
@@ -102,17 +109,18 @@ get_result()
 	if [ $count = 1 ];  then
 		echo -n $res
 	else
-		echo -n "N/A"
+		echo -n "0"
 	fi
 
 }
 
 get_raw_results()
 {
+	configs=$*
+	first_config=$1
 	echo "--------------------------------------------------------------"
 	echo "Performance results are:"
 	echo "--------------------------------------------------------------"
-	configs=$*
 	echo benchmark $configs
 	for bench in $benchmarks
 	do
@@ -130,7 +138,7 @@ get_raw_results()
 	echo "--------------------------------------------------------------"
 	configs=$*
 	echo benchmark $configs
-	for bench in $SPEC/result.$config/*_base.amd64-m64-gcc42-nn
+	for bench in $SPEC/result.$first_config/*_base.amd64-m64-gcc42-nn
 	do
 		printf "%-20s"  $(basename $bench _base.amd64-m64-gcc42-nn)
 		for config in $*
@@ -138,8 +146,8 @@ get_raw_results()
 			file="$SPEC/result.$config/$(basename $bench)"
 			res=$(get_size_result $file)
 
-			printf "%15s" $res
-			#echo -n "$res	"
+			#printf "%15s" $res
+			echo -n "$res	"
 		done
 		echo
 	done
@@ -149,23 +157,30 @@ get_raw_results()
 
 main()
 {
-	trace_flags=" --step-option zipr:--traceplacement:on --step-option zipr:true"
-	relax_flags=" --step-option zipr:--relax:on --step-option zipr:true"
-	split_flgas="--step-option fill_in_indtargs:--split-eh-frame "
-	icall_flags="--step-option fix_calls:--no-fix-icalls "
+	trace_flags="   --step-option zipr:--traceplacement:on --step-option zipr:true"
+	relax_flags="   --step-option zipr:--relax:on --step-option zipr:true --step-option zipr:--unpin:on --step-option zipr:false"
+	nounpin_flags=" --step-option zipr:--unpin:on --step-option zipr:false"
+	split_flags="   --step-option fill_in_indtargs:--split-eh-frame "
+	icall_flags="   --step-option fix_calls:--no-fix-icalls "
 	start_dir=$(pwd)
 	setup
 	run_test baseline $SPEC/config/ubuntu14.04lts-64bit.cfg
 	PSOPTS="--backend zipr"  run_test zipr     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	#PSOPTS="--backend zipr $nounpin_flags "  run_test zipr-nounpin     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
 	PSOPTS="--backend zipr $trace_flags "  run_test zipr-trace     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
-	PSOPTS="--backend zipr $relax_flags "  run_test zipr-relax     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	#PSOPTS="--backend zipr $relax_flags "  run_test zipr-relax     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	#PSOPTS="--backend zipr $relax_flags $nounpin_flags "  run_test zipr-relax-nounpin     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
 	PSOPTS="--backend zipr $split_flags "  run_test split     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
-	PSOPTS="--backend zipr $split_flags $trace_flags "  run_test split-trace     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
-	PSOPTS="--backend zipr $split_flags $trace_flags "  run_test split-relax     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	#PSOPTS="--backend zipr $split_flags $nounpin_flags "  run_test split-nounpin     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	#PSOPTS="--backend zipr $split_flags $trace_flags "  run_test split-trace     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	#PSOPTS="--backend zipr $split_flags $trace_flags "  run_test split-relax     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
 	PSOPTS="--backend zipr $split_flags $icall_flags "  run_test split-no-fix-icalls     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
 	PSOPTS="--backend zipr $split_flags $icall_flags $trace_flags "  run_test split-no-fix-icalls-trace     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	#PSOPTS="--backend zipr $split_flags $icall_flags $relax_flags "  run_test split-no-fix-icalls-relax     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	#PSOPTS="--backend zipr $split_flags $icall_flags $relax_flags $nounpin_flags "  run_test split-no-fix-icalls-relax-nounpin     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
 
-	get_raw_results baseline  zipr zipr-trace zipr-relax split split-trace split-no-fix-icalls split-no-fix-icalls-trace
+	#get_raw_results baseline  zipr zipr-nounpin zipr-trace zipr-relax zipr-relax-nounpin split split-nounpin split-trace split-no-fix-icalls split-no-fix-icalls-trace split-no-fix-icalls-relax split-no-fix-icalls-relax-nounpin
+	get_raw_results baseline  zipr zipr-trace split-no-fix-icalls split-no-fix-icalls-trace 
 
 }
 
