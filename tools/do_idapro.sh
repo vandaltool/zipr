@@ -31,7 +31,8 @@ analyze_file()
     		*idapro6*|*idaproCur*)
         		# only works on IDA 6.0+
         		echo "IDA 6.* detected."
-        		screen -D -L -ln -m -a -T xterm sh -x $SMPSA_HOME/SMP-analyze.sh $file $stars_options
+        		#screen -D -L -ln -m -a -T xterm sh -x $SMPSA_HOME/SMP-analyze.sh $file $stars_options
+        		TVHEADLESS=1 $SMPSA_HOME/SMP-analyze.sh $file $stars_options
         		;;
 		*)
 			echo Cannot detect IDA version: $IDAROOT
