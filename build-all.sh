@@ -104,10 +104,12 @@ fi
 cd $PEASOUP_UMBRELLA_DIR/zipr_large_only_plugin/
 scons -j 3|| exit
 
-if [ -e zipr ] ; then
+if [[ -e $PEASOUP_UMBRELLA_DIR/zipr ]] && [[ -e $PEASOUP_UMBRELLA_DIR/zipr_relax_plugin ]]  ; then
 	cd $PEASOUP_UMBRELLA_DIR/zipr_relax_plugin/
 	scons -j 3|| exit
+fi
 
+if [[ -e $PEASOUP_UMBRELLA_DIR/zipr ]] && [[ -e $PEASOUP_UMBRELLA_DIR/zipr_trace_plugin ]]  ; then
 	cd $PEASOUP_UMBRELLA_DIR/zipr_trace_plugin/
 	scons -j 3|| exit
 fi

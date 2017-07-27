@@ -33,11 +33,13 @@ centos_files/nss-3.28.4-1.0.el7_3.i686.rpm -text
 centos_files/nss-softokn-3.16.2.3-14.4.el7.i686.rpm -text
 centos_files/nss-softokn-freebl-3.16.2.3-14.4.el7.i686.rpm -text
 centos_files/nss-util-3.28.4-1.0.el7_3.i686.rpm -text
+centos_files/oniguruma-5.9.5-3.el7.x86_64.rpm -text
 centos_files/pam-1.1.8-18.el7.i686.rpm -text
 centos_files/pam-1.1.8-18.el7.x86_64.rpm -text svneol=unset#application/x-rpm
 centos_files/patch-2.7.1-8.el7.x86_64.rpm -text svneol=unset#application/x-rpm
 centos_files/pcre-8.32-15.el7_2.1.i686.rpm -text
 centos_files/pcre-8.32-15.el7_2.1.x86_64.rpm -text svneol=unset#application/x-rpm
+centos_files/perl-Data-Dumper-2.145-3.el7.x86_64.rpm -text
 centos_files/perl-JSON-PP-2.27202-2.el7.noarch.rpm -text
 centos_files/postgresql-9.2.18-1.el7.x86_64.rpm -text svneol=unset#application/x-rpm
 centos_files/postgresql-contrib-9.2.18-1.el7.x86_64.rpm -text svneol=unset#application/x-rpm

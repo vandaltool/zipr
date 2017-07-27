@@ -38,20 +38,22 @@ if [ -d $ZIPR_SCFI_PLUGIN ]; then
 	scons  -c || exit
 fi
 
-if [ -d $ZIPR_CALLBACKS ]; then 
+if [[ -d $ZIPR_CALLBACKS ]] && [[ -e $ZIPR_CALLBACKS/Makefile ]] ; then 
 	cd $ZIPR_CALLBACKS
 	make clean
 fi
 
-if [ -d "$PEASOUP_UMBRELLA_DIR/zipr_large_only_plugin/" ]; then
+if [[ -d "$PEASOUP_UMBRELLA_DIR/zipr_large_only_plugin/" ]]; then
 	cd $PEASOUP_UMBRELLA_DIR/zipr_large_only_plugin/
 	scons -c || exit
 fi
 
-if [ -f zipr ]; then
+if [[ -e $PEASOUP_UMBRELLA_DIR/zipr_relax_plugin ]]; then
 	cd $PEASOUP_UMBRELLA_DIR/zipr_relax_plugin/
 	scons -c || exit
+fi
 
+if [[ -e $PEASOUP_UMBRELLA_DIR/zipr_trace_plugin ]]; then
 	cd $PEASOUP_UMBRELLA_DIR/zipr_trace_plugin/
 	scons -c || exit
 fi
