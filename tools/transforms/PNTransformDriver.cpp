@@ -2502,22 +2502,28 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 				//TODO: hack for TNE, padd the allocation by adding a random
 				//amount to the register used to subtract from esp. 
 
-				stringstream ss;
+				stringstream ss_add;
+				stringstream ss_sub;
 				//TODO: I am uncertain how alignment will work in this situation
 				//if the layout is aligned, this will return a padding amount
 				//divisible by the alignment stride, however, without knowing
 				//the size of the object, this may not ensure alignment, it is
 				//up to the compiler to handle that else where. 
-				ss<<"add "<<matched<<" , 0x"<<hex<<layout->GetRandomPadding();//"0x500";
+				auto rand_pad=layout->GetRandomPadding();
+				ss_add<<"add "<<matched<<" , 0x"<<hex<<rand_pad;//"0x500";
+				ss_sub<<"sub "<<matched<<" , 0x"<<hex<<rand_pad;//"0x500";
 
 				if(verbose_log)
 				{
 					cerr<<"PNTransformDriver: adding padding to dynamic stack allocation"<<endl;
-					cerr<<"PNTransformDriver: inserted instruction = "<<ss.str()<<endl;
+					cerr<<"PNTransformDriver: inserted instruction before = "<<ss_add.str()<<endl;
+					cerr<<"PNTransformDriver: inserted instruction after = "<<ss_sub.str()<<endl;
 				}
 
-				Instruction_t *new_instr = insertAssemblyBefore(virp,instr,ss.str(),NULL);
-				new_instr->SetComment("Dynamic array padding:" +ss.str());
+				Instruction_t *new_instr = insertAssemblyBefore(virp,instr,ss_add.str(),NULL);
+				new_instr->SetComment("Dynamic array padding:" +ss_add.str());
+
+				Instruction_t *new_instr2 = insertAssemblyAfter(virp,instr,ss_sub.str(),NULL);
 				return true;			
 			}
 		}
