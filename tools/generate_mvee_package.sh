@@ -296,7 +296,7 @@ copy_stuff()
 	exe=$3
 	target_path=$4
 	is_main=$5
-	echo -n "	Copying  files for $exe ... "
+	echo -n "	Copying files for $exe ... "
 
 	mkdir -p $out 2> /dev/null
 
