@@ -1166,7 +1166,25 @@ I5-2   	0x00000000000b93bf <+59>:	lea    rax,[rip+0x1f33a]        # 0xd8700
    	0x00000000000b93c6 <+66>:	add    rax,rdx
    	0x00000000000b93c9 <+69>:	jmp    rax
 
-Since I6 doesn't access memory, do another backup until with to verify a 
+Note: Since I6 doesn't access memory, do another backup until with to verify address format 
+
+Alternate version 2:
+
+	   0xdcf7 <+7>:	mov    r8,QWORD PTR [rdi+0xa0]
+	   0xdcfe <+14>:	cmp    r8,rax
+	   0xdd01 <+17>:	jbe    0xdd5c <httpd_got_request+108>
+	   0xdd03 <+19>:	mov    r9,QWORD PTR [rdi+0x90]
+I5	   0xdd0a <+26>:	lea    rcx,[rip+0x2a427]        # 0x38138
+	   0xdd11 <+33>:	cmp    DWORD PTR [rdi+0xb0],0xb
+	   0xdd18 <+40>:	movzx  edx,BYTE PTR [r9+rax*1]
+	   0xdd1d <+45>:	ja     0xdd4c <httpd_got_request+92>
+	   0xdd1f <+47>:	mov    esi,DWORD PTR [rdi+0xb0]
+I6	   0xdd25 <+53>:	movsxd rsi,DWORD PTR [rcx+rsi*4]
+I7	   0xdd29 <+57>:	add    rsi,rcx
+I8	   0xdd2c <+60>:	jmp    rsi
+
+Note: Here the operands of the add are reversed, so lookup code was not finding I5 where it was expected.
+
 
 #endif
 
@@ -1174,7 +1192,7 @@ Since I6 doesn't access memory, do another backup until with to verify a
 	// for now, only trying to find I4-I8.  ideally finding I1 would let us know the size of the
 	// jump table.  We'll figure out N by trying targets until they fail to produce something valid.
 
-	string table_index_str, cmp_str;
+	string table_index_str;
 	Instruction_t* I8=insn;
 	Instruction_t* I7=NULL;
 	Instruction_t* I6=NULL;
@@ -1206,7 +1224,8 @@ Since I6 doesn't access memory, do another backup until with to verify a
 	table_index_str += disasm.Argument1.ArgMnemonic;
 	table_index_str += ")";
 
-	cmp_str = string("cmp ") + disasm.Argument1.ArgMnemonic;
+	const auto cmp_str = string("cmp ") + disasm.Argument1.ArgMnemonic;
+	const auto cmp_str2 = string("cmp ") + disasm.Argument2.ArgMnemonic;
 
 	if(!backup_until(table_index_str.c_str(), I7, I8))
 		return;
@@ -1344,22 +1363,37 @@ Since I6 doesn't access memory, do another backup until with to verify a
 			continue;
 
 		int table_size = 0;
-		if(!backup_until(cmp_str.c_str(), I1, I8))
+		if(backup_until(cmp_str.c_str(), I1, I8))
+		{
+			DISASM d1;
+			I1->Disassemble(d1);
+			table_size = d1.Instruction.Immediat;
+			if (table_size <= 0)
+			{
+				cout<<"pic64: found I1 ('"<<d1.CompleteInstr<<"'), but could not find size of switch table"<<endl;
+				// set table_size to be very large, so we can still do pinning appropriately
+				table_size=std::numeric_limits<int>::max();
+			}
+		}
+		else if(backup_until(cmp_str2.c_str(), I1, I8))
+		{
+			DISASM d1;
+			I1->Disassemble(d1);
+			table_size = d1.Instruction.Immediat;
+			if (table_size <= 0)
+			{
+				// set table_size to be very large, so we can still do pinning appropriately
+				cout<<"pic64: found I1 ('"<<d1.CompleteInstr<<"'), but could not find size of switch table"<<endl;
+				table_size=std::numeric_limits<int>::max();
+			}
+		}
+		else
 		{
 			cout<<"pic64: could not find size of switch table"<<endl;
 
 			// we set the table_size variable to max_int so that we can still do pinning, 
 			// but we won't do the switch identification.
 			table_size=std::numeric_limits<int>::max();
-		}
-		else
-		{
-			DISASM d1;
-			I1->Disassemble(d1);
-			table_size = d1.Instruction.Immediat;
-			if (table_size <= 0)
-				// set table_size to be very large, so we can still do pinning appropriately
-				table_size=std::numeric_limits<int>::max();
 		}
 
 		set<Instruction_t *> ibtargets;
