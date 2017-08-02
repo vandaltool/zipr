@@ -1,10 +1,7 @@
     "monitor" : {
         "dump_variant_core" : true,
         "detach_variants": false,
-        "pre_launch_command": "/target_apps/global/fix_loader.sh /target_apps/monitor.conf",
-        "divergence": {
-                "actions": [ "SHUTDOWN" ]
-        }
+        "pre_launch_command": "/target_apps/global/fix_loader.sh /target_apps/monitor.conf"
 
     },
 
