@@ -140,7 +140,8 @@ get_raw_results()
 	echo benchmark $configs
 	for bench in $SPEC/result.$first_config/*_base.amd64-m64-gcc42-nn
 	do
-		printf "%-20s"  $(basename $bench _base.amd64-m64-gcc42-nn)
+		#printf "%-20s"  $(basename $bench _base.amd64-m64-gcc42-nn)
+		echo -n "$(basename $bench _base.amd64-m64-gcc42-nn)	"
 		for config in $*
 		do
 			file="$SPEC/result.$config/$(basename $bench)"
