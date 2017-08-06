@@ -525,7 +525,7 @@ void infer_targets(FileIR_t *firp, section* shdr)
 
 void print_targets()
 {
-	int j=0;
+	int j=1;
 	for(
 		map<virtual_offset_t,ibt_provenance_t>::iterator it=targets.begin();
 		it!=targets.end();
