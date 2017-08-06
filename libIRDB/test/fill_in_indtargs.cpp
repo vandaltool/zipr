@@ -544,6 +544,22 @@ void print_targets()
 	cout<<endl;
 }
 
+void print_targets_oneline()
+{
+	int j=1;
+	for(
+		map<virtual_offset_t,ibt_provenance_t>::iterator it=targets.begin();
+		it!=targets.end();
+		++it, j++
+	   )
+	{
+		virtual_offset_t target=it->first;
+	
+		cout<<std::hex<<target<<",";
+	}
+	cout<<endl;
+}
+
 set<Instruction_t*> find_in_function(string needle, Function_t *haystack)
 {
 	DISASM disasm;
@@ -2701,6 +2717,11 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t>
 	cout<<"========================================="<<endl;
 	cout<<"# ATTRIBUTE total_indirect_targets="<<std::dec<<targets.size()<<endl;
 	print_targets();
+	cout<<"========================================="<<endl;
+
+	cout<<"========================================="<<endl;
+	cout<<"# ATTRIBUTE oneline_indirect_targets=";
+	print_targets_oneline();
 	cout<<"========================================="<<endl;
 
 	// try to setup an ICFS for every IB.
