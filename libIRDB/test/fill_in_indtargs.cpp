@@ -1415,17 +1415,24 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		set<Instruction_t *> ibtargets;
 		virtual_offset_t offset=D1-pSec->get_address();
 		int entry=0;
+		auto found_table_error = false;
 		do
 		{
 			// check that we can still grab a word from this section
 			if(offset+sizeof(int) > pSec->get_size())
+			{
+				found_table_error = true;
 				break;
+			}
 
 			const int *table_entry_ptr=(const int*)&(secdata[offset]);
 			virtual_offset_t table_entry=*table_entry_ptr;
 
 			if(!possible_target(D1+table_entry, 0/* from addr unknown */,prov))
+			{
+				found_table_error = true;
 				break;
+			}
 
 			if(getenv("IB_VERBOSE"))
 			{
@@ -1446,6 +1453,8 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 			{
 				if(getenv("IB_VERBOSE"))
 					cout << "      INVALID target" << endl;
+
+				found_table_error = true;
 				break;
 			}
 			offset+=sizeof(int);
@@ -1458,11 +1467,15 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		cout << "pic64: detected table size (max_int means no found): 0x"<< hex << table_size << " #entries: 0x" << entry << " ibtargets.size: " << ibtargets.size() << endl;
 
 		// note that there may be an off-by-one error here as table size depends on whether instruction I2 is a jb or jbe.
-		if (table_size == ibtargets.size() || table_size == (ibtargets.size()-1))
+		if (!found_table_error)
 		{
 			cout << "pic64: valid switch table detected ibtp_switchtable_type4" << endl;
 			jmptables[I8].SetTargets(ibtargets);
 			jmptables[I8].SetAnalysisStatus(ICFS_Analysis_Complete);
+		}
+		else
+		{
+			cout << "pic64: INVALID switch table detected ibtp_switchtable_type4" << endl;
 		}
 	}
 }
