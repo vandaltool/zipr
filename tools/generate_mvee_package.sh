@@ -19,7 +19,7 @@ Usage:
 	--outdir <path_to_variants>
 	[--args <arguments string in json format> ]
 	[--server <servername>
-	[--class <atd class>
+	[--class <atd class> ]
 	[--mainexe <exe base name>
 	[--extra_preloads "<preloads>" ]
 	[(--help | h )]
@@ -32,7 +32,7 @@ check_opts()
 	# defaults
 	args="\"-k\", \"start\""
 	server="APACHE"
-	class="None"
+	class=""
 	backend="zipr"	 	
 	use_diehard="--nodiehard"
 	use_libtwitcher="--nolibtwitcher"
@@ -647,7 +647,6 @@ finalize_json()
 	json_contents="${json_contents//<<LIBS>>/}"
 	json_contents="${json_contents//,<<LDLIB>>/}"
 	json_contents="${json_contents//<<LDLIB>>/}"
-	json_contents="${json_contents//<<CLASS>>/$class}"
 	json_contents="${json_contents//<<SERVER>>/$server}"
 	json_contents="${json_contents//<<ARGS>>/$args}"
 	json_contents="${json_contents//, <<CODE_MAP>>/}"
@@ -656,6 +655,13 @@ finalize_json()
 	json_contents="${json_contents//<<SCOOP_MAP>>/}"
 	json_contents="${json_contents//, <<P1_MAP>>/}"
 	json_contents="${json_contents//<<P1_MAP>>/}"
+	if [[ -z "$class" ]]; then
+		# remove class field
+		json_contents="${json_contents//<<CLASS>>,/}"
+	else
+		# put proper class in place.
+		json_contents="${json_contents//<<CLASS>>/\"class\" : \"$class\"}"
+	fi
 
 	echo "$json_contents" > $json.ugly
 	echo "$json_contents" |json_pp > $json
