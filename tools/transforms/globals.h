@@ -26,6 +26,7 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <limits.h>
 
 
 
@@ -47,6 +48,7 @@ class PNOptions
 			random_seed=getpid();
 			canary_value=0;
 			canary_value_inited=false;
+			double_threshold=32*1024; // 32kb 
 		}
 
 		void setMinStackPadding(int val) { min_stack_padding = val; }
@@ -56,12 +58,14 @@ class PNOptions
 		void setShouldDoubleFrameSize(bool val) { should_double_frame_size = val; }
 		void setRandomSeed(int val) { random_seed = val; }
 		void setCanaryValue(int val) { canary_value = val; canary_value_inited=true; }
+		void setDoubleThreshold(int val) { double_threshold = val; }
 
 		int getMinStackPadding() const { return min_stack_padding; }
 		int getMaxStackPadding() const { return max_stack_padding; }
 		int getRecursiveMinStackPadding() const { return recursive_min_stack_padding; }
 		int getRecursiveMaxStackPadding() const { return recursive_max_stack_padding; }
 		bool getShouldDoubleFrameSize() const { return should_double_frame_size; }
+		int getDoubleThreshold() { return double_threshold; }
 		int getRandomSeed() { return random_seed; }
 		int getCanaryValue() 	
 		{ 
@@ -98,6 +102,8 @@ class PNOptions
 		int random_seed;
 		int canary_value;
 		bool canary_value_inited;
+
+		int double_threshold;
 
 		std::set<std::string> canary_functions;
 };

@@ -71,6 +71,7 @@ enum
 	RECURSIVE_MIN_STACK_PAD_OPTION,
 	RECURSIVE_MAX_STACK_PAD_OPTION,
 	SHOULD_DOUBLE_FRAME_SIZE_OPTION,
+	DOUBLE_THRESHOLD_OPTION,
 	SELECTIVE_CANARIES_OPTION,
 	SET_RANDOM_SEED,
 	SET_CANARY_VALUE,
@@ -98,6 +99,7 @@ static struct option const long_options[] =
 	{"recursive_min_stack_padding",required_argument, NULL, RECURSIVE_MIN_STACK_PAD_OPTION},
 	{"recursive_max_stack_padding",required_argument, NULL, RECURSIVE_MAX_STACK_PAD_OPTION},
 	{"should_double_frame_size",required_argument, NULL, SHOULD_DOUBLE_FRAME_SIZE_OPTION},
+	{"double_threshold_size",required_argument, NULL, DOUBLE_THRESHOLD_OPTION,},
 	{"selective_canaries",required_argument, NULL, SELECTIVE_CANARIES_OPTION},
 	{"random_seed",required_argument, NULL, SET_RANDOM_SEED},
 	{"canary_value",required_argument, NULL, SET_CANARY_VALUE},
@@ -337,6 +339,13 @@ int main(int argc, char **argv)
 				pn_options->setRecursiveMaxStackPadding(recursive_max_stack_padding);
 			break;
 		}
+		case DOUBLE_THRESHOLD_OPTION:
+		{
+			const auto double_threshold = atoi(optarg);
+			pn_options->setDoubleThreshold(double_threshold);
+			break;	
+		}
+	
 		case SHOULD_DOUBLE_FRAME_SIZE_OPTION:
 		{
 			if(strcasecmp("true",optarg)==0)
