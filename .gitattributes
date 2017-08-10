@@ -15,6 +15,7 @@ cgc_spri/spawn_with_spri_open.c -text
 chopzero_src/Makefile -text
 chopzero_src/chopzero.c -text
 cpp-examples/Makefile -text
+cpp-examples/Makefile.zipr -text
 cpp-examples/derived2_throw.cpp -text
 cpp-examples/derived3_throw.cpp -text
 cpp-examples/derived4_throw.cpp -text
