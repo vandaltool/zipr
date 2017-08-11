@@ -3,7 +3,7 @@
 .SUFFIXES: .o .c .cpp .stock .zipr
 
 #exes=hanoi++.zipr newdel.zipr newdel_broke1.zipr newdel_broke2.zipr newdel_broke3.zipr newdel_broke4.zipr newdel_broke5.zipr  newdel_broke6.zipr  newdel_broke7.zipr  throw.zipr newdelete1.zipr newdelete2.zipr newdelete3.zipr newdelete4.zipr newdelete5.zipr newdelete6.zipr 
-exes=hanoi++.zipr throw.zipr simple_throw.zipr
+exes=hanoi++.zipr throw.zipr simple_throw.zipr newdel.zipr
 
 
 all: env_check  ${exes}
