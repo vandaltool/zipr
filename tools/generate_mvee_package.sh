@@ -300,7 +300,7 @@ copy_stuff()
 
 	mkdir -p $out 2> /dev/null
 
-	if [[ $is_main ]] ; then
+	if [[ $is_main == 1 ]] ; then
 		cp $in/*.so 		$out/ 2> /dev/null 
 		cp $in/*json 		$out/ 2> /dev/null 
 		cp $in/*nol 		$out/ 2> /dev/null 
@@ -387,7 +387,7 @@ finalize_json()
 
 
 			# update user we're starting a new variant.
-			echo "Including variant $seq (variant_$vs_$seq) of type $config."
+			echo "Including variant $seq (variant_${vs}_${seq}) of type $config."
 
 			# calculate where the variantw ill go on both the generation box and the output box.
 			new_variant_dir="$outdir/vs-$vs/variant-$seq"
