@@ -12,7 +12,7 @@ analyze_file()
 	rc=1
 	if [ ! -z "$IDA_PRO_SERVER_HOST" ]; then
 		echo "STARS (Remote on ${IDA_PRO_SERVER_HOST}) Analyzing $file target is: $target_name"
-		$PEASOUP_UMBRELLA_DIR/IdaProServer/SMP-analyze.sh $file $stars_options
+		$PEASOUP_UMBRELLA_DIR/IdaProServer/SMP-analyze-remote.sh $file $stars_options
 		rc=$?
 
 		if [ ! $rc -eq 0 ]; then
