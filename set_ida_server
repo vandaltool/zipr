@@ -3,4 +3,7 @@
 export IDA_PRO_SERVER_HOST=192.168.184.141
 #IDA_PRO_SERVER_USER=<user>
 #IDA_PRO_SERVER_PORT=22
-export SMPSA_HOME=$PEASOUP_UMBRELLA_DIR/IdaProServer
+
+
+# no longer need the redirect this way.  just setting the IDA_PRO_SERVER hostname is good enough.
+#export SMPSA_HOME=$PEASOUP_UMBRELLA_DIR/IdaProServer
