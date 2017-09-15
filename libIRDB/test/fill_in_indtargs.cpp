@@ -20,6 +20,7 @@
  */
 
 #include <libIRDB-core.hpp>
+#include <libIRDB-util.hpp>
 #include <iostream>
 #include <fstream>
 #include <limits>
@@ -281,6 +282,7 @@ void mark_targets(FileIR_t *firp)
 }
 
 
+#ifdef MOMVED
 bool IsParameterWrite(FileIR_t *firp,Instruction_t* insn, string& output_dst)
 {
 	DISASM d;
@@ -347,6 +349,7 @@ bool IsParameterWrite(FileIR_t *firp,Instruction_t* insn, string& output_dst)
 	// return we didn't find a memory of the right type
 	return false;
 }
+#endif
 
 
 bool CallToPrintfFollows(FileIR_t *firp, Instruction_t* insn, const string& arg_str)

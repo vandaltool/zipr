@@ -34,6 +34,7 @@ namespace libIRDB
 {
 
 #include <util/insn_preds.hpp>
+#include <util/params.hpp>
 
 };
 

@@ -228,6 +228,7 @@ libIRDB/include/libIRDB-syscall.hpp -text
 libIRDB/include/libIRDB-util.hpp -text
 libIRDB/include/syscall/syscall.hpp -text
 libIRDB/include/util/insn_preds.hpp -text
+libIRDB/include/util/params.hpp -text
 libIRDB/include/utils.hpp -text
 libIRDB/install_libs.sh -text
 libIRDB/src/Makefile.in -text
@@ -266,6 +267,7 @@ libIRDB/src/util/Makefile -text
 libIRDB/src/util/SConscript -text
 libIRDB/src/util/SConstruct -text
 libIRDB/src/util/insn_preds.cpp -text
+libIRDB/src/util/params.cpp -text
 libIRDB/test/SConscript -text
 libIRDB/test/SConstruct -text
 libIRDB/test/build_callgraph.cpp -text

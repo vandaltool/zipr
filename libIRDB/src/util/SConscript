@@ -8,6 +8,7 @@ myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 libname="IRDB-util"
 files=  '''
 	insn_preds.cpp
+	params.cpp
 	'''
 cpppath=''' 
 	$SECURITY_TRANSFORMS_HOME/include/
@@ -19,6 +20,7 @@ cpppath='''
 #myenv.Append(CCFLAGS=" -Wall -W -Wextra -Wconversion ")
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath))
+myenv.Append(CXXFLAGS = " -std=c++11 ")
 lib=myenv.Library(libname, Split(files))
 
 install=env.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
