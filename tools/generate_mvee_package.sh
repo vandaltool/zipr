@@ -545,20 +545,19 @@ finalize_json()
 			fi
 
 			# handle structured nol/noh
-			# echo "	config is $config"
-			if [[ $config == *"struct"* ]] || [[  $config == *"struct"* ]] ; then
+			if [[ $config == *"struct"* ]] ; then 
 				echo $struct_set_size > $new_variant_dir/nolnoh_config
 				echo $struct_set_no >> $new_variant_dir/nolnoh_config
 				echo "	Struct noh/nol is enabled: $struct_set_no / $struct_set_size "
 				if [[ $config == *"probNoh"* ]] || [[  $config == *"probNol"* ]] ; then
 					echo
-					echo "Cannot have structNol with probNoh or structNoh with probNol.  Fatal error. "
+					echo "Cannot have structured xforms and probNoh or probNol.  Fatal error. "
 					echo
 					exit 1
 				fi
 			else
-				echo $total_variants > $new_variant_dir/nolnoh_config
-				# echo "	Struct Noh/nol is disabled."
+				# assume we are variant  #(rand 0-3)
+				echo 4 > $new_variant_dir/nolnoh_config
 			fi
 	
 
