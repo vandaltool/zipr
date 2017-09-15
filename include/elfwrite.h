@@ -70,6 +70,18 @@ class ElfWriter
 		public:
 			LoadSegment_t() :filesz(0), memsz(0), filepos(0), start_page(0), m_perms(0) { }
 
+			LoadSegment_t( unsigned int p_filesz, unsigned int p_memsz, unsigned int p_filepos, unsigned int p_start_page, unsigned int p_m_perms)
+				:
+				filesz(p_filesz),
+				memsz(p_memsz), 
+				filepos(p_filepos),
+				start_page(p_start_page),
+				m_perms(p_m_perms)
+			{
+				
+			}
+
+
 		unsigned int filesz; 
 		unsigned int memsz; 
 		unsigned int filepos;
@@ -82,7 +94,7 @@ class ElfWriter
 	typedef std::map<libIRDB::virtual_offset_t, PageData_t> PageMap_t;
 
 	public: 
-		ElfWriter(libIRDB::FileIR_t* firp, bool write_sections) : m_firp(firp), m_write_sections(write_sections) { }
+		ElfWriter(libIRDB::FileIR_t* firp, bool write_sections, bool bss_opts) : m_firp(firp), m_write_sections(write_sections), m_bss_opts(bss_opts) { }
 		virtual ~ElfWriter() {}
 		void Write(const ELFIO::elfio *elfiop, libIRDB::FileIR_t* firp, const std::string &out_file, const std::string &infile);
 
@@ -112,6 +124,7 @@ class ElfWriter
 	protected:
 		libIRDB::FileIR_t* m_firp;
 		bool m_write_sections;
+		bool m_bss_opts;
 	private:
 		libIRDB::virtual_offset_t DetectMinAddr(const ELFIO::elfio *elfiop, libIRDB::FileIR_t* firp, const std::string &out_file);
 		libIRDB::virtual_offset_t DetectMaxAddr(const ELFIO::elfio *elfiop, libIRDB::FileIR_t* firp, const std::string &out_file);
@@ -134,7 +147,7 @@ class ElfWriterImpl : public ElfWriter
 {
 	public:
 
-		ElfWriterImpl(libIRDB::FileIR_t* firp, bool write_sections) : ElfWriter(firp, write_sections) { } 
+		ElfWriterImpl(libIRDB::FileIR_t* firp, bool write_sections, bool bss_opts ) : ElfWriter(firp, write_sections, bss_opts) { } 
 	
 	protected:
 		int GetFileHeaderSize()  { return sizeof(T_Elf_Ehdr); } 

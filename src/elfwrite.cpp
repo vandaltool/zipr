@@ -156,34 +156,50 @@ void ElfWriter::SortSegmap()
 
 void ElfWriter::CreateSegmap(const ELFIO::elfio *elfiop, FileIR_t* firp, const string &out_file)
 {
-	// init some segment vars.
-	virtual_offset_t segstart=pagemap.begin()->first;
-	PageData_t segperms=pagemap.begin()->second;
-	virtual_offset_t segend=segstart+PAGE_SIZE;
-	virtual_offset_t initend=segstart;
-	if(pagemap.begin()->second.is_zero_initialized())
-		initend=segstart;
-	else
-		initend=segend;
+	const auto should_bss_optimize= [&] (const PageData_t& perms)
+	{
+		return (perms.is_zero_initialized() && m_bss_opts);
+	};
 
-	PageMap_t::iterator it=pagemap.begin(); 
+
+
+	// init some segment vars.
+	auto segstart=pagemap.begin()->first;
+	auto segperms=pagemap.begin()->second;
+	auto segend=segstart+PAGE_SIZE;
+	auto initend=segstart;
+
+	const auto update_initend=[&](const PageData_t& perms)
+	{
+		if(should_bss_optimize(perms))
+			initend=segstart;
+		else
+			initend=segend;
+	};
+
+	update_initend(segperms);
+
+	auto it=pagemap.begin(); 
 	++it;	// handled first one above.
 
 	for( /* init'd above */; it!=pagemap.end(); ++it)
 	{
 		// grab page address and perms
-		virtual_offset_t pagestart=it->first;
-		const PageData_t &perms=it->second;
+		const auto pagestart=it->first;
+		const auto &perms=it->second;
 
 
 		// if we switch perms, or skip a page 
 		if( (perms.m_perms!=segperms.m_perms) || (segend!=pagestart))
 		{
+/*
 			LoadSegment_t *seg=new LoadSegment_t;
 			seg->memsz=segend-segstart;
 			seg->filesz=initend-segstart;
 			seg->start_page=segstart;
 			seg->m_perms=segperms.m_perms;
+*/
+			const auto seg=new LoadSegment_t(initend-segstart, segend-segstart, 0, segstart,segperms.m_perms);
 			segvec.push_back(seg);
 
 			cout<<"Found segment "<<hex<<segstart<<"-"<<(segend-1)<<", perms="<<segperms.m_perms<<", memsz="<<seg->memsz<<", filesz="<<seg->filesz<<endl;
@@ -191,28 +207,35 @@ void ElfWriter::CreateSegmap(const ELFIO::elfio *elfiop, FileIR_t* firp, const s
 			segperms=perms;
 			segstart=pagestart;
 			segend=segstart+PAGE_SIZE;
-			if(perms.is_zero_initialized())
+
+			update_initend(perms);
+/*
+			if( should_bss_optimize(perms) ) // perms.is_zero_initialized() && m_bss_opts)
 				initend=segstart;
 			else
 				initend=segend;
+*/
 
 		}
 		else
 		{
 			// else, same permission and next page, extend segment. 
 			segend=pagestart+PAGE_SIZE;
-			if(!perms.is_zero_initialized())
+			if(! should_bss_optimize(perms) ) // !perms.is_zero_initialized() || ! m_bss_opts)
 				initend=pagestart+PAGE_SIZE;
 		}
 		
 	}
 
 	// make sure we print the last one
+/*
 	LoadSegment_t *seg=new LoadSegment_t;
 	seg->memsz=segend-segstart;
 	seg->filesz=initend-segstart;
 	seg->start_page=segstart;
 	seg->m_perms=segperms.m_perms;
+*/
+	const auto seg=new LoadSegment_t(initend-segstart, segend-segstart, 0, segstart,segperms.m_perms);
 	segvec.push_back(seg);
 
 	cout<<"Found segment "<<hex<<segstart<<"-"<<(segend-1)<<", perms="<<segperms.m_perms<<", memsz="<<seg->memsz<<", filesz="<<seg->filesz<<endl;
