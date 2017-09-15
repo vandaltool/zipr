@@ -192,7 +192,7 @@ PNStackLayout* PrecedenceBoundaryInference::GetPNStackLayout(libIRDB::Function_t
 //and I have removed, as of this version, this inference from P1
 //		revised_playout.SetCanarySafe(false);
 
-		return new PNStackLayout(revised_playout);
+		return new PNStackLayout(revised_playout, func);
 	}
 
 //I don't know why I marked these as not canary safe originally, I think this was
@@ -201,7 +201,7 @@ PNStackLayout* PrecedenceBoundaryInference::GetPNStackLayout(libIRDB::Function_t
 //and I have removed, as of this version, this inference from P1
 //	precedence_layout.SetCanarySafe(false);
 	
-	return new PNStackLayout(precedence_layout);
+	return new PNStackLayout(precedence_layout, func);
 }
 
 string PrecedenceBoundaryInference::GetInferenceName() const

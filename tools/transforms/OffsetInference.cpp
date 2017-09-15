@@ -32,6 +32,21 @@
 using namespace std;
 using namespace libIRDB;
 
+static Relocation_t* FindRelocation(Instruction_t* insn, string type)
+{
+        RelocationSet_t::iterator rit;
+        for( rit=insn->GetRelocations().begin(); rit!=insn->GetRelocations().end(); ++rit)
+        {
+                Relocation_t& reloc=*(*rit);
+                if(reloc.GetType()==type)
+                {
+                        return &reloc;
+                }
+        }
+        return NULL;
+}
+
+
 extern int get_saved_reg_size();
 
 //TODO: Use cfg entry point only, then use func instructions,
@@ -544,7 +559,14 @@ else
 	if(regexec(&(pn_regex->regex_push_anything), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
 		Instruction_t* ft=instr->GetFallthrough();
-		if(ft && !ft->GetFallthrough() && 
+		const auto reloc1=FindRelocation(instr,"32-bit");
+		const auto reloc2=FindRelocation(instr,"push64");
+	
+		if(reloc1!=NULL || reloc2!=NULL)
+		{
+			/* definite a push from a fixed calls */
+		}
+		else if(ft && !ft->GetFallthrough() && 
 			(ft->GetTarget()==NULL || ft->GetTarget()->GetFunction()!=instr->GetFunction()))
 		{
 			/* probably a push/jmp converted by fix calls */
@@ -989,12 +1011,12 @@ else
 		//if the size of aoi is the same as any other inference
 		//assume they are the same (insert a null layout entry)
 		if(pn_direct_offsets->GetRanges().size() != aoi_size)
-			direct[func] = new PNStackLayout(*pn_direct_offsets);
+			direct[func] = new PNStackLayout(*pn_direct_offsets, func);
 		else
 			direct[func] = NULL;
 
 		if(pn_scaled_offsets->GetRanges().size() != aoi_size)
-			scaled[func] = new PNStackLayout(*pn_scaled_offsets);
+			scaled[func] = new PNStackLayout(*pn_scaled_offsets, func);
 		else
 			scaled[func] = NULL;
 
@@ -1002,9 +1024,9 @@ else
 		//AOI, I don't want to generate it to save time, but what if a function
 		//has no coverage, so p1 is used, if I set it null here because the
 		//layouts are the same, I wont have any modification for that function. 
-		p1[func] = new PNStackLayout(*pn_p1_offsets);
+		p1[func] = new PNStackLayout(*pn_p1_offsets, func);
 
-		all_offsets[func] = new PNStackLayout(*pn_all_offsets);
+		all_offsets[func] = new PNStackLayout(*pn_all_offsets, func);
 
 		if(!dealloc_flag)
 		{

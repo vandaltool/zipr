@@ -105,7 +105,7 @@ unsigned int PNStackLayout::GetRandomPadding(unsigned int obj_size)
 //TODO: negative offsets?
 
 
-PNStackLayout::PNStackLayout(StackLayout stack_layout) : stack_layout(stack_layout)
+PNStackLayout::PNStackLayout(StackLayout stack_layout, libIRDB::Function_t* func) : stack_layout(stack_layout)
 {
 	ALIGNMENT_BYTE_SIZE=libIRDB::FileIR_t::GetArchitectureBitWidth()/sizeof(int);
 	//PNTransformDriver sets up the seed, I need a better way of handling this
@@ -123,8 +123,11 @@ PNStackLayout::PNStackLayout(StackLayout stack_layout) : stack_layout(stack_layo
 		mem_objects.push_back(pn_obj);
 	}
 
-	base_id = 0;
+	assert(func);
+	base_id = func->GetBaseID();
 	entry_id = 0;
+	if(func->GetEntryPoint()!=NULL)
+		entry_id=func->GetEntryPoint()->GetBaseID();
 }
 
 PNStackLayout::PNStackLayout(const PNStackLayout &stack_layout): stack_layout(stack_layout.stack_layout)

@@ -28,6 +28,7 @@
 #include <assert.h>
 #include "globals.h"
 #include "canary.h"
+#include <libIRDB-core.hpp>
 
 //NOTE: padding adds a value between max and min, plus the frame size
 //I believe this was done to protect against a very large buffer 
@@ -65,14 +66,14 @@ protected:
 	unsigned int altered_alloc_size;
 
 	std::vector<canary> canaries;
-	int base_id;
-	int entry_id;
+	libIRDB::db_id_t base_id;
+	libIRDB::db_id_t entry_id;
 
 	
 	virtual void AddCanaryPadding();
 
 public:
-	PNStackLayout(StackLayout stack_layout);
+	PNStackLayout(StackLayout stack_layout, libIRDB::Function_t* func);
 	PNStackLayout(const PNStackLayout &stack_layout);
 
 	virtual ~PNStackLayout();

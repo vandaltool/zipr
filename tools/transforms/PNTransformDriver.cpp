@@ -2271,8 +2271,8 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 
 
 	orig_layout->SetCanaries(canaries);
-	orig_layout->SetBaseID(func->GetBaseID());
-	orig_layout->SetEntryID(func->GetEntryPoint()->GetBaseID());
+//	orig_layout->SetBaseID(func->GetBaseID());
+//	orig_layout->SetEntryID(func->GetEntryPoint()->GetBaseID());
 
 	EhUpdater_t eh_update(orig_virp, func, layout);
 	if(!eh_update.execute())
@@ -2307,6 +2307,7 @@ bool PNTransformDriver::Sans_Canary_Rewrite(PNStackLayout *layout, Function_t *f
 		if(!Instruction_Rewrite(layout,instr,&cfg))
 			return false;
 	}
+
 	EhUpdater_t eh_update(orig_virp, func, layout);
 	if(!eh_update.execute())
 		return false;

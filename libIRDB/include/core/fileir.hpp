@@ -69,6 +69,7 @@ class FileIR_t : public BaseObj_t
 		void GenerateSPRI(FileIR_t *orig_varirp, std::ostream &fout, bool with_ilr=false);
 
 		void SetBaseIDS();
+		db_id_t GetMaxBaseID();
 
 		File_t* GetFile() const { return fileptr; }
 

@@ -31,6 +31,7 @@
 #include "Rewrite_Utility.hpp"
 #include <libIRDB-cfg.hpp>
 #include "canary.h"
+#include <libIRDB-core.hpp>
 
 
 //TODO: I should use the types defined by beaengine

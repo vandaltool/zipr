@@ -468,8 +468,10 @@ static bool is_in_relro_segment(const int secndx)
 
 void fill_in_scoops(FileIR_t *firp)
 {
-	int secnum = elfiop->sections.size();
-	int secndx=0;
+
+	auto max_base_id=firp->GetMaxBaseID();
+	auto secnum = elfiop->sections.size();
+	auto secndx=0;
 
 	/* look through each section */
 	for (secndx=1; secndx<secnum; secndx++)
@@ -540,7 +542,7 @@ void fill_in_scoops(FileIR_t *firp)
 			( elfiop->sections[secndx]->isExecutable() << 0 ) ;
 
 		bool is_relro=is_in_relro_segment(secndx);
-		DataScoop_t *newscoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, name, startaddr, endaddr, NULL, permissions, is_relro, the_contents);
+		DataScoop_t *newscoop=new DataScoop_t(max_base_id++, name, startaddr, endaddr, NULL, permissions, is_relro, the_contents);
 		assert(newscoop);
 		firp->GetDataScoops().insert(newscoop);
 
