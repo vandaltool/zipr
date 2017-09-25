@@ -108,23 +108,73 @@ EhWriterImpl_t<ptrsize>::CIErepresentation_t::CIErepresentation_t(Instruction_t*
 
 
 template <int ptrsize>
+void EhWriterImpl_t<ptrsize>::print_pers(Instruction_t* insn, EhWriterImpl_t<ptrsize>::CIErepresentation_t *cie)
+{
+	const auto pretty_print= [&](Relocation_t* pr)
+		{
+			if(pr==NULL)
+			{
+				cout<<"Found no personality reloc"<<endl;
+				return;
+			}
+			const auto personality_scoop=dynamic_cast<DataScoop_t*>(pr->GetWRT());
+			const auto personality_insn=dynamic_cast<Instruction_t*>(pr->GetWRT());
+
+			if(pr->GetWRT()==NULL)
+				cout<<"\tFound null personality"<<endl;
+			else if(personality_scoop)
+				cout<<"\tFound personlity scoop "<<personality_scoop->GetName()<<"+0x"<<hex<<pr->GetAddend()<<endl;
+			else if(personality_insn)
+				cout<<"\tFound personlity instruction "<<hex<<personality_insn->GetBaseID()<<dec<<":"<<hex<<personality_insn->getDisassembly()<<endl;
+			else
+				cout<<"\tFound reloc: unexpected type? "<<endl;
+		};
+
+	cout<<"  CIE-Personality addr= "<<hex<<cie->personality_reloc<<dec<<endl;
+	pretty_print(cie->GetPersonalityReloc());
+	const auto personality_it=find_if(
+		insn->GetEhProgram()->GetRelocations().begin(), 
+		insn->GetEhProgram()->GetRelocations().end(),
+		[](const Relocation_t* r) { return r->GetType()=="personality"; });
+
+	const auto pr = (personality_it==insn->GetEhProgram()->GetRelocations().end())
+		? (Relocation_t*)NULL
+		: *personality_it;
+	cout<<"  insn personality addr= "<<hex<<pr<<dec<<endl;
+	pretty_print(pr);
+
+
+};
+
+
+template <int ptrsize>
 EhWriterImpl_t<ptrsize>::FDErepresentation_t::FDErepresentation_t(Instruction_t* insn, EhWriterImpl_t<ptrsize>* ehw)
 	: 
 		lsda(insn),
 		cie(NULL)
 {
 	auto cie_it=find_if( ehw->all_cies.begin(), ehw->all_cies.end(), [&](const CIErepresentation_t* candidate)
-	{
-		return candidate->canSupport(insn);
-	});
+			{
+				return candidate->canSupport(insn);
+			});
 
 	if(cie_it==ehw->all_cies.end())
 	{
 		cie=new CIErepresentation_t(insn,ehw);
 		ehw->all_cies.push_back(cie);
+
+		if(getenv("EH_VERBOSE")!=NULL)
+			cout<<"Creating new CIE representation"<<endl;
 	}
 	else
+	{
 		cie=*cie_it;
+		if(getenv("EH_VERBOSE")!=NULL)
+		{
+			cout<<"Re-using CIE representation"<<endl;
+			print_pers(insn, cie);
+		}
+	}
 
 	start_addr=ehw->zipr_obj.GetLocationMap()->at(insn);
 	last_advance_addr=start_addr;
@@ -525,7 +575,11 @@ void EhWriterImpl_t<ptrsize>::BuildFDEs()
 		else
 		{
 			if(getenv("EH_VERBOSE")!=NULL)
+			{
 				cout<<"Extending new FDE for "<<hex<<this_insn->GetBaseID()<<":"<<this_insn->getDisassembly()<<" at " << this_addr <<endl;
+				print_pers(this_insn,current_fde->cie);
+
+			}
 			current_fde->extend(this_insn,this);
 		}
 	}
@@ -647,87 +701,6 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 				act_entry_num--;
 			}
 		};
-
-#if 0
-		{
-			// determine if cleanup is requested.
-			const auto cleanup_it=find(action_reloc_set.begin(), action_reloc_set.end(), (Relocation_t*)NULL);
-			const auto has_cleanup=(cleanup_it!=action_reloc_set.end());
-
-			// determine if catch all is requested.
-			const auto catch_all_it=find_if(action_reloc_set.begin(), action_reloc_set.end(), 
-				[&](const Relocation_t* reloc) { return reloc && reloc->GetWRT()==NULL; });
-			const auto has_catch_all=(catch_all_it!=action_reloc_set.end());
-
-			// counter for the element in this action table entry.
-			auto act_entry_num=action_reloc_set.size()-1;
-
-			// sanity
-			if(has_cleanup && has_catch_all)
-				// what?
-				assert(0);
-
-			// emit any cleanup first.
-			if(has_cleanup)
-			{
-				// has to be first	
-				assert(act_entry_num==action_reloc_set.size()-1);
-
-				// output entry.
-				out<<"LSDA"<<dec<<lsda_num<<"_act"<<act_num<<"_start_entry"<<act_entry_num<<":"<<endl;
-				out<<"	.uleb128 0 #cleanup"<<endl;
-
-				out<<"	.uleb128 0 "<<endl; // always comes last in this action_table set
-				act_entry_num--;
-
-			}
-			if(has_catch_all)
-			{
-				const auto catch_all_reloc=*catch_all_it;
-				const auto tt_it=find_if(lsda->type_table.begin(), lsda->type_table.end(), 
-					[&](const Relocation_t* candidate) { return candidate && RelocsEqual(candidate, catch_all_reloc); });
-				assert(tt_it != lsda->type_table.end());
-				const auto tt_index=tt_it-lsda->type_table.begin();
-
-				out<<"LSDA"<<dec<<lsda_num<<"_act"<<act_num<<"_start_entry"<<act_entry_num<<":"<<endl;
-				out<<"	.uleb128 "<<dec<<1+tt_index<<endl;        
-			
-				if(act_entry_num==action_reloc_set.size()-1)
-					out<<"	.uleb128 0 "<<endl;
-				else
-					out<<"	.uleb128  LSDA"<<lsda_num<<"_act"<<act_num<<"_start_entry"<<act_entry_num+1<<" - . "<<endl;
-				act_entry_num--;
-			}
-
-			for(const auto& action_reloc : action_reloc_set)
-			{
-				// indicates has_cleanup -- taken care of specially above.
-				if(action_reloc==NULL)
-				{
-					continue; 
-				}
-
-				// which indicates has catch all -- taken care of specially above.
-				if(action_reloc->GetWRT()==NULL)
-				{
-					continue;
-				}
-
-				const auto tt_it=find_if(lsda->type_table.begin(), lsda->type_table.end(), 
-					[action_reloc](const Relocation_t* candidate) { return candidate!=NULL && RelocsEqual(action_reloc,candidate); } );
-				assert(tt_it != lsda->type_table.end());
-				const auto tt_index=tt_it-lsda->type_table.begin();
-				out<<"LSDA"<<dec<<lsda_num<<"_act"<<act_num<<"_start_entry"<<act_entry_num<<""<<":"<<endl;
-				out<<"	.uleb128 "<<dec<<1+tt_index<<endl;        
-				if(act_entry_num==action_reloc_set.size()-1)
-					out<<"	.uleb128 0 "<<endl;
-				else
-					out<<"	.uleb128  LSDA"<<lsda_num<<"_act"<<act_num<<"_start_entry"<<act_entry_num+1<<" - . "<<endl;
-				act_entry_num--;
-			}
-        		//out<<"	.equ  LSDA"<<lsda_num<<"_act"<<act_num<<"_start,  LSDA"<<lsda_num<<"_act"<<act_num<<"_start_entry0"<<endl;
-		};
-#endif
 
 
 		const auto output_callsite=[&](const typename FDErepresentation_t::LSDArepresentation_t::call_site_t &cs, const uint32_t cs_num) -> void

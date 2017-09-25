@@ -18,6 +18,8 @@ class EhWriterImpl_t : public EhWriter_t
 {
 	private:
 
+
+
 	class EhProgramListingManip_t : public libIRDB::EhProgramListing_t
 	{
 		public:
@@ -42,6 +44,7 @@ class EhWriterImpl_t : public EhWriter_t
 		CIErepresentation_t(libIRDB::Instruction_t*, EhWriterImpl_t<ptrsize>* ehw);
 		void emitAssembly(std::ostream& out) {}
 		bool canSupport(libIRDB::Instruction_t* insn) const;
+		libIRDB::Relocation_t* GetPersonalityReloc() const { return personality_reloc;}
 
 		private:
 			// need nothing?
@@ -57,6 +60,8 @@ class EhWriterImpl_t : public EhWriter_t
 		friend class FDErepresentation_t;
 		friend EhWriterImpl_t<ptrsize>;	
 	};
+
+	static void print_pers(libIRDB::Instruction_t* insn, CIErepresentation_t *cie);
 
 
 	class FDErepresentation_t
