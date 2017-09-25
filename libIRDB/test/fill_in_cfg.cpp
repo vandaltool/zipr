@@ -27,13 +27,11 @@
 #include <assert.h>
 #include <sys/mman.h>
 #include <ctype.h>
-
 #include <exeio.h>
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
-
-
 #include "beaengine/BeaEngine.h"
+#include "eh_frame.hpp"
 
 int odd_target_count=0;
 int bad_target_count=0;
@@ -555,6 +553,61 @@ void fill_in_scoops(FileIR_t *firp)
 
 }
 
+void fill_in_landing_pads(FileIR_t *firp)
+{
+	const auto eh_frame_rep_ptr = split_eh_frame_t::factory(firp);
+	eh_frame_rep_ptr->parse();
+	eh_frame_rep_ptr->print();
+	cout<<"Completed eh-frame parsing"<<endl;
+
+	map<Function_t*,set<Instruction_t*> > insns_to_add_to_funcs;
+
+	for_each(firp->GetInstructions().begin(), firp->GetInstructions().end(), [&](Instruction_t* t)
+	{
+		if(t->GetFunction()==NULL)
+			return;
+		auto lp=eh_frame_rep_ptr->find_lp(t);
+		if(lp && lp->GetFunction()==NULL)
+			insns_to_add_to_funcs[t->GetFunction()].insert(lp);
+	});
+
+
+	for_each(insns_to_add_to_funcs.begin(), insns_to_add_to_funcs.end(), [&](pair<Function_t* const,set<Instruction_t*> > & p)
+	{
+		auto & func=p.first; 	
+		auto insns=p.second; 	/* copy */
+		auto insn_count=0;
+
+		while(insns.size()>0 )
+		{
+			auto it=insns.begin();
+			auto insn=*it;
+			insns.erase(it);
+
+			assert(insn);
+			if(insn->GetFunction()!=NULL)
+				continue;
+
+			auto lp=eh_frame_rep_ptr->find_lp(insn);
+			if(lp && lp->GetFunction()==NULL)
+				insns.insert(lp);
+
+			insn->SetFunction(func);
+			cout<<"	Adding "<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<"@"<<hex<<insn->GetAddress()->GetVirtualOffset()<<dec<<endl;
+			insn_count++;
+			
+
+			auto target=insn->GetTarget();
+			auto fallthru=insn->GetFallthrough();
+
+			if(target) insns.insert(target);
+			if(fallthru) insns.insert(fallthru);
+		}
+		cout<<"Found LP outside of function "<<func->GetName()<<" added "<<insn_count<<" instructions"<<endl;
+	});
+	
+}
+
 main(int argc, char* argv[])
 {
 
@@ -606,6 +659,7 @@ main(int argc, char* argv[])
 
 			fill_in_cfg(firp);
 			fill_in_scoops(firp);
+			fill_in_landing_pads(firp);
 
 			// write the DB back and commit our changes 
 			firp->WriteToDB();

@@ -280,6 +280,7 @@ libIRDB/test/create_variant.cpp -text
 libIRDB/test/create_variantir.cpp -text
 libIRDB/test/drop_variant.cpp -text
 libIRDB/test/dwarf2.h -text
+libIRDB/test/eh_frame.hpp -text
 libIRDB/test/fill_in_cfg.cpp -text
 libIRDB/test/fill_in_indtargs.cpp -text
 libIRDB/test/fill_in_indtargs.hpp -text

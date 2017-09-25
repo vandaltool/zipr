@@ -32,13 +32,17 @@ if 'build_tools' not in myenv or myenv['build_tools'] is None or int(myenv['buil
 	install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
 	Default(install)
 
+	pgm=myenv.Program("fill_in_cfg.exe",  Split("split_eh_frame.cpp fill_in_cfg.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
+	install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
+	Default(install)
+
 	pgm=myenv.Program("fix_calls.exe",  ehframe+Split("fix_calls.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
 	install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
 	Default(install)
 
 	# most programs go to $sectrans/bin
 	pgms='''print_variant list_programs create_variant create_variantir read_variantir clone 
-		drop_variant generate_spri fill_in_cfg unfix_calls 
+		drop_variant generate_spri unfix_calls 
 		find_strings build_callgraph build_preds rename_function pin_address mark_functions_safe
 		'''
 	for i in Split(pgms):

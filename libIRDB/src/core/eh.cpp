@@ -32,11 +32,10 @@ using namespace std;
 
 bool libIRDB::operator<(const EhProgram_t&a, const EhProgram_t&b)
 {
-        return  tie(a.cie_program,a.fde_program,a.code_alignment_factor,a.data_alignment_factor,a.return_register, a.ptrsize)
+        return  tie(a.cie_program,a.fde_program,a.code_alignment_factor,a.data_alignment_factor,a.return_register, a.ptrsize, a.GetRelocations())
                 <
-                tie(b.cie_program,b.fde_program,b.code_alignment_factor,b.data_alignment_factor,b.return_register, b.ptrsize);
+                tie(b.cie_program,b.fde_program,b.code_alignment_factor,b.data_alignment_factor,b.return_register, b.ptrsize, b.GetRelocations());
 }
-
 
 namespace std
 {
