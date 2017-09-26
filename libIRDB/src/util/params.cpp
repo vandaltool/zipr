@@ -108,8 +108,6 @@ static bool IsOrWasCall(const FileIR_t *firp, Instruction_t* insn)
 		// look for "push64" type reloc
 		auto it = std::find_if(insn->GetRelocations().begin(),insn->GetRelocations().end(),[&](const Relocation_t* reloc) 
 		{
-			if (reloc)
-				cout << "IsOrWasCall(): reloc: " << reloc->GetType() << endl;
 			return (reloc && ((reloc->GetType() == string("push64")) || reloc->GetType() == string("fix_call_fallthrough")));
 		});
 
