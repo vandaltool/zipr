@@ -432,7 +432,7 @@ void ZiprImpl_t::CreateExecutableScoops(const std::map<RangeAddress_t, int> &ord
 			text_name=".text"; // use the name .text first.
 
 		text_contents.resize(text_end->GetVirtualOffset() - text_start->GetVirtualOffset()+1);
-		DataScoop_t* text_scoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, text_name,  text_start, text_end, NULL, 5, false, text_contents);
+		DataScoop_t* text_scoop=new DataScoop_t(m_firp->GetMaxBaseID()+1, text_name,  text_start, text_end, NULL, 5, false, text_contents);
 		m_firp->GetDataScoops().insert(text_scoop);
 	
 		cout<<"Adding scoop "<<text_scoop->GetName()<<hex<<" at "<<hex<<text_start->GetVirtualOffset()<<" - "<<text_end->GetVirtualOffset()<<endl;
@@ -3686,7 +3686,7 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 		m_firp->GetAddresses().insert(textra_end);
 		string textra_contents;
 		textra_contents.resize(end_of_new_space-start_of_new_space);
-		DataScoop_t* textra_scoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, ".textra", textra_start, textra_end, NULL, 5, false, textra_contents);
+		DataScoop_t* textra_scoop=new DataScoop_t(m_firp->GetMaxBaseID()+1, ".textra", textra_start, textra_end, NULL, 5, false, textra_contents);
 		m_firp->GetDataScoops().insert(textra_scoop);
 
 		printf("Dumping addrs %p-%p\n", (void*)start_of_new_space, (void*)end_of_new_space);

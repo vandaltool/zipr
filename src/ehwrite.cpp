@@ -1053,7 +1053,7 @@ void EhWriterImpl_t<ptrsize>::ScoopifyEhOutput()
 		const auto start_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, BaseObj_t::NOT_IN_DATABASE, start_vo);
 		const auto end_vo=sec->get_address()+sec->get_size()-1;
 		const auto end_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, BaseObj_t::NOT_IN_DATABASE, end_vo);
-		const auto new_scoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, secname, start_addr,end_addr,NULL,4,false,data);
+		const auto new_scoop=new DataScoop_t(zipr_obj.GetFileIR()->GetMaxBaseID()+1, secname, start_addr,end_addr,NULL,4,false,data);
 
 		zipr_obj.GetFileIR()->GetAddresses().insert(start_addr);
 		zipr_obj.GetFileIR()->GetAddresses().insert(end_addr);
