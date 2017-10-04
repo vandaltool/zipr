@@ -173,12 +173,10 @@ do
 
 	# invoke $PS.
 	#echo "PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PS $in $baseoutdir/v${seq}/${in_base} " "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" 
-	set -x
-	PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PS $myin $baseoutdir/v${seq}/${in_base} "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" > $baseoutdir/v${seq}/variant_output.txt 2>&1 &
+	(set -x; PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PS $myin $baseoutdir/v${seq}/${in_base} "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" > $baseoutdir/v${seq}/variant_output.txt 2>&1 ) &
 
 	# remember the pid.
 	pids="$pids $!"
-	set +x
 
 done
 

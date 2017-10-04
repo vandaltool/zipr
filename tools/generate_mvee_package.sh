@@ -587,9 +587,10 @@ finalize_json()
 	cp $CFAR_HOME/non_overlapping_libraries/fix_loader.sh $outdir/global/
 
 
-	if [ $server = "APACHE" ]; then
-		ld_preload_var="/thread_libs/libgetpid.so:/target_apps/global/libpthread_exit.so"
-	fi
+#	if [ $server = "APACHE" ]; then
+#		ld_preload_var="/target_apps/global/libpthread_exit.so"
+#	fi
+
 	if [ "x"$use_diehard  = "x--diehard" -o  "x"$use_libtwitcher  = "x--libtwitcher" ]; then
 		ld_preload_var="/variant_specific/libheaprand.so:$ld_preload_var"
 
