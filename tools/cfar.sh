@@ -66,6 +66,7 @@ do
 	elif [ "$i" == "--config_name" ]; then 	
 		seq=$(expr $seq + 1)
 		config_name=${cmd_line_options[$seq]}
+		echo -n "	"
 		echo "Found config_name setting, config=$config_name"
 	# this option is used by cfar, and the user cannot request it.
 	elif [ "$i" == "--tempdir" ]; then 	
@@ -173,7 +174,8 @@ do
 
 	# invoke $PS.
 	#echo "PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PS $in $baseoutdir/v${seq}/${in_base} " "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" 
-	(set -x; PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PS $myin $baseoutdir/v${seq}/${in_base} "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" > $baseoutdir/v${seq}/variant_output.txt 2>&1 ) &
+	echo -n "	"
+	(set -x; env PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PS $myin $baseoutdir/v${seq}/${in_base} "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" > $baseoutdir/v${seq}/variant_output.txt 2>&1 ) & 
 
 	# remember the pid.
 	pids="$pids $!"
@@ -191,11 +193,13 @@ do
 	wait $i
 	exit_code=$?
 	if [ $exit_code == 0 ]; then
-		echo "Protection process went well!  Exit_code: $exit_code."
+		echo "	Protection process went well!  Exit_code: $exit_code."
 	elif [ $exit_code == 1 ]; then
-		echo "Protection process had warnings.  Exit_code: $exit_code."
+		echo "	Protection process had warnings.  Exit_code: $exit_code."
 	else
-		echo "Protection process $i failed with exit code: $exit_code."
+		echo "**********************************************************"
+		echo "*Protection process $i failed with exit code: $exit_code.*"
+		echo "**********************************************************"
 		ok=0
 	fi
 done

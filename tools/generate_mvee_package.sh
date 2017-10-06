@@ -22,13 +22,14 @@ Usage:
 	[--class <atd class> ]
 	[--mainexe <exe base name>
 	[--extra_preloads "<preloads>" ]
-	[(--help | h )]
+	[(--help | -h )]
+	[(--verbose | -v )]
 "
 }
 
 check_opts()
 {
-	echo args="$@"
+	# echo args="$@"
 	# defaults
 	args="\"-k\", \"start\""
 	server="APACHE"
@@ -40,13 +41,14 @@ check_opts()
 	use_nol="--disablenol"
 	use_includecr="--noinclude-cr"
 	mainexe_opt="" # look in target_apps and find exactly one thing.
+	verbose=0
 
 
 
         # Note that we use `"$@"' to let each command-line parameter expand to a 
         # separate word. The quotes around `$@' are essential!
         # We need TEMP as the `eval set --' would nuke the return value of getopt.
-        short_opts="h"
+        short_opts="hv"
         long_opts="
 		   --long libtwitcher
                    --long nolibtwitcher
@@ -68,6 +70,7 @@ check_opts()
                    --long strata
                    --long mainexe:
                    --long extra_preloads:
+                   --long verbose
                 "
 
         # solaris does not support long option names
@@ -86,76 +89,66 @@ check_opts()
         while true ; do
                 case "$1" in
                         --extra_preloads)
-				echo "Setting preloads = $2"
 				extra_preloads="$2"
                                 shift 2
 			;;
                         --mainexe)
-				echo "Setting mainexe = $2"
 				mainexe_opt="$2"
                                 shift 2
+			;;
+                        --verbose|-v)
+				verbose=1
+				shift 1
 			;;
                         --help|-h)
                                 usage;
                                 exit 1
                         ;;
                         --indir)
-				echo "Setting indir = $2"
                                 indir="$2"
                                 shift 2
 			;;
                         --outdir)
-				echo "Setting outdir = $2"
                                 outdir="$2"
                                 shift 2
 			;;
                         --args)
-				echo "Setting args = $2"
                                 args="$2"
                                 shift 2
 			;;
                         --class)
                                 class="$2"
-				echo "Setting class = $2"
                                 shift 2
 			;;
                         --server)
-				echo "Setting server = $2"
                                 server="$2"
                                 shift 2
 			;;
                         --strata)
-				echo "Setting backend = strata"
                                 backend="strata"
                                 shift
 			;;
                         --zipr)
-				echo "Setting backend = zipr"
                                 backend="zipr"
                                 shift
 			;;
                         --diehard|--nodiehard)
-				echo "Setting diehard = $1"
 				use_diehard="$1"
                                 shift 1
 			;;
                         --libtwitcher|--nolibtwitcher)
-				echo "Setting libtwitcher = $1"
 				use_libtwitcher="$1"
                                 shift 1
 			;;
                         --include-cr|--noinclude-cr)
-				echo "Setting include-cr = $1"
 				use_includecr="$1"
                                 shift 1
 			;;
 			--enablenoh|--disablenoh)
-				echo "Setting noh = $1"
 				use_noh="$1"
 				shift 1
 			;;
 			--enablenol|--disablenol)
-				echo "Setting nol = $1"
 				use_nol="$1"
 				shift 1
 			;;
@@ -183,6 +176,23 @@ check_opts()
 		echo "Specifying a directory is necessary"
 		exit 3;
 	fi	
+
+	if [[ $verbose = 1 ]]
+	then
+		echo "Setting preloads = $extra_preloads"
+		echo "Setting mainexe = $mainexe_opt"
+		echo "Setting indir = $indir"
+		echo "Setting outdir = $outdir"
+		echo "Setting args = $args"
+		echo "Setting class = $class"
+		echo "Setting server = $server"
+		echo "Setting backend = $backend"
+		echo "Setting diehard = $use_diehard"
+		echo "Setting libtwitcher = $use_libtwitcher"
+		echo "Setting include-cr = $use_includecr"
+		echo "Setting noh = $use_noh"
+		echo "Setting nol = $use_nol"
+	fi
 
 	server=${server^^} # uppercase the server setting.
 }
