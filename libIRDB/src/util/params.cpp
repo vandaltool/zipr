@@ -29,7 +29,7 @@ using namespace std;
 // Does instruction potentially write to a parameter to a call?
 bool libIRDB::IsParameterWrite(const FileIR_t *firp, Instruction_t* insn, string& output_dst)
 {
-	DISASM d;
+	auto d=DISASM({0});
 	insn->Disassemble(d);
 	if(d.Argument1.AccessMode!=WRITE)
 	{
@@ -93,49 +93,159 @@ bool libIRDB::IsParameterWrite(const FileIR_t *firp, Instruction_t* insn, string
 	return false;
 }
 
-// is instruction originally a call?
-static bool IsOrWasCall(const FileIR_t *firp, Instruction_t* insn)
+//
+// we look for:
+//    (1) call instruction
+//    (2) call converted to push/jmp pair
+//
+static Instruction_t* IsOrWasCall(const FileIR_t *firp, Instruction_t* insn)
 {
 	if (firp == NULL || insn == NULL)
-		return false;
+		return NULL;
 
-	DISASM d;
+	auto d=DISASM({0});
 	insn->Disassemble(d);
 	if(d.Instruction.Mnemonic == string("call "))
-		return true;
-	else {
-		// call may have been converted to push/jmp in previous phase
-		// look for "push64" type reloc
+	{
+		return insn->GetTarget();
+	}
+	else 
+	{
+		// look for "push64" or "fix_call_fallthrough" reloc
 		auto it = std::find_if(insn->GetRelocations().begin(),insn->GetRelocations().end(),[&](const Relocation_t* reloc) 
 		{
 			return (reloc && ((reloc->GetType() == string("push64")) || reloc->GetType() == string("fix_call_fallthrough")));
 		});
 
+		// find actual target
 		if (it != insn->GetRelocations().end())
-			return true;
+		{
+			if (insn->GetTarget())
+				return insn->GetTarget();
+			else if (insn->GetFallthrough())
+				return insn->GetFallthrough()->GetTarget();
+		}
 	}
 
 	return false;
 }
 
 // Does a call follow the instruction?
-bool libIRDB::CallFollows(FileIR_t *firp, Instruction_t* insn, const string& arg_str)
+bool libIRDB::CallFollows(const FileIR_t *firp, Instruction_t* insn, const string& reg_arg_str, const std::string &fn_pattern)
 {
+	const std::set<std::string> param_regs = {"rdi", "rsi", "rdx", "rcx", "r8", "r9"};
+	const bool original_is_param_register = param_regs.find(reg_arg_str) != param_regs.end();
+
+	std::set<std::string> live_params;
+	live_params.insert(reg_arg_str);
+	
 	for(Instruction_t* ptr=insn->GetFallthrough(); ptr!=NULL; ptr=ptr->GetFallthrough())
 	{
-		DISASM d;
+		auto d=DISASM({0});
 		ptr->Disassemble(d);
-		if(IsOrWasCall(firp, ptr))
+		long long vo = 0;
+		if (ptr->GetAddress())
+			vo = ptr->GetAddress()->GetVirtualOffset();
+//		std::cout << "CallFollows(): " << ptr->getDisassembly() << " @ " << hex << vo << std::endl;
+
+		const auto tgt = IsOrWasCall(firp, ptr);
+
+		if (tgt) 
 		{
-			// found it
-			return true;
+			if (fn_pattern.size() == 0)
+			{
+				// don't care about function name
+//				std::cout << "CallFollows(): yes, parameter to call" << endl;
+				return true;
+			}
+			else 
+			{
+				// look for specific function
+
+				// check the target has a function 
+				if(tgt->GetFunction()==NULL) 
+					return false;
+
+				const auto fname = tgt->GetFunction()->GetName();
+//				std::cout << "CallFollows(): yes, parameter to call: function name: " << fname << endl;
+				return fname.find(fn_pattern)!=string::npos;
+			}
 		}
 
-		// found reference to argstring, assume it's a write and exit
-		if(string(d.CompleteInstr).find(arg_str)!= string::npos)
-			return false;
+		// found reference to argstring, original code would just stop the search
+		// need more sophisticated heuristic
+		if(string(d.CompleteInstr).find(reg_arg_str)!= string::npos)
+		{
+			if (original_is_param_register)
+			{
+				std::string arg;
+				if (IsParameterWrite(firp, ptr, arg))
+				{
+//					std::cout << "CallFollows(): " << ptr->getDisassembly() << ": detected write parameter" << std::endl;
+ 					if (arg == reg_arg_str)
+					{
+//						std::cout << "CallFollows(): " << ptr->getDisassembly() << ": same parameter as original: remove from live list: " << reg_arg_str << std::endl;
+						live_params.erase(reg_arg_str);
+					}
+					else 
+					{
+						if (std::string(d.Argument2.ArgMnemonic) == reg_arg_str) {
+//							std::cout << "CallFollows(): " << ptr->getDisassembly() << ": copy of original detected: add to live list: " << arg << std::endl;
+							live_params.insert(arg);
+						}
+					}
+				}
+
+				std::cout << "CallFollows(): " << ptr->getDisassembly() << ": #live_param: " << dec << live_params.size() << std::endl;
+				if (live_params.size() == 0)
+				{
+//					std::cout << "CallFollows(): not a parameter to call" << endl;
+					return false;
+				}
+			}
+			else
+			{
+//				std::cout << "\tassume it's a write and exit" << std::endl;
+				return false;
+			}
+
+		}
 	}
 
+//	std::cout << "CallFollows(): no more fallthroughs, not a parameter to call" << endl;
 	return false;
 }
 
+bool libIRDB::LeaFlowsIntoCall(const FileIR_t *firp, Instruction_t* insn)
+{
+	auto d=DISASM({0});
+	insn->Disassemble(d);
+
+	if(string(d.Instruction.Mnemonic)!="lea ")
+		return false;
+
+//	std::cout << "LeaFlowsIntoCall(): investigating " << insn->getDisassembly() << endl;
+
+	string param_write;
+	if (!libIRDB::IsParameterWrite(firp, insn, param_write))
+		return false;
+
+	return CallFollows(firp, insn, param_write);
+}
+
+bool libIRDB::LeaFlowsIntoPrintf(const FileIR_t *firp, Instruction_t* insn)
+{
+	auto d=DISASM({0});
+	insn->Disassemble(d);
+
+	if(string(d.Instruction.Mnemonic)!="lea ")
+		return false;
+
+//	std::cout << "LeaFlowsIntoCall(): investigating " << insn->getDisassembly() << endl;
+
+	string param_write;
+	if (!libIRDB::IsParameterWrite(firp, insn, param_write))
+		return false;
+
+	return CallFollows(firp, insn, param_write, "printf");
+}
