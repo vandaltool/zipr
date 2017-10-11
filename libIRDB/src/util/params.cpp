@@ -216,6 +216,18 @@ bool libIRDB::CallFollows(const FileIR_t *firp, Instruction_t* insn, const strin
 	return false;
 }
 
+bool libIRDB::FlowsIntoCall(const FileIR_t *firp, Instruction_t* insn)
+{
+	auto d=DISASM({0});
+	insn->Disassemble(d);
+
+	string param_write;
+	if (!libIRDB::IsParameterWrite(firp, insn, param_write))
+		return false;
+
+	return CallFollows(firp, insn, param_write);
+}
+
 bool libIRDB::LeaFlowsIntoCall(const FileIR_t *firp, Instruction_t* insn)
 {
 	auto d=DISASM({0});
@@ -224,13 +236,7 @@ bool libIRDB::LeaFlowsIntoCall(const FileIR_t *firp, Instruction_t* insn)
 	if(string(d.Instruction.Mnemonic)!="lea ")
 		return false;
 
-//	std::cout << "LeaFlowsIntoCall(): investigating " << insn->getDisassembly() << endl;
-
-	string param_write;
-	if (!libIRDB::IsParameterWrite(firp, insn, param_write))
-		return false;
-
-	return CallFollows(firp, insn, param_write);
+	return FlowsIntoCall(firp, insn);
 }
 
 bool libIRDB::LeaFlowsIntoPrintf(const FileIR_t *firp, Instruction_t* insn)
