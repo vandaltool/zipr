@@ -1,0 +1,23 @@
+# Notes for setting up, building and installing peasoup_umbrella (non-CFAR)
+
+0. IMPORTANT:  You will need your own valid IDA Pro license key and IDA Pro installation.  Update the IDA* lines in the file set_env_vars to point to your installation.
+
+1. Get the required packages by running the get-peasoup-packages.sh script.
+	. ./set_env_vars; bash ./get-peasoup-packages.sh all
+
+2. Set up the postgres databases (enter password of your choice)
+	bash ./postgres_setup.sh
+
+3. Build and save the build results to build.out
+	bash ./build.sh | tee -ai build.out
+
+
+If the build succeeds, a directory named $PEASOUP_UMBRELLA_DIR/installed will be created  (see file set_env_vars for environment variable settings).  This directory will contain the built versions of the modules that comprise the toolchain.
+
+To test your installation, try a simple analysis using zipr static rewriter.
+
+. ./set_env_vars; $PSZ `which ls` ls.zipr
+
+If the toolchain build has completed successfully, then ls.zipr will be a working, statically rewritten version of ls.
+
+

@@ -1,4 +1,5 @@
 * text=auto !eol
+/INSTALL -text
 /build-all.sh -text
 centos_files/at-3.1.13-22.el7.x86_64.rpm -text
 centos_files/audit-2.6.5-3.el7_3.1.x86_64.rpm -text
