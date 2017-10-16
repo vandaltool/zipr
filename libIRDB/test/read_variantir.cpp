@@ -22,6 +22,7 @@
 
 #include <libIRDB-core.hpp>
 #include <iostream>
+#include <algorithm>
 #include <stdlib.h>
 
 using namespace libIRDB;
@@ -57,11 +58,21 @@ main(int argc, char* argv[])
 			File_t* this_file=*it;
 			assert(this_file);
 
-			cout<<"Analyzing file "<<this_file->GetURL()<<endl;
+			cout<<"... Analyzing file "<<this_file->GetURL()<<endl;
 
 			// read the db  
 			FileIR_t* firp=new FileIR_t(*pidp, this_file);
 			assert(firp);
+
+			std::for_each(firp->GetFunctions().begin(), firp->GetFunctions().end(), [](const Function_t* fn) {
+				if (!fn) return;
+				cout<<"Function: " << fn->GetName();				
+				cout<<" NumArgs: " << fn->GetNumArguments();				
+				cout<<" FP: " << fn->GetUseFramePointer();				
+				cout<<" StackFrameSize: " << fn->GetStackFrameSize();				
+				cout<<" OutArgsRegionSize: " << fn->GetOutArgsRegionSize();				
+				cout<<endl;
+			});
 
 			for(
 				set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
