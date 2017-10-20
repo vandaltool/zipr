@@ -1030,7 +1030,9 @@ void EhWriterImpl_t<ptrsize>::CompileEhOutput()
 	// err check.
 	if( res==-1 || WEXITSTATUS(res)!=0 )
 	{
-		cerr<<"Cannot compile eh_frame."<<endl;
+		perror("Cannot compile eh_frame.");
+		cerr<<"Exit code="<<res<<endl;
+		cerr<<" for command="<<cmd<<endl;
 		exit(2);
 	}
 }
