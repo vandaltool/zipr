@@ -1663,79 +1663,9 @@ bool PNTransformDriver::Validate_Recursive(vector<validation_record> &vrs, unsig
 void PNTransformDriver::Finalize_Transformation()
 {
 	cout<<"Finalizing Transformation: Committing all previously validated transformations ("<<finalization_registry.size()<<" functions)"<<endl;
-// 	set<FileIR_t*> firps;
-
-// 	for(vector<finalize_record>::iterator it = finalization_registry.begin(); it != finalization_registry.end(); it++)
-// 	{
-// 		finalize_record fr = *it;
-// 		Function_t *func;
-// 		PNStackLayout *layout;
-// 		FileIR_t *firp;
-
-// 		func = fr.func;
-// 		layout = fr.layout;
-// 		firp = fr.firp;
-
-// 		assert(func != NULL && layout != NULL && firp != NULL);
-// 		firps.insert(firp);
-
-// //DEBUG: This code needs to be put back, especially for removing canaries
-// //if do_canaries is false, but at the moment, accumulating modifications
-// //works for zsh, making it appear that delayed modification is broken. 
-
-// 		// orig_virp = firp;
-
-// 		//Make sure any previous modificaitons are undone. 
-// 		//undo(func);
-
-// 		// //TODO: really there should be no need to retransform, but it
-// 		// //is much easier to retransform than to retain the modified
-// 		// //instructions previously made. 
-// 		// if(do_canaries)
-// 		// 	Canary_Rewrite(layout,func);
-// 		// else
-// 		// 	Sans_Canary_Rewrite(layout,func);
-// 	}
 
 	//TODO: one more validation? 
 	cerr<<"Sanity validation check....."<<endl;
-
-	// string dirname = "p1.xform/validation_final";
-	// string cmd = "mkdir -p " + dirname;
-	// system(cmd.c_str());
-
-	// string aspri_filename = string(get_current_dir_name()) + "/" + dirname + "/a.irdb.aspri";
-	// string bspri_filename = string(get_current_dir_name()) + "/" + dirname + "/a.irdb.bspri";
-
-	// ofstream aspriFile;
-	// aspriFile.open(aspri_filename.c_str(),ios_base::out);
-	
-	// if(!aspriFile.is_open())
-	// {
-	// 	assert(false);
-	// }
-
-	// for(set<FileIR_t*>::iterator it=firps.begin();
-	// 	it!=firps.end();
-	// 	++it
-	// 	)
-	// {
-	// 	FileIR_t *firp = *it;
-	// 	firp->GenerateSPRI(aspriFile,false);
-	// }
-
-	// aspriFile.close();
-
-	// char new_instr[1024];
-	// //This script generates the aspri and bspri files; it also runs BED
-	// sprintf(new_instr, "%s %d %s %s", BED_script.c_str(), orig_progid, aspri_filename.c_str(), bspri_filename.c_str());
-	
-	// //If OK=BED(func), then commit	
-	// int rt=system(new_instr);
-	// int actual_exit = -1, actual_signal = -1;
-	// if (WIFEXITED(rt)) actual_exit = WEXITSTATUS(rt);
-	// else actual_signal = WTERMSIG(rt);
-	// int retval = actual_exit;
 
 	if(	!Validate(NULL,"validation_final"))
 	{
@@ -1945,6 +1875,9 @@ bool PNTransformDriver::ShuffleValidation(int reps, PNStackLayout *layout,Functi
 // previously modified and validated functions. 
 bool PNTransformDriver::Validate(FileIR_t *virp, string name)
 {
+	if(!pn_options->getShouldSpriValidate())
+		return true;
+
 	cerr<<"PNTransformDriver: Validate(): "<<name<<endl;
 
 	string dirname = "p1.xform/" + name;

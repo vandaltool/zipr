@@ -49,6 +49,7 @@ class PNOptions
 			canary_value=0;
 			canary_value_inited=false;
 			double_threshold=32*1024; // 32kb 
+			spri_validate=false;
 		}
 
 		void setMinStackPadding(int val) { min_stack_padding = val; }
@@ -65,6 +66,7 @@ class PNOptions
 		int getRecursiveMinStackPadding() const { return recursive_min_stack_padding; }
 		int getRecursiveMaxStackPadding() const { return recursive_max_stack_padding; }
 		bool getShouldDoubleFrameSize() const { return should_double_frame_size; }
+		bool getShouldSpriValidate() const { return spri_validate; }
 		int getDoubleThreshold() { return double_threshold; }
 		int getRandomSeed() { return random_seed; }
 		int getCanaryValue() 	
@@ -104,6 +106,7 @@ class PNOptions
 		bool canary_value_inited;
 
 		int double_threshold;
+		bool spri_validate;
 
 		std::set<std::string> canary_functions;
 };
