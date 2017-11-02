@@ -82,7 +82,7 @@ long long no_fix_for_safefn=0;
 
 pqxxDB_t pqxx_interface;
 
-bool opt_fix_icalls = true;
+bool opt_fix_icalls = false;
 bool opt_fix_safefn = true;
 
 void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, UIntPtr offset);

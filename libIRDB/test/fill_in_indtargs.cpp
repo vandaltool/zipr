@@ -2753,7 +2753,7 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t>
 main(int argc, char* argv[])
 {
 	auto argc_iter = (int)2;
-	auto split_eh_frame_opt=false;
+	auto split_eh_frame_opt=true;
 	auto do_unpin_opt=-1;
 	auto forced_pins=std::list<virtual_offset_t> ();
 
