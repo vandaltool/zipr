@@ -369,6 +369,7 @@ void PNTransformDriver::GenerateTransformsInit()
 	blacklist_funcs = 0;
 	sanitized_funcs = 0;
 	push_pop_sanitized_funcs = 0;
+	cond_frame_sanitized_funcs = 0;
 	jump_table_sanitized = 0;
 	bad_variadic_func_sanitized = 0;
 	pic_jump_table_sanitized = 0;
@@ -600,6 +601,55 @@ Instruction_t* find_exit_insn(Instruction_t *insn, Function_t *func)
 
 }
 
+
+// check for a conditional frame -- that is, a cond branch before the sub resp
+static bool	check_for_cond_frame(Function_t *func, ControlFlowGraph_t* cfg)
+{
+	assert(func && cfg);
+	const auto b=cfg->GetEntry();
+
+
+	const auto is_rsp_sub= [](const DISASM &d) -> bool
+	{
+		return 
+		  (string(d.Instruction.Mnemonic)=="sub " &&  		/* is sub */
+		  ((d.Argument1.ArgType&0xFFFF0000)==REGISTER_TYPE+GENERAL_REG ) &&  /* and arg1 is a register */
+		  (d.Argument1.ArgType&0x0000FFFF)==REG4);		/* and is the stack pointer. */
+	};
+
+	const auto is_rsp_sub_insn= [&](const Instruction_t* i) -> bool
+	{
+		DISASM d;
+		i->Disassemble(d);
+		return is_rsp_sub(d);
+	};
+
+	if(!b)
+		return true;
+
+#define WHOLE_CONTAINER(s) (s).begin(), (s).end()
+
+	const auto has_rsp_sub_it= find_if(WHOLE_CONTAINER(func->GetInstructions()), is_rsp_sub_insn);
+
+	if(has_rsp_sub_it == func->GetInstructions().end())
+		return true;
+
+	for(const auto &i : b->GetInstructions())
+	{
+		if(is_rsp_sub_insn(i))
+		{
+			return true;	 /* found the sub first. */
+		}
+		if(i->GetTarget() && i->GetFallthrough())	 /* is cond branch */
+		{
+			cout<<"Found cond-frame in "<<func->GetName()<<" because "<<i->getDisassembly()<<endl;
+			return false; 
+		}
+			
+	} 
+	return true;
+}
+
 // check_for_push_pop_coherence -
 // we are trying to check whether the function's prologue uses 
 // the same number of push as each exit to the function does.
@@ -607,7 +657,7 @@ Instruction_t* find_exit_insn(Instruction_t *insn, Function_t *func)
 // but, we are actively trying to ignore pushes/pops related to calling another function.
 // return true if push/pop coherence is OK.
 // false otherwise.
-bool	check_for_push_pop_coherence(Function_t *func)
+static bool	check_for_push_pop_coherence(Function_t *func)
 {
 
 	// count pushes in the prologue
@@ -1118,6 +1168,17 @@ void PNTransformDriver::SanitizeFunctions()
 			if(!check_for_push_pop_coherence(func))
 			{
 				push_pop_sanitized_funcs++;	
+				sanitized.insert(func);
+				continue;
+			}
+		}
+		// if it's not already sanitized
+		if(sanitized.find(func)==sanitized.end())
+		{
+			// check for push/pop coherence.
+			if(!check_for_cond_frame(func, &cfg))
+			{
+				cond_frame_sanitized_funcs++;	
 				sanitized.insert(func);
 				continue;
 			}
@@ -1792,6 +1853,7 @@ void PNTransformDriver::Print_Report()
 	cerr<<"Blacklisted Functions \t\t"<<blacklist_funcs<<endl;
 	cerr<<"Sanitized Functions \t\t"<<sanitized_funcs<<endl;
 	cerr<<"Push/Pop Sanitized Functions \t\t"<<push_pop_sanitized_funcs<<endl;
+	cerr<<"Cond Frame Sanitized Functions \t\t"<<cond_frame_sanitized_funcs<<endl;
 	cerr<<"EH-land-pad-not-in-func Sanitized Functions \t\t"<<eh_sanitized<<endl;
 	cerr<<"Bad Variadic Sanitized Functions \t\t"<<push_pop_sanitized_funcs<<endl;
 	cerr<<"Jump table Sanitized Functions \t\t"<<jump_table_sanitized<<endl;

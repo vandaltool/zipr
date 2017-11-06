@@ -87,6 +87,7 @@ class PNTransformDriver
     	int blacklist_funcs;
 	int sanitized_funcs;
 	int push_pop_sanitized_funcs;
+	int cond_frame_sanitized_funcs;
 	int bad_variadic_func_sanitized;
 	int jump_table_sanitized;
   	int pic_jump_table_sanitized;
