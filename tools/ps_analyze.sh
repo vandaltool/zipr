@@ -52,6 +52,8 @@ CONCOLIC_DIR=concolic.files_a.stratafied_0001
 
 JOBID="$(basename $1).$$"
 
+user_critical_steps=""
+
 # 
 # By default, big data approach is off
 # To turn on the big data approach: modify check_options()
@@ -159,6 +161,8 @@ usage()
 	echo "Where options can be any of"
 	echo "   --step <stepname>=(on|off) 		Turn the <stepname> step on or off"
 	echo "   -s <stepname>=(on|off)			Same as --step"
+	echo "   --critical-step <stepname>=(on|off)    Same as --step, but exits with error code if step fails."
+	echo "   -c <stepname>=(on|off)    		Same as --critical-step"
 	echo "   --step-option <stepname>:<option>	Pass additional option to step <stepname>"
 	echo "   -o <stepname>:<option>			Same as --step-option"
 	echo "   --timeout				Specify a timeout for ps_analyze.sh."
@@ -208,9 +212,10 @@ check_options()
 	# Note that we use `"$@"' to let each command-line parameter expand to a 
 	# separate word. The quotes around `$@' are essential!
 	# We need TEMP as the `eval set --' would nuke the return value of getopt.
-	short_opts="s:t:w:b:o:h"
+	short_opts="s:c:t:w:b:o:h"
 	long_opts="--long step-option: 
 		   --long step: 
+		   --long critical-step: 
 		   --long timeout: 
 		   --long id:  				
 		   --long name:	  			
@@ -278,6 +283,13 @@ check_options()
 			-s|--step) 
 				check_step_option $2
 				phases_spec=" $phases_spec $2 "
+				shift 2 
+			;;
+			-c|--critical-step) 
+				check_step_option $2
+				phases_spec=" $phases_spec $2 "
+				step_name=$(echo "$2" | sed "s/=on *$//"|sed "s/=off *$//")
+				user_critical_steps="$user_critical_steps $step_name "
 				shift 2 
 			;;
 			--manual_test_script) 
@@ -404,6 +416,13 @@ is_step_error()
 stop_if_error()
 {
 	my_step=$1
+
+	# check for a step the user specified as critical.
+	echo "$user_critical_steps"|egrep " $step " > /dev/null
+	grep_res=$?
+	if [ $grep_res -eq 0 ] ; then
+		return 4;
+	fi
 
 	case $my_step in
 		# getting the annotation file right is necessary-ish
