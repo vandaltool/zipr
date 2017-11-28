@@ -608,14 +608,34 @@ void fill_in_landing_pads(FileIR_t *firp)
 	
 }
 
+void parse_args(int argc, char* argv[], bool &fix_landing_pads)
+{
+	for (int i = 0; i < argc; ++i)
+	{
+		if (strcmp("--fix-landing-pads", argv[i]) == 0)
+		{
+			fix_landing_pads = true;
+		}
+		else if (strcmp("--no-fix-landing-pads", argv[i]) == 0)
+		{
+			fix_landing_pads = false;
+		}
+	}
+}
+
 main(int argc, char* argv[])
 {
+	bool fix_landing_pads = true; // default
 
-	if(argc!=2)
+	if(argc<2)
 	{
-		cerr<<"Usage: fill_in_cfg <id>"<<endl;
+		cerr<<"Usage: fill_in_cfg <id> [--fix-landing-pads | --no-fix-landing-pads]"<<endl;
 		exit(-1);
 	}
+
+	parse_args(argc, argv, fix_landing_pads);
+
+	cout<<"fix_landing_pads="<<fix_landing_pads<<endl;
 
 	VariantID_t *pidp=NULL;
 	FileIR_t * firp=NULL;
@@ -659,7 +679,11 @@ main(int argc, char* argv[])
 
 			fill_in_cfg(firp);
 			fill_in_scoops(firp);
-			fill_in_landing_pads(firp);
+
+			if (fix_landing_pads)
+			{
+				fill_in_landing_pads(firp);
+			}
 
 			// write the DB back and commit our changes 
 			firp->WriteToDB();
