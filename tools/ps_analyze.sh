@@ -1047,7 +1047,7 @@ if [ $record_stats -eq 1 ]; then
 fi
 
 # build basic IR
-perform_step fill_in_cfg mandatory $SECURITY_TRANSFORMS_HOME/bin/fill_in_cfg.exe $varid	
+perform_step fill_in_cfg mandatory $SECURITY_TRANSFORMS_HOME/bin/fill_in_cfg.exe $varid $step_options_fill_in_cfg
 perform_step fill_in_safefr mandatory $SECURITY_TRANSFORMS_HOME/bin/fill_in_safefr.exe $varid 
 perform_step fill_in_indtargs mandatory $SECURITY_TRANSFORMS_HOME/bin/fill_in_indtargs.exe $varid $step_options_fill_in_indtargs
 
