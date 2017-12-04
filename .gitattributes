@@ -20,6 +20,7 @@ cpp-examples/derived2_throw.cpp -text
 cpp-examples/derived3_throw.cpp -text
 cpp-examples/derived4_throw.cpp -text
 cpp-examples/derived_throw.cpp -text
+cpp-examples/dynamic_exception.cpp -text
 cpp-examples/hanoi++.cpp -text
 cpp-examples/newdel.cpp -text
 cpp-examples/newdel_broke1.cpp -text
