@@ -930,8 +930,6 @@ tools/bed.sh -text
 tools/bed_blackbox.sh -text
 tools/bed_manual.sh -text
 tools/cfar.sh -text
-tools/cfar_configs/cfar_partProbNog_probNol_probNoh_probNos_probBilr_probP1_probHeaprand_zipr.sh -text
-tools/cfar_configs/cfar_partStructNog_structNol_structNoh_structNos_structNoc_structP1Canaries_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_probBilr_libtwitcher_zipr.sh -text
 tools/cfar_configs/cfar_probBilr_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_probBilr_probNoh_zipr.sh -text
