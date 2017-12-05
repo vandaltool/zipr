@@ -198,7 +198,7 @@ void insert_functions(int fileID, const vector<wahoo::Function*> &functions  )
       wahoo::Function *f = functions[j];
       string functionName = f->getName();
       app_iaddr_t functionAddress = f->getAddress();
-      int functionFrameSize =  0; // FIXME -- this isn't right.
+      int functionFrameSize =  f->getFrameSize(); 
 
       int function_id = j;
       f->setFunctionID(function_id);

@@ -25,6 +25,8 @@ class Function
     void              setAddress(const app_iaddr_t p_address) { m_address = p_address; }
     int               getSize() const { return m_size; }
     void              setSize(const int p_size) { m_size = p_size; }
+    int               getFrameSize() const { return m_frameSize; }
+    void              setFrameSize(const int p_size) { m_frameSize = p_size; }
     int               getFunctionID() const { return m_functionID; }
     void              setFunctionID(const int id) { m_functionID = id; }
 
@@ -67,6 +69,7 @@ class Function
     string         m_name;
     app_iaddr_t    m_address;
     int            m_size;
+    int            m_frameSize;
     bool           m_isSafe;
     bool           m_useFP;
     int            m_outArgsRegionSize;

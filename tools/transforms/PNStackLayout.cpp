@@ -106,6 +106,7 @@ unsigned int PNStackLayout::GetRandomPadding(unsigned int obj_size)
 
 
 PNStackLayout::PNStackLayout(StackLayout stack_layout, libIRDB::Function_t* func) : stack_layout(stack_layout)
+
 {
 	ALIGNMENT_BYTE_SIZE=libIRDB::FileIR_t::GetArchitectureBitWidth()/sizeof(int);
 	//PNTransformDriver sets up the seed, I need a better way of handling this
@@ -128,6 +129,8 @@ PNStackLayout::PNStackLayout(StackLayout stack_layout, libIRDB::Function_t* func
 	entry_id = 0;
 	if(func->GetEntryPoint()!=NULL)
 		entry_id=func->GetEntryPoint()->GetBaseID();
+
+	m_func = func;
 }
 
 PNStackLayout::PNStackLayout(const PNStackLayout &stack_layout): stack_layout(stack_layout.stack_layout)
@@ -148,6 +151,7 @@ PNStackLayout::PNStackLayout(const PNStackLayout &stack_layout): stack_layout(st
 
 	base_id = 0;
 	entry_id = 0;
+	m_func = NULL;
 }
 
 PNStackLayout::~PNStackLayout()

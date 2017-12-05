@@ -69,6 +69,7 @@ protected:
 	libIRDB::db_id_t base_id;
 	libIRDB::db_id_t entry_id;
 
+	libIRDB::Function_t *m_func;
 	
 	virtual void AddCanaryPadding();
 
@@ -98,6 +99,7 @@ public:
 	virtual unsigned int GetNumberOfMemoryObjects() const;
 	virtual PNRange* GetClosestRangeEBP(int loc) const;
 	virtual PNRange* GetClosestRangeESP(int loc) const;
+	virtual libIRDB::Function_t* GetFunction() const { return m_func; }
 	virtual unsigned int GetOriginalAllocSize() const;
 	virtual unsigned int GetAlteredAllocSize() const;
 	virtual unsigned int GetSavedRegsSize() const;

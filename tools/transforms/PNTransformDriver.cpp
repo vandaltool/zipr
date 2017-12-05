@@ -530,6 +530,8 @@ void PNTransformDriver::GenerateTransforms()
 	if(timeExpired)
 		cerr<<"Time Expired: Commit Changes So Far"<<endl;
 
+	Update_FrameSize(); // call before finalizing transformations
+
 	//finalize transformation, commit to database 
 	Finalize_Transformation();
 
@@ -1749,6 +1751,27 @@ void PNTransformDriver::Finalize_Transformation()
 	}
 }
 
+void PNTransformDriver::Update_FrameSize()
+{
+	map<string,vector<PNStackLayout*> >::const_iterator it;
+	for(it = transformed_history.begin(); it != transformed_history.end(); it++)
+	{
+		//TODO: how do we know which layout we want???
+		for(unsigned int i=0;i<it->second.size();i++)
+		{
+			auto func = it->second[i]->GetFunction();
+			if (!func) continue;
+
+			const auto alteredAllocSize = it->second[i]->GetAlteredAllocSize();
+			if (alteredAllocSize > 0)
+			{
+				cout << "DEBUG: function: " << func->GetName() << "   orig size: " << func->GetStackFrameSize() << " altered size: " << alteredAllocSize << endl;
+				func->SetStackFrameSize(alteredAllocSize);
+			}
+		}
+	}
+}
+
 void PNTransformDriver::Print_Report()
 {
 	cerr<<dec<<endl;
@@ -1758,6 +1781,7 @@ void PNTransformDriver::Print_Report()
 
 	map<string,vector<PNStackLayout*> >::const_iterator it;
 	int total_transformed = 0;
+
 
 	vector<string> history_keys;
 	for(it = transformed_history.begin(); it != transformed_history.end(); it++)

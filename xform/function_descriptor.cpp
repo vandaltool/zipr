@@ -28,6 +28,7 @@ void wahoo::Function::_init()
   m_name = "";
   m_address = -1;
   m_size = -1;
+  m_frameSize = 0;
   m_isSafe = false;
   m_useFP = false;
   m_outArgsRegionSize = 0;

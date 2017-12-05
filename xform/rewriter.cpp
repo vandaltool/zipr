@@ -527,11 +527,11 @@ MEDS doesn't mark this as a stack reference
 			}
 			else if(strcmp(scope,"STACK")==0)
 			{
-				char esp[1000], plus[1000], offset_str[1000];
+				char esp[1000], plus[1000], offset_str[1000], name[1000];
 				int esp_offset;
 
 				/* remaining params id, addr, parent/child, name */
-				fscanf(fin, "%d%s%s%d%s", &id, esp, plus, &esp_offset, parent_child);
+				fscanf(fin, "%d%s%s%d%s%s", &id, esp, plus, &esp_offset, parent_child, name);
 
 				assert(strcmp(esp, "esp")==0 && strcmp(plus,"+")==0);
 
@@ -544,6 +544,14 @@ MEDS doesn't mark this as a stack reference
 					
 //					printf("New stack frame at: pc=0x%x size=0x%x  HT-count=%d\n", addr, sshv->size, stackrefs_hash->count);
 
+					// @todo: record frame size
+					// set the frame size
+// 5b     64 DATAREF STACK 2 esp + 0 PARENT LocalFrame LOCALFRAME
+					if (strstr(name,"LocalFrame"))
+					{
+						if ( m_instructions[addr]->getFunction() )
+							m_instructions[addr]->getFunction()->setFrameSize(size_type_u.size);
+					}
 
 				}
 				else if(strcmp(parent_child, "CHILDOF")==0)

@@ -134,6 +134,7 @@ class PNTransformDriver
 
     	virtual void Print_Report();
     	virtual void Print_Map();
+    	virtual void Update_FrameSize();
 //    	virtual bool CanaryTransformHandler(PNStackLayout *layout, libIRDB::Function_t *func,bool validate);
     	virtual bool PaddingTransformHandler(PNStackLayout *layout, libIRDB::Function_t *func,bool validate);
     	virtual bool LayoutRandTransformHandler(PNStackLayout *layout, libIRDB::Function_t *func, bool validate);
