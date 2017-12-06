@@ -1884,6 +1884,18 @@ void PNTransformDriver::Print_Report()
 	cerr<<"PIC Jump table Sanitized Functions \t\t"<<jump_table_sanitized<<endl;
 	cerr<<"Transformable Functions \t"<<(total_funcs-not_transformable.size())<<endl;
 	cerr<<"Transformed \t\t\t"<<total_transformed<<endl;
+
+	cerr<<"pnxform::Non-Blacklisted Functions \t"<<total_funcs<<endl;
+	cerr<<"pnxform::Blacklisted Functions \t\t"<<blacklist_funcs<<endl;
+	cerr<<"pnxform::Sanitized Functions \t\t"<<sanitized_funcs<<endl;
+	cerr<<"pnxform::Push/Pop Sanitized Functions \t\t"<<push_pop_sanitized_funcs<<endl;
+	cerr<<"pnxform::Cond Frame Sanitized Functions \t\t"<<cond_frame_sanitized_funcs<<endl;
+	cerr<<"pnxform::EH-land-pad-not-in-func Sanitized Functions \t\t"<<eh_sanitized<<endl;
+	cerr<<"pnxform::Bad Variadic Sanitized Functions \t\t"<<push_pop_sanitized_funcs<<endl;
+	cerr<<"pnxform::Jump table Sanitized Functions \t\t"<<jump_table_sanitized<<endl;
+	cerr<<"pnxform::PIC Jump table Sanitized Functions \t\t"<<jump_table_sanitized<<endl;
+	cerr<<"pnxform::Transformable Functions \t"<<(total_funcs-not_transformable.size())<<endl;
+	cerr<<"pnxform::Transformed \t\t\t"<<total_transformed<<endl;
 }
 
 
