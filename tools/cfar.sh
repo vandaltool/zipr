@@ -30,6 +30,7 @@ structured_noc=0
 structured_nog=0
 structured_nos=0
 structured_ds=0
+structured_stack_init=0   # auto stack initialize
 config_name="unspecified"
 backend="strata"
 
@@ -62,6 +63,8 @@ do
 	# this option is for cfar, handle it and remove it from the ps_analyze arguments.
 	elif [ "$i" == "--structured_ds" ]; then 	
 		structured_ds=1
+	elif [ "$i" == "--structured_stack_init" ]; then 	
+		structured_stack_init=1
 	# this option is for cfar, handle it and remove it from the ps_analyze arguments.
 	elif [ "$i" == "--config_name" ]; then 	
 		seq=$(expr $seq + 1)
@@ -152,6 +155,15 @@ do
 	if [ $structured_ds -eq 1 ]; then
 		sharepath_key="$seq:$variants:dir://$share_path"
 		per_variant_options+=(--step-option duck_season:"--barrier $sharepath_key")
+	fi
+
+	if [ $structured_stack_init -eq 1 ]; then
+		# check even/odd status of variant number.
+		if [ $(expr ${seq} % 2) = 0 ]; then
+			per_variant_options+=(--step-option stack_initialize:"--initvalue 0x00000000")
+		else
+			per_variant_options+=(--step-option stack_initialize:"--initvalue 0xffffffff")
+		fi
 	fi
 
 	# options to stack_stamp to create non-overlapping stamps
