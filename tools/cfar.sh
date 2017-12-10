@@ -160,9 +160,9 @@ do
 	if [ $structured_stack_init -eq 1 ]; then
 		# check even/odd status of variant number.
 		if [ $(expr ${seq} % 2) = 0 ]; then
-			per_variant_options+=(--step-option stack_initialize:"--initvalue 0x00000000")
+			per_variant_options+=(--step-option initialize_stack:"--initvalue 0x00000000")
 		else
-			per_variant_options+=(--step-option stack_initialize:"--initvalue 0xffffffff")
+			per_variant_options+=(--step-option initialize_stack:"--initvalue 0xffffffff")
 		fi
 	fi
 
