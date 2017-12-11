@@ -1983,9 +1983,9 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 		build_ir_insn(i);
 	}
 
-	cout<<"#ATTRIBUTE total_eh_programs_created="<<dec<<firp->GetAllEhPrograms().size()<<endl;
-	cout<<"#ATTRIBUTE total_eh_programs_reused="<<dec<<reusedpgms<<endl;
-	cout<<"#ATTRIBUTE total_eh_programs="<<dec<<firp->GetAllEhPrograms().size()+reusedpgms<<endl;
+	cout<<"# ATTRIBUTE split_eh::total_eh_programs_created="<<dec<<firp->GetAllEhPrograms().size()<<endl;
+	cout<<"# ATTRIBUTE split_eh::total_eh_programs_reused="<<dec<<reusedpgms<<endl;
+	cout<<"# ATTRIBUTE split_eh::total_eh_programs="<<dec<<firp->GetAllEhPrograms().size()+reusedpgms<<endl;
 
 	remove_scoop(eh_frame_scoop);
 	remove_scoop(eh_frame_hdr_scoop);

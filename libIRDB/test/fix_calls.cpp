@@ -849,20 +849,20 @@ void fix_all_calls(FileIR_t* firp, bool print_stats, bool fix_all)
 
 	if(print_stats)
 	{
-		cout << "# ATTRIBUTE fixed_calls="<<std::dec<<fixed_calls<<endl;
-		cout << "# ATTRIBUTE no_fix_needed_calls="<<std::dec<<not_fixed_calls<<endl;
-		cout << "# ATTRIBUTE other_instructions="<<std::dec<<not_calls<<endl;
-		cout << "# ATTRIBUTE fixed_ratio="<<std::dec<<(fixed_calls/((float)(not_fixed_calls+fixed_calls)))<<endl;
-		cout << "# ATTRIBUTE remaining_ratio="<<std::dec<<(not_fixed_calls/((float)(not_fixed_calls+fixed_calls+not_calls)))<<endl;
-		cout << "# ATTRIBUTE no_target_insn="<<std::dec<< no_target_insn << endl;
-		cout << "# ATTRIBUTE no_fallthrough_insn="<<std::dec<< no_fallthrough_insn << endl;
-		cout << "# ATTRIBUTE target_not_in_function="<<std::dec<< target_not_in_function << endl;
-		cout << "# ATTRIBUTE call_to_not_entry="<<std::dec<< call_to_not_entry << endl;
-		cout << "# ATTRIBUTE thunk_check="<<std::dec<< thunk_check << endl;
-		cout << "# ATTRIBUTE found_pattern="<<std::dec<< found_pattern << endl;
-		cout << "# ATTRIBUTE in_ehframe="<<std::dec<< in_ehframe << endl;
-		cout << "# ATTRIBUTE no_fix_for_ib="<<std::dec<< no_fix_for_ib << endl;
-		cout << "# ATTRIBUTE no_fix_for_safefn="<<std::dec<< no_fix_for_safefn << endl;
+		cout << "# ATTRIBUTE fix_calls::fixed_calls="<<std::dec<<fixed_calls<<endl;
+		cout << "# ATTRIBUTE fix_calls::no_fix_needed_calls="<<std::dec<<not_fixed_calls<<endl;
+		cout << "# ATTRIBUTE fix_calls::other_instructions="<<std::dec<<not_calls<<endl;
+		cout << "# ATTRIBUTE fix_calls::fixed_ratio="<<std::dec<<(fixed_calls/((float)(not_fixed_calls+fixed_calls)))<<endl;
+		cout << "# ATTRIBUTE fix_calls::remaining_ratio="<<std::dec<<(not_fixed_calls/((float)(not_fixed_calls+fixed_calls+not_calls)))<<endl;
+		cout << "# ATTRIBUTE fix_calls::no_target_insn="<<std::dec<< no_target_insn << endl;
+		cout << "# ATTRIBUTE fix_calls::no_fallthrough_insn="<<std::dec<< no_fallthrough_insn << endl;
+		cout << "# ATTRIBUTE fix_calls::target_not_in_function="<<std::dec<< target_not_in_function << endl;
+		cout << "# ATTRIBUTE fix_calls::call_to_not_entry="<<std::dec<< call_to_not_entry << endl;
+		cout << "# ATTRIBUTE fix_calls::thunk_check="<<std::dec<< thunk_check << endl;
+		cout << "# ATTRIBUTE fix_calls::found_pattern="<<std::dec<< found_pattern << endl;
+		cout << "# ATTRIBUTE fix_calls::in_ehframe="<<std::dec<< in_ehframe << endl;
+		cout << "# ATTRIBUTE fix_calls::no_fix_for_ib="<<std::dec<< no_fix_for_ib << endl;
+		cout << "# ATTRIBUTE fix_calls::no_fix_for_safefn="<<std::dec<< no_fix_for_safefn << endl;
 		no_target_insn=0;
 		no_fallthrough_insn=0;
 		target_not_in_function=0;

@@ -24,10 +24,10 @@ main()
 		exit 1
 	fi
 
-	echo "#ATTRIBUTE backend=$backend" $i >  $file
-	echo "#ATTRIBUTE peasoup_dir=$newdir" $i >>  $file
-	echo "#ATTRIBUTE output_file=$stratafied_exe" $i >>  $file
-	echo "#ATTRIBUTE pwd=$PWD" $i >>  $file
+	echo "# ATTRIBUTE backend=$backend" $i >  $file
+	echo "# ATTRIBUTE peasoup_dir=$newdir" $i >>  $file
+	echo "# ATTRIBUTE output_file=$stratafied_exe" $i >>  $file
+	echo "# ATTRIBUTE pwd=$PWD" $i >>  $file
 
 
 }
