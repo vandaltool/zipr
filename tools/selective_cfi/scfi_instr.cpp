@@ -345,8 +345,8 @@ bool SCFI_Instrument::mark_targets()
 			}
 		}
 	}
-	cout<<"# ATTRIBUTE ind_targets_found="<<std::dec<<ind_targets<<endl;
-	cout<<"# ATTRIBUTE targets_found="<<std::dec<<targets<<endl;
+	cout<<"# ATTRIBUTE scfi::ind_targets_found="<<std::dec<<ind_targets<<endl;
+	cout<<"# ATTRIBUTE scfi::targets_found="<<std::dec<<targets<<endl;
 	return true;
 }
 
@@ -736,7 +736,7 @@ static void display_histogram(std::ostream& out, std::string attr_label, std::ma
 {
 	if (p_map.size()) 
 	{
-		out<<"# ATTRIBUTE " << attr_label << "=";
+		out<<"# ATTRIBUTE scfi::" << attr_label << "=";
 		out<<"{ibt_size:count,";
 		bool first_time=true;
 		for (map<int,int>::iterator it = p_map.begin(); 
@@ -959,25 +959,25 @@ bool SCFI_Instrument::instrument_jumps()
 		}
 	}
 	
-	cout<<"# ATTRIBUTE cfi_jmp_checks="<<std::dec<<cfi_branch_jmp_checks<<endl;
-	cout<<"# ATTRIBUTE cfi_jmp_complete="<<cfi_branch_jmp_complete<<endl;
+	cout<<"# ATTRIBUTE scfi::cfi_jmp_checks="<<std::dec<<cfi_branch_jmp_checks<<endl;
+	cout<<"# ATTRIBUTE scfi::cfi_jmp_complete="<<cfi_branch_jmp_complete<<endl;
 	display_histogram(cout, "cfi_jmp_complete_histogram", jmps);
 
-	cout<<"# ATTRIBUTE cfi_branch_call_checks="<<std::dec<<cfi_branch_call_checks<<endl;
-	cout<<"# ATTRIBUTE cfi_branch_call_complete="<<std::dec<<cfi_branch_call_complete<<endl;
+	cout<<"# ATTRIBUTE scfi::cfi_branch_call_checks="<<std::dec<<cfi_branch_call_checks<<endl;
+	cout<<"# ATTRIBUTE scfi::cfi_branch_call_complete="<<std::dec<<cfi_branch_call_complete<<endl;
 	display_histogram(cout, "cfi_call_complete_histogram", calls);
 
-	cout<<"# ATTRIBUTE cfi_ret_checks="<<std::dec<<cfi_branch_ret_checks<<endl;
-	cout<<"# ATTRIBUTE cfi_ret_complete="<<std::dec<<cfi_branch_ret_complete<<endl;
+	cout<<"# ATTRIBUTE scfi::cfi_ret_checks="<<std::dec<<cfi_branch_ret_checks<<endl;
+	cout<<"# ATTRIBUTE scfi::cfi_ret_complete="<<std::dec<<cfi_branch_ret_complete<<endl;
 	display_histogram(cout, "cfi_ret_complete_histogram", rets);
 
 
 	// 0 or 1 checks.
-	cout<<"# ATTRIBUTE multimodule_checks="<< (unsigned int)(zestcfi_function_entry!=NULL) <<endl;
+	cout<<"# ATTRIBUTE scfi::multimodule_checks="<< (unsigned int)(zestcfi_function_entry!=NULL) <<endl;
 
-	cout<<"# ATTRIBUTE cfi_checks="<<std::dec<<cfi_checks<<endl;
+	cout<<"# ATTRIBUTE scfi::cfi_checks="<<std::dec<<cfi_checks<<endl;
 	ibt_complete = cfi_branch_jmp_complete + cfi_branch_call_complete + cfi_branch_ret_complete;
-	cout<<"# ATTRIBUTE ibt_complete="<<std::dec<<ibt_complete<<endl;
+	cout<<"# ATTRIBUTE scfi::ibt_complete="<<std::dec<<ibt_complete<<endl;
 
 	if (cfi_branch_jmp_checks > 0) 
 		cfi_branch_jmp_complete_ratio = (double)cfi_branch_jmp_complete / cfi_branch_jmp_checks;
@@ -993,14 +993,14 @@ bool SCFI_Instrument::instrument_jumps()
 		cfi_branch_complete_ratio = (double) cfi_checks / ibt_complete;
 	
 
-	cout << "# ATTRIBUTE cfi_jmp_complete_ratio=" << cfi_branch_jmp_complete_ratio << endl;
-	cout << "# ATTRIBUTE cfi_call_complete_ratio=" << cfi_branch_call_complete_ratio << endl;
-	cout << "# ATTRIBUTE cfi_ret_complete_ratio=" << cfi_branch_ret_complete_ratio << endl;
-	cout << "# ATTRIBUTE cfi_complete_ratio=" << cfi_branch_ret_complete_ratio << endl;
+	cout << "# ATTRIBUTE scfi::cfi_jmp_complete_ratio=" << cfi_branch_jmp_complete_ratio << endl;
+	cout << "# ATTRIBUTE scfi::cfi_call_complete_ratio=" << cfi_branch_call_complete_ratio << endl;
+	cout << "# ATTRIBUTE scfi::cfi_ret_complete_ratio=" << cfi_branch_ret_complete_ratio << endl;
+	cout << "# ATTRIBUTE scfi::cfi_complete_ratio=" << cfi_branch_ret_complete_ratio << endl;
 
-	cout<<"# ATTRIBUTE cfi_safefn_jmp_skipped="<<cfi_safefn_jmp_skipped<<endl;
-	cout<<"# ATTRIBUTE cfi_safefn_ret_skipped="<<cfi_safefn_ret_skipped<<endl;
-	cout<<"# ATTRIBUTE cfi_safefn_call_skipped="<<cfi_safefn_call_skipped<<endl;
+	cout<<"# ATTRIBUTE scfi::cfi_safefn_jmp_skipped="<<cfi_safefn_jmp_skipped<<endl;
+	cout<<"# ATTRIBUTE scfi::cfi_safefn_ret_skipped="<<cfi_safefn_ret_skipped<<endl;
+	cout<<"# ATTRIBUTE scfi::cfi_safefn_call_skipped="<<cfi_safefn_call_skipped<<endl;
 
 	return true;
 }

@@ -88,19 +88,19 @@ bool ColoredInstructionNonces_t::create()
 		}
 	}
 
-	cout<<"# ATTRIBUTE Unique_Used_ICFS_size="<<dec<<used_icfs.size()<<endl;
-	cout<<"# ATTRIBUTE Unique_ICFS_size="<<dec<<unique_icfs.size()<<endl;
+	cout<<"# ATTRIBUTE scfi::Unique_Used_ICFS_size="<<dec<<used_icfs.size()<<endl;
+	cout<<"# ATTRIBUTE scfi::Unique_ICFS_size="<<dec<<unique_icfs.size()<<endl;
 #endif
 
 	// output stats
-	cout<<"# ATTRIBUTE slots_used="<<slots_used.size()<<endl;
+	cout<<"# ATTRIBUTE scfi::slots_used="<<slots_used.size()<<endl;
 	int total_slots = 0;
 	for(int slot_no=0; slot_no<slots_used.size(); slot_no++)
 	{
-		cout<<"# ATTRIBUTE used_slot"<<slot_no<<"="<<slots_used[slot_no].SlotsUsed()<<endl;
+		cout<<"# scfi::ATTRIBUTE used_slot"<<slot_no<<"="<<slots_used[slot_no].SlotsUsed()<<endl;
 		total_slots += slots_used[slot_no].SlotsUsed();
 	}
-	cout<<"# ATTRIBUTE total_slots="<<total_slots<<endl;
+	cout<<"# ATTRIBUTE scfi::total_slots="<<total_slots<<endl;
 
 	return true;
 }
