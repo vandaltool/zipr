@@ -21,6 +21,7 @@ using namespace std;
 using namespace EXEIO;
 using namespace libIRDB;
 
+#define WHOLE_CONTAINER(s) begin(s), end(s)
 
 template <int ptrsize>
 template <class T> 
@@ -271,7 +272,7 @@ void eh_program_insn_t<ptrsize>::print(uint64_t &pc, int64_t caf) const
 	// make sure uint8_t is an unsigned char.	
 	static_assert(std::is_same<unsigned char, uint8_t>::value, "uint8_t is not unsigned char");
 
-	auto data=program_bytes.data();
+	auto data=program_bytes;
 	auto opcode=program_bytes[0];
 	auto opcode_upper2=(uint8_t)(opcode >> 6);
 	auto opcode_lower6=(uint8_t)(opcode & (0x3f));
@@ -290,7 +291,7 @@ void eh_program_insn_t<ptrsize>::print(uint64_t &pc, int64_t caf) const
 		case 2:
 		{
 			uint64_t uleb=0;
-			if(eh_frame_util_t<ptrsize>::read_uleb128(uleb, pos, data, max))
+			if(eh_frame_util_t<ptrsize>::read_uleb128(uleb, pos, (const uint8_t* const)data.data(), max))
 				return;
 			// case DW_CFA_offset:
 			cout<<"				cfa_offset "<<dec<<uleb<<endl;
@@ -320,33 +321,33 @@ void eh_program_insn_t<ptrsize>::print(uint64_t &pc, int64_t caf) const
 				// takes single uleb128
 				case DW_CFA_undefined:
 					cout<<"				undefined" ;
-					print_uleb_operand(pos,data,max); 
+					print_uleb_operand(pos,(const uint8_t* const)data.data(),max); 
 					cout<<endl;
 					break;
 		
 				case DW_CFA_same_value:
 					cout<<"				same_value ";
-					print_uleb_operand(pos,data,max); 
+					print_uleb_operand(pos,(const uint8_t* const)data.data(),max); 
 					cout<<endl;
 					break;
 				case DW_CFA_restore_extended:
 					cout<<"				restore_extended ";
-					print_uleb_operand(pos,data,max); 
+					print_uleb_operand(pos,(const uint8_t* const)data.data(),max); 
 					cout<<endl;
 					break;
 				case DW_CFA_def_cfa_register:
 					cout<<"				def_cfa_register ";
-					print_uleb_operand(pos,data,max); 
+					print_uleb_operand(pos,(const uint8_t* const)data.data(),max); 
 					cout<<endl;
 					break;
 				case DW_CFA_GNU_args_size:
 					cout<<"				GNU_arg_size ";
-					print_uleb_operand(pos,data,max); 
+					print_uleb_operand(pos,(const uint8_t* const)data.data(),max); 
 					cout<<endl;
 					break;
 				case DW_CFA_def_cfa_offset:
 					cout<<"				def_cfa_offset "; 
-					print_uleb_operand(pos,data,max); 
+					print_uleb_operand(pos,(const uint8_t* const)data.data(),max); 
 					cout<<endl;
 					break;
 
@@ -356,16 +357,16 @@ void eh_program_insn_t<ptrsize>::print(uint64_t &pc, int64_t caf) const
 					switch(ptrsize)
 					{
 						case 4:
-							arg=*(uint32_t*)data[pos]; break;
+							arg=*(uint32_t*)&data.data()[pos]; break;
 						case 8:
-							arg=*(uint64_t*)data[pos]; break;
+							arg=*(uint64_t*)&data.data()[pos]; break;
 					}
 					cout<<"				set_loc "<<hex<<arg<<endl;
 					break;
 				}
 				case DW_CFA_advance_loc1:
 				{
-					auto loc=*(uint8_t*)(&data[pos]);
+					auto loc=*(uint8_t*)(&data.data()[pos]);
 					pc+=(loc*caf);
 					cout<<"				advance_loc1 "<<+loc<<" to " <<pc << endl;
 					break;
@@ -373,7 +374,7 @@ void eh_program_insn_t<ptrsize>::print(uint64_t &pc, int64_t caf) const
 
 				case DW_CFA_advance_loc2:
 				{
-					auto loc=*(uint16_t*)(&data[pos]);
+					auto loc=*(uint16_t*)(&data.data()[pos]);
 					pc+=(loc*caf);
 					cout<<"				advance_loc2 "<<+loc<<" to " <<pc << endl;
 					break;
@@ -381,40 +382,40 @@ void eh_program_insn_t<ptrsize>::print(uint64_t &pc, int64_t caf) const
 
 				case DW_CFA_advance_loc4:
 				{
-					auto loc=*(uint32_t*)(&data[pos]);
+					auto loc=*(uint32_t*)(&data.data()[pos]);
 					pc+=(loc*caf);
 					cout<<"				advance_loc4 "<<+loc<<" to " <<pc << endl;
 					break;
 				}
 				case DW_CFA_offset_extended:
 					cout<<"				offset_extended ";
-					print_uleb_operand(pos,data,max);
-					print_uleb_operand(pos,data,max);
+					print_uleb_operand(pos,(const uint8_t* const)data.data(),max);
+					print_uleb_operand(pos,(const uint8_t* const)data.data(),max);
 					cout<<endl;
 					break;
 				case DW_CFA_register:
 					cout<<"				register ";
-					print_uleb_operand(pos,data,max);
-					print_uleb_operand(pos,data,max);
+					print_uleb_operand(pos,(const uint8_t* const)data.data(),max);
+					print_uleb_operand(pos,(const uint8_t* const)data.data(),max);
 					cout<<endl;
 					break;
 				case DW_CFA_def_cfa:
 					cout<<"				def_cfa ";
-					print_uleb_operand(pos,data,max);
-					print_uleb_operand(pos,data,max);
+					print_uleb_operand(pos,(const uint8_t* const)data.data(),max);
+					print_uleb_operand(pos,(const uint8_t* const)data.data(),max);
 					cout<<endl;
 					break;
 				case DW_CFA_def_cfa_sf:
 					cout<<"				def_cfa_sf ";
-					print_uleb_operand(pos,data,max);
-					print_sleb_operand(pos,data,max);
+					print_uleb_operand(pos,(const uint8_t* const)data.data(),max);
+					print_sleb_operand(pos,(const uint8_t* const)data.data(),max);
 					cout<<endl;
 					break;
 
 				case DW_CFA_def_cfa_expression:
 				{
 					auto uleb=uint64_t(0);
-					if(eh_frame_util_t<ptrsize>::read_uleb128(uleb, pos, data, max))
+					if(eh_frame_util_t<ptrsize>::read_uleb128(uleb, pos, (const uint8_t* const)data.data(), max))
 						return ;
 					cout<<"				def_cfa_expression "<<dec<<uleb<<endl;
 					pos+=uleb;		// doing this old school for now, as we aren't printing the expression.
@@ -424,9 +425,9 @@ void eh_program_insn_t<ptrsize>::print(uint64_t &pc, int64_t caf) const
 				{
 					auto uleb1=uint64_t(0);
 					auto uleb2=uint64_t(0);
-					if(eh_frame_util_t<ptrsize>::read_uleb128(uleb1, pos, data, max))
+					if(eh_frame_util_t<ptrsize>::read_uleb128(uleb1, pos, (const uint8_t* const)data.data(), max))
 						return ;
-					if(eh_frame_util_t<ptrsize>::read_uleb128(uleb2, pos, data, max))
+					if(eh_frame_util_t<ptrsize>::read_uleb128(uleb2, pos, (const uint8_t* const)data.data(), max))
 						return ;
 					cout<<"                              expression "<<dec<<uleb1<<" "<<uleb2<<endl;
 					pos+=uleb2;
@@ -436,9 +437,9 @@ void eh_program_insn_t<ptrsize>::print(uint64_t &pc, int64_t caf) const
 				{
 					auto uleb1=uint64_t(0);
 					auto uleb2=uint64_t(0);
-					if(eh_frame_util_t<ptrsize>::read_uleb128(uleb1, pos, data, max))
+					if(eh_frame_util_t<ptrsize>::read_uleb128(uleb1, pos, (const uint8_t* const)data.data(), max))
 						return ;
-					if(eh_frame_util_t<ptrsize>::read_uleb128(uleb2, pos, data, max))
+					if(eh_frame_util_t<ptrsize>::read_uleb128(uleb2, pos, (const uint8_t* const)data.data(), max))
 						return ;
 					cout<<"                              val_expression "<<dec<<uleb1<<" "<<uleb2<<endl;
 					pos+=uleb2;
@@ -447,7 +448,7 @@ void eh_program_insn_t<ptrsize>::print(uint64_t &pc, int64_t caf) const
 				case DW_CFA_def_cfa_offset_sf:
 				{
 					auto leb=int64_t(0);
-					if(eh_frame_util_t<ptrsize>::read_sleb128(leb, pos, data, max))
+					if(eh_frame_util_t<ptrsize>::read_sleb128(leb, pos, (const uint8_t* const)data.data(), max))
 						return ;
 					cout<<"					def_cfa_offset_sf "<<dec<<leb;
 					break;
@@ -456,9 +457,9 @@ void eh_program_insn_t<ptrsize>::print(uint64_t &pc, int64_t caf) const
 				{
 					auto uleb1=uint64_t(0);
 					auto sleb2=int64_t(0);
-					if(eh_frame_util_t<ptrsize>::read_uleb128(uleb1, pos, data, max))
+					if(eh_frame_util_t<ptrsize>::read_uleb128(uleb1, pos, (const uint8_t* const)data.data(), max))
 						return ;
-					if(eh_frame_util_t<ptrsize>::read_sleb128(sleb2, pos, data, max))
+					if(eh_frame_util_t<ptrsize>::read_sleb128(sleb2, pos, (const uint8_t* const)data.data(), max))
 						return ;
 					cout<<"                              offset_extended_sf "<<dec<<uleb1<<" "<<sleb2<<endl;
 					break;
@@ -673,7 +674,6 @@ bool eh_program_insn_t<ptrsize>::parse_insn(
 template <int ptrsize>
 bool eh_program_insn_t<ptrsize>::isNop() const 
 {
-	const auto data=program_bytes.data();
 	const auto opcode=program_bytes[0];
 	const auto opcode_upper2=(uint8_t)(opcode >> 6);
 	const auto opcode_lower6=(uint8_t)(opcode & (0x3f));
@@ -695,7 +695,6 @@ bool eh_program_insn_t<ptrsize>::isNop() const
 template <int ptrsize>
 bool eh_program_insn_t<ptrsize>::isRestoreState() const 
 {
-	const auto data=program_bytes.data();
 	const auto opcode=program_bytes[0];
 	const auto opcode_upper2=(uint8_t)(opcode >> 6);
 	const auto opcode_lower6=(uint8_t)(opcode & (0x3f));
@@ -716,7 +715,6 @@ bool eh_program_insn_t<ptrsize>::isRestoreState() const
 template <int ptrsize>
 bool eh_program_insn_t<ptrsize>::isRememberState() const 
 {
-	const auto data=program_bytes.data();
 	const auto opcode=program_bytes[0];
 	const auto opcode_upper2=(uint8_t)(opcode >> 6);
 	const auto opcode_lower6=(uint8_t)(opcode & (0x3f));
@@ -740,7 +738,7 @@ bool eh_program_insn_t<ptrsize>::Advance(uint64_t &cur_addr, uint64_t CAF) const
 	// make sure uint8_t is an unsigned char.	
 	static_assert(std::is_same<unsigned char, uint8_t>::value, "uint8_t is not unsigned char");
 
-	auto data=program_bytes.data();
+	auto data=program_bytes;
 	auto opcode=program_bytes[0];
 	auto opcode_upper2=(uint8_t)(opcode >> 6);
 	auto opcode_lower6=(uint8_t)(opcode & (0x3f));
@@ -778,21 +776,21 @@ bool eh_program_insn_t<ptrsize>::Advance(uint64_t &cur_addr, uint64_t CAF) const
 				}
 				case DW_CFA_advance_loc1:
 				{
-					auto loc=*(uint8_t*)(&data[pos]);
+					auto loc=*(uint8_t*)(&data.data()[pos]);
 					cur_addr+=(loc*CAF);
 					return true;
 				}
 
 				case DW_CFA_advance_loc2:
 				{
-					auto loc=*(uint16_t*)(&data[pos]);
+					auto loc=*(uint16_t*)(&data.data()[pos]);
 					cur_addr+=(loc*CAF);
 					return true;
 				}
 
 				case DW_CFA_advance_loc4:
 				{
-					auto loc=*(uint32_t*)(&data[pos]);
+					auto loc=*(uint32_t*)(&data.data()[pos]);
 					cur_addr+=(loc*CAF);
 					return true;
 				}
@@ -1080,8 +1078,6 @@ bool lsda_call_site_action_t<ptrsize>::parse_lcsa(uint32_t& pos, const uint8_t* 
 	if(this->read_sleb128(action, pos, data, max))
 		return true;
 
-	assert(action>=0);
-
 	auto next_action=pos;
 	auto next_pos_offset=int64_t(0);
 	if(this->read_sleb128(next_pos_offset, pos, data, max))
@@ -1181,15 +1177,6 @@ lsda_call_site_t<ptrsize>::lsda_call_site_t() :
 {}
 
 
-template <int ptrsize>
-int64_t lsda_call_site_t<ptrsize>::GetMaxTypeTableIndex() const
-{
-	if(action_table.size()==0)
-		return 0;
-	return max_element(action_table.begin(), action_table.end())->GetAction();
-}
-
-
 
 template <int ptrsize>
 bool lsda_call_site_t<ptrsize>::parse_lcs(	
@@ -1243,9 +1230,7 @@ bool lsda_call_site_t<ptrsize>::parse_lcs(
 	}
 	else if( action < 0 )
 	{
-		assert(0); // a negative value in "action" indicates a negative type filter.
-			   // this indicates a null-terminated list of types in the type table.
-			   // as there's no example of this, assert for now.
+		assert(0); // how can the index into the action table be negative?
 	}
 	else
 	{
@@ -1314,10 +1299,9 @@ void lsda_call_site_t<ptrsize>::build_ir(Instruction_t* insn, const vector<lsda_
 		for_each(action_table.begin(), action_table.end(), [&](const lsda_call_site_action_t<ptrsize>& p)
 		{
 			const auto action=p.GetAction();
-			new_ehcs->GetTTOrderVector().push_back(action);
 			if(action==0)
 			{
-				// NO!  This means that the type table has a 0, which means catch all.	
+				new_ehcs->GetTTOrderVector().push_back(action);
 				// an action table entry of 0 means that it has a cleanup, but not a catch all.
 				//auto newreloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, 0, "type_table_entry", NULL, 0);
 				//new_ehcs->GetRelocations().insert(newreloc);
@@ -1327,12 +1311,12 @@ void lsda_call_site_t<ptrsize>::build_ir(Instruction_t* insn, const vector<lsda_
 			}
 			else if(action>0)
 			{
+				new_ehcs->GetTTOrderVector().push_back(action);
 				const auto index=action - 1;
 				//cout<<"Catch for type:  ";
 				// the type table reveral was done during parsing, type table is right-side-up now.
 				//type_table.at(index).print();
 				auto wrt=(DataScoop_t*)NULL; 
-				assert(index<type_table.size());
 				if(type_table.at(index).GetTypeInfoPointer()!=0)
 				{
 					wrt=firp->FindScoop(type_table.at(index).GetTypeInfoPointer());
@@ -1353,7 +1337,17 @@ void lsda_call_site_t<ptrsize>::build_ir(Instruction_t* insn, const vector<lsda_
 			}
 			else if(action<0)
 			{
-				assert(0); // see note in parse_lcs about actions < 0.
+				static auto already_warned=false;
+				if(!already_warned)
+				{
+					ofstream fout("warning.txt"); 
+					fout<<"Dynamic exception specification in eh_frame not fully supported."<<endl; 
+					already_warned=true;
+				}
+
+				// this isn't right at all, but pretend it's a cleanup!
+				new_ehcs->SetHasCleanup();
+				cout<<"Cleanup only (no catches) ."<<endl;
 			}
 			else
 			{
@@ -1386,7 +1380,7 @@ lsda_t<ptrsize>::lsda_t() :
 template <int ptrsize>
 bool lsda_t<ptrsize>::parse_lsda(const uint64_t lsda_addr, const DataScoop_t* gcc_except_scoop, const uint64_t fde_region_start)
 {
-	// make sure there's a coop and that we're in the range.
+	// make sure there's a scoop and that we're in the range.
 	if(!gcc_except_scoop)
 		return true;
 	if(lsda_addr<gcc_except_scoop->GetStart()->GetVirtualOffset())
@@ -1394,29 +1388,29 @@ bool lsda_t<ptrsize>::parse_lsda(const uint64_t lsda_addr, const DataScoop_t* gc
 	if(lsda_addr>=gcc_except_scoop->GetEnd()->GetVirtualOffset())
 		return true;
 
-	const auto data=(const uint8_t* const)gcc_except_scoop->GetContents().data();
+	const auto &data=gcc_except_scoop->GetContents();
 	const auto data_addr=gcc_except_scoop->GetStart()->GetVirtualOffset();
 	const auto max=gcc_except_scoop->GetContents().size();
 	auto pos=uint32_t(lsda_addr-data_addr);
 	auto start_pos=pos;
 
-	if(this->read_type(landing_pad_base_encoding, pos, data, max))
+	if(this->read_type(landing_pad_base_encoding, pos, (const uint8_t* const)data.data(), max))
 		return true;
 	if(landing_pad_base_encoding!=DW_EH_PE_omit)
 	{
-		if(this->read_type_with_encoding(landing_pad_base_encoding,landing_pad_base_addr, pos, data, max, data_addr))
+		if(this->read_type_with_encoding(landing_pad_base_encoding,landing_pad_base_addr, pos, (const uint8_t* const)data.data(), max, data_addr))
 			return true;
 	}
 	else
 		landing_pad_base_addr=fde_region_start;
 
-	if(this->read_type(type_table_encoding, pos, data, max))
+	if(this->read_type(type_table_encoding, pos, (const uint8_t* const)data.data(), max))
 		return true;
 
 	auto type_table_pos=0;
 	if(type_table_encoding!=DW_EH_PE_omit)
 	{
-		if(this->read_uleb128(type_table_offset, pos, data, max))
+		if(this->read_uleb128(type_table_offset, pos, (const uint8_t* const)data.data(), max))
 			return true;
 		type_table_addr=lsda_addr+type_table_offset+(pos-start_pos);
 		type_table_pos=pos+type_table_offset;
@@ -1424,10 +1418,10 @@ bool lsda_t<ptrsize>::parse_lsda(const uint64_t lsda_addr, const DataScoop_t* gc
 	else
 		type_table_addr=0;
 
-	if(this->read_type(cs_table_encoding, pos, data, max))
+	if(this->read_type(cs_table_encoding, pos, (const uint8_t* const)data.data(), max))
 		return true;
 
-	if(this->read_uleb128(cs_table_length, pos, data, max))
+	if(this->read_uleb128(cs_table_length, pos, (const uint8_t* const)data.data(), max))
 		return true;
 
 	auto cs_table_end=pos+cs_table_length;
@@ -1438,18 +1432,16 @@ bool lsda_t<ptrsize>::parse_lsda(const uint64_t lsda_addr, const DataScoop_t* gc
 
 	// action table comes immediately after the call site table.
 	action_table_start_addr=cs_table_start_addr+cs_table_length;
-	auto max_tt_entry=uint64_t(0);
 	while(1)
 	{
 		lsda_call_site_t<ptrsize> lcs;
 		if(lcs.parse_lcs(action_table_start_addr,
-			cs_table_start_addr,cs_table_encoding, pos, data, cs_table_end, data_addr, landing_pad_base_addr, max))
+			cs_table_start_addr,cs_table_encoding, pos, (const uint8_t* const)data.data(), cs_table_end, data_addr, landing_pad_base_addr, max))
 		{
 			return true;
 		}
 
 		call_site_table.push_back(lcs);
-		max_tt_entry=std::max(max_tt_entry, (uint64_t)lcs.GetMaxTypeTableIndex());
 		
 		if(pos>=cs_table_end)
 			break;	
@@ -1457,14 +1449,46 @@ bool lsda_t<ptrsize>::parse_lsda(const uint64_t lsda_addr, const DataScoop_t* gc
 
 	if(type_table_encoding!=DW_EH_PE_omit)
 	{
-		// 1-based indexing because of odd backwards indexing of type table.
-		for(int i=1;i<=max_tt_entry;i++)
+		for(const auto cs_tab_entry : call_site_table)
 		{
-			lsda_type_table_entry_t <ptrsize> ltte;
-			if(ltte.parse(type_table_encoding, type_table_pos, i, data, max, data_addr ))
-				return true;
-			type_table.push_back(ltte);
-		}
+			for(const auto act_tab_entry : cs_tab_entry.GetActionTable())
+			{
+				const auto type_filter=act_tab_entry.GetAction();
+				const auto parse_and_insert_tt_entry = [&] (const unsigned long index) -> bool
+				{
+					cout<<"Parsing TypeTable at -"<<index<<endl;
+					// 1-based indexing because of odd backwards indexing of type table.
+					lsda_type_table_entry_t <ptrsize> ltte;
+					if(ltte.parse(type_table_encoding, type_table_pos, index, (const uint8_t* const)data.data(), max, data_addr ))
+						return true;
+					type_table.resize(std::max(index,type_table.size()));
+					type_table.at(index-1)=ltte;
+					return false;
+				};
+		
+				if(type_filter==0)
+				{	
+					// type-filter==0 means no TT entry in the action table.
+				}
+				else if(type_filter>0)
+				{
+					// type_filter > 0 indicates singleton type table entry
+					if(parse_and_insert_tt_entry(type_filter))
+						return true;
+				}
+				else if(type_filter<0)
+				{
+					// a type filter < 0 indicates a dynamic exception specification is in play.
+					// these are not common and even less likely to be needed for correct execution.
+					// we ignore for now.  A warning is printed if they are found in build_ir. 
+				}
+				else 
+					assert(0);
+
+			};
+		
+		};
+
 	}
 
 	return false;
@@ -1495,7 +1519,7 @@ void lsda_t<ptrsize>::print() const
 	i=0;
 	for_each(type_table.begin(), type_table.end(), [&](const lsda_type_table_entry_t<ptrsize>& p)
 	{
-		cout<<"			[ "<<hex<<i++<<"] Type table entry "<<endl;
+		cout<<"			[ -"<<dec<<++i<<"] Type table entry "<<endl;
 		p.print();
 	});
 }

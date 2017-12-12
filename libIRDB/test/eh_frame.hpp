@@ -237,10 +237,10 @@ class lsda_call_site_t : private eh_frame_util_t<ptrsize>
 	public:
 	lsda_call_site_t() ;
 
-	int64_t GetMaxTypeTableIndex() const;
+	const std::vector<lsda_call_site_action_t <ptrsize> >& GetActionTable() const { return action_table; }
+	      std::vector<lsda_call_site_action_t <ptrsize> >& GetActionTable()       { return action_table; }
 
 	uint64_t GetLandingPadAddress() const  { return landing_pad_addr ; } 
-	
 
 	bool parse_lcs(	
 		const uint64_t action_table_start_addr, 	
