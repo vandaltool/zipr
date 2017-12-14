@@ -13,7 +13,7 @@
                 }
             },
             "dump": {
-                "top_dir": "/work_dir/images"
+                "top_dir": "/testing/results/images"
             },
             "monitor": {
 		<<PRECHECKPOINTCMD>>,
@@ -31,13 +31,13 @@
                         "--ext-unix-sk",
                         "-v4",
                         "--raven-files",
-                        "/work_dir/thttpd.log"
+                        "/testing/results/thttpd.log"
                     ],
                     "path": "/usr/sbin/criu"
                 }
             },
             "dump": {
-                "top_dir": "/work_dir/images"
+                "top_dir": "/testing/results/images"
             },
             "monitor": {
                 "exec": {
