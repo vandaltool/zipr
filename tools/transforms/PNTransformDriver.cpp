@@ -1819,7 +1819,7 @@ void PNTransformDriver::Print_Report()
 	for(unsigned int i=0;i<history_keys.size();++i)
 	{
 		cerr<<"\tLayout: "<<history_keys[i]<<endl;
-		cerr<<"# ATTRIBUTE pnxform::Layout="<<history_keys[i]<<endl;
+		cerr<<"# ATTRIBUTE Layout="<<history_keys[i]<<endl;
 		vector<PNStackLayout*> layouts = transformed_history[history_keys[i]];
 
 		map<int,int> obj_histogram;
@@ -1889,12 +1889,12 @@ void PNTransformDriver::Print_Report()
 	cerr<<"Transformed \t\t\t"<<total_transformed<<endl;
 
 	cerr<<"# ATTRIBUTE pnxform::Functions_validated_exceeding_threshold="<<high_coverage_count<<endl;
-	cerr<<"# ATTRIBUTE pnxform::Functions_validated_ with_ nonZero_coverage_below_or_ equal_to_threshold="<<low_coverage_count<<endl;
+	cerr<<"# ATTRIBUTE pnxform::Functions_validated_with_nonZero_coverage_below_or_equal_to_threshold="<<low_coverage_count<<endl;
 	cerr<<"# ATTRIBUTE pnxform::Functions_modified_with_no_coverage="<<no_coverage_count<<endl;
 	cerr<<"# ATTRIBUTE pnxform::Total_recursive_validations_performed="<<validation_count<<endl;
 
 	cerr<<"# ATTRIBUTE pnxform::NonBlacklisted_Functions="<<total_funcs<<endl;
-	cerr<<"# ATTRIBUTE pnxform::Blacklisted Functions="<<blacklist_funcs<<endl;
+	cerr<<"# ATTRIBUTE pnxform::Blacklisted_Functions="<<blacklist_funcs<<endl;
 	cerr<<"# ATTRIBUTE pnxform::Sanitized_Functions="<<sanitized_funcs<<endl;
 	cerr<<"# ATTRIBUTE pnxform::PushPop_Sanitized_Functions="<<push_pop_sanitized_funcs<<endl;
 	cerr<<"# ATTRIBUTE pnxform::CondFrameSanitized_Functions="<<cond_frame_sanitized_funcs<<endl;
