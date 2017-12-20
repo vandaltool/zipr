@@ -1504,7 +1504,8 @@ void FileIR_t::SplitScoop(
 		size_t size, 
 		DataScoop_t* &before,
 		DataScoop_t* &containing, 
-		DataScoop_t* &after
+		DataScoop_t* &after,
+		db_id_t *max_id_ptr	 /* in and out param */
 	)
 {
 
@@ -1520,15 +1521,21 @@ void FileIR_t::SplitScoop(
 		return;
 	}
 
-	const auto max=GetMaxBaseID();
-	const auto multiple=1000;
+	auto calcd_max_id=db_id_t(0);
+	if(max_id_ptr==NULL)
+		calcd_max_id = GetMaxBaseID();
+
+	auto &max_id = max_id_ptr == NULL ? calcd_max_id : *max_id_ptr ;
+	
+	if(max_id==0)
+		max_id=calcd_max_id;
+
+	const auto multiple=(unsigned)1000;
 
 	// round to nearest multiple
-	const auto rounded_max = ((max + multiple/2) / multiple) * multiple;
+	const auto rounded_max = ((max_id + (multiple/2)) / multiple) * multiple;
 
-	auto id=rounded_max + multiple; // and skip forward so we're passed the highest.
-
-	assert(id>=max);
+	max_id=rounded_max + multiple; // and skip forward so we're passed the highest.
 
 	const bool needs_before = addr!=tosplit->GetStart()->GetVirtualOffset();
 	const bool needs_after = addr+size-1 != tosplit->GetEnd()->GetVirtualOffset();
@@ -1540,18 +1547,18 @@ void FileIR_t::SplitScoop(
 		// const AddressID_t* before_start=NULL;
 	
 		const auto before_start=new AddressID_t;
-		before_start->SetBaseID(id++);
+		before_start->SetBaseID(max_id++);
 		before_start->SetFileID(tosplit->GetStart()->GetFileID());
 		before_start->SetVirtualOffset(tosplit->GetStart()->GetVirtualOffset());
 
 		// const AddressID_t* before_end=new AddressID_t;
 		const auto before_end=new AddressID_t;
-		before_end->SetBaseID(id++);
+		before_end->SetBaseID(max_id++);
 		before_end->SetFileID(tosplit->GetStart()->GetFileID());
 		before_end->SetVirtualOffset(addr-1);
 
 		before=new DataScoop_t;
-		before->SetBaseID(id++);
+		before->SetBaseID(max_id++);
 		before->SetName(tosplit->GetName()+"3");
 		before->SetStart(before_start);
 		before->SetEnd(before_end);
@@ -1571,18 +1578,18 @@ void FileIR_t::SplitScoop(
 	// setup containing
 	// AddressID_t* containing_start=new AddressID_t;
 	const auto containing_start=new AddressID_t;
-	containing_start->SetBaseID(id++);
+	containing_start->SetBaseID(max_id++);
 	containing_start->SetFileID(tosplit->GetStart()->GetFileID());
 	containing_start->SetVirtualOffset(addr);
 
 	//AddressID_t* containing_end=new AddressID_t;
 	const auto containing_end=new AddressID_t;
-	containing_end->SetBaseID(id++);
+	containing_end->SetBaseID(max_id++);
 	containing_end->SetFileID(tosplit->GetStart()->GetFileID());
 	containing_end->SetVirtualOffset(addr+size-1);
 
 	containing=new DataScoop_t;
-	containing->SetBaseID(id++);
+	containing->SetBaseID(max_id++);
 	containing->SetName(tosplit->GetName()+"3");
 	containing->SetStart(containing_start);
 	containing->SetEnd(containing_end);
@@ -1602,18 +1609,18 @@ void FileIR_t::SplitScoop(
 		// setup after
 		// AddressID_t* after_start=new AddressID_t;
 		const auto after_start=new AddressID_t;
-		after_start->SetBaseID(id++);
+		after_start->SetBaseID(max_id++);
 		after_start->SetFileID(tosplit->GetStart()->GetFileID());
 		after_start->SetVirtualOffset(addr+size);
 
 		// AddressID_t* after_end=new AddressID_t;
 		const auto after_end=new AddressID_t;
-		after_end->SetBaseID(id++);
+		after_end->SetBaseID(max_id++);
 		after_end->SetFileID(tosplit->GetStart()->GetFileID());
 		after_end->SetVirtualOffset(tosplit->GetEnd()->GetVirtualOffset());
 
 		after=new DataScoop_t;
-		after->SetBaseID(id++);
+		after->SetBaseID(max_id++);
 		after->SetName(tosplit->GetName()+"3");
 		after->SetStart(after_start);
 		after->SetEnd(after_end);
