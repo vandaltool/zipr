@@ -47,6 +47,8 @@
 
 #define MAX_JUMPS_TO_FOLLOW 100000
 
+#define WHOLE_CONTAINER(s) begin(s), end(s)
+
 using namespace std;
 using namespace libIRDB;
 
@@ -544,9 +546,10 @@ void PNTransformDriver::GenerateTransforms()
 
 // count_prologue_pushes -
 // start at the entry point of a function, and count all push instructions
-static int count_prologue_pushes(Function_t *func)
+static pair<int,int> get_prologue_data(Function_t *func)
 {
 	int count=0;
+	int subs=0;
 	Instruction_t* insn=NULL, *prev=NULL;
 
 	// note: GetNextInstruction will return NULL if it tries to leave the function
@@ -558,7 +561,11 @@ static int count_prologue_pushes(Function_t *func)
 	{
 		DISASM d;
 		insn->Disassemble(d);
-		if(strstr(d.CompleteInstr,"push"))
+		if(string(d.Instruction.Mnemonic) == "sub " && d.Argument1.ArgType==REGISTER_TYPE+GENERAL_REG+REG4)
+		{
+			subs++;
+		}
+		else if(string(d.Instruction.Mnemonic) == "push ")
 		{
 			if( 	(d.Argument2.ArgType&CONSTANT_TYPE)==CONSTANT_TYPE   //&& 
 //				insn->GetFallthrough()!=NULL &&
@@ -575,8 +582,44 @@ static int count_prologue_pushes(Function_t *func)
 
 		prev=insn;
 	}
-	return count;
+	return pair<int,int>(count,subs);
 }
+
+
+static bool is_exit_insn(Instruction_t* prev)
+{
+	if(prev->GetFallthrough()!=NULL && prev->GetTarget()!=NULL)
+		return false; // cond branch 
+	if(prev->GetFallthrough()==NULL && prev->GetTarget()==NULL)
+	{
+		DISASM d;
+		prev->Disassemble(d);
+		if(string(d.CompleteInstr) == "ret ") 
+			return true;
+
+		const auto ib_targets=prev->GetIBTargets();
+		if(ib_targets)
+		{
+			const auto out_of_function_it=find_if(WHOLE_CONTAINER(*ib_targets), [&](const Instruction_t* i)
+				{ 
+					return i->GetFunction() != prev->GetFunction(); 
+				} ) ;
+
+			if(out_of_function_it!=end(*ib_targets))
+				return true; // detected this as an exit node.
+		}
+
+		return NULL; // indirect branch of some unknown type?
+	}
+
+	// target or fallthrough is null, but exactly 1 is non-null
+
+	const auto next_insn = prev->GetTarget() ? prev->GetTarget() : prev->GetFallthrough();  
+	assert(next_insn);
+
+	return (next_insn->GetFunction() != prev->GetFunction());
+}
+
 Instruction_t* find_exit_insn(Instruction_t *insn, Function_t *func)
 {
 	Instruction_t *prev=NULL;
@@ -585,21 +628,7 @@ Instruction_t* find_exit_insn(Instruction_t *insn, Function_t *func)
 		prev=insn;
 	}
 
-	if(prev->GetFallthrough()!=NULL && prev->GetTarget()!=NULL)
-		return NULL; // cond branch 
-	if(prev->GetFallthrough()==NULL && prev->GetTarget()==NULL)
-	{
-		DISASM d;
-		prev->Disassemble(d);
-		if(strstr(d.CompleteInstr,"ret ")!=NULL) // return ret.
-			return prev;
-		return NULL; // indirect branch 
-	}
-
-	// it must have either a fallthrough or target, but not both.
-	// so it must leave the function.
-
-	return prev;
+	return is_exit_insn(prev) ?  prev : NULL;
 
 }
 
@@ -663,13 +692,18 @@ static bool	check_for_push_pop_coherence(Function_t *func)
 {
 
 	// count pushes in the prologue
-	int prologue_pushes=count_prologue_pushes(func);
+	const pair<int,int> p=get_prologue_data(func);
+	const int prologue_pushes=p.first;
+	const int prologue_subrsps=p.second;
+
+
 
 //cerr<<"Found "<<prologue_pushes<<" pushes in "<<func->GetName()<<endl;
 
 	// keep a map that keeps the count of pops for each function exit.
 	map<Instruction_t*, int> pop_count_per_exit;
-	map<Instruction_t*, bool> found_leave_per_exit;
+	map<Instruction_t*, int> found_leave_per_exit;
+	map<Instruction_t*, int> found_addrsp_per_exit;
 
 	// now, look for pops, and fill in that map.
 	for(
@@ -681,13 +715,19 @@ static bool	check_for_push_pop_coherence(Function_t *func)
 		Instruction_t* insn=*it;
 		DISASM d;
 		insn->Disassemble(d);
-		if(strstr(d.CompleteInstr,"leave")!=NULL)
+		if((string(d.Instruction.Mnemonic) == "add " || string(d.Instruction.Mnemonic) == "lea ") && d.Argument1.ArgType==REGISTER_TYPE+GENERAL_REG+REG4)
 		{
 			Instruction_t *exit_insn=find_exit_insn(insn,func);
 			if(exit_insn)
-				found_leave_per_exit[exit_insn]=true;
+				found_addrsp_per_exit[exit_insn]++;
 		}
-		if(strstr(d.CompleteInstr,"pop")!=NULL)
+		else if(string(d.Instruction.Mnemonic) == "leave ")
+		{
+			Instruction_t *exit_insn=find_exit_insn(insn,func);
+			if(exit_insn)
+				found_leave_per_exit[exit_insn]++;
+		}
+		else if(string(d.Instruction.Mnemonic)=="pop ")
 		{
 			Instruction_t *exit_insn=find_exit_insn(insn,func);
 
@@ -705,7 +745,12 @@ static bool	check_for_push_pop_coherence(Function_t *func)
 			}
 			else
 			{
-//cerr<<"Could not find exit insn for pop ("<< d.CompleteInstr << ")"<<endl;
+//
+//  some pops dont match exit points because they follow a call instruction where arguments were pushed.
+//  so, we don't immediately error if the pop doesn't match to an exit point.
+//
+//				cerr<<"Could not find exit insn for pop ("<< hex << insn->GetBaseID() <<":"<< d.CompleteInstr << " at " << insn->GetAddress()->GetVirtualOffset() << ")"<<endl;
+//				return false;
 			}
 		}
 	}
@@ -730,11 +775,53 @@ static bool	check_for_push_pop_coherence(Function_t *func)
 //cerr<<"Found "<<map_pair.second<<" pops in exit: \""<< d.CompleteInstr <<"\" func:"<<func->GetName()<<endl;
 
 		// do the check
-		if(prologue_pushes != map_pair.second && found_leave_per_exit[insn]==false)
+		if(prologue_pushes != map_pair.second && found_leave_per_exit[insn]==0)
 		{
 			cerr<<"Sanitizing function "<<func->GetName()<<" because pushes don't match pops for an exit"<<endl;
 			return false;
 		}
+	}
+
+
+	for(const auto insn : func->GetInstructions())
+	{
+		if(!is_exit_insn(insn))
+			continue;
+		if ( prologue_subrsps == 0)
+		{
+			if(found_leave_per_exit[insn]!=0 || found_addrsp_per_exit[insn]!=0)
+			{
+				cerr<<"Sanitizing function "<<func->GetName()<<" because prologue subrsps=0 and leave="
+				    <<dec<<found_leave_per_exit[insn]<<", addrsps!="<<found_addrsp_per_exit[insn]<<" for an exit at "
+				    <<hex<<"0x"<<insn->GetAddress()->GetVirtualOffset()<<endl;
+				return false;
+			}
+		}
+		else if ( prologue_subrsps == 1 )
+		{
+			if(found_leave_per_exit[insn]==1 && found_addrsp_per_exit[insn]==0)
+			{
+				// this case is OK, there's a leave that matches the prologue
+			}
+			else if(found_leave_per_exit[insn]==0 && found_addrsp_per_exit[insn]==1)
+			{
+				// this case is OK, there's an addrsp that matches the prologue
+			}
+			else
+			{
+				cerr<<"Sanitizing function "<<func->GetName()<<" because prologue subrsps=1 and leave="
+				    <<dec<<found_leave_per_exit[insn]<<", addrsps!="<<found_addrsp_per_exit[insn]<<" for an exit at "
+				    <<hex<<"0x"<<insn->GetAddress()->GetVirtualOffset()<<endl;
+				return false;
+			}
+			
+		}
+		else
+		{
+			cerr<<"Sanitizing function "<<func->GetName()<<" because prologue has more than 1 subrsp? "<<endl;
+			return false;
+		}
+		
 	}
 
 	return true;
@@ -1085,11 +1172,8 @@ void PNTransformDriver::SanitizeFunctions()
 		)
 	{
 		Function_t *func = *func_it;
-		ControlFlowGraph_t cfg(func);
 		assert(func);
-
-		if(func == NULL)
-			continue;
+		ControlFlowGraph_t cfg(func);
 
 		for(
 			set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
@@ -1879,7 +1963,7 @@ void PNTransformDriver::Print_Report()
 	cerr<<"Push/Pop Sanitized Functions \t\t"<<push_pop_sanitized_funcs<<endl;
 	cerr<<"Cond Frame Sanitized Functions \t\t"<<cond_frame_sanitized_funcs<<endl;
 	cerr<<"EH-land-pad-not-in-func Sanitized Functions \t\t"<<eh_sanitized<<endl;
-	cerr<<"Bad Variadic Sanitized Functions \t\t"<<push_pop_sanitized_funcs<<endl;
+	cerr<<"Bad Variadic Sanitized Functions \t\t"<<bad_variadic_func_sanitized<<endl;
 	cerr<<"Jump table Sanitized Functions \t\t"<<jump_table_sanitized<<endl;
 	cerr<<"PIC Jump table Sanitized Functions \t\t"<<jump_table_sanitized<<endl;
 	cerr<<"Transformable Functions \t"<<(total_funcs-not_transformable.size())<<endl;
@@ -2530,8 +2614,8 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 				//the size of the object, this may not ensure alignment, it is
 				//up to the compiler to handle that else where. 
 				auto rand_pad=layout->GetRandomPadding();
-				ss_add<<"add "<<matched<<" , 0x"<<hex<<rand_pad;//"0x500";
-				ss_sub<<"sub "<<matched<<" , 0x"<<hex<<rand_pad;//"0x500";
+				ss_add<<"add "<<esp_reg<<" , 0x"<<hex<<rand_pad;//"0x500";
+				ss_sub<<"sub "<<esp_reg<<" , 0x"<<hex<<rand_pad;//"0x500";
 
 				if(verbose_log)
 				{
