@@ -2736,7 +2736,7 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t>
 	cout<<"========================================="<<endl;
 
 	cout<<"========================================="<<endl;
-	cout<<"# ATTRIBUTE fill_in_indtargs::oneline_indirect_targets=";
+	cout<<"# ATTRIBUTE oneline_indirect_targets=";
 	print_targets_oneline();
 	cout<<"========================================="<<endl;
 
