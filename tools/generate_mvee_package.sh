@@ -332,6 +332,47 @@ copy_stuff()
 
 }
 
+# mc2zk copy assurance evidence to the generated mvee package
+copy_assurance_evidence()
+{
+	# This should be the assurance_evidence log for the binary file
+	in=$1
+	# This should be the file whose name is vs-?_variant-1_evidence.txt
+	out=$2
+	#  This is the name of the binary
+	exe=$3
+	is_main=$4
+	transform_config_name=$5 
+
+	echo -n "	Copying assurance evidence file for $exe ... "
+
+	# Don't do anything if there isn't a source file.
+	if [[ ! -f "$in" ]]; then
+		echo "No assurance case evidence found for $exe config: $transform_config_name."
+		return
+	fi
+
+	# We will assume that the main exe is handled first, so create the file if is_main is 1
+	if [[ $is_main == 1 ]] ; then
+		# copy to new file
+		echo "Binary Name: $exe" > $out
+		echo "Transforms configuration:  $transform_config_name" >> $out
+		echo
+		cat $in | grep '^[[:space:]]' >> $out
+
+	else
+		# Append to existing file
+		echo "Binary Name: $exe" >> $out
+		echo "Transforms configuration:  $transform_config_name" >> $out
+		echo
+		cat $in | grep '^[[:space:]]' >> $out
+	fi
+
+	echo >> $out
+
+	echo "Done copying assurance evidence for $exe!"
+}
+
 
 
 finalize_json()
@@ -340,6 +381,7 @@ finalize_json()
 	mkdir -p $outdir
 	mkdir $outdir/global
 	mkdir $outdir/marshaling
+	mkdir $outdir/assurance
 
 	# copy jar, python, and bash scripts into package.
 	cp $CFAR_EMT_PLUGINS/*.jar $outdir/marshaling/
@@ -494,6 +536,9 @@ finalize_json()
 			# new_variant_dir_ts="/target_apps/vs-$vs/variant-$seq"
 			copy_stuff $full_exe_dir/peasoup_executable_dir $new_variant_dir/bin/peasoup_executable_dir $main_exe $new_variant_dir_ts/bin/peasoup_executable_dir 1
 				
+			# copy assurance evidence
+			copy_assurance_evidence $full_exe_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_variant-${seq}_evidence.txt $main_exe 1 $config
+
 
 			# echo "exe_dir=$exe_dir"
 
@@ -523,11 +568,17 @@ finalize_json()
 					cp  $indir/$lib_dir/$lib $new_variant_dir/modules
 					line=",  "$'\n\t\t\t'"  \"/testing/content/apache_support/modules/$lib=$new_variant_dir_ts/modules/$lib\" "
 					copy_stuff $indir/$lib_dir/peasoup_executable_dir $new_variant_dir/modules/$lib-peasoup_executable_dir $lib $new_variant_dir_ts/modules/$lib-peasoup_executable_dir 0
+
+					# copy assurance evidence
+					copy_assurance_evidence $indir/$lib_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_variant-${seq}_evidence.txt $lib 0 $config
 				else
 					mkdir -p $new_variant_dir/lib 2>/dev/null || true
 					cp  $indir/$lib_dir/$lib $new_variant_dir/lib
 					line=",  "$'\n\t\t\t'"  \"/usr/lib/$lib=$new_variant_dir_ts/lib/$lib\" "
 					copy_stuff $indir/$lib_dir/peasoup_executable_dir $new_variant_dir/lib/$lib-peasoup_executable_dir $lib $new_variant_dir_ts/lib/$lib-peasoup_executable_dir 0
+
+					# copy assurance evidence
+					copy_assurance_evidence $indir/$lib_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_variant-${seq}_evidence.txt $lib 0 $config
 				fi
 				variant_config_contents="${variant_config_contents//,<<LIBS>>/$line,<<LIBS>>}"
 		
