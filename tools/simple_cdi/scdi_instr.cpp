@@ -384,6 +384,7 @@ void SimpleCDI_Instrument::display_stats(std::ostream &out)
 		fraction = (float)num_complete_returns/num_returns;
 	out << "# ATTRIBUTE scdi::num_complete_returns=" << num_complete_returns << endl;
 	out << "# ATTRIBUTE scdi::complete_returns_fraction=" << fraction << endl;
+	out << "# ATTRIBUTE scdi::complete_returns_pct=" << fraction*100.00<<"%" << endl;
 	out << "# ATTRIBUTE scdi::single_target_set_jumps=" << single_target_set_jumps << endl;
 	out << "# ATTRIBUTE scdi::single_target_set_returns=" << single_target_set_returns << endl;
 
@@ -391,6 +392,7 @@ void SimpleCDI_Instrument::display_stats(std::ostream &out)
 	if (num_complete_ibts > 0)
 		fraction = (float)(single_target_set_returns)/num_returns;
 	out << "# ATTRIBUTE scdi::single_target_set_return_fraction=" << fraction << endl;
+	out << "# ATTRIBUTE scdi::single_target_set_return_pct=" << fraction*100.00<<"%" << endl;
 }
 
 /* CDI: control data isolation */

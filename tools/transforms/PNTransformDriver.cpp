@@ -1904,7 +1904,7 @@ void PNTransformDriver::Print_Report()
 	cerr<<"# ATTRIBUTE pnxform::PICJumpTableSanitized_Functions="<<jump_table_sanitized<<endl;
 	cerr<<"# ATTRIBUTE pnxform::Transformables_Functions="<<(total_funcs-not_transformable.size())<<endl;
 	cerr<<"# ATTRIBUTE pnxform::Transformed="<<total_transformed<<endl;
-	cerr<<"# ATTRIBUTE pnxform::PctTransformable_Transformed="<<std::fixed<<((double)(total_transformed)/(double)(total_funcs-not_transformable.size()))<<endl;
+	cerr<<"# ATTRIBUTE pnxform::PctTransformable_Transformed="<<std::fixed<<((double)(total_transformed)/(double)(total_funcs-not_transformable.size()))*100.00<<"%"<<endl;
 }
 
 
