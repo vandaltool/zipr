@@ -852,9 +852,9 @@ void fix_all_calls(FileIR_t* firp, bool print_stats, bool fix_all)
 		cout << "# ATTRIBUTE fix_calls::fixed_calls="<<std::dec<<fixed_calls<<endl;
 		cout << "# ATTRIBUTE fix_calls::no_fix_needed_calls="<<std::dec<<not_fixed_calls<<endl;
 		cout << "# ATTRIBUTE fix_calls::other_instructions="<<std::dec<<not_calls<<endl;
-		cout << "# ATTRIBUTE fix_calls::fixed_ratio="<<std::fixed<<(((float)fixed_calls)/((float)(not_fixed_calls+fixed_calls+not_calls)))<<endl;
-		cout << "# ATTRIBUTE fix_calls::remaining_ratio="<<std::fixed<<((float)not_fixed_calls/((float)(not_fixed_calls+fixed_calls+not_calls)))<<endl;
-		cout << "# ATTRIBUTE fix_calls::other_insts_ratio="<<std::fixed<<((float)not_calls/((float)(not_fixed_calls+fixed_calls+not_calls)))<<endl;
+		cout << "# ATTRIBUTE fix_calls::fixed_pct="<<std::fixed<<(((float)fixed_calls)/((float)(not_fixed_calls+fixed_calls+not_calls)))*100.00<<"%"<<endl;
+		cout << "# ATTRIBUTE fix_calls::remaining_ratio="<<std::fixed<<((float)not_fixed_calls/((float)(not_fixed_calls+fixed_calls+not_calls)))*100.00<<"%"<<endl;
+		cout << "# ATTRIBUTE fix_calls::other_insts_ratio="<<std::fixed<<((float)not_calls/((float)(not_fixed_calls+fixed_calls+not_calls)))*100.00<<"%"<<endl;
 		cout << "# ATTRIBUTE fix_calls::no_target_insn="<<std::dec<< no_target_insn << endl;
 		cout << "# ATTRIBUTE fix_calls::no_fallthrough_insn="<<std::dec<< no_fallthrough_insn << endl;
 		cout << "# ATTRIBUTE fix_calls::target_not_in_function="<<std::dec<< target_not_in_function << endl;

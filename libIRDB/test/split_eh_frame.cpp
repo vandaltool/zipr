@@ -2010,6 +2010,8 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 	cout<<"# ATTRIBUTE split_eh::total_eh_programs_created="<<dec<<firp->GetAllEhPrograms().size()<<endl;
 	cout<<"# ATTRIBUTE split_eh::total_eh_programs_reused="<<dec<<reusedpgms<<endl;
 	cout<<"# ATTRIBUTE split_eh::total_eh_programs="<<dec<<firp->GetAllEhPrograms().size()+reusedpgms<<endl;
+	cout<<"# ATTRIBUTE split_eh::pct_eh_programs="<<std::fixed<<((float)GetAllEhPrograms().size/(float)firp->GetAllEhPrograms().size()+reusedpgms)*100.00<<"%"<<endl;
+	cout<<"# ATTRIBUTE split_eh::pct_eh_programs_reused="<<std::fixed<<((float)reusedpgms/(float)firp->GetAllEhPrograms().size()+reusedpgms)*100.00<<"%"<<endl;
 
 	remove_scoop(eh_frame_scoop);
 	remove_scoop(eh_frame_hdr_scoop);
