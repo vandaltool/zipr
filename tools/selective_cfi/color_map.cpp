@@ -101,6 +101,7 @@ bool ColoredInstructionNonces_t::create()
 		total_slots += slots_used[slot_no].SlotsUsed();
 	}
 	cout<<"# ATTRIBUTE scfi::total_slots="<<total_slots<<endl;
+	cout<<"# ATTRIBUTE scfi::pct_slots_used="<<std::fixed<<((float)slots_used.size()/(float)total_slots)*100.00<<"%"<<endl;
 
 	return true;
 }

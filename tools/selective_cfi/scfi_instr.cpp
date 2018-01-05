@@ -993,10 +993,10 @@ bool SCFI_Instrument::instrument_jumps()
 		cfi_branch_complete_ratio = (double) cfi_checks / ibt_complete;
 	
 
-	cout << "# ATTRIBUTE scfi::cfi_jmp_complete_ratio=" << cfi_branch_jmp_complete_ratio << endl;
-	cout << "# ATTRIBUTE scfi::cfi_call_complete_ratio=" << cfi_branch_call_complete_ratio << endl;
-	cout << "# ATTRIBUTE scfi::cfi_ret_complete_ratio=" << cfi_branch_ret_complete_ratio << endl;
-	cout << "# ATTRIBUTE scfi::cfi_complete_ratio=" << cfi_branch_ret_complete_ratio << endl;
+	cout << "# ATTRIBUTE scfi::cfi_jmp_complete_ratio=" << cfi_branch_jmp_complete_ratio*100.00<<"%" << endl;
+	cout << "# ATTRIBUTE scfi::cfi_call_complete_ratio=" << cfi_branch_call_complete_ratio*100.00<<"%" << endl;
+	cout << "# ATTRIBUTE scfi::cfi_ret_complete_ratio=" << cfi_branch_ret_complete_ratio*100.00<<"%" << endl;
+	cout << "# ATTRIBUTE scfi::cfi_complete_ratio=" << cfi_branch_ret_complete_ratio*100.00<<"%" << endl;
 
 	cout<<"# ATTRIBUTE scfi::cfi_safefn_jmp_skipped="<<cfi_safefn_jmp_skipped<<endl;
 	cout<<"# ATTRIBUTE scfi::cfi_safefn_ret_skipped="<<cfi_safefn_ret_skipped<<endl;
