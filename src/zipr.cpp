@@ -1988,8 +1988,8 @@ void ZiprImpl_t::PlaceDollops()
 		count_pins++;
 	}
 
-	cout<<"# ATTRIBUTE zipr::pins_detected="<<dec<<count_pins<<endl;
-	cout<<"# ATTRIBUTE zipr::placement_queue_size="<<dec<<placement_queue.size()<<endl;
+	cout<<"# ATTRIBUTE Zipr::pins_detected="<<dec<<count_pins<<endl;
+	cout<<"# ATTRIBUTE Zipr::placement_queue_size="<<dec<<placement_queue.size()<<endl;
 
 	while (!placement_queue.empty())
 	{
@@ -4227,7 +4227,7 @@ void  ZiprImpl_t::FixMultipleFallthroughs()
 	// after we've inserted all the jumps, assemble them.
 	m_firp->AssembleRegistry();
 
-	cout<<"# ATTRIBUTE zipr::jumps_inserted_for_multiple_fallthroughs="<<dec<<count<<endl;
+	cout<<"# ATTRIBUTE Zipr::jumps_inserted_for_multiple_fallthroughs="<<dec<<count<<endl;
 }
 
 
