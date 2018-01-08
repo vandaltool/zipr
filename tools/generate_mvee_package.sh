@@ -332,12 +332,46 @@ copy_stuff()
 
 }
 
-# mc2zk copy assurance evidence to the generated mvee package
+# parse assurance evidence into human readable format
+# $1 input file (assurance evidence)
+# $2 output file (vs-?_variant-?_evidence.txt)
+parse_assurance_file()
+{
+	input=$1
+	output=$2
+
+	# find the part of the line that is the transform name
+	transform_names=`grep :: $input | sed 's/^+.*//g'| sed 's/::.*//g' | uniq`
+
+	# count the number of different transform labels
+	j=0
+	for i in $transform_names
+	do
+        	j=`expr $j + 1`
+	done
+
+	# for each transform_name find the lines that match the transform, parse them,
+	# and place them in the output file
+	count=1
+	for t in $transform_names
+	do
+        	echo ${count}. Transform Name:  $t
+        	matching_lines=`grep :: $input | sed 's/^+.*//g' | grep $t`
+        	for m in $matching_lines
+        	do
+                	echo -n -e "\t" >> $output
+                	echo $m | sed 's/^.*:://g' >> $output
+        	done
+        	count=`expr $count + 1`
+	done	
+}
+
+# copy assurance evidence to the generated mvee package
 copy_assurance_evidence()
 {
 	# This should be the assurance_evidence log for the binary file
 	in=$1
-	# This should be the file whose name is vs-?_variant-1_evidence.txt
+	# This should be the file whose name is vs-?_variant-?_evidence.txt
 	out=$2
 	#  This is the name of the binary
 	exe=$3
@@ -358,14 +392,16 @@ copy_assurance_evidence()
 		echo "Binary Name: $exe" > $out
 		echo "Transforms configuration:  $transform_config_name" >> $out
 		echo
-		cat $in | grep '^[[:space:]]' >> $out
+		parse_assurance_file $in $out
+#		cat $in | grep '^[[:space:]]' >> $out
 
 	else
 		# Append to existing file
 		echo "Binary Name: $exe" >> $out
 		echo "Transforms configuration:  $transform_config_name" >> $out
 		echo
-		cat $in | grep '^[[:space:]]' >> $out
+		parse_assurance_file $in $out
+#		cat $in | grep '^[[:space:]]' >> $out
 	fi
 
 	echo >> $out
