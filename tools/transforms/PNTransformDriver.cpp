@@ -1902,9 +1902,11 @@ void PNTransformDriver::Print_Report()
 	cerr<<"# ATTRIBUTE Stack_Transformation::BadVariadicSanitizedFunctions="<<push_pop_sanitized_funcs<<endl;
 	cerr<<"# ATTRIBUTE Stack_Transformation::JumpTableSanitized_Functions="<<jump_table_sanitized<<endl;
 	cerr<<"# ATTRIBUTE Stack_Transformation::PICJumpTableSanitized_Functions="<<jump_table_sanitized<<endl;
-	cerr<<"# ATTRIBUTE Stack_Transformation::Transformables_Functions="<<(total_funcs-not_transformable.size())<<endl;
-	cerr<<"# ATTRIBUTE Stack_Transformation::Transformed="<<total_transformed<<endl;
-	cerr<<"# ATTRIBUTE Stack_Transformation::PctTransformable_Transformed="<<std::fixed<<((double)(total_transformed)/(double)(total_funcs-not_transformable.size()))*100.00<<"%"<<endl;
+	cerr<<"# ATTRIBUTE ASSURANCE_Stack_Transformation::Total_Number_of_Functions="<<total_funcs<<endl;
+	cerr<<"# ATTRIBUTE ASSURANCE_Stack_Transformation::Transformable_Functions="<<(total_funcs-not_transformable.size())<<endl;
+	cerr<<"# ATTRIBUTE ASSURANCE_Stack_Transformation::Percent_of_Functions_that_are_Transformable="<<std::fixed<<((double)(total_funcs-not_transformable.size())/(double)total_funcs)*100.00<<"%"<<endl;
+	cerr<<"# ATTRIBUTE ASSURANCE_Stack_Transformation::Total_Transformed_Functions="<<total_transformed<<endl;
+	cerr<<"# ATTRIBUTE ASSURANCE_Stack_Transformation::Percent_Transformable_Functions_Transformed="<<std::fixed<<((double)(total_transformed)/(double)(total_funcs-not_transformable.size()))*100.00<<"%"<<endl;
 }
 
 
