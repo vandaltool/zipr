@@ -2010,7 +2010,7 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 	cout<<"# ATTRIBUTE Split_Exception_Handler::total_eh_programs_created="<<dec<<firp->GetAllEhPrograms().size()<<endl;
 	cout<<"# ATTRIBUTE Split_Exception_Handler::total_eh_programs_reused="<<dec<<reusedpgms<<endl;
 	cout<<"# ATTRIBUTE Split_Exception_Handler::total_eh_programs="<<dec<<firp->GetAllEhPrograms().size()+reusedpgms<<endl;
-	cout<<"# ATTRIBUTE Split_Exception_Handler::pct_eh_programs="<<std::fixed<<((float)firp->GetAllEhPrograms().size/(float)firp->GetAllEhPrograms().size()+reusedpgms)*100.00<<"%"<<endl;
+	cout<<"# ATTRIBUTE Split_Exception_Handler::pct_eh_programs="<<std::fixed<<((float)firp->GetAllEhPrograms().size()/(float)firp->GetAllEhPrograms().size()+reusedpgms)*100.00<<"%"<<endl;
 	cout<<"# ATTRIBUTE Split_Exception_Handler::pct_eh_programs_reused="<<std::fixed<<((float)reusedpgms/(float)firp->GetAllEhPrograms().size()+reusedpgms)*100.00<<"%"<<endl;
 
 	remove_scoop(eh_frame_scoop);
