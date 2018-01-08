@@ -186,8 +186,8 @@ void Unpin_t::DoUnpinForFixedCalls()
 		}
 	}
 
-	cout<<"# ATTRIBUTE zipr_unpin::insn_unpin_total_unpins="<<dec<<insn_unpins<<endl;
-	cout<<"# ATTRIBUTE zipr_unpin::insn_unpin_missed_unpins="<<dec<<missed_unpins<<endl;
+	cout<<"# ATTRIBUTE Zipr_Unpinning::insn_unpin_total_unpins="<<dec<<insn_unpins<<endl;
+	cout<<"# ATTRIBUTE Zipr_Unpinning::insn_unpin_missed_unpins="<<dec<<missed_unpins<<endl;
 }
 
 
@@ -265,8 +265,8 @@ void Unpin_t::DoUnpinForScoops()
 		}
 	}
 
-	cout<<"# ATTRIBUTE zipr_unpin::scoop_unpin_total_unpins="<<dec<<scoop_unpins<<endl;
-	cout<<"# ATTRIBUTE zipr_unpin::scoop_unpin_missed_unpins="<<dec<<missed_unpins<<endl;
+	cout<<"# ATTRIBUTE Zipr_Unpinning::scoop_unpin_total_unpins="<<dec<<scoop_unpins<<endl;
+	cout<<"# ATTRIBUTE Zipr_Unpinning::scoop_unpin_missed_unpins="<<dec<<missed_unpins<<endl;
 }
 
 Zipr_SDK::ZiprPreference Unpin_t::RetargetCallback(
