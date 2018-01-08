@@ -1825,7 +1825,7 @@ void PNTransformDriver::Print_Report()
 		map<int,int> obj_histogram;
 
 		cerr<<"\t\tTotal Transformed: "<<layouts.size()<<endl;
-		cerr<<"# ATTRIBUTE pnxform::Total_Transformed="<<layouts.size()<<endl;
+		cerr<<"# ATTRIBUTE Stack_Transformation::Total_Transformed="<<layouts.size()<<endl;
 
 		int p1reductions = 0;
 		double mem_obj_avg = 0.0;
@@ -1864,7 +1864,7 @@ void PNTransformDriver::Print_Report()
 		}
 
 		cerr<<"\t\tP1 Reductions: "<<p1reductions<<endl;
-		cerr<<"# ATTRIBUTE pnxform::P1_Reductions="<<p1reductions<<endl;
+		cerr<<"# ATTRIBUTE Stack_Transformation::P1_Reductions="<<p1reductions<<endl;
 	}
 
 	cerr<<"----------------------------------------------"<<endl;
@@ -1888,23 +1888,23 @@ void PNTransformDriver::Print_Report()
 	cerr<<"Transformable Functions \t"<<(total_funcs-not_transformable.size())<<endl;
 	cerr<<"Transformed \t\t\t"<<total_transformed<<endl;
 
-	cerr<<"# ATTRIBUTE pnxform::Functions_validated_exceeding_threshold="<<high_coverage_count<<endl;
-	cerr<<"# ATTRIBUTE pnxform::Functions_validated_with_nonZero_coverage_below_or_equal_to_threshold="<<low_coverage_count<<endl;
-	cerr<<"# ATTRIBUTE pnxform::Functions_modified_with_no_coverage="<<no_coverage_count<<endl;
-	cerr<<"# ATTRIBUTE pnxform::Total_recursive_validations_performed="<<validation_count<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::Functions_validated_exceeding_threshold="<<high_coverage_count<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::Functions_validated_with_nonZero_coverage_below_or_equal_to_threshold="<<low_coverage_count<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::Functions_modified_with_no_coverage="<<no_coverage_count<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::Total_recursive_validations_performed="<<validation_count<<endl;
 
-	cerr<<"# ATTRIBUTE pnxform::NonBlacklisted_Functions="<<total_funcs<<endl;
-	cerr<<"# ATTRIBUTE pnxform::Blacklisted_Functions="<<blacklist_funcs<<endl;
-	cerr<<"# ATTRIBUTE pnxform::Sanitized_Functions="<<sanitized_funcs<<endl;
-	cerr<<"# ATTRIBUTE pnxform::PushPop_Sanitized_Functions="<<push_pop_sanitized_funcs<<endl;
-	cerr<<"# ATTRIBUTE pnxform::CondFrameSanitized_Functions="<<cond_frame_sanitized_funcs<<endl;
-	cerr<<"# ATTRIBUTE pnxform::EH_land_pad_not_in_FuncSanitizedFunctions="<<eh_sanitized<<endl;
-	cerr<<"# ATTRIBUTE pnxform::BadVariadicSanitizedFunctions="<<push_pop_sanitized_funcs<<endl;
-	cerr<<"# ATTRIBUTE pnxform::JumpTableSanitized_Functions="<<jump_table_sanitized<<endl;
-	cerr<<"# ATTRIBUTE pnxform::PICJumpTableSanitized_Functions="<<jump_table_sanitized<<endl;
-	cerr<<"# ATTRIBUTE pnxform::Transformables_Functions="<<(total_funcs-not_transformable.size())<<endl;
-	cerr<<"# ATTRIBUTE pnxform::Transformed="<<total_transformed<<endl;
-	cerr<<"# ATTRIBUTE pnxform::PctTransformable_Transformed="<<std::fixed<<((double)(total_transformed)/(double)(total_funcs-not_transformable.size()))*100.00<<"%"<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::NonBlacklisted_Functions="<<total_funcs<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::Blacklisted_Functions="<<blacklist_funcs<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::Sanitized_Functions="<<sanitized_funcs<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::PushPop_Sanitized_Functions="<<push_pop_sanitized_funcs<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::CondFrameSanitized_Functions="<<cond_frame_sanitized_funcs<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::EH_land_pad_not_in_FuncSanitizedFunctions="<<eh_sanitized<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::BadVariadicSanitizedFunctions="<<push_pop_sanitized_funcs<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::JumpTableSanitized_Functions="<<jump_table_sanitized<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::PICJumpTableSanitized_Functions="<<jump_table_sanitized<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::Transformables_Functions="<<(total_funcs-not_transformable.size())<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::Transformed="<<total_transformed<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::PctTransformable_Transformed="<<std::fixed<<((double)(total_transformed)/(double)(total_funcs-not_transformable.size()))*100.00<<"%"<<endl;
 }
 
 

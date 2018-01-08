@@ -93,20 +93,20 @@ void print_cfi_stats(FileIR_t* firp)
 	float act_targs_per_jmp=(float)act_jmp_targs/(float)jmps;
 	float act_targs_per_ret=(float)act_ret_targs/(float)rets;
 
-	cout<<"# ATTRIBUTE cfi::actual_targs_per_ib_no_cfi="<<insn_byte_count<<endl;
-//	cout<<"# ATTRIBUTE cfi::actual_targs_per_call_no_cfi="<<insn_byte_count<<endl;
-	cout<<"# ATTRIBUTE cfi::actual_targs_per_jmp_no_cfi="<<insn_byte_count<<endl;
-	cout<<"# ATTRIBUTE cfi::actual_targs_per_ret_no_cfi="<<insn_byte_count<<endl;
+	cout<<"# ATTRIBUTE Control_Flow_Integrity::actual_targs_per_ib_no_cfi="<<insn_byte_count<<endl;
+//	cout<<"# ATTRIBUTE Control_Flow_Integrity::actual_targs_per_call_no_cfi="<<insn_byte_count<<endl;
+	cout<<"# ATTRIBUTE Control_Flow_Integrity::actual_targs_per_jmp_no_cfi="<<insn_byte_count<<endl;
+	cout<<"# ATTRIBUTE Control_Flow_Integrity::actual_targs_per_ret_no_cfi="<<insn_byte_count<<endl;
 
-	cout<<"# ATTRIBUTE cfi::possible_targs_per_ib_basic_cfi="<<total_ib_targets.size()<<endl;
-//	cout<<"# ATTRIBUTE cfi::possible_targs_per_call_basic_cfi="<<total_call_targets.size()<<endl;
-	cout<<"# ATTRIBUTE cfi::possible_targs_per_jmp_basic_cfi="<<total_jmp_targets.size()<<endl;
-	cout<<"# ATTRIBUTE cfi::possible_targs_per_ret_basic_cfi="<<total_ret_targets.size()<<endl;
+	cout<<"# ATTRIBUTE Control_Flow_Integrity::possible_targs_per_ib_basic_cfi="<<total_ib_targets.size()<<endl;
+//	cout<<"# ATTRIBUTE Control_Flow_Integrity::possible_targs_per_call_basic_cfi="<<total_call_targets.size()<<endl;
+	cout<<"# ATTRIBUTE Control_Flow_Integrity::possible_targs_per_jmp_basic_cfi="<<total_jmp_targets.size()<<endl;
+	cout<<"# ATTRIBUTE Control_Flow_Integrity::possible_targs_per_ret_basic_cfi="<<total_ret_targets.size()<<endl;
 
-	cout<<"# ATTRIBUTE cfi::actual_targs_per_ib_refined_cfi="<<act_targs_per_ib<<endl;
-//	cout<<"# ATTRIBUTE cfi::actual_targs_per_call_refined_cfi="<<act_targs_per_call<<endl;
-	cout<<"# ATTRIBUTE cfi::actual_targs_per_jmp_refined_cfi="<<act_targs_per_jmp<<endl;
-	cout<<"# ATTRIBUTE cfi::actual_targs_per_ret_refined_cfi="<<act_targs_per_ret<<endl;
+	cout<<"# ATTRIBUTE Control_Flow_Integrity::actual_targs_per_ib_refined_cfi="<<act_targs_per_ib<<endl;
+//	cout<<"# ATTRIBUTE Control_Flow_Integrity::actual_targs_per_call_refined_cfi="<<act_targs_per_call<<endl;
+	cout<<"# ATTRIBUTE Control_Flow_Integrity::actual_targs_per_jmp_refined_cfi="<<act_targs_per_jmp<<endl;
+	cout<<"# ATTRIBUTE Control_Flow_Integrity::actual_targs_per_ret_refined_cfi="<<act_targs_per_ret<<endl;
 
 
 	float basic_cfi_ib_percent_reduction=1-( (float)total_ib_targets.size() / insn_byte_count);
@@ -114,20 +114,20 @@ void print_cfi_stats(FileIR_t* firp)
 	float basic_cfi_jmp_percent_reduction=1-( (float)total_jmp_targets.size() / insn_byte_count);
 	float basic_cfi_ret_percent_reduction=1-( (float)total_ret_targets.size() / insn_byte_count);
 
-	cout<<"# ATTRIBUTE cfi::basic_cfi_ib_percent_reduction="<<basic_cfi_ib_percent_reduction*100.00<<"%"<<endl;
-	cout<<"# ATTRIBUTE cfi::basic_cfi_call_percent_reduction="<<basic_cfi_call_percent_reduction*100.00<<"%"<<endl;
-	cout<<"# ATTRIBUTE cfi::basic_cfi_jmp_percent_reduction="<<basic_cfi_jmp_percent_reduction*100.00<<"%"<<endl;
-	cout<<"# ATTRIBUTE cfi::basic_cfi_ret_percent_reduction="<<basic_cfi_ret_percent_reduction*100<<"%"<<endl;
+	cout<<"# ATTRIBUTE Control_Flow_Integrity::basic_cfi_ib_percent_reduction="<<basic_cfi_ib_percent_reduction*100.00<<"%"<<endl;
+	cout<<"# ATTRIBUTE Control_Flow_Integrity::basic_cfi_call_percent_reduction="<<basic_cfi_call_percent_reduction*100.00<<"%"<<endl;
+	cout<<"# ATTRIBUTE Control_Flow_Integrity::basic_cfi_jmp_percent_reduction="<<basic_cfi_jmp_percent_reduction*100.00<<"%"<<endl;
+	cout<<"# ATTRIBUTE Control_Flow_Integrity::basic_cfi_ret_percent_reduction="<<basic_cfi_ret_percent_reduction*100<<"%"<<endl;
 
 	float refined_cfi_ib_percent_reduction=1-( act_targs_per_ib / total_ib_targets.size()  );
 	float refined_cfi_call_percent_reduction=1-( act_targs_per_call / total_call_targets.size()  );
 	float refined_cfi_jmp_percent_reduction=1-( act_targs_per_jmp / total_jmp_targets.size()  );
 	float refined_cfi_ret_percent_reduction=1-( act_targs_per_ret / total_ret_targets.size()  );
 
-	cout<<"# ATTRIBUTE cfi::refined_cfi_ib_percent_reduction_over_basic="<<refined_cfi_ib_percent_reduction*100.00<<"%"<<endl;
-	cout<<"# ATTRIBUTE cfi::refined_cfi_call_percent_reduction_over_basic="<<refined_cfi_call_percent_reduction*100.00<<"%"<<endl;
-	cout<<"# ATTRIBUTE cfi::refined_cfi_jmp_percent_reduction_over_basic="<<refined_cfi_jmp_percent_reduction*100.00<<"%"<<endl;
-	cout<<"# ATTRIBUTE cfi::refined_cfi_ret_percent_reduction_over_basic="<<refined_cfi_ret_percent_reduction*100.00<<"%"<<endl;
+	cout<<"# ATTRIBUTE Control_Flow_Integrity::refined_cfi_ib_percent_reduction_over_basic="<<refined_cfi_ib_percent_reduction*100.00<<"%"<<endl;
+	cout<<"# ATTRIBUTE Control_Flow_Integrity::refined_cfi_call_percent_reduction_over_basic="<<refined_cfi_call_percent_reduction*100.00<<"%"<<endl;
+	cout<<"# ATTRIBUTE Control_Flow_Integrity::refined_cfi_jmp_percent_reduction_over_basic="<<refined_cfi_jmp_percent_reduction*100.00<<"%"<<endl;
+	cout<<"# ATTRIBUTE Control_Flow_Integrity::refined_cfi_ret_percent_reduction_over_basic="<<refined_cfi_ret_percent_reduction*100.00<<"%"<<endl;
 
 }
 
