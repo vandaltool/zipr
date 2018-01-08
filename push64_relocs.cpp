@@ -209,10 +209,10 @@ void Push64Relocs_t::HandlePush64Relocs()
 		}
 	}
 
-	cout<<"# ATTRIBUTE push64_relocs::push_relocations_count="
+	cout<<"# ATTRIBUTE Push_Relocations::push_relocations_count="
 	    <<std::dec<<push64_relocations_count
 			<<endl;
-	cout<<"# ATTRIBUTE push64_relocs::pcrel_relocations_count="
+	cout<<"# ATTRIBUTE Push_Relocations::pcrel_relocations_count="
 	    <<std::dec<<pcrel_relocations_count
 			<<endl;
 }
