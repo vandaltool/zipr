@@ -340,8 +340,8 @@ parse_assurance_file()
 	input=$1
 	output=$2
 
-	# find the part of the line that is the transform name
-	transform_names=`grep :: $input | sed 's/^+.*//g'| sed 's/::.*//g' | uniq`
+	# find the part of the line that is the transform name, strip out the ASSURANCE_ tag 
+	transform_names=`grep ASSURANCE_ $input | grep :: | sed 's/ASSURANCE_//g' | sed 's/^+.*//g'| sed 's/::.*//g' | uniq`
 
 	# count the number of different transform labels
 	j=0
@@ -356,11 +356,15 @@ parse_assurance_file()
 	for t in $transform_names
 	do
         	echo ${count}. Transform Name:  $t
-        	matching_lines=`grep :: $input | sed 's/^+.*//g' | grep $t`
+        	matching_lines=`grep ASSURANCE_ $input | grep :: | sed 's/^+.*//g' | grep $t`
+
+		# starting letter for labelling
+		letter=a
         	for m in $matching_lines
         	do
-                	echo -n -e "\t" >> $output
+                	echo -n -e "\t${letter}. " >> $output
                 	echo $m | sed 's/^.*:://g' >> $output
+			letter=$(echo "$letter" | tr "0-9a-z" "1-9a-z_")
         	done
         	count=`expr $count + 1`
 	done	
