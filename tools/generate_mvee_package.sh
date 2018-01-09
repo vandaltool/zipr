@@ -365,7 +365,12 @@ parse_assurance_file()
         	for m in $matching_lines
         	do
                 	echo -n -e "\t${letter}. " >> $output
-                	echo $m | sed 's/^.*:://g' >> $output
+			# find the stats and print them in human-readable format
+			
+			# get rid of everything before ::
+			# change the = to :
+			# change the underscores to spaces
+                	echo $m | sed 's/^.*:://g' | sed 's/=/: /g' | sed 's/_/ /g'  >> $output
 			# "increment" the letter level
 			letter=$(echo "$letter" | tr "0-9a-z" "1-9a-z_")
         	done
