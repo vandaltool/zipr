@@ -355,7 +355,7 @@ parse_assurance_file()
 	count=1
 	for t in $transform_names
 	do
-        	echo ${count}. Transform Name:  $t
+        	echo "${count}. Transform Name:  $t" >> $output
         	matching_lines=`grep ASSURANCE_ $input | grep :: | sed 's/^+.*//g' | grep $t`
 
 		# starting letter for labelling
