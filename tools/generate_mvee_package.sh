@@ -352,10 +352,12 @@ parse_assurance_file()
 
 	# for each transform_name find the lines that match the transform, parse them,
 	# and place them in the output file
+	# simulate outline numbering using 1,2,3... and a,b,c...
 	count=1
 	for t in $transform_names
 	do
-        	echo "${count}. Transform Name:  $t" >> $output
+		# Remove any underscores and replace with spaces to make more human-readable
+        	echo "${count}. Transform Name:  `echo $t | sed 's/_/ /g' `" >> $output
         	matching_lines=`grep ASSURANCE_ $input | grep :: | sed 's/^+.*//g' | grep $t`
 
 		# starting letter for labelling
@@ -364,8 +366,12 @@ parse_assurance_file()
         	do
                 	echo -n -e "\t${letter}. " >> $output
                 	echo $m | sed 's/^.*:://g' >> $output
+			# "increment" the letter level
 			letter=$(echo "$letter" | tr "0-9a-z" "1-9a-z_")
         	done
+		# prettier formatting, add blank line
+		echo >> $output
+		# increment the counter level
         	count=`expr $count + 1`
 	done	
 }
@@ -395,7 +401,7 @@ copy_assurance_evidence()
 		# copy to new file
 		echo "Binary Name: $exe" > $out
 		echo "Transforms configuration:  $transform_config_name" >> $out
-		echo
+		echo >> $out
 		parse_assurance_file $in $out
 #		cat $in | grep '^[[:space:]]' >> $out
 
@@ -403,7 +409,7 @@ copy_assurance_evidence()
 		# Append to existing file
 		echo "Binary Name: $exe" >> $out
 		echo "Transforms configuration:  $transform_config_name" >> $out
-		echo
+		echo >> $out
 		parse_assurance_file $in $out
 #		cat $in | grep '^[[:space:]]' >> $out
 	fi
