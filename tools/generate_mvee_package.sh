@@ -341,7 +341,9 @@ parse_assurance_file()
 	output=$2
 
 	# find the part of the line that is the transform name, strip out the ASSURANCE_ tag 
-	transform_names=`grep ASSURANCE_ $input | grep :: | sed 's/ASSURANCE_//g' | sed 's/^+.*//g'| sed 's/::.*//g' | uniq`
+	# The space is important to distinguish between variant set AGGREGATE_ASSURANCE and 
+	# per_variant_ASSURANCE
+	transform_names=`grep [[:space:]]ASSURANCE_ $input | grep :: | sed 's/ASSURANCE_//g' | sed 's/^+.*//g'| sed 's/::.*//g' | uniq`
 
 	# count the number of different transform labels
 	j=0
@@ -358,7 +360,10 @@ parse_assurance_file()
 	do
 		# Remove any underscores and replace with spaces to make more human-readable
         	echo "${count}. Transform Name:  `echo $t | sed 's/_/ /g' `" >> $output
-        	matching_lines=`grep ASSURANCE_ $input | grep :: | sed 's/^+.*//g' | grep $t`
+
+		# The space is important to distinguish between variant set AGGREGATE_ASSURANCE and 
+		# per_variant_ASSURANCE
+        	matching_lines=`grep [[:space:]]ASSURANCE_ $input | grep :: | sed 's/^+.*//g' | grep $t`
 
 		# starting letter for labelling
 		letter=a
