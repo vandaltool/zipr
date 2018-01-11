@@ -332,6 +332,58 @@ copy_stuff()
 
 }
 
+# gather_aggregate_assurance_evidence()
+# This function gathers and annotates all lines into an output file
+# This resulting output file will be parsed into human-readable format at a later step 
+gather_aggregate_assurance_evidence()
+{
+	# Inputs: 
+	# 	$1=input file 
+	#	$2=output file
+	# 	$3=variant_label (variant number 1,2,3, etc.)
+	input=$1
+	output=$2
+	variant_num=$3
+
+	if [ ! -f "$input" ]; then
+		echo "gather_aggregate_assurance_evidence(): $input FILE NOT FOUND."
+		return
+	fi
+
+	# find the AGGREGATE_ASSURANCE data
+	# 	1. find matching lines
+	#	2. add variant number information
+	transform_names=`grep AGGREGATE_ASSURANCE_ $input | sed "s/AGGREGATE_ASSURANCE_/variant-${variant_num}::/g"`
+
+	# put the lines into the output file
+	for t in $transform_names
+	do
+		echo "$t" >> $output
+	done
+}
+
+# After aggregate assurance evidence is collected, parse it into human readable form
+parse_aggregate_assurance_file()
+{
+	# Inputs:
+	#	$1= input file containing unsorted aggregated annotated assurance case evidence
+	#		format is   <variantIdentifier>::<transformName>::<statisticalEvidence>  
+	input=$1
+	output=$2
+
+	if [ ! -f "$input" ]; then
+		echo "parse_aggregate_assurance_file():  $input FILE NOT FOUND."
+		return
+	fi
+
+	# first find the transform names, it is the second field
+	transform_names=`cat $input | awk 'BEGIN{FS=::}{print $2}'`
+	for t in $transform_names
+	do
+	done
+}
+
+
 # parse assurance evidence into human readable format
 # $1 input file (assurance evidence)
 # $2 output file (vs-?_variant-?_evidence.txt)
@@ -339,6 +391,12 @@ parse_assurance_file()
 {
 	input=$1
 	output=$2
+
+	if [ ! -f "$input" ]; then
+		echo "parse_assurance_file():  $input FILE NOT FOUND."
+		return
+	fi
+	
 
 	# find the part of the line that is the transform name, strip out the ASSURANCE_ tag 
 	# The space is important to distinguish between variant set AGGREGATE_ASSURANCE and 
@@ -395,8 +453,12 @@ copy_assurance_evidence()
 	out=$2
 	#  This is the name of the binary
 	exe=$3
+	# is this the main binary?
 	is_main=$4
+	# name of the transformation configuration
 	transform_config_name=$5 
+	# identifier to print that identifies variant set and which variant
+	vs_identifier="$6"
 
 	echo -n "	Copying assurance evidence file for $exe ... "
 
@@ -413,15 +475,14 @@ copy_assurance_evidence()
 		echo "Transforms configuration:  $transform_config_name" >> $out
 		echo >> $out
 		parse_assurance_file $in $out
-#		cat $in | grep '^[[:space:]]' >> $out
 
 	else
 		# Append to existing file
 		echo "Binary Name: $exe" >> $out
 		echo "Transforms configuration:  $transform_config_name" >> $out
+		echo "Variant Identifier:  $vs_identifier" >> $out
 		echo >> $out
 		parse_assurance_file $in $out
-#		cat $in | grep '^[[:space:]]' >> $out
 	fi
 
 	echo >> $out
@@ -481,7 +542,7 @@ finalize_json()
 		# to hold the initial list for the variant set description.
 		vs_json_contents=" \"vs-$vs\" : [ <<VARIANT_LIST>> ]"
 
-		# for each varjiant in the variant set.
+		# for each variant in the variant set.
 		for seq in $(seq 1 $variants_per_vs )
 		do
 
@@ -593,22 +654,18 @@ finalize_json()
 			copy_stuff $full_exe_dir/peasoup_executable_dir $new_variant_dir/bin/peasoup_executable_dir $main_exe $new_variant_dir_ts/bin/peasoup_executable_dir 1
 				
 			# copy assurance evidence
-			copy_assurance_evidence $full_exe_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_variant-${seq}_evidence.txt $main_exe 1 $config
-
+			copy_assurance_evidence $full_exe_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_variant-${seq}_evidence.txt $main_exe 1 $config "vs-${vs}_variant-${seq}"
 
 			# echo "exe_dir=$exe_dir"
 
 			# get the variant number for this config (e.g., get "v0" or "v1")
 			var_num_dir=$(basename $exe_dir)
 
-
-
 			# fill in any libraries that the variants should refer to
 			for lib in $libraries
 			do
 				# echo adding lib $lib
 				lib_dir="/vs-$vs/target_app_libs/dh-$lib/$config/$var_num_dir"
-
 
 				if [ "$main_exe" ==  "$lib" ]; then
 					#cp -R $indir/$lib_dir/peasoup_executable_dir $new_variant_dir/lib/peasoup_executable_dir.$lib.$config
@@ -624,9 +681,8 @@ finalize_json()
 					cp  $indir/$lib_dir/$lib $new_variant_dir/modules
 					line=",  "$'\n\t\t\t'"  \"/testing/content/apache_support/modules/$lib=$new_variant_dir_ts/modules/$lib\" "
 					copy_stuff $indir/$lib_dir/peasoup_executable_dir $new_variant_dir/modules/$lib-peasoup_executable_dir $lib $new_variant_dir_ts/modules/$lib-peasoup_executable_dir 0
-
 					# copy assurance evidence
-					copy_assurance_evidence $indir/$lib_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_variant-${seq}_evidence.txt $lib 0 $config
+					copy_assurance_evidence $indir/$lib_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_variant-${seq}_evidence.txt $lib 0 $config "vs-${vs}_variant-${seq}"
 				else
 					mkdir -p $new_variant_dir/lib 2>/dev/null || true
 					cp  $indir/$lib_dir/$lib $new_variant_dir/lib
@@ -634,7 +690,7 @@ finalize_json()
 					copy_stuff $indir/$lib_dir/peasoup_executable_dir $new_variant_dir/lib/$lib-peasoup_executable_dir $lib $new_variant_dir_ts/lib/$lib-peasoup_executable_dir 0
 
 					# copy assurance evidence
-					copy_assurance_evidence $indir/$lib_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_variant-${seq}_evidence.txt $lib 0 $config
+					copy_assurance_evidence $indir/$lib_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_variant-${seq}_evidence.txt $lib 0 $config "vs-${vs}_variant-${seq}"
 				fi
 				variant_config_contents="${variant_config_contents//,<<LIBS>>/$line,<<LIBS>>}"
 		
