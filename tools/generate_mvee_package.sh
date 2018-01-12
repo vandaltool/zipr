@@ -341,9 +341,11 @@ gather_aggregate_assurance_evidence()
 	# 	$1=input file 
 	#	$2=output file
 	# 	$3=variant_label (variant number 1,2,3, etc.)
-	input=$1
-	output=$2
-	variant_num=$3
+	#	$4=binary_name
+	input="$1"
+	output="$2"
+	variant_num="$3"
+	binary_name="$4"
 
 	if [ ! -f "$input" ]; then
 		echo "gather_aggregate_assurance_evidence(): $input FILE NOT FOUND."
@@ -353,7 +355,7 @@ gather_aggregate_assurance_evidence()
 	# find the AGGREGATE_ASSURANCE data
 	# 	1. find matching lines
 	#	2. add variant number information
-	transform_names=`grep AGGREGATE_ASSURANCE_ $input | sed "s/AGGREGATE_ASSURANCE_/variant-${variant_num}::/g"`
+	transform_names=`grep AGGREGATE_ASSURANCE_ $input | sed "s/AGGREGATE_ASSURANCE_/${binary_name}::variant-${variant_num}::/g"`
 
 	# put the lines into the output file
 	for t in $transform_names
@@ -367,19 +369,72 @@ parse_aggregate_assurance_file()
 {
 	# Inputs:
 	#	$1= input file containing unsorted aggregated annotated assurance case evidence
-	#		format is   <variantIdentifier>::<transformName>::<statisticalEvidence>  
+	#		input file format is <binary_name>::<variantIdentifier>::<transformName>::<statEvidence>  
+	#
 	input=$1
 	output=$2
+	variant_set_label=$3
 
 	if [ ! -f "$input" ]; then
 		echo "parse_aggregate_assurance_file():  $input FILE NOT FOUND."
 		return
 	fi
 
-	# first find the transform names, it is the second field
-	transform_names=`cat $input | awk 'BEGIN{FS=::}{print $2}'`
-	for t in $transform_names
+	# find the binary names
+	binary_names=`cat $input | awk 'BEGIN{FS="::"}{print $1}' | sort | uniq`
+
+	# find the variant names
+	variant_names=`cat $input | awk 'BEGIN{FS="::"} {print $2}' | sort | uniq`
+
+	# find the transform names
+	transform_names=`cat $input | awk 'BEGIN{FS="::"} {print $3}' |sort | uniq`
+
+	# for each binary 
+	for b in $binary_names
 	do
+		echo "Variant Set: $variant_set_label" >> $output
+		echo "Binary Name: $b" >> $output
+		echo >> $output
+
+		t_label=A
+		# for each transform
+		for t in $transform_names
+		do
+			echo -n "${t_label}. Transform Name: " >> $output
+			echo "$t" | sed 's/_/ /g' >> $output
+			# find the unique stat names 
+			# stat name with values is in 4th field
+			# so remove everything from = to EOL
+			stat_names=`grep "$t" $input | awk 'BEGIN{FS="::"} {print $4}' | sed "s/=.*//g" | sort | uniq`
+			s_label=1
+			for s in $stat_names
+			do
+				echo -n -e "\t" >> $output
+				echo -n "${s_label}. " >> $output
+				# remove the underscores
+				echo "$s" | sed 's/_/ /g' >> $output
+		
+				v_label=a
+				for v in $variant_names
+				do
+					# find the stat for that variant
+					stat_val=`grep "$b" $input | grep "$v" | grep "$s" |  awk 'BEGIN{FS="::"} {print $4}' | sed "s/${s}=//g"`
+					echo -e "\t\t${v_label}. ${v}: ${stat_val}" >> $output
+					# increment the t_label to the next value
+					# make use of the fact that perl can increment letters
+					v_label=$( perl -e '++$ARGV[0]; print $ARGV[0];' -- "$v_label" )
+				done
+				echo >> $output
+				# increment the t_label to the next value
+				# make use of the fact that perl can increment letters
+				s_label=$( perl -e '++$ARGV[0]; print $ARGV[0];' -- "$s_label" )
+			done
+			echo >> $output
+			# increment the t_label to the next value
+			# make use of the fact that perl can increment letters
+			t_label=$( perl -e '++$ARGV[0]; print $ARGV[0];' -- "$t_label" )
+		done	
+		echo >> $output
 	done
 }
 
