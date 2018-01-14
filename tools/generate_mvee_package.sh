@@ -382,10 +382,8 @@ parse_aggregate_assurance_file()
 
 	# find the binary names
 	binary_names=`cat $input | awk 'BEGIN{FS="::"}{print $1}' | sort | uniq`
-
 	# find the variant names
 	variant_names=`cat $input | awk 'BEGIN{FS="::"} {print $2}' | sort | uniq`
-
 	# find the transform names
 	transform_names=`cat $input | awk 'BEGIN{FS="::"} {print $3}' |sort | uniq`
 
@@ -490,7 +488,7 @@ parse_assurance_file()
 			# change the underscores to spaces
                 	echo $m | sed 's/^.*:://g' | sed 's/=/: /g' | sed 's/_/ /g'  >> $output
 			# "increment" the letter level
-			letter=$(echo "$letter" | tr "0-9a-z" "1-9a-z_")
+			letter=$( perl -e '++ARGV[0]; print $ARGV[0];' -- "$letter")
         	done
 		# prettier formatting, add blank line
 		echo >> $output
@@ -674,9 +672,6 @@ finalize_json()
 				exit 4
 			fi
 
-			
-
-
 			# start with ps_dir
 			ps_dir=$(dirname $variant_json)
 
@@ -711,6 +706,9 @@ finalize_json()
 			# copy assurance evidence
 			copy_assurance_evidence $full_exe_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_variant-${seq}_evidence.txt $main_exe 1 $config "vs-${vs}_variant-${seq}"
 
+			# gather aggregate assurance evidence
+			gather_aggregate_assurance_evidence $full_exe_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt "vs-${vs}" $main_exe 
+			
 			# echo "exe_dir=$exe_dir"
 
 			# get the variant number for this config (e.g., get "v0" or "v1")
@@ -736,17 +734,17 @@ finalize_json()
 					cp  $indir/$lib_dir/$lib $new_variant_dir/modules
 					line=",  "$'\n\t\t\t'"  \"/testing/content/apache_support/modules/$lib=$new_variant_dir_ts/modules/$lib\" "
 					copy_stuff $indir/$lib_dir/peasoup_executable_dir $new_variant_dir/modules/$lib-peasoup_executable_dir $lib $new_variant_dir_ts/modules/$lib-peasoup_executable_dir 0
-					# copy assurance evidence
-					copy_assurance_evidence $indir/$lib_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_variant-${seq}_evidence.txt $lib 0 $config "vs-${vs}_variant-${seq}"
 				else
 					mkdir -p $new_variant_dir/lib 2>/dev/null || true
 					cp  $indir/$lib_dir/$lib $new_variant_dir/lib
 					line=",  "$'\n\t\t\t'"  \"/usr/lib/$lib=$new_variant_dir_ts/lib/$lib\" "
 					copy_stuff $indir/$lib_dir/peasoup_executable_dir $new_variant_dir/lib/$lib-peasoup_executable_dir $lib $new_variant_dir_ts/lib/$lib-peasoup_executable_dir 0
-
-					# copy assurance evidence
-					copy_assurance_evidence $indir/$lib_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_variant-${seq}_evidence.txt $lib 0 $config "vs-${vs}_variant-${seq}"
 				fi
+				# copy assurance evidence
+				copy_assurance_evidence $indir/$lib_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_variant-${seq}_evidence.txt $lib 0 $config "vs-${vs}_variant-${seq}"
+				# gather aggregate assurance evidence
+				gather_aggregate_assurance_evidence $full_exe_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt "vs-${vs}" $lib 
+
 				variant_config_contents="${variant_config_contents//,<<LIBS>>/$line,<<LIBS>>}"
 		
 			done
@@ -807,6 +805,11 @@ finalize_json()
 			seq=$(expr $seq + 1)
 
 		done
+
+		# parse the aggregated assurance case evidence for the variant set
+		parse_aggregate_assurance_file "$outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt" "$outdire/assurance/vs-${vs}_aggregate_evidence.txt" "vs-${vs}"
+		
+
 		json_contents="${json_contents//<<VARIANT_SETS>>/$vs_json_contents,<<VARIANT_SETS>>}"
 	done
 
