@@ -488,7 +488,7 @@ parse_assurance_file()
 			# change the underscores to spaces
                 	echo $m | sed 's/^.*:://g' | sed 's/=/: /g' | sed 's/_/ /g'  >> $output
 			# "increment" the letter level
-			letter=$( perl -e '++ARGV[0]; print $ARGV[0];' -- "$letter")
+			letter=$( perl -e '++$ARGV[0]; print $ARGV[0];' -- "$letter")
         	done
 		# prettier formatting, add blank line
 		echo >> $output
@@ -707,7 +707,7 @@ finalize_json()
 			copy_assurance_evidence $full_exe_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_variant-${seq}_evidence.txt $main_exe 1 $config "vs-${vs}_variant-${seq}"
 
 			# gather aggregate assurance evidence
-			gather_aggregate_assurance_evidence $full_exe_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt "vs-${vs}" $main_exe 
+			gather_aggregate_assurance_evidence $full_exe_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  "$outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt" $seq $main_exe 
 			
 			# echo "exe_dir=$exe_dir"
 
@@ -807,7 +807,7 @@ finalize_json()
 		done
 
 		# parse the aggregated assurance case evidence for the variant set
-		parse_aggregate_assurance_file "$outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt" "$outdire/assurance/vs-${vs}_aggregate_evidence.txt" "vs-${vs}"
+		parse_aggregate_assurance_file "$outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt" "$outdir/assurance/vs-${vs}_aggregate_evidence.txt" "vs-${vs}"
 		
 
 		json_contents="${json_contents//<<VARIANT_SETS>>/$vs_json_contents,<<VARIANT_SETS>>}"
