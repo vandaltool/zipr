@@ -382,10 +382,6 @@ parse_aggregate_assurance_file()
 
 	# find the binary names
 	binary_names=`cat $input | awk 'BEGIN{FS="::"}{print $1}' | sort | uniq`
-	# find the variant names
-	variant_names=`cat $input | awk 'BEGIN{FS="::"} {print $2}' | sort | uniq`
-	# find the transform names
-	transform_names=`cat $input | awk 'BEGIN{FS="::"} {print $3}' |sort | uniq`
 
 	# for each binary 
 	for b in $binary_names
@@ -394,16 +390,22 @@ parse_aggregate_assurance_file()
 		echo "Binary Name: $b" >> $output
 		echo >> $output
 
+
+		# find the transform names for this binary
+		transform_names=`cat $input |grep $b | awk 'BEGIN{FS="::"} {print $3}' |sort | uniq`
+
 		t_label=A
 		# for each transform
 		for t in $transform_names
 		do
 			echo -n "${t_label}. Transform Name: " >> $output
 			echo "$t" | sed 's/_/ /g' >> $output
+
 			# find the unique stat names 
 			# stat name with values is in 4th field
 			# so remove everything from = to EOL
-			stat_names=`grep "$t" $input | awk 'BEGIN{FS="::"} {print $4}' | sed "s/=.*//g" | sort | uniq`
+			stat_names=`grep "$b" $input | grep "$t" | awk 'BEGIN{FS="::"} {print $4}' | sed "s/=.*//g" | sort | uniq`
+
 			s_label=1
 			for s in $stat_names
 			do
@@ -412,6 +414,8 @@ parse_aggregate_assurance_file()
 				# remove the underscores
 				echo "$s" | sed 's/_/ /g' >> $output
 		
+				# find the variant names
+				variant_names=`cat $input | grep $b | awk 'BEGIN{FS="::"} {print $2}' | sort | uniq`
 				v_label=a
 				for v in $variant_names
 				do
@@ -743,7 +747,7 @@ finalize_json()
 				# copy assurance evidence
 				copy_assurance_evidence $indir/$lib_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_variant-${seq}_evidence.txt $lib 0 $config "vs-${vs}_variant-${seq}"
 				# gather aggregate assurance evidence
-				gather_aggregate_assurance_evidence $full_exe_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt "vs-${vs}" $lib 
+				gather_aggregate_assurance_evidence $full_exe_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt "$seq" $lib 
 
 				variant_config_contents="${variant_config_contents//,<<LIBS>>/$line,<<LIBS>>}"
 		
