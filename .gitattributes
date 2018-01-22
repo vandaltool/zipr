@@ -984,11 +984,13 @@ tools/cfar_configs/cfar_structNoc_structP1Canaries_zipr.sh -text
 tools/cfar_configs/cfar_structNoc_structP1FloatingCanaries_structNos_structNol_structNoh_zipr.sh -text
 tools/cfar_configs/cfar_structNoc_zipr.sh -text
 tools/cfar_configs/cfar_structNogOF_phase1_zipr.sh -text
+tools/cfar_configs/cfar_structNogOF_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_structNogOF_structSS_phase1_zipr.sh -text
 tools/cfar_configs/cfar_structNogOF_structSS_probDS_phase1_zipr.sh -text
 tools/cfar_configs/cfar_structNogOF_structSS_structDSX_phase1_zipr.sh -text
 tools/cfar_configs/cfar_structNogOF_structSS_structDSX_structSI_phase1_zipr.sh -text
 tools/cfar_configs/cfar_structNogOF_structSS_structDS_phase1_zipr.sh -text
+tools/cfar_configs/cfar_structNogOF_zipr.sh -text
 tools/cfar_configs/cfar_structNog_phase1_zipr.sh -text
 tools/cfar_configs/cfar_structNog_structNol_structNoh_structNos_structNoc_probHeaprand_zipr.sh -text
 tools/cfar_configs/cfar_structNog_structNol_structNoh_structNos_structNoc_structP1Canaries_probHeaprand_zipr.sh -text
