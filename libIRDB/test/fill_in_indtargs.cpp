@@ -2203,8 +2203,8 @@ void setup_icfs(FileIR_t* firp, EXEIO::exeio* elfiop)
 		// stars calls it data, but printw arning if we didn't find it in data or as a printf addr.
 		if(prov.isPartiallySet(stars_data) && !prov.isPartiallySet(non_stars_data))
 		{
-			ofstream fout("warning.txt", ofstream::out | ofstream::app);
-			fout<<"STARS found an IBT in data that FII wasn't able to classify at "<<hex<<insn->GetAddress()->GetVirtualOffset()<<"."<<endl;
+			//ofstream fout("warning.txt", ofstream::out | ofstream::app);
+			cerr<<"STARS found an IBT in data that FII wasn't able to classify at "<<hex<<insn->GetAddress()->GetVirtualOffset()<<"."<<endl;
 		}
 
 		// create icfs for complete jump tables.
