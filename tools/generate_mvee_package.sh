@@ -347,6 +347,8 @@ gather_aggregate_assurance_evidence()
 	variant_num="$3"
 	binary_name="$4"
 
+	echo -n "	Gathering aggregate assurance evidence for $binary_name, variant $variant_num ... "
+
 	if [ ! -f "$input" ]; then
 		echo "gather_aggregate_assurance_evidence(): $input FILE NOT FOUND."
 		return
@@ -362,6 +364,8 @@ gather_aggregate_assurance_evidence()
 	do
 		echo "$t" >> $output
 	done
+
+	echo "Done!"
 }
 
 # After aggregate assurance evidence is collected, parse it into human readable form
@@ -375,10 +379,13 @@ parse_aggregate_assurance_file()
 	output=$2
 	variant_set_label=$3
 
+
 	if [ ! -f "$input" ]; then
 		echo "parse_aggregate_assurance_file():  $input FILE NOT FOUND."
 		return
 	fi
+
+	echo -n "	Parsing aggregate assurance evidence for $variant_set_label ... "
 
 	# find the binary names
 	binary_names=`cat $input | awk 'BEGIN{FS="::"}{print $1}' | sort | uniq`
@@ -420,7 +427,7 @@ parse_aggregate_assurance_file()
 				for v in $variant_names
 				do
 					# find the stat for that variant
-					stat_val=`grep "$b" $input | grep "$v" | grep "$s" |  awk 'BEGIN{FS="::"} {print $4}' | sed "s/${s}=//g"`
+					stat_val=`grep "$b" $input | grep "$t" | grep "$v" | grep "$s" |  awk 'BEGIN{FS="::"} {print $4}' | sed "s/${s}=//g"`
 					echo -e "\t\t${v_label}. ${v}: ${stat_val}" >> $output
 					# increment the t_label to the next value
 					# make use of the fact that perl can increment letters
@@ -438,6 +445,8 @@ parse_aggregate_assurance_file()
 		done	
 		echo >> $output
 	done
+
+	echo "Done!"
 }
 
 
@@ -544,7 +553,7 @@ copy_assurance_evidence()
 
 	echo >> $out
 
-	echo "Done copying assurance evidence for $exe!"
+	echo "Done!"
 }
 
 
