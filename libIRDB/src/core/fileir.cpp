@@ -27,6 +27,9 @@
 #include <elf.h>
 #include <stdlib.h>
 #include <sys/wait.h>
+#include <iomanip>
+
+
 
 using namespace libIRDB;
 using namespace std;
@@ -79,6 +82,7 @@ static virtual_offset_t strtovo(std::string s)
 
 // Create a Variant from the database
 FileIR_t::FileIR_t(const VariantID_t &newprogid, File_t* fid) : BaseObj_t(NULL)
+	
 {
 	orig_variant_ir_p=NULL;
 	progid=newprogid;	
@@ -130,6 +134,9 @@ FileIR_t::~FileIR_t()
 // DB operations
 void FileIR_t::ReadFromDB()
 {
+    	ReadIRDB_start = clock();
+
+
 	auto entry_points=map<Function_t*,db_id_t>();
 	auto unresolvedICFS=std::map<Instruction_t*, db_id_t>();
 	auto unresolvedEhCallSites=std::map<EhCallSite_t*,db_id_t>();
@@ -157,6 +164,10 @@ void FileIR_t::ReadFromDB()
 
 	UpdateEntryPoints(insnMap,entry_points);
 	UpdateUnresolvedEhCallSites(insnMap,unresolvedEhCallSites);
+
+	ReadIRDB_end = clock();
+
+
 }
 
 
@@ -524,6 +535,19 @@ std::map<db_id_t,AddressID_t*> FileIR_t::ReadAddrsFromDB
 }
 
 
+static string encoded_to_raw_string(string encoded)
+{
+	int len = encoded.length();
+	std::string raw;
+	for(int i=0; i< len; i+=2)
+	{
+	    string byte = encoded.substr(i,2);
+	    char chr = (char) (int)strtol(byte.c_str(), nullptr, 16);
+	    raw.push_back(chr);
+	}
+	return raw;
+}
+
 std::map<db_id_t,Instruction_t*> FileIR_t::ReadInsnsFromDB 
 	(      
         const std::map<db_id_t,Function_t*> &funcMap,
@@ -567,7 +591,8 @@ std::map<db_id_t,Instruction_t*> FileIR_t::ReadInsnsFromDB
 		db_id_t icfs_id=atoi(dbintr->GetResultColumn("icfs_id").c_str());
 		db_id_t eh_pgm_id=atoi(dbintr->GetResultColumn("ehpgm_id").c_str());
 		db_id_t eh_cs_id=atoi(dbintr->GetResultColumn("ehcss_id").c_str());
-		std::string data=(dbintr->GetResultColumn("data"));
+		std::string encoded_data=(dbintr->GetResultColumn("data"));
+		std::string data=encoded_to_raw_string(encoded_data);
 		std::string callback=(dbintr->GetResultColumn("callback"));
 		std::string comment=(dbintr->GetResultColumn("comment"));
 		db_id_t indirect_branch_target_address_id = atoi(dbintr->GetResultColumn("ind_target_address_id").c_str());
@@ -670,6 +695,11 @@ void FileIR_t::ReadRelocsFromDB
 
 void FileIR_t::WriteToDB()
 {
+    	const auto WriteIRDB_start = clock();
+
+	const auto pqIntr=dynamic_cast<pqxxDB_t*>(dbintr);
+	assert(pqIntr);
+
 	//Resolve (assemble) any instructions in the registry.
 	AssembleRegistry();
 
@@ -694,7 +724,7 @@ void FileIR_t::WriteToDB()
 
 	/* and now that everything has an ID, let's write to the DB */
 
-	// write out the types
+// write out the types
 	string q=string("");
 	for(std::set<Type_t*>::const_iterator t=types.begin(); t!=types.end(); ++t)
 	{
@@ -707,9 +737,9 @@ void FileIR_t::WriteToDB()
 	}
 	dbintr->IssueQuery(q);
 
-	bool withHeader;
 
-	withHeader = true;
+// write out functions 
+	auto withHeader=true;
 	q=string("");
 	for(std::set<Function_t*>::const_iterator f=funcs.begin(); f!=funcs.end(); ++f)
 	{
@@ -722,32 +752,24 @@ void FileIR_t::WriteToDB()
 	}
 	dbintr->IssueQuery(q);
 
-	withHeader = true;
-	q=string("");
-	for(std::set<AddressID_t*>::const_iterator a=addrs.begin(); a!=addrs.end(); ++a)
-	{
-		q+=(*a)->WriteToDB(fileptr,j,withHeader);
-		withHeader = false;
-		if(q.size()>1024*1024)
-		{
-			q+=";";
-			dbintr->IssueQuery(q);
-			q=string("");
-			withHeader = true;
-		}
-	}
-	dbintr->IssueQuery(q);
 
-	withHeader = true;
-	q=string("");
+// write out addresses
+	pqxx::tablewriter W_addrs(pqIntr->GetTransaction(),fileptr->address_table_name);
+	for(const auto &a : addrs)
+	{
+		W_addrs << a->WriteToDB(fileptr,j,withHeader);
+	}
+	W_addrs.complete();
+
+
+// write out instructions
+
+	pqxx::tablewriter W(pqIntr->GetTransaction(),fileptr->instruction_table_name);
 	for(std::set<Instruction_t*>::const_iterator i=insns.begin(); i!=insns.end(); ++i)
 	{	
 		Instruction_t const * const insnp=*i;
 		DISASM disasm;
 		insnp->Disassemble(disasm);
-
-		// we have a few new requirements for instructions that doesn't correspond to original program insns.
-//		cerr << "handling instruction:" << ((Instruction_t*)insnp)->getDisassembly() << " comment: " << ((Instruction_t*)insnp)->GetComment() << endl;
 
 		if(insnp->GetOriginalAddressID() == NOT_IN_DATABASE)
 		{
@@ -779,28 +801,16 @@ void FileIR_t::WriteToDB()
 			}
 		}
 
-		q+=(*i)->WriteToDB(fileptr,j,withHeader);
-		withHeader = false;
-		if(q.size()>1024*1024)
-		{
-			q+=";";
-			dbintr->IssueQuery(q);
-			q=string("");
-			withHeader = true;
-		}
 
-		string r="";
-		std::set<Relocation_t*> irelocs = (*i)->GetRelocations();
-		for(set<Relocation_t*>::iterator it=irelocs.begin(); it!=irelocs.end(); ++it)
-		{
-			Relocation_t* reloc=*it;
-			r+=reloc->WriteToDB(fileptr,*i);
-		}
-		if(r!="")
-			dbintr->IssueQuery(r);
+		const auto &insn_values=(*i)->WriteToDB(fileptr,j);
+		W << insn_values;
+
 	}
-	dbintr->IssueQuery(q);
+	W.complete();
 
+
+
+// icfs 
 	for (ICFSSet_t::iterator it = GetAllICFS().begin(); it != GetAllICFS().end(); ++it)
 	{
 		ICFS_t* icfs = *it;
@@ -808,49 +818,75 @@ void FileIR_t::WriteToDB()
 		string q = icfs->WriteToDB(fileptr);
 		dbintr->IssueQuery(q);
 	}
+
+// scoops
 	for(DataScoopSet_t::const_iterator it=scoops.begin(); it!=scoops.end(); ++it)
 	{
 		DataScoop_t* scoop = *it;
 		assert(scoop);
 		string q = scoop->WriteToDB(fileptr,j);
 		dbintr->IssueQuery(q);
-
-		q="";
-                const std::set<Relocation_t*> &the_relocs = scoop->GetRelocations();
-                for(set<Relocation_t*>::const_iterator rit=the_relocs.begin(); rit!=the_relocs.end(); ++rit)
-                {
-                        Relocation_t* reloc=*rit;
-                        q+=reloc->WriteToDB(fileptr,scoop);
-                }
-		if(q!="")
-			dbintr->IssueQuery(q);
-
 	}
+
+// ehpgms 
+	pqxx::tablewriter W_eh(pqIntr->GetTransaction(),fileptr->ehpgm_table_name);
 	for(const auto& i : eh_pgms)
 	{
-		string q = i->WriteToDB(fileptr);
-		dbintr->IssueQuery(q);
-
-		string r="";
-		for(auto& reloc : i->GetRelocations())
-		{
-			r+=reloc->WriteToDB(fileptr,i);
-		}
-		if(r!="")
-			dbintr->IssueQuery(r);
+		W_eh << i->WriteToDB(fileptr);
 	}
+	W_eh.complete();
+
+// eh css
 	for(const auto& i : eh_css)
 	{
 		string q = i->WriteToDB(fileptr);
 		dbintr->IssueQuery(q);
+	}
+
+
+// all relocs
+	pqxx::tablewriter W_reloc(pqIntr->GetTransaction(),fileptr->relocs_table_name);
+
+// eh css relocs
+	for(const auto& i : eh_css)
+	{
+		for(auto& reloc : i->GetRelocations())
+			W_reloc << reloc->WriteToDB(fileptr,i);
+	}
+
+// eh pgms relocs
+	for(const auto& i : eh_pgms)
+	{
 		string r="";
 		for(auto& reloc : i->GetRelocations())
-		{
-			r+=reloc->WriteToDB(fileptr,i);
-		}
-		if(r!="")
-			dbintr->IssueQuery(r);
+			W_reloc << reloc->WriteToDB(fileptr,i);
 	}
+// scoops relocs
+	for(const auto& i : scoops)
+	{
+		for(auto& reloc : i->GetRelocations())
+			W_reloc << reloc->WriteToDB(fileptr,i);
+	}
+// write out instruction's relocs
+	for(const auto& i : insns)
+	{
+		for(auto& reloc : i->GetRelocations())
+			W_reloc << reloc->WriteToDB(fileptr,i);
+	}
+	W_reloc.complete();
+
+	const auto WriteIRDB_end = clock();
+	const auto read_time = (double)(ReadIRDB_end-ReadIRDB_start)/ CLOCKS_PER_SEC;
+	const auto write_time = (double)(WriteIRDB_end-WriteIRDB_start)/ CLOCKS_PER_SEC;
+	const auto wall_time = (double)(WriteIRDB_end-ReadIRDB_start)/ CLOCKS_PER_SEC;
+	const auto transform_time=wall_time - read_time - write_time; 
+
+	std::cout << std::dec; 
+    	std::cout << std::fixed << std::setprecision(2) << "#ATTRIBUTE ReadIRDB_WallClock=" << read_time <<endl;
+    	std::cout << std::fixed << std::setprecision(2) << "#ATTRIBUTE WriteIRDB_WallClock=" << write_time << endl;
+    	std::cout << std::fixed << std::setprecision(2) << "#ATTRIBUTE TotalIRDB_WallClock=" << wall_time << endl;
+    	std::cout << std::fixed << std::setprecision(2) << "#ATTRIBUTE TransformIRDB_WallClock=" << transform_time << endl;
+
 }
 
 

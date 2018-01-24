@@ -64,7 +64,7 @@ class Instruction_t : public BaseObj_t
 		void SetIndirectBranchTargetAddress(AddressID_t* myIndTarg) { indTarg=myIndTarg; }
 
 		void WriteToDB() { assert(0); }
-		std::string WriteToDB(File_t *fid, db_id_t newid, bool p_withHeader);
+		std::vector<std::string> WriteToDB(File_t *fid, db_id_t newid); 
 		int Disassemble(DISASM &d) const; 
 		std::string getDisassembly() const;
 		bool Assemble(std::string assembly);

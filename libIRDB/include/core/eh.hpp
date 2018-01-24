@@ -65,7 +65,7 @@ class EhProgram_t : public BaseObj_t
         int64_t GetReturnRegNumber() const { return return_register; }
         void SetReturnRegNumber(const int64_t rr) { return_register=rr; }
 
-        std::string WriteToDB(File_t* fid);    // writes to DB, ID is not -1.
+        std::vector<std::string> WriteToDB(File_t* fid);    // writes to DB, ID is not -1.
 
 
 	friend bool operator<(const EhProgram_t&a, const EhProgram_t&b);

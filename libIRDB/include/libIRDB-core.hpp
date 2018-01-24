@@ -29,6 +29,7 @@
 #include <iostream>
 #include <pqxx/pqxx>
 #include <beaengine/BeaEngine.h>
+#include <ctime>
 
 namespace libIRDB 
 {

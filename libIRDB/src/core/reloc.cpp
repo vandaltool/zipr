@@ -23,20 +23,23 @@
 
 using namespace std;
 
-std::string Relocation_t::WriteToDB(File_t* fid, BaseObj_t* myinsn)
+vector<std::string> Relocation_t::WriteToDB(File_t* fid, BaseObj_t* myinsn)
 {
-        string q;
         db_id_t wrt_id=wrt_obj ? wrt_obj->GetBaseID() : BaseObj_t::NOT_IN_DATABASE;
+/*
+        string q;
         q ="insert into " + fid->relocs_table_name;
-        q+="(reloc_id,reloc_offset,reloc_type,instruction_id,wrt_id,addend,doip_id) "+
+        q+="(reloc_id,reloc_offset,reloc_type,instruction_id,addend,wrt_id,doip_id) "+
                 string(" VALUES (") +
-                string("'") + to_string(GetBaseID())          + string("', ") +
-                string("'") + to_string(offset)               + string("', ") +
-                string("'") + (type)                          + string("', ") +
-                string("'") + to_string(myinsn->GetBaseID())  + string("', ") +
-                string("'") + to_string(wrt_id)  + string("', ") +
-                string("'") + to_string(addend)  + string("', ") +
-                string("'") + to_string(GetDoipID())          + string("') ; ") ;
-        return q;
+*/
+	return {
+                to_string(GetBaseID()),
+                to_string(offset),
+                (type),
+                to_string(myinsn->GetBaseID()),
+                to_string(addend),
+                to_string(wrt_id),
+                to_string(GetDoipID())
+		};
 }
 

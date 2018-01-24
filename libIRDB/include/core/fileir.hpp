@@ -20,6 +20,8 @@
 
 #include "type.hpp"
 
+
+
 typedef std::set<Function_t*> FunctionSet_t;
 typedef std::set<AddressID_t*> AddressSet_t;
 
@@ -169,5 +171,11 @@ class FileIR_t : public BaseObj_t
 		void CleanupICFS();
 		void GarbageCollectICFS();
 		void DedupICFS();
+
+
+		std::clock_t ReadIRDB_start;
+		std::clock_t ReadIRDB_end;
+
+
 };
 

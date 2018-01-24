@@ -147,13 +147,15 @@ void insert_instructions(int fileID, const vector<wahoo::Instruction*> &instruct
       buf[0] = '\0';
       if (data)
       {
-        sprintf(buf,"E'");
+        sprintf(buf,"'");
         for (int k = 0; k < instruction->getSize(); ++k)
         {
           unsigned char c = data[k];
-          sprintf(&buf[strlen(buf)],"\\\\%03o", c); // octal encoding
+	  char tmpbuf[10];
+          sprintf(tmpbuf,"%02X", (unsigned int)c); // octal encoding
+	  strcat(buf,tmpbuf);
         }
-        sprintf(&buf[strlen(buf)],"'::bytea");
+        strcat(buf,"'");
       }
       else
       {
