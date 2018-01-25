@@ -86,99 +86,101 @@ int get_file_id(char *progName, char *md5hash)
 // insert addresses & instructions into DB
 void insert_instructions(int fileID, const vector<wahoo::Instruction*> &instructions, const vector<wahoo::Function*> &functions)
 {
-  cerr << "Inserting instructions in the DB"<<endl;
-  connection conn;
-  work txn(conn);
-  txn.exec("SET client_encoding='LATIN1';");
-  // for each instruction:
-  //    (1) get address, insert into address table
-  //    (2) populate instruction table
+	cerr << "Inserting instructions in the DB"<<endl;
+	connection conn;
+	work txn(conn);
+	// for each instruction:
+	//    get address, insert into address table
+	// for each instruction:
+	//    populate instruction table
 
-  int count = 0;
+	int count = 0;
 
-  for (int i = 0; i < instructions.size(); i += STRIDE )
-  {
-    char buf[128];
+	pqxx::tablewriter W_addrs(txn,addressTable);
+	for (int i = 0; i < instructions.size(); i ++ )
+	{
+    		char buf[128];
 
-    string query = "INSERT INTO " + addressTable;
-    query += " (address_id, file_id, vaddress_offset) VALUES ";
+		wahoo::Instruction *instruction = instructions[i];
+		app_iaddr_t   addr = instruction->getAddress();
 
-    string query2 = "INSERT INTO " + instructionTable;
-    query2 += " (instruction_id,address_id, parent_function_id, orig_address_id, data, comment) VALUES ";
+		// assign an instruction id
+		address_to_instructionid_map[addr]=next_address_id++;
 
-    for (int j = i; j < i + STRIDE; ++j)
-    {
-      if (j >= instructions.size()) break;
-      wahoo::Instruction *instruction = instructions[j];
-      app_iaddr_t   addr = instruction->getAddress();
+		// assign an address id
+		int address_id = next_address_id++;
+		instruction_to_addressid_map[instruction]=address_id;
 
-      address_to_instructionid_map[addr]=j;
+		snprintf(buf,sizeof(buf),"%lld", (long long)addr);
 
-      int address_id = next_address_id++;
-      instruction_to_addressid_map[instruction]=address_id;
 
-      // insert into address table
-      if (j != i) query += ",";
-      query += "(";
-      query += txn.quote(address_id) + ",";
-      query += txn.quote(fileID) + ",";
-      sprintf(buf,"%lld", (long long)addr);
-      query += txn.quote(string(buf));
-      query += ")";
+		// insert into address table
+		vector<string> row=
+			{  
+				to_string(address_id),
+				to_string(fileID),
+				string(buf),
+				"-1"
+			}; 
+		W_addrs << row;
 
-      int parent_function_id = -1;
-      if (instruction->getFunction())
-      {
-        parent_function_id = instruction->getFunction()->getFunctionID();
-      }
-      int orig_address_id = address_id;
-      string asmData = instruction->getAsm();
+	}
+	W_addrs.complete();
 
-      if (j != i ) query2 += ",";
-      query2 += "(";
-      query2 += txn.quote(my_to_string(j)) + ",";
-      query2 += txn.quote(address_id) + ","; // the address id
-      query2 += txn.quote(parent_function_id) + ","; 
-      query2 += txn.quote(orig_address_id) + ","; 
+	pqxx::tablewriter W_insns(txn,instructionTable);
+  	for (int i = 0; i < instructions.size(); i ++)
+	{
+		const auto instruction = instructions[i];
+		const auto addr = instruction->getAddress();
+		const auto instruction_id=address_to_instructionid_map[addr];
+		const auto address_id=instruction_to_addressid_map[instruction];
+      		const auto parent_function_id = instruction->getFunction() ?  instruction->getFunction()->getFunctionID() : -1 ;
+		const auto orig_address_id=address_id;
+		const auto fallthrough_address_id="-1";
+		const auto target_address_id="-1";
+		const auto icfs_id="-1";
+		const auto ehpgm_id="-1";
+		const auto ehcss_id="-1";
 
-      // encode instruction binary data information
-      // using the Postgre bytea syntax (octal representation of binary data)
-      unsigned char *data = (unsigned char*) instruction->getData();
-      buf[0] = '\0';
-      if (data)
-      {
-        sprintf(buf,"'");
-        for (int k = 0; k < instruction->getSize(); ++k)
-        {
-          unsigned char c = data[k];
-	  char tmpbuf[10];
-          sprintf(tmpbuf,"%02X", (unsigned int)c); // octal encoding
-	  strcat(buf,tmpbuf);
-        }
-        strcat(buf,"'");
-      }
-      else
-      {
-        sprintf(buf,"''"); 
-      }
- 
-      query2 += string(buf) + ","; 
-      query2 += txn.quote(asmData); 
-      query2 += ")";
+      		const auto data = (unsigned char*) instruction->getData();
+		ostringstream hex_data;
+		hex_data << setfill('0') << hex;;
+		for (auto i = 0; i < instruction->getSize(); ++i)
+			hex_data << setw(2) << (int)(data[i]&0xff);
 
-//   cerr << "Query: " << query << endl; 
-//   cerr << "Query2: " << query2 << endl; 
-    }
+		const auto & encoded_data=hex_data.str();
+		const auto callback=string("");
+      		const auto & comment = instruction->getAsm();
+		const auto ind_target_address_id="-1";
+		const auto doip_id="-1";
 
-    txn.exec(query);
-    txn.exec(query2); 
-  }
+		const auto row=vector<string>(
+			{  
+				to_string(instruction_id),
+				to_string(address_id),
+				to_string(parent_function_id),
+				to_string(orig_address_id),
+				fallthrough_address_id,
+				target_address_id,
+				icfs_id,
+				ehpgm_id,
+				ehcss_id,
+				encoded_data,
+				callback,
+				comment,
+				ind_target_address_id,
+				doip_id
+			}) ; 
+		W_insns << row;
 
-  cerr << "Committing all instructions - this may take a while"<<endl;
+
+
+	};
+	W_insns.complete();
+
   txn.commit();
   cerr << "Done inserting instructions in the DB"<<endl;
 }
-
 
 void insert_functions(int fileID, const vector<wahoo::Function*> &functions  )
 {
@@ -250,17 +252,6 @@ void update_functions(int fileID, const vector<wahoo::Function*> &functions  )
       	bool useFP = f->getUseFramePointer();
 	int insnid=-1; 	// NOT_IN_DATABASE
 
-/*
-	if(functionAddress!=0)	
-	{
-		assert(address_to_instructionid_map.find(functionAddress)!=address_to_instructionid_map.end());
-		insnid=address_to_instructionid_map[functionAddress];
-	}
-    	query += "update " + functionTable;
-	query += " set entry_point_id = " + txn.quote(my_to_string(insnid));
-    	query += " where function_id = " + txn.quote(my_to_string(function_id));
-	query += ";";
-*/
 
 	// if a function has a valid address, but the address isn't in the table...
 	if(functionAddress!=0 && 
