@@ -756,7 +756,7 @@ finalize_json()
 				# copy assurance evidence
 				copy_assurance_evidence $indir/$lib_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_variant-${seq}_evidence.txt $lib 0 $config "vs-${vs}_variant-${seq}"
 				# gather aggregate assurance evidence
-				gather_aggregate_assurance_evidence $full_exe_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt "$seq" $lib 
+				gather_aggregate_assurance_evidence $indir/$lib_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt "$seq" $lib 
 
 				variant_config_contents="${variant_config_contents//,<<LIBS>>/$line,<<LIBS>>}"
 		
