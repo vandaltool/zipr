@@ -202,17 +202,24 @@ ok=1
 # wait for each child.  detect failures.
 for i in $pids;
 do
-	wait $i
+	wait -n $pids
 	exit_code=$?
 	if [ $exit_code == 0 ]; then
 		echo "	Protection process went well!  Exit_code: $exit_code."
 	elif [ $exit_code == 1 ]; then
 		echo "	Protection process had warnings.  Exit_code: $exit_code."
 	else
-		echo "**********************************************************"
-		echo "*Protection process $i failed with exit code: $exit_code.*"
-		echo "**********************************************************"
+		echo "*******************************************************"
+		echo "*Protection process failed with exit code: $exit_code.*"
+		echo "*******************************************************"
+
+		while [[ $(jobs -p) != "" ]] ;
+		do
+			echo "Killing remaining jobs."
+			kill -9 $(jobs -p)
+		done
 		ok=0
+		break
 	fi
 done
 
