@@ -119,7 +119,8 @@ fi
 
 # init some variables.
 share_path=/tmp/$(whoami)
-pids=
+
+declare -A pidSet
 
 # remove any old data xfers.
 rm -f $share_path/Barriers*
@@ -190,7 +191,7 @@ do
 	(set -x; env PGDATABASE=peasoup_${USER}_v$seq $zipr_env $PS $myin $baseoutdir/v${seq}/${in_base} "${new_cmd_line_options[@]}"  "${per_variant_options[@]}" > $baseoutdir/v${seq}/variant_output.txt 2>&1 ) & 
 
 	# remember the pid.
-	pids="$pids $!"
+	pidSet["$!"]=1
 
 done
 
@@ -199,28 +200,61 @@ done
 ok=1
 
 
+#
 # wait for each child.  detect failures.
-for i in $pids;
-do
-	wait -n $pids
-	exit_code=$?
-	if [ $exit_code == 0 ]; then
-		echo "	Protection process went well!  Exit_code: $exit_code."
-	elif [ $exit_code == 1 ]; then
-		echo "	Protection process had warnings.  Exit_code: $exit_code."
-	else
-		echo "*******************************************************"
-		echo "*Protection process failed with exit code: $exit_code.*"
-		echo "*******************************************************"
+#
 
-		while [[ $(jobs -p) != "" ]] ;
-		do
-			echo "Killing remaining jobs."
-			kill -9 $(jobs -p)
-		done
-		ok=0
-		break
-	fi
+# while there are children we haven't queried their exit status
+while [[ ${#pidSet[@]} != 0 ]] ; 
+do
+	# sleep so this loop doesn't consume too many cycles.
+	sleep 2
+
+	# check each un-checked child to see if it's exited
+	for child in "${!pidSet[@]}"; 
+	do 
+
+
+		kill -0 $child > /dev/null 2>&1
+		dead=$?
+		# if it's dead, mark it as so, and get the exit code
+		if [[ $dead = 1 ]]; then
+			# mark as dead
+			unset pidSet["$child"]
+
+			# get exit code
+			wait $child
+			exit_code=$?
+
+			# sanity check exit code
+			if [ $exit_code == 0 ]; then
+				echo "	Protection process for $child went well!  Exit_code: $exit_code."
+			elif [ $exit_code == 1 ]; then
+				echo "	Protection process for $child had warnings.  Exit_code: $exit_code."
+			else
+				echo "******************************************************************"
+				echo "*Protection process for $child failed with exit code: $exit_code.*"
+				echo "******************************************************************"
+
+				# on an error, kill all remaining jobs.
+				while [[ $(jobs -p) != "" ]] ;
+				do
+					echo "Killing remaining jobs."
+					kill -9 $(jobs -p)
+				done
+
+				# mark that we don't have to check other children.
+				pidSet=()
+
+				# mark that there's a failure observed
+				ok=0
+	
+				# quit checking
+				break
+			fi
+		fi
+		
+	done
 done
 
 
