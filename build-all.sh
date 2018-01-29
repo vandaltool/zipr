@@ -76,10 +76,10 @@ if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then
 fi
 
 cd $SECURITY_TRANSFORMS_HOME
-scons -j 3|| exit
+scons || exit
 
 cd $SMPSA_HOME
-scons  -j 3|| exit
+scons || exit
 
 cd $PEASOUP_HOME
 make || exit
@@ -93,35 +93,35 @@ fi
 
 if [ -d $ZIPR_HOME ]; then
 	cd $ZIPR_HOME
-	scons  -j 3|| exit
+	scons  || exit
 fi
 
 if [ -d $ZIPR_SCFI_PLUGIN ]; then
 	cd $ZIPR_SCFI_PLUGIN
-	scons  -j 3|| exit
+	scons  || exit
 fi
 
 cd $PEASOUP_UMBRELLA_DIR/zipr_large_only_plugin/
-scons -j 3|| exit
+scons || exit
 
 if [[ -e $PEASOUP_UMBRELLA_DIR/zipr ]] && [[ -e $PEASOUP_UMBRELLA_DIR/zipr_relax_plugin ]]  ; then
 	cd $PEASOUP_UMBRELLA_DIR/zipr_relax_plugin/
-	scons -j 3|| exit
+	scons || exit
 fi
 
 if [[ -e $PEASOUP_UMBRELLA_DIR/zipr ]] && [[ -e $PEASOUP_UMBRELLA_DIR/zipr_trace_plugin ]]  ; then
 	cd $PEASOUP_UMBRELLA_DIR/zipr_trace_plugin/
-	scons -j 3|| exit
+	scons || exit
 fi
 
 cd $PEASOUP_UMBRELLA_DIR/zipr_push64_reloc_plugin
-scons -j 3|| exit
+scons || exit
 
 cd $PEASOUP_UMBRELLA_DIR/zipr_unpin_plugin
-scons -j 3|| exit
+scons || exit
 
 cd $IRDB_TRANSFORMS
-scons -j 3|| exit
+scons || exit
 
 if [ -d $DAFFY_HOME ]; then
 	cd $DAFFY_HOME

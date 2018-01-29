@@ -1,6 +1,6 @@
 diablo_toolchain		http://svn.zephyr-software.com/repos/diablo_toolchain/trunk/
-idaproCur            		http://svn.zephyr-software.com/repos/idaproCur/trunk/
-idaproCur_sdk        		http://svn.zephyr-software.com/repos/idaproCur_sdk/trunk/
+idaproCur            		http://svn.zephyr-software.com/repos/idapro70/trunk/
+idaproCur_sdk        		http://svn.zephyr-software.com/repos/idapro70_sdk/trunk/
 strata               		http://svn.zephyr-software.com/repos/strata/trunk/
 peasoup_examples     		http://svn.zephyr-software.com/repos/peasoup_examples/trunk/
 security_transforms  		http://svn.zephyr-software.com/repos/security_transforms/trunk/
