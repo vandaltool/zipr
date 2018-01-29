@@ -53,5 +53,5 @@ for log_file_path in sys.argv[1:]:
 				stats[step_name][attribute_name] = attribute_value
 
 if stats:
-	print json.dumps(stats)
+	print (json.dumps(stats))
 	
