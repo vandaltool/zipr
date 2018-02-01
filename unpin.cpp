@@ -37,6 +37,7 @@
 #include "unpin.h"
 #include <memory>
 #include <inttypes.h>
+#include <bea_deprecated.hpp>
 
 
 using namespace libIRDB;
@@ -329,7 +330,7 @@ void Unpin_t::DoUpdateForInstructions()
 	{
 		Instruction_t* from_insn=*it;
                 DISASM disasm;
-                from_insn->Disassemble(disasm);
+                Disassemble(from_insn,disasm);
 
                 // find memory arg.
                 ARGTYPE* the_arg=NULL;
@@ -473,7 +474,7 @@ void Unpin_t::DoUpdateForInstructions()
 					ms[from_insn_location+i]=newbyte;
 				}
 				DISASM disasm2;
-				from_insn->Disassemble(disasm2);	
+				Disassemble(from_insn,disasm2);	
 				cout<<"unpin:pcrel:new_disp="<<hex<<new_disp<<endl;
 				cout<<"unpin:pcrel:new_insn_addr="<<hex<<from_insn_location<<endl;
 				cout<<"unpin:pcrel:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.CompleteInstr
@@ -505,7 +506,7 @@ void Unpin_t::DoUpdateForInstructions()
 					//cout<<"Updating push["<<i<<"] from "<<hex<<oldbyte<<" to "<<newbyte<<endl;
 				}
                 		DISASM disasm2;
-                		from_insn->Disassemble(disasm2);
+                		Disassemble(from_insn,disasm2);
 				cout<<"unpin:absptr_to_scoop:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.CompleteInstr
 			 	    <<" to "<<disasm2.CompleteInstr<<" for scoop: "<<wrt->GetName()<<endl;
 			}
@@ -530,7 +531,7 @@ void Unpin_t::DoUpdateForInstructions()
 				}
 
                 		DISASM disasm2;
-                		from_insn->Disassemble(disasm2);
+                		Disassemble(from_insn,disasm2);
 				cout<<"unpin:immedptr_to_scoop:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.CompleteInstr
 			 	    <<" to "<<disasm2.CompleteInstr<<" for scoop: "<<wrt->GetName()<<endl;
 
