@@ -45,7 +45,7 @@
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
 #include "targ-config.h"
-#include "beaengine/BeaEngine.h"
+#include <bea_deprecated.hpp>
 
 using namespace libIRDB;
 using namespace std;
@@ -662,7 +662,7 @@ void ZiprImpl_t::RecordPinnedInsnAddrs()
 bool ZiprImpl_t::ShouldPinImmediately(Instruction_t *upinsn)
 {
 	DISASM d;
-	upinsn->Disassemble(d);
+	Disassemble(upinsn,d);
 	Instruction_t *pin_at_next_byte = NULL;
 	AddressID_t *upinsn_ibta = NULL, *ft_ibta = NULL;
 
@@ -2421,7 +2421,7 @@ void ZiprImpl_t::PlaceDollops()
 #if 1
 					if (m_verbose) {
 						DISASM d;
-						dollop_entry->Instruction()->Disassemble(d);
+						Disassemble(dollop_entry->Instruction(),d);
 						cout << std::hex << dollop_entry->Instruction()->GetBaseID() 
 						     << ":" << d.CompleteInstr << endl;
 					}
@@ -2734,7 +2734,7 @@ void ZiprImpl_t::OptimizePinnedInstructions()
 		memory_space.PlopJump(addr);
 
 		DISASM d;
-		uu.GetInstruction()->Disassemble(d);
+		Disassemble(uu.GetInstruction(),d);
 
 		bool can_optimize=false; // fixme
 		if(can_optimize)
@@ -2953,7 +2953,7 @@ void ZiprImpl_t::UpdatePins()
 		assert(target_dollop_entry_instruction != NULL &&
 		       target_dollop_entry_instruction == uu.GetInstruction());
 
-		target_dollop_entry_instruction->Disassemble(d);
+		Disassemble(target_dollop_entry_instruction,d);
 
 		patch_addr = p.GetAddress();
 		target_addr = target_dollop_entry->Place();
@@ -3116,7 +3116,7 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntry(
 	if (override_place != 0)
 		addr = ret = override_place;
 
-	insn->Disassemble(d);
+	Disassemble(insn,d);
 
 	raw_data = insn->GetDataBits();
 	orig_data = insn->GetDataBits();
