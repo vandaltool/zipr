@@ -35,6 +35,7 @@
 #include "utils.hpp"
 #include "Rewrite_Utility.hpp"
 #include "push64_relocs.h"
+#include <bea_deprecated.hpp>
 
 using namespace libIRDB;
 using namespace std;
@@ -333,7 +334,7 @@ void Push64Relocs_t::UpdatePush64Adds()
 			insn_bytes=(uint8_t*)malloc(insn_bytes_len);
 			memcpy(insn_bytes, insn->GetDataBits().c_str(), insn_bytes_len);
 
-			insn->Disassemble(d);
+			Disassemble(insn,d);
 
 			if(arg_has_relative(d.Argument1))
 				arg=&d.Argument1;
