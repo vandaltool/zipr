@@ -33,6 +33,7 @@
 #include <exeio.h>
 
 #include "fill_in_indtargs.hpp"
+#include <bea_deprecated.hpp>
 
 
 using namespace libIRDB;
@@ -106,8 +107,8 @@ bool check_entry(bool &found, ControlFlowGraph_t* cfg)
 	{
 		DISASM disasm;
 		Instruction_t* insn=*it;
-		insn->Disassemble(disasm);
-		if(Instruction_t::SetsStackPointer(&disasm)) {
+		Disassemble(insn,disasm);
+		if(SetsStackPointer(&disasm)) {
 			return false;
 		} else {
 			if(getenv("VERBOSE_FIX_CALLS"))
@@ -202,7 +203,7 @@ bool call_needs_fix(Instruction_t* insn)
 	if(!target)
 	{
 		/* call 0's aren't to real locations */
-		insn->Disassemble(disasm);
+		Disassemble(insn,disasm);
 		if(strcmp(disasm.CompleteInstr, "call 0x00000000")==0)
 		{
 			return false;
@@ -306,7 +307,7 @@ bool call_needs_fix(Instruction_t* insn)
 		Instruction_t* itrinsn=*it;
 		/* if the disassembly contains the string mentioned */
 		DISASM disasm;
-		itrinsn->Disassemble(disasm);
+		Disassemble(itrinsn,disasm);
 		if(strstr(disasm.CompleteInstr, pattern.c_str())!=NULL) 
 		{
 			found_pattern++;
@@ -460,7 +461,7 @@ static void convert_to_jump(Instruction_t* insn, int offset)
 {
 	string newbits=insn->GetDataBits();
 	DISASM d;
-	insn->Disassemble(d);
+	Disassemble(insn,d);
 	/* this case is odd, handle it specially (and more easily to understand) */
 	if(strcmp(d.CompleteInstr, "call qword [rsp]")==0)
 	{
@@ -547,7 +548,7 @@ void fix_call(Instruction_t* insn, FileIR_t *firp, bool can_unpin)
         DISASM disasm;
 
         /* Disassemble the instruction */
-        int instr_len = insn->Disassemble(disasm);
+        int instr_len = Disassemble(insn,disasm);
 
 
 	/* if this instruction is an inserted call instruction than we don't need to 
@@ -705,7 +706,7 @@ bool is_call(Instruction_t* insn)
 #endif
 
         /* Disassemble the instruction */
-        int instr_len = insn->Disassemble(disasm);
+        int instr_len = Disassemble(insn,disasm);
 	
 
 	return (disasm.Instruction.BranchType==CallType);
@@ -891,7 +892,7 @@ bool arg_has_relative(const ARGTYPE &arg)
 void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, UIntPtr virt_offset)
 {
 	DISASM disasm;
-	insn->Disassemble(disasm);
+	Disassemble(insn,disasm);
 	int is_rel= arg_has_relative(disasm.Argument1) || arg_has_relative(disasm.Argument2) || arg_has_relative(disasm.Argument3);
 
 	/* if this has already been fixed, we can skip it */
@@ -966,7 +967,7 @@ void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, UIntPtr virt_offset)
 		insn->GetRelocations().insert(reloc);
 		firp->GetRelocations().insert(reloc);
 
-		insn->Disassemble(disasm);
+		Disassemble(insn,disasm);
 		if(getenv("VERBOSE_FIX_CALLS"))
 			cout<<" Converted to: "<<disasm.CompleteInstr<<endl;
 	}

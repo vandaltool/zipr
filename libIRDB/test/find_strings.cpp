@@ -35,6 +35,7 @@
 #include "targ-config.h"
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
+#include <bea_deprecated.hpp>
 
 
 
@@ -299,7 +300,7 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei)
 				DISASM disasm;
 				char *str = NULL;
 
-				int res=insn->Disassemble(disasm);
+				int res=Disassemble(insn,disasm);
 				assert(res);
 
 				// Concatenate printable strings from consecutive store immediates to SP-relative stack addresses
@@ -374,7 +375,7 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei)
 						newdisp += argsize;
 					else
 						newdisp = disp + argsize;
-					res=insn->Disassemble(disasm);
+					res=Disassemble(insn,disasm);
 					assert(res);
 				}
 				
@@ -409,7 +410,7 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei)
                 Instruction_t *insn=*it;
 
                 DISASM disasm;
-		int res=insn->Disassemble(disasm);
+		int res=Disassemble(insn,disasm);
 		assert(res);
 //	cout<<"Pass 2: Checking insn: "<<disasm.CompleteInstr<<" id: "<<insn->GetBaseID()<<endl;
 

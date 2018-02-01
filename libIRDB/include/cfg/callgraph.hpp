@@ -21,8 +21,6 @@
 #ifndef irdb_cfg_callgraph_h
 #define irdb_cfg_callgraph_h
 
-#include <sstream>
-
 // only one type of hell node for now, but leave
 // open the possibilty for multiple hell nodes
 typedef enum { DEFAULT_HELL_NODE = 0 } HellNodeType; 

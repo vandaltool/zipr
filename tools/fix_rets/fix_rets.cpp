@@ -21,6 +21,7 @@
 #include "fix_rets.hpp"
 
 #include <assert.h>
+#include <bea_deprecated.hpp>
 
 using namespace libTransform;
 
@@ -72,7 +73,7 @@ int FixRets::execute()
 				if (insn!=NULL)
 				{
 					DISASM disasm;
-					insn->Disassemble(disasm);
+					Disassemble(insn,disasm);
 					string stack_pointer;
 					string stack_offset_size;
 

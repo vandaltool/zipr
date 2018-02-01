@@ -26,9 +26,9 @@
 #include <fstream>
 #include <stdlib.h>
 #include <map>
-#include "beaengine/BeaEngine.h"
 #include <string.h>
 #include <assert.h>
+#include <bea_deprecated.hpp>
 
 #undef EIP
 
@@ -394,7 +394,7 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 	DISASM disasm;
 
 	/* Disassemble the instruction */
-	int instr_len = newinsn->Disassemble(disasm);
+	int instr_len = Disassemble(newinsn,disasm);
 
 
 	/* if this instruction has a prefix, re-disassemble it showing the segment regs */

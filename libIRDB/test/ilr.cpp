@@ -23,6 +23,7 @@
 #include <libIRDB-core.hpp>
 #include <iostream>
 #include <stdlib.h>
+#include <bea_deprecated.hpp>
 
 using namespace libIRDB;
 using namespace std;
@@ -70,7 +71,7 @@ void do_ilr(VariantID_t *pidp, FileIR_t* firp)
                 if(getenv("ILR_NUMINSNSTOTRANSFORM") && ilrd_instructions==atoi(getenv("ILR_NUMINSNSTOTRANSFORM")))
 		{
 			DISASM d;
-			insn->Disassemble(d);
+			Disassemble(insn,d);
 			cout<<"Aborting after insn #"<<std::dec<<ilrd_instructions<<": "<<d.CompleteInstr << " at "
 				<<std::hex<<insn->GetAddress()->GetVirtualOffset()<<std::dec<<endl; 
 		}

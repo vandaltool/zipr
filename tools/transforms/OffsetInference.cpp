@@ -28,6 +28,7 @@
 #include <set>
 #include <fstream>
 #include "globals.h"
+#include <bea_deprecated.hpp>
 
 using namespace std;
 using namespace libIRDB;
@@ -164,7 +165,7 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 		Instruction_t* instr = entry;
 
 		DISASM disasm;
-		instr->Disassemble(disasm);
+		Disassemble(instr,disasm);
 		disasm_str = disasm.CompleteInstr;
 
 		if(verbose_log)
@@ -244,7 +245,7 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 //					Instruction_t* next=*(it+1);
 					Instruction_t* next = entry->GetFallthrough();
 					DISASM next_disasm;
-					next->Disassemble(next_disasm);
+					Disassemble(next,next_disasm);
 
 					//cerr<<"DEBUG DEBUG: Disasm next match: "<<next_disasm.CompleteInstr<<endl;
 					
@@ -482,7 +483,7 @@ assert(instructions.size() != 0);
 		string disasm_str;
 
 		DISASM disasm;
-		instr->Disassemble(disasm);
+		Disassemble(instr,disasm);
 		disasm_str = disasm.CompleteInstr;
 
 		if(verbose_log)

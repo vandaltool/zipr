@@ -22,6 +22,7 @@
 #include <libIRDB-core.hpp>
 #include <libIRDB-util.hpp>
 #include <utils.hpp>
+#include <bea_deprecated.hpp>
 
 using namespace libIRDB;
 using namespace std;
@@ -30,7 +31,7 @@ using namespace std;
 bool libIRDB::IsParameterWrite(const FileIR_t *firp, Instruction_t* insn, string& output_dst)
 {
 	auto d=DISASM({0});
-	insn->Disassemble(d);
+	Disassemble(insn,d);
 	if(d.Argument1.AccessMode!=WRITE)
 	{
 		return false;
@@ -104,7 +105,7 @@ static Instruction_t* IsOrWasCall(const FileIR_t *firp, Instruction_t* insn)
 		return NULL;
 
 	auto d=DISASM({0});
-	insn->Disassemble(d);
+	Disassemble(insn,d);
 	if(d.Instruction.Mnemonic == string("call "))
 	{
 		return insn->GetTarget();
@@ -142,7 +143,7 @@ bool libIRDB::CallFollows(const FileIR_t *firp, Instruction_t* insn, const strin
 	for(Instruction_t* ptr=insn->GetFallthrough(); ptr!=NULL; ptr=ptr->GetFallthrough())
 	{
 		auto d=DISASM({0});
-		ptr->Disassemble(d);
+		Disassemble(ptr,d);
 		long long vo = 0;
 		if (ptr->GetAddress())
 			vo = ptr->GetAddress()->GetVirtualOffset();
@@ -219,7 +220,7 @@ bool libIRDB::CallFollows(const FileIR_t *firp, Instruction_t* insn, const strin
 bool libIRDB::FlowsIntoCall(const FileIR_t *firp, Instruction_t* insn)
 {
 	auto d=DISASM({0});
-	insn->Disassemble(d);
+	Disassemble(insn,d);
 
 	string param_write;
 	if (!libIRDB::IsParameterWrite(firp, insn, param_write))
@@ -231,7 +232,7 @@ bool libIRDB::FlowsIntoCall(const FileIR_t *firp, Instruction_t* insn)
 bool libIRDB::LeaFlowsIntoCall(const FileIR_t *firp, Instruction_t* insn)
 {
 	auto d=DISASM({0});
-	insn->Disassemble(d);
+	Disassemble(insn,d);
 
 	if(string(d.Instruction.Mnemonic)!="lea ")
 		return false;
@@ -242,7 +243,7 @@ bool libIRDB::LeaFlowsIntoCall(const FileIR_t *firp, Instruction_t* insn)
 bool libIRDB::LeaFlowsIntoPrintf(const FileIR_t *firp, Instruction_t* insn)
 {
 	auto d=DISASM({0});
-	insn->Disassemble(d);
+	Disassemble(insn,d);
 
 	if(string(d.Instruction.Mnemonic)!="lea ")
 		return false;

@@ -28,8 +28,8 @@
 #include <string.h>
 #include <iostream>
 #include <pqxx/pqxx>
-#include <beaengine/BeaEngine.h>
 #include <ctime>
+#include <stdint.h>
 
 namespace libIRDB 
 {

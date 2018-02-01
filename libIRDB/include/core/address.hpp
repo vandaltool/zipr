@@ -18,7 +18,6 @@
  *
  */
 
-#include <stdint.h>
 
 //
 // An address in a variant.

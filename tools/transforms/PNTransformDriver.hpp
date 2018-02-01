@@ -32,6 +32,7 @@
 #include <libIRDB-cfg.hpp>
 #include "canary.h"
 #include <libIRDB-core.hpp>
+#include <bea_deprecated.hpp>
 
 
 //TODO: I should use the types defined by beaengine

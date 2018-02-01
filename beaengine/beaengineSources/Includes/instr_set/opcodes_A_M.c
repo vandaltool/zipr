@@ -990,12 +990,23 @@ void __bea_callspec__ bswap_edi(PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ bsf_GvEv(PDISASM pMyDisasm)
 {
-    (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
-    #ifndef BEA_LIGHT_DISASSEMBLY
-       (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "bsf ");
-    #endif
-    GvEv(pMyDisasm);
-    FillFlags(pMyDisasm,9);
+    	if ((*pMyDisasm).Prefix.RepPrefix == InUsePrefix)
+	{
+    		(*pMyDisasm).Prefix.RepPrefix = InvalidPrefix;
+    		#ifndef BEA_LIGHT_DISASSEMBLY
+       		(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "tzcnt ");
+    		#endif
+    		(*pMyDisasm).Instruction.Category = AVX_INSTRUCTION;
+	}
+    	else
+	{
+    		#ifndef BEA_LIGHT_DISASSEMBLY
+       		(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "bsf ");
+    		#endif
+    		(*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
+	}
+	GvEv(pMyDisasm);
+	FillFlags(pMyDisasm,9);
 }
 
 /* =======================================

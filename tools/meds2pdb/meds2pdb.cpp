@@ -257,6 +257,7 @@ void update_functions(int fileID, const vector<wahoo::Function*> &functions  )
 	if(functionAddress!=0 && 
 		address_to_instructionid_map.find(functionAddress)==address_to_instructionid_map.end())
 	{
+abort();
 		// remove the function from the list of valid functions.
 		query+="delete from "+functionTable;
 		query+=" where function_id = " + txn.quote(my_to_string(function_id));

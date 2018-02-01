@@ -560,7 +560,7 @@ static pair<int,int> get_prologue_data(Function_t *func)
 	for(i=0,insn=func->GetEntryPoint(); insn!=NULL && i<MAX_JUMPS_TO_FOLLOW; ++i,insn=GetNextInstruction(prev,insn, func))
 	{
 		DISASM d;
-		insn->Disassemble(d);
+		Disassemble(insn,d);
 		if(string(d.Instruction.Mnemonic) == "sub " && d.Argument1.ArgType==REGISTER_TYPE+GENERAL_REG+REG4)
 		{
 			subs++;
@@ -593,7 +593,7 @@ static bool is_exit_insn(Instruction_t* prev)
 	if(prev->GetFallthrough()==NULL && prev->GetTarget()==NULL)
 	{
 		DISASM d;
-		prev->Disassemble(d);
+		Disassemble(prev,d);
 		if(string(d.CompleteInstr) == "ret ") 
 			return true;
 
@@ -651,7 +651,7 @@ static bool	check_for_cond_frame(Function_t *func, ControlFlowGraph_t* cfg)
 	const auto is_rsp_sub_insn= [&](const Instruction_t* i) -> bool
 	{
 		DISASM d;
-		i->Disassemble(d);
+		Disassemble(i,d);
 		return is_rsp_sub(d);
 	};
 
@@ -714,7 +714,7 @@ static bool	check_for_push_pop_coherence(Function_t *func)
 	{
 		Instruction_t* insn=*it;
 		DISASM d;
-		insn->Disassemble(d);
+		Disassemble(insn,d);
 		if((string(d.Instruction.Mnemonic) == "add " || string(d.Instruction.Mnemonic) == "lea ") && d.Argument1.ArgType==REGISTER_TYPE+GENERAL_REG+REG4)
 		{
 			Instruction_t *exit_insn=find_exit_insn(insn,func);
@@ -734,7 +734,7 @@ static bool	check_for_push_pop_coherence(Function_t *func)
 			if(exit_insn)
 			{
 				DISASM d2;
-				exit_insn->Disassemble(d2);
+				Disassemble(exit_insn,d2);
 //cerr<<"Found exit insn ("<< d2.CompleteInstr << ") for pop ("<< d.CompleteInstr << ")"<<endl;
 				map<Instruction_t*, int>::iterator mit;
 				mit=pop_count_per_exit.find(exit_insn);
@@ -770,7 +770,7 @@ static bool	check_for_push_pop_coherence(Function_t *func)
 		Instruction_t* insn=map_pair.first;
 		assert(insn);
 		DISASM d;
-		insn->Disassemble(d);
+		Disassemble(insn,d);
 
 //cerr<<"Found "<<map_pair.second<<" pops in exit: \""<< d.CompleteInstr <<"\" func:"<<func->GetName()<<endl;
 
@@ -874,7 +874,7 @@ bool	check_for_bad_variadic_funcs(Function_t *func, const ControlFlowGraph_t* cf
 	{
 		Instruction_t* insn=*it;
 		DISASM d;
-		insn->Disassemble(d);
+		Disassemble(insn,d);
 
 		/* found the suspicious move insn first */
 		if(strcmp(d.CompleteInstr,"movzx eax, al")==0)
@@ -926,7 +926,7 @@ bool PNTransformDriver::check_jump_tables(Instruction_t* insn)
 		return true;
 
 	DISASM d;
-	insn->Disassemble(d);
+	Disassemble(insn,d);
 
 	/* only look at jumps */
 	int branch_type = d.Instruction.BranchType;
@@ -1018,7 +1018,7 @@ bool PNTransformDriver::backup_until(const char* insn_type, Instruction_t *& pre
 		prev=*(preds[prev].begin());
 
         	// get I7's disassembly
-        	prev->Disassemble(disasm);
+        	Disassemble(prev,disasm);
 
         	// check it's the requested type
         	if(strstr(disasm.Instruction.Mnemonic, insn_type)!=NULL)
@@ -1110,7 +1110,7 @@ DN:   0x4824e0: .long 0x4824e0-LN
 	if(!backup_until("lea", I5, I6))
 		return true;
 
-	I5->Disassemble(disasm);
+	Disassemble(I5,disasm);
 
         if(!(disasm.Argument2.ArgType&MEMORY_TYPE))
                 return true;
@@ -1187,7 +1187,7 @@ void PNTransformDriver::SanitizeFunctions()
 			if(instr == NULL)
 				continue;
 
-			instr->Disassemble(disasm);
+			Disassemble(instr,disasm);
 			string disasm_str = disasm.CompleteInstr;
 
 /*
@@ -2244,7 +2244,7 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 		string disasm_str = "";
 		DISASM disasm;
 
-		instr->Disassemble(disasm);
+		Disassemble(instr,disasm);
 		disasm_str = disasm.CompleteInstr;
 
 		if(verbose_log)
@@ -2401,7 +2401,7 @@ bool PNTransformDriver::Sans_Canary_Rewrite(PNStackLayout *layout, Function_t *f
 		Instruction_t* instr=*it;
 		string disasm_str = "";
 		DISASM disasm;
-		instr->Disassemble(disasm);
+		Disassemble(instr,disasm);
 		disasm_str = disasm.CompleteInstr;
 
 		if(verbose_log)
@@ -2463,7 +2463,7 @@ int PNTransformDriver::prologue_offset_to_actual_offset(ControlFlowGraph_t* cfg,
 	{
 		assert(insn);
 		DISASM d;
-		insn->Disassemble(d);
+		Disassemble(insn,d);
 		string disasm_str=d.CompleteInstr;
 		
 		if(strstr(d.CompleteInstr, "push")!=NULL)
@@ -2533,7 +2533,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	string disasm_str = "";
 	DISASM disasm;
 
-	instr->Disassemble(disasm);
+	Disassemble(instr,disasm);
 	disasm_str = disasm.CompleteInstr;
 	
 	//the disassmebly of lea has extra tokens not accepted by nasm, remove those tokens

@@ -25,6 +25,7 @@
 #include "utils.hpp"
 #include "scdi_instr.hpp"
 #include "Rewrite_Utility.hpp"
+#include <bea_deprecated.hpp>
 
 using namespace std;
 using namespace libIRDB;
@@ -224,7 +225,7 @@ bool SimpleCDI_Instrument::add_scdi_instrumentation(Instruction_t* insn)
 
 	ICFS_t* ibts=insn->GetIBTargets();
 	DISASM d;
-	insn->Disassemble(d);
+	Disassemble(insn,d);
 
 	if(getenv("SimpleCDI_VERBOSE")!=NULL && ibts)
 	{
@@ -310,7 +311,7 @@ bool SimpleCDI_Instrument::is_return(Instruction_t* insn)
 	if (insn) 
 	{
 		DISASM d;
-		insn->Disassemble(d);
+		Disassemble(insn,d);
 		return string(d.Instruction.Mnemonic) == string("ret "); 
 
 		// FIXME: handle retn immd, but this means the instrumentation should pop/lea immd

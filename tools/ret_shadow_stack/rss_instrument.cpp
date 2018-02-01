@@ -25,6 +25,7 @@
 #include "MEDS_ProblemFuncAnnotation.hpp"
 #include "Rewrite_Utility.hpp"
 #include <stdlib.h>
+#include <bea_deprecated.hpp>
 
 
 
@@ -276,7 +277,7 @@ bool RSS_Instrument::add_rss_push(FileIR_t* firp, Instruction_t* insn)
 	if(getenv("RSS_VERBOSE")!=NULL)
 	{
 		DISASM d; 
-		insn->Disassemble(d);
+		Disassemble(insn,d);
 		cout<<"Adding push instrumentation at 0x"<<std::hex<<insn->GetAddress()->GetVirtualOffset()
 			<< " disasm="<<d.CompleteInstr <<endl;
 	}
@@ -319,7 +320,7 @@ bool RSS_Instrument::add_rss_pop(FileIR_t* firp, Instruction_t* insn)
 	if(getenv("RSS_VERBOSE")!=NULL)
 	{
 		DISASM d; 
-		insn->Disassemble(d);
+		Disassemble(insn,d);
 		cout<<"Adding pop instrumentation at 0x"<<std::hex<<insn->GetAddress()->GetVirtualOffset()
 			<< " disasm="<<d.CompleteInstr <<endl;
 	}
@@ -392,7 +393,7 @@ bool RSS_Instrument::add_rss_pop(FileIR_t* firp, Instruction_t* insn)
 static bool is_exit_instruction(Instruction_t *insn, MEDS_AnnotationParser *meds_ap)
 {
 	DISASM d;
-	insn->Disassemble(d);
+	Disassemble(insn,d);
 	if(strstr(d.CompleteInstr,"ret")!=0)
 		return true;
 

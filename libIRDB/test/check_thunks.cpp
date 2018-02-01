@@ -35,6 +35,7 @@
 
 #include "check_thunks.hpp"
 #include "fill_in_indtargs.hpp"
+#include <bea_deprecated.hpp>
 
 
 using namespace libIRDB;
@@ -60,7 +61,7 @@ void check_for_thunk_offsets(FileIR_t* firp, virtual_offset_t thunk_base)
 		// if it has a targ and fallthrough (quick test) it might be a call 
 		Instruction_t* insn=*it;
 		DISASM d;
-		insn->Disassemble(d);
+		Disassemble(insn,d);
 	
 		if(string(d.Instruction.Mnemonic)==string("add "))
 		{
@@ -146,7 +147,7 @@ void check_func_for_thunk_offsets(Function_t *func, Instruction_t* thunk_insn,
 		// if it has a targ and fallthrough (quick test) it might be a call 
 		Instruction_t* insn=*it;
 		DISASM d;
-		insn->Disassemble(d);
+		Disassemble(insn,d);
 	
 		if(string(d.Instruction.Mnemonic)==string("add "))
 		{
@@ -198,7 +199,7 @@ void check_func_for_thunk_offsets(Function_t *func, Instruction_t* thunk_insn,
 bool is_thunk_load(Instruction_t* insn, string &reg)
 {
 	DISASM d;
-	insn->Disassemble(d);
+	Disassemble(insn,d);
 
 	if(string(d.Instruction.Mnemonic)!=string("mov "))
 		return false;
@@ -216,7 +217,7 @@ bool is_thunk_load(Instruction_t* insn, string &reg)
 bool is_ret(Instruction_t* insn)
 {
 	DISASM d;
-	insn->Disassemble(d);
+	Disassemble(insn,d);
 
 	if(d.Instruction.BranchType!=RetType)
 		return false;
@@ -230,7 +231,7 @@ bool is_ret(Instruction_t* insn)
 bool is_pop(Instruction_t* insn, string &reg)
 {
         DISASM d;
-        insn->Disassemble(d);
+        Disassemble(insn,d);
 
         if(string(d.Instruction.Mnemonic)!=string("pop "))
                 return false;
@@ -248,7 +249,7 @@ bool is_pop(Instruction_t* insn, string &reg)
 bool is_thunk_call(Instruction_t* insn, string &reg)
 {
 	DISASM d;
-	insn->Disassemble(d);
+	Disassemble(insn,d);
 
 	/* not a call */
 	if(d.Instruction.BranchType!=CallType)
@@ -276,7 +277,7 @@ bool is_thunk_call(Instruction_t* insn, string &reg)
 bool is_thunk_call_type2(Instruction_t* insn, string &reg, Instruction_t** newinsn)
 {
 	DISASM d;
-	insn->Disassemble(d);
+	Disassemble(insn,d);
 
 	/* not a call */
 	if(d.Instruction.BranchType!=CallType)
@@ -305,7 +306,7 @@ bool is_thunk_call_type2(Instruction_t* insn, string &reg, Instruction_t** newin
 bool is_thunk_add(Instruction_t *insn, string reg, string &offset)
 {
 	DISASM d;
-	insn->Disassemble(d);
+	Disassemble(insn,d);
 
 	// make sure it's an add instruction 
 	if(string(d.Instruction.Mnemonic)!=string("add "))

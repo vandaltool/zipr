@@ -28,6 +28,7 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <iomanip>
+#include <bea_deprecated.hpp>
 
 
 
@@ -769,7 +770,7 @@ void FileIR_t::WriteToDB()
 	{	
 		Instruction_t const * const insnp=*i;
 		DISASM disasm;
-		insnp->Disassemble(disasm);
+		Disassemble(insnp,disasm);
 
 		if(insnp->GetOriginalAddressID() == NOT_IN_DATABASE)
 		{

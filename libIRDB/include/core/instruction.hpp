@@ -65,14 +65,14 @@ class Instruction_t : public BaseObj_t
 
 		void WriteToDB() { assert(0); }
 		std::vector<std::string> WriteToDB(File_t *fid, db_id_t newid); 
-		int Disassemble(DISASM &d) const; 
+		// int Disassemble(DISASM &d) const; 
 		std::string getDisassembly() const;
 		bool Assemble(std::string assembly);
 
 		bool IsFunctionExit() const;
 
-		static bool SetsStackPointer(DISASM *disasm);
-		static bool SetsStackPointer(ARGTYPE* arg);
+		//static bool SetsStackPointer(DISASM *disasm);
+		//static bool SetsStackPointer(ARGTYPE* arg);
 
 		bool IsSyscall() { return getDisassembly().find("int 0x80") != std::string::npos; }
 

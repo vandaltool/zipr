@@ -24,6 +24,7 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+#include <bea_deprecated.hpp>
 
 #undef EIP
 
@@ -75,6 +76,7 @@ Instruction_t::Instruction_t(db_id_t id,
 	SetBaseID(id);
 }
 
+/*
 int Instruction_t::Disassemble(DISASM &disasm) const
 {
  
@@ -88,11 +90,12 @@ int Instruction_t::Disassemble(DISASM &disasm) const
  	 
   	return instr_len;  
 }
+*/
 
 std::string Instruction_t::getDisassembly() const
 {
   	DISASM disasm;
-  	Disassemble(disasm);
+  	Disassemble(this,disasm);
   	return std::string(disasm.CompleteInstr);
 }
 
@@ -237,6 +240,7 @@ bool Instruction_t::IsFunctionExit() const
 }
 
 
+/*
 bool Instruction_t::SetsStackPointer(ARGTYPE* arg)
 {
 	if((arg->AccessMode & WRITE ) == 0)
@@ -267,3 +271,4 @@ bool Instruction_t::SetsStackPointer(DISASM* disasm)
 	return false;
 
 }
+*/

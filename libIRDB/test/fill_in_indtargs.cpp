@@ -42,6 +42,7 @@
 #include "check_thunks.hpp"
 #include "fill_in_indtargs.hpp"
 #include "libMEDSAnnotation.h"
+#include <bea_deprecated.hpp>
 
 using namespace libIRDB;
 using namespace std;
@@ -286,7 +287,7 @@ void mark_targets(FileIR_t *firp)
 bool IsParameterWrite(FileIR_t *firp,Instruction_t* insn, string& output_dst)
 {
 	DISASM d;
-	insn->Disassemble(d);
+	Disassemble(insn,d);
 	if(d.Argument1.AccessMode!=WRITE)
 	{
 		return false;
@@ -357,7 +358,7 @@ bool CallToPrintfFollows(FileIR_t *firp, Instruction_t* insn, const string& arg_
 	for(Instruction_t* ptr=insn->GetFallthrough(); ptr!=NULL; ptr=ptr->GetFallthrough())
 	{
 		DISASM d;
-		ptr->Disassemble(d);
+		Disassemble(ptr,d);
 		if(d.Instruction.Mnemonic == string("call "))
 		{
 			// check we have a target
@@ -406,7 +407,7 @@ void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<vir
         {
                 Instruction_t *insn=*it;
                 DISASM disasm;
-                virtual_offset_t instr_len = insn->Disassemble(disasm);
+                virtual_offset_t instr_len = Disassemble(insn,disasm);
 
                 assert(instr_len==insn->GetDataBits().size());
 
@@ -576,7 +577,7 @@ set<Instruction_t*> find_in_function(string needle, Function_t *haystack)
 	for (fit; fit != haystack->GetInstructions().end(); fit++)
 	{
 		Instruction_t *candidate = *fit;
-		candidate->Disassemble(disasm);
+		Disassemble(candidate,disasm);
 
 		// check it's the requested type
 		if(regexec(&preg, disasm.CompleteInstr, 0, NULL, 0) == 0)
@@ -605,7 +606,7 @@ bool backup_until(const char* insn_type_regex, Instruction_t *& prev, Instructio
 	
 
        		// get I7's disassembly
-       		prev->Disassemble(disasm);
+       		Disassemble(prev,disasm);
 
        		// check it's the requested type
        		if(regexec(&preg, disasm.CompleteInstr, 0, NULL, 0) == 0)
@@ -625,7 +626,7 @@ bool backup_until(const char* insn_type_regex, Instruction_t *& prev, Instructio
 		{
 			Instruction_t* pred=*it;
        		
-			pred->Disassemble(disasm);
+			Disassemble(pred,disasm);
        			// check it's the requested type
        			if(regexec(&preg, disasm.CompleteInstr, 0, NULL, 0) == 0)
 			{
@@ -713,7 +714,7 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 	else
 	{
 		DISASM dcmp;
-		Icmp->Disassemble(dcmp);
+		Disassemble(Icmp,dcmp);
 		table_size = dcmp.Instruction.Immediat;
 		if(table_size<=0)
 			table_size=std::numeric_limits<int>::max();
@@ -721,7 +722,7 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 
 	// grab the offset out of the lea.
 	DISASM d2;
-	I3->Disassemble(d2);
+	Disassemble(I3,d2);
 
 	// get the offset from the thunk
 	virtual_offset_t table_offset=d2.Instruction.AddrValue;
@@ -852,7 +853,7 @@ I5:   0x809900e <text_handler+51>: jmp    ecx
 
 	// grab the offset out of the lea.
 	DISASM d2;
-	I3->Disassemble(d2);
+	Disassemble(I3,d2);
 
 	// get the offset from the thunk
 	virtual_offset_t table_offset=d2.Instruction.AddrValue;
@@ -1249,7 +1250,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	if(!backup_until(table_index_str.c_str(), I7, I8))
 		return;
 
-	I7->Disassemble(disasm);
+	Disassemble(I7,disasm);
 
 	// Check if lea instruction is being used as add (scale=1, disp=0)
 	if(strstr(disasm.Instruction.Mnemonic, "lea"))
@@ -1269,7 +1270,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 
 	string lea_string="lea ";
 	
-	I6->Disassemble(disasm);
+	Disassemble(I6,disasm);
 	if( (disasm.Argument2.ArgType&MEMORY_TYPE)	 == MEMORY_TYPE)
 	{
 		// try to be smarter for memory types.
@@ -1351,7 +1352,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	for (found_leas_it; found_leas_it != found_leas.end(); found_leas_it++) 
 	{
 		Instruction_t *I5_cur = *found_leas_it;
-		I5_cur->Disassemble(disasm);
+		Disassemble(I5_cur,disasm);
 
 		if(!(disasm.Argument2.ArgType&MEMORY_TYPE))
 			//return;
@@ -1385,7 +1386,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		if(backup_until(cmp_str.c_str(), I1, I8))
 		{
 			DISASM d1;
-			I1->Disassemble(d1);
+			Disassemble(I1,d1);
 			table_size = d1.Instruction.Immediat;
 			if (table_size <= 0)
 			{
@@ -1397,7 +1398,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		else if(backup_until(cmp_str2.c_str(), I1, I8))
 		{
 			DISASM d1;
-			I1->Disassemble(d1);
+			Disassemble(I1,d1);
 			table_size = d1.Instruction.Immediat;
 			if (table_size <= 0)
 			{
@@ -1532,7 +1533,7 @@ static void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t
 	// extract size off the comparison
 	// make sure not off by one
 	DISASM d1;
-	I1->Disassemble(d1);
+	Disassemble(I1,d1);
 	virtual_offset_t table_size = d1.Instruction.Immediat;
 
 	if (table_size <= 0) return;
@@ -1630,7 +1631,7 @@ static void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, D
 
 	// extract start of jmp table
 	DISASM d4;
-	I4->Disassemble(d4);
+	Disassemble(I4,d4);
 
 	// make sure there's a scaling factor
 	if (d4.Argument2.Memory.Scale < 4)
@@ -1652,7 +1653,7 @@ static void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, D
 	// extract size off the comparison
 	// make sure not off by one
 	DISASM d1;
-	I1->Disassemble(d1);
+	Disassemble(I1,d1);
 	virtual_offset_t table_size = d1.Instruction.Immediat;
 	if (table_size <= 0) return;
 
@@ -2114,7 +2115,7 @@ void mark_return_points(FileIR_t* firp)
 	{
 		Instruction_t* insn=*it;
 		DISASM d;
-		insn->Disassemble(d);
+		Disassemble(insn,d);
 		if(string("call ")==d.Instruction.Mnemonic && insn->GetFallthrough())
 		{
 			targets[insn->GetFallthrough()->GetAddress()->GetVirtualOffset()].add(ibt_provenance_t::ibtp_ret);
@@ -2226,7 +2227,7 @@ void setup_icfs(FileIR_t* firp, EXEIO::exeio* elfiop)
 
 		// disassemble the instruction, and figure out which type of hell node we need.
 		DISASM d;
-		insn->Disassemble(d);
+		Disassemble(insn,d);
 		if(string("ret ")==d.Instruction.Mnemonic || string("retn ")==d.Instruction.Mnemonic)
 		{
 			if(getenv("IB_VERBOSE")!=0)

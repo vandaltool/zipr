@@ -32,6 +32,7 @@
 #include "elfio/elfio_dump.hpp"
 #include "beaengine/BeaEngine.h"
 #include "eh_frame.hpp"
+#include <bea_deprecated.hpp>
 
 int odd_target_count=0;
 int bad_target_count=0;
@@ -367,7 +368,7 @@ void fill_in_cfg(FileIR_t *firp)
       			DISASM disasm;
       			memset(&disasm, 0, sizeof(DISASM));
 	
-      			int instr_len = insn->Disassemble(disasm);
+      			int instr_len = Disassemble(insn,disasm);
 	
 			assert(instr_len==insn->GetDataBits().size());
 	

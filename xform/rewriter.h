@@ -31,8 +31,8 @@ class Rewriter
     FILE* getAsmSpri() { return m_spri; };
     void setAsmSpri(FILE *p_spri) { m_spri = p_spri; };
 
-    // dissassemble all functions
-    void dissassemble();
+    // disassemble all functions
+    void disassemble();
 
     // one instruction modification
     void addSimpleRewriteRule(wahoo::Function* p_func, char *p_origInstr, int p_origSize, app_iaddr_t p_origAddress, char *p_newInstr);

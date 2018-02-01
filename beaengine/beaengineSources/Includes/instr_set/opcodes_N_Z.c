@@ -455,7 +455,7 @@ void __bea_callspec__ pop_Ev(PDISASM pMyDisasm)
         }
     }
     else {
-        FailDecode(pMyDisasm);
+        HandleXop3(pMyDisasm);
     }
 }
 

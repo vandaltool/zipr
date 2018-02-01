@@ -24,6 +24,7 @@
 #include <libIRDB-core.hpp>
 #include <libIRDB-cfg.hpp>
 #include <utils.hpp>
+#include <bea_deprecated.hpp>
 
 using namespace libIRDB;
 using namespace std;
@@ -47,14 +48,14 @@ Callgraph_t::~Callgraph_t()
 static bool IsCallSite(Instruction_t* insn)
 {
 	DISASM insnd;
-	insn->Disassemble(insnd);
+	Disassemble(insn,insnd);
 	return NULL!=(strstr(insnd.Instruction.Mnemonic,"call"));
 }
 
 static bool IsTailJmpSite(Instruction_t* insn)
 {
 	DISASM insnd;
-	insn->Disassemble(insnd);
+	Disassemble(insn,insnd);
 	if(strstr(insnd.Instruction.Mnemonic,"jmp")==NULL)
 		return false;
 
@@ -69,14 +70,14 @@ static bool IsTailJmpSite(Instruction_t* insn)
 static bool IsPushJmpSite(Instruction_t* insn)
 {
 	DISASM insnd;
-	insn->Disassemble(insnd);
+	Disassemble(insn,insnd);
 	if(strstr(insnd.Instruction.Mnemonic,"push")==NULL || insn->GetFallthrough()==NULL)
 		return false;
 
 	if(insn->GetRelocations().size()==0)
 		return false;
 
-	insn->GetFallthrough()->Disassemble(insnd);
+	Disassemble(insn->GetFallthrough(), insnd);
 	if(strstr(insnd.Instruction.Mnemonic,"jmp")==NULL)
 		return false;
 

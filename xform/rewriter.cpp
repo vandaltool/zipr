@@ -623,8 +623,8 @@ any esp access outside this region (esp + K) >= (esp + size) can be xformed
 
 after_loop:
 
-  // for each instruction in a function, dissassemble and stash away assembly string
-	dissassemble();
+  // for each instruction in a function, disassemble and stash away assembly string
+	disassemble();
 }
 
 
@@ -655,14 +655,14 @@ void Rewriter::readElfFile(char p_filename[])
 
 	pclose(pin);
 
-	dissassemble();
+	disassemble();
 }
 
 
 /*
-*   for all instructions, dissassemble them using the BeaEngine
+*   for all instructions, disassemble them using the BeaEngine
 */
-void Rewriter::dissassemble()
+void Rewriter::disassemble()
 {
   	// for every instruction, grab from ELF
   	// disassemble

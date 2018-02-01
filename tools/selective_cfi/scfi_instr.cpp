@@ -30,6 +30,7 @@
 #include <elf.h>
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
+#include <bea_deprecated.hpp>
 
 
 
@@ -358,7 +359,7 @@ static string change_to_push(Instruction_t *insn)
 	string newbits=insn->GetDataBits();
 
 	DISASM d; 
-	insn->Disassemble(d);
+	Disassemble(insn,d);
 
 	int opcode_offset=0;
 
@@ -534,7 +535,7 @@ void SCFI_Instrument::AddReturnCFIForExeNonce(Instruction_t* insn, ColoredSlotVa
 
 	
 	DISASM d;
-	insn->Disassemble(d);
+	Disassemble(insn,d);
 	if(d.Argument1.ArgType!=NO_ARGUMENT)
 	{
 		unsigned int sp_adjust=d.Instruction.Immediat-firp->GetArchitectureBitWidth()/8;
@@ -627,7 +628,7 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 
 	
 	DISASM d;
-	insn->Disassemble(d);
+	Disassemble(insn,d);
 	if(d.Argument1.ArgType!=NO_ARGUMENT)
 	{
 		unsigned int sp_adjust=d.Instruction.Immediat-firp->GetArchitectureBitWidth()/8;
@@ -754,7 +755,7 @@ static void display_histogram(std::ostream& out, std::string attr_label, std::ma
 bool SCFI_Instrument::is_plt_style_jmp(Instruction_t* insn) 
 {
 	DISASM d;
-	insn->Disassemble(d);
+	Disassemble(insn,d);
 	if((d.Argument1.ArgType&MEMORY_TYPE)==MEMORY_TYPE)
 	{
 		if(d.Argument1.Memory.BaseRegister == 0 && d.Argument1.Memory.IndexRegister == 0)  
@@ -807,7 +808,7 @@ bool SCFI_Instrument::instrument_jumps()
 	{
 		Instruction_t* insn=*it;
 		DISASM d;
-		insn->Disassemble(d);
+		Disassemble(insn,d);
 
 
 		// we always have to protect the zestcfi dispatcher, that we just added.

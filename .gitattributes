@@ -201,6 +201,7 @@ libIRDB/LICENSE.txt -text
 libIRDB/Makefile.in -text
 libIRDB/SConscript -text
 libIRDB/SConstruct -text
+libIRDB/include/bea_deprecated.hpp -text
 libIRDB/include/cfg/BasicBlock.hpp -text
 libIRDB/include/cfg/CFG.hpp -text
 libIRDB/include/cfg/callgraph.hpp -text
@@ -1009,7 +1010,6 @@ third_party/do_bea_update.sh -text
 third_party/elfio-2.2.tar.gz -text
 third_party/elfio.hpp -text
 third_party/sqlite-autoconf-3071300.tar.gz -text
-tools/Makefile.in -text
 tools/SConscript -text
 tools/SConstruct -text
 tools/absolutify/SConscript -text
@@ -1119,7 +1119,6 @@ tools/inferfn/SConstruct -text
 tools/inferfn/inferfn.cpp -text
 tools/inferfn/inferfn.hpp -text
 tools/inferfn/inferfn_driver.cpp -text
-tools/meds2pdb/Makefile.in -text
 tools/meds2pdb/SConscript -text
 tools/meds2pdb/SConstruct -text
 tools/meds2pdb/meds2pdb.cpp -text

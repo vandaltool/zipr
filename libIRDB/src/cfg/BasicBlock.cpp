@@ -23,6 +23,7 @@
 #include <libIRDB-core.hpp>
 #include <libIRDB-cfg.hpp>
 #include <utils.hpp>
+#include <bea_deprecated.hpp>
 
 using namespace libIRDB;
 using namespace std;
@@ -168,7 +169,7 @@ bool BasicBlock_t::EndsInBranch()
 
 	assert(branch);
 
-	branch->Disassemble(d);
+	Disassemble(branch,d);
 
 	if(d.Instruction.BranchType!=0)
 		return true;
@@ -183,7 +184,7 @@ bool BasicBlock_t::EndsInIndirectBranch()
 
 	assert(branch);
 
-	branch->Disassemble(d);
+	Disassemble(branch,d);
 
 	if(d.Instruction.BranchType==RetType)
 		return true;
@@ -207,6 +208,7 @@ bool BasicBlock_t::EndsInConditionalBranch()
 	DISASM d;
 	Instruction_t *branch=instructions[instructions.size()-1];	
 	assert(branch);
+	Disassemble(branch,d);
 
 	if(d.Instruction.BranchType==RetType || d.Instruction.BranchType==JmpType || d.Instruction.BranchType==CallType)
 		return false;
