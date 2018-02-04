@@ -957,6 +957,7 @@ tools/cfar_configs/cfar_probNog_probSS_phase1_zipr.sh -text
 tools/cfar_configs/cfar_probNog_probSS_probDSX_phase1_zipr.sh -text
 tools/cfar_configs/cfar_probNog_probSS_probDSX_probSI_phase1_zipr.sh -text
 tools/cfar_configs/cfar_probNog_probSS_probDS_phase1_zipr.sh -text
+tools/cfar_configs/cfar_probNog_probXg_phase1_zipr.sh -text
 tools/cfar_configs/cfar_probNog_probXg_probBilr_zipr.sh -text
 tools/cfar_configs/cfar_probNoh_probIlr_probP1_probHeaprand_probNos_strata.sh -text
 tools/cfar_configs/cfar_probNoh_probNos_probBilr_probP1_probHeaprand_zipr.sh -text
