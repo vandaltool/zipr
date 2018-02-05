@@ -1939,13 +1939,22 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 				assert(newreloc);	
 
 				if(personality_obj==NULL)
-					cout<<"Null personality obj: 0x"<<hex<<personality<<endl;
+				{
+					if(getenv("EHIR_VERBOSE")!=NULL)
+						cout<<"Null personality obj: 0x"<<hex<<personality<<endl;
+				}
 				else if(personality_scoop)
-					cout<<"Found personality scoop: 0x"<<hex<<personality<<" -> "
-					    <<personality_scoop->GetName()<<"+0x"<<hex<<addend<<endl;
+				{
+					if(getenv("EHIR_VERBOSE")!=NULL)
+						cout<<"Found personality scoop: 0x"<<hex<<personality<<" -> "
+						    <<personality_scoop->GetName()<<"+0x"<<hex<<addend<<endl;
+				}
 				else if(personality_insn)
-					cout<<"Found personality insn: 0x"<<hex<<personality<<" -> "
-					    <<personality_insn->GetBaseID()<<":"<<personality_insn->getDisassembly()<<endl;
+				{
+					if(getenv("EHIR_VERBOSE")!=NULL)
+						cout<<"Found personality insn: 0x"<<hex<<personality<<" -> "
+						    <<personality_insn->GetBaseID()<<":"<<personality_insn->getDisassembly()<<endl;
+				}
 				else
 					assert(0);
 

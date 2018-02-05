@@ -7,6 +7,7 @@ dirs='''
 	core  
 	syscall  
 	util
+	decode
 	'''
 
 for i in Split(dirs):

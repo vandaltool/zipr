@@ -38,11 +38,10 @@
 #include <elf.h>
 
 #include <exeio.h>
-#include "beaengine/BeaEngine.h"
 #include "check_thunks.hpp"
 #include "fill_in_indtargs.hpp"
 #include "libMEDSAnnotation.h"
-#include <bea_deprecated.hpp>
+#include <libIRDB-decode.hpp>
 
 using namespace libIRDB;
 using namespace std;
@@ -89,12 +88,12 @@ static long total_unpins=0;
  */
 
 
-static void check_for_PIC_switch_table32_type2(Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t>& thunk_bases);
-static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t>& thunk_bases);
-static void check_for_PIC_switch_table32(FileIR_t*, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t>& thunk_bases);
-static void check_for_PIC_switch_table64(FileIR_t*, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop);
-static void check_for_nonPIC_switch_table(FileIR_t*, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop);
-static void check_for_nonPIC_switch_table_pattern2(FileIR_t*, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop);
+static void check_for_PIC_switch_table32_type2(Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t>& thunk_bases);
+static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t>& thunk_bases);
+static void check_for_PIC_switch_table32(FileIR_t*, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t>& thunk_bases);
+static void check_for_PIC_switch_table64(FileIR_t*, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop);
+static void check_for_nonPIC_switch_table(FileIR_t*, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop);
+static void check_for_nonPIC_switch_table_pattern2(FileIR_t*, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop);
 
 extern void read_ehframe(FileIR_t* firp, EXEIO::exeio* );
 
@@ -205,20 +204,20 @@ EXEIO::section*  find_section(virtual_offset_t addr, EXEIO::exeio *elfiop)
 	return NULL;
 }
 
-void handle_argument(ARGTYPE *arg, Instruction_t* insn, ibt_provenance_t::provtype_t pt = ibt_provenance_t::ibtp_text)
+void handle_argument(const DecodedOperand_t *arg, Instruction_t* insn, ibt_provenance_t::provtype_t pt = ibt_provenance_t::ibtp_text)
 {
-	if( (arg->ArgType&MEMORY_TYPE) == MEMORY_TYPE ) 
+	if(arg->isMemory()) //  (arg->ArgType&MEMORY_TYPE) == MEMORY_TYPE ) 
 	{
-		if((arg->ArgType&RELATIVE_)==RELATIVE_)
+		if(arg->isPcrel()) // (arg->ArgType&RELATIVE_)==RELATIVE_)
 		{
 			assert(insn);
 			assert(insn->GetAddress());
-			possible_target(arg->Memory.Displacement+insn->GetAddress()->GetVirtualOffset()+
+			possible_target(arg->getMemoryDisplacement() /*arg->Memory.Displacement*/+insn->GetAddress()->GetVirtualOffset()+
 				insn->GetDataBits().length(), insn->GetAddress()->GetVirtualOffset(), pt);
 		}
 		else
 		{
-			possible_target(arg->Memory.Displacement, insn->GetAddress()->GetVirtualOffset(), pt);
+			possible_target(arg->getMemoryDisplacement() /* arg->Memory.Displacement*/, insn->GetAddress()->GetVirtualOffset(), pt);
 		}
 	}
 }
@@ -286,9 +285,9 @@ void mark_targets(FileIR_t *firp)
 #ifdef MOMVED
 bool IsParameterWrite(FileIR_t *firp,Instruction_t* insn, string& output_dst)
 {
-	DISASM d;
-	Disassemble(insn,d);
-	if(d.Argument1.AccessMode!=WRITE)
+	DecodedInstruction_t d(insn);
+	(void)WRITE; // makes ure bea header isn't included.
+	if(!d.getOperand(0).IsWrite()) // d.Argument1.AccessMode!=WRITE)
 	{
 		return false;
 	}
@@ -297,17 +296,18 @@ bool IsParameterWrite(FileIR_t *firp,Instruction_t* insn, string& output_dst)
 	if(firp->GetArchitectureBitWidth()==64)
 	{
 		// if it's a register
-		if((d.Argument1.ArgType&REGISTER_TYPE)==REGISTER_TYPE)
+		if(d.getOperand(0).isRegister()) // (d.Argument1.ArgType&REGISTER_TYPE)==REGISTER_TYPE)
 		{
-			int regno=(d.Argument1.ArgType)&0xFFFF;
+			// int regno=(d.Argument1.ArgType)&0xFFFF
+			const auto regno=d.getOperand(0).getRegNumber();
 			switch(regno)
 			{
-				case REG7:	// rdi
-				case REG6:	// rsi
-				case REG2:	// rdx
-				case REG1:	// rcx
-				case REG8:	// r8
-				case REG9:	// r9
+				case 7 /*REG7*/:	// rdi
+				case 6 /*REG6*/:	// rsi
+				case 2 /*REG2*/:	// rdx
+				case 1 /*REG1*/:	// rcx
+				case 8 /*REG8*/:	// r8
+				case 9 /*REG9*/:	// r9
 					output_dst=d.Argument1.ArgMnemonic;
 					return true;
 
@@ -323,19 +323,19 @@ bool IsParameterWrite(FileIR_t *firp,Instruction_t* insn, string& output_dst)
 
 
 	// check for memory type
-	if((d.Argument1.ArgType&MEMORY_TYPE)!=MEMORY_TYPE)
+	if(!d.isMemory()) // (d.Argument1.ArgType&MEMORY_TYPE)!=MEMORY_TYPE)
 		return false;
 
 	// check that base reg is esp.
-	if(d.Argument1.Memory.BaseRegister != REG4)
+	if(d->getOperand(0)->hasBaseRegister() && d->getOperand(0)->getBaseRegister() != 4) // d.Argument1.Memory.BaseRegister != REG4)
 		return false;
 
 	// check that there's no index reg
-	if(d.Argument1.Memory.IndexRegister != 0)
+	if(! d->getOperand(0).hasIndexRegister()) // d.Argument1.Memory.IndexRegister != 0)
 		return false;
 
 	// get k out of [esp + k ]
-	unsigned int k=d.Argument1.Memory.Displacement;
+	unsigned int k=d->getOperand(0).getMemoryDisplacement(); // d.Argument1.Memory.Displacement;
 
 	// check that we know the frame layout.
 	if(insn->GetFunction() == NULL)
@@ -343,7 +343,7 @@ bool IsParameterWrite(FileIR_t *firp,Instruction_t* insn, string& output_dst)
 
 	if(k < insn->GetFunction()->GetOutArgsRegionSize())
 	{
-		output_dst=string("[")+d.Argument1.ArgMnemonic+string("]");
+		output_dst=string("[")+d->getOperand(0).getString() /* d.Argument1.ArgMnemonic*/ +string("]");
 		return true;
 	}
 
@@ -357,9 +357,9 @@ bool CallToPrintfFollows(FileIR_t *firp, Instruction_t* insn, const string& arg_
 {
 	for(Instruction_t* ptr=insn->GetFallthrough(); ptr!=NULL; ptr=ptr->GetFallthrough())
 	{
-		DISASM d;
-		Disassemble(ptr,d);
-		if(d.Instruction.Mnemonic == string("call "))
+		DecodedInstruction_t d(ptr);
+		// Disassemble(ptr,d);
+		if(d.getMnemonic() == string("call"))
 		{
 			// check we have a target
 			if(ptr->GetTarget()==NULL)
@@ -378,7 +378,7 @@ bool CallToPrintfFollows(FileIR_t *firp, Instruction_t* insn, const string& arg_
 		}
 
 		// found reference to argstring, assume it's a write and exit
-		if(string(d.CompleteInstr).find(arg_str)!= string::npos)
+		if(d.getDisassembly()/*string(d.CompleteInstr)*/.find(arg_str)!= string::npos)
 			return false;
 	}
 
@@ -406,8 +406,9 @@ void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<vir
            )
         {
                 Instruction_t *insn=*it;
-                DISASM disasm;
-                virtual_offset_t instr_len = Disassemble(insn,disasm);
+                // DISASM disasm;
+		DecodedInstruction_t disasm(insn);
+                virtual_offset_t instr_len = disasm.length(); // Disassemble(insn,disasm);
 
                 assert(instr_len==insn->GetDataBits().size());
 
@@ -426,7 +427,7 @@ void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<vir
 		check_for_nonPIC_switch_table_pattern2(firp, insn,disasm, elfiop);
 
 		/* other branches can't indicate an indirect branch target */
-		if(disasm.Instruction.BranchType)
+		if(disasm.isBranch()) // disasm.Instruction.BranchType)
 			continue;
 
 		ibt_provenance_t::provtype_t prov=0;
@@ -436,15 +437,19 @@ void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<vir
 		}
 		else
 		{
-			cout<<"TextToPrintf analysis of '"<<disasm.CompleteInstr<<"' successful at " <<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
+			cout<<"TextToPrintf analysis of '"<<disasm.getDisassembly()<<"' successful at " <<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
 			prov=ibt_provenance_t::ibtp_texttoprintf;
 		}
 		/* otherwise, any immediate is a possible branch target */
-		possible_target(disasm.Instruction.Immediat,0, prov);
-		handle_argument(&disasm.Argument1, insn, prov);
-		handle_argument(&disasm.Argument2, insn, prov);
-		handle_argument(&disasm.Argument3, insn, prov);
-		handle_argument(&disasm.Argument4, insn, prov);
+		possible_target(disasm.getImmediate() /* Instruction.Immediat*/ ,0, prov);
+		const auto op0=disasm.getOperand(0);
+		const auto op1=disasm.getOperand(1);
+		const auto op2=disasm.getOperand(2);
+		const auto op3=disasm.getOperand(3);
+		handle_argument(&op0, insn, prov);
+		handle_argument(&op1, insn, prov);
+		handle_argument(&op2, insn, prov);
+		handle_argument(&op3, insn, prov);
 	}
 }
 
@@ -566,7 +571,6 @@ void print_targets_oneline()
 
 set<Instruction_t*> find_in_function(string needle, Function_t *haystack)
 {
-	DISASM disasm;
 	regex_t preg;
 	set<Instruction_t*>::const_iterator fit;
 	set<Instruction_t*> found_instructions;
@@ -577,10 +581,12 @@ set<Instruction_t*> find_in_function(string needle, Function_t *haystack)
 	for (fit; fit != haystack->GetInstructions().end(); fit++)
 	{
 		Instruction_t *candidate = *fit;
-		Disassemble(candidate,disasm);
+		//DISASM disasm;
+		//Disassemble(candidate,disasm);
+		DecodedInstruction_t disasm(candidate);
 
 		// check it's the requested type
-		if(regexec(&preg, disasm.CompleteInstr, 0, NULL, 0) == 0)
+		if(regexec(&preg, disasm.getDisassembly().c_str() /*CompleteInstr*/, 0, NULL, 0) == 0)
 		{
 			found_instructions.insert(candidate);
 		}
@@ -591,7 +597,6 @@ set<Instruction_t*> find_in_function(string needle, Function_t *haystack)
 
 bool backup_until(const char* insn_type_regex, Instruction_t *& prev, Instruction_t* orig, bool recursive=false)
 {
-	DISASM disasm;
 	prev=orig;
 	regex_t preg;
 
@@ -606,10 +611,12 @@ bool backup_until(const char* insn_type_regex, Instruction_t *& prev, Instructio
 	
 
        		// get I7's disassembly
-       		Disassemble(prev,disasm);
+		//DISASM disasm;
+       		//Disassemble(prev,disasm);
+		DecodedInstruction_t disasm(prev);
 
        		// check it's the requested type
-       		if(regexec(&preg, disasm.CompleteInstr, 0, NULL, 0) == 0)
+       		if(regexec(&preg, disasm.getDisassembly().c_str() /*CompleteInstr*/, 0, NULL, 0) == 0)
 		{
 			regfree(&preg);
 			return true;
@@ -625,10 +632,10 @@ bool backup_until(const char* insn_type_regex, Instruction_t *& prev, Instructio
 			it!=preds[myprev].end(); ++it)
 		{
 			Instruction_t* pred=*it;
-       		
-			Disassemble(pred,disasm);
+			//Disassemble(pred,disasm);
+			DecodedInstruction_t disasm(pred);
        			// check it's the requested type
-       			if(regexec(&preg, disasm.CompleteInstr, 0, NULL, 0) == 0)
+       			if(regexec(&preg, disasm.getDisassembly().c_str()/*CompleteInstr*/, 0, NULL, 0) == 0)
 			{
 				regfree(&preg);
 				return true;
@@ -650,7 +657,7 @@ bool backup_until(const char* insn_type_regex, Instruction_t *& prev, Instructio
 /*
  * check_for_PIC_switch_table32 - look for switch tables in PIC code for 32-bit code.
  */
-static void check_for_PIC_switch_table32(FileIR_t *firp, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
+static void check_for_PIC_switch_table32(FileIR_t *firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
 {
 
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type1;
@@ -683,15 +690,15 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
         Instruction_t* I4=NULL;
         Instruction_t* I3=NULL;
         // check if I5 is a jump
-        if(strstr(disasm.Instruction.Mnemonic, "jmp")==NULL)
+        if(strstr(disasm.getMnemonic().c_str() /*Instruction.Mnemonic*/, "jmp")==NULL)
 		return;
 
 	// return if it's a jump to a constant address, these are common
-        if(disasm.Argument1.ArgType&CONSTANT_TYPE)
+        if(disasm.getOperand(0).isConstant() /*disasm.Argument1.ArgType&CONSTANT_TYPE*/)
 		return;
 
 	// return if it's a jump to a memory address
-        if(disasm.Argument1.ArgType&MEMORY_TYPE)
+        if(disasm.getOperand(0).isMemory() /*disasm.Argument1.ArgType&MEMORY_TYPE*/)
 		return;
 
 	// has to be a jump to a register now
@@ -713,23 +720,26 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 	}
 	else
 	{
-		DISASM dcmp;
-		Disassemble(Icmp,dcmp);
-		table_size = dcmp.Instruction.Immediat;
+		//DISASM dcmp;
+		//Disassemble(Icmp,dcmp);
+		DecodedInstruction_t dcmp(Icmp);	
+		table_size = dcmp.getImmediate(); //Instruction.Immediat;
 		if(table_size<=0)
 			table_size=std::numeric_limits<int>::max();
 	}
 
 	// grab the offset out of the lea.
-	DISASM d2;
-	Disassemble(I3,d2);
+	//DISASM d2;
+	//Disassemble(I3,d2);
+	DecodedInstruction_t d2(I3);
 
 	// get the offset from the thunk
-	virtual_offset_t table_offset=d2.Instruction.AddrValue;
+	virtual_offset_t table_offset=d2.getAddress(); // d2.Instruction.AddrValue;
 	if(table_offset==0)
 		return;
 
-cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< " with table_offset="<<table_offset<<" and table_size="<<table_size<<endl;
+	cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< " with table_offset="<<table_offset
+	    <<" and table_size="<<table_size<<endl;
 		
 	/* iterate over all thunk_bases/module_starts */
 	for(set<virtual_offset_t>::iterator it=thunk_bases.begin(); it!=thunk_bases.end(); ++it)
@@ -813,7 +823,7 @@ cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< "
 
 }
 
-static void check_for_PIC_switch_table32_type2(Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
+static void check_for_PIC_switch_table32_type2(Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
 {
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type2;
 #if 0
@@ -830,15 +840,16 @@ I5:   0x809900e <text_handler+51>: jmp    ecx
         Instruction_t* I4=NULL;
         Instruction_t* I3=NULL;
         // check if I5 is a jump
-        if(strstr(disasm.Instruction.Mnemonic, "jmp")==NULL)
+        if(strstr(disasm.getMnemonic().c_str() /*disasm.Instruction.Mnemonic*/, "jmp")==NULL)
 		return;
 
 	// return if it's a jump to a constant address, these are common
-        if(disasm.Argument1.ArgType&CONSTANT_TYPE)
+        if(disasm.getOperand(0).isConstant() /*disasm.Argument1.ArgType&CONSTANT_TYPE*/)
 		return;
 
 	// return if it's a jump to a memory address
-        if(disasm.Argument1.ArgType&MEMORY_TYPE)
+        //if(disasm.Argument1.ArgType&MEMORY_TYPE)
+        if(disasm.getOperand(0).isMemory())
 		return;
 
 	// has to be a jump to a register now
@@ -852,11 +863,12 @@ I5:   0x809900e <text_handler+51>: jmp    ecx
 		return;
 
 	// grab the offset out of the lea.
-	DISASM d2;
-	Disassemble(I3,d2);
+	//DISASM d2;
+	//Disassemble(I3,d2);
+	DecodedInstruction_t d2(I3);
 
 	// get the offset from the thunk
-	virtual_offset_t table_offset=d2.Instruction.AddrValue;
+	virtual_offset_t table_offset=d2.getAddress(); // d2.Instruction.AddrValue;
 	if(table_offset==0)
 		return;
 
@@ -933,30 +945,36 @@ cout<<hex<<"Found (type2) switch dispatch at "<<I3->GetAddress()->GetVirtualOffs
  *
  * nb: also works for 64-bit.
  */
-static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
+static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
 {
 	int ptrsize=firp->GetArchitectureBitWidth()/8;
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type3;
 
         Instruction_t* I5=insn;
         // check if I5 is a jump
-        if(strstr(disasm.Instruction.Mnemonic, "jmp")==NULL)
+        //if(strstr(disasm.Instruction.Mnemonic, "jmp")==NULL)
+        if(strstr(disasm.getMnemonic().c_str()/*Instruction.Mnemonic*/, "jmp")==NULL)
 		return;
 
 	// return if it's not a jump to a memory address
-        if(!(disasm.Argument1.ArgType&MEMORY_TYPE))
+        //if(!(disasm.Argument1.ArgType&MEMORY_TYPE))
+        if(!(disasm.getOperand(0).isMemory()))
 		return;
 
 	/* return if there's no displacement */
-        if(disasm.Argument1.Memory.Displacement==0)
+        //if(disasm.Argument1.Memory.Displacement==0)
+        if(disasm.getOperand(0).getMemoryDisplacement()==0)
 		return;
 
-        if(disasm.Argument1.Memory.Scale!=ptrsize)
+        //if(disasm.Argument1.Memory.Scale!=ptrsize)
+        // if(disasm.getOperand(0).getScaleValue()!=ptrsize)
+        if(!disasm.getOperand(0).hasIndexRegister() || disasm.getOperand(0).getScaleValue()!=ptrsize)
 		return;
 
 	// grab the table base out of the jmp.
-	virtual_offset_t table_base=disasm.Argument1.Memory.Displacement;
-        if((disasm.Argument1.ArgType&RELATIVE_))
+	virtual_offset_t table_base=disasm.getOperand(0).getMemoryDisplacement();//disasm.Argument1.Memory.Displacement;
+        //if((disasm.Argument1.ArgType&RELATIVE_))
+        if(disasm.getOperand(0).isPcrel())
 		table_base+=insn->GetDataBits().size()+insn->GetAddress()->GetVirtualOffset();
 
 	if(table_base==0)
@@ -1049,13 +1067,12 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 
 		/* if there's no base register and no index reg, */
 		/* then this jmp can't have more than one valid table entry */
-		if( disasm.Argument1.Memory.BaseRegister==0 && disasm.Argument1.Memory.IndexRegister==0 ) 
+		//if( disasm.Argument1.Memory.BaseRegister==0 && disasm.Argument1.Memory.IndexRegister==0 ) 
+		if( !disasm.getOperand(0).hasBaseRegister() && !disasm.getOperand(0).hasIndexRegister()) 
 		{
 			/* but the table can have 1 valid entry. */
 			if(pSec->get_name()==".got.plt")
 			{	
-
-
 	                        Instruction_t *ibtarget = lookupInstruction(firp, table_entry);
 				if(ibtarget)
 				{
@@ -1067,7 +1084,7 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 #endif
 					possible_target(table_entry,table_base+0*ptrsize, ibt_provenance_t::ibtp_gotplt);
 					if(getenv("IB_VERBOSE")!=0)
-						cout<<hex<<"Found  plt dispatch ("<<disasm.CompleteInstr<<"') at "<<I5->GetAddress()->GetVirtualOffset()<< endl;
+						cout<<hex<<"Found  plt dispatch ("<<disasm.getDisassembly()<<"') at "<<I5->GetAddress()->GetVirtualOffset()<< endl;
 					return;
 				}
 			}
@@ -1076,14 +1093,16 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 			else
 				possible_target(table_entry,table_base+0*ptrsize, ibt_provenance_t::ibtp_rodata);
 			if(getenv("IB_VERBOSE")!=0)
-				cout<<hex<<"Found  constant-memory dispatch from non- .got.plt location ("<<disasm.CompleteInstr<<"') at "<<I5->GetAddress()->GetVirtualOffset()<< endl;
+				cout<<hex<<"Found  constant-memory dispatch from non- .got.plt location ("<<disasm.getDisassembly()<<"') at "
+				    <<I5->GetAddress()->GetVirtualOffset()<< endl;
 			return;
 		}
 		if(!is_possible_target(table_entry,table_base+i*ptrsize))
 		{
 			if(getenv("IB_VERBOSE")!=0)
 			{
-				cout<<hex<<"Found (type3) candidate for switch dispatch for '"<<disasm.CompleteInstr<<"' at "<<I5->GetAddress()->GetVirtualOffset()<< " with table_base="<<table_base<<endl;
+				cout<<hex<<"Found (type3) candidate for switch dispatch for '"<<disasm.getDisassembly()<<"' at "
+				    <<I5->GetAddress()->GetVirtualOffset()<< " with table_base="<<table_base<<endl;
 				cout<<"Found table_entry "<<hex<<table_entry<<" is not valid\n"<<endl;
 			}
 			return;	
@@ -1146,7 +1165,7 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
  * if so, see if we can trace back a few instructions to find a
  * the start of the table.
  */
-static void check_for_PIC_switch_table64(FileIR_t* firp, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop)
+static void check_for_PIC_switch_table64(FileIR_t* firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop)
 {
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type4;
 /* here's the pattern we're looking for */
@@ -1219,14 +1238,14 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	Instruction_t* I5=NULL;
 	Instruction_t* I1=NULL;
 	// check if I8 is a jump
-	if(strstr(disasm.Instruction.Mnemonic, "jmp")==NULL)
+	if(strstr(disasm.getMnemonic().c_str()/*Instruction.Mnemonic*/, "jmp")==NULL)
 		return;
 
 	// return if it's a jump to a constant address, these are common
-	if(disasm.Argument1.ArgType&CONSTANT_TYPE)
+	if(disasm.getOperand(0).isConstant()) //disasm.Argument1.ArgType&CONSTANT_TYPE)
 		return;
 	// return if it's a jump to a memory address
-	if(disasm.Argument1.ArgType&MEMORY_TYPE)
+	if(disasm.getOperand(0).isMemory()) // Argument1.ArgType&MEMORY_TYPE)
 		return;
 
 	// has to be a jump to a register now
@@ -1239,25 +1258,26 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	 * Backup and find the instruction that's an add or lea before I8.
 	 */
 	table_index_str = "(add ";
-	table_index_str += disasm.Argument1.ArgMnemonic;
+	table_index_str += disasm.getOperand(0).getString(); //Argument1.ArgMnemonic;
 	table_index_str += "|lea ";
-	table_index_str += disasm.Argument1.ArgMnemonic;
+	table_index_str += disasm.getOperand(0).getString(); //Argument1.ArgMnemonic;
 	table_index_str += ")";
 
-	const auto cmp_str = string("cmp ") + disasm.Argument1.ArgMnemonic;
-	const auto cmp_str2 = string("cmp ") + disasm.Argument2.ArgMnemonic;
+	const auto cmp_str = string("cmp ") + disasm.getOperand(0).getString(); //Argument1.ArgMnemonic;
+	const auto cmp_str2 = string("cmp ") + disasm.getOperand(1).getString(); //Argument2.ArgMnemonic;
 
 	if(!backup_until(table_index_str.c_str(), I7, I8))
 		return;
 
-	Disassemble(I7,disasm);
+	// Disassemble(I7,disasm);
+	disasm=DecodedInstruction_t(I7);
 
 	// Check if lea instruction is being used as add (scale=1, disp=0)
-	if(strstr(disasm.Instruction.Mnemonic, "lea"))
+	if(strstr(disasm.getMnemonic().c_str() /* Instruction.Mnemonic*/, "lea"))
 	{
-		if(!(disasm.Argument2.ArgType&MEMORY_TYPE))
+		if(!(disasm.getOperand(1).isMemory() /*disasm.Argument2.ArgType&MEMORY_TYPE)*/))
 			return;
-		if(!(disasm.Argument2.Memory.Scale == 1 && disasm.Argument2.Memory.Displacement == 0))
+		if(!(disasm.getOperand(1).getScaleValue() /* .Argument2.Memory.Scale */ == 1 && disasm.getOperand(1).getMemoryDisplacement() /*Argument2.Memory.Displacement*/ == 0))
 			return;
 	} 
 	// backup and find the instruction that's an movsxd before I7
@@ -1270,8 +1290,9 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 
 	string lea_string="lea ";
 	
-	Disassemble(I6,disasm);
-	if( (disasm.Argument2.ArgType&MEMORY_TYPE)	 == MEMORY_TYPE)
+	// Disassemble(I6,disasm);
+	disasm=DecodedInstruction_t(I6);
+	if( disasm.getOperand(1).isMemory() /* (disasm.Argument2.ArgType&MEMORY_TYPE)	 == MEMORY_TYPE*/)
 	{
 		// try to be smarter for memory types.
 
@@ -1281,24 +1302,26 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		 * for the base of the jump table.
 		 */
 		string base_reg="";
-		switch(disasm.Argument2.Memory.BaseRegister)
+		if(!disasm.getOperand(1).hasBaseRegister() /*Argument2.Memory.BaseRegister*/)
+			return;
+		switch(disasm.getOperand(1).getBaseRegister() /*Argument2.Memory.BaseRegister*/)
 		{
-			case REG0: base_reg="rax"; break;
-			case REG1: base_reg="rcx"; break;
-			case REG2: base_reg="rdx"; break;
-			case REG3: base_reg="rbx"; break;
-			case REG4: base_reg="rsp"; break;
-			case REG5: base_reg="rbp"; break;
-			case REG6: base_reg="rsi"; break;
-			case REG7: base_reg="rdi"; break;
-			case REG8: base_reg="r8"; break;
-			case REG9: base_reg="r9"; break;
-			case REG10: base_reg="r10"; break;
-			case REG11: base_reg="r11"; break;
-			case REG12: base_reg="r12"; break;
-			case REG13: base_reg="r13"; break;
-			case REG14: base_reg="r14"; break;
-			case REG15: base_reg="r15"; break;
+			case 0/*REG0*/: base_reg="rax"; break;
+			case 1/*REG1*/: base_reg="rcx"; break;
+			case 2/*REG2*/: base_reg="rdx"; break;
+			case 3/*REG3*/: base_reg="rbx"; break;
+			case 4/*REG4*/: base_reg="rsp"; break;
+			case 5/*REG5*/: base_reg="rbp"; break;
+			case 6/*REG6*/: base_reg="rsi"; break;
+			case 7/*REG7*/: base_reg="rdi"; break;
+			case 8/*REG8*/: base_reg="r8"; break;
+			case 9/*REG9*/: base_reg="r9"; break;
+			case 10/*REG10*/: base_reg="r10"; break;
+			case 11/*REG11*/: base_reg="r11"; break;
+			case 12/*REG12*/: base_reg="r12"; break;
+			case 13/*REG13*/: base_reg="r13"; break;
+			case 14/*REG14*/: base_reg="r14"; break;
+			case 15/*REG15*/: base_reg="r15"; break;
 			default: 
 				// no base register;
 				return;
@@ -1352,12 +1375,13 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	for (found_leas_it; found_leas_it != found_leas.end(); found_leas_it++) 
 	{
 		Instruction_t *I5_cur = *found_leas_it;
-		Disassemble(I5_cur,disasm);
+		//Disassemble(I5_cur,disasm);
+		disasm=DecodedInstruction_t(I5_cur);
 
-		if(!(disasm.Argument2.ArgType&MEMORY_TYPE))
+		if(!(disasm.getOperand(1).isMemory() /*Argument2.ArgType&MEMORY_TYPE*/))
 			//return;
 			continue;
-		if(!(disasm.Argument2.ArgType&RELATIVE_))
+		if(!(disasm.getOperand(1).isPcrel() /*Argument2.ArgType&RELATIVE_*/))
 			//return;
 			continue;
 
@@ -1365,7 +1389,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		// instruction address (and include the instruction's size, etc.
 		// but, fix_calls has already removed this oddity so we can relocate
 		// the instruction.
-		virtual_offset_t D1=strtol(disasm.Argument2.ArgMnemonic, NULL, 16);
+		virtual_offset_t D1=strtol(disasm.getOperand(1).getString().c_str()/*Argument2.ArgMnemonic*/, NULL, 16);
 
 		// find the section with the data table
 		EXEIO::section *pSec=find_section(D1,elfiop);
@@ -1385,25 +1409,27 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		int table_size = 0;
 		if(backup_until(cmp_str.c_str(), I1, I8))
 		{
-			DISASM d1;
-			Disassemble(I1,d1);
-			table_size = d1.Instruction.Immediat;
+			//DISASM d1;
+			//Disassemble(I1,d1);
+			DecodedInstruction_t d1(I1);
+			table_size = d1.getImmediate(); // Instruction.Immediat;
 			if (table_size <= 0)
 			{
-				cout<<"pic64: found I1 ('"<<d1.CompleteInstr<<"'), but could not find size of switch table"<<endl;
+				cout<<"pic64: found I1 ('"<<d1.getDisassembly()/*CompleteInstr*/<<"'), but could not find size of switch table"<<endl;
 				// set table_size to be very large, so we can still do pinning appropriately
 				table_size=std::numeric_limits<int>::max();
 			}
 		}
 		else if(backup_until(cmp_str2.c_str(), I1, I8))
 		{
-			DISASM d1;
-			Disassemble(I1,d1);
-			table_size = d1.Instruction.Immediat;
+			//DISASM d1;
+			//Disassemble(I1,d1);
+			DecodedInstruction_t d1(I1);
+			table_size = d1.getImmediate()/*Instruction.Immediat*/;
 			if (table_size <= 0)
 			{
 				// set table_size to be very large, so we can still do pinning appropriately
-				cout<<"pic64: found I1 ('"<<d1.CompleteInstr<<"'), but could not find size of switch table"<<endl;
+				cout<<"pic64: found I1 ('"<<d1.getDisassembly()/*CompleteInstr*/<<"'), but could not find size of switch table"<<endl;
 				table_size=std::numeric_limits<int>::max();
 			}
 		}
@@ -1441,7 +1467,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 			if(getenv("IB_VERBOSE"))
 			{
 				cout<<"Found possible table entry, at: "<< std::hex << I8->GetAddress()->GetVirtualOffset()
-			    		<< " insn: " << disasm.CompleteInstr<< " d1: "
+			    		<< " insn: " << disasm.getDisassembly()/*CompleteInstr*/<< " d1: "
 			    		<< D1 << " table_entry:" << table_entry 
 			    		<< " target: "<< D1+table_entry << std::dec << endl;
 			}
@@ -1497,7 +1523,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 
 	nb: handles both 32 and 64 bit
 */
-static void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop)
+static void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop)
 {
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type5;
 	Instruction_t *I1 = NULL;
@@ -1506,19 +1532,23 @@ static void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t
 	assert(IJ);
 
 	// check if IJ is a jump
-	if(strstr(disasm.Instruction.Mnemonic, "jmp")==NULL)
+	//if(strstr(disasm.Instruction.Mnemonic, "jmp")==NULL)
+	if(strstr(disasm.getMnemonic().c_str(), "jmp")==NULL)
 		return;
 
 	// look for a memory type
-	if(!(disasm.Argument1.ArgType&MEMORY_TYPE))
+	//if(!(disasm.Argument1.ArgType&MEMORY_TYPE))
+	if(!(disasm.getOperand(0).isMemory()))
 		return;
 
 	// make sure there's a scaling factor
-	if (disasm.Argument1.Memory.Scale < 4)
+	//if (disasm.Argument1.Memory.Scale < 4)
+	//if (disasm.getOperand(0).getScaleValue() < 4) assumes scale is meaningful here?  
+	if (!disasm.getOperand(0).hasIndexRegister() || disasm.getOperand(0).getScaleValue() < 4)
 		return;
 
 	// extract start of jmp table
-	virtual_offset_t table_offset = disasm.Instruction.AddrValue;
+	virtual_offset_t table_offset = disasm.getAddress(); // disasm.Instruction.AddrValue;
 	if(table_offset==0)
 		return;
 
@@ -1532,9 +1562,10 @@ static void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t
 
 	// extract size off the comparison
 	// make sure not off by one
-	DISASM d1;
-	Disassemble(I1,d1);
-	virtual_offset_t table_size = d1.Instruction.Immediat;
+	//DISASM d1;
+	//Disassemble(I1,d1);
+	DecodedInstruction_t d1(I1);
+	virtual_offset_t table_size = d1.getImmediate()/*d1.Instruction.Immediat*/;
 
 	if (table_size <= 0) return;
 
@@ -1601,7 +1632,7 @@ static void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t
 
 	nb: handles both 32 and 64 bit
 */
-static void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DISASM disasm, EXEIO::exeio* elfiop)
+static void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop)
 {
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type6;
 	Instruction_t *I1 = NULL;
@@ -1612,15 +1643,15 @@ static void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, D
 	if (!IJ) return;
 
 	// check if IJ is a jump
-	if(strstr(disasm.Instruction.Mnemonic, "jmp")==NULL)
+	if(strstr(disasm.getMnemonic().c_str()/*disasm.Instruction.Mnemonic*/, "jmp")==NULL)
 		return;
 
 	// return if it's a jump to a constant address, these are common
-	if(disasm.Argument1.ArgType&CONSTANT_TYPE)
+	if(disasm.getOperand(0).isConstant() /*disasm.Argument1.ArgType&CONSTANT_TYPE*/)
 		return;
 
 	// return if it's a jump to a memory address
-	if(disasm.Argument1.ArgType&MEMORY_TYPE)
+	if(disasm.getOperand(0).isMemory() /*disasm.Argument1.ArgType&MEMORY_TYPE*/)
 		return;
 
 	// has to be a jump to a register now
@@ -1630,14 +1661,15 @@ static void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, D
 		return;
 
 	// extract start of jmp table
-	DISASM d4;
-	Disassemble(I4,d4);
+	// DISASM d4;
+	// Disassemble(I4,d4);
+	DecodedInstruction_t d4(I4);
 
 	// make sure there's a scaling factor
-	if (d4.Argument2.Memory.Scale < 4)
+	if (d4.getOperand(1).isMemory() && d4.getOperand(1).getScaleValue() /*d4.Argument2.Memory.Scale*/ < 4)
 		return;
 
-	virtual_offset_t table_offset=d4.Instruction.AddrValue;
+	virtual_offset_t table_offset=d4.getAddress(); // d4.Instruction.AddrValue;
 	if(table_offset==0)
 		return;
 
@@ -1652,9 +1684,10 @@ static void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, D
 
 	// extract size off the comparison
 	// make sure not off by one
-	DISASM d1;
-	Disassemble(I1,d1);
-	virtual_offset_t table_size = d1.Instruction.Immediat;
+	//DISASM d1;
+	//Disassemble(I1,d1);
+	DecodedInstruction_t d1(I1);
+	virtual_offset_t table_size = d1.getImmediate(); // d1.Instruction.Immediat;
 	if (table_size <= 0) return;
 
 	if(getenv("IB_VERBOSE"))
@@ -2114,9 +2147,10 @@ void mark_return_points(FileIR_t* firp)
            )
 	{
 		Instruction_t* insn=*it;
-		DISASM d;
-		Disassemble(insn,d);
-		if(string("call ")==d.Instruction.Mnemonic && insn->GetFallthrough())
+		//DISASM d;
+		//Disassemble(insn,d);
+		DecodedInstruction_t d(insn);
+		if(string("call")==d.getMnemonic() /*.Instruction.Mnemonic*/ && insn->GetFallthrough())
 		{
 			targets[insn->GetFallthrough()->GetAddress()->GetVirtualOffset()].add(ibt_provenance_t::ibtp_ret);
 		}
@@ -2226,22 +2260,25 @@ void setup_icfs(FileIR_t* firp, EXEIO::exeio* elfiop)
 		}
 
 		// disassemble the instruction, and figure out which type of hell node we need.
-		DISASM d;
-		Disassemble(insn,d);
-		if(string("ret ")==d.Instruction.Mnemonic || string("retn ")==d.Instruction.Mnemonic)
+		//DISASM d;
+		//Disassemble(insn,d);
+		DecodedInstruction_t d(insn);
+		if(string("ret")==d.getMnemonic() /*Instruction.Mnemonic*/ || string("retn")==d.getMnemonic() /*d.Instruction.Mnemonic*/)
 		{
 			if(getenv("IB_VERBOSE")!=0)
 				cout<<"using ret hell node for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
 			insn->SetIBTargets(ret_hell);
 		}
-		else if ( (string("call ")==d.Instruction.Mnemonic) && ((d.Argument1.ArgType&0xffff0000&CONSTANT_TYPE)!=CONSTANT_TYPE))
+		//else if ( (string("call ")==d.Instruction.Mnemonic) && ((d.Argument1.ArgType&0xffff0000&CONSTANT_TYPE)!=CONSTANT_TYPE))
+		else if ( (string("call")==d.getMnemonic()) && (!d.getOperand(0).isConstant()))
 		{
 			if(getenv("IB_VERBOSE")!=0)
 				cout<<"using call hell node for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
 			// indirect call 
 			insn->SetIBTargets(call_hell);
 		}
-		else if ( (string("jmp ")==d.Instruction.Mnemonic) && ((d.Argument1.ArgType&0xffff0000&CONSTANT_TYPE)!=CONSTANT_TYPE))
+		//else if ( (string("jmp ")==d.Instruction.Mnemonic) && ((d.Argument1.ArgType&0xffff0000&CONSTANT_TYPE)!=CONSTANT_TYPE))
+		else if ( (string("jmp")==d.getMnemonic()) && (!d.getOperand(0).isConstant()))
 		{
 			if(getenv("IB_VERBOSE")!=0)
 				cout<<"using jmp hell node for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;

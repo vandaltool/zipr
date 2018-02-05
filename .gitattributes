@@ -223,8 +223,11 @@ libIRDB/include/core/reloc.hpp -text
 libIRDB/include/core/scoop.hpp -text
 libIRDB/include/core/type.hpp -text
 libIRDB/include/core/variantid.hpp -text
+libIRDB/include/decode/decode.hpp -text
+libIRDB/include/decode/operand.hpp -text
 libIRDB/include/libIRDB-cfg.hpp -text
 libIRDB/include/libIRDB-core.hpp -text
+libIRDB/include/libIRDB-decode.hpp -text
 libIRDB/include/libIRDB-syscall.hpp -text
 libIRDB/include/libIRDB-util.hpp -text
 libIRDB/include/syscall/syscall.hpp -text
@@ -260,6 +263,9 @@ libIRDB/src/core/reloc.cpp -text
 libIRDB/src/core/scoop.cpp -text
 libIRDB/src/core/type.cpp -text
 libIRDB/src/core/variantid.cpp -text
+libIRDB/src/decode/SConscript -text
+libIRDB/src/decode/decode.cpp -text
+libIRDB/src/decode/operand.cpp -text
 libIRDB/src/syscall/Makefile.in -text
 libIRDB/src/syscall/SConscript -text
 libIRDB/src/syscall/SConstruct -text

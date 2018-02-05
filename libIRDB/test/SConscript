@@ -18,7 +18,7 @@ if 'build_tools' not in myenv or myenv['build_tools'] is None or int(myenv['buil
 		'''
 
 	LIBPATH="$SECURITY_TRANSFORMS_HOME/lib"
-	LIBS=Split( env.subst('$BASE_IRDB_LIBS')+ " IRDB-cfg IRDB-util MEDSannotation")
+	LIBS=Split( env.subst('$BASE_IRDB_LIBS')+ " IRDB-cfg IRDB-util IRDB-decode MEDSannotation")
 
 	print "The libs for libIRDB/tests are:"
 	print LIBS
