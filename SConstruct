@@ -27,9 +27,9 @@ env.Replace(build_cgc=ARGUMENTS.get("build_cgc", 0))
 
 if int(env['debug']) == 1:
         print "Setting debug mode"
-        env.Append(CFLAGS=" -Og -g ")
-        env.Append(CXXFLAGS=" -Og -g ")
-        env.Append(LINKFLAGS=" -Og -g ")
+        env.Append(CFLAGS=" -g ")
+        env.Append(CXXFLAGS=" -g ")
+        env.Append(LINKFLAGS=" -g ")
 else:
         print "Setting release mode"
         env.Append(CFLAGS=" -O3 ")
