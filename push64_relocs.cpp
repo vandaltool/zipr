@@ -30,28 +30,32 @@
 
 
 #include <zipr_sdk.h>
+#include <libIRDB-decode.hpp>
 #include <string>
 #include <algorithm>
 #include "utils.hpp"
 #include "Rewrite_Utility.hpp"
 #include "push64_relocs.h"
-#include <bea_deprecated.hpp>
+// #include <bea_deprecated.hpp>
 
 using namespace libIRDB;
 using namespace std;
 using namespace Zipr_SDK;
 using namespace ELFIO;
 
+#define ALLOF(a) begin(a), end(a)
 
+/*
 bool arg_has_relative(const ARGTYPE &arg)
 {
-	/* if it's relative memory, watch out! */
+	// if it's relative memory, watch out! 
 	if(arg.ArgType&MEMORY_TYPE)
 		if(arg.ArgType&RELATIVE_)
 			return true;
 	
 	return false;
 }
+*/
 
 Push64Relocs_t::Push64Relocs_t(MemorySpace_t *p_ms,
 	elfio *p_elfio,
@@ -318,8 +322,8 @@ void Push64Relocs_t::UpdatePush64Adds()
 			int existing_offset_size = 0;
 			uint8_t *insn_bytes = NULL;
 			int insn_bytes_len = 0;
-			DISASM d;
-			ARGTYPE *arg=NULL;
+			//DISASM d;
+			//ARGTYPE *arg=NULL;
 #if 1	
 			insn_addr = final_insn_locations[insn];
 			if (insn_addr == 0)
@@ -334,7 +338,8 @@ void Push64Relocs_t::UpdatePush64Adds()
 			insn_bytes=(uint8_t*)malloc(insn_bytes_len);
 			memcpy(insn_bytes, insn->GetDataBits().c_str(), insn_bytes_len);
 
-			Disassemble(insn,d);
+			DecodedInstruction_t d(insn);
+			/* Disassemble(insn,d);
 
 			if(arg_has_relative(d.Argument1))
 				arg=&d.Argument1;
@@ -342,11 +347,15 @@ void Push64Relocs_t::UpdatePush64Adds()
 				arg=&d.Argument2;
 			if(arg_has_relative(d.Argument3))
 				arg=&d.Argument3;
-
 			assert(arg);
+			*/
+			const auto operands=d.getOperands();
+			const auto arg_it=find_if(ALLOF(operands),[](const DecodedOperand_t& op) { return op.isMemory() && op.isPcrel(); });
+			assert(arg_it!=operands.end());
+			const auto arg=*arg_it;
 
-			memory_offset = arg->Memory.DisplacementAddr-d.EIP;
-			existing_offset_size = arg->Memory.DisplacementSize;
+			memory_offset = d.getMemoryDisplacementOffset(arg); // arg->Memory.DisplacementAddr-d.EIP;
+			existing_offset_size = arg.getMemoryDisplacementEncodingSize(); // arg->Memory.DisplacementSize;
 			assert(memory_offset>=0 && memory_offset <=15 &&
 			      (existing_offset_size==1 || 
 			       existing_offset_size==2 || 
@@ -363,7 +372,7 @@ void Push64Relocs_t::UpdatePush64Adds()
 				     << std::hex << existing_offset
 						 << " existing offset at 0x" 
 						 << insn_addr << "." << endl
-						 << "Based on: " << d.CompleteInstr << endl
+						 << "Based on: " << d.getDisassembly() /*CompleteInstr*/ << endl
 						 << "New address: 0x" << std::hex << new_offset << endl;
 			
 			m_memory_space.PlopBytes(insn_addr+memory_offset,
