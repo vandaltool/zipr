@@ -30,6 +30,7 @@
 
 #include <zipr_all.h>
 #include <libIRDB-core.hpp>
+#include <libIRDB-decode.hpp>
 #include <Rewrite_Utility.hpp>
 #include <iostream>
 #include <stdlib.h>
@@ -45,7 +46,9 @@
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
 #include "targ-config.h"
-#include <bea_deprecated.hpp>
+//#include <bea_deprecated.hpp>
+
+#define ALLOF(a) begin(a),end(a)
 
 using namespace libIRDB;
 using namespace std;
@@ -661,12 +664,13 @@ void ZiprImpl_t::RecordPinnedInsnAddrs()
 
 bool ZiprImpl_t::ShouldPinImmediately(Instruction_t *upinsn)
 {
-	DISASM d;
-	Disassemble(upinsn,d);
+	//DISASM d;
+	//Disassemble(upinsn,d);
+	DecodedInstruction_t d(upinsn);
 	Instruction_t *pin_at_next_byte = NULL;
 	AddressID_t *upinsn_ibta = NULL, *ft_ibta = NULL;
 
-	if(d.Instruction.BranchType==RetType)
+	if(d.isReturn() /* d.Instruction.BranchType==RetType */)
 		return true;
 
 	upinsn_ibta=upinsn->GetIndirectBranchTargetAddress();
@@ -2420,10 +2424,12 @@ void ZiprImpl_t::PlaceDollops()
 				{
 #if 1
 					if (m_verbose) {
-						DISASM d;
+						/*DISASM d;
 						Disassemble(dollop_entry->Instruction(),d);
+						*/
+						DecodedInstruction_t d(dollop_entry->Instruction());
 						cout << std::hex << dollop_entry->Instruction()->GetBaseID() 
-						     << ":" << d.CompleteInstr << endl;
+						     << ":" << d.getDisassembly()/*.CompleteInstr*/ << endl;
 					}
 #endif
 					dollop_entry->Place(cur_addr);
@@ -2733,8 +2739,6 @@ void ZiprImpl_t::OptimizePinnedInstructions()
 		patch_list.insert(pair<const UnresolvedUnpinned_t,Patch_t>(uu,thepatch));
 		memory_space.PlopJump(addr);
 
-		DISASM d;
-		Disassemble(uu.GetInstruction(),d);
 
 		bool can_optimize=false; // fixme
 		if(can_optimize)
@@ -2744,8 +2748,13 @@ void ZiprImpl_t::OptimizePinnedInstructions()
 		else
 		{
 			if (m_verbose)
+			{
+				//DISASM d;
+				//Disassemble(uu.GetInstruction(),d);
+				DecodedInstruction_t d(uu.GetInstruction());
 				printf("Converting 5-byte pinned jump at %p-%p to patch to %d:%s\n", 
-				(void*)addr,(void*)(addr+4), uu.GetInstruction()->GetBaseID(), d.CompleteInstr);
+				       (void*)addr,(void*)(addr+4), uu.GetInstruction()->GetBaseID(), d.getDisassembly().c_str()/*.CompleteInstr*/);
+			}
 			m_stats->total_tramp_space+=5;
 		}
 
@@ -2940,7 +2949,6 @@ void ZiprImpl_t::UpdatePins()
 		Dollop_t *target_dollop = NULL;
 		DollopEntry_t *target_dollop_entry = NULL;
 		Instruction_t *target_dollop_entry_instruction = NULL;
-		DISASM d;
 		RangeAddress_t patch_addr, target_addr;
 		target_dollop = m_dollop_mgr.GetContainingDollop(uu.GetInstruction());
 		assert(target_dollop != NULL);
@@ -2953,7 +2961,6 @@ void ZiprImpl_t::UpdatePins()
 		assert(target_dollop_entry_instruction != NULL &&
 		       target_dollop_entry_instruction == uu.GetInstruction());
 
-		Disassemble(target_dollop_entry_instruction,d);
 
 		patch_addr = p.GetAddress();
 		target_addr = target_dollop_entry->Place();
@@ -2983,10 +2990,16 @@ void ZiprImpl_t::UpdatePins()
 				target_addr = final_insn_locations[target_dollop_entry->Instruction()];
 
 			if (m_verbose)
+			{
+				//DISASM d;
+				//Disassemble(target_dollop_entry_instruction,d);
+				DecodedInstruction_t d(target_dollop_entry_instruction);
 				cout << "Patching pin at " << std::hex << patch_addr << " to "
-				     << std::hex << target_addr << ": " << d.CompleteInstr << endl;
+				     << std::hex << target_addr << ": " << d.getDisassembly() /*CompleteInstr*/ << endl;
+			}
 			assert(target_dollop_entry_instruction != NULL &&
 			       target_dollop_entry_instruction == uu.GetInstruction());
+
 		}
 
 		PatchJump(patch_addr, target_addr);
@@ -3107,51 +3120,60 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntry(
 {
 	Instruction_t *insn = entry->Instruction();
 	RangeAddress_t ret = entry->Place(), addr = entry->Place();
-	bool is_instr_relative = false;
 	string raw_data, orig_data; 
-	DISASM d;
 
 	assert(insn);
 
 	if (override_place != 0)
 		addr = ret = override_place;
 
+	/* DISASM d;
 	Disassemble(insn,d);
+	*/
+	DecodedInstruction_t d(insn);
 
 	raw_data = insn->GetDataBits();
 	orig_data = insn->GetDataBits();
 
-	is_instr_relative = IS_RELATIVE(d.Argument1) ||
+	const auto operands=d.getOperands();
+	const auto is_instr_relative_it = find_if(ALLOF(operands),[](const DecodedOperand_t& op)
+	                                          { return op.isMemory() && op.isPcrel(); });
+
+	const bool is_instr_relative = is_instr_relative_it != operands.end(); /* IS_RELATIVE(d.Argument1) ||
 	                    IS_RELATIVE(d.Argument2) ||
-											IS_RELATIVE(d.Argument3);
+	                    IS_RELATIVE(d.Argument3); */
+
+
 	if (is_instr_relative) {
-		ARGTYPE *relative_arg = NULL;
-		uint32_t abs_displacement;
-		uint32_t *displacement;
+		uint32_t abs_displacement=0;
+		uint32_t *displacement=0;
 		char instr_raw[20] = {0,};
-		int size;
-		int offset;
+		int size=0;
+		int offset=0;
 		assert(raw_data.length() <= 20);
 
 		/*
 		 * Which argument is relative? There must be one.
 		 */
+		/* ARGTYPE *relative_arg = NULL;
 		if (IS_RELATIVE(d.Argument1)) relative_arg = &d.Argument1;
 		if (IS_RELATIVE(d.Argument2)) relative_arg = &d.Argument2;
 		if (IS_RELATIVE(d.Argument3)) relative_arg = &d.Argument3;
 		assert(relative_arg);
+		*/
+		DecodedOperand_t relative_arg=*is_instr_relative_it;
 
 		/*
 		 * Calculate the offset into the instruction
 		 * of the displacement address.
 		 */
-		offset = relative_arg->Memory.DisplacementAddr - d.EIP;
+		offset = d.getMemoryDisplacementOffset(relative_arg); /*relative_arg->Memory.DisplacementAddr - d.EIP; */
 
 		/*
 		 * The size of the displacement address must be
 		 * four at this point.
 		 */
-		size = relative_arg->Memory.DisplacementSize;
+		size = relative_arg.getMemoryDisplacementEncodingSize(); /* relative_arg->Memory.DisplacementSize; */
 		assert(size == 4);
 
 		/*
