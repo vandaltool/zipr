@@ -442,14 +442,15 @@ void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<vir
 		}
 		/* otherwise, any immediate is a possible branch target */
 		possible_target(disasm.getImmediate() /* Instruction.Immediat*/ ,0, prov);
-		const auto op0=disasm.getOperand(0);
-		const auto op1=disasm.getOperand(1);
-		const auto op2=disasm.getOperand(2);
-		const auto op3=disasm.getOperand(3);
-		handle_argument(&op0, insn, prov);
-		handle_argument(&op1, insn, prov);
-		handle_argument(&op2, insn, prov);
-		handle_argument(&op3, insn, prov);
+
+		for(auto i=0;i<4;i++)
+		{
+			if(disasm.hasOperand(i))
+			{
+				const auto op=disasm.getOperand(i);
+				handle_argument(&op, insn, prov);
+			}
+		}
 	}
 }
 
@@ -1264,7 +1265,11 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	table_index_str += ")";
 
 	const auto cmp_str = string("cmp ") + disasm.getOperand(0).getString(); //Argument1.ArgMnemonic;
-	const auto cmp_str2 = string("cmp ") + disasm.getOperand(1).getString(); //Argument2.ArgMnemonic;
+
+	// this was completely broken because argument2 had a null mnemonic, which we found out because getOperand(1) threw an exception.
+	// i suspect it's attempting to find a compare of operand1 on the RHS of a compare, but i need better regex foo to get that.
+	// for now, repeat what was working.
+	const auto cmp_str2 = string("cmp "); // + disasm.getOperand(1).getString(); //Argument2.ArgMnemonic;
 
 	if(!backup_until(table_index_str.c_str(), I7, I8))
 		return;
@@ -2295,7 +2300,7 @@ void setup_icfs(FileIR_t* firp, EXEIO::exeio* elfiop)
 }
 
 
-void unpin_elf_tables(FileIR_t *firp, int do_unpin_opt)
+void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 {
 	map<string,int> unpin_counts;
 	map<string,int> missed_unpins;
@@ -2530,7 +2535,7 @@ DataScoop_t* find_scoop(FileIR_t *firp, const virtual_offset_t &vo)
 int type3_unpins=0;
 int type3_pins=0;
 
-void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* scoop, int do_unpin_opt)
+void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* scoop, int64_t do_unpin_opt)
 {
 
 	assert(firp && insn && scoop);
@@ -2697,7 +2702,7 @@ void print_unpins(FileIR_t *firp)
 }
 
 
-void unpin_well_analyzed_ibts(FileIR_t *firp, int do_unpin_opt)
+void unpin_well_analyzed_ibts(FileIR_t *firp, int64_t do_unpin_opt)
 {
 	unpin_elf_tables(firp, do_unpin_opt);
 	unpin_switches(firp, do_unpin_opt);
@@ -2709,7 +2714,7 @@ void unpin_well_analyzed_ibts(FileIR_t *firp, int do_unpin_opt)
 /*
  * fill_in_indtargs - main driver routine for 
  */
-void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t> forced_pins, int do_unpin_opt)
+void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t> forced_pins, int64_t do_unpin_opt)
 {
 	set<virtual_offset_t> thunk_bases;
 	find_all_module_starts(firp,thunk_bases);
@@ -2782,7 +2787,7 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t>
 	setup_icfs(firp, elfiop);
 
 	// do unpinning of well analyzed ibts.
-	if(do_unpin_opt!=-1) 
+	if(do_unpin_opt!=(int64_t)-1) 
 		unpin_well_analyzed_ibts(firp, do_unpin_opt);
 
 }
@@ -2792,7 +2797,7 @@ main(int argc, char* argv[])
 {
 	auto argc_iter = (int)2;
 	auto split_eh_frame_opt=true;
-	auto do_unpin_opt=-1;
+	auto do_unpin_opt=numeric_limits<int64_t>::max() ;
 	auto forced_pins=std::list<virtual_offset_t> ();
 
 	if(argc<2)

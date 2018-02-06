@@ -29,6 +29,8 @@ class DecodedOperand_t
 		virtual_offset_t getMemoryDisplacement() const;
 		bool isPcrel() const;
 		uint32_t getScaleValue() const;
+		uint32_t getMemoryDisplacementEncodingSize() const;
+		
 
 
 

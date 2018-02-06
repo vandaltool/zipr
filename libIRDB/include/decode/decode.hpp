@@ -2,6 +2,7 @@
 #define libirdb_decode_hpp
 
 #include <stdint.h>
+#include <vector>
 
 namespace libIRDB
 {
@@ -27,18 +28,21 @@ class DecodedInstruction_t
 		bool valid() const;
 		uint32_t length() const;
 		bool isBranch() const;
+		bool isCall() const;
 		bool isUnconditionalBranch() const;
 		bool isConditionalBranch() const;
 		bool isReturn() const;
 		string getMnemonic() const;
 		virtual_offset_t getImmediate() const;
 		virtual_offset_t getAddress() const;
-
-
-
+		bool setsStackPointer() const;
+		uint32_t getPrefixCount() const;
+		virtual_offset_t getMemoryDisplacementOffset(const DecodedOperand_t& t) const;
 
 		// 0-based.  first operand is numbered 0.
+		bool hasOperand(const int op_num) const;
 		DecodedOperand_t getOperand(const int op_num) const;
+		vector<DecodedOperand_t> getOperands() const;
 
 	private:
 

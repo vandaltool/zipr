@@ -166,3 +166,9 @@ bool DecodedOperand_t::isPcrel() const
 	ARGTYPE *t=static_cast<ARGTYPE*>(arg_data);
 	return (t->ArgType&RELATIVE_)==RELATIVE_;
 }
+
+uint32_t DecodedOperand_t::getMemoryDisplacementEncodingSize() const
+{
+	ARGTYPE *t=static_cast<ARGTYPE*>(arg_data);
+	return t->Memory.DisplacementSize;
+}

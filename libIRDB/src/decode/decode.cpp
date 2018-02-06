@@ -6,6 +6,20 @@
 using namespace libIRDB;
 using namespace std;
 
+// static functions
+static inline bool my_SetsStackPointer(const ARGTYPE* arg)
+{
+        if((arg->AccessMode & WRITE ) == 0)
+                return false;
+        int access_type=arg->ArgType;
+
+        if(access_type==REGISTER_TYPE + GENERAL_REG +REG4)
+                return true;
+        return false;
+
+}
+
+// constructors, destructors, operators.
 
 DecodedInstruction_t::DecodedInstruction_t(const Instruction_t* i)
 {
@@ -54,6 +68,8 @@ DecodedInstruction_t& DecodedInstruction_t::operator=(const DecodedInstruction_t
 	return *this;
 }
 
+// private methods
+
 void DecodedInstruction_t::Disassemble(const virtual_offset_t start_addr, const void *data, uint32_t max_len)
 {
 	DISASM* d=static_cast<DISASM*>(disasm_data);
@@ -66,6 +82,8 @@ void DecodedInstruction_t::Disassemble(const virtual_offset_t start_addr, const 
 	disasm_length=Disasm(d);
 
 }
+
+// public methods
 
 string DecodedInstruction_t::getDisassembly() const
 {
@@ -92,6 +110,12 @@ bool DecodedInstruction_t::isBranch() const
 	return d->Instruction.BranchType!=0;
 }
 
+bool DecodedInstruction_t::isCall() const
+{
+	DISASM* d=static_cast<DISASM*>(disasm_data);
+	return d->Instruction.BranchType==CallType;
+}
+
 bool DecodedInstruction_t::isUnconditionalBranch() const
 {
 	DISASM* d=static_cast<DISASM*>(disasm_data);
@@ -111,9 +135,31 @@ bool DecodedInstruction_t::isReturn() const
 }
 
 
+bool DecodedInstruction_t::hasOperand(const int op_num) const
+{
+	DISASM* d=static_cast<DISASM*>(disasm_data);
+	switch(op_num+1)
+	{
+		case 1:
+			return d->Argument1.ArgType!=NO_ARGUMENT;
+		case 2:
+			return d->Argument2.ArgType!=NO_ARGUMENT;
+		case 3:
+			return d->Argument3.ArgType!=NO_ARGUMENT;
+		case 4:
+			return d->Argument4.ArgType!=NO_ARGUMENT;
+		default:
+			return false;
+	}
+}
+
+
 // 0-based.  first operand is numbered 0.
 DecodedOperand_t DecodedInstruction_t::getOperand(const int op_num) const
 {
+	if(!hasOperand(op_num))
+		throw std::out_of_range("op_num");
+
 	DISASM* d=static_cast<DISASM*>(disasm_data);
 	switch(op_num+1)
 	{
@@ -125,9 +171,20 @@ DecodedOperand_t DecodedInstruction_t::getOperand(const int op_num) const
 			return DecodedOperand_t(&d->Argument3);
 		case 4:
 			return DecodedOperand_t(&d->Argument4);
-		default:
-			throw std::out_of_range("op_num");
 	}
+}
+
+vector<DecodedOperand_t> DecodedInstruction_t::getOperands() const
+{
+	auto ret_val=vector<DecodedOperand_t>();
+	for(auto i=0;i<4;i++)
+	{
+		if(hasOperand(i))
+			ret_val.push_back(getOperand(i));
+		else
+			break;
+	}
+	return ret_val;
 }
 
 
@@ -152,3 +209,39 @@ virtual_offset_t DecodedInstruction_t::getAddress() const
 	DISASM* d=static_cast<DISASM*>(disasm_data);
 	return d->Instruction.AddrValue;
 }
+
+
+bool DecodedInstruction_t::setsStackPointer() const
+{
+	DISASM* d=static_cast<DISASM*>(disasm_data);
+
+        if(strstr(d->Instruction.Mnemonic, "push")!=NULL)
+                return true;
+        if(strstr(d->Instruction.Mnemonic, "pop")!=NULL)
+                return true;
+        if(strstr(d->Instruction.Mnemonic, "call")!=NULL)
+                return true;
+        if(d->Instruction.ImplicitModifiedRegs==REGISTER_TYPE+GENERAL_REG+REG4)
+                return true;
+
+        if(my_SetsStackPointer(&d->Argument1)) return true;
+        if(my_SetsStackPointer(&d->Argument2)) return true;
+        if(my_SetsStackPointer(&d->Argument3)) return true;
+        if(my_SetsStackPointer(&d->Argument4)) return true;
+
+        return false;
+}
+
+uint32_t DecodedInstruction_t::getPrefixCount() const
+{
+	DISASM* d=static_cast<DISASM*>(disasm_data);
+	return d->Prefix.Number;
+}
+
+virtual_offset_t DecodedInstruction_t::getMemoryDisplacementOffset(const DecodedOperand_t& t) const
+{
+	DISASM* d=static_cast<DISASM*>(disasm_data);
+	ARGTYPE* the_arg=static_cast<ARGTYPE*>(t.arg_data);
+	return the_arg->Memory.DisplacementAddr-d->EIP;
+}
+
