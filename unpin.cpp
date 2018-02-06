@@ -37,7 +37,8 @@
 #include "unpin.h"
 #include <memory>
 #include <inttypes.h>
-#include <bea_deprecated.hpp>
+//#include <bea_deprecated.hpp>
+#include <libIRDB-decode.hpp>
 
 
 using namespace libIRDB;
@@ -46,14 +47,18 @@ using namespace Zipr_SDK;
 using namespace ELFIO;
 
 
+#define ALLOF(a) begin(a),end(a)
+
+/*
 static bool arg_has_memory(const ARGTYPE &arg)
 {
-        /* if it's relative memory, watch out! */
+        // if it's relative memory, watch out! 
         if(arg.ArgType&MEMORY_TYPE)
                 return true;
 
         return false;
 }
+*/
 
 static std::string findAndReplace(const std::string& in_str, const std::string& oldStr, const std::string& newStr)
 {
@@ -329,10 +334,12 @@ void Unpin_t::DoUpdateForInstructions()
 	   )
 	{
 		Instruction_t* from_insn=*it;
-                DISASM disasm;
-                Disassemble(from_insn,disasm);
+                //DISASM disasm;
+                //Disassemble(from_insn,disasm);
+		const auto disasm=DecodedInstruction_t(from_insn);
 
                 // find memory arg.
+		/*
                 ARGTYPE* the_arg=NULL;
                 if(arg_has_memory(disasm.Argument1))
                         the_arg=&disasm.Argument1;
@@ -342,6 +349,9 @@ void Unpin_t::DoUpdateForInstructions()
                         the_arg=&disasm.Argument3;
                 if(arg_has_memory(disasm.Argument4))
                         the_arg=&disasm.Argument4;
+		*/
+		const auto operands=disasm.getOperands();
+		
 
 		for(
 			RelocationSet_t::iterator rit=from_insn->GetRelocations().begin(); 
@@ -434,14 +444,17 @@ void Unpin_t::DoUpdateForInstructions()
 			else if(reloc->GetType()==string("pcrel") && reloc->GetWRT()!=NULL)
 			{
 
+				const auto the_arg_it=find_if(ALLOF(operands),[](const DecodedOperand_t& op){ return op.isMemory() && op.isPcrel(); });
 				BaseObj_t* bo_wrt=reloc->GetWRT();
 				DataScoop_t* scoop_wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
 				Instruction_t* insn_wrt=dynamic_cast<Instruction_t*>(reloc->GetWRT());
-				virtual_offset_t rel_addr1=the_arg->Memory.Displacement;
+				assert(the_arg_it!=operands.end());
+				const auto the_arg=*the_arg_it;
+				virtual_offset_t rel_addr1=the_arg.getMemoryDisplacement(); // ->Memory.Displacement;
 				rel_addr1+=from_insn->GetDataBits().size();
 
-				int disp_offset=the_arg->Memory.DisplacementAddr-disasm.EIP;
-				int disp_size=the_arg->Memory.DisplacementSize;
+				int disp_offset=disasm.getMemoryDisplacementOffset(the_arg); // the_arg->Memory.DisplacementAddr-disasm.EIP;
+				int disp_size=the_arg.getMemoryDisplacementEncodingSize(); // the_arg->Memory.DisplacementSize;
 				libIRDB::virtual_offset_t from_insn_location=locMap[from_insn];
 				assert(disp_size==4);
 				assert(0<disp_offset && disp_offset<=from_insn->GetDataBits().size() - disp_size);
@@ -473,28 +486,35 @@ void Unpin_t::DoUpdateForInstructions()
 					unsigned char newbyte=from_insn->GetDataBits()[i];
 					ms[from_insn_location+i]=newbyte;
 				}
-				DISASM disasm2;
-				Disassemble(from_insn,disasm2);	
+				//DISASM disasm2;
+				//Disassemble(from_insn,disasm2);	
+				const auto disasm2=DecodedInstruction_t(from_insn);
 				cout<<"unpin:pcrel:new_disp="<<hex<<new_disp<<endl;
 				cout<<"unpin:pcrel:new_insn_addr="<<hex<<from_insn_location<<endl;
-				cout<<"unpin:pcrel:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.CompleteInstr
-					<<" to "<<disasm2.CompleteInstr<<" wrt "<< convert_string <<endl;
+				cout<<"unpin:pcrel:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.getDisassembly() /*CompleteInstr*/
+					<<" to "<<disasm2.getDisassembly() /*CompleteInstr*/<<" wrt "<< convert_string <<endl;
 			}
 			// instruction has a absolute  memory operand that needs it's displacement updated.
 			else if(reloc->GetType()==string("absoluteptr_to_scoop"))
 			{
 
+				// push/pop from memory might have a memory operand with no string to represent the implicit stack operand.
+				const auto the_arg_it=find_if(ALLOF(operands),[](const DecodedOperand_t& op){ return op.isMemory() && op.getString()!=""; });
 				DataScoop_t* wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
 				assert(wrt);
-				virtual_offset_t rel_addr1=the_arg->Memory.Displacement;
+				const auto &the_arg=*the_arg_it;
+				virtual_offset_t rel_addr1=the_arg.getMemoryDisplacement(); // ->Memory.Displacement;
+				//virtual_offset_t rel_addr1=the_arg->Memory.Displacement;
 
-				int disp_offset=the_arg->Memory.DisplacementAddr-disasm.EIP;
-				int disp_size=the_arg->Memory.DisplacementSize;
+				int disp_offset=disasm.getMemoryDisplacementOffset(the_arg); // the_arg->Memory.DisplacementAddr-disasm.EIP;
+				int disp_size=the_arg.getMemoryDisplacementEncodingSize(); // the_arg->Memory.DisplacementSize;
+				//int disp_offset=the_arg->Memory.DisplacementAddr-disasm.EIP;
+				//int disp_size=the_arg->Memory.DisplacementSize;
 				assert(disp_size==4);
 				assert(0<disp_offset && disp_offset<=from_insn->GetDataBits().size() - disp_size);
 				assert(reloc->GetWRT());
 
-                                unsigned int new_disp=the_arg->Memory.Displacement + wrt->GetStart()->GetVirtualOffset();
+                                unsigned int new_disp=the_arg.getMemoryDisplacement()/*the_arg->Memory.Displacement */+ wrt->GetStart()->GetVirtualOffset();
                                 from_insn->SetDataBits(from_insn->GetDataBits().replace(disp_offset, disp_size, (char*)&new_disp, disp_size));
 				// update the instruction in the memory space.
 				libIRDB::virtual_offset_t from_insn_location=locMap[from_insn];
@@ -505,10 +525,11 @@ void Unpin_t::DoUpdateForInstructions()
 
 					//cout<<"Updating push["<<i<<"] from "<<hex<<oldbyte<<" to "<<newbyte<<endl;
 				}
-                		DISASM disasm2;
-                		Disassemble(from_insn,disasm2);
-				cout<<"unpin:absptr_to_scoop:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.CompleteInstr
-			 	    <<" to "<<disasm2.CompleteInstr<<" for scoop: "<<wrt->GetName()<<endl;
+                		//DISASM disasm2;
+                		//Disassemble(from_insn,disasm2);
+				const auto disasm2=DecodedInstruction_t(from_insn);
+				cout<<"unpin:absptr_to_scoop:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.getDisassembly()/*CompleteInstr*/
+			 	    <<" to "<<disasm2.getDisassembly()/*CompleteInstr*/<<" for scoop: "<<wrt->GetName()<<endl;
 			}
 			// instruction has an immediate that needs an update.
 			else if(reloc->GetType()==string("immedptr_to_scoop"))
@@ -516,7 +537,7 @@ void Unpin_t::DoUpdateForInstructions()
 				DataScoop_t* wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
 				assert(wrt);
 
-        			virtual_offset_t rel_addr2=disasm.Instruction.Immediat;
+        			virtual_offset_t rel_addr2=disasm.getImmediate(); // disasm.Instruction.Immediat;
 				virtual_offset_t new_addr = rel_addr2 + wrt->GetStart()->GetVirtualOffset();
 
                                 from_insn->SetDataBits(from_insn->GetDataBits().replace(from_insn->GetDataBits().size()-4, 4, (char*)&new_addr, 4));
@@ -530,10 +551,11 @@ void Unpin_t::DoUpdateForInstructions()
 					//cout<<"Updating push["<<i<<"] from "<<hex<<oldbyte<<" to "<<newbyte<<endl;
 				}
 
-                		DISASM disasm2;
-                		Disassemble(from_insn,disasm2);
-				cout<<"unpin:immedptr_to_scoop:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.CompleteInstr
-			 	    <<" to "<<disasm2.CompleteInstr<<" for scoop: "<<wrt->GetName()<<endl;
+                		//DISASM disasm2;
+                		//Disassemble(from_insn,disasm2);
+				const auto disasm2=DecodedInstruction_t(from_insn);
+				cout<<"unpin:immedptr_to_scoop:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.getDisassembly() /*CompleteInstr*/
+			 	    <<" to "<<disasm2.getDisassembly() /*CompleteInstr*/<<" for scoop: "<<wrt->GetName()<<endl;
 
 			}
 			else if(reloc->GetType()==string("callback_to_scoop"))
