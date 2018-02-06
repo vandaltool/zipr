@@ -21,7 +21,6 @@ include/zipr_optimizations.h -text
 include/zipr_stats.h -text
 include/zipr_utils.h -text
 /install-sh -text
-src/Makefile.in -text
 src/SConscript -text
 src/SConstruct -text
 src/dollop.cpp -text
