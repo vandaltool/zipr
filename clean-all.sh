@@ -72,10 +72,15 @@ fi
 
 cd $PEASOUP_UMBRELLA_DIR
 
-# clean up installation
-$PEDI_HOME/pedi -c -m manifest.txt
-if [ -d "$PS_INSTALL" ]; then
-	echo "removing $PS_INSTALL"
-	rm -fr "$PS_INSTALL"
+# clean up installation if this module is the root of the install.
+# skip pedi cleanup if we are part of a larger project, as future builds
+# won't know how to install properly.  
+if [[ $(head -1 manifest.txt.config) == $(pwd) ]] ; then 
+
+	$PEDI_HOME/pedi -c -m manifest.txt
+	if [ -d "$PS_INSTALL" ]; then
+		echo "removing $PS_INSTALL"
+		rm -fr "$PS_INSTALL"
+	fi
 fi
 
