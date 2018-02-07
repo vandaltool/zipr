@@ -75,7 +75,9 @@ enum
 	SELECTIVE_CANARIES_OPTION,
 	SET_RANDOM_SEED,
 	SET_CANARY_VALUE,
-	SET_FLOATING_CANARY_OPTION
+	SET_FLOATING_CANARY_OPTION,
+	SET_DETECTION_POLICY_OPTION,
+	SET_DETECTION_EXIT_CODE_OPTION
 };
 
 
@@ -104,6 +106,8 @@ static struct option const long_options[] =
 	{"random_seed",required_argument, NULL, SET_RANDOM_SEED},
 	{"canary_value",required_argument, NULL, SET_CANARY_VALUE},
 	{"floating_canary",no_argument, NULL, SET_FLOATING_CANARY_OPTION},
+	{"detection_policy",required_argument, NULL, SET_DETECTION_POLICY_OPTION},
+	{"detection_exit_code",required_argument, NULL, SET_DETECTION_EXIT_CODE_OPTION},
 	{NULL, 0, NULL, 0}
 };
 
@@ -397,6 +401,24 @@ int main(int argc, char **argv)
 			floating_canary = true;
 			break;
 		}
+		case SET_DETECTION_POLICY_OPTION:
+		{
+			if(strcasecmp("exit",optarg)==0)
+				pn_options->setDetectionPolicy(P_CONTROLLED_EXIT);
+			else if(strcasecmp("halt",optarg)==0)
+				pn_options->setDetectionPolicy(P_HARD_EXIT);
+			else
+				pn_options->setDetectionPolicy(P_CONTROLLED_EXIT);
+			break;
+		}
+		case SET_DETECTION_EXIT_CODE_OPTION:
+		{
+			auto exit_code=(unsigned)atoi(optarg);
+			assert(exit_code >= 0 && exit_code <= 255);
+			pn_options->setDetectionExitCode(exit_code);
+			break;
+		}
+
 		case '?':
 		{
 			//error message already printed by getopt_long
@@ -451,6 +473,12 @@ int main(int argc, char **argv)
 	try 
 	{
 		PNTransformDriver transform_driver(pidp,BED_script, &pqxx_interface);
+
+		cout << "   detection_policy: " << pn_options->getDetectionPolicy() << endl;
+		cout << "detection_exit_code: " << pn_options->getDetectionExitCode() << " only active if controlled exit specified" << endl;
+
+		transform_driver.SetMitigationPolicy(pn_options->getDetectionPolicy());
+		transform_driver.SetDetectionExitCode(pn_options->getDetectionExitCode());
 
 		OffsetInference *offset_inference = new OffsetInference();
 

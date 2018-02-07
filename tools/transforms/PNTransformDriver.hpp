@@ -105,6 +105,7 @@ class PNTransformDriver
     	bool write_stack_ir_to_db;
 
 	mitigation_policy m_mitigation_policy;
+	unsigned m_exit_code;
 
 	// a way to map an instruction to it's set of predecessors. 
   	std::map< Instruction_t* , set<Instruction_t*> > preds;
@@ -190,8 +191,10 @@ public:
     	virtual void GenerateTransforms();
     	virtual void SetWriteStackIrToDb(bool setting) { write_stack_ir_to_db = setting; }
 
-		inline virtual mitigation_policy GetMitigationPolicy() const { return m_mitigation_policy; }
-		virtual void SetMitigationPolicy(mitigation_policy policy) { m_mitigation_policy = policy; }
+	inline virtual mitigation_policy GetMitigationPolicy() const { return m_mitigation_policy; }
+	virtual void SetMitigationPolicy(mitigation_policy policy) { m_mitigation_policy = policy; }
+	virtual unsigned GetDetectionExitCode() const { return m_exit_code; }
+	virtual void SetDetectionExitCode(unsigned p_exitCode) { m_exit_code = p_exitCode; }
 };
 
 #endif
