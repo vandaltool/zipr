@@ -55,10 +55,16 @@ build()
 	gcc -o test_buffer_overflow.exe test_buffer_overflow.c  -fno-stack-protector
 }
 
+build_with_stack_protector()
+{
+	gcc -o test_buffer_overflow.exe.sp test_buffer_overflow.c 
+}
+
 
 protect()
 {
 	do_p1 ./test_buffer_overflow.exe test_buffer_overflow.exe.p1.189 
+	do_p1 ./test_buffer_overflow.exe.sp test_buffer_overflow.exe.sp.p1.189 
 	do_p1 ./test_buffer_overflow.exe test_buffer_overflow.exe.p1.188 "--detection_policy exit --detection_exit_code 188"
 	do_p1 ./test_buffer_overflow.exe test_buffer_overflow.exe.p1.hlt "--detection_policy halt"
 }
@@ -81,6 +87,7 @@ main()
 {
 	clean
 	build
+	build_with_stack_protector
 	protect
 	get_correct
 
@@ -89,6 +96,7 @@ main()
 	test_functional test_buffer_overflow.exe.p1.189 
 	test_functional test_buffer_overflow.exe.p1.188 
 	test_functional test_buffer_overflow.exe.p1.hlt 
+	test_functional test_buffer_overflow.exe.sp.p1.189 
 
 	report
 
@@ -98,6 +106,9 @@ main()
 	test_detection test_buffer_overflow.exe.p1.189 189
 	test_detection test_buffer_overflow.exe.p1.188 188
 	test_detection test_buffer_overflow.exe.p1.hlt 139
+
+	# verify P1 detection comes before gcc stack smashing protection
+	test_detection test_buffer_overflow.exe.sp.p1.189 189
 
 	report 
 
