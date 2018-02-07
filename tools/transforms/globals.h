@@ -65,7 +65,7 @@ class PNOptions
 			canary_value_inited=false;
 			double_threshold=32*1024; // 32kb 
 			spri_validate=false;
-			detection_policy=P_CONTROLLED_EXIT;
+			detection_policy=P_HARD_EXIT;
 			detection_exit_code=DEFAULT_DETECTION_EXIT_CODE;
 		}
 
