@@ -634,7 +634,7 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 	//DISASM d;
 	//Disassemble(insn,d);
 	const auto d=DecodedInstruction_t(insn);
-	if(d.hasOperand(1)) // d.Argument1.ArgType!=NO_ARGUMENT)
+	if(d.hasOperand(0)) // d.Argument1.ArgType!=NO_ARGUMENT)
 	{
 		unsigned int sp_adjust=d.getImmediate() /* Instruction.Immediat*/-firp->GetArchitectureBitWidth()/8;
 		cout<<"Found relatively rare ret_with_pop insn: "<<d.getDisassembly()<<endl;

@@ -2,12 +2,20 @@
 
 do_cfi()
 {
-	(set -x ; $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all --step-option zipr:"--add-sections false" )
+	if [[ -f $2 ]]; then
+		echo "Eliding rebuild of $2"
+	else
+		(set -x ; $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all --step-option zipr:"--add-sections false" )
+	fi
 }
 
 do_coloring_cfi()
 {
-	(set -x ; $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all --step-option selective_cfi:--color  --step-option zipr:"--add-sections false" )
+	if [[ -f $2 ]]; then
+		echo "Eliding rebuild of $2"
+	else
+		(set -x ; $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all --step-option selective_cfi:--color  --step-option zipr:"--add-sections false" )
+	fi
 }
 
 
@@ -117,7 +125,11 @@ main()
 	test dude.exe.pie libfoo.so.cfi.color libdude.so.cfi
 
 	report
-	clean
+	if [[ $1 == "-k" ]] ; then
+		echo "Skipping cleanup"
+	else
+		clean
+	fi
 }
 
 passes=0 
