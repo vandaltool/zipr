@@ -23,12 +23,13 @@
 #include <algorithm>
 #include <unistd.h>
 #include <fstream>
-#include "beaengine/BeaEngine.h"
+// #include "beaengine/BeaEngine.h"
 #include "General_Utility.hpp"
 #include "PNIrdbManager.hpp"
 #include <cmath>
 #include "globals.h"
 #include <libIRDB-cfg.hpp>
+#include <libIRDB-decode.hpp>
 #include "EhUpdater.hpp"
 
 #include <fcntl.h>
@@ -560,15 +561,16 @@ static pair<int,int> get_prologue_data(Function_t *func)
 	int i;
 	for(i=0,insn=func->GetEntryPoint(); insn!=NULL && i<MAX_JUMPS_TO_FOLLOW; ++i,insn=GetNextInstruction(prev,insn, func))
 	{
-		DISASM d;
-		Disassemble(insn,d);
-		if(string(d.Instruction.Mnemonic) == "sub " && d.Argument1.ArgType==REGISTER_TYPE+GENERAL_REG+REG4)
+		//DISASM d;
+		//Disassemble(insn,d);
+		const auto d=DecodedInstruction_t(insn);
+		if(d.getMnemonic()/*Instruction.Mnemonic*/ == "sub" && d.getOperand(0).isRegister() && d.getOperand(0).getRegNumber()==4 /*Argument1.ArgType==REGISTER_TYPE+GENERAL_REG+REG4*/)
 		{
 			subs++;
 		}
-		else if(string(d.Instruction.Mnemonic) == "push ")
+		else if(d.getMnemonic() /*string(d.Instruction.Mnemonic)*/ == "push")
 		{
-			if( 	(d.Argument2.ArgType&CONSTANT_TYPE)==CONSTANT_TYPE   //&& 
+			if( 	d.getOperand(1).isConstant() /*d.Argument2.ArgType&CONSTANT_TYPE)==CONSTANT_TYPE   */ //&& 
 //				insn->GetFallthrough()!=NULL &&
 //				insn->GetFallthrough()->GetTarget()!=NULL && 
 //				func->GetInstructions().find(insn->GetFallthrough()->GetTarget())!=func->GetInstructions().end()
@@ -593,9 +595,10 @@ static bool is_exit_insn(Instruction_t* prev)
 		return false; // cond branch 
 	if(prev->GetFallthrough()==NULL && prev->GetTarget()==NULL)
 	{
-		DISASM d;
-		Disassemble(prev,d);
-		if(string(d.CompleteInstr) == "ret ") 
+		//DISASM d;
+		//Disassemble(prev,d);
+		const auto d=DecodedInstruction_t(prev);
+		if(d.isReturn() /*string(d.CompleteInstr) == "ret "*/) 
 			return true;
 
 		const auto ib_targets=prev->GetIBTargets();
@@ -641,18 +644,19 @@ static bool	check_for_cond_frame(Function_t *func, ControlFlowGraph_t* cfg)
 	const auto b=cfg->GetEntry();
 
 
-	const auto is_rsp_sub= [](const DISASM &d) -> bool
+	const auto is_rsp_sub= [](const DecodedInstruction_t &d) -> bool
 	{
 		return 
-		  (string(d.Instruction.Mnemonic)=="sub " &&  		/* is sub */
-		  ((d.Argument1.ArgType&0xFFFF0000)==REGISTER_TYPE+GENERAL_REG ) &&  /* and arg1 is a register */
-		  (d.Argument1.ArgType&0x0000FFFF)==REG4);		/* and is the stack pointer. */
+		  (d.getMnemonic() == /*string(d.Instruction.Mnemonic)==*/"sub" &&  		/* is sub */
+		  d.getOperand(0).isRegister() /* ((d.Argument1.ArgType&0xFFFF0000)==REGISTER_TYPE+GENERAL_REG )*/ &&  /* and arg1 is a register */
+		  d.getOperand(0).getRegNumber()==4 /*(d.Argument1.ArgType&0x0000FFFF)==REG4*/);		/* and is the stack pointer. */
 	};
 
 	const auto is_rsp_sub_insn= [&](const Instruction_t* i) -> bool
 	{
-		DISASM d;
-		Disassemble(i,d);
+		//DISASM d;
+		//Disassemble(i,d);
+		const auto d=DecodedInstruction_t(i);
 		return is_rsp_sub(d);
 	};
 
@@ -714,28 +718,33 @@ static bool	check_for_push_pop_coherence(Function_t *func)
 	   )
 	{
 		Instruction_t* insn=*it;
-		DISASM d;
-		Disassemble(insn,d);
-		if((string(d.Instruction.Mnemonic) == "add " || string(d.Instruction.Mnemonic) == "lea ") && d.Argument1.ArgType==REGISTER_TYPE+GENERAL_REG+REG4)
+		//DISASM d;
+		//Disassemble(insn,d);
+		const auto d=DecodedInstruction_t(insn);
+		//if((string(d.Instruction.Mnemonic) == "add " || string(d.Instruction.Mnemonic) == "lea ") && d.Argument1.ArgType==REGISTER_TYPE+GENERAL_REG+REG4)
+		if((d.getMnemonic()== "add" || d.getMnemonic() == "lea") && d.getOperand(0).isRegister() && d.getOperand(0).getRegNumber()==4)
 		{
 			Instruction_t *exit_insn=find_exit_insn(insn,func);
 			if(exit_insn)
 				found_addrsp_per_exit[exit_insn]++;
 		}
-		else if(string(d.Instruction.Mnemonic) == "leave ")
+		//else if(string(d.Instruction.Mnemonic) == "leave ")
+		else if(d.getMnemonic() == "leave")
 		{
 			Instruction_t *exit_insn=find_exit_insn(insn,func);
 			if(exit_insn)
 				found_leave_per_exit[exit_insn]++;
 		}
-		else if(string(d.Instruction.Mnemonic)=="pop ")
+		//else if(string(d.Instruction.Mnemonic)=="pop ")
+		else if(d.getMnemonic() == "pop")
 		{
 			Instruction_t *exit_insn=find_exit_insn(insn,func);
 
 			if(exit_insn)
 			{
-				DISASM d2;
-				Disassemble(exit_insn,d2);
+				//DISASM d2;
+				//Disassemble(exit_insn,d2);
+				//const auto d2=DecodedInstruction_t(exit_insn);
 //cerr<<"Found exit insn ("<< d2.CompleteInstr << ") for pop ("<< d.CompleteInstr << ")"<<endl;
 				map<Instruction_t*, int>::iterator mit;
 				mit=pop_count_per_exit.find(exit_insn);
@@ -770,8 +779,9 @@ static bool	check_for_push_pop_coherence(Function_t *func)
 		pair<Instruction_t*const,int> map_pair=*it;
 		Instruction_t* insn=map_pair.first;
 		assert(insn);
-		DISASM d;
-		Disassemble(insn,d);
+		//DISASM d;
+		//Disassemble(insn,d);
+		//const auto d=DecodedInstruction_t(insn);
 
 //cerr<<"Found "<<map_pair.second<<" pops in exit: \""<< d.CompleteInstr <<"\" func:"<<func->GetName()<<endl;
 
@@ -874,24 +884,27 @@ bool	check_for_bad_variadic_funcs(Function_t *func, const ControlFlowGraph_t* cf
 	for(vector<Instruction_t*>::const_iterator it=insns.begin(); it!=insns.end(); ++it)
 	{
 		Instruction_t* insn=*it;
-		DISASM d;
-		Disassemble(insn,d);
+		//DISASM d;
+		//Disassemble(insn,d);
+		const auto d=DecodedInstruction_t(insn);
 
 		/* found the suspicious move insn first */
-		if(strcmp(d.CompleteInstr,"movzx eax, al")==0)
+		const auto disassembly=d.getDisassembly();
+		const auto c_str=disassembly.c_str();
+		if(strcmp(c_str /*.CompleteInstr*/,"movzx eax, al")==0)
 			return false;
 
 
 		/* else, check for a use or def of rax in any of it's forms */
-		if(strstr(d.CompleteInstr,"eax")!=0)
+		if(strstr(c_str /*d.CompleteInstr*/,"eax")!=0)
 			return true;
-		if(strstr(d.CompleteInstr,"rax")!=0)
+		if(strstr(c_str/*d.CompleteInstr*/,"rax")!=0)
 			return true;
-		if(strstr(d.CompleteInstr,"ax")!=0)
+		if(strstr(c_str/*d.CompleteInstr*/,"ax")!=0)
 			return true;
-		if(strstr(d.CompleteInstr,"ah")!=0)
+		if(strstr(c_str/*d.CompleteInstr*/,"ah")!=0)
 			return true;
-		if(strstr(d.CompleteInstr,"al")!=0)
+		if(strstr(c_str/*d.CompleteInstr*/,"al")!=0)
 			return true;
 	}
 
@@ -926,22 +939,23 @@ bool PNTransformDriver::check_jump_tables(Instruction_t* insn)
 	if(insn->GetTarget() || insn->GetFallthrough())
 		return true;
 
-	DISASM d;
-	Disassemble(insn,d);
+	//DISASM d;
+	//Disassemble(insn,d);
+	const auto d=DecodedInstruction_t(insn);
 
 	/* only look at jumps */
-	int branch_type = d.Instruction.BranchType;
-	if(branch_type!=JmpType)
+	//int branch_type = d.Instruction.BranchType;
+	if(!d.isUnconditionalBranch() /*branch_type!=JmpType*/)
 		return true;
 
 	/* make sure this is an indirect branch */
-	if((d.Argument1.ArgType&MEMORY_TYPE)==0)
+	if(!d.getOperand(0).isMemory() /*(d.Argument1.ArgType&MEMORY_TYPE)==0*/)
 		return true;
 
-	if(d.Argument1.Memory.Scale<4)
+	if(d.getOperand(0).getScaleValue() /*d.Argument1.Memory.Scale*/<4)
 		return true;
 
-	int displacement=d.Argument1.Memory.Displacement;
+	int displacement=d.getOperand(0).getMemoryDisplacement() /*d.Argument1.Memory.Displacement*/;
 
 	EXEIO::section* pSec=find_section(displacement,elfiop);
 
@@ -1011,7 +1025,6 @@ bool PNTransformDriver::check_jump_table_entries(set<int> jump_tab_entries,Funct
 
 bool PNTransformDriver::backup_until(const char* insn_type, Instruction_t *& prev, Instruction_t* orig)
 {
-	DISASM disasm;
 	prev=orig;
 	while(preds[prev].size()==1)
 	{
@@ -1019,10 +1032,12 @@ bool PNTransformDriver::backup_until(const char* insn_type, Instruction_t *& pre
 		prev=*(preds[prev].begin());
 
         	// get I7's disassembly
-        	Disassemble(prev,disasm);
+		//DISASM disasm;
+        	//Disassemble(prev,disasm);
+		const auto disasm=DecodedInstruction_t(prev);
 
         	// check it's the requested type
-        	if(strstr(disasm.Instruction.Mnemonic, insn_type)!=NULL)
+        	if(strstr((disasm.getMnemonic()+" ").c_str() /*disasm.Instruction.Mnemonic*/, insn_type)!=NULL)
                 	return true;
 
 		// otherwise, try backing up again.
@@ -1031,7 +1046,7 @@ bool PNTransformDriver::backup_until(const char* insn_type, Instruction_t *& pre
 	return false;
 }
 
-  void  PNTransformDriver::calc_preds()
+void  PNTransformDriver::calc_preds()
 {
   preds.clear();
         for(
@@ -1054,7 +1069,7 @@ bool PNTransformDriver::backup_until(const char* insn_type, Instruction_t *& pre
 /* check if this instruction is an indirect jump via a register,
  * if so, see if the jump location is in the same function. Return false if not in the same function. 
  */
-bool PNTransformDriver::check_for_PIC_switch_table64(Instruction_t* insn, DISASM disasm)
+bool PNTransformDriver::check_for_PIC_switch_table64(Instruction_t* insn, DecodedInstruction_t disasm)
 {
 
         /* here's the pattern we're looking for */
@@ -1087,14 +1102,17 @@ DN:   0x4824e0: .long 0x4824e0-LN
         Instruction_t* I6=NULL;
         Instruction_t* I5=NULL;
         // check if I8 is a jump
-        if(strstr(disasm.Instruction.Mnemonic, "jmp")==NULL)
+        //if(strstr(disasm.Instruction.Mnemonic, "jmp")==NULL)
+        if(disasm.getMnemonic() !=  "jmp")
                 return true;
 
 	// return if it's a jump to a constant address, these are common
-        if(disasm.Argument1.ArgType&CONSTANT_TYPE)
+        //if(disasm.Argument1.ArgType&CONSTANT_TYPE)
+        if(disasm.getOperand(0).isConstant())
 		return true;
 	// return if it's a jump to a memory address
-        if(disasm.Argument1.ArgType&MEMORY_TYPE)
+        //if(disasm.Argument1.ArgType&MEMORY_TYPE)
+        if(disasm.getOperand(0).isMemory())
 		return true;
 
 	// has to be a jump to a register now
@@ -1111,18 +1129,20 @@ DN:   0x4824e0: .long 0x4824e0-LN
 	if(!backup_until("lea", I5, I6))
 		return true;
 
-	Disassemble(I5,disasm);
+	disasm=DecodedInstruction_t(I5); // Disassemble(I5,disasm);
 
-        if(!(disasm.Argument2.ArgType&MEMORY_TYPE))
+        //if(!(disasm.Argument2.ArgType&MEMORY_TYPE))
+        if(!disasm.getOperand(1).isMemory())
                 return true;
-        if(!(disasm.Argument2.ArgType&RELATIVE_))
+        //if(!(disasm.Argument2.ArgType&RELATIVE_))
+        if(!disasm.getOperand(1).isPcrel())
                 return true;
 
         // note that we'd normally have to add the displacement to the
         // instruction address (and include the instruction's size, etc.
         // but, fix_calls has already removed this oddity so we can relocate
         // the instruction.
-        int D1=strtol(disasm.Argument2.ArgMnemonic, NULL, 16);
+        int D1=strtol(disasm.getOperand(1).getString().c_str()/*Argument2.ArgMnemonic*/, NULL, 16);
 
         // find the section with the data table
         EXEIO::section *pSec=find_section(D1,elfiop);
@@ -1182,14 +1202,15 @@ void PNTransformDriver::SanitizeFunctions()
 			++it
 			)
 		{
-			DISASM disasm;
+			//DISASM disasm;
 			Instruction_t* instr = *it;
 
 			if(instr == NULL)
 				continue;
 
-			Disassemble(instr,disasm);
-			string disasm_str = disasm.CompleteInstr;
+			//Disassemble(instr,disasm);
+			const auto disasm=DecodedInstruction_t(instr);
+			string disasm_str = disasm.getDisassembly()/*CompleteInstr*/;
 
 /*
 			if(disasm_str.find("nop")!=string::npos && instr->GetFunction() == NULL)
@@ -1203,8 +1224,8 @@ void PNTransformDriver::SanitizeFunctions()
 				//check if instruciton is a call, unconditional jump, or ret
 				//all other instructions should have targets within the same function
 				//if not, filter the functions
-				int branch_type = disasm.Instruction.BranchType;
-				if(branch_type!=RetType && branch_type!=JmpType && branch_type!=CallType)
+				//int branch_type = disasm.Instruction.BranchType;
+				if(!disasm.isReturn() && !disasm.isUnconditionalBranch() && !disasm.isCall() /*branch_type!=RetType && branch_type!=JmpType && branch_type!=CallType*/)
 					// check if instr->GetTarget() (for cond branches) 
 					// exits the function.  If so, sanitize both funcs.
 					TargetFunctionCheck(instr,instr->GetTarget());
@@ -2243,10 +2264,11 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 
 		string matched="";
 		string disasm_str = "";
-		DISASM disasm;
+		//DISASM disasm;
 
-		Disassemble(instr,disasm);
-		disasm_str = disasm.CompleteInstr;
+		//Disassemble(instr,disasm);
+		const auto disasm=DecodedInstruction_t(instr);
+		disasm_str = disasm.getDisassembly() /*CompleteInstr*/;
 
 		if(verbose_log)
 			cerr<<"PNTransformDriver: Canary_Rewrite: Looking at instruction "<<disasm_str<<endl;
@@ -2401,9 +2423,10 @@ bool PNTransformDriver::Sans_Canary_Rewrite(PNStackLayout *layout, Function_t *f
 	{
 		Instruction_t* instr=*it;
 		string disasm_str = "";
-		DISASM disasm;
-		Disassemble(instr,disasm);
-		disasm_str = disasm.CompleteInstr;
+		//DISASM disasm;
+		//Disassemble(instr,disasm);
+		const auto disasm=DecodedInstruction_t(instr);
+		disasm_str = disasm.getDisassembly() /*CompleteInstr*/;
 
 		if(verbose_log)
 			cerr<<"PNTransformDriver: Sans_Canary_Rewrite: Looking at instruction "<<disasm_str<<endl;
@@ -2463,11 +2486,13 @@ int PNTransformDriver::prologue_offset_to_actual_offset(ControlFlowGraph_t* cfg,
 	for(int i=0;insn!=NULL && i<MAX_JUMPS_TO_FOLLOW; ++i, insn=GetNextInstruction(prev,insn, func))
 	{
 		assert(insn);
-		DISASM d;
-		Disassemble(insn,d);
-		string disasm_str=d.CompleteInstr;
+		//DISASM d;
+		//Disassemble(insn,d);
+		const auto d=DecodedInstruction_t(insn);
+		string disasm_str=d.getDisassembly() /*CompleteInstr*/;
 		
-		if(strstr(d.CompleteInstr, "push")!=NULL)
+		//if(strstr(d.CompleteInstr, "push")!=NULL)
+		if(d.getMnemonic()=="push")
 			return offset;
 	
 		int max = PNRegularExpressions::MAX_MATCHES;
@@ -2475,7 +2500,7 @@ int PNTransformDriver::prologue_offset_to_actual_offset(ControlFlowGraph_t* cfg,
 		regmatch_t *pmatch=new regmatch_t[max]; // (max*sizeof(regmatch_t));
 
 		/* check for a stack alloc */
-                if(regexec(&(pn_regex->regex_stack_alloc), d.CompleteInstr, 5, pmatch, 0)==0)
+                if(regexec(&(pn_regex->regex_stack_alloc), d.getDisassembly().c_str() /*CompleteInstr*/, 5, pmatch, 0)==0)
 		{
 
                         if (pmatch[1].rm_so >= 0 && pmatch[1].rm_eo >= 0)
@@ -2532,10 +2557,10 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 
 	string matched="";
 	string disasm_str = "";
-	DISASM disasm;
-
-	Disassemble(instr,disasm);
-	disasm_str = disasm.CompleteInstr;
+	//DISASM disasm;
+	//Disassemble(instr,disasm);
+	const auto disasm=DecodedInstruction_t(instr);
+	disasm_str = disasm.getDisassembly() /*CompleteInstr*/;
 	
 	//the disassmebly of lea has extra tokens not accepted by nasm, remove those tokens
 	if(regexec(&(pn_regex->regex_lea_hack), disasm_str.c_str(), max, pmatch, 0)==0)

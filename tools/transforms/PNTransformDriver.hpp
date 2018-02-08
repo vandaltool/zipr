@@ -29,10 +29,11 @@
 #include "PNRegularExpressions.hpp"
 #include <csignal>
 #include "Rewrite_Utility.hpp"
-#include <libIRDB-cfg.hpp>
-#include "canary.h"
 #include <libIRDB-core.hpp>
-#include <bea_deprecated.hpp>
+#include <libIRDB-cfg.hpp>
+#include <libIRDB-decode.hpp>
+#include "canary.h"
+//#include <bea_deprecated.hpp>
 
 
 //TODO: I should use the types defined by beaengine
@@ -157,7 +158,7 @@ class PNTransformDriver
 	int prologue_offset_to_actual_offset(ControlFlowGraph_t* cfg, Instruction_t *instr,int offset);
 	bool check_jump_tables(Instruction_t* insn);
   	bool check_jump_table_entries(std::set<int> insn,Function_t *func);
-  	bool check_for_PIC_switch_table64(Instruction_t* insn, DISASM disasm);
+  	bool check_for_PIC_switch_table64(Instruction_t* insn, libIRDB::DecodedInstruction_t disasm);
   	bool backup_until(const char* insn_type, Instruction_t *& prev, Instruction_t* orig);
   	void calc_preds();
 	void InitNewFileIR(File_t* this_file);
