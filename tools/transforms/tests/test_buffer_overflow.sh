@@ -85,7 +85,6 @@ report ()
 
 main()
 {
-	clean
 	build
 	build_with_stack_protector
 	protect
@@ -98,11 +97,7 @@ main()
 	test_functional test_buffer_overflow.exe.p1.hlt 
 	test_functional test_buffer_overflow.exe.sp.p1.189 
 
-	report
-
-	echo "Test detection"
-	passes=0 
-	fails=0
+	echo "Test detection (segfaults, etc. expected) -- errors do not effect test results"
 	test_detection test_buffer_overflow.exe.p1.139 139
 	test_detection test_buffer_overflow.exe.p1.188 188
 	test_detection test_buffer_overflow.exe.p1.hlt 139
