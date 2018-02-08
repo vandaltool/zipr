@@ -989,7 +989,7 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 	if(!pSec)
 		return;
 
-	auto table_max=-1;
+	auto table_max=numeric_limits<uint32_t>::max();
 	auto cmp_insn=(Instruction_t*)NULL;
 	if(backup_until("cmp ", cmp_insn, insn))
 	{
