@@ -80,6 +80,9 @@ map< Instruction_t*, fii_icfs > jmptables;
 // a map of virtual offset -> instruction for quick access.
 map<virtual_offset_t,Instruction_t*> lookupInstructionMap;
 
+// the set of things that are partially unpinned already.
+set<Instruction_t*> already_unpinned;
+
 static long total_unpins=0;
 
 
@@ -152,9 +155,9 @@ bool possible_target(virtual_offset_t p, virtual_offset_t from_addr, ibt_provena
 		if(getenv("IB_VERBOSE")!=NULL)
 		{
 			if(from_addr!=0)
-				cout<<"Found IB target address 0x"<<std::hex<<p<<" at 0x"<<from_addr<<std::dec<<endl;
+				cout<<"Found IB target address 0x"<<std::hex<<p<<" at 0x"<<from_addr<<std::dec<<", prov="<<prov<<endl;
 			else
-				cout<<"Found IB target address 0x"<<std::hex<<p<<" from unknown location"<<endl;
+				cout<<"Found IB target address 0x"<<std::hex<<p<<" from unknown location, prov="<<prov<<endl;
 		}
 		targets[p].add(prov);
 		return true;
@@ -981,11 +984,20 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 	if(table_base==0)
 		return;
 
-
 	// find the section with the data table
 	EXEIO::section *pSec=find_section(table_base,elfiop);
 	if(!pSec)
 		return;
+
+	auto table_max=-1;
+	auto cmp_insn=(Instruction_t*)NULL;
+	if(backup_until("cmp ", cmp_insn, insn))
+	{
+		assert(cmp_insn);
+		const auto cmp_decode=DecodedInstruction_t(cmp_insn);
+		table_max=cmp_decode.getImmediate();
+	}
+	
 
 	// if the section has no data, abort 
 	const char* secdata=pSec->get_data();
@@ -1078,11 +1090,7 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 				if(ibtarget)
 				{
 					jmptables[I5].insert(ibtarget);
-#ifdef CGC
-					jmptables[I5].SetAnalysisStatus(ICFS_Analysis_Complete);
-#else
 					jmptables[I5].SetAnalysisStatus(ICFS_Analysis_Module_Complete);
-#endif
 					possible_target(table_entry,table_base+0*ptrsize, ibt_provenance_t::ibtp_gotplt);
 					if(getenv("IB_VERBOSE")!=0)
 						cout<<hex<<"Found  plt dispatch ("<<disasm.getDisassembly()<<"') at "<<I5->GetAddress()->GetVirtualOffset()<< endl;
@@ -1123,7 +1131,16 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 		// finished the loop.
 		for(i=0;true;i++)
 		{
-			if(offset+i*ptrsize+ptrsize > pSec->get_size())
+			if(i>table_max)
+			{
+				if(getenv("IB_VERBOSE")!=0)
+				{
+					cout<<hex<<"Switch dispatch at "<<I5->GetAddress()->GetVirtualOffset()<< " with table_base="
+					    <<table_base<<" is complete!"<<endl;
+				}
+				jmptables[insn].SetAnalysisStatus(ICFS_Analysis_Complete);
+			}
+			if(offset+i*ptrsize+ptrsize > pSec->get_size() || i > table_max)
 				return;
 
 			const void *table_entry_ptr=(const int*)&(secdata[offset+i*ptrsize]);
@@ -1148,9 +1165,8 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 				cout<<"Found switch table (thunk-relative) entry["<<dec<<i<<"], "<<hex<<table_entry<<endl;
 
 			// make table bigger.
-			jmptables[insn].SetTableSize(i);
+			jmptables[insn].SetTableSize(i+1);/* 0 index, and this index is determined valid. */
 			jmptables[insn].insert(ibt);
-			jmptables[insn].SetAnalysisStatus(ICFS_Analysis_Complete);
 		}
 	}
 	else
@@ -2352,32 +2368,43 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 				  )
 				{
 					total_unpins++;
+					auto allow_unpin=true;
 					if(do_unpin_opt != -1)
 					{
 						if(total_unpins > do_unpin_opt) 
 						{
+						/*
 							cout<<"Aborting unpin process mid elf table."<<endl;
 							return;
+						*/
+							allow_unpin=false;
 						}
-						cout<<"Attempting unpin #"<<total_unpins<<"."<<endl;
 					}
 
 					// when/if they fail, convert to if and guard the reloc creation.
 					if(getenv("UNPIN_VERBOSE")!=0)
-						cout<<"Unpinning "<<scoop->GetName()<<" entry at offset "<<dec<<i<<". vo="<<hex<<vo<<endl;
+					{
+						if(allow_unpin)
+							cout<<"Attempting unpin #"<<total_unpins<<"."<<endl;
+						else
+							cout<<"Eliding unpin #"<<total_unpins<<"."<<endl;
+					}
 
+					if(allow_unpin || already_unpinned.find(insn)!=already_unpinned.end())
+					{
+						already_unpinned.insert(insn);
+						unpin_counts[scoop->GetName()]++;
 
-					unpin_counts[scoop->GetName()]++;
+						Relocation_t* nr=new Relocation_t();
+						assert(nr);
+						nr->SetType("data_to_insn_ptr");
+						nr->SetOffset(i);
+						nr->SetWRT(insn);
 
-					Relocation_t* nr=new Relocation_t();
-					assert(nr);
-					nr->SetType("data_to_insn_ptr");
-					nr->SetOffset(i);
-					nr->SetWRT(insn);
-
-					// add reloc to IR.
-					firp->GetRelocations().insert(nr);
-					scoop->GetRelocations().insert(nr);
+						// add reloc to IR.
+						firp->GetRelocations().insert(nr);
+						scoop->GetRelocations().insert(nr);
+					}
 				}
 				else
 				{
@@ -2543,7 +2570,10 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 	set<Instruction_t*> switch_targs;
 
 	if(getenv("UNPIN_VERBOSE"))
-		cout<<"Unpinning type3 switch, dispatch is "<<hex<<insn->GetAddress()->GetVirtualOffset()<<":"<<insn->getDisassembly()<<endl; 
+	{
+		cout<<"Unpinning type3 switch, dispatch is "<<hex<<insn->GetAddress()->GetVirtualOffset()<<":"
+		    <<insn->getDisassembly()<<" with tabSz="<<jmptables[insn].GetTableSize()<<endl; 
+	}
 
 
 	// switch check
@@ -2590,29 +2620,44 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 			// which isn't otherwise addressed.
 			if(targets[table_entry].areOnlyTheseSet(prov))
 			{
+				auto allow_new_unpins=true;
 				total_unpins++;
 				if(do_unpin_opt != -1 && total_unpins > do_unpin_opt) 
 				{
-					cout<<"Aborting unpin process mid switch table."<<endl;
-					return;
+					allow_new_unpins=false;
+					
+					// don't abort early as we need to fully unpin the IBT once we've started.
+					//cout<<"Aborting unpin process mid switch table."<<endl;
+					// return;
 				}
 
-				if(getenv("UNPIN_VERBOSE"))
-					cout<<"Unpinning switch for ibt="<<hex<<table_entry<<", scoop_off="<<scoop_off<<endl;
+				// if we are out of unpins, and we haven't unpinned this instruction yet, skip unpinning it.
+				if(!allow_new_unpins && already_unpinned.find(ibt)==already_unpinned.end())
+				{
+					if(getenv("UNPIN_VERBOSE"))
+						cout<<"Eliding switch unpin for entry["<<dec<<i<<"] ibt="<<hex<<table_entry<<", scoop_off="<<scoop_off<<endl;
 
+					// do nothing
+				}
+				else
+				{
+					if(getenv("UNPIN_VERBOSE"))
+						cout<<"Unpinning switch entry ["<<dec<<i<<"] for ibt="<<hex<<table_entry<<", scoop_off="<<scoop_off<<endl;
+					already_unpinned.insert(ibt);
 
-				Relocation_t* nr=new Relocation_t();
-				assert(nr);
-				nr->SetType("data_to_insn_ptr");
-				nr->SetOffset(scoop_off);
-				nr->SetWRT(ibt);
-				// add reloc to IR.
-				firp->GetRelocations().insert(nr);
-				scoop->GetRelocations().insert(nr);
+					Relocation_t* nr=new Relocation_t();
+					assert(nr);
+					nr->SetType("data_to_insn_ptr");
+					nr->SetOffset(scoop_off);
+					nr->SetWRT(ibt);
+					// add reloc to IR.
+					firp->GetRelocations().insert(nr);
+					scoop->GetRelocations().insert(nr);
 
-				// remove rodata reference for hell nodes.
-				targets[table_entry]=newprov;
-				switch_targs.insert(ibt);
+					// remove rodata reference for hell nodes.
+					targets[table_entry]=newprov;
+					switch_targs.insert(ibt);
+				}
 			}
 		}
 		scoop_off+=ptrsize;
@@ -2661,11 +2706,13 @@ void unpin_switches(FileIR_t *firp, int do_unpin_opt)
 		{
 			unpin_type3_switchtable(firp,insn,scoop, do_unpin_opt);
 		}
+		/* don't do this as it breaks binary--search of unpinning 
 		if(do_unpin_opt != -1 && total_unpins > do_unpin_opt) 
 		{
 			cout<<"Aborting unpin after switch table."<<endl;
 			return;
 		}
+		*/
 		
         }
 	cout<<"#ATTRIBUTE switch_type3_pins="<<dec<<type3_pins<<endl;
@@ -2724,6 +2771,7 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t>
 	ranges.clear();
 	targets.clear();
 	jmptables.clear();
+	already_unpinned.clear();
 	lookupInstruction_init(firp);
 
 	calc_preds(firp);
