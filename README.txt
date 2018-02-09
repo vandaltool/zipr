@@ -1,6 +1,6 @@
 
 
-Congratulations!  You've recieved a copy of
+Congratulations!  You've received a copy of
 the Zipr toolchain.  Before use, you need to install it.
 
 To install, pick an approriate directory for your OS from the 
