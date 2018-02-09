@@ -30,6 +30,7 @@ class DecodedOperand_t
 		bool isPcrel() const;
 		uint32_t getScaleValue() const;
 		uint32_t getMemoryDisplacementEncodingSize() const;
+		uint32_t getArgumentSizeInBytes() const;
 		
 
 

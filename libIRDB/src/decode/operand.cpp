@@ -172,3 +172,9 @@ uint32_t DecodedOperand_t::getMemoryDisplacementEncodingSize() const
 	ARGTYPE *t=static_cast<ARGTYPE*>(arg_data);
 	return t->Memory.DisplacementSize;
 }
+
+uint32_t DecodedOperand_t::getArgumentSizeInBytes() const
+{
+	ARGTYPE *t=static_cast<ARGTYPE*>(arg_data);
+	return t->ArgSize/8;
+}

@@ -11,6 +11,7 @@ using namespace libIRDB;
 using namespace std;
 
 class DecodedOperand_t;
+typedef std::vector<DecodedOperand_t> DecodedOperandVector_t;
 
 class DecodedInstruction_t
 {
@@ -42,7 +43,7 @@ class DecodedInstruction_t
 		// 0-based.  first operand is numbered 0.
 		bool hasOperand(const int op_num) const;
 		DecodedOperand_t getOperand(const int op_num) const;
-		vector<DecodedOperand_t> getOperands() const;
+		DecodedOperandVector_t getOperands() const;
 
 	private:
 

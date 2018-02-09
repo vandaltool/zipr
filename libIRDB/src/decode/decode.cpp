@@ -174,9 +174,9 @@ DecodedOperand_t DecodedInstruction_t::getOperand(const int op_num) const
 	}
 }
 
-vector<DecodedOperand_t> DecodedInstruction_t::getOperands() const
+DecodedOperandVector_t DecodedInstruction_t::getOperands() const
 {
-	auto ret_val=vector<DecodedOperand_t>();
+	auto ret_val=DecodedOperandVector_t();
 	for(auto i=0;i<4;i++)
 	{
 		if(hasOperand(i))
