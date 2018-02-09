@@ -64,9 +64,16 @@ centos_files/zlib-1.2.7-17.el7.x86_64.rpm -text svneol=unset#application/x-rpm
 /irdb_vars -text
 /manifest.txt -text
 /postgres_setup.sh -text
+/regen_install.sh -text
 /set_command_envs -text
 /set_env_vars -text
 /set_ida_server -text
 /start_dev.sh -text
 /svn.externals.uva_dev -text
+ubuntu16_files/README.txt -text
+ubuntu16_files/Vagrantfile -text
+ubuntu16_files/generate_ais_installer.sh -text
+ubuntu16_files/install.sh -text
+ubuntu16_files/manifest.txt -text
+ubuntu16_files/test.sh -text
 /yum_packages.sh -text

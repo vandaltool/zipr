@@ -6,9 +6,12 @@ submanifest SMPStaticAnalyzer/manifest.txt
 submanifest zipr_install/manifest.txt
 submanifest stratafier/manifest.txt
 submanifest IdaProServer/manifest.txt
+submanifest ubuntu16_files/manifest.txt
 file set_command_envs ps
 file set_env_vars ps
 file set_ida_server ps
 file irdb_vars ps
 file yum_packages.sh centos
+file postgres_setup.sh ps
+file README.txt ps
 directory centos_files centos

@@ -1,0 +1,57 @@
+Vagrant.configure(2) do |config|
+  config.vm.define "zipr_toolchain" do |zipr_toolchain|
+
+    # sanity check env.  -- but do this after the box definition.
+
+    zipr_toolchain.vm.box = "ubuntu/xenial64"
+    zipr_toolchain.vm.box_url = "http://cloud-images.ubuntu.com/releases/16.04/release/ubuntu-16.04-server-cloudimg-amd64-vagrant.box"
+#    zipr_toolchain.vm.hostname = "ziprtools"
+
+    zipr_toolchain.vm.provider "virtualbox" do |vbox|
+# 	 vbox.gui = true
+        vbox.name = "ziprtools"
+        vbox.cpus = 2 
+        vbox.memory = 8192
+    end
+
+    # README step 0, unpack tarball.
+    zipr_toolchain.vm.provision "shell", privileged: false, inline: <<-SHELL
+	cd /home/vagrant
+	tar xzf /vagrant/zipr_toolchain.tgz
+    SHELL
+
+    # README step 2:  install key.
+    zipr_toolchain.vm.provision "file", source: Pathname.new(ENV["IDAROOT"]).join("ida.key"), destination: "$HOME/zipr_toolchain/idaproCur/ida.key"
+
+    # README step 3-6: run installer, setup postgres as vagrant, test ls.
+    zipr_toolchain.vm.provision "shell", privileged: false, inline: <<-SHELL
+	cd /home/vagrant/zipr_toolchain ; sudo ./ubuntu16_files/install.sh 2>&1 | tee /tmp/install.log
+	source set_env_vars
+	./postgres_setup.sh
+	cd /tmp
+	$PSZ /bin/ls ./ls.protected 
+	if ./ls.protected ; then
+		echo
+		echo
+		echo
+		echo "Installation Success!  (Passed smoke test on /bin/ls)"
+		echo
+		echo
+		echo
+	else
+		echo
+		echo
+		echo
+		echo
+		echo "Installation failed!  (Could not protect /bin/ls)"
+		echo
+		echo
+		echo
+	fi
+	echo "Cleaning up"
+	rm -Rf /tmp/ls /tmp/peasoup*
+		
+    SHELL
+  end
+end
+
