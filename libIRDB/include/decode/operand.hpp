@@ -20,8 +20,17 @@ class DecodedOperand_t
 		string getString() const;
 		bool isWrite() const;
 		bool isRegister() const;
+		bool isGeneralPurposeRegister() const;
+		bool isMmxRegister() const;
+		bool isFpuRegister() const;
+		bool isSseRegister() const;
+		bool isAvxRegister() const;
+		bool isSpecialRegister() const;
+		bool isSegmentRegister() const;
 		uint32_t getRegNumber() const;
 		bool isMemory() const;
+		bool hasSegmentRegister() const;
+		uint32_t getSegmentRegister() const;
 		bool hasBaseRegister() const;
 		bool hasIndexRegister() const;
 		uint32_t getBaseRegister() const;
@@ -31,8 +40,8 @@ class DecodedOperand_t
 		uint32_t getScaleValue() const;
 		uint32_t getMemoryDisplacementEncodingSize() const;
 		uint32_t getArgumentSizeInBytes() const;
-		
-
+		bool isRead() const; 
+		bool isWritten() const; 
 
 
 	private:

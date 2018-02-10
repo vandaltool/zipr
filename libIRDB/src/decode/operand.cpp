@@ -11,6 +11,7 @@ static uint32_t beaRegNoToIRDBRegNo(uint32_t regno)
 	switch(regno)
 	{
 		case 0: return -1;	// no reg -> -1
+		case REG0+REG2: /* eax:edx pair -- call it reg 0 */ return 0;
 		case REG0: return 0;
 		case REG1: return 1;
 		case REG2: return 2;
@@ -90,7 +91,47 @@ bool DecodedOperand_t::isRegister() const
 	return (t->ArgType&REGISTER_TYPE)==REGISTER_TYPE;
 }
 
+bool DecodedOperand_t::isGeneralPurposeRegister() const
+{
+	ARGTYPE *t=static_cast<ARGTYPE*>(arg_data);
+	return isRegister() && (t->ArgType&GENERAL_REG)==GENERAL_REG;
+}
 
+bool DecodedOperand_t::isMmxRegister() const
+{
+	ARGTYPE *t=static_cast<ARGTYPE*>(arg_data);
+	return isRegister() && (t->ArgType&MMX_REG)==MMX_REG;
+}
+
+bool DecodedOperand_t::isFpuRegister() const
+{
+	ARGTYPE *t=static_cast<ARGTYPE*>(arg_data);
+	return isRegister() && (t->ArgType&FPU_REG)==FPU_REG;
+}
+
+bool DecodedOperand_t::isSseRegister() const
+{
+	ARGTYPE *t=static_cast<ARGTYPE*>(arg_data);
+	return isRegister() && (t->ArgType&SSE_REG)==SSE_REG;
+}
+
+bool DecodedOperand_t::isAvxRegister() const
+{
+	ARGTYPE *t=static_cast<ARGTYPE*>(arg_data);
+	return isRegister() && (t->ArgType&AVX_REG)==AVX_REG;
+}
+
+bool DecodedOperand_t::isSpecialRegister() const
+{
+	ARGTYPE *t=static_cast<ARGTYPE*>(arg_data);
+	return isRegister() && (t->ArgType&SPECIAL_REG)==SPECIAL_REG;
+}
+
+bool DecodedOperand_t::isSegmentRegister() const
+{
+	ARGTYPE *t=static_cast<ARGTYPE*>(arg_data);
+	return isRegister() && (t->ArgType&SEGMENT_REG)==SEGMENT_REG;
+}
 
 uint32_t DecodedOperand_t::getRegNumber() const
 {
@@ -177,4 +218,31 @@ uint32_t DecodedOperand_t::getArgumentSizeInBytes() const
 {
 	ARGTYPE *t=static_cast<ARGTYPE*>(arg_data);
 	return t->ArgSize/8;
+}
+
+bool DecodedOperand_t::hasSegmentRegister() const
+{
+	ARGTYPE *t=static_cast<ARGTYPE*>(arg_data);
+	return t->SegmentReg!=0;
+
+}
+
+uint32_t DecodedOperand_t::getSegmentRegister() const
+{
+	if(!hasSegmentRegister())
+		throw std::logic_error("getSegmentRegisterNumber called with no segment register");
+	ARGTYPE *t=static_cast<ARGTYPE*>(arg_data);
+	return t->SegmentReg;
+}
+
+bool DecodedOperand_t::isRead() const
+{
+	ARGTYPE *t=static_cast<ARGTYPE*>(arg_data);
+	return (t->AccessMode&READ)==READ;
+}
+
+bool DecodedOperand_t::isWritten() const
+{
+	ARGTYPE *t=static_cast<ARGTYPE*>(arg_data);
+	return (t->AccessMode&WRITE)==WRITE;
 }

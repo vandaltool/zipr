@@ -38,6 +38,11 @@ class DecodedInstruction_t
 		virtual_offset_t getAddress() const;
 		bool setsStackPointer() const;
 		uint32_t getPrefixCount() const;
+		bool hasRepPrefix() const;
+		bool hasRepnePrefix() const;
+		bool hasOperandSizePrefix() const;
+		bool hasRexWPrefix() const;
+		bool hasImplicitlyModifiedRegs() const;
 		virtual_offset_t getMemoryDisplacementOffset(const DecodedOperand_t& t) const;
 
 		// 0-based.  first operand is numbered 0.

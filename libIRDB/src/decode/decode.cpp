@@ -245,3 +245,34 @@ virtual_offset_t DecodedInstruction_t::getMemoryDisplacementOffset(const Decoded
 	return the_arg->Memory.DisplacementAddr-d->EIP;
 }
 
+
+bool DecodedInstruction_t::hasRepPrefix() const
+{
+	DISASM* d=static_cast<DISASM*>(disasm_data);
+	return d->Prefix.RepnePrefix!=NotUsedPrefix;
+}
+
+bool DecodedInstruction_t::hasRepnePrefix() const
+{
+	DISASM* d=static_cast<DISASM*>(disasm_data);
+	return d->Prefix.RepPrefix!=NotUsedPrefix;
+}
+
+bool DecodedInstruction_t::hasOperandSizePrefix() const
+{
+	DISASM* d=static_cast<DISASM*>(disasm_data);
+	return d->Prefix.OperandSize!=NotUsedPrefix;
+}
+
+bool DecodedInstruction_t::hasRexWPrefix() const
+{
+	DISASM* d=static_cast<DISASM*>(disasm_data);
+	return d->Prefix.REX.W_;
+}
+
+bool DecodedInstruction_t::hasImplicitlyModifiedRegs() const
+{
+	DISASM* d=static_cast<DISASM*>(disasm_data);
+	return d->Instruction.ImplicitModifiedRegs!=0;
+}
+
