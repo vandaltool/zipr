@@ -35,11 +35,13 @@ class DecodedOperand_t
 		bool hasIndexRegister() const;
 		uint32_t getBaseRegister() const;
 		uint32_t getIndexRegister() const;
+		bool hasMemoryDisplacement() const;
 		virtual_offset_t getMemoryDisplacement() const;
 		bool isPcrel() const;
 		uint32_t getScaleValue() const;
 		uint32_t getMemoryDisplacementEncodingSize() const;
 		uint32_t getArgumentSizeInBytes() const;
+		uint32_t getArgumentSizeInBits() const;
 		bool isRead() const; 
 		bool isWritten() const; 
 

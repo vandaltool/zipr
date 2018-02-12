@@ -194,6 +194,14 @@ uint32_t DecodedOperand_t::getScaleValue() const
 	return t->Memory.Scale; 	/* 0 indicates no scale */
 }
 
+bool DecodedOperand_t::hasMemoryDisplacement() const
+{
+	if(!isMemory())
+		throw std::logic_error("GetBaseRegister called on not memory operand");
+	ARGTYPE *t=static_cast<ARGTYPE*>(arg_data);
+	return t->Memory.DisplacementAddr!=0;
+}
+
 virtual_offset_t DecodedOperand_t::getMemoryDisplacement() const
 {
 	if(!isMemory())
@@ -218,6 +226,12 @@ uint32_t DecodedOperand_t::getArgumentSizeInBytes() const
 {
 	ARGTYPE *t=static_cast<ARGTYPE*>(arg_data);
 	return t->ArgSize/8;
+}
+
+uint32_t DecodedOperand_t::getArgumentSizeInBits() const
+{
+	ARGTYPE *t=static_cast<ARGTYPE*>(arg_data);
+	return t->ArgSize;
 }
 
 bool DecodedOperand_t::hasSegmentRegister() const
