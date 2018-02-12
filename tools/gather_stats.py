@@ -48,6 +48,8 @@ for log_file_path in sys.argv[1:]:
 					stats[step_name][attribute_name] = attribute_value
 			elif re.search(ATTRIBUTE, line) or re.search(ATTRIBUTE2, line): 
 				(attribute_name, attribute_value) = extract_attribute(line.rstrip())
+				# need to make sure no '.' in attribute name as mongodb doesn't allow
+				attribute_name = attribute_name.replace(".","_")
 				if not step_name in stats:
 					stats[step_name] = {}
 				stats[step_name][attribute_name] = attribute_value
