@@ -223,6 +223,7 @@ libIRDB/include/core/reloc.hpp -text
 libIRDB/include/core/scoop.hpp -text
 libIRDB/include/core/type.hpp -text
 libIRDB/include/core/variantid.hpp -text
+libIRDB/include/decode/decode.hpp -text
 libIRDB/include/decode/decode_bea.hpp -text
 libIRDB/include/decode/decode_cs.hpp -text
 libIRDB/include/decode/decode_meta.hpp -text
