@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <fstream>
 #include <libIRDB-core.hpp>
+#include <libIRDB-decode.hpp>
 #include <libgen.h>
 #include <iomanip>
 #include <algorithm>
@@ -45,7 +46,8 @@ void dump_icfs(Instruction_t* insn)
 	cout<<"\tTargets: "<<boolalpha<<insn->GetIBTargets()->IsModuleComplete()<<endl;
 	for_each(insn->GetIBTargets()->begin(), insn->GetIBTargets()->end(), [&](const Instruction_t* targ)
 	{
-		cout<<"\t"<<targ->GetBaseID()<<":"<<targ->getDisassembly()<<endl;
+		const auto d=DecodedInstruction_t(targ);
+		cout<<"\t"<<targ->GetBaseID()<<":"<<d.getDisassembly()<<endl;
 	});
 }
 
@@ -117,7 +119,8 @@ int main(int argc, char **argv)
 				else
 					cout<<setw(9)<<"NoFunc";
 					
-				cout<<" "<<insn->getDisassembly()<<endl;
+				const auto d=DecodedInstruction_t(insn);
+				cout<<" "<<d.getDisassembly()<<endl;
 	
 				if(dump_icfs_flag == insn->GetBaseID())
 					dump_icfs(insn);

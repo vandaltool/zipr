@@ -1,6 +1,8 @@
-#ifndef libRIDB_decodedoperand_hpp
-#define libRIDB_decodedoperand_hpp
+#ifndef libRIDB_decodedoperandmeta_hpp
+#define libRIDB_decodedoperandmeta_hpp
 
+#include <decode/decode_bea.hpp>
+#include <decode/operand_bea.hpp>
 namespace libIRDB
 {
 
@@ -8,13 +10,13 @@ using namespace std;
 using namespace libIRDB;
 
 
-class DecodedOperand_t
+class DecodedOperandMeta_t
 {
 	public:
-		DecodedOperand_t() =delete;
-		DecodedOperand_t& operator=(const DecodedOperand_t& copy);
-		DecodedOperand_t(const DecodedOperand_t& copy);
-		virtual ~DecodedOperand_t();
+		DecodedOperandMeta_t() =delete;
+		DecodedOperandMeta_t& operator=(const DecodedOperandMeta_t& copy);
+		DecodedOperandMeta_t(const DecodedOperandMeta_t& copy);
+		virtual ~DecodedOperandMeta_t();
 
 		bool isConstant() const;
 		string getString() const;
@@ -47,12 +49,11 @@ class DecodedOperand_t
 
 
 	private:
+		DecodedOperandMeta_t(const DecodedOperandBea_t& in);
 
+		DecodedOperandBea_t bea;
 
-		void* arg_data;
-		DecodedOperand_t(void* arg_p);
-
-		friend class DecodedInstruction_t;
+		friend class DecodedInstructionMeta_t;
 
 };
 

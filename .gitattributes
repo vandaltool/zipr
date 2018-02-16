@@ -223,8 +223,12 @@ libIRDB/include/core/reloc.hpp -text
 libIRDB/include/core/scoop.hpp -text
 libIRDB/include/core/type.hpp -text
 libIRDB/include/core/variantid.hpp -text
-libIRDB/include/decode/decode.hpp -text
-libIRDB/include/decode/operand.hpp -text
+libIRDB/include/decode/decode_bea.hpp -text
+libIRDB/include/decode/decode_cs.hpp -text
+libIRDB/include/decode/decode_meta.hpp -text
+libIRDB/include/decode/operand_bea.hpp -text
+libIRDB/include/decode/operand_cs.hpp -text
+libIRDB/include/decode/operand_meta.hpp -text
 libIRDB/include/libIRDB-cfg.hpp -text
 libIRDB/include/libIRDB-core.hpp -text
 libIRDB/include/libIRDB-decode.hpp -text
@@ -264,8 +268,12 @@ libIRDB/src/core/scoop.cpp -text
 libIRDB/src/core/type.cpp -text
 libIRDB/src/core/variantid.cpp -text
 libIRDB/src/decode/SConscript -text
-libIRDB/src/decode/decode.cpp -text
-libIRDB/src/decode/operand.cpp -text
+libIRDB/src/decode/decode_bea.cpp -text
+libIRDB/src/decode/decode_cs.cpp -text
+libIRDB/src/decode/decode_meta.cpp -text
+libIRDB/src/decode/operand_bea.cpp -text
+libIRDB/src/decode/operand_cs.cpp -text
+libIRDB/src/decode/operand_meta.cpp -text
 libIRDB/src/syscall/Makefile.in -text
 libIRDB/src/syscall/SConscript -text
 libIRDB/src/syscall/SConstruct -text
@@ -886,6 +894,7 @@ plugins_install/stratafy_with_pc_confine.sh -text
 plugins_install/test.exe -text
 plugins_install/test.sh -text
 plugins_install/watchdog.sh -text
+/svn.externals.uva_dev -text
 third_party/ELFkickers-3.0a.tar.gz -text
 third_party/ELFkickers-3.0a/COPYING -text
 third_party/ELFkickers-3.0a/Changelog -text
