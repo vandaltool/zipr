@@ -10,6 +10,11 @@ if [ "$PEASOUP_UMBRELLA_DIR" != "$FULL_BUILD_LOC" ]; then
     exit 1;
 fi
 
+SCONSDEBUG=""
+if [[ "$*" =~ "--debug" ]]; then
+	SCONSDEBUG=" debug=1 "
+fi
+
 if [ `basename $FULL_BUILD_LOC` == "cfar_umbrella" ]; then
 	cfar_mode="--enable-cfar"
 fi
@@ -76,10 +81,10 @@ if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then
 fi
 
 cd $SECURITY_TRANSFORMS_HOME
-scons || exit
+scons $SCONSDEBUG -j 3 || exit
 
 cd $SMPSA_HOME
-scons || exit
+scons $SCONSDEBUG -j 3 || exit
 
 cd $PEASOUP_HOME
 make || exit
@@ -93,35 +98,35 @@ fi
 
 if [ -d $ZIPR_HOME ]; then
 	cd $ZIPR_HOME
-	scons  || exit
+	scons $SCONSDEBUG -j 3|| exit
 fi
 
 if [ -d $ZIPR_SCFI_PLUGIN ]; then
 	cd $ZIPR_SCFI_PLUGIN
-	scons  || exit
+	scons  $SCONSDEBUG || exit
 fi
 
 cd $PEASOUP_UMBRELLA_DIR/zipr_large_only_plugin/
-scons || exit
+scons $SCONSDEBUG || exit
 
 if [[ -e $PEASOUP_UMBRELLA_DIR/zipr ]] && [[ -e $PEASOUP_UMBRELLA_DIR/zipr_relax_plugin ]]  ; then
 	cd $PEASOUP_UMBRELLA_DIR/zipr_relax_plugin/
-	scons || exit
+	scons $SCONSDEBUG || exit
 fi
 
 if [[ -e $PEASOUP_UMBRELLA_DIR/zipr ]] && [[ -e $PEASOUP_UMBRELLA_DIR/zipr_trace_plugin ]]  ; then
 	cd $PEASOUP_UMBRELLA_DIR/zipr_trace_plugin/
-	scons || exit
+	scons $SCONSDEBUG || exit
 fi
 
 cd $PEASOUP_UMBRELLA_DIR/zipr_push64_reloc_plugin
-scons || exit
+scons $SCONSDEBUG || exit
 
 cd $PEASOUP_UMBRELLA_DIR/zipr_unpin_plugin
-scons || exit
+scons $SCONSDEBUG || exit
 
 cd $IRDB_TRANSFORMS
-scons || exit
+scons $SCONSDEBUG -j 3 || exit
 
 if [ -d $DAFFY_HOME ]; then
 	cd $DAFFY_HOME
