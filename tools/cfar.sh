@@ -237,10 +237,13 @@ do
 				echo "******************************************************************"
 
 				# on an error, kill all remaining jobs.
-				while [[ $(jobs -p) != "" ]] ;
+				local count=0
+				while [[ $(jobs -p) != "" ]] && [[ $count -lt 10 ]] ;
 				do
 					echo "Killing remaining jobs."
 					kill -9 $(jobs -p)
+					sleep 1
+					count=$(expr $count + 1 )
 				done
 
 				# mark that we don't have to check other children.
