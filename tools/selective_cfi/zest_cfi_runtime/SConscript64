@@ -30,6 +30,7 @@ myenv.Append(LINKFLAGS = LDFLAGS +" -m64 ")
 so64=myenv.SharedLibrary("libzestcfi.so",  cfiles+nasmfiles64)
 install64=myenv.Install("$ZEST_RUNTIME/lib64/", so64)
 Default(install64)
+Return('install64')
 
 	
 	

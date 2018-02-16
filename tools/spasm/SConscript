@@ -29,3 +29,4 @@ Default(install)
 
 	
 	
+Return('install')

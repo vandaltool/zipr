@@ -48,3 +48,4 @@ for pgm in pgms.keys():
 
 install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", ppgms)
 Default(install)
+Return('install')

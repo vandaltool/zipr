@@ -26,3 +26,5 @@ myenv.Append(CPPFLAGS=CPPFLAGS)
 pgm=myenv.Program(target="absolutify.exe", source=Split("absolutify.cpp absolutify_driver.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
 install=myenv.Install("$SECURITY_TRANSFORMS_HOME/plugins_install/", pgm)
 Default(install)
+
+Return('install')

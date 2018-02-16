@@ -32,5 +32,7 @@ Default(install)
 	
 	
 #lib32=SConscript("zest_cfi_runtime/SConscript", variant_dir="build32")
-SConscript("zest_cfi_runtime/SConscript") # , variant_dir="build64")
+zestcfi_lib=SConscript("zest_cfi_runtime/SConscript") # , variant_dir="build64")
 
+ret=[]+install+zestcfi_lib
+Return('ret')

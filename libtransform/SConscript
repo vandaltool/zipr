@@ -2,4 +2,6 @@ import os
 
 Import('env')
 
-SConscript("src/SConscript")
+lib=SConscript("src/SConscript")
+
+Return('lib')

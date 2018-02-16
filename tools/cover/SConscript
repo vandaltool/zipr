@@ -27,4 +27,4 @@ install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
 Default(install)
 
 	
-	
+Return('install')

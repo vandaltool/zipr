@@ -1,28 +1,37 @@
 import os
+import glob
 
 Import('env')
 myenv=env
 myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 
 
+libnamesimple="IRDB-decode-simple"
 libname="IRDB-decode"
 files=  '''
-	decode.cpp
-	operand.cpp
+	decode_cs.cpp
+	operand_cs.cpp
+	decode_bea.cpp
+	operand_bea.cpp
+	decode_meta.cpp
+	operand_meta.cpp
 	'''
 cpppath=''' 
 	$SECURITY_TRANSFORMS_HOME/include/
 	$SECURITY_TRANSFORMS_HOME/libIRDB/include/
 	$SECURITY_TRANSFORMS_HOME/beaengine/include
 	$SECURITY_TRANSFORMS_HOME/beaengine/beaengineSources/Includes/
+	$SECURITY_TRANSFORMS_HOME/libcapstone/include/
 	'''
 
 #myenv.Append(CCFLAGS=" -Wall -W -Wextra -Wconversion ")
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath))
 myenv.Append(CXXFLAGS = " -std=c++11 ")
-lib=myenv.Library(libname, Split(files))
-
+globs=glob.glob(os.environ['SECURITY_TRANSFORMS_HOME']+'/libcapstone/zipr_unpack/*.o')
+lib=myenv.Library(libname, Split(files)  + globs ); 
 install=env.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
 Default(install)
 
+
+Return('install')

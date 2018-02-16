@@ -26,3 +26,4 @@ lib=myenv.Library(libname, Split(files))
 install=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
 Default(install)
 
+Return('install')

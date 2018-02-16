@@ -1,3 +1,5 @@
 
 Import('env')
-env.SConscript("SConscript64")
+res=env.SConscript("SConscript64")
+
+Return('res')
