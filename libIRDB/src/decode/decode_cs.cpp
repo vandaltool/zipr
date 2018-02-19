@@ -441,7 +441,7 @@ bool DecodedInstructionCapstone_t::hasRexWPrefix() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
-	return (the_insn->detail->x86.rex & 0x7) == 0x1;
+	return (the_insn->detail->x86.rex & 0x8) == 0x8;
 }
 
 bool DecodedInstructionCapstone_t::hasImplicitlyModifiedRegs() const
