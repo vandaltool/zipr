@@ -237,7 +237,7 @@ do
 				echo "******************************************************************"
 
 				# on an error, kill all remaining jobs.
-				local count=0
+				count=0
 				while [[ $(jobs -p) != "" ]] && [[ $count -lt 10 ]] ;
 				do
 					echo "Killing remaining jobs."
