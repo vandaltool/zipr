@@ -9,16 +9,18 @@
 #configs="shadow.scfi"
 #configs="scfi.shadow shadow.scfi"
 #configs="scfi.color"
-configs="zipr scfi scfi.color"
+#configs="zipr scfi scfi.color"
 #configs="shadow"
-#configs="kill_deads"
+configs="p1 scfi"
 #configs="ibtl"
 #configs="killdeads_strata"
 #configs="ibtl ibtl_p1"
+#configs="zipr scfi p1"
 
 # specify programs to test
 #orig_progs="grep ncal bzip2 du ls objdump readelf sort tar touch tcpdump"
-orig_progs="grep ncal bzip2 du ls objdump readelf sort tar touch"
+#orig_progs="grep bzip2 du ls objdump readelf sort tar touch"
+orig_progs="grep bzip2 du ls"
 #orig_progs="bzip2"
 #orig_progs="gedit"
 #orig_progs="gimp"
@@ -68,7 +70,10 @@ do
         
 	case $config in
 		zipr)
-			$PEASOUP_HOME/tools/ps_analyze.sh $progpath $protected --backend zipr --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+			$PSZ $progpath $protected --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
+		p1)
+			$PSZ $progpath $protected --step p1transform=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 		;;
 		scfi.color)
 			FIX_CALLS_FIX_ALL_CALLS=1 $PEASOUP_HOME/tools/ps_analyze.sh $progpath $protected --backend zipr --step selective_cfi=on --step-option selective_cfi:--color --tempdir $temp_dir > test_${prog}.ps.log 2>&1
@@ -77,10 +82,10 @@ do
 			FIX_CALLS_FIX_ALL_CALLS=1 $PEASOUP_HOME/tools/ps_analyze.sh $progpath $protected --backend zipr --step selective_cfi=on --step-option selective_cfi:--color --step-option selective_cfi:--no-protect-jumps --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 		;;
 		scfi)
-			FIX_CALLS_FIX_ALL_CALLS=1 $PEASOUP_HOME/tools/ps_analyze.sh $progpath $protected --backend zipr --step selective_cfi=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+			FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected --step selective_cfi=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 		;;
 		kill_deads)
-			$PEASOUP_HOME/tools/ps_analyze.sh $progpath $protected --backend zipr --step kill_deads=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+			$PSZ $progpath $protected --step kill_deads=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 		;;
 		scdi)
 			SimpleCDI_VERBOSE=1 $PEASOUP_HOME/tools/ps_analyze.sh $progpath $protected --backend zipr --step simple_cdi=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
