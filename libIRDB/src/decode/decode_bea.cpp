@@ -246,19 +246,19 @@ virtual_offset_t DecodedInstructionBea_t::getMemoryDisplacementOffset(const Deco
 }
 
 
-bool DecodedInstructionBea_t::hasRepPrefix() const
+bool DecodedInstructionBea_t::hasRelevantRepPrefix() const
 {
 	DISASM* d=static_cast<DISASM*>(disasm_data);
-	return d->Prefix.RepnePrefix!=NotUsedPrefix;
+	return d->Prefix.RepPrefix==InUsePrefix;
 }
 
-bool DecodedInstructionBea_t::hasRepnePrefix() const
+bool DecodedInstructionBea_t::hasRelevantRepnePrefix() const
 {
 	DISASM* d=static_cast<DISASM*>(disasm_data);
-	return d->Prefix.RepPrefix!=NotUsedPrefix;
+	return d->Prefix.RepnePrefix==InUsePrefix;
 }
 
-bool DecodedInstructionBea_t::hasOperandSizePrefix() const
+bool DecodedInstructionBea_t::hasRelevantOperandSizePrefix() const
 {
 	DISASM* d=static_cast<DISASM*>(disasm_data);
 	return d->Prefix.OperandSize!=NotUsedPrefix;
