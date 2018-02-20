@@ -20,7 +20,7 @@
 
 #include "transform.hpp"
 #include "Rewrite_Utility.hpp"
-#include <bea_deprecated.hpp>
+// #include <bea_deprecated.hpp>
 
 /*
  * Find the first occurrence of find in s, ignore case.
@@ -499,6 +499,8 @@ void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumen
 	addPopf(popf_i, p_fallThrough);
 }
 
+
+#if 0
 // returns true if BeaEngine says arg1 of the instruction is a register 
 bool Transform::hasTargetRegister(Instruction_t *p_instruction, int p_argNo)
 {
@@ -517,6 +519,7 @@ bool Transform::hasTargetRegister(Instruction_t *p_instruction, int p_argNo)
 	else
 		return false;
 }
+
 
 RegisterName Transform::getTargetRegister(Instruction_t *p_instruction, int p_argNo)
 {
@@ -608,6 +611,7 @@ bool Transform::isAddSubNonEspInstruction(Instruction_t *p_instruction)
 
 	return false;
 }
+#endif
 
 void Transform::addTestRegister8(Instruction_t *p_instr, RegisterName p_reg, Instruction_t *p_fallThrough)
 {

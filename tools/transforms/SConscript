@@ -19,7 +19,7 @@ cpppath='''
 LIBS= " xform IRDB-cfg IRDB-decode MEDSannotation transform " + env.subst('$BASE_IRDB_LIBS') 
 LIBPATH="$SECURITY_TRANSFORMS_HOME/lib"
 
-integer_files="transformutils.cpp integertransformdriver.cpp"
+#integer_files="transformutils.cpp integertransformdriver.cpp"
 
 # doesn't work on solaris.
 #myenv.Append(CFLAGS="-Wall")
@@ -44,10 +44,10 @@ Default(install3)
 #install=myenv.InstallAs("p1transform.exe", p1)
 #Default(install)
 
-intdr=myenv.Program("integertransformdriver.exe", Split(integer_files), LIBS=Split(LIBS)+ru_lib, LIBPATH=Split(LIBPATH))
-install4=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", intdr)
-Default(install4)
+#intdr=myenv.Program("integertransformdriver.exe", Split(integer_files), LIBS=Split(LIBS)+ru_lib, LIBPATH=Split(LIBPATH))
+#install4=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", intdr)
+#Default(install4)
 
 
-install=[]+install1 + install2 + install3 + install4
+install=[]+install1 + install2 + install3 
 Return('install')

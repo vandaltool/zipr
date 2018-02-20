@@ -6,7 +6,8 @@ Import('env')
 myenv=env.Clone()
 myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 
-files="integertransform32.cpp  integertransform64.cpp  integertransform.cpp  leapattern.cpp  pointercheck64.cpp  Rewrite_Utility.cpp  transform.cpp"
+#files="integertransform32.cpp  integertransform64.cpp  integertransform.cpp  leapattern.cpp  pointercheck64.cpp  Rewrite_Utility.cpp  transform.cpp"
+files="Rewrite_Utility.cpp  transform.cpp"
 
 cpppath='''
          $SECURITY_TRANSFORMS_HOME/include

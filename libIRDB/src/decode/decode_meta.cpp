@@ -104,29 +104,41 @@ compare_decoders_assert(bool, isConditionalBranch);
 compare_decoders_assert(bool, isReturn);
 compare_decoders_assert(uint32_t, getPrefixCount);
 compare_decoders_assert(bool, hasRexWPrefix);
+compare_decoders_assert(bool, setsStackPointer);
 
 /* demonstrating when capstone is better */
 passthrough_to_cs(string, getMnemonic);
 passthrough_to_cs(string,getDisassembly);
 passthrough_to_cs(virtual_offset_t, getAddress);	 // bea sometimes calcs this wrong.  way wrong.
+passthrough_to_cs(int64_t, getImmediate);
 
 // demonstrating they different and trying to determine which is better.
-compare_decoders(int64_t, getImmediate);
-compare_decoders(bool, hasRelevantRepPrefix);
+compare_decoders(bool, hasImplicitlyModifiedRegs); 	// found div %sil insn that bea gets wrong.
+compare_decoders(bool, hasRelevantRepPrefix);		// rep ret disagreement.
 compare_decoders(bool, hasRelevantRepnePrefix);
 compare_decoders(bool, hasRelevantOperandSizePrefix);
 
 // not yet completed
-passthrough_to_bea(bool, setsStackPointer);
-passthrough_to_bea(bool, hasImplicitlyModifiedRegs);
-
-
 // needs more complicated impl.
 
 
 bool DecodedInstructionMeta_t::hasOperand(const int op_num) const
 {
-	return bea.hasOperand(op_num);
+	const auto bea_res=bea.hasOperand(op_num);
+/*
+	const auto cs_res =cs .hasOperand(op_num);
+	if(bea_res!=cs_res)  								
+	{ 										
+		cerr<<"Bea/Capstone miscompare: bea='"<<bea_res<<"'"			
+					     <<" cs='"<<cs_res <<"'"<<endl; 		
+		cerr<<" in bea="<<bea.getDisassembly();					
+		cerr<<" or cs="<<bea.getDisassembly();					
+		cerr<<" at " <<__FUNCTION__<<endl;					
+		abort(); 								
+	} 										
+	return cs_res; 									
+*/
+	return bea_res;
 }
 
 // 0-based.  first operand is numbered 0.

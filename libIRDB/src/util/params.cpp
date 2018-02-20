@@ -249,10 +249,8 @@ bool libIRDB::CallFollows(const FileIR_t *firp, Instruction_t* insn, const strin
 
 bool libIRDB::FlowsIntoCall(const FileIR_t *firp, Instruction_t* insn)
 {
-/*
-	auto d=DISASM({0});
-	Disassemble(insn,d);
-*/
+	//auto d=DISASM({0});
+	//Disassemble(insn,d);
 
 	string param_write;
 	if (!libIRDB::IsParameterWrite(firp, insn, param_write))

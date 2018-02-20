@@ -282,8 +282,62 @@ bool DecodedInstructionCapstone_t::isReturn() const
 
 bool DecodedInstructionCapstone_t::hasOperand(const int op_num) const
 {
+	const auto needs_additional_memop=[&]() -> bool 
+		{
+			return (getMnemonic()=="pop" || getMnemonic()=="push");
+		};
+	const auto needs_no_dest_shift=[&]() -> bool 
+		{
+			return (getMnemonic()=="nop");
+		};
+	const auto needs_additional_regop=[&]() -> bool 
+		{
+			return (getMnemonic()=="cbw"     ||
+			        getMnemonic()=="cwde"    ||
+			        getMnemonic()=="cdqe"    ||
+			        getMnemonic()=="div"     ||
+			        getMnemonic()=="mul"     ||
+			        getMnemonic()=="fild"    || 
+			        getMnemonic()=="fist"    || 
+			        getMnemonic()=="fistp"   || 
+			        getMnemonic()=="fld"     || 
+			        getMnemonic()=="fst"     || 
+			        getMnemonic()=="fstp"    ||
+			        getMnemonic()=="faddp"   || 
+			        getMnemonic()=="fdivp"   || 
+			        getMnemonic()=="fdivrp"  || 
+			        getMnemonic()=="fmulp"   ||
+			        getMnemonic()=="fsubp"   ||
+			        getMnemonic()=="fsubrp"  ||
+			        getMnemonic()=="fcomip"  ||
+			        getMnemonic()=="fcomp"   ||
+			        getMnemonic()=="fcompp"  ||
+			        getMnemonic()=="ficomp"  ||
+			        getMnemonic()=="fucomip" ||
+			        getMnemonic()=="fucomp"  ||
+			        getMnemonic()=="fucompp" 
+
+
+
+			       );
+		};
+
+		
+
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
-	return false;
+	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
+	const auto cs_op_count=the_insn->detail->x86.op_count;
+
+	// calc space for extra operands that bea has that cs doens't.
+	const auto cs_op_count1=(needs_additional_memop() ?  cs_op_count+1 : cs_op_count); 
+	const auto cs_op_count2=(needs_additional_regop() ? cs_op_count1+1 : cs_op_count1);
+	const auto real_op_count=cs_op_count2;
+
+	// shift the op over so bea matches cs.
+	const auto real_op_num1=(needs_no_dest_shift() ? op_num-1 : op_num); 
+	const auto real_op_num=real_op_num1;
+
+	return 0 <= real_op_num  && real_op_num < real_op_count;
 }
 
 // 0-based.  first operand is numbered 0.
@@ -394,6 +448,50 @@ virtual_offset_t DecodedInstructionCapstone_t::getAddress() const
 bool DecodedInstructionCapstone_t::setsStackPointer() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
+
+	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
+
+/* slow string manip */
+//        if(getMnemonic()=="push")
+//                return true;
+//        if(getMnemonic()=="pop")
+//                return true;
+//        if(getMnemonic()=="call")
+//                return true;
+
+	// any sp reg
+	const auto sp_regs=set<x86_reg>({X86_REG_RSP, X86_REG_ESP, X86_REG_SP, X86_REG_SPL});
+
+	// check the implicit regs.
+	const auto regs_write_end=begin(the_insn->detail->regs_write)+the_insn->detail->regs_write_count;
+	const auto implicit_regs_it=find_if
+		(
+			begin(the_insn->detail->regs_write),
+			regs_write_end,
+			[sp_regs](const uint8_t actual_reg) 
+			{ 
+				return sp_regs.find((x86_reg)actual_reg)!=sp_regs.end();
+			} 
+		) ;
+	if(implicit_regs_it!=regs_write_end)	
+		return true;
+
+
+	// now check each operand
+	const auto operands_end=begin(the_insn->detail->x86.operands)+the_insn->detail->x86.op_count;
+	const auto operands_it=find_if
+		(
+			begin(the_insn->detail->x86.operands), 
+			operands_end,
+			[sp_regs](const cs_x86_op& op)
+			{
+				return op.type==X86_OP_REG && sp_regs.find(op.reg)!=sp_regs.end();
+			}
+		);
+	if(operands_it!=operands_end)	
+		return true;
+
+	// didn't find this anywhere, return false;
         return false;
 }
 
@@ -447,6 +545,21 @@ bool DecodedInstructionCapstone_t::hasRexWPrefix() const
 bool DecodedInstructionCapstone_t::hasImplicitlyModifiedRegs() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
-	return false;
+
+	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
+
+
+	const auto count=count_if
+		(
+			begin(the_insn->detail->regs_write),
+			begin(the_insn->detail->regs_write)+the_insn->detail->regs_write_count,
+			[](const uint8_t actual_pref) 
+			{ 
+				return actual_pref!=X86_REG_EFLAGS; 
+			} 
+		) ;
+	
+	return count>0;
+
 }
 

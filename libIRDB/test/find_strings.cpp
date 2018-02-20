@@ -35,8 +35,9 @@
 #include "targ-config.h"
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
-#include <bea_deprecated.hpp>
+// #include <bea_deprecated.hpp>
 
+#include <libIRDB-decode.hpp>
 
 
 using namespace libIRDB;
@@ -154,15 +155,18 @@ void is_string_pointer(void* addr, elf_info_t &ei)
 
 }
 
-void is_string_constant(DISASM& disasm)
+void is_string_constant(const DecodedInstruction_t& disasm)
 {
 	void *addr;
 
-	if(disasm.Argument1.ArgType != MEMORY_TYPE || disasm.Argument2.ArgType == MEMORY_TYPE
-	   || disasm.Argument1.ArgSize != FileIR_t::GetArchitectureBitWidth() )
+	//if(disasm.Argument1.ArgType != MEMORY_TYPE || disasm.Argument2.ArgType == MEMORY_TYPE
+	//   || disasm.Argument1.ArgSize != FileIR_t::GetArchitectureBitWidth() )
+	if(!disasm.getOperand(0).isMemory() || disasm.getOperand(1).isMemory() 
+	   || disasm.getOperand(0).getArgumentSizeInBits() != FileIR_t::GetArchitectureBitWidth() )
 		return;
 
-	addr = (void*)disasm.Instruction.Immediat;
+	// addr = (void*)disasm.Instruction.Immediat;
+	addr = (void*)disasm.getImmediate();
 
 	/* consider that this constant itself may be a string */
 	unsigned char byte1=(((long long unsigned int)addr)>>24)&0xff;
@@ -203,21 +207,27 @@ void is_string_constant(DISASM& disasm)
 
 } 
 
-void handle_argument(ARGTYPE *arg, elf_info_t &ei, Instruction_t *insn)
+void handle_argument(const DecodedOperand_t &arg, elf_info_t &ei, Instruction_t *insn)
 {
-        if( (arg->ArgType & MEMORY_TYPE) == MEMORY_TYPE )
+        // if( (arg->ArgType & MEMORY_TYPE) == MEMORY_TYPE )
+        if(arg.isMemory())
 	{
 		/* Only check without GOT offset if type is executable */
 	
-       		if( ((arg->ArgType & ABSOLUTE_) == ABSOLUTE_)  && !ei.elfiop->isDLL() )
+       		// if( ((arg->ArgType & ABSOLUTE_) == ABSOLUTE_)  && !ei.elfiop->isDLL() )
+       		if( !arg.isPcrel()  && !ei.elfiop->isDLL() )
 			//  && ei.elfiop->get_type() == ET_EXEC ) -- checks for .so/.dll vrs .exe.
-			is_string_pointer((void*)arg->Memory.Displacement,ei);
+			// is_string_pointer((void*)arg->Memory.Displacement,ei);
+			is_string_pointer((void*)arg.getMemoryDisplacement(),ei);
 		else
-			is_string_pointer((void*)(arg->Memory.Displacement + insn->GetDataBits().size()), ei);
+			//is_string_pointer((void*)(arg->Memory.Displacement + insn->GetDataBits().size()), ei);
+			is_string_pointer((void*)(arg.getMemoryDisplacement() + insn->GetDataBits().size()), ei);
 
 		/* Check with GOT offset if present */
-		if ( ei.got && arg->Memory.BaseRegister == REG3 /* ebx */ )
-			is_string_pointer((void*)(arg->Memory.Displacement + ei.got),ei);
+		// if ( ei.got && arg->Memory.BaseRegister == REG3 /* ebx */ )
+		if ( ei.got && arg.hasBaseRegister() && arg.getBaseRegister() == 3 /* ebx */ )
+			// is_string_pointer((void*)(arg->Memory.Displacement + ei.got),ei);
+			is_string_pointer((void*)(arg.getMemoryDisplacement() + ei.got),ei);
 	}
 }
 
@@ -297,10 +307,12 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei)
 			while(iit!=(*bit)->GetInstructions().end())
 			{
 				Instruction_t *insn=*iit;
-				DISASM disasm;
+				//DISASM disasm;
 				char *str = NULL;
 
-				int res=Disassemble(insn,disasm);
+				//int res=Disassemble(insn,disasm);
+				auto disasm=DecodedInstruction_t(insn);
+				int res=disasm.length();
 				assert(res);
 
 				// Concatenate printable strings from consecutive store immediates to SP-relative stack addresses
@@ -313,35 +325,44 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei)
 //					cout<<"Pass 1: Checking insn: "<<disasm.CompleteInstr<<" id: "<<(*iit)->GetBaseID()<<" category: " << (int) (disasm.Instruction.Category & 0xFFFF0000) << " ibta: " << (*iit)->GetIndirectBranchTargetAddress() << endl;
 
 					// Break if not assignment of an immediate to an esp/ebp/eax offset
-					if (disasm.Argument1.ArgType != MEMORY_TYPE
-					    || (disasm.Argument1.Memory.BaseRegister != REG4 /* esp */
-					        && disasm.Argument1.Memory.BaseRegister != REG5 /* ebp */
-					        && disasm.Argument1.Memory.BaseRegister != REG0 /* eax */)
-					    || (basereg && disasm.Argument1.Memory.BaseRegister != basereg)
-					    || disasm.Argument2.ArgType == MEMORY_TYPE
-//old					    || disasm.Argument1.ArgSize > 32)
-
-					    || ((disasm.Instruction.Category & 0XFFFF0000) != GENERAL_PURPOSE_INSTRUCTION)) 
+//					if (disasm.Argument1.ArgType != MEMORY_TYPE
+//					    || (disasm.Argument1.Memory.BaseRegister != REG4 /* esp */
+//					        && disasm.Argument1.Memory.BaseRegister != REG5 /* ebp */
+//					        && disasm.Argument1.Memory.BaseRegister != REG0 /* eax */)
+//					    || (basereg && disasm.Argument1.Memory.BaseRegister != basereg)
+//					    || disasm.Argument2.ArgType == MEMORY_TYPE
+//					    || ((disasm.Instruction.Category & 0XFFFF0000) != GENERAL_PURPOSE_INSTRUCTION)) 
+					if (!disasm.getOperand(0).isMemory()
+					    || !disasm.getOperand(0).hasBaseRegister()
+					    || (disasm.getOperand(0).getBaseRegister() != 4 /* esp */
+					        && disasm.getOperand(0).getBaseRegister() != 5 /* ebp */
+					        && disasm.getOperand(0).getBaseRegister() != 0 /* eax */)
+					    || (basereg && disasm.getOperand(0).getBaseRegister() != basereg)
+					    || disasm.getOperand(1).isMemory()
+					   )
 					{
 						// mark visited
 						visited_insns.insert(*iit);
 						is_string_constant(disasm);
 						break;
 					}
-					basereg = disasm.Argument1.Memory.BaseRegister;
-					unsigned int disp = disasm.Argument1.Memory.Displacement;
+					// basereg = disasm.Argument1.Memory.BaseRegister;
+					basereg = disasm.getOperand(0).getBaseRegister();
+					unsigned int disp = disasm.getOperand(0).getMemoryDisplacement();
 					// break if displacement moved backward
 					if (newdisp && (disp < newdisp || disp == olddisp))
 						break;
 					// mark visited
 					visited_insns.insert(*iit);
 					// check for a printable argument
-					unsigned int imm = disasm.Instruction.Immediat;
+					// unsigned int imm = disasm.Instruction.Immediat;
+					unsigned int imm = disasm.getImmediate();
 					unsigned char byte1=(imm>>24)&0xff;
 					unsigned char byte2=(imm>>16)&0xff;
 					unsigned char byte3=(imm>>8)&0xff;
 					unsigned char byte4=imm&0xff;
-					size_t argsize = disasm.Argument1.ArgSize / 8;
+					// size_t argsize = disasm.Argument1.ArgSize / 8;
+					size_t argsize = disasm.getOperand(0).getArgumentSizeInBytes(); // .ArgSize / 8;
 
 					if ( imm!=0 /* special case 0 which is likely from push <reg> insns, etc. */ && 
 					    (((is_string_character(byte1) || byte1==0) || argsize < 4) &&
@@ -375,7 +396,9 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei)
 						newdisp += argsize;
 					else
 						newdisp = disp + argsize;
-					res=Disassemble(insn,disasm);
+					// res=Disassemble(insn,disasm);
+					disasm=DecodedInstruction_t(insn);
+					res=disasm.length();
 					assert(res);
 				}
 				
@@ -409,19 +432,22 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei)
 	{
                 Instruction_t *insn=*it;
 
-                DISASM disasm;
-		int res=Disassemble(insn,disasm);
+                //DISASM disasm;
+		//int res=Disassemble(insn,disasm);
+		const auto disasm=DecodedInstruction_t(insn);
+		int res=disasm.length();
 		assert(res);
 //	cout<<"Pass 2: Checking insn: "<<disasm.CompleteInstr<<" id: "<<insn->GetBaseID()<<endl;
 
 		// check for immediate string pointers in non-PIC code
 		if ( !ei.elfiop->isDLL()) // ei.elfiop->get_type() == ET_EXEC )
-			is_string_pointer((void*)disasm.Instruction.Immediat,ei);
+			// is_string_pointer((void*)disasm.Instruction.Immediat,ei);
+			is_string_pointer((void*)disasm.getImmediate(),ei);
 		// always check for string pointers in memory argument displacements
 
-		handle_argument(&disasm.Argument1,ei, insn);
-		handle_argument(&disasm.Argument2,ei, insn);
-		handle_argument(&disasm.Argument3,ei, insn);
+		handle_argument(disasm.getOperand(0),ei, insn);
+		handle_argument(disasm.getOperand(1),ei, insn);
+		handle_argument(disasm.getOperand(2),ei, insn);
 
 		// if not in a function, check for string in immediate
 		if (visited_insns.find(insn) != visited_insns.end())

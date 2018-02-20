@@ -35,7 +35,8 @@
 
 #include "check_thunks.hpp"
 #include "fill_in_indtargs.hpp"
-#include <bea_deprecated.hpp>
+// #include <bea_deprecated.hpp>
+#include <libIRDB-decode.hpp>
 
 
 using namespace libIRDB;
@@ -60,16 +61,20 @@ void check_for_thunk_offsets(FileIR_t* firp, virtual_offset_t thunk_base)
 	{
 		// if it has a targ and fallthrough (quick test) it might be a call 
 		Instruction_t* insn=*it;
-		DISASM d;
-		Disassemble(insn,d);
+		//DISASM d;
+		//Disassemble(insn,d);
+		const auto d=DecodedInstruction_t(insn);
 	
-		if(string(d.Instruction.Mnemonic)==string("add "))
+		//if(string(d.Instruction.Mnemonic)==string("add "))
+		if(d.getMnemonic()=="add")
 		{
 			// check that arg2 is a constant
-			if(HIWORD(d.Argument2.ArgType)!=CONSTANT_TYPE+ABSOLUTE_)
+			// if(HIWORD(d.Argument2.ArgType)!=CONSTANT_TYPE+ABSOLUTE_)
+			if(!d.getOperand(1).isConstant())
 				continue;
 
-			string add_offset=string(d.Argument2.ArgMnemonic);
+			// string add_offset=string(d.Argument2.ArgMnemonic);
+			const auto add_offset=d.getOperand(1).getString();
 
 			virtual_offset_t addoff=strtol(add_offset.c_str(),NULL,16);
 
@@ -79,15 +84,19 @@ void check_for_thunk_offsets(FileIR_t* firp, virtual_offset_t thunk_base)
 
 			possible_target(thunk_base+addoff, 0, ibt_provenance_t::ibtp_text);
 		}
-		else if(string(d.Instruction.Mnemonic)==string("lea "))
+		// else if(string(d.Instruction.Mnemonic)==string("lea "))
+		if(d.getMnemonic()=="lea")
 		{
-			assert (d.Argument2.ArgType==MEMORY_TYPE);
+			// assert (d.Argument2.ArgType==MEMORY_TYPE);
+			assert (d.getOperand(1).isMemory());
 
 			/* no indexing please! */
-			if(d.Argument2.Memory.IndexRegister!=0)
+			// if(d.Argument2.Memory.IndexRegister!=0)
+			if(!d.getOperand(1).hasIndexRegister())
 				continue;
 
-			virtual_offset_t leaoff=d.Argument2.Memory.Displacement;
+			// virtual_offset_t leaoff=d.Argument2.Memory.Displacement;
+			virtual_offset_t leaoff=d.getOperand(1).getMemoryDisplacement();
 
 			/* bounds check gently */
 			if(0<leaoff && leaoff<100)
@@ -146,16 +155,20 @@ void check_func_for_thunk_offsets(Function_t *func, Instruction_t* thunk_insn,
 	{
 		// if it has a targ and fallthrough (quick test) it might be a call 
 		Instruction_t* insn=*it;
-		DISASM d;
-		Disassemble(insn,d);
+		// DISASM d;
+		// Disassemble(insn,d);
+		const auto d=DecodedInstruction_t(insn);
 	
-		if(string(d.Instruction.Mnemonic)==string("add "))
+		// if(string(d.Instruction.Mnemonic)==string("add "))
+		if(d.getMnemonic()=="add")
 		{
 			// check that arg2 is a constant
-			if(HIWORD(d.Argument2.ArgType)!=CONSTANT_TYPE+ABSOLUTE_)
+			// if(HIWORD(d.Argument2.ArgType)!=CONSTANT_TYPE+ABSOLUTE_)
+			if(!d.getOperand(1).isConstant())
 				continue;
 
-			string add_offset=string(d.Argument2.ArgMnemonic);
+			// string add_offset=string(d.Argument2.ArgMnemonic);
+			const auto add_offset=d.getOperand(1).getString(); 
 
 			virtual_offset_t addoff=strtol(add_offset.c_str(),NULL,16);
 
@@ -168,15 +181,19 @@ void check_func_for_thunk_offsets(Function_t *func, Instruction_t* thunk_insn,
 //			     <<" addoff: " << addoff << " total: "<< (thunk_base+addoff)<<endl;
 			possible_target(thunk_base+addoff, 0, ibt_provenance_t::ibtp_text);
 		}
-		else if(string(d.Instruction.Mnemonic)==string("lea "))
+		// else if(string(d.Instruction.Mnemonic)==string("lea "))
+		else if(d.getMnemonic()=="lea")
 		{
-			assert (d.Argument2.ArgType==MEMORY_TYPE);
+			// assert (d.Argument2.ArgType==MEMORY_TYPE);
+			assert (d.getOperand(1).isMemory()); 
 
 			/* no indexing please! */
-			if(d.Argument2.Memory.IndexRegister!=0)
+			// if(d.Argument2.Memory.IndexRegister!=0)
+			if(!d.getOperand(1).hasIndexRegister())
 				continue;
 
-			virtual_offset_t leaoff=d.Argument2.Memory.Displacement;
+			// virtual_offset_t leaoff=d.Argument2.Memory.Displacement;
+			virtual_offset_t leaoff=d.getOperand(1).getMemoryDisplacement();
 
 			/* bounds check gently */
 			if(0<leaoff && leaoff<100)
@@ -198,16 +215,20 @@ void check_func_for_thunk_offsets(Function_t *func, Instruction_t* thunk_insn,
  */
 bool is_thunk_load(Instruction_t* insn, string &reg)
 {
-	DISASM d;
-	Disassemble(insn,d);
+	//DISASM d;
+	//Disassemble(insn,d);
+	const auto d=DecodedInstruction_t(insn);
 
-	if(string(d.Instruction.Mnemonic)!=string("mov "))
+	//if(string(d.Instruction.Mnemonic)!=string("mov "))
+	if(d.getMnemonic()!="mov")
 		return false;
 
-	if(d.Argument2.ArgType!=MEMORY_TYPE || string(d.Argument2.ArgMnemonic)!=string("esp"))
+	//if(d.Argument2.ArgType!=MEMORY_TYPE || string(d.Argument2.ArgMnemonic)!=string("esp"))
+	if(!d.getOperand(1).isMemory() || d.getOperand(1).getString()!="esp")
 		return false;
 
-	reg=string(d.Argument1.ArgMnemonic);
+	// reg=string(d.Argument1.ArgMnemonic);
+	reg=d.getOperand(0).getString();
 	return true;
 }
 
@@ -216,13 +237,15 @@ bool is_thunk_load(Instruction_t* insn, string &reg)
  */
 bool is_ret(Instruction_t* insn)
 {
-	DISASM d;
-	Disassemble(insn,d);
+	//DISASM d;
+	//Disassemble(insn,d);
+	const auto d=DecodedInstruction_t(insn);
+	return d.isReturn(); 
 
-	if(d.Instruction.BranchType!=RetType)
-		return false;
-	
-	return true;
+//	if(d.Instruction.BranchType!=RetType)
+//		return false;
+//	
+//	return true;
 }
 
 /*
@@ -230,13 +253,14 @@ bool is_ret(Instruction_t* insn)
  */
 bool is_pop(Instruction_t* insn, string &reg)
 {
-        DISASM d;
-        Disassemble(insn,d);
+        //DISASM d;
+        //Disassemble(insn,d);
+	const auto d=DecodedInstruction_t(insn);
 
-        if(string(d.Instruction.Mnemonic)!=string("pop "))
+        if(d.getMnemonic()!="pop")
                 return false;
 
-	reg=string(d.Argument1.ArgMnemonic);
+	reg=d.getOperand(1).getString();
         return true;
 }
 
@@ -248,11 +272,13 @@ bool is_pop(Instruction_t* insn, string &reg)
 /* note: reg is output paramater */
 bool is_thunk_call(Instruction_t* insn, string &reg)
 {
-	DISASM d;
-	Disassemble(insn,d);
+	//DISASM d;
+	//Disassemble(insn,d);
+	const auto d=DecodedInstruction_t(insn);
 
 	/* not a call */
-	if(d.Instruction.BranchType!=CallType)
+	//if(d.Instruction.BranchType!=CallType)
+	if(!d.isCall())
 		return false;
 
 	/* no target in IRDB */
@@ -276,11 +302,13 @@ bool is_thunk_call(Instruction_t* insn, string &reg)
 
 bool is_thunk_call_type2(Instruction_t* insn, string &reg, Instruction_t** newinsn)
 {
-	DISASM d;
-	Disassemble(insn,d);
+	//DISASM d;
+	//Disassemble(insn,d);
+	const auto d=DecodedInstruction_t(insn);
 
 	/* not a call */
-	if(d.Instruction.BranchType!=CallType)
+	//if(d.Instruction.BranchType!=CallType)
+	if(!d.isCall())
 		return false;
 
 	/* no target in IRDB */
@@ -305,22 +333,26 @@ bool is_thunk_call_type2(Instruction_t* insn, string &reg, Instruction_t** newin
 /* note: offset is an output parameter */
 bool is_thunk_add(Instruction_t *insn, string reg, string &offset)
 {
-	DISASM d;
-	Disassemble(insn,d);
+	//DISASM d;
+	//Disassemble(insn,d);
+	const auto d=DecodedInstruction_t(insn);
 
 	// make sure it's an add instruction 
-	if(string(d.Instruction.Mnemonic)!=string("add "))
+	//if(string(d.Instruction.Mnemonic)!=string("add "))
+	if(d.getMnemonic()!="add")
 		return false;
 
 	// check that it's an add of the proper reg
-	if(string(d.Argument1.ArgMnemonic)!=reg)
+	if(d.getOperand(0).getString()!=reg)
 		return false;
 
 	// check that arg2 is a constant
-	if(HIWORD(d.Argument2.ArgType)!=CONSTANT_TYPE+ABSOLUTE_)
+	//if(HIWORD(d.Argument2.ArgType)!=CONSTANT_TYPE+ABSOLUTE_)
+	if(!d.getOperand(1).isConstant())
 		return false;
 
-	offset=string(d.Argument2.ArgMnemonic);
+	// offset=string(d.Argument2.ArgMnemonic);
+	offset=d.getOperand(1).getString();
 
 	virtual_offset_t intoff=strtol(offset.c_str(),NULL,16);
 
