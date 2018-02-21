@@ -1,5 +1,5 @@
 
-#include <libIRDB-decode.hpp>
+#include <libIRDB-core.hpp>
 #include <bea_deprecated.hpp>
 
 using namespace std;

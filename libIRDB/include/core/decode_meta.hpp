@@ -3,10 +3,10 @@
 
 #include <stdint.h>
 #include <vector>
-#include <decode/decode_bea.hpp>
-#include <decode/operand_bea.hpp>
-#include <decode/decode_cs.hpp>
-#include <decode/operand_cs.hpp>
+#include <core/decode_bea.hpp>
+#include <core/operand_bea.hpp>
+#include <core/decode_cs.hpp>
+#include <core/operand_cs.hpp>
 
 namespace libIRDB
 {

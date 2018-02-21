@@ -1,5 +1,5 @@
 
-#include <libIRDB-decode.hpp>
+#include <libIRDB-core.hpp>
 
 #include <capstone.h>
 #include <x86.h>
@@ -12,6 +12,19 @@ using namespace libIRDB;
 using namespace std;
 
 #define ALLOF(a) begin(a),end(a)
+
+typedef struct special_instruction special_instruction_t;
+struct special_instruction
+{
+	string binary;
+	string mnemonic;
+	string operands;
+};
+
+vector<special_instruction_t> cs_special_instructions=
+	{
+		{"\xdf\xc0", "ffreep", "st0"}
+	};
 
 
 // static helpers 
@@ -92,6 +105,27 @@ void DecodedInstructionCapstone_t::Disassemble(const virtual_offset_t start_addr
 	const auto ok = cs_disasm_iter(cs_handle->getHandle(), &code, &size, &address, insn);
 	if(!ok)
 		insn->size=0;
+
+
+	if(insn->size==0)
+	{
+		const auto special_it=find_if(ALLOF(cs_special_instructions), [&](const special_instruction_t& si)
+			{
+				if(si.binary.length() > max_len)
+					return false;
+				const auto data_as_str=string((char*)data,si.binary.length());
+				return si.binary==data_as_str;
+			});
+		const auto is_special=special_it != end(cs_special_instructions);
+		if(is_special)
+		{
+			// if we run into more complicated stuff, we may need to extend this
+			insn->size=special_it->binary.length();
+			strcpy(insn->mnemonic, special_it->mnemonic.c_str());
+			strcpy(insn->op_str, special_it->operands.c_str());
+		}
+	
+	}
 
 
 	const auto cs_freer=[](cs_insn * insn) -> void 

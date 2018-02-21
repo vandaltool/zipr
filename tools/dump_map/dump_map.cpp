@@ -21,7 +21,6 @@
 #include <stdlib.h>
 #include <fstream>
 #include <libIRDB-core.hpp>
-#include <libIRDB-decode.hpp>
 #include <libgen.h>
 #include <iomanip>
 #include <algorithm>

@@ -23,8 +23,6 @@
 #include <libIRDB-core.hpp>
 #include <libIRDB-cfg.hpp>
 #include <utils.hpp>
-//#include <bea_deprecated.hpp>
-#include <libIRDB-decode.hpp>
 
 using namespace libIRDB;
 using namespace std;

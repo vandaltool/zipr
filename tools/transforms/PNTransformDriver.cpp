@@ -29,7 +29,6 @@
 #include <cmath>
 #include "globals.h"
 #include <libIRDB-cfg.hpp>
-#include <libIRDB-decode.hpp>
 #include "EhUpdater.hpp"
 
 #include <fcntl.h>

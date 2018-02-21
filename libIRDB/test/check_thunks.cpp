@@ -35,8 +35,6 @@
 
 #include "check_thunks.hpp"
 #include "fill_in_indtargs.hpp"
-// #include <bea_deprecated.hpp>
-#include <libIRDB-decode.hpp>
 
 
 using namespace libIRDB;

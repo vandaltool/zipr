@@ -2,8 +2,8 @@
 #define libdecode_decode_hpp
 
 
-#include <decode/decode_meta.hpp>
-#include <decode/operand_meta.hpp>
+#include <core/decode_meta.hpp>
+#include <core/operand_meta.hpp>
 
 
 namespace libIRDB

@@ -1,5 +1,5 @@
 
-#include <libIRDB-decode.hpp>
+#include <libIRDB-core.hpp>
 
 #include <bea_deprecated.hpp>
 
@@ -38,7 +38,7 @@ DecodedInstructionBea_t::DecodedInstructionBea_t(const virtual_offset_t start_ad
 DecodedInstructionBea_t::DecodedInstructionBea_t(const virtual_offset_t start_addr, const void *data, const void* endptr)
 {
 	disasm_data=static_cast<void*>(new DISASM({}));
-	const auto length=(char*)endptr-(char*)data;
+	const auto length=(char*)endptr-(char*)data + 1;
 	Disassemble(start_addr,data,length);
 }
 

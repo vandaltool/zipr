@@ -59,4 +59,6 @@ class Instruction_t; // forward decl for many classes
 
 };
 
+#include <core/decode.hpp>
+
 #endif

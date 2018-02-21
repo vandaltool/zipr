@@ -28,7 +28,7 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <iomanip>
-#include <bea_deprecated.hpp>
+//#include <bea_deprecated.hpp>
 
 
 
@@ -231,9 +231,9 @@ void FileIR_t::AssembleRegistry()
 	assert(actual_exit == 0);
 	
 	
-	DISASM disasm;
-	memset(&disasm, 0, sizeof(DISASM));
-	disasm.Archi=GetArchitectureBitWidth();
+	//DISASM disasm;
+	//memset(&disasm, 0, sizeof(DISASM));
+	//disasm.Archi=GetArchitectureBitWidth();
 
 	ifstream binreader;
 	unsigned int filesize;
@@ -262,8 +262,19 @@ void FileIR_t::AssembleRegistry()
 		Instruction_t *instr = reg_val->first;
 
 
-		disasm.EIP =  (UIntPtr)&binary_stream[index];
-		int instr_len = Disasm(&disasm);
+		// disasm.EIP =  (UIntPtr)&binary_stream[index];
+		// int instr_len = Disasm(&disasm);
+
+		const auto disasm=DecodedInstruction_t
+			(
+				/* fake start addr doesn't matter */0x1000, 
+				(void*)&binary_stream[index], 
+				(void*)&binary_stream[filesize]
+			);
+
+		assert(disasm.valid());
+		const auto instr_len=disasm.length();
+
 		string rawBits;
 		rawBits.resize(instr_len);
 		for(int i=0;i<instr_len;i++,index++)
@@ -769,14 +780,15 @@ void FileIR_t::WriteToDB()
 	for(std::set<Instruction_t*>::const_iterator i=insns.begin(); i!=insns.end(); ++i)
 	{	
 		Instruction_t const * const insnp=*i;
-		DISASM disasm;
-		Disassemble(insnp,disasm);
+		//DISASM disasm;
+		//Disassemble(insnp,disasm);
+		const auto disasm=DecodedInstruction_t(insnp);
 
 		if(insnp->GetOriginalAddressID() == NOT_IN_DATABASE)
 		{
 
-			if(insnp->GetFallthrough()==NULL && 
-				disasm.Instruction.BranchType!=RetType && disasm.Instruction.BranchType!=JmpType )
+			// if(insnp->GetFallthrough()==NULL && disasm.Instruction.BranchType!=RetType && disasm.Instruction.BranchType!=JmpType )
+			if(insnp->GetFallthrough()==NULL && !disasm.isReturn() && !disasm.isUnconditionalBranch())
 			{
 				// instructions that fall through are required to either specify a fallthrough that's
 				// in the IRDB, or have an associated "old" instruction.  
@@ -786,11 +798,16 @@ void FileIR_t::WriteToDB()
 				assert(0);
 				abort();
 			}
-			if(insnp->GetTarget()==NULL && disasm.Instruction.BranchType!=0 && 
-				disasm.Instruction.BranchType!=RetType &&
+			//if(insnp->GetTarget()==NULL && disasm.Instruction.BranchType!=0 && 
+			//	disasm.Instruction.BranchType!=RetType &&
+			//	// not an indirect branch
+			//	((disasm.Instruction.BranchType!=JmpType && disasm.Instruction.BranchType!=CallType) ||
+			//	 disasm.Argument1.ArgType&CONSTANT_TYPE))
+
+			if(insnp->GetTarget()==NULL && disasm.isBranch() && !disasm.isReturn() &&
 				// not an indirect branch
-				((disasm.Instruction.BranchType!=JmpType && disasm.Instruction.BranchType!=CallType) ||
-				 disasm.Argument1.ArgType&CONSTANT_TYPE))
+				( (!disasm.isUnconditionalBranch() && !disasm.isCall()) || disasm.getOperand(0).isConstant())
+			  )
 			{
 				// direct branches are required to either specify a target that's
 				// in the IRDB, or have an associated "old" instruction.  

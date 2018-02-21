@@ -41,7 +41,6 @@
 #include "check_thunks.hpp"
 #include "fill_in_indtargs.hpp"
 #include "libMEDSAnnotation.h"
-#include <libIRDB-decode.hpp>
 
 using namespace libIRDB;
 using namespace std;

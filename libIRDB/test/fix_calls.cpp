@@ -33,8 +33,6 @@
 #include <exeio.h>
 
 #include "fill_in_indtargs.hpp"
-#include <libIRDB-decode.hpp>
-//#include <bea_deprecated.hpp>
 
 
 using namespace libIRDB;

@@ -1,5 +1,5 @@
 
-#include <libIRDB-decode.hpp>
+#include <libIRDB-core.hpp>
 
 using namespace std;
 using namespace libIRDB;

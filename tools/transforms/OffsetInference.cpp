@@ -28,8 +28,6 @@
 #include <set>
 #include <fstream>
 #include "globals.h"
-//#include <bea_deprecated.hpp>
-#include <libIRDB-decode.hpp>
 
 using namespace std;
 using namespace libIRDB;

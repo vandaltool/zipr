@@ -31,7 +31,6 @@
 #include "Rewrite_Utility.hpp"
 #include <libIRDB-core.hpp>
 #include <libIRDB-cfg.hpp>
-#include <libIRDB-decode.hpp>
 #include "canary.h"
 //#include <bea_deprecated.hpp>
 

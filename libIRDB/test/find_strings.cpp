@@ -35,9 +35,7 @@
 #include "targ-config.h"
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
-// #include <bea_deprecated.hpp>
 
-#include <libIRDB-decode.hpp>
 
 
 using namespace libIRDB;

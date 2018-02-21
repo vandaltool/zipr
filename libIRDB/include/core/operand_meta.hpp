@@ -1,8 +1,8 @@
 #ifndef libRIDB_decodedoperandmeta_hpp
 #define libRIDB_decodedoperandmeta_hpp
 
-#include <decode/decode_bea.hpp>
-#include <decode/operand_bea.hpp>
+#include <core/decode_bea.hpp>
+#include <core/operand_bea.hpp>
 namespace libIRDB
 {
 
