@@ -416,8 +416,7 @@ File_t* VariantID_t::GetMainFile() const
 		++it
 	   )
 	{
-		const char* name=(*it)->GetURL().c_str();
-		if(strstr(name,"a.ncexe")!=NULL)
+		if ((*it)->GetURL().find("a.ncexe") != string::npos)
 			return *it;
 	}
 	/* we should have found the main file somewhere. */
