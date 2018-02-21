@@ -30,7 +30,6 @@
 
 #include <zipr_all.h>
 #include <libIRDB-core.hpp>
-#include <libIRDB-decode.hpp>
 #include <Rewrite_Utility.hpp>
 #include <iostream>
 #include <stdlib.h>
