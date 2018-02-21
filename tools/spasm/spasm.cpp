@@ -176,7 +176,7 @@ static uintptr_t getSymbolAddress(const string &symbolFilename, const string &sy
 bool fexists(const string &filename)
 {
 	ifstream ifile(filename.c_str());
-	return ifile;
+	return ifile.is_open();
 }
 
 
