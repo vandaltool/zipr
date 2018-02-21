@@ -30,13 +30,12 @@
 
 
 #include <zipr_sdk.h>
-#include <libIRDB-decode.hpp>
+#include <libIRDB-core.hpp>
 #include <string>
 #include <algorithm>
 #include "utils.hpp"
 #include "Rewrite_Utility.hpp"
 #include "push64_relocs.h"
-// #include <bea_deprecated.hpp>
 
 using namespace libIRDB;
 using namespace std;
