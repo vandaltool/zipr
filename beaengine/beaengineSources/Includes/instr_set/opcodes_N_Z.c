@@ -1815,9 +1815,9 @@ void __bea_callspec__ retn_(PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ ret_(PDISASM pMyDisasm)
 {
-    if ((*pMyDisasm).Prefix.RepPrefix == SuperfluousPrefix) {
-        (*pMyDisasm).Prefix.RepPrefix = InUsePrefix;
-    }
+//    if ((*pMyDisasm).Prefix.RepPrefix == SuperfluousPrefix) {
+//        (*pMyDisasm).Prefix.RepPrefix = InUsePrefix;
+//    }
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+CONTROL_TRANSFER;
     (*pMyDisasm).Instruction.BranchType = RetType;
     #ifndef BEA_LIGHT_DISASSEMBLY
@@ -2208,8 +2208,8 @@ void __bea_callspec__ syscall_(PDISASM pMyDisasm)
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "syscall ");
         #endif
         GV.EIP_++;
-        (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG1+REG11;
-        (*pMyDisasm).Argument1.ArgSize = 64;
+        //(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG1+REG11;
+        //(*pMyDisasm).Argument1.ArgSize = 64;
     }
     else {
         FailDecode(pMyDisasm);

@@ -230,7 +230,7 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 			//if the push is a constant, then check if the next instruction
 			//is an unconditional jmp, if so, ignore the push, assume 
 			//the push is part of fixed calls. 
-			if(disasm.getOperand(1).isConstant() /* (disasm.Argument2.ArgType & 0xF0000000) == CONSTANT_TYPE */)
+			if(disasm.getOperand(0).isConstant() /* (disasm.Argument2.ArgType & 0xF0000000) == CONSTANT_TYPE */)
 			{
 				//Grab the pushed value
 				assert(pmatch[1].rm_so >=0 && pmatch[1].rm_eo >=0);

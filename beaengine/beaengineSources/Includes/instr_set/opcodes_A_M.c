@@ -1826,11 +1826,11 @@ void __bea_callspec__ cli_(PDISASM pMyDisasm)
 void __bea_callspec__ cpuid_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+MISCELLANEOUS_INSTRUCTION;
-    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0+REG1+REG2+REG3;
+//    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0+REG1+REG2+REG3;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cpuid ");
     #endif
-    (*pMyDisasm).Argument1.ArgSize = 32;
+//    (*pMyDisasm).Argument1.ArgSize = 32;
     GV.EIP_++;
 }
 

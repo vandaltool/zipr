@@ -906,7 +906,7 @@ void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, UIntPtr virt_offset)
 
 		const auto the_arg=*relop_it;	
 
-		int offset=disasm.getMemoryDisplacementOffset(the_arg); /*the_arg->Memory.DisplacementAddr-disasm.EIP*/;
+		int offset=disasm.getMemoryDisplacementOffset(the_arg, insn); /*the_arg->Memory.DisplacementAddr-disasm.EIP*/;
 		assert(offset>=0 && offset <=15);
 		int size=the_arg.getMemoryDisplacementEncodingSize(); // the_arg->Memory.DisplacementSize;
 		assert(size==1 || size==2 || size==4 || size==8);

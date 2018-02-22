@@ -13,8 +13,8 @@ class DecodedOperandCapstone_t
 {
 	public:
 		DecodedOperandCapstone_t() =delete;
-		DecodedOperandCapstone_t& operator=(const DecodedOperandCapstone_t& copy);
-		DecodedOperandCapstone_t(const DecodedOperandCapstone_t& copy);
+		//DecodedOperandCapstone_t& operator=(const DecodedOperandCapstone_t& copy);
+		//DecodedOperandCapstone_t(const DecodedOperandCapstone_t& copy);
 		virtual ~DecodedOperandCapstone_t();
 
 		bool isConstant() const;
@@ -48,6 +48,11 @@ class DecodedOperandCapstone_t
 
 
 	private:
+
+		DecodedOperandCapstone_t( const shared_ptr<void> &my_insn, uint8_t op_num);
+
+		shared_ptr<void> my_insn;
+		uint8_t op_num;
 
 		friend class DecodedInstructionCapstone_t;
 

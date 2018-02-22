@@ -569,7 +569,7 @@ static pair<int,int> get_prologue_data(Function_t *func)
 		}
 		else if(d.getMnemonic() /*string(d.Instruction.Mnemonic)*/ == "push")
 		{
-			if( 	d.getOperand(1).isConstant() /*d.Argument2.ArgType&CONSTANT_TYPE)==CONSTANT_TYPE   */ //&& 
+			if( 	d.getOperand(0).isConstant() /*d.Argument2.ArgType&CONSTANT_TYPE)==CONSTANT_TYPE   */ //&& 
 //				insn->GetFallthrough()!=NULL &&
 //				insn->GetFallthrough()->GetTarget()!=NULL && 
 //				func->GetInstructions().find(insn->GetFallthrough()->GetTarget())!=func->GetInstructions().end()

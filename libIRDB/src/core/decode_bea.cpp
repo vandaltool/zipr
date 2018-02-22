@@ -215,11 +215,11 @@ bool DecodedInstructionBea_t::setsStackPointer() const
 {
 	DISASM* d=static_cast<DISASM*>(disasm_data);
 
-        if(strstr(d->Instruction.Mnemonic, "push")!=NULL)
+        if(getMnemonic()== "push")
                 return true;
-        if(strstr(d->Instruction.Mnemonic, "pop")!=NULL)
+        if(getMnemonic()== "pop")
                 return true;
-        if(strstr(d->Instruction.Mnemonic, "call")!=NULL)
+        if(getMnemonic()== "call")
                 return true;
         if(d->Instruction.ImplicitModifiedRegs==REGISTER_TYPE+GENERAL_REG+REG4)
                 return true;

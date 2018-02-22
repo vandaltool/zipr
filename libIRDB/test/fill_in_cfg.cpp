@@ -155,7 +155,7 @@ void set_target
 
 		/* get the offset */
 		// virtual_offset_t virtual_offset=strtoul(disasm->Argument1.ArgMnemonic, NULL, 16);
-		virtual_offset_t virtual_offset=strtoul(disasm->getOperand(0).getString().c_str(), NULL, 16);
+		virtual_offset_t virtual_offset=disasm->getAddress();
 
 		/* create a pair of offset/file */
 		pair<db_id_t,virtual_offset_t> p(insn->GetAddress()->GetFileID(),virtual_offset);
@@ -703,7 +703,6 @@ main(int argc, char* argv[])
         }
 
 	assert(pidp);
-
 
 	delete pidp;
 	pidp=NULL;

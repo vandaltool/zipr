@@ -24,7 +24,6 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
-#include <bea_deprecated.hpp>
 
 #undef EIP
 
@@ -94,9 +93,12 @@ int Instruction_t::Disassemble(DISASM &disasm) const
 
 std::string Instruction_t::getDisassembly() const
 {
-  	DISASM disasm;
-  	Disassemble(this,disasm);
-  	return std::string(disasm.CompleteInstr);
+//  	DISASM disasm;
+//  	Disassemble(this,disasm);
+//  	return std::string(disasm.CompleteInstr);
+
+	const auto d=DecodedInstruction_t(this);
+	return d.getDisassembly();
 }
 
 // 

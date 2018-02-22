@@ -105,6 +105,9 @@ compare_decoders_assert(bool, isReturn);
 compare_decoders_assert(uint32_t, getPrefixCount);
 compare_decoders_assert(bool, hasRexWPrefix);
 compare_decoders_assert(bool, setsStackPointer);
+compare_decoders_assert(bool, hasRelevantRepPrefix);		// rep ret disagreement.
+compare_decoders_assert(bool, hasRelevantRepnePrefix);
+compare_decoders_assert(bool, hasRelevantOperandSizePrefix);
 
 /* demonstrating when capstone is better */
 passthrough_to_cs(string, getMnemonic);
@@ -114,9 +117,6 @@ passthrough_to_cs(int64_t, getImmediate);
 
 // demonstrating they different and trying to determine which is better.
 compare_decoders(bool, hasImplicitlyModifiedRegs); 	// found div %sil insn that bea gets wrong.
-compare_decoders(bool, hasRelevantRepPrefix);		// rep ret disagreement.
-compare_decoders(bool, hasRelevantRepnePrefix);
-compare_decoders(bool, hasRelevantOperandSizePrefix);
 
 // not yet completed
 // needs more complicated impl.
@@ -124,9 +124,9 @@ compare_decoders(bool, hasRelevantOperandSizePrefix);
 
 bool DecodedInstructionMeta_t::hasOperand(const int op_num) const
 {
-	const auto bea_res=bea.hasOperand(op_num);
-/*
 	const auto cs_res =cs .hasOperand(op_num);
+/*
+	const auto bea_res=bea.hasOperand(op_num);
 	if(bea_res!=cs_res)  								
 	{ 										
 		cerr<<"Bea/Capstone miscompare: bea='"<<bea_res<<"'"			
@@ -136,29 +136,29 @@ bool DecodedInstructionMeta_t::hasOperand(const int op_num) const
 		cerr<<" at " <<__FUNCTION__<<endl;					
 		abort(); 								
 	} 										
-	return cs_res; 									
-*/
 	return bea_res;
+*/
+	return cs_res; 									
 }
 
 // 0-based.  first operand is numbered 0.
 DecodedOperandMeta_t DecodedInstructionMeta_t::getOperand(const int op_num) const
 {
-	return DecodedOperandMeta_t(bea.getOperand(op_num));
+	return DecodedOperandMeta_t(cs.getOperand(op_num));
 }
 
 DecodedOperandMetaVector_t DecodedInstructionMeta_t::getOperands() const
 {
 	auto ret_val=DecodedOperandMetaVector_t();
-	auto bea_operands=bea.getOperands();
-	for(const auto &op : bea_operands ) 
+	auto cs_operands=cs.getOperands();
+	for(const auto &op : cs_operands ) 
 		ret_val.push_back(DecodedOperandMeta_t(op));
 	return ret_val;
 }
 
-virtual_offset_t DecodedInstructionMeta_t::getMemoryDisplacementOffset(const DecodedOperandMeta_t& t) const
+virtual_offset_t DecodedInstructionMeta_t::getMemoryDisplacementOffset(const DecodedOperandMeta_t& t, const Instruction_t* insn) const
 {
-	return bea.getMemoryDisplacementOffset(t.bea);
+	return cs.getMemoryDisplacementOffset(t.cs, insn);
 }
 
 

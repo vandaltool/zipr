@@ -7,11 +7,34 @@
 #include <functional>
 #include <set>
 #include <algorithm>
+#include <stdexcept>
 
 using namespace libIRDB;
 using namespace std;
 
 #define ALLOF(a) begin(a),end(a)
+
+DecodedInstructionCapstone_t::CapstoneHandle_t* DecodedInstructionCapstone_t::cs_handle=NULL ;
+
+DecodedInstructionCapstone_t::CapstoneHandle_t::CapstoneHandle_t(FileIR_t* firp)
+{
+
+	const auto width=FileIR_t::GetArchitectureBitWidth();
+	const auto mode = (width==64) ? CS_MODE_64: CS_MODE_32;
+	auto err = cs_open(CS_ARCH_X86, mode,  &handle);
+
+	if (err)
+	{
+		const auto s=string("Failed on cs_open() with error returned: ")+to_string(err)+"\n";
+		throw std::runtime_error(s);
+	}
+	cs_option(handle, CS_OPT_DETAIL, CS_OPT_ON);
+	cs_option(handle, CS_OPT_SYNTAX, CS_OPT_SYNTAX_INTEL);
+
+
+}
+
+
 
 typedef struct special_instruction special_instruction_t;
 struct special_instruction
@@ -46,6 +69,7 @@ static bool isJmp(cs_insn* the_insn)
 	return isPartOfGroup(the_insn,X86_GRP_JUMP);
 }
 
+#if 0
 class CapstoneHandle_t
 {
 	public:
@@ -72,18 +96,19 @@ class CapstoneHandle_t
 		csh handle;
 };
 static CapstoneHandle_t *cs_handle=NULL;
+#endif
 
 template<class type>
-static inline type insnToImmedHelper(cs_insn* the_insn)
+static inline type insnToImmedHelper(cs_insn* the_insn, csh handle)
 {
-        const auto count = cs_op_count(cs_handle->getHandle(), the_insn, X86_OP_IMM);
+        const auto count = cs_op_count(handle, the_insn, X86_OP_IMM);
 	const auto x86 = &(the_insn->detail->x86);
 
         if (count==0) 
 		return 0;	 /* no immediate is the same as an immediate of 0, i guess? */
         else if (count==1) 
 	{
-		const auto index = cs_op_index(cs_handle->getHandle(), the_insn, X86_OP_IMM, 1);
+		const auto index = cs_op_index(handle, the_insn, X86_OP_IMM, 1);
 		return x86->operands[index].imm;
 	}
 	else
@@ -144,6 +169,8 @@ DecodedInstructionCapstone_t::DecodedInstructionCapstone_t(const Instruction_t* 
 	const auto data=i->GetDataBits().data();
 	const auto address=i->GetAddress()->GetVirtualOffset();
         Disassemble(address,data,length);
+
+	if(!valid()) throw std::invalid_argument("The Insruction_t::GetDataBits field is not a valid instruction.");
 }
 
 DecodedInstructionCapstone_t::DecodedInstructionCapstone_t(const virtual_offset_t start_addr, const void *data, uint32_t max_len)
@@ -163,6 +190,11 @@ DecodedInstructionCapstone_t::DecodedInstructionCapstone_t(const virtual_offset_
 DecodedInstructionCapstone_t::DecodedInstructionCapstone_t(const DecodedInstructionCapstone_t& copy)
 {
 	*this=copy;
+}
+
+DecodedInstructionCapstone_t::DecodedInstructionCapstone_t(const shared_ptr<void> &p_my_insn)
+	: my_insn(p_my_insn)
+{
 }
 
 DecodedInstructionCapstone_t::~DecodedInstructionCapstone_t()
@@ -316,75 +348,35 @@ bool DecodedInstructionCapstone_t::isReturn() const
 
 bool DecodedInstructionCapstone_t::hasOperand(const int op_num) const
 {
-	const auto needs_additional_memop=[&]() -> bool 
-		{
-			return (getMnemonic()=="pop" || getMnemonic()=="push");
-		};
-	const auto needs_no_dest_shift=[&]() -> bool 
-		{
-			return (getMnemonic()=="nop");
-		};
-	const auto needs_additional_regop=[&]() -> bool 
-		{
-			return (getMnemonic()=="cbw"     ||
-			        getMnemonic()=="cwde"    ||
-			        getMnemonic()=="cdqe"    ||
-			        getMnemonic()=="div"     ||
-			        getMnemonic()=="mul"     ||
-			        getMnemonic()=="fild"    || 
-			        getMnemonic()=="fist"    || 
-			        getMnemonic()=="fistp"   || 
-			        getMnemonic()=="fld"     || 
-			        getMnemonic()=="fst"     || 
-			        getMnemonic()=="fstp"    ||
-			        getMnemonic()=="faddp"   || 
-			        getMnemonic()=="fdivp"   || 
-			        getMnemonic()=="fdivrp"  || 
-			        getMnemonic()=="fmulp"   ||
-			        getMnemonic()=="fsubp"   ||
-			        getMnemonic()=="fsubrp"  ||
-			        getMnemonic()=="fcomip"  ||
-			        getMnemonic()=="fcomp"   ||
-			        getMnemonic()=="fcompp"  ||
-			        getMnemonic()=="ficomp"  ||
-			        getMnemonic()=="fucomip" ||
-			        getMnemonic()=="fucomp"  ||
-			        getMnemonic()=="fucompp" 
-
-
-
-			       );
-		};
-
-		
-
-	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
+	if(op_num<0) throw std::logic_error(string("Called ")+ __FUNCTION__+" with opnum="+to_string(op_num));
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
-	const auto cs_op_count=the_insn->detail->x86.op_count;
-
-	// calc space for extra operands that bea has that cs doens't.
-	const auto cs_op_count1=(needs_additional_memop() ?  cs_op_count+1 : cs_op_count); 
-	const auto cs_op_count2=(needs_additional_regop() ? cs_op_count1+1 : cs_op_count1);
-	const auto real_op_count=cs_op_count2;
-
-	// shift the op over so bea matches cs.
-	const auto real_op_num1=(needs_no_dest_shift() ? op_num-1 : op_num); 
-	const auto real_op_num=real_op_num1;
-
-	return 0 <= real_op_num  && real_op_num < real_op_count;
+	const auto &x86 = (the_insn->detail->x86);
+	return 0 <= op_num  && op_num < x86.op_count;
 }
 
 // 0-based.  first operand is numbered 0.
 DecodedOperandCapstone_t DecodedInstructionCapstone_t::getOperand(const int op_num) const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
-	assert(0);
+	if(!hasOperand(op_num)) throw std::logic_error(string("Called ")+__FUNCTION__+" on without hasOperand()==true");
+
+	return DecodedOperandCapstone_t(my_insn,(uint8_t)op_num);
+	
 }
 
 DecodedOperandCapstoneVector_t DecodedInstructionCapstone_t::getOperands() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
-	assert(0);
+	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
+	const auto &x86 = (the_insn->detail->x86);
+	const auto opcount=x86.op_count;
+
+	auto ret_val=DecodedOperandCapstoneVector_t();
+	
+	for(auto i=0;i<opcount;i++)
+		ret_val.push_back(getOperand(i));
+
+	return ret_val;
 }
 
 string DecodedInstructionCapstone_t::getMnemonic() const
@@ -446,7 +438,7 @@ int64_t DecodedInstructionCapstone_t::getImmediate() const
 	if(isCall() || isJmp(the_insn))
 		return 0;
 
-	return insnToImmedHelper<int64_t>(the_insn);
+	return insnToImmedHelper<int64_t>(the_insn, cs_handle->getHandle());
 }
 
 
@@ -457,7 +449,7 @@ virtual_offset_t DecodedInstructionCapstone_t::getAddress() const
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
 
 	if(isCall() || isJmp(the_insn))
-		return insnToImmedHelper<virtual_offset_t>(the_insn);
+		return insnToImmedHelper<virtual_offset_t>(the_insn, cs_handle->getHandle());
 
 
         const auto count = cs_op_count(cs_handle->getHandle(), the_insn, X86_OP_MEM);
@@ -512,8 +504,9 @@ bool DecodedInstructionCapstone_t::setsStackPointer() const
 
 
 	// now check each operand
+	const auto operands_begin=begin(the_insn->detail->x86.operands);
 	const auto operands_end=begin(the_insn->detail->x86.operands)+the_insn->detail->x86.op_count;
-	const auto operands_it=find_if
+	const auto rsp_it=find_if
 		(
 			begin(the_insn->detail->x86.operands), 
 			operands_end,
@@ -522,11 +515,23 @@ bool DecodedInstructionCapstone_t::setsStackPointer() const
 				return op.type==X86_OP_REG && sp_regs.find(op.reg)!=sp_regs.end();
 			}
 		);
-	if(operands_it!=operands_end)	
-		return true;
+	// not found in the operands, we're done.
+	if(rsp_it==operands_end)	
+	        return false;
 
-	// didn't find this anywhere, return false;
-        return false;
+	// now decide if it's a register that's read or written.
+
+	// special check for things without a destation (as op[0])
+	if(getMnemonic()=="push" || 
+	   getMnemonic()=="cmp"  ||
+	   getMnemonic()=="call" ||
+	   getMnemonic()=="test")
+		return false;
+
+	// standard check -- is the reg op 0
+	const auto is_op0=(rsp_it==operands_begin);
+
+	return is_op0;
 }
 
 uint32_t DecodedInstructionCapstone_t::getPrefixCount() const
@@ -540,10 +545,57 @@ uint32_t DecodedInstructionCapstone_t::getPrefixCount() const
 	return count_with_rex;
 }
 
-virtual_offset_t DecodedInstructionCapstone_t::getMemoryDisplacementOffset(const DecodedOperandCapstone_t& t) const
+virtual_offset_t DecodedInstructionCapstone_t::getMemoryDisplacementOffset(const DecodedOperandCapstone_t& t, const Instruction_t* insn) const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
-	return false;
+
+	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
+
+	const auto encoding_size=t.getMemoryDisplacementEncodingSize();
+	const auto x86 = &(the_insn->detail->x86);
+        const auto imm_count = cs_op_count(cs_handle->getHandle(), the_insn, X86_OP_IMM);
+	const auto disp_size=t.getMemoryDisplacementEncodingSize();
+	const auto imm=getImmediate();
+	const auto disp=t.getMemoryDisplacement();
+
+	if(imm_count==0)
+		return the_insn->size - disp_size;
+
+	// shifts can an immediate that's note encoded in the instruction
+	// but never an immediate encoded in the instruction.
+	if(
+	   string((char*)the_insn->detail->x86.opcode)=="\xd0" || // shift left or right with an immediate that's not actually  encoded in the insn
+	   string((char*)the_insn->detail->x86.opcode)=="\xd1" 
+	  )
+		return the_insn->size - disp_size;
+
+	const auto possible_imm_sizes= string(the_insn->mnemonic)=="movabs" ?  set<int>({8}) : set<int>({1,2,4});
+
+	for(const auto imm_size : possible_imm_sizes)
+	{
+		if(the_insn->size < disp_size + imm_size)
+			continue;
+
+		const auto disp_start=the_insn->size-imm_size-disp_size;
+		const auto imm_start=the_insn->size-imm_size;
+		
+		const auto candidate_disp_eq = disp_size==4  ? *(int32_t*)(&insn->GetDataBits().c_str()[disp_start])==(int32_t)disp :
+		                               disp_size==2  ? *(int16_t*)(&insn->GetDataBits().c_str()[disp_start])==(int16_t)disp :
+		                               disp_size==1  ? *(int8_t *)(&insn->GetDataBits().c_str()[disp_start])==(int8_t )disp : (assert(0),false);
+
+		const auto candidate_imm_eq = imm_size==8  ? *(int64_t*)(&insn->GetDataBits().c_str()[imm_start])==(int64_t)imm :
+					      imm_size==4  ? *(int32_t*)(&insn->GetDataBits().c_str()[imm_start])==(int32_t)imm :
+					      imm_size==2  ? *(int16_t*)(&insn->GetDataBits().c_str()[imm_start])==(int16_t)imm :
+		                              imm_size==1  ? *(int8_t *)(&insn->GetDataBits().c_str()[imm_start])==(int8_t )imm : (int64_t)(assert(0),false);
+
+		if(candidate_disp_eq && candidate_imm_eq)
+			return disp_start;
+		
+	}
+
+	assert(0);
+
+
 }
 
 

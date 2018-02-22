@@ -49,9 +49,9 @@ class DecodedOperandMeta_t
 
 
 	private:
-		DecodedOperandMeta_t(const DecodedOperandBea_t& in);
+		DecodedOperandMeta_t(const DecodedOperandCapstone_t& in);
 
-		DecodedOperandBea_t bea;
+		DecodedOperandCapstone_t cs;
 
 		friend class DecodedInstructionMeta_t;
 
