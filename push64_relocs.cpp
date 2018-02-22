@@ -353,7 +353,7 @@ void Push64Relocs_t::UpdatePush64Adds()
 			assert(arg_it!=operands.end());
 			const auto arg=*arg_it;
 
-			memory_offset = d.getMemoryDisplacementOffset(arg); // arg->Memory.DisplacementAddr-d.EIP;
+			memory_offset = d.getMemoryDisplacementOffset(arg, insn); // arg->Memory.DisplacementAddr-d.EIP;
 			existing_offset_size = arg.getMemoryDisplacementEncodingSize(); // arg->Memory.DisplacementSize;
 			assert(memory_offset>=0 && memory_offset <=15 &&
 			      (existing_offset_size==1 || 
