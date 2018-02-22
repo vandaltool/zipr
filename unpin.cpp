@@ -451,7 +451,7 @@ void Unpin_t::DoUpdateForInstructions()
 				virtual_offset_t rel_addr1=the_arg.getMemoryDisplacement(); // ->Memory.Displacement;
 				rel_addr1+=from_insn->GetDataBits().size();
 
-				int disp_offset=disasm.getMemoryDisplacementOffset(the_arg); // the_arg->Memory.DisplacementAddr-disasm.EIP;
+				int disp_offset=disasm.getMemoryDisplacementOffset(the_arg,from_insn); // the_arg->Memory.DisplacementAddr-disasm.EIP;
 				int disp_size=the_arg.getMemoryDisplacementEncodingSize(); // the_arg->Memory.DisplacementSize;
 				libIRDB::virtual_offset_t from_insn_location=locMap[from_insn];
 				assert(disp_size==4);
@@ -504,7 +504,7 @@ void Unpin_t::DoUpdateForInstructions()
 				virtual_offset_t rel_addr1=the_arg.getMemoryDisplacement(); // ->Memory.Displacement;
 				//virtual_offset_t rel_addr1=the_arg->Memory.Displacement;
 
-				int disp_offset=disasm.getMemoryDisplacementOffset(the_arg); // the_arg->Memory.DisplacementAddr-disasm.EIP;
+				int disp_offset=disasm.getMemoryDisplacementOffset(the_arg,from_insn); // the_arg->Memory.DisplacementAddr-disasm.EIP;
 				int disp_size=the_arg.getMemoryDisplacementEncodingSize(); // the_arg->Memory.DisplacementSize;
 				//int disp_offset=the_arg->Memory.DisplacementAddr-disasm.EIP;
 				//int disp_size=the_arg->Memory.DisplacementSize;
