@@ -359,7 +359,7 @@ bool DecodedOperandCapstone_t::hasBaseRegister() const
 {
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
         const auto &op = (the_insn->detail->x86.operands[op_num]);
-	return isMemory() && op.mem.base!=X86_REG_INVALID;
+	return isMemory() && op.mem.base!=X86_REG_INVALID && op.mem.base!=X86_REG_RIP;
 }
 
 bool DecodedOperandCapstone_t::hasIndexRegister() const
