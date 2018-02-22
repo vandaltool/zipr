@@ -3166,7 +3166,7 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntry(
 		 * Calculate the offset into the instruction
 		 * of the displacement address.
 		 */
-		offset = d.getMemoryDisplacementOffset(relative_arg); /*relative_arg->Memory.DisplacementAddr - d.EIP; */
+		offset = d.getMemoryDisplacementOffset(relative_arg, insn); /*relative_arg->Memory.DisplacementAddr - d.EIP; */
 
 		/*
 		 * The size of the displacement address must be
