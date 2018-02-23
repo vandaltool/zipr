@@ -478,12 +478,12 @@ bool DecodedInstructionCapstone_t::setsStackPointer() const
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
 
 /* slow string manip */
-//        if(getMnemonic()=="push")
-//                return true;
-//        if(getMnemonic()=="pop")
-//                return true;
-//        if(getMnemonic()=="call")
-//                return true;
+        if(getMnemonic()=="push")
+                return true;
+        if(getMnemonic()=="pop")
+                return true;
+        if(getMnemonic()=="call")
+                return true;
 
 	// any sp reg
 	const auto sp_regs=set<x86_reg>({X86_REG_RSP, X86_REG_ESP, X86_REG_SP, X86_REG_SPL});

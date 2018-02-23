@@ -484,10 +484,118 @@ uint32_t DecodedOperandCapstone_t::getSegmentRegister() const
 
 set<string> read_only_operand_mnemonics=
 	{
-		"push"
-		"cmp"
-		"test"
+		// specal read-only op cases, rest are some form of compare.
+		"push",
+
+		// test 
+		"test",
+
+		// bit test (but not bt+comp or bt+reset as those have a reg dest.
+		"bt",
+
+		// compare 
+		"cmp",
+
+		// compare string
+		"cmps",
+		"cmpsb",
+		"cmpsw",
+		"cmpsd",
+		"cmpsq",
+
+		// float compare [and pop]
+		"fcom",
+		"fcomp",
+		"fcompp",
+
+		// compare floating point values
+		"fcomi",
+		"fcomip",
+		"fucomi",
+		"fucomip",
+
+
+		// logical compare
+		"ptest",
+		"vptest",
+
+		// scas variants
+		"scas",
+		"scass",
+		"scasb",
+		"scasw",
+		"scasd",
+
+		// ucomiss -- unordered cmpare scalar single-precision floating-point values and set flags
+		"ucomiss",
+		"vucomiss",
+
+		// comiss -- unordered cmpare scalar single-precision floating-point values and set flags
+		"comiss",
+		"vcomiss",
+
+		// comisd "comapre scalar ordered double-preicions floating-point values and set flags
+		"comisd"
+		"vcomisd"
+
+		// ucomisd "comapre scalar ordered double-preicions floating-point values and set flags
+		"ucomisd"
+		"vucomisd"
+
+		// packed bit test
+		"vtestps",
+		"vtestpd"
+
+		// compare packed {double,single}-prec float values 
+		"cmppd",
+		"vcmppd",
+		"cmpps",
+		"vcmpps",
+
+		// compare sclar {double,single}-prec float values
+		"cmpsd",
+		"vcmpsd",
+		"cmpss",
+		"vcmpss",
+
+		// compare packed data for equal
+		"pcmpeqb",
+		"vpcmpeqb",
+		"pcmpeqw",
+		"vpcmpeqw",
+		"pcmpeqd",
+		"vpcmpeqd",
+		"pcmpeqq",
+		"vpcmpeqq",
+
+		// packed compare explicit length string, return {index, mask}
+		"pcmpestri",
+		"vpcmpestri",
+		"pcmpestrm",
+		"vpcmpestrm",
+
+		// compare packed data for greather than
+		"pcompgtb",
+		"vpcompgtb",
+		"pcompgtw",
+		"vpcompgtw",
+		"pcompgtd",
+		"vpcompgtd",
+		"pcompgtq",
+		"vpcompgtq",
+
+		// packed compare implicit length string, return index or mask
+		"pcmpistri",
+		"vpcmpistri",
+		"pcmpistrm",
+		"vpcmpistrm",
+
+		// test if in transactional region
+		"xtest"
+
 	};
+
+
 
 bool DecodedOperandCapstone_t::isRead() const
 {
