@@ -180,21 +180,30 @@ string DecodedOperandCapstone_t::getString() const
 			return to_string(op.imm);
 		case X86_OP_MEM: 
 		{
-			string ret_val;
 //			if (op.mem.segment != X86_REG_INVALID)
 //				ret_val+=cs_reg_name(handle, op.mem.segment) +"  : " ;
-			if (op.mem.base != X86_REG_INVALID)
-				ret_val+=cs_reg_name(handle, op.mem.base);
+			if (op.mem.base == X86_REG_RIP)
+			{
+				/* convert pc+disp into disp+insn_size. */
+				return to_string(op.mem.disp+the_insn->size);
+			}
+			else
+			{
+				string ret_val;
+				if (op.mem.base != X86_REG_INVALID)
+					ret_val+=cs_reg_name(handle, op.mem.base);
 
-			if (op.mem.index != X86_REG_INVALID)
-				ret_val+=string(" + ") +cs_reg_name(handle, op.mem.index);
+				if (op.mem.index != X86_REG_INVALID)
+					ret_val+=string(" + ") +cs_reg_name(handle, op.mem.index);
 
-			if (op.mem.scale != 1)
-				ret_val+=string(" * ") + to_string(op.mem.scale);
+				if (op.mem.scale != 1)
+					ret_val+=string(" * ") + to_string(op.mem.scale);
 
-			if (op.mem.disp != 0)
-				ret_val+=" + "+ to_string(op.mem.disp);
-			return ret_val;
+				if (op.mem.disp != 0)
+					ret_val+=" + "+ to_string(op.mem.disp);
+				return ret_val;
+			}
+			assert(0);
 		}
 		case X86_OP_FP:
 		case X86_OP_INVALID: 
@@ -457,7 +466,8 @@ uint32_t DecodedOperandCapstone_t::getMemoryDisplacementEncodingSize() const
 uint32_t DecodedOperandCapstone_t::getArgumentSizeInBytes() const
 {
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
-	return the_insn->detail->x86.addr_size;
+        const auto &op = (the_insn->detail->x86.operands[op_num]);
+	return op.size;
 }
 
 uint32_t DecodedOperandCapstone_t::getArgumentSizeInBits() const

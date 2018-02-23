@@ -292,8 +292,10 @@ string DecodedInstructionCapstone_t::getDisassembly() const
 	const auto no_dec1=needs_memdec ? noxmmword : (myReplace(noxmmword," qword ", " ")) ;
 	const auto no_dec2=needs_memdec ? no_dec1 : (myReplace(no_dec1," dword ", " ")) ;
 
+	const auto no_rip=myReplace(no_dec2, "rip", to_string(the_insn->size));
 
-	return no_dec2;
+
+	return no_rip;
 }
 
 bool DecodedInstructionCapstone_t::valid() const
