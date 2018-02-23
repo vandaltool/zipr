@@ -545,12 +545,12 @@ set<string> read_only_operand_mnemonics=
 		"vcomiss",
 
 		// comisd "comapre scalar ordered double-preicions floating-point values and set flags
-		"comisd"
-		"vcomisd"
+		"comisd",
+		"vcomisd",
 
 		// ucomisd "comapre scalar ordered double-preicions floating-point values and set flags
-		"ucomisd"
-		"vucomisd"
+		"ucomisd",
+		"vucomisd",
 
 		// packed bit test
 		"vtestps",
@@ -601,7 +601,7 @@ set<string> read_only_operand_mnemonics=
 		"vpcmpistrm",
 
 		// test if in transactional region
-		"xtest"
+		"xtest",
 
 	};
 

@@ -152,6 +152,9 @@ void DecodedInstructionCapstone_t::Disassemble(const virtual_offset_t start_addr
 	
 	}
 
+	if(string(insn->mnemonic)=="fcompi")
+		strcpy(insn->mnemonic, "fcomip"); // bad opcode out of capstone.
+
 
 	const auto cs_freer=[](cs_insn * insn) -> void 
 		{  
