@@ -215,9 +215,9 @@ DecodedInstructionCapstone_t& DecodedInstructionCapstone_t::operator=(const Deco
 
 string DecodedInstructionCapstone_t::getDisassembly() const
 {
-	const auto myReplace=[](std::string str,
+	const auto myReplace=[](std::string &str,
 		       const std::string& oldStr,
-		       const std::string& newStr) -> string
+		       const std::string& newStr) -> void
 	{
 		std::string::size_type pos = 0u;
 		while((pos = str.find(oldStr, pos)) != std::string::npos)
@@ -225,7 +225,6 @@ string DecodedInstructionCapstone_t::getDisassembly() const
 			str.replace(pos, oldStr.length(), newStr);
 			pos += newStr.length();
 		}
-		return str;
 	};
 
 
@@ -274,11 +273,11 @@ string DecodedInstructionCapstone_t::getDisassembly() const
 
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
-	const auto full_str=getMnemonic()+" "+the_insn->op_str;
+	auto full_str=getMnemonic()+" "+the_insn->op_str;
 
-	const auto noptr=myReplace(full_str," ptr ", " ");
-	const auto noxword=myReplace(noptr," xword ", " tword ");
-	const auto noxmmword=myReplace(noxword," xmmword ", " ");
+	myReplace(full_str," ptr ", " ");
+	myReplace(full_str," xword ", " tword ");
+	myReplace(full_str," xmmword ", " ");
 
 
 	const auto has_prefix_it=find_if(ALLOF(prefixes),[&](const string& prefix) 
@@ -292,13 +291,19 @@ string DecodedInstructionCapstone_t::getDisassembly() const
 	const auto needs_memdec_shape=!(has_prefix && has_suffix);
 	const auto needs_memdec=needs_memdec_special && needs_memdec_shape;
 
-	const auto no_dec1=needs_memdec ? noxmmword : (myReplace(noxmmword," qword ", " ")) ;
-	const auto no_dec2=needs_memdec ? no_dec1 : (myReplace(no_dec1," dword ", " ")) ;
+	//const auto no_dec1=needs_memdec ? noxmmword : (myReplace(noxmmword," qword ", " ")) ;
+	//const auto no_dec2=needs_memdec ? no_dec1 : (myReplace(no_dec1," dword ", " ")) ;
+	//const auto no_rip=myReplace(no_dec2, "rip", to_string(the_insn->size));
 
-	const auto no_rip=myReplace(no_dec2, "rip", to_string(the_insn->size));
+	if(!needs_memdec) 
+	{
+		myReplace(full_str," qword ", " ");
+		myReplace(full_str," dword ", " ");
+	}
 
+	myReplace(full_str, "rip", to_string(the_insn->size));
 
-	return no_rip;
+	return full_str;
 }
 
 bool DecodedInstructionCapstone_t::valid() const

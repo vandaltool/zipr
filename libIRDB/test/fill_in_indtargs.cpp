@@ -2212,14 +2212,14 @@ void setup_icfs(FileIR_t* firp, EXEIO::exeio* elfiop)
 		//DISASM d;
 		//Disassemble(insn,d);
 		DecodedInstruction_t d(insn);
-		if(string("ret")==d.getMnemonic() /*Instruction.Mnemonic*/ || string("retn")==d.getMnemonic() /*d.Instruction.Mnemonic*/)
+		if(d.isReturn()) // string("ret")==d.getMnemonic() /*Instruction.Mnemonic*/ || string("retn")==d.getMnemonic() /*d.Instruction.Mnemonic*/)
 		{
 			if(getenv("IB_VERBOSE")!=0)
 				cout<<"using ret hell node for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
 			insn->SetIBTargets(ret_hell);
 		}
 		//else if ( (string("call ")==d.Instruction.Mnemonic) && ((d.Argument1.ArgType&0xffff0000&CONSTANT_TYPE)!=CONSTANT_TYPE))
-		else if ( (string("call")==d.getMnemonic()) && (!d.getOperand(0).isConstant()))
+		else if ( d.isCall() /* (string("call")==d.getMnemonic()) */ && (!d.getOperand(0).isConstant()))
 		{
 			if(getenv("IB_VERBOSE")!=0)
 				cout<<"using call hell node for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
@@ -2227,7 +2227,7 @@ void setup_icfs(FileIR_t* firp, EXEIO::exeio* elfiop)
 			insn->SetIBTargets(call_hell);
 		}
 		//else if ( (string("jmp ")==d.Instruction.Mnemonic) && ((d.Argument1.ArgType&0xffff0000&CONSTANT_TYPE)!=CONSTANT_TYPE))
-		else if ( (string("jmp")==d.getMnemonic()) && (!d.getOperand(0).isConstant()))
+		else if ( d.isUnconditionalBranch() /*(string("jmp")==d.getMnemonic()) */&& (!d.getOperand(0).isConstant()))
 		{
 			if(getenv("IB_VERBOSE")!=0)
 				cout<<"using jmp hell node for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
@@ -2634,14 +2634,6 @@ void unpin_switches(FileIR_t *firp, int do_unpin_opt)
 		{
 			unpin_type3_switchtable(firp,insn,scoop, do_unpin_opt);
 		}
-		/* don't do this as it breaks binary--search of unpinning 
-		if(do_unpin_opt != -1 && total_unpins > do_unpin_opt) 
-		{
-			cout<<"Aborting unpin after switch table."<<endl;
-			return;
-		}
-		*/
-		
         }
 	cout<<"#ATTRIBUTE switch_type3_pins="<<dec<<type3_pins<<endl;
 	cout<<"#ATTRIBUTE switch_type3_unpins="<<dec<<type3_unpins<<endl;
@@ -2672,8 +2664,6 @@ void print_unpins(FileIR_t *firp)
 			cout<<"Found relocation in "<<scoop->GetName()<<" of type "<<reloc->GetType()<<" at offset "<<hex<<reloc->GetOffset()<<endl;
 		}
 	}
-
-
 }
 
 
@@ -2896,7 +2886,6 @@ main(int argc, char* argv[])
         }
 
 	assert(firp && pidp);
-
 
 	delete pidp;
 }

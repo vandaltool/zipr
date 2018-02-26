@@ -19,7 +19,6 @@
  */
 
 
-
 #include <libIRDB-core.hpp>
 #include <libIRDB-cfg.hpp>
 #include <utils.hpp>
@@ -180,10 +179,6 @@ bool call_needs_fix(Instruction_t* insn)
 		return true;
 	}
 
-#if 0
-	if(fallthru->GetIndirectBranchTargetAddress()!=NULL)
-		return true;
-#else
 	virtual_offset_t addr=fallthru->GetAddress()->GetVirtualOffset();
 	RangeSet_t::iterator rangeiter=eh_frame_ranges.find(Range_t(addr,addr));
 	if(rangeiter != eh_frame_ranges.end())	// found an eh_frame addr entry for this call
@@ -191,7 +186,6 @@ bool call_needs_fix(Instruction_t* insn)
 		in_ehframe++;
 		return true;
 	}
-#endif
 
 	if (!opt_fix_icalls && insn->GetIBTargets() && insn->GetIBTargets()->size() > 0) 
 	{
@@ -206,7 +200,8 @@ bool call_needs_fix(Instruction_t* insn)
 		/* call 0's aren't to real locations */
 		// Disassemble(insn,disasm);
 		DecodedInstruction_t disasm(insn);
-		if(strcmp(disasm.getDisassembly().c_str()/*CompleteInstr*/, "call 0x00000000")==0)
+		// if(strcmp(disasm.getDisassembly().c_str()/*CompleteInstr*/, "call 0x00000000")==0)
+		if(disasm.getOperand(0).isConstant() && disasm.getAddress()==0)
 		{
 			return false;
 		}
@@ -248,9 +243,20 @@ bool call_needs_fix(Instruction_t* insn)
 		return true;
 	}
 
+	typedef map<Function_t*, ControlFlowGraph_t*> ControlFlowGraphMap_t;
 
-	/* build a cfg for this function */
-	ControlFlowGraph_t* cfg=new ControlFlowGraph_t(func);
+	static ControlFlowGraphMap_t cfg_optimizer;
+
+	const auto is_found_it=cfg_optimizer.find(func);
+	const auto is_found=(is_found_it!=end(cfg_optimizer));
+
+	if(!is_found)
+		/* build a cfg for this function */
+		cfg_optimizer[func]=new ControlFlowGraph_t(func);
+
+	auto cfg=cfg_optimizer[func];
+	
+
 
 	assert(cfg->GetEntry());
 	
@@ -266,7 +272,7 @@ bool call_needs_fix(Instruction_t* insn)
 	/* check the entry block for thunks, etc. */
 	bool found;
 	bool ret=check_entry(found,cfg);
-	delete cfg;
+	// delete cfg;
 	if(found)
 	{
 		if(ret)
@@ -287,7 +293,8 @@ bool call_needs_fix(Instruction_t* insn)
 
 	/* now, search the function for stack references  */
 
-
+// is this even right with the assembler switch ? 
+#if 0
 	/* determine what the stack ref. would look like */
 	if(func->GetUseFramePointer())
 	{
@@ -326,6 +333,7 @@ bool call_needs_fix(Instruction_t* insn)
 			return true;
 		}
 	}
+#endif
 
 	/* otherwise, we think it's safe */
 	return false;

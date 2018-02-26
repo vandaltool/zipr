@@ -43,7 +43,7 @@ class DecodedInstructionBea_t
 		bool hasRelevantOperandSizePrefix() const;
 		bool hasRexWPrefix() const;
 		bool hasImplicitlyModifiedRegs() const;
-		virtual_offset_t getMemoryDisplacementOffset(const DecodedOperandBea_t& t) const;
+		virtual_offset_t getMemoryDisplacementOffset(const DecodedOperandBea_t& t, const libIRDB::Instruction_t*) const;
 
 		// 0-based.  first operand is numbered 0.
 		bool hasOperand(const int op_num) const;

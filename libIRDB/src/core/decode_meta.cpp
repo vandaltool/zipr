@@ -1,5 +1,7 @@
 
 #include <libIRDB-core.hpp>
+#include <core/decode_meta.hpp>
+#include <core/operand_meta.hpp>
 
 using namespace libIRDB;
 using namespace std;

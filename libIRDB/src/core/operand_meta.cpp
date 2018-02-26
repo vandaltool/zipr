@@ -1,5 +1,11 @@
 
 #include <libIRDB-core.hpp>
+#include <core/operand_cs.hpp>
+#include <core/decode_cs.hpp>
+#include <core/operand_bea.hpp>
+#include <core/decode_bea.hpp>
+#include <core/operand_meta.hpp>
+#include <core/decode_meta.hpp>
 
 using namespace std;
 using namespace libIRDB;

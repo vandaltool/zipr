@@ -760,18 +760,6 @@ bool eh_program_insn_t<ptrsize>::Advance(uint64_t &cur_addr, uint64_t CAF) const
 				case DW_CFA_set_loc:
 				{
 					assert(0);
-/*
-					auto arg=uintptr_t(0xDEADBEEF);
-					switch(ptrsize)
-					{
-						case 4:
-							arg=*(uint32_t*)data[pos]; break;
-						case 8:
-							arg=*(uint64_t*)data[pos]; break;
-					}
-					cout<<"				set_loc "<<hex<<arg<<endl;
-					break;
-*/	
 					return true;
 				}
 				case DW_CFA_advance_loc1:
@@ -1288,11 +1276,11 @@ void lsda_call_site_t<ptrsize>::build_ir(Instruction_t* insn, const vector<lsda_
 	firp->GetAllEhCallSites().insert(new_ehcs);
 	insn->SetEhCallSite(new_ehcs);
 
-	cout<<"landing pad addr : 0x"<<hex<<landing_pad_addr<<endl;
+	//cout<<"landing pad addr : 0x"<<hex<<landing_pad_addr<<endl;
 	if(action_table.size() == 0 ) 
 	{
 		new_ehcs->SetHasCleanup();
-		cout<<"Destructors to call, but no exceptions to catch"<<endl;
+		// cout<<"Destructors to call, but no exceptions to catch"<<endl;
 	}
 	else
 	{
@@ -1302,12 +1290,7 @@ void lsda_call_site_t<ptrsize>::build_ir(Instruction_t* insn, const vector<lsda_
 			if(action==0)
 			{
 				new_ehcs->GetTTOrderVector().push_back(action);
-				// an action table entry of 0 means that it has a cleanup, but not a catch all.
-				//auto newreloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, 0, "type_table_entry", NULL, 0);
-				//new_ehcs->GetRelocations().insert(newreloc);
-				//firp->GetRelocations().insert(newreloc);
-				new_ehcs->SetHasCleanup();
-				cout<<"Cleanup only (no catches) ."<<endl;
+				//cout<<"Cleanup only (no catches) ."<<endl;
 			}
 			else if(action>0)
 			{
@@ -1330,10 +1313,10 @@ void lsda_call_site_t<ptrsize>::build_ir(Instruction_t* insn, const vector<lsda_
 				new_ehcs->GetRelocations().insert(newreloc);
 				firp->GetRelocations().insert(newreloc);
 
-				if(wrt==NULL)
-					cout<<"Catch all in type table"<<endl;
-				else
-					cout<<"Catch for type at "<<wrt->GetName()<<"+0x"<<hex<<addend<<"."<<endl;
+				//if(wrt==NULL)
+				//	cout<<"Catch all in type table"<<endl;
+				//else
+				//	cout<<"Catch for type at "<<wrt->GetName()<<"+0x"<<hex<<addend<<"."<<endl;
 			}
 			else if(action<0)
 			{
@@ -1347,7 +1330,7 @@ void lsda_call_site_t<ptrsize>::build_ir(Instruction_t* insn, const vector<lsda_
 
 				// this isn't right at all, but pretend it's a cleanup!
 				new_ehcs->SetHasCleanup();
-				cout<<"Cleanup only (no catches) ."<<endl;
+				//cout<<"Cleanup only (no catches) ."<<endl;
 			}
 			else
 			{
@@ -1456,7 +1439,7 @@ bool lsda_t<ptrsize>::parse_lsda(const uint64_t lsda_addr, const DataScoop_t* gc
 				const auto type_filter=act_tab_entry.GetAction();
 				const auto parse_and_insert_tt_entry = [&] (const unsigned long index) -> bool
 				{
-					cout<<"Parsing TypeTable at -"<<index<<endl;
+					// cout<<"Parsing TypeTable at -"<<index<<endl;
 					// 1-based indexing because of odd backwards indexing of type table.
 					lsda_type_table_entry_t <ptrsize> ltte;
 					if(ltte.parse(type_table_encoding, type_table_pos, index, (const uint8_t* const)data.data(), max, data_addr ))

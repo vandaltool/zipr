@@ -27,6 +27,9 @@ if 'build_tools' not in myenv or myenv['build_tools'] is None or int(myenv['buil
 	myenv=myenv.Clone(CPPPATH=Split(cpppath))
 
 	myenv.Append(CCFLAGS=" -std=c++11 ")
+	#myenv.Append(CCFLAGS=" -pg ")
+	#myenv.Append(LINKFLAGS=" -pg ")
+
 	ehframe=myenv.Object("read_ehframe.cpp");
 	split_eh_frame=myenv.Object("split_eh_frame.cpp");
 

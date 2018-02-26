@@ -2,6 +2,8 @@
 #include <libIRDB-core.hpp>
 
 #include <bea_deprecated.hpp>
+#include <core/decode_bea.hpp>
+#include <core/operand_bea.hpp>
 
 using namespace libIRDB;
 using namespace std;
@@ -238,7 +240,7 @@ uint32_t DecodedInstructionBea_t::getPrefixCount() const
 	return d->Prefix.Number;
 }
 
-virtual_offset_t DecodedInstructionBea_t::getMemoryDisplacementOffset(const DecodedOperandBea_t& t) const
+virtual_offset_t DecodedInstructionBea_t::getMemoryDisplacementOffset(const DecodedOperandBea_t& t, const libIRDB::Instruction_t*) const
 {
 	DISASM* d=static_cast<DISASM*>(disasm_data);
 	ARGTYPE* the_arg=static_cast<ARGTYPE*>(t.arg_data);

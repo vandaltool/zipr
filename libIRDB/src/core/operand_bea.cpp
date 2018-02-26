@@ -2,6 +2,9 @@
 #include <libIRDB-core.hpp>
 #include <bea_deprecated.hpp>
 
+#include <core/decode_bea.hpp>
+#include <core/operand_bea.hpp>
+
 using namespace std;
 using namespace libIRDB;
 
