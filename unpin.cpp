@@ -334,7 +334,8 @@ void Unpin_t::DoUpdateForInstructions()
 		Instruction_t* from_insn=*it;
                 //DISASM disasm;
                 //Disassemble(from_insn,disasm);
-		const auto disasm=DecodedInstruction_t(from_insn);
+//		const auto disasm=DecodedInstruction_t(from_insn);
+//		const auto operands=disasm.getOperands();
 
                 // find memory arg.
 		/*
@@ -348,7 +349,6 @@ void Unpin_t::DoUpdateForInstructions()
                 if(arg_has_memory(disasm.Argument4))
                         the_arg=&disasm.Argument4;
 		*/
-		const auto operands=disasm.getOperands();
 		
 
 		for(
@@ -441,7 +441,8 @@ void Unpin_t::DoUpdateForInstructions()
 			// instruction has a pcrel memory operand.
 			else if(reloc->GetType()==string("pcrel") && reloc->GetWRT()!=NULL)
 			{
-
+				const auto disasm=DecodedInstruction_t(from_insn);
+				const auto operands=disasm.getOperands();
 				const auto the_arg_it=find_if(ALLOF(operands),[](const DecodedOperand_t& op){ return op.isMemory() && op.isPcrel(); });
 				BaseObj_t* bo_wrt=reloc->GetWRT();
 				DataScoop_t* scoop_wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
@@ -451,6 +452,8 @@ void Unpin_t::DoUpdateForInstructions()
 				virtual_offset_t rel_addr1=the_arg.getMemoryDisplacement(); // ->Memory.Displacement;
 				rel_addr1+=from_insn->GetDataBits().size();
 
+//				const auto disasm=DecodedInstruction_t(from_insn);
+//				const auto operands=disasm.getOperands();
 				int disp_offset=disasm.getMemoryDisplacementOffset(the_arg,from_insn); // the_arg->Memory.DisplacementAddr-disasm.EIP;
 				int disp_size=the_arg.getMemoryDisplacementEncodingSize(); // the_arg->Memory.DisplacementSize;
 				libIRDB::virtual_offset_t from_insn_location=locMap[from_insn];
@@ -496,6 +499,9 @@ void Unpin_t::DoUpdateForInstructions()
 			else if(reloc->GetType()==string("absoluteptr_to_scoop"))
 			{
 
+				const auto disasm=DecodedInstruction_t(from_insn);
+				const auto operands=disasm.getOperands();
+
 				// push/pop from memory might have a memory operand with no string to represent the implicit stack operand.
 				const auto the_arg_it=find_if(ALLOF(operands),[](const DecodedOperand_t& op){ return op.isMemory() && op.getString()!=""; });
 				DataScoop_t* wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
@@ -535,6 +541,7 @@ void Unpin_t::DoUpdateForInstructions()
 				DataScoop_t* wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
 				assert(wrt);
 
+				const auto disasm=DecodedInstruction_t(from_insn);
         			virtual_offset_t rel_addr2=disasm.getImmediate(); // disasm.Instruction.Immediat;
 				virtual_offset_t new_addr = rel_addr2 + wrt->GetStart()->GetVirtualOffset();
 
