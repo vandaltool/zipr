@@ -11,7 +11,8 @@
 #configs="scfi.color"
 #configs="zipr scfi scfi.color"
 #configs="shadow"
-configs="p1_scfi_mg"
+#configs="p1 scfi"
+configs="mg mgx mgx_p1 p1_mgx"
 #configs="ibtl"
 #configs="killdeads_strata"
 #configs="ibtl ibtl_p1"
@@ -20,7 +21,7 @@ configs="p1_scfi_mg"
 # specify programs to test
 #orig_progs="grep ncal bzip2 du ls objdump readelf sort tar touch tcpdump"
 #orig_progs="grep bzip2 du ls objdump readelf sort tar touch"
-orig_progs="grep bzip2 du ls objdump"
+orig_progs="grep ls objdump tar"
 #orig_progs="bzip2"
 #orig_progs="gedit"
 #orig_progs="gimp"
@@ -74,6 +75,18 @@ do
 		;;
 		p1)
 			$PSZ $progpath $protected --step p1transform=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
+		mg)
+			$PSZ $progpath $protected --step move_globals=on --step-option move_globals:--aggressive --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
+		mgx)
+			$PSZ $progpath $protected --step move_globals=on --step-option move_globals:--aggressive --step xor_globals=on  --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
+		mgx_p1)
+			$PSZ $progpath $protected --step move_globals=on --step-option move_globals:--aggressive --step xor_globals=on --step p1transform=on  --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
+		p1_mgx)
+			$PSZ $progpath $protected --step p1transform=on --step move_globals=on --step-option move_globals:--aggressive --step xor_globals=on --step p1transform=on  --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 		;;
 		scfi.color)
 			FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected --backend zipr --step selective_cfi=on --step-option selective_cfi:--color --tempdir $temp_dir > test_${prog}.ps.log 2>&1
