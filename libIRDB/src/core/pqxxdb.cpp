@@ -54,7 +54,7 @@ std::string pqxxDB_t::GetResultColumn(std::string colname)
 	if(results_iter[colname].is_null())
 		return std::string("");
 
-	pqxx::binarystring bin_str(results_iter[colname]);
+	pqxx::binarystring bin_str(results_iter.at(colname));
 
 	return bin_str.str();
 

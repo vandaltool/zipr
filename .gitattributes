@@ -197,6 +197,12 @@ libEXEIO/src/exeio_src.cpp -text
 libEXEIO/test/SConscript -text
 libEXEIO/test/SConstruct -text
 libEXEIO/test/main.cpp -text
+libElfDep/SConscript -text
+libElfDep/SConstruct -text
+libElfDep/include/libElfDep.hpp -text
+libElfDep/src/SConscript -text
+libElfDep/src/SConstruct -text
+libElfDep/src/elfdep.cpp -text
 libIRDB/LICENSE.txt -text
 libIRDB/Makefile.in -text
 libIRDB/SConscript -text

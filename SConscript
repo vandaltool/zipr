@@ -95,11 +95,12 @@ libxform=SConscript("xform/SConscript", variant_dir='scons_build/libxform')
 libtransform=SConscript("libtransform/SConscript", variant_dir='scons_build/libtransform')
 libIRDB=SConscript("libIRDB/SConscript", variant_dir='scons_build/libIRDB')
 libStructDiv=SConscript("libStructDiv/SConscript", variant_dir='scons_build/libStructDiv')
+libElfDep=SConscript("libElfDep/SConscript", variant_dir='scons_build/libElfDep')
 
 pedi = Command( target = "./testoutput",
 		source = "./SConscript",
                 action = os.environ['PEDI_HOME']+"/pedi -m manifest.txt " )
-Depends(pedi, (libEXEIO, libbea, libMEDSannotation,libxform,libtransform,libIRDB,libStructDiv))
+Depends(pedi, (libEXEIO, libbea, libMEDSannotation,libxform,libtransform,libIRDB,libStructDiv, libElfDep))
 
 tools=None
 if 'build_tools' not in env or env['build_tools'] is None or int(env['build_tools']) == 1:
