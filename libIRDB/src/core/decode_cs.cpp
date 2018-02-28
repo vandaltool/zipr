@@ -154,7 +154,14 @@ void DecodedInstructionCapstone_t::Disassemble(const virtual_offset_t start_addr
 
 	if(string(insn->mnemonic)=="fcompi")
 		strcpy(insn->mnemonic, "fcomip"); // bad opcode out of capstone.
-
+	else if(string(insn->mnemonic)=="movsq")
+		strcpy(insn->op_str, ""); // force into MOVS
+	else if(string(insn->mnemonic)=="movsd")
+		strcpy(insn->op_str, ""); // force into MOVS
+	else if(string(insn->mnemonic)=="movsw")
+		strcpy(insn->op_str, ""); // force into MOVS
+	else if(string(insn->mnemonic)=="movsb")
+		strcpy(insn->op_str, ""); // force into MOVS
 
 	const auto cs_freer=[](cs_insn * insn) -> void 
 		{  
