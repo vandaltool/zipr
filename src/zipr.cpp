@@ -186,6 +186,7 @@ ZiprOptionsNamespace_t *ZiprImpl_t::RegisterOptions(ZiprOptionsNamespace_t *glob
 
 	global->AddOption(&m_variant);
 	global->AddOption(&m_verbose);
+	global->AddOption(&m_vverbose);
 	global->AddOption(&m_apply_nop);
 	global->AddOption(&m_add_sections);
 	global->AddOption(&m_bss_opts);
@@ -226,7 +227,10 @@ void ZiprImpl_t::CreateBinaryFile()
 		cout << "Seeded the random number generator with " << m_seed << "." << endl;
 
 
+	FixTwoByteWithPrefix();	// have to do this before multi-fallthrough in case it creaates some.
+	FixNoFallthroughs();	// have to do this before multi-fallthrough in case it creaates some.
 	FixMultipleFallthroughs();
+
 
 	// create ranges, including extra range that's def. big enough.
 	FindFreeRanges(m_output_filename);
@@ -2024,7 +2028,7 @@ void ZiprImpl_t::PlaceDollops()
 		to_place = pq_entry.first;
 		from_address = pq_entry.second;
 
-		if (m_verbose)
+		if (m_vverbose)
 			cout << "Original starting address: " << std::hex
 			     << to_place->front()->Instruction()->GetAddress()->GetVirtualOffset()
 					 << endl;
@@ -2193,7 +2197,7 @@ void ZiprImpl_t::PlaceDollops()
 		//cout << "Adjusting cur_addr to " << std::hex << cur_addr << " at A." << endl;
 		has_fallthrough = (to_place->FallthroughDollop() != NULL);
 
-		if (m_verbose)
+		if (m_vverbose)
 		{
 			cout << "Placing " << std::dec << to_place->GetSize() << " dollop in "
 			     << std::dec << (placement.GetEnd() - placement.GetStart()) 
@@ -2369,26 +2373,8 @@ void ZiprImpl_t::PlaceDollops()
 				                         ) < Utils::TRAMPOLINE_SIZE
 				                        ));
 
-				if (m_verbose)
+				if (m_vverbose)
 				{
-#if 0
-					cout << "de_and_fallthrough_fit             : " 
-					     << de_and_fallthrough_fit << endl
-					     << "last_de_fits                       : " 
-							 << last_de_fits << endl
-					     << "fits_entirely                      : " 
-							 << fits_entirely << endl
-					     << "all_fallthroughs_fit               : " 
-							 << all_fallthroughs_fit << endl
-					     << "initial_placement_abuts_pin        : " 
-							 << initial_placement_abuts_pin << endl
-					     << "initial_placement_abuts_fallthrough: " 
-							 << initial_placement_abuts_fallthrough << endl
-					     << "initial_placement_abuts_pin        : " 
-							 << initial_placement_abuts_pin << endl
-					     << "disallowed_override                : " 
-							 << disallowed_override << endl;
-#else
 					struct custom_bool : numpunct<char>
 					{
 						protected:
@@ -2411,7 +2397,6 @@ void ZiprImpl_t::PlaceDollops()
 							 << initial_placement_abuts_pin          << ", "
 							 << disallowed_override                  << noboolalpha << endl;
 
-#endif
 				}
 
 				if ((de_and_fallthrough_fit ||
@@ -2421,8 +2406,7 @@ void ZiprImpl_t::PlaceDollops()
 						initial_placement_abuts_pin ||
 						all_fallthroughs_fit) && !disallowed_override)
 				{
-#if 1
-					if (m_verbose) {
+					if (m_vverbose) {
 						/*DISASM d;
 						Disassemble(dollop_entry->Instruction(),d);
 						*/
@@ -2430,14 +2414,13 @@ void ZiprImpl_t::PlaceDollops()
 						cout << std::hex << dollop_entry->Instruction()->GetBaseID() 
 						     << ":" << d.getDisassembly()/*.CompleteInstr*/ << endl;
 					}
-#endif
 					dollop_entry->Place(cur_addr);
 					cur_addr+=DetermineWorstCaseDollopEntrySize(dollop_entry,
 					                                      false);
 					//cout << "Adjusting cur_addr to " << std::hex << cur_addr << " at B." << endl;
 					if (dollop_entry->TargetDollop())
 					{
-						if (m_verbose)
+						if (m_vverbose)
 							cout << "Adding " << std::hex << dollop_entry->TargetDollop()
 							     << " to placement queue." << endl;
 						placement_queue.insert(pair<Dollop_t*, RangeAddress_t>(
@@ -2470,7 +2453,7 @@ void ZiprImpl_t::PlaceDollops()
 				if (am_coalescing)
 					m_stats->truncated_dollops_during_coalesce++;
 
-				if (m_verbose)
+				if (m_vverbose)
 					cout << "Split a " 
 					     << ((am_coalescing) ? "coalesced " : " ")
 							 << "dollop because it didn't fit. Fallthrough to "
@@ -2577,7 +2560,7 @@ void ZiprImpl_t::PlaceDollops()
 				 * smaller than the first instruction fallthrough 
 				 * in the fallthrough dollop and the trampoline size.
 				 */
-				if (m_verbose)
+				if (m_vverbose)
 					cout << "Determining whether to coalesce: "
 					     << "Remaining: " << std::dec << remaining_size
 							 << " vs Needed: " << std::dec 
@@ -2607,12 +2590,10 @@ void ZiprImpl_t::PlaceDollops()
 					to_place->push_back(patch_de);
 					to_place->FallthroughPatched(true);
 
-					if (m_verbose)
+					if (m_vverbose)
 						cout << "Not coalescing"
-						     << string((fallthrough->IsPlaced()) ?
-								    " because fallthrough is placed" : "")
-						     << string((!allowed_coalescing) ?
-								    " because I am not allowed" : "")
+						     << string((fallthrough->IsPlaced()) ?  " because fallthrough is placed" : "")
+						     << string((!allowed_coalescing) ?  " because I am not allowed" : "")
 						     << "; Added jump (via " << std::hex << patch_de
 						     << " at " << std::hex << patch_de->Place() << ") "
 						     << "to fallthrough dollop (" << std::hex 
@@ -2637,7 +2618,7 @@ void ZiprImpl_t::PlaceDollops()
 				}
 				else
 				{
-					if (m_verbose)
+					if (m_vverbose)
 						cout << "Coalescing fallthrough dollop." << endl;
 					to_place->WasCoalesced(true);
 					/*
@@ -2658,7 +2639,7 @@ void ZiprImpl_t::PlaceDollops()
 		/*
 		 * Reserve the range that we just used.
 		 */
-		if (m_verbose)
+		if (m_vverbose)
 			cout << "Reserving " << std::hex << placement.GetStart()
 			     << ", " << std::hex << cur_addr << "." << endl;
 		memory_space.SplitFreeRange(Range_t(placement.GetStart(), cur_addr));
@@ -3344,7 +3325,14 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntryWithTarget(
 			 * is the last of the dollop. 
 			 */
 			if (!fallthrough_de)
-				fallthrough_de = entry->MemberOfDollop()->FallthroughDollop()->front();
+			{
+				if(entry->MemberOfDollop()->FallthroughDollop())
+					fallthrough_de = entry->MemberOfDollop()->FallthroughDollop()->front();
+				else
+					// even a cond branch may have a null fallthrough, account for that here 
+					// by plopping nothing
+					return ret;
+			}
 
 			assert(fallthrough_de && fallthrough_de->IsPlaced());
 
@@ -3793,15 +3781,6 @@ int find_magic_segment_index(ELFIO::elfio *elfiop)
         {
                 ELFIO::segment* seg = elfiop->segments[i];
                 assert(seg);
-#if 0
-                if( (seg->get_flags() & PF_X) == 0 )
-                        continue;
-                if( (seg->get_flags() & PF_R) == 0)
-                        continue;
-		last_seg=seg;
-		last_seg_index=i;
-		break;
-#else
 		if(seg->get_type() != PT_LOAD)
 			continue;
 		if(last_seg && (last_seg->get_virtual_address() + last_seg->get_memory_size()) > (seg->get_virtual_address() + seg->get_memory_size())) 
@@ -3810,7 +3789,6 @@ int find_magic_segment_index(ELFIO::elfio *elfiop)
 			continue;
 		last_seg=seg;
 		last_seg_index=i;
-#endif
         }
 	cout<<"Found magic Seg #"<<std::dec<<last_seg_index<<" has file offset "<<last_seg->get_offset()<<endl;
 	return last_seg_index;
@@ -4212,6 +4190,69 @@ void ZiprImpl_t::UpdateScoops()
 	return;
 }
 
+
+
+void  ZiprImpl_t::FixNoFallthroughs()
+{
+        Instruction_t *hlt=addNewAssembly(m_firp, NULL, "hlt"); 
+	hlt->SetFallthrough(hlt);
+
+	for(const auto insn : m_firp->GetInstructions())
+	{
+		if(insn==hlt) continue;
+
+		if(insn->GetFallthrough()==NULL)
+		{
+			const auto d=DecodedInstruction_t(insn);
+			if(d.isConditionalBranch())
+				insn->SetFallthrough(hlt);
+		}
+		if(insn->GetTarget()==NULL)
+		{
+			const auto d=DecodedInstruction_t(insn);
+			if(d.isBranch() && !d.isReturn() && d.hasOperand(0) && d.getOperand(0).isConstant())
+				insn->SetTarget(hlt);
+		}
+		
+	}
+		
+	
+}
+
+void  ZiprImpl_t::FixTwoByteWithPrefix()
+{
+	for(const auto insn : m_firp->GetInstructions())
+	{
+		const auto d=DecodedInstruction_t(insn);
+		if(!d.isBranch()) continue;
+		if(d.isReturn()) continue;
+		if(d.getOperands().size()!=1) continue;
+		if(!d.getOperand(0).isConstant()) continue;
+		
+		auto done=false;
+		while (!done)
+		{
+			char b=insn->GetDataBits()[0];
+			switch(b)
+			{
+
+				case (char)0x2e:
+				case (char)0x3e:
+				case (char)0x64:
+				case (char)0x65:
+				{
+					// remove prefix 
+					insn->SetDataBits(insn->GetDataBits().erase(0,1));	
+					break;
+				}
+				default:
+					done=1;
+					break;
+			}
+		}
+
+	}
+}
 
 
 void  ZiprImpl_t::FixMultipleFallthroughs()

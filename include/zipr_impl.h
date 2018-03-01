@@ -52,7 +52,8 @@ class ZiprImpl_t : public Zipr_t
 			m_callbacks("callbacks"),
 			m_objcopy("objcopy", "/usr/bin/objcopy"),
 			m_replop("replop", false),
-			m_verbose("verbose", true),
+			m_verbose("verbose", false),
+			m_vverbose("very_verbose", false),
 			m_apply_nop("apply_nop", false),
 			m_add_sections("add-sections", false),
 			m_bss_opts("bss-opts", true),
@@ -343,6 +344,16 @@ class ZiprImpl_t : public Zipr_t
 		// exist by adding direct jump instructions where necessary to eliminate multiple fallthroughs.
 		void  FixMultipleFallthroughs();
 
+		// zipr assumes that jumps (jcc and jmp) are either 2 or 5 byte.
+		// sometimes they include a prefix to help the branch predictor
+		// remove unneeded prefixes to meet zipr assumptions.
+		void  FixTwoByteWithPrefix();
+
+		// zipr also has internal assumptions about conditional branches having targets/fallthrougsh.
+		// patch any instructions with null fallthrougsh and targtes a halt instruction
+		void  FixNoFallthroughs();
+
+
 
 		/*
 		 * DetermineWorstCaseInsnSize
@@ -491,7 +502,7 @@ class ZiprImpl_t : public Zipr_t
 		// Options
 		ZiprOptions_t m_zipr_options;
 		ZiprStringOption_t m_output_filename, m_callbacks, m_objcopy;
-		ZiprBooleanOption_t m_replop, m_verbose, m_apply_nop, m_add_sections, m_bss_opts;
+		ZiprBooleanOption_t m_replop, m_verbose, m_vverbose, m_apply_nop, m_add_sections, m_bss_opts;
 		ZiprIntegerOption_t m_variant, m_architecture, m_seed;
 		ZiprStringOption_t m_dollop_map_filename;
 
