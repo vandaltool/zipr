@@ -9,7 +9,6 @@ dirs='''
 	cover
 	fix_rets
         meds2pdb	
-	memcover
 	ret_shadow_stack
 	safefr
 	selective_cfi
@@ -17,8 +16,12 @@ dirs='''
 	spasm
 	cookbook
 	dump_map
-	print_cfi_stats
 	hook_start
+	'''
+
+nobuild_dirs='''
+	print_cfi_stats
+	memcover
 	'''
 cgc_dirs='''
 	c2e

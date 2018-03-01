@@ -31,6 +31,8 @@ files=  '''
 	operand_meta.cpp
 	'''
 
+# bea engine listed for core components.
+
 cpppath=''' 
 	.
 	$SECURITY_TRANSFORMS_HOME/include/

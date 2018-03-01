@@ -976,6 +976,13 @@ int FileIR_t::GetArchitectureBitWidth()
 	return archdesc->GetBitWidth();
 }
 
+int FileIR_t::SetArchitectureBitWidth(int width) 
+{
+	if(archdesc==NULL)
+		archdesc=new ArchitectureDescription_t;
+	archdesc->SetBitWidth(width);
+}	
+
 void FileIR_t::SetArchitecture()
 {
 

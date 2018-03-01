@@ -34,7 +34,6 @@
 #include <stdio.h>
 
 #include <exeio.h>
-#include "beaengine/BeaEngine.h"
 #include "check_thunks.hpp"
 
 using namespace libIRDB;

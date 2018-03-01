@@ -91,7 +91,8 @@ class FileIR_t : public BaseObj_t
 		//removes the mapping for orig->assembly from the map. 
 		void ChangeRegistryKey(Instruction_t* orig, Instruction_t* updated);
 
-		static int GetArchitectureBitWidth();
+		static int GetArchitectureBitWidth() ;
+		static int SetArchitectureBitWidth(const int width);
 		void SetArchitecture();
 
 		// Lookup a scoop by address

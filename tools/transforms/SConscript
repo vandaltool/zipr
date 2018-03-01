@@ -11,9 +11,7 @@ cpppath='''
 	$SECURITY_TRANSFORMS_HOME/libIRDB/include/
 	$SECURITY_TRANSFORMS_HOME/libMEDSannotation/include/
 	$SECURITY_TRANSFORMS_HOME/libtransform/include/
-	$SECURITY_TRANSFORMS_HOME/beaengine/include
 	$SECURITY_TRANSFORMS_HOME/libEXEIO/include
-	$SECURITY_TRANSFORMS_HOME/beaengine/beaengineSources/Includes/
 	'''
 
 LIBS= " xform IRDB-cfg MEDSannotation transform " + env.subst('$BASE_IRDB_LIBS') 

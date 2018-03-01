@@ -24,7 +24,6 @@
 #include <utils.hpp>
 #include <iostream>
 #include <stdlib.h>
-#include "beaengine/BeaEngine.h"
 #include <assert.h>
 #include <string.h>
 #include <elf.h>
@@ -85,7 +84,7 @@ pqxxDB_t pqxx_interface;
 bool opt_fix_icalls = false;
 bool opt_fix_safefn = true;
 
-void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, UIntPtr offset);
+void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, uintptr_t offset);
 
 /* Read the exception handler frame so that those indirect branches are accounted for */
 void read_ehframe(FileIR_t* firp, EXEIO::exeio* );
@@ -881,6 +880,7 @@ void fix_all_calls(FileIR_t* firp, bool print_stats, bool fix_all)
 	}
 }
 
+#if 0
 bool arg_has_relative(const ARGTYPE &arg)
 {
 	/* if it's relative memory, watch out! */
@@ -890,12 +890,13 @@ bool arg_has_relative(const ARGTYPE &arg)
 	
 	return false;
 }
+#endif
 
 
 //
 //  fix_other_pcrel - add relocations to other instructions that have pcrel bits
 //
-void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, UIntPtr virt_offset)
+void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 {
 	//DISASM disasm;
 	//Disassemble(insn,disasm);
@@ -937,16 +938,16 @@ void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, UIntPtr virt_offset)
 		memcpy(cstr,data.c_str(), data.length());
 		void *offsetptr=&cstr[offset];
 
-		UIntPtr disp=the_arg.getMemoryDisplacement(); // ->Memory.Displacement;
-		UIntPtr oldpc=virt_offset;
-		UIntPtr newdisp=disp+oldpc;
+		uintptr_t disp=the_arg.getMemoryDisplacement(); // ->Memory.Displacement;
+		uintptr_t oldpc=virt_offset;
+		uintptr_t newdisp=disp+oldpc;
 
 		assert(offset+size<=data.length());
 		
 		switch(size)
 		{
 			case 4:
-				assert( (UIntPtr)(int)newdisp == (UIntPtr)newdisp);
+				assert( (uintptr_t)(int)newdisp == (uintptr_t)newdisp);
 				*(int*)offsetptr=newdisp;
 				break;
 			case 1:
@@ -976,7 +977,7 @@ void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, UIntPtr virt_offset)
 	}
 }
 
-void fix_safefr(FileIR_t* firp, Instruction_t *insn, UIntPtr virt_offset)
+void fix_safefr(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 {
 	/* if this has already been fixed, we can skip it */
 	if(virt_offset==0 || virt_offset==-1)

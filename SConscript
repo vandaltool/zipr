@@ -73,12 +73,12 @@ else:
     os.chdir(os.environ['SECURITY_TRANSFORMS_HOME'])
 
 
-env['BASE_IRDB_LIBS']="IRDB-core", "pqxx", "pq", "BeaEngine_s_d", "capstone", "EXEIO"
+env['BASE_IRDB_LIBS']="IRDB-core", "pqxx", "pq", "EXEIO"
 
 if sysname != "SunOS":
 	libPEBLISS=SConscript("pebliss/trunk/pe_lib/SConscript", variant_dir='scons_build/libPEBLISS')
 	# setup libraries needed for linking
-	env['BASE_IRDB_LIBS']="IRDB-core", "pqxx", "pq", "BeaEngine_s_d", "EXEIO", "pebliss"
+	env['BASE_IRDB_LIBS']="IRDB-core", "pqxx", "pq", "EXEIO", "pebliss"
 
 # pebliss requires iconv, which needs to be explicit on cygwin.
 if "CYGWIN" in sysname:

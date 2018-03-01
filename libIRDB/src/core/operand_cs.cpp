@@ -168,6 +168,15 @@ bool DecodedOperandCapstone_t::isConstant() const
 	return op.type==X86_OP_IMM;
 }
 
+uint64_t DecodedOperandCapstone_t::getConstant() const
+{
+	if(!isConstant()) throw std::logic_error(string("Cannot ")+__FUNCTION__+"  of non-constant operand");
+	
+        const auto the_insn=static_cast<cs_insn*>(my_insn.get());
+        const auto &op = (the_insn->detail->x86.operands[op_num]);
+	return op.imm;
+}
+
 string DecodedOperandCapstone_t::getString() const
 {
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());

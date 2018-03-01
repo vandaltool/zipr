@@ -41,6 +41,12 @@ class Instruction_t : public BaseObj_t
 		Instruction_t* GetFallthrough() const { return fallthrough; } 
 		Instruction_t* GetTarget() const { return target; } 
 		ICFS_t* GetIBTargets() const { return icfs; }
+
+		// prefer the copy method, since it's inline, compiler will optimize appropriately
+		// const& rets are just an optimization anyhow....
+		//const std::string& GetDataBits()  const { return data; } 
+		//const std::string& GetComment()   const { return comment; } 
+		//const std::string& GetCallback()  const { return callback; } 
 		std::string GetDataBits()  const { return data; } 
 		std::string GetCallback()  const { return callback; } 
 		std::string GetComment()   const { return comment; } 

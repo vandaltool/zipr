@@ -279,7 +279,7 @@ void add_new_instructions(FileIR_t *firp)
 
                 		disasm.Options = NasmSyntax + PrefixedNumeral;
                 		disasm.Archi = firp->GetArchitectureBitWidth();
-                		disasm.EIP = (UIntPtr) &data[offset_into_section];
+                		disasm.EIP = (uintptr_t) &data[offset_into_section];
 				disasm.SecurityBlock=elfiop->sections[secndx]->get_size()-offset_into_section;
                 		disasm.VirtualAddr = missed_address;
 				*/
@@ -287,7 +287,6 @@ void add_new_instructions(FileIR_t *firp)
 
 				
 
-                		const auto instr_len = disasm.length();
 
 
 /* bea docs say OUT_OF_RANGE and UNKNOWN_OPCODE are defined, but they aren't */
@@ -303,6 +302,8 @@ void add_new_instructions(FileIR_t *firp)
 				}
 				else if(getenv("VERBOSE_CFG"))
 					cout<<"Found valid insn at "<<missed_address<<": "<<disasm.getDisassembly()<<endl;
+
+                		const auto instr_len = disasm.length();
 
 				/* intel instructions have a max size of 16 */
 				assert(1<=instr_len && instr_len<=16);

@@ -12,7 +12,6 @@ files="Rewrite_Utility.cpp  transform.cpp"
 cpppath='''
          $SECURITY_TRANSFORMS_HOME/include
          $SECURITY_TRANSFORMS_HOME/libIRDB/include
-         $SECURITY_TRANSFORMS_HOME/beaengine/include
          $SECURITY_TRANSFORMS_HOME/libtransform/include
          $SECURITY_TRANSFORMS_HOME/libMEDSannotation/include/
         '''

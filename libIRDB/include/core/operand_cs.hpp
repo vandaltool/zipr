@@ -18,6 +18,7 @@ class DecodedOperandCapstone_t
 		virtual ~DecodedOperandCapstone_t();
 
 		bool isConstant() const;
+		uint64_t getConstant() const;
 		string getString() const;
 		bool isWrite() const;
 		bool isRegister() const;

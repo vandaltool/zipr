@@ -24,7 +24,6 @@
 #include <libIRDB-cfg.hpp>
 #include <iostream>
 #include <stdlib.h>
-#include "beaengine/BeaEngine.h"
 #include <assert.h>
 #include <string.h>
 

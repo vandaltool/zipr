@@ -12,7 +12,6 @@
 #include <memory>
 
 #include <exeio.h>
-#include "beaengine/BeaEngine.h"
 #include "dwarf2.h"
 
 #include "eh_frame.hpp"

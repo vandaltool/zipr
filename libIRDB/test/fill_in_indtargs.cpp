@@ -372,7 +372,13 @@ void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<vir
 			prov=ibt_provenance_t::ibtp_texttoprintf;
 		}
 		/* otherwise, any immediate is a possible branch target */
-		possible_target(disasm.getImmediate() /* Instruction.Immediat*/ ,0, prov);
+		for(const auto& op: disasm.getOperands())
+		{
+			if(op.isConstant())
+			{
+				possible_target(op.getConstant() /* Instruction.Immediat*/ ,0, prov);
+			}
+		}
 
 		for(auto i=0;i<4;i++)
 		{
