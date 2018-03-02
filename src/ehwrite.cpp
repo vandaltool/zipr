@@ -18,7 +18,7 @@
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
 #include "targ-config.h"
-#include "beaengine/BeaEngine.h"
+//#include "beaengine/BeaEngine.h"
 
 using namespace libIRDB;
 using namespace std;

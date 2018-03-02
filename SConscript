@@ -13,16 +13,7 @@ if 'do_cgc' in env and int(env['do_cgc']) == 1:
 # build security transforms
 irdbenv=env.Clone(); 
 
-#sectrans_path=os.environ['SECURITY_TRANSFORMS_HOME']
-#sectrans_sconscript=os.path.join(sectrans_path,"SConscript");
-#env=irdbenv.Clone()
-#Export('env')   # for security_transforms.
-#SConscript(sectrans_sconscript, variant_dir='scons_build/irdb_libs')
-
-
-#print 'env='
-#print env.Dump()
-SConscript("src/SConscript", variant_dir='scons_build/zipr')
+zipr=SConscript("src/SConscript", variant_dir='scons_build/zipr')
 
 if sysname  != "SunOS":
 	SConscript("test/SConscript")
@@ -30,5 +21,7 @@ if sysname  != "SunOS":
 pedi = Command( target = "./testoutput",
                 source = "./SConscript",
                 action = "cd "+os.environ['ZIPR_INSTALL']+" ; " +os.environ['PEDI_HOME']+"/pedi -m manifest.txt ; cd -" )
+
+Depends(pedi,zipr)
 Default( pedi )
 
