@@ -257,7 +257,7 @@ bool is_pop(Instruction_t* insn, string &reg)
         if(d.getMnemonic()!="pop")
                 return false;
 
-	reg=d.getOperand(1).getString();
+	reg=d.getOperand(0).getString();
         return true;
 }
 

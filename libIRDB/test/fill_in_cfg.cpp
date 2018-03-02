@@ -556,7 +556,8 @@ void fill_in_landing_pads(FileIR_t *firp)
 {
 	const auto eh_frame_rep_ptr = split_eh_frame_t::factory(firp);
 	eh_frame_rep_ptr->parse();
-	eh_frame_rep_ptr->print();
+	if(getenv("EHIR_VERBOSE"))
+		eh_frame_rep_ptr->print();
 	cout<<"Completed eh-frame parsing"<<endl;
 
 	map<Function_t*,set<Instruction_t*> > insns_to_add_to_funcs;
