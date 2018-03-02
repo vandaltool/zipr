@@ -35,7 +35,7 @@ doit()
 	echo "And psflags=$psopts "
 	g++ -w $options $src 
 	rm -Rf peasoup_executable_direc*
-	EHIR_VERBOSE=1 $PSZ ./a.out ./xxx --step-option fill_in_indtargs:--split-eh-frame --step-option zipr:'--add-sections true' 	$psopts
+	(set -x ; EHIR_VERBOSE=1 $PSZ ./a.out ./xxx --step-option fill_in_indtargs:--split-eh-frame --step-option zipr:'--add-sections true' 	$psopts)
 
 	compare
 
@@ -68,9 +68,9 @@ main()
 	do
 		for option in -O0 -O1 -O2 -O3 -Os -Og
 		do
-			#doit_meta $src "$option" ""
+			doit_meta $src "$option" ""
 			#doit_meta $src "$option" "--step p1transform=on"
-			doit_meta $src "$option" "--step stack_stamp=on"
+			#doit_meta $src "$option" "--step stack_stamp=on"
 		done
 	done
 }
