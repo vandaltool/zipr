@@ -152,7 +152,9 @@ void DecodedInstructionCapstone_t::Disassemble(const virtual_offset_t start_addr
 	
 	}
 
-	if(string(insn->mnemonic)=="fcompi")
+	const auto mnemonic=string(insn->mnemonic);
+
+	if(mnemonic=="fcompi")
 		strcpy(insn->mnemonic, "fcomip"); // bad opcode out of capstone.
 	else if(string(insn->mnemonic)=="movsq")
 		strcpy(insn->op_str, ""); // force into MOVS
@@ -162,6 +164,20 @@ void DecodedInstructionCapstone_t::Disassemble(const virtual_offset_t start_addr
 		strcpy(insn->op_str, ""); // force into MOVS
 	else if(string(insn->mnemonic)=="movsb")
 		strcpy(insn->op_str, ""); // force into MOVS
+
+	if(mnemonic=="movabs")
+	{
+		if(insn->detail->x86.operands[0].type==X86_OP_MEM)
+		{
+			insn->detail->x86.operands[0].imm=insn->detail->x86.operands[0].mem.disp;
+			insn->detail->x86.operands[0].type=X86_OP_IMM;
+		}
+		if(insn->detail->x86.operands[1].type==X86_OP_MEM)
+		{
+			insn->detail->x86.operands[1].imm=insn->detail->x86.operands[1].mem.disp;
+			insn->detail->x86.operands[1].type=X86_OP_IMM;
+		}
+	}
 
 	const auto cs_freer=[](cs_insn * insn) -> void 
 		{  
@@ -421,12 +437,13 @@ string DecodedInstructionCapstone_t::getMnemonic() const
 
 	});
 
-
 	// get the cs insn via casting.
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
+
 	
 	// get mnemonic as a string
 	auto mnemonic=string(the_insn->mnemonic);
+
 
 	// remove any prefixes by finding the last space and removing anything before it.
 	const auto space_pos=mnemonic.rfind(" ");

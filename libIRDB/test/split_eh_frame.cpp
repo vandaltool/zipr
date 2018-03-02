@@ -1548,9 +1548,6 @@ bool fde_contents_t<ptrsize>::appliesTo(const Instruction_t* insn) const
 }
 
 template <int ptrsize>
-uint64_t fde_contents_t<ptrsize>::GetFDEStartAddress() const { return fde_start_addr; }
-
-template <int ptrsize>
 const cie_contents_t<ptrsize>& fde_contents_t<ptrsize>::GetCIE() const { return cie_info; }
 
 template <int ptrsize>
@@ -1719,7 +1716,8 @@ bool split_eh_frame_impl_t<ptrsize>::iterate_fdes()
 			//cout << "FDE length="<< dec << act_length << " cie=[" << setw(6) << hex << cie_position << "]" << endl;
 			if(f.parse_fde(old_position, cie_position, data, max, eh_addr, gcc_except_table_scoop))
 				return true;
-			fdes.push_back(f);
+			const auto old_fde_size=fdes.size();
+			fdes.insert(f);
 		}
 		//cout << "----------------------------------------"<<endl;
 		
@@ -1811,10 +1809,8 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 	// find the right cie and fde, and build the IR from those for this instruction.
 	auto build_ir_insn=[&](Instruction_t* insn) -> void
 	{
-		auto fie_it=find_if(fdes.begin(), fdes.end(), [&](const fde_contents_t<ptrsize>  &p)
-		{
-			return p.appliesTo(insn);
-		});
+		const auto tofind=fde_contents_t<ptrsize>( insn->GetAddress()->GetVirtualOffset(), insn->GetAddress()->GetVirtualOffset()+1 );
+		const auto fie_it=fdes.find(tofind);
 
 		if(fie_it!=fdes.end())
 		{
@@ -2011,12 +2007,12 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 template <int ptrsize>
 libIRDB::Instruction_t* split_eh_frame_impl_t<ptrsize>::find_lp(libIRDB::Instruction_t* i) const 
 {
-	const auto fde_it=find_if(fdes.begin(), fdes.end(), [&](const fde_contents_t <ptrsize>& fde)
-		{ return fde.appliesTo(i); });
+	const auto tofind=fde_contents_t<ptrsize>( i->GetAddress()->GetVirtualOffset(), i->GetAddress()->GetVirtualOffset()+1);
+	const auto fde_it=fdes.find(tofind);
 
 	if(fde_it==fdes.end())
 		return NULL;
-
+	
 	const auto &the_fde=*fde_it;
 	const auto &the_lsda=the_fde.GetLSDA();
 	const auto &cstab  = the_lsda.GetCallSites();
