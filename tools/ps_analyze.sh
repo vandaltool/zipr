@@ -557,12 +557,12 @@ perform_step()
 
 	endtime=`$PS_DATE`
 	
-	echo "# ATTRIBUTE start_time=$starttime" >> $logfile
-	echo "# ATTRIBUTE end_time=$endtime" >> $logfile
-	echo "# ATTRIBUTE peasoup_step_name=$step" >> $logfile
-	echo "# ATTRIBUTE peasoup_step_number=$stepnum" >> $logfile
-	echo "# ATTRIBUTE peasoup_step_command=$command " >> $logfile
-	echo "# ATTRIBUTE peasoup_step_exitcode=$command_exit" >> $logfile
+	echo "#ATTRIBUTE start_time=$starttime" >> $logfile
+	echo "#ATTRIBUTE end_time=$endtime" >> $logfile
+	echo "#ATTRIBUTE step_name=$step" >> $logfile
+	echo "#ATTRIBUTE step_number=$stepnum" >> $logfile
+	echo "#ATTRIBUTE step_command=$command " >> $logfile
+	echo "#ATTRIBUTE step_exitcode=$command_exit" >> $logfile
 
 	# report job status
 	if [ $command_exit -eq 0 ]; then
@@ -594,7 +594,7 @@ perform_step()
 		# report warning in log file, line by line, as an attribute.
 		while IFS= read -r line; do
 			echo
-			echo "# ATTRIBUTE peasoup_serious_warning_text=\"$line\""  >> $logfile
+			echo "#ATTRIBUTE serious_warning_text=\"$line\""  >> $logfile
 		done < "warning.txt"
 		# remove warning.txt so we don't report these warnings again.
 		rm -f warning.txt
@@ -702,10 +702,10 @@ report_logs()
 	logfile=logs/ps_analyze.log
 
 	myhost=$(hostname)
-	echo "# ATTRIBUTE start_time=$ps_starttime" >> $logfile
-	echo "# ATTRIBUTE end_time=$ps_endtime" >> $logfile
-	echo "# ATTRIBUTE hostname=$myhost" >> $logfile
-	echo "# ATTRIBUTE peasoup_step_name=all_peasoup" >> $logfile
+	echo "#ATTRIBUTE start_time=$ps_starttime" >> $logfile
+	echo "#ATTRIBUTE end_time=$ps_endtime" >> $logfile
+	echo "#ATTRIBUTE hostname=$myhost" >> $logfile
+	echo "#ATTRIBUTE step_name=all_helix" >> $logfile
 
 #	for i in $all_logs
 #	do

@@ -194,7 +194,7 @@ check_opts()
 		echo "Setting nol = $use_nol"
 	fi
 
-	server=${server^^} # uppercase the server setting.
+	server=${server} # uppercase the server setting.
 }
 
 
@@ -742,7 +742,7 @@ finalize_json()
 		
 				# note the weird $'\n' is bash's way to encode a new line.
 				# set line=  ,\n"alias=file" -- but the bash is ugly, and I can't do better.
-				if [[ $lib == mod* ]]; then
+				if [[ $lib == mod* ]] && [[ $server = "APACHE" ]]; then
 					mkdir -p $new_variant_dir/modules 2>/dev/null || true
 					cp  $indir/$lib_dir/$lib $new_variant_dir/modules
 					line=",  "$'\n\t\t\t'"  \"/testing/content/apache_support/modules/$lib=$new_variant_dir_ts/modules/$lib\" "
