@@ -226,12 +226,12 @@ bool Instruction_t::IsFunctionExit() const
 
 	/* if there's a target that's outside this function */
 	Instruction_t *target=GetTarget();
-	if(target && !is_in_set(my_function->GetInstructions(),target))
+	if(target && target->GetFunction()!=GetFunction()) // !is_in_set(my_function->GetInstructions(),target))
 		return true;
 
 	/* if there's a fallthrough that's outside this function */
 	Instruction_t *ft=GetFallthrough();
-	if(fallthrough && !is_in_set(my_function->GetInstructions(),ft))
+	if(fallthrough && ft->GetFunction()!=GetFunction()) // !is_in_set(my_function->GetInstructions(),ft))
 		return true;
 
 	/* some instructions have no next-isntructions defined in the db, and we call them function exits */

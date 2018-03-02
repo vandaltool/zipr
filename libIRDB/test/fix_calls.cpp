@@ -731,8 +731,7 @@ bool can_skip_safe_function(Instruction_t *call_insn)
 		return false;
 
 	/* if the call instruction isn't to a function entry point */
-	ControlFlowGraph_t* cfg=new ControlFlowGraph_t(func);
-	if(cfg->GetEntry()->GetInstructions()[0]!=target)
+	if(func->GetEntryPoint()!=target)
 	{
 		return false;
 	}
