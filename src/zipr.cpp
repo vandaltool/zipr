@@ -4194,12 +4194,16 @@ void ZiprImpl_t::UpdateScoops()
 
 void  ZiprImpl_t::FixNoFallthroughs()
 {
-        Instruction_t *hlt=addNewAssembly(m_firp, NULL, "hlt"); 
-	hlt->SetFallthrough(hlt);
+        auto hlt=addNewAssembly(m_firp, NULL, "hlt"); 
+        auto jmp=addNewAssembly(m_firp, NULL, "jmp 0"); 
+
+	hlt->SetFallthrough(jmp);
+	jmp->SetTarget(hlt);
 
 	for(const auto insn : m_firp->GetInstructions())
 	{
 		if(insn==hlt) continue;
+		if(insn==jmp) continue;
 
 		if(insn->GetFallthrough()==NULL)
 		{
