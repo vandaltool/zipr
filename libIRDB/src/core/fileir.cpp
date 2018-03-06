@@ -27,6 +27,10 @@
 #include <elf.h>
 #include <stdlib.h>
 #include <sys/wait.h>
+#include <iomanip>
+//#include <bea_deprecated.hpp>
+
+
 
 using namespace libIRDB;
 using namespace std;
@@ -79,6 +83,7 @@ static virtual_offset_t strtovo(std::string s)
 
 // Create a Variant from the database
 FileIR_t::FileIR_t(const VariantID_t &newprogid, File_t* fid) : BaseObj_t(NULL)
+	
 {
 	orig_variant_ir_p=NULL;
 	progid=newprogid;	
@@ -130,6 +135,9 @@ FileIR_t::~FileIR_t()
 // DB operations
 void FileIR_t::ReadFromDB()
 {
+    	ReadIRDB_start = clock();
+
+
 	auto entry_points=map<Function_t*,db_id_t>();
 	auto unresolvedICFS=std::map<Instruction_t*, db_id_t>();
 	auto unresolvedEhCallSites=std::map<EhCallSite_t*,db_id_t>();
@@ -157,6 +165,10 @@ void FileIR_t::ReadFromDB()
 
 	UpdateEntryPoints(insnMap,entry_points);
 	UpdateUnresolvedEhCallSites(insnMap,unresolvedEhCallSites);
+
+	ReadIRDB_end = clock();
+
+
 }
 
 
@@ -219,9 +231,9 @@ void FileIR_t::AssembleRegistry()
 	assert(actual_exit == 0);
 	
 	
-	DISASM disasm;
-	memset(&disasm, 0, sizeof(DISASM));
-	disasm.Archi=GetArchitectureBitWidth();
+	//DISASM disasm;
+	//memset(&disasm, 0, sizeof(DISASM));
+	//disasm.Archi=GetArchitectureBitWidth();
 
 	ifstream binreader;
 	unsigned int filesize;
@@ -250,8 +262,19 @@ void FileIR_t::AssembleRegistry()
 		Instruction_t *instr = reg_val->first;
 
 
-		disasm.EIP =  (UIntPtr)&binary_stream[index];
-		int instr_len = Disasm(&disasm);
+		// disasm.EIP =  (UIntPtr)&binary_stream[index];
+		// int instr_len = Disasm(&disasm);
+
+		const auto disasm=DecodedInstruction_t
+			(
+				/* fake start addr doesn't matter */0x1000, 
+				(void*)&binary_stream[index], 
+				(void*)&binary_stream[filesize]
+			);
+
+		assert(disasm.valid());
+		const auto instr_len=disasm.length();
+
 		string rawBits;
 		rawBits.resize(instr_len);
 		for(int i=0;i<instr_len;i++,index++)
@@ -524,6 +547,19 @@ std::map<db_id_t,AddressID_t*> FileIR_t::ReadAddrsFromDB
 }
 
 
+static string encoded_to_raw_string(string encoded)
+{
+	int len = encoded.length();
+	std::string raw;
+	for(int i=0; i< len; i+=2)
+	{
+	    string byte = encoded.substr(i,2);
+	    char chr = (char) (int)strtol(byte.c_str(), nullptr, 16);
+	    raw.push_back(chr);
+	}
+	return raw;
+}
+
 std::map<db_id_t,Instruction_t*> FileIR_t::ReadInsnsFromDB 
 	(      
         const std::map<db_id_t,Function_t*> &funcMap,
@@ -567,7 +603,8 @@ std::map<db_id_t,Instruction_t*> FileIR_t::ReadInsnsFromDB
 		db_id_t icfs_id=atoi(dbintr->GetResultColumn("icfs_id").c_str());
 		db_id_t eh_pgm_id=atoi(dbintr->GetResultColumn("ehpgm_id").c_str());
 		db_id_t eh_cs_id=atoi(dbintr->GetResultColumn("ehcss_id").c_str());
-		std::string data=(dbintr->GetResultColumn("data"));
+		std::string encoded_data=(dbintr->GetResultColumn("data"));
+		std::string data=encoded_to_raw_string(encoded_data);
 		std::string callback=(dbintr->GetResultColumn("callback"));
 		std::string comment=(dbintr->GetResultColumn("comment"));
 		db_id_t indirect_branch_target_address_id = atoi(dbintr->GetResultColumn("ind_target_address_id").c_str());
@@ -670,6 +707,11 @@ void FileIR_t::ReadRelocsFromDB
 
 void FileIR_t::WriteToDB()
 {
+    	const auto WriteIRDB_start = clock();
+
+	const auto pqIntr=dynamic_cast<pqxxDB_t*>(dbintr);
+	assert(pqIntr);
+
 	//Resolve (assemble) any instructions in the registry.
 	AssembleRegistry();
 
@@ -694,7 +736,7 @@ void FileIR_t::WriteToDB()
 
 	/* and now that everything has an ID, let's write to the DB */
 
-	// write out the types
+// write out the types
 	string q=string("");
 	for(std::set<Type_t*>::const_iterator t=types.begin(); t!=types.end(); ++t)
 	{
@@ -707,9 +749,9 @@ void FileIR_t::WriteToDB()
 	}
 	dbintr->IssueQuery(q);
 
-	bool withHeader;
 
-	withHeader = true;
+// write out functions 
+	auto withHeader=true;
 	q=string("");
 	for(std::set<Function_t*>::const_iterator f=funcs.begin(); f!=funcs.end(); ++f)
 	{
@@ -722,38 +764,31 @@ void FileIR_t::WriteToDB()
 	}
 	dbintr->IssueQuery(q);
 
-	withHeader = true;
-	q=string("");
-	for(std::set<AddressID_t*>::const_iterator a=addrs.begin(); a!=addrs.end(); ++a)
-	{
-		q+=(*a)->WriteToDB(fileptr,j,withHeader);
-		withHeader = false;
-		if(q.size()>1024*1024)
-		{
-			q+=";";
-			dbintr->IssueQuery(q);
-			q=string("");
-			withHeader = true;
-		}
-	}
-	dbintr->IssueQuery(q);
 
-	withHeader = true;
-	q=string("");
+// write out addresses
+	pqxx::tablewriter W_addrs(pqIntr->GetTransaction(),fileptr->address_table_name);
+	for(const auto &a : addrs)
+	{
+		W_addrs << a->WriteToDB(fileptr,j,withHeader);
+	}
+	W_addrs.complete();
+
+
+// write out instructions
+
+	pqxx::tablewriter W(pqIntr->GetTransaction(),fileptr->instruction_table_name);
 	for(std::set<Instruction_t*>::const_iterator i=insns.begin(); i!=insns.end(); ++i)
 	{	
 		Instruction_t const * const insnp=*i;
-		DISASM disasm;
-		insnp->Disassemble(disasm);
-
-		// we have a few new requirements for instructions that doesn't correspond to original program insns.
-//		cerr << "handling instruction:" << ((Instruction_t*)insnp)->getDisassembly() << " comment: " << ((Instruction_t*)insnp)->GetComment() << endl;
+		//DISASM disasm;
+		//Disassemble(insnp,disasm);
+		const auto disasm=DecodedInstruction_t(insnp);
 
 		if(insnp->GetOriginalAddressID() == NOT_IN_DATABASE)
 		{
 
-			if(insnp->GetFallthrough()==NULL && 
-				disasm.Instruction.BranchType!=RetType && disasm.Instruction.BranchType!=JmpType )
+			// if(insnp->GetFallthrough()==NULL && disasm.Instruction.BranchType!=RetType && disasm.Instruction.BranchType!=JmpType )
+			if(insnp->GetFallthrough()==NULL && !disasm.isReturn() && !disasm.isUnconditionalBranch())
 			{
 				// instructions that fall through are required to either specify a fallthrough that's
 				// in the IRDB, or have an associated "old" instruction.  
@@ -763,11 +798,16 @@ void FileIR_t::WriteToDB()
 				assert(0);
 				abort();
 			}
-			if(insnp->GetTarget()==NULL && disasm.Instruction.BranchType!=0 && 
-				disasm.Instruction.BranchType!=RetType &&
+			//if(insnp->GetTarget()==NULL && disasm.Instruction.BranchType!=0 && 
+			//	disasm.Instruction.BranchType!=RetType &&
+			//	// not an indirect branch
+			//	((disasm.Instruction.BranchType!=JmpType && disasm.Instruction.BranchType!=CallType) ||
+			//	 disasm.Argument1.ArgType&CONSTANT_TYPE))
+
+			if(insnp->GetTarget()==NULL && disasm.isBranch() && !disasm.isReturn() &&
 				// not an indirect branch
-				((disasm.Instruction.BranchType!=JmpType && disasm.Instruction.BranchType!=CallType) ||
-				 disasm.Argument1.ArgType&CONSTANT_TYPE))
+				( (!disasm.isUnconditionalBranch() && !disasm.isCall()) || disasm.getOperand(0).isConstant())
+			  )
 			{
 				// direct branches are required to either specify a target that's
 				// in the IRDB, or have an associated "old" instruction.  
@@ -779,28 +819,16 @@ void FileIR_t::WriteToDB()
 			}
 		}
 
-		q+=(*i)->WriteToDB(fileptr,j,withHeader);
-		withHeader = false;
-		if(q.size()>1024*1024)
-		{
-			q+=";";
-			dbintr->IssueQuery(q);
-			q=string("");
-			withHeader = true;
-		}
 
-		string r="";
-		std::set<Relocation_t*> irelocs = (*i)->GetRelocations();
-		for(set<Relocation_t*>::iterator it=irelocs.begin(); it!=irelocs.end(); ++it)
-		{
-			Relocation_t* reloc=*it;
-			r+=reloc->WriteToDB(fileptr,*i);
-		}
-		if(r!="")
-			dbintr->IssueQuery(r);
+		const auto &insn_values=(*i)->WriteToDB(fileptr,j);
+		W << insn_values;
+
 	}
-	dbintr->IssueQuery(q);
+	W.complete();
 
+
+
+// icfs 
 	for (ICFSSet_t::iterator it = GetAllICFS().begin(); it != GetAllICFS().end(); ++it)
 	{
 		ICFS_t* icfs = *it;
@@ -808,49 +836,75 @@ void FileIR_t::WriteToDB()
 		string q = icfs->WriteToDB(fileptr);
 		dbintr->IssueQuery(q);
 	}
+
+// scoops
 	for(DataScoopSet_t::const_iterator it=scoops.begin(); it!=scoops.end(); ++it)
 	{
 		DataScoop_t* scoop = *it;
 		assert(scoop);
 		string q = scoop->WriteToDB(fileptr,j);
 		dbintr->IssueQuery(q);
-
-		q="";
-                const std::set<Relocation_t*> &the_relocs = scoop->GetRelocations();
-                for(set<Relocation_t*>::const_iterator rit=the_relocs.begin(); rit!=the_relocs.end(); ++rit)
-                {
-                        Relocation_t* reloc=*rit;
-                        q+=reloc->WriteToDB(fileptr,scoop);
-                }
-		if(q!="")
-			dbintr->IssueQuery(q);
-
 	}
+
+// ehpgms 
+	pqxx::tablewriter W_eh(pqIntr->GetTransaction(),fileptr->ehpgm_table_name);
 	for(const auto& i : eh_pgms)
 	{
-		string q = i->WriteToDB(fileptr);
-		dbintr->IssueQuery(q);
-
-		string r="";
-		for(auto& reloc : i->GetRelocations())
-		{
-			r+=reloc->WriteToDB(fileptr,i);
-		}
-		if(r!="")
-			dbintr->IssueQuery(r);
+		W_eh << i->WriteToDB(fileptr);
 	}
+	W_eh.complete();
+
+// eh css
 	for(const auto& i : eh_css)
 	{
 		string q = i->WriteToDB(fileptr);
 		dbintr->IssueQuery(q);
+	}
+
+
+// all relocs
+	pqxx::tablewriter W_reloc(pqIntr->GetTransaction(),fileptr->relocs_table_name);
+
+// eh css relocs
+	for(const auto& i : eh_css)
+	{
+		for(auto& reloc : i->GetRelocations())
+			W_reloc << reloc->WriteToDB(fileptr,i);
+	}
+
+// eh pgms relocs
+	for(const auto& i : eh_pgms)
+	{
 		string r="";
 		for(auto& reloc : i->GetRelocations())
-		{
-			r+=reloc->WriteToDB(fileptr,i);
-		}
-		if(r!="")
-			dbintr->IssueQuery(r);
+			W_reloc << reloc->WriteToDB(fileptr,i);
 	}
+// scoops relocs
+	for(const auto& i : scoops)
+	{
+		for(auto& reloc : i->GetRelocations())
+			W_reloc << reloc->WriteToDB(fileptr,i);
+	}
+// write out instruction's relocs
+	for(const auto& i : insns)
+	{
+		for(auto& reloc : i->GetRelocations())
+			W_reloc << reloc->WriteToDB(fileptr,i);
+	}
+	W_reloc.complete();
+
+	const auto WriteIRDB_end = clock();
+	const auto read_time = (double)(ReadIRDB_end-ReadIRDB_start)/ CLOCKS_PER_SEC;
+	const auto write_time = (double)(WriteIRDB_end-WriteIRDB_start)/ CLOCKS_PER_SEC;
+	const auto wall_time = (double)(WriteIRDB_end-ReadIRDB_start)/ CLOCKS_PER_SEC;
+	const auto transform_time=wall_time - read_time - write_time; 
+
+	std::cout << std::dec; 
+    	std::cout << std::fixed << std::setprecision(2) << "#ATTRIBUTE ReadIRDB_WallClock=" << read_time <<endl;
+    	std::cout << std::fixed << std::setprecision(2) << "#ATTRIBUTE WriteIRDB_WallClock=" << write_time << endl;
+    	std::cout << std::fixed << std::setprecision(2) << "#ATTRIBUTE TotalIRDB_WallClock=" << wall_time << endl;
+    	std::cout << std::fixed << std::setprecision(2) << "#ATTRIBUTE TransformIRDB_WallClock=" << transform_time << endl;
+
 }
 
 
@@ -921,6 +975,13 @@ int FileIR_t::GetArchitectureBitWidth()
 {
 	return archdesc->GetBitWidth();
 }
+
+int FileIR_t::SetArchitectureBitWidth(int width) 
+{
+	if(archdesc==NULL)
+		archdesc=new ArchitectureDescription_t;
+	archdesc->SetBitWidth(width);
+}	
 
 void FileIR_t::SetArchitecture()
 {
@@ -1504,7 +1565,8 @@ void FileIR_t::SplitScoop(
 		size_t size, 
 		DataScoop_t* &before,
 		DataScoop_t* &containing, 
-		DataScoop_t* &after
+		DataScoop_t* &after,
+		db_id_t *max_id_ptr	 /* in and out param */
 	)
 {
 
@@ -1520,15 +1582,21 @@ void FileIR_t::SplitScoop(
 		return;
 	}
 
-	const auto max=GetMaxBaseID();
-	const auto multiple=1000;
+	auto calcd_max_id=db_id_t(0);
+	if(max_id_ptr==NULL)
+		calcd_max_id = GetMaxBaseID();
+
+	auto &max_id = max_id_ptr == NULL ? calcd_max_id : *max_id_ptr ;
+	
+	if(max_id==0)
+		max_id=calcd_max_id;
+
+	const auto multiple=(unsigned)1000;
 
 	// round to nearest multiple
-	const auto rounded_max = ((max + multiple/2) / multiple) * multiple;
+	const auto rounded_max = ((max_id + (multiple/2)) / multiple) * multiple;
 
-	auto id=rounded_max + multiple; // and skip forward so we're passed the highest.
-
-	assert(id>=max);
+	max_id=rounded_max + multiple; // and skip forward so we're passed the highest.
 
 	const bool needs_before = addr!=tosplit->GetStart()->GetVirtualOffset();
 	const bool needs_after = addr+size-1 != tosplit->GetEnd()->GetVirtualOffset();
@@ -1540,18 +1608,18 @@ void FileIR_t::SplitScoop(
 		// const AddressID_t* before_start=NULL;
 	
 		const auto before_start=new AddressID_t;
-		before_start->SetBaseID(id++);
+		before_start->SetBaseID(max_id++);
 		before_start->SetFileID(tosplit->GetStart()->GetFileID());
 		before_start->SetVirtualOffset(tosplit->GetStart()->GetVirtualOffset());
 
 		// const AddressID_t* before_end=new AddressID_t;
 		const auto before_end=new AddressID_t;
-		before_end->SetBaseID(id++);
+		before_end->SetBaseID(max_id++);
 		before_end->SetFileID(tosplit->GetStart()->GetFileID());
 		before_end->SetVirtualOffset(addr-1);
 
 		before=new DataScoop_t;
-		before->SetBaseID(id++);
+		before->SetBaseID(max_id++);
 		before->SetName(tosplit->GetName()+"3");
 		before->SetStart(before_start);
 		before->SetEnd(before_end);
@@ -1571,18 +1639,18 @@ void FileIR_t::SplitScoop(
 	// setup containing
 	// AddressID_t* containing_start=new AddressID_t;
 	const auto containing_start=new AddressID_t;
-	containing_start->SetBaseID(id++);
+	containing_start->SetBaseID(max_id++);
 	containing_start->SetFileID(tosplit->GetStart()->GetFileID());
 	containing_start->SetVirtualOffset(addr);
 
 	//AddressID_t* containing_end=new AddressID_t;
 	const auto containing_end=new AddressID_t;
-	containing_end->SetBaseID(id++);
+	containing_end->SetBaseID(max_id++);
 	containing_end->SetFileID(tosplit->GetStart()->GetFileID());
 	containing_end->SetVirtualOffset(addr+size-1);
 
 	containing=new DataScoop_t;
-	containing->SetBaseID(id++);
+	containing->SetBaseID(max_id++);
 	containing->SetName(tosplit->GetName()+"3");
 	containing->SetStart(containing_start);
 	containing->SetEnd(containing_end);
@@ -1602,18 +1670,18 @@ void FileIR_t::SplitScoop(
 		// setup after
 		// AddressID_t* after_start=new AddressID_t;
 		const auto after_start=new AddressID_t;
-		after_start->SetBaseID(id++);
+		after_start->SetBaseID(max_id++);
 		after_start->SetFileID(tosplit->GetStart()->GetFileID());
 		after_start->SetVirtualOffset(addr+size);
 
 		// AddressID_t* after_end=new AddressID_t;
 		const auto after_end=new AddressID_t;
-		after_end->SetBaseID(id++);
+		after_end->SetBaseID(max_id++);
 		after_end->SetFileID(tosplit->GetStart()->GetFileID());
 		after_end->SetVirtualOffset(tosplit->GetEnd()->GetVirtualOffset());
 
 		after=new DataScoop_t;
-		after->SetBaseID(id++);
+		after->SetBaseID(max_id++);
 		after->SetName(tosplit->GetName()+"3");
 		after->SetStart(after_start);
 		after->SetEnd(after_end);

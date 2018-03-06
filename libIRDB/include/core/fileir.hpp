@@ -20,6 +20,8 @@
 
 #include "type.hpp"
 
+
+
 typedef std::set<Function_t*> FunctionSet_t;
 typedef std::set<AddressID_t*> AddressSet_t;
 
@@ -89,14 +91,15 @@ class FileIR_t : public BaseObj_t
 		//removes the mapping for orig->assembly from the map. 
 		void ChangeRegistryKey(Instruction_t* orig, Instruction_t* updated);
 
-		static int GetArchitectureBitWidth();
+		static int GetArchitectureBitWidth() ;
+		static int SetArchitectureBitWidth(const int width);
 		void SetArchitecture();
 
 		// Lookup a scoop by address
 		DataScoop_t* FindScoop(const libIRDB::virtual_offset_t &addr);
 
 		void SplitScoop(DataScoop_t *tosplit, const libIRDB::virtual_offset_t &addr, size_t size, 
-				DataScoop_t* &before,DataScoop_t* &containing, DataScoop_t* &after);
+				DataScoop_t* &before,DataScoop_t* &containing, DataScoop_t* &after, db_id_t *max_id=NULL);
 
 
 	private:
@@ -169,5 +172,11 @@ class FileIR_t : public BaseObj_t
 		void CleanupICFS();
 		void GarbageCollectICFS();
 		void DedupICFS();
+
+
+		std::clock_t ReadIRDB_start;
+		std::clock_t ReadIRDB_end;
+
+
 };
 

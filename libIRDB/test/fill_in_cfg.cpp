@@ -30,7 +30,6 @@
 #include <exeio.h>
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
-#include "beaengine/BeaEngine.h"
 #include "eh_frame.hpp"
 
 int odd_target_count=0;
@@ -79,7 +78,7 @@ void populate_instruction_map
 void set_fallthrough
 	(
 	map< pair<db_id_t,virtual_offset_t>, Instruction_t*> &insnMap,
-	DISASM *disasm, Instruction_t *insn, FileIR_t *firp
+	DecodedInstruction_t *disasm, Instruction_t *insn, FileIR_t *firp
 	)
 {
 	assert(disasm);
@@ -90,8 +89,11 @@ void set_fallthrough
 	
 	// check for branches with targets 
 	if(
-		(disasm->Instruction.BranchType==JmpType) ||			// it is a unconditional branch 
-		(disasm->Instruction.BranchType==RetType)			// or a return
+		//(disasm->Instruction.BranchType==JmpType) ||			// it is a unconditional branch 
+		//(disasm->Instruction.BranchType==RetType)			// or a return
+
+		(disasm->isUnconditionalBranch() ) ||	// it is a unconditional branch 
+		(disasm->isReturn())			// or a return
 	  )
 	{
 		// this is a branch with no fallthrough instruction
@@ -127,7 +129,7 @@ void set_fallthrough
 void set_target
 	(
 	map< pair<db_id_t,virtual_offset_t>, Instruction_t*> &insnMap,
-	DISASM *disasm, Instruction_t *insn, FileIR_t *firp
+	DecodedInstruction_t *disasm, Instruction_t *insn, FileIR_t *firp
 	)
 {
 
@@ -139,9 +141,12 @@ void set_target
 	
 	// check for branches with targets 
 	if(
-		(disasm->Instruction.BranchType!=0) &&			// it is a branch 
-		(disasm->Instruction.BranchType!=RetType) && 		// and not a return
-		(disasm->Argument1.ArgType & CONSTANT_TYPE)!=0		// and has a constant argument type 1
+		//(disasm->Instruction.BranchType!=0) &&			// it is a branch 
+		//(disasm->Instruction.BranchType!=RetType) && 		// and not a return
+		//(disasm->Argument1.ArgType & CONSTANT_TYPE)!=0		// and has a constant argument type 1
+		(disasm->isBranch()) &&			// it is a branch 
+		(!disasm->isReturn()) && 		// and not a return
+		(disasm->getOperand(0).isConstant())		// and has a constant argument type 1
 	  )
 	{
 //		cout<<"Found direct jump with addr=" << insn->GetAddress()->GetVirtualOffset() <<
@@ -149,7 +154,8 @@ void set_target
 //			disasm->Argument1.ArgMnemonic<<"."<<endl;
 
 		/* get the offset */
-		virtual_offset_t virtual_offset=strtoul(disasm->Argument1.ArgMnemonic, NULL, 16);
+		// virtual_offset_t virtual_offset=strtoul(disasm->Argument1.ArgMnemonic, NULL, 16);
+		virtual_offset_t virtual_offset=disasm->getAddress();
 
 		/* create a pair of offset/file */
 		pair<db_id_t,virtual_offset_t> p(insn->GetAddress()->GetFileID(),virtual_offset);
@@ -266,30 +272,38 @@ void add_new_instructions(FileIR_t *firp)
 				virtual_offset_t offset_into_section=missed_address-elfiop->sections[secndx]->get_address();
 	
 				/* disassemble the instruction */
-				DISASM disasm;
-                		memset(&disasm, 0, sizeof(DISASM));
+				DecodedInstruction_t disasm(missed_address, (void*)&data[offset_into_section], elfiop->sections[secndx]->get_size()-offset_into_section );
+
+				/*
+                		memset(&disasm, 0, sizeof(DecodeInstruction_t));
 
                 		disasm.Options = NasmSyntax + PrefixedNumeral;
                 		disasm.Archi = firp->GetArchitectureBitWidth();
-                		disasm.EIP = (UIntPtr) &data[offset_into_section];
+                		disasm.EIP = (uintptr_t) &data[offset_into_section];
 				disasm.SecurityBlock=elfiop->sections[secndx]->get_size()-offset_into_section;
                 		disasm.VirtualAddr = missed_address;
-                		int instr_len = Disasm(&disasm);
+				*/
+
+
+				
+
 
 
 /* bea docs say OUT_OF_RANGE and UNKNOWN_OPCODE are defined, but they aren't */
-#define OUT_OF_RANGE (0)
-#define UNKNOWN_OPCODE (-1) 
+// #define OUT_OF_RANGE (0)
+// #define UNKNOWN_OPCODE (-1) 
 
 				/* if we found the instruction, but can't disassemble it, then we skip out for now */
-				if(instr_len==OUT_OF_RANGE || instr_len==UNKNOWN_OPCODE)
+				if(!disasm.valid()) // instr_len==OUT_OF_RANGE || instr_len==UNKNOWN_OPCODE)
 				{
 					if(getenv("VERBOSE_CFG"))
 						cout<<"Found invalid insn at "<<missed_address<<endl;
 					break;
 				}
 				else if(getenv("VERBOSE_CFG"))
-					cout<<"Found valid insn at "<<missed_address<<": "<<disasm.CompleteInstr<<endl;
+					cout<<"Found valid insn at "<<missed_address<<": "<<disasm.getDisassembly()<<endl;
+
+                		const auto instr_len = disasm.length();
 
 				/* intel instructions have a max size of 16 */
 				assert(1<=instr_len && instr_len<=16);
@@ -315,7 +329,7 @@ void add_new_instructions(FileIR_t *firp)
 				assert(newinsn);
 				newinsn->SetAddress(newaddr);
 				newinsn->SetDataBits(newinsnbits);
-				newinsn->SetComment(string(disasm.CompleteInstr)+string(" from fill_in_cfg "));
+				newinsn->SetComment(disasm.getDisassembly()+string(" from fill_in_cfg "));
 				newinsn->SetAddress(newaddr);
 				/* fallthrough/target/is indirect will be set later */
 
@@ -364,10 +378,10 @@ void fill_in_cfg(FileIR_t *firp)
 	   	   )
 		{
 			Instruction_t *insn=*it;
-      			DISASM disasm;
-      			memset(&disasm, 0, sizeof(DISASM));
+      			DecodedInstruction_t disasm(insn);
+      			//memset(&disasm, 0, sizeof(DISASM));
 	
-      			int instr_len = insn->Disassemble(disasm);
+      			const auto instr_len = disasm.length();
 	
 			assert(instr_len==insn->GetDataBits().size());
 	
@@ -493,21 +507,6 @@ void fill_in_scoops(FileIR_t *firp)
 			cout<<"Skipping scoop for section (executable) "<<elfiop->sections[secndx]->get_name()<<endl;
                 	continue;
 		}
-#if 0
-		// we decided to skip BSS for a bad reason.  trying again.
-        	if(elfiop->sections[secndx]->isBSS())
-		{
-			cout<<"Skipping bss section: "<<elfiop->sections[secndx]->get_name()<<endl;
-                	continue;
-		}
-		// we decided to skip tls for a bad reason.  trying again.
-        	if(elfiop->sections[secndx]->isThreadLocal())
-		{
-			cout<<"Skipping tls section (executable) "<<elfiop->sections[secndx]->get_name()<<endl;
-                	continue;
-		}
-#endif
-
 		/* name */
 		string name=elfiop->sections[secndx]->get_name();
 
@@ -557,7 +556,8 @@ void fill_in_landing_pads(FileIR_t *firp)
 {
 	const auto eh_frame_rep_ptr = split_eh_frame_t::factory(firp);
 	eh_frame_rep_ptr->parse();
-	eh_frame_rep_ptr->print();
+	if(getenv("EHIR_VERBOSE"))
+		eh_frame_rep_ptr->print();
 	cout<<"Completed eh-frame parsing"<<endl;
 
 	map<Function_t*,set<Instruction_t*> > insns_to_add_to_funcs;
@@ -705,7 +705,6 @@ main(int argc, char* argv[])
         }
 
 	assert(pidp);
-
 
 	delete pidp;
 	pidp=NULL;

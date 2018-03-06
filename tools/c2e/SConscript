@@ -9,7 +9,6 @@ myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 cpppath=''' 
 	 $SECURITY_TRANSFORMS_HOME/include 
 	 $SECURITY_TRANSFORMS_HOME/libIRDB/include 
-	 $SECURITY_TRANSFORMS_HOME/beaengine/include 
 	 $SECURITY_TRANSFORMS_HOME/tools/transforms 
 	'''
 
@@ -34,3 +33,4 @@ Default(install)
 
 	
 	
+Return('install')

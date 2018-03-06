@@ -66,7 +66,7 @@ void libIRDB::EhProgram_t::print() const
 	cout<<dec<<"CAF: "<<code_alignment_factor<<" DAF: "<<data_alignment_factor<<" ptrsize="<< +ptrsize<<" cie_hash: "<<hex<<cie_hash<<" fde_hash: "<<fde_hash<<endl;
 }
 
-std::string EhProgram_t::WriteToDB(File_t* fid)    // writes to DB, ID is not -1.
+vector<std::string> EhProgram_t::WriteToDB(File_t* fid)    // writes to DB, ID is not -1.
 {
 	auto str_to_encoded_string=[](const string& data) -> string
 	{
@@ -92,18 +92,22 @@ std::string EhProgram_t::WriteToDB(File_t* fid)    // writes to DB, ID is not -1
 	string encoded_cie_program=vec_to_encoded_string(cie_program);
 	string encoded_fde_program=vec_to_encoded_string(fde_program);
 
+/*
 	string q;
 	q ="insert into " + fid->GetEhProgramTableName();
 	q+="(eh_pgm_id,caf,daf,return_register,ptrsize,cie_program,fde_program) "+
 		string(" VALUES (") +
-		string("'") + to_string(GetBaseID())          + string("', ") +
-		string("'") + to_string(+code_alignment_factor)               + string("', ") +
-		string("'") + to_string(+data_alignment_factor)               + string("', ") +
-		string("'") + to_string(+return_register)               + string("', ") +
-		string("'") + to_string(+ptrsize)               + string("', ") +
-		string("'") + encoded_cie_program               + string("', ") +
-		string("'") + encoded_fde_program               + string("') ; ");
-	return q;
+*/
+
+	return {
+		to_string(GetBaseID()),
+		to_string(+code_alignment_factor),
+		to_string(+data_alignment_factor),
+		to_string(+return_register),
+		to_string(+ptrsize),
+		encoded_cie_program,
+		encoded_fde_program
+		};
 
 }
 

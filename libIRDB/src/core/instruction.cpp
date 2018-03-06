@@ -75,6 +75,7 @@ Instruction_t::Instruction_t(db_id_t id,
 	SetBaseID(id);
 }
 
+/*
 int Instruction_t::Disassemble(DISASM &disasm) const
 {
  
@@ -88,12 +89,16 @@ int Instruction_t::Disassemble(DISASM &disasm) const
  	 
   	return instr_len;  
 }
+*/
 
 std::string Instruction_t::getDisassembly() const
 {
-  	DISASM disasm;
-  	Disassemble(disasm);
-  	return std::string(disasm.CompleteInstr);
+//  	DISASM disasm;
+//  	Disassemble(this,disasm);
+//  	return std::string(disasm.CompleteInstr);
+
+	const auto d=DecodedInstruction_t(this);
+	return d.getDisassembly();
 }
 
 // 
@@ -160,7 +165,7 @@ bool Instruction_t::Assemble(string assembly)
 }
 
 
-string Instruction_t::WriteToDB(File_t *fid, db_id_t newid, bool p_withHeader)
+vector<string> Instruction_t::WriteToDB(File_t *fid, db_id_t newid)
 {
 	assert(fid);
 	assert(my_address);
@@ -189,36 +194,27 @@ string Instruction_t::WriteToDB(File_t *fid, db_id_t newid, bool p_withHeader)
 	auto eh_css_id=NOT_IN_DATABASE;
 	if(eh_cs) eh_css_id=eh_cs->GetBaseID();
 
-	string q;
-	
-	if (p_withHeader) 
-		q = string("insert into ")+fid->instruction_table_name +
-                string(" (instruction_id, address_id, parent_function_id, orig_address_id, fallthrough_address_id, "
-		       "target_address_id, icfs_id, data, callback, comment, ind_target_address_id, ehpgm_id, ehcss_id, doip_id) VALUES ");
-	else
-		q = ",";
-
 	ostringstream hex_data;
 	hex_data << setfill('0') << hex;;
 	for (size_t i = 0; i < data.length(); ++i)
 		hex_data << setw(2) << (int)(data[i]&0xff);
-	
-	q += string("('") + to_string(GetBaseID())            		+ string("', ") +
-                string("'") + to_string(my_address->GetBaseID())   	+ string("', ") +
-                string("'") + to_string(func_id)            		+ string("', ") +
-                string("'") + to_string(orig_address_id)         	+ string("', ") +
-                string("'") + to_string(ft_id)         			+ string("', ") +
-                string("'") + to_string(targ_id)         		+ string("', ") +
-                string("'") + to_string(icfs_id)         		+ string("', ") +
-                string("decode('") + hex_data.str()                     + string("', 'hex'), ") +
-                string("'") + callback                              	+ string("', ") +
-                string("'") + comment                              	+ string("', ") +
-                string("'") + to_string(indirect_bt_id)                 + string("', ") +
-                string("'") + to_string(eh_pgm_id)                 	+ string("', ") +
-                string("'") + to_string(eh_css_id)                 	+ string("', ") +
-                string("'") + to_string(GetDoipID())            	+ string("')  ") ;
 
-	return q;
+
+	return {
+		to_string(GetBaseID()),
+                to_string(my_address->GetBaseID()),
+                to_string(func_id),
+                to_string(orig_address_id),
+                to_string(ft_id),
+                to_string(targ_id),
+                to_string(icfs_id),
+                to_string(eh_pgm_id),
+                to_string(eh_css_id),
+                hex_data.str(),
+                callback,
+                comment,
+                to_string(indirect_bt_id),
+                to_string(GetDoipID()) };
 }
 
 
@@ -230,12 +226,12 @@ bool Instruction_t::IsFunctionExit() const
 
 	/* if there's a target that's outside this function */
 	Instruction_t *target=GetTarget();
-	if(target && !is_in_set(my_function->GetInstructions(),target))
+	if(target && target->GetFunction()!=GetFunction()) // !is_in_set(my_function->GetInstructions(),target))
 		return true;
 
 	/* if there's a fallthrough that's outside this function */
 	Instruction_t *ft=GetFallthrough();
-	if(fallthrough && !is_in_set(my_function->GetInstructions(),ft))
+	if(fallthrough && ft->GetFunction()!=GetFunction()) // !is_in_set(my_function->GetInstructions(),ft))
 		return true;
 
 	/* some instructions have no next-isntructions defined in the db, and we call them function exits */
@@ -246,6 +242,7 @@ bool Instruction_t::IsFunctionExit() const
 }
 
 
+/*
 bool Instruction_t::SetsStackPointer(ARGTYPE* arg)
 {
 	if((arg->AccessMode & WRITE ) == 0)
@@ -269,7 +266,6 @@ bool Instruction_t::SetsStackPointer(DISASM* disasm)
 	if(disasm->Instruction.ImplicitModifiedRegs==REGISTER_TYPE+GENERAL_REG+REG4)
 		return true;
 
-
 	if(SetsStackPointer(&disasm->Argument1)) return true;
 	if(SetsStackPointer(&disasm->Argument2)) return true;
 	if(SetsStackPointer(&disasm->Argument3)) return true;
@@ -277,3 +273,4 @@ bool Instruction_t::SetsStackPointer(DISASM* disasm)
 	return false;
 
 }
+*/

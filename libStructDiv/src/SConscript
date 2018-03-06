@@ -16,7 +16,9 @@ cpppath='''
 LIBPATH="$SECURITY_TRANSFORMS_HOME/lib"
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath))
+myenv.Append(CXXFLAGS="-fPIC")
 lib=myenv.Library("StructDiv",  Split(files))
 install=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
 Default(install)
 
+Return('install')

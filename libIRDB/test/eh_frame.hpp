@@ -15,7 +15,6 @@
 #include <memory>
 
 #include <exeio.h>
-#include "beaengine/BeaEngine.h"
 #include "dwarf2.h"
 
 
@@ -317,10 +316,16 @@ class fde_contents_t : eh_frame_util_t<ptrsize>
 
 	public:
 	fde_contents_t() ;
+	fde_contents_t(const uint64_t start_addr, const uint64_t end_addr)
+		: 
+		fde_start_addr(start_addr),
+		fde_end_addr(end_addr)
+	{} 
 
 	bool appliesTo(const libIRDB::Instruction_t* insn) const;
 
-	uint64_t GetFDEStartAddress() const ;
+	uint64_t GetFDEStartAddress() const { return fde_start_addr; } 
+	uint64_t GetFDEEndAddress() const {return fde_end_addr; }
 
 	const cie_contents_t<ptrsize>& GetCIE() const ;
 	cie_contents_t<ptrsize>& GetCIE() ;
@@ -343,6 +348,10 @@ class fde_contents_t : eh_frame_util_t<ptrsize>
 	void build_ir(libIRDB::Instruction_t* insn, const OffsetMap_t &om, libIRDB::FileIR_t* firp) const;
 
 };
+
+template <int ptrsize>
+bool operator<(const fde_contents_t<ptrsize>& a, const fde_contents_t<ptrsize>& b) { return a.GetFDEEndAddress()-1 < b.GetFDEStartAddress(); }
+
 
 class split_eh_frame_t 
 {
@@ -368,7 +377,7 @@ class split_eh_frame_impl_t : public split_eh_frame_t
 	libIRDB::DataScoop_t* gcc_except_table_scoop;
 	OffsetMap_t offset_to_insn_map;
 	std::vector<cie_contents_t <ptrsize> > cies;
-	std::vector<fde_contents_t <ptrsize> > fdes;
+	std::set<fde_contents_t <ptrsize> > fdes;
 
 
 	bool init_offset_map();

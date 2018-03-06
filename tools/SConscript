@@ -2,12 +2,13 @@ import os
 
 Import('env')
 
+tools=[]
+
 dirs='''
 	transforms
 	cover
 	fix_rets
-	meds2pdb
-	memcover
+        meds2pdb	
 	ret_shadow_stack
 	safefr
 	selective_cfi
@@ -15,8 +16,12 @@ dirs='''
 	spasm
 	cookbook
 	dump_map
-	print_cfi_stats
 	hook_start
+	'''
+
+nobuild_dirs='''
+	print_cfi_stats
+	memcover
 	'''
 cgc_dirs='''
 	c2e
@@ -30,9 +35,13 @@ cgc_dirs='''
 
 
 for i in Split(dirs):
-	SConscript(os.path.join(i,"SConscript"))
+	newtool=SConscript(os.path.join(i,"SConscript"))
+	tools=tools + newtool
 
 
 if 'build_cgc' in env and int(env['build_cgc']) == 1:
 	for i in Split(cgc_dirs):
-		SConscript(os.path.join(i,"SConscript"))
+		newtool=SConscript(os.path.join(i,"SConscript"))
+		tools=tools+newtool
+
+Return('tools')

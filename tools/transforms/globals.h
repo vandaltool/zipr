@@ -32,6 +32,21 @@
 
 extern bool verbose_log;
 
+#define DEFAULT_DETECTION_EXIT_CODE 189
+
+// make sure these match values in detector_handlers.h in the strata library
+enum mitigation_policy 
+{
+	P_NONE=0, 
+	P_CONTINUE_EXECUTION, 
+	P_CONTROLLED_EXIT, 
+	P_CONTINUE_EXECUTION_SATURATING_ARITHMETIC, 
+	P_CONTINUE_EXECUTION_WARNONLY,
+	P_HARD_EXIT
+};
+
+
+
 class PNOptions 
 {
 	public:
@@ -50,6 +65,8 @@ class PNOptions
 			canary_value_inited=false;
 			double_threshold=32*1024; // 32kb 
 			spri_validate=false;
+			detection_policy=P_HARD_EXIT;
+			detection_exit_code=DEFAULT_DETECTION_EXIT_CODE;
 		}
 
 		void setMinStackPadding(int val) { min_stack_padding = val; }
@@ -93,6 +110,11 @@ class PNOptions
 				return getDoCanaries();
 		}
 
+		void setDetectionPolicy(mitigation_policy p_policy) { detection_policy = p_policy; } 
+		mitigation_policy getDetectionPolicy() const { return detection_policy; } 
+		unsigned getDetectionExitCode() const { return detection_exit_code; }
+		void setDetectionExitCode(unsigned p_exitCode) { detection_exit_code = p_exitCode; }
+
 	private:
 		int min_stack_padding;
 		int max_stack_padding;
@@ -109,6 +131,9 @@ class PNOptions
 		bool spri_validate;
 
 		std::set<std::string> canary_functions;
+
+		mitigation_policy detection_policy;
+		unsigned detection_exit_code;
 };
 
 extern PNOptions *pn_options;

@@ -3,5 +3,8 @@ import os
 Import('env')
 
 
-SConscript("src/SConscript")
-SConscript("test/SConscript")
+lib1=SConscript("src/SConscript")
+lib2=SConscript("test/SConscript")
+
+rets = [ lib1, lib2]
+Return('rets')

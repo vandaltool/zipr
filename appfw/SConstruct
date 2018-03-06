@@ -1,3 +1,5 @@
 env=Environment()
 Export('env')
-SConscript("SConscript")
+lib=SConscript("SConscript")
+
+Return(lib)

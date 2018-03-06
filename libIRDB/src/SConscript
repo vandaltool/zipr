@@ -2,6 +2,8 @@ import os
 
 Import('env')
 
+tools=[]
+
 dirs='''
 	cfg  
 	core  
@@ -10,4 +12,6 @@ dirs='''
 	'''
 
 for i in Split(dirs):
-	SConscript(os.path.join(i,"SConscript"))
+	tools=tools + SConscript(os.path.join(i,"SConscript"))
+
+Return('tools')

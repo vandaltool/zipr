@@ -20,8 +20,8 @@
 
 //#include <libIRDB-core.hpp>
 //#include <libIRDB-util.hpp>
+#include <stdlib.h>
 #include <libIRDB-syscall.hpp>
-#include <cstdlib>
 
 using namespace std;
 using namespace libIRDB;

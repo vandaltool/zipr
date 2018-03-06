@@ -5,6 +5,7 @@ Import('env')
 myenv=env.Clone()
 myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 
+installed=[] 
 if 'build_tools' not in myenv or myenv['build_tools'] is None or int(myenv['build_tools']) == 1:
 
 	cpppath=''' 
@@ -20,10 +21,13 @@ if 'build_tools' not in myenv or myenv['build_tools'] is None or int(myenv['buil
 
 	pgms="simple_sd_driver"
 	for i in Split(pgms):
+		print "building "+str(i)
 		pgm=myenv.Program(target=i+".exe",  source=Split(i+".cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
 		install=myenv.Install("$SECURITY_TRANSFORMS_HOME/libStructDiv/test/", pgm)
 		Default(install)
+		installed=installed+[install]
 
 
 		
 		
+Return('installed')

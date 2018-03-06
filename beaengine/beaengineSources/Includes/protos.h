@@ -713,22 +713,61 @@ void __bea_callspec__ pclmulqdq_(PDISASM);
 /* prefixes */
 void __bea_callspec__ HandleVex2(PDISASM);
 void __bea_callspec__ HandleVex3(PDISASM);
+void __bea_callspec__ HandleXop3(PDISASM);
 
 /* useful helpers */
 void V_reg(ARGTYPE* arg, PDISASM pMyDisasm);
 void L_imm(ARGTYPE* arg, PDISASM pMyDisasm);
 
-/* actual opcodes */
+
+
+// AVX (part 1, aka AVX-128)
+void vbrdcstss  (PDISASM pMyDisasm); // vbroadcastss
+void vbrdcstsd  (PDISASM pMyDisasm); // vbroadcastsd
+// vbroadcastf128 
+void vinsrtf128 (PDISASM pMyDisasm); // vinsertf128 
+void vextraf128 (PDISASM pMyDisasm);
+// vmaskmovps
+// vmaskmovpd
+void vpermilps1 (PDISASM pMyDisasm); // vpermilps
+void vpermilps2 (PDISASM pMyDisasm); // vpermilps
+// vpermilpd
+void vperm2f128 (PDISASM pMyDisasm); // vperm2f128
+// vzeroall
+// vzeroupper
+
+
+// avx (part 2, aka avx2 aka avx 256?)
+// vbroadcastss
+// vbroadcastsd
+// vpbroadcastb
+// vpbroadcastw
+// vpbroadcastd
+// vpbroadcastq
+// vpbroadcastI128
+void vinsrti128 (PDISASM pMyDisasm); // vinserti128
+// vgatherdpd
+// vgatherqpd
+// vgatherrqd
+// vgatherdqq
+// vmaskmovd
+// vmaskmovq
+// vpermps
+// vpermd
+// vpermpd
+// vpermq
+// vperm2i128
+// vblendd
+// vpsllvd
+// vpsllvq
+// vpsrlvd
+// vpsrlvq
+// vpsravd
+
+
 void vblendvpd /*VxHxWxLx */ (PDISASM pMyDisasm);
 void three_dnow_ (PDISASM pMyDisasm);
 
-void vbrdcstss  (PDISASM pMyDisasm);
-void vbrdcstsd  (PDISASM pMyDisasm);
-void vextraf128 (PDISASM pMyDisasm);
-void vinsrtf128 (PDISASM pMyDisasm);
-void vperm2f128 (PDISASM pMyDisasm);
-void vpermilps1 (PDISASM pMyDisasm);
-void vpermilps2 (PDISASM pMyDisasm);
 void fmadd132sd(PDISASM pMyDisasm);
 void fmadd213sd(PDISASM pMyDisasmd);
 void fmadd231sd(PDISASM pMyDisasmd);
@@ -795,3 +834,53 @@ void fnmadd231s(PDISASM pMyDisasm);
 void fnmsub132s(PDISASM pMyDisasm);
 void fnmsub213s(PDISASM pMyDisasm);
 void fnmsub231s(PDISASM pMyDisasm);
+
+
+// Intel ADX
+// adcx
+// ad0x
+
+//ABM (advance bit manipulation)
+// popcnt
+// lzcnt
+
+// BMI1 (bit manip. instr set 1)
+void __bea_callspec__ andn(PDISASM pMyDisasm); // andn
+void __bea_callspec__ bextr(PDISASM pMyDisasm); // blsi
+void __bea_callspec__ blsi(PDISASM pMyDisasm); // blsi
+void __bea_callspec__ blsmsk(PDISASM pMyDisasm); // blsmsk
+void __bea_callspec__ blsr(PDISASM pMyDisasm); // blsr
+void __bea_callspec__ tzcnt(PDISASM pMyDisasm); // tzcnt
+
+// BMI2
+void __bea_callspec__ bzhi(PDISASM pMyDisasm); // bzhi
+void __bea_callspec__ mulx(PDISASM pMyDisasm); // mulx
+void __bea_callspec__ pdep(PDISASM pMyDisasm); // pdep
+void __bea_callspec__ pext(PDISASM pMyDisasm); // pext
+void __bea_callspec__ rorx(PDISASM pMyDisasm); // rorx
+void __bea_callspec__ sarx(PDISASM pMyDisasm); // sarx
+void __bea_callspec__ shrx(PDISASM pMyDisasm); // shrx
+void __bea_callspec__ shlx(PDISASM pMyDisasm); // shlx
+
+
+// TBM (trailing bit manipulation
+// bextr
+// blcfill
+// blci
+// blcic
+// blcmsk
+// blcs
+// blsfill
+// blsic
+// t1mskc
+// tzmsk
+
+
+// SHA extensions
+void __bea_callspec__ sha1rnds4(PDISASM pMyDisasm); // sha1rnds4
+void __bea_callspec__ sha1nexte(PDISASM pMyDisasm); // sha1nextE
+void __bea_callspec__ sha1msg1(PDISASM pMyDisasm); // sha1msg1
+void __bea_callspec__ sha1msg2(PDISASM pMyDisasm); // sha1msg2
+void __bea_callspec__ sha256rnds2(PDISASM pMyDisasm); // ha256rnds2
+void __bea_callspec__ sha256msg1(PDISASM pMyDisasm); // sha256msg1
+void __bea_callspec__ sha256msg2(PDISASM pMyDisasm); // sha256msg2

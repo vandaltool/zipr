@@ -12,7 +12,6 @@
 #include <memory>
 
 #include <exeio.h>
-#include "beaengine/BeaEngine.h"
 #include "dwarf2.h"
 
 #include "eh_frame.hpp"
@@ -760,18 +759,6 @@ bool eh_program_insn_t<ptrsize>::Advance(uint64_t &cur_addr, uint64_t CAF) const
 				case DW_CFA_set_loc:
 				{
 					assert(0);
-/*
-					auto arg=uintptr_t(0xDEADBEEF);
-					switch(ptrsize)
-					{
-						case 4:
-							arg=*(uint32_t*)data[pos]; break;
-						case 8:
-							arg=*(uint64_t*)data[pos]; break;
-					}
-					cout<<"				set_loc "<<hex<<arg<<endl;
-					break;
-*/	
 					return true;
 				}
 				case DW_CFA_advance_loc1:
@@ -1288,11 +1275,11 @@ void lsda_call_site_t<ptrsize>::build_ir(Instruction_t* insn, const vector<lsda_
 	firp->GetAllEhCallSites().insert(new_ehcs);
 	insn->SetEhCallSite(new_ehcs);
 
-	cout<<"landing pad addr : 0x"<<hex<<landing_pad_addr<<endl;
+	//cout<<"landing pad addr : 0x"<<hex<<landing_pad_addr<<endl;
 	if(action_table.size() == 0 ) 
 	{
 		new_ehcs->SetHasCleanup();
-		cout<<"Destructors to call, but no exceptions to catch"<<endl;
+		// cout<<"Destructors to call, but no exceptions to catch"<<endl;
 	}
 	else
 	{
@@ -1302,12 +1289,7 @@ void lsda_call_site_t<ptrsize>::build_ir(Instruction_t* insn, const vector<lsda_
 			if(action==0)
 			{
 				new_ehcs->GetTTOrderVector().push_back(action);
-				// an action table entry of 0 means that it has a cleanup, but not a catch all.
-				//auto newreloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, 0, "type_table_entry", NULL, 0);
-				//new_ehcs->GetRelocations().insert(newreloc);
-				//firp->GetRelocations().insert(newreloc);
-				new_ehcs->SetHasCleanup();
-				cout<<"Cleanup only (no catches) ."<<endl;
+				//cout<<"Cleanup only (no catches) ."<<endl;
 			}
 			else if(action>0)
 			{
@@ -1330,10 +1312,10 @@ void lsda_call_site_t<ptrsize>::build_ir(Instruction_t* insn, const vector<lsda_
 				new_ehcs->GetRelocations().insert(newreloc);
 				firp->GetRelocations().insert(newreloc);
 
-				if(wrt==NULL)
-					cout<<"Catch all in type table"<<endl;
-				else
-					cout<<"Catch for type at "<<wrt->GetName()<<"+0x"<<hex<<addend<<"."<<endl;
+				//if(wrt==NULL)
+				//	cout<<"Catch all in type table"<<endl;
+				//else
+				//	cout<<"Catch for type at "<<wrt->GetName()<<"+0x"<<hex<<addend<<"."<<endl;
 			}
 			else if(action<0)
 			{
@@ -1347,7 +1329,7 @@ void lsda_call_site_t<ptrsize>::build_ir(Instruction_t* insn, const vector<lsda_
 
 				// this isn't right at all, but pretend it's a cleanup!
 				new_ehcs->SetHasCleanup();
-				cout<<"Cleanup only (no catches) ."<<endl;
+				//cout<<"Cleanup only (no catches) ."<<endl;
 			}
 			else
 			{
@@ -1456,7 +1438,7 @@ bool lsda_t<ptrsize>::parse_lsda(const uint64_t lsda_addr, const DataScoop_t* gc
 				const auto type_filter=act_tab_entry.GetAction();
 				const auto parse_and_insert_tt_entry = [&] (const unsigned long index) -> bool
 				{
-					cout<<"Parsing TypeTable at -"<<index<<endl;
+					// cout<<"Parsing TypeTable at -"<<index<<endl;
 					// 1-based indexing because of odd backwards indexing of type table.
 					lsda_type_table_entry_t <ptrsize> ltte;
 					if(ltte.parse(type_table_encoding, type_table_pos, index, (const uint8_t* const)data.data(), max, data_addr ))
@@ -1564,9 +1546,6 @@ bool fde_contents_t<ptrsize>::appliesTo(const Instruction_t* insn) const
 
 	return ( fde_start_addr<=insn_addr && insn_addr<fde_end_addr );
 }
-
-template <int ptrsize>
-uint64_t fde_contents_t<ptrsize>::GetFDEStartAddress() const { return fde_start_addr; }
 
 template <int ptrsize>
 const cie_contents_t<ptrsize>& fde_contents_t<ptrsize>::GetCIE() const { return cie_info; }
@@ -1737,7 +1716,8 @@ bool split_eh_frame_impl_t<ptrsize>::iterate_fdes()
 			//cout << "FDE length="<< dec << act_length << " cie=[" << setw(6) << hex << cie_position << "]" << endl;
 			if(f.parse_fde(old_position, cie_position, data, max, eh_addr, gcc_except_table_scoop))
 				return true;
-			fdes.push_back(f);
+			const auto old_fde_size=fdes.size();
+			fdes.insert(f);
 		}
 		//cout << "----------------------------------------"<<endl;
 		
@@ -1829,10 +1809,8 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 	// find the right cie and fde, and build the IR from those for this instruction.
 	auto build_ir_insn=[&](Instruction_t* insn) -> void
 	{
-		auto fie_it=find_if(fdes.begin(), fdes.end(), [&](const fde_contents_t<ptrsize>  &p)
-		{
-			return p.appliesTo(insn);
-		});
+		const auto tofind=fde_contents_t<ptrsize>( insn->GetAddress()->GetVirtualOffset(), insn->GetAddress()->GetVirtualOffset()+1 );
+		const auto fie_it=fdes.find(tofind);
 
 		if(fie_it!=fdes.end())
 		{
@@ -1939,13 +1917,22 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 				assert(newreloc);	
 
 				if(personality_obj==NULL)
-					cout<<"Null personality obj: 0x"<<hex<<personality<<endl;
+				{
+					if(getenv("EHIR_VERBOSE")!=NULL)
+						cout<<"Null personality obj: 0x"<<hex<<personality<<endl;
+				}
 				else if(personality_scoop)
-					cout<<"Found personality scoop: 0x"<<hex<<personality<<" -> "
-					    <<personality_scoop->GetName()<<"+0x"<<hex<<addend<<endl;
+				{
+					if(getenv("EHIR_VERBOSE")!=NULL)
+						cout<<"Found personality scoop: 0x"<<hex<<personality<<" -> "
+						    <<personality_scoop->GetName()<<"+0x"<<hex<<addend<<endl;
+				}
 				else if(personality_insn)
-					cout<<"Found personality insn: 0x"<<hex<<personality<<" -> "
-					    <<personality_insn->GetBaseID()<<":"<<personality_insn->getDisassembly()<<endl;
+				{
+					if(getenv("EHIR_VERBOSE")!=NULL)
+						cout<<"Found personality insn: 0x"<<hex<<personality<<" -> "
+						    <<personality_insn->GetBaseID()<<":"<<personality_insn->getDisassembly()<<endl;
+				}
 				else
 					assert(0);
 
@@ -2022,12 +2009,12 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 template <int ptrsize>
 libIRDB::Instruction_t* split_eh_frame_impl_t<ptrsize>::find_lp(libIRDB::Instruction_t* i) const 
 {
-	const auto fde_it=find_if(fdes.begin(), fdes.end(), [&](const fde_contents_t <ptrsize>& fde)
-		{ return fde.appliesTo(i); });
+	const auto tofind=fde_contents_t<ptrsize>( i->GetAddress()->GetVirtualOffset(), i->GetAddress()->GetVirtualOffset()+1);
+	const auto fde_it=fdes.find(tofind);
 
 	if(fde_it==fdes.end())
 		return NULL;
-
+	
 	const auto &the_fde=*fde_it;
 	const auto &the_lsda=the_fde.GetLSDA();
 	const auto &cstab  = the_lsda.GetCallSites();

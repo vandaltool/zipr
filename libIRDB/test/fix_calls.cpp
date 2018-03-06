@@ -19,13 +19,11 @@
  */
 
 
-
 #include <libIRDB-core.hpp>
 #include <libIRDB-cfg.hpp>
 #include <utils.hpp>
 #include <iostream>
 #include <stdlib.h>
-#include "beaengine/BeaEngine.h"
 #include <assert.h>
 #include <string.h>
 #include <elf.h>
@@ -40,6 +38,7 @@ using namespace std;
 using namespace EXEIO;
 
 
+#define ALLOF(a) begin(a),end(a)
 
 class Range_t
 {
@@ -85,7 +84,7 @@ pqxxDB_t pqxx_interface;
 bool opt_fix_icalls = false;
 bool opt_fix_safefn = true;
 
-void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, UIntPtr offset);
+void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, uintptr_t offset);
 
 /* Read the exception handler frame so that those indirect branches are accounted for */
 void read_ehframe(FileIR_t* firp, EXEIO::exeio* );
@@ -104,10 +103,11 @@ bool check_entry(bool &found, ControlFlowGraph_t* cfg)
 		++it
 	   )
 	{
-		DISASM disasm;
 		Instruction_t* insn=*it;
-		insn->Disassemble(disasm);
-		if(Instruction_t::SetsStackPointer(&disasm)) {
+		//DISASM disasm;
+		//Disassemble(insn,disasm);
+		DecodedInstruction_t disasm(insn);
+		if(disasm.setsStackPointer()) {
 			return false;
 		} else {
 			if(getenv("VERBOSE_FIX_CALLS"))
@@ -120,7 +120,7 @@ bool check_entry(bool &found, ControlFlowGraph_t* cfg)
 			}
 		}
 
-		if(strstr(disasm.CompleteInstr, "[esp]"))
+		if(strstr(disasm.getDisassembly().c_str()/* disasm.CompleteInstr*/, "[esp]"))
 		{
 			found=true;
 			if(getenv("VERBOSE_FIX_CALLS"))
@@ -154,7 +154,7 @@ bool call_needs_fix(Instruction_t* insn)
 
 	Instruction_t *target=insn->GetTarget();
 	Instruction_t *fallthru=insn->GetFallthrough();
-	DISASM disasm;
+	//DISASM disasm;
 
 	string pattern;
 
@@ -178,10 +178,6 @@ bool call_needs_fix(Instruction_t* insn)
 		return true;
 	}
 
-#if 0
-	if(fallthru->GetIndirectBranchTargetAddress()!=NULL)
-		return true;
-#else
 	virtual_offset_t addr=fallthru->GetAddress()->GetVirtualOffset();
 	RangeSet_t::iterator rangeiter=eh_frame_ranges.find(Range_t(addr,addr));
 	if(rangeiter != eh_frame_ranges.end())	// found an eh_frame addr entry for this call
@@ -189,7 +185,6 @@ bool call_needs_fix(Instruction_t* insn)
 		in_ehframe++;
 		return true;
 	}
-#endif
 
 	if (!opt_fix_icalls && insn->GetIBTargets() && insn->GetIBTargets()->size() > 0) 
 	{
@@ -202,8 +197,10 @@ bool call_needs_fix(Instruction_t* insn)
 	if(!target)
 	{
 		/* call 0's aren't to real locations */
-		insn->Disassemble(disasm);
-		if(strcmp(disasm.CompleteInstr, "call 0x00000000")==0)
+		// Disassemble(insn,disasm);
+		DecodedInstruction_t disasm(insn);
+		// if(strcmp(disasm.getDisassembly().c_str()/*CompleteInstr*/, "call 0x00000000")==0)
+		if(disasm.getOperand(0).isConstant() && disasm.getAddress()==0)
 		{
 			return false;
 		}
@@ -245,9 +242,20 @@ bool call_needs_fix(Instruction_t* insn)
 		return true;
 	}
 
+	typedef map<Function_t*, ControlFlowGraph_t*> ControlFlowGraphMap_t;
 
-	/* build a cfg for this function */
-	ControlFlowGraph_t* cfg=new ControlFlowGraph_t(func);
+	static ControlFlowGraphMap_t cfg_optimizer;
+
+	const auto is_found_it=cfg_optimizer.find(func);
+	const auto is_found=(is_found_it!=end(cfg_optimizer));
+
+	if(!is_found)
+		/* build a cfg for this function */
+		cfg_optimizer[func]=new ControlFlowGraph_t(func);
+
+	auto cfg=cfg_optimizer[func];
+	
+
 
 	assert(cfg->GetEntry());
 	
@@ -263,7 +271,7 @@ bool call_needs_fix(Instruction_t* insn)
 	/* check the entry block for thunks, etc. */
 	bool found;
 	bool ret=check_entry(found,cfg);
-	delete cfg;
+	// delete cfg;
 	if(found)
 	{
 		if(ret)
@@ -284,7 +292,8 @@ bool call_needs_fix(Instruction_t* insn)
 
 	/* now, search the function for stack references  */
 
-
+// is this even right with the assembler switch ? 
+#if 0
 	/* determine what the stack ref. would look like */
 	if(func->GetUseFramePointer())
 	{
@@ -305,9 +314,10 @@ bool call_needs_fix(Instruction_t* insn)
 	{
 		Instruction_t* itrinsn=*it;
 		/* if the disassembly contains the string mentioned */
-		DISASM disasm;
-		itrinsn->Disassemble(disasm);
-		if(strstr(disasm.CompleteInstr, pattern.c_str())!=NULL) 
+		//DISASM disasm;
+		//Disassemble(itrinsn,disasm);
+		DecodedInstruction_t disasm(itrinsn);
+		if(strstr(disasm.getDisassembly().c_str() /*disasm.CompleteInstr*/, pattern.c_str())!=NULL) 
 		{
 			found_pattern++;
 			if(getenv("VERBOSE_FIX_CALLS"))
@@ -322,6 +332,7 @@ bool call_needs_fix(Instruction_t* insn)
 			return true;
 		}
 	}
+#endif
 
 	/* otherwise, we think it's safe */
 	return false;
@@ -459,10 +470,12 @@ string adjust_esp_offset(string newbits, int offset)
 static void convert_to_jump(Instruction_t* insn, int offset)
 {
 	string newbits=insn->GetDataBits();
-	DISASM d;
-	insn->Disassemble(d);
+	//DISASM d;
+	//Disassemble(insn,d);
+	DecodedInstruction_t d(insn);
+
 	/* this case is odd, handle it specially (and more easily to understand) */
-	if(strcmp(d.CompleteInstr, "call qword [rsp]")==0)
+	if(strcmp(d.getDisassembly().c_str()/*.CompleteInstr*/, "call qword [rsp]")==0)
 	{
 		char buf[100];
 		sprintf(buf,"jmp qword [rsp+%d]", offset);
@@ -472,7 +485,7 @@ static void convert_to_jump(Instruction_t* insn, int offset)
 
 
 	/* skip over any prefixes */
-	int op_index=d.Prefix.Number;
+	int op_index=d.getPrefixCount(); // d.Prefix.Number;
 
 	// on the opcode.  assume no prefix here 	
 	switch((unsigned char)newbits[op_index])
@@ -544,10 +557,11 @@ void fix_call(Instruction_t* insn, FileIR_t *firp, bool can_unpin)
 	bool has_rex=false;
 
 	/* disassemble */
-        DISASM disasm;
+        //DISASM disasm;
+	DecodedInstruction_t disasm(insn);
 
         /* Disassemble the instruction */
-        int instr_len = insn->Disassemble(disasm);
+        int instr_len = disasm.length(); // Disassemble(insn,disasm);
 
 
 	/* if this instruction is an inserted call instruction than we don't need to 
@@ -575,7 +589,7 @@ void fix_call(Instruction_t* insn, FileIR_t *firp, bool can_unpin)
 
 	if(getenv("VERBOSE_FIX_CALLS"))
 	{
-		cout<<"Doing a fix_call on "<<std::hex<<insn->GetAddress()->GetVirtualOffset()<< " which is "<<disasm.CompleteInstr<<endl;
+		cout<<"Doing a fix_call on "<<std::hex<<insn->GetAddress()->GetVirtualOffset()<< " which is "<<disasm.getDisassembly() /*.CompleteInstr*/<<endl;
 	}
 
 
@@ -695,20 +709,12 @@ void fix_call(Instruction_t* insn, FileIR_t *firp, bool can_unpin)
 bool is_call(Instruction_t* insn)
 {
 
-        DISASM disasm;
-        memset(&disasm, 0, sizeof(DISASM));
-#if 0
-        disasm.Options = NasmSyntax + PrefixedNumeral;
-        disasm.Archi = 32;
-        disasm.EIP = (UIntPtr)insn->GetDataBits().c_str();
-        disasm.VirtualAddr = insn->GetAddress()->GetVirtualOffset();
-#endif
-
         /* Disassemble the instruction */
-        int instr_len = insn->Disassemble(disasm);
+	DecodedInstruction_t disasm(insn);
+        //int instr_len = disasm.length(); // Disassemble(insn,disasm);
 	
 
-	return (disasm.Instruction.BranchType==CallType);
+	return disasm.isCall(); // (disasm.Instruction.BranchType==CallType);
 }
 
 bool can_skip_safe_function(Instruction_t *call_insn) 
@@ -725,8 +731,7 @@ bool can_skip_safe_function(Instruction_t *call_insn)
 		return false;
 
 	/* if the call instruction isn't to a function entry point */
-	ControlFlowGraph_t* cfg=new ControlFlowGraph_t(func);
-	if(cfg->GetEntry()->GetInstructions()[0]!=target)
+	if(func->GetEntryPoint()!=target)
 	{
 		return false;
 	}
@@ -875,6 +880,7 @@ void fix_all_calls(FileIR_t* firp, bool print_stats, bool fix_all)
 	}
 }
 
+#if 0
 bool arg_has_relative(const ARGTYPE &arg)
 {
 	/* if it's relative memory, watch out! */
@@ -884,16 +890,21 @@ bool arg_has_relative(const ARGTYPE &arg)
 	
 	return false;
 }
+#endif
 
 
 //
 //  fix_other_pcrel - add relocations to other instructions that have pcrel bits
 //
-void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, UIntPtr virt_offset)
+void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 {
-	DISASM disasm;
-	insn->Disassemble(disasm);
-	int is_rel= arg_has_relative(disasm.Argument1) || arg_has_relative(disasm.Argument2) || arg_has_relative(disasm.Argument3);
+	//DISASM disasm;
+	//Disassemble(insn,disasm);
+	DecodedInstruction_t disasm(insn);
+	const auto &operands=disasm.getOperands();
+	const auto relop_it=find_if(ALLOF(operands),[](const DecodedOperand_t& op)
+		{ return op.isMemory() && op.isPcrel() ; } );
+	const bool is_rel= relop_it!=operands.end(); 
 
 	/* if this has already been fixed, we can skip it */
 	if(virt_offset==0 || virt_offset==-1)
@@ -901,26 +912,19 @@ void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, UIntPtr virt_offset)
 
 	if(is_rel)
 	{
-		ARGTYPE* the_arg=NULL;
-		if(arg_has_relative(disasm.Argument1))
-			the_arg=&disasm.Argument1;
-		if(arg_has_relative(disasm.Argument2))
-			the_arg=&disasm.Argument2;
-		if(arg_has_relative(disasm.Argument3))
-			the_arg=&disasm.Argument3;
 
-		assert(the_arg);
+		const auto the_arg=*relop_it;	
 
-		int offset=the_arg->Memory.DisplacementAddr-disasm.EIP;
+		int offset=disasm.getMemoryDisplacementOffset(the_arg, insn); /*the_arg->Memory.DisplacementAddr-disasm.EIP*/;
 		assert(offset>=0 && offset <=15);
-		int size=the_arg->Memory.DisplacementSize;
+		int size=the_arg.getMemoryDisplacementEncodingSize(); // the_arg->Memory.DisplacementSize;
 		assert(size==1 || size==2 || size==4 || size==8);
 
 		if(getenv("VERBOSE_FIX_CALLS"))
 		{
-			cout<<"Found insn with pcrel memory operand: "<<disasm.CompleteInstr
-		    	    <<" Displacement="<<std::hex<<the_arg->Memory.Displacement<<std::dec
-		    	    <<" size="<<the_arg->Memory.DisplacementSize<<" Offset="<<offset;
+			cout<<"Found insn with pcrel memory operand: "<<disasm.getDisassembly()/*.CompleteInstr */
+		    	    <<" Displacement="<<std::hex<<the_arg.getMemoryDisplacement() /*the_arg->Memory.Displacement*/<<std::dec
+		    	    <<" size="<<the_arg.getMemoryDisplacementEncodingSize() /*the_arg->Memory.DisplacementSize*/<<" Offset="<<offset;
 		}
 
 		/* convert [rip_pc+displacement] addresssing mode into [rip_0+displacement] where rip_pc is the actual PC of the insn, 
@@ -934,16 +938,16 @@ void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, UIntPtr virt_offset)
 		memcpy(cstr,data.c_str(), data.length());
 		void *offsetptr=&cstr[offset];
 
-		UIntPtr disp=the_arg->Memory.Displacement;
-		UIntPtr oldpc=virt_offset;
-		UIntPtr newdisp=disp+oldpc;
+		uintptr_t disp=the_arg.getMemoryDisplacement(); // ->Memory.Displacement;
+		uintptr_t oldpc=virt_offset;
+		uintptr_t newdisp=disp+oldpc;
 
 		assert(offset+size<=data.length());
 		
 		switch(size)
 		{
 			case 4:
-				assert( (UIntPtr)(int)newdisp == (UIntPtr)newdisp);
+				assert( (uintptr_t)(int)newdisp == (uintptr_t)newdisp);
 				*(int*)offsetptr=newdisp;
 				break;
 			case 1:
@@ -967,13 +971,13 @@ void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, UIntPtr virt_offset)
 		insn->GetRelocations().insert(reloc);
 		firp->GetRelocations().insert(reloc);
 
-		insn->Disassemble(disasm);
+		disasm=DecodedInstruction_t(insn);
 		if(getenv("VERBOSE_FIX_CALLS"))
-			cout<<" Converted to: "<<disasm.CompleteInstr<<endl;
+			cout<<" Converted to: "<<disasm.getDisassembly() /*CompleteInstr*/<<endl;
 	}
 }
 
-void fix_safefr(FileIR_t* firp, Instruction_t *insn, UIntPtr virt_offset)
+void fix_safefr(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 {
 	/* if this has already been fixed, we can skip it */
 	if(virt_offset==0 || virt_offset==-1)

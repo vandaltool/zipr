@@ -37,4 +37,4 @@ pgm=myenv.Program(libname, Split(files))
 
 install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
 Default(install)
-
+Return('install')

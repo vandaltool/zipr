@@ -275,10 +275,10 @@ bool RSS_Instrument::add_rss_push(FileIR_t* firp, Instruction_t* insn)
 
 	if(getenv("RSS_VERBOSE")!=NULL)
 	{
-		DISASM d; 
-		insn->Disassemble(d);
+		//DISASM d; 
+		//Disassemble(insn,d);
 		cout<<"Adding push instrumentation at 0x"<<std::hex<<insn->GetAddress()->GetVirtualOffset()
-			<< " disasm="<<d.CompleteInstr <<endl;
+			<< " disasm="<<insn->getDisassembly() <<endl;
 	}
 
 	if(do_zipr)
@@ -318,10 +318,10 @@ bool RSS_Instrument::add_rss_pop(FileIR_t* firp, Instruction_t* insn)
 
 	if(getenv("RSS_VERBOSE")!=NULL)
 	{
-		DISASM d; 
-		insn->Disassemble(d);
+		//DISASM d; 
+		//Disassemble(insn,d);
 		cout<<"Adding pop instrumentation at 0x"<<std::hex<<insn->GetAddress()->GetVirtualOffset()
-			<< " disasm="<<d.CompleteInstr <<endl;
+			<< " disasm="<<insn->getDisassembly() <<endl;
 	}
 	if(do_zipr)
 	{
@@ -391,9 +391,10 @@ bool RSS_Instrument::add_rss_pop(FileIR_t* firp, Instruction_t* insn)
 
 static bool is_exit_instruction(Instruction_t *insn, MEDS_AnnotationParser *meds_ap)
 {
-	DISASM d;
-	insn->Disassemble(d);
-	if(strstr(d.CompleteInstr,"ret")!=0)
+	//DISASM d;
+	//Disassemble(insn,d);
+	const auto d=DecodedInstruction_t(insn);
+	if(d.isReturn()) // strstr(d.CompleteInstr,"ret")!=0)
 		return true;
 
         assert(meds_ap);

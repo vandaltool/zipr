@@ -21,7 +21,7 @@ files=  '''
 	stackref_hash.c
 	'''
 cpppath=''' 
-	$SECURITY_TRANSFORMS_HOME/beaengine/include/
+	$SECURITY_TRANSFORMS_HOME/libIRDB/include/
 	$SECURITY_TRANSFORMS_HOME/libEXEIO/include/
 	$SECURITY_TRANSFORMS_HOME/include/
 	'''
@@ -29,9 +29,11 @@ cpppath='''
 CFLAGS="-fPIC  -DUBUNTU"
 
 myenv=myenv.Clone(CC="$CXX", CPPPATH=Split(cpppath), CFLAGS=CFLAGS)
+myenv.Append(CXXFLAGS=" -std=c++11 ")
 lib=myenv.Library(lib, Split(files))
 
 install=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
 
 Default(install)
 
+Return('lib')

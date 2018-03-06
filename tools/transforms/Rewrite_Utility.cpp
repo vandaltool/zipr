@@ -214,7 +214,7 @@ void setInstructionAssembly(FileIR_t* virp,Instruction_t *p_instr, string p_asse
 	virp->RegisterAssembly(p_instr,p_assembly);
 
 //	  p_instr->Assemble(p_assembly);
-	p_instr->SetComment(p_instr->getDisassembly());
+	p_instr->SetComment(p_assembly);
 	p_instr->SetFallthrough(p_fallThrough); 
 	p_instr->SetTarget(p_target); 
 	
@@ -298,7 +298,7 @@ string getJecxzDataBits()
 	return dataBits;	
 }
 
-Instruction_t* getHandlerCode(FileIR_t* virp, Instruction_t* fallthrough, mitigation_policy policy)
+Instruction_t* getHandlerCode(FileIR_t* virp, Instruction_t* fallthrough, mitigation_policy policy, unsigned exit_code)
 {
 	Instruction_t *handler_code ;
 	if(virp->GetArchitectureBitWidth()==32)
@@ -338,11 +338,20 @@ Instruction_t* getHandlerCode(FileIR_t* virp, Instruction_t* fallthrough, mitiga
 		assert(virp->GetArchitectureBitWidth()==64);
 		if (policy == P_CONTROLLED_EXIT) 
 		{
+			string exit_code_str = "mov rdi, " + std::to_string(exit_code);
 			handler_code = allocateNewInstruction(virp,fallthrough);
-			setInstructionAssembly(virp,handler_code,"mov rdi, 189",NULL,NULL);
+
+			setInstructionAssembly(virp,handler_code,exit_code_str.c_str(), NULL,NULL);
 			Instruction_t* syscall_num = insertAssemblyAfter(virp,handler_code,"mov rax, 60",NULL);
 			Instruction_t* syscall_i = insertAssemblyAfter(virp,syscall_num,"syscall",NULL);
 			syscall_i->SetFallthrough(fallthrough);
+		}
+		else if (policy == P_HARD_EXIT) 
+		{
+			handler_code= allocateNewInstruction(virp,fallthrough);
+			setInstructionAssembly(virp,handler_code,"hlt",NULL,NULL);
+			handler_code->SetComment("hlt ; hard exit requested");
+			handler_code->SetFallthrough(fallthrough);
 		}
 		else
 		{

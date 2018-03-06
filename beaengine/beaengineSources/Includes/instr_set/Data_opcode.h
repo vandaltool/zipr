@@ -92,10 +92,10 @@ void (__bea_callspec__ *opcode_map2[])(PDISASM) = {
 /*9*/FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, fmaddsub132p,fmsubadd132p,fmadd132p,  fmadd132s , fmsub132p,  fmsub132s,  fnmadd132p, fnmadd132s, fnmsub132p, fnmsub132s,
 /*a*/FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, fmaddsub213p,fmsubadd213p,fmadd213p,  fmadd213s , fmsub213p,  fmsub213s,  fnmadd213p, fnmadd213s, fnmsub213p, fnmsub213s,
 /*b*/FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, fmaddsub231p,fmsubadd231p,fmadd231p,  fmadd231s , fmsub231p,  fmsub231s,  fnmadd231p, fnmadd231s, fnmsub231p, fnmsub231s,
-/*c*/FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,  FailDecode,  FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*c*/FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,  FailDecode,  sha1nexte,  sha1msg1,   sha1msg2,   sha256rnds2,sha256msg1, sha256msg2, FailDecode, FailDecode,
 /*d*/FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,  FailDecode,  FailDecode, FailDecode, FailDecode, aesimc    , aesenc    , aesenclast, aesdec    , aesdeclast,
 /*e*/FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,  FailDecode,  FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
-/*e*/crc32_GvEb, crc32_GvEv, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,  FailDecode,  FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*f*/crc32_GvEb, crc32_GvEv, andn      , blsi      , FailDecode, bzhi      , mulx      ,  bextr     ,  FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
  };
 
 /* ===============================================================================  */
@@ -110,7 +110,7 @@ void (__bea_callspec__ *opcode_map2[])(PDISASM) = {
 /*0*/    FailDecode, FailDecode, FailDecode, FailDecode, vpermilps2, FailDecode, vperm2f128, FailDecode, roundps_  , roundpd_  , roundss_  , roundsd_  , blendps_  , blendpd_  , pblendw_  , palignr_  ,
 /*1*/    FailDecode, FailDecode, FailDecode, FailDecode, pextrb_   , pextrw2_  , pextrd_   , extractps_, vinsrtf128, vextraf128, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
 /*2*/    pinsrb_   , insertps_ , pinsrd_   , FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
-/*3*/    FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*3*/    FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, vinsrti128, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
 /*4*/    dpps_     , dppd_     , mpsadbw_  , FailDecode, pclmulqdq_, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, vblendvpd , FailDecode, FailDecode, FailDecode, FailDecode,
 /*5*/    FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, vfmaddsubps,vfmaddsubpd,vfmsubaddps,vfmsubaddpd,
 /*6*/    pcmpestrm_, pcmpestri_, pcmpistrm_, pcmpistri_, FailDecode, FailDecode, FailDecode, FailDecode, vfmaddps  , vfmaddpd  , vfmaddss  , vfmaddsd  , vfmsubps  , vfmsubpd  , vfmsubss  , vfmsubsd  ,
@@ -119,10 +119,39 @@ void (__bea_callspec__ *opcode_map2[])(PDISASM) = {
 /*9*/    FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
 /*a*/    FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
 /*b*/    FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
-/*c*/    FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*c*/    FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, sha1rnds4,  FailDecode, FailDecode, FailDecode,
 /*d*/    FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, aeskeygen ,
 /*e*/    FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
-/*f*/    FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*f*/    rorx      , FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, sarx, 	 FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+ };
+
+// ===============================================================================  
+//							                           
+//							                           
+// opcode map for XOP extensions that start with a "xop" prefix (identical to vex, 
+// except first byte is 8f).
+// where XOP.mmmmm==8
+//	
+//
+// ===============================================================================  
+ void (__bea_callspec__ *opcode_map_xop_mm8[])(PDISASM) = {
+//    0           1           2           3           4           5           6           7           8           9           a           b           c           d           e           f 
+/*0*/ FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*1*/ FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*2*/ FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*3*/ FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*4*/ FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*5*/ FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*6*/ FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*7*/ FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*8*/ FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*9*/ FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*a*/ FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*b*/ FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*c*/ FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*d*/ FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*e*/ FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*f*/ FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode
  };
 
 

@@ -34,7 +34,6 @@
 #include <stdio.h>
 
 #include <exeio.h>
-#include "beaengine/BeaEngine.h"
 #include "check_thunks.hpp"
 
 using namespace libIRDB;
@@ -54,6 +53,10 @@ using namespace EXEIO;
 //
 // data structures
 //
+
+
+class ibt_provenance_t; 
+static inline std::ostream& operator<<(std::ostream& out, const ibt_provenance_t& prov);
 
 class ibt_provenance_t
 {
@@ -107,11 +110,59 @@ class ibt_provenance_t
 		bool areOnlyTheseSet(const ibt_provenance_t t) const { return (value&~t.value) == 0; }
 		bool isEmpty() const { return value==0; }
 
+
 	private:
 
 		provtype_t value;
+		friend ostream& operator<<(ostream& out, const ibt_provenance_t& prov);
 		
 };
+
+static inline std::ostream& operator<<(std::ostream& out, const ibt_provenance_t& prov)
+{
+#define print_prov(a) 						\
+{						 		\
+	if(prov.value&(ibt_provenance_t::a))			\
+	{ 							\
+		const auto foo=std::string(#a);			\
+		out<<foo.substr(4,foo.length())<<",";		\
+	}							\
+}		
+	print_prov(ibtp_eh_frame);
+	print_prov(ibtp_user);
+	print_prov(ibtp_gotplt);
+	print_prov(ibtp_initarray);
+	print_prov(ibtp_finiarray);
+	print_prov(ibtp_entrypoint);
+	print_prov(ibtp_data);
+	print_prov(ibtp_text);
+	print_prov(ibtp_texttoprintf);
+	print_prov(ibtp_dynsym);
+	print_prov(ibtp_symtab);
+	print_prov(ibtp_stars_ret);
+	print_prov(ibtp_stars_switch);
+	print_prov(ibtp_stars_data);
+	print_prov(ibtp_stars_unknown);
+	print_prov(ibtp_stars_addressed);
+	print_prov(ibtp_stars_unreachable);
+	print_prov(ibtp_switchtable_type1);
+	print_prov(ibtp_switchtable_type2);
+	print_prov(ibtp_switchtable_type3);
+	print_prov(ibtp_switchtable_type4);
+	print_prov(ibtp_switchtable_type5);
+	print_prov(ibtp_switchtable_type6);
+	print_prov(ibtp_switchtable_type7);
+	print_prov(ibtp_switchtable_type8);
+	print_prov(ibtp_switchtable_type9);
+	print_prov(ibtp_switchtable_type10);
+	print_prov(ibtp_rodata);
+	print_prov(ibtp_unknown);
+	print_prov(ibtp_got);
+	print_prov(ibtp_ret);
+#undef print_prov
+
+	return out;
+}
 
 
 /*

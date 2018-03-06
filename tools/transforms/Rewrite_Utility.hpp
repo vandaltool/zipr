@@ -19,20 +19,10 @@
  */
 
 #include <libIRDB-core.hpp>
+#include "globals.h"
 
 using namespace libIRDB;
 using namespace std;
-
-// make sure these match values in detector_handlers.h in the strata library
-enum mitigation_policy 
-{
-	P_NONE=0, 
-	P_CONTINUE_EXECUTION, 
-	P_CONTROLLED_EXIT, 
-	P_CONTINUE_EXECUTION_SATURATING_ARITHMETIC, 
-	P_CONTINUE_EXECUTION_WARNONLY
-};
-
 
 //The "first" instruction will have its contents replaced and a duplicate of "first" will be in the follow of first. 
 //This duplicate is returned since the user already has a pointer to first. 
@@ -68,7 +58,7 @@ string getJzDataBits();
 string getJnzDataBits();
 string getJecxzDataBits();
 string getRetDataBits();
-Instruction_t* getHandlerCode(FileIR_t* virp, Instruction_t* fallthrough, mitigation_policy policy );
+Instruction_t* getHandlerCode(FileIR_t* virp, Instruction_t* fallthrough, mitigation_policy policy, unsigned exitcode );
 
 //The esp offset is allowed to be negative, and is handled properly.
 //Returns the pointer for the copied "first" instruction, which is at the

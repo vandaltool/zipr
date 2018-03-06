@@ -9,7 +9,6 @@ cpppath='''
 	 $SECURITY_TRANSFORMS_HOME/include 
 	 $SECURITY_TRANSFORMS_HOME/libIRDB/include 
 	 $SECURITY_TRANSFORMS_HOME/libEXEIO/include 
-	 $SECURITY_TRANSFORMS_HOME/beaengine/include 
 	 $SECURITY_TRANSFORMS_HOME/tools/transforms
 	 $SECURITY_TRANSFORMS_HOME/xform
 	 $SECURITY_TRANSFORMS_HOME/libMEDSannotation/include
@@ -26,3 +25,4 @@ myenv.Append(CPPFLAGS=CPPFLAGS)
 pgm=myenv.Program(target="hook_start.exe", source=Split("hook_start.cpp hook_start_driver.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
 install=myenv.Install("$SECURITY_TRANSFORMS_HOME/plugins_install/", pgm)
 Default(install)
+Return('install')

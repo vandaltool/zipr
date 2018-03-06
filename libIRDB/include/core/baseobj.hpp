@@ -19,9 +19,6 @@
  */
 
 
-#include <stdint.h>
-#include <set>
-
 typedef uintptr_t virtual_offset_t;
 typedef int db_id_t;
 

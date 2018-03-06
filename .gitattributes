@@ -197,10 +197,17 @@ libEXEIO/src/exeio_src.cpp -text
 libEXEIO/test/SConscript -text
 libEXEIO/test/SConstruct -text
 libEXEIO/test/main.cpp -text
+libElfDep/SConscript -text
+libElfDep/SConstruct -text
+libElfDep/include/libElfDep.hpp -text
+libElfDep/src/SConscript -text
+libElfDep/src/SConstruct -text
+libElfDep/src/elfdep.cpp -text
 libIRDB/LICENSE.txt -text
 libIRDB/Makefile.in -text
 libIRDB/SConscript -text
 libIRDB/SConstruct -text
+libIRDB/include/bea_deprecated.hpp -text
 libIRDB/include/cfg/BasicBlock.hpp -text
 libIRDB/include/cfg/CFG.hpp -text
 libIRDB/include/cfg/callgraph.hpp -text
@@ -210,6 +217,10 @@ libIRDB/include/core/archdesc.hpp -text
 libIRDB/include/core/baseobj.hpp -text
 libIRDB/include/core/basetypes.hpp -text
 libIRDB/include/core/dbinterface.hpp -text
+libIRDB/include/core/decode.hpp -text
+libIRDB/include/core/decode_bea.hpp -text
+libIRDB/include/core/decode_cs.hpp -text
+libIRDB/include/core/decode_meta.hpp -text
 libIRDB/include/core/doip.hpp -text
 libIRDB/include/core/eh.hpp -text
 libIRDB/include/core/file.hpp -text
@@ -217,6 +228,9 @@ libIRDB/include/core/fileir.hpp -text
 libIRDB/include/core/function.hpp -text
 libIRDB/include/core/icfs.hpp -text
 libIRDB/include/core/instruction.hpp -text
+libIRDB/include/core/operand_bea.hpp -text
+libIRDB/include/core/operand_cs.hpp -text
+libIRDB/include/core/operand_meta.hpp -text
 libIRDB/include/core/pqxxdb.hpp -text
 libIRDB/include/core/reloc.hpp -text
 libIRDB/include/core/scoop.hpp -text
@@ -247,6 +261,9 @@ libIRDB/src/core/address.cpp -text
 libIRDB/src/core/all.hpp -text
 libIRDB/src/core/baseobj.cpp -text
 libIRDB/src/core/dbinterface.cpp -text
+libIRDB/src/core/decode_bea.cpp -text
+libIRDB/src/core/decode_cs.cpp -text
+libIRDB/src/core/decode_meta.cpp -text
 libIRDB/src/core/eh.cpp -text
 libIRDB/src/core/file.cpp -text
 libIRDB/src/core/fileir.cpp -text
@@ -254,6 +271,9 @@ libIRDB/src/core/function.cpp -text
 libIRDB/src/core/generate_spri.cpp -text
 libIRDB/src/core/icfs.cpp -text
 libIRDB/src/core/instruction.cpp -text
+libIRDB/src/core/operand_bea.cpp -text
+libIRDB/src/core/operand_cs.cpp -text
+libIRDB/src/core/operand_meta.cpp -text
 libIRDB/src/core/pqxxdb.cpp -text
 libIRDB/src/core/reloc.cpp -text
 libIRDB/src/core/scoop.cpp -text
@@ -880,6 +900,7 @@ plugins_install/stratafy_with_pc_confine.sh -text
 plugins_install/test.exe -text
 plugins_install/test.sh -text
 plugins_install/watchdog.sh -text
+/svn.externals.uva_dev -text
 third_party/ELFkickers-3.0a.tar.gz -text
 third_party/ELFkickers-3.0a/COPYING -text
 third_party/ELFkickers-3.0a/Changelog -text
@@ -1010,7 +1031,6 @@ third_party/do_bea_update.sh -text
 third_party/elfio-2.2.tar.gz -text
 third_party/elfio.hpp -text
 third_party/sqlite-autoconf-3071300.tar.gz -text
-tools/Makefile.in -text
 tools/SConscript -text
 tools/SConstruct -text
 tools/absolutify/SConscript -text
@@ -1120,7 +1140,6 @@ tools/inferfn/SConstruct -text
 tools/inferfn/inferfn.cpp -text
 tools/inferfn/inferfn.hpp -text
 tools/inferfn/inferfn_driver.cpp -text
-tools/meds2pdb/Makefile.in -text
 tools/meds2pdb/SConscript -text
 tools/meds2pdb/SConstruct -text
 tools/meds2pdb/meds2pdb.cpp -text
@@ -1249,6 +1268,8 @@ tools/transforms/globals.h -text
 tools/transforms/integertransformdriver.cpp -text
 tools/transforms/nulltransform.cpp -text
 tools/transforms/sample_meds_int.annot -text
+tools/transforms/tests/test_buffer_overflow.c -text
+tools/transforms/tests/test_buffer_overflow.sh -text
 tools/transforms/transformutils.cpp -text
 tools/transforms/transformutils.h -text
 xform/Makefile.in -text

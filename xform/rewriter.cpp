@@ -22,10 +22,8 @@
 #include <string>
 #include <set>
 #include <stdlib.h>
+#include <libIRDB-core.hpp>
 
-
-
-#include "beaengine/BeaEngine.h"
 
 #include "all.h"
 #include "targ-config.h"
@@ -37,6 +35,7 @@
 
 
 using namespace std;
+using namespace libIRDB;
 
 Rewriter::Rewriter(char *p_elfPath, char *p_annotationFilePath)
 {
@@ -623,8 +622,8 @@ any esp access outside this region (esp + K) >= (esp + size) can be xformed
 
 after_loop:
 
-  // for each instruction in a function, dissassemble and stash away assembly string
-	dissassemble();
+  // for each instruction in a function, disassemble and stash away assembly string
+	disassemble();
 }
 
 
@@ -633,7 +632,7 @@ after_loop:
 */
 void Rewriter::readElfFile(char p_filename[])
 {
-	char buf[1000];
+	static char buf[64*1024];
 	char* objdump=getenv("PS_OBJDUMP");
 	if(!objdump)
 		objdump=strdup("objdump");
@@ -655,15 +654,20 @@ void Rewriter::readElfFile(char p_filename[])
 
 	pclose(pin);
 
-	dissassemble();
+	disassemble();
 }
 
 
 /*
-*   for all instructions, dissassemble them using the BeaEngine
+*   for all instructions, disassemble them using the BeaEngine
 */
-void Rewriter::dissassemble()
+void Rewriter::disassemble()
 {
+	if(getElfReader()->isElf64() || getElfReader()->isPe64())
+		FileIR_t::SetArchitectureBitWidth(64);
+	else
+		FileIR_t::SetArchitectureBitWidth(32);
+
   	// for every instruction, grab from ELF
   	// disassemble
 
@@ -676,36 +680,31 @@ void Rewriter::dissassemble()
       		wahoo::Instruction *instr = instructions[j];
 
       		// disassemble using BeaEngine
-      		DISASM disasm;
-      		memset(&disasm, 0, sizeof(DISASM));
+      		//DISASM disasm;
+      		//memset(&disasm, 0, sizeof(DISASM));
 
-      		disasm.Options = NasmSyntax + PrefixedNumeral;
-
-		if(getElfReader()->isElf64() || getElfReader()->isPe64())
-      			disasm.Archi = 64;
-		
-		else
-      			disasm.Archi = 32;
+      		//disasm.Options = NasmSyntax + PrefixedNumeral;
 
 
-      		disasm.EIP = (UIntPtr) getElfReader()->getInstructionBuffer(instr->getAddress());
-      		disasm.VirtualAddr = instr->getAddress();
+      		//disasm.EIP = (UIntPtr) getElfReader()->getInstructionBuffer(instr->getAddress());
+      		//disasm.VirtualAddr = instr->getAddress();
 
-      		int instr_len = 0;
+		const auto instr_data=(void*)(getElfReader()->getInstructionBuffer(instr->getAddress()));
+		const auto disasm=DecodedInstruction_t(instr->getAddress(), instr_data, 16);
+
 
 		/* maybe this isn't in a section so getInstructionBuffer returns 0 */
-		if(disasm.EIP)
-			instr_len=Disasm(&disasm);
 
-		if(instr_len>0)
+		if(disasm.valid())
 		{
-      			instr->setAsm(string(disasm.CompleteInstr));  
+      			const auto instr_len = disasm.length() ; //Disasm(&disasm);
+      			instr->setAsm(disasm.getDisassembly());
       			instr->setSize(instr_len);
-      			instr->setData((void*)disasm.EIP);
+      			instr->setData(instr_data);
 		}
 		else
 		{
-			cerr<<"BeaEngine has decided that instruction at "<<hex
+			cerr<<"Decided that instruction at "<<hex
 				<<instr->getAddress()<<dec<<" is bogus."<<endl;
 			/* bogus intruction, remove it */
 			m_instructions[instr->getAddress()]=NULL;

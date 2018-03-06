@@ -10,7 +10,6 @@ myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 cpppath=''' 
 	 $SECURITY_TRANSFORMS_HOME/include 
 	 $SECURITY_TRANSFORMS_HOME/libIRDB/include 
-	 $SECURITY_TRANSFORMS_HOME/beaengine/include 
 	 $SECURITY_TRANSFORMS_HOME/libMEDSannotation/include 
 	 $SECURITY_TRANSFORMS_HOME/tools/transforms 
 	'''
@@ -29,15 +28,17 @@ LIBPATH="$SECURITY_TRANSFORMS_HOME/lib"
 LIBS=Split(env.subst('$BASE_IRDB_LIBS')+ " IRDB-cfg IRDB-syscall IRDB-util rewrite ")
 
 pgm=myenv.Program("cgclibc.exe",  files1,  LIBPATH=LIBPATH, LIBS=LIBS)
-install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
-Default(install)
+install1=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
+Default(install1)
 
 pgm=myenv.Program("display_functions.exe",  files2,  LIBPATH=LIBPATH, LIBS=LIBS)
-install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
-Default(install)
+install2=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
+Default(install2)
 
 pgm=myenv.Program("infer_syscall_wrappers.exe",  files3,  LIBPATH=LIBPATH, LIBS=LIBS)
-install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
-Default(install)
+install3=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
+Default(install3)
 
+ret=[] + lib1 + lib2 + lib3;
 
+Return('ret')

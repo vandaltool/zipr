@@ -25,6 +25,7 @@
 #include "utils.hpp"
 #include "scdi_instr.hpp"
 #include "Rewrite_Utility.hpp"
+//#include <bea_deprecated.hpp>
 
 using namespace std;
 using namespace libIRDB;
@@ -223,12 +224,13 @@ bool SimpleCDI_Instrument::add_scdi_instrumentation(Instruction_t* insn)
 	}
 
 	ICFS_t* ibts=insn->GetIBTargets();
-	DISASM d;
-	insn->Disassemble(d);
+	//DISASM d;
+	//Disassemble(insn,d);
+	const auto d=DecodedInstruction_t(insn);
 
 	if(getenv("SimpleCDI_VERBOSE")!=NULL && ibts)
 	{
-		cout <<"["<<string(d.CompleteInstr)<<"] [" << string(d.Instruction.Mnemonic)<< "] IBTargets size: " << ibts->size() << " analysis_status: " << ibts->GetAnalysisStatus() << endl;
+		cout <<"["<<d.getDisassembly()<<"] [" << d.getMnemonic()<< "] IBTargets size: " << ibts->size() << " analysis_status: " << ibts->GetAnalysisStatus() << endl;
 	}
 
 	if (is_return(insn))
@@ -263,14 +265,16 @@ bool SimpleCDI_Instrument::add_scdi_instrumentation(Instruction_t* insn)
 		}
 	}
 
-	assert(strstr("ret ", d.Instruction.Mnemonic)==NULL);
-	assert(strstr("retn ", d.Instruction.Mnemonic)==NULL);
+	//assert(strstr("ret ", d.Instruction.Mnemonic)==NULL);
+	//assert(strstr("retn ", d.Instruction.Mnemonic)==NULL);
+	assert(!d.isReturn()) ;
 	
 	// pre-instrument
 	// push reg
 	// mov reg, <target>
 	string reg="rcx";
-	string addr_mode=(strstr(d.CompleteInstr," "));
+	//string addr_mode=(strstr(d.CompleteInstr," "));
+	string addr_mode=d.getOperand(0).getString();
 
 	Instruction_t* tmp=insn;
 	insertAssemblyBefore(firp,tmp,"push "+reg);
@@ -309,9 +313,10 @@ bool SimpleCDI_Instrument::is_return(Instruction_t* insn)
 {
 	if (insn) 
 	{
-		DISASM d;
-		insn->Disassemble(d);
-		return string(d.Instruction.Mnemonic) == string("ret "); 
+		//DISASM d;
+		//Disassemble(insn,d);
+		const auto d=DecodedInstruction_t(insn);
+		return d.isReturn(); // string(d.Instruction.Mnemonic) == string("ret "); 
 
 		// FIXME: handle retn immd, but this means the instrumentation should pop/lea immd
 	/*	return (string(d.Instruction.Mnemonic) == string("ret ") ||

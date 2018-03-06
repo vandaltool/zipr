@@ -28,7 +28,8 @@
 #include <string.h>
 #include <iostream>
 #include <pqxx/pqxx>
-#include <beaengine/BeaEngine.h>
+#include <ctime>
+#include <stdint.h>
 
 namespace libIRDB 
 {
@@ -57,5 +58,7 @@ class Instruction_t; // forward decl for many classes
 #include <core/pqxxdb.hpp>
 
 };
+
+#include <core/decode.hpp>
 
 #endif

@@ -13,8 +13,6 @@ files=  '''
 cpppath=''' 
 	$SECURITY_TRANSFORMS_HOME/include/
 	$SECURITY_TRANSFORMS_HOME/libIRDB/include/
-	$SECURITY_TRANSFORMS_HOME/beaengine/include
-	$SECURITY_TRANSFORMS_HOME/beaengine/beaengineSources/Includes/
 	'''
 
 #myenv.Append(CCFLAGS=" -Wall -W -Wextra -Wconversion ")
@@ -26,3 +24,4 @@ lib=myenv.Library(libname, Split(files))
 install=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
 Default(install)
 
+Return('install')

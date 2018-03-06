@@ -10,7 +10,6 @@ cpppath='''
 	 $SECURITY_TRANSFORMS_HOME/include 
 	 $SECURITY_TRANSFORMS_HOME/libIRDB/include 
 	 $SECURITY_TRANSFORMS_HOME/libMEDSannotation/include 
-	 $SECURITY_TRANSFORMS_HOME/beaengine/include 
 	 $SECURITY_TRANSFORMS_HOME/tools/transforms 
 	'''
 
@@ -26,5 +25,4 @@ pgm=myenv.Program(pgm,  files,  LIBPATH=LIBPATH, LIBS=LIBS)
 install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
 Default(install)
 
-	
-	
+Return('install')

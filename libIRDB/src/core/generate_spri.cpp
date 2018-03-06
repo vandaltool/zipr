@@ -26,9 +26,9 @@
 #include <fstream>
 #include <stdlib.h>
 #include <map>
-#include "beaengine/BeaEngine.h"
 #include <string.h>
 #include <assert.h>
+//#include <bea_deprecated.hpp>
 
 #undef EIP
 
@@ -71,26 +71,31 @@ static string addressify(Instruction_t* insn);
 //
 // determine if this branch has a short offset that can't be represented as a long branch
 //
-static bool needs_short_branch_rewrite(Instruction_t* newinsn, const DISASM &disasm)
+static bool needs_short_branch_rewrite(Instruction_t* newinsn, const DecodedInstruction_t &disasm)
 {
-	if   (	   strstr(disasm.Instruction.Mnemonic, "jecxz" ) 
-		|| strstr(disasm.Instruction.Mnemonic, "jrcxz" ) 
-		|| strstr(disasm.Instruction.Mnemonic, "loop"  ) 
-		|| strstr(disasm.Instruction.Mnemonic, "loopne") 
-		|| strstr(disasm.Instruction.Mnemonic, "loope" ) )
+	if   (	   (disasm.getMnemonic()== "jecxz" ) 
+		|| (disasm.getMnemonic()== "jrcxz" ) 
+		|| (disasm.getMnemonic()== "loop"  ) 
+		|| (disasm.getMnemonic()== "loopne") 
+		|| (disasm.getMnemonic()== "loope" ) )
 		return true;
 
 	/* 64-bit has more needs than this */
-	if(disasm.Archi==32)
+	// if(disasm.Archi==32)
+	if(FileIR_t::GetArchitectureBitWidth()==32)
 		return false;
 
-	if(disasm.Instruction.BranchType==0)		/* non-branches, jumps, calls and returns don't need this rewrite */
+	// if(disasm.Instruction.BranchType==0)		/* non-branches, jumps, calls and returns don't need this rewrite */
+	if(!disasm.isBranch())
 		return false;
-	if(disasm.Instruction.BranchType==JmpType)
+	// if(disasm.Instruction.BranchType==JmpType)
+	if(disasm.isUnconditionalBranch())
 		return false;
-	if(disasm.Instruction.BranchType==CallType)
+	// if(disasm.Instruction.BranchType==CallType)
+	if(disasm.isCall())
 		return false;
-	if(disasm.Instruction.BranchType==RetType)
+	// if(disasm.Instruction.BranchType==RetType)
+	if(disasm.isReturn())
 		return false;
 
 	/* all other branches (on x86-64) need further checking */
@@ -278,12 +283,12 @@ bool convert_jump_for_64bit(Instruction_t* newinsn, string &final, string &emit_
 	return true;
 }
 
-void emit_jump(FileIR_t* fileIRp, ostream& fout, DISASM& disasm, Instruction_t* newinsn, Instruction_t *old_insn, string & original_target, string &emit_later)
+void emit_jump(FileIR_t* fileIRp, ostream& fout, const DecodedInstruction_t& disasm, Instruction_t* newinsn, Instruction_t *old_insn, string & original_target, string &emit_later)
 {
 
 	string label=labelfy(newinsn);
-	string complete_instr=string(disasm.CompleteInstr);
-	string address_string=string(disasm.Argument1.ArgMnemonic);
+	string complete_instr=disasm.getDisassembly();
+	string address_string=disasm.getOperand(0).getString();
 	bool converted=false;
 
 
@@ -316,15 +321,19 @@ void emit_jump(FileIR_t* fileIRp, ostream& fout, DISASM& disasm, Instruction_t* 
 
 	
 		/* sanity, no segment registers for absolute mode */
-		assert(disasm.Argument1.SegmentReg==0);
+		//assert(disasm.Argument1.SegmentReg==0);
 
-		if(disasm.Archi==64)
+		// if(disasm.Archi==64)
+		if(FileIR_t::GetArchitectureBitWidth()==64)
 			converted=convert_jump_for_64bit(newinsn,final, emit_later,new_target);
 
 		fout<<final<<endl;
 
 		if (new_target.c_str()[0]=='0')
 		{
+assert(0); 
+#if 0
+this will never work again?
 			// if we converted to an indirect jump, do a 64-bit reloc 
 			if(converted)
 			{
@@ -348,6 +357,7 @@ void emit_jump(FileIR_t* fileIRp, ostream& fout, DISASM& disasm, Instruction_t* 
 				/* other jcc'often use a 2-byte opcode for far jmps (which is what spri will emit) */
 				emit_relocation(fileIRp, fout,2,"32-bit",newinsn);
 			}
+#endif
 		}
 	}
 	else 	/* this instruction has a target, but it's not in the DB */
@@ -355,6 +365,8 @@ void emit_jump(FileIR_t* fileIRp, ostream& fout, DISASM& disasm, Instruction_t* 
 		/* so we'll just emit the instruction and let it go back to the application text. */	
 		fout<<complete_instr<<endl;
 // needs relocation info.
+#if 0
+// never to work again?
 		if(complete_instr.compare("call 0x00000000")==0 ||
 		   complete_instr.compare("jmp 0x00000000")==0
 		  )
@@ -377,6 +389,7 @@ void emit_jump(FileIR_t* fileIRp, ostream& fout, DISASM& disasm, Instruction_t* 
 				assert(strstr(fileIRp->GetFile()->GetURL().c_str(),"a.ncexe")!=0);
 			}
 		}
+#endif
 	}
 }
 
@@ -391,12 +404,15 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 	Instruction_t* old_insn=insnMap[newinsn];
 
 	// disassemble using BeaEngine
-	DISASM disasm;
+	// DISASM disasm;
 
 	/* Disassemble the instruction */
-	int instr_len = newinsn->Disassemble(disasm);
+	//int instr_len = Disassemble(newinsn,disasm);
+	const auto disasm=DecodedInstruction_t(newinsn);
 
 
+// not needed after library fix.
+#if 0
 	/* if this instruction has a prefix, re-disassemble it showing the segment regs */
 	if(
 		disasm.Prefix.FSPrefix || 
@@ -418,11 +434,12 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 		/* Disassemble the instruction */
 		int instr_len = Disasm(&disasm);
 	}
+#endif
 
 
 	string label=labelfy(newinsn);
-	string complete_instr=string(disasm.CompleteInstr);
-	string address_string=string(disasm.Argument1.ArgMnemonic);
+	string complete_instr=disasm.getDisassembly(); //string(disasm.CompleteInstr);
+	string address_string=disasm.getOperand(0).getString(); // string(disasm.Argument1.ArgMnemonic);
 
 	/* Emit any callback functions */
 	if (!newinsn->GetCallback().empty())
@@ -437,8 +454,8 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 
 	/* emit the actual instruction from the database */
 	if( 
-	   strstr(disasm.CompleteInstr,"jmp far")!=0 || 
-	   strstr(disasm.CompleteInstr,"call far")!=0
+	   strstr(disasm.getDisassembly().c_str(),"jmp far")!=0 || 
+	   strstr(disasm.getDisassembly().c_str(),"call far")!=0
 	  )
 	{
 		fout<<"\t hlt " << endl;
@@ -446,9 +463,12 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 
 	/* if it's a branch instruction, we have extra work to do */
 	else if(
-		(disasm.Instruction.BranchType!=0) &&                  // it is a branch
-		(disasm.Instruction.BranchType!=RetType) &&            // and not a return
-		(disasm.Argument1.ArgType & CONSTANT_TYPE)!=0          // and has a constant argument type 1
+		//(disasm.Instruction.BranchType!=0) &&                  // it is a branch
+		//(disasm.Instruction.BranchType!=RetType) &&            // and not a return
+		//(disasm.Argument1.ArgType & CONSTANT_TYPE)!=0          // and has a constant argument type 1
+		disasm.isBranch()  &&
+		!disasm.isReturn() &&
+		disasm.getOperand(0).isConstant() 
 	  )
 	{
 		emit_jump(fileIRp, fout, disasm,newinsn,old_insn, original_target, emit_later);
@@ -460,7 +480,11 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 		/* beaEngine kinda sucks and does some non-nasmness. */
 		
 		/* in this case, we look for an "lea <reg>, dword [ addr ]" and remove the "dword" part */
-		if(strstr(disasm.CompleteInstr,"lea ") != NULL )
+		// if(strstr(disasm.CompleteInstr,"lea ") != NULL )
+
+// not needed after bea and/or libdecode fixes.
+#if 0
+		if(disasm.getMnemonic()=="lea")
 		{
 			char* a=strstr(disasm.CompleteInstr, "dword ");
 			if(a!=NULL)
@@ -473,9 +497,11 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 			}
 		}
 
+
 		/* In this case, we look for "mov*x dstreg, srcreg" and convert srcreg to an appropriate size */
-		if(	strstr(disasm.CompleteInstr, "movzx ") || 
-			strstr(disasm.CompleteInstr, "movsx ") )
+		//if(	strstr(disasm.CompleteInstr, "movzx ") || 
+		//	strstr(disasm.CompleteInstr, "movsx ") )
+		if(	disasm.getMnemonic()== "movzx" || disasm.getMnemonic()== "movsx" )
 		{
 			if( disasm.Instruction.Opcode==0xfbe || disasm.Instruction.Opcode==0xfb6 ) 
 			{
@@ -519,8 +545,9 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 		{
 			disasm.CompleteInstr[8]='\0';
 		}
+#endif
 			
-		fout<<disasm.CompleteInstr;
+		fout<<disasm.getDisassembly();
 		fout<<endl;
 	}
 
@@ -700,16 +727,21 @@ static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& f
 	}
 	else
 	{
-		DISASM disasm;
-		disasm.Options = NasmSyntax + PrefixedNumeral + ShowSegmentRegs;
-		disasm.Archi = fileIRp->GetArchitectureBitWidth();
-		disasm.EIP = (UIntPtr)newinsn->GetDataBits().c_str();
-		disasm.VirtualAddr = old_insn ? old_insn->GetAddress()->GetVirtualOffset() : 0;
+		//DISASM disasm;
+		//disasm.Options = NasmSyntax + PrefixedNumeral + ShowSegmentRegs;
+		//disasm.Archi = fileIRp->GetArchitectureBitWidth();
+		//disasm.EIP = (UIntPtr)newinsn->GetDataBits().c_str();
+		//disasm.VirtualAddr = old_insn ? old_insn->GetAddress()->GetVirtualOffset() : 0;
+		const auto disasm=DecodedInstruction_t(newinsn);
 
 		/* Disassemble the instruction */
-		int instr_len = Disasm(&disasm);
+		//int instr_len = Disasm(&disasm);
+		assert(disasm.valid());
+		int instr_len = disasm.length();
+		
 
-		if( disasm.Instruction.BranchType!=RetType && disasm.Instruction.BranchType!=JmpType ) 
+		//if( disasm.Instruction.BranchType!=RetType && disasm.Instruction.BranchType!=JmpType ) 
+		if( !disasm.isReturn() && !disasm.isUnconditionalBranch())
 		{
 			assert(old_insn);	/* it's an error to insert a new, non-unconditional branch instruction
 						 * and not specify it's fallthrough */

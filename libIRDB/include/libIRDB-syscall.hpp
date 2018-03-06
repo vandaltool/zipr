@@ -33,9 +33,8 @@
 
 namespace libIRDB 
 {
-
 #include <syscall/syscall.hpp>
-
 };
+
 
 #endif

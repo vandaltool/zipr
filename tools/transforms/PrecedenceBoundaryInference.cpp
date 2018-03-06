@@ -21,7 +21,7 @@
 #include "OffsetInference.hpp"
 #include "PrecedenceBoundaryInference.hpp"
 #include "General_Utility.hpp"
-#include "beaengine/BeaEngine.h"
+//#include "beaengine/BeaEngine.h"
 #include <cassert>
 #include <iostream>
 #include <cstdlib>

@@ -29,29 +29,43 @@ using namespace std;
 // Does instruction potentially write to a parameter to a call?
 bool libIRDB::IsParameterWrite(const FileIR_t *firp, Instruction_t* insn, string& output_dst)
 {
-	auto d=DISASM({0});
-	insn->Disassemble(d);
-	if(d.Argument1.AccessMode!=WRITE)
-	{
+//	auto d=DISASM({0});
+//	Disassemble(insn,d);
+	const auto d=DecodedInstruction_t(insn);
+
+//	if(d.Argument1.AccessMode!=WRITE)
+	if(!d.hasOperand(0))
 		return false;
-	}
+	if(!d.getOperand(0).isWrite())
+		return false;
 
 	/* 64 bit machines use regs to pass parameters */
 	if(firp->GetArchitectureBitWidth()==64)
 	{
 		// if it's a register
-		if((d.Argument1.ArgType&REGISTER_TYPE)==REGISTER_TYPE)
+//		if((d.Argument1.ArgType&REGISTER_TYPE)==REGISTER_TYPE)
+		if(d.getOperand(0).isRegister())
 		{
-			int regno=(d.Argument1.ArgType)&0xFFFF;
+//			int regno=(d.Argument1.ArgType)&0xFFFF;
+			int regno=d.getOperand(0).getRegNumber();
 			switch(regno)
 			{
+/*
 				case REG7:	// rdi
 				case REG6:	// rsi
 				case REG2:	// rdx
 				case REG1:	// rcx
 				case REG8:	// r8
 				case REG9:	// r9
-					output_dst=d.Argument1.ArgMnemonic;
+*/
+				case 1:  // rcx?
+				case 2:  // rdx?
+				case 6:  // rsi?
+				case 7:  // rdi?
+				case 8:  // r8?
+				case 9:  // r9?
+//					output_dst=d.Argument1.ArgMnemonic;
+					output_dst=d.getOperand(0).getString();
 					return true;
 
 				// other regsiters == no.
@@ -65,19 +79,27 @@ bool libIRDB::IsParameterWrite(const FileIR_t *firp, Instruction_t* insn, string
 	// not a register or not 64-bit.  check for [esp+k]
 
 	// check for memory type
-	if((d.Argument1.ArgType&MEMORY_TYPE)!=MEMORY_TYPE)
+//	if((d.Argument1.ArgType&MEMORY_TYPE)!=MEMORY_TYPE)
+	if(!d.getOperand(0).isMemory())
 		return false;
 
 	// check that base reg is esp.
-	if(d.Argument1.Memory.BaseRegister != REG4)
+//	if(d.Argument1.Memory.BaseRegister != REG4)
+	if(!d.getOperand(0).hasBaseRegister())
+		return false;
+	if(d.getOperand(0).getBaseRegister() != 4)
 		return false;
 
 	// check that there's no index reg
-	if(d.Argument1.Memory.IndexRegister != 0)
+//	if(d.Argument1.Memory.IndexRegister != 0)
+	if(d.getOperand(0).hasIndexRegister())
 		return false;
 
 	// get k out of [esp + k ]
-	unsigned int k=d.Argument1.Memory.Displacement;
+//	unsigned int k=d.Argument1.Memory.Displacement;
+	if (!d.getOperand(0).hasMemoryDisplacement())
+		return false;
+	const auto k=d.getOperand(0).getMemoryDisplacement();
 
 	// check that we know the frame layout.
 	if(insn->GetFunction() == NULL)
@@ -85,7 +107,8 @@ bool libIRDB::IsParameterWrite(const FileIR_t *firp, Instruction_t* insn, string
 
 	if(k < insn->GetFunction()->GetOutArgsRegionSize())
 	{
-		output_dst=string("[")+d.Argument1.ArgMnemonic+string("]");
+//		output_dst=string("[")+d.Argument1.ArgMnemonic+string("]");
+		output_dst=string("[")+d.getOperand(0).getString()+string("]");
 		return true;
 	}
 
@@ -103,9 +126,12 @@ static Instruction_t* IsOrWasCall(const FileIR_t *firp, Instruction_t* insn)
 	if (firp == NULL || insn == NULL)
 		return NULL;
 
-	auto d=DISASM({0});
-	insn->Disassemble(d);
-	if(d.Instruction.Mnemonic == string("call "))
+//	auto d=DISASM({0});
+//	Disassemble(insn,d);
+	const auto d=DecodedInstruction_t(insn);
+
+//	if(d.Instruction.Mnemonic == string("call "))
+	if(d.isCall())
 	{
 		return insn->GetTarget();
 	}
@@ -141,8 +167,9 @@ bool libIRDB::CallFollows(const FileIR_t *firp, Instruction_t* insn, const strin
 	
 	for(Instruction_t* ptr=insn->GetFallthrough(); ptr!=NULL; ptr=ptr->GetFallthrough())
 	{
-		auto d=DISASM({0});
-		ptr->Disassemble(d);
+//		auto d=DISASM({0});
+//		Disassemble(ptr,d);
+		const auto d=DecodedInstruction_t(ptr);
 		long long vo = 0;
 		if (ptr->GetAddress())
 			vo = ptr->GetAddress()->GetVirtualOffset();
@@ -174,7 +201,8 @@ bool libIRDB::CallFollows(const FileIR_t *firp, Instruction_t* insn, const strin
 
 		// found reference to argstring, original code would just stop the search
 		// need more sophisticated heuristic
-		if(string(d.CompleteInstr).find(reg_arg_str)!= string::npos)
+//		if(string(d.CompleteInstr).find(reg_arg_str)!= string::npos)
+		if(d.getDisassembly().find(reg_arg_str)!= string::npos)
 		{
 			if (original_is_param_register)
 			{
@@ -189,7 +217,8 @@ bool libIRDB::CallFollows(const FileIR_t *firp, Instruction_t* insn, const strin
 					}
 					else 
 					{
-						if (std::string(d.Argument2.ArgMnemonic) == reg_arg_str) {
+//						if (std::string(d.Argument2.ArgMnemonic) == reg_arg_str) {
+						if (d.hasOperand(1) && d.getOperand(1).getString() == reg_arg_str) {
 //							std::cout << "CallFollows(): " << ptr->getDisassembly() << ": copy of original detected: add to live list: " << arg << std::endl;
 							live_params.insert(arg);
 						}
@@ -218,8 +247,8 @@ bool libIRDB::CallFollows(const FileIR_t *firp, Instruction_t* insn, const strin
 
 bool libIRDB::FlowsIntoCall(const FileIR_t *firp, Instruction_t* insn)
 {
-	auto d=DISASM({0});
-	insn->Disassemble(d);
+	//auto d=DISASM({0});
+	//Disassemble(insn,d);
 
 	string param_write;
 	if (!libIRDB::IsParameterWrite(firp, insn, param_write))
@@ -230,10 +259,13 @@ bool libIRDB::FlowsIntoCall(const FileIR_t *firp, Instruction_t* insn)
 
 bool libIRDB::LeaFlowsIntoCall(const FileIR_t *firp, Instruction_t* insn)
 {
-	auto d=DISASM({0});
-	insn->Disassemble(d);
+//	auto d=DISASM({0});
+//	Disassemble(insn,d);
+	const auto d=DecodedInstruction_t(insn);
 
-	if(string(d.Instruction.Mnemonic)!="lea ")
+//	if(string(d.Instruction.Mnemonic)!="lea ")
+//		return false;
+	if (d.getMnemonic()!="lea")
 		return false;
 
 	return FlowsIntoCall(firp, insn);
@@ -241,10 +273,13 @@ bool libIRDB::LeaFlowsIntoCall(const FileIR_t *firp, Instruction_t* insn)
 
 bool libIRDB::LeaFlowsIntoPrintf(const FileIR_t *firp, Instruction_t* insn)
 {
-	auto d=DISASM({0});
-	insn->Disassemble(d);
+//	auto d=DISASM({0});
+//	Disassemble(insn,d);
+	const auto d=DecodedInstruction_t(insn);
 
-	if(string(d.Instruction.Mnemonic)!="lea ")
+//	if(string(d.Instruction.Mnemonic)!="lea ")
+//		return false;
+	if (d.getMnemonic()!="lea")
 		return false;
 
 //	std::cout << "LeaFlowsIntoCall(): investigating " << insn->getDisassembly() << endl;

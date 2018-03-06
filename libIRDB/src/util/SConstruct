@@ -3,4 +3,5 @@
 
 env=Environment()
 Export('env')
-SConscript("SConscript")
+install=SConscript("SConscript")
+Return('install')

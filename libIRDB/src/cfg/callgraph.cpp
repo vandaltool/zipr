@@ -46,16 +46,21 @@ Callgraph_t::~Callgraph_t()
 
 static bool IsCallSite(Instruction_t* insn)
 {
-	DISASM insnd;
-	insn->Disassemble(insnd);
-	return NULL!=(strstr(insnd.Instruction.Mnemonic,"call"));
+	//DISASM insnd;
+	//Disassemble(insn,insnd);
+	//return NULL!=(strstr(insnd.Instruction.Mnemonic,"call"));
+
+	const auto d=DecodedInstruction_t(insn);
+	return d.isCall();
 }
 
 static bool IsTailJmpSite(Instruction_t* insn)
 {
-	DISASM insnd;
-	insn->Disassemble(insnd);
-	if(strstr(insnd.Instruction.Mnemonic,"jmp")==NULL)
+	//DISASM insnd;
+	//Disassemble(insn,insnd);
+	const auto d=DecodedInstruction_t(insn);
+	// if(strstr(insnd.Instruction.Mnemonic,"jmp")==NULL)
+	if(d.isBranch())
 		return false;
 
 	if(insn->GetTarget()==NULL)
@@ -68,16 +73,18 @@ static bool IsTailJmpSite(Instruction_t* insn)
 
 static bool IsPushJmpSite(Instruction_t* insn)
 {
-	DISASM insnd;
-	insn->Disassemble(insnd);
-	if(strstr(insnd.Instruction.Mnemonic,"push")==NULL || insn->GetFallthrough()==NULL)
+	//DISASM insnd;
+	//Disassemble(insn,insnd);
+	const auto d=DecodedInstruction_t(insn);
+	if(d.getMnemonic()!="push" || insn->GetFallthrough()==NULL)
 		return false;
 
 	if(insn->GetRelocations().size()==0)
 		return false;
 
-	insn->GetFallthrough()->Disassemble(insnd);
-	if(strstr(insnd.Instruction.Mnemonic,"jmp")==NULL)
+	const auto d2=DecodedInstruction_t(insn->GetFallthrough());
+	//if(strstr(insnd.Instruction.Mnemonic,"jmp")==NULL)
+	if(!d2.isBranch())
 		return false;
 
 	return true;

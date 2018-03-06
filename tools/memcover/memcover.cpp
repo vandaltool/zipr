@@ -23,11 +23,11 @@
 #include <cstdio>
 #include <string>
 #include <fstream>
-#include <beaengine/BeaEngine.h>
 #include <libIRDB-core.hpp>
 #include "General_Utility.hpp"
 #include "Rewrite_Utility.hpp"
 #include <sstream>
+#include <bea_deprecated.hpp>
 
 
 #define ARG_CNT 3
@@ -282,7 +282,7 @@ void process_instructions(FileIR_t *fir_p)
 		assert(instr);
 
 		DISASM disasm;
-		instr->Disassemble(disasm); //calls memset for me, no worries
+		Disassemble(instr,disasm); //calls memset for me, no worries
 		string instr_mn = disasm.Instruction.Mnemonic;
 		trim(instr_mn);
 		PREFIXINFO prefix = disasm.Prefix;
@@ -334,7 +334,7 @@ void process_instructions(FileIR_t *fir_p)
 		Instruction_t *first_instr = func->GetEntryPoint();
 
 		DISASM disasm;
-		first_instr->Disassemble(disasm); //calls memset for me, no worries
+		Disassemble(first_instr,disasm); //calls memset for me, no worries
 
 		func_entries[first_instr] = disasm;
 	}

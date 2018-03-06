@@ -29,9 +29,10 @@
 #include "PNRegularExpressions.hpp"
 #include <csignal>
 #include "Rewrite_Utility.hpp"
+#include <libIRDB-core.hpp>
 #include <libIRDB-cfg.hpp>
 #include "canary.h"
-#include <libIRDB-core.hpp>
+//#include <bea_deprecated.hpp>
 
 
 //TODO: I should use the types defined by beaengine
@@ -104,6 +105,7 @@ class PNTransformDriver
     	bool write_stack_ir_to_db;
 
 	mitigation_policy m_mitigation_policy;
+	unsigned m_exit_code;
 
 	// a way to map an instruction to it's set of predecessors. 
   	std::map< Instruction_t* , set<Instruction_t*> > preds;
@@ -155,7 +157,7 @@ class PNTransformDriver
 	int prologue_offset_to_actual_offset(ControlFlowGraph_t* cfg, Instruction_t *instr,int offset);
 	bool check_jump_tables(Instruction_t* insn);
   	bool check_jump_table_entries(std::set<int> insn,Function_t *func);
-  	bool check_for_PIC_switch_table64(Instruction_t* insn, DISASM disasm);
+  	bool check_for_PIC_switch_table64(Instruction_t* insn, libIRDB::DecodedInstruction_t disasm);
   	bool backup_until(const char* insn_type, Instruction_t *& prev, Instruction_t* orig);
   	void calc_preds();
 	void InitNewFileIR(File_t* this_file);
@@ -189,8 +191,10 @@ public:
     	virtual void GenerateTransforms();
     	virtual void SetWriteStackIrToDb(bool setting) { write_stack_ir_to_db = setting; }
 
-		inline virtual mitigation_policy GetMitigationPolicy() const { return m_mitigation_policy; }
-		virtual void SetMitigationPolicy(mitigation_policy policy) { m_mitigation_policy = policy; }
+	inline virtual mitigation_policy GetMitigationPolicy() const { return m_mitigation_policy; }
+	virtual void SetMitigationPolicy(mitigation_policy policy) { m_mitigation_policy = policy; }
+	virtual unsigned GetDetectionExitCode() const { return m_exit_code; }
+	virtual void SetDetectionExitCode(unsigned p_exitCode) { m_exit_code = p_exitCode; }
 };
 
 #endif

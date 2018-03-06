@@ -30,5 +30,6 @@ myenv.Append(LINKFLAGS = LDFLAGS+" -m32 ")
 so32=myenv.SharedLibrary("libzestcfi32.so",  cfiles+nasmfiles32)
 install32=myenv.Install("$ZEST_RUNTIME/lib32/", so32)
 Default(install32)
+Return('install32'
 
 	

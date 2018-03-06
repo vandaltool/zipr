@@ -1,4 +1,5 @@
 import os
+import glob
 
 Import('env')
 myenv=env.Clone()
@@ -22,7 +23,15 @@ files=  '''
 	variantid.cpp
 	eh.cpp
 	reloc.cpp
+	decode_cs.cpp
+	operand_cs.cpp
+	decode_bea.cpp
+	operand_bea.cpp
+	decode_meta.cpp
+	operand_meta.cpp
 	'''
+
+# bea engine listed for core components.
 
 cpppath=''' 
 	.
@@ -30,13 +39,18 @@ cpppath='''
 	$SECURITY_TRANSFORMS_HOME/libIRDB/include/
 	$SECURITY_TRANSFORMS_HOME/beaengine/include
 	$SECURITY_TRANSFORMS_HOME/beaengine/beaengineSources/Includes/
+	$SECURITY_TRANSFORMS_HOME/libcapstone/include/
 	'''
+
+globs=glob.glob(os.environ['SECURITY_TRANSFORMS_HOME']+'/libcapstone/zipr_unpack/*.o')
 
 myenv.Append(CCFLAGS=" -std=c++11 ")
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath))
-mylib=myenv.Library(libname, Split(files))
+mylib=myenv.Library(libname, Split(files) + globs)
 
 install=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", mylib)
 Default(install)
+
+Return('install')
 

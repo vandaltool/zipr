@@ -357,16 +357,17 @@ static string change_to_push(Instruction_t *insn)
 {
 	string newbits=insn->GetDataBits();
 
-	DISASM d; 
-	insn->Disassemble(d);
+	//DISASM d; 
+	//Disassemble(insn,d);
+	const auto d=DecodedInstruction_t(insn);
 
 	int opcode_offset=0;
 
 
 	// FIXME: assumes REX is only prefix on jmp insn.  
 	// does not assume rex exists.
-	if(d.Prefix.REX.state == InUsePrefix)
-		opcode_offset=1;
+	//if(d.Prefix.REX.state == InUsePrefix)
+		opcode_offset=d.getPrefixCount();
 
 	unsigned char modregrm = (newbits[1+opcode_offset]);
 	modregrm &= 0xc7;
@@ -533,12 +534,14 @@ void SCFI_Instrument::AddReturnCFIForExeNonce(Instruction_t* insn, ColoredSlotVa
 		worddec="qword";	// 64-bit reg.
 
 	
-	DISASM d;
-	insn->Disassemble(d);
-	if(d.Argument1.ArgType!=NO_ARGUMENT)
+	//DISASM d;
+	//Disassemble(insn,d);
+	const auto d=DecodedInstruction_t(insn);
+
+	if(d.hasOperand(0)) // d.Argument1.ArgType!=NO_ARGUMENT)
 	{
-		unsigned int sp_adjust=d.Instruction.Immediat-firp->GetArchitectureBitWidth()/8;
-		cout<<"Found relatively rare ret_with_pop insn: "<<d.CompleteInstr<<endl;
+		unsigned int sp_adjust=d.getImmediate() /*d.Instruction.Immediat*/-firp->GetArchitectureBitWidth()/8;
+		cout<<"Found relatively rare ret_with_pop insn: "<<d.getDisassembly() /*CompleteInstr*/<<endl;
 		char buf[30];
 		sprintf(buf, "pop %s [%s+%d]", worddec.c_str(), rspreg.c_str(), sp_adjust);
 		Instruction_t* newafter=insertAssemblyBefore(firp,insn,buf);
@@ -626,12 +629,13 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 		worddec="qword";	// 64-bit reg.
 
 	
-	DISASM d;
-	insn->Disassemble(d);
-	if(d.Argument1.ArgType!=NO_ARGUMENT)
+	//DISASM d;
+	//Disassemble(insn,d);
+	const auto d=DecodedInstruction_t(insn);
+	if(d.hasOperand(0)) // d.Argument1.ArgType!=NO_ARGUMENT)
 	{
-		unsigned int sp_adjust=d.Instruction.Immediat-firp->GetArchitectureBitWidth()/8;
-		cout<<"Found relatively rare ret_with_pop insn: "<<d.CompleteInstr<<endl;
+		unsigned int sp_adjust=d.getImmediate() /* Instruction.Immediat*/-firp->GetArchitectureBitWidth()/8;
+		cout<<"Found relatively rare ret_with_pop insn: "<<d.getDisassembly()<<endl;
 		char buf[30];
 		sprintf(buf, "pop %s [%s+%d]", worddec.c_str(), rspreg.c_str(), sp_adjust);
 		Instruction_t* newafter=insertAssemblyBefore(firp,insn,buf);
@@ -753,11 +757,13 @@ static void display_histogram(std::ostream& out, std::string attr_label, std::ma
 
 bool SCFI_Instrument::is_plt_style_jmp(Instruction_t* insn) 
 {
-	DISASM d;
-	insn->Disassemble(d);
-	if((d.Argument1.ArgType&MEMORY_TYPE)==MEMORY_TYPE)
+	//DISASM d;
+	//Disassemble(insn,d);
+	const auto d=DecodedInstruction_t(insn);
+	if(d.getOperand(0).isMemory()) // (d.Argument1.ArgType&MEMORY_TYPE)==MEMORY_TYPE)
 	{
-		if(d.Argument1.Memory.BaseRegister == 0 && d.Argument1.Memory.IndexRegister == 0)  
+		//if(d.Argument1.Memory.BaseRegister == 0 && d.Argument1.Memory.IndexRegister == 0)  
+		if(!d.getOperand(0).hasBaseRegister() && !d.getOperand(0).hasIndexRegister() )  
 			return true;
 		return false;
 	}
@@ -806,8 +812,9 @@ bool SCFI_Instrument::instrument_jumps()
 		++it)
 	{
 		Instruction_t* insn=*it;
-		DISASM d;
-		insn->Disassemble(d);
+		//DISASM d;
+		//Disassemble(insn,d);
+		const auto d=DecodedInstruction_t(insn);
 
 
 		// we always have to protect the zestcfi dispatcher, that we just added.
@@ -822,7 +829,7 @@ bool SCFI_Instrument::instrument_jumps()
 		if(insn->GetBaseID()==BaseObj_t::NOT_IN_DATABASE)
 			continue;
 
-		if(string(d.Instruction.Mnemonic)==string("call ") && (protect_safefn && !do_exe_nonce_for_call))
+		if(d.isCall() /*string(d.Instruction.Mnemonic)==string("call ")*/ && (protect_safefn && !do_exe_nonce_for_call))
 		{
                 	cerr<<"Fatal Error: Found call instruction!"<<endl;
                 	cerr<<"FIX_CALLS_FIX_ALL_CALLS=1 should be set in the environment, or"<<endl;
@@ -847,116 +854,124 @@ bool SCFI_Instrument::instrument_jumps()
 			cerr<<"Looking at: "<<insn->getDisassembly()<< " but no associated function" << endl;
 	
 		
-		switch(d.Instruction.BranchType)
+		//switch(d.Instruction.BranchType)
+		//{
+		//case  JmpType:
+		if(d.isUnconditionalBranch())
 		{
-			case  JmpType:
+			//if((d.Argument1.ArgType&CONSTANT_TYPE)!=CONSTANT_TYPE)
+			if(!d.getOperand(0).isConstant()) 
 			{
-				if((d.Argument1.ArgType&CONSTANT_TYPE)!=CONSTANT_TYPE)
+				bool is_fixed_call=is_jmp_a_fixed_call(insn);
+				bool is_plt_style=is_plt_style_jmp(insn);
+				bool is_any_call_style = (is_fixed_call || is_plt_style);
+				if(do_jumps && !is_any_call_style)
 				{
-					bool is_fixed_call=is_jmp_a_fixed_call(insn);
-					bool is_plt_style=is_plt_style_jmp(insn);
-					bool is_any_call_style = (is_fixed_call || is_plt_style);
-					if(do_jumps && !is_any_call_style)
+					if (insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
 					{
-						if (insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
-						{
-							cfi_branch_jmp_complete++;
-							jmps[insn->GetIBTargets()->size()]++;
-						}
-
-						cfi_checks++;
-						cfi_branch_jmp_checks++;
-
-						AddJumpCFI(insn);
+						cfi_branch_jmp_complete++;
+						jmps[insn->GetIBTargets()->size()]++;
 					}
-					else if(do_calls && is_any_call_style)
-					{
-						if (insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
-						{
-							cfi_branch_call_complete++;
-							calls[insn->GetIBTargets()->size()]++;
-						}
 
-						cfi_checks++;
-						cfi_branch_call_checks++;
-						
-						AddJumpCFI(insn);
-					}
-					else 
-					{	
-						cout<<"Eliding protection for "<<insn->getDisassembly()<<std::boolalpha
-							<<" is_fixed_call="<<is_fixed_call
-							<<" is_plt_style="<<is_plt_style
-							<<" is_any_call_style="<<is_any_call_style
-							<<" do_jumps="<<do_jumps
-							<<" do_calls="<<do_calls<<endl;
-					}
+					cfi_checks++;
+					cfi_branch_jmp_checks++;
+
+					AddJumpCFI(insn);
 				}
-	
-				break;
+				else if(do_calls && is_any_call_style)
+				{
+					if (insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
+					{
+						cfi_branch_call_complete++;
+						calls[insn->GetIBTargets()->size()]++;
+					}
+
+					cfi_checks++;
+					cfi_branch_call_checks++;
+					
+					AddJumpCFI(insn);
+				}
+				else 
+				{	
+					cout<<"Eliding protection for "<<insn->getDisassembly()<<std::boolalpha
+						<<" is_fixed_call="<<is_fixed_call
+						<<" is_plt_style="<<is_plt_style
+						<<" is_any_call_style="<<is_any_call_style
+						<<" do_jumps="<<do_jumps
+						<<" do_calls="<<do_calls<<endl;
+				}
 			}
-			case  CallType:
+
+			break;
+		}
+		// case  CallType:
+		else if(d.isCall())
+		{
+
+
+			// should only see calls if we are not CFI'ing safe functions
+			// be sure to use with: --no-fix-safefn in fixcalls
+			//    (1) --no-fix-safefn in fixcalls leaves call as call (instead of push/jmp)
+			//    (2) and here, we don't plop down a nonce
+			//    see (3) below where we don't instrument returns for safe functions
+
+			// bool isDirectCall = (d.Argument1.ArgType&CONSTANT_TYPE)==CONSTANT_TYPE;
+			bool isDirectCall = d.getOperand(0).isConstant();
+			if (!protect_safefn)
 			{
 
-				// should only see calls if we are not CFI'ing safe functions
-				// be sure to use with: --no-fix-safefn in fixcalls
-				//    (1) --no-fix-safefn in fixcalls leaves call as call (instead of push/jmp)
-				//    (2) and here, we don't plop down a nonce
-				//    see (3) below where we don't instrument returns for safe functions
-				if (!protect_safefn)
+				if (safefn || (isDirectCall && isCallToSafeFunction(insn)))
 				{
-					bool isDirectCall = (d.Argument1.ArgType&CONSTANT_TYPE)==CONSTANT_TYPE;
-
-					if (safefn || (isDirectCall && isCallToSafeFunction(insn)))
-					{
-						cfi_safefn_call_skipped++;
-						continue;
-					}
-				}
-
-				AddExecutableNonce(insn);	// for all calls
-				if((d.Argument1.ArgType&CONSTANT_TYPE)!=CONSTANT_TYPE)
-				{
-					// for indirect calls.
-					AddCallCFIWithExeNonce(insn);
-				}
-				break;
-			}
-			case  RetType: 
-			{
-				if (insn->GetFunction())
-					cerr << "found ret type  protect_safefn: " << protect_safefn << "  safefn: " << safefn <<  " function: " << insn->GetFunction()->GetName() << endl;
-				else
-					cerr << "found ret type  protect_safefn: " << protect_safefn << "  safefn: " << safefn << " no functions associated with instruction!! wtf???" << endl;
-				if (insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
-				{
-					cfi_branch_ret_complete++;
-					rets[insn->GetIBTargets()->size()]++;
-				}
-
-				// (3) and here, we don't instrument returns for safe function
-				if (!protect_safefn && safefn)
-				{
-					cerr << "Skip ret instructions in function: " << insn->GetFunction()->GetName() << endl;
-					cfi_safefn_ret_skipped++;
+					cfi_safefn_call_skipped++;
 					continue;
 				}
-
-				cfi_checks++;
-				cfi_branch_ret_checks++;
-
-				if(do_exe_nonce_for_call)
-					AddReturnCFIForExeNonce(insn);
-				else
-					AddReturnCFI(insn);
-				break;
-
 			}
-			default:
+
+			AddExecutableNonce(insn);	// for all calls
+			if(!isDirectCall) // (d.Argument1.ArgType&CONSTANT_TYPE)!=CONSTANT_TYPE)
 			{
-				break;
+				// for indirect calls.
+				AddCallCFIWithExeNonce(insn);
 			}
+			break;
 		}
+		// case  RetType: 
+		else if (d.isReturn()) 
+		{
+			if (insn->GetFunction())
+				cerr << "found ret type  protect_safefn: " << protect_safefn << "  safefn: " << safefn <<  " function: " << insn->GetFunction()->GetName() << endl;
+			else
+				cerr << "found ret type  protect_safefn: " << protect_safefn << "  safefn: " << safefn << " no functions associated with instruction!! wtf???" << endl;
+			if (insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
+			{
+				cfi_branch_ret_complete++;
+				rets[insn->GetIBTargets()->size()]++;
+			}
+
+			// (3) and here, we don't instrument returns for safe function
+			if (!protect_safefn && safefn)
+			{
+				cerr << "Skip ret instructions in function: " << insn->GetFunction()->GetName() << endl;
+				cfi_safefn_ret_skipped++;
+				continue;
+			}
+
+			cfi_checks++;
+			cfi_branch_ret_checks++;
+
+			if(do_exe_nonce_for_call)
+				AddReturnCFIForExeNonce(insn);
+			else
+				AddReturnCFI(insn);
+			break;
+
+		}
+		else // default:
+		{
+			// 	break;
+			// do nothing
+		}
+		//}
 	}
 	
 	cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::cfi_jmp_checks="<<std::dec<<cfi_branch_jmp_checks<<endl;

@@ -163,55 +163,56 @@ std::ostream& libIRDB::operator<<(std::ostream& os, const BasicBlock_t& block)
 
 bool BasicBlock_t::EndsInBranch() 
 {
-	DISASM d;
+	//DISASM d;
 	Instruction_t *branch=instructions[instructions.size()-1];	
 
 	assert(branch);
 
-	branch->Disassemble(d);
-
-	if(d.Instruction.BranchType!=0)
-		return true;
-	return false;
+	//Disassemble(branch,d);
+	const auto d=DecodedInstruction_t(branch);
+	return d.isBranch();
 
 	
 }
 bool BasicBlock_t::EndsInIndirectBranch() 
 {
-	DISASM d;
+	//DISASM d;
 	Instruction_t *branch=instructions[instructions.size()-1];	
 
 	assert(branch);
 
-	branch->Disassemble(d);
+	//Disassemble(branch,d);
+	const auto d=DecodedInstruction_t(branch);
 
-	if(d.Instruction.BranchType==RetType)
+	if(d.isReturn())
 		return true;
-	if(d.Instruction.BranchType==JmpType || d.Instruction.BranchType==CallType)
+	if(d.isUnconditionalBranch() || d.isCall())
 	{
-		if((d.Argument1.ArgType&CONSTANT_TYPE)==0)
+		//if((d.Argument1.ArgType&CONSTANT_TYPE)==0)
+		if(!d.getOperand(0).isConstant())
 			/* not a constant type */
 			return true;
 		return false;
 		
 	}
-
 	return false;
-
-	
 }
 bool BasicBlock_t::EndsInConditionalBranch() 
 {
 	if(!EndsInBranch())
 		return false;
-	DISASM d;
 	Instruction_t *branch=instructions[instructions.size()-1];	
 	assert(branch);
+	//DISASM d;
+	//Disassemble(branch,d);
+	const auto d=DecodedInstruction_t(branch);
 
-	if(d.Instruction.BranchType==RetType || d.Instruction.BranchType==JmpType || d.Instruction.BranchType==CallType)
-		return false;
+	return d.isConditionalBranch(); 
 
-	return true;
+//	if(d.isReturn() || d.UnconditionalBranch() || d.isCall())
+//		return false;
+//
+//	return true;
 
 }
 Instruction_t* BasicBlock_t::GetBranchInstruction()

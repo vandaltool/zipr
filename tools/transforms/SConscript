@@ -11,15 +11,13 @@ cpppath='''
 	$SECURITY_TRANSFORMS_HOME/libIRDB/include/
 	$SECURITY_TRANSFORMS_HOME/libMEDSannotation/include/
 	$SECURITY_TRANSFORMS_HOME/libtransform/include/
-	$SECURITY_TRANSFORMS_HOME/beaengine/include
 	$SECURITY_TRANSFORMS_HOME/libEXEIO/include
-	$SECURITY_TRANSFORMS_HOME/beaengine/beaengineSources/Includes/
 	'''
 
 LIBS= " xform IRDB-cfg MEDSannotation transform " + env.subst('$BASE_IRDB_LIBS') 
 LIBPATH="$SECURITY_TRANSFORMS_HOME/lib"
 
-integer_files="transformutils.cpp integertransformdriver.cpp"
+#integer_files="transformutils.cpp integertransformdriver.cpp"
 
 # doesn't work on solaris.
 #myenv.Append(CFLAGS="-Wall")
@@ -33,19 +31,21 @@ all_files="PNTransformDriver.cpp PNStackLayout.cpp PNRange.cpp Range.cpp OffsetI
 myenv=myenv.Clone(CPPPATH=Split(cpppath))
 ru_obj=myenv.Object("Rewrite_Utility.cpp");
 ru_lib=myenv.Library("rewrite", ru_obj);
-install=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", ru_lib)
-Default(install)
+install1=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", ru_lib)
+Default(install1)
 
 p1=myenv.Program("p1transform.exe", Split(all_files), LIBS=Split(LIBS)+ru_lib, LIBPATH=Split(LIBPATH))
-install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", p1)
-Default(install)
-install=myenv.InstallAs("$SECURITY_TRANSFORMS_HOME/bin/pntransform.exe", p1)
-Default(install)
+install2=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", p1)
+Default(install2)
+install3=myenv.InstallAs("$SECURITY_TRANSFORMS_HOME/bin/pntransform.exe", p1)
+Default(install3)
 #install=myenv.InstallAs("p1transform.exe", p1)
 #Default(install)
 
-intdr=myenv.Program("integertransformdriver.exe", Split(integer_files), LIBS=Split(LIBS)+ru_lib, LIBPATH=Split(LIBPATH))
-install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", intdr)
-Default(install)
+#intdr=myenv.Program("integertransformdriver.exe", Split(integer_files), LIBS=Split(LIBS)+ru_lib, LIBPATH=Split(LIBPATH))
+#install4=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", intdr)
+#Default(install4)
 
 
+install=[]+install1 + install2 + install3 
+Return('install')

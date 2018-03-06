@@ -71,13 +71,14 @@ int FixRets::execute()
 			{
 				if (insn!=NULL)
 				{
-					DISASM disasm;
-					insn->Disassemble(disasm);
+					//DISASM disasm;
+					//Disassemble(insn,disasm);
+					const auto disasm=DecodedInstruction_t(insn);
 					string stack_pointer;
 					string stack_offset_size;
 
-					cout << "Complete instruction: " << disasm.CompleteInstr << "-" << endl;
-					if (strcmp(disasm.CompleteInstr,"ret "))
+					cout << "Complete instruction: " << disasm.getDisassembly() << "-" << endl;
+					if (disasm.isReturn()) // strcmp(disasm.CompleteInstr,"ret "))
 						continue;
 					if (insn->GetIndirectBranchTargetAddress())
 					{

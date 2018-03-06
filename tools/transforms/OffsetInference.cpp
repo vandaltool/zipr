@@ -21,7 +21,7 @@
 
 #include "OffsetInference.hpp"
 #include "General_Utility.hpp"
-#include "beaengine/BeaEngine.h"
+//#include "beaengine/BeaEngine.h"
 #include <cassert>
 #include <iostream>
 #include <cstdlib>
@@ -163,9 +163,10 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 		//Instruction_t* instr=*it;
 		Instruction_t* instr = entry;
 
-		DISASM disasm;
-		instr->Disassemble(disasm);
-		disasm_str = disasm.CompleteInstr;
+		//DISASM disasm;
+		//Disassemble(instr,disasm);
+		const auto disasm=DecodedInstruction_t(instr);
+		disasm_str = disasm.getDisassembly(); // CompleteInstr;
 
 		if(verbose_log)
 			cerr << "OffsetInference: SetupLayout(): disassembled line =  "<<disasm_str<< endl;
@@ -229,7 +230,7 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 			//if the push is a constant, then check if the next instruction
 			//is an unconditional jmp, if so, ignore the push, assume 
 			//the push is part of fixed calls. 
-			if((disasm.Argument2.ArgType & 0xF0000000) == CONSTANT_TYPE)
+			if(disasm.getOperand(0).isConstant() /* (disasm.Argument2.ArgType & 0xF0000000) == CONSTANT_TYPE */)
 			{
 				//Grab the pushed value
 				assert(pmatch[1].rm_so >=0 && pmatch[1].rm_eo >=0);
@@ -243,12 +244,13 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 				{
 //					Instruction_t* next=*(it+1);
 					Instruction_t* next = entry->GetFallthrough();
-					DISASM next_disasm;
-					next->Disassemble(next_disasm);
+					//DISASM next_disasm;
+					//Disassemble(next,next_disasm);
+					const auto next_disasm=DecodedInstruction_t(next);
 
 					//cerr<<"DEBUG DEBUG: Disasm next match: "<<next_disasm.CompleteInstr<<endl;
 					
-					if(next_disasm.Instruction.BranchType == JmpType)
+					if(next_disasm.isUnconditionalBranch() /*Instruction.BranchType == JmpType*/)
 					{
 						
 						if(verbose_log)
@@ -481,9 +483,10 @@ assert(instructions.size() != 0);
 		Instruction_t* instr=*it;
 		string disasm_str;
 
-		DISASM disasm;
-		instr->Disassemble(disasm);
-		disasm_str = disasm.CompleteInstr;
+		//DISASM disasm;
+		//Disassemble(instr,disasm);
+		const auto disasm=DecodedInstruction_t(instr);
+		disasm_str = disasm.getDisassembly() /*CompleteInstr*/;
 
 		if(verbose_log)
 			cerr << "OffsetInference: FindAllOffsets(): disassembled line =	 "<<disasm_str<< endl;
@@ -599,7 +602,7 @@ else
                         matched = disasm_str.substr(pmatch[1].rm_so,mlen);
                         // extract displacement
 
-                        int offset = disasm.Argument2.Memory.Displacement;
+                        int offset = disasm.getOperand(1).getMemoryDisplacement() /*Argument2.Memory.Displacement*/;
 			if(offset<0) /* huh? */
 			{
 				if(verbose_log)
@@ -720,7 +723,7 @@ else
 //p1 is used only. Specifically this occurred when the frame size was 0x20, and the call was to esp+0x1c
 //the fix call because a jmp esp+0x20 which was outside the frame, and PN corrected by changing the offset
 //to reflect the padding. 
-	else if(disasm.Instruction.BranchType == JmpType)
+	else if(disasm.isUnconditionalBranch() /*Instruction.BranchType == JmpType*/)
 	{
 		if(regexec(&(pn_regex->regex_esp_scaled), disasm_str.c_str(), max, pmatch, 0)==0 ||
 		   regexec(&(pn_regex->regex_esp_direct), disasm_str.c_str(), max, pmatch, 0)==0 ||

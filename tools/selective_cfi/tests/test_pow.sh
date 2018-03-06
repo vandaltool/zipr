@@ -86,7 +86,9 @@ main()
 	test pow.exe libm.so.6.cfi	5 8	# shared lib only
 	test pow.exe.cfi libm.so.6.cfi	5 8	# both protected
 	report
-	clean
+	if [[ ! $1 == -k ]]; then
+		clean
+	fi
 }
 
 passes=0 

@@ -1,0 +1,30 @@
+import os
+import utils
+
+
+env=Environment()
+Export('env')
+
+env.Replace(debug=ARGUMENTS.get("debug",0))
+
+
+if int(env['debug']) == 1:
+        print "Setting debug mode"
+        env.Append(CFLAGS=" -g ")
+        env.Append(CXXFLAGS=" -g ")
+        env.Append(LINKFLAGS=" -g ")
+else:
+        print "Setting release mode"
+        env.Append(CFLAGS=" -O3 ")
+        env.Append(CXXFLAGS=" -O3 ")
+        env.Append(LINKFLAGS=" -O3 ")
+
+lib=SConscript("SConscript")
+
+pedi = Command( target = "./testoutput",
+                source = "./SConscript",
+                action = "cd "+os.environ['SECURITY_TRANSFORMS_HOME']+" ; " + os.environ['PEDI_HOME']+"/pedi -m manifest.txt " )
+
+Depends(pedi,lib);
+Default(pedi)
+

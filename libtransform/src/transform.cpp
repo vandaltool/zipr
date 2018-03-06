@@ -20,6 +20,7 @@
 
 #include "transform.hpp"
 #include "Rewrite_Utility.hpp"
+// #include <bea_deprecated.hpp>
 
 /*
  * Find the first occurrence of find in s, ignore case.
@@ -498,6 +499,8 @@ void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumen
 	addPopf(popf_i, p_fallThrough);
 }
 
+
+#if 0
 // returns true if BeaEngine says arg1 of the instruction is a register 
 bool Transform::hasTargetRegister(Instruction_t *p_instruction, int p_argNo)
 {
@@ -505,7 +508,7 @@ bool Transform::hasTargetRegister(Instruction_t *p_instruction, int p_argNo)
 		return false;
 
 	DISASM disasm;
-	p_instruction->Disassemble(disasm);
+	Disassemble(p_instruction,disasm);
 	
 	if (p_argNo == 1)
 		return disasm.Argument1.ArgType & 0xFFFF0000 & REGISTER_TYPE;
@@ -517,12 +520,13 @@ bool Transform::hasTargetRegister(Instruction_t *p_instruction, int p_argNo)
 		return false;
 }
 
+
 RegisterName Transform::getTargetRegister(Instruction_t *p_instruction, int p_argNo)
 {
 	if (hasTargetRegister(p_instruction, p_argNo))
 	{
 		DISASM disasm;
-		p_instruction->Disassemble(disasm);
+		Disassemble(p_instruction,disasm);
 
 		if (p_argNo == 1)
 			return Register::getRegister(disasm.Argument1.ArgMnemonic);
@@ -550,7 +554,7 @@ bool Transform::isMultiplyInstruction(Instruction_t *p_instruction)
 	}
 
 	DISASM disasm;
-	p_instruction->Disassemble(disasm);
+	Disassemble(p_instruction,disasm);
 
 	// beaengine adds space at the end of the mnemonic string
 	return my_strcasestr(disasm.Instruction.Mnemonic, "MUL ") != NULL;
@@ -572,7 +576,7 @@ bool Transform::isMovInstruction(Instruction_t *p_instruction)
 	}
 
 	DISASM disasm;
-	p_instruction->Disassemble(disasm);
+	Disassemble(p_instruction,disasm);
 
 	// nb: beaengine adds space at the end of the mnemonic string
 	return my_strcasestr(disasm.Instruction.Mnemonic, "MOV") != NULL;
@@ -587,8 +591,7 @@ bool Transform::isAddSubNonEspInstruction(Instruction_t *p_instruction)
 		return false;
 
 	DISASM disasm;
-
-	p_instruction->Disassemble(disasm);
+	Disassemble(p_instruction,disasm);
 
 	// beaengine adds space at the end of the mnemonic string
 	if (my_strcasestr(disasm.Instruction.Mnemonic, "ADD "))
@@ -608,6 +611,7 @@ bool Transform::isAddSubNonEspInstruction(Instruction_t *p_instruction)
 
 	return false;
 }
+#endif
 
 void Transform::addTestRegister8(Instruction_t *p_instr, RegisterName p_reg, Instruction_t *p_fallThrough)
 {
