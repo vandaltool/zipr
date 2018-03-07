@@ -36,7 +36,7 @@ bool libIRDB::IsParameterWrite(const FileIR_t *firp, Instruction_t* insn, string
 //	if(d.Argument1.AccessMode!=WRITE)
 	if(!d.hasOperand(0))
 		return false;
-	if(!d.getOperand(0).isWrite())
+	if(!d.getOperand(0).isWritten())
 		return false;
 
 	/* 64 bit machines use regs to pass parameters */

@@ -38,7 +38,6 @@ DecodedOperandMeta_t& DecodedOperandMeta_t::operator=(const DecodedOperandMeta_t
 
 passthrough_to_cs(bool, isConstant);
 passthrough_to_cs(string, getString);
-passthrough_to_cs(bool, isWrite);
 passthrough_to_cs(bool, isRegister);
 passthrough_to_cs(bool, isGeneralPurposeRegister);
 passthrough_to_cs(bool, isMmxRegister);

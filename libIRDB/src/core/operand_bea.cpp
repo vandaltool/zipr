@@ -81,13 +81,6 @@ string DecodedOperandBea_t::getString() const
 	return t->ArgMnemonic;
 }
 
-		
-bool DecodedOperandBea_t::isWrite() const
-{
-	ARGTYPE *t=static_cast<ARGTYPE*>(arg_data);
-	return t->AccessMode==WRITE;
-}
-
 bool DecodedOperandBea_t::isRegister() const
 {
 	ARGTYPE *t=static_cast<ARGTYPE*>(arg_data);

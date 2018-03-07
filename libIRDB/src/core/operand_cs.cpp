@@ -223,12 +223,6 @@ string DecodedOperandCapstone_t::getString() const
 	}
 }
 
-		
-bool DecodedOperandCapstone_t::isWrite() const
-{
-	return false;
-}
-
 bool DecodedOperandCapstone_t::isRegister() const
 {
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());

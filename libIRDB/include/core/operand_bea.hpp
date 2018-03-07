@@ -18,7 +18,6 @@ class DecodedOperandBea_t
 
 		bool isConstant() const;
 		string getString() const;
-		bool isWrite() const;
 		bool isRegister() const;
 		bool isGeneralPurposeRegister() const;
 		bool isMmxRegister() const;
