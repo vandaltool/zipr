@@ -415,10 +415,47 @@ uint32_t DecodedOperandCapstone_t::getScaleValue() const
 
 bool DecodedOperandCapstone_t::hasMemoryDisplacement() const
 {
-        const auto the_insn=static_cast<cs_insn*>(my_insn.get());
-        const auto &op = (the_insn->detail->x86.operands[op_num]);
-	return isMemory() && op.mem.disp!=0;
-}
+
+	if (!isMemory()) 
+		return false;
+
+	const auto the_insn = static_cast<cs_insn*>(my_insn.get());
+	const auto &op = (the_insn->detail->x86.operands[op_num]);
+
+	const auto modrm = the_insn->detail->x86.modrm;
+	const auto mod = (modrm >> 6) & 0x3;
+	const auto rm = (modrm & 0x7);
+	const auto sib = the_insn->detail->x86.sib;
+	const auto sib_base = (sib >> 0) & 0x7;
+	const auto sib_index = (sib >> 3) & 0x7;
+
+	switch (mod)
+	{
+	case 0 /* 00 */:
+		if (rm == 4 &&	 // indicates SIB is present.
+			sib_base == 0x5 // indicates disp32 when sib present and mod=00.
+			)
+			return true;	// abs 32-bit
+
+		if (rm == 5)
+			return true;	// pcrel or abs 32-bit depending on if 32-bit or 64-bit arch.
+
+		return false;
+
+	case 1 /* 01 */:
+		return true;
+
+	case 2 /* 10 */:
+		return true;
+
+	case 3 /* 11 */:
+		return false;
+
+	default: 
+		return false;
+	}
+	return false; // should be unreachable
+} // end of DecodedOperandCapstone_t::hasMemoryDisplacement()
 
 virtual_offset_t DecodedOperandCapstone_t::getMemoryDisplacement() const
 {
