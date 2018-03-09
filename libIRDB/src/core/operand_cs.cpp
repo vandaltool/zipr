@@ -410,8 +410,7 @@ uint32_t DecodedOperandCapstone_t::getScaleValue() const
 bool DecodedOperandCapstone_t::hasMemoryDisplacement() const
 {
 
-	if (!isMemory()) 
-		return false;
+	if(!isMemory()) throw std::logic_error(string("Cannot ")+__FUNCTION__+"  of non-memory operand");
 
 	const auto the_insn = static_cast<cs_insn*>(my_insn.get());
 	const auto &op = (the_insn->detail->x86.operands[op_num]);
@@ -425,30 +424,30 @@ bool DecodedOperandCapstone_t::hasMemoryDisplacement() const
 
 	switch (mod)
 	{
-	case 0 /* 00 */:
-		if (rm == 4 &&	 // indicates SIB is present.
-			sib_base == 0x5 // indicates disp32 when sib present and mod=00.
-			)
-			return true;	// abs 32-bit
+		case 0 /* 00 */:
+			if (rm == 4 &&	 // indicates SIB is present.
+			    sib_base == 0x5 // indicates disp32 when sib present and mod=00.
+			   )
+				return true;	// abs 32-bit
 
-		if (rm == 5)
-			return true;	// pcrel or abs 32-bit depending on if 32-bit or 64-bit arch.
+			if (rm == 5)
+				return true;	// pcrel or abs 32-bit depending on if 32-bit or 64-bit arch.
 
-		return false;
+			return false;
 
-	case 1 /* 01 */:
-		return true;
+		case 1 /* 01 */:
+			return true;
 
-	case 2 /* 10 */:
-		return true;
+		case 2 /* 10 */:
+			return true;
 
-	case 3 /* 11 */:
-		return false;
+		case 3 /* 11 */:
+			return false;
 
-	default: 
-		return false;
+		default: 
+			assert(0); //unreachable
 	}
-	return false; // should be unreachable
+	assert(0); // unreachable
 } // end of DecodedOperandCapstone_t::hasMemoryDisplacement()
 
 virtual_offset_t DecodedOperandCapstone_t::getMemoryDisplacement() const
