@@ -20,7 +20,7 @@ centos_files/libdb-5.3.21-19.el7.i686.rpm -text
 centos_files/libgcc-4.8.5-11.el7.i686.rpm -text
 centos_files/libgomp-4.8.5-11.el7.x86_64.rpm -text svneol=unset#application/x-rpm
 centos_files/libmpc-1.0.1-3.el7.x86_64.rpm -text svneol=unset#application/x-rpm
-centos_files/libpqxx-3.1.1.tar.gz -text svneol=unset#application/x-gzip
+centos_files/libpqxx-4.0.1-1.el7.x86_64.rpm -text
 centos_files/libselinux-2.5-6.el7.i686.rpm -text
 centos_files/libsepol-2.5-6.el7.i686.rpm -text
 centos_files/libstdc++-4.8.5-11.el7.i686.rpm -text
