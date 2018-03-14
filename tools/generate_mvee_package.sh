@@ -821,6 +821,9 @@ finalize_json()
 
 		# parse the aggregated assurance case evidence for the variant set
 		parse_aggregate_assurance_file "$outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt" "$outdir/assurance/vs-${vs}_aggregate_evidence.txt" "vs-${vs}"
+
+		# remove the intermediate file
+		rm -f "$outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt"
 		
 
 		json_contents="${json_contents//<<VARIANT_SETS>>/$vs_json_contents,<<VARIANT_SETS>>}"
