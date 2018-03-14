@@ -2266,7 +2266,7 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 
 		DataScoop_t* scoop=*it;
 		const char *scoop_contents=scoop->GetContents().c_str();
-		if(scoop->GetName()==".init_array" || scoop->GetName()==".fini_array" || scoop->GetName()==".got.plt")
+		if(scoop->GetName()==".init_array" || scoop->GetName()==".fini_array" || scoop->GetName()==".got.plt" || scoop->GetName()==".got")
 		{
 			int start_offset=0;
 			if(scoop->GetName()==".got.plt")
@@ -2279,16 +2279,23 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 				virtual_offset_t vo;
 				if(ptrsize==4)
 					/* get int, 4 bytes */
-					vo=(virtual_offset_t)*(int*)&scoop_contents[i];
+					vo=(virtual_offset_t)*(uint32_t*)&scoop_contents[i];
 				else if(ptrsize==8)
 					/* get long long, 8 bytes */
-					vo=(virtual_offset_t)*(long long*)&scoop_contents[i];
+					vo=(virtual_offset_t)*(uint64_t*)&scoop_contents[i];
 				else
 					assert(0);	
 
 
 				Instruction_t* insn=lookupInstruction(firp,vo);
 
+				// OK for .got scoop to miss
+				if(scoop->GetName()==".got" && insn==NULL)
+				{
+					if(getenv("UNPIN_VERBOSE")!=0)
+						cout<<"Skipping "<<scoop->GetName()<<" unpin for "<<hex<<vo<<" due to no instruction at vo"<<endl;
+					continue;
+				}
 
 				// these asserts are probably overkill, but want them for sanity checking for now.
 				assert(insn);
@@ -2298,6 +2305,7 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 					ibt_provenance_t::ibtp_initarray | 
 					ibt_provenance_t::ibtp_finiarray | 
 					ibt_provenance_t::ibtp_gotplt | 
+					ibt_provenance_t::ibtp_got | 
 					ibt_provenance_t::ibtp_stars_data)
 				  )
 				{
@@ -2338,12 +2346,15 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 						// add reloc to IR.
 						firp->GetRelocations().insert(nr);
 						scoop->GetRelocations().insert(nr);
+
+						if(getenv("UNPIN_VERBOSE")!=0)
+							cout<<"Unpinning "+scoop->GetName()+" entry at offset "<<dec<<i<<endl;
 					}
 				}
 				else
 				{
 					if(getenv("UNPIN_VERBOSE")!=0)
-						cout<<"Skipping "<<scoop->GetName()<<" unpin for "<<hex<<vo<<" due to other references."<<dec<<i<<endl;
+						cout<<"Skipping "<<scoop->GetName()<<" unpin for "<<hex<<vo<<" due to other references at offset="<<dec<<i<<endl;
 					missed_unpins[scoop->GetName()]++;
 				}
 			}
@@ -2454,7 +2465,13 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 					}
 				}
 			}
+		}	
+		else
+		{
+			if(getenv("UNPIN_VERBOSE")!=0)
+				cout<<"Skipping unpin of section "<<scoop->GetName()<<endl;
 		}
+			
 	}
 
 	int total_elftable_unpins=0;

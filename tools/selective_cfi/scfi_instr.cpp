@@ -1169,8 +1169,6 @@ void SCFI_Instrument::add_got_entry(const std::string& name)
 {
 	// find relevant scoops
 	auto dynamic_scoop=find_scoop(firp,".dynamic");
-	// auto gotplt_scoop=find_scoop(firp,".got.plt");
-	//auto got_scoop=find_scoop(firp,".got");
 	auto dynstr_scoop=find_scoop(firp,".dynstr");
 	auto dynsym_scoop=find_scoop(firp,".dynsym");
 	auto relaplt_scoop=find_scoop(firp,".rela.dyn coalesced w/.rela.plt");
@@ -1179,7 +1177,6 @@ void SCFI_Instrument::add_got_entry(const std::string& name)
 
 	// add 0-init'd pointer to table
 	string new_got_entry_str(ptrsize,0);	 // zero-init a pointer-sized string
-	//auto dl_got_entry_pos=add_to_scoop(new_got_entry_str,gotplt_scoop);
 
 
 	// create a new, unpinned, rw+relro scoop that's an empty pointer.
@@ -1253,16 +1250,16 @@ bool SCFI_Instrument::add_got_entries()
 {
 
 	// find all the necessary scoops;
-	auto dynamic_scoop=find_scoop(firp,".dynamic");
-	auto gotplt_scoop=find_scoop(firp,".got.plt");
-	auto got_scoop=find_scoop(firp,".got");
-	auto dynstr_scoop=find_scoop(firp,".dynstr");
-	auto dynsym_scoop=find_scoop(firp,".dynsym");
-	auto relaplt_scoop=find_scoop(firp,".rela.dyn coalesced w/.rela.plt");
-	auto relplt_scoop=find_scoop(firp,".rel.dyn coalesced w/.rel.plt");
-	auto relscoop=relaplt_scoop!=NULL ?  relaplt_scoop : relplt_scoop;
-
-	Instruction_t* to_dl_runtime_resolve=find_runtime_resolve<T_Elf_Sym,T_Elf_Rela, T_Elf_Dyn, rela_shift, reloc_type, ptrsize>(gotplt_scoop);
+	const auto dynamic_scoop=find_scoop(firp,".dynamic");
+	const auto gotplt_scoop=find_scoop(firp,".got.plt");
+	const auto got_scoop=find_scoop(firp,".got");
+	const auto dynstr_scoop=find_scoop(firp,".dynstr");
+	const auto dynsym_scoop=find_scoop(firp,".dynsym");
+	const auto relaplt_scoop=find_scoop(firp,".rela.dyn coalesced w/.rela.plt");
+	const auto relplt_scoop=find_scoop(firp,".rel.dyn coalesced w/.rel.plt");
+	const auto relscoop=relaplt_scoop!=NULL ?  relaplt_scoop : relplt_scoop;
+	const auto search_in = gotplt_scoop==NULL ? got_scoop : gotplt_scoop;
+	const auto to_dl_runtime_resolve=find_runtime_resolve<T_Elf_Sym,T_Elf_Rela, T_Elf_Dyn, rela_shift, reloc_type, ptrsize>(search_in);
 
 
 	// add necessary GOT entries.
@@ -1325,7 +1322,6 @@ bool SCFI_Instrument::add_libdl_as_needed_support()
 	// use this to determine whether a scoop has a given name.
 
 	auto dynamic_scoop=find_scoop(firp,".dynamic");
-	auto gotplt_scoop=find_scoop(firp,".got.plt");
 	auto dynstr_scoop=find_scoop(firp,".dynstr");
 	auto dynsym_scoop=find_scoop(firp,".dynsym");
 	auto relaplt_scoop=find_scoop(firp,".rela.dyn coalesced w/.rela.plt");
@@ -1333,8 +1329,8 @@ bool SCFI_Instrument::add_libdl_as_needed_support()
 
 
 	// they all have to be here, or none are.
-	assert( (dynamic_scoop==NULL && gotplt_scoop==NULL && dynstr_scoop==NULL && dynsym_scoop==NULL ) || 
-		(dynamic_scoop!=NULL && gotplt_scoop!=NULL && dynstr_scoop!=NULL && dynsym_scoop!=NULL )
+	assert( (dynamic_scoop==NULL && dynstr_scoop==NULL && dynsym_scoop==NULL ) || 
+		(dynamic_scoop!=NULL && dynstr_scoop!=NULL && dynsym_scoop!=NULL )
 		);
 
 
