@@ -34,7 +34,7 @@ using namespace std;
 //
 // main routine to generate spri rules for a variant.
 //
-main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 	if(argc!=3 && argc!=4)
 	{
@@ -101,6 +101,7 @@ main(int argc, char* argv[])
 		
 
 	delete varidp;
+	return 0;
 }
 
 

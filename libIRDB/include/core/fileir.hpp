@@ -92,7 +92,7 @@ class FileIR_t : public BaseObj_t
 		void ChangeRegistryKey(Instruction_t* orig, Instruction_t* updated);
 
 		static int GetArchitectureBitWidth() ;
-		static int SetArchitectureBitWidth(const int width);
+		static void SetArchitectureBitWidth(const int width);
 		void SetArchitecture();
 
 		// Lookup a scoop by address

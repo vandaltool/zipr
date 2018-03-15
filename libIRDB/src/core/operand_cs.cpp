@@ -23,7 +23,7 @@ static uint32_t to_seg_reg_number(const x86_reg &reg)
 		case X86_REG_DS: return 3;
 		case X86_REG_FS: return 4;
 		case X86_REG_GS: return 5;
-		defaut: assert(0);
+		default: break;
 	}
 	assert(0);
 }
@@ -131,6 +131,7 @@ static uint32_t to_reg_number(const x86_reg &reg)
 		case X86_REG_R15D:
 		case X86_REG_R15W:
 			return 15;
+		default: break;
 	}
 	assert(0);
 }
@@ -413,14 +414,14 @@ bool DecodedOperandCapstone_t::hasMemoryDisplacement() const
 	if(!isMemory()) throw std::logic_error(string("Cannot ")+__FUNCTION__+"  of non-memory operand");
 
 	const auto the_insn = static_cast<cs_insn*>(my_insn.get());
-	const auto &op = (the_insn->detail->x86.operands[op_num]);
+	//const auto &op = (the_insn->detail->x86.operands[op_num]);
 
 	const auto modrm = the_insn->detail->x86.modrm;
 	const auto mod = (modrm >> 6) & 0x3;
 	const auto rm = (modrm & 0x7);
 	const auto sib = the_insn->detail->x86.sib;
 	const auto sib_base = (sib >> 0) & 0x7;
-	const auto sib_index = (sib >> 3) & 0x7;
+	//const auto sib_index = (sib >> 3) & 0x7;
 
 	switch (mod)
 	{
@@ -472,14 +473,14 @@ uint32_t DecodedOperandCapstone_t::getMemoryDisplacementEncodingSize() const
 {
 	if(!isMemory()) throw std::logic_error(string("Cannot ")+__FUNCTION__+"  of non-memory operand");
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
-        const auto &op = (the_insn->detail->x86.operands[op_num]);
+        //const auto &op = (the_insn->detail->x86.operands[op_num]);
 
 	const auto modrm=the_insn->detail->x86.modrm;
 	const auto mod=(modrm>>6)&0x3;
 	const auto rm=(modrm)&0x7;
 	const auto sib=the_insn->detail->x86.sib;
 	const auto sib_base=(sib>>0)&0x7;
-	const auto sib_index=(sib>>3)&0x7;
+	//const auto sib_index=(sib>>3)&0x7;
 
 	switch(mod)
 	{

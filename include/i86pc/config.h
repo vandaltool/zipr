@@ -58,18 +58,5 @@ typedef s_uint64_t 	   counter_t;
 #define NULL 0
 #endif
 
-#include <elfio/elfio.hpp>
-
-typedef ELFIO::Elf32_Ehdr  IRDB_Elf_Ehdr;
-typedef ELFIO::Elf32_Shdr  IRDB_Elf_Shdr;
-typedef ELFIO::Elf32_Off   IRDB_Elf_Off;
-typedef ELFIO::Elf32_Half  IRDB_Elf_Half;
-typedef ELFIO::Elf32_Word  IRDB_Elf_Word;
-typedef ELFIO::Elf32_Addr  IRDB_Elf_Addr;
-typedef ELFIO::Elf32_Sym  IRDB_Elf_Sym;
-typedef ELFIO::Elf32_Rel  IRDB_Elf_Rel;
-typedef ELFIO::Elf32_Rela  IRDB_Elf_Rela;
-#define IRDB_ELF_ST_TYPE ELF32_ST_TYPE
-
 
 #endif

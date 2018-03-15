@@ -153,7 +153,7 @@ static Instruction_t* IsOrWasCall(const FileIR_t *firp, Instruction_t* insn)
 		}
 	}
 
-	return false;
+	return NULL;
 }
 
 // Does a call follow the instruction?
@@ -170,11 +170,6 @@ bool libIRDB::CallFollows(const FileIR_t *firp, Instruction_t* insn, const strin
 //		auto d=DISASM({0});
 //		Disassemble(ptr,d);
 		const auto d=DecodedInstruction_t(ptr);
-		long long vo = 0;
-		if (ptr->GetAddress())
-			vo = ptr->GetAddress()->GetVirtualOffset();
-//		std::cout << "CallFollows(): " << ptr->getDisassembly() << " @ " << hex << vo << std::endl;
-
 		const auto tgt = IsOrWasCall(firp, ptr);
 
 		if (tgt) 

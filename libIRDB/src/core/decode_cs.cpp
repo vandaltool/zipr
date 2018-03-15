@@ -206,7 +206,6 @@ DecodedInstructionCapstone_t::DecodedInstructionCapstone_t(const Instruction_t* 
 DecodedInstructionCapstone_t::DecodedInstructionCapstone_t(const virtual_offset_t start_addr, const void *data, uint32_t max_len)
 {
 	if(!cs_handle) cs_handle=new CapstoneHandle_t(NULL);
-        const auto endptr=data+max_len;
         Disassemble(start_addr, data, max_len);
 }
 
@@ -589,8 +588,8 @@ virtual_offset_t DecodedInstructionCapstone_t::getMemoryDisplacementOffset(const
 
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
 
-	const auto encoding_size=t.getMemoryDisplacementEncodingSize();
-	const auto x86 = &(the_insn->detail->x86);
+	//const auto encoding_size=t.getMemoryDisplacementEncodingSize();
+	//const auto x86 = &(the_insn->detail->x86);
         const auto imm_count = cs_op_count(cs_handle->getHandle(), the_insn, X86_OP_IMM);
 	const auto disp_size=t.getMemoryDisplacementEncodingSize();
 	const auto imm=getImmediate();

@@ -146,12 +146,11 @@ void BasicBlock_t::BuildBlock
 
 std::ostream& libIRDB::operator<<(std::ostream& os, const BasicBlock_t& block)
 {
-	int i;
 	os<<block.is_exit_block;
 	os<<"\t ---- Starting block print -----" <<endl;
-	for(i=0;i<block.instructions.size();i++)
+	for(auto i=0U;i<block.instructions.size();i++)
 	{
-		Instruction_t* insn=block.instructions[i];
+		const auto insn=block.instructions[i];
 		os<<"\t Instruction "<<std::dec<<i<<" at " << std::hex << insn->GetAddress()->GetVirtualOffset() << " with id " << std::dec << insn->GetBaseID() << " " << insn->GetComment() << endl;
 	}
 	os<<"\t ---- done block print -----" <<endl;
@@ -163,12 +162,9 @@ std::ostream& libIRDB::operator<<(std::ostream& os, const BasicBlock_t& block)
 
 bool BasicBlock_t::EndsInBranch() 
 {
-	//DISASM d;
-	Instruction_t *branch=instructions[instructions.size()-1];	
-
+	const auto branch=instructions[instructions.size()-1];	
 	assert(branch);
 
-	//Disassemble(branch,d);
 	const auto d=DecodedInstruction_t(branch);
 	return d.isBranch();
 
@@ -176,19 +172,15 @@ bool BasicBlock_t::EndsInBranch()
 }
 bool BasicBlock_t::EndsInIndirectBranch() 
 {
-	//DISASM d;
-	Instruction_t *branch=instructions[instructions.size()-1];	
-
+	const auto *branch=instructions[instructions.size()-1];	
 	assert(branch);
 
-	//Disassemble(branch,d);
 	const auto d=DecodedInstruction_t(branch);
 
 	if(d.isReturn())
 		return true;
 	if(d.isUnconditionalBranch() || d.isCall())
 	{
-		//if((d.Argument1.ArgType&CONSTANT_TYPE)==0)
 		if(!d.getOperand(0).isConstant())
 			/* not a constant type */
 			return true;
@@ -201,27 +193,20 @@ bool BasicBlock_t::EndsInConditionalBranch()
 {
 	if(!EndsInBranch())
 		return false;
-	Instruction_t *branch=instructions[instructions.size()-1];	
+	const auto branch=instructions[instructions.size()-1];	
 	assert(branch);
-	//DISASM d;
-	//Disassemble(branch,d);
 	const auto d=DecodedInstruction_t(branch);
 
 	return d.isConditionalBranch(); 
-
-//	if(d.isReturn() || d.UnconditionalBranch() || d.isCall())
-//		return false;
-//
-//	return true;
-
 }
+
 Instruction_t* BasicBlock_t::GetBranchInstruction()
 
 {
 	if(!EndsInBranch())
 		return NULL;
 
-	Instruction_t *branch=instructions[instructions.size()-1];	
+	auto branch=instructions[instructions.size()-1];	
 	return branch;
 }
 

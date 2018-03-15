@@ -49,9 +49,8 @@ Instruction_t *HookStart::add_instrumentation(Instruction_t *site)
 	virtual_offset_t postCallbackReturn = getAvailableAddress();
 	char pushRetBuf[100],
 	     movIdBuf[100],
-			 movRaxBuf[100],
-			 movRspBuf[100],
-			 movRetBuf[100];
+	     movRaxBuf[100],
+	     movRspBuf[100];
 	sprintf(pushRetBuf,"push qword 0x%lx", postCallbackReturn);
 	sprintf(movIdBuf,"mov rdi, 0x0");
 	sprintf(movRaxBuf,"mov rsi, rax");
@@ -63,10 +62,7 @@ Instruction_t *HookStart::add_instrumentation(Instruction_t *site)
 
 	Instruction_t *tmp=site,
 	              *callback=NULL,
-								*post_callback=NULL,
-								*fallthrough=NULL;
-
-	fallthrough = site->GetFallthrough();
+	              *post_callback=NULL;
 
 	site=insertAssemblyBefore(firp,tmp,"push rsp");
 	tmp=insertAssemblyAfter(firp,tmp,"push rbp");
@@ -144,8 +140,6 @@ int HookStart::execute()
 		  ++it)
 		{
 			Instruction_t *insn = *it;
-			virtual_offset_t target = 0;
-
 			if (insn->GetAddress() && 
 			    insn->GetAddress()->GetVirtualOffset()==m_elfiop->get_entry())
 			{

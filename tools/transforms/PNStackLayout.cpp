@@ -85,7 +85,7 @@ unsigned int PNStackLayout::GetRandomPadding(unsigned int obj_size)
 
 
 
-	if(pn_options->getShouldDoubleFrameSize() && obj_size < pn_options->getDoubleThreshold())
+	if(pn_options->getShouldDoubleFrameSize() && obj_size < (uintptr_t)pn_options->getDoubleThreshold())
 	{
 		//if the original frame size is not aligned, then add as many bytes as necessary to align it
 		//for example, if 3 bytes over alignment, and the alignment stride is 8, then add 8 - 3, or 5 bytes. 

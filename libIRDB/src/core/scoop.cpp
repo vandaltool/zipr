@@ -69,7 +69,7 @@ string DataScoop_t::WriteToDBRange(File_t *fid, db_id_t newid, int start, int en
 
 
         hex_data << query_start << setfill('0') << hex;
-        for (size_t i = start; i < end; ++i)
+        for (auto i = start; i < end; ++i)
 	{
                 hex_data << setw(2) << (int)(contents[i]&0xff);
 

@@ -48,7 +48,7 @@ int main(int argc, char **argv)
 
         string programName(argv[0]);
         int variantID = atoi(argv[1]);
-	int threshold = 1;
+	uint32_t threshold = 1;
 
 	// FIXME: implement getting threshold value from arguments
 

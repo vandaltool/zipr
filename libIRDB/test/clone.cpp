@@ -29,7 +29,7 @@
 using namespace libIRDB;
 using namespace std;
 
-main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 
 	if(argc!=3)
@@ -83,6 +83,5 @@ main(int argc, char* argv[])
 	delete newpidp;
 	delete pidp;
 
-
-	exit(0);
+	return 0;
 }

@@ -21,6 +21,7 @@ namespace EXEIO
 	class exeio_section_t
 	{
 		public: 
+			virtual ~exeio_section_t() {}  
 			virtual bool isLoadable() const =0;
 			virtual bool isExecutable() const =0;
 			virtual bool isWriteable() const =0;

@@ -130,13 +130,11 @@ void Callgraph_t::AddFile(libIRDB::FileIR_t* const firp)
 	CreateNodes(firp);
 
 	// for each instruction 
-	set<Instruction_t*> &insns=firp->GetInstructions();
-	Instruction_t* insn=NULL, *prev=NULL;
-	for(set<Instruction_t*>::iterator it=insns.begin();
-			insns.end() != it;
-			++it, prev=insn)
+	auto &insns=firp->GetInstructions();
+
+	for(auto it=insns.begin(); insns.end() != it; ++it)
 	{
-		insn=*it;
+		auto insn=*it;
 		if(IsCallSite(insn) || IsTailJmpSite(insn))
 			MarkCallSite(insn);
 		if(IsPushJmpSite(insn))
@@ -145,7 +143,7 @@ void Callgraph_t::AddFile(libIRDB::FileIR_t* const firp)
 		if(insn->GetFunction() && insn->GetFunction()->GetEntryPoint()==insn
 			&& insn->GetIndirectBranchTargetAddress())
 		{
-				CallGraphNode_t *node = FindNode(insn->GetFunction());
+				auto node = FindNode(insn->GetFunction());
 				assert(node);
 				callees[&GetDefaultHellNode()].insert(node);
 				callers[node].insert(&GetDefaultHellNode());
@@ -159,25 +157,19 @@ void Callgraph_t::Dump(std::ostream& fout)
 	fout<<"Dumping callgraph ..."<<endl;
 
 	fout<<"Mapping one way ..."<<endl;
-	for(CGNodeToCGNodeSetMap_t::iterator it=callees.begin();
-		callees.end()!=it;
-		++it)
+	for(auto it=callees.begin(); callees.end()!=it; ++it)
 	{
 		CallGraphNode_t* node = it->first;
 
 		fout<<"Function "<<GetNodeName(node)<<" calls: ";
 		CallGraphNodeSet_t &node_callers=it->second;
-		for(CallGraphNodeSet_t::iterator it2=node_callers.begin();
-			node_callers.end()!=it2;
-			++it2)
+		for(auto it2=node_callers.begin(); node_callers.end()!=it2; ++it2)
 		{
 			CallGraphNode_t* the_callee=*it2;
 			fout<<GetNodeName(the_callee)<<", ";
 		}
 		fout<<endl;
-		for(CallSiteSet_t::iterator it2=GetCallSites(node).begin();
-			GetCallSites(node).end() != it2; 
-			++it2)
+		for(auto it2=GetCallSites(node).begin(); GetCallSites(node).end() != it2; ++it2)
 		{
 			CallSite_t the_call_site=*it2;
 			fout<<"\t"<<GetCallsiteDisassembly(the_call_site)<<endl;
@@ -185,9 +177,7 @@ void Callgraph_t::Dump(std::ostream& fout)
 	}
 
 	fout<<"Mapping the other way ..."<<endl;
-	for(CGNodeToCGNodeSetMap_t::iterator it=callers.begin();
-		callers.end()!=it;
-		++it)
+	for(auto it=callers.begin(); callers.end()!=it; ++it)
 	{
 		CallGraphNode_t* n=it->first;
 
@@ -206,20 +196,16 @@ void Callgraph_t::Dump(std::ostream& fout)
 
 
 	fout<<"Printing call sites..."<<endl;
-	for(NodeToCallSiteSetMap_t::iterator it=call_sites.begin();
-			call_sites.end()!=it;
-			++it)
+	for(auto it=call_sites.begin(); call_sites.end()!=it; ++it)
 	{
-		CallGraphNode_t *from_node=it->first;
-		CallSiteSet_t  call_sites_for_func=it->second;
+		auto from_node=it->first;
+		auto &call_sites_for_func=it->second;
 
 		fout<<"Call Sites for "<<GetNodeName(from_node)<<": ";
 
-		for(CallSiteSet_t::iterator it2=call_sites_for_func.begin();
-			call_sites_for_func.end() != it2; 
-			++it2)
+		for(auto it2=call_sites_for_func.begin(); call_sites_for_func.end() != it2; ++it2)
 		{
-			CallSite_t the_call_site=*it2;
+			auto the_call_site=*it2;
 			fout<<GetCallsiteDisassembly(the_call_site)<<", ";
 		}
 		fout<<endl;
@@ -244,9 +230,8 @@ cerr << "visiting node: " << GetNodeName(node) << " visited(size):" << visited.s
 
 	visited.insert(node);
 
-	CallGraphNodeSet_t directPredecessors = GetCallersOfNode(node);
-	CallGraphNodeSet_t::iterator it;
-	for (it = directPredecessors.begin(); it != directPredecessors.end(); ++it)
+	auto directPredecessors = GetCallersOfNode(node);
+	for (auto it = directPredecessors.begin(); it != directPredecessors.end(); ++it)
 	{
 		if (visited.count(*it) == 0)
 		{
@@ -267,20 +252,20 @@ CallGraphNode_t* Callgraph_t::FindNode(Function_t* const fn)
 
 void Callgraph_t::GetAncestors(Function_t* const fn, CallGraphNodeSet_t &ancestors, bool skipHellNode)
 {
-	CallGraphNode_t* node = FindNode(fn);
+	auto node = FindNode(fn);
 	if (node)
 		GetAncestors(node, ancestors, skipHellNode);
 }
 
 void Callgraph_t::GetAncestors(CallGraphNode_t* const node, CallGraphNodeSet_t &ancestors, bool skipHellNode)
 {
-	CallGraphNodeSet_t visited;
+	auto visited=CallGraphNodeSet_t();
 	_GetAncestors(node, ancestors, visited, skipHellNode);
 }
 
 bool Callgraph_t::Reachable(CallGraphNode_t* const from, CallGraphNode_t* const to, bool skipHellNode)
 {
-	CallGraphNodeSet_t ancestors;
+	auto ancestors=CallGraphNodeSet_t();
 	GetAncestors(to, ancestors, skipHellNode);
 	return (ancestors.count(from) > 0);
 }

@@ -43,19 +43,19 @@ class SCFI_Instrument
 				bool p_do_multimodule=false,
 				bool p_do_exe_nonce_for_call=false
 			) 
-			: firp(the_firp), 
+			: 
+		  	  firp(the_firp), 
 			  do_coloring(p_do_coloring), 
 			  do_common_slow_path(p_do_common_slow_path), 
 			  do_jumps(p_do_jumps), 
 			  do_calls(p_do_calls), 
 			  do_rets(p_do_rets), 
-			  protect_safefn(p_do_safefn), 
 			  do_multimodule(p_do_multimodule), 
+			  protect_safefn(p_do_safefn), 
 			  do_exe_nonce_for_call(p_do_exe_nonce_for_call), 
-			  ExecutableNonceValue("\x90", 1),
 			  ret_shared(NULL),
-			  zestcfi_function_entry(NULL)
-
+			  zestcfi_function_entry(NULL),
+			  ExecutableNonceValue("\x90", 1)
 		{ 
 			std::cout<<std::boolalpha;
 			std::cout<<"#ATTRIBUTE do_coloring="<<p_do_coloring<<std::endl;
@@ -75,7 +75,7 @@ class SCFI_Instrument
 		}
 		bool execute();
 
-	private:
+	private: // methods
 
 		// helpers for adding GOT entries and symbols for multi-module cfi	
 		template<typename T_Elf_Sym, typename T_Elf_Rela, typename T_Elf_Dyn, int reloc_type, int rela_shift, int B>
@@ -133,9 +133,9 @@ class SCFI_Instrument
 		unsigned int GetNonceOffset(libIRDB::Instruction_t*);
 
 
+	private: // data
 		// predecessors of instructions.
 		libIRDB::InstructionPredecessors_t preds;
-	
 		libIRDB::FileIR_t* firp;
 		bool do_coloring;
 		bool do_common_slow_path;
@@ -145,12 +145,9 @@ class SCFI_Instrument
 		bool do_multimodule;
 		bool protect_safefn;
 		bool do_exe_nonce_for_call;
-
 		std::unique_ptr<ColoredInstructionNonces_t> color_map;
-
 		libIRDB::Instruction_t *ret_shared;
 		libIRDB::Instruction_t *zestcfi_function_entry;
-
 		std::string ExecutableNonceValue;
 };
 

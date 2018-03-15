@@ -38,7 +38,7 @@ uint32_t calculate_checksum(std::istream& file)
 
 		//Calculate checksum for each byte of file
 		std::streamoff filesize = pe_utils::get_file_size(file);
-		for(long long i = 0; i < filesize; i += 4)
+		for(unsigned long long i = 0; i < (unsigned long long) filesize; i += 4)
 		{
 			unsigned long dw = 0;
 

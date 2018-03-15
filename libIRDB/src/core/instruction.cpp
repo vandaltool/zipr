@@ -32,14 +32,14 @@ using namespace std;
 
 Instruction_t::Instruction_t() :
 	BaseObj_t(NULL), 
-	data(""),
-	callback(""),
-	comment(""),
 	my_address(NULL),
 	my_function(NULL),
 	orig_address_id(NOT_IN_DATABASE),
 	fallthrough(NULL),
 	target(NULL),
+	data(""),
+	callback(""),
+	comment(""),
 	indTarg(NULL),
 	icfs(NULL),
 	eh_pgm(NULL),
@@ -59,15 +59,15 @@ Instruction_t::Instruction_t(db_id_t id,
 		db_id_t doip_id) :
 
 	BaseObj_t(NULL), 
-	data(thedata),
-	callback(my_callback),
-	comment(my_comment),
-	indTarg(my_indTarg),
 	my_address(addr),
 	my_function(func),
 	orig_address_id(orig_id),
 	fallthrough(NULL),
 	target(NULL),
+	data(thedata),
+	callback(my_callback),
+	comment(my_comment),
+	indTarg(my_indTarg),
 	icfs(NULL),
 	eh_pgm(NULL),
 	eh_cs(NULL)
@@ -155,7 +155,7 @@ bool Instruction_t::Assemble(string assembly)
 
     string rawBits;
     rawBits.resize(filesize);
-    for (int i = 0; i < filesize; ++i)
+    for (auto i = 0U; i < filesize; ++i)
       rawBits[i] = memblock[i];
 
     // should erase those 2 files here

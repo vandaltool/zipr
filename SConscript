@@ -33,7 +33,7 @@ else:
         os.makedirs(ELFIO_DIR)     # make directory 
         tgz=tarfile.open(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/elfio-2.2.tar.gz", "r:gz")
         print 'Extracting elfio tarball'
-        tgz.list(verbose=False)
+        #tgz.list(verbose=False)
         tgz.extractall(ELFIO_DIR)
     	shutil.copytree(ELFIO_DIR+"elfio-2.2/elfio", os.environ['SECURITY_TRANSFORMS_HOME']+"/include/elfio")
         shutil.copy(os.path.join(os.environ['SECURITY_TRANSFORMS_HOME'],"third_party","elfio.hpp"), 
@@ -47,7 +47,7 @@ else:
         os.makedirs(SQLITE3_DIR)     # make directory 
         tgz=tarfile.open(os.path.join(os.environ['SECURITY_TRANSFORMS_HOME'], 'third_party/sqlite-autoconf-3071300.tar.gz'), "r:gz")
         print 'Extracting needed files from sqlite3 tarball'
-        tgz.list(verbose=False)
+        #tgz.list(verbose=False)
         tgz.extract('sqlite-autoconf-3071300/sqlite3.h', SQLITE3_DIR)
         tgz.extract('sqlite-autoconf-3071300/sqlite3.c', SQLITE3_DIR)
 		# copy sqlite3.h
@@ -86,7 +86,6 @@ if "CYGWIN" in sysname:
 	env['BASE_IRDB_LIBS']=env['BASE_IRDB_LIBS']+("iconv",)
 
 Export('env')
-
 
 libEXEIO=SConscript("libEXEIO/SConscript", variant_dir='scons_build/libEXEIO')
 libbea=SConscript("beaengine/SConscript", variant_dir='scons_build/beaengine')

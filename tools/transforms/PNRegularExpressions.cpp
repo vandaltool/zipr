@@ -94,19 +94,19 @@ PNRegularExpressions::PNRegularExpressions()
 	}
 
 	// match "[esp+reg*scale+disp]"	
-	if(regcomp(&regex_esp_scaled, FIRN(".*\\[%sp"WS"[+].*[+](.+)\\].*"),REG_EXTENDED | REG_ICASE) !=0)
+	if(regcomp(&regex_esp_scaled, FIRN(".*\\[%sp" WS "[+].*[+](.+)\\].*"),REG_EXTENDED | REG_ICASE) !=0)
 	{
 		fprintf(stderr,"Error: regular expression for esp scaled addresses failed\n");
 		exit(1);
 	}
-	if((errcode=regcomp(&regex_lea_rsp, FIRN(".*lea.*\\[.*%sp.*("HEXNUM").*\\].*"),REG_EXTENDED | REG_ICASE)) !=0)
+	if((errcode=regcomp(&regex_lea_rsp, FIRN(".*lea.*\\[.*%sp.*(" HEXNUM ").*\\].*"),REG_EXTENDED | REG_ICASE)) !=0)
 	{
 		char buf[1000];
 		regerror(errcode,&regex_lea_rsp,buf,sizeof(buf));
 		fprintf(stderr,"Error: regular expression for regex_lea_rsp failed, code: %s\n", buf);
 		exit(1);
 	}
-	if((errcode=regcomp(&regex_esp_scaled_nodisp, FIRN(".*\\[%sp"WS"[+]"WS""REGSTRING SCALE"(\\]).*"),REG_EXTENDED | REG_ICASE)) !=0)
+	if((errcode=regcomp(&regex_esp_scaled_nodisp, FIRN(".*\\[%sp" WS "[+]" WS "" REGSTRING SCALE "(\\]).*"),REG_EXTENDED | REG_ICASE)) !=0)
 	{
 		char buf[1000];
 		regerror(errcode,&regex_esp_scaled_nodisp,buf,sizeof(buf));
@@ -114,13 +114,13 @@ PNRegularExpressions::PNRegularExpressions()
 		exit(1);
 	}
 
-	if(regcomp(&regex_ebp_scaled,FIRN(".*\\[%bp"WS"[+]"WS".*[-](.+)\\].*"),REG_EXTENDED | REG_ICASE) !=0)
+	if(regcomp(&regex_ebp_scaled,FIRN(".*\\[%bp" WS "[+]" WS ".*[-](.+)\\].*"),REG_EXTENDED | REG_ICASE) !=0)
 	{
 		fprintf(stderr,"Error: regular expression for ebp scaled addresses failed\n");
 		exit(1);
 	}
 
-	if((errcode=regcomp(&regex_esp_direct,          FIRN(".*\\[%sp"WS"[+]"WS"("HEXNUM")\\].*"),REG_EXTENDED | REG_ICASE)) !=0)
+	if((errcode=regcomp(&regex_esp_direct,          FIRN(".*\\[%sp" WS "[+]" WS "(" HEXNUM ")\\].*"),REG_EXTENDED | REG_ICASE)) !=0)
 	{
 		char buf[1000];
 		regerror(errcode,&regex_esp_direct,buf,sizeof(buf));
@@ -128,7 +128,7 @@ PNRegularExpressions::PNRegularExpressions()
 		exit(1);	
 	}
 
-	if((errcode=regcomp(&regex_esp_direct_negoffset,FIRN(".*\\[%sp"WS"[-]"WS"("HEXNUM")\\].*"),REG_EXTENDED | REG_ICASE)) !=0)
+	if((errcode=regcomp(&regex_esp_direct_negoffset,FIRN(".*\\[%sp" WS "[-]" WS "(" HEXNUM ")\\].*"),REG_EXTENDED | REG_ICASE)) !=0)
 	{
 		char buf[1000];
 		regerror(errcode,&regex_esp_direct_negoffset,buf,sizeof(buf));
@@ -137,7 +137,7 @@ PNRegularExpressions::PNRegularExpressions()
 	}
 
 
-	if(regcomp(&regex_ebp_direct,FIRN(".*\\[%bp"WS"[-]"WS"("HEXNUM")\\].*"),REG_EXTENDED | REG_ICASE) !=0)
+	if(regcomp(&regex_ebp_direct,FIRN(".*\\[%bp" WS "[-]" WS "(" HEXNUM ")\\].*"),REG_EXTENDED | REG_ICASE) !=0)
 	{
 		fprintf(stderr,"Error: regular expression for esp direct addresses failed\n");
 		exit(1);	
@@ -187,7 +187,7 @@ PNRegularExpressions::PNRegularExpressions()
 	//Unlike other expressions, there are two pattern matches here
 	//the first is the scaling factor (if one exists), the second is the
 	//offset.
-	if (regcomp(&regex_scaled_ebp_index, FIRN(".*\\[.*[+]"WS"%bp[*]?(.*)[-](.+)\\].*"), REG_EXTENDED | REG_ICASE) != 0)
+	if (regcomp(&regex_scaled_ebp_index, FIRN(".*\\[.*[+]" WS "%bp[*]?(.*)[-](.+)\\].*"), REG_EXTENDED | REG_ICASE) != 0)
 	{
 		fprintf(stderr,"Error: regular expression for scaled ebp index failed to compile\n");
 		exit(1);
@@ -200,7 +200,7 @@ PNRegularExpressions::PNRegularExpressions()
 	}
 
 
-        if((errcode=regcomp(&regex_add_rbp,FIRN("add ("REGSTRING"), *%bp *"),REG_EXTENDED | REG_ICASE)) !=0)
+        if((errcode=regcomp(&regex_add_rbp,FIRN("add (" REGSTRING "), *%bp *"),REG_EXTENDED | REG_ICASE)) !=0)
         {
                 char buf[1000];
                 regerror(errcode,&regex_add_rbp,buf,sizeof(buf));

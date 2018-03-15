@@ -28,7 +28,7 @@ using namespace libIRDB;
 using namespace std;
 
 
-main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 
 	if(argc!=2)
@@ -65,4 +65,5 @@ main(int argc, char* argv[])
 	cout<<"Variant "<< argv[1]<< " found in db: "<<*pidp << endl;
 
 	delete pidp;
+	return 0;
 }

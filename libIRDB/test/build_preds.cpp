@@ -35,7 +35,7 @@ using namespace std;
 //
 // main routine to build and print a call graph.
 //
-main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 	if(argc!=2)
 	{
@@ -99,6 +99,8 @@ main(int argc, char* argv[])
 		
 
 	delete varidp;
+
+	return 0;
 }
 
 

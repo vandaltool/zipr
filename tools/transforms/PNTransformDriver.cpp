@@ -47,7 +47,7 @@
 
 #define MAX_JUMPS_TO_FOLLOW 100000
 
-#define WHOLE_CONTAINER(s) begin(s), end(s)
+#define ALLOF(s) begin(s), end(s)
 
 using namespace std;
 using namespace libIRDB;
@@ -603,7 +603,7 @@ static bool is_exit_insn(Instruction_t* prev)
 		const auto ib_targets=prev->GetIBTargets();
 		if(ib_targets)
 		{
-			const auto out_of_function_it=find_if(WHOLE_CONTAINER(*ib_targets), [&](const Instruction_t* i)
+			const auto out_of_function_it=find_if(ALLOF(*ib_targets), [&](const Instruction_t* i)
 				{ 
 					return i->GetFunction() != prev->GetFunction(); 
 				} ) ;
@@ -662,9 +662,7 @@ static bool	check_for_cond_frame(Function_t *func, ControlFlowGraph_t* cfg)
 	if(!b)
 		return true;
 
-#define WHOLE_CONTAINER(s) (s).begin(), (s).end()
-
-	const auto has_rsp_sub_it= find_if(WHOLE_CONTAINER(func->GetInstructions()), is_rsp_sub_insn);
+	const auto has_rsp_sub_it= find_if(ALLOF(func->GetInstructions()), is_rsp_sub_insn);
 
 	if(has_rsp_sub_it == func->GetInstructions().end())
 		return true;
@@ -971,7 +969,7 @@ bool PNTransformDriver::check_jump_tables(Instruction_t* insn)
 	set<int> jump_tab_entries;
 	for(int i=0;jump_tab_entries.size()<5;i++)
 	{
-		if(offset+i*4+sizeof(int) > (int) pSec->get_size())
+		if((int)(offset+i*4+sizeof(int)) > (int) pSec->get_size())
 			break;
 
 		const int *table_entry_ptr=(const int*)&(secdata[offset+i*4]);
@@ -1162,7 +1160,7 @@ DN:   0x4824e0: .long 0x4824e0-LN
         for(int i=0;table_entries.size()<5;i++)
         {
                 // check that we can still grab a word from this section
-                if(offset+sizeof(int) > (int)pSec->get_size())
+                if((int)(offset+sizeof(int)) > (int)pSec->get_size())
                         break;
 
                 const int *table_entry_ptr=(const int*)&(secdata[offset]);
@@ -2652,7 +2650,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 				Instruction_t *new_instr = insertAssemblyBefore(virp,instr,ss_add.str(),NULL);
 				new_instr->SetComment("Dynamic array padding:" +ss_add.str());
 
-				Instruction_t *new_instr2 = insertAssemblyAfter(virp,instr,ss_sub.str(),NULL);
+				insertAssemblyAfter(virp,instr,ss_sub.str(),NULL);
 				return true;			
 			}
 		}

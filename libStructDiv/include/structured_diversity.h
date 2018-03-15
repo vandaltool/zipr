@@ -27,6 +27,7 @@ class StructuredDiversity_t
 		{
 			// nothing else to do.
 		}
+		virtual ~StructuredDiversity_t() { } 
 
 
 		// Perform a barrier of type T.  T should be marshable

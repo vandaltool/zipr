@@ -91,30 +91,16 @@ string ElfReader::read(app_iaddr_t p_pc, unsigned p_numBytes)
   for ( int i = 0; i < m_reader->sections.size(); ++i ) 
   {    
     section* pSec = m_reader->sections[i];
-
-/*
-    cerr << "Sec. name: " << pSec->get_name() 
-         << " Sec. address: " << pSec->get_address() 
-         << " Sec. offset: " << pSec->GetOffset() 
-         << " Sec. size: " << pSec->get_size() << std::endl;
-*/
-
     if (pSec->get_address() + pSec->get_size() < 1) continue;
     if (p_pc >= pSec->get_address() && p_pc <= (pSec->get_address() + pSec->get_size() - 1))
     {
       // found the section, now read off the data
       long offset = p_pc - pSec->get_address();
-//      cerr << "ElfReader::read(): pc 0x" << hex << p_pc << " is in section#" << i << ": " << pSec->get_name() << " at offset: " << offset << endl;
-      for (int j = 0; j < p_numBytes; ++j)
-      {
-        unsigned char c = pSec->get_data()[j + offset];
-      }
 
-      cerr << endl;
+      // caution!  This may result in an overflow of the section and fault if called with p_numBytes too big.
       return string(pSec->get_data() + offset, p_numBytes);
     }
   }
-
   return string();
 }
 

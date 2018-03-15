@@ -106,7 +106,7 @@ zestcfi__dl_iterate_phdr (int (*callback) (struct dl_phdr_info *info,
 
   /* We have to determine the namespace of the caller since this determines
      which namespace is reported.  */
-  size_t nloaded = GL(dl_ns)[0]._ns_nloaded;
+  //size_t nloaded = GL(dl_ns)[0]._ns_nloaded;
   Lmid_t ns = 0;
 #ifdef SHARED
   const void *caller = RETURN_ADDRESS (0);

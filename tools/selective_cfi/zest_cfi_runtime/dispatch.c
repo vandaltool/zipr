@@ -6,16 +6,13 @@
 #include <string.h>
 #include <unistd.h>
 
-#define strcmp Zest_Strcmp
-#define strlen Zest_Strlen
-
 // typedef for a function pointer because the syntax is otherwise insane, unreadable and unwriteable.
 typedef void (*zestcfi_func_ptr_t)(ElfW(Addr)) ;
 
 #define DEBUG 0
 
 
-static int strcmp(const char *s1, const char *s2)
+static int Zest_strcmp(const char *s1, const char *s2)
 {
 	for ( ; *s1 == *s2; s1++, s2++)
 		if (*s1 == '\0')
@@ -23,17 +20,19 @@ static int strcmp(const char *s1, const char *s2)
 	return ((*(unsigned char *)s1 < *(unsigned char *)s2) ? -1 : +1);
 }
 
-static size_t strlen( const char *str )
+#if DEBUG
+static size_t Zest_strlen( const char *str )
 {
 	register const char *s;
 	for (s = str; *s; ++s);
 	return(s - str);
 }
+#endif
 
 static void write_str(const char* out)
 {
 #if DEBUG
-	write(2,out,strlen(out));
+	write(2,out,Zest_strlen(out));
 #endif
 }
 
@@ -111,7 +110,7 @@ static ElfW(Addr) find_symtab_entry(const char* tofind, const ElfW(Sym) *symtab,
 		write_str(symstring);
 		write_str("\n");
 #endif
-		if(strcmp(symstring, tofind)==0)
+		if(Zest_strcmp(symstring, tofind)==0)
 			return (ElfW(Addr))&symtab[i];
 	}
 
@@ -124,7 +123,7 @@ int dl_iterate_phdr_callback (struct dl_phdr_info *info, size_t size, void *data
 	ElfW(Addr) *zestcfi_addr=(ElfW(Addr)*)data;
 	ElfW(Addr) target=*zestcfi_addr;
 
-	const char* objname=info->dlpi_name;
+	//const char* objname=info->dlpi_name;
 	const ElfW(Phdr) *phdr_start=info->dlpi_phdr;
 	const ElfW(Half) phnum=info->dlpi_phnum;
 
@@ -142,7 +141,7 @@ int dl_iterate_phdr_callback (struct dl_phdr_info *info, size_t size, void *data
 	const ElfW(Sym) *symtab=(ElfW(Sym)*)find_dynamic_entry(info,DT_SYMTAB, dynamic_start);
 	// apparently some modules don't have a reloc for their symtab pointer properly entry.
 	if(!ptload_for_target_exists(info, phdr_start, phnum, (ElfW(Addr))symtab))
-		symtab=(ElfW(Addr))symtab+(ElfW(Addr))info->dlpi_addr;
+		symtab=(ElfW(Sym)*)((ElfW(Addr))symtab+(ElfW(Addr))info->dlpi_addr);
 
 	if(!symtab) 
 	{
@@ -153,7 +152,7 @@ int dl_iterate_phdr_callback (struct dl_phdr_info *info, size_t size, void *data
 	const char* strtab=(const char*)find_dynamic_entry(info,DT_STRTAB, dynamic_start);
 	// apparently some modules don't have a reloc for their symtab pointer properly entry.
 	if(!ptload_for_target_exists(info, phdr_start, phnum, (ElfW(Addr))strtab))
-		strtab=(ElfW(Addr))strtab+(ElfW(Addr))info->dlpi_addr;
+		strtab=(const char*)((ElfW(Addr))strtab+(ElfW(Addr))info->dlpi_addr);
 	if(!strtab) 
 	{
 		write_str("Couldn't find strtab start. ");
@@ -184,7 +183,9 @@ int dl_iterate_phdr_callback (struct dl_phdr_info *info, size_t size, void *data
 
 zestcfi_func_ptr_t* zest_cfi_dispatch_c(ElfW(Addr) target)
 {
-	write_ptr(target);
+	extern int zestcfi__dl_iterate_phdr (int (*callback) (struct dl_phdr_info *info, size_t size, void *data), void *data);
+
+	write_ptr((void*)target);
 	write_str(" -- ");
 
 	ElfW(Addr) zestcfi_addr=target;
@@ -198,7 +199,7 @@ zestcfi_func_ptr_t* zest_cfi_dispatch_c(ElfW(Addr) target)
 	else
 	{
 		write_str("Found zest-cfi_dispatcher.  Control transfer will be checked.\n");
-		zestcfi_func_ptr_t zest_cfi_ptr = (zestcfi_func_ptr_t) zestcfi_addr;
-		return zestcfi_addr;
+		zestcfi_func_ptr_t *zest_cfi_ptr = (zestcfi_func_ptr_t*) zestcfi_addr;
+		return zest_cfi_ptr;
 	}
 }

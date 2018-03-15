@@ -58,10 +58,10 @@ int main(int argc, char **argv)
                 exit(1);
         }
 
-	auto dump_icfs_flag=(unsigned long long)-1; 
+	auto dump_icfs_flag=(db_id_t)BaseObj_t::NOT_IN_DATABASE; 
 	auto dump_icfs_str=getenv("DUMP_ICFS");
 	if(dump_icfs_str)
-		dump_icfs_flag=strtoull(dump_icfs_str,NULL,0);
+		dump_icfs_flag=(db_id_t)strtoull(dump_icfs_str,NULL,0);
 		
 
         string programName(argv[0]);

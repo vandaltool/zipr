@@ -9,17 +9,17 @@ dirs='''
 	cover
 	fix_rets
         meds2pdb	
-	ret_shadow_stack
 	safefr
 	selective_cfi
-	simple_cdi
 	spasm
-	cookbook
 	dump_map
 	hook_start
 	'''
 
 nobuild_dirs='''
+	cookbook
+	simple_cdi
+	ret_shadow_stack
 	print_cfi_stats
 	memcover
 	'''

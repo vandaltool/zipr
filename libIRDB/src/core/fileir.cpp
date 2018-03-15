@@ -194,10 +194,10 @@ void FileIR_t::AssembleRegistry()
 	int rt = system(command.c_str());
 	
 	int actual_exit = -1;
-	int actual_signal = -1;
+	//int actual_signal = -1;
 
 	if (WIFEXITED(rt)) actual_exit = WEXITSTATUS(rt);
-    else actual_signal = WTERMSIG(rt);
+    	//else actual_signal = WTERMSIG(rt);
 
 	assert(actual_exit == 0);
 	
@@ -221,12 +221,10 @@ void FileIR_t::AssembleRegistry()
 	rt = system(command.c_str());
 
 	actual_exit = -1;
-	actual_signal = -1;
+	//actual_signal = -1;
 
-    	if (WIFEXITED(rt)) 
-		actual_exit = WEXITSTATUS(rt);
-    	else 
-		actual_signal = WTERMSIG(rt);
+    	if (WIFEXITED(rt)) actual_exit = WEXITSTATUS(rt);
+    	//else actual_signal = WTERMSIG(rt);
 
 	assert(actual_exit == 0);
 	
@@ -250,7 +248,7 @@ void FileIR_t::AssembleRegistry()
 	binreader.read((char*)binary_stream,filesize);
 	binreader.close();
 
-	unsigned int instr_index = 0;
+	//unsigned int instr_index = 0;
 	//for(unsigned int index=0; index < filesize; instr_index++)
 	unsigned int index = 0;
 	registry_type::iterator reg_val =  assembly_registry.begin();
@@ -277,7 +275,7 @@ void FileIR_t::AssembleRegistry()
 
 		string rawBits;
 		rawBits.resize(instr_len);
-		for(int i=0;i<instr_len;i++,index++)
+		for(auto i=0U;i<instr_len;i++,index++)
 		{
 			rawBits[i] = binary_stream[index];
 		}
@@ -354,12 +352,14 @@ std::map<db_id_t,Function_t*> FileIR_t::ReadFuncsFromDB
 				isSafe = true;
 		}
 
-		db_id_t doipid=atoi(dbintr->GetResultColumn("doip_id").c_str());
+		// handle later?
+		//db_id_t doipid=atoi(dbintr->GetResultColumn("doip_id").c_str());
 
 		FuncType_t* fnType = NULL;
 		if (typesMap.count(function_type_id) > 0)
 			fnType = dynamic_cast<FuncType_t*>(typesMap[function_type_id]);
 		Function_t *newfunc=new Function_t(fid,name,sfsize,oasize,useFP,isSafe,fnType, NULL); 
+		assert(newfunc);
 		entry_points[newfunc]=entry_point_id;
 		
 //std::cout<<"Found function "<<name<<"."<<std::endl;
@@ -530,7 +530,9 @@ std::map<db_id_t,AddressID_t*> FileIR_t::ReadAddrsFromDB
 		db_id_t aid=atoi(dbintr->GetResultColumn("address_id").c_str());
 		db_id_t file_id=atoi(dbintr->GetResultColumn("file_id").c_str());
 		virtual_offset_t vaddr=strtovo(dbintr->GetResultColumn("vaddress_offset"));
-		db_id_t doipid=atoi(dbintr->GetResultColumn("doip_id").c_str());
+
+		// handle later?
+		//db_id_t doipid=atoi(dbintr->GetResultColumn("doip_id").c_str());
 
 		AddressID_t *newaddr=new AddressID_t(aid,file_id,vaddr);
 
@@ -686,7 +688,9 @@ void FileIR_t::ReadRelocsFromDB
                 int reloc_offset=atoi(dbintr->GetResultColumn("reloc_offset").c_str());
                 std::string reloc_type=(dbintr->GetResultColumn("reloc_type"));
                 db_id_t instruction_id=atoi(dbintr->GetResultColumn("instruction_id").c_str());
-                db_id_t doipid=atoi(dbintr->GetResultColumn("doip_id").c_str());
+
+		// handle later?
+                //db_id_t doipid=atoi(dbintr->GetResultColumn("doip_id").c_str());
                 db_id_t wrt_id=atoi(dbintr->GetResultColumn("wrt_id").c_str());
                 uint32_t addend=atoi(dbintr->GetResultColumn("addend").c_str());
 
@@ -976,7 +980,7 @@ int FileIR_t::GetArchitectureBitWidth()
 	return archdesc->GetBitWidth();
 }
 
-int FileIR_t::SetArchitectureBitWidth(int width) 
+void FileIR_t::SetArchitectureBitWidth(int width) 
 {
 	if(archdesc==NULL)
 		archdesc=new ArchitectureDescription_t;

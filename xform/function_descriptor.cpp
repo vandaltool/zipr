@@ -123,7 +123,7 @@ double wahoo::Function::getInstructionCoverage(int *p_count, int *p_total)
   unsigned count = 0;
   if (m_allInstructions.size() == 0)
     return 0.0;
-  for (int i = 0; i < m_allInstructions.size(); ++i)
+  for (auto i = 0U; i < m_allInstructions.size(); ++i)
   {
     if (m_allInstructions[i]->isVisited())
       count++;

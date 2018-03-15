@@ -138,7 +138,7 @@ void MEDS_InstructionCheckAnnotation::parse()
 	if (m_rawInputLine.find(MEDS_ANNOT_FLOWS_INTO_CRITICAL_SINK)!=string::npos)
 		m_flowsIntoCriticalSink = true;
 
-	int idiom_pos = m_rawInputLine.find(MEDS_ANNOT_IDIOM);
+	auto idiom_pos = m_rawInputLine.find(MEDS_ANNOT_IDIOM);
 	if (idiom_pos != string::npos)
 	{
 		idiom_pos += strlen(MEDS_ANNOT_IDIOM);

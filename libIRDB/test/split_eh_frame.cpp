@@ -24,7 +24,7 @@ using namespace libIRDB;
 
 template <int ptrsize>
 template <class T> 
-bool eh_frame_util_t<ptrsize>::read_type(T &value, unsigned int &position, const uint8_t* const data, const int max)
+bool eh_frame_util_t<ptrsize>::read_type(T &value, uint32_t &position, const uint8_t* const data, const uint32_t max)
 {
 	if(position + sizeof(T) > max) return true;
 
@@ -43,9 +43,9 @@ template <int ptrsize>
 template <class T> 
 bool eh_frame_util_t<ptrsize>::read_type_with_encoding
 	(const uint8_t encoding, T &value, 
-	unsigned int &position, 
+	uint32_t &position, 
 	const uint8_t* const data, 
-	const int max, 
+	const uint32_t max, 
 	const uint64_t section_start_addr )
 {
 	auto orig_position=position;
@@ -167,9 +167,9 @@ bool eh_frame_util_t<ptrsize>::read_type_with_encoding
 template <int ptrsize>
 bool eh_frame_util_t<ptrsize>::read_string 
 	(string &s, 
-	unsigned int & position, 
+	uint32_t & position, 
 	const uint8_t* const data, 
-	const int max)
+	const uint32_t max)
 {
 	while(data[position]!='\0' && position < max)
 	{
@@ -235,7 +235,7 @@ bool eh_frame_util_t<ptrsize>::read_sleb128 (
 template <int ptrsize>
 bool eh_frame_util_t<ptrsize>::read_length(
 	uint64_t &act_length, 
-	unsigned int &position, 
+	uint32_t &position, 
 	const uint8_t* const data, 
 	const uint32_t max)
 {
@@ -742,7 +742,7 @@ bool eh_program_insn_t<ptrsize>::Advance(uint64_t &cur_addr, uint64_t CAF) const
 	auto opcode_upper2=(uint8_t)(opcode >> 6);
 	auto opcode_lower6=(uint8_t)(opcode & (0x3f));
 	auto pos=uint32_t(1);
-	auto max=program_bytes.size();
+	//auto max=program_bytes.size();
 
 	switch(opcode_upper2)
 	{
@@ -841,9 +841,6 @@ bool eh_program_t<ptrsize>::parse_program(
 	
 	}
 
-	auto program_end_position=pos;
-
-	//cout<<endl;
 	return false;
 }
 
@@ -1407,7 +1404,7 @@ bool lsda_t<ptrsize>::parse_lsda(const uint64_t lsda_addr, const DataScoop_t* gc
 		return true;
 
 	auto cs_table_end=pos+cs_table_length;
-	auto cs_table_start_pos=pos;
+	//auto cs_table_start_pos=pos;
 	cs_table_start_offset=pos;
 	cs_table_start_addr=lsda_addr+pos-start_pos;
 	cs_table_end_addr=cs_table_start_addr+cs_table_length;
@@ -1581,7 +1578,7 @@ bool fde_contents_t<ptrsize>::parse_fde(
 
 
 	auto end_pos=pos+length;
-	auto end_length_position=pos;
+	//auto end_length_position=pos;
 
 	auto cie_id=uint32_t(0);
 	if(this->read_type(cie_id, pos, eh_frame_scoop_data, max))
@@ -1716,7 +1713,7 @@ bool split_eh_frame_impl_t<ptrsize>::iterate_fdes()
 			//cout << "FDE length="<< dec << act_length << " cie=[" << setw(6) << hex << cie_position << "]" << endl;
 			if(f.parse_fde(old_position, cie_position, data, max, eh_addr, gcc_except_table_scoop))
 				return true;
-			const auto old_fde_size=fdes.size();
+			//const auto old_fde_size=fdes.size();
 			fdes.insert(f);
 		}
 		//cout << "----------------------------------------"<<endl;

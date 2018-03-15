@@ -20,31 +20,6 @@
 
 #include "transform.hpp"
 #include "Rewrite_Utility.hpp"
-// #include <bea_deprecated.hpp>
-
-/*
- * Find the first occurrence of find in s, ignore case.
- */
-static char *
-my_strcasestr(const char* s, char *find)
-{
-	char c, sc;
-	size_t len;
-
-	if ((c = *find++) != 0) {
-		c = tolower((unsigned char)c);
-		len = strlen(find);
-		do {
-			do {
-				if ((sc = *s++) == 0)
-					return (NULL);
-			} while ((char)tolower((unsigned char)sc) != c);
-		} while (strncasecmp(s, find, len) != 0);
-		s--;
-	}
-	return ((char *)s);
-}
-
 #define OPTIMIZE_ASSEMBLY
 
 using namespace libTransform;
@@ -1489,7 +1464,7 @@ Instruction_t* Transform::registerCallbackHandler64(string p_callbackHandler, in
 	postCallback->GetAddress()->SetVirtualOffset(postCallbackReturn);
 
 	// push the address to return to once the callback handler is invoked
-	sprintf(tmpbuf,"mov rax, 0x%x", postCallbackReturn);
+	sprintf(tmpbuf,"mov rax, 0x%x", (uint32_t)postCallbackReturn);
 	instr = addNewAssembly(instr, tmpbuf);
 
 	instr = addNewAssembly(instr, "push rax");
@@ -1545,7 +1520,7 @@ void Transform::logMessage(const std::string &p_method, const MEDS_InstructionCh
 
 void libTransform::convertToLowercase(string &str)
 {
-	for (int i = 0; i < str.length(); ++i)
+	for (auto i = 0U; i < str.length(); ++i)
 	{
 		str[i] = tolower(str[i]);
 	}

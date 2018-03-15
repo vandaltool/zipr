@@ -104,7 +104,7 @@ static void add_annotations(FileIR_t* firp)
 }
 
 
-main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 
 	if(argc!=2)
@@ -159,5 +159,6 @@ main(int argc, char* argv[])
 	cout<<"Done!"<<endl;
 
 	delete pidp;
+	return 0;
 }
 

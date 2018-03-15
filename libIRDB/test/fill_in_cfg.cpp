@@ -29,7 +29,6 @@
 #include <ctype.h>
 #include <exeio.h>
 #include "elfio/elfio.hpp"
-#include "elfio/elfio_dump.hpp"
 #include "eh_frame.hpp"
 
 int odd_target_count=0;
@@ -42,7 +41,7 @@ using namespace std;
 using namespace EXEIO;
 
 set< pair<db_id_t,virtual_offset_t> > missed_instructions;
-int failed_target_count=0;
+auto failed_target_count=0U;
 
 pqxxDB_t pqxx_interface;
 
@@ -315,7 +314,7 @@ void add_new_instructions(FileIR_t *firp)
 				/* get the new bits for an instruction */
 				string newinsnbits;
 				newinsnbits.resize(instr_len);
-				for(int i=0;i<instr_len;i++)
+				for(auto i=0U;i<instr_len;i++)
 					newinsnbits[i]=data[offset_into_section+i];
 
 				/* create a new address */
@@ -443,7 +442,7 @@ static bool is_in_relro_segment(const int secndx)
 		return false;
 
 	int segnum = real_elfiop->segments.size();
-	int segndx=0;
+//	int segndx=0;
 
 	virtual_offset_t sec_start=(virtual_offset_t)(elfiop->sections[secndx]->get_address());
 	virtual_offset_t sec_end=(virtual_offset_t)(elfiop->sections[secndx]->get_address() + elfiop->sections[secndx]->get_size() - 1 );
@@ -530,7 +529,7 @@ void fill_in_scoops(FileIR_t *firp)
 		if (elfiop->sections[secndx]->get_data()) 
 			the_contents.assign(elfiop->sections[secndx]->get_data(),elfiop->sections[secndx]->get_size());
 
-		Type_t *chunk_type=NULL; /* FIXME -- need to figure out the type system for scoops, but NULL should remain valid */
+//		Type_t *chunk_type=NULL; /* FIXME -- need to figure out the type system for scoops, but NULL should remain valid */
 
 		/* permissions */
 		int permissions= 
@@ -623,7 +622,7 @@ void parse_args(int argc, char* argv[], bool &fix_landing_pads)
 	}
 }
 
-main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 	bool fix_landing_pads = true; // default
 
@@ -673,9 +672,9 @@ main(int argc, char* argv[])
 
 			elfiop=new EXEIO::exeio;
 			assert(elfiop);
-			elfiop->load("readeh_tmp_file.exe");
-			EXEIO::dump::header(cout,*elfiop);
-			EXEIO::dump::section_headers(cout,*elfiop);
+			elfiop->load(string("readeh_tmp_file.exe"));
+			//EXEIO::dump::header(cout,*elfiop);
+			//EXEIO::dump::section_headers(cout,*elfiop);
 
 			fill_in_cfg(firp);
 			fill_in_scoops(firp);
@@ -708,4 +707,5 @@ main(int argc, char* argv[])
 
 	delete pidp;
 	pidp=NULL;
+	return 0;
 }

@@ -221,10 +221,8 @@ bool MEDS_FPTRShadowAnnotation::isRIPRelative() const
 //     [rip-constant]
 uintptr_t MEDS_FPTRShadowAnnotation::computeRIPAddress()
 {
-	RegisterName reg;
-	int offset;
-	uintptr_t instructionAddress;
-	uintptr_t address;
+	RegisterName reg=RegisterName();
+	int offset=0;
 
 	parseRegister(getExpression().c_str(), &reg, &offset);
 
@@ -240,7 +238,7 @@ uintptr_t MEDS_FPTRShadowAnnotation::computeRIPAddress()
 int MEDS_FPTRShadowAnnotation::parseRegisterOffset(const char *p_buf)
 {
 	// e.g.: [rsp] [esp+12] [esp-12] 
-	for (int i = 0; i < strlen(p_buf); ++i)
+	for (auto i = 0U; i < strlen(p_buf); ++i)
 	{
 		if (p_buf[i] == '-' || p_buf[i] == '+')
 		{
@@ -256,7 +254,7 @@ void MEDS_FPTRShadowAnnotation::parseRegister(const char *p_buf, RegisterName *p
 	int startReg = -1;
 	int endReg = -1;
 	int signPos = -1;
-	for (int i = 0; i < strlen(p_buf); ++i)
+	for (auto i = 0U; i < strlen(p_buf); ++i)
 	{
 		if (p_buf[i] == '[') startReg = i+1;
 		if (p_buf[i] == ']') 

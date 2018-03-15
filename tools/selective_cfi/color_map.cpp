@@ -23,7 +23,7 @@ bool ColoredInstructionNonces_t::create()
 	{
 		const ICFS_t& the_icfs=*it;
 
-		for(int slot_no=0; /* loop until break */ ; slot_no++)
+		for(auto slot_no=0U; /* loop until break */ ; slot_no++)
 		{
 			// check if we need to allocate a new slot
 			if(slot_no<slots_used.size())
@@ -95,7 +95,7 @@ bool ColoredInstructionNonces_t::create()
 	// output stats
 	cout<<"# ATTRIBUTE slots_used="<<slots_used.size()<<endl;
 	int total_slots = 0;
-	for(int slot_no=0; slot_no<slots_used.size(); slot_no++)
+	for(auto slot_no=0U; slot_no<slots_used.size(); slot_no++)
 	{
 		cout<<"# ATTRIBUTE used_slot"<<slot_no<<"="<<slots_used[slot_no].SlotsUsed()<<endl;
 		total_slots += slots_used[slot_no].SlotsUsed();

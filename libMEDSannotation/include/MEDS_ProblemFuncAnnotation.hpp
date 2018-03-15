@@ -62,7 +62,7 @@ class MEDS_ProblemFuncAnnotation : public MEDS_FuncAnnotation
 	private:
 		void init();
 		void parse();
-		bool matches(std::string line, string pattern, ProblemType prob_type);
+		void matches(std::string line, string pattern, ProblemType prob_type);
 
 	private:
 		std::string m_rawInputLine;

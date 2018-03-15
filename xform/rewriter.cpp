@@ -26,9 +26,8 @@
 
 
 #include "all.h"
-#include "targ-config.h"
+//#include "targ-config.h"
 #include "elfio/elfio.hpp"
-#include "elfio/elfio_dump.hpp"
 
 
 #include "rewriter.h"
@@ -55,7 +54,7 @@ wahoo::Function* Rewriter::ensureFunctionExists(const app_iaddr_t p_addr)
 	if (m_functions.count(p_addr) > 0)
 		return m_functions[p_addr];
 
-    wahoo::Function *fn = new wahoo::Function(p_addr);
+	wahoo::Function *fn = new wahoo::Function(p_addr);
 	m_functions[p_addr] = fn;
 
 	return fn;
@@ -77,16 +76,16 @@ wahoo::Instruction* Rewriter::ensureInstructionExists(const app_iaddr_t p_addr)
 */
 void Rewriter::readAnnotationFile(char p_filename[])
 {
-	FILE* fin;
-	app_iaddr_t addr = 0, prevPC = 0, prevStackDeallocPC = 0;
+	FILE* fin=NULL;
+	app_iaddr_t addr = 0, prevStackDeallocPC = 0;
 	union { int size, type;} size_type_u;
 	char type[200];
 	char scope[200];
 	char remainder[200000];
-	char * objname;
-	int pid=0;
-	int var_length=0;
-	int bitvector_size_bits=0;
+	
+	
+	
+	
 	int line=0;
 
 	wahoo::Function *nullfn = new wahoo::Function("ThisIsNotAFunction", 0, 0);
@@ -119,12 +118,10 @@ void Rewriter::readAnnotationFile(char p_filename[])
 		fscanf(fin, "%s%s", type,scope);
 
 		int annot_type;
-		int is_spec_annot=FALSE;
 		if(size_type_u.type<-255)
 		{
 			annot_type=size_type_u.type+256;
 			size_type_u.type=size_type_u.type+256;
-			is_spec_annot=TRUE;
 		}
 		else
 			annot_type=size_type_u.type;
@@ -258,9 +255,6 @@ void Rewriter::readAnnotationFile(char p_filename[])
 			/* optimizing annotation about not needing heavyweight metadata update */
 			/* ignore for now */
 			
-			// stash away instruction
-			prevPC = addr;
-
             		/*
 	 		 *  sudeep -- added support for flags
 			 */
@@ -274,13 +268,15 @@ void Rewriter::readAnnotationFile(char p_filename[])
 				sshk.pc = addr;
 				ensureInstructionExists(addr);
 				m_instructions[addr]->setSize(size_type_u.size);
-				if (sshv = (stackref_hash_value_t*) Hashtable_get(stackrefs_hash, &sshk))
+				sshv = (stackref_hash_value_t*) Hashtable_get(stackrefs_hash, &sshk);
+				if (sshv)
 				{
                     		        instrmap_hash_key_t key;
                                         key.pc = addr;
                     		        instrmap_hash_value_t* val;
 //					printf("STACK ALLOC INSTRUCTION CONFIRMED AT pc=0x%x size=%d\n", sshk.pc, size_type_u.size);
-				        if (val = (instrmap_hash_value_t*) Hashtable_get(instrmaps_hash, &key))
+				        val = (instrmap_hash_value_t*) Hashtable_get(instrmaps_hash, &key);
+				        if (val)
                                         {
 //					  printf("STACK ALLOC INSTRUCTION CONFIRMED: site alloc marked\n");
                                           val->site_alloc = 1; 
@@ -303,7 +299,8 @@ void Rewriter::readAnnotationFile(char p_filename[])
 					fgets(remainder, sizeof(remainder), fin);
 					// this is a *potential* stack deallocation instruction only
 					if ((strstr(remainder,"leave") && strstr(remainder,"EFLAGS")) ||
- 						strstr(remainder,"pop") && strstr(remainder,"ebp"))
+ 					    (strstr(remainder,"pop"  ) && strstr(remainder,"ebp"   ))
+					   )
 					{
 						prevStackDeallocPC = addr;
 					}
@@ -333,7 +330,7 @@ void Rewriter::readAnnotationFile(char p_filename[])
 
 				// rely on the fact that INST BELONGTO is the first INST annotation in a MEDS file (warning: but it is not required to be there)
 //				assert(m_functions[func_addr]);
-				wahoo::Function *fn = ensureFunctionExists(func_addr);
+				(void)ensureFunctionExists(func_addr);
 				wahoo::Instruction* instr = new wahoo::Instruction(addr, -1, m_functions[func_addr]);
 				m_instructions[addr] = instr;
 
@@ -405,6 +402,7 @@ MEDS doesn't mark this as a stack reference
 					case -2:	/* fast meta data updates, results = always number */
 							/* remaining params: <reason> reg, {reg, ...} ZZ comment */
 					{
+						break;
 					}
 
 					/* skip warning message on this instruction, promised safe */
@@ -504,8 +502,8 @@ MEDS doesn't mark this as a stack reference
 		}
 		else if(strcmp(type,"DATAREF")==0)
 		{
-			char name[1000], parent_child[1000], offset_str[1000];
-			int id, parent_id, offset, parent_offset;
+			char parent_child[1000];
+			int id;
 			if(size_type_u.size<=0)
 			{
 			}
@@ -526,7 +524,7 @@ MEDS doesn't mark this as a stack reference
 			}
 			else if(strcmp(scope,"STACK")==0)
 			{
-				char esp[1000], plus[1000], offset_str[1000], name[1000];
+				char esp[1000], plus[1000], name[1000];
 				int esp_offset;
 
 				/* remaining params id, addr, parent/child, name */
@@ -539,9 +537,8 @@ MEDS doesn't mark this as a stack reference
 					/* add to the stackref hashtable, also record the id->stackref mapping so we can
 					 * can easily lookup the id for any fields we find.
 					 */
-                        		stackref_hash_value_t *sshv=add_stack_ref(addr,size_type_u.size, esp_offset);
+                        		(void)add_stack_ref(addr,size_type_u.size, esp_offset);
 					
-//					printf("New stack frame at: pc=0x%x size=0x%x  HT-count=%d\n", addr, sshv->size, stackrefs_hash->count);
 
 					// @todo: record frame size
 					// set the frame size
@@ -642,13 +639,17 @@ void Rewriter::readElfFile(char p_filename[])
 
 	assert(pin);
 
-	fscanf(pin, "%p", &addr);
+	
+	void* tmp=NULL;
+	fscanf(pin, "%p", &tmp);
+	addr=(app_iaddr_t)tmp;
 	fgets(buf,sizeof(buf),pin);
 	do 
 	{
 		if(m_instructions[addr]==NULL)
 			m_instructions[addr]=new wahoo::Instruction(addr,-1,NULL);
-		fscanf(pin,"%x", &addr);
+		fscanf(pin,"%p", &tmp);
+		addr=(app_iaddr_t)tmp;
 		fgets(buf,sizeof(buf),pin);
 	} while(!feof(pin));
 
@@ -673,21 +674,11 @@ void Rewriter::disassemble()
 
 	vector<wahoo::Instruction*> instructions=getAllInstructions(); 
 
-	fprintf(stderr, "Rewriter::disassemble(): number of instructions: %d\n", instructions.size());
+	fprintf(stderr, "Rewriter::disassemble(): number of instructions: %" PRIuPTR "\n", (uintptr_t)instructions.size());
 
-    	for (int j = 0; j < instructions.size(); ++j)
+    	for (auto j = 0U; j < instructions.size(); ++j)
     	{
       		wahoo::Instruction *instr = instructions[j];
-
-      		// disassemble using BeaEngine
-      		//DISASM disasm;
-      		//memset(&disasm, 0, sizeof(DISASM));
-
-      		//disasm.Options = NasmSyntax + PrefixedNumeral;
-
-
-      		//disasm.EIP = (UIntPtr) getElfReader()->getInstructionBuffer(instr->getAddress());
-      		//disasm.VirtualAddr = instr->getAddress();
 
 		const auto instr_data=(void*)(getElfReader()->getInstructionBuffer(instr->getAddress()));
 		const auto disasm=DecodedInstruction_t(instr->getAddress(), instr_data, 16);
@@ -740,7 +731,7 @@ void Rewriter::commitFn2SPRI(wahoo::Function *p_func, FILE *p_fp)
 {
   if (!p_func) return;
 
-  for (int i = 0; i < p_func->getRewrites().size(); ++i)
+  for (auto i = 0U; i < p_func->getRewrites().size(); ++i)
   {
     string rewriteRule = p_func->getRewrites()[i];
     fprintf(p_fp, "%s\n", rewriteRule.c_str());
@@ -752,7 +743,6 @@ vector<wahoo::Function*> Rewriter::getCandidateFunctions()
   vector<wahoo::Function*> candidates;
   for (map<app_iaddr_t, wahoo::Function*>::iterator it = m_functions.begin(); it != m_functions.end(); ++it)
   {
-    app_iaddr_t addr = it->first;
     wahoo::Function* f = it->second;
 
     // null fn or fn marked as SAFE by MEDS -- we don't xform those
@@ -769,7 +759,6 @@ vector<wahoo::Function*> Rewriter::getNonCandidateFunctions()
   vector<wahoo::Function*> nonCandidates;
   for (map<app_iaddr_t, wahoo::Function*>::iterator it = m_functions.begin(); it != m_functions.end(); ++it)
   {
-    app_iaddr_t addr = it->first;
     wahoo::Function* f = it->second;
 
     // null fn or fn marked as SAFE by MEDS -- we don't xform those
@@ -787,7 +776,6 @@ vector<wahoo::Function*> Rewriter::getAllFunctions()
 
   for (map<app_iaddr_t, wahoo::Function*>::iterator it = m_functions.begin(); it != m_functions.end(); ++it)
   {
-    app_iaddr_t addr = it->first;
     wahoo::Function* f = it->second;
 
     if (!f) continue;
@@ -804,7 +792,6 @@ vector<wahoo::Instruction*> Rewriter::getAllInstructions()
 
   for (map<app_iaddr_t, wahoo::Instruction*>::iterator it = m_instructions.begin(); it != m_instructions.end(); ++it)
   {
-    app_iaddr_t addr = it->first;
     wahoo::Instruction* instr = it->second;
 
     if (!instr) continue;
@@ -850,7 +837,7 @@ map<wahoo::Function*, double> Rewriter::getFunctionCoverage(char *p_instructionF
 
   vector<wahoo::Instruction*> allInstructions = getAllInstructions();
 
-  for (int i = 0; i < allInstructions.size(); ++i)
+  for (auto i = 0U; i < allInstructions.size(); ++i)
   {
     wahoo::Instruction* instr = allInstructions[i];
     if (!instr) continue;
@@ -864,7 +851,7 @@ map<wahoo::Function*, double> Rewriter::getFunctionCoverage(char *p_instructionF
   // now all instructions have been marked as visited or not
 
   vector<wahoo::Function*> allFunctions = getAllFunctions();
-  for (int i = 0; i < allFunctions.size(); ++i)
+  for (auto i = 0U; i < allFunctions.size(); ++i)
   {
     coverage[allFunctions[i]] = allFunctions[i]->getInstructionCoverage();
   }

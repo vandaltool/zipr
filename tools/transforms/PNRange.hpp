@@ -34,6 +34,7 @@ public:
 	PNRange(const PNRange &range);
 	PNRange(const Range &range);
 	PNRange();
+	virtual ~PNRange() {}
 	virtual unsigned int GetPaddingSize() const;
 	virtual int GetDisplacement() const;
 	virtual void SetDisplacement(int offset);

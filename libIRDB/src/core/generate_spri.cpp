@@ -169,7 +169,7 @@ static string addressify(Instruction_t* insn)
 
 static string URLToFile(string url)
 {
-	int loc=0;
+	auto loc=(size_t)0;
 
 	loc=url.find('/');
 	while(loc!=string::npos)
@@ -289,7 +289,6 @@ void emit_jump(FileIR_t* fileIRp, ostream& fout, const DecodedInstruction_t& dis
 	string label=labelfy(newinsn);
 	string complete_instr=disasm.getDisassembly();
 	string address_string=disasm.getOperand(0).getString();
-	bool converted=false;
 
 
 	/* if we have a target instruction in the database */
@@ -325,7 +324,10 @@ void emit_jump(FileIR_t* fileIRp, ostream& fout, const DecodedInstruction_t& dis
 
 		// if(disasm.Archi==64)
 		if(FileIR_t::GetArchitectureBitWidth()==64)
-			converted=convert_jump_for_64bit(newinsn,final, emit_later,new_target);
+		{
+			auto converted=convert_jump_for_64bit(newinsn,final, emit_later,new_target);
+			(void)converted; // unused?
+		}
 
 		fout<<final<<endl;
 

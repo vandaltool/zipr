@@ -25,6 +25,8 @@ files=  '''
 	reloc.cpp
 	decode_cs.cpp
 	operand_cs.cpp
+'''
+unused_files='''
 	decode_bea.cpp
 	operand_bea.cpp
 	decode_meta.cpp
@@ -44,7 +46,7 @@ cpppath='''
 
 globs=glob.glob(os.environ['SECURITY_TRANSFORMS_HOME']+'/libcapstone/zipr_unpack/*.o')
 
-myenv.Append(CCFLAGS=" -std=c++11 ")
+myenv.Append(CCFLAGS=" -Wall -std=c++11 ")
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath))
 mylib=myenv.Library(libname, Split(files) + globs)

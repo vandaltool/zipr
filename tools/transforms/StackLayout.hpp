@@ -51,6 +51,7 @@ public:
 	StackLayout(const std::string &layout_name, const std::string &function_name, unsigned int frame_alloc_size,
 				unsigned int saved_regs_size, bool frame_pointer, unsigned int out_args_size);
 	StackLayout(const StackLayout &layout);
+	virtual ~StackLayout() {}
 	virtual void InsertESPOffset(int offset);
 	virtual void InsertEBPOffset(int offset);
 	virtual int EBPToESP(int offset);

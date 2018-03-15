@@ -112,8 +112,8 @@ void check_for_thunk_offsets(FileIR_t* firp, Instruction_t *thunk_insn, string r
 
 	virtual_offset_t thunk_base=thunk_insn->GetFallthrough()->GetAddress()->GetVirtualOffset()+
 		strtol(offset.c_str(),NULL,16);
-	virtual_offset_t thunk_call_addr=thunk_insn->GetAddress()->GetVirtualOffset();
-	virtual_offset_t thunk_call_offset=strtol(offset.c_str(),NULL,16);
+	//virtual_offset_t thunk_call_addr=thunk_insn->GetAddress()->GetVirtualOffset();
+	//virtual_offset_t thunk_call_offset=strtol(offset.c_str(),NULL,16);
 
 	/* don't check inserted thunk addresses */
 	if(thunk_insn->GetAddress()->GetVirtualOffset()==0)
@@ -136,8 +136,8 @@ void check_func_for_thunk_offsets(Function_t *func, Instruction_t* thunk_insn,
 
 	virtual_offset_t thunk_base=thunk_insn->GetFallthrough()->GetAddress()->GetVirtualOffset()+
 		strtol(offset.c_str(),NULL,16);
-	virtual_offset_t thunk_call_addr=thunk_insn->GetAddress()->GetVirtualOffset();
-	virtual_offset_t thunk_call_offset=strtol(offset.c_str(),NULL,16);
+	//virtual_offset_t thunk_call_addr=thunk_insn->GetAddress()->GetVirtualOffset();
+	//virtual_offset_t thunk_call_offset=strtol(offset.c_str(),NULL,16);
 
 
 	/* don't check inserted thunk addresses */

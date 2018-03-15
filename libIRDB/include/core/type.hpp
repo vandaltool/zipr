@@ -110,7 +110,7 @@ class AggregateType_t : public Type_t
 		virtual bool IsAggregateType() const { return true; }
 
 		void AddAggregatedType(Type_t *t, int pos);
-		virtual int GetNumAggregatedTypes() const { return refTypes.size(); } 
+		virtual size_t GetNumAggregatedTypes() const { return refTypes.size(); } 
 		Type_t* GetAggregatedType(unsigned int pos) const { 
 			return (pos < (unsigned int)refTypes.size()) ? refTypes.at(pos) : NULL;
 		}

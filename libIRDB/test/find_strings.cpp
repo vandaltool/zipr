@@ -31,10 +31,15 @@
 
 #include <exeio.h>
 
-#include <elf.h>
+//#include <elf.h>
 #include "targ-config.h"
 #include "elfio/elfio.hpp"
-#include "elfio/elfio_dump.hpp"
+//#include "elfio/elfio_dump.hpp"
+
+// elfio doesn't have this, and elf.h does, but including both is troublesome.
+#ifndef SHT_GNU_HASH
+#define SHT_GNU_HASH	  0x6ffffff6
+#endif
 
 
 
@@ -42,7 +47,7 @@ using namespace libIRDB;
 using namespace std;
 using namespace EXEIO;
 
-#define arch_ptr_bytes() (firp->GetArchitectureBitWidth()/8)
+#define arch_ptr_bytes() (uintptr_t)(firp->GetArchitectureBitWidth()/8)
 
 bool is_string_character(char c)
 {
@@ -76,7 +81,7 @@ void found_string(string s, void* addr)
 	do {
 		// look for new lines in the string
 		// if found, split it up and print out each one as it's own thing.
-		while(p=strchr(old_p,'\n'))
+		while( ( p=strchr(old_p,'\n')) )
 		{
 			*p=0;
 			if (*old_p != 0)
@@ -131,7 +136,7 @@ void check_for_string(const char* p, void* addr)
 
 void is_string_pointer(void* addr, elf_info_t &ei)
 {
-	long long int intaddr=(long long int)(addr);
+	auto intaddr=(uintptr_t)(addr);
 
 	for(int i=0;i<ei.secnum;i++)
 	{
@@ -159,8 +164,9 @@ void is_string_constant(const DecodedInstruction_t& disasm)
 
 	//if(disasm.Argument1.ArgType != MEMORY_TYPE || disasm.Argument2.ArgType == MEMORY_TYPE
 	//   || disasm.Argument1.ArgSize != FileIR_t::GetArchitectureBitWidth() )
-	if(!disasm.getOperand(0).isMemory() || disasm.getOperand(1).isMemory() 
-	   || disasm.getOperand(0).getArgumentSizeInBits() != FileIR_t::GetArchitectureBitWidth() )
+	if(!disasm.getOperand(0).isMemory() || 
+	   disasm.getOperand(1).isMemory() || 
+	   (uintptr_t)disasm.getOperand(0).getArgumentSizeInBits() != (uintptr_t)FileIR_t::GetArchitectureBitWidth() )
 		return;
 
 	// addr = (void*)disasm.Instruction.Immediat;
@@ -479,8 +485,8 @@ void find_strings_in_data(FileIR_t* firp, elf_info_t& ei)
 		    || the_elfiop->sections[i]->get_size() < arch_ptr_bytes())
 			continue;
 
-		int offset = 0;
-		int step;
+		auto offset = 0U;
+		auto step = 0U;
 		/* step over relocation info */
 		switch( the_elfiop->sections[i]->get_type() )
 		{
@@ -514,7 +520,7 @@ void find_strings_in_data(FileIR_t* firp, elf_info_t& ei)
 		}
 
 		load_section(ei,i,true);
-        	for(int j=offset;j+arch_ptr_bytes()<=ei.elfiop->sections[i]->get_size();j+=step)
+        	for(auto j=offset;(uintptr_t)(j+arch_ptr_bytes())<=(uintptr_t)(ei.elfiop->sections[i]->get_size());j+=step)
         	{
 			void* p;
 			if(arch_ptr_bytes()==4)
@@ -543,9 +549,9 @@ void find_strings(VariantID_t *pidp, FileIR_t* firp)
 	pqxx::largeobject lo(elfoid);
 	lo.to_file(pqxx_interface->GetTransaction(),"readeh_tmp_file.exe");
 	EXEIO::exeio    elfiop;
-	elfiop.load("readeh_tmp_file.exe");
-	EXEIO::dump::header(cout,elfiop);
-	EXEIO::dump::section_headers(cout,elfiop);
+	elfiop.load(string("readeh_tmp_file.exe"));
+	//EXEIO::dump::header(cout,elfiop);
+	//EXEIO::dump::section_headers(cout,elfiop);
 
 
 
@@ -562,7 +568,7 @@ void find_strings(VariantID_t *pidp, FileIR_t* firp)
 	cout << "# ATTRIBUTE filename="<<firp->GetFile()->GetURL()<<endl;
 }
 
-main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 
 	if(argc!=2)
@@ -618,5 +624,6 @@ main(int argc, char* argv[])
 	cout<<"Done!"<<endl;
 
 	delete pidp;
+	return 0;
 }
 

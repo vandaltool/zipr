@@ -24,16 +24,16 @@ DominatorGraph_t::DominatorGraph_t(const ControlFlowGraph_t* p_cfg, bool needs_p
 	{
 		return node->GetPredecessors();
 	};
-	pred_func_ptr_t func_get_successors=[](const BasicBlock_t* node) -> const BasicBlockSet_t&
-	{
-		return node->GetSuccessors();
-	};
 
 	dom_graph=Dom_Comp(p_cfg->GetBlocks(), func_get_predecessors, p_cfg->GetEntry());
 	idom_graph=Idom_Comp(p_cfg->GetBlocks(), dom_graph, p_cfg->GetEntry());
 
 // a func may have multiple exit nodes.  how do we deal with that?
 // psuedo-block?  invoke this for each exit block?
+//	pred_func_ptr_t func_get_successors=[](const BasicBlock_t* node) -> const BasicBlockSet_t&
+//	{
+//		return node->GetSuccessors();
+//	};
 //	post_dom_graph=Dom_Comp(p_cfg->GetBlocks(), func_get_successors, p_cfg->GetEntry());
 //	post_idom_graph=IDom_Comp(p_cfg->GetBlocks(), post_dom_graph, p_cfg->GetEntry());
 }
@@ -88,7 +88,6 @@ DominatorMap_t DominatorGraph_t::Dom_Comp(const BasicBlockSet_t& N, pred_func_pt
 	Domin(r) := { r } 
 */
 	BasicBlockSet_t D, T;
-	BasicBlock_t* n=NULL, *p=NULL;
 	bool change=true;
 	DominatorMap_t Domin;
 	Domin[r].insert(r);
@@ -219,7 +218,7 @@ end || IDom_Comp
 BlockToBlockMap_t DominatorGraph_t::Idom_Comp(const BasicBlockSet_t& N, const DominatorMap_t &Domin, BasicBlock_t* r) 
 {
 	// n, s, t: Node
-	BasicBlock_t* n=NULL, *s=NULL, *t=NULL;
+	//BasicBlock_t* n=NULL, *s=NULL, *t=NULL;
 
 	// Tmp: Node -> set of Node
 	DominatorMap_t Tmp;

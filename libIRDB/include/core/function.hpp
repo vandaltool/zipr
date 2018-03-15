@@ -35,11 +35,11 @@ class Function_t : public BaseObj_t
 
         int GetStackFrameSize() const { return stack_frame_size; }
         const std::string& GetName() const { return name; }
-        int GetOutArgsRegionSize() const { return out_args_region_size; }
+        uint32_t GetOutArgsRegionSize() const { return out_args_region_size; }
 
         void SetStackFrameSize(int size) { stack_frame_size=size; }
         void SetName(std::string newname)	 { name=newname; }
-        void SetOutArgsRegionSize(int oa_size) {out_args_region_size=oa_size;}
+        void SetOutArgsRegionSize(uint32_t oa_size) {out_args_region_size=oa_size;}
 
 	void SetEntryPoint(Instruction_t *insn) {entry_point=insn;}
 	Instruction_t* GetEntryPoint() const { return entry_point;}
@@ -62,7 +62,7 @@ class Function_t : public BaseObj_t
 	InstructionSet_t my_insns;
         int stack_frame_size;
         std::string name;
-        int out_args_region_size;
+        uint32_t out_args_region_size;
         bool use_fp;
         bool is_safe;
 	FuncType_t *function_type;

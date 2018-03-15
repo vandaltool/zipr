@@ -20,10 +20,9 @@
 
 #include <iostream>
 
-#include "targ-config.h"
+//#include "targ-config.h"
 
 #include "elfio/elfio.hpp"
-#include "elfio/elfio_dump.hpp"
 
 #include "null_transform.h"
 #include "stackref_hash.h"
@@ -60,7 +59,7 @@ void NullTransform::rewrite()
       continue;
     }
 
-    for (int j = 0; j < f->getInstructions().size(); ++j)
+    for (auto j = 0U; j < f->getInstructions().size(); ++j)
     {
       wahoo::Instruction *instr = f->getInstructions()[j];
       char buf[1024];

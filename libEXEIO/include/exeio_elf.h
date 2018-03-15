@@ -6,9 +6,11 @@
 #include <assert.h>
 
 
-#include "targ-config.h"
+// #include "targ-config.h"
+#pragma GCC diagnostic ignored "-Wsign-compare"
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
+#pragma GCC diagnostic pop
 
 class exeio_backend;
 class exeio_section;
@@ -42,7 +44,7 @@ namespace EXEIO
 	{
 		public:
 			exeio_elf_backend_t() : e(NULL), main(NULL) {}
-			~exeio_elf_backend_t()
+			virtual ~exeio_elf_backend_t()
 			{
 				if(!main)
 					return;
@@ -50,7 +52,8 @@ namespace EXEIO
 				for(int i=0;i<e->sections.size(); ++i)
 				{
 					// copy each section into the main class' structure.
-					delete main->sections[i];
+					EXEIO::exeio_elf_section_t* sec=dynamic_cast<EXEIO::exeio_elf_section_t*>(main->sections[i]);
+					delete sec;
 				}
 
 				// remove the elfio class.

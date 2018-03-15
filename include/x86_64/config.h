@@ -58,19 +58,4 @@ typedef s_uint64_t 	   counter_t;
 #define NULL 0
 #endif
 
-#include <elf.h>
-
-typedef Elf64_Ehdr  IRDB_Elf_Ehdr;
-typedef Elf64_Shdr  IRDB_Elf_Shdr;
-typedef Elf64_Off   IRDB_Elf_Off;
-typedef Elf64_Half  IRDB_Elf_Half;
-typedef Elf64_Word  IRDB_Elf_Word;
-typedef Elf64_Addr  IRDB_Elf_Addr;
-typedef Elf64_Sym  IRDB_Elf_Sym;
-typedef Elf64_Rel  IRDB_Elf_Rel;
-typedef Elf64_Rela  IRDB_Elf_Rela;
-
-#define IRDB_ELF_ST_TYPE ELF64_ST_TYPE
-
-
 #endif

@@ -31,7 +31,7 @@ class File_t : public BaseObj_t
 		const std::string &ehpgms, const std::string &ehcss, 
 		const db_id_t &doipid);
 
-        File_t(db_id_t file_id) : BaseObj_t(NULL) { assert(0);}          // read from DB       
+        File_t(db_id_t file_id) : BaseObj_t(NULL) { (void)file_id; assert(0);}          // read from DB       
         void WriteToDB() { assert(0); }   // writes to DB ID is not -1.
 
         std::string GetAddressTableName() const { return address_table_name; }

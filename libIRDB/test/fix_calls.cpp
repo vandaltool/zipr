@@ -398,8 +398,8 @@ string adjust_esp_offset(string newbits, int offset)
 
         int sib_byte=(unsigned char)newbits[2];
         int sib_base=(unsigned char)sib_byte&0x7;
-        int sib_ss=(sib_byte>>3)&0x7;
-        int sib_index=(sib_byte>>3)&0x7;
+        //int sib_ss=(sib_byte>>3)&0x7;
+        //int sib_index=(sib_byte>>3)&0x7;
 
 
         /* 32-bit offset */
@@ -554,14 +554,14 @@ void fix_call(Instruction_t* insn, FileIR_t *firp, bool can_unpin)
 {
 	/* record the possibly new indirect branch target if this call gets fixed */
 	Instruction_t* newindirtarg=insn->GetFallthrough();
-	bool has_rex=false;
+	//bool has_rex=false;
 
 	/* disassemble */
         //DISASM disasm;
 	DecodedInstruction_t disasm(insn);
 
         /* Disassemble the instruction */
-        int instr_len = disasm.length(); // Disassemble(insn,disasm);
+        //int instr_len = disasm.length(); // Disassemble(insn,disasm);
 
 
 	/* if this instruction is an inserted call instruction than we don't need to 
@@ -575,8 +575,10 @@ void fix_call(Instruction_t* insn, FileIR_t *firp, bool can_unpin)
 	 */
 	if((insn->GetDataBits()[0]&0x40)==0x40)
 	{
+#if 0
 		// has rex!
 		has_rex=true;
+#endif
 	}
 	else if( (insn->GetDataBits()[0]!=(char)0xff) && 
 		 (insn->GetDataBits()[0]!=(char)0xe8) && 
@@ -744,28 +746,6 @@ bool can_skip_safe_function(Instruction_t *call_insn)
 	return func->IsSafe();
 }
 
-static File_t* find_file(FileIR_t* firp, db_id_t fileid)
-{
-#if 0
-        set<File_t*> &files=firp->GetFiles();
-
-        for(
-                set<File_t*>::iterator it=files.begin();
-                it!=files.end();
-                ++it
-           )
-        {
-                File_t* thefile=*it;
-                if(thefile->GetBaseID()==fileid)
-                        return thefile;
-        }
-        return NULL;
-#endif
-        assert(firp->GetFile()->GetBaseID()==fileid);
-        return firp->GetFile();
-
-}
-
 
 template <class T> struct insn_less : binary_function <T,T,bool> {
   bool operator() (const T& x, const T& y) const {
@@ -906,7 +886,7 @@ void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 	const bool is_rel= relop_it!=operands.end(); 
 
 	/* if this has already been fixed, we can skip it */
-	if(virt_offset==0 || virt_offset==-1)
+	if(virt_offset==0 || virt_offset==(uintptr_t)-1)
 		return;
 
 	if(is_rel)
@@ -941,7 +921,7 @@ void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 		uintptr_t oldpc=virt_offset;
 		uintptr_t newdisp=disp+oldpc;
 
-		assert(offset+size<=data.length());
+		assert((uintptr_t)(offset+size)<=(uintptr_t)(data.length()));
 		
 		switch(size)
 		{
@@ -953,7 +933,8 @@ void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 			case 2:
 			case 8:
 			default:
-				assert(("Cannot handle offset of given size", 0));
+				assert(0);
+				//assert(("Cannot handle offset of given size", 0));
 		}
 
 		/* put the data back into the insn */
@@ -979,7 +960,7 @@ void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 void fix_safefr(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 {
 	/* if this has already been fixed, we can skip it */
-	if(virt_offset==0 || virt_offset==-1)
+	if(virt_offset==0 || virt_offset==(uintptr_t)-1)
 		return;
 
 	for(set<Relocation_t*>::iterator it=insn->GetRelocations().begin();
@@ -1017,7 +998,7 @@ void fix_other_pcrel(FileIR_t* firp)
 //
 // main rountine; convert calls into push/jump statements 
 //
-main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 
 	bool fix_all=false;
@@ -1111,7 +1092,7 @@ main(int argc, char* argv[])
                         pqxx::largeobject lo(elfoid);
                         lo.to_file(pqxx_interface.GetTransaction(),"readeh_tmp_file.exe");
                         EXEIO::exeio*    elfiop=new EXEIO::exeio;
-                        elfiop->load((const char*)"readeh_tmp_file.exe");
+                        elfiop->load(string("readeh_tmp_file.exe"));
                         EXEIO::dump::header(cout,*elfiop);
                         EXEIO::dump::section_headers(cout,*elfiop);
 			// do eh_frame reading as required. 
@@ -1138,6 +1119,7 @@ main(int argc, char* argv[])
         }
 
 	delete pidp;
+	return 0;
 }
 
 
@@ -1164,5 +1146,6 @@ void range(virtual_offset_t a, virtual_offset_t b)
 bool possible_target(uintptr_t p, uintptr_t at, ibt_provenance_t prov)
 {
 	// used for LDSA
+	return false;
 }
 

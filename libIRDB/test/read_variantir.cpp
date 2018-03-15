@@ -28,7 +28,7 @@
 using namespace libIRDB;
 using namespace std;
 
-main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 
 	if(argc!=2)
@@ -120,4 +120,5 @@ main(int argc, char* argv[])
 		exit(-1);
 	}
 
+	return 0;
 }

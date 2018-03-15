@@ -43,7 +43,14 @@ namespace EXEIO
 	class exeio_pe_backend_t : public exeio_backend_t
 	{
 		public:
-			exeio_pe_backend_t() : e(NULL), main(NULL), pe_sections(NULL) {}
+			exeio_pe_backend_t() 
+				: 
+				e(NULL), 
+				pe_sections(NULL),
+				main(NULL)
+			{
+			}
+
 			~exeio_pe_backend_t()
 			{
 				if(!main)
@@ -52,7 +59,8 @@ namespace EXEIO
 				for(int i=0;i<main->sections.size(); ++i)
 				{
 					// copy each section into the main class' structure.
-					delete main->sections[i];
+					EXEIO::exeio_pe_section_t* sec=dynamic_cast<EXEIO::exeio_pe_section_t*>(main->sections[i]);			
+					delete sec;
 				}
 
 				// remove the pe_bliss class.

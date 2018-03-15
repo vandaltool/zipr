@@ -27,20 +27,20 @@ class eh_frame_util_t
 {
 	public: 
 	template <class T> 
-	static bool read_type(T &value, unsigned int &position, const uint8_t* const data, const int max);
+	static bool read_type(T &value, uint32_t &position, const uint8_t* const data, const uint32_t max);
 	template <class T> 
 	static bool read_type_with_encoding
 		(const uint8_t encoding, T &value, 
-		unsigned int &position, 
+		uint32_t &position, 
 		const uint8_t* const data, 
-		const int max, 
+		const uint32_t max, 
 		const uint64_t section_start_addr );
 
 	static bool read_string 
 		(std::string &s, 
-		unsigned int & position, 
+		uint32_t & position, 
 		const uint8_t* const data, 
-		const int max);
+		const uint32_t max);
 
 
 	// see https://en.wikipedia.org/wiki/LEB128
@@ -59,7 +59,7 @@ class eh_frame_util_t
 	
 	static bool read_length(
 		uint64_t &act_length, 
-		unsigned int &position, 
+		uint32_t &position, 
 		const uint8_t* const data, 
 		const uint32_t max);
 };

@@ -20,7 +20,6 @@
  *
  */
 
-int ptrsize=0;
 
 
 #include <libIRDB-core.hpp>
@@ -32,9 +31,12 @@ int ptrsize=0;
 #include <string.h>
 
 #include <exeio.h>
-#include "targ-config.h"
+
+// disable sign compare warnings in 3rd party code 
+#pragma GCC diagnostic ignored "-Wsign-compare"
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
+#pragma GCC diagnostic pop
 
 
 #include "fill_in_indtargs.hpp"
@@ -48,6 +50,7 @@ using namespace std;
 
 
 
+uint32_t ptrsize=0;
 ELFIO::elfio *elfiop=NULL;
 void* eh_frame_addr=0;
 char* eh_frame_data=0;
@@ -267,28 +270,6 @@ struct lsda_header_info
 };
 
 
-
-static File_t* find_file(FileIR_t* virp, db_id_t fileid)
-{
-#if 0
-        set<File_t*> &files=virp->GetFiles();
-
-        for(
-                set<File_t*>::iterator it=files.begin();
-                it!=files.end();
-                ++it
-           )
-        {
-                File_t* thefile=*it;
-                if(thefile->GetBaseID()==fileid)
-                        return thefile;
-        }
-        return NULL;
-#endif
-        assert(virp->GetFile()->GetBaseID()==fileid);
-        return virp->GetFile();
-
-}
 
 struct object *all_objects=NULL;
 
@@ -881,8 +862,8 @@ void read_ehframe(FileIR_t* virp, EXEIO::exeio* exeiop)
 
 	int secndx=0;
 	int secnum=elfiop->sections.size(); 
-	ELFIO::Elf_Half strndx = elfiop->get_section_name_str_index();
-	const char* strtab=elfiop->sections[strndx]->get_data();
+	//ELFIO::Elf_Half strndx = elfiop->get_section_name_str_index();
+	//const char* strtab=elfiop->sections[strndx]->get_data();
 
        	/* Locate desired section */
        	bool found=false;

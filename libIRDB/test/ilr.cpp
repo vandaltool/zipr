@@ -120,7 +120,7 @@ void do_ilr(VariantID_t *pidp, FileIR_t* firp)
 	cout<<"Writing variant "<<*pidp<<" back to database." << endl;
 	firp->WriteToDB();
 }
-main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 
 	if(argc!=2)
@@ -178,5 +178,6 @@ main(int argc, char* argv[])
 	cout<<"Done!"<<endl;
 
 	delete pidp;
+	return 0;
 }
 

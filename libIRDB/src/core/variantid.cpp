@@ -110,6 +110,7 @@ bool VariantID_t::Register()
 	BaseObj_t::dbintr->MoveToNextRow();
 	assert(BaseObj_t::dbintr->IsDone());
 
+	return true;
 }    
 
 VariantID_t* VariantID_t::Clone(bool deep)

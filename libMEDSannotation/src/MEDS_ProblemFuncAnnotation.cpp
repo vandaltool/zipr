@@ -91,7 +91,7 @@ void MEDS_ProblemFuncAnnotation::parse()
 	
 }
 
-bool MEDS_ProblemFuncAnnotation::matches(string line, string pattern, ProblemType prob_type)
+void MEDS_ProblemFuncAnnotation::matches(string line, string pattern, ProblemType prob_type)
 {
 	
         if (line.find(pattern)!=string::npos)

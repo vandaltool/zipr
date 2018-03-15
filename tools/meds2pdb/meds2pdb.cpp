@@ -19,6 +19,7 @@
  */
 
 #include <iostream>
+#include <iomanip>
 #include <map>
 #include <time.h>
 #include <string.h>
@@ -94,10 +95,8 @@ void insert_instructions(int fileID, const vector<wahoo::Instruction*> &instruct
 	// for each instruction:
 	//    populate instruction table
 
-	int count = 0;
-
 	pqxx::tablewriter W_addrs(txn,addressTable);
-	for (int i = 0; i < instructions.size(); i ++ )
+	for (auto i = 0U; i < instructions.size(); i ++ )
 	{
     		char buf[128];
 
@@ -128,7 +127,7 @@ void insert_instructions(int fileID, const vector<wahoo::Instruction*> &instruct
 	W_addrs.complete();
 
 	pqxx::tablewriter W_insns(txn,instructionTable);
-  	for (int i = 0; i < instructions.size(); i ++)
+  	for (auto i = 0U; i < instructions.size(); i ++)
 	{
 		const auto instruction = instructions[i];
 		const auto addr = instruction->getAddress();
@@ -189,19 +188,18 @@ void insert_functions(int fileID, const vector<wahoo::Function*> &functions  )
   txn.exec("SET client_encoding='LATIN1';");
 
   // bulk insert of function information into the DB
-  int count = 0;
-  for (int i = 0; i < functions.size(); i += STRIDE)
+  for (auto i = 0U; i < functions.size(); i += STRIDE)
   {  
     string query = "INSERT INTO " + functionTable;
     query += " (function_id, name, stack_frame_size, out_args_region_size, use_frame_pointer, is_safe) VALUES ";
 
 
-    for (int j = i; j < i + STRIDE; ++j)
+    for (auto j = i; j < i + STRIDE; ++j)
     {
       if (j >= functions.size()) break;
       wahoo::Function *f = functions[j];
       string functionName = f->getName();
-      app_iaddr_t functionAddress = f->getAddress();
+      //app_iaddr_t functionAddress = f->getAddress();
       int functionFrameSize =  f->getFrameSize(); 
 
       int function_id = j;
@@ -235,21 +233,20 @@ void update_functions(int fileID, const vector<wahoo::Function*> &functions  )
   txn.exec("SET client_encoding='LATIN1';");
 
   // bulk insert of function information into the DB
-  int count = 0;
   string query;
-  for (int i = 0; i < functions.size(); i += STRIDE )
+  for (auto i = 0U; i < functions.size(); i += STRIDE )
   {  
     query="";
-    for (int j = i; j < i + STRIDE; ++j)
+    for (auto j = i; j < i + STRIDE; ++j)
     {
         if (j >= functions.size()) break;
       	wahoo::Function *f = functions[j];
       	string functionName = f->getName();
       	app_iaddr_t functionAddress = f->getAddress();
-      	int functionSize = f->getSize();
+      	//int functionSize = f->getSize();
       	int function_id = f->getFunctionID();
-      	int outArgsRegionSize = f->getOutArgsRegionSize();
-      	bool useFP = f->getUseFramePointer();
+      	//int outArgsRegionSize = f->getOutArgsRegionSize();
+      	//bool useFP = f->getUseFramePointer();
 	int insnid=-1; 	// NOT_IN_DATABASE
 
 
@@ -335,10 +332,10 @@ void update_function_prototype(const vector<wahoo::Function*> &functions, char* 
 	work txn(conn);
 	txn.exec("SET client_encoding='LATIN1';");
 
-	for (int i = 0; i < functions.size(); i += STRIDE)
+	for (auto i = 0U; i < functions.size(); i += STRIDE)
 	{  
 		string q = "";
-		for (int j = i; j < i + STRIDE; ++j)
+		for (auto j = i; j < i + STRIDE; ++j)
 		{
 			if (j >= functions.size()) break;
 			wahoo::Function *f = functions[j];
@@ -346,8 +343,8 @@ void update_function_prototype(const vector<wahoo::Function*> &functions, char* 
 			app_iaddr_t functionAddress = f->getAddress();
 			VirtualOffset vo(functionAddress);
 
-			MEDS_FuncPrototypeAnnotation* fn_prototype_annot = NULL; 
-			MEDS_FuncPrototypeAnnotation* fn_returntotype_annot = NULL; 
+			//MEDS_FuncPrototypeAnnotation* fn_prototype_annot = NULL; 
+			//MEDS_FuncPrototypeAnnotation* fn_returntotype_annot = NULL; 
 			
 			std::vector<MEDS_Arg> *args = NULL;
 			MEDS_Arg *returnArg = NULL;
@@ -357,7 +354,7 @@ void update_function_prototype(const vector<wahoo::Function*> &functions, char* 
 				std::pair<MEDS_Annotations_t::iterator,MEDS_Annotations_t::iterator> ret; 
 				ret = annotations.equal_range(vo);
 				MEDS_FuncPrototypeAnnotation* p_annotation; 
-				for ( MEDS_Annotations_t::iterator it = ret.first; it != ret.second; ++it)
+				for ( auto it = ret.first; it != ret.second; ++it)
 				{    
 					MEDS_AnnotationBase *base_type=(it->second);
 					p_annotation = dynamic_cast<MEDS_FuncPrototypeAnnotation*>(base_type);
@@ -383,7 +380,7 @@ void update_function_prototype(const vector<wahoo::Function*> &functions, char* 
 				int func_type_id = getNewTypeId();
 				int basic_type_id = T_UNKNOWN;
 
-				for (int i = 0; i < args->size(); ++i)
+				for (auto i = 0U; i < args->size(); ++i)
 				{
 					if ((*args)[i].isNumericType())
 						basic_type_id = T_NUMERIC;

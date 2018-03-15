@@ -86,7 +86,7 @@ static void insert_into_scoop_at(const string &str, DataScoop_t* scoop, FileIR_t
 	// update each reloc to point to the new location.
 	for_each(scoop->GetRelocations().begin(), scoop->GetRelocations().end(), [str,at](Relocation_t* reloc)
 	{
-		if(reloc->GetOffset()>=at)
+		if((unsigned int)reloc->GetOffset()>=at)
 			reloc->SetOffset(reloc->GetOffset()+str.size());
 		
 	});
@@ -424,7 +424,7 @@ void ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,rel
 		{
 			cout<<"Inserting new DT_NEEDED at index "<<dec<<index<<endl;
 			// found a null terminator entry.
-			for(auto i=0; i<sizeof(T_Elf_Dyn); i++)
+			for(auto i=0U; i<sizeof(T_Elf_Dyn); i++)
 			{
 				// copy new_dynamic_entry ontop of null entry.
 				dynamic_scoop->GetContents()[index*sizeof(T_Elf_Dyn) + i ] = ((char*)&new_dynamic_entry)[i];
@@ -456,10 +456,6 @@ void ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,rel
 template<typename T_Elf_Sym, typename T_Elf_Rela, typename T_Elf_Dyn, int reloc_type, int rela_shift, int ptrsize>
 void ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>::prependLibraryDepedencies(const string &libraryName)
 {
-	const auto is_dt_needed=[](const T_Elf_Dyn& dyn_p) 
-		{ 	
-			return dyn_p.d_tag==DT_NEEDED; 
-		} ;
 	const auto firp=getFileIR();
 
 	auto dynamic_scoop=find_scoop(firp,".dynamic");

@@ -4,7 +4,7 @@ Import('env')
 
 
 lib1=SConscript("src/SConscript")
-lib2=SConscript("test/SConscript")
+#lib2=SConscript("test/SConscript")
 
-rets = [ lib1, lib2]
+rets = [ lib1 ]
 Return('rets')

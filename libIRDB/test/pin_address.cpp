@@ -43,7 +43,7 @@ unsigned long pa_strtoul(const char * const number)
 	 * Determine the base.
 	 */
 	if (number_len >= 2 && number[0] == '0' && 
-	   (number[1] == 'x') || (number[1] == 'X'))
+	   ((number[1] == 'x') || (number[1] == 'X')))
 		base = 16;
 	else if (number_len >= 1 && number[0] == '0')
 		base = 8;
@@ -59,7 +59,7 @@ unsigned long pa_strtoul(const char * const number)
 	}
 }
 
-main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 	VariantID_t *pidp=NULL;
 	FileIR_t * firp=NULL;
@@ -141,4 +141,5 @@ main(int argc, char* argv[])
 	assert(firp && pidp);
 
 	delete pidp;
+	return 0;
 }

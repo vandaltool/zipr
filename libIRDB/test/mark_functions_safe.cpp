@@ -69,7 +69,7 @@ void mark_function_safe(FileIR_t* firp, const std::string& function_file)
 	firp->WriteToDB();
 }
 
-main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 	if(argc!=3)
 	{
@@ -120,5 +120,6 @@ main(int argc, char* argv[])
 	cout<<"Done!"<<endl;
 
 	delete pidp;
+	return 0;
 }
 

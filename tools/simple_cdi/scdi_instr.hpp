@@ -28,27 +28,31 @@
 class SimpleCDI_Instrument
 {
 	public:
-		SimpleCDI_Instrument(libIRDB::FileIR_t *the_firp, int p_target_set_threshold=1) : firp(the_firp), 
+		SimpleCDI_Instrument(libIRDB::FileIR_t *the_firp, uint32_t p_target_set_threshold=1) 
+			: 
+			firp(the_firp), 
+			target_set_threshold(p_target_set_threshold),
 			single_target_set_jumps(0),
 			single_target_set_returns(0),
 			num_complete_ibts(0),
 			num_returns(0),
-			num_complete_returns(0),
-			target_set_threshold(p_target_set_threshold) {}
+			num_complete_returns(0)
+		{
+		}
+
 		bool execute();
 
-	private:
+	private: // methods
 
 		bool is_return(libIRDB::Instruction_t* insn);
 		bool add_scdi_instrumentation(libIRDB::Instruction_t* insn);
-		bool needs_scdi_instrumentation(libIRDB::Instruction_t* insn, int p_target_set_threshold);
+		bool needs_scdi_instrumentation(libIRDB::Instruction_t* insn, uint32_t p_target_set_threshold);
 		bool convert_ibs();
 		void display_stats(std::ostream &out);
 	
+	private: // data
 		libIRDB::FileIR_t* firp;
-
-		int target_set_threshold;
-
+		uint32_t target_set_threshold;
 		int single_target_set_jumps;
 		int single_target_set_returns;
 		int num_complete_ibts;

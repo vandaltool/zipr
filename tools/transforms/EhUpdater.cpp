@@ -31,33 +31,6 @@ static bool read_uleb128
 
 }
 
-// see https://en.wikipedia.org/wiki/LEB128
-static bool read_sleb128 (
-	int64_t &result,
-	uint32_t & position,
-	const uint8_t* const data,
-	const uint32_t max)
-{
-	result = 0;
-	auto shift = 0;
-	auto size = 64;  // number of bits in signed integer;
-	auto byte=uint8_t(0);
-	do
-	{
-		byte = data [position];
-		position++;
-		result |= ((byte & 0x7f)<< shift);
-		shift += 7;
-	} while( (byte & 0x80) != 0);
-
-	/* sign bit of byte is second high order bit (0x40) */
-	if ((shift < size) && ( (byte & 0x40) !=0 /* sign bit of byte is set */))
-		/* sign extend */
-		result |= - (1 << shift);
-	return ( position >= max );
-
-}
-
 static string to_uleb128 (uint64_t value)
 {
 	auto output_str=string("");
@@ -74,37 +47,6 @@ static string to_uleb128 (uint64_t value)
 
 	return output_str;
 }
-
-static string to_sleb128 (int64_t value)
-{
-	auto output_str=string("");
-	auto more = true;
-	auto negative = (value < 0);
-	auto size = sizeof(value)*8; // no. of bits in signed integer;
-	while(more) 
-	{
-		auto byte = value & 0x7f; // low order 7 bits of value;
-		value >>= 7;
-		/* the following is unnecessary if the implementation of >>= uses an 
-		arithmetic rather than logical shift for a signed left operand */
-		if (negative)
-			value |= - (1 <<(size - 7)); /* sign extend */
-
-		/* sign bit of byte is second high order bit (0x40) */
-		const bool sign_bit_clear = (byte&0x40) == 0; 
-		const bool sign_bit_set = !sign_bit_clear;
-		// if ((value == 0 && sign bit of byte is clear) 
-		// 	|| (value == -1 && sign bit of byte is set))
-		if ((value == 0 && sign_bit_clear ) || (value == -1 && sign_bit_set))
-			more = false;
-		else
-			byte |= 0x80; // set high order bit of byte;
-
-		output_str.push_back(byte);	 // emit byte 
-	}
-	return output_str;
-}
-
 
 /* transform any eh handling info for the FDE program*/
 bool EhUpdater_t::update_program(EhProgram_t* ehpgm)
@@ -138,7 +80,7 @@ bool EhUpdater_t::update_program(EhProgram_t* ehpgm)
 
 			const auto  encoded_factored_new_offset=to_uleb128(factored_new_offset);
 			auto new_dwarf_insn=string("");
-			for(auto i=0;i<offset_pos;i++)
+			for(auto i=0U;i<offset_pos;i++)
 				new_dwarf_insn.push_back(dwarf_insn[i]);
 			new_dwarf_insn+=encoded_factored_new_offset;
 			dwarf_insn=new_dwarf_insn;

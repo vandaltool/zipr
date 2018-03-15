@@ -516,7 +516,7 @@ set<Instruction_t*> find_in_function(string needle, Function_t *haystack)
 	assert(0 == regcomp(&preg, needle.c_str(), REG_EXTENDED));
 
 	fit = haystack->GetInstructions().begin();
-	for (fit; fit != haystack->GetInstructions().end(); fit++)
+	for (; fit != haystack->GetInstructions().end(); fit++)
 	{
 		Instruction_t *candidate = *fit;
 		//DISASM disasm;
@@ -649,7 +649,7 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 	if(!backup_until("mov", I3, I4))
 		return;
 
-	int table_size = 0;
+	auto table_size = 0U;
 	if (!backup_until("cmp", Icmp, I3))
 	{
 		cerr<<"pic32: could not find size of switch table"<<endl;
@@ -700,7 +700,7 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 		int i;
 		for(i=0;i<3;i++)
 		{
-                	if(offset+i*4+sizeof(int) > pSec->get_size())
+                	if((int)(offset+i*4+sizeof(int)) > (int)pSec->get_size())
                         	break;
 
                 	const int *table_entry_ptr=(const int*)&(secdata[offset+i*4]);
@@ -719,7 +719,7 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 			// finished the loop.
 			for(i=0;true;i++)
 			{
-                		if(offset+i*4+sizeof(int) > pSec->get_size())
+                		if((int)(offset+i*4+sizeof(int)) > (int)pSec->get_size())
                         		break;
 	
                 		const int32_t *table_entry_ptr=(const int32_t*)&(secdata[offset+i*4]);
@@ -815,7 +815,7 @@ cout<<hex<<"Found (type2) switch dispatch at "<<I3->GetAddress()->GetVirtualOffs
 	/* iterate over all thunk_bases/module_starts */
 	for(set<virtual_offset_t>::iterator it=thunk_bases.begin(); it!=thunk_bases.end(); ++it)
 	{
-		virtual_offset_t thunk_base=*it;
+		//virtual_offset_t thunk_base=*it;
 		virtual_offset_t table_base=*it+table_offset;
 
 		// find the section with the data table
@@ -833,7 +833,7 @@ cout<<hex<<"Found (type2) switch dispatch at "<<I3->GetAddress()->GetVirtualOffs
 		int i;
 		for(i=0;i<3;i++)
 		{
-                	if(offset+i*4+sizeof(int) > pSec->get_size())
+                	if((int)(offset+i*4+sizeof(int)) > (int)pSec->get_size())
                         	break;
 
                 	const int32_t *table_entry_ptr=(const int32_t*)&(secdata[offset+i*4]);
@@ -851,7 +851,7 @@ cout<<hex<<"Found (type2) switch dispatch at "<<I3->GetAddress()->GetVirtualOffs
 			// finished the loop.
 			for(i=0;true;i++)
 			{
-                		if(offset+i*4+sizeof(int) > pSec->get_size())
+                		if((int)(offset+i*4+sizeof(int)) > (int)pSec->get_size())
                         		break;
 	
                 		const int32_t *table_entry_ptr=(const int32_t*)&(secdata[offset+i*4]);
@@ -885,33 +885,27 @@ cout<<hex<<"Found (type2) switch dispatch at "<<I3->GetAddress()->GetVirtualOffs
  */
 static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
 {
-	int ptrsize=firp->GetArchitectureBitWidth()/8;
+	uint32_t ptrsize=firp->GetArchitectureBitWidth()/8;
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type3;
 
         Instruction_t* I5=insn;
         // check if I5 is a jump
-        //if(strstr(disasm.Instruction.Mnemonic, "jmp")==NULL)
         if(strstr(disasm.getMnemonic().c_str()/*Instruction.Mnemonic*/, "jmp")==NULL)
 		return;
 
 	// return if it's not a jump to a memory address
-        //if(!(disasm.Argument1.ArgType&MEMORY_TYPE))
         if(!(disasm.getOperand(0).isMemory()))
 		return;
 
 	/* return if there's no displacement */
-        //if(disasm.Argument1.Memory.Displacement==0)
         if(disasm.getOperand(0).getMemoryDisplacement()==0)
 		return;
 
-        //if(disasm.Argument1.Memory.Scale!=ptrsize)
-        // if(disasm.getOperand(0).getScaleValue()!=ptrsize)
         if(!disasm.getOperand(0).hasIndexRegister() || disasm.getOperand(0).getScaleValue()!=ptrsize)
 		return;
 
 	// grab the table base out of the jmp.
 	virtual_offset_t table_base=disasm.getOperand(0).getMemoryDisplacement();//disasm.Argument1.Memory.Displacement;
-        //if((disasm.Argument1.ArgType&RELATIVE_))
         if(disasm.getOperand(0).isPcrel())
 		table_base+=insn->GetDataBits().size()+insn->GetAddress()->GetVirtualOffset();
 
@@ -955,7 +949,7 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 		for(i=0;true;i++)
 		{
 			
-			if(offset+i*ptrsize+ptrsize > pSec->get_size())
+			if((int)(offset+i*ptrsize+ptrsize) > (int)pSec->get_size())
 				return;
 
 			const void *table_entry_ptr=(const int*)&(secdata[offset+i*ptrsize]);
@@ -988,10 +982,10 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 	}
 	
 
-	int i;
+	auto i=0U;
 	for(i=0;i<3;i++)
 	{
-		if(offset+i*ptrsize+ptrsize > pSec->get_size())
+		if((int)(offset+i*ptrsize+ptrsize) > (int)pSec->get_size())
 			return;
 
 		const void *table_entry_ptr=(const int*)&(secdata[offset+i*ptrsize]);
@@ -1074,7 +1068,7 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 				}
 				jmptables[insn].SetAnalysisStatus(ICFS_Analysis_Complete);
 			}
-			if(offset+i*ptrsize+ptrsize > pSec->get_size() || i > table_max)
+			if((int)(offset+i*ptrsize+ptrsize) > (int)pSec->get_size() || i > table_max)
 				return;
 
 			const void *table_entry_ptr=(const int*)&(secdata[offset+i*ptrsize]);
@@ -1125,7 +1119,7 @@ I1:   0x000000000044425a <+218>:        cmp    DWORD PTR [rax+0x8],0xd   // boun
 I2:   0x000000000044425e <+222>:        jbe    0x444320 <_gedit_tab_get_icon+416>
 <new bb>
 I3:   0x0000000000444264 <+228>:        mov    rdi,rbp // default case, also jumped to via indirect branch below
-<snip (doesn't fall through)>
+<snip (doesnt fall through)>
 I4:   0x0000000000444320 <+416>:        mov    edx,DWORD PTR [rax+0x8]		# load from memory into index reg EDX.
 
 THIS ONE
@@ -1156,7 +1150,7 @@ I5-2   	0x00000000000b93bf <+59>:	lea    rax,[rip+0x1f33a]        # 0xd8700
    	0x00000000000b93c6 <+66>:	add    rax,rdx
    	0x00000000000b93c9 <+69>:	jmp    rax
 
-Note: Since I6 doesn't access memory, do another backup until with to verify address format 
+Note: Since I6 doesnt access memory, do another backup until with to verify address format 
 
 Alternate version 2:
 
@@ -1327,7 +1321,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	 * Check each one that is returned.
 	 */
 	found_leas_it = found_leas.begin();
-	for (found_leas_it; found_leas_it != found_leas.end(); found_leas_it++) 
+	for (; found_leas_it != found_leas.end(); found_leas_it++) 
 	{
 		Instruction_t *I5_cur = *found_leas_it;
 		//Disassemble(I5_cur,disasm);
@@ -1361,7 +1355,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 			//return;
 			continue;
 
-		int table_size = 0;
+		auto table_size = 0U;
 		if(backup_until(cmp_str.c_str(), I1, I8))
 		{
 			//DISASM d1;
@@ -1399,12 +1393,12 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 
 		set<Instruction_t *> ibtargets;
 		virtual_offset_t offset=D1-pSec->get_address();
-		int entry=0;
+		auto entry=0U;
 		auto found_table_error = false;
 		do
 		{
 			// check that we can still grab a word from this section
-			if(offset+sizeof(int) > pSec->get_size())
+			if((int)(offset+sizeof(int)) > (int)pSec->get_size())
 			{
 				found_table_error = true;
 				break;
@@ -1540,12 +1534,12 @@ static void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t
 
 	// get the base offset into the section
     	virtual_offset_t offset=table_offset-pSec->get_address();
-	int i;
+	auto i=0U;
 
 	set<Instruction_t*> ibtargets;
 	for(i=0;i<table_size;++i)
 	{
-		if(offset+i*arch_ptr_bytes()+sizeof(int) > pSec->get_size())
+		if((int)(offset+i*arch_ptr_bytes()+sizeof(int)) > (int)pSec->get_size())
 		{
 			cout << "jmp table outside of section range ==> invalid switch table" << endl;
 			return;
@@ -1591,7 +1585,7 @@ static void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, D
 {
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type6;
 	Instruction_t *I1 = NULL;
-	Instruction_t *I2 = NULL;
+	//Instruction_t *I2 = NULL;
 	Instruction_t *I4 = NULL;
 	Instruction_t *IJ = insn;
 
@@ -1663,7 +1657,7 @@ static void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, D
 
 	// get the base offset into the section
 	virtual_offset_t offset=table_offset-pSec->get_address();
-	int i;
+	auto i=0U;
 
 	if(getenv("IB_VERBOSE"))
 		cout << hex << "offset: " << offset << " arch bit width: " << dec << firp->GetArchitectureBitWidth() << endl;
@@ -1671,7 +1665,7 @@ static void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, D
 	set<Instruction_t*> ibtargets;
 	for(i=0;i<table_size;++i)
 	{
-		if(offset+i*arch_ptr_bytes()+sizeof(int) > pSec->get_size())
+		if((int)(offset+i*arch_ptr_bytes()+sizeof(int)) > (int)pSec->get_size())
 		{
 			cout << "jmp table outside of section range ==> invalid switch table" << endl;
 			return;
@@ -1907,12 +1901,12 @@ void read_stars_xref_file(FileIR_t* firp)
 
 void process_dynsym(FileIR_t* firp)
 {
-	FILE *dynsymfile = popen("$PS_OBJDUMP -T readeh_tmp_file.exe | $PS_GREP '^[0-9]\\+' | $PS_GREP -v UND | awk '{print $1;}' | $PS_GREP -v '^$'", "r");
+	auto dynsymfile = popen("$PS_OBJDUMP -T readeh_tmp_file.exe | $PS_GREP '^[0-9]\\+' | $PS_GREP -v UND | awk '{print $1;}' | $PS_GREP -v '^$'", "r");
 	assert(dynsymfile);
-	virtual_offset_t target=0;
+	auto target=(unsigned int)0;
 	while( fscanf(dynsymfile, "%x", &target) != -1)
 	{
-		possible_target(target,0,ibt_provenance_t::ibtp_dynsym);
+		possible_target((virtual_offset_t)target,0,ibt_provenance_t::ibtp_dynsym);
 	}
 }
 
@@ -2268,13 +2262,13 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 		const char *scoop_contents=scoop->GetContents().c_str();
 		if(scoop->GetName()==".init_array" || scoop->GetName()==".fini_array" || scoop->GetName()==".got.plt" || scoop->GetName()==".got")
 		{
-			int start_offset=0;
+			auto start_offset=0U;
 			if(scoop->GetName()==".got.plt")
 			{
 				// .got.plt has a start index of 4 pointers into the section.
 				start_offset=4*ptrsize;
 			}
-			for(int i=start_offset; i+ptrsize <= scoop->GetSize() ; i+=ptrsize)
+			for(auto i=start_offset; i+ptrsize <= scoop->GetSize() ; i+=ptrsize)
 			{
 				virtual_offset_t vo;
 				if(ptrsize==4)
@@ -2380,8 +2374,8 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 					assert(0);
 				
 			}
-			int table_entry_no=0;
-			for(int i=0;i+symsize<scoop->GetSize(); i+=symsize, table_entry_no++)
+			auto table_entry_no=0U;
+			for(auto i=0U;i+symsize<scoop->GetSize(); i+=symsize, table_entry_no++)
 			{
 				int addr_offset=0;
 				virtual_offset_t vo=0;
@@ -2782,7 +2776,7 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t>
 }
 
 
-main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 	auto argc_iter = (int)2;
 	auto split_eh_frame_opt=true;
@@ -2886,7 +2880,7 @@ main(int argc, char* argv[])
 		        pqxx::largeobject lo(elfoid);
         		lo.to_file(pqxx_interface.GetTransaction(),"readeh_tmp_file.exe");
         		EXEIO::exeio*    elfiop=new EXEIO::exeio;
-        		elfiop->load((const char*)"readeh_tmp_file.exe");
+        		elfiop->load(string("readeh_tmp_file.exe"));
 
 			// find all indirect branch targets
 			fill_in_indtargs(firp, elfiop, forced_pins, do_unpin_opt);
@@ -2911,4 +2905,5 @@ main(int argc, char* argv[])
 	assert(firp && pidp);
 
 	delete pidp;
+	return 0;
 }

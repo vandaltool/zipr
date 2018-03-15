@@ -22,9 +22,6 @@ libpath='''
 	$SECURITY_TRANSFORMS_HOME/lib/
 	'''
 
-#myenv.Append(CCFLAGS="-Wp,-w -Wall")
-myenv.Append(CCFLAGS=" -g ")
-
 libs=   '''
 	EXEIO
 	pebliss

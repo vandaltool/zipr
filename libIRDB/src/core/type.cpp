@@ -84,7 +84,7 @@ string AggregateType_t::WriteToDB(File_t *fid, db_id_t newid)
 
 	string q;
 
-	for (int i = 0; i < GetNumAggregatedTypes(); ++i)
+	for (auto i = 0U; i < GetNumAggregatedTypes(); ++i)
 	{
 		Type_t* t = GetAggregatedType(i);
 		q+=string("insert into ")+fid->types_table_name + 
