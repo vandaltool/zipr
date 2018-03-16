@@ -595,6 +595,11 @@ virtual_offset_t DecodedInstructionCapstone_t::getMemoryDisplacementOffset(const
 	const auto imm=getImmediate();
 	const auto disp=t.getMemoryDisplacement();
 
+	if(string((char*)the_insn->detail->x86.opcode)=="\x0f\xc2") // CMPPD, CMPSS 
+	{
+		return the_insn->size - disp_size - 1;  // last byte encodes an immediate value to distinguish pseudo-ops
+	}
+	
 	if(imm_count==0)
 		return the_insn->size - disp_size;
 
