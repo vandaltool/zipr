@@ -61,7 +61,7 @@ if [[ $args = "" ]]; then
 	args="all"
 fi
 
-for arg in args; do
+for arg in $args; do
     case $arg in
     all)
 	install_packs $ALL_PKGS

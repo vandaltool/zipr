@@ -14,7 +14,7 @@ main()
 		coreutils
 		postgresql
 		postgresql-client
-		libpqxx-3.1
+		libpqxx-4.0
 		python
 		"
 
