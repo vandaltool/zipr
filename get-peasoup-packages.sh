@@ -6,7 +6,7 @@
 #dpkg --add-architecture i386
 #sudo apt-get update
 
-# Needed to build PEASOUP components
+# Needed to build components
 BASE_PKGS="
   scons
   dwarfdump
@@ -48,13 +48,6 @@ SERVER_IRDB_PKGS="postgresql"
 ALL_PKGS="$BASE_PKGS $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS "
 
 
-if [[ "$PEASOUP_UMBRELLA_DIR" == "" ]]; then
-	echo "PEASOUP_UMBRELLA_DIR not found"
-	echo "Did you source set_env_vars and use sudo -E"
-	exit 1
-fi
-
-
 install_packs()
 {
 	for i in $*
@@ -91,9 +84,11 @@ for arg in args; do
     esac
 done
 
+
+orig_dir=$(pwd)
 echo "Getting irdb_transforms packages."
 cd irdb_transforms
 sudo ./get-packages.sh
-cd $PEASOUP_UMBRELLA_DIR
+cd $orig_dir
 
-echo Peasoup packages complete.
+echo Intsalling packages complete.
