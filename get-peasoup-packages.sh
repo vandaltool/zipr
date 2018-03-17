@@ -20,6 +20,7 @@ BASE_PKGS="
   xdotool
   gcc-multilib
   g++-multilib
+  autoconf
   realpath
   libelf-dev
   libxqilla-dev
@@ -44,27 +45,7 @@ CLIENT_IRDB_PKGS="
 # For IRDB server
 SERVER_IRDB_PKGS="postgresql"
 
-# For building test subjects
-TEST_PKGS="
-  asciidoc
-  autoconf
-  bison
-  gawk
-  gettext
-  libx11-dev
-  libfontconfig1-dev
-  libperl-dev
-  poedit
-  yasm
-  xvfb"
-
-# For handling SQL command injections
-SQL_PKGS="sqlite3 libsqlite3-dev mysql-client mysql-server libmysqlclient-dev"
-
-# For LDAP
-LDAP_PKGS="ldap-utils slapd libldap2-dev"
-
-ALL_PKGS="$BASE_PKGS $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS $TEST_PKGS $SQL_PKGS $LDAP_PKGS"
+ALL_PKGS="$BASE_PKGS $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS "
 
 
 if [[ "$PEASOUP_UMBRELLA_DIR" == "" ]]; then
@@ -81,7 +62,13 @@ install_packs()
 		sudo apt-get install $i -y
 	done
 }
-for arg in $@; do
+
+args="$@"
+if [[ $args = "" ]]; then
+	args="all"
+fi
+
+for arg in args; do
     case $arg in
     all)
 	install_packs $ALL_PKGS
@@ -97,15 +84,6 @@ for arg in $@; do
 	;;
     irdb)
 	install_packs $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS
-	;;
-    test)
-	install_packs $TEST_PKGS
-	;;
-    sql)
-	install_packs $SQL_PKGS
-	;;
-    ldap)
-	install_packs $LDAP_PKGS
 	;;
     *)
 	echo "$arg not recognized. Recognized args: all, base, client-irdb,";

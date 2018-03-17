@@ -10,19 +10,22 @@ if [ "$PEASOUP_UMBRELLA_DIR" != "$FULL_BUILD_LOC" ]; then
     exit 1;
 fi
 
-# stratafier
-cd $PEASOUP_UMBRELLA_DIR/stratafier
-make clean
+use_strata=0
+if [[ $use_strata = 1 ]] ; then
+	# stratafier
+	cd $PEASOUP_UMBRELLA_DIR/stratafier
+	make clean
 
-# clean main strata
-cd $STRATA_HOME
-./configure
-make clean
-rm Makefile
+	# clean main strata
+	cd $STRATA_HOME
+	./configure
+	make clean
+	rm Makefile
 
-# clean strata32 if exists.
-cd $PEASOUP_UMBRELLA_DIR/
-rm -Rf strata32
+	# clean strata32 if exists.
+	cd $PEASOUP_UMBRELLA_DIR/
+	rm -Rf strata32
+fi
 
 cd $SMPSA_HOME
 scons -c || exit

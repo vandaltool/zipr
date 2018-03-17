@@ -26,46 +26,50 @@ mkdir -p $ZEST_RUNTIME/sbin
 
 if [ ! -f manifest.txt.config -o ! -d "$PS_INSTALL" ]; then
 	mkdir -p "$PS_INSTALL"
-	$PEDI_HOME/pedi --setup -m manifest.txt -l ida -l ida_key -l ps -l zipr -l stratafier -l stars -i $PS_INSTALL
+	$PEDI_HOME/pedi --setup -m manifest.txt -l ida -l ida_key -l ps -l zipr -l stars -i $PS_INSTALL
 fi
 
-# stratafier
-cd $PEASOUP_UMBRELLA_DIR/stratafier
-make || exit
 
-# strata
-if [ ! "$STRATA_HOME" ]; then 
-    echo "STRATA_HOME not set.";
-    exit 1; 
-fi
-
-if [ `uname -m` = 'x86_64' ]; then
-	# build 32-bit strata
-	if [ ! -d $STRATA_HOME32 ] ; then 
-		cd $STRATA
-		if [ -f Makefile ] ; then
-			make clean distclean
-		fi
-		cd $PEASOUP_UMBRELLA_DIR
-		echo Creating strata 32-bit build directory
-		cp -R $STRATA $STRATA32
-	fi
-	
-	cd $STRATA_HOME32
-	STRATA_HOME=$STRATA_HOME32 STRATA=$STRATA_HOME32 ./build -host=i386-linux || exit
-
-	# build x86-64 strata
-	cd $STRATA_HOME
-	if [ -f Makefile -a Makefile -nt configure -a Makefile -nt Makefile.in ]; then
-		echo Skipping Strata reconfigure step
-	else
-		./configure $cfar_mode || exit
-	fi
+use_strata=0
+if [[ $use_strata = 1 ]]; then
+	# stratafier
+	cd $PEASOUP_UMBRELLA_DIR/stratafier
 	make || exit
 
-else
-	cd $STRATA_HOME
-	./build $cfar_mode || exit
+	# strata
+	if [ ! "$STRATA_HOME" ]; then 
+	    echo "STRATA_HOME not set.";
+	    exit 1; 
+	fi
+
+	if [ `uname -m` = 'x86_64' ]; then
+		# build 32-bit strata
+		if [ ! -d $STRATA_HOME32 ] ; then 
+			cd $STRATA
+			if [ -f Makefile ] ; then
+				make clean distclean
+			fi
+			cd $PEASOUP_UMBRELLA_DIR
+			echo Creating strata 32-bit build directory
+			cp -R $STRATA $STRATA32
+		fi
+		
+		cd $STRATA_HOME32
+		STRATA_HOME=$STRATA_HOME32 STRATA=$STRATA_HOME32 ./build -host=i386-linux || exit
+
+		# build x86-64 strata
+		cd $STRATA_HOME
+		if [ -f Makefile -a Makefile -nt configure -a Makefile -nt Makefile.in ]; then
+			echo Skipping Strata reconfigure step
+		else
+			./configure $cfar_mode || exit
+		fi
+		make || exit
+
+	else
+		cd $STRATA_HOME
+		./build $cfar_mode || exit
+	fi
 fi
 
 # smp-static-analyzer
