@@ -52,7 +52,7 @@ libpath='''
 	'''
 
 if sysname != "SunOS":
-	myenv.Append(CCFLAGS=" -Wall ")
+	myenv.Append(CCFLAGS=" -Wall -Werror ")
 
 myenv.Append(CXXFLAGS=" -std=c++11 ")
 myenv=myenv.Clone(CPPPATH=Split(cpppath), LIBS=Split(libs), LIBPATH=Split(libpath), SHLIBSUFFIX=".zpi", SHLIBPREFIX="")
