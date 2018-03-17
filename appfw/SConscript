@@ -1,9 +1,0 @@
-import os
-import shutil
-
-Import('env')
-
-lib1=SConscript("src/SConscript.64", variant_dir='build64')
-lib2=SConscript("src/SConscript.32", variant_dir='build32')
-
-Return(lib1+lib2)

@@ -1,8 +1,0 @@
-#!/bin/bash
-
-#mysql --user=root --password=ps2 -h datamanager testdata <setup.sql
-mysql --user=root -h localhost testdata <setup.sql
-
-$1 "$2"
-
-mysql --user=root -h localhost testdata <teardown.sql

@@ -1,1 +1,0 @@
-UPDATE `wp38_postmeta` SET `meta_value` = '1392403575:1' WHERE `post_id` = 3 AND `meta_key` = '_edit_lock'

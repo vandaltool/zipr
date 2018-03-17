@@ -1,9 +1,0 @@
-all: setup_lib
-	if test `uname -s` = Linux ; then cd src; make all; fi
-
-setup_lib:
-	-mkdir -p lib/32 lib/64 
-
-clean:
-	-rm -f lib/*.so lib/*.o lib/*.o64 lib/*.o32 lib/*.so32 lib/*.so64 lib/32/*.so lib/64/*.so
-	cd src; make clean

@@ -1,3 +1,0 @@
-* turn on thread safety in interception library
-* wildcards in signature matching
-* better white listing of internal sqlite sql queries (may need to run signatures on sqlite itself)
