@@ -59,7 +59,7 @@ bool EhWriterImpl_t<ptrsize>::CIErepresentation_t::canSupport(Instruction_t* ins
 	if(insn->GetEhProgram()->GetCIEProgram() != pgm || 
 	   insn->GetEhProgram()->GetCodeAlignmentFactor() != code_alignment_factor || 
 	   insn->GetEhProgram()->GetDataAlignmentFactor() != data_alignment_factor || 
-	   insn->GetEhProgram()->GetReturnRegNumber() != return_reg 
+	   insn->GetEhProgram()->GetReturnRegNumber() != (int64_t)return_reg 
 	  )
 		return false;
 
@@ -373,7 +373,7 @@ bool EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::canExte
 		[&](const Relocation_t* candidate_reloc)
 			{
 				const auto tt_index=candidate_reloc->GetOffset()/tt_entry_size;
-				if(tt_index>=type_table.size())
+				if(tt_index>=(int64_t)type_table.size())
 					return false;
 				const auto &tt_entry=type_table.at(tt_index);
 	
@@ -454,7 +454,7 @@ void EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::extend(
 			       (tt_encoding&0xf)==0xb); // encoding contains DW_EH_PE_sdata4
 			const auto tt_entry_size=4;
 			const auto tt_index= reloc->GetOffset()/tt_entry_size;
-			if(tt_index>=type_table.size())
+			if(tt_index>=(int64_t)type_table.size())
 				type_table.resize(tt_index+1);
 			assert(type_table.at(tt_index)==NULL || RelocsEqual(type_table.at(tt_index),reloc));	
 			type_table[tt_index]=reloc;	
@@ -596,7 +596,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 	auto output_program=[&](const EhProgramListingManip_t& p, ostream & out) 
 	{
 		auto flags=out.flags();//save flags
-		for(auto i=0; i < p.size() ; i ++ ) 
+		for(auto i=0U; i < p.size() ; i ++ ) 
 		{		
 			const auto &s = p[i];
 			if(i==p.size()-1 && p.isAdvanceDirective(s))	/* no need to output last insn if it's an advance */
@@ -956,7 +956,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 		out<<"eh_frame_table:"<<endl;
 		out<<"        # fde pointers"<<endl;
 
-		for(auto fde_num=0; fde_num < all_fdes.size(); fde_num++)
+		for(auto fde_num=0U; fde_num < all_fdes.size(); fde_num++)
 		{
 			const auto& fde=all_fdes[fde_num];
 			out<<"        .int 0x"<<hex<<fde->start_addr<<" - eh_frame_hdr_start"<<endl;

@@ -6,10 +6,6 @@ import tarfile
 
 Import('env')
 
-if 'do_cgc' in env and int(env['do_cgc']) == 1:
-	env.Append(CFLAGS=" -DCGC ")
-	env.Append(CCFLAGS=" -DCGC ")
-
 # build security transforms
 irdbenv=env.Clone(); 
 
