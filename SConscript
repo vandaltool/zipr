@@ -11,9 +11,6 @@ if env.GetOption('clean'):
     if os.path.exists(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/ELFIO"):
         print 'Removing third_party/ELFIO'
     	shutil.rmtree(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/ELFIO")
-    if os.path.exists(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/SQLITE3"):
-        print 'Removing third_party/SQLITE3'
-    	shutil.rmtree(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/SQLITE3")
     if os.path.exists(os.environ['SECURITY_TRANSFORMS_HOME']+"/include/elfio"):
         print 'Removing include/elfio'
     	shutil.rmtree(os.environ['SECURITY_TRANSFORMS_HOME']+"/include/elfio")
@@ -40,22 +37,6 @@ else:
 		    os.path.join(os.environ['SECURITY_TRANSFORMS_HOME'],"include","elfio","elfio.hpp"))
     else:
         assert os.path.isdir(ELFIO_DIR)
-
-    # SQLITE3
-    SQLITE3_DIR=os.path.join(os.environ['SECURITY_TRANSFORMS_HOME'], 'third_party/SQLITE3')
-    if not os.path.exists(SQLITE3_DIR):
-        os.makedirs(SQLITE3_DIR)     # make directory 
-        tgz=tarfile.open(os.path.join(os.environ['SECURITY_TRANSFORMS_HOME'], 'third_party/sqlite-autoconf-3071300.tar.gz'), "r:gz")
-        print 'Extracting needed files from sqlite3 tarball'
-        #tgz.list(verbose=False)
-        tgz.extract('sqlite-autoconf-3071300/sqlite3.h', SQLITE3_DIR)
-        tgz.extract('sqlite-autoconf-3071300/sqlite3.c', SQLITE3_DIR)
-		# copy sqlite3.h
-        source_dir = os.path.join(SQLITE3_DIR, 'sqlite-autoconf-3071300') 
-        target_dir = os.path.join(os.environ['SECURITY_TRANSFORMS_HOME'], 'appfw', 'src')
-        shutil.copy(os.path.join(source_dir, 'sqlite3.h'), os.path.abspath(os.path.join(target_dir, 'sqlite3.h')))
-    else:
-        assert os.path.isdir(SQLITE3_DIR)
 
     # check/install targ-config.h
     if not os.path.isfile(os.environ['SECURITY_TRANSFORMS_HOME']+"/include/targ-config.h"):
@@ -105,16 +86,6 @@ tools=None
 if 'build_tools' not in env or env['build_tools'] is None or int(env['build_tools']) == 1:
 	tools=SConscript("tools/SConscript", variant_dir='scons_build/tools')
 	Depends(pedi,tools)
-
-# appfw
-appfw64=None
-appfw32=None
-if 'build_appfw' in env:
-    if int(env['build_appfw']) == 1:		 
-        appfw64=SConscript("appfw/src/SConscript.64", variant_dir='scons_build/appfw.64')
-        appfw32=SConscript("appfw/src/SConscript.32", variant_dir='scons_build/appfw.32')
-	Depends(pedi,(appfw64,appfw32))
-
 
 Default( pedi )
 
