@@ -38,13 +38,13 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
-
-
 #include "elfio/elfio.hpp"
-
 #include "ben_lib.h"
 
 using namespace std;
+
+void ignore_result(int /* res */) { }
+
 
 static string regularAddressRegex = "0x[[:xdigit:]]+";
 static string offsetAddressRegex = "[a-zA-Z0-9\\._-]+[[:blank:]]*[+][[:blank:]]*0x[[:xdigit:]]+|[a-zA-Z0-9\\._]+[[:blank:]]*[+][[:blank:]]*[[:xdigit:]]+";
@@ -153,7 +153,7 @@ static uintptr_t getSymbolAddress(const string &symbolFilename, const string &sy
 
 	FILE *fp = popen(command.c_str(), "r");
 
-	fscanf(fp,"%s", address);
+	ignore_result(fscanf(fp,"%s", address));
 	string addressString = string(address);
 
 	//TODO: throw exception if address is not found. 
@@ -389,11 +389,11 @@ static void assemble(const string &assemblyFile, int bits)
 
 	//remove any preexisting assembly or nasm generated files
 	string command = "rm -f " + assemblyFile;
-	system(command.c_str());
+	ignore_result(system(command.c_str()));
 	command = "rm -f "+assemblyFile+".bin";
-	system(command.c_str());
+	ignore_result(system(command.c_str()));
 	command = "rm -f "+assemblyFile+".map";
-	system(command.c_str());
+	ignore_result(system(command.c_str()));
 
 
 	ofstream asmFile;
@@ -508,7 +508,7 @@ static void assemble(const string &assemblyFile, int bits)
 //TODO: check if system fails, make a func call to handle system
 	command = "nasm -O1 -w-number-overflow " + assemblyFile + " -o "+assemblyFile+".bin";
 	cout<<"Running nasm ("<<command<<")...";
-	system(command.c_str());
+	ignore_result(system(command.c_str()));
 	cout<<"Done!"<<endl;
 
 	

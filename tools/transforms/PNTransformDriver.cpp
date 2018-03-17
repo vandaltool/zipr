@@ -39,6 +39,8 @@
 #include <sys/wait.h>
 
 
+void ignore_result(int /* res */ ) { } 
+
 #ifndef PATH_MAX
 #define PATH_MAX 4096
 #endif
@@ -2131,7 +2133,7 @@ bool PNTransformDriver::Validate(FileIR_t *virp, string name)
 	rm_command+=bin_filename   + " ";
 	rm_command+=map_filename   + " ";
 
-	system(rm_command.c_str()); // don't bother with an error check.
+	ignore_result(system(rm_command.c_str())); // don't bother with an error check.
 	
 	return (retval == 0);
 }

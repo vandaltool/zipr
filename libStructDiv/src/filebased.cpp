@@ -18,6 +18,9 @@
 using namespace std;
 using namespace libStructDiv;
 
+void ignore_result(int /* res */ ) {}
+
+
 template<typename T> std::string toString(const T& value)
 {
     std::ostringstream oss;
@@ -73,7 +76,7 @@ FileBased_StructuredDiversity_t::FileBased_StructuredDiversity_t(string key, int
 	}
 	cout<<"Initing shared path: "<<m_shared_dir<<endl<<"Contents:"<<endl;
 	string ls_cmd="ls "+m_shared_dir;
-	system(ls_cmd.c_str());
+	ignore_result(system(ls_cmd.c_str()));
 #else
 	assert(0); // filesystem sharing not implement on non-linux platforms yet
 #endif

@@ -785,8 +785,12 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
 		
       		if (encoding == DW_EH_PE_absptr)
         	{
-          		pc_begin = ((_Unwind_Ptr *) this_fde->pc_begin)[0];
-          		pc_range = ((_Unwind_Ptr *) this_fde->pc_begin)[1];
+          		//pc_begin = ((_Unwind_Ptr *) this_fde->pc_begin)[0];
+			auto my_pc_begin=(_Unwind_Ptr*)(this_fde->pc_begin);
+			memcpy(&pc_begin, my_pc_begin, sizeof(_Unwind_Ptr));
+          		//pc_range = ((_Unwind_Ptr *) this_fde->pc_begin)[1];
+			memcpy(&pc_range, my_pc_begin+1, sizeof(_Unwind_Ptr));
+
 			if(getenv("EH_VERBOSE"))
 			{
 				cout<<"absptr pc_begin 0x"<<std::hex<<(pc_begin+offset)<<"\t";

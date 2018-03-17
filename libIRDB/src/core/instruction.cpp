@@ -30,6 +30,9 @@
 using namespace libIRDB;
 using namespace std;
 
+static void ignore_result(int /* res */) { }
+
+
 Instruction_t::Instruction_t() :
 	BaseObj_t(NULL), 
 	my_address(NULL),
@@ -112,9 +115,9 @@ bool Instruction_t::Assemble(string assembly)
 
    //remove any preexisting assembly or nasm generated files
    string command = "rm -f " + assemblyFile;
-   system(command.c_str());
+   ignore_result(system(command.c_str()));
    command = "rm -f "+assemblyFile+".bin";
-   system(command.c_str());
+   ignore_result(system(command.c_str()));
 
    ofstream asmFile;
    asmFile.open(assemblyFile.c_str());
@@ -129,7 +132,7 @@ bool Instruction_t::Assemble(string assembly)
    asmFile.close();
 
    command = "nasm " + assemblyFile + " -o "+ binaryOutputFile;
-   system(command.c_str());
+   ignore_result(system(command.c_str()));
 
     ifstream binreader;
     unsigned int filesize;

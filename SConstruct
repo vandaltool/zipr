@@ -9,9 +9,9 @@ env=Environment()
 
 
 # default build options
-env.Replace(CFLAGS="-fPIC  -Wall ")
-env.Replace(CXXFLAGS="-fPIC  -Wall ")
-env.Replace(LINKFLAGS="-fPIC -Wall ")
+env.Replace(CFLAGS="-fPIC  -Wall -Werror ")
+env.Replace(CXXFLAGS="-fPIC  -Wall -Werror ")
+env.Replace(LINKFLAGS="-fPIC -Wall -Werror ")
 
 # parse arguments
 env.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])

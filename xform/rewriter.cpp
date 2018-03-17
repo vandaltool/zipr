@@ -36,6 +36,10 @@
 using namespace std;
 using namespace libIRDB;
 
+template <class T>
+void ignore_result(T /* res */) { }
+
+
 Rewriter::Rewriter(char *p_elfPath, char *p_annotationFilePath)
 {
   m_elfReader = new ElfReader(p_elfPath);
@@ -110,12 +114,12 @@ void Rewriter::readAnnotationFile(char p_filename[])
 
 	do 
 	{
-		fscanf(fin, "%p%d", (void**)&addr, &size_type_u.size);
+		ignore_result(fscanf(fin, "%p%d", (void**)&addr, &size_type_u.size));
 
 		if(feof(fin))		// deal with blank lines at the EOF
 			break;
 		
-		fscanf(fin, "%s%s", type,scope);
+		ignore_result(fscanf(fin, "%s%s", type,scope));
 
 		int annot_type;
 		if(size_type_u.type<-255)
@@ -143,7 +147,7 @@ void Rewriter::readAnnotationFile(char p_filename[])
 				funclist_hash_key_t *flhk=(funclist_hash_key_t*)spri_allocate_type(sizeof(funclist_hash_key_t));
 				funclist_hash_value_t *flhv=(funclist_hash_value_t*)spri_allocate_type(sizeof(funclist_hash_value_t));
 	
-				fscanf(fin,"%s", name);
+				ignore_result(fscanf(fin,"%s", name));
 				flhk->name=spri_strdup(name);
 				flhv->pc=addr;
 //				fprintf(stderr, "Adding name=%s pc=%x to funclist hash table\n", flhk->name, flhv->pc);
@@ -154,7 +158,7 @@ void Rewriter::readAnnotationFile(char p_filename[])
 				fn->setSize(size_type_u.size);
 				fn->setName(name);
 //				wahoo::Function *fn = new wahoo::Function(name, addr, size_type_u.size);
-				fgets(remainder, sizeof(remainder), fin);
+				ignore_result(fgets(remainder, sizeof(remainder), fin));
 				if (strstr(remainder, "FUNC_SAFE"))
 					fn->setSafe();
 				else
@@ -176,12 +180,12 @@ void Rewriter::readAnnotationFile(char p_filename[])
 
 				while(1)	// loop until found ZZ 
 				{
-					fscanf(fin, "%s", zz);
+					ignore_result(fscanf(fin, "%s", zz));
 					if(strcmp("ZZ", zz)==0)
 						break;
 			
 					reg_num=atoi(zz);
-					fscanf(fin,"%d%d", &reg_offset, &reg_type);
+					ignore_result(fscanf(fin,"%d%d", &reg_offset, &reg_type));
 					assert(reg_num==reg);
 					frame_restore_hash_add_reg_restore(addr,reg_num,reg_offset,reg_type);
 					reg++;
@@ -190,7 +194,7 @@ void Rewriter::readAnnotationFile(char p_filename[])
 			else if(strcmp(scope,"MMSAFENESS")==0)
 			{
 			char safeness[1000];
-			fscanf(fin, "%s", safeness);
+			ignore_result(fscanf(fin, "%s", safeness));
 			if(strcmp(safeness, "SAFE") == 0)
  			{
 //
@@ -222,7 +226,7 @@ void Rewriter::readAnnotationFile(char p_filename[])
 			/* found function declaration */
 			assert(strcmp(scope,"STACK")==0);
 			/* remaining parameters are "esp + <const> <name>"  */
-			fscanf(fin, "%s%s%d%s", esp, plus, &offset, name);
+			ignore_result(fscanf(fin, "%s%s%d%s", esp, plus, &offset, name));
 
 			if(strcmp(name, "ReturnAddress")==0)
 			{
@@ -296,7 +300,7 @@ void Rewriter::readAnnotationFile(char p_filename[])
                                         val->size = size_type_u.size; 
 	                    		Hashtable_put(instrmaps_hash,key,val); 
 
-					fgets(remainder, sizeof(remainder), fin);
+					ignore_result(fgets(remainder, sizeof(remainder), fin));
 					// this is a *potential* stack deallocation instruction only
 					if ((strstr(remainder,"leave") && strstr(remainder,"EFLAGS")) ||
  					    (strstr(remainder,"pop"  ) && strstr(remainder,"ebp"   ))
@@ -319,7 +323,7 @@ void Rewriter::readAnnotationFile(char p_filename[])
 			else if (strcmp(scope, "BELONGTO") == 0)
 			{
 				app_iaddr_t func_addr;
-				fscanf(fin, "%p", (void**)&func_addr);
+				ignore_result(fscanf(fin, "%p", (void**)&func_addr));
                     		instrmap_hash_key_t* key = (instrmap_hash_key_t*)spri_allocate_type(sizeof(instrmap_hash_key_t));
                     		instrmap_hash_value_t* val = (instrmap_hash_value_t*)spri_allocate_type(sizeof(instrmap_hash_value_t));
                     		key->pc = addr;
@@ -330,7 +334,7 @@ void Rewriter::readAnnotationFile(char p_filename[])
 
 				// rely on the fact that INST BELONGTO is the first INST annotation in a MEDS file (warning: but it is not required to be there)
 //				assert(m_functions[func_addr]);
-				(void)ensureFunctionExists(func_addr);
+				ignore_result(ensureFunctionExists(func_addr));
 				wahoo::Instruction* instr = new wahoo::Instruction(addr, -1, m_functions[func_addr]);
 				m_instructions[addr] = instr;
 
@@ -359,7 +363,7 @@ void Rewriter::readAnnotationFile(char p_filename[])
 					case -1:	/* no meta data updates */
 							/* remaining params: <reason> comment */
 					{
-						fgets(remainder, sizeof(remainder), fin);
+						ignore_result(fgets(remainder, sizeof(remainder), fin));
 						// this is a *potential* stack deallocation instruction only
 						if (strstr(remainder,"add") && strstr(remainder,"esp")
 							&& strstr(remainder,"1stSrcVia2ndSrc")
@@ -441,11 +445,11 @@ MEDS doesn't mark this as a stack reference
 			assert(strcmp(scope,"STACK")==0 || strcmp(scope,"GLOBAL")==0);
 
 			/* remaining params are <const> <field> <real_const_if_global> <comment> */ 
-			fscanf(fin, "%d%s", &the_const, field);
+			ignore_result(fscanf(fin, "%d%s", &the_const, field));
 			if( 	strcmp(type,"PTRIMMEDESP2")==0 || 
 				strcmp(type,"PTRIMMEDABSOLUTE")==0
 			  )
-				fscanf(fin, "%x", &real_const);
+				ignore_result(fscanf(fin, "%x", &real_const));
 			else
 				real_const=the_const;
 
@@ -488,7 +492,7 @@ MEDS doesn't mark this as a stack reference
 
                         // see if we can pick up access to local variables
 			// and access to arguments off esp
-			fgets(remainder, sizeof(remainder), fin);
+			ignore_result(fgets(remainder, sizeof(remainder), fin));
 			if (strstr(remainder, "var_") || 
                             (strstr(remainder, "arg_") && strstr(remainder, "[esp")))
 			{
@@ -510,7 +514,7 @@ MEDS doesn't mark this as a stack reference
 			else if(strcmp(scope,"GLOBAL")==0)
 			{
 				/* remaining params id, addr, parent/child, name */
-				fscanf(fin, "%d%p%s", &id, (void**)&addr, parent_child);
+				ignore_result(fscanf(fin, "%d%p%s", &id, (void**)&addr, parent_child));
 
 				if(strcmp(parent_child, "PARENT")==0)
 				{
@@ -528,7 +532,7 @@ MEDS doesn't mark this as a stack reference
 				int esp_offset;
 
 				/* remaining params id, addr, parent/child, name */
-				fscanf(fin, "%d%s%s%d%s%s", &id, esp, plus, &esp_offset, parent_child, name);
+				ignore_result(fscanf(fin, "%d%s%s%d%s%s", &id, esp, plus, &esp_offset, parent_child, name));
 
 				assert(strcmp(esp, "esp")==0 && strcmp(plus,"+")==0);
 
@@ -537,7 +541,7 @@ MEDS doesn't mark this as a stack reference
 					/* add to the stackref hashtable, also record the id->stackref mapping so we can
 					 * can easily lookup the id for any fields we find.
 					 */
-                        		(void)add_stack_ref(addr,size_type_u.size, esp_offset);
+                        		ignore_result(add_stack_ref(addr,size_type_u.size, esp_offset));
 					
 
 					// @todo: record frame size
@@ -562,7 +566,7 @@ any esp access outside this region (esp + K) >= (esp + size) can be xformed
    80482fd      4 DATAREF STACK 3125 esp + 32 CHILDOF 3122 OFFSET 32 LOCALVAR var_1C
    80482fd      4 DATAREF STACK 3126 esp + 36 CHILDOF 3122 OFFSET 36 LOCALVAR var_18
 */
-					fgets(remainder, sizeof(remainder), fin);
+					ignore_result(fgets(remainder, sizeof(remainder), fin));
 					if (strstr(remainder,"OutArgsRegion"))
 					{
 //fprintf(stderr," found OutArgsRegion @ 0x%08x\n", addr);
@@ -612,7 +616,7 @@ any esp access outside this region (esp + K) >= (esp + size) can be xformed
 			fprintf(stderr, "Fatal, Unknown type at line %d\n", line);
 		}
 	
-		fgets(remainder, sizeof(remainder), fin);
+		ignore_result(fgets(remainder, sizeof(remainder), fin));
 		line++;
 	} while(!feof(fin));
 	fclose(fin);
@@ -641,16 +645,16 @@ void Rewriter::readElfFile(char p_filename[])
 
 	
 	void* tmp=NULL;
-	fscanf(pin, "%p", &tmp);
+	ignore_result(fscanf(pin, "%p", &tmp));
 	addr=(app_iaddr_t)tmp;
-	fgets(buf,sizeof(buf),pin);
+	ignore_result(fgets(buf,sizeof(buf),pin));
 	do 
 	{
 		if(m_instructions[addr]==NULL)
 			m_instructions[addr]=new wahoo::Instruction(addr,-1,NULL);
-		fscanf(pin,"%p", &tmp);
+		ignore_result(fscanf(pin,"%p", &tmp));
 		addr=(app_iaddr_t)tmp;
-		fgets(buf,sizeof(buf),pin);
+		ignore_result(fgets(buf,sizeof(buf),pin));
 	} while(!feof(pin));
 
 	pclose(pin);

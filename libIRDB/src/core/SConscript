@@ -39,10 +39,10 @@ cpppath='''
 	.
 	$SECURITY_TRANSFORMS_HOME/include/
 	$SECURITY_TRANSFORMS_HOME/libIRDB/include/
-	$SECURITY_TRANSFORMS_HOME/beaengine/include
-	$SECURITY_TRANSFORMS_HOME/beaengine/beaengineSources/Includes/
 	$SECURITY_TRANSFORMS_HOME/libcapstone/include/
 	'''
+#	$SECURITY_TRANSFORMS_HOME/beaengine/include
+#	$SECURITY_TRANSFORMS_HOME/beaengine/beaengineSources/Includes/
 
 globs=glob.glob(os.environ['SECURITY_TRANSFORMS_HOME']+'/libcapstone/zipr_unpack/*.o')
 
