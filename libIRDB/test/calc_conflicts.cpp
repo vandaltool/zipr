@@ -185,14 +185,15 @@ main(int argc, char* argv[])
 
 	assert(virp && pidp);
 
-	cout<<"# ATTRIBUTE num_addresses="<<std::dec<<num_addresses<<endl;
-	cout<<"# ATTRIBUTE num_conflicts="<<std::dec<<num_conflicts<<endl;
-	cout<<"# ATTRIBUTE total_conflicts="<<std::dec<<tot_conflicts<<endl;
-	cout<<"# ATTRIBUTE ave_conflicts="<<std::dec<<((double)tot_conflicts/num_addresses)<<endl;
-	cout<<"# ATTRIBUTE ave_bytes_conflicted="<<std::dec<<((double)num_conflicts/num_addresses)<<endl;
-	cout <<"# ATTRIBUTE total_executable_bytes = "<< std::dec << total_bytes<<endl;
-	cout<<"# ATTRIBUTE ave_conflicts_within_exe="<<std::dec<<((double)tot_conflicts/total_bytes)<<endl;
-	cout<<"# ATTRIBUTE ave_bytes_conflicted_within_exe="<<std::dec<<((double)num_conflicts/total_bytes)<<endl;
+	cout<<"# ATTRIBUTE calc_conflicts::num_addresses="<<std::dec<<num_addresses<<endl;
+	cout<<"# ATTRIBUTE calc_conflicts::num_conflicts="<<std::dec<<num_conflicts<<endl;
+	cout<<"# ATTRIBUTE calc_conflicts::total_conflicts="<<std::dec<<tot_conflicts<<endl;
+	cout<<"# ATTRIBUTE calc_conflicts::pct_conflicts="<<std::fixed<<((float)num_conflicts/(float)tot_conflicts)*100.00<<"%"<<endl;
+	cout<<"# ATTRIBUTE calc_conflicts::ave_conflicts="<<std::dec<<((double)tot_conflicts/num_addresses)<<endl;
+	cout<<"# ATTRIBUTE calc_conflicts::ave_bytes_conflicted="<<std::dec<<((double)num_conflicts/num_addresses)<<endl;
+	cout <<"# ATTRIBUTE calc_conflicts::total_executable_bytes = "<< std::dec << total_bytes<<endl;
+	cout<<"# ATTRIBUTE calc_conflicts::ave_conflicts_within_exe="<<std::dec<<((double)tot_conflicts/total_bytes)<<endl;
+	cout<<"# ATTRIBUTE calc_conflicts::ave_bytes_conflicted_within_exe="<<std::dec<<((double)num_conflicts/total_bytes)<<endl;
 
 
 	delete virp;

@@ -100,7 +100,7 @@ static void add_annotations(FileIR_t* firp)
 		}
 	}
 
-	cout << "# ATTRIBUTE num_safe_functions=" << dec << num_safe_functions << endl;
+	cout << "# ATTRIBUTE Fill_In_Safe_Functions::num_safe_functions=" << dec << num_safe_functions << endl;
 }
 
 

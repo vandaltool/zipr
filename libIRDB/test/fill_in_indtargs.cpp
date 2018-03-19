@@ -1986,7 +1986,7 @@ ICFS_t* setup_call_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop)
 
 	ICFS_t* ret=setup_hellnode(firp,elfiop,allowed);
 
-	cout<<"#ATTRIBUTE call_hellnode_size="<<dec<<ret->size()<<endl;
+	cout<<"# ATTRIBUTE fill_in_indtargs::call_hellnode_size="<<dec<<ret->size()<<endl;
 	return ret;
 
 }
@@ -2029,7 +2029,7 @@ ICFS_t* setup_jmp_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop)
 	 */
 
 	ICFS_t* ret=setup_hellnode(firp,elfiop,allowed);
-	cout<<"#ATTRIBUTE jmp_hellnode_size="<<dec<<ret->size()<<endl;
+	cout<<"# ATTRIBUTE fill_in_indtargs::jmp_hellnode_size="<<dec<<ret->size()<<endl;
 	return ret;
 
 }
@@ -2078,9 +2078,9 @@ ICFS_t* setup_ret_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop)
 	 */
 
 	ICFS_t* ret_hell_node=setup_hellnode(firp,elfiop,allowed);
-	cout<<"#ATTRIBUTE basicret_hellnode_size="<<dec<<ret_hell_node->size()<<endl;
+	cout<<"# ATTRIBUTE fill_in_indtargs::basicret_hellnode_size="<<dec<<ret_hell_node->size()<<endl;
 
-	cout<<"#ATTRIBUTE fullret_hellnode_size="<<dec<<ret_hell_node->size()<<endl;
+	cout<<"# ATTRIBUTE fill_in_indtargs::fullret_hellnode_size="<<dec<<ret_hell_node->size()<<endl;
 	return ret_hell_node;
 }
 
@@ -2237,7 +2237,7 @@ void setup_icfs(FileIR_t* firp, EXEIO::exeio* elfiop)
 
 	}
 
-	cout<<"#ATTRIBUTE total_ibtas_set="<<dec<<total_ibta_set<<endl;
+	cout<<"# ATTRIBUTE fill_in_indtargs::total_ibtas_set="<<dec<<total_ibta_set<<endl;
 
 	if(getenv("ICFS_VERBOSE")!=NULL)
 		print_icfs(firp);
@@ -2475,16 +2475,16 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 	{
 		string name=it->first;
 		int count=it->second;
-		cout<<"#ATTRIBUTE unpin_count_"<<name<<"="<<dec<<count<<endl;
+		cout<<"# ATTRIBUTE fill_in_indtargs::unpin_count_"<<name<<"="<<dec<<count<<endl;
 		total_elftable_unpins++;
 	}
 	for(map<string,int>::iterator it=missed_unpins.begin(); it!=missed_unpins.end(); ++it)
 	{
 		string name=it->first;
 		int count=it->second;
-		cout<<"#ATTRIBUTE missed_unpin_count_"<<name<<"="<<dec<<count<<endl;
+		cout<<"# ATTRIBUTE fill_in_indtargs::hmissed_unpin_count_"<<name<<"="<<dec<<count<<endl;
 	}
-	cout<<"#ATTRIBUTE total_elftable_unpins="<<dec<<total_elftable_unpins<<endl;
+	cout<<"# ATTRIBUTE fill_in_indtargs::total_elftable_unpins="<<dec<<total_elftable_unpins<<endl;
 
 }
 
@@ -2652,8 +2652,8 @@ void unpin_switches(FileIR_t *firp, int do_unpin_opt)
 			unpin_type3_switchtable(firp,insn,scoop, do_unpin_opt);
 		}
         }
-	cout<<"#ATTRIBUTE switch_type3_pins="<<dec<<type3_pins<<endl;
-	cout<<"#ATTRIBUTE switch_type3_unpins="<<dec<<type3_unpins<<endl;
+	cout<<"# ATTRIBUTE fill_in_indtargs::switch_type3_pins="<<dec<<type3_pins<<endl;
+	cout<<"# ATTRIBUTE fill_in_indtargs::switch_type3_unpins="<<dec<<type3_unpins<<endl;
 }
 
 void print_unpins(FileIR_t *firp)
@@ -2757,7 +2757,7 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t>
 	
 
 	cout<<"========================================="<<endl;
-	cout<<"# ATTRIBUTE total_indirect_targets="<<std::dec<<targets.size()<<endl;
+	cout<<"# ATTRIBUTE fill_in_indtargs::total_indirect_targets="<<std::dec<<targets.size()<<endl;
 	print_targets();
 	cout<<"========================================="<<endl;
 

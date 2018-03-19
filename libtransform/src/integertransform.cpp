@@ -118,31 +118,31 @@ void IntegerTransform::logStats()
 {
 	std::string fileURL = getFileIR()->GetFile()->GetURL();	
 
-	std::cerr << "# ATTRIBUTE file_name=" << fileURL << std::endl;
-	std::cerr << "# ATTRIBUTE num_annotations_processed=" << dec << m_numAnnotations << std::endl;
-	std::cerr << "# ATTRIBUTE num_idioms=" << m_numIdioms << std::endl;
-	std::cerr << "# ATTRIBUTE num_blacklisted=" << m_numBlacklisted << std::endl;
-	std::cerr << "# ATTRIBUTE num_benign=" << m_numBenign << std::endl;
+	std::cerr << "# ATTRIBUTE intx::file_name=" << fileURL << std::endl;
+	std::cerr << "# ATTRIBUTE intx::num_annotations_processed=" << dec << m_numAnnotations << std::endl;
+	std::cerr << "# ATTRIBUTE intx::num_idioms=" << m_numIdioms << std::endl;
+	std::cerr << "# ATTRIBUTE intx::num_blacklisted=" << m_numBlacklisted << std::endl;
+	std::cerr << "# ATTRIBUTE intx::num_benign=" << m_numBenign << std::endl;
 
-	std::cerr << "# ATTRIBUTE num_total_overflows=" << m_numTotalOverflows << std::endl;
-	std::cerr << "# ATTRIBUTE num_overflows_instrumented=" << m_numOverflows << std::endl;
-	std::cerr << "# ATTRIBUTE num_overflows_skipped=" << m_numOverflowsSkipped << std::endl;
-	std::cerr << "# ATTRIBUTE overflows_coverage=" << (double)m_numOverflows/(double)m_numTotalOverflows << std::endl;
+	std::cerr << "# ATTRIBUTE intx::num_total_overflows=" << m_numTotalOverflows << std::endl;
+	std::cerr << "# ATTRIBUTE intx::num_overflows_instrumented=" << m_numOverflows << std::endl;
+	std::cerr << "# ATTRIBUTE intx::num_overflows_skipped=" << m_numOverflowsSkipped << std::endl;
+	std::cerr << "# ATTRIBUTE intx::overflows_coverage=" << (double)m_numOverflows/(double)m_numTotalOverflows << std::endl;
 
-	std::cerr << "# ATTRIBUTE num_total_underflows=" << m_numTotalUnderflows << std::endl;
-	std::cerr << "# ATTRIBUTE num_underflows_instrumented=" << m_numUnderflows << std::endl;
-	std::cerr << "# ATTRIBUTE num_underflows_skipped=" << m_numUnderflowsSkipped << std::endl;
-	std::cerr << "# ATTRIBUTE underflows_coverage=" << (double)m_numUnderflows/(double)m_numTotalUnderflows << std::endl;
+	std::cerr << "# ATTRIBUTE intx::num_total_underflows=" << m_numTotalUnderflows << std::endl;
+	std::cerr << "# ATTRIBUTE intx::num_underflows_instrumented=" << m_numUnderflows << std::endl;
+	std::cerr << "# ATTRIBUTE intx::num_underflows_skipped=" << m_numUnderflowsSkipped << std::endl;
+	std::cerr << "# ATTRIBUTE intx::underflows_coverage=" << (double)m_numUnderflows/(double)m_numTotalUnderflows << std::endl;
 
-	std::cerr << "# ATTRIBUTE num_total_truncations=" << m_numTotalTruncations << std::endl;
-	std::cerr << "# ATTRIBUTE num_truncations_instrumented=" << m_numTruncations << std::endl;
-	std::cerr << "# ATTRIBUTE num_truncations_skipped=" << m_numTruncationsSkipped << std::endl;
-	std::cerr << "# ATTRIBUTE truncation_coverage=" << (double)m_numTruncations/(double)m_numTotalTruncations << std::endl;
+	std::cerr << "# ATTRIBUTE intx::num_total_truncations=" << m_numTotalTruncations << std::endl;
+	std::cerr << "# ATTRIBUTE intx::num_truncations_instrumented=" << m_numTruncations << std::endl;
+	std::cerr << "# ATTRIBUTE intx::num_truncations_skipped=" << m_numTruncationsSkipped << std::endl;
+	std::cerr << "# ATTRIBUTE intx::truncation_coverage=" << (double)m_numTruncations/(double)m_numTotalTruncations << std::endl;
 
-	std::cerr << "# ATTRIBUTE num_total_signedness=" << m_numTotalSignedness << std::endl;
-	std::cerr << "# ATTRIBUTE num_signedness_instrumented=" << m_numSignedness << std::endl;
-	std::cerr << "# ATTRIBUTE num_signedness_skipped=" << m_numSignednessSkipped << std::endl;
-	std::cerr << "# ATTRIBUTE signedness_coverage=" << (double)m_numSignedness/(double)m_numTotalSignedness << std::endl;
+	std::cerr << "# ATTRIBUTE intx::num_total_signedness=" << m_numTotalSignedness << std::endl;
+	std::cerr << "# ATTRIBUTE intx::num_signedness_instrumented=" << m_numSignedness << std::endl;
+	std::cerr << "# ATTRIBUTE intx::num_signedness_skipped=" << m_numSignednessSkipped << std::endl;
+	std::cerr << "# ATTRIBUTE intx::signedness_coverage=" << (double)m_numSignedness/(double)m_numTotalSignedness << std::endl;
 
-	std::cerr << "# ATTRIBUTE num_floating_point=" << m_numFP << std::endl;
+	std::cerr << "# ATTRIBUTE intx::num_floating_point=" << m_numFP << std::endl;
 }

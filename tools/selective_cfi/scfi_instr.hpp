@@ -58,13 +58,13 @@ class SCFI_Instrument
 			  ExecutableNonceValue("\x90", 1)
 		{ 
 			std::cout<<std::boolalpha;
-			std::cout<<"#ATTRIBUTE do_coloring="<<p_do_coloring<<std::endl;
-			std::cout<<"#ATTRIBUTE do_common_slow_path="<<p_do_common_slow_path<<std::endl;
-			std::cout<<"#ATTRIBUTE do_jumps="<<p_do_jumps<<std::endl;
-			std::cout<<"#ATTRIBUTE do_calls="<<p_do_calls<<std::endl;
-			std::cout<<"#ATTRIBUTE do_rets="<<p_do_rets<<std::endl;
-			std::cout<<"#ATTRIBUTE do_safefn="<<p_do_safefn<<std::endl;
-			std::cout<<"#ATTRIBUTE do_multimodule="<<p_do_multimodule<<std::endl;
+			std::cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::do_coloring="<<p_do_coloring<<std::endl;
+			std::cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::do_common_slow_path="<<p_do_common_slow_path<<std::endl;
+			std::cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::do_jumps="<<p_do_jumps<<std::endl;
+			std::cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::do_calls="<<p_do_calls<<std::endl;
+			std::cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::do_rets="<<p_do_rets<<std::endl;
+			std::cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::do_safefn="<<p_do_safefn<<std::endl;
+			std::cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::do_multimodule="<<p_do_multimodule<<std::endl;
 			preds.AddFile(the_firp); 
 
 			if(do_exe_nonce_for_call && p_do_coloring)

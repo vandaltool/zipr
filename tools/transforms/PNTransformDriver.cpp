@@ -23,6 +23,7 @@
 #include <algorithm>
 #include <unistd.h>
 #include <fstream>
+#include <iomanip>
 // #include "beaengine/BeaEngine.h"
 #include "General_Utility.hpp"
 #include "PNIrdbManager.hpp"
@@ -520,7 +521,7 @@ void PNTransformDriver::GenerateTransforms()
 
 
 			cerr<<"######PreFile Report: Accumulated results prior to processing file: "<<url<<"######"<<endl;
-			Print_Report();
+			//Print_Report();
 
 			cout<<"PNTransformDriver: Protecting File: "<<url<<endl;
 			GenerateTransformsHidden(file_coverage_map);
@@ -1706,7 +1707,7 @@ void PNTransformDriver::Register_Finalized(vector<validation_record> &vrs,unsign
 	if(intermediate_report_count >= 50)
 	{
 		cerr<<"############################INTERMEDIATE SUMMARY############################"<<endl;
-		Print_Report();
+		//Print_Report();
 		intermediate_report_count=0;
 	}
 }
@@ -1924,11 +1925,13 @@ void PNTransformDriver::Print_Report()
 	for(unsigned int i=0;i<history_keys.size();++i)
 	{
 		cerr<<"\tLayout: "<<history_keys[i]<<endl;
+		cerr<<"# ATTRIBUTE Layout="<<history_keys[i]<<endl;
 		vector<PNStackLayout*> layouts = transformed_history[history_keys[i]];
 
 		map<int,int> obj_histogram;
 
 		cerr<<"\t\tTotal Transformed: "<<layouts.size()<<endl;
+		cerr<<"# ATTRIBUTE Stack_Transformation::Total_Transformed="<<layouts.size()<<endl;
 
 		int p1reductions = 0;
 		double mem_obj_avg = 0.0;
@@ -1967,6 +1970,7 @@ void PNTransformDriver::Print_Report()
 		}
 
 		cerr<<"\t\tP1 Reductions: "<<p1reductions<<endl;
+		cerr<<"# ATTRIBUTE Stack_Transformation::P1_Reductions="<<p1reductions<<endl;
 	}
 
 	cerr<<"----------------------------------------------"<<endl;
@@ -1989,6 +1993,26 @@ void PNTransformDriver::Print_Report()
 	cerr<<"PIC Jump table Sanitized Functions \t\t"<<jump_table_sanitized<<endl;
 	cerr<<"Transformable Functions \t"<<(total_funcs-not_transformable.size())<<endl;
 	cerr<<"Transformed \t\t\t"<<total_transformed<<endl;
+
+	cerr<<"# ATTRIBUTE Stack_Transformation::Functions_validated_exceeding_threshold="<<high_coverage_count<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::Functions_validated_with_nonZero_coverage_below_or_equal_to_threshold="<<low_coverage_count<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::Functions_modified_with_no_coverage="<<no_coverage_count<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::Total_recursive_validations_performed="<<validation_count<<endl;
+
+	cerr<<"# ATTRIBUTE Stack_Transformation::NonBlacklisted_Functions="<<total_funcs<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::Blacklisted_Functions="<<blacklist_funcs<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::Sanitized_Functions="<<sanitized_funcs<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::PushPop_Sanitized_Functions="<<push_pop_sanitized_funcs<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::CondFrameSanitized_Functions="<<cond_frame_sanitized_funcs<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::EH_land_pad_not_in_FuncSanitizedFunctions="<<eh_sanitized<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::BadVariadicSanitizedFunctions="<<push_pop_sanitized_funcs<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::JumpTableSanitized_Functions="<<jump_table_sanitized<<endl;
+	cerr<<"# ATTRIBUTE Stack_Transformation::PICJumpTableSanitized_Functions="<<jump_table_sanitized<<endl;
+	cerr<<"# ATTRIBUTE ASSURANCE_Stack_Transformation::Total_Number_of_Functions="<<total_funcs<<endl;
+	cerr<<"# ATTRIBUTE ASSURANCE_Stack_Transformation::Transformable_Functions="<<(total_funcs-not_transformable.size())<<endl;
+	cerr<<"# ATTRIBUTE ASSURANCE_Stack_Transformation::Percent_of_Functions_that_are_Transformable="<<std::fixed <<std::setprecision(1)<<((double)(total_funcs-not_transformable.size())/(double)total_funcs)*100.00<<"%"<<endl;
+	cerr<<"# ATTRIBUTE ASSURANCE_Stack_Transformation::Total_Transformed_Functions="<<total_transformed<<endl;
+	cerr<<"# ATTRIBUTE ASSURANCE_Stack_Transformation::Percent_Transformable_Functions_Transformed="<<std::fixed<<std::setprecision(1)<<((double)(total_transformed)/(double)(total_funcs-not_transformable.size()))*100.00<<"%"<<endl;
 }
 
 

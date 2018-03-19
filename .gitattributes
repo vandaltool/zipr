@@ -756,6 +756,7 @@ pebliss/trunk/tests/tests_utils/tests_utils.vcproj -text
 pebliss/trunk/tests/tests_utils/tests_utils.vcxproj -text
 pebliss/trunk/tests/tests_utils/tests_utils.vcxproj.filters -text
 plugins_install/add_confinement_section.sh -text
+plugins_install/assurance_case_evidence.sh -text
 plugins_install/cgc_optimize_start.sh -text
 plugins_install/concolic.sh -text
 plugins_install/controlled_exit.sh -text

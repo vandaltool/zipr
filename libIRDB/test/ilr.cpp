@@ -112,10 +112,10 @@ void do_ilr(VariantID_t *pidp, FileIR_t* firp)
 	firp->GetAddresses()=newaddressset;
 
 
-	cout << "# ATTRIBUTE filename="<<firp->GetFile()->GetURL()<<endl;
-	cout << "# ATTRIBUTE unmoved_instructions="<<std::dec<<unmoved_instr<<endl;
-	cout << "# ATTRIBUTE moved_instructions="<<std::dec<<moved_instr<<endl;
-	cout << "# ATTRIBUTE moved_ratio="<<std::dec<<(float)moved_instr/(moved_instr+unmoved_instr)<<endl;
+	cout << "# ATTRIBUTE ilr::filename="<<firp->GetFile()->GetURL()<<endl;
+	cout << "# ATTRIBUTE ilr::unmoved_instructions="<<std::dec<<unmoved_instr<<endl;
+	cout << "# ATTRIBUTE ilr::moved_instructions="<<std::dec<<moved_instr<<endl;
+	cout << "# ATTRIBUTE ilr::moved_insts_pct="<<std::fixed<<((float)moved_instr/(moved_instr+unmoved_instr))*100.00<<"%"<<endl;
 
 	cout<<"Writing variant "<<*pidp<<" back to database." << endl;
 	firp->WriteToDB();

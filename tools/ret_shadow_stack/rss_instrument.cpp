@@ -578,9 +578,12 @@ bool RSS_Instrument::execute()
 		
 	}
 
-	cout << "# ATTRIBUTE safe_funcs=" <<std::dec<<safe_funcs<<endl;
-	cout << "# ATTRIBUTE problem_funcs=" <<problem_funcs<<endl;
-	cout << "# ATTRIBUTE instr_funcs=" <<instr_funcs<<endl;
+	cout << "# ATTRIBUTE Return_Shadow_Stack::total_funcs=" <<std::dec<<safe_funcs+problem_funcs+instr_funcs<<endl;
+	cout << "# ATTRIBUTE Return_Shadow_Stack::safe_funcs=" <<std::dec<<safe_funcs<<endl;
+	cout << "# ATTRIBUTE Return_Shadow_Stack::problem_funcs=" <<problem_funcs<<endl;
+	cout << "# ATTRIBUTE Return_Shadow_Stack::instr_funcs=" <<instr_funcs<<endl;
+	cout << "# ATTRIBUTE Return_Shadow_Stack::pct_funcs_instrumented=" <<((float)instr_funcs/(float)(safe_funcs+problem_funcs+instr_funcs))*100.00<<"%"<<endl;
+	
 
 	/* return an exit code */
 	if(success)

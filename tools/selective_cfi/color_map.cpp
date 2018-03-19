@@ -88,19 +88,20 @@ bool ColoredInstructionNonces_t::create()
 		}
 	}
 
-	cout<<"# ATTRIBUTE Unique_Used_ICFS_size="<<dec<<used_icfs.size()<<endl;
-	cout<<"# ATTRIBUTE Unique_ICFS_size="<<dec<<unique_icfs.size()<<endl;
+	cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::Unique_Used_ICFS_size="<<dec<<used_icfs.size()<<endl;
+	cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::Unique_ICFS_size="<<dec<<unique_icfs.size()<<endl;
 #endif
 
 	// output stats
-	cout<<"# ATTRIBUTE slots_used="<<slots_used.size()<<endl;
+	cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::slots_used="<<slots_used.size()<<endl;
 	int total_slots = 0;
 	for(auto slot_no=0U; slot_no<slots_used.size(); slot_no++)
 	{
-		cout<<"# ATTRIBUTE used_slot"<<slot_no<<"="<<slots_used[slot_no].SlotsUsed()<<endl;
+		cout<<"# Selective_Control_Flow_Integrity::ATTRIBUTE used_slot"<<slot_no<<"="<<slots_used[slot_no].SlotsUsed()<<endl;
 		total_slots += slots_used[slot_no].SlotsUsed();
 	}
-	cout<<"# ATTRIBUTE total_slots="<<total_slots<<endl;
+	cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::total_slots="<<total_slots<<endl;
+	cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::pct_slots_used="<<std::fixed<<((float)slots_used.size()/(float)total_slots)*100.00<<"%"<<endl;
 
 	return true;
 }

@@ -565,7 +565,7 @@ void find_strings(VariantID_t *pidp, FileIR_t* firp)
 
 	free_elf_info(ei);
 
-	cout << "# ATTRIBUTE filename="<<firp->GetFile()->GetURL()<<endl;
+	cout << "# ATTRIBUTE find_strings::filename="<<firp->GetFile()->GetURL()<<endl;
 }
 
 int main(int argc, char* argv[])
