@@ -154,16 +154,20 @@ void DecodedInstructionCapstone_t::Disassemble(const virtual_offset_t start_addr
 
 	const auto mnemonic=string(insn->mnemonic);
 
+	const auto x86=insn->detail->x86;
+
 	if(mnemonic=="fcompi")
 		strcpy(insn->mnemonic, "fcomip"); // bad opcode out of capstone.
-	else if(string(insn->mnemonic)=="movsq")
-		strcpy(insn->op_str, ""); // force into MOVS
-	else if(string(insn->mnemonic)=="movsd")
-		strcpy(insn->op_str, ""); // force into MOVS
-	else if(string(insn->mnemonic)=="movsw")
-		strcpy(insn->op_str, ""); // force into MOVS
-	else if(string(insn->mnemonic)=="movsb")
-		strcpy(insn->op_str, ""); // force into MOVS
+	else if(x86.opcode[0]==0xa5 && string(insn->mnemonic)=="movsq")
+		strcpy(insn->op_str, ""); // force into MOVS version
+	// note, there's two forms of movsd -- one is move string, the other is move scalar double, 
+	// only adjust the move string version  
+	else if(x86.opcode[0]==0xa4 && string(insn->mnemonic)=="movsd")	 
+		strcpy(insn->op_str, ""); // force into MOVS version
+	else if(x86.opcode[0]==0xa5 && string(insn->mnemonic)=="movsw")
+		strcpy(insn->op_str, ""); // force into MOVS version
+	else if(x86.opcode[0]==0xa4 && string(insn->mnemonic)=="movsb")
+		strcpy(insn->op_str, ""); // force into MOVS version
 
 	if(mnemonic=="movabs")
 	{
