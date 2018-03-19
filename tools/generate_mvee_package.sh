@@ -8,13 +8,14 @@ usage()
 
 	echo "
 Usage:
-	generate_mvee_config.sh 
+	generate_mvee_package.sh 
 
 	[(--include-cr|--noinclude-cr)]
 	[(--diehard|--nodiehard)]
 	[(--libtwitcher|--nolibtwitcher)]
 	[(--enablenoh|--disablenoh)]
 	[(--enablenol|--disablenol)]
+	[(--enable-assurance|--disable-assurance)]
 	--indir <path_to_variants>
 	--outdir <path_to_variants>
 	[--args <arguments string in json format> ]
@@ -39,6 +40,7 @@ check_opts()
 	use_libtwitcher="--nolibtwitcher"
 	use_noh="--disablenoh"
 	use_nol="--disablenol"
+	use_assurance="--disable-assurance"
 	use_includecr="--noinclude-cr"
 	mainexe_opt="" # look in target_apps and find exactly one thing.
 	verbose=0
@@ -58,6 +60,8 @@ check_opts()
 		   --long disablenoh
 		   --long enablenol
 		   --long disablenol
+		   --long enable-assurance
+		   --long disable-assurance
 		   --long include-cr
 		   --long noinclude-cr
                    --long indir:
@@ -77,7 +81,7 @@ check_opts()
         if [ `uname -s` = "SunOS" ]; then
                 TEMP=`getopt $short_opts "$@"`
         else
-                TEMP=`getopt -o $short_opts $long_opts -n 'generate_mvee_config.sh' -- "$@"`
+                TEMP=`getopt -o $short_opts $long_opts -n 'generate_mvee_package.sh' -- "$@"`
         fi
 
         # error check #
@@ -152,6 +156,10 @@ check_opts()
 				use_nol="$1"
 				shift 1
 			;;
+			--enable-assurance|--disable-assurance)
+				use_assurance="$1"
+				shift 1
+			;;
                         --)
                                 shift
                                 break
@@ -192,6 +200,7 @@ check_opts()
 		echo "Setting include-cr = $use_includecr"
 		echo "Setting noh = $use_noh"
 		echo "Setting nol = $use_nol"
+		echo "Setting assurance = $use_assurance"
 	fi
 
 	server=${server} # uppercase the server setting.
@@ -332,6 +341,230 @@ copy_stuff()
 
 }
 
+# gather_aggregate_assurance_evidence()
+# This function gathers and annotates all lines into an output file
+# This resulting output file will be parsed into human-readable format at a later step 
+gather_aggregate_assurance_evidence()
+{
+	# Inputs: 
+	# 	$1=input file 
+	#	$2=output file
+	# 	$3=variant_label (variant number 1,2,3, etc.)
+	#	$4=binary_name
+	input="$1"
+	output="$2"
+	variant_num="$3"
+	binary_name="$4"
+
+	echo -n "	Gathering aggregate assurance evidence for $binary_name, variant $variant_num ... "
+
+	if [ ! -f "$input" ]; then
+		echo "gather_aggregate_assurance_evidence(): $input FILE NOT FOUND."
+		return
+	fi
+
+	# find the AGGREGATE_ASSURANCE data
+	# 	1. find matching lines
+	#	2. add variant number information
+	transform_names=`grep AGGREGATE_ASSURANCE_ $input | sed "s/AGGREGATE_ASSURANCE_/${binary_name}::variant-${variant_num}::/g"`
+
+	# put the lines into the output file
+	for t in $transform_names
+	do
+		echo "$t" >> $output
+	done
+
+	echo "Done!"
+}
+
+# After aggregate assurance evidence is collected, parse it into human readable form
+parse_aggregate_assurance_file()
+{
+	# Inputs:
+	#	$1= input file containing unsorted aggregated annotated assurance case evidence
+	#		input file format is <binary_name>::<variantIdentifier>::<transformName>::<statEvidence>  
+	#
+	input=$1
+	output=$2
+	variant_set_label=$3
+
+
+	if [ ! -f "$input" ]; then
+		echo "parse_aggregate_assurance_file():  $input FILE NOT FOUND."
+		return
+	fi
+
+	echo -n "	Parsing aggregate assurance evidence for $variant_set_label ... "
+
+	# find the binary names
+	binary_names=`cat $input | awk 'BEGIN{FS="::"}{print $1}' | sort | uniq`
+
+	# for each binary 
+	for b in $binary_names
+	do
+		echo "Variant Set: $variant_set_label" >> $output
+		echo "Binary Name: $b" >> $output
+		echo >> $output
+
+
+		# find the transform names for this binary
+		transform_names=`cat $input |grep $b | awk 'BEGIN{FS="::"} {print $3}' |sort | uniq`
+
+		t_label=A
+		# for each transform
+		for t in $transform_names
+		do
+			echo -n "${t_label}. Transform Name: " >> $output
+			echo "$t" | sed 's/_/ /g' >> $output
+
+			# find the unique stat names 
+			# stat name with values is in 4th field
+			# so remove everything from = to EOL
+			stat_names=`grep "$b" $input | grep "$t" | awk 'BEGIN{FS="::"} {print $4}' | sed "s/=.*//g" | sort | uniq`
+
+			s_label=1
+			for s in $stat_names
+			do
+				echo -n -e "\t" >> $output
+				echo -n "${s_label}. " >> $output
+				# remove the underscores
+				echo "$s" | sed 's/_/ /g' >> $output
+		
+				# find the variant names
+				variant_names=`cat $input | grep $b | awk 'BEGIN{FS="::"} {print $2}' | sort | uniq`
+				v_label=a
+				for v in $variant_names
+				do
+					# find the stat for that variant
+					stat_val=`grep "$b" $input | grep "$t" | grep "$v" | grep "$s" |  awk 'BEGIN{FS="::"} {print $4}' | sed "s/${s}=//g"`
+					echo -e "\t\t${v_label}. ${v}: ${stat_val}" >> $output
+					# increment the t_label to the next value
+					# make use of the fact that perl can increment letters
+					v_label=$( perl -e '++$ARGV[0]; print $ARGV[0];' -- "$v_label" )
+				done
+				echo >> $output
+				# increment the t_label to the next value
+				# make use of the fact that perl can increment letters
+				s_label=$( perl -e '++$ARGV[0]; print $ARGV[0];' -- "$s_label" )
+			done
+			echo >> $output
+			# increment the t_label to the next value
+			# make use of the fact that perl can increment letters
+			t_label=$( perl -e '++$ARGV[0]; print $ARGV[0];' -- "$t_label" )
+		done	
+		echo >> $output
+	done
+
+	echo "Done!"
+}
+
+
+# parse assurance evidence into human readable format
+# $1 input file (assurance evidence)
+# $2 output file (vs-?_variant-?_evidence.txt)
+parse_assurance_file()
+{
+	input=$1
+	output=$2
+
+	if [ ! -f "$input" ]; then
+		echo "parse_assurance_file():  $input FILE NOT FOUND."
+		return
+	fi
+	
+
+	# find the part of the line that is the transform name, strip out the ASSURANCE_ tag 
+	# The space is important to distinguish between variant set AGGREGATE_ASSURANCE and 
+	# per_variant_ASSURANCE
+	transform_names=`grep [[:space:]]ASSURANCE_ $input | grep :: | sed 's/ASSURANCE_//g' | sed 's/^+.*//g'| sed 's/::.*//g' | uniq`
+
+	# count the number of different transform labels
+	j=0
+	for i in $transform_names
+	do
+        	j=`expr $j + 1`
+	done
+
+	# for each transform_name find the lines that match the transform, parse them,
+	# and place them in the output file
+	# simulate outline numbering using 1,2,3... and a,b,c...
+	count=1
+	for t in $transform_names
+	do
+		# Remove any underscores and replace with spaces to make more human-readable
+        	echo "${count}. Transform Name:  `echo $t | sed 's/_/ /g' `" >> $output
+
+		# The space is important to distinguish between variant set AGGREGATE_ASSURANCE and 
+		# per_variant_ASSURANCE
+        	matching_lines=`grep [[:space:]]ASSURANCE_ $input | grep :: | sed 's/^+.*//g' | grep $t`
+
+		# starting letter for labelling
+		letter=a
+        	for m in $matching_lines
+        	do
+                	echo -n -e "\t${letter}. " >> $output
+			# find the stats and print them in human-readable format
+			
+			# get rid of everything before ::
+			# change the = to :
+			# change the underscores to spaces
+                	echo $m | sed 's/^.*:://g' | sed 's/=/: /g' | sed 's/_/ /g'  >> $output
+			# "increment" the letter level
+			letter=$( perl -e '++$ARGV[0]; print $ARGV[0];' -- "$letter")
+        	done
+		# prettier formatting, add blank line
+		echo >> $output
+		# increment the counter level
+        	count=`expr $count + 1`
+	done	
+}
+
+# copy assurance evidence to the generated mvee package
+copy_assurance_evidence()
+{
+	# This should be the assurance_evidence log for the binary file
+	in=$1
+	# This should be the file whose name is vs-?_variant-?_evidence.txt
+	out=$2
+	#  This is the name of the binary
+	exe=$3
+	# is this the main binary?
+	is_main=$4
+	# name of the transformation configuration
+	transform_config_name=$5 
+	# identifier to print that identifies variant set and which variant
+	vs_identifier="$6"
+
+	echo -n "	Copying assurance evidence file for $exe ... "
+
+	# Don't do anything if there isn't a source file.
+	if [[ ! -f "$in" ]]; then
+		echo "No assurance case evidence found for $exe config: $transform_config_name."
+		return
+	fi
+
+	# We will assume that the main exe is handled first, so create the file if is_main is 1
+	if [[ $is_main == 1 ]] ; then
+		# copy to new file
+		echo "Binary Name: $exe" > $out
+		echo "Transforms configuration:  $transform_config_name" >> $out
+		echo >> $out
+		parse_assurance_file $in $out
+
+	else
+		# Append to existing file
+		echo "Binary Name: $exe" >> $out
+		echo "Transforms configuration:  $transform_config_name" >> $out
+		echo "Variant Identifier:  $vs_identifier" >> $out
+		echo >> $out
+		parse_assurance_file $in $out
+	fi
+
+	echo >> $out
+
+	echo "Done!"
+}
+
 
 
 finalize_json()
@@ -340,6 +573,10 @@ finalize_json()
 	mkdir -p $outdir
 	mkdir $outdir/global
 	mkdir $outdir/marshaling
+	# only create assurance directory if gathering assurance evidence
+	if [ "x"$use_assurance = "x--enable-assurance" ]; then
+		mkdir $outdir/assurance
+	fi
 
 	# copy jar, python, and bash scripts into package.
 	cp $CFAR_EMT_PLUGINS/*.jar $outdir/marshaling/
@@ -383,7 +620,7 @@ finalize_json()
 		# to hold the initial list for the variant set description.
 		vs_json_contents=" \"vs-$vs\" : [ <<VARIANT_LIST>> ]"
 
-		# for each varjiant in the variant set.
+		# for each variant in the variant set.
 		for seq in $(seq 1 $variants_per_vs )
 		do
 
@@ -460,9 +697,6 @@ finalize_json()
 				exit 4
 			fi
 
-			
-
-
 			# start with ps_dir
 			ps_dir=$(dirname $variant_json)
 
@@ -494,20 +728,24 @@ finalize_json()
 			# new_variant_dir_ts="/target_apps/vs-$vs/variant-$seq"
 			copy_stuff $full_exe_dir/peasoup_executable_dir $new_variant_dir/bin/peasoup_executable_dir $main_exe $new_variant_dir_ts/bin/peasoup_executable_dir 1
 				
+			if [ "x"$use_assurance = "x--enable-assurance" ]; then
+				# copy assurance evidence
+				copy_assurance_evidence $full_exe_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_variant-${seq}_evidence.txt $main_exe 1 $config "vs-${vs}_variant-${seq}"
 
+				# gather aggregate assurance evidence
+				gather_aggregate_assurance_evidence $full_exe_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  "$outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt" $seq $main_exe 
+			fi
+			
 			# echo "exe_dir=$exe_dir"
 
 			# get the variant number for this config (e.g., get "v0" or "v1")
 			var_num_dir=$(basename $exe_dir)
-
-
 
 			# fill in any libraries that the variants should refer to
 			for lib in $libraries
 			do
 				# echo adding lib $lib
 				lib_dir="/vs-$vs/target_app_libs/dh-$lib/$config/$var_num_dir"
-
 
 				if [ "$main_exe" ==  "$lib" ]; then
 					#cp -R $indir/$lib_dir/peasoup_executable_dir $new_variant_dir/lib/peasoup_executable_dir.$lib.$config
@@ -528,6 +766,13 @@ finalize_json()
 					cp  $indir/$lib_dir/$lib $new_variant_dir/lib
 					line=",  "$'\n\t\t\t'"  \"/usr/lib/$lib=$new_variant_dir_ts/lib/$lib\" "
 					copy_stuff $indir/$lib_dir/peasoup_executable_dir $new_variant_dir/lib/$lib-peasoup_executable_dir $lib $new_variant_dir_ts/lib/$lib-peasoup_executable_dir 0
+				fi
+				if [ "x"$use_assurance = "x--enable-assurance" ]; then
+					# copy assurance evidence
+					copy_assurance_evidence $indir/$lib_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_variant-${seq}_evidence.txt $lib 0 $config "vs-${vs}_variant-${seq}"
+					# gather aggregate assurance evidence
+					gather_aggregate_assurance_evidence $indir/$lib_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt "$seq" $lib 
+
 				fi
 				variant_config_contents="${variant_config_contents//,<<LIBS>>/$line,<<LIBS>>}"
 		
@@ -589,6 +834,17 @@ finalize_json()
 			seq=$(expr $seq + 1)
 
 		done
+
+		if [ "x"$use_assurance = "x--enable-assurance" ]; then
+
+			# parse the aggregated assurance case evidence for the variant set
+			parse_aggregate_assurance_file "$outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt" "$outdir/assurance/vs-${vs}_aggregate_evidence.txt" "vs-${vs}"
+
+			# remove the intermediate file
+			rm -f "$outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt"
+		fi
+		
+
 		json_contents="${json_contents//<<VARIANT_SETS>>/$vs_json_contents,<<VARIANT_SETS>>}"
 	done
 
