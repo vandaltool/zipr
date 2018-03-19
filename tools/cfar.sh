@@ -31,6 +31,7 @@ structured_nog=0
 structured_nos=0
 structured_ds=0
 structured_stack_init=0   # auto stack initialize
+assurance_case_evidence=1 	# for gathering assurance case evidence
 config_name="unspecified"
 backend="strata"
 
@@ -87,6 +88,9 @@ do
 			echo "Unknown backend: ${cmd_line_options[$(expr $seq + 1)]}"
 			exit 1
 		fi
+	# this option is for cfar.  It should always be last so that all the log files for every step can be parsed
+	elif [ "$i" == "--gather_assurance" ]; then 	
+		assurance_case_evidence=1 
 	else
 		new_cmd_line_options+=("$i")
 	fi
@@ -178,6 +182,14 @@ do
 			per_variant_options+=(--step-option stack_stamp:"--stamp-value 0x5a5a5a5a")
 		fi
 	fi
+
+	# options to turn on assurance case evidence gathering
+	# This has to be here because per_variant options come last in the PS commandline
+	# And we need assurance case evidence to be LAST ps_analyze step executed
+	if [ "$assurance_case_evidence" -eq 1 ]; then
+		per_variant_options+=(--step assurance_case_evidence=on)
+	fi
+
 
 	# add in options for output directory.
 	per_variant_options+=(--tempdir "$baseoutdir/v${seq}/peasoup_executable_dir")

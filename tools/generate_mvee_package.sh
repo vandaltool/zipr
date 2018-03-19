@@ -8,13 +8,14 @@ usage()
 
 	echo "
 Usage:
-	generate_mvee_config.sh 
+	generate_mvee_package.sh 
 
 	[(--include-cr|--noinclude-cr)]
 	[(--diehard|--nodiehard)]
 	[(--libtwitcher|--nolibtwitcher)]
 	[(--enablenoh|--disablenoh)]
 	[(--enablenol|--disablenol)]
+	[(--enable-assurance|--disable-assurance)]
 	--indir <path_to_variants>
 	--outdir <path_to_variants>
 	[--args <arguments string in json format> ]
@@ -39,6 +40,7 @@ check_opts()
 	use_libtwitcher="--nolibtwitcher"
 	use_noh="--disablenoh"
 	use_nol="--disablenol"
+	use_assurance="--disable-assurance"
 	use_includecr="--noinclude-cr"
 	mainexe_opt="" # look in target_apps and find exactly one thing.
 	verbose=0
@@ -58,6 +60,8 @@ check_opts()
 		   --long disablenoh
 		   --long enablenol
 		   --long disablenol
+		   --long enable-assurance
+		   --long disable-assurance
 		   --long include-cr
 		   --long noinclude-cr
                    --long indir:
@@ -77,7 +81,7 @@ check_opts()
         if [ `uname -s` = "SunOS" ]; then
                 TEMP=`getopt $short_opts "$@"`
         else
-                TEMP=`getopt -o $short_opts $long_opts -n 'generate_mvee_config.sh' -- "$@"`
+                TEMP=`getopt -o $short_opts $long_opts -n 'generate_mvee_package.sh' -- "$@"`
         fi
 
         # error check #
@@ -152,6 +156,10 @@ check_opts()
 				use_nol="$1"
 				shift 1
 			;;
+			--enable-assurance|--disable-assurance)
+				use_assurance="$1"
+				shift 1
+			;;
                         --)
                                 shift
                                 break
@@ -192,6 +200,7 @@ check_opts()
 		echo "Setting include-cr = $use_includecr"
 		echo "Setting noh = $use_noh"
 		echo "Setting nol = $use_nol"
+		echo "Setting assurance = $use_assurance"
 	fi
 
 	server=${server} # uppercase the server setting.
@@ -564,7 +573,10 @@ finalize_json()
 	mkdir -p $outdir
 	mkdir $outdir/global
 	mkdir $outdir/marshaling
-	mkdir $outdir/assurance
+	# only create assurance directory if gathering assurance evidence
+	if [ "x"$use_assurance = "x--enable-assurance" ]; then
+		mkdir $outdir/assurance
+	fi
 
 	# copy jar, python, and bash scripts into package.
 	cp $CFAR_EMT_PLUGINS/*.jar $outdir/marshaling/
@@ -716,11 +728,13 @@ finalize_json()
 			# new_variant_dir_ts="/target_apps/vs-$vs/variant-$seq"
 			copy_stuff $full_exe_dir/peasoup_executable_dir $new_variant_dir/bin/peasoup_executable_dir $main_exe $new_variant_dir_ts/bin/peasoup_executable_dir 1
 				
-			# copy assurance evidence
-			copy_assurance_evidence $full_exe_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_variant-${seq}_evidence.txt $main_exe 1 $config "vs-${vs}_variant-${seq}"
+			if [ "x"$use_assurance = "x--enable-assurance" ]; then
+				# copy assurance evidence
+				copy_assurance_evidence $full_exe_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_variant-${seq}_evidence.txt $main_exe 1 $config "vs-${vs}_variant-${seq}"
 
-			# gather aggregate assurance evidence
-			gather_aggregate_assurance_evidence $full_exe_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  "$outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt" $seq $main_exe 
+				# gather aggregate assurance evidence
+				gather_aggregate_assurance_evidence $full_exe_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  "$outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt" $seq $main_exe 
+			fi
 			
 			# echo "exe_dir=$exe_dir"
 
@@ -753,11 +767,13 @@ finalize_json()
 					line=",  "$'\n\t\t\t'"  \"/usr/lib/$lib=$new_variant_dir_ts/lib/$lib\" "
 					copy_stuff $indir/$lib_dir/peasoup_executable_dir $new_variant_dir/lib/$lib-peasoup_executable_dir $lib $new_variant_dir_ts/lib/$lib-peasoup_executable_dir 0
 				fi
-				# copy assurance evidence
-				copy_assurance_evidence $indir/$lib_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_variant-${seq}_evidence.txt $lib 0 $config "vs-${vs}_variant-${seq}"
-				# gather aggregate assurance evidence
-				gather_aggregate_assurance_evidence $indir/$lib_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt "$seq" $lib 
+				if [ "x"$use_assurance = "x--enable-assurance" ]; then
+					# copy assurance evidence
+					copy_assurance_evidence $indir/$lib_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_variant-${seq}_evidence.txt $lib 0 $config "vs-${vs}_variant-${seq}"
+					# gather aggregate assurance evidence
+					gather_aggregate_assurance_evidence $indir/$lib_dir/peasoup_executable_dir/logs/assurance_case_evidence.log  $outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt "$seq" $lib 
 
+				fi
 				variant_config_contents="${variant_config_contents//,<<LIBS>>/$line,<<LIBS>>}"
 		
 			done
@@ -819,11 +835,14 @@ finalize_json()
 
 		done
 
-		# parse the aggregated assurance case evidence for the variant set
-		parse_aggregate_assurance_file "$outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt" "$outdir/assurance/vs-${vs}_aggregate_evidence.txt" "vs-${vs}"
+		if [ "x"$use_assurance = "x--enable-assurance" ]; then
 
-		# remove the intermediate file
-		rm -f "$outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt"
+			# parse the aggregated assurance case evidence for the variant set
+			parse_aggregate_assurance_file "$outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt" "$outdir/assurance/vs-${vs}_aggregate_evidence.txt" "vs-${vs}"
+
+			# remove the intermediate file
+			rm -f "$outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt"
+		fi
 		
 
 		json_contents="${json_contents//<<VARIANT_SETS>>/$vs_json_contents,<<VARIANT_SETS>>}"
