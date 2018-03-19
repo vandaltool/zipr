@@ -583,10 +583,10 @@ void EhWriterImpl_t<ptrsize>::BuildFDEs()
 			current_fde->extend(this_insn,this);
 		}
 	}
-	cout<<"#ATTRIBUTE fdes_calculated="<<dec<<all_fdes.size()<<endl;
-	cout<<"#ATTRIBUTE cies_calculated="<<dec<<all_cies.size()<<endl;
-	cout<<"#ATTRIBUTE insns_with_eh_info="<<dec<<insns_with_frame<<endl;
-	cout<<"#ATTRIBUTE avg_insns_per_fde="<<dec<<insns_with_frame/(float)all_fdes.size()<<endl;
+	cout<<"# ATTRIBUTE ExceptionHandlerWrite::fdes_calculated="<<dec<<all_fdes.size()<<endl;
+	cout<<"# ATTRIBUTE ExceptionHandlerWrite::cies_calculated="<<dec<<all_cies.size()<<endl;
+	cout<<"# ATTRIBUTE ExceptionHandlerWrite::insns_with_eh_info="<<dec<<insns_with_frame<<endl;
+	cout<<"# ATTRIBUTE ExceptionHandlerWrite::avg_insns_per_fde="<<dec<<insns_with_frame/(float)all_fdes.size()<<endl;
 }
 
 template<int ptrsize>
