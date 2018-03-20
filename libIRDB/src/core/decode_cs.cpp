@@ -276,6 +276,8 @@ string DecodedInstructionCapstone_t::getDisassembly() const
 	// {l,le,ne,eq,g,gt} specifier.
 	const auto prefixes=set<string>(
 		{
+			"max",
+			"min",
 			"mov",
 			"movl",
 			"cmp",
