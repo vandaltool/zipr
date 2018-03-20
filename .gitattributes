@@ -61,6 +61,7 @@ centos_files/zlib-1.2.7-17.el7.x86_64.rpm -text svneol=unset#application/x-rpm
 /cfar_postgres_setup.sh -text
 /cfar_postgres_setup_for_other.sh -text
 /clean-all.sh -text
+/externals.conf -text
 /get-peasoup-packages.sh -text
 /irdb_vars -text
 /manifest.txt -text
@@ -70,7 +71,6 @@ centos_files/zlib-1.2.7-17.el7.x86_64.rpm -text svneol=unset#application/x-rpm
 /set_env_vars -text
 /set_ida_server -text
 /start_dev.sh -text
-/svn.externals.uva_dev -text
 ubuntu16_files/README.txt -text
 ubuntu16_files/Vagrantfile -text
 ubuntu16_files/generate_ais_installer.sh -text
