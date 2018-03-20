@@ -1338,7 +1338,8 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		// instruction address (and include the instruction's size, etc.
 		// but, fix_calls has already removed this oddity so we can relocate
 		// the instruction.
-		virtual_offset_t D1=strtol(disasm.getOperand(1).getString().c_str()/*Argument2.ArgMnemonic*/, NULL, 16);
+		virtual_offset_t D1=strtol(disasm.getOperand(1).getString().c_str()/*Argument2.ArgMnemonic*/, NULL, 0);
+		D1+=I5_cur->GetAddress()->GetVirtualOffset();
 
 		// find the section with the data table
 		EXEIO::section *pSec=find_section(D1,elfiop);
