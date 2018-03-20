@@ -1,8 +1,0 @@
-# EASY-INSTALL-ENTRY-SCRIPT: 'rdflib==2.4.2','console_scripts','rdfpipe'
-from pkg_resources import load_entry_point
-if __name__ == '__main__':
-import sys
-        load_entry_point('rdflib==2.4.2', 'console_scripts', 'rdfpipe')()
-__requires__ = 'rdflib==2.4.2'
-    sys.exit(
-#!/usr/bin/python

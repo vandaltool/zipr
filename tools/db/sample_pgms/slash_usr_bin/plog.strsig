@@ -1,4 +1,0 @@
-#!/bin/sh
-  exec tail "$@" /var/log/ppp.log
-  exec tail "$@" /var/log/syslog | grep ' \(pppd\|chat\)\['
-if [ -s /var/log/ppp.log ]; then

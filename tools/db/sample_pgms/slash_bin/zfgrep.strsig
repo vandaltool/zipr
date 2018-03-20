@@ -1,6 +1,0 @@
-#!/bin/bash
-bindir='/bin'
---__bindir) bindir=${2?}; shift; shift;;
-case $1 in
-exec zgrep -F "$@"
-PATH=$bindir:$PATH

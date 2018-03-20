@@ -1,5 +1,0 @@
-#!/bin/sh
-if test "x$1" = "x"; then
-  ruby "$script" "$@"
-  ruby "$script" $HOME
-script=`kpsewhich -format=texmfscripts epspdftk.rb`

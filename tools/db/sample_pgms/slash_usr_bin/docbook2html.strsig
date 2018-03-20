@@ -1,2 +1,0 @@
-#! /bin/sh
-jw -f docbook -b html "$@"

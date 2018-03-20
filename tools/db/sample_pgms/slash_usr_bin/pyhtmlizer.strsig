@@ -1,8 +1,0 @@
-# Copyright (c) Twisted Matrix Laboratories.
-except ImportError:
-from twisted.scripts.htmlizer import run
-    import _preamble
-import sys
-# See LICENSE for details.
-    sys.exc_clear()
-#! /usr/bin/python

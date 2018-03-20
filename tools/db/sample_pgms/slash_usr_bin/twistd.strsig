@@ -1,9 +1,0 @@
-# Copyright (c) Twisted Matrix Laboratories.
-except ImportError:
-from twisted.scripts.twistd import run
-import os, sys
-    import _preamble
-# See LICENSE for details.
-    sys.exc_clear()
-sys.path.insert(0, os.path.abspath(os.getcwd()))
-#! /usr/bin/python

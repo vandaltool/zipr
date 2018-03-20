@@ -1,5 +1,0 @@
-#! /bin/sh
-	echo "This script will flush the IPv4 routing table"
-	echo "Usage: routef"
-	exec ip -4 ro flush  scope global  type unicast
-if [ -z "$*" ] ; then

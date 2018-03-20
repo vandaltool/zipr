@@ -1,6 +1,0 @@
-AJPATH=/usr/share/java/aspectjweaver.jar
-#!/bin/sh
-  "-Daj.aspect.path=$ASPECTPATH" \
-  "-Daj.class.path=$ASPECTPATH${CLASSPATH:+:$CLASSPATH}" \
-  -Djava.system.class.loader=org.aspectj.weaver.loadtime.WeavingURLClassLoader \
-exec "${JAVACMD:=java}" -classpath "$AJPATH${CLASSPATH:+:$CLASSPATH}" \

@@ -1,4 +1,0 @@
-from migrate.versioning.shell import main
-import sys
-sys.exit(main())
-#!/usr/bin/python

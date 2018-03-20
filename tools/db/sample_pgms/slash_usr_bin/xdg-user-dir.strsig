@@ -1,5 +1,0 @@
-#!/bin/sh
-  eval echo \${XDG_${1}_DIR:-$HOME}
-  eval echo \${XDG_${1}_DIR:-$HOME/Desktop}
-if [ "x$1" = "xDESKTOP" ]; then
-test -f ${XDG_CONFIG_HOME:-~/.config}/user-dirs.dirs && . ${XDG_CONFIG_HOME:-~/.config}/user-dirs.dirs

@@ -1,4 +1,0 @@
-AJPATH=/usr/share/java/aspectjweaver.jar
-#!/bin/sh
-exec "${JAVACMD:=java}" -classpath "$AJPATH${CLASSPATH:+:$CLASSPATH}" \
-  -javaagent:$AJPATH "$@"

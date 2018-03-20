@@ -1,7 +1,0 @@
-#!/bin/sh
-  CLASSPATH="$2"
-CLASSPATH="${CLASSPATH:-.}:/usr/share/java/jline.jar:/usr/share/java/bsh.jar"
-exec /usr/bin/java jline.ConsoleRunner bsh.Interpreter "$@"
-export CLASSPATH
-if [ "$1" = "-classpath" ]
-  shift 2

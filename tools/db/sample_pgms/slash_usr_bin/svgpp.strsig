@@ -1,6 +1,0 @@
-#!/bin/sh
-find_jars xercesImpl batik-all
-find_java_runtime
-# Include the wrappers utility script
-run_java org.apache.batik.apps.svgpp.Main "$@"
-. /usr/lib/java-wrappers/java-wrappers.sh

@@ -1,7 +1,0 @@
-    apturl-gtk $@
-    apturl-kde $@
-#!/bin/sh
-    echo "Please install apturl-gtk or apturl-kde."
-elif [ -x /usr/bin/apturl-gtk ]; then
-elif [ -x /usr/bin/apturl-kde ]; then
-if [ "$KDE_FULL_SESSION" = "true" ] && [ -x /usr/bin/apturl-kde ]; then

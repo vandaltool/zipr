@@ -1,9 +1,0 @@
-#!/bin/sh
-		echo "Couldn't find a pager!" 1>&2
-		echo "Set the \$PAGER environment variable to your desired pager." 1>&2
-		exit 1
-	if [ "$ret" -eq 126 ] || [ "$ret" -eq 127 ]; then
-if [ "$ret" -eq 126 ] || [ "$ret" -eq 127 ]; then
-more "$@"
-${PAGER:-pager} "$@"
-ret="$?"
