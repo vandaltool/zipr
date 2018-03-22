@@ -17,6 +17,7 @@ analyze_file()
 
 		if [ ! $rc -eq 0 ]; then
 			echo "STARS (Remote) failure..."
+			exit 1
 		fi
 	fi
 
