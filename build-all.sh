@@ -10,6 +10,11 @@ if [ "$PEASOUP_UMBRELLA_DIR" != "$FULL_BUILD_LOC" ]; then
     exit 1;
 fi
 
+echo
+echo "Building Zipr toolchain."
+echo
+
+
 SCONSDEBUG=""
 if [[ "$*" =~ "--debug" ]]; then
 	SCONSDEBUG=" debug=1 "
@@ -143,6 +148,6 @@ $PEDI_HOME/pedi -m manifest.txt
 
 echo
 echo
-echo  "peasoup/cfar_umbrella Overall build complete."
+echo  "Zipr toolchain build complete."
 echo
 echo
