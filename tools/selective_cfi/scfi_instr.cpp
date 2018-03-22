@@ -664,7 +664,6 @@ bool SCFI_Instrument::instrument_jumps()
 		Instruction_t* insn=*it;
 		//DISASM d;
 		//Disassemble(insn,d);
-		const auto d=DecodedInstruction_t(insn);
 
 
 		// we always have to protect the zestcfi dispatcher, that we just added.
@@ -678,6 +677,13 @@ bool SCFI_Instrument::instrument_jumps()
 
 		if(insn->GetBaseID()==BaseObj_t::NOT_IN_DATABASE)
 			continue;
+
+		const auto d=DecodedInstruction_t(insn);
+
+		if (insn->GetFunction())
+			cerr<<"Looking at: "<<insn->getDisassembly()<< " from func: " << insn->GetFunction()->GetName() << endl;
+		else
+			cerr<<"Looking at: "<<insn->getDisassembly()<< " but no associated function" << endl;
 
 		if(d.isCall() /*string(d.Instruction.Mnemonic)==string("call ")*/ && (protect_safefn && !do_exe_nonce_for_call))
 		{
@@ -698,10 +704,6 @@ bool SCFI_Instrument::instrument_jumps()
 				cerr << insn->GetFunction()->GetName() << " is safe" << endl;
 		}
 
-		if (insn->GetFunction())
-			cerr<<"Looking at: "<<insn->getDisassembly()<< " from func: " << insn->GetFunction()->GetName() << endl;
-		else
-			cerr<<"Looking at: "<<insn->getDisassembly()<< " but no associated function" << endl;
 	
 		
 		//switch(d.Instruction.BranchType)
@@ -751,13 +753,10 @@ bool SCFI_Instrument::instrument_jumps()
 						<<" do_calls="<<do_calls<<endl;
 				}
 			}
-
-			break;
 		}
 		// case  CallType:
 		else if(d.isCall())
 		{
-
 
 			// should only see calls if we are not CFI'ing safe functions
 			// be sure to use with: --no-fix-safefn in fixcalls
@@ -783,7 +782,6 @@ bool SCFI_Instrument::instrument_jumps()
 				// for indirect calls.
 				AddCallCFIWithExeNonce(insn);
 			}
-			break;
 		}
 		// case  RetType: 
 		else if (d.isReturn()) 
@@ -801,7 +799,6 @@ bool SCFI_Instrument::instrument_jumps()
 			// (3) and here, we don't instrument returns for safe function
 			if (!protect_safefn && safefn)
 			{
-				cerr << "Skip ret instructions in function: " << insn->GetFunction()->GetName() << endl;
 				cfi_safefn_ret_skipped++;
 				continue;
 			}
@@ -809,17 +806,15 @@ bool SCFI_Instrument::instrument_jumps()
 			cfi_checks++;
 			cfi_branch_ret_checks++;
 
-			if(do_exe_nonce_for_call)
+			if(do_exe_nonce_for_call) {
 				AddReturnCFIForExeNonce(insn);
-			else
+			}
+			else {
 				AddReturnCFI(insn);
-			break;
-
+			}
 		}
 		else // default:
 		{
-			// 	break;
-			// do nothing
 		}
 		//}
 	}
