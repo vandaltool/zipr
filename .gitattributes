@@ -73,7 +73,7 @@ centos_files/zlib-1.2.7-17.el7.x86_64.rpm -text svneol=unset#application/x-rpm
 /start_dev.sh -text
 ubuntu16_files/README.txt -text
 ubuntu16_files/Vagrantfile -text
-ubuntu16_files/generate_ais_installer.sh -text
+ubuntu16_files/generate_installer.sh -text
 ubuntu16_files/install.sh -text
 ubuntu16_files/manifest.txt -text
 ubuntu16_files/test.sh -text
