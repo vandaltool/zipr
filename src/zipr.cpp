@@ -4228,10 +4228,10 @@ void  ZiprImpl_t::FixTwoByteWithPrefix()
 	for(const auto insn : m_firp->GetInstructions())
 	{
 		const auto d=DecodedInstruction_t(insn);
-		if(!d.isBranch()) continue;
-		if(d.isReturn()) continue;
-		if(d.getOperands().size()!=1) continue;
-		if(!d.getOperand(0).isConstant()) continue;
+		if(!d.isBranch()) continue;	// skip non-branches
+		if(d.isReturn()) continue;	// skip returns
+		if(d.getOperands().size()!=1) continue;	// skip branches that have no operands or more than one
+		if(!d.getOperand(0).isConstant()) continue;	// skip anything where the operand isn't a constant
 		
 		auto done=false;
 		while (!done)
@@ -4252,6 +4252,11 @@ void  ZiprImpl_t::FixTwoByteWithPrefix()
 				default:
 					done=1;
 					break;
+			}
+			// remove rex prefix when unnecessary 
+			if(m_firp->GetArchitectureBitWidth()==64 && (b&0xf0)==0x40 /* has rex prefix */)
+			{
+				insn->SetDataBits(insn->GetDataBits().erase(0,1));	
 			}
 		}
 
