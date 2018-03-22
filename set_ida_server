@@ -1,6 +1,12 @@
 
 
+# put in the name of your remote host here.
 export IDA_PRO_SERVER_HOST=helix64.cs.virginia.edu
+
+# put in the name of your remote dir here
+# Assuming you are using helix64, you can re-use the jdh8d dir.
+export IDA_PRO_REMOTE_DIR=/home/jdh8d/umbrellas/stars_remote_umbrella
+
 #IDA_PRO_SERVER_USER=<user>
 #IDA_PRO_SERVER_PORT=22
 
