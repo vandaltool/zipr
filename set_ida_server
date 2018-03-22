@@ -1,6 +1,6 @@
 
 
-export IDA_PRO_SERVER_HOST=192.168.184.141
+export IDA_PRO_SERVER_HOST=helix64.cs.virginia.edu
 #IDA_PRO_SERVER_USER=<user>
 #IDA_PRO_SERVER_PORT=22
 
