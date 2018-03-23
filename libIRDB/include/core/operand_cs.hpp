@@ -26,6 +26,7 @@ class DecodedOperandCapstone_t
 		bool isFpuRegister() const;
 		bool isSseRegister() const;
 		bool isAvxRegister() const;
+		bool isZmmRegister() const;
 		bool isSpecialRegister() const;
 		bool isSegmentRegister() const;
 		uint32_t getRegNumber() const;

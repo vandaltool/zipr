@@ -312,6 +312,22 @@ bool DecodedOperandCapstone_t::isAvxRegister() const
 	return isRegister() &&  regs.find(op.reg)!=end(regs);
 }
 
+bool DecodedOperandCapstone_t::isZmmRegister() const
+{
+	const auto regs=set<x86_reg>({
+		X86_REG_ZMM0, X86_REG_ZMM1, X86_REG_ZMM2,
+		X86_REG_ZMM3, X86_REG_ZMM4, X86_REG_ZMM5, X86_REG_ZMM6, X86_REG_ZMM7,
+		X86_REG_ZMM8, X86_REG_ZMM9, X86_REG_ZMM10, X86_REG_ZMM11, X86_REG_ZMM12,
+		X86_REG_ZMM13, X86_REG_ZMM14, X86_REG_ZMM15, X86_REG_ZMM16, X86_REG_ZMM17,
+		X86_REG_ZMM18, X86_REG_ZMM19, X86_REG_ZMM20, X86_REG_ZMM21, X86_REG_ZMM22,
+		X86_REG_ZMM23, X86_REG_ZMM24, X86_REG_ZMM25, X86_REG_ZMM26, X86_REG_ZMM27,
+		X86_REG_ZMM28, X86_REG_ZMM29, X86_REG_ZMM30, X86_REG_ZMM31,
+		});
+        const auto the_insn=static_cast<cs_insn*>(my_insn.get());
+        const auto &op = (the_insn->detail->x86.operands[op_num]);
+	return isRegister() &&  regs.find(op.reg)!=end(regs);
+}
+
 bool DecodedOperandCapstone_t::isSpecialRegister() const
 {
 	const auto regs=set<x86_reg>({
@@ -357,6 +373,8 @@ uint32_t DecodedOperandCapstone_t::getRegNumber() const
 		return op.reg-X86_REG_XMM0;
 	else if(isAvxRegister())
 		return op.reg-X86_REG_YMM0;
+	else if(isZmmRegister())
+		return op.reg-X86_REG_ZMM0;
 	else if(isSegmentRegister())
 		return to_seg_reg_number(op.reg);
 	else

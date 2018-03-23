@@ -44,7 +44,7 @@ bool libIRDB::IsParameterWrite(const FileIR_t *firp, Instruction_t* insn, string
 	{
 		// if it's a register
 //		if((d.Argument1.ArgType&REGISTER_TYPE)==REGISTER_TYPE)
-		if(d.getOperand(0).isRegister())
+		if(d.getOperand(0).isGeneralPurposeRegister())
 		{
 //			int regno=(d.Argument1.ArgType)&0xFFFF;
 			int regno=d.getOperand(0).getRegNumber();
