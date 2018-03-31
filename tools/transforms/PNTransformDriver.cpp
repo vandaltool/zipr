@@ -595,6 +595,14 @@ static bool is_exit_insn(Instruction_t* prev)
 {
 	if(prev->GetFallthrough()!=NULL && prev->GetTarget()!=NULL)
 		return false; // cond branch 
+
+	// check for fixed_call
+	const auto reloc_it=find_if(ALLOF(prev->GetRelocations()), [&](const Relocation_t* r)
+		{ return r->GetType()=="fix_call_fallthrough"; } ); 
+	if(reloc_it!=end(prev->GetRelocations()))
+		return false;
+	
+	
 	if(prev->GetFallthrough()==NULL && prev->GetTarget()==NULL)
 	{
 		//DISASM d;
