@@ -284,6 +284,7 @@ string DecodedInstructionCapstone_t::getDisassembly() const
 			"movh",
 			"add",
 			"sub",
+			"sqrt",
 			"mul",
 			"div",
 			"ucomi",
