@@ -216,7 +216,6 @@ namespace zipr {
 	}
 
 	bool ZiprDollopManager_t::UpdateTargets(Dollop_t *dollop) {
-		list<DollopEntry_t*>::iterator it, it_end;
 		bool changed = false;
 		bool local_changed = false;
 		int local_changed_count=0;
@@ -224,7 +223,9 @@ namespace zipr {
 		do {
 			local_changed = false;
 			local_changed_count++;
-			for (it = dollop->begin(), it_end = dollop->end();
+			const auto local_dollop=list<DollopEntry_t*>(dollop->begin(), dollop->end());
+			list<DollopEntry_t*>::const_iterator it, it_end;
+			for (it = local_dollop.begin(), it_end = local_dollop.end();
 			     it != it_end;
 					 /* nop */) {
 				DollopEntry_t *entry = *it;
@@ -240,11 +241,13 @@ namespace zipr {
 					 * contained the target and the call would have
 					 * split this dollop. That makes the iterator go
 					 * haywire.
+					 * 
+					 * But!  We could avoid the break by using a copy of the set.
 					 */
 					if (new_target != entry->TargetDollop()) {
 						entry->TargetDollop(new_target);
 						changed = local_changed = true;
-						break;
+						//break;
 					}
 				}
 			}
@@ -260,7 +263,8 @@ namespace zipr {
 		int update_count=0;
 		do {
 			changed = false;
-			for (it = m_dollops.begin(), it_end = m_dollops.end(); it != m_dollops.end(); /* nop */) 
+			const auto local_dollops=m_dollops;
+			for (it = local_dollops.begin(), it_end = local_dollops.end(); it != it_end; /* nop */) 
 			{
 				Dollop_t *entry = *it;
 				it++;
