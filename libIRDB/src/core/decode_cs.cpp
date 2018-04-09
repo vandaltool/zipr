@@ -288,9 +288,9 @@ string DecodedInstructionCapstone_t::getDisassembly() const
 			"mul",
 			"div",
 			"ucomi",
-			"cvtsi2",
 			"cvtpi2",
 			"shuf",
+			//"cvtsi2",  had to remove this one?
 		});
 	const auto suffixes=set<string>(
 		{
