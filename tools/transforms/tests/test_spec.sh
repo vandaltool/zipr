@@ -18,6 +18,7 @@
 
 # all
 all_benchmarks="400.perlbench 401.bzip2 403.gcc 410.bwaves 416.gamess 429.mcf 433.milc 434.zeusmp 435.gromacs 436.cactusADM 437.leslie3d 444.namd 445.gobmk 450.soplex 453.povray 454.calculix 456.hmmer 458.sjeng 459.GemsFDTD 462.libquantum 464.h264ref 465.tonto 470.lbm 471.omnetpp 473.astar 481.wrf 482.sphinx3 483.xalancbmk"
+#all_benchmarks=" 403.gcc "
 
 
 number=1
@@ -218,6 +219,10 @@ main()
 
 	# should be 100% success, tested by jdh on 8/28/17 as 100% success.
 	PSOPTS="$zipr_flags "  run_test zipr     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg "$all_benchmarks"
+
+
+	# avoid stack overflows in gcc and xalan
+	ulimit -s unlimited
 	PSOPTS="$zipr_flags $p1flags "  run_test zipr-p1     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg "$all_benchmarks"
 
 	get_raw_results baseline  zipr zipr-p1
