@@ -2,9 +2,9 @@
 
 #benchmarks="gcc"
 # 447.dealII // broken build
-#benchmarks=" 400.perlbench 401.bzip2 403.gcc 410.bwaves 416.gamess 429.mcf 433.milc 434.zeusmp 435.gromacs 436.cactusADM 437.leslie3d 444.namd 445.gobmk 450.soplex 453.povray 454.calculix 456.hmmer 458.sjeng 459.GemsFDTD 462.libquantum 464.h264ref 465.tonto 470.lbm 471.omnetpp 473.astar 481.wrf 482.sphinx3 483.xalancbmk "
+benchmarks=" 400.perlbench 401.bzip2 403.gcc 410.bwaves 416.gamess 429.mcf 433.milc 434.zeusmp 435.gromacs 436.cactusADM 437.leslie3d 444.namd 445.gobmk 450.soplex 453.povray 454.calculix 456.hmmer 458.sjeng 459.GemsFDTD 462.libquantum 464.h264ref 465.tonto 470.lbm 471.omnetpp 473.astar 481.wrf 482.sphinx3 483.xalancbmk "
 
-benchmarks="400.perlbench 403.gcc 445.gobmk 453.povray 458.sjeng 464.h264ref 464.tonto 471.omnetpp 481.wrf 482.sphinx3 483.xalancbmk"
+#benchmarks="400.perlbench 403.gcc 445.gobmk 453.povray 458.sjeng 464.h264ref 464.tonto 471.omnetpp 481.wrf 482.sphinx3 483.xalancbmk"
 number=1
 
 setup()
@@ -61,7 +61,7 @@ get_result()
 	bench=$1
 	config=$2
 
-	results=$(cat $SPEC/result.$config/CPU2006.002.log|grep Success|grep $bench|grep ratio=|sed 's/.*ratio=//'|sed 's/,.*//')
+	results=$(cat $SPEC/result.$config/CPU2006.002.log 2>/dev/null|grep Success|grep $bench|grep ratio=|sed 's/.*ratio=//'|sed 's/,.*//')
 
 	sum=0
 	count=0
@@ -128,13 +128,10 @@ main()
 	setup
 	run_test baseline $SPEC/config/ubuntu14.04lts-64bit.cfg
 	PSOPTS="--backend zipr"  run_test zipr     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
-	PSOPTS="--backend zipr --step-option zipr:--relax:on --step-option zipr:true"  run_test zipr-relax     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
 	PSOPTS="--backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all" run_test mm-basic-cfi $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
-	PSOPTS="--backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all --step-option zipr:--relax:on --step-option zipr:true" run_test mm-basic-cfi-relax $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
 	PSOPTS="--backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all --step-option selective_cfi:--color" run_test mm-color-cfi $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
-	PSOPTS="--backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all --step-option selective_cfi:--color --step-option zipr:--relax:on --step-option zipr:true" run_test mm-color-cfi-relax $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
 
-	get_raw_results baseline zipr mm-basic-cfi mm-color-cfi zipr-relax mm-basic-cfi-relax mm-color-cfi-relax 
+	get_raw_results baseline zipr mm-basic-cfi mm-color-cfi 
 
 }
 

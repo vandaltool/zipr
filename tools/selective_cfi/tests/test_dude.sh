@@ -23,17 +23,18 @@ get_correct()
 {
 	cp libfoo.so.orig libfoo.so
 	cp libdude.so.orig libdude.so
-	./dude.exe > correct
+	./dude.exe > correct 2>&1 
 }
 
 test()
 {
-	cp $2 libfoo.so  
-	cp $3 libdude.so  
-	./$1 > out 
+	local fail=0
+	cp $2 libfoo.so   || fail=1
+	cp $3 libdude.so   || fail=1
+	./$1 > out  2>&1 
 
 	cmp out correct
-	if [ $? = 1 ]; then
+	if [[ $? = 1 ]] || [[ $fail = 1 ]] ; then
 		fails=$(expr $fails + 1 )
 		echo test failed $1 $2 $3
 		echo "=== out ==="
