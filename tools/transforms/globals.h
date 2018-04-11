@@ -53,7 +53,7 @@ class PNOptions
 	// default configuration parameters go here
 		PNOptions() {
 			// specify defaults;
-			min_stack_padding = 1000;
+			min_stack_padding = 128;
 			max_stack_padding = min_stack_padding*2;
 			recursive_min_stack_padding = 64;
 			recursive_max_stack_padding = recursive_min_stack_padding*2;
