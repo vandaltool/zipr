@@ -215,14 +215,14 @@ main()
 	p1flags=" 	-c p1transform=on " 
 	start_dir=$(pwd)
 	setup
+
+	# baseline 
 	run_test baseline $SPEC/config/ubuntu14.04lts-64bit.cfg "$all_benchmarks"
 
-	# should be 100% success, tested by jdh on 8/28/17 as 100% success.
+	# should be 100% success, tested by jdh on 4/11/18 as 100% success.
 	PSOPTS="$zipr_flags "  run_test zipr     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg "$all_benchmarks"
 
-
-	# avoid stack overflows in gcc and xalan
-	ulimit -s unlimited
+	# two failures as of 4/11/18 -- cactusADM and povray
 	PSOPTS="$zipr_flags $p1flags "  run_test zipr-p1     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg "$all_benchmarks"
 
 	get_raw_results baseline  zipr zipr-p1
