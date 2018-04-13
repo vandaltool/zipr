@@ -4,7 +4,7 @@ default rel
 
 extern zest_cfi_dispatch_c
 
-%define cfi_dispatch_translation_cache_entries 128
+%define cfi_dispatch_translation_cache_entries 16*1024
 
 section .tls alloc write align=8 tls
 
