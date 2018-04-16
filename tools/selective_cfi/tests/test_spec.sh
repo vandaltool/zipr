@@ -26,10 +26,14 @@ setup()
 
 run_test()
 {
-	config_name=$1
-	config=$2
+	local config_name=$1
+	local config=$2
+
+	all_configs_that_were_run="$all_configs_that_were_run $config_name"
+
 	cd $SPEC
 	if [ ! -d result.$config_name ]; then
+		echo "Re-doing runspec for test $config_name"
 		dropdb  $PGDATABASE 
 		createdb  $PGDATABASE 
 		$PEASOUP_HOME/tools/db/pdb_setup.sh
@@ -84,17 +88,21 @@ get_result()
 
 }
 
+
+# global
+all_configs_that_were_run=""
+
 get_raw_results()
 {
 	echo "--------------------------------------------------------------"
 	echo "Performance results are:"
 	echo "--------------------------------------------------------------"
-	configs=$*
+	local configs="$all_configs_that_were_run"
 	echo benchmark $configs
 	for bench in $benchmarks
 	do
 		echo -n "$bench 	"
-		for config in $*
+		for config in $configs 
 		do
 			get_result $bench $config
 			echo -n "	"
@@ -105,12 +113,11 @@ get_raw_results()
 	echo "--------------------------------------------------------------"
 	echo "Size results are:"
 	echo "--------------------------------------------------------------"
-	configs=$*
 	echo benchmark $configs
 	for bench in $SPEC/result.$config/*_base.amd64-m64-gcc42-nn
 	do
 		echo -n "$(basename $bench _base.amd64-m64-gcc42-nn) 	"
-		for config in $*
+		for config in $configs
 		do
 			file="$SPEC/result.$config/$(basename $bench)"
 			get_size_result $file 
@@ -126,12 +133,29 @@ main()
 {
 	start_dir=$(pwd)
 	setup
-	run_test baseline $SPEC/config/ubuntu14.04lts-64bit.cfg
-	PSOPTS="--backend zipr"  run_test zipr     $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
-	PSOPTS="--backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all" run_test mm-basic-cfi $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
-	PSOPTS="--backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all --step-option selective_cfi:--color" run_test mm-color-cfi $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
 
-	get_raw_results baseline zipr mm-basic-cfi mm-color-cfi 
+
+	local zipr_flags="--backend zipr"
+	local mm_basic_cfi_flags="--step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all "
+	local mm_color_cfi_flags="$mm_basic_cfi_flags --step-option selective_cfi:--color"
+	local trace_flags="-o zipr:--traceplacement:on -o zipr:true"
+	
+
+	# no $PS -- aka, baseline.
+	run_test original $SPEC/config/ubuntu14.04lts-64bit.cfg
+
+	# zipr, basic cfi, color cfi
+	PSOPTS="$zipr_flags"  				run_test zipr         $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	PSOPTS="$zipr_flags $mm_basic_cfi_flags " 	run_test mm-basic-cfi $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	PSOPTS="$zipr_flags $mm_color_cfi_flags" 	run_test mm-color-cfi $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+
+	# zipr, basic cfi, color cfi
+	# with trace placement
+	PSOPTS="$zipr_flags $trace_flags "  			run_test zipr-trace         $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	PSOPTS="$zipr_flags $mm_basic_cfi_flags  $trace_flags " run_test mm-basic-cfi-trace $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	PSOPTS="$zipr_flags $mm_color_cfi_flags $trace_flags " 	run_test mm-color-cfi-trace $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+
+	get_raw_results 
 
 }
 
