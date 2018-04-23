@@ -5,10 +5,18 @@ do_cfi()
 	(set -x ; $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all --step-option zipr:"--add-sections false")
 }
 
+# Note: exe nonce cfi doesn't always run against non-exe nonce cfi modules
+do_cfi_exe_nonces()
+{
+        $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--no-fix-safefn --step-option selective_cfi:--exe-nonce-for-call --step-option zipr:"--add-sections false"
+}
+
 do_coloring_cfi()
 {
 	(set -x ; $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all --step-option selective_cfi:--color  --step-option zipr:"--add-sections false" )
 }
+
+
 
 
 get_correct()
@@ -56,6 +64,8 @@ protect()
 {
 	do_coloring_cfi ./pow.exe ./pow.exe.cfi
 	do_cfi ./libm.so.6.orig ./libm.so.6.cfi
+	do_cfi_exe_nonces ./pow.exe ./pow.exe.nonce.cfi
+	do_cfi_exe_nonces ./libm.so.6.orig ./libm.so.6.exe.nonce.cfi
 }
 
 clean()
@@ -86,6 +96,17 @@ main()
 	test pow.exe.cfi libm.so.6.orig	5 8	# main exe
 	test pow.exe libm.so.6.cfi	5 8	# shared lib only
 	test pow.exe.cfi libm.so.6.cfi	5 8	# both protected
+	get_correct 3 5
+        test pow.exe libm.so.6.orig     3 5     # unprotected - should pass! 3 5
+        test pow.exe.nonce.cfi libm.so.6.orig 3 5     # main exe
+        test pow.exe libm.so.6.exe.nonce.cfi      3 5     # shared lib only
+        test pow.exe.nonce.cfi libm.so.6.exe.nonce.cfi  3 5     # both protected
+        get_correct 5 8
+        test pow.exe libm.so.6.orig     5 8     # unprotected - should pass! 3 5
+        test pow.exe.nonce.cfi libm.so.6.orig 5 8     # main exe
+        test pow.exe libm.so.6.exe.nonce.cfi      5 8     # shared lib only
+        test pow.exe.nonce.cfi libm.so.6.exe.nonce.cfi  5 8     # both protected
+
 	report
 	if [[ ! $1 == -k ]]; then
 		clean

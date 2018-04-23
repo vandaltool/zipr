@@ -102,6 +102,26 @@ assert(0);
 
 }
 
+unsigned int SCFI_Instrument::GetExeNonceOffset(Instruction_t* insn)
+{
+        /* using executable nonce with 4 byte multi-byte nop
+         * (which is 3 byte opcode, 0x0F1F80). Note that multi-byte nops
+         *  are not supported on older processors (~< 2006) */
+	return -3;
+}
+
+NonceValueType_t SCFI_Instrument::GetExeNonce(Instruction_t* insn)
+{
+	// using 0xAABBCCDD (coloring not yet supported)
+	return 0xaabbccdd;
+}
+
+unsigned int SCFI_Instrument::GetExeNonceSize(Instruction_t* insn)
+{
+	//using 4 byte executable nonce
+	return 4;
+}
+
 unsigned int SCFI_Instrument::GetNonceOffset(Instruction_t* insn)
 {
 	if(color_map)
@@ -133,9 +153,15 @@ unsigned int SCFI_Instrument::GetNonceSize(Instruction_t* insn)
 
 bool SCFI_Instrument::mark_targets() 
 {
-	int targets=0, ind_targets=0;
-	for(InstructionSet_t::iterator it=firp->GetInstructions().begin();
-		it!=firp->GetInstructions().end();
+	int targets=0, ind_targets=0, exe_nonce_targets=0;
+	// Make sure no unresolved instructions are in the insn set
+	firp->AssembleRegistry();
+	firp->SetBaseIDS();		
+	// Make sure the new insns added in this loop are not processed in this loop
+	// (ok since none of the them should receive nonces)
+	auto insn_set = firp->GetInstructions();
+	for(InstructionSet_t::iterator it=insn_set.begin();
+		it!=insn_set.end();
 		++it)
 	{
 		targets++;
@@ -194,9 +220,30 @@ bool SCFI_Instrument::mark_targets()
 				cout<<"Found nonce="+type+"  for "<<std::hex<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<endl;
 			}
 		}
+
+		if(do_exe_nonce_for_call && DecodedInstruction_t(insn).isCall()) 
+                {
+		    ++exe_nonce_targets;
+                    string type;
+                    if(do_coloring)
+                    {
+                        assert(0); //coloring not yet supported for exe nonces
+                    }
+                    else
+                    {
+                        type="cfi_exe_nonce=";
+                        type+=to_string(GetExeNonce(insn));
+
+                        Relocation_t* reloc=create_reloc(insn);
+                        reloc->SetOffset(-GetExeNonceOffset(insn));
+                        reloc->SetType(type);
+                        cout<<"Found nonce="+type+"  for "<<std::hex<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<endl;
+                    }
+                } 
 	}
 	cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::ind_targets_found="<<std::dec<<ind_targets<<endl;
 	cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::targets_found="<<std::dec<<targets<<endl;
+	cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::exe_nonce_targets_found="<<std::dec<<exe_nonce_targets<<endl;
 	return true;
 }
 
@@ -328,15 +375,20 @@ void SCFI_Instrument::AddCallCFIWithExeNonce(Instruction_t* insn)
 {
 	// make a stub to call
 
-	// the stub is:
-	//	push [target]
-	// 	jmp slow
-	string pushbits=change_to_push(insn);
-	Instruction_t* stub=addNewDatabits(firp,NULL,pushbits);
-	stub->SetComment(insn->GetComment()+" cfi stub");
-	
+        // the stub is:
+        //      push [target]
+        //      ret     
+        string pushbits=change_to_push(insn);
+        Instruction_t* stub=addNewDatabits(firp,NULL,pushbits);
+        stub->SetComment(insn->GetComment()+" cfi stub");
 
-	string jmpBits=getJumpDataBits();
+        string retBits=getRetDataBits();
+        Instruction_t* ret=insertDataBitsAfter(firp, stub, retBits);
+
+        assert(stub->GetFallthrough()==ret);
+        AddReturnCFI(ret);
+
+	/*string jmpBits=getJumpDataBits();
 	Instruction_t* jmp=insertDataBitsAfter(firp, stub, jmpBits);
 
 	assert(stub->GetFallthrough()==jmp);
@@ -344,7 +396,7 @@ void SCFI_Instrument::AddCallCFIWithExeNonce(Instruction_t* insn)
 	// create a reloc so the stub goes to the slow path, eventually
 	createNewRelocation(firp,jmp,"slow_cfi_path",0);
 	jmp->SetFallthrough(NULL);
-	jmp->SetTarget(jmp);	// looks like infinite loop, but will go to slow apth
+	jmp->SetTarget(jmp);	// looks like infinite loop, but will go to slow apth*/
 
 	// convert the indirct call to a direct call to the stub.
 	string call_bits=insn->GetDataBits();
@@ -448,7 +500,48 @@ void SCFI_Instrument::AddReturnCFIForExeNonce(Instruction_t* insn, ColoredSlotVa
 
 	return;
 #else
-	assert(0);
+	//TODO: Fix possible TOCTOU race condition (see Abadi CFI paper)
+	//	Ret address can be changed between nonce check and ret insn execution (in theory)
+        string decoration="";
+	int nonce_size=GetExeNonceSize(insn);
+	int nonce_offset=-GetExeNonceOffset(insn);
+	unsigned int nonce=GetExeNonce(insn);
+	Instruction_t* jne=NULL, *tmp=NULL;
+	
+
+	// convert a return to:
+	// 	mov ecx, [esp]
+	// 	cmp <nonce size> PTR [ecx+<offset>], Nonce
+	// 	jne exit_node	; no need for slow path here			
+	// 	ret             ; ignore race condition for now
+        
+        switch(nonce_size)
+	{
+                case 4: 
+                    decoration="dword ";
+                    break;
+		case 1: //handle later
+		case 2:	// handle later
+		default:
+			cerr<<"Cannot handle nonce of size "<<std::dec<<nonce_size<<endl;
+			assert(0);
+		
+	}
+
+	// insert the pop/checking code.
+	insertAssemblyBefore(firp,insn,string("mov ")+reg+string(", [")+rspreg+string("]"));
+	tmp=insertAssemblyAfter(firp,insn,string("cmp ")+decoration+
+		" ["+reg+"+"+to_string(nonce_offset)+"], "+to_string(nonce));
+        jne=tmp=insertAssemblyAfter(firp,tmp,"jne 0");
+        // set the jne's target to itself, and create a reloc that zipr/strata will have to resolve.
+	jne->SetTarget(jne);	// needed so spri/spasm/irdb don't freak out about missing target for new insn.
+	Relocation_t* reloc=create_reloc(jne);
+	reloc->SetType("exit_node"); 
+	reloc->SetOffset(0);
+	cout<<"Setting exit node"<<endl;
+	// leave the ret instruction (risk of successful race condition exploit << performance benefit)
+
+	return;
 #endif
 	
 }
@@ -657,8 +750,11 @@ bool SCFI_Instrument::instrument_jumps()
 	// build histogram of target sizes
 
 	// for each instruction
-	for(InstructionSet_t::iterator it=firp->GetInstructions().begin();
-		it!=firp->GetInstructions().end();
+	// But make sure the new insns added in this loop are not processed in this loop
+        // (ok since none of the them should need to be protected)
+        auto insn_set = firp->GetInstructions();
+	for(InstructionSet_t::iterator it=insn_set.begin();
+		it!=insn_set.end();
 		++it)
 	{
 		Instruction_t* insn=*it;

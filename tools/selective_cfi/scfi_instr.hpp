@@ -132,6 +132,10 @@ class SCFI_Instrument
 		unsigned int GetNonceSize(libIRDB::Instruction_t* insn);
 		unsigned int GetNonceOffset(libIRDB::Instruction_t*);
 
+		unsigned int GetExeNonceOffset(libIRDB::Instruction_t* insn);
+		NonceValueType_t GetExeNonce(libIRDB::Instruction_t* insn);
+                unsigned int GetExeNonceSize(libIRDB::Instruction_t* insn);
+
 
 	private: // data
 		// predecessors of instructions.

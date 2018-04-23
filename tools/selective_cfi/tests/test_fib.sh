@@ -5,10 +5,17 @@ do_cfi()
 	$PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all --step-option zipr:"--add-sections false"
 }
 
+# Note: exe nonce cfi doesn't always run against non-exe nonce cfi modules
+do_cfi_exe_nonces()
+{
+        $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--no-fix-safefn --step-option selective_cfi:--exe-nonce-for-call --step-option zipr:"--add-sections false"
+}
+
 do_coloring_cfi()
 {
-	$PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all --step-option selective_cfi:--color  --step-option zipr:"--add-sections false"
+	$PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all --step-option selective_cfi:--color --step-option zipr:"--add-sections false"
 }
+
 
 
 get_correct()
@@ -82,6 +89,10 @@ protect()
 	do_cfi ./libfib.so.orig ./libfib.so.cfi
 	do_cfi ./libfib2.so.orig ./libfib2.so.cfi
 
+	do_cfi_exe_nonces ./fib.exe ./fib.exe.nonce.cfi
+        do_cfi_exe_nonces ./libfib.so.orig ./libfib.so.exe.nonce.cfi
+        do_cfi_exe_nonces ./libfib2.so.orig ./libfib2.so.exe.nonce.cfi
+
 	do_coloring_cfi ./fib.exe ./fib.exe.cfi.color
 	do_coloring_cfi ./libfib.so.orig ./libfib.so.cfi.color
 	do_coloring_cfi ./libfib2.so.orig ./libfib2.so.cfi.color
@@ -90,6 +101,11 @@ protect()
 	do_cfi ./libfib2.O2.so.orig ./libfib2.O2.so.cfi
 	do_cfi ./libfib2.O3.so.orig ./libfib2.O3.so.cfi
 	do_cfi ./libfib2.Os.so.orig ./libfib2.Os.so.cfi
+
+	do_cfi_exe_nonces ./libfib2.O.so.orig ./libfib2.O.so.exe.nonce.cfi
+        do_cfi_exe_nonces ./libfib2.O2.so.orig ./libfib2.O2.so.exe.nonce.cfi
+        do_cfi_exe_nonces ./libfib2.O3.so.orig ./libfib2.O3.so.exe.nonce.cfi
+        do_cfi_exe_nonces ./libfib2.Os.so.orig ./libfib2.Os.so.exe.nonce.cfi
 
 	do_coloring_cfi ./libfib2.O.so.orig ./libfib2.O.so.cfi.color
 	do_coloring_cfi ./libfib2.O2.so.orig ./libfib2.O2.so.cfi.color
@@ -100,6 +116,11 @@ protect()
 	do_cfi ./libfib.O2.so.orig ./libfib.O2.so.cfi
 	do_cfi ./libfib.O3.so.orig ./libfib.O3.so.cfi
 	do_cfi ./libfib.Os.so.orig ./libfib.Os.so.cfi
+
+	do_cfi_exe_nonces ./libfib.O.so.orig ./libfib.O.so.exe.nonce.cfi
+        do_cfi_exe_nonces ./libfib.O2.so.orig ./libfib.O2.so.exe.nonce.cfi
+        do_cfi_exe_nonces ./libfib.O3.so.orig ./libfib.O3.so.exe.nonce.cfi
+        do_cfi_exe_nonces ./libfib.Os.so.orig ./libfib.Os.so.exe.nonce.cfi
 
 	do_coloring_cfi ./libfib.O.so.orig ./libfib.O.so.cfi.color
 	do_coloring_cfi ./libfib.O2.so.orig ./libfib.O2.so.cfi.color
@@ -174,6 +195,48 @@ main()
 	test fib.exe.cfi 5 libfib.so.cfi libfib2.so.cfi
 	test fib.exe.cfi 6 libfib.so.cfi libfib2.so.cfi
 
+	test fib.exe 2 libfib.so.exe.nonce.cfi libfib2.so.orig
+        test fib.exe 3 libfib.so.exe.nonce.cfi libfib2.so.orig
+        test fib.exe 4 libfib.so.exe.nonce.cfi libfib2.so.orig
+        test fib.exe 5 libfib.so.exe.nonce.cfi libfib2.so.orig
+        test fib.exe 6 libfib.so.exe.nonce.cfi libfib2.so.orig
+
+	test fib.exe 2 libfib.so.orig libfib2.so.exe.nonce.cfi
+        test fib.exe 3 libfib.so.orig libfib2.so.exe.nonce.cfi
+        test fib.exe 4 libfib.so.orig libfib2.so.exe.nonce.cfi
+        test fib.exe 5 libfib.so.orig libfib2.so.exe.nonce.cfi
+        test fib.exe 6 libfib.so.orig libfib2.so.exe.nonce.cfi
+
+	test fib.exe 2 libfib.so.exe.nonce.cfi libfib2.so.exe.nonce.cfi
+        test fib.exe 3 libfib.so.exe.nonce.cfi libfib2.so.exe.nonce.cfi
+        test fib.exe 4 libfib.so.exe.nonce.cfi libfib2.so.exe.nonce.cfi
+        test fib.exe 5 libfib.so.exe.nonce.cfi libfib2.so.exe.nonce.cfi
+        test fib.exe 6 libfib.so.exe.nonce.cfi libfib2.so.exe.nonce.cfi
+
+	test fib.exe.nonce.cfi 2 libfib.so.orig libfib2.so.orig
+        test fib.exe.nonce.cfi 3 libfib.so.orig libfib2.so.orig
+        test fib.exe.nonce.cfi 4 libfib.so.orig libfib2.so.orig
+        test fib.exe.nonce.cfi 5 libfib.so.orig libfib2.so.orig
+        test fib.exe.nonce.cfi 6 libfib.so.orig libfib2.so.orig
+
+	test fib.exe.nonce.cfi 2 libfib.so.exe.nonce.cfi libfib2.so.orig
+        test fib.exe.nonce.cfi 3 libfib.so.exe.nonce.cfi libfib2.so.orig
+        test fib.exe.nonce.cfi 4 libfib.so.exe.nonce.cfi libfib2.so.orig
+        test fib.exe.nonce.cfi 5 libfib.so.exe.nonce.cfi libfib2.so.orig
+        test fib.exe.nonce.cfi 6 libfib.so.exe.nonce.cfi libfib2.so.orig
+
+	test fib.exe.nonce.cfi 2 libfib.so.orig libfib2.so.exe.nonce.cfi
+        test fib.exe.nonce.cfi 3 libfib.so.orig libfib2.so.exe.nonce.cfi
+        test fib.exe.nonce.cfi 4 libfib.so.orig libfib2.so.exe.nonce.cfi
+        test fib.exe.nonce.cfi 5 libfib.so.orig libfib2.so.exe.nonce.cfi
+        test fib.exe.nonce.cfi 6 libfib.so.orig libfib2.so.exe.nonce.cfi
+
+	test fib.exe.nonce.cfi 2 libfib.so.exe.nonce.cfi libfib2.so.exe.nonce.cfi
+        test fib.exe.nonce.cfi 3 libfib.so.exe.nonce.cfi libfib2.so.exe.nonce.cfi
+        test fib.exe.nonce.cfi 4 libfib.so.exe.nonce.cfi libfib2.so.exe.nonce.cfi
+        test fib.exe.nonce.cfi 5 libfib.so.exe.nonce.cfi libfib2.so.exe.nonce.cfi
+        test fib.exe.nonce.cfi 6 libfib.so.exe.nonce.cfi libfib2.so.exe.nonce.cfi
+
 	test fib.exe.cfi.color 2 libfib.so.orig libfib2.so.orig
 	test fib.exe.cfi.color 3 libfib.so.orig libfib2.so.orig
 	test fib.exe.cfi.color 4 libfib.so.orig libfib2.so.orig
@@ -197,7 +260,7 @@ main()
 	test fib.exe.cfi.color 4 libfib.so.cfi libfib2.so.cfi
 	test fib.exe.cfi.color 5 libfib.so.cfi libfib2.so.cfi
 	test fib.exe.cfi.color 6 libfib.so.cfi libfib2.so.cfi
-
+	
 	test fib.exe 2 libfib.so.cfi.color libfib2.so.orig
 	test fib.exe 3 libfib.so.cfi.color libfib2.so.orig
 	test fib.exe 4 libfib.so.cfi.color libfib2.so.orig
@@ -258,6 +321,11 @@ main()
 	test fib.exe.cfi.color 4 libfib.so.orig libfib2.O3.so.cfi
 	test fib.exe.cfi.color 4 libfib.so.orig libfib2.Os.so.cfi
 
+	test fib.exe 4 libfib.so.orig libfib2.O.so.exe.nonce.cfi
+        test fib.exe 4 libfib.so.orig libfib2.O2.so.exe.nonce.cfi
+        test fib.exe 4 libfib.so.orig libfib2.O3.so.exe.nonce.cfi
+        test fib.exe 4 libfib.so.orig libfib2.Os.so.exe.nonce.cfi
+
 	test fib.exe.cfi.color 4 libfib.so.cfi.color libfib2.O.so.cfi.color
 	test fib.exe.cfi.color 4 libfib.so.cfi.color libfib2.O2.so.cfi.color
 	test fib.exe.cfi.color 4 libfib.so.cfi.color libfib2.O3.so.cfi.color
@@ -268,6 +336,11 @@ main()
 	test fib.exe.cfi.color 4 libfib.Os.so.orig libfib2.O3.so.cfi
 	test fib.exe.cfi.color 4 libfib.O.so.orig libfib2.Os.so.cfi
 
+	test fib.exe 4 libfib.O3.so.orig libfib2.O.so.exe.nonce.cfi
+        test fib.exe 4 libfib.O2.so.orig libfib2.O2.so.exe.nonce.cfi
+        test fib.exe 4 libfib.Os.so.orig libfib2.O3.so.exe.nonce.cfi
+        test fib.exe 4 libfib.O.so.orig libfib2.Os.so.exe.nonce.cfi
+
 	test fib.exe.cfi.color 4 libfib.O2.so.cfi.color libfib2.O.so.cfi.color
 	test fib.exe.cfi.color 4 libfib.O3.so.cfi.color libfib2.O2.so.cfi.color
 	test fib.exe.cfi.color 4 libfib.O.so.cfi.color libfib2.O3.so.cfi.color
@@ -277,6 +350,11 @@ main()
 	test fib.exe.cfi.color 5 libfib.so.orig libfib2.O2.so.cfi
 	test fib.exe.cfi.color 5 libfib.so.orig libfib2.O3.so.cfi
 	test fib.exe.cfi.color 5 libfib.so.orig libfib2.Os.so.cfi
+
+	test fib.exe 5 libfib.so.orig libfib2.O.so.exe.nonce.cfi
+        test fib.exe 5 libfib.so.orig libfib2.O2.so.exe.nonce.cfi
+        test fib.exe 5 libfib.so.orig libfib2.O3.so.exe.nonce.cfi
+        test fib.exe 5 libfib.so.orig libfib2.Os.so.exe.nonce.cfi
 
 	test fib.exe.cfi.color 5 libfib.so.cfi.color libfib2.O.so.cfi.color
 	test fib.exe.cfi.color 5 libfib.so.cfi.color libfib2.O2.so.cfi.color

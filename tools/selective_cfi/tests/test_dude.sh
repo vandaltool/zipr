@@ -9,12 +9,18 @@ do_cfi()
 	fi
 }
 
+# Note: exe nonce cfi doesn't always run against non-exe nonce cfi modules
+do_cfi_exe_nonces()
+{
+        $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--no-fix-safefn --step-option selective_cfi:--exe-nonce-for-call --step-option zipr:"--add-sections false"
+}
+
 do_coloring_cfi()
 {
 	if [[ -f $2 ]]; then
 		echo "Eliding rebuild of $2"
 	else
-		(set -x ; $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all --step-option selective_cfi:--color  --step-option zipr:"--add-sections false" )
+		(set -x ; $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all --step-option selective_cfi:--color --step-option zipr:"--add-sections false" )
 	fi
 }
 
@@ -64,6 +70,10 @@ protect()
 	do_cfi ./libfoo.so.orig ./libfoo.so.cfi
 	do_cfi ./libdude.so.orig ./libdude.so.cfi
 
+	do_cfi_exe_nonces ./dude.exe ./dude.exe.nonce.cfi
+        do_cfi_exe_nonces ./libfoo.so.orig ./libfoo.so.exe.nonce.cfi
+        do_cfi_exe_nonces ./libdude.so.orig ./libdude.so.exe.nonce.cfi
+
 	do_coloring_cfi ./dude.exe ./dude.exe.cfi.color
 	do_coloring_cfi ./libfoo.so.orig ./libfoo.so.cfi.color
 	do_coloring_cfi ./libdude.so.orig ./libdude.so.cfi.color
@@ -98,6 +108,11 @@ main()
 	test dude.exe libfoo.so.cfi libdude.so.cfi.color
 	test dude.exe libfoo.so.cfi.color libdude.so.cfi
 
+	test dude.exe libfoo.so.orig libdude.so.orig            # unprotected - should pass!
+        test dude.exe libfoo.so.exe.nonce.cfi libdude.so.orig
+        test dude.exe libfoo.so.orig libdude.so.exe.nonce.cfi
+        test dude.exe libfoo.so.exe.nonce.cfi libdude.so.exe.nonce.cfi
+
 	test dude.exe.cfi libfoo.so.orig libdude.so.orig	
 	test dude.exe.cfi libfoo.so.cfi libdude.so.orig		
 	test dude.exe.cfi libfoo.so.cfi.color libdude.so.orig		
@@ -106,6 +121,11 @@ main()
 	test dude.exe.cfi libfoo.so.cfi libdude.so.cfi
 	test dude.exe.cfi libfoo.so.cfi libdude.so.cfi.color
 	test dude.exe.cfi libfoo.so.cfi.color libdude.so.cfi
+
+	test dude.exe.nonce.cfi libfoo.so.orig libdude.so.orig
+        test dude.exe.nonce.cfi libfoo.so.exe.nonce.cfi libdude.so.orig
+        test dude.exe.nonce.cfi libfoo.so.orig libdude.so.exe.nonce.cfi
+        test dude.exe.nonce.cfi libfoo.so.exe.nonce.cfi libdude.so.exe.nonce.cfi
 
 	test dude.exe.cfi.color libfoo.so.orig libdude.so.orig	
 	test dude.exe.cfi.color libfoo.so.cfi libdude.so.orig		
@@ -124,6 +144,12 @@ main()
 	test dude.exe.pie libfoo.so.cfi libdude.so.cfi
 	test dude.exe.pie libfoo.so.cfi libdude.so.cfi.color
 	test dude.exe.pie libfoo.so.cfi.color libdude.so.cfi
+
+	test dude.exe.pie libfoo.so.orig libdude.so.orig                # unprotected - should pass!
+        test dude.exe.pie libfoo.so.exe.nonce.cfi libdude.so.orig
+        test dude.exe.pie libfoo.so.orig libdude.so.exe.nonce.cfi
+        test dude.exe.pie libfoo.so.exe.nonce.cfi libdude.so.exe.nonce.cfi
+
 
 	report
 	if [[ $1 == "-k" ]] ; then
