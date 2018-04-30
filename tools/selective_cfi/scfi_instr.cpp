@@ -370,43 +370,69 @@ void SCFI_Instrument::AddJumpCFI(Instruction_t* insn)
 #endif
 }
 
-
+//TODO: Does not work with coloring
 void SCFI_Instrument::AddCallCFIWithExeNonce(Instruction_t* insn)
 {
-	// make a stub to call
+	string reg="ecx";       // 32-bit reg 
+        if(firp->GetArchitectureBitWidth()==64)
+                reg="r11";      // 64-bit reg.
 
-        // the stub is:
-        //      push [target]
-        //      ret     
-        string pushbits=change_to_push(insn);
-        Instruction_t* stub=addNewDatabits(firp,NULL,pushbits);
-        stub->SetComment(insn->GetComment()+" cfi stub");
+	string decoration="";
+        int nonce_size=GetNonceSize(insn);
+        int nonce_offset=GetNonceOffset(insn);
+        unsigned int nonce=GetNonce(insn);
+        Instruction_t* call=NULL, *jne=NULL, *stub=NULL;
 
-        string retBits=getRetDataBits();
-        Instruction_t* ret=insertDataBitsAfter(firp, stub, retBits);
 
-        assert(stub->GetFallthrough()==ret);
-        AddReturnCFI(ret);
+        // convert a call indtarg to:
+	//      push indtarg  ;Calculate target if it has a memory operation
+        //      pop reg       ;Calculate it before changing stack ptr with call stub
+	//	call stub     ;Easy way to get correct return address on stack
+	//
+        //stub: cmp <nonce size> PTR [ecx-<nonce size>], Nonce
+        //      jne slow
+	//	jmp reg          
 
-	/*string jmpBits=getJumpDataBits();
-	Instruction_t* jmp=insertDataBitsAfter(firp, stub, jmpBits);
+        switch(nonce_size)
+        {
+                case 1:
+                        decoration="byte ";
+                        break;
+                case 2: // handle later
+                case 4: // handle later
+                default:
+                        cerr<<"Cannot handle nonce of size "<<std::dec<<nonce_size<<endl;
+                        assert(0);
 
-	assert(stub->GetFallthrough()==jmp);
+        }
 
-	// create a reloc so the stub goes to the slow path, eventually
-	createNewRelocation(firp,jmp,"slow_cfi_path",0);
-	jmp->SetFallthrough(NULL);
-	jmp->SetTarget(jmp);	// looks like infinite loop, but will go to slow apth*/
+        // insert the pop/checking code.
+	string pushbits=change_to_push(insn);
+   call=insertDataBitsBefore(firp, insn, pushbits);
+        insertAssemblyAfter(firp,insn,string("pop ")+reg);
+
+        stub=addNewAssembly(firp,stub,string("cmp ")+decoration+
+                " ["+reg+"-"+to_string(nonce_offset)+"], "+to_string(nonce));
+        jne=insertAssemblyAfter(firp,stub,"jne 0");
+	insertAssemblyAfter(firp,jne,string("jmp ")+reg);
+
+        // set the jne's target to itself, and create a reloc that zipr/strata will have to resolve.
+        jne->SetTarget(jne);    // needed so spri/spasm/irdb don't freak out about missing target for new insn.
+        Relocation_t* reloc=create_reloc(jne);
+        reloc->SetType("slow_cfi_path");
+        reloc->SetOffset(0);
+        cout<<"Setting slow path for: "<<"slow_cfi_path"<<endl;
 
 	// convert the indirct call to a direct call to the stub.
-	string call_bits=insn->GetDataBits();
-	call_bits.resize(5);
-	call_bits[0]=0xe8;
-	insn->SetTarget(stub);
-	insn->SetDataBits(call_bits);
-	insn->SetComment("Direct call to cfi stub");
-	insn->SetIBTargets(NULL);	// lose info about branch targets.
+        string call_bits=call->GetDataBits();
+        call_bits.resize(5);
+        call_bits[0]=0xe8;
+        call->SetTarget(stub);
+        call->SetDataBits(call_bits);
+        call->SetComment("Direct call to cfi stub");
+        call->SetIBTargets(NULL);       // lose info about branch targets.
 
+	return;
 }
 
 void SCFI_Instrument::AddExecutableNonce(Instruction_t* insn)
