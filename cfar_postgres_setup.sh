@@ -16,7 +16,6 @@ reset_db()
 reset_db
 
 #Create Database User and Table
-source set_env_vars
 for i in $(seq 0 4)
 do
 	#Setup the Database to store PEASOUP info
