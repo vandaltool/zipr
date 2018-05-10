@@ -4,7 +4,7 @@ libcpath=""
 
 do_cfi()
 {
-	$PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all --step-option zipr:"--add-sections false"
+	$PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--elftables-only  --step-option fix_calls:--fix-all --step-option zipr:"--add-sections false"
 	if [ ! $? -eq 0 ]; then
 		echo "do_cfi(): failed to protect"
 	fi
@@ -12,7 +12,7 @@ do_cfi()
 
 do_cfi_color()
 {
-	$PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all --step-option selective_cfi:--color  --step-option zipr:"--add-sections false"
+	$PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--elftables-only  --step-option fix_calls:--fix-all --step-option selective_cfi:--color  --step-option zipr:"--add-sections false"
 	if [ ! $? -eq 0 ]; then
 		echo "do_coloring_cfi(): failed to protect"
 	fi

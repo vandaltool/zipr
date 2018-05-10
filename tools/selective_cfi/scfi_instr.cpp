@@ -1008,7 +1008,7 @@ static DataScoop_t* find_scoop(FileIR_t *firp,const string &name)
 
 static unsigned int  add_to_scoop(const string &str, DataScoop_t* scoop) 
 {
-	// assert that this scoop is unpinned.  may need to enable --step move_globals --step-option move_globals:--cfi
+	// assert that this scoop is unpinned.  may need to enable --step move_globals --step-option move_globals:--elftables-only
 	assert(scoop->GetStart()->GetVirtualOffset()==0);
 	int len=str.length();
 	scoop->SetContents(scoop->GetContents()+str);

@@ -30,7 +30,7 @@ do_cfi()
 		return
 	fi
 	echo -n "$(basename $2) ... "
-        $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all --step-option zipr:"--add-sections false" > $2.ps_output 2>&1
+        $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--elftables-only  --step-option fix_calls:--fix-all --step-option zipr:"--add-sections false" > $2.ps_output 2>&1
 	check_fail $1 $2 $?
 }
 
@@ -41,7 +41,7 @@ do_coloring_cfi()
 		return
 	fi
 	echo -n "$(basename $2) ... "
-        $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all --step-option selective_cfi:--color  --step-option zipr:"--add-sections false"> $2.ps_output 2>&1
+        $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--elftables-only  --step-option fix_calls:--fix-all --step-option selective_cfi:--color  --step-option zipr:"--add-sections false"> $2.ps_output 2>&1
 	check_fail $1 $2 $?
 
 }

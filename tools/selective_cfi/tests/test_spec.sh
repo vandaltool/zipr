@@ -136,8 +136,8 @@ main()
 
 
 	local zipr_flags="--backend zipr"
-	local mm_basic_cfi_flags="--step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--fix-all "
-	local mm_basic_cfi_exe_nonces_flags="--step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--cfi  --step-option fix_calls:--no-fix-safefn --step-option selective_cfi:--exe-nonce-for-call "
+	local mm_basic_cfi_flags="--step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--elftables-only  --step-option fix_calls:--fix-all "
+	local mm_basic_cfi_exe_nonces_flags="--step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--elftables-only  --step-option fix_calls:--no-fix-safefn --step-option selective_cfi:--exe-nonce-for-call "
 	local mm_color_cfi_flags="$mm_basic_cfi_flags --step-option selective_cfi:--color"
 	local trace_flags="-o zipr:--traceplacement:on -o zipr:true"
 	
