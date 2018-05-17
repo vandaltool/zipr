@@ -1,0 +1,3 @@
+[submodule "libcapstone"]
+	path = libcapstone
+	url = https://github.com/aquynh/capstone.git
