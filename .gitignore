@@ -1,0 +1,9 @@
+bin/callbacks.exe
+lib/
+manifest.txt.config
+plugins/large_only.zpi
+plugins/push64_relocs.zpi
+plugins/relax.zpi
+plugins/traceplacement.zpi
+plugins/unpin.zpi
+
