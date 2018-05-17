@@ -1,5 +1,4 @@
 
-
 Congratulations!  You've received a copy of
 the Zipr toolchain.  Before use, you need to install it.
 
