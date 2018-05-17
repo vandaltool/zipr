@@ -1,0 +1,34 @@
+[submodule "security_transforms"]
+	path = security_transforms
+	url = http://git.zephyr-software.com/allnp/security_transforms.git
+[submodule "idaproCur"]
+	path = idaproCur
+	url = http://git.zephyr-software.com/allzp/idapro71
+[submodule "idaproCur_sdk"]
+	path = idaproCur_sdk
+	url = http://git.zephyr-software.com/allzp/idapro71_sdk
+[submodule "irdb_transforms"]
+	path = irdb_transforms
+	url = http://git.zephyr-software.com/allnp/irdb_transforms.git
+[submodule "SMPStaticAnalyzer"]
+	shallow = true
+	path = SMPStaticAnalyzer
+	url = http://git.zephyr-software.com/allnp/SMPStaticAnalyzer.git
+[submodule "zipr"]
+	path = zipr
+	url = http://git.zephyr-software.com/allzp/zipr.git
+[submodule "zipr_sdk"]
+	path = zipr_sdk
+	url = http://git.zephyr-software.com/allnp/zipr_sdk.git
+[submodule "daffy"]
+	path = daffy
+	url = http://git.zephyr-software.com/allnp/daffy.git
+[submodule "pedi"]
+	path = pedi
+	url = http://git.zephyr-software.com/allnp/pedi.git
+[submodule "IdaProServer"]
+	path = IdaProServer
+	url = http://git.zephyr-software.com/allnp/IdaProServer.git
+[submodule "zipr_large_only_plugin"]
+	path = zipr_large_only_plugin
+	url = http://git.zephyr-software.com/allnp/zipr_large_only_plugin.git
