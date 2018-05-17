@@ -32,3 +32,27 @@
 [submodule "zipr_large_only_plugin"]
 	path = zipr_large_only_plugin
 	url = http://git.zephyr-software.com/allnp/zipr_large_only_plugin.git
+[submodule "peasoup_examples"]
+	path = peasoup_examples
+	url = http://git.zephyr-software.com/allnp/peasoup_examples.git
+[submodule "zipr_callbacks"]
+	path = zipr_callbacks
+	url = http://git.zephyr-software.com/allnp/zipr_callbacks.git
+[submodule "zipr_unpin_plugin"]
+	path = zipr_unpin_plugin
+	url = http://git.zephyr-software.com/allnp/zipr_unpin_plugin.git
+[submodule "zipr_scfi_plugin"]
+	path = zipr_scfi_plugin
+	url = http://git.zephyr-software.com/allzp/zipr_scfi_plugin.git
+[submodule "zipr_relax_plugin"]
+	path = zipr_relax_plugin
+	url = http://git.zephyr-software.com/allnp/zipr_relax_plugin.git
+[submodule "zipr_trace_plugin"]
+	path = zipr_trace_plugin
+	url = http://git.zephyr-software.com/allnp/zipr_trace_plugin.git
+[submodule "zipr_push64_reloc_plugin"]
+	path = zipr_push64_reloc_plugin
+	url = http://git.zephyr-software.com/allnp/zipr_push64_reloc_plugin.git
+[submodule "zipr_install"]
+	path = zipr_install
+	url = http://git.zephyr-software.com/allnp/zipr_install.git
