@@ -45,11 +45,13 @@ else:
 		     os.path.join(os.environ['SECURITY_TRANSFORMS_HOME'],"include","targ-config.h"))
 
     os.chdir(os.environ['SECURITY_TRANSFORMS_HOME']+"/libcapstone")
+    print "Rebuilding libcapstone."
     os.system("./make.sh ")
     os.chdir(os.environ['SECURITY_TRANSFORMS_HOME']+"/libcapstone")
     if not os.path.exists(os.environ['SECURITY_TRANSFORMS_HOME']+"/libcapstone/zipr_unpack"):
 	    os.mkdir(os.environ['SECURITY_TRANSFORMS_HOME']+"/libcapstone/zipr_unpack")
 	    os.chdir(os.environ['SECURITY_TRANSFORMS_HOME']+"/libcapstone/zipr_unpack")
+            print "Unpacking libcapstone.a for libIRDB-core."
 	    os.system("ar x "+os.environ['SECURITY_TRANSFORMS_HOME']+"/libcapstone/libcapstone.a")
     os.chdir(os.environ['SECURITY_TRANSFORMS_HOME'])
 
