@@ -2,5 +2,17 @@ build/
 include/elfio/
 include/targ-config.h
 third_party/ELFIO/
+.sconsign.dblite
+beaengine/beaengineSources/BeaEngine.o
+bin/
+lib/
+manifest.txt.config
+plugins_install/dump_map.exe
+plugins_install/fix_rets.exe
+plugins_install/hook_start.exe
+plugins_install/ilr.exe
+plugins_install/selective_cfi.exe
+tools/meds2pdb/meds2pdb
+
 
 
