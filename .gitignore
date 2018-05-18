@@ -7,20 +7,6 @@ beaengine/beaengineSources/BeaEngine.o
 bin/
 lib/
 manifest.txt.config
-plugins_install/dump_map.exe
-plugins_install/fix_rets.exe
-plugins_install/hook_start.exe
-plugins_install/ilr.exe
-plugins_install/selective_cfi.exe
 tools/meds2pdb/meds2pdb
-plugins_install/add_lib.exe
-plugins_install/duck_season.exe
-plugins_install/initialize_stack.exe
-plugins_install/kill_deads.exe
-plugins_install/move_globals.exe
-plugins_install/non_overlapping_stack.exe
-plugins_install/resolve_callbacks.exe
-plugins_install/set_interpreter.exe
-plugins_install/stack_stamp.exe
-plugins_install/xor_globals.exe
+plugins_install/*.exe
 
