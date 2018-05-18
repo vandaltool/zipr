@@ -4,7 +4,6 @@ submanifest peasoup_examples/manifest.txt
 submanifest idaproCur/manifest.txt
 submanifest SMPStaticAnalyzer/manifest.txt
 submanifest zipr_install/manifest.txt
-#submanifest stratafier/manifest.txt
 submanifest IdaProServer/manifest.txt
 submanifest ubuntu16_files/manifest.txt
 file set_command_envs ps
