@@ -4,7 +4,7 @@ libcpath=""
 
 do_cfi()
 {
-	$PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--elftables-only  --step-option fix_calls:--fix-all --step-option zipr:"--add-sections false"
+	(set -x ; $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--elftables-only  --step-option fix_calls:--fix-all --step-option zipr:"--add-sections false")
 	if [ ! $? -eq 0 ]; then
 		echo "do_cfi(): failed to protect"
 	fi
@@ -12,11 +12,18 @@ do_cfi()
 
 do_cfi_color()
 {
-	$PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--elftables-only  --step-option fix_calls:--fix-all --step-option selective_cfi:--color  --step-option zipr:"--add-sections false"
+	(set -x ; $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--elftables-only  --step-option fix_calls:--fix-all --step-option selective_cfi:--color  --step-option zipr:"--add-sections false" )
 	if [ ! $? -eq 0 ]; then
 		echo "do_coloring_cfi(): failed to protect"
 	fi
 }
+
+# Note: exe nonce cfi doesn't always run against non-exe nonce cfi modules
+do_cfi_exe_nonces()
+{
+        (set -x ; $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--elftables-only  --step-option fix_calls:--no-fix-safefn --step-option selective_cfi:--exe-nonce-for-call --step-option zipr:"--add-sections false" )
+}
+
 
 
 get_correct()
@@ -56,10 +63,15 @@ build()
 
 protect()
 {
+	do_cfi_exe_nonces libc.so.6.orig libc-2.19.so.noncecfi
+	do_cfi_exe_nonces libc_driver.exe libc_driver.exe.noncecfi
+
 	do_cfi libc.so.6.orig libc-2.19.so.cfi
 	do_cfi libc_driver.exe libc_driver.exe.cfi
+
 	do_cfi_color libc.so.6.orig libc-2.19.so.colorcfi
 	do_cfi_color libc_driver.exe libc_driver.exe.colorcfi
+
 }
 
 clean()
@@ -84,12 +96,23 @@ main()
 	test libc_driver.exe 		libc.so.6.orig
 	test libc_driver.exe.cfi 	libc.so.6.orig
 	test libc_driver.exe.colorcfi 	libc.so.6.orig
+	test libc_driver.exe.noncecfi 	libc.so.6.orig
+
 	test libc_driver.exe 		libc.so.6.cfi
 	test libc_driver.exe.cfi 	libc.so.6.cfi
 	test libc_driver.exe.colorcfi 	libc.so.6.cfi
+	test libc_driver.exe.noncecfi 	libc.so.6.cfi
+
 	test libc_driver.exe		libc.so.6.colorcfi
 	test libc_driver.exe.cfi	libc.so.6.colorcfi
 	test libc_driver.exe.colorcfi	libc.so.6.colorcfi
+	test libc_driver.exe.noncecfi	libc.so.6.colorcfi
+
+	test libc_driver.exe		libc.so.6.noncecfi
+	test libc_driver.exe.cfi	libc.so.6.noncecfi
+	test libc_driver.exe.colorcfi	libc.so.6.noncecfi
+	test libc_driver.exe.noncecfi	libc.so.6.noncecfi
+
 
 	report
 	clean

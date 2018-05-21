@@ -121,7 +121,7 @@ get_raw_results()
 		do
 			file="$SPEC/result.$config/$(basename $bench)"
 			get_size_result $file 
-			echo -n "	"
+			echo -n " 	"
 		done
 		echo
 	done
@@ -153,9 +153,10 @@ main()
 
 	# zipr, basic cfi, color cfi
 	# with trace placement
-	PSOPTS="$zipr_flags $trace_flags "  			run_test zipr-trace         $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
-	PSOPTS="$zipr_flags $mm_basic_cfi_flags  $trace_flags " run_test mm-basic-cfi-trace $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
-	PSOPTS="$zipr_flags $mm_color_cfi_flags $trace_flags " 	run_test mm-color-cfi-trace $SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	PSOPTS="$zipr_flags $trace_flags "  					run_test zipr-trace         		$SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	PSOPTS="$zipr_flags $mm_basic_cfi_flags  $trace_flags " 		run_test mm-basic-cfi-trace 		$SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	PSOPTS="$zipr_flags $mm_basic_cfi_exe_nonces_flags $trace_flags "   	run_test mm-basic-cfi-exe-nonces-trace 	$SPEC/config/ubuntu14.04lts-64bit-withps.cfg
+	PSOPTS="$zipr_flags $mm_color_cfi_flags $trace_flags " 			run_test mm-color-cfi-trace 		$SPEC/config/ubuntu14.04lts-64bit-withps.cfg
 
 	get_raw_results 
 
