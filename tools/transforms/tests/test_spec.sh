@@ -27,7 +27,8 @@ setup()
 {
 
 	if [ ! -d spec2006 ]; then
-		svn co ^/spec2006/trunk spec2006
+		#svn co ^/spec2006/trunk spec2006
+		git clone --depth 1 http://git.zephyr-software.com/allzp/spec2006.git spec2006
 	fi
 
 	if [[ ! -f /usr/bin/gfortran ]]; then
