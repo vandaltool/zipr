@@ -53,6 +53,7 @@ using namespace libIRDB;
 using namespace std;
 using namespace zipr;
 using namespace ELFIO;
+using namespace IRDBUtility;
 
 
 inline uintptr_t page_round_up(uintptr_t x)
