@@ -51,7 +51,6 @@ libs='''
 	BeaEngine_s_d 
 	pqxx  
 	transform 
-	rewrite 
 	pq 
 	dl 
 	EXEIO
