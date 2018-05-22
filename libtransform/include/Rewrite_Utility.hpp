@@ -39,6 +39,19 @@ enum mitigation_policy
 //This duplicate is returned since the user already has a pointer to first. 
 Instruction_t* insertAssemblyBefore(FileIR_t* virp, Instruction_t* first, string assembly, Instruction_t *target);
 Instruction_t* insertAssemblyBefore(FileIR_t* virp, Instruction_t* first, string assembly);
+Instruction_t* insertDataBitsBefore(FileIR_t* virp, Instruction_t* first, string dataBits, Instruction_t *target);
+Instruction_t* insertDataBitsBefore(FileIR_t* virp, Instruction_t* first, string dataBits);
+
+// insert new instructions after, diff types.
+Instruction_t* insertAssemblyAfter(FileIR_t* virp, Instruction_t* first, string assembly, Instruction_t *target);
+Instruction_t* insertAssemblyAfter(FileIR_t* virp, Instruction_t* first, string assembly);
+Instruction_t* insertDataBitsAfter(FileIR_t* virp, Instruction_t* first, string dataBits, Instruction_t *target);
+Instruction_t* insertDataBitsAfter(FileIR_t* virp, Instruction_t* first, string dataBits);
+
+// add new instructions of diff types.
+Instruction_t* addNewDatabits(FileIR_t* firp, Instruction_t *p_instr, string p_bits);
+Instruction_t* addNewAssembly(FileIR_t* firp, Instruction_t *p_instr, string p_asm);
+
 
 //Does not insert into any variant, just copies data about the instruction itself, see the copyInstruction(src,dest) to see what is copied. 
 Instruction_t* copyInstruction(Instruction_t* instr);

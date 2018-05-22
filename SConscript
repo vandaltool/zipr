@@ -70,11 +70,11 @@ if "CYGWIN" in sysname:
 
 Export('env')
 
+libtransform=SConscript("libtransform/SConscript", variant_dir='scons_build/libtransform')
 libEXEIO=SConscript("libEXEIO/SConscript", variant_dir='scons_build/libEXEIO')
 libbea=SConscript("beaengine/SConscript", variant_dir='scons_build/beaengine')
 libMEDSannotation=SConscript("libMEDSannotation/SConscript", variant_dir='scons_build/libMEDSannotation')
 libxform=SConscript("xform/SConscript", variant_dir='scons_build/libxform')
-libtransform=SConscript("libtransform/SConscript", variant_dir='scons_build/libtransform')
 libIRDB=SConscript("libIRDB/SConscript", variant_dir='scons_build/libIRDB')
 libStructDiv=SConscript("libStructDiv/SConscript", variant_dir='scons_build/libStructDiv')
 libElfDep=SConscript("libElfDep/SConscript", variant_dir='scons_build/libElfDep')

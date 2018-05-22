@@ -7,6 +7,7 @@
 using namespace libTransform;
 using namespace ELFIO;
 using namespace libIRDB;
+using namespace IRDBUtility;
 
 HookStart::HookStart(FileIR_t *p_variantIR) :
 	Transform(NULL, p_variantIR, NULL),

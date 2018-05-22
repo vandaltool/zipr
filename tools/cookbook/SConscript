@@ -42,7 +42,7 @@ myenv.Append(CPPDEFINES=CPPDEFINES)
 cookbook_obj = myenv.Object(Dir('.').srcnode().abspath+"/x86_64_linux/cookbook.cpp")
 
 LIBPATH="$SECURITY_TRANSFORMS_HOME/lib"
-LIBS=cookbook_obj + Split("xform IRDB-core IRDB-cfg IRDB-util pqxx BeaEngine_s_d rewrite transform MEDSannotation " + env.subst('$BASE_IRDB_LIBS') )
+LIBS=cookbook_obj + Split("xform IRDB-core IRDB-cfg IRDB-util pqxx BeaEngine_s_d transform MEDSannotation " + env.subst('$BASE_IRDB_LIBS') )
 
 for pgm in pgms.keys():
 	ppgms.append(myenv.Program(pgm,  pgms[pgm],  LIBPATH=LIBPATH, LIBS=LIBS))

@@ -36,6 +36,16 @@
 
 using namespace std;
 using namespace libIRDB;
+using namespace IRDBUtility;
+
+string getRetDataBits()
+{
+        string dataBits;
+        dataBits.resize(1);
+        dataBits[0] = 0xc3;
+        return dataBits;
+}
+
 
 
 Relocation_t* SCFI_Instrument::FindRelocation(Instruction_t* insn, string type)
