@@ -200,7 +200,7 @@ DecodedInstructionCapstone_t::DecodedInstructionCapstone_t(const Instruction_t* 
 	const auto address=i->GetAddress()->GetVirtualOffset();
         Disassemble(address,data,length);
 
-	if(!valid()) throw std::invalid_argument("The Insruction_t::GetDataBits field is not a valid instruction.");
+	if(!valid()) throw std::invalid_argument("The Instruction_t::GetDataBits field is not a valid instruction.");
 }
 
 DecodedInstructionCapstone_t::DecodedInstructionCapstone_t(const virtual_offset_t start_addr, const void *data, uint32_t max_len)
