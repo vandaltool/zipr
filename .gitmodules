@@ -2,9 +2,11 @@
 	path = security_transforms
 	url = http://git.zephyr-software.com/allnp/security_transforms.git
 [submodule "idaproCur"]
+	shallow = true
 	path = idaproCur
 	url = http://git.zephyr-software.com/allzp/idapro71
 [submodule "idaproCur_sdk"]
+	shallow = true
 	path = idaproCur_sdk
 	url = http://git.zephyr-software.com/allzp/idapro71_sdk
 [submodule "irdb_transforms"]
