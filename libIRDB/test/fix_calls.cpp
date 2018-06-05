@@ -290,49 +290,6 @@ bool call_needs_fix(Instruction_t* insn)
 		return ret;
 	}
 
-	/* now, search the function for stack references  */
-
-// is this even right with the assembler switch ? 
-#if 0
-	/* determine what the stack ref. would look like */
-	if(func->GetUseFramePointer())
-	{
-		pattern="[ebp+0x04]";
-	}
-	else
-	{
-		pattern="[esp+"+to_string(func->GetStackFrameSize())+"]";
-	}
-
-
-	/* check each instruction */
-	for(
-		std::set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
-		it!=func->GetInstructions().end();
-		++it
-	   )
-	{
-		Instruction_t* itrinsn=*it;
-		/* if the disassembly contains the string mentioned */
-		//DISASM disasm;
-		//Disassemble(itrinsn,disasm);
-		DecodedInstruction_t disasm(itrinsn);
-		if(strstr(disasm.getDisassembly().c_str() /*disasm.CompleteInstr*/, pattern.c_str())!=NULL) 
-		{
-			found_pattern++;
-			if(getenv("VERBOSE_FIX_CALLS"))
-			{
-				virtual_offset_t addr = 0;
-				if (insn->GetAddress())
-					addr = insn->GetAddress()->GetVirtualOffset();
-				cout<<"Needs fix: Found pattern"<< " address="
-				    <<hex<<addr<<": "<<insn->getDisassembly()<<endl;
-			}
-			/* then we need to fix this callsite */ 
-			return true;
-		}
-	}
-#endif
 
 	/* otherwise, we think it's safe */
 	return false;
@@ -554,15 +511,9 @@ void fix_call(Instruction_t* insn, FileIR_t *firp, bool can_unpin)
 {
 	/* record the possibly new indirect branch target if this call gets fixed */
 	Instruction_t* newindirtarg=insn->GetFallthrough();
-	//bool has_rex=false;
-
-	/* disassemble */
-        //DISASM disasm;
-	DecodedInstruction_t disasm(insn);
 
         /* Disassemble the instruction */
-        //int instr_len = disasm.length(); // Disassemble(insn,disasm);
-
+	DecodedInstruction_t disasm(insn);
 
 	/* if this instruction is an inserted call instruction than we don't need to 
 	 * convert it for correctness' sake.
@@ -575,10 +526,7 @@ void fix_call(Instruction_t* insn, FileIR_t *firp, bool can_unpin)
 	 */
 	if((insn->GetDataBits()[0]&0x40)==0x40)
 	{
-#if 0
-		// has rex!
-		has_rex=true;
-#endif
+		// ignore rex prefixes
 	}
 	else if( (insn->GetDataBits()[0]!=(char)0xff) && 
 		 (insn->GetDataBits()[0]!=(char)0xe8) && 
@@ -753,6 +701,24 @@ template <class T> struct insn_less : binary_function <T,T,bool> {
 };
 
 
+// 
+// Mark ret_point as an unpinned IBT.
+//
+void mark_as_unpinned_ibt(FileIR_t* firp, Instruction_t* ret_point)
+{
+	if( ret_point == NULL ) return;
+	if( ret_point->GetIndirectBranchTargetAddress() != NULL ) return;
+	
+	auto newaddr = new AddressID_t;
+	assert(newaddr);
+	newaddr->SetFileID(ret_point->GetAddress()->GetFileID());
+	newaddr->SetVirtualOffset(0);	// unpinne
+	
+	firp->GetAddresses().insert(newaddr);
+	ret_point->SetIndirectBranchTargetAddress(newaddr);
+	
+}
+
 //
 // fix_all_calls - convert calls to push/jump pairs in the IR.  if fix_all is true, all calls are converted, 
 // else we attempt to detect the calls it is safe to convert.
@@ -818,7 +784,8 @@ void fix_all_calls(FileIR_t* firp, bool print_stats, bool fix_all)
 			else
 			{
 				if(getenv("VERBOSE_FIX_CALLS"))
-					cout<<"no fix needed for "<<insn->GetAddress()->GetVirtualOffset()<<":"<<insn->getDisassembly()<<endl;
+					cout<<"No fix needed, marking ret site IBT, for "<<insn->GetAddress()->GetVirtualOffset()<<":"<<insn->getDisassembly()<<endl;
+				mark_as_unpinned_ibt(firp, insn->GetFallthrough());
 				not_fixed_calls++;
 			}
 		}
@@ -859,18 +826,6 @@ void fix_all_calls(FileIR_t* firp, bool print_stats, bool fix_all)
 		no_fix_for_ib=0;
 	}
 }
-
-#if 0
-bool arg_has_relative(const ARGTYPE &arg)
-{
-	/* if it's relative memory, watch out! */
-	if(arg.ArgType&MEMORY_TYPE)
-		if(arg.ArgType&RELATIVE_)
-			return true;
-	
-	return false;
-}
-#endif
 
 
 //
