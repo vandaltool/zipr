@@ -350,21 +350,6 @@ void SCFI_Instrument::AddJumpCFI(Instruction_t* insn)
 	cout<<"Converting ' "<<insn->getDisassembly()<<"' to '";
 	Instruction_t* after=insertDataBitsBefore(firp,insn,pushbits); 
 	move_relocs(after,insn);
-#ifdef CGC
-	// insert the pop/checking code.
-	cout<<insn->getDisassembly()<<"+jmp slowpath'"<<endl;
-
-	string jmpBits=getJumpDataBits();
-        after->SetDataBits(jmpBits);
-        after->SetComment(insn->getDisassembly()+" ; scfi");
-	assert(do_common_slow_path); /* fixme:  this defaults to the slow_cfi path.  need to color accordingly */
-	createNewRelocation(firp,after,"slow_cfi_path",0);
-	after->SetFallthrough(NULL);
-	after->SetTarget(after);
-	after->SetIBTargets(NULL); // lose information about ib targets.
-	insn->SetIBTargets(NULL); // lose information about ib targets.
-	return;
-#else
 	
 	after->SetDataBits(getRetDataBits());
 	cout <<insn->getDisassembly()<<" + ret' "<<endl ;
@@ -377,7 +362,6 @@ void SCFI_Instrument::AddJumpCFI(Instruction_t* insn)
 	AddReturnCFI(after,v);
 	// cout<<"Warning, JUMPS not CFI's yet"<<endl;
 	return;
-#endif
 }
 
 //TODO: Does not work with coloring
@@ -420,6 +404,10 @@ void SCFI_Instrument::AddCallCFIWithExeNonce(Instruction_t* insn)
 	string pushbits=change_to_push(insn);
    call=insertDataBitsBefore(firp, insn, pushbits);
         insertAssemblyAfter(firp,insn,string("pop ")+reg);
+
+	// keep any relocs on the push instruction, as those may need updating.
+	insn->GetRelocations()=call->GetRelocations();
+	call->GetRelocations().clear();
 
         stub=addNewAssembly(firp,stub,string("cmp ")+decoration+
                 " ["+reg+"-"+to_string(nonce_offset)+"], "+to_string(nonce));
@@ -493,49 +481,6 @@ void SCFI_Instrument::AddReturnCFIForExeNonce(Instruction_t* insn, ColoredSlotVa
 		insn=newafter;
 	}
 		
-#ifdef CGC
-#if 0
-	ret -> jmp shared
-
-	shared: 
-		and [rsp], 0x7ffffffff
-		mov reg <- [ rsp ] 
-		cmp [reg], exe_nonce_value
-		jne slow
-		ret
-
-#endif
-
-	string jmpBits=getJumpDataBits();
-
-#ifndef CGC
-	assert(0); // not ported to non-cgc mode
-#endif
-	if(!ret_shared)
-	{
-        	string clamp_str="and "+worddec+"["+rspreg+"], 0x7fffffff";
-		Instruction_t* tmp=NULL;
-		ret_shared=
-#ifdef CGC
-        	tmp=addNewAssembly(firp,tmp,clamp_str); // FIXME???
-		tmp=addNewAssembly(firp, tmp, "mov "+reg+", ["+rspreg+"]");
-#else
-		tmp=addNewAssembly(firp, "mov "+reg+", ["+rspreg+"]");
-#endif
-// fixme:  get value from ExecutableNonceString -- somewhat challening
-		tmp=addNewAssembly(firp, tmp, "cmp byte ["+reg+"], 0x90");
-		tmp=addNewAssembly(firp, tmp, "jne 0");
-		createNewRelocation(firp,tmp,"slow_cfi_path",0);
-		tmp->SetTarget(tmp);
-		tmp=addNewAssembly(firp, tmp, "ret");
-
-	}
-	
-        insn->SetDataBits(jmpBits);
-	insn->SetTarget(ret_shared);
-
-	return;
-#else
 	//TODO: Fix possible TOCTOU race condition (see Abadi CFI paper)
 	//	Ret address can be changed between nonce check and ret insn execution (in theory)
         string decoration="";
@@ -578,7 +523,6 @@ void SCFI_Instrument::AddReturnCFIForExeNonce(Instruction_t* insn, ColoredSlotVa
 	// leave the ret instruction (risk of successful race condition exploit << performance benefit)
 
 	return;
-#endif
 	
 }
 
@@ -652,20 +596,6 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 	
 	
 
-#ifdef CGC
-	// insert the pop/checking code.
-	Instruction_t* after=insn;
-
-	string jmpBits=getJumpDataBits();
-	
-        after->SetDataBits(jmpBits);
-        after->SetComment(insn->getDisassembly()+" ; scfi");
-	createNewRelocation(firp,after,slow_cfi_path_reloc_string,0);
-	after->SetFallthrough(NULL);
-	after->SetTarget(after);
-	return;
-	
-#else
 
 	string decoration="";
 	int nonce_size=GetNonceSize(insn);
@@ -712,7 +642,6 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 	cout<<"Setting slow path for: "<<slow_cfi_path_reloc_string<<endl;
 
 	return;
-#endif
 }
 
 static void display_histogram(std::ostream& out, std::string attr_label, std::map<int,int> & p_map)
