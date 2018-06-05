@@ -65,13 +65,5 @@ Instruction_t* allocateNewInstruction(FileIR_t* virp, Instruction_t *template_in
 void setInstructionAssembly(FileIR_t* virp,Instruction_t *p_instr, string p_assembly, Instruction_t *p_fallThrough, Instruction_t *p_target);
 Instruction_t* getHandlerCode(FileIR_t* virp, Instruction_t* fallthrough, mitigation_policy policy );
 
-string getJumpDataBits();
-string getJnsDataBits();
-string getJzDataBits();
-string getJnzDataBits();
-string getJecxzDataBits();
-string getRetDataBits();
-
-Relocation_t* createNewRelocation(FileIR_t* firp, Instruction_t* insn, string type, int offset);
 
 }
