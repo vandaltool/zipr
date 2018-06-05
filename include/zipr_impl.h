@@ -55,7 +55,7 @@ class ZiprImpl_t : public Zipr_t
 			m_verbose("verbose", false),
 			m_vverbose("very_verbose", false),
 			m_apply_nop("apply_nop", false),
-			m_add_sections("add-sections", false),
+			m_add_sections("add-sections", true),
 			m_bss_opts("bss-opts", true),
 			m_variant("variant"),
 			m_architecture("architecture"),
