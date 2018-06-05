@@ -588,7 +588,10 @@ void ZiprImpl_t::AddPinnedInstructions()
 		Instruction_t* insn=*it;
 		assert(insn);
 
-		if(!insn->GetIndirectBranchTargetAddress())
+		if(insn->GetIndirectBranchTargetAddress()==NULL)
+			continue;
+
+		if(insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()==0)
 			continue;
 
 		// deal with unassigned IBTAs.
