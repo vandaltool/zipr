@@ -68,6 +68,7 @@ Instruction_t* insertAssemblyBefore(FileIR_t* virp, Instruction_t* first, string
 	//"Null" out the original address (it should be as if the instruction was not in the database).
 	first->SetOriginalAddressID(BaseObj_t::NOT_IN_DATABASE);
 	first->GetRelocations().clear();
+        first->SetIBTargets(NULL);
 
 	virp->ChangeRegistryKey(first,next);
 	setInstructionAssembly(virp,first,assembly,next,target);
@@ -201,7 +202,10 @@ void copyInstruction(Instruction_t* src, Instruction_t* dest)
 	dest->SetCallback(src->GetCallback());
 	dest->SetFallthrough(src->GetFallthrough());
 	dest->SetTarget(src->GetTarget());
+        dest->SetIBTargets(src->GetIBTargets()); 
 	dest->GetRelocations()=src->GetRelocations();
+        dest->SetEhProgram(src->GetEhProgram());
+	dest->SetEhCallSite(src->GetEhCallSite());
 }
 
 Instruction_t* allocateNewInstruction(FileIR_t* virp, db_id_t p_fileID,Function_t* func)
@@ -243,5 +247,84 @@ void setInstructionAssembly(FileIR_t* virp,Instruction_t *p_instr, string p_asse
 	virp->GetAddresses().insert(p_instr->GetAddress());
 	virp->GetInstructions().insert(p_instr);
 }
+
+
+string getRetDataBits()
+{
+	string dataBits;
+	dataBits.resize(1);
+	dataBits[0] = 0xc3;
+	return dataBits;
+}
+
+
+string getJumpDataBits()
+{
+	string dataBits;
+	dataBits.resize(5);
+	dataBits[0] = 0xe9;
+	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
+	dataBits[2] = 0x00; // value doesn't matter -- we will fill it in later
+	dataBits[3] = 0x00; // value doesn't matter -- we will fill it in later
+	dataBits[4] = 0x00; // value doesn't matter -- we will fill it in later
+	return dataBits;
+}
+
+// jns - jump not signed
+string getJnsDataBits()
+{
+	string dataBits;
+	dataBits.resize(2);
+	dataBits[0] = 0x79;
+	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
+	return dataBits;
+}
+
+// jz - jump zero
+string	getJzDataBits()
+{
+	string dataBits;
+	dataBits.resize(2);
+	dataBits[0] = 0x74;
+	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
+
+	return dataBits;
+}
+
+// jnz - jump not zero
+string getJnzDataBits()
+{
+	string dataBits;
+	dataBits.resize(2);
+	dataBits[0] = 0x75;
+	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
+
+	return dataBits;	
+}
+
+// jecxz - jump ecx zero
+string getJecxzDataBits()
+{
+	string dataBits;
+	dataBits.resize(2);
+	dataBits[0] = 0xe3;
+	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
+
+	return dataBits;	
+}
+
+
+Relocation_t* createNewRelocation(FileIR_t* firp, Instruction_t* insn, string type, int offset)
+{
+        Relocation_t* reloc=new Relocation_t;
+        insn->GetRelocations().insert(reloc);
+        firp->GetRelocations().insert(reloc);
+
+	reloc->SetType(type);
+	reloc->SetOffset(offset);
+
+        return reloc;
+}
+
 
 }
