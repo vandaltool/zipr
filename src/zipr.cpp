@@ -176,6 +176,7 @@ ZiprOptionsNamespace_t *ZiprImpl_t::RegisterOptions(ZiprOptionsNamespace_t *glob
 		"which contains any required callbacks.");
 	m_seed.SetDescription("Seed the random number generator with this value.");
 	m_dollop_map_filename.SetDescription("Specify filename to save dollop map.");
+	m_paddable_minimum_distance.SetDescription("Specify the minimum size of a gap to be filled.");
 
 	// our pid is a fine default value -- had issues with time(NULL) as two copies of zipr from 
 	// were getting the same time(NULL) return value since we invoked them in parallel.
@@ -188,6 +189,7 @@ ZiprOptionsNamespace_t *ZiprImpl_t::RegisterOptions(ZiprOptionsNamespace_t *glob
 	zipr_namespace->AddOption(&m_objcopy);
 	zipr_namespace->AddOption(&m_seed);
 	zipr_namespace->AddOption(&m_dollop_map_filename);
+	zipr_namespace->AddOption(&m_paddable_minimum_distance);
 
 	global->AddOption(&m_variant);
 	global->AddOption(&m_verbose);
@@ -500,8 +502,12 @@ RangeAddress_t ZiprImpl_t::PlaceUnplacedScoops(RangeAddress_t max_addr)
 
 void ZiprImpl_t::FindFreeRanges(const std::string &name)
 {
+	DataScoop_t *textra_scoop = nullptr;
+	AddressID_t *textra_start_addr = new AddressID_t(),
+	            *textra_end_addr = new AddressID_t();
+	RangeAddress_t textra_start, textra_end;
+	string textra_contents, textra_name;
 	RangeAddress_t max_addr=0;
-
 	std::map<RangeAddress_t, int> ordered_sections;
 
 	/*
@@ -520,7 +526,6 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 
 
 	CreateExecutableScoops(ordered_sections);
-
 
 	// scan sections for a max-addr.
 	std::map<RangeAddress_t, int>::iterator it = ordered_sections.begin();
@@ -549,6 +554,84 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 
 	}
 
+	/*
+	 *  First things first: Let's put empty scoops
+	 *  in all the gaps.
+	 */
+
+	if (m_verbose)
+		cout << "Filling gaps that are larger than " << std::dec
+		     << m_paddable_minimum_distance << " bytes." << endl;
+
+	DataScoopByAddressSet_t sorted_scoop_set(m_firp->GetDataScoops().begin(),
+	                                         m_firp->GetDataScoops().end());
+	for(
+		DataScoopByAddressSet_t::iterator it=sorted_scoop_set.begin();
+		it!=sorted_scoop_set.end();
+		++it
+	   )
+	{
+		DataScoop_t* this_scoop=*it;
+		DataScoop_t* next_scoop=NULL;
+		RangeAddress_t this_end = this_scoop->GetEnd()->GetVirtualOffset(),
+		               next_start = 0;
+
+		if (m_verbose)
+			cout << "There's a scoop between " << std::hex
+		       << this_scoop->GetStart()->GetVirtualOffset()
+		       << " and " << std::hex << this_scoop->GetEnd()->GetVirtualOffset()
+		       << endl;
+
+		if (std::next(it,1) != sorted_scoop_set.end())
+		{
+			next_scoop = *std::next(it,1);
+			next_start = next_scoop->GetStart()->GetVirtualOffset();
+
+			if ((next_start - this_end) > (unsigned int)m_paddable_minimum_distance)
+			{
+				DataScoop_t *new_padding_scoop = nullptr;
+				AddressID_t *new_padding_scoop_start_addr = new AddressID_t(),
+				            *new_padding_scoop_end_addr = new AddressID_t();
+				RangeAddress_t new_padding_scoop_start, new_padding_scoop_end;
+				string new_padding_scoop_contents, new_padding_scoop_name;
+
+				//new_padding_scoop_start = page_round_up(this_end + 1);
+				new_padding_scoop_start = this_end + 1;
+				//new_padding_scoop_end = page_round_down(next_start - 1);
+				new_padding_scoop_end = next_start - 1;
+
+				new_padding_scoop_name = "zipr_scoop_"+
+				                         to_string(new_padding_scoop_start);
+
+				new_padding_scoop_start_addr->SetVirtualOffset(new_padding_scoop_start);
+				new_padding_scoop_end_addr->SetVirtualOffset(new_padding_scoop_end);
+
+				cout << "New free space: 0x" << std::hex << new_padding_scoop_start
+				     << "-0x"
+				     << std::hex << new_padding_scoop_end
+				     << endl;
+
+				new_padding_scoop = new DataScoop_t(m_firp->GetMaxBaseID()+1,
+				                                    new_padding_scoop_name,
+				                                    new_padding_scoop_start_addr,
+				                                    new_padding_scoop_end_addr,
+				                                    NULL,
+				                                    5,
+				                                    false,
+				                                    new_padding_scoop_contents);
+				new_padding_scoop_contents.resize(new_padding_scoop->GetSize());
+				new_padding_scoop->SetContents(new_padding_scoop_contents);
+
+				m_zipr_scoops.insert(new_padding_scoop);
+				m_firp->GetAddresses().insert(new_padding_scoop_start_addr);
+				m_firp->GetAddresses().insert(new_padding_scoop_end_addr);
+
+				memory_space.AddFreeRange(Range_t(new_padding_scoop_start,
+				                                  new_padding_scoop_end), true);
+			}
+		}
+	}
+
 	// scan scoops for a max-addr.
 	for(
 		DataScoopSet_t::iterator it=m_firp->GetDataScoops().begin(); 
@@ -571,6 +654,45 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 	// the sections existing in the ELF.
 	RangeAddress_t new_free_page=page_round_up(max_addr);
 
+
+	/*
+	 * TODO
+	 *
+	 * Make a scoop out of this. Insert it into m_zipr_scoops
+	 * and m_firp->GetDataScoops()
+	 */
+	textra_start = new_free_page;
+	textra_end = (RangeAddress_t)-1;
+	textra_name = "textra";
+
+	textra_start_addr->SetVirtualOffset(textra_start);
+	textra_end_addr->SetVirtualOffset(textra_end);
+
+	cout << "New free space: 0x" << std::hex << textra_start
+	     << "-0x"
+	     << std::hex << textra_end
+	     << endl;
+
+	textra_scoop = new DataScoop_t(m_firp->GetMaxBaseID()+1,
+	                                    textra_name,
+	                                    textra_start_addr,
+	                                    textra_end_addr,
+	                                    NULL,
+	                                    5,
+	                                    false,
+	                                    textra_contents);
+
+	/*
+	 * Normally we would have to resize the underlying contents here.
+	 * Unfortunately that's not a smart idea since it will be really big.
+	 * Instead, we are going to do a batch resizing below.
+	textra_contents.resize(textra_end - textra_start + 1);
+	textra_scoop->SetContents(textra_contents);
+	 */
+
+	m_zipr_scoops.insert(textra_scoop);
+	m_firp->GetAddresses().insert(textra_start_addr);
+	m_firp->GetAddresses().insert(textra_end_addr);
 
 	memory_space.AddFreeRange(Range_t(new_free_page,(RangeAddress_t)-1), true);
 	if (m_verbose)
@@ -3645,7 +3767,7 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 			next_sec = rewrite_headers_elfiop->sections[i+1];
 		}
 		extend_section(sec, next_sec);
-#endif
+#endif //EXTEND_SECTIONS
 	}
 	rewrite_headers_elfiop->save(name);
 
@@ -3654,7 +3776,7 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 #ifdef CGC
         if(!use_stratafier_mode)
                 myfn+=".stripped";
-#endif
+#endif //CGC
 
 	printf("Opening %s\n", myfn.c_str());
 	FILE* fexe=fopen(myfn.c_str(),"r+");
@@ -3683,50 +3805,8 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 	if(!to_insert)
 		perror( "void ZiprImpl_t::OutputBinaryFile(const string &name)");
 
-#endif // support_stratafier_mode
+#endif //support_stratafier_mode
 
-// for elfwriter
-	// find end of textra space.
-	RangeSet_t::iterator it=memory_space.FindFreeRange((RangeAddress_t) -1);
-	assert(memory_space.IsValidRange(it));
-	RangeAddress_t end_of_new_space=it->GetStart();
-
-	if(start_of_new_space != end_of_new_space )
-	{
-
-		// first byte of this range is the last used byte.
-		AddressID_t *textra_start=new AddressID_t();
-		textra_start->SetVirtualOffset(start_of_new_space);
-		m_firp->GetAddresses().insert(textra_start);
-		AddressID_t *textra_end=new AddressID_t();
-		textra_end->SetVirtualOffset(end_of_new_space);
-		m_firp->GetAddresses().insert(textra_end);
-		string textra_contents;
-		textra_contents.resize(end_of_new_space-start_of_new_space);
-		DataScoop_t* textra_scoop=new DataScoop_t(m_firp->GetMaxBaseID()+1, ".textra", textra_start, textra_end, NULL, 5, false, textra_contents);
-		m_firp->GetDataScoops().insert(textra_scoop);
-
-		printf("Dumping addrs %p-%p\n", (void*)start_of_new_space, (void*)end_of_new_space);
-		for(RangeAddress_t i=start_of_new_space;i<end_of_new_space;i++)
-		{
-			char b=0;
-			if(!memory_space.IsByteFree(i))
-			{
-				b=memory_space[i];
-			}
-			if(i-start_of_new_space<200)// keep verbose output short enough.
-			{
-				if (m_verbose)
-					printf("Writing byte %#2x at %p, fileoffset=%llx\n", ((unsigned)b)&0xff, 
-					(void*)i, (long long)(i-start_of_new_space));
-			}
-			textra_scoop->GetContents()[i-start_of_new_space]=b;
-	#ifdef support_stratafier_mode
-			fwrite(&b,1,1,to_insert);
-	#endif
-		}
-
-	}
 #ifdef support_stratafier_mode
 	fclose(to_insert);
 
@@ -4135,6 +4215,8 @@ void ZiprImpl_t::UpdateScoops()
 	   )
 	{
 		DataScoop_t* scoop=*it;
+		virtual_offset_t first_valid_address=0;
+		virtual_offset_t last_valid_address=0;
 
 		if(!scoop->isExecuteable())
 		{
@@ -4143,9 +4225,27 @@ void ZiprImpl_t::UpdateScoops()
 		}
 		assert(m_zipr_scoops.find(scoop)!=m_zipr_scoops.end());
 
-		virtual_offset_t first_valid_address=0;
-		virtual_offset_t last_valid_address=0;
-		for(virtual_offset_t i=scoop->GetStart()->GetVirtualOffset() ; i<= scoop->GetEnd()->GetVirtualOffset(); i++ )
+		/*
+		 * Yes, I know that this adds another iteration, but we need to know
+		 * beforehand about shrinking.
+		 */
+
+		if (scoop->GetName() == "textra")
+		{
+			/*
+			 * We have to do special handling for the textra scoop.
+			 * If we do not, then the sheer scale of the default size
+			 * of the textra scoop will cause Zipr to bomb during the
+			 * next loop.
+			 */
+			RangeSet_t::iterator it=memory_space.FindFreeRange((RangeAddress_t) -1);
+			assert(memory_space.IsValidRange(it));
+			scoop->GetEnd()->SetVirtualOffset(it->GetStart());
+		}
+
+		for(virtual_offset_t i=scoop->GetStart()->GetVirtualOffset();
+		    i<= scoop->GetEnd()->GetVirtualOffset();
+		    i++ )
 		{
 			if( ! memory_space.IsByteFree(i) )
 			{
@@ -4153,15 +4253,10 @@ void ZiprImpl_t::UpdateScoops()
 				if(first_valid_address==0)
 					first_valid_address=i;
 
-				// update the scoop
-				scoop->GetContents()[i-scoop->GetStart()->GetVirtualOffset()]=memory_space[i];
-
 				// record that this address was valid.
 				last_valid_address=i;
-
 			}
 		}
-
 
 		if(last_valid_address==0 || first_valid_address==0)
 		{
@@ -4178,27 +4273,53 @@ void ZiprImpl_t::UpdateScoops()
 			delete scoop->GetEnd();
 			delete scoop;
 			scoop=NULL;
-			
-			
 		}
 		else
 		{
-			if(scoop->GetStart()->GetVirtualOffset() != first_valid_address || scoop->GetEnd()->GetVirtualOffset() != last_valid_address)
-				cout<<"Shrinking scoop "<<scoop->GetName()<<" to "<<hex<<first_valid_address<<"-"<<last_valid_address<<endl;
-			else
+			if ((scoop->GetStart()->GetVirtualOffset() != first_valid_address ||
+			   scoop->GetEnd()->GetVirtualOffset() != last_valid_address) &&
+			   m_verbose)
+			{
+				cout <<"Shrinking scoop "<<scoop->GetName()
+				     <<" to "
+				     << std::hex << first_valid_address << "-"
+				     << std::hex << last_valid_address << endl;
+			}
+			else if (m_verbose)
+			{
 				cout<<"Leaving scoop "<<scoop->GetName()<<" alone. "<<endl;
+			}
+
+			cout << "Updating a scoop named " << scoop->GetName() << endl;
 			assert(first_valid_address!=0);
 			assert(last_valid_address!=0);
 			scoop->GetStart()->SetVirtualOffset(first_valid_address);
 			scoop->GetEnd()->SetVirtualOffset(last_valid_address);
+
+			/*
+			 * Resize the contents.
+			 */
+			string scoop_contents = scoop->GetContents();
+			scoop_contents.resize(scoop->GetEnd()->GetVirtualOffset() -
+			                      scoop->GetStart()->GetVirtualOffset() + 1);
+			scoop->SetContents(scoop_contents);
+			assert(scoop->GetSize() == scoop_contents.size());
+
+			/*
+			 * And now update the contents.
+			 */
+			for(virtual_offset_t i=scoop->GetStart()->GetVirtualOffset();
+			    i<= scoop->GetEnd()->GetVirtualOffset();
+			    i++)
+			{
+				scoop->GetContents()[i-scoop->GetStart()->GetVirtualOffset()]=memory_space[i];
+			}
+			m_firp->GetDataScoops().insert(scoop);
 			++it;
 		}
-
 	}
 	return;
 }
-
-
 
 void  ZiprImpl_t::FixNoFallthroughs()
 {

@@ -119,6 +119,9 @@ void ElfWriter::CreatePagemap(const ELFIO::elfio *elfiop, FileIR_t* firp, const 
 				if(i+j < start_addr)
 					continue;
 
+				if(i+j > end_addr)
+					continue;
+
 				// get the data out of the scoop and put it into the page map.
 				virtual_offset_t offset=i+j-start_addr;
 				if(offset<scoop->GetContents().size())
@@ -335,7 +338,7 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr, T_Elf_Shdr,T_Elf_Sym, T_Elf
 		if(pagemap.at(page).inuse[page_offset])
 			return false;
 
-		// check write perms.  4=r, 2=w, 1=x.
+		// check that the page is not writable.  4=r, 2=w, 1=x.
 		if((pagemap.at(page).m_perms & 0x2) != 0)
 			return false;
 	}
