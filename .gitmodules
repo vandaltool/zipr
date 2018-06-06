@@ -13,7 +13,6 @@
 	path = irdb_transforms
 	url = git@git.zephyr-software.com:allnp/irdb_transforms.git
 [submodule "SMPStaticAnalyzer"]
-	shallow = true
 	path = SMPStaticAnalyzer
 	url = git@git.zephyr-software.com:allnp/SMPStaticAnalyzer.git
 [submodule "zipr"]
