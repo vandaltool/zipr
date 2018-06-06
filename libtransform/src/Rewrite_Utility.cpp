@@ -68,6 +68,11 @@ Instruction_t* insertAssemblyBefore(FileIR_t* virp, Instruction_t* first, string
 	//"Null" out the original address (it should be as if the instruction was not in the database).
 	first->SetOriginalAddressID(BaseObj_t::NOT_IN_DATABASE);
 	first->GetRelocations().clear();
+        first->SetIBTargets(NULL);
+	//Note that the instruction just inserted should have the same exception handling
+        //info as the instructions immediately around it.
+        //Thus the exception handling information (EhCallSite and EhProgram) are kept the 
+        //same from the copy of first (unlike with relocations and IBT's).
 
 	virp->ChangeRegistryKey(first,next);
 	setInstructionAssembly(virp,first,assembly,next,target);
@@ -98,7 +103,13 @@ Instruction_t* insertDataBitsBefore(FileIR_t* virp, Instruction_t* first, string
         //"Null" out the original address (it should be as if the instruction was not in the database).
         first->SetOriginalAddressID(BaseObj_t::NOT_IN_DATABASE);
         first->GetRelocations().clear();
+	first->SetIBTargets(NULL);
+	//Note that the instruction just inserted should have the same exception handling
+	//info as the instructions immediately around it.
+	//Thus the exception handling information (EhCallSite and EhProgram) are kept the 
+	//same from the copy of first (unlike with relocations and IBT's).
 
+	virp->ChangeRegistryKey(first,next);
         setInstructionDataBits(virp,first,dataBits,next,target);
 
         return next;
@@ -201,7 +212,10 @@ void copyInstruction(Instruction_t* src, Instruction_t* dest)
 	dest->SetCallback(src->GetCallback());
 	dest->SetFallthrough(src->GetFallthrough());
 	dest->SetTarget(src->GetTarget());
+        dest->SetIBTargets(src->GetIBTargets()); 
 	dest->GetRelocations()=src->GetRelocations();
+        dest->SetEhProgram(src->GetEhProgram());
+	dest->SetEhCallSite(src->GetEhCallSite());
 }
 
 Instruction_t* allocateNewInstruction(FileIR_t* virp, db_id_t p_fileID,Function_t* func)
@@ -243,5 +257,6 @@ void setInstructionAssembly(FileIR_t* virp,Instruction_t *p_instr, string p_asse
 	virp->GetAddresses().insert(p_instr->GetAddress());
 	virp->GetInstructions().insert(p_instr);
 }
+
 
 }
