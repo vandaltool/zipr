@@ -69,6 +69,10 @@ Instruction_t* insertAssemblyBefore(FileIR_t* virp, Instruction_t* first, string
 	first->SetOriginalAddressID(BaseObj_t::NOT_IN_DATABASE);
 	first->GetRelocations().clear();
         first->SetIBTargets(NULL);
+	//Note that the instruction just inserted should have the same exception handling
+        //info as the instructions immediately around it.
+        //Thus the exception handling information (EhCallSite and EhProgram) are kept the 
+        //same from the copy of first (unlike with relocations and IBT's).
 
 	virp->ChangeRegistryKey(first,next);
 	setInstructionAssembly(virp,first,assembly,next,target);
@@ -99,7 +103,13 @@ Instruction_t* insertDataBitsBefore(FileIR_t* virp, Instruction_t* first, string
         //"Null" out the original address (it should be as if the instruction was not in the database).
         first->SetOriginalAddressID(BaseObj_t::NOT_IN_DATABASE);
         first->GetRelocations().clear();
+	first->SetIBTargets(NULL);
+	//Note that the instruction just inserted should have the same exception handling
+	//info as the instructions immediately around it.
+	//Thus the exception handling information (EhCallSite and EhProgram) are kept the 
+	//same from the copy of first (unlike with relocations and IBT's).
 
+	virp->ChangeRegistryKey(first,next);
         setInstructionDataBits(virp,first,dataBits,next,target);
 
         return next;
