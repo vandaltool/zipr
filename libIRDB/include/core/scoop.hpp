@@ -21,6 +21,8 @@
 #ifndef libirdb_data_scoop_hpp
 #define libirdb_data_scoop_hpp
 
+class DataScoopByAddressComp_t;
+
 class DataScoop_t : public BaseObj_t
 {
 
@@ -94,6 +96,7 @@ class DataScoop_t : public BaseObj_t
                 std::string WriteToDB(File_t *fid, db_id_t newid);
 		std::string WriteToDBRange(File_t *fid, db_id_t newid, int start, int end, std::string table_name);
 
+	friend DataScoopByAddressComp_t;
 
 	private:
 		const static int permissions_r=4;
@@ -111,6 +114,23 @@ class DataScoop_t : public BaseObj_t
 
 };
 
+class DataScoopByAddressComp_t {
+	public:
+	bool operator()(const DataScoop_t *lhs, const DataScoop_t *rhs) {
+
+		if (!lhs ||
+		    !rhs ||
+		    !lhs->start ||
+		    !rhs->start
+		   )
+			throw std::logic_error("Cannot order scoops that have null elements.");
+
+		return std::make_tuple(lhs->start->GetVirtualOffset(), lhs) <
+		       std::make_tuple(rhs->start->GetVirtualOffset(), rhs);
+	}
+};
+
 typedef std::set<DataScoop_t*> DataScoopSet_t;
+typedef std::set<DataScoop_t*, DataScoopByAddressComp_t> DataScoopByAddressSet_t;
 
 #endif
