@@ -28,12 +28,12 @@ if [ -z "$seq" ]; then
 	cp $CFAR_HOME/DieHard/src/libdiehard.so libheaprand.so
 else
 	if [ ! -f $CFAR_HOME/DieHard/src/libdiehard-4k.so ]; then
-		echo "ERROR: DieHard library not built/found" | tee warning.txt
+		echo "ERROR: DieHard library 4k not built/found" | tee warning.txt
 		exit 1
 	fi
 
 	if [ ! -f $CFAR_HOME/DieHard/src/libdiehard-32k.so ]; then
-		echo "ERROR: DieHard library not built/found" | tee warning.txt
+		echo "ERROR: DieHard library 32k not built/found" | tee warning.txt
 		exit 1
 	fi
 
