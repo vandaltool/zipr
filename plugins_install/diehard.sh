@@ -16,9 +16,10 @@ case $key in
 	--structured_heap)
 		seq="$2"
 		shift
+		shift
 	;;
 	*)
-		shift;
+		shift
 	;;
 esac
 done
