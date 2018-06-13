@@ -7,7 +7,6 @@ fi
 
 $PEASOUP_HOME/tools/update_env_var.sh DO_DIEHARD 1
 
-
 seq=""
 while [[ $# -gt 0 ]]
 do
@@ -43,4 +42,3 @@ else
 		cp $CFAR_HOME/DieHard/src/libdiehard-4k.so libheaprand.so
 	fi
 fi
-
