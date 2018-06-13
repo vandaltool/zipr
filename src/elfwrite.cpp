@@ -86,7 +86,7 @@ virtual_offset_t ElfWriter::DetectMaxAddr(const ELFIO::elfio *elfiop, FileIR_t* 
 		DataScoop_t* scoop=*it;
 
 		if(scoop->GetEnd()->GetVirtualOffset() > max_addr)
-			max_addr=scoop->GetStart()->GetVirtualOffset();
+			max_addr=scoop->GetEnd()->GetVirtualOffset();
 
 	}
 	return max_addr;
