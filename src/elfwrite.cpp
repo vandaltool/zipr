@@ -26,14 +26,9 @@ using namespace zipr;
 using namespace ELFIO;
 
 
-#ifndef PAGE_SIZE
-#define PAGE_SIZE 4096
-#endif
-
 static inline uintptr_t page_round_up(uintptr_t x)
 {
-        const int page_size=PAGE_SIZE;
-        return  ( (((uintptr_t)(x)) + page_size-1)  & (~(page_size-1)) );
+        return  ( (((uintptr_t)(x)) + PAGE_SIZE-1)  & (~(PAGE_SIZE-1)) );
 }
 
 

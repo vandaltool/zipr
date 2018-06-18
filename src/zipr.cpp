@@ -58,8 +58,12 @@ using namespace IRDBUtility;
 
 inline uintptr_t page_round_up(uintptr_t x)
 {
-	const int page_size=4096;
-	return  ( (((uintptr_t)(x)) + page_size-1)  & (~(page_size-1)) );
+	return  ( (((uintptr_t)(x)) + PAGE_SIZE-1)  & (~(PAGE_SIZE-1)) );
+}
+
+inline uintptr_t page_round_down(uintptr_t x)
+{
+	return  ( (((uintptr_t)(x)) - (PAGE_SIZE-1))  & (~(PAGE_SIZE-1)) );
 }
 
 int find_magic_segment_index(ELFIO::elfio *elfiop);
