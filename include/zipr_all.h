@@ -49,6 +49,8 @@ namespace zipr
 
 using namespace Zipr_SDK;
 
+#define PAGE_SIZE 4096
+
 #include <sled.h>
 #include <unresolved.h>
 #include <zipr_mem_space.h>

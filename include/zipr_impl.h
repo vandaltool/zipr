@@ -511,7 +511,6 @@ class ZiprImpl_t : public Zipr_t
 
                 template <class T> static T page_align(const T& in)
 		{
-			const T PAGE_SIZE=4096;
 			return align_by(in,PAGE_SIZE);
 		}
                 template <class T> static T align_up_to(const T& in, const T &by)
