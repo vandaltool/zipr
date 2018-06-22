@@ -60,7 +60,8 @@ class ZiprImpl_t : public Zipr_t
 			m_variant("variant"),
 			m_architecture("architecture"),
 			m_seed("seed", 0),
-			m_dollop_map_filename("dollop_map_filename", "dollop.map")
+			m_dollop_map_filename("dollop_map_filename", "dollop.map"),
+			m_paddable_minimum_distance("paddable_minimum_distance", 5*1024)
 		{ 
 			Init();
  		};
@@ -492,6 +493,9 @@ class ZiprImpl_t : public Zipr_t
 		RangeAddress_t bss_needed;
 		bool use_stratafier_mode;
 
+		/*
+		 * Scoops
+		 */
 		libIRDB::DataScoopSet_t m_zipr_scoops;
 
 		ZiprPluginManager_t plugman;
@@ -505,6 +509,7 @@ class ZiprImpl_t : public Zipr_t
 		ZiprBooleanOption_t m_replop, m_verbose, m_vverbose, m_apply_nop, m_add_sections, m_bss_opts;
 		ZiprIntegerOption_t m_variant, m_architecture, m_seed;
 		ZiprStringOption_t m_dollop_map_filename;
+		ZiprIntegerOption_t m_paddable_minimum_distance;
 
 		std::list<DollopEntry_t *> m_des_to_replop;
 
