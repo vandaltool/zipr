@@ -2,10 +2,8 @@ before_script:
   - "echo before_script"
   - "echo before_script2"
 
-job:
+testing:
   tags:
     - zipr
-
-testing:
   script:
     - "echo Testing"
