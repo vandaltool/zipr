@@ -1,8 +1,7 @@
 before_script:
   - "echo before_script"
-  - true
+  - "echo before_script2"
 
 testing:
   script:
     - "echo Testing"
-    - true
