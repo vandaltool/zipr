@@ -65,6 +65,7 @@ myenv=myenv.Clone(CPPPATH=Split(cpppath), LIBS=Split(libs), LIBPATH=Split(libpat
 #print 'myenv='
 #print myenv.Dump()
 
+myenv.Append(CXXFLAGS=" -Wno-deprecated")
 ziprexe=myenv.Program("zipr.exe", Split(files))
 
 install=myenv.Install("$ZIPR_INSTALL/bin/", ziprexe)

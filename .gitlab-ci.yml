@@ -1,0 +1,16 @@
+before_script:
+  - pwd
+  - cp -R ./* /home/gitlab-runner/code/peasoup_umbrella/zipr/
+  - cd /home/gitlab-runner/code/peasoup_umbrella
+  - source set_env_vars
+after_script:
+  - "rm -rf /home/gitlab-runner/code/peasoup_umbrella/zipr/* || true"
+
+testing:
+  tags:
+    - zipr
+  script:
+    - cd zipr
+    - ls
+    - scons -c
+    - scons debug=1
