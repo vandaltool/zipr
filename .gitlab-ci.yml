@@ -1,0 +1,9 @@
+before_script:
+  - cd /home/gitlab-runner/code/peasoup_umbrella
+  - source set_env_vars
+testing:
+  tags:
+    - zipr
+  script:
+    - "echo Testing"
+    - env 
