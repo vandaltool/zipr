@@ -6,4 +6,6 @@ testing:
   tags:
     - zipr
   script:
+    - echo "whomai?"
+    - whoami
     - "echo Testing"
