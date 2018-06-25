@@ -11,8 +11,8 @@ main()
 	chmod og-rw $HOME/.pgpass
 
 	#Create Database User and Table
-	echo "CREATE ROLE $USER WITH CREATEDB LOGIN NOSUPERUSER NOCREATEROLE PASSWORD '$randpass'" | sudo -u postgres psql
-	echo "ALTER ROLE $USER WITH PASSWORD '$randpass'" | sudo -u postgres psql
+	echo "CREATE ROLE \"$USER\" WITH CREATEDB LOGIN NOSUPERUSER NOCREATEROLE PASSWORD '$randpass'" | sudo -u postgres psql
+	echo "ALTER ROLE \"$USER\" WITH PASSWORD '$randpass'" | sudo -u postgres psql
 	dropdb peasoup_$USER
 	createdb peasoup_$USER
 
