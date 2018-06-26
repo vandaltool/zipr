@@ -587,6 +587,20 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 			next_scoop = *std::next(it,1);
 			next_start = next_scoop->GetStart()->GetVirtualOffset();
 
+
+			if (this_end > next_start) {
+				/*
+				 * It's possible that sections overlap
+				 * one another. Computing the distance
+				 * as an unsigned (as below) causes problems.
+				 * So, we make a special check here.
+				 */
+				if (m_verbose)
+					cout << "Not considering this section because it "
+					     << "does not end before the next one starts." << endl;
+				continue;
+			}
+
 			if ((next_start - this_end) > (unsigned int)m_paddable_minimum_distance)
 			{
 				DataScoop_t *new_padding_scoop = nullptr;
