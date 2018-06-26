@@ -1714,9 +1714,9 @@ void calc_preds(FileIR_t* firp)
            )
         {
                 Instruction_t* insn=*it;
-                if(insn->GetTarget());
+                if(insn->GetTarget())
                         preds[insn->GetTarget()].insert(insn);
-                if(insn->GetFallthrough());
+                if(insn->GetFallthrough())
                         preds[insn->GetFallthrough()].insert(insn);
         }
 }

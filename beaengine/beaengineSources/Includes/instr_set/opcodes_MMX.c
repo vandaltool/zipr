@@ -735,7 +735,7 @@ void __bea_callspec__ pand_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
 	if(GV.VEX.has_vex)
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
-           (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "pand ");
+        (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "pand ");
         #endif
         GV.AVX_ = GV.VEX.length;
         GV.SSE_ = !GV.VEX.length;

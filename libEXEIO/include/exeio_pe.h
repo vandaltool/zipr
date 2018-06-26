@@ -6,7 +6,10 @@
 #include <vector>
 #include <assert.h>
 #include <fstream>
+
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #include <pe_bliss.h>
+#pragma GCC diagnostic pop
 
 
 class exeio_backend;
