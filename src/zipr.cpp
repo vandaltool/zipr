@@ -138,8 +138,6 @@ void ZiprImpl_t::Init()
 		m_error = true;
 		return;
 	}
-	// init  pinned addresses map.
-	RecordPinnedInsnAddrs();
 }
 
 ZiprImpl_t::~ZiprImpl_t()
@@ -719,12 +717,19 @@ void ZiprImpl_t::AddPinnedInstructions()
 	// find the big chunk of free memory in case we need it for unassigned pins.
 	virtual_offset_t next_pin_addr=memory_space.GetInfiniteFreeRange().GetStart();
 
-        for(   
-                set<Instruction_t*>::const_iterator it=m_firp->GetInstructions().begin();
-                it!=m_firp->GetInstructions().end();
-                ++it
-           )
-        {
+
+	/*
+	 * Start out by recording the pinned address into a map
+	 * for use by other functions.
+	 */
+	RecordPinnedInsnAddrs();
+
+	for(
+	    set<Instruction_t*>::const_iterator it=m_firp->GetInstructions().begin();
+	    it!=m_firp->GetInstructions().end();
+	    ++it
+	   )
+	{
 		Instruction_t* insn=*it;
 		assert(insn);
 
