@@ -4257,9 +4257,9 @@ void ZiprImpl_t::UpdateScoops()
 			 * of the textra scoop will cause Zipr to bomb during the
 			 * next loop.
 			 */
-			RangeSet_t::iterator it=memory_space.FindFreeRange((RangeAddress_t) -1);
-			assert(memory_space.IsValidRange(it));
-			scoop->GetEnd()->SetVirtualOffset(it->GetStart());
+			auto frit=memory_space.FindFreeRange((RangeAddress_t) -1);
+			assert(memory_space.IsValidRange(frit));
+			scoop->GetEnd()->SetVirtualOffset(frit->GetStart());
 		}
 
 		for(virtual_offset_t i=scoop->GetStart()->GetVirtualOffset();
