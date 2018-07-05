@@ -4284,10 +4284,13 @@ void ZiprImpl_t::UpdateScoops()
 			m_firp->GetAddresses().erase(scoop->GetStart());
 			m_firp->GetAddresses().erase(scoop->GetEnd());
 
-			// erase and move to next element.
-			it=m_firp->GetDataScoops().erase(it);
+			if (m_verbose)
+				cout << "Removing an empty scoop (" << scoop->GetName() << ")." << endl;
 
-			// remove addresses and scoop
+			m_firp->GetDataScoops().erase(*it);
+			it = m_zipr_scoops.erase(it);
+
+			// Delete addresses and then the scoop itself.
 			delete scoop->GetStart();
 			delete scoop->GetEnd();
 			delete scoop;
