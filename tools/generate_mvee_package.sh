@@ -849,7 +849,7 @@ finalize_json()
 	done
 
 	# copy libpthread_exit.so and fix_loader
-	cp $CFAR_HOME/pthread_exit/libpthread_exit.so $outdir/global/
+#	cp $CFAR_HOME/pthread_exit/libpthread_exit.so $outdir/global/
 	cp $CFAR_HOME/non_overlapping_libraries/fix_loader.sh $outdir/global/
 
 
