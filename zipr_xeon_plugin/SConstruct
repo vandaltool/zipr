@@ -1,0 +1,37 @@
+import os
+import sys
+
+
+env=Environment()
+
+# default build options
+env.Replace(CFLAGS="-fPIC  -w ")
+env.Replace(CXXFLAGS="-fPIC  -w ")
+env.Replace(LINKFLAGS="-fPIC  ")
+
+# parse arguments
+env.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
+env.Replace(ZIPR_HOME=os.environ['ZIPR_HOME'])
+env.Replace(ZIPR_INSTALL=os.environ['ZIPR_INSTALL'])
+env.Replace(ZIPR_SDK=os.environ['ZIPR_SDK'])
+env.Replace(debug=ARGUMENTS.get("debug",0))
+env.Replace(do_64bit_build=ARGUMENTS.get("do_64bit_build",0))
+
+
+if int(env['debug']) == 1:
+        print "Setting debug mode"
+        env.Append(CFLAGS=" -g")
+        env.Append(CXXFLAGS=" -g")
+        env.Append(LINKFLAGS=" -g")
+else:
+        print "Setting release mode"
+        env.Append(CFLAGS=" -O3")
+        env.Append(CXXFLAGS=" -O3")
+        env.Append(LINKFLAGS=" -O3")
+
+env['build_appfw']=0
+env['build_tools']=0
+
+Export('env')
+SConscript("SConscript", variant_dir='build')
+
