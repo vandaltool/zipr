@@ -836,12 +836,17 @@ finalize_json()
 		done
 
 		if [ "x"$use_assurance = "x--enable-assurance" ]; then
+			if [ ! -f "$outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt" ]; then
+				echo "There does not appear to be any AGGREGATE ASSURANCE evidence to gather."
 
-			# parse the aggregated assurance case evidence for the variant set
-			parse_aggregate_assurance_file "$outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt" "$outdir/assurance/vs-${vs}_aggregate_evidence.txt" "vs-${vs}"
+			else
+				# parse the aggregated assurance case evidence for the variant set
+				parse_aggregate_assurance_file "$outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt" "$outdir/assurance/vs-${vs}_aggregate_evidence.txt" "vs-${vs}"
 
-			# remove the intermediate file
-			rm -f "$outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt"
+				# remove the intermediate file
+				rm -f "$outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt"
+			fi
+			
 		fi
 		
 
