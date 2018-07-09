@@ -574,6 +574,12 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 		RangeAddress_t this_end = this_scoop->GetEnd()->GetVirtualOffset(),
 		               next_start = 0;
 
+		if(this_scoop->GetStart()->GetVirtualOffset()==0)
+		{
+			// unpinned scoops can get ignored.
+			continue;
+		}
+
 		if (m_verbose)
 			cout << "There's a scoop between " << std::hex
 		       << this_scoop->GetStart()->GetVirtualOffset()
@@ -653,6 +659,12 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 	{
 		DataScoop_t* scoop=*it;
 		RangeAddress_t  end=scoop->GetEnd()->GetVirtualOffset();
+
+		if(scoop->GetStart()->GetVirtualOffset()==0)
+		{
+			// unpinned scoops can get ignored.
+			continue;
+		}
 
 		if(end >= max_addr)
 		{
