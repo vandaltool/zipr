@@ -2344,6 +2344,11 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 
 						if(getenv("UNPIN_VERBOSE")!=0)
 							cout<<"Unpinning "+scoop->GetName()+" entry at offset "<<dec<<i<<endl;
+						// mark as unpinned
+						if(insn->GetIndirectBranchTargetAddress()!=NULL)
+						{
+							insn->GetIndirectBranchTargetAddress()->SetVirtualOffset(0);
+						}
 					}
 				}
 				else
@@ -2451,6 +2456,12 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 						// add reloc to IR.
 						firp->GetRelocations().insert(nr);
 						scoop->GetRelocations().insert(nr);
+
+						// mark as unpinned
+                                                if(insn->GetIndirectBranchTargetAddress()!=NULL)
+                                                {
+                                                        insn->GetIndirectBranchTargetAddress()->SetVirtualOffset(0);
+                                                }
 					}
 					else
 					{
@@ -2603,6 +2614,12 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 					// remove rodata reference for hell nodes.
 					targets[table_entry]=newprov;
 					switch_targs.insert(ibt);
+
+					// mark as unpinned
+                                        if(ibt->GetIndirectBranchTargetAddress()!=NULL)
+                                        {
+                                                ibt->GetIndirectBranchTargetAddress()->SetVirtualOffset(0);
+                                        }
 				}
 			}
 		}
