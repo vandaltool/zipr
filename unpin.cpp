@@ -171,17 +171,6 @@ void Unpin_t::DoUnpinForFixedCalls()
 					cout<<"Unpin::Warn: unpin found non-IBTA to unpin.  probably it's unpinned twice.  continuing anyhow."<<endl;
 				}
 	
-				wrt_insn->SetIndirectBranchTargetAddress(NULL);
-
-				PlacementQueue_t* pq=zo->GetPlacementQueue();
-				assert(pq);
-
-				// create a new dollop for the unpinned IBT
-				// and add it to the placement queue.
-				Dollop_t *newDoll=zo->GetDollopManager()->AddNewDollops(wrt_insn);
-				pq->insert(std::pair<Dollop_t*,RangeAddress_t>(newDoll, 0));
-
-				
 				unpins++;
 				insn_unpins++;
 				if(m_max_unpins != -1 && unpins>=m_max_unpins)
@@ -250,16 +239,6 @@ void Unpin_t::DoUnpinForScoops()
 				}
 				else
 				{
-					insn->SetIndirectBranchTargetAddress(NULL);
-
-					PlacementQueue_t* pq=zo->GetPlacementQueue();
-					assert(pq);
-
-					// create a new dollop for the unpinned IBT
-					// and add it to the placement queue.
-					Dollop_t *newDoll=zo->GetDollopManager()->AddNewDollops(insn);
-					pq->insert(std::pair<Dollop_t*,RangeAddress_t>(newDoll, 0));
-
 					unpins++;
 					scoop_unpins++;
 					if(m_max_unpins != -1 && unpins>=m_max_unpins)
