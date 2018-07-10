@@ -440,7 +440,15 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 		if(seg == new_phdr_segment_index)
 			continue;
 		// uh oh, we found that the phdr would cross into the next segment 
-		return false;
+		// but, we know there's enough space in the next segment because 
+		// 	1) read_only_space_at returned true, so there's enough free space.
+		// 	2) the free space cannot transcend the entire next segment, because that would mean the entire 
+		//	   segment was empty (implying the segment is redundant).  
+		// Thus, we can just stop looking here and extend the previous segment to abut the new segment. 
+		// and the phdrs will span the two segments.
+		for(auto j=i+1;j<phdr_size; j++)
+			assert(seg==locate_segment_index(new_phdr_addr+j));
+		break;
 	}
 
 	// if we get here, we've found a spot for the PHDR.
