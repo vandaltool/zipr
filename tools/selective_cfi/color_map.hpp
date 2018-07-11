@@ -25,7 +25,7 @@
 #include <stdint.h>
 
 
-typedef int64_t NonceValueType_t;
+typedef uint64_t NonceValueType_t;
 
 class ColoredSlotValue_t
 {
@@ -63,8 +63,8 @@ class ColoredSlotAllocator_t
 	
 	private:
 		int slot_number;
-		int used;
-		int max_value;
+		NonceValueType_t used;
+		NonceValueType_t max_value;
 };
 
 typedef std::map<int,ColoredSlotValue_t> ColoredSlotValues_t;
@@ -75,7 +75,9 @@ class ColoredInstructionNonces_t
 	public:
 		ColoredInstructionNonces_t(libIRDB::FileIR_t *the_firp)
 			: firp(the_firp), slot_size(1), slot_values(255) { }
-
+		ColoredInstructionNonces_t(libIRDB::FileIR_t *the_firp, int the_slot_size)
+			: firp(the_firp), slot_size(the_slot_size), 
+                          slot_values(~((NonceValueType_t) 0) >> (sizeof(NonceValueType_t)*8-the_slot_size*8))  { }               
 		ColoredSlotValues_t  GetColorsOfIBT (libIRDB::Instruction_t* i) 
 		{ return color_assignments[i]; }
 
@@ -96,7 +98,7 @@ class ColoredInstructionNonces_t
 
 		// used to describe how big a nonce slot is.  for now, 1 byte.
 		const int slot_size;
-		const int slot_values;
+		const NonceValueType_t slot_values;
 
 		// information for each slot we've used.
 		std::vector<ColoredSlotAllocator_t> slots_used;
@@ -130,4 +132,3 @@ class UniqueICFSSetSorter_t
 };
 
 #endif
-
