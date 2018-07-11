@@ -122,12 +122,12 @@ static void resolveSymbols(const string &mapFile);
 //static vector<bin_instruction_t> parseBin(const string &binFile);
 //static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector<spasmline_t> &spasmlines, const string &symbolFilename);
 //static void printVector(const string &outputFile, const vector<string> &lines);
-static uintptr_t getSymbolAddress(const string &symbolFilename, const string &symbol) throw(exception);
+static uintptr_t getSymbolAddress(const string &symbolFilename, const string &symbol) ;
 
 //
 // @todo: need to cache results
 //
-static string getCallbackAddress(const string &symbolFilename, const string &symbol) throw(exception)
+static string getCallbackAddress(const string &symbolFilename, const string &symbol) 
 {
 	char buf[30];
 	int diff=getSymbolAddress(symbolFilename, symbol)
@@ -138,7 +138,7 @@ static string getCallbackAddress(const string &symbolFilename, const string &sym
 }
 
 
-static uintptr_t getSymbolAddress(const string &symbolFilename, const string &symbol) throw(exception)
+static uintptr_t getSymbolAddress(const string &symbolFilename, const string &symbol) 
 {
 	string symbolFullName = symbolFilename + "+" + symbol;
 	map<string,string>::iterator callbackMapIterator;
@@ -180,9 +180,9 @@ bool fexists(const string &filename)
 }
 
 
-//void a2bspri(const string &input, const string &output, const string &symbolFilename) throw(exception)
+//void a2bspri(const string &input, const string &output, const string &symbolFilename) 
 void a2bspri(const vector<string> &input,const string &outFilename, const string &exeFilename,
-	const string &symbolFilename) throw(exception)
+	const string &symbolFilename) 
 {
 
 	assert(fexists(symbolFilename));

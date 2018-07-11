@@ -26,9 +26,9 @@
 #include <exception>
 #include <vector>
 
-//void a2bspri(const std::string &input, const std::string &output, const std::string &elfFile) throw(std::exception);
+//void a2bspri(const std::string &input, const std::string &output, const std::string &elfFile) ;
 void a2bspri(const std::vector<std::string> &input,const std::string &outFilename, 
-	const std::string &exeFilename, const std::string &symbolFilename) throw(std::exception);
+	const std::string &exeFilename, const std::string &symbolFilename) ;
 
 class SpasmException: public std::exception
 {

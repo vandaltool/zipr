@@ -52,7 +52,7 @@ void __bea_callspec__ G12_(PDISASM pMyDisasm)
                 #ifndef BEA_LIGHT_DISASSEMBLY
 		if(GV.VEX.has_vex)
                    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "v");
-                   (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "psrlw ");
+                (void) strcat ((*pMyDisasm).Instruction.Mnemonic, "psrlw ");
                 #endif
             }
             else {
