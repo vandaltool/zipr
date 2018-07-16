@@ -638,8 +638,13 @@ void fix_call(Instruction_t* insn, FileIR_t *firp, bool can_unpin)
 				    <<hex<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<endl;
 			}
 			// set newindirtarg as unpinned IBT
-		 	newindirtarg->GetIndirectBranchTargetAddress()->SetVirtualOffset(0);	
-			reloc->SetWRT(newindirtarg);
+		        auto newaddr = new AddressID_t;
+                        assert(newaddr); 
+                        newaddr->SetFileID(newindirtarg->GetAddress()->GetFileID());
+                        newaddr->SetVirtualOffset(0);   // unpinned
+                        firp->GetAddresses().insert(newaddr);
+                        newindirtarg->SetIndirectBranchTargetAddress(newaddr);
+      			reloc->SetWRT(newindirtarg);
 		}
 	}
 

@@ -2344,10 +2344,16 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 
 						if(getenv("UNPIN_VERBOSE")!=0)
 							cout<<"Unpinning "+scoop->GetName()+" entry at offset "<<dec<<i<<endl;
-						// mark as unpinned
-						if(insn->GetIndirectBranchTargetAddress()!=NULL)
+						// mark as unpinned (if it wasn't already pinned by something else)
+						if(insn->GetIndirectBranchTargetAddress()==NULL)
 						{
-							insn->GetIndirectBranchTargetAddress()->SetVirtualOffset(0);
+							auto newaddr = new AddressID_t;
+							assert(newaddr);
+							newaddr->SetFileID(insn->GetAddress()->GetFileID());
+							newaddr->SetVirtualOffset(0);	// unpinne
+	
+							firp->GetAddresses().insert(newaddr);
+							insn->SetIndirectBranchTargetAddress(newaddr);
 						}
 					}
 				}
@@ -2457,11 +2463,17 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 						firp->GetRelocations().insert(nr);
 						scoop->GetRelocations().insert(nr);
 
-						// mark as unpinned
-                                                if(insn->GetIndirectBranchTargetAddress()!=NULL)
+						// mark as unpinned (if it wasn't already pinned by something else)
+                                                if(insn->GetIndirectBranchTargetAddress()==NULL)
                                                 {
-                                                        insn->GetIndirectBranchTargetAddress()->SetVirtualOffset(0);
-                                                }
+                                                        auto newaddr = new AddressID_t;
+                                                        assert(newaddr);
+                                                        newaddr->SetFileID(insn->GetAddress()->GetFileID());
+                                                        newaddr->SetVirtualOffset(0);   // unpinne
+
+                                                        firp->GetAddresses().insert(newaddr);
+                                                        insn->SetIndirectBranchTargetAddress(newaddr);
+                                                }	
 					}
 					else
 					{
@@ -2615,11 +2627,17 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 					targets[table_entry]=newprov;
 					switch_targs.insert(ibt);
 
-					// mark as unpinned
-                                        if(ibt->GetIndirectBranchTargetAddress()!=NULL)
-                                        {
-                                                ibt->GetIndirectBranchTargetAddress()->SetVirtualOffset(0);
-                                        }
+					 // mark as unpinned (if it wasn't already pinned by something else)
+                                         if(ibt->GetIndirectBranchTargetAddress()==NULL)
+                                         {
+                                                 auto newaddr = new AddressID_t;
+                                                 assert(newaddr);
+                                                 newaddr->SetFileID(ibt->GetAddress()->GetFileID());
+                                                 newaddr->SetVirtualOffset(0);   // unpinne
+
+                                                 firp->GetAddresses().insert(newaddr);
+                                                 ibt->SetIndirectBranchTargetAddress(newaddr);
+                                         }	
 				}
 			}
 		}
