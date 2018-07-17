@@ -637,13 +637,8 @@ void fix_call(Instruction_t* insn, FileIR_t *firp, bool can_unpin)
 				cout<<"Setting unpin for type="<< reloc->GetType()<< " address="
 				    <<hex<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<endl;
 			}
-			// set newindirtarg as unpinned IBT
-		        auto newaddr = new AddressID_t;
-                        assert(newaddr); 
-                        newaddr->SetFileID(newindirtarg->GetAddress()->GetFileID());
-                        newaddr->SetVirtualOffset(0);   // unpinned
-                        firp->GetAddresses().insert(newaddr);
-                        newindirtarg->SetIndirectBranchTargetAddress(newaddr);
+			// set newindirtarg as unpinned
+                        newindirtarg->GetIndirectBranchTargetAddress()->SetVirtualOffset(0);
       			reloc->SetWRT(newindirtarg);
 		}
 	}
