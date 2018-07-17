@@ -444,8 +444,10 @@ class ZiprImpl_t : public Zipr_t
 				{
 					assert(p1.GetInstruction());
 					assert(p2.GetInstruction());
-					assert(p1.GetInstruction()->GetIndirectBranchTargetAddress());
-					assert(p2.GetInstruction()->GetIndirectBranchTargetAddress());
+					assert(p1.GetInstruction()->GetIndirectBranchTargetAddress()
+					       && p1.GetInstruction()->GetIndirectBranchTargetAddress()->GetVirtualOffset()!=0);
+					assert(p2.GetInstruction()->GetIndirectBranchTargetAddress()
+					       && p2.GetInstruction()->GetIndirectBranchTargetAddress()->GetVirtualOffset()!=0);
 
 					return p1.GetInstruction()->GetIndirectBranchTargetAddress()->GetVirtualOffset() < 
 						p2.GetInstruction()->GetIndirectBranchTargetAddress()->GetVirtualOffset() ;

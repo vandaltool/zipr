@@ -790,7 +790,8 @@ void ZiprImpl_t::RecordPinnedInsnAddrs()
 		Instruction_t* insn=*it;
 		assert(insn);
 
-		if(!insn->GetIndirectBranchTargetAddress()) 
+		if(!insn->GetIndirectBranchTargetAddress()
+		   || insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()==0) 
 		{
 			continue;
 		}
@@ -838,7 +839,7 @@ bool ZiprImpl_t::ShouldPinImmediately(Instruction_t *upinsn)
 		return true;
 
 	upinsn_ibta=upinsn->GetIndirectBranchTargetAddress();
-	assert(upinsn_ibta!=NULL);
+	assert(upinsn_ibta!=NULL && upinsn_ibta->GetVirtualOffset()!=0);
 
 	if (upinsn->GetFallthrough() != NULL)
 		ft_ibta=upinsn->GetFallthrough()->GetIndirectBranchTargetAddress();
@@ -2249,10 +2250,17 @@ void ZiprImpl_t::PlaceDollops()
 			 * possibility of the validity of the placement in (2).
 			 */
 			initial_placement_abuts_pin = to_place->FallthroughDollop() && 
-			                              to_place->FallthroughDollop()->
+			                           (  to_place->FallthroughDollop()->
 			                              front()->
 			                              Instruction()->
-			                              GetIndirectBranchTargetAddress() && 
+			                              GetIndirectBranchTargetAddress()
+						      &&
+						      to_place->FallthroughDollop()->
+                                                      front()->
+                                                      Instruction()->
+                                                      GetIndirectBranchTargetAddress()->
+						      GetVirtualOffset()!=0  
+						   )                                && 
 			                              to_place->FallthroughDollop()->
 			                                        front()->
 			                                        Instruction()->
@@ -2367,8 +2375,9 @@ void ZiprImpl_t::PlaceDollops()
 					 << "a fallthrough" << endl;
 		}
 
-		if (to_place->front()->Instruction()->GetIndirectBranchTargetAddress() &&
-		    cur_addr == to_place->
+		if (( to_place->front()->Instruction()->GetIndirectBranchTargetAddress() 
+		      && to_place->front()->Instruction()->GetIndirectBranchTargetAddress()->GetVirtualOffset()!=0 
+		    )	    && cur_addr == to_place->
 				            front()->
 										Instruction()->
 										GetIndirectBranchTargetAddress()->
@@ -2636,11 +2645,17 @@ void ZiprImpl_t::PlaceDollops()
 				 * first instruction is pinned AND the last entry of this
 				 * dollop abuts that pin.
 				 */
-				if ((fallthrough->
-				     front()->
-				     Instruction()->
-				     GetIndirectBranchTargetAddress()
-				    ) &&
+				if (( fallthrough->
+				      front()->
+				      Instruction()->
+				      GetIndirectBranchTargetAddress()
+				      &&
+				      fallthrough->
+                                      front()->
+                                      Instruction()->
+                                      GetIndirectBranchTargetAddress()->
+				      GetVirtualOffset()!=0
+				     ) &&
 				    (cur_addr == fallthrough->
 				                 front()->
 				                 Instruction()->

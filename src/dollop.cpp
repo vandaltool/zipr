@@ -25,7 +25,8 @@ namespace Zipr_SDK {
 			/*
 			 * If this is a pinned instruction, we want to stop!
 			 */
-		         (NULL == loop->GetIndirectBranchTargetAddress())
+		         (NULL == loop->GetIndirectBranchTargetAddress() 
+			  || loop->GetIndirectBranchTargetAddress()->GetVirtualOffset()==0)
 						);
 
 		m_size = CalculateWorstCaseSize();
