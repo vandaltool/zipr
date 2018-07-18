@@ -166,7 +166,10 @@ bool SCFI_Instrument::mark_targets()
 	int targets=0, ind_targets=0, exe_nonce_targets=0;
 	// Make sure no unresolved instructions are in the insn set
 	firp->AssembleRegistry();
-	firp->SetBaseIDS();		
+	firp->SetBaseIDS();	
+	// create new preds (we've added instructions)
+	InstructionPredecessors_t newPreds;
+	newPreds.AddFile(firp);
 	// Make sure the new insns added in this loop are not processed in this loop
 	// (ok since none of the them should receive nonces)
 	auto insn_set = firp->GetInstructions();
@@ -180,7 +183,7 @@ bool SCFI_Instrument::mark_targets()
 		{
 
 			// make sure there are no fallthroughs to nonces.
-			for(InstructionSet_t::iterator pred_it=preds[insn].begin(); pred_it!=preds[insn].end(); ++pred_it)
+			for(InstructionSet_t::iterator pred_it=newPreds[insn].begin(); pred_it!=newPreds[insn].end(); ++pred_it)
 			{
 				Instruction_t* the_pred=*pred_it;
 				if(the_pred->GetFallthrough()==insn)
