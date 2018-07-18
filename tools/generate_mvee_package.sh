@@ -838,6 +838,7 @@ finalize_json()
 		if [ "x"$use_assurance = "x--enable-assurance" ]; then
 			if [ ! -f "$outdir/assurance/vs-${vs}_aggregate_evidence.tmp.txt" ]; then
 				echo "There does not appear to be any AGGREGATE ASSURANCE evidence to gather."
+				echo "There are no transformations which produce aggregate (inter-variant) evidence for vs-${vs}." >> "$outdir/assurance/vs-${vs}_aggregate_evidence.txt"
 
 			else
 				# parse the aggregated assurance case evidence for the variant set
