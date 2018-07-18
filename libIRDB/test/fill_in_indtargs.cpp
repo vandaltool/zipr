@@ -2344,7 +2344,6 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 
 						if(getenv("UNPIN_VERBOSE")!=0)
 							cout<<"Unpinning "+scoop->GetName()+" entry at offset "<<dec<<i<<endl;
-						// mark as unpinned (if it wasn't already pinned by something else)
 						if(insn->GetIndirectBranchTargetAddress()==NULL)
 						{
 							auto newaddr = new AddressID_t;
@@ -2467,7 +2466,6 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 						firp->GetRelocations().insert(nr);
 						scoop->GetRelocations().insert(nr);
 
-						// mark as unpinned (if it wasn't already pinned by something else)
                                                 if(insn->GetIndirectBranchTargetAddress()==NULL)
                                                 {
                                                         auto newaddr = new AddressID_t;
@@ -2635,7 +2633,6 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 					targets[table_entry]=newprov;
 					switch_targs.insert(ibt);
 
-					 // mark as unpinned (if it wasn't already pinned by something else)
                                          if(ibt->GetIndirectBranchTargetAddress()==NULL)
                                          {
                                                  auto newaddr = new AddressID_t;
