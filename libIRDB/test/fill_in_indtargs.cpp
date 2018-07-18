@@ -2355,6 +2355,10 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 							firp->GetAddresses().insert(newaddr);
 							insn->SetIndirectBranchTargetAddress(newaddr);
 						}
+						else
+						{
+							insn->GetIndirectBranchTargetAddress()->SetVirtualOffset(0);
+						}	
 					}
 				}
 				else
@@ -2473,7 +2477,11 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 
                                                         firp->GetAddresses().insert(newaddr);
                                                         insn->SetIndirectBranchTargetAddress(newaddr);
-                                                }	
+                                                }
+						else
+                                                {
+                                                        insn->GetIndirectBranchTargetAddress()->SetVirtualOffset(0);
+                                                }
 					}
 					else
 					{
@@ -2637,7 +2645,11 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 
                                                  firp->GetAddresses().insert(newaddr);
                                                  ibt->SetIndirectBranchTargetAddress(newaddr);
-                                         }	
+                                         }
+				         else
+                                         {
+                                                 ibt->GetIndirectBranchTargetAddress()->SetVirtualOffset(0);
+                                         }
 				}
 			}
 		}
