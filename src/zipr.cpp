@@ -526,6 +526,7 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 	CreateExecutableScoops(ordered_sections);
 
 	// scan sections for a max-addr.
+#if 0
 	std::map<RangeAddress_t, int>::iterator it = ordered_sections.begin();
 	for (;it!=ordered_sections.end();) 
 	{ 
@@ -551,6 +552,7 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 
 
 	}
+#endif
 
 	/*
 	 *  First things first: Let's put empty scoops
@@ -561,15 +563,10 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 		cout << "Filling gaps that are larger than " << std::dec
 		     << m_paddable_minimum_distance << " bytes." << endl;
 
-	DataScoopByAddressSet_t sorted_scoop_set(m_firp->GetDataScoops().begin(),
-	                                         m_firp->GetDataScoops().end());
-	for(
-		DataScoopByAddressSet_t::iterator it=sorted_scoop_set.begin();
-		it!=sorted_scoop_set.end();
-		++it
-	   )
+	DataScoopByAddressSet_t sorted_scoop_set(ALLOF(m_firp->GetDataScoops()));
+	for( auto it=sorted_scoop_set.begin(); it!=sorted_scoop_set.end(); ++it )
 	{
-		DataScoop_t* this_scoop=*it;
+		auto this_scoop=*it;
 		DataScoop_t* next_scoop=NULL;
 		RangeAddress_t this_end = this_scoop->GetEnd()->GetVirtualOffset(),
 		               next_start = 0;
@@ -582,9 +579,9 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 
 		if (m_verbose)
 			cout << "There's a scoop between " << std::hex
-		       << this_scoop->GetStart()->GetVirtualOffset()
-		       << " and " << std::hex << this_scoop->GetEnd()->GetVirtualOffset()
-		       << endl;
+			     << this_scoop->GetStart()->GetVirtualOffset()
+			     << " and " << std::hex << this_scoop->GetEnd()->GetVirtualOffset()
+			     << endl;
 
 		if (std::next(it,1) != sorted_scoop_set.end())
 		{
@@ -651,13 +648,8 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 	}
 
 	// scan scoops for a max-addr.
-	for(
-		DataScoopSet_t::iterator it=m_firp->GetDataScoops().begin(); 
-		it!=m_firp->GetDataScoops().end();
-		++it
-	   )
+	for( auto scoop : m_zipr_scoops)
 	{
-		DataScoop_t* scoop=*it;
 		RangeAddress_t  end=scoop->GetEnd()->GetVirtualOffset();
 
 		if(scoop->GetStart()->GetVirtualOffset()==0)
