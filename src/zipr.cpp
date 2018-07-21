@@ -749,7 +749,13 @@ void ZiprImpl_t::AddPinnedInstructions()
 			continue;
 
 		if(insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()==0)
+                {
+                        // Unpinned IBT. Create dollop and add it to placement
+                        // queue straight away--there are no pinning considerations.
+                        Dollop_t *newDoll=m_dollop_mgr.AddNewDollops(insn);
+			placement_queue.insert(pair<Dollop_t*,RangeAddress_t>(newDoll, 0));
 			continue;
+                }
 
 		// deal with unassigned IBTAs.
 		if(insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()==0)
