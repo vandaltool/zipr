@@ -526,7 +526,6 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 	CreateExecutableScoops(ordered_sections);
 
 	// scan sections for a max-addr.
-#if 0
 	std::map<RangeAddress_t, int>::iterator it = ordered_sections.begin();
 	for (;it!=ordered_sections.end();) 
 	{ 
@@ -552,7 +551,6 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 
 
 	}
-#endif
 
 	/*
 	 *  First things first: Let's put empty scoops
