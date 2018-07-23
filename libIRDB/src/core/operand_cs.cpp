@@ -217,7 +217,6 @@ string DecodedOperandCapstone_t::getString() const
 			}
 			assert(0);
 		}
-		case X86_OP_FP:
 		case X86_OP_INVALID: 
 		default:
 			assert(0);
