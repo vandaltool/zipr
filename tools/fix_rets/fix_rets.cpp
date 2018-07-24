@@ -80,7 +80,10 @@ int FixRets::execute()
 					cout << "Complete instruction: " << disasm.getDisassembly() << "-" << endl;
 					if (disasm.isReturn()) // strcmp(disasm.CompleteInstr,"ret "))
 						continue;
-					if (insn->GetIndirectBranchTargetAddress())
+
+                                        bool isPinned =   insn->GetIndirectBranchTargetAddress()
+                                                       && insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()!=0;
+					if (isPinned)
 					{
 						cout << "Skipping ret fix because it's pinned." << endl;
 						continue;
