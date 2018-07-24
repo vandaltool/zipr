@@ -55,8 +55,8 @@ class ElfDependencies_t : public Transform
 		private:
 			bool add_dl_support();
 			Instruction_t* find_runtime_resolve(DataScoop_t* gotplt_scoop);
-			void add_got_entry(const std::string& name);
-			bool add_got_entries();
+			DataScoop_t* add_got_entry(const std::string& name);
+			//bool add_got_entries();
 			bool add_libdl_as_needed_support(string libName);
 			bool execute();
 

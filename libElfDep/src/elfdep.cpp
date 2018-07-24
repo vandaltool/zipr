@@ -185,13 +185,29 @@ ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_ty
 template<typename T_Elf_Sym, typename T_Elf_Rela, typename T_Elf_Dyn, int reloc_type, int rela_shift, int ptrsize>
 pair<DataScoop_t*,int> ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>::appendGotEntry(const string &name)
 {
-	assert(0);
+	auto got_scoop=add_got_entry(name);
+	return {got_scoop,0};
 }
 
 template<typename T_Elf_Sym, typename T_Elf_Rela, typename T_Elf_Dyn, int reloc_type, int rela_shift, int ptrsize>
 Instruction_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>::appendPltEntry(const string &name)
 {
-	assert(0);
+
+	static int labelcounter=0;
+
+	stringstream labelstream;
+	labelstream << "L_pltentry_" << labelcounter++;
+
+	auto got_scoop=add_got_entry(name);
+
+	auto newinsn=addNewAssembly(labelstream.str()+": jmp [rel "+labelstream.str()+"]");
+	
+	auto newreloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, 0, "pcrel", got_scoop);
+
+	newinsn->GetRelocations().insert(newreloc);
+	getFileIR()->GetRelocations().insert(newreloc);
+
+	return newinsn;
 }
 
 
@@ -200,7 +216,6 @@ Instruction_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_E
 
 // please  keep this if 0, as we likely want to add plt/got entries in a library later, but
 // we need a use case to test this code -- it was copied from CFI.
-#if 0
 
 template<typename T_Elf_Sym, typename T_Elf_Rela, typename T_Elf_Dyn, int reloc_type, int rela_shift, int ptrsize>
 Instruction_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>::find_runtime_resolve(DataScoop_t* gotplt_scoop)
@@ -222,7 +237,7 @@ Instruction_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_E
 }
 
 template<typename T_Elf_Sym, typename T_Elf_Rela, typename T_Elf_Dyn, int reloc_type, int rela_shift, int ptrsize>
-void ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>::add_got_entry(const std::string& name)
+DataScoop_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>::add_got_entry(const std::string& name)
 {
 	const auto firp=getFileIR();
 	// find relevant scoops
@@ -304,7 +319,10 @@ void ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,rel
 			dyn_entry.d_un.d_val-=sizeof(T_Elf_Rela);
 
 	}
+	return external_func_addr_scoop;
 }
+
+#if 0
 
 template<typename T_Elf_Sym, typename T_Elf_Rela, typename T_Elf_Dyn, int reloc_type, int rela_shift, int ptrsize>
 bool ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>::add_got_entries()
