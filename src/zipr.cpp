@@ -2537,18 +2537,18 @@ void ZiprImpl_t::PlaceDollops()
 				                         );
 				last_de_fits = (std::next(dit,1)==dit_end) /* last */ &&
 				               (placement.GetEnd()>=(cur_addr+ /* fits */
-							DetermineWorstCaseDollopEntrySize(dollop_entry,
-							                            to_place->FallthroughDollop()!=NULL))
-							                            /* with or without fallthrough */
+				                DetermineWorstCaseDollopEntrySize(dollop_entry,
+				                to_place->FallthroughDollop()!=NULL))
+				               /* with or without fallthrough */
 							         );
 				disallowed_override = !allowed_coalescing && 
 				                      !(de_and_fallthrough_fit ||
-															  fits_entirely ||
-															  last_de_fits ||
-															  initial_placement_abuts_pin ||
-															  initial_placement_abuts_fallthrough
-															 ) && 
-															 all_fallthroughs_fit && 
+				                        fits_entirely ||
+				                        last_de_fits ||
+				                        initial_placement_abuts_pin ||
+				                        initial_placement_abuts_fallthrough
+				                       ) && 
+				                       all_fallthroughs_fit && 
 				                       ((placement.GetEnd() - 
 				                        (cur_addr + 
 				                         DetermineWorstCaseDollopEntrySize(
@@ -3246,8 +3246,8 @@ RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t *entry, RangeAddress_t
 			updated_addr = std::max(zpi->PlopDollopEntry(entry,
 			                                             placed_address,
 			                                             target_address,
-																									 insn_wcis,
-																									 pp_placed_insn),
+		 	                                             insn_wcis,
+		 	                                             pp_placed_insn),
 			                        updated_addr);
 			if (m_verbose)
 				cout << zpi->ToString() << " placed entry " 
