@@ -2,28 +2,8 @@
 
 libcpath=""
 
-do_cfi()
-{
-	(set -x ; $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--elftables-only  --step-option fix_calls:--fix-all --step-option zipr:"--add-sections false")
-	if [ ! $? -eq 0 ]; then
-		echo "do_cfi(): failed to protect"
-	fi
-}
 
-do_cfi_color()
-{
-	(set -x ; $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--elftables-only  --step-option fix_calls:--fix-all --step-option selective_cfi:--color  --step-option zipr:"--add-sections false" )
-	if [ ! $? -eq 0 ]; then
-		echo "do_coloring_cfi(): failed to protect"
-	fi
-}
-
-# Note: exe nonce cfi doesn't always run against non-exe nonce cfi modules
-do_cfi_exe_nonces()
-{
-        (set -x ; $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--elftables-only  --step-option fix_calls:--no-fix-safefn --step-option selective_cfi:--exe-nonce-for-call --step-option zipr:"--add-sections false" )
-}
-
+source cfi_all_configs.sh
 
 
 get_correct()
@@ -43,7 +23,7 @@ test()
 	cmp out correct
 	if [ $? = 1 ]; then
 		fails=$(expr $fails + 1 )
-		echo test failed
+		echo test $pgm $libc failed | tee -a libc_test_log.txt
 	else
 		passes=$(expr $passes + 1 )
 		echo test passed.
@@ -63,15 +43,20 @@ build()
 
 protect()
 {
-	do_cfi_exe_nonces libc.so.6.orig libc-2.19.so.noncecfi
-	do_cfi_exe_nonces libc_driver.exe libc_driver.exe.noncecfi
+	files=(libc_driver.exe libc.so.6.orig)
 
-	do_cfi libc.so.6.orig libc-2.19.so.cfi
-	do_cfi libc_driver.exe libc_driver.exe.cfi
+        libc_driver_exe_varients=(libc_driver.exe)
+        libc_so_6_orig_varients=(libc.so.6.orig)
 
-	do_cfi_color libc.so.6.orig libc-2.19.so.colorcfi
-	do_cfi_color libc_driver.exe libc_driver.exe.colorcfi
-
+        for file in "${files[@]}"; do
+                for config in "${configs[@]}"; do
+                        echo Protecting file "$file" with config "$config" | tee -a libc_protection_log.txt
+                        "$config" ./"$file" ./"$file"".""$config" | tee -a libc_protection_log.txt
+                        varient_array_name="$(echo "$file" | sed -e 's/\./_/g')""_varients"
+                        declare -n varient_array="$varient_array_name"
+                        varient_array+=("$file"".""$config")
+                done
+        done	
 }
 
 clean()
@@ -79,13 +64,17 @@ clean()
 	rm out
 	rm correct
 	rm -Rf *.orig *libc*.exe *libc.*cfi *peasoup_exec*
+
+	for config in "${configs[@]}"; do
+                rm *."$config"
+        done
 }
 
 report ()
 {
 	total=$(expr $passes + $fails)
-	echo "Passes:  $passes / $total"
-	echo "Fails :  $fails / $total"
+	echo "Passes:  $passes / $total" | tee -a libc_test_log.txt
+	echo "Fails :  $fails / $total" | tee -a libc_test_log.txt
 }
 
 main()
@@ -93,26 +82,12 @@ main()
 	build
 	protect
 	get_correct
-	test libc_driver.exe 		libc.so.6.orig
-	test libc_driver.exe.cfi 	libc.so.6.orig
-	test libc_driver.exe.colorcfi 	libc.so.6.orig
-	test libc_driver.exe.noncecfi 	libc.so.6.orig
 
-	test libc_driver.exe 		libc.so.6.cfi
-	test libc_driver.exe.cfi 	libc.so.6.cfi
-	test libc_driver.exe.colorcfi 	libc.so.6.cfi
-	test libc_driver.exe.noncecfi 	libc.so.6.cfi
-
-	test libc_driver.exe		libc.so.6.colorcfi
-	test libc_driver.exe.cfi	libc.so.6.colorcfi
-	test libc_driver.exe.colorcfi	libc.so.6.colorcfi
-	test libc_driver.exe.noncecfi	libc.so.6.colorcfi
-
-	test libc_driver.exe		libc.so.6.noncecfi
-	test libc_driver.exe.cfi	libc.so.6.noncecfi
-	test libc_driver.exe.colorcfi	libc.so.6.noncecfi
-	test libc_driver.exe.noncecfi	libc.so.6.noncecfi
-
+	for libc_driver_varient in "${libc_driver_exe_varients[@]}"; do
+                for libc_varient in "${libc_so_6_orig_varients[@]}"; do
+                        test "$libc_driver_varient" "$libc_varient"
+                done
+        done	
 
 	report
 	clean
