@@ -48,7 +48,7 @@ void usage(char* name)
 "		[ --multimodule | --no-multimodule ] \n"
 "		[--exe-nonce-for-call|--no-exe-nonce-for-call]  \n"
 " \n"
-"default: --no-color --no-color-exe-nonces --protect-jumps --protect-calls --protect-rets --protect-safefn --common-slow-path --no-multimodule --no-exe-nonce-for-call --nonce-size 1 --exe-nonce-size 4\n"; 
+"default: --no-color --no-color-exe-nonces --no-protect-jumps --protect-calls --protect-rets --protect-safefn --common-slow-path --no-multimodule --no-exe-nonce-for-call --nonce-size 1 --exe-nonce-size 4\n"; 
 }
 
 int main(int argc, char **argv)
@@ -71,7 +71,7 @@ int main(int argc, char **argv)
 	bool do_coloring=false;
         bool do_color_exe_nonces=false;
 	bool do_common_slow_path=true;
-	bool do_jumps=false; // Should this be do_jumps=true?
+	bool do_jumps=false; // do_jumps=true will cause failures b/c registers stay live over ind jumps
 	bool do_calls=true;
 	bool do_rets=true;
 	bool do_safefn=true;
