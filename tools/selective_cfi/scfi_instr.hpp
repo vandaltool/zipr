@@ -144,29 +144,29 @@ class SCFI_Instrument
 		// predecessors of instructions.
 		libIRDB::InstructionPredecessors_t preds;
 		libIRDB::FileIR_t* firp;
-                int nonce_size;
-                int exe_nonce_size;
-		bool do_coloring;
-                bool do_color_exe_nonces;
-		bool do_common_slow_path;
-		bool do_jumps;
-		bool do_calls;
-		bool do_rets;
-		bool do_multimodule;
-		bool protect_safefn;
-		bool do_exe_nonce_for_call;
+                const int nonce_size;
+                const int exe_nonce_size;
+		const bool do_coloring;
+                const bool do_color_exe_nonces;
+		const bool do_common_slow_path;
+		const bool do_jumps;
+		const bool do_calls;
+		const bool do_rets;
+		const bool do_multimodule;
+		const bool protect_safefn;
+		const bool do_exe_nonce_for_call;
 		std::unique_ptr<ColoredInstructionNonces_t> color_map;
                 std::unique_ptr<ColoredInstructionNonces_t> exe_nonce_color_map;
-		libIRDB::Instruction_t *ret_shared;
+		const libIRDB::Instruction_t *ret_shared;
 		libIRDB::Instruction_t *zestcfi_function_entry;
 		std::string ExecutableNonceValue;
                 
                 // Exe Nonce helpers
-                int EXE_NONCE_OPCODE_SIZE = 3;
+                const int EXE_NONCE_OPCODE_SIZE = 3;
                 // Enter opcode val in reverse-byte order, as nonce_relocs reverses the bytes before placement
                 // (The nonce values themselves are placed little endian, but the opcode should be placed big-endian)
-                int EXE_NONCE_OPCODE_VAL = 0x801F0F; // actual opcode = 0x0F1F80
-                int EXE_NONCE_ARG_SIZE = 4;
+                const int EXE_NONCE_OPCODE_VAL = 0x801F0F; // actual opcode = 0x0F1F80
+                const int EXE_NONCE_ARG_SIZE = 4;
                 /* Nonces are just bit strings. To fit them into exe
                  * nonces that have a limited argument size, they may need to
                  * be split over more than one exe nonce. To be stored as tightly 
