@@ -77,7 +77,7 @@ class ColoredInstructionNonces_t
 			: firp(the_firp), slot_size(1), slot_values(255) { }
 		ColoredInstructionNonces_t(libIRDB::FileIR_t *the_firp, int the_slot_size)
 			: firp(the_firp), slot_size(the_slot_size), 
-                          slot_values(~((NonceValueType_t) 0) >> (sizeof(NonceValueType_t)*8-the_slot_size*8))  { }               
+                          slot_values(MaxNonceValForSlotSize(the_slot_size))  { }               
 		ColoredSlotValues_t  GetColorsOfIBT (libIRDB::Instruction_t* i) 
 		{ return color_assignments[i]; }
 
@@ -111,6 +111,15 @@ class ColoredInstructionNonces_t
 		// information for each IB (as indexed by the IBs ICFS).
 		// the slot that each IB uses. ICFS_t -> slot_value
 		std::map<libIRDB::ICFS_t, ColoredSlotValue_t> slot_assignments;
+
+                NonceValueType_t MaxNonceValForSlotSize(int slot_size)
+                {
+                    NonceValueType_t max_nonce_val = ~((NonceValueType_t) 0);
+                    size_t max_nonce_size_bits = sizeof(NonceValueType_t)*8;
+                    size_t slot_size_bits = slot_size*8;
+
+                    return max_nonce_val >> (max_nonce_size_bits - slot_size_bits);
+                }
 
 
 };
