@@ -10,7 +10,7 @@ myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 myenv.Replace(ZIPR_HOME=os.environ['ZIPR_HOME'])
 myenv.Replace(ZIPR_SDK=os.environ['ZIPR_SDK'])
 myenv.Replace(ZIPR_INSTALL=os.environ['ZIPR_INSTALL'])
-myenv.Append(CXXFLAGS = " -std=c++11 -Wall ")
+myenv.Replace(CXXFLAGS = " -g -std=c++11 -Wall ")
 
 cpppath=''' 
 	 $SECURITY_TRANSFORMS_HOME/include 
