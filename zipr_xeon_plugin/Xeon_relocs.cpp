@@ -259,6 +259,10 @@ RangeAddress_t Xeon_relocs::PlopDollopEntry(Zipr_SDK::DollopEntry_t *de,
 	RangeAddress_t ret=placed_addr; // relocs currently account for instruction size in offset
 	// TODO: Need to update ret to =instruction size + placed addr for calls if plopping on calls
 	Instruction_t* insn=de->Instruction();
+	if(DecodedInstruction_t(insn).isCall())
+	{
+		ret += instruction_size;
+	}
 
 	if (m_verbose)
 	{

@@ -36,7 +36,7 @@ class Xeon_relocs : public ZiprPluginInterface_t
                             for( auto it=firp->GetInstructions().begin(); it!=firp->GetInstructions().end(); ++it)
 				{
 					const auto insn=*it;
-					if(FindRelocation(insn, "insert_dynlib_check"))
+					if(FindRelocation(insn, "nonce_miscomp_path"))
 					{
 						m_on=true;
 						break;
