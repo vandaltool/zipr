@@ -227,10 +227,35 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 	//const auto &fdes=*fdes_ptr;
 
 	auto reusedpgms=size_t(0);
-	struct EhProgramComparator_t { 
-//			bool operator() (const EhProgram_t* a, const EhProgram_t* b) { return *a < *b; } 
-		bool operator() (const whole_pgm_t& a, const whole_pgm_t& b) 
-		{ return tie(*a.first, a.second) < tie(*b.first,b.second); } 
+	struct EhProgramComparator_t 
+	{
+		bool operator() (const whole_pgm_t& lhs, const whole_pgm_t& rhs) 
+		{
+			const auto &a=*(lhs.first);
+			const auto &b=*(rhs.first);
+			return
+				make_tuple(
+				    a.GetCIEProgram(),
+				    a.GetFDEProgram(),
+				    a.GetCodeAlignmentFactor(),
+				    a.GetDataAlignmentFactor(),
+				    a.GetReturnRegNumber(),
+				    a.GetPointerSize(), 
+				    lhs.second
+				   )
+				<
+				make_tuple(
+				    b.GetCIEProgram(),
+				    b.GetFDEProgram(),
+				    b.GetCodeAlignmentFactor(),
+				    b.GetDataAlignmentFactor(),
+				    b.GetReturnRegNumber(),
+				    b.GetPointerSize(), 
+				    rhs.second
+				   );
+
+//			return tie(*a.first, a.second) < tie(*b.first,b.second); 
+		}
 	};
 
 	// this is used to avoid adding duplicate entries to the program's IR, it allows a lookup by value
@@ -445,8 +470,12 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 	cout<<"# ATTRIBUTE Split_Exception_Handler::total_eh_programs_created="<<dec<<firp->GetAllEhPrograms().size()<<endl;
 	cout<<"# ATTRIBUTE Split_Exception_Handler::total_eh_programs_reused="<<dec<<reusedpgms<<endl;
 	cout<<"# ATTRIBUTE Split_Exception_Handler::total_eh_programs="<<dec<<firp->GetAllEhPrograms().size()+reusedpgms<<endl;
-	cout<<"# ATTRIBUTE Split_Exception_Handler::pct_eh_programs="<<std::fixed<<((float)firp->GetAllEhPrograms().size()/(float)firp->GetAllEhPrograms().size()+reusedpgms)*100.00<<"%"<<endl;
-	cout<<"# ATTRIBUTE Split_Exception_Handler::pct_eh_programs_reused="<<std::fixed<<((float)reusedpgms/(float)firp->GetAllEhPrograms().size()+reusedpgms)*100.00<<"%"<<endl;
+	cout<<"# ATTRIBUTE Split_Exception_Handler::pct_eh_programs="<<std::fixed
+	    <<((float)firp->GetAllEhPrograms().size()/((float)firp->GetAllEhPrograms().size()+reusedpgms))*100.00
+	    <<"%" <<endl;
+	cout<<"# ATTRIBUTE Split_Exception_Handler::pct_eh_programs_reused="<<std::fixed
+	    <<((float)reusedpgms/((float)firp->GetAllEhPrograms().size()+reusedpgms))*100.00
+	    <<"%"<<endl;
 
 	remove_scoop(eh_frame_scoop);
 	remove_scoop(eh_frame_hdr_scoop);
@@ -510,10 +539,6 @@ split_eh_frame_impl_t<ptrsize>::split_eh_frame_impl_t(FileIR_t* p_firp)
 	  gcc_except_table_scoop(NULL)
 {
 	assert(firp!=NULL);
-	for(auto s :  firp->GetDataScoops())
-	{
-		cout<<"Scoop is "<<s->GetName()<<endl;
-	}
 
 	// function to find a scoop by name.
 	auto lookup_scoop_by_name=[&](const string &the_name) -> DataScoop_t* 

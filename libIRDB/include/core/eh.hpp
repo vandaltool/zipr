@@ -79,6 +79,8 @@ class EhProgram_t : public BaseObj_t
 
         std::vector<std::string> WriteToDB(File_t* fid);    // writes to DB, ID is not -1.
 
+        uint8_t GetPointerSize() const { return ptrsize; }
+
 
 	friend bool operator<(const EhProgram_t&a, const EhProgram_t&b);
 
