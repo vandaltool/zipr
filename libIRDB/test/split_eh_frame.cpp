@@ -270,13 +270,17 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 		const auto fie_it=fdes.find(tofind);
 		*/
 		const auto find_addr=insn->GetAddress()->GetVirtualOffset();
+		/*
+		too slow
 		const auto finder=[&](const shared_ptr<FDEContents_t>& fde) -> bool 
 			{ return fde->getStartAddress() <= find_addr && find_addr < fde->getEndAddress(); };
 		const auto fie_ptr_it=find_if ( ALLOF(*fdes), finder);
+		*/
+		const auto fie_ptr=eh_frame_parser->findFDE(find_addr);
 
-		if(fie_ptr_it!=fdes->end())
+		if(fie_ptr != nullptr ) 
 		{
-			const auto fie_ptr=*fie_ptr_it;
+			// const auto fie_ptr=*fie_ptr_it;
 
 			if(getenv("EHIR_VERBOSE")!=NULL)
 			{
@@ -486,20 +490,21 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 template <int ptrsize>
 libIRDB::Instruction_t* split_eh_frame_impl_t<ptrsize>::find_lp(libIRDB::Instruction_t* i) const 
 {
+	const auto find_addr=i->GetAddress()->GetVirtualOffset();
 	//const auto tofind=fde_contents_t<ptrsize>( i->GetAddress()->GetVirtualOffset(), i->GetAddress()->GetVirtualOffset()+1);
 	//const auto fde_it=fdes.find(tofind);
-	const auto find_addr=i->GetAddress()->GetVirtualOffset();
+	/* too slow
 	const auto fde_ptr_it=find_if
 		(
 		    ALLOF(*fdes),
 		    [&](const shared_ptr<FDEContents_t>& fde) { return fde->getStartAddress() <= find_addr && find_addr < fde->getEndAddress(); }
 		);
+	*/
+	const auto fde_ptr=eh_frame_parser->findFDE(find_addr);
 
-	if(fde_ptr_it==fdes->end())
-		return NULL;
+	if(fde_ptr==nullptr)
+		return nullptr;
 
-	const auto fde_ptr=*fde_ptr_it;
-	
 	const auto &the_fde=*fde_ptr;
 	const auto &the_lsda_ptr=the_fde.getLSDA();
 	const auto &the_lsda=*the_lsda_ptr;
@@ -510,7 +515,7 @@ libIRDB::Instruction_t* split_eh_frame_impl_t<ptrsize>::find_lp(libIRDB::Instruc
 		{ return lsda_call_site_appliesTo(*cs,i); });
 
 	if(cstab_it==cstab.end())
-		return NULL;
+		return nullptr;
 
 	const auto &the_cstab_entry_ptr=*cstab_it;
 	const auto &the_cstab_entry=*the_cstab_entry_ptr;
@@ -519,7 +524,7 @@ libIRDB::Instruction_t* split_eh_frame_impl_t<ptrsize>::find_lp(libIRDB::Instruc
 	const auto om_it=offset_to_insn_map.find(lp_addr);
 
 	if(om_it==offset_to_insn_map.end())
-		return NULL;
+		return nullptr;
 
 	auto lp=om_it->second;
 	return lp;
@@ -573,6 +578,8 @@ split_eh_frame_impl_t<ptrsize>::split_eh_frame_impl_t(FileIR_t* p_firp)
 
 	if(eh_frame_parser!=NULL)
 		fdes=eh_frame_parser->getFDEs();
+
+	(void)init_offset_map();
 }
 
 unique_ptr<split_eh_frame_t> split_eh_frame_t::factory(FileIR_t *firp)
