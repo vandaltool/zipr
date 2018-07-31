@@ -245,11 +245,9 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 		const auto fie_it=fdes.find(tofind);
 		*/
 		const auto find_addr=insn->GetAddress()->GetVirtualOffset();
-		const auto fie_ptr_it=find_if
-			(
-			    ALLOF(*fdes),
-			    [&](const shared_ptr<FDEContents_t>& fde) { return fde->getStartAddress() <= find_addr && find_addr < fde->getEndAddress(); }
-			);
+		const auto finder=[&](const shared_ptr<FDEContents_t>& fde) -> bool 
+			{ return fde->getStartAddress() <= find_addr && find_addr < fde->getEndAddress(); };
+		const auto fie_ptr_it=find_if ( ALLOF(*fdes), finder);
 
 		if(fie_ptr_it!=fdes->end())
 		{
@@ -512,14 +510,22 @@ split_eh_frame_impl_t<ptrsize>::split_eh_frame_impl_t(FileIR_t* p_firp)
 	  gcc_except_table_scoop(NULL)
 {
 	assert(firp!=NULL);
+	for(auto s :  firp->GetDataScoops())
+	{
+		cout<<"Scoop is "<<s->GetName()<<endl;
+	}
 
 	// function to find a scoop by name.
-	auto lookup_scoop_by_name=[&](const string &name) -> DataScoop_t* 
+	auto lookup_scoop_by_name=[&](const string &the_name) -> DataScoop_t* 
 	{
-		auto scoop_it=find_if(firp->GetDataScoops().begin(), firp->GetDataScoops().end(), [name](DataScoop_t* scoop)
-		{
-			return scoop->GetName()==name;
-		});
+		//auto scoop_it=find_if(ALLOF(firp->GetDataScoops()), [the_name](DataScoop_t* scoop)
+		const auto scoop_it=find_if(
+			firp->GetDataScoops().begin(), 
+			firp->GetDataScoops().end(), 
+			[the_name](DataScoop_t* scoop)
+			{
+				return scoop->GetName()==the_name;
+			});
 
 		if(scoop_it!=firp->GetDataScoops().end())
 			return *scoop_it;
