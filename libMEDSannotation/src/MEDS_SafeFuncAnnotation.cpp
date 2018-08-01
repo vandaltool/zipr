@@ -39,6 +39,8 @@ MEDS_SafeFuncAnnotation::MEDS_SafeFuncAnnotation(const string &p_rawLine)
 {
 	init();
 	m_rawInputLine=p_rawLine;
+	setLeaf(false);
+	setHasFramePointer(true);
 	parse();
 }
 
@@ -102,6 +104,28 @@ void MEDS_SafeFuncAnnotation::parse()
 		if(getenv("VERBOSE"))
 			cout<<"Found FUNC_UNSAFE annotation for "<<vo.to_string()<<endl;
 		markUnsafe();	 // sets valid
+	}
+
+        if (m_rawInputLine.find(" FUNC_LEAF ")!=string::npos)
+	{
+		if(getenv("VERBOSE"))
+			cout<<"Found FUNC_LEAF for "<<vo.to_string()<<endl;
+		setLeaf(true);
+	}
+	else
+	{
+		setLeaf(false);
+	}
+
+        if (m_rawInputLine.find(" NOFP ")!=string::npos)
+	{
+		if(getenv("VERBOSE"))
+			cout<<"Found NOFP (no frame pointer) for "<<vo.to_string()<<endl;
+		setHasFramePointer(false);
+	}
+	else
+	{
+		setHasFramePointer(true);
 	}
 
 }

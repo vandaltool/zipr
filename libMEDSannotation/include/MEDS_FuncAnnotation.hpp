@@ -37,7 +37,7 @@ using namespace std;
 using namespace MEDS_Annotation;
 
 //
-// Class to handle one MEDS (integer vulnerability) annotation
+// Class to handle one MEDS annotation
 //
 class MEDS_FuncAnnotation : public MEDS_AnnotationBase
 {
@@ -50,8 +50,16 @@ class MEDS_FuncAnnotation : public MEDS_AnnotationBase
 		virtual string getFuncName() const { return m_func_name; }
 		virtual void setFuncName(const string &p_func_name) { m_func_name=p_func_name; }
 
+		virtual bool isLeaf() const { return m_isleaf; }
+		virtual void setLeaf(const bool p_leaf) { m_isleaf = p_leaf; }
+
+		virtual bool hasFramePointer() const { return m_hasfp; }
+		virtual void setHasFramePointer(const bool p_hasfp) { m_hasfp = p_hasfp; }
+
 	private:
 		string m_func_name;
+		bool m_isleaf;
+		bool m_hasfp;
 };
 
 }
