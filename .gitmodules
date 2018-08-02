@@ -2,3 +2,6 @@
 	shallow = true
 	path = libcapstone
 	url = https://github.com/aquynh/capstone.git
+[submodule "libehp"]
+	path = libehp
+	url = git@git.zephyr-software.com:allnp/libehp.git
