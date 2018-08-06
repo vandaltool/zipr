@@ -54,29 +54,29 @@ class split_eh_frame_impl_t : public split_eh_frame_t
 		(
 		    const EHP::LSDACallSite_t& cs, 
 		    const libIRDB::Instruction_t* insn
-		);
+		) const;
 	void lsda_call_site_build_ir
 		(
 		    const EHP::LSDACallSite_t& cs,
 		    libIRDB::Instruction_t* insn, 
 		    /* const std::vector<lsda_type_table_entry_t <ptrsize> > &*/ std::shared_ptr<EHP::TypeTableVector_t> type_table_ptr, 
 		    const uint8_t& tt_encoding
-		);
+		) const;
 	void lsda_build_ir
 		(
 		    const EHP::LSDA_t& lsda,
 		    libIRDB::Instruction_t* insn
-		);
+		) const;
         bool fde_contents_appliesTo
 		(
 		    const EHP::FDEContents_t& fde,
 		    const libIRDB::Instruction_t* insn
-		);
+		) const;
 	void fde_contents_build_ir
 		(
 		    const EHP::FDEContents_t& fde,
 		    libIRDB::Instruction_t* insn
-		);
+		) const;
 
 	public:
 
