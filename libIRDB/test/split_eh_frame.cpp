@@ -24,7 +24,7 @@ using namespace EHP;
 #define ALLOF(s) begin(s), end(s)
 
 template <int ptrsize>
-bool split_eh_frame_impl_t<ptrsize>::lsda_call_site_appliesTo(const LSDACallSite_t& cs, const Instruction_t* insn) 
+bool split_eh_frame_impl_t<ptrsize>::lsda_call_site_appliesTo(const LSDACallSite_t& cs, const Instruction_t* insn)  const
 {
 	assert(insn && insn->GetAddress());
 	auto insn_addr=insn->GetAddress()->GetVirtualOffset();
@@ -42,7 +42,7 @@ void split_eh_frame_impl_t<ptrsize>::lsda_call_site_build_ir
 	    Instruction_t* insn, 
 	    const /*vector<lsda_type_table_entry_t <ptrsize> > &*/ std::shared_ptr<EHP::TypeTableVector_t> type_table_ptr, 
 	    const uint8_t& tt_encoding
-	)
+	) const
 {
 	const auto &type_table=*type_table_ptr;
 	const auto &om=offset_to_insn_map;
@@ -128,7 +128,7 @@ void split_eh_frame_impl_t<ptrsize>::lsda_call_site_build_ir
 }
 
 template <int ptrsize>
-void split_eh_frame_impl_t<ptrsize>::lsda_build_ir(const LSDA_t& lsda, Instruction_t* insn)
+void split_eh_frame_impl_t<ptrsize>::lsda_build_ir(const LSDA_t& lsda, Instruction_t* insn) const
 {
 	const auto  call_site_table_ptr=lsda.getCallSites();
 	const auto& call_site_table=*call_site_table_ptr;
@@ -152,7 +152,7 @@ void split_eh_frame_impl_t<ptrsize>::lsda_build_ir(const LSDA_t& lsda, Instructi
 }
 
 template <int ptrsize>
-bool split_eh_frame_impl_t<ptrsize>::fde_contents_appliesTo(const FDEContents_t& fde, const Instruction_t* insn) 
+bool split_eh_frame_impl_t<ptrsize>::fde_contents_appliesTo(const FDEContents_t& fde, const Instruction_t* insn)  const
 {
 	assert(insn && insn->GetAddress());
 	auto insn_addr=insn->GetAddress()->GetVirtualOffset();
@@ -162,7 +162,7 @@ bool split_eh_frame_impl_t<ptrsize>::fde_contents_appliesTo(const FDEContents_t&
 }
 
 template <int ptrsize>
-void split_eh_frame_impl_t<ptrsize>::fde_contents_build_ir(const FDEContents_t& fde, Instruction_t* insn)
+void split_eh_frame_impl_t<ptrsize>::fde_contents_build_ir(const FDEContents_t& fde, Instruction_t* insn) const
 {
 	const auto fde_start_addr=fde.getStartAddress();
 	const auto fde_end_addr=fde.getEndAddress();
@@ -179,7 +179,7 @@ void split_eh_frame_impl_t<ptrsize>::fde_contents_build_ir(const FDEContents_t& 
 }
 
 template <int ptrsize>
-bool split_eh_frame_impl_t<ptrsize>::init_offset_map()
+bool split_eh_frame_impl_t<ptrsize>::init_offset_map() 
 {
 	//for_each(firp->GetInstructions().begin(), firp->GetInstructions().end(), [&](Instruction_t* i)
 	for(const auto i : firp->GetInstructions())
@@ -189,35 +189,6 @@ bool split_eh_frame_impl_t<ptrsize>::init_offset_map()
 	return false;
 }
 
-#if 0
-template <int ptrsize>
-split_eh_frame_impl_t<ptrsize>::split_eh_frame_impl_t(FileIR_t* p_firp)
-	: firp(p_firp),
-	  eh_frame_scoop(NULL),
-	  eh_frame_hdr_scoop(NULL),
-	  gcc_except_table_scoop(NULL)
-{
-	assert(firp!=NULL);
-
-	// function to find a scoop by name.
-	auto lookup_scoop_by_name=[&](const string &name) -> DataScoop_t* 
-	{
-		auto scoop_it=find_if(firp->GetDataScoops().begin(), firp->GetDataScoops().end(), [name](DataScoop_t* scoop)
-		{
-			return scoop->GetName()==name;
-		});
-
-		if(scoop_it!=firp->GetDataScoops().end())
-			return *scoop_it;
-		return NULL;
-	};
-
-	eh_frame_scoop=lookup_scoop_by_name(".eh_frame");
-	eh_frame_hdr_scoop=lookup_scoop_by_name(".eh_frame_hdr");
-	gcc_except_table_scoop=lookup_scoop_by_name(".gcc_except_table");
-
-}
-#endif
 
 template <int ptrsize>
 void split_eh_frame_impl_t<ptrsize>::build_ir() const
