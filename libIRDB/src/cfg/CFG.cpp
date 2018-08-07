@@ -25,10 +25,12 @@
 using namespace std;
 using namespace libIRDB;
 
+#define ALLOF(a) begin(a),end(a)
+
 /*
  *  FindTargets - locate all possible instructions that are the target of a jump instruction
  */
-static set<Instruction_t*> FindBlockStarts(Function_t* func) 
+static InstructionSet_t FindBlockStarts(Function_t* func) 
 {
 
 	InstructionSet_t targets;
@@ -80,55 +82,86 @@ static set<Instruction_t*> FindBlockStarts(Function_t* func)
 	return targets;
 }
 
-
-
-
 ControlFlowGraph_t::ControlFlowGraph_t(Function_t* func) :
 	entry(NULL), function(func)
 {
 	Build(func);	
 }
 
-void ControlFlowGraph_t::Build(Function_t* func)
+
+void ControlFlowGraph_t::alloc_blocks(const InstructionSet_t &starts, map<Instruction_t*,BasicBlock_t*>& insn2block_map)
 {
-	set<Instruction_t*> starts=FindBlockStarts(func);
-
-	map<Instruction_t*,BasicBlock_t*> insn2block_map;
-
 	/* create a basic block for each instruction that starts a block */
-	for(	set<Instruction_t*>::const_iterator it=starts.begin();
-		it!=starts.end();
-		++it
-	   )
+	for(const auto &insn : starts)
 	{
-		Instruction_t* insn=*it;
-		BasicBlock_t* newblock=new BasicBlock_t;
+		if(is_in_container(insn2block_map,insn)) // already allocated 
+			continue;
 
-		/* record the entry block */
-		if(insn==func->GetEntryPoint())
-			entry=newblock;
+		auto  newblock=new BasicBlock_t;
 
 		assert( insn && newblock );
 
 		blocks.insert(newblock);
 		insn2block_map[insn]=newblock;
 	}
+}
+
+void ControlFlowGraph_t::build_blocks(const map<Instruction_t*,BasicBlock_t*>& insn2block_map)
+{
 
 	/* Ask the basic block to set the fields for each block that need to be set */
-	for(	map<Instruction_t*,BasicBlock_t*>::const_iterator it=insn2block_map.begin();
-		it!=insn2block_map.end();
-		++it
-	   )
+	for(const auto &it : insn2block_map)
 	{
-		Instruction_t* insn=(*it).first;
-		BasicBlock_t* block=(*it).second;
+		const auto insn=it.first;
+		const auto block=it.second;
+
+		if(block->GetInstructions().size()>0) // already built
+			continue;
 
 		assert(insn && block);
 
-		block->BuildBlock(func, insn, insn2block_map);
+		block->BuildBlock(insn, insn2block_map);
 
 	}
 
+}
+
+void ControlFlowGraph_t::find_unblocked_instructions(InstructionSet_t &starts, Function_t* func)
+{
+	auto mapped_instructions=InstructionSet_t();
+	auto missed_instructions=InstructionSet_t();
+	for(const auto block : GetBlocks())
+		mapped_instructions.insert(ALLOF(block->GetInstructions()));
+
+	auto my_inserter=inserter(missed_instructions,missed_instructions.end());
+	set_difference(ALLOF(func->GetInstructions()), ALLOF(mapped_instructions), my_inserter);
+	starts.insert(ALLOF(missed_instructions));
+}
+
+
+
+void ControlFlowGraph_t::Build(Function_t* func)
+{
+	auto starts=FindBlockStarts(func);
+
+	auto insn2block_map=map<Instruction_t*,BasicBlock_t*> ();
+
+	alloc_blocks(starts, insn2block_map);
+	build_blocks(insn2block_map);
+	/* record the entry block */
+	entry=insn2block_map[func->GetEntryPoint()];
+
+	/* most functions are done now. */
+	/* however, if a function has a (direct) side entrance, 
+	 * some code may appear unreachable and not be placed in 
+	 * a block -- here, we detect that code and create a 
+	 * new basic block for every instruction, as any may have a side entrance
+	 */ 
+	/* note:  side entrances may miss a block start */
+	/* in code that appears reachable from the entrance?! */
+	find_unblocked_instructions(starts, func);
+	alloc_blocks(starts, insn2block_map);
+	build_blocks(insn2block_map);
 
 
 }
