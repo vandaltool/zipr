@@ -507,6 +507,15 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 	string textra_contents, textra_name;
 	RangeAddress_t max_addr=0;
 	std::map<RangeAddress_t, int> ordered_sections;
+	DataScoopByAddressSet_t sorted_scoop_set;
+
+
+	/*
+	 * This function should be the *only* place where
+	 * scoops are added to m_zipr_scoops. This assert
+	 * is here to maintain that variant.
+	 */
+	assert(m_zipr_scoops.empty());
 
 	/*
 	 * Make an ordered list of the sections
@@ -518,10 +527,7 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 		section* sec = elfiop->sections[i];
 		assert(sec);
 		ordered_sections.insert(std::pair<RangeAddress_t,int>(sec->get_address(), i));
-
-
 	}
-
 
 	CreateExecutableScoops(ordered_sections);
 
@@ -548,8 +554,6 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 
 		if( (sec->get_flags() & SHF_ALLOC) ==0 )
 			continue;
-
-
 	}
 
 	/*
@@ -561,7 +565,17 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 		cout << "Filling gaps that are larger than " << std::dec
 		     << m_paddable_minimum_distance << " bytes." << endl;
 
-	DataScoopByAddressSet_t sorted_scoop_set(ALLOF(m_firp->GetDataScoops()));
+	/*
+	 * Only put pinned data scoops into the list of
+	 * scoops to consider for adding gap filling.
+	 */
+	copy_if(ALLOF(m_firp->GetDataScoops()),
+	        inserter(sorted_scoop_set, sorted_scoop_set.begin()),
+	        [](DataScoop_t* ds)
+	        {
+	        	return ds->GetStart()->GetVirtualOffset() != 0;
+	        }
+	);
 	for( auto it=sorted_scoop_set.begin(); it!=sorted_scoop_set.end(); ++it )
 	{
 		auto this_scoop=*it;
@@ -569,23 +583,25 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 		RangeAddress_t this_end = this_scoop->GetEnd()->GetVirtualOffset(),
 		               next_start = 0;
 
-		if(this_scoop->GetStart()->GetVirtualOffset()==0)
-		{
-			// unpinned scoops can get ignored.
-			continue;
-		}
+		assert(this_scoop->GetStart()->GetVirtualOffset()!=0);
 
 		if (m_verbose)
 			cout << "There's a scoop between " << std::hex
 			     << this_scoop->GetStart()->GetVirtualOffset()
 			     << " and " << std::hex << this_scoop->GetEnd()->GetVirtualOffset()
+			     << " with permissions " << std::hex << this_scoop->getRawPerms()
 			     << endl;
 
+		/*
+		 * Never pad after the last scoop.
+		 */
 		if (std::next(it,1) != sorted_scoop_set.end())
 		{
 			next_scoop = *std::next(it,1);
 			next_start = next_scoop->GetStart()->GetVirtualOffset();
-
+			unsigned int new_padding_scoop_size = 0;
+			RangeAddress_t new_padding_scoop_start = this_end + 1;
+			RangeAddress_t new_padding_scoop_end = next_start - 1;
 
 			if (this_end > next_start) {
 				/*
@@ -600,27 +616,73 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 				continue;
 			}
 
-			if ((next_start - this_end) > (unsigned int)m_paddable_minimum_distance)
+			if (m_verbose)
+				cout << "Considering a gap between: 0x" << std::hex 
+				     << new_padding_scoop_start << "-0x"
+				     << std::hex << new_padding_scoop_end
+				     << endl;
+
+			/*
+			 * If the adjacent scoop is writable, we
+			 * do not want to put an executable scoop
+			 * in the same page.
+			 */
+			if (this_scoop->isWriteable())
+			{
+				new_padding_scoop_start = page_round_up(new_padding_scoop_start);
+
+				if (m_verbose)
+					cout << "Adjacent scoop is writable. Adjusting start up to 0x"
+					     << std::hex << new_padding_scoop_start << "." << endl;
+			}
+
+			/*
+			 * If the next scoop is writable, we
+			 * do not want to put an executable scoop
+			 * in the same page.
+			 */
+			if (next_scoop->isWriteable())
+			{
+				new_padding_scoop_end = page_round_down(new_padding_scoop_end);
+
+				if (m_verbose)
+					cout << "Next scoop is writable. Adjusting end down to 0x"
+					     << std::hex << new_padding_scoop_end << "." << endl;
+			}
+
+			/*
+			 * After making the proper adjustments, we know
+			 * the size of the gap. So, now we have to determine
+			 * whether to pad or not:
+			 *
+			 * 1. Is the gap bigger than the user-defined gap criteria
+			 * 2. One or both of the surrounding segments are not
+			 *    writable (a policy decision not to pad between
+			 *    writable segments.
+			 */
+			new_padding_scoop_size = new_padding_scoop_start - new_padding_scoop_end;
+			if ((new_padding_scoop_size>(unsigned int)m_paddable_minimum_distance) &&
+			    (!this_scoop->isWriteable() || !next_scoop->isWriteable())
+				 )
 			{
 				DataScoop_t *new_padding_scoop = nullptr;
-				AddressID_t *new_padding_scoop_start_addr = new AddressID_t(),
-				            *new_padding_scoop_end_addr = new AddressID_t();
-				RangeAddress_t new_padding_scoop_start, new_padding_scoop_end;
 				string new_padding_scoop_contents, new_padding_scoop_name;
-
-				//new_padding_scoop_start = page_round_up(this_end + 1);
-				new_padding_scoop_start = this_end + 1;
-				//new_padding_scoop_end = page_round_down(next_start - 1);
-				new_padding_scoop_end = next_start - 1;
+				int new_padding_scoop_perms = 0x5;
+				AddressID_t *new_padding_scoop_start_addr = nullptr,
+				            *new_padding_scoop_end_addr = nullptr;
 
 				new_padding_scoop_name = "zipr_scoop_"+
 				                         to_string(new_padding_scoop_start);
 
+				new_padding_scoop_start_addr = new AddressID_t();
+				new_padding_scoop_end_addr = new AddressID_t();
 				new_padding_scoop_start_addr->SetVirtualOffset(new_padding_scoop_start);
 				new_padding_scoop_end_addr->SetVirtualOffset(new_padding_scoop_end);
+				m_firp->GetAddresses().insert(new_padding_scoop_start_addr);
+				m_firp->GetAddresses().insert(new_padding_scoop_end_addr);
 
-				cout << "New free space: 0x" << std::hex << new_padding_scoop_start
-				     << "-0x"
+				cout << "Gap filling with a scoop between 0x"
+				     << std::hex << new_padding_scoop_start << " and 0x"
 				     << std::hex << new_padding_scoop_end
 				     << endl;
 
@@ -629,38 +691,39 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 				                                    new_padding_scoop_start_addr,
 				                                    new_padding_scoop_end_addr,
 				                                    NULL,
-				                                    5,
+				                                    new_padding_scoop_perms,
 				                                    false,
 				                                    new_padding_scoop_contents);
 				new_padding_scoop_contents.resize(new_padding_scoop->GetSize());
 				new_padding_scoop->SetContents(new_padding_scoop_contents);
 
+				/*
+				 * Insert this scoop into a list of scoops that Zipr added.
+				 */
 				m_zipr_scoops.insert(new_padding_scoop);
-				m_firp->GetAddresses().insert(new_padding_scoop_start_addr);
-				m_firp->GetAddresses().insert(new_padding_scoop_end_addr);
 
+				/*
+				 * Tell Zipr that it can put executable code in this section.
+				 */
 				memory_space.AddFreeRange(Range_t(new_padding_scoop_start,
 				                                  new_padding_scoop_end), true);
 			}
 		}
 	}
 
-	// scan scoops for a max-addr.
-	for( auto scoop : m_zipr_scoops)
-	{
-		RangeAddress_t  end=scoop->GetEnd()->GetVirtualOffset();
-
-		if(scoop->GetStart()->GetVirtualOffset()==0)
+	/*
+	 * Scan the scoops that we added to see if we went beyond
+	 * the previously highest known address. This should never
+	 * happen because we never pad after the last scoop.
+	 */
+	auto max_addr_zipr_scoops_result = max_element(ALLOF(m_zipr_scoops),
+		[](DataScoop_t *a, DataScoop_t *b)
 		{
-			// unpinned scoops can get ignored.
-			continue;
+			return a->GetEnd()->GetVirtualOffset() <
+			       b->GetEnd()->GetVirtualOffset();
 		}
-
-		if(end >= max_addr)
-		{
-			max_addr=end+1;
-		}
-	}
+	);
+	assert(max_addr>=(*max_addr_zipr_scoops_result)->GetEnd()->GetVirtualOffset());
 
 	max_addr=PlaceUnplacedScoops(max_addr);
 
@@ -2519,18 +2582,18 @@ void ZiprImpl_t::PlaceDollops()
 				                         );
 				last_de_fits = (std::next(dit,1)==dit_end) /* last */ &&
 				               (placement.GetEnd()>=(cur_addr+ /* fits */
-							DetermineWorstCaseDollopEntrySize(dollop_entry,
-							                            to_place->FallthroughDollop()!=NULL))
-							                            /* with or without fallthrough */
+				                DetermineWorstCaseDollopEntrySize(dollop_entry,
+				                to_place->FallthroughDollop()!=NULL))
+				               /* with or without fallthrough */
 							         );
 				disallowed_override = !allowed_coalescing && 
 				                      !(de_and_fallthrough_fit ||
-															  fits_entirely ||
-															  last_de_fits ||
-															  initial_placement_abuts_pin ||
-															  initial_placement_abuts_fallthrough
-															 ) && 
-															 all_fallthroughs_fit && 
+				                        fits_entirely ||
+				                        last_de_fits ||
+				                        initial_placement_abuts_pin ||
+				                        initial_placement_abuts_fallthrough
+				                       ) && 
+				                       all_fallthroughs_fit && 
 				                       ((placement.GetEnd() - 
 				                        (cur_addr + 
 				                         DetermineWorstCaseDollopEntrySize(
@@ -3234,8 +3297,8 @@ RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t *entry, RangeAddress_t
 			updated_addr = std::max(zpi->PlopDollopEntry(entry,
 			                                             placed_address,
 			                                             target_address,
-																									 insn_wcis,
-																									 pp_placed_insn),
+		 	                                             insn_wcis,
+		 	                                             pp_placed_insn),
 			                        updated_addr);
 			if (m_verbose)
 				cout << zpi->ToString() << " placed entry " 
@@ -4265,6 +4328,7 @@ void ZiprImpl_t::UpdateScoops()
 			++it;
 			continue;
 		}
+
 		assert(m_zipr_scoops.find(scoop)!=m_zipr_scoops.end());
 
 		/*

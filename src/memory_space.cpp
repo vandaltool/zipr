@@ -270,7 +270,7 @@ Range_t ZiprMemorySpace_t::GetFreeRange(int size)
 		Range_t r=*it;
 		if(r.GetEnd()==(RangeAddress_t)-1)
 			big_range=r;
-		if(r.GetEnd() - r.GetStart() >= (unsigned) size)
+		else if(r.GetEnd() - r.GetStart() >= (unsigned) size)
 			v.push_back(r);
 
 		// that's enough randomization
