@@ -38,6 +38,11 @@ bool Register::isValidRegister(std::string p_reg)
 	return getRegister(p_reg) != rn_UNKNOWN;
 }
 
+bool Register::isValidRegister(const RegisterName p_reg)
+{
+	return isValidRegister(Register::toString(p_reg));
+}
+
 RegisterName Register::getRegister(std::string p_reg)
 {
 	if (strcasecmp(p_reg.c_str(), "EFLAGS") ==0)
@@ -522,3 +527,62 @@ RegisterName Register::promoteTo64(const RegisterName p_reg)
 			break;
 	}
 }
+
+RegisterName Register::demoteTo32(const RegisterName p_reg)
+{
+	if (is32bit(p_reg))
+		return p_reg;
+
+	switch (p_reg)
+	{
+		case rn_RAX:   return  rn_EAX;
+		case rn_RBX:   return  rn_EBX;
+		case rn_RCX:   return  rn_ECX;
+		case rn_RDX:   return  rn_EDX;
+		case rn_RBP:   return  rn_EBP;
+		case rn_RSP:   return  rn_ESP;
+		case rn_RSI:   return  rn_ESI;
+		case rn_RDI:   return  rn_EDI;
+		case  rn_R8:   return  rn_R8D;
+		case  rn_R9:   return  rn_R9D;
+		case rn_R10:   return rn_R10D;
+		case rn_R11:   return rn_R11D;
+		case rn_R12:   return rn_R12D;
+		case rn_R13:   return rn_R13D;
+		case rn_R14:   return rn_R14D;
+		case rn_R15:   return rn_R15D;
+		default:
+			return rn_UNKNOWN;
+			break;
+	}
+}
+
+RegisterName Register::demoteTo16(const RegisterName p_reg)
+{
+	if (is16bit(p_reg))
+		return p_reg;
+
+	switch (p_reg)
+	{
+		case rn_RAX: case  rn_EAX:   return rn_AX;
+		case rn_RBX: case  rn_EBX:   return rn_BX;
+		case rn_RCX: case  rn_ECX:   return rn_CX;
+		case rn_RDX: case  rn_EDX:   return rn_DX;
+		case rn_RBP: case  rn_EBP:   return rn_BP;
+		case rn_RSP: case  rn_ESP:   return rn_SP;
+		case rn_RSI: case  rn_ESI:   return rn_SI;
+		case rn_RDI: case  rn_EDI:   return rn_DI;
+		case  rn_R8: case  rn_R8D:   return rn_R8W;
+		case  rn_R9: case  rn_R9D:   return rn_R9W;
+		case rn_R10: case rn_R10D:   return rn_R10W;
+		case rn_R11: case rn_R11D:   return rn_R11W;
+		case rn_R12: case rn_R12D:   return rn_R12W;
+		case rn_R13: case rn_R13D:   return rn_R13W;
+		case rn_R14: case rn_R14D:   return rn_R14W;
+		case rn_R15: case rn_R15D:   return rn_R15W;
+		default:
+			return rn_UNKNOWN;
+			break;
+	}
+}
+

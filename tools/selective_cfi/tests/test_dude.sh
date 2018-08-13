@@ -1,29 +1,6 @@
 #!/bin/bash  
 
-do_cfi()
-{
-	if [[ -f $2 ]]; then
-		echo "Eliding rebuild of $2"
-	else
-		(set -x ; $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--elftables-only  --step-option fix_calls:--fix-all --step-option zipr:"--add-sections false" )
-	fi
-}
-
-# Note: exe nonce cfi doesn't always run against non-exe nonce cfi modules
-do_cfi_exe_nonces()
-{
-        $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--elftables-only  --step-option fix_calls:--no-fix-safefn --step-option selective_cfi:--exe-nonce-for-call --step-option zipr:"--add-sections false"
-}
-
-do_coloring_cfi()
-{
-	if [[ -f $2 ]]; then
-		echo "Eliding rebuild of $2"
-	else
-		(set -x ; $PS $1 $2 --backend zipr --step move_globals=on --step selective_cfi=on --step-option selective_cfi:--multimodule --step-option move_globals:--elftables-only  --step-option fix_calls:--fix-all --step-option selective_cfi:--color --step-option zipr:"--add-sections false" )
-	fi
-}
-
+source cfi_all_configs.sh
 
 get_correct()
 {
@@ -42,7 +19,7 @@ test()
 	cmp out correct
 	if [[ $? = 1 ]] || [[ $fail = 1 ]] ; then
 		fails=$(expr $fails + 1 )
-		echo test failed $1 $2 $3
+		echo test failed $1 $2 $3 | tee -a dude_test_log.txt
 		echo "=== out ==="
 		cat out
 		echo "======"
@@ -66,17 +43,22 @@ build()
 
 protect()
 {
-	do_cfi ./dude.exe ./dude.exe.cfi
-	do_cfi ./libfoo.so.orig ./libfoo.so.cfi
-	do_cfi ./libdude.so.orig ./libdude.so.cfi
+	files=(dude.exe dude.exe.pie libfoo.so.orig libdude.so.orig)
 
-	do_cfi_exe_nonces ./dude.exe ./dude.exe.nonce.cfi
-        do_cfi_exe_nonces ./libfoo.so.orig ./libfoo.so.exe.nonce.cfi
-        do_cfi_exe_nonces ./libdude.so.orig ./libdude.so.exe.nonce.cfi
+        dude_exe_varients=(dude.exe)
+	dude_exe_pie_varients=(dude.exe.pie)
+        libfoo_so_orig_varients=(libfoo.so.orig)
+	libdude_so_orig_varients=(libdude.so.orig)
 
-	do_coloring_cfi ./dude.exe ./dude.exe.cfi.color
-	do_coloring_cfi ./libfoo.so.orig ./libfoo.so.cfi.color
-	do_coloring_cfi ./libdude.so.orig ./libdude.so.cfi.color
+        for file in "${files[@]}"; do
+                for config in "${configs[@]}"; do
+                        echo Protecting file "$file" with config "$config" | tee -a dude_protection_log.txt
+                        "$config" ./"$file" ./"$file"".""$config" | tee -a dude_protection_log.txt
+                        varient_array_name="$(echo "$file" | sed -e 's/\./_/g')""_varients"
+                        declare -n varient_array="$varient_array_name"
+                        varient_array+=("$file"".""$config")
+                done
+        done	
 }
 
 clean()
@@ -84,13 +66,24 @@ clean()
 	rm out
 	rm correct
 	rm -Rf dude.exe* peasoup_exe* lib*.so*
+
+	for config in "${configs[@]}"; do
+                rm *."$config"
+        done
 }
 
 report ()
 {
 	total=$(expr $passes + $fails)
-	echo "Passes:  $passes / $total"
-	echo "Fails :  $fails / $total"
+	echo "Passes:  $passes / $total" | tee -a dude_test_log.txt
+	echo "Fails :  $fails / $total" | tee -a dude_test_log.txt
+
+	if grep -q "Warning " ./dude_protection_log.txt
+        then
+                echo PROTECTION WARNINGS DETECTED!
+        else
+                echo ALL PROTECTIONS SUCCESSFUL
+        fi
 }
 
 main()
@@ -99,58 +92,17 @@ main()
 	protect
 	get_correct
 
-	test dude.exe libfoo.so.orig libdude.so.orig		# unprotected - should pass!
-	test dude.exe libfoo.so.cfi libdude.so.orig		
-	test dude.exe libfoo.so.cfi.color libdude.so.orig		
-	test dude.exe libfoo.so.orig libdude.so.cfi		
-	test dude.exe libfoo.so.orig libdude.so.cfi.color		
-	test dude.exe libfoo.so.cfi libdude.so.cfi
-	test dude.exe libfoo.so.cfi libdude.so.cfi.color
-	test dude.exe libfoo.so.cfi.color libdude.so.cfi
+	dude_varients=("${dude_exe_varients[@]}" "${dude_exe_pie_varients[@]}")
+	
+	for dude_varient in "${dude_varients[@]}"; do
+                for libfoo_varient in "${libfoo_so_orig_varients[@]}"; do
+                        for libdude_varient in "${libdude_so_orig_varients[@]}"; do
+                                test "$dude_varient" "$libfoo_varient" "$libdude_varient"
+                        done
+                done
+        done	
 
-	test dude.exe libfoo.so.orig libdude.so.orig            # unprotected - should pass!
-        test dude.exe libfoo.so.exe.nonce.cfi libdude.so.orig
-        test dude.exe libfoo.so.orig libdude.so.exe.nonce.cfi
-        test dude.exe libfoo.so.exe.nonce.cfi libdude.so.exe.nonce.cfi
-
-	test dude.exe.cfi libfoo.so.orig libdude.so.orig	
-	test dude.exe.cfi libfoo.so.cfi libdude.so.orig		
-	test dude.exe.cfi libfoo.so.cfi.color libdude.so.orig		
-	test dude.exe.cfi libfoo.so.orig libdude.so.cfi		
-	test dude.exe.cfi libfoo.so.orig libdude.so.cfi.color		
-	test dude.exe.cfi libfoo.so.cfi libdude.so.cfi
-	test dude.exe.cfi libfoo.so.cfi libdude.so.cfi.color
-	test dude.exe.cfi libfoo.so.cfi.color libdude.so.cfi
-
-	test dude.exe.nonce.cfi libfoo.so.orig libdude.so.orig
-        test dude.exe.nonce.cfi libfoo.so.exe.nonce.cfi libdude.so.orig
-        test dude.exe.nonce.cfi libfoo.so.orig libdude.so.exe.nonce.cfi
-        test dude.exe.nonce.cfi libfoo.so.exe.nonce.cfi libdude.so.exe.nonce.cfi
-
-	test dude.exe.cfi.color libfoo.so.orig libdude.so.orig	
-	test dude.exe.cfi.color libfoo.so.cfi libdude.so.orig		
-	test dude.exe.cfi.color libfoo.so.cfi.color libdude.so.orig		
-	test dude.exe.cfi.color libfoo.so.orig libdude.so.cfi		
-	test dude.exe.cfi.color libfoo.so.orig libdude.so.cfi.color		
-	test dude.exe.cfi.color libfoo.so.cfi libdude.so.cfi
-	test dude.exe.cfi.color libfoo.so.cfi libdude.so.cfi.color
-	test dude.exe.cfi.color libfoo.so.cfi.color libdude.so.cfi
-
-	test dude.exe.pie libfoo.so.orig libdude.so.orig		# unprotected - should pass!
-	test dude.exe.pie libfoo.so.cfi libdude.so.orig		
-	test dude.exe.pie libfoo.so.cfi.color libdude.so.orig		
-	test dude.exe.pie libfoo.so.orig libdude.so.cfi		
-	test dude.exe.pie libfoo.so.orig libdude.so.cfi.color		
-	test dude.exe.pie libfoo.so.cfi libdude.so.cfi
-	test dude.exe.pie libfoo.so.cfi libdude.so.cfi.color
-	test dude.exe.pie libfoo.so.cfi.color libdude.so.cfi
-
-	test dude.exe.pie libfoo.so.orig libdude.so.orig                # unprotected - should pass!
-        test dude.exe.pie libfoo.so.exe.nonce.cfi libdude.so.orig
-        test dude.exe.pie libfoo.so.orig libdude.so.exe.nonce.cfi
-        test dude.exe.pie libfoo.so.exe.nonce.cfi libdude.so.exe.nonce.cfi
-
-
+	
 	report
 	if [[ $1 == "-k" ]] ; then
 		echo "Skipping cleanup"
@@ -163,3 +115,4 @@ passes=0
 fails=0
 
 main $*
+

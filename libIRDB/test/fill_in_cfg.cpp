@@ -29,7 +29,7 @@
 #include <ctype.h>
 #include <exeio.h>
 #include "elfio/elfio.hpp"
-#include "eh_frame.hpp"
+#include "split_eh_frame.hpp"
 
 int odd_target_count=0;
 int bad_target_count=0;
@@ -554,24 +554,26 @@ void fill_in_scoops(FileIR_t *firp)
 void fill_in_landing_pads(FileIR_t *firp)
 {
 	const auto eh_frame_rep_ptr = split_eh_frame_t::factory(firp);
-	eh_frame_rep_ptr->parse();
+	// eh_frame_rep_ptr->parse(); already parsed now.
 	if(getenv("EHIR_VERBOSE"))
 		eh_frame_rep_ptr->print();
 	cout<<"Completed eh-frame parsing"<<endl;
 
 	map<Function_t*,set<Instruction_t*> > insns_to_add_to_funcs;
 
-	for_each(firp->GetInstructions().begin(), firp->GetInstructions().end(), [&](Instruction_t* t)
+	// for_each(firp->GetInstructions().begin(), firp->GetInstructions().end(), [&](Instruction_t* t)
+	for(const auto t : firp->GetInstructions())
 	{
 		if(t->GetFunction()==NULL)
-			return;
+			continue;
 		auto lp=eh_frame_rep_ptr->find_lp(t);
 		if(lp && lp->GetFunction()==NULL)
 			insns_to_add_to_funcs[t->GetFunction()].insert(lp);
-	});
+	};
 
 
-	for_each(insns_to_add_to_funcs.begin(), insns_to_add_to_funcs.end(), [&](pair<Function_t* const,set<Instruction_t*> > & p)
+	// for_each(insns_to_add_to_funcs.begin(), insns_to_add_to_funcs.end(), [&](pair<Function_t* const,set<Instruction_t*> > & p)
+	for(const auto & p : insns_to_add_to_funcs)
 	{
 		auto & func=p.first; 	
 		auto insns=p.second; 	/* copy */
@@ -603,7 +605,7 @@ void fill_in_landing_pads(FileIR_t *firp)
 			if(fallthru) insns.insert(fallthru);
 		}
 		cout<<"Found LP outside of function "<<func->GetName()<<" added "<<insn_count<<" instructions"<<endl;
-	});
+	};
 	
 }
 

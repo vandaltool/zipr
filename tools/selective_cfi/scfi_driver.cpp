@@ -36,7 +36,10 @@ using namespace libIRDB;
 void usage(char* name)
 {
 	cerr<<" Usage: "<<name<<" <variant_id>  \n"
+"               [--nonce-size [1|2|4|8]]  \n"
+"		[--exe-nonce-size [1|2|4|8]]  \n"
 "		[--color|--no-color]  \n"
+"		[--color-exe-nonces|--no-color-exe-nonces]  \n"         
 "		[--protect-jumps|--no-protect-jumps]  \n"
 "		[--protect-calls|--no-protect-calls]  \n"
 "		[--protect-rets|--no-protect-rets] \n"
@@ -45,7 +48,7 @@ void usage(char* name)
 "		[ --multimodule | --no-multimodule ] \n"
 "		[--exe-nonce-for-call|--no-exe-nonce-for-call]  \n"
 " \n"
-"default: --no-color --protect-jumps --protect-calls --protect-rets --protect-safefn --common-slow-path --no-multimodule --no-exe-nonce-for-call\n"; 
+"default: --no-color --no-color-exe-nonces --no-protect-jumps --protect-calls --protect-rets --protect-safefn --common-slow-path --no-multimodule --no-exe-nonce-for-call --nonce-size 1 --exe-nonce-size 4\n"; 
 }
 
 int main(int argc, char **argv)
@@ -66,16 +69,43 @@ int main(int argc, char **argv)
 #endif
 
 	bool do_coloring=false;
+        bool do_color_exe_nonces=false;
 	bool do_common_slow_path=true;
-	bool do_jumps=false;
+	bool do_jumps=false; // do_jumps=true will cause failures b/c registers stay live over ind jumps
 	bool do_calls=true;
 	bool do_rets=true;
 	bool do_safefn=true;
 	bool do_multimodule=false;
 	bool do_exe_nonce_for_call=false;
+        int nonce_size=1;
+        int exe_nonce_size=4;
 	for(int  i=2;i<argc;i++)
 	{
-		if(string(argv[i])=="--color")
+                if(string(argv[i])=="--nonce-size" && 
+                        string(argv[i+1]).length()==1 && isdigit(string(argv[i+1])[0]))
+                {
+                    nonce_size = stoi(string(argv[i+1]));
+                    if(!(nonce_size == 1 || nonce_size == 2 || nonce_size == 4 || nonce_size == 8))
+                    {
+                        cerr<<"Unknown option: "<< argv[i] << endl;
+			usage(argv[0]);
+			exit(1);
+                    }
+                    ++i; // Skip over size argument
+                }
+                else if(string(argv[i])=="--exe-nonce-size" && 
+                        string(argv[i+1]).length()==1 && isdigit(string(argv[i+1])[0]))
+                {
+                    exe_nonce_size = stoi(string(argv[i+1]));
+                    if(!(exe_nonce_size == 1 || exe_nonce_size == 2 || exe_nonce_size == 4 || exe_nonce_size == 8))
+                    {
+                        cerr<<"Unknown option: "<< argv[i] << endl;
+			usage(argv[0]);
+			exit(1);
+                    }
+                    ++i; // Skip over size argument
+                }
+		else if(string(argv[i])=="--color")
 		{
 			cout<<"Using coloring..."<<endl;
 			do_coloring=true;
@@ -84,6 +114,16 @@ int main(int argc, char **argv)
 		{
 			cout<<"Not using coloring..."<<endl;
 			do_coloring=false;
+		}
+                else if(string(argv[i])=="--color-exe-nonces")
+		{
+			cout<<"Using coloring for exe nonces..."<<endl;
+			do_color_exe_nonces=true;
+		}
+		else if(string(argv[i])=="--no-color-exe-nonces")
+		{
+			cout<<"Not using coloring for exe nonces..."<<endl;
+			do_color_exe_nonces=false;
 		}
 		else if(string(argv[i])=="--protect-calls")
 		{
@@ -191,7 +231,7 @@ int main(int argc, char **argv)
 
                 try
                 {
-			SCFI_Instrument scfii(firp, do_coloring, do_common_slow_path, do_jumps, do_calls, do_rets, do_safefn, do_multimodule, do_exe_nonce_for_call);
+			SCFI_Instrument scfii(firp, nonce_size, exe_nonce_size, do_coloring, do_color_exe_nonces, do_common_slow_path, do_jumps, do_calls, do_rets, do_safefn, do_multimodule, do_exe_nonce_for_call);
 
 
 			int success=scfii.execute();

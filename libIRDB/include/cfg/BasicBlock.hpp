@@ -49,6 +49,9 @@ class BasicBlock_t
 		bool EndsInIndirectBranch();
 		bool EndsInConditionalBranch();
 		Instruction_t* GetBranchInstruction();
+		void dump(std::ostream &os=std::cout) const { os<<*this; }
+
+	protected:
 
 		void BuildBlock(Function_t* func,
                 		Instruction_t* insn,
@@ -65,6 +68,7 @@ class BasicBlock_t
 		bool is_exit_block;
 
 	friend std::ostream& operator<<(std::ostream& os, const BasicBlock_t& block);
+	friend class ControlFlowGraph_t;
 };
 
 std::ostream& operator<<(std::ostream& os, const BasicBlock_t& block);

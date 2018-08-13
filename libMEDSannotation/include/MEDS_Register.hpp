@@ -51,6 +51,7 @@ class Register
   		static RegisterName getRegister(std::string);
   		static RegisterName getRegister(char *str);
   		static bool isValidRegister(std::string);
+  		static bool isValidRegister(const RegisterName);
   		static bool is64bit(RegisterName);
   		static bool is32bit(RegisterName);
   		static bool is16bit(RegisterName);
@@ -60,6 +61,8 @@ class Register
   		static RegisterName getFreeRegister64(const RegisterSet_t &p_used);
   		static std::string readRegisterSet(const std::string &in, RegisterSet_t &out);
 		static RegisterName promoteTo64(const RegisterName p_reg);
+		static RegisterName demoteTo32(const RegisterName p_reg);
+		static RegisterName demoteTo16(const RegisterName p_reg);
 
 };
 

@@ -29,6 +29,7 @@ class ControlFlowGraph_t
 
 		BasicBlock_t* GetEntry() const { return entry; }
 		Function_t* GetFunction() const { return function; }
+		void dump(std::ostream &os=std::cout) const { os<<*this; }
 
 	protected:
 		void Build(Function_t *func);

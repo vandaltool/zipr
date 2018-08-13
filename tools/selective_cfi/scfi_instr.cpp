@@ -114,22 +114,44 @@ assert(0);
 
 unsigned int SCFI_Instrument::GetExeNonceOffset(Instruction_t* insn)
 {
-        /* using executable nonce with 4 byte multi-byte nop
-         * (which is 3 byte opcode, 0x0F1F80). Note that multi-byte nops
-         *  are not supported on older processors (~< 2006) */
-	return -3;
+        if(exe_nonce_color_map)
+	{
+		assert(insn->GetIBTargets());
+                // We can't know the offset yet because this nonce may need to get
+                // shoved into multiple exe nonces, so just return the position.
+		cout << "EXE NONCE OFFSET IS: "<< exe_nonce_color_map->GetColorOfIB(insn).GetPosition() << endl;
+		return exe_nonce_color_map->GetColorOfIB(insn).GetPosition();
+	}
+        // Otherwise, only one nonce per target and it's always in the first position
+	return 0;
 }
 
 NonceValueType_t SCFI_Instrument::GetExeNonce(Instruction_t* insn)
 {
-	// using 0xAABBCCDD (coloring not yet supported)
-	return 0xaabbccdd;
+	if(exe_nonce_color_map)
+	{
+		assert(insn->GetIBTargets());
+		return exe_nonce_color_map->GetColorOfIB(insn).GetNonceValue();
+	}
+        // Otherwise, all nonces are the same
+        switch(exe_nonce_size)
+        {
+            case 1:
+                return 0xcc;
+            case 2:
+                return 0xbbcc;
+            case 4:
+                return 0xaabbccdd;
+            case 8:
+                return 0xaabbccdd00112233; 
+            default:
+                exit(1); // wat?
+        }
 }
 
 unsigned int SCFI_Instrument::GetExeNonceSize(Instruction_t* insn)
 {
-	//using 4 byte executable nonce
-	return 4;
+    return exe_nonce_size;
 }
 
 unsigned int SCFI_Instrument::GetNonceOffset(Instruction_t* insn)
@@ -151,14 +173,25 @@ NonceValueType_t SCFI_Instrument::GetNonce(Instruction_t* insn)
 		assert(insn->GetIBTargets());
 		return color_map->GetColorOfIB(insn).GetNonceValue();
 	}
-	return 0xf4;
+        // Otherwise, all nonces are the same
+	switch(nonce_size)
+        {
+            case 1:
+                return 0xcc;
+            case 2:
+                return 0xbbcc;
+            case 4:
+                return 0xaabbccdd;
+            case 8:
+		return 0xaabbccdd00112233;                
+            default:
+                exit(1); // wat?
+        }
 }
 
 unsigned int SCFI_Instrument::GetNonceSize(Instruction_t* insn)
 {
-	/* in time we look up the nonce size for this insn */
-	/* for now, it's just f4 as the nonce */
-	return 1;
+    return nonce_size;
 }
 
 bool SCFI_Instrument::mark_targets() 
@@ -199,7 +232,7 @@ bool SCFI_Instrument::mark_targets()
 			if(do_coloring)
 			{
 				ColoredSlotValues_t v=color_map->GetColorsOfIBT(insn);
-				int size=1;
+				int size=GetNonceSize(insn);
 				for(auto i=0U;i<v.size();i++)
 				{
 					if(!v[i].IsValid())
@@ -223,34 +256,74 @@ bool SCFI_Instrument::mark_targets()
 			}
 			else
 			{
-				// cfi_nonce=f4.
-				type="cfi_nonce=";
-				type+=to_string(GetNonce(insn));
-
+				type=string("cfi_nonce=(pos=") +  to_string(-((int) GetNonceOffset(insn))) + ",nv="
+                                    + to_string(GetNonce(insn)) + ",sz="+ to_string(GetNonceSize(insn))+ ")";
 				Relocation_t* reloc=create_reloc(insn);
-				reloc->SetOffset(-GetNonceOffset(insn));
+				reloc->SetOffset(-((int) GetNonceOffset(insn)));
 				reloc->SetType(type);
-				cout<<"Found nonce="+type+"  for "<<std::hex<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<endl;
+				cout<<"Created reloc='"+type+"' for "<<std::hex<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<endl;
 			}
 		}
 
 		if(do_exe_nonce_for_call && DecodedInstruction_t(insn).isCall()) 
                 {
 		    ++exe_nonce_targets;
-                    string type;
-                    if(do_coloring)
+                 
+                    if(do_color_exe_nonces)
                     {
-                        assert(0); //coloring not yet supported for exe nonces
+                        // The colors we want are not on the call, but on its return target.
+                        ColoredSlotValues_t v=exe_nonce_color_map->GetColorsOfIBT(insn->GetFallthrough());
+			
+			// The return target gets a regular nonce as well, so there may be an inserted jmp
+			// in the way of the original IBT that has our colors.
+			if(v.size() == 0)
+			{
+			    v=exe_nonce_color_map->GetColorsOfIBT(insn->GetFallthrough()->GetTarget());
+			}
+
+                        int nonceSz=GetExeNonceSize(insn); //Multiple sizes not yet supported	
+    
+                        for(auto i=0U;i<v.size();i++)
+                        {
+                            int noncePos;
+                            NonceValueType_t nonceVal;
+                            if(!v[i].IsValid())
+                            {
+                                // This position is not valid, but need to fill it with something anyway
+                                // because nonces are executable
+                                noncePos = i; //FIXME: BAD COUPLING. Relies on the fact that i == position number
+                                nonceVal = 0xc;
+                            }
+                            else
+                            {
+                                noncePos=v[i].GetPosition();
+                                nonceVal = v[i].GetNonceValue();
+                            }
+                            PlaceExeNonceReloc(insn, nonceVal, nonceSz, noncePos);
+                        }
+                        // Place exe nonce reloc to fill extra space (if any)
+                        int isExtraSpace = (v.size()*nonceSz) % EXE_NONCE_ARG_SIZE;
+                        if(isExtraSpace)
+                        {
+                            int extraSpace = EXE_NONCE_ARG_SIZE - ((v.size()*nonceSz) % EXE_NONCE_ARG_SIZE);
+                            int extraSpacePos = v.size();
+                            int extraSpaceBytePos = GetNonceBytePos(nonceSz, extraSpacePos-1)+nonceSz;
+                            CreateExeNonceReloc(insn, 0, extraSpace, extraSpaceBytePos);
+                        }
                     }
                     else
                     {
-                        type="cfi_exe_nonce=";
-                        type+=to_string(GetExeNonce(insn));
-
-                        Relocation_t* reloc=create_reloc(insn);
-                        reloc->SetOffset(-GetExeNonceOffset(insn));
-                        reloc->SetType(type);
-                        cout<<"Found nonce="+type+"  for "<<std::hex<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<endl;
+                    	int nonceSz = GetExeNonceSize(insn);
+                        PlaceExeNonceReloc(insn, GetExeNonce(insn), nonceSz, GetExeNonceOffset(insn));
+                        // Place exe nonce reloc to fill extra space (if any)
+                        int isExtraSpace = nonceSz % EXE_NONCE_ARG_SIZE;
+                        if(isExtraSpace)
+                        {
+                            int extraSpace = EXE_NONCE_ARG_SIZE - (nonceSz % EXE_NONCE_ARG_SIZE);
+                            int extraSpacePos = 1;
+                            int extraSpaceBytePos = GetNonceBytePos(nonceSz, extraSpacePos-1)+nonceSz;
+                            CreateExeNonceReloc(insn, 0, extraSpace, extraSpaceBytePos);
+                        } 
                     }
                 } 
 	}
@@ -259,6 +332,110 @@ bool SCFI_Instrument::mark_targets()
 	cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::exe_nonce_targets_found="<<std::dec<<exe_nonce_targets<<endl;
 	return true;
 }
+
+
+void SCFI_Instrument::CreateExeNonceReloc(Instruction_t* insn, NonceValueType_t nonceVal, int nonceSz, int bytePos) 
+{
+    string type=string("cfi_exe_nonce=(pos=") +  to_string(bytePos) + ",nv="
+        + to_string(nonceVal) + ",sz="+ to_string(nonceSz)+ ")";
+    Relocation_t* reloc=create_reloc(insn);
+    reloc->SetOffset(bytePos);
+    reloc->SetType(type);
+    cout<<"Created reloc='"+type+"' for "<<std::hex<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<endl;
+}
+
+
+int SCFI_Instrument::GetNonceBytePos(int nonceSz, int noncePos)
+{
+    // To get to the nonce, we must pass over noncePos other nonces, which may involve
+    // jumping over some exe nonce opcodes, depending on the exe nonce argument size.
+    int nonceBytePos =   (((noncePos*nonceSz)/EXE_NONCE_ARG_SIZE)+1)*EXE_NONCE_OPCODE_SIZE
+                            + noncePos*nonceSz;
+    return nonceBytePos;
+}
+
+
+/* Nonces are just bit strings. To fit them into exe
+ * nonces that have a limited argument size, they may need to
+ * be split over more than one exe nonce. To be stored as tightly 
+ * as possible, more than one nonce may be fit into one exe nonce. 
+ * 
+ * To handle this, the GetExeNonceFit function returns a list
+ * of one or more NonceParts that together specify where in memory 
+ * the complete nonce string is located.
+ * This function makes some CRITICAL ASSUMPTIONS. Look at the function definition in scfi_instr.hpp */
+std::vector<SCFI_Instrument::NoncePart_t> SCFI_Instrument::GetExeNonceFit(NonceValueType_t nonceVal, int nonceSz, int noncePos)
+{
+    // Checking an assumption
+    if(nonceSz > EXE_NONCE_ARG_SIZE)
+        assert(nonceSz % EXE_NONCE_ARG_SIZE == 0);
+    else
+        assert(EXE_NONCE_ARG_SIZE % nonceSz == 0);
+    
+    // If our nonce will fit into a single exe nonce
+    if(EXE_NONCE_ARG_SIZE >= nonceSz)
+    {
+        // To get to our nonce, we must pass over noncePos other nonces, which may involve
+        // jumping over some exe nonce opcodes, depending on the exe nonce argument size.
+        int nonceBytePos =   GetNonceBytePos(nonceSz, noncePos);
+        std::vector<NoncePart_t> noncePartList;
+        NoncePart_t nonce = {nonceVal, nonceBytePos, nonceSz};
+        noncePartList.push_back(nonce);
+        return noncePartList;
+    } 
+    else //Otherwise, our nonce will have to be split over multiple exe nonces
+    {
+        // We will be dividing the nonce into nonceSz/EXE_NONCE_ARG_SIZE nonce parts,
+        // and each part corresponds to one entire exe nonce.
+         
+        std::vector<NoncePart_t> noncePartList;
+        for(int exeNonceIndex=0; exeNonceIndex < nonceSz/EXE_NONCE_ARG_SIZE; exeNonceIndex++)
+        {
+            // Calculate our nonce part info. The idea is to treat
+            // the nonce part as if it were a complete nonce in a scenario where
+            // nonce size = exe nonce arg size. This requires recalculation of the
+            // nonce position.
+            
+            int noncePartSz = EXE_NONCE_ARG_SIZE;
+            int noncePartPos = exeNonceIndex + noncePos*(nonceSz/EXE_NONCE_ARG_SIZE);
+            int noncePartBytePos = GetNonceBytePos(noncePartSz, noncePartPos);
+    
+            NonceValueType_t mask = 0;
+	    mask = ~mask;
+            NonceValueType_t noncePartVal =  (nonceVal >> exeNonceIndex*EXE_NONCE_ARG_SIZE*8)
+                               & (mask >> (8-EXE_NONCE_ARG_SIZE)*8);
+ 	    cout << "CALCD NONCE BYTE POS AS: " << noncePartBytePos << endl;            
+            // Store the calculated nonce part info
+            NoncePart_t part = {noncePartVal, noncePartBytePos, noncePartSz};
+            noncePartList.push_back(part);
+        }
+        return noncePartList;
+    }
+}
+
+
+// This function supports marking targets for colored 1, 2, 4, or 8 byte exe nonces.
+// The exe nonce argument sizes can be 1, 2, 4, or 8 bytes.
+void SCFI_Instrument::PlaceExeNonceReloc(Instruction_t* insn, NonceValueType_t nonceVal, int nonceSz, int noncePos)
+{   
+    // Get the nonce parts our nonce will be divided into to fit into the exe nonces
+    std::vector<NoncePart_t> nonceParts = GetExeNonceFit(nonceVal, nonceSz, noncePos);
+    // Create exe nonce relocs for each part.
+    for(std::vector<NoncePart_t>::iterator it = nonceParts.begin(); it != nonceParts.end(); ++it)
+    {
+        NoncePart_t theNoncePart = *it;
+        // If this nonce part is next to an exe nonce opcode, create a reloc for the opcode too
+        bool nextToExeNonceOpCode = !((noncePos*nonceSz) % EXE_NONCE_ARG_SIZE);
+        if(nextToExeNonceOpCode)
+        {
+            CreateExeNonceReloc(insn, EXE_NONCE_OPCODE_VAL, EXE_NONCE_OPCODE_SIZE,
+                                      theNoncePart.bytePos-EXE_NONCE_OPCODE_SIZE   );
+        }
+        // Create an exe nonce reloc for the nonce part.
+        CreateExeNonceReloc(insn, theNoncePart.val, theNoncePart.size, theNoncePart.bytePos);
+    }
+}
+
 
 /*
  * targ_change_to_push - use the mode in the insnp to create a new instruction that is a push instruction.
@@ -341,13 +518,6 @@ static void move_relocs(Instruction_t* from, Instruction_t* to)
 void SCFI_Instrument::AddJumpCFI(Instruction_t* insn)
 {
 	assert(do_rets);
-	ColoredSlotValue_t v2;
-	if(insn->GetIBTargets() && color_map)
-		v2=color_map->GetColorOfIB(insn);
-	ColoredSlotValue_t *v=&v2;
-	string reg="ecx";	// 32-bit reg 
-	if(firp->GetArchitectureBitWidth()==64)
-		reg="rcx";	// 64-bit reg.
 
 	string pushbits=change_to_push(insn);
 	cout<<"Converting ' "<<insn->getDisassembly()<<"' to '";
@@ -359,26 +529,30 @@ void SCFI_Instrument::AddJumpCFI(Instruction_t* insn)
 
 	// move any pc-rel relocation bits to the push, which will access memory now 
 	mov_reloc(after,insn,"pcrel");
-	after->SetIBTargets(insn->GetIBTargets());
-	insn->SetIBTargets(NULL);
-
-	AddReturnCFI(after,v);
+	
+	if(do_exe_nonce_for_call)
+        {
+            // This may be inefficient b/c jumps will not normally be targeting 
+            // return targets. However, that does happen in multimodule returns
+            // so this is needed.
+            AddReturnCFIForExeNonce(after);
+        }
+        else
+        {
+            AddReturnCFI(after);
+        }
 	// cout<<"Warning, JUMPS not CFI's yet"<<endl;
 	return;
 }
 
-//TODO: Does not work with coloring
+
 void SCFI_Instrument::AddCallCFIWithExeNonce(Instruction_t* insn)
 {
 	string reg="ecx";       // 32-bit reg 
         if(firp->GetArchitectureBitWidth()==64)
                 reg="r11";      // 64-bit reg.
 
-	string decoration="";
-        int nonce_size=GetNonceSize(insn);
-        int nonce_offset=GetNonceOffset(insn);
-        unsigned int nonce=GetNonce(insn);
-        Instruction_t* call=NULL, *jne=NULL, *stub=NULL;
+        Instruction_t* call=NULL, *stub=NULL;
 
 
         // convert a call indtarg to:
@@ -389,19 +563,7 @@ void SCFI_Instrument::AddCallCFIWithExeNonce(Instruction_t* insn)
         //stub: cmp <nonce size> PTR [ecx-<nonce size>], Nonce
         //      jne slow
 	//	jmp reg          
-
-        switch(nonce_size)
-        {
-                case 1:
-                        decoration="byte ";
-                        break;
-                case 2: // handle later
-                case 4: // handle later
-                default:
-                        cerr<<"Cannot handle nonce of size "<<std::dec<<nonce_size<<endl;
-                        assert(0);
-
-        }
+ 
 
         // insert the pop/checking code.
 	string pushbits=change_to_push(insn);
@@ -412,18 +574,23 @@ void SCFI_Instrument::AddCallCFIWithExeNonce(Instruction_t* insn)
 	insn->GetRelocations()=call->GetRelocations();
 	call->GetRelocations().clear();
 
-        stub=addNewAssembly(firp,stub,string("cmp ")+decoration+
-                " ["+reg+"-"+to_string(nonce_offset)+"], "+to_string(nonce));
-        jne=insertAssemblyAfter(firp,stub,"jne 0");
-	insertAssemblyAfter(firp,jne,string("jmp ")+reg);
-
-        // set the jne's target to itself, and create a reloc that zipr/strata will have to resolve.
-        jne->SetTarget(jne);    // needed so spri/spasm/irdb don't freak out about missing target for new insn.
-        Relocation_t* reloc=create_reloc(jne);
-        reloc->SetType("slow_cfi_path");
-        reloc->SetOffset(0);
-        cout<<"Setting slow path for: "<<"slow_cfi_path"<<endl;
-
+       	// Jump to non-exe nonce check code
+	stub = addNewAssembly(firp, NULL, string("push ")+reg);
+    	Instruction_t* ret = insertDataBitsAfter(firp, stub, getRetDataBits());
+    	ret->SetIBTargets(call->GetIBTargets());
+	
+        if(do_exe_nonce_for_call)
+        {
+            // This may be inefficient b/c jumps will not normally be targeting 
+            // return targets. However, that does happen in multimodule returns
+            // so this is needed.
+            AddReturnCFIForExeNonce(ret);
+        }
+        else
+        {
+            AddReturnCFI(ret);
+        }	
+ 
 	// convert the indirct call to a direct call to the stub.
         string call_bits=call->GetDataBits();
         call_bits.resize(5);
@@ -442,10 +609,75 @@ void SCFI_Instrument::AddExecutableNonce(Instruction_t* insn)
 //	insertDataBitsAfter(firp, insn, ExecutableNonceValue, NULL);
 }
 
+// Returns the insn starting a non-exe nonce check for an insn, in case the exe nonce check fails
+Instruction_t* SCFI_Instrument::GetExeNonceSlowPath(Instruction_t* insn)
+{
+    // Jump to non-exe nonce check code
+    Instruction_t* ret = addNewDatabits(firp, NULL, getRetDataBits());
+    ret->SetIBTargets(insn->GetIBTargets()); 
+    AddReturnCFI(ret);
+    return ret;
+}
+
+
+// This function supports nonce checks for 1, 2, 4, or 8 byte nonces
+// with 1, 2, 4, or 4 byte exe nonce argument sizes.
+// TODO: Support 8 byte exe nonce arg sizes
+void SCFI_Instrument::InsertExeNonceComparisons(Instruction_t* insn, 
+        NonceValueType_t nonceVal, int nonceSz, int noncePos, 
+        Instruction_t* exeNonceSlowPath)
+{
+    
+    int noncePartSz; 
+    if(nonceSz > EXE_NONCE_ARG_SIZE)
+        noncePartSz = EXE_NONCE_ARG_SIZE;
+    else
+        noncePartSz = nonceSz;
+    
+    string reg="ecx";	// 32-bit reg 
+    if(firp->GetArchitectureBitWidth()==64)
+        reg="r11";	// 64-bit reg.
+    
+    string decoration="";
+    switch(noncePartSz)
+    {
+        case 8:
+            cerr<<"Cannot handle nonce part of size "<<std::dec<<nonceSz<<endl;
+            assert(0);
+	    break;
+        case 4: 
+            decoration="dword ";
+            break;
+        case 2:	// handle later
+            decoration="word ";
+            break;
+        case 1: //handle later
+            decoration="byte ";
+            break;
+	default:
+            cerr<<"Cannot handle nonce of size "<<std::dec<<nonceSz<<endl;
+            assert(0);		
+    }
+    
+    // Get the nonce parts our nonce will be divided into to fit into the exe nonces
+    std::vector<NoncePart_t> nonceParts = GetExeNonceFit(nonceVal, nonceSz, noncePos);
+    // Create exe nonce comparisons for each part.
+    Instruction_t* tmp = insn;
+    Instruction_t* jne=NULL;
+    for(std::vector<NoncePart_t>::iterator it = nonceParts.begin(); it != nonceParts.end(); ++it)
+    {
+        NoncePart_t theNoncePart = *it;
+	cout << "ADDING CMP FOR BYTE POS: " << theNoncePart.bytePos << "FOR NONCE WITH POSITION: " << noncePos << "AND SIZE: " << nonceSz << endl;
+        tmp=insertAssemblyAfter(firp,tmp,string("cmp ")+decoration+
+		" ["+reg+"+"+to_string(theNoncePart.bytePos)+"], "+to_string(theNoncePart.val));
+        jne=tmp=insertAssemblyAfter(firp,tmp,"jne 0");
+        jne->SetTarget(exeNonceSlowPath);
+    }
+}
+
 
 void SCFI_Instrument::AddReturnCFIForExeNonce(Instruction_t* insn, ColoredSlotValue_t *v)
 {
-	assert(!do_coloring);
 
 	if(!do_rets)
 		return;
@@ -482,15 +714,18 @@ void SCFI_Instrument::AddReturnCFIForExeNonce(Instruction_t* insn, ColoredSlotVa
 
 		// rewrite the "old" isntruction, as that's what insertAssemblyBefore returns
 		insn=newafter;
+		//Needed b/c AddReturnCFI may be called on this ret insn
+                //But also clean up and change ret_with_pop to ret (as it should be now) to be safe
+                setInstructionAssembly(firp,insn, string("ret"), insn->GetFallthrough(), insn->GetTarget()); 
 	}
+        //TODO: Handle uncommon slow path
 		
-	//TODO: Fix possible TOCTOU race condition (see Abadi CFI paper)
+	//TODO: Fix possible TOCTOU race condition? (see Abadi CFI paper)
 	//	Ret address can be changed between nonce check and ret insn execution (in theory)
-        string decoration="";
 	int nonce_size=GetExeNonceSize(insn);
-	int nonce_offset=-GetExeNonceOffset(insn);
-	unsigned int nonce=GetExeNonce(insn);
-	Instruction_t* jne=NULL, *tmp=NULL;
+	int nonce_pos=GetExeNonceOffset(insn);
+	NonceValueType_t nonce=GetExeNonce(insn);
+        Instruction_t* exeNonceSlowPath = GetExeNonceSlowPath(insn);
 	
 
 	// convert a return to:
@@ -498,32 +733,11 @@ void SCFI_Instrument::AddReturnCFIForExeNonce(Instruction_t* insn, ColoredSlotVa
 	// 	cmp <nonce size> PTR [ecx+<offset>], Nonce
 	// 	jne exit_node	; no need for slow path here			
 	// 	ret             ; ignore race condition for now
-        
-        switch(nonce_size)
-	{
-                case 4: 
-                    decoration="dword ";
-                    break;
-		case 1: //handle later
-		case 2:	// handle later
-		default:
-			cerr<<"Cannot handle nonce of size "<<std::dec<<nonce_size<<endl;
-			assert(0);
-		
-	}
 
-	// insert the pop/checking code.
+	// insert the mov/checking code.
 	insertAssemblyBefore(firp,insn,string("mov ")+reg+string(", [")+rspreg+string("]"));
-	tmp=insertAssemblyAfter(firp,insn,string("cmp ")+decoration+
-		" ["+reg+"+"+to_string(nonce_offset)+"], "+to_string(nonce));
-        jne=tmp=insertAssemblyAfter(firp,tmp,"jne 0");
-        // set the jne's target to itself, and create a reloc that zipr/strata will have to resolve.
-	jne->SetTarget(jne);	// needed so spri/spasm/irdb don't freak out about missing target for new insn.
-	Relocation_t* reloc=create_reloc(jne);
-	reloc->SetType("exit_node"); 
-	reloc->SetOffset(0);
-	cout<<"Setting exit node"<<endl;
-	// leave the ret instruction (risk of successful race condition exploit << performance benefit)
+        InsertExeNonceComparisons(insn, nonce, nonce_size, nonce_pos, exeNonceSlowPath);
+       	// leave the ret instruction (risk of successful race condition exploit << performance benefit)
 
 	return;
 	
@@ -573,6 +787,8 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 
 		// rewrite the "old" isntruction, as that's what insertAssemblyBefore returns
 		insn=newafter;
+		//Clean up and change ret_with_pop to ret (as it should be now) to be safe
+                setInstructionAssembly(firp,insn, string("ret"), insn->GetFallthrough(), insn->GetTarget()); 
 	}
 		
 	int size=1;
@@ -603,7 +819,7 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 	string decoration="";
 	int nonce_size=GetNonceSize(insn);
 	int nonce_offset=GetNonceOffset(insn);
-	unsigned int nonce=GetNonce(insn);
+	NonceValueType_t nonce=GetNonce(insn);
 	Instruction_t* jne=NULL, *tmp=NULL;
 	
 
@@ -617,10 +833,17 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 	switch(nonce_size)
 	{
 		case 1:
-			decoration="byte ";
-			break;
+                    decoration="byte ";
+                    break;
 		case 2:	// handle later
+                    decoration="word ";
+                    break;
 		case 4: // handle later
+                    decoration="dword ";
+                    break;
+                case 8:
+                    decoration="dword "; // 8 byte nonces will be split into 2 compares
+                    break;
 		default:
 			cerr<<"Cannot handle nonce of size "<<std::dec<<nonce_size<<endl;
 			assert(0);
@@ -629,10 +852,27 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 
 	// insert the pop/checking code.
 	insertAssemblyBefore(firp,insn,string("pop ")+reg);
-	tmp=insertAssemblyAfter(firp,insn,string("cmp ")+decoration+
+        if(nonce_size != 8)
+        {
+            tmp=insertAssemblyAfter(firp,insn,string("cmp ")+decoration+
 		" ["+reg+"-"+to_string(nonce_offset)+"], "+to_string(nonce));
-    jne=tmp=insertAssemblyAfter(firp,tmp,"jne 0");
-
+        }
+        else
+        {
+            tmp=insertAssemblyAfter(firp,insn,string("cmp ")+decoration+
+		" ["+reg+"-"+to_string(nonce_offset)+"], "+to_string((uint32_t) nonce)); // upper 32 bits chopped off by cast
+            jne=tmp=insertAssemblyAfter(firp,tmp,"jne 0");
+            tmp=insertAssemblyAfter(firp,tmp,string("cmp ")+decoration+
+		" ["+reg+"-"+to_string(nonce_offset - 4)+"], "+to_string((uint32_t) (nonce >> 32)));
+            // set the jne's target to itself, and create a reloc that zipr/strata will have to resolve.
+            jne->SetTarget(jne);	// needed so spri/spasm/irdb don't freak out about missing target for new insn.
+            Relocation_t* reloc=create_reloc(jne);
+            reloc->SetType(slow_cfi_path_reloc_string); 
+            reloc->SetOffset(0);
+            cout<<"Setting slow path for: "<<slow_cfi_path_reloc_string<<endl;
+        }
+        
+        jne=tmp=insertAssemblyAfter(firp,tmp,"jne 0");
 	// convert the ret instruction to a jmp ecx
 	cout<<"Converting "<<hex<<tmp->GetFallthrough()->GetBaseID()<<":"<<tmp->GetFallthrough()->getDisassembly()<<"to jmp+reg"<<endl;
 	setInstructionAssembly(firp,tmp->GetFallthrough(), string("jmp ")+reg, NULL,NULL);
@@ -643,7 +883,7 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 	reloc->SetType(slow_cfi_path_reloc_string); 
 	reloc->SetOffset(0);
 	cout<<"Setting slow path for: "<<slow_cfi_path_reloc_string<<endl;
-
+	
 	return;
 }
 
@@ -1347,12 +1587,31 @@ bool SCFI_Instrument::execute()
 	// do not move later.
 	if(do_coloring)
 	{
-		color_map.reset(new ColoredInstructionNonces_t(firp)); 
+		color_map.reset(new ColoredInstructionNonces_t(firp, nonce_size)); 
 		assert(color_map);
 		success = success && color_map->build();
 	
 	}
-	
+        
+	if(do_color_exe_nonces)
+        {
+            // A separate color map is created for exe nonces so that exe and 
+            // non-exe colored nonces can be different sizes.
+            // Note that these independent color slots will not conflict with
+            // the non-exe slots, but ONLY because exe nonces come after a target,
+            // while non-exe nonces come before.
+            exe_nonce_color_map.reset(new ColoredInstructionNonces_t(firp, exe_nonce_size)); 
+            assert(exe_nonce_color_map);
+            success = success && exe_nonce_color_map->build();
+            // Note that it is in theory possible (but I'm assuming unlikely) that 
+            // unnecessary colored exe nonce slots will be added due to 
+            // insn's sharing the same IBTs on func ret sites but having 
+            // differing IBT's on non-func ret sites. (Because we reuse the non-exe
+            // nonce color map, which pays attention to all IBT's and
+            // not just the IBT's that target func ret sites, yet we are only putting
+            // exe nonces on func ret sites).
+        }
+        
 	success = success && instrument_jumps();	// to handle moving of relocs properly if
 							// an insn is both a IBT and a IB,
 							// we instrument first, then add relocs for targets

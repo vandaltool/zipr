@@ -58,10 +58,15 @@ else:
 
 env['BASE_IRDB_LIBS']="IRDB-core", "pqxx", "pq", "EXEIO"
 
+pedi = Command( target = "./testoutput",
+		source = "./SConscript",
+                action = os.environ['PEDI_HOME']+"/pedi -m manifest.txt " )
+
 if sysname != "SunOS":
 	libPEBLISS=SConscript("pebliss/trunk/pe_lib/SConscript", variant_dir='scons_build/libPEBLISS')
 	# setup libraries needed for linking
 	env['BASE_IRDB_LIBS']="IRDB-core", "pqxx", "pq", "EXEIO", "pebliss"
+	Depends(pedi,libPEBLISS)
 
 # pebliss requires iconv, which needs to be explicit on cygwin.
 if "CYGWIN" in sysname:
@@ -69,6 +74,9 @@ if "CYGWIN" in sysname:
 	env['BASE_IRDB_LIBS']=env['BASE_IRDB_LIBS']+("iconv",)
 
 Export('env')
+
+libehp=env.SConscript("libehp/SConscript", variant_dir='scons_build/libehp')
+libehp=env.Install("$SECURITY_TRANSFORMS_HOME/lib", libehp);
 
 libtransform=SConscript("libtransform/SConscript", variant_dir='scons_build/libtransform')
 libEXEIO=SConscript("libEXEIO/SConscript", variant_dir='scons_build/libEXEIO')
@@ -79,10 +87,8 @@ libIRDB=SConscript("libIRDB/SConscript", variant_dir='scons_build/libIRDB')
 libStructDiv=SConscript("libStructDiv/SConscript", variant_dir='scons_build/libStructDiv')
 libElfDep=SConscript("libElfDep/SConscript", variant_dir='scons_build/libElfDep')
 
-pedi = Command( target = "./testoutput",
-		source = "./SConscript",
-                action = os.environ['PEDI_HOME']+"/pedi -m manifest.txt " )
-Depends(pedi, (libEXEIO, libbea, libMEDSannotation,libxform,libtransform,libIRDB,libStructDiv, libElfDep))
+
+Depends(pedi, (libehp,libtransform,libEXEIO,libbea,libMEDSannotation,libxform,libIRDB,libStructDiv,libElfDep))
 
 tools=None
 if 'build_tools' not in env or env['build_tools'] is None or int(env['build_tools']) == 1:
