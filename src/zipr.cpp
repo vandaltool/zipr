@@ -491,6 +491,11 @@ RangeAddress_t ZiprImpl_t::PlaceUnplacedScoops(RangeAddress_t max_addr)
 			    <<hex<<scoop->GetEnd()->GetVirtualOffset()<<endl;
 		}
 	}
+
+
+	// assert we unpinned everything 
+	for(const auto s : m_firp->GetDataScoops())
+		assert(s->GetStart()->GetVirtualOffset()!=0);
 	
 	
 	max_addr=plugman.PlaceScoopsEnd(max_addr);
