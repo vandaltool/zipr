@@ -37,11 +37,11 @@ BasicBlock_t::BasicBlock_t()
 
 void BasicBlock_t::BuildBlock
 	(
-		Function_t* func, 
 		Instruction_t* insn, 
 		const map<Instruction_t*,BasicBlock_t*> &insn2block_map
 	)
 {
+	const auto &func=insn->GetFunction();
 	assert(insn);
 	/* loop through the instructions for this block */
 	while(insn)
@@ -116,7 +116,7 @@ void BasicBlock_t::BuildBlock
 			break;
 
 		/* check for a fallthrough out of the function */
-		if(ft_insn && !is_in_container(func->GetInstructions(),ft_insn))
+		if(ft_insn && ft_insn->GetFunction() != func) //  !is_in_container(func->GetInstructions(),ft_insn))
 			break;
 
 

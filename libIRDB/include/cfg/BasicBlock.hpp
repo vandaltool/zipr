@@ -53,8 +53,7 @@ class BasicBlock_t
 
 	protected:
 
-		void BuildBlock(Function_t* func,
-                		Instruction_t* insn,
+		void BuildBlock( Instruction_t* insn,
                 		const std::map<Instruction_t*,BasicBlock_t*> &insn2block_map
         			);
 
