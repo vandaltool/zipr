@@ -149,7 +149,8 @@ void ControlFlowGraph_t::Build(Function_t* func)
 	alloc_blocks(starts, insn2block_map);
 	build_blocks(insn2block_map);
 	/* record the entry block */
-	entry=insn2block_map[func->GetEntryPoint()];
+	if(func->GetEntryPoint())
+		entry=insn2block_map[func->GetEntryPoint()];
 
 	/* most functions are done now. */
 	/* however, if a function has a (direct) side entrance, 
