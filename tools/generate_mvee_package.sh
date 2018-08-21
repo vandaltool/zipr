@@ -359,6 +359,57 @@ copy_stuff()
 
 }
 
+get_target_path_to()
+{
+	local local_filename="$1"
+	# no supplemental info?  return default
+	if [[ -z $sad_file ]]; then
+		echo "/usr/lib"
+		return 
+	fi
+
+
+	# search for a per-file load path for this file
+	sad_contents=$(cat $sad_file |jq .per_file_load_path)
+	if [[ $sad_contents != 'null' ]]; then
+		sad_contents=$(echo "$sad_contents" |head -n -1|tail -n +2)     # trim open and close []s
+
+		for i in "$sad_contents"
+		do
+			i=$(echo $i | sed -e "s/^\"//" -e "s/\"$//")
+			tokens=(${i})
+
+			lhs=${tokens[0]}
+			middle=${tokens[1]}
+			rhs=${tokens[2]}
+
+			if ! [[ $middle  = "loaded_from" ]]; then
+				echo "Cannot parse 'lhs loaded_from rhs' from $i" 2>&1 
+				exit 1
+			fi			
+			if [[ ! -z ${tokens[3]} ]]; then
+				echo "Extra tokens in loaded_from expression $i" 2>&1 
+				exit 1
+			fi
+			if [[ $(basename $lhs) == $local_filename ]]; then
+				dirname $rhs
+				return
+			fi
+		done
+	fi
+
+	# not found.  Check for a default path
+	default_lib_load_path=$(cat $sad_file |jq .default_lib_load_path)
+	if [[ $default_lib_load_path != "null" ]]; then
+		# strip quotes
+		echo $default_lib_load_path | sed -e "s/^\"//" -e "s/\"$//"
+		return 
+	fi
+	echo "/usr/lib"
+	return 
+
+}
+
 # gather_aggregate_assurance_evidence()
 # This function gathers and annotates all lines into an output file
 # This resulting output file will be parsed into human-readable format at a later step 
@@ -782,7 +833,8 @@ finalize_json()
 				else
 					mkdir -p $new_variant_dir/lib 2>/dev/null || true
 					cp  $indir/$lib_dir/$lib $new_variant_dir/lib
-					line=",  "$'\n\t\t\t'"  \"/usr/lib/$lib=$new_variant_dir_ts/lib/$lib\" "
+					target_path=$(get_target_path_to $lib) || exit $?
+					line=",  "$'\n\t\t\t'"  \"$target_path/$lib=$new_variant_dir_ts/lib/$lib\" "
 					copy_stuff $indir/$lib_dir/peasoup_executable_dir $new_variant_dir/lib/$lib-peasoup_executable_dir $lib $new_variant_dir_ts/lib/$lib-peasoup_executable_dir 0
 				fi
 				if [ "x"$use_assurance = "x--enable-assurance" ]; then
@@ -847,7 +899,9 @@ finalize_json()
 			supplemental_aliases="${supplemental_aliases//\#VAR_NAME\#/$variant_name}"
 			supplemental_aliases="${supplemental_aliases//\#VARSET_NAME\#/vs-$vs}"
 			# add to variant config
-			variant_config_contents="${variant_config_contents//<<LIBS>>/$supplemental_aliases,<<LIBS>>}"
+			if [[ ! -z $supplemental_alises ]]; then
+				variant_config_contents="${variant_config_contents//<<LIBS>>/$supplemental_aliases,<<LIBS>>}"
+			fi
 
 			# sub in other variant_config fields
 			variant_config_contents="${variant_config_contents//<<EXEPATH>>/$new_variant_dir_ts/bin}"
@@ -990,30 +1044,32 @@ get_main_exe_path()
 	if [[ ! -z $sad_file ]] ; then
 	
 		sad_contents=$(cat $sad_file |jq .per_file_load_path)
-		sad_contents=$(echo "$sad_contents" |head -n -1|tail -n +2)     # trim open and close []'s
+		if [[ $sad_contents != 'null' ]]; then
+			sad_contents=$(echo "$sad_contents" |head -n -1|tail -n +2)     # trim open and close []'s
 
-		for i in "$sad_contents"
-		do
-			i=$(echo $i | sed -e "s/^\"//" -e "s/\"$//")
-			tokens=(${i})
+			for i in "$sad_contents"
+			do
+				i=$(echo $i | sed -e "s/^\"//" -e "s/\"$//")
+				tokens=(${i})
 
-			lhs=${tokens[0]}
-			middle=${tokens[1]}
-			rhs=${tokens[2]}
+				lhs=${tokens[0]}
+				middle=${tokens[1]}
+				rhs=${tokens[2]}
 
-			if ! [[ $middle  = "loaded_from" ]]; then
-				echo "Cannot parse 'lhs loaded_from rhs' from $i"
-				exit 1
-			fi			
-			if [[ ! -z ${tokens[3]} ]]; then
-				echo "Extra tokens in loaded_from expression $i"
-				exit 1
-			fi
-			if [[ $(basename $lhs) == $mainexe_opt ]]; then
-				main_exe_path="$rhs"
-				break;
-			fi
-		done
+				if ! [[ $middle  = "loaded_from" ]]; then
+					echo "Cannot parse 'lhs loaded_from rhs' from $i"
+					exit 1
+				fi			
+				if [[ ! -z ${tokens[3]} ]]; then
+					echo "Extra tokens in loaded_from expression $i"
+					exit 1
+				fi
+				if [[ $(basename $lhs) == $mainexe_opt ]]; then
+					main_exe_path="$rhs"
+					break;
+				fi
+			done
+		fi
 	fi
 }
 
