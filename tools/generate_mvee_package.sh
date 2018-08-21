@@ -899,7 +899,7 @@ finalize_json()
 			supplemental_aliases="${supplemental_aliases//\#VAR_NAME\#/$variant_name}"
 			supplemental_aliases="${supplemental_aliases//\#VARSET_NAME\#/vs-$vs}"
 			# add to variant config
-			if [[ ! -z $supplemental_alises ]]; then
+			if [[ ! -z $supplemental_aliases ]]; then
 				variant_config_contents="${variant_config_contents//<<LIBS>>/$supplemental_aliases,<<LIBS>>}"
 			fi
 
