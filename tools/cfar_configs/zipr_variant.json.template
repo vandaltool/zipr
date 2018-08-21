@@ -2,7 +2,7 @@
                 "exec" : {
                     "alias" : [
 			"/work_dir/images/=/work_dir/images/",
-                        "/variant_specific/main_exe=<<EXEPATH>>/<<EXE_NAME>>",
+                        "<<MAINEXE>>=<<EXEPATH>>/<<EXE_NAME>>",
                         "/variant_specific/heap_map=<<EXEPATH>>/<<PS_DIR>>/heap.map",
 			"/dev/cfar_urandom=/dev/urandom",
                         "/etc/ld.so.cache=/etc/ld.so.cache",

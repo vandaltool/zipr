@@ -1,6 +1,6 @@
     "monitor" : {
         "dump_variant_core" : true,
-        "detach_variants": false,
+        <<DETACH_VARIANTS>>,
         "pre_launch_command": "/target_apps/global/fix_loader.sh /target_apps/monitor.conf"
 
     },

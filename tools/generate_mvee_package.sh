@@ -21,8 +21,10 @@ Usage:
 	[--args <arguments string in json format> ]
 	[--server <servername>
 	[--class <atd class> ]
+	[--do-detach (true|false|null) ]
 	[--mainexe <exe base name>
 	[--extra_preloads "<preloads>" ]
+	[--supplement "<supplment_file>" ]
 	[(--help | -h )]
 	[(--verbose | -v )]
 "
@@ -42,6 +44,7 @@ check_opts()
 	use_nol="--disablenol"
 	use_assurance="--disable-assurance"
 	use_includecr="--noinclude-cr"
+	do_detach=null
 	mainexe_opt="" # look in target_apps and find exactly one thing.
 	verbose=0
 
@@ -72,8 +75,10 @@ check_opts()
                    --long help
                    --long zipr
                    --long strata
+                   --long do-detach:
                    --long mainexe:
                    --long extra_preloads:
+                   --long supplement:
                    --long verbose
                 "
 
@@ -94,6 +99,14 @@ check_opts()
                 case "$1" in
                         --extra_preloads)
 				extra_preloads="$2"
+                                shift 2
+			;;
+                        --supplement)
+				sad_file="$2"
+                                shift 2
+			;;
+                        --do-detach)
+				do_detach="$2"
                                 shift 2
 			;;
                         --mainexe)
@@ -212,6 +225,11 @@ sanity_check()
 	# count the number of variants that will be in the system, and sanity check that each library has those same variants.
 	total_variants=0
 	total_variant_sets=0
+
+	if [[ ! -z $sad_file ]] && [[ ! -f $sad_file ]]; then
+		echo "Supplement application description file $sad_file does not exist or isn't a normal file"
+		exit 1
+	fi
 
 	var_sets=$(ls $indir)
 	for vs_dir in $var_sets
@@ -816,8 +834,22 @@ finalize_json()
 			fi
 	
 
-
 			variant_name="variant_${vs}_${seq}"
+
+			# now, add any extra aliases that we may need from the suppoliment file
+			# grab contents
+			supplemental_aliases=$(cat $sad_file |jq .additional_aliases)
+                	supplemental_aliases=$(echo "$supplemental_aliases" |head -n -1|tail -n +2)     # trim open and close []'s
+
+			# fill in fields
+			supplemental_aliases="${supplemental_aliases//\#VAR_NUM\#/$seq}"
+			supplemental_aliases="${supplemental_aliases//\#VARSET_NUM\#/$vs}"
+			supplemental_aliases="${supplemental_aliases//\#VAR_NAME\#/$variant_name}"
+			supplemental_aliases="${supplemental_aliases//\#VARSET_NAME\#/vs-$vs}"
+			# add to variant config
+			variant_config_contents="${variant_config_contents//<<LIBS>>/$supplemental_aliases,<<LIBS>>}"
+
+			# sub in other variant_config fields
 			variant_config_contents="${variant_config_contents//<<EXEPATH>>/$new_variant_dir_ts/bin}"
 			variant_config_contents="${variant_config_contents//<<VARIANTNUM>>/$variant_name}"
 			variant_config_contents="${variant_config_contents//<<VARIANTINDEX>>/$seq}"
@@ -907,9 +939,19 @@ finalize_json()
 		json_contents="${json_contents//<<MONITOR>>/$monitor_contents}"
 	fi
 
-	# substittue in the right settings for the monitor settings.
+
+	get_main_exe_path
+
+	if [[ $do_detach == 'null' ]] ; then
+		json_contents="${json_contents//<<DETACH_VARIANTS>>,/}"
+		json_contents="${json_contents//<<DETACH_VARIANTS>>/}"
+	else
+		line='"detach_variants" : '$do_detach
+		json_contents="${json_contents//<<DETACH_VARIANTS>>/$line}"
+	fi
 
 	# remove variant_config placeholders
+	json_contents="${json_contents//<<MAINEXE>>/$main_exe_path}"
 	json_contents="${json_contents//,<<VARIANT_CONFIG>>/}"
 	json_contents="${json_contents//,<<VARIANT_LIST>>/}"
 	json_contents="${json_contents//,<<VARIANT_SETS>>/}"
@@ -940,6 +982,41 @@ finalize_json()
 
 	echo "Finalized $json as atd config."
 }
+
+get_main_exe_path()
+{
+	main_exe_path="/variant_specific/$mainexe_opt"
+
+	if [[ ! -z $sad_file ]] ; then
+	
+		sad_contents=$(cat $sad_file |jq .per_file_load_path)
+		sad_contents=$(echo "$sad_contents" |head -n -1|tail -n +2)     # trim open and close []'s
+
+		for i in "$sad_contents"
+		do
+			i=$(echo $i | sed -e "s/^\"//" -e "s/\"$//")
+			tokens=(${i})
+
+			lhs=${tokens[0]}
+			middle=${tokens[1]}
+			rhs=${tokens[2]}
+
+			if ! [[ $middle  = "loaded_from" ]]; then
+				echo "Cannot parse 'lhs loaded_from rhs' from $i"
+				exit 1
+			fi			
+			if [[ ! -z ${tokens[3]} ]]; then
+				echo "Extra tokens in loaded_from expression $i"
+				exit 1
+			fi
+			if [[ $(basename $lhs) == $mainexe_opt ]]; then
+				main_exe_path="$rhs"
+				break;
+			fi
+		done
+	fi
+}
+
 
 main()
 {
