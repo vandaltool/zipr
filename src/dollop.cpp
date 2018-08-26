@@ -23,10 +23,9 @@ namespace Zipr_SDK {
 			push_back(new DollopEntry_t(loop, this));
 		} while ((NULL != (loop = loop->GetFallthrough())) &&
 			/*
-			 * If this is a pinned instruction, we want to stop!
+			 * If this is a pinned instruction (or unpinned IBT), we want to stop!
 			 */
-		         (NULL == loop->GetIndirectBranchTargetAddress() 
-			  || loop->GetIndirectBranchTargetAddress()->GetVirtualOffset()==0)
+		         (NULL == loop->GetIndirectBranchTargetAddress())
 						);
 
 		m_size = CalculateWorstCaseSize();

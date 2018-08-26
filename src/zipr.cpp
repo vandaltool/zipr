@@ -909,7 +909,7 @@ bool ZiprImpl_t::ShouldPinImmediately(Instruction_t *upinsn)
 		if(upinsn->GetFallthrough()==NULL)
 			return true;
 		ft_ibta=upinsn->GetFallthrough()->GetIndirectBranchTargetAddress();
-		if(ft_ibta && (upinsn_ibta->GetVirtualOffset()+1) == ft_ibta->GetVirtualOffset())
+		if((ft_ibta && ft_ibta->GetVirtualOffset()!=0) && (upinsn_ibta->GetVirtualOffset()+1) == ft_ibta->GetVirtualOffset())
 			return true;
 	}
 
