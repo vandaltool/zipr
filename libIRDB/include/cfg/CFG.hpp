@@ -26,24 +26,27 @@ class ControlFlowGraph_t
 {
 	public:
 		ControlFlowGraph_t(Function_t* func);
-
 		BasicBlock_t* GetEntry() const { return entry; }
 		Function_t* GetFunction() const { return function; }
+		BasicBlockSet_t& GetBlocks()   { return blocks; }
+		const BasicBlockSet_t& GetBlocks()   const { return blocks; }
 		void dump(std::ostream &os=std::cout) const { os<<*this; }
 
-	protected:
-		void Build(Function_t *func);
-
 	private:
-		std::set<BasicBlock_t*> blocks;
+	// methods 
+		void Build(Function_t *func);
+		void alloc_blocks(const InstructionSet_t &starts, map<Instruction_t*,BasicBlock_t*>& insn2block_map);
+		void build_blocks(const map<Instruction_t*,BasicBlock_t*>& insn2block_map);
+		void find_unblocked_instructions(InstructionSet_t &starts, Function_t* func);
+
+	// data
+		BasicBlockSet_t blocks;
 		BasicBlock_t* entry;
 		Function_t* function;
 
 	/* friends */
 	public:
 		friend std::ostream& operator<<(std::ostream& os, const ControlFlowGraph_t& cfg);
-		BasicBlockSet_t& GetBlocks()   { return blocks; }
-		const BasicBlockSet_t& GetBlocks()   const { return blocks; }
 };
 
 
