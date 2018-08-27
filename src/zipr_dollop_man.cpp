@@ -125,7 +125,13 @@ namespace zipr {
 				 * and link them together.
 				 */
 				previous_dollop = new_dollop;
-				new_dollop = Dollop_t::CreateNewDollop(fallthrough, this);
+
+				// cannot do this:
+				// new_dollop = Dollop_t::CreateNewDollop(fallthrough, this);
+				// because CreateNewDollop does not adaquately trim the dollop
+				// and it might result in an instruction being in two dollops
+				// Using AddNewDollops instead.
+				new_dollop = this->AddNewDollops(fallthrough);
 				previous_dollop->FallthroughDollop(new_dollop);
 				new_dollop->FallbackDollop(previous_dollop);
 			}
