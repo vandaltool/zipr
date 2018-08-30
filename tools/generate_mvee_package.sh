@@ -890,14 +890,16 @@ finalize_json()
 
 			# now, add any extra aliases that we may need from the suppoliment file
 			# grab contents
-			supplemental_aliases=$(cat $sad_file |jq .additional_aliases)
-                	supplemental_aliases=$(echo "$supplemental_aliases" |head -n -1|tail -n +2)     # trim open and close []'s
+			if [[ ! -z $sad_file ]]; then
+				supplemental_aliases=$(cat $sad_file |jq .additional_aliases)
+				supplemental_aliases=$(echo "$supplemental_aliases" |head -n -1|tail -n +2)     # trim open and close []'s
 
-			# fill in fields
-			supplemental_aliases="${supplemental_aliases//\#VAR_NUM\#/$seq}"
-			supplemental_aliases="${supplemental_aliases//\#VARSET_NUM\#/$vs}"
-			supplemental_aliases="${supplemental_aliases//\#VAR_NAME\#/$variant_name}"
-			supplemental_aliases="${supplemental_aliases//\#VARSET_NAME\#/vs-$vs}"
+				# fill in fields
+				supplemental_aliases="${supplemental_aliases//\#VAR_NUM\#/$seq}"
+				supplemental_aliases="${supplemental_aliases//\#VARSET_NUM\#/$vs}"
+				supplemental_aliases="${supplemental_aliases//\#VAR_NAME\#/$variant_name}"
+				supplemental_aliases="${supplemental_aliases//\#VARSET_NAME\#/vs-$vs}"
+			fi
 			# add to variant config
 			if [[ ! -z $supplemental_aliases ]]; then
 				variant_config_contents="${variant_config_contents//<<LIBS>>/$supplemental_aliases,<<LIBS>>}"
