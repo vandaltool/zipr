@@ -121,6 +121,16 @@ cerr << "(2) carefullyInsertBefore: @: 0x" << std::hex << p_instrumented->GetAdd
 #endif
 }
 
+Instruction_t* Transform::insertAssemblyBefore(Instruction_t* before, const string &the_asm, Instruction_t* target)
+{
+	return IRDBUtility::insertAssemblyBefore(getFileIR(), before, the_asm, target);
+}
+
+Instruction_t* Transform::insertAssemblyAfter(Instruction_t* before, const string &the_asm, Instruction_t* target)
+{
+	return IRDBUtility::insertAssemblyAfter(getFileIR(), before, the_asm, target);
+}
+
 void Transform::addPushf(Instruction_t *p_pushf_i, Instruction_t *p_fallThrough)
 {
 	string dataBits;

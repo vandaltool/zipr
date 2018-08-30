@@ -52,6 +52,8 @@ class Transform {
 		void addCallbackHandler64(Instruction_t *p_instr, string p_callbackHandler, int p_numArgs);
 		void addInstruction(Instruction_t *p_instr, string p_dataBits, Instruction_t *p_fallThrough, Instruction_t *p_target);
 		Instruction_t* carefullyInsertBefore(Instruction_t* &p_target, Instruction_t* &p_new);
+		Instruction_t* insertAssemblyBefore(Instruction_t* before, const string &the_asm, Instruction_t* target=nullptr);
+		Instruction_t* insertAssemblyAfter(Instruction_t* after, const string &the_asm, Instruction_t* target=nullptr);
 
 		void addPushRegister(Instruction_t *p_instr, RegisterName, Instruction_t *p_fallThrough);
 		void addPopRegister(Instruction_t *p_instr, RegisterName, Instruction_t *p_fallThrough);

@@ -46,7 +46,7 @@ void HookStart::LoadElf()
 Instruction_t *HookStart::add_instrumentation(Instruction_t *site)
 {
 	Relocation_t *zipr_reloc = new Relocation_t;
-	FileIR_t *firp = getFileIR();
+	//FileIR_t *firp = getFileIR();
 	virtual_offset_t postCallbackReturn = getAvailableAddress();
 	char pushRetBuf[100],
 	     movIdBuf[100],
@@ -65,60 +65,60 @@ Instruction_t *HookStart::add_instrumentation(Instruction_t *site)
 	              *callback=NULL,
 	              *post_callback=NULL;
 
-	site=insertAssemblyBefore(firp,tmp,"push rsp");
-	tmp=insertAssemblyAfter(firp,tmp,"push rbp");
-	tmp=insertAssemblyAfter(firp,tmp,"push rdi");
-	tmp=insertAssemblyAfter(firp,tmp,"push rsi");
-	tmp=insertAssemblyAfter(firp,tmp,"push rdx");
-	tmp=insertAssemblyAfter(firp,tmp,"push rcx");
-	tmp=insertAssemblyAfter(firp,tmp,"push rbx");
-	tmp=insertAssemblyAfter(firp,tmp,"push rax");
-	tmp=insertAssemblyAfter(firp,tmp,"push r8");
-	tmp=insertAssemblyAfter(firp,tmp,"push r9");
-	tmp=insertAssemblyAfter(firp,tmp,"push r10");
-	tmp=insertAssemblyAfter(firp,tmp,"push r11");
-	tmp=insertAssemblyAfter(firp,tmp,"push r12");
-	tmp=insertAssemblyAfter(firp,tmp,"push r13");
-	tmp=insertAssemblyAfter(firp,tmp,"push r14");
-	tmp=insertAssemblyAfter(firp,tmp,"push r15");
-	tmp=insertAssemblyAfter(firp,tmp,"pushf");
-	tmp=insertAssemblyAfter(firp,tmp,movIdBuf);
+	site=insertAssemblyBefore(tmp,"push rsp");
+	tmp=insertAssemblyAfter(tmp,"push rbp");
+	tmp=insertAssemblyAfter(tmp,"push rdi");
+	tmp=insertAssemblyAfter(tmp,"push rsi");
+	tmp=insertAssemblyAfter(tmp,"push rdx");
+	tmp=insertAssemblyAfter(tmp,"push rcx");
+	tmp=insertAssemblyAfter(tmp,"push rbx");
+	tmp=insertAssemblyAfter(tmp,"push rax");
+	tmp=insertAssemblyAfter(tmp,"push r8");
+	tmp=insertAssemblyAfter(tmp,"push r9");
+	tmp=insertAssemblyAfter(tmp,"push r10");
+	tmp=insertAssemblyAfter(tmp,"push r11");
+	tmp=insertAssemblyAfter(tmp,"push r12");
+	tmp=insertAssemblyAfter(tmp,"push r13");
+	tmp=insertAssemblyAfter(tmp,"push r14");
+	tmp=insertAssemblyAfter(tmp,"push r15");
+	tmp=insertAssemblyAfter(tmp,"pushf");
+	tmp=insertAssemblyAfter(tmp,movIdBuf);
 	/*
 	 * Let's put a relocation on here!
 	 */
 	tmp->GetRelocations().insert(zipr_reloc);
-	tmp=insertAssemblyAfter(firp,tmp,movRaxBuf);
-	tmp=insertAssemblyAfter(firp,tmp,movRspBuf);
+	tmp=insertAssemblyAfter(tmp,movRaxBuf);
+	tmp=insertAssemblyAfter(tmp,movRspBuf);
 	/*
 	 * The "bogus" return address that we push here
 	 * will be popped by the callback handler 
 	 * invocation code in zipr.
 	 */
-	tmp=insertAssemblyAfter(firp,tmp,pushRetBuf);	 // push <ret addr>
+	tmp=insertAssemblyAfter(tmp,pushRetBuf);	 // push <ret addr>
 
-	callback=tmp=insertAssemblyAfter(firp,tmp,"call 0");
+	callback=tmp=insertAssemblyAfter(tmp,"call 0");
 	callback->SetTarget(callback);
 	callback->SetCallback(m_callback_name);
 
-	post_callback=tmp=insertAssemblyAfter(firp,tmp,"popf");
+	post_callback=tmp=insertAssemblyAfter(tmp,"popf");
 	post_callback->GetAddress()->SetVirtualOffset(postCallbackReturn);
 
-	tmp=insertAssemblyAfter(firp,tmp,"pop r15");
-	tmp=insertAssemblyAfter(firp,tmp,"pop r14");
-	tmp=insertAssemblyAfter(firp,tmp,"pop r13");
-	tmp=insertAssemblyAfter(firp,tmp,"pop r12");
-	tmp=insertAssemblyAfter(firp,tmp,"pop r11");
-	tmp=insertAssemblyAfter(firp,tmp,"pop r10");
-	tmp=insertAssemblyAfter(firp,tmp,"pop r9");
-	tmp=insertAssemblyAfter(firp,tmp,"pop r8");
-	tmp=insertAssemblyAfter(firp,tmp,"pop rax");
-	tmp=insertAssemblyAfter(firp,tmp,"pop rbx");
-	tmp=insertAssemblyAfter(firp,tmp,"pop rcx");
-	tmp=insertAssemblyAfter(firp,tmp,"pop rdx");
-	tmp=insertAssemblyAfter(firp,tmp,"pop rsi");
-	tmp=insertAssemblyAfter(firp,tmp,"pop rdi");
-	tmp=insertAssemblyAfter(firp,tmp,"pop rbp");
-	tmp=insertAssemblyAfter(firp,tmp,"lea rsp, [rsp+8]");
+	tmp=insertAssemblyAfter(tmp,"pop r15");
+	tmp=insertAssemblyAfter(tmp,"pop r14");
+	tmp=insertAssemblyAfter(tmp,"pop r13");
+	tmp=insertAssemblyAfter(tmp,"pop r12");
+	tmp=insertAssemblyAfter(tmp,"pop r11");
+	tmp=insertAssemblyAfter(tmp,"pop r10");
+	tmp=insertAssemblyAfter(tmp,"pop r9");
+	tmp=insertAssemblyAfter(tmp,"pop r8");
+	tmp=insertAssemblyAfter(tmp,"pop rax");
+	tmp=insertAssemblyAfter(tmp,"pop rbx");
+	tmp=insertAssemblyAfter(tmp,"pop rcx");
+	tmp=insertAssemblyAfter(tmp,"pop rdx");
+	tmp=insertAssemblyAfter(tmp,"pop rsi");
+	tmp=insertAssemblyAfter(tmp,"pop rdi");
+	tmp=insertAssemblyAfter(tmp,"pop rbp");
+	tmp=insertAssemblyAfter(tmp,"lea rsp, [rsp+8]");
 
 	tmp->SetFallthrough(site);
 
