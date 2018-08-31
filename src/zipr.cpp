@@ -3305,6 +3305,16 @@ RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t *entry, RangeAddress_t
 		updated_addr = PlopDollopEntry(entry, placed_address, target_address);
 	}
 
+	// sanity check that we aren't moving an instruction that's already been placed.	
+	const auto old_loc=final_insn_locations[insn];
+	if(old_loc != 0 && old_loc != placed_address )
+	{
+		static int count=0;
+		cout<<"Warning, Moving instruction "<<hex<<insn->GetBaseID()<<":"<<insn->GetComment()
+		    <<" from "<<hex<<old_loc<<" to "<<placed_address<<endl;
+		cout<<"Happened for "<<dec<<count++<<" out of "<<m_firp->GetInstructions().size()<<" instructions"<<endl;
+	}
+
 	final_insn_locations[insn] = placed_address;
 	return updated_addr;
 }
