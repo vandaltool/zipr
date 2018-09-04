@@ -18,29 +18,25 @@ void IBTProvenance_t::AddProvs(const Instruction_t* before, const InstructionSet
         bool isIndCall = IndBranchAsm.isCall() && !IndBranchAsm.getOperand(0).isConstant();
         bool isRet = IndBranchAsm.isReturn();
         
-        // Set the provenance info of targets depending on the type of IB
-        IB_Type this_IB_type;
-        
-        if(isIndJmp)
-        {
-                this_IB_type = IB_Type::IndJmp;
-        }
-        else if(isIndCall)
-        {
-                this_IB_type = IB_Type::IndCall;
-        }
-        else if(isRet)
-        {
-                this_IB_type = IB_Type::Ret;
-        }
-        else
-        {
-                assert(0);
-        }
-        
+        // Set the provenance info of targets depending on the type of IB 
 	for(auto insn : afterset)
 	{
-                prov_map[insn].set((size_t) this_IB_type);
+		if(isIndJmp)
+		{
+			prov_map[insn].addIndirectJump();
+		}
+		else if(isIndCall)
+		{
+			prov_map[insn].addIndirectCall();
+		}
+		else if(isRet)
+		{
+			prov_map[insn].addReturn();
+		}
+		else
+		{
+			assert(0);
+		}
 	}
 }
 

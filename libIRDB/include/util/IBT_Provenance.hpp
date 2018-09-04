@@ -1,33 +1,22 @@
 #ifndef IBT_Provenance_h
 #define IBT_Provenance_h
 
-#include <bitset>
+#include "Provenance.hpp"
 
 class IBTProvenance_t
 {
 	private:
-        enum class IB_Type { IndJmp = 0, IndCall = 1, Ret = 2 };
-	typedef std::map<const Instruction_t*, std::bitset<3>> ProvMap_t;
+	typedef std::map<const Instruction_t*, Provenance_t> ProvMap_t;
 
 	public:
 	IBTProvenance_t(const FileIR_t* f=NULL) {Init(); if(f) AddFile(f);}
         virtual ~IBTProvenance_t() {;}
 	virtual void AddFile(const FileIR_t* );
         
-        bool IsInsnRetTarg(const Instruction_t* i) const
-        {
-            return (prov_map.at(i)).test((size_t) IB_Type::Ret);
-        }
-
-	bool IsInsnIndJmpTarg(const Instruction_t* i) const
-        {
-            return (prov_map.at(i)).test((size_t) IB_Type::IndJmp);
-        }
-        
-        bool IsInsnIndCallTarg(const Instruction_t* i) const
-        {
-            return (prov_map.at(i)).test((size_t) IB_Type::IndCall);
-        }
+        Provenance_t getProvenance(const Instruction_t* insn) const
+	{
+		return prov_map.at(insn);
+	} 
 
 	protected:
 	virtual void Init() {};
