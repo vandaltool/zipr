@@ -3,15 +3,15 @@
 
 #include <bitset>
 
-class IBT_Provenance_t
+class IBTProvenance_t
 {
 	private:
         enum class IB_Type { IndJmp = 0, IndCall = 1, Ret = 2 };
 	typedef std::map<const Instruction_t*, std::bitset<3>> ProvMap_t;
 
 	public:
-	IBT_Provenance_t(const FileIR_t* f=NULL) {Init(); if(f) AddFile(f);}
-        virtual ~IBT_Provenance_t() {;}
+	IBTProvenance_t(const FileIR_t* f=NULL) {Init(); if(f) AddFile(f);}
+        virtual ~IBTProvenance_t() {;}
 	virtual void AddFile(const FileIR_t* );
         
         bool IsInsnRetTarg(const Instruction_t* i) const

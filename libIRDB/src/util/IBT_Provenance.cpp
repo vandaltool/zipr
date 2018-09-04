@@ -9,7 +9,7 @@ using namespace std;
 
 
 
-void IBT_Provenance_t::AddProvs(const Instruction_t* before, const InstructionSet_t& afterset)
+void IBTProvenance_t::AddProvs(const Instruction_t* before, const InstructionSet_t& afterset)
 {
         // Determine type of IB
         const auto IndBranchAsm=DecodedInstruction_t(before);
@@ -44,7 +44,7 @@ void IBT_Provenance_t::AddProvs(const Instruction_t* before, const InstructionSe
 	}
 }
 
-void IBT_Provenance_t::AddFile(const FileIR_t* firp2)
+void IBTProvenance_t::AddFile(const FileIR_t* firp2)
 {
 	FileIR_t* firp=(FileIR_t*)firp2; // discarding const qualifier because we know we won't change the set
         firp->AssembleRegistry(); // Takes time but I'm paranoid
