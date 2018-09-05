@@ -113,13 +113,14 @@ ZiprOptionsNamespace_t *Unpin_t::RegisterOptions(ZiprOptionsNamespace_t *global)
 	return unpin_ns;
 }
 
+// CAN BE DELETED, left in just for stats? (Would speed up zipr step to delete)
 void Unpin_t::DoUnpin()
 {
 	DoUnpinForScoops();
 	DoUnpinForFixedCalls();
 }
 
-
+// CAN BE DELETED, left in just for stats?
 // scan instructions and process instruction relocs that can be unpinned.
 void Unpin_t::DoUnpinForFixedCalls()
 {
@@ -157,31 +158,7 @@ void Unpin_t::DoUnpinForFixedCalls()
 				// safe cast and check.
 				Instruction_t* wrt_insn=dynamic_cast<Instruction_t*>(reloc->GetWRT());
 				assert(wrt_insn);
-				if(should_cfi_pin(wrt_insn))
-					continue;
-
-
-				if(wrt_insn->GetIndirectBranchTargetAddress())
-				{
-					cout<<"Unpin::Found "<<reloc->GetType()<<" relocation for pinned insn at "<<hex<<
-						wrt_insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()<<endl;
-				}
-				else
-				{
-					cout<<"Unpin::Warn: unpin found non-IBTA to unpin.  probably it's unpinned twice.  continuing anyhow."<<endl;
-				}
-	
-				wrt_insn->SetIndirectBranchTargetAddress(NULL);
-
-				PlacementQueue_t* pq=zo->GetPlacementQueue();
-				assert(pq);
-
-				// create a new dollop for the unpinned IBT
-				// and add it to the placement queue.
-				Dollop_t *newDoll=zo->GetDollopManager()->AddNewDollops(wrt_insn);
-				pq->insert(std::pair<Dollop_t*,RangeAddress_t>(newDoll, 0));
-
-				
+		
 				unpins++;
 				insn_unpins++;
 				if(m_max_unpins != -1 && unpins>=m_max_unpins)
@@ -195,6 +172,7 @@ void Unpin_t::DoUnpinForFixedCalls()
 }
 
 
+// CAN BE DELETED, left in just for stats?
 void Unpin_t::DoUnpinForScoops()
 {
 	if(m_max_unpins != -1 && unpins>=m_max_unpins)
@@ -226,45 +204,10 @@ void Unpin_t::DoUnpinForScoops()
 				// safe cast and check.
 				assert(insn);
 
-
-				if(insn->GetIndirectBranchTargetAddress())
-				{
-					cout<<"Unpin::Found data_to_insn_ptr relocation for pinned insn:"
-					    <<hex<<insn->GetBaseID()<<":" <<insn->getDisassembly()<<" at "
-					    <<hex<< insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()<<endl;
-				}
-				else
-				{
-					cout<<"Unpin::Warn: unpin found non-IBTA to unpin for insn:"
-					    <<hex<<insn->GetBaseID()<<":" <<insn->getDisassembly()
-					    <<".  probably it's unpinned twice.  continuing anyhow."<<endl;
-				}
-	
-				bool found=should_cfi_pin(insn);
-
-				/* don't unpin if we found one */
-				if(found)
-				{
-					cout<<"Unpin::Not unpinning because CFI is requesting a nonce."<<endl;
-					missed_unpins++;
-				}
-				else
-				{
-					insn->SetIndirectBranchTargetAddress(NULL);
-
-					PlacementQueue_t* pq=zo->GetPlacementQueue();
-					assert(pq);
-
-					// create a new dollop for the unpinned IBT
-					// and add it to the placement queue.
-					Dollop_t *newDoll=zo->GetDollopManager()->AddNewDollops(insn);
-					pq->insert(std::pair<Dollop_t*,RangeAddress_t>(newDoll, 0));
-
-					unpins++;
-					scoop_unpins++;
-					if(m_max_unpins != -1 && unpins>=m_max_unpins)
-						return;
-				}
+				unpins++;
+				scoop_unpins++;
+				if(m_max_unpins != -1 && unpins>=m_max_unpins)
+					return;
 			}
 		}
 	}
