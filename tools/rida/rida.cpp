@@ -287,8 +287,8 @@ class CreateFunctions_t
 			}
 
 			const auto gotPltSec=exeio.sections[endSecName];
-			assert(gotPltSec!=NULL);
-			addRange(gotPltSec->get_address(),gotPltSec->get_size());
+			if(gotPltSec!=NULL)
+				addRange(gotPltSec->get_address(),gotPltSec->get_size());
 	
 		}
 
