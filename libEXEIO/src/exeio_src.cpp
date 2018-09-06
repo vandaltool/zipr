@@ -14,7 +14,7 @@ using namespace std;
 using namespace pe_bliss;
 #endif
 
-void exeio::load(char* filename)
+void exeio::load(const char* filename)
 {
 
 	ifstream instream(filename); 

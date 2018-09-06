@@ -1,0 +1,12 @@
+
+
+
+env=Environment()
+
+env.Append(CFLAGS="    -g -Wall -Werror -std=c++11 -fmax-errors=2")
+env.Append(CXXFLAGS="  -g -Wall -Werror -std=c++11 -fmax-errors=2")
+env.Append(LINKFLAGS=" -g -Wall -Werror -std=c++11 -fmax-errors=2")
+
+Export('env')
+install=SConscript("SConscript")
+Return('install')

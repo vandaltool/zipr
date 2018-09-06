@@ -59,7 +59,7 @@ namespace EXEIO
 				// remove the elfio class.
 				delete e;
 			}
-			void load(exeio* the_main, char* filename)
+			void load(exeio* the_main, const char* filename)
 			{
 				main=the_main;
 				e=new ELFIO::elfio;	

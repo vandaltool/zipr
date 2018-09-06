@@ -13,6 +13,7 @@ dirs='''
 	spasm
 	dump_map
 	hook_start
+	rida
 	'''
 
 nobuild_dirs='''

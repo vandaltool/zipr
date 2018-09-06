@@ -30,6 +30,7 @@ if "CYGWIN" in sysname:
 	libs = libs + " iconv"
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath), LIBS=Split(libs), LIBPATH=Split(libpath))
+myenv.Append(CXXFLAGS=" -Wall -Werror -std=c++11 ")
 pgm=myenv.Program(libname, Split(files))
 
 install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)

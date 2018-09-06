@@ -69,7 +69,7 @@ namespace EXEIO
 				// remove the pe_bliss class.
 				delete e;
 			}
-			void load(exeio* the_main, char* filename)
+			void load(exeio* the_main, const char* filename)
 			{
 				main=the_main;
 

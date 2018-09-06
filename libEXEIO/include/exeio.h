@@ -44,7 +44,7 @@ namespace EXEIO
 			virtual ~exeio_backend_t() { }
 			virtual void dump_header(std::ostream& stream) =0;
 			virtual void dump_section_headers(std::ostream& stream) =0;
-			virtual void load(exeio_t* main, char* filename) =0;
+			virtual void load(exeio_t* main, const char* filename) =0;
                         virtual execlass_t get_class() =0;
 			virtual virtual_offset_t get_entry() =0;
 			virtual void* get_elfio() { return NULL; }
@@ -57,6 +57,22 @@ namespace EXEIO
 	{
 		public:
 			exeio_section_t* operator[](int i) { return the_sections[i]; }
+			exeio_section_t* operator[](const std::string& name) 
+			{ 
+				for(auto s: the_sections)
+					if(s->get_name()==name)
+							return s;
+				return NULL;
+			}
+			exeio_section_t* findByAddress(const uint64_t addr)
+			{ 
+				for(auto s: the_sections)
+				{
+					if(s->get_address() <= addr &&  addr < (s->get_address()+s->get_size()))
+						return s;
+				}
+				return NULL;
+			}
 			int size() const { return (int)the_sections.size(); }
 
 			void add_section(exeio_section_t* sec)
@@ -77,13 +93,14 @@ namespace EXEIO
 		public:
 			// constructors
 			exeio_t()  { Init(); }
-			exeio_t(char* filename) { Init(); load(filename); }
+			exeio_t(const char* filename) { Init(); load(filename); }
+			exeio_t(const std::string& filename) { Init(); load(filename.c_str()); }
 			virtual ~exeio_t() { delete backend; }
 
-			virtual void load(std::string filename) { load((char*)filename.c_str()); }
+			virtual void load(const std::string filename) { load((char*)filename.c_str()); }
 
 			// load the file
-			virtual void load(char* fn);
+			virtual void load(const char* fn);
 
 			// trying to do minimal rewriting of code that uses
 			// ELFIO namespace.  
