@@ -426,7 +426,7 @@ stop_if_error()
 
 	case $my_step in
 		# getting the annotation file right is necessary-ish
-		meds_static)
+		meds_static|rida)
 			return 1;
 		;;
 		# DB operations are necessary 
@@ -638,6 +638,7 @@ do_plugins()
 		spasm
 		fast_annot
 		fast_spri
+		rida
 	"
 
 	for i in $phases_spec
@@ -992,23 +993,13 @@ STRATA_PC_CONFINE_XOR=0
 #
 perform_step gather_libraries mandatory $PEASOUP_HOME/tools/do_gatherlibs.sh $step_options_gather_libraries
 
-
 #
 # Running IDA Pro static analysis phase ...
 #
 perform_step meds_static mandatory $PEASOUP_HOME/tools/do_idapro.sh $name $step_options_meds_static
+perform_step rida mandatory $SECURITY_TRANSFORMS_HOME/plugins_install/rida.exe ./a.ncexe ./a.ncexe.annot ./a.ncexe.infoannot ./a.ncexe.STARSxrefs $step_options_rida
 touch a.ncexe.annot
 cp a.ncexe.annot a.ncexe.annot.full
-# this check is extraneous now.
-#if [ ! -f $newname.ncexe.annot  ] ; then 
-#	fail_gracefully "idapro step failed, exiting early.  Is IDAPRO installed? "
-#fi
-
-
-#
-# Run concolic engine
-#
-#perform_step concolic none $PEASOUP_HOME/tools/do_concolic.sh a -z $PEASOUP_UMBRELLA_DIR/grace.conf
 
 ##
 ## Populate IR Database
