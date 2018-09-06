@@ -18,7 +18,9 @@
 using namespace std;
 using namespace libStructDiv;
 
-void ignore_result(int /* res */ ) {}
+
+template <class T>
+void ignore_result(T /* res */ ) {}
 
 
 template<typename T> std::string toString(const T& value)
@@ -47,33 +49,47 @@ FileBased_StructuredDiversity_t::FileBased_StructuredDiversity_t(string key, int
 	m_shared_dir=p_config;
 
 	// check path exists.
-	struct stat info;
+	struct stat info = {};
 	if( stat(m_shared_dir.c_str(), &info ) != 0 )
 	{
 		// dir doesn't exist, make it.
 		if(mkdir(m_shared_dir.c_str(),0755)!=0)
 		{
-			perror("FileBased_StructuredDiversity_t::FileBased_StructuredDiversity_t");
-			cerr<<"Cannot create dir:"<<endl;
-			exit(1);
+			// OK if this fails, because maybe another variant did it since we last checked.
 		}	
 	}
-	else
+
+	// but now, _we_ have tried to make the dir, and so it should be there, or we give up.
+	if( stat(m_shared_dir.c_str(), &info ) != 0 )
 	{
-		// dir exists,
-		// remove any old Barriers file for my variant..
-		string base_filespec=m_shared_dir+"/Barriers_"+uname+"_"+GetKey()+"_*_"+toString(GetVariantID())+".*";
-		string rm_cmd="/bin/rm -f "+base_filespec;
-		int res=system(rm_cmd.c_str());
-		if(res!=0)
-		{
-			perror("FileBased_StructuredDiversity_t::FileBased_StructuredDiversity_t");
-			cerr<<"Cannot remove files, cmd="<<rm_cmd<<endl;
-			exit(1);
-		}
-		
+		// at this point, we tried to make it and couldn't.
+		// and no one else did either.  Thus, it's an error.
+		perror("FileBased_StructuredDiversity_t::FileBased_StructuredDiversity_t");
+		cerr<<"Cannot create dir:"<<m_shared_dir<<endl;
+		exit(1);
+	}
+
+	if(!S_ISDIR(info.st_mode))
+	{
+		cerr<<"FileBased_StructuredDiversity_t::FileBased_StructuredDiversity_t: "
+		    <<m_shared_dir<<" is not a directory."<<endl;
+		exit(1);
 		
 	}
+
+	
+	// dir exists,
+	// remove any old Barriers file for my variant..
+	string base_filespec=m_shared_dir+"/Barriers_"+uname+"_"+GetKey()+"_*_"+toString(GetVariantID())+".*";
+	string rm_cmd="/bin/rm -f "+base_filespec;
+	int res=system(rm_cmd.c_str());
+	if(res!=0)
+	{
+		perror("FileBased_StructuredDiversity_t::FileBased_StructuredDiversity_t");
+		cerr<<"Cannot remove files, cmd="<<rm_cmd<<endl;
+		exit(1);
+	}
+		
 	cout<<"Initing shared path: "<<m_shared_dir<<endl<<"Contents:"<<endl;
 	string ls_cmd="ls "+m_shared_dir;
 	ignore_result(system(ls_cmd.c_str()));
