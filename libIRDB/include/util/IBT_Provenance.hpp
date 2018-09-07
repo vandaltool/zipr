@@ -13,10 +13,25 @@ class IBTProvenance_t
         virtual ~IBTProvenance_t() {;}
 	virtual void AddFile(const FileIR_t* );
         
-        Provenance_t getProvenance(const Instruction_t* insn) const
+        /*Provenance_t getProvenance(const Instruction_t* insn) const
 	{
-		return prov_map.at(insn);
-	} 
+		return ((ProvMap_t) prov_map)[insn];
+	}*/
+
+	Provenance_t& operator[] (const Instruction_t* i)  
+	{
+		return prov_map[i];
+	}
+
+	const Provenance_t& operator[] (const Instruction_t* i)  const
+	{ 
+		ProvMap_t::const_iterator it=prov_map.find(i);
+		if (it!= prov_map.end()) 
+			return it->second;
+		static Provenance_t empty;
+		return empty;
+	}
+ 
 
 	protected:
 	virtual void Init() {};
