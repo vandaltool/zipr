@@ -5,3 +5,6 @@
 [submodule "libehp"]
 	path = libehp
 	url = git@git.zephyr-software.com:opensrc/libehp.git
+[submodule "third_party/elfio-code"]
+	path = third_party/elfio-code
+	url = http://git.code.sf.net/p/elfio/code

@@ -8,14 +8,13 @@
 #include <string>
 #include "capstone/capstone.h"
 #include <fstream>
-#include <elfio/elfio.hpp>
+//#include <elfio/elfio.hpp>
 #include <elf.h>
 
 
 using namespace std;
 using namespace EHP;
 using namespace EXEIO;
-using namespace ELFIO;
 
 #define ALLOF(a) begin(a),end(a)
 
@@ -80,9 +79,9 @@ class CreateFunctions_t
 			ehframeToSccs();
 			addSectionToSccs(".init");
 			addSectionToSccs(".fini");
-			pltSplit<ELFIO::Elf64_Sym>(".plt", ".plt.got");
+			pltSplit<Elf64_Sym>(".plt", ".plt.got");
 			// if exeio->elf class == 64-bit
-			nameFunctions<ELFIO::Elf64_Sym>();
+			nameFunctions<Elf64_Sym>();
 			// else
 			// nameFunctions<Elf32_Rela, Elf32_Rel, Elf32_Sym>();
 

@@ -19,6 +19,7 @@
  */
 
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <set>
 #include <stdlib.h>
@@ -27,7 +28,7 @@
 
 #include "all.h"
 //#include "targ-config.h"
-#include "elfio/elfio.hpp"
+//#include "elfio/elfio.hpp"
 
 
 #include "rewriter.h"

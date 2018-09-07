@@ -20,6 +20,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <fstream>
 #include <map>
 #include <time.h>
 #include <string.h>

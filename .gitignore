@@ -1,7 +1,5 @@
 build/
-include/elfio/
 include/targ-config.h
-third_party/ELFIO/
 .sconsign.dblite
 beaengine/beaengineSources/BeaEngine.o
 bin/

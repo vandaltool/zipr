@@ -1191,3 +1191,5 @@ xform/stackref_hash.c -text
 xform/stackref_hash.h -text
 xform/strata_defines.h -text
 libcapstone norecurse
+third_party/elfio-code norecurse
+
