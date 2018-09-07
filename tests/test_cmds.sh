@@ -12,22 +12,22 @@
 #configs="zipr scfi scfi.color"
 #configs="shadow"
 #configs="p1 scfi"
-configs="mg mgx mgx_p1 p1_mgx"
+#configs="mg mgx mgx_p1 p1_mgx"
 #configs="ibtl"
 #configs="killdeads_strata"
 #configs="ibtl ibtl_p1"
 #configs="zipr scfi p1"
+#configs="rida"
+configs="rida_p1 rida_scfi rida_p1_scfi"
 
 # specify programs to test
 #orig_progs="grep ncal bzip2 du ls objdump readelf sort tar touch tcpdump"
-#orig_progs="grep bzip2 du ls objdump readelf sort tar touch"
-orig_progs="grep ls objdump tar"
-#orig_progs="bzip2"
+orig_progs="du grep bzip2 ls objdump readelf sort tar touch"
+orig_progs="ncal"
 #orig_progs="gedit"
 #orig_progs="gimp"
 #orig_progs="openssl"
 #orig_progs="tcpdump sort touch"
-#orig_progs="grep"
 build_only=0
 
 export IB_VERBOSE=1
@@ -70,8 +70,23 @@ do
 	progpath=$(readlink -f $progpath)
         
 	case $config in
+		zafl)
+			zafl.sh $progpath $protected --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
 		zipr)
 			$PSZ $progpath $protected --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
+		rida)
+			$PSZ $progpath $protected -s meds_static=off -s rida=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
+		rida_p1)
+			$PSZ $progpath $protected -s meds_static=off -s rida=on -s p1transform=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
+		rida_scfi)
+			FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected -s meds_static=off -s rida=on -s selective_cfi=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
+		rida_p1_scfi)
+			FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected -s meds_static=off -s rida=on -s p1transform=on -s selective_cfi=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 		;;
 		p1)
 			$PSZ $progpath $protected --step p1transform=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1

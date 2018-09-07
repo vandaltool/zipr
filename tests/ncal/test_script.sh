@@ -3,10 +3,10 @@
 TEST_LIB=$PEASOUP_HOME/tests/manual_test_lib.sh
 
 #for grep, I use some data files, so I set up variables pointing to that location
-TEST_DIR=$PEASOUP_HOME/tests/cal
+TEST_DIR=$PEASOUP_HOME/tests/ncal
 
 #used for filtering program names from output.
-ORIG_NAME=cal
+ORIG_NAME=ncal
 
 #must import the library here, as it depends on some of the above variables
 . $TEST_LIB
