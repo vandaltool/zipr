@@ -344,10 +344,30 @@ class CreateFunctions_t
 				const auto size=max.second-min.first;
 		
 				cout<<"Function "<<dec<<i++<<" is "<<hex<<min.first<<" "<<dec<<max.second-min.first<<endl;
+				const auto usefp=getUseFp(scc);
 
-				outfile<<hex<<"\t"<<min.first<<"\t"<<dec<<size<<"\tFUNC GLOBAL\t"<<funcNames[scc]<<endl;
+				outfile<<hex<<"\t"<<min.first<<"\t"<<dec<<size<<"\tFUNC GLOBAL\t"<<funcNames[scc]<<" "<< usefp << endl;
 				doBelongTos(scc);
 			}
+		}
+
+		string getUseFp(const RangeSet_t scc)
+		{
+			assert(scc.begin()!=scc.end());
+			const auto startAddr=scc.begin()->first;
+			const auto fde=ehp->findFDE(startAddr);
+			if(!fde) return "NOFP";
+			const auto &ehprogram=fde->getProgram();
+			const auto ehprogramInstructions=ehprogram.getInstructions();
+
+			const auto def_cfa_rbp_it = find_if(ALLOF(*ehprogramInstructions), [](const shared_ptr<EHProgramInstruction_t> insn)
+				{
+					assert(insn);
+					const auto &insnBytes=insn->getBytes();
+					// 0xd, 0x6 is "def_cfa_register rbp" 
+					return insnBytes==EHProgramInstructionByteVector_t({(uint8_t)0xd,(uint8_t)0x6});
+				});
+			return def_cfa_rbp_it == ehprogramInstructions->end() ?  "NOFP" : "USEFP";
 		}
 		
 
