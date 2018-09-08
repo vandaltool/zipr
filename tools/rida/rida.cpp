@@ -79,7 +79,7 @@ class CreateFunctions_t
 			ehframeToSccs();
 			addSectionToSccs(".init");
 			addSectionToSccs(".fini");
-			pltSplit<Elf64_Sym>(".plt", ".plt.got");
+			pltSplit<Elf64_Sym, Elf64_Rela, Elf64_Rel>(".plt", ".plt.got");
 			// if exeio->elf class == 64-bit
 			nameFunctions<Elf64_Sym>();
 			// else
@@ -208,11 +208,16 @@ class CreateFunctions_t
 			sccs.insert(ranges);
 		}
 
-		template<class T_Sym>
+		template<class T_Sym, class T_Rela, class T_Rel>
 		void pltSplit(const string &pltSecName, const string &endSecName)
 		{
 			const auto dynsymSec=exeio.sections[".dynsym"];
 			const auto dynstrSec=exeio.sections[".dynstr"];
+			const auto relapltSec=exeio.sections[".rela.plt"];
+			const auto relpltSec=exeio.sections[".rel.plt"];
+			const auto relSec=relapltSec  ? relapltSec : relpltSec;
+			const auto relSecEntrySize=relapltSec  ? sizeof(T_Rela) : sizeof(T_Rel);
+			
 
 			const auto addRange=[&](const Address_t s, size_t len)
 			{
@@ -221,14 +226,24 @@ class CreateFunctions_t
 				sccs.insert(RangeSet_t({Range_t({s,s+len})}));
 			};
 
-			const auto addName=[&](const Address_t addr, uint64_t dynsymIndex)
+			const auto addName=[&](const Address_t addr, uint64_t symIndex)
 			{
-
 				if(!dynsymSec) return;
 				if(!dynstrSec) return;
+				if(!relSec) return;
+			
+				// get the data out of the plt section.
+				const auto relData=relSec->get_data();
+				if(symIndex*relSecEntrySize >= (size_t)relSec->get_size()) return;
+				const auto relDataAsSymPtr=reinterpret_cast<const T_Rel *>(relData + symIndex*relSecEntrySize);
+				const auto &relEntry=*relDataAsSymPtr;
 
+				// calculate index into dynsym, section.
+				const auto dynsymIndex=ELF64_R_SYM(relEntry.r_info);
 				const auto dynsymData=dynsymSec->get_data();
 				const auto dynstrData=dynstrSec->get_data();
+
+				cout<<dec<<"At entry "<<symIndex<<", reloc entry has dynsym index "<<dynsymIndex<<endl;
 
 				// the index into the .dynsym section for the relocation.
 				const auto dynsymDataAsSymPtr=reinterpret_cast<const T_Sym *>(dynsymData);
@@ -243,19 +258,25 @@ class CreateFunctions_t
 				if(name_offset < 0U || name_offset > (size_t)dynstrSec->get_size())
 					return;
 
-				// get the name
-				const auto name=string(dynstrData+name_offset)+"@plt";
+				const auto applyName=[&](const string& part, const Address_t myAddr)
+					{
+						// get the name
+						const auto name=string(dynstrData+name_offset)+part+"@plt";
 
-				// find a function 
-				auto func_it=find_if(ALLOF(sccs), [&](const RangeSet_t& s) 
-					{ 
-						return s.begin() -> first == addr;
-					});
-				if(func_it!=sccs.end())
-				{
-					cout<<"Setting function at "<<hex<<addr<<" to name "<<name<<endl;
-					funcNames[*func_it]=name;
-				}
+						// find a function 
+						auto func_it=find_if(ALLOF(sccs), [&](const RangeSet_t& s) 
+							{ 
+								return s.begin() -> first == myAddr;
+							});
+						if(func_it!=sccs.end())
+						{
+							cout<<"Setting function at "<<hex<<myAddr<<" to name "<<name<<endl;
+							funcNames[*func_it]=name;
+						}
+					};
+
+				applyName("part1", addr);
+				applyName("part2", addr+6);
 			};
 
 			const auto pltSec=exeio.sections[pltSecName];
@@ -276,18 +297,32 @@ class CreateFunctions_t
 			const auto plt_skip=16;
 			const auto plt_header_size=12;
 			const auto plt_entry_size=16;
+			const auto plt_entry_size_first_part=6;
 
 			addRange(startAddr,plt_header_size);
-			auto dynsymEntryIndex=1;
+			auto dynsymEntryIndex=0;
 			for(auto i=startAddr+plt_skip; i<endAddr; i+=plt_skip) 
 			{
-				addRange(i,plt_entry_size);
+				addRange(i,plt_entry_size_first_part);
+				addRange(i+6,plt_entry_size-plt_entry_size_first_part);
 				addName(i,dynsymEntryIndex++);
 			}
 
+
+			// deal with gotPlt Section.
 			const auto gotPltSec=exeio.sections[endSecName];
-			if(gotPltSec!=NULL)
-				addRange(gotPltSec->get_address(),gotPltSec->get_size());
+			if(gotPltSec==NULL)
+				return;
+
+			// 64-bit, at least, entries are 6 bytes, with 2 bytes of padding.
+			const auto gotPltEntrySize=8;
+			const auto gotPltRangeSize=6;
+			const auto gotPltStartAddr=gotPltSec->get_address();
+
+			for(auto i=0U; i + gotPltRangeSize < (size_t)gotPltSec->get_size(); i+=gotPltEntrySize)
+			{
+				addRange(gotPltStartAddr+i,gotPltRangeSize);
+			}
 	
 		}
 
