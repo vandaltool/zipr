@@ -17,17 +17,10 @@
 #configs="killdeads_strata"
 #configs="ibtl ibtl_p1"
 #configs="zipr scfi p1"
-#configs="rida"
-configs="rida_p1 rida_scfi rida_p1_scfi"
+configs="zafl zafl_ida"
 
 # specify programs to test
-#orig_progs="grep ncal bzip2 du ls objdump readelf sort tar touch tcpdump"
-orig_progs="du grep bzip2 ls objdump readelf sort tar touch"
-orig_progs="ncal"
-#orig_progs="gedit"
-#orig_progs="gimp"
-#orig_progs="openssl"
-#orig_progs="tcpdump sort touch"
+orig_progs="grep ncal bzip2 du ls objdump readelf sort tar touch tcpdump"
 build_only=0
 
 export IB_VERBOSE=1
@@ -38,6 +31,7 @@ do
 echo "----------------------------------"
 echo "TEST CONFIGURATION: $config"
 progs_pass=""
+progs_pass_peasoup=""
 progs_fail=""
 progs_fail_peasoup=""
 
@@ -64,14 +58,23 @@ do
 		rm $protected
 	fi
 
-	echo "TEST ($config) ${prog}: Protecting..."
 
 	progpath=$(which $prog)
+	if [ ! -e $progpath ]; then
+		echo "$prog not found: skipping..."
+		continue
+	fi
+
+	echo "TEST ($config) ${prog}: Protecting..."
+
 	progpath=$(readlink -f $progpath)
         
 	case $config in
 		zafl)
-			zafl.sh $progpath $protected --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+			zafl.sh $progpath $protected --rida --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
+		zafl_ida)
+			zafl.sh $progpath $protected --ida --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 		;;
 		zipr)
 			$PSZ $progpath $protected --tempdir $temp_dir > test_${prog}.ps.log 2>&1
@@ -152,9 +155,9 @@ do
 
 	if [ ! $? -eq 0 ]; then
 		echo "TEST ($config) ${prog}: FAILED to peasoupify"
-		progs_fail_peasoup="$progs_fail_peasoup $prog"
+		progs_fail_peasoup="$progs_fail_peasoup $prog.$config"
     else
-		progs_pass_peasoup="$progs_pass_peasoup $prog"
+		progs_pass_peasoup="$progs_pass_peasoup $prog.$config"
 	fi
 
 	if [ $build_only -eq 1 ]; then
@@ -165,18 +168,19 @@ do
 	timeout 300 ../$prog/test_script.sh $progpath ./$protected > test_${prog}.log 2>&1
 	if [ $? -eq 0 ]; then
 		echo "TEST ($config) ${prog}: PASS"
-		progs_pass="$progs_pass $prog"
+		progs_pass="$progs_pass $prog.$config"
 	else
 		echo "TEST ($config) ${prog}: FAIL"
-		progs_fail="$progs_fail $prog"
+		progs_fail="$progs_fail $prog.$config"
 	fi
 done
 
+echo
 echo "================================================"
-echo "TEST SUMMARY PASS ($config): $progs_pass"
-echo "TEST SUMMARY PASS ($config) (ps_analyze): $progs_pass_peasoup"
-echo "TEST SUMMARY FAIL ($config): $progs_fail"
-echo "TEST SUMMARY FAIL ($config) (ps_analyze): $progs_fail_peasoup"
+echo "TEST SUMMARY PASS (build): $progs_pass_peasoup"
+echo "TEST SUMMARY PASS (functional): $progs_pass"
+echo "TEST SUMMARY FAIL (build): $progs_fail_peasoup"
+echo "TEST SUMMARY FAIL (functional): $progs_fail"
 
 popd
 
