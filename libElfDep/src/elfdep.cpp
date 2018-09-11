@@ -250,6 +250,9 @@ DataScoop_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf
 	auto relplt_scoop=find_scoop(firp,".rel.dyn coalesced w/.rel.plt");
 	auto relscoop=relaplt_scoop!=NULL ?  relaplt_scoop : relplt_scoop;
 
+	if (!relscoop) 
+		throw std::logic_error("Cannot find rela.plt or rel.plt. Did you remember to use move_globals with --elf_tables?");
+
 	// add 0-init'd pointer to table
 	string new_got_entry_str(ptrsize,0);	 // zero-init a pointer-sized string
 	//auto dl_got_entry_pos=add_to_scoop(new_got_entry_str,gotplt_scoop);
