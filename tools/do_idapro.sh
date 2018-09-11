@@ -1,4 +1,4 @@
-#!/bin/bash  -x
+#!/bin/bash 
 
 analyze_file()
 {
@@ -41,6 +41,13 @@ analyze_file()
 		echo MEDS Failed to produce successful exit code for $file.
 		exit 2 
 	fi
+
+	funcs=$(grep -e "FUNC GLOBAL" -e "FUNC LOCAL" a.ncexe.annot |wc -l)
+	namedFuncs=$(grep -e "FUNC GLOBAL" -e "FUNC LOCAL" a.ncexe.annot |grep -v "sub_" |wc -l )
+	unnamedFuncs=$(grep -e "FUNC GLOBAL" -e "FUNC LOCAL" a.ncexe.annot |grep "sub_" |wc -l )
+	echo "#ATTRIBUTE functions=$funcs"
+	echo "#ATTRIBUTE named_functions=$namedFuncs"
+	echo "#ATTRIBUTE unnamed_functions=$unnamedFuncs"
 
 }
 
