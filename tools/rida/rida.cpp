@@ -90,6 +90,14 @@ class CreateFunctions_t
 		template<class T_Sym>
 		void nameFunctions()
 		{
+			// do symbol names.
+			parseSyms<T_Sym>(".dynsym", ".dynstr");
+			parseSyms<T_Sym>(".symtab", ".strtab");
+
+			auto namedFunctions=0U;
+			auto unnamedFunctions=0U;
+			auto functions=0U;
+
 			// set default names 
 			for(const auto &func: sccs)
 			{
@@ -97,13 +105,23 @@ class CreateFunctions_t
 				const auto first_range=*(func.begin());
 				const auto startAddr=first_range.first;
 				const auto name=string()+"sub_"+to_string(startAddr);
+				functions++;
 				if(funcNames[func]=="")	// destructive test OK, next line sets if empty.
+				{
+					unnamedFunctions++;
 					funcNames[func]=name;
+				}
+				else
+				{
+					namedFunctions++;
+				}
+					
 			}
+
+			cout<<"#ATTRIBUTE functions="<<dec<<functions<<endl;
+			cout<<"#ATTRIBUTE named_functions="<<dec<<namedFunctions<<endl;
+			cout<<"#ATTRIBUTE uunamed_functions="<<dec<<unnamedFunctions<<endl;
 	
-			// do symbol names.
-			parseSyms<T_Sym>(".dynsym", ".dynstr");
-			parseSyms<T_Sym>(".symtab", ".strtab");
 		}
 
 		template<class T_Sym>
@@ -307,6 +325,7 @@ class CreateFunctions_t
 				addRange(i+6,plt_entry_size-plt_entry_size_first_part);
 				addName(i,dynsymEntryIndex++);
 			}
+			cout<<"#ATTRIBUTE plt_entries="<<dec<<dynsymEntryIndex<<endl;
 
 
 			// deal with gotPlt Section.
@@ -318,11 +337,14 @@ class CreateFunctions_t
 			const auto gotPltEntrySize=8;
 			const auto gotPltRangeSize=6;
 			const auto gotPltStartAddr=gotPltSec->get_address();
+			auto gotpltEntries=0U;
 
 			for(auto i=0U; i + gotPltRangeSize < (size_t)gotPltSec->get_size(); i+=gotPltEntrySize)
 			{
 				addRange(gotPltStartAddr+i,gotPltRangeSize);
+				gotpltEntries++;
 			}
+			cout<<"#ATTRIBUTE gotplt_entries="<<dec<<gotpltEntries<<endl;
 	
 		}
 
