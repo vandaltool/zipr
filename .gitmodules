@@ -1,5 +1,4 @@
 [submodule "libcapstone"]
-	shallow = true
 	path = libcapstone
 	url = https://github.com/aquynh/capstone.git
 [submodule "libehp"]
