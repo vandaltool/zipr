@@ -17,10 +17,11 @@
 #configs="killdeads_strata"
 #configs="ibtl ibtl_p1"
 #configs="zipr scfi p1"
-configs="kill_deads zafl zafl_ida rida_scfi"
+configs="zafl_ida"
 
 # specify programs to test
-orig_progs="grep du ncal bzip2 ls objdump readelf sort tar touch tcpdump"
+orig_progs="bzip2 grep du ncal ls objdump readelf sort tar touch tcpdump"
+orig_progs="tcpdump"
 build_only=0
 
 export IB_VERBOSE=1
