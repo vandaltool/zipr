@@ -1167,7 +1167,7 @@ I6	   0xdd25 <+53>:	movsxd rsi,DWORD PTR [rcx+rsi*4]
 I7	   0xdd29 <+57>:	add    rsi,rcx
 I8	   0xdd2c <+60>:	jmp    rsi
 
-Note: Here the operands of the add are reversed, so lookup code was not finding I5 where it was expected.
+Note: Here the operands of the add are reversed, so lookup code was not finding I5 where it was expected.c
 
 
 #endif
@@ -1376,7 +1376,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 			//Disassemble(I1,d1);
 			DecodedInstruction_t d1(I1);
 			table_size = d1.getImmediate()/*Instruction.Immediat*/;
-			if (table_size <= 0)
+			if (table_size <= 2)
 			{
 				// set table_size to be very large, so we can still do pinning appropriately
 				cout<<"pic64: found I1 ('"<<d1.getDisassembly()/*CompleteInstr*/<<"'), but could not find size of switch table"<<endl;
