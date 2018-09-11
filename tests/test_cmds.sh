@@ -17,7 +17,7 @@
 #configs="killdeads_strata"
 #configs="ibtl ibtl_p1"
 #configs="zipr scfi p1"
-configs="zafl_ida"
+configs="zafl_ida_nostars zafl_ida"
 
 # specify programs to test
 orig_progs="bzip2 grep du ncal ls objdump readelf sort tar touch tcpdump"
@@ -76,6 +76,9 @@ do
 		;;
 		zafl_ida)
 			zafl.sh $progpath $protected --ida --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
+		zafl_ida_nostars)
+			zafl.sh $progpath $protected --ida --no-stars --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 		;;
 		zipr)
 			$PSZ $progpath $protected --tempdir $temp_dir > test_${prog}.ps.log 2>&1
