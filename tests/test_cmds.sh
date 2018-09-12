@@ -17,6 +17,7 @@
 #configs="killdeads_strata"
 #configs="ibtl ibtl_p1"
 #configs="zipr scfi p1"
+configs="zafl_ida zafl_rida zafl_ida_nostars zafl_rida_nostars"
 configs="zafl"
 
 # specify programs to test
@@ -75,6 +76,9 @@ do
 		;;
 		zafl_rida)
 			zafl.sh $progpath $protected --rida --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
+		zafl_rida_nostars)
+			zafl.sh $progpath $protected --rida --no-stars --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 		;;
 		zafl_ida)
 			zafl.sh $progpath $protected --ida --tempdir $temp_dir > test_${prog}.ps.log 2>&1
