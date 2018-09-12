@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <assert.h>
 #include <set>
 #include <algorithm>
@@ -104,7 +105,10 @@ class CreateFunctions_t
 				assert(func.begin() != func.end());
 				const auto first_range=*(func.begin());
 				const auto startAddr=first_range.first;
-				const auto name=string()+"sub_"+to_string(startAddr);
+				std::stringstream ss;
+				ss << "sub_" << hex << startAddr;
+				const auto name = ss.str();
+
 				functions++;
 				if(funcNames[func]=="")	// destructive test OK, next line sets if empty.
 				{
@@ -399,7 +403,7 @@ class CreateFunctions_t
 				const auto max=*prev(scc.end());
 				const auto size=max.second-min.first;
 		
-				cout<<"Function "<<dec<<i++<<" is "<<hex<<min.first<<" "<<dec<<max.second-min.first<<endl;
+				cout<<"Function "<<dec<<i++<<" (" <<funcNames[scc] << ") is "<<hex<<min.first<<" "<<dec<<max.second-min.first<<endl;
 				const auto usefp=getUseFp(scc);
 
 				outfile<<hex<<"\t"<<min.first<<"\t"<<dec<<size<<"\tFUNC GLOBAL\t"<<funcNames[scc]<<" "<< usefp << endl;
