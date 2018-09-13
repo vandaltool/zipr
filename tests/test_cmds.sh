@@ -18,6 +18,8 @@
 #configs="ibtl ibtl_p1"
 #configs="zipr scfi p1"
 configs="zafl_rida"
+configs="zafl_ida zafl_rida zafl_ida_nostars zafl_rida_nostars"
+configs="zafl"
 
 # specify programs to test
 orig_progs="bzip2 grep du ncal ls objdump readelf sort tar touch tcpdump"
@@ -71,7 +73,13 @@ do
         
 	case $config in
 		zafl)
+			zafl.sh $progpath $protected --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
+		zafl_rida)
 			zafl.sh $progpath $protected --rida --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
+		zafl_rida_nostars)
+			zafl.sh $progpath $protected --rida --no-stars --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 		;;
 		zafl_ida)
 			zafl.sh $progpath $protected --ida --tempdir $temp_dir > test_${prog}.ps.log 2>&1
