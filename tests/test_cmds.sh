@@ -109,7 +109,10 @@ do
 			$PSZ $progpath $protected --step p1transform=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 		;;
 		mg)
-			$PSZ $progpath $protected --step move_globals=on --step-option move_globals:--aggressive --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+			$PSZ $progpath $protected --step move_globals=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
+		mg_elfonly)
+			$PSZ $progpath $protected --step move_globals=on -o move_globals:--elftables-only --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 		;;
 		mgx)
 			$PSZ $progpath $protected --step move_globals=on --step-option move_globals:--aggressive --step xor_globals=on  --tempdir $temp_dir > test_${prog}.ps.log 2>&1
