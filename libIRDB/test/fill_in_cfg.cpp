@@ -18,32 +18,19 @@
  *
  */
 
-#include <libIRDB-core.hpp>
+#include "fill_in_cfg.hpp"
 #include <iostream>
 #include <fstream>
-#include <stdlib.h>
 #include <string.h>
-#include <map>
 #include <assert.h>
 #include <sys/mman.h>
 #include <ctype.h>
-#include <exeio.h>
 #include "elfio/elfio.hpp"
 #include "split_eh_frame.hpp"
-
-int odd_target_count=0;
-int bad_target_count=0;
-int bad_fallthrough_count=0;
-EXEIO::exeio    *elfiop=NULL;
 
 using namespace libIRDB;
 using namespace std;
 using namespace EXEIO;
-
-set< pair<db_id_t,virtual_offset_t> > missed_instructions;
-auto failed_target_count=0U;
-
-pqxxDB_t pqxx_interface;
 
 void populate_instruction_map
 	(
@@ -202,24 +189,8 @@ void set_target
 
 static File_t* find_file(FileIR_t* firp, db_id_t fileid)
 {
-#if 0
-	set<File_t*> &files=firp->GetFiles();
-
-	for(
-		set<File_t*>::iterator it=files.begin();
-		it!=files.end();
-		++it
-	   )
-	{
-		File_t* thefile=*it;
-		if(thefile->GetBaseID()==fileid)
-			return thefile;
-	}
-	return NULL;
-#endif
 	assert(firp->GetFile()->GetBaseID()==fileid);
 	return firp->GetFile();
-
 }
 
 
@@ -609,65 +580,50 @@ void fill_in_landing_pads(FileIR_t *firp)
 	
 }
 
-void parse_args(int argc, char* argv[], bool &fix_landing_pads)
+PopulateCFG ParseAndConstruct
+        (
+        int argc, 
+        char* argv[], 
+        pqxxDB_t the_pqxx_interface,
+        list<FileIR_t *> the_firp_list
+        )
 {
-	for (int i = 0; i < argc; ++i)
-	{
-		if (strcmp("--fix-landing-pads", argv[i]) == 0)
-		{
-			fix_landing_pads = true;
-		}
-		else if (strcmp("--no-fix-landing-pads", argv[i]) == 0)
-		{
-			fix_landing_pads = false;
-		}
-	}
+    bool p_fix_landing_pads = true; // default
+    
+    if(argc<2)
+    {
+            cerr<<"Usage: fill_in_cfg <id> [--fix-landing-pads | --no-fix-landing-pads]"<<endl;
+            exit(-1);
+    }
+    
+    for (int i = 0; i < argc; ++i)
+    {
+            if (strcmp("--fix-landing-pads", argv[i]) == 0)
+            {
+                    p_fix_landing_pads = true;
+            }
+            else if (strcmp("--no-fix-landing-pads", argv[i]) == 0)
+            {
+                    p_fix_landing_pads = false;
+            }
+    }
+    
+    return PopulateCFG(p_fix_landing_pads, the_pqxx_interface, the_firp_list);
 }
 
-int main(int argc, char* argv[])
+bool execute()
 {
-	bool fix_landing_pads = true; // default
-
-	if(argc<2)
+    try 
 	{
-		cerr<<"Usage: fill_in_cfg <id> [--fix-landing-pads | --no-fix-landing-pads]"<<endl;
-		exit(-1);
-	}
-
-	parse_args(argc, argv, fix_landing_pads);
-
-	cout<<"fix_landing_pads="<<fix_landing_pads<<endl;
-
-	VariantID_t *pidp=NULL;
-	FileIR_t * firp=NULL;
-
-	try 
-	{
-		/* setup the interface to the sql server */
-		BaseObj_t::SetInterface(&pqxx_interface);
-
-		pidp=new VariantID_t(atoi(argv[1]));
-
-		assert(pidp->IsRegistered()==true);
-
-		cout<<"New Variant, after reading registration, is: "<<*pidp << endl;
-
-		for(set<File_t*>::iterator it=pidp->GetFiles().begin();
-			it!=pidp->GetFiles().end();
-			++it
-		    )
+		assert(pqxx_interface);
+                
+		for( FileIR_t* firp : firp_list)
 		{
-			File_t* this_file=*it;
-			assert(this_file);
-			cout<<"Filling in cfg for "<<this_file->GetURL()<<endl;
-
-
-			// read the db  
-			firp=new FileIR_t(*pidp, this_file);
 			assert(firp);
+                        cout<<"Filling in cfg for "<<firp->GetFile()->GetURL()<<endl;
 
 			/* get the OID of the file */
-			int elfoid=this_file->GetELFOID();
+			int elfoid=firp->GetFile()->GetELFOID();
 
 			pqxx::largeobject lo(elfoid);
                 	lo.to_file(pqxx_interface.GetTransaction(),"readeh_tmp_file.exe");
@@ -675,8 +631,6 @@ int main(int argc, char* argv[])
 			elfiop=new EXEIO::exeio;
 			assert(elfiop);
 			elfiop->load(string("readeh_tmp_file.exe"));
-			//EXEIO::dump::header(cout,*elfiop);
-			//EXEIO::dump::section_headers(cout,*elfiop);
 
 			fill_in_cfg(firp);
 			fill_in_scoops(firp);
@@ -686,28 +640,16 @@ int main(int argc, char* argv[])
 				fill_in_landing_pads(firp);
 			}
 
-			// write the DB back and commit our changes 
-			firp->WriteToDB();
-			delete firp;
 			delete elfiop;
 			firp=NULL;
 			elfiop=NULL;
-
 		}
-
-
-		pqxx_interface.Commit();
-
 	}
 	catch (DatabaseError_t pnide)
 	{
 		cout<<"Unexpected database error: "<<pnide<<endl;
-		exit(-1);
+		return false;
         }
-
-	assert(pidp);
-
-	delete pidp;
-	pidp=NULL;
-	return 0;
+    
+    return true;
 }
