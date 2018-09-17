@@ -62,8 +62,8 @@ do
 
 
 	progpath=$(which $prog)
-	if [ ! -e $progpath ]; then
-		echo "$prog not found: skipping..."
+	if [ "$progpath" = "" ]; then
+		echo "TEST: Original binary ($prog) not found: skipping..."
 		continue
 	fi
 
