@@ -75,6 +75,9 @@ do
 		zafl)
 			zafl.sh $progpath $protected --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 		;;
+		zafl0)
+			ZAFL_LIMIT_END=0 zafl.sh $progpath $protected --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
 		zafl_rida)
 			zafl.sh $progpath $protected --rida --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 		;;
