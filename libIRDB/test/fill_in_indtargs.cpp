@@ -776,7 +776,7 @@ I5:   0x809900e <text_handler+51>: jmp    ecx
 
         Instruction_t* I5=insn;
         Instruction_t* I4=NULL;
-        Instruction_t* I3=NULL;
+//        Instruction_t* I3=NULL;
         // check if I5 is a jump
         if(strstr(disasm.getMnemonic().c_str() /*disasm.Instruction.Mnemonic*/, "jmp")==NULL)
 		return;
@@ -796,27 +796,33 @@ I5:   0x809900e <text_handler+51>: jmp    ecx
 	if(!backup_until("add", I4, I5))
 		return;
 
-	// backup and find the instruction that's an movsxd before I7
-	if(!backup_until("lea", I3, I4))
+	const auto d4=DecodedInstruction_t(I4);
+	if(!d4.hasOperand(1) || !d4.getOperand(1).isMemory())
 		return;
+
+	// found that sometimes I3 is set a different way, 
+	// and that it's perfectly reasonable to just use I4's offsets.
+	// backup and find the instruction that's an movsxd before I7
+//	if(!backup_until("lea", I3, I4))
+//		return;
 
 	// grab the offset out of the lea.
 	//DISASM d2;
 	//Disassemble(I3,d2);
-	DecodedInstruction_t d2(I3);
+	//DecodedInstruction_t d2(I3);
 
 	// get the offset from the thunk
-	virtual_offset_t table_offset=d2.getAddress(); // d2.Instruction.AddrValue;
+	virtual_offset_t table_offset=d4.getOperand(1).getMemoryDisplacement(); //d2.getAddress(); // d2.Instruction.AddrValue;
 	if(table_offset==0)
 		return;
 
-cout<<hex<<"Found (type2) switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< " with table_offset="<<table_offset<<endl;
+cout<<hex<<"Found (type2) switch dispatch at "<<I5->GetAddress()->GetVirtualOffset()<< " with table_offset="<<table_offset<<endl;
 		
 	/* iterate over all thunk_bases/module_starts */
 	for(set<virtual_offset_t>::iterator it=thunk_bases.begin(); it!=thunk_bases.end(); ++it)
 	{
-		//virtual_offset_t thunk_base=*it;
-		virtual_offset_t table_base=*it+table_offset;
+		virtual_offset_t thunk_base=*it;
+		virtual_offset_t table_base=(*it)+table_offset;
 
 		// find the section with the data table
         	EXEIO::section *pSec=find_section(table_base,elfiop);
@@ -840,7 +846,7 @@ cout<<hex<<"Found (type2) switch dispatch at "<<I3->GetAddress()->GetVirtualOffs
                 	virtual_offset_t table_entry=*table_entry_ptr;
 
 // cout<<"Checking target base:" << std::hex << table_base+table_entry << ", " << table_base+i*4<<endl;
-			if(!is_possible_target(table_base+table_entry,table_base+i*4))
+			if(!is_possible_target(table_base+table_entry,table_base+i*4) && !is_possible_target(thunk_base+table_entry,table_base+i*4))
 				break;	
 		}
 		/* did we finish the loop or break out? */
@@ -858,8 +864,10 @@ cout<<hex<<"Found (type2) switch dispatch at "<<I3->GetAddress()->GetVirtualOffs
                 		virtual_offset_t table_entry=*table_entry_ptr;
 	
 				if(getenv("IB_VERBOSE")!=0)
-					cout<<"Found switch table (thunk-relative) entry["<<dec<<i<<"], "<<hex<<table_base+table_entry<<endl;
-				if(!possible_target(table_base+table_entry,table_base+i*4,prov))
+					cout<<"Found switch table (thunk-relative) entry["<<dec<<i<<"], "<<hex<<table_base+table_entry<<" or "<<thunk_base+table_entry<<endl;
+				auto t1=possible_target(table_base+table_entry,table_base+i*4,prov);
+				auto t2=possible_target(thunk_base+table_entry,table_base+i*4,prov);
+				if(!t1 && !t2)
 					break;
 			}
 		}
