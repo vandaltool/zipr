@@ -213,6 +213,10 @@ string DecodedOperandCapstone_t::getString() const
 
 				if (op.mem.disp != 0)
 					ret_val+=" + "+ to_string(op.mem.disp);
+
+				if(ret_val=="")
+					return "0";
+				
 				return ret_val;
 			}
 			assert(0);
