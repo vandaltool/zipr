@@ -21,7 +21,8 @@ DecodedInstructionCapstone_t::CapstoneHandle_t::CapstoneHandle_t(FileIR_t* firp)
 
 	const auto width=FileIR_t::GetArchitectureBitWidth();
 	const auto mode = (width==64) ? CS_MODE_64: CS_MODE_32;
-	auto err = cs_open(CS_ARCH_X86, mode,  &handle);
+	static_assert(sizeof(csh)==sizeof(handle), "Capstone handle size is unexpected.  Has CS changed?");
+	auto err = cs_open(CS_ARCH_X86, mode,  (csh*)&handle);
 
 	if (err)
 	{
