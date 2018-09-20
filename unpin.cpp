@@ -449,6 +449,7 @@ void Unpin_t::DoUpdateForInstructions()
 				const auto the_arg_it=find_if(ALLOF(operands),[](const DecodedOperand_t& op){ return op.isMemory() && op.getString()!=""; });
 				DataScoop_t* wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
 				assert(wrt);
+				assert(the_arg_it!=operands.end());
 				const auto &the_arg=*the_arg_it;
 				virtual_offset_t rel_addr1=the_arg.getMemoryDisplacement(); // ->Memory.Displacement;
 				//virtual_offset_t rel_addr1=the_arg->Memory.Displacement;
