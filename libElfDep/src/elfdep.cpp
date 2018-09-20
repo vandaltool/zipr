@@ -304,7 +304,9 @@ DataScoop_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf
 	// create the new reloc 
 	T_Elf_Rela dl_rel;
 	memset(&dl_rel,0,sizeof(dl_rel));
-	dl_rel.r_info= ((dl_pos/sizeof(T_Elf_Sym))<<rela_shift) | reloc_type;
+	auto r_info_tmp=(decltype(dl_rel.r_info))dl_pos;
+	dl_rel.r_info= ((r_info_tmp/sizeof(T_Elf_Sym)) <<rela_shift ) | reloc_type;
+
 	string dl_rel_str((const char*)&dl_rel, sizeof(dl_rel));
 
 // need to fixup relocs
