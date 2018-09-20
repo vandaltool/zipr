@@ -59,4 +59,13 @@ lib=myenv.SharedLibrary("push64_relocs", Split(files))
 install=myenv.Install("$ZIPR_INSTALL/plugins/", lib)
 Default(install)
 
+pedi = Command( target = "./testoutput",
+                source = "./SConscript",
+                action = "cd "+os.environ['ZIPR_INSTALL']+" ; " +os.environ['PEDI_HOME']+"/pedi -m manifest.txt ; cd -" )
+
+Depends (pedi, install)
+Default( pedi )
+
+
+
 
