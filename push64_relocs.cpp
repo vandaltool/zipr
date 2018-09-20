@@ -155,15 +155,15 @@ void Push64Relocs_t::HandlePush64Relocation(Instruction_t *insn, Relocation_t *r
 	 */
 // this is OK, but could we consider the insn->Assemble() method for readability? 
 	databits = "";
-	databits.resize(8);
-	databits[0]=0x48;
-	databits[1]=0x81;
-	databits[2]=0x2c;	
-	databits[3]=0x24;
-	databits[4]=0xff;
-	databits[5]=0xff;
-	databits[6]=0xff;
-	databits[7]=0xff;
+	if(m_firp.GetArchitectureBitWidth()==64)
+		databits+=(char)0x48;	 // rex prefix to convert esp->rsp
+	databits+=(char)0x81;
+	databits+=(char)0x2c;	
+	databits+=(char)0x24;
+	databits+=(char)0xff;
+	databits+=(char)0xff;
+	databits+=(char)0xff;
+	databits+=(char)0xff;
 	add_insn->SetDataBits(databits);
 
 	/*
@@ -301,12 +301,13 @@ void Push64Relocs_t::UpdatePush64Adds()
 			     << " as the updated offset." << endl
 					 << "Using 0x" << std::hex << add_offset 
 					 << " as the base offset." << endl;
+			const auto rex_skip=m_firp.GetArchitectureBitWidth()==64 ? 1 : 0;
 			if (change_to_add)
 			{
 				char add = (char)0x04;
-				m_memory_space.PlopBytes(add_addr+2, (const char*)&add, 1);
+				m_memory_space.PlopBytes(add_addr+rex_skip+1, (const char*)&add, 1);
 			}
-			m_memory_space.PlopBytes(add_addr+4, (const char*)&relocated_value, 4);
+			m_memory_space.PlopBytes(add_addr+rex_skip+3, (const char*)&relocated_value, 4);
 		}
 		// handle basic pcrel relocations.
 		// zipr_unpin_plugin handles pcrel + WRT
