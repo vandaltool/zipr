@@ -34,7 +34,7 @@ if 'build_tools' not in myenv or myenv['build_tools'] is None or int(myenv['buil
 	Default(install)
 	installed=installed+install
 
-	pgm=myenv.Program("fill_in_cfg.exe",  split_eh_frame+Split("fill_in_cfg.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
+	pgm=myenv.Program("fill_in_cfg.exe",  split_eh_frame+Split("fill_in_cfg_driver.cpp fill_in_cfg.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
 	install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
 	Default(install)
 	installed=installed+install

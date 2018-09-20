@@ -32,7 +32,7 @@ using namespace libIRDB;
 using namespace std;
 using namespace EXEIO;
 
-void populate_instruction_map
+void PopulateCFG::populate_instruction_map
 	(
 		map< pair<db_id_t,virtual_offset_t>, Instruction_t*> &insnMap,
 		FileIR_t *firp
@@ -61,7 +61,7 @@ void populate_instruction_map
 
 }
 
-void set_fallthrough
+void PopulateCFG::set_fallthrough
 	(
 	map< pair<db_id_t,virtual_offset_t>, Instruction_t*> &insnMap,
 	DecodedInstruction_t *disasm, Instruction_t *insn, FileIR_t *firp
@@ -112,7 +112,7 @@ void set_fallthrough
 }
 
 
-void set_target
+void PopulateCFG::set_target
 	(
 	map< pair<db_id_t,virtual_offset_t>, Instruction_t*> &insnMap,
 	DecodedInstruction_t *disasm, Instruction_t *insn, FileIR_t *firp
@@ -187,14 +187,14 @@ void set_target
 	}
 }
 
-static File_t* find_file(FileIR_t* firp, db_id_t fileid)
+File_t* PopulateCFG::find_file(FileIR_t* firp, db_id_t fileid)
 {
 	assert(firp->GetFile()->GetBaseID()==fileid);
 	return firp->GetFile();
 }
 
 
-void add_new_instructions(FileIR_t *firp)
+void PopulateCFG::add_new_instructions(FileIR_t *firp)
 {
 	int found_instructions=0;
 	for(
@@ -324,7 +324,7 @@ void add_new_instructions(FileIR_t *firp)
 
 }
 
-void fill_in_cfg(FileIR_t *firp)
+void PopulateCFG::fill_in_cfg(FileIR_t *firp)
 {
 	int round=0;
 	
@@ -406,7 +406,7 @@ void fill_in_cfg(FileIR_t *firp)
 
 }
 
-static bool is_in_relro_segment(const int secndx)
+bool PopulateCFG::is_in_relro_segment(const int secndx)
 {
 	ELFIO::elfio *real_elfiop = reinterpret_cast<ELFIO::elfio*>(elfiop->get_elfio()); 
 	if(!real_elfiop)
@@ -448,7 +448,7 @@ static bool is_in_relro_segment(const int secndx)
 	return false;
 }
 
-void fill_in_scoops(FileIR_t *firp)
+void PopulateCFG::fill_in_scoops(FileIR_t *firp)
 {
 
 	auto max_base_id=firp->GetMaxBaseID();
@@ -522,7 +522,7 @@ void fill_in_scoops(FileIR_t *firp)
 
 }
 
-void fill_in_landing_pads(FileIR_t *firp)
+void PopulateCFG::fill_in_landing_pads(FileIR_t *firp)
 {
 	const auto eh_frame_rep_ptr = split_eh_frame_t::factory(firp);
 	// eh_frame_rep_ptr->parse(); already parsed now.
@@ -580,11 +580,11 @@ void fill_in_landing_pads(FileIR_t *firp)
 	
 }
 
-PopulateCFG ParseAndConstruct
+PopulateCFG PopulateCFG::Factory
         (
         int argc, 
         char* argv[], 
-        pqxxDB_t the_pqxx_interface,
+        pqxxDB_t* the_pqxx_interface,
         list<FileIR_t *> the_firp_list
         )
 {
@@ -608,15 +608,13 @@ PopulateCFG ParseAndConstruct
             }
     }
     
-    return PopulateCFG(p_fix_landing_pads, the_pqxx_interface, the_firp_list);
+    return PopulateCFG(the_pqxx_interface, the_firp_list, p_fix_landing_pads);
 }
 
-bool execute()
+bool PopulateCFG::execute()
 {
     try 
 	{
-		assert(pqxx_interface);
-                
 		for( FileIR_t* firp : firp_list)
 		{
 			assert(firp);
@@ -626,7 +624,7 @@ bool execute()
 			int elfoid=firp->GetFile()->GetELFOID();
 
 			pqxx::largeobject lo(elfoid);
-                	lo.to_file(pqxx_interface.GetTransaction(),"readeh_tmp_file.exe");
+                	lo.to_file(pqxx_interface->GetTransaction(),"readeh_tmp_file.exe");
 
 			elfiop=new EXEIO::exeio;
 			assert(elfiop);

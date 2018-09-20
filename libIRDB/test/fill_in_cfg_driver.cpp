@@ -22,19 +22,19 @@ int main(int argc, char* argv[])
 		cout<<"New Variant, after reading registration, is: "<<*pidp << endl;
 
                 // setup
-		for(set<File_t*> it : pidp->GetFiles())
+		for(File_t* it : pidp->GetFiles())
 		{
-			File_t* this_file=*it;
+			File_t* this_file=it;
 			assert(this_file);
                         
 			// read the db  
-			firp=new FileIR_t(*pidp, this_file);
+			FileIR_t* firp=new FileIR_t(*pidp, this_file);
 			assert(firp);
                         the_firp_list.push_back(firp);
                 }
                 
                 // fill_in_cfg for all files
-                PopulateCFG fill_in_cfg = PopulateCFG::ParseAndConstruct(argc, argv, the_pqxx_interface, the_firp_list);
+                PopulateCFG fill_in_cfg = PopulateCFG::Factory(argc, argv, &the_pqxx_interface, the_firp_list);
                 
                 bool success = fill_in_cfg.execute();
                 if(!success)
@@ -45,13 +45,13 @@ int main(int argc, char* argv[])
                 
                 // cleanup
                 for(FileIR_t* the_firp : the_firp_list)
+		{
                         assert(the_firp);
                         // write the DB back and commit our changes 
 			the_firp->WriteToDB();
 			delete the_firp;
-			the_firp=NULL;
 		}
-		pqxx_interface.Commit();
+		the_pqxx_interface.Commit();
 	}
 	catch (DatabaseError_t pnide)
 	{
