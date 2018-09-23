@@ -10,6 +10,7 @@ files=  '''
 	insn_preds.cpp
         IBT_Provenance.cpp
 	params.cpp
+	IR_Files.cpp
 	'''
 cpppath=''' 
 	$SECURITY_TRANSFORMS_HOME/include/
