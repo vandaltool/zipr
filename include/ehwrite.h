@@ -28,6 +28,7 @@ class EhWriterImpl_t : public EhWriter_t
 		bool canExtend(const EhProgramListingManip_t &other);
 		void extend(const uint64_t inc_amt, const EhProgramListingManip_t &other);
 		bool isAdvanceDirective(const std::string &s) const;
+		std::string getPrintableString(const std::string &s) const;
 		private:
 		int getMergeIndex(const EhProgramListingManip_t &other);
 

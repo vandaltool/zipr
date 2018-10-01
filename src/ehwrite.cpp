@@ -15,10 +15,11 @@
 #include <fstream>
 #include <elf.h>
 
+#include <zipr_dwarf2.hpp>
+
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
 #include "targ-config.h"
-//#include "beaengine/BeaEngine.h"
 
 using namespace libIRDB;
 using namespace std;
@@ -322,6 +323,301 @@ bool EhWriterImpl_t<ptrsize>::EhProgramListingManip_t::isAdvanceDirective(const 
 
 }
 
+// see https://en.wikipedia.org/wiki/LEB128
+template <int ptrsize>
+static bool read_uleb128
+        ( uint64_t &result,
+        uint32_t& position,
+        const uint8_t* const data,
+        const uint32_t max)
+{
+        result = 0;
+        auto shift = 0;
+        while( position < max )
+        {
+                auto byte = data[position];
+                position++;
+                result |= ( ( byte & 0x7f ) << shift);
+                if ( ( byte & 0x80) == 0)
+                        break;
+                shift += 7;
+        }
+        return ( position > max );
+
+}
+
+// see https://en.wikipedia.org/wiki/LEB128
+template <int ptrsize>
+static bool read_sleb128 (
+        int64_t &result,
+        uint32_t & position,
+        const uint8_t* const data,
+        const uint32_t max)
+{
+        result = 0;
+        auto shift = 0;
+        auto size = 64;  // number of bits in signed integer;
+        auto byte=uint8_t(0);
+        do
+        {
+                byte = data [position];
+                position++;
+                result |= ((byte & 0x7f)<< shift);
+                shift += 7;
+        } while( (byte & 0x80) != 0);
+
+        /* sign bit of byte is second high order bit (0x40) */
+        if ((shift < size) && ( (byte & 0x40) !=0 /* sign bit of byte is set */))
+                /* sign extend */
+                result |= - (1 << shift);
+        return ( position > max );
+
+}
+
+
+
+
+template <int ptrsize>
+static void print_uleb_operand(
+	stringstream &sout,
+        uint32_t pos,
+        const uint8_t* const data,
+        const uint32_t max)
+{
+        auto uleb=uint64_t(0xdeadbeef);
+        read_uleb128<ptrsize>(uleb, pos, data, max);
+        sout<<" "<<dec<<uleb;
+}
+
+template <int ptrsize>
+static void print_sleb_operand(
+	stringstream &sout,
+        uint32_t pos,
+        const uint8_t* const data,
+        const uint32_t max)
+{
+        auto leb=int64_t(0xdeadbeef);
+        read_sleb128<ptrsize>(leb, pos, data, max);
+        sout<<" "<<dec<<leb;
+}
+
+
+
+template <int ptrsize>
+string EhWriterImpl_t<ptrsize>::EhProgramListingManip_t::getPrintableString(const string &s) const
+{
+
+	stringstream sout;
+	// make sure uint8_t is an unsigned char.	
+	static_assert(std::is_same<unsigned char, uint8_t>::value, "uint8_t is not unsigned char");
+
+	auto data=s;
+	auto opcode=(uint8_t)data[0];
+	auto opcode_upper2=(uint8_t)(opcode >> 6);
+	auto opcode_lower6=(uint8_t)(opcode & (0x3f));
+	auto pos=uint32_t(1);
+	auto max=data.size();
+
+	switch(opcode_upper2)
+	{
+		case 1:
+		{
+			// case DW_CFA_advance_loc:
+			sout<<"				cfa_advance_loc "<<dec<<+opcode_lower6<<" * caf";
+			break;
+		}
+		case 2:
+		{
+			uint64_t uleb=0;
+			sout<<"				cfa_offset "; 
+			if(read_uleb128<ptrsize>(uleb, pos, (const uint8_t* const)data.data(), max))
+				break;
+			// case DW_CFA_offset:
+			sout <<dec<<uleb;
+			break;
+		}
+		case 3:
+		{
+			// case DW_CFA_restore (register #):
+			sout<<"				cfa_restore";
+			break;
+		}
+		case 0:
+		{
+			switch(opcode_lower6)
+			{
+			
+				case DW_CFA_nop:
+					sout<<"				nop" ;
+					break;
+				case DW_CFA_remember_state:
+					sout<<"				remember_state" ;
+					break;
+				case DW_CFA_restore_state:
+					sout<<"				restore_state" ;
+					break;
+
+				// takes single uleb128
+				case DW_CFA_undefined:
+					sout<<"				undefined" ;
+					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max); 
+					break;
+		
+				case DW_CFA_same_value:
+					sout<<"				same_value ";
+					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max); 
+					break;
+				case DW_CFA_restore_extended:
+					sout<<"				restore_extended ";
+					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max); 
+					break;
+				case DW_CFA_def_cfa_register:
+					sout<<"				def_cfa_register ";
+					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max); 
+					break;
+				case DW_CFA_GNU_args_size:
+					sout<<"				GNU_arg_size ";
+					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max); 
+					break;
+				case DW_CFA_def_cfa_offset:
+					sout<<"				def_cfa_offset "; 
+					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max); 
+					break;
+
+				case DW_CFA_set_loc:
+				{
+					auto arg=uintptr_t(0xDEADBEEF);
+					switch(ptrsize)
+					{
+						case 4:
+							arg=*(uint32_t*)&data.data()[pos]; break;
+						case 8:
+							arg=*(uint64_t*)&data.data()[pos]; break;
+						default: 
+							assert(0);
+					}
+					sout<<"				set_loc "<<hex<<arg;
+					break;
+				}
+				case DW_CFA_advance_loc1:
+				{
+					auto loc=*(uint8_t*)(&data.data()[pos]);
+					sout<<"				advance_loc1 "<<+loc<<" * caf " ;
+					break;
+				}
+
+				case DW_CFA_advance_loc2:
+				{
+					auto loc=*(uint16_t*)(&data.data()[pos]);
+					sout<<"				advance_loc2 "<<+loc<<" * caf " ;
+					break;
+				}
+
+				case DW_CFA_advance_loc4:
+				{
+					auto loc=*(uint32_t*)(&data.data()[pos]);
+					sout<<"				advance_loc4 "<<+loc<<" * caf " ;
+					break;
+				}
+				case DW_CFA_offset_extended:
+					sout<<"				offset_extended ";
+					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max);
+					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max);
+					break;
+				case DW_CFA_register:
+					sout<<"				register ";
+					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max);
+					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max);
+					break;
+				case DW_CFA_def_cfa:
+					sout<<"				def_cfa ";
+					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max);
+					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max);
+					break;
+				case DW_CFA_def_cfa_sf:
+					sout<<"				def_cfa_sf ";
+					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max);
+					print_sleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max);
+					break;
+
+				case DW_CFA_def_cfa_expression:
+				{
+					auto uleb=uint64_t(0);
+					sout<<"				def_cfa_expression "; 
+					if(read_uleb128<ptrsize>(uleb, pos, (const uint8_t* const)data.data(), max))
+						break;
+					sout <<dec<<uleb;
+					pos+=uleb;		// doing this old school for now, as we aren't printing the expression.
+					sout <<" (not printing expression)";
+					break;
+				}
+				case DW_CFA_expression:
+				{
+					auto uleb1=uint64_t(0);
+					auto uleb2=uint64_t(0);
+					sout<<"                              expression "; 
+					if(read_uleb128<ptrsize>(uleb1, pos, (const uint8_t* const)data.data(), max))
+						break;
+					if(read_uleb128<ptrsize>(uleb2, pos, (const uint8_t* const)data.data(), max))
+						break;
+					sout<<dec<<uleb1<<" "<<uleb2;
+					pos+=uleb2;
+					break;
+				}
+				case DW_CFA_val_expression:
+				{
+					auto uleb1=uint64_t(0);
+					auto uleb2=uint64_t(0);
+					sout<<"                              val_expression "; 
+					if(read_uleb128<ptrsize>(uleb1, pos, (const uint8_t* const)data.data(), max))
+						break;
+					if(read_uleb128<ptrsize>(uleb2, pos, (const uint8_t* const)data.data(), max))
+						break;
+					sout <<dec<<uleb1<<" "<<uleb2;
+					pos+=uleb2;
+					break;
+				}
+				case DW_CFA_def_cfa_offset_sf:
+				{
+					auto leb=int64_t(0);
+					sout<<"					def_cfa_offset_sf "; 
+					if(read_sleb128<ptrsize>(leb, pos, (const uint8_t* const)data.data(), max))
+						break;
+					sout <<dec<<leb;
+					break;
+				}
+				case DW_CFA_offset_extended_sf:
+				{
+					auto uleb1=uint64_t(0);
+					auto sleb2=int64_t(0);
+					sout<<"                              offset_extended_sf "; 
+					if(read_uleb128<ptrsize>(uleb1, pos, (const uint8_t* const)data.data(), max))
+						break;
+					if(read_sleb128<ptrsize>(sleb2, pos, (const uint8_t* const)data.data(), max))
+						break;
+					sout <<dec<<uleb1<<" "<<sleb2;
+					break;
+				}
+
+
+				/* SGI/MIPS specific */
+				case DW_CFA_MIPS_advance_loc8:
+
+				/* GNU extensions */
+				case DW_CFA_GNU_window_save:
+				case DW_CFA_GNU_negative_offset_extended:
+				default:
+					sout<<"Unhandled opcode cannot print. opcode="<<opcode;
+			}
+			break;
+		}
+		default:
+			assert(0);
+	}
+
+	return sout.str();
+}
+
 template <int ptrsize>
 EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::LSDArepresentation_t(Instruction_t* insn)
 	// if there are call sites, use the call site encoding.  if not, set to omit for initializer.
@@ -613,7 +909,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 					first=false;
 				out<<"0x"<<hex<<setfill('0')<<setw(2)<<((int)c&0xff);
 			}
-			out << endl;
+			out << " # " << p.getPrintableString(s)<<endl;
 		}
 		out.flags(flags); // restore flags
 	};
@@ -709,30 +1005,30 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 			const auto cs_end_addr=zipr_obj.GetLocationMap()->at(cs.cs_insn_start)+cs.cs_insn_start->GetDataBits().size();
 			const auto cs_len=cs_end_addr-cs_start_addr;
 			out<<"LSDA"<<dec<<lsda_num<<"_cs_tab_entry"<<cs_num<<"_start:"<<endl;
-        		out<<"	# 1) start of call site relative to FDE start addr"<<endl;
-        		out<<"	.uleb128 0x"<<hex<<cs_start_addr<<" - 0x"<<hex<<fde->start_addr<<endl;
-        		out<<"	# 2) length of call site"<<endl;
-        		out<<"	.uleb128 "<<dec<<cs_len<<endl;
+        		out<<"	# 1) start of call site relative to FDE start addr (call site encoding)"<<endl;
+        		out<<"	.sleb128 0x"<<hex<<cs_start_addr<<" - 0x"<<hex<<fde->start_addr<<endl;
+        		out<<"	# 2) length of call site (call site encoding)"<<endl;
+        		out<<"	.sleb128 "<<dec<<cs_len<<endl;
 			if(cs.landing_pad)
 			{
 				const auto lp_addr=zipr_obj.GetLocationMap()->at(cs.landing_pad);
-				out<<"	# 3) the landing pad, or 0 if none exists."<<endl;
-				out<<"	.uleb128 0x"<<hex<<lp_addr<<" - 0x"<<hex<<landing_pad_base<<endl;
+				out<<"	# 3) the landing pad, or 0 if none exists. (call site encoding)"<<endl;
+				out<<"	.sleb128 0x"<<hex<<lp_addr<<" - 0x"<<hex<<landing_pad_base<<endl;
 			}
 			else
 			{
-				out<<"	# 3) the landing pad, or 0 if none exists."<<endl;
-				out<<"	.uleb128 0"<<endl;
+				out<<"	# 3) the landing pad, or 0 if none exists. (call site encoding)"<<endl;
+				out<<"	.sleb128 0"<<endl;
 			}
 			if(cs.actions.size() > 0 )
 			{
-				out<<"	# 4) index into action table + 1 -- 0 indicates unwind only"<<endl;
-				out<<"	.uleb128 1 + LSDA"<<dec<<lsda_num<<"_act"
+				out<<"	# 4) index into action table + 1 -- 0 indicates unwind only (call site encoding)"<<endl;
+				out<<"	.sleb128 1 + LSDA"<<dec<<lsda_num<<"_act"
 				   <<cs.action_table_index<<"_start_entry0 - LSDA"<<dec<<lsda_num<<"_action_tab_start"<<endl;
 			}
 			else
 			{
-				out<<"	# 4) index into action table + 1 -- 0 indicates unwind only"<<endl;
+				out<<"	# 4) index into action table + 1 -- 0 indicates unwind only (always uleb)"<<endl;
 				out<<"	.uleb128 0 # no actions!" << endl;
 			}
 			out<<"LSDA"<<dec<<lsda_num<<"_cs_tab_entry"<<cs_num<<"_end:"<<endl;
@@ -773,7 +1069,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 			out<<"LSDA"<<dec<<lsda_num<<"_tt_ptr_end:"<<endl;
 			out<<""<<endl;
 			out<<"        # 5) call site table encoding"<<endl;
-			out<<"        .byte 0x1 # DW_EH_PE_uleb128 "<<endl;
+			out<<"        .byte 0x9 # DW_EH_PE_sleb128 "<<endl;
 			out<<""<<endl;
 			out<<"        # 6) the length of the call site table"<<endl;
 			out<<"        .uleb128 LSDA"<<dec<<lsda_num<<"_cs_tab_end-LSDA"<<dec<<lsda_num<<"_cs_tab_start"<<endl;
