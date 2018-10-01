@@ -1233,7 +1233,7 @@ Instruction_t* ZiprImpl_t::Emit68Sled(RangeAddress_t addr, Sled_t sled, Instruct
 	if(m_firp->GetArchitectureBitWidth()!=64)
 	{
 		decoration="dword";
-		string stack_reg="esp";
+		stack_reg="esp";
 	}
 	const int stack_push_size=m_firp->GetArchitectureBitWidth()/8;
 
