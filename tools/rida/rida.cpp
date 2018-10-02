@@ -93,7 +93,7 @@ class CreateFunctions_t
 			addSectionToSccs(".init");
 			addSectionToSccs(".fini");
 	
-			if(file_class==64)
+			if(file_class==ELF64)
 			{
 				class Extracter64
 				{
