@@ -660,6 +660,7 @@ bool EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::canExte
 
 	assert((tt_encoding&0xf)==0x3 || 	// encoding contains DW_EH_PE_udata4 
 	       (tt_encoding)==0xff || 		// or is exactly DW_EH_PE_omit
+	       ((tt_encoding&0xf)==0x0 && ptrsize==4) || 		// or is exactly DW_EH_PE_absptr on 32-bit
  	       (tt_encoding&0xf)==0xb ); 	// or encoding contains DW_EH_PE_sdata4
 	const auto tt_entry_size=4;
 
@@ -746,8 +747,11 @@ void EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::extend(
 		if(tt_it==type_table.end())
 		{
 			const auto tt_encoding = insn->GetEhCallSite()->GetTTEncoding();
-			assert((tt_encoding&0xf)==0x3 ||  // encoding contains DW_EH_PE_udata4
-			       (tt_encoding&0xf)==0xb); // encoding contains DW_EH_PE_sdata4
+			assert(
+			       (tt_encoding&0xf)==0x3 ||  		// encoding contains DW_EH_PE_udata4
+			       (tt_encoding&0xf)==0xb ||  		// encoding contains DW_EH_PE_sdata4
+			       ((tt_encoding&0xf)==0x0 && ptrsize==4)  	// encoding contains DW_EH_PE_absptr && ptrsize==4
+				);
 			const auto tt_entry_size=4;
 			const auto tt_index= reloc->GetOffset()/tt_entry_size;
 			if(tt_index>=(int64_t)type_table.size())
@@ -989,11 +993,11 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 			for(int i=act_entry_num; i>=0; i--)
 			{
 				out<<"LSDA"<<dec<<lsda_num<<"_act"<<act_num<<"_start_entry"<<act_entry_num<<""<<":"<<endl;
-				out<<"	.uleb128 "<<dec<<ttov.at(act_entry_num)<<endl;        
+				out<<"	.sleb128 "<<dec<<ttov.at(act_entry_num)<<endl;        
 				if(act_entry_num==biggest_ttov_index)
-					out<<"	.uleb128 0 "<<endl;
+					out<<"	.sleb128 0 "<<endl;
 				else
-					out<<"	.uleb128  LSDA"<<lsda_num<<"_act"<<act_num<<"_start_entry"<<act_entry_num+1<<" - . "<<endl;
+					out<<"	.sleb128  LSDA"<<lsda_num<<"_act"<<act_num<<"_start_entry"<<act_entry_num+1<<" - . "<<endl;
 				act_entry_num--;
 			}
 		};
@@ -1227,7 +1231,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 		if(fde->hasLsda())
 			out<<"        .int LSDA"<<fde_num<<" - .    # LSDA hard coded here (as pcrel+sdata4)"<<endl;	 
 		else
-			out<<"        .int 0      # no LSDA "<<endl;	 
+			out<<"        .int 0-.      # no LSDA, encoded with pcrel "<<endl;	 
 		out<<"Lfde"<<fde_num<<"_aug_data_end:"<<endl;
 		out<<""<<endl;
 		out<<"        # FDE"<<fde_num<<" program"<<endl;
