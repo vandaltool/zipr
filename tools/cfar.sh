@@ -104,7 +104,7 @@ done
 
 # add default options for cfar which asks ps_analyze to fill in a variant specification for what it did.
 # and also by default dump the IRDB mapping information, useful for debugging.
-new_cmd_line_options+=(--step generate_variant_config=on --step dump_map=on --step-option zipr:"--add-sections true --bss-opts false")
+new_cmd_line_options+=(--step generate_variant_config=on -s rida=on -s meds_static=off --step dump_map=on --step-option zipr:"--add-sections true --bss-opts false")
 
 #
 # figure out a place for ps_analyze to work so we can examine results.
