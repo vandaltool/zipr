@@ -486,7 +486,7 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 	if(total_header_size > min_addr)
 		return false;
 
-	libIRDB::virtual_offset_t new_phdr_addr=(T_Elf_Addr)page_align(min_addr)-total_header_size;
+	libIRDB::virtual_offset_t new_phdr_addr=(T_Elf_Addr)page_align(min_addr)-PAGE_SIZE+sizeof(T_Elf_Ehdr);
 	return CreateNewPhdrs_internal(min_addr,max_addr,aligned_phdr_size,true, sizeof(T_Elf_Ehdr), new_phdr_addr);
 }
 
