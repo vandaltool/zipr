@@ -1371,7 +1371,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 			//Disassemble(I1,d1);
 			DecodedInstruction_t d1(I1);
 			table_size = d1.getImmediate(); // Instruction.Immediat;
-			if (table_size <= 0)
+			if (table_size <= 4)
 			{
 				cout<<"pic64: found I1 ('"<<d1.getDisassembly()/*CompleteInstr*/<<"'), but could not find size of switch table"<<endl;
 				// set table_size to be very large, so we can still do pinning appropriately
@@ -1384,7 +1384,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 			//Disassemble(I1,d1);
 			DecodedInstruction_t d1(I1);
 			table_size = d1.getImmediate()/*Instruction.Immediat*/;
-			if (table_size <= 2)
+			if (table_size <= 4)
 			{
 				// set table_size to be very large, so we can still do pinning appropriately
 				cout<<"pic64: found I1 ('"<<d1.getDisassembly()/*CompleteInstr*/<<"'), but could not find size of switch table"<<endl;
