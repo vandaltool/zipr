@@ -36,7 +36,7 @@ namespace libIRDB
 #include <util/insn_preds.hpp>
 #include <util/IBT_Provenance.hpp>
 #include <util/params.hpp>
-#include <util/IR_Files.hpp>
+#include <util/IRDB_Objects.hpp>
 
 };
 
