@@ -29,7 +29,8 @@ class VariantID_t : public BaseObj_t
 {
     public:
         VariantID_t();        		// create a Variant ID not in the database 
-        VariantID_t(db_id_t pid);       // read from the DB 
+        VariantID_t(db_id_t pid);       // read from the DB
+	~VariantID_t();     // Deletes the File_t objects -- beware dangling File_t* in FileIR_t objects!  
 
         bool IsRegistered();               
         bool Register();    // accesses DB

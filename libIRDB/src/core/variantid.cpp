@@ -38,6 +38,19 @@ VariantID_t::VariantID_t() :
 }
 
 
+VariantID_t::~VariantID_t()
+{
+	for(std::set<File_t*>::iterator 
+		it = files.begin();
+		it != files.end();
+		++it
+	   )	
+	{
+		delete *it;
+	}
+}
+
+
 void VariantID_t::CreateTables()
 {
 	// note:  this tables are now part of File_t.
