@@ -1,5 +1,5 @@
-#ifndef IRDB_Objects_h
-#define IRDB_Objects_h
+#ifndef IRDBObjects_h
+#define IRDBObjects_h
 
 #include <map>
 #include <utility>
