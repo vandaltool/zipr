@@ -1,5 +1,5 @@
-#ifndef IRDBObjects_h
-#define IRDBObjects_h
+#ifndef IRDB_Objects_h
+#define IRDB_Objects_h
 
 #include <map>
 #include <utility>
@@ -63,6 +63,10 @@ class IRDBObjects_t
 		std::map<db_id_t, std::shared_ptr<VariantID_t>> variant_map;
                 // maps file id to (file, file ir)
 		std::map<db_id_t, std::pair<std::shared_ptr<File_t>, std::shared_ptr<FileIR_t>>> file_IR_map;
+                
+                // minor helpers (used to check assertions)
+                bool FilesAlreadyPresent(std::set<File_t*> the_files);
+                bool FilesBeingShared(std::shared_ptr<VariantID_t> the_variant);
 };
 
 #endif

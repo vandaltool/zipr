@@ -53,11 +53,7 @@ int IRDBObjects_t::DeleteFileIR(db_id_t file_id, bool write_to_DB)
         map<db_id_t, pair<shared_ptr<File_t>, shared_ptr<FileIR_t>>>::iterator 
             it = file_IR_map.find(file_id);
         
-        if(it == file_IR_map.end())
-        {
-            ret_status = 1;
-        }
-        else
+        if(it != file_IR_map.end())
         {
             if(it->second.second != NULL)
             {
@@ -76,12 +72,12 @@ int IRDBObjects_t::DeleteFileIR(db_id_t file_id, bool write_to_DB)
                     catch (DatabaseError_t pnide)
                     {
                         cerr << "Unexpected database error: " << pnide << "file url: " << the_file->GetURL() << endl;
-                        ret_status = 2;
+                        ret_status = 1;
                     }
                     catch (...)
                     {
                         cerr << "Unexpected error file url: " << the_file->GetURL() << endl;
-                        ret_status = 2;
+                        ret_status = 1;
                     }
                 }
                 (it->second.second).reset();
@@ -92,10 +88,31 @@ int IRDBObjects_t::DeleteFileIR(db_id_t file_id, bool write_to_DB)
 }
 
 
+bool IRDBObjects_t::FilesAlreadyPresent(set<File_t*> the_files)
+{
+        for(set<File_t*>::iterator it=the_files.begin();
+            it!=the_files.end();
+            ++it
+           )
+        {       
+            if(GetFile((*it)->GetBaseID()) != NULL)
+            {
+                return true;
+            }
+        }
+        
+        return false;
+}
+
+
 int IRDBObjects_t::AddVariant(db_id_t variant_id)
 {
-        shared_ptr<VariantID_t> the_variant = make_shared<VariantID_t>(variant_id);        
+        shared_ptr<VariantID_t> the_variant = make_shared<VariantID_t>(variant_id);      
+        
         assert(the_variant->IsRegistered()==true);
+        // disallow variants that share shallow copies to be read in simultaneously
+        // to prevent desynchronization. 
+        assert(!FilesAlreadyPresent(the_variant->GetFiles()));
         
         pair<db_id_t, shared_ptr<VariantID_t>> var_pair = make_pair(variant_id, the_variant);
         variant_map.insert(var_pair);
@@ -119,32 +136,35 @@ int IRDBObjects_t::AddVariant(db_id_t variant_id)
 }
 
 
+bool IRDBObjects_t::FilesBeingShared(shared_ptr<VariantID_t> the_variant)
+{
+        for(set<File_t*>::iterator file_it=the_variant->GetFiles().begin();
+                file_it!=the_variant->GetFiles().end();
+                ++file_it
+               )
+        {
+            assert(file_IR_map.find((*file_it)->GetBaseID()) != file_IR_map.end());
+            pair<shared_ptr<File_t>, shared_ptr<FileIR_t>> file_IR_pair = file_IR_map.at((*file_it)->GetBaseID());
+            if(!file_IR_pair.first.unique() || !file_IR_pair.second.unique())
+            {
+                return true;
+            }
+        }
+        
+        return false;
+}
+
+
 int IRDBObjects_t::DeleteVariant(db_id_t variant_id, bool write_to_DB)
 {
         int ret_status = 0;
         map<db_id_t, shared_ptr<VariantID_t>>::iterator var_it = variant_map.find(variant_id);
         
-        if(var_it == variant_map.end())
+        if(var_it != variant_map.end())
         {
-            ret_status = 1;
-        }
-        else
-        {
-            bool files_being_shared = false;
-            for(set<File_t*>::iterator file_it=var_it->second->GetFiles().begin();
-                file_it!=var_it->second->GetFiles().end();
-                ++file_it
-               )
-            {
-                assert(file_IR_map.find((*file_it)->GetBaseID()) != file_IR_map.end());
-                pair<shared_ptr<File_t>, shared_ptr<FileIR_t>> file_IR_pair = file_IR_map.at((*file_it)->GetBaseID());
-                if(!file_IR_pair.first.unique() || !file_IR_pair.second.unique())
-                {
-                    files_being_shared = true;
-                }
-            }
-            
-            assert(!files_being_shared);
+            // To prevent reading in the same files again while they are being used
+            // somewhere else, which could lead to desynchronization
+            assert(!FilesBeingShared(var_it->second));
             assert(var_it->second.unique());
             
             if(write_to_DB)
@@ -157,21 +177,21 @@ int IRDBObjects_t::DeleteVariant(db_id_t variant_id, bool write_to_DB)
                 catch (DatabaseError_t pnide)
                 {
                     cerr << "Unexpected database error: " << pnide << "variant ID: " << variant_id << endl;
-                    ret_status = 2;
+                    ret_status = 1;
                 }
                 catch (...)
                 {
                     cerr << "Unexpected error variant ID: " << variant_id << endl;
-                    ret_status = 2;
+                    ret_status = 1;
                 }
             }
             // remove files and file IRs
-            for(set<File_t*>::iterator file_it2=var_it->second->GetFiles().begin();
-                file_it2!=var_it->second->GetFiles().end();
-                ++file_it2
+            for(set<File_t*>::iterator file_it=var_it->second->GetFiles().begin();
+                file_it!=var_it->second->GetFiles().end();
+                ++file_it
                )
             {
-                file_IR_map.erase((*file_it2)->GetBaseID());
+                file_IR_map.erase((*file_it)->GetBaseID());
             }
             
             // remove variant
