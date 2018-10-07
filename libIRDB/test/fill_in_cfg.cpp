@@ -580,43 +580,47 @@ void PopulateCFG::fill_in_landing_pads(FileIR_t *firp)
 	
 }
 
-PopulateCFG PopulateCFG::Factory
+int PopulateCFG::ParseArgs
         (
         int argc, 
-        char* argv[], 
-        pqxxDB_t* the_pqxx_interface,
-        list<FileIR_t *> the_firp_list
+        char* argv[]
         )
-{
-    bool p_fix_landing_pads = true; // default
-    
+{   
     if(argc<2)
     {
             cerr<<"Usage: fill_in_cfg <id> [--fix-landing-pads | --no-fix-landing-pads]"<<endl;
-            exit(-1);
+            return -1;
     }
+
+    variant_id = atoi(argv[1]);
     
-    for (int i = 0; i < argc; ++i)
+    for (int i = 2; i < argc; ++i)
     {
             if (strcmp("--fix-landing-pads", argv[i]) == 0)
             {
-                    p_fix_landing_pads = true;
+                    fix_landing_pads = true;
             }
             else if (strcmp("--no-fix-landing-pads", argv[i]) == 0)
             {
-                    p_fix_landing_pads = false;
+                    fix_landing_pads = false;
             }
     }
     
-    return PopulateCFG(the_pqxx_interface, the_firp_list, p_fix_landing_pads);
+    return 0;
 }
 
-bool PopulateCFG::execute()
+int PopulateCFG::ExecuteStep(IRDBObjects_t *irdb_objects)
 {
     try 
 	{
-		for( FileIR_t* firp : firp_list)
+		pqxx_interface = irdb_objects->GetDBInterface();
+		irdb_objects->AddVariant(variant_id);
+		shared_ptr<VariantID_t> variant = irdb_objects->GetVariant(variant_id);
+		for(File_t* file : variant->GetFiles())
 		{
+			irdb_objects->AddFileIR(variant_id, file->GetBaseID());
+			shared_ptr<FileIR_t> firp = irdb_objects->GetFileIR(file->GetBaseID());
+
 			assert(firp);
                         cout<<"Filling in cfg for "<<firp->GetFile()->GetURL()<<endl;
 
@@ -630,24 +634,35 @@ bool PopulateCFG::execute()
 			assert(elfiop);
 			elfiop->load(string("readeh_tmp_file.exe"));
 
-			fill_in_cfg(firp);
-			fill_in_scoops(firp);
+			fill_in_cfg(firp.get());
+			fill_in_scoops(firp.get());
 
 			if (fix_landing_pads)
 			{
-				fill_in_landing_pads(firp);
+				fill_in_landing_pads(firp.get());
 			}
 
 			delete elfiop;
-			firp=NULL;
 			elfiop=NULL;
 		}
 	}
 	catch (DatabaseError_t pnide)
 	{
-		cout<<"Unexpected database error: "<<pnide<<endl;
-		return false;
+		cerr<<"Unexpected database error: "<<pnide<<endl;
+		return -1;
         }
+	catch(...)
+	{
+		cerr<<"Unexpected error"<<endl;
+		return -1;
+	}
     
-    return true;
+    return 0;
+}
+
+
+extern "C"
+Transform_SDK::TransformStep_t* TransformStepFactory(void)
+{
+	return new PopulateCFG();
 }

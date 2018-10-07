@@ -107,6 +107,11 @@ bool IRDBObjects_t::FilesAlreadyPresent(set<File_t*> the_files)
 
 int IRDBObjects_t::AddVariant(db_id_t variant_id)
 {
+	if(GetVariant(variant_id) != NULL)
+        {
+            return 1;
+        }
+
         shared_ptr<VariantID_t> the_variant = make_shared<VariantID_t>(variant_id);      
         
         assert(the_variant->IsRegistered()==true);

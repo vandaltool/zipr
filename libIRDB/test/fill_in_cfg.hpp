@@ -2,20 +2,22 @@
 #define fill_in_cfg_hpp
 
 #include <libIRDB-core.hpp>
+#include <libIRDB-util.hpp>
 #include <stdlib.h>
 #include <map>
 #include <exeio.h>
+#include "transform_step.h"
 
-class PopulateCFG
+class PopulateCFG : public Transform_SDK::TransformStep_t
 {
     public:
-        PopulateCFG(libIRDB::pqxxDB_t* the_pqxx_interface,
-                    std::list<libIRDB::FileIR_t *> the_firp_list,
+        PopulateCFG(libIRDB::pqxxDB_t* p_pqxx_interface = NULL,
+		    libIRDB::db_id_t p_variant_id = 0,
                     bool p_fix_landing_pads = true
             )
             :
-            pqxx_interface(the_pqxx_interface),
-            firp_list(the_firp_list),
+	    pqxx_interface(p_pqxx_interface),
+            variant_id(p_variant_id),
             fix_landing_pads(p_fix_landing_pads)
         {
             odd_target_count = 0;
@@ -25,8 +27,13 @@ class PopulateCFG
        
             elfiop = NULL;
         }
-        static PopulateCFG Factory(int argc, char* argv[], libIRDB::pqxxDB_t*, std::list<libIRDB::FileIR_t *>);
-        bool execute();
+	
+	std::string GetStepName(void)
+	{
+		return std::string("fill_in_cfg");
+	}
+        int ParseArgs(int argc, char* argv[]);
+	int ExecuteStep(libIRDB::IRDBObjects_t*);
     
     private: // methods
         
@@ -68,7 +75,7 @@ class PopulateCFG
         
         // non-optional
         libIRDB::pqxxDB_t* pqxx_interface;
-        std::list<libIRDB::FileIR_t *> firp_list;
+	libIRDB::db_id_t variant_id;        
         bool fix_landing_pads;
         
         EXEIO::exeio *elfiop;
