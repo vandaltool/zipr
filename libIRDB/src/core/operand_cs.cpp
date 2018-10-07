@@ -557,6 +557,8 @@ uint32_t DecodedOperandCapstone_t::getSegmentRegister() const
 
 set<string> write_only_operand_mnemonics=
  	{
+		"sete",
+		"setne",
 		"fst",
 		"fstp",
 		"fist",
