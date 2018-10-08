@@ -988,6 +988,24 @@ STRATA_PC_CONFINE=0
 STRATA_PC_CONFINE_XOR=0
 
 
+# start thanos 
+input_pipe="thanos_input"
+[ -p $input_pipe ] || mkfifo $input_pipe
+output_pipe="thanos_output"
+[ -p $output_pipe ] || mkfifo $output_pipe
+
+$SECURITY_TRANSFORMS_HOME/plugins_install/transform_step_plugins/thanos.exe $input_pipe $output_pipe &
+# test thanos (DELETE ME)
+printf "TEST" > $input_pipe
+sleep 5
+read -r cmd <$output_pipe
+if [ "$cmd" ]; then
+    printf 'Response was %s \n' "$cmd"
+fi
+printf "THANOS_DONE" > $input_pipe
+sleep 5
+
+
 #
 # copy the .so files for this exe into a working directory.
 #
