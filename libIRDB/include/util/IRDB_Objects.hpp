@@ -21,38 +21,30 @@ class IRDBObjects_t
                 };
 		~IRDBObjects_t();
 
-		// Add/delete file IRs for a variant. Takes in the base ID of the
-                // file (File_t) that the FileIR_t is paired with. 
+		// Add/delete file IRs for a variant.
                 // Cannot delete a file IR if it is also owned outside this object.
-		// When deleting file IRs, have the option to write back to the DB.
-                // If the write fails, the IR is still deleted.
-		int AddFileIR(db_id_t variant_id, db_id_t file_id);
-		int DeleteFileIR(db_id_t file_id, bool write_to_DB);
+		// AddFileIR returns the added IR or the preexistent IR if it was already added.
+		std::shared_ptr<FileIR_t> AddFileIR(db_id_t variant_id, db_id_t file_id);    // Returns NULL if no such file exists
+		int DeleteFileIR(db_id_t file_id);
                 // Add or delete a variant
-                // When deleting a variant, have the option to write back to the DB.
                 // Cannot delete a variant if it or its files are also owned outside this object.
-                // If the write fails, the variant is still deleted.
-                // Writing a variant does NOT write its files' IRs, but DOES delete them!
-                int AddVariant(db_id_t variant_id); 
-                int DeleteVariant(db_id_t variant_id, bool write_to_DB);
+                // Deleting a variant does NOT write its files' IRs, but DOES delete them!
+                // AddVariant returns the added variant or the preexistent variant if it was already added.
+                std::shared_ptr<VariantID_t> AddVariant(db_id_t variant_id);
+                int DeleteVariant(db_id_t variant_id);
                 
-                // get a variant
-                // returns shared_ptr(NULL) if no such variant
-		std::shared_ptr<VariantID_t> GetVariant(db_id_t variant_id);
-		// get a file IR
-                // returns shared_ptr(NULL) if no such file IR
-		std::shared_ptr<FileIR_t> GetFileIR(db_id_t file_id);
                 // get a file
                 // returns shared_ptr(NULL) if no such file
                 std::shared_ptr<File_t> GetFile(db_id_t file_id);
                 // Get DB interface
                 pqxxDB_t* GetDBInterface();
 
-		// Write back all variants and file IRs stored in this IRFiles_t object.
-                // Also removes all variants and file IRs even if some writes fail.
-                // Returns 1 if any writes fail.
-                // Does NOT commit changes.
-		bool WriteBackAll(void);
+		// Write back variants and file IRs. Does NOT commit changes.
+                int WriteBackFileIR(db_id_t file_id);
+                int WriteBackVariant(db_id_t variant_id);   // Does NOT write back its files' IRs
+		int WriteBackAll(void);    // Returns -1 if any writes fail.
+                
+                int DeleteAll(void);
 		
 	private:
                 pqxxDB_t pqxx_interface;

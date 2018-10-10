@@ -19,14 +19,15 @@ IRDBObjects_t::~IRDBObjects_t()
 }
 
 
-int IRDBObjects_t::AddFileIR(db_id_t variant_id, db_id_t file_id)
+shared_ptr<FileIR_t> IRDBObjects_t::AddFileIR(db_id_t variant_id, db_id_t file_id)
 {
         map<db_id_t, pair<shared_ptr<File_t>, shared_ptr<FileIR_t>>>::iterator 
             it = file_IR_map.find(file_id);
         
         if(it == file_IR_map.end())
         {
-            return 1;
+            shared_ptr<FileIR_t> null_fileIR;
+            return null_fileIR;
         }
         else
         {            
@@ -41,15 +42,48 @@ int IRDBObjects_t::AddFileIR(db_id_t variant_id, db_id_t file_id)
                 it->second.second = make_shared<FileIR_t>(the_variant, the_file);
                 assert(it->second.second != NULL);
             }
-            return 0;
+            return it->second.second;
         }
 }
 
 
-int IRDBObjects_t::DeleteFileIR(db_id_t file_id, bool write_to_DB)
+int IRDBObjects_t::WriteBackFileIR(db_id_t file_id)
 {
-        int ret_status = 0;
-    
+        map<db_id_t, pair<shared_ptr<File_t>, shared_ptr<FileIR_t>>>::iterator 
+            it = file_IR_map.find(file_id);
+        
+        if(it != file_IR_map.end())
+        {
+            shared_ptr<File_t> the_file = it->second.first;
+            assert(the_file != NULL);
+                    
+            try
+            {
+                cout<<"Writing changes for "<<the_file->GetURL()<<endl;
+                (it->second.second)->WriteToDB();
+            }
+            catch (DatabaseError_t pnide)
+            {
+                cerr << "Unexpected database error: " << pnide << "file url: " << the_file->GetURL() << endl;
+                return -1;
+            }
+            catch (...)
+            {
+                cerr << "Unexpected error file url: " << the_file->GetURL() << endl;
+                return -1;
+            }
+        }
+        else
+        {
+            return 1;  
+        }
+        
+        return 0;
+}
+
+
+int IRDBObjects_t::DeleteFileIR(db_id_t file_id)
+{
         map<db_id_t, pair<shared_ptr<File_t>, shared_ptr<FileIR_t>>>::iterator 
             it = file_IR_map.find(file_id);
         
@@ -58,33 +92,14 @@ int IRDBObjects_t::DeleteFileIR(db_id_t file_id, bool write_to_DB)
             if(it->second.second != NULL)
             {
                 assert(it->second.second.unique());
-                
-                if(write_to_DB)
-                {
-                    shared_ptr<File_t> the_file = it->second.first;
-                    assert(the_file != NULL);
-                    
-                    try
-                    {
-                        cout<<"Writing changes for "<<the_file->GetURL()<<endl;
-                        (it->second.second)->WriteToDB();
-                    }
-                    catch (DatabaseError_t pnide)
-                    {
-                        cerr << "Unexpected database error: " << pnide << "file url: " << the_file->GetURL() << endl;
-                        ret_status = 1;
-                    }
-                    catch (...)
-                    {
-                        cerr << "Unexpected error file url: " << the_file->GetURL() << endl;
-                        ret_status = 1;
-                    }
-                }
                 (it->second.second).reset();
             }
-        }       
-        
-        return ret_status;
+            return 0;
+        }
+        else
+        {
+            return -1;
+        }
 }
 
 
@@ -105,17 +120,18 @@ bool IRDBObjects_t::FilesAlreadyPresent(set<File_t*> the_files)
 }
 
 
-int IRDBObjects_t::AddVariant(db_id_t variant_id)
+shared_ptr<VariantID_t> IRDBObjects_t::AddVariant(db_id_t variant_id)
 {
-	if(GetVariant(variant_id) != NULL)
+        map<db_id_t, shared_ptr<VariantID_t>>::iterator var_it = variant_map.find(variant_id);        
+        if(var_it != variant_map.end())
         {
-            return 1;
+            return var_it->second;
         }
-
+    
         shared_ptr<VariantID_t> the_variant = make_shared<VariantID_t>(variant_id);      
         
         assert(the_variant->IsRegistered()==true);
-        // disallow variants that share shallow copies to be read in simultaneously
+        // disallow variants that share shallow copies to both be read in
         // to prevent desynchronization. 
         assert(!FilesAlreadyPresent(the_variant->GetFiles()));
         
@@ -137,7 +153,7 @@ int IRDBObjects_t::AddVariant(db_id_t variant_id)
             file_IR_map.insert(file_map_pair);
         }
         
-        return 0;
+        return var_pair.second;
 }
 
 
@@ -160,9 +176,39 @@ bool IRDBObjects_t::FilesBeingShared(shared_ptr<VariantID_t> the_variant)
 }
 
 
-int IRDBObjects_t::DeleteVariant(db_id_t variant_id, bool write_to_DB)
+int IRDBObjects_t::WriteBackVariant(db_id_t variant_id)
 {
-        int ret_status = 0;
+        map<db_id_t, shared_ptr<VariantID_t>>::iterator it = variant_map.find(variant_id);
+        
+        if(it != variant_map.end())
+        {
+            try
+            {
+                cout<<"Writing changes for variant "<<variant_id<<endl;
+                it->second->WriteToDB();
+            }
+            catch (DatabaseError_t pnide)
+            {
+                cerr << "Unexpected database error: " << pnide << "variant ID: " << variant_id << endl;
+                return -1;
+            }
+            catch (...)
+            {
+                cerr << "Unexpected error variant ID: " << variant_id << endl;
+                return -1;
+            }
+        }
+        else
+        {
+            return 1;
+        }
+        
+        return 0;
+}
+
+
+int IRDBObjects_t::DeleteVariant(db_id_t variant_id)
+{
         map<db_id_t, shared_ptr<VariantID_t>>::iterator var_it = variant_map.find(variant_id);
         
         if(var_it != variant_map.end())
@@ -172,24 +218,6 @@ int IRDBObjects_t::DeleteVariant(db_id_t variant_id, bool write_to_DB)
             assert(!FilesBeingShared(var_it->second));
             assert(var_it->second.unique());
             
-            if(write_to_DB)
-            {
-                try
-                {
-                    cout<<"Writing changes for variant "<<variant_id<<endl;
-                    var_it->second->WriteToDB();
-                }
-                catch (DatabaseError_t pnide)
-                {
-                    cerr << "Unexpected database error: " << pnide << "variant ID: " << variant_id << endl;
-                    ret_status = 1;
-                }
-                catch (...)
-                {
-                    cerr << "Unexpected error variant ID: " << variant_id << endl;
-                    ret_status = 1;
-                }
-            }
             // remove files and file IRs
             for(set<File_t*>::iterator file_it=var_it->second->GetFiles().begin();
                 file_it!=var_it->second->GetFiles().end();
@@ -201,78 +229,65 @@ int IRDBObjects_t::DeleteVariant(db_id_t variant_id, bool write_to_DB)
             
             // remove variant
             variant_map.erase(variant_id);
+            return 0;
+        }
+        else
+        {
+            return -1;
+        }
+}
+
+
+int IRDBObjects_t::WriteBackAll(void)
+{
+        int ret_status = 0;
+    
+        // Write back FileIRs
+        for(map<db_id_t, pair<shared_ptr<File_t>, shared_ptr<FileIR_t>>>::iterator
+                file_it = file_IR_map.begin(); 
+                file_it != file_IR_map.end();
+                ++file_it 
+            )
+        {
+            int result = IRDBObjects_t::WriteBackFileIR((file_it->second.first)->GetBaseID());
+            if(result != 0)
+            {
+                ret_status = -1;
+            }
+        }
+    
+        // Write back Variants
+        for(map<db_id_t, shared_ptr<VariantID_t>>::iterator
+                var_it = variant_map.begin(); 
+                var_it != variant_map.end();
+                ++var_it
+            )
+        {
+            int result = IRDBObjects_t::WriteBackVariant((var_it->second)->GetBaseID());
+            if(result != 0)
+            {
+                ret_status = -1;
+            }
         }
         
         return ret_status;
 }
 
 
-bool IRDBObjects_t::WriteBackAll(void)
+int IRDBObjects_t::DeleteAll(void)
 {
-        bool all_successes = true;
-    
-        // Write back FileIRs
-        for(map<db_id_t, pair<shared_ptr<File_t>, shared_ptr<FileIR_t>>>::iterator
-                it = file_IR_map.begin(); 
-                it != file_IR_map.end();
-                ++it 
-            )
-        {
-            int result = IRDBObjects_t::DeleteFileIR((it->second.first)->GetBaseID(), true);
-            if(result != 0)
-            {
-                all_successes = false;
-            }
-        }
-    
-        // Write back Variants
+        // Delete Variants (also deletes all files)
         for(map<db_id_t, shared_ptr<VariantID_t>>::iterator
-                it2 = variant_map.begin(); 
-                it2 != variant_map.end();
-                ++it2
+                it = variant_map.begin(); 
+                it != variant_map.end();
+                ++it
             )
         {
-            int result = IRDBObjects_t::DeleteVariant((it2->second)->GetBaseID(), true);
-            if(result != 0)
-            {
-                all_successes = false;
-            }
+            int result = IRDBObjects_t::DeleteVariant((it->second)->GetBaseID());
+            assert(result == 0);
         }
         
-        return all_successes;
-}
-
-
-shared_ptr<VariantID_t> IRDBObjects_t::GetVariant(db_id_t variant_id)
-{
-        map<db_id_t, shared_ptr<VariantID_t>>::iterator it = variant_map.find(variant_id);
-        
-        if(it == variant_map.end())
-        {
-            shared_ptr<VariantID_t> null_var;
-            return null_var;
-        }
-        else
-        {
-            return it->second;
-        }
-}
-
-
-shared_ptr<FileIR_t> IRDBObjects_t::GetFileIR(db_id_t file_id)
-{
-        map<db_id_t, pair<shared_ptr<File_t>, shared_ptr<FileIR_t>>>::iterator 
-            it = file_IR_map.find(file_id);
-        
-        if(it == file_IR_map.end())
-        {
-            shared_ptr<FileIR_t> null_fileIR;
-            return null_fileIR;
-        }
-        else
-        {
-            return it->second.second;
-        }
+        return 0;
 }
 
 

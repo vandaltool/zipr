@@ -614,13 +614,10 @@ int PopulateCFG::ExecuteStep(IRDBObjects_t *irdb_objects)
     try 
 	{
 		pqxx_interface = irdb_objects->GetDBInterface();
-		irdb_objects->AddVariant(variant_id);
-		shared_ptr<VariantID_t> variant = irdb_objects->GetVariant(variant_id);
+		shared_ptr<VariantID_t> variant = irdb_objects->AddVariant(variant_id);
 		for(File_t* file : variant->GetFiles())
 		{
-			irdb_objects->AddFileIR(variant_id, file->GetBaseID());
-			shared_ptr<FileIR_t> firp = irdb_objects->GetFileIR(file->GetBaseID());
-
+			shared_ptr<FileIR_t> firp = irdb_objects->AddFileIR(variant_id, file->GetBaseID());
 			assert(firp);
                         cout<<"Filling in cfg for "<<firp->GetFile()->GetURL()<<endl;
 
