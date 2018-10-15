@@ -14,7 +14,7 @@ namespace Transform_SDK
 			virtual std::string GetStepName(void) = 0;
 
 			// Allows all steps to parse args before any step takes time to execute
-			virtual int ParseArgs(int argc, char* argv[], libIRDB::IRDBObjects_t *irdb_objects)
+			virtual int ParseArgs(int argc, char* argv[])
 			{
 				return 0; // success
 			}

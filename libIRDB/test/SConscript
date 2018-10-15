@@ -36,7 +36,7 @@ if 'build_tools' not in myenv or myenv['build_tools'] is None or int(myenv['buil
 	installed=installed+install
 
 	pgm=myenv.SharedLibrary("fill_in_cfg.so",  Split("fill_in_cfg.cpp split_eh_frame.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
-	install=myenv.Install("$SECURITY_TRANSFORMS_HOME/plugins_install/transform_step_plugins", pgm)
+	install=myenv.Install("$SECURITY_TRANSFORMS_HOME/plugins_install", pgm)
 	Default(install)
 	installed=installed+install
 
