@@ -551,8 +551,22 @@ perform_step()
 		$command 2>&1 | tee $logfile
 		command_exit=${PIPESTATUS[0]} # this funkiness gets the exit code of $command, not tee
 	else
-		$command > $logfile 2>&1 
-		command_exit=$?
+		echo "$command"|grep "\./lib$step\.so " > /dev/null
+		grep_res=$?
+		if [ $grep_res -eq 0 ] ; then
+			echo "$user_critical_steps"|egrep " $step " > /dev/null
+			grep_res=$?
+			if [ $grep_res -eq 0 ] ; then
+				echo "EXECUTE_STEP CRITICAL $command" > $input_pipe
+			else
+				echo "EXECUTE_STEP OPTIONAL $command" > $input_pipe
+			fi	
+			read -r thanos_res < $output_pipe
+			echo "Response was $thanos_res"
+		else
+			$command > $logfile 2>&1 
+			command_exit=$?
+		fi
 	fi
 
 	endtime=`$PS_DATE`
@@ -670,6 +684,8 @@ do_plugins()
 			perform_step $stepname none $plugin_path/$stepname.exe  $cloneid  $value
 		elif [ -x $plugin_path/$stepname.sh ]; then
 			perform_step $stepname none $plugin_path/$stepname.sh $cloneid  $value
+		elif [ -x $plugin_path/lib$stepname.so ]; then
+			perform_step $stepname none ./lib$stepname.so $cloneid $value
 		else
 			echo "*********************************************************"
 			echo "*********************************************************"
@@ -994,17 +1010,18 @@ input_pipe="thanos_input"
 output_pipe="thanos_output"
 [ -p $output_pipe ] || mkfifo $output_pipe
 
-$SECURITY_TRANSFORMS_HOME/plugins_install/transform_step_plugins/thanos.exe $input_pipe $output_pipe &
-# test thanos (DELETE ME)
-printf "TEST" > $input_pipe
-sleep 5
-read -r cmd <$output_pipe
-if [ "$cmd" ]; then
-    printf 'Response was %s \n' "$cmd"
-fi
-printf "THANOS_DONE" > $input_pipe
-sleep 5
+$SECURITY_TRANSFORMS_HOME/plugins_install/thanos.exe $input_pipe $output_pipe &
+thanos_pid=$!
 
+# Make sure thanos is always exited
+function exit_thanos {
+	# will do the job for emergency exits
+	kill $thanos_pid
+	wait $thanos_pid 2>/dev/null
+	rm -f $input_pipe
+	rm -f $output_pipe
+}
+trap exit_thanos EXIT
 
 #
 # copy the .so files for this exe into a working directory.
@@ -1056,7 +1073,7 @@ if [ $record_stats -eq 1 ]; then
 fi
 
 # build basic IR
-perform_step fill_in_cfg mandatory $SECURITY_TRANSFORMS_HOME/bin/fill_in_cfg.exe $varid $step_options_fill_in_cfg
+perform_step fill_in_cfg mandatory ./libfill_in_cfg.so $varid $step_options_fill_in_cfg
 perform_step fill_in_safefr mandatory $SECURITY_TRANSFORMS_HOME/bin/fill_in_safefr.exe $varid 
 perform_step fill_in_indtargs mandatory $SECURITY_TRANSFORMS_HOME/bin/fill_in_indtargs.exe $varid $step_options_fill_in_indtargs
 
