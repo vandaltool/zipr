@@ -94,27 +94,34 @@ int main(int argc, char *argv[])
             {
                 if(strncmp(buf+12, " OPTIONAL ", 10) == 0 || strncmp(buf+12, " CRITICAL ", 10) == 0)
                 {
-                    char *end = strchr(buf, '\n');
-                    if (!end || (end == buf+22))
+	 	    char *command_start = buf+12+10;
+                    char *command_end = strchr(buf, '\n');
+                    if (!command_end || (command_end == command_start))
                     {
                         res = write(outfd, (void*) "ERR_INVALID_CMD\n", 16);
                     }
                     else
                     {
-                        *end = '\0';
-                        string command (buf+22);
-                        
-                        size_t step_name_end = command.find_first_of(" ");
-                        char* step_name;
-                        if(step_name_end == string::npos)
-                        {
-                            step_name = (buf+22);
-                        }
-                        else
-                        {
-                            step_name = (char*) (command.substr(0, step_name_end)).c_str();
-                        }
+			// parse command string into argv, argc
+			// simple parsing relies on ps_analyze.sh separating
+			// step arguments with single spaces.
+			*command_end = '\0';
 
+			size_t max_args = ((command_end - command_start) / 2)+1;
+                        char** argv = (char**) malloc(max_args);
+			int argc = 0;
+			
+			argv[argc++] = command_start; 
+			char* command_remaining = strchr(command_start, ' ');
+                        while (command_remaining != NULL)
+                        {
+			    *command_remaining = '\0';
+                            argv[argc++] = command_remaining+1;
+			    command_remaining = strchr(command_remaining, ' ');
+                        }
+                        argv = (char**) realloc(argv, argc);
+
+			char* step_name = argv[0];                        
                         void* dlhdl = dlopen((plugin_path.append(step_name)).c_str(), RTLD_NOW);
                         if(dlhdl == NULL)
                         {
@@ -134,19 +141,6 @@ int main(int argc, char *argv[])
 				TransformStep_t* the_step = (*func)();
 				assert(the_step != NULL);
 
-	                        int argc = (int) count(command.begin(), command.end(), ' ')+1;
-                                char** argv = (char**) malloc(argc);
-                                argv[0] = buf+22;
-                                size_t pos = 0;
-                                int arg_num = 1;
-                                while ((pos = command.find_first_of(" ", pos)) != string::npos)
-                                {
-                                    *(buf+22+pos) = '\0';
-                                    argv[arg_num] = buf+22+pos+1;
-                                    ++arg_num;
-                                    ++pos;
-                                }
-                                assert(arg_num == argc);
                                 bool step_optional = true;
                                 if(strncmp(buf+12, " CRITICAL ", 10) == 0)
                                 {
@@ -210,7 +204,7 @@ int execute_step(int argc, char* argv[], bool step_optional,
     // FOR TESTING: print args
     for(int i = 0; i < argc; i++)
     {
-        printf("%s ", argv[argc]);
+        printf("%s ", argv[i]);
     }
     printf("\n");
     return 15; // for test
