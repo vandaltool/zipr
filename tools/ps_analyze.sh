@@ -551,7 +551,7 @@ perform_step()
 		$command 2>&1 | tee $logfile
 		command_exit=${PIPESTATUS[0]} # this funkiness gets the exit code of $command, not tee
 	else
-		echo "$command"|grep "\./lib$step\.so " > /dev/null
+		echo "$command"|grep "lib$step\.so " > /dev/null
 		grep_res=$?
 		if [ $grep_res -eq 0 ] ; then
 			echo "$user_critical_steps"|egrep " $step " > /dev/null
@@ -685,7 +685,7 @@ do_plugins()
 		elif [ -x $plugin_path/$stepname.sh ]; then
 			perform_step $stepname none $plugin_path/$stepname.sh $cloneid  $value
 		elif [ -x $plugin_path/lib$stepname.so ]; then
-			perform_step $stepname none ./lib$stepname.so $cloneid $value
+			perform_step $stepname none lib$stepname.so $cloneid $value
 		else
 			echo "*********************************************************"
 			echo "*********************************************************"
@@ -1073,7 +1073,7 @@ if [ $record_stats -eq 1 ]; then
 fi
 
 # build basic IR
-perform_step fill_in_cfg mandatory ./libfill_in_cfg.so $varid $step_options_fill_in_cfg
+perform_step fill_in_cfg mandatory libfill_in_cfg.so $varid $step_options_fill_in_cfg
 perform_step fill_in_safefr mandatory $SECURITY_TRANSFORMS_HOME/bin/fill_in_safefr.exe $varid 
 perform_step fill_in_indtargs mandatory $SECURITY_TRANSFORMS_HOME/bin/fill_in_indtargs.exe $varid $step_options_fill_in_indtargs
 
