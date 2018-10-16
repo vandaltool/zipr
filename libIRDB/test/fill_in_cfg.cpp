@@ -659,7 +659,7 @@ int PopulateCFG::ExecuteStep(IRDBObjects_t *irdb_objects)
 
 
 extern "C"
-Transform_SDK::TransformStep_t* TransformStepFactory(void)
+Transform_SDK::TransformStep_t* GetTransformStep(void)
 {
 	return new PopulateCFG();
 }

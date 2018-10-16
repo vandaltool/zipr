@@ -22,11 +22,16 @@ namespace Transform_SDK
 			virtual int ExecuteStep(libIRDB::IRDBObjects_t *irdb_objects)
 			{
 				return 0; // success
+			}
+			
+			virtual ~TransformStep_t(void)
+			{
+				// do nothing 
 			}		
 	};
 }
 
 extern "C"
-Transform_SDK::TransformStep_t* TransformStepFactory(void);    
+Transform_SDK::TransformStep_t* GetTransformStep(void);    
 
 #endif

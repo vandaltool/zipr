@@ -38,6 +38,14 @@ int main(int argc, char *argv[])
     char buf[MAX_BUF];
     buf[0] = '\0';
 
+    const char* base_path = getenv("SECURITY_TRANSFORMS_HOME");
+    if(base_path == NULL)
+    {
+	cerr << "Environment variables not set." << endl;
+	return -1;
+    }
+    string plugin_path (string(base_path).append("/plugins_install/"));
+
     fd = open(input_pipe, O_RDONLY);
     if (fd == -1) {
         cerr << "Not a valid pipe name." << endl;
@@ -96,31 +104,36 @@ int main(int argc, char *argv[])
                         *end = '\0';
                         string command (buf+22);
                         
-                        size_t step_path_end = command.find_first_of(" ");
-                        char* step_path;
-                        if(step_path_end == string::npos)
+                        size_t step_name_end = command.find_first_of(" ");
+                        char* step_name;
+                        if(step_name_end == string::npos)
                         {
-                            step_path = (buf+22);
+                            step_name = (buf+22);
                         }
                         else
                         {
-                            step_path = (char*) (command.substr(0, step_path_end)).c_str();
+                            step_name = (char*) (command.substr(0, step_name_end)).c_str();
                         }
-                        void* dlhdl = dlopen(step_path, RTLD_LAZY);
+
+                        void* dlhdl = dlopen((plugin_path.append(step_name)).c_str(), RTLD_NOW);
                         if(dlhdl == NULL)
                         {
                             res = write(outfd, (void*) "STEP_UNSUPPORTED\n", 17);
                         }
                         else
-                        {
-			    TransformStep_t* (*func)(void);
-                            func = (TransformStep_t* (*)(void)) dlsym(dlhdl, "TransformStepFactory");
-                            if(func == NULL)
+                  	{
+                            void* sym = dlsym(dlhdl, "GetTransformStep"); 
+                            if(sym == NULL)
                             {
 			        res = write(outfd, (void*) "STEP_UNSUPPORTED\n", 17);
                             }
                             else
                             {
+				TransformStep_t* (*func)(void);
+				func = (TransformStep_t* (*)(void)) sym;
+				TransformStep_t* the_step = (*func)();
+				assert(the_step != NULL);
+
 	                        int argc = (int) count(command.begin(), command.end(), ' ')+1;
                                 char** argv = (char**) malloc(argc);
                                 argv[0] = buf+22;
@@ -139,13 +152,14 @@ int main(int argc, char *argv[])
                                 {
                                     step_optional = false;
                                 }
-				cout << "GOT HERE 3" << endl;
                                 int step_retval = 0;
+
 				if(exec_mode == Mode::DEFAULT)
-				    step_retval = execute_step(argc, argv, step_optional, shared_objects, (*func)());
-                                free(argv);
+				    step_retval = execute_step(argc, argv, step_optional, shared_objects, the_step);
+                                delete the_step;
+				free(argv);
                                 dlclose(dlhdl);
-                                res = write(outfd, (void*) "STEP_RETVAL\n", 14);
+                                res = write(outfd, (void*) "STEP_RETVAL\n", 12);
                                 assert(sizeof(step_retval) == 4);
                             }
                         }

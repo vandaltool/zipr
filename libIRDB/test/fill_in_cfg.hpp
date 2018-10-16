@@ -27,13 +27,19 @@ class PopulateCFG : public Transform_SDK::TransformStep_t
        
             elfiop = NULL;
         }
+
+	~PopulateCFG(void) override
+	{
+		// do nothing (this class uses shared IRDB objects that
+		// are not managed by this class).
+	}
 	
-	std::string GetStepName(void)
+	std::string GetStepName(void) override
 	{
 		return std::string("fill_in_cfg");
 	}
-        int ParseArgs(int argc, char* argv[]);
-	int ExecuteStep(libIRDB::IRDBObjects_t*);
+        int ParseArgs(int argc, char* argv[]) override;
+	int ExecuteStep(libIRDB::IRDBObjects_t*) override;
     
     private: // methods
         
