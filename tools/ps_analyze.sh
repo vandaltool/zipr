@@ -554,9 +554,7 @@ perform_step()
 		echo "$command"|grep "lib$step\.so " > /dev/null
 		grep_res=$?
 		if [ $grep_res -eq 0 ] ; then
-			echo "$user_critical_steps"|egrep " $step " > /dev/null
-			grep_res=$?
-			if [ $grep_res -eq 0 ] ; then
+			if [[ "$(stop_if_error $step)" != "0" ]]; then
 				echo "EXECUTE_STEP CRITICAL $command" > $input_pipe
 			else
 				echo "EXECUTE_STEP OPTIONAL $command" > $input_pipe
