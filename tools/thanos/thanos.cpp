@@ -272,5 +272,5 @@ int execute_step(int argc, char* argv[], bool step_optional, Mode exec_mode,
         }
     }
     
-    return 12;
+    return step_error;
 }

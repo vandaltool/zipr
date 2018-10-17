@@ -247,7 +247,7 @@ int IRDBObjects_t::DeleteVariant(db_id_t variant_id)
 int IRDBObjects_t::WriteBackAll(void)
 {
         int ret_status = 0;
-   	cout << "Writing file IRs" << endl; 
+
         // Write back FileIRs
         for(map<db_id_t, pair<shared_ptr<File_t>, shared_ptr<FileIR_t>>>::iterator
                 file_it = file_IR_map.begin(); 

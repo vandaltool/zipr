@@ -605,6 +605,8 @@ int PopulateCFG::ParseArgs
                     fix_landing_pads = false;
             }
     }
+
+    cout<<"fix_landing_pads="<<fix_landing_pads<<endl;
     
     return 0;
 }
