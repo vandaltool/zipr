@@ -18,8 +18,11 @@ using namespace Transform_SDK;
 
 #define MAX_BUF 1024
 
-int execute_step(int argc, char* argv[], bool step_optional, 
+enum class Mode { DEBUG, VERBOSE, DEFAULT };
+
+int execute_step(int argc, char* argv[], bool step_optional, Mode exec_mode, 
                  IRDBObjects_t* shared_objects, TransformStep_t* the_step);
+
 
 // The toolchain driver script ps_analyze.sh communicates
 // with this program via two pipes. This allows DB objects to be held
@@ -60,12 +63,9 @@ int main(int argc, char *argv[])
     }
    
     // Main loop where ps_analyze communicates with thanos.exe
-    // to execute steps that conform to the Transform Step SDK.
-    enum class Mode { DEBUG, VERBOSE, DEFAULT };
-    
-    Mode exec_mode = Mode::DEFAULT;
-    IRDBObjects_t* shared_objects = new IRDBObjects_t();
-    
+    // to execute steps that conform to the Transform Step SDK.    
+    Mode exec_mode = Mode::DEBUG;
+    IRDBObjects_t* shared_objects = new IRDBObjects_t();    
     while (true) 
     {
         if((num_bytes_read = read(in_pipe_fd, buf, MAX_BUF)) > 0)
@@ -157,8 +157,7 @@ int main(int argc, char *argv[])
                                 }
                                 int step_retval = 0;
 
-				if(exec_mode == Mode::DEFAULT)
-				    step_retval = execute_step(argc, argv, step_optional, shared_objects, the_step);
+				step_retval = execute_step(argc, argv, step_optional, exec_mode, shared_objects, the_step);
                                 delete the_step;
 				free(argv);
                                 dlclose(dlhdl);
@@ -200,7 +199,7 @@ int main(int argc, char *argv[])
 }
 
 
-int execute_step(int argc, char* argv[], bool step_optional, 
+int execute_step(int argc, char* argv[], bool step_optional, Mode exec_mode, 
                  IRDBObjects_t* shared_objects, TransformStep_t* the_step)
 {
     int parse_retval = the_step->ParseArgs(argc, argv);
@@ -209,9 +208,68 @@ int execute_step(int argc, char* argv[], bool step_optional,
         return parse_retval;
     }
     
+    pqxxDB_t* pqxx_interface = shared_objects->GetDBInterface();
     if(step_optional)
     {
-        shared_objects->WriteBackAll();        
+        int error = shared_objects->WriteBackAll();
+        if(error)
+        {
+            return -1; // the failure must be from a critical step, abort
+        }
+        else
+        {
+            // commit changes (in case this step fails) and reset interface
+            pqxx_interface->Commit();
+            pqxx_interface = shared_objects->ResetDBInterface();
+        }
+    }
+
+    int step_error = the_step->ExecuteStep(shared_objects);
+
+    if(step_error)
+    {
+        if(step_optional)
+        {
+            // delete all shared items without writing
+            // next step will have to get the last "good" version from DB
+            shared_objects->DeleteAll();
+        }
+        else
+        {
+            return -1; // critical step failed, abort
+        }
+    }
+    
+    if(step_optional)
+    {
+        // write changes to DB to see if it succeeds
+        int error = shared_objects->WriteBackAll();
+        if(error)
+        {
+            // abort changes by resetting DB interface
+            pqxx_interface = shared_objects->ResetDBInterface();
+        }
+        else if(exec_mode == Mode::DEBUG)
+        {
+            // commit changes (in case next step fails) and reset interface 
+            pqxx_interface->Commit();
+            pqxx_interface = shared_objects->ResetDBInterface();
+        }
+    }
+    else if(exec_mode == Mode::DEBUG)
+    {
+        // write changes to DB in case next step fails
+        int error = shared_objects->WriteBackAll();
+        if(error)
+        {
+            return -1; // critical step failed, abort
+        }
+        else
+        {
+            // commit changes (in case next step fails) and reset interface 
+            pqxx_interface->Commit();
+            pqxx_interface = shared_objects->ResetDBInterface();
+        }
     }
     
     return 12;

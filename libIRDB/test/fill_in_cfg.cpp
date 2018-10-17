@@ -614,6 +614,9 @@ int PopulateCFG::ExecuteStep(IRDBObjects_t *irdb_objects)
     try 
 	{
 		pqxx_interface = irdb_objects->GetDBInterface();
+		// now set the DB interface for THIS PLUGIN LIBRARY -- VERY IMPORTANT
+		BaseObj_t::SetInterface(pqxx_interface);	
+
 		shared_ptr<VariantID_t> variant = irdb_objects->AddVariant(variant_id);
 		for(File_t* file : variant->GetFiles())
 		{

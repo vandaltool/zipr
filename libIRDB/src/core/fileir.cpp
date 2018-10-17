@@ -752,7 +752,7 @@ void FileIR_t::WriteToDB()
 		}
 	}
 	dbintr->IssueQuery(q);
-
+	
 
 // write out functions 
 	auto withHeader=true;
@@ -776,7 +776,6 @@ void FileIR_t::WriteToDB()
 		W_addrs << a->WriteToDB(fileptr,j,withHeader);
 	}
 	W_addrs.complete();
-
 
 // write out instructions
 
@@ -823,13 +822,11 @@ void FileIR_t::WriteToDB()
 			}
 		}
 
-
 		const auto &insn_values=(*i)->WriteToDB(fileptr,j);
 		W << insn_values;
 
 	}
 	W.complete();
-
 
 
 // icfs 

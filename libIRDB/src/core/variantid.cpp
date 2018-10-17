@@ -63,8 +63,7 @@ VariantID_t::VariantID_t(db_id_t pid) : BaseObj_t(NULL)
 	q+=to_string(pid);
 	q+=";";
 
-
-	try 
+       	try 
 	{
 		BaseObj_t::dbintr->IssueQuery(q);
 	}
@@ -76,7 +75,7 @@ VariantID_t::VariantID_t(db_id_t pid) : BaseObj_t(NULL)
 
 		throw DatabaseError_t(DatabaseError_t::VariantTableNotRegistered); 
 	};
-
+	
 	if(BaseObj_t::dbintr->IsDone())
 		throw DatabaseError_t(DatabaseError_t::VariantNotInDatabase); 
 

@@ -43,6 +43,8 @@ shared_ptr<FileIR_t> IRDBObjects_t::AddFileIR(db_id_t variant_id, db_id_t file_i
                 it->second.second = make_shared<FileIR_t>(the_variant, the_file);
                 assert(it->second.second != NULL);
             }
+	    // make sure static variable is set in the calling module -- IMPORTANT
+	    (it->second.second)->SetArchitecture();
             return it->second.second;
         }
 }
@@ -61,7 +63,9 @@ int IRDBObjects_t::WriteBackFileIR(db_id_t file_id)
             try
             {
                 cout<<"Writing changes for "<<the_file->GetURL()<<endl;
-                (it->second.second)->WriteToDB();
+		// make sure static variable is set in the calling module -- IMPORTANT
+                (it->second.second)->SetArchitecture();
+	        (it->second.second)->WriteToDB();
             }
             catch (DatabaseError_t pnide)
             {
@@ -123,14 +127,15 @@ bool IRDBObjects_t::FilesAlreadyPresent(set<File_t*> the_files)
 
 shared_ptr<VariantID_t> IRDBObjects_t::AddVariant(db_id_t variant_id)
 {
-        map<db_id_t, shared_ptr<VariantID_t>>::iterator var_it = variant_map.find(variant_id);        
+        map<db_id_t, shared_ptr<VariantID_t>>::iterator var_it = variant_map.find(variant_id);      
+
         if(var_it != variant_map.end())
         {
             return var_it->second;
         }
-    
+
         shared_ptr<VariantID_t> the_variant = make_shared<VariantID_t>(variant_id);      
-        
+
         assert(the_variant->IsRegistered()==true);
         // disallow variants that share shallow copies to both be read in
         // to prevent desynchronization. 
@@ -138,7 +143,7 @@ shared_ptr<VariantID_t> IRDBObjects_t::AddVariant(db_id_t variant_id)
         
         pair<db_id_t, shared_ptr<VariantID_t>> var_pair = make_pair(variant_id, the_variant);
         variant_map.insert(var_pair);
-        
+
         // add files
         for(set<File_t*>::iterator it=the_variant->GetFiles().begin();
             it!=the_variant->GetFiles().end();
@@ -242,7 +247,7 @@ int IRDBObjects_t::DeleteVariant(db_id_t variant_id)
 int IRDBObjects_t::WriteBackAll(void)
 {
         int ret_status = 0;
-    
+   	cout << "Writing file IRs" << endl; 
         // Write back FileIRs
         for(map<db_id_t, pair<shared_ptr<File_t>, shared_ptr<FileIR_t>>>::iterator
                 file_it = file_IR_map.begin(); 
@@ -256,7 +261,7 @@ int IRDBObjects_t::WriteBackAll(void)
                 ret_status = -1;
             }
         }
-    
+
         // Write back Variants
         for(map<db_id_t, shared_ptr<VariantID_t>>::iterator
                 var_it = variant_map.begin(); 

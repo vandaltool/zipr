@@ -18,7 +18,6 @@ DecodedInstructionCapstone_t::CapstoneHandle_t* DecodedInstructionCapstone_t::cs
 
 DecodedInstructionCapstone_t::CapstoneHandle_t::CapstoneHandle_t(FileIR_t* firp)
 {
-
 	const auto width=FileIR_t::GetArchitectureBitWidth();
 	const auto mode = (width==64) ? CS_MODE_64: CS_MODE_32;
 	auto err = cs_open(CS_ARCH_X86, mode,  &handle);
