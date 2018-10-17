@@ -17,7 +17,7 @@ class IRDBObjects_t
 		IRDBObjects_t() 
                 {
                     // set up interface to the sql server
-                    BaseObj_t::SetInterface(&pqxx_interface);
+                    BaseObj_t::SetInterface(pqxx_interface);
                 };
 		~IRDBObjects_t();
 
@@ -38,6 +38,7 @@ class IRDBObjects_t
                 std::shared_ptr<File_t> GetFile(db_id_t file_id);
                 // Get DB interface
                 pqxxDB_t* GetDBInterface();
+		pqxxDB_t* ResetDBInterface();
 
 		// Write back variants and file IRs. Does NOT commit changes.
                 int WriteBackFileIR(db_id_t file_id);
@@ -47,7 +48,7 @@ class IRDBObjects_t
                 int DeleteAll(void);
 		
 	private:
-                pqxxDB_t pqxx_interface;
+                pqxxDB_t *pqxx_interface = new pqxxDB_t();
 		// maps for speed of finding needed files, file IRs and/or variants
 		// that have already been read from the DB
                 

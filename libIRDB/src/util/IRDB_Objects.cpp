@@ -13,7 +13,8 @@ using namespace std;
 
 IRDBObjects_t::~IRDBObjects_t()
 {
-        // All dynamically allocated members (DB objects)
+	delete pqxx_interface;
+        // All dynamically allocated DB objects
         // are held as shared pointers and don't need to be 
         // explicitly deleted.
 }
@@ -310,6 +311,15 @@ shared_ptr<File_t> IRDBObjects_t::GetFile(db_id_t file_id)
 
 pqxxDB_t* IRDBObjects_t::GetDBInterface()
 {
-        return &pqxx_interface;
+        return pqxx_interface;
+}
+
+
+pqxxDB_t* IRDBObjects_t::ResetDBInterface()
+{
+	delete pqxx_interface;  // Aborts if Commit() has not been called 
+	pqxx_interface = new pqxxDB_t();
+	BaseObj_t::SetInterface(pqxx_interface);
+	return pqxx_interface;
 }
 

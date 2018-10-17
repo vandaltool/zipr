@@ -21,18 +21,19 @@ using namespace Transform_SDK;
 int execute_step(int argc, char* argv[], bool step_optional, 
                  IRDBObjects_t* shared_objects, TransformStep_t* the_step);
 
-// The toolchain driver scripts such as ps_analyze communicate
-// with this program via a pipe. This allows DB objects to be held
-// in memory and shared across steps without rewriting the entire ps_analyze
+// The toolchain driver script ps_analyze.sh communicates
+// with this program via two pipes. This allows DB objects to be held
+// in memory and shared across steps without rewriting the entire ps_analyze.sh
 // script in C++.
 int main(int argc, char *argv[])
 {
     if(argc < 3)
     {
         cerr << "Usage: thanos.exe <input pipe name> <output pipe name>" << endl;
+        return 1;
     }
     
-    int fd, i;
+    int in_pipe_fd, out_pipe_fd, num_bytes_read;
     char* input_pipe = argv[1];
     char* output_pipe = argv[2];
     char buf[MAX_BUF];
@@ -42,23 +43,22 @@ int main(int argc, char *argv[])
     if(base_path == NULL)
     {
 	cerr << "Environment variables not set." << endl;
-	return -1;
+	return 1;
     }
     string plugin_path (string(base_path).append("/plugins_install/"));
 
-    fd = open(input_pipe, O_RDONLY);
-    if (fd == -1) {
+    in_pipe_fd = open(input_pipe, O_RDONLY);
+    if (in_pipe_fd == -1) {
         cerr << "Not a valid pipe name." << endl;
         return 1;
     }
 
-    int outfd = open(output_pipe, O_WRONLY);
-    if (outfd == -1) {
+    out_pipe_fd = open(output_pipe, O_WRONLY);
+    if (out_pipe_fd == -1) {
         cerr << "Not a valid pipe name." << endl;
         return 1;
     }
    
-    ssize_t res = 1; 
     // Main loop where ps_analyze communicates with thanos.exe
     // to execute steps that conform to the Transform Step SDK.
     enum class Mode { DEBUG, VERBOSE, DEFAULT };
@@ -68,9 +68,9 @@ int main(int argc, char *argv[])
     
     while (true) 
     {
-        if((i = read(fd, buf, MAX_BUF)) > 0)
+        if((num_bytes_read = read(in_pipe_fd, buf, MAX_BUF)) > 0)
         {
-            buf[i] = '\0';
+            buf[num_bytes_read] = '\0';
             if(strncmp(buf, "SET_MODE", 8) == 0)
             {
                 if(strcmp(buf+8, " DEBUG") == 0)
@@ -87,7 +87,9 @@ int main(int argc, char *argv[])
                 }
                 else
                 {
-                    res = write(outfd, (void*) "ERR_INVALID_CMD\n", 16);
+                    ssize_t write_res = write(out_pipe_fd, (void*) "ERR_INVALID_CMD\n", 16);
+                    if(write_res == -1)
+                        return -1;
                 }
             }
             else if(strncmp(buf, "EXECUTE_STEP", 12) == 0)
@@ -98,7 +100,9 @@ int main(int argc, char *argv[])
                     char *command_end = strchr(buf, '\n');
                     if (!command_end || (command_end == command_start))
                     {
-                        res = write(outfd, (void*) "ERR_INVALID_CMD\n", 16);
+                        ssize_t write_res = write(out_pipe_fd, (void*) "ERR_INVALID_CMD\n", 16);
+                        if(write_res == -1)
+                            return -1;
                     }
                     else
                     {
@@ -121,18 +125,23 @@ int main(int argc, char *argv[])
                         }
                         argv = (char**) realloc(argv, argc);
 
+                        // load transform step plugin
 			char* step_name = argv[0];                        
                         void* dlhdl = dlopen((plugin_path.append(step_name)).c_str(), RTLD_NOW);
                         if(dlhdl == NULL)
                         {
-                            res = write(outfd, (void*) "STEP_UNSUPPORTED\n", 17);
+                            ssize_t write_res = write(out_pipe_fd, (void*) "STEP_UNSUPPORTED\n", 17);
+                            if(write_res == -1)
+                                return -1;
                         }
                         else
                   	{
                             void* sym = dlsym(dlhdl, "GetTransformStep"); 
                             if(sym == NULL)
                             {
-			        res = write(outfd, (void*) "STEP_UNSUPPORTED\n", 17);
+			        ssize_t write_res = write(out_pipe_fd, (void*) "STEP_UNSUPPORTED\n", 17);
+                                if(write_res == -1)
+                                    return -1;
                             }
                             else
                             {
@@ -153,15 +162,20 @@ int main(int argc, char *argv[])
                                 delete the_step;
 				free(argv);
                                 dlclose(dlhdl);
-                                res = write(outfd, (void*) "STEP_RETVAL\n", 12);
-                                assert(sizeof(step_retval) == 4);
+
+				string step_retval_str(to_string(step_retval)+"\n");
+                                ssize_t write_res = write(out_pipe_fd, (void*) step_retval_str.c_str(), step_retval_str.size()); // size() excludes terminating null character in this case, which is what we want
+                                if(write_res == -1)
+                                    return -1;
                             }
                         }
                     }
                 }
                 else
                 {
-                    res = write(outfd, (void*) "ERR_INVALID_CMD\n", 16);
+                    ssize_t write_res = write(out_pipe_fd, (void*) "ERR_INVALID_CMD\n", 16);
+                    if(write_res == -1)
+                        return -1;
                 }
             }
             else if(strcmp(buf, "TERMINATE") == 0)
@@ -171,19 +185,18 @@ int main(int argc, char *argv[])
             }
             else
             {
-                res = write(outfd, (void*) "ERR_INVALID_CMD\n", 16);
+                ssize_t write_res = write(out_pipe_fd, (void*) "ERR_INVALID_CMD\n", 16);
+                if(write_res == -1)
+                    return -1;
             }
         }
     }
 
-    close(fd);
-    close(outfd);
+    close(in_pipe_fd);
+    close(out_pipe_fd);
     delete shared_objects;
 	
-    if(res)
-        return 0;
-    else
-        return -1;
+    return 0;
 }
 
 
@@ -201,11 +214,5 @@ int execute_step(int argc, char* argv[], bool step_optional,
         shared_objects->WriteBackAll();        
     }
     
-    // FOR TESTING: print args
-    for(int i = 0; i < argc; i++)
-    {
-        printf("%s ", argv[i]);
-    }
-    printf("\n");
-    return 15; // for test
+    return 12;
 }

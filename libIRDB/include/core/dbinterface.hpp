@@ -37,6 +37,7 @@ class DBinterface_t
 {
 	public:
 		DBinterface_t() {};
+		virtual ~DBinterface_t() {};
                 virtual void IssueQuery(std::string query)=0;
                 virtual void MoveToNextRow()=0;
                 virtual std::string GetResultColumn(std::string colname)=0;
