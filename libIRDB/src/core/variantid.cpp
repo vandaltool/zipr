@@ -40,13 +40,10 @@ VariantID_t::VariantID_t() :
 
 VariantID_t::~VariantID_t()
 {
-	for(std::set<File_t*>::iterator 
-		it = files.begin();
-		it != files.end();
-		++it
-	   )	
+	cout << "VARIANT ID DESTRUCTOR" << endl;
+	for(auto it : files)	
 	{
-		delete *it;
+		delete it;
 	}
 }
 

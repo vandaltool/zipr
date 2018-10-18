@@ -49,10 +49,10 @@ class VariantID_t : public BaseObj_t
 	File_t* GetMainFile() const;
 
 	friend std::ostream& libIRDB::operator<<(std::ostream& out, const VariantID_t& pid);
-	friend class FileIR_T;
-	friend class Function_t;
-	friend class AddressID_t;
-	friend class Instruction_t;
+	//friend class FileIR_T;
+	//friend class Function_t;
+	//friend class AddressID_t;
+	//friend class Instruction_t;
 
 	db_id_t GetOriginalVariantID() const { return orig_pid;}
 	

@@ -86,14 +86,14 @@ FileIR_t::FileIR_t(const VariantID_t &newprogid, File_t* fid) : BaseObj_t(NULL)
 	
 {
 	orig_variant_ir_p=NULL;
-	progid=newprogid;	
+	progid=(VariantID_t*) &newprogid;	
 
 	if(fid==NULL)
 		fileptr=newprogid.GetMainFile();
 	else
 		fileptr=fid;
 
-	if(progid.IsRegistered())
+	if(progid->IsRegistered())
 	{
 		ReadFromDB();
 		SetArchitecture();

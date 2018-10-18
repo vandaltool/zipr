@@ -123,9 +123,9 @@ class FileIR_t : public BaseObj_t
 		RelocationSet_t   relocs;
 		TypeSet_t         types;
 		DataScoopSet_t    scoops;
-		VariantID_t       progid;
+		VariantID_t*      progid;    // Not owned by fileIR
 		ICFSSet_t         icfs_set;
-		File_t*           fileptr;
+		File_t*           fileptr;   // Owned by variant, not fileIR
 		EhProgramSet_t    eh_pgms;
 		EhCallSiteSet_t   eh_css;
 
