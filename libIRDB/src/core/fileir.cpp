@@ -82,18 +82,18 @@ static virtual_offset_t strtovo(std::string s)
 }
 
 // Create a Variant from the database
-FileIR_t::FileIR_t(const VariantID_t &newprogid, File_t* fid) : BaseObj_t(NULL)
+FileIR_t::FileIR_t(const VariantID_t &newprogid, File_t* fid) 
+			: BaseObj_t(NULL), progid((VariantID_t&) newprogid)
 	
 {
 	orig_variant_ir_p=NULL;
-	progid=(VariantID_t*) &newprogid;	
 
 	if(fid==NULL)
 		fileptr=newprogid.GetMainFile();
 	else
 		fileptr=fid;
 
-	if(progid->IsRegistered())
+	if(progid.IsRegistered())
 	{
 		ReadFromDB();
 		SetArchitecture();
