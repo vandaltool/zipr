@@ -543,24 +543,36 @@ perform_step()
 	echo -n Performing step "$step" [dependencies=$mandatory] ...
 	starttime=`$PS_DATE`
 
-	# If verbose is on, tee to a file 
-	if [ ! -z "$DEBUG_STEPS" ]; then
-		$command 
-		command_exit=$?
-	elif [ ! -z "$VERBOSE" ]; then
-		$command 2>&1 | tee $logfile
-		command_exit=${PIPESTATUS[0]} # this funkiness gets the exit code of $command, not tee
-	else
-		echo "$command"|grep "lib$step\.so " > /dev/null
-		grep_res=$?
-		if [ $grep_res -eq 0 ] ; then
-			if [[ "$(stop_if_error $step)" != "0" ]]; then
-				echo "EXECUTE_STEP CRITICAL $command" > $input_pipe
-			else
-				echo "EXECUTE_STEP OPTIONAL $command" > $input_pipe
-			fi	
-			read -r thanos_res < $output_pipe
-			echo "Response was $thanos_res"
+	# First, check if using Transform_Step plugin architecture
+	echo "$command"|grep "lib$step\.so " > /dev/null
+        grep_res=$?
+        if [ $grep_res -eq 0 ] ; then
+                if [[ "$(stop_if_error $step)" != "0" ]]; then
+                        echo "EXECUTE_STEP CRITICAL $command" > $input_pipe
+                else
+                        echo "EXECUTE_STEP OPTIONAL $command" > $input_pipe
+                fi
+
+                read -r thanos_res < $output_pipe
+
+                if [ "$thanos_res" = "ERR_INVALID_CMD"  ]; then
+                        echo Internal Transform_Step plugin architecture error.
+                        echo Exiting ps_analyze early.
+                        exit -1
+                elif [ "$thanos_res" = "STEP_UNSUPPORTED" ]; then
+                        command_exit=127 # command not found
+                else
+                        command_exit=$thanos_res
+		fi
+        else
+		# Otherwise, do things the old way (step is its own process)
+		# If verbose is on, tee to a file 
+		if [ ! -z "$DEBUG_STEPS" ]; then
+			$command 
+			command_exit=$?
+		elif [ ! -z "$VERBOSE" ]; then
+			$command 2>&1 | tee $logfile
+			command_exit=${PIPESTATUS[0]} # this funkiness gets the exit code of $command, not tee
 		else
 			$command > $logfile 2>&1 
 			command_exit=$?
