@@ -205,11 +205,10 @@ int main(int argc, char *argv[])
                         return -1;
                 }
             }
-            else if(strcmp(buf, "TERMINATE") == 0)
+	    else if(strcmp(buf, "TERMINATE") == 0)
             {
-                // do thanos stuff
-                break;
-            }
+                    break;
+            } 
             else
             {
                 ssize_t write_res = write(out_pipe_fd, (void*) "ERR_INVALID_CMD\n", 16);
