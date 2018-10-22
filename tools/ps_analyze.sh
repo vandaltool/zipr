@@ -557,7 +557,7 @@ perform_step()
 
                 if [ "$thanos_res" = "ERR_INVALID_CMD"  ]; then
                         echo Internal Transform_Step plugin architecture error.
-                        echo Exiting ps_analyze early.
+                        echo Unrecognized EXECUTE_STEP command. Exiting ps_analyze early.
                         exit -1
                 elif [ "$thanos_res" = "STEP_UNSUPPORTED" ]; then
                         command_exit=127 # command not found
@@ -1022,6 +1022,23 @@ output_pipe="thanos_output"
 
 $SECURITY_TRANSFORMS_HOME/plugins_install/thanos.exe $input_pipe $output_pipe &
 thanos_pid=$!
+
+# set thanos execution mode
+if [ ! -z "$DEBUG_STEPS" ]; then
+        printf "SET_MODE DEBUG" > $input_pipe
+elif [ ! -z "$VERBOSE" ]; then
+	printf "SET_MODE VERBOSE" > $input_pipe
+else
+	printf "SET_MODE DEFAULT" > $input_pipe
+fi
+
+read -r mode_set_res < $output_pipe
+
+if [ "$mode_set_res" != "MODE_SET_OK" ]; then
+	echo Internal Transform_Step plugin architecture error.
+	echo Mode set failed. Exiting ps_analyze early.
+	exit -1
+fi
 
 # Make sure thanos is always exited
 function exit_thanos {
