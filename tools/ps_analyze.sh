@@ -508,10 +508,29 @@ perform_step()
 	if [ "$step" = "$stop_before_step" ]; then 
 		echo "ps_analyze has been asked to stop before step $step."
 		echo "command is:  $command"
+
+		printf "COMMIT_ALL" > $input_pipe
+                read -r commit_res < $output_pipe
+                if [ "$commit_res" != "COMMIT_ALL_OK"  ]; then
+                        echo A critical step was necessary, but failed.
+                        echo To know exactly which step failed, source set the DEBUG_STEPS env var.
+                        exit -1;
+                fi
+		printf "TERMINATE" > $input_pipe
+
 		exit 1
 	fi
 	if [ "$step" = "$dump_before_step" ]; then 
 		echo " ---- ps_analyze has been asked to dump before step $step."
+
+		printf "COMMIT_ALL" > $input_pipe
+                read -r commit_res < $output_pipe
+                if [ "$commit_res" != "COMMIT_ALL_OK"  ]; then
+			echo A critical step was necessary, but failed.  Exiting ps_analyze early.
+			echo To know exactly which step failed, source set the DEBUG_STEPS env var.
+                        exit -1;                        
+		fi
+
 		$SECURITY_TRANSFORMS_HOME/plugins_install/dump_map.exe $cloneid > logs/dump_before.log
 	fi
 
@@ -642,10 +661,29 @@ perform_step()
 	if [ "$step" = "$stop_after_step" ]; then 
 		echo "ps_analyze has been asked to stop after step $step."
 		echo "command is:  $command"
+
+		printf "COMMIT_ALL" > $input_pipe
+                read -r commit_res < $output_pipe
+                if [ "$commit_res" != "COMMIT_ALL_OK"  ]; then
+                        echo A critical step was necessary, but failed.
+                        echo To know exactly which step failed, source set the DEBUG_STEPS env var.
+                        exit -1;
+                fi
+		printf "TERMINATE" > $input_pipe
+
 		exit 1
 	fi
 	if [ "$step" = "$dump_after_step" ]; then 
 		echo " ---- ps_analyze has been asked to dump after step $step."
+
+		printf "COMMIT_ALL" > $input_pipe
+                read -r commit_res < $output_pipe
+                if [ "$commit_res" != "COMMIT_ALL_OK"  ]; then
+                        echo A critical step was necessary, but failed.  Exiting ps_analyze early.
+                        echo To know exactly which step failed, source set the DEBUG_STEPS env var.
+                        exit -1;
+                fi
+
 		$SECURITY_TRANSFORMS_HOME/plugins_install/dump_map.exe $cloneid > logs/dump_after.log
 	fi
 	return $command_exit
@@ -1051,8 +1089,8 @@ fi
 # Make sure thanos is always exited
 function exit_thanos {
 	# will do the job for emergency exits
-	kill $thanos_pid
-	wait $thanos_pid 2>/dev/null
+	kill $thanos_pid &> /dev/null
+	wait $thanos_pid &> /dev/null
 	rm -f $input_pipe
 	rm -f $output_pipe
 }
@@ -1331,7 +1369,17 @@ cd $newdir
 python $PEASOUP_HOME/tools/gather_stats.py logs/*.log > logs/stats.json
 
 # make sure we only do this once there are no more updates to the peasoup_dir
-perform_step installer none $PEASOUP_HOME/tools/do_installer.sh $PWD $protected_exe 
+perform_step installer none $PEASOUP_HOME/tools/do_installer.sh $PWD $protected_exe
+
+# exit thanos cleanly
+printf "COMMIT_ALL" > $input_pipe
+read -r commit_res < $output_pipe
+if [ "$commit_res" != "COMMIT_ALL_OK"  ]; then
+        echo A critical step was necessary, but failed.
+        echo To know exactly which step failed, source set the DEBUG_STEPS env var.
+        errors=1;
+fi
+printf "TERMINATE" > $input_pipe 
 
 cd - > /dev/null 2>&1
 
