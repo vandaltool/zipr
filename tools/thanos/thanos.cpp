@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
    
     // Main loop where ps_analyze communicates with thanos.exe
     // to execute steps that conform to the Transform Step SDK.    
-    Mode exec_mode = Mode::DEBUG;
+    Mode exec_mode = Mode::DEFAULT;
     IRDBObjects_t* shared_objects = new IRDBObjects_t();    
     while (true) 
     {
@@ -90,7 +90,11 @@ int main(int argc, char *argv[])
                     ssize_t write_res = write(out_pipe_fd, (void*) "ERR_INVALID_CMD\n", 16);
                     if(write_res == -1)
                         return -1;
+		    continue;
                 }
+		ssize_t write_res = write(out_pipe_fd, (void*) "MODE_SET_OK\n", 12);
+                if(write_res == -1)
+                    return -1;
             }
             else if(strncmp(buf, "EXECUTE_STEP", 12) == 0)
             {
