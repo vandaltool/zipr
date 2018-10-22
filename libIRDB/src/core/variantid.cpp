@@ -40,7 +40,6 @@ VariantID_t::VariantID_t() :
 
 VariantID_t::~VariantID_t()
 {
-	cout << "VARIANT ID DESTRUCTOR" << endl;
 	for(auto it : files)	
 	{
 		delete it;

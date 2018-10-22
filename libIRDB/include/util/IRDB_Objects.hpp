@@ -33,9 +33,6 @@ class IRDBObjects_t
                 std::shared_ptr<VariantID_t> AddVariant(db_id_t variant_id);
                 int DeleteVariant(db_id_t variant_id);
                 
-                // get a file
-                // returns shared_ptr(NULL) if no such file
-                std::shared_ptr<File_t> GetFile(db_id_t file_id);
                 // Get DB interface
                 pqxxDB_t* GetDBInterface();
 		pqxxDB_t* ResetDBInterface();
@@ -55,7 +52,7 @@ class IRDBObjects_t
                 // maps variant id to variant
 		std::map<db_id_t, std::shared_ptr<VariantID_t>> variant_map;
                 // maps file id to (file, file ir)
-		std::map<db_id_t, std::pair<std::shared_ptr<File_t>, std::shared_ptr<FileIR_t>>> file_IR_map;
+		std::map<db_id_t, std::pair<File_t*, std::shared_ptr<FileIR_t>>> file_IR_map;
                 
                 // minor helpers (used to check assertions)
                 bool FilesAlreadyPresent(std::set<File_t*> the_files);

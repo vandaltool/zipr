@@ -22,7 +22,7 @@ IRDBObjects_t::~IRDBObjects_t()
 
 shared_ptr<FileIR_t> IRDBObjects_t::AddFileIR(db_id_t variant_id, db_id_t file_id)
 {
-        map<db_id_t, pair<shared_ptr<File_t>, shared_ptr<FileIR_t>>>::iterator 
+        map<db_id_t, pair<File_t*, shared_ptr<FileIR_t>>>::iterator 
             it = file_IR_map.find(file_id);
         
         if(it == file_IR_map.end())
@@ -34,7 +34,7 @@ shared_ptr<FileIR_t> IRDBObjects_t::AddFileIR(db_id_t variant_id, db_id_t file_i
         {            
             if(it->second.second == NULL)
             {
-                File_t* the_file = (it->second.first).get(); 
+                File_t* the_file = it->second.first; 
                 assert(the_file != NULL);
             
                 assert(variant_map.find(variant_id) != variant_map.end());
@@ -52,12 +52,12 @@ shared_ptr<FileIR_t> IRDBObjects_t::AddFileIR(db_id_t variant_id, db_id_t file_i
 
 int IRDBObjects_t::WriteBackFileIR(db_id_t file_id)
 {
-        map<db_id_t, pair<shared_ptr<File_t>, shared_ptr<FileIR_t>>>::iterator 
+        map<db_id_t, pair<File_t*, shared_ptr<FileIR_t>>>::iterator 
             it = file_IR_map.find(file_id);
         
         if(it != file_IR_map.end())
         {
-            shared_ptr<File_t> the_file = it->second.first;
+            File_t* the_file = it->second.first;
             assert(the_file != NULL);
                     
             try
@@ -89,14 +89,14 @@ int IRDBObjects_t::WriteBackFileIR(db_id_t file_id)
 
 int IRDBObjects_t::DeleteFileIR(db_id_t file_id)
 {
-        map<db_id_t, pair<shared_ptr<File_t>, shared_ptr<FileIR_t>>>::iterator 
+        map<db_id_t, pair<File_t*, shared_ptr<FileIR_t>>>::iterator 
             it = file_IR_map.find(file_id);
         
         if(it != file_IR_map.end())
         {
             if(it->second.second != NULL)
             {
-                assert(it->second.second.unique());
+                assert(it->second.second.use_count() <= 2);
                 (it->second.second).reset();
             }
             return 0;
@@ -114,8 +114,8 @@ bool IRDBObjects_t::FilesAlreadyPresent(set<File_t*> the_files)
             it!=the_files.end();
             ++it
            )
-        {       
-            if(GetFile((*it)->GetBaseID()) != NULL)
+        {    
+            if(file_IR_map.find((*it)->GetBaseID()) != file_IR_map.end())
             {
                 return true;
             }
@@ -150,11 +150,11 @@ shared_ptr<VariantID_t> IRDBObjects_t::AddVariant(db_id_t variant_id)
             ++it
            )
         {            
-            shared_ptr<File_t> curr_file(*it);
+	    File_t* curr_file = *it;
             shared_ptr<FileIR_t> curr_file_IR;
                     
-            pair<shared_ptr<File_t>, shared_ptr<FileIR_t>> file_IR_pair = make_pair(curr_file, curr_file_IR);
-            pair<db_id_t, pair<shared_ptr<File_t>, shared_ptr<FileIR_t>>> file_map_pair = make_pair((*it)->GetBaseID(), file_IR_pair);
+            pair<File_t*, shared_ptr<FileIR_t>> file_IR_pair = make_pair(curr_file, curr_file_IR);
+            pair<db_id_t, pair<File_t*, shared_ptr<FileIR_t>>> file_map_pair = make_pair((*it)->GetBaseID(), file_IR_pair);
             
             file_IR_map.insert(file_map_pair);
         }
@@ -171,8 +171,8 @@ bool IRDBObjects_t::FilesBeingShared(shared_ptr<VariantID_t> the_variant)
                )
         {
             assert(file_IR_map.find((*file_it)->GetBaseID()) != file_IR_map.end());
-            pair<shared_ptr<File_t>, shared_ptr<FileIR_t>> file_IR_pair = file_IR_map.at((*file_it)->GetBaseID());
-            if(!file_IR_pair.first.unique() || !file_IR_pair.second.unique())
+            pair<File_t*, shared_ptr<FileIR_t>> file_IR_pair = file_IR_map.at((*file_it)->GetBaseID());
+            if(file_IR_pair.second.use_count() > 2)
             {
                 return true;
             }
@@ -222,7 +222,7 @@ int IRDBObjects_t::DeleteVariant(db_id_t variant_id)
             // To prevent reading in the same files again while they are being used
             // somewhere else, which could lead to desynchronization
             assert(!FilesBeingShared(var_it->second));
-            assert(var_it->second.unique());
+            assert(var_it->second.use_count() <= 2);
             
             // remove files and file IRs
             for(set<File_t*>::iterator file_it=var_it->second->GetFiles().begin();
@@ -249,7 +249,7 @@ int IRDBObjects_t::WriteBackAll(void)
         int ret_status = 0;
 
         // Write back FileIRs
-        for(map<db_id_t, pair<shared_ptr<File_t>, shared_ptr<FileIR_t>>>::iterator
+        for(map<db_id_t, pair<File_t*, shared_ptr<FileIR_t>>>::iterator
                 file_it = file_IR_map.begin(); 
                 file_it != file_IR_map.end();
                 ++file_it 
@@ -294,23 +294,6 @@ int IRDBObjects_t::DeleteAll(void)
         }
         
         return 0;
-}
-
-
-shared_ptr<File_t> IRDBObjects_t::GetFile(db_id_t file_id)
-{
-        map<db_id_t, pair<shared_ptr<File_t>, shared_ptr<FileIR_t>>>::iterator 
-            it = file_IR_map.find(file_id);
-        
-        if(it == file_IR_map.end())
-        {
-            shared_ptr<File_t> null_file;
-            return null_file;
-        }
-        else
-        {
-            return it->second.first;
-        }
 }
 
 

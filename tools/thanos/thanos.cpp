@@ -181,6 +181,30 @@ int main(int argc, char *argv[])
                         return -1;
                 }
             }
+	    else if(strcmp(buf, "COMMIT_ALL") == 0)
+            {
+                pqxxDB_t* pqxx_interface = shared_objects->GetDBInterface();
+                int error = shared_objects->WriteBackAll();
+                if(error)
+                {
+                    int error_retval = -1; // critical step failed, abort
+                    string retval_str(to_string(error_retval)+"\n");
+                    ssize_t write_res = write(out_pipe_fd, (void*) retval_str.c_str(), retval_str.size()); // size() excludes terminating null character in this case, which is what we want
+                    if(write_res == -1)
+                        return -1;
+                }
+                else
+                {
+                    // commit changes and reset interface 
+                    pqxx_interface->Commit();
+                    pqxx_interface = shared_objects->ResetDBInterface();
+                    // delete all shared items
+                    shared_objects->DeleteAll();
+		    ssize_t write_res = write(out_pipe_fd, (void*) "COMMIT_ALL_OK\n", 14);
+                    if(write_res == -1)
+                        return -1;
+                }
+            }
             else if(strcmp(buf, "TERMINATE") == 0)
             {
                 // do thanos stuff
