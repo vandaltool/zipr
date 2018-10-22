@@ -566,16 +566,22 @@ perform_step()
 		fi
         else
 		# Otherwise, do things the old way (step is its own process)
-		# If verbose is on, tee to a file 
-		if [ ! -z "$DEBUG_STEPS" ]; then
-			$command 
-			command_exit=$?
-		elif [ ! -z "$VERBOSE" ]; then
-			$command 2>&1 | tee $logfile
-			command_exit=${PIPESTATUS[0]} # this funkiness gets the exit code of $command, not tee
+		printf "COMMIT_ALL" > $input_pipe
+		read -r commit_res < $output_pipe
+		if [ "$commit_res" != "COMMIT_ALL_OK"  ]; then
+			command_exit=$commit_res
 		else
-			$command > $logfile 2>&1 
-			command_exit=$?
+			# If verbose is on, tee to a file 
+			if [ ! -z "$DEBUG_STEPS" ]; then
+				$command 
+				command_exit=$?
+			elif [ ! -z "$VERBOSE" ]; then
+				$command 2>&1 | tee $logfile
+				command_exit=${PIPESTATUS[0]} # this funkiness gets the exit code of $command, not tee
+			else
+				$command > $logfile 2>&1 
+				command_exit=$?
+			fi
 		fi
 	fi
 
@@ -607,6 +613,8 @@ perform_step()
 		stop_if_error $step
 		if [ $? -gt $error_threshold ]; then 
 			echo The $step step is necessary, but failed.  Exiting ps_analyze early.
+			echo If DEBUG_STEPS is NOT on, this failure may be from a previously
+			echo executed critical step.
 			exit -1;
 		fi
 		errors=1
