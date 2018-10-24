@@ -14,6 +14,7 @@ files=  '''
 	src/MEDS_FRSafeAnnotation.cpp
 	src/MEDS_FuncPrototypeAnnotation.cpp
 	src/MEDS_InstructionCheckAnnotation.cpp
+	src/MEDS_MemoryRangeAnnotation.cpp
 	src/MEDS_ProblemFuncAnnotation.cpp
 	src/MEDS_Register.cpp
 	src/MEDS_SafeFuncAnnotation.cpp
