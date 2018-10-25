@@ -65,7 +65,8 @@ int main(int argc, char *argv[])
     // Main loop where ps_analyze communicates with thanos.exe
     // to execute steps that conform to the Transform Step SDK.    
     Mode exec_mode = Mode::DEFAULT;
-    IRDBObjects_t* shared_objects = new IRDBObjects_t();    
+    IRDBObjects_t* shared_objects = new IRDBObjects_t(); 
+    string logfile_path; 
     while (true) 
     {
         if((num_bytes_read = read(in_pipe_fd, buf, MAX_BUF)) > 0)
@@ -96,6 +97,14 @@ int main(int argc, char *argv[])
                 if(write_res == -1)
                     return -1;
             }
+	    else if(strncmp(buf, "SET_LOGFILE ", 12) == 0)
+            {
+		logfile_path.assign(buf+12);
+
+	  	ssize_t write_res = write(out_pipe_fd, (void*) "LOGFILE_SET_OK\n", 15);
+                if(write_res == -1)
+                    return -1;			
+	    }
             else if(strncmp(buf, "EXECUTE_STEP", 12) == 0)
             {
                 if(strncmp(buf+12, " OPTIONAL ", 10) == 0 || strncmp(buf+12, " CRITICAL ", 10) == 0)
@@ -129,7 +138,7 @@ int main(int argc, char *argv[])
                         }
                         argv = (char**) realloc(argv, argc);
 
-                        // load transform step plugin
+                        // setup transform step plugin
 			char* step_name = argv[0];                        
                         void* dlhdl = dlopen((plugin_path.append(step_name)).c_str(), RTLD_NOW);
                         if(dlhdl == NULL)
@@ -159,13 +168,49 @@ int main(int argc, char *argv[])
                                 {
                                     step_optional = false;
                                 }
-                                int step_retval = 0;
+                               
+				// setup logging
+				int saved_stdout = dup(STDOUT_FILENO);
+				int saved_stderr = dup(STDERR_FILENO);	
+				FILE *log_output = NULL;  
+				if(exec_mode == Mode::VERBOSE)
+				{
+				    string tee_command("tee ");
+				    tee_command.append(logfile_path);
+				    log_output = popen(tee_command.c_str(), "a");
+				    int log_output_fd = fileno(log_output);
+				    dup2(log_output_fd, STDOUT_FILENO);
+			            dup2(log_output_fd, STDERR_FILENO);
+				}
+				else if(exec_mode == Mode::DEFAULT)
+				{
+				    log_output = fopen(logfile_path.c_str(), "a");
+				    int log_output_fd = fileno(log_output);
+                                    dup2(log_output_fd, STDOUT_FILENO);
+                                    dup2(log_output_fd, STDERR_FILENO); 
+				}
 
-				step_retval = execute_step(argc, argv, step_optional, exec_mode, shared_objects, the_step);
-                                delete the_step;
+				int step_retval = execute_step(argc, argv, step_optional, exec_mode, shared_objects, the_step);
+                                
+				// cleanup from logging
+				if(exec_mode == Mode::VERBOSE)
+                                {
+                                    pclose(log_output);
+                                }
+                                else if(exec_mode == Mode::DEFAULT)
+                                {
+                                    fclose(log_output);
+                                }
+                                dup2(saved_stdout, STDOUT_FILENO);
+                                close(saved_stdout);
+                                dup2(saved_stderr, STDERR_FILENO);
+                                close(saved_stderr);
+
+				// cleanup plugin
+				delete the_step;
 				free(argv);
                                 dlclose(dlhdl);
-
+				
 				string step_retval_str(to_string(step_retval)+"\n");
                                 ssize_t write_res = write(out_pipe_fd, (void*) step_retval_str.c_str(), step_retval_str.size()); // size() excludes terminating null character in this case, which is what we want
                                 if(write_res == -1)
@@ -182,7 +227,28 @@ int main(int argc, char *argv[])
                 }
             }
 	    else if(strcmp(buf, "COMMIT_ALL") == 0)
-            {
+            {	
+		// setup logging
+		int saved_stdout = dup(STDOUT_FILENO);
+                int saved_stderr = dup(STDERR_FILENO);
+                FILE *log_output = NULL;
+                if(exec_mode == Mode::VERBOSE && !logfile_path.empty())
+                {
+                    string tee_command("tee ");
+                    tee_command.append(logfile_path);
+                    log_output = popen(tee_command.c_str(), "a");
+                    int log_output_fd = fileno(log_output);
+                    dup2(log_output_fd, STDOUT_FILENO);
+                    dup2(log_output_fd, STDERR_FILENO);
+                }
+                else if(exec_mode == Mode::DEFAULT && !logfile_path.empty())
+                {
+                    log_output = fopen(logfile_path.c_str(), "a");
+                    int log_output_fd = fileno(log_output);
+                    dup2(log_output_fd, STDOUT_FILENO);
+                    dup2(log_output_fd, STDERR_FILENO);
+                }	
+
                 pqxxDB_t* pqxx_interface = shared_objects->GetDBInterface();
                 int error = shared_objects->WriteBackAll();
                 if(error)
@@ -204,6 +270,20 @@ int main(int argc, char *argv[])
                     if(write_res == -1)
                         return -1;
                 }
+		
+		// cleanup from logging		
+		if(exec_mode == Mode::VERBOSE && !logfile_path.empty())
+                {
+                    pclose(log_output);
+                }
+                else if(exec_mode == Mode::DEFAULT && !logfile_path.empty())
+                {
+                    fclose(log_output);
+                }
+                dup2(saved_stdout, STDOUT_FILENO);
+                close(saved_stdout);
+                dup2(saved_stderr, STDERR_FILENO);
+                close(saved_stderr);
             }
 	    else if(strcmp(buf, "TERMINATE") == 0)
             {
