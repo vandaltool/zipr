@@ -567,8 +567,12 @@ perform_step()
         grep_res=$?
         if [ $grep_res -eq 0 ] ; then
                 if [[ "$(stop_if_error $step)" != "0" ]]; then
-                        echo "EXECUTE_STEP CRITICAL $command" > $input_pipe
+			printf "SET_LOGFILE %s" $(pwd)/$logfile > $input_pipe
+			read -r log_set_res < $output_pipe
+			echo "EXECUTE_STEP CRITICAL $command" > $input_pipe
                 else
+			printf "SET_LOGFILE %s" $(pwd)/$logfile > $input_pipe
+			read -r log_set_res < $output_pipe
                         echo "EXECUTE_STEP OPTIONAL $command" > $input_pipe
                 fi
 
