@@ -533,12 +533,16 @@ set<Instruction_t*> find_in_function(string needle, Function_t *haystack)
 	return found_instructions;
 }
 
-bool backup_until(const char* insn_type_regex, Instruction_t *& prev, Instruction_t* orig, bool recursive=false)
+bool backup_until(const string &insn_type_regex_str, Instruction_t *& prev, Instruction_t* orig, const string & stop_if_set="", bool recursive=false)
 {
+	const auto insn_type_regex=insn_type_regex_str.c_str();
 	prev=orig;
 	regex_t preg;
+	regex_t stop_expression;
 
 	assert(0 == regcomp(&preg, insn_type_regex, REG_EXTENDED));
+	if(stop_if_set!="")
+		assert(0 == regcomp(&stop_expression, stop_if_set.c_str(), REG_EXTENDED));
 
 	int max=10000;
 
@@ -553,12 +557,25 @@ bool backup_until(const char* insn_type_regex, Instruction_t *& prev, Instructio
        		//Disassemble(prev,disasm);
 		DecodedInstruction_t disasm(prev);
 
+
        		// check it's the requested type
        		if(regexec(&preg, disasm.getDisassembly().c_str() /*CompleteInstr*/, 0, NULL, 0) == 0)
 		{
 			regfree(&preg);
+			if(stop_if_set!="")
+				regfree(&stop_expression);
 			return true;
 		}
+		if(stop_if_set!="")
+			for(auto operand : disasm.getOperands())
+			{
+				if(operand.isWritten() && regexec(&stop_expression, operand.getString().c_str(), 0, NULL, 0) == 0)
+				{
+					regfree(&preg);
+					regfree(&stop_expression);
+					return false;
+				}
+			}
 
 		// otherwise, try backing up again.
 	}
@@ -576,11 +593,25 @@ bool backup_until(const char* insn_type_regex, Instruction_t *& prev, Instructio
        			if(regexec(&preg, disasm.getDisassembly().c_str()/*CompleteInstr*/, 0, NULL, 0) == 0)
 			{
 				regfree(&preg);
+				if(stop_if_set!="")
+					regfree(&stop_expression);
 				return true;
 			}
-			if(backup_until(insn_type_regex, prev, pred))
+			if(stop_if_set!="")
+				for(auto operand : disasm.getOperands())
+				{
+					if(operand.isWritten() && regexec(&stop_expression, operand.getString().c_str(), 0, NULL, 0) == 0)
+					{
+						regfree(&preg);
+						regfree(&stop_expression);
+						return false;
+					}
+				}
+			if(backup_until(insn_type_regex, prev, pred, stop_if_set))
 			{
 				regfree(&preg);
+				if(stop_if_set!="")
+					regfree(&stop_expression);
 				return true;
 			}
 			// reset for next call
@@ -628,7 +659,7 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
         Instruction_t* I4=NULL;
         Instruction_t* I3=NULL;
         // check if I5 is a jump
-        if(strstr(disasm.getMnemonic().c_str() /*Instruction.Mnemonic*/, "jmp")==NULL)
+        if(disasm.getMnemonic() != "jmp")
 		return;
 
 	// return if it's a jump to a constant address, these are common
@@ -639,14 +670,38 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
         if(disasm.getOperand(0).isMemory() /*disasm.Argument1.ArgType&MEMORY_TYPE*/)
 		return;
 
+	assert(disasm.getOperand(0).isRegister());
+	const auto I5_reg=disasm.getOperand(0).getString();
+	auto jmp_reg=string();
+
 	// has to be a jump to a register now
 
 	// backup and find the instruction that's an add before I8 
-	if(!backup_until("add", I4, I5))
+	if(!backup_until(string()+"add "+I5_reg, I4, I5, I5_reg))
+	{
+		auto mov_insn=static_cast<Instruction_t*>(NULL);
+		if(!backup_until(string()+"mov "+I5_reg, mov_insn, I5, I5_reg))
+			return;
+		const auto mov_insn_disasm=DecodedInstruction_t(mov_insn);
+		if(!mov_insn_disasm.getOperand(1).isRegister())
+			return;
+		const auto mov_reg=mov_insn_disasm.getOperand(1).getString();
+		if(!backup_until(string()+"add "+mov_reg, I4, mov_insn, mov_reg))
+				return;
+		jmp_reg=mov_reg;
+	}
+	else 
+		jmp_reg=I5_reg;
+
+	assert(jmp_reg!="" && I4!=nullptr);
+
+	const auto d4=DecodedInstruction_t(I4);
+	if(!d4.getOperand(1).isRegister())
 		return;
 
+	const auto add_reg=d4.getOperand(1).getString();
 	// backup and find the instruction that's an movsxd before I7
-	if(!backup_until("mov", I3, I4))
+	if(!backup_until(string()+"(mov "+jmp_reg+"|mov "+add_reg+")", I3, I4))
 		return;
 
 	auto table_size = 0U;
@@ -1312,7 +1367,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	else
 	{
 		cout << "Using fallback method." << endl;
-		if (backup_until(lea_string.c_str(), I5, I6, true))
+		if (backup_until(lea_string.c_str(), I5, I6, "", true))
 		{
 			found_leas.insert(I5);
 		}
