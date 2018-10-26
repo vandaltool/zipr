@@ -151,7 +151,7 @@ bool possible_target(virtual_offset_t p, virtual_offset_t from_addr, ibt_provena
 {
 	if(is_possible_target(p,from_addr))
 	{
-		if(getenv("IB_VERBOSE")!=NULL)
+		if(getenv("IB_VERBOSE")!=nullptr)
 		{
 			if(from_addr!=0)
 				cout<<"Found IB target address 0x"<<std::hex<<p<<" at 0x"<<from_addr<<std::dec<<", prov="<<prov<<endl;
@@ -203,7 +203,7 @@ EXEIO::section*  find_section(virtual_offset_t addr, EXEIO::exeio *elfiop)
 
                  return pSec;
 	}
-	return NULL;
+	return nullptr;
 }
 
 void handle_argument(const DecodedOperand_t *arg, Instruction_t* insn, ibt_provenance_t::provtype_t pt = ibt_provenance_t::ibtp_text)
@@ -241,7 +241,7 @@ Instruction_t *lookupInstruction(FileIR_t *firp, virtual_offset_t virtual_offset
 {
 	if(lookupInstructionMap.find(virtual_offset)!=lookupInstructionMap.end())
 		return lookupInstructionMap[virtual_offset];
-	return NULL;
+	return nullptr;
 }
 
 void mark_targets(FileIR_t *firp)
@@ -262,12 +262,12 @@ void mark_targets(FileIR_t *firp)
 			bool isprintf=targets[addr].areOnlyTheseSet(ibt_provenance_t::ibtp_stars_data|ibt_provenance_t::ibtp_texttoprintf);
 			if (isret)
 			{
-				if(getenv("IB_VERBOSE")!=NULL)
+				if(getenv("IB_VERBOSE")!=nullptr)
 					cout<<"Skipping pin for ret at "<<hex<<addr<<endl;
 			}
 			else if(isprintf)
 			{
-				if(getenv("IB_VERBOSE")!=NULL)
+				if(getenv("IB_VERBOSE")!=nullptr)
 					cout<<"Skipping pin for text to printf at "<<hex<<addr<<endl;
 			}
 			else
@@ -286,18 +286,18 @@ void mark_targets(FileIR_t *firp)
 
 bool CallToPrintfFollows(FileIR_t *firp, Instruction_t* insn, const string& arg_str)
 {
-	for(Instruction_t* ptr=insn->GetFallthrough(); ptr!=NULL; ptr=ptr->GetFallthrough())
+	for(Instruction_t* ptr=insn->GetFallthrough(); ptr!=nullptr; ptr=ptr->GetFallthrough())
 	{
 		DecodedInstruction_t d(ptr);
 		// Disassemble(ptr,d);
 		if(d.getMnemonic() == string("call"))
 		{
 			// check we have a target
-			if(ptr->GetTarget()==NULL)
+			if(ptr->GetTarget()==nullptr)
 				return false;
 
 			// check the target has a function 
-			if(ptr->GetTarget()->GetFunction()==NULL)
+			if(ptr->GetTarget()->GetFunction()==nullptr)
 				return false;
 
 			// check if we're calling printf.
@@ -524,7 +524,7 @@ set<Instruction_t*> find_in_function(string needle, Function_t *haystack)
 		DecodedInstruction_t disasm(candidate);
 
 		// check it's the requested type
-		if(regexec(&preg, disasm.getDisassembly().c_str() /*CompleteInstr*/, 0, NULL, 0) == 0)
+		if(regexec(&preg, disasm.getDisassembly().c_str() /*CompleteInstr*/, 0, nullptr, 0) == 0)
 		{
 			found_instructions.insert(candidate);
 		}
@@ -559,7 +559,7 @@ bool backup_until(const string &insn_type_regex_str, Instruction_t *& prev, Inst
 
 
        		// check it's the requested type
-       		if(regexec(&preg, disasm.getDisassembly().c_str() /*CompleteInstr*/, 0, NULL, 0) == 0)
+       		if(regexec(&preg, disasm.getDisassembly().c_str() /*CompleteInstr*/, 0, nullptr, 0) == 0)
 		{
 			regfree(&preg);
 			if(stop_if_set!="")
@@ -569,7 +569,7 @@ bool backup_until(const string &insn_type_regex_str, Instruction_t *& prev, Inst
 		if(stop_if_set!="")
 			for(auto operand : disasm.getOperands())
 			{
-				if(operand.isWritten() && regexec(&stop_expression, operand.getString().c_str(), 0, NULL, 0) == 0)
+				if(operand.isWritten() && regexec(&stop_expression, operand.getString().c_str(), 0, nullptr, 0) == 0)
 				{
 					regfree(&preg);
 					regfree(&stop_expression);
@@ -590,7 +590,7 @@ bool backup_until(const string &insn_type_regex_str, Instruction_t *& prev, Inst
 			//Disassemble(pred,disasm);
 			DecodedInstruction_t disasm(pred);
        			// check it's the requested type
-       			if(regexec(&preg, disasm.getDisassembly().c_str()/*CompleteInstr*/, 0, NULL, 0) == 0)
+       			if(regexec(&preg, disasm.getDisassembly().c_str()/*CompleteInstr*/, 0, nullptr, 0) == 0)
 			{
 				regfree(&preg);
 				if(stop_if_set!="")
@@ -600,7 +600,7 @@ bool backup_until(const string &insn_type_regex_str, Instruction_t *& prev, Inst
 			if(stop_if_set!="")
 				for(auto operand : disasm.getOperands())
 				{
-					if(operand.isWritten() && regexec(&stop_expression, operand.getString().c_str(), 0, NULL, 0) == 0)
+					if(operand.isWritten() && regexec(&stop_expression, operand.getString().c_str(), 0, nullptr, 0) == 0)
 					{
 						regfree(&preg);
 						regfree(&stop_expression);
@@ -655,9 +655,9 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 #endif
 
         Instruction_t* I5=insn;
-        Instruction_t* Icmp=NULL;
-        Instruction_t* I4=NULL;
-        Instruction_t* I3=NULL;
+        Instruction_t* Icmp=nullptr;
+        Instruction_t* I4=nullptr;
+        Instruction_t* I3=nullptr;
         // check if I5 is a jump
         if(disasm.getMnemonic() != "jmp")
 		return;
@@ -679,7 +679,7 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 	// backup and find the instruction that's an add before I8 
 	if(!backup_until(string()+"add "+I5_reg, I4, I5, I5_reg))
 	{
-		auto mov_insn=static_cast<Instruction_t*>(NULL);
+		auto mov_insn=static_cast<Instruction_t*>(nullptr);
 		if(!backup_until(string()+"mov "+I5_reg, mov_insn, I5, I5_reg))
 			return;
 		const auto mov_insn_disasm=DecodedInstruction_t(mov_insn);
@@ -830,10 +830,10 @@ I5:   0x809900e <text_handler+51>: jmp    ecx
 #endif
 
         Instruction_t* I5=insn;
-        Instruction_t* I4=NULL;
-//        Instruction_t* I3=NULL;
+        Instruction_t* I4=nullptr;
+//        Instruction_t* I3=nullptr;
         // check if I5 is a jump
-        if(strstr(disasm.getMnemonic().c_str() /*disasm.Instruction.Mnemonic*/, "jmp")==NULL)
+        if(strstr(disasm.getMnemonic().c_str() /*disasm.Instruction.Mnemonic*/, "jmp")==nullptr)
 		return;
 
 	// return if it's a jump to a constant address, these are common
@@ -953,7 +953,7 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 
         Instruction_t* I5=insn;
         // check if I5 is a jump
-        if(strstr(disasm.getMnemonic().c_str()/*Instruction.Mnemonic*/, "jmp")==NULL)
+        if(strstr(disasm.getMnemonic().c_str()/*Instruction.Mnemonic*/, "jmp")==nullptr)
 		return;
 
 	// return if it's not a jump to a memory address
@@ -981,7 +981,7 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 		return;
 
 	auto table_max=numeric_limits<uint32_t>::max();
-	auto cmp_insn=(Instruction_t*)NULL;
+	auto cmp_insn=(Instruction_t*)nullptr;
 	if(backup_until("cmp ", cmp_insn, insn))
 	{
 		assert(cmp_insn);
@@ -1032,7 +1032,7 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 
 			Instruction_t* ibt=lookupInstruction(firp,table_entry);
 			// if we didn't find an instruction or the insn isn't in our set, stop looking, we've found the table size
-			if(ibt==NULL || jmptables[insn].find(ibt) == jmptables[insn].end())
+			if(ibt==nullptr || jmptables[insn].find(ibt) == jmptables[insn].end())
 				break;
 		}
 		jmptables[insn].SetTableSize(i);
@@ -1150,7 +1150,7 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
 			}
 
 			Instruction_t* ibt=lookupInstruction(firp,table_entry);
-			if(!possible_target(table_entry,table_base+i*ptrsize,prov) || ibt==NULL)
+			if(!possible_target(table_entry,table_base+i*ptrsize,prov) || ibt==nullptr)
 				return;
 			if(getenv("IB_VERBOSE")!=0)
 				cout<<"Found switch table (thunk-relative) entry["<<dec<<i<<"], "<<hex<<table_entry<<endl;
@@ -1241,12 +1241,12 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 
 	string table_index_str;
 	Instruction_t* I8=insn;
-	Instruction_t* I7=NULL;
-	Instruction_t* I6=NULL;
-	Instruction_t* I5=NULL;
-	Instruction_t* I1=NULL;
+	Instruction_t* I7=nullptr;
+	Instruction_t* I6=nullptr;
+	Instruction_t* I5=nullptr;
+	Instruction_t* I1=nullptr;
 	// check if I8 is a jump
-	if(strstr(disasm.getMnemonic().c_str()/*Instruction.Mnemonic*/, "jmp")==NULL)
+	if(strstr(disasm.getMnemonic().c_str()/*Instruction.Mnemonic*/, "jmp")==nullptr)
 		return;
 
 	// return if it's a jump to a constant address, these are common
@@ -1401,7 +1401,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		// instruction address (and include the instruction's size, etc.
 		// but, fix_calls has already removed this oddity so we can relocate
 		// the instruction.
-		virtual_offset_t D1=strtol(disasm.getOperand(1).getString().c_str()/*Argument2.ArgMnemonic*/, NULL, 0);
+		virtual_offset_t D1=strtol(disasm.getOperand(1).getString().c_str()/*Argument2.ArgMnemonic*/, nullptr, 0);
 		D1+=I5_cur->GetAddress()->GetVirtualOffset();
 
 		// find the section with the data table
@@ -1539,14 +1539,14 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 static void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop)
 {
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type5;
-	Instruction_t *I1 = NULL;
+	Instruction_t *I1 = nullptr;
 	Instruction_t *IJ = insn;
 
 	assert(IJ);
 
 	// check if IJ is a jump
-	//if(strstr(disasm.Instruction.Mnemonic, "jmp")==NULL)
-	if(strstr(disasm.getMnemonic().c_str(), "jmp")==NULL)
+	//if(strstr(disasm.Instruction.Mnemonic, "jmp")==nullptr)
+	if(strstr(disasm.getMnemonic().c_str(), "jmp")==nullptr)
 		return;
 
 	// look for a memory type
@@ -1648,15 +1648,15 @@ static void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t
 static void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop)
 {
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type6;
-	Instruction_t *I1 = NULL;
-	//Instruction_t *I2 = NULL;
-	Instruction_t *I4 = NULL;
+	Instruction_t *I1 = nullptr;
+	//Instruction_t *I2 = nullptr;
+	Instruction_t *I4 = nullptr;
 	Instruction_t *IJ = insn;
 
 	if (!IJ) return;
 
 	// check if IJ is a jump
-	if(strstr(disasm.getMnemonic().c_str()/*disasm.Instruction.Mnemonic*/, "jmp")==NULL)
+	if(strstr(disasm.getMnemonic().c_str()/*disasm.Instruction.Mnemonic*/, "jmp")==nullptr)
 		return;
 
 	// return if it's a jump to a constant address, these are common
@@ -1819,7 +1819,7 @@ void handle_ibt_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBTAnnotation* p_
 			Instruction_t* ibt=lookupInstruction(firp, p_ibt_annotation->getVirtualOffset().getOffset());
 			if(fromib && ibt)
 			{
-				if(getenv("IB_VERBOSE")!=NULL)
+				if(getenv("IB_VERBOSE")!=nullptr)
 					cout<<hex<<"Adding call/switch icfs: "<<fromib->GetAddress()->GetVirtualOffset()<<"->"<<ibt->GetAddress()->GetVirtualOffset()<<endl;
 				jmptables[fromib].insert(ibt);
 			}
@@ -1842,7 +1842,7 @@ void handle_ibt_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBTAnnotation* p_
 			Instruction_t* ibt=lookupInstruction(firp, toaddr);
 			if(fromib && ibt)
 			{
-				if(getenv("IB_VERBOSE")!=NULL)
+				if(getenv("IB_VERBOSE")!=nullptr)
 					cout<<hex<<"Adding ret icfs: "<<fromib->GetAddress()->GetVirtualOffset()<<"->"<<ibt->GetAddress()->GetVirtualOffset()<<endl;
 				jmptables[fromib].insert(ibt);
 			}
@@ -1856,7 +1856,7 @@ void handle_ibt_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBTAnnotation* p_
 		{
 			possible_target((EXEIO::virtual_offset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
 				0,ibt_provenance_t::ibtp_stars_data);
-			if(getenv("IB_VERBOSE")!=NULL)
+			if(getenv("IB_VERBOSE")!=nullptr)
 				cout<<hex<<"detected stars data ibt at"<<p_ibt_annotation->getVirtualOffset().getOffset()<<endl;
 			break;
 		}
@@ -1864,7 +1864,7 @@ void handle_ibt_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBTAnnotation* p_
 		{
 			possible_target((EXEIO::virtual_offset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
 				0,ibt_provenance_t::ibtp_stars_unreachable);
-			if(getenv("IB_VERBOSE")!=NULL)
+			if(getenv("IB_VERBOSE")!=nullptr)
 				cout<<hex<<"detected stars unreachable ibt at"<<p_ibt_annotation->getVirtualOffset().getOffset()<<endl;
 			break;
 		}
@@ -1872,7 +1872,7 @@ void handle_ibt_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBTAnnotation* p_
 		{
 			possible_target((EXEIO::virtual_offset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
 				0,ibt_provenance_t::ibtp_stars_addressed);
-			if(getenv("IB_VERBOSE")!=NULL)
+			if(getenv("IB_VERBOSE")!=nullptr)
 				cout<<hex<<"detected stars addresssed ibt at"<<p_ibt_annotation->getVirtualOffset().getOffset()<<endl;
 			break;
 		}
@@ -1880,7 +1880,7 @@ void handle_ibt_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBTAnnotation* p_
 		{
 			possible_target((EXEIO::virtual_offset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
 				0,ibt_provenance_t::ibtp_stars_unknown);
-			if(getenv("IB_VERBOSE")!=NULL)
+			if(getenv("IB_VERBOSE")!=nullptr)
 				cout<<hex<<"detected stars unknown ibt at"<<p_ibt_annotation->getVirtualOffset().getOffset()<<endl;
 			break;
 		}
@@ -1988,7 +1988,7 @@ ICFS_t* setup_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop, ibt_provenance_t al
 		Instruction_t* insn=*it;
 
 		/*
-		if(insn->GetIndirectBranchTargetAddress() == NULL)
+		if(insn->GetIndirectBranchTargetAddress() == nullptr)
 			continue;
 		*/
 
@@ -2241,7 +2241,7 @@ void setup_icfs(FileIR_t* firp, EXEIO::exeio* elfiop)
 		// if we already got it complete (via stars or FII)
 		Instruction_t* insn=*it;
 
-		if(insn->GetIndirectBranchTargetAddress()!=NULL)
+		if(insn->GetIndirectBranchTargetAddress()!=nullptr)
 			total_ibta_set++;
 			
 
@@ -2303,7 +2303,7 @@ void setup_icfs(FileIR_t* firp, EXEIO::exeio* elfiop)
 
 	cout<<"# ATTRIBUTE fill_in_indtargs::total_ibtas_set="<<dec<<total_ibta_set<<endl;
 
-	if(getenv("ICFS_VERBOSE")!=NULL)
+	if(getenv("ICFS_VERBOSE")!=nullptr)
 		print_icfs(firp);
 }
 
@@ -2348,7 +2348,7 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 				Instruction_t* insn=lookupInstruction(firp,vo);
 
 				// OK for .got scoop to miss
-				if(scoop->GetName()==".got" && insn==NULL)
+				if(scoop->GetName()==".got" && insn==nullptr)
 				{
 					if(getenv("UNPIN_VERBOSE")!=0)
 						cout<<"Skipping "<<scoop->GetName()<<" unpin for "<<hex<<vo<<" due to no instruction at vo"<<endl;
@@ -2407,7 +2407,7 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 
 						if(getenv("UNPIN_VERBOSE")!=0)
 							cout<<"Unpinning "+scoop->GetName()+" entry at offset "<<dec<<i<<endl;
-						if(insn->GetIndirectBranchTargetAddress()==NULL)
+						if(insn->GetIndirectBranchTargetAddress()==nullptr)
 						{
 							auto newaddr = new AddressID_t;
 							assert(newaddr);
@@ -2433,8 +2433,8 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 		}
 		else if(scoop->GetName()==".dynsym")
 		{
-			Elf64_Sym  *sym64=NULL;
-			Elf32_Sym  *sym32=NULL;
+			Elf64_Sym  *sym64=nullptr;
+			Elf32_Sym  *sym32=nullptr;
 			int ptrsize=0;
 			int symsize=0;
 			const char* scoop_contents=scoop->GetContents().c_str();
@@ -2529,7 +2529,7 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 						firp->GetRelocations().insert(nr);
 						scoop->GetRelocations().insert(nr);
 
-                                                if(insn->GetIndirectBranchTargetAddress()==NULL)
+                                                if(insn->GetIndirectBranchTargetAddress()==nullptr)
                                                 {
                                                         auto newaddr = new AddressID_t;
                                                         assert(newaddr);
@@ -2593,7 +2593,7 @@ DataScoop_t* find_scoop(FileIR_t *firp, const virtual_offset_t &vo)
 		if( s->GetStart()->GetVirtualOffset()<=vo && vo<s->GetEnd()->GetVirtualOffset() )
 			return s;
 	}
-	return NULL;
+	return nullptr;
 }
 
 // stats for unpinning.
@@ -2696,7 +2696,7 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 					targets[table_entry]=newprov;
 					switch_targs.insert(ibt);
 
-                                         if(ibt->GetIndirectBranchTargetAddress()==NULL)
+                                         if(ibt->GetIndirectBranchTargetAddress()==nullptr)
                                          {
                                                  auto newaddr = new AddressID_t;
                                                  assert(newaddr);
@@ -2746,7 +2746,7 @@ void unpin_switches(FileIR_t *firp, int do_unpin_opt)
 			continue;
 
 		// sanity check we have a good switch 
-		if(insn->GetIBTargets()==NULL) continue;
+		if(insn->GetIBTargets()==nullptr) continue;
 
 		// sanity check we have a good switch 
 		if(insn->GetIBTargets()->GetAnalysisStatus()!=ICFS_Analysis_Complete) continue;
@@ -2767,7 +2767,7 @@ void unpin_switches(FileIR_t *firp, int do_unpin_opt)
 void print_unpins(FileIR_t *firp)
 {
 	// don't print if not asked for this type of verbose 
-	if(getenv("UNPIN_VERBOSE") == NULL)
+	if(getenv("UNPIN_VERBOSE") == nullptr)
 		return;
 
 	for(
@@ -2917,7 +2917,7 @@ int main(int argc, char* argv[])
 			argc_iter++;
 
 			try { 
-				do_unpin_opt = stoul(arg_as_str,NULL,0);
+				do_unpin_opt = stoul(arg_as_str,nullptr,0);
 			}
 			catch (invalid_argument ia)
 			{
@@ -2954,8 +2954,8 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	VariantID_t *pidp=NULL;
-	FileIR_t * firp=NULL;
+	VariantID_t *pidp=nullptr;
+	FileIR_t * firp=nullptr;
 
 	try 
 	{
@@ -3001,7 +3001,8 @@ int main(int argc, char* argv[])
 			delete firp;
 		}
 
-		pqxx_interface.Commit();
+		if(getenv("FII_NOUPDATE")==nullptr)
+			pqxx_interface.Commit();
 
 	}
 	catch (DatabaseError_t pnide)
