@@ -24,6 +24,7 @@
 #include <string>
 #include <string.h>
 #include <cstdint>
+#include <inttypes.h>
 
 #include "MEDS_MemoryRangeAnnotation.hpp"
 
@@ -87,7 +88,7 @@ void MEDS_MemoryRangeAnnotation::parse()
 
 	// 417748     12 INSTR STATICMEMWRITE MIN 3c60320  LIMIT 4e53730  ZZ
 	// 4992ea      4 INSTR STACKMEMRANGE MIN RSP - 568 LIMIT RSP - 48 INSTRSPDELTA - 592 ZZ
-	int ItemsFilled = sscanf(m_rawInputLine.c_str(), "%*x %d %*s %*s MIN %lx LIMIT %lx", &instrSize, &MinVal, &LimitVal);
+	int ItemsFilled = sscanf(m_rawInputLine.c_str(), "%*x %d %*s %*s MIN %" SCNu64 " LIMIT %" SCNu64 "", &instrSize, &MinVal, &LimitVal);
 	if (3 != ItemsFilled) {
 		this->setInvalid();
 		cerr << "Error on sscanf of annotation" << endl;
