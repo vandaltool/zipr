@@ -406,7 +406,7 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 	}
 
 	// find segment
-	int new_phdr_segment_index=locate_segment_index(new_phdr_addr);
+	int new_phdr_segment_index=locate_segment_index(new_phdr_addr-1);
 
 	// if there's no segment for the start, we'll have to allocate a page anyhow.  just use the _Preallocate routine.
 	if(new_phdr_segment_index==-1)
