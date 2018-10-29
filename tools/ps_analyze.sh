@@ -586,6 +586,9 @@ perform_step()
                         command_exit=127 # command not found
                 else
                         command_exit=$thanos_res
+			if [ ! -z "$VERBOSE" ]; then
+				cat $logfile	
+			fi
 		fi
         else
 		# Otherwise, do things the old way (step is its own process)
