@@ -173,16 +173,7 @@ int main(int argc, char *argv[])
 				int saved_stdout = dup(STDOUT_FILENO);
 				int saved_stderr = dup(STDERR_FILENO);	
 				FILE *log_output = NULL;  
-				if(exec_mode == Mode::VERBOSE)
-				{
-				    string tee_command("tee ");
-				    tee_command.append(logfile_path);
-				    log_output = popen(tee_command.c_str(), "a");
-				    int log_output_fd = fileno(log_output);
-				    dup2(log_output_fd, STDOUT_FILENO);
-			            dup2(log_output_fd, STDERR_FILENO);
-				}
-				else if(exec_mode == Mode::DEFAULT)
+				if(exec_mode == Mode::DEFAULT || exec_mode == Mode::VERBOSE)
 				{
 				    log_output = fopen(logfile_path.c_str(), "a");
 				    int log_output_fd = fileno(log_output);
@@ -193,11 +184,7 @@ int main(int argc, char *argv[])
 				int step_retval = execute_step(argc, argv, step_optional, exec_mode, shared_objects, the_step);
                                 
 				// cleanup from logging
-				if(exec_mode == Mode::VERBOSE)
-                                {
-                                    pclose(log_output);
-                                }
-                                else if(exec_mode == Mode::DEFAULT)
+				if(exec_mode == Mode::DEFAULT || exec_mode == Mode::VERBOSE)
                                 {
                                     fclose(log_output);
                                 }
@@ -232,16 +219,7 @@ int main(int argc, char *argv[])
 		int saved_stdout = dup(STDOUT_FILENO);
                 int saved_stderr = dup(STDERR_FILENO);
                 FILE *log_output = NULL;
-                if(exec_mode == Mode::VERBOSE && !logfile_path.empty())
-                {
-                    string tee_command("tee ");
-                    tee_command.append(logfile_path);
-                    log_output = popen(tee_command.c_str(), "a");
-                    int log_output_fd = fileno(log_output);
-                    dup2(log_output_fd, STDOUT_FILENO);
-                    dup2(log_output_fd, STDERR_FILENO);
-                }
-                else if(exec_mode == Mode::DEFAULT && !logfile_path.empty())
+                if((exec_mode == Mode::DEFAULT || exec_mode == Mode::VERBOSE) && !logfile_path.empty())
                 {
                     log_output = fopen(logfile_path.c_str(), "a");
                     int log_output_fd = fileno(log_output);
@@ -272,11 +250,7 @@ int main(int argc, char *argv[])
                 }
 		
 		// cleanup from logging		
-		if(exec_mode == Mode::VERBOSE && !logfile_path.empty())
-                {
-                    pclose(log_output);
-                }
-                else if(exec_mode == Mode::DEFAULT && !logfile_path.empty())
+		if((exec_mode == Mode::DEFAULT || exec_mode == Mode::VERBOSE) && !logfile_path.empty())
                 {
                     fclose(log_output);
                 }
