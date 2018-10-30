@@ -260,7 +260,7 @@ check_options()
 				if [ "X$2" = "Xzipr" ]; then
 					echo "Using Zipr backend."
 					export backend="zipr"
-					phases_spec=" $phases_spec stratafy_with_pc_confine=off generate_spri=off spasm=off fast_annot=off zipr=on preLoaded_ILR1=off  preLoaded_ILR2=off fast_spri=off create_binary_script=off is_so=off"
+					phases_spec=" $phases_spec clone=off stratafy_with_pc_confine=off generate_spri=off spasm=off fast_annot=off zipr=on preLoaded_ILR1=off  preLoaded_ILR2=off fast_spri=off create_binary_script=off is_so=off"
 					phases_spec=${phases_spec/preLoaded_ILR1=on/}
 					phases_spec=${phases_spec/preLoaded_ILR2=on/}
 					step_options_gather_libraries="$step_options_gather_libraries --main_exe_only"
@@ -1168,6 +1168,8 @@ if [ $? = 1 ]; then
 	if [ -z "$cloneid" -o  ! "$cloneid" -gt 0 ]; then
 		fail_gracefully "Failed to create variant.  Is postgres running properly?"
 	fi
+else
+	cloneid=$varid
 fi
 
 # do the basic tranforms we're performing for peasoup 
@@ -1324,7 +1326,7 @@ perform_step spawner stratafy_with_pc_confine  $PEASOUP_HOME/tools/do_spawner.sh
 perform_step get_pins spasm,fast_spri  $PEASOUP_HOME/tools/get_pins.sh 
 
 # zipr
-perform_step zipr clone,fill_in_indtargs,fill_in_cfg,pdb_register env LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ZIPR_INSTALL/lib $ZIPR_INSTALL/bin/zipr.exe --variant $cloneid --zipr:objcopy $PS_OBJCOPY $step_options_zipr
+perform_step zipr fill_in_indtargs,fill_in_cfg,pdb_register env LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ZIPR_INSTALL/lib $ZIPR_INSTALL/bin/zipr.exe --variant $cloneid --zipr:objcopy $PS_OBJCOPY $step_options_zipr
 
 # copy TOCTOU tool here if it exists
 if [[ "$CONCURRENCY_HOME/toctou_tool" != "" && -d "$CONCURRENCY_HOME/toctou_tool" ]]; then
