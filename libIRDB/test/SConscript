@@ -31,7 +31,7 @@ if 'build_tools' not in myenv or myenv['build_tools'] is None or int(myenv['buil
 	split_eh_frame=myenv.Object("split_eh_frame.cpp");
 
 	pgm=myenv.Program("fill_in_indtargs.exe",  ehframe+split_eh_frame+Split("fill_in_indtargs.cpp check_thunks.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
-	install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
+	install=myenv.Install("$SECURITY_TRANSFORMS_HOME/plugins_install", pgm)
 	Default(install)
 	installed=installed+install
 
@@ -41,7 +41,7 @@ if 'build_tools' not in myenv or myenv['build_tools'] is None or int(myenv['buil
 	installed=installed+install
 
 	pgm=myenv.Program("fix_calls.exe",  ehframe+Split("fix_calls.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
-	install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
+	install=myenv.Install("$SECURITY_TRANSFORMS_HOME/plugins_install", pgm)
 	Default(install)
 	installed=installed+install
 
@@ -54,7 +54,7 @@ if 'build_tools' not in myenv or myenv['build_tools'] is None or int(myenv['buil
 	for i in Split(pgms):
 		# print "Registering pgm: "+ i
 		pgm=myenv.Program(target=i+".exe",  source=Split(i+".cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
-		install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
+		install=myenv.Install("$SECURITY_TRANSFORMS_HOME/plugins_install/", pgm)
 		Default(install)
 		installed=installed+install
 
