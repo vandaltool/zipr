@@ -80,7 +80,7 @@ CREATE TABLE #ITN#
 
 CREATE TABLE #RTN#
 (
-	reloc_id	      	SERIAL PRIMARY KEY, 	-- id in the table
+	reloc_id	      	integer, 	-- id in the table
 	reloc_offset 	  	integer DEFAULT 0,	-- how far into the object/instruction is the relocation
 	reloc_type	    	text DEFAULT '',	-- what type is the relocation.
 	instruction_id  	integer DEFAULT -1,	-- the object/instruction for this reloc, field name is anachronistic. 
