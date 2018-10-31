@@ -1,3 +1,4 @@
+#include <libIRDB-core.hpp>
 #include <libIRDB-util.hpp>
 #include <fcntl.h>
 #include <dlfcn.h>
@@ -6,7 +7,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <map>
-#include <transform_step.h>
 #include <algorithm>
 #include <assert.h>
 

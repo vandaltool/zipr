@@ -56,6 +56,8 @@ class Instruction_t; // forward decl for many classes
 #include <core/eh.hpp>
 #include <core/fileir.hpp>
 #include <core/pqxxdb.hpp>
+#include <core/IRDB_Objects.hpp>
+#include <core/transform_step.h>
 
 };
 

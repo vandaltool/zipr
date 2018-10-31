@@ -1,8 +1,6 @@
 #ifndef TransformStep_h
 #define TransformStep_h
 
-#include <libIRDB-util.hpp>
-
 
 namespace Transform_SDK
 {

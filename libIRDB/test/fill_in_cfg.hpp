@@ -2,13 +2,11 @@
 #define fill_in_cfg_hpp
 
 #include <libIRDB-core.hpp>
-#include <libIRDB-util.hpp>
 #include <stdlib.h>
 #include <map>
 #include <exeio.h>
-#include "transform_step.h"
 
-class PopulateCFG : public Transform_SDK::TransformStep_t
+class PopulateCFG : public libIRDB::Transform_SDK::TransformStep_t
 {
     public:
         PopulateCFG(libIRDB::pqxxDB_t* p_pqxx_interface = NULL,

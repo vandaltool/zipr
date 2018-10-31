@@ -17,7 +17,6 @@ if 'build_tools' not in myenv or myenv['build_tools'] is None or int(myenv['buil
 		 $SECURITY_TRANSFORMS_HOME/libEXEIO/include 
 		 $SECURITY_TRANSFORMS_HOME/libehp/include 
 		 $SECURITY_TRANSFORMS_HOME/third_party/elfio-code
-		 $SECURITY_TRANSFORMS_HOME/libtransform/include
 		'''
 
 	LIBPATH="$SECURITY_TRANSFORMS_HOME/lib"
