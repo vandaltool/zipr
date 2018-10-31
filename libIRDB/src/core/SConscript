@@ -25,6 +25,7 @@ files=  '''
 	reloc.cpp
 	decode_cs.cpp
 	operand_cs.cpp
+	IRDB_Objects.cpp
 '''
 unused_files='''
 	decode_bea.cpp

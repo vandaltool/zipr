@@ -1,6 +1,5 @@
 #include <map>
 #include <libIRDB-core.hpp>
-#include <libIRDB-util.hpp>
 #include <utils.hpp>
 #include <utility>
 #include <memory>
