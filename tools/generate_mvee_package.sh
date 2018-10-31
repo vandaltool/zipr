@@ -957,14 +957,23 @@ finalize_json()
 	fi
 	if [ "x"$use_noh = "x--enablenoh" ]; then
 		ld_preload_var="/variant_specific/noh.so:$ld_preload_var"
-		#json_contents="${json_contents//<<ENV>>/\"NUMVARIANTS=$total_variants\",<<ENV>>}"
 	fi
 	# remove leading/trailing spaces.
 	ld_preload_var=${ld_preload_var%% }
 	ld_preload_var=${ld_preload_var## }
 	ld_preload_var="${ld_preload_var}:$extra_preloads"
-
 	json_contents="${json_contents//<<ENV>>/\"LD_PRELOAD=$ld_preload_var\",<<ENV>>}"
+
+	# deal with extra ENV from supplement
+	if [[ ! -z $sad_file ]] ; then
+		sad_contents=$(cat $sad_file |jq .additional_env)
+		if [[ $sad_contents != 'null' ]]; then
+			sad_contents=$(echo "$sad_contents" |head -n -1|tail -n +2)     # trim open and close []'s
+			if [[ ! -z $sad_contents ]]; then
+				json_contents="${json_contents//<<ENV>>/$sad_contents,<<ENV>>}"
+			fi
+		fi
+	fi
 
 	# if we are supposed to include checkpoint/restore lines in the file
 	if [ "x"$use_includecr = "x--include-cr" ]; then

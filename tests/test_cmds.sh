@@ -62,8 +62,8 @@ do
 
 
 	progpath=$(which $prog)
-	if [ ! -e $progpath ]; then
-		echo "$prog not found: skipping..."
+	if [ "$progpath" = "" ]; then
+		echo "TEST: Original binary ($prog) not found: skipping..."
 		continue
 	fi
 
@@ -74,6 +74,9 @@ do
 	case $config in
 		zafl)
 			zafl.sh $progpath $protected --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+		;;
+		zafl0)
+			ZAFL_LIMIT_END=0 zafl.sh $progpath $protected --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 		;;
 		zafl_rida)
 			zafl.sh $progpath $protected --rida --tempdir $temp_dir > test_${prog}.ps.log 2>&1
