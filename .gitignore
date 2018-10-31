@@ -7,4 +7,5 @@ lib/
 manifest.txt.config
 tools/meds2pdb/meds2pdb
 plugins_install/*.exe
+plugins_install/*.so
 *.swp
