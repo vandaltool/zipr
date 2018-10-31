@@ -11,6 +11,7 @@
 #include <fstream>
 //#include <elfio/elfio.hpp>
 #include <elf.h>
+#include <functional>
 
 
 using namespace std;
@@ -46,12 +47,14 @@ class CreateFunctions_t
 		exeio_t exeio;
 		csh cshandle;
 		ofstream outfile;
+		execlass_t file_class;
 	public:
 		CreateFunctions_t(const string &input_pgm, const string &output_annot, const bool p_verbose)
 			: 
 			verbose(p_verbose),
 			exeio(input_pgm),
-			cshandle()
+			cshandle(),
+			file_class(exeio.get_class())
 		{
 			outfile.open(output_annot.c_str(), ofstream::out);
 			if(!outfile.is_open())
@@ -63,7 +66,14 @@ class CreateFunctions_t
 			if(verbose)
 				ehp->print();
 
-			if (cs_open(CS_ARCH_X86, CS_MODE_64, &cshandle) != CS_ERR_OK)
+			if(file_class!=ELF64 && file_class != ELF32)
+			{
+				cerr<<"Rida can only process ELF files."<<endl;
+				exit(1);
+			}
+
+			const auto cs_mode= file_class==ELF64 ? CS_MODE_64 : CS_MODE_32 ;
+			if (cs_open(CS_ARCH_X86, cs_mode , &cshandle) != CS_ERR_OK)
 			{
 				cerr<<"Cannot initialize capstone"<<endl;
 				exit(1);
@@ -77,23 +87,47 @@ class CreateFunctions_t
 
 		void calculate()
 		{
+
+
 			ehframeToSccs();
 			addSectionToSccs(".init");
 			addSectionToSccs(".fini");
-			pltSplit<Elf64_Sym, Elf64_Rela, Elf64_Rel>(".plt", ".plt.got");
-			// if exeio->elf class == 64-bit
-			nameFunctions<Elf64_Sym>();
-			// else
-			// nameFunctions<Elf32_Rela, Elf32_Rel, Elf32_Sym>();
+	
+			if(file_class==ELF64)
+			{
+				class Extracter64
+				{
+					public:
+						Elf64_Xword  elf_r_sym (Elf64_Xword a) { return ELF64_R_SYM (a); }
+						Elf64_Xword  elf_r_type(Elf64_Xword a) { return ELF64_R_TYPE(a); }
+						unsigned char  elf_st_bind(unsigned char a) { return ELF64_ST_BIND(a); }
+						unsigned char  elf_st_type(unsigned char a) { return ELF64_ST_TYPE(a); }
+				};
+				pltSplit<Elf64_Sym, Elf64_Rela, Elf64_Rel, Extracter64>(".plt", ".plt.got");
+				nameFunctions<Elf64_Sym, Extracter64>();
+			}
+			else
+			{
+				class Extracter32
+				{
+					public:
+						Elf32_Word  elf_r_sym (Elf32_Word a) { return ELF32_R_SYM (a); }
+						Elf32_Word  elf_r_type(Elf32_Word a) { return ELF32_R_TYPE(a); }
+						unsigned char  elf_st_bind(unsigned char a) { return ELF32_ST_BIND(a); }
+						unsigned char  elf_st_type(unsigned char a) { return ELF32_ST_TYPE(a); }
+				};
+				pltSplit<Elf32_Sym, Elf32_Rela, Elf32_Rel, Extracter32>(".plt", ".plt.got");
+				nameFunctions<Elf32_Sym, Extracter32>();
+			}
 
 		}
 
-		template<class T_Sym>
+		template<class T_Sym, class T_Extracter>
 		void nameFunctions()
 		{
 			// do symbol names.
-			parseSyms<T_Sym>(".dynsym", ".dynstr");
-			parseSyms<T_Sym>(".symtab", ".strtab");
+			parseSyms<T_Sym, T_Extracter>(".dynsym", ".dynstr");
+			parseSyms<T_Sym, T_Extracter>(".symtab", ".strtab");
 
 			auto namedFunctions=0U;
 			auto unnamedFunctions=0U;
@@ -128,7 +162,7 @@ class CreateFunctions_t
 	
 		}
 
-		template<class T_Sym>
+		template<class T_Sym, class T_Extracter>
 		void parseSyms(const string& secName, const string & stringSecName)
 		{
 			const auto sec=exeio.sections[secName];
@@ -148,7 +182,7 @@ class CreateFunctions_t
 					continue;
 
 				// works for both ELF64 and ELF32, macros defined the same.
-				const auto type=ELF64_ST_TYPE(sym->st_info);
+				const auto type=T_Extracter().elf_st_type(sym->st_info);
 				if(type!=STT_FUNC) 
 					continue;
 
@@ -230,7 +264,7 @@ class CreateFunctions_t
 			sccs.insert(ranges);
 		}
 
-		template<class T_Sym, class T_Rela, class T_Rel>
+		template<class T_Sym, class T_Rela, class T_Rel, class T_Extracter>
 		void pltSplit(const string &pltSecName, const string &endSecName)
 		{
 			const auto dynsymSec=exeio.sections[".dynsym"];
@@ -261,7 +295,7 @@ class CreateFunctions_t
 				const auto &relEntry=*relDataAsSymPtr;
 
 				// calculate index into dynsym, section.
-				const auto dynsymIndex=ELF64_R_SYM(relEntry.r_info);
+				const auto dynsymIndex=T_Extracter().elf_r_sym(relEntry.r_info);
 				const auto dynsymData=dynsymSec->get_data();
 				const auto dynstrData=dynstrSec->get_data();
 
@@ -337,7 +371,7 @@ class CreateFunctions_t
 			if(gotPltSec==NULL)
 				return;
 
-			// 64-bit, at least, entries are 6 bytes, with 2 bytes of padding.
+			// both 32- and 64-bit, entries are 6 bytes, with 2 bytes of padding.
 			const auto gotPltEntrySize=8;
 			const auto gotPltRangeSize=6;
 			const auto gotPltStartAddr=gotPltSec->get_address();
@@ -420,12 +454,14 @@ class CreateFunctions_t
 			const auto &ehprogram=fde->getProgram();
 			const auto ehprogramInstructions=ehprogram.getInstructions();
 
-			const auto def_cfa_rbp_it = find_if(ALLOF(*ehprogramInstructions), [](const shared_ptr<EHProgramInstruction_t> insn)
+			const auto def_cfa_rbp_it = find_if(ALLOF(*ehprogramInstructions), [&](const shared_ptr<EHProgramInstruction_t> insn)
 				{
 					assert(insn);
 					const auto &insnBytes=insn->getBytes();
+					// 0xd, 0x5 is "def_cfa_register ebp" 
 					// 0xd, 0x6 is "def_cfa_register rbp" 
-					return insnBytes==EHProgramInstructionByteVector_t({(uint8_t)0xd,(uint8_t)0x6});
+					const auto reg=file_class==ELF64 ? (uint8_t)0x6 : (uint8_t)0x5;
+					return insnBytes==EHProgramInstructionByteVector_t({(uint8_t)0xd, reg });
 				});
 			return def_cfa_rbp_it == ehprogramInstructions->end() ?  "NOFP" : "USEFP";
 		}

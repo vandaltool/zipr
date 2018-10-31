@@ -87,7 +87,7 @@ static uintptr_t const ORG_PC = 0xff000000;
 //padding is added to the ORG_PC for the first vpc
 //the padding amount is [0-PC_PADDING_MAX), i.e., not inclusive of PC_PADDING_MAX
 static unsigned int const PC_PADDING_MAX = 8001;
-static uintptr_t vpc = ORG_PC; 
+static uint64_t vpc = ORG_PC; 
 static map<string,string> symMap; 
 static map<string,string> callbackMap; 
 
@@ -199,7 +199,7 @@ void a2bspri(const vector<string> &input,const string &outFilename, const string
 	if(elfiop.get_class()==ELFCLASS64) 
 	{
 		bits=64;
-      vpc += (rand() & 0x000fffff);
+      		vpc += (rand() & 0x000fffff);
 		vpc<<=32;
 		vpc += rand();
 	}

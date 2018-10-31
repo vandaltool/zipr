@@ -12,6 +12,7 @@ dirs='''
 	selective_cfi
 	spasm
 	dump_map
+	dump_insns
 	hook_start
 	rida
 	thanos

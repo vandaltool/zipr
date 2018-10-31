@@ -1262,6 +1262,7 @@ Instruction_t* Transform::addNewMaxSaturation(Instruction_t *p_prev, RegisterNam
 
 void Transform::addMaxSaturation(Instruction_t *p_instruction, RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough)
 {
+#if 0
 	assert(getFileIR() && p_instruction);
 
 	p_instruction->SetFallthrough(p_fallthrough);
@@ -1311,10 +1312,15 @@ void Transform::addMaxSaturation(Instruction_t *p_instruction, RegisterName p_re
 				break;
 		}
 	}
+#else
+	// not used, and had compiler errors.
+	assert(0);
+#endif
 }
 
 void Transform::addMinSaturation(Instruction_t *p_instruction, RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough)
 {
+#if 0
 	assert(getFileIR() && p_instruction);
 
 	p_instruction->SetFallthrough(p_fallthrough);
@@ -1347,6 +1353,10 @@ void Transform::addMinSaturation(Instruction_t *p_instruction, RegisterName p_re
 				break;
 		}
 	}
+#else
+	// not used, and had compiler errors.
+	assert(0);
+#endif
 }
 
 void Transform::setAssembly(Instruction_t *p_instr, string p_asm)

@@ -46,7 +46,7 @@ class DataScoop_t : public BaseObj_t
 				libIRDB::Type_t* p_type,
 				int p_permissions, 
 				bool p_is_relro, 
-				std::string p_contents)
+				const std::string &p_contents)
 			:
 				BaseObj_t(NULL),
 				name(p_name),

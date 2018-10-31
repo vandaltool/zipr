@@ -10,6 +10,8 @@
 #include <elf.h>
 #include <algorithm>
 #include <memory>
+#include <tuple>
+#include <functional>
 
 #include <exeio.h>
 
@@ -193,7 +195,35 @@ bool split_eh_frame_impl_t<ptrsize>::init_offset_map()
 template <int ptrsize>
 void split_eh_frame_impl_t<ptrsize>::build_ir() const
 {
-	typedef pair<EhProgram_t*,uint64_t> whole_pgm_t;
+	class whole_pgm_t
+	{
+		public:
+			whole_pgm_t(EhProgram_t* _pgm, uint64_t _personality)
+				: hashcode(hashPgm(_pgm)), pgm(_pgm), personality(_personality)
+			{
+			}
+			EhProgram_t* getProgram() const { return pgm; }
+			uint64_t getPersonality() const { return personality; }
+		private:
+			static uint64_t hashPgm(const EhProgram_t* vec)
+			{
+				assert(vec);
+				auto seed = vec->GetCIEProgram().size() + vec->GetFDEProgram().size();
+				auto hash_fn=hash<string>();
+
+				for(const auto& i : vec->GetCIEProgram()) 
+					seed ^= hash_fn(i) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+				for(const auto& i : vec->GetFDEProgram()) 
+					seed ^= hash_fn(i) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+				return seed;
+			};
+		uint64_t hashcode;
+		EhProgram_t* pgm;
+		uint64_t personality;
+
+		friend struct EhProgramComparator_t;
+	};
+
 	//const auto fdes_ptr=eh_frame_parser->getFDEs();
 	//const auto &fdes=*fdes_ptr;
 
@@ -202,29 +232,31 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 	{
 		bool operator() (const whole_pgm_t& lhs, const whole_pgm_t& rhs) 
 		{
-			const auto &a=*(lhs.first);
-			const auto &b=*(rhs.first);
-			return
-				make_tuple(
-				    a.GetCIEProgram(),
-				    a.GetFDEProgram(),
-				    a.GetCodeAlignmentFactor(),
-				    a.GetDataAlignmentFactor(),
-				    a.GetReturnRegNumber(),
-				    a.GetPointerSize(), 
-				    lhs.second
-				   )
-				<
-				make_tuple(
-				    b.GetCIEProgram(),
-				    b.GetFDEProgram(),
-				    b.GetCodeAlignmentFactor(),
-				    b.GetDataAlignmentFactor(),
-				    b.GetReturnRegNumber(),
-				    b.GetPointerSize(), 
-				    rhs.second
-				   );
-
+			const auto &a=*(lhs.pgm);
+			const auto &b=*(rhs.pgm);
+			if(lhs.hashcode == rhs.hashcode)
+				return
+					make_tuple(
+					    a.GetCIEProgram(),
+					    a.GetFDEProgram(),
+					    a.GetCodeAlignmentFactor(),
+					    a.GetDataAlignmentFactor(),
+					    a.GetReturnRegNumber(),
+					    a.GetPointerSize(), 
+					    lhs.personality
+					   )
+					<
+					make_tuple(
+					    b.GetCIEProgram(),
+					    b.GetFDEProgram(),
+					    b.GetCodeAlignmentFactor(),
+					    b.GetDataAlignmentFactor(),
+					    b.GetReturnRegNumber(),
+					    b.GetPointerSize(), 
+					    rhs.personality
+					   );
+			else 
+				return lhs.hashcode < rhs.hashcode;
 //			return tie(*a.first, a.second) < tie(*b.first,b.second); 
 		}
 	};
@@ -247,7 +279,23 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 			{ return fde->getStartAddress() <= find_addr && find_addr < fde->getEndAddress(); };
 		const auto fie_ptr_it=find_if ( ALLOF(*fdes), finder);
 		*/
-		const auto fie_ptr=eh_frame_parser->findFDE(find_addr);
+		static auto fie_ptr=shared_ptr<FDEContents_t>(); 
+		static auto cie_instructions=shared_ptr<EHProgramInstructionVector_t>();
+		static auto fde_instructions=shared_ptr<EHProgramInstructionVector_t>();
+
+		if (fie_ptr && fie_ptr->getStartAddress() <= find_addr && find_addr < fie_ptr->getEndAddress())
+		{
+			// fie_ptr already points at right thing, do nothing
+		}
+		else 
+		{
+			fie_ptr=eh_frame_parser->findFDE(find_addr);
+			if(fie_ptr)
+			{
+				cie_instructions=fie_ptr->getCIE().getProgram().getInstructions();
+				fde_instructions=fie_ptr->getProgram().getInstructions();
+			}
+		}
 
 		if(fie_ptr != nullptr ) 
 		{
@@ -268,11 +316,10 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 			const auto personality=fie_ptr->getCIE().getPersonality(); 
 			const auto insn_addr=insn->GetAddress()->GetVirtualOffset();
 
-			auto import_pgm = [&](EhProgramListing_t& out_pgm_final, const EHProgram_t& in_pgm) -> void
+			auto import_pgm = [&](EhProgramListing_t& out_pgm_final, const shared_ptr<EHProgramInstructionVector_t> &in_pgm_instructions_ptr) -> void
 			{
 				auto out_pgm=vector<shared_ptr<EHProgramInstruction_t> >();
 				auto cur_addr=fde_addr;
-				const auto in_pgm_instructions_ptr=in_pgm.getInstructions();
 				const auto in_pgm_instructions=*in_pgm_instructions_ptr;
 				for(const auto & insn_ptr : in_pgm_instructions)
 				{
@@ -328,8 +375,8 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 			// build an eh program on the stack;
 
 			auto ehpgm=EhProgram_t(BaseObj_t::NOT_IN_DATABASE,caf,daf,return_reg, ptrsize);
-			import_pgm(ehpgm.GetCIEProgram(), fie_ptr->getCIE().getProgram());
-			import_pgm(ehpgm.GetFDEProgram(), fie_ptr->getProgram());
+			import_pgm(ehpgm.GetCIEProgram(), cie_instructions);
+			import_pgm(ehpgm.GetFDEProgram(), fde_instructions);
 
 
 			if(getenv("EHIR_VERBOSE")!=NULL)
@@ -339,7 +386,7 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 			if(ehpgm_it != eh_program_cache.end())
 			{
 				// yes, use the cached program.
-				insn->SetEhProgram(ehpgm_it->first);
+				insn->SetEhProgram(ehpgm_it->getProgram());
 				if(getenv("EHIR_VERBOSE")!=NULL)
 					cout<<"Re-using existing Program!"<<endl;
 				reusedpgms++;

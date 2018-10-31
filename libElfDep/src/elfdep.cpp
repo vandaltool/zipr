@@ -249,6 +249,9 @@ DataScoop_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf
 	auto relaplt_scoop=find_scoop(firp,".rela.dyn coalesced w/.rela.plt");
 	auto relplt_scoop=find_scoop(firp,".rel.dyn coalesced w/.rel.plt");
 	auto relscoop=relaplt_scoop!=NULL ?  relaplt_scoop : relplt_scoop;
+	auto gnu_version_scoop=find_scoop(firp,".gnu.version");
+	assert(gnu_version_scoop);
+	assert(gnu_version_scoop->GetStart()->GetVirtualOffset()==0);
 
 	if (!relscoop) 
 		throw std::logic_error("Cannot find rela.plt or rel.plt. Did you remember to use move_globals with --elf_tables?");
@@ -279,6 +282,12 @@ DataScoop_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf
 	string dl_sym_str((const char*)&dl_sym, sizeof(T_Elf_Sym));
 	unsigned int dl_pos=add_to_scoop(dl_sym_str,dynsym_scoop);
 
+	// update the gnu.version section so that the new symbol has a version.
+	const auto new_version_str=string("\0\0", 2);	 // \0\0 means *local*, as in, don't index the gnu.verneeded array.
+	add_to_scoop(new_version_str,gnu_version_scoop);
+
+	
+
 	// find the rela count.  can't insert before that.
 	int rela_count=0;
 	for(int i=0;i+sizeof(T_Elf_Dyn)<dynamic_scoop->GetSize(); i+=sizeof(T_Elf_Dyn))
@@ -295,7 +304,9 @@ DataScoop_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf
 	// create the new reloc 
 	T_Elf_Rela dl_rel;
 	memset(&dl_rel,0,sizeof(dl_rel));
-	dl_rel.r_info= ((dl_pos/sizeof(T_Elf_Sym))<<rela_shift) | reloc_type;
+	auto r_info_tmp=(decltype(dl_rel.r_info))dl_pos;
+	dl_rel.r_info= ((r_info_tmp/sizeof(T_Elf_Sym)) <<rela_shift ) | reloc_type;
+
 	string dl_rel_str((const char*)&dl_rel, sizeof(dl_rel));
 
 // need to fixup relocs

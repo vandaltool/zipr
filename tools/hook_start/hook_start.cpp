@@ -52,7 +52,7 @@ Instruction_t *HookStart::add_instrumentation(Instruction_t *site)
 	     movIdBuf[100],
 	     movRaxBuf[100],
 	     movRspBuf[100];
-	sprintf(pushRetBuf,"push qword 0x%lx", postCallbackReturn);
+	sprintf(pushRetBuf,"push qword 0x%lx", (long unsigned int)postCallbackReturn);
 	sprintf(movIdBuf,"mov rdi, 0x0");
 	sprintf(movRaxBuf,"mov rsi, rax");
 	sprintf(movRspBuf,"mov rdx, rsp");

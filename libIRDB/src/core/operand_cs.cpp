@@ -213,6 +213,10 @@ string DecodedOperandCapstone_t::getString() const
 
 				if (op.mem.disp != 0)
 					ret_val+=" + "+ to_string(op.mem.disp);
+
+				if(ret_val=="")
+					return "0";
+				
 				return ret_val;
 			}
 			assert(0);
@@ -551,6 +555,16 @@ uint32_t DecodedOperandCapstone_t::getSegmentRegister() const
 }
 
 
+set<string> write_only_operand_mnemonics=
+ 	{
+		"sete",
+		"setne",
+		"fst",
+		"fstp",
+		"fist",
+		"fistp"
+	};
+
 set<string> read_only_operand_mnemonics=
 	{
 		// specal read-only op cases, rest are some form of compare.
@@ -564,6 +578,12 @@ set<string> read_only_operand_mnemonics=
 
 		// compare 
 		"cmp",
+
+		// multiplies and divides implicitly read/write eax/ax instead of op0 
+		"mul",
+		// "imul", imul has 2 forms, have to handle separately.
+		"div",
+		"idiv",
 
 		// compare string
 		"cmps",
@@ -668,6 +688,20 @@ set<string> read_only_operand_mnemonics=
 
 bool DecodedOperandCapstone_t::isRead() const
 {
+	if(!isWritten())
+		return true;
+
+	const auto d=DecodedInstructionCapstone_t(my_insn);
+	const auto d_mnemonic=d.getMnemonic();
+	const auto woom_it=write_only_operand_mnemonics.find(d_mnemonic);
+	const auto in_woom=(woom_it!=end(write_only_operand_mnemonics));
+	if(in_woom)
+		return false;
+		
+        const auto the_insn=static_cast<cs_insn*>(my_insn.get());
+        const auto &op = (the_insn->detail->x86.operands[op_num]);
+	return (op.access & CS_AC_READ)!=0;
+/*
 	if(op_num!=0)
 		return true;
 
@@ -687,10 +721,30 @@ bool DecodedOperandCapstone_t::isRead() const
 	return true;
 
 	assert(0);
+*/
 }
 
 bool DecodedOperandCapstone_t::isWritten() const
 {	
+	const auto d=DecodedInstructionCapstone_t(my_insn);
+	const auto d_mnemonic=d.getMnemonic();
+	const auto room_it=read_only_operand_mnemonics.find(d_mnemonic);
+	const auto in_room=(room_it!=end(read_only_operand_mnemonics));
+	if(in_room)
+		return false;
+	const auto woom_it=write_only_operand_mnemonics.find(d_mnemonic);
+	const auto in_woom=(woom_it!=end(write_only_operand_mnemonics));
+	if(in_woom)
+		return true;
+
+	// imul has a 1-argument form which uses all it's operands
+	if(d_mnemonic=="imul" && !d.hasOperand(1))
+		return false;
+        const auto the_insn=static_cast<cs_insn*>(my_insn.get());
+        const auto &op = (the_insn->detail->x86.operands[op_num]);
+
+	return (op.access & CS_AC_WRITE)!=0;
+/*
 	if(op_num!=0)
 		return false;
 	const auto d=DecodedInstructionCapstone_t(my_insn);
@@ -703,4 +757,5 @@ bool DecodedOperandCapstone_t::isWritten() const
 		return false;
 
 	return true;
+*/
 }
