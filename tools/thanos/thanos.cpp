@@ -9,6 +9,7 @@
 #include <map>
 #include <algorithm>
 #include <assert.h>
+#include <iostream>
 
 
 using namespace std;
@@ -140,9 +141,11 @@ int main(int argc, char *argv[])
 
                         // setup transform step plugin
 			char* step_name = argv[0];                        
-                        void* dlhdl = dlopen((plugin_path.append(step_name)).c_str(), RTLD_NOW);
+                        void* dlhdl = dlopen((plugin_path+step_name).c_str(), RTLD_NOW);
                         if(dlhdl == NULL)
                         {
+                            const auto err=dlerror();
+                            cout<<"Cannot open "<<step_name<<": "<<err<<endl;
                             ssize_t write_res = write(out_pipe_fd, (void*) "STEP_UNSUPPORTED\n", 17);
                             if(write_res == -1)
                                 return -1;
@@ -152,6 +155,8 @@ int main(int argc, char *argv[])
                             void* sym = dlsym(dlhdl, "GetTransformStep"); 
                             if(sym == NULL)
                             {
+                                const auto err=dlerror();
+                                cout<<"Cannot find GetTransformStep in "<<step_name<<": "<<err<<endl;
 			        ssize_t write_res = write(out_pipe_fd, (void*) "STEP_UNSUPPORTED\n", 17);
                                 if(write_res == -1)
                                     return -1;

@@ -26,15 +26,15 @@ if 'build_tools' not in myenv or myenv['build_tools'] is None or int(myenv['buil
 
 	myenv.Append(CCFLAGS=" -std=c++11 -Wall")
 
-	ehframe=myenv.Object("read_ehframe.cpp");
-	split_eh_frame=myenv.Object("split_eh_frame.cpp");
+	ehframe=myenv.SharedObject("read_ehframe.cpp");
+	split_eh_frame=myenv.SharedObject("split_eh_frame.cpp");
 
-	pgm=myenv.Program("fill_in_indtargs.exe",  ehframe+split_eh_frame+Split("fill_in_indtargs.cpp check_thunks.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
+	pgm=myenv.SharedLibrary("fill_in_indtargs.so",  ehframe+split_eh_frame+Split("fill_in_indtargs.cpp check_thunks.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
 	install=myenv.Install("$SECURITY_TRANSFORMS_HOME/plugins_install", pgm)
 	Default(install)
 	installed=installed+install
 
-	pgm=myenv.SharedLibrary("fill_in_cfg.so",  Split("fill_in_cfg.cpp split_eh_frame.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
+	pgm=myenv.SharedLibrary("fill_in_cfg.so",  Split("fill_in_cfg.cpp")+split_eh_frame, LIBPATH=LIBPATH, LIBS=LIBS)
 	install=myenv.Install("$SECURITY_TRANSFORMS_HOME/plugins_install", pgm)
 	Default(install)
 	installed=installed+install
