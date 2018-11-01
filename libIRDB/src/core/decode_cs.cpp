@@ -196,7 +196,8 @@ DecodedInstructionCapstone_t::DecodedInstructionCapstone_t(const Instruction_t* 
 	if(!i) throw std::invalid_argument("No instruction given to DecodedInstruction_t(Instruction_t*)");
 
         const auto length=i->GetDataBits().size();
-	const auto data=i->GetDataBits().data();
+	const auto &databits=i->GetDataBits();
+	const auto data=databits.data();
 	const auto address=i->GetAddress()->GetVirtualOffset();
         Disassemble(address,data,length);
 
