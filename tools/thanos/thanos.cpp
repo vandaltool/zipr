@@ -22,7 +22,7 @@ using namespace Transform_SDK;
 enum class Mode { DEBUG, VERBOSE, DEFAULT };
 
 int execute_step(int argc, char* argv[], bool step_optional, Mode exec_mode, 
-                 IRDBObjects_t* shared_objects, TransformStep_t* the_step);
+                 IRDBObjects_t* shared_objects, unique_ptr<TransformStep_t>& the_step);
 
 
 // The toolchain driver script ps_analyze.sh communicates
@@ -163,9 +163,9 @@ int main(int argc, char *argv[])
                             }
                             else
                             {
-				TransformStep_t* (*func)(void);
-				func = (TransformStep_t* (*)(void)) sym;
-				TransformStep_t* the_step = (*func)();
+				unique_ptr<TransformStep_t> (*func)(void);
+				func = (unique_ptr<TransformStep_t> (*)(void)) sym;
+				unique_ptr<TransformStep_t> the_step = (*func)();
 				assert(the_step != NULL);
 
                                 bool step_optional = true;
@@ -185,9 +185,9 @@ int main(int argc, char *argv[])
                                     dup2(log_output_fd, STDOUT_FILENO);
                                     dup2(log_output_fd, STDERR_FILENO); 
 				}
-
+				
 				int step_retval = execute_step(argc, argv, step_optional, exec_mode, shared_objects, the_step);
-                                
+
 				// cleanup from logging
 				if(exec_mode == Mode::DEFAULT || exec_mode == Mode::VERBOSE)
                                 {
@@ -199,7 +199,6 @@ int main(int argc, char *argv[])
                                 close(saved_stderr);
 
 				// cleanup plugin
-				delete the_step;
 				free(argv);
                                 dlclose(dlhdl);
 				
@@ -288,9 +287,9 @@ int main(int argc, char *argv[])
 
 
 int execute_step(int argc, char* argv[], bool step_optional, Mode exec_mode, 
-                 IRDBObjects_t* shared_objects, TransformStep_t* the_step)
+                 IRDBObjects_t* shared_objects, unique_ptr<TransformStep_t>& the_step)
 {
-    int parse_retval = the_step->ParseArgs(argc, argv);
+    int parse_retval = the_step->parseArgs(argc, argv);
     if(parse_retval != 0)
     {
         return parse_retval;
@@ -312,7 +311,7 @@ int execute_step(int argc, char* argv[], bool step_optional, Mode exec_mode,
         }
     }
 
-    int step_error = the_step->ExecuteStep(shared_objects);
+    int step_error = the_step->executeStep(shared_objects);
 
     if(step_error)
     {

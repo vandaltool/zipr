@@ -9,15 +9,15 @@ namespace Transform_SDK
 		public:
 			// Step names must be unique, allows arguments to
 			// be directed to their matching transform steps.
-			virtual std::string GetStepName(void) = 0;
+			virtual std::string getStepName(void) const = 0;
 
 			// Allows all steps to parse args before any step takes time to execute
-			virtual int ParseArgs(int argc, char* argv[])
+			virtual int parseArgs(int argc, const char* const argv[])
 			{
 				return 0; // success
 			}
 				
-			virtual int ExecuteStep(libIRDB::IRDBObjects_t *irdb_objects)
+			virtual int executeStep(libIRDB::IRDBObjects_t *const irdb_objects)
 			{
 				return 0; // success
 			}
@@ -30,6 +30,6 @@ namespace Transform_SDK
 }
 
 extern "C"
-Transform_SDK::TransformStep_t* GetTransformStep(void);    
+std::unique_ptr<Transform_SDK::TransformStep_t> GetTransformStep(void);    
 
 #endif

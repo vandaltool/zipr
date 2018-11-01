@@ -580,10 +580,10 @@ void PopulateCFG::fill_in_landing_pads(FileIR_t *firp)
 	
 }
 
-int PopulateCFG::ParseArgs
+int PopulateCFG::parseArgs
         (
         int argc, 
-        char* argv[]
+        const char* const argv[]
         )
 {   
     if(argc<2)
@@ -611,7 +611,7 @@ int PopulateCFG::ParseArgs
     return 0;
 }
 
-int PopulateCFG::ExecuteStep(IRDBObjects_t *irdb_objects)
+int PopulateCFG::executeStep(IRDBObjects_t *const irdb_objects)
 {
     try 
 	{
@@ -664,7 +664,8 @@ int PopulateCFG::ExecuteStep(IRDBObjects_t *irdb_objects)
 
 
 extern "C"
-Transform_SDK::TransformStep_t* GetTransformStep(void)
+unique_ptr<Transform_SDK::TransformStep_t> GetTransformStep(void)
 {
-	return new PopulateCFG();
+	unique_ptr<Transform_SDK::TransformStep_t> the_step(new PopulateCFG());
+	return the_step;
 }

@@ -32,12 +32,12 @@ class PopulateCFG : public libIRDB::Transform_SDK::TransformStep_t
 		// are not managed by this class).
 	}
 	
-	std::string GetStepName(void) override
+	std::string getStepName(void) const override
 	{
 		return std::string("fill_in_cfg");
 	}
-        int ParseArgs(int argc, char* argv[]) override;
-	int ExecuteStep(libIRDB::IRDBObjects_t*) override;
+        int parseArgs(int argc, const char* const argv[]) override;
+	int executeStep(libIRDB::IRDBObjects_t *const) override;
     
     private: // methods
         
