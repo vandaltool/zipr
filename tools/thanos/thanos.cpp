@@ -22,7 +22,7 @@ using namespace Transform_SDK;
 enum class Mode { DEBUG, VERBOSE, DEFAULT };
 
 int execute_step(int argc, char* argv[], bool step_optional, Mode exec_mode, 
-                 IRDBObjects_t* shared_objects, unique_ptr<TransformStep_t>& the_step);
+                 IRDBObjects_t* shared_objects, TransformStep_t* the_step);
 
 
 // The toolchain driver script ps_analyze.sh communicates
@@ -163,9 +163,9 @@ int main(int argc, char *argv[])
                             }
                             else
                             {
-				unique_ptr<TransformStep_t> (*func)(void);
-				func = (unique_ptr<TransformStep_t> (*)(void)) sym;
-				unique_ptr<TransformStep_t> the_step = (*func)();
+				shared_ptr<TransformStep_t> (*func)(void);
+				func = (shared_ptr<TransformStep_t> (*)(void)) sym;
+				shared_ptr<TransformStep_t> the_step = (*func)();
 				assert(the_step != NULL);
 
                                 bool step_optional = true;
@@ -186,7 +186,7 @@ int main(int argc, char *argv[])
                                     dup2(log_output_fd, STDERR_FILENO); 
 				}
 				
-				int step_retval = execute_step(argc, argv, step_optional, exec_mode, shared_objects, the_step);
+				int step_retval = execute_step(argc, argv, step_optional, exec_mode, shared_objects, the_step.get());
 
 				// cleanup from logging
 				if(exec_mode == Mode::DEFAULT || exec_mode == Mode::VERBOSE)
@@ -287,7 +287,7 @@ int main(int argc, char *argv[])
 
 
 int execute_step(int argc, char* argv[], bool step_optional, Mode exec_mode, 
-                 IRDBObjects_t* shared_objects, unique_ptr<TransformStep_t>& the_step)
+                 IRDBObjects_t* shared_objects, TransformStep_t* the_step)
 {
     int parse_retval = the_step->parseArgs(argc, argv);
     if(parse_retval != 0)

@@ -2869,7 +2869,7 @@ int64_t do_unpin_opt=numeric_limits<int64_t>::max() ;
 db_id_t variant_id=BaseObj_t::NOT_IN_DATABASE;
 set<virtual_offset_t> forced_pins;
 
-int ParseArgs(int argc, char* argv[])
+int parseArgs(int argc, const char* const argv[])
 {
 	auto argc_iter = (int)2;
 
@@ -2941,7 +2941,7 @@ int ParseArgs(int argc, char* argv[])
 }
 
 
-int ExecuteStep(IRDBObjects_t *irdb_objects)
+int executeStep(IRDBObjects_t *const irdb_objects)
 {
 	//VariantID_t *pidp=nullptr;
 	//FileIR_t * firp=nullptr;
@@ -3003,7 +3003,7 @@ int ExecuteStep(IRDBObjects_t *irdb_objects)
 	return 0;
 }
 
-std::string GetStepName(void) override
+std::string getStepName(void) const override
 {
 	return std::string("fill_in_indtargs");
 }
@@ -3012,25 +3012,27 @@ std::string GetStepName(void) override
 };
 
 
-PopulateIndTargs_t* curInvocation;
+shared_ptr<Transform_SDK::TransformStep_t> curInvocation;
 
 bool possible_target(virtual_offset_t p, virtual_offset_t from_addr, ibt_provenance_t prov)
 {
 	assert(curInvocation);
-	return curInvocation->possible_target(p,from_addr,prov);
+	return (dynamic_cast<PopulateIndTargs_t*>(curInvocation.get()))->possible_target(p,from_addr,prov);
 }
 
 void range(virtual_offset_t start, virtual_offset_t end)
 {
 	assert(curInvocation);
-	return curInvocation->range(start,end);
+	return (dynamic_cast<PopulateIndTargs_t*>(curInvocation.get()))->range(start,end);
 }
 
 extern "C"
-Transform_SDK::TransformStep_t* GetTransformStep(void)
+shared_ptr<Transform_SDK::TransformStep_t> GetTransformStep(void)
 {
-        curInvocation=new PopulateIndTargs_t();
+        curInvocation.reset(new PopulateIndTargs_t());
 	return curInvocation;
+
+	//return shared_ptr<Transform_SDK::TransformStep_t>(new PopulateIndTargs_t());
 }
 
 

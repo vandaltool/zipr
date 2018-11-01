@@ -30,6 +30,6 @@ namespace Transform_SDK
 }
 
 extern "C"
-std::unique_ptr<Transform_SDK::TransformStep_t> GetTransformStep(void);    
+std::shared_ptr<Transform_SDK::TransformStep_t> GetTransformStep(void);    
 
 #endif

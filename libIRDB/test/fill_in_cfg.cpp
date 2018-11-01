@@ -664,8 +664,8 @@ int PopulateCFG::executeStep(IRDBObjects_t *const irdb_objects)
 
 
 extern "C"
-unique_ptr<Transform_SDK::TransformStep_t> GetTransformStep(void)
+shared_ptr<Transform_SDK::TransformStep_t> GetTransformStep(void)
 {
-	unique_ptr<Transform_SDK::TransformStep_t> the_step(new PopulateCFG());
+	shared_ptr<Transform_SDK::TransformStep_t> the_step(new PopulateCFG());
 	return the_step;
 }
