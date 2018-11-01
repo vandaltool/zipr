@@ -119,7 +119,7 @@ int main(int argc, char **argv)
 					cout<<setw(9)<<"NoFunc";
 					
 				const auto d=DecodedInstruction_t(insn);
-				cout<<" "<<d.getDisassembly()<<endl;
+				cout<<" "<<d.getDisassembly()<<"("<<insn->GetComment()<<")"<<endl;
 	
 				if(dump_icfs_flag == insn->GetBaseID())
 					dump_icfs(insn);
