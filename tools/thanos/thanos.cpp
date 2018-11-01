@@ -269,6 +269,8 @@ int main(int argc, char *argv[])
                     return -1;
             }
         }
+	else
+		sleep(1);
     }
 
     close(in_pipe_fd);
