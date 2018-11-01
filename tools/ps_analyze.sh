@@ -281,9 +281,10 @@ check_options()
 				if [ "X$2" = "Xzipr" ]; then
 					echo "Using Zipr backend."
 					export backend="zipr"
-					phases_spec=" $phases_spec gather_libraries=off clone=off stratafy_with_pc_confine=off generate_spri=off spasm=off fast_annot=off zipr=on preLoaded_ILR1=off  preLoaded_ILR2=off fast_spri=off create_binary_script=off is_so=off"
+					phases_spec=" $phases_spec gather_libraries=off clone=off stratafy_with_pc_confine=off generate_spri=off spasm=off fast_annot=off preLoaded_ILR1=off  preLoaded_ILR2=off fast_spri=off create_binary_script=off is_so=off"
 					phases_spec=${phases_spec/preLoaded_ILR1=on/}
 					phases_spec=${phases_spec/preLoaded_ILR2=on/}
+					post_phases_spec="$post_phases_spec zipr=on"
 					step_options_gather_libraries="$step_options_gather_libraries --main_exe_only"
 				elif [ "X$2" = "Xstrata" ]; then
 					echo "Using Strata backend."
@@ -361,6 +362,8 @@ check_options()
 			;;
 		esac
 	done
+
+	phases_spec="$phases_spec $post_phases_spec "
 
 	#
 	# Check/parse input/output file
@@ -445,7 +448,7 @@ is_step_error()
 
 	case $my_step in
 		*)
-			if [ $my_error -eq 0 ]; then
+			if [[ $my_error -eq 0 ]]; then
 				# if not otherwise specified, programs should return 0
 				return 0;
 			fi
@@ -664,18 +667,18 @@ perform_step()
 	echo "#ATTRIBUTE step_exitcode=$command_exit" >> $logfile
 
 	# report job status
-	if [ $command_exit -eq 0 ]; then
-		if [ $record_stats -eq 1 ]; then
+	if [[ $command_exit -eq 0 ]]; then
+		if [[ $record_stats -eq 1 ]]; then
 			$PEASOUP_HOME/tools/db/job_status_report.sh "$JOBID" "$step" "$stepnum" completed "$endtime" success $logfile
 		fi
 	else
-		if [ $record_stats -eq 1 ]; then
+		if [[ $record_stats -eq 1 ]]; then
 			$PEASOUP_HOME/tools/db/job_status_report.sh "$JOBID" "$step" "$stepnum" completed "$endtime" error $logfile
 		fi
 	fi
 
 	is_step_error $step $command_exit
-	if [ $? -ne 0 ]; then
+	if [[ $? -ne 0 ]]; then
 		echo "Done.  Command failed! ***************************************"
 
 		# check if we need to exit
