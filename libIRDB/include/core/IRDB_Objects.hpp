@@ -46,17 +46,19 @@ class IRDBObjects_t
 		
 	private:
                 pqxxDB_t *pqxx_interface = new pqxxDB_t();
-		// maps for speed of finding needed files, file IRs and/or variants
-		// that have already been read from the DB
+		// type aliases of maps. maps allow speed of finding needed files, file IRs 
+		// and/or variants that have already been read from the DB 
+		using IdToVariantMap_t = std::map<db_id_t, const std::shared_ptr<VariantID_t>>; 
+
+		using FileIRInfo_t = std::pair<File_t *const, std::shared_ptr<FileIR_t>>;
+		using IdToFileIRInfoMap_t = std::map<db_id_t, FileIRInfo_t>; 
                 
-                // maps variant id to variant
-		std::map<db_id_t, std::shared_ptr<VariantID_t>> variant_map;
-                // maps file id to (file, file ir)
-		std::map<db_id_t, std::pair<File_t*, std::shared_ptr<FileIR_t>>> file_IR_map;
+		IdToVariantMap_t variant_map;
+        	IdToFileIRInfoMap_t file_IR_map;
                 
                 // minor helpers (used to check assertions)
-                bool FilesAlreadyPresent(std::set<File_t*> the_files);
-                bool FilesBeingShared(std::shared_ptr<VariantID_t> the_variant);
+                bool FilesAlreadyPresent(const std::set<File_t*>& the_files) const;
+                bool FilesBeingShared(const std::shared_ptr<VariantID_t>& the_variant) const;
 };
 
 #endif
