@@ -199,7 +199,9 @@ int main(int argc, char *argv[])
                                 close(saved_stderr);
 
 				// cleanup plugin
-				free(argv);
+				free(argv); 
+				argv=nullptr;
+				the_step.reset(); // explicitly get rid of the handle to the library so we can close it.
                                 dlclose(dlhdl);
 				
 				string step_retval_str(to_string(step_retval)+"\n");
