@@ -2973,6 +2973,8 @@ int executeStep(IRDBObjects_t *const irdb_objects)
 			// firp=new FileIR_t(*pidp, this_file);
 			assert(firp);
 
+			firp->SetBaseIDS();
+
 			// read the executeable file
 			int elfoid=firp->GetFile()->GetELFOID();
 		        pqxx::largeobject lo(elfoid);
