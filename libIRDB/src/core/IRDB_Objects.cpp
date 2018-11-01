@@ -21,8 +21,7 @@ IRDBObjects_t::~IRDBObjects_t()
 
 shared_ptr<FileIR_t> IRDBObjects_t::AddFileIR(db_id_t variant_id, db_id_t file_id)
 {
-        map<db_id_t, pair<File_t*, shared_ptr<FileIR_t>>>::iterator 
-            it = file_IR_map.find(file_id);
+        auto it = file_IR_map.find(file_id);
         
         if(it == file_IR_map.end())
         {
@@ -33,7 +32,7 @@ shared_ptr<FileIR_t> IRDBObjects_t::AddFileIR(db_id_t variant_id, db_id_t file_i
         {            
             if(it->second.second == NULL)
             {
-                File_t* the_file = it->second.first; 
+                File_t *const the_file = it->second.first; 
                 assert(the_file != NULL);
             
                 assert(variant_map.find(variant_id) != variant_map.end());
@@ -51,12 +50,11 @@ shared_ptr<FileIR_t> IRDBObjects_t::AddFileIR(db_id_t variant_id, db_id_t file_i
 
 int IRDBObjects_t::WriteBackFileIR(db_id_t file_id)
 {
-        map<db_id_t, pair<File_t*, shared_ptr<FileIR_t>>>::iterator 
-            it = file_IR_map.find(file_id);
+        auto it = file_IR_map.find(file_id);
         
         if(it != file_IR_map.end())
         {
-            File_t* the_file = it->second.first;
+            File_t *const the_file = it->second.first;
             assert(the_file != NULL);
                     
             try
@@ -88,8 +86,7 @@ int IRDBObjects_t::WriteBackFileIR(db_id_t file_id)
 
 int IRDBObjects_t::DeleteFileIR(db_id_t file_id)
 {
-        map<db_id_t, pair<File_t*, shared_ptr<FileIR_t>>>::iterator 
-            it = file_IR_map.find(file_id);
+        auto it = file_IR_map.find(file_id);
         
         if(it != file_IR_map.end())
         {
@@ -107,9 +104,9 @@ int IRDBObjects_t::DeleteFileIR(db_id_t file_id)
 }
 
 
-bool IRDBObjects_t::FilesAlreadyPresent(set<File_t*> the_files)
+bool IRDBObjects_t::FilesAlreadyPresent(const set<File_t*>& the_files) const
 {
-        for(set<File_t*>::iterator it=the_files.begin();
+        for(set<File_t*>::const_iterator it=the_files.begin();
             it!=the_files.end();
             ++it
            )
@@ -126,34 +123,34 @@ bool IRDBObjects_t::FilesAlreadyPresent(set<File_t*> the_files)
 
 shared_ptr<VariantID_t> IRDBObjects_t::AddVariant(db_id_t variant_id)
 {
-        map<db_id_t, shared_ptr<VariantID_t>>::iterator var_it = variant_map.find(variant_id);      
+        auto var_it = variant_map.find(variant_id);      
 
         if(var_it != variant_map.end())
         {
             return var_it->second;
         }
 
-        shared_ptr<VariantID_t> the_variant = make_shared<VariantID_t>(variant_id);      
+        const auto the_variant = make_shared<VariantID_t>(variant_id);      
 
         assert(the_variant->IsRegistered()==true);
         // disallow variants that share shallow copies to both be read in
         // to prevent desynchronization. 
         assert(!FilesAlreadyPresent(the_variant->GetFiles()));
         
-        pair<db_id_t, shared_ptr<VariantID_t>> var_pair = make_pair(variant_id, the_variant);
+        auto var_pair = make_pair(variant_id, the_variant);
         variant_map.insert(var_pair);
 
         // add files
-        for(set<File_t*>::iterator it=the_variant->GetFiles().begin();
+        for(set<File_t*>::const_iterator it=the_variant->GetFiles().begin();
             it!=the_variant->GetFiles().end();
             ++it
            )
         {            
-	    File_t* curr_file = *it;
+	    File_t *const curr_file = *it;
             shared_ptr<FileIR_t> curr_file_IR;
                     
-            pair<File_t*, shared_ptr<FileIR_t>> file_IR_pair = make_pair(curr_file, curr_file_IR);
-            pair<db_id_t, pair<File_t*, shared_ptr<FileIR_t>>> file_map_pair = make_pair((*it)->GetBaseID(), file_IR_pair);
+            auto file_IR_pair = make_pair(curr_file, curr_file_IR);
+            auto file_map_pair = make_pair((*it)->GetBaseID(), file_IR_pair);
             
             file_IR_map.insert(file_map_pair);
         }
@@ -162,15 +159,15 @@ shared_ptr<VariantID_t> IRDBObjects_t::AddVariant(db_id_t variant_id)
 }
 
 
-bool IRDBObjects_t::FilesBeingShared(shared_ptr<VariantID_t> the_variant)
+bool IRDBObjects_t::FilesBeingShared(const shared_ptr<VariantID_t>& the_variant) const
 {
-        for(set<File_t*>::iterator file_it=the_variant->GetFiles().begin();
+        for(set<File_t*>::const_iterator file_it=the_variant->GetFiles().begin();
                 file_it!=the_variant->GetFiles().end();
                 ++file_it
                )
         {
             assert(file_IR_map.find((*file_it)->GetBaseID()) != file_IR_map.end());
-            pair<File_t*, shared_ptr<FileIR_t>> file_IR_pair = file_IR_map.at((*file_it)->GetBaseID());
+            const pair<File_t*, shared_ptr<FileIR_t>> file_IR_pair = file_IR_map.at((*file_it)->GetBaseID());
             if(file_IR_pair.second.use_count() > 2)
             {
                 return true;
@@ -183,7 +180,7 @@ bool IRDBObjects_t::FilesBeingShared(shared_ptr<VariantID_t> the_variant)
 
 int IRDBObjects_t::WriteBackVariant(db_id_t variant_id)
 {
-        map<db_id_t, shared_ptr<VariantID_t>>::iterator it = variant_map.find(variant_id);
+        auto it = variant_map.find(variant_id);
         
         if(it != variant_map.end())
         {
@@ -214,7 +211,7 @@ int IRDBObjects_t::WriteBackVariant(db_id_t variant_id)
 
 int IRDBObjects_t::DeleteVariant(db_id_t variant_id)
 {
-        map<db_id_t, shared_ptr<VariantID_t>>::iterator var_it = variant_map.find(variant_id);
+        auto var_it = variant_map.find(variant_id);
         
         if(var_it != variant_map.end())
         {
@@ -224,7 +221,7 @@ int IRDBObjects_t::DeleteVariant(db_id_t variant_id)
             assert(var_it->second.use_count() <= 2);
             
             // remove files and file IRs
-            for(set<File_t*>::iterator file_it=var_it->second->GetFiles().begin();
+            for(set<File_t*>::const_iterator file_it=var_it->second->GetFiles().begin();
                 file_it!=var_it->second->GetFiles().end();
                 ++file_it
                )
@@ -248,10 +245,9 @@ int IRDBObjects_t::WriteBackAll(void)
         int ret_status = 0;
 
         // Write back FileIRs
-        for(map<db_id_t, pair<File_t*, shared_ptr<FileIR_t>>>::iterator
-                file_it = file_IR_map.begin(); 
-                file_it != file_IR_map.end();
-                ++file_it 
+        for(auto file_it = file_IR_map.begin(); 
+                 file_it != file_IR_map.end();
+                 ++file_it 
             )
         {
             int result = IRDBObjects_t::WriteBackFileIR((file_it->second.first)->GetBaseID());
@@ -262,10 +258,9 @@ int IRDBObjects_t::WriteBackAll(void)
         }
 
         // Write back Variants
-        for(map<db_id_t, shared_ptr<VariantID_t>>::iterator
-                var_it = variant_map.begin(); 
-                var_it != variant_map.end();
-                ++var_it
+        for(auto var_it = variant_map.begin(); 
+                 var_it != variant_map.end();
+                 ++var_it
             )
         {
             int result = IRDBObjects_t::WriteBackVariant((var_it->second)->GetBaseID());
@@ -282,10 +277,9 @@ int IRDBObjects_t::WriteBackAll(void)
 int IRDBObjects_t::DeleteAll(void)
 {
         // Delete Variants (also deletes all files)
-        for(map<db_id_t, shared_ptr<VariantID_t>>::iterator
-                it = variant_map.begin(); 
-                it != variant_map.end();
-                ++it
+        for(auto it = variant_map.begin(); 
+                 it != variant_map.end();
+                 ++it
             )
         {
             int result = IRDBObjects_t::DeleteVariant((it->second)->GetBaseID());
