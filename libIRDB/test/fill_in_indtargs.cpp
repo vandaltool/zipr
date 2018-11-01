@@ -2974,6 +2974,7 @@ int executeStep(IRDBObjects_t *const irdb_objects)
 			assert(firp);
 
 			firp->SetBaseIDS();
+			firp->AssembleRegistry();
 
 			// read the executeable file
 			int elfoid=firp->GetFile()->GetELFOID();
