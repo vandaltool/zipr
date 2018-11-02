@@ -1,4 +1,4 @@
-#!/bin/bash  
+#!/bin/bash
 #
 # ps_analyze.sh - analyze a program and transform it for peasoupification to prevent exploit.
 #
@@ -17,6 +17,7 @@ realpath() {
 
 init_globals()
 {
+
 	##################################################################################
 	# set default values for 
 	##################################################################################
@@ -80,6 +81,12 @@ init_globals()
 	# stepnum used for counting how many steps peasoup executes
 	# 
 	stepnum=0
+
+
+	#
+	# set library path for shared library builds
+	#
+	export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$SECURITY_TRANSFORMS_HOME/lib"
 
 }
 handle_alarm()
