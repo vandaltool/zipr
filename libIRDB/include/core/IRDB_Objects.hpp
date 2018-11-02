@@ -16,36 +16,37 @@ class IRDBObjects_t
 	public:
 		IRDBObjects_t() 
                 {
+		    pqxx_interface = std::unique_ptr<pqxxDB_t>(new pqxxDB_t());
                     // set up interface to the sql server
-                    BaseObj_t::SetInterface(pqxx_interface);
+                    BaseObj_t::SetInterface(pqxx_interface.get());
                 };
 		~IRDBObjects_t();
 
 		// Add/delete file IRs for a variant.
                 // Cannot delete a file IR if it is also owned outside this object.
 		// AddFileIR returns the added IR or the preexistent IR if it was already added.
-		std::shared_ptr<FileIR_t> AddFileIR(db_id_t variant_id, db_id_t file_id);    // Returns NULL if no such file exists
-		int DeleteFileIR(db_id_t file_id);
+		std::shared_ptr<FileIR_t> addFileIR(db_id_t variant_id, db_id_t file_id);    // Returns NULL if no such file exists
+		void deleteFileIR(db_id_t file_id);
                 // Add or delete a variant
                 // Cannot delete a variant if it or its files are also owned outside this object.
                 // Deleting a variant does NOT write its files' IRs, but DOES delete them!
                 // AddVariant returns the added variant or the preexistent variant if it was already added.
-                std::shared_ptr<VariantID_t> AddVariant(db_id_t variant_id);
-                int DeleteVariant(db_id_t variant_id);
+                std::shared_ptr<VariantID_t> addVariant(db_id_t variant_id);
+                void deleteVariant(db_id_t variant_id);
                 
                 // Get DB interface
-                pqxxDB_t* GetDBInterface();
-		pqxxDB_t* ResetDBInterface();
+                pqxxDB_t* getDBInterface() const;
+		pqxxDB_t* resetDBInterface();
 
 		// Write back variants and file IRs. Does NOT commit changes.
-                int WriteBackFileIR(db_id_t file_id);
-                int WriteBackVariant(db_id_t variant_id);   // Does NOT write back its files' IRs
-		int WriteBackAll(void);    // Returns -1 if any writes fail.
+                int writeBackFileIR(db_id_t file_id);
+                int writeBackVariant(db_id_t variant_id);   // Does NOT write back its files' IRs
+		int writeBackAll(void);    // Returns -1 if any writes fail.
                 
-                int DeleteAll(void);
+                void deleteAll(void);
 		
 	private:
-                pqxxDB_t *pqxx_interface = new pqxxDB_t();
+                std::unique_ptr<pqxxDB_t> pqxx_interface;
 		// type aliases of maps. maps allow speed of finding needed files, file IRs 
 		// and/or variants that have already been read from the DB 
 		using IdToVariantMap_t = std::map<db_id_t, const std::shared_ptr<VariantID_t>>; 
@@ -57,8 +58,8 @@ class IRDBObjects_t
         	IdToFileIRInfoMap_t file_IR_map;
                 
                 // minor helpers (used to check assertions)
-                bool FilesAlreadyPresent(const std::set<File_t*>& the_files) const;
-                bool FilesBeingShared(const std::shared_ptr<VariantID_t>& the_variant) const;
+                bool filesAlreadyPresent(const std::set<File_t*>& the_files) const;
+                bool filesBeingShared(const std::shared_ptr<VariantID_t>& the_variant) const;
 };
 
 #endif

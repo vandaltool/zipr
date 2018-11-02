@@ -2949,10 +2949,10 @@ int executeStep(IRDBObjects_t *const irdb_objects)
 	try 
 	{
 		/* setup the interface to the sql server */
-		const auto pqxx_interface=irdb_objects->GetDBInterface();
+		const auto pqxx_interface=irdb_objects->getDBInterface();
 		BaseObj_t::SetInterface(pqxx_interface);
 
-		auto  pidp = irdb_objects->AddVariant(variant_id);
+		auto  pidp = irdb_objects->addVariant(variant_id);
 		assert(pidp);
 
 		// pidp=new VariantID_t(atoi(argv[1]));
@@ -2969,7 +2969,7 @@ int executeStep(IRDBObjects_t *const irdb_objects)
 			cout<<"Analyzing file "<<this_file->GetURL()<<endl;
 
 			// read the db  
-                        auto firp = irdb_objects->AddFileIR(variant_id, this_file->GetBaseID());
+                        auto firp = irdb_objects->addFileIR(variant_id, this_file->GetBaseID());
 			// firp=new FileIR_t(*pidp, this_file);
 			assert(firp);
 
