@@ -39,7 +39,7 @@ if 'build_tools' not in myenv or myenv['build_tools'] is None or int(myenv['buil
 	Default(install)
 	installed=installed+install
 
-	pgm=myenv.Program("fix_calls.exe",  ehframe+Split("fix_calls.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
+	pgm=myenv.SharedLibrary("fix_calls.so",  ehframe+Split("fix_calls.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
 	install=myenv.Install("$SECURITY_TRANSFORMS_HOME/plugins_install", pgm)
 	Default(install)
 	installed=installed+install
