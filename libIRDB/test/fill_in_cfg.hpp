@@ -9,12 +9,10 @@
 class PopulateCFG : public libIRDB::Transform_SDK::TransformStep_t
 {
     public:
-        PopulateCFG(libIRDB::pqxxDB_t* p_pqxx_interface = NULL,
-		    libIRDB::db_id_t p_variant_id = 0,
+        PopulateCFG(libIRDB::db_id_t p_variant_id = 0,
                     bool p_fix_landing_pads = true
             )
             :
-	    pqxx_interface(p_pqxx_interface),
             variant_id(p_variant_id),
             fix_landing_pads(p_fix_landing_pads)
         {
@@ -23,7 +21,7 @@ class PopulateCFG : public libIRDB::Transform_SDK::TransformStep_t
             bad_fallthrough_count = 0;
             failed_target_count = 0U;
        
-            elfiop = NULL;
+  	    elfiop = std::unique_ptr<EXEIO::exeio>(nullptr);
         }
 
 	~PopulateCFG(void) override
@@ -78,11 +76,10 @@ class PopulateCFG : public libIRDB::Transform_SDK::TransformStep_t
         unsigned int failed_target_count;
         
         // non-optional
-        libIRDB::pqxxDB_t* pqxx_interface;
 	libIRDB::db_id_t variant_id;        
         bool fix_landing_pads;
         
-        EXEIO::exeio *elfiop;
+        std::unique_ptr<EXEIO::exeio> elfiop;
         std::set< std::pair<libIRDB::db_id_t,libIRDB::virtual_offset_t> > missed_instructions;
 };
 

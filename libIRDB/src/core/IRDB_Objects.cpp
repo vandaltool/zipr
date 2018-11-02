@@ -12,16 +12,15 @@ using namespace std;
 
 IRDBObjects_t::~IRDBObjects_t()
 {
-	delete pqxx_interface;
         // All dynamically allocated DB objects
         // are held as shared pointers and don't need to be 
         // explicitly deleted.
 }
 
 
-shared_ptr<FileIR_t> IRDBObjects_t::AddFileIR(db_id_t variant_id, db_id_t file_id)
+shared_ptr<FileIR_t> IRDBObjects_t::addFileIR(db_id_t variant_id, db_id_t file_id)
 {
-        auto it = file_IR_map.find(file_id);
+        const auto it = file_IR_map.find(file_id);
         
         if(it == file_IR_map.end())
         {
@@ -48,9 +47,9 @@ shared_ptr<FileIR_t> IRDBObjects_t::AddFileIR(db_id_t variant_id, db_id_t file_i
 }
 
 
-int IRDBObjects_t::WriteBackFileIR(db_id_t file_id)
+int IRDBObjects_t::writeBackFileIR(db_id_t file_id)
 {
-        auto it = file_IR_map.find(file_id);
+        const auto it = file_IR_map.find(file_id);
         
         if(it != file_IR_map.end())
         {
@@ -84,9 +83,9 @@ int IRDBObjects_t::WriteBackFileIR(db_id_t file_id)
 }
 
 
-int IRDBObjects_t::DeleteFileIR(db_id_t file_id)
+void IRDBObjects_t::deleteFileIR(db_id_t file_id)
 {
-        auto it = file_IR_map.find(file_id);
+        const auto it = file_IR_map.find(file_id);
         
         if(it != file_IR_map.end())
         {
@@ -95,16 +94,11 @@ int IRDBObjects_t::DeleteFileIR(db_id_t file_id)
                 assert(it->second.second.use_count() <= 2);
                 (it->second.second).reset();
             }
-            return 0;
-        }
-        else
-        {
-            return -1;
-        }
+        } 
 }
 
 
-bool IRDBObjects_t::FilesAlreadyPresent(const set<File_t*>& the_files) const
+bool IRDBObjects_t::filesAlreadyPresent(const set<File_t*>& the_files) const
 {
         for(set<File_t*>::const_iterator it=the_files.begin();
             it!=the_files.end();
@@ -121,9 +115,9 @@ bool IRDBObjects_t::FilesAlreadyPresent(const set<File_t*>& the_files) const
 }
 
 
-shared_ptr<VariantID_t> IRDBObjects_t::AddVariant(db_id_t variant_id)
+shared_ptr<VariantID_t> IRDBObjects_t::addVariant(db_id_t variant_id)
 {
-        auto var_it = variant_map.find(variant_id);      
+        const auto var_it = variant_map.find(variant_id);      
 
         if(var_it != variant_map.end())
         {
@@ -135,9 +129,9 @@ shared_ptr<VariantID_t> IRDBObjects_t::AddVariant(db_id_t variant_id)
         assert(the_variant->IsRegistered()==true);
         // disallow variants that share shallow copies to both be read in
         // to prevent desynchronization. 
-        assert(!FilesAlreadyPresent(the_variant->GetFiles()));
+        assert(!filesAlreadyPresent(the_variant->GetFiles()));
         
-        auto var_pair = make_pair(variant_id, the_variant);
+        const auto var_pair = make_pair(variant_id, the_variant);
         variant_map.insert(var_pair);
 
         // add files
@@ -159,7 +153,7 @@ shared_ptr<VariantID_t> IRDBObjects_t::AddVariant(db_id_t variant_id)
 }
 
 
-bool IRDBObjects_t::FilesBeingShared(const shared_ptr<VariantID_t>& the_variant) const
+bool IRDBObjects_t::filesBeingShared(const shared_ptr<VariantID_t>& the_variant) const
 {
         for(set<File_t*>::const_iterator file_it=the_variant->GetFiles().begin();
                 file_it!=the_variant->GetFiles().end();
@@ -178,9 +172,9 @@ bool IRDBObjects_t::FilesBeingShared(const shared_ptr<VariantID_t>& the_variant)
 }
 
 
-int IRDBObjects_t::WriteBackVariant(db_id_t variant_id)
+int IRDBObjects_t::writeBackVariant(db_id_t variant_id)
 {
-        auto it = variant_map.find(variant_id);
+        const auto it = variant_map.find(variant_id);
         
         if(it != variant_map.end())
         {
@@ -209,15 +203,15 @@ int IRDBObjects_t::WriteBackVariant(db_id_t variant_id)
 }
 
 
-int IRDBObjects_t::DeleteVariant(db_id_t variant_id)
+void IRDBObjects_t::deleteVariant(db_id_t variant_id)
 {
-        auto var_it = variant_map.find(variant_id);
+        const auto var_it = variant_map.find(variant_id);
         
         if(var_it != variant_map.end())
         {
             // To prevent reading in the same files again while they are being used
             // somewhere else, which could lead to desynchronization
-            assert(!FilesBeingShared(var_it->second));
+            assert(!filesBeingShared(var_it->second));
             assert(var_it->second.use_count() <= 2);
             
             // remove files and file IRs
@@ -231,16 +225,11 @@ int IRDBObjects_t::DeleteVariant(db_id_t variant_id)
             
             // remove variant
             variant_map.erase(variant_id);
-            return 0;
-        }
-        else
-        {
-            return -1;
-        }
+        } 
 }
 
 
-int IRDBObjects_t::WriteBackAll(void)
+int IRDBObjects_t::writeBackAll(void)
 {
         int ret_status = 0;
 
@@ -250,7 +239,7 @@ int IRDBObjects_t::WriteBackAll(void)
                  ++file_it 
             )
         {
-            int result = IRDBObjects_t::WriteBackFileIR((file_it->second.first)->GetBaseID());
+            const int result = IRDBObjects_t::writeBackFileIR((file_it->second.first)->GetBaseID());
             if(result != 0)
             {
                 ret_status = -1;
@@ -263,7 +252,7 @@ int IRDBObjects_t::WriteBackAll(void)
                  ++var_it
             )
         {
-            int result = IRDBObjects_t::WriteBackVariant((var_it->second)->GetBaseID());
+            const int result = IRDBObjects_t::writeBackVariant((var_it->second)->GetBaseID());
             if(result != 0)
             {
                 ret_status = -1;
@@ -274,7 +263,7 @@ int IRDBObjects_t::WriteBackAll(void)
 }
 
 
-int IRDBObjects_t::DeleteAll(void)
+void IRDBObjects_t::deleteAll(void)
 {
         // Delete Variants (also deletes all files)
         for(auto it = variant_map.begin(); 
@@ -282,25 +271,21 @@ int IRDBObjects_t::DeleteAll(void)
                  ++it
             )
         {
-            int result = IRDBObjects_t::DeleteVariant((it->second)->GetBaseID());
-            assert(result == 0);
+            IRDBObjects_t::deleteVariant((it->second)->GetBaseID());
         }
-        
-        return 0;
 }
 
 
-pqxxDB_t* IRDBObjects_t::GetDBInterface()
+pqxxDB_t* IRDBObjects_t::getDBInterface() const
 {
-        return pqxx_interface;
+        return pqxx_interface.get();
 }
 
 
-pqxxDB_t* IRDBObjects_t::ResetDBInterface()
+pqxxDB_t* IRDBObjects_t::resetDBInterface()
 {
-	delete pqxx_interface;  // Aborts if Commit() has not been called 
-	pqxx_interface = new pqxxDB_t();
-	BaseObj_t::SetInterface(pqxx_interface);
-	return pqxx_interface;
+	pqxx_interface.reset(new pqxxDB_t());  // Aborts if Commit() has not been called
+	BaseObj_t::SetInterface(pqxx_interface.get());
+	return pqxx_interface.get();
 }
 

@@ -615,25 +615,24 @@ int PopulateCFG::executeStep(IRDBObjects_t *const irdb_objects)
 {
     try 
 	{
-		pqxx_interface = irdb_objects->GetDBInterface();
+		const auto pqxx_interface = irdb_objects->getDBInterface();
 		// now set the DB interface for THIS PLUGIN LIBRARY -- VERY IMPORTANT
 		BaseObj_t::SetInterface(pqxx_interface);	
 
-		shared_ptr<VariantID_t> variant = irdb_objects->AddVariant(variant_id);
+		const shared_ptr<VariantID_t> variant = irdb_objects->addVariant(variant_id);
 		for(File_t* file : variant->GetFiles())
 		{
-			shared_ptr<FileIR_t> firp = irdb_objects->AddFileIR(variant_id, file->GetBaseID());
+			const shared_ptr<FileIR_t> firp = irdb_objects->addFileIR(variant_id, file->GetBaseID());
 			assert(firp);
                         cout<<"Filling in cfg for "<<firp->GetFile()->GetURL()<<endl;
 
 			/* get the OID of the file */
-			int elfoid=firp->GetFile()->GetELFOID();
+			const int elfoid=firp->GetFile()->GetELFOID();
 
 			pqxx::largeobject lo(elfoid);
                 	lo.to_file(pqxx_interface->GetTransaction(),"readeh_tmp_file.exe");
 
-			elfiop=new EXEIO::exeio;
-			assert(elfiop);
+			elfiop.reset(new exeio());
 			elfiop->load(string("readeh_tmp_file.exe"));
 
 			fill_in_cfg(firp.get());
@@ -643,9 +642,6 @@ int PopulateCFG::executeStep(IRDBObjects_t *const irdb_objects)
 			{
 				fill_in_landing_pads(firp.get());
 			}
-
-			delete elfiop;
-			elfiop=NULL;
 		}
 	}
 	catch (DatabaseError_t pnide)
@@ -666,6 +662,6 @@ int PopulateCFG::executeStep(IRDBObjects_t *const irdb_objects)
 extern "C"
 shared_ptr<Transform_SDK::TransformStep_t> GetTransformStep(void)
 {
-	shared_ptr<Transform_SDK::TransformStep_t> the_step(new PopulateCFG());
+	const shared_ptr<Transform_SDK::TransformStep_t> the_step(new PopulateCFG());
 	return the_step;
 }
