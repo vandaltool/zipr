@@ -869,27 +869,30 @@ void FileIR_t::WriteToDB()
 // eh css relocs
 	for(const auto& i : eh_css)
 	{
-		for(auto& reloc : i->GetRelocations())
+		const auto &relocs=i->GetRelocations();
+		for(auto& reloc : relocs)
 			W_reloc << reloc->WriteToDB(fileptr,i);
 	}
 
 // eh pgms relocs
 	for(const auto& i : eh_pgms)
 	{
-		string r="";
-		for(auto& reloc : i->GetRelocations())
+		const auto &relocs=i->GetRelocations();
+		for(auto& reloc : relocs)
 			W_reloc << reloc->WriteToDB(fileptr,i);
 	}
 // scoops relocs
 	for(const auto& i : scoops)
 	{
-		for(auto& reloc : i->GetRelocations())
+		const auto &relocs=i->GetRelocations();
+		for(auto& reloc : relocs)
 			W_reloc << reloc->WriteToDB(fileptr,i);
 	}
 // write out instruction's relocs
 	for(const auto& i : insns)
 	{
-		for(auto& reloc : i->GetRelocations())
+		const auto &relocs=i->GetRelocations();
+		for(auto& reloc : relocs)
 			W_reloc << reloc->WriteToDB(fileptr,i);
 	}
 	W_reloc.complete();

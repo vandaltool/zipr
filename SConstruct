@@ -24,28 +24,20 @@ env.Replace(build_tools=ARGUMENTS.get("build_tools", 1))
 env.Replace(build_stars=ARGUMENTS.get("build_stars", 1))
 env.Replace(build_cgc=ARGUMENTS.get("build_cgc", 0))
 
+env.Append(LINKFLAGS=" -Wl,-unresolved-symbols=ignore-in-shared-libs ")
 
 if int(env['debug']) == 1:
         print "Setting debug mode"
         env.Append(CFLAGS=" -g ")
         env.Append(CXXFLAGS=" -g ")
-        env.Append(LINKFLAGS=" -g ")
+	env.Append(LINKFLAGS=" -g ")
+	env.Append(SHLINKFLAGS=" -g ")
 else:
         print "Setting release mode"
         env.Append(CFLAGS=" -O3 ")
         env.Append(CXXFLAGS=" -O3 ")
-        env.Append(LINKFLAGS=" -O3 ")
-
-if 'build_cgc' in env and int(env['build_cgc']) == 1:
-        print "Setting debug mode"
-        env.Append(CFLAGS=" -DCGC ")
-        env.Append(CXXFLAGS=" -DCGC ")
-        env.Append(LINKFLAGS=" -DCGC ")
-	print 'Turn off appfw as we are building CGC'
-	env['build_appfw'] = 0
-elif env['build_appfw'] is None: # by default, turn on build of appfw, unless cgc is on
-	env['build_appfw'] = 1
-
+        env.Append(LINKFLAGS=" -O3  ")
+        env.Append(SHLINKFLAGS=" -O3  ")
 
 # set 32/64 bit build properly
 print  "env[64bit]="+str(env['do_64bit_build'])
@@ -69,6 +61,7 @@ else:
 # add extra flag for solaris.
 if sysname == "SunOS":
         env.Append(LINKFLAGS=" -L/opt/csw/lib -DSOLARIS  ")
+        env.Append(SHLINKFLAGS=" -L/opt/csw/lib -DSOLARIS  ")
         env.Append(CFLAGS=" -I/opt/csw/include -DSOLARIS ")
         env.Append(CXXFLAGS=" -I/opt/csw/include -DSOLARIS  ")
 

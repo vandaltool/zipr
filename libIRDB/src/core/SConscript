@@ -42,15 +42,17 @@ cpppath='''
 	$SECURITY_TRANSFORMS_HOME/libIRDB/include/
 	$SECURITY_TRANSFORMS_HOME/libcapstone/include/capstone/
 	'''
-#	$SECURITY_TRANSFORMS_HOME/beaengine/include
-#	$SECURITY_TRANSFORMS_HOME/beaengine/beaengineSources/Includes/
+libpath='''
+	$SECURITY_TRANSFORMS_HOME/lib
+        '''
 
-globs=glob.glob(os.environ['SECURITY_TRANSFORMS_HOME']+'/libcapstone/zipr_unpack/*.o')
+#globs=glob.glob(os.environ['SECURITY_TRANSFORMS_HOME']+'/libcapstone/zipr_unpack/*.o')
 
 myenv.Append(CCFLAGS=" -Wall -std=c++11 ")
+myenv.Append(LIBPATH=libpath)
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath))
-mylib=myenv.Library(libname, Split(files) + globs)
+mylib=myenv.SharedLibrary(libname, Split(files), LIBS=Split("pqxx capstone"))
 
 install=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", mylib)
 Default(install)
