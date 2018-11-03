@@ -772,7 +772,7 @@ do_plugins()
 		stepname=$i
 		stepname=$(basename $stepname =on)
 		stepname=$(basename $stepname =off)
-		
+			
 		echo $builtin_steps | grep $stepname  > /dev/null 2> /dev/null 
 	
 		if [ $? = 0 ]; then
@@ -791,13 +791,13 @@ do_plugins()
 
 		plugin_path=$SECURITY_TRANSFORMS_HOME/plugins_install/
 		
-		# invoke .exe or .sh as a plugin step.
-		if [ -x $plugin_path/$stepname.exe ]; then
+		# invoke .so, .exe, or .sh as a plugin step.
+		if [ -x $plugin_path/lib$stepname.so ]; then
+                        perform_step $stepname none lib$stepname.so $cloneid $value
+		elif [ -x $plugin_path/$stepname.exe ]; then
 			perform_step $stepname none $plugin_path/$stepname.exe  $cloneid  $value
 		elif [ -x $plugin_path/$stepname.sh ]; then
 			perform_step $stepname none $plugin_path/$stepname.sh $cloneid  $value
-		elif [ -x $plugin_path/lib$stepname.so ]; then
-			perform_step $stepname none lib$stepname.so $cloneid $value
 		else
 			echo "*********************************************************"
 			echo "*********************************************************"
