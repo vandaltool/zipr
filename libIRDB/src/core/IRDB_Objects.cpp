@@ -28,21 +28,23 @@ shared_ptr<FileIR_t> IRDBObjects_t::addFileIR(db_id_t variant_id, db_id_t file_i
             return null_fileIR;
         }
         else
-        {            
-            if(it->second.second == NULL)
+        {           
+	    File_t *const & the_file = (it->second).file;
+	    shared_ptr<FileIR_t> & the_fileIR = (it->second).fileIR;
+ 
+            if(the_fileIR == NULL)
             {
-                File_t *const the_file = it->second.first; 
                 assert(the_file != NULL);
             
                 assert(variant_map.find(variant_id) != variant_map.end());
                 VariantID_t& the_variant = *(variant_map.at(variant_id).get());
                 
-                it->second.second = make_shared<FileIR_t>(the_variant, the_file);
-                assert(it->second.second != NULL);
+                the_fileIR = make_shared<FileIR_t>(the_variant, the_file);
+                assert(the_fileIR != NULL);
             }
 	    // make sure static variable is set in the calling module -- IMPORTANT
-	    (it->second.second)->SetArchitecture();
-            return it->second.second;
+	    the_fileIR->SetArchitecture();
+            return the_fileIR;
         }
 }
 
@@ -53,15 +55,16 @@ int IRDBObjects_t::writeBackFileIR(db_id_t file_id)
         
         if(it != file_IR_map.end())
         {
-            File_t *const the_file = it->second.first;
+            File_t *const & the_file = (it->second).file;
             assert(the_file != NULL);
                     
             try
             {
                 cout<<"Writing changes for "<<the_file->GetURL()<<endl;
 		// make sure static variable is set in the calling module -- IMPORTANT
-                (it->second.second)->SetArchitecture();
-	        (it->second.second)->WriteToDB();
+		shared_ptr<FileIR_t> & the_fileIR = (it->second).fileIR;
+                the_fileIR->SetArchitecture();
+	        the_fileIR->WriteToDB();
             }
             catch (DatabaseError_t pnide)
             {
@@ -89,10 +92,11 @@ void IRDBObjects_t::deleteFileIR(db_id_t file_id)
         
         if(it != file_IR_map.end())
         {
-            if(it->second.second != NULL)
+	    shared_ptr<FileIR_t> & the_fileIR = (it->second).fileIR;
+            if(the_fileIR != NULL)
             {
-                assert(it->second.second.use_count() <= 2);
-                (it->second.second).reset();
+                assert(the_fileIR.use_count() <= 2);
+                the_fileIR.reset();
             }
         } 
 }
@@ -143,8 +147,8 @@ shared_ptr<VariantID_t> IRDBObjects_t::addVariant(db_id_t variant_id)
 	    File_t *const curr_file = *it;
             shared_ptr<FileIR_t> curr_file_IR;
                     
-            auto file_IR_pair = make_pair(curr_file, curr_file_IR);
-            auto file_map_pair = make_pair((*it)->GetBaseID(), file_IR_pair);
+            FileIRInfo_t file_IR_info = {curr_file, curr_file_IR};
+            auto file_map_pair = make_pair((*it)->GetBaseID(), file_IR_info);
             
             file_IR_map.insert(file_map_pair);
         }
@@ -161,8 +165,8 @@ bool IRDBObjects_t::filesBeingShared(const shared_ptr<VariantID_t>& the_variant)
                )
         {
             assert(file_IR_map.find((*file_it)->GetBaseID()) != file_IR_map.end());
-            const pair<File_t*, shared_ptr<FileIR_t>> file_IR_pair = file_IR_map.at((*file_it)->GetBaseID());
-            if(file_IR_pair.second.use_count() > 2)
+            const auto file_IR_info = file_IR_map.at((*file_it)->GetBaseID());
+            if(file_IR_info.fileIR.use_count() > 2)
             {
                 return true;
             }
@@ -239,7 +243,7 @@ int IRDBObjects_t::writeBackAll(void)
                  ++file_it 
             )
         {
-            const int result = IRDBObjects_t::writeBackFileIR((file_it->second.first)->GetBaseID());
+            const int result = IRDBObjects_t::writeBackFileIR((file_it->second.file)->GetBaseID());
             if(result != 0)
             {
                 ret_status = -1;

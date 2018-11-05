@@ -50,8 +50,11 @@ class IRDBObjects_t
 		// type aliases of maps. maps allow speed of finding needed files, file IRs 
 		// and/or variants that have already been read from the DB 
 		using IdToVariantMap_t = std::map<db_id_t, const std::shared_ptr<VariantID_t>>; 
-
-		using FileIRInfo_t = std::pair<File_t *const, std::shared_ptr<FileIR_t>>;
+		struct FileIRInfo_t
+		{
+  		    File_t *const file;
+  		    std::shared_ptr<FileIR_t> fileIR;
+		};
 		using IdToFileIRInfoMap_t = std::map<db_id_t, FileIRInfo_t>; 
                 
 		IdToVariantMap_t variant_map;
