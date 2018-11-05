@@ -2871,7 +2871,6 @@ set<virtual_offset_t> forced_pins;
 
 int parseArgs(int argc, const char* const argv[])
 {
-	auto argc_iter = (int)2;
 
 	if(argc<2)
 	{
@@ -2880,10 +2879,13 @@ int parseArgs(int argc, const char* const argv[])
 	}
 
 	variant_id=atoi(argv[1]);
+	cout<<"Parsing parameters with argc= " << argc<<endl;
 
 	// parse dash-style options.
+	auto argc_iter = (int)2;
 	while(argc_iter < argc && argv[argc_iter][0]=='-')
 	{
+		cout<<"Parsing parameter: "<< argv[argc_iter] << endl;
 		if(string(argv[argc_iter])=="--no-unpin")
 		{
 			do_unpin_opt=-1;
@@ -2937,6 +2939,8 @@ int parseArgs(int argc, const char* const argv[])
 			forced_pins.insert(offset);
 		}
 	}
+
+	cout<<"Setting unpin limit to: "<<dec<<do_unpin_opt<<endl;
 	return 0;
 }
 
