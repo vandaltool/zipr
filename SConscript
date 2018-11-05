@@ -59,7 +59,10 @@ if "CYGWIN" in sysname:
 
 Export('env')
 
-libcapstone=env.Install("$SECURITY_TRANSFORMS_HOME/lib","$SECURITY_TRANSFORMS_HOME/libcapstone/libcapstone.so.4")
+env.Install("$SECURITY_TRANSFORMS_HOME/lib/", "$SECURITY_TRANSFORMS_HOME/libcapstone/libcapstone.so.4")
+env.Command(os.environ['SECURITY_TRANSFORMS_HOME']+"/lib/libcapstone.so", os.environ['SECURITY_TRANSFORMS_HOME']+"/lib/libcapstone.so.4", "ln -s $SOURCE.abspath $TARGET.abspath")
+libcapstone=os.environ['SECURITY_TRANSFORMS_HOME']+"/lib/libcapstone.so"
+
 libehp=env.SConscript("libehp/SConscript", variant_dir='scons_build/libehp')
 libehp=env.Install("$SECURITY_TRANSFORMS_HOME/lib", libehp);
 libtransform=SConscript("libtransform/SConscript", variant_dir='scons_build/libtransform')
