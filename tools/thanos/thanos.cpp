@@ -132,13 +132,15 @@ int main(int argc, char *argv[])
                         char** argv = (char**) malloc(max_args);
 			int argc = 0;
 			
+			//cout<<"Setting argv[0]="<<command_start<<endl;
 			argv[argc++] = command_start; 
 			char* command_remaining = strchr(command_start, ' ');
                         while (command_remaining != NULL)
                         {
 			    *command_remaining = '\0';
+			    //cout<<"Setting argv["<<dec<<argc<<"]="<<command_remaining+1<<endl;
                             argv[argc++] = command_remaining+1;
-			    command_remaining = strchr(command_remaining, ' ');
+			    command_remaining = strchr(command_remaining+1, ' ');
                         }
                         argv = (char**) realloc(argv, argc);
 
