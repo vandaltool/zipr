@@ -29,23 +29,23 @@ shared_ptr<FileIR_t> IRDBObjects_t::addFileIR(const db_id_t variant_id, const db
         }
         else
         {           
-	const auto the_file = (it->second).file;
-	auto& the_fileIR = (it->second).fileIR;
+		const auto the_file = (it->second).file;
+		auto& the_fileIR = (it->second).fileIR;
 
-	if(the_fileIR == NULL)
-	{
-		assert(the_file != NULL);
+		if(the_fileIR == NULL)
+		{
+			assert(the_file != NULL);
 
-		assert(variant_map.find(variant_id) != variant_map.end());
-		const auto & the_variant = *(variant_map.at(variant_id).get());
+			assert(variant_map.find(variant_id) != variant_map.end());
+			const auto & the_variant = *(variant_map.at(variant_id).get());
 
-		the_fileIR = make_shared<FileIR_t>(the_variant, the_file);
-		assert(the_fileIR != NULL);
-	}
+			the_fileIR = make_shared<FileIR_t>(the_variant, the_file);
+			assert(the_fileIR != NULL);
+		}
 
-	// make sure static variable is set in the calling module -- IMPORTANT
-	the_fileIR->SetArchitecture();
-	return the_fileIR;
+		// make sure static variable is set in the calling module -- IMPORTANT
+		the_fileIR->SetArchitecture();
+		return the_fileIR;
         }
 }
 
@@ -54,9 +54,10 @@ int IRDBObjects_t::writeBackFileIR(const db_id_t file_id)
         const auto it = file_IR_map.find(file_id);
         
         if(it == file_IR_map.end())
-            return 1;  
-            const auto& the_file = (it->second).file;
-            assert(the_file != NULL);
+            return 1; 
+ 
+        const auto& the_file = (it->second).file;
+        assert(the_file != NULL);
                     
 	try
 	{
@@ -91,8 +92,8 @@ void IRDBObjects_t::deleteFileIR(const db_id_t file_id)
 	auto& the_fileIR = (it->second).fileIR;
 	if(the_fileIR != NULL)
 	{
-		// can't se just reset the_fileIR and let the shared_ptr delete when it's appropriate?  If the xform is holding a shared_ptr, who cares?
-		// stated another way:  why bother asserting here?  is it a problem if someone else holds the fileIR shared ptr?
+		// To prevent reading in the same fileIR again while it is being used
+        	// somewhere else, which could lead to desynchronization
 		assert(the_fileIR.use_count() <= 2);
 		the_fileIR.reset();
 	}
@@ -157,6 +158,7 @@ int IRDBObjects_t::writeBackVariant(const db_id_t variant_id)
         
         if(it == variant_map.end())
 		return 1;
+
 	try
 	{
 		cout<<"Writing changes for variant "<<variant_id<<endl;
