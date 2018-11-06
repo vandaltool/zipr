@@ -1,15 +1,15 @@
 before_script:
   - "source ~gitlab-runner/cicd_support/cicd_support.shinc" 
 
+
 after_script:
   - "echo Test Complete, eliding cleanup"
-  - "rm -rf /tmp/ped_ls /tmp/xxx"
+  - "rm -rf /tmp/ped_ls /tmp/ls.rida /tmp/ped_cat"
 
-xform-ls:
-  tags:
-    - zipr
-    - integration
-  script:
+
+
+do_build:
+  stage: build
     - "# gather info for debugging later, probably not necessary "
     - "pwd"
     - "hostname"
@@ -28,12 +28,35 @@ xform-ls:
     - "sudo ./get-peasoup-packages.sh all"
     - "./build-all.sh"
     - "dropdb $PGDATABASE 2>/dev/null || true ; ./postgres_setup.sh"
+
+xform-ls:
+  stage: test
+  tags:
+    - zipr
+  script:
     - "cd /tmp"
-    - "rm -rf ped_ls; $PSZ /bin/ls ./xxx -c rida=on -s meds_static=off --tempdir ped_ls || true"
-    - "if [[ ! -x ./xxx ]]; then cat ped_ls/logs/*; fi"
+    - "rm -rf ped_ls; $PSZ /bin/ls ./ls.rida -c rida=on -s meds_static=off --tempdir ped_ls || true"
+    - "if [[ ! -x ./ls.rida ]]; then cat ped_ls/logs/*; fi"
     - "rm -rf ped_ls"
-    - "./xxx"
+    - "./ls.rida"
     - ""
+
+xform-cat:
+  stage: test
+  tags:
+    - zipr
+  script:
+    - "cd /tmp"
+    - "rm -rf ped_cat; $PSZ /bin/ls ./cat.rida -c rida=on -s meds_static=off --tempdir ped_cat || true"
+    - "if [[ ! -x ./cat.rida ]]; then cat ped_ls/logs/*; fi"
+    - "./cat.rida /dev/null "
+    - ""
+
+internal-tests:
+  stage: test
+  tags:
+    - zipr
+  script:
     - "# run zipr internal tests"
     - "cd $ZIPR_HOME/test; scons"
     - "for i in *.exe; do ./$i; done"
