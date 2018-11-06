@@ -6,14 +6,18 @@ before_script:
   - "export CICD_SUPPORT_DIR=/tmp/cicd_support"
   - "export CICD_TO_TEST_DIR=$(pwd)"
   - "cd $(dirname $CICD_SUPPORT_DIR); if [[ ! -d $(basename $CICD_SUPPORT_DIR) ]]; then git clone ${CICD_SERVER_PREFIX}allnp/cicd_support.git  $(basename $CICD_SUPPORT_DIR); fi"
-  - "cd /tmp/cicd_support; git pull ; source set_env; source cicd_support.shinc"
+  - "cd $CICD_SUPPORT_DIR; git pull ; source set_env; source cicd_support.shinc"
   - "# grab this modules submodules, as committed on the branch"
   - "git submodule sync --recursive "
   - "git submodule update --init --recursive"
 
 after_script:
+  - "export CICD_MODULE_WORK_DIR=/tmp/work_dir_zipr"
+  - "export CICD_SERVER_PREFIX=git@git.zephyr-software.com:"
   - "# boiler plate"
-  - "env |grep CICD"
+  - "export CICD_SUPPORT_DIR=/tmp/cicd_support"
+  - "export CICD_TO_TEST_DIR=$(pwd)"
+  - "cd $CICD_SUPPORT_DIR;  source cicd_support.shinc"
   - "cicd_cleanup"
 
 testing:
