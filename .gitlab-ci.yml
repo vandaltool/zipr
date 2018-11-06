@@ -10,6 +10,9 @@ after_script:
 
 do_build:
   stage: build
+  tags:
+    - zipr
+  script:
     - "# gather info for debugging later, probably not necessary "
     - "pwd"
     - "hostname"
