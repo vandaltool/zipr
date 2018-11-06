@@ -1,37 +1,43 @@
 before_script:
   - "#### customize per module."
   - "export CICD_MODULE_WORK_DIR=/tmp/work_dir_zipr"
-  - "export CICD_SERVER_PREFIX=git@git.zephyr-software.com:"
+  - "# grab this modules submodules, as committed on the branch, use if module has submodules (or not sure)"
+  - "git submodule sync --recursive "
+  - "git submodule update --init --recursive"
   - "# boiler plate"
+  - "export CICD_SERVER_PREFIX=git@git.zephyr-software.com:"
   - "export CICD_SUPPORT_DIR=/tmp/cicd_support"
   - "export CICD_TO_TEST_DIR=$(pwd)"
   - "cd $(dirname $CICD_SUPPORT_DIR); if [[ ! -d $(basename $CICD_SUPPORT_DIR) ]]; then git clone ${CICD_SERVER_PREFIX}allnp/cicd_support.git  $(basename $CICD_SUPPORT_DIR); fi"
   - "cd $CICD_SUPPORT_DIR; git pull ; source set_env; source cicd_support.shinc"
-  - "# grab this modules submodules, as committed on the branch"
-  - "git submodule sync --recursive "
-  - "git submodule update --init --recursive"
 
 after_script:
+  - "#### customize per module."
   - "export CICD_MODULE_WORK_DIR=/tmp/work_dir_zipr"
-  - "export CICD_SERVER_PREFIX=git@git.zephyr-software.com:"
   - "# boiler plate"
+  - "export CICD_SERVER_PREFIX=git@git.zephyr-software.com:"
   - "export CICD_SUPPORT_DIR=/tmp/cicd_support"
   - "export CICD_TO_TEST_DIR=$(pwd)"
   - "cd $CICD_SUPPORT_DIR;  source cicd_support.shinc"
   - "cicd_cleanup"
 
-testing:
+xform-ls:
   tags:
     - zipr
   script:
-    - "# pwd"
-    - "# hostname"
-    - "# whoami"
+    - "# gather info for debugging later, probably not necessary "
+    - "pwd"
+    - "hostname"
+    - "whoami"
+    - "env|grep CICD"
+    - 
     - "# puts peasoup_umbrella (and all submodules) in CICD_MODULE_WORK_DIR"
-    - "env |grep CICD"
     - "cicd_setup_module_dependency allnp/peasoup_umbrella.git"
-    - "# puts TO_TEST_DIR (the module to test, zipr in this case) in peasoup_umbrella/zipr."
+    - 
+    - "# puts the version of zipr to test in peasoup_umbrella/zipr."
     - "cicd_put_module_in_tree peasoup_umbrella/zipr"
+    -
+    - "# Build/run $PSZ, test result"
     - "cd $CICD_MODULE_WORK_DIR/peasoup_umbrella"
     - "source set_env_vars"
     - "sudo ./get-peasoup-packages.sh all"
