@@ -37,6 +37,8 @@ xform-ls:
   tags:
     - zipr
   script:
+    - "cd $CICD_MODULE_WORK_DIR/peasoup_umbrella"
+    - "source set_env_vars"
     - "cd /tmp"
     - "rm -rf ped_ls; $PSZ /bin/ls ./ls.rida -c rida=on -s meds_static=off --tempdir ped_ls || true"
     - "if [[ ! -x ./ls.rida ]]; then cat ped_ls/logs/*; fi"
@@ -49,6 +51,8 @@ xform-cat:
   tags:
     - zipr
   script:
+    - "cd $CICD_MODULE_WORK_DIR/peasoup_umbrella"
+    - "source set_env_vars"
     - "cd /tmp"
     - "rm -rf ped_cat; $PSZ /bin/ls ./cat.rida -c rida=on -s meds_static=off --tempdir ped_cat || true"
     - "if [[ ! -x ./cat.rida ]]; then cat ped_ls/logs/*; fi"
@@ -60,6 +64,8 @@ internal-tests:
   tags:
     - zipr
   script:
+    - "cd $CICD_MODULE_WORK_DIR/peasoup_umbrella"
+    - "source set_env_vars"
     - "# run zipr internal tests"
     - "cd $ZIPR_HOME/test; scons"
     - "for i in *.exe; do ./$i; done"
