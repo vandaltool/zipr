@@ -156,9 +156,9 @@ VariantID_t* VariantID_t::Clone(bool deep)
 	return ret;
 }       
 
-void VariantID_t::CloneFiles(set<File_t*> &files)
+void VariantID_t::CloneFiles(FileSet_t &files)
 {
-	for(set<File_t*>::iterator fiter=files.begin(); fiter!=files.end(); ++fiter)
+	for(auto fiter=files.begin(); fiter!=files.end(); ++fiter)
 		files.insert(CloneFile(*fiter));
 }
 
@@ -420,7 +420,7 @@ void VariantID_t::DropFromDB()
 File_t* VariantID_t::GetMainFile() const
 {
 	for(
-		set<File_t*>::iterator it=files.begin();
+		auto it=files.begin();
 		it!=files.end();
 		++it
 	   )

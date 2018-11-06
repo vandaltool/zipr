@@ -25,6 +25,8 @@ class VariantID_t;
 
 std::ostream& operator<<(std::ostream& out, const libIRDB::VariantID_t& pid);
 
+using FileSet_t = std::set<File_t*>;
+
 class VariantID_t : public BaseObj_t
 {
     public:
@@ -41,7 +43,8 @@ class VariantID_t : public BaseObj_t
 
 	void DropFromDB();
 
-        std::set<File_t*>&    GetFiles() { return files; }
+	FileSet_t&    GetFiles() { return files; }
+	const FileSet_t&    GetFiles() const { return files; }
 
 	std::string GetName() { return name; }
 	void SetName(std::string newname) { name=newname;}
@@ -56,7 +59,7 @@ class VariantID_t : public BaseObj_t
 
 	db_id_t GetOriginalVariantID() const { return orig_pid;}
 	
-	void CloneFiles(std::set<File_t*>& files);
+	void CloneFiles(FileSet_t& files);
 	File_t* CloneFile(File_t* fptr);
 
     private:
@@ -68,12 +71,9 @@ class VariantID_t : public BaseObj_t
 
 	void CreateTables();	// create the address, function and instruction tables 
 
-        std::set<File_t*> files;
+        FileSet_t files;
 
         void  ReadFilesFromDB();
-
-
-
 
 };
 
