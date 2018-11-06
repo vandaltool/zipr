@@ -1,24 +1,8 @@
 before_script:
-  - "#### customize per module."
-  - "export CICD_MODULE_WORK_DIR=/tmp/work_dir_zipr"
-  - "# grab this modules submodules, as committed on the branch, use if module has submodules (or not sure)"
-  - "git submodule sync --recursive "
-  - "git submodule update --init --recursive"
-  - "# boiler plate"
-  - "export CICD_SERVER_PREFIX=git@git.zephyr-software.com:"
-  - "export CICD_SUPPORT_DIR=/tmp/cicd_support"
-  - "export CICD_TO_TEST_DIR=$(pwd)"
-  - "cd $(dirname $CICD_SUPPORT_DIR); if [[ ! -d $(basename $CICD_SUPPORT_DIR) ]]; then git clone ${CICD_SERVER_PREFIX}allnp/cicd_support.git  $(basename $CICD_SUPPORT_DIR); fi"
-  - "cd $CICD_SUPPORT_DIR; git pull ; source set_env; source cicd_support.shinc"
+  - "source ~gitlab-runner/cicd_support/cicd_support.shinc" 
 
 after_script:
-  - "#### customize per module."
-  - "export CICD_MODULE_WORK_DIR=/tmp/work_dir_zipr"
-  - "# boiler plate"
-  - "export CICD_SERVER_PREFIX=git@git.zephyr-software.com:"
-  - "export CICD_SUPPORT_DIR=/tmp/cicd_support"
-  - "export CICD_TO_TEST_DIR=$(pwd)"
-  - "cd $CICD_SUPPORT_DIR;  source cicd_support.shinc"
+  - "source ~gitlab-runner/cicd_support/cicd_support.shinc" 
   - "cicd_cleanup"
 
 xform-ls:
