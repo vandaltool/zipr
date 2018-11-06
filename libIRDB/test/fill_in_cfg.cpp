@@ -619,10 +619,10 @@ int PopulateCFG::executeStep(IRDBObjects_t *const irdb_objects)
 		// now set the DB interface for THIS PLUGIN LIBRARY -- VERY IMPORTANT
 		BaseObj_t::SetInterface(pqxx_interface);	
 
-		const shared_ptr<VariantID_t> variant = irdb_objects->addVariant(variant_id);
+		const auto variant = irdb_objects->addVariant(variant_id);
 		for(File_t* file : variant->GetFiles())
 		{
-			const shared_ptr<FileIR_t> firp = irdb_objects->addFileIR(variant_id, file->GetBaseID());
+			const auto firp = irdb_objects->addFileIR(variant_id, file->GetBaseID());
 			assert(firp);
                         cout<<"Filling in cfg for "<<firp->GetFile()->GetURL()<<endl;
 
@@ -635,12 +635,12 @@ int PopulateCFG::executeStep(IRDBObjects_t *const irdb_objects)
 			elfiop.reset(new exeio());
 			elfiop->load(string("readeh_tmp_file.exe"));
 
-			fill_in_cfg(firp.get());
-			fill_in_scoops(firp.get());
+			fill_in_cfg(firp);
+			fill_in_scoops(firp);
 
 			if (fix_landing_pads)
 			{
-				fill_in_landing_pads(firp.get());
+				fill_in_landing_pads(firp);
 			}
 		}
 	}

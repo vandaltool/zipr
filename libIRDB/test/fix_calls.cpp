@@ -1061,10 +1061,10 @@ int executeStep(IRDBObjects_t *const irdb_objects)
                         EXEIO::dump::section_headers(cout,*elfiop);
 			// do eh_frame reading as required. 
 			if(do_eh_frame)
-        			read_ehframe(firp.get(), elfiop);
+        			read_ehframe(firp, elfiop);
 
-			fix_all_calls(firp.get(),true,fix_all);
-			fix_other_pcrel(firp.get());
+			fix_all_calls(firp,true,fix_all);
+			fix_other_pcrel(firp);
 
 			cout<<"Done!"<<endl;
 

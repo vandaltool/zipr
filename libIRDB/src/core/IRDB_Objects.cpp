@@ -15,11 +15,11 @@ using namespace std;
 IRDBObjects_t::~IRDBObjects_t()
 {
         // All dynamically allocated DB objects
-        // are held as shared pointers and don't need to be 
+        // are held as unique pointers and don't need to be 
         // explicitly deleted.
 }
 
-shared_ptr<FileIR_t> IRDBObjects_t::addFileIR(const db_id_t variant_id, const db_id_t file_id)
+FileIR_t* IRDBObjects_t::addFileIR(const db_id_t variant_id, const db_id_t file_id)
 {
         const auto it = file_IR_map.find(file_id);
         
@@ -39,13 +39,13 @@ shared_ptr<FileIR_t> IRDBObjects_t::addFileIR(const db_id_t variant_id, const db
 			assert(variant_map.find(variant_id) != variant_map.end());
 			const auto & the_variant = *(variant_map.at(variant_id).get());
 
-			the_fileIR = make_shared<FileIR_t>(the_variant, the_file);
+			the_fileIR = unique_ptr<FileIR_t>(new FileIR_t(the_variant, the_file));
 			assert(the_fileIR != NULL);
 		}
 
 		// make sure static variable is set in the calling module -- IMPORTANT
 		the_fileIR->SetArchitecture();
-		return the_fileIR;
+		return the_fileIR.get();
         }
 }
 
@@ -92,9 +92,6 @@ void IRDBObjects_t::deleteFileIR(const db_id_t file_id)
 	auto& the_fileIR = (it->second).fileIR;
 	if(the_fileIR != NULL)
 	{
-		// To prevent reading in the same fileIR again while it is being used
-        	// somewhere else, which could lead to desynchronization
-		assert(the_fileIR.use_count() <= 2);
 		the_fileIR.reset();
 	}
 }
@@ -111,44 +108,31 @@ bool IRDBObjects_t::filesAlreadyPresent(const set<File_t*>& the_files) const
         return missing_file_it==the_files.end();
 }
 
-shared_ptr<VariantID_t> IRDBObjects_t::addVariant(const db_id_t variant_id)
+VariantID_t* IRDBObjects_t::addVariant(const db_id_t variant_id)
 {
         const auto var_it = variant_map.find(variant_id);      
 
         if(var_it != variant_map.end())
         {
-            return var_it->second;
+            return (var_it->second).get();
         }
 
-        auto the_variant = make_shared<VariantID_t>(variant_id);      
+	variant_map[variant_id].reset(new VariantID_t(variant_id));	
+	auto the_variant = variant_map[variant_id].get();
 
-        assert(the_variant->IsRegistered()==true);
-        // disallow variants that share shallow copies to both be read in
+	assert(the_variant->IsRegistered()==true);
+	// disallow variants that share shallow copies to both be read in
         // to prevent desynchronization. 
         assert(!filesAlreadyPresent(the_variant->GetFiles()));
-	variant_map[variant_id]=the_variant;
 
         // add files
 	for(auto &curr_file : the_variant->GetFiles())
 	{
-            auto curr_file_IR = shared_ptr<FileIR_t>();
-            auto file_IR_info = FileIRInfo_t({curr_file, curr_file_IR});
-            file_IR_map[curr_file->GetBaseID()]=file_IR_info;
+            file_IR_map[curr_file->GetBaseID()]=FileIRInfo_t();
+	    file_IR_map[curr_file->GetBaseID()].file = curr_file;
         }
         
         return the_variant;
-}
-
-bool IRDBObjects_t::filesBeingShared(const VariantID_t* the_variant) const
-{
-
-	const auto &all_files=the_variant->GetFiles();
-	const auto shared_file_it=find_if(ALLOF(all_files), [&](const File_t* file)
-		{
-		    const auto file_IR_info = file_IR_map.at(file->GetBaseID());
-		    return (file_IR_info.fileIR.use_count() > 2);
-		});
-	return shared_file_it!=all_files.end();
 }
 
 
@@ -185,11 +169,6 @@ void IRDBObjects_t::deleteVariant(const db_id_t variant_id)
         
         if(var_it == variant_map.end())
 		return;
-
-	// To prevent reading in the same files again while they are being used
-	// somewhere else, which could lead to desynchronization
-	assert(!filesBeingShared(var_it->second.get()));
-	assert(var_it->second.use_count() <= 2);
 
 	// remove files and file IRs
 	for(const auto file : var_it->second->GetFiles())

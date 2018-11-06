@@ -2988,9 +2988,9 @@ int executeStep(IRDBObjects_t *const irdb_objects)
         		elfiop->load(string("readeh_tmp_file.exe"));
 
 			// find all indirect branch targets
-			fill_in_indtargs(firp.get(), elfiop.get(), do_unpin_opt);
+			fill_in_indtargs(firp, elfiop.get(), do_unpin_opt);
 			if(split_eh_frame_opt)
-				split_eh_frame(firp.get());
+				split_eh_frame(firp);
 		}
 
 		if(getenv("FII_NOUPDATE")!=nullptr)

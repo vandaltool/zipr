@@ -24,15 +24,16 @@ class IRDBObjects_t
 		~IRDBObjects_t();
 
 		// Add/delete file IRs for a variant.
-                // Cannot delete a file IR if it is also owned outside this object.
+		// Step does not have ownership of fileIR (can't make assumptions about its
+		// lifetime!), and a call to DeleteFileIR will render any pointers to that fileIR dangling.            
 		// AddFileIR returns the added IR or the preexistent IR if it was already added.
-		std::shared_ptr<FileIR_t> addFileIR(const db_id_t variant_id, const db_id_t file_id);    // Returns NULL if no such file exists
+		FileIR_t* addFileIR(const db_id_t variant_id, const db_id_t file_id);    // Returns NULL if no such file exists
 		void deleteFileIR(const db_id_t file_id);
                 // Add or delete a variant
-                // Cannot delete a variant if it or its files are also owned outside this object.
+                // Step does not have ownership of variant (can't make assumptions about its lifetime!), and a call to DeleteVariant will render any pointers to that variant dangling.
                 // Deleting a variant does NOT write its files' IRs, but DOES delete them!
                 // AddVariant returns the added variant or the preexistent variant if it was already added.
-                std::shared_ptr<VariantID_t> addVariant(const db_id_t variant_id);
+                VariantID_t* addVariant(const db_id_t variant_id);
                 void deleteVariant(db_id_t variant_id);
                 
                 // Get DB interface
@@ -50,20 +51,25 @@ class IRDBObjects_t
                 std::unique_ptr<pqxxDB_t> pqxx_interface;
 		// type aliases of maps. maps allow speed of finding needed files, file IRs 
 		// and/or variants that have already been read from the DB 
-		using IdToVariantMap_t = std::map<db_id_t, std::shared_ptr<VariantID_t>>; 
+		using IdToVariantMap_t = std::map<db_id_t, std::unique_ptr<VariantID_t>>; 
 		struct FileIRInfo_t
 		{
   		    File_t * file;
-  		    std::shared_ptr<FileIR_t> fileIR;
+  		    std::unique_ptr<FileIR_t> fileIR;
+
+		    FileIRInfo_t() : file(nullptr), fileIR(nullptr)
+       		    {
+               	    } 
+
 		};
 		using IdToFileIRInfoMap_t = std::map<db_id_t, FileIRInfo_t>; 
                 
 		IdToVariantMap_t variant_map;
         	IdToFileIRInfoMap_t file_IR_map;
+
+		// minor helper
+		bool filesAlreadyPresent(const std::set<File_t*>&) const;
                 
-                // minor helpers (used to check assertions)
-                bool filesAlreadyPresent(const FileSet_t& the_files) const;
-                bool filesBeingShared(const VariantID_t* the_variant) const;
 };
 
 #endif
