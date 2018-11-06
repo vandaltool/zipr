@@ -32,9 +32,8 @@ testing:
     - "cicd_setup_module_dependency allnp/peasoup_umbrella.git"
     - "# puts TO_TEST_DIR (the module to test, zipr in this case) in peasoup_umbrella/zipr."
     - "cicd_put_module_in_tree peasoup_umbrella/zipr"
-    - "cd $CICD_MODULE_WORK_DIR"
+    - "cd $CICD_MODULE_WORK_DIR/peasoup_umbrella"
     - "source set_env_vars"
-    - "cd zipr"
-    - "scons -c"
-    - "scons debug=1"
+    - "sudo ./get-packages.sh all"
+    - "./build-all.sh"
 
