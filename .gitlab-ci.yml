@@ -1,7 +1,7 @@
 before_script:
   - "#### customize per module."
   - "export CICD_MODULE_WORK_DIR=/tmp/work_dir_zipr"
-  - "export CICD_SERVER_PREFIX=git@git.zephyr-softaware.com:"
+  - "export CICD_SERVER_PREFIX=git@git.zephyr-software.com:"
   - "# boiler plate"
   - "export CICD_SUPPORT_DIR=/tmp/cicd_support"
   - "export CICD_TO_TEST_DIR=$(pwd)"
