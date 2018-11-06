@@ -2,8 +2,8 @@ before_script:
   - "source ~gitlab-runner/cicd_support/cicd_support.shinc" 
 
 after_script:
-  - "source ~gitlab-runner/cicd_support/cicd_support.shinc" 
-  - "cicd_cleanup"
+  - "echo Test Complete, eliding cleanup"
+  - "rm -rf /tmp/ped_ls /tmp/xxx"
 
 xform-ls:
   tags:
@@ -25,8 +25,8 @@ xform-ls:
     - "cd $CICD_MODULE_WORK_DIR/peasoup_umbrella"
     - "source set_env_vars"
     - "sudo ./get-peasoup-packages.sh all"
-    - "./build-all.sh --debug"
-    - "./postgres_setup.sh"
+    - "./build-all.sh"
+    - "dropdb $PGDATABASE 2>/dev/null || true ; ./postgres_setup.sh"
     - "cd /tmp"
     - "rm -rf ped_ls; $PSZ /bin/ls ./xxx -c rida=on -s meds_static=off --tempdir ped_ls || true"
     - "if [[ ! -x ./xxx ]]; then cat ped_ls/logs/*; fi"
