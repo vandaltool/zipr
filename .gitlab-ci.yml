@@ -38,5 +38,5 @@ testing:
     - "./build-all.sh --debug"
     - "./postgres_setup.sh"
     - "cd /tmp"
-    - "rm -rf ped_ls; $PSZ /bin/ls ./xxx -c rida -s meds_static=off --tempdir ped_ls; rm -rf ped_ls"
+    - "rm -rf ped_ls; $PSZ /bin/ls ./xxx -c rida=on -s meds_static=off --tempdir ped_ls; rm -rf ped_ls"
 
