@@ -35,5 +35,5 @@ xform-ls:
     - ""
     - "# run zipr internal tests"
     - "cd $ZIPR_HOME/tests; scons"
-    - "for i in *.exe; do ./$i; done
+    - "for i in *.exe; do ./$i; done"
 
