@@ -78,6 +78,6 @@ update-ps:
     - zipr
   script:
     - "cd $CICD_MODULE_WORK_DIR/peasoup_umbrella"
-    - "git commit -m "submod automatic update from zipr update-ps job on $(date)" zipr
+    - "git commit -m 'submod automatic update from zipr update-ps job on '$(date) zipr"
     - "git push"
           
