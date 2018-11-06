@@ -70,3 +70,14 @@ internal-tests:
     - "cd $ZIPR_HOME/test; scons"
     - "for i in *.exe; do ./$i; done"
 
+
+update-ps:
+  only: master
+  when: on_success
+  tags:
+    - zipr
+  script:
+    - "cd $CICD_MODULE_WORK_DIR/peasoup_umbrella"
+    - "git commit -m "submod automatic update from zipr update-ps job on $(date)" zipr
+    - "git push"
+          
