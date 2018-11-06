@@ -72,13 +72,15 @@ internal-tests:
 
 
 update-ps:
-        stage: deploy
-        only: master
-        when: on_success
-        tags:
-                - zipr
-        script:
-                - "cd $CICD_MODULE_WORK_DIR/peasoup_umbrella"
-                - "git commit -m 'submod automatic update from zipr update-ps job on '$(date) zipr"
-                - "git push"
-          
+   stage: deploy
+   only: 
+      refs:
+        - master
+   when: on_success
+   tags:
+      - zipr
+   script:
+      - "cd $CICD_MODULE_WORK_DIR/peasoup_umbrella"
+      - "git commit -m 'submod automatic update from zipr update-ps job on '$(date) zipr"
+      - "git push"
+     
