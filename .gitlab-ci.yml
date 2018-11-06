@@ -27,6 +27,8 @@ xform-ls:
     - "sudo ./get-peasoup-packages.sh all"
     - "./build-all.sh --debug"
     - "./postgres_setup.sh"
+    - "#cd $PEASOUP_HOME/tests"
+    - "#make clean all"
     - "cd /tmp"
     - "rm -rf ped_ls; $PSZ /bin/ls ./xxx -c rida=on -s meds_static=off --tempdir ped_ls; rm -rf ped_ls"
     - "./xxx"
