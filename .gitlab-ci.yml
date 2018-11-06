@@ -13,6 +13,7 @@ before_script:
 
 after_script:
   - "# boiler plate"
+  - "env |grep CICD"
   - "cicd_cleanup"
 
 testing:
