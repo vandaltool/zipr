@@ -34,6 +34,6 @@ testing:
     - "cicd_put_module_in_tree peasoup_umbrella/zipr"
     - "cd $CICD_MODULE_WORK_DIR/peasoup_umbrella"
     - "source set_env_vars"
-    - "sudo ./get-packages.sh all"
+    - "sudo ./get-peasoup-packages.sh all"
     - "./build-all.sh"
 
