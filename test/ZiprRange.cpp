@@ -61,18 +61,17 @@ bool TestRangeSpeed() {
 	}
 
 	//m.PrintMemorySpace(cout);
-
-	for (int i = 0;
-	     i<100000000;
-			 i++)
+	const auto timeStart=clock();	
+	auto i=0;
+	for (i = 0; (clock()-timeStart)/CLOCKS_PER_SEC < 10; i++)
 	{
 		volatile RangeAddress_t found_start = 0;
-		Range_t placement;
-		placement = m.GetFreeRange(d->Size());
+		auto placement = m.GetFreeRange(d->Size());
 
 		found_start = placement.GetStart();
 		found_start++;
 	}
+	cout<<"In 10 seconds, executed "<<dec<<i<<" iterations of GetFreeRange()"<<endl;
 
 	return true;
 }
