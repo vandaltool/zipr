@@ -8,14 +8,6 @@ Import('env')
 
 
 if env.GetOption('clean'):
-#    if os.path.exists(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/ELFIO"):
-#        print 'Removing third_party/ELFIO'
-#    	shutil.rmtree(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/ELFIO")
-#    if os.path.exists(os.environ['SECURITY_TRANSFORMS_HOME']+"/include/elfio"):
-#        print 'Removing include/elfio'
-#    	shutil.rmtree(os.environ['SECURITY_TRANSFORMS_HOME']+"/include/elfio")
-
-
     if os.path.exists(os.environ['SECURITY_TRANSFORMS_HOME']+"/include/targ-config.h"):
         print 'Removing include/targ-config.h'
     	os.remove(os.environ['SECURITY_TRANSFORMS_HOME']+"/include/targ-config.h")
@@ -27,18 +19,6 @@ if env.GetOption('clean'):
 
 
 else:
-#    ELFIO_DIR=os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/ELFIO/"
-#    if not os.path.exists(ELFIO_DIR):
-#        os.makedirs(ELFIO_DIR)     # make directory 
-#        tgz=tarfile.open(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/elfio-2.2.tar.gz", "r:gz")
-#        print 'Extracting elfio tarball'
-#        #tgz.list(verbose=False)
-#        tgz.extractall(ELFIO_DIR)
-#    	shutil.copytree(ELFIO_DIR+"elfio-2.2/elfio", os.environ['SECURITY_TRANSFORMS_HOME']+"/include/elfio")
-#        shutil.copy(os.path.join(os.environ['SECURITY_TRANSFORMS_HOME'],"third_party","elfio.hpp"), 
-#		    os.path.join(os.environ['SECURITY_TRANSFORMS_HOME'],"include","elfio","elfio.hpp"))
-#    else:
-#        assert os.path.isdir(ELFIO_DIR)
 
     # check/install targ-config.h
     if not os.path.isfile(os.environ['SECURITY_TRANSFORMS_HOME']+"/include/targ-config.h"):
@@ -48,7 +28,8 @@ else:
 
     os.chdir(os.environ['SECURITY_TRANSFORMS_HOME']+"/libcapstone")
     print "Rebuilding libcapstone."
-    os.system("./make.sh ")
+    jobs=env.GetOption('num_jobs')
+    os.system("make -j "+str(jobs))
     os.chdir(os.environ['SECURITY_TRANSFORMS_HOME']+"/libcapstone")
     if not os.path.exists(os.environ['SECURITY_TRANSFORMS_HOME']+"/libcapstone/zipr_unpack"):
 	    os.mkdir(os.environ['SECURITY_TRANSFORMS_HOME']+"/libcapstone/zipr_unpack")
