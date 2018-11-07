@@ -6,7 +6,7 @@ before_script:
 after_script:
   - "source ~gitlab-runner/cicd_support/cicd_support.shinc" 
 
-build:
+do-build:
   stage: build
   tags:
     - psz
@@ -38,7 +38,7 @@ xform-ls:
     - "./xxx"
 
 
-basic_pgms_rida:
+basic-pgms-rida:
   stage: test
   tags:
     - psz
@@ -49,7 +49,7 @@ basic_pgms_rida:
     - "cd /tmp"
     - "cd $PEASOUP_HOME/tests; ./test_cmds.sh rida"
 
-basic_pgms_rida_p1:
+basic-pgms-rida-p1:
   stage: test
   tags:
     - psz
