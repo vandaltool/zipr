@@ -71,17 +71,18 @@ internal-tests:
     - "for i in *.exe; do ./$i; done"
 
 
-update-ps:
-   stage: deploy
-   only: 
-      refs:
-        - master
-   when: on_success
-   tags:
-      - zipr
-   script:
-      - "cd $CICD_MODULE_WORK_DIR/peasoup_umbrella"
-      - "git add zipr" 
-      - "git commit -m \"submod automatic update from zipr update-ps job on $(date)\" "
-      - "git push"
+# updating ps-analyze is now done nightly.
+#update-ps:
+#   stage: deploy
+#   only: 
+#      refs:
+#        - master
+#   when: on_success
+#   tags:
+#      - zipr
+#   script:
+#      - "cd $CICD_MODULE_WORK_DIR/peasoup_umbrella"
+#      - "git add zipr" 
+#      - "git commit -m \"submod automatic update from zipr update-ps job on $(date)\" "
+#      - "git push"
      
