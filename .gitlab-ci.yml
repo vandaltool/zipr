@@ -18,6 +18,7 @@ do-build:
     - "env|grep CICD"
     - ""
     - "cd $CICD_TO_TEST_DIR"
+    - "cp -r . /tmp/peasoup_test
     - "source set_env_vars"
     - "sudo ./get-peasoup-packages.sh all"
     - "./build-all.sh --debug"
@@ -29,7 +30,7 @@ xform-ls:
     - psz
     - integration
   script:
-    - "cd $CICD_TO_TEST_DIR"
+    - "cd /tmp/peasoup_test"
     - "source set_env_vars"
     - "cd /tmp"
     - "rm -rf xxx ped_ls; $PSZ /bin/ls ./xxx -c rida=on -s meds_static=off --tempdir ped_ls || true"
@@ -44,7 +45,7 @@ basic-pgms-rida:
     - psz
     - integration
   script:
-    - "cd $CICD_TO_TEST_DIR"
+    - "cd /tmp/peasoup_test"
     - "source set_env_vars"
     - "cd $CICD_TO_TEST_DIR/peasoup_examples/tests"
     - "cd $PEASOUP_HOME/tests; make clean; ./test_cmds.sh rida"
@@ -55,7 +56,7 @@ basic-pgms-rida-p1:
     - psz
     - integration
   script:
-    - "cd $CICD_TO_TEST_DIR"
+    - "cd /tmp/peasoup_test"
     - "source set_env_vars"
     - "cd $CICD_TO_TEST_DIR/peasoup_examples/tests"
     - "cd $PEASOUP_HOME/tests; make clean; ./test_cmds.sh rida_p1"
