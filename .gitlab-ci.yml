@@ -1,7 +1,5 @@
 before_script:
   - "source ~gitlab-runner/cicd_support/cicd_support.shinc" 
-  - "git submodule sync --recursive"
-  - "git submodule update --recursive --init"
 
 after_script:
   - "source ~gitlab-runner/cicd_support/cicd_support.shinc" 
@@ -11,6 +9,9 @@ do-build:
   tags:
     - psz
   script:
+    - "# update submodules" 
+    - "git submodule sync --recursive"
+    - "git submodule update --recursive --init"
     - "# gather info for debugging later, probably not necessary "
     - "pwd"
     - "hostname"
