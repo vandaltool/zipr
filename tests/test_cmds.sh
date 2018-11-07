@@ -161,7 +161,9 @@ do_tests()
 			if [ ! $? -eq 0 ]; then
 				echo "TEST ($config) ${prog}: FAILED to peasoupify"
 				progs_fail_peasoup="$progs_fail_peasoup $prog.$config"
-		    else
+				cat test_${prog}.ps.log
+				cat $temp_dir/logs/*.log
+		        else
 				progs_pass_peasoup="$progs_pass_peasoup $prog.$config"
 			fi
 
