@@ -17,7 +17,7 @@ do-build:
     - "whoami"
     - "env|grep CICD"
     - ""
-    - "cp -r $CICD_TO_TEST_DIR /tmp/peasoup_test"
+    - "rsync -a --exclude='.git'  $CICD_TO_TEST_DIR /tmp/peasoup_test"
     - "cd /tmp/peasoup_test"
     - "source set_env_vars"
     - "sudo ./get-peasoup-packages.sh all"
