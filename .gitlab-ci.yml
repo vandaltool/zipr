@@ -47,8 +47,7 @@ basic-pgms-rida:
     - "cd $CICD_TO_TEST_DIR"
     - "source set_env_vars"
     - "cd $CICD_TO_TEST_DIR/peasoup_examples/tests"
-    - "cd /tmp"
-    - "cd $PEASOUP_HOME/tests; ./test_cmds.sh rida"
+    - "cd $PEASOUP_HOME/tests; make clean; ./test_cmds.sh rida"
 
 basic-pgms-rida-p1:
   stage: test
@@ -59,6 +58,5 @@ basic-pgms-rida-p1:
     - "cd $CICD_TO_TEST_DIR"
     - "source set_env_vars"
     - "cd $CICD_TO_TEST_DIR/peasoup_examples/tests"
-    - "cd /tmp"
-    - "cd $PEASOUP_HOME/tests; ./test_cmds.sh rida_p1"
+    - "cd $PEASOUP_HOME/tests; make clean; ./test_cmds.sh rida_p1"
 
