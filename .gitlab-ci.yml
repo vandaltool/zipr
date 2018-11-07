@@ -5,13 +5,12 @@ before_script:
 
 after_script:
   - "source ~gitlab-runner/cicd_support/cicd_support.shinc" 
-  - "cicd_cleanup"
 
-xform-ls:
+build:
+  stage: build
   tags:
     - psz
-    - integration
-  script:
+   script:
     - "# gather info for debugging later, probably not necessary "
     - "pwd"
     - "hostname"
@@ -23,9 +22,41 @@ xform-ls:
     - "sudo ./get-peasoup-packages.sh all"
     - "./build-all.sh --debug"
     - "./postgres_setup.sh"
+
+xform-ls:
+  stage: test
+  tags:
+    - psz
+    - integration
+  script:
+    - "cd $CICD_TO_TEST_DIR"
+    - "source set_env_vars"
     - "cd /tmp"
     - "rm -rf ped_ls; $PSZ /bin/ls ./xxx -c rida=on -s meds_static=off --tempdir ped_ls || true"
     - "if [[ ! -x ./xxx ]]; then cat ped_ls/logs/*; fi"
     - "rm -rf ped_ls"
     - "./xxx"
+
+
+basic_pgms_rida:
+  stage: test
+  tags:
+    - psz
+    - integration
+  script:
+    - "cd $CICD_TO_TEST_DIR/peasoup_examples/tests"
+    - "source set_env_vars"
+    - "cd /tmp"
+    - "cd $PEASOUP_HOME/tests; ./test_cmds.sh rida"
+
+basic_pgms_rida_p1:
+  stage: test
+  tags:
+    - psz
+    - integration
+  script:
+    - "cd $CICD_TO_TEST_DIR/peasoup_examples/tests"
+    - "source set_env_vars"
+    - "cd /tmp"
+    - "cd $PEASOUP_HOME/tests; ./test_cmds.sh rida_p1"
 
