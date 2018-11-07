@@ -44,8 +44,9 @@ basic-pgms-rida:
     - psz
     - integration
   script:
-    - "cd $CICD_TO_TEST_DIR/peasoup_examples/tests"
+    - "cd $CICD_TO_TEST_DIR"
     - "source set_env_vars"
+    - "cd $CICD_TO_TEST_DIR/peasoup_examples/tests"
     - "cd /tmp"
     - "cd $PEASOUP_HOME/tests; ./test_cmds.sh rida"
 
@@ -55,8 +56,9 @@ basic-pgms-rida-p1:
     - psz
     - integration
   script:
-    - "cd $CICD_TO_TEST_DIR/peasoup_examples/tests"
+    - "cd $CICD_TO_TEST_DIR"
     - "source set_env_vars"
+    - "cd $CICD_TO_TEST_DIR/peasoup_examples/tests"
     - "cd /tmp"
     - "cd $PEASOUP_HOME/tests; ./test_cmds.sh rida_p1"
 
