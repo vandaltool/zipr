@@ -7,7 +7,7 @@ after_script:
 do-build:
   stage: build
   tags:
-    - psz
+    - ubuntu18
   script:
     - "# update submodules" 
     - "git submodule sync --recursive"
@@ -28,8 +28,7 @@ do-build:
 xform-ls:
   stage: test
   tags:
-    - psz
-    - integration
+    - ubuntu18
   script:
     - "cd /tmp/peasoup_test"
     - "source set_env_vars"
@@ -43,8 +42,7 @@ xform-ls:
 basic-pgms-rida:
   stage: test
   tags:
-    - psz
-    - integration
+    - ubuntu18
   script:
     - "cd /tmp/peasoup_test"
     - "source set_env_vars"
@@ -54,8 +52,7 @@ basic-pgms-rida:
 basic-pgms-rida-p1:
   stage: test
   tags:
-    - psz
-    - integration
+    - ubuntu18
   script:
     - "cd /tmp/peasoup_test"
     - "source set_env_vars"
