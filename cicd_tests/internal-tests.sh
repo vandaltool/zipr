@@ -1,6 +1,7 @@
 #!/bin/bash 
 
 set -e
+set -x
 
 cd $CICD_MODULE_WORK_DIR/peasoup_umbrella
 source set_env_vars

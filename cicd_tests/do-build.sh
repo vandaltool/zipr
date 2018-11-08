@@ -1,6 +1,7 @@
 #/bin/bash 
 
 set -e
+set -x
 
 # gather info for debugging later, probably not necessary 
 pwd
