@@ -3,86 +3,34 @@ before_script:
 
 
 after_script:
-  - "echo Test Complete, eliding cleanup"
-  - "rm -rf /tmp/ped_ls /tmp/ls.rida /tmp/ped_cat"
+  - "echo Test Complete."
 
 
 
-do_build:
+do-build:
   stage: build
   tags:
-    - zipr
+    - ubuntu18
   script:
-    - "# gather info for debugging later, probably not necessary "
-    - "pwd"
-    - "hostname"
-    - "whoami"
-    - "env|grep CICD"
-    - ""
-    - "# puts peasoup_umbrella (and all submodules) in CICD_MODULE_WORK_DIR"
-    - "cicd_setup_module_dependency allnp/peasoup_umbrella.git"
-    - ""
-    - "# puts the version of zipr to test in peasoup_umbrella/zipr."
-    - "cicd_put_module_in_tree peasoup_umbrella/zipr"
-    - ""
-    - "# Build/run $PSZ, test result"
-    - "cd $CICD_MODULE_WORK_DIR/peasoup_umbrella"
-    - "source set_env_vars"
-    - "sudo ./get-peasoup-packages.sh all"
-    - "./build-all.sh"
-    - "dropdb $PGDATABASE 2>/dev/null || true ; ./postgres_setup.sh"
+    - ./cicd_tests/do-build.sh
 
 xform-ls:
   stage: test
   tags:
-    - zipr
+    - ubuntu18
   script:
-    - "cd $CICD_MODULE_WORK_DIR/peasoup_umbrella"
-    - "source set_env_vars"
-    - "cd /tmp"
-    - "rm -rf ls.rida ped_ls; $PSZ /bin/ls ./ls.rida -c rida=on -s meds_static=off --tempdir ped_ls || true"
-    - "if [[ ! -x ./ls.rida ]]; then cat ped_ls/logs/*; fi"
-    - "rm -rf ped_ls"
-    - "./ls.rida"
-    - ""
+    - ./cicd_tests/xform-ls.sh
 
 xform-cat:
   stage: test
   tags:
-    - zipr
+    - ubuntu18
   script:
-    - "cd $CICD_MODULE_WORK_DIR/peasoup_umbrella"
-    - "source set_env_vars"
-    - "cd /tmp"
-    - "rm -rf cat.rida ped_cat; $PSZ /bin/ls ./cat.rida -c rida=on -s meds_static=off --tempdir ped_cat || true"
-    - "if [[ ! -x ./cat.rida ]]; then cat ped_ls/logs/*; fi"
-    - "./cat.rida /dev/null "
-    - ""
+    - ./cicd_tests/xform-cat.sh
 
 internal-tests:
   stage: test
   tags:
     - zipr
   script:
-    - "cd $CICD_MODULE_WORK_DIR/peasoup_umbrella"
-    - "source set_env_vars"
-    - "# run zipr internal tests"
-    - "cd $ZIPR_HOME/test; scons"
-    - "for i in *.exe; do ./$i; done"
-
-
-# updating ps-analyze is now done nightly.
-#update-ps:
-#   stage: deploy
-#   only: 
-#      refs:
-#        - master
-#   when: on_success
-#   tags:
-#      - zipr
-#   script:
-#      - "cd $CICD_MODULE_WORK_DIR/peasoup_umbrella"
-#      - "git add zipr" 
-#      - "git commit -m \"submod automatic update from zipr update-ps job on $(date)\" "
-#      - "git push"
-     
+    - ./cicd_tests/internal-tests.sh
