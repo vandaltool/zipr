@@ -31,6 +31,6 @@ xform-cat:
 internal-tests:
   stage: test
   tags:
-    - zipr
+    - ubuntu18
   script:
     - ./cicd_tests/internal-tests.sh
