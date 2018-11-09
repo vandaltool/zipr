@@ -100,14 +100,14 @@ xform-cat-ubuntu18:
 
 #per OS
 internal-tests-ubuntu18:
-  << *internal-tests
+  <<: *internal-tests
   tags:
     - ubuntu18
   variables:
     OS: 'ubuntu18'  
 
 internal-tests-ubuntu16:
-  << *internal-tests
+  <<: *internal-tests
   tags:
     - ubuntu16
   variables:
