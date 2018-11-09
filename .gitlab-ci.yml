@@ -7,10 +7,17 @@ after_script:
 
 
 
-do-build:
+do-build-ubuntu18:
   stage: build
   tags:
     - ubuntu18
+  script:
+    - ./cicd_tests/do-build.sh
+
+do-build-ubuntu16:
+  stage: build
+  tags:
+    - ubuntu16
   script:
     - ./cicd_tests/do-build.sh
 
