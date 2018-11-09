@@ -29,7 +29,8 @@ main()
 	dropdb $PGDATABASE 2>/dev/null || true ; ./postgres_setup.sh
 
 	cd $orig_dir
-	cp $CICD_MODULE_WORK_DIR/install ps-install-$OS
+	rm -rf ps-install-OS
+	cp $CICD_MODULE_WORK_DIR/peasoup_umbrella/installed ps-install-$OS
 }
 
 main "$@"
