@@ -93,7 +93,7 @@ xform-cat-ubuntu18:
 #
 
 # template
-.internal-tests: &internal_tests
+.internal-tests: &internal-tests
   stage: test
   script:
     - ./cicd-tests/internal-tests.sh
