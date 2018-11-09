@@ -15,7 +15,7 @@ after_script:
 .do-build: &do-build
   stage: build
   script:
-    - ./cicd-tests/do-build.sh
+    - ./cicd_tests/do-build.sh
 
 
 
@@ -54,7 +54,7 @@ do-build-ubuntu16:
 .xform-ls: &xform-ls
   stage: test
   script:
-    - ./cicd-tests/xform-ls.sh
+    - ./cicd_tests/xform-ls.sh
 
 #per OS
 xform-ls-ubuntu18:
@@ -79,7 +79,7 @@ xform-ls-ubuntu16:
 .xform-cat: &xform-cat
   stage: test
   script:
-    - ./cicd-tests/xform-cat.sh
+    - ./cicd_tests/xform-cat.sh
 
 xform-cat-ubuntu18:
   <<: *xform-cat
@@ -96,7 +96,7 @@ xform-cat-ubuntu18:
 .internal-tests: &internal-tests
   stage: test
   script:
-    - ./cicd-tests/internal-tests.sh
+    - ./cicd_tests/internal-tests.sh
 
 #per OS
 internal-tests-ubuntu18:
