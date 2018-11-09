@@ -85,6 +85,13 @@ xform-cat-ubuntu18:
     - ubuntu18
   variables:
     OS: 'ubuntu18'  
+    
+xform-cat-ubuntu16:
+  <<: *xform-cat
+  tags:
+    - ubuntu16
+  variables:
+    OS: 'ubuntu16'  
 
 #
 # run zipr internal tests
