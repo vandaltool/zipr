@@ -17,13 +17,13 @@ stages:
 #
 
 #template 
-.do-clean: &do-clean
+.do-clean: &do-nightly-clean
   stage: clean
   script:
     - ./cicd_tests/do-clean.sh
 
 # per os items
-do-clean-ubuntu18:
+do-nightly-clean-ubuntu18:
   <<: *do-clean
   tags:
     - ubuntu18
@@ -31,7 +31,7 @@ do-clean-ubuntu18:
     OS: 'ubuntu18'  
 
 # per os items
-do-clean-ubuntu16:
+do-nightly-clean-ubuntu16:
   <<: *do-clean
   tags:
     - ubuntu18
@@ -66,15 +66,6 @@ do-build-ubuntu16:
     - ubuntu16
   variables:
     OS: 'ubuntu16'  
-
-#do-build-centos75:
-#  <<: *do-build
-# tags:
-#   - centos75
-# variables:
-#   OS: 'centos75'  
-
-
 
 
 
