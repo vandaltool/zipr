@@ -1,43 +1,114 @@
 before_script:
-  - "source ~gitlab-runner/cicd_support/cicd_support.shinc" 
+  - "source ~gitlab-runner/cicd-support/cicd-support.shinc" 
 
 
 after_script:
   - "echo Test Complete."
 
 
+#
+# building 
+#
 
-do-build-ubuntu18:
+
+# template
+.do-build: &do-build
   stage: build
+  script:
+    - ./cicd-tests/do-build.sh
+
+
+
+# per os items
+do-build-ubuntu18:
+  <<: *do-build
   tags:
     - ubuntu18
-  script:
-    - ./cicd_tests/do-build.sh
+  variables:
+    OS: 'ubuntu18'  
+
 
 do-build-ubuntu16:
-  stage: build
+  <<: *do-build
   tags:
     - ubuntu16
-  script:
-    - ./cicd_tests/do-build.sh
+  variables:
+    OS: 'ubuntu16'  
 
-xform-ls:
+#do-build-centos75:
+  <<: *do-build
+# tags:
+#   - centos75
+# variables:
+#   OS: 'centos75'  
+
+
+
+
+
+#
+# $PSZ ls
+#
+
+# template
+.xform-ls: &xform-ls
   stage: test
+  script:
+    - ./cicd-tests/xform-ls.sh
+
+#per OS
+xform-ls-ubuntu18:
+  <<: xform-ls
   tags:
     - ubuntu18
-  script:
-    - ./cicd_tests/xform-ls.sh
+  variables:
+    OS: 'ubuntu18'  
 
-xform-cat:
+xform-ls-ubuntu16:
+  <<: xform-ls
+  tags:
+    - ubuntu16
+  variables:
+    OS: 'ubuntu16'  
+
+#
+# $PSZ cat
+#
+
+# template
+.xform-cat: &xform-cat
   stage: test
+  script:
+    - ./cicd-tests/xform-cat.sh
+
+xform-cat-ubuntu18:
+  <<: *xform-cat
   tags:
     - ubuntu18
-  script:
-    - ./cicd_tests/xform-cat.sh
+  variables:
+    OS: 'ubuntu18'  
 
-internal-tests:
+#
+# run zipr internal tests
+#
+
+# template
+.internal-tests: &internal_tests
   stage: test
+  script:
+    - ./cicd-tests/internal-tests.sh
+
+#per OS
+internal-tests-ubuntu18:
+  << *internal-tests
   tags:
     - ubuntu18
-  script:
-    - ./cicd_tests/internal-tests.sh
+  variables:
+    OS: 'ubuntu18'  
+
+internal-tests-ubuntu16:
+  << *internal-tests
+  tags:
+    - ubuntu16
+  variables:
+    OS: 'ubuntu16'  
