@@ -5,6 +5,39 @@ before_script:
 after_script:
   - "echo Test Complete."
 
+stages:
+  - clean
+  - build
+  - test
+
+
+
+#
+# Cleaning
+#
+
+#template 
+.do-clean: &do-clean
+  stage: clean
+  script:
+    - ./cicd_tests/do-clean.sh
+
+# per os items
+do-clean-ubuntu18:
+  <<: *do-clean
+  tags:
+    - ubuntu18
+  variables:
+    OS: 'ubuntu18'  
+
+# per os items
+do-clean-ubuntu16:
+  <<: *do-clean
+  tags:
+    - ubuntu18
+  variables:
+    OS: 'ubuntu16'  
+
 
 #
 # building 
@@ -16,9 +49,6 @@ after_script:
   stage: build
   script:
     - ./cicd_tests/do-build.sh
-  artifacts:
-    paths:
-    -  "./ps-install-*"
 
 
 # per os items
