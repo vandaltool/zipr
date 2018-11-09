@@ -24,7 +24,7 @@ stages:
 
 # per os items
 do-nightly-clean-ubuntu18:
-  <<: *do-clean
+  <<: *do-nightly-clean
   tags:
     - ubuntu18
   variables:
@@ -32,7 +32,7 @@ do-nightly-clean-ubuntu18:
 
 # per os items
 do-nightly-clean-ubuntu16:
-  <<: *do-clean
+  <<: *do-nightly-clean
   tags:
     - ubuntu18
   variables:
