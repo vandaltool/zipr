@@ -34,7 +34,7 @@ do-nightly-clean-ubuntu18:
 do-nightly-clean-ubuntu16:
   <<: *do-nightly-clean
   tags:
-    - ubuntu18
+    - ubuntu16
   variables:
     OS: 'ubuntu16'  
 
