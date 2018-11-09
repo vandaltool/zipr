@@ -16,6 +16,10 @@ after_script:
   stage: build
   script:
     - ./cicd_tests/do-build.sh
+  artifacts:
+    paths:
+    -  "./ps-install-*"
+
 
 # per os items
 do-build-ubuntu18:
