@@ -1,5 +1,5 @@
 before_script:
-  - "source ~gitlab-runner/cicd-support/cicd-support.shinc" 
+  - "source ~gitlab-runner/cicd_support/cicd_support.shinc" 
 
 
 after_script:
