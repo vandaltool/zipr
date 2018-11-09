@@ -58,14 +58,14 @@ do-build-ubuntu16:
 
 #per OS
 xform-ls-ubuntu18:
-  <<: xform-ls
+  <<: *xform-ls
   tags:
     - ubuntu18
   variables:
     OS: 'ubuntu18'  
 
 xform-ls-ubuntu16:
-  <<: xform-ls
+  <<: *xform-ls
   tags:
     - ubuntu16
   variables:
