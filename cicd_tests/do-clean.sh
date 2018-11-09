@@ -10,7 +10,7 @@ main()
 	pwd
 	hostname
 	whoami
-	env|grep CICD
+	env|grep "^CICD"
 
 
 	if [[ $CICD_NIGHTLY == 1 ]] ; then
