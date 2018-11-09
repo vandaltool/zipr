@@ -17,8 +17,6 @@ after_script:
   script:
     - ./cicd_tests/do-build.sh
 
-
-
 # per os items
 do-build-ubuntu18:
   <<: *do-build
@@ -36,7 +34,7 @@ do-build-ubuntu16:
     OS: 'ubuntu16'  
 
 #do-build-centos75:
-  <<: *do-build
+#  <<: *do-build
 # tags:
 #   - centos75
 # variables:
