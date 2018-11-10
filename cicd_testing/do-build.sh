@@ -16,6 +16,6 @@ time rsync -a --exclude='.git'  $CICD_TO_TEST_DIR/ /tmp/peasoup_test
 cd /tmp/peasoup_test
 source set_env_vars
 sudo ./get-peasoup-packages.sh all
-build-all.sh --debug
+./build-all.sh 
 postgres_setup.sh
 
