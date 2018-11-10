@@ -6,7 +6,7 @@ set -x
 # update submodules
 git submodule sync --recursive
 git submodule update --recursive --init
-gather info for debugging later, probably not necessary 
+# gather info for debugging later, probably not necessary 
 pwd
 hostname
 whoami
