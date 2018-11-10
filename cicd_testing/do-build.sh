@@ -17,5 +17,5 @@ cd /tmp/peasoup_test
 source set_env_vars
 sudo ./get-peasoup-packages.sh all
 ./build-all.sh 
-postgres_setup.sh
+./postgres_setup.sh
 
