@@ -3,7 +3,7 @@ set -e
 set -x
 
 
-update submodules
+# update submodules
 git submodule sync --recursive
 git submodule update --recursive --init
 gather info for debugging later, probably not necessary 
