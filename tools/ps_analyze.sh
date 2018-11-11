@@ -560,30 +560,11 @@ perform_step()
 
 	if [ "$step" = "$stop_before_step" ]; then 
 		echo "ps_analyze has been asked to stop before step $step."
-		echo "command is:  $command"
-
-		printf "COMMIT_ALL" > $input_pipe
-                read -r commit_res < $output_pipe
-                if [ "$commit_res" != "COMMIT_ALL_OK"  ]; then
-                        echo A critical step was necessary, but failed.
-                        echo To know exactly which step failed, source set the DEBUG_STEPS env var.
-                        exit -1;
-                fi
-		printf "TERMINATE" > $input_pipe
-
+		echo "command is:  $command"	
 		exit 1
 	fi
 	if [ "$step" = "$dump_before_step" ]; then 
-		echo " ---- ps_analyze has been asked to dump before step $step."
-
-		printf "COMMIT_ALL" > $input_pipe
-                read -r commit_res < $output_pipe
-                if [ "$commit_res" != "COMMIT_ALL_OK"  ]; then
-			echo A critical step was necessary, but failed.  Exiting ps_analyze early.
-			echo To know exactly which step failed, source set the DEBUG_STEPS env var.
-                        exit -1;                        
-		fi
-
+		echo " ---- ps_analyze has been asked to dump before step $step."	
 		$SECURITY_TRANSFORMS_HOME/plugins_install/dump_map.exe $cloneid > logs/dump_before.log
 	fi
 
@@ -615,55 +596,18 @@ perform_step()
 	echo -n Performing step "$step" [dependencies=$mandatory] ...
 	starttime=`$PS_DATE`
 
-	# First, check if using Transform_Step plugin architecture
-	echo "$command"|grep "lib$step\.so " > /dev/null
-        grep_res=$?
-        if [ $grep_res -eq 0 ] ; then
-                if [[ "$(stop_if_error $step)" != "0" ]]; then
-			printf "SET_LOGFILE %s" $(pwd)/$logfile > $input_pipe
-			read -r log_set_res < $output_pipe
-			echo "EXECUTE_STEP CRITICAL $command" > $input_pipe
-                else
-			printf "SET_LOGFILE %s" $(pwd)/$logfile > $input_pipe
-			read -r log_set_res < $output_pipe
-                        echo "EXECUTE_STEP OPTIONAL $command" > $input_pipe
-                fi
-
-                read -r thanos_res < $output_pipe
-
-                if [ "$thanos_res" = "ERR_INVALID_CMD"  ]; then
-                        echo Internal Transform_Step plugin architecture error.
-                        echo Unrecognized EXECUTE_STEP command. Exiting ps_analyze early.
-                        exit -1
-                elif [ "$thanos_res" = "STEP_UNSUPPORTED" ]; then
-                        command_exit=127 # command not found
-                else
-                        command_exit=$thanos_res
-			if [ ! -z "$VERBOSE" ]; then
-				cat $logfile	
-			fi
-		fi
-        else
-		# Otherwise, do things the old way (step is its own process)
-		printf "COMMIT_ALL" > $input_pipe
-		read -r commit_res < $output_pipe
-		if [ "$commit_res" != "COMMIT_ALL_OK"  ]; then
-			command_exit=$commit_res
-		else
-			# If verbose is on, tee to a file 
-			if [ ! -z "$DEBUG_STEPS" ]; then
-				$command 
-				command_exit=$?
-			elif [ ! -z "$VERBOSE" ]; then
-				$command 2>&1 | tee $logfile
-				command_exit=${PIPESTATUS[0]} # this funkiness gets the exit code of $command, not tee
-			else
-				$command > $logfile 2>&1 
-				command_exit=$?
-			fi
-		fi
+	# If verbose is on, tee to a file 
+	if [ ! -z "$DEBUG_STEPS" ]; then
+		eval $command 
+		command_exit=$?
+	elif [ ! -z "$VERBOSE" ]; then
+		eval $command 2>&1 | tee $logfile
+		command_exit=${PIPESTATUS[0]} # this funkiness gets the exit code of $command, not tee
+	else
+		eval $command > $logfile 2>&1 
+		command_exit=$?
 	fi
-
+	
 	endtime=`$PS_DATE`
 	
 	echo "#ATTRIBUTE start_time=$starttime" >> $logfile
@@ -692,8 +636,6 @@ perform_step()
 		stop_if_error $step
 		if [ $? -gt $error_threshold ]; then 
 			echo The $step step is necessary, but failed.  Exiting ps_analyze early.
-			echo If DEBUG_STEPS is NOT on, this failure may be from a previously
-			echo executed critical step.
 			exit -1;
 		fi
 		errors=1
@@ -721,29 +663,10 @@ perform_step()
 	if [ "$step" = "$stop_after_step" ]; then 
 		echo "ps_analyze has been asked to stop after step $step."
 		echo "command is:  $command"
-
-		printf "COMMIT_ALL" > $input_pipe
-                read -r commit_res < $output_pipe
-                if [ "$commit_res" != "COMMIT_ALL_OK"  ]; then
-                        echo A critical step was necessary, but failed.
-                        echo To know exactly which step failed, source set the DEBUG_STEPS env var.
-                        exit -1;
-                fi
-		printf "TERMINATE" > $input_pipe
-
 		exit 1
 	fi
 	if [ "$step" = "$dump_after_step" ]; then 
 		echo " ---- ps_analyze has been asked to dump after step $step."
-
-		printf "COMMIT_ALL" > $input_pipe
-                read -r commit_res < $output_pipe
-                if [ "$commit_res" != "COMMIT_ALL_OK"  ]; then
-                        echo A critical step was necessary, but failed.  Exiting ps_analyze early.
-                        echo To know exactly which step failed, source set the DEBUG_STEPS env var.
-                        exit -1;
-                fi
-
 		$SECURITY_TRANSFORMS_HOME/plugins_install/dump_map.exe $cloneid > logs/dump_after.log
 	fi
 	return $command_exit
@@ -790,11 +713,27 @@ do_plugins()
 		value="${!this_step_options_name}"
 
 		plugin_path=$SECURITY_TRANSFORMS_HOME/plugins_install/
+
+		# first check if step can be invoked as a thanos plugin
+                if [ -x $plugin_path/lib$stepname.so ]; then
+                	
+			# add step to the block of contiguous thanos plugins
+			stop_if_error $stepname			
+			if [[ $? -gt $error_threshold ]]; then
+                        	thanos_plugins="$thanos_plugins \"$stepname --step-args $cloneid $value\""
+			else
+				thanos_plugins="$thanos_plugins \"$stepname -optional --step-args $cloneid $value\""	
+			fi
+
+			continue
+		elif [[ $thanos_plugins ]]; then 
+			# execute preceding block of thanos plugin steps now
+			perform_step fill_in_cfg none "$plugin_path/thanos.exe "$thanos_plugins""
+			thanos_plugins=""
+		fi
 		
-		# invoke .so, .exe, or .sh as a plugin step.
-		if [ -x $plugin_path/lib$stepname.so ]; then
-                        perform_step $stepname none lib$stepname.so $cloneid $value
-		elif [ -x $plugin_path/$stepname.exe ]; then
+		# invoke .exe, or .sh as a plugin step
+		if [ -x $plugin_path/$stepname.exe ]; then
 			perform_step $stepname none $plugin_path/$stepname.exe  $cloneid  $value
 		elif [ -x $plugin_path/$stepname.sh ]; then
 			perform_step $stepname none $plugin_path/$stepname.sh $cloneid  $value
@@ -807,6 +746,12 @@ do_plugins()
 			warnings=1
 		fi
 	done
+
+	# execute last block of thanos plugins if there are any left	
+	if [[ $thanos_plugins ]]; then
+		perform_step thanos none "$plugin_path/thanos.exe "$thanos_plugins""
+                thanos_plugins=""         	
+	fi
 
 }
 
@@ -934,16 +879,6 @@ compatcheck()
 
 }
 
-
-# Make sure thanos is always exited
-exit_thanos()
-{
-	# will do the job for emergency exits
-	kill $thanos_pid &> /dev/null
-	wait $thanos_pid &> /dev/null
-	rm -f $input_pipe
-	rm -f $output_pipe
-}
 
 do_prefix_steps()
 {
@@ -1092,37 +1027,6 @@ main()
 	mkdir logs 	
 
 
-
-
-	# start thanos 
-	input_pipe="thanos_input"
-	[ -p $input_pipe ] || mkfifo $input_pipe
-	output_pipe="thanos_output"
-	[ -p $output_pipe ] || mkfifo $output_pipe
-
-	$SECURITY_TRANSFORMS_HOME/plugins_install/thanos.exe $input_pipe $output_pipe &
-	thanos_pid=$!
-
-	# set thanos execution mode
-	if [ ! -z "$DEBUG_STEPS" ]; then
-		printf "SET_MODE DEBUG" > $input_pipe
-	elif [ ! -z "$VERBOSE" ]; then
-		printf "SET_MODE VERBOSE" > $input_pipe
-	else
-		printf "SET_MODE DEFAULT" > $input_pipe
-	fi
-
-	read -r mode_set_res < $output_pipe
-
-	if [ "$mode_set_res" != "MODE_SET_OK" ]; then
-		echo Internal Transform_Step plugin architecture error.
-		echo Mode set failed. Exiting ps_analyze early.
-		exit -1
-	fi
-
-	trap exit_thanos EXIT
-
-
 	do_prefix_steps
 	cloneid=$varid
 
@@ -1159,16 +1063,7 @@ main()
 	# make sure we only do this once there are no more updates to the peasoup_dir
 	perform_step installer none $PEASOUP_HOME/tools/do_installer.sh $PWD $protected_exe
 
-	# exit thanos cleanly
-	printf "COMMIT_ALL" > $input_pipe
-	read -r commit_res < $output_pipe
-	if [ "$commit_res" != "COMMIT_ALL_OK"  ]; then
-		echo A critical step was necessary, but failed.
-		echo To know exactly which step failed, source set the DEBUG_STEPS env var.
-		errors=1;
-	fi
-	printf "TERMINATE" > $input_pipe 
-
+	
 	cd - > /dev/null 2>&1
 
 
