@@ -580,27 +580,23 @@ void PopulateCFG::fill_in_landing_pads(FileIR_t *firp)
 	
 }
 
-int PopulateCFG::parseArgs
-        (
-        int argc, 
-        const char* const argv[]
-        )
+int PopulateCFG::parseArgs(const vector<string> step_args)
 {   
-    if(argc<2)
+    if(step_args.size()<1)
     {
-            cerr<<"Usage: fill_in_cfg <id> [--fix-landing-pads | --no-fix-landing-pads]"<<endl;
+            cerr<<"Usage: <id> [--fix-landing-pads | --no-fix-landing-pads]"<<endl;
             return -1;
     }
 
-    variant_id = atoi(argv[1]);
+    variant_id = stoi(step_args[0]);
     
-    for (int i = 2; i < argc; ++i)
+    for (unsigned int i = 1; i < step_args.size(); ++i)
     {
-            if (strcmp("--fix-landing-pads", argv[i]) == 0)
+            if (step_args[i]=="--fix-landing-pads")
             {
                     fix_landing_pads = true;
             }
-            else if (strcmp("--no-fix-landing-pads", argv[i]) == 0)
+            else if (step_args[i]=="--no-fix-landing-pads")
             {
                     fix_landing_pads = false;
             }

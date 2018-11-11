@@ -962,12 +962,12 @@ bool fix_all=false;
 bool do_eh_frame=true;
 
 
-int parseArgs(int argc, const char* const argv[])
+int parseArgs(const vector<string> step_args)
 {
 
-	if(argc<2)
+	if(step_args.size()<1)
 	{
-		cerr<<"Usage: fix_calls <id> [--fix-all | --no-fix-all ] [--eh-frame | --no-ehframe] "<<endl;
+		cerr<<"Usage: <id> [--fix-all | --no-fix-all ] [--eh-frame | --no-ehframe] "<<endl;
 		cerr<<" --eh-frame " << endl;
 		cerr<<" --no-eh-frame 		Use (or dont) the eh-frame section to be compatible with exception handling." << endl;
 		cerr<<" --fix-all " << endl;
@@ -977,50 +977,50 @@ int parseArgs(int argc, const char* const argv[])
 		exit(-1);
 	}
 
-	for(int argc_iter=2; argc_iter<argc; argc_iter++)
+	for(unsigned int argc_iter=1; argc_iter<step_args.size(); argc_iter++)
 	{
-		if(strcmp("--fix-all", argv[argc_iter])==0)
+		if("--fix-all"==step_args[argc_iter])
 		{
 			fix_all=true;
 		}
-		else if(strcmp("--no-fix-all", argv[argc_iter])==0)
+		else if("--no-fix-all"==step_args[argc_iter])
 		{
 			fix_all=false;
 		}
-		else if(strcmp("--eh-frame", argv[argc_iter])==0)
+		else if("--eh-frame"==step_args[argc_iter])
 		{
 			do_eh_frame=true;
 		}
-		else if(strcmp("--no-eh-frame", argv[argc_iter])==0)
+		else if("--no-eh-frame"==step_args[argc_iter])
 		{
 			do_eh_frame=false;
 		}
-		else if(strcmp("--fix-icalls", argv[argc_iter])==0)
+		else if("--fix-icalls"==step_args[argc_iter])
 		{
 			opt_fix_icalls = true;
 		}
-		else if(strcmp("--no-fix-icalls", argv[argc_iter])==0)
+		else if("--no-fix-icalls"==step_args[argc_iter])
 		{
 			opt_fix_icalls = false;
 		}
-		else if(strcmp("--fix-safefn", argv[argc_iter])==0)
+		else if("--fix-safefn"==step_args[argc_iter])
 		{
 			opt_fix_safefn = true;
 		}
-		else if(strcmp("--no-fix-safefn", argv[argc_iter])==0)
+		else if("--no-fix-safefn"==step_args[argc_iter])
 		{
 			opt_fix_safefn = false;
 		}
 		else
 		{
-			cerr<<"Unrecognized option: "<<argv[argc_iter]<<endl;
+			cerr<<"Unrecognized option: "<<step_args[argc_iter]<<endl;
 			return -1;
 		}
 	}
 	if(getenv("FIX_CALLS_FIX_ALL_CALLS"))
 		fix_all=true;
 
-	variant_id=atoi(argv[1]);
+	variant_id=stoi(step_args[0]);
 	return 0;
 }
 

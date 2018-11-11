@@ -2869,37 +2869,37 @@ int64_t do_unpin_opt=numeric_limits<int64_t>::max() ;
 db_id_t variant_id=BaseObj_t::NOT_IN_DATABASE;
 set<virtual_offset_t> forced_pins;
 
-int parseArgs(int argc, const char* const argv[])
+int parseArgs(const vector<string> step_args)
 {
 
-	if(argc<2)
+	if(step_args.size()<1)
 	{
-		cerr<<"Usage: fill_in_indtargs <id> [--[no-]split-eh-frame] [--[no-]unpin] [addr,...]"<<endl;
+		cerr<<"Usage: <id> [--[no-]split-eh-frame] [--[no-]unpin] [addr,...]"<<endl;
 		exit(-1);
 	}
 
-	variant_id=atoi(argv[1]);
-	cout<<"Parsing parameters with argc= " << argc<<endl;
+	variant_id=stoi(step_args[0]);
+	cout<<"Parsing parameters with argc= " << step_args.size()<<endl;
 
 	// parse dash-style options.
-	auto argc_iter = (int)2;
-	while(argc_iter < argc && argv[argc_iter][0]=='-')
+	unsigned int argc_iter = 1;
+	while(argc_iter < step_args.size() && step_args[argc_iter][0]=='-')
 	{
-		cout<<"Parsing parameter: "<< argv[argc_iter] << endl;
-		if(string(argv[argc_iter])=="--no-unpin")
+		cout<<"Parsing parameter: "<< step_args[argc_iter] << endl;
+		if(step_args[argc_iter]=="--no-unpin")
 		{
 			do_unpin_opt=-1;
 			argc_iter++;
 		}
-		else if(string(argv[argc_iter])=="--unpin")
+		else if(step_args[argc_iter]=="--unpin")
 		{
 			do_unpin_opt = numeric_limits<decltype(do_unpin_opt)>::max() ;
 			argc_iter++;
 		}
-		else if(string(argv[argc_iter])=="--max-unpin" || string(argv[argc_iter])=="--max-unpins")
+		else if(step_args[argc_iter]=="--max-unpin" || step_args[argc_iter]=="--max-unpins")
 		{
 			argc_iter++;
-			auto arg_as_str=argv[argc_iter];
+			auto arg_as_str=step_args[argc_iter];
 			argc_iter++;
 
 			try { 
@@ -2912,27 +2912,27 @@ int parseArgs(int argc, const char* const argv[])
 			}
 			
 		}
-		else if(string(argv[argc_iter])=="--no-split-eh-frame")
+		else if(step_args[argc_iter]=="--no-split-eh-frame")
 		{
 			split_eh_frame_opt=false;
 			argc_iter++;
 		}
-		else if(string(argv[argc_iter])=="--split-eh-frame")
+		else if(step_args[argc_iter]=="--split-eh-frame")
 		{
 			split_eh_frame_opt=true;
 			argc_iter++;
 		}
 		else
 		{
-			cerr<<"Unknown option: "<<argv[argc_iter]<<endl;
+			cerr<<"Unknown option: "<<step_args[argc_iter]<<endl;
 			return 2;
 		}
 	}
 	// parse addr argumnets 
-	for (; argc_iter < argc; argc_iter++)
+	for (; argc_iter < step_args.size(); argc_iter++)
 	{
 		char *end_ptr;
-		virtual_offset_t offset = strtol(argv[argc_iter], &end_ptr, 0);
+		virtual_offset_t offset = strtol(step_args[argc_iter].c_str(), &end_ptr, 0);
 		if (*end_ptr == '\0')
 		{
 			cout << "force pinning: 0x" << std::hex << offset << endl;

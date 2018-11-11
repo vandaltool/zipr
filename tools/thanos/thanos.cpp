@@ -1,302 +1,208 @@
 #include <libIRDB-core.hpp>
-#include <libIRDB-util.hpp>
-#include <fcntl.h>
-#include <dlfcn.h>
-#include <cstdio>
-#include <cstdlib>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <map>
-#include <algorithm>
-#include <assert.h>
+#include <dlfcn.h> 
+#include <vector>
+#include <memory>
+#include <sstream>
 #include <iostream>
-
 
 using namespace std;
 using namespace libIRDB;
 using namespace Transform_SDK;
 
-
-#define MAX_BUF 1024
-
-enum class Mode { DEBUG, VERBOSE, DEFAULT };
-
-int execute_step(int argc, const char* const argv[], bool step_optional, Mode exec_mode, 
-                 IRDBObjects_t *const shared_objects, TransformStep_t *const the_step);
-
-
-// The toolchain driver script ps_analyze.sh communicates
-// with this program via two pipes. This allows DB objects to be held
-// in memory and shared across steps without rewriting the entire ps_analyze.sh
-// script in C++.
-int main(int argc, char *argv[])
+class ThanosPlugin_t
 {
-    if(argc < 3)
-    {
-        cerr << "Usage: thanos.exe <input pipe name> <output pipe name>" << endl;
-        return 1;
-    }
-    
-    int in_pipe_fd=-1;
-    int out_pipe_fd=-1;
-    int num_bytes_read=0;
+    public:
+        static unique_ptr<ThanosPlugin_t> pluginFactory(const string plugin_details);
+	static int saveChanges();
+	bool isOptional()
+	{
+		return step_optional;
+	}
+	string getStepName()
+	{
+		return step_name;
+	}
+	int runPlugin();
 
-    const char *const input_pipe = argv[1];
-    const char *const output_pipe = argv[2];
-    char buf[MAX_BUF];
-    buf[0] = '\0';
+    private:
+        // methods
+        ThanosPlugin_t(const string p_step_name,
+                       const bool p_step_optional,
+                       const vector<string> p_step_args
+                       )
+                       :
+                           step_name(p_step_name),
+                           step_optional(p_step_optional),
+                           step_args(p_step_args)
+                       {
+                       }
+	int executeStep(TransformStep_t& the_step, const bool are_debugging);
+	int commitAll();
 
-    const char *const base_path = getenv("SECURITY_TRANSFORMS_HOME");
-    if(base_path == NULL)
-    {
-	cerr << "Environment variables not set." << endl;
-	return 1;
-    }
-    const string plugin_path (string(base_path).append("/plugins_install/"));
+        // data
+        const string step_name;
+        const bool step_optional;
+        const vector<string> step_args;
+	static const unique_ptr<IRDBObjects_t> shared_objects;
+};
+// initialize private static data member
+const unique_ptr<IRDBObjects_t> ThanosPlugin_t::shared_objects(new IRDBObjects_t());
 
-    in_pipe_fd = open(input_pipe, O_RDONLY);
-    if (in_pipe_fd == -1) {
-        cerr << "Not a valid pipe name." << endl;
-        return 1;
-    }
+using PluginList_t = vector<unique_ptr<ThanosPlugin_t>>;
+PluginList_t getPlugins(const int argc, char const *const argv[]); 
 
-    out_pipe_fd = open(output_pipe, O_WRONLY);
-    if (out_pipe_fd == -1) {
-        cerr << "Not a valid pipe name." << endl;
-        return 1;
-    }
-   
-    // Main loop where ps_analyze communicates with thanos.exe
-    // to execute steps that conform to the Transform Step SDK.    
-    Mode exec_mode = Mode::DEFAULT;
-    unique_ptr<IRDBObjects_t> shared_objects(new IRDBObjects_t()); 
-    string logfile_path = string(); 
-    while (true) 
-    {
-        if((num_bytes_read = read(in_pipe_fd, buf, MAX_BUF)) > 0)
-        {
-            buf[num_bytes_read] = '\0';
-            if(strncmp(buf, "SET_MODE", 8) == 0)
-            {
-                if(strcmp(buf+8, " DEBUG") == 0)
-                {
-                    exec_mode = Mode::DEBUG;
-                }
-                else if(strcmp(buf+8, " VERBOSE") == 0)
-                {
-                    exec_mode = Mode::VERBOSE;
-                }
-                else if(strcmp(buf+8, " DEFAULT") == 0)
-                {
-                    exec_mode = Mode::DEFAULT;
-                }
-                else
-                {
-                    const ssize_t write_res = write(out_pipe_fd, (void*) "ERR_INVALID_CMD\n", 16);
-                    if(write_res == -1)
-                        return -1;
-		    continue;
-                }
-		const ssize_t write_res = write(out_pipe_fd, (void*) "MODE_SET_OK\n", 12);
-                if(write_res == -1)
-                    return -1;
-            }
-	    else if(strncmp(buf, "SET_LOGFILE ", 12) == 0)
-            {
-		logfile_path.assign(buf+12);
 
-	  	const ssize_t write_res = write(out_pipe_fd, (void*) "LOGFILE_SET_OK\n", 15);
-                if(write_res == -1)
-                    return -1;			
-	    }
-            else if(strncmp(buf, "EXECUTE_STEP", 12) == 0)
-            {
-                if(strncmp(buf+12, " OPTIONAL ", 10) == 0 || strncmp(buf+12, " CRITICAL ", 10) == 0)
-                {
-	 	    char *const command_start = buf+12+10;
-                    char *const command_end = strchr(buf, '\n');
-                    if (!command_end || (command_end == command_start))
-                    {
-                        const ssize_t write_res = write(out_pipe_fd, (void*) "ERR_INVALID_CMD\n", 16);
-                        if(write_res == -1)
-                            return -1;
-                    }
-                    else
-                    {
-			// parse command string into argv, argc
-			// simple parsing relies on ps_analyze.sh separating
-			// step arguments with single spaces.
-			*command_end = '\0';
+int main(int argc, char* argv[])
+{
+	// get plugins
+	auto thanos_plugins = getPlugins(argc-1, argv+1);	
+	if(thanos_plugins.size() == 0)
+	{
+		// for now, usage is pretty strict to enable simple
+		// parsing, because this program is only used by an
+		// automated script
+		cout << "Syntax error in arguments." << endl;
+		cout << "USAGE: (\"<step name> [-optional] [--step-args [ARGS]]\")+" << endl;
+		return 1;
+	}
 
-			const size_t max_args = ((command_end - command_start) / 2)+1;
-                        char** argv = (char**) malloc(max_args);
-			int argc = 0;
-			
-			//cout<<"Setting argv[0]="<<command_start<<endl;
-			argv[argc++] = command_start; 
-			char* command_remaining = strchr(command_start, ' ');
-                        while (command_remaining != NULL)
-                        {
-			    *command_remaining = '\0';
-			    //cout<<"Setting argv["<<dec<<argc<<"]="<<command_remaining+1<<endl;
-                            argv[argc++] = command_remaining+1;
-			    command_remaining = strchr(command_remaining+1, ' ');
-                        }
-                        argv = (char**) realloc(argv, argc);
+	for(unsigned int i = 0; i < thanos_plugins.size(); ++i)
+	{
+		ThanosPlugin_t* plugin = thanos_plugins[i].get();
 
-                        // setup transform step plugin
-			const char *const step_name = argv[0];                        
-                        void *const dlhdl = dlopen((plugin_path+step_name).c_str(), RTLD_NOW);
-                        if(dlhdl == NULL)
-                        {
-                            const auto err=dlerror();
-                            cout<<"Cannot open "<<step_name<<": "<<err<<endl;
-                            const ssize_t write_res = write(out_pipe_fd, (void*) "STEP_UNSUPPORTED\n", 17);
-                            if(write_res == -1)
-                                return -1;
-                        }
-                        else
-                  	{
-                            const void *const sym = dlsym(dlhdl, "GetTransformStep"); 
-                            if(sym == NULL)
-                            {
-                                const auto err=dlerror();
-                                cout<<"Cannot find GetTransformStep in "<<step_name<<": "<<err<<endl;
-			        const ssize_t write_res = write(out_pipe_fd, (void*) "STEP_UNSUPPORTED\n", 17);
-                                if(write_res == -1)
-                                    return -1;
-                            }
-                            else
-                            {
-				using GetTransformPtr_t = shared_ptr<TransformStep_t> (*)(void);  // function pointer, takes void, returns TransformStep_t shared ptr
-				// variables	
-				GetTransformPtr_t func=(GetTransformPtr_t)sym;
-				shared_ptr<TransformStep_t> the_step = (*func)();
-				assert(the_step != NULL);
-
-                                bool step_optional = true;
-                                if(strncmp(buf+12, " CRITICAL ", 10) == 0)
-                                {
-                                    step_optional = false;
-                                }
-                               
-				// setup logging
-				int saved_stdout = dup(STDOUT_FILENO);
-				int saved_stderr = dup(STDERR_FILENO);	
-				FILE *log_output = NULL;  
-				if(exec_mode == Mode::DEFAULT || exec_mode == Mode::VERBOSE)
-				{
-				    log_output = fopen(logfile_path.c_str(), "a");
-				    int log_output_fd = fileno(log_output);
-                                    dup2(log_output_fd, STDOUT_FILENO);
-                                    dup2(log_output_fd, STDERR_FILENO); 
-				}
-				
-				const int step_retval = execute_step(argc, argv, step_optional, exec_mode, shared_objects.get(), the_step.get());
-
-				// cleanup from logging
-				if(exec_mode == Mode::DEFAULT || exec_mode == Mode::VERBOSE)
-                                {
-                                    fclose(log_output);
-                                }
-                                dup2(saved_stdout, STDOUT_FILENO);
-                                close(saved_stdout);
-                                dup2(saved_stderr, STDERR_FILENO);
-                                close(saved_stderr);
-
-				// cleanup plugin
-				free(argv); 
-				argv=nullptr;
-				the_step.reset(); // explicitly get rid of the handle to the library so we can close it.
-                                dlclose(dlhdl);
-				
-				const string step_retval_str(to_string(step_retval)+"\n");
-                                const ssize_t write_res = write(out_pipe_fd, (void*) step_retval_str.c_str(), step_retval_str.size()); // size() excludes terminating null character in this case, which is what we want
-                                if(write_res == -1)
-                                    return -1;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    const ssize_t write_res = write(out_pipe_fd, (void*) "ERR_INVALID_CMD\n", 16);
-                    if(write_res == -1)
-                        return -1;
-                }
-            }
-	    else if(strcmp(buf, "COMMIT_ALL") == 0)
-            {	
-		// setup logging
-		int saved_stdout = dup(STDOUT_FILENO);
-                int saved_stderr = dup(STDERR_FILENO);
-                FILE *log_output = NULL;
-                if((exec_mode == Mode::DEFAULT || exec_mode == Mode::VERBOSE) && !logfile_path.empty())
-                {
-                    log_output = fopen(logfile_path.c_str(), "a");
-                    int log_output_fd = fileno(log_output);
-                    dup2(log_output_fd, STDOUT_FILENO);
-                    dup2(log_output_fd, STDERR_FILENO);
-                }	
-
-                pqxxDB_t* pqxx_interface = shared_objects->getDBInterface();
-                const int error = shared_objects->writeBackAll();
-                if(error)
-                {
-                    const int error_retval = -1; // critical step failed, abort
-                    const string retval_str(to_string(error_retval)+"\n");
-                    const ssize_t write_res = write(out_pipe_fd, (void*) retval_str.c_str(), retval_str.size()); // size() excludes terminating null character in this case, which is what we want
-                    if(write_res == -1)
-                        return -1;
-                }
-                else
-                {
-                    // commit changes and reset interface 
-                    pqxx_interface->Commit();
-                    pqxx_interface = shared_objects->resetDBInterface();
-                    // delete all shared items
-                    shared_objects->deleteAll();
-		    const ssize_t write_res = write(out_pipe_fd, (void*) "COMMIT_ALL_OK\n", 14);
-                    if(write_res == -1)
-                        return -1;
-                }
-		
-		// cleanup from logging		
-		if((exec_mode == Mode::DEFAULT || exec_mode == Mode::VERBOSE) && !logfile_path.empty())
-                {
-                    fclose(log_output);
-                }
-                dup2(saved_stdout, STDOUT_FILENO);
-                close(saved_stdout);
-                dup2(saved_stderr, STDERR_FILENO);
-                close(saved_stderr);
-            }
-	    else if(strcmp(buf, "TERMINATE") == 0)
-            {
-                    break;
-            } 
-            else
-            {
-                const ssize_t write_res = write(out_pipe_fd, (void*) "ERR_INVALID_CMD\n", 16);
-                if(write_res == -1)
-                    return -1;
-            }
-        }
+		const int result = plugin->runPlugin();
+		// if that returns failure AND the step is not optional
+		if(result != 0 && !plugin->isOptional())
+		{
+			cout << "A critical step failed: " << plugin->getStepName() << endl;
+			cout << "If DEBUG_STEPS is not on, this failure could "
+			     << "be due to an earlier critical step." << endl;	 
+			return 1; // critical step failed, abort
+		}
+	}
+	// write back final changes
+	const int result = ThanosPlugin_t::saveChanges();
+	if(result != 0)
+	{
+		cout << "A critical step failed: " << (thanos_plugins.back())->getStepName() 
+		     << endl;
+                cout << "If DEBUG_STEPS is not on, this failure could "
+                     << "be due to an earlier critical step." << endl;
+                return 1; // critical step failed, abort
+	}
 	else
-		sleep(1);
-    }
-
-    close(in_pipe_fd);
-    close(out_pipe_fd);
-   	
-    return 0;
+	{
+		return 0; // success :)
+	}
 }
 
 
-int execute_step(int argc, const char* const argv[], bool step_optional, Mode exec_mode, 
-                 IRDBObjects_t* shared_objects, TransformStep_t* the_step)
+PluginList_t getPlugins(const int argc, char const *const argv[])
+{	
+	PluginList_t plugins;
+	
+	for(auto i = 0; i < argc; ++i)
+	{
+		auto the_plugin = ThanosPlugin_t::pluginFactory(string(argv[i]));	
+		if(the_plugin == nullptr)
+			return PluginList_t();
+		plugins.push_back(move(the_plugin));
+	}
+	return plugins;
+}
+
+
+// assumes that tokens are always space-separated
+// (cannot be delineated by quotes, for example)
+const vector<string> getTokens(const string arg_string)
 {
-    const int parse_retval = the_step->parseArgs(argc, argv);
+	vector<string> tokens;
+	istringstream arg_stream(arg_string);
+    	string token; 
+    	while (getline(arg_stream, token, ' ')) 
+	{
+               	tokens.push_back(token);
+    	}
+	return tokens;
+}
+
+
+unique_ptr<ThanosPlugin_t> ThanosPlugin_t::pluginFactory(const string plugin_details)
+{
+	auto tokens = getTokens(plugin_details);
+	if(tokens.size() < 1)
+		return unique_ptr<ThanosPlugin_t>(nullptr);
+
+	const auto step_name = tokens[0];
+	auto step_optional = false;
+	vector<string> step_args;
+	for(unsigned int i = 1; i < tokens.size(); ++i)
+	{
+		if(tokens[i] == "--step-args")
+		{
+			if(tokens.begin()+i+1 < tokens.end())
+				step_args.assign(tokens.begin()+i+1, tokens.end());
+			break;
+		}
+		else if(tokens[i] == "-optional")
+		{
+			step_optional = true;
+		}
+		else
+		{
+			return unique_ptr<ThanosPlugin_t>(nullptr);
+		}
+	}	
+	return unique_ptr<ThanosPlugin_t>(new ThanosPlugin_t(step_name, step_optional, step_args));	
+}
+
+
+int ThanosPlugin_t::runPlugin()
+{
+	static const char *const base_path = getenv("SECURITY_TRANSFORMS_HOME");
+        if(base_path == NULL)
+        {
+		cout << "Environment variables not set." << endl;
+		return -1;
+    	}
+    	static const auto plugin_path (string(base_path).append("/plugins_install/"));
+
+	void *const dlhdl = dlopen((plugin_path+"lib"+step_name+".so").c_str(), RTLD_NOW);
+        if(dlhdl == NULL)
+        {
+        	const auto err=dlerror();
+                cout<<"Cannot open "<<step_name<<": "<<err<<endl;
+		return -1;
+        }
+        
+       	const void *const sym = dlsym(dlhdl, "GetTransformStep"); 
+        if(sym == NULL)
+        {
+        	const auto err=dlerror();
+                cout<<"Cannot find GetTransformStep in "<<step_name<<": "<<err<<endl;
+		return -1;
+        }
+
+	using GetTransformPtr_t = shared_ptr<TransformStep_t> (*)(void);  // function pointer, takes void, returns TransformStep_t shared ptr
+	GetTransformPtr_t func=(GetTransformPtr_t)sym;
+	shared_ptr<TransformStep_t> the_step = (*func)();
+	assert(the_step != NULL);
+	
+	static const char *const are_debugging = getenv("DEBUG_STEPS");	
+	
+	const int step_result = executeStep(*(the_step.get()), (bool) are_debugging);
+
+	the_step.reset(); // explicitly get rid of the handle to the library so we can close it.
+	dlclose(dlhdl);
+
+	// return status of execute method
+	return step_result; 
+}
+
+
+int ThanosPlugin_t::executeStep(TransformStep_t& the_step, const bool are_debugging)
+{
+    const int parse_retval = the_step.parseArgs(step_args);
     if(parse_retval != 0)
     {
         return parse_retval;
@@ -308,7 +214,7 @@ int execute_step(int argc, const char* const argv[], bool step_optional, Mode ex
         const int error = shared_objects->writeBackAll();
         if(error)
         {
-            return -1; // the failure must be from a critical step, abort
+            return 1; // the failure must be from a critical step, abort
         }
         else
         {
@@ -318,7 +224,7 @@ int execute_step(int argc, const char* const argv[], bool step_optional, Mode ex
         }
     }
 
-    const int step_error = the_step->executeStep(shared_objects);
+    const int step_error = the_step.executeStep(shared_objects.get());
 
     if(step_error)
     {
@@ -330,7 +236,7 @@ int execute_step(int argc, const char* const argv[], bool step_optional, Mode ex
         }
         else
         {
-            return -1; // critical step failed, abort
+            return 1; // critical step failed, abort
         }
     }
     
@@ -343,20 +249,20 @@ int execute_step(int argc, const char* const argv[], bool step_optional, Mode ex
             // abort changes by resetting DB interface
             pqxx_interface = shared_objects->resetDBInterface();
         }
-        else if(exec_mode == Mode::DEBUG)
+        else if(are_debugging)
         {
             // commit changes (in case next step fails) and reset interface 
             pqxx_interface->Commit();
             pqxx_interface = shared_objects->resetDBInterface();
         }
     }
-    else if(exec_mode == Mode::DEBUG)
+    else if(are_debugging)
     {
         // write changes to DB in case next step fails
         const int error = shared_objects->writeBackAll();
         if(error)
         {
-            return -1; // critical step failed, abort
+            return 1; // critical step failed, abort
         }
         else
         {
@@ -366,5 +272,24 @@ int execute_step(int argc, const char* const argv[], bool step_optional, Mode ex
         }
     }
     
-    return step_error;
+    return step_error;	
 }
+
+
+int ThanosPlugin_t::saveChanges()
+{
+	pqxxDB_t* pqxx_interface = shared_objects->getDBInterface();
+        const int error = shared_objects->writeBackAll();
+        if(error)
+        {
+        	return 1; // critical step failed, abort
+        }
+        else
+        {
+        	// commit changes and reset interface 
+        	pqxx_interface->Commit();
+        	pqxx_interface = shared_objects->resetDBInterface();
+       		return 0;
+        }
+}
+

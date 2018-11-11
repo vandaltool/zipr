@@ -34,7 +34,7 @@ class PopulateCFG : public libIRDB::Transform_SDK::TransformStep_t
 	{
 		return std::string("fill_in_cfg");
 	}
-        int parseArgs(int argc, const char* const argv[]) override;
+        int parseArgs(const std::vector<std::string> step_args) override;
 	int executeStep(libIRDB::IRDBObjects_t *const) override;
     
     private: // methods

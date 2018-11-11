@@ -12,7 +12,7 @@ namespace Transform_SDK
 			virtual std::string getStepName(void) const = 0;
 
 			// Allows all steps to parse args before any step takes time to execute
-			virtual int parseArgs(int argc, const char* const argv[])
+			virtual int parseArgs(const std::vector<std::string> step_args)
 			{
 				return 0; // success
 			}
