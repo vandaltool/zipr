@@ -30,7 +30,7 @@ main()
 	sudo ./get-peasoup-packages.sh all
 
 	# remove pedi files so that rebuilding includes re-doing pedi setup.
-	$PEDI_HOME/pedi -c -m manifest.txt
+	$PEDI_HOME/pedi -c -m manifest.txt || true # ignore errors in cleanup
 	./build-all.sh
 	dropdb $PGDATABASE 2>/dev/null || true ; ./postgres_setup.sh
 
