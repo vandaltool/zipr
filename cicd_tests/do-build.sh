@@ -12,6 +12,9 @@ main()
 	whoami
 	env|grep "^CICD"
 
+	git submodule sync 
+	git submodule update --init --recursive
+
 	local orig_dir=$(pwd)
 
 	# puts peasoup_umbrella (and all submodules) in CICD_MODULE_WORK_DIR
