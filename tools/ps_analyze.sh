@@ -556,7 +556,15 @@ perform_step()
 
 	performed_steps="$performed_steps $step"
 
-	logfile=logs/$step.log
+	echo "$command"|grep "thanos.exe " > /dev/null
+        grep_res=$?
+        using_thanos=!$grep_res
+
+	if [[ $using_thanos -eq 0 ]]; then
+		logfile=logs/$step.log
+	else
+		logfile=logs/thanos.log
+	fi
 
 	if [ "$step" = "$stop_before_step" ]; then 
 		echo "ps_analyze has been asked to stop before step $step."
@@ -596,13 +604,25 @@ perform_step()
 	echo -n Performing step "$step" [dependencies=$mandatory] ...
 	starttime=`$PS_DATE`
 
+		
 	# If verbose is on, tee to a file 
-	if [ ! -z "$DEBUG_STEPS" ]; then
+	if [[ ! -z "$DEBUG_STEPS" ]]; then
 		eval $command 
 		command_exit=$?
-	elif [ ! -z "$VERBOSE" ]; then
+	elif [[ ! -z "$VERBOSE" && $using_thanos -eq 0 ]]; then
 		eval $command 2>&1 | tee $logfile
 		command_exit=${PIPESTATUS[0]} # this funkiness gets the exit code of $command, not tee
+	elif [[ ! -z "$VERBOSE" && $using_thanos -ne 0 ]]; then
+                eval $command 2>&1 # thanos.exe handles logging
+                command_exit=$?
+		# display each logfile
+		for this_step in $step
+		do
+			cat logs/$this_step.log
+		done
+	elif [[ $using_thanos -ne 0 ]]; then
+		eval $command > "logs/fill_in_cfg.log" 2>&1 # thanos.exe handles logging
+                command_exit=$?	
 	else
 		eval $command > $logfile 2>&1 
 		command_exit=$?
@@ -658,8 +678,14 @@ perform_step()
 	# move to the next step 
 	stepnum=`expr $stepnum + 1`
 
+	if [[ $using_thanos -ne 0 ]]; then
+		for this_step in $step
+        	do
+        		all_logs="$all_logs logs/$this_step.log"
+        	done
+	fi
 	all_logs="$all_logs $logfile"
-
+	
 	if [ "$step" = "$stop_after_step" ]; then 
 		echo "ps_analyze has been asked to stop after step $step."
 		echo "command is:  $command"
@@ -689,7 +715,6 @@ do_plugins()
 		fast_annot
 		fast_spri
 	"
-
 	for i in $phases_spec
 	do
 		stepname=$i
@@ -700,7 +725,7 @@ do_plugins()
 	
 		if [ $? = 0 ]; then
 			# skip builtin steps so we don't get errors.
-			continue;
+			continue
 		fi
 		is_step_on $stepname
 		if [ $? = 0 ]; then
@@ -724,12 +749,13 @@ do_plugins()
 			else
 				thanos_plugins="$thanos_plugins \"$stepname -optional --step-args $cloneid $value\""	
 			fi
-
+			thanos_steps="$thanos_steps $stepname"
 			continue
-		elif [[ $thanos_plugins ]]; then 
+		elif [[ $thanos_steps ]]; then 
 			# execute preceding block of thanos plugin steps now
-			perform_step fill_in_cfg none "$plugin_path/thanos.exe "$thanos_plugins""
+			perform_step "$thanos_steps" none "$plugin_path/thanos.exe "$thanos_plugins""
 			thanos_plugins=""
+			thanos_steps=""
 		fi
 		
 		# invoke .exe, or .sh as a plugin step
@@ -749,8 +775,9 @@ do_plugins()
 
 	# execute last block of thanos plugins if there are any left	
 	if [[ $thanos_plugins ]]; then
-		perform_step thanos none "$plugin_path/thanos.exe "$thanos_plugins""
-                thanos_plugins=""         	
+		perform_step "$thanos_steps" none "$plugin_path/thanos.exe "$thanos_plugins""
+                thanos_plugins=""
+                thanos_steps=""		
 	fi
 
 }
