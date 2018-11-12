@@ -28,6 +28,9 @@ main()
 	cd $CICD_MODULE_WORK_DIR/peasoup_umbrella
 	source set_env_vars
 	sudo ./get-peasoup-packages.sh all
+
+	# remove pedi files so that rebuilding includes re-doing pedi setup.
+	$PEDI_HOME/pedi -c -m manifest.txt
 	./build-all.sh
 	dropdb $PGDATABASE 2>/dev/null || true ; ./postgres_setup.sh
 
