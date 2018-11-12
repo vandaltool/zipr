@@ -4,6 +4,8 @@
 #include <memory>
 #include <sstream>
 #include <iostream>
+#include <unistd.h>
+#include <fcntl.h>
 
 using namespace std;
 using namespace libIRDB;
@@ -188,9 +190,33 @@ int ThanosPlugin_t::runPlugin()
 	shared_ptr<TransformStep_t> the_step = (*func)();
 	assert(the_step != NULL);
 	
-	static const char *const are_debugging = getenv("DEBUG_STEPS");	
+	static const char *const are_debugging = getenv("DEBUG_STEPS");
+
+	int saved_stdout = dup(STDOUT_FILENO);
+        int saved_stderr = dup(STDERR_FILENO);  
+        FILE *log_output = NULL; 
+
+	bool are_logging = !((bool) are_debugging);
+	if(are_logging)
+	{
+		// setup logging
+		auto logfile_path = "./logs/"+step_name+".log";
+		log_output = fopen(logfile_path.c_str(), "a");
+		auto log_output_fd = fileno(log_output);
+                dup2(log_output_fd, STDOUT_FILENO);
+                dup2(log_output_fd, STDERR_FILENO); 
+	}
 	
 	const int step_result = executeStep(*(the_step.get()), (bool) are_debugging);
+
+	if(are_logging)
+	{
+		fclose(log_output);
+	}
+	dup2(saved_stdout, STDOUT_FILENO);
+        close(saved_stdout);
+        dup2(saved_stderr, STDERR_FILENO);
+        close(saved_stderr);
 
 	the_step.reset(); // explicitly get rid of the handle to the library so we can close it.
 	dlclose(dlhdl);
