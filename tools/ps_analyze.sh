@@ -613,16 +613,13 @@ perform_step()
 		eval $command 2>&1 | tee $logfile
 		command_exit=${PIPESTATUS[0]} # this funkiness gets the exit code of $command, not tee
 	elif [[ ! -z "$VERBOSE" && $using_thanos -ne 0 ]]; then
-                eval $command 2>&1 # thanos.exe handles logging
-                command_exit=$?
-		# display each logfile
+		eval $command > $logfile 2>&1
+		# display logs to stdout
 		for this_step in $step
 		do
 			cat logs/$this_step.log
 		done
-	elif [[ $using_thanos -ne 0 ]]; then
-		eval $command > "logs/fill_in_cfg.log" 2>&1 # thanos.exe handles logging
-                command_exit=$?	
+		cat $logfile
 	else
 		eval $command > $logfile 2>&1 
 		command_exit=$?
