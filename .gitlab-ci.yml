@@ -1,0 +1,120 @@
+before_script:
+  - "source ~gitlab-runner/cicd_support/cicd_support.shinc" 
+
+
+after_script:
+  - "echo Test Complete."
+
+stages:
+  - clean
+  - build
+  - test
+
+
+
+#
+# Cleaning
+#
+
+#template 
+.do-clean: &do-nightly-clean
+  stage: clean
+  script:
+    - ./cicd_tests/do-clean.sh
+
+# per os items
+do-nightly-clean-ubuntu18:
+  <<: *do-nightly-clean
+  tags:
+    - ubuntu18
+  variables:
+    OS: 'ubuntu18'  
+
+# per os items
+do-nightly-clean-ubuntu16:
+  <<: *do-nightly-clean
+  tags:
+    - ubuntu16
+  variables:
+    OS: 'ubuntu16'  
+
+
+#
+# building 
+#
+
+
+# template
+.do-build: &do-build
+  stage: build
+  script:
+    - ./cicd_tests/do-build.sh
+
+
+# per os items
+do-build-ubuntu18:
+  <<: *do-build
+  tags:
+    - ubuntu18
+  variables:
+    OS: 'ubuntu18'  
+
+
+do-build-ubuntu16:
+  <<: *do-build
+  tags:
+    - ubuntu16
+  variables:
+    OS: 'ubuntu16'  
+
+
+
+#
+# $PSZ ls
+#
+
+# template
+.xform-ls: &xform-ls
+  stage: test
+  script:
+    - ./cicd_tests/xform-ls.sh
+
+#per OS
+xform-ls-ubuntu18:
+  <<: *xform-ls
+  tags:
+    - ubuntu18
+  variables:
+    OS: 'ubuntu18'  
+
+xform-ls-ubuntu16:
+  <<: *xform-ls
+  tags:
+    - ubuntu16
+  variables:
+    OS: 'ubuntu16'  
+
+#
+# $PSZ cat
+#
+
+# template
+.xform-cat: &xform-cat
+  stage: test
+  script:
+    - ./cicd_tests/xform-cat.sh
+
+xform-cat-ubuntu18:
+  <<: *xform-cat
+  tags:
+    - ubuntu18
+  variables:
+    OS: 'ubuntu18'  
+    
+xform-cat-ubuntu16:
+  <<: *xform-cat
+  tags:
+    - ubuntu16
+  variables:
+    OS: 'ubuntu16'  
+
