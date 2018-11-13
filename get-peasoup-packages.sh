@@ -110,4 +110,8 @@ cd irdb_transforms
 sudo ./get-packages.sh
 cd $orig_dir
 
+cd daffy
+sudo ./get-packages.sh
+cd $orig_dir
+
 echo Intsalling packages complete.
