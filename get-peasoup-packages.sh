@@ -22,11 +22,15 @@ BASE_PKGS="
   g++-multilib
   autoconf
   realpath
-  libelf-dev
-  libxqilla-dev
-  libxerces-c-dev
+  apt-libelf-dev
+  yum-libelf-devel
+  apt-libxqilla-dev
+  yum-libxqilla-devel
+  apt-libxerces-c-dev
+  yum-libxerces-c-dev
   screen
-  libxml2-dev
+  apt-libxml2-dev
+  yum-libxml2-devel
   libstdc++6:i386
   coreutils
   makeself"
@@ -36,8 +40,10 @@ BASE_PKGS="
 CLIENT_IRDB_PKGS="
   postgresql-client
   pgadmin3
-  libpqxx-dev
-  libmysqlclient-dev
+  apt-libpqxx-dev
+  yum-libpqxx-dev
+  apt-libmysqlclient-dev
+  yum-libmysqlclient-devel
   scons
   cmake
   automake1.9"
@@ -54,9 +60,21 @@ install_packs()
 	do
 		which apt-get 1> /dev/null 2> /dev/null 
 		if [[ $? == 0  ]]; then
-			sudo apt-get install $i -y 
+			if [[ $i =~ apt-* ]]; then
+				sudo apt-get -y install $(echo $i|sed "s/^apt-//")
+			elif [[ $i =~ yum-* ]]; then
+				echo "Skipping install of $i for platform  $(lsb_release -d -s)"
+			else
+				sudo apt-get -y install $i
+			fi
 		else 
-			sudo yum install $i -y
+			if [[ $i =~ apt-* ]]; then
+				echo "Skipping install of $i for platform  $(cat /etc/redhat-release)"
+			elif [[ $i =~ yum-* ]]; then
+				sudo yum -y install $(echo $i|sed "s/^yum-//")
+			else
+				sudo yum -y install $i
+			fi
 		fi
 	done
 }
