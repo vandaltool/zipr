@@ -129,5 +129,4 @@ basic-pgms-rida-p1-centos75:
   <<: *basic-pgms-rida-p1
   tags:
     - centos75
-  allow_failure: true
 
