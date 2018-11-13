@@ -152,6 +152,9 @@ do_tests()
 				ibtl_p1)
 					$PSZ $progpath $protected --backend strata --step ibtl=on --step ilr=on --step pc_confine=on --step p1transform=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
+				orig)
+					cp $progpath $protected 
+				;;
 				*)
 					echo "Unknown configuration requested"
 					continue
