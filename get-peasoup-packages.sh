@@ -52,7 +52,12 @@ install_packs()
 {
 	for i in $*
 	do
-		sudo apt-get install $i -y
+		which apt-get 2> /dev/null 
+		if [[ $? = 0  ]]; then
+			sudo apt-get install $i -y 
+		else 
+			sudo yum install $i -y
+		fi
 	done
 }
 
