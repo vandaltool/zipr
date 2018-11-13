@@ -35,6 +35,8 @@ BASE_PKGS="
 # For clients of IRDB
 CLIENT_IRDB_PKGS="
   postgresql-client
+  yum-postgresql-server 
+  yum-postgresql-contrib
   pgadmin3
   apt-libpqxx-dev
   yum-libpqxx-devel
@@ -45,7 +47,9 @@ CLIENT_IRDB_PKGS="
   automake1.9"
 
 # For IRDB server
-SERVER_IRDB_PKGS="postgresql"
+SERVER_IRDB_PKGS="
+	postgresql
+"
 
 ALL_PKGS="$BASE_PKGS $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS "
 
