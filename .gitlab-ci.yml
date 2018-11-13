@@ -28,6 +28,11 @@ do-nightly-clean-ubuntu16:
   tags:
     - ubuntu16
 
+do-nightly-clean-centos75:
+  <<: *do-nightly-clean
+  tags:
+    - centos75
+
 #
 # Building
 #
@@ -46,6 +51,11 @@ do-build-ubuntu16:
   <<: *do-build
   tags:
     - ubuntu16
+
+do-build-centos75:
+  <<: *do-build
+  tags:
+    - centos75
 
 #
 # $PSZ ls
@@ -67,6 +77,11 @@ xform-ls-ubuntu16:
   tags:
     - ubuntu16
 
+xform-ls-centos75:
+  <<: *xform-ls
+  tags:
+    - centos75
+
 
 
 #
@@ -87,6 +102,11 @@ basic-pgms-rida-ubuntu16:
   tags:
     - ubuntu16
 
+basic-pgms-rida-centos75:
+  <<: *basic-pgms-rida
+  tags:
+    - centos75
+
 #
 # test_cmds.sh rida-p1
 #
@@ -105,4 +125,8 @@ basic-pgms-rida-p1-ubuntu16:
   tags:
     - ubuntu16
 
+basic-pgms-rida-p1-centos75:
+  <<: *basic-pgms-rida-p1
+  tags:
+    - centos75
 
