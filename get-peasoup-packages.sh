@@ -9,15 +9,12 @@
 # Needed to build components
 BASE_PKGS="
   scons
-  dwarfdump
   bison
   flex
   g++
   nasm
   openjdk-6-jre
   sharutils
-  subversion
-  xdotool
   gcc-multilib
   g++-multilib
   autoconf
@@ -27,8 +24,7 @@ BASE_PKGS="
   apt-libxqilla-dev
   yum-libxqilla-devel
   apt-libxerces-c-dev
-  yum-libxerces-c-dev
-  screen
+  yum-libxerces-c-devel
   apt-libxml2-dev
   yum-libxml2-devel
   libstdc++6:i386
@@ -41,7 +37,7 @@ CLIENT_IRDB_PKGS="
   postgresql-client
   pgadmin3
   apt-libpqxx-dev
-  yum-libpqxx-dev
+  yum-libpqxx-devel
   apt-libmysqlclient-dev
   yum-libmysqlclient-devel
   scons
