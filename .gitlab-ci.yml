@@ -30,13 +30,19 @@ do-nightly-clean-ubuntu18:
   variables:
     OS: 'ubuntu18'  
 
-# per os items
 do-nightly-clean-ubuntu16:
   <<: *do-nightly-clean
   tags:
     - ubuntu16
   variables:
     OS: 'ubuntu16'  
+
+do-nightly-clean-centos75:
+  <<: *do-nightly-clean
+  tags:
+    - centos75
+  variables:
+    OS: 'centos75'  
 
 
 #
@@ -67,6 +73,13 @@ do-build-ubuntu16:
   variables:
     OS: 'ubuntu16'  
 
+do-build-centos75:
+  <<: *do-build
+  tags:
+    - centos75
+  variables:
+    OS: 'centos75'  
+
 
 
 #
@@ -94,6 +107,13 @@ xform-ls-ubuntu16:
   variables:
     OS: 'ubuntu16'  
 
+xform-ls-centos75:
+  <<: *xform-ls
+  tags:
+    - centos75
+  variables:
+    OS: 'centos75'  
+
 #
 # $PSZ cat
 #
@@ -117,6 +137,13 @@ xform-cat-ubuntu16:
     - ubuntu16
   variables:
     OS: 'ubuntu16'  
+
+xform-cat-centos75:
+  <<: *xform-cat
+  tags:
+    - centos75
+  variables:
+    OS: 'centos75'  
 
 #
 # run zipr internal tests
@@ -142,3 +169,10 @@ internal-tests-ubuntu16:
     - ubuntu16
   variables:
     OS: 'ubuntu16'  
+
+internal-tests-centos75:
+  <<: *internal-tests
+  tags:
+    - centos75
+  variables:
+    OS: 'centos75'  
