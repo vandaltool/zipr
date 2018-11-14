@@ -21,8 +21,8 @@ main()
 	cicd_setup_module_dependency allnp/peasoup_umbrella.git
 
 
-	# puts the version of irdb_transforms to test in peasoup_umbrella/irdb_transfroms
-	cicd_put_module_in_tree peasoup_umbrella/irdb_transforms
+	# puts the version of peasoup_examples to test in peasoup_umbrella/peasoup_examples
+	cicd_put_module_in_tree peasoup_umbrella/peasoup_examples
 
 	# Build/run $PSZ, test result
 	cd $CICD_MODULE_WORK_DIR/peasoup_umbrella
