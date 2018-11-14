@@ -10,6 +10,8 @@
 
 source $(dirname $0)/ps_wrapper.source $0
 
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SECURITY_TRANSFORMS_HOME/lib
+
 realpath() {
   \cd "$1"
   /bin/pwd
