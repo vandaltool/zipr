@@ -40,8 +40,6 @@ CLIENT_IRDB_PKGS="
   pgadmin3
   apt-libpqxx-dev
   yum-libpqxx-devel
-  apt-libmysqlclient-dev
-  yum-libmysqlclient-devel
   scons
   cmake
   automake1.9"
@@ -61,22 +59,28 @@ install_packs()
 		which apt-get 1> /dev/null 2> /dev/null 
 		if [[ $? == 0  ]]; then
 			if [[ $i =~ apt-* ]]; then
-				sudo apt-get -y install $(echo $i|sed "s/^apt-//")
+				apters="$apters $(echo $i|sed "s/^apt-//")"
 			elif [[ $i =~ yum-* ]]; then
 				echo "Skipping install of $i for platform  $(lsb_release -d -s)"
 			else
-				sudo apt-get -y install $i
+				apters="$apters $i"
 			fi
 		else 
 			if [[ $i =~ apt-* ]]; then
 				echo "Skipping install of $i for platform  $(cat /etc/redhat-release)"
 			elif [[ $i =~ yum-* ]]; then
-				sudo yum -y install $(echo $i|sed "s/^yum-//")
+				yummers="$yummers $(echo $i|sed "s/^yum-//")"
 			else
-				sudo yum -y install $i
+				yummers="$yummers $i"
 			fi
 		fi
 	done
+	which apt-get 1> /dev/null 2> /dev/null 
+	if [[ $? == 0  ]]; then
+		sudo apt-get install -y --ignore-missing $apters
+	else
+		sudo yum install -y --skip-broken $yummers
+	fi
 }
 
 args="$@"
