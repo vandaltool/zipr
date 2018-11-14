@@ -42,7 +42,7 @@ void dump_icfs(Instruction_t* insn)
 	
 	cout<<"\tComplete: "<<boolalpha<<insn->GetIBTargets()->IsComplete()<<endl;
 	cout<<"\tModComplete: "<<boolalpha<<insn->GetIBTargets()->IsModuleComplete()<<endl;
-	cout<<"\tTargets: "<<boolalpha<<insn->GetIBTargets()->IsModuleComplete()<<endl;
+	cout<<"\tTargets: "<<endl;
 	for_each(insn->GetIBTargets()->begin(), insn->GetIBTargets()->end(), [&](const Instruction_t* targ)
 	{
 		const auto d=DecodedInstruction_t(targ);
