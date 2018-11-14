@@ -797,10 +797,10 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 			// valid switch table? may or may not have default: in the switch
 			// table size = 8, #entries: 9 b/c of default
 			cout << "pic32 (base pattern): table size: " << table_size << " ibtargets.size: " << ibtargets.size() << endl;
+			jmptables[I5].SetTargets(ibtargets);
 			if (table_size == ibtargets.size() || table_size == (ibtargets.size()-1))
 			{
 				cout << "pic32 (base pattern): valid switch table detected ibtp_switchtable_type1" << endl;
-				jmptables[I5].SetTargets(ibtargets);
 				jmptables[I5].SetAnalysisStatus(ICFS_Analysis_Complete);
 			
 			}
@@ -931,7 +931,7 @@ cout<<hex<<"Found (type2) switch dispatch at "<<I5->GetAddress()->GetVirtualOffs
 				if (ibtarget1)
 					ibtargets.insert(ibtarget1);
 				auto ibtarget2 = lookupInstruction(firp, thunk_base+table_entry);
-				if (ibtarget1)
+				if (ibtarget2)
 					ibtargets.insert(ibtarget2);
 			}
 		}
@@ -1517,11 +1517,11 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		// table size = 8, #entries: 9 b/c of default
 		cout << "pic64: detected table size (max_int means no found): 0x"<< hex << table_size << " #entries: 0x" << entry << " ibtargets.size: " << ibtargets.size() << endl;
 
+		jmptables[I8].SetTargets(ibtargets);
 		// note that there may be an off-by-one error here as table size depends on whether instruction I2 is a jb or jbe.
 		if (!found_table_error)
 		{
 			cout << "pic64: valid switch table detected ibtp_switchtable_type4" << endl;
-			jmptables[I8].SetTargets(ibtargets);
 			jmptables[I8].SetAnalysisStatus(ICFS_Analysis_Complete);
 		}
 		else
