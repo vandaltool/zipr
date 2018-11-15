@@ -4,12 +4,24 @@
 #include <memory>
 #include <sstream>
 #include <iostream>
+#include <iomanip>
 #include <unistd.h>
 #include <fcntl.h>
+#include <fstream>
+#include <ctime>
+
 
 using namespace std;
 using namespace libIRDB;
 using namespace Transform_SDK;
+
+#define ALLOF(a) begin(a),end(a)
+
+// global to be used like cout/cerr for writing to the logs
+ofstream thanos_log;
+ostream *real_cout;
+ostream *real_cerr;
+string thanos_path;
 
 class ThanosPlugin_t
 {
@@ -54,8 +66,22 @@ using PluginList_t = vector<unique_ptr<ThanosPlugin_t>>;
 PluginList_t getPlugins(const int argc, char const *const argv[]); 
 
 
+
 int main(int argc, char* argv[])
 {
+	thanos_path=argv[0];
+	ostream my_real_cerr(cerr.rdbuf());
+	ostream my_real_cout(cout.rdbuf());
+        real_cerr=&my_real_cerr;
+        real_cout=&my_real_cout;
+
+ 	thanos_log.open("logs/thanos.log", ofstream::out);
+
+	if(!thanos_log)
+	{
+		cerr<<"Cannot open logs/thanos.log"<<endl;
+		exit(1);
+	}
 	// get plugins
 	auto thanos_plugins = getPlugins(argc-1, argv+1);	
 	if(thanos_plugins.size() == 0)
@@ -63,8 +89,8 @@ int main(int argc, char* argv[])
 		// for now, usage is pretty strict to enable simple
 		// parsing, because this program is only used by an
 		// automated script
-		cout << "Syntax error in arguments." << endl;
-		cout << "USAGE: (\"<step name> [-optional] [--step-args [ARGS]]\")+" << endl;
+		thanos_log << "Syntax error in arguments." << endl;
+		thanos_log << "USAGE: (\"<step name> [-optional] [--step-args [ARGS]]\")+" << endl;
 		return 1;
 	}
 
@@ -76,8 +102,8 @@ int main(int argc, char* argv[])
 		// if that returns failure AND the step is not optional
 		if(result != 0 && !plugin->isOptional())
 		{
-			cout << "A critical step failed: " << plugin->getStepName() << endl;
-			cout << "If DEBUG_STEPS is not on, this failure could "
+			thanos_log << "A critical step failed: " << plugin->getStepName() << endl;
+			thanos_log << "If DEBUG_STEPS is not on, this failure could "
 			     << "be due to an earlier critical step." << endl;	 
 			return 1; // critical step failed, abort
 		}
@@ -86,9 +112,9 @@ int main(int argc, char* argv[])
 	const int result = ThanosPlugin_t::saveChanges();
 	if(result != 0)
 	{
-		cout << "A critical step failed: " << (thanos_plugins.back())->getStepName() 
+		thanos_log << "A critical step failed: " << (thanos_plugins.back())->getStepName() 
 		     << endl;
-                cout << "If DEBUG_STEPS is not on, this failure could "
+                thanos_log << "If DEBUG_STEPS is not on, this failure could "
                      << "be due to an earlier critical step." << endl;
                 return 1; // critical step failed, abort
 	}
@@ -164,7 +190,7 @@ int ThanosPlugin_t::runPlugin()
 	static const char *const base_path = getenv("SECURITY_TRANSFORMS_HOME");
         if(base_path == NULL)
         {
-		cout << "Environment variables not set." << endl;
+		thanos_log << "Environment variables not set." << endl;
 		return -1;
     	}
     	static const auto plugin_path (string(base_path).append("/plugins_install/"));
@@ -173,7 +199,7 @@ int ThanosPlugin_t::runPlugin()
         if(dlhdl == NULL)
         {
         	const auto err=dlerror();
-                cout<<"Cannot open "<<step_name<<": "<<err<<endl;
+                thanos_log<<"Cannot open "<<step_name<<": "<<err<<endl;
 		return -1;
         }
         
@@ -181,7 +207,7 @@ int ThanosPlugin_t::runPlugin()
         if(sym == NULL)
         {
         	const auto err=dlerror();
-                cout<<"Cannot find GetTransformStep in "<<step_name<<": "<<err<<endl;
+                thanos_log<<"Cannot find GetTransformStep in "<<step_name<<": "<<err<<endl;
 		return -1;
         }
 
@@ -192,31 +218,49 @@ int ThanosPlugin_t::runPlugin()
 	
 	static const char *const are_debugging = getenv("DEBUG_STEPS");
 
-	int saved_stdout = dup(STDOUT_FILENO);
-        int saved_stderr = dup(STDERR_FILENO);  
-        FILE *log_output = NULL; 
 
-	bool are_logging = !((bool) are_debugging);
+	auto saved_cerrbuf = cerr.rdbuf();
+        auto saved_coutbuf = cout.rdbuf();
+	ofstream logfile;
+
+	auto are_logging = !((bool) are_debugging);
 	if(are_logging)
 	{
 		// setup logging
 		auto logfile_path = "./logs/"+step_name+".log";
-		log_output = fopen(logfile_path.c_str(), "a");
-		auto log_output_fd = fileno(log_output);
-                dup2(log_output_fd, STDOUT_FILENO);
-                dup2(log_output_fd, STDERR_FILENO); 
+		logfile.open(logfile_path,ofstream::out);
+		if(!logfile)
+		{
+			*real_cout<<"Cannot open log file "<<logfile_path<<endl;
+			exit(1);
+		}
+		cout.rdbuf(logfile.rdbuf());
+		cerr.rdbuf(logfile.rdbuf());
 	}
 	
-	const int step_result = executeStep(*(the_step.get()), (bool) are_debugging);
 
-	if(are_logging)
-	{
-		fclose(log_output);
-	}
-	dup2(saved_stdout, STDOUT_FILENO);
-        close(saved_stdout);
-        dup2(saved_stderr, STDERR_FILENO);
-        close(saved_stderr);
+	const auto start_time = clock();
+  	const auto start_t=time(nullptr);
+	const auto start_time_str = ctime(&start_t);
+
+	const auto step_result = executeStep(*(the_step.get()), (bool) are_debugging);
+
+        const auto end_time = clock();
+  	const auto end_t=time(nullptr);
+	const auto end_time_str = ctime(&end_t);
+        const auto elapsed_time = (double)(end_time-start_time)/ CLOCKS_PER_SEC;
+
+        cout<< "#ATTRIBUTE start_time=" << start_time_str ; // endl in time_str
+        cout<< "#ATTRIBUTE end_time="   << end_time_str   ; // endl in time_str
+        cout<< "#ATTRIBUTE elapsed_time="  << elapsed_time<<endl;
+        cout<< "#ATTRIBUTE step_name=" << step_name<<endl;
+        cout<< "#ATTRIBUTE step_command=  " << thanos_path << " " << step_name 
+	    << " --step-args "; copy(ALLOF(step_args), ostream_iterator<string>(cout, " ")); cout<<endl;
+        cout<< "#ATTRIBUTE step_exitcode="<<dec<<step_result<<endl;
+
+
+	cerr.rdbuf(saved_cerrbuf);
+	cout.rdbuf(saved_coutbuf);
 
 	the_step.reset(); // explicitly get rid of the handle to the library so we can close it.
 	dlclose(dlhdl);
@@ -228,77 +272,90 @@ int ThanosPlugin_t::runPlugin()
 
 int ThanosPlugin_t::executeStep(TransformStep_t& the_step, const bool are_debugging)
 {
-    const int parse_retval = the_step.parseArgs(step_args);
-    if(parse_retval != 0)
-    {
-        return parse_retval;
-    }
-    
-    pqxxDB_t* pqxx_interface = shared_objects->getDBInterface();
-    if(step_optional)
-    {
-        const int error = shared_objects->writeBackAll();
-        if(error)
-        {
-            return 1; // the failure must be from a critical step, abort
-        }
-        else
-        {
-            // commit changes (in case this step fails) and reset interface
-            pqxx_interface->Commit();
-            pqxx_interface = shared_objects->resetDBInterface();
-        }
-    }
 
-    const int step_error = the_step.executeStep(shared_objects.get());
+	*real_cout<<"Performing step "<<the_step.getStepName()<< " [dependencies=unknown] ..."; // no endl intentionally.
+	flush(*real_cout);
 
-    if(step_error)
-    {
-        if(step_optional)
-        {
-            // delete all shared items without writing
-            // next step will have to get the last "good" version from DB
-            shared_objects->deleteAll();
-        }
-        else
-        {
-            return 1; // critical step failed, abort
-        }
-    }
-    
-    if(step_optional)
-    {
-        // write changes to DB to see if it succeeds
-        const int error = shared_objects->writeBackAll();
-        if(error)
-        {
-            // abort changes by resetting DB interface
-            pqxx_interface = shared_objects->resetDBInterface();
-        }
-        else if(are_debugging)
-        {
-            // commit changes (in case next step fails) and reset interface 
-            pqxx_interface->Commit();
-            pqxx_interface = shared_objects->resetDBInterface();
-        }
-    }
-    else if(are_debugging)
-    {
-        // write changes to DB in case next step fails
-        const int error = shared_objects->writeBackAll();
-        if(error)
-        {
-            return 1; // critical step failed, abort
-        }
-        else
-        {
-            // commit changes (in case next step fails) and reset interface 
-            pqxx_interface->Commit();
-            pqxx_interface = shared_objects->resetDBInterface();
-        }
-    }
-    
-    return step_error;	
+
+	const int parse_retval = the_step.parseArgs(step_args);
+	if(parse_retval != 0)
+	{
+		return parse_retval;
+	}
+
+	pqxxDB_t* pqxx_interface = shared_objects->getDBInterface();
+	if(step_optional)
+	{
+		const int error = shared_objects->writeBackAll();
+		if(error)
+		{
+			return 1; // the failure must be from a critical step, abort
+		}
+		else
+		{
+		    // commit changes (in case this step fails) and reset interface
+		    pqxx_interface->Commit();
+		    pqxx_interface = shared_objects->resetDBInterface();
+		}
+	}
+
+	const int step_error = the_step.executeStep(shared_objects.get());
+
+	if(step_error)
+	{
+		if(step_optional)
+		{
+
+                        *real_cout<<"Done.  Command failed! ***************************************"<<endl;
+			// delete all shared items without writing
+			// next step will have to get the last "good" version from DB
+			shared_objects->deleteAll();
+		}
+		else
+		{
+                        *real_cout<<"Done.  Command failed! ***************************************"<<endl;
+                        *real_cout<<"ERROR: The "<<the_step.getStepName()<<" step is necessary, but failed.  Exiting early."<<endl;
+			return 1; // critical step failed, abort
+		}
+	}
+	else
+	{
+			*real_cout<<"Done.  Successful."<<endl;
+	}
+
+	if(step_optional)
+	{
+		// write changes to DB to see if it succeeds
+		const int error = shared_objects->writeBackAll();
+		if(error)
+		{
+			// abort changes by resetting DB interface
+			pqxx_interface = shared_objects->resetDBInterface();
+		}
+		else if(are_debugging)
+		{
+			// commit changes (in case next step fails) and reset interface 
+			pqxx_interface->Commit();
+			pqxx_interface = shared_objects->resetDBInterface();
+		}
+	}
+	else if(are_debugging)
+	{
+		// write changes to DB in case next step fails
+		const int error = shared_objects->writeBackAll();
+		if(error)
+		{
+			return 1; // critical step failed, abort
+		}
+		else
+		{
+			// commit changes (in case next step fails) and reset interface 
+			pqxx_interface->Commit();
+			pqxx_interface = shared_objects->resetDBInterface();
+		}
+	}
+
+	return step_error;	
 }
 
 
