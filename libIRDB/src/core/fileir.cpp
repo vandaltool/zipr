@@ -711,7 +711,7 @@ void FileIR_t::ReadRelocsFromDB
 
 void FileIR_t::WriteToDB()
 {
-    	const auto WriteIRDB_start = clock();
+//     	const auto WriteIRDB_start = clock();
 
 	const auto pqIntr=dynamic_cast<pqxxDB_t*>(dbintr);
 	assert(pqIntr);
@@ -897,17 +897,18 @@ void FileIR_t::WriteToDB()
 	}
 	W_reloc.complete();
 
+/*	std::cout << std::dec; 
+
 	const auto WriteIRDB_end = clock();
 	const auto read_time = (double)(ReadIRDB_end-ReadIRDB_start)/ CLOCKS_PER_SEC;
 	const auto write_time = (double)(WriteIRDB_end-WriteIRDB_start)/ CLOCKS_PER_SEC;
 	const auto wall_time = (double)(WriteIRDB_end-ReadIRDB_start)/ CLOCKS_PER_SEC;
 	const auto transform_time=wall_time - read_time - write_time; 
-
-	std::cout << std::dec; 
     	std::cout << std::fixed << std::setprecision(2) << "#ATTRIBUTE ReadIRDB_WallClock=" << read_time <<endl;
     	std::cout << std::fixed << std::setprecision(2) << "#ATTRIBUTE WriteIRDB_WallClock=" << write_time << endl;
     	std::cout << std::fixed << std::setprecision(2) << "#ATTRIBUTE TotalIRDB_WallClock=" << wall_time << endl;
     	std::cout << std::fixed << std::setprecision(2) << "#ATTRIBUTE TransformIRDB_WallClock=" << transform_time << endl;
+*/
 
 }
 

@@ -61,7 +61,7 @@ int IRDBObjects_t::writeBackFileIR(const db_id_t file_id)
                     
 	try
 	{
-		cout<<"Writing changes for "<<the_file->GetURL()<<endl;
+		// cout<<"Writing changes for "<<the_file->GetURL()<<endl;
 		// make sure static variable is set in the calling module -- IMPORTANT
 		const auto & the_fileIR = (it->second).fileIR;
 		the_fileIR->SetArchitecture();
@@ -145,7 +145,7 @@ int IRDBObjects_t::writeBackVariant(const db_id_t variant_id)
 
 	try
 	{
-		cout<<"Writing changes for variant "<<variant_id<<endl;
+		// cout<<"Writing changes for variant "<<variant_id<<endl;
 		it->second->WriteToDB();
         	return 0;
 	}

@@ -473,8 +473,8 @@ void VariantID_t::ReadFilesFromDB()
 
 		File_t *newfile=new File_t(file_id,orig_fid,url,hash,type,oid,atn,ftn,itn,icfs,icfs_map,rtn,typ,dtn,ehp,css,doipid);
 
-std::cout<<"Found file "<<file_id<<"."<<std::endl;
-std::cout<<"  atn: " << atn << " ftn: " << ftn << " rtn: " << rtn << " typ: " << typ << std::endl;
+// std::cout<<"Found file "<<file_id<<"."<<std::endl;
+// std::cout<<"  atn: " << atn << " ftn: " << ftn << " rtn: " << rtn << " typ: " << typ << std::endl;
 
 		files.insert(newfile);
 
