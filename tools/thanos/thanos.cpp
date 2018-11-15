@@ -22,6 +22,7 @@ ofstream thanos_log;
 ostream *real_cout;
 ostream *real_cerr;
 string thanos_path;
+bool redirect_opt=true;
 
 class ThanosPlugin_t
 {
@@ -65,8 +66,6 @@ const unique_ptr<IRDBObjects_t> ThanosPlugin_t::shared_objects(new IRDBObjects_t
 using PluginList_t = vector<unique_ptr<ThanosPlugin_t>>;
 PluginList_t getPlugins(const int argc, char const *const argv[]); 
 
-
-
 int main(int argc, char* argv[])
 {
 	thanos_path=argv[0];
@@ -83,14 +82,31 @@ int main(int argc, char* argv[])
 		exit(1);
 	}
 	// get plugins
-	auto thanos_plugins = getPlugins(argc-1, argv+1);	
+	auto argv_iter=1;
+	while (true)
+	{
+		if(argv_iter >= argc)
+		{
+			break;
+		}
+		if(string(argv[argv_iter])=="--no-redirect")
+		{
+			redirect_opt=false;
+			argv_iter++;
+		}
+		else
+			break;
+	}
+	const auto plugin_argv_iter=argv_iter;
+
+	auto thanos_plugins = getPlugins(argc-plugin_argv_iter, argv+plugin_argv_iter);	
 	if(thanos_plugins.size() == 0)
 	{
 		// for now, usage is pretty strict to enable simple
 		// parsing, because this program is only used by an
 		// automated script
 		thanos_log << "Syntax error in arguments." << endl;
-		thanos_log << "USAGE: (\"<step name> [-optional] [--step-args [ARGS]]\")+" << endl;
+		thanos_log << "USAGE: <thanos opts> (\"<step name> [-optional] [--step-args [ARGS]]\")+" << endl;
 		return 1;
 	}
 
@@ -234,8 +250,11 @@ int ThanosPlugin_t::runPlugin()
 			*real_cout<<"Cannot open log file "<<logfile_path<<endl;
 			exit(1);
 		}
-		cout.rdbuf(logfile.rdbuf());
-		cerr.rdbuf(logfile.rdbuf());
+		if(redirect_opt)
+		{
+			cout.rdbuf(logfile.rdbuf());
+			cerr.rdbuf(logfile.rdbuf());
+		}
 	}
 	
 

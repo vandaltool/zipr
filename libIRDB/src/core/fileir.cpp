@@ -1328,12 +1328,14 @@ void FileIR_t::GarbageCollectICFS()
 		}
 	}
 
+/*
 	int unused_icfs = this->GetAllICFS().size() - used_icfs.size();
 	if (unused_icfs > 0)
 	{
 		cerr << "FileIR_t::GarbageCollectICFS(): WARNING: " << dec << unused_icfs << " unused ICFS found. ";
 		cerr << "Deleting before committing to IRDB" << endl;
 	}
+*/
 
 	ICFSSet_t to_erase;
 	for(ICFSSet_t::const_iterator it=this->GetAllICFS().begin();
