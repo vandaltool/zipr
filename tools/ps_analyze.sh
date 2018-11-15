@@ -601,18 +601,20 @@ perform_step()
 		fi
 	fi
 
-	echo -n Performing step "$step" [dependencies=$mandatory] ...
 	starttime=`$PS_DATE`
 
 		
 	# If verbose is on, tee to a file 
 	if [[ ! -z "$DEBUG_STEPS" ]]; then
+		echo -n Performing step "$step" [dependencies=$mandatory] ...
 		eval $command 
 		command_exit=$?
 	elif [[ ! -z "$VERBOSE" && $using_thanos -eq 0 ]]; then
+		echo -n Performing step "$step" [dependencies=$mandatory] ...
 		eval $command 2>&1 | tee $logfile
 		command_exit=${PIPESTATUS[0]} # this funkiness gets the exit code of $command, not tee
 	elif [[ ! -z "$VERBOSE" && $using_thanos -ne 0 ]]; then
+		echo -n Performing step "$step" [dependencies=$mandatory] ...
 		eval $command > $logfile 2>&1
 		# display logs to stdout
 		for this_step in $step
@@ -620,7 +622,11 @@ perform_step()
 			cat logs/$this_step.log
 		done
 		cat $logfile
+	elif [[ $using_thanos -ne 0 ]]; then
+		eval $command
+		command_exit=$?
 	else
+		echo -n Performing step "$step" [dependencies=$mandatory] ...
 		eval $command > $logfile 2>&1 
 		command_exit=$?
 	fi
@@ -645,31 +651,33 @@ perform_step()
 		fi
 	fi
 
-	is_step_error $step $command_exit
-	if [[ $? -ne 0 ]]; then
-		echo "Done.  Command failed! ***************************************"
+	if [[ $using_thanos -eq 0 ]]; then
+		is_step_error $step $command_exit
+		if [[ $? -ne 0 ]]; then
+			echo "Done.  Command failed! ***************************************"
 
-		# check if we need to exit
-		stop_if_error $step
-		if [ $? -gt $error_threshold ]; then 
-			echo The $step step is necessary, but failed.  Exiting ps_analyze early.
-			exit -1;
+			# check if we need to exit
+			stop_if_error $step
+			if [ $? -gt $error_threshold ]; then 
+				echo The $step step is necessary, but failed.  Exiting ps_analyze early.
+				exit -1;
+			fi
+			errors=1
+		elif [ -f warning.txt ]; then
+			# report warning to user.
+			warnings=1
+			echo "Done.  Command had serious warnings! ***************************************"
+			cat warning.txt
+			# report warning in log file, line by line, as an attribute.
+			while IFS= read -r line; do
+				echo
+				echo "#ATTRIBUTE serious_warning_text=\"$line\""  >> $logfile
+			done < "warning.txt"
+			# remove warning.txt so we don't report these warnings again.
+			rm -f warning.txt
+		else
+			echo "Done.  Successful."
 		fi
-		errors=1
-	elif [ -f warning.txt ]; then
-		# report warning to user.
-		warnings=1
-		echo "Done.  Command had serious warnings! ***************************************"
-		cat warning.txt
-		# report warning in log file, line by line, as an attribute.
-		while IFS= read -r line; do
-			echo
-			echo "#ATTRIBUTE serious_warning_text=\"$line\""  >> $logfile
-		done < "warning.txt"
-		# remove warning.txt so we don't report these warnings again.
-		rm -f warning.txt
-	else
-		echo Done.  Successful.
 	fi
 
 	# move to the next step 
