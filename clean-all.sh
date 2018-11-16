@@ -72,8 +72,12 @@ if [ -d $ZIPR_HOME ]; then
 	scons -c || exit
 fi
 
+cd $DAFFY_HOME
+./clean_cfar.sh
 
 cd $PEASOUP_UMBRELLA_DIR
+
+
 
 # clean up installation if this module is the root of the install.
 # skip pedi cleanup if we are part of a larger project, as future builds

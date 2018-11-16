@@ -1,0 +1,132 @@
+before_script:
+  - "source ~gitlab-runner/cicd_support/cicd_support.shinc" 
+
+after_script:
+  - "source ~gitlab-runner/cicd_support/cicd_support.shinc" 
+
+stages:
+  - clean
+  - build
+  - test
+
+
+#
+# Cleaning
+#
+.do-nightly-clean: &do-nightly-clean
+  stage: clean
+  script:
+    - ./cicd_testing/do-clean.sh 
+
+do-nightly-clean-ubuntu18:
+  <<: *do-nightly-clean
+  tags:
+    - ubuntu18
+
+do-nightly-clean-ubuntu16:
+  <<: *do-nightly-clean
+  tags:
+    - ubuntu16
+
+do-nightly-clean-centos75:
+  <<: *do-nightly-clean
+  tags:
+    - centos75
+
+#
+# Building
+#
+
+.do-build: &do-build
+  stage: build
+  script:
+    - ./cicd_testing/do-build.sh 
+
+do-build-ubuntu18:
+  <<: *do-build
+  tags:
+    - ubuntu18
+
+do-build-ubuntu16:
+  <<: *do-build
+  tags:
+    - ubuntu16
+
+do-build-centos75:
+  <<: *do-build
+  tags:
+    - centos75
+
+#
+# $PSZ ls
+#
+
+.xform-ls: &xform-ls
+  stage: test
+  script:
+    - ./cicd_testing/xform-ls.sh
+
+
+xform-ls-ubuntu18:
+  <<: *xform-ls
+  tags:
+    - ubuntu18
+
+xform-ls-ubuntu16:
+  <<: *xform-ls
+  tags:
+    - ubuntu16
+
+xform-ls-centos75:
+  <<: *xform-ls
+  tags:
+    - centos75
+
+
+
+#
+# test_cmds.sh rida
+#
+.basic-pgms-rida: &basic-pgms-rida
+  stage: test
+  script:
+    - ./cicd_testing/basic-pgms-rida.sh
+
+basic-pgms-rida-ubuntu18:
+  <<: *basic-pgms-rida
+  tags:
+    - ubuntu18
+
+basic-pgms-rida-ubuntu16:
+  <<: *basic-pgms-rida
+  tags:
+    - ubuntu16
+
+basic-pgms-rida-centos75:
+  <<: *basic-pgms-rida
+  tags:
+    - centos75
+
+#
+# test_cmds.sh rida-p1
+#
+.basic-pgms-rida-p1: &basic-pgms-rida-p1
+  stage: test
+  script:
+    - ./cicd_testing/basic-pgms-rida-p1.sh
+
+basic-pgms-rida-p1-ubuntu18:
+  <<: *basic-pgms-rida-p1
+  tags:
+    - ubuntu18
+
+basic-pgms-rida-p1-ubuntu16:
+  <<: *basic-pgms-rida-p1
+  tags:
+    - ubuntu16
+
+basic-pgms-rida-p1-centos75:
+  <<: *basic-pgms-rida-p1
+  tags:
+    - centos75
+
