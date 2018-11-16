@@ -2,4 +2,5 @@
 directory plugins_install ps
 directory lib ps
 directory bin ps
+directory lib ps
 

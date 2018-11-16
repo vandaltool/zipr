@@ -32,6 +32,7 @@
 #include "MEDS_DeadRegAnnotation.hpp"
 #include "MEDS_IBAnnotation.hpp"
 #include "MEDS_IBTAnnotation.hpp"
+#include "MEDS_MemoryRangeAnnotation.hpp"
 
 // @todo: multiple annotation per instruction
 
@@ -104,7 +105,7 @@ void MEDS_AnnotationParser::parseFile(istream &p_inputStream)
 		if(add_if_valid<MEDS_FuncExitAnnotation>(line)) continue;
 		if(add_if_valid<MEDS_IBAnnotation>(line)) continue;
 		if(add_if_valid<MEDS_IBTAnnotation>(line)) continue;
-
+		if (add_if_valid<MEDS_MemoryRangeAnnotation>(line)) continue;
 		
 	}
 }

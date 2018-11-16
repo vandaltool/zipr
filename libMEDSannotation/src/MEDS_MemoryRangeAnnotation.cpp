@@ -23,8 +23,7 @@
 #include <cstdio>
 #include <string>
 #include <string.h>
-#include <cstdint>
-#include <inttypes.h>
+#include <cinttypes>
 
 #include "MEDS_MemoryRangeAnnotation.hpp"
 
@@ -88,11 +87,30 @@ void MEDS_MemoryRangeAnnotation::parse()
 
 	// 417748     12 INSTR STATICMEMWRITE MIN 3c60320  LIMIT 4e53730  ZZ
 	// 4992ea      4 INSTR STACKMEMRANGE MIN RSP - 568 LIMIT RSP - 48 INSTRSPDELTA - 592 ZZ
-	int ItemsFilled = sscanf(m_rawInputLine.c_str(), "%*x %d %*s %*s MIN %" SCNu64 " LIMIT %" SCNu64 "", &instrSize, &MinVal, &LimitVal);
-	if (3 != ItemsFilled) {
+	if (this->isStaticGlobalRange()) {
+		int ItemsFilled = sscanf(m_rawInputLine.c_str(), "%*x %d %*s %*s MIN %" SCNx64 " LIMIT %" SCNx64, &instrSize, &MinVal, &LimitVal);
+		if (3 != ItemsFilled) {
+			this->setInvalid();
+			cerr << "Error on sscanf of annotation: ItemsFilled = " << ItemsFilled << " line: " << m_rawInputLine << endl;
+			return;
+		}
+		else {
+			cerr << "Parsed STATICMEMWRITE annotation: MIN = " << hex << MinVal << " LIMIT = " << LimitVal << endl;
+		}
+	}
+	else {
+#if 0
+		int ItemsFilled = sscanf(m_rawInputLine.c_str(), "%*x %d %*s %*s MIN %" SCNx64 " LIMIT %" SCNx64, &instrSize, &MinVal, &LimitVal);
+		if (3 != ItemsFilled) {
+			this->setInvalid();
+			cerr << "Error on sscanf of annotation: ItemsFilled = " << ItemsFilled << " line: " << m_rawInputLine << endl;
+			return;
+		}
+#else
 		this->setInvalid();
-		cerr << "Error on sscanf of annotation" << endl;
+		cerr << "Not yet parsing STACKMEMRANGE annotations " << endl;
 		return;
+#endif
 	}
 
 	this->setInstructionSize(instrSize); // in base class
