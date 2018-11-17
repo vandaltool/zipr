@@ -22,6 +22,7 @@ LIBS=Split("IRDB-core IRDB-cfg IRDB-util MEDSannotation")
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath))
 myenv.Append(CXXFLAGS = " -std=c++11 ")
+myenv.Append(LINKFLAGS=" -Wl,-rpath,/home/mm8bx/peasoup/security_transforms/lib ")
 
 lib=myenv.SharedLibrary("transform",  Split(files), LIBPATH=LIBPATH, LIBS=LIBS)
 install=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
