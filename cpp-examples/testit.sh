@@ -63,14 +63,23 @@ doit_meta()
 
 main()
 {
+	local rida_flags="-c rida=on -s meds_static=off "
+	local ss_flags="-c stack_stamp=on"
+	local p1_flags="-c p1transform=on"
 
 	for src in $src_files
 	do
 		for option in -O0 -O1 -O2 -O3 -Os -Og
 		do
+			# stars/ida
 			doit_meta $src "$option" ""
-			#doit_meta $src "$option" "--step p1transform=on"
-			#doit_meta $src "$option" "--step stack_stamp=on"
+			doit_meta $src "$option" "$p1_flags"
+			doit_meta $src "$option" "$ss_flags"
+
+			#rida
+			doit_meta $src "$option" "$rida_flags "
+			doit_meta $src "$option" "$rida_flags $p1_flags"
+			doit_meta $src "$option" "$rida_flags $ss_flags"
 		done
 	done
 }
