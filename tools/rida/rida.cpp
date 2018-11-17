@@ -37,7 +37,7 @@ class CreateFunctions_t
 		{
 			public:
 				Range_t(const Address_t &a, const Address_t &b) : pair<Address_t,Address_t>(a,b) { } 
-				bool contains(const Address_t &c) const { return first <= c && c<=second; }
+				bool contains(const Address_t &c) const { return first <= c && c<second; }
 			
 		};
 		using RangeSet_t = set<Range_t>;
@@ -48,6 +48,7 @@ class CreateFunctions_t
 		csh cshandle;
 		ofstream outfile;
 		execlass_t file_class;
+		friend ostream& operator<<(ostream& os, const CreateFunctions_t::RangeSet_t& rs);
 	public:
 		CreateFunctions_t(const string &input_pgm, const string &output_annot, const bool p_verbose)
 			: 
@@ -235,21 +236,28 @@ class CreateFunctions_t
 					if(verbose)
 						cout<<"\tCall site (0x"<<cs->getCallSiteAddress()<<"-"<<cs->getCallSiteEndAddress()
 						    <<") with landing pad=0x"<<cs->getLandingPadAddress()<<endl;
+					if(cs->getLandingPadAddress()==0x0)
+						continue;
 					auto set1_it=find_if(ALLOF(sccs), [&](const RangeSet_t& s) { return s.find(pair) != s.end(); } );
 					assert(set1_it!=sccs.end());
 
 					auto set2_it=find_if(ALLOF(sccs), [&](const RangeSet_t& s) 
 						{ 
-							return find_if(ALLOF(s), [&](const Range_t& r) { return r.contains(cs->getCallSiteAddress()); }) != s.end(); 
+							return find_if(ALLOF(s), [&](const Range_t& r) { return r.contains(cs->getLandingPadAddress()); }) != s.end(); 
 						});
 					assert(set2_it!=sccs.end());
 					auto set1=*set1_it;
 					auto set2=*set2_it;
-					sccs.erase(set1);
-					sccs.erase(set2);
-					auto set3=RangeSet_t();
-					set_union(ALLOF(set1), ALLOF(set2), inserter(set3, set3.begin()));
-					sccs.insert(set3);
+					if(set1!=set2)
+					{
+						sccs.erase(set1);
+						sccs.erase(set2);
+						auto set3=RangeSet_t();
+						if(verbose)
+							cout<<"\tMerging: set1="<< hex<< set1 << " and set2="<<set2<<dec<<endl;
+						set_union(ALLOF(set1), ALLOF(set2), inserter(set3, set3.begin()));
+						sccs.insert(set3);
+					}
 				}
 			}
 
@@ -467,7 +475,17 @@ class CreateFunctions_t
 		}
 		
 
+
 };
+
+ostream& operator<<(ostream& os, const CreateFunctions_t::RangeSet_t& rs)
+{
+	for(const auto r : rs)
+	{
+		os<<"("<<r.first<<"-"<<r.second<<"), ";
+	}
+	return os;
+}
 
 int main(int argc, char* argv[])
 {

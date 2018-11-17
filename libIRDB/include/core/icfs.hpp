@@ -45,6 +45,10 @@ class ICFS_t : public InstructionSet_t, public BaseObj_t
 		{
 			InstructionSet_t::operator=(other);
 		}
+		void AddTargets(const InstructionSet_t &other) 
+		{
+			insert(std::begin(other), std::end(other)); 
+		}
 
 		bool IsIncomplete() const {
 			return GetAnalysisStatus() == ICFS_Analysis_Incomplete;

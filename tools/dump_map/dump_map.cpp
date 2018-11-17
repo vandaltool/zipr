@@ -42,7 +42,7 @@ void dump_icfs(Instruction_t* insn)
 	
 	cout<<"\tComplete: "<<boolalpha<<insn->GetIBTargets()->IsComplete()<<endl;
 	cout<<"\tModComplete: "<<boolalpha<<insn->GetIBTargets()->IsModuleComplete()<<endl;
-	cout<<"\tTargets: "<<boolalpha<<insn->GetIBTargets()->IsModuleComplete()<<endl;
+	cout<<"\tTargets: "<<endl;
 	for_each(insn->GetIBTargets()->begin(), insn->GetIBTargets()->end(), [&](const Instruction_t* targ)
 	{
 		const auto d=DecodedInstruction_t(targ);
@@ -119,7 +119,7 @@ int main(int argc, char **argv)
 					cout<<setw(9)<<"NoFunc";
 					
 				const auto d=DecodedInstruction_t(insn);
-				cout<<" "<<d.getDisassembly()<<endl;
+				cout<<" "<<d.getDisassembly()<<"("<<insn->GetComment()<<")"<<endl;
 	
 				if(dump_icfs_flag == insn->GetBaseID())
 					dump_icfs(insn);
