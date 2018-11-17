@@ -7,4 +7,5 @@ plugins/relax.zpi
 plugins/traceplacement.zpi
 plugins/unpin.zpi
 plugins/nonce_relocs.zpi
+lib/libtrace.so
 
