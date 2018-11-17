@@ -797,7 +797,7 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 			// valid switch table? may or may not have default: in the switch
 			// table size = 8, #entries: 9 b/c of default
 			cout << "pic32 (base pattern): table size: " << table_size << " ibtargets.size: " << ibtargets.size() << endl;
-			jmptables[I5].SetTargets(ibtargets);
+			jmptables[I5].AddTargets(ibtargets);
 			if (table_size == ibtargets.size() || table_size == (ibtargets.size()-1))
 			{
 				cout << "pic32 (base pattern): valid switch table detected ibtp_switchtable_type1" << endl;
@@ -943,7 +943,7 @@ cout<<hex<<"Found (type2) switch dispatch at "<<I5->GetAddress()->GetVirtualOffs
 
 		// now, try next thunk base 
 	}
-	jmptables[I5].SetTargets(ibtargets);
+	jmptables[I5].AddTargets(ibtargets);
 }
 
 
@@ -1517,16 +1517,18 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		// table size = 8, #entries: 9 b/c of default
 		cout << "pic64: detected table size (max_int means no found): 0x"<< hex << table_size << " #entries: 0x" << entry << " ibtargets.size: " << ibtargets.size() << endl;
 
-		jmptables[I8].SetTargets(ibtargets);
+		jmptables[I8].AddTargets(ibtargets);
 		// note that there may be an off-by-one error here as table size depends on whether instruction I2 is a jb or jbe.
 		if (!found_table_error)
 		{
-			cout << "pic64: valid switch table detected ibtp_switchtable_type4" << endl;
+			cout << "pic64: valid switch table for "<<hex<<I8->GetAddress()->GetVirtualOffset()
+			     <<"detected ibtp_switchtable_type4" << endl;
 			jmptables[I8].SetAnalysisStatus(ICFS_Analysis_Complete);
 		}
 		else
 		{
-			cout << "pic64: INVALID switch table detected ibtp_switchtable_type4" << endl;
+			cout << "pic64: INVALID switch table detected for, "
+			     <<hex<<I8->GetAddress()->GetVirtualOffset()<<"type=ibtp_switchtable_type4" << endl;
 		}
 	}
 }
@@ -1635,7 +1637,7 @@ static void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t
 
 	cout << "(non-PIC) valid switch table found - ibtp_switchtable_type5" << endl;
 
-	jmptables[IJ].SetTargets(ibtargets);
+	jmptables[IJ].AddTargets(ibtargets);
 	jmptables[IJ].SetAnalysisStatus(ICFS_Analysis_Complete);
 }
 
@@ -1770,7 +1772,7 @@ static void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, D
 	}
 
 	cout << "(non-PIC) valid switch table found - prov=ibt_provenance_t::ibtp_switchtable_type6" << endl;
-	jmptables[IJ].SetTargets(ibtargets);
+	jmptables[IJ].AddTargets(ibtargets);
 	jmptables[IJ].SetAnalysisStatus(ICFS_Analysis_Complete);
 }
 
@@ -2265,15 +2267,15 @@ void setup_icfs(FileIR_t* firp, EXEIO::exeio* elfiop)
 		// create icfs for complete jump tables.
 		if(jmptables[insn].IsComplete())
 		{
-			if(getenv("IB_VERBOSE")!=0)
-			{
-				cout<<"IB complete for "<<hex<<insn->GetAddress()->GetVirtualOffset()
-					<<":"<<insn->getDisassembly()<<endl;
-			}
 			// get the strcuture into the IRDB	
 			ICFS_t* nn=new ICFS_t(jmptables[insn]);
 			firp->GetAllICFS().insert(nn);
 			insn->SetIBTargets(nn);
+			if(getenv("IB_VERBOSE")!=0)
+			{
+				cout<<"IB complete for "<<hex<<insn->GetAddress()->GetVirtualOffset()
+					<<":"<<insn->getDisassembly()<<" with "<<dec<<nn->size()<<" targets."<<endl;
+			}
 
 			// that's all we need to do
 			continue;
