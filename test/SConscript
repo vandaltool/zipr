@@ -48,7 +48,6 @@ libs='''
  	xform 
 	IRDB-core 
 	IRDB-cfg 
-	BeaEngine_s_d 
 	pqxx  
 	transform 
 	pq 
