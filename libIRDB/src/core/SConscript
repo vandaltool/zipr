@@ -50,7 +50,6 @@ libpath='''
 
 myenv.Append(CCFLAGS=" -Wall -std=c++11 ")
 myenv.Append(LIBPATH=libpath)
-myenv.Append(LINKFLAGS=" -Wl,-rpath,/home/mm8bx/peasoup/security_transforms/lib ")
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath))
 mylib=myenv.SharedLibrary(libname, Split(files), LIBS=Split("pqxx capstone"))
