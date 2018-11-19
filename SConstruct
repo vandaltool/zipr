@@ -21,6 +21,8 @@ env.Replace(debug=ARGUMENTS.get("debug",0))
 env.Replace(do_cgc=ARGUMENTS.get("do_cgc",0))
 env.Replace(do_64bit_build=ARGUMENTS.get("do_64bit_build",0))
 
+env.Append(LINKFLAGS=" -Wl,-unresolved-symbols=ignore-in-shared-libs ")
+
 if int(env['profile']) == 1:
         print "Setting profile and debug mode"
         env.Append(CFLAGS=" -pg")
