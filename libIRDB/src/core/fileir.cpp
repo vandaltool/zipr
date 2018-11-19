@@ -82,11 +82,11 @@ static virtual_offset_t strtovo(std::string s)
 }
 
 // Create a Variant from the database
-FileIR_t::FileIR_t(const VariantID_t &newprogid, File_t* fid) : BaseObj_t(NULL)
+FileIR_t::FileIR_t(const VariantID_t &newprogid, File_t* fid) 
+			: BaseObj_t(NULL), progid((VariantID_t&) newprogid)
 	
 {
 	orig_variant_ir_p=NULL;
-	progid=newprogid;	
 
 	if(fid==NULL)
 		fileptr=newprogid.GetMainFile();
@@ -711,7 +711,7 @@ void FileIR_t::ReadRelocsFromDB
 
 void FileIR_t::WriteToDB()
 {
-    	const auto WriteIRDB_start = clock();
+//     	const auto WriteIRDB_start = clock();
 
 	const auto pqIntr=dynamic_cast<pqxxDB_t*>(dbintr);
 	assert(pqIntr);
@@ -752,7 +752,7 @@ void FileIR_t::WriteToDB()
 		}
 	}
 	dbintr->IssueQuery(q);
-
+	
 
 // write out functions 
 	auto withHeader=true;
@@ -776,7 +776,6 @@ void FileIR_t::WriteToDB()
 		W_addrs << a->WriteToDB(fileptr,j,withHeader);
 	}
 	W_addrs.complete();
-
 
 // write out instructions
 
@@ -823,13 +822,11 @@ void FileIR_t::WriteToDB()
 			}
 		}
 
-
 		const auto &insn_values=(*i)->WriteToDB(fileptr,j);
 		W << insn_values;
 
 	}
 	W.complete();
-
 
 
 // icfs 
@@ -872,42 +869,46 @@ void FileIR_t::WriteToDB()
 // eh css relocs
 	for(const auto& i : eh_css)
 	{
-		for(auto& reloc : i->GetRelocations())
+		const auto &relocs=i->GetRelocations();
+		for(auto& reloc : relocs)
 			W_reloc << reloc->WriteToDB(fileptr,i);
 	}
 
 // eh pgms relocs
 	for(const auto& i : eh_pgms)
 	{
-		string r="";
-		for(auto& reloc : i->GetRelocations())
+		const auto &relocs=i->GetRelocations();
+		for(auto& reloc : relocs)
 			W_reloc << reloc->WriteToDB(fileptr,i);
 	}
 // scoops relocs
 	for(const auto& i : scoops)
 	{
-		for(auto& reloc : i->GetRelocations())
+		const auto &relocs=i->GetRelocations();
+		for(auto& reloc : relocs)
 			W_reloc << reloc->WriteToDB(fileptr,i);
 	}
 // write out instruction's relocs
 	for(const auto& i : insns)
 	{
-		for(auto& reloc : i->GetRelocations())
+		const auto &relocs=i->GetRelocations();
+		for(auto& reloc : relocs)
 			W_reloc << reloc->WriteToDB(fileptr,i);
 	}
 	W_reloc.complete();
+
+/*	std::cout << std::dec; 
 
 	const auto WriteIRDB_end = clock();
 	const auto read_time = (double)(ReadIRDB_end-ReadIRDB_start)/ CLOCKS_PER_SEC;
 	const auto write_time = (double)(WriteIRDB_end-WriteIRDB_start)/ CLOCKS_PER_SEC;
 	const auto wall_time = (double)(WriteIRDB_end-ReadIRDB_start)/ CLOCKS_PER_SEC;
 	const auto transform_time=wall_time - read_time - write_time; 
-
-	std::cout << std::dec; 
     	std::cout << std::fixed << std::setprecision(2) << "#ATTRIBUTE ReadIRDB_WallClock=" << read_time <<endl;
     	std::cout << std::fixed << std::setprecision(2) << "#ATTRIBUTE WriteIRDB_WallClock=" << write_time << endl;
     	std::cout << std::fixed << std::setprecision(2) << "#ATTRIBUTE TotalIRDB_WallClock=" << wall_time << endl;
     	std::cout << std::fixed << std::setprecision(2) << "#ATTRIBUTE TransformIRDB_WallClock=" << transform_time << endl;
+*/
 
 }
 
@@ -1327,12 +1328,14 @@ void FileIR_t::GarbageCollectICFS()
 		}
 	}
 
+/*
 	int unused_icfs = this->GetAllICFS().size() - used_icfs.size();
 	if (unused_icfs > 0)
 	{
 		cerr << "FileIR_t::GarbageCollectICFS(): WARNING: " << dec << unused_icfs << " unused ICFS found. ";
 		cerr << "Deleting before committing to IRDB" << endl;
 	}
+*/
 
 	ICFSSet_t to_erase;
 	for(ICFSSet_t::const_iterator it=this->GetAllICFS().begin();

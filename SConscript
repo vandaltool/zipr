@@ -39,16 +39,17 @@ else:
     os.chdir(os.environ['SECURITY_TRANSFORMS_HOME'])
 
 
-env['BASE_IRDB_LIBS']="IRDB-core", "pqxx", "pq", "EXEIO"
 
 pedi = Command( target = "./testoutput",
 		source = "./SConscript",
                 action = os.environ['PEDI_HOME']+"/pedi -m manifest.txt " )
 
+env['BASE_IRDB_LIBS']="IRDB-core", "pqxx", "pq", "EXEIO"
+
 if sysname != "SunOS":
 	libPEBLISS=SConscript("pebliss/trunk/pe_lib/SConscript", variant_dir='scons_build/libPEBLISS')
 	# setup libraries needed for linking
-	env['BASE_IRDB_LIBS']="IRDB-core", "pqxx", "pq", "EXEIO", "pebliss"
+	env['BASE_IRDB_LIBS']=env['BASE_IRDB_LIBS']+("pebliss",)
 	Depends(pedi,libPEBLISS)
 
 # pebliss requires iconv, which needs to be explicit on cygwin.
@@ -58,20 +59,24 @@ if "CYGWIN" in sysname:
 
 Export('env')
 
+env.Install("$SECURITY_TRANSFORMS_HOME/lib/", "$SECURITY_TRANSFORMS_HOME/libcapstone/libcapstone.so.4")
+env.Command(os.environ['SECURITY_TRANSFORMS_HOME']+"/lib/libcapstone.so", os.environ['SECURITY_TRANSFORMS_HOME']+"/lib/libcapstone.so.4", "ln -s $SOURCE.abspath $TARGET.abspath")
+libcapstone=os.environ['SECURITY_TRANSFORMS_HOME']+"/lib/libcapstone.so"
+
 libehp=env.SConscript("libehp/SConscript", variant_dir='scons_build/libehp')
 libehp=env.Install("$SECURITY_TRANSFORMS_HOME/lib", libehp);
-
 libtransform=SConscript("libtransform/SConscript", variant_dir='scons_build/libtransform')
 libEXEIO=SConscript("libEXEIO/SConscript", variant_dir='scons_build/libEXEIO')
-libbea=SConscript("beaengine/SConscript", variant_dir='scons_build/beaengine')
+#libbea=SConscript("beaengine/SConscript", variant_dir='scons_build/beaengine')
 libMEDSannotation=SConscript("libMEDSannotation/SConscript", variant_dir='scons_build/libMEDSannotation')
 libxform=SConscript("xform/SConscript", variant_dir='scons_build/libxform')
 libIRDB=SConscript("libIRDB/SConscript", variant_dir='scons_build/libIRDB')
+Depends(libIRDB,libcapstone)
 libStructDiv=SConscript("libStructDiv/SConscript", variant_dir='scons_build/libStructDiv')
 libElfDep=SConscript("libElfDep/SConscript", variant_dir='scons_build/libElfDep')
 
 
-Depends(pedi, (libehp,libtransform,libEXEIO,libbea,libMEDSannotation,libxform,libIRDB,libStructDiv,libElfDep))
+Depends(pedi, (libehp,libtransform,libEXEIO,libMEDSannotation,libxform,libIRDB,libStructDiv,libElfDep, libcapstone))
 
 tools=None
 if 'build_tools' not in env or env['build_tools'] is None or int(env['build_tools']) == 1:

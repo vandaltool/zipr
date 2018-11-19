@@ -38,6 +38,15 @@ VariantID_t::VariantID_t() :
 }
 
 
+VariantID_t::~VariantID_t()
+{
+	for(auto it : files)	
+	{
+		delete it;
+	}
+}
+
+
 void VariantID_t::CreateTables()
 {
 	// note:  this tables are now part of File_t.
@@ -50,8 +59,7 @@ VariantID_t::VariantID_t(db_id_t pid) : BaseObj_t(NULL)
 	q+=to_string(pid);
 	q+=";";
 
-
-	try 
+       	try 
 	{
 		BaseObj_t::dbintr->IssueQuery(q);
 	}
@@ -63,7 +71,7 @@ VariantID_t::VariantID_t(db_id_t pid) : BaseObj_t(NULL)
 
 		throw DatabaseError_t(DatabaseError_t::VariantTableNotRegistered); 
 	};
-
+	
 	if(BaseObj_t::dbintr->IsDone())
 		throw DatabaseError_t(DatabaseError_t::VariantNotInDatabase); 
 
@@ -148,9 +156,9 @@ VariantID_t* VariantID_t::Clone(bool deep)
 	return ret;
 }       
 
-void VariantID_t::CloneFiles(set<File_t*> &files)
+void VariantID_t::CloneFiles(FileSet_t &files)
 {
-	for(set<File_t*>::iterator fiter=files.begin(); fiter!=files.end(); ++fiter)
+	for(auto fiter=files.begin(); fiter!=files.end(); ++fiter)
 		files.insert(CloneFile(*fiter));
 }
 
@@ -412,7 +420,7 @@ void VariantID_t::DropFromDB()
 File_t* VariantID_t::GetMainFile() const
 {
 	for(
-		set<File_t*>::iterator it=files.begin();
+		auto it=files.begin();
 		it!=files.end();
 		++it
 	   )
@@ -465,8 +473,8 @@ void VariantID_t::ReadFilesFromDB()
 
 		File_t *newfile=new File_t(file_id,orig_fid,url,hash,type,oid,atn,ftn,itn,icfs,icfs_map,rtn,typ,dtn,ehp,css,doipid);
 
-std::cout<<"Found file "<<file_id<<"."<<std::endl;
-std::cout<<"  atn: " << atn << " ftn: " << ftn << " rtn: " << rtn << " typ: " << typ << std::endl;
+// std::cout<<"Found file "<<file_id<<"."<<std::endl;
+// std::cout<<"  atn: " << atn << " ftn: " << ftn << " rtn: " << rtn << " typ: " << typ << std::endl;
 
 		files.insert(newfile);
 

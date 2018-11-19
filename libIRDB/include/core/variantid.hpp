@@ -25,11 +25,14 @@ class VariantID_t;
 
 std::ostream& operator<<(std::ostream& out, const libIRDB::VariantID_t& pid);
 
+using FileSet_t = std::set<File_t*>;
+
 class VariantID_t : public BaseObj_t
 {
     public:
         VariantID_t();        		// create a Variant ID not in the database 
-        VariantID_t(db_id_t pid);       // read from the DB 
+        VariantID_t(db_id_t pid);       // read from the DB
+	~VariantID_t();     // Deletes the File_t objects -- beware dangling File_t* in FileIR_t objects!  
 
         bool IsRegistered();               
         bool Register();    // accesses DB
@@ -40,7 +43,8 @@ class VariantID_t : public BaseObj_t
 
 	void DropFromDB();
 
-        std::set<File_t*>&    GetFiles() { return files; }
+	FileSet_t&    GetFiles() { return files; }
+	const FileSet_t&    GetFiles() const { return files; }
 
 	std::string GetName() { return name; }
 	void SetName(std::string newname) { name=newname;}
@@ -48,14 +52,14 @@ class VariantID_t : public BaseObj_t
 	File_t* GetMainFile() const;
 
 	friend std::ostream& libIRDB::operator<<(std::ostream& out, const VariantID_t& pid);
-	friend class FileIR_T;
-	friend class Function_t;
-	friend class AddressID_t;
-	friend class Instruction_t;
+	//friend class FileIR_T;
+	//friend class Function_t;
+	//friend class AddressID_t;
+	//friend class Instruction_t;
 
 	db_id_t GetOriginalVariantID() const { return orig_pid;}
 	
-	void CloneFiles(std::set<File_t*>& files);
+	void CloneFiles(FileSet_t& files);
 	File_t* CloneFile(File_t* fptr);
 
     private:
@@ -67,12 +71,9 @@ class VariantID_t : public BaseObj_t
 
 	void CreateTables();	// create the address, function and instruction tables 
 
-        std::set<File_t*> files;
+        FileSet_t files;
 
         void  ReadFilesFromDB();
-
-
-
 
 };
 

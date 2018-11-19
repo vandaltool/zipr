@@ -24,6 +24,10 @@ class pqxxDB_t : public DBinterface_t
 {
 	public:
 		pqxxDB_t();
+		~pqxxDB_t() override
+        	{
+                    // do nothing
+        	};
 		void IssueQuery(std::string query);
 		void IssueQuery(std::stringstream & query);
 		void MoveToNextRow();

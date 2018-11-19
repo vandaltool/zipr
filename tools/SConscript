@@ -15,6 +15,7 @@ dirs='''
 	dump_insns
 	hook_start
 	rida
+	thanos
 	'''
 
 nobuild_dirs='''

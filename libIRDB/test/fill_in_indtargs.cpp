@@ -25,6 +25,7 @@
 #include <fstream>
 #include <limits>
 #include <string>
+#include <algorithm>
 #include <stdlib.h>
 #include <string.h>
 #include <map>
@@ -53,8 +54,16 @@ using namespace MEDS_Annotation;
 #define arch_ptr_bytes() (firp->GetArchitectureBitWidth()/8)
 #define ALLOF(a) begin(a),end(a)
 
+extern void read_ehframe(FileIR_t* firp, EXEIO::exeio* );
+
+class PopulateIndTargs_t : public libIRDB::Transform_SDK::TransformStep_t
+{
+
+public:
+
+
 /* 
- * global variables 
+ * class variables 
  */
 
 //
@@ -83,36 +92,8 @@ map<virtual_offset_t,Instruction_t*> lookupInstructionMap;
 // the set of things that are partially unpinned already.
 set<Instruction_t*> already_unpinned;
 
-static long total_unpins=0;
+long total_unpins=0;
 
-
-/*
- * Forward prototypes 
- */
-
-
-static void check_for_PIC_switch_table32_type2(FileIR_t *firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t>& thunk_bases);
-static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t>& thunk_bases);
-static void check_for_PIC_switch_table32(FileIR_t*, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t>& thunk_bases);
-static void check_for_PIC_switch_table64(FileIR_t*, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop);
-static void check_for_nonPIC_switch_table(FileIR_t*, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop);
-static void check_for_nonPIC_switch_table_pattern2(FileIR_t*, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop);
-
-extern void read_ehframe(FileIR_t* firp, EXEIO::exeio* );
-
-
-
-
-template <class T> T MAX(T a, T b) 
-{
-	return a>b ? a : b;
-}
-
-
-/*
- * range - record a new eh_frame range into the ranges global variable.
- *   this is called from read_ehframe.
- */
 void range(virtual_offset_t start, virtual_offset_t end)
 { 	
 	pair<virtual_offset_t,virtual_offset_t> foo(start,end);
@@ -627,7 +608,7 @@ bool backup_until(const string &insn_type_regex_str, Instruction_t *& prev, Inst
 /*
  * check_for_PIC_switch_table32 - look for switch tables in PIC code for 32-bit code.
  */
-static void check_for_PIC_switch_table32(FileIR_t *firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
+void check_for_PIC_switch_table32(FileIR_t *firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
 {
 
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type1;
@@ -817,7 +798,7 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 
 
 
-static void check_for_PIC_switch_table32_type2(FileIR_t *firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
+void check_for_PIC_switch_table32_type2(FileIR_t *firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
 {
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type2;
 	auto ibtargets = InstructionSet_t();
@@ -954,7 +935,7 @@ cout<<hex<<"Found (type2) switch dispatch at "<<I5->GetAddress()->GetVirtualOffs
  *
  * nb: also works for 64-bit.
  */
-static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
+void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
 {
 	uint32_t ptrsize=firp->GetArchitectureBitWidth()/8;
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type3;
@@ -1181,7 +1162,7 @@ static void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* in
  * if so, see if we can trace back a few instructions to find a
  * the start of the table.
  */
-static void check_for_PIC_switch_table64(FileIR_t* firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop)
+void check_for_PIC_switch_table64(FileIR_t* firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop)
 {
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type4;
 /* here's the pattern we're looking for */
@@ -1546,7 +1527,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 
 	nb: handles both 32 and 64 bit
 */
-static void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop)
+void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop)
 {
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type5;
 	Instruction_t *I1 = nullptr;
@@ -1654,7 +1635,7 @@ static void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t
 
 	nb: handles both 32 and 64 bit
 */
-static void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop)
+void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop)
 {
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type6;
 	Instruction_t *I1 = nullptr;
@@ -2816,7 +2797,7 @@ void unpin_well_analyzed_ibts(FileIR_t *firp, int64_t do_unpin_opt)
 /*
  * fill_in_indtargs - main driver routine for 
  */
-void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t> forced_pins, int64_t do_unpin_opt)
+void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, int64_t do_unpin_opt)
 {
 	set<virtual_offset_t> thunk_bases;
 	find_all_module_starts(firp,thunk_bases);
@@ -2846,7 +2827,7 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t>
 		infer_targets(firp, elfiop->sections[secndx]);
 	
 	/* should move to separate function */
-	std::list<virtual_offset_t>::iterator forced_iterator = forced_pins.begin();
+	auto forced_iterator = forced_pins.begin();
 	for (; forced_iterator != forced_pins.end(); forced_iterator++)
 	{
 		possible_target(*forced_iterator, 0, ibt_provenance_t::ibtp_user);
@@ -2895,37 +2876,42 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, std::list<virtual_offset_t>
 
 }
 
+bool split_eh_frame_opt=true;
+int64_t do_unpin_opt=numeric_limits<int64_t>::max() ;
+db_id_t variant_id=BaseObj_t::NOT_IN_DATABASE;
+set<virtual_offset_t> forced_pins;
 
-int main(int argc, char* argv[])
+int parseArgs(const vector<string> step_args)
 {
-	auto argc_iter = (int)2;
-	auto split_eh_frame_opt=true;
-	auto do_unpin_opt=numeric_limits<int64_t>::max() ;
-	auto forced_pins=std::list<virtual_offset_t> ();
 
-	if(argc<2)
+	if(step_args.size()<1)
 	{
-		cerr<<"Usage: fill_in_indtargs <id> [--[no-]split-eh-frame] [--[no-]unpin] [addr,...]"<<endl;
+		cerr<<"Usage: <id> [--[no-]split-eh-frame] [--[no-]unpin] [addr,...]"<<endl;
 		exit(-1);
 	}
 
+	variant_id=stoi(step_args[0]);
+	cout<<"Parsing parameters with argc= " << step_args.size()<<endl;
+
 	// parse dash-style options.
-	while(argc_iter < argc && argv[argc_iter][0]=='-')
+	unsigned int argc_iter = 1;
+	while(argc_iter < step_args.size() && step_args[argc_iter][0]=='-')
 	{
-		if(string(argv[argc_iter])=="--no-unpin")
+		cout<<"Parsing parameter: "<< step_args[argc_iter] << endl;
+		if(step_args[argc_iter]=="--no-unpin")
 		{
 			do_unpin_opt=-1;
 			argc_iter++;
 		}
-		else if(string(argv[argc_iter])=="--unpin")
+		else if(step_args[argc_iter]=="--unpin")
 		{
 			do_unpin_opt = numeric_limits<decltype(do_unpin_opt)>::max() ;
 			argc_iter++;
 		}
-		else if(string(argv[argc_iter])=="--max-unpin" || string(argv[argc_iter])=="--max-unpins")
+		else if(step_args[argc_iter]=="--max-unpin" || step_args[argc_iter]=="--max-unpins")
 		{
 			argc_iter++;
-			auto arg_as_str=argv[argc_iter];
+			auto arg_as_str=step_args[argc_iter];
 			argc_iter++;
 
 			try { 
@@ -2938,93 +2924,134 @@ int main(int argc, char* argv[])
 			}
 			
 		}
-		else if(string(argv[argc_iter])=="--no-split-eh-frame")
+		else if(step_args[argc_iter]=="--no-split-eh-frame")
 		{
 			split_eh_frame_opt=false;
 			argc_iter++;
 		}
-		else if(string(argv[argc_iter])=="--split-eh-frame")
+		else if(step_args[argc_iter]=="--split-eh-frame")
 		{
 			split_eh_frame_opt=true;
 			argc_iter++;
 		}
 		else
 		{
-			cerr<<"Unknown option: "<<argv[argc_iter]<<endl;
-			exit(2);
+			cerr<<"Unknown option: "<<step_args[argc_iter]<<endl;
+			return 2;
 		}
 	}
 	// parse addr argumnets 
-	for (; argc_iter < argc; argc_iter++)
+	for (; argc_iter < step_args.size(); argc_iter++)
 	{
 		char *end_ptr;
-		virtual_offset_t offset = strtol(argv[argc_iter], &end_ptr, 0);
+		virtual_offset_t offset = strtol(step_args[argc_iter].c_str(), &end_ptr, 0);
 		if (*end_ptr == '\0')
 		{
 			cout << "force pinning: 0x" << std::hex << offset << endl;
-			forced_pins.push_back(offset);
+			forced_pins.insert(offset);
 		}
 	}
 
-	VariantID_t *pidp=nullptr;
-	FileIR_t * firp=nullptr;
+	cout<<"Setting unpin limit to: "<<dec<<do_unpin_opt<<endl;
+	return 0;
+}
+
+
+int executeStep(IRDBObjects_t *const irdb_objects)
+{
+	//VariantID_t *pidp=nullptr;
+	//FileIR_t * firp=nullptr;
 
 	try 
 	{
 		/* setup the interface to the sql server */
-		pqxxDB_t pqxx_interface;
-		BaseObj_t::SetInterface(&pqxx_interface);
+		const auto pqxx_interface=irdb_objects->getDBInterface();
+		BaseObj_t::SetInterface(pqxx_interface);
 
-		pidp=new VariantID_t(atoi(argv[1]));
+		auto  pidp = irdb_objects->addVariant(variant_id);
+		assert(pidp);
+
+		// pidp=new VariantID_t(atoi(argv[1]));
 
 
 		assert(pidp->IsRegistered()==true);
 
 		cout<<"New Variant, after reading registration, is: "<<*pidp << endl;
 
-		for(set<File_t*>::iterator it=pidp->GetFiles().begin();
-			it!=pidp->GetFiles().end();
-			++it)
+		for(const auto &this_file : pidp->GetFiles()) 
 		{
-			File_t* this_file=*it;
 			assert(this_file);
 
 			cout<<"Analyzing file "<<this_file->GetURL()<<endl;
 
 			// read the db  
-			firp=new FileIR_t(*pidp, this_file);
+                        auto firp = irdb_objects->addFileIR(variant_id, this_file->GetBaseID());
+			// firp=new FileIR_t(*pidp, this_file);
+			assert(firp);
 
+			firp->SetBaseIDS();
+			firp->AssembleRegistry();
 
 			// read the executeable file
 			int elfoid=firp->GetFile()->GetELFOID();
 		        pqxx::largeobject lo(elfoid);
-        		lo.to_file(pqxx_interface.GetTransaction(),"readeh_tmp_file.exe");
-        		EXEIO::exeio*    elfiop=new EXEIO::exeio;
+        		lo.to_file(pqxx_interface->GetTransaction(),"readeh_tmp_file.exe");
+        		auto elfiop=unique_ptr<EXEIO::exeio>(new EXEIO::exeio);
         		elfiop->load(string("readeh_tmp_file.exe"));
 
 			// find all indirect branch targets
-			fill_in_indtargs(firp, elfiop, forced_pins, do_unpin_opt);
+			fill_in_indtargs(firp, elfiop.get(), do_unpin_opt);
 			if(split_eh_frame_opt)
 				split_eh_frame(firp);
-			
-			// write the DB back and commit our changes 
-			firp->WriteToDB();
-
-			delete firp;
 		}
 
-		if(getenv("FII_NOUPDATE")==nullptr)
-			pqxx_interface.Commit();
+		if(getenv("FII_NOUPDATE")!=nullptr)
+			return -1;
 
 	}
 	catch (DatabaseError_t pnide)
 	{
 		cout<<"Unexpected database error: "<<pnide<<endl;
-		exit(-1);
+		return -1;
         }
-
-	assert(firp && pidp);
-
-	delete pidp;
+        catch(...)
+        {
+                cerr<<"Unexpected error"<<endl;
+                return -1;
+        }
 	return 0;
 }
+
+std::string getStepName(void) const override
+{
+	return std::string("fill_in_indtargs");
+}
+
+
+};
+
+
+shared_ptr<Transform_SDK::TransformStep_t> curInvocation;
+
+bool possible_target(virtual_offset_t p, virtual_offset_t from_addr, ibt_provenance_t prov)
+{
+	assert(curInvocation);
+	return (dynamic_cast<PopulateIndTargs_t*>(curInvocation.get()))->possible_target(p,from_addr,prov);
+}
+
+void range(virtual_offset_t start, virtual_offset_t end)
+{
+	assert(curInvocation);
+	return (dynamic_cast<PopulateIndTargs_t*>(curInvocation.get()))->range(start,end);
+}
+
+extern "C"
+shared_ptr<Transform_SDK::TransformStep_t> GetTransformStep(void)
+{
+        curInvocation.reset(new PopulateIndTargs_t());
+	return curInvocation;
+
+	//return shared_ptr<Transform_SDK::TransformStep_t>(new PopulateIndTargs_t());
+}
+
+

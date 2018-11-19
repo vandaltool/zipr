@@ -18,34 +18,21 @@
  *
  */
 
-#include <libIRDB-core.hpp>
+#include "fill_in_cfg.hpp"
 #include <iostream>
 #include <fstream>
-#include <stdlib.h>
 #include <string.h>
-#include <map>
 #include <assert.h>
 #include <sys/mman.h>
 #include <ctype.h>
-#include <exeio.h>
 #include "elfio/elfio.hpp"
 #include "split_eh_frame.hpp"
-
-int odd_target_count=0;
-int bad_target_count=0;
-int bad_fallthrough_count=0;
-EXEIO::exeio    *elfiop=NULL;
 
 using namespace libIRDB;
 using namespace std;
 using namespace EXEIO;
 
-set< pair<db_id_t,virtual_offset_t> > missed_instructions;
-auto failed_target_count=0U;
-
-pqxxDB_t pqxx_interface;
-
-void populate_instruction_map
+void PopulateCFG::populate_instruction_map
 	(
 		map< pair<db_id_t,virtual_offset_t>, Instruction_t*> &insnMap,
 		FileIR_t *firp
@@ -74,7 +61,7 @@ void populate_instruction_map
 
 }
 
-void set_fallthrough
+void PopulateCFG::set_fallthrough
 	(
 	map< pair<db_id_t,virtual_offset_t>, Instruction_t*> &insnMap,
 	DecodedInstruction_t *disasm, Instruction_t *insn, FileIR_t *firp
@@ -125,7 +112,7 @@ void set_fallthrough
 }
 
 
-void set_target
+void PopulateCFG::set_target
 	(
 	map< pair<db_id_t,virtual_offset_t>, Instruction_t*> &insnMap,
 	DecodedInstruction_t *disasm, Instruction_t *insn, FileIR_t *firp
@@ -200,30 +187,14 @@ void set_target
 	}
 }
 
-static File_t* find_file(FileIR_t* firp, db_id_t fileid)
+File_t* PopulateCFG::find_file(FileIR_t* firp, db_id_t fileid)
 {
-#if 0
-	set<File_t*> &files=firp->GetFiles();
-
-	for(
-		set<File_t*>::iterator it=files.begin();
-		it!=files.end();
-		++it
-	   )
-	{
-		File_t* thefile=*it;
-		if(thefile->GetBaseID()==fileid)
-			return thefile;
-	}
-	return NULL;
-#endif
 	assert(firp->GetFile()->GetBaseID()==fileid);
 	return firp->GetFile();
-
 }
 
 
-void add_new_instructions(FileIR_t *firp)
+void PopulateCFG::add_new_instructions(FileIR_t *firp)
 {
 	int found_instructions=0;
 	for(
@@ -353,7 +324,7 @@ void add_new_instructions(FileIR_t *firp)
 
 }
 
-void fill_in_cfg(FileIR_t *firp)
+void PopulateCFG::fill_in_cfg(FileIR_t *firp)
 {
 	int round=0;
 	
@@ -435,7 +406,7 @@ void fill_in_cfg(FileIR_t *firp)
 
 }
 
-static bool is_in_relro_segment(const int secndx)
+bool PopulateCFG::is_in_relro_segment(const int secndx)
 {
 	ELFIO::elfio *real_elfiop = reinterpret_cast<ELFIO::elfio*>(elfiop->get_elfio()); 
 	if(!real_elfiop)
@@ -477,7 +448,7 @@ static bool is_in_relro_segment(const int secndx)
 	return false;
 }
 
-void fill_in_scoops(FileIR_t *firp)
+void PopulateCFG::fill_in_scoops(FileIR_t *firp)
 {
 
 	auto max_base_id=firp->GetMaxBaseID();
@@ -551,7 +522,7 @@ void fill_in_scoops(FileIR_t *firp)
 
 }
 
-void fill_in_landing_pads(FileIR_t *firp)
+void PopulateCFG::fill_in_landing_pads(FileIR_t *firp)
 {
 	const auto eh_frame_rep_ptr = split_eh_frame_t::factory(firp);
 	// eh_frame_rep_ptr->parse(); already parsed now.
@@ -609,74 +580,56 @@ void fill_in_landing_pads(FileIR_t *firp)
 	
 }
 
-void parse_args(int argc, char* argv[], bool &fix_landing_pads)
-{
-	for (int i = 0; i < argc; ++i)
-	{
-		if (strcmp("--fix-landing-pads", argv[i]) == 0)
-		{
-			fix_landing_pads = true;
-		}
-		else if (strcmp("--no-fix-landing-pads", argv[i]) == 0)
-		{
-			fix_landing_pads = false;
-		}
-	}
+int PopulateCFG::parseArgs(const vector<string> step_args)
+{   
+    if(step_args.size()<1)
+    {
+            cerr<<"Usage: <id> [--fix-landing-pads | --no-fix-landing-pads]"<<endl;
+            return -1;
+    }
+
+    variant_id = stoi(step_args[0]);
+    
+    for (unsigned int i = 1; i < step_args.size(); ++i)
+    {
+            if (step_args[i]=="--fix-landing-pads")
+            {
+                    fix_landing_pads = true;
+            }
+            else if (step_args[i]=="--no-fix-landing-pads")
+            {
+                    fix_landing_pads = false;
+            }
+    }
+
+    cout<<"fix_landing_pads="<<fix_landing_pads<<endl;
+    
+    return 0;
 }
 
-int main(int argc, char* argv[])
+int PopulateCFG::executeStep(IRDBObjects_t *const irdb_objects)
 {
-	bool fix_landing_pads = true; // default
-
-	if(argc<2)
+    try 
 	{
-		cerr<<"Usage: fill_in_cfg <id> [--fix-landing-pads | --no-fix-landing-pads]"<<endl;
-		exit(-1);
-	}
+		const auto pqxx_interface = irdb_objects->getDBInterface();
+		// now set the DB interface for THIS PLUGIN LIBRARY -- VERY IMPORTANT
+		BaseObj_t::SetInterface(pqxx_interface);	
 
-	parse_args(argc, argv, fix_landing_pads);
-
-	cout<<"fix_landing_pads="<<fix_landing_pads<<endl;
-
-	VariantID_t *pidp=NULL;
-	FileIR_t * firp=NULL;
-
-	try 
-	{
-		/* setup the interface to the sql server */
-		BaseObj_t::SetInterface(&pqxx_interface);
-
-		pidp=new VariantID_t(atoi(argv[1]));
-
-		assert(pidp->IsRegistered()==true);
-
-		cout<<"New Variant, after reading registration, is: "<<*pidp << endl;
-
-		for(set<File_t*>::iterator it=pidp->GetFiles().begin();
-			it!=pidp->GetFiles().end();
-			++it
-		    )
+		const auto variant = irdb_objects->addVariant(variant_id);
+		for(File_t* file : variant->GetFiles())
 		{
-			File_t* this_file=*it;
-			assert(this_file);
-			cout<<"Filling in cfg for "<<this_file->GetURL()<<endl;
-
-
-			// read the db  
-			firp=new FileIR_t(*pidp, this_file);
+			const auto firp = irdb_objects->addFileIR(variant_id, file->GetBaseID());
 			assert(firp);
+                        cout<<"Filling in cfg for "<<firp->GetFile()->GetURL()<<endl;
 
 			/* get the OID of the file */
-			int elfoid=this_file->GetELFOID();
+			const int elfoid=firp->GetFile()->GetELFOID();
 
 			pqxx::largeobject lo(elfoid);
-                	lo.to_file(pqxx_interface.GetTransaction(),"readeh_tmp_file.exe");
+                	lo.to_file(pqxx_interface->GetTransaction(),"readeh_tmp_file.exe");
 
-			elfiop=new EXEIO::exeio;
-			assert(elfiop);
+			elfiop.reset(new exeio());
 			elfiop->load(string("readeh_tmp_file.exe"));
-			//EXEIO::dump::header(cout,*elfiop);
-			//EXEIO::dump::section_headers(cout,*elfiop);
 
 			fill_in_cfg(firp);
 			fill_in_scoops(firp);
@@ -685,29 +638,26 @@ int main(int argc, char* argv[])
 			{
 				fill_in_landing_pads(firp);
 			}
-
-			// write the DB back and commit our changes 
-			firp->WriteToDB();
-			delete firp;
-			delete elfiop;
-			firp=NULL;
-			elfiop=NULL;
-
 		}
-
-
-		pqxx_interface.Commit();
-
 	}
 	catch (DatabaseError_t pnide)
 	{
-		cout<<"Unexpected database error: "<<pnide<<endl;
-		exit(-1);
+		cerr<<"Unexpected database error: "<<pnide<<endl;
+		return -1;
         }
+	catch(...)
+	{
+		cerr<<"Unexpected error"<<endl;
+		return -1;
+	}
+    
+    return 0;
+}
 
-	assert(pidp);
 
-	delete pidp;
-	pidp=NULL;
-	return 0;
+extern "C"
+shared_ptr<Transform_SDK::TransformStep_t> GetTransformStep(void)
+{
+	const shared_ptr<Transform_SDK::TransformStep_t> the_step(new PopulateCFG());
+	return the_step;
 }

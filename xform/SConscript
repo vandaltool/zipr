@@ -30,7 +30,7 @@ CFLAGS="-fPIC  -DUBUNTU"
 
 myenv=myenv.Clone(CC="$CXX", CPPPATH=Split(cpppath), CFLAGS=CFLAGS)
 myenv.Append(CXXFLAGS=" -std=c++11 ")
-lib=myenv.Library(lib, Split(files))
+lib=myenv.SharedLibrary(lib, Split(files), LIBS=Split("IRDB-core EXEIO"), LIBPATH=Split("$SECURITY_TRANSFORMS_HOME/lib"))
 
 install=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
 

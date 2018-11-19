@@ -1,8 +1,7 @@
 import os
 
 
-Import('env')
-myenv=env.Clone()
+myenv=Environment()
 myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 myenv.Replace(ZEST_RUNTIME=os.environ['ZEST_RUNTIME'])
 

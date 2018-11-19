@@ -37,8 +37,17 @@ using namespace libIRDB;
 using namespace std;
 using namespace EXEIO;
 
-
+// macros
 #define ALLOF(a) begin(a),end(a)
+
+
+// externs
+extern void read_ehframe(FileIR_t* firp, EXEIO::exeio* );
+
+class FixCalls_t : public libIRDB::Transform_SDK::TransformStep_t
+{
+
+public:
 
 class Range_t
 {
@@ -64,7 +73,7 @@ struct Range_tCompare
         }
 };
 
-typedef std::set<Range_t, Range_tCompare> RangeSet_t;
+using RangeSet_t = std::set<Range_t, Range_tCompare>;
 
 
 
@@ -78,18 +87,8 @@ long long found_pattern=0;
 long long in_ehframe=0;
 long long no_fix_for_ib=0;
 long long no_fix_for_safefn=0;
-
-pqxxDB_t pqxx_interface;
-
 bool opt_fix_icalls = false;
 bool opt_fix_safefn = true;
-
-void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, uintptr_t offset);
-
-/* Read the exception handler frame so that those indirect branches are accounted for */
-void read_ehframe(FileIR_t* firp, EXEIO::exeio* );
-
-
 
 bool check_entry(bool &found, ControlFlowGraph_t* cfg)
 {
@@ -138,6 +137,8 @@ bool check_entry(bool &found, ControlFlowGraph_t* cfg)
 	return false;
 }
 
+using ControlFlowGraphMap_t = map<Function_t*, ControlFlowGraph_t*>;
+ControlFlowGraphMap_t cfg_optimizer;
 
 bool call_needs_fix(Instruction_t* insn)
 {
@@ -242,9 +243,7 @@ bool call_needs_fix(Instruction_t* insn)
 		return true;
 	}
 
-	typedef map<Function_t*, ControlFlowGraph_t*> ControlFlowGraphMap_t;
 
-	static ControlFlowGraphMap_t cfg_optimizer;
 
 	const auto is_found_it=cfg_optimizer.find(func);
 	const auto is_found=(is_found_it!=end(cfg_optimizer));
@@ -424,7 +423,7 @@ string adjust_esp_offset(string newbits, int offset)
  * convert_to_jump - assume newbits is a call insn, convert newbits to a jump, and return it.
  * Also: if newbits is a call [esp+k], add "offset" to k.
  */ 
-static void convert_to_jump(Instruction_t* insn, int offset)
+void convert_to_jump(Instruction_t* insn, int offset)
 {
 	string newbits=insn->GetDataBits();
 	//DISASM d;
@@ -956,15 +955,19 @@ void fix_other_pcrel(FileIR_t* firp)
 //
 // main rountine; convert calls into push/jump statements 
 //
-int main(int argc, char* argv[])
+// int main(int argc, char* argv[])
+
+
+bool fix_all=false;
+bool do_eh_frame=true;
+
+
+int parseArgs(const vector<string> step_args)
 {
 
-	bool fix_all=false;
-	bool do_eh_frame=true;
-
-	if(argc<2)
+	if(step_args.size()<1)
 	{
-		cerr<<"Usage: fix_calls <id> [--fix-all | --no-fix-all ] [--eh-frame | --no-ehframe] "<<endl;
+		cerr<<"Usage: <id> [--fix-all | --no-fix-all ] [--eh-frame | --no-ehframe] "<<endl;
 		cerr<<" --eh-frame " << endl;
 		cerr<<" --no-eh-frame 		Use (or dont) the eh-frame section to be compatible with exception handling." << endl;
 		cerr<<" --fix-all " << endl;
@@ -974,81 +977,84 @@ int main(int argc, char* argv[])
 		exit(-1);
 	}
 
-	for(int argc_iter=2; argc_iter<argc; argc_iter++)
+	for(unsigned int argc_iter=1; argc_iter<step_args.size(); argc_iter++)
 	{
-		if(strcmp("--fix-all", argv[argc_iter])==0)
+		if("--fix-all"==step_args[argc_iter])
 		{
 			fix_all=true;
 		}
-		else if(strcmp("--no-fix-all", argv[argc_iter])==0)
+		else if("--no-fix-all"==step_args[argc_iter])
 		{
 			fix_all=false;
 		}
-		else if(strcmp("--eh-frame", argv[argc_iter])==0)
+		else if("--eh-frame"==step_args[argc_iter])
 		{
 			do_eh_frame=true;
 		}
-		else if(strcmp("--no-eh-frame", argv[argc_iter])==0)
+		else if("--no-eh-frame"==step_args[argc_iter])
 		{
 			do_eh_frame=false;
 		}
-		else if(strcmp("--fix-icalls", argv[argc_iter])==0)
+		else if("--fix-icalls"==step_args[argc_iter])
 		{
 			opt_fix_icalls = true;
 		}
-		else if(strcmp("--no-fix-icalls", argv[argc_iter])==0)
+		else if("--no-fix-icalls"==step_args[argc_iter])
 		{
 			opt_fix_icalls = false;
 		}
-		else if(strcmp("--fix-safefn", argv[argc_iter])==0)
+		else if("--fix-safefn"==step_args[argc_iter])
 		{
 			opt_fix_safefn = true;
 		}
-		else if(strcmp("--no-fix-safefn", argv[argc_iter])==0)
+		else if("--no-fix-safefn"==step_args[argc_iter])
 		{
 			opt_fix_safefn = false;
 		}
 		else
 		{
-			cerr<<"Unrecognized option: "<<argv[argc_iter]<<endl;
-			exit(-1);
+			cerr<<"Unrecognized option: "<<step_args[argc_iter]<<endl;
+			return -1;
 		}
 	}
 	if(getenv("FIX_CALLS_FIX_ALL_CALLS"))
 		fix_all=true;
 
-	VariantID_t *pidp=NULL;
-	FileIR_t *firp=NULL;
+	variant_id=stoi(step_args[0]);
+	return 0;
+}
 
-	/* setup the interface to the sql server */
-	BaseObj_t::SetInterface(&pqxx_interface);
+db_id_t variant_id=BaseObj_t::NOT_IN_DATABASE;
 
-	cout<<"Reading variant "<<string(argv[1])<<" from database." << endl;
+
+int executeStep(IRDBObjects_t *const irdb_objects)
+{
+
+	cout<<"Reading variant "<<variant_id<<" from database." << endl;
 	try 
 	{
+		/* setup the interface to the sql server */
+                const auto pqxx_interface=irdb_objects->getDBInterface();
+                BaseObj_t::SetInterface(pqxx_interface);
 
-		pidp=new VariantID_t(atoi(argv[1]));
+		auto  pidp = irdb_objects->addVariant(variant_id);
 		cout<<"Fixing calls->push/jmp in variant "<<*pidp<< "." <<endl;
 
 		assert(pidp->IsRegistered()==true);
 
-                for(set<File_t*>::iterator it=pidp->GetFiles().begin();
-                        it!=pidp->GetFiles().end();
-                        ++it
-                    )
+		for(const auto &this_file : pidp->GetFiles())
                 {
-                        File_t* this_file=*it;
                         assert(this_file);
 
 			// read the db  
-			firp=new FileIR_t(*pidp,this_file);
+			auto firp = irdb_objects->addFileIR(variant_id, this_file->GetBaseID());
 	
 			assert(firp && pidp);
 	
 			eh_frame_ranges.clear();
                         int elfoid=firp->GetFile()->GetELFOID();
                         pqxx::largeobject lo(elfoid);
-                        lo.to_file(pqxx_interface.GetTransaction(),"readeh_tmp_file.exe");
+                        lo.to_file(pqxx_interface->GetTransaction(),"readeh_tmp_file.exe");
                         EXEIO::exeio*    elfiop=new EXEIO::exeio;
                         elfiop->load(string("readeh_tmp_file.exe"));
                         EXEIO::dump::header(cout,*elfiop);
@@ -1059,24 +1065,22 @@ int main(int argc, char* argv[])
 
 			fix_all_calls(firp,true,fix_all);
 			fix_other_pcrel(firp);
-			firp->WriteToDB();
 
 			cout<<"Done!"<<endl;
-			delete firp;
 
 		}
-		cout<<"Writing variant "<<*pidp<<" back to database." << endl;
-		pqxx_interface.Commit();
-
-
 	}
 	catch (DatabaseError_t pnide)
 	{
 		cout<<"Unexpected database error: "<<pnide<<endl;
-		exit(-1);
+		return -1;
+        }
+        catch(...)
+        {
+                cerr<<"Unexpected error"<<endl;
+                return -1;
         }
 
-	delete pidp;
 	return 0;
 }
 
@@ -1106,4 +1110,36 @@ bool possible_target(uintptr_t p, uintptr_t at, ibt_provenance_t prov)
 	// used for LDSA
 	return false;
 }
+
+
+std::string getStepName(void) const override
+{
+        return std::string("fix_calls");
+}
+
+}; // end class FixCalls_t
+
+shared_ptr<Transform_SDK::TransformStep_t> curInvocation;
+
+bool possible_target(virtual_offset_t p, virtual_offset_t from_addr, ibt_provenance_t prov)
+{
+        assert(curInvocation);
+        return (dynamic_cast<FixCalls_t*>(curInvocation.get()))->possible_target(p,from_addr,prov);
+}
+
+void range(virtual_offset_t start, virtual_offset_t end)
+{
+        assert(curInvocation);
+        return (dynamic_cast<FixCalls_t*>(curInvocation.get()))->range(start,end);
+}
+
+extern "C"
+shared_ptr<Transform_SDK::TransformStep_t> GetTransformStep(void)
+{
+        curInvocation.reset(new FixCalls_t());
+        return curInvocation;
+
+        //return shared_ptr<Transform_SDK::TransformStep_t>(new FixCalls_t());
+}
+
 
