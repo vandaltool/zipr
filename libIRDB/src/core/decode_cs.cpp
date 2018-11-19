@@ -169,6 +169,7 @@ void DecodedInstructionCapstone_t::Disassemble(const virtual_offset_t start_addr
 	else if(x86.opcode[0]==0xa4 && string(insn->mnemonic)=="movsb")
 		strcpy(insn->op_str, ""); // force into MOVS version
 
+/*
 	if(mnemonic=="movabs")
 	{
 		if(insn->detail->x86.operands[0].type==X86_OP_MEM)
@@ -182,6 +183,7 @@ void DecodedInstructionCapstone_t::Disassemble(const virtual_offset_t start_addr
 			insn->detail->x86.operands[1].type=X86_OP_IMM;
 		}
 	}
+*/
 
 	const auto cs_freer=[](cs_insn * insn) -> void 
 		{  
@@ -615,7 +617,7 @@ virtual_offset_t DecodedInstructionCapstone_t::getMemoryDisplacementOffset(const
 	  )
 		return the_insn->size - disp_size;
 
-	const auto possible_imm_sizes= string(the_insn->mnemonic)=="movabs" ?  set<int>({8}) : set<int>({1,2,4});
+	const auto possible_imm_sizes= string(the_insn->mnemonic)=="movabs" ?  set<int>({1,2,4,8}) : set<int>({1,2,4});
 
 	for(const auto imm_size : possible_imm_sizes)
 	{
