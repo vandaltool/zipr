@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 #
 # ps_analyze.sh - analyze a program and transform it for peasoupification to prevent exploit.
 #
@@ -12,57 +12,86 @@ source $(dirname $0)/ps_wrapper.source $0
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SECURITY_TRANSFORMS_HOME/lib
 
-realpath() {
+realpath() 
+{
   \cd "$1"
   /bin/pwd
 }
 
+init_globals()
+{
 
-##################################################################################
-# set default values for 
-##################################################################################
+	##################################################################################
+	# set default values for 
+	##################################################################################
 
-initial_on_phases="stratafy_with_pc_confine create_binary_script is_so gather_libraries meds_static pdb_register fill_in_cfg fill_in_indtargs clone fix_calls generate_spri spasm fast_annot fast_spri preLoaded_ILR1 preLoaded_ILR2"
+	initial_on_phases="stratafy_with_pc_confine create_binary_script is_so gather_libraries meds_static pdb_register fill_in_cfg fill_in_indtargs clone fix_calls generate_spri spasm fast_annot fast_spri preLoaded_ILR1 preLoaded_ILR2"
 
-##################################################################################
+	##################################################################################
 
-ulimit -s unlimited > /dev/null 2>&1 || true
+	ulimit -s unlimited > /dev/null 2>&1 || true
 
-# default watchdog value is 30 seconds
-#watchdog_val=30
-errors=0
-warnings=0
+	# default watchdog value is 30 seconds
+	#watchdog_val=30
+	errors=0
+	warnings=0
 
-# record statistics in database?
-record_stats=0
+	# record statistics in database?
+	record_stats=0
 
-# DEFAULT TIMEOUT VALUE
-INTEGER_TRANSFORM_TIMEOUT_VALUE=1800
-TWITCHER_TRANSFORM_TIMEOUT_VALUE=1800
-# Setting PN timeout to 6 hours for TNE. 
-# PN_TIMEOUT_VALUE=21600
+	export backend=strata
 
-export backend=strata
+	# 
+	# set default values for 
+	#
 
-# 
-# set default values for 
-#
+	#CONCOLIC_DIR=concolic.files_a.stratafied_0001
 
-CONCOLIC_DIR=concolic.files_a.stratafied_0001
+	# JOBID
 
-# JOBID
 
-JOBID="$(basename $1).$$"
+	user_critical_steps=""
 
-user_critical_steps=""
+	# 
+	# By default, big data approach is off
+	# To turn on the big data approach: modify check_options()
+	#
 
-# 
-# By default, big data approach is off
-# To turn on the big data approach: modify check_options()
-#
+	# alarm handler
+	THIS_PID=$$
 
-# alarm handler
-THIS_PID=$$
+	#
+	# turn off runtime protections for BED. turn off runtime prrotections for BED. turn off runtime prrotections for BED.
+	#
+	STRATA_DOUBLE_FREE=0
+	STRATA_HEAPRAND=0
+	STRATA_PC_CONFINE=0
+	STRATA_PC_CONFINE_XOR=0
+
+	#
+	# set the threshold value.  if a step errors with a more severe error (1=most severe, >1 lesser severe)
+	# than the error_threshold, we exit.
+	#
+	error_threshold=0
+
+	#
+	# record when we started processing:
+	#
+	ps_starttime=$($PS_DATE)
+
+
+	#
+	# stepnum used for counting how many steps peasoup executes
+	# 
+	stepnum=0
+
+
+	#
+	# set library path for shared library builds
+	#
+	export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$SECURITY_TRANSFORMS_HOME/lib"
+
+}
 handle_alarm()
 {
 	# reset handler
@@ -262,9 +291,10 @@ check_options()
 				if [ "X$2" = "Xzipr" ]; then
 					echo "Using Zipr backend."
 					export backend="zipr"
-					phases_spec=" $phases_spec stratafy_with_pc_confine=off generate_spri=off spasm=off fast_annot=off zipr=on preLoaded_ILR1=off  preLoaded_ILR2=off fast_spri=off create_binary_script=off is_so=off"
+					phases_spec=" $phases_spec gather_libraries=off clone=off stratafy_with_pc_confine=off generate_spri=off spasm=off fast_annot=off preLoaded_ILR1=off  preLoaded_ILR2=off fast_spri=off create_binary_script=off is_so=off"
 					phases_spec=${phases_spec/preLoaded_ILR1=on/}
 					phases_spec=${phases_spec/preLoaded_ILR2=on/}
+					post_phases_spec="$post_phases_spec zipr=on"
 					step_options_gather_libraries="$step_options_gather_libraries --main_exe_only"
 				elif [ "X$2" = "Xstrata" ]; then
 					echo "Using Strata backend."
@@ -343,6 +373,36 @@ check_options()
 		esac
 	done
 
+	phases_spec="$phases_spec $post_phases_spec "
+
+	#
+	# Check/parse input/output file
+	#
+	if [ -z $2 ]; then
+	  fail_gracefully "Usage: $0 <original_binary> <new_binary> <options>"
+	fi
+
+	#
+	# record the original program's name
+	#
+	orig_exe=$1
+	shift
+
+	#
+	# sanity check incoming arg.
+	#
+	if [ ! -f $orig_exe ]; then
+		fail_gracefully "ps_analyze cannot find file named $orig_exe."
+	fi
+
+	JOBID="$(basename $orig_exe).$$"
+
+	#
+	# record the new program's name
+	#
+	export protected_exe=$1
+	shift
+
 	# report errors if found
 	if [ ! -z $1 ]; then
 		echo Unparsed parameters:
@@ -350,12 +410,6 @@ check_options()
 	for arg do echo '--> '"\`$arg'" ; done
 	if [ ! -z $1 ]; then
 		exit -3;	
-	fi
-
-	# turn off heaprand, signconv_func_monitor, and watchdog double_free if twitcher is on for now
-	is_step_on twitchertransform
-	if [[ $? = 1 && "$TWITCHER_HOME" != "" ]]; then
-		phases_spec="$phases_spec heaprand=off signconv_func_monitor=off watchdog=off double_free=off"
 	fi
 
 	#
@@ -404,7 +458,7 @@ is_step_error()
 
 	case $my_step in
 		*)
-			if [ $my_error -eq 0 ]; then
+			if [[ $my_error -eq 0 ]]; then
 				# if not otherwise specified, programs should return 0
 				return 0;
 			fi
@@ -505,15 +559,23 @@ perform_step()
 
 	performed_steps="$performed_steps $step"
 
-	logfile=logs/$step.log
+	echo "$command"|grep "thanos.exe " > /dev/null
+        grep_res=$?
+        using_thanos=!$grep_res
+
+	if [[ $using_thanos -eq 0 ]]; then
+		logfile=logs/$step.log
+	else
+		logfile=logs/thanos.log
+	fi
 
 	if [ "$step" = "$stop_before_step" ]; then 
 		echo "ps_analyze has been asked to stop before step $step."
-		echo "command is:  $command"
+		echo "command is:  LD_LIBRARY_PATH=$SECURITY_TRANSFORMS_HOME/lib gdb --args $command"	
 		exit 1
 	fi
 	if [ "$step" = "$dump_before_step" ]; then 
-		echo " ---- ps_analyze has been asked to dump before step $step."
+		echo " ---- ps_analyze has been asked to dump before step $step."	
 		$SECURITY_TRANSFORMS_HOME/plugins_install/dump_map.exe $cloneid > logs/dump_before.log
 	fi
 
@@ -542,21 +604,36 @@ perform_step()
 		fi
 	fi
 
-	echo -n Performing step "$step" [dependencies=$mandatory] ...
 	starttime=`$PS_DATE`
 
+		
 	# If verbose is on, tee to a file 
-	if [ ! -z "$DEBUG_STEPS" ]; then
-		$command 
+	if [[ ! -z "$DEBUG_STEPS" ]]; then
+		echo -n Performing step "$step" [dependencies=$mandatory] ...
+		eval $command 
 		command_exit=$?
-	elif [ ! -z "$VERBOSE" ]; then
-		$command 2>&1 | tee $logfile
+	elif [[ ! -z "$VERBOSE" && $using_thanos -eq 0 ]]; then
+		echo -n Performing step "$step" [dependencies=$mandatory] ...
+		eval $command 2>&1 | tee $logfile
 		command_exit=${PIPESTATUS[0]} # this funkiness gets the exit code of $command, not tee
+	elif [[ ! -z "$VERBOSE" && $using_thanos -ne 0 ]]; then
+		echo -n Performing step "$step" [dependencies=$mandatory] ...
+		eval $command > $logfile 2>&1
+		# display logs to stdout
+		for this_step in $step
+		do
+			cat logs/$this_step.log
+		done
+		cat $logfile
+	elif [[ $using_thanos -ne 0 ]]; then
+		eval $command
+		command_exit=$?
 	else
-		$command > $logfile 2>&1 
+		echo -n Performing step "$step" [dependencies=$mandatory] ...
+		eval $command > $logfile 2>&1 
 		command_exit=$?
 	fi
-
+	
 	endtime=`$PS_DATE`
 	
 	echo "#ATTRIBUTE start_time=$starttime" >> $logfile
@@ -567,51 +644,59 @@ perform_step()
 	echo "#ATTRIBUTE step_exitcode=$command_exit" >> $logfile
 
 	# report job status
-	if [ $command_exit -eq 0 ]; then
-		if [ $record_stats -eq 1 ]; then
+	if [[ $command_exit -eq 0 ]]; then
+		if [[ $record_stats -eq 1 ]]; then
 			$PEASOUP_HOME/tools/db/job_status_report.sh "$JOBID" "$step" "$stepnum" completed "$endtime" success $logfile
 		fi
 	else
-		if [ $record_stats -eq 1 ]; then
+		if [[ $record_stats -eq 1 ]]; then
 			$PEASOUP_HOME/tools/db/job_status_report.sh "$JOBID" "$step" "$stepnum" completed "$endtime" error $logfile
 		fi
 	fi
 
-	is_step_error $step $command_exit
-	if [ $? -ne 0 ]; then
-		echo "Done.  Command failed! ***************************************"
+	if [[ $using_thanos -eq 0 ]]; then
+		is_step_error $step $command_exit
+		if [[ $? -ne 0 ]]; then
+			echo "Done.  Command failed! ***************************************"
 
-		# check if we need to exit
-		stop_if_error $step
-		if [ $? -gt $error_threshold ]; then 
-			echo The $step step is necessary, but failed.  Exiting ps_analyze early.
-			exit -1;
+			# check if we need to exit
+			stop_if_error $step
+			if [ $? -gt $error_threshold ]; then 
+				echo The $step step is necessary, but failed.  Exiting ps_analyze early.
+				exit -1;
+			fi
+			errors=1
+		elif [ -f warning.txt ]; then
+			# report warning to user.
+			warnings=1
+			echo "Done.  Command had serious warnings! ***************************************"
+			cat warning.txt
+			# report warning in log file, line by line, as an attribute.
+			while IFS= read -r line; do
+				echo
+				echo "#ATTRIBUTE serious_warning_text=\"$line\""  >> $logfile
+			done < "warning.txt"
+			# remove warning.txt so we don't report these warnings again.
+			rm -f warning.txt
+		else
+			echo "Done.  Successful."
 		fi
-		errors=1
-	elif [ -f warning.txt ]; then
-		# report warning to user.
-		warnings=1
-		echo "Done.  Command had serious warnings! ***************************************"
-		cat warning.txt
-		# report warning in log file, line by line, as an attribute.
-		while IFS= read -r line; do
-			echo
-			echo "#ATTRIBUTE serious_warning_text=\"$line\""  >> $logfile
-		done < "warning.txt"
-		# remove warning.txt so we don't report these warnings again.
-		rm -f warning.txt
-	else
-		echo Done.  Successful.
 	fi
 
 	# move to the next step 
 	stepnum=`expr $stepnum + 1`
 
+	if [[ $using_thanos -ne 0 ]]; then
+		for this_step in $step
+        	do
+        		all_logs="$all_logs logs/$this_step.log"
+        	done
+	fi
 	all_logs="$all_logs $logfile"
-
+	
 	if [ "$step" = "$stop_after_step" ]; then 
 		echo "ps_analyze has been asked to stop after step $step."
-		echo "command is:  $command"
+		echo "command is:  LD_LIBRARY_PATH=$SECURITY_TRANSFORMS_HOME/lib gdb --args $command"
 		exit 1
 	fi
 	if [ "$step" = "$dump_after_step" ]; then 
@@ -621,39 +706,46 @@ perform_step()
 	return $command_exit
 }
 
+run_current_thanos_steps()
+{
+	# echo "Doing thanos steps: $thanos_plugins"
+	# execute last block of thanos plugins if there are any left	
+	if [[ $thanos_plugins ]]; then
+		perform_step "$thanos_steps" none "$plugin_path/thanos.exe "$thanos_plugins""
+                thanos_plugins=""
+                thanos_steps=""		
+	fi
+}
+
+
 do_plugins()
 {
 
 	builtin_steps="
 		gather_libraries
 		meds_static
+		rida
 		pdb_register
-		fill_in_cfg
-		fill_in_indtargs
 		clone
-		fix_calls
 		manual_test
-		zipr
 		generate_spri
 		preLoaded_ILR1
 		preLoaded_ILR2
 		spasm
 		fast_annot
 		fast_spri
-		rida
 	"
-
 	for i in $phases_spec
 	do
 		stepname=$i
 		stepname=$(basename $stepname =on)
 		stepname=$(basename $stepname =off)
-		
+			
 		echo $builtin_steps | grep $stepname  > /dev/null 2> /dev/null 
 	
 		if [ $? = 0 ]; then
 			# skip builtin steps so we don't get errors.
-			continue;
+			continue
 		fi
 		is_step_on $stepname
 		if [ $? = 0 ]; then
@@ -666,8 +758,36 @@ do_plugins()
 		value="${!this_step_options_name}"
 
 		plugin_path=$SECURITY_TRANSFORMS_HOME/plugins_install/
+
+
+		# first check if step can be invoked as a thanos plugin
+                if [ -x $plugin_path/lib$stepname.so ]; then
+			# if this step is a stop before/after step, cleanup anything outstanding so we can do the one step special.
+			if [[ $stepname == $stop_before_step ]] || [[ $stepname == $stop_after_step ]] ||
+			   [[ $stepname == $dump_before_step ]] || [[ $stepname == $dump_after_step ]]; then
+				run_current_thanos_steps
+			fi
+			# add step to the block of contiguous thanos plugins
+			stop_if_error $stepname			
+			if [[ $? -gt $error_threshold ]]; then
+                        	thanos_plugins="$thanos_plugins \"$stepname --step-args $cloneid $value\""
+			else
+				thanos_plugins="$thanos_plugins \"$stepname -optional --step-args $cloneid $value\""	
+			fi
+			thanos_steps="$thanos_steps $stepname"
+			# if this step is a stop before/after step, do it special, so we exit early.
+			if [[ $stepname == $stop_before_step ]] || [[ $stepname == $stop_after_step ]]; then
+				perform_step $stepname none "$plugin_path/thanos.exe --no-redirect "$thanos_plugins""
+			elif   [[ $stepname == $dump_before_step ]] || [[ $stepname == $dump_after_step ]]; then
+				perform_step $stepname none "$plugin_path/thanos.exe "$thanos_plugins""
+			fi
+			continue
+		elif [[ $thanos_steps ]]; then 
+			# execute preceding block of thanos plugin steps now
+			run_current_thanos_steps
+		fi
 		
-		# invoke .exe or .sh as a plugin step.
+		# invoke .exe, or .sh as a plugin step
 		if [ -x $plugin_path/$stepname.exe ]; then
 			perform_step $stepname none $plugin_path/$stepname.exe  $cloneid  $value
 		elif [ -x $plugin_path/$stepname.sh ]; then
@@ -681,18 +801,9 @@ do_plugins()
 			warnings=1
 		fi
 	done
-		
 
-# old style -- scan plugins in alphabetical order.
-#	# do plugins directory
-#	for i in $SECURITY_TRANSFORMS_HOME/plugins_install/*.exe $SECURITY_TRANSFORMS_HOME/plugins_install/*.sh;
-#	do
-#		stepname=`basename $i .exe`
-#		stepname=`basename $stepname .sh`
-#		this_step_options_name=step_options_$stepname
-#		value="${!this_step_options_name}"
-#		perform_step $stepname none $i $cloneid  $value
-#	done
+	# execute last block of thanos plugins if there are any left	
+	run_current_thanos_steps
 
 }
 
@@ -710,17 +821,6 @@ report_logs()
 	echo "#ATTRIBUTE hostname=$myhost" >> $logfile
 	echo "#ATTRIBUTE step_name=all_helix" >> $logfile
 
-#	for i in $all_logs
-#	do
-#		stepname=`basename $i .log`
-#		echo >> $logfile
-#		echo ------------------------------------------------------- >> $logfile
-#		echo ----- From $i ------------------- >> $logfile
-#		echo ------------------------------------------------------- >> $logfile
-#		cat $i |sed "s/^# ATTRIBUTE */# ATTRIBUTE ps_$i_/" >> $logfile
-#		echo ------------------------------------------------------- >> $logfile
-#		echo >> $logfile
-#	done
 }
 
 
@@ -832,488 +932,242 @@ compatcheck()
 }
 
 
-#
-# turn on debugging output if it's requested.
-#
-if [ ! -z "$VERBOSE" ]; then
-	set -x
-fi
-
-
-#
-# set the threshold value.  if a step errors with a more severe error (1=most severe, >1 lesser severe)
-# than the error_threshold, we exit.
-#
-error_threshold=0
-
-#
-# record when we started processing:
-#
-ps_starttime=$($PS_DATE)
-
-
-#
-# stepnum used for counting how many steps peasoup executes
-# 
-stepnum=0
-
-
-#
-# Check for proper environment variables and files that are necessary to peasoupify a program.
-#
-check_environ_vars PEASOUP_HOME SMPSA_HOME SECURITY_TRANSFORMS_HOME IDAROOT
-
-
-
-if [ ! -x $SMPSA_HOME/SMP-analyze.sh ] &&  [ ! -x $SMPSA_HOME/SMP-analyze.sh ] ; then
-	echo "SMP-analyze script (local or remote) not found"
-	exit 1
-fi
-
-#
-# Check/parse options
-#
-if [ -z $2 ]; then
-  fail_gracefully "Usage: $0 <original_binary> <new_binary> <options>"
-fi
-
-#
-# record the original program's name
-#
-orig_exe=$1
-newname=a
-shift
-
-
-#
-# sanity check incoming arg.
-#
-if [ ! -f $orig_exe ]; then
-	fail_gracefully "ps_analyze cannot find file named $orig_exe."
-fi
-
-#
-# record the new program's name
-#
-export protected_exe=$1
-shift
-
-#
-# finish argument parsing
-#
-check_options "$@"
-
-
-#
-# check for input file existance and file type
-#
-compatcheck $orig_exe
-
-#
-# new program
-#
-name=`basename $orig_exe`
-
-#
-# create a new working directory.  default to something that allows parallelism unless asked by the user.
-#
-if [ "X$tempdir_opt" != "X" ]; then
-	newdir="$tempdir_opt"
-else
-	newdir=peasoup_executable_directory.$JOBID
-fi
-export newdir
-
-# create a working dir for all our files using the pid
-mkdir $newdir
-
-# store the original executable as a.ncexe
-cp $orig_exe $newdir/$newname.ncexe
-
-file $orig_exe|grep 32-bit >/dev/null 2>&1 
-if [ $? = 0 ]; then 
-	if [ `uname -p` = 'x86_64' ]; then
-		STRATA_HOME=$STRATA_HOME32
-		STRATA=$STRATA32
-	fi
-	arch_bits=32
-else
-	arch_bits=64
-fi
-
-
-if [ $backend = "strata" ]; then
-	check_environ_vars STRATA_HOME 
-	check_files $PEASOUP_HOME/tools/getsyms.sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh 
-elif [ $backend = "zipr" ]; then
-	check_environ_vars ZIPR_INSTALL
-	check_files $ZIPR_INSTALL/bin/zipr.exe
-else
-	echo "Unknown backend!"
-	exit 1
-fi
-
-#
-# setup libstrata.so.  We'll setup two versions, one with symbols so we can debug, and a stripped, faster-loading version.
-# by default, use the faster version.  copy in the .symbosl version for debugging
-#
-if [ -f $STRATA_HOME/lib/libstrata.so  -a $backend = "strata" ]; then
-	cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.symbols
-	cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.nosymbols
-	$PS_STRIP $newdir/libstrata.so.nosymbols
-	cp $newdir/libstrata.so.nosymbols $newdir/libstrata.so
-fi
-
-
-adjust_lib_path 
-
-
-
-# make sure we overwrite out output file one way or another
-rm -f $protected_exe
-
-# and switch to that dir
-cd $newdir
-
-check_for_bad_funcs $newname.ncexe
-
-# next, create a location for our log files
-mkdir logs 	
-
-
-#
-# turn off runtime protections for BED. turn off runtime prrotections for BED. turn off runtime prrotections for BED.
-#
-STRATA_DOUBLE_FREE=0
-STRATA_HEAPRAND=0
-STRATA_PC_CONFINE=0
-STRATA_PC_CONFINE_XOR=0
-
-
-#
-# copy the .so files for this exe into a working directory.
-#
-perform_step gather_libraries mandatory $PEASOUP_HOME/tools/do_gatherlibs.sh $step_options_gather_libraries
-
-#
-# Running IDA Pro static analysis phase ...
-#
-perform_step meds_static mandatory $PEASOUP_HOME/tools/do_idapro.sh $name $step_options_meds_static
-perform_step rida mandatory $SECURITY_TRANSFORMS_HOME/plugins_install/rida.exe ./a.ncexe ./a.ncexe.annot ./a.ncexe.infoannot ./a.ncexe.STARSxrefs $step_options_rida
-touch a.ncexe.annot
-cp a.ncexe.annot a.ncexe.annot.full
-
-##
-## Populate IR Database
-##
-
-#
-# get some simple info for the program
-#	
-if [ -z $DB_PROGRAM_NAME ]; then
-#	DB_PROGRAM_NAME=`basename $orig_exe | sed "s/[^a-zA-Z0-9]/_/g"`
-	DB_PROGRAM_NAME=`basename $protected_exe | sed "s/[^a-zA-Z0-9]/_/g"`
-fi
-MD5HASH=`$PS_MD5SUM $newname.ncexe | cut -f1 -d' '`
-
-INSTALLER=`pwd`
-
-#
-# register the program
-#
-perform_step pdb_register mandatory "$PEASOUP_HOME/tools/db/pdb_register.sh $DB_PROGRAM_NAME `pwd`" registered.id
-is_step_on pdb_register
-if [ $? = 1 ]; then
-	varid=`cat registered.id`
-	if [ ! $varid -gt 0 ]; then
-		fail_gracefully "Failed to write Variant into database. Exiting early.  Is postgres running?  Can $PGUSER access the db?"
-	fi
-fi
-
-if [ $record_stats -eq 1 ]; then
-	$PEASOUP_HOME/tools/db/job_spec_register.sh "$JOBID" "$DB_PROGRAM_NAME" "$varid" 'submitted' "$ps_starttime"
-fi
-
-
-if [ $record_stats -eq 1 ]; then
-	$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'pending' "$ps_starttime"
-fi
-
-# build basic IR
-perform_step fill_in_cfg mandatory $SECURITY_TRANSFORMS_HOME/bin/fill_in_cfg.exe $varid $step_options_fill_in_cfg
-perform_step fill_in_safefr mandatory $SECURITY_TRANSFORMS_HOME/bin/fill_in_safefr.exe $varid 
-perform_step fill_in_indtargs mandatory $SECURITY_TRANSFORMS_HOME/bin/fill_in_indtargs.exe $varid $step_options_fill_in_indtargs
-
-# finally create a clone so we can do some transforms 
-perform_step clone mandatory $SECURITY_TRANSFORMS_HOME/bin/clone.exe $varid clone.id
-is_step_on clone
-if [ $? = 1 ]; then
-	cloneid=`cat clone.id`
-	#	
-	# we could skip this check and simplify ps_analyze if we say that cloning is necessary in is_step_error
+do_prefix_steps()
+{
 	#
-	if [ -z "$cloneid" -o  ! "$cloneid" -gt 0 ]; then
-		fail_gracefully "Failed to create variant.  Is postgres running properly?"
+	# copy the .so files for this exe into a working directory.
+	#
+	perform_step gather_libraries mandatory $PEASOUP_HOME/tools/do_gatherlibs.sh $step_options_gather_libraries
+
+	#
+	# Running IDA Pro static analysis phase ...
+	#
+	perform_step meds_static mandatory $PEASOUP_HOME/tools/do_idapro.sh $name $step_options_meds_static
+	perform_step rida mandatory $SECURITY_TRANSFORMS_HOME/plugins_install/rida.exe ./a.ncexe ./a.ncexe.annot ./a.ncexe.infoannot ./a.ncexe.STARSxrefs $step_options_rida
+	touch a.ncexe.annot
+	cp a.ncexe.annot a.ncexe.annot.full
+
+	##
+	## Populate IR Database
+	##
+
+	#
+	# get some simple info for the program
+	#	
+	if [ -z $DB_PROGRAM_NAME ]; then
+		DB_PROGRAM_NAME=`basename $protected_exe | sed "s/[^a-zA-Z0-9]/_/g"`
 	fi
-fi
+	#MD5HASH=`$PS_MD5SUM $newname.ncexe | cut -f1 -d' '`
 
-# do the basic tranforms we're performing for peasoup 
-perform_step fix_calls mandatory $SECURITY_TRANSFORMS_HOME/bin/fix_calls.exe $cloneid	$step_options_fix_calls
-# look for strings in the binary 
-perform_step find_strings none $SECURITY_TRANSFORMS_HOME/bin/find_strings.exe $cloneid $step_options_find_strings
+	INSTALLER=`pwd`
 
-#
-# analyze binary for string signatures
-#
-perform_step appfw find_strings $PEASOUP_HOME/tools/do_appfw.sh $arch_bits $newname.ncexe logs/find_strings.log $step_optoins_appfw
-
-#
-# protect_pov
-#
-perform_step protect_pov fill_in_indtargs $PEASOUP_HOME/tools/do_protect_pov.sh $PWD/a.ncexe $name $PWD/crash.pov.cso $step_options_protect_pov
-if [ -f crash.pov.cso  ]; then
-	step_options_watch_allocate="$step_options_watch_allocate --warning_file=crash.pov.cso"
-fi
-
-#
-# check signatures to determine if we know which program this is.
-#
-perform_step determine_program find_strings $PEASOUP_HOME/tools/match_program.sh 
-
-# If we ran determine program and got a log, then see if we were successful.
-if [ -f logs/determine_program.log ]; then
-	program=$(cat logs/determine_program.log |grep "Program is a version of "|sed -e "s/Program is a version of .//" -e "s/.$//")
-fi
-
-if [[ "$program" != "" ]]; then
-	echo "Detected program is a version of '$program'"
-
-	manual_test_script=$PEASOUP_HOME/tests/$program/test_script.sh
-
-	if [[ -f "$manual_test_script" ]];then
-		#check if the selected script succeeds
-		#I'm currently capping the validation run to 6 minutes
-		#to avoid the case where every test times out, but doesn't
-		#invalidate the test. 
-		eval timeout 360 $manual_test_script `pwd`/$newname.ncexe `pwd`/$newname.ncexe &>logs/script_validation.log
-		
-		if [[ ! $? -eq 0 ]]; then
-			echo "Manual Script Failure: test script fails to validate original program, ignoring selected script."
-			manual_test_script=""
+	#
+	# register the program
+	#
+	perform_step pdb_register mandatory "$PEASOUP_HOME/tools/db/pdb_register.sh $DB_PROGRAM_NAME `pwd`" registered.id
+	is_step_on pdb_register
+	if [ $? = 1 ]; then
+		varid=`cat registered.id`
+		if [ ! $varid -gt 0 ]; then
+			fail_gracefully "Failed to write Variant into database. Exiting early.  Is postgres running?  Can $PGUSER access the db?"
 		fi
-	else
-		echo "Manual Test Script: $manual_test_script Not Found."
-		manual_test_script=""
-	fi
-else
-	echo "Program not detected in signature database."
-fi
-
-#At this point we will know if manual testing should be turned off automatically
-#i.e., we will know if a manual_test_script file exists.
-if [ -z $manual_test_script ]; then
-	phases_spec=" $phases_spec manual_test=off"
-else
-	phases_spec=" $phases_spec manual_test=on"
-fi
-
-#
-# Run script to setup manual tests
-#
-perform_step manual_test none $PEASOUP_HOME/tools/do_manualtests.sh $name $protected_exe $manual_test_script $manual_test_coverage_file
-
-#
-# remove the parts of the annotation file not needed at runtime
-#
-perform_step fast_annot meds_static $PEASOUP_HOME/tools/fast_annot.sh
-
-
-#
-# sfuzz: simple fuzzing to find crashes and record crashing instruction
-# @todo: 2nd arg is the benchmark name but we're currently passing in
-#        the binary in
-# 
-perform_step sfuzz none $PEASOUP_HOME/tools/do_sfuzz.sh $newname.ncexe $orig_exe crash.sfuzz.cso
-# if crash found, feed the cso file to the watch allocate step
-if [ -f crash.sfuzz.cso  ]; then
-	step_options_watch_allocate="$step_options_watch_allocate --warning_file=crash.sfuzz.cso"
-fi
-
-#
-# cinderella: infer malloc and other libc functions
-#
-perform_step cinderella clone,fill_in_indtargs,fill_in_cfg $PEASOUP_HOME/tools/do_cinderella.sh $cloneid
-
-#
-# For CGC, pad malloc
-#
-perform_step cgc_hlx cinderella $SECURITY_TRANSFORMS_HOME/bin/cgc_hlx.exe --varid=$cloneid $step_options_cgc_hlx
-
-#
-# Do P1/Pn transform.
-#
-#perform_step p1transform meds_static,clone $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed.sh $PN_TIMEOUT_VALUE $step_options_p1transform
-		
-#
-# Do integer transform.
-#
-if [ -z "$program" ]; then
-   program="unknown"
-fi
-
-perform_step integertransform meds_static,clone $PEASOUP_HOME/tools/do_integertransform.sh $cloneid $program $CONCOLIC_DIR $INTEGER_TRANSFORM_TIMEOUT_VALUE $step_options_integertransform
-
-#
-# perform step to instrument pgm with return shadow stack
-#
-perform_step ret_shadow_stack meds_static,clone $PEASOUP_HOME/tools/do_rss.sh --varid $cloneid  $step_options_ret_shadow_stack
-
-#
-# Do Twitcher transform step if twitcher is present
-#
-if [[ "$TWITCHER_HOME" != "" && -d "$TWITCHER_HOME" ]]; then
-	perform_step twitchertransform none $TWITCHER_HOME/twitcher-transform/do_twitchertransform.sh $cloneid $program $CONCOLIC_DIR $TWITCHER_TRANSFORM_TIMEOUT_VALUE
-fi
-
-# input filtering
-perform_step input_filtering clone,fill_in_indtargs,fill_in_cfg $SECURITY_TRANSFORMS_HOME/bin/watch_syscall.exe  --varid $cloneid --do_input_filtering $step_options_input_filtering
-
-# watch syscalls
-perform_step watch_allocate clone,fill_in_indtargs,fill_in_cfg,pdb_register $SECURITY_TRANSFORMS_HOME/bin/watch_syscall.exe  --varid $cloneid --do_sandboxing $step_options_watch_allocate
-
-#
-# check for any steps turned on by the --step option that aren't explicitly mentioned.
-# if found, run the step as a plugin to $PS
-#
-do_plugins
-
-# generate aspri, and assemble it to bspri
-perform_step generate_spri mandatory $SECURITY_TRANSFORMS_HOME/bin/generate_spri.exe $($PEASOUP_HOME/tools/is_so.sh a.ncexe) $cloneid a.irdb.aspri
-
-# hack to work with cgc file size restrictions.
-stratafier_file=`ls -1 *nostrip 2>/dev/null |head -1` 
-if [ "X$stratafier_file" = "X" ]; then 
-	stratafier_file=stratafier.o.exe
-fi
-perform_step spasm mandatory $SECURITY_TRANSFORMS_HOME/bin/spasm a.irdb.aspri a.irdb.bspri a.ncexe $stratafier_file libstrata.so.symbols 
-
-perform_step fast_spri spasm $PEASOUP_HOME/tools/fast_spri.sh a.irdb.bspri a.irdb.fbspri 
-
-# preLoaded_ILR step
-perform_step preLoaded_ILR1 fast_spri $STRATA_HOME/tools/preLoaded_ILR/generate_hashfiles.exe a.irdb.fbspri 
-perform_step preLoaded_ILR2 preLoaded_ILR1 $PEASOUP_HOME/tools/generate_relocfile.sh a.irdb.fbspri
-
-
-# put a front end in front of a.stratafied which opens file 990 for strata to read.
-perform_step spawner stratafy_with_pc_confine  $PEASOUP_HOME/tools/do_spawner.sh 
-
-# put a front end in front of a.stratafied which opens file 990 for strata to read.
-perform_step get_pins spasm,fast_spri  $PEASOUP_HOME/tools/get_pins.sh 
-
-# zipr
-perform_step zipr clone,fill_in_indtargs,fill_in_cfg,pdb_register env LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ZIPR_INSTALL/lib $ZIPR_INSTALL/bin/zipr.exe --variant $cloneid --zipr:objcopy $PS_OBJCOPY $step_options_zipr
-
-# copy TOCTOU tool here if it exists
-if [[ "$CONCURRENCY_HOME/toctou_tool" != "" && -d "$CONCURRENCY_HOME/toctou_tool" ]]; then
-	perform_step toctou none $CONCURRENCY_HOME/do_toctou.sh
-fi
-
-if [[ "$CONCURRENCY_HOME/deadlock" != "" && -d "$CONCURRENCY_HOME/deadlock" ]]; then
-    # copy deadlock tool here if it exists
-	perform_step deadlock none $CONCURRENCY_HOME/do_deadlock.sh
-    # enable some jitter in the scheduling
-	perform_step schedperturb none $CONCURRENCY_HOME/do_schedperturb.sh
-fi
-
-#
-#select the output file name to use -- b.out.addseg if zipr is on.
-#
-is_step_on zipr
-zipr_on=$?
-if [ $zipr_on -eq 0 ]; then 
-	my_outfile=$newdir/a.sh
-else
-	my_outfile=$newdir/c.out
-fi
-
-# AT 
-perform_step cgc_at_string none $DAFFY_HOME/anti_tamper/string_table_trick.sh $(basename $my_outfile)
-
-# Basic sanity check to make sure protected CB is ok
-perform_step cgc_sanity_check none $PEASOUP_HOME/tools/cgc_sanity_check.sh $PWD/a.ncexe ${PWD}/$(basename $my_outfile)
-
-#
-# create a report for all of ps_analyze.
-#
-ps_endtime=`$PS_DATE` 
-report_logs
-
-
-# go back to original directory
-cd - > /dev/null 2>&1
-
-
-
-# copy output file into requested location.
-cp $my_outfile $protected_exe
-
-cd $newdir
-
-# gather stats into JSON format
-python $PEASOUP_HOME/tools/gather_stats.py logs/*.log > logs/stats.json
-
-# make sure we only do this once there are no more updates to the peasoup_dir
-perform_step installer none $PEASOUP_HOME/tools/do_installer.sh $PWD $protected_exe 
-
-cd - > /dev/null 2>&1
-
-
-# we're done; cancel timer
-if [ ! -z $TIMER_PID ]; then
-	kill -9 $TIMER_PID
-fi
-
-check_steps_completed
-
-#
-# return success if we created a script to invoke the pgm and zipr is off. 
-#
-if [ -f $protected_exe ]; then 
-	if [ $errors = 1 ]; then
-		echo
-		echo
-		echo "*******************************"
-		echo "* Warning: Some steps failed! *"
-		echo "*******************************"
-		if [ $record_stats -eq 1 ]; then
-			$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'partial' "$ps_endtime" 
-		fi
-		exit 2;
-	elif [ $warnings = 1 ]; then
-		echo
-		echo
-		echo "**********************************************"
-		echo "* Warning: Some steps had critical warnings! *"
-		echo "**********************************************"
-		if [ $record_stats -eq 1 ]; then
-			$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'partial' "$ps_endtime" 
-		fi
-		exit 1;
-	
-	else
-		if [ $record_stats -eq 1 ]; then
-			$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'success' "$ps_endtime" 
-		fi
-		exit 0;
 	fi
 
-else
-		echo "**************************************"
-		echo "*Error: failed to create output file!*"
-		echo "*    Cannot protect this program.    *"
-		echo "**************************************"
 	if [ $record_stats -eq 1 ]; then
-		$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'error' "$ps_endtime"
+		$PEASOUP_HOME/tools/db/job_spec_register.sh "$JOBID" "$DB_PROGRAM_NAME" "$varid" 'submitted' "$ps_starttime"
 	fi
-	exit 255;
-fi
+
+
+	if [ $record_stats -eq 1 ]; then
+		$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'pending' "$ps_starttime"
+	fi
+}
+
+main() 
+{
+	init_globals
+
+
+
+	#
+	# Check for proper environment variables and files that are necessary to peasoupify a program.
+	#
+	check_environ_vars PEASOUP_HOME SECURITY_TRANSFORMS_HOME 
+
+	#
+	# finish argument parsing
+	#
+	check_options "$@"
+
+
+
+	#
+	# check for input file existance and file type
+	#
+	compatcheck $orig_exe
+
+	#
+	# new program
+	#
+	name=`basename $orig_exe`
+	newname=a
+
+	#
+	# create a new working directory.  default to something that allows parallelism unless asked by the user.
+	#
+	if [ "X$tempdir_opt" != "X" ]; then
+		newdir="$tempdir_opt"
+	else
+		newdir=peasoup_executable_directory.$JOBID
+	fi
+	export newdir
+
+	# create a working dir for all our files using the pid
+	mkdir $newdir
+
+	# store the original executable as a.ncexe
+	cp $orig_exe $newdir/$newname.ncexe
+
+	file $orig_exe|grep 32-bit >/dev/null 2>&1 
+	if [ $? = 0 ]; then 
+		if [ `uname -p` = 'x86_64' ]; then
+			STRATA_HOME=$STRATA_HOME32
+			STRATA=$STRATA32
+		fi
+		arch_bits=32
+	else
+		arch_bits=64
+	fi
+
+
+	if [ $backend = "strata" ]; then
+		check_environ_vars STRATA_HOME 
+		check_files $PEASOUP_HOME/tools/getsyms.sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh 
+	elif [ $backend = "zipr" ]; then
+		check_environ_vars ZIPR_INSTALL
+		check_files $ZIPR_INSTALL/bin/zipr.exe
+	else
+		echo "Unknown backend!"
+		exit 1
+	fi
+
+	#
+	# setup libstrata.so.  We'll setup two versions, one with symbols so we can debug, and a stripped, faster-loading version.
+	# by default, use the faster version.  copy in the .symbosl version for debugging
+	#
+	if [ -f $STRATA_HOME/lib/libstrata.so  -a $backend = "strata" ]; then
+		cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.symbols
+		cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.nosymbols
+		$PS_STRIP $newdir/libstrata.so.nosymbols
+		cp $newdir/libstrata.so.nosymbols $newdir/libstrata.so
+	fi
+
+
+	adjust_lib_path 
+
+
+
+	# make sure we overwrite out output file one way or another
+	rm -f $protected_exe
+
+	# and switch to that dir
+	cd $newdir
+
+	check_for_bad_funcs $newname.ncexe
+
+	# next, create a location for our log files
+	mkdir logs 	
+
+
+	do_prefix_steps
+	cloneid=$varid
+
+
+	do_plugins
+
+
+	#
+	# create a report for all of ps_analyze.
+	#
+	ps_endtime=`$PS_DATE` 
+	report_logs
+
+	# figure out the output file
+	is_step_on zipr
+	zipr_on=$?
+	if [ $zipr_on -eq 0 ]; then 
+		my_outfile=$newdir/a.sh
+	else
+		my_outfile=$newdir/c.out
+	fi
+
+	# go back to original directory
+	cd - > /dev/null 2>&1
+
+	# copy output file into requested location.
+	cp $my_outfile $protected_exe
+
+	cd $newdir
+
+	# gather stats into JSON format
+	python $PEASOUP_HOME/tools/gather_stats.py logs/*.log > logs/stats.json
+
+	# make sure we only do this once there are no more updates to the peasoup_dir
+	perform_step installer none $PEASOUP_HOME/tools/do_installer.sh $PWD $protected_exe
+
+	
+	cd - > /dev/null 2>&1
+
+
+	# we're done; cancel timer
+	if [ ! -z $TIMER_PID ]; then
+		kill -9 $TIMER_PID
+	fi
+
+	check_steps_completed
+
+	#
+	# return success if we created a script to invoke the pgm and zipr is off. 
+	#
+	if [ -f $protected_exe ]; then 
+		if [ $errors = 1 ]; then
+			echo
+			echo
+			echo "*******************************"
+			echo "* Warning: Some steps failed! *"
+			echo "*******************************"
+			if [ $record_stats -eq 1 ]; then
+				$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'partial' "$ps_endtime" 
+			fi
+			exit 2;
+		elif [ $warnings = 1 ]; then
+			echo
+			echo
+			echo "**********************************************"
+			echo "* Warning: Some steps had critical warnings! *"
+			echo "**********************************************"
+			if [ $record_stats -eq 1 ]; then
+				$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'partial' "$ps_endtime" 
+			fi
+			exit 1;
+		
+		else
+			if [ $record_stats -eq 1 ]; then
+				$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'success' "$ps_endtime" 
+			fi
+			exit 0;
+		fi
+
+	else
+			echo "**************************************"
+			echo "*Error: failed to create output file!*"
+			echo "*    Cannot protect this program.    *"
+			echo "**************************************"
+		if [ $record_stats -eq 1 ]; then
+			$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'error' "$ps_endtime"
+		fi
+		exit 255;
+	fi
+}
+
+main "$@"
