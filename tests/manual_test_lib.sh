@@ -34,6 +34,15 @@ fi
 TEST_PROG=$1
 BENCH=$2
 
+if [ ! -z "$TEST_VERBOSE" ]; then
+	echo
+	echo "Original program: $TEST_PROG"
+	ls -lt $TEST_PROG
+	echo "Test program: $BENCH"
+	ls -lt $BENCH
+	echo
+fi
+
 DUMMY_NAME=DUMMY
 
 BENCH_BASE=`basename $BENCH`
