@@ -121,7 +121,7 @@ int main(int argc, char* argv[])
 			thanos_log << "A critical step failed: " << plugin->getStepName() << endl;
 			thanos_log << "If DEBUG_STEPS is not on, this failure could "
 			     << "be due to an earlier critical step." << endl;	 
-			return 2; // critical step failed, abort
+			return 1; // critical step failed, abort
 		}
 	}
 	// write back final changes
@@ -132,7 +132,7 @@ int main(int argc, char* argv[])
 		     << endl;
                 thanos_log << "If DEBUG_STEPS is not on, this failure could "
                      << "be due to an earlier critical step." << endl;
-                return 2; // critical step failed, abort
+                return 1; // critical step failed, abort
 	}
 	else
 	{
@@ -299,15 +299,10 @@ int ThanosPlugin_t::executeStep(TransformStep_t& the_step, const bool are_debugg
 	const int parse_retval = the_step.parseArgs(step_args);
 	if(parse_retval != 0)
 	{
-		if(step_optional)
+		*real_cout<<"Done.  Command failed! ***************************************"<<endl;
+		if(!step_optional)
 		{
-
-                        *real_cout<<"Done.  Command failed! ***************************************"<<endl;
-		}
-		else
-		{
-                        *real_cout<<"Done.  Command failed! ***************************************"<<endl;
-                        *real_cout<<"ERROR: The "<<the_step.getStepName()<<" step is necessary, but failed.  Exiting early."<<endl;
+			*real_cout<<"ERROR: The "<<the_step.getStepName()<<" step is necessary, but failed.  Exiting early."<<endl;	
 		}
 		return parse_retval;
 	}
