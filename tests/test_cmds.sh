@@ -214,13 +214,22 @@ do_tests()
 
 usage()
 {
-	echo "test_cmds.sh [options] [config]*"
+	echo "test_cmds.sh [options] [configs...]"
 	echo	
 	echo "options:"
 	echo "   -h, --help              print help info"
 	echo "   -l                      print logs on failure"
 	echo "   -a, --app <appname>     app to test (may be repeated)"
 	echo "      appname: bzip2 grep du ncal ls objdump readelf sort tar touch tcpdump"
+	echo
+	echo "configs:"
+	echo "    rida                   (default configuration)"
+	echo "    p1                     P1 transform"
+	echo "    mgx                    move globals"
+	echo "    mgx_p1                 move globals, followed by P1"
+	echo "    kill_deads             xform with bogus random values for dead registers"
+	echo
+	echo "    ...too many configs to list, consult script"
 }
 
 parse_args()
