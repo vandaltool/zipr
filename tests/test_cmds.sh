@@ -1,13 +1,16 @@
 #!/bin/bash
 
+apps=""
+positional=""
+show_logs_on_failure=0
 had_fails=0
+
 
 do_tests()
 {
 	local configs="$1"
+	local progs_to_test="$2"
 
-	# specify programs to test
-	orig_progs="bzip2 grep du ncal ls objdump readelf sort tar touch tcpdump"
 	build_only=0
 
 	export IB_VERBOSE=1
@@ -31,7 +34,7 @@ do_tests()
 		pushd .
 		cd tmp_test_area.$config
 
-		for prog in $orig_progs
+		for prog in $progs_to_test
 		do
 			# use same name 
 			protected=${prog}
@@ -80,6 +83,9 @@ do_tests()
 				;;
 				zipr)
 					$PSZ $progpath $protected --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+				;;
+				ida)
+					$PSZ $progpath $protected -s meds_static=on -s rida=off --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				rida)
 					$PSZ $progpath $protected -s meds_static=off -s rida=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
@@ -165,7 +171,9 @@ do_tests()
 				echo "TEST ($config) ${prog}: FAILED to peasoupify"
 				progs_fail_peasoup="$progs_fail_peasoup $prog.$config"
 				cat test_${prog}.ps.log
-				cat $temp_dir/logs/*.log
+				if [ $show_logs_on_failure -eq 1 ]; then
+					cat $temp_dir/logs/*.log
+				fi
 		        else
 				progs_pass_peasoup="$progs_pass_peasoup $prog.$config"
 			fi
@@ -182,6 +190,9 @@ do_tests()
 			else
 				echo "TEST ($config) ${prog}: FAIL"
 				progs_fail="$progs_fail $prog.$config"
+				if [ $show_logs_on_failure -eq 1 ]; then
+					cat test_${prog}.log
+				fi
 			fi
 		done
 
@@ -201,15 +212,75 @@ do_tests()
 	fi
 }
 
+usage()
+{
+	echo "test_cmds.sh [options] [config]*"
+	echo	
+	echo "options:"
+	echo "   -h, --help              print help info"
+	echo "   -l                      print logs on failure"
+	echo "   -a, --app <appname>     app to test (may be repeated)"
+	echo "      appname: bzip2 grep du ncal ls objdump readelf sort tar touch tcpdump"
+}
+
+parse_args()
+{
+	PARAMS=""
+	while (( "$#" )); do
+		key="$1"
+
+		case $key in
+			-h|--help)
+				usage
+				exit 0
+				;;
+			-l)
+				show_logs_on_failure=1
+				shift
+				;;
+			-a|--app)
+				shift
+				apps="$apps $1 "
+				shift
+				;;
+			-*|--*=) # unsupported flags
+				echo "Error: Unsupported flag $1" >&2
+				exit 1
+				;;
+    			*) # preserve positional arguments
+				PARAMS="$PARAMS $1"
+				shift
+				;;
+		esac
+	done
+
+	eval set -- "$PARAMS"
+	positional=($PARAMS)
+}
+
 main()
 {
-	local configs="$1"
+	parse_args $*
+
+	local configs="$positional"
 
 	if [[ $configs == "" ]]; then
 		configs="rida"
 	fi
+	if [[ $apps == "" ]]; then
+		apps="bzip2 grep du ncal ls objdump readelf sort tar touch tcpdump"
+	fi
 
-	do_tests "$configs"
+	echo 
+	echo "test configuration"
+	echo "    apps: $apps"
+	echo " configs:  $configs"
+	if [ $show_logs_on_failure -eq 1 ]; then
+		echo "test log:  show-on-failure"
+	fi
+	echo 
+
+	do_tests "$configs" "$apps"
 
 	exit $had_fails
 }
