@@ -452,9 +452,8 @@ is_step_on()
 #
 is_step_error()
 {
-	my_step=$1
-	my_error=$2
-
+	my_error=$1
+	my_step=$2
 
 	case $my_step in
 		*)
@@ -619,6 +618,7 @@ perform_step()
 	elif [[ ! -z "$VERBOSE" && $using_thanos -ne 0 ]]; then
 		echo -n Performing step "$step" [dependencies=$mandatory] ...
 		eval $command > $logfile 2>&1
+		command_exit=$?
 		# display logs to stdout
 		for this_step in $step
 		do
@@ -654,31 +654,38 @@ perform_step()
 		fi
 	fi
 
-	if [[ $using_thanos -eq 0 ]]; then
-		is_step_error $step $command_exit
-		if [[ $? -ne 0 ]]; then
+	is_step_error $command_exit $step
+	if [[ $? -ne 0 ]]; then
+		if [[ $using_thanos -eq 0 || $command_exit -ne 1 ]]; then
 			echo "Done.  Command failed! ***************************************"
+		fi
 
-			# check if we need to exit
-			stop_if_error $step
-			if [ $? -gt $error_threshold ]; then 
-				echo The $step step is necessary, but failed.  Exiting ps_analyze early.
-				exit -1;
+		# check if we need to exit
+		stop_if_error $step
+		if [[ $using_thanos -ne 0 ]]; then
+			if [[ $command_exit -ne 1 ]]; then
+	                       	echo A critical step executed under thanos or the thanos plugin driver has been forcefully terminated. Exiting ps_analyze early.
 			fi
-			errors=1
-		elif [ -f warning.txt ]; then
-			# report warning to user.
-			warnings=1
-			echo "Done.  Command had serious warnings! ***************************************"
-			cat warning.txt
-			# report warning in log file, line by line, as an attribute.
-			while IFS= read -r line; do
-				echo
-				echo "#ATTRIBUTE serious_warning_text=\"$line\""  >> $logfile
-			done < "warning.txt"
-			# remove warning.txt so we don't report these warnings again.
-			rm -f warning.txt
-		else
+                        exit -1;
+		elif [ $? -gt $error_threshold ]; then 
+			echo The $step step is necessary, but failed.  Exiting ps_analyze early.
+			exit -1;
+		fi
+		errors=1
+	elif [ -f warning.txt ]; then
+		# report warning to user.
+		warnings=1
+		echo "Done.  Command had serious warnings! ***************************************"
+		cat warning.txt
+		# report warning in log file, line by line, as an attribute.
+		while IFS= read -r line; do
+			echo
+			echo "#ATTRIBUTE serious_warning_text=\"$line\""  >> $logfile
+		done < "warning.txt"
+		# remove warning.txt so we don't report these warnings again.
+		rm -f warning.txt
+	else
+		if [[ $using_thanos -eq 0 ]]; then
 			echo "Done.  Successful."
 		fi
 	fi
