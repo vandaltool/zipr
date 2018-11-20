@@ -343,6 +343,12 @@ compare_exit_status()
 	fi 
 }
 
+show_log()
+{
+	echo "=== Show content of $1 ==="
+	cat $1
+}
+
 #assumes that orig_status, test_status, orig_error, test_error, orig_out, and test_out
 #all exists, and does a comparison of each. 
 compare_std_results()
@@ -356,6 +362,12 @@ compare_std_results()
 
 	if [ ! "$?" -eq 0 ]; then
 		echo "Exit Status Failure"
+		if [ ! -z "$TEST_VERBOSE" ]; then
+			show_log orig_out
+			show_log test_out
+			show_log orig_error
+			show_log test_error
+		fi
 		report_failure
 	fi 
 
@@ -365,6 +377,10 @@ compare_std_results()
 	diff orig_error test_error
 	if [ ! $? -eq 0 ]; then
 		echo "Stderr  Failure"
+		if [ ! -z "$TEST_VERBOSE" ]; then
+			show_log orig_error
+			show_log test_error
+		fi
 		report_failure
 	fi 
 
@@ -375,6 +391,10 @@ compare_std_results()
 	if [ ! $? -eq 0 ]; then
 		echo "run_test Stdout Failure"
 		report_failure
+		if [ ! -z "$TEST_VERBOSE" ]; then
+			show_log orig_out
+			show_log test_out
+		fi
 	fi 
 }
 

@@ -1,10 +1,11 @@
 #!/bin/bash
 
-apps=""
-positional=""
 show_logs_on_failure=0
 had_fails=0
-
+apps=""
+default_apps="bzip2 grep du ncal ls objdump readelf sort tar touch tcpdump"
+configs=""
+default_configs="rida"
 
 do_tests()
 {
@@ -183,7 +184,7 @@ do_tests()
 			fi
 
 			echo "TEST ($config) ${prog}: Running tests..."
-			timeout 300 ../$prog/test_script.sh $progpath ./$protected > test_${prog}.log 2>&1
+			TEST_VERBOSE=1 timeout 300 ../$prog/test_script.sh $progpath ./$protected > test_${prog}.log 2>&1
 			if [ $? -eq 0 ]; then
 				echo "TEST ($config) ${prog}: PASS"
 				progs_pass="$progs_pass $prog.$config"
@@ -214,22 +215,23 @@ do_tests()
 
 usage()
 {
-	echo "test_cmds.sh [options] [configs...]"
+	echo "test_cmds.sh [options]"
 	echo	
 	echo "options:"
 	echo "   -h, --help              print help info"
 	echo "   -l                      print logs on failure"
 	echo "   -a, --app <appname>     app to test (may be repeated)"
 	echo "      appname: bzip2 grep du ncal ls objdump readelf sort tar touch tcpdump"
+	echo "   -c, --config <config>"
 	echo
-	echo "configs:"
+	echo "config:"
 	echo "    rida                   (default configuration)"
 	echo "    p1                     P1 transform"
 	echo "    mgx                    move globals"
 	echo "    mgx_p1                 move globals, followed by P1"
 	echo "    kill_deads             xform with bogus random values for dead registers"
 	echo
-	echo "    ...too many configs to list, consult script"
+	echo "    ...too many other configs to list, consult script"
 }
 
 parse_args()
@@ -248,9 +250,12 @@ parse_args()
 				shift
 				;;
 			-a|--app)
-				shift
-				apps="$apps $1 "
-				shift
+				apps="$apps $2 "
+				shift 2
+				;;
+			-c|--config)
+				configs="$configs $2 "
+				shift 2
 				;;
 			-*|--*=) # unsupported flags
 				echo "Error: Unsupported flag $1" >&2
@@ -264,26 +269,34 @@ parse_args()
 	done
 
 	eval set -- "$PARAMS"
+
+	# backward compatibility where all configs passed as positional parameters
+	# should really use -c option only
+
 	positional=($PARAMS)
+
+	if [[ $positional != "" ]]; then
+		configs="$configs $positional"
+	fi
+
+	if [[ $configs == "" ]]; then
+		configs=" $default_configs"
+	fi
+
+	if [[ $apps == "" ]]; then
+		apps=" $default_apps"
+	fi
+
 }
 
 main()
 {
-	parse_args $*
-
-	local configs="$positional"
-
-	if [[ $configs == "" ]]; then
-		configs="rida"
-	fi
-	if [[ $apps == "" ]]; then
-		apps="bzip2 grep du ncal ls objdump readelf sort tar touch tcpdump"
-	fi
+	parse_args "$@"
 
 	echo 
 	echo "test configuration"
 	echo "    apps: $apps"
-	echo " configs:  $configs"
+	echo " configs: $configs"
 	if [ $show_logs_on_failure -eq 1 ]; then
 		echo "test log:  show-on-failure"
 	fi
