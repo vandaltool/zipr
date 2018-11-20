@@ -14,15 +14,11 @@ TEST_DIR=$PEASOUP_HOME/tests/tcpdump
 
 run_basic_test 20 -h
 run_basic_test 20 -$i -s0 -nr $TEST_DIR/tcpd_tests/print-flags.pcap
-run_basic_test 20 -$i -s0 -nr $TEST_DIR/tcpd_tests/print-flags.pcap
-run_basic_test 20 -$i -s0 -nr $TEST_DIR/tcpd_tests/print-flags.pcap
-run_basic_test 20 -$i -s0 -nr $TEST_DIR/tcpd_tests/print-flags.pcap
-run_basic_test 20 -$i -s0 -nr $TEST_DIR/tcpd_tests/print-flags.pcap
-run_basic_test 20 -$i -s0 -nr $TEST_DIR/tcpd_tests/print-flags.pcap
 run_basic_test 20  -t -n -v -v -v -r $TEST_DIR/tcpd_tests/lmp.pcap 
 run_basic_test 20 -n -r $TEST_DIR/tcpd_tests/bgp_vpn_attrset.pcap -t -v
 run_basic_test 20 -n -r $TEST_DIR/tcpd_tests/mpbgp-linklocal-nexthop.pcap -t -v
 run_basic_test 20 -n -r $TEST_DIR/tcpd_tests/eapon1.pcap -t
+run_basic_test 20  -t -n -v -v -v -r $TEST_DIR/tcpd_tests/lmp.pcap 
 run_basic_test 20 -n -r $TEST_DIR/tcpd_tests/02-sunrise-sunset-esp.pcap -t -n
 run_basic_test 20 -n -r $TEST_DIR/tcpd_tests/02-sunrise-sunset-esp.pcap -t -E "0x12345678@192.1.2.45 3des-cbc-hmac96:0x4043434545464649494a4a4c4c4f4f515152525454575758"
 run_basic_test 20 -n -r $TEST_DIR/tcpd_tests/08-sunrise-sunset-esp2.pcap -t -E "0x12345678@192.1.2.45 3des-cbc-hmac96:0x43434545464649494a4a4c4c4f4f51515252545457575840,0xabcdabcd@192.0.1.1 3des-cbc-hmac96:0x434545464649494a4a4c4c4f4f5151525254545757584043"
