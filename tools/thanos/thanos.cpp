@@ -299,6 +299,11 @@ int ThanosPlugin_t::executeStep(TransformStep_t& the_step, const bool are_debugg
 	const int parse_retval = the_step.parseArgs(step_args);
 	if(parse_retval != 0)
 	{
+		*real_cout<<"Done.  Command failed! ***************************************"<<endl;
+		if(!step_optional)
+		{
+			*real_cout<<"ERROR: The "<<the_step.getStepName()<<" step is necessary, but failed.  Exiting early."<<endl;	
+		}
 		return parse_retval;
 	}
 
