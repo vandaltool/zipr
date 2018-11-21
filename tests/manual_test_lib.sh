@@ -220,6 +220,10 @@ run_server_test_prog_only()
 
 run_bench_prog_only()
 {
+	set -x
+
+	ls -lt *out *error
+
 	TIMEOUT=$1
 	shift
 
