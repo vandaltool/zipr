@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -x
-source cfi_smokescreen_configs.sh 
+source ../tools/selective_cfi/tests/cfi_smokescreen_configs.sh 
 
 get_correct()
 {
@@ -30,14 +30,14 @@ test()
 
 build()
 {
-	gcc -o libfoo.so libfoo.c -w -shared -fPIC
-	gcc -o foo.exe foo.c -w -L. -lfoo
+	gcc -o libfoo.so ../tools/selective_cfi/tests/libfoo.c -w -shared -fPIC
+	gcc -o foo.exe ../tools/selective_cfi/tests/foo.c -w -L. -lfoo
 	mv libfoo.so libfoo.so.orig
 
-	gcc -o libfoo.O.so libfoo.c -O -w -shared -fPIC
-        gcc -o libfoo.O2.so libfoo.c -O2 -w -shared -fPIC
-        gcc -o libfoo.O3.so libfoo.c -O3 -w -shared -fPIC
-        gcc -o libfoo.Os.so libfoo.c -Os -w -shared -fPIC
+	gcc -o libfoo.O.so ../tools/selective_cfi/tests/libfoo.c -O -w -shared -fPIC
+        gcc -o libfoo.O2.so ../tools/selective_cfi/tests/libfoo.c -O2 -w -shared -fPIC
+        gcc -o libfoo.O3.so ../tools/selective_cfi/tests/libfoo.c -O3 -w -shared -fPIC
+        gcc -o libfoo.Os.so ../tools/selective_cfi/tests/libfoo.c -Os -w -shared -fPIC
         mv libfoo.O.so libfoo.O.so.orig
         mv libfoo.O2.so libfoo.O2.so.orig
         mv libfoo.O3.so libfoo.O3.so.orig
