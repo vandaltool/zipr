@@ -153,7 +153,7 @@ xform-cat-centos75:
 .basic-pgms-orig: &basic-pgms-orig
   stage: test
   script:
-    - ./cicd_testing/basic-pgms-orig.sh
+    - ./cicd_tests/basic-pgms-orig.sh
 
 basic-pgms-orig-ubuntu18:
   <<: *basic-pgms-orig
