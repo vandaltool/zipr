@@ -5,7 +5,7 @@ TEST_LIB="$(dirname "$(realpath $0)")/../manual_test_lib.sh"
 #used for filtering program names from output.
 ORIG_NAME=tcpdump
 
-chmod og+rwx "$(dirname "$(realpath $0)")/tcpd_tests"
+chmod -R og+rwx "$(dirname "$(realpath $0)")/tcpd_tests"
 
 #must import the library here, as it depends on some of the above variables
 . $TEST_LIB
