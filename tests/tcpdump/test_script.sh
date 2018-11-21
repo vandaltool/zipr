@@ -1,5 +1,6 @@
 #!/bin/bash 
-TEST_LIB=$PEASOUP_HOME/tests/manual_test_lib.sh
+
+TEST_LIB="$(dirname "$(realpath $0)")/../manual_test_lib.sh"
 
 #used for filtering program names from output.
 ORIG_NAME=tcpdump
