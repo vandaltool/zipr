@@ -162,20 +162,6 @@ test_foo-ubuntu18:
     - ubuntu18
   variables:
     OS: 'ubuntu18'
-
-test_foo-ubuntu16:
-  <<: *test_foo
-  tags:
-    - ubuntu16
-  variables:
-    OS: 'ubuntu16'
-
-test_foo-centos75:
-  <<: *test_foo
-  tags:
-    - centos75
-  variables:
-    OS: 'centos75'
               
 
 #
@@ -194,17 +180,3 @@ test_fib-ubuntu18:
     - ubuntu18
   variables:
     OS: 'ubuntu18'
-
-test_fib-ubuntu16:
-  <<: *test_fib
-  tags:
-    - ubuntu16
-  variables:
-    OS: 'ubuntu16'
-
-test_fib-centos75:
-  <<: *test_fib
-  tags:
-    - centos75
-  variables:
-    OS: 'centos75' 
