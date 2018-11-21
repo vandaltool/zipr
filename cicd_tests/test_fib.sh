@@ -1,5 +1,6 @@
 #!/bin/bash  
 
+cd $CICD_MODULE_WORK_DIR/peasoup_umbrella
 set -x
 source ../tools/selective_cfi/tests/cfi_smokescreen_configs.sh
 
