@@ -4,7 +4,7 @@ set -x
 set -e
 trap clean EXIT
 
-cd /home/mm8bx/peasoup
+cd $CICD_MODULE_WORK_DIR/peasoup_umbrella
 source set_env_vars
 cd ./security_transforms/cicd_tests
 
