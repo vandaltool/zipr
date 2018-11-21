@@ -15,11 +15,11 @@ TEST_DIR=$PEASOUP_HOME/tests/tcpdump
 
 # debugging
 strace $2 -n -r $TEST_DIR/tcpd_tests/bgp_vpn_attrset.pcap -t -v
-if [ $? -eq 0 ]; then
-	report_success
-else
+if [ ! $? -eq 0 ]; then
 	report_failure 
 fi
+
+run_basic_test 20 -n -r $TEST_DIR/tcpd_tests/bgp_vpn_attrset.pcap -t -v
 
 run_basic_test 20 -h
 run_basic_test 20 -$i -s0 -nr $TEST_DIR/tcpd_tests/print-flags.pcap
