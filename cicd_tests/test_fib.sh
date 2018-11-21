@@ -1,6 +1,8 @@
 #!/bin/bash  
 
-cd $CICD_MODULE_WORK_DIR/peasoup_umbrella/security_transforms/cicd_tests
+cd $CICD_MODULE_WORK_DIR/peasoup_umbrella
+source set_env_vars
+cd ./security_transforms/cicd_tests
 set -e
 set -x
 source cfi_smokescreen_configs.sh
