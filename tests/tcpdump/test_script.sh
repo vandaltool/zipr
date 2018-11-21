@@ -25,6 +25,7 @@ echo
 echo "STRACE $2"
 strace $2 -n -r $TEST_DIR/tcpd_tests/bgp_vpn_attrset.pcap -t -v
 if [ ! $? -eq 0 ]; then
+	tail -n 30 /var/log/syslog
 	report_failure 
 fi
 
