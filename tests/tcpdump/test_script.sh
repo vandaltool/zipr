@@ -11,7 +11,8 @@ echo "TEST_DIR: $TEST_DIR"
 ORIG_NAME=tcpdump
 
 ls -lt  | grep tcpd_tests
-chmod -R og+rwx "$TEST_DIR/tcpd_tests"
+whoami
+sudo chmod -R og+rwx "$TEST_DIR/tcpd_tests"
 ls -lt "$TEST_DIR/tcpd_tests/*.pcap"
 
 #must import the library here, as it depends on some of the above variables
