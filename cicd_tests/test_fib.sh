@@ -78,7 +78,7 @@ clean()
 {
 	rm out >> /dev/null
 	rm correct >> /dev/null
-	rm fib_protection_log.txt >> /dev/null
+	rm fib*log.txt >> /dev/null
 	rm -Rf fib.exe* peasoup_exe* lib*.so* >> /dev/null
 
  	for config in "${configs[@]}"; do

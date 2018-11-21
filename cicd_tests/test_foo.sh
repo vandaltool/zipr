@@ -80,6 +80,7 @@ clean()
 	rm *.orig >> /dev/null
 	rm *.exe >> /dev/null
 	rm *.so >> /dev/null
+	rm foo*log.txt >> /dev/null
 	
 	for config in "${configs[@]}"; do
 		rm *."$config" >> /dev/null
