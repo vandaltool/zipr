@@ -10,9 +10,12 @@ echo "TEST_DIR: $TEST_DIR"
 #used for filtering program names from output.
 ORIG_NAME=tcpdump
 
-ls -lt  | grep tcpd_tests
+ls -lt  $TEST_DIR | grep tcpd_tests
+pwd
 whoami
 sudo chmod -R og+rwx "$TEST_DIR/tcpd_tests"
+ls -lt $TEST_DIR
+ls -lt $TEST_DIR/tcpd_tests
 ls -lt "$TEST_DIR/tcpd_tests/*.pcap"
 
 #must import the library here, as it depends on some of the above variables
