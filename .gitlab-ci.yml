@@ -147,3 +147,26 @@ xform-cat-centos75:
   variables:
     OS: 'centos75'  
 
+#
+# test_cmds.sh orig
+#
+.basic-pgms-orig: &basic-pgms-orig
+  stage: test
+  script:
+    - ./cicd_testing/basic-pgms-orig.sh
+
+basic-pgms-orig-ubuntu18:
+  <<: *basic-pgms-orig
+  tags:
+    - ubuntu18
+
+basic-pgms-orig-ubuntu16:
+  <<: *basic-pgms-orig
+  tags:
+    - ubuntu16
+
+basic-pgms-orig-centos75:
+  <<: *basic-pgms-orig
+  tags:
+    - centos75
+
