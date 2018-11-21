@@ -4,7 +4,7 @@ set -x
 set -e
 trap clean EXIT
 
-cd $CICD_MODULE_WORK_DIR/peasoup_umbrella
+cd /home/mm8bx/peasoup
 source set_env_vars
 cd ./security_transforms/cicd_tests
 
@@ -14,8 +14,11 @@ get_correct()
 {
 	cp libfib.so.orig libfib.so
 	cp libfib2.so.orig libfib2.so
+	# for fib.exe, a non-zero exit status can indicate success
+	set +e
 	./fib.exe $1 > correct
 	echo $? >> correct
+	set -e
 }
 
 test()
@@ -27,9 +30,12 @@ test()
 	get_correct $n
 
 	cp $3 libfib.so  
-	cp $4 libfib2.so  
+	cp $4 libfib2.so 
+	# for fib.exe, a non-zero exit status can indicate success
+	set +e
 	./$1 $n > out 
 	echo $? >> out
+	set -e
 
 	cmp out correct
 }
@@ -68,12 +74,14 @@ protect()
 
 clean()
 {
-	rm out >> /dev/null
-	rm correct >> /dev/null
-	rm -Rf fib.exe* peasoup_exe* lib*.so* >> /dev/null
+	set +e
+	set +x
+	rm out >> /dev/null 2>&1
+	rm correct >> /dev/null 2>&1
+	rm -Rf fib.exe* peasoup_exe* lib*.so* >> /dev/null 2>&1
 
  	for config in "${configs[@]}"; do
-                rm *."$config" >> /dev/null
+                rm *."$config" >> /dev/null 2>&1 
         done	
 }
 
@@ -88,7 +96,7 @@ main()
 	for fib_varient in "${fib_varients[@]}"; do
                 for libfib_varient in "${libfib_so_orig_varients[@]}"; do
 			for libfib2_varient in "${libfib2_so_orig_varients[@]}"; do
-				for i in {2...6}; do
+				for i in {2..6}; do
                         		test "$fib_varient" $i "$libfib_varient" "$libfib2_varient"
 				done
 			done

@@ -69,15 +69,17 @@ protect()
 
 clean()
 {
-	rm out >> /dev/null
-	rm correct >> /dev/null
-	rm -rf peasoup_executable_directory.* >> /dev/null
-	rm *.orig >> /dev/null
-	rm *.exe >> /dev/null
-	rm *.so >> /dev/null
+	set +e
+	set +x
+	rm out >> /dev/null 2&>1
+	rm correct >> /dev/null 2&>1
+	rm -rf peasoup_executable_directory.* >> /dev/null 2&>1
+	rm *.orig >> /dev/null 2&>1
+	rm *.exe >> /dev/null 2&>1
+	rm *.so >> /dev/null 2&>1
 	
 	for config in "${configs[@]}"; do
-		rm *."$config" >> /dev/null
+		rm *."$config" >> /dev/null 2&>1
 	done
 }
 
