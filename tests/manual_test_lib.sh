@@ -125,6 +125,9 @@ log_results()
 
 run_test_prog_only()
 {
+	set -x
+	ls -lt *out *error
+
 	TIMEOUT=$1
 	shift
 
@@ -145,6 +148,7 @@ run_test_prog_only()
 
 	status=$?
 	echo $status >test_status
+	cat test_status
 
 	log_name=`echo "TEST_$TEST_PROG $cmd_args" | sed -e 's/ /_/g' -e 's/\//#/g'`
 	log_results $log_name test_out test_error test_status 
