@@ -1,8 +1,9 @@
 #!/bin/bash  
 
-cd $CICD_MODULE_WORK_DIR/peasoup_umbrella
+cd $CICD_MODULE_WORK_DIR/peasoup_umbrella/security_transforms/cicd_tests
+set -e
 set -x
-source ../tools/selective_cfi/tests/cfi_smokescreen_configs.sh
+source cfi_smokescreen_configs.sh
 
 get_correct()
 {
@@ -42,10 +43,10 @@ test()
 
 build()
 {
-	gcc -o libfib.so ../tools/selective_cfi/tests/libfib.c -w -shared -fPIC
-	gcc -o libfib2.so ../tools/selective_cfi/tests/libfib2.c -w -shared -fPIC
-	gcc -o fib.exe ../tools/selective_cfi/tests/fib.c -w -L. -lfib -lfib2
-	gcc -o fib.exe.pie ../tools/selective_cfi/tests/fib.c -fPIC -fpie -pie -w -L. -lfib -lfib2
+	gcc -o libfib.so libfib.c -w -shared -fPIC
+	gcc -o libfib2.so libfib2.c -w -shared -fPIC
+	gcc -o fib.exe fib.c -w -L. -lfib -lfib2
+	gcc -o fib.exe.pie fib.c -fPIC -fpie -pie -w -L. -lfib -lfib2
 	mv libfib.so libfib.so.orig
 	mv libfib2.so libfib2.so.orig
 }
