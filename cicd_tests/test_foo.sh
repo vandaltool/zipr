@@ -1,10 +1,13 @@
 #!/bin/bash
 
+set -x
+set -e
+trap clean EXIT
+
 cd $CICD_MODULE_WORK_DIR/peasoup_umbrella
 source set_env_vars
 cd ./security_transforms/cicd_tests
-set -e
-set -x
+
 source cfi_smokescreen_configs.sh 
 
 get_correct()
@@ -15,20 +18,12 @@ get_correct()
 
 test()
 {
+	echo Running test: "$1" "$2"
 	
 	cp $2 libfoo.so  
 	./$1 > out 
 
 	cmp out correct
-	if [ $? = 1 ]; then
-		fails=$(expr $fails + 1 )
-		echo test "$1" "$2" failed | tee -a foo_test_log.txt
-		clean
-		exit 1
-	else
-		passes=$(expr $passes + 1 )
-		echo test passed.
-	fi
 }
 
 
@@ -62,8 +57,8 @@ protect()
 		
  	for file in "${files[@]}"; do
 		for config in "${configs[@]}"; do
-			echo Protecting file "$file" with config "$config" | tee -a foo_protection_log.txt
-			"$config" ./"$file" ./"$file"".""$config" | tee -a foo_protection_log.txt
+			echo Protecting file "$file" with config "$config"
+			"$config" ./"$file" ./"$file"".""$config"
 			varient_array_name="$(echo "$file" | sed -e 's/\./_/g')""_varients"
 			declare -n varient_array="$varient_array_name"
 			varient_array+=("$file"".""$config")
@@ -80,30 +75,12 @@ clean()
 	rm *.orig >> /dev/null
 	rm *.exe >> /dev/null
 	rm *.so >> /dev/null
-	rm foo*log.txt >> /dev/null
 	
 	for config in "${configs[@]}"; do
 		rm *."$config" >> /dev/null
 	done
 }
 
-report ()
-{
-	total=$(expr $passes + $fails)
-	echo "Passes:  $passes / $total" | tee -a foo_test_log.txt
-	echo "Fails :  $fails / $total" | tee -a foo_test_log.txt
-	
-	if grep -q "Warning " ./foo_protection_log.txt
-	then
-		echo PROTECTION WARNINGS DETECTED!
-		clean
-		exit 1
-	else
-		echo ALL PROTECTIONS SUCCESSFUL
-		clean
-		exit 0
-	fi
-}
 
 main()
 {
@@ -121,10 +98,8 @@ main()
 		done
 	done	
 	
-	report
+	exit 0
 }
 
-passes=0 
-fails=0
 
 main $*
