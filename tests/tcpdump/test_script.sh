@@ -14,6 +14,15 @@ DELETE_FILTER="stonesoup|gcc|lib|DUMMY|exec|python|tcpdump"
 TEST_DIR=$PEASOUP_HOME/tests/tcpdump
 
 # debugging
+echo
+echo "STRACE $1"
+strace $1 -n -r $TEST_DIR/tcpd_tests/bgp_vpn_attrset.pcap -t -v
+if [ ! $? -eq 0 ]; then
+	report_failure 
+fi
+
+echo
+echo "STRACE $2"
 strace $2 -n -r $TEST_DIR/tcpd_tests/bgp_vpn_attrset.pcap -t -v
 if [ ! $? -eq 0 ]; then
 	report_failure 
