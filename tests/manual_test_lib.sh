@@ -31,22 +31,28 @@ if [[ ! -z "$IGNORE_RESULTS" ]]; then
 	echo "TEST SCRIPT COVERAGE RUN: running test script ignoring results."
 fi
 
-TEST_PROG=$1
-BENCH=$2
+TEST_PROG=$(realpath $1)
+BENCH=$(realpath $2)
+
+DUMMY_NAME=DUMMY
+TEST_BASE=`basename $TEST_PROG`
+BENCH_BASE=`basename $BENCH`
+SCRATCH_DIR="$(dirname $BENCH)"
+
+TEST_PROG_ORIG=$SCRATCH_DIR/$TEST_BASE.orig
+BENCH_ORIG=$SCRATCH_DIR/$BENCH_BASE.xform
+CANONICAL=$SCRATCH_DIR/$TEST_BASE
+
+cp $TEST_PROG $TEST_PROG_ORIG
+cp $BENCH $BENCH_ORIG
 
 if [ ! -z "$TEST_VERBOSE" ]; then
 	echo
-	echo "Original program: $TEST_PROG"
-	ls -lt $TEST_PROG
-	echo "Test program: $BENCH"
-	ls -lt $BENCH
+	echo "Original program : $TEST_PROG --> $TEST_PROG_ORIG"
+	echo "Test program     : $BENCH --> $BENCH_ORIG"
+	echo "Canonical program: $CANONICAL"
 	echo
 fi
-
-DUMMY_NAME=DUMMY
-
-BENCH_BASE=`basename $BENCH`
-TEST_BASE=`basename $TEST_PROG`
 
 NAME_REGEX=`echo "($BENCH_BASE\|$TEST_BASE\|$ORIG_NAME\|.peasoup\|.ncexe\|.stratafied)" | sed 's/\./\\\./'`
 
@@ -127,6 +133,9 @@ run_test_prog_only()
 {
 	TIMEOUT=$1
 	shift
+
+	cp $TEST_PROG_ORIG $CANONICAL
+	TEST_PROG=$CANONICAL
 
 	cmd_args="$@"
 
@@ -220,6 +229,9 @@ run_server_test_prog_only()
 
 run_bench_prog_only()
 {
+	cp $BENCH_ORIG $CANONICAL
+	BENCH=$CANONICAL
+
 	TIMEOUT=$1
 	shift
 
@@ -399,11 +411,11 @@ compare_std_results()
 	diff orig_out test_out
 	if [ ! $? -eq 0 ]; then
 		echo "run_test Stdout Failure"
-		report_failure
 		if [ ! -z "$TEST_VERBOSE" ]; then
 			show_log orig_out
 			show_log test_out
 		fi
+		report_failure
 	fi 
 }
 

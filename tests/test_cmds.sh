@@ -162,6 +162,15 @@ do_tests()
 				orig)
 					cp $progpath $protected 
 				;;
+				expect_fail)
+					set -x
+					base_prog=$(basename $progpath)
+					if [ $base_prog = "ls" ]; then
+						cp $(which diff) $protected 
+					else
+						cp $(which ls) $protected 
+					fi
+				;;
 				*)
 					echo "Unknown configuration requested"
 					continue
@@ -186,13 +195,24 @@ do_tests()
 			echo "TEST ($config) ${prog}: Running tests..."
 			TEST_VERBOSE=1 timeout 300 ../$prog/test_script.sh $progpath ./$protected > test_${prog}.log 2>&1
 			if [ $? -eq 0 ]; then
-				echo "TEST ($config) ${prog}: PASS"
-				progs_pass="$progs_pass $prog.$config"
+				if [ "$config" != "expect_fail" ]; then
+					echo "TEST ($config) ${prog}: PASS"
+					progs_pass="$progs_pass $prog.$config"
+				else
+					progs_fail="$progs_fail $prog.$config"
+					if [ $show_logs_on_failure -eq 1 ]; then
+						cat test_${prog}.log
+					fi
+				fi
 			else
-				echo "TEST ($config) ${prog}: FAIL"
-				progs_fail="$progs_fail $prog.$config"
-				if [ $show_logs_on_failure -eq 1 ]; then
-					cat test_${prog}.log
+				if [ "$config" != "expect_fail" ]; then
+					echo "TEST ($config) ${prog}: FAIL"
+					progs_fail="$progs_fail $prog.$config"
+					if [ $show_logs_on_failure -eq 1 ]; then
+						cat test_${prog}.log
+					fi
+				else
+					progs_pass="$progs_pass $prog.$config"
 				fi
 			fi
 		done
@@ -226,6 +246,8 @@ usage()
 	echo
 	echo "config:"
 	echo "    rida                   (default configuration)"
+	echo "    orig                   test against self"
+	echo "    fail                   deliberately induce failure"
 	echo "    p1                     P1 transform"
 	echo "    mgx                    move globals"
 	echo "    mgx_p1                 move globals, followed by P1"

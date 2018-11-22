@@ -1,24 +1,19 @@
 #!/bin/bash 
 
-TEST_LIB="$(dirname "$(realpath $0)")/../manual_test_lib.sh"
+TEST_DIR=$PEASOUP_HOME/tests/tcpdump
+TEST_LIB="$(realpath "$TEST_DIR/../manual_test_lib.sh")"
 
 #used for filtering program names from output.
 ORIG_NAME=tcpdump
-
 
 #must import the library here, as it depends on some of the above variables
 . $TEST_LIB
 
 DELETE_FILTER="stonesoup|gcc|lib|DUMMY|exec|python|tcpdump"
 
-TEST_DIR=$PEASOUP_HOME/tests/tcpdump
-
-# debugging
-ls -lt $TEST_DIR/tcpd_tests/lmp.pcap 
-
 run_basic_test 20 -h
-run_basic_test 20 -$i -s0 -nr $TEST_DIR/tcpd_tests/print-flags.pcap
 run_basic_test 20 -n -r $TEST_DIR/tcpd_tests/bgp_vpn_attrset.pcap -t -v
+run_basic_test 20 -$i -s0 -nr $TEST_DIR/tcpd_tests/print-flags.pcap
 run_basic_test 20 -n -r $TEST_DIR/tcpd_tests/mpbgp-linklocal-nexthop.pcap -t -v
 run_basic_test 20 -n -r $TEST_DIR/tcpd_tests/eapon1.pcap -t
 run_basic_test 20 -n -r $TEST_DIR/tcpd_tests/02-sunrise-sunset-esp.pcap -t -n

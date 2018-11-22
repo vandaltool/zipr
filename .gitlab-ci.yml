@@ -85,6 +85,52 @@ do-build-centos75:
 
 
 #
+# test_cmds.sh orig
+#
+.basic-pgms-orig: &basic-pgms-orig
+  stage: test
+  script:
+    - ./cicd_tests/basic-pgms-orig.sh
+
+basic-pgms-orig-ubuntu18:
+  <<: *basic-pgms-orig
+  tags:
+    - ubuntu18
+
+basic-pgms-orig-ubuntu16:
+  <<: *basic-pgms-orig
+  tags:
+    - ubuntu16
+
+basic-pgms-orig-centos75:
+  <<: *basic-pgms-orig
+  tags:
+    - centos75
+
+#
+# verify that test_cmds.sh detects test failure
+#
+.verify-fails: &verify-fails
+  stage: test
+  script:
+    - ./cicd_tests/verify-fails.sh
+
+verify-fails-ubuntu18:
+  <<: *verify-fails
+  tags:
+    - ubuntu18
+
+verify-fails-ubuntu16:
+  <<: *verify-fails
+  tags:
+    - ubuntu16
+
+verify-fails-centos75:
+  <<: *verify-fails
+  tags:
+    - centos75
+
+#
 # $PSZ ls
 #
 
@@ -147,26 +193,4 @@ xform-cat-centos75:
   variables:
     OS: 'centos75'  
 
-#
-# test_cmds.sh orig
-#
-.basic-pgms-orig: &basic-pgms-orig
-  stage: test
-  script:
-    - ./cicd_tests/basic-pgms-orig.sh
-
-basic-pgms-orig-ubuntu18:
-  <<: *basic-pgms-orig
-  tags:
-    - ubuntu18
-
-basic-pgms-orig-ubuntu16:
-  <<: *basic-pgms-orig
-  tags:
-    - ubuntu16
-
-basic-pgms-orig-centos75:
-  <<: *basic-pgms-orig
-  tags:
-    - centos75
 
