@@ -21,27 +21,27 @@ echo "TEST_PROG: $TEST_PROG"
 run_basic_test 120 --help
 run_basic_test 120 --version
 run_basic_test 120 --doesnotexist
-run_basic_test 120 ls $DATA_DIR
-run_basic_test 120 ls $DATA_DIR/not-exist
-run_basic_test 120 ls -a $DATA_DIR
-run_basic_test 120 ls -l $DATA_DIR
-run_basic_test 120 ls -ltr $DATA_DIR
-run_basic_test 120 ls -ltrR $DATA_DIR
-run_basic_test 120 ls -ha $DATA_DIR
-run_basic_test 120 ls -Z $DATA_DIR
-run_basic_test 120 ls -Rd $DATA_DIR
-run_basic_test 120 ls -Rlg $DATA_DIR
-run_basic_test 120 ls -lC -s $DATA_DIR
-run_basic_test 120 ls -C --color=always $DATA_DIR
-run_basic_test 120 ls -F $DATA_DIR
-run_basic_test 120 ls -Fg $DATA_DIR
-run_basic_test 120 ls -ha --si $DATA_DIR
-run_basic_test 120 ls -ha --si -i $DATA_DIR
-run_basic_test 120 ls -lt --time-style=full-iso $DATA_DIR
-run_basic_test 120 ls -lt --time-style=long-iso $DATA_DIR
-run_basic_test 120 ls -lt --time-style=iso $DATA_DIR
-run_basic_test 120 ls -lt --tabsize=4 --time-style=iso $DATA_DIR
-run_basic_test 120 ls -ltZ $DATA_DIR
+run_basic_test 120 $DATA_DIR
+run_basic_test 120 $DATA_DIR/not-exist
+run_basic_test 120 -a $DATA_DIR
+run_basic_test 120 -l $DATA_DIR
+run_basic_test 120 -ltr $DATA_DIR
+run_basic_test 120 -ltrR $DATA_DIR
+run_basic_test 120 -ha $DATA_DIR
+run_basic_test 120 -Z $DATA_DIR
+run_basic_test 120 -Rd $DATA_DIR
+run_basic_test 120 -Rlg $DATA_DIR
+run_basic_test 120 -lC -s $DATA_DIR
+run_basic_test 120 -C --color=always $DATA_DIR
+run_basic_test 120 -F $DATA_DIR
+run_basic_test 120 -Fg $DATA_DIR
+run_basic_test 120 -ha --si $DATA_DIR
+run_basic_test 120 -ha --si -i $DATA_DIR
+run_basic_test 120 -lt --time-style=full-iso $DATA_DIR
+run_basic_test 120 -lt --time-style=long-iso $DATA_DIR
+run_basic_test 120 -lt --time-style=iso $DATA_DIR
+run_basic_test 120 -lt --tabsize=4 --time-style=iso $DATA_DIR
+run_basic_test 120 -ltZ $DATA_DIR
 
 cleanup
 
