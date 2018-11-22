@@ -48,12 +48,11 @@ cp $BENCH $BENCH_ORIG
 
 if [ ! -z "$TEST_VERBOSE" ]; then
 	echo
-	echo "Original program: $TEST_PROG --> $TEST_PROG_ORIG"
-	echo "Test program: $BENCH --> $BENCH_ORIG"
+	echo "Original program : $TEST_PROG --> $TEST_PROG_ORIG"
+	echo "Test program     : $BENCH --> $BENCH_ORIG"
 	echo "Canonical program: $CANONICAL"
 	echo
 fi
-
 
 NAME_REGEX=`echo "($BENCH_BASE\|$TEST_BASE\|$ORIG_NAME\|.peasoup\|.ncexe\|.stratafied)" | sed 's/\./\\\./'`
 
