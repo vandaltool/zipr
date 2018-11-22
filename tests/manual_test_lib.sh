@@ -411,11 +411,11 @@ compare_std_results()
 	diff orig_out test_out
 	if [ ! $? -eq 0 ]; then
 		echo "run_test Stdout Failure"
-		report_failure
 		if [ ! -z "$TEST_VERBOSE" ]; then
 			show_log orig_out
 			show_log test_out
 		fi
+		report_failure
 	fi 
 }
 
