@@ -195,7 +195,7 @@ do_tests()
 			echo "TEST ($config) ${prog}: Running tests..."
 			TEST_VERBOSE=1 timeout 300 ../$prog/test_script.sh $progpath ./$protected > test_${prog}.log 2>&1
 			if [ $? -eq 0 ]; then
-				if [ "$config" != "fail" ]; then
+				if [ "$config" != "expect_fail" ]; then
 					echo "TEST ($config) ${prog}: PASS"
 					progs_pass="$progs_pass $prog.$config"
 				else
@@ -205,7 +205,7 @@ do_tests()
 					fi
 				fi
 			else
-				if [ "$config" != "fail" ]; then
+				if [ "$config" != "expect_fail" ]; then
 					echo "TEST ($config) ${prog}: FAIL"
 					progs_fail="$progs_fail $prog.$config"
 					if [ $show_logs_on_failure -eq 1 ]; then
