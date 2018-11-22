@@ -107,3 +107,27 @@ basic-pgms-orig-centos75:
   tags:
     - centos75
 
+#
+# verify that test_cmds.sh detects test failure
+#
+.verify-fails: &verify-fails
+  stage: test
+  script:
+    - ./cicd_tests/verify-fails.sh
+
+verify-fails-ubuntu18:
+  <<: *verify-fails
+  tags:
+    - ubuntu18
+
+verify-fails-ubuntu16:
+  <<: *verify-fails
+  tags:
+    - ubuntu16
+
+verify-fails-centos75:
+  <<: *verify-fails
+  tags:
+    - centos75
+
+
