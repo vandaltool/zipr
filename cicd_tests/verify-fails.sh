@@ -13,6 +13,7 @@ make clean
 # verify ls failure
 ./test_cmds.sh -l -c fail -a ls
 if [ $? -eq 0 ]; then
+	echo "Error: expected ls failure"
 	exit 1
 else
 	exit 0
@@ -21,6 +22,7 @@ fi
 # verify grep failure
 ./test_cmds.sh -l -c fail -a grep
 if [ $? -eq 0 ]; then
+	echo "Error: expected grep failure"
 	exit 1
 else
 	exit 0
