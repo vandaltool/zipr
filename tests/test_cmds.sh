@@ -162,7 +162,7 @@ do_tests()
 				orig)
 					cp $progpath $protected 
 				;;
-				fail)
+				expect_fail)
 					set -x
 					base_prog=$(basename $progpath)
 					if [ $base_prog = "ls" ]; then
@@ -195,13 +195,24 @@ do_tests()
 			echo "TEST ($config) ${prog}: Running tests..."
 			TEST_VERBOSE=1 timeout 300 ../$prog/test_script.sh $progpath ./$protected > test_${prog}.log 2>&1
 			if [ $? -eq 0 ]; then
-				echo "TEST ($config) ${prog}: PASS"
-				progs_pass="$progs_pass $prog.$config"
+				if [ "$config" != "fail" ]; then
+					echo "TEST ($config) ${prog}: PASS"
+					progs_pass="$progs_pass $prog.$config"
+				else
+					progs_fail="$progs_fail $prog.$config"
+					if [ $show_logs_on_failure -eq 1 ]; then
+						cat test_${prog}.log
+					fi
+				fi
 			else
-				echo "TEST ($config) ${prog}: FAIL"
-				progs_fail="$progs_fail $prog.$config"
-				if [ $show_logs_on_failure -eq 1 ]; then
-					cat test_${prog}.log
+				if [ "$config" != "fail" ]; then
+					echo "TEST ($config) ${prog}: FAIL"
+					progs_fail="$progs_fail $prog.$config"
+					if [ $show_logs_on_failure -eq 1 ]; then
+						cat test_${prog}.log
+					fi
+				else
+					progs_pass="$progs_pass $prog.$config"
 				fi
 			fi
 		done
@@ -218,9 +229,7 @@ do_tests()
 	done
 
 	if [[ $progs_fail != "" ]] || [[ $progs_fail_peasoup != "" ]]; then
-		if [[ $config != "fail" ]]; then
-			had_fails=1
-		fi
+		had_fails=1
 	fi
 }
 
