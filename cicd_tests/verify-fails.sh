@@ -15,8 +15,6 @@ make clean
 if [ $? -eq 0 ]; then
 	echo "Error: expected ls failure"
 	exit 1
-else
-	exit 0
 fi
 
 # verify grep failure
@@ -24,7 +22,7 @@ fi
 if [ $? -eq 0 ]; then
 	echo "Error: expected grep failure"
 	exit 1
-else
-	exit 0
 fi
+
+exit 0
 
