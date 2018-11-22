@@ -162,6 +162,15 @@ do_tests()
 				orig)
 					cp $progpath $protected 
 				;;
+				fail)
+					set -x
+					base_prog=$(basename $progpath)
+					if [ $base_prog = "ls" ]; then
+						cp $(which diff) $protected 
+					else
+						cp $(which ls) $protected 
+					fi
+				;;
 				*)
 					echo "Unknown configuration requested"
 					continue
@@ -226,6 +235,8 @@ usage()
 	echo
 	echo "config:"
 	echo "    rida                   (default configuration)"
+	echo "    orig                   test against self"
+	echo "    fail                   deliberately induce failure"
 	echo "    p1                     P1 transform"
 	echo "    mgx                    move globals"
 	echo "    mgx_p1                 move globals, followed by P1"

@@ -1,47 +1,18 @@
 #!/bin/bash 
 
-set -x
-
 TEST_DIR=$PEASOUP_HOME/tests/tcpdump
-TEST_LIB="$TEST_DIR/../manual_test_lib.sh"
-
-echo "TEST_DIR: $TEST_DIR"
+TEST_LIB="$(realpath "$TEST_DIR/../manual_test_lib.sh")"
 
 #used for filtering program names from output.
 ORIG_NAME=tcpdump
-
-ls -lt  $TEST_DIR | grep tcpd_tests
-pwd
-whoami
-sudo chmod -R og+rwx "$TEST_DIR/tcpd_tests"
-ls -lt $TEST_DIR
-ls -lt $TEST_DIR/tcpd_tests
-ls -lt "$TEST_DIR/tcpd_tests/*.pcap"
 
 #must import the library here, as it depends on some of the above variables
 . $TEST_LIB
 
 DELETE_FILTER="stonesoup|gcc|lib|DUMMY|exec|python|tcpdump"
 
-# debugging
-echo
-echo "STRACE $1"
-strace $1 -n -r $TEST_DIR/tcpd_tests/bgp_vpn_attrset.pcap -t -v
-if [ ! $? -eq 0 ]; then
-	report_failure 
-fi
-
-echo
-echo "STRACE $2"
-strace $2 -n -r $TEST_DIR/tcpd_tests/bgp_vpn_attrset.pcap -t -v
-if [ ! $? -eq 0 ]; then
-	tail -n 30 /var/log/syslog
-	report_failure 
-fi
-
-run_basic_test 20 -n -r $TEST_DIR/tcpd_tests/bgp_vpn_attrset.pcap -t -v
-
 run_basic_test 20 -h
+run_basic_test 20 -n -r $TEST_DIR/tcpd_tests/bgp_vpn_attrset.pcap -t -v
 run_basic_test 20 -$i -s0 -nr $TEST_DIR/tcpd_tests/print-flags.pcap
 run_basic_test 20 -n -r $TEST_DIR/tcpd_tests/mpbgp-linklocal-nexthop.pcap -t -v
 run_basic_test 20 -n -r $TEST_DIR/tcpd_tests/eapon1.pcap -t
