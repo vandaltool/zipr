@@ -130,4 +130,67 @@ verify-fails-centos75:
   tags:
     - centos75
 
+#
+# $PSZ ls
+#
+
+# template
+.xform-ls: &xform-ls
+  stage: test
+  script:
+    - ./cicd_tests/xform-ls.sh
+
+#per OS
+xform-ls-ubuntu18:
+  <<: *xform-ls
+  tags:
+    - ubuntu18
+  variables:
+    OS: 'ubuntu18'  
+
+xform-ls-ubuntu16:
+  <<: *xform-ls
+  tags:
+    - ubuntu16
+  variables:
+    OS: 'ubuntu16'  
+
+xform-ls-centos75:
+  <<: *xform-ls
+  tags:
+    - centos75
+  variables:
+    OS: 'centos75'  
+
+#
+# $PSZ cat
+#
+
+# template
+.xform-cat: &xform-cat
+  stage: test
+  script:
+    - ./cicd_tests/xform-cat.sh
+
+xform-cat-ubuntu18:
+  <<: *xform-cat
+  tags:
+    - ubuntu18
+  variables:
+    OS: 'ubuntu18'  
+    
+xform-cat-ubuntu16:
+  <<: *xform-cat
+  tags:
+    - ubuntu16
+  variables:
+    OS: 'ubuntu16'  
+
+xform-cat-centos75:
+  <<: *xform-cat
+  tags:
+    - centos75
+  variables:
+    OS: 'centos75'  
+
 
