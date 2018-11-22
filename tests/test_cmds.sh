@@ -218,7 +218,9 @@ do_tests()
 	done
 
 	if [[ $progs_fail != "" ]] || [[ $progs_fail_peasoup != "" ]]; then
-		had_fails=1
+		if [[ $config != "fail" ]]; then
+			had_fails=1
+		fi
 	fi
 }
 
