@@ -310,7 +310,7 @@ int ThanosPlugin_t::executeStep(TransformStep_t& the_step, const bool are_debugg
 	pqxxDB_t* pqxx_interface = shared_objects->getDBInterface();
 	if(step_optional)
 	{
-		const int error = shared_objects->writeBackAll();
+		const int error = shared_objects->writeBackAll(&thanos_log);
 		if(error)
 		{
 			return 1; // the failure must be from a critical step, abort
@@ -350,7 +350,7 @@ int ThanosPlugin_t::executeStep(TransformStep_t& the_step, const bool are_debugg
 	if(step_optional)
 	{
 		// write changes to DB to see if it succeeds
-		const int error = shared_objects->writeBackAll();
+		const int error = shared_objects->writeBackAll(&thanos_log);
 		if(error)
 		{
 			// abort changes by resetting DB interface
@@ -366,7 +366,7 @@ int ThanosPlugin_t::executeStep(TransformStep_t& the_step, const bool are_debugg
 	else if(are_debugging)
 	{
 		// write changes to DB in case next step fails
-		const int error = shared_objects->writeBackAll();
+		const int error = shared_objects->writeBackAll(&thanos_log);
 		if(error)
 		{
 			return 1; // critical step failed, abort
@@ -386,7 +386,7 @@ int ThanosPlugin_t::executeStep(TransformStep_t& the_step, const bool are_debugg
 int ThanosPlugin_t::saveChanges()
 {
 	pqxxDB_t* pqxx_interface = shared_objects->getDBInterface();
-        const int error = shared_objects->writeBackAll();
+        const int error = shared_objects->writeBackAll(&thanos_log);
         if(error)
         {
         	return 1; // critical step failed, abort

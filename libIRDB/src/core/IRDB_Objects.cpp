@@ -49,7 +49,7 @@ FileIR_t* IRDBObjects_t::addFileIR(const db_id_t variant_id, const db_id_t file_
         }
 }
 
-int IRDBObjects_t::writeBackFileIR(const db_id_t file_id)
+int IRDBObjects_t::writeBackFileIR(const db_id_t file_id, ostream *verbose_logging)
 {
         const auto it = file_IR_map.find(file_id);
         
@@ -65,7 +65,7 @@ int IRDBObjects_t::writeBackFileIR(const db_id_t file_id)
 		// make sure static variable is set in the calling module -- IMPORTANT
 		const auto & the_fileIR = (it->second).fileIR;
 		the_fileIR->SetArchitecture();
-		the_fileIR->WriteToDB();
+		the_fileIR->WriteToDB(verbose_logging);
         	return 0;
 	}
 	catch (DatabaseError_t pnide)
@@ -180,14 +180,14 @@ void IRDBObjects_t::deleteVariant(const db_id_t variant_id)
 	variant_map.erase(variant_id);
 }
 
-int IRDBObjects_t::writeBackAll(void)
+int IRDBObjects_t::writeBackAll(ostream *verbose_logging)
 {
         int ret_status = 0;
 
         // Write back FileIRs
 	for(auto &file_pair : file_IR_map)
         {
-		const int result = IRDBObjects_t::writeBackFileIR((file_pair.second.file)->GetBaseID());
+		const int result = IRDBObjects_t::writeBackFileIR((file_pair.second.file)->GetBaseID(), verbose_logging);
 		if(result != 0)
 		{
 			ret_status = -1;

@@ -37,6 +37,7 @@ using namespace std;
 
 
 #define SCOOP_CHUNK_SIZE (10*1024*1024)  /* 10 mb  */
+#define ALLOF(a) begin(a),end(a)
 
 
 #undef EIP
@@ -281,7 +282,7 @@ void FileIR_t::AssembleRegistry()
 		}
 
 		instr->SetDataBits(rawBits);
-//		cerr << "doing instruction:" << ((Instruction_t*)instr)->getDisassembly() << " comment: " << ((Instruction_t*)instr)->GetComment() << endl;
+//		*verbose_logging << "doing instruction:" << ((Instruction_t*)instr)->getDisassembly() << " comment: " << ((Instruction_t*)instr)->GetComment() << endl;
 		reg_val++;
 	}
 
@@ -709,7 +710,7 @@ void FileIR_t::ReadRelocsFromDB
 }
 
 
-void FileIR_t::WriteToDB()
+void FileIR_t::WriteToDB(ostream *verbose_logging)
 {
 //     	const auto WriteIRDB_start = clock();
 
@@ -722,7 +723,7 @@ void FileIR_t::WriteToDB()
 	/* assign each item a unique ID */
 	SetBaseIDS();
 
-	CleanupICFS();
+	CleanupICFS(verbose_logging);
 
 	db_id_t j=-1;
 
@@ -797,7 +798,8 @@ void FileIR_t::WriteToDB()
 				// in the IRDB, or have an associated "old" instruction.  
 				// without these bits of information, the new instruction can't possibly execute correctly.
 				// and we won't have the information necessary to emit spri.
-				cerr << "NULL fallthrough: offending instruction:" << ((Instruction_t*)insnp)->getDisassembly() << " comment: " << ((Instruction_t*)insnp)->GetComment() << endl;
+
+				*verbose_logging << "NULL fallthrough: offending instruction:" << ((Instruction_t*)insnp)->getDisassembly() << " comment: " << ((Instruction_t*)insnp)->GetComment() << endl;
 				assert(0);
 				abort();
 			}
@@ -816,7 +818,7 @@ void FileIR_t::WriteToDB()
 				// in the IRDB, or have an associated "old" instruction.  
 				// without these bits of information, the new instruction can't possibly execute correctly.
 				// and we won't have the information necessary to emit spri.
-				cerr << "Call must have a target; offending instruction:" << ((Instruction_t*)insnp)->getDisassembly() << " comment: " << ((Instruction_t*)insnp)->GetComment() << endl;
+				*verbose_logging << "Call must have a target; offending instruction:" << ((Instruction_t*)insnp)->getDisassembly() << " comment: " << ((Instruction_t*)insnp)->GetComment() << endl;
 				assert(0);
 				abort();
 			}
@@ -1313,53 +1315,21 @@ void FileIR_t::ReadAllICFSFromDB(std::map<db_id_t,Instruction_t*> &addr2instMap,
 	}
 }
 
-void FileIR_t::GarbageCollectICFS()
+void FileIR_t::GarbageCollectICFS(ostream* verbose_logging)
 {
-	std::set<ICFS_t*> used_icfs;
+	auto used_icfs= ICFSSet_t();
+	// get the IBTarget of each instruction into used_icfs
+	transform(     ALLOF(insns), inserter(used_icfs, begin(used_icfs)), 
+	               [](const Instruction_t* insn) -> ICFS_t* { return insn->GetIBTargets(); } 
+	         );
+	// we likely inserted null into the set, which we just will remove as a special ase.
+	used_icfs.erase(nullptr);
 
-	for(set<Instruction_t*>::const_iterator it=this->GetInstructions().begin();
-		it!=this->GetInstructions().end();
-   		++it)
-	{
-		Instruction_t* instr=*it;
-		if(instr && instr->GetIBTargets())
-		{ 
-			used_icfs.insert(instr->GetIBTargets());
-		}
-	}
-
-/*
-	int unused_icfs = this->GetAllICFS().size() - used_icfs.size();
-	if (unused_icfs > 0)
-	{
-		cerr << "FileIR_t::GarbageCollectICFS(): WARNING: " << dec << unused_icfs << " unused ICFS found. ";
-		cerr << "Deleting before committing to IRDB" << endl;
-	}
-*/
-
-	ICFSSet_t to_erase;
-	for(ICFSSet_t::const_iterator it=this->GetAllICFS().begin();
-		it != this->GetAllICFS().end();
-		++it)
-	{
-		ICFS_t* icfs = *it;
-		if (used_icfs.count(icfs) == 0)
-		{
-			to_erase.insert(icfs);
-		}
-	}
-
-	for(ICFSSet_t::const_iterator it=to_erase.begin();
-		it != to_erase.end();
-		++it)
-	{
-		ICFS_t* icfs = *it;
-		this->GetAllICFS().erase(icfs);
-	}
-
+	// update the list to include only the used ones.
+	icfs_set=used_icfs;
 }
 
-void FileIR_t::DedupICFS()
+void FileIR_t::DedupICFS(ostream *verbose_logging)
 {
 	std::set<ICFS_t> unique_icfs;
 
@@ -1380,8 +1350,8 @@ void FileIR_t::DedupICFS()
 
 	if (duplicates.size() > 0)
 	{
-		cerr << "FileIR_t::DedupICFS(): WARNING: " << dec << duplicates.size() << " duplicate ICFS out of " << all_icfs.size() << " total ICFS";
-		cerr << ". De-duplicating before committing to IRDB" << endl;
+		*verbose_logging << "FileIR_t::DedupICFS(): WARNING: " << dec << duplicates.size() << " duplicate ICFS out of " << all_icfs.size() << " total ICFS";
+		*verbose_logging << ". De-duplicating before committing to IRDB" << endl;
 	}
 
 	// remove duplicate icfs
@@ -1404,7 +1374,7 @@ void FileIR_t::DedupICFS()
 			if (*icfs == *t)
 			{
 				duplicate_map[icfs] = t;
-				cerr << "FileIR_t::DedupICFS(): remap: icfs id " << icfs->GetBaseID() << " --> icsf id " << t->GetBaseID() << endl;
+				*verbose_logging << "FileIR_t::DedupICFS(): remap: icfs id " << icfs->GetBaseID() << " --> icsf id " << t->GetBaseID() << endl;
 				break;
 			}
 		}
@@ -1423,10 +1393,10 @@ void FileIR_t::DedupICFS()
 	}
 }
 
-void FileIR_t::CleanupICFS()
+void FileIR_t::CleanupICFS(ostream *verbose_logging)
 {
-	GarbageCollectICFS();
-	DedupICFS();
+	GarbageCollectICFS(verbose_logging);
+	DedupICFS(verbose_logging);
 }
 
 std::map<db_id_t,DataScoop_t*> FileIR_t::ReadScoopsFromDB

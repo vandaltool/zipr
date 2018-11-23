@@ -37,7 +37,7 @@ class FileIR_t : public BaseObj_t
 		virtual ~FileIR_t();
 	  
 		// DB operations
-		void WriteToDB();
+		void WriteToDB(std::ostream *verbose_logging=&std::cerr);
 
 		// accessors and mutators in one
 		FunctionSet_t&    GetFunctions() { return funcs; }
@@ -169,9 +169,9 @@ class FileIR_t : public BaseObj_t
 		void ReadAllICFSFromDB(std::map<db_id_t,Instruction_t*> &addr2insnMap,
 			std::map<Instruction_t*, db_id_t> &unresolvedICFS);
 
-		void CleanupICFS();
-		void GarbageCollectICFS();
-		void DedupICFS();
+		void CleanupICFS(std::ostream *verbose_logging=&std::cerr);
+		void GarbageCollectICFS(std::ostream *verbose_logging=&std::cerr);
+		void DedupICFS(std::ostream *verbose_logging=&std::cerr);
 
 
 		std::clock_t ReadIRDB_start;
