@@ -41,23 +41,23 @@ int ElfDep_Tester_t::execute()
 
 	// insert the instrumentation
 	auto tmp=insert_loc;
-    	(void)insertAssemblyBefore(getFileIR(),tmp," push rdi") ;
-	tmp=  insertAssemblyAfter(getFileIR(), tmp," push rsi ") ;
-	tmp=  insertAssemblyAfter(getFileIR(), tmp," push rdx") ;
-	tmp=  insertAssemblyAfter(getFileIR(), tmp," push rcx ") ;
-	tmp=  insertAssemblyAfter(getFileIR(), tmp," push r8 ") ;
-	tmp=  insertAssemblyAfter(getFileIR(), tmp," push r9 ") ;
-	tmp=  insertAssemblyAfter(getFileIR(), tmp," call 0 ", edpcb) ;
-	tmp=  insertAssemblyAfter(getFileIR(), tmp," L1: mov rcx, [rel L1]");
+    	(void)insertAssemblyBefore(tmp," push rdi") ;
+	tmp=  insertAssemblyAfter(tmp," push rsi ") ;
+	tmp=  insertAssemblyAfter(tmp," push rdx") ;
+	tmp=  insertAssemblyAfter(tmp," push rcx ") ;
+	tmp=  insertAssemblyAfter(tmp," push r8 ") ;
+	tmp=  insertAssemblyAfter(tmp," push r9 ") ;
+	tmp=  insertAssemblyAfter(tmp," call 0 ", edpcb) ;
+	tmp=  insertAssemblyAfter(tmp," L1: mov rcx, [rel L1]");
 	auto got_insn=tmp;
-	tmp=  insertAssemblyAfter(getFileIR(), tmp," inc dword [rcx]");
-	tmp=  insertAssemblyAfter(getFileIR(), tmp," call 0", edpcb);
-	tmp=  insertAssemblyAfter(getFileIR(), tmp," pop r9");
-	tmp=  insertAssemblyAfter(getFileIR(), tmp," pop r8");
-	tmp=  insertAssemblyAfter(getFileIR(), tmp," pop rcx");
-	tmp=  insertAssemblyAfter(getFileIR(), tmp," pop rdx");
-	tmp=  insertAssemblyAfter(getFileIR(), tmp," pop rsi");
-	tmp=  insertAssemblyAfter(getFileIR(), tmp," pop rdi");
+	tmp=  insertAssemblyAfter(tmp," inc dword [rcx]");
+	tmp=  insertAssemblyAfter(tmp," call 0", edpcb);
+	tmp=  insertAssemblyAfter(tmp," pop r9");
+	tmp=  insertAssemblyAfter(tmp," pop r8");
+	tmp=  insertAssemblyAfter(tmp," pop rcx");
+	tmp=  insertAssemblyAfter(tmp," pop rdx");
+	tmp=  insertAssemblyAfter(tmp," pop rsi");
+	tmp=  insertAssemblyAfter(tmp," pop rdi");
 
 
 	// map the load to point at the GOT entry.
