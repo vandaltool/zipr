@@ -70,9 +70,6 @@ do_tests()
 				zafl_rida)
 					zafl.sh $progpath $protected --rida --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
-				zafl_rida_nostars)
-					zafl.sh $progpath $protected --rida --no-stars --tempdir $temp_dir > test_${prog}.ps.log 2>&1
-				;;
 				zafl_ida)
 					zafl.sh $progpath $protected --ida --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
@@ -92,7 +89,7 @@ do_tests()
 					$PSZ $progpath $protected -s meds_static=off -s rida=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				rida_p1)
-					$PSZ $progpath $protected -s meds_static=off -s rida=on -s p1transform=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					$PSZ $progpath $protected -s meds_static=off -s rida=on -c p1transform=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				rida_scfi)
 					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected -s meds_static=off -s rida=on -s selective_cfi=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
@@ -101,22 +98,22 @@ do_tests()
 					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected -s meds_static=off -s rida=on -s p1transform=on -s selective_cfi=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				p1)
-					$PSZ $progpath $protected --step p1transform=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					$PSZ $progpath $protected -c p1transform=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				mg)
-					$PSZ $progpath $protected --step move_globals=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					$PSZ $progpath $protected -c move_globals=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				mg_elfonly)
-					$PSZ $progpath $protected --step move_globals=on -o move_globals:--elftables-only --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					$PSZ $progpath $protected -c move_globals=on -o move_globals:--elftables-only --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				mgx)
-					$PSZ $progpath $protected --step move_globals=on --step-option move_globals:--aggressive --step xor_globals=on  --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					$PSZ $progpath $protected -c move_globals=on --step-option move_globals:--aggressive --step xor_globals=on  --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				mgx_p1)
-					$PSZ $progpath $protected --step move_globals=on --step-option move_globals:--aggressive --step xor_globals=on --step p1transform=on  --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					$PSZ $progpath $protected -c move_globals=on --step-option move_globals:--aggressive -c xor_globals=on -c p1transform=on  --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				p1_mgx)
-					$PSZ $progpath $protected --step p1transform=on --step move_globals=on --step-option move_globals:--aggressive --step xor_globals=on --step p1transform=on  --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					$PSZ $progpath $protected -c p1transform=on -c move_globals=on --step-option move_globals:--aggressive -c xor_globals=on --step p1transform=on  --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				scfi.color)
 					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected --backend zipr --step selective_cfi=on --step-option selective_cfi:--color --tempdir $temp_dir > test_${prog}.ps.log 2>&1
@@ -125,7 +122,7 @@ do_tests()
 					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected --backend zipr --step selective_cfi=on --step-option selective_cfi:--color --step-option selective_cfi:--no-protect-jumps --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				scfi)
-					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected --step selective_cfi=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected -c selective_cfi=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				p1_scfi)
 					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected -c p1transform=on -c selective_cfi=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
@@ -134,7 +131,7 @@ do_tests()
 					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected -c p1transform=on -c selective_cfi=on -c move_globals=on --step-option move_globals:--aggressive --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				kill_deads)
-					$PSZ $progpath $protected --step kill_deads=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					$PSZ $progpath $protected -c kill_deads=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				scdi)
 					SimpleCDI_VERBOSE=1 $PSZ $progpath $protected --backend zipr --step simple_cdi=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
