@@ -145,3 +145,34 @@ xform-cat-centos75:
   variables:
     OS: 'centos75'  
 
+#
+# elfdep test
+#
+
+# template
+.elfdep: &elfdep
+  stage: test
+  script:
+    - ./cicd_tests/elfdep.sh
+
+elfdep-ubuntu18:
+  <<: *elfdep
+  tags:
+    - ubuntu18
+  variables:
+    OS: 'ubuntu18'  
+    
+elfdep-ubuntu16:
+  <<: *elfdep
+  tags:
+    - ubuntu16
+  variables:
+    OS: 'ubuntu16'  
+
+elfdep-centos75:
+  <<: *elfdep
+  tags:
+    - centos75
+  variables:
+    OS: 'centos75'  
+
