@@ -206,6 +206,7 @@ Instruction_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_E
 
 	newinsn->GetRelocations().insert(newreloc);
 	getFileIR()->GetRelocations().insert(newreloc);
+	newinsn->GetAddress()->SetFileID(getFileIR()->GetFile()->GetBaseID());
 
 	return newinsn;
 }
