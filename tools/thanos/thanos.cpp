@@ -74,13 +74,18 @@ int main(int argc, char* argv[])
         real_cerr=&my_real_cerr;
         real_cout=&my_real_cout;
 
- 	thanos_log.open("logs/thanos.log", ofstream::out);
+ 	thanos_log.open("logs/thanos.log", ofstream::out|ofstream::app);
 
 	if(!thanos_log)
 	{
 		cerr<<"Cannot open logs/thanos.log"<<endl;
 		exit(1);
 	}
+	// catch any misc stuff to the thanos log
+	cout.rdbuf(thanos_log.rdbuf());
+	cerr.rdbuf(thanos_log.rdbuf());
+
+
 	// get plugins
 	auto argv_iter=1;
 	while (true)
@@ -302,7 +307,7 @@ int ThanosPlugin_t::executeStep(TransformStep_t& the_step, const bool are_debugg
 		*real_cout<<"Done.  Command failed! ***************************************"<<endl;
 		if(!step_optional)
 		{
-			*real_cout<<"ERROR: The "<<the_step.getStepName()<<" step is necessary, but failed.  Exiting early."<<endl;	
+			*real_cout<<"ERROR: The "<<the_step.getStepName()<<" step is necessary, but options parsing failed.  Exiting early."<<endl;	
 		}
 		return parse_retval;
 	}
