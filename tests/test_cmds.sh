@@ -175,7 +175,8 @@ do_tests()
 					fi
 				;;
 				*)
-					echo "Unknown configuration requested"
+					echo "Unknown configuration requested -- exiting"
+					exit 1
 					continue
 				;;
 			esac
