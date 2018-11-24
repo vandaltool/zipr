@@ -26,11 +26,10 @@
 #include <fstream>
 #include <iostream>
 
+#include <utils.hpp>
+
 using namespace libIRDB;
 using namespace std;
-
-static void ignore_result(int /* res */) { }
-
 
 
 File_t::File_t(const db_id_t &myfile_id, const db_id_t &my_orig_fid, const std::string &myurl, 
@@ -82,7 +81,8 @@ void File_t::CreateTables()
 		ehcss_table_name+" "+
 		tmpfile;
 
-	ignore_result(system(command.c_str()));
+	// ignore_result(system(command.c_str()));
+	command_to_stream(command,cout);
 
 
 	std::ifstream t(tmpfile.c_str());

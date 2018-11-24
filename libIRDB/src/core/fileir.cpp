@@ -28,9 +28,6 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <iomanip>
-//#include <bea_deprecated.hpp>
-
-
 
 using namespace libIRDB;
 using namespace std;
@@ -42,6 +39,29 @@ using namespace std;
 
 #undef EIP
 
+int command_to_stream(const string& command, ostream& stream)
+{
+	auto redirect_command=command+" 2>&1 ";
+	auto buffer=array<char,128>();
+
+	std::cout << "Issuing subcommand: "<< command << std::endl;
+	auto pipe = popen(redirect_command.c_str(), "r");
+	if (!pipe)
+	{
+		stream << "Couldn't start command:"<< strerror(errno) << endl;
+		return 1;
+	}
+	while (fgets(buffer.data(), 128, pipe) != NULL) 
+	{
+		stream<<buffer.data();
+	}
+	auto returnCode = pclose(pipe);
+	if(returnCode==-1)
+		stream << "Could not close pipe: "<< strerror(errno) << endl;
+
+	std::cout << "Return code = "<<returnCode << std::endl;
+	return returnCode;
+}
 
 static void UpdateEntryPoints(
 	const std::map<db_id_t,Instruction_t*> 	&insnMap,
@@ -192,14 +212,8 @@ void FileIR_t::AssembleRegistry()
 	string binaryOutputFile = "tmp.bin";
 
 	string command = "rm -f " + assemblyFile + " " + binaryOutputFile;
-	int rt = system(command.c_str());
+	auto actual_exit = command_to_stream(command, cout); // system(command.c_str());
 	
-	int actual_exit = -1;
-	//int actual_signal = -1;
-
-	if (WIFEXITED(rt)) actual_exit = WEXITSTATUS(rt);
-    	//else actual_signal = WTERMSIG(rt);
-
 	assert(actual_exit == 0);
 	
 	ofstream asmFile;
@@ -219,14 +233,7 @@ void FileIR_t::AssembleRegistry()
 	asmFile.close();
 
 	command = string("nasm ") + assemblyFile + string(" -o ") + binaryOutputFile;
-	rt = system(command.c_str());
-
-	actual_exit = -1;
-	//actual_signal = -1;
-
-    	if (WIFEXITED(rt)) actual_exit = WEXITSTATUS(rt);
-    	//else actual_signal = WTERMSIG(rt);
-
+	actual_exit = command_to_stream(command,cout); // system(command.c_str());
 	assert(actual_exit == 0);
 	
 	

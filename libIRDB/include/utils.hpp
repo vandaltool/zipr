@@ -120,6 +120,9 @@ inline Funct for_randomOrder_each(const IterType &b, const IterType & e, const F
 	return callback;
 }
 
+int command_to_stream(const std::string& command, std::ostream& stream);
+
+
 #endif
 
 

@@ -24,14 +24,12 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+#include <utils.hpp>
 
 #undef EIP
 
 using namespace libIRDB;
 using namespace std;
-
-static void ignore_result(int /* res */) { }
-
 
 Instruction_t::Instruction_t() :
 	BaseObj_t(NULL), 
@@ -115,9 +113,9 @@ bool Instruction_t::Assemble(string assembly)
 
    //remove any preexisting assembly or nasm generated files
    string command = "rm -f " + assemblyFile;
-   ignore_result(system(command.c_str()));
+   command_to_stream(command,cout);
    command = "rm -f "+assemblyFile+".bin";
-   ignore_result(system(command.c_str()));
+   command_to_stream(command,cout);
 
    ofstream asmFile;
    asmFile.open(assemblyFile.c_str());
@@ -132,7 +130,7 @@ bool Instruction_t::Assemble(string assembly)
    asmFile.close();
 
    command = "nasm " + assemblyFile + " -o "+ binaryOutputFile;
-   ignore_result(system(command.c_str()));
+   command_to_stream(command,cout);
 
     ifstream binreader;
     unsigned int filesize;
