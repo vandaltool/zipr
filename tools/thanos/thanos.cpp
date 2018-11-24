@@ -313,6 +313,8 @@ int ThanosPlugin_t::executeStep(TransformStep_t& the_step, const bool are_debugg
 	flush(*real_cout);
 
 
+	/* reset optind for getops, in case plugin forgets to do it. */
+	optind=1;
 	const int parse_retval = the_step.parseArgs(step_args);
 	if(parse_retval != 0)
 	{
