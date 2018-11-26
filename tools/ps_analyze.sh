@@ -769,11 +769,13 @@ do_plugins()
 
 		# first check if step can be invoked as a thanos plugin
                 if [ -x $plugin_path/lib$stepname.so ]; then
+
 			# if this step is a stop before/after step, cleanup anything outstanding so we can do the one step special.
 			if [[ $stepname == $stop_before_step ]] || [[ $stepname == $stop_after_step ]] ||
 			   [[ $stepname == $dump_before_step ]] || [[ $stepname == $dump_after_step ]]; then
 				run_current_thanos_steps
 			fi
+
 			# add step to the block of contiguous thanos plugins
 			stop_if_error $stepname			
 			if [[ $? -gt $error_threshold ]]; then
@@ -782,11 +784,18 @@ do_plugins()
 				thanos_plugins="$thanos_plugins \"$stepname -optional --step-args $cloneid $value\""	
 			fi
 			thanos_steps="$thanos_steps $stepname"
+
 			# if this step is a stop before/after step, do it special, so we exit early.
 			if [[ $stepname == $stop_before_step ]] || [[ $stepname == $stop_after_step ]]; then
+				# just run the step now.
 				perform_step $stepname none "$plugin_path/thanos.exe --no-redirect "$thanos_plugins""
+				thanos_steps=""
+				thanos_plugins=""
 			elif   [[ $stepname == $dump_before_step ]] || [[ $stepname == $dump_after_step ]]; then
+				# just run the step now.
 				perform_step $stepname none "$plugin_path/thanos.exe "$thanos_plugins""
+				thanos_steps=""
+				thanos_plugins=""
 			fi
 			continue
 		elif [[ $thanos_steps ]]; then 
