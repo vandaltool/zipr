@@ -227,6 +227,8 @@ Instruction_t* allocateNewInstruction(FileIR_t* virp, db_id_t p_fileID,Function_
 
 	instr->SetFunction(func);
 	instr->SetAddress(a);
+	if(func)
+		func->GetInstructions().insert(instr);
 
 	virp->GetInstructions().insert(instr);
 	virp->GetAddresses().insert(a);

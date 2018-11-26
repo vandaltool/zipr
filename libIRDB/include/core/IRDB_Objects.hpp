@@ -46,6 +46,8 @@ class IRDBObjects_t
 		int writeBackAll(std::ostream* verbose_logging=nullptr);    // Returns -1 if any writes fail.
                 
                 void deleteAll(void);
+
+		void tidyIR();
 		
 	private:
                 std::unique_ptr<pqxxDB_t> pqxx_interface;

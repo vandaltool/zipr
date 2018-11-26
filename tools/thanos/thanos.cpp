@@ -54,6 +54,7 @@ class ThanosPlugin_t
                            step_args(p_step_args)
                        {
                        }
+	void tidyIR();
 	int executeStep(TransformStep_t& the_step, const bool are_debugging);
 	int commitAll();
 
@@ -306,6 +307,12 @@ int ThanosPlugin_t::runPlugin()
 }
 
 
+void ThanosPlugin_t::tidyIR()
+{
+	optind=1;
+	shared_objects->tidyIR();
+}
+
 int ThanosPlugin_t::executeStep(TransformStep_t& the_step, const bool are_debugging)
 {
 
@@ -313,8 +320,8 @@ int ThanosPlugin_t::executeStep(TransformStep_t& the_step, const bool are_debugg
 	flush(*real_cout);
 
 
-	/* reset optind for getops, in case plugin forgets to do it. */
-	optind=1;
+	tidyIR();
+
 	const int parse_retval = the_step.parseArgs(step_args);
 	if(parse_retval != 0)
 	{

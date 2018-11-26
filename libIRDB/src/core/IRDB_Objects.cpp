@@ -211,7 +211,7 @@ void IRDBObjects_t::deleteAll(void)
         // Delete Variants (also deletes all files)
 	for( auto &variant_pair : variant_map)
         {
-            IRDBObjects_t::deleteVariant((variant_pair.second)->GetBaseID());
+		IRDBObjects_t::deleteVariant((variant_pair.second)->GetBaseID());
         }
 }
 
@@ -227,3 +227,15 @@ pqxxDB_t* IRDBObjects_t::resetDBInterface()
 	return pqxx_interface.get();
 }
 
+
+void IRDBObjects_t::tidyIR(void)
+{
+        // Delete Variants (also deletes all files)
+	for( auto &variant_pair : file_IR_map)
+        {
+		const auto &file_ir_info = variant_pair.second;
+		auto fileIR=file_ir_info.fileIR.get();
+		fileIR->AssembleRegistry();
+		fileIR->SetBaseIDS();
+        }
+}
