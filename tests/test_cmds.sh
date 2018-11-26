@@ -76,6 +76,12 @@ do_tests()
 				zafl_ida_nostars)
 					zafl.sh $progpath $protected --ida --no-stars --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
+				zafl_nostars)
+					zafl.sh $progpath $protected --no-stars --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+				;;
+				zafl_opt_graph)
+					zafl.sh $progpath $protected -g --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+				;;
 				zafl_rida)
 					zafl.sh $progpath $protected --rida --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
@@ -169,7 +175,8 @@ do_tests()
 					fi
 				;;
 				*)
-					echo "Unknown configuration requested"
+					echo "Unknown configuration requested -- exiting"
+					exit 1
 					continue
 				;;
 			esac
