@@ -24,7 +24,7 @@ class Relocation_t : public BaseObj_t
     public:
 
         // create new item.
-        Relocation_t() : BaseObj_t(NULL), offset(0), wrt_obj(NULL)  {}	// new reloc w/no data
+        Relocation_t() : BaseObj_t(NULL), offset(0), wrt_obj(NULL), addend(0)  {}	// new reloc w/no data
 
 	// a reloc read from the DB 
         Relocation_t(db_id_t reloc_id, int _offset, std::string _type, BaseObj_t* p_wrt_obj=NULL, int32_t p_addend=0) :
