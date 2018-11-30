@@ -24,6 +24,12 @@ run_basic_test 120 --doesnotexist
 run_basic_test 120 -cvf $DATA_DIR.tar $DATA_DIR
 run_basic_test 120 -tvf $DATA_DIR/test.tar $DATA_DIR
 
+# sanity check tar functionality
+timeout 10 $BENCH -tf $DATA_DIR.tar | grep dir1
+if [ ! $? -eq 0 ];then 
+	report_failure
+fi
+
 rm $DATA_DIR.tar
 cleanup
 

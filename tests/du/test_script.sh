@@ -18,6 +18,11 @@ ORIG_NAME=du
 pwd
 echo "TEST_PROG: $TEST_PROG"
 
+timeout 10 $BENCH /usr | grep bin
+if [ ! $? -eq 0 ]; then
+	report_failure
+fi
+
 run_basic_test 120 --help
 run_basic_test 120 --version
 run_basic_test 120 --doesnotexist

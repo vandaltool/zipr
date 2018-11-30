@@ -7,6 +7,12 @@ ORIG_NAME=touch
 #must import the library here, as it depends on some of the above variables
 . $TEST_LIB
 
+# sanity check
+timeout 10 $BENCH --help | grep FILE
+if [ ! $? -eq 0 ];then
+	report_failure
+fi
+
 run_basic_test 20 --help
 run_basic_test 20 --version
 rm -f tmp

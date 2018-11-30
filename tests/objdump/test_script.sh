@@ -18,6 +18,12 @@ ORIG_NAME=objdump
 pwd
 echo "TEST_PROG: $TEST_PROG"
 
+# sanity check
+timeout 10 $BENCH -D /bin/ls | grep -e add >/dev/null 2>&1
+if [ ! $? -eq 0 ];then 
+	report_failure
+fi
+
 run_basic_test 120 --help
 run_basic_test 120 --version
 run_basic_test 120 --doesnotexist

@@ -18,6 +18,24 @@ ORIG_NAME=grep
 pwd
 echo "TEST_PROG: $TEST_PROG"
 
+
+# test basic grep functionality
+TMP_LOG=/tmp/tmp.hello.$(whoami)
+ls / | $BENCH tmp >/dev/null 2>&1
+if [ ! $? -eq 0 ]; then
+	report_failure
+fi
+echo "hello" > $TMP_LOG
+$BENCH hello $TMP_LOG
+if [ ! $? -eq 0 ]; then
+	report_failure
+fi
+$BENCH foobar $TMP_LOG
+if [ $? -eq 0 ]; then
+	report_failure
+fi
+rm $TMP_LOG
+
 run_basic_test 120 --help
 run_basic_test 120 --version
 run_basic_test 120 --doesnotexist

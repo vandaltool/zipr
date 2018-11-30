@@ -18,6 +18,14 @@ ORIG_NAME=sort
 pwd
 echo "TEST_PROG: $TEST_PROG"
 
+# sanity check
+SORTED=/tmp/tmp.sorted.$(whoami)
+timeout 20 $BENCH $DATA_DIR/data.cba > $SORTED
+diff $SORTED $DATA_DIR/data.abc
+if [ ! $? -eq 0 ]; then
+	report_failure
+fi
+rm $SORTED
 
 run_basic_test 120 --help
 run_basic_test 120 --version

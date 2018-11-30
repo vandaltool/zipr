@@ -13,6 +13,13 @@ DELETE_FILTER="stonesoup|gcc|lib|DUMMY|exec|python|tcpdump"
 
 run_basic_test 20 -h
 run_basic_test 20 -n -r $TEST_DIR/tcpd_tests/bgp_vpn_attrset.pcap -t -v
+
+# sanity check tcpdump
+timeout 10 $BENCH -n -r $TEST_DIR/tcpd_tests/bgp_vpn_attrset.pcap -t -v | grep -i "message" >/dev/null 2>&1
+if [ ! $? -eq 0 ];then
+	report_failure
+fi
+
 run_basic_test 20 -$i -s0 -nr $TEST_DIR/tcpd_tests/print-flags.pcap
 run_basic_test 20 -n -r $TEST_DIR/tcpd_tests/mpbgp-linklocal-nexthop.pcap -t -v
 run_basic_test 20 -n -r $TEST_DIR/tcpd_tests/eapon1.pcap -t
