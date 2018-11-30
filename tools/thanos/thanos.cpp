@@ -26,6 +26,8 @@ ostream *real_cout;
 ostream *real_cerr;
 string thanos_path;
 bool redirect_opt=true;
+int new_stdout_fd=1;
+int new_stderr_fd=2;
 
 class ThanosPlugin_t
 {
@@ -74,8 +76,8 @@ int main(int argc, char* argv[])
 {
 	thanos_path=argv[0];
 
-	auto new_stdout_fd=dup(STDOUT_FILENO);
-	auto new_stderr_fd=dup(STDERR_FILENO);
+	new_stdout_fd=dup(STDOUT_FILENO);
+	new_stderr_fd=dup(STDERR_FILENO);
 
 	__gnu_cxx::stdio_filebuf<char> stdout_filebuf(new_stdout_fd, ios::out); 
 	__gnu_cxx::stdio_filebuf<char> stderr_filebuf(new_stderr_fd, ios::out); 
@@ -294,8 +296,8 @@ int ThanosPlugin_t::runPlugin()
         cout<< "#ATTRIBUTE step_exitcode="<<dec<<step_result<<endl;
 
 
-	dup2(thanos_log_fd, STDOUT_FILENO);
-	dup2(thanos_log_fd, STDERR_FILENO);
+	dup2(new_stdout_fd, STDOUT_FILENO);
+	dup2(new_stderr_fd, STDERR_FILENO);
 	if(logfile)
 		fclose(logfile);
 
