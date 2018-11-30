@@ -273,6 +273,11 @@ int ThanosPlugin_t::runPlugin()
 			dup2(fileno(logfile), STDOUT_FILENO);
 			dup2(fileno(logfile), STDERR_FILENO);
 		}
+		else
+		{
+			dup2(new_stdout_fd, STDOUT_FILENO);
+			dup2(new_stderr_fd, STDERR_FILENO);
+		}
 	}
 	
 
@@ -296,8 +301,8 @@ int ThanosPlugin_t::runPlugin()
         cout<< "#ATTRIBUTE step_exitcode="<<dec<<step_result<<endl;
 
 
-	dup2(new_stdout_fd, STDOUT_FILENO);
-	dup2(new_stderr_fd, STDERR_FILENO);
+	dup2(thanos_log_fd, STDOUT_FILENO);
+	dup2(thanos_log_fd, STDERR_FILENO);
 	if(logfile)
 		fclose(logfile);
 
