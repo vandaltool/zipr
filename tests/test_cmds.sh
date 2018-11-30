@@ -16,15 +16,16 @@ do_tests()
 
 	export IB_VERBOSE=1
 
+	progs_pass=""
+	progs_fail=""
+	progs_pass_peasoup=""
+	progs_fail_peasoup=""
+
 	for config in $configs
 	do
 
 		echo "----------------------------------"
 		echo "TEST CONFIGURATION: $config"
-		progs_pass=""
-		progs_pass_peasoup=""
-		progs_fail=""
-		progs_fail_peasoup=""
 
 		if [ -d tmp_test_area.$config ]; then
 			rm -fr tmp_test_area.$config
