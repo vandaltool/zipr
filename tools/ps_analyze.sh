@@ -473,7 +473,7 @@ stop_if_error()
 	my_step=$1
 
 	# check for a step the user specified as critical.
-	echo "$user_critical_steps"|egrep " $step " > /dev/null
+	echo "$user_critical_steps"|egrep " $my_step " > /dev/null
 	grep_res=$?
 	if [ $grep_res -eq 0 ] ; then
 		return 4;
