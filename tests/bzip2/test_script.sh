@@ -55,16 +55,19 @@ run_bench_prog_only 120 -k $DATA_DIR/compression_input1_orig
 #sure it does exist before doing any comparisons. I check the bench's output
 #file because it is possible for the test to fail to produce an output for
 #different reasons. 
-if [[ -z "$IGNORE_RESULTS" ]] && [[ -f $DATA_DIR/compression_input1_orig.bz2 ]]; then
-
-	compare_std_results
- 	
-	diff $DATA_DIR/compression_input1_test.bz2 $DATA_DIR/compression_input1_orig.bz2
-	status=$?
-	if [ ! "$status" -eq 0 ]; then
-		echo "Exit Status Failure"
+if [[ -z "$IGNORE_RESULTS" ]] ; then
+	if [[ -f $DATA_DIR/compression_input1_orig.bz2 ]]; then
+		compare_std_results
+		
+		diff $DATA_DIR/compression_input1_test.bz2 $DATA_DIR/compression_input1_orig.bz2
+		status=$?
+		if [ ! "$status" -eq 0 ]; then
+			echo "Exit Status Failure"
+			report_failure
+		fi 
+	else
 		report_failure
-	fi 
+	fi
 fi
 cleanup
 report_success
