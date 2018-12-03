@@ -13,4 +13,5 @@ file irdb_vars ps
 file yum_packages.sh centos
 file postgres_setup.sh ps
 file README.txt ps
+file cfar_postgres_setup.sh cfar
 directory centos_files centos
