@@ -3,7 +3,7 @@
 show_logs_on_failure=0
 had_fails=0
 apps=""
-declare -A app_paths
+declare -A app_path
 default_apps="bzip2 grep du ncal ls objdump readelf sort tar touch tcpdump"
 configs=""
 default_configs="rida"
