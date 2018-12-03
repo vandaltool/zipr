@@ -3,6 +3,7 @@
 show_logs_on_failure=0
 had_fails=0
 apps=""
+declare -A app_path
 default_apps="bzip2 grep du ncal ls objdump readelf sort tar touch tcpdump"
 configs=""
 default_configs="rida"
@@ -51,15 +52,14 @@ do_tests()
 			fi
 
 
-			progpath=$(which $prog)
+			progpath="${app_path[$prog]}"
 			if [ "$progpath" = "" ]; then
 				echo "TEST: Original binary ($prog) not found: skipping..."
 				continue
 			fi
+			progpath=$(realpath $progpath)
+			echo "TEST ($config) ${prog}=${progpath}: Protecting..."
 
-			echo "TEST ($config) ${prog}: Protecting..."
-
-			progpath=$(readlink -f $progpath)
 			
 			case $config in
 				zafl)
@@ -162,6 +162,74 @@ do_tests()
 				;;
 				ibtl_p1)
 					$PSZ $progpath $protected --backend strata --step ibtl=on --step ilr=on --step pc_confine=on --step p1transform=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+				;;
+				mvp1v1)
+					$VGT -i $progpath -c mvp1 -o $temp_dir > test_${prog}.ps.log 2>&1
+					cp $temp_dir/vs-1/variant-1/bin/$(basename $progpath) $protected 
+				;;
+				mvp1v2)
+					$VGT -i $progpath -c mvp1 -o $temp_dir > test_${prog}.ps.log 2>&1
+					cp $temp_dir/vs-1/variant-2/bin/$(basename $progpath) $protected 
+				;;
+				mvp2v1)
+					$VGT -i $progpath -c mvp2 -o $temp_dir > test_${prog}.ps.log 2>&1
+					cp $temp_dir/vs-1/variant-1/bin/$(basename $progpath) $protected 
+				;;
+				mvp2v2)
+					$VGT -i $progpath -c mvp2 -o $temp_dir > test_${prog}.ps.log 2>&1
+					cp $temp_dir/vs-1/variant-2/bin/$(basename $progpath) $protected 
+				;;
+				mvp3v1)
+					$VGT -i $progpath -c mvp3 -o $temp_dir > test_${prog}.ps.log 2>&1
+					cp $temp_dir/vs-1/variant-1/bin/$(basename $progpath) $protected 
+				;;
+				mvp3v2)
+					$VGT -i $progpath -c mvp3 -o $temp_dir > test_${prog}.ps.log 2>&1
+					cp $temp_dir/vs-1/variant-2/bin/$(basename $progpath) $protected 
+				;;
+				mvp3v3)
+					$VGT -i $progpath -c mvp3 -o $temp_dir > test_${prog}.ps.log 2>&1
+					cp $temp_dir/vs-1/variant-3/bin/$(basename $progpath) $protected 
+				;;
+				mvp4v1)
+					$VGT -i $progpath -c mvp4 -o $temp_dir > test_${prog}.ps.log 2>&1
+					cp $temp_dir/vs-1/variant-1/bin/$(basename $progpath) $protected 
+				;;
+				mvp4v2)
+					$VGT -i $progpath -c mvp4 -o $temp_dir > test_${prog}.ps.log 2>&1
+					cp $temp_dir/vs-1/variant-2/bin/$(basename $progpath) $protected 
+				;;
+				mvp4v3)
+					$VGT -i $progpath -c mvp4 -o $temp_dir > test_${prog}.ps.log 2>&1
+					cp $temp_dir/vs-1/variant-3/bin/$(basename $progpath) $protected 
+				;;
+				mvpAv1)
+					$VGT -i $progpath -c mvpA -o $temp_dir > test_${prog}.ps.log 2>&1
+					cp $temp_dir/vs-1/variant-1/bin/$(basename $progpath) $protected 
+				;;
+				mvpAv2)
+					$VGT -i $progpath -c mvpA -o $temp_dir > test_${prog}.ps.log 2>&1
+					cp $temp_dir/vs-1/variant-2/bin/$(basename $progpath) $protected 
+				;;
+				mvpBv1)
+					$VGT -i $progpath -c mvpB -o $temp_dir > test_${prog}.ps.log 2>&1
+					cp $temp_dir/vs-1/variant-1/bin/$(basename $progpath) $protected 
+				;;
+				mvpBv2)
+					$VGT -i $progpath -c mvpB -o $temp_dir > test_${prog}.ps.log 2>&1
+					cp $temp_dir/vs-1/variant-2/bin/$(basename $progpath) $protected 
+				;;
+				mvpCv1)
+					$VGT -i $progpath -c mvpC -o $temp_dir > test_${prog}.ps.log 2>&1
+					cp $temp_dir/vs-1/variant-1/bin/$(basename $progpath) $protected 
+				;;
+				mvpCv2)
+					$VGT -i $progpath -c mvpC -o $temp_dir > test_${prog}.ps.log 2>&1
+					cp $temp_dir/vs-1/variant-2/bin/$(basename $progpath) $protected 
+				;;
+				mvpCv3)
+					$VGT -i $progpath -c mvpC -o $temp_dir > test_${prog}.ps.log 2>&1
+					cp $temp_dir/vs-1/variant-3/bin/$(basename $progpath) $protected 
 				;;
 				orig)
 					cp $progpath $protected 
@@ -316,9 +384,32 @@ parse_args()
 
 }
 
+
+process_apps()
+{
+	local new_apps=""
+	local fields=()
+	for i in $apps
+	do
+		IFS="=" read -ra fields <<< $i
+		if [[ ${#fields[@]} -gt 2 ]]; then
+			echo "Cannot separate  $i into 2 fields based on delimiter '='"
+			exit 1
+		elif [[ ${#fields[@]} -eq 2 ]]; then
+			app_path[${fields[0]}]=${fields[1]}
+		elif [[ ${#fields[@]} -eq 1 ]]; then
+			app_path[${fields[0]}]=$(which ${fields[0]})
+		fi
+
+		new_apps="$new_apps ${fields[0]}"
+	done
+	apps="$new_apps"
+}
+
 main()
 {
 	parse_args "$@"
+	process_apps
 
 	echo 
 	echo "test configuration"
