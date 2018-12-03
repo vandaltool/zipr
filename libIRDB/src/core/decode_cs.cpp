@@ -596,7 +596,7 @@ virtual_offset_t DecodedInstructionCapstone_t::getMemoryDisplacementOffset(const
 
 	//const auto encoding_size=t.getMemoryDisplacementEncodingSize();
 	//const auto x86 = &(the_insn->detail->x86);
-        const auto imm_count = cs_op_count(cs_handle->getHandle(), the_insn, X86_OP_IMM);
+    const auto imm_count = cs_op_count(cs_handle->getHandle(), the_insn, X86_OP_IMM);
 	const auto disp_size=t.getMemoryDisplacementEncodingSize();
 	const auto imm=getImmediate();
 	const auto disp=t.getMemoryDisplacement();
@@ -619,8 +619,14 @@ virtual_offset_t DecodedInstructionCapstone_t::getMemoryDisplacementOffset(const
 
 	const auto possible_imm_sizes= string(the_insn->mnemonic)=="movabs" ?  set<int>({1,2,4,8}) : set<int>({1,2,4});
 
-	for(const auto imm_size : possible_imm_sizes)
+	// Reverse iterate to find the maximum size value-match possible.
+	//  E.g. with a mov [rbx*8 + 0x00000000],0x00000000 instruction, it would be easy to match
+	//  a 1-byte immediate value of 0 and a 4-byte displacement value of zero, while
+	//  the desired behavior is to match two 4-byte values of zero when searching
+	//  for the actual start offsets of the displacement and immediate fields.
+	for (auto imm_size_iter = possible_imm_sizes.crbegin(); imm_size_iter != possible_imm_sizes.crend(); ++imm_size_iter)
 	{
+		const auto imm_size = (*imm_size_iter);
 		if(the_insn->size < disp_size + imm_size)
 			continue;
 
