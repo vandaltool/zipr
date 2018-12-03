@@ -557,12 +557,47 @@ uint32_t DecodedOperandCapstone_t::getSegmentRegister() const
 
 set<string> write_only_operand_mnemonics=
  	{
+		"seta",
+		"setae",
+		"setb",
+		"setbe",
+		"setc",
 		"sete",
+		"setg",
+		"setge",
+		"setl",
+		"setle",
+		"setna",
+		"setnae",
+		"setnb",
+		"setnbe",
+		"setnc",
 		"setne",
+		"setng",
+		"setnge",
+		"setnl",
+		"setnle",
+		"setno",
+		"setnp",
+		"setns",
+		"setnz",
+		"seto",
+		"setp",
+		"setpe",
+		"setpo",
+		"sets",
+		"setz",
 		"fst",
 		"fstp",
 		"fist",
 		"fistp"
+	};
+
+set<string> write_first_operand_mnemonics=
+	{
+		"movups",
+		"ror",
+		"rol"
 	};
 
 set<string> read_only_operand_mnemonics=
@@ -728,21 +763,37 @@ bool DecodedOperandCapstone_t::isWritten() const
 {	
 	const auto d=DecodedInstructionCapstone_t(my_insn);
 	const auto d_mnemonic=d.getMnemonic();
+
+	// special case check:  all operands are reads
 	const auto room_it=read_only_operand_mnemonics.find(d_mnemonic);
 	const auto in_room=(room_it!=end(read_only_operand_mnemonics));
 	if(in_room)
 		return false;
+
+	// special case check:  all operands are writes
 	const auto woom_it=write_only_operand_mnemonics.find(d_mnemonic);
 	const auto in_woom=(woom_it!=end(write_only_operand_mnemonics));
 	if(in_woom)
 		return true;
 
+	// special case check:  first operand is writes
+	if(op_num==0)
+	{
+		const auto wfom_it=write_first_operand_mnemonics.find(d_mnemonic);
+		const auto in_wfom=(wfom_it!=end(write_first_operand_mnemonics));
+		if(in_wfom)
+			return true;
+	}
+
+	// special case of imul
 	// imul has a 1-argument form which uses all it's operands
 	if(d_mnemonic=="imul" && !d.hasOperand(1))
 		return false;
+
+
+	// default: use capstone's advice.
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
         const auto &op = (the_insn->detail->x86.operands[op_num]);
-
 	return (op.access & CS_AC_WRITE)!=0;
 /*
 	if(op_num!=0)
