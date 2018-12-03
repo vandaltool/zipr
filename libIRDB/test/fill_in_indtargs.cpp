@@ -655,11 +655,12 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 	assert(disasm.getOperand(0).isRegister());
 	const auto I5_reg=disasm.getOperand(0).getString();
 	auto jmp_reg=string();
+	auto add_reg=string();
 
 	// has to be a jump to a register now
 
 	// backup and find the instruction that's an add before I8 
-	if(!backup_until(string()+"add "+I5_reg, I4, I5, I5_reg))
+	if(!backup_until(string()+"add "+I5_reg+"|lea "+I5_reg, I4, I5, I5_reg))
 	{
 		auto mov_insn=static_cast<Instruction_t*>(nullptr);
 		if(!backup_until(string()+"mov "+I5_reg, mov_insn, I5, I5_reg))
@@ -673,15 +674,53 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 		jmp_reg=mov_reg;
 	}
 	else 
-		jmp_reg=I5_reg;
+	{
+		const auto d4=DecodedInstruction_t(I4);
+		if(d4.getMnemonic()=="lea")
+		{
+			const auto base_reg=d4.getOperand(1).getBaseRegister();
+			switch(base_reg)
+			{
+				case 0/*REG0*/: jmp_reg="eax"; break;
+				case 1/*REG1*/: jmp_reg="ecx"; break;
+				case 2/*REG2*/: jmp_reg="edx"; break;
+				case 3/*REG3*/: jmp_reg="ebx"; break;
+				case 4/*REG4*/: jmp_reg="esp"; break;
+				case 5/*REG5*/: jmp_reg="ebp"; break;
+				case 6/*REG6*/: jmp_reg="esi"; break;
+				case 7/*REG7*/: jmp_reg="edi"; break;
+				default: 
+					// no base register;
+					return;
+			}
+			const auto index_reg=d4.getOperand(1).getBaseRegister();
+			switch(index_reg)
+			{
+				case 0/*REG0*/: add_reg="eax"; break;
+				case 1/*REG1*/: add_reg="ecx"; break;
+				case 2/*REG2*/: add_reg="edx"; break;
+				case 3/*REG3*/: add_reg="ebx"; break;
+				case 4/*REG4*/: add_reg="esp"; break;
+				case 5/*REG5*/: add_reg="ebp"; break;
+				case 6/*REG6*/: add_reg="esi"; break;
+				case 7/*REG7*/: add_reg="edi"; break;
+				default: 
+					// no base register;
+					return;
+			}
+		}
+		else
+		{
+			jmp_reg=I5_reg;
+			if(!d4.getOperand(1).isRegister())
+				return;
+			add_reg=d4.getOperand(1).getString();
+		}
+	}
 
-	assert(jmp_reg!="" && I4!=nullptr);
+	assert(jmp_reg!="" && add_reg!="" && I4!=nullptr);
 
-	const auto d4=DecodedInstruction_t(I4);
-	if(!d4.getOperand(1).isRegister())
-		return;
 
-	const auto add_reg=d4.getOperand(1).getString();
 	// backup and find the instruction that's an movsxd before I7
 	if(!backup_until(string()+"(mov "+jmp_reg+"|mov "+add_reg+")", I3, I4))
 		return;
