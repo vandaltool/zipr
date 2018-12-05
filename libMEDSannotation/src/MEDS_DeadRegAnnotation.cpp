@@ -63,7 +63,9 @@ void MEDS_DeadRegAnnotation::parse()
         VirtualOffset vo(m_rawInputLine);
         m_virtualOffset = vo;
 
-	cout <<"Found deadreg annotation in: "<<m_rawInputLine<<endl;
+        if (getenv("DEADREGS_VERBOSE")) {
+         	cout <<"Found deadreg annotation in: "<<m_rawInputLine<<endl;
+        }
 	// ignore result of getRegisterSet method because 
 	// we don't need to parse the rest of the line.
 	Register::readRegisterSet(m_rawInputLine.substr(pos+tofind.length()), regset);
