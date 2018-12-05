@@ -91,7 +91,7 @@ fi
 which apt-get 1> /dev/null 2> /dev/null 
 if [[ $? != 0  ]]; then
 	#setup extra repositories on centos
-	sudo yum install epel-release
+	sudo yum install epel-release -y
 fi
 
 for arg in $args; do
@@ -128,4 +128,4 @@ cd daffy
 sudo ./get-packages.sh
 cd $orig_dir
 
-echo Intsalling packages complete.
+echo Installing packages complete.
