@@ -88,6 +88,12 @@ if [[ $args = "" ]]; then
 	args="all"
 fi
 
+which apt-get 1> /dev/null 2> /dev/null 
+if [[ $? != 0  ]]; then
+	#setup extra repositories on centos
+	sudo yum install epel-release
+fi
+
 for arg in $args; do
     case $arg in
     all)
