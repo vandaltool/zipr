@@ -596,8 +596,12 @@ set<string> write_only_operand_mnemonics=
 set<string> write_first_operand_mnemonics=
 	{
 		"movups",
+      "movd",
+		"rol",
+      "movdqa",
 		"ror",
-		"rol"
+      "movdqu",
+      "movq"
 	};
 
 set<string> read_only_operand_mnemonics=
