@@ -267,6 +267,8 @@ class CreateFunctions_t
 		void addSectionToSccs(const string &sec_name)
 		{
 			const auto sec=exeio.sections[sec_name];
+			if(sec==nullptr)
+				return;
 			const auto range=Range_t(sec->get_address(), sec->get_address()+sec->get_size());
 			const auto ranges=RangeSet_t({range});
 			sccs.insert(ranges);
