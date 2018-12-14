@@ -6,41 +6,34 @@
 class IBTProvenance_t
 {
 	private:
-	typedef std::map<const Instruction_t*, Provenance_t> ProvMap_t;
+
+	// types 
+	using InsnProvMap_t =  std::map<const Instruction_t*, Provenance_t>;
+	using ICFSProvMap_t =  std::map<const ICFS_t*, Provenance_t>;
+
+	// data
+	InsnProvMap_t prov_map;
+	static Provenance_t empty;
+
+	// methods
+	void Init() {};
+	void AddProvs(const Provenance_t& p, const InstructionSet_t& after) ;
 
 	public:
 	IBTProvenance_t(const FileIR_t* f=NULL) {Init(); if(f) AddFile(f);}
-        virtual ~IBTProvenance_t() {;}
-	virtual void AddFile(const FileIR_t* );
+	virtual ~IBTProvenance_t() {} 	// default destructor not OK for some reason?
+	void AddFile(const FileIR_t* );
         
-        /*Provenance_t getProvenance(const Instruction_t* insn) const
-	{
-		return ((ProvMap_t) prov_map)[insn];
-	}*/
-
-	Provenance_t& operator[] (const Instruction_t* i)  
-	{
-		return prov_map[i];
-	}
 
 	const Provenance_t& operator[] (const Instruction_t* i)  const
 	{ 
-		ProvMap_t::const_iterator it=prov_map.find(i);
+		const auto it=prov_map.find(i);
 		if (it!= prov_map.end()) 
 			return it->second;
-		static Provenance_t empty;
 		return empty;
 	}
  
 
-	protected:
-	virtual void Init() {};
-
-	private:
-
-	virtual void AddProvs(const Instruction_t* before, const InstructionSet_t& after);
-
-	ProvMap_t prov_map;
 };
 
 #endif
