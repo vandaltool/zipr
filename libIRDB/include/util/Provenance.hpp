@@ -28,10 +28,16 @@ class Provenance_t
 			prov.set((size_t) ProvType::IndCall);
 		}
 
+		void addProv(const Provenance_t& other)
+		{
+			prov |= other.prov;
+		}
+
 		bool hasReturn() const
 		{
 			return prov.test((size_t) ProvType::Ret);
 		}
+
 		
 		bool hasIndirectJump() const
 		{
