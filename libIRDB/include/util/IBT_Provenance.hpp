@@ -9,7 +9,6 @@ class IBTProvenance_t
 
 	// types 
 	using InsnProvMap_t =  std::map<const Instruction_t*, Provenance_t>;
-	using ICFSProvMap_t =  std::map<const ICFS_t*, Provenance_t>;
 
 	// data
 	InsnProvMap_t prov_map;
