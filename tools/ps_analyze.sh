@@ -21,11 +21,6 @@ realpath()
 init_globals()
 {
 
-	##################################################################################
-	# set default values for 
-	##################################################################################
-
-	initial_on_phases="stratafy_with_pc_confine create_binary_script is_so gather_libraries meds_static pdb_register fill_in_cfg fill_in_indtargs clone fix_calls generate_spri spasm fast_annot fast_spri preLoaded_ILR1 preLoaded_ILR2"
 
 	##################################################################################
 
@@ -91,6 +86,12 @@ init_globals()
 	#
 	export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$SECURITY_TRANSFORMS_HOME/lib"
 
+
+	#
+	# Remember the last step or step option we parsed, so we can apply future option parsing
+	#
+	last_step_parsed=""
+
 }
 handle_alarm()
 {
@@ -154,12 +155,63 @@ adjust_lib_path()
 
 check_step_option()
 {
-	echo $1|egrep "=off$|=on$" > /dev/null
-	if [ $? -ne 0 ]; then
-		echo Malformed option: $1;
-		exit -4;
+	local step_specifier="$1"
+	local specifies_step_on=0;
+	local specifies_step_off=0;
+
+	# check if step is specified to be off
+	echo $step_specifier|egrep "=off$" > /dev/null
+	if [[ $? -eq 0 ]]
+	then
+		specifies_step_off=1
 	fi
-	
+
+	# check if step is specified to be on
+	echo $step_specifier|egrep "=on$" > /dev/null
+	if [[ $? -eq 0 ]] 
+	then
+		specifies_step_on=1
+	fi
+
+	# if user didn't specify, sanity check further 
+	if [[ $specifies_step_on -eq 0 ]] && [[ $specifies_step_off -eq 0 ]]
+	then
+		echo $step_specifier|egrep "=" > /dev/null
+		if [[ $? -eq 0 ]]; then
+			echo "Malformed option (cannot contain = sign): $1"
+			exit -4;
+		fi
+
+		# no other odd = things, just go ahead and default to on
+		step_specifier="${step_specifier}=on"
+		specifies_step_on=1
+	fi
+
+	step_name=${step_specifier%%=*}
+
+	echo "$phases_spec"|egrep " $step_name=off " > /dev/null
+	local found_off_res=$?
+	echo "$phases_spec"|egrep " $step_name=on " > /dev/null
+	local found_on_res=$?
+	if [[ $specifies_step_on -eq 1 ]] && [[ $found_off_res -eq 0 ]];  then
+		echo "Step $step_name specified as both on and off"
+		exit -4
+	elif [[ $specifies_step_off -eq 1 ]] && [[ $found_on_res -eq 0 ]];  then
+		echo "Step $step_name specified as both on and off"
+		exit -4
+	elif [[ $specifies_step_on -eq 1 ]] && [[ $found_on_res -eq 0 ]];  then
+		echo "Step $step_name specified on multiple times"
+		exit -4
+	elif [[ $specifies_step_off -eq 1 ]] && [[ $found_off_res -eq 0 ]];  then
+		echo "Step $step_name specified off multiple times"
+		exit -4
+	else
+		phases_spec=" $phases_spec $step_specifier "
+	fi
+
+
+	# remember for future option parsing
+	last_step_parsed=$step_name
 }
 
 
@@ -167,12 +219,20 @@ set_step_option()
 {
 	step=`echo "$1" | cut -d: -f1` 
 	option=`echo "$1" | cut -s -d: -f2-` 
+	no_delim_option=`echo "$1" | cut -d: -f99999-` 
+
+	if [[ ! -z $no_delim_option ]]; then
+		echo "Detected elided step option in $1"
+		set_step_option "$last_step_parsed:$no_delim_option"
+		return $?
+	fi
 
 	# echo "Found step-option for '$step':'$option'"
 	if [[ -z "$option" ]]; then
 		echo "Cannot parse step:option pair out of '$1'"
 		exit 2
 	fi
+	last_step_parsed="$step"
 
 	#
 	# this sets step_options_$step to have the new option
@@ -227,6 +287,9 @@ check_options()
 	#
 	# turn on initial default set of phases
 	#
+
+	local default_annot_generator=meds_static
+	local initial_on_phases="stratafy_with_pc_confine create_binary_script is_so gather_libraries pdb_register fill_in_cfg fill_in_indtargs clone fix_calls generate_spri spasm fast_annot fast_spri preLoaded_ILR1 preLoaded_ILR2"
 	for phase in $initial_on_phases
 	do
 		echo $phases_spec|egrep "$phase=" > /dev/null
@@ -314,12 +377,10 @@ check_options()
 #            		;;
 			-s|--step) 
 				check_step_option $2
-				phases_spec=" $phases_spec $2 "
 				shift 2 
 			;;
 			-c|--critical-step) 
 				check_step_option $2
-				phases_spec=" $phases_spec $2 "
 				step_name=$(echo "$2" | sed "s/=on *$//"|sed "s/=off *$//")
 				user_critical_steps="$user_critical_steps $step_name "
 				shift 2 
@@ -395,6 +456,35 @@ check_options()
 		fail_gracefully "ps_analyze cannot find file named $orig_exe."
 	fi
 
+
+	is_step_on rida
+	local rida_on=$?
+	is_step_on meds_static
+	local meds_static_on=$?
+	# if both are on, that's an error
+	if [[ $rida_on -eq 1 ]] && [[ $meds_static_on -eq 1 ]]; then
+		echo "Cannot enable both rida and meds_static"
+		exit -4
+	# if neither are on, use default
+	elif [[ $rida_on -eq 0 ]] && [[ $meds_static_on -eq 0 ]]; then
+		phases_spec=" $phases_spec ${default_annot_generator}=on "
+	fi
+	# else, exactly 1 must be on, and that needs no special handling.
+
+	# double check that we didn't turn both off.
+	is_step_on rida
+	rida_on=$?
+	is_step_on meds_static
+	meds_static_on=$?
+	if [[ $rida_on -eq 0 ]] && [[ $meds_static_on -eq 0 ]]; then
+		echo "Cannot explicitly disable both rida and meds_static (or disable meds_static without enabling rida)"
+		exit -4
+	fi
+		
+	
+
+
+	# record a job id
 	JOBID="$(basename $orig_exe).$$"
 
 	#
@@ -664,11 +754,11 @@ perform_step()
 		stop_if_error $step
 		if [[ $using_thanos -ne 0 ]]; then
 			if [[ $command_exit -ne 1 ]]; then
-	                       	echo A critical step executed under thanos or the thanos plugin driver has been forcefully terminated. Exiting ps_analyze early.
+	                       	echo "A critical step executed under the thanos plugin driver has been forcefully terminated. Exiting ps_analyze early."
 			fi
                         exit -1;
 		elif [ $? -gt $error_threshold ]; then 
-			echo The $step step is necessary, but failed.  Exiting ps_analyze early.
+			echo "The $step step is necessary, but failed.  Exiting ps_analyze early."
 			exit -1;
 		fi
 		errors=1
