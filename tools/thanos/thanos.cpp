@@ -296,8 +296,8 @@ int ThanosPlugin_t::runPlugin()
         cout<< "#ATTRIBUTE end_time="   << end_time_str   ; // endl in time_str
         cout<< "#ATTRIBUTE elapsed_time="  << elapsed_time<<endl;
         cout<< "#ATTRIBUTE step_name=" << step_name<<endl;
-        cout<< "#ATTRIBUTE step_command=  " << thanos_path << " " << step_name 
-	    << " --step-args "; copy(ALLOF(step_args), ostream_iterator<string>(cout, " ")); cout<<endl;
+        cout<< "#ATTRIBUTE step_command=  " << thanos_path << " \"" << step_name 
+	    << " --step-args "; copy(ALLOF(step_args), ostream_iterator<string>(cout, " ")); cout<<"\""<<endl;
         cout<< "#ATTRIBUTE step_exitcode="<<dec<<step_result<<endl;
 
 
