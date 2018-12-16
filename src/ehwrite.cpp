@@ -883,10 +883,19 @@ void EhWriterImpl_t<ptrsize>::BuildFDEs()
 			current_fde->extend(this_insn,this);
 		}
 	}
+
+	const auto avg_insn_per_fde = insns_with_frame/(float)all_fdes.size();
+
+
+        assert(getenv("SELF_VALIDATE")==nullptr || all_fdes.size() > 10 ) ;
+        assert(getenv("SELF_VALIDATE")==nullptr || all_cies.size() > 0 ) ;
+        assert(getenv("SELF_VALIDATE")==nullptr || insns_with_frame > 10 );
+        assert(getenv("SELF_VALIDATE")==nullptr ||  avg_insn_per_fde > 1 ) ;
+
 	cout<<"# ATTRIBUTE ExceptionHandlerWrite::fdes_calculated="<<dec<<all_fdes.size()<<endl;
 	cout<<"# ATTRIBUTE ExceptionHandlerWrite::cies_calculated="<<dec<<all_cies.size()<<endl;
 	cout<<"# ATTRIBUTE ExceptionHandlerWrite::insns_with_eh_info="<<dec<<insns_with_frame<<endl;
-	cout<<"# ATTRIBUTE ExceptionHandlerWrite::avg_insns_per_fde="<<dec<<insns_with_frame/(float)all_fdes.size()<<endl;
+	cout<<"# ATTRIBUTE ExceptionHandlerWrite::avg_insns_per_fde="<<dec<<avg_insn_per_fde<<endl;
 }
 
 template<int ptrsize>
