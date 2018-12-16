@@ -16,12 +16,16 @@ class PopulateCFG : public libIRDB::Transform_SDK::TransformStep_t
             variant_id(p_variant_id),
             fix_landing_pads(p_fix_landing_pads)
         {
-            odd_target_count = 0;
-            bad_target_count = 0;
-            bad_fallthrough_count = 0;
-            failed_target_count = 0U;
-       
-  	    elfiop = std::unique_ptr<EXEIO::exeio>(nullptr);
+		odd_target_count = 0;
+		bad_target_count = 0;
+		bad_fallthrough_count = 0;
+		failed_target_count = 0U;
+
+		targets_set=0;
+		fallthroughs_set=0;
+		scoops_detected=0;
+
+		elfiop = std::unique_ptr<EXEIO::exeio>(nullptr);
         }
 
 	~PopulateCFG(void) override
@@ -74,6 +78,10 @@ class PopulateCFG : public libIRDB::Transform_SDK::TransformStep_t
         int bad_target_count;
         int bad_fallthrough_count;
         unsigned int failed_target_count;
+
+	size_t targets_set=0;
+	size_t fallthroughs_set=0;
+	size_t scoops_detected=0;
         
         // non-optional
 	libIRDB::db_id_t variant_id;        

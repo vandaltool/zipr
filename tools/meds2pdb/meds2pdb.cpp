@@ -96,6 +96,8 @@ void insert_instructions(int fileID, const vector<wahoo::Instruction*> &instruct
 	// for each instruction:
 	//    populate instruction table
 
+	assert(getenv("SELF_VALIDATE")==nullptr || instructions.size() > 0 );
+
 	pqxx::tablewriter W_addrs(txn,addressTable);
 	for (auto i = 0U; i < instructions.size(); i ++ )
 	{
@@ -188,6 +190,8 @@ void insert_functions(int fileID, const vector<wahoo::Function*> &functions  )
   work txn(conn);
   txn.exec("SET client_encoding='LATIN1';");
 
+  assert(getenv("SELF_VALIDATE")==nullptr || functions.size() > 0 );
+
   // bulk insert of function information into the DB
   for (auto i = 0U; i < functions.size(); i += STRIDE)
   {  
@@ -232,6 +236,8 @@ void update_functions(int fileID, const vector<wahoo::Function*> &functions  )
   connection conn;
   work txn(conn);
   txn.exec("SET client_encoding='LATIN1';");
+
+  assert(getenv("SELF_VALIDATE")==nullptr || functions.size() > 0 );
 
   // bulk insert of function information into the DB
   string query;
