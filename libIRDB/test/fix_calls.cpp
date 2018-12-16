@@ -1077,7 +1077,7 @@ int executeStep(IRDBObjects_t *const irdb_objects)
         }
 
 	assert(getenv("SELF_VALIDATE")==nullptr || (fixed_calls + other_fixes) > 5);
-	assert(getenv("SELF_VALIDATE")==nullptr || not_fixed_calls > 5);
+	assert(getenv("SELF_VALIDATE")==nullptr || fix_all || not_fixed_calls > 5);
 
 	return 0;
 }
