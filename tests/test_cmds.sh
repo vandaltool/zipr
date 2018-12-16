@@ -24,6 +24,7 @@ do_tests()
 
 	for config in $configs
 	do
+		export SELF_VALIDATE=$config
 
 		echo "----------------------------------"
 		echo "TEST CONFIGURATION: $config"
