@@ -66,10 +66,6 @@ public:
  * class variables 
  */
 
-//
-// record the ICFS for each branch, these can come from switch tables
-// 
-map<Instruction_t*, ICFS_t> icfs_maps;
 
 // the bounds of the executable sections in the pgm.
 set< pair <virtual_offset_t,virtual_offset_t>  > bounds;
@@ -3058,6 +3054,13 @@ int executeStep(IRDBObjects_t *const irdb_objects)
                 cerr<<"Unexpected error"<<endl;
                 return -1;
         }
+
+	assert(getenv("SELF_VALIDATE")==nullptr || bounds.size() > 3 );
+	assert(getenv("SELF_VALIDATE")==nullptr || targets.size() > 100 );
+	assert(getenv("SELF_VALIDATE")==nullptr || ranges.size() > 5 );
+	assert(getenv("SELF_VALIDATE")==nullptr || preds.size() > 100 );
+	assert(getenv("SELF_VALIDATE")==nullptr || lookupInstructionMap.size() > 100 );
+
 	return 0;
 }
 

@@ -221,6 +221,9 @@ class CreateFunctions_t
 				sccs.insert(RangeSet_t({Range_t(fde->getStartAddress(),fde->getEndAddress())}));
 
 			cout<<hex;
+			if(getenv("SELF_VALIDATE"))
+				assert(fdes->size()>0);
+
 			for(const auto fde : *fdes)
 			{
 				if(verbose)
@@ -453,6 +456,8 @@ class CreateFunctions_t
 				outfile<<hex<<"\t"<<min.first<<"\t"<<dec<<size<<"\tFUNC GLOBAL\t"<<funcNames[scc]<<" "<< usefp << endl;
 				doBelongTos(scc);
 			}
+			if(getenv("SELF_VALIDATE"))
+				assert(sccs.size()>0);
 		}
 
 		string getUseFp(const RangeSet_t scc)

@@ -78,15 +78,20 @@ using RangeSet_t = std::set<Range_t, Range_tCompare>;
 
 
 RangeSet_t eh_frame_ranges;
-long long no_target_insn=0;
-long long no_fallthrough_insn=0;
-long long target_not_in_function=0;
-long long call_to_not_entry=0;
-long long thunk_check=0;
-long long found_pattern=0;
-long long in_ehframe=0;
-long long no_fix_for_ib=0;
-long long no_fix_for_safefn=0;
+size_t no_target_insn=0;
+size_t no_fallthrough_insn=0;
+size_t target_not_in_function=0;
+size_t call_to_not_entry=0;
+size_t thunk_check=0;
+size_t found_pattern=0;
+size_t in_ehframe=0;
+size_t no_fix_for_ib=0;
+size_t no_fix_for_safefn=0;
+size_t other_fixes=0;
+size_t fixed_calls=0;
+size_t not_fixed_calls=0;
+size_t not_calls=0;
+
 bool opt_fix_icalls = false;
 bool opt_fix_safefn = true;
 
@@ -724,7 +729,7 @@ void mark_as_unpinned_ibt(FileIR_t* firp, Instruction_t* ret_point)
 // fix_all_calls - convert calls to push/jump pairs in the IR.  if fix_all is true, all calls are converted, 
 // else we attempt to detect the calls it is safe to convert.
 //
-void fix_all_calls(FileIR_t* firp, bool print_stats, bool fix_all)
+void fix_all_calls(FileIR_t* firp, bool fix_all)
 {
 
         set<Instruction_t*,insn_less<Instruction_t*> > sorted_insns;
@@ -739,7 +744,6 @@ void fix_all_calls(FileIR_t* firp, bool print_stats, bool fix_all)
                 sorted_insns.insert(insn);
         }
 
-	long long fixed_calls=0, not_fixed_calls=0, not_calls=0;
 
 	for(
 		set<Instruction_t*,insn_less<Instruction_t*> >::const_iterator it=sorted_insns.begin();
@@ -749,7 +753,7 @@ void fix_all_calls(FileIR_t* firp, bool print_stats, bool fix_all)
 	{
 
 		Instruction_t* insn=*it;
-		if(getenv("STOP_FIX_CALLS_AT") && fixed_calls>=atoi(getenv("STOP_FIX_CALLS_AT")))
+		if(getenv("STOP_FIX_CALLS_AT") && fixed_calls>=(size_t)atoi(getenv("STOP_FIX_CALLS_AT")))
 			break;
 
 		if(is_call(insn)) 
@@ -761,7 +765,7 @@ void fix_all_calls(FileIR_t* firp, bool print_stats, bool fix_all)
 			}
 			// we've been asked to fix all calls for funsies/cfi
 			// (and a bit about debugging fix-calls that's not important for anyone but jdh.
-			else if ( fix_all || (getenv("FIX_CALL_LIMIT") && not_fixed_calls>=atoi(getenv("FIX_CALL_LIMIT"))))
+			else if ( fix_all || (getenv("FIX_CALL_LIMIT") && not_fixed_calls>=(size_t)atoi(getenv("FIX_CALL_LIMIT"))))
 			{
 				bool fix_me = true;
 				if (!opt_fix_safefn && can_skip_safe_function(insn))
@@ -799,33 +803,21 @@ void fix_all_calls(FileIR_t* firp, bool print_stats, bool fix_all)
 		}
 	}
 
-
-	if(print_stats)
-	{
-		cout << "# ATTRIBUTE fix_calls::fixed_calls="<<std::dec<<fixed_calls<<endl;
-		cout << "# ATTRIBUTE fix_calls::no_fix_needed_calls="<<std::dec<<not_fixed_calls<<endl;
-		cout << "# ATTRIBUTE fix_calls::other_instructions="<<std::dec<<not_calls<<endl;
-		cout << "# ATTRIBUTE fix_calls::fixed_pct="<<std::fixed<<(((float)fixed_calls)/((float)(not_fixed_calls+fixed_calls+not_calls)))*100.00<<"%"<<endl;
-		cout << "# ATTRIBUTE fix_calls::remaining_ratio="<<std::fixed<<((float)not_fixed_calls/((float)(not_fixed_calls+fixed_calls+not_calls)))*100.00<<"%"<<endl;
-		cout << "# ATTRIBUTE fix_calls::other_insts_ratio="<<std::fixed<<((float)not_calls/((float)(not_fixed_calls+fixed_calls+not_calls)))*100.00<<"%"<<endl;
-		cout << "# ATTRIBUTE fix_calls::no_target_insn="<<std::dec<< no_target_insn << endl;
-		cout << "# ATTRIBUTE fix_calls::no_fallthrough_insn="<<std::dec<< no_fallthrough_insn << endl;
-		cout << "# ATTRIBUTE fix_calls::target_not_in_function="<<std::dec<< target_not_in_function << endl;
-		cout << "# ATTRIBUTE fix_calls::call_to_not_entry="<<std::dec<< call_to_not_entry << endl;
-		cout << "# ATTRIBUTE fix_calls::thunk_check="<<std::dec<< thunk_check << endl;
-		cout << "# ATTRIBUTE fix_calls::found_pattern="<<std::dec<< found_pattern << endl;
-		cout << "# ATTRIBUTE fix_calls::in_ehframe="<<std::dec<< in_ehframe << endl;
-		cout << "# ATTRIBUTE fix_calls::no_fix_for_ib="<<std::dec<< no_fix_for_ib << endl;
-		cout << "# ATTRIBUTE fix_calls::no_fix_for_safefn="<<std::dec<< no_fix_for_safefn << endl;
-		no_target_insn=0;
-		no_fallthrough_insn=0;
-		target_not_in_function=0;
-		call_to_not_entry=0;
-		thunk_check=0;
-		found_pattern=0;
-		in_ehframe=0;
-		no_fix_for_ib=0;
-	}
+	cout << "# ATTRIBUTE fix_calls::fixed_calls="<<std::dec<<fixed_calls<<endl;
+	cout << "# ATTRIBUTE fix_calls::no_fix_needed_calls="<<std::dec<<not_fixed_calls<<endl;
+	cout << "# ATTRIBUTE fix_calls::other_instructions="<<std::dec<<not_calls<<endl;
+	cout << "# ATTRIBUTE fix_calls::fixed_pct="<<std::fixed<<(((float)fixed_calls)/((float)(not_fixed_calls+fixed_calls+not_calls)))*100.00<<"%"<<endl;
+	cout << "# ATTRIBUTE fix_calls::remaining_ratio="<<std::fixed<<((float)not_fixed_calls/((float)(not_fixed_calls+fixed_calls+not_calls)))*100.00<<"%"<<endl;
+	cout << "# ATTRIBUTE fix_calls::other_insts_ratio="<<std::fixed<<((float)not_calls/((float)(not_fixed_calls+fixed_calls+not_calls)))*100.00<<"%"<<endl;
+	cout << "# ATTRIBUTE fix_calls::no_target_insn="<<std::dec<< no_target_insn << endl;
+	cout << "# ATTRIBUTE fix_calls::no_fallthrough_insn="<<std::dec<< no_fallthrough_insn << endl;
+	cout << "# ATTRIBUTE fix_calls::target_not_in_function="<<std::dec<< target_not_in_function << endl;
+	cout << "# ATTRIBUTE fix_calls::call_to_not_entry="<<std::dec<< call_to_not_entry << endl;
+	cout << "# ATTRIBUTE fix_calls::thunk_check="<<std::dec<< thunk_check << endl;
+	cout << "# ATTRIBUTE fix_calls::found_pattern="<<std::dec<< found_pattern << endl;
+	cout << "# ATTRIBUTE fix_calls::in_ehframe="<<std::dec<< in_ehframe << endl;
+	cout << "# ATTRIBUTE fix_calls::no_fix_for_ib="<<std::dec<< no_fix_for_ib << endl;
+	cout << "# ATTRIBUTE fix_calls::no_fix_for_safefn="<<std::dec<< no_fix_for_safefn << endl;
 }
 
 
@@ -908,6 +900,8 @@ void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 		insn->GetRelocations().insert(reloc);
 		firp->GetRelocations().insert(reloc);
 
+		other_fixes++;
+
 		disasm=DecodedInstruction_t(insn);
 		if(getenv("VERBOSE_FIX_CALLS"))
 			cout<<" Converted to: "<<disasm.getDisassembly() /*CompleteInstr*/<<endl;
@@ -950,6 +944,7 @@ void fix_other_pcrel(FileIR_t* firp)
 		fix_other_pcrel(firp,insn, insn->GetAddress()->GetVirtualOffset());
 		fix_safefr(firp,insn, insn->GetAddress()->GetVirtualOffset());
 	}
+	cout << "# ATTRIBUTE fix_calls::other_fixes="<<std::dec<<other_fixes<<endl;
 }
 
 //
@@ -1063,7 +1058,7 @@ int executeStep(IRDBObjects_t *const irdb_objects)
 			if(do_eh_frame)
         			read_ehframe(firp, elfiop);
 
-			fix_all_calls(firp,true,fix_all);
+			fix_all_calls(firp,fix_all);
 			fix_other_pcrel(firp);
 
 			cout<<"Done!"<<endl;
@@ -1080,6 +1075,9 @@ int executeStep(IRDBObjects_t *const irdb_objects)
                 cerr<<"Unexpected error"<<endl;
                 return -1;
         }
+
+	assert(getenv("SELF_VALIDATE")==nullptr || (fixed_calls + other_fixes) > 5);
+	assert(getenv("SELF_VALIDATE")==nullptr || not_fixed_calls > 5);
 
 	return 0;
 }
