@@ -334,7 +334,7 @@ bool SCFI_Instrument::mark_targets()
 
 	assert(getenv("SELF_VALIDATE")==nullptr || ind_targets > 5 );
 	assert(getenv("SELF_VALIDATE")==nullptr || targets > 5 );
-	assert(getenv("SELF_VALIDATE")==nullptr || exe_nonce_targets > 5 );
+	assert(getenv("SELF_VALIDATE")==nullptr || !do_exe_nonce_for_call || exe_nonce_targets > 5 );
 
 	return true;
 }
