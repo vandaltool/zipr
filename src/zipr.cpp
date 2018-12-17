@@ -2222,7 +2222,7 @@ void ZiprImpl_t::PlaceDollops()
 	}
 
 	assert(getenv("SELF_VALIDATE")==nullptr || count_pins > 5 ) ;
-	assert(getenv("SELF_VALIDATE")==nullptr || placement_queue.size() > 20 ) ;
+	assert(getenv("SELF_VALIDATE")==nullptr || placement_queue.size() > 15 ) ;
 
 	cout<<"# ATTRIBUTE Zipr::pins_detected="<<dec<<count_pins<<endl;
 	cout<<"# ATTRIBUTE Zipr::placement_queue_size="<<dec<<placement_queue.size()<<endl;
