@@ -3057,7 +3057,7 @@ int executeStep(IRDBObjects_t *const irdb_objects)
 
 	assert(getenv("SELF_VALIDATE")==nullptr || bounds.size() > 3 );
 	assert(getenv("SELF_VALIDATE")==nullptr || targets.size() > 100 );
-	assert(getenv("SELF_VALIDATE")==nullptr || ranges.size() > 5 );
+	assert(getenv("SELF_VALIDATE")==nullptr || ranges.size() > 4 );
 	assert(getenv("SELF_VALIDATE")==nullptr || preds.size() > 100 );
 	assert(getenv("SELF_VALIDATE")==nullptr || lookupInstructionMap.size() > 100 );
 
