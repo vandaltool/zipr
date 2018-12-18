@@ -1,11 +1,11 @@
-export PS_OBJDUMP=objdump
-export PS_OBJCOPY=objcopy
-export PS_READELF=readelf
-export PS_NM=nm
-export PS_STRIP=strip
-export PS_DATE="date --iso-8601=seconds"
-export PS_TAR=tar
-export PS_MD5SUM=md5sum
-export PS_TIMEOUT=timeout
-export PS_GREP=grep
+if [[ -z $PS_OBJDUMP ]]; then export PS_OBJDUMP=objdump; fi
+if [[ -z $PS_OBJCOPY ]] ; then export PS_OBJCOPY=objcopy; fi
+if [[ -z $PS_READELF ]] ; then export PS_READELF=readelf; fi
+if [[ -z $PS_NM  ]] ; then export PS_NM=nm; fi
+if [[ -z $PS_STRIP ]] ; then export PS_STRIP=strip; fi
+if [[ -z $PS_DATE ]] ; then export PS_DATE="date --iso-8601=seconds"; fi
+if [[ -z $PS_TAR ]] ; then export PS_TAR=tar; fi
+if [[ -z $PS_MD5SUM ]] ; then export PS_MD5SUM=md5sum; fi
+if [[ -z $PS_TIMEOUT ]] ; then export PS_TIMEOUT=timeout; fi
+if [[ -z $PS_GREP ]] ; then export PS_GREP=grep; fi
 
