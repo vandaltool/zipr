@@ -49,6 +49,7 @@ class File_t : public BaseObj_t
 	void CreateTables();
 
 	int GetELFOID() const { return elfoid; };
+	db_id_t GetFileID() const {return orig_fid; };
 
         friend class FileIR_t;
         friend class Function_t;
