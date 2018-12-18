@@ -149,7 +149,7 @@ Instruction_t* addNewDatabits(FileIR_t* firp, Instruction_t *p_instr, string p_b
         if (p_instr)
                 newinstr = allocateNewInstruction(firp,p_instr->GetAddress()->GetFileID(), p_instr->GetFunction());
         else
-                newinstr = allocateNewInstruction(firp,BaseObj_t::NOT_IN_DATABASE, NULL);
+                newinstr = allocateNewInstruction(firp,firp->GetFile()->GetFileID(), NULL);
 
         newinstr->SetDataBits(p_bits);
 
@@ -168,7 +168,7 @@ Instruction_t* addNewAssembly(FileIR_t* firp, Instruction_t *p_instr, string p_a
         if (p_instr)
                 newinstr = allocateNewInstruction(firp,p_instr->GetAddress()->GetFileID(), p_instr->GetFunction());
         else
-                newinstr = allocateNewInstruction(firp,BaseObj_t::NOT_IN_DATABASE, NULL);
+                newinstr = allocateNewInstruction(firp,firp->GetFile()->GetFileID(), NULL);
 
         firp->RegisterAssembly(newinstr, p_asm);
 
