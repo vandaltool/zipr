@@ -397,12 +397,12 @@ bool DecodedInstructionCapstoneX86_t::hasOperand(const int op_num) const
 }
 
 // 0-based.  first operand is numbered 0.
-DecodedOperandCapstoneX86_t DecodedInstructionCapstoneX86_t::getOperand(const int op_num) const
+shared_ptr<DecodedOperandCapstone_t> DecodedInstructionCapstoneX86_t::getOperand(const int op_num) const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	if(!hasOperand(op_num)) throw std::logic_error(string("Called ")+__FUNCTION__+" on without hasOperand()==true");
 
-	return DecodedOperandCapstoneX86_t(my_insn,(uint8_t)op_num);
+	return shared_ptr<DecodedOperandCapstone_t>(new DecodedOperandCapstoneX86_t(my_insn,(uint8_t)op_num));
 	
 }
 
@@ -588,7 +588,7 @@ uint32_t DecodedInstructionCapstoneX86_t::getPrefixCount() const
 	return count_with_rex;
 }
 
-virtual_offset_t DecodedInstructionCapstoneX86_t::getMemoryDisplacementOffset(const DecodedOperandCapstoneX86_t& t, const Instruction_t* insn) const
+virtual_offset_t DecodedInstructionCapstoneX86_t::getMemoryDisplacementOffset(const DecodedOperandCapstone_t& t, const Instruction_t* insn) const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 

@@ -1,5 +1,5 @@
-#ifndef libRIDB_decodedoperandcsx86_hpp
-#define libRIDB_decodedoperandcsx86_hpp
+#ifndef libRIDB_decodedoperandcsarm_hpp
+#define libRIDB_decodedoperandcsarm_hpp
 
 #include <memory>
 #include <core/decode_base.hpp>
@@ -12,13 +12,11 @@ using namespace std;
 using namespace libIRDB;
 
 
-class DecodedOperandCapstoneX86_t : public DecodedOperandCapstone_t
+class DecodedOperandCapstoneARM_t : public DecodedOperandCapstone_t
 {
 	public:
-		DecodedOperandCapstoneX86_t() =delete;
-		//DecodedOperandCapstoneX86_t& operator=(const DecodedOperandCapstoneX86_t& copy);
-		//DecodedOperandCapstoneX86_t(const DecodedOperandCapstoneX86_t& copy);
-		virtual ~DecodedOperandCapstoneX86_t();
+		DecodedOperandCapstoneARM_t() =delete;
+		virtual ~DecodedOperandCapstoneARM_t();
 
 		virtual bool isConstant() const override;
 		virtual uint64_t getConstant() const override;
@@ -53,12 +51,12 @@ class DecodedOperandCapstoneX86_t : public DecodedOperandCapstone_t
 
 	private:
 
-		DecodedOperandCapstoneX86_t( const shared_ptr<void> &my_insn, uint8_t op_num);
+		DecodedOperandCapstoneARM_t( const shared_ptr<void> &my_insn, uint8_t op_num);
 
 		shared_ptr<void> my_insn;
 		uint8_t op_num;
 
-		friend class DecodedInstructionCapstoneX86_t;
+		friend class DecodedInstructionCapstoneARM_t;
 
 };
 

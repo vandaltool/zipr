@@ -25,7 +25,8 @@ DecodedInstructionDispatcher_t::DecodedInstructionDispatcher_t(const virtual_off
 
 DecodedInstructionDispatcher_t::DecodedInstructionDispatcher_t(const DecodedInstructionDispatcher_t& copy) 
 {
-	cs.reset(new DecodedInstructionCapstoneX86_t(*copy.cs));
+	const auto copy_cs_casted=dynamic_cast<DecodedInstructionCapstoneX86_t*>(copy.cs.get());
+	cs.reset(new DecodedInstructionCapstoneX86_t(*copy_cs_casted));
 }
 
 DecodedInstructionDispatcher_t::~DecodedInstructionDispatcher_t()
@@ -34,7 +35,8 @@ DecodedInstructionDispatcher_t::~DecodedInstructionDispatcher_t()
 
 DecodedInstructionDispatcher_t& DecodedInstructionDispatcher_t::operator=(const DecodedInstructionDispatcher_t& copy)
 {
-	cs.reset(new DecodedInstructionCapstoneX86_t(*copy.cs));
+	const auto copy_cs_casted=dynamic_cast<DecodedInstructionCapstoneX86_t*>(copy.cs.get());
+	cs.reset(new DecodedInstructionCapstoneX86_t(*copy_cs_casted));
 	return *this;
 }
 

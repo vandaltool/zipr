@@ -5,6 +5,8 @@
 #include <vector>
 #include <core/decode_csx86.hpp>
 #include <core/operand_csx86.hpp>
+#include <core/decode_csarm.hpp>
+#include <core/operand_csarm.hpp>
 
 namespace libIRDB
 {
@@ -54,7 +56,7 @@ class DecodedInstructionDispatcher_t
 
 	private:
 
-		std::unique_ptr<DecodedInstructionCapstoneX86_t> cs;
+		std::shared_ptr<DecodedInstructionCapstoneX86_t> cs;
 
 };
 

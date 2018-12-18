@@ -1,5 +1,5 @@
-#ifndef libirdb_decodecsx86_hpp
-#define libirdb_decodecsx86_hpp
+#ifndef libirdb_decodecsarm_hpp
+#define libirdb_decodecsarm_hpp
 
 #include <stdint.h>
 #include <vector>
@@ -13,18 +13,18 @@ namespace libIRDB
 using namespace libIRDB;
 using namespace std;
 
-class DecodedOperandCapstoneX86_t;
-class DecodedInstructionCapstoneX86_t : public DecodedInstructionCapstone_t
+class DecodedOperandCapstoneARM_t;
+class DecodedInstructionCapstoneARM_t : public DecodedInstructionCapstone_t
 {
 	public:
-		DecodedInstructionCapstoneX86_t()=delete;
-		DecodedInstructionCapstoneX86_t(const Instruction_t*);
-		DecodedInstructionCapstoneX86_t(const virtual_offset_t start_addr, const void *data, uint32_t max_len);
-		DecodedInstructionCapstoneX86_t(const virtual_offset_t start_addr, const void *data, const void* endptr);
-		DecodedInstructionCapstoneX86_t(const DecodedInstructionCapstoneX86_t& copy);
-		DecodedInstructionCapstoneX86_t& operator=(const DecodedInstructionCapstoneX86_t& copy);
+		DecodedInstructionCapstoneARM_t()=delete;
+		DecodedInstructionCapstoneARM_t(const Instruction_t*);
+		DecodedInstructionCapstoneARM_t(const virtual_offset_t start_addr, const void *data, uint32_t max_len);
+		DecodedInstructionCapstoneARM_t(const virtual_offset_t start_addr, const void *data, const void* endptr);
+		DecodedInstructionCapstoneARM_t(const DecodedInstructionCapstoneARM_t& copy);
+		DecodedInstructionCapstoneARM_t& operator=(const DecodedInstructionCapstoneARM_t& copy);
 
-		virtual ~DecodedInstructionCapstoneX86_t();
+		virtual ~DecodedInstructionCapstoneARM_t();
 
 		virtual string getDisassembly() const override;
 		virtual bool valid() const override;
@@ -70,9 +70,9 @@ class DecodedInstructionCapstoneX86_t : public DecodedInstructionCapstone_t
 		static CapstoneHandle_t *cs_handle;
 
 
-		friend class DecodedOperandCapstoneX86_t;
+		friend class DecodedOperandCapstoneARM_t;
 
-		DecodedInstructionCapstoneX86_t(const shared_ptr<void> &my_insn);
+		DecodedInstructionCapstoneARM_t(const shared_ptr<void> &my_insn);
 
 };
 

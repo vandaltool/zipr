@@ -25,6 +25,8 @@ files=  '''
 	reloc.cpp
 	decode_csx86.cpp
 	operand_csx86.cpp
+	decode_csarm.cpp
+	operand_csarm.cpp
 	IRDB_Objects.cpp
 	decode_dispatch.cpp
 	operand_dispatch.cpp
