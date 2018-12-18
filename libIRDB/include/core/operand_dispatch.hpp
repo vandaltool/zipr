@@ -51,7 +51,7 @@ class DecodedOperandDispatcher_t
 	private:
 		DecodedOperandDispatcher_t(const shared_ptr<DecodedOperandCapstone_t> in);
 
-		std::shared_ptr<DecodedOperandCapstoneX86_t> cs;
+		std::shared_ptr<DecodedOperandCapstone_t> cs;
 
 		friend class DecodedInstructionDispatcher_t;
 

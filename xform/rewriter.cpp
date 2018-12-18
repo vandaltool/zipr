@@ -639,6 +639,7 @@ void Rewriter::readElfFile(char p_filename[])
 	if(!objdump)
 		objdump=strdup("objdump");
 	sprintf(buf, "%s -d --prefix-addresses %s | grep \"^[0-9]\"", objdump, p_filename);
+	printf("Running objdump, like so: %s\n", buf);
 	FILE* pin=popen(buf, "r");
 	app_iaddr_t addr;
 
@@ -652,7 +653,10 @@ void Rewriter::readElfFile(char p_filename[])
 	do 
 	{
 		if(m_instructions[addr]==NULL)
+		{
+			cout<<"Found instruction from objdump at "<<hex<<addr<<endl;
 			m_instructions[addr]=new wahoo::Instruction(addr,-1,NULL);
+		}
 		ignore_result(fscanf(pin,"%p", &tmp));
 		addr=(app_iaddr_t)tmp;
 		ignore_result(fgets(buf,sizeof(buf),pin));

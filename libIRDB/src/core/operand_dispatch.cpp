@@ -10,14 +10,12 @@ using namespace libIRDB;
 
 DecodedOperandDispatcher_t::DecodedOperandDispatcher_t(const shared_ptr<DecodedOperandCapstone_t> copy_cs)  
 {
-	const auto copy_cs_casted=dynamic_cast<DecodedOperandCapstoneX86_t*>(copy_cs.get());
-	cs.reset(new DecodedOperandCapstoneX86_t(*copy_cs_casted));
+	cs=copy_cs;
 } 
 
 DecodedOperandDispatcher_t::DecodedOperandDispatcher_t(const DecodedOperandDispatcher_t& copy) 
 {
-	const auto copy_cs_casted=dynamic_cast<DecodedOperandCapstoneX86_t*>(copy.cs.get());
-	cs.reset(new DecodedOperandCapstoneX86_t(*copy_cs_casted));
+	cs=copy.cs;
 }
 
 DecodedOperandDispatcher_t::~DecodedOperandDispatcher_t()
@@ -26,8 +24,7 @@ DecodedOperandDispatcher_t::~DecodedOperandDispatcher_t()
 
 DecodedOperandDispatcher_t& DecodedOperandDispatcher_t::operator=(const DecodedOperandDispatcher_t& copy)
 {
-	const auto copy_cs_casted=dynamic_cast<DecodedOperandCapstoneX86_t*>(copy.cs.get());
-	cs.reset(new DecodedOperandCapstoneX86_t(*copy_cs_casted));
+	cs=copy.cs;
 	return *this;
 }
 

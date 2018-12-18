@@ -56,7 +56,7 @@ class DecodedInstructionDispatcher_t
 
 	private:
 
-		std::shared_ptr<DecodedInstructionCapstoneX86_t> cs;
+		std::shared_ptr<DecodedInstructionCapstone_t> cs;
 
 };
 

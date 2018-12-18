@@ -13,18 +13,18 @@ namespace libIRDB
 using namespace libIRDB;
 using namespace std;
 
-class DecodedOperandCapstoneARM_t;
-class DecodedInstructionCapstoneARM_t : public DecodedInstructionCapstone_t
+class DecodedOperandCapstoneARM64_t;
+class DecodedInstructionCapstoneARM64_t : public DecodedInstructionCapstone_t
 {
 	public:
-		DecodedInstructionCapstoneARM_t()=delete;
-		DecodedInstructionCapstoneARM_t(const Instruction_t*);
-		DecodedInstructionCapstoneARM_t(const virtual_offset_t start_addr, const void *data, uint32_t max_len);
-		DecodedInstructionCapstoneARM_t(const virtual_offset_t start_addr, const void *data, const void* endptr);
-		DecodedInstructionCapstoneARM_t(const DecodedInstructionCapstoneARM_t& copy);
-		DecodedInstructionCapstoneARM_t& operator=(const DecodedInstructionCapstoneARM_t& copy);
+		DecodedInstructionCapstoneARM64_t()=delete;
+		DecodedInstructionCapstoneARM64_t(const Instruction_t*);
+		DecodedInstructionCapstoneARM64_t(const virtual_offset_t start_addr, const void *data, uint32_t max_len);
+		DecodedInstructionCapstoneARM64_t(const virtual_offset_t start_addr, const void *data, const void* endptr);
+		DecodedInstructionCapstoneARM64_t(const DecodedInstructionCapstoneARM64_t& copy);
+		DecodedInstructionCapstoneARM64_t& operator=(const DecodedInstructionCapstoneARM64_t& copy);
 
-		virtual ~DecodedInstructionCapstoneARM_t();
+		virtual ~DecodedInstructionCapstoneARM64_t();
 
 		virtual string getDisassembly() const override;
 		virtual bool valid() const override;
@@ -70,9 +70,9 @@ class DecodedInstructionCapstoneARM_t : public DecodedInstructionCapstone_t
 		static CapstoneHandle_t *cs_handle;
 
 
-		friend class DecodedOperandCapstoneARM_t;
+		friend class DecodedOperandCapstoneARM64_t;
 
-		DecodedInstructionCapstoneARM_t(const shared_ptr<void> &my_insn);
+		DecodedInstructionCapstoneARM64_t(const shared_ptr<void> &my_insn);
 
 };
 

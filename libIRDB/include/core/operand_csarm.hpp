@@ -12,11 +12,11 @@ using namespace std;
 using namespace libIRDB;
 
 
-class DecodedOperandCapstoneARM_t : public DecodedOperandCapstone_t
+class DecodedOperandCapstoneARM64_t : public DecodedOperandCapstone_t
 {
 	public:
-		DecodedOperandCapstoneARM_t() =delete;
-		virtual ~DecodedOperandCapstoneARM_t();
+		DecodedOperandCapstoneARM64_t() =delete;
+		virtual ~DecodedOperandCapstoneARM64_t();
 
 		virtual bool isConstant() const override;
 		virtual uint64_t getConstant() const override;
@@ -51,12 +51,12 @@ class DecodedOperandCapstoneARM_t : public DecodedOperandCapstone_t
 
 	private:
 
-		DecodedOperandCapstoneARM_t( const shared_ptr<void> &my_insn, uint8_t op_num);
+		DecodedOperandCapstoneARM64_t( const shared_ptr<void> &my_insn, uint8_t op_num);
 
 		shared_ptr<void> my_insn;
 		uint8_t op_num;
 
-		friend class DecodedInstructionCapstoneARM_t;
+		friend class DecodedInstructionCapstoneARM64_t;
 
 };
 

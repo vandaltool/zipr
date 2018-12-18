@@ -10,23 +10,22 @@ using namespace std;
 
 DecodedInstructionDispatcher_t::DecodedInstructionDispatcher_t(const Instruction_t* i) 
 {
-	cs.reset(new DecodedInstructionCapstoneX86_t(i));
+	cs=DecodedInstructionCapstone_t::factory(i);
 }
 
 DecodedInstructionDispatcher_t::DecodedInstructionDispatcher_t(const virtual_offset_t start_addr, const void *data, uint32_t max_len) 
 {
-	cs.reset(new DecodedInstructionCapstoneX86_t(start_addr,data,max_len));
+	cs=DecodedInstructionCapstone_t::factory(start_addr,data,max_len);
 }
 
 DecodedInstructionDispatcher_t::DecodedInstructionDispatcher_t(const virtual_offset_t start_addr, const void *data, const void* endptr) 
 {
-	cs.reset(new DecodedInstructionCapstoneX86_t(start_addr,data,endptr));
+	cs=DecodedInstructionCapstone_t::factory(start_addr,data,endptr);
 }
 
 DecodedInstructionDispatcher_t::DecodedInstructionDispatcher_t(const DecodedInstructionDispatcher_t& copy) 
 {
-	const auto copy_cs_casted=dynamic_cast<DecodedInstructionCapstoneX86_t*>(copy.cs.get());
-	cs.reset(new DecodedInstructionCapstoneX86_t(*copy_cs_casted));
+	cs=copy.cs; 
 }
 
 DecodedInstructionDispatcher_t::~DecodedInstructionDispatcher_t()
@@ -35,15 +34,14 @@ DecodedInstructionDispatcher_t::~DecodedInstructionDispatcher_t()
 
 DecodedInstructionDispatcher_t& DecodedInstructionDispatcher_t::operator=(const DecodedInstructionDispatcher_t& copy)
 {
-	const auto copy_cs_casted=dynamic_cast<DecodedInstructionCapstoneX86_t*>(copy.cs.get());
-	cs.reset(new DecodedInstructionCapstoneX86_t(*copy_cs_casted));
+	cs=copy.cs; 
 	return *this;
 }
 
 
 
 #define passthrough_to_cs(ret_type, method_name) 						\
-	ret_type DecodedInstructionDispatcher_t::method_name() const 					\
+	ret_type DecodedInstructionDispatcher_t::method_name() const 				\
 	{ 											\
 		return cs->method_name(); 							\
 	} 
