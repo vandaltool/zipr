@@ -218,6 +218,7 @@ int main(int argc, char **argv)
 	cout<<"selective_cfi.exe started\n";
 
         bool one_success = false;
+	bool seen_failures = false;
         for(set<File_t*>::iterator it=pidp->GetFiles().begin();
             it!=pidp->GetFiles().end();
                 ++it)
@@ -245,15 +246,18 @@ int main(int argc, char **argv)
                         }
 			else
 			{
+				seen_failures = true;
 				cout<<"Skipping (no changes) "<<this_file->GetURL()<<endl;
 			}
                 }
                 catch (DatabaseError_t pnide)
                 {
+			seen_failures = true;
                         cerr << programName << ": Unexpected database error: " << pnide << "file url: " << this_file->GetURL() << endl;
                 }
                 catch (...)
                 {
+			seen_failures = true;
                         cerr << programName << ": Unexpected error file url: " << this_file->GetURL() << endl;
                 }
         } // end file iterator
@@ -265,6 +269,13 @@ int main(int argc, char **argv)
                 pqxx_interface.Commit();
 	}
 
-        return 0;
+	if(seen_failures)
+	{
+		return 1;
+	}
+	else
+	{
+        	return 0;
+	}
 }
 
