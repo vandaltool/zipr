@@ -327,9 +327,15 @@ bool SCFI_Instrument::mark_targets()
                     }
                 } 
 	}
+
 	cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::ind_targets_found="<<std::dec<<ind_targets<<endl;
 	cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::targets_found="<<std::dec<<targets<<endl;
 	cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::exe_nonce_targets_found="<<std::dec<<exe_nonce_targets<<endl;
+
+	assert(getenv("SELF_VALIDATE")==nullptr || ind_targets > 5 );
+	assert(getenv("SELF_VALIDATE")==nullptr || targets > 5 );
+	assert(getenv("SELF_VALIDATE")==nullptr || !do_exe_nonce_for_call || exe_nonce_targets > 5 );
+
 	return true;
 }
 
@@ -1135,6 +1141,8 @@ bool SCFI_Instrument::instrument_jumps()
 	cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::cfi_ret_complete="<<std::dec<<cfi_branch_ret_complete<<endl;
 	display_histogram(cout, "cfi_ret_complete_histogram", rets);
 
+	assert(getenv("SELF_VALIDATE")==nullptr || cfi_branch_call_checks> 2);
+	assert(getenv("SELF_VALIDATE")==nullptr || cfi_branch_call_checks> 2);
 
 	// 0 or 1 checks.
 	cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::multimodule_checks="<< (unsigned int)(zestcfi_function_entry!=NULL) <<endl;

@@ -92,9 +92,8 @@ void MEDS_FuncPrototypeAnnotation::parse()
 			char *zarg = strstr(buf, arg);
 			if (zarg)
 			{
-				char tmp[maxbufsize];
 				int meds_type;
-				sscanf(tmp,"%*s %d %*s", &meds_type);
+				sscanf(zarg,"%*s %d", &meds_type);
 				MEDS_Arg marg(meds_type);
 				addArg(marg);
 			}

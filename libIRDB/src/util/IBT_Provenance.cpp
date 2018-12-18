@@ -8,47 +8,57 @@ using namespace libIRDB;
 using namespace std;
 
 
+Provenance_t IBTProvenance_t::empty;
 
-void IBTProvenance_t::AddProvs(const Instruction_t* before, const InstructionSet_t& afterset)
+
+void IBTProvenance_t::AddFile(const FileIR_t* firp)
 {
-        // Determine type of IB
-        const auto IndBranchAsm=DecodedInstruction_t(before);
-        
-        bool isIndJmp = IndBranchAsm.isUnconditionalBranch() && !IndBranchAsm.getOperand(0).isConstant();
-        bool isIndCall = IndBranchAsm.isCall() && !IndBranchAsm.getOperand(0).isConstant();
-        bool isRet = IndBranchAsm.isReturn();
-        
-        // Set the provenance info of targets depending on the type of IB 
-	for(auto insn : afterset)
+
+        using ICFSProvMap_t =  std::map<const ICFS_t*, Provenance_t>;
+
+	auto icfs_prov_map = ICFSProvMap_t(); 
+
+	// collect before info for each icfs into icfs_prov_map
+	for(auto insn : firp->GetInstructions())
 	{
+		const auto &ibTargets=insn->GetIBTargets();
+		if(!ibTargets)
+			continue;
+
+		auto this_prov=Provenance_t();
+		const auto IndBranchAsm=DecodedInstruction_t(insn);
+		const auto isIndJmp = IndBranchAsm.isUnconditionalBranch() && !IndBranchAsm.getOperand(0).isConstant();
+		const auto isIndCall = IndBranchAsm.isCall() && !IndBranchAsm.getOperand(0).isConstant();
+		const auto isRet = IndBranchAsm.isReturn();
+
 		if(isIndJmp)
 		{
-			prov_map[insn].addIndirectJump();
+			this_prov.addIndirectJump();
 		}
 		else if(isIndCall)
 		{
-			prov_map[insn].addIndirectCall();
+			this_prov.addIndirectCall();
 		}
 		else if(isRet)
 		{
-			prov_map[insn].addReturn();
+			this_prov.addReturn();
 		}
 		else
 		{
 			assert(0);
 		}
-	}
-}
 
-void IBTProvenance_t::AddFile(const FileIR_t* firp2)
-{
-	FileIR_t* firp=(FileIR_t*)firp2; // discarding const qualifier because we know we won't change the set
-        firp->AssembleRegistry(); // Takes time but I'm paranoid
-	for(auto insn : firp->GetInstructions())
+		icfs_prov_map[ibTargets].addProv(this_prov);
+	}
+
+	// deploy info for each target of the icfs
+	for(const auto &icfs : firp->GetAllICFS())
 	{
-		// If insn is an IB, add the type of IB to the targets' provenance info
-	        if(insn->GetIBTargets())
-        	      	AddProvs(insn, *insn->GetIBTargets());		
+		assert(icfs);
+		for(const auto &insn : *icfs)
+		{
+			prov_map[insn].addProv(icfs_prov_map[icfs]);
+		}
 	}
 }
 

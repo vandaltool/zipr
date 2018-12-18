@@ -9,6 +9,8 @@
 #include <fcntl.h>
 #include <fstream>
 #include <ctime>
+#include <ext/stdio_filebuf.h>
+
 
 
 using namespace std;
@@ -18,11 +20,14 @@ using namespace Transform_SDK;
 #define ALLOF(a) begin(a),end(a)
 
 // global to be used like cout/cerr for writing to the logs
-ofstream thanos_log;
+int thanos_log_fd=-1;
+ostream *thanos_log;
 ostream *real_cout;
 ostream *real_cerr;
 string thanos_path;
 bool redirect_opt=true;
+int new_stdout_fd=1;
+int new_stderr_fd=2;
 
 class ThanosPlugin_t
 {
@@ -51,6 +56,7 @@ class ThanosPlugin_t
                            step_args(p_step_args)
                        {
                        }
+	void tidyIR();
 	int executeStep(TransformStep_t& the_step, const bool are_debugging);
 	int commitAll();
 
@@ -69,18 +75,33 @@ PluginList_t getPlugins(const int argc, char const *const argv[]);
 int main(int argc, char* argv[])
 {
 	thanos_path=argv[0];
-	ostream my_real_cerr(cerr.rdbuf());
-	ostream my_real_cout(cout.rdbuf());
-        real_cerr=&my_real_cerr;
+
+	new_stdout_fd=dup(STDOUT_FILENO);
+	new_stderr_fd=dup(STDERR_FILENO);
+
+	__gnu_cxx::stdio_filebuf<char> stdout_filebuf(new_stdout_fd, ios::out); 
+	__gnu_cxx::stdio_filebuf<char> stderr_filebuf(new_stderr_fd, ios::out); 
+	
+	ostream my_real_cout(&stderr_filebuf);
+	ostream my_real_cerr(&stdout_filebuf);
         real_cout=&my_real_cout;
+        real_cerr=&my_real_cerr;
 
- 	thanos_log.open("logs/thanos.log", ofstream::out);
-
-	if(!thanos_log)
+	auto thanos_log_fileptr=fopen("logs/thanos.log", "a+");
+	if(!thanos_log_fileptr)
 	{
-		cerr<<"Cannot open logs/thanos.log"<<endl;
+		*real_cerr<<"Cannot open logs/thanos.log"<<endl;
 		exit(1);
 	}
+	thanos_log_fd=fileno(thanos_log_fileptr);
+	__gnu_cxx::stdio_filebuf<char> thanos_log_filebuf(thanos_log_fd, ios::out); 
+	ostream thanos_log_stream(&thanos_log_filebuf);
+ 	thanos_log=&thanos_log_stream;
+
+	// make sure stuff goes to the log unless otherwise indicated by using real_cout
+	dup2(thanos_log_fd, STDOUT_FILENO);
+	dup2(thanos_log_fd, STDERR_FILENO);
+
 	// get plugins
 	auto argv_iter=1;
 	while (true)
@@ -105,8 +126,8 @@ int main(int argc, char* argv[])
 		// for now, usage is pretty strict to enable simple
 		// parsing, because this program is only used by an
 		// automated script
-		thanos_log << "Syntax error in arguments." << endl;
-		thanos_log << "USAGE: <thanos opts> (\"<step name> [-optional] [--step-args [ARGS]]\")+" << endl;
+		*thanos_log << "Syntax error in arguments." << endl;
+		*thanos_log << "USAGE: <thanos opts> (\"<step name> [-optional] [--step-args [ARGS]]\")+" << endl;
 		return 1;
 	}
 
@@ -118,8 +139,8 @@ int main(int argc, char* argv[])
 		// if that returns failure AND the step is not optional
 		if(result != 0 && !plugin->isOptional())
 		{
-			thanos_log << "A critical step failed: " << plugin->getStepName() << endl;
-			thanos_log << "If DEBUG_STEPS is not on, this failure could "
+			*thanos_log << "A critical step failed: " << plugin->getStepName() << endl;
+			*thanos_log << "If DEBUG_STEPS is not on, this failure could "
 			     << "be due to an earlier critical step." << endl;	 
 			return 1; // critical step failed, abort
 		}
@@ -128,9 +149,9 @@ int main(int argc, char* argv[])
 	const int result = ThanosPlugin_t::saveChanges();
 	if(result != 0)
 	{
-		thanos_log << "A critical step failed: " << (thanos_plugins.back())->getStepName() 
+		*thanos_log << "A critical step failed: " << (thanos_plugins.back())->getStepName() 
 		     << endl;
-                thanos_log << "If DEBUG_STEPS is not on, this failure could "
+                *thanos_log << "If DEBUG_STEPS is not on, this failure could "
                      << "be due to an earlier critical step." << endl;
                 return 1; // critical step failed, abort
 	}
@@ -206,7 +227,7 @@ int ThanosPlugin_t::runPlugin()
 	static const char *const base_path = getenv("SECURITY_TRANSFORMS_HOME");
         if(base_path == NULL)
         {
-		thanos_log << "Environment variables not set." << endl;
+		*thanos_log << "Environment variables not set." << endl;
 		return -1;
     	}
     	static const auto plugin_path (string(base_path).append("/plugins_install/"));
@@ -215,7 +236,7 @@ int ThanosPlugin_t::runPlugin()
         if(dlhdl == NULL)
         {
         	const auto err=dlerror();
-                thanos_log<<"Cannot open "<<step_name<<": "<<err<<endl;
+                *thanos_log<<"Cannot open "<<step_name<<": "<<err<<endl;
 		return -1;
         }
         
@@ -223,7 +244,7 @@ int ThanosPlugin_t::runPlugin()
         if(sym == NULL)
         {
         	const auto err=dlerror();
-                thanos_log<<"Cannot find GetTransformStep in "<<step_name<<": "<<err<<endl;
+                *thanos_log<<"Cannot find GetTransformStep in "<<step_name<<": "<<err<<endl;
 		return -1;
         }
 
@@ -234,17 +255,14 @@ int ThanosPlugin_t::runPlugin()
 	
 	static const char *const are_debugging = getenv("DEBUG_STEPS");
 
-
-	auto saved_cerrbuf = cerr.rdbuf();
-        auto saved_coutbuf = cout.rdbuf();
-	ofstream logfile;
+	auto logfile=(FILE*)nullptr;
 
 	auto are_logging = !((bool) are_debugging);
 	if(are_logging)
 	{
 		// setup logging
 		auto logfile_path = "./logs/"+step_name+".log";
-		logfile.open(logfile_path,ofstream::out);
+		logfile=fopen(logfile_path.c_str(), "a+");
 		if(!logfile)
 		{
 			*real_cout<<"Cannot open log file "<<logfile_path<<endl;
@@ -252,8 +270,13 @@ int ThanosPlugin_t::runPlugin()
 		}
 		if(redirect_opt)
 		{
-			cout.rdbuf(logfile.rdbuf());
-			cerr.rdbuf(logfile.rdbuf());
+			dup2(fileno(logfile), STDOUT_FILENO);
+			dup2(fileno(logfile), STDERR_FILENO);
+		}
+		else
+		{
+			dup2(new_stdout_fd, STDOUT_FILENO);
+			dup2(new_stderr_fd, STDERR_FILENO);
 		}
 	}
 	
@@ -273,13 +296,15 @@ int ThanosPlugin_t::runPlugin()
         cout<< "#ATTRIBUTE end_time="   << end_time_str   ; // endl in time_str
         cout<< "#ATTRIBUTE elapsed_time="  << elapsed_time<<endl;
         cout<< "#ATTRIBUTE step_name=" << step_name<<endl;
-        cout<< "#ATTRIBUTE step_command=  " << thanos_path << " " << step_name 
-	    << " --step-args "; copy(ALLOF(step_args), ostream_iterator<string>(cout, " ")); cout<<endl;
+        cout<< "#ATTRIBUTE step_command=  " << thanos_path << " \"" << step_name 
+	    << " --step-args "; copy(ALLOF(step_args), ostream_iterator<string>(cout, " ")); cout<<"\""<<endl;
         cout<< "#ATTRIBUTE step_exitcode="<<dec<<step_result<<endl;
 
 
-	cerr.rdbuf(saved_cerrbuf);
-	cout.rdbuf(saved_coutbuf);
+	dup2(thanos_log_fd, STDOUT_FILENO);
+	dup2(thanos_log_fd, STDERR_FILENO);
+	if(logfile)
+		fclose(logfile);
 
 	the_step.reset(); // explicitly get rid of the handle to the library so we can close it.
 	dlclose(dlhdl);
@@ -289,6 +314,12 @@ int ThanosPlugin_t::runPlugin()
 }
 
 
+void ThanosPlugin_t::tidyIR()
+{
+	optind=1;
+	shared_objects->tidyIR();
+}
+
 int ThanosPlugin_t::executeStep(TransformStep_t& the_step, const bool are_debugging)
 {
 
@@ -296,13 +327,15 @@ int ThanosPlugin_t::executeStep(TransformStep_t& the_step, const bool are_debugg
 	flush(*real_cout);
 
 
+	tidyIR();
+
 	const int parse_retval = the_step.parseArgs(step_args);
 	if(parse_retval != 0)
 	{
 		*real_cout<<"Done.  Command failed! ***************************************"<<endl;
 		if(!step_optional)
 		{
-			*real_cout<<"ERROR: The "<<the_step.getStepName()<<" step is necessary, but failed.  Exiting early."<<endl;	
+			*real_cout<<"ERROR: The "<<the_step.getStepName()<<" step is necessary, but options parsing failed.  Exiting early."<<endl;	
 		}
 		return parse_retval;
 	}
@@ -310,7 +343,7 @@ int ThanosPlugin_t::executeStep(TransformStep_t& the_step, const bool are_debugg
 	pqxxDB_t* pqxx_interface = shared_objects->getDBInterface();
 	if(step_optional)
 	{
-		const int error = shared_objects->writeBackAll();
+		const int error = shared_objects->writeBackAll(thanos_log);
 		if(error)
 		{
 			return 1; // the failure must be from a critical step, abort
@@ -350,7 +383,7 @@ int ThanosPlugin_t::executeStep(TransformStep_t& the_step, const bool are_debugg
 	if(step_optional)
 	{
 		// write changes to DB to see if it succeeds
-		const int error = shared_objects->writeBackAll();
+		const int error = shared_objects->writeBackAll(thanos_log);
 		if(error)
 		{
 			// abort changes by resetting DB interface
@@ -366,7 +399,7 @@ int ThanosPlugin_t::executeStep(TransformStep_t& the_step, const bool are_debugg
 	else if(are_debugging)
 	{
 		// write changes to DB in case next step fails
-		const int error = shared_objects->writeBackAll();
+		const int error = shared_objects->writeBackAll(thanos_log);
 		if(error)
 		{
 			return 1; // critical step failed, abort
@@ -386,7 +419,7 @@ int ThanosPlugin_t::executeStep(TransformStep_t& the_step, const bool are_debugg
 int ThanosPlugin_t::saveChanges()
 {
 	pqxxDB_t* pqxx_interface = shared_objects->getDBInterface();
-        const int error = shared_objects->writeBackAll();
+        const int error = shared_objects->writeBackAll(thanos_log);
         if(error)
         {
         	return 1; // critical step failed, abort

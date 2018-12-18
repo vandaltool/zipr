@@ -106,7 +106,10 @@ void PopulateCFG::set_fallthrough
 
 	/* set the target for this insn */
 	if(fallthrough_insn!=0)
+	{
+		fallthroughs_set++;
 		insn->SetFallthrough(fallthrough_insn);
+	}
 	else
 		missed_instructions.insert(pair<db_id_t,virtual_offset_t>(insn->GetAddress()->GetFileID(),virtual_offset));
 }
@@ -180,7 +183,10 @@ void PopulateCFG::set_target
 
 		/* set the target for this insn */
 		if(target_insn!=0)
+		{
+			targets_set++;
 			insn->SetTarget(target_insn);
+		}
 		else
 			missed_instructions.insert( pair<db_id_t,virtual_offset_t>(insn->GetAddress()->GetFileID(),virtual_offset));
 
@@ -510,6 +516,7 @@ void PopulateCFG::fill_in_scoops(FileIR_t *firp)
 
 		bool is_relro=is_in_relro_segment(secndx);
 		DataScoop_t *newscoop=new DataScoop_t(max_base_id++, name, startaddr, endaddr, NULL, permissions, is_relro, the_contents);
+		scoops_detected++;
 		assert(newscoop);
 		firp->GetDataScoops().insert(newscoop);
 
@@ -650,8 +657,20 @@ int PopulateCFG::executeStep(IRDBObjects_t *const irdb_objects)
 		cerr<<"Unexpected error"<<endl;
 		return -1;
 	}
+
+        cout<<"#ATTRIBUTE targets_set="<<targets_set<<endl;
+        cout<<"#ATTRIBUTE fallthroughs_set="<<fallthroughs_set<<endl;
+        cout<<"#ATTRIBUTE scoops_detected="<<scoops_detected<<endl;
+
+	if(getenv("SELF_VALIDATE"))
+	{
+		assert(targets_set > 10);
+		assert(fallthroughs_set > 100);
+		assert(scoops_detected > 5 );
+	}
+
     
-    return 0;
+	return 0;
 }
 
 

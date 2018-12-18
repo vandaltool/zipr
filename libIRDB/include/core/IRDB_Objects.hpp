@@ -41,11 +41,13 @@ class IRDBObjects_t
 		pqxxDB_t* resetDBInterface();
 
 		// Write back variants and file IRs. Does NOT commit changes.
-                int writeBackFileIR(const db_id_t file_id);
+                int writeBackFileIR(const db_id_t file_id, std::ostream *verbose_logging=nullptr);
                 int writeBackVariant(const db_id_t variant_id);   // Does NOT write back its files' IRs
-		int writeBackAll(void);    // Returns -1 if any writes fail.
+		int writeBackAll(std::ostream* verbose_logging=nullptr);    // Returns -1 if any writes fail.
                 
                 void deleteAll(void);
+
+		void tidyIR();
 		
 	private:
                 std::unique_ptr<pqxxDB_t> pqxx_interface;
