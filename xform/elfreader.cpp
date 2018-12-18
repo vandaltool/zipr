@@ -86,7 +86,7 @@ ElfReader::~ElfReader()
 /*
 * Read <p_numBytes> from ELF file for location <p_pc>
 */
-string ElfReader::read(app_iaddr_t p_pc, unsigned p_numBytes)
+string ElfReader::read(app_iaddr_t p_pc, unsigned p_numBytes) const
 {
   for ( int i = 0; i < m_reader->sections.size(); ++i ) 
   {    
@@ -109,7 +109,7 @@ string ElfReader::read(app_iaddr_t p_pc, unsigned p_numBytes)
 * No bounds checking is done on <p_buf>
 * Return false if address not in valid sections
 */
-bool ElfReader::read(app_iaddr_t p_pc, unsigned p_numBytes, char* p_buf)
+bool ElfReader::read(app_iaddr_t p_pc, unsigned p_numBytes, char* p_buf) const
 {
   for ( int i = 0; i < m_reader->sections.size(); ++i ) 
   {    
@@ -130,7 +130,7 @@ bool ElfReader::read(app_iaddr_t p_pc, unsigned p_numBytes, char* p_buf)
 /*
 * Return buffer for instruction off the ELF file
 */
-char* ElfReader::getInstructionBuffer(app_iaddr_t p_pc)
+const char* ElfReader::getInstructionBuffer(app_iaddr_t p_pc) const
 {
   for ( int i = 0; i < m_reader->sections.size(); ++i ) 
   {    

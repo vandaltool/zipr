@@ -5,16 +5,14 @@
 #include <vector>
 #include <assert.h>
 
-
-// #include "targ-config.h"
 #pragma GCC diagnostic ignored "-Wsign-compare"
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
+#include "elf.h"
 #pragma GCC diagnostic pop
 
 class exeio_backend;
 class exeio_section;
-
 
 namespace EXEIO
 {
@@ -93,6 +91,19 @@ namespace EXEIO
 					case ELFCLASS32: return ELF32;
 					default: assert(0);
 				};
+			}
+			virtual MachineType_t getMachineType() const
+			{
+				assert(e);
+				switch(e->get_machine())
+				{
+					case EM_ARM	: return mtArm32;
+					case EM_AARCH64	: return mtAarch64;
+					case EM_386     : return mtI386;
+					case EM_X86_64	: return mtX86_64;
+					default: assert(0);
+				}
+				assert(0);
 			}
 
 			// get entry point of function.

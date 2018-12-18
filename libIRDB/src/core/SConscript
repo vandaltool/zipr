@@ -23,15 +23,15 @@ files=  '''
 	variantid.cpp
 	eh.cpp
 	reloc.cpp
-	decode_cs.cpp
-	operand_cs.cpp
+	decode_csx86.cpp
+	operand_csx86.cpp
 	IRDB_Objects.cpp
+	decode_dispatch.cpp
+	operand_dispatch.cpp
 '''
 unused_files='''
 	decode_bea.cpp
 	operand_bea.cpp
-	decode_meta.cpp
-	operand_meta.cpp
 	'''
 
 # bea engine listed for core components.

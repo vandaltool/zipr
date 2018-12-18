@@ -669,10 +669,13 @@ void Rewriter::readElfFile(char p_filename[])
 */
 void Rewriter::disassemble()
 {
+	getElfReader()->SetArchitecture();
+	/*
 	if(getElfReader()->isElf64() || getElfReader()->isPe64())
 		FileIR_t::SetArchitectureBitWidth(64);
 	else
 		FileIR_t::SetArchitectureBitWidth(32);
+		*/
 
   	// for every instruction, grab from ELF
   	// disassemble

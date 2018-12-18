@@ -11,20 +11,20 @@ namespace libIRDB
 using namespace libIRDB;
 using namespace std;
 
-class DecodedOperandCapstone_t;
-typedef std::vector<DecodedOperandCapstone_t> DecodedOperandCapstoneVector_t;
+class DecodedOperandCapstoneX86_t;
+typedef std::vector<DecodedOperandCapstoneX86_t> DecodedOperandCapstoneVector_t;
 
-class DecodedInstructionCapstone_t
+class DecodedInstructionCapstoneX86_t
 {
 	public:
-		DecodedInstructionCapstone_t()=delete;
-		DecodedInstructionCapstone_t(const Instruction_t*);
-		DecodedInstructionCapstone_t(const virtual_offset_t start_addr, const void *data, uint32_t max_len);
-		DecodedInstructionCapstone_t(const virtual_offset_t start_addr, const void *data, const void* endptr);
-		DecodedInstructionCapstone_t(const DecodedInstructionCapstone_t& copy);
-		DecodedInstructionCapstone_t& operator=(const DecodedInstructionCapstone_t& copy);
+		DecodedInstructionCapstoneX86_t()=delete;
+		DecodedInstructionCapstoneX86_t(const Instruction_t*);
+		DecodedInstructionCapstoneX86_t(const virtual_offset_t start_addr, const void *data, uint32_t max_len);
+		DecodedInstructionCapstoneX86_t(const virtual_offset_t start_addr, const void *data, const void* endptr);
+		DecodedInstructionCapstoneX86_t(const DecodedInstructionCapstoneX86_t& copy);
+		DecodedInstructionCapstoneX86_t& operator=(const DecodedInstructionCapstoneX86_t& copy);
 
-		virtual ~DecodedInstructionCapstone_t();
+		virtual ~DecodedInstructionCapstoneX86_t();
 
 		string getDisassembly() const;
 		bool valid() const;
@@ -44,11 +44,11 @@ class DecodedInstructionCapstone_t
 		bool hasRelevantOperandSizePrefix() const;
 		bool hasRexWPrefix() const;
 		bool hasImplicitlyModifiedRegs() const;
-		virtual_offset_t getMemoryDisplacementOffset(const DecodedOperandCapstone_t& t, const Instruction_t* insn) const;
+		virtual_offset_t getMemoryDisplacementOffset(const DecodedOperandCapstoneX86_t& t, const Instruction_t* insn) const;
 
 		// 0-based.  first operand is numbered 0.
 		bool hasOperand(const int op_num) const;
-		DecodedOperandCapstone_t getOperand(const int op_num) const;
+		DecodedOperandCapstoneX86_t getOperand(const int op_num) const;
 		DecodedOperandCapstoneVector_t getOperands() const;
 
 	private:
@@ -89,9 +89,9 @@ class DecodedInstructionCapstone_t
 		static CapstoneHandle_t *cs_handle;
 
 
-		friend class DecodedOperandCapstone_t;
+		friend class DecodedOperandCapstoneX86_t;
 
-		DecodedInstructionCapstone_t(const shared_ptr<void> &my_insn);
+		DecodedInstructionCapstoneX86_t(const shared_ptr<void> &my_insn);
 
 };
 

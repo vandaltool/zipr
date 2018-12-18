@@ -19,23 +19,28 @@
  */
 
 
-enum AD_FileType_t { AD_ELF, AD_CGC, AD_PE };
+enum ADFileType_t { AD_ELF, AD_CGC, AD_PE, AD_NONE };
+enum ADMachineType_t { admtAarch64,  admtX86_64, admtI386, admtNone }; 
 
 class ArchitectureDescription_t
 {
 	public:
 
-	ArchitectureDescription_t() : bits(0) {}
+		ArchitectureDescription_t() : bits(0), ft(AD_NONE), mt(admtNone) {}
 
-	int GetBitWidth() 		{ return bits; }	
-	void SetBitWidth(int _bits) 	{ bits=_bits; }	
+		int GetBitWidth() const 		{ return bits; }	
+		void SetBitWidth(const int _bits) 	{ bits=_bits; }	
 
-	AD_FileType_t GetFileType() 		{ return ft; }	
-	void SetFileType(AD_FileType_t t) 	{ ft=t; }
+		ADFileType_t GetFileType() const	{ return ft; }	
+		void SetFileType(const ADFileType_t t) 	{ ft=t; }
+
+		ADMachineType_t getMachineType() const 		{ return mt; }	
+		void setMachineType(const ADMachineType_t t) 	{ mt=t; }
 
 	private:
 
-		int bits;
-		AD_FileType_t ft;
+		size_t bits;
+		ADFileType_t ft;
+		ADMachineType_t mt;
 };
 

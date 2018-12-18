@@ -990,27 +990,35 @@ int FileIR_t::GetArchitectureBitWidth()
 	return archdesc->GetBitWidth();
 }
 
-void FileIR_t::SetArchitectureBitWidth(int width) 
+void FileIR_t::SetArchitecture(const int width, const ADMachineType_t mt) 
 {
 	if(archdesc==NULL)
 		archdesc=new ArchitectureDescription_t;
-	archdesc->SetBitWidth(width);
+	archdesc->SetBitWidth(width); 
+	archdesc->setMachineType(mt); 
 }	
 
 void FileIR_t::SetArchitecture()
 {
 
 	/* the first 16 bytes of an ELF file define the magic number and ELF Class. */
-    	unsigned char e_ident[16];
+    	// unsigned char e_ident[16];
+	union 
+	{
+		Elf32_Ehdr ehdr32;
+		Elf64_Ehdr ehdr64;
+	} hdr_union;
 
-	DBinterface_t* myinter=BaseObj_t::GetInterface();
-	pqxxDB_t *mypqxxintr=dynamic_cast<pqxxDB_t*>(myinter);
+	auto myinter=BaseObj_t::GetInterface();
+	auto *mypqxxintr=dynamic_cast<pqxxDB_t*>(myinter);
 
-	int elfoid=GetFile()->GetELFOID();
+	const auto elfoid=GetFile()->GetELFOID();
         pqxx::largeobjectaccess loa(mypqxxintr->GetTransaction(), elfoid, PGSTD::ios::in);
 
 
-        loa.cread((char*)&e_ident, sizeof(e_ident));
+        loa.cread((char*)&hdr_union, sizeof(hdr_union));
+
+	const auto e_ident=hdr_union.ehdr32.e_ident;
 
 	archdesc=new ArchitectureDescription_t;
 
@@ -1042,20 +1050,32 @@ void FileIR_t::SetArchitecture()
 
 	if (archdesc->GetFileType() == AD_PE)
 	{
-		// just assume 64 bit for Windows, o/w could also extract from file
+		// just assume x86-64 bit for Windows, o/w could also extract from file
 		archdesc->SetBitWidth(64);
+		archdesc->setMachineType(admtX86_64);
 	}
 	else
 	{
 		switch(e_ident[4])
 		{
 			case ELFCLASS32:
+			{
 				archdesc->SetBitWidth(32);
+				if(hdr_union.ehdr32.e_machine!=EM_386)
+					throw std::invalid_argument("Arch not supported.  32-bit archs supported:  I386");
+				archdesc->setMachineType(admtI386);
 				break;
+			}
 			case ELFCLASS64:
+			{
 				archdesc->SetBitWidth(64);
+				const auto mt= 
+					hdr_union.ehdr64.e_machine==EM_AARCH64 ? admtAarch64 : 
+					hdr_union.ehdr64.e_machine==EM_X86_64  ? admtX86_64 : 
+					throw std::invalid_argument("Arch not supported.  64-bit archs supported:  Aarch64, X86-64");
+				archdesc->setMachineType(mt);
 				break;
-			case ELFCLASSNONE:
+			}
 			default:
 				cerr << "Unknown ELF class " <<endl;
 				exit(-1);

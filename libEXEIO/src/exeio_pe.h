@@ -129,6 +129,11 @@ namespace EXEIO
                 		}
 
 			}
+			virtual MachineType_t getMachineType() const
+			{
+				assert(0);
+			}
+
                         virtual execlass_t get_class() 
 			{
 				assert(e);

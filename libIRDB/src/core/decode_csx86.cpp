@@ -14,9 +14,9 @@ using namespace std;
 
 #define ALLOF(a) begin(a),end(a)
 
-DecodedInstructionCapstone_t::CapstoneHandle_t* DecodedInstructionCapstone_t::cs_handle=NULL ;
+DecodedInstructionCapstoneX86_t::CapstoneHandle_t* DecodedInstructionCapstoneX86_t::cs_handle=NULL ;
 
-DecodedInstructionCapstone_t::CapstoneHandle_t::CapstoneHandle_t(FileIR_t* firp)
+DecodedInstructionCapstoneX86_t::CapstoneHandle_t::CapstoneHandle_t(FileIR_t* firp)
 {
 	const auto width=FileIR_t::GetArchitectureBitWidth();
 	const auto mode = (width==64) ? CS_MODE_64: CS_MODE_32;
@@ -120,7 +120,7 @@ static inline type insnToImmedHelper(cs_insn* the_insn, csh handle)
 // shared code 
 // constructors, destructors, operators.
 
-void DecodedInstructionCapstone_t::Disassemble(const virtual_offset_t start_addr, const void *data, const uint32_t max_len)
+void DecodedInstructionCapstoneX86_t::Disassemble(const virtual_offset_t start_addr, const void *data, const uint32_t max_len)
 {
 	using namespace std::placeholders;
 	auto insn=cs_malloc(cs_handle->getHandle());
@@ -192,7 +192,7 @@ void DecodedInstructionCapstone_t::Disassemble(const virtual_offset_t start_addr
 	my_insn.reset(insn,cs_freer);
 }
 
-DecodedInstructionCapstone_t::DecodedInstructionCapstone_t(const Instruction_t* i)
+DecodedInstructionCapstoneX86_t::DecodedInstructionCapstoneX86_t(const Instruction_t* i)
 {
 	if(!cs_handle) cs_handle=new CapstoneHandle_t(NULL);
 	if(!i) throw std::invalid_argument("No instruction given to DecodedInstruction_t(Instruction_t*)");
@@ -206,35 +206,35 @@ DecodedInstructionCapstone_t::DecodedInstructionCapstone_t(const Instruction_t* 
 	if(!valid()) throw std::invalid_argument("The Instruction_t::GetDataBits field is not a valid instruction.");
 }
 
-DecodedInstructionCapstone_t::DecodedInstructionCapstone_t(const virtual_offset_t start_addr, const void *data, uint32_t max_len)
+DecodedInstructionCapstoneX86_t::DecodedInstructionCapstoneX86_t(const virtual_offset_t start_addr, const void *data, uint32_t max_len)
 {
 	if(!cs_handle) cs_handle=new CapstoneHandle_t(NULL);
         Disassemble(start_addr, data, max_len);
 }
 
-DecodedInstructionCapstone_t::DecodedInstructionCapstone_t(const virtual_offset_t start_addr, const void *data, const void* endptr)
+DecodedInstructionCapstoneX86_t::DecodedInstructionCapstoneX86_t(const virtual_offset_t start_addr, const void *data, const void* endptr)
 {
 	if(!cs_handle) cs_handle=new CapstoneHandle_t(NULL);
         const auto length=(char*)endptr-(char*)data;
         Disassemble(start_addr,data,length);
 }
 
-DecodedInstructionCapstone_t::DecodedInstructionCapstone_t(const DecodedInstructionCapstone_t& copy)
+DecodedInstructionCapstoneX86_t::DecodedInstructionCapstoneX86_t(const DecodedInstructionCapstoneX86_t& copy)
 {
 	*this=copy;
 }
 
-DecodedInstructionCapstone_t::DecodedInstructionCapstone_t(const shared_ptr<void> &p_my_insn)
+DecodedInstructionCapstoneX86_t::DecodedInstructionCapstoneX86_t(const shared_ptr<void> &p_my_insn)
 	: my_insn(p_my_insn)
 {
 }
 
-DecodedInstructionCapstone_t::~DecodedInstructionCapstone_t()
+DecodedInstructionCapstoneX86_t::~DecodedInstructionCapstoneX86_t()
 {
 	// no need to cs_free(my_insn) because shared pointer will do that for us!
 }
 
-DecodedInstructionCapstone_t& DecodedInstructionCapstone_t::operator=(const DecodedInstructionCapstone_t& copy)
+DecodedInstructionCapstoneX86_t& DecodedInstructionCapstoneX86_t::operator=(const DecodedInstructionCapstoneX86_t& copy)
 {
 	my_insn=copy.my_insn;
 	return *this;
@@ -242,7 +242,7 @@ DecodedInstructionCapstone_t& DecodedInstructionCapstone_t::operator=(const Deco
 
 // public methods
 
-string DecodedInstructionCapstone_t::getDisassembly() const
+string DecodedInstructionCapstoneX86_t::getDisassembly() const
 {
 	const auto myReplace=[](std::string &str,
 		       const std::string& oldStr,
@@ -338,27 +338,27 @@ string DecodedInstructionCapstone_t::getDisassembly() const
 	return full_str;
 }
 
-bool DecodedInstructionCapstone_t::valid() const
+bool DecodedInstructionCapstoneX86_t::valid() const
 {
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
 	return the_insn->size!=0;
 }
 
-uint32_t DecodedInstructionCapstone_t::length() const
+uint32_t DecodedInstructionCapstoneX86_t::length() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
 	return the_insn->size;
 }
 
-bool DecodedInstructionCapstone_t::isBranch() const
+bool DecodedInstructionCapstoneX86_t::isBranch() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
 	return isCall() || isReturn() || isJmp(the_insn);
 }
 
-bool DecodedInstructionCapstone_t::isCall() const
+bool DecodedInstructionCapstoneX86_t::isCall() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 
@@ -366,7 +366,7 @@ bool DecodedInstructionCapstone_t::isCall() const
 	return isPartOfGroup(the_insn,X86_GRP_CALL);
 }
 
-bool DecodedInstructionCapstone_t::isUnconditionalBranch() const
+bool DecodedInstructionCapstoneX86_t::isUnconditionalBranch() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
@@ -374,21 +374,21 @@ bool DecodedInstructionCapstone_t::isUnconditionalBranch() const
 	return isJmp(the_insn) && !isConditionalBranch();
 }
 
-bool DecodedInstructionCapstone_t::isConditionalBranch() const
+bool DecodedInstructionCapstoneX86_t::isConditionalBranch() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
 	return isJmp(the_insn) && getMnemonic()!="jmp";
 }
 
-bool DecodedInstructionCapstone_t::isReturn() const
+bool DecodedInstructionCapstoneX86_t::isReturn() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
 	return isPartOfGroup(the_insn,X86_GRP_RET);
 }
 
-bool DecodedInstructionCapstone_t::hasOperand(const int op_num) const
+bool DecodedInstructionCapstoneX86_t::hasOperand(const int op_num) const
 {
 	if(op_num<0) throw std::logic_error(string("Called ")+ __FUNCTION__+" with opnum="+to_string(op_num));
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
@@ -397,16 +397,16 @@ bool DecodedInstructionCapstone_t::hasOperand(const int op_num) const
 }
 
 // 0-based.  first operand is numbered 0.
-DecodedOperandCapstone_t DecodedInstructionCapstone_t::getOperand(const int op_num) const
+DecodedOperandCapstoneX86_t DecodedInstructionCapstoneX86_t::getOperand(const int op_num) const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	if(!hasOperand(op_num)) throw std::logic_error(string("Called ")+__FUNCTION__+" on without hasOperand()==true");
 
-	return DecodedOperandCapstone_t(my_insn,(uint8_t)op_num);
+	return DecodedOperandCapstoneX86_t(my_insn,(uint8_t)op_num);
 	
 }
 
-DecodedOperandCapstoneVector_t DecodedInstructionCapstone_t::getOperands() const
+DecodedOperandCapstoneVector_t DecodedInstructionCapstoneX86_t::getOperands() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
@@ -421,7 +421,7 @@ DecodedOperandCapstoneVector_t DecodedInstructionCapstone_t::getOperands() const
 	return ret_val;
 }
 
-string DecodedInstructionCapstone_t::getMnemonic() const
+string DecodedInstructionCapstoneX86_t::getMnemonic() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 
@@ -471,7 +471,7 @@ string DecodedInstructionCapstone_t::getMnemonic() const
 }
 
 
-int64_t DecodedInstructionCapstone_t::getImmediate() const
+int64_t DecodedInstructionCapstoneX86_t::getImmediate() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 
@@ -485,7 +485,7 @@ int64_t DecodedInstructionCapstone_t::getImmediate() const
 }
 
 
-virtual_offset_t DecodedInstructionCapstone_t::getAddress() const
+virtual_offset_t DecodedInstructionCapstoneX86_t::getAddress() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 
@@ -514,7 +514,7 @@ virtual_offset_t DecodedInstructionCapstone_t::getAddress() const
 }
 
 
-bool DecodedInstructionCapstone_t::setsStackPointer() const
+bool DecodedInstructionCapstoneX86_t::setsStackPointer() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 
@@ -577,7 +577,7 @@ bool DecodedInstructionCapstone_t::setsStackPointer() const
 	return is_op0;
 }
 
-uint32_t DecodedInstructionCapstone_t::getPrefixCount() const
+uint32_t DecodedInstructionCapstoneX86_t::getPrefixCount() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 
@@ -588,7 +588,7 @@ uint32_t DecodedInstructionCapstone_t::getPrefixCount() const
 	return count_with_rex;
 }
 
-virtual_offset_t DecodedInstructionCapstone_t::getMemoryDisplacementOffset(const DecodedOperandCapstone_t& t, const Instruction_t* insn) const
+virtual_offset_t DecodedInstructionCapstoneX86_t::getMemoryDisplacementOffset(const DecodedOperandCapstoneX86_t& t, const Instruction_t* insn) const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 
@@ -654,35 +654,35 @@ virtual_offset_t DecodedInstructionCapstone_t::getMemoryDisplacementOffset(const
 
 
 
-bool DecodedInstructionCapstone_t::hasRelevantRepPrefix() const
+bool DecodedInstructionCapstoneX86_t::hasRelevantRepPrefix() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
 	return hasPrefix(the_insn,X86_PREFIX_REP);
 }
 
-bool DecodedInstructionCapstone_t::hasRelevantRepnePrefix() const
+bool DecodedInstructionCapstoneX86_t::hasRelevantRepnePrefix() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
 	return hasPrefix(the_insn,X86_PREFIX_REPNE);
 }
 
-bool DecodedInstructionCapstone_t::hasRelevantOperandSizePrefix() const
+bool DecodedInstructionCapstoneX86_t::hasRelevantOperandSizePrefix() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
 	return hasPrefix(the_insn,X86_PREFIX_OPSIZE);
 }
 
-bool DecodedInstructionCapstone_t::hasRexWPrefix() const
+bool DecodedInstructionCapstoneX86_t::hasRexWPrefix() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
 	return (the_insn->detail->x86.rex & 0x8) == 0x8;
 }
 
-bool DecodedInstructionCapstone_t::hasImplicitlyModifiedRegs() const
+bool DecodedInstructionCapstoneX86_t::hasImplicitlyModifiedRegs() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 

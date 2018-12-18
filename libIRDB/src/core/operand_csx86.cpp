@@ -1,8 +1,8 @@
 
 #include <libIRDB-core.hpp>
 #include <memory>
-#include <core/operand_cs.hpp>
-#include <core/decode_cs.hpp>
+#include <core/operand_csx86.hpp>
+#include <core/decode_csx86.hpp>
 
 using namespace std;
 using namespace libIRDB;
@@ -138,17 +138,17 @@ static uint32_t to_reg_number(const x86_reg &reg)
 
 // methods
 
-//DecodedOperandCapstone_t& DecodedOperandCapstone_t::operator=(const DecodedOperandCapstone_t& copy)
+//DecodedOperandCapstoneX86_t& DecodedOperandCapstoneX86_t::operator=(const DecodedOperandCapstoneX86_t& copy)
 //{
 //	return *this;
 //}
 //
-//DecodedOperandCapstone_t::DecodedOperandCapstone_t(const DecodedOperandCapstone_t& copy)
+//DecodedOperandCapstoneX86_t::DecodedOperandCapstoneX86_t(const DecodedOperandCapstoneX86_t& copy)
 //{
 //	*this=copy;
 //}
 
-DecodedOperandCapstone_t::DecodedOperandCapstone_t( const shared_ptr<void> & p_my_insn, uint8_t p_op_num)
+DecodedOperandCapstoneX86_t::DecodedOperandCapstoneX86_t( const shared_ptr<void> & p_my_insn, uint8_t p_op_num)
 	:
 	my_insn(p_my_insn),
 	op_num(p_op_num)
@@ -156,12 +156,12 @@ DecodedOperandCapstone_t::DecodedOperandCapstone_t( const shared_ptr<void> & p_m
 	
 }
 
-DecodedOperandCapstone_t::~DecodedOperandCapstone_t()
+DecodedOperandCapstoneX86_t::~DecodedOperandCapstoneX86_t()
 {
 }
 
 
-bool DecodedOperandCapstone_t::isConstant() const
+bool DecodedOperandCapstoneX86_t::isConstant() const
 {
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
         const auto &op = (the_insn->detail->x86.operands[op_num]);
@@ -169,7 +169,7 @@ bool DecodedOperandCapstone_t::isConstant() const
 	return op.type==X86_OP_IMM;
 }
 
-uint64_t DecodedOperandCapstone_t::getConstant() const
+uint64_t DecodedOperandCapstoneX86_t::getConstant() const
 {
 	if(!isConstant()) throw std::logic_error(string("Cannot ")+__FUNCTION__+"  of non-constant operand");
 	
@@ -178,11 +178,11 @@ uint64_t DecodedOperandCapstone_t::getConstant() const
 	return op.imm;
 }
 
-string DecodedOperandCapstone_t::getString() const
+string DecodedOperandCapstoneX86_t::getString() const
 {
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
         const auto &op = (the_insn->detail->x86.operands[op_num]);
-	const auto handle=DecodedInstructionCapstone_t::cs_handle->getHandle();
+	const auto handle=DecodedInstructionCapstoneX86_t::cs_handle->getHandle();
 
 	switch(op.type)
 	{
@@ -227,14 +227,14 @@ string DecodedOperandCapstone_t::getString() const
 	}
 }
 
-bool DecodedOperandCapstone_t::isRegister() const
+bool DecodedOperandCapstoneX86_t::isRegister() const
 {
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
         const auto &op = (the_insn->detail->x86.operands[op_num]);
 	return op.type==X86_OP_REG;
 }
 
-bool DecodedOperandCapstone_t::isGeneralPurposeRegister() const
+bool DecodedOperandCapstoneX86_t::isGeneralPurposeRegister() const
 {
 
 	const auto gp_regs=set<x86_reg>({
@@ -261,7 +261,7 @@ bool DecodedOperandCapstone_t::isGeneralPurposeRegister() const
 	return isRegister() &&  gp_regs.find(op.reg)!=end(gp_regs);
 }
 
-bool DecodedOperandCapstone_t::isMmxRegister() const
+bool DecodedOperandCapstoneX86_t::isMmxRegister() const
 {
 	const auto regs=set<x86_reg>({
 		X86_REG_MM0, X86_REG_MM1,
@@ -272,7 +272,7 @@ bool DecodedOperandCapstone_t::isMmxRegister() const
 	return isRegister() &&  regs.find(op.reg)!=end(regs);
 }
 
-bool DecodedOperandCapstone_t::isFpuRegister() const
+bool DecodedOperandCapstoneX86_t::isFpuRegister() const
 {
 	const auto regs=set<x86_reg>({
 		X86_REG_ST0, X86_REG_ST1, X86_REG_ST2, X86_REG_ST3,
@@ -283,7 +283,7 @@ bool DecodedOperandCapstone_t::isFpuRegister() const
 	return isRegister() &&  regs.find(op.reg)!=end(regs);
 }
 
-bool DecodedOperandCapstone_t::isSseRegister() const
+bool DecodedOperandCapstoneX86_t::isSseRegister() const
 {
 	const auto regs=set<x86_reg>({
 		X86_REG_XMM0, X86_REG_XMM1, X86_REG_XMM2, X86_REG_XMM3, X86_REG_XMM4,
@@ -299,7 +299,7 @@ bool DecodedOperandCapstone_t::isSseRegister() const
 	return isRegister() &&  regs.find(op.reg)!=end(regs);
 }
 
-bool DecodedOperandCapstone_t::isAvxRegister() const
+bool DecodedOperandCapstoneX86_t::isAvxRegister() const
 {
 	const auto regs=set<x86_reg>({
 		X86_REG_YMM0, X86_REG_YMM1, X86_REG_YMM2,
@@ -315,7 +315,7 @@ bool DecodedOperandCapstone_t::isAvxRegister() const
 	return isRegister() &&  regs.find(op.reg)!=end(regs);
 }
 
-bool DecodedOperandCapstone_t::isZmmRegister() const
+bool DecodedOperandCapstoneX86_t::isZmmRegister() const
 {
 	const auto regs=set<x86_reg>({
 		X86_REG_ZMM0, X86_REG_ZMM1, X86_REG_ZMM2,
@@ -331,7 +331,7 @@ bool DecodedOperandCapstone_t::isZmmRegister() const
 	return isRegister() &&  regs.find(op.reg)!=end(regs);
 }
 
-bool DecodedOperandCapstone_t::isSpecialRegister() const
+bool DecodedOperandCapstoneX86_t::isSpecialRegister() const
 {
 	const auto regs=set<x86_reg>({
 		X86_REG_CR1, X86_REG_CR2, X86_REG_CR3, X86_REG_CR4, X86_REG_CR5,
@@ -345,7 +345,7 @@ bool DecodedOperandCapstone_t::isSpecialRegister() const
 	return isRegister() &&  regs.find(op.reg)!=end(regs);
 }
 
-bool DecodedOperandCapstone_t::isSegmentRegister() const
+bool DecodedOperandCapstoneX86_t::isSegmentRegister() const
 {
 	const auto regs=set<x86_reg>({
 		X86_REG_CS,
@@ -362,7 +362,7 @@ bool DecodedOperandCapstone_t::isSegmentRegister() const
 
 
 
-uint32_t DecodedOperandCapstone_t::getRegNumber() const
+uint32_t DecodedOperandCapstoneX86_t::getRegNumber() const
 {
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
         const auto &op = (the_insn->detail->x86.operands[op_num]);
@@ -384,28 +384,28 @@ uint32_t DecodedOperandCapstone_t::getRegNumber() const
 		assert(0);
 }
 
-bool DecodedOperandCapstone_t::isMemory() const
+bool DecodedOperandCapstoneX86_t::isMemory() const
 {
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
         const auto &op = (the_insn->detail->x86.operands[op_num]);
 	return op.type==X86_OP_MEM;
 }
 
-bool DecodedOperandCapstone_t::hasBaseRegister() const
+bool DecodedOperandCapstoneX86_t::hasBaseRegister() const
 {
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
         const auto &op = (the_insn->detail->x86.operands[op_num]);
 	return isMemory() && op.mem.base!=X86_REG_INVALID && op.mem.base!=X86_REG_RIP;
 }
 
-bool DecodedOperandCapstone_t::hasIndexRegister() const
+bool DecodedOperandCapstoneX86_t::hasIndexRegister() const
 {
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
         const auto &op = (the_insn->detail->x86.operands[op_num]);
 	return isMemory() && op.mem.index!=X86_REG_INVALID;
 }
 
-uint32_t DecodedOperandCapstone_t::getBaseRegister() const
+uint32_t DecodedOperandCapstoneX86_t::getBaseRegister() const
 {
 	if(!isMemory()) throw std::logic_error(string("Cannot ")+__FUNCTION__+"  of non-memory operand");
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
@@ -413,7 +413,7 @@ uint32_t DecodedOperandCapstone_t::getBaseRegister() const
 	return to_reg_number((x86_reg)op.mem.base);
 }
 
-uint32_t DecodedOperandCapstone_t::getIndexRegister() const
+uint32_t DecodedOperandCapstoneX86_t::getIndexRegister() const
 {
 	if(!isMemory()) throw std::logic_error(string("Cannot ")+__FUNCTION__+"  of non-memory operand");
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
@@ -421,7 +421,7 @@ uint32_t DecodedOperandCapstone_t::getIndexRegister() const
 	return to_reg_number((x86_reg)op.mem.index);
 }
 
-uint32_t DecodedOperandCapstone_t::getScaleValue() const
+uint32_t DecodedOperandCapstoneX86_t::getScaleValue() const
 {
 	if(!isMemory()) throw std::logic_error(string("Cannot ")+__FUNCTION__+"  of non-memory operand");
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
@@ -429,7 +429,7 @@ uint32_t DecodedOperandCapstone_t::getScaleValue() const
 	return op.mem.scale;
 }
 
-bool DecodedOperandCapstone_t::hasMemoryDisplacement() const
+bool DecodedOperandCapstoneX86_t::hasMemoryDisplacement() const
 {
 
 	if(!isMemory()) throw std::logic_error(string("Cannot ")+__FUNCTION__+"  of non-memory operand");
@@ -470,9 +470,9 @@ bool DecodedOperandCapstone_t::hasMemoryDisplacement() const
 			assert(0); //unreachable
 	}
 	assert(0); // unreachable
-} // end of DecodedOperandCapstone_t::hasMemoryDisplacement()
+} // end of DecodedOperandCapstoneX86_t::hasMemoryDisplacement()
 
-virtual_offset_t DecodedOperandCapstone_t::getMemoryDisplacement() const
+virtual_offset_t DecodedOperandCapstoneX86_t::getMemoryDisplacement() const
 {
 	if(!isMemory()) throw std::logic_error(string("Cannot ")+__FUNCTION__+"  of non-memory operand");
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
@@ -480,7 +480,7 @@ virtual_offset_t DecodedOperandCapstone_t::getMemoryDisplacement() const
 	return op.mem.disp;
 }
 
-bool DecodedOperandCapstone_t::isPcrel() const
+bool DecodedOperandCapstoneX86_t::isPcrel() const
 {
 	if(!isMemory())	return false;
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
@@ -490,7 +490,7 @@ bool DecodedOperandCapstone_t::isPcrel() const
 }
 
 /* in bytes */
-uint32_t DecodedOperandCapstone_t::getMemoryDisplacementEncodingSize() const
+uint32_t DecodedOperandCapstoneX86_t::getMemoryDisplacementEncodingSize() const
 {
 	if(!isMemory()) throw std::logic_error(string("Cannot ")+__FUNCTION__+"  of non-memory operand");
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
@@ -526,19 +526,19 @@ uint32_t DecodedOperandCapstone_t::getMemoryDisplacementEncodingSize() const
 	assert(0);
 }
 
-uint32_t DecodedOperandCapstone_t::getArgumentSizeInBytes() const
+uint32_t DecodedOperandCapstoneX86_t::getArgumentSizeInBytes() const
 {
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
         const auto &op = (the_insn->detail->x86.operands[op_num]);
 	return op.size;
 }
 
-uint32_t DecodedOperandCapstone_t::getArgumentSizeInBits() const
+uint32_t DecodedOperandCapstoneX86_t::getArgumentSizeInBits() const
 {
 	return getArgumentSizeInBytes()*8;
 }
 
-bool DecodedOperandCapstone_t::hasSegmentRegister() const
+bool DecodedOperandCapstoneX86_t::hasSegmentRegister() const
 {
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
         const auto &op = (the_insn->detail->x86.operands[op_num]);
@@ -546,7 +546,7 @@ bool DecodedOperandCapstone_t::hasSegmentRegister() const
 
 }
 
-uint32_t DecodedOperandCapstone_t::getSegmentRegister() const
+uint32_t DecodedOperandCapstoneX86_t::getSegmentRegister() const
 {
 	if(!isMemory()) throw std::logic_error(string("Cannot ")+__FUNCTION__+"  of operand without memory operand");
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
@@ -725,12 +725,12 @@ set<string> read_only_operand_mnemonics=
 
 
 
-bool DecodedOperandCapstone_t::isRead() const
+bool DecodedOperandCapstoneX86_t::isRead() const
 {
 	if(!isWritten())
 		return true;
 
-	const auto d=DecodedInstructionCapstone_t(my_insn);
+	const auto d=DecodedInstructionCapstoneX86_t(my_insn);
 	const auto d_mnemonic=d.getMnemonic();
 	const auto woom_it=write_only_operand_mnemonics.find(d_mnemonic);
 	const auto in_woom=(woom_it!=end(write_only_operand_mnemonics));
@@ -744,7 +744,7 @@ bool DecodedOperandCapstone_t::isRead() const
 	if(op_num!=0)
 		return true;
 
-	const auto d=DecodedInstructionCapstone_t(my_insn);
+	const auto d=DecodedInstructionCapstoneX86_t(my_insn);
 	if(d.isBranch())	
 		return true;	
 
@@ -763,9 +763,9 @@ bool DecodedOperandCapstone_t::isRead() const
 */
 }
 
-bool DecodedOperandCapstone_t::isWritten() const
+bool DecodedOperandCapstoneX86_t::isWritten() const
 {	
-	const auto d=DecodedInstructionCapstone_t(my_insn);
+	const auto d=DecodedInstructionCapstoneX86_t(my_insn);
 	const auto d_mnemonic=d.getMnemonic();
 
 	// special case check:  all operands are reads
@@ -802,7 +802,7 @@ bool DecodedOperandCapstone_t::isWritten() const
 /*
 	if(op_num!=0)
 		return false;
-	const auto d=DecodedInstructionCapstone_t(my_insn);
+	const auto d=DecodedInstructionCapstoneX86_t(my_insn);
 	if(d.isBranch())	
 		return false;	
 

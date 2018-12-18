@@ -1,7 +1,8 @@
-#ifndef libRIDB_decodedoperandcs_hpp
-#define libRIDB_decodedoperandcs_hpp
+#ifndef libRIDB_decodedoperand_dispatch_hpp
+#define libRIDB_decodedoperand_dispatch_hpp
 
-#include <memory>
+#include <core/decode_csx86.hpp>
+#include <core/operand_csx86.hpp>
 namespace libIRDB
 {
 
@@ -9,13 +10,13 @@ using namespace std;
 using namespace libIRDB;
 
 
-class DecodedOperandCapstone_t
+class DecodedOperandDispatcher_t
 {
 	public:
-		DecodedOperandCapstone_t() =delete;
-		//DecodedOperandCapstone_t& operator=(const DecodedOperandCapstone_t& copy);
-		//DecodedOperandCapstone_t(const DecodedOperandCapstone_t& copy);
-		virtual ~DecodedOperandCapstone_t();
+		DecodedOperandDispatcher_t() =delete;
+		DecodedOperandDispatcher_t& operator=(const DecodedOperandDispatcher_t& copy);
+		DecodedOperandDispatcher_t(const DecodedOperandDispatcher_t& copy);
+		virtual ~DecodedOperandDispatcher_t();
 
 		bool isConstant() const;
 		uint64_t getConstant() const;
@@ -26,7 +27,6 @@ class DecodedOperandCapstone_t
 		bool isFpuRegister() const;
 		bool isSseRegister() const;
 		bool isAvxRegister() const;
-		bool isZmmRegister() const;
 		bool isSpecialRegister() const;
 		bool isSegmentRegister() const;
 		uint32_t getRegNumber() const;
@@ -49,13 +49,11 @@ class DecodedOperandCapstone_t
 
 
 	private:
+		DecodedOperandDispatcher_t(const DecodedOperandCapstoneX86_t& in);
 
-		DecodedOperandCapstone_t( const shared_ptr<void> &my_insn, uint8_t op_num);
+		std::unique_ptr<DecodedOperandCapstoneX86_t> cs;
 
-		shared_ptr<void> my_insn;
-		uint8_t op_num;
-
-		friend class DecodedInstructionCapstone_t;
+		friend class DecodedInstructionDispatcher_t;
 
 };
 

@@ -9,7 +9,6 @@
 #include <string>
 #include "capstone/capstone.h"
 #include <fstream>
-//#include <elfio/elfio.hpp>
 #include <elf.h>
 #include <functional>
 
@@ -48,6 +47,7 @@ class CreateFunctions_t
 		csh cshandle;
 		ofstream outfile;
 		execlass_t file_class;
+		MachineType_t machine_type;
 		friend ostream& operator<<(ostream& os, const CreateFunctions_t::RangeSet_t& rs);
 	public:
 		CreateFunctions_t(const string &input_pgm, const string &output_annot, const bool p_verbose)
@@ -55,7 +55,8 @@ class CreateFunctions_t
 			verbose(p_verbose),
 			exeio(input_pgm),
 			cshandle(),
-			file_class(exeio.get_class())
+			file_class(exeio.get_class()),
+			machine_type(exeio.getMachineType())
 		{
 			outfile.open(output_annot.c_str(), ofstream::out);
 			if(!outfile.is_open())
@@ -73,8 +74,19 @@ class CreateFunctions_t
 				exit(1);
 			}
 
-			const auto cs_mode= file_class==ELF64 ? CS_MODE_64 : CS_MODE_32 ;
-			if (cs_open(CS_ARCH_X86, cs_mode , &cshandle) != CS_ERR_OK)
+			const auto cs_mode= 
+				machine_type==mtAarch64 ? CS_MODE_LITTLE_ENDIAN :
+				file_class==ELF64 ? CS_MODE_64 : 
+				file_class==ELF32 ? CS_MODE_32 : 
+				throw std::runtime_error("Cannot handle ELF class");
+
+			const auto my_cs_arch = 
+				machine_type == mtX86_64  ?  CS_ARCH_X86 : 
+				machine_type == mtI386    ?  CS_ARCH_X86 :
+				machine_type == mtAarch64 ?  CS_ARCH_ARM64 : 
+				throw std::runtime_error("Cannot handle architecture");
+
+			if (cs_open(my_cs_arch, cs_mode , &cshandle) != CS_ERR_OK)
 			{
 				cerr<<"Cannot initialize capstone"<<endl;
 				exit(1);
@@ -356,26 +368,57 @@ class CreateFunctions_t
 			if(verbose)
 				cout<<"Found plt function range is "<<hex<<startAddr<<"-"<<endAddr<<endl;
 
-			auto pltRange_it=find_if(ALLOF(sccs), [&](const RangeSet_t& s) 
+			const auto pltRange_it=find_if(ALLOF(sccs), [&](const RangeSet_t& s) 
 				{ 
 					return find_if(ALLOF(s), [&](const Range_t& r) { return r.contains(startAddr); }) != s.end(); 
 				});
-			assert(pltRange_it!=sccs.end());
-			sccs.erase(pltRange_it);	// invalidates all iterators
+			// erase startAddr if found.
+			if(pltRange_it!=sccs.end())
+				sccs.erase(pltRange_it);	// invalidates all iterators
 
-			const auto plt_skip=16;
-			const auto plt_header_size=12;
-			const auto plt_entry_size=16;
-			const auto plt_entry_size_first_part=6;
-
-			addRange(startAddr,plt_header_size);
 			auto dynsymEntryIndex=0;
-			for(auto i=startAddr+plt_skip; i<endAddr; i+=plt_skip) 
+
+			const auto handle_x86_plt=[&]()
 			{
-				addRange(i,plt_entry_size_first_part);
-				addRange(i+6,plt_entry_size-plt_entry_size_first_part);
-				addName(i,dynsymEntryIndex++);
-			}
+				const auto plt_skip=16;
+				const auto plt_header_size=12;
+				const auto plt_entry_size=16;
+				const auto plt_entry_size_first_part=6;
+
+				addRange(startAddr,plt_header_size);
+				for(auto i=startAddr+plt_skip; i<endAddr; i+=plt_skip) 
+				{
+					addRange(i,plt_entry_size_first_part);
+					addRange(i+6,plt_entry_size-plt_entry_size_first_part);
+					addName(i,dynsymEntryIndex++);
+				}
+			};
+			const auto handle_arm_plt=[&]()
+			{
+				const auto plt_entry_size=16;
+				const auto plt_header_size=8*4;
+
+				addRange(startAddr,plt_header_size);
+				for(auto i=startAddr+plt_header_size; i<endAddr; i+=plt_entry_size) 
+				{
+					addRange(i,plt_entry_size);
+					addName(i,dynsymEntryIndex++);
+				}
+			};
+
+			switch(machine_type)
+			{
+				case mtX86_64:
+				case mtI386: 
+					handle_x86_plt();
+					break;
+				case mtAarch64:
+					handle_arm_plt();
+					break;
+				default:
+					assert(0);
+
+			};
 			cout<<"#ATTRIBUTE plt_entries="<<dec<<dynsymEntryIndex<<endl;
 
 
