@@ -151,6 +151,16 @@ class ZiprImpl_t : public Zipr_t
 		}
 
 
+                virtual Zipr_SDK::MemorySpace_t *GetMemorySpace() { return &memory_space; }
+		virtual Zipr_SDK::DollopManager_t *GetDollopManager() { return &m_dollop_mgr; }
+                virtual ELFIO::elfio *GetELFIO() { return elfiop; }
+                virtual libIRDB::FileIR_t *GetFileIR() { return m_firp; }
+                virtual Zipr_SDK::InstructionLocationMap_t *GetLocationMap() { return &final_insn_locations; }
+		virtual Zipr_SDK::PlacementQueue_t* GetPlacementQueue() { return &placement_queue; }  
+		virtual Zipr_SDK::RangeAddress_t PlaceUnplacedScoops(Zipr_SDK::RangeAddress_t max);
+		Stats_t* GetStats() { return m_stats; }
+
+
 	private:
 
 		void Init();
@@ -194,6 +204,7 @@ class ZiprImpl_t : public Zipr_t
 
 
 
+#if 0
 		/*
 		 * AddPinnedInstructions()
 		 *
@@ -302,6 +313,7 @@ class ZiprImpl_t : public Zipr_t
 		 * Creates all the dollops starting with
 		 * those pointed to by the five byte pins.
 		 */
+#endif
 		void CreateDollops();
 		void PlaceDollops();
 		void WriteDollops();
@@ -431,23 +443,27 @@ class ZiprImpl_t : public Zipr_t
 		void InsertNewSegmentIntoExe(std::string old_file, std::string new_file, RangeAddress_t sec_start);
 		std::string AddCallbacksToNewSegment(const std::string& tmpname, RangeAddress_t end_of_new_space);
 		RangeAddress_t FindCallbackAddress(RangeAddress_t end_of_new_space,RangeAddress_t start_addr, const std::string &callback);
+
+#if 0
 		libIRDB::Instruction_t *FindPinnedInsnAtAddr(RangeAddress_t addr);
-		bool ShouldPinImmediately(libIRDB::Instruction_t *upinsn);
-		bool IsPinFreeZone(RangeAddress_t addr, int size);
+
+// 		bool ShouldPinImmediately(libIRDB::Instruction_t *upinsn);
+// 		bool IsPinFreeZone(RangeAddress_t addr, int size);
 
 		// routines to deal with a "68 sled"
-		int Calc68SledSize(RangeAddress_t addr, size_t sled_overhead=6);
-		RangeAddress_t Do68Sled(RangeAddress_t addr);
-		void Update68Sled(Sled_t, Sled_t &);
-		libIRDB::Instruction_t* Emit68Sled(Sled_t sled);
-		libIRDB::Instruction_t* Emit68Sled(RangeAddress_t addr, Sled_t sled, libIRDB::Instruction_t* next_sled);
+// 		int Calc68SledSize(RangeAddress_t addr, size_t sled_overhead=6);
+// 		RangeAddress_t Do68Sled(RangeAddress_t addr);
+// 		void Update68Sled(Sled_t, Sled_t &);
+// 		libIRDB::Instruction_t* Emit68Sled(Sled_t sled);
+// 		libIRDB::Instruction_t* Emit68Sled(RangeAddress_t addr, Sled_t sled, libIRDB::Instruction_t* next_sled);
 		/*
 		 * The goal here is to simply clear out chain entries
 		 * that may be in the way. This will not clear out 
 		 * previously added PUSHs.
 		 */
-		void Clear68SledArea(Sled_t sled);
-		void InsertJumpPoints68SledArea(Sled_t &sled);
+//		void Clear68SledArea(Sled_t sled);
+//		void InsertJumpPoints68SledArea(Sled_t &sled);
+#endif
 		// support
 		RangeAddress_t extend_section(ELFIO::section *sec,ELFIO::section *next_sec);
 
@@ -455,19 +471,7 @@ class ZiprImpl_t : public Zipr_t
 		void dump_instruction_map();
  		virtual void RelayoutEhInfo();
 
-	public: 
 
-                virtual Zipr_SDK::MemorySpace_t *GetMemorySpace() { return &memory_space; }
-		virtual Zipr_SDK::DollopManager_t *GetDollopManager() { return &m_dollop_mgr; }
-                virtual ELFIO::elfio *GetELFIO() { return elfiop; }
-                virtual libIRDB::FileIR_t *GetFileIR() { return m_firp; }
-                virtual Zipr_SDK::InstructionLocationMap_t *GetLocationMap() { return &final_insn_locations; }
-		virtual Zipr_SDK::PlacementQueue_t* GetPlacementQueue() { return &placement_queue; }  
-		virtual Zipr_SDK::RangeAddress_t PlaceUnplacedScoops(Zipr_SDK::RangeAddress_t max);
-		Stats_t* GetStats() { return m_stats; }
-
-
-	private:
 		Stats_t *m_stats;
 
 		// data for the stuff we're rewriting.
@@ -482,16 +486,9 @@ class ZiprImpl_t : public Zipr_t
 
 
 		// structures necessary for ZIPR algorithm.
-		std::set<UnresolvedUnpinned_t> unresolved_unpinned_addrs;
-		std::set<UnresolvedPinned_t,pin_sorter_t> unresolved_pinned_addrs; 
+		// std::set<UnresolvedUnpinned_t> unresolved_unpinned_addrs;
+		// std::set<UnresolvedPinned_t,pin_sorter_t> unresolved_pinned_addrs; 
 		std::multimap<UnresolvedUnpinned_t,Patch_t> patch_list;
-
-		// structures to pinned things.
-		std::set<UnresolvedPinned_t> two_byte_pins; 
-		std::map<UnresolvedPinned_t,RangeAddress_t> five_byte_pins; 
-		std::set<Sled_t> m_sleds;
-		std::map<RangeAddress_t,std::pair<libIRDB::Instruction_t*, size_t> > m_InsnSizeAtAddrs; 
-		std::map<RangeAddress_t, bool> m_AddrInSled;
 
 		// a manager for all dollops
 		ZiprDollopManager_t m_dollop_mgr;
