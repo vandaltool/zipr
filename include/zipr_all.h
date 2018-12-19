@@ -59,7 +59,7 @@ using namespace Zipr_SDK;
 #include <zipr_dollop_man.h>
 #include <zipr_utils.h>
 #include <arch/archbase.hpp>
-#include <pinner/pinner_base.h>
+#include <pinner/pinner_base.hpp>
 #include <zipr_impl.h>
 #include <zipr_optimizations.h>
 #include <zipr_stats.h>

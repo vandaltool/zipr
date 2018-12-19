@@ -1,11 +1,11 @@
 #ifndef ZIPR_PINNER
 #define ZIPR_PINNER
 
-class ZiprPinner_t 
+class ZiprPinnerBase_t 
 {
 	public:
 		virtual void doPinning()=0;
-		static unique_ptr<ZiprPinner_t> factory(Zipr_SDK::Zipr_t* parent);
+		static unique_ptr<ZiprPinnerBase_t> factory(Zipr_SDK::Zipr_t* parent);
 };
 
 

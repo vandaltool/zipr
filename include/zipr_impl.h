@@ -36,9 +36,26 @@
 #include <memory>
 class Stats_t;
 
+class pin_sorter_t 
+{
+	public:
+		bool operator() (const UnresolvedPinned_t& p1, const UnresolvedPinned_t& p2)
+		{
+			assert(p1.GetInstruction());
+			assert(p2.GetInstruction());
+			assert(p1.GetInstruction()->GetIndirectBranchTargetAddress()
+			       && p1.GetInstruction()->GetIndirectBranchTargetAddress()->GetVirtualOffset()!=0);
+			assert(p2.GetInstruction()->GetIndirectBranchTargetAddress()
+			       && p2.GetInstruction()->GetIndirectBranchTargetAddress()->GetVirtualOffset()!=0);
+
+			return p1.GetInstruction()->GetIndirectBranchTargetAddress()->GetVirtualOffset() < 
+				p2.GetInstruction()->GetIndirectBranchTargetAddress()->GetVirtualOffset() ;
+		}
+};
 
 class ZiprImpl_t : public Zipr_t
 {
+
 
 	public:
 		ZiprImpl_t(int argc, char **argv) :
@@ -111,6 +128,29 @@ class ZiprImpl_t : public Zipr_t
 		 */
 		void AskPluginsAboutPlopping();
 		bool AskPluginsAboutPlopping(libIRDB::Instruction_t *);
+
+		void RecordNewPatch(const std::pair<RangeAddress_t, UnresolvedUnpinnedPatch_t>& p)
+		{
+				m_PatchAtAddrs.insert(p);
+		}
+		UnresolvedUnpinnedPatch_t FindPatch(const RangeAddress_t r) const
+		{
+			return m_PatchAtAddrs.at(r);
+		}
+		void RemovePatch(const RangeAddress_t r)
+		{
+			auto patch_it = m_PatchAtAddrs.find(r);
+                        assert(patch_it != m_PatchAtAddrs.end());
+                        m_PatchAtAddrs.erase(patch_it);
+		}
+		libIRDB::Instruction_t *FindPatchTargetAtAddr(RangeAddress_t addr);
+		void PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr);
+		void AddPatch(const UnresolvedUnpinned_t& uu, const Patch_t& thepatch)
+		{
+			patch_list.insert(pair<const UnresolvedUnpinned_t,Patch_t>(uu,thepatch));
+		}
+
+
 	private:
 
 		void Init();
@@ -342,6 +382,8 @@ class ZiprImpl_t : public Zipr_t
 		void RecordPinnedInsnAddrs();
 
 
+		void PerformPinning();
+
 		// zipr has some internal assumptions that multiple fallthroughs to the same instruction
 		// are problematic.  this function adjusts the IR such that no multiple fallthroughs
 		// exist by adding direct jump instructions where necessary to eliminate multiple fallthroughs.
@@ -369,7 +411,6 @@ class ZiprImpl_t : public Zipr_t
 		size_t DetermineWorstCaseInsnSize(libIRDB::Instruction_t*, bool account_for_trampoline);
 
 		// patching
-		void PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr);
 		void ApplyPatches(libIRDB::Instruction_t* insn);
 		void PatchInstruction(RangeAddress_t addr, libIRDB::Instruction_t* insn);
 		void RewritePCRelOffset(RangeAddress_t from_addr,RangeAddress_t to_addr, int insn_length, int offset_pos);
@@ -391,7 +432,6 @@ class ZiprImpl_t : public Zipr_t
 		std::string AddCallbacksToNewSegment(const std::string& tmpname, RangeAddress_t end_of_new_space);
 		RangeAddress_t FindCallbackAddress(RangeAddress_t end_of_new_space,RangeAddress_t start_addr, const std::string &callback);
 		libIRDB::Instruction_t *FindPinnedInsnAtAddr(RangeAddress_t addr);
-		libIRDB::Instruction_t *FindPatchTargetAtAddr(RangeAddress_t addr);
 		bool ShouldPinImmediately(libIRDB::Instruction_t *upinsn);
 		bool IsPinFreeZone(RangeAddress_t addr, int size);
 
@@ -413,6 +453,7 @@ class ZiprImpl_t : public Zipr_t
 
 		void dump_scoop_map();
 		void dump_instruction_map();
+ 		virtual void RelayoutEhInfo();
 
 	public: 
 
@@ -423,8 +464,7 @@ class ZiprImpl_t : public Zipr_t
                 virtual Zipr_SDK::InstructionLocationMap_t *GetLocationMap() { return &final_insn_locations; }
 		virtual Zipr_SDK::PlacementQueue_t* GetPlacementQueue() { return &placement_queue; }  
 		virtual Zipr_SDK::RangeAddress_t PlaceUnplacedScoops(Zipr_SDK::RangeAddress_t max);
- 		virtual void RelayoutEhInfo();
-
+		Stats_t* GetStats() { return m_stats; }
 
 
 	private:
@@ -439,36 +479,19 @@ class ZiprImpl_t : public Zipr_t
 
 		bool m_error;
 
-		class pin_sorter_t 
-		{
-			public:
-				bool operator() (const UnresolvedPinned_t& p1, const UnresolvedPinned_t& p2)
-				{
-					assert(p1.GetInstruction());
-					assert(p2.GetInstruction());
-					assert(p1.GetInstruction()->GetIndirectBranchTargetAddress()
-					       && p1.GetInstruction()->GetIndirectBranchTargetAddress()->GetVirtualOffset()!=0);
-					assert(p2.GetInstruction()->GetIndirectBranchTargetAddress()
-					       && p2.GetInstruction()->GetIndirectBranchTargetAddress()->GetVirtualOffset()!=0);
 
-					return p1.GetInstruction()->GetIndirectBranchTargetAddress()->GetVirtualOffset() < 
-						p2.GetInstruction()->GetIndirectBranchTargetAddress()->GetVirtualOffset() ;
-				}
-		};
-
-		std::set<Sled_t> m_sleds;
 
 		// structures necessary for ZIPR algorithm.
 		std::set<UnresolvedUnpinned_t> unresolved_unpinned_addrs;
 		std::set<UnresolvedPinned_t,pin_sorter_t> unresolved_pinned_addrs; 
 		std::multimap<UnresolvedUnpinned_t,Patch_t> patch_list;
 
-		// map of where bytes will actually go.
-//		std::map<RangeAddress_t,char> byte_map;
-
 		// structures to pinned things.
 		std::set<UnresolvedPinned_t> two_byte_pins; 
 		std::map<UnresolvedPinned_t,RangeAddress_t> five_byte_pins; 
+		std::set<Sled_t> m_sleds;
+		std::map<RangeAddress_t,std::pair<libIRDB::Instruction_t*, size_t> > m_InsnSizeAtAddrs; 
+		std::map<RangeAddress_t, bool> m_AddrInSled;
 
 		// a manager for all dollops
 		ZiprDollopManager_t m_dollop_mgr;
@@ -476,8 +499,6 @@ class ZiprImpl_t : public Zipr_t
 		// final mapping of instruction to address.
 		// std::map<libIRDB::Instruction_t*,RangeAddress_t> 
 		Zipr_SDK::InstructionLocationMap_t final_insn_locations; 
-		std::map<RangeAddress_t,std::pair<libIRDB::Instruction_t*, size_t> > m_InsnSizeAtAddrs; 
-		std::map<RangeAddress_t, bool> m_AddrInSled;
 		std::map<RangeAddress_t,UnresolvedUnpinnedPatch_t> m_PatchAtAddrs; 
 
 		// unpatched callbacks
@@ -505,7 +526,7 @@ class ZiprImpl_t : public Zipr_t
 		ZiprPluginManager_t plugman;
 
 		std::map<libIRDB::Instruction_t*,
-		         std::unique_ptr<std::list<DLFunctionHandle_t>>> plopping_plugins;
+		std::unique_ptr<std::list<DLFunctionHandle_t>>> plopping_plugins;
 		
 		// Options
 		ZiprOptions_t m_zipr_options;

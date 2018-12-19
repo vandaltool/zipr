@@ -1,10 +1,15 @@
-#ifndef ZIPR_PINNER
-#define ZIPR_PINNER
+#ifndef ZIPR_PINNER_ARM64
+#define ZIPR_PINNER_ARM64
 
-class ZiprPinner_t 
+class ZiprPinnerARM64_t  : public ZiprPinnerBase_t
 {
 	public:
-		virtual void doPinning();
+                ZiprPinnerARM64_t(Zipr_SDK::Zipr_t* p_parent);
+                virtual void doPinning() override;
+
+        private:
+                Zipr_SDK::Zipr_t* m_parent;
+
 };
 
 
