@@ -84,9 +84,9 @@ template < typename T > std::string to_string( const T& n )
 
 void ZiprImpl_t::Init()
 {
+
 	bss_needed=0;
 	use_stratafier_mode=false;
-
 	ostream *error = &cout, *warn = NULL;
 
 	m_zipr_options.AddNamespace(new ZiprOptionsNamespace_t("global"));
@@ -125,6 +125,8 @@ void ZiprImpl_t::Init()
 		}
 	}
 	plugman = ZiprPluginManager_t(this, &m_zipr_options);
+
+	archhelper=ZiprArchitectureHelperBase_t::factory(m_firp);
 
 	/*
 	 * Parse again now that the plugins registered something.
@@ -4522,34 +4524,33 @@ void  ZiprImpl_t::FixTwoByteWithPrefix()
 
 void  ZiprImpl_t::FixMultipleFallthroughs()
 {
-	int count=0;
-	map<Instruction_t*, InstructionSet_t> fallthrough_from;
-	for_each(m_firp->GetInstructions().begin(), m_firp->GetInstructions().end(), 
-		[&fallthrough_from](Instruction_t* insn)
+	auto count=0;
+	auto fallthrough_from=map<Instruction_t*, InstructionSet_t>();
+	
+	for(auto & insn : m_firp->GetInstructions())
 	{
-		Instruction_t* ft=insn->GetFallthrough();
+		auto ft=insn->GetFallthrough();
 		if(ft)
 			fallthrough_from[ft].insert(insn);
-	});
+	};
 
-	for_each(fallthrough_from.begin(), fallthrough_from.end(), [&](const pair<Instruction_t*, InstructionSet_t>& p)
+	for(auto &p : fallthrough_from)
 	{
-		Instruction_t* ft=p.first;
+		auto ft=p.first;
 		if(p.second.size()>1)
 		{
 			// skip the first one, because something can fallthrough, just not everything.
 			for_each(next(p.second.begin()), p.second.end(), [&](Instruction_t* from)
 			{
 			
-				Instruction_t* newjmp=addNewAssembly(m_firp, NULL, "jmp 0");
+				auto newjmp=archhelper->createNewJumpInstruction(m_firp,NULL);
 				count++;
-
 				newjmp->SetTarget(ft);
 				from->SetFallthrough(newjmp);
 
 			});
 		};
-	});
+	}
 
 	// after we've inserted all the jumps, assemble them.
 	m_firp->AssembleRegistry();

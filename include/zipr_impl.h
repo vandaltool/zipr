@@ -32,6 +32,8 @@
 #define zipr_impl_h
 
 #include <climits>
+#include <arch/archbase.hpp>
+#include <memory>
 class Stats_t;
 
 
@@ -512,6 +514,7 @@ class ZiprImpl_t : public Zipr_t
 		ZiprIntegerOption_t m_variant, m_architecture, m_seed;
 		ZiprStringOption_t m_dollop_map_filename;
 		ZiprIntegerOption_t m_paddable_minimum_distance;
+		std::unique_ptr<ZiprArchitectureHelperBase_t> archhelper;
 
 		std::list<DollopEntry_t *> m_des_to_replop;
 

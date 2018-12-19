@@ -37,6 +37,7 @@
 #include <list>
 #include <map>
 #include <libIRDB-core.hpp>
+#include <Rewrite_Utility.hpp>
 #include <algorithm>
 
 #include "elfio/elfio.hpp"
@@ -57,11 +58,13 @@ using namespace Zipr_SDK;
 #include <plugin_man.h>
 #include <zipr_dollop_man.h>
 #include <zipr_utils.h>
+#include <arch/archbase.hpp>
 #include <zipr_impl.h>
 #include <zipr_optimizations.h>
 #include <zipr_stats.h>
 #include <elfwrite.h>
 #include <ehwrite.h>
+
 };
 
 #endif
