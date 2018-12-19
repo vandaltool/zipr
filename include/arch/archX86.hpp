@@ -9,5 +9,9 @@ class ZiprArchitectureHelperX86_t  : public ZiprArchitectureHelperBase_t
 		{
 			return IRDBUtility::addNewAssembly(p_firp, p_existing, "jmp 0");
 		}
+		virtual libIRDB::Instruction_t* createNewHaltInstruction(libIRDB::FileIR_t *p_firp, libIRDB::Instruction_t* p_existing) override
+		{
+			return IRDBUtility::addNewAssembly(p_firp, p_existing, "hlt");
+		}
 };
 #endif
