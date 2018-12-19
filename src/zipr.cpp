@@ -202,48 +202,8 @@ ZiprOptionsNamespace_t *ZiprImpl_t::RegisterOptions(ZiprOptionsNamespace_t *glob
 	return zipr_namespace;
 }
 
-void ZiprImpl_t::CreateBinaryFile()
+void  ZiprImpl_t::PerformPinning()
 {
-	m_stats = new Stats_t();
-
-
-	/* load the elfiop for the orig. binary */
-	lo = new pqxx::largeobject(m_firp->GetFile()->GetELFOID());
-	lo->to_file(m_pqxx_interface.GetTransaction(),string(m_output_filename).c_str());
-
-	/* use ELFIO to load the sections */
-	assert(elfiop);
-	elfiop->load(m_output_filename);
-	ELFIO::dump::section_headers(cout,*elfiop);
-
-	if (m_architecture == 0)
-	{
-		if (m_verbose)
-			cout << "Doing architecture autodetection." << endl;
-		m_architecture.SetValue(libIRDB::FileIR_t::GetArchitectureBitWidth());
-		if (m_verbose)
-			cout << "Autodetected to " << (int)m_architecture << endl;
-	}
-
-	/*
-	 * Take the seed and initialize the random number
-	 * generator.
-	 */
-	std::srand((unsigned)m_seed);
-	if (m_verbose)
-		cout << "Seeded the random number generator with " << m_seed << "." << endl;
-
-
-	FixTwoByteWithPrefix();	// have to do this before multi-fallthrough in case it creaates some.
-	FixNoFallthroughs();	// have to do this before multi-fallthrough in case it creaates some.
-	FixMultipleFallthroughs();
-
-
-	// create ranges, including extra range that's def. big enough.
-	FindFreeRanges(m_output_filename);
-
-	plugman.PinningBegin();
-
 	// Initial creation of the set of pinned instructions.
 	AddPinnedInstructions();
 
@@ -287,6 +247,52 @@ void ZiprImpl_t::CreateBinaryFile()
 
 	// Convert all 5-byte pins into full fragments
 	OptimizePinnedInstructions();
+}
+
+void ZiprImpl_t::CreateBinaryFile()
+{
+	m_stats = new Stats_t();
+
+
+	/* load the elfiop for the orig. binary */
+	lo = new pqxx::largeobject(m_firp->GetFile()->GetELFOID());
+	lo->to_file(m_pqxx_interface.GetTransaction(),string(m_output_filename).c_str());
+
+	/* use ELFIO to load the sections */
+	assert(elfiop);
+	elfiop->load(m_output_filename);
+	ELFIO::dump::section_headers(cout,*elfiop);
+
+	if (m_architecture == 0)
+	{
+		if (m_verbose)
+			cout << "Doing architecture autodetection." << endl;
+		m_architecture.SetValue(libIRDB::FileIR_t::GetArchitectureBitWidth());
+		if (m_verbose)
+			cout << "Autodetected to " << (int)m_architecture << endl;
+	}
+
+	/*
+	 * Take the seed and initialize the random number
+	 * generator.
+	 */
+	std::srand((unsigned)m_seed);
+	if (m_verbose)
+		cout << "Seeded the random number generator with " << m_seed << "." << endl;
+
+
+	FixTwoByteWithPrefix();	// have to do this before multi-fallthrough in case it creaates some.
+	FixNoFallthroughs();	// have to do this before multi-fallthrough in case it creaates some.
+	FixMultipleFallthroughs();
+
+
+	// create ranges, including extra range that's def. big enough.
+	FindFreeRanges(m_output_filename);
+
+	plugman.PinningBegin();
+
+	// allocate and execute a pinning algorithm.
+	ZiprPinnerBase_t::factory(this)->doPinning();
 
 	// tell plugins we are done pinning.
 	plugman.PinningEnd();
@@ -299,19 +305,12 @@ void ZiprImpl_t::CreateBinaryFile()
 	AskPluginsAboutPlopping();
 
 	CreateDollops();
-
 	RecalculateDollopSizes();
-
 	plugman.DollopBegin();
-
 	PlaceDollops();
-
 	plugman.DollopEnd();
-
 	WriteDollops();
-
 	ReplopDollopEntriesWithTargets();
-
 	UpdatePins();
 
 	// tell plugins we are done plopping and about to link callbacks.
@@ -2816,7 +2815,7 @@ void ZiprImpl_t::PlaceDollops()
 				{
 
 					string patch_jump_string;
-					Instruction_t *patch = addNewAssembly(m_firp, NULL, "jmp qword 0");
+					Instruction_t *patch = archhelper->createNewJumpInstruction(m_firp, NULL);
 					DollopEntry_t *patch_de = new DollopEntry_t(patch, to_place);
 
 					patch_jump_string.resize(5);
@@ -4452,8 +4451,8 @@ void ZiprImpl_t::UpdateScoops()
 
 void  ZiprImpl_t::FixNoFallthroughs()
 {
-        auto hlt=addNewAssembly(m_firp, NULL, "hlt"); 
-        auto jmp=addNewAssembly(m_firp, NULL, "jmp 0"); 
+        auto hlt=archhelper->createNewHaltInstruction(m_firp, NULL);
+        auto jmp=archhelper->createNewJumpInstruction(m_firp, NULL);
 
 	hlt->SetFallthrough(jmp);
 	jmp->SetTarget(hlt);
@@ -4490,6 +4489,7 @@ void  ZiprImpl_t::FixTwoByteWithPrefix()
 		if(d.isReturn()) continue;	// skip returns
 		if(d.getOperands().size()!=1) continue;	// skip branches that have no operands or more than one
 		if(!d.getOperand(0).isConstant()) continue;	// skip anything where the operand isn't a constant
+		if(d.getPrefixCount()==0) continue;	// prevents arm instructions from being xformed.
 		
 		auto done=false;
 		while (!done)
