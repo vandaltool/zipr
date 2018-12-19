@@ -130,9 +130,6 @@ void PopulateCFG::set_target
 	
 	// check for branches with targets 
 	if(
-		//(disasm->Instruction.BranchType!=0) &&			// it is a branch 
-		//(disasm->Instruction.BranchType!=RetType) && 		// and not a return
-		//(disasm->Argument1.ArgType & CONSTANT_TYPE)!=0		// and has a constant argument type 1
 		(disasm->isBranch()) &&			// it is a branch 
 		(!disasm->isReturn()) && 		// and not a return
 		(disasm->getOperand(0).isConstant())		// and has a constant argument type 1
