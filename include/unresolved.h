@@ -38,6 +38,7 @@ enum UnresolvedType_t
 	CondJump,
 	UncondJump_rel8,
 	UncondJump_rel32,
+	UncondJump_rel26,
 	Call,
 	Data32,
 	Data64

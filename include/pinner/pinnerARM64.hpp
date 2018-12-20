@@ -8,7 +8,13 @@ class ZiprPinnerARM64_t  : public ZiprPinnerBase_t
                 virtual void doPinning() override;
 
         private:
-                Zipr_SDK::Zipr_t* m_parent;
+		zipr::ZiprImpl_t* m_parent;
+		libIRDB::FileIR_t* m_firp;
+		Zipr_SDK::MemorySpace_t &memory_space;
+                Zipr_SDK::DollopManager_t &m_dollop_mgr;
+		Zipr_SDK::PlacementQueue_t &placement_queue;
+
+
 
 };
 

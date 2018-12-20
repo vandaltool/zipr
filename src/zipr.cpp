@@ -55,6 +55,176 @@ using namespace zipr;
 using namespace ELFIO;
 using namespace IRDBUtility;
 
+class ZiprPatcherBase_t
+{
+	public:
+		static unique_ptr<ZiprPatcherBase_t> factory(Zipr_SDK::Zipr_t* p_parent);
+		virtual void ApplyNopToPatch(RangeAddress_t addr)=0;
+		virtual void ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)=0;
+		virtual void PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)=0;
+};
+
+
+class ZiprPatcherARM64_t : public ZiprPatcherBase_t
+{
+	public:
+	ZiprPatcherARM64_t(Zipr_SDK::Zipr_t* p_parent){ assert(0); }
+	void ApplyNopToPatch(RangeAddress_t addr){ assert(0); }
+	void ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr){ assert(0); }
+	void PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr){ assert(0); }
+};
+class ZiprPatcherX86_t : public ZiprPatcherBase_t
+{
+	ZiprImpl_t* m_parent;
+	FileIR_t* m_firp;
+	Zipr_SDK::MemorySpace_t &memory_space;
+
+	public:
+	ZiprPatcherX86_t(Zipr_SDK::Zipr_t* p_parent) :
+	        m_parent(dynamic_cast<zipr::ZiprImpl_t*>(p_parent)),     // upcast to ZiprImpl
+		m_firp(p_parent->GetFileIR()),
+        	memory_space(*p_parent->GetMemorySpace())
+	{}
+
+void RewritePCRelOffset(RangeAddress_t from_addr,RangeAddress_t to_addr, int insn_length, int offset_pos)
+{
+	int new_offset=((unsigned int)to_addr)-((unsigned int)from_addr)-((unsigned int)insn_length);
+
+	memory_space[from_addr+offset_pos+0]=(new_offset>>0)&0xff;
+	memory_space[from_addr+offset_pos+1]=(new_offset>>8)&0xff;
+	memory_space[from_addr+offset_pos+2]=(new_offset>>16)&0xff;
+	memory_space[from_addr+offset_pos+3]=(new_offset>>24)&0xff;
+}
+
+void ApplyNopToPatch(RangeAddress_t addr)
+{
+	/*
+	 * TODO: Add assertion that this is really a patch.
+	 */
+
+	/*
+	 * 0F 1F 44 00 00H
+	 */
+	memory_space[addr] = (unsigned char)0x0F;
+	memory_space[addr+1] = (unsigned char)0x1F;
+	memory_space[addr+2] = (unsigned char)0x44;
+	memory_space[addr+3] = (unsigned char)0x00;
+	memory_space[addr+4] = (unsigned char)0x00;
+}
+
+void ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)
+{
+	unsigned char insn_first_byte=memory_space[from_addr];
+	unsigned char insn_second_byte=memory_space[from_addr+1];
+
+	switch(insn_first_byte)
+	{
+		case (unsigned char)0xF: // two byte escape
+		{
+			assert( insn_second_byte==(unsigned char)0x80 ||	// should be a JCC 
+				insn_second_byte==(unsigned char)0x81 ||
+				insn_second_byte==(unsigned char)0x82 ||
+				insn_second_byte==(unsigned char)0x83 ||
+				insn_second_byte==(unsigned char)0x84 ||
+				insn_second_byte==(unsigned char)0x85 ||
+				insn_second_byte==(unsigned char)0x86 ||
+				insn_second_byte==(unsigned char)0x87 ||
+				insn_second_byte==(unsigned char)0x88 ||
+				insn_second_byte==(unsigned char)0x89 ||
+				insn_second_byte==(unsigned char)0x8a ||
+				insn_second_byte==(unsigned char)0x8b ||
+				insn_second_byte==(unsigned char)0x8c ||
+				insn_second_byte==(unsigned char)0x8d ||
+				insn_second_byte==(unsigned char)0x8e ||
+				insn_second_byte==(unsigned char)0x8f );
+
+			RewritePCRelOffset(from_addr,to_addr,6,2);
+			break;
+		}
+
+		case (unsigned char)0xe8:	// call
+		case (unsigned char)0xe9:	// jmp
+		{
+			RewritePCRelOffset(from_addr,to_addr,5,1);
+			break;
+		}
+
+		case (unsigned char)0xf0: // lock
+		case (unsigned char)0xf2: // rep/repe
+		case (unsigned char)0xf3: // repne
+		case (unsigned char)0x2e: // cs override
+		case (unsigned char)0x36: // ss override
+		case (unsigned char)0x3e: // ds override
+		case (unsigned char)0x26: // es override
+		case (unsigned char)0x64: // fs override
+		case (unsigned char)0x65: // gs override
+		case (unsigned char)0x66: // operand size override
+		case (unsigned char)0x67: // address size override
+		{
+			cout << "found patch for instruction with prefix.  prefix is: "<<hex<<insn_first_byte<<".  Recursing at "<<from_addr+1<<dec<<endl;
+			// recurse at addr+1 if we find a prefix byte has been plopped.
+			return this->ApplyPatch(from_addr+1, to_addr);
+		}
+		default:
+		{
+			if(m_firp->GetArchitectureBitWidth()==64) /* 64-bit x86 machine  assumed */
+			{
+				/* check for REX prefix */
+				if((unsigned char)0x40 <= insn_first_byte  && insn_first_byte <= (unsigned char)0x4f)
+				{
+					cout << "found patch for instruction with prefix.  prefix is: "<<hex<<insn_first_byte<<".  Recursing at "<<from_addr+1<<dec<<endl;
+					// recurse at addr+1 if we find a prefix byte has been plopped.
+					return this->ApplyPatch(from_addr+1, to_addr);
+				}
+			}
+			std::cerr << "insn_first_byte: 0x" << hex << (int)insn_first_byte << dec << std::endl;
+			assert(0);
+		}
+	}
+}
+
+void PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)
+{
+	uintptr_t off=to_addr-at_addr-2;
+
+	assert(!memory_space.IsByteFree(at_addr));
+	
+	switch(memory_space[at_addr])
+	{
+		case (char)0xe9:	/* 5byte jump */
+		{
+			RewritePCRelOffset(at_addr,to_addr,5,1);
+			break;
+		}
+		case (char)0xeb:	/* 2byte jump */
+		{
+			assert(off==(uintptr_t)(char)off);
+
+			assert(!memory_space.IsByteFree(at_addr+1));
+			memory_space[at_addr+1]=(char)off;
+			break;
+		}
+		default:
+		{
+			assert(false);
+		}
+	}
+}
+
+
+};
+
+unique_ptr<ZiprPatcherBase_t> ZiprPatcherBase_t::factory(Zipr_SDK::Zipr_t* p_parent)
+{
+	auto l_firp=p_parent->GetFileIR();
+        auto ret= l_firp->GetArchitecture()->getMachineType() == admtX86_64   ?  (ZiprPatcherBase_t*)new ZiprPatcherX86_t  (p_parent) :
+                  l_firp->GetArchitecture()->getMachineType() == admtI386     ?  (ZiprPatcherBase_t*)new ZiprPatcherX86_t  (p_parent) :
+                  l_firp->GetArchitecture()->getMachineType() == admtAarch64  ?  (ZiprPatcherBase_t*)new ZiprPatcherARM64_t(p_parent) :
+                  throw domain_error("Cannot init architecture");
+
+        return unique_ptr<ZiprPatcherBase_t>(ret);
+}
+
 
 inline uintptr_t page_round_up(uintptr_t x)
 {
@@ -1446,6 +1616,7 @@ void ZiprImpl_t::PlaceDollops()
 					Instruction_t *patch = archhelper->createNewJumpInstruction(m_firp, NULL);
 					DollopEntry_t *patch_de = new DollopEntry_t(patch, to_place);
 
+					/* -- not needed as createNewJumpInstruction sets the data bits properly for the arch.
 					patch_jump_string.resize(5);
 					patch_jump_string[0] = (char)0xe9;
 					patch_jump_string[1] = (char)0x00;
@@ -1453,6 +1624,7 @@ void ZiprImpl_t::PlaceDollops()
 					patch_jump_string[3] = (char)0x00;
 					patch_jump_string[4] = (char)0x00;
 					patch->SetDataBits(patch_jump_string);
+					*/
 
 					patch_de->TargetDollop(fallthrough);
 					patch_de->Place(cur_addr);
@@ -1556,66 +1728,6 @@ void ZiprImpl_t::CreateDollops()
 		cout << "Created " <<std::dec << m_dollop_mgr.Size() 
 		     << " total dollops." << endl;
 }
-#if 0
-void ZiprImpl_t::OptimizePinnedInstructions()
-{
-
-	// should only be 5-byte pins by now.
-
-	assert(two_byte_pins.size()==0);
-
-
-	for(
-		std::map<UnresolvedPinned_t,RangeAddress_t>::iterator it=five_byte_pins.begin();
-			it!=five_byte_pins.end();
-	   )
-	{
-		RangeAddress_t addr=(*it).second;
-		UnresolvedPinned_t up=(*it).first;
-
-		// ideally, we'll try to fill out the pinned 5-byte jump instructions with actual instructions
-		// from the program.  That's an optimization.  At the moment, let's just create a patch for each one.
-
-		if (m_AddrInSled[addr])
-		{
-			if (m_verbose)
-				cout << "Skipping five byte pin at " 
-				     << std::hex << addr << " because it is in a sled." << endl;
-			it++;
-			continue;
-		}
-
-		UnresolvedUnpinned_t uu(up.GetInstruction());
-		Patch_t	thepatch(addr,UncondJump_rel32);
-
-		patch_list.insert(pair<const UnresolvedUnpinned_t,Patch_t>(uu,thepatch));
-		memory_space.PlopJump(addr);
-
-
-		bool can_optimize=false; // fixme
-		if(can_optimize)
-		{
-			//fixme
-		}
-		else
-		{
-			if (m_verbose)
-			{
-				//DISASM d;
-				//Disassemble(uu.GetInstruction(),d);
-				DecodedInstruction_t d(uu.GetInstruction());
-				printf("Converting 5-byte pinned jump at %p-%p to patch to %d:%s\n", 
-				       (void*)addr,(void*)(addr+4), uu.GetInstruction()->GetBaseID(), d.getDisassembly().c_str()/*.CompleteInstr*/);
-			}
-			m_stats->total_tramp_space+=5;
-		}
-
-		// remove and move to next pin
-		five_byte_pins.erase(it++);
-	}
-		
-}
-#endif
 
 void ZiprImpl_t::CallToNop(RangeAddress_t at_addr)
 {
@@ -1645,34 +1757,6 @@ void ZiprImpl_t::PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr)
 		default:
 			assert(0);
 
-	}
-}
-
-void ZiprImpl_t::PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)
-{
-	uintptr_t off=to_addr-at_addr-2;
-
-	assert(!memory_space.IsByteFree(at_addr));
-	
-	switch(memory_space[at_addr])
-	{
-		case (char)0xe9:	/* 5byte jump */
-		{
-			RewritePCRelOffset(at_addr,to_addr,5,1);
-			break;
-		}
-		case (char)0xeb:	/* 2byte jump */
-		{
-			assert(off==(uintptr_t)(char)off);
-
-			assert(!memory_space.IsByteFree(at_addr+1));
-			memory_space[at_addr+1]=(char)off;
-			break;
-		}
-		default:
-		{
-			assert(false);
-		}
 	}
 }
 
@@ -2277,109 +2361,7 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntryWithCallback(
 	return at;
 }
 
-void ZiprImpl_t::RewritePCRelOffset(RangeAddress_t from_addr,RangeAddress_t to_addr, int insn_length, int offset_pos)
-{
-	int new_offset=((unsigned int)to_addr)-((unsigned int)from_addr)-((unsigned int)insn_length);
 
-	memory_space[from_addr+offset_pos+0]=(new_offset>>0)&0xff;
-	memory_space[from_addr+offset_pos+1]=(new_offset>>8)&0xff;
-	memory_space[from_addr+offset_pos+2]=(new_offset>>16)&0xff;
-	memory_space[from_addr+offset_pos+3]=(new_offset>>24)&0xff;
-}
-
-void ZiprImpl_t::ApplyNopToPatch(RangeAddress_t addr)
-{
-	/*
-	 * TODO: Add assertion that this is really a patch.
-	 */
-	if (!m_apply_nop)
-	{
-		if (m_verbose)
-			cout << "Skipping chance to apply nop to fallthrough patch." << endl;
-		return;
-	}
-	assert(true);
-
-	/*
-	 * 0F 1F 44 00 00H
-	 */
-	memory_space[addr] = (unsigned char)0x0F;
-	memory_space[addr+1] = (unsigned char)0x1F;
-	memory_space[addr+2] = (unsigned char)0x44;
-	memory_space[addr+3] = (unsigned char)0x00;
-	memory_space[addr+4] = (unsigned char)0x00;
-}
-
-void ZiprImpl_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)
-{
-	unsigned char insn_first_byte=memory_space[from_addr];
-	unsigned char insn_second_byte=memory_space[from_addr+1];
-
-	switch(insn_first_byte)
-	{
-		case (unsigned char)0xF: // two byte escape
-		{
-			assert( insn_second_byte==(unsigned char)0x80 ||	// should be a JCC 
-				insn_second_byte==(unsigned char)0x81 ||
-				insn_second_byte==(unsigned char)0x82 ||
-				insn_second_byte==(unsigned char)0x83 ||
-				insn_second_byte==(unsigned char)0x84 ||
-				insn_second_byte==(unsigned char)0x85 ||
-				insn_second_byte==(unsigned char)0x86 ||
-				insn_second_byte==(unsigned char)0x87 ||
-				insn_second_byte==(unsigned char)0x88 ||
-				insn_second_byte==(unsigned char)0x89 ||
-				insn_second_byte==(unsigned char)0x8a ||
-				insn_second_byte==(unsigned char)0x8b ||
-				insn_second_byte==(unsigned char)0x8c ||
-				insn_second_byte==(unsigned char)0x8d ||
-				insn_second_byte==(unsigned char)0x8e ||
-				insn_second_byte==(unsigned char)0x8f );
-
-			RewritePCRelOffset(from_addr,to_addr,6,2);
-			break;
-		}
-
-		case (unsigned char)0xe8:	// call
-		case (unsigned char)0xe9:	// jmp
-		{
-			RewritePCRelOffset(from_addr,to_addr,5,1);
-			break;
-		}
-
-		case (unsigned char)0xf0: // lock
-		case (unsigned char)0xf2: // rep/repe
-		case (unsigned char)0xf3: // repne
-		case (unsigned char)0x2e: // cs override
-		case (unsigned char)0x36: // ss override
-		case (unsigned char)0x3e: // ds override
-		case (unsigned char)0x26: // es override
-		case (unsigned char)0x64: // fs override
-		case (unsigned char)0x65: // gs override
-		case (unsigned char)0x66: // operand size override
-		case (unsigned char)0x67: // address size override
-		{
-			cout << "found patch for instruction with prefix.  prefix is: "<<hex<<insn_first_byte<<".  Recursing at "<<from_addr+1<<dec<<endl;
-			// recurse at addr+1 if we find a prefix byte has been plopped.
-			return this->ApplyPatch(from_addr+1, to_addr);
-		}
-		default:
-		{
-			if(m_firp->GetArchitectureBitWidth()==64) /* 64-bit x86 machine  assumed */
-			{
-				/* check for REX prefix */
-				if((unsigned char)0x40 <= insn_first_byte  && insn_first_byte <= (unsigned char)0x4f)
-				{
-					cout << "found patch for instruction with prefix.  prefix is: "<<hex<<insn_first_byte<<".  Recursing at "<<from_addr+1<<dec<<endl;
-					// recurse at addr+1 if we find a prefix byte has been plopped.
-					return this->ApplyPatch(from_addr+1, to_addr);
-				}
-			}
-			std::cerr << "insn_first_byte: 0x" << hex << (int)insn_first_byte << dec << std::endl;
-			assert(0);
-		}
-	}
-}
 
 
 DataScoop_t* ZiprImpl_t::FindScoop(const RangeAddress_t &addr)
@@ -3213,3 +3195,24 @@ void  ZiprImpl_t::RelayoutEhInfo()
 
 	eh->GenerateNewEhInfo();
 }
+
+
+void ZiprImpl_t::ApplyNopToPatch(RangeAddress_t addr)
+{
+	if (!m_apply_nop)
+	{
+		if (m_verbose)
+			cout << "Skipping chance to apply nop to fallthrough patch." << endl;
+		return;
+	}
+	ZiprPatcherBase_t::factory(this)->ApplyNopToPatch(addr);
+}
+void ZiprImpl_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)
+{
+	ZiprPatcherBase_t::factory(this)->ApplyPatch(from_addr,to_addr);
+}
+void ZiprImpl_t::PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)
+{
+	ZiprPatcherBase_t::factory(this)->PatchJump(at_addr,to_addr);
+}
+

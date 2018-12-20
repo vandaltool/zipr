@@ -7,11 +7,13 @@ class ZiprArchitectureHelperX86_t  : public ZiprArchitectureHelperBase_t
 	public:
 		virtual libIRDB::Instruction_t* createNewJumpInstruction(libIRDB::FileIR_t *p_firp, libIRDB::Instruction_t* p_existing) override
 		{
-			return IRDBUtility::addNewAssembly(p_firp, p_existing, "jmp 0");
+			const auto bits=string("\xe9\x00\x00\x00\x00",5); /* jmp 0 */
+                        return IRDBUtility::addNewDatabits(p_firp, p_existing, bits);
 		}
 		virtual libIRDB::Instruction_t* createNewHaltInstruction(libIRDB::FileIR_t *p_firp, libIRDB::Instruction_t* p_existing) override
 		{
-			return IRDBUtility::addNewAssembly(p_firp, p_existing, "hlt");
+			const auto bits=string("\xf4",1); 	/* hlt */
+                        return IRDBUtility::addNewDatabits(p_firp, p_existing, bits);
 		}
 };
 #endif
