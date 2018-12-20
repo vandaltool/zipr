@@ -2,8 +2,8 @@
 
 namespace zipr
 {
-#include <pinner/pinnerX86.hpp>
-#include <pinner/pinnerARM64.hpp>
+#include <pinner/pinner_x86.hpp>
+#include <pinner/pinner_arm64.hpp>
 }
 #include <memory>
 #include <Rewrite_Utility.hpp>

@@ -4,8 +4,8 @@
 
 namespace zipr
 {
-#include <arch/archX86.hpp>
-#include <arch/archARM64.hpp>
+#include <arch/arch_x86.hpp>
+#include <arch/arch_arm64.hpp>
 }
 #include <memory>
 #include <Rewrite_Utility.hpp>

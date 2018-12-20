@@ -55,6 +55,8 @@ using namespace zipr;
 using namespace ELFIO;
 using namespace IRDBUtility;
 
+
+#if 0
 class ZiprPatcherBase_t
 {
 	public:
@@ -224,7 +226,7 @@ unique_ptr<ZiprPatcherBase_t> ZiprPatcherBase_t::factory(Zipr_SDK::Zipr_t* p_par
 
         return unique_ptr<ZiprPatcherBase_t>(ret);
 }
-
+#endif
 
 inline uintptr_t page_round_up(uintptr_t x)
 {
