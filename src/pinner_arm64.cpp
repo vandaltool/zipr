@@ -44,7 +44,7 @@ void  ZiprPinnerARM64_t::doPinning()
 
 		// put unconditional branch with 26-bit offset in memory
 		// 0001 0100  0000 0000  0000 0000  0000 0000 
-                uint8_t bytes[]={'\x14','\x00','\x00','\x00'};
+                uint8_t bytes[]={'\x00','\x00','\x00','\x14'};
 		for(auto i=0U;i<sizeof(bytes);i++)
 		{
 			assert(memory_space.find(ibta_addr+i) == memory_space.end() );

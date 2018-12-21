@@ -29,6 +29,8 @@
  **************************************************************************/
 
 #include <zipr_all.h>
+
+namespace zipr
 {
 #include "patcher/patcher_arm64.hpp"
 #include "patcher/patcher_x86.hpp"

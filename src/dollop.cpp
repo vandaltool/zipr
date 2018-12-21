@@ -1,9 +1,12 @@
 #include <zipr_all.h>
 #include <iostream>
 
+#define ALLOF(a) std::begin((a)),std::end((a))
+
 namespace Zipr_SDK {
 	using namespace libIRDB;
 	using namespace zipr;
+	using namespace std;
 	Dollop_t::Dollop_t(Instruction_t *start, Zipr_SDK::DollopManager_t *mgr) :
 		m_size(0),
 		m_fallthrough_dollop(NULL),
@@ -38,40 +41,35 @@ namespace Zipr_SDK {
 
 	size_t Dollop_t::CalculateWorstCaseSize()
 	{
-		size_t dollop_size = 0;
-		list<DollopEntry_t*>::const_iterator it, it_end;
+		// calculate the total, worst-case size of each dollop entry
+		auto total_dollop_entry_size = (size_t)0;
+		assert(m_dollop_mgr);
+		for (auto cur_de : *this )
+			total_dollop_entry_size += m_dollop_mgr->DetermineWorstCaseDollopEntrySize(cur_de);
 
-		for (it = begin(), it_end = end();
-		     it != it_end;
-		     it++)
-		{
-			Instruction_t *cur_insn = (*it)->Instruction();
-			if (m_dollop_mgr != NULL)
-				dollop_size += m_dollop_mgr->DetermineWorstCaseDollopEntrySize(*it);
-			else
-			{
-				assert(false);
-				dollop_size += Utils::DetermineWorstCaseInsnSize(cur_insn, false);
-			}
-		}
+		// now determine if we need to add space for a trampoline.
 
-		if ((m_fallthrough_dollop || (back() && 
-		                             back()->Instruction() && 
-																 back()->Instruction()->GetFallthrough())) &&
-		    (!m_fallthrough_patched && !m_coalesced))
-			dollop_size += Utils::TRAMPOLINE_SIZE;
-		return dollop_size;
+		// no need for a trampoline if patched and/or coalesced.
+		if(m_fallthrough_patched || m_coalesced)
+			return total_dollop_entry_size;
+
+		// no need for a trampoline if there is no fallthrough
+		const auto has_fallthrough = m_fallthrough_dollop || 
+		                             (back() && back()->Instruction() && back()->Instruction()->GetFallthrough())
+					     ;
+		if (!has_fallthrough)
+			return total_dollop_entry_size;
+
+		// save space for a trampoline.
+		return 	total_dollop_entry_size + Utils::TRAMPOLINE_SIZE;
 	}
-
 	DollopEntry_t *Dollop_t::FallthroughDollopEntry(DollopEntry_t *entry) const
 	{
-		list<DollopEntry_t *>::const_iterator found_entry;
-
-		found_entry = std::find(begin(), end(), entry);
-		if (found_entry != end() && std::next(found_entry) != end())
-			return *(std::next(found_entry));
-		else
-			return NULL;
+		const auto found_entry = find(ALLOF(*this), entry);
+		if (found_entry == end())
+		       return NULL;
+		const auto next_entry=next(found_entry);
+		return next_entry == end() ? nullptr : *next_entry ;
 	}
 
 	void Dollop_t::WasCoalesced(bool coalesced)

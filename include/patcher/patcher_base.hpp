@@ -14,59 +14,30 @@
  *
  * Unless otherwise specified, the information contained in this
  * directory, following this legend, and/or referenced herein is
- * Zephyr Software LLC. (Zephyr) Proprietary Information. 
+ * Zephyr Software LLC. (Zephyr) Proprietary Information.
  *
  * CONTACT
  *
  * For technical assistance, contact Zephyr Software LCC. at:
- *      
+ *
  *
  * Zephyr Software, LLC
  * 2040 Tremont Rd
  * Charlottesville, VA 22911
- *
+ * 
  * E-mail: jwd@zephyr-software.com
  **************************************************************************/
 
-#ifndef zipr_all_h
-#define zipr_all_h
 
-#include <stdlib.h>
-#include <stdint.h>
-#include <set>
-#include <list>
-#include <map>
-#include <libIRDB-core.hpp>
-#include <Rewrite_Utility.hpp>
-#include <algorithm>
+#ifndef PATCHER_BASE
+#define PATCHER_BASE
 
-#include "elfio/elfio.hpp"
-#include "elfio/elfio_dump.hpp"
-
-#include <zipr_sdk.h>
-
-namespace zipr
+class ZiprPatcherBase_t
 {
-
-using namespace Zipr_SDK;
-
-#define PAGE_SIZE 4096
-
-#include <sled.h>
-#include <unresolved.h>
-#include <zipr_mem_space.h>
-#include <plugin_man.h>
-#include <zipr_dollop_man.h>
-#include <zipr_utils.h>
-#include <arch/arch_base.hpp>
-#include <pinner/pinner_base.hpp>
-#include <patcher/patcher_base.hpp>
-#include <zipr_impl.h>
-#include <zipr_optimizations.h>
-#include <zipr_stats.h>
-#include <elfwrite.h>
-#include <ehwrite.h>
-
+	public:
+		static unique_ptr<ZiprPatcherBase_t> factory(Zipr_SDK::Zipr_t* p_parent);
+		virtual void ApplyNopToPatch(RangeAddress_t addr)=0;
+		virtual void ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)=0;
+		virtual void PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)=0;
 };
-
 #endif

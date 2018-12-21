@@ -126,7 +126,7 @@ void ElfWriter::CreatePagemap(const ELFIO::elfio *elfiop, FileIR_t* firp, const 
 				virtual_offset_t offset=i+j-start_addr;
 				if(offset<scoop->GetContents().size())
 				{
-					// cout<<"Updating page["<<hex<<i<<"+"<<j<<"("<<(i+j)<<")]="<<hex<<(int)scoop->GetContents()[ offset ]<<endl; 
+					cout<<"Updating page["<<hex<<i<<"+"<<j<<"("<<(i+j)<<")]="<<hex<<(int)scoop->GetContents()[ offset ]<<endl; 
 					pagemap_i.data[j]=scoop->GetContents()[ offset ]; 
 					pagemap_i.inuse[j]=true;
 				}

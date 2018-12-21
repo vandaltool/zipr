@@ -31,9 +31,6 @@
 #ifndef zipr_impl_h
 #define zipr_impl_h
 
-#include <climits>
-#include <arch/archbase.hpp>
-#include <memory>
 class Stats_t;
 
 class pin_sorter_t 

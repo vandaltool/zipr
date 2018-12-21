@@ -1059,10 +1059,10 @@ void ZiprImpl_t::PlaceDollops()
 		from_address = pq_entry.second;
 
 		if (m_vverbose)
-			cout << "Original starting address: " << std::hex
-			     << to_place->front()->Instruction()->GetAddress()->GetVirtualOffset()
-					 << endl;
-
+		{
+			cout << "Placing dollop with original starting address: " << hex
+			     << to_place->front()->Instruction()->GetAddress()->GetVirtualOffset() << endl;
+		}
 
 		if (to_place->IsPlaced())
 			continue;
@@ -1087,9 +1087,8 @@ void ZiprImpl_t::PlaceDollops()
 
 			if (m_verbose)
 				cout << placer->ToString() << " placed this dollop between " 
-				     << std::hex << placement.GetStart() << " and " 
-						 << std::hex << placement.GetEnd()
-						 << endl;
+				     << hex << placement.GetStart() << " and " << placement.GetEnd()
+				     << endl;
 
 			/*
 			 * Check if the size that we got back is enough to hold
@@ -1213,7 +1212,8 @@ void ZiprImpl_t::PlaceDollops()
 			}
 		}
 
-		if (!placed) {
+		if (!placed) 
+		{
 			// cout << "Using default place locator." << endl;
 			/*
 			 * TODO: Re-enable this ONCE we figure out why the dollop
@@ -1236,21 +1236,19 @@ void ZiprImpl_t::PlaceDollops()
 
 		if (m_vverbose)
 		{
-			cout << "Placing " << std::dec << to_place->GetSize() << " dollop in "
-			     << std::dec << (placement.GetEnd() - placement.GetStart()) 
-					 << " hole." << endl
-					 << "Dollop " << ((has_fallthrough) ? "has " : "does not have ")
-					 << "a fallthrough" << endl;
+			cout << "Dollop size=" << dec << to_place->GetSize() << ".  Placing in hole size="
+			     << (placement.GetEnd() - placement.GetStart()) << " hole at " << hex << cur_addr << endl;
+			cout << "Dollop " << ((has_fallthrough) ? "has " : "does not have ")
+		  	     << "a fallthrough" << endl;
 		}
 
-		if (( to_place->front()->Instruction()->GetIndirectBranchTargetAddress() 
-		      && to_place->front()->Instruction()->GetIndirectBranchTargetAddress()->GetVirtualOffset()!=0 
-		    )	    && cur_addr == to_place->
-				            front()->
-										Instruction()->
-										GetIndirectBranchTargetAddress()->
-										GetVirtualOffset()
-		   )
+		const auto has_pinned_ibta=
+				to_place->front()->Instruction()->GetIndirectBranchTargetAddress() && 
+				to_place->front()->Instruction()->GetIndirectBranchTargetAddress()->GetVirtualOffset()!=0 ;
+		const auto pinned_ibta_addr = has_pinned_ibta ?  
+				to_place-> front()-> Instruction()-> GetIndirectBranchTargetAddress()-> GetVirtualOffset() : 
+				virtual_offset_t(0);
+		if (has_pinned_ibta && cur_addr == pinned_ibta_addr)
 		{
 			unsigned int space_to_clear = Utils::SHORT_PIN_SIZE;
 			/*
@@ -1282,11 +1280,13 @@ void ZiprImpl_t::PlaceDollops()
 		 * Handle the case where the placer put us atop the fallthrough
 		 * link from it's FallbackDollop()
 		 */
-		else if (to_place->FallbackDollop() &&
-		    to_place->FallbackDollop()->IsPlaced() &&
-				(to_place->FallbackDollop()->Place() +
-				 to_place->FallbackDollop()->GetSize() - 5) ==
-		    placement.GetStart())
+		else if ( // has dollop that falls through to us.
+			  to_place->FallbackDollop() && 
+			  // and it's already placed.
+		    	  to_place->FallbackDollop()->IsPlaced() && 
+			  // and the place is adjacent to us
+			  ( to_place->FallbackDollop()->Place() + to_place->FallbackDollop()->GetSize() - 5) == placement.GetStart()
+			)
 		{
 			/*
 			 * We have placed this dollop at the location where
@@ -1306,7 +1306,8 @@ void ZiprImpl_t::PlaceDollops()
 
 		assert(to_place->GetSize() != 0);
 
-		do {
+		do 
+		{
 			bool all_fallthroughs_fit = false;
 			size_t wcds = 0;
 
@@ -1376,40 +1377,29 @@ void ZiprImpl_t::PlaceDollops()
 				 *    allowed to proceed placing this dollop but we are not 
 				 *    allowed to coalesce and we are out of space for the 
 				 *    jump to the fallthrough.)
-				 *    Call this the disallowed_override case
+				 *    Call this the !allowed_override case
 				 * 6. There is enough room for this instruction AND it is
 				 *    the last entry of this dollop AND the dollop has a
 				 *    fallthrough AND that fallthrough is to a pin that
 				 *    immediately follows this instruction in memory.
 				 *    Call this initial_placement_abuts (calculated above).
 				 */
-				bool de_and_fallthrough_fit = false;
-				bool last_de_fits = false;
-				bool disallowed_override = true;
-				de_and_fallthrough_fit = (placement.GetEnd()>= /* fits */
-				     (cur_addr+DetermineWorstCaseDollopEntrySize(dollop_entry, true))
+				const auto de_and_fallthrough_fit = 
+					// does this fit, i.e., end>current+rest_of_dollop
+					(placement.GetEnd()>= (cur_addr+DetermineWorstCaseDollopEntrySize(dollop_entry, true))
 				                         );
-				last_de_fits = (std::next(dit,1)==dit_end) /* last */ &&
-				               (placement.GetEnd()>=(cur_addr+ /* fits */
-				                DetermineWorstCaseDollopEntrySize(dollop_entry,
-				                to_place->FallthroughDollop()!=NULL))
-				               /* with or without fallthrough */
-							         );
-				disallowed_override = !allowed_coalescing && 
-				                      !(de_and_fallthrough_fit ||
-				                        fits_entirely ||
-				                        last_de_fits ||
-				                        initial_placement_abuts_pin ||
-				                        initial_placement_abuts_fallthrough
-				                       ) && 
-				                       all_fallthroughs_fit && 
-				                       ((placement.GetEnd() - 
-				                        (cur_addr + 
-				                         DetermineWorstCaseDollopEntrySize(
-				                           dollop_entry,
-				                           false)
-				                         ) < Utils::TRAMPOLINE_SIZE
-				                        ));
+				const auto is_last_insn           = next(dit)==dit_end; /* last */ 
+				const auto has_fallthrough_dollop = to_place->FallthroughDollop()!=nullptr ;
+				const auto fits_with_fallthrough  = placement.GetEnd()>=(cur_addr+ DetermineWorstCaseDollopEntrySize(dollop_entry, has_fallthrough_dollop));
+				const auto last_de_fits           = is_last_insn && fits_with_fallthrough;
+				const auto could_fit_here         = 
+					de_and_fallthrough_fit || 
+					fits_entirely || 
+					last_de_fits || 
+					initial_placement_abuts_pin || 
+					initial_placement_abuts_fallthrough ;
+				const auto tramp_fits=(placement.GetEnd() - (cur_addr + DetermineWorstCaseDollopEntrySize( dollop_entry, false))) < Utils::TRAMPOLINE_SIZE;
+				const auto allowed_override = allowed_coalescing || could_fit_here || !all_fallthroughs_fit || !tramp_fits ;
 
 				if (m_vverbose)
 				{
@@ -1433,7 +1423,7 @@ void ZiprImpl_t::PlaceDollops()
 							 << initial_placement_abuts_pin          << ", "
 							 << initial_placement_abuts_fallthrough  << ", "
 							 << initial_placement_abuts_pin          << ", "
-							 << disallowed_override                  << noboolalpha << endl;
+							 << allowed_override                  << noboolalpha << endl;
 
 				}
 
@@ -1442,7 +1432,7 @@ void ZiprImpl_t::PlaceDollops()
 						fits_entirely ||
 						initial_placement_abuts_fallthrough ||
 						initial_placement_abuts_pin ||
-						all_fallthroughs_fit) && !disallowed_override)
+						all_fallthroughs_fit) && allowed_override)
 				{
 					if (m_vverbose) {
 						/*DISASM d;
@@ -2088,12 +2078,10 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntry(
 	const auto is_instr_relative_it = find_if(ALLOF(operands),[](const DecodedOperand_t& op)
 	                                          { return op.isMemory() && op.isPcrel(); });
 
-	const bool is_instr_relative = is_instr_relative_it != operands.end(); /* IS_RELATIVE(d.Argument1) ||
-	                    IS_RELATIVE(d.Argument2) ||
-	                    IS_RELATIVE(d.Argument3); */
+	const bool is_instr_relative = is_instr_relative_it != operands.end(); 
 
-
-	if (is_instr_relative) {
+	if (is_instr_relative) 
+	{
 		uint32_t abs_displacement=0;
 		uint32_t *displacement=0;
 		char instr_raw[20] = {0,};
@@ -2104,25 +2092,19 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntry(
 		/*
 		 * Which argument is relative? There must be one.
 		 */
-		/* ARGTYPE *relative_arg = NULL;
-		if (IS_RELATIVE(d.Argument1)) relative_arg = &d.Argument1;
-		if (IS_RELATIVE(d.Argument2)) relative_arg = &d.Argument2;
-		if (IS_RELATIVE(d.Argument3)) relative_arg = &d.Argument3;
-		assert(relative_arg);
-		*/
 		DecodedOperand_t relative_arg=*is_instr_relative_it;
 
 		/*
 		 * Calculate the offset into the instruction
 		 * of the displacement address.
 		 */
-		offset = d.getMemoryDisplacementOffset(relative_arg, insn); /*relative_arg->Memory.DisplacementAddr - d.EIP; */
+		offset = d.getMemoryDisplacementOffset(relative_arg, insn); 
 
 		/*
 		 * The size of the displacement address must be
 		 * four at this point.
 		 */
-		size = relative_arg.getMemoryDisplacementEncodingSize(); /* relative_arg->Memory.DisplacementSize; */
+		size = relative_arg.getMemoryDisplacementEncodingSize(); 
 		assert(size == 4);
 
 		/*
@@ -2172,9 +2154,9 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntry(
 		}
 
 		if (m_verbose)
-			cout << "Plopping at " << std::hex << addr
+			cout << "Plopping '"<<entry->Instruction()->getDisassembly() <<"' at " << std::hex << addr
 			     << " with target " << std::hex << ((target_address != 0) ? target_address : entry->TargetDollop()->Place())
-					 << endl;
+			     << endl;
 		ret=PlopDollopEntryWithTarget(entry, addr, target_address);
 	}
 	else if(entry->Instruction()->GetCallback()!="")
@@ -2187,9 +2169,9 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntry(
 	}
 	else
 	{
-		memory_space.PlopBytes(addr,
-		                       insn->GetDataBits().c_str(),
-													 insn->GetDataBits().length());
+		if (m_verbose)
+			cout << "Plopping non-ctl "<<insn->getDisassembly()<<" at " << hex << addr << endl;
+		memory_space.PlopBytes(addr, insn->GetDataBits().c_str(), insn->GetDataBits().length());
 		ret+=insn->GetDataBits().length();
 	}
 
