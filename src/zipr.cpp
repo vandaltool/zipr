@@ -45,7 +45,6 @@
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
 #include "targ-config.h"
-//#include <bea_deprecated.hpp>
 
 #define ALLOF(a) begin(a),end(a)
 
@@ -921,30 +920,24 @@ Instruction_t *ZiprImpl_t::FindPatchTargetAtAddr(RangeAddress_t addr)
 
 void ZiprImpl_t::WriteDollops()
 {
-	DollopList_t::iterator it, it_end;
-	for (it = m_dollop_mgr.dollops_begin(),
-	     it_end = m_dollop_mgr.dollops_end();
-	     it != it_end;
-	     it++)
+	for (auto & dollop_to_write : m_dollop_mgr.GetDollops()  ) 
 	{
-		list<DollopEntry_t*>::const_iterator dit, dit_end;
-		Dollop_t *dollop_to_write = *it;
-
+		assert(dollop_to_write != nullptr);
+		// skip unplaced dollops as they aren't necessary
 		if (!dollop_to_write->IsPlaced())
 			continue;
-
-		for (dit = dollop_to_write->begin(), dit_end = dollop_to_write->end();
-		     dit != dit_end;
-		     dit++)
+	
+		// write each entry in the dollop
+		for (auto &entry_to_write : *dollop_to_write) 
 		{
-			RangeAddress_t start, end, should_end;
-			DollopEntry_t *entry_to_write = *dit;
+			assert(entry_to_write != nullptr);
+			// plop it.
+			const auto de_end_loc = _PlopDollopEntry(entry_to_write);
 
-			start = entry_to_write->Place();
-			end = _PlopDollopEntry(entry_to_write);
-			should_end = start +
-			             DetermineWorstCaseDollopEntrySize(entry_to_write, false);
-			assert(end <= should_end);
+			// sanity check that we didn't go passed the worst case size we calculate for this entry
+			const auto de_start_loc = entry_to_write->Place();
+			const auto should_end_before = de_start_loc + DetermineWorstCaseDollopEntrySize(entry_to_write, false);
+			assert(de_end_loc <= should_end_before);
 			/*
 			 * Build up a list of those dollop entries that we have
 			 * just written that have a target. See comment above 
@@ -1417,35 +1410,32 @@ void ZiprImpl_t::PlaceDollops()
 
 					cout << "Placement stats: " 
 					     << de_and_fallthrough_fit               << ", "
-							 << last_de_fits                         << ", "
-							 << fits_entirely                        << ", "
-							 << all_fallthroughs_fit                 << ", "
-							 << initial_placement_abuts_pin          << ", "
-							 << initial_placement_abuts_fallthrough  << ", "
-							 << initial_placement_abuts_pin          << ", "
-							 << allowed_override                  << noboolalpha << endl;
+					     << last_de_fits                         << ", "
+					     << fits_entirely                        << ", "
+					     << all_fallthroughs_fit                 << ", "
+					     << initial_placement_abuts_pin          << ", "
+					     << initial_placement_abuts_fallthrough  << ", "
+					     << initial_placement_abuts_pin          << ", "
+					     << allowed_override                     << noboolalpha << endl;
 
 				}
 
-				if ((de_and_fallthrough_fit ||
-				    last_de_fits ||
-						fits_entirely ||
-						initial_placement_abuts_fallthrough ||
-						initial_placement_abuts_pin ||
-						all_fallthroughs_fit) && allowed_override)
+				const auto beneficial_to_override = de_and_fallthrough_fit || last_de_fits || fits_entirely || 
+					               initial_placement_abuts_fallthrough || initial_placement_abuts_pin || 
+						       all_fallthroughs_fit;
+				if ( beneficial_to_override && allowed_override)
 				{
-					if (m_vverbose) {
-						/*DISASM d;
-						Disassemble(dollop_entry->Instruction(),d);
-						*/
-						DecodedInstruction_t d(dollop_entry->Instruction());
-						cout << std::hex << dollop_entry->Instruction()->GetBaseID() 
-						     << ":" << d.getDisassembly()/*.CompleteInstr*/ << endl;
-					}
 					dollop_entry->Place(cur_addr);
-					cur_addr+=DetermineWorstCaseDollopEntrySize(dollop_entry,
-					                                      false);
-					//cout << "Adjusting cur_addr to " << std::hex << cur_addr << " at B." << endl;
+					const auto wcsz=DetermineWorstCaseDollopEntrySize(dollop_entry, false);
+					const auto next_cur_addr=cur_addr+wcsz;
+					if (m_vverbose) 
+					{
+						DecodedInstruction_t d(dollop_entry->Instruction());
+						cout << "Placing " << hex << dollop_entry->Instruction()->GetBaseID() 
+						     << ":" << d.getDisassembly() << " at "
+						     << cur_addr << "-" << next_cur_addr << endl;
+					}
+					cur_addr=next_cur_addr;
 					if (dollop_entry->TargetDollop())
 					{
 						if (m_vverbose)

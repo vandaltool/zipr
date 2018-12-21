@@ -89,6 +89,8 @@ class ZiprDollopManager_t : public DollopManager_t {
 		DollopList_t::iterator dollops_end() {
 			return m_dollops.end();
 		}
+		DollopList_t& GetDollops() { return m_dollops; }
+		const DollopList_t& GetDollops() const { return m_dollops; }
 
 		/*
 		 * Printing/output functions.
