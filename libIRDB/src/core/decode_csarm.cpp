@@ -266,7 +266,12 @@ virtual_offset_t DecodedInstructionCapstoneARM64_t::getAddress() const
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
 	if(isCall() || isJmp(the_insn))
+	{
+		const auto mnemonic=getMnemonic();
+		if( mnemonic=="tbnz" || mnemonic=="tbz")
+			return getOperand(2)->getConstant();
 		return insnToImmedHelper<int64_t>(the_insn, cs_handle->getHandle());
+	}
 	assert(0);
 
 }
