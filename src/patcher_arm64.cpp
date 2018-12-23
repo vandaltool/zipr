@@ -72,10 +72,6 @@ void ZiprPatcherARM64_t::ApplyNopToPatch(RangeAddress_t addr)
 
 void ZiprPatcherARM64_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)
 { 
-// A Brandh unconditional, in binary is: op=000101 imm26=00  00000000  00000000  00000000
-// it includes a 26-bit immediate, which is +/- 128MB, which should be a good enough "jump anywhere"
-// for now.
-//
         const auto first_byte =(uint8_t)memory_space[from_addr+3];
         const auto second_byte=(uint8_t)memory_space[from_addr+2];
         const auto third_byte =(uint8_t)memory_space[from_addr+1];
@@ -90,49 +86,77 @@ void ZiprPatcherARM64_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_
 			(((uint32_t)third_byte ) <<  8)|
 			(((uint32_t)fourth_byte) <<  0);
 
-	switch(opcode)
+	// A Bracdh unconditional, in binary is: op=000101 imm26=00  00000000  00000000  00000000
+	// it includes a 26-bit immediate, which is +/- 128MB, which should be a good enough "jump anywhere"
+	// for now.
+	//
+	const auto is_uncond_branch  =(first_byte >>2) == (0x14 >> 2);  // unconditional branch  
+	const auto is_uncond_branch_and_link=(first_byte >>2) == (0x97 >> 2); 	// uncond branch and link 
+
+	// B.cond
+	// 01010100 imm19 0 cond
+	const auto is_branch_cond = first_byte== 0x54; 			// conditional branch
+
+	// compare and branch 
+	// sf 011 0101 imm19 Rt
+	// sf 011 0100 imm19 Rt
+	const auto is_compare_and_branch_nz = (first_byte & 0x7f) == 0x35; 
+	const auto is_compare_and_branch_z  = (first_byte & 0x7f) == 0x34; 
+	const auto is_compare_and_branch    = (is_compare_and_branch_nz || is_compare_and_branch_z);
+
+	// b5 011 0111 b40 imm14 Rt -- tbnz
+	// b5 011 0110 b40 imm14 Rt -- tbz
+	const auto is_test_and_branch_nz = (first_byte & 0x7f) == 0x37; 
+	const auto is_test_and_branch_z  = (first_byte & 0x7f) == 0x36; 
+	const auto is_test_and_branch    = is_test_and_branch_nz || is_test_and_branch_z;
+
+	if(is_uncond_branch || is_uncond_branch_and_link)
 	{
-			
-		case (0x14 >> 2) : // unconditional branch  
-		case (0x97 >> 2) : // uncond branch and link 
-		{
-			const auto opBits=32U-26U;	// 32 bits, imm26
-			// assert there's no overflow.
-			assert((uint64_t)(new_offset << opBits) == ((uint64_t)new_offset) << opBits);
-			// or in opcode for first byte.  set remaining bytes.
-			const auto trimmed_offset=new_offset & ((1<<26)-1);
-			const auto new_first_byte =               (trimmed_offset>> 0)&0xff;
-			const auto new_second_byte=               (trimmed_offset>> 8)&0xff;
-			const auto new_third_byte =               (trimmed_offset>>16)&0xff;
-			const auto new_fourth_byte=(opcode<<2) | ((trimmed_offset>>24)&0xff);
-			//cout<<"ARM64::Patching "<<hex<<from_addr+0<<" val="<<new_first_byte <<endl;
-			//cout<<"ARM64::Patching "<<hex<<from_addr+1<<" val="<<new_second_byte<<endl;
-			//cout<<"ARM64::Patching "<<hex<<from_addr+2<<" val="<<new_third_byte <<endl;
-			//cout<<"ARM64::Patching "<<hex<<from_addr+3<<" val="<<new_fourth_byte<<endl;
-			memory_space[from_addr+0]=new_first_byte;             
-			memory_space[from_addr+1]=new_second_byte;
-			memory_space[from_addr+2]=new_third_byte;
-			memory_space[from_addr+3]=new_fourth_byte;
-			break;
-		}
-		case ( 0x54 >> 2 ) : 	// conditional branch
-		{
-			const auto opBits=32U-19;	// 32 bits, imm19
-			const auto mask19=(1<<19U)-1;
-			assert(first_byte==0x54); // need the last 2 0's for opcode here.
-			assert((uint64_t)(new_offset << opBits) == ((uint64_t)new_offset) << opBits);
-			const auto full_word_clean=full_word & ~(mask19<<5);
-			const auto full_word_new_offset=full_word_clean | ((new_offset&mask19)<<5);
-			memory_space[from_addr+0]=(full_word_new_offset>> 0)&0xff;
-			memory_space[from_addr+1]=(full_word_new_offset>> 8)&0xff;
-			memory_space[from_addr+2]=(full_word_new_offset>>16)&0xff;
-			memory_space[from_addr+3]=(full_word_new_offset>>24)&0xff;
-			break;
-		}
-
-
-		default: assert(0);
+		const auto non_imm_bits=32U-26U;	// 32 bits, imm26
+		// assert there's no overflow.
+		assert((uint64_t)(new_offset << non_imm_bits) == ((uint64_t)new_offset) << non_imm_bits);
+		// or in opcode for first byte.  set remaining bytes.
+		const auto trimmed_offset=new_offset & ((1<<26)-1);
+		const auto new_first_byte =               (trimmed_offset>> 0)&0xff;
+		const auto new_second_byte=               (trimmed_offset>> 8)&0xff;
+		const auto new_third_byte =               (trimmed_offset>>16)&0xff;
+		const auto new_fourth_byte=(opcode<<2) | ((trimmed_offset>>24)&0xff);
+		//cout<<"ARM64::Patching "<<hex<<from_addr+0<<" val="<<new_first_byte <<endl;
+		//cout<<"ARM64::Patching "<<hex<<from_addr+1<<" val="<<new_second_byte<<endl;
+		//cout<<"ARM64::Patching "<<hex<<from_addr+2<<" val="<<new_third_byte <<endl;
+		//cout<<"ARM64::Patching "<<hex<<from_addr+3<<" val="<<new_fourth_byte<<endl;
+		memory_space[from_addr+0]=new_first_byte;             
+		memory_space[from_addr+1]=new_second_byte;
+		memory_space[from_addr+2]=new_third_byte;
+		memory_space[from_addr+3]=new_fourth_byte;
 	}
+	else if (is_branch_cond || is_compare_and_branch)
+	{
+		const auto non_mask_bits=32U-19;	// 32 bits, imm19
+		const auto mask19=(1<<19U)-1;
+		assert((uint64_t)(new_offset << non_mask_bits) == ((uint64_t)new_offset) << non_mask_bits);
+		const auto full_word_clean=full_word & ~(mask19<<5);
+		const auto full_word_new_offset=full_word_clean | ((new_offset&mask19)<<5);
+		memory_space[from_addr+0]=(full_word_new_offset>> 0)&0xff;
+		memory_space[from_addr+1]=(full_word_new_offset>> 8)&0xff;
+		memory_space[from_addr+2]=(full_word_new_offset>>16)&0xff;
+		memory_space[from_addr+3]=(full_word_new_offset>>24)&0xff;
+	}
+	else if (is_test_and_branch)
+	{
+		const auto non_mask_bits=32U-14;	// 32 bits, imm14
+		const auto mask14=(1<<14U)-1;
+		assert(first_byte==0x54); // need the last 2 0's for opcode here.
+		assert((uint64_t)(new_offset << non_mask_bits) == ((uint64_t)new_offset) << non_mask_bits);
+		const auto full_word_clean=full_word & ~(mask14<<5);
+		const auto full_word_new_offset=full_word_clean | ((new_offset&mask14)<<5);
+		memory_space[from_addr+0]=(full_word_new_offset>> 0)&0xff;
+		memory_space[from_addr+1]=(full_word_new_offset>> 8)&0xff;
+		memory_space[from_addr+2]=(full_word_new_offset>>16)&0xff;
+		memory_space[from_addr+3]=(full_word_new_offset>>24)&0xff;
+	}
+	else 
+		assert(0);
 
 }
 
