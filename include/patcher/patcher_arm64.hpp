@@ -35,15 +35,21 @@
 
 class ZiprPatcherARM64_t : public ZiprPatcherBase_t
 {
+	// data
         zipr::ZiprImpl_t* m_parent;
         libIRDB::FileIR_t* m_firp;
         Zipr_SDK::MemorySpace_t &memory_space;
 
 
 	public:
+
 	ZiprPatcherARM64_t(Zipr_SDK::Zipr_t* p_parent);
-	void ApplyNopToPatch(RangeAddress_t addr);
-	void ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr);
-	void PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr);
+	void ApplyNopToPatch(RangeAddress_t addr) override;
+	void ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr) override;
+	void PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr) override;
+	void PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr) override;
+	void CallToNop(RangeAddress_t at_addr) override;
+
+
 };
 #endif

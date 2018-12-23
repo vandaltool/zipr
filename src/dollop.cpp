@@ -31,21 +31,21 @@ namespace Zipr_SDK {
 		         (NULL == loop->GetIndirectBranchTargetAddress())
 						);
 
-		m_size = CalculateWorstCaseSize();
+		m_size = CalculateSize();
 	}
 
-	void Dollop_t::ReCalculateWorstCaseSize()
+	void Dollop_t::ReCalculateSize()
 	{
-		m_size = CalculateWorstCaseSize();
+		m_size = CalculateSize();
 	}
 
-	size_t Dollop_t::CalculateWorstCaseSize()
+	size_t Dollop_t::CalculateSize()
 	{
 		// calculate the total, worst-case size of each dollop entry
 		auto total_dollop_entry_size = (size_t)0;
 		assert(m_dollop_mgr);
 		for (auto cur_de : *this )
-			total_dollop_entry_size += m_dollop_mgr->DetermineWorstCaseDollopEntrySize(cur_de);
+			total_dollop_entry_size += m_dollop_mgr->DetermineDollopEntrySize(cur_de);
 
 		// now determine if we need to add space for a trampoline.
 
@@ -61,7 +61,12 @@ namespace Zipr_SDK {
 			return total_dollop_entry_size;
 
 		// save space for a trampoline.
-		return 	total_dollop_entry_size + Utils::TRAMPOLINE_SIZE;
+		assert(m_dollop_mgr);
+		const auto l_dollop_mgr=dynamic_cast<ZiprDollopManager_t*>(m_dollop_mgr);
+		const auto l_zipr=l_dollop_mgr->GetZipr();
+		const auto l_zipr_impl=dynamic_cast<ZiprImpl_t*>(l_zipr);
+		assert(l_zipr_impl);
+		return 	total_dollop_entry_size + l_zipr_impl->GetSizer()->TRAMPOLINE_SIZE;
 	}
 	DollopEntry_t *Dollop_t::FallthroughDollopEntry(DollopEntry_t *entry) const
 	{
@@ -75,13 +80,13 @@ namespace Zipr_SDK {
 	void Dollop_t::WasCoalesced(bool coalesced)
 	{
 		m_coalesced = coalesced;
-		m_size = CalculateWorstCaseSize();
+		m_size = CalculateSize();
 	}
 
 	void Dollop_t::FallthroughPatched(bool patched)
 	{
 		m_fallthrough_patched = patched;
-		m_size = CalculateWorstCaseSize();
+		m_size = CalculateSize();
 	}
 
 	Dollop_t *Dollop_t::Split(libIRDB::Instruction_t *split_point) {
@@ -141,8 +146,8 @@ namespace Zipr_SDK {
 			new_dollop->push_back(to_move);
 			erase(moved_it);
 		}
-		new_dollop->m_size = new_dollop->CalculateWorstCaseSize();
-		m_size = CalculateWorstCaseSize();
+		new_dollop->m_size = new_dollop->CalculateSize();
+		m_size = CalculateSize();
 
 		/*
 		 * 4. Return the new one
@@ -154,7 +159,7 @@ namespace Zipr_SDK {
 		std::list<DollopEntry_t*>::iterator first_to_remove, 
 		std::list<DollopEntry_t*>::iterator last_to_remove) {
 		erase(first_to_remove, last_to_remove);
-		m_size = CalculateWorstCaseSize();
+		m_size = CalculateSize();
 	}
 
 	DollopEntry_t::DollopEntry_t(libIRDB::Instruction_t *insn,Dollop_t *member_of)

@@ -4,6 +4,9 @@
 class ZiprArchitectureHelperARM64_t : public ZiprArchitectureHelperBase_t
 {
 	public:
+		ZiprArchitectureHelperARM64_t(Zipr_SDK::Zipr_t* p_zipr_obj) : ZiprArchitectureHelperBase_t(p_zipr_obj)
+		{
+		}
 		virtual libIRDB::Instruction_t* createNewJumpInstruction(libIRDB::FileIR_t *p_firp, libIRDB::Instruction_t* p_existing) override
 		{
 			// A Brandh unconditional, in binary is: 0001 0100  00000000  00000000  00000000

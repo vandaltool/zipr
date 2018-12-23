@@ -78,6 +78,7 @@ class ZiprImpl_t : public Zipr_t
 			m_seed("seed", 0),
 			m_dollop_map_filename("dollop_map_filename", "dollop.map"),
 			m_paddable_minimum_distance("paddable_minimum_distance", 5*1024)
+
 		{ 
 			Init();
  		};
@@ -88,14 +89,14 @@ class ZiprImpl_t : public Zipr_t
 			return m_error;
 		}
 		/*
-		 * DetermineWorstCaseDollopEntrySize
+		 * DetermineDollopEntrySize
 		 * 
 		 * Determine the worst case dollop entry size.
 		 * and account for the possibility that a plugin
 		 * may be plopping this instruction and want
 		 * to do some calculations.
 		 */
-		size_t DetermineWorstCaseDollopEntrySize(DollopEntry_t *entry, bool account_for_trampoline);
+		size_t DetermineDollopEntrySize(DollopEntry_t *entry, bool account_for_trampoline);
 
 		Zipr_SDK::RangeAddress_t PlopDollopEntry(
 			DollopEntry_t *,
@@ -156,6 +157,7 @@ class ZiprImpl_t : public Zipr_t
 		virtual Zipr_SDK::PlacementQueue_t* GetPlacementQueue() { return &placement_queue; }  
 		virtual Zipr_SDK::RangeAddress_t PlaceUnplacedScoops(Zipr_SDK::RangeAddress_t max);
 		Stats_t* GetStats() { return m_stats; }
+		ZiprSizerBase_t* GetSizer() { return sizer; }
 
 
 	private:
@@ -198,119 +200,6 @@ class ZiprImpl_t : public Zipr_t
 		 * Creates a scoop for the executable instructions in the IR.
 		 */
 		void UpdateScoops();
-
-
-
-#if 0
-		/*
-		 * AddPinnedInstructions()
-		 *
-		 * Input: None
-		 * Output: Output
-		 * Uses: IRDB
-		 * Effects: unresolved_pinned_addrs
-		 *
-		 * Creates a set of addresses of unresolved pins.
-		 */
-		void AddPinnedInstructions();
-		/*
-		 * ReservePinnedInstructions()
-		 *
-		 * Input: None
-		 * Output: None
-		 * Uses: unresolved_pinned_addrs, memory_space
-		 * Effects: two_byte_pins
-		 *
-		 * Builds up two_byte_pins, a set of addresses of
-		 * two byte memory ranges that correspond to pinned
-		 * addresses.
-		 *
-		 * This function also handles cases where space for
-		 * two byte pins do not exist at pinned addresses and
-		 * puts in the appropriate workaround code.
-		 *
-		 */
-		void ReservePinnedInstructions();
-		/*
-		 * PreReserve2ByteJumpTargets()
-		 *
-		 * Input: None
-		 * Output: None
-		 * Uses: two_byte_pins, memory_space
-		 * Effects: two_byte_pins, memory_space
-		 *
-		 * Reserves nearby space (2/5 bytes) within
-		 * range of two byte pins. Each two byte pin
-		 * will have either two or five nearby bytes
-		 * reserved by the end of this loop.
-		 *
-		 */
-		void PreReserve2ByteJumpTargets();
-
-		/*
-		 * ExpandPinnedInstructions()
-		 *
-		 * Input: None
-		 * Output: Output
-		 * Uses: two_byte_pins, memory_space
-		 * Effects: memory_space, five_byte_pins
-		 *
-		 * Turn reserved two byte pins into five
-		 * byte pins where space allows. All new
-		 * five byte pin locations are added to
-		 * five_byte_pins. Those two byte pins
-		 * that cannot be expanded are readded
-		 * to two_byte_pins.
-		 *
-		 */
-		void ExpandPinnedInstructions();
-		/*
-		 * Fix2BytePinnedInstructions()
-		 *
-		 * Input: None
-		 * Output: None
-		 * Uses: two_byte_pins, memory_space
-		 * Effects: five_byte_pins, memory_space,
-		 *          two_byte_pins
-		 *
-		 * Look at the pre-reserved space for each
-		 * remaining two byte pin. If the prereserved
-		 * space is five bytes, then we make the two
-		 * byte pin point to the five byte space and
-		 * make the five byte pin point to the insn
-		 * (and add it to the list of five byte pins).
-		 * However, if the prereserved space is only
-		 * two bytes, then we make the existing two
-		 * byte pin point to the preserved two byte
-		 * pin and add it back to the list of two
-		 * byte pins.
-		 *
-		 */
-		void Fix2BytePinnedInstructions();
-
-		/*
-		 * OptimizedPinnedInstructions()
-		 *
-		 * Input:
-		 * Output:
-		 * Effects:
-		 *
-		 *
-		 *
-		 */
-		void OptimizePinnedInstructions();
-		/*
-		 * CreateDollops()
-		 *
-		 * Input: None
-		 * Output: None
-		 * Uses: five_byte_pins, memory_space
-		 * Effects: m_dollop_mgr, five_byte_pins
-		 *
-		 * Creates all the dollops starting with
-		 * those pointed to by the five byte pins.
-		 */
-#endif
 		void CreateDollops();
 		void PlaceDollops();
 		void WriteDollops();
@@ -410,14 +299,14 @@ class ZiprImpl_t : public Zipr_t
 
 
 		/*
-		 * DetermineWorstCaseInsnSize
+		 * DetermineInsnSize
 		 * 
 		 * Determine the worst case instruction size
 		 * but do not account for the possibility that a plugin
 		 * may be plopping this instruction and want
 		 * to do some calculations.
 		 */
-		size_t DetermineWorstCaseInsnSize(libIRDB::Instruction_t*, bool account_for_trampoline);
+		size_t DetermineInsnSize(libIRDB::Instruction_t*, bool account_for_trampoline);
 
 		// patching
 		void ApplyPatches(libIRDB::Instruction_t* insn);
@@ -529,7 +418,8 @@ class ZiprImpl_t : public Zipr_t
 		ZiprIntegerOption_t m_variant, m_architecture, m_seed;
 		ZiprStringOption_t m_dollop_map_filename;
 		ZiprIntegerOption_t m_paddable_minimum_distance;
-		std::unique_ptr<ZiprArchitectureHelperBase_t> archhelper;
+
+
 
 		std::list<DollopEntry_t *> m_des_to_replop;
 
@@ -548,6 +438,12 @@ class ZiprImpl_t : public Zipr_t
 			assert( (by & (by - 1)) == 0 ); 
                         return in&~(by-1);
                 }
+		
+		// arch specific stuff
+		std::unique_ptr<ZiprArchitectureHelperBase_t> archhelper;
+		ZiprPinnerBase_t * pinner =nullptr;
+		ZiprPatcherBase_t* patcher=nullptr;
+		ZiprSizerBase_t  * sizer  =nullptr;
 
 
 };

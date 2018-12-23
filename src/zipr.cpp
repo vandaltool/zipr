@@ -53,6 +53,7 @@ using namespace std;
 using namespace zipr;
 using namespace ELFIO;
 using namespace IRDBUtility;
+using namespace Zipr_SDK;
 
 
 inline uintptr_t page_round_up(uintptr_t x)
@@ -83,6 +84,9 @@ template < typename T > std::string to_string( const T& n )
 
 void ZiprImpl_t::Init()
 {
+
+	// allocate stats
+	m_stats = new Stats_t();
 
 	bss_needed=0;
 	use_stratafier_mode=false;
@@ -125,7 +129,10 @@ void ZiprImpl_t::Init()
 	}
 	plugman = ZiprPluginManager_t(this, &m_zipr_options);
 
-	archhelper=ZiprArchitectureHelperBase_t::factory(m_firp);
+	archhelper=ZiprArchitectureHelperBase_t::factory(this);
+	pinner =archhelper->getPinner ();
+	patcher=archhelper->getPatcher();
+	sizer  =archhelper->getSizer  ();
 
 	/*
 	 * Parse again now that the plugins registered something.
@@ -204,7 +211,6 @@ ZiprOptionsNamespace_t *ZiprImpl_t::RegisterOptions(ZiprOptionsNamespace_t *glob
 
 void ZiprImpl_t::CreateBinaryFile()
 {
-	m_stats = new Stats_t();
 
 
 	/* load the elfiop for the orig. binary */
@@ -245,7 +251,8 @@ void ZiprImpl_t::CreateBinaryFile()
 	plugman.PinningBegin();
 
 	// allocate and execute a pinning algorithm.
-	ZiprPinnerBase_t::factory(this)->doPinning();
+	assert(pinner);
+	pinner->doPinning();
 
 	// tell plugins we are done pinning.
 	plugman.PinningEnd();
@@ -395,7 +402,7 @@ void ZiprImpl_t::CreateExecutableScoops(const std::map<RangeAddress_t, int> &ord
 			text_name=".text"; // use the name .text first.
 
 		text_contents.resize(text_end->GetVirtualOffset() - text_start->GetVirtualOffset()+1);
-		DataScoop_t* text_scoop=new DataScoop_t(m_firp->GetMaxBaseID()+1, text_name,  text_start, text_end, NULL, 5, false, text_contents);
+		DataScoop_t* text_scoop=new DataScoop_t(m_firp->GetMaxBaseID()+1, text_name,  text_start, text_end, NULL, 5 /*R-X*/, false, text_contents);
 		m_firp->GetDataScoops().insert(text_scoop);
 	
 		cout<<"Adding scoop "<<text_scoop->GetName()<<hex<<" at "<<hex<<text_start->GetVirtualOffset()<<" - "<<text_end->GetVirtualOffset()<<endl;
@@ -421,9 +428,7 @@ RangeAddress_t ZiprImpl_t::PlaceUnplacedScoops(RangeAddress_t max_addr)
 	for(auto &p : scoops_by_perms )
 	{
 		// start by rounding up to a page boundary so that page perms don't get unioned.
-		max_addr=page_round_up(max_addr);
-		// for(auto dit=pit->second.begin(); dit!=pit->second.end(); ++dit)
-		//	DataScoop_t* scoop=*dit;
+		max_addr=page_round_up(max_addr); 
 		for(auto &scoop  : p.second)
 		{
 			max_addr=align_up_to(max_addr,(RangeAddress_t)16);	// 16 byte align.
@@ -484,19 +489,17 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 	CreateExecutableScoops(ordered_sections);
 
 	// scan sections for a max-addr.
-	std::map<RangeAddress_t, int>::iterator it = ordered_sections.begin();
-	for (;it!=ordered_sections.end();) 
+	for (auto p : ordered_sections )
 	{ 
-		section* sec = elfiop->sections[it->second];
+		section* sec = elfiop->sections[p.second];
 		assert(sec);
 
 		RangeAddress_t start=sec->get_address();
 		RangeAddress_t end=sec->get_size()+start-1;
 
-		++it;
-
 		if (m_verbose)
 			printf("max_addr is %p, end is %p\n", (void*)max_addr, (void*)end);
+
 		if(start && end>max_addr)
 		{
 			if (m_verbose)
@@ -619,7 +622,7 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 			{
 				DataScoop_t *new_padding_scoop = nullptr;
 				string new_padding_scoop_contents, new_padding_scoop_name;
-				int new_padding_scoop_perms = 0x5;
+				int new_padding_scoop_perms = 0x5 /* r-x */;
 				AddressID_t *new_padding_scoop_start_addr = nullptr,
 				            *new_padding_scoop_end_addr = nullptr;
 
@@ -707,7 +710,7 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 	                                    textra_start_addr,
 	                                    textra_end_addr,
 	                                    NULL,
-	                                    5,
+	                                     /* r-x */5,
 	                                    false,
 	                                    textra_contents);
 
@@ -757,7 +760,7 @@ void ZiprImpl_t::WriteDollops()
 
 			// sanity check that we didn't go passed the worst case size we calculate for this entry
 			const auto de_start_loc = entry_to_write->Place();
-			const auto should_end_before = de_start_loc + DetermineWorstCaseDollopEntrySize(entry_to_write, false);
+			const auto should_end_before = de_start_loc + DetermineDollopEntrySize(entry_to_write, false);
 			assert(de_end_loc <= should_end_before);
 			/*
 			 * Build up a list of those dollop entries that we have
@@ -789,7 +792,7 @@ void ZiprImpl_t::WriteDollops()
  */
 void ZiprImpl_t::ReplopDollopEntriesWithTargets()
 {
-	for (DollopEntry_t *entry_to_write : m_des_to_replop)
+	for (auto entry_to_write : m_des_to_replop)
 	{
 		Instruction_t *src_insn = NULL;
 		RangeAddress_t src_insn_addr;
@@ -805,33 +808,23 @@ void ZiprImpl_t::PlaceDollops()
 {
 	int count_pins=0;
 
-//	set<pair<Dollop_t*,RangeAddress_t>, placement_queue_comp> placement_queue;
-	//list<pair<Dollop_t*, RangeAddress_t>> placement_queue;
-	multimap<const UnresolvedUnpinned_t,Patch_t>::const_iterator pin_it,
-	                                                             pin_it_end;
 	/*
 	 * Build up initial placement q with destinations of
 	 * pins.
 	 */
-	for (pin_it = patch_list.begin(), pin_it_end = patch_list.end();
-	     pin_it != pin_it_end;
-	     pin_it++)
+	for (auto p : patch_list)
 	{
-		Dollop_t *target_dollop = NULL;
-		UnresolvedUnpinned_t uu = (*pin_it).first;
-		Patch_t patch = (*pin_it).second;
-		Instruction_t *target_insn = NULL;
-
-		target_insn = uu.GetInstruction();
-		target_dollop = m_dollop_mgr.GetContainingDollop(target_insn);
+		auto uu = p.first;
+		auto patch = p.second;
+		auto target_insn = uu.GetInstruction();
+		auto target_dollop = m_dollop_mgr.GetContainingDollop(target_insn);
 		assert(target_dollop);
 
 		placement_queue.insert(pair<Dollop_t*,RangeAddress_t>(target_dollop,patch.GetAddress()));
-		if (m_verbose) {
-			cout << "Original: " << std::hex << target_insn->
-			                                    GetAddress()->
-			                                    GetVirtualOffset() << " "
-			     << "vs. Patch: " << std::hex << patch.GetAddress() << endl;
+		if (m_verbose) 
+		{
+			cout << "Original: " << hex << target_insn-> GetAddress()-> GetVirtualOffset() << " "
+			     << "vs. Patch: " << patch.GetAddress() << endl;
 		}
 		count_pins++;
 	}
@@ -844,33 +837,25 @@ void ZiprImpl_t::PlaceDollops()
 
 	while (!placement_queue.empty())
 	{
-		pair<Dollop_t*, RangeAddress_t> pq_entry(NULL,NULL);
-		Dollop_t *to_place = NULL;
-		RangeAddress_t from_address =0;
-		size_t minimum_valid_req_size = 0;
-		Range_t placement = {0,0};
+		auto placement=Range_t();
 		DLFunctionHandle_t placer = NULL;
-		bool placed = false;
-		list<DollopEntry_t*>::const_iterator dit, dit_end;
+		auto placed = false;
 		RangeAddress_t cur_addr = 0 ;
 		bool has_fallthrough = false;
 		Dollop_t *fallthrough = NULL;
-		bool continue_placing = false;
-		bool am_coalescing = false;
-		bool allowed_coalescing = true, allowed_fallthrough = true;
-		bool initial_placement_abuts_pin = false;
-		bool initial_placement_abuts_fallthrough = false;
-		bool fits_entirely = false;
+		auto continue_placing = false;
+
+		auto initial_placement_abuts_pin = false;
+		auto initial_placement_abuts_fallthrough = false;
+		auto fits_entirely = false;
 		RangeAddress_t fallthrough_dollop_place = 0;
 		bool fallthrough_has_preplacement = false;
 
-		//pq_entry = placement_queue.front();
-		pq_entry = *(placement_queue.begin());
-		//placement_queue.pop_front();
+		auto pq_entry = *(placement_queue.begin());
 		placement_queue.erase(placement_queue.begin());
 
-		to_place = pq_entry.first;
-		from_address = pq_entry.second;
+		auto to_place = pq_entry.first;
+		auto from_address = pq_entry.second;
 
 		if (m_vverbose)
 		{
@@ -881,21 +866,19 @@ void ZiprImpl_t::PlaceDollops()
 		if (to_place->IsPlaced())
 			continue;
 
-		to_place->ReCalculateWorstCaseSize();
+		to_place->ReCalculateSize();
 
-		minimum_valid_req_size = std::min(
-			DetermineWorstCaseDollopEntrySize(to_place->front(), true),
-			Utils::DetermineWorstCaseDollopSizeInclFallthrough(to_place));
+		auto minimum_valid_req_size = std::min(
+			DetermineDollopEntrySize(to_place->front(), true),
+			sizer->DetermineDollopSizeInclFallthrough(to_place));
 		/*
 		 * Ask the plugin manager if there are any plugins
 		 * that want to tell us where to place this dollop.
 		 */
-		if (plugman.DoesPluginAddress(to_place,
-		                              from_address,
-		                              placement,
-		                              allowed_coalescing,
-		                              allowed_fallthrough,
-		                              placer))
+		auto am_coalescing = false;
+		auto allowed_coalescing = true;
+	       	auto allowed_fallthrough = true;
+		if (plugman.DoesPluginAddress(to_place, from_address, placement, allowed_coalescing, allowed_fallthrough, placer))
 		{
 			placed = true;
 
@@ -930,24 +913,11 @@ void ZiprImpl_t::PlaceDollops()
 			 * TODO: Consider that allowed_coalescing may invalidate the
 			 * possibility of the validity of the placement in (2).
 			 */
+			const auto ibta=to_place->FallthroughDollop()-> front()-> Instruction()-> GetIndirectBranchTargetAddress() ;
 			initial_placement_abuts_pin = to_place->FallthroughDollop() && 
-			                           (  to_place->FallthroughDollop()->
-			                              front()->
-			                              Instruction()->
-			                              GetIndirectBranchTargetAddress()
-						      &&
-						      to_place->FallthroughDollop()->
-                                                      front()->
-                                                      Instruction()->
-                                                      GetIndirectBranchTargetAddress()->
-						      GetVirtualOffset()!=0  
-						   )                                && 
-			                              to_place->FallthroughDollop()->
-			                                        front()->
-			                                        Instruction()->
-			                                        GetIndirectBranchTargetAddress()->
-			                                        GetVirtualOffset() == 
-			                         (placement.GetStart() + to_place->GetSize() - 5);
+			                                   ibta && 
+			                                   ibta -> GetVirtualOffset()!=0   && 
+			                                   ibta-> GetVirtualOffset() == (placement.GetStart() + to_place->GetSize() - sizer->TRAMPOLINE_SIZE);
 			/*
 			 * If this dollop has a fallthrough, find out where that 
 			 * fallthrough is (or is going to be) placed. That way
@@ -996,13 +966,11 @@ void ZiprImpl_t::PlaceDollops()
 				}
 			}
 			initial_placement_abuts_fallthrough = to_place->FallthroughDollop() &&
-			                                      fallthrough_has_preplacement &&
-																						fallthrough_dollop_place == 
-			                         (placement.GetStart() + to_place->GetSize() - 5);
+			                                           fallthrough_has_preplacement &&
+			                                           fallthrough_dollop_place == (placement.GetStart() + to_place->GetSize() - sizer->TRAMPOLINE_SIZE);
 
 
-			fits_entirely = (to_place->GetSize() <= 
-			                (placement.GetEnd()-placement.GetStart()));
+			auto fits_entirely = (to_place->GetSize() <= (placement.GetEnd()-placement.GetStart()));
 
 			if (m_verbose)
 			{
@@ -1014,10 +982,8 @@ void ZiprImpl_t::PlaceDollops()
 				     << fits_entirely << endl;
 			}
 
-			if (((placement.GetEnd()-placement.GetStart()) < minimum_valid_req_size)&&
-			    !(initial_placement_abuts_pin || 
-					  initial_placement_abuts_fallthrough ||
-						fits_entirely)
+			if ( ((placement.GetEnd()-placement.GetStart()) < minimum_valid_req_size) &&
+			    !(initial_placement_abuts_pin || initial_placement_abuts_fallthrough || fits_entirely)
 			   )
 			{
 				if (m_verbose)
@@ -1034,7 +1000,7 @@ void ZiprImpl_t::PlaceDollops()
 			 * sizes are not being recalculated correctly.
 			 */
 			//placement = memory_space.GetFreeRange(to_place->GetSize());
-			placement = memory_space.GetFreeRange(minimum_valid_req_size);
+			placement = sizer->DoPlacement(minimum_valid_req_size);
 
 			/*
 			 * Reset allowed_coalescing because DoesPluginAddress
@@ -1064,7 +1030,7 @@ void ZiprImpl_t::PlaceDollops()
 				virtual_offset_t(0);
 		if (has_pinned_ibta && cur_addr == pinned_ibta_addr)
 		{
-			unsigned int space_to_clear = Utils::SHORT_PIN_SIZE;
+			unsigned int space_to_clear = sizer->SHORT_PIN_SIZE;
 			/*
 			 * We have placed this dollop at the location where
 			 * its first instruction was pinned in memory.
@@ -1073,7 +1039,7 @@ void ZiprImpl_t::PlaceDollops()
 				cout << "Placed atop its own pin!" << endl;
 
 			if (memory_space[cur_addr] == (char)0xe9)
-				space_to_clear = Utils::LONG_PIN_SIZE;
+				space_to_clear = sizer->LONG_PIN_SIZE;
 
 			for (unsigned int j = cur_addr; j<(cur_addr+space_to_clear); j++)
 			{
@@ -1099,7 +1065,7 @@ void ZiprImpl_t::PlaceDollops()
 			  // and it's already placed.
 		    	  to_place->FallbackDollop()->IsPlaced() && 
 			  // and the place is adjacent to us
-			  ( to_place->FallbackDollop()->Place() + to_place->FallbackDollop()->GetSize() - 5) == placement.GetStart()
+			  ( to_place->FallbackDollop()->Place() + to_place->FallbackDollop()->GetSize() - sizer->TRAMPOLINE_SIZE) == placement.GetStart()
 			)
 		{
 			/*
@@ -1144,12 +1110,12 @@ void ZiprImpl_t::PlaceDollops()
 			 */
 			continue_placing = false;
 		
-			to_place->ReCalculateWorstCaseSize();
+			to_place->ReCalculateSize();
 
 			/*
 			 * Calculate before we place this dollop.
 			 */
-			wcds = Utils::DetermineWorstCaseDollopSizeInclFallthrough(to_place);
+			wcds = sizer->DetermineDollopSizeInclFallthrough(to_place);
 
 			to_place->Place(cur_addr);
 
@@ -1158,9 +1124,9 @@ void ZiprImpl_t::PlaceDollops()
 			fits_entirely = (to_place->GetSize() <= (placement.GetEnd()-cur_addr));
 			all_fallthroughs_fit = (wcds <= (placement.GetEnd()-cur_addr));
 
-			for (dit = to_place->begin(), dit_end = to_place->end();
-			     dit != dit_end;
-			     dit++)
+			auto dit = to_place->begin();
+			auto dit_end = to_place->end();
+			for ( /* empty */; dit != dit_end; dit++)
 			{
 				DollopEntry_t *dollop_entry = *dit;
 				/*
@@ -1185,7 +1151,7 @@ void ZiprImpl_t::PlaceDollops()
 				 *    "[A]ll of its fallthoughs will fit" encompasses
 				 *    the possibility that one of those is already 
 				 *    placed -- we use the trampoline size at that point.
-				 *    See DetermineWorstCaseDollopSizeInclFallthrough().
+				 *    See DetermineDollopSizeInclFallthrough().
 				 *    Call this the all_fallthroughs_fit case.
 				 * 5. NOT (All fallthroughs fit is the only way that we are
 				 *    allowed to proceed placing this dollop but we are not 
@@ -1200,10 +1166,10 @@ void ZiprImpl_t::PlaceDollops()
 				 */
 				const auto de_and_fallthrough_fit = 
 					// does this fit, i.e., end>current+rest_of_dollop
-					(placement.GetEnd()>= (cur_addr+DetermineWorstCaseDollopEntrySize(dollop_entry, true)));
+					(placement.GetEnd()>= (cur_addr+DetermineDollopEntrySize(dollop_entry, true)));
 				const auto is_last_insn           = next(dit)==dit_end; /* last */ 
 				const auto has_fallthrough_dollop = to_place->FallthroughDollop()!=nullptr ;
-				const auto fits_with_fallthrough  = placement.GetEnd()>=(cur_addr+ DetermineWorstCaseDollopEntrySize(dollop_entry, has_fallthrough_dollop));
+				const auto fits_with_fallthrough  = placement.GetEnd()>=(cur_addr+ DetermineDollopEntrySize(dollop_entry, has_fallthrough_dollop));
 				const auto last_de_fits           = is_last_insn && fits_with_fallthrough;
 				const auto could_fit_here         = 
 					de_and_fallthrough_fit              || 
@@ -1212,7 +1178,7 @@ void ZiprImpl_t::PlaceDollops()
 					initial_placement_abuts_pin         || 
 					initial_placement_abuts_fallthrough ;
 				const auto tramp_fits             =
-				        (placement.GetEnd() - (cur_addr + DetermineWorstCaseDollopEntrySize( dollop_entry, false))) < Utils::TRAMPOLINE_SIZE;
+				        (placement.GetEnd() - (cur_addr + DetermineDollopEntrySize( dollop_entry, false))) < sizer->TRAMPOLINE_SIZE;
 				const auto allowed_override       = 
 					allowed_coalescing    || 
 					could_fit_here        || 
@@ -1255,7 +1221,7 @@ void ZiprImpl_t::PlaceDollops()
 				if ( beneficial_to_override && allowed_override )
 				{
 					dollop_entry->Place(cur_addr);
-					const auto wcsz=DetermineWorstCaseDollopEntrySize(dollop_entry, false);
+					const auto wcsz=DetermineDollopEntrySize(dollop_entry, false);
 					const auto next_cur_addr=cur_addr+wcsz;
 					if (m_vverbose) 
 					{
@@ -1293,7 +1259,7 @@ void ZiprImpl_t::PlaceDollops()
 				 *
 				 * However ... (see below)
 				 */
-				Dollop_t *split_dollop = to_place->Split((*dit)->Instruction());
+				auto split_dollop = to_place->Split((*dit)->Instruction());
 				m_dollop_mgr.AddDollops(split_dollop);
 
 				to_place->WasTruncated(true);
@@ -1382,11 +1348,11 @@ void ZiprImpl_t::PlaceDollops()
 				 * We could fit the entirety of the dollop (and
 				 * fallthroughs) ...
 				 */
-				fallthroughs_wcds = Utils::DetermineWorstCaseDollopSizeInclFallthrough(fallthrough);
+				fallthroughs_wcds = sizer->DetermineDollopSizeInclFallthrough(fallthrough);
 				/*
 				 * ... or maybe we just want to start the next dollop.
 				 */
-				fallthrough_wcis=DetermineWorstCaseDollopEntrySize(fallthrough-> front(),
+				fallthrough_wcis=DetermineDollopEntrySize(fallthrough-> front(),
 																													 true);
 				remaining_size = placement.GetEnd() - cur_addr;
 
@@ -1415,7 +1381,7 @@ void ZiprImpl_t::PlaceDollops()
 
 					patch_de->TargetDollop(fallthrough);
 					patch_de->Place(cur_addr);
-					cur_addr+=DetermineWorstCaseDollopEntrySize(patch_de, false);
+					cur_addr+=DetermineDollopEntrySize(patch_de, false);
 					//cout << "Adjusting cur_addr to " << std::hex << cur_addr << " at C." << endl;
 
 					to_place->push_back(patch_de);
@@ -1480,7 +1446,7 @@ void ZiprImpl_t::PlaceDollops()
 void ZiprImpl_t::RecalculateDollopSizes()
 {
 	for (auto &dollop : m_dollop_mgr.GetDollops())
-		dollop->ReCalculateWorstCaseSize();
+		dollop->ReCalculateSize();
 }
 
 void ZiprImpl_t::CreateDollops()
@@ -1504,40 +1470,22 @@ void ZiprImpl_t::CreateDollops()
 
 void ZiprImpl_t::CallToNop(RangeAddress_t at_addr)
 {
-	char bytes[]={(char)0x90,(char)0x90,(char)0x90,(char)0x90,(char)0x90}; // nop;nop;nop;nop;nop
-	memory_space.PlopBytes(at_addr,bytes,sizeof(bytes));
+	assert(patcher);
+	patcher->CallToNop(at_addr);
+	return;
 }
 
 void ZiprImpl_t::PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr)
 {
-	uintptr_t off=to_addr-at_addr-5;
-
-	assert(!memory_space.IsByteFree(at_addr));
-	
-	switch(memory_space[at_addr])
-	{
-		case (char)0xe8:	/* 5byte call */
-		{
-			assert(off==(uintptr_t)off);
-			assert(!memory_space.AreBytesFree(at_addr+1,4));
-
-			memory_space[at_addr+1]=(char)(off>> 0)&0xff;
-			memory_space[at_addr+2]=(char)(off>> 8)&0xff;
-			memory_space[at_addr+3]=(char)(off>>16)&0xff;
-			memory_space[at_addr+4]=(char)(off>>24)&0xff;
-			break;
-		}
-		default:
-			assert(0);
-
-	}
+	assert(patcher);
+	patcher->PatchCall(at_addr,to_addr);
 }
 
-size_t ZiprImpl_t::DetermineWorstCaseDollopEntrySize(DollopEntry_t *entry, bool account_for_fallthrough)
+size_t ZiprImpl_t::DetermineDollopEntrySize(DollopEntry_t *entry, bool account_for_fallthrough)
 {
 	std::map<Instruction_t*,unique_ptr<list<DLFunctionHandle_t>>>::const_iterator plop_it;
 	size_t opening_size = 0, closing_size = 0;
-	size_t wcis = DetermineWorstCaseInsnSize(entry->Instruction(), account_for_fallthrough);
+	size_t wcis = DetermineInsnSize(entry->Instruction(), account_for_fallthrough);
 
 	plop_it = plopping_plugins.find(entry->Instruction());
 	if (plop_it != plopping_plugins.end())
@@ -1568,13 +1516,13 @@ size_t ZiprImpl_t::DetermineWorstCaseDollopEntrySize(DollopEntry_t *entry, bool 
 	return wcis+opening_size+closing_size;
 }
 
-size_t ZiprImpl_t::DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_for_fallthrough)
+size_t ZiprImpl_t::DetermineInsnSize(Instruction_t* insn, bool account_for_fallthrough)
 {
 	std::map<Instruction_t*,unique_ptr<list<DLFunctionHandle_t>>>::const_iterator plop_it;
 	size_t worst_case_size = 0;
 	size_t default_worst_case_size = 0;
 
-	default_worst_case_size = Utils::DetermineWorstCaseInsnSize(insn, account_for_fallthrough);
+	default_worst_case_size = sizer->DetermineInsnSize(insn, account_for_fallthrough);
 
 	plop_it = plopping_plugins.find(insn);
 	if (plop_it != plopping_plugins.end())
@@ -1582,7 +1530,7 @@ size_t ZiprImpl_t::DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_
 		for (auto handle : *(plop_it->second))
 		{
 			ZiprPluginInterface_t *zpi = dynamic_cast<ZiprPluginInterface_t*>(handle);
-			worst_case_size =std::max(zpi->WorstCaseInsnSize(insn,
+			worst_case_size =std::max(zpi->InsnSize(insn,
 			                                                 account_for_fallthrough),
 			                          worst_case_size);
 		}
@@ -1599,14 +1547,11 @@ size_t ZiprImpl_t::DetermineWorstCaseInsnSize(Instruction_t* insn, bool account_
 		worst_case_size = default_worst_case_size;
 	}
 
-#if 0
-// if you need this log, please implement a more-verbose logging option
-// this log line accounts for 80% of a 744mb log file.
-	if (m_verbose)
-		cout << "Worst case size" 
-		     << ((account_for_fallthrough) ? " (including jump)" : "")
-		     << ": " << worst_case_size << endl;
-#endif
+	if (m_vverbose)
+	{
+		const auto inc_jmp=((account_for_fallthrough) ? " (including jump)" : "");
+		cout << "Worst case size" << inc_jmp << ": " << worst_case_size << endl;
+	}
 
 	return worst_case_size;
 }
@@ -1746,7 +1691,7 @@ void ZiprImpl_t::PatchInstruction(RangeAddress_t from_addr, Instruction_t* to_in
 RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t *entry, RangeAddress_t override_address)
 {
 	const auto insn = entry->Instruction();
-	const auto insn_wcis = DetermineWorstCaseInsnSize(insn, false);
+	const auto insn_wcis = DetermineInsnSize(insn, false);
 	RangeAddress_t updated_addr = 0;
 	auto placed_address = entry->Place();
 	RangeAddress_t target_address = 0;
@@ -2113,7 +2058,7 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntryWithCallback(
 	else
 		assert(0);
 
-	assert(Utils::CALLBACK_TRAMPOLINE_SIZE<=(at-originalAt));
+	assert(sizer->CALLBACK_TRAMPOLINE_SIZE<=(at-originalAt));
 	return at;
 }
 
@@ -2954,14 +2899,17 @@ void ZiprImpl_t::ApplyNopToPatch(RangeAddress_t addr)
 			cout << "Skipping chance to apply nop to fallthrough patch." << endl;
 		return;
 	}
-	ZiprPatcherBase_t::factory(this)->ApplyNopToPatch(addr);
+	assert(patcher);
+	patcher->ApplyNopToPatch(addr);
 }
 void ZiprImpl_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)
 {
-	ZiprPatcherBase_t::factory(this)->ApplyPatch(from_addr,to_addr);
+	assert(patcher);
+	patcher->ApplyPatch(from_addr,to_addr);
 }
 void ZiprImpl_t::PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)
 {
-	ZiprPatcherBase_t::factory(this)->PatchJump(at_addr,to_addr);
+	assert(patcher);
+	patcher->PatchJump(at_addr,to_addr);
 }
 

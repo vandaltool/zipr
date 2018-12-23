@@ -101,14 +101,14 @@ void ZiprPatcherARM64_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_
 			assert((uint64_t)(new_offset << opBits) == ((uint64_t)new_offset) << opBits);
 			// or in opcode for first byte.  set remaining bytes.
 			const auto trimmed_offset=new_offset & ((1<<26)-1);
-			const auto new_first_byte =              (trimmed_offset>> 0)&0xff;
-			const auto new_second_byte=              (trimmed_offset>> 8)&0xff;
-			const auto new_third_byte =              (trimmed_offset>>16)&0xff;
-			const auto new_fourth_byte=first_byte | ((trimmed_offset>>24)&0xff);
-			cout<<"ARM64::Patching "<<hex<<from_addr+0<<" val="<<new_first_byte <<endl;
-			cout<<"ARM64::Patching "<<hex<<from_addr+1<<" val="<<new_second_byte<<endl;
-			cout<<"ARM64::Patching "<<hex<<from_addr+2<<" val="<<new_third_byte <<endl;
-			cout<<"ARM64::Patching "<<hex<<from_addr+3<<" val="<<new_fourth_byte<<endl;
+			const auto new_first_byte =               (trimmed_offset>> 0)&0xff;
+			const auto new_second_byte=               (trimmed_offset>> 8)&0xff;
+			const auto new_third_byte =               (trimmed_offset>>16)&0xff;
+			const auto new_fourth_byte=(opcode<<2) | ((trimmed_offset>>24)&0xff);
+			//cout<<"ARM64::Patching "<<hex<<from_addr+0<<" val="<<new_first_byte <<endl;
+			//cout<<"ARM64::Patching "<<hex<<from_addr+1<<" val="<<new_second_byte<<endl;
+			//cout<<"ARM64::Patching "<<hex<<from_addr+2<<" val="<<new_third_byte <<endl;
+			//cout<<"ARM64::Patching "<<hex<<from_addr+3<<" val="<<new_fourth_byte<<endl;
 			memory_space[from_addr+0]=new_first_byte;             
 			memory_space[from_addr+1]=new_second_byte;
 			memory_space[from_addr+2]=new_third_byte;
@@ -121,8 +121,8 @@ void ZiprPatcherARM64_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_
 			const auto mask19=(1<<19U)-1;
 			assert(first_byte==0x54); // need the last 2 0's for opcode here.
 			assert((uint64_t)(new_offset << opBits) == ((uint64_t)new_offset) << opBits);
-			const auto full_word_clean=full_word & (mask19<<4);
-			const auto full_word_new_offset=full_word_clean | (new_offset&mask19);
+			const auto full_word_clean=full_word & ~(mask19<<5);
+			const auto full_word_new_offset=full_word_clean | ((new_offset&mask19)<<5);
 			memory_space[from_addr+0]=(full_word_new_offset>> 0)&0xff;
 			memory_space[from_addr+1]=(full_word_new_offset>> 8)&0xff;
 			memory_space[from_addr+2]=(full_word_new_offset>>16)&0xff;
@@ -139,6 +139,16 @@ void ZiprPatcherARM64_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_
 void ZiprPatcherARM64_t::PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)
 {
 	return this->ApplyPatch(at_addr,to_addr);
+}
+void ZiprPatcherARM64_t::PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr)
+{
+	assert(0);
+}
+
+
+void ZiprPatcherARM64_t::CallToNop(RangeAddress_t at_addr)
+{
+        assert(0);
 }
 
 

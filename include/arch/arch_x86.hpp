@@ -5,6 +5,10 @@
 class ZiprArchitectureHelperX86_t  : public ZiprArchitectureHelperBase_t
 {
 	public:
+		ZiprArchitectureHelperX86_t(Zipr_SDK::Zipr_t* p_zipr_obj) : ZiprArchitectureHelperBase_t(p_zipr_obj)
+                {
+                }
+
 		virtual libIRDB::Instruction_t* createNewJumpInstruction(libIRDB::FileIR_t *p_firp, libIRDB::Instruction_t* p_existing) override
 		{
 			const auto bits=string("\xe9\x00\x00\x00\x00",5); /* jmp 0 */

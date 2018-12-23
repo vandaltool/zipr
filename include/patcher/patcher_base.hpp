@@ -39,5 +39,10 @@ class ZiprPatcherBase_t
 		virtual void ApplyNopToPatch(RangeAddress_t addr)=0;
 		virtual void ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)=0;
 		virtual void PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)=0;
+		virtual void PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr)=0;
+		virtual void CallToNop(RangeAddress_t at_addr)=0;
+
+
+
 };
 #endif

@@ -191,3 +191,37 @@ void ZiprPatcherX86_t::PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)
 }
 
 
+
+void ZiprPatcherX86_t::PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr)
+{
+        uintptr_t off=to_addr-at_addr-5;
+
+        assert(!memory_space.IsByteFree(at_addr));
+
+        switch(memory_space[at_addr])
+        {
+                case (char)0xe8:        /* 5byte call */
+                {
+                        assert(off==(uintptr_t)off);
+                        assert(!memory_space.AreBytesFree(at_addr+1,4));
+
+                        memory_space[at_addr+1]=(char)(off>> 0)&0xff;
+                        memory_space[at_addr+2]=(char)(off>> 8)&0xff;
+                        memory_space[at_addr+3]=(char)(off>>16)&0xff;
+                        memory_space[at_addr+4]=(char)(off>>24)&0xff;
+                        break;
+                }
+                default:
+                        assert(0);
+
+        }
+}
+
+void ZiprPatcherX86_t::CallToNop(RangeAddress_t at_addr)
+{
+        char bytes[]={(char)0x90,(char)0x90,(char)0x90,(char)0x90,(char)0x90}; // nop;nop;nop;nop;nop
+        memory_space.PlopBytes(at_addr,bytes,sizeof(bytes));
+}
+
+
+

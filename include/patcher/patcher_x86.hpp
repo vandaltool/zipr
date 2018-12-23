@@ -33,16 +33,23 @@
 
 class ZiprPatcherX86_t : public ZiprPatcherBase_t
 {
+	// data
 	zipr::ZiprImpl_t* m_parent;
 	libIRDB::FileIR_t* m_firp;
 	Zipr_SDK::MemorySpace_t &memory_space;
 
+	// methods
+	void RewritePCRelOffset(RangeAddress_t from_addr,RangeAddress_t to_addr, int insn_length, int offset_pos);
+
 	public:
 		ZiprPatcherX86_t(Zipr_SDK::Zipr_t* p_parent) ;
-		void RewritePCRelOffset(RangeAddress_t from_addr,RangeAddress_t to_addr, int insn_length, int offset_pos);
-		void ApplyNopToPatch(RangeAddress_t addr);
-		void ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr);
-		void PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr);
+		void ApplyNopToPatch(RangeAddress_t addr) override;
+		void ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr) override;
+		void PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr) override;
+                void PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr) override;
+		void CallToNop(RangeAddress_t at_addr) override;
+
+	
 
 
 };

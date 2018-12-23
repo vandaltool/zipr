@@ -14,11 +14,20 @@ using namespace std;
 using namespace libIRDB;
 using namespace zipr;
 
-unique_ptr<ZiprArchitectureHelperBase_t> ZiprArchitectureHelperBase_t::factory(FileIR_t* p_firp)
+ZiprArchitectureHelperBase_t::ZiprArchitectureHelperBase_t(Zipr_SDK::Zipr_t* p_zipr_obj) :
+	m_pinner (ZiprPinnerBase_t ::factory(p_zipr_obj)),
+	m_patcher(ZiprPatcherBase_t::factory(p_zipr_obj)),
+	m_sizer  (ZiprSizerBase_t  ::factory(p_zipr_obj)) 
 {
-	auto ret= p_firp->GetArchitecture()->getMachineType() == admtX86_64   ?  (ZiprArchitectureHelperBase_t*)new ZiprArchitectureHelperX86_t  () :
-	          p_firp->GetArchitecture()->getMachineType() == admtI386     ?  (ZiprArchitectureHelperBase_t*)new ZiprArchitectureHelperX86_t  () :
-	          p_firp->GetArchitecture()->getMachineType() == admtAarch64  ?  (ZiprArchitectureHelperBase_t*)new ZiprArchitectureHelperARM64_t() :
+}
+
+
+unique_ptr<ZiprArchitectureHelperBase_t> ZiprArchitectureHelperBase_t::factory(Zipr_SDK::Zipr_t* p_zipr_obj)
+{
+	auto l_firp=p_zipr_obj->GetFileIR();
+	auto ret= l_firp->GetArchitecture()->getMachineType() == admtX86_64   ?  (ZiprArchitectureHelperBase_t*)new ZiprArchitectureHelperX86_t  (p_zipr_obj) :
+	          l_firp->GetArchitecture()->getMachineType() == admtI386     ?  (ZiprArchitectureHelperBase_t*)new ZiprArchitectureHelperX86_t  (p_zipr_obj) :
+	          l_firp->GetArchitecture()->getMachineType() == admtAarch64  ?  (ZiprArchitectureHelperBase_t*)new ZiprArchitectureHelperARM64_t(p_zipr_obj) :
 	          throw domain_error("Cannot init architecture");
 
 	return unique_ptr<ZiprArchitectureHelperBase_t>(ret);

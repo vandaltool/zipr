@@ -30,6 +30,9 @@ files=  '''
 	patcher_arm64.cpp  
 	patcher_base.cpp  
 	patcher_x86.cpp
+	sizer_base.cpp
+	sizer_x86.cpp
+	sizer_arm64.cpp
 	'''
 
 # ELFIO needs to be first so we get the zipr version instead of the sectrans version.  the zipr version is modified to include get_offset.

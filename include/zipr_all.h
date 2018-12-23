@@ -58,9 +58,10 @@ using namespace Zipr_SDK;
 #include <plugin_man.h>
 #include <zipr_dollop_man.h>
 #include <zipr_utils.h>
-#include <arch/arch_base.hpp>
 #include <pinner/pinner_base.hpp>
 #include <patcher/patcher_base.hpp>
+#include <sizer/sizer_base.hpp>
+#include <arch/arch_base.hpp>
 #include <zipr_impl.h>
 #include <zipr_optimizations.h>
 #include <zipr_stats.h>
