@@ -146,7 +146,6 @@ void ZiprPatcherARM64_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_
 	{
 		const auto non_mask_bits=32U-14;	// 32 bits, imm14
 		const auto mask14=(1<<14U)-1;
-		assert(first_byte==0x54); // need the last 2 0's for opcode here.
 		assert((uint64_t)(new_offset << non_mask_bits) == ((uint64_t)new_offset) << non_mask_bits);
 		const auto full_word_clean=full_word & ~(mask14<<5);
 		const auto full_word_new_offset=full_word_clean | ((new_offset&mask14)<<5);
