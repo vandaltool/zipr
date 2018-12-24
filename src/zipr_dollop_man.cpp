@@ -160,20 +160,11 @@ namespace zipr {
 	}
 
 	Dollop_t *ZiprDollopManager_t::GetContainingDollop(libIRDB::Instruction_t *insn) {
-#if 0
-		try {
-			return m_insn_to_dollop.at(insn);
-		} catch (const std::out_of_range &oor) {
-			return NULL;
-		}
-		return NULL;
-#else
 		InsnToDollopMap_t::iterator it=m_insn_to_dollop.find(insn);
 		if(it!=m_insn_to_dollop.end())
 			return it->second;
 		return NULL;
 			
-#endif
 	}
 
 	void ZiprDollopManager_t::AddDollops(Dollop_t *dollop_head) {
@@ -212,70 +203,70 @@ namespace zipr {
 		 * Push the actual dollop onto the list of dollops
 		 * if it's not already there.
 		 */
-#if 0		
-		if (m_dollops.end()==std::find(m_dollops.begin(), m_dollops.end(), dollop))
-			m_dollops.push_back(dollop);
-#else
-			m_dollops.insert(dollop);
-
-#endif
-	
+		m_dollops.insert(dollop);
 		m_refresh_stats = true;
 	}
 
 	bool ZiprDollopManager_t::UpdateTargets(Dollop_t *dollop) {
-		bool changed = false;
-		bool local_changed = false;
-		int local_changed_count=0;
-		int and_count=0;
-		do {
-			local_changed = false;
-			local_changed_count++;
-			const auto local_dollop=list<DollopEntry_t*>(dollop->begin(), dollop->end());
-			list<DollopEntry_t*>::const_iterator it, it_end;
-			for (it = local_dollop.begin(), it_end = local_dollop.end();
-			     it != it_end;
-					 /* nop */) {
-				DollopEntry_t *entry = *it;
-				it++;
-				if (entry->Instruction() &&
-				    entry->Instruction()->GetTarget()) {
-					Dollop_t *new_target=AddNewDollops(entry->Instruction()->GetTarget());
-					and_count++;
+		const auto handle_reloc=[this](const Relocation_t* reloc) 
+		{
+			auto wrt_insn=dynamic_cast<Instruction_t*>(reloc->GetWRT());
+			if(wrt_insn)
+			{
+				// we don't bother marking a change because
+				// we only need to do this once for relocs
+				// and we are certain to get here once for every dollop
+				AddNewDollops(wrt_insn);	
+				cout<<"Adding new dollop for reloc of type="<<reloc->GetType()<<endl;
 
-					/*
-					 * In the case there is a change, we have to restart.
-					 * The dollop that we are updating could itself have
-					 * contained the target and the call would have
-					 * split this dollop. That makes the iterator go
-					 * haywire.
-					 * 
-					 * But!  We could avoid the break by using a copy of the set.
-					 */
-					if (new_target != entry->TargetDollop()) {
-						entry->TargetDollop(new_target);
-						changed = local_changed = true;
-						//break;
-					}
+			}
+		};
+
+		auto changed = false;
+		const auto local_dollop=list<DollopEntry_t*>(dollop->begin(), dollop->end());
+		for (auto &entry : local_dollop )
+		{
+			auto insn=entry->Instruction();
+			if (insn->GetTarget()) 
+			{
+				auto new_target=AddNewDollops(insn->GetTarget());
+
+				/*
+				 * In the case there is a change, we have to restart.
+				 * The dollop that we are updating could itself have
+				 * contained the target and the call would have
+				 * split this dollop. That makes the iterator go
+				 * haywire.
+				 * 
+				 * But!  We could avoid the break by using a copy of the set, which we do.
+				 */
+				if (new_target != entry->TargetDollop()) {
+					entry->TargetDollop(new_target);
+					changed = true;
 				}
 			}
+
+			// make sure each instruction referenced via a relocation is placed in a dollop
+			for(auto &reloc : insn->GetRelocations())
+				handle_reloc(reloc);
+			auto ehpgm=insn->GetEhProgram();
+			if(ehpgm)
+				for(auto &reloc : ehpgm->GetRelocations())
+					handle_reloc(reloc);
+		}
 			
-		} while (false); // while (local_changed);
 		return changed;
 	}
 
 	void ZiprDollopManager_t::UpdateAllTargets(void) {
-		DollopList_t::iterator it, it_end;
-		bool changed = false;
-		int changed_count=0;
-		int update_count=0;
+		auto changed = false;
+		auto changed_count=0;
+		auto update_count=0;
 		do {
 			changed = false;
 			const auto local_dollops=m_dollops;
-			for (it = local_dollops.begin(), it_end = local_dollops.end(); it != it_end; /* nop */) 
+			for (auto entry : local_dollops)
 			{
-				Dollop_t *entry = *it;
-				it++;
 				changed |= UpdateTargets(entry);
 				update_count++;
 				if((update_count%1000000) == 0 )

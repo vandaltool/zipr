@@ -1129,6 +1129,34 @@ void ZiprImpl_t::PlaceDollops()
 			for ( /* empty */; dit != dit_end; dit++)
 			{
 				DollopEntry_t *dollop_entry = *dit;
+				/* 
+				 * first, check if we need to add any reference dollops to the placement queue
+				 */
+				const auto handle_reloc=[&](const Relocation_t* reloc)
+				{
+					auto wrt_insn=dynamic_cast<Instruction_t*>(reloc->GetWRT());
+					if(wrt_insn)
+					{
+						auto containing=m_dollop_mgr.GetContainingDollop(wrt_insn);
+						assert(containing!=nullptr);
+						if(!containing->IsPlaced())
+						{
+							placement_queue.insert(pair<Dollop_t*, RangeAddress_t>( containing, cur_addr));
+							cout<<"Adding to placement queue for reloc of type="<<reloc->GetType()<<endl;
+						}
+					}
+				};
+
+
+				// make sure each instruction referenced via a relocation is placed in a dollop
+				auto insn=dollop_entry->Instruction();
+				for(auto &reloc : insn->GetRelocations())
+					handle_reloc(reloc);
+				auto ehpgm=insn->GetEhProgram();
+				if(ehpgm)
+					for(auto &reloc : ehpgm->GetRelocations())
+						handle_reloc(reloc);
+
 				/*
 				 * There are several ways that a dollop could end:
 				 * 1. There is no more fallthrough (handled above with
@@ -1320,11 +1348,7 @@ void ZiprImpl_t::PlaceDollops()
 				 * even if we do coaelesce something its fallthrough could
 				 * be preplaced ...
 				 */
-				if (!am_coalescing &&
-				    to_place->FallthroughDollop() &&
-				    fallthrough_has_preplacement &&
-				    fallthrough_dollop_place == cur_addr
-				   )
+				if (!am_coalescing && to_place->FallthroughDollop() && fallthrough_has_preplacement && fallthrough_dollop_place == cur_addr)
 				{
 					if (m_verbose)
 						cout << "Dollop had a fallthrough dollop and "
@@ -1766,9 +1790,6 @@ RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t *entry, RangeAddress_t
 	final_insn_locations[insn] = placed_address;
 	return updated_addr;
 }
-
-#define IS_RELATIVE(A) \
-((A.ArgType & MEMORY_TYPE) && (A.ArgType & RELATIVE_))
 
 RangeAddress_t ZiprImpl_t::PlopDollopEntry(
 	DollopEntry_t *entry,
