@@ -1,42 +1,41 @@
 
 #include <libIRDB-core.hpp>
-#include <core/operand_cs.hpp>
-#include <core/decode_cs.hpp>
-#include <core/operand_bea.hpp>
-#include <core/decode_bea.hpp>
-#include <core/operand_meta.hpp>
-#include <core/decode_meta.hpp>
+#include <core/operand_csx86.hpp>
+#include <core/decode_csx86.hpp>
+#include <core/operand_dispatch.hpp>
+#include <core/decode_dispatch.hpp>
 
 using namespace std;
 using namespace libIRDB;
 
-DecodedOperandMeta_t::DecodedOperandMeta_t(const DecodedOperandCapstone_t& copy_cs)  :
-	cs(copy_cs)
+DecodedOperandDispatcher_t::DecodedOperandDispatcher_t(const shared_ptr<DecodedOperandCapstone_t> copy_cs)  
 {
+	cs=copy_cs;
 } 
 
-DecodedOperandMeta_t::DecodedOperandMeta_t(const DecodedOperandMeta_t& copy) : 
-	cs(copy.cs)
+DecodedOperandDispatcher_t::DecodedOperandDispatcher_t(const DecodedOperandDispatcher_t& copy) 
+{
+	cs=copy.cs;
+}
+
+DecodedOperandDispatcher_t::~DecodedOperandDispatcher_t()
 {
 }
 
-DecodedOperandMeta_t::~DecodedOperandMeta_t()
-{
-}
-
-DecodedOperandMeta_t& DecodedOperandMeta_t::operator=(const DecodedOperandMeta_t& copy)
+DecodedOperandDispatcher_t& DecodedOperandDispatcher_t::operator=(const DecodedOperandDispatcher_t& copy)
 {
 	cs=copy.cs;
 	return *this;
 }
 
 #define passthrough_to_cs(ret_type, method_name) \
-	ret_type DecodedOperandMeta_t::method_name() const \
+	ret_type DecodedOperandDispatcher_t::method_name() const \
 	{ \
-		return cs.method_name(); \
+		return cs->method_name(); \
 	} 
 
 passthrough_to_cs(bool, isConstant);
+passthrough_to_cs(uint64_t, getConstant);
 passthrough_to_cs(string, getString);
 passthrough_to_cs(bool, isRegister);
 passthrough_to_cs(bool, isGeneralPurposeRegister);

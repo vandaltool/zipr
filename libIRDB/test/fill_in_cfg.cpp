@@ -127,69 +127,70 @@ void PopulateCFG::set_target
 
 	if(insn->GetTarget())
 		return;
-	
-	// check for branches with targets 
-	if(
-		//(disasm->Instruction.BranchType!=0) &&			// it is a branch 
-		//(disasm->Instruction.BranchType!=RetType) && 		// and not a return
-		//(disasm->Argument1.ArgType & CONSTANT_TYPE)!=0		// and has a constant argument type 1
-		(disasm->isBranch()) &&			// it is a branch 
-		(!disasm->isReturn()) && 		// and not a return
-		(disasm->getOperand(0).isConstant())		// and has a constant argument type 1
-	  )
-	{
-//		cout<<"Found direct jump with addr=" << insn->GetAddress()->GetVirtualOffset() <<
-//			" disasm="<<disasm->CompleteInstr<<" ArgMnemonic="<<
-//			disasm->Argument1.ArgMnemonic<<"."<<endl;
 
-		/* get the offset */
-		// virtual_offset_t virtual_offset=strtoul(disasm->Argument1.ArgMnemonic, NULL, 16);
-		virtual_offset_t virtual_offset=disasm->getAddress();
-
-		/* create a pair of offset/file */
-		pair<db_id_t,virtual_offset_t> p(insn->GetAddress()->GetFileID(),virtual_offset);
-	
-		/* lookup the target insn from the map */
-		Instruction_t *target_insn=insnMap[p];
-
-		/* sanity, note we may see odd control transfers to 0x0 */
-		if(target_insn==NULL)
+	const auto &operands = disasm->getOperands();
+	for(auto operand : operands)
+	{	
+		// check for branches with targets 
+		if(
+			disasm->isBranch() &&		// it is a branch 
+			!disasm->isReturn() && 		// and not a return
+			operand.isConstant()		// and has a constant argument 
+		  )
 		{
-			unsigned char first_byte=0;
-			if(insn->GetFallthrough())
-				first_byte=(insn->GetFallthrough()->GetDataBits().c_str())[0];
-			virtual_offset_t jump_dist=virtual_offset-(insn->GetAddress()->GetVirtualOffset()+(insn->GetDataBits()).size());
-			if(	
-				// jump 1 byte forward
-				jump_dist == 1 &&
+	//		cout<<"Found direct jump with addr=" << insn->GetAddress()->GetVirtualOffset() <<
+	//			" disasm="<<disasm->CompleteInstr<<" ArgMnemonic="<<
+	//			disasm->Argument1.ArgMnemonic<<"."<<endl;
 
-				// and we calculated the fallthrough
-				insn->GetFallthrough()!=NULL &&
+			/* get the offset */
+			// virtual_offset_t virtual_offset=strtoul(disasm->Argument1.ArgMnemonic, NULL, 16);
+			virtual_offset_t virtual_offset=disasm->getAddress();
 
-				// and the fallthrough starts with a lock prefix
-				first_byte==0xf0
-			  )
+			/* create a pair of offset/file */
+			pair<db_id_t,virtual_offset_t> p(insn->GetAddress()->GetFileID(),virtual_offset);
+		
+			/* lookup the target insn from the map */
+			Instruction_t *target_insn=insnMap[p];
+
+			/* sanity, note we may see odd control transfers to 0x0 */
+			if(target_insn==NULL)
 			{
-				odd_target_count++;
-				target_insn=insn->GetFallthrough();
+				unsigned char first_byte=0;
+				if(insn->GetFallthrough())
+					first_byte=(insn->GetFallthrough()->GetDataBits().c_str())[0];
+				virtual_offset_t jump_dist=virtual_offset-(insn->GetAddress()->GetVirtualOffset()+(insn->GetDataBits()).size());
+				if(	
+					// jump 1 byte forward
+					jump_dist == 1 &&
+
+					// and we calculated the fallthrough
+					insn->GetFallthrough()!=NULL &&
+
+					// and the fallthrough starts with a lock prefix
+					first_byte==0xf0
+				  )
+				{
+					odd_target_count++;
+					target_insn=insn->GetFallthrough();
+				}
+				else
+				{
+					if(virtual_offset!=0)
+						cout<<"Cannot set target (target="<< std::hex << virtual_offset << ") for "<<std::hex<<insn->GetAddress()->GetVirtualOffset()<<"."<<endl;
+					bad_target_count++;
+				}
+			}
+
+			/* set the target for this insn */
+			if(target_insn!=0)
+			{
+				targets_set++;
+				insn->SetTarget(target_insn);
 			}
 			else
-			{
-				if(virtual_offset!=0)
-					cout<<"Cannot set target (target="<< std::hex << virtual_offset << ") for "<<std::hex<<insn->GetAddress()->GetVirtualOffset()<<"."<<endl;
-				bad_target_count++;
-			}
-		}
+				missed_instructions.insert( pair<db_id_t,virtual_offset_t>(insn->GetAddress()->GetFileID(),virtual_offset));
 
-		/* set the target for this insn */
-		if(target_insn!=0)
-		{
-			targets_set++;
-			insn->SetTarget(target_insn);
 		}
-		else
-			missed_instructions.insert( pair<db_id_t,virtual_offset_t>(insn->GetAddress()->GetFileID(),virtual_offset));
-
 	}
 }
 

@@ -13,6 +13,7 @@ namespace EXEIO
 	class exeio_t; // forward decl
 
 	typedef enum { ELF64, ELF32, PE32, PE64 } execlass_t;
+	typedef enum {  mtX86_64, mtI386, mtArm32, mtAarch64 } MachineType_t; 
 
 	typedef uintptr_t virtual_offset_t;
 
@@ -46,6 +47,7 @@ namespace EXEIO
 			virtual void dump_section_headers(std::ostream& stream) =0;
 			virtual void load(exeio_t* main, const char* filename) =0;
                         virtual execlass_t get_class() =0;
+                        virtual MachineType_t getMachineType() const =0;
 			virtual virtual_offset_t get_entry() =0;
 			virtual void* get_elfio() { return NULL; }
 			virtual bool isDLL() =0;
@@ -116,6 +118,7 @@ namespace EXEIO
 			virtual void dump_header(std::ostream& stream) { assert(backend); backend->dump_header(stream); }
 			virtual void dump_section_headers(std::ostream& stream) { assert(backend); backend->dump_section_headers(stream); }
                         virtual execlass_t get_class() { assert(backend); return backend->get_class(); }
+                        virtual MachineType_t getMachineType() const { assert(backend); return backend->getMachineType(); }
 			virtual void* get_elfio() { assert(backend); return backend->get_elfio(); }
 			virtual bool isDLL() { assert(backend); return backend->isDLL(); }
 			virtual bool isDynamicallyLinked() { assert(backend); return backend->isDynamicallyLinked(); }

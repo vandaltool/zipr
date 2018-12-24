@@ -92,8 +92,9 @@ class FileIR_t : public BaseObj_t
 		void ChangeRegistryKey(Instruction_t* orig, Instruction_t* updated);
 
 		static int GetArchitectureBitWidth() ;
-		static void SetArchitectureBitWidth(const int width);
+		static void SetArchitecture(const int width, const ADMachineType_t mt);
 		void SetArchitecture();
+		static const ArchitectureDescription_t* GetArchitecture() { return archdesc; }
 
 		// Lookup a scoop by address
 		DataScoop_t* FindScoop(const libIRDB::virtual_offset_t &addr);
