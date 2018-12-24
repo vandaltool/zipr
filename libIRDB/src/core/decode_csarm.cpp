@@ -13,6 +13,8 @@ using namespace libIRDB;
 using namespace std;
 
 #define ALLOF(a) begin(a),end(a)
+static const auto ARM64_REG_PC=(arm64_reg)(ARM64_REG_ENDING+1);
+
 
 DecodedInstructionCapstoneARM64_t::CapstoneHandle_t* DecodedInstructionCapstoneARM64_t::cs_handle=NULL ;
 
@@ -82,8 +84,30 @@ void DecodedInstructionCapstoneARM64_t::Disassemble(const virtual_offset_t start
 	if(!ok)
 		insn->size=0;
 
+        auto &op0 = (insn->detail->arm64.operands[0]); // might change these.
+        auto &op1 = (insn->detail->arm64.operands[1]);
 
 	const auto mnemonic=string(insn->mnemonic);
+	const auto is_ldr_type = mnemonic=="ldr"  || mnemonic=="ldrsw" ;
+	if(is_ldr_type && op1.type==ARM64_OP_IMM)
+	{
+		// no, this is a pcrel load.
+		const auto imm=op1.imm;
+		op1.type=ARM64_OP_MEM;
+		op1.mem.base=ARM64_REG_PC;
+		op1.mem.index=ARM64_REG_INVALID;
+		op1.mem.disp=imm;
+	}
+	if(mnemonic=="prfm" && op0.type==ARM64_OP_IMM)
+	{
+		// no, this is a pcrel load.
+		const auto imm=op0.imm;
+		op0.type=ARM64_OP_MEM;
+		op0.mem.base=ARM64_REG_PC;
+		op0.mem.index=ARM64_REG_INVALID;
+		op0.mem.disp=imm;
+	}
+
 
 	const auto cs_freer=[](cs_insn * insn) -> void 
 		{  
@@ -176,8 +200,8 @@ bool DecodedInstructionCapstoneARM64_t::isCall() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 
-	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
-	return isPartOfGroup(the_insn,ARM64_GRP_CALL);
+	const auto mnemonic=getMnemonic();
+	return mnemonic=="bl" || mnemonic=="blr";
 }
 
 bool DecodedInstructionCapstoneARM64_t::isUnconditionalBranch() const
@@ -281,7 +305,11 @@ bool DecodedInstructionCapstoneARM64_t::setsStackPointer() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 
-	assert (0);
+	if(!hasOperand(0)) return false;
+
+	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
+	const auto &arm = (the_insn->detail->arm64);
+	return (arm.operands[0].type==ARM64_OP_REG && arm.operands[0].reg==ARM64_REG_SP);
 }
 
 uint32_t DecodedInstructionCapstoneARM64_t::getPrefixCount() const

@@ -101,15 +101,8 @@ bool check_entry(bool &found, ControlFlowGraph_t* cfg)
 	BasicBlock_t *entry=cfg->GetEntry();
 	found=false;
 
-	for(
-		std::vector<Instruction_t*>::const_iterator it=entry->GetInstructions().begin();
-		it!=entry->GetInstructions().end();
-		++it
-	   )
+	for(auto insn : entry->GetInstructions())
 	{
-		Instruction_t* insn=*it;
-		//DISASM disasm;
-		//Disassemble(insn,disasm);
 		DecodedInstruction_t disasm(insn);
 		if(disasm.setsStackPointer()) {
 			return false;
@@ -124,7 +117,7 @@ bool check_entry(bool &found, ControlFlowGraph_t* cfg)
 			}
 		}
 
-		if(strstr(disasm.getDisassembly().c_str()/* disasm.CompleteInstr*/, "[esp]"))
+		if(strstr(disasm.getDisassembly().c_str(), "[esp]"))
 		{
 			found=true;
 			if(getenv("VERBOSE_FIX_CALLS"))
@@ -513,6 +506,9 @@ void convert_to_jump(Instruction_t* insn, int offset)
  */
 void fix_call(Instruction_t* insn, FileIR_t *firp, bool can_unpin)
 {
+	if(firp->GetArchitecture()->getMachineType()==admtAarch64)
+		return;
+
 	/* record the possibly new indirect branch target if this call gets fixed */
 	Instruction_t* newindirtarg=insn->GetFallthrough();
 

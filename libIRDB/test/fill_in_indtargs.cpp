@@ -224,13 +224,8 @@ Instruction_t *lookupInstruction(FileIR_t *firp, virtual_offset_t virtual_offset
 
 void mark_targets(FileIR_t *firp)
 {
-        for(
-                set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
-                it!=firp->GetInstructions().end();
-                ++it
-           )
-        {
-		Instruction_t *insn=*it;
+        for(auto insn : firp->GetInstructions())
+	{
 		virtual_offset_t addr=insn->GetAddress()->GetVirtualOffset();
 
 		/* lookup in the list of targets */
@@ -250,6 +245,8 @@ void mark_targets(FileIR_t *firp)
 			}
 			else
 			{
+				if(getenv("IB_VERBOSE")!=nullptr)
+					cout<<"Setting pin at "<<hex<<addr<<endl;
 				AddressID_t* newaddr = new AddressID_t;
 				newaddr->SetFileID(insn->GetAddress()->GetFileID());
 				newaddr->SetVirtualOffset(insn->GetAddress()->GetVirtualOffset());
@@ -451,37 +448,18 @@ void infer_targets(FileIR_t *firp, section* shdr)
 void print_targets()
 {
 	int j=1;
-	for(
-		map<virtual_offset_t,ibt_provenance_t>::iterator it=targets.begin();
-		it!=targets.end();
-		++it, j++
-	   )
+	for(auto  p : targets )
 	{
-		virtual_offset_t target=it->first;
+		const auto target=p.first;
 	
-		cout<<std::hex<<target;
+		cout<<hex<<target;
 		if(j%10 == 0)
 			cout<<endl; 
 		else
 			cout<<", ";
+		j++;
 	}
 
-	cout<<endl;
-}
-
-void print_targets_oneline()
-{
-	int j=1;
-	for(
-		map<virtual_offset_t,ibt_provenance_t>::iterator it=targets.begin();
-		it!=targets.end();
-		++it, j++
-	   )
-	{
-		virtual_offset_t target=it->first;
-	
-		cout<<std::hex<<target<<",";
-	}
 	cout<<endl;
 }
 
@@ -497,12 +475,10 @@ set<Instruction_t*> find_in_function(string needle, Function_t *haystack)
 	for (; fit != haystack->GetInstructions().end(); fit++)
 	{
 		Instruction_t *candidate = *fit;
-		//DISASM disasm;
-		//Disassemble(candidate,disasm);
 		DecodedInstruction_t disasm(candidate);
 
 		// check it's the requested type
-		if(regexec(&preg, disasm.getDisassembly().c_str() /*CompleteInstr*/, 0, nullptr, 0) == 0)
+		if(regexec(&preg, disasm.getDisassembly().c_str(), 0, nullptr, 0) == 0)
 		{
 			found_instructions.insert(candidate);
 		}
@@ -2895,11 +2871,6 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, int64_t do_unpin_opt)
 	cout<<"========================================="<<endl;
 	cout<<"# ATTRIBUTE fill_in_indtargs::total_indirect_targets="<<std::dec<<targets.size()<<endl;
 	print_targets();
-	cout<<"========================================="<<endl;
-
-	cout<<"========================================="<<endl;
-	cout<<"# ATTRIBUTE oneline_indirect_targets=";
-	print_targets_oneline();
 	cout<<"========================================="<<endl;
 
 	// try to setup an ICFS for every IB.

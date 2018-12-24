@@ -57,7 +57,6 @@ class DecodedOperandCapstoneARM64_t : public DecodedOperandCapstone_t
 		uint8_t op_num;
 
 		friend class DecodedInstructionCapstoneARM64_t;
-
 };
 
 }

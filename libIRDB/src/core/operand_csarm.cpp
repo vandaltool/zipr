@@ -8,7 +8,7 @@ using namespace std;
 using namespace libIRDB;
 
 #include <capstone.h>
-
+static const auto ARM64_REG_PC=(arm64_reg)(ARM64_REG_ENDING+1);
 
 
 DecodedOperandCapstoneARM64_t::DecodedOperandCapstoneARM64_t( const shared_ptr<void> & p_my_insn, uint8_t p_op_num)
@@ -243,7 +243,20 @@ virtual_offset_t DecodedOperandCapstoneARM64_t::getMemoryDisplacement() const
 
 bool DecodedOperandCapstoneARM64_t::isPcrel() const
 {
-        if(!isMemory()) return false;
+	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
+        const auto &op = (the_insn->detail->arm64.operands[op_num]);
+
+	// covers ldr, ldrsw, prfm
+	// note: capstone's reports ldr, ldrsw, and prfm as using an imm, when they actually access memory.
+	// jdh fixed this in the IRDB's Disassemble routine
+	if(isMemory() && op.mem.base==ARM64_REG_PC)
+		return true;
+
+	const auto mnemonic=string(the_insn->mnemonic);
+	const auto is_adr_type= mnemonic=="adr"  || mnemonic=="adrp";
+	if(is_adr_type && op.type==ARM64_OP_IMM)
+		return true;
+
 	return false;	 // no PC as general purpose reg.
 }
 

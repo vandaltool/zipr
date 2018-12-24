@@ -85,9 +85,13 @@ int main(int argc, char **argv)
 					if(op.isRead()) readWriteString += "READ ";
 					if(op.isWritten()) readWriteString += "WRITE ";
 
-					cout<<"\t"<<"operand["<<op_count<<"]="<<op.getString()<<" rw="<<readWriteString
-					    <<boolalpha<<"isGPReg="<<op.isGeneralPurposeRegister()<<" isMem="<<op.isMemory()
-					    << " isImm="<<op.isConstant() << endl;
+					cout<<"\t"<<"operand["<<op_count<<"]="<<op.getString() << boolalpha 
+					    <<" rw="     <<readWriteString
+					    <<" isGPReg="<<op.isGeneralPurposeRegister()
+					    <<" isMem="  <<op.isMemory()
+					    <<" isImm="  <<op.isConstant() 
+					    <<" isPcrel="<<op.isPcrel() 
+					    << endl;
 	
 					op_count++;			
 				}
