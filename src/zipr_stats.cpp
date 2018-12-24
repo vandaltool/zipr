@@ -25,7 +25,6 @@
 #include <iostream>
 
 using namespace zipr;
-using namespace zipr::Utils;
 
 void Stats_t::PrintStats(std::ostream &out)
 {

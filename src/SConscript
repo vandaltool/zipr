@@ -23,6 +23,16 @@ files=  '''
 	zipr_dollop_man.cpp
 	elfwrite.cpp
 	ehwrite.cpp
+	arch_base.cpp
+	pinner_arm64.cpp  
+	pinner_base.cpp  
+	pinner_x86.cpp
+	patcher_arm64.cpp  
+	patcher_base.cpp  
+	patcher_x86.cpp
+	sizer_base.cpp
+	sizer_x86.cpp
+	sizer_arm64.cpp
 	'''
 
 # ELFIO needs to be first so we get the zipr version instead of the sectrans version.  the zipr version is modified to include get_offset.
@@ -63,7 +73,7 @@ myenv=myenv.Clone(CPPPATH=Split(cpppath), LIBS=Split(libs), LIBPATH=Split(libpat
 #print 'myenv='
 #print myenv.Dump()
 
-myenv.Append(CXXFLAGS=" -Wno-deprecated")
+myenv.Append(CXXFLAGS=" -Wno-deprecated -fmax-errors=2")
 ziprexe=myenv.Program("zipr.exe", Split(files))
 
 install=myenv.Install("$ZIPR_INSTALL/bin/", ziprexe)

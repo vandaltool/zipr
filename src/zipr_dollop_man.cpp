@@ -3,7 +3,6 @@
 #include <cstdlib>
 
 using namespace zipr;
-using namespace zipr::Utils;
 using namespace std;
 using namespace Zipr_SDK;
 using namespace libIRDB;
@@ -140,11 +139,14 @@ namespace zipr {
 		}
 	}
 
-	size_t ZiprDollopManager_t::DetermineWorstCaseDollopEntrySize(DollopEntry_t *entry) {
+	size_t ZiprDollopManager_t::DetermineDollopEntrySize(DollopEntry_t *entry) 
+	{
+		const auto l_zipr=dynamic_cast<ZiprImpl_t*>(m_zipr);
+		const auto sizer=l_zipr->GetSizer();
 		if (m_zipr != NULL)
-			return m_zipr->DetermineWorstCaseDollopEntrySize(entry, false);
+			return m_zipr->DetermineDollopEntrySize(entry, false);
 		else
-			return Utils::DetermineWorstCaseInsnSize(entry->Instruction(), false);
+			return sizer->DetermineInsnSize(entry->Instruction(), false);
 	}
 
 	void ZiprDollopManager_t::PrintDollopPatches(const ostream &out) {

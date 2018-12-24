@@ -39,8 +39,7 @@ cpppath='''
 	$ZIPR_HOME/third_party/ELFIO/elfio-2.2	
 	$SECURITY_TRANSFORMS_HOME/include/
 	$SECURITY_TRANSFORMS_HOME/libIRDB/include/
-	$SECURITY_TRANSFORMS_HOME/beaengine/include
-	$SECURITY_TRANSFORMS_HOME/beaengine/beaengineSources/Includes/
+	$SECURITY_TRANSFORMS_HOME/libtransform/include/
 	$ZIPR_HOME/include/
 	$ZIPR_SDK/include/
 	'''

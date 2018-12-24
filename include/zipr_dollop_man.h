@@ -89,6 +89,8 @@ class ZiprDollopManager_t : public DollopManager_t {
 		DollopList_t::iterator dollops_end() {
 			return m_dollops.end();
 		}
+		DollopList_t& GetDollops() { return m_dollops; }
+		const DollopList_t& GetDollops() const { return m_dollops; }
 
 		/*
 		 * Printing/output functions.
@@ -103,7 +105,9 @@ class ZiprDollopManager_t : public DollopManager_t {
 		/*
 		 * Helper functions.
 		 */
-		size_t DetermineWorstCaseDollopEntrySize(DollopEntry_t *entry);
+		size_t DetermineDollopEntrySize(DollopEntry_t *entry);
+
+		Zipr_SDK::Zipr_t* GetZipr() const { return m_zipr; }
 	private:
 		/*
 		 * Helper functions.
@@ -126,6 +130,6 @@ class ZiprDollopManager_t : public DollopManager_t {
 		size_t m_total_dollop_space, m_total_dollop_entries;
 		unsigned int m_total_dollops, m_truncated_dollops;
 
-		Zipr_SDK::Zipr_t *m_zipr;
+		Zipr_SDK::Zipr_t* m_zipr;
 };
 #endif

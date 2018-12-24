@@ -14,60 +14,43 @@
  *
  * Unless otherwise specified, the information contained in this
  * directory, following this legend, and/or referenced herein is
- * Zephyr Software LLC. (Zephyr) Proprietary Information. 
+ * Zephyr Software LLC. (Zephyr) Proprietary Information.
  *
  * CONTACT
  *
  * For technical assistance, contact Zephyr Software LCC. at:
- *      
+ *
  *
  * Zephyr Software, LLC
  * 2040 Tremont Rd
  * Charlottesville, VA 22911
- *
+ * 
  * E-mail: jwd@zephyr-software.com
  **************************************************************************/
 
-#ifndef zipr_all_h
-#define zipr_all_h
+#ifndef PATCHER_X86
+#define PATCHER_X86
 
-#include <stdlib.h>
-#include <stdint.h>
-#include <set>
-#include <list>
-#include <map>
-#include <libIRDB-core.hpp>
-#include <Rewrite_Utility.hpp>
-#include <algorithm>
-
-#include "elfio/elfio.hpp"
-#include "elfio/elfio_dump.hpp"
-
-#include <zipr_sdk.h>
-
-namespace zipr
+class ZiprPatcherX86_t : public ZiprPatcherBase_t
 {
+	// data
+	zipr::ZiprImpl_t* m_parent;
+	libIRDB::FileIR_t* m_firp;
+	Zipr_SDK::MemorySpace_t &memory_space;
 
-using namespace Zipr_SDK;
+	// methods
+	void RewritePCRelOffset(RangeAddress_t from_addr,RangeAddress_t to_addr, int insn_length, int offset_pos);
 
-#define PAGE_SIZE 4096
+	public:
+		ZiprPatcherX86_t(Zipr_SDK::Zipr_t* p_parent) ;
+		void ApplyNopToPatch(RangeAddress_t addr) override;
+		void ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr) override;
+		void PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr) override;
+                void PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr) override;
+		void CallToNop(RangeAddress_t at_addr) override;
 
-#include <sled.h>
-#include <unresolved.h>
-#include <zipr_mem_space.h>
-#include <plugin_man.h>
-#include <zipr_dollop_man.h>
-#include <zipr_utils.h>
-#include <pinner/pinner_base.hpp>
-#include <patcher/patcher_base.hpp>
-#include <sizer/sizer_base.hpp>
-#include <arch/arch_base.hpp>
-#include <zipr_impl.h>
-#include <zipr_optimizations.h>
-#include <zipr_stats.h>
-#include <elfwrite.h>
-#include <ehwrite.h>
+	
+
 
 };
-
 #endif
