@@ -98,7 +98,7 @@ bool opt_fix_safefn = true;
 bool check_entry(bool &found, ControlFlowGraph_t* cfg)
 {
 
-	BasicBlock_t *entry=cfg->GetEntry();
+	auto entry=cfg->GetEntry();
 	found=false;
 
 	for(auto insn : entry->GetInstructions())
@@ -141,19 +141,14 @@ ControlFlowGraphMap_t cfg_optimizer;
 bool call_needs_fix(Instruction_t* insn)
 {
 
-	for(set<Relocation_t*>::iterator it=insn->GetRelocations().begin();
-		it!=insn->GetRelocations().end();
-		++it
-	   )
+	for(auto reloc : insn->GetRelocations())
 	{
-		Relocation_t* reloc=*it;
 		if(string("safefr") == reloc->GetType())
 			return false;
 	}
 
-	Instruction_t *target=insn->GetTarget();
-	Instruction_t *fallthru=insn->GetFallthrough();
-	//DISASM disasm;
+	auto target=insn->GetTarget();
+	auto fallthru=insn->GetFallthrough();
 
 	string pattern;
 
@@ -177,8 +172,8 @@ bool call_needs_fix(Instruction_t* insn)
 		return true;
 	}
 
-	virtual_offset_t addr=fallthru->GetAddress()->GetVirtualOffset();
-	RangeSet_t::iterator rangeiter=eh_frame_ranges.find(Range_t(addr,addr));
+	auto addr=fallthru->GetAddress()->GetVirtualOffset();
+	auto rangeiter=eh_frame_ranges.find(Range_t(addr,addr));
 	if(rangeiter != eh_frame_ranges.end())	// found an eh_frame addr entry for this call
 	{
 		in_ehframe++;
@@ -196,9 +191,7 @@ bool call_needs_fix(Instruction_t* insn)
 	if(!target)
 	{
 		/* call 0's aren't to real locations */
-		// Disassemble(insn,disasm);
 		DecodedInstruction_t disasm(insn);
-		// if(strcmp(disasm.getDisassembly().c_str()/*CompleteInstr*/, "call 0x00000000")==0)
 		if(disasm.getOperand(0).isConstant() && disasm.getAddress()==0)
 		{
 			return false;
@@ -223,7 +216,7 @@ bool call_needs_fix(Instruction_t* insn)
   	 */
 
 
-	Function_t* func=target->GetFunction();
+	auto func=target->GetFunction();
 
 	/* if there's no function for this instruction */
 	if(!func)
@@ -266,7 +259,7 @@ bool call_needs_fix(Instruction_t* insn)
 
 
 	/* check the entry block for thunks, etc. */
-	bool found;
+	auto found=false;
 	bool ret=check_entry(found,cfg);
 	// delete cfg;
 	if(found)
@@ -424,12 +417,10 @@ string adjust_esp_offset(string newbits, int offset)
 void convert_to_jump(Instruction_t* insn, int offset)
 {
 	string newbits=insn->GetDataBits();
-	//DISASM d;
-	//Disassemble(insn,d);
 	DecodedInstruction_t d(insn);
 
 	/* this case is odd, handle it specially (and more easily to understand) */
-	if(strcmp(d.getDisassembly().c_str()/*.CompleteInstr*/, "call qword [rsp]")==0)
+	if(strcmp(d.getDisassembly().c_str(), "call qword [rsp]")==0)
 	{
 		char buf[100];
 		sprintf(buf,"jmp qword [rsp+%d]", offset);
@@ -660,12 +651,8 @@ void fix_call(Instruction_t* insn, FileIR_t *firp, bool can_unpin)
 //
 bool is_call(Instruction_t* insn)
 {
-
         /* Disassemble the instruction */
 	DecodedInstruction_t disasm(insn);
-        //int instr_len = disasm.length(); // Disassemble(insn,disasm);
-	
-
 	return disasm.isCall(); // (disasm.Instruction.BranchType==CallType);
 }
 
@@ -728,27 +715,10 @@ void mark_as_unpinned_ibt(FileIR_t* firp, Instruction_t* ret_point)
 void fix_all_calls(FileIR_t* firp, bool fix_all)
 {
 
-        set<Instruction_t*,insn_less<Instruction_t*> > sorted_insns;
+	auto sorted_insns = set<Instruction_t*,insn_less<Instruction_t*> >(ALLOF(firp->GetInstructions()));
 
-        for(
-                set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
-                it!=firp->GetInstructions().end();
-                ++it
-           )
-        {
-                Instruction_t* insn=*it;
-                sorted_insns.insert(insn);
-        }
-
-
-	for(
-		set<Instruction_t*,insn_less<Instruction_t*> >::const_iterator it=sorted_insns.begin();
-		it!=sorted_insns.end(); 
-		++it
-	   )
+	for(auto insn : sorted_insns)
 	{
-
-		Instruction_t* insn=*it;
 		if(getenv("STOP_FIX_CALLS_AT") && fixed_calls>=(size_t)atoi(getenv("STOP_FIX_CALLS_AT")))
 			break;
 
@@ -763,7 +733,7 @@ void fix_all_calls(FileIR_t* firp, bool fix_all)
 			// (and a bit about debugging fix-calls that's not important for anyone but jdh.
 			else if ( fix_all || (getenv("FIX_CALL_LIMIT") && not_fixed_calls>=(size_t)atoi(getenv("FIX_CALL_LIMIT"))))
 			{
-				bool fix_me = true;
+				auto fix_me = true;
 				if (!opt_fix_safefn && can_skip_safe_function(insn))
 				{
 					fix_me = false;
@@ -822,12 +792,10 @@ void fix_all_calls(FileIR_t* firp, bool fix_all)
 //
 void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 {
-	//DISASM disasm;
-	//Disassemble(insn,disasm);
 	DecodedInstruction_t disasm(insn);
 	const auto &operands=disasm.getOperands();
 	const auto relop_it=find_if(ALLOF(operands),[](const DecodedOperand_t& op)
-		{ return op.isMemory() && op.isPcrel() ; } );
+		{ return op.isPcrel() ; } );
 	const bool is_rel= relop_it!=operands.end(); 
 
 	/* if this has already been fixed, we can skip it */
@@ -836,71 +804,78 @@ void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 
 	if(is_rel)
 	{
-
 		const auto the_arg=*relop_it;	
-
-		int offset=disasm.getMemoryDisplacementOffset(the_arg, insn); /*the_arg->Memory.DisplacementAddr-disasm.EIP*/;
-		assert(offset>=0 && offset <=15);
-		int size=the_arg.getMemoryDisplacementEncodingSize(); // the_arg->Memory.DisplacementSize;
-		assert(size==1 || size==2 || size==4 || size==8);
-
-		if(getenv("VERBOSE_FIX_CALLS"))
+		const auto mt=firp->GetArchitecture()->getMachineType();
+		if(mt==admtAarch64)
 		{
-			cout<<"Found insn with pcrel memory operand: "<<disasm.getDisassembly()/*.CompleteInstr */
-		    	    <<" Displacement="<<std::hex<<the_arg.getMemoryDisplacement() /*the_arg->Memory.Displacement*/<<std::dec
-		    	    <<" size="<<the_arg.getMemoryDisplacementEncodingSize() /*the_arg->Memory.DisplacementSize*/<<" Offset="<<offset;
+			// figure out how to rewrite pcrel arm insns, then change the virt addr
+			// insn->GetAddress()->SetVirtualOffset(0);	
 		}
-
-		/* convert [rip_pc+displacement] addresssing mode into [rip_0+displacement] where rip_pc is the actual PC of the insn, 
-		 * and rip_0 is means that the PC=0. AKA, we are relocating this instruction to PC=0. Later we add a relocation to undo this transform at runtime 
-		 * when we know the actual address.
-		 */
-
-		/* get the data */
-		string data=insn->GetDataBits();
-		char cstr[20]; 
-		memcpy(cstr,data.c_str(), data.length());
-		void *offsetptr=&cstr[offset];
-
-		uintptr_t disp=the_arg.getMemoryDisplacement(); // ->Memory.Displacement;
-		uintptr_t oldpc=virt_offset;
-		uintptr_t newdisp=disp+oldpc;
-
-		assert((uintptr_t)(offset+size)<=(uintptr_t)(data.length()));
-		
-		switch(size)
+		else if(mt==admtX86_64 ||  mt==admtI386)
 		{
-			case 4:
-				assert( (uintptr_t)(int)newdisp == (uintptr_t)newdisp);
-				*(int*)offsetptr=newdisp;
-				break;
-			case 1:
-			case 2:
-			case 8:
-			default:
-				assert(0);
-				//assert(("Cannot handle offset of given size", 0));
-		}
+			assert(the_arg.isMemory());
+			auto offset=disasm.getMemoryDisplacementOffset(the_arg, insn); 
+			assert(offset>=0 && offset <=15);
+			auto size=the_arg.getMemoryDisplacementEncodingSize(); 
+			assert(size==1 || size==2 || size==4 || size==8);
 
-		/* put the data back into the insn */
-		data.replace(0, data.length(), cstr, data.length());
-		insn->SetDataBits(data);
+			if(getenv("VERBOSE_FIX_CALLS"))
+			{
+				cout<<"Found insn with pcrel memory operand: "<<disasm.getDisassembly()/*.CompleteInstr */
+				    <<" Displacement="<<std::hex<<the_arg.getMemoryDisplacement() /*the_arg->Memory.Displacement*/<<std::dec
+				    <<" size="<<the_arg.getMemoryDisplacementEncodingSize() /*the_arg->Memory.DisplacementSize*/<<" Offset="<<offset;
+			}
 
-		// going to end up in the SPRI file anyhow after changing the data bits 
-		// and it's important to set the VO to 0, so that the pcrel-ness is calculated correctly.
-		insn->GetAddress()->SetVirtualOffset(0);	
+			/* convert [rip_pc+displacement] addresssing mode into [rip_0+displacement] where rip_pc is the actual PC of the insn, 
+			 * and rip_0 is means that the PC=0. AKA, we are relocating this instruction to PC=0. Later we add a relocation to undo this transform at runtime 
+			 * when we know the actual address.
+			 */
+
+			/* get the data */
+			string data=insn->GetDataBits();
+			char cstr[20]={}; 
+			memcpy(cstr,data.c_str(), data.length());
+			void *offsetptr=&cstr[offset];
+
+			uintptr_t disp=the_arg.getMemoryDisplacement(); 
+			uintptr_t oldpc=virt_offset;
+			uintptr_t newdisp=disp+oldpc;
+
+			assert((uintptr_t)(offset+size)<=(uintptr_t)(data.length()));
 			
-		Relocation_t *reloc=new Relocation_t;
-		reloc->SetOffset(0);
-		reloc->SetType("pcrel");
+			switch(size)
+			{
+				case 4:
+					assert( (uintptr_t)(int)newdisp == (uintptr_t)newdisp);
+					*(int*)offsetptr=newdisp;
+					break;
+				case 1:
+				case 2:
+				case 8:
+				default:
+					assert(0);
+					//assert(("Cannot handle offset of given size", 0));
+			}
+
+			/* put the data back into the insn */
+			data.replace(0, data.length(), cstr, data.length());
+			insn->SetDataBits(data);
+
+			other_fixes++;
+
+			disasm=DecodedInstruction_t(insn);
+			if(getenv("VERBOSE_FIX_CALLS"))
+				cout<<" Converted to: "<<disasm.getDisassembly() /*CompleteInstr*/<<endl;
+
+			// and it's important to set the VO to 0, so that the pcrel-ness is calculated correctly.
+			insn->GetAddress()->SetVirtualOffset(0);	
+		}
+
+		// now that we've done the rewriting, go ahead and add the reloc.
+		auto reloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, 0,"pcrel");
 		insn->GetRelocations().insert(reloc);
 		firp->GetRelocations().insert(reloc);
 
-		other_fixes++;
-
-		disasm=DecodedInstruction_t(insn);
-		if(getenv("VERBOSE_FIX_CALLS"))
-			cout<<" Converted to: "<<disasm.getDisassembly() /*CompleteInstr*/<<endl;
 	}
 }
 
@@ -910,16 +885,12 @@ void fix_safefr(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 	if(virt_offset==0 || virt_offset==(uintptr_t)-1)
 		return;
 
-	for(set<Relocation_t*>::iterator it=insn->GetRelocations().begin();
-		it!=insn->GetRelocations().end();
-		++it)
+	for(auto reloc : insn->GetRelocations())
 	{
-		Relocation_t* reloc=*it;
 		assert(reloc);
-		if(string("safefr") == reloc->GetType())
+		if( reloc->GetType() == "safefr" )
 		{
-			AddressID_t* addr	=new AddressID_t;
-			addr->SetFileID(insn->GetAddress()->GetFileID());
+			auto addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, insn->GetAddress()->GetFileID(), 0);
 			firp->GetAddresses().insert(addr);
 			insn->SetAddress(addr);
 		}
@@ -930,13 +901,8 @@ void fix_safefr(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 void fix_other_pcrel(FileIR_t* firp)
 {
 
-	for(
-		set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
-		it!=firp->GetInstructions().end(); 
-		++it
-	   )
+	for(auto insn : firp->GetInstructions())
 	{
-		Instruction_t* insn=*it;
 		fix_other_pcrel(firp,insn, insn->GetAddress()->GetVirtualOffset());
 		fix_safefr(firp,insn, insn->GetAddress()->GetVirtualOffset());
 	}
@@ -1078,11 +1044,6 @@ int executeStep(IRDBObjects_t *const irdb_objects)
 	return 0;
 }
 
-
-
-
-
-
 void range(virtual_offset_t a, virtual_offset_t b)
 {
 	// we've found examples of ranges being 0 sized, and it's a bit weird what that means.
@@ -1093,7 +1054,7 @@ void range(virtual_offset_t a, virtual_offset_t b)
 	// non-zero sized fde
 	assert(a<b);
 
-	RangeSet_t::iterator rangeiter=eh_frame_ranges.find(Range_t(a+1,a+1));
+	const auto rangeiter=eh_frame_ranges.find(Range_t(a+1,a+1));
 	assert(rangeiter==eh_frame_ranges.end());
 
 	eh_frame_ranges.insert(Range_t(a+1,b));	// ranges are interpreted as (a,b]
