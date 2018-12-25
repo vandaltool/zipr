@@ -913,11 +913,12 @@ void ZiprImpl_t::PlaceDollops()
 			 * TODO: Consider that allowed_coalescing may invalidate the
 			 * possibility of the validity of the placement in (2).
 			 */
-			const auto ibta=to_place->FallthroughDollop()-> front()-> Instruction()-> GetIndirectBranchTargetAddress() ;
-			initial_placement_abuts_pin = to_place->FallthroughDollop() && 
-			                                   ibta && 
-			                                   ibta -> GetVirtualOffset()!=0   && 
-			                                   ibta-> GetVirtualOffset() == (placement.GetStart() + to_place->GetSize() - sizer->TRAMPOLINE_SIZE);
+			const auto has_fallthrough = to_place->FallthroughDollop() != nullptr;
+			const auto ibta=has_fallthrough ? to_place->FallthroughDollop()-> front()-> Instruction()-> GetIndirectBranchTargetAddress() : 0; 
+			initial_placement_abuts_pin = has_fallthrough && 
+		   	                              ibta && 
+		   	                              ibta -> GetVirtualOffset()!=0   && 
+		   	                              ibta-> GetVirtualOffset() == (placement.GetStart() + to_place->GetSize() - sizer->TRAMPOLINE_SIZE);
 			/*
 			 * If this dollop has a fallthrough, find out where that 
 			 * fallthrough is (or is going to be) placed. That way
