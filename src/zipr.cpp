@@ -129,10 +129,15 @@ void ZiprImpl_t::Init()
 	}
 	plugman = ZiprPluginManager_t(this, &m_zipr_options);
 
-	archhelper=ZiprArchitectureHelperBase_t::factory(this);
-	pinner =archhelper->getPinner ();
-	patcher=archhelper->getPatcher();
-	sizer  =archhelper->getSizer  ();
+	// need a file IR to create the arch-specific stuff.
+	// without it, we won't run anything anyhow
+	if(m_firp)
+	{
+		archhelper=ZiprArchitectureHelperBase_t::factory(this);
+		pinner =archhelper->getPinner ();
+		patcher=archhelper->getPatcher();
+		sizer  =archhelper->getSizer  ();
+	}
 
 	/*
 	 * Parse again now that the plugins registered something.
@@ -1798,7 +1803,6 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntry(
 {
 	Instruction_t *insn = entry->Instruction();
 	RangeAddress_t ret = entry->Place(), addr = entry->Place();
-	string raw_data, orig_data; 
 
 	assert(insn);
 
@@ -1807,8 +1811,10 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntry(
 
 	const auto d=DecodedInstruction_t(insn);
 
-	raw_data = insn->GetDataBits();
-	orig_data = insn->GetDataBits();
+	string raw_data = insn->GetDataBits();
+	string orig_data = insn->GetDataBits();
+
+#if 0
 
 	const auto operands=d.getOperands();
 	const auto is_instr_relative_it = find_if(ALLOF(operands),[](const DecodedOperand_t& op)
@@ -1869,6 +1875,7 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntry(
 		raw_data.replace(0, raw_data.length(), instr_raw, raw_data.length());
 		insn->SetDataBits(raw_data);
 	}
+#endif
 
 	if(entry->TargetDollop() && entry->Instruction()->GetCallback()=="")
 	{
