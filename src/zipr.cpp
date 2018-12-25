@@ -1815,7 +1815,7 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntry(
 	string raw_data = insn->GetDataBits();
 	string orig_data = insn->GetDataBits();
 
-#if 0
+#if 1 /* this is needed! */
 
 	const auto operands=d.getOperands();
 	const auto is_instr_relative_it = find_if(ALLOF(operands),[](const DecodedOperand_t& op)
