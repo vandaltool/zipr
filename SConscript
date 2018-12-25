@@ -20,11 +20,6 @@ myenv.Replace(ZIPR_SDK=os.environ['ZIPR_SDK'])
 myenv.Replace(ZIPR_INSTALL=os.environ['ZIPR_INSTALL'])
 myenv.Replace(do_cgc=ARGUMENTS.get("do_cgc",0))
 
-if 'do_cgc' in env and int(env['do_cgc']) == 1:
-        myenv.Append(CFLAGS=" -DCGC ")
-        myenv.Append(CCFLAGS=" -DCGC ")
-
-
 
 
 files=  '''
@@ -50,7 +45,7 @@ libpath='''
 	'''
 
 if sysname != "SunOS":
-	myenv.Append(CCFLAGS=" -Wall -Werror ")
+	myenv.Append(CCFLAGS=" -Wall -Werror -fmax-errors=2")
 
 myenv.Append(CXXFLAGS=" -std=c++11 ")
 myenv=myenv.Clone(CPPPATH=Split(cpppath), LIBS=Split(libs), LIBPATH=Split(libpath), SHLIBSUFFIX=".zpi", SHLIBPREFIX="")

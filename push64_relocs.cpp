@@ -314,18 +314,7 @@ void Push64Relocs_t::UpdatePush64Adds()
 		// caution, side effect in if statement.
 		else if ( (reloc = FindPcrelRelocation(insn)) != NULL && reloc->GetWRT()==NULL)
 		{
-// would consider updating this if statement to be a function call for simplicity/readability.
-			uint8_t memory_offset = 0;
-			int32_t existing_offset = 0;
-			int32_t new_offset = 0;
-			uint32_t insn_addr = 0;
-			int existing_offset_size = 0;
-			uint8_t *insn_bytes = NULL;
-			int insn_bytes_len = 0;
-			//DISASM d;
-			//ARGTYPE *arg=NULL;
-#if 1	
-			insn_addr = final_insn_locations[insn];
+			const auto insn_addr = final_insn_locations[insn];
 			if (insn_addr == 0)
 			{
 				if (m_verbose)
@@ -334,51 +323,91 @@ void Push64Relocs_t::UpdatePush64Adds()
 			}
 			assert(insn_addr != 0);
 
-			insn_bytes_len = sizeof(uint8_t)*insn->GetDataBits().length();
-			insn_bytes=(uint8_t*)malloc(insn_bytes_len);
+			const auto insn_bytes_len = sizeof(uint8_t)*insn->GetDataBits().length();
+			uint8_t insn_bytes[insn_bytes_len]={};
 			memcpy(insn_bytes, insn->GetDataBits().c_str(), insn_bytes_len);
 
-			DecodedInstruction_t d(insn);
-			/* Disassemble(insn,d);
-
-			if(arg_has_relative(d.Argument1))
-				arg=&d.Argument1;
-			if(arg_has_relative(d.Argument2))
-				arg=&d.Argument2;
-			if(arg_has_relative(d.Argument3))
-				arg=&d.Argument3;
-			assert(arg);
-			*/
+			const auto d=DecodedInstruction_t(insn);
 			const auto operands=d.getOperands();
-			const auto arg_it=find_if(ALLOF(operands),[](const DecodedOperand_t& op) { return op.isMemory() && op.isPcrel(); });
+			const auto arg_it=find_if(ALLOF(operands),[](const DecodedOperand_t& op) { return op.isPcrel(); });
 			assert(arg_it!=operands.end());
 			const auto arg=*arg_it;
+			const auto mt=m_firp.GetArchitecture()->getMachineType();
+		
+			if(mt==admtX86_64 || mt==admtI386)
+			{
+				assert(arg.isMemory()); // only  memory operands have pcrel in x86.
+				auto memory_offset = d.getMemoryDisplacementOffset(arg, insn); 
+				auto existing_offset_size = arg.getMemoryDisplacementEncodingSize(); 
+				assert(memory_offset>=0 && memory_offset <=15);
+				assert(existing_offset_size==1 || existing_offset_size==2 || existing_offset_size==4 || existing_offset_size==8);
+				int32_t existing_offset=0;
+				memcpy((uint8_t*)&existing_offset, 
+				       (uint8_t*)&insn_bytes[memory_offset], 
+							 existing_offset_size);
 
-			memory_offset = d.getMemoryDisplacementOffset(arg, insn); // arg->Memory.DisplacementAddr-d.EIP;
-			existing_offset_size = arg.getMemoryDisplacementEncodingSize(); // arg->Memory.DisplacementSize;
-			assert(memory_offset>=0 && memory_offset <=15 &&
-			      (existing_offset_size==1 || 
-			       existing_offset_size==2 || 
-						 existing_offset_size==4 || 
-						 existing_offset_size==8));
+				auto new_offset = existing_offset-insn_addr; 
+				if (m_verbose)
+				{
+					cout << "Relocating a pcrel relocation with 0x" 
+					     << hex << existing_offset
+					     << " existing offset at 0x" 
+					     << insn_addr << "." << endl;
+					cout << "Based on: " << d.getDisassembly() << endl
+					     << "New address: 0x" << hex << new_offset << endl;
+				}
+				
+				m_memory_space.PlopBytes(insn_addr+memory_offset,
+							 (const char*)&new_offset,
+							 existing_offset_size);
+			}
+			else if(mt==admtAarch64)
+			{
+				const auto mnemonic=d.getMnemonic();
+				const auto is_adr_type=mnemonic=="adr" || mnemonic=="adrp";
+				const auto full_insn=*(uint32_t*)insn_bytes;
+				const auto mask2 =(1<< 2)-1;
+				const auto mask5 =(1<< 5)-1;
+				const auto mask12=(1<<12)-1;
+				const auto mask19=(1<<19)-1;
 
-			memcpy((uint8_t*)&existing_offset, 
-			       (uint8_t*)&insn_bytes[memory_offset], 
-						 existing_offset_size);
+				if(is_adr_type)
+				{
+					// adr : 0 immlo2 10000 immhi19 Rd5
+					// adrp: 1 immlo2 10000 immhi19 Rd5
+					const auto op_byte=insn_bytes[3];
+					assert((op_byte&mask5) == 0x10); // sanity check adr(p) opcode bytes.
+					const auto immlo2=(op_byte >> 5)&mask2; // gram immlo2
+					const auto immhi19=(full_insn >> 5)&mask19; // gram immhi19
+					const auto imm21=immhi19<<2 | immlo2;	// get full immediate in one field.
+					const auto imm21_ext=(((int64_t)imm21)<<43) >> 43; // sign extend to 64-bit
+					const auto orig_insn_addr=insn->GetAddress()->GetVirtualOffset();
+					const auto orig_insn_pageno=(orig_insn_addr>>12);
+					const auto new_insn_pageno =(     insn_addr>>12);
+					const auto new_imm21_ext = imm21_ext + orig_insn_pageno - new_insn_pageno + reloc->GetAddend(); 
+					// make sure no overflow.
+					assert( ((new_imm21_ext << 43) >> 43) == new_imm21_ext);
+					const auto new_immhi19=new_imm21_ext >> 2;
+					const auto new_immlo2 =new_imm21_ext  & mask2;
+					const auto clean_new_insn= full_insn & ~(mask2<<29) & ~ (mask19 << 5);
+					const auto new_insn=clean_new_insn | (new_immlo2 << 29) | (new_immhi19<<5);
+					// put the new instruction in the output
+					m_memory_space.PlopBytes(insn_addr, (const char*)&new_insn, 4);
 
-			new_offset = existing_offset-insn_addr; 
-			if (m_verbose)
-				cout << "Relocating a pcrel relocation with 0x" 
-				     << std::hex << existing_offset
-						 << " existing offset at 0x" 
-						 << insn_addr << "." << endl
-						 << "Based on: " << d.getDisassembly() /*CompleteInstr*/ << endl
-						 << "New address: 0x" << std::hex << new_offset << endl;
-			
-			m_memory_space.PlopBytes(insn_addr+memory_offset,
-			                         (const char*)&new_offset,
-															 existing_offset_size);
-#endif
+					if (m_verbose)
+					{
+						cout << "Relocating a pcrel relocation with orig_pageno=" << hex 
+						     << (orig_insn_pageno << 12) << " offset=(page-pc+" << imm21_ext << ")"  << endl;
+						cout << "Based on: " << d.getDisassembly() << " originally at "  << orig_insn_addr 
+						     << " now located at : 0x" << hex << insn_addr << " with offset=(page-pc + "
+						     << new_imm21_ext << ")" << endl;
+					}
+				}
+				else
+					assert(0);
+			}
+			else
+				assert(0);
 		}
 	}
 }
