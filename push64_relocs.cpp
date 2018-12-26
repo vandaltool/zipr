@@ -324,7 +324,8 @@ void Push64Relocs_t::UpdatePush64Adds()
 			assert(insn_addr != 0);
 
 			const auto insn_bytes_len = sizeof(uint8_t)*insn->GetDataBits().length();
-			uint8_t insn_bytes[insn_bytes_len]={};
+			uint8_t insn_bytes[insn_bytes_len]; // compiler disallows init on some platforms.  
+			// but memcpy should init it sufficiently.
 			memcpy(insn_bytes, insn->GetDataBits().c_str(), insn_bytes_len);
 
 			const auto d=DecodedInstruction_t(insn);
