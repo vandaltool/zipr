@@ -49,6 +49,7 @@ if 'build_tools' not in myenv or myenv['build_tools'] is None or int(myenv['buil
 		generate_spri 
 		find_strings 
 		mark_functions_safe
+		decode_test
 		'''
 	for i in Split(pgms):
 		# print "Registering pgm: "+ i
