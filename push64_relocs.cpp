@@ -357,6 +357,9 @@ void Push64Relocs_t::UpdatePush64Adds()
 					     << "New address: 0x" << hex << new_offset << endl;
 				}
 				
+				// is this plugin useless?
+				for(auto i=0U; i< existing_offset_size; i++)
+					assert(m_memory_space[insn_addr+memory_offset+i]==((const char*)&new_offset)[i]);
 				m_memory_space.PlopBytes(insn_addr+memory_offset,
 							 (const char*)&new_offset,
 							 existing_offset_size);
