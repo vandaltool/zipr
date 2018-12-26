@@ -47,17 +47,6 @@ using namespace ELFIO;
 
 #define ALLOF(a) begin(a),end(a)
 
-/*
-static bool arg_has_memory(const ARGTYPE &arg)
-{
-        // if it's relative memory, watch out! 
-        if(arg.ArgType&MEMORY_TYPE)
-                return true;
-
-        return false;
-}
-*/
-
 static std::string findAndReplace(const std::string& in_str, const std::string& oldStr, const std::string& newStr)
 {
         std::string str=in_str;
@@ -72,15 +61,10 @@ static std::string findAndReplace(const std::string& in_str, const std::string& 
 
 static bool has_cfi_reloc(Instruction_t* insn)
 {
-	for(
-		RelocationSet_t::iterator rit2=insn->GetRelocations().begin(); 
-		rit2!=insn->GetRelocations().end();
-		rit2++
-	   )
+	for(auto reloc : insn->GetRelocations())
 	{
-
 		/* check for a nonce relocation */
-		if ( (*rit2) -> GetType().find("cfi_nonce") != string::npos )
+		if ( reloc -> GetType().find("cfi_nonce") != string::npos )
 		{
 			return true;
 		}
@@ -98,7 +82,7 @@ bool Unpin_t::should_cfi_pin(Instruction_t* insn)
 
 ZiprOptionsNamespace_t *Unpin_t::RegisterOptions(ZiprOptionsNamespace_t *global)
 {
-	ZiprOptionsNamespace_t *unpin_ns = new ZiprOptionsNamespace_t("unpin");
+	auto unpin_ns = new ZiprOptionsNamespace_t("unpin");
 	global->AddOption(&m_verbose);
 
 	m_should_cfi_pin.SetDescription("Pin CFI instructions.");
@@ -129,23 +113,10 @@ void Unpin_t::DoUnpinForFixedCalls()
 	auto insn_unpins=0;
 	auto missed_unpins=0;
 
-	for(
-		InstructionSet_t::iterator it=zo->GetFileIR()->GetInstructions().begin();
-		it!=zo->GetFileIR()->GetInstructions().end();
-		++it
-	   )
+	for(auto from_insn : zo->GetFileIR()->GetInstructions())
 	{
-		Instruction_t* from_insn=*it;
-
-		for(
-			RelocationSet_t::iterator rit=from_insn->GetRelocations().begin(); 
-			rit!=from_insn->GetRelocations().end();
-			rit++
-		   )
+		for(auto reloc : from_insn->GetRelocations())
 		{
-			Relocation_t* reloc=*rit;
-
-			
 			// this probably won't work on shared objects.
 			// complicated with the push64-reloc plugin also rewriting these things?
 			if(reloc->GetType()==string("32-bit") || reloc->GetType()==string("push64"))
@@ -156,7 +127,7 @@ void Unpin_t::DoUnpinForFixedCalls()
 
 				// getWRT returns an BaseObj, but this reloc type expects an instruction
 				// safe cast and check.
-				Instruction_t* wrt_insn=dynamic_cast<Instruction_t*>(reloc->GetWRT());
+				auto wrt_insn=dynamic_cast<Instruction_t*>(reloc->GetWRT());
 				assert(wrt_insn);
 		
 				unpins++;
@@ -171,7 +142,6 @@ void Unpin_t::DoUnpinForFixedCalls()
 	cout<<"# ATTRIBUTE Zipr_Unpinning::insn_unpin_missed_unpins="<<dec<<missed_unpins<<endl;
 }
 
-
 // CAN BE DELETED, left in just for stats?
 void Unpin_t::DoUnpinForScoops()
 {
@@ -180,26 +150,13 @@ void Unpin_t::DoUnpinForScoops()
 	auto missed_unpins=0;
 	auto scoop_unpins=0;
 
-	for(
-		DataScoopSet_t::iterator it=zo->GetFileIR()->GetDataScoops().begin();
-		it!=zo->GetFileIR()->GetDataScoops().end();
-		++it
-	   )
+	for(auto scoop : zo->GetFileIR()->GetDataScoops())
 	{
-		DataScoop_t* scoop=*it;
-
-		for(
-			RelocationSet_t::iterator rit=scoop->GetRelocations().begin(); 
-			rit!=scoop->GetRelocations().end();
-			rit++
-		   )
+		for(auto reloc : scoop->GetRelocations())
 		{
-			Relocation_t* reloc=*rit;
-
-			
 			if(reloc->GetType()==string("data_to_insn_ptr"))
 			{
-				Instruction_t* insn=dynamic_cast<Instruction_t*>(reloc->GetWRT());
+				auto insn=dynamic_cast<Instruction_t*>(reloc->GetWRT());
 				// getWRT returns an BaseObj, but this reloc type expects an instruction
 				// safe cast and check.
 				assert(insn);
@@ -228,20 +185,15 @@ Zipr_SDK::ZiprPreference Unpin_t::RetargetCallback(
 		return Zipr_SDK::ZiprPluginInterface_t::RetargetCallback(callback_address, callback_entry, target_address);
 
 
-	MemorySpace_t &ms=*zo->GetMemorySpace();
-	Instruction_t *insn = callback_entry->Instruction();
-	Zipr_SDK::InstructionLocationMap_t &locMap=*(zo->GetLocationMap());
-	for(
-		RelocationSet_t::iterator rit=insn->GetRelocations().begin();
-		rit!=insn->GetRelocations().end();
-		rit++
-		)
+	auto& ms=*zo->GetMemorySpace();
+	auto  insn = callback_entry->Instruction();
+	auto& locMap=*(zo->GetLocationMap());
+	for(auto reloc : insn->GetRelocations())
 	{
-		Relocation_t *reloc = *rit;
 		if (reloc->GetType()==string("callback_to_scoop"))
 		{
-			DataScoop_t *wrt = dynamic_cast<DataScoop_t*>(reloc->GetWRT());
-			int addend = reloc->GetAddend();
+			auto wrt = dynamic_cast<DataScoop_t*>(reloc->GetWRT());
+			auto addend = reloc->GetAddend();
 
 			target_address = wrt->GetStart()->GetVirtualOffset() + addend;
 		
@@ -265,42 +217,13 @@ void Unpin_t::DoUpdateForInstructions()
 {
 	int unpins=0;
 	int missed_unpins=0;
-	MemorySpace_t &ms=*zo->GetMemorySpace();
-	Zipr_SDK::InstructionLocationMap_t &locMap=*(zo->GetLocationMap());
+	auto& ms=*zo->GetMemorySpace();
+	auto& locMap=*(zo->GetLocationMap());
 
-	for(
-		InstructionSet_t::iterator it=zo->GetFileIR()->GetInstructions().begin();
-		it!=zo->GetFileIR()->GetInstructions().end();
-		++it
-	   )
+	for(auto from_insn : zo->GetFileIR()->GetInstructions())
 	{
-		Instruction_t* from_insn=*it;
-                //DISASM disasm;
-                //Disassemble(from_insn,disasm);
-//		const auto disasm=DecodedInstruction_t(from_insn);
-//		const auto operands=disasm.getOperands();
-
-                // find memory arg.
-		/*
-                ARGTYPE* the_arg=NULL;
-                if(arg_has_memory(disasm.Argument1))
-                        the_arg=&disasm.Argument1;
-                if(arg_has_memory(disasm.Argument2))
-                        the_arg=&disasm.Argument2;
-                if(arg_has_memory(disasm.Argument3))
-                        the_arg=&disasm.Argument3;
-                if(arg_has_memory(disasm.Argument4))
-                        the_arg=&disasm.Argument4;
-		*/
-		
-
-		for(
-			RelocationSet_t::iterator rit=from_insn->GetRelocations().begin(); 
-			rit!=from_insn->GetRelocations().end();
-			rit++
-		   )
+		for(auto reloc : from_insn->GetRelocations())
 		{
-			Relocation_t* reloc=*rit;
 			// this probably won't work on shared objects.
 			// complicated with the push64-reloc plugin also rewriting these things?
 			if(reloc->GetType()==string("32-bit") || reloc->GetType()==string("push64"))
@@ -311,13 +234,13 @@ void Unpin_t::DoUpdateForInstructions()
 
 				// getWRT returns an BaseObj, but this reloc type expects an instruction
 				// safe cast and check.
-				Instruction_t* wrt_insn=dynamic_cast<Instruction_t*>(reloc->GetWRT());
+				auto wrt_insn=dynamic_cast<Instruction_t*>(reloc->GetWRT());
 				assert(wrt_insn);
 				if(should_cfi_pin(wrt_insn)) 
 					continue;
 
-				libIRDB::virtual_offset_t wrt_insn_location=locMap[wrt_insn];
-				libIRDB::virtual_offset_t from_insn_location=locMap[from_insn];
+				auto wrt_insn_location =locMap[wrt_insn];
+				auto from_insn_location=locMap[from_insn];
 
 				// 32-bit code and main executables just push a full 32-bit addr.
 				if(zo->GetELFIO()->get_type()==ET_EXEC)
@@ -338,67 +261,32 @@ void Unpin_t::DoUpdateForInstructions()
 					    <<dec<<from_insn->GetBaseID()<<":"<<from_insn->getDisassembly()<<"@"<<hex<<from_insn_location<<" to point at "
 					    <<dec<<wrt_insn ->GetBaseID()<<":"<<wrt_insn ->getDisassembly()<<"@"<<hex<<wrt_insn_location <<endl;
 
-					for(unsigned int i=0;i<from_insn->GetDataBits().size();i++)
+					for(auto i=0U;i<from_insn->GetDataBits().size();i++)
 					{ 
 						unsigned char newbyte=newpush[i];
 						ms[from_insn_location+i]=newbyte;
 					}
 				}
 				// shared object
-				// gets a call/sub [$rsp], const pair.
-				else 
-				{
-// handled in push64_relocs which is required for shared objects.
-#if 0
-					auto call_insn=from_insn;
-					auto sub_insn=call_insn->GetTarget();
-					libIRDB::virtual_offset_t sub_insn_location=locMap[sub_insn];
-
-					assert(sub_insn);
-					auto subbits=sub_insn->GetDataBits();
-
-					// must be sub [$rsp], const
-					assert( subbits[0]==(char)0x48 && subbits[1]==(char)0x81 && 
-					        subbits[2]==(char)0x2c && subbits[3]==(char)0x24); 
-					unsigned char newoffset[sizeof(int)]={};
-					// grab old offset from memory space
-					for(unsigned int i=0;i<from_insn->GetDataBits().size();i++)
-						newoffset[i]=ms[sub_insn_location+4+i];
-
-					// update it.
-					*(unsigned int*)newoffset += wrt_insn_location;
-
-					// write memory space.
-					for(unsigned int i=0;i<sizeof(int); i++)
-						ms[sub_insn_location+4+i]=newoffset[i];
-
-					cout<<"Unpin::Updating push64-so insn:"
-						<<dec<<from_insn->GetBaseID()<<"@"<<hex<<from_insn_location<<" to point at "
-						<<dec<<wrt_insn ->GetBaseID()<<"@"<<hex<<wrt_insn_location <<endl;
-
-	
-#endif
-				}
+				// gets a call/sub [$rsp], const pair, handled in push64_relocs
+				// else { }
 
 			}
 			// instruction has a pcrel memory operand.
-			else if(reloc->GetType()==string("pcrel") && reloc->GetWRT()!=NULL)
+			else if(reloc->GetType()==string("pcrel")) //  && reloc->GetWRT()!=NULL)
 			{
 				const auto disasm=DecodedInstruction_t(from_insn);
 				const auto operands=disasm.getOperands();
 				const auto the_arg_it=find_if(ALLOF(operands),[](const DecodedOperand_t& op){ return op.isMemory() && op.isPcrel(); });
-				BaseObj_t* bo_wrt=reloc->GetWRT();
-				DataScoop_t* scoop_wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
-				Instruction_t* insn_wrt=dynamic_cast<Instruction_t*>(reloc->GetWRT());
+				const auto bo_wrt=reloc->GetWRT();
+				const auto scoop_wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
+				const auto insn_wrt=dynamic_cast<Instruction_t*>(reloc->GetWRT());
 				assert(the_arg_it!=operands.end());
 				const auto the_arg=*the_arg_it;
-				virtual_offset_t rel_addr1=the_arg.getMemoryDisplacement(); // ->Memory.Displacement;
-				rel_addr1+=from_insn->GetDataBits().size();
+				const auto rel_addr1=the_arg.getMemoryDisplacement()+from_insn->GetDataBits().size();
 
-//				const auto disasm=DecodedInstruction_t(from_insn);
-//				const auto operands=disasm.getOperands();
-				int disp_offset=disasm.getMemoryDisplacementOffset(the_arg,from_insn); // the_arg->Memory.DisplacementAddr-disasm.EIP;
-				int disp_size=the_arg.getMemoryDisplacementEncodingSize(); // the_arg->Memory.DisplacementSize;
+				const int  disp_offset=disasm.getMemoryDisplacementOffset(the_arg,from_insn); 
+				const int  disp_size=the_arg.getMemoryDisplacementEncodingSize(); 
 				libIRDB::virtual_offset_t from_insn_location=locMap[from_insn];
 				assert(disp_size==4);
 				assert(0<disp_offset && disp_offset<=from_insn->GetDataBits().size() - disp_size);
@@ -406,7 +294,6 @@ void Unpin_t::DoUpdateForInstructions()
 				libIRDB::virtual_offset_t to_addr=0xdeadbeef; // noteable value that shouldn't be used.
 				string convert_string;
 
-				assert(bo_wrt);
 				if(scoop_wrt)
 				{
 					to_addr=scoop_wrt->GetStart()->GetVirtualOffset();
@@ -418,25 +305,28 @@ void Unpin_t::DoUpdateForInstructions()
 					convert_string=string("insn ")+to_string(insn_wrt->GetBaseID())+
 					               ":"+insn_wrt->getDisassembly();
 				}
-				else assert(0);
+				else 
+				{
+					assert(bo_wrt==nullptr);
+					to_addr=0; /* no WRT obj */
+					convert_string=string("no-object");
+				}
 					
 				int new_disp=rel_addr1 + to_addr - from_insn->GetDataBits().size()-from_insn_location;
 	
 				from_insn->SetDataBits(from_insn->GetDataBits().replace(disp_offset, 
 					disp_size, (char*)&new_disp, disp_size));
 				// update the instruction in the memory space.
-				for(unsigned int i=0;i<from_insn->GetDataBits().size();i++)
+				for(auto i = 0U;i<from_insn->GetDataBits().size();i++)
 				{ 
 					unsigned char newbyte=from_insn->GetDataBits()[i];
 					ms[from_insn_location+i]=newbyte;
 				}
-				//DISASM disasm2;
-				//Disassemble(from_insn,disasm2);	
 				const auto disasm2=DecodedInstruction_t(from_insn);
 				cout<<"unpin:pcrel:new_disp="<<hex<<new_disp<<endl;
 				cout<<"unpin:pcrel:new_insn_addr="<<hex<<from_insn_location<<endl;
-				cout<<"unpin:pcrel:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.getDisassembly() /*CompleteInstr*/
-					<<" to "<<disasm2.getDisassembly() /*CompleteInstr*/<<" wrt "<< convert_string <<endl;
+				cout<<"unpin:pcrel:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.getDisassembly() 
+				    <<" to "<<disasm2.getDisassembly() <<" wrt "<< convert_string <<endl;
 			}
 			// instruction has a absolute  memory operand that needs it's displacement updated.
 			else if(reloc->GetType()==string("absoluteptr_to_scoop"))
@@ -451,18 +341,15 @@ void Unpin_t::DoUpdateForInstructions()
 				assert(wrt);
 				assert(the_arg_it!=operands.end());
 				const auto &the_arg=*the_arg_it;
-				virtual_offset_t rel_addr1=the_arg.getMemoryDisplacement(); // ->Memory.Displacement;
-				//virtual_offset_t rel_addr1=the_arg->Memory.Displacement;
+				virtual_offset_t rel_addr1=the_arg.getMemoryDisplacement(); 
 
-				int disp_offset=disasm.getMemoryDisplacementOffset(the_arg,from_insn); // the_arg->Memory.DisplacementAddr-disasm.EIP;
-				int disp_size=the_arg.getMemoryDisplacementEncodingSize(); // the_arg->Memory.DisplacementSize;
-				//int disp_offset=the_arg->Memory.DisplacementAddr-disasm.EIP;
-				//int disp_size=the_arg->Memory.DisplacementSize;
+				int disp_offset=disasm.getMemoryDisplacementOffset(the_arg,from_insn); 
+				int disp_size=the_arg.getMemoryDisplacementEncodingSize(); 
 				assert(disp_size==4);
 				assert(0<disp_offset && disp_offset<=from_insn->GetDataBits().size() - disp_size);
 				assert(reloc->GetWRT());
 
-                                unsigned int new_disp=the_arg.getMemoryDisplacement()/*the_arg->Memory.Displacement */+ wrt->GetStart()->GetVirtualOffset();
+                                unsigned int new_disp=the_arg.getMemoryDisplacement() + wrt->GetStart()->GetVirtualOffset();
                                 from_insn->SetDataBits(from_insn->GetDataBits().replace(disp_offset, disp_size, (char*)&new_disp, disp_size));
 				// update the instruction in the memory space.
 				libIRDB::virtual_offset_t from_insn_location=locMap[from_insn];
@@ -473,11 +360,9 @@ void Unpin_t::DoUpdateForInstructions()
 
 					//cout<<"Updating push["<<i<<"] from "<<hex<<oldbyte<<" to "<<newbyte<<endl;
 				}
-                		//DISASM disasm2;
-                		//Disassemble(from_insn,disasm2);
 				const auto disasm2=DecodedInstruction_t(from_insn);
-				cout<<"unpin:absptr_to_scoop:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.getDisassembly()/*CompleteInstr*/
-			 	    <<" to "<<disasm2.getDisassembly()/*CompleteInstr*/<<" for scoop: "<<wrt->GetName()<<endl;
+				cout<<"unpin:absptr_to_scoop:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.getDisassembly()
+			 	    <<" to "<<disasm2.getDisassembly() <<" for scoop: "<<wrt->GetName()<<endl;
 			}
 			// instruction has an immediate that needs an update.
 			else if(reloc->GetType()==string("immedptr_to_scoop"))
@@ -486,7 +371,7 @@ void Unpin_t::DoUpdateForInstructions()
 				assert(wrt);
 
 				const auto disasm=DecodedInstruction_t(from_insn);
-        			virtual_offset_t rel_addr2=disasm.getImmediate(); // disasm.Instruction.Immediat;
+        			virtual_offset_t rel_addr2=disasm.getImmediate(); 
 				virtual_offset_t new_addr = rel_addr2 + wrt->GetStart()->GetVirtualOffset();
 
                                 from_insn->SetDataBits(from_insn->GetDataBits().replace(from_insn->GetDataBits().size()-4, 4, (char*)&new_addr, 4));
@@ -500,11 +385,9 @@ void Unpin_t::DoUpdateForInstructions()
 					//cout<<"Updating push["<<i<<"] from "<<hex<<oldbyte<<" to "<<newbyte<<endl;
 				}
 
-                		//DISASM disasm2;
-                		//Disassemble(from_insn,disasm2);
 				const auto disasm2=DecodedInstruction_t(from_insn);
-				cout<<"unpin:immedptr_to_scoop:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.getDisassembly() /*CompleteInstr*/
-			 	    <<" to "<<disasm2.getDisassembly() /*CompleteInstr*/<<" for scoop: "<<wrt->GetName()<<endl;
+				cout<<"unpin:immedptr_to_scoop:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.getDisassembly() 
+			 	    <<" to "<<disasm2.getDisassembly() <<" for scoop: "<<wrt->GetName()<<endl;
 
 			}
 			else if(reloc->GetType()==string("callback_to_scoop"))
@@ -550,26 +433,15 @@ void Unpin_t::DoUpdateForInstructions()
 
 void Unpin_t::DoUpdateForScoops()
 {
-	unsigned int byte_width=zo->GetFileIR()->GetArchitectureBitWidth()/8;
-	for(
-		DataScoopSet_t::iterator it=zo->GetFileIR()->GetDataScoops().begin();
-		it!=zo->GetFileIR()->GetDataScoops().end();
-		++it
-	   )
+	auto byte_width=zo->GetFileIR()->GetArchitectureBitWidth()/8;
+	for(auto scoop : zo->GetFileIR()->GetDataScoops())
 	{
-		DataScoop_t* scoop=*it;
 		assert(scoop->GetEnd()->GetVirtualOffset() - scoop->GetStart()->GetVirtualOffset()+1 == scoop->GetSize());
 		assert(scoop->GetContents().size() == scoop->GetSize());
-		string scoop_contents=scoop->GetContents();
+		auto scoop_contents=scoop->GetContents();
 
-		for(
-			RelocationSet_t::iterator rit=scoop->GetRelocations().begin(); 
-			rit!=scoop->GetRelocations().end();
-			rit++
-		   )
+		for(auto reloc : scoop->GetRelocations())
 		{
-			Relocation_t* reloc=*rit;
-
 			if(reloc->GetType()==string("data_to_insn_ptr"))
 			{
 				virtual_offset_t reloff=reloc->GetOffset();
