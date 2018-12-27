@@ -219,6 +219,7 @@ void Unpin_t::DoUpdateForInstructions()
 	int missed_unpins=0;
 	auto& ms=*zo->GetMemorySpace();
 	auto& locMap=*(zo->GetLocationMap());
+	auto& firp=*(zo->GetFileIR());
 
 	for(auto from_insn : zo->GetFileIR()->GetInstructions())
 	{
@@ -275,22 +276,21 @@ void Unpin_t::DoUpdateForInstructions()
 			// instruction has a pcrel memory operand.
 			else if(reloc->GetType()==string("pcrel")) //  && reloc->GetWRT()!=NULL)
 			{
+				// decode the instruction and find the pcrel operand
 				const auto disasm=DecodedInstruction_t(from_insn);
 				const auto operands=disasm.getOperands();
-				const auto the_arg_it=find_if(ALLOF(operands),[](const DecodedOperand_t& op){ return op.isMemory() && op.isPcrel(); });
+				const auto the_arg_it=find_if(ALLOF(operands),[](const DecodedOperand_t& op){ return op.isPcrel(); });
 				const auto bo_wrt=reloc->GetWRT();
 				const auto scoop_wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
 				const auto insn_wrt=dynamic_cast<Instruction_t*>(reloc->GetWRT());
 				assert(the_arg_it!=operands.end());
 				const auto the_arg=*the_arg_it;
-				const auto rel_addr1=the_arg.getMemoryDisplacement()+from_insn->GetDataBits().size();
+				const auto mt=firp.GetArchitecture()->getMachineType();
 
-				const int  disp_offset=disasm.getMemoryDisplacementOffset(the_arg,from_insn); 
-				const int  disp_size=the_arg.getMemoryDisplacementEncodingSize(); 
-				libIRDB::virtual_offset_t from_insn_location=locMap[from_insn];
-				assert(disp_size==4);
-				assert(0<disp_offset && disp_offset<=from_insn->GetDataBits().size() - disp_size);
+				// get the new insn addr 	
+				const auto from_insn_location=(virtual_offset_t)locMap[from_insn];
 
+				// get WRT info
 				libIRDB::virtual_offset_t to_addr=0xdeadbeef; // noteable value that shouldn't be used.
 				string convert_string;
 
@@ -303,7 +303,7 @@ void Unpin_t::DoUpdateForInstructions()
 				{
 					to_addr=locMap[insn_wrt];
 					convert_string=string("insn ")+to_string(insn_wrt->GetBaseID())+
-					               ":"+insn_wrt->getDisassembly();
+						       ":"+insn_wrt->getDisassembly();
 				}
 				else 
 				{
@@ -311,22 +311,112 @@ void Unpin_t::DoUpdateForInstructions()
 					to_addr=0; /* no WRT obj */
 					convert_string=string("no-object");
 				}
-					
-				int new_disp=rel_addr1 + to_addr - from_insn->GetDataBits().size()-from_insn_location;
-	
-				from_insn->SetDataBits(from_insn->GetDataBits().replace(disp_offset, 
-					disp_size, (char*)&new_disp, disp_size));
-				// update the instruction in the memory space.
-				for(auto i = 0U;i<from_insn->GetDataBits().size();i++)
-				{ 
-					unsigned char newbyte=from_insn->GetDataBits()[i];
-					ms[from_insn_location+i]=newbyte;
+
+				if(mt==admtX86_64 || mt==admtI386)
+				{
+					const auto rel_addr1=the_arg.getMemoryDisplacement()+from_insn->GetDataBits().size();
+					const auto disp_offset=(int)disasm.getMemoryDisplacementOffset(the_arg,from_insn); 
+					const auto disp_size=(int)the_arg.getMemoryDisplacementEncodingSize(); 
+					assert(disp_size==4);
+					assert(0<disp_offset && disp_offset<=from_insn->GetDataBits().size() - disp_size);
+						
+					const auto new_disp=(int)(rel_addr1 + to_addr - from_insn->GetDataBits().size()-from_insn_location);
+					const auto newbits=from_insn->GetDataBits().replace(disp_offset, disp_size, (char*)&new_disp, disp_size); 
+					from_insn->SetDataBits(newbits);
+					ms.PlopBytes(from_insn_location, newbits.c_str(), newbits.size());
+					const auto disasm2=DecodedInstruction_t(from_insn);
+					cout<<"unpin:pcrel:new_disp="<<hex<<new_disp<<endl;
+					cout<<"unpin:pcrel:new_insn_addr="<<hex<<from_insn_location<<endl;
+					cout<<"unpin:pcrel:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.getDisassembly() 
+					    <<" to "<<disasm2.getDisassembly() <<" wrt "<< convert_string <<endl;
 				}
-				const auto disasm2=DecodedInstruction_t(from_insn);
-				cout<<"unpin:pcrel:new_disp="<<hex<<new_disp<<endl;
-				cout<<"unpin:pcrel:new_insn_addr="<<hex<<from_insn_location<<endl;
-				cout<<"unpin:pcrel:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.getDisassembly() 
-				    <<" to "<<disasm2.getDisassembly() <<" wrt "<< convert_string <<endl;
+	                        else if(mt==admtAarch64)
+                        	{
+					assert(bo_wrt==nullptr); // not yet imp'd WRT offsetting.
+					assert(to_addr==0); // not yet imp'd WRT offsetting.
+					const auto mnemonic    =disasm.getMnemonic();
+					const auto is_adr_type =mnemonic=="adr";
+					const auto is_adrp_type=mnemonic=="adrp";
+					const auto is_ldr_type =mnemonic=="ldr";
+					const auto mask2 =(1<< 2)-1;
+					const auto mask5 =(1<< 5)-1;
+					const auto mask12=(1<<12)-1;
+					const auto mask19=(1<<19)-1;
+					const auto orig_insn_addr=from_insn->GetAddress()->GetVirtualOffset(); // original location
+					const auto insn_bytes_len=4;	// arm is always 4.
+					uint8_t insn_bytes[insn_bytes_len]; // compiler disallows init on some platforms.
+					// but memcpy should init it sufficiently.
+					memcpy(insn_bytes, from_insn->GetDataBits().c_str(), insn_bytes_len);
+					const auto full_insn=*(uint32_t*)insn_bytes;
+					const auto op_byte=insn_bytes[3];
+
+					if(is_adrp_type || is_adr_type)
+					{
+
+						// adr : 0 immlo2 10000 immhi19 Rd5
+						// adrp: 1 immlo2 10000 immhi19 Rd5
+						assert((op_byte&mask5) == 0x10); // sanity check adr(p) opcode bytes.
+						const auto immlo2    = (op_byte >> 5)&mask2; // grab immlo2
+						const auto immhi19   = (full_insn >> 5)&mask19; // grab immhi19
+						const auto imm21     = immhi19<<2 | immlo2;   // get full immediate in one field.
+						const auto imm21_ext = (((int64_t)imm21)<<43) >> 43; // sign extend to 64-bit
+
+						const auto shift_dist= 
+							is_adrp_type ? 12 : // bits in page 
+							is_adr_type  ?  2 : // bits in instruction
+							throw invalid_argument("Unknown adr insn");
+
+						const auto orig_insn_pageno = orig_insn_addr>>shift_dist;
+						const auto new_insn_pageno  = from_insn_location>>shift_dist;
+						const auto new_imm21_ext = imm21_ext + (int64_t)orig_insn_pageno - 
+								(int64_t)new_insn_pageno + (int64_t)reloc->GetAddend()+(int64_t)to_addr;
+
+						// make sure no overflow.
+						assert( ((new_imm21_ext << 43) >> 43) == new_imm21_ext);
+						const auto new_immhi19   = new_imm21_ext >> 2;
+						const auto new_immlo2    = new_imm21_ext  & mask2;
+						const auto clean_new_insn= full_insn & ~(mask2<<29) & ~ (mask19 << 5);
+						const auto new_insn      = clean_new_insn | ((new_immlo2&mask2) << 29) | ((new_immhi19&mask19)<<5);
+						// put the new instruction in the output
+						ms.PlopBytes(from_insn_location, (const char*)&new_insn, insn_bytes_len);
+						if (m_verbose)
+						{
+							cout << "Relocating a adr(p) pcrel relocation with orig_pageno=" << hex
+							     << (orig_insn_pageno << 12) << " offset=(page-pc+" << imm21_ext << ")"  << endl;
+							cout << "Based on: " << disasm.getDisassembly() << hex << " originally at "  << orig_insn_addr
+							     << " now located at : 0x" << hex << from_insn_location << " with offset=(page-pc + "
+							     << new_imm21_ext << ")" << endl;
+						}
+					}
+					else if(is_ldr_type)
+					{
+						// ldr: 0 x1 0110 0 0 imm19 Rt5
+						const auto imm19    = ((int64_t)full_insn >> 5 ) & mask19;
+						const auto imm19_ext= (imm19 << 45) >> 45;
+						const auto referenced_addr=(imm19_ext<<2)+from_insn->GetAddress()->GetVirtualOffset()+4;
+						const auto new_imm19_ext  =((int64_t)referenced_addr-(int64_t)from_insn_location-4+(int64_t)reloc->GetAddend()+(int64_t)to_addr)>>2;
+						assert( ((new_imm19_ext << 45) >> 45) == new_imm19_ext);
+						const auto clean_new_insn = full_insn & ~(mask19 << 5);
+						const auto new_insn       = clean_new_insn | ((new_imm19_ext & mask19)<<5);
+						// put the new instruction in the output
+						ms.PlopBytes(from_insn_location, (const char*)&new_insn, insn_bytes_len);
+						if (m_verbose)
+						{
+							cout << "Relocating a ldr pcrel relocation with orig_addr=" << hex
+							     << (referenced_addr) << " offset=(pc+" << imm19_ext << ")"  << endl;
+							cout << "Based on: " << disasm.getDisassembly() 
+							     << " now located at : 0x" << hex << from_insn_location << " with offset=(pc + "
+							     << new_imm19_ext << ")" << endl;
+						}
+
+					}
+					else
+						assert(0);
+
+
+
+				}
+
 			}
 			// instruction has a absolute  memory operand that needs it's displacement updated.
 			else if(reloc->GetType()==string("absoluteptr_to_scoop"))
