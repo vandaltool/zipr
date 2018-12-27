@@ -184,20 +184,25 @@ EXEIO::section*  find_section(virtual_offset_t addr, EXEIO::exeio *elfiop)
 	return nullptr;
 }
 
-void handle_argument(const DecodedOperand_t *arg, Instruction_t* insn, ibt_provenance_t::provtype_t pt = ibt_provenance_t::ibtp_text)
+void handle_argument(
+		     const DecodedInstruction_t& decoded_insn, 
+		     const DecodedOperand_t *arg, 
+		     Instruction_t* insn, 
+		     ibt_provenance_t::provtype_t pt = ibt_provenance_t::ibtp_text
+		    )
 {
-	if(arg->isMemory()) //  (arg->ArgType&MEMORY_TYPE) == MEMORY_TYPE ) 
+	if(arg->isMemory() && decoded_insn.getMnemonic()=="lea") 
 	{
-		if(arg->isPcrel()) // (arg->ArgType&RELATIVE_)==RELATIVE_)
+		if(arg->isPcrel()) 
 		{
 			assert(insn);
 			assert(insn->GetAddress());
-			possible_target(arg->getMemoryDisplacement() /*arg->Memory.Displacement*/+insn->GetAddress()->GetVirtualOffset()+
+			possible_target(arg->getMemoryDisplacement() + insn->GetAddress()->GetVirtualOffset() +
 				insn->GetDataBits().length(), insn->GetAddress()->GetVirtualOffset(), pt);
 		}
 		else
 		{
-			possible_target(arg->getMemoryDisplacement() /* arg->Memory.Displacement*/, insn->GetAddress()->GetVirtualOffset(), pt);
+			possible_target(arg->getMemoryDisplacement(), insn->GetAddress()->GetVirtualOffset(), pt);
 		}
 	}
 }
@@ -305,14 +310,8 @@ bool texttoprintf(FileIR_t *firp,Instruction_t* insn)
 void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<virtual_offset_t>& thunk_bases)
 {
 
-        for(
-                set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
-                it!=firp->GetInstructions().end();
-                ++it
-           )
+        for(auto insn : firp->GetInstructions())
         {
-                Instruction_t *insn=*it;
-                // DISASM disasm;
 		DecodedInstruction_t disasm(insn);
                 virtual_offset_t instr_len = disasm.length(); // Disassemble(insn,disasm);
 
@@ -360,7 +359,7 @@ void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<vir
 			if(disasm.hasOperand(i))
 			{
 				const auto op=disasm.getOperand(i);
-				handle_argument(&op, insn, prov);
+				handle_argument(disasm, &op, insn, prov);
 			}
 		}
 	}
@@ -443,6 +442,24 @@ void infer_targets(FileIR_t *firp, section* shdr)
 	}
 
 }
+
+void handle_scoop_scanning(FileIR_t* firp)
+{
+	// check for addresses in scoops in the text section. 
+	for(auto scoop : firp->GetDataScoops())
+	{
+		// test if scoop was added by fill_in_cfg -- make this test better.
+		if(scoop->GetName().find("data_in_text_")==string::npos) continue;
+
+		// at the moment, FIC only creates 8-byte scoops from the .text segment.  if this changes, this code needs updating.
+		assert((scoop->GetEnd()->GetVirtualOffset() - scoop->GetStart()->GetVirtualOffset() + 1) == 8 );
+
+		// check ot see if the scoop has an IBTA 
+		const auto addr=*(uint64_t*)(scoop->GetContents().c_str());
+		possible_target(addr, scoop->GetStart()->GetVirtualOffset(), ibt_provenance_t::ibtp_unknown);
+	}
+}
+
 
 
 void print_targets()
@@ -953,7 +970,7 @@ void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, Dec
 
         Instruction_t* I5=insn;
         // check if I5 is a jump
-        if(strstr(disasm.getMnemonic().c_str()/*Instruction.Mnemonic*/, "jmp")==nullptr)
+        if(strstr(disasm.getMnemonic().c_str(), "jmp")==nullptr)
 		return;
 
 	// return if it's not a jump to a memory address
@@ -1785,6 +1802,13 @@ void calc_preds(FileIR_t* firp)
         }
 }
 
+void handle_takes_address_annot(FileIR_t* firp,Instruction_t* insn, MEDS_TakesAddressAnnotation* p_takes_address_annotation)
+{
+	if(!p_takes_address_annotation->isCode())
+		return;
+	const auto refd_addr=p_takes_address_annotation->GetReferencedAddress();
+	possible_target(refd_addr,insn->GetAddress()->GetVirtualOffset(), ibt_provenance_t::ibtp_text);
+}
 
 void handle_ib_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBAnnotation* p_ib_annotation)
 {
@@ -1897,24 +1921,18 @@ void handle_ibt_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBTAnnotation* p_
 void read_stars_xref_file(FileIR_t* firp)
 {
 
-	string BINARY_NAME="a.ncexe";
-	string SHARED_OBJECTS_DIR="shared_objects";
+	const auto BINARY_NAME=string("a.ncexe");
+	const auto SHARED_OBJECTS_DIR=string("shared_objects");
 
-	string fileBasename = basename((char*)firp->GetFile()->GetURL().c_str());
-	int ibs=0;
-	int ibts=0;
+	const auto fileBasename = string(basename((char*)firp->GetFile()->GetURL().c_str()));
 
-	MEDS_AnnotationParser annotationParser;
-	string annotationFilename;
+	auto annotationParser=MEDS_AnnotationParser();
 	// need to map filename to integer annotation file produced by STARS
 	// this should be retrieved from the IRDB but for now, we use files to store annotations
 	// convention from within the peasoup subdirectory is:
 	//      a.ncexe.infoannot
 	//      shared_objects/<shared-lib-filename>.infoannot
-	if (fileBasename==BINARY_NAME) 
-		annotationFilename = BINARY_NAME;
-	else
-		annotationFilename = SHARED_OBJECTS_DIR + "/" + fileBasename ;
+	const auto annotationFilename =(fileBasename==BINARY_NAME) ? BINARY_NAME : SHARED_OBJECTS_DIR + "/" + fileBasename ;
 
 	try
 	{
@@ -1925,43 +1943,29 @@ void read_stars_xref_file(FileIR_t* firp)
 		cout<<"Warning:  annotation parser reports error: "<<s<<endl;
 	}
 
-        for(
-                set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
-                it!=firp->GetInstructions().end();
-                ++it
-           )
+        for(auto insn : firp->GetInstructions())
 	{
-		Instruction_t* insn=*it;
-		virtual_offset_t irdb_vo = insn->GetAddress()->GetVirtualOffset();
-		VirtualOffset vo(irdb_vo);
+		const auto irdb_vo = insn->GetAddress()->GetVirtualOffset();
+		const auto vo=VirtualOffset(irdb_vo);
 
 		/* find it in the annotations */
-        	pair<MEDS_Annotations_t::iterator,MEDS_Annotations_t::iterator> ret;
-		ret = annotationParser.getAnnotations().equal_range(vo);
-		MEDS_IBAnnotation* p_ib_annotation;
-		MEDS_IBTAnnotation* p_ibt_annotation;
+		const auto ret = annotationParser.getAnnotations().equal_range(vo);
 
 		/* for each annotation for this instruction */
-		for (MEDS_Annotations_t::iterator ait = ret.first; ait != ret.second; ++ait)
+		for (auto ait = ret.first; ait != ret.second; ++ait)
 		{
 			/* is this annotation a funcSafe annotation? */
-			p_ib_annotation=dynamic_cast<MEDS_IBAnnotation*>(ait->second);
+			const auto p_ib_annotation=dynamic_cast<MEDS_IBAnnotation*>(ait->second);
+			const auto p_ibt_annotation=dynamic_cast<MEDS_IBTAnnotation*>(ait->second);
+			const auto p_takes_address_annotation=dynamic_cast<MEDS_TakesAddressAnnotation*>(ait->second);
 			if(p_ib_annotation && p_ib_annotation->isValid())
-			{
-				ibs++;
 				handle_ib_annot(firp,insn,p_ib_annotation);
-			}
-			p_ibt_annotation=dynamic_cast<MEDS_IBTAnnotation*>(ait->second);
-			if(p_ibt_annotation && p_ibt_annotation->isValid())
-			{
-				ibts++;
+			else if(p_ibt_annotation && p_ibt_annotation->isValid())
 				handle_ibt_annot(firp,insn,p_ibt_annotation);
-			}
+			else if(p_takes_address_annotation && p_takes_address_annotation->isValid())
+				handle_takes_address_annot(firp,insn,p_takes_address_annotation);
 		}
 	}
-
-	cout<<"Found "<<ibs<<" ibs and "<<ibts<<" ibts in the STARSxref file."<<endl;
-
 }
 
 void process_dynsym(FileIR_t* firp)
@@ -1978,22 +1982,11 @@ void process_dynsym(FileIR_t* firp)
 
 ICFS_t* setup_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop, ibt_provenance_t allowed)
 {
-	ICFS_t* hn=new ICFS_t(ICFS_Analysis_Module_Complete);
+	auto hn=new ICFS_t(ICFS_Analysis_Module_Complete);
 
-        for(
-                set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
-                it!=firp->GetInstructions().end();
-                ++it
-           )
+        for(auto insn: firp->GetInstructions())
 	{
-		Instruction_t* insn=*it;
-
-		/*
-		if(insn->GetIndirectBranchTargetAddress() == nullptr)
-			continue;
-		*/
-
-		ibt_provenance_t prov=targets[insn->GetAddress()->GetVirtualOffset()];
+		auto prov=targets[insn->GetAddress()->GetVirtualOffset()];
 
 		if(prov.isEmpty())
 			continue;
@@ -2836,13 +2829,12 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, int64_t do_unpin_opt)
 	/* look through each section and look for target possibilities */
         for (secndx=0; secndx<secnum; secndx++)
 		infer_targets(firp, elfiop->sections[secndx]);
+
+	handle_scoop_scanning(firp);
 	
 	/* should move to separate function */
-	auto forced_iterator = forced_pins.begin();
-	for (; forced_iterator != forced_pins.end(); forced_iterator++)
-	{
-		possible_target(*forced_iterator, 0, ibt_provenance_t::ibtp_user);
-	}
+	for(auto pin : forced_pins )
+		possible_target(pin, 0, ibt_provenance_t::ibtp_user);
 
 	/* look through the instructions in the program for targets */
 	get_instruction_targets(firp, elfiop, thunk_bases);

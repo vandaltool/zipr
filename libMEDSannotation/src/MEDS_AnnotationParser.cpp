@@ -30,6 +30,7 @@
 #include "MEDS_FRSafeAnnotation.hpp"
 #include "MEDS_FPTRShadowAnnotation.hpp"
 #include "MEDS_DeadRegAnnotation.hpp"
+#include "MEDS_TakesAddressAnnotation.hpp"
 #include "MEDS_IBAnnotation.hpp"
 #include "MEDS_IBTAnnotation.hpp"
 #include "MEDS_MemoryRangeAnnotation.hpp"
@@ -87,26 +88,24 @@ template <class type> bool MEDS_AnnotationParser::add_if_valid(string line)
 
 void MEDS_AnnotationParser::parseFile(istream &p_inputStream)
 {
-	string line;
-
 	while (!p_inputStream.eof())
 	{
+		auto line=string();
 		getline(p_inputStream, line);
 		if (line.empty()) continue;
 
-
-		if(add_if_valid<MEDS_DeadRegAnnotation>(line)) continue;
-		if(add_if_valid<MEDS_FPTRShadowAnnotation>(line)) continue;
-		if(add_if_valid<MEDS_InstructionCheckAnnotation>(line)) continue;
-		if(add_if_valid<MEDS_FuncPrototypeAnnotation>(line)) continue;
-		if(add_if_valid<MEDS_SafeFuncAnnotation>(line)) continue;
-		if(add_if_valid<MEDS_ProblemFuncAnnotation>(line)) continue;
-		if(add_if_valid<MEDS_FRSafeAnnotation>(line)) continue;
-		if(add_if_valid<MEDS_FuncExitAnnotation>(line)) continue;
-		if(add_if_valid<MEDS_IBAnnotation>(line)) continue;
-		if(add_if_valid<MEDS_IBTAnnotation>(line)) continue;
-		if (add_if_valid<MEDS_MemoryRangeAnnotation>(line)) continue;
-		
+		if(add_if_valid<MEDS_DeadRegAnnotation>          (line)) continue;
+		if(add_if_valid<MEDS_FPTRShadowAnnotation>       (line)) continue;
+		if(add_if_valid<MEDS_InstructionCheckAnnotation> (line)) continue;
+		if(add_if_valid<MEDS_FuncPrototypeAnnotation>    (line)) continue;
+		if(add_if_valid<MEDS_SafeFuncAnnotation>         (line)) continue;
+		if(add_if_valid<MEDS_ProblemFuncAnnotation>      (line)) continue;
+		if(add_if_valid<MEDS_FRSafeAnnotation>           (line)) continue;
+		if(add_if_valid<MEDS_FuncExitAnnotation>         (line)) continue;
+		if(add_if_valid<MEDS_TakesAddressAnnotation>     (line)) continue;
+		if(add_if_valid<MEDS_IBAnnotation>               (line)) continue;
+		if(add_if_valid<MEDS_IBTAnnotation>              (line)) continue;
+		if(add_if_valid<MEDS_MemoryRangeAnnotation>      (line)) continue;
 	}
 }
 

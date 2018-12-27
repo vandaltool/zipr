@@ -10,6 +10,8 @@
 #include "MEDS_FuncAnnotation.hpp"
 #include "MEDS_FuncPrototypeAnnotation.hpp"
 #include "MEDS.hpp"
+#include "MEDS_TakesAddressAnnotation.hpp"
+#include "MEDS_IBAnnotation.hpp"
 #include "MEDS_IBAnnotation.hpp"
 #include "MEDS_IBTAnnotation.hpp"
 #include "MEDS_InstructionCheckAnnotation.hpp"

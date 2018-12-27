@@ -46,6 +46,7 @@ class PopulateCFG : public libIRDB::Transform_SDK::TransformStep_t
         // main workers
         void fill_in_cfg(libIRDB::FileIR_t *);
         void fill_in_scoops(libIRDB::FileIR_t *);
+        void detect_scoops_in_code(libIRDB::FileIR_t *firp);
         void fill_in_landing_pads(libIRDB::FileIR_t *);
         
         // helpers

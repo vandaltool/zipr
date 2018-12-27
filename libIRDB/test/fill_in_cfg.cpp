@@ -43,17 +43,12 @@ void PopulateCFG::populate_instruction_map
 
 
 	/* for each instruction in the IR */
-	for(
-		set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
-		it!=firp->GetInstructions().end(); 
-		++it
-	   )
+	for(auto insn : firp->GetInstructions())
 	{
-		Instruction_t *insn=*it;
-		db_id_t fileID=insn->GetAddress()->GetFileID();
-		virtual_offset_t vo=insn->GetAddress()->GetVirtualOffset();
+		auto fileID=insn->GetAddress()->GetFileID();
+		auto vo=insn->GetAddress()->GetVirtualOffset();
 
-		pair<db_id_t,virtual_offset_t> p(fileID,vo);
+		auto p=pair<db_id_t,virtual_offset_t>(fileID,vo);
 
 		assert(insnMap[p]==NULL);
 		insnMap[p]=insn;
@@ -75,9 +70,6 @@ void PopulateCFG::set_fallthrough
 	
 	// check for branches with targets 
 	if(
-		//(disasm->Instruction.BranchType==JmpType) ||			// it is a unconditional branch 
-		//(disasm->Instruction.BranchType==RetType)			// or a return
-
 		(disasm->isUnconditionalBranch() ) ||	// it is a unconditional branch 
 		(disasm->isReturn())			// or a return
 	  )
@@ -88,13 +80,13 @@ void PopulateCFG::set_fallthrough
 
 	/* get the address of the next instrution */
 	
-	virtual_offset_t virtual_offset=insn->GetAddress()->GetVirtualOffset() + insn->GetDataBits().size();
+	auto virtual_offset=insn->GetAddress()->GetVirtualOffset() + insn->GetDataBits().size();
 
 	/* create a pair of offset/file */
-	pair<db_id_t,virtual_offset_t> p(insn->GetAddress()->GetFileID(),virtual_offset);
+	auto p=pair<db_id_t,virtual_offset_t>(insn->GetAddress()->GetFileID(),virtual_offset);
 	
 	/* lookup the target insn from the map */
-	Instruction_t *fallthrough_insn=insnMap[p];
+	auto fallthrough_insn=insnMap[p];
 
 	/* sanity, note we may see odd control transfers to 0x0 */
 	if(fallthrough_insn==NULL &&   virtual_offset!=0)
@@ -143,14 +135,13 @@ void PopulateCFG::set_target
 	//			disasm->Argument1.ArgMnemonic<<"."<<endl;
 
 			/* get the offset */
-			// virtual_offset_t virtual_offset=strtoul(disasm->Argument1.ArgMnemonic, NULL, 16);
-			virtual_offset_t virtual_offset=disasm->getAddress();
+			auto virtual_offset=disasm->getAddress();
 
 			/* create a pair of offset/file */
-			pair<db_id_t,virtual_offset_t> p(insn->GetAddress()->GetFileID(),virtual_offset);
+			auto p=pair<db_id_t,virtual_offset_t>(insn->GetAddress()->GetFileID(),virtual_offset);
 		
 			/* lookup the target insn from the map */
-			Instruction_t *target_insn=insnMap[p];
+			auto target_insn=insnMap[p];
 
 			/* sanity, note we may see odd control transfers to 0x0 */
 			if(target_insn==NULL)
@@ -204,20 +195,16 @@ File_t* PopulateCFG::find_file(FileIR_t* firp, db_id_t fileid)
 void PopulateCFG::add_new_instructions(FileIR_t *firp)
 {
 	int found_instructions=0;
-	for(
-		set< pair<db_id_t,virtual_offset_t> >::const_iterator it=missed_instructions.begin();
-		it!=missed_instructions.end(); 
-		++it
-   	   )
+	for(auto p : missed_instructions)
 	{
 		/* get the address we've missed */
-		virtual_offset_t missed_address=(*it).second;
+		auto missed_address=p.second;
 
 		/* get the address ID of the instruction that's missing the missed addressed */
-		db_id_t missed_fileid=(*it).first;
+		auto missed_fileid=p.first;
 		
 		/* figure out which file we're looking at */
-		File_t* filep=find_file(firp,missed_fileid);
+		auto filep=find_file(firp,missed_fileid);
 		assert(filep);
 
 
@@ -251,27 +238,10 @@ void PopulateCFG::add_new_instructions(FileIR_t *firp)
 				/* disassemble the instruction */
 				DecodedInstruction_t disasm(missed_address, (void*)&data[offset_into_section], elfiop->sections[secndx]->get_size()-offset_into_section );
 
-				/*
-                		memset(&disasm, 0, sizeof(DecodeInstruction_t));
 
-                		disasm.Options = NasmSyntax + PrefixedNumeral;
-                		disasm.Archi = firp->GetArchitectureBitWidth();
-                		disasm.EIP = (uintptr_t) &data[offset_into_section];
-				disasm.SecurityBlock=elfiop->sections[secndx]->get_size()-offset_into_section;
-                		disasm.VirtualAddr = missed_address;
-				*/
-
-
-				
-
-
-
-/* bea docs say OUT_OF_RANGE and UNKNOWN_OPCODE are defined, but they aren't */
-// #define OUT_OF_RANGE (0)
-// #define UNKNOWN_OPCODE (-1) 
 
 				/* if we found the instruction, but can't disassemble it, then we skip out for now */
-				if(!disasm.valid()) // instr_len==OUT_OF_RANGE || instr_len==UNKNOWN_OPCODE)
+				if(!disasm.valid()) 
 				{
 					if(getenv("VERBOSE_CFG"))
 						cout<<"Found invalid insn at "<<missed_address<<endl;
@@ -296,13 +266,13 @@ void PopulateCFG::add_new_instructions(FileIR_t *firp)
 					newinsnbits[i]=data[offset_into_section+i];
 
 				/* create a new address */
-				AddressID_t *newaddr=new AddressID_t();
+				auto newaddr=new AddressID_t();
 				assert(newaddr);
 				newaddr->SetVirtualOffset(missed_address);
 				newaddr->SetFileID(missed_fileid);
 
 				/* create a new instruction */
-				Instruction_t *newinsn=new Instruction_t();
+				auto newinsn=new Instruction_t();
 				assert(newinsn);
 				newinsn->SetAddress(newaddr);
 				newinsn->SetDataBits(newinsnbits);
@@ -348,15 +318,9 @@ void PopulateCFG::fill_in_cfg(FileIR_t *firp)
 		cout << "Found "<<firp->GetInstructions().size()<<" instructions." <<endl;
 
 		/* for each instruction, disassemble it and set the target/fallthrough */
-		for(
-			set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
-			it!=firp->GetInstructions().end(); 
-			++it
-	   	   )
+		for(auto insn : firp->GetInstructions())
 		{
-			Instruction_t *insn=*it;
       			DecodedInstruction_t disasm(insn);
-      			//memset(&disasm, 0, sizeof(DISASM));
 	
       			const auto instr_len = disasm.length();
 	
@@ -380,14 +344,10 @@ void PopulateCFG::fill_in_cfg(FileIR_t *firp)
 	} while(missed_instructions.size()>failed_target_count);
 
 	cout<<"Caution: Was unable to find instructions for these addresses:"<<hex<<endl;
-	for(
-		set< pair<db_id_t,virtual_offset_t> >::const_iterator it=missed_instructions.begin();
-		it!=missed_instructions.end(); 
-		++it
-   	   )
+	for(auto p : missed_instructions)
 	{
 		/* get the address we've missed */
-		virtual_offset_t missed_address=(*it).second;
+		virtual_offset_t missed_address=p.second;
 		cout << missed_address << ", ";
 	}
 	cout<<dec<<endl;
@@ -399,16 +359,8 @@ void PopulateCFG::fill_in_cfg(FileIR_t *firp)
 	/* for each instruction, set the original address id to be that of the address id, as fill_in_cfg is 
 	 * designed to work on only original programs.
 	 */
-	for(
-		std::set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
-		it!=firp->GetInstructions().end(); 
-		++it
-   	   )
-	{
-		Instruction_t* insn=*it;
-
+	for(auto insn : firp->GetInstructions())
 		insn->SetOriginalAddressID(insn->GetAddress()->GetBaseID());
-	}
 
 
 }
@@ -420,7 +372,6 @@ bool PopulateCFG::is_in_relro_segment(const int secndx)
 		return false;
 
 	int segnum = real_elfiop->segments.size();
-//	int segndx=0;
 
 	virtual_offset_t sec_start=(virtual_offset_t)(elfiop->sections[secndx]->get_address());
 	virtual_offset_t sec_end=(virtual_offset_t)(elfiop->sections[secndx]->get_address() + elfiop->sections[secndx]->get_size() - 1 );
@@ -488,14 +439,14 @@ void PopulateCFG::fill_in_scoops(FileIR_t *firp)
 		string name=elfiop->sections[secndx]->get_name();
 
 		/* start address */
-		AddressID_t *startaddr=new AddressID_t();
+		auto startaddr=new AddressID_t();
 		assert(startaddr);
 		startaddr->SetVirtualOffset( elfiop->sections[secndx]->get_address());
 		startaddr->SetFileID(firp->GetFile()->GetBaseID());
 		firp->GetAddresses().insert(startaddr);
 
 		/* end */
-		AddressID_t *endaddr=new AddressID_t();
+		auto endaddr=new AddressID_t();
 		assert(endaddr);
 		endaddr->SetVirtualOffset( elfiop->sections[secndx]->get_address() + elfiop->sections[secndx]->get_size()-1);
 		endaddr->SetFileID(firp->GetFile()->GetBaseID());
@@ -528,6 +479,62 @@ void PopulateCFG::fill_in_scoops(FileIR_t *firp)
 
 	}
 
+}
+
+void PopulateCFG::detect_scoops_in_code(FileIR_t *firp)
+{
+	// only valid for arm64
+	if(firp->GetArchitecture()->getMachineType() != admtAarch64) return;
+
+	// check each insn for an ldr with a pcrel operand.
+	for(auto insn : firp->GetInstructions())
+	{
+		const auto d=DecodedInstruction_t(insn);
+		// look for ldr's with a pcrel operand
+		if(d.getMnemonic()!="ldr") continue;
+		const auto op1=d.getOperand(1);
+	       	if( !op1.isPcrel()) continue;
+
+		// sanity check that it's a memory operation.
+		assert(op1.isMemory());
+
+		const auto referenced_address=op1.getMemoryDisplacement();
+
+		const auto sec=elfiop->sections.findByAddress(referenced_address);
+		// can't find section.
+		if(sec==nullptr) continue;
+
+		// only trying to do this for executable chunks, other code deals with
+		// scoops not in the .text section.
+		if(!sec->isExecutable()) continue;
+
+		const auto sec_data=sec->get_data();
+		const auto sec_start=sec->get_address();
+		const auto the_contents=string(&sec_data[referenced_address-sec_start],8);
+		const auto fileid=firp->GetFile()->GetBaseID();
+
+
+		auto start_addr=new AddressID_t();
+		assert(start_addr);
+		start_addr->SetVirtualOffset(referenced_address);
+		start_addr->SetFileID(fileid);
+		firp->GetAddresses().insert(start_addr);
+
+		auto end_addr=new AddressID_t();
+		assert(end_addr);
+		end_addr->SetVirtualOffset(referenced_address+7);
+		end_addr->SetFileID(fileid);
+		firp->GetAddresses().insert(end_addr);
+
+		const auto name="data_in_text_"+to_string(referenced_address);
+		const auto permissions=0x4; /* R-- */
+		const auto is_relro=false;
+		auto newscoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, name, start_addr, end_addr, NULL, permissions, is_relro, the_contents);
+		firp->GetDataScoops().insert(newscoop);
+
+		cout<<"Allocated data in text segment "<<name<<"=("<<start_addr->GetVirtualOffset()<<"-"
+		    <<end_addr->GetVirtualOffset()<<")"<<endl;
+	}
 }
 
 void PopulateCFG::fill_in_landing_pads(FileIR_t *firp)
@@ -617,7 +624,7 @@ int PopulateCFG::parseArgs(const vector<string> step_args)
 
 int PopulateCFG::executeStep(IRDBObjects_t *const irdb_objects)
 {
-    try 
+	try 
 	{
 		const auto pqxx_interface = irdb_objects->getDBInterface();
 		// now set the DB interface for THIS PLUGIN LIBRARY -- VERY IMPORTANT
@@ -641,6 +648,7 @@ int PopulateCFG::executeStep(IRDBObjects_t *const irdb_objects)
 
 			fill_in_cfg(firp);
 			fill_in_scoops(firp);
+			detect_scoops_in_code(firp);
 
 			if (fix_landing_pads)
 			{
@@ -670,7 +678,6 @@ int PopulateCFG::executeStep(IRDBObjects_t *const irdb_objects)
 		assert(scoops_detected > 5 );
 	}
 
-    
 	return 0;
 }
 
