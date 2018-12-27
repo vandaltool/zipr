@@ -735,6 +735,21 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 	if (m_verbose)
 		printf("Adding (mysterious) free range 0x%p to EOF\n", (void*)new_free_page);
 	start_of_new_space=new_free_page;
+
+	for(auto scoop : m_firp->GetDataScoops())
+	{
+		if(scoop->isExecuteable()) continue;
+		// put scoops in memory to make sure they are busy,
+		// just in case they overlap with free ranges.
+		// this came up on Aarch64 because data is in the .text segment.
+		cout<<"Pre-allocating scoop "<<scoop->GetName() << "=("
+		    << scoop->GetStart()->GetVirtualOffset() << "-" 
+		    << scoop->GetEnd()  ->GetVirtualOffset() << ")"<<endl;
+		memory_space.PlopBytes(scoop->GetStart()->GetVirtualOffset(), 
+		                       scoop->GetContents().c_str(),
+				       scoop->GetContents().size()
+				      );
+	}
 }
 
 
