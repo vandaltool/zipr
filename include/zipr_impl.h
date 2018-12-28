@@ -158,6 +158,8 @@ class ZiprImpl_t : public Zipr_t
 		virtual Zipr_SDK::RangeAddress_t PlaceUnplacedScoops(Zipr_SDK::RangeAddress_t max);
 		Stats_t* GetStats() { return m_stats; }
 		ZiprSizerBase_t* GetSizer() { return sizer; }
+		ZiprPatcherBase_t* GetPatcher() { return patcher; }
+		ZiprPinnerBase_t* GetPinner() { return pinner; }
 
 
 	private:

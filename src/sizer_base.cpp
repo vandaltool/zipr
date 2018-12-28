@@ -26,6 +26,24 @@ unique_ptr<ZiprSizerBase_t> ZiprSizerBase_t::factory(Zipr_SDK::Zipr_t* p_zipr_ob
 	return unique_ptr<ZiprSizerBase_t>(ret);
 }
 
+ZiprSizerBase_t::ZiprSizerBase_t(Zipr_SDK::Zipr_t* p_zipr_obj,
+		const size_t p_CALLBACK_TRAMPOLINE_SIZE,
+		const size_t p_TRAMPOLINE_SIZE,
+		const size_t p_LONG_PIN_SIZE,
+		const size_t p_SHORT_PIN_SIZE,
+		const size_t p_ALIGNMENT
+		) :
+	memory_space(*dynamic_cast<zipr::ZiprMemorySpace_t*>(p_zipr_obj->GetMemorySpace())),
+	m_zipr_obj(*dynamic_cast<zipr::ZiprImpl_t*>(p_zipr_obj)),
+	CALLBACK_TRAMPOLINE_SIZE(p_CALLBACK_TRAMPOLINE_SIZE),
+	TRAMPOLINE_SIZE         (p_TRAMPOLINE_SIZE         ),
+	LONG_PIN_SIZE           (p_LONG_PIN_SIZE           ),
+	SHORT_PIN_SIZE          (p_SHORT_PIN_SIZE          ),
+	ALIGNMENT               (p_ALIGNMENT               )
+{
+}
+
+
 Range_t ZiprSizerBase_t::DoPlacement(const size_t size) const
 {
 	auto new_place=memory_space.GetFreeRange(size+ALIGNMENT-1);	

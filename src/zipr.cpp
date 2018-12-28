@@ -1949,6 +1949,9 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntryWithTarget(
 	RangeAddress_t override_place,
 	RangeAddress_t override_target)
 {
+	return sizer->PlopDollopEntryWithTarget(entry,override_place,override_target);
+#if 0
+
 	auto insn = entry->Instruction();
 
 	assert(entry->TargetDollop());
@@ -2067,6 +2070,7 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntryWithTarget(
 		default:
 			assert(0);
 	}
+#endif
 }
 
 RangeAddress_t ZiprImpl_t::PlopDollopEntryWithCallback(
