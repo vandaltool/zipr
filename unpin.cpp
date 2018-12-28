@@ -362,8 +362,8 @@ void Unpin_t::DoUpdateForInstructions()
 						const auto imm21_ext = (((int64_t)imm21)<<43) >> 43; // sign extend to 64-bit
 
 						const auto shift_dist= 
-							is_adrp_type ? 12 : // bits in page 
-							is_adr_type  ?  2 : // bits in instruction
+							is_adrp_type ? 12 : // bits in page for adrp 
+							is_adr_type  ?  0 : // no shift for adr
 							throw invalid_argument("Unknown adr insn");
 
 						const auto orig_insn_pageno = orig_insn_addr>>shift_dist;
