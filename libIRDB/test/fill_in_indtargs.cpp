@@ -620,7 +620,7 @@ bool check_for_arm_switch_templ(
 Sample code for this branch type:
 
        # x2 gets the value of x0
-       # this probably isn't normal or required, but we aren't checking 
+       # this probably is not normal or required, but we are not checking 
        # it anyhow.  This is just to understand the example.
 
 i0:    0x4039c0     mov     x2, x0 
