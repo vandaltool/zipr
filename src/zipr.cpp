@@ -1163,7 +1163,7 @@ void ZiprImpl_t::PlaceDollops()
 						if(!containing->IsPlaced())
 						{
 							placement_queue.insert(pair<Dollop_t*, RangeAddress_t>( containing, cur_addr));
-							cout<<"Adding to placement queue for reloc of type="<<reloc->GetType()<<endl;
+							// cout<<"Adding to placement queue for reloc of type="<<reloc->GetType()<<endl;
 						}
 					}
 				};
@@ -2844,32 +2844,25 @@ void  ZiprImpl_t::FixTwoByteWithPrefix()
 		if(d.getOperands().size()!=1) continue;	// skip branches that have no operands or more than one
 		if(!d.getOperand(0).isConstant()) continue;	// skip anything where the operand isn't a constant
 		if(d.getPrefixCount()==0) continue;	// prevents arm instructions from being xformed.
-		
-		auto done=false;
-		while (!done)
-		{
-			char b=insn->GetDataBits()[0];
-			switch(b)
-			{
 
-				case (char)0x2e:
-				case (char)0x3e:
-				case (char)0x64:
-				case (char)0x65:
-				{
-					// remove prefix 
-					insn->SetDataBits(insn->GetDataBits().erase(0,1));	
-					break;
-				}
-				default:
-					done=1;
-					break;
+		
+		while (true)
+		{
+			const auto b=insn->GetDataBits()[0];
+			// basic prefix check
+			const auto prefixes=set<uint8_t>({0x2e, 0x3e, 0x64, 0x65, 0xf2, 0xf3});
+			if(prefixes.find(b)!=end(prefixes))
+			{
+				// remove prefix 
+				insn->SetDataBits(insn->GetDataBits().erase(0,1));	
 			}
 			// remove rex prefix when unnecessary 
-			if(m_firp->GetArchitectureBitWidth()==64 && (b&0xf0)==0x40 /* has rex prefix */)
+			else if(m_firp->GetArchitectureBitWidth()==64 && (b&0xf0)==0x40 /* has rex prefix */)
 			{
 				insn->SetDataBits(insn->GetDataBits().erase(0,1));	
 			}
+			else 
+				break;
 		}
 
 	}
