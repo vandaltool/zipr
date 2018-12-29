@@ -317,19 +317,30 @@ void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<vir
 
                 assert(instr_len==insn->GetDataBits().size());
 
-		// work for both 32- and 64-bit.
-		check_for_PIC_switch_table32_type2(firp, insn,disasm, elfiop, thunk_bases);
-		check_for_PIC_switch_table32_type3(firp, insn,disasm, elfiop, thunk_bases);
+		const auto mt=firp->GetArchitecture()->getMachineType();
 
-		if (firp->GetArchitectureBitWidth()==32)
-			check_for_PIC_switch_table32(firp, insn,disasm, elfiop, thunk_bases);
-		else if (firp->GetArchitectureBitWidth()==64)
-			check_for_PIC_switch_table64(firp, insn,disasm, elfiop);
+		if(mt==admtX86_64 || mt==admtI386)
+		{
+			// work for both 32- and 64-bit.
+			check_for_PIC_switch_table32_type2(firp, insn,disasm, elfiop, thunk_bases);
+			check_for_PIC_switch_table32_type3(firp, insn,disasm, elfiop, thunk_bases);
+
+			if (firp->GetArchitectureBitWidth()==32)
+				check_for_PIC_switch_table32(firp, insn,disasm, elfiop, thunk_bases);
+			else if (firp->GetArchitectureBitWidth()==64)
+				check_for_PIC_switch_table64(firp, insn,disasm, elfiop);
+			else
+				assert(0);
+
+			check_for_nonPIC_switch_table(firp, insn,disasm, elfiop);
+			check_for_nonPIC_switch_table_pattern2(firp, insn,disasm, elfiop);
+		}
+		else if(mt==admtAarch64)
+		{
+			check_for_arm_switch_type1(firp,insn, disasm, elfiop);
+		}
 		else
-			assert(0);
-
-		check_for_nonPIC_switch_table(firp, insn,disasm, elfiop);
-		check_for_nonPIC_switch_table_pattern2(firp, insn,disasm, elfiop);
+			throw invalid_argument("Cannot determine machine type");
 
 		/* other branches can't indicate an indirect branch target */
 		if(disasm.isBranch()) // disasm.Instruction.BranchType)
@@ -349,9 +360,7 @@ void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<vir
 		for(const auto& op: disasm.getOperands())
 		{
 			if(op.isConstant())
-			{
-				possible_target(op.getConstant() /* Instruction.Immediat*/ ,0, prov);
-			}
+				possible_target(op.getConstant(), 0, prov);
 		}
 
 		for(auto i=0;i<4;i++)
@@ -593,6 +602,259 @@ bool backup_until(const string &insn_type_regex_str, Instruction_t *& prev, Inst
 	return false;
 }
 
+
+
+template<class table_entry_type_t>
+bool check_for_arm_switch_templ(
+		const string& extender, 
+		const string &ldr, 
+		FileIR_t *firp, 
+		Instruction_t* i10, 
+		const DecodedInstruction_t &d10, 
+		EXEIO::exeio* elfiop,
+		const virtual_offset_t &unk) 
+{
+	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type1;
+
+#if 0
+Sample code for this branch type:
+
+       # x2 gets the value of x0
+       # this probably isn't normal or required, but we aren't checking 
+       # it anyhow.  This is just to understand the example.
+
+i0:    0x4039c0     mov     x2, x0 
+       # range check
+i1:    0x4039c4:    cmp     x0, #0x3
+i2:    0x4039c8:    b.hi    0x4039d4
+i3:    0x4039cc:    cmp     w0, #0x3
+i4:    0x4039d0:    b.ls    0x40449c
+
+       // generate switch table base address
+       // this code may be hard to find if the compiler optimizes it
+       // outside the block with the rest of the dispatch code, and/or
+       // spills a register.
+       // thus, we allow for it not to be found, and instead us any "unk"
+       // we return true if we've found the entry to avoid looking at unks
+       // if we don't need to.
+i5:    0x40449c:    adrp    table_page_reg, 0x415000          // table page 
+i6:    0x4044a0:    add     table_reg, table_page_reg, #0x2b0 // table offset 
+       // table=table_page+table_offset
+       //
+       // load from switch table
+i7:    0x4044a4:    ldrh    index_reg, [table_reg,w2,uxtw #1]
+       // calculate branch_addr+4+table[i]*4
+i8:    0x4044a8:    adr     offset_reg, 0x4044b4 // jump base addr
+i9:    0x4044ac:    add     i10_reg, offset_reg, index_reg, sxth #2
+       // actually take the branch
+i10:   0x4044b0:    br      i10_reg
+i11:   0x4044b4:    
+
+
+notes:
+
+1) jump table entries are 2-bytes
+2) jump table entries specify an offset from the byte after dispatch branch
+3) jump table entries dont store the lower 2 bits of the offset, as they 
+   have to be 0 due to instruction alignment
+
+	
+#endif
+	// sanity check the jump 
+        if(d10.getMnemonic() != "br") return true;
+
+	// grab the reg
+	const auto i10_reg=d10.getOperand(0).getString();
+
+	// try to find I9
+	auto i9=(Instruction_t*)nullptr;
+	if(!backup_until(string()+"add "+i10_reg+".* "+extender+" #2", /* look for this pattern. */
+				i9,                            /* find i9 */
+				i10,                           /* before I10 */
+				i10_reg                        /* stop if i10_reg set */
+				))
+		return false; /* try other extenders */
+
+	// Extract the I9 fields.
+	assert(i9);
+	const auto d9=DecodedInstruction_t(i9);
+	const auto offset_reg=d9.getOperand(1).getString();
+	const auto index_reg =d9.getOperand(2).getString();
+
+
+	// try to find I8
+	auto i8=(Instruction_t*)nullptr;
+	if(!backup_until(string()+"adr "+offset_reg, /* look for this pattern. */
+				i8,                  /* find i8 */
+				i9,                  /* before I9 */
+				offset_reg           /* stop if offste_reg set */
+				))
+		return true; 
+
+
+	// extract the I8 fields
+	assert(i8);
+	const auto d8=DecodedInstruction_t(i8);
+	const auto jump_base_addr=d8.getOperand(1).getConstant();
+
+	// try to find I7
+	auto i7=(Instruction_t*)nullptr;
+	if(!backup_until(string()+ldr+" "+index_reg, /* look for this pattern. */
+				i7,                  /* find i7 */
+				i9,                  /* before I9 */
+				index_reg            /* stop if index_reg set */
+				))
+		return true;
+
+
+	// extract the I7 fields
+	assert(i7);
+	const auto d7=DecodedInstruction_t(i7);
+	const auto memory_op_string=d7.getOperand(1).getString();
+	const auto plus_pos=memory_op_string.find(" +");
+	const auto table_reg=memory_op_string.substr(0,plus_pos);
+
+	// now we try to find the table base in I5 and I6
+	// but we may fail due to compiler opts.  Prepare for such failures
+	// by setting our table-addr to 0 and indicating we didn't find it.
+	// we will check these variables after the attempt and fall back to an 
+	// unk, if given one.
+	auto found_table_base=false;
+	auto table_addr=0u;
+
+	// try to find I6
+	auto i6=(Instruction_t*)nullptr;
+	if(backup_until(string()+"add "+table_reg,  /* look for this pattern. */
+				i6,                  /* find i6 */
+				i7,                  /* before I7 */
+				table_reg            /* stop if table_reg set */
+				))
+	{
+
+
+		// extract the I6 fields
+		assert(i6);
+		const auto d6=DecodedInstruction_t(i6);
+		const auto table_page_reg   =d6.getOperand(1).getString();
+		const auto table_page_offset=d6.getOperand(2).getConstant();
+
+		// try to find I5
+		auto i5=(Instruction_t*)nullptr;
+		if(backup_until(string()+"adrp "+table_page_reg,  /* look for this pattern. */
+					i5,                       /* find i5 */
+					i6,                       /* before I6 */
+					table_page_reg            /* stop if table_reg_reg set */
+					))
+		{
+			// extract i5 fields
+			assert(i5);
+			const auto d5=DecodedInstruction_t(i5);
+			const auto table_page=d5.getOperand(1).getConstant();
+			table_addr=table_page+table_page_offset;
+			found_table_base=true;
+		}
+	}
+
+	if(!found_table_base)
+		table_addr=unk;
+
+	if(table_addr==0)
+		return false;
+
+
+	// try to find switch table jumps
+	const auto i10_func=i10->GetFunction();
+
+	// find the section with the jump table
+	const auto table_section=find_section(table_addr,elfiop);
+	if(!table_section) return false;  
+
+	// if the section has no data, abort if not found
+	const auto table_section_data_ptr=table_section->get_data();
+	if(table_section_data_ptr == nullptr ) return false;
+
+	// get the section's adddress, abort if not loaded
+	const auto table_section_address=table_section->get_address();
+	if(table_section_address==0) return false;
+
+	// calculate how far into the section the table is.
+	const auto table_offset_into_section=(table_addr-table_section_address);
+
+	// calculate the actual data for the table
+	const auto table_data_ptr = table_section_data_ptr + table_offset_into_section;
+
+	// calculate a stop point so we don't fall out of the section.
+	const auto table_section_end_ptr=table_section_data_ptr+table_section->get_size();
+
+	// define how to map an index in the table into an address to deref.
+	const auto entry_size=sizeof(table_entry_type_t);
+	const auto getEntryPtr =[&](const uint64_t index) { return table_data_ptr+index*entry_size; };
+	const auto getEntryAddr=[&](const uint64_t index) { return table_addr    +index*entry_size; };
+
+	// log that we've found a table, etc.
+	cout << "Found ARM type1 at 0x"<<hex<<i10->GetAddress()->GetVirtualOffset()
+	     << " with jump_base_addr = 0x"<<hex<<jump_base_addr
+	     << ", table_reg='"<<table_reg<<"'"
+	     << ", table_addr="<<table_addr
+	     << endl;
+
+	// look at each table entry
+	auto target_count=0U;
+	auto targets=set<virtual_offset_t>();
+	for ( ; getEntryPtr(target_count)+entry_size < table_section_end_ptr ; target_count++ )
+	{
+		const auto entry_ptr  = getEntryPtr(target_count);
+		const auto entry_address  = getEntryAddr(target_count);
+		const auto table_entry    = *(table_entry_type_t*)entry_ptr;
+		const auto candidate_ibta = jump_base_addr+table_entry*4;	 // 4 being instruction alignment factor for ARM64
+		const auto ibtarget       = lookupInstruction(firp, candidate_ibta);
+
+		cout << "\tEntry #"<<dec<<target_count<<"= ent-addr="<<hex<<entry_address
+	   	     << " ent="<<hex<<+table_entry	 // print as int, not char.
+		     << " ibta="<<candidate_ibta<<endl;
+
+		// stop if we failed to find an instruction,
+		// or find an instruction outside the function
+		if( ibtarget == nullptr || ibtarget->GetFunction()!=i10_func )
+			break;
+
+		// record that we found something that looks valid-enough to try to pin
+		// stop if we couldn't pin.
+		if(!possible_target(candidate_ibta,entry_address,prov))
+			break;
+		targets.insert(candidate_ibta);
+	}
+	cout << "\tUnique target count="<<dec<<targets.size()<<endl;
+	return target_count>1;
+}
+
+
+/* not sure what "unk" is. 
+ * This is the term IDA seems to be using 
+ * for a reference to a pc-rel switch table
+ * it may have another  meaning, but that's what I mean here.
+ */
+
+using UnkSet_t=set<virtual_offset_t>;
+map<Function_t*,UnkSet_t> all_unks;
+
+void check_for_arm_switch_type1(FileIR_t *firp, Instruction_t* i10, const DecodedInstruction_t &d10, EXEIO::exeio* elfiop)
+{
+	// try all the unks with 8-bit and 16-bit tables.  stop early if we 
+	// succeed with w/o using a unk or we fail so hard it's not worth checking any more.
+	
+	// check for 16- and 8-bit tables without unks.
+	if(check_for_arm_switch_templ<int16_t>("sxth", "ldrh", firp,i10,d10,elfiop,0)) return;
+	if(check_for_arm_switch_templ<int8_t >("sxtb", "ldrb", firp,i10,d10,elfiop,0)) return;
+
+	const auto these_unks=all_unks[i10->GetFunction()];
+	for(auto unk : these_unks)
+	{
+		check_for_arm_switch_templ<int16_t>("sxth", "ldrh", firp,i10,d10,elfiop,unk);
+		check_for_arm_switch_templ<int8_t >("sxtb", "ldrb", firp,i10,d10,elfiop,unk);
+	}
+
+}
 
 /*
  * check_for_PIC_switch_table32 - look for switch tables in PIC code for 32-bit code.
@@ -1804,10 +2066,16 @@ void calc_preds(FileIR_t* firp)
 
 void handle_takes_address_annot(FileIR_t* firp,Instruction_t* insn, MEDS_TakesAddressAnnotation* p_takes_address_annotation)
 {
-	if(!p_takes_address_annotation->isCode())
-		return;
-	const auto refd_addr=p_takes_address_annotation->GetReferencedAddress();
-	possible_target(refd_addr,insn->GetAddress()->GetVirtualOffset(), ibt_provenance_t::ibtp_text);
+	const auto referenced_addr=p_takes_address_annotation->GetReferencedAddress();
+	if(p_takes_address_annotation->isCode())
+	{
+		const auto refd_addr=referenced_addr;
+		possible_target(refd_addr,insn->GetAddress()->GetVirtualOffset(), ibt_provenance_t::ibtp_text);
+	}
+	else
+	{
+		all_unks[insn->GetFunction()].insert(referenced_addr);
+	}
 }
 
 void handle_ib_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBAnnotation* p_ib_annotation)

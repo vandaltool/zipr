@@ -61,7 +61,7 @@ static inline std::ostream& operator<<(std::ostream& out, const ibt_provenance_t
 class ibt_provenance_t
 {
 	public:
-		typedef unsigned int provtype_t;
+		typedef uint32_t provtype_t;
 
 		ibt_provenance_t() : value(0) { };
 
