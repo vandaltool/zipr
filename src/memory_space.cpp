@@ -41,7 +41,7 @@ void ZiprMemorySpace_t::SplitFreeRange(Range_t split_from)
 	RangeAddress_t counter, end;
 	for (counter = split_from.GetStart(), end = split_from.GetEnd();
 	     counter!=end;
-			 counter++)
+	     counter++)
 	{
 		SplitFreeRange(counter);
 	}
@@ -49,10 +49,10 @@ void ZiprMemorySpace_t::SplitFreeRange(Range_t split_from)
 
 void ZiprMemorySpace_t::SplitFreeRange(RangeAddress_t addr)
 {
-	RangeSet_t::iterator it=FindFreeRange(addr);
+	const auto it=FindFreeRange(addr);
 	assert(IsValidRange(it));
 
-	Range_t r=*it;
+	const auto r=*it;
 	if(r.GetStart()==r.GetEnd())
 	{
 		assert(addr==r.GetEnd());
@@ -80,7 +80,7 @@ void ZiprMemorySpace_t::MergeFreeRange(Range_t range)
 	RangeAddress_t counter, end;
 	for (counter = range.GetStart(), end = range.GetEnd();
 	     counter!=end;
-			 counter++)
+	     counter++)
 	{
 		MergeFreeRange(counter);
 	}
@@ -178,18 +178,15 @@ void ZiprMemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 
 void ZiprMemorySpace_t::PrintMemorySpace(std::ostream &out)
 {
-	for( RangeSet_t::iterator it=free_ranges.begin();
-		it!=free_ranges.end();
-		++it)
+	for(auto r : free_ranges)
 	{
-		Range_t r = *it;
 		out <<"0x"<<std::hex<<r.GetStart()<<" - 0x"<<std::hex<<r.GetEnd()<<endl;
 	}
 }
 
 RangeSet_t::iterator ZiprMemorySpace_t::FindFreeRange(RangeAddress_t addr)
 {
-	RangeSet_t::iterator freer = free_ranges.find(Range_t(addr, addr)); 
+	auto freer = free_ranges.find(Range_t(addr, addr)); 
 	return freer;
 }
 
@@ -201,8 +198,8 @@ bool ZiprMemorySpace_t::IsValidRange(RangeSet_t::iterator it)
 std::pair<RangeSet_t::const_iterator,RangeSet_t::const_iterator>
 	ZiprMemorySpace_t::GetNearbyFreeRanges(const RangeAddress_t hint,size_t count)
 {
-	Range_t search(hint, hint+1);
-	RangeSet_t::const_iterator result = free_ranges.lower_bound(search);
+	const auto search=Range_t(hint, hint+1);
+	const auto result = free_ranges.lower_bound(search);
 	/*
 	 * TODO: Not quite sure what to make of this.
 	 */
@@ -212,11 +209,8 @@ std::pair<RangeSet_t::const_iterator,RangeSet_t::const_iterator>
 
 Range_t ZiprMemorySpace_t::GetLargeRange(void)
 {
-	for( RangeSet_t::iterator it=free_ranges.begin();
-		it!=free_ranges.end();
-		++it)
+	for(auto r : free_ranges)
 	{
-		Range_t r=*it;
 		if(r.GetEnd()==(RangeAddress_t)-1)
 			return r;
 	}
@@ -230,12 +224,9 @@ bool ZiprMemorySpace_t::SortRangeBySize(const Range_t &a, const Range_t &b)
 
 std::list<Range_t> ZiprMemorySpace_t::GetFreeRanges(size_t size)
 {
-	list<Range_t> result;
-	for( RangeSet_t::iterator it=free_ranges.begin();
-		it!=free_ranges.end();
-		++it)
+	auto result=list<Range_t>();
+	for(auto r : free_ranges)
 	{
-		Range_t r=*it;
 		if(r.GetEnd() - r.GetStart() >= (unsigned) size)
 			result.push_back(r);
 	}
@@ -245,13 +236,8 @@ std::list<Range_t> ZiprMemorySpace_t::GetFreeRanges(size_t size)
 
 Range_t ZiprMemorySpace_t::GetInfiniteFreeRange()
 {
-	vector<Range_t> v;
-	Range_t big_range;
-	for( RangeSet_t::iterator it=free_ranges.begin();
-		it!=free_ranges.end();
-		++it)
+	for(auto r : free_ranges)
 	{
-		Range_t r=*it;
 		if(r.GetEnd()==(RangeAddress_t)-1)
 			return r;
 	}
@@ -263,11 +249,8 @@ Range_t ZiprMemorySpace_t::GetFreeRange(int size)
 {
 	vector<Range_t> v;
 	Range_t big_range;
-	for( RangeSet_t::iterator it=free_ranges.begin();
-		it!=free_ranges.end();
-		++it)
+	for(auto r : free_ranges)
 	{
-		Range_t r=*it;
 		if(r.GetEnd()==(RangeAddress_t)-1)
 			big_range=r;
 		else if(r.GetEnd() - r.GetStart() >= (unsigned) size)

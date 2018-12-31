@@ -72,6 +72,7 @@ void ZiprPatcherARM64_t::ApplyNopToPatch(RangeAddress_t addr)
 
 void ZiprPatcherARM64_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)
 { 
+
         const auto first_byte =(uint8_t)memory_space[from_addr+3];
         const auto second_byte=(uint8_t)memory_space[from_addr+2];
         const auto third_byte =(uint8_t)memory_space[from_addr+1];
@@ -112,35 +113,100 @@ void ZiprPatcherARM64_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_
 
 	if(is_uncond_branch || is_uncond_branch_and_link)
 	{
+		// cout<<"Applying uncond branch patch from "<<hex<<from_addr<<" to "<<to_addr<<endl;
 		const auto non_imm_bits=32U-26U;	// 32 bits, imm26
 		// assert there's no overflow.
 		assert((uint64_t)(new_offset << non_imm_bits) == ((uint64_t)new_offset) << non_imm_bits);
 		// or in opcode for first byte.  set remaining bytes.
-		const auto trimmed_offset=new_offset & ((1<<26)-1);
-		const auto new_first_byte =               (trimmed_offset>> 0)&0xff;
-		const auto new_second_byte=               (trimmed_offset>> 8)&0xff;
-		const auto new_third_byte =               (trimmed_offset>>16)&0xff;
-		const auto new_fourth_byte=(opcode<<2) | ((trimmed_offset>>24)&0xff);
-		//cout<<"ARM64::Patching "<<hex<<from_addr+0<<" val="<<new_first_byte <<endl;
-		//cout<<"ARM64::Patching "<<hex<<from_addr+1<<" val="<<new_second_byte<<endl;
-		//cout<<"ARM64::Patching "<<hex<<from_addr+2<<" val="<<new_third_byte <<endl;
-		//cout<<"ARM64::Patching "<<hex<<from_addr+3<<" val="<<new_fourth_byte<<endl;
-		memory_space[from_addr+0]=new_first_byte;             
-		memory_space[from_addr+1]=new_second_byte;
-		memory_space[from_addr+2]=new_third_byte;
-		memory_space[from_addr+3]=new_fourth_byte;
+		const auto mask26=((1<<26)-1);
+		const auto trimmed_offset=new_offset & mask26;
+		memory_space[from_addr+0]=               (trimmed_offset>> 0)&0xff;
+		memory_space[from_addr+1]=               (trimmed_offset>> 8)&0xff;
+		memory_space[from_addr+2]=               (trimmed_offset>>16)&0xff;
+		memory_space[from_addr+3]=(opcode<<2) | ((trimmed_offset>>24)&0xff);
 	}
 	else if (is_branch_cond || is_compare_and_branch)
 	{
 		const auto non_mask_bits=32U-19;	// 32 bits, imm19
 		const auto mask19=(1<<19U)-1;
-		assert((uint64_t)(new_offset << non_mask_bits) == ((uint64_t)new_offset) << non_mask_bits);
-		const auto full_word_clean=full_word & ~(mask19<<5);
-		const auto full_word_new_offset=full_word_clean | ((new_offset&mask19)<<5);
-		memory_space[from_addr+0]=(full_word_new_offset>> 0)&0xff;
-		memory_space[from_addr+1]=(full_word_new_offset>> 8)&0xff;
-		memory_space[from_addr+2]=(full_word_new_offset>>16)&0xff;
-		memory_space[from_addr+3]=(full_word_new_offset>>24)&0xff;
+		if((uint64_t)(new_offset << non_mask_bits) == ((uint64_t)new_offset) << non_mask_bits)
+		{
+			// the branch offset works here!
+			const auto full_word_clean=full_word & ~(mask19<<5);
+			const auto full_word_new_offset=full_word_clean | ((new_offset&mask19)<<5);
+			memory_space[from_addr+0]=(full_word_new_offset>> 0)&0xff;
+			memory_space[from_addr+1]=(full_word_new_offset>> 8)&0xff;
+			memory_space[from_addr+2]=(full_word_new_offset>>16)&0xff;
+			memory_space[from_addr+3]=(full_word_new_offset>>24)&0xff;
+		}
+		else
+		{
+			// branch offset didn't work.
+			// hopefully we can get there with a direct branch.
+			/* the plan when the branch offset doesn't fit:
+			 * FA: b   L0
+			 * FT: 
+			 * ..
+			 * L0  b<cond> <args>, L2 # at tramp_start
+			 * L1  b FT
+			 * L2: b <target>
+			 */
+			const auto tramp_size=12;
+
+			// check to see if we already had to trampoline from_addr.  If so, 
+			// patch the trampoline, not the actual redirect.
+			auto tramp_start=RangeAddress_t(0);
+			const auto redirect_it=redirect_map.find(from_addr);
+			if(redirect_it==redirect_map.end())
+			{
+				// allocate new space in memory
+				const auto tramp_range=memory_space.GetFreeRange(tramp_size);
+				tramp_start=tramp_range.GetStart();
+				// don't be too fancy, just reserve 12 bytes.
+				memory_space.SplitFreeRange({tramp_start,tramp_start+tramp_size});
+				// record that we had to trampoline this!
+				redirect_map[from_addr]=tramp_start;
+			}
+			else
+			{
+				// use previous tramp space.
+				tramp_start=redirect_it->second;
+			}
+
+			const auto FA=from_addr;
+			const auto FT=from_addr+4;
+			const auto L0=tramp_start;
+			const auto L1=tramp_start+4;
+			const auto L2=tramp_start+8;
+			const auto branch_bytes=string("\x00\x00\x00\x014",4);
+
+			// put the cond branch in the trampline, make it jump to L2
+			memory_space[L0+0]=memory_space[FA+0];
+			memory_space[L0+1]=memory_space[FA+1];
+			memory_space[L0+2]=memory_space[FA+2];
+			memory_space[L0+3]=memory_space[FA+3];
+			ApplyPatch(L0,L2);
+
+			// now make the original location jump to the trampoline
+			memory_space.PlopBytes(FA, branch_bytes.c_str(), 4);
+			ApplyPatch(FA,L0);// make it jump to FT
+			
+			// now drop down a uncond jump for L1, and make it go to FT
+			// (i.e., jump around the jump to the target)
+			memory_space.PlopBytes(L1, branch_bytes.c_str(), 4);
+			ApplyPatch(L1,FT);// make it jump to FT
+
+			// lastly, put down the uncond jump at L2, and make it go to the target
+			memory_space.PlopBytes(L2, branch_bytes.c_str(), 4);
+			ApplyPatch(L2,to_addr);// make it jump to +8
+
+			const auto disasm_str=DecodedInstruction_t(from_addr, (const void*)&full_word, 4).getDisassembly();
+
+			cout << "Had to trampline "<<disasm_str<< " at "<<hex<<from_addr
+			     << " to " << L0 << " - " << L0+tramp_size<< " for target "<<to_addr<<endl;
+
+
+		}
 	}
 	else if (is_test_and_branch)
 	{

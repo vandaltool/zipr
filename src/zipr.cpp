@@ -780,15 +780,16 @@ void ZiprImpl_t::WriteDollops()
 
 			// sanity check that we didn't go passed the worst case size we calculate for this entry
 			const auto de_start_loc = entry_to_write->Place();
-			const auto should_end_before = de_start_loc + DetermineDollopEntrySize(entry_to_write, false);
-			assert(de_end_loc <= should_end_before);
+			const auto should_end_at = de_start_loc + DetermineDollopEntrySize(entry_to_write, false);
+			assert(de_end_loc == should_end_at);
 			/*
 			 * Build up a list of those dollop entries that we have
 			 * just written that have a target. See comment above 
 			 * ReplopDollopEntriesWithTargets() for the reason that
 			 * we have to do this.
 			 */
-			if (entry_to_write->TargetDollop())
+			const auto will_replop=entry_to_write->TargetDollop()!=nullptr;
+			if (will_replop)
 				m_des_to_replop.push_back(entry_to_write);
 		}
 	}
@@ -1738,16 +1739,13 @@ RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t *entry, RangeAddress_t
 	const auto insn = entry->Instruction();
 	const auto insn_wcis = DetermineInsnSize(insn, false);
 	RangeAddress_t updated_addr = 0;
-	auto placed_address = entry->Place();
 	RangeAddress_t target_address = 0;
 	auto placed_insn = false;
-
-	if (entry->TargetDollop() && entry->TargetDollop()->front())
+	const auto target_dollop=entry->TargetDollop();
+	if (target_dollop && target_dollop->front())
 	{
-		auto target_address_iter = final_insn_locations.find(entry->
-		                                                     TargetDollop()->
-		                                                     front()->
-		                                                     Instruction());
+		const auto entry_target_head_insn=entry-> TargetDollop()-> front()-> Instruction();
+		const auto target_address_iter = final_insn_locations.find(entry_target_head_insn);
 		if (target_address_iter != final_insn_locations.end())
 		{
 			target_address = target_address_iter->second;
@@ -1758,32 +1756,26 @@ RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t *entry, RangeAddress_t
 	}	
 
 
-	if (override_address != 0)
-		placed_address = override_address;
-	
+	auto placed_address = override_address == 0 ? entry->Place() : override_address;
 	const auto plop_it = plopping_plugins.find(insn);
 	if (plop_it != plopping_plugins.end())
 	{
 		for (auto pp : *(plop_it->second))
 		{
 			auto pp_placed_insn = false;
-			DLFunctionHandle_t handle = pp;
-			auto zpi = dynamic_cast<ZiprPluginInterface_t*>(handle);
-			updated_addr = std::max(zpi->PlopDollopEntry(entry,
-			                                             placed_address,
-			                                             target_address,
-		 	                                             insn_wcis,
-		 	                                             pp_placed_insn
-								    ),
-			                        updated_addr
-			                       );
+			const auto handle = pp;
+			const auto zpi = dynamic_cast<ZiprPluginInterface_t*>(handle);
+			const auto plugin_ret=zpi->PlopDollopEntry(entry, placed_address, target_address, insn_wcis, pp_placed_insn);
+			updated_addr = std::max(plugin_ret, updated_addr);
 			if (m_verbose)
+			{
 				cout << zpi->ToString() << " placed entry " 
 				     << std::hex << entry 
-						 << " at address: " << std::hex << placed_address 
-						 << " " << (pp_placed_insn ? "and placed" : "but did not place")
-						 << " the instruction."
-						 << endl;
+				     << " at address: " << std::hex << placed_address 
+				     << " " << (pp_placed_insn ? "and placed" : "but did not place")
+				     << " the instruction."
+				     << endl;
+			}
 		
 			placed_insn |= pp_placed_insn;
 		}
@@ -1830,69 +1822,6 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntry(
 	string raw_data = insn->GetDataBits();
 	string orig_data = insn->GetDataBits();
 
-#if 0
-	/* functionality moved to unpin plugin. */
-
-	const auto operands=d.getOperands();
-	const auto is_instr_relative_it = find_if(ALLOF(operands),[](const DecodedOperand_t& op)
-	                                          { return op.isMemory() && op.isPcrel(); });
-
-	const auto is_instr_relative = is_instr_relative_it != operands.end(); 
-
-	if (is_instr_relative) 
-	{
-		uint32_t abs_displacement=0;
-		uint32_t *displacement=0;
-		char instr_raw[20] = {0,};
-		int size=0;
-		int offset=0;
-		assert(raw_data.length() <= 20);
-
-		/*
-		 * Which argument is relative? There must be one.
-		 */
-		auto relative_arg=*is_instr_relative_it;
-
-		/*
-		 * Calculate the offset into the instruction
-		 * of the displacement address.
-		 */
-		offset = d.getMemoryDisplacementOffset(relative_arg, insn); 
-
-		/*
-		 * The size of the displacement address must be
-		 * four at this point.
-		 */
-		size = relative_arg.getMemoryDisplacementEncodingSize(); 
-		assert(size == 4);
-
-		/*
-		 * Copy the instruction raw bytes to a place
-		 * where we can modify them.
-		 */
-		memcpy(instr_raw,raw_data.c_str(),raw_data.length());
-
-		/*
-		 * Calculate absolute displacement and relative
-		 * displacement.
-		 */
-		displacement = (uint32_t*)(&instr_raw[offset]);
-		abs_displacement = *displacement;
-		*displacement = abs_displacement - addr;
-
-		if(m_verbose)
-		{
-			cout<<"absolute displacement: "<< hex << abs_displacement<<endl;
-			cout<<"relative displacement: "<< hex << *displacement<<endl;
-		}
-
-		/*
-		 * Update the instruction with the relative displacement.
-		 */
-		raw_data.replace(0, raw_data.length(), instr_raw, raw_data.length());
-		insn->SetDataBits(raw_data);
-	}
-#endif
 
 	if(entry->TargetDollop() && entry->Instruction()->GetCallback()=="")
 	{
@@ -2722,7 +2651,7 @@ void ZiprImpl_t::UpdateScoops()
 			scoop->GetEnd()->SetVirtualOffset(frit->GetStart());
 		}
 
-		for(virtual_offset_t i=scoop->GetStart()->GetVirtualOffset();
+		for(auto i=scoop->GetStart()->GetVirtualOffset();
 		    i<= scoop->GetEnd()->GetVirtualOffset();
 		    i++ )
 		{
