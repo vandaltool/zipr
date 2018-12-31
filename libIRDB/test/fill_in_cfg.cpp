@@ -483,25 +483,45 @@ void PopulateCFG::fill_in_scoops(FileIR_t *firp)
 
 void PopulateCFG::detect_scoops_in_code(FileIR_t *firp)
 {
+	// data for this function
+	auto already_scoopified=set<virtual_offset_t>();
+
 	// only valid for arm64
 	if(firp->GetArchitecture()->getMachineType() != admtAarch64) return;
 
 	// check each insn for an ldr with a pcrel operand.
 	for(auto insn : firp->GetInstructions())
 	{
-		const auto d=DecodedInstruction_t(insn);
 		// look for ldr's with a pcrel operand
+		const auto d=DecodedInstruction_t(insn);
 		if(d.getMnemonic()!="ldr") continue;
+		const auto op0=d.getOperand(0);
 		const auto op1=d.getOperand(1);
 	       	if( !op1.isPcrel()) continue;
 
-		// sanity check that it's a memory operation.
+		// sanity check that it's a memory operation, and extract fields
 		assert(op1.isMemory());
-
 		const auto referenced_address=op1.getMemoryDisplacement();
+		const auto op0_str=op0.getString();
+		const auto referenced_size=  // could use API call?
+			op0_str[0]=='w' ? 4  : 
+			op0_str[0]=='x' ? 8  : 
+			op0_str[0]=='s' ? 4  : 
+			op0_str[0]=='d' ? 8  : 
+			op0_str[0]=='q' ? 16 : 
+			throw domain_error("Cannot decode instruction size");
+			;
 
+		// check if we've seen this address already
+		const auto already_seen_it=already_scoopified.find(referenced_address);
+		if(already_seen_it!=end(already_scoopified)) continue;
+
+		// not seen, add it
+		already_scoopified.insert(referenced_address);
+
+
+		// find section and sanity check.
 		const auto sec=elfiop->sections.findByAddress(referenced_address);
-		// can't find section.
 		if(sec==nullptr) continue;
 
 		// only trying to do this for executable chunks, other code deals with
@@ -510,20 +530,16 @@ void PopulateCFG::detect_scoops_in_code(FileIR_t *firp)
 
 		const auto sec_data=sec->get_data();
 		const auto sec_start=sec->get_address();
-		const auto the_contents=string(&sec_data[referenced_address-sec_start],8);
+		const auto the_contents=string(&sec_data[referenced_address-sec_start],referenced_size);
 		const auto fileid=firp->GetFile()->GetBaseID();
 
 
-		auto start_addr=new AddressID_t();
+		auto start_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE,fileid,referenced_address);
 		assert(start_addr);
-		start_addr->SetVirtualOffset(referenced_address);
-		start_addr->SetFileID(fileid);
 		firp->GetAddresses().insert(start_addr);
 
-		auto end_addr=new AddressID_t();
+		auto end_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE,fileid,referenced_address+referenced_size-1);
 		assert(end_addr);
-		end_addr->SetVirtualOffset(referenced_address+7);
-		end_addr->SetFileID(fileid);
 		firp->GetAddresses().insert(end_addr);
 
 		const auto name="data_in_text_"+to_string(referenced_address);
@@ -532,8 +548,8 @@ void PopulateCFG::detect_scoops_in_code(FileIR_t *firp)
 		auto newscoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, name, start_addr, end_addr, NULL, permissions, is_relro, the_contents);
 		firp->GetDataScoops().insert(newscoop);
 
-		cout<<"Allocated data in text segment "<<name<<"=("<<start_addr->GetVirtualOffset()<<"-"
-		    <<end_addr->GetVirtualOffset()<<")"<<endl;
+		cout<< "Allocated data in text segment "<<name<<"=("<<start_addr->GetVirtualOffset()<<"-"
+		    << end_addr->GetVirtualOffset()<<")"<<endl;
 	}
 }
 

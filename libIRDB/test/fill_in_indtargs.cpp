@@ -460,12 +460,26 @@ void handle_scoop_scanning(FileIR_t* firp)
 		// test if scoop was added by fill_in_cfg -- make this test better.
 		if(scoop->GetName().find("data_in_text_")==string::npos) continue;
 
-		// at the moment, FIC only creates 8-byte scoops from the .text segment.  if this changes, this code needs updating.
-		assert((scoop->GetEnd()->GetVirtualOffset() - scoop->GetStart()->GetVirtualOffset() + 1) == 8 );
 
-		// check ot see if the scoop has an IBTA 
-		const auto addr=*(uint64_t*)(scoop->GetContents().c_str());
-		possible_target(addr, scoop->GetStart()->GetVirtualOffset(), ibt_provenance_t::ibtp_unknown);
+		// at the moment, FIC only creates 4-, 8-, and 16- bytes scoops
+		// change this code if FIC chagnes.
+		if(scoop->GetSize() == 4 ) 
+		{
+			// may be a 4-byter, which can't hold an address.
+			continue; 
+		}
+		if(scoop->GetSize() == 8 )
+		{
+			// check to see if the scoop has an IBTA 
+			const auto addr=*(uint64_t*)(scoop->GetContents().c_str());
+			possible_target(addr, scoop->GetStart()->GetVirtualOffset(), ibt_provenance_t::ibtp_unknown);
+		}
+		else
+		{
+			// we may see 16 indicating that a ldr q-word happened.
+			// this isn't likely an IBT, so we skip scanning it.
+			assert(scoop->GetSize() == 16 );	 
+		}
 	}
 }
 
@@ -823,6 +837,10 @@ notes:
 		if(!possible_target(candidate_ibta,entry_address,prov))
 			break;
 		targets.insert(candidate_ibta);
+
+		// this was running away when looking for byte-entries.  occasionally there is no 
+		// byte offset that's not a valid instructoin, and we run until the end of the section.
+		if(target_count> 1024) break;
 	}
 	cout << "\tUnique target count="<<dec<<targets.size()<<endl;
 	return target_count>1;
