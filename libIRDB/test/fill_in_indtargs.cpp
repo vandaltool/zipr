@@ -102,15 +102,10 @@ void range(virtual_offset_t start, virtual_offset_t end)
  */
 bool is_in_range(virtual_offset_t p)
 {
-	for(
-		set< pair <virtual_offset_t,virtual_offset_t>  >::iterator it=ranges.begin();
-		it!=ranges.end();
-		++it
-	   )
+	for(auto  bound : ranges)
 	{
-		pair<virtual_offset_t,virtual_offset_t> bound=*it;
-		virtual_offset_t start=bound.first;
-		virtual_offset_t end=bound.second;
+		auto start=bound.first;
+		auto end=bound.second;
 		if(start<=p && p<=end)
 			return true;
 	}
@@ -144,21 +139,10 @@ bool possible_target(virtual_offset_t p, virtual_offset_t from_addr, ibt_provena
 
 bool is_possible_target(virtual_offset_t p, virtual_offset_t addr)
 {
-/*
-	if(p!=(int)p)
+	for(auto bound : bounds)
 	{
-		return false;	// can't be a pointer if it's greater than 2gb. 
-	}
-*/
-	for(
-		set< pair <virtual_offset_t,virtual_offset_t>  >::iterator it=bounds.begin();
-		it!=bounds.end();
-		++it
-	   )
-	{
-		pair<virtual_offset_t,virtual_offset_t> bound=*it;
-		virtual_offset_t start=bound.first;
-		virtual_offset_t end=bound.second;
+		auto start=bound.first;
+		auto end=bound.second;
 		if(start<=p && p<=end)
 		{
 			return true;
@@ -211,11 +195,9 @@ void handle_argument(
 void lookupInstruction_init(FileIR_t *firp)
 {
 	lookupInstructionMap.clear();
-	for(set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
-		it!=firp->GetInstructions().end(); ++it)
+	for(auto insn : firp->GetInstructions())
         {
-		Instruction_t *insn=*it;
-		virtual_offset_t addr=insn->GetAddress()->GetVirtualOffset();
+		const auto addr=insn->GetAddress()->GetVirtualOffset();
 		lookupInstructionMap[addr]=insn;
 	}
 }
@@ -231,13 +213,13 @@ void mark_targets(FileIR_t *firp)
 {
         for(auto insn : firp->GetInstructions())
 	{
-		virtual_offset_t addr=insn->GetAddress()->GetVirtualOffset();
+		auto addr=insn->GetAddress()->GetVirtualOffset();
 
 		/* lookup in the list of targets */
 		if(targets.find(addr)!=targets.end())
 		{
-			bool isret=targets[addr].areOnlyTheseSet(ibt_provenance_t::ibtp_ret);
-			bool isprintf=targets[addr].areOnlyTheseSet(ibt_provenance_t::ibtp_stars_data|ibt_provenance_t::ibtp_texttoprintf);
+			const auto isret=targets[addr].areOnlyTheseSet(ibt_provenance_t::ibtp_ret);
+			const auto isprintf=targets[addr].areOnlyTheseSet(ibt_provenance_t::ibtp_stars_data|ibt_provenance_t::ibtp_texttoprintf);
 			if (isret)
 			{
 				if(getenv("IB_VERBOSE")!=nullptr)
@@ -506,16 +488,13 @@ void print_targets()
 set<Instruction_t*> find_in_function(string needle, Function_t *haystack)
 {
 	regex_t preg;
-	set<Instruction_t*>::const_iterator fit;
 	set<Instruction_t*> found_instructions;
 
 	assert(0 == regcomp(&preg, needle.c_str(), REG_EXTENDED));
 
-	fit = haystack->GetInstructions().begin();
-	for (; fit != haystack->GetInstructions().end(); fit++)
+	for (auto candidate :  haystack->GetInstructions())
 	{
-		Instruction_t *candidate = *fit;
-		DecodedInstruction_t disasm(candidate);
+		auto disasm=DecodedInstruction_t(candidate);
 
 		// check it's the requested type
 		if(regexec(&preg, disasm.getDisassembly().c_str(), 0, nullptr, 0) == 0)
@@ -547,13 +526,11 @@ bool backup_until(const string &insn_type_regex_str, Instruction_t *& prev, Inst
 	
 
        		// get I7's disassembly
-		//DISASM disasm;
-       		//Disassemble(prev,disasm);
 		DecodedInstruction_t disasm(prev);
 
 
        		// check it's the requested type
-       		if(regexec(&preg, disasm.getDisassembly().c_str() /*CompleteInstr*/, 0, nullptr, 0) == 0)
+       		if(regexec(&preg, disasm.getDisassembly().c_str(), 0, nullptr, 0) == 0)
 		{
 			regfree(&preg);
 			if(stop_if_set!="")
@@ -584,7 +561,7 @@ bool backup_until(const string &insn_type_regex_str, Instruction_t *& prev, Inst
 			//Disassemble(pred,disasm);
 			DecodedInstruction_t disasm(pred);
        			// check it's the requested type
-       			if(regexec(&preg, disasm.getDisassembly().c_str()/*CompleteInstr*/, 0, nullptr, 0) == 0)
+       			if(regexec(&preg, disasm.getDisassembly().c_str(), 0, nullptr, 0) == 0)
 			{
 				regfree(&preg);
 				if(stop_if_set!="")
@@ -1012,23 +989,20 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 	}
 
 	// grab the offset out of the lea.
-	//DISASM d2;
-	//Disassemble(I3,d2);
-	DecodedInstruction_t d2(I3);
+	const auto d2=DecodedInstruction_t(I3);
 
 	// get the offset from the thunk
-	virtual_offset_t table_offset=d2.getAddress(); // d2.Instruction.AddrValue;
+	auto table_offset=d2.getAddress(); 
 	if(table_offset==0)
 		return;
 
-	cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< " with table_offset="<<table_offset
-	    <<" and table_size="<<table_size<<endl;
+	cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()
+	    << " with table_offset="<<table_offset <<" and table_size="<<table_size<<endl;
 		
 	/* iterate over all thunk_bases/module_starts */
-	for(set<virtual_offset_t>::iterator it=thunk_bases.begin(); it!=thunk_bases.end(); ++it)
+	for(auto thunk_base : thunk_bases)
 	{
-		virtual_offset_t thunk_base=*it;
-		virtual_offset_t table_base=*it+table_offset;
+		virtual_offset_t table_base=thunk_base+table_offset;
 
 		// find the section with the data table
         	EXEIO::section *pSec=find_section(table_base,elfiop);
@@ -1165,18 +1139,17 @@ I5:   0x809900e <text_handler+51>: jmp    ecx
 cout<<hex<<"Found (type2) switch dispatch at "<<I5->GetAddress()->GetVirtualOffset()<< " with table_offset="<<table_offset<<endl;
 		
 	/* iterate over all thunk_bases/module_starts */
-	for(set<virtual_offset_t>::iterator it=thunk_bases.begin(); it!=thunk_bases.end(); ++it)
+	for(auto thunk_base : thunk_bases )
 	{
-		virtual_offset_t thunk_base=*it;
-		virtual_offset_t table_base=(*it)+table_offset;
+		auto table_base=thunk_base+table_offset;
 
 		// find the section with the data table
-        	EXEIO::section *pSec=find_section(table_base,elfiop);
+        	auto pSec=find_section(table_base,elfiop);
 		if(!pSec)
 			continue;
 
 		// if the section has no data, abort 
-        	const char* secdata=pSec->get_data();
+        	const auto secdata=pSec->get_data();
 		if(!secdata)
 			continue;
 
@@ -1368,7 +1341,6 @@ void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, Dec
 
 		/* if there's no base register and no index reg, */
 		/* then this jmp can't have more than one valid table entry */
-		//if( disasm.Argument1.Memory.BaseRegister==0 && disasm.Argument1.Memory.IndexRegister==0 ) 
 		if( !disasm.getOperand(0).hasBaseRegister() && !disasm.getOperand(0).hasIndexRegister()) 
 		{
 			/* but the table can have 1 valid entry. */
@@ -2596,46 +2568,36 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 	map<string,int> unpin_counts;
 	map<string,int> missed_unpins;
 
-	for(
-		DataScoopSet_t::iterator it=firp->GetDataScoops().begin();
-		it!=firp->GetDataScoops().end();
-		++it
-	   )
+	for(auto scoop : firp->GetDataScoops())
 	{
 		// 4 or 8 
-		int ptrsize=firp->GetArchitectureBitWidth()/8;
-
-		DataScoop_t* scoop=*it;
+		const auto ptrsize=firp->GetArchitectureBitWidth()/8;
 		const char *scoop_contents=scoop->GetContents().c_str();
 		if(scoop->GetName()==".init_array" || scoop->GetName()==".fini_array" || scoop->GetName()==".got.plt" || scoop->GetName()==".got")
 		{
-			auto start_offset=0U;
-			if(scoop->GetName()==".got.plt")
-			{
-				// .got.plt has a start index of 4 pointers into the section.
-				start_offset=4*ptrsize;
-			}
+			const auto start_offset= (scoop->GetName()==".got.plt") ? 3*ptrsize : 0u;
 			for(auto i=start_offset; i+ptrsize <= scoop->GetSize() ; i+=ptrsize)
 			{
-				virtual_offset_t vo;
-				if(ptrsize==4)
-					/* get int, 4 bytes */
-					vo=(virtual_offset_t)*(uint32_t*)&scoop_contents[i];
-				else if(ptrsize==8)
-					/* get long long, 8 bytes */
-					vo=(virtual_offset_t)*(uint64_t*)&scoop_contents[i];
-				else
-					assert(0);	
+				const auto vo=
+					ptrsize==4 ? (virtual_offset_t)*(uint32_t*)&scoop_contents[i] : 
+					ptrsize==8 ? (virtual_offset_t)*(uint64_t*)&scoop_contents[i] :
+					throw domain_error("Invalid ptr size");
 
 
-				Instruction_t* insn=lookupInstruction(firp,vo);
+				auto insn=lookupInstruction(firp,vo);
 
-				// OK for .got scoop to miss
+				// OK for .got scoop to miss, some entries are empty.
 				if(scoop->GetName()==".got" && insn==nullptr)
 				{
 					if(getenv("UNPIN_VERBOSE")!=0)
 						cout<<"Skipping "<<scoop->GetName()<<" unpin for "<<hex<<vo<<" due to no instruction at vo"<<endl;
 					continue;
+				}
+				if(vo==0)
+				{
+					// some segments may be null terminated.
+					assert(i+ptrsize==scoop->GetSize());
+					break;
 				}
 
 				// these asserts are probably overkill, but want them for sanity checking for now.
@@ -2675,16 +2637,13 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 
 					if(allow_unpin || already_unpinned.find(insn)!=already_unpinned.end())
 					{
+						// mark as unpinned
 						already_unpinned.insert(insn);
 						unpin_counts[scoop->GetName()]++;
 
-						Relocation_t* nr=new Relocation_t();
-						assert(nr);
-						nr->SetType("data_to_insn_ptr");
-						nr->SetOffset(i);
-						nr->SetWRT(insn);
-
 						// add reloc to IR.
+						Relocation_t* nr=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, i, "data_to_insn_ptr", insn);
+						assert(nr);
 						firp->GetRelocations().insert(nr);
 						scoop->GetRelocations().insert(nr);
 
@@ -2692,16 +2651,16 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 							cout<<"Unpinning "+scoop->GetName()+" entry at offset "<<dec<<i<<endl;
 						if(insn->GetIndirectBranchTargetAddress()==nullptr)
 						{
-							auto newaddr = new AddressID_t;
+							// add ibta to mark as unpipnned
+							const auto fileid=insn->GetAddress()->GetFileID();
+							auto newaddr = new AddressID_t(BaseObj_t::NOT_IN_DATABASE,fileid,0);
 							assert(newaddr);
-							newaddr->SetFileID(insn->GetAddress()->GetFileID());
-							newaddr->SetVirtualOffset(0);	// unpinne
-	
 							firp->GetAddresses().insert(newaddr);
 							insn->SetIndirectBranchTargetAddress(newaddr);
 						}
 						else
 						{
+							// just mark as unpinned.
 							insn->GetIndirectBranchTargetAddress()->SetVirtualOffset(0);
 						}	
 					}
@@ -2716,25 +2675,13 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 		}
 		else if(scoop->GetName()==".dynsym")
 		{
-			Elf64_Sym  *sym64=nullptr;
-			Elf32_Sym  *sym32=nullptr;
-			int ptrsize=0;
-			int symsize=0;
-			const char* scoop_contents=scoop->GetContents().c_str();
-			switch(firp->GetArchitectureBitWidth())
-			{	
-				case 64:
-					ptrsize=8;
-					symsize=sizeof(Elf64_Sym);
-					break;	
-				case 32:
-					ptrsize=4;
-					symsize=sizeof(Elf32_Sym);
-					break;	
-				default:
-					assert(0);
-				
-			}
+			const auto ptrsize=firp->GetArchitectureBitWidth()/8;
+			const auto scoop_contents=scoop->GetContents().c_str();
+			const auto symsize= 
+				ptrsize==8 ?  sizeof(Elf64_Sym) :
+				ptrsize==4 ?  sizeof(Elf32_Sym) :
+				throw domain_error("Cannot detect ptr size -> ELF symbol mapping");
+
 			auto table_entry_no=0U;
 			for(auto i=0U;i+symsize<scoop->GetSize(); i+=symsize, table_entry_no++)
 			{
@@ -2746,7 +2693,7 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 				{
 					case 4:
 					{
-						sym32=(Elf32_Sym*)&scoop_contents[i];
+						auto sym32=(Elf32_Sym*)&scoop_contents[i];
 						addr_offset=(uintptr_t)&(sym32->st_value)-(uintptr_t)sym32;
 						vo=sym32->st_value;
 						st_info_field=sym32->st_info;
@@ -2755,16 +2702,15 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 					}
 					case 8:
 					{
-						sym64=(Elf64_Sym*)&scoop_contents[i];
+						auto sym64=(Elf64_Sym*)&scoop_contents[i];
 						addr_offset=(uintptr_t)&(sym64->st_value)-(uintptr_t)sym64;
 						vo=sym64->st_value;
 						st_info_field=sym64->st_info;
 						shndx=sym64->st_shndx;
 						break;
-						break;
 					}
 					default:
-						assert(0);
+						throw domain_error("Invalid pointer size");
 				}
 
 				// this is good for both 32- and 64-bit.
@@ -2772,8 +2718,7 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 
 				if(shndx!=SHN_UNDEF && type==STT_FUNC)
 				{
-					Instruction_t* insn=lookupInstruction(firp,vo);
-
+					auto insn=lookupInstruction(firp,vo);
 
 					// these asserts are probably overkill, but want them for sanity checking for now.
 					assert(insn);
@@ -2802,11 +2747,8 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 						// when/if these asserts fail, convert to if and guard the reloc creation.
 
 						unpin_counts[scoop->GetName()]++;
-						Relocation_t* nr=new Relocation_t();
+						auto nr=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, i+addr_offset, "data_to_insn_ptr", insn);
 						assert(nr);
-						nr->SetType("data_to_insn_ptr");
-						nr->SetOffset(i+addr_offset);
-						nr->SetWRT(insn);
 
 						// add reloc to IR.
 						firp->GetRelocations().insert(nr);
@@ -2866,13 +2808,8 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 
 DataScoop_t* find_scoop(FileIR_t *firp, const virtual_offset_t &vo)
 {
-	for(
-		DataScoopSet_t::iterator it=firp->GetDataScoops().begin();
-		it!=firp->GetDataScoops().end();
-		++it
-	   )
+	for(auto s : firp->GetDataScoops())
 	{
-		DataScoop_t* s=*it;
 		if( s->GetStart()->GetVirtualOffset()<=vo && vo<s->GetEnd()->GetVirtualOffset() )
 			return s;
 	}
@@ -2935,7 +2872,7 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 		}
 
 		// verify we have an instruction.
-		Instruction_t* ibt=lookupInstruction(firp,table_entry);
+		auto ibt=lookupInstruction(firp,table_entry);
 		if(ibt)
 		{
 			// which isn't otherwise addressed.
@@ -2966,12 +2903,9 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 						cout<<"Unpinning switch entry ["<<dec<<i<<"] for ibt="<<hex<<table_entry<<", scoop_off="<<scoop_off<<endl;
 					already_unpinned.insert(ibt);
 
-					Relocation_t* nr=new Relocation_t();
-					assert(nr);
-					nr->SetType("data_to_insn_ptr");
-					nr->SetOffset(scoop_off);
-					nr->SetWRT(ibt);
 					// add reloc to IR.
+					auto nr=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, scoop_off, "data_to_insn_ptr", ibt);
+					assert(nr);
 					firp->GetRelocations().insert(nr);
 					scoop->GetRelocations().insert(nr);
 
@@ -3053,21 +2987,11 @@ void print_unpins(FileIR_t *firp)
 	if(getenv("UNPIN_VERBOSE") == nullptr)
 		return;
 
-	for(
-		DataScoopSet_t::iterator it=firp->GetDataScoops().begin();
-		it!=firp->GetDataScoops().end();
-		++it
-	   )
+	for(auto scoop : firp->GetDataScoops())
 	{
-		DataScoop_t* scoop=*it;
 		assert(scoop);
-		for(
-			RelocationSet_t::iterator rit=scoop->GetRelocations().begin();
-			rit!=scoop->GetRelocations().end();
-			++rit
-		   )
+		for(auto reloc : scoop->GetRelocations())
 		{
-			Relocation_t* reloc=*rit;
 			assert(reloc);
 			cout<<"Found relocation in "<<scoop->GetName()<<" of type "<<reloc->GetType()<<" at offset "<<hex<<reloc->GetOffset()<<endl;
 		}
