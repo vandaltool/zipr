@@ -536,8 +536,8 @@ void Unpin_t::DoUpdateForInstructions()
 
 							if(is_ldr_int_type)
 							{
-								// convert: ldr w/x reg : 0 x1 011 0 00 ---imm19---- Rt5    x1 indicate size (0,1 -> w/x) 
-								// to     : ldr x/w reg : 1 x1 111 0 01 01 imm12 Rn5 Rt5    x1 indciates szie (0,1 -> w/x)
+								// convert: ldr w/x reg : 0 x1 011 0 00 ---imm19---- Rt5    x1 indicates size (0,1 -> w/x) 
+								// to     : ldr x/w reg : 1 x1 111 0 01 01 imm12 Rn5 Rt5    x1 indciates size (0,1 -> w/x)
 								auto new_ldr_bytes=string("\x00\x00\x40\xb9",4);
 								auto new_ldr_word =*(int*)new_ldr_bytes.c_str();
 								const auto orig_ldr_size_bit=(full_insn>>30)&mask1;
