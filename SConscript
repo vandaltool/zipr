@@ -22,6 +22,8 @@ myenv.Replace(do_cgc=ARGUMENTS.get("do_cgc",0))
 
 files=  '''
 	unpin.cpp
+	unpin_aarch64.cpp
+	unpin_x86.cpp
 	'''
 
 # ELFIO needs to be first so we get the zipr version instead of the sectrans version.  the zipr version is modified to include get_offset.

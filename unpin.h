@@ -44,9 +44,16 @@ class Unpin_t : public Zipr_SDK::ZiprPluginInterface_t
 				m_should_cfi_pin("should_cfi_pin", false) ,
 				m_on("on",true), 
 				m_max_unpins("max-unpins",-1), 
-				unpins(0)
-		{ 
-		};
+				unpins(0),
+		                missed_unpins(0),
+                		ms(*zo->GetMemorySpace()),
+                		locMap(*(zo->GetLocationMap())),
+                		firp(*(zo->GetFileIR()))
+
+		{ }
+
+		virtual ~Unpin_t() 
+		{ } 
 
 		virtual void PinningBegin()
 		{
@@ -65,7 +72,14 @@ class Unpin_t : public Zipr_SDK::ZiprPluginInterface_t
 			const Zipr_SDK::RangeAddress_t &callback_address,
 			const Zipr_SDK::DollopEntry_t *callback_entry,
 			Zipr_SDK::RangeAddress_t &target_address);
-	private:
+	protected:
+		// designed for arch-specific override.
+		virtual void HandleRetAddrReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc)=0;
+		virtual void HandlePcrelReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc)=0;
+		virtual void HandleAbsptrReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc)=0;
+		virtual void HandleImmedptrReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc)=0;
+		virtual void HandleCallbackReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc)=0;
+
 		bool should_cfi_pin(Instruction_t* insn);
 
 		// workhorses 
@@ -85,6 +99,49 @@ class Unpin_t : public Zipr_SDK::ZiprPluginInterface_t
 		Zipr_SDK::ZiprIntegerOption_t m_max_unpins; 
 
 		int unpins;
+		int missed_unpins=0;
+		Zipr_SDK::MemorySpace_t& ms;
+		Zipr_SDK::InstructionLocationMap_t& locMap;
+		libIRDB::FileIR_t& firp;
+
 };
 
+
+class UnpinX86_t : public Unpin_t
+{
+	public:
+		UnpinX86_t( Zipr_SDK::Zipr_t* zipr_object) 
+			: Unpin_t(zipr_object)
+
+		{ 
+		}
+	protected:
+		// designed for arch-specific override.
+		void HandleRetAddrReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc) override;
+		void HandlePcrelReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc) override;
+		void HandleAbsptrReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc) override;
+		void HandleImmedptrReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc) override;
+		void HandleCallbackReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc) override;
+
+
+};
+
+class UnpinAarch64_t : public Unpin_t
+{
+	public:
+		UnpinAarch64_t( Zipr_SDK::Zipr_t* zipr_object) 
+			: Unpin_t(zipr_object)
+
+		{ 
+		}
+	protected:
+		// designed for arch-specific override.
+		void HandleRetAddrReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc) override;
+		void HandlePcrelReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc) override;
+		void HandleAbsptrReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc) override;
+		void HandleImmedptrReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc) override;
+		void HandleCallbackReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc) override;
+
+
+};
 #endif
