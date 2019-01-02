@@ -802,22 +802,48 @@ notes:
 
 		cout << "\tEntry #"<<dec<<target_count<<"= ent-addr="<<hex<<entry_address
 	   	     << " ent="<<hex<<+table_entry	 // print as int, not char.
-		     << " ibta="<<candidate_ibta<<endl;
+		     << " ibta="<<candidate_ibta;
 
 		// stop if we failed to find an instruction,
 		// or find an instruction outside the function
-		if( ibtarget == nullptr || ibtarget->GetFunction()!=i10_func )
+		if( ibtarget == nullptr )
+		{
+			cout<<" -- no target insn!"<<endl;
 			break;
+		}
+		const auto ibtarget_func=ibtarget->GetFunction();
+		if( i10_func == nullptr )
+		{
+			// finding switch in non-function is OK.
+		}
+		else if(ibtarget_func == nullptr )
+		{
+			// finding target in non-function is OK
+		}
+		else if( i10_func != ibtarget_func )
+		{
+			// finding switch in function to different function, not ok.
+			cout<<" -- switch to diff func? No."<<endl;
+			
+		}
 
 		// record that we found something that looks valid-enough to try to pin
 		// stop if we couldn't pin.
 		if(!possible_target(candidate_ibta,entry_address,prov))
+		{
+			cout<<" -- not possible target!"<<endl;
 			break;
+		}
+		cout<<" -- valid target!"<<endl;
 		targets.insert(candidate_ibta);
 
 		// this was running away when looking for byte-entries.  occasionally there is no 
 		// byte offset that's not a valid instructoin, and we run until the end of the section.
-		if(target_count> 1024) break;
+		if(target_count> 1024) 
+		{
+			cout<<"Caution, exiting loop after 1024 valid entries."<<endl;
+			break;
+		}
 	}
 	cout << "\tUnique target count="<<dec<<targets.size()<<endl;
 	return target_count>1;
