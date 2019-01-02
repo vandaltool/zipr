@@ -72,8 +72,10 @@ if [ -d $ZIPR_HOME ]; then
 	scons -c || exit
 fi
 
-cd $DAFFY_HOME
-./clean_cfar.sh
+if [ -d $DAFFY_HOME ]; then
+	cd $DAFFY_HOME
+	./clean_cfar.sh
+fi
 
 cd $PEASOUP_UMBRELLA_DIR
 
