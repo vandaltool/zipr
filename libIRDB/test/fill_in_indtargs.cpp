@@ -3007,14 +3007,53 @@ void unpin_well_analyzed_ibts(FileIR_t *firp, int64_t do_unpin_opt)
 }
 
 
+void find_all_arm_unks(FileIR_t* firp)
+{
+	/* only valid for arm */
+	if(firp->GetArchitecture()->getMachineType() != admtAarch64) return;
+
+	for(auto insn : firp->GetInstructions())
+	{
+		const auto d=DecodedInstruction_t(insn);
+		if(d.getMnemonic()!="add") continue;
+		if(!d.hasOperand(1)) continue;
+		if(!d.hasOperand(2)) continue;
+		const auto op1=d.getOperand(1);
+		const auto op2=d.getOperand(2);
+		if(!op1.isRegister()) continue;
+		if(!op2.isConstant()) continue;
+
+		const auto op1_reg=op1.getString();
+		const auto op2_constant=op2.getConstant();
+
+		// try to find an adrp
+		auto adrp_insn=(Instruction_t*)nullptr;
+		if(!backup_until(string()+"adrp "+op1_reg, adrp_insn, insn, op1_reg)) continue;
+		assert(adrp_insn);
+
+		const auto adrp_disasm=DecodedInstruction_t(adrp_insn);
+		const auto adrp_page=adrp_disasm.getOperand(1).getConstant();
+		const auto unk_value=adrp_page+op2_constant;
+
+		all_unks[insn->GetFunction()     ].insert(unk_value);
+		all_unks[adrp_insn->GetFunction()].insert(unk_value);
+
+		cout << "FII detected ARM unk="<<hex<<unk_value<<" for "<<d.getDisassembly()
+		     << " and "<<adrp_disasm.getDisassembly()<<endl;
+
+	}
+}
 
 /*
  * fill_in_indtargs - main driver routine for 
  */
 void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, int64_t do_unpin_opt)
 {
+	calc_preds(firp);
+
 	set<virtual_offset_t> thunk_bases;
 	find_all_module_starts(firp,thunk_bases);
+	find_all_arm_unks(firp);
 
 	// reset global vars
 	bounds.clear();
@@ -3024,7 +3063,6 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, int64_t do_unpin_opt)
 	already_unpinned.clear();
 	lookupInstruction_init(firp);
 
-	calc_preds(firp);
 
         int secnum = elfiop->sections.size();
 	int secndx=0;
