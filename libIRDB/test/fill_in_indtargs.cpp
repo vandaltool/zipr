@@ -789,6 +789,8 @@ notes:
 	     << ", table_addr="<<table_addr
 	     << endl;
 
+	const auto do_verbose=getenv("IB_VERBOSE") != nullptr;
+
 	// look at each table entry
 	auto target_count=0U;
 	auto targets=set<virtual_offset_t>();
@@ -800,15 +802,17 @@ notes:
 		const auto candidate_ibta = jump_base_addr+table_entry*4;	 // 4 being instruction alignment factor for ARM64
 		const auto ibtarget       = lookupInstruction(firp, candidate_ibta);
 
-		cout << "\tEntry #"<<dec<<target_count<<"= ent-addr="<<hex<<entry_address
-	   	     << " ent="<<hex<<+table_entry	 // print as int, not char.
-		     << " ibta="<<candidate_ibta;
+		if(do_verbose)
+			cout << "\tEntry #"<<dec<<target_count<<"= ent-addr="<<hex<<entry_address
+			     << " ent="<<hex<<+table_entry	 // print as int, not char.
+			     << " ibta="<<candidate_ibta;
 
 		// stop if we failed to find an instruction,
 		// or find an instruction outside the function
 		if( ibtarget == nullptr )
 		{
-			cout<<" -- no target insn!"<<endl;
+			if(do_verbose)
+				cout<<" -- no target insn!"<<endl;
 			break;
 		}
 		const auto ibtarget_func=ibtarget->GetFunction();
@@ -823,7 +827,9 @@ notes:
 		else if( i10_func != ibtarget_func )
 		{
 			// finding switch in function to different function, not ok.
-			cout<<" -- switch to diff func? No."<<endl;
+			if(do_verbose)
+				cout<<" -- switch to diff func? No."<<endl;
+			break;
 			
 		}
 
@@ -831,10 +837,12 @@ notes:
 		// stop if we couldn't pin.
 		if(!possible_target(candidate_ibta,entry_address,prov))
 		{
-			cout<<" -- not possible target!"<<endl;
+			if(do_verbose)
+				cout<<" -- not possible target!"<<endl;
 			break;
 		}
-		cout<<" -- valid target!"<<endl;
+		if(do_verbose)
+			cout<<" -- valid target!"<<endl;
 		targets.insert(candidate_ibta);
 
 		// this was running away when looking for byte-entries.  occasionally there is no 
@@ -3064,8 +3072,9 @@ void find_all_arm_unks(FileIR_t* firp)
 		all_unks[insn->GetFunction()     ].insert(unk_value);
 		all_unks[adrp_insn->GetFunction()].insert(unk_value);
 
-		cout << "FII detected ARM unk="<<hex<<unk_value<<" for "<<d.getDisassembly()
-		     << " and "<<adrp_disasm.getDisassembly()<<endl;
+		if(getenv("IB_VERBOSE"))
+			cout << "Detected ARM unk="<<hex<<unk_value<<" for "<<d.getDisassembly()
+			     << " and "<<adrp_disasm.getDisassembly()<<endl;
 
 	}
 }
