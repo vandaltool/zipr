@@ -494,7 +494,7 @@ void PopulateCFG::detect_scoops_in_code(FileIR_t *firp)
 	{
 		// look for ldr's with a pcrel operand
 		const auto d=DecodedInstruction_t(insn);
-		if(d.getMnemonic()!="ldr") continue;
+		if(d.getMnemonic()!="ldr") continue;	 // only valid on arm.
 		const auto op0=d.getOperand(0);
 		const auto op1=d.getOperand(1);
 	       	if( !op1.isPcrel()) continue;

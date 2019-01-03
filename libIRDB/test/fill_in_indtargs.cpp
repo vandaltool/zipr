@@ -3072,6 +3072,14 @@ void find_all_arm_unks(FileIR_t* firp)
 		all_unks[insn->GetFunction()     ].insert(unk_value);
 		all_unks[adrp_insn->GetFunction()].insert(unk_value);
 
+		/* check for scoops at the unk address.
+		 * if found, we assume that the unk points at data.
+		 * else, we mark it as a possible code target.
+		 */
+		if(firp->FindScoop(unk_value)==nullptr)
+			possible_target(unk_value, 0, ibt_provenance_t::ibtp_text);
+		
+		/* verbose logging */
 		if(getenv("IB_VERBOSE"))
 			cout << "Detected ARM unk="<<hex<<unk_value<<" for "<<d.getDisassembly()
 			     << " and "<<adrp_disasm.getDisassembly()<<endl;
@@ -3088,7 +3096,6 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, int64_t do_unpin_opt)
 
 	set<virtual_offset_t> thunk_bases;
 	find_all_module_starts(firp,thunk_bases);
-	find_all_arm_unks(firp);
 
 	// reset global vars
 	bounds.clear();
@@ -3108,6 +3115,10 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, int64_t do_unpin_opt)
 
 	/* import info from stars */
 	read_stars_xref_file(firp);
+
+	/* and find any unks ourselves, as stars is unreliable */
+	find_all_arm_unks(firp);
+
 
 	/* look through each section and look for target possibilities */
         for (secndx=0; secndx<secnum; secndx++)
