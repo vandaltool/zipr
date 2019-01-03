@@ -137,7 +137,7 @@ scons $SCONSDEBUG || exit 1
 cd $IRDB_TRANSFORMS
 scons $SCONSDEBUG -j 3 || exit 1
 
-if [[ -d $DAFFY_HOME ]] && [[ $(uname -p) == 'x86_64' ]]; then
+if [[ -d "$DAFFY_HOME" ]] && [[ $(uname -p) == 'x86_64' ]]; then
 	cd $DAFFY_HOME
 	./setup_cfar.sh || exit 1
 fi
