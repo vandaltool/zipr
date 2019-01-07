@@ -56,6 +56,8 @@ using namespace MEDS_Annotation;
 
 extern void read_ehframe(FileIR_t* firp, EXEIO::exeio* );
 
+
+
 class PopulateIndTargs_t : public libIRDB::Transform_SDK::TransformStep_t
 {
 
@@ -506,19 +508,50 @@ set<Instruction_t*> find_in_function(string needle, Function_t *haystack)
 	return found_instructions;
 }
 
+
+
 bool backup_until(const string &insn_type_regex_str, Instruction_t *& prev, Instruction_t* orig, const string & stop_if_set="", bool recursive=false)
 {
-	const auto insn_type_regex=insn_type_regex_str.c_str();
+
+	const auto find_or_build_regex=[&] (const string& s) -> regex_t&
+		{
+			// declare a freer for regexs so they go away when the program ends.
+			const auto regex_freer=[](regex_t* to_free)  -> void
+			{
+				regfree(to_free);
+				delete to_free;
+			};
+			// keep the map safe from anyone but me using it.
+			using regex_unique_ptr_t=unique_ptr<regex_t, decltype(regex_freer)>;
+			static map<string, regex_unique_ptr_t > regexs_used;
+
+			if(s=="")
+			{
+				static regex_t empty;
+				return empty;
+			}
+			const auto it=regexs_used.find(s);
+			if(it==regexs_used.end())
+			{
+				// allocate a new regex ptr
+				regexs_used.insert(pair<string,regex_unique_ptr_t>(s,move(regex_unique_ptr_t(new regex_t, regex_freer))));
+				// and compile it.
+				auto &regex_ptr=regexs_used.at(s);
+				const auto ret=regcomp(regex_ptr.get(), s.c_str(), REG_EXTENDED);
+				// error check
+				assert(ret==0);
+			}
+			return *regexs_used.at(s).get();
+		};
+
+
+	// build regexs.
+	const auto &preg            = find_or_build_regex(insn_type_regex_str);
+	const auto &stop_expression = find_or_build_regex(stop_if_set);
+
+
+	auto max=10000u;
 	prev=orig;
-	regex_t preg;
-	regex_t stop_expression;
-
-	assert(0 == regcomp(&preg, insn_type_regex, REG_EXTENDED));
-	if(stop_if_set!="")
-		assert(0 == regcomp(&stop_expression, stop_if_set.c_str(), REG_EXTENDED));
-
-	int max=10000;
-
 	while(preds[prev].size()==1 && max-- > 0)
 	{
 		// get the only item in the list.
@@ -526,70 +559,49 @@ bool backup_until(const string &insn_type_regex_str, Instruction_t *& prev, Inst
 	
 
        		// get I7's disassembly
-		DecodedInstruction_t disasm(prev);
-
+		const auto disasm=DecodedInstruction_t(prev);
 
        		// check it's the requested type
        		if(regexec(&preg, disasm.getDisassembly().c_str(), 0, nullptr, 0) == 0)
-		{
-			regfree(&preg);
-			if(stop_if_set!="")
-				regfree(&stop_expression);
 			return true;
-		}
+
 		if(stop_if_set!="")
-			for(auto operand : disasm.getOperands())
+		{
+			for(const auto operand : disasm.getOperands())
 			{
 				if(operand.isWritten() && regexec(&stop_expression, operand.getString().c_str(), 0, nullptr, 0) == 0)
-				{
-					regfree(&preg);
-					regfree(&stop_expression);
 					return false;
-				}
 			}
+		}
 
 		// otherwise, try backing up again.
 	}
 	if(recursive)
 	{
-		Instruction_t* myprev=prev;
+		const auto myprev=prev;
 		// can't just use prev because recursive call will update it.
-		for(InstructionSet_t::iterator it=preds[myprev].begin();
-			it!=preds[myprev].end(); ++it)
+		for(const auto pred : preds[myprev])
 		{
-			Instruction_t* pred=*it;
 			//Disassemble(pred,disasm);
-			DecodedInstruction_t disasm(pred);
+			const auto disasm=DecodedInstruction_t(pred);
        			// check it's the requested type
        			if(regexec(&preg, disasm.getDisassembly().c_str(), 0, nullptr, 0) == 0)
-			{
-				regfree(&preg);
-				if(stop_if_set!="")
-					regfree(&stop_expression);
 				return true;
-			}
 			if(stop_if_set!="")
-				for(auto operand : disasm.getOperands())
+			{
+				for(const auto operand : disasm.getOperands())
 				{
 					if(operand.isWritten() && regexec(&stop_expression, operand.getString().c_str(), 0, nullptr, 0) == 0)
-					{
-						regfree(&preg);
-						regfree(&stop_expression);
 						return false;
-					}
 				}
-			if(backup_until(insn_type_regex, prev, pred, stop_if_set))
-			{
-				regfree(&preg);
-				if(stop_if_set!="")
-					regfree(&stop_expression);
-				return true;
 			}
+			if(backup_until(insn_type_regex_str, prev, pred, stop_if_set))
+				return true;
+
 			// reset for next call
 			prev=myprev;
 		}
 	}
-	regfree(&preg);
 	return false;
 }
 
@@ -2263,7 +2275,11 @@ void read_stars_xref_file(FileIR_t* firp)
 void process_dynsym(FileIR_t* firp)
 {
 	auto dynsymfile = popen("$PS_OBJDUMP -T readeh_tmp_file.exe | $PS_GREP '^[0-9]\\+' | $PS_GREP -v UND | awk '{print $1;}' | $PS_GREP -v '^$'", "r");
-	assert(dynsymfile);
+	if(!dynsymfile)
+	{
+		perror("Cannot open readeh_tmp_file.exe");
+		exit(2);
+	}
 	auto target=(unsigned int)0;
 	while( fscanf(dynsymfile, "%x", &target) != -1)
 	{
