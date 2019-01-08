@@ -35,6 +35,7 @@ using namespace MEDS_Annotation;
 
 #define MEDS_ANNOT_STATICMEMWRITE "STATICMEMWRITE"
 #define MEDS_ANNOT_STACKMEMRANGE "STACKMEMRANGE"
+#define MEDS_ANNOT_SENTINEL "SENTINEL"
 
 //
 // Class to handle one MEDS memory range annotation
@@ -71,6 +72,14 @@ using namespace MEDS_Annotation;
 //      but STARS loop analysis and symbolic analysis have determined that the memory
 //      write is to the range [MIN..LIMIT-1] as seen in the annotation.
 //
+//    4992ea      4 INSTR SENTINEL BASE 43d920 OFFSET -8 ZZ
+//     Meaning: Address (BASE + OFFSET) is used as a loop sentinel in instruction at 0x4992ea.
+//     The loop only accesses memory at BASE, so the address of BASE should be used
+//     as the data scoop referred to by this instruction, e.g. cmp rax,0x43d918 could be
+//     the instruction, followed by jg top_of_loop. When RAX reaches value 0x43d918, the loop
+//     exits without using that value except as a sentinel to terminate the loop. 0x43d918 is
+//     in a different data scoop than 0x43d920, and 0x43d920 is the relevant scoop for the loop.
+//
 
 class MEDS_MemoryRangeAnnotation : public MEDS_AnnotationBase
 {
@@ -82,23 +91,29 @@ class MEDS_MemoryRangeAnnotation : public MEDS_AnnotationBase
 
 		uint64_t getRangeMin() const { return m_rangeMin; };
 		uint64_t getRangeLimit() const { return m_rangeLimit; };
+		int64_t getSentinelOffset() const { return m_sentinelOffset; };
 
 		const bool isStackRange() const { return m_stackRange; };
 		const bool isStaticGlobalRange() const { return m_staticGlobalRange; };
+		const bool isSentinel() const { return m_sentinel; };
 
 	private:  // methods
 		void parse();
 		void setStackRange(const bool p_val) { m_stackRange = p_val; };
 		void setStaticGlobalRange(const bool p_val) { m_staticGlobalRange = p_val; };
+		void setSentinel(const bool p_val) { m_sentinel = p_val; };
 		void setRangeMin(const uint64_t p_val) { m_rangeMin = p_val; };
 		void setRangeLimit(const uint64_t p_val) { m_rangeLimit = p_val; };
+		void setSentinelOffset(const int64_t p_val) { m_sentinelOffset = p_val; };
 
 	private: // data
 		string m_rawInputLine;
 		bool m_stackRange;
 		bool m_staticGlobalRange;
+		bool m_sentinel;
 		uint64_t m_rangeMin;
 		uint64_t m_rangeLimit;
+		int64_t m_sentinelOffset;
 };
 
 }
