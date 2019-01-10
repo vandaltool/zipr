@@ -258,7 +258,8 @@ do_tests()
 				if [ $show_logs_on_failure -eq 1 ]; then
 					cat $temp_dir/logs/*.log
 				fi
-		        else
+				continue
+			else
 				progs_pass_peasoup="$progs_pass_peasoup $prog.$config"
 			fi
 
