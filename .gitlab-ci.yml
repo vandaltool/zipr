@@ -130,3 +130,26 @@ basic-pgms-rida-p1-centos75:
   tags:
     - centos75
 
+#
+# test_cmds.sh fixcalls
+#
+.basic-pgms-fixcalls: &basic-pgms-fixcalls
+  stage: test
+  script:
+    - ./cicd_testing/basic-pgms-fixcalls.sh
+
+basic-pgms-fixcalls-ubuntu18:
+  <<: *basic-pgms-fixcalls
+  tags:
+    - ubuntu18
+
+basic-pgms-fixcalls-ubuntu16:
+  <<: *basic-pgms-fixcalls
+  tags:
+    - ubuntu16
+
+basic-pgms-fixcalls-centos75:
+  <<: *basic-pgms-fixcalls
+  tags:
+    - centos75
+
