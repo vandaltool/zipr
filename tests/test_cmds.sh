@@ -235,6 +235,9 @@ do_tests()
 					$VGT -i $progpath -c mvpC -o $temp_dir > test_${prog}.ps.log 2>&1
 					cp $temp_dir/vs-1/variant-3/bin/$(basename $progpath) $protected 
 				;;
+				fix_calls)
+					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+				;;
 				orig)
 					cp $progpath $protected 
 				;;
