@@ -35,6 +35,7 @@ using namespace MEDS_Annotation;
 
 	417748     12 INSTR STATICMEMWRITE MIN 3c60320  LIMIT 4e53730  ZZ
 	4992ea      4 INSTR STACKMEMRANGE MIN RSP-568 LIMIT RSP-48 INSTRSPDELTA -592 ZZ
+	4992ea      4 INSTR SENTINEL BASE 43d920 OFFSET -8 ZZ
 
 	See explanations in the header file MEDS_MemoryRangeAnnotation.hpp.
 
@@ -45,6 +46,7 @@ MEDS_MemoryRangeAnnotation::MEDS_MemoryRangeAnnotation() : MEDS_AnnotationBase()
 	this->setInvalid();	
 	this->setStackRange(false);
 	this->setStaticGlobalRange(false);
+	this->setSentinel(false);
 }
 
 MEDS_MemoryRangeAnnotation::MEDS_MemoryRangeAnnotation(const string &p_rawLine) : MEDS_AnnotationBase()
@@ -52,6 +54,7 @@ MEDS_MemoryRangeAnnotation::MEDS_MemoryRangeAnnotation(const string &p_rawLine) 
 	this->setInvalid();
 	this->setStackRange(false);
 	this->setStaticGlobalRange(false);
+	this->setSentinel(false);
 	this->m_rawInputLine = p_rawLine;
 	this->parse();
 }
@@ -71,7 +74,12 @@ void MEDS_MemoryRangeAnnotation::parse()
 		this->setStackRange(true);
 	}
 
-	if (!this->isStackRange() && !this->isStaticGlobalRange())
+	if (this->m_rawInputLine.find(MEDS_ANNOT_SENTINEL) != string::npos)
+	{
+		this->setSentinel(true);
+	}
+
+	if (!this->isStackRange() && !this->isStaticGlobalRange() && !this->isSentinel())
 	{
 		/* invalid annotation */
 		this->setInvalid();	
@@ -83,6 +91,7 @@ void MEDS_MemoryRangeAnnotation::parse()
 	this->setVirtualOffset(vo); // in base class
 
 	uint64_t MinVal, LimitVal;
+	int64_t OffsetVal;
 	int instrSize;
 
 	// 417748     12 INSTR STATICMEMWRITE MIN 3c60320  LIMIT 4e53730  ZZ
@@ -98,7 +107,7 @@ void MEDS_MemoryRangeAnnotation::parse()
 			cerr << "Parsed STATICMEMWRITE annotation: MIN = " << hex << MinVal << " LIMIT = " << LimitVal << endl;
 		}
 	}
-	else {
+	else if (this->isStackRange()) {
 #if 0
 		int ItemsFilled = sscanf(m_rawInputLine.c_str(), "%*x %d %*s %*s MIN %" SCNx64 " LIMIT %" SCNx64, &instrSize, &MinVal, &LimitVal);
 		if (3 != ItemsFilled) {
@@ -112,21 +121,39 @@ void MEDS_MemoryRangeAnnotation::parse()
 		return;
 #endif
 	}
+	else { // SENTINEL
+		int ItemsFilled = sscanf(m_rawInputLine.c_str(), "%*x %d %*s %*s BASE %" SCNx64 " OFFSET %" SCNd64, &instrSize, &MinVal, &OffsetVal);
+		if (3 != ItemsFilled) {
+			this->setInvalid();
+			cerr << "Error on sscanf of annotation: ItemsFilled = " << ItemsFilled << " line: " << m_rawInputLine << endl;
+			return;
+		}
+	}
 
 	this->setInstructionSize(instrSize); // in base class
 	this->setRangeMin(MinVal);
-	this->setRangeLimit(LimitVal);
+	if (this->isSentinel()) {
+		this->setSentinelOffset(OffsetVal);
+	}
+	else {
+		this->setRangeLimit(LimitVal);
+	}
 
 	cout << "virtual offset: " << hex << this->getVirtualOffset().getOffset() << dec << endl;
 	cout << "size: " << this->getInstructionSize() << endl;
 	cout << "min: " << this->getRangeMin() << endl;
-	cout << "limit: " << this->getRangeLimit() << endl;
+	if (this->isSentinel()) {
+		cout << "offset: " << this->getSentinelOffset() << endl;
+	}
+	else {
+		cout << "limit: " << this->getRangeLimit() << endl;
 
-	if (LimitVal <= MinVal)
-	{
-		setInvalid();
-		cerr << "invalid range limit" << endl;
-		return;
+		if (LimitVal <= MinVal)
+		{
+			setInvalid();
+			cerr << "invalid range limit" << endl;
+			return;
+		}
 	}
 
 	cout << "valid annotation" << endl;
