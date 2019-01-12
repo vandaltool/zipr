@@ -102,6 +102,9 @@ do_tests()
 				rida_p1)
 					$PSZ $progpath $protected -s meds_static=off -s rida=on -c p1transform=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
+				ida_scfi)
+					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected -s meds_static=on -s rida=off -s selective_cfi=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+				;;
 				rida_scfi)
 					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected -s meds_static=off -s rida=on -s selective_cfi=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
