@@ -48,6 +48,7 @@ using namespace std;
 using namespace EXEIO;
 using namespace MEDS_Annotation;
 
+
 /*
  * defines 
  */
@@ -60,6 +61,13 @@ extern void read_ehframe(FileIR_t* firp, EXEIO::exeio* );
 
 class PopulateIndTargs_t : public libIRDB::Transform_SDK::TransformStep_t
 {
+
+using SpillPoint_t = pair<Function_t*, virtual_offset_t>;
+using PerFuncAddrSet_t=set<virtual_offset_t>;
+map<Function_t*,PerFuncAddrSet_t> all_adrp_results;
+map<SpillPoint_t,PerFuncAddrSet_t> spilled_adrps;
+map<Function_t*,PerFuncAddrSet_t> all_add_adrp_results;
+map<SpillPoint_t,PerFuncAddrSet_t> spilled_add_adrp_results;
 
 public:
 
@@ -510,7 +518,13 @@ set<Instruction_t*> find_in_function(string needle, Function_t *haystack)
 
 
 
-bool backup_until(const string &insn_type_regex_str, Instruction_t *& prev, Instruction_t* orig, const string & stop_if_set="", bool recursive=false)
+bool backup_until(const string &insn_type_regex_str, 
+		  Instruction_t *& prev, 
+		  Instruction_t* orig, 
+		  const string & stop_if_set="", 
+		  bool recursive=false, 
+		  uint32_t max_insns=10000u, 
+		  uint32_t max_recursions=5u)
 {
 
 	const auto find_or_build_regex=[&] (const string& s) -> regex_t&
@@ -550,10 +564,12 @@ bool backup_until(const string &insn_type_regex_str, Instruction_t *& prev, Inst
 	const auto &stop_expression = find_or_build_regex(stop_if_set);
 
 
-	auto max=10000u;
 	prev=orig;
-	while(preds[prev].size()==1 && max-- > 0)
+	while(preds[prev].size()==1 && max_insns > 0)
 	{
+		// dec max for next loop 
+		max_insns--;
+
 		// get the only item in the list.
 		prev=*(preds[prev].begin());
 	
@@ -576,13 +592,14 @@ bool backup_until(const string &insn_type_regex_str, Instruction_t *& prev, Inst
 
 		// otherwise, try backing up again.
 	}
-	if(recursive)
+	if(recursive && max_insns > 0 && max_recursions > 0 )
 	{
 		const auto myprev=prev;
 		// can't just use prev because recursive call will update it.
-		for(const auto pred : preds[myprev])
+		const auto &mypreds=preds[myprev];
+		for(const auto pred : mypreds)
 		{
-			//Disassemble(pred,disasm);
+			prev=pred;// mark that we are here, in case we return true here.
 			const auto disasm=DecodedInstruction_t(pred);
        			// check it's the requested type
        			if(regexec(&preg, disasm.getDisassembly().c_str(), 0, nullptr, 0) == 0)
@@ -595,7 +612,7 @@ bool backup_until(const string &insn_type_regex_str, Instruction_t *& prev, Inst
 						return false;
 				}
 			}
-			if(backup_until(insn_type_regex_str, prev, pred, stop_if_set))
+			if(backup_until(insn_type_regex_str, prev, pred, stop_if_set, recursive, max_insns, max_recursions/mypreds.size()))
 				return true;
 
 			// reset for next call
@@ -607,31 +624,23 @@ bool backup_until(const string &insn_type_regex_str, Instruction_t *& prev, Inst
 
 
 
-template<class table_entry_type_t>
-bool check_for_arm_switch_templ(
-		const string& extender, 
-		const string &ldr, 
+void check_for_arm_switch_type1(
 		FileIR_t *firp, 
 		Instruction_t* i10, 
 		const DecodedInstruction_t &d10, 
-		EXEIO::exeio* elfiop,
-		const virtual_offset_t &unk) 
+		EXEIO::exeio* elfiop)
 {
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type1;
 
 #if 0
 Sample code for this branch type:
 
-       # x2 gets the value of x0
-       # this probably is not normal or required, but we are not checking 
-       # it anyhow.  This is just to understand the example.
+       ; x2 gets the value of x0
+       ; this probably is not normal or required, but we are not checking 
+       ; it anyhow.  This is just to understand the example.
 
-i0:    0x4039c0     mov     x2, x0 
-       # range check
-i1:    0x4039c4:    cmp     x0, #0x3
-i2:    0x4039c8:    b.hi    0x4039d4
-i3:    0x4039cc:    cmp     w0, #0x3
-i4:    0x4039d0:    b.ls    0x40449c
+i1:    0x4039c4:    cmp     table_index_reg, #0x3
+i2:    0x4039c8:    b.hi    0x4039d4	 ; may also be a b.ls
 
        // generate switch table base address
        // this code may be hard to find if the compiler optimizes it
@@ -641,14 +650,17 @@ i4:    0x4039d0:    b.ls    0x40449c
        // we return true if we've found the entry to avoid looking at unks
        // if we don't need to.
 i5:    0x40449c:    adrp    table_page_reg, 0x415000          // table page 
-i6:    0x4044a0:    add     table_reg, table_page_reg, #0x2b0 // table offset 
+i6:    0x4044a0:    add     table_base_reg, table_page_reg, #0x2b0 // table offset 
        // table=table_page+table_offset
        //
        // load from switch table
-i7:    0x4044a4:    ldrh    index_reg, [table_reg,w2,uxtw #1]
+i7:    0x4044a4:    ldrh    table_entry_reg, [table_base_reg,table_index_reg,uxtw #1]
+or
+i7:    0x4044a4:    ldrb    table_entry_reg, [table_base_reg,table_index_reg,uxtw ]
+
        // calculate branch_addr+4+table[i]*4
-i8:    0x4044a8:    adr     offset_reg, 0x4044b4 // jump base addr
-i9:    0x4044ac:    add     i10_reg, offset_reg, index_reg, sxth #2
+i8:    0x4044a8:    adr     branch_reg, 0x4044b4 // jump base addr
+i9:    0x4044ac:    add     i10_reg, branch_reg, table_entry_reg, sxth #2
        // actually take the branch
 i10:   0x4044b0:    br      i10_reg
 i11:   0x4044b4:    
@@ -664,238 +676,347 @@ notes:
 	
 #endif
 	// sanity check the jump 
-        if(d10.getMnemonic() != "br") return true;
+        if(d10.getMnemonic() != "br") return;
 
 	// grab the reg
 	const auto i10_reg=d10.getOperand(0).getString();
 
 	// try to find I9
 	auto i9=(Instruction_t*)nullptr;
-	if(!backup_until(string()+"add "+i10_reg+".* "+extender+" #2", /* look for this pattern. */
+	/* search for externder=sxth or sxtb */
+	if(!backup_until( string()+"(add "+i10_reg+",.* sxth #2)|(add "+i10_reg+",.* sxtb #2)", /* look for this pattern. */
 				i9,                            /* find i9 */
 				i10,                           /* before I10 */
-				i10_reg                        /* stop if i10_reg set */
+				i10_reg+"$"                    /* stop if i10_reg set */
 				))
-		return false; /* try other extenders */
+	{
+		return; 
+	}
 
 	// Extract the I9 fields.
 	assert(i9);
-	const auto d9=DecodedInstruction_t(i9);
-	const auto offset_reg=d9.getOperand(1).getString();
-	const auto index_reg =d9.getOperand(2).getString();
+	const auto d9              = DecodedInstruction_t(i9);
+	const auto offset_reg      = d9.getOperand(1).getString();
+	const auto table_entry_reg = d9.getOperand(2).getString();
 
 
 	// try to find I8
 	auto i8=(Instruction_t*)nullptr;
-	if(!backup_until(string()+"adr "+offset_reg, /* look for this pattern. */
+	if(!backup_until(string()+"adr "+offset_reg+",", /* look for this pattern. */
 				i8,                  /* find i8 */
 				i9,                  /* before I9 */
-				offset_reg           /* stop if offste_reg set */
+				offset_reg+"$"       /* stop if offste_reg set */
 				))
-		return true; 
+		return; 
 
 
 	// extract the I8 fields
 	assert(i8);
-	const auto d8=DecodedInstruction_t(i8);
-	const auto jump_base_addr=d8.getOperand(1).getConstant();
+	const auto d8             = DecodedInstruction_t(i8);
+	const auto jump_base_addr = d8.getOperand(1).getConstant();
 
 	// try to find I7
 	auto i7=(Instruction_t*)nullptr;
-	if(!backup_until(string()+ldr+" "+index_reg, /* look for this pattern. */
-				i7,                  /* find i7 */
-				i9,                  /* before I9 */
-				index_reg            /* stop if index_reg set */
+	if(!backup_until(string()+ "(ldrh "+table_entry_reg+",)|(ldrb "+table_entry_reg+",)", /* look for this pattern. */
+				i7,                                                           /* find i7 */
+				i9,                                                           /* before I9 */
+				table_entry_reg+"$"                                           /* stop if index_reg set */
 				))
-		return true;
+		return;
 
 
 	// extract the I7 fields
 	assert(i7);
-	const auto d7=DecodedInstruction_t(i7);
-	const auto memory_op_string=d7.getOperand(1).getString();
-	const auto plus_pos=memory_op_string.find(" +");
-	const auto table_reg=memory_op_string.substr(0,plus_pos);
+	const auto d7               = DecodedInstruction_t(i7);
+	const auto memory_op_string = d7.getOperand(1).getString();
+	const auto plus_pos         = memory_op_string.find(" +");
+	const auto table_base_reg   = memory_op_string.substr(0,plus_pos);
+	const auto table_index_reg  = memory_op_string.substr(plus_pos+3);
+	const auto table_entry_size = 
+		d7.getMnemonic()=="ldrb" ? 1 :
+		d7.getMnemonic()=="ldrh" ? 2 :
+		throw invalid_argument("Unable to detected switch table entry size for ARM64");
 
 	// now we try to find the table base in I5 and I6
 	// but we may fail due to compiler opts.  Prepare for such failures
-	// by setting our table-addr to 0 and indicating we didn't find it.
-	// we will check these variables after the attempt and fall back to an 
-	// unk, if given one.
-	auto found_table_base=false;
-	auto table_addr=0u;
+	// by creating a set of possible table bases.
+	// If we find i5/i6 or a reload of a spilled table address,
+	// we will refine our guess.
+	auto all_table_bases= all_add_adrp_results[i10->GetFunction()];
 
 	// try to find I6
 	auto i6=(Instruction_t*)nullptr;
-	if(backup_until(string()+"add "+table_reg,  /* look for this pattern. */
-				i6,                  /* find i6 */
-				i7,                  /* before I7 */
-				table_reg            /* stop if table_reg set */
-				))
+	if(backup_until(string()+"add "+table_base_reg+",",  /* look for this pattern. */
+	                i6,                                  /* find i6 */
+	                i7,                                  /* before I7 */
+	                table_base_reg+"$",                  /* stop if table_base_reg set */
+	                true,			             /* look hard -- recursely examine up to 10k instructions and 500 blocks */
+	                10000,
+	                500
+			))
 	{
 
 
 		// extract the I6 fields
 		assert(i6);
-		const auto d6=DecodedInstruction_t(i6);
-		const auto table_page_reg   =d6.getOperand(1).getString();
-		const auto table_page_offset=d6.getOperand(2).getConstant();
+		const auto d6                = DecodedInstruction_t(i6);
+		const auto table_page_reg    = d6.getOperand(1).getString();
+		const auto table_page_offset = d6.getOperand(2).getConstant();
 
 		// try to find I5
 		auto i5=(Instruction_t*)nullptr;
-		if(backup_until(string()+"adrp "+table_page_reg,  /* look for this pattern. */
-					i5,                       /* find i5 */
-					i6,                       /* before I6 */
-					table_page_reg            /* stop if table_reg_reg set */
-					))
+		if(backup_until(string()+"adrp "+table_page_reg+",",  /* look for this pattern. */
+		                i5,                                   /* find i5 */
+		                i6,                                   /* before I6 */
+		                table_page_reg+"$",                   /* stop if table_page set */
+		                true,			              /* look hard -- recursely examine up to 10k instructions and 500 blocks */
+		                10000,
+		                500
+		                ))
 		{
 			// extract i5 fields
 			assert(i5);
-			const auto d5=DecodedInstruction_t(i5);
-			const auto table_page=d5.getOperand(1).getConstant();
-			table_addr=table_page+table_page_offset;
-			found_table_base=true;
+			const auto d5         = DecodedInstruction_t(i5);
+			const auto table_page = d5.getOperand(1).getConstant();
+			const auto table_addr=table_page+table_page_offset;
+			all_table_bases= PerFuncAddrSet_t({table_addr});
+		}
+		else
+		{
+			for(auto adrp_value : all_adrp_results[i10->GetFunction()])
+			{
+				all_table_bases.insert(adrp_value+table_page_offset);
+			}
 		}
 	}
-
-	if(!found_table_base)
-		table_addr=unk;
-
-	if(table_addr==0)
-		return false;
-
-
-	// try to find switch table jumps
-	const auto i10_func=i10->GetFunction();
-
-	// find the section with the jump table
-	const auto table_section=find_section(table_addr,elfiop);
-	if(!table_section) return false;  
-
-	// if the section has no data, abort if not found
-	const auto table_section_data_ptr=table_section->get_data();
-	if(table_section_data_ptr == nullptr ) return false;
-
-	// get the section's adddress, abort if not loaded
-	const auto table_section_address=table_section->get_address();
-	if(table_section_address==0) return false;
-
-	// calculate how far into the section the table is.
-	const auto table_offset_into_section=(table_addr-table_section_address);
-
-	// calculate the actual data for the table
-	const auto table_data_ptr = table_section_data_ptr + table_offset_into_section;
-
-	// calculate a stop point so we don't fall out of the section.
-	const auto table_section_end_ptr=table_section_data_ptr+table_section->get_size();
-
-	// define how to map an index in the table into an address to deref.
-	const auto entry_size=sizeof(table_entry_type_t);
-	const auto getEntryPtr =[&](const uint64_t index) { return table_data_ptr+index*entry_size; };
-	const auto getEntryAddr=[&](const uint64_t index) { return table_addr    +index*entry_size; };
-
-	// log that we've found a table, etc.
-	cout << "Found ARM type1 at 0x"<<hex<<i10->GetAddress()->GetVirtualOffset()
-	     << " with jump_base_addr = 0x"<<hex<<jump_base_addr
-	     << ", table_reg='"<<table_reg<<"'"
-	     << ", table_addr="<<table_addr
-	     << endl;
-
-	const auto do_verbose=getenv("IB_VERBOSE") != nullptr;
-
-	// look at each table entry
-	auto target_count=0U;
-	auto targets=set<virtual_offset_t>();
-	for ( ; getEntryPtr(target_count)+entry_size < table_section_end_ptr ; target_count++ )
+	// could not find i5/i6, it's possible (likely) that the table was just spilled and is being
+	// reloaded from the stack.  check for that.
+	else if(backup_until(string()+"ldr "+table_base_reg+",",  /* look for this pattern. */
+	                     i6,                                  /* find i6 -- the reload of the table */
+	                     i7,                                  /* before I7 */
+	                     table_base_reg+"$",                  /* stop if table_base_reg set */
+	                     true,                                /* look hard -- recursely examine up to 10k instructions and 500 blocks */
+	                     10000,
+	                     500
+	                     ))
 	{
-		const auto entry_ptr  = getEntryPtr(target_count);
-		const auto entry_address  = getEntryAddr(target_count);
-		const auto table_entry    = *(table_entry_type_t*)entry_ptr;
-		const auto candidate_ibta = jump_base_addr+table_entry*4;	 // 4 being instruction alignment factor for ARM64
-		const auto ibtarget       = lookupInstruction(firp, candidate_ibta);
+		assert(i6);
+		const auto d6                = DecodedInstruction_t(i6);
+		// found reload of table address from spill location!
+                // reloads write to the stack with a constant offset.
+                const auto reload_op1=d6.getOperand(1);
+                assert(reload_op1.isMemory());
+                const auto reload_op1_string=reload_op1.getString();
 
-		if(do_verbose)
-			cout << "\tEntry #"<<dec<<target_count<<"= ent-addr="<<hex<<entry_address
-			     << " ent="<<hex<<+table_entry	 // print as int, not char.
-			     << " ibta="<<candidate_ibta;
+                // needs to have a base reg, which is either sp or x29
+                const auto hasbr   = (reload_op1.hasBaseRegister()) ;
+                const auto okbr    = (reload_op1_string.substr(0,2)=="sp" || reload_op1_string.substr(0,3)=="x29" ) ;
+                const auto hasdisp = (reload_op1.hasMemoryDisplacement()) ;
+                const auto hasir   = (reload_op1.hasIndexRegister()) ;
+		const auto ok      = hasbr && okbr && hasdisp && !hasir;
 
-		// stop if we failed to find an instruction,
-		// or find an instruction outside the function
-		if( ibtarget == nullptr )
+		if(ok)
 		{
-			if(do_verbose)
-				cout<<" -- no target insn!"<<endl;
-			break;
-		}
-		const auto ibtarget_func=ibtarget->GetFunction();
-		if( i10_func == nullptr )
-		{
-			// finding switch in non-function is OK.
-		}
-		else if(ibtarget_func == nullptr )
-		{
-			// finding target in non-function is OK
-		}
-		else if( i10_func != ibtarget_func )
-		{
-			// finding switch in function to different function, not ok.
-			if(do_verbose)
-				cout<<" -- switch to diff func? No."<<endl;
-			break;
-			
+			// extract fields
+			const auto reload_disp=reload_op1.getMemoryDisplacement();
+			const auto reload_loc=SpillPoint_t({i10->GetFunction(),reload_disp});
+			const auto &spills=spilled_add_adrp_results[reload_loc];
+			if(spills.size()>0)  
+			{
+				all_table_bases=spills;
+				cout<<"Using spilled table bases!"<<endl;
+			}
 		}
 
-		// record that we found something that looks valid-enough to try to pin
-		// stop if we couldn't pin.
-		if(!possible_target(candidate_ibta,entry_address,prov))
-		{
-			if(do_verbose)
-				cout<<" -- not possible target!"<<endl;
-			break;
-		}
-		if(do_verbose)
-			cout<<" -- valid target!"<<endl;
-		targets.insert(candidate_ibta);
-
-		// this was running away when looking for byte-entries.  occasionally there is no 
-		// byte offset that's not a valid instructoin, and we run until the end of the section.
-		if(target_count> 1024) 
-		{
-			cout<<"Caution, exiting loop after 1024 valid entries."<<endl;
-			break;
-		}
 	}
-	cout << "\tUnique target count="<<dec<<targets.size()<<endl;
-	return target_count>1;
-}
+	// end trying to find the table base.
 
+	// try to find i1+i2 so we can assign a resonable bound on the switch table size.
+	// assume it's 1024 if we can't otherwise find it.
+	const auto max_bound=1024u;
+	auto my_bound=max_bound;
 
-/* not sure what "unk" is. 
- * This is the term IDA seems to be using 
- * for a reference to a pc-rel switch table
- * it may have another  meaning, but that's what I mean here.
- */
+	// start by finding i2.
+	auto i2=(Instruction_t*)nullptr;
+	if(backup_until(string()+"(b.hi)|(b.ls)", /* look for this pattern. */
+				i2,           /* find i2 */
+				i7,           /* before I7 */
+				"",           /* don't stop for reg sets, just look for control flow */
+				true	      /* recurse into other blocks */
+				))
+	{
+		auto i1=(Instruction_t*)nullptr;
+		if(backup_until(string()+"cmp "+table_index_reg+",", /* look for this pattern. */
+					i1,                          /* find i1 */
+					i2,                          /* before I2 */
+					"cmp,adds,subs,cmpn",        /* stop for CC-setting insns -- fixme, probably not the right syntax for stop-if */
+					true	                     /* recurse into other blocks */
+					))
+		{
+			const auto d1  = DecodedInstruction_t(i1);
+			const auto d1op1 =  d1.getOperand(1);
+			if(d1op1.isConstant())
+			{
+				my_bound=d1op1.getConstant();
+			}
 
-using UnkSet_t=set<virtual_offset_t>;
-map<Function_t*,UnkSet_t> all_unks;
+		}
 
-void check_for_arm_switch_type1(FileIR_t *firp, Instruction_t* i10, const DecodedInstruction_t &d10, EXEIO::exeio* elfiop)
-{
-	// try all the unks with 8-bit and 16-bit tables.  stop early if we 
-	// succeed with w/o using a unk or we fail so hard it's not worth checking any more.
+	}
 	
-	// check for 16- and 8-bit tables without unks.
-	if(check_for_arm_switch_templ<int16_t>("sxth", "ldrh", firp,i10,d10,elfiop,0)) return;
-	if(check_for_arm_switch_templ<int8_t >("sxtb", "ldrb", firp,i10,d10,elfiop,0)) return;
+	const auto do_verbose=getenv("IB_VERBOSE");
 
-	const auto these_unks=all_unks[i10->GetFunction()];
-	for(auto unk : these_unks)
+	// given:
+	//   1) a set of possible places for a jump table (all_table_bases)
+	//   2) address from which the the tables is relative (jump_base_addr)
+	//   3) the size of the table (my_bound)
+	//
+	//   calculate any possible targets for this switch.
+
+	// consider each jump table
+	auto my_targets=set<virtual_offset_t>();
+	auto valid_table_count=0u;
+	for(auto cur_table_addr : all_table_bases)
 	{
-		check_for_arm_switch_templ<int16_t>("sxth", "ldrh", firp,i10,d10,elfiop,unk);
-		check_for_arm_switch_templ<int8_t >("sxtb", "ldrb", firp,i10,d10,elfiop,unk);
-	}
 
+		// try to find switch table jumps
+		const auto i10_func=i10->GetFunction();
+
+		// find the section with the jump table
+		const auto table_section=find_section(cur_table_addr,elfiop);
+		if(!table_section) continue;  
+
+		// if the section has no data, abort if not found
+		const auto table_section_data_ptr=table_section->get_data();
+		if(table_section_data_ptr == nullptr ) continue;
+
+		// get the section's adddress, abort if not loaded
+		const auto table_section_address=table_section->get_address();
+		if(table_section_address==0) continue;
+	
+		// ARM swith tables are in ROdata, thus not exectuable and not writeable.
+		if( table_section->isExecutable() ) continue;
+		if( table_section->isWriteable() ) continue;
+
+		// calculate how far into the section the table is.
+		const auto table_offset_into_section=(cur_table_addr-table_section_address);
+
+		// calculate the actual data for the table
+		const auto table_data_ptr = table_section_data_ptr + table_offset_into_section;
+
+		// calculate a stop point so we don't fall out of the section.
+		const auto table_section_end_ptr=table_section_data_ptr+table_section->get_size();
+
+		// define how to map an index in the table into an address to deref.
+		const auto getEntryPtr  = [&](const uint64_t index) { return table_data_ptr + index*table_entry_size; };
+		const auto getEntryAddr = [&](const uint64_t index) { return cur_table_addr + index*table_entry_size; };
+
+		if(do_verbose)
+		{
+			// log that we've found a table, etc.
+			cout << "Found ARM type1 at 0x"<<hex<<i10->GetAddress()->GetVirtualOffset()
+			     << " with my_bound = 0x"<<hex<<my_bound
+			     << ", table_entry_size = "<<dec<<table_entry_size
+			     << ", jump_base_addr = 0x"<<hex<<jump_base_addr
+			     << ", table_base_reg='"<<table_base_reg<<"'"
+			     << ", table_index_reg='"<<table_index_reg<<"'"
+			     << ", table_addr="<<cur_table_addr
+			     << endl;
+		}
+
+		const auto do_verbose=getenv("IB_VERBOSE") != nullptr;
+
+		// look at each table entry
+		auto target_count=0U;
+		auto this_table_targets=vector<tuple<virtual_offset_t, virtual_offset_t, ibt_provenance_t> >();
+		for ( ; getEntryPtr(target_count)+table_entry_size < table_section_end_ptr ; target_count++ )
+		{
+			const auto entry_ptr      = getEntryPtr(target_count);
+			const auto entry_address  = getEntryAddr(target_count);
+			const auto table_entry    = 
+				table_entry_size==1 ? *(int8_t* )entry_ptr :
+				table_entry_size==2 ? *(int16_t*)entry_ptr :
+				throw invalid_argument("Cannot determine how to load table entry from size");
+			const auto candidate_ibta = jump_base_addr+table_entry*4;	 // 4 being instruction alignment factor for ARM64
+			const auto ibtarget       = lookupInstruction(firp, candidate_ibta);
+
+			if(do_verbose)
+				cout << "\tEntry #"<<dec<<target_count<<"= ent-addr="<<hex<<entry_address
+				     << " ent="<<hex<<+table_entry	 // print as int, not char.
+				     << " ibta="<<candidate_ibta;
+
+			// stop if we failed to find an instruction,
+			// or find an instruction outside the function
+			if( ibtarget == nullptr )
+			{
+				if(do_verbose)
+					cout<<" -- no target insn!"<<endl;
+				break;
+			}
+			const auto ibtarget_func=ibtarget->GetFunction();
+			if( i10_func == nullptr )
+			{
+				// finding switch in non-function is OK.
+			}
+			else if(ibtarget_func == nullptr )
+			{
+				// finding target in non-function is OK
+			}
+			else if( i10_func != ibtarget_func )
+			{
+				// finding switch in function to different function, not ok.
+				if(do_verbose)
+					cout<<" -- switch to diff func? No."<<endl;
+				break;
+				
+			}
+
+			// record that we found something that looks valid-enough to try to pin
+			// stop if we couldn't pin.
+			if(!is_possible_target(candidate_ibta,entry_address))
+			{
+				if(do_verbose)
+					cout<<" -- not valid target!"<<endl;
+				break;
+			}
+			if(firp->FindScoop(candidate_ibta)!=nullptr)
+			{
+				if(do_verbose)
+					cout<<" -- not valid target due to data-in-text detection!"<<endl;
+				break;
+
+			}
+
+			if(do_verbose)
+				cout<<" -- valid target!"<<endl;
+
+			// record this entry of the table
+			this_table_targets.push_back({candidate_ibta, entry_address,prov});
+
+			if(target_count>my_bound)
+				break;
+
+		}
+		// allow this table if the bound was a max-bound situation.
+		// also allow if all the table entries were valid.
+		// (allow week off-by-one comparison due to inaccurancies in detecting exact bound)
+		if(my_bound == max_bound || target_count+1 >= my_bound)
+		{
+			// since this table is valid, add all entries to the list of IBT's for this IR.
+			for(auto &t : this_table_targets)
+			{
+				const auto candidate_ibta=get<0>(t);
+				possible_target(candidate_ibta, get<1>(t), get<2>(t));
+				my_targets.insert(candidate_ibta);
+			}
+			valid_table_count++;
+		}
+	}
+	cout  << "Across "<<dec<<all_table_bases.size()<< " tables, "<<valid_table_count<<" are valid, bound="<<my_bound
+	      << " unique target count="<<my_targets.size()<<" entry_size="<<table_entry_size<<endl;
+	return; 
 }
+
 
 /*
  * check_for_PIC_switch_table32 - look for switch tables in PIC code for 32-bit code.
@@ -937,11 +1058,11 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 		return;
 
 	// return if it's a jump to a constant address, these are common
-        if(disasm.getOperand(0).isConstant() /*disasm.Argument1.ArgType&CONSTANT_TYPE*/)
+        if(disasm.getOperand(0).isConstant() )
 		return;
 
 	// return if it's a jump to a memory address
-        if(disasm.getOperand(0).isMemory() /*disasm.Argument1.ArgType&MEMORY_TYPE*/)
+        if(disasm.getOperand(0).isMemory() )
 		return;
 
 	assert(disasm.getOperand(0).isRegister());
@@ -2110,7 +2231,7 @@ void handle_takes_address_annot(FileIR_t* firp,Instruction_t* insn, MEDS_TakesAd
 	}
 	else
 	{
-		all_unks[insn->GetFunction()].insert(referenced_addr);
+		all_add_adrp_results[insn->GetFunction()].insert(referenced_addr);
 	}
 }
 
@@ -3056,12 +3177,103 @@ void unpin_well_analyzed_ibts(FileIR_t *firp, int64_t do_unpin_opt)
 	print_unpins(firp);
 }
 
+bool find_arm_address_gen(Instruction_t* insn, const string& reg, virtual_offset_t& address, bool& page_only) 
+{
+	// init output args, just in case.
+	address=0;
+	page_only=true;
+
+	auto adrp_insn=(Instruction_t*)nullptr;
+	if(backup_until(string()+"adrp "+reg+",",  /* to find */
+			 adrp_insn,                          /* return insn here */
+			 insn,                               /* look before here */
+			 reg+"$",                  /* stop if reg is set */
+			 true)) 			     /* try hard to find the other half, more expensive */
+	{
+		assert(adrp_insn);
+		const auto adrp_disasm=DecodedInstruction_t(adrp_insn);
+		const auto page_no=adrp_disasm.getOperand(1).getConstant();
+
+		cout<<"Found spilled page_no at "<<hex<<insn->GetAddress()->GetVirtualOffset()<<" in: "<<endl;
+		cout<<"\t"<<adrp_disasm.getDisassembly()<<endl;
+		cout<<"\t"<<insn->getDisassembly()<<endl;
+		page_only=true;
+		address=page_no;
+		return true;
+	}
+
+	auto add_insn=(Instruction_t*)nullptr;
+	if(backup_until(string()+"add "+reg+",",  /* to find */
+			 add_insn,                          /* return insn here */
+			 insn,                              /* look before here */
+			 reg+"$",                 /* stop if reg is set */
+			 true)) 			    /* try hard to find the other half, more expensive */
+	{
+		assert(add_insn);
+		const auto add_disasm=DecodedInstruction_t(add_insn);
+		const auto add_op1=add_disasm.getOperand(1);
+		const auto add_op2=add_disasm.getOperand(2);
+		if(!add_op1.isRegister()) return false;
+		if( add_op1.getString()=="x29") return false; // skip arm SP.
+		if(!add_op2.isConstant()) return false;
+
+		const auto add_op1_reg=add_op1.getString();
+		const auto add_op2_constant=add_op2.getConstant();
+
+		// try to find an adrp
+		auto adrp_insn=(Instruction_t*)nullptr;
+		if(!backup_until(string()+"adrp "+add_op1_reg+",",  /* to find */
+				 adrp_insn,                         /* return insn here */
+				 add_insn,                          /* look before here */
+				 add_op1_reg+"$",                   /* stop if reg is set */
+				 true)) 			    /* try hard to find the other half, more expensive */
+			return false;
+		assert(adrp_insn);
+
+		const auto adrp_disasm=DecodedInstruction_t(adrp_insn);
+		const auto adrp_page=adrp_disasm.getOperand(1).getConstant();
+		const auto spilled_address=adrp_page+add_op2_constant;
+		cout<<"Found spilled address at "<<hex<<insn->GetAddress()->GetVirtualOffset()<<" in: "<<endl;
+		cout<<"\t"<<adrp_disasm.getDisassembly()<<endl;
+		cout<<"\t"<<add_disasm.getDisassembly()<<endl;
+		cout<<"\t"<<insn->getDisassembly()<<endl;
+		page_only=false;
+		address=spilled_address;
+		return true;
+	}
+	return false;
+}
 
 void find_all_arm_unks(FileIR_t* firp)
 {
+	const auto reg_to_spilled_addr=[&](Instruction_t* insn, const string &reg, const SpillPoint_t& spill_loc)
+		{
+
+			auto page_only=true;
+			auto address=virtual_offset_t(0);
+			if(find_arm_address_gen(insn,reg, address, page_only))
+			{
+				if(page_only)
+					spilled_adrps[spill_loc].insert(address);
+				else
+					spilled_add_adrp_results[spill_loc].insert(address);
+			}
+		};
+	const auto do_verbose=getenv("IB_VERBOSE");
 	/* only valid for arm */
 	if(firp->GetArchitecture()->getMachineType() != admtAarch64) return;
 
+	/* find adrps */
+	for(auto insn : firp->GetInstructions())
+	{
+		const auto d=DecodedInstruction_t(insn);
+		if(d.getMnemonic()!="adrp") continue;
+		const auto op1=d.getOperand(1);
+		const auto op1_constant=op1.getConstant();
+		all_adrp_results[insn->GetFunction()].insert(op1_constant);
+	}
+
+	/* find add/adrp pairs */
 	for(auto insn : firp->GetInstructions())
 	{
 		const auto d=DecodedInstruction_t(insn);
@@ -3071,6 +3283,7 @@ void find_all_arm_unks(FileIR_t* firp)
 		const auto op1=d.getOperand(1);
 		const auto op2=d.getOperand(2);
 		if(!op1.isRegister()) continue;
+		if(op1.getString()=="x29") continue; // skip arm SP.
 		if(!op2.isConstant()) continue;
 
 		const auto op1_reg=op1.getString();
@@ -3078,15 +3291,20 @@ void find_all_arm_unks(FileIR_t* firp)
 
 		// try to find an adrp
 		auto adrp_insn=(Instruction_t*)nullptr;
-		if(!backup_until(string()+"adrp "+op1_reg, adrp_insn, insn, op1_reg)) continue;
+		if(!backup_until(string()+"adrp "+op1_reg+",",  /* to find */
+		                 adrp_insn,                     /* return insn here */
+	                	 insn,                          /* look before here */
+	                 	 op1_reg+"$",                   /* stop if reg is set */
+	                 	 true)) 			/* try hard to find the other half, more expensive */
+			continue;
 		assert(adrp_insn);
 
 		const auto adrp_disasm=DecodedInstruction_t(adrp_insn);
 		const auto adrp_page=adrp_disasm.getOperand(1).getConstant();
 		const auto unk_value=adrp_page+op2_constant;
 
-		all_unks[insn->GetFunction()     ].insert(unk_value);
-		all_unks[adrp_insn->GetFunction()].insert(unk_value);
+		all_add_adrp_results[insn->GetFunction()     ].insert(unk_value);
+		all_add_adrp_results[adrp_insn->GetFunction()].insert(unk_value);
 
 		/* check for scoops at the unk address.
 		 * if found, we assume that the unk points at data.
@@ -3096,12 +3314,90 @@ void find_all_arm_unks(FileIR_t* firp)
 			possible_target(unk_value, 0, ibt_provenance_t::ibtp_text);
 		
 		/* verbose logging */
-		if(getenv("IB_VERBOSE"))
+		if(do_verbose) 
 			cout << "Detected ARM unk="<<hex<<unk_value<<" for "<<d.getDisassembly()
 			     << " and "<<adrp_disasm.getDisassembly()<<endl;
 
 	}
+	/* find spilled adrp's and add/adrp pairs 
+	 * looking for these patterns:
+	 *
+	 * adrp reg1, #page_no
+	 * add reg2, reg1, #page_offset
+	 * str reg2, [x29, #spill loc]  ; or sp instead of x29
+	 *
+	 * or
+	 *
+	 * adrp reg1, #page_no
+	 * str reg1, [x29, #spill loc]  ; or sp instead of x29
+	 *
+	 * we record these later, in case we find a switch dispatch that has a spilled jump table address.
+	 */
+	for(auto insn : firp->GetInstructions())
+	{
+		// look for a spill of an address
+		const auto d=DecodedInstruction_t(insn);
+
+		// spills are str instructions
+		if(d.getMnemonic()!="str") continue;
+
+		// spills of an address are writing an X register. 
+		const auto spill_op0_reg=d.getOperand(0).getString();
+		if(spill_op0_reg[0]!='x') continue;
+
+		// spills write to the stack with a constant offset.
+		const auto spill_op1=d.getOperand(1);
+		assert(spill_op1.isMemory());
+		const auto spill_op1_string=spill_op1.getString();
+		// needs to have a base reg, which is either sp or x29
+		if(!spill_op1.hasBaseRegister()) continue;
+		if( spill_op1_string.substr(0,2)!="sp" && spill_op1_string.substr(0,3)!="x29" ) continue;
+		if(!spill_op1.hasMemoryDisplacement()) continue;
+		if( spill_op1.hasIndexRegister()) continue;
+
+		const auto spill_disp=spill_op1.getMemoryDisplacement();
+
+		// found str <x-reg> [sp+const]
+
+		reg_to_spilled_addr(insn, spill_op0_reg, SpillPoint_t({insn->GetFunction(),spill_disp  }));
+
+
+	}
+	for(auto insn : firp->GetInstructions())
+	{
+		// look for a spill of an address
+		const auto d=DecodedInstruction_t(insn);
+
+		// spills are str instructions
+		if(d.getMnemonic()!="stp") continue;
+
+		// spills of an address are writing an X register. 
+		const auto spill_op0_reg=d.getOperand(0).getString();
+		const auto spill_op1_reg=d.getOperand(1).getString();
+		if(spill_op0_reg[0]!='x') continue;
+
+		// spills write to the stack with a constant offset.
+		const auto spill_op2=d.getOperand(2);
+		assert(spill_op2.isMemory());
+		const auto spill_op2_string=spill_op2.getString();
+		// needs to have a base reg, which is either sp or x29
+		if(!spill_op2.hasBaseRegister()) continue;
+		if( spill_op2_string.substr(0,2)!="sp" && spill_op2_string.substr(0,3)!="x29" ) continue;
+		if(!spill_op2.hasMemoryDisplacement()) continue;
+		if( spill_op2.hasIndexRegister()) continue;
+
+		const auto spill_disp=spill_op2.getMemoryDisplacement();
+
+		// found stp <xreg> <xreg> [sp+const]
+
+		reg_to_spilled_addr(insn, spill_op0_reg, SpillPoint_t({insn->GetFunction(),spill_disp  }));
+		reg_to_spilled_addr(insn, spill_op1_reg, SpillPoint_t({insn->GetFunction(),spill_disp+8}));
+
+
+	}
+
 }
+
 
 /*
  * fill_in_indtargs - main driver routine for 

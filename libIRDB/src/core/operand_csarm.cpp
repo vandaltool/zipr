@@ -50,6 +50,10 @@ string DecodedOperandCapstoneARM64_t::getString() const
         {
                 case ARM64_OP_REG:
                         return string(cs_reg_name(handle, op.reg));
+                case ARM64_OP_REG_MRS:
+                case ARM64_OP_REG_MSR:
+                case ARM64_OP_FP:
+			return string("fpcr");
                 case ARM64_OP_IMM:
                         return to_string(op.imm);
                 case ARM64_OP_MEM:

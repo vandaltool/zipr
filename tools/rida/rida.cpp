@@ -361,7 +361,8 @@ class CreateFunctions_t
 			};
 
 			const auto pltSec=exeio.sections[pltSecName];
-			assert(pltSec!=NULL);
+			if(pltSec==NULL) return;
+
 			const auto startAddr=pltSec->get_address();
 			const auto endAddr=pltSec->get_address()+pltSec->get_size();
 

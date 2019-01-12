@@ -209,14 +209,15 @@ bool DecodedInstructionCapstoneARM64_t::isUnconditionalBranch() const
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
 
-	return isJmp(the_insn) && !isConditionalBranch();
+	return isJmp(the_insn) && 
+		(getMnemonic()=="b" || getMnemonic()=="br");
 }
 
 bool DecodedInstructionCapstoneARM64_t::isConditionalBranch() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
-	return isJmp(the_insn) && getMnemonic()!="br";
+	return isJmp(the_insn) && !isUnconditionalBranch();
 }
 
 bool DecodedInstructionCapstoneARM64_t::isReturn() const
