@@ -991,7 +991,9 @@ notes:
 				cout<<" -- valid target!"<<endl;
 
 			// record this entry of the table
-			this_table_targets.push_back({candidate_ibta, entry_address,prov});
+			// this works on newer compilers and is easier to read, but older compilers....
+			// this_table_targets.push_back({candidate_ibta, entry_address,prov});
+			this_table_targets.push_back(make_tuple(candidate_ibta, entry_address,prov));
 
 			if(target_count>my_bound)
 				break;
