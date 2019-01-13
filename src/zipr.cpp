@@ -1787,7 +1787,15 @@ RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t *entry, RangeAddress_t
 	 */
 	if (!placed_insn)
 	{
-		updated_addr = PlopDollopEntry(entry, placed_address, target_address);
+		/* Some plugins, like scfi, may place the entry but leave it 
+		   up to zipr to place the instruction. This does assume that 
+		   zipr will place the instruction in a way that is compatible 
+		   with what the plugin is trying to do.
+		   
+		   TODO: Should we continue to allow this?
+		*/
+		const auto zipr_ret = PlopDollopEntry(entry, placed_address, target_address); 
+		updated_addr = std::max(zipr_ret, updated_addr);
 	}
 
 	// sanity check that we aren't moving an instruction that's already been placed.	
