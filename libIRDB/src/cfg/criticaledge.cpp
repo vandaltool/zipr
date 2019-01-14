@@ -25,20 +25,19 @@
 using namespace std;
 using namespace libIRDB;
 
-CriticalEdgeAnalyzer_t::CriticalEdgeAnalyzer_t(ControlFlowGraph_t* p_cfg) :
+CriticalEdgeAnalyzer_t::CriticalEdgeAnalyzer_t(const ControlFlowGraph_t& p_cfg) :
 	m_cfg(p_cfg)
 {
-	assert(m_cfg);
 }
 
 /*
 *   Critical edge between two nodes is where the source node has multiple successsors,
 *   and the target node has multiple predecessors 
 */
-BasicBlockEdgeSet_t CriticalEdgeAnalyzer_t::GetAllCriticalEdges()
+BasicBlockEdgeSet_t CriticalEdgeAnalyzer_t::GetAllCriticalEdges() const
 {
 	BasicBlockEdgeSet_t criticals; 
-	for (const auto &src : m_cfg->GetBlocks())
+	for (const auto &src : m_cfg.GetBlocks())
 	{
 		for (const auto &tgt : src->GetSuccessors())
 		{
