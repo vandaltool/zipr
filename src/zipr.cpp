@@ -827,7 +827,7 @@ void ZiprImpl_t::ReplopDollopEntriesWithTargets()
 
 void ZiprImpl_t::PlaceDollops()
 {
-	int count_pins=0;
+	auto count_pins=0u;
 
 	/*
 	 * Build up initial placement q with destinations of
@@ -835,8 +835,8 @@ void ZiprImpl_t::PlaceDollops()
 	 */
 	for (auto p : patch_list)
 	{
-		auto uu = p.first;
-		auto patch = p.second;
+		const auto uu = p.first;
+		const auto patch = p.second;
 		auto target_insn = uu.GetInstruction();
 		auto target_dollop = m_dollop_mgr.GetContainingDollop(target_insn);
 		assert(target_dollop);
@@ -850,7 +850,7 @@ void ZiprImpl_t::PlaceDollops()
 		count_pins++;
 	}
 
-	assert(getenv("SELF_VALIDATE")==nullptr || count_pins > 5 ) ;
+	assert(getenv("SELF_VALIDATE")==nullptr || count_pins > 3 ) ;
 	assert(getenv("SELF_VALIDATE")==nullptr || placement_queue.size() > 15 ) ;
 
 	cout<<"# ATTRIBUTE Zipr::pins_detected="<<dec<<count_pins<<endl;
@@ -859,19 +859,17 @@ void ZiprImpl_t::PlaceDollops()
 	while (!placement_queue.empty())
 	{
 		auto placement=Range_t();
-		DLFunctionHandle_t placer = NULL;
+		auto placer = DLFunctionHandle_t(nullptr);
 		auto placed = false;
-		RangeAddress_t cur_addr = 0 ;
-		bool has_fallthrough = false;
-		Dollop_t *fallthrough = NULL;
+		auto cur_addr = RangeAddress_t(0);
+		auto has_fallthrough = false;
+		auto fallthrough = (Dollop_t*)(nullptr);
 		auto continue_placing = false;
-
 		auto initial_placement_abuts_pin = false;
 		auto initial_placement_abuts_fallthrough = false;
 		auto fits_entirely = false;
-		RangeAddress_t fallthrough_dollop_place = 0;
-		bool fallthrough_has_preplacement = false;
-
+		auto fallthrough_dollop_place = RangeAddress_t(0);
+		auto fallthrough_has_preplacement = false;
 		auto pq_entry = *(placement_queue.begin());
 		placement_queue.erase(placement_queue.begin());
 
