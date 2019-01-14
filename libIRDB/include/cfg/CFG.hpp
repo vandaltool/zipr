@@ -19,9 +19,6 @@
  */
 
 
-
-typedef std::set<BasicBlock_t*> BasicBlockSet_t;
-
 class ControlFlowGraph_t
 {
 	public:

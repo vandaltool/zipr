@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - Zephyr Software LLC
+ * Copyright (c) 2019 - Zephyr Software LLC
  *
  * This file may be used and modified for non-commercial purposes as long as
  * all copyright, permission, and nonwarranty notices are preserved.
@@ -18,27 +18,16 @@
  *
  */
 
-#ifndef libIRDB_cfg
-#define libIRDB_cfg
+typedef std::set<BasicBlock_t*> BasicBlockSet_t;
+typedef std::tuple<BasicBlock_t*, BasicBlock_t*> BasicBlockEdge_t;
+typedef std::set<BasicBlockEdge_t> BasicBlockEdgeSet_t;
 
-
-/* Building a CFG depends on core functionality */
-#include <libIRDB-core.hpp>
-
-#include <vector>
-#include <set>
-#include <map>
-#include <ostream>
-
-namespace libIRDB 
+class CriticalEdgeAnalyzer_t
 {
+	public:
+		CriticalEdgeAnalyzer_t(const ControlFlowGraph_t &p_cfg);
+		BasicBlockEdgeSet_t GetAllCriticalEdges() const;
 
-#include <cfg/BasicBlock.hpp>
-#include <cfg/CFG.hpp>
-#include <cfg/callgraph.hpp>
-#include <cfg/domgraph.hpp>
-#include <cfg/criticaledge.hpp>
-
+	private:
+		ControlFlowGraph_t m_cfg;
 };
-
-#endif

@@ -8,7 +8,7 @@ myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 
 libname="IRDB-cfg"
 files=  '''
-	BasicBlock.cpp  callgraph.cpp  CFG.cpp domgraph.cpp
+	BasicBlock.cpp  callgraph.cpp  CFG.cpp domgraph.cpp criticaledge.cpp
 	'''
 cpppath=''' 
 	$SECURITY_TRANSFORMS_HOME/include/
