@@ -18,7 +18,6 @@
  *
  */
 
-typedef std::set<BasicBlock_t*> BasicBlockSet_t;
 typedef std::tuple<BasicBlock_t*, BasicBlock_t*> BasicBlockEdge_t;
 typedef std::set<BasicBlockEdge_t> BasicBlockEdgeSet_t;
 
@@ -29,5 +28,5 @@ class CriticalEdgeAnalyzer_t
 		BasicBlockEdgeSet_t GetAllCriticalEdges() const;
 
 	private:
-		ControlFlowGraph_t m_cfg;
+		const ControlFlowGraph_t m_cfg;
 };
