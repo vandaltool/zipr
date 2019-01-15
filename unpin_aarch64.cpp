@@ -180,7 +180,7 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 			const auto L2=tramp_start+8;
 			const auto branch_bytes=string("\x00\x00\x00\x14",4);
 			// const auto updated_orig_insn_pageno = orig_insn_addr>>12; // orig_insn_pageno was shifted by 0 for adr
-			const auto relocd_insn_pageno  = L1>>12;
+			const auto relocd_insn_pageno  = L0>>12;
 			const auto address_to_generate_pageno = address_to_generate >> 12;
 			const auto address_to_generate_page_offset = address_to_generate & mask12;
 			const auto relocd_imm21_ext = (int64_t)address_to_generate_pageno - (int64_t)relocd_insn_pageno;
@@ -200,6 +200,8 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 			auto adrp_word =*(int*)adrp_bytes.c_str();
 			adrp_word|=destreg<<0;
 			adrp_word |=  ((relocd_immlo2&mask2) << 29) | ((relocd_immhi19&mask19)<<5);
+			cout << "Tramp for "<<L0<<", relocd_immlo2=" << relocd_immlo2
+			     << ", relocd_immhi19=" << relocd_immhi19 << endl;
 			ms.PlopBytes(L0,(char*)&adrp_word,4);
 
 			// add64 imm12 = 1001 0001 00 imm12 Rn Rd
