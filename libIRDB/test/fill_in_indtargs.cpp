@@ -62,12 +62,21 @@ extern void read_ehframe(FileIR_t* firp, EXEIO::exeio* );
 class PopulateIndTargs_t : public libIRDB::Transform_SDK::TransformStep_t
 {
 
-using SpillPoint_t = pair<Function_t*, virtual_offset_t>;
+// record all full addresses and page-addresses found per function (or null for no function
 using PerFuncAddrSet_t=set<virtual_offset_t>;
 map<Function_t*,PerFuncAddrSet_t> all_adrp_results;
-map<SpillPoint_t,PerFuncAddrSet_t> spilled_adrps;
 map<Function_t*,PerFuncAddrSet_t> all_add_adrp_results;
+
+// record all full addresses and page-addresses found that are spilled to the stack
+using SpillPoint_t = pair<Function_t*, virtual_offset_t>;
 map<SpillPoint_t,PerFuncAddrSet_t> spilled_add_adrp_results;
+map<SpillPoint_t,PerFuncAddrSet_t> spilled_adrps;
+
+// record all full addresses found that are spilled to to a floating-point register (e.g., D10) 
+using DregSpillPoint_t = pair<Function_t*, string>;
+map<DregSpillPoint_t, PerFuncAddrSet_t> spilled_to_dreg;
+
+map<string,PerFuncAddrSet_t> per_reg_add_adrp_results;
 
 public:
 
@@ -687,7 +696,7 @@ notes:
 	if(!backup_until( string()+"(add "+i10_reg+",.* sxth #2)|(add "+i10_reg+",.* sxtb #2)", /* look for this pattern. */
 				i9,                            /* find i9 */
 				i10,                           /* before I10 */
-				i10_reg+"$"                    /* stop if i10_reg set */
+				"^"+i10_reg+"$"                /* stop if i10_reg set */
 				))
 	{
 		return; 
@@ -703,9 +712,9 @@ notes:
 	// try to find I8
 	auto i8=(Instruction_t*)nullptr;
 	if(!backup_until(string()+"adr "+offset_reg+",", /* look for this pattern. */
-				i8,                  /* find i8 */
-				i9,                  /* before I9 */
-				offset_reg+"$"       /* stop if offste_reg set */
+				i8,                      /* find i8 */
+				i9,                      /* before I9 */
+				"^"+offset_reg+"$"       /* stop if offste_reg set */
 				))
 		return; 
 
@@ -720,7 +729,7 @@ notes:
 	if(!backup_until(string()+ "(ldrh "+table_entry_reg+",)|(ldrb "+table_entry_reg+",)", /* look for this pattern. */
 				i7,                                                           /* find i7 */
 				i9,                                                           /* before I9 */
-				table_entry_reg+"$"                                           /* stop if index_reg set */
+				"^"+table_entry_reg+"$"                                       /* stop if index_reg set */
 				))
 		return;
 
@@ -742,14 +751,14 @@ notes:
 	// by creating a set of possible table bases.
 	// If we find i5/i6 or a reload of a spilled table address,
 	// we will refine our guess.
-	auto all_table_bases= all_add_adrp_results[i10->GetFunction()];
+	auto all_table_bases= per_reg_add_adrp_results[table_base_reg];
 
 	// try to find I6
 	auto i6=(Instruction_t*)nullptr;
 	if(backup_until(string()+"add "+table_base_reg+",",  /* look for this pattern. */
 	                i6,                                  /* find i6 */
 	                i7,                                  /* before I7 */
-	                table_base_reg+"$",                  /* stop if table_base_reg set */
+	                "^"+table_base_reg+"$",              /* stop if table_base_reg set */
 	                true,			             /* look hard -- recursely examine up to 10k instructions and 500 blocks */
 	                10000,
 	                500
@@ -768,7 +777,7 @@ notes:
 		if(backup_until(string()+"adrp "+table_page_reg+",",  /* look for this pattern. */
 		                i5,                                   /* find i5 */
 		                i6,                                   /* before I6 */
-		                table_page_reg+"$",                   /* stop if table_page set */
+		                "^"+table_page_reg+"$",               /* stop if table_page set */
 		                true,			              /* look hard -- recursely examine up to 10k instructions and 500 blocks */
 		                10000,
 		                500
@@ -794,7 +803,7 @@ notes:
 	else if(backup_until(string()+"ldr "+table_base_reg+",",  /* look for this pattern. */
 	                     i6,                                  /* find i6 -- the reload of the table */
 	                     i7,                                  /* before I7 */
-	                     table_base_reg+"$",                  /* stop if table_base_reg set */
+	                     "^"+table_base_reg+"$",              /* stop if table_base_reg set */
 	                     true,                                /* look hard -- recursely examine up to 10k instructions and 500 blocks */
 	                     10000,
 	                     500
@@ -824,10 +833,38 @@ notes:
 			if(spills.size()>0)  
 			{
 				all_table_bases=spills;
-				cout<<"Using spilled table bases!"<<endl;
+				cout<<"Using spilled table bases from stack!"<<endl;
 			}
 		}
 
+	}
+	// also possible we couldn't find it spilled to the stack, and it's instead spilled to an FP register.
+	else if(backup_until(string()+"fmov "+table_base_reg+",",  /* look for this pattern. */
+	                     i6,                                   /* find i6 -- the reload of the table from an FP reg*/
+	                     i7,                                   /* before I7 */
+	                     "^"+table_base_reg+"$",               /* stop if table_base_reg set */
+	                     true,                                 /* look hard -- recursely examine up to 10k instructions and 500 blocks */
+	                     10000,
+	                     500
+	                     ))
+	{
+		assert(i6);
+		const auto d6             = DecodedInstruction_t(i6);
+                const auto reload_op1     = d6.getOperand(1);
+		const auto reload_op1_str = reload_op1.getString();
+		const auto is_dreg        = reload_op1_str[0]=='d';
+
+		if(is_dreg)
+		{
+
+			const auto reload_loc = DregSpillPoint_t({i6->GetFunction(), reload_op1_str});
+			const auto spills     = spilled_to_dreg[reload_loc];
+			if(spills.size()>0)  
+			{
+				all_table_bases=spills;
+				cout<<"Using spilled table bases from d-reg!"<<endl;
+			}
+		}
 	}
 	// end trying to find the table base.
 
@@ -845,21 +882,67 @@ notes:
 				true	      /* recurse into other blocks */
 				))
 	{
+		/* find i1 */
 		auto i1=(Instruction_t*)nullptr;
-		if(backup_until(string()+"cmp "+table_index_reg+",", /* look for this pattern. */
+		if(backup_until(string()+"cmp ",                     /* look for this pattern. */
 					i1,                          /* find i1 */
 					i2,                          /* before I2 */
-					"cmp,adds,subs,cmpn",        /* stop for CC-setting insns -- fixme, probably not the right syntax for stop-if */
+					"(cmp)|(adds)|(subs)|(cmn)", /* stop for CC-setting insns -- fixme, probably not the right syntax for stop-if */
 					true	                     /* recurse into other blocks */
 					))
 		{
-			const auto d1  = DecodedInstruction_t(i1);
-			const auto d1op1 =  d1.getOperand(1);
-			if(d1op1.isConstant())
+			// try to verify that there's data flow from the ldr[bh] to the cmp 
+			auto next_reg=table_index_reg;
+			auto prev_insn=i7;
+			while(true)
 			{
-				my_bound=d1op1.getConstant();
-			}
+				auto new_i1=(Instruction_t*)nullptr;
+				if(backup_until(string()+"cmp "+next_reg+",", /* look for this pattern. */
+							new_i1,               /* find i1 */
+							prev_insn,            /* before prev_insn */
+							"^"+next_reg+"$",     /* stop if next_reg is set */
+							true	              /* recurse into other blocks */
+							))
+				{
+					if(i1!=new_i1) /* sanity check that we got to the same place */
+						break;
+					const auto d1    = DecodedInstruction_t(i1);
+					const auto d1op1 =  d1.getOperand(1);
+					if(d1op1.isConstant())
+					{
+						my_bound=d1op1.getConstant();
+					}
+					break;
 
+				}
+				else if(backup_until(string()+"mov "+next_reg+",", /* look for this pattern. */
+							new_i1,                    /* find i1 */
+							prev_insn,                 /* before I2 */
+							"^"+next_reg+"$",          /* stop if next_reg is set */
+							true	                   /* recurse into other blocks */
+							))
+				{
+					// track backwards on reg 2 if we find a mov <reg1>, <reg2>
+					const auto d1        = DecodedInstruction_t(new_i1);
+					const auto new_d1op1 =  d1.getOperand(1);
+					if(new_d1op1.isRegister())
+					{
+						next_reg=new_d1op1.getString();
+						continue;
+					}
+					else
+					{
+						// movd constant into table reg?  wtf
+						break;
+					}
+				}
+				else
+				{
+					// no bound found
+					break;
+				}
+				assert(0);
+			}
 		}
 
 	}
@@ -3187,10 +3270,10 @@ bool find_arm_address_gen(Instruction_t* insn, const string& reg, virtual_offset
 
 	auto adrp_insn=(Instruction_t*)nullptr;
 	if(backup_until(string()+"adrp "+reg+",",  /* to find */
-			 adrp_insn,                          /* return insn here */
-			 insn,                               /* look before here */
-			 reg+"$",                  /* stop if reg is set */
-			 true)) 			     /* try hard to find the other half, more expensive */
+			 adrp_insn,                /* return insn here */
+			 insn,                     /* look before here */
+			 "^"+reg+"$",              /* stop if reg is set */
+			 true))                    /* try hard to find the other half, more expensive */
 	{
 		assert(adrp_insn);
 		const auto adrp_disasm=DecodedInstruction_t(adrp_insn);
@@ -3206,10 +3289,10 @@ bool find_arm_address_gen(Instruction_t* insn, const string& reg, virtual_offset
 
 	auto add_insn=(Instruction_t*)nullptr;
 	if(backup_until(string()+"add "+reg+",",  /* to find */
-			 add_insn,                          /* return insn here */
-			 insn,                              /* look before here */
-			 reg+"$",                 /* stop if reg is set */
-			 true)) 			    /* try hard to find the other half, more expensive */
+			 add_insn,                /* return insn here */
+			 insn,                    /* look before here */
+			 "^"+reg+"$",             /* stop if reg is set */
+			 true))                   /* try hard to find the other half, more expensive */
 	{
 		assert(add_insn);
 		const auto add_disasm=DecodedInstruction_t(add_insn);
@@ -3227,7 +3310,7 @@ bool find_arm_address_gen(Instruction_t* insn, const string& reg, virtual_offset
 		if(!backup_until(string()+"adrp "+add_op1_reg+",",  /* to find */
 				 adrp_insn,                         /* return insn here */
 				 add_insn,                          /* look before here */
-				 add_op1_reg+"$",                   /* stop if reg is set */
+				 "^"+add_op1_reg+"$",               /* stop if reg is set */
 				 true)) 			    /* try hard to find the other half, more expensive */
 			return false;
 		assert(adrp_insn);
@@ -3282,6 +3365,7 @@ void find_all_arm_unks(FileIR_t* firp)
 		if(d.getMnemonic()!="add") continue;
 		if(!d.hasOperand(1)) continue;
 		if(!d.hasOperand(2)) continue;
+		const auto op0=d.getOperand(1);
 		const auto op1=d.getOperand(1);
 		const auto op2=d.getOperand(2);
 		if(!op1.isRegister()) continue;
@@ -3296,7 +3380,7 @@ void find_all_arm_unks(FileIR_t* firp)
 		if(!backup_until(string()+"adrp "+op1_reg+",",  /* to find */
 		                 adrp_insn,                     /* return insn here */
 	                	 insn,                          /* look before here */
-	                 	 op1_reg+"$",                   /* stop if reg is set */
+	                 	 "^"+op1_reg+"$",               /* stop if reg is set */
 	                 	 true)) 			/* try hard to find the other half, more expensive */
 			continue;
 		assert(adrp_insn);
@@ -3305,8 +3389,9 @@ void find_all_arm_unks(FileIR_t* firp)
 		const auto adrp_page=adrp_disasm.getOperand(1).getConstant();
 		const auto unk_value=adrp_page+op2_constant;
 
-		all_add_adrp_results[insn->GetFunction()     ].insert(unk_value);
-		all_add_adrp_results[adrp_insn->GetFunction()].insert(unk_value);
+		all_add_adrp_results     [ insn->GetFunction()     ].insert(unk_value);
+		all_add_adrp_results     [ adrp_insn->GetFunction()].insert(unk_value);
+		per_reg_add_adrp_results [ op0.getString()         ].insert(unk_value);
 
 		/* check for scoops at the unk address.
 		 * if found, we assume that the unk points at data.
@@ -3396,6 +3481,33 @@ void find_all_arm_unks(FileIR_t* firp)
 		reg_to_spilled_addr(insn, spill_op1_reg, SpillPoint_t({insn->GetFunction(),spill_disp+8}));
 
 
+	}
+
+	// look for spilling an address into a d-register.
+	for(auto insn : firp->GetInstructions())
+	{
+		// look for moves to d-regs via fmov.
+		const auto d       = DecodedInstruction_t(insn);
+		if( d.getMnemonic()!="fmov" ) continue;
+
+		// look for a spill of an address
+		const auto op0     = d.getOperand(0);
+		const auto op1     = d.getOperand(1);
+		const auto op0_str = op0.getString();
+		const auto op1_str = op1.getString();
+
+		// spills to d-regs are fmov instructions with a d-reg dest and an xreg src.
+		if( op0_str[0]     !='d'    ) continue;
+		if( op1_str[0]     !='x'    ) continue;
+
+		auto page_only=true;
+		auto address=virtual_offset_t(0);
+		if(find_arm_address_gen(insn,op1_str, address, page_only))
+		{
+			const auto spill_loc = DregSpillPoint_t({insn->GetFunction(), op0_str});
+			spilled_to_dreg[spill_loc].insert(address);
+
+		}
 	}
 
 }
