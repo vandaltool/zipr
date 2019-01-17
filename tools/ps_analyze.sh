@@ -1216,10 +1216,10 @@ main()
 	cd $newdir
 
 	# gather stats into JSON format
-	python $PEASOUP_HOME/tools/gather_stats.py logs/*.log > logs/stats.json
+	#python $PEASOUP_HOME/tools/gather_stats.py logs/*.log > logs/stats.json
 
 	# make sure we only do this once there are no more updates to the peasoup_dir
-	perform_step installer none $PEASOUP_HOME/tools/do_installer.sh $PWD $protected_exe
+	#perform_step installer none $PEASOUP_HOME/tools/do_installer.sh $PWD $protected_exe
 
 	
 	cd - > /dev/null 2>&1
