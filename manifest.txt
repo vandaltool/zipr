@@ -14,4 +14,5 @@ file yum_packages.sh centos
 file postgres_setup.sh ps
 file README.txt ps
 file cfar_postgres_setup.sh cfar
+file get-peasoup-packages.sh ps
 directory centos_files centos
