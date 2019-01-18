@@ -163,8 +163,43 @@ void ControlFlowGraph_t::Build(Function_t* func)
 	find_unblocked_instructions(starts, func);
 	alloc_blocks(starts, insn2block_map);
 	build_blocks(insn2block_map);
+}
 
+// returns true iff there's an edge from <p_src> to <p_tgt> in the CFG
+bool ControlFlowGraph_t::HasEdge(BasicBlock_t *p_src, BasicBlock_t *p_tgt) const
+{
+	const auto src_exists = blocks.find(p_src) != blocks.end();
+	const auto tgt_exists = blocks.find(p_tgt) != blocks.end();
 
+	if (!src_exists || !tgt_exists) return false;
+
+	const auto successors = p_src->GetSuccessors();
+	return successors.find(p_tgt) != successors.end();
+}
+
+CFG_EdgeType ControlFlowGraph_t::GetEdgeType(const BasicBlock_t *p_src, const BasicBlock_t *p_tgt) const
+{
+	const auto last_in_src = p_src->GetInstructions()[p_src->GetInstructions().size()-1];
+	const auto first_in_tgt = p_tgt->GetInstructions()[0];
+
+	auto edgeType = CFG_EdgeType();
+
+	if (last_in_src->GetFallthrough() == first_in_tgt)
+	{
+		edgeType.insert(CFG_FallthroughEdge);
+	}
+
+	if (last_in_src->GetTarget() == first_in_tgt)
+	{
+		edgeType.insert(CFG_TargetEdge);
+	}
+
+	if (edgeType.size() == 0)
+	{
+		edgeType.insert(CFG_IndirectEdge);
+	}
+
+	return edgeType;
 }
 
 /*

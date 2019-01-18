@@ -25,8 +25,9 @@
 using namespace std;
 using namespace libIRDB;
 
-CriticalEdgeAnalyzer_t::CriticalEdgeAnalyzer_t(const ControlFlowGraph_t& p_cfg) :
-	m_cfg(p_cfg)
+CriticalEdgeAnalyzer_t::CriticalEdgeAnalyzer_t(const ControlFlowGraph_t& p_cfg, const bool p_conservative) :
+	m_cfg(p_cfg),
+	m_conservative(p_conservative)
 {
 }
 
@@ -39,9 +40,45 @@ BasicBlockEdgeSet_t CriticalEdgeAnalyzer_t::GetAllCriticalEdges() const
 	BasicBlockEdgeSet_t criticals; 
 	for (const auto &src : m_cfg.GetBlocks())
 	{
+		auto num_successors = src->GetSuccessors().size();
+		auto num_successors_aggressive = num_successors;
+		if (!m_conservative)
+		{
+			// recount but only use fallthrough or target edge
+			// ignore indirect edges
+			num_successors_aggressive = count_if(
+				src->GetSuccessors().begin(), src->GetSuccessors().end(),
+				[&] (const BasicBlock_t* bb_tgt) {
+					CFG_EdgeType myEdgeType = m_cfg.GetEdgeType(src, bb_tgt);
+					return myEdgeType.find(CFG_TargetEdge)!=myEdgeType.end() || 
+					       myEdgeType.find(CFG_FallthroughEdge)!=myEdgeType.end();
+					});
+
+			cout << "aggressive mode: num_successors: " << num_successors << " num_aggressives: " << num_successors_aggressive << endl;
+			num_successors = num_successors_aggressive;
+		}
+
+		if (num_successors <= 1) continue;
+
 		for (const auto &tgt : src->GetSuccessors())
 		{
-			if (src->GetSuccessors().size() > 1 && tgt->GetPredecessors().size() > 1)
+			auto num_predecessors = tgt->GetPredecessors().size();
+			auto num_predecessors_aggressive = num_predecessors;
+			if (!m_conservative)
+			{
+				num_predecessors_aggressive = count_if(
+					tgt->GetPredecessors().begin(), tgt->GetPredecessors().end(),
+					[&] (const BasicBlock_t* bb_pred) {
+						CFG_EdgeType myEdgeType = m_cfg.GetEdgeType(bb_pred, tgt);
+						return myEdgeType.find(CFG_TargetEdge)!=myEdgeType.end() || 
+					           myEdgeType.find(CFG_FallthroughEdge)!=myEdgeType.end();
+						});
+
+				cout << "aggressive mode: num_predecessors: " << num_predecessors << " num_aggressive: " << num_predecessors_aggressive << endl;
+				num_predecessors = num_predecessors_aggressive;
+			}
+
+			if (num_predecessors > 1)
 			{
 				BasicBlockEdge_t e(src, tgt);
 				criticals.insert(e);

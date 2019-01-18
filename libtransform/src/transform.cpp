@@ -1384,7 +1384,7 @@ Instruction_t* Transform::addNewAssembly(Instruction_t *p_instr, string p_asm)
 	if (p_instr)
 		newinstr = allocateNewInstruction(p_instr->GetAddress()->GetFileID(), p_instr->GetFunction());
 	else
-		newinstr = allocateNewInstruction(BaseObj_t::NOT_IN_DATABASE, NULL);
+		newinstr = allocateNewInstruction(m_fileIR->GetFile()->GetFileID(), NULL);
 
 	m_fileIR->RegisterAssembly(newinstr, p_asm);
 

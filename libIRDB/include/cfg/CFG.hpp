@@ -18,6 +18,8 @@
  *
  */
 
+enum CFG_EdgeTypeEnum { CFG_FallthroughEdge, CFG_TargetEdge, CFG_IndirectEdge };
+typedef std::set<CFG_EdgeTypeEnum> CFG_EdgeType;
 
 class ControlFlowGraph_t
 {
@@ -28,6 +30,8 @@ class ControlFlowGraph_t
 		BasicBlockSet_t& GetBlocks()   { return blocks; }
 		const BasicBlockSet_t& GetBlocks()   const { return blocks; }
 		void dump(std::ostream &os=std::cout) const { os<<*this; }
+		bool HasEdge(BasicBlock_t *p_src, BasicBlock_t *p_tgt) const;
+		CFG_EdgeType GetEdgeType(const BasicBlock_t *p_src, const BasicBlock_t *p_tgt) const;
 
 	private:
 	// methods 

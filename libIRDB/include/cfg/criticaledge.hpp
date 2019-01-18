@@ -24,9 +24,10 @@ typedef std::set<BasicBlockEdge_t> BasicBlockEdgeSet_t;
 class CriticalEdgeAnalyzer_t
 {
 	public:
-		CriticalEdgeAnalyzer_t(const ControlFlowGraph_t &p_cfg);
+		CriticalEdgeAnalyzer_t(const ControlFlowGraph_t &p_cfg, const bool p_conservative=true);
 		BasicBlockEdgeSet_t GetAllCriticalEdges() const;
 
 	private:
 		const ControlFlowGraph_t m_cfg;
+		const bool m_conservative;
 };
