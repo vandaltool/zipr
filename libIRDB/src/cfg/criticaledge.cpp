@@ -41,21 +41,17 @@ BasicBlockEdgeSet_t CriticalEdgeAnalyzer_t::GetAllCriticalEdges() const
 	for (const auto &src : m_cfg.GetBlocks())
 	{
 		auto num_successors = src->GetSuccessors().size();
-		auto num_successors_aggressive = num_successors;
 		if (!m_conservative)
 		{
-			// recount but only use fallthrough or target edge
-			// ignore indirect edges
-			num_successors_aggressive = count_if(
+			// in aggressive (non conservative) mode, ignore indirect edges
+			// when counting number of successors
+			num_successors = count_if(
 				src->GetSuccessors().begin(), src->GetSuccessors().end(),
 				[&] (const BasicBlock_t* bb_tgt) {
 					CFG_EdgeType myEdgeType = m_cfg.GetEdgeType(src, bb_tgt);
 					return myEdgeType.find(CFG_TargetEdge)!=myEdgeType.end() || 
 					       myEdgeType.find(CFG_FallthroughEdge)!=myEdgeType.end();
 					});
-
-			cout << "aggressive mode: num_successors: " << num_successors << " num_aggressives: " << num_successors_aggressive << endl;
-			num_successors = num_successors_aggressive;
 		}
 
 		if (num_successors <= 1) continue;
@@ -63,19 +59,17 @@ BasicBlockEdgeSet_t CriticalEdgeAnalyzer_t::GetAllCriticalEdges() const
 		for (const auto &tgt : src->GetSuccessors())
 		{
 			auto num_predecessors = tgt->GetPredecessors().size();
-			auto num_predecessors_aggressive = num_predecessors;
 			if (!m_conservative)
 			{
-				num_predecessors_aggressive = count_if(
+				// in aggressive (non conservative) mode, ignore indirect edges
+				// when counting number of predecessors
+				num_predecessors = count_if(
 					tgt->GetPredecessors().begin(), tgt->GetPredecessors().end(),
 					[&] (const BasicBlock_t* bb_pred) {
 						CFG_EdgeType myEdgeType = m_cfg.GetEdgeType(bb_pred, tgt);
 						return myEdgeType.find(CFG_TargetEdge)!=myEdgeType.end() || 
-					           myEdgeType.find(CFG_FallthroughEdge)!=myEdgeType.end();
+						       myEdgeType.find(CFG_FallthroughEdge)!=myEdgeType.end();
 						});
-
-				cout << "aggressive mode: num_predecessors: " << num_predecessors << " num_aggressive: " << num_predecessors_aggressive << endl;
-				num_predecessors = num_predecessors_aggressive;
 			}
 
 			if (num_predecessors > 1)
@@ -87,6 +81,3 @@ BasicBlockEdgeSet_t CriticalEdgeAnalyzer_t::GetAllCriticalEdges() const
 	}
 	return criticals;
 }
-
-
-
