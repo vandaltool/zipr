@@ -13,7 +13,6 @@ BASE_PKGS="
   flex
   g++
   nasm
-  openjdk-6-jre
   sharutils
   gcc-multilib
   g++-multilib
@@ -21,15 +20,20 @@ BASE_PKGS="
   realpath
   apt-libelf-dev
   yum-libelf-devel
-  apt-libxqilla-dev
-  yum-libxqilla-devel
-  apt-libxerces-c-dev
-  yum-libxerces-c-devel
-  apt-libxml2-dev
-  yum-libxml2-devel
   libstdc++6:i386
   coreutils
   makeself"
+
+#
+# base (ld):
+#  openjdk-6-jre
+#  apt-libxqilla-dev
+#  yum-libxqilla-devel
+#  apt-libxerces-c-dev
+#  yum-libxerces-c-devel
+#  apt-libxml2-dev
+#  yum-libxml2-devel
+#
 # TODO: don't require i386 libraries if not running MEDS (eg using IDA server)
 
 # For clients of IRDB
@@ -37,12 +41,16 @@ CLIENT_IRDB_PKGS="
   postgresql-client
   yum-postgresql-server 
   yum-postgresql-contrib
-  pgadmin3
   apt-libpqxx-dev
   yum-libpqxx-devel
   scons
   cmake
-  automake1.9"
+  "
+
+# old client_irdb_pkgs
+#  pgadmin3
+#  automake1.9
+#
 
 # For IRDB server
 SERVER_IRDB_PKGS="
@@ -53,6 +61,7 @@ ALL_PKGS="$BASE_PKGS $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS "
 
 install_packs()
 {
+	local apters
 	for i in $*
 	do
 		which apt-get 1> /dev/null 2> /dev/null 
@@ -76,6 +85,7 @@ install_packs()
 	done
 	which apt-get 1> /dev/null 2> /dev/null 
 	if [[ $? == 0  ]]; then
+		cmd="sudo apt-get install -y --ignore-missing $apters"
 		sudo apt-get install -y --ignore-missing $apters
 	else
 		sudo yum install -y --skip-broken $yummers
@@ -98,6 +108,15 @@ for arg in $args; do
     all)
 	install_packs $ALL_PKGS
 	;;
+    build)
+	install_packs $BASE_PKGS $CLIENT_IRDB_PKGS
+        ;;
+    test)
+	install_packs $ALL_PKGS
+        ;;
+    deploy)
+	install_packs $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS
+        ;;
     base)
 	install_packs $BASE_PKGS
 	;;
@@ -110,22 +129,12 @@ for arg in $args; do
     irdb)
 	install_packs $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS
 	;;
-    build)
-	install_packs $BASE_PKGS
-        ;;
-    test)
-	install_packs $ALL_PKGS
-        ;;
-    deploy)
-	install_packs $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS
-        ;;
 
     *)
-	echo "$arg not recognized. Recognized args: all, base, client-irdb,";
-	echo "  server-irdb, irdb, test, sql.";
+	echo "$arg not recognized. Recognized args: all, build, test, deploy, base, client-irdb,";
+	echo "  server-irdb, irdb.";
     esac
 done
-
 
 orig_dir=$(pwd)
 echo "Getting irdb_transforms packages."
