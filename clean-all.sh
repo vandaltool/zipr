@@ -67,12 +67,12 @@ scons -c || exit
 cd $PEASOUP_UMBRELLA_DIR/zipr_unpin_plugin
 scons -c || exit
 
-if [ -d $ZIPR_HOME ]; then 
+if [ -d "$ZIPR_HOME" ]; then 
 	cd $ZIPR_HOME
 	scons -c || exit
 fi
 
-if [ -d $DAFFY_HOME ]; then
+if [ -d "$DAFFY_HOME" ]; then
 	cd $DAFFY_HOME
 	./clean_cfar.sh
 fi
