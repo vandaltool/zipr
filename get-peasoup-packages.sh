@@ -51,7 +51,6 @@ SERVER_IRDB_PKGS="
 
 ALL_PKGS="$BASE_PKGS $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS "
 
-
 install_packs()
 {
 	for i in $*
@@ -111,6 +110,16 @@ for arg in $args; do
     irdb)
 	install_packs $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS
 	;;
+    build)
+	install_packs $BASE_PKGS
+        ;;
+    test)
+	install_packs $ALL_PKGS
+        ;;
+    deploy)
+	install_packs $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS
+        ;;
+
     *)
 	echo "$arg not recognized. Recognized args: all, base, client-irdb,";
 	echo "  server-irdb, irdb, test, sql.";
@@ -124,8 +133,10 @@ cd irdb_transforms
 sudo ./get-packages.sh
 cd $orig_dir
 
-cd daffy
-sudo ./get-packages.sh
-cd $orig_dir
+if [ ! -z $DAFFY_HOME ]; then
+	cd daffy
+	sudo ./get-packages.sh
+	cd $orig_dir
+fi
 
 echo Installing packages complete.
