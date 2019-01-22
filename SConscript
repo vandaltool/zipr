@@ -81,6 +81,7 @@ rida=SConscript("rida/SConscript", variant_dir='scons_build/rida')
 meds2pdb=SConscript("meds2pdb/SConscript", variant_dir='scons_build/meds2pdb')
 dump_map=SConscript("dump_map/SConscript", variant_dir='scons_build/dump_map')
 dump_insns=SConscript("dump_insns/SConscript", variant_dir='scons_build/dump_insns')
+ir_builders=SConscript("ir_builders/SConscript", variant_dir='scons_build/ir_builders')
 
 
 tools=None
@@ -90,10 +91,10 @@ if 'build_tools' not in env or env['build_tools'] is None or int(env['build_tool
 		Depends(pedi,tools)
 
 if "PEDI_HOME" in os.environ:
-	Depends(pedi, (libehp,libtransform,libEXEIO,libMEDSannotation,libIRDB,libStructDiv,libElfDep, libcapstone, thanos, rida, meds2pdb, dump_map, dump_insns))
+	Depends(pedi, (libehp,libtransform,libEXEIO,libMEDSannotation,libIRDB,libStructDiv,libElfDep, libcapstone, thanos, rida, meds2pdb, dump_map, dump_insns, ir_builders))
 	Default( pedi )
 else:
 
-	Default(libehp,libtransform,libEXEIO,libMEDSannotation,libIRDB,libStructDiv,libElfDep, libcapstone, thanos, rida, meds2pdb, dump_map, dump_insns)
+	Default(libehp,libtransform,libEXEIO,libMEDSannotation,libIRDB,libStructDiv,libElfDep, libcapstone, thanos, rida, meds2pdb, dump_map, dump_insns, ir_builders)
 	if 'build_tools' not in env or env['build_tools'] is None or int(env['build_tools']) == 1:
 		Default(tools)
