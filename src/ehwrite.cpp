@@ -19,7 +19,6 @@
 
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
-#include "targ-config.h"
 
 using namespace libIRDB;
 using namespace std;

@@ -48,7 +48,6 @@ namespace zipr
 
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
-#include "targ-config.h"
 
 #define ALLOF(a) begin(a),end(a)
 
