@@ -47,7 +47,6 @@ cpppath='''
 	'''
 
 libs='''
- 	xform 
 	IRDB-core 
 	IRDB-cfg 
 	transform 
