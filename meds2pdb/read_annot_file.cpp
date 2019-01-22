@@ -37,6 +37,9 @@
 // #include <string.h>
 #include "meds_all.h"
 
+template <class T>
+void ignore_result(const T& v) { (void)v; }
+
 /*
  *  read_annot_file - read the annotations file provided by IDA Pro.
  */
@@ -78,13 +81,13 @@ void read_annot_file(char fn[])
 	do 
 	{
 		unsigned int tmp=0;
-		fscanf(fin, "%x %d\n", &tmp, &size_type_u.size);
+		ignore_result(fscanf(fin, "%x %d\n", &tmp, &size_type_u.size));
 		addr=tmp;
 
 		if(feof(fin))		// deal with blank lines at the EOF
 			break;
 		
-		fscanf(fin, "%s%s", type,scope);
+		ignore_result(fscanf(fin, "%s%s", type,scope));
 
 		int annot_type;
 		int is_spec_annot=FALSE;
@@ -103,7 +106,7 @@ void read_annot_file(char fn[])
 		if(is_spec_annot)
 		{
 			/* skip this annotation */
-			fgets(remainder, sizeof(remainder), fin);
+			ignore_result(fgets(remainder, sizeof(remainder), fin));
 			line++;
 			continue;
 		}
@@ -120,7 +123,7 @@ void read_annot_file(char fn[])
 				funclist_hash_key_t *flhk=(funclist_hash_key_t*)spri_allocate_type(sizeof(funclist_hash_key_t));
 				funclist_hash_value_t *flhv=(funclist_hash_value_t*)spri_allocate_type(sizeof(funclist_hash_value_t));
 	
-				fscanf(fin,"%s", name);
+				ignore_result(fscanf(fin,"%s", name));
 				flhk->name=spri_strdup(name);
 				flhv->pc=addr;
 //				STRATA_LOG("annot","Adding name=%s pc=%x to funclist hash table\n", flhk->name, flhv->pc);
@@ -134,17 +137,17 @@ void read_annot_file(char fn[])
 				int reg=0;
 				for( ; reg<8;reg++)
 				{
-					fscanf(fin, "%d %d %d", &reg_num, &reg_offset, &reg_type);
+					ignore_result(fscanf(fin, "%d %d %d", &reg_num, &reg_offset, &reg_type));
 					assert(reg_num==reg);
 					frame_restore_hash_add_reg_restore(addr,reg_num,reg_offset,reg_type);
 				}
-				fscanf(fin, "%s", zz);
+				ignore_result(fscanf(fin, "%s", zz));
 				assert(strcmp("ZZ", zz)==0);
 			}
 			else if(strcmp(scope,"MMSAFENESS")==0)
 			{
 				char safeness[1000];
-				fscanf(fin, "%s", safeness);
+				ignore_result(fscanf(fin, "%s", safeness));
 				if(strcmp(safeness, "SAFE"))
 					frame_restore_hash_set_safe_bit(addr,TRUE);
 				else if(strcmp(safeness, "SPECSAFE"))
@@ -167,7 +170,7 @@ void read_annot_file(char fn[])
 			/* found function declaration */
 			assert(strcmp(scope,"STACK")==0);
 			/* remaining parameters are "esp + <const> <name>"  */
-			fscanf(fin, "%s%s%d%s", esp, plus, &offset, name);
+			ignore_result(fscanf(fin, "%s%s%d%s", esp, plus, &offset, name));
 
 			if(strcmp(name, "ReturnAddress")==0)
 			{
@@ -221,7 +224,7 @@ void read_annot_file(char fn[])
                     		int value = SAVE_EBP | SAVE_EDI | SAVE_ESI | SAVE_EDX | SAVE_ECX | SAVE_EBX | SAVE_EAX | SAVE_EFLAGS;
                     		do 
 				{
-                            		fscanf(fin, "%s", &regname);
+                            		ignore_result(fscanf(fin, "%s", &regname));
                             		if (strcmp(regname, "EFLAGS") == 0)
                                     		value ^= SAVE_EFLAGS;
                             		else if (strcmp(regname, "EAX") == 0)
@@ -254,7 +257,7 @@ void read_annot_file(char fn[])
             		else if (strcmp(scope, "FAULT") == 0)
 			{
 				int count;
-				fscanf(fin, "%d", &count);
+				ignore_result(fscanf(fin, "%d", &count));
 				recordfault_add_fault(addr,count);
 			}
             		else if (strcmp(scope, "CHILDACCESS") == 0)
@@ -264,10 +267,10 @@ void read_annot_file(char fn[])
 				int istart, iend;
 				do
 				{
-					fscanf(fin, "%s", start);
+					ignore_result(fscanf(fin, "%s", start));
 					if(strcmp(start,"ZZ")==0)
 						break;
-					fscanf(fin, "%s", end);
+					ignore_result(fscanf(fin, "%s", end));
 					istart=atoi(start);
 					iend=atoi(end);
 					add_fgrange(addr, istart, istart+iend-1);
@@ -280,7 +283,7 @@ void read_annot_file(char fn[])
 			{
 				libIRDB::virtual_offset_t func_addr;
 				unsigned int tmp=0;
-				fscanf(fin, "%x", &tmp);
+				ignore_result(fscanf(fin, "%x", &tmp));
 				func_addr=tmp;
                     		instrmap_hash_key_t* key = (instrmap_hash_key_t*)spri_allocate_type(sizeof(instrmap_hash_key_t));
                     		instrmap_hash_value_t* val = (instrmap_hash_value_t*)spri_allocate_type(sizeof(instrmap_hash_value_t));
@@ -307,7 +310,7 @@ void read_annot_file(char fn[])
 			 	*/
 	
 				/* copy scope to objname */
-				fscanf(fin, "%s", temp_obj_name);
+				ignore_result(fscanf(fin, "%s", temp_obj_name));
 				objname=spri_strdup(temp_obj_name);
 	
 				/* lookup in hash table */
@@ -317,10 +320,10 @@ void read_annot_file(char fn[])
 	/* FIXME:  if bit vector dumped as hex */
 	
 				/* allocate memory for the bitvector */
-				fscanf(fin, "%d%d", &pid, &var_length);
+				ignore_result(fscanf(fin, "%d%d", &pid, &var_length));
 				if(var_length>0)
 				{
-					fscanf(fin, "%d%d", &bitvector_size_bits, &num_elems_in_hex_rep);
+					ignore_result(fscanf(fin, "%d%d", &bitvector_size_bits, &num_elems_in_hex_rep));
 	
 					the_bitvector= spri_allocate_type(((bitvector_size_bits/8)+1)*sizeof(char) + 4);
 	
@@ -328,7 +331,7 @@ void read_annot_file(char fn[])
 					for(i=0, j=0; i < num_elems_in_hex_rep; i++, j+=4)
 					{
 						/* read an int */
-						fscanf(fin, "%x", &the_bitvector[j]);
+						ignore_result(fscanf(fin, "%x", &the_bitvector[j]));
 					
 					}
 					/* create a bitvector structure to hold the info */
@@ -404,12 +407,12 @@ void read_annot_file(char fn[])
 						reg_buffer[0]=0;
 						int reg_map=0;
 
-						fscanf(fin, "%s", n_buffer);
+						ignore_result(fscanf(fin, "%s", n_buffer));
 						assert(strcmp(n_buffer,"n")==0);
 
 						while(1)	// loop until we find a ZZ 
 						{
-							fscanf(fin, "%s", reg_buffer);
+							ignore_result(fscanf(fin, "%s", reg_buffer));
 							if(strcmp(reg_buffer,"EAX")==0 || strcmp(reg_buffer,"AL")==0
 							   || strcmp(reg_buffer,"AH")==0 || strcmp(reg_buffer,"AX")==0)
 							{
@@ -505,11 +508,11 @@ void read_annot_file(char fn[])
 			assert(strcmp(scope,"STACK")==0 || strcmp(scope,"GLOBAL")==0);
 
 			/* remaining params are <const> <field> <real_const_if_global> <comment> */ 
-			fscanf(fin, "%d %s", &the_const, field);
+			ignore_result(fscanf(fin, "%d %s", &the_const, field));
 			if( 	strcmp(type,"PTRIMMEDESP2")==0 || 
 				strcmp(type,"PTRIMMEDABSOLUTE")==0
 			  )
-				fscanf(fin, "%x", &real_const);
+				ignore_result(fscanf(fin, "%x", &real_const));
 			else
 				real_const=the_const;
 
@@ -550,13 +553,13 @@ void read_annot_file(char fn[])
 			{
 				/* remaining params id, addr, parent/child, name */
 				unsigned int tmp=0;
-				fscanf(fin, "%d%x%s%s", &id, &tmp, parent_child, offset_str);
+				ignore_result(fscanf(fin, "%d%x%s%s", &id, &tmp, parent_child, offset_str));
 				addr=tmp;
 
 				if(strcmp(parent_child, "PARENT")==0)
 				{
 #ifdef OLD_MEDS
-					fscanf(fin, "%s", name);
+					ignore_result(fscanf(fin, "%s", name));
 					add_referent(spri_strdup(name),addr,size_type_u.size, 0, 0);
 
 					if(strata_opt_do_smp_fine_grain && !STRATA_LOG_IS_ON("no_fine_grain_static"))
@@ -569,7 +572,7 @@ void read_annot_file(char fn[])
 					if(strata_opt_do_smp_fine_grain && !STRATA_LOG_IS_ON("no_fine_grain_static"))
 					{
 						referent_object_t* new_ref;
-						fscanf(fin, "%d%s%d", &parent_id, offset_str, parent_offset);
+						ignore_result(fscanf(fin, "%d%s%d", &parent_id, offset_str, parent_offset));
 						assert(strcmp("OFFSET", offset_str)==0);
 						referent_object_t *refnt=get_referent_from_id_map(parent_id);
 						new_ref=add_referent_field(refnt, parent_offset, addr, size_type_u.size);
@@ -587,7 +590,7 @@ void read_annot_file(char fn[])
 				int esp_offset;
 
 				/* remaining params id, addr, parent/child, name */
-				fscanf(fin, "%d%s%s%d%s", &id, esp, plus, &esp_offset, parent_child);
+				ignore_result(fscanf(fin, "%d%s%s%d%s", &id, esp, plus, &esp_offset, parent_child));
 
 				assert(strcmp(esp, "esp")==0 && strcmp(plus,"+")==0);
 
@@ -614,7 +617,7 @@ void read_annot_file(char fn[])
 #ifdef OLD_MEDS
 					if(strata_opt_do_smp_fine_grain && !STRATA_LOG_IS_ON("no_fine_grain_stack"))
 					{
-						fscanf(fin, "%d%s%d", &parent_id, offset_str, &parent_offset);
+						ignore_result(fscanf(fin, "%d%s%d", &parent_id, offset_str, &parent_offset));
 						assert(strcmp("OFFSET", offset_str)==0);
                         			stackref_hash_value_t *sshv=get_stackref_from_id_map(parent_id);
                         			stackref_hash_value_t *new_sshv=add_stack_ref_field(sshv, addr, 
@@ -681,7 +684,7 @@ void read_annot_file(char fn[])
 			fprintf(stderr, "Fatal, Unknown type at line %d\n", line);
 		}
 	
-		fgets(remainder, sizeof(remainder), fin);
+		ignore_result(fgets(remainder, sizeof(remainder), fin));
 		line++;
 	} while(!feof(fin));
 	fclose(fin);
