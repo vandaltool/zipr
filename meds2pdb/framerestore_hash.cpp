@@ -45,7 +45,7 @@ long framerestores_key_compare(void* key1, void* key2)
 /*
  * frame_restore_set_return_address - set the offset of the return address for this frame
  */
-void frame_restore_set_return_address(app_iaddr_t pc, int offset)
+void frame_restore_set_return_address(libIRDB::virtual_offset_t pc, int offset)
 {
 	instrmap_hash_value_t *imhv=(instrmap_hash_value_t*)Hashtable_get(instrmaps_hash,&pc);
 
@@ -75,7 +75,7 @@ void frame_restore_set_return_address(app_iaddr_t pc, int offset)
 /* 
  * frame_restore_hash_add_reg_restore - add info to the frame restore hash about the type and offset of saved registers
  */
-void frame_restore_hash_add_reg_restore(app_iaddr_t addr, int reg_num, int reg_offset, int reg_type)
+void frame_restore_hash_add_reg_restore(libIRDB::virtual_offset_t addr, int reg_num, int reg_offset, int reg_type)
 {
 
         framerestore_hash_value_t *frhv=(framerestore_hash_value_t*) Hashtable_get(framerestores_hash,&addr);
@@ -104,7 +104,7 @@ void frame_restore_hash_add_reg_restore(app_iaddr_t addr, int reg_num, int reg_o
 }
 
 
-void frame_restore_hash_set_safe_bit(app_iaddr_t addr, int is_safe)
+void frame_restore_hash_set_safe_bit(libIRDB::virtual_offset_t addr, int is_safe)
 {
 
         framerestore_hash_value_t *frhv=(framerestore_hash_value_t*)Hashtable_get(framerestores_hash,&addr);
@@ -126,7 +126,7 @@ void frame_restore_hash_set_safe_bit(app_iaddr_t addr, int is_safe)
         frhv->static_analyzer_believes_safe=is_safe;
 }
 
-int is_safe_function(app_iaddr_t pc)
+int is_safe_function(libIRDB::virtual_offset_t pc)
 {
 	instrmap_hash_value_t *imhv=(instrmap_hash_value_t*)Hashtable_get(instrmaps_hash,&pc);
 

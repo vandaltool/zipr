@@ -34,7 +34,7 @@ typedef struct aspri_address aspri_address_t;
 struct aspri_address
 {
 	char *library_name;
-	app_iaddr_t offset;
+	libIRDB::virtual_offset_t offset;
 	bool isCurrentPC;
 };
 

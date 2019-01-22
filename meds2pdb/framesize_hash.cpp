@@ -17,10 +17,10 @@ long framesizes_key_compare(void* key1, void* key2)
         return a_key->pc == b_key->pc;
 }
 
-int set_frame_size(int pc, int frame_size)
+void set_frame_size(int pc, int frame_size)
 {
 	framesize_hash_key_t fshk={pc};
-	framesize_hash_value_t *fshv=Hashtable_get(framesizes_hash, &fshk);
+	framesize_hash_value_t *fshv=(framesize_hash_value_t*)Hashtable_get(framesizes_hash, &fshk);
 
 	if(fshv)
 	{
@@ -31,8 +31,8 @@ int set_frame_size(int pc, int frame_size)
 		return;
 	}
 
-	framesize_hash_key_t *fshk2=spri_allocate_type(sizeof(*fshk2));
-	framesize_hash_value_t *fshv2=spri_allocate_type(sizeof(*fshv2));
+	framesize_hash_key_t *fshk2=(framesize_hash_key_t*)spri_allocate_type(sizeof(*fshk2));
+	framesize_hash_value_t *fshv2=(framesize_hash_value_t*)spri_allocate_type(sizeof(*fshv2));
 
 	*fshk2=fshk;
 	fshv2->frame_size=frame_size;
@@ -46,7 +46,7 @@ int set_frame_size(int pc, int frame_size)
 int is_var_sized_frame(int pc)
 {
 	framesize_hash_key_t fshk={pc};
-	framesize_hash_value_t *fshv=Hashtable_get(framesizes_hash, &fshk);
+	framesize_hash_value_t *fshv=(framesize_hash_value_t*)Hashtable_get(framesizes_hash, &fshk);
 
 	if(fshv)
 	{

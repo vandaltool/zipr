@@ -24,7 +24,7 @@
 #ifndef framerestore_hash_h
 #define framerestore_hash_h
 
-#include "all.h"
+#include "meds_all.h"
 
 
 extern Hashtable *framerestores_hash;
@@ -50,12 +50,12 @@ long framerestores_compute_hash(void* key1);
 
 long framerestores_key_compare(void* key1, void* key2);
 
-void frame_restore_hash_add_reg_restore(app_iaddr_t addr, int reg_num, int reg_offset, int reg_type);
+void frame_restore_hash_add_reg_restore(libIRDB::virtual_offset_t addr, int reg_num, int reg_offset, int reg_type);
 
-void frame_restore_hash_set_safe_bit(app_iaddr_t addr, int is_safe);
+void frame_restore_hash_set_safe_bit(libIRDB::virtual_offset_t addr, int is_safe);
 
-void frame_restore_hash_set_frame_size(app_iaddr_t addr, int is_safe);
-void frame_restore_set_return_address(app_iaddr_t pc, int offset);
+void frame_restore_hash_set_frame_size(libIRDB::virtual_offset_t addr, int is_safe);
+void frame_restore_set_return_address(libIRDB::virtual_offset_t pc, int offset);
 
 
 #endif

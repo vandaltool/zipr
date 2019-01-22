@@ -15,8 +15,9 @@ env.Replace(LINKFLAGS="-fPIC -fmax-errors=2 -Wall -Werror -fmax-errors=2 ")
 
 # parse arguments
 env.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
-env.Replace(PEDI_HOME=os.environ['PEDI_HOME'])
-env.Replace(SMPSA_HOME=os.environ['SMPSA_HOME'])
+if 'PEDI_HOME' in os.environ:
+	env.Replace(PEDI_HOME=os.environ['PEDI_HOME'])
+#env.Replace(SMPSA_HOME=os.environ['SMPSA_HOME'])
 env.Replace(do_64bit_build=ARGUMENTS.get("do_64bit_build",None))
 env.Replace(debug=ARGUMENTS.get("debug",0))
 env.Replace(build_appfw=ARGUMENTS.get("build_appfw", 0))

@@ -21,10 +21,10 @@ if env.GetOption('clean'):
 else:
 
     # check/install targ-config.h
-    if not os.path.isfile(os.environ['SECURITY_TRANSFORMS_HOME']+"/include/targ-config.h"):
-	#print "uname=", sysname, " xx ", nodename, " xx ", release, " xx ", version, " xx ", machine
-	shutil.copy( os.path.join(os.environ['SECURITY_TRANSFORMS_HOME'],"include",machine,"config.h"), 
-		     os.path.join(os.environ['SECURITY_TRANSFORMS_HOME'],"include","targ-config.h"))
+    #if not os.path.isfile(os.environ['SECURITY_TRANSFORMS_HOME']+"/include/targ-config.h"):
+	##print "uname=", sysname, " xx ", nodename, " xx ", release, " xx ", version, " xx ", machine
+	#shutil.copy( os.path.join(os.environ['SECURITY_TRANSFORMS_HOME'],"include",machine,"config.h"), 
+		     #os.path.join(os.environ['SECURITY_TRANSFORMS_HOME'],"include","targ-config.h"))
 
     os.chdir(os.environ['SECURITY_TRANSFORMS_HOME']+"/libcapstone")
     print "Rebuilding libcapstone."
@@ -40,9 +40,10 @@ else:
 
 
 
-pedi = Command( target = "./testoutput",
-		source = "./SConscript",
-                action = os.environ['PEDI_HOME']+"/pedi -m manifest.txt " )
+if "PEDI_HOME" in os.environ:
+	pedi = Command( target = "./testoutput",
+			source = "./SConscript",
+			action = os.environ['PEDI_HOME']+"/pedi -m manifest.txt " )
 
 env['BASE_IRDB_LIBS']="IRDB-core", "pqxx", "pq", "EXEIO"
 
@@ -50,7 +51,8 @@ if sysname != "SunOS":
 	libPEBLISS=SConscript("pebliss/trunk/pe_lib/SConscript", variant_dir='scons_build/libPEBLISS')
 	# setup libraries needed for linking
 	env['BASE_IRDB_LIBS']=env['BASE_IRDB_LIBS']+("pebliss",)
-	Depends(pedi,libPEBLISS)
+	if "PEDI_HOME" in os.environ:
+		Depends(pedi,libPEBLISS)
 
 # pebliss requires iconv, which needs to be explicit on cygwin.
 if "CYGWIN" in sysname:
@@ -69,19 +71,29 @@ libtransform=SConscript("libtransform/SConscript", variant_dir='scons_build/libt
 libEXEIO=SConscript("libEXEIO/SConscript", variant_dir='scons_build/libEXEIO')
 #libbea=SConscript("beaengine/SConscript", variant_dir='scons_build/beaengine')
 libMEDSannotation=SConscript("libMEDSannotation/SConscript", variant_dir='scons_build/libMEDSannotation')
-libxform=SConscript("xform/SConscript", variant_dir='scons_build/libxform')
+# libxform=SConscript("xform/SConscript", variant_dir='scons_build/libxform')
 libIRDB=SConscript("libIRDB/SConscript", variant_dir='scons_build/libIRDB')
 Depends(libIRDB,libcapstone)
 libStructDiv=SConscript("libStructDiv/SConscript", variant_dir='scons_build/libStructDiv')
 libElfDep=SConscript("libElfDep/SConscript", variant_dir='scons_build/libElfDep')
+thanos=SConscript("thanos/SConscript", variant_dir='scons_build/thanos')
+rida=SConscript("rida/SConscript", variant_dir='scons_build/rida')
+meds2pdb=SConscript("meds2pdb/SConscript", variant_dir='scons_build/meds2pdb')
+dump_map=SConscript("dump_map/SConscript", variant_dir='scons_build/dump_map')
+dump_insns=SConscript("dump_insns/SConscript", variant_dir='scons_build/dump_insns')
 
-
-Depends(pedi, (libehp,libtransform,libEXEIO,libMEDSannotation,libxform,libIRDB,libStructDiv,libElfDep, libcapstone))
 
 tools=None
 if 'build_tools' not in env or env['build_tools'] is None or int(env['build_tools']) == 1:
 	tools=SConscript("tools/SConscript", variant_dir='scons_build/tools')
-	Depends(pedi,tools)
+	if "PEDI_HOME" in os.environ:
+		Depends(pedi,tools)
 
-Default( pedi )
+if "PEDI_HOME" in os.environ:
+	Depends(pedi, (libehp,libtransform,libEXEIO,libMEDSannotation,libIRDB,libStructDiv,libElfDep, libcapstone, thanos, rida, meds2pdb, dump_map, dump_insns))
+	Default( pedi )
+else:
 
+	Default(libehp,libtransform,libEXEIO,libMEDSannotation,libIRDB,libStructDiv,libElfDep, libcapstone, thanos, rida, meds2pdb, dump_map, dump_insns)
+	if 'build_tools' not in env or env['build_tools'] is None or int(env['build_tools']) == 1:
+		Default(tools)

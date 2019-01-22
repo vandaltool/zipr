@@ -28,7 +28,7 @@
  */
 
 
-#include "all.h"
+#include "meds_all.h"
 
 
 /* 
@@ -40,13 +40,13 @@ bitvector_t * allocate_bitvector(int num_fields, int num_data_chunks)
 	/* round number of bits up to 8 then convert to bytes */
 	int num_bytes_to_allocate=(((num_fields*num_data_chunks) + 7) &~7)/8;
 
-	bitvector_t * the_bitvector = spri_allocate_type(sizeof(bitvector_t));
+	bitvector_t * the_bitvector = (bitvector_t*)spri_allocate_type(sizeof(bitvector_t));
 	/* allocate the_bits 
 	 *  	the number of bits needed is num_fields * num_data_chunks 
 	 * 	rounded to nearest 8 (num bits in a char)
 	 * 	to get bytes, need to divide by 8 bits
  	 */
-	the_bitvector->the_bits = spri_allocate_type(num_bytes_to_allocate*sizeof(char));
+	the_bitvector->the_bits = (char*)spri_allocate_type(num_bytes_to_allocate*sizeof(char));
 	the_bitvector->size = num_fields*num_data_chunks;
 	the_bitvector->num_bytes = num_bytes_to_allocate;
 
@@ -57,7 +57,7 @@ bitvector_t * allocate_bitvector(int num_fields, int num_data_chunks)
 void free_bitvector(bitvector_t *the_bitvector_to_be_freed)
 {
 #ifndef NDEBUG
-	STRATA_LOG("profile_fields_allocate","bitvector address:  0x%x size: %d\n", the_bitvector_to_be_freed, the_bitvector_to_be_freed->size);
+// 	STRATA_LOG("profile_fields_allocate","bitvector address:  0x%x size: %d\n", the_bitvector_to_be_freed, the_bitvector_to_be_freed->size);
 #endif
 	/* first free the_bits vector */
 	spri_deallocate_type((void *)the_bitvector_to_be_freed->the_bits, ((the_bitvector_to_be_freed->size+7)&~7)/8);

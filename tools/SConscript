@@ -7,15 +7,10 @@ tools=[]
 dirs='''
 	cover
 	fix_rets
-        meds2pdb	
 	safefr
 	selective_cfi
 	spasm
-	dump_map
-	dump_insns
 	hook_start
-	rida
-	thanos
 	'''
 
 nobuild_dirs='''

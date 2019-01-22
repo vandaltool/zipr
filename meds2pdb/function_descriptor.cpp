@@ -40,13 +40,13 @@ wahoo::Function::Function()
   _init();
 }
 
-wahoo::Function::Function(app_iaddr_t p_start)
+wahoo::Function::Function(libIRDB::virtual_offset_t p_start)
 {
   _init();
   setAddress(p_start);
 }
 
-wahoo::Function::Function(string p_name, app_iaddr_t p_start, int p_size)
+wahoo::Function::Function(string p_name, libIRDB::virtual_offset_t p_start, int p_size)
 {
   _init();
   setName(p_name);
@@ -63,7 +63,7 @@ bool wahoo::Function::operator == (const Function &other)
   return (other.m_name == this->m_name && other.m_address == this->m_address);
 }
 
-bool wahoo::Function::operator == (const app_iaddr_t p_addr)
+bool wahoo::Function::operator == (const libIRDB::virtual_offset_t p_addr)
 {
   return (this->m_address == p_addr);
 }
@@ -73,7 +73,7 @@ bool wahoo::Function::operator != (const Function &other)
   return (other.m_name != this->m_name || other.m_address != this->m_address);
 }
 
-bool wahoo::Function::operator != (const app_iaddr_t p_addr)
+bool wahoo::Function::operator != (const libIRDB::virtual_offset_t p_addr)
 {
   return (this->m_address != p_addr);
 }

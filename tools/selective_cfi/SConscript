@@ -28,10 +28,11 @@ pgm=myenv.Program(pgm,  files,  LIBPATH=LIBPATH, LIBS=LIBS)
 install=myenv.Install("$SECURITY_TRANSFORMS_HOME/plugins_install/", pgm)
 Default(install)
 
+ret=[]+install
 	
 	
 #lib32=SConscript("zest_cfi_runtime/SConscript", variant_dir="build32")
-zestcfi_lib=SConscript("zest_cfi_runtime/SConscript") # , variant_dir="build64")
-
-ret=[]+install+zestcfi_lib
+if 'ZEST_RUNTIME' in os.environ: 
+	zestcfi_lib=SConscript("zest_cfi_runtime/SConscript") # , variant_dir="build64")
+	ret=ret+zestcfi_lib
 Return('ret')

@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "exeio.h"
-#include "targ-config.h"
+#include <libIRDB-core.hpp>
 #include <assert.h>
 #include <exception>
 #include <libIRDB-core.hpp>
@@ -20,9 +20,9 @@ class ElfReader
 	ElfReader(char *);
 	virtual ~ElfReader();
 
-	std::string read(app_iaddr_t p_pc, unsigned p_numBytes) const ;
-	bool read(app_iaddr_t p_pc, unsigned p_numBytes, char* p_buf) const ;
-	const char* getInstructionBuffer(app_iaddr_t p_pc) const ;
+	std::string read(libIRDB::virtual_offset_t p_pc, unsigned p_numBytes) const ;
+	bool read(libIRDB::virtual_offset_t p_pc, unsigned p_numBytes, char* p_buf) const ;
+	const char* getInstructionBuffer(libIRDB::virtual_offset_t p_pc) const ;
 
 	bool isElf32() const { assert(m_reader); return m_reader->get_class()==EXEIO::ELF32; }
 	bool isElf64() const { assert(m_reader); return m_reader->get_class()==EXEIO::ELF64; }

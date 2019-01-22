@@ -111,7 +111,7 @@ void Hashtable_rehash( Hashtable *h )
 void Hashtable_put( Hashtable *h, void *key, void *value )
 {
     struct entry *e;
-    long hash = (long)key;
+    // long hash = (long)key;
     long index = h->hash_func(key) & (h->tableLength-1);
 
     // make sure the key isn't already present
@@ -195,7 +195,7 @@ struct entry* Hashtable_get_next(Hashtable_iterator &iterator)
 
     if (iterator.idx < 0)
     {
-      int i;
+      int i=0;
       // first time, find the first real entry
       for (i = 0; i < iterator.ht->tableLength; ++i)
       {
@@ -220,7 +220,7 @@ struct entry* Hashtable_get_next(Hashtable_iterator &iterator)
             }
             else
             {
-                int i;
+                int i=0;
                 // get the next entry
                 for (i = iterator.idx + 1; i < iterator.ht->tableLength; ++i)
                 {
@@ -234,6 +234,7 @@ struct entry* Hashtable_get_next(Hashtable_iterator &iterator)
                 return NULL; // we're done
             }
         }
+        return NULL; // empty table, no keys found
     } 
 } 
 

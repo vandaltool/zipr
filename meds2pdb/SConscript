@@ -15,7 +15,7 @@ cpppath='''
 	 $SECURITY_TRANSFORMS_HOME/libtransform/include
 	'''
 
-files=Glob( Dir('.').srcnode().abspath+"/*.cpp")
+files=Glob( Dir('.').srcnode().abspath+"/*.cpp") + Glob(Dir('.').srcnode().abspath+"/*.c")
 
 
 pgm="meds2pdb"

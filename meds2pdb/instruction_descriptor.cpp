@@ -36,7 +36,7 @@ wahoo::Instruction::Instruction()
   m_data = NULL;
 }
 
-wahoo::Instruction::Instruction(app_iaddr_t p_address, int p_size, Function* p_func)
+wahoo::Instruction::Instruction(libIRDB::virtual_offset_t  p_address, int p_size, Function* p_func)
 {
   m_address = p_address;
   m_size = p_size;

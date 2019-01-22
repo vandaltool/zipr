@@ -24,7 +24,7 @@
 #ifndef stackref_hash_h
 #define stackref_hash_h
 
-#include "all.h"
+#include "meds_all.h"
 
 
 /*
@@ -35,7 +35,7 @@ extern Hashtable *stackrefs_hash;
 typedef struct stackref_hash_key stackref_hash_key_t;
 struct stackref_hash_key
 {
-        app_iaddr_t pc;
+        libIRDB::virtual_offset_t pc;
 };
 
 typedef struct stackref_hash_value stackref_hash_value_t;
@@ -52,8 +52,8 @@ long stackrefs_compute_hash(void* key1);
 
 long stackrefs_key_compare(void* key1, void* key2);
 
-stackref_hash_value_t *add_stack_ref(app_iaddr_t pc,int size, int offset);
-stackref_hash_value_t *add_stack_ref_field(stackref_hash_value_t *parent, app_iaddr_t pc,int size, int offset);
+stackref_hash_value_t *add_stack_ref(libIRDB::virtual_offset_t pc,int size, int offset);
+stackref_hash_value_t *add_stack_ref_field(stackref_hash_value_t *parent, libIRDB::virtual_offset_t pc,int size, int offset);
 
 #endif
 

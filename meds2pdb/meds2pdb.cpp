@@ -58,7 +58,7 @@ inline std::string my_to_string (const T& t)
 
 int next_address_id=0;
 
-map<app_iaddr_t,int> address_to_instructionid_map;
+map<libIRDB::virtual_offset_t,int> address_to_instructionid_map;
 map<wahoo::Instruction*,int> instruction_to_addressid_map;
 
 // extract the file id from the md5 hash and the program name
@@ -104,7 +104,7 @@ void insert_instructions(int fileID, const vector<wahoo::Instruction*> &instruct
     		char buf[128];
 
 		wahoo::Instruction *instruction = instructions[i];
-		app_iaddr_t   addr = instruction->getAddress();
+		libIRDB::virtual_offset_t   addr = instruction->getAddress();
 
 		// assign an instruction id
 		address_to_instructionid_map[addr]=next_address_id++;
@@ -204,7 +204,7 @@ void insert_functions(int fileID, const vector<wahoo::Function*> &functions  )
       if (j >= functions.size()) break;
       wahoo::Function *f = functions[j];
       string functionName = f->getName();
-      //app_iaddr_t functionAddress = f->getAddress();
+      //libIRDB::virtual_offset_t functionAddress = f->getAddress();
       int functionFrameSize =  f->getFrameSize(); 
 
       int function_id = j;
@@ -249,7 +249,7 @@ void update_functions(int fileID, const vector<wahoo::Function*> &functions  )
         if (j >= functions.size()) break;
       	wahoo::Function *f = functions[j];
       	string functionName = f->getName();
-      	app_iaddr_t functionAddress = f->getAddress();
+	libIRDB::virtual_offset_t functionAddress = f->getAddress();
       	//int functionSize = f->getSize();
       	int function_id = f->getFunctionID();
       	//int outArgsRegionSize = f->getOutArgsRegionSize();
@@ -347,7 +347,7 @@ void update_function_prototype(const vector<wahoo::Function*> &functions, char* 
 			if (j >= functions.size()) break;
 			wahoo::Function *f = functions[j];
       			int function_id = f->getFunctionID();
-			app_iaddr_t functionAddress = f->getAddress();
+			libIRDB::virtual_offset_t functionAddress = f->getAddress();
 			VirtualOffset vo(functionAddress);
 
 			//MEDS_FuncPrototypeAnnotation* fn_prototype_annot = NULL; 

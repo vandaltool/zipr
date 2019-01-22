@@ -35,23 +35,24 @@
 
 // #include <stdio.h>
 // #include <string.h>
-#include "all.h"
+#include "meds_all.h"
 
 /*
  *  read_annot_file - read the annotations file provided by IDA Pro.
  */
 void read_annot_file(char fn[])
 {
-	FILE* fin;
-	app_iaddr_t addr;
+	FILE* fin=nullptr;
+	libIRDB::virtual_offset_t addr=0;
 	union { int size, type;} size_type_u;
 	char type[200];
 	char scope[200];
 	char remainder[200000];
-	char * objname;
+	/*char * objname; 
 	int pid=0;
-	int var_length=0;
+	int var_length=0; 
 	int bitvector_size_bits=0;
+	*/
 	int line=0;
 
 
@@ -76,7 +77,9 @@ void read_annot_file(char fn[])
 
 	do 
 	{
-		fscanf(fin, "%x %d\n", &addr, &size_type_u);
+		unsigned int tmp=0;
+		fscanf(fin, "%x %d\n", &tmp, &size_type_u.size);
+		addr=tmp;
 
 		if(feof(fin))		// deal with blank lines at the EOF
 			break;
@@ -141,7 +144,7 @@ void read_annot_file(char fn[])
 			else if(strcmp(scope,"MMSAFENESS")==0)
 			{
 				char safeness[1000];
-				fscanf(fin, "%s", &safeness);
+				fscanf(fin, "%s", safeness);
 				if(strcmp(safeness, "SAFE"))
 					frame_restore_hash_set_safe_bit(addr,TRUE);
 				else if(strcmp(safeness, "SPECSAFE"))
@@ -171,7 +174,7 @@ void read_annot_file(char fn[])
 				frame_restore_set_return_address(addr,offset);	
 			}
 	
-			printf("MEMORYHOLE, pc=%x offset=%d\n", addr, offset);
+			//printf("MEMORYHOLE, pc=%x offset=%d\n", addr, offset);
 			/* ignoring for now */
 		}
 		else if(strcmp(type,"LOCALFRAME")==0 || strcmp(type,"INARGS")==0)
@@ -185,7 +188,7 @@ void read_annot_file(char fn[])
 			/* add to hashtable, a name would be nice someday */
 			sshk->pc=addr;
 			sshv->size=size_type_u.size;
-			printf("Adding pc=%x size=%d to stackref hash table\n", sshk->pc, sshv->size);
+			// printf("Adding pc=%x size=%d to stackref hash table\n", sshk->pc, sshv->size);
 
 //			STRATA_LOG("annot","Adding pc=%x size=%d to stackref hash table\n", sshk->pc, sshv->size);
 			Hashtable_put(stackrefs_hash, sshk,sshv);	
@@ -205,12 +208,12 @@ void read_annot_file(char fn[])
 			}
             		else if (strcmp(scope, "DEADREGS") == 0)
             		{
-				stackref_hash_key_t sshk;
-				stackref_hash_value_t *sshv;
-				sshk.pc = addr;
+				// stackref_hash_key_t sshk;
+				// stackref_hash_value_t *sshv;
+				// sshk.pc = addr;
 				if (Hashtable_get(stackrefs_hash, &addr))
 				{
-					printf("STACK ALLOC INSTRUCTION CONFIRMED AT pc=0x%x size=%d\n", sshk.pc, size_type_u);
+					// printf("STACK ALLOC INSTRUCTION CONFIRMED AT pc=0x%x size=%d\n", sshk.pc, size_type_u);
 				}
 				
 #ifdef OLD_MEDS
@@ -275,8 +278,10 @@ void read_annot_file(char fn[])
 #endif
             		else if (strcmp(scope, "BELONGTO") == 0)
 			{
-				app_iaddr_t func_addr;
-				fscanf(fin, "%x", &func_addr);
+				libIRDB::virtual_offset_t func_addr;
+				unsigned int tmp=0;
+				fscanf(fin, "%x", &tmp);
+				func_addr=tmp;
                     		instrmap_hash_key_t* key = (instrmap_hash_key_t*)spri_allocate_type(sizeof(instrmap_hash_key_t));
                     		instrmap_hash_value_t* val = (instrmap_hash_value_t*)spri_allocate_type(sizeof(instrmap_hash_value_t));
                     		key->pc = addr;
@@ -535,8 +540,8 @@ void read_annot_file(char fn[])
 		}
 		else if(strcmp(type,"DATAREF")==0)
 		{
-			char name[1000], parent_child[1000], offset_str[1000];
-			int id, parent_id, offset, parent_offset;
+			char /* name[1000], */ parent_child[1000], offset_str[1000];
+			int id /*, parent_id, offset, parent_offset*/;
 			if(size_type_u.size<=0)
 			{
 //				STRATA_LOG("warn", "Found DATAREF of size <=0 at line %d of annot file\n", line);
@@ -544,7 +549,9 @@ void read_annot_file(char fn[])
 			else if(strcmp(scope,"GLOBAL")==0)
 			{
 				/* remaining params id, addr, parent/child, name */
-				fscanf(fin, "%d%x%s%s", &id, &addr, parent_child);
+				unsigned int tmp=0;
+				fscanf(fin, "%d%x%s%s", &id, &tmp, parent_child, offset_str);
+				addr=tmp;
 
 				if(strcmp(parent_child, "PARENT")==0)
 				{
@@ -562,7 +569,7 @@ void read_annot_file(char fn[])
 					if(strata_opt_do_smp_fine_grain && !STRATA_LOG_IS_ON("no_fine_grain_static"))
 					{
 						referent_object_t* new_ref;
-						fscanf(fin, "%d%s%d", &parent_id, offset_str, &parent_offset);
+						fscanf(fin, "%d%s%d", &parent_id, offset_str, parent_offset);
 						assert(strcmp("OFFSET", offset_str)==0);
 						referent_object_t *refnt=get_referent_from_id_map(parent_id);
 						new_ref=add_referent_field(refnt, parent_offset, addr, size_type_u.size);
@@ -576,11 +583,11 @@ void read_annot_file(char fn[])
 			}
 			else if(strcmp(scope,"STACK")==0)
 			{
-				char esp[1000], plus[1000], offset_str[1000];
+				char esp[1000], plus[1000]; // , offset_str[1000];
 				int esp_offset;
 
 				/* remaining params id, addr, parent/child, name */
-				fscanf(fin, "%d%s%s%d%s", &id, &esp, &plus, &esp_offset, parent_child);
+				fscanf(fin, "%d%s%s%d%s", &id, esp, plus, &esp_offset, parent_child);
 
 				assert(strcmp(esp, "esp")==0 && strcmp(plus,"+")==0);
 
@@ -589,17 +596,17 @@ void read_annot_file(char fn[])
 					/* add to the stackref hashtable, also record the id->stackref mapping so we can
 					 * can easily lookup the id for any fields we find.
 					 */
-                        		stackref_hash_value_t *sshv=add_stack_ref(addr,size_type_u.size, esp_offset);
+                        		/*stackref_hash_value_t *sshv=(stackref_hash_value_t *)*/(void)add_stack_ref(addr,size_type_u.size, esp_offset);
 					
-					printf("New stack frame at: pc=0x%x size=0x%x\n", addr, sshv->size);
+					// printf("New stack frame at: pc=0x%x size=0x%x\n", addr, sshv->size);
 
 #ifdef OLD_MEDS
 					//if(strata_opt_do_smp_fine_grain && !STRATA_LOG_IS_ON("no_fine_grain_stack"))
-					if(!STRATA_LOG_IS_ON("no_fine_grain_stack"))
-						add_to_stackref_id_map(id,sshv);
+					// if(!STRATA_LOG_IS_ON("no_fine_grain_stack"))
+						// add_to_stackref_id_map(id,sshv);
 
                         		/* add to hashtable, a name would be nice someday */
-                        		STRATA_LOG("annot","Adding pc=%x size=%d to stackref hash table\n", addr, sshv->size);
+                        		// STRATA_LOG("annot","Adding pc=%x size=%d to stackref hash table\n", addr, sshv->size);
 #endif
 				}
 				else if(strcmp(parent_child, "CHILDOF")==0)

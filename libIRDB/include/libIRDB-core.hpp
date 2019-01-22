@@ -44,7 +44,6 @@ class Instruction_t; // forward decl for many classes
 #include <core/baseobj.hpp>
 #include <core/reloc.hpp>
 #include <core/address.hpp>
-// xxx #include <core/instructioncfg.hpp>
 #include <core/icfs.hpp>
 #include <core/instruction.hpp>
 #include <core/file.hpp>

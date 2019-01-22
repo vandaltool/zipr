@@ -1,5 +1,5 @@
 /*
- * instrmap_hash.h - hash table for instrumentation details.
+ * funclist_hash.h - list of functions hashtable.
  *
  * Copyright (c) 2000, 2001, 2010 - University of Virginia 
  *
@@ -21,29 +21,28 @@
  *
  */
 
-#ifndef instrmap_hash_h
-#define instrmap_hash_h
+#ifndef funclist_hash_h
+#define funclist_hash_h
 
-#include "all.h"
+#include "meds_all.h"
 
 
-extern Hashtable *instrmaps_hash;
-struct instrmap_hash_key
+extern Hashtable *funclists_hash;
+struct funclist_hash_key
+{
+	char* name;
+	
+};
+typedef struct funclist_hash_key funclist_hash_key_t;
+
+struct funclist_hash_value
 {
         int pc;
 };
-typedef struct instrmap_hash_key instrmap_hash_key_t;
+typedef struct funclist_hash_value funclist_hash_value_t;
 
-struct instrmap_hash_value
-{
-	int func_addr;
-	int site_alloc;
-        int size;
-};
-typedef struct instrmap_hash_value instrmap_hash_value_t;
+long funclists_compute_hash(void* key1);
 
-long instrmaps_compute_hash(void* key1);
-
-long instrmaps_key_compare(void* key1, void* key2);
+long funclists_key_compare(void* key1, void* key2);
 
 #endif

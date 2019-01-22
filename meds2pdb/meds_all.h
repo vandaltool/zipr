@@ -1,5 +1,5 @@
 /*
- * all.h
+ * meds_all.h
  *
  * Copyright (c) 2011 - University of Virginia 
  *
@@ -29,10 +29,11 @@
 #include <string.h>
 #include <assert.h>
 
+#include <libIRDB-core.hpp>
+
 #include "strata_defines.h"
 
 /* x86_32-specific headers */
-#include "targ-config.h"
 #include "instrument.h"
 
 #include "spri_alloc.h"
@@ -45,5 +46,7 @@
 #include "instrmap_hash.h"
 #include "funclist_hash.h"
 #include "constant_hash.h"
+
+#include <inttypes.h>
 
 #endif

@@ -1,7 +1,7 @@
 #ifndef framesize_hash_h
 #define framesize_hash_h
 
-#include "all.h"
+#include "meds_all.h"
 
 
 extern Hashtable *framesizes_hash;
@@ -22,7 +22,7 @@ long framesizes_compute_hash(void* key1);
 
 long framesizes_key_compare(void* key1, void* key2);
 
-int set_frame_size(int pc, int frame_size);
+void set_frame_size(int pc, int frame_size);
 int is_var_sized_frame(int pc);
 
 

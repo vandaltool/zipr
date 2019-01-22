@@ -20,15 +20,8 @@
 
 #include <iostream>
 #include <string.h>
-#include "targ-config.h"
-
 #include <stdio.h>
-
-/*
-#include "elfio/elfio.hpp"
-#include "elfio/elfio_dump.hpp"
-
-*/
+#include <libIRDB-core.hpp>
 #include "elfreader.h"
 
 using namespace std;
@@ -86,7 +79,7 @@ ElfReader::~ElfReader()
 /*
 * Read <p_numBytes> from ELF file for location <p_pc>
 */
-string ElfReader::read(app_iaddr_t p_pc, unsigned p_numBytes) const
+string ElfReader::read(libIRDB::virtual_offset_t p_pc, unsigned p_numBytes) const
 {
   for ( int i = 0; i < m_reader->sections.size(); ++i ) 
   {    
@@ -109,7 +102,7 @@ string ElfReader::read(app_iaddr_t p_pc, unsigned p_numBytes) const
 * No bounds checking is done on <p_buf>
 * Return false if address not in valid sections
 */
-bool ElfReader::read(app_iaddr_t p_pc, unsigned p_numBytes, char* p_buf) const
+bool ElfReader::read(libIRDB::virtual_offset_t p_pc, unsigned p_numBytes, char* p_buf) const
 {
   for ( int i = 0; i < m_reader->sections.size(); ++i ) 
   {    
@@ -130,7 +123,7 @@ bool ElfReader::read(app_iaddr_t p_pc, unsigned p_numBytes, char* p_buf) const
 /*
 * Return buffer for instruction off the ELF file
 */
-const char* ElfReader::getInstructionBuffer(app_iaddr_t p_pc) const
+const char* ElfReader::getInstructionBuffer(libIRDB::virtual_offset_t p_pc) const
 {
   for ( int i = 0; i < m_reader->sections.size(); ++i ) 
   {    

@@ -2,7 +2,8 @@
 #include <vector>
 #include <string>
 
-#include "targ-config.h"
+#include <libIRDB-core.hpp>
+#include <libIRDB-core.hpp>
 #include "instruction_descriptor.h"
 
 //class wahoo::Instruction;
@@ -15,26 +16,26 @@ class Function
 {
   public:
     Function();
-    Function(app_iaddr_t);
-    Function(string, app_iaddr_t, int);
+    Function(libIRDB::virtual_offset_t);
+    Function(string, libIRDB::virtual_offset_t, int);
     ~Function();
 
-    string            getName() const { return m_name; }
-    void              setName(const string p_name) { m_name = p_name; }
-    app_iaddr_t       getAddress() const { return m_address; }
-    void              setAddress(const app_iaddr_t p_address) { m_address = p_address; }
-    int               getSize() const { return m_size; }
-    void              setSize(const int p_size) { m_size = p_size; }
-    int               getFrameSize() const { return m_frameSize; }
-    void              setFrameSize(const int p_size) { m_frameSize = p_size; }
-    int               getFunctionID() const { return m_functionID; }
-    void              setFunctionID(const int id) { m_functionID = id; }
+    string                    getName() const { return m_name; }
+    void                      setName(const string p_name) { m_name = p_name; }
+    libIRDB::virtual_offset_t getAddress() const { return m_address; }
+    void                      setAddress(const libIRDB::virtual_offset_t p_address) { m_address = p_address; }
+    int                       getSize() const { return m_size; }
+    void                      setSize(const int p_size) { m_size = p_size; }
+    int                       getFrameSize() const { return m_frameSize; }
+    void                      setFrameSize(const int p_size) { m_frameSize = p_size; }
+    int                       getFunctionID() const { return m_functionID; }
+    void                      setFunctionID(const int id) { m_functionID = id; }
 
 	
     bool operator == (const Function &);
-    bool operator == (const app_iaddr_t);
+    bool operator == (const libIRDB::virtual_offset_t);
     bool operator != (const Function &);
-    bool operator != (const app_iaddr_t);
+    bool operator != (const libIRDB::virtual_offset_t);
 
     bool isSafe() const { return m_isSafe; }
     void setSafe() { m_isSafe = true; }
@@ -67,7 +68,7 @@ class Function
 
     int            m_functionID;
     string         m_name;
-    app_iaddr_t    m_address;
+    libIRDB::virtual_offset_t    m_address;
     int            m_size;
     int            m_frameSize;
     bool           m_isSafe;

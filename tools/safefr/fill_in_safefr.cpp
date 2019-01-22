@@ -28,8 +28,6 @@
 #include <assert.h>
 #include <libgen.h>
 
-#include "targ-config.h"
-
 #include "MEDS_AnnotationParser.hpp"
 #include "MEDS_FRSafeAnnotation.hpp"
 
