@@ -57,3 +57,6 @@
 [submodule "zipr_install"]
 	path = zipr_install
 	url = git@git.zephyr-software.com:allnp/zipr_install.git
+[submodule "zipr_xeon_plugin"]
+	path = zipr_xeon_plugin
+	url = git@git.zephyr-software.com:allnp/xeon_plugin

@@ -115,6 +115,11 @@ if [ -d $ZIPR_SCFI_PLUGIN ]; then
 	scons  $SCONSDEBUG || exit 1
 fi
 
+if [ -d $ZIPR_XEON_PLUGIN ]; then
+        cd $ZIPR_XEON_PLUGIN
+        scons  $SCONSDEBUG || exit
+fi
+
 cd $PEASOUP_UMBRELLA_DIR/zipr_large_only_plugin/
 scons $SCONSDEBUG || exit 1
 
