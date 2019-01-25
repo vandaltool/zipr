@@ -287,20 +287,20 @@ ostream& libIRDB::operator<<(ostream& os, const DominatorGraph_t& dg)
 	{
 		assert(blk);
 		const BasicBlockSet_t& blk_dominates=dg.GetDominators(blk);
-		Instruction_t* first_insn=*(blk->GetInstructions().begin());
+		auto first_insn=*(blk->GetInstructions().begin());
 		assert(first_insn);
 
-		os<<"\tBlock entry id:" <<blk->GetInstructions()[0]->GetBaseID()<<endl;
+		os<<"\tBlock entry id:" <<blk->GetInstructions()[0]->getBaseID()<<endl;
 		os<<"\t\tDominated by: ";
 		for_each(blk_dominates.begin(), blk_dominates.end(), [&os](const BasicBlock_t* dom)
 		{
-			os<<dom->GetInstructions()[0]->GetBaseID()<<", ";
+			os<<dom->GetInstructions()[0]->getBaseID()<<", ";
 		});
 		os<<endl;
 
 		const BasicBlock_t* idom=dg.GetImmediateDominator(blk);
 		if(idom)
-			os<<"\t\tImmediate Dominator: "<<hex<<idom->GetInstructions()[0]->GetBaseID()<<endl;
+			os<<"\t\tImmediate Dominator: "<<hex<<idom->GetInstructions()[0]->getBaseID()<<endl;
 		else
 			os<<"\t\tNo Immed Dominator."<<endl;
 

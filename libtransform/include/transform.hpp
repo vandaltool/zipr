@@ -25,21 +25,26 @@
 #include <set>
 #include <map>
 
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 
 #include "MEDS_InstructionCheckAnnotation.hpp"
 #include "VirtualOffset.hpp"
 
-using namespace std;
-using namespace libIRDB;
-using namespace MEDS_Annotation;
-
 #define MAX_ASSEMBLY_SIZE 2048
 
+namespace libIRDB
+{
+	class FileIR_t;
+}
 namespace libTransform
 {
+using namespace std;
+using namespace IRDB_SDK;
+using namespace MEDS_Annotation;
 
-class Transform {
+
+class Transform 
+{
 
 	public:
 		Transform(VariantID_t *, FileIR_t *, set<std::string> *p_filteredFunctions);
@@ -85,18 +90,14 @@ class Transform {
 		void addMulRegisterConstant(Instruction_t *p_instr, RegisterName p_regTgt, int p_constantValue, Instruction_t *p_fallThrough);
 		void addMovRegisters(Instruction_t *p_instr, RegisterName p_regTgt, RegisterName p_regSrc, Instruction_t *p_fallThrough);
 
-		Instruction_t* allocateNewInstruction(db_id_t p_fileID=BaseObj_t::NOT_IN_DATABASE, Function_t* p_func=NULL);
+		Instruction_t* allocateNewInstruction(DatabaseID_t p_fileID=BaseObj_t::NOT_IN_DATABASE, Function_t* p_func=NULL);
 
-		virtual_offset_t getAvailableAddress();
+		VirtualOffset_t getAvailableAddress();
 
 		VariantID_t* getVariantID() { return m_variantID; }
-		FileIR_t* getFileIR() { return m_fileIR; }
+		FileIR_t* getFileIR(); //  { return dynamic_cast<FileIR_t*>(m_fileIR); }
 		set<std::string>* getFilteredFunctions() { return m_filteredFunctions; }
 
-		// bool isMultiplyInstruction(libIRDB::Instruction_t*);
-		//bool isMovInstruction(libIRDB::Instruction_t*);
-		//bool isAddSubNonEspInstruction(libIRDB::Instruction_t*);
-		//RegisterName getTargetRegister(libIRDB::Instruction_t*, int argNo = 1);
 		Instruction_t* addNewMaxSaturation(Instruction_t *p_prev, RegisterName p_reg, const MEDS_InstructionCheckAnnotation p_annotation);
 		void addMinSaturation(Instruction_t *p_instruction, RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough);
 		void addMaxSaturation(Instruction_t *p_instruction, RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough);
@@ -114,10 +115,9 @@ class Transform {
 		void addTestRegister32(Instruction_t *p_instr, RegisterName, Instruction_t *p_fallThrough);
 		void addTestRegisterMask32(Instruction_t *p_instr, RegisterName, unsigned p_mask, Instruction_t *p_fallThrough);
 		void addCmpRegisterMask32(Instruction_t *p_instr, RegisterName, unsigned p_mask, Instruction_t *p_fallThrough);
-		//bool hasTargetRegister(libIRDB::Instruction_t*, int argNo = 1);
 
 		VariantID_t 		*m_variantID;
-		FileIR_t           	*m_fileIR;
+		libIRDB::FileIR_t       *m_fileIR;
 		set<std::string>	*m_filteredFunctions;
 		std::map<std::string, Instruction_t*> m_handlerMap;
 };

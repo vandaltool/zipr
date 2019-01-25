@@ -25,7 +25,7 @@ using namespace std;
 
 vector<std::string> Relocation_t::WriteToDB(File_t* fid, BaseObj_t* myinsn)
 {
-        db_id_t wrt_id=wrt_obj ? wrt_obj->GetBaseID() : BaseObj_t::NOT_IN_DATABASE;
+        db_id_t wrt_id=wrt_obj ? wrt_obj->getBaseID() : BaseObj_t::NOT_IN_DATABASE;
 /*
         string q;
         q ="insert into " + fid->relocs_table_name;
@@ -33,13 +33,13 @@ vector<std::string> Relocation_t::WriteToDB(File_t* fid, BaseObj_t* myinsn)
                 string(" VALUES (") +
 */
 	return {
-                to_string(GetBaseID()),
+                to_string(getBaseID()),
                 to_string(offset),
                 (type),
-                to_string(myinsn->GetBaseID()),
+                to_string(myinsn->getBaseID()),
                 to_string(addend),
                 to_string(wrt_id),
-                to_string(GetDoipID())
+                to_string(getDoipID())
 		};
 }
 

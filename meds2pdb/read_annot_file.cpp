@@ -46,7 +46,7 @@ void ignore_result(const T& v) { (void)v; }
 void read_annot_file(char fn[])
 {
 	FILE* fin=nullptr;
-	libIRDB::virtual_offset_t addr=0;
+	VirtualOffset_t addr=0;
 	union { int size, type;} size_type_u;
 	char type[200];
 	char scope[200];
@@ -281,7 +281,7 @@ void read_annot_file(char fn[])
 #endif
             		else if (strcmp(scope, "BELONGTO") == 0)
 			{
-				libIRDB::virtual_offset_t func_addr;
+				VirtualOffset_t func_addr;
 				unsigned int tmp=0;
 				ignore_result(fscanf(fin, "%x", &tmp));
 				func_addr=tmp;

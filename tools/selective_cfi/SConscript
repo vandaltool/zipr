@@ -7,6 +7,7 @@ myenv=env.Clone()
 myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 
 cpppath=''' 
+	 $IRDB_SDK/include 
 	 $SECURITY_TRANSFORMS_HOME/include 
 	 $SECURITY_TRANSFORMS_HOME/libIRDB/include 
 	 $SECURITY_TRANSFORMS_HOME/libMEDSannotation/include 

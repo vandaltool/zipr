@@ -25,16 +25,18 @@
 using namespace libIRDB;
 using namespace std;
 
-Function_t::Function_t(db_id_t id, std::string myname, int size, int oa_size, bool useFP, bool isSafe, FuncType_t *fn_type, Instruction_t* entry)
-	: BaseObj_t(NULL), entry_point(entry)
+Function_t::Function_t(db_id_t id, std::string myname, int size, int oa_size, bool useFP, bool isSafe, IRDB_SDK::FuncType_t *fn_type, IRDB_SDK::Instruction_t* entry)
+	: BaseObj_t(NULL), entry_point(dynamic_cast<Instruction_t*>(entry))
 {
-	SetBaseID(id);
+	setBaseID(id);
 	name=myname;
 	stack_frame_size=size;	
 	out_args_region_size=oa_size;
-    use_fp = useFP;
-    SetSafe(isSafe);
-	function_type = fn_type;
+	use_fp = useFP;
+	setSafe(isSafe);
+	function_type = dynamic_cast<FuncType_t*>(fn_type);
+	if(entry) assert(entry_point);
+	if(fn_type) assert(function_type);
 }
 
 string Function_t::WriteToDB(File_t *fid, db_id_t newid)
@@ -43,19 +45,19 @@ string Function_t::WriteToDB(File_t *fid, db_id_t newid)
 
 	int entryid=NOT_IN_DATABASE;
 	if(entry_point)
-		entryid=entry_point->GetBaseID();
+		entryid=entry_point->getBaseID();
 
-	if(GetBaseID()==NOT_IN_DATABASE)
-		SetBaseID(newid);
+	if(getBaseID()==NOT_IN_DATABASE)
+		setBaseID(newid);
 
     int function_type_id = NOT_IN_DATABASE;
-	if (GetType())
-		function_type_id = GetType()->GetBaseID();	 
+	if (getType())
+		function_type_id = getType()->getBaseID();	 
 
 	string q=string("insert into ")+fid->function_table_name + 
 		string(" (function_id, entry_point_id, name, stack_frame_size, out_args_region_size, use_frame_pointer, is_safe, type_id, doip_id) ")+
 		string(" VALUES (") + 
-		string("'") + to_string(GetBaseID()) 		  + string("', ") + 
+		string("'") + to_string(getBaseID()) 		  + string("', ") + 
 		string("'") + to_string(entryid) 		  + string("', ") + 
 		string("'") + name 				  + string("', ") + 
 		string("'") + to_string(stack_frame_size) 	  + string("', ") + 
@@ -63,17 +65,30 @@ string Function_t::WriteToDB(File_t *fid, db_id_t newid)
 	        string("'") + to_string(use_fp) 		  + string("', ") + 
 	        string("'") + to_string(is_safe) 		  + string("', ") + 
 	        string("'") + to_string(function_type_id) 	  + string("', ") + 
-		string("'") + to_string(GetDoipID()) 		  + string("') ; ") ;
+		string("'") + to_string(getDoipID()) 		  + string("') ; ") ;
 
 	return q;
 }
 
-int Function_t::GetNumArguments() const
+int Function_t::getNumArguments() const
 {
 	if (!function_type) return -1;
-	AggregateType_t *argtype = function_type->GetArgumentsType();
+	auto argtype = function_type->getArgumentsType();
 	if (argtype)
-		return argtype->GetNumAggregatedTypes();
+		return argtype->getNumAggregatedTypes();
 	else
 		return -1;
 }
+
+void Function_t::setType(IRDB_SDK::FuncType_t *t)  
+{ 
+	function_type = dynamic_cast<FuncType_t*>(t); 
+	if(t) 
+		assert(function_type); 
+}
+
+IRDB_SDK::FuncType_t* Function_t::getType() const  
+{ 
+	return function_type; 
+}
+

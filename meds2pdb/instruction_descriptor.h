@@ -3,9 +3,9 @@
 
 #include <string>
 #include <set>
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 
 using namespace std;
 
@@ -18,7 +18,7 @@ class Function;
 class Instruction {
   public:
     Instruction();
-    Instruction(libIRDB::virtual_offset_t, int p_size = -1, Function* = NULL);
+    Instruction(IRDB_SDK::VirtualOffset_t, int p_size = -1, Function* = NULL);
     ~Instruction();
 
     void setSize(int p_size) { m_size = p_size; }
@@ -29,7 +29,7 @@ class Instruction {
     void markStackRef();
     void markVarStackRef();
 
-    libIRDB::virtual_offset_t     getAddress() const { return m_address; }
+    IRDB_SDK::VirtualOffset_t     getAddress() const { return m_address; }
     int             getSize() const { return m_size; }
     Function*       getFunction() const { return m_function; }
     string          getAsm() const { return m_asm; }
@@ -48,7 +48,7 @@ class Instruction {
     bool isVisited() const { return m_isVisited; }
 
   private:
-    libIRDB::virtual_offset_t     m_address;
+    IRDB_SDK::VirtualOffset_t     m_address;
     int             m_size;
     Function*       m_function;
     string          m_asm;

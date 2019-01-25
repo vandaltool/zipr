@@ -33,6 +33,8 @@
 namespace libIRDB 
 {
 
+	using namespace std;
+
 #include <cfg/BasicBlock.hpp>
 #include <cfg/CFG.hpp>
 #include <cfg/callgraph.hpp>

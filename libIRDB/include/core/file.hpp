@@ -18,10 +18,13 @@
  *
  */
 
+namespace libIRDB
+{
 // An ELF file as represented by the DB
-class File_t : public BaseObj_t
+class File_t : public BaseObj_t, virtual public IRDB_SDK::File_t
 {
     public:
+        virtual ~File_t(){}
         // create new item.
         File_t( const db_id_t &file_id, const db_id_t &orig_fid, const std::string &url, 
 		const std::string &hash, const std::string &arch, const int &elfoid, 
@@ -34,22 +37,22 @@ class File_t : public BaseObj_t
         File_t(db_id_t file_id) : BaseObj_t(NULL) { (void)file_id; assert(0);}          // read from DB       
         void WriteToDB() { assert(0); }   // writes to DB ID is not -1.
 
-        std::string GetAddressTableName() const { return address_table_name; }
-        std::string GetFunctionTableName() const { return function_table_name; }
-        std::string GetInstructionTableName() const { return instruction_table_name; }
-        std::string GetICFSTableName() const { return icfs_table_name; }
-        std::string GetICFSMapTableName() const { return icfs_map_table_name; }
-        std::string GetRelocationsTableName() const { return relocs_table_name; }
-        std::string GetTypesTableName() const { return types_table_name; }
-        std::string GetScoopTableName() const { return scoop_table_name; }
-        std::string GetEhProgramTableName() const { return ehpgm_table_name; }
-        std::string GetEhCallSiteTableName() const { return ehcss_table_name; }
-        std::string GetURL() const { return url; }
+        std::string getAddressTableName() const { return address_table_name; }
+        std::string getFunctionTableName() const { return function_table_name; }
+        std::string getInstructionTableName() const { return instruction_table_name; }
+        std::string getICFSTableName() const { return icfs_table_name; }
+        std::string getICFSMapTableName() const { return icfs_map_table_name; }
+        std::string getRelocationsTableName() const { return relocs_table_name; }
+        std::string getTypesTableName() const { return types_table_name; }
+        std::string getScoopTableName() const { return scoop_table_name; }
+        std::string getEhProgramTableName() const { return ehpgm_table_name; }
+        std::string getEhCallSiteTableName() const { return ehcss_table_name; }
+        std::string getURL() const { return url; }
 
 	void CreateTables();
 
-	int GetELFOID() const { return elfoid; };
-	db_id_t GetFileID() const {return orig_fid; };
+	int getELFOID() const { return elfoid; };
+	db_id_t getFileID() const {return orig_fid; };
 
         friend class FileIR_t;
         friend class Function_t;
@@ -83,3 +86,4 @@ class File_t : public BaseObj_t
         std::string ehcss_table_name;
 	int elfoid;
 };
+}

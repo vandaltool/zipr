@@ -24,9 +24,9 @@ typedef std::set<CFG_EdgeTypeEnum> CFG_EdgeType;
 class ControlFlowGraph_t
 {
 	public:
-		ControlFlowGraph_t(Function_t* func);
+		ControlFlowGraph_t(IRDB_SDK::Function_t* func);
 		BasicBlock_t* GetEntry() const { return entry; }
-		Function_t* GetFunction() const { return function; }
+		IRDB_SDK::Function_t* getFunction() const { return function; }
 		BasicBlockSet_t& GetBlocks()   { return blocks; }
 		const BasicBlockSet_t& GetBlocks()   const { return blocks; }
 		void dump(std::ostream &os=std::cout) const { os<<*this; }
@@ -35,15 +35,15 @@ class ControlFlowGraph_t
 
 	private:
 	// methods 
-		void Build(Function_t *func);
-		void alloc_blocks(const InstructionSet_t &starts, map<Instruction_t*,BasicBlock_t*>& insn2block_map);
-		void build_blocks(const map<Instruction_t*,BasicBlock_t*>& insn2block_map);
-		void find_unblocked_instructions(InstructionSet_t &starts, Function_t* func);
+		void Build(IRDB_SDK::Function_t *func);
+		void alloc_blocks(const IRDB_SDK::InstructionSet_t &starts, map<IRDB_SDK::Instruction_t*,BasicBlock_t*>& insn2block_map);
+		void build_blocks(const map<IRDB_SDK::Instruction_t*,BasicBlock_t*>& insn2block_map);
+		void find_unblocked_instructions(InstructionSet_t &starts, IRDB_SDK::Function_t* func);
 
 	// data
 		BasicBlockSet_t blocks;
 		BasicBlock_t* entry;
-		Function_t* function;
+		IRDB_SDK::Function_t* function;
 
 	/* friends */
 	public:

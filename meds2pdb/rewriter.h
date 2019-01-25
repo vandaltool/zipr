@@ -1,6 +1,6 @@
 #include <map>
 #include <set>
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 // #include "elfio/elfio.hpp"
 //#include "elfio/elfio_dump.hpp"
 
@@ -35,18 +35,18 @@ class Rewriter
     void disassemble();
 
     // one instruction modification
-    void addSimpleRewriteRule(wahoo::Function* p_func, char *p_origInstr, int p_origSize, libIRDB::virtual_offset_t p_origAddress, char *p_newInstr);
+    void addSimpleRewriteRule(wahoo::Function* p_func, char *p_origInstr, int p_origSize, IRDB_SDK::VirtualOffset_t p_origAddress, char *p_newInstr);
 
     // commit function to AsmSPRI file
     void commitFn2SPRI(wahoo::Function* p_func, FILE *p_file);
 
   protected:
-    map<libIRDB::virtual_offset_t, wahoo::Function*> m_functions;
-    map<libIRDB::virtual_offset_t, wahoo::Instruction*> m_instructions;
+    map<IRDB_SDK::VirtualOffset_t, wahoo::Function*> m_functions;
+    map<IRDB_SDK::VirtualOffset_t, wahoo::Instruction*> m_instructions;
 
   private:
-    wahoo::Function*     ensureFunctionExists(const libIRDB::virtual_offset_t);
-    wahoo::Instruction*  ensureInstructionExists(const libIRDB::virtual_offset_t);
+    wahoo::Function*     ensureFunctionExists(const IRDB_SDK::VirtualOffset_t);
+    wahoo::Instruction*  ensureInstructionExists(const IRDB_SDK::VirtualOffset_t);
 
   private:
     ElfReader*    m_elfReader;   

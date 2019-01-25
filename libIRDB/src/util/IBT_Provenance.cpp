@@ -11,24 +11,25 @@ using namespace std;
 Provenance_t IBTProvenance_t::empty;
 
 
-void IBTProvenance_t::AddFile(const FileIR_t* firp)
+void IBTProvenance_t::AddFile(const IRDB_SDK::FileIR_t* firp)
 {
 
-        using ICFSProvMap_t =  std::map<const ICFS_t*, Provenance_t>;
+        using ICFSProvMap_t =  std::map<const IRDB_SDK::ICFS_t*, Provenance_t>;
 
 	auto icfs_prov_map = ICFSProvMap_t(); 
 
 	// collect before info for each icfs into icfs_prov_map
-	for(auto insn : firp->GetInstructions())
+	for(auto insn : firp->getInstructions())
 	{
-		const auto &ibTargets=insn->GetIBTargets();
+		const auto &ibTargets=insn->getIBTargets();
 		if(!ibTargets)
 			continue;
 
 		auto this_prov=Provenance_t();
-		const auto IndBranchAsm=DecodedInstruction_t(insn);
-		const auto isIndJmp = IndBranchAsm.isUnconditionalBranch() && !IndBranchAsm.getOperand(0).isConstant();
-		const auto isIndCall = IndBranchAsm.isCall() && !IndBranchAsm.getOperand(0).isConstant();
+		const auto p_IndBranchAsm=DecodedInstruction_t::factory(insn);
+		const auto &IndBranchAsm=*p_IndBranchAsm;
+		const auto isIndJmp = IndBranchAsm.isUnconditionalBranch() && !IndBranchAsm.getOperand(0)->isConstant();
+		const auto isIndCall = IndBranchAsm.isCall() && !IndBranchAsm.getOperand(0)->isConstant();
 		const auto isRet = IndBranchAsm.isReturn();
 
 		if(isIndJmp)
@@ -52,7 +53,7 @@ void IBTProvenance_t::AddFile(const FileIR_t* firp)
 	}
 
 	// deploy info for each target of the icfs
-	for(const auto &icfs : firp->GetAllICFS())
+	for(const auto &icfs : firp->getAllICFS())
 	{
 		assert(icfs);
 		for(const auto &insn : *icfs)

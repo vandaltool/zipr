@@ -24,10 +24,14 @@
 using namespace std;
 using namespace libIRDB;
 
-bool BasicType_t::IsNumericType() const
+bool BasicType_t::isNumericType() const
 {
-		int type = GetTypeID();
-		return type == T_NUMERIC || type == T_INT || type == T_FLOAT || type == T_DOUBLE || type == T_CHAR;
+		auto type = getTypeID();
+		return type == IRDB_SDK::itNumeric || 
+		       type == IRDB_SDK::itInt     || 
+		       type == IRDB_SDK::itFloat   || 
+		       type == IRDB_SDK::itDouble  || 
+		       type == IRDB_SDK::itChar;
 }
 
 /*
@@ -47,15 +51,12 @@ string BasicType_t::WriteToDB(File_t *fid, db_id_t newid)
 {
 	assert(fid);
 
-//	if(GetBaseID()==NOT_IN_DATABASE)
-//		SetBaseID(newid);
-
 	string q=string("insert into ")+fid->types_table_name + 
 		string(" (type_id, type, name, ref_type_id, pos, ref_type_id2) ")+
 		string(" VALUES (") + 
-		string("'") + to_string(GetBaseID()) + string("', ") + 
-		string("'") + to_string(GetTypeID()) + string("', ") + 
-		string("'") + GetName()              + string("','-1','-1','-1') ; ") ;
+		string("'") + to_string(getBaseID()) + string("', ") + 
+		string("'") + to_string(getTypeID()) + string("', ") + 
+		string("'") + getName()              + string("','-1','-1','-1') ; ") ;
 
 //    cout << "BasicType_t::WriteToDB(): " << q << endl;
 	return q;
@@ -63,14 +64,14 @@ string BasicType_t::WriteToDB(File_t *fid, db_id_t newid)
 
 string PointerType_t::WriteToDB(File_t *fid, db_id_t newid)
 {
-	assert(fid && GetReferentType());
+	assert(fid && getReferentType());
 	string q=string("insert into ")+fid->types_table_name + 
 		string(" (type_id, type, name, ref_type_id,pos,ref_type_id2) ")+
 		string(" VALUES (") + 
-		string("'") + to_string(GetBaseID())                    + string("', ") + 
-		string("'") + to_string(GetTypeID())                    + string("', ") + 
-		string("'") + GetName()                                 + string("', ") +
-		string("'") + to_string(GetReferentType()->GetBaseID()) + 
+		string("'") + to_string(getBaseID())                    + string("', ") + 
+		string("'") + to_string(getTypeID())                    + string("', ") + 
+		string("'") + getName()                                 + string("', ") +
+		string("'") + to_string(getReferentType()->getBaseID()) + 
 		string("','-1','-1') ; ") ;
 
 //    cout << "PointerType_t::WriteToDB(): " << q << endl;
@@ -80,20 +81,20 @@ string PointerType_t::WriteToDB(File_t *fid, db_id_t newid)
 string AggregateType_t::WriteToDB(File_t *fid, db_id_t newid)
 {
 	assert(fid);
-	assert(GetNumAggregatedTypes() > 0);
+	assert(getNumAggregatedTypes() > 0);
 
 	string q;
 
-	for (auto i = 0U; i < GetNumAggregatedTypes(); ++i)
+	for (auto i = 0U; i < getNumAggregatedTypes(); ++i)
 	{
-		Type_t* t = GetAggregatedType(i);
+		auto t = getAggregatedType(i);
 		q+=string("insert into ")+fid->types_table_name + 
 			string(" (type_id, type, name, ref_type_id, pos,ref_type_id2) ")+
 			string(" VALUES (") + 
-			string("'") + to_string(GetBaseID())                    + string("', ") + 
-			string("'") + to_string(GetTypeID())                    + string("', ") + 
-			string("'") + GetName()                                 + string("', ") +
-			string("'") + to_string(t->GetBaseID()) + string("', ") +
+			string("'") + to_string(getBaseID())                    + string("', ") + 
+			string("'") + to_string(getTypeID())                    + string("', ") + 
+			string("'") + getName()                                 + string("', ") +
+			string("'") + to_string(t->getBaseID()) + string("', ") +
 			string("'") + to_string(i) +
 			string("','-1') ; ") ;
 	}
@@ -102,7 +103,7 @@ string AggregateType_t::WriteToDB(File_t *fid, db_id_t newid)
 	return q;
 }
 
-void AggregateType_t::AddAggregatedType(Type_t *t, int pos)
+void AggregateType_t::addAggregatedType(IRDB_SDK::Type_t *t, int pos)
 {
 	refTypes.push_back(t);
 
@@ -124,16 +125,16 @@ CREATE TABLE #TYP#
 string FuncType_t::WriteToDB(File_t *fid, db_id_t newid)
 {
 	assert(fid);
-	assert(GetReturnType());
-	assert(GetArgumentsType());
+	assert(getReturnType());
+	assert(getArgumentsType());
 	string q=string("insert into ")+fid->types_table_name + 
 		string(" (type_id, type, name, ref_type_id, ref_type_id2,pos) ")+
 		string(" VALUES (") + 
-		string("'") + to_string(GetBaseID())                    + string("', ") + 
-		string("'") + to_string(GetTypeID())                    + string("', ") + 
-		string("'") + GetName()                                 + string("', ") +
-		string("'") + to_string(GetReturnType()->GetBaseID()) + string("', ") +
-		string("'") + to_string(GetArgumentsType()->GetBaseID()) + 
+		string("'") + to_string(getBaseID())                    + string("', ") + 
+		string("'") + to_string(getTypeID())                    + string("', ") + 
+		string("'") + getName()                                 + string("', ") +
+		string("'") + to_string(getReturnType()->getBaseID()) + string("', ") +
+		string("'") + to_string(getArgumentsType()->getBaseID()) + 
 		string("','-1') ; ") ;
 
 //  cout << "FuncType_t::WriteToDB(): " << q << endl;

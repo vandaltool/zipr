@@ -1,5 +1,9 @@
 
 #include <libIRDB-core.hpp>
+#include <core/decode_base.hpp>
+#include <core/decode_csx86.hpp>
+#include <core/operand_base.hpp>
+#include <core/operand_csx86.hpp>
 
 #include <capstone.h>
 #include <x86.h>
@@ -14,11 +18,13 @@ using namespace std;
 
 #define ALLOF(a) begin(a),end(a)
 
+
+
 DecodedInstructionCapstoneX86_t::CapstoneHandle_t* DecodedInstructionCapstoneX86_t::cs_handle=NULL ;
 
 DecodedInstructionCapstoneX86_t::CapstoneHandle_t::CapstoneHandle_t(FileIR_t* firp)
 {
-	const auto width=FileIR_t::GetArchitectureBitWidth();
+	const auto width=FileIR_t::getArchitectureBitWidth();
 	const auto mode = (width==64) ? CS_MODE_64: CS_MODE_32;
 	static_assert(sizeof(csh)==sizeof(handle), "Capstone handle size is unexpected.  Has CS changed?");
 	auto err = cs_open(CS_ARCH_X86, mode,  (csh*)&handle);
@@ -76,7 +82,7 @@ class CapstoneHandle_t
 		CapstoneHandle_t(FileIR_t* firp=NULL)
 		{
 
-			const auto width=FileIR_t::GetArchitectureBitWidth();
+			const auto width=FileIR_t::getArchitectureBitWidth();
 			const auto mode = (width==64) ? CS_MODE_64: CS_MODE_32; 
 	                auto err = cs_open(CS_ARCH_X86, mode,  &handle);
 
@@ -197,13 +203,13 @@ DecodedInstructionCapstoneX86_t::DecodedInstructionCapstoneX86_t(const Instructi
 	if(!cs_handle) cs_handle=new CapstoneHandle_t(NULL);
 	if(!i) throw std::invalid_argument("No instruction given to DecodedInstruction_t(Instruction_t*)");
 
-        const auto length=i->GetDataBits().size();
-	const auto &databits=i->GetDataBits();
+        const auto length=i->getDataBits().size();
+	const auto &databits=i->getDataBits();
 	const auto data=databits.data();
-	const auto address=i->GetAddress()->GetVirtualOffset();
+	const auto address=i->getAddress()->getVirtualOffset();
         Disassemble(address,data,length);
 
-	if(!valid()) throw std::invalid_argument("The Instruction_t::GetDataBits field is not a valid instruction.");
+	if(!valid()) throw std::invalid_argument("The Instruction_t::getDataBits field is not a valid instruction.");
 }
 
 DecodedInstructionCapstoneX86_t::DecodedInstructionCapstoneX86_t(const virtual_offset_t start_addr, const void *data, uint32_t max_len)
@@ -397,23 +403,23 @@ bool DecodedInstructionCapstoneX86_t::hasOperand(const int op_num) const
 }
 
 // 0-based.  first operand is numbered 0.
-shared_ptr<DecodedOperandCapstone_t> DecodedInstructionCapstoneX86_t::getOperand(const int op_num) const
+shared_ptr<DecodedOperand_t> DecodedInstructionCapstoneX86_t::getOperand(const int op_num) const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	if(!hasOperand(op_num)) throw std::logic_error(string("Called ")+__FUNCTION__+" on without hasOperand()==true");
 
-	return shared_ptr<DecodedOperandCapstone_t>(new DecodedOperandCapstoneX86_t(my_insn,(uint8_t)op_num));
+	return shared_ptr<DecodedOperand_t>(new DecodedOperandCapstoneX86_t(my_insn,(uint8_t)op_num));
 	
 }
 
-DecodedOperandCapstoneVector_t DecodedInstructionCapstoneX86_t::getOperands() const
+IRDB_SDK::DecodedOperandVector_t DecodedInstructionCapstoneX86_t::getOperands() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
 	const auto &x86 = (the_insn->detail->x86);
 	const auto opcount=x86.op_count;
 
-	auto ret_val=DecodedOperandCapstoneVector_t();
+	auto ret_val=IRDB_SDK::DecodedOperandVector_t();
 	
 	for(auto i=0;i<opcount;i++)
 		ret_val.push_back(getOperand(i));
@@ -588,8 +594,9 @@ uint32_t DecodedInstructionCapstoneX86_t::getPrefixCount() const
 	return count_with_rex;
 }
 
-virtual_offset_t DecodedInstructionCapstoneX86_t::getMemoryDisplacementOffset(const DecodedOperandCapstone_t& t, const Instruction_t* insn) const
+IRDB_SDK::VirtualOffset_t DecodedInstructionCapstoneX86_t::getMemoryDisplacementOffset(const IRDB_SDK::DecodedOperand_t* p_t, const IRDB_SDK::Instruction_t* insn) const
 {
+	auto &t = *p_t;
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
@@ -633,14 +640,14 @@ virtual_offset_t DecodedInstructionCapstoneX86_t::getMemoryDisplacementOffset(co
 		const auto disp_start=the_insn->size-imm_size-disp_size;
 		const auto imm_start=the_insn->size-imm_size;
 		
-		const auto candidate_disp_eq = disp_size==4  ? *(int32_t*)(&insn->GetDataBits().c_str()[disp_start])==(int32_t)disp :
-		                               disp_size==2  ? *(int16_t*)(&insn->GetDataBits().c_str()[disp_start])==(int16_t)disp :
-		                               disp_size==1  ? *(int8_t *)(&insn->GetDataBits().c_str()[disp_start])==(int8_t )disp : (assert(0),false);
+		const auto candidate_disp_eq = disp_size==4  ? *(int32_t*)(&insn->getDataBits().c_str()[disp_start])==(int32_t)disp :
+		                               disp_size==2  ? *(int16_t*)(&insn->getDataBits().c_str()[disp_start])==(int16_t)disp :
+		                               disp_size==1  ? *(int8_t *)(&insn->getDataBits().c_str()[disp_start])==(int8_t )disp : (assert(0),false);
 
-		const auto candidate_imm_eq = imm_size==8  ? *(int64_t*)(&insn->GetDataBits().c_str()[imm_start])==(int64_t)imm :
-					      imm_size==4  ? *(int32_t*)(&insn->GetDataBits().c_str()[imm_start])==(int32_t)imm :
-					      imm_size==2  ? *(int16_t*)(&insn->GetDataBits().c_str()[imm_start])==(int16_t)imm :
-		                              imm_size==1  ? *(int8_t *)(&insn->GetDataBits().c_str()[imm_start])==(int8_t )imm : (int64_t)(assert(0),false);
+		const auto candidate_imm_eq = imm_size==8  ? *(int64_t*)(&insn->getDataBits().c_str()[imm_start])==(int64_t)imm :
+					      imm_size==4  ? *(int32_t*)(&insn->getDataBits().c_str()[imm_start])==(int32_t)imm :
+					      imm_size==2  ? *(int16_t*)(&insn->getDataBits().c_str()[imm_start])==(int16_t)imm :
+		                              imm_size==1  ? *(int8_t *)(&insn->getDataBits().c_str()[imm_start])==(int8_t )imm : (int64_t)(assert(0),false);
 
 		if(candidate_disp_eq && candidate_imm_eq)
 			return disp_start;

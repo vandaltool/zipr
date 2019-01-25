@@ -8,7 +8,7 @@ class IBTProvenance_t
 	private:
 
 	// types 
-	using InsnProvMap_t =  std::map<const Instruction_t*, Provenance_t>;
+	using InsnProvMap_t =  std::map<const IRDB_SDK::Instruction_t*, Provenance_t>;
 
 	// data
 	InsnProvMap_t prov_map;
@@ -19,12 +19,12 @@ class IBTProvenance_t
 	void AddProvs(const Provenance_t& p, const InstructionSet_t& after) ;
 
 	public:
-	IBTProvenance_t(const FileIR_t* f=NULL) {Init(); if(f) AddFile(f);}
+	IBTProvenance_t(const IRDB_SDK::FileIR_t* f=NULL) {Init(); if(f) AddFile(f);}
 	virtual ~IBTProvenance_t() {} 	// default destructor not OK for some reason?
-	void AddFile(const FileIR_t* );
+	void AddFile(const IRDB_SDK::FileIR_t* );
         
 
-	const Provenance_t& operator[] (const Instruction_t* i)  const
+	const Provenance_t& operator[] (const IRDB_SDK::Instruction_t* i)  const
 	{ 
 		const auto it=prov_map.find(i);
 		if (it!= prov_map.end()) 

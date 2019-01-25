@@ -28,13 +28,13 @@
 #include "elfio/elfio.hpp"
 #include "split_eh_frame.hpp"
 
-using namespace libIRDB;
 using namespace std;
 using namespace EXEIO;
+using namespace IRDB_SDK;
 
 void PopulateCFG::populate_instruction_map
 	(
-		map< pair<db_id_t,virtual_offset_t>, Instruction_t*> &insnMap,
+		map< pair<DatabaseID_t,VirtualOffset_t>, Instruction_t*> &insnMap,
 		FileIR_t *firp
 	)
 {
@@ -43,12 +43,12 @@ void PopulateCFG::populate_instruction_map
 
 
 	/* for each instruction in the IR */
-	for(auto insn : firp->GetInstructions())
+	for(auto insn : firp->getInstructions())
 	{
-		auto fileID=insn->GetAddress()->GetFileID();
-		auto vo=insn->GetAddress()->GetVirtualOffset();
+		auto fileID=insn->getAddress()->getFileID();
+		auto vo=insn->getAddress()->getVirtualOffset();
 
-		auto p=pair<db_id_t,virtual_offset_t>(fileID,vo);
+		auto p=pair<DatabaseID_t,VirtualOffset_t>(fileID,vo);
 
 		assert(insnMap[p]==NULL);
 		insnMap[p]=insn;
@@ -58,14 +58,14 @@ void PopulateCFG::populate_instruction_map
 
 void PopulateCFG::set_fallthrough
 	(
-	map< pair<db_id_t,virtual_offset_t>, Instruction_t*> &insnMap,
+	map< pair<DatabaseID_t,VirtualOffset_t>, Instruction_t*> &insnMap,
 	DecodedInstruction_t *disasm, Instruction_t *insn, FileIR_t *firp
 	)
 {
 	assert(disasm);
 	assert(insn);
 
-	if(insn->GetFallthrough())
+	if(insn->getFallthrough())
 		return;
 	
 	// check for branches with targets 
@@ -80,10 +80,10 @@ void PopulateCFG::set_fallthrough
 
 	/* get the address of the next instrution */
 	
-	auto virtual_offset=insn->GetAddress()->GetVirtualOffset() + insn->GetDataBits().size();
+	auto virtual_offset=insn->getAddress()->getVirtualOffset() + insn->getDataBits().size();
 
 	/* create a pair of offset/file */
-	auto p=pair<db_id_t,virtual_offset_t>(insn->GetAddress()->GetFileID(),virtual_offset);
+	auto p=pair<DatabaseID_t,VirtualOffset_t>(insn->getAddress()->getFileID(),virtual_offset);
 	
 	/* lookup the target insn from the map */
 	auto fallthrough_insn=insnMap[p];
@@ -91,7 +91,7 @@ void PopulateCFG::set_fallthrough
 	/* sanity, note we may see odd control transfers to 0x0 */
 	if(fallthrough_insn==NULL &&   virtual_offset!=0)
 	{
-		cout<<"Cannot set fallthrough for "<<std::hex<<insn->GetAddress()->GetVirtualOffset();
+		cout<<"Cannot set fallthrough for "<<std::hex<<insn->getAddress()->getVirtualOffset();
 		cout<< " : "<<insn->getDisassembly()<<endl;
 		bad_fallthrough_count++;
 	}
@@ -100,16 +100,16 @@ void PopulateCFG::set_fallthrough
 	if(fallthrough_insn!=0)
 	{
 		fallthroughs_set++;
-		insn->SetFallthrough(fallthrough_insn);
+		insn->setFallthrough(fallthrough_insn);
 	}
 	else
-		missed_instructions.insert(pair<db_id_t,virtual_offset_t>(insn->GetAddress()->GetFileID(),virtual_offset));
+		missed_instructions.insert(pair<DatabaseID_t,VirtualOffset_t>(insn->getAddress()->getFileID(),virtual_offset));
 }
 
 
 void PopulateCFG::set_target
 	(
-	map< pair<db_id_t,virtual_offset_t>, Instruction_t*> &insnMap,
+	map< pair<DatabaseID_t,VirtualOffset_t>, Instruction_t*> &insnMap,
 	DecodedInstruction_t *disasm, Instruction_t *insn, FileIR_t *firp
 	)
 {
@@ -117,7 +117,7 @@ void PopulateCFG::set_target
 	assert(insn);
 	assert(disasm);
 
-	if(insn->GetTarget())
+	if(insn->getTarget())
 		return;
 
 	const auto &operands = disasm->getOperands();
@@ -127,10 +127,10 @@ void PopulateCFG::set_target
 		if(
 			disasm->isBranch() &&		// it is a branch 
 			!disasm->isReturn() && 		// and not a return
-			operand.isConstant()		// and has a constant argument 
+			operand->isConstant()		// and has a constant argument 
 		  )
 		{
-	//		cout<<"Found direct jump with addr=" << insn->GetAddress()->GetVirtualOffset() <<
+	//		cout<<"Found direct jump with addr=" << insn->getAddress()->getVirtualOffset() <<
 	//			" disasm="<<disasm->CompleteInstr<<" ArgMnemonic="<<
 	//			disasm->Argument1.ArgMnemonic<<"."<<endl;
 
@@ -138,7 +138,7 @@ void PopulateCFG::set_target
 			auto virtual_offset=disasm->getAddress();
 
 			/* create a pair of offset/file */
-			auto p=pair<db_id_t,virtual_offset_t>(insn->GetAddress()->GetFileID(),virtual_offset);
+			auto p=pair<DatabaseID_t,VirtualOffset_t>(insn->getAddress()->getFileID(),virtual_offset);
 		
 			/* lookup the target insn from the map */
 			auto target_insn=insnMap[p];
@@ -147,27 +147,27 @@ void PopulateCFG::set_target
 			if(target_insn==NULL)
 			{
 				unsigned char first_byte=0;
-				if(insn->GetFallthrough())
-					first_byte=(insn->GetFallthrough()->GetDataBits().c_str())[0];
-				virtual_offset_t jump_dist=virtual_offset-(insn->GetAddress()->GetVirtualOffset()+(insn->GetDataBits()).size());
+				if(insn->getFallthrough())
+					first_byte=(insn->getFallthrough()->getDataBits().c_str())[0];
+				VirtualOffset_t jump_dist=virtual_offset-(insn->getAddress()->getVirtualOffset()+(insn->getDataBits()).size());
 				if(	
 					// jump 1 byte forward
 					jump_dist == 1 &&
 
 					// and we calculated the fallthrough
-					insn->GetFallthrough()!=NULL &&
+					insn->getFallthrough()!=NULL &&
 
 					// and the fallthrough starts with a lock prefix
 					first_byte==0xf0
 				  )
 				{
 					odd_target_count++;
-					target_insn=insn->GetFallthrough();
+					target_insn=insn->getFallthrough();
 				}
 				else
 				{
 					if(virtual_offset!=0)
-						cout<<"Cannot set target (target="<< std::hex << virtual_offset << ") for "<<std::hex<<insn->GetAddress()->GetVirtualOffset()<<"."<<endl;
+						cout<<"Cannot set target (target="<< std::hex << virtual_offset << ") for "<<std::hex<<insn->getAddress()->getVirtualOffset()<<"."<<endl;
 					bad_target_count++;
 				}
 			}
@@ -176,19 +176,19 @@ void PopulateCFG::set_target
 			if(target_insn!=0)
 			{
 				targets_set++;
-				insn->SetTarget(target_insn);
+				insn->setTarget(target_insn);
 			}
 			else
-				missed_instructions.insert( pair<db_id_t,virtual_offset_t>(insn->GetAddress()->GetFileID(),virtual_offset));
+				missed_instructions.insert( pair<DatabaseID_t,VirtualOffset_t>(insn->getAddress()->getFileID(),virtual_offset));
 
 		}
 	}
 }
 
-File_t* PopulateCFG::find_file(FileIR_t* firp, db_id_t fileid)
+File_t* PopulateCFG::find_file(FileIR_t* firp, DatabaseID_t fileid)
 {
-	assert(firp->GetFile()->GetBaseID()==fileid);
-	return firp->GetFile();
+	assert(firp->getFile()->getBaseID()==fileid);
+	return firp->getFile();
 }
 
 
@@ -225,18 +225,19 @@ void PopulateCFG::add_new_instructions(FileIR_t *firp)
         		if( !elfiop->sections[secndx]->isExecutable()) 
                 		continue;
 		
-        		virtual_offset_t first=elfiop->sections[secndx]->get_address();
-        		virtual_offset_t second=elfiop->sections[secndx]->get_address()+elfiop->sections[secndx]->get_size();
+        		VirtualOffset_t first=elfiop->sections[secndx]->get_address();
+        		VirtualOffset_t second=elfiop->sections[secndx]->get_address()+elfiop->sections[secndx]->get_size();
 
 			/* is the missed instruction in this section */
 			if(first<=missed_address && missed_address<second)
 			{
 				const char* data=elfiop->sections[secndx]->get_data();
 				// second=data?
-				virtual_offset_t offset_into_section=missed_address-elfiop->sections[secndx]->get_address();
+				VirtualOffset_t offset_into_section=missed_address-elfiop->sections[secndx]->get_address();
 	
 				/* disassemble the instruction */
-				DecodedInstruction_t disasm(missed_address, (void*)&data[offset_into_section], elfiop->sections[secndx]->get_size()-offset_into_section );
+				auto disasm_p=DecodedInstruction_t::factory(missed_address, (void*)&data[offset_into_section], elfiop->sections[secndx]->get_size()-offset_into_section );
+				auto &disasm=*disasm_p;
 
 
 
@@ -266,26 +267,34 @@ void PopulateCFG::add_new_instructions(FileIR_t *firp)
 					newinsnbits[i]=data[offset_into_section+i];
 
 				/* create a new address */
+				/*
 				auto newaddr=new AddressID_t();
 				assert(newaddr);
-				newaddr->SetVirtualOffset(missed_address);
-				newaddr->SetFileID(missed_fileid);
+				newaddr->setVirtualOffset(missed_address);
+				newaddr->setFileID(missed_fileid);
+				firp->getAddresses().insert(newaddr);
+				*/
+				auto newaddr=firp->addNewAddress(missed_fileid,missed_address);
 
 				/* create a new instruction */
+				/*
 				auto newinsn=new Instruction_t();
 				assert(newinsn);
-				newinsn->SetAddress(newaddr);
-				newinsn->SetDataBits(newinsnbits);
-				newinsn->SetComment(disasm.getDisassembly()+string(" from fill_in_cfg "));
-				newinsn->SetAddress(newaddr);
+				newinsn->setAddress(newaddr);
+				newinsn->setDataBits(newinsnbits);
+				newinsn->setComment(disasm.getDisassembly()+string(" from fill_in_cfg "));
+				firp->getInstructions().insert(newinsn);
+				newinsn->setAddress(newaddr);
+				*/
+				auto newinsn=firp->addNewInstruction(newaddr, nullptr, newinsnbits, disasm.getDisassembly()+string(" from fill_in_cfg "), nullptr);
+				(void)newinsn;// just add to IR
+
 				/* fallthrough/target/is indirect will be set later */
 
 				/* insert into the IR */
-				firp->GetInstructions().insert(newinsn);
-				firp->GetAddresses().insert(newaddr);
 
 
-				cout<<"Found new instruction, "<<newinsn->GetComment()<<", at "<<std::hex<<newinsn->GetAddress()->GetVirtualOffset()<<" in file "<<"<no name yet>"<<"."<<endl; 
+				cout<<"Found new instruction, "<<newinsn->getComment()<<", at "<<std::hex<<newinsn->getAddress()->getVirtualOffset()<<" in file "<<"<no name yet>"<<"."<<endl; 
 				found_instructions++;
 			}
 		
@@ -312,22 +321,22 @@ void PopulateCFG::fill_in_cfg(FileIR_t *firp)
 		failed_target_count=0;
 		missed_instructions.clear();
 
-		map< pair<db_id_t,virtual_offset_t>, Instruction_t*> insnMap;
+		map< pair<DatabaseID_t,VirtualOffset_t>, Instruction_t*> insnMap;
 		populate_instruction_map(insnMap, firp);
 
-		cout << "Found "<<firp->GetInstructions().size()<<" instructions." <<endl;
+		cout << "Found "<<firp->getInstructions().size()<<" instructions." <<endl;
 
 		/* for each instruction, disassemble it and set the target/fallthrough */
-		for(auto insn : firp->GetInstructions())
+		for(auto insn : firp->getInstructions())
 		{
-      			DecodedInstruction_t disasm(insn);
+      			auto disasm=DecodedInstruction_t::factory(insn);
 	
-      			const auto instr_len = disasm.length();
+      			const auto instr_len = disasm->length();
 	
-			assert(instr_len==insn->GetDataBits().size());
+			assert(instr_len==insn->getDataBits().size());
 	
-			set_fallthrough(insnMap, &disasm, insn, firp);
-			set_target(insnMap, &disasm, insn, firp);
+			set_fallthrough(insnMap, disasm.get(), insn, firp);
+			set_target(insnMap, disasm.get(), insn, firp);
 			
 		}
 		if(bad_target_count>0)
@@ -347,20 +356,20 @@ void PopulateCFG::fill_in_cfg(FileIR_t *firp)
 	for(auto p : missed_instructions)
 	{
 		/* get the address we've missed */
-		virtual_offset_t missed_address=p.second;
+		VirtualOffset_t missed_address=p.second;
 		cout << missed_address << ", ";
 	}
 	cout<<dec<<endl;
 
 
 	/* set the base IDs for all instructions */
-	firp->SetBaseIDS();
+	firp->setBaseIDS();
 
 	/* for each instruction, set the original address id to be that of the address id, as fill_in_cfg is 
 	 * designed to work on only original programs.
 	 */
-	for(auto insn : firp->GetInstructions())
-		insn->SetOriginalAddressID(insn->GetAddress()->GetBaseID());
+	for(auto insn : firp->getInstructions())
+		insn->setOriginalAddressID(insn->getAddress()->getBaseID());
 
 
 }
@@ -373,8 +382,8 @@ bool PopulateCFG::is_in_relro_segment(const int secndx)
 
 	int segnum = real_elfiop->segments.size();
 
-	virtual_offset_t sec_start=(virtual_offset_t)(elfiop->sections[secndx]->get_address());
-	virtual_offset_t sec_end=(virtual_offset_t)(elfiop->sections[secndx]->get_address() + elfiop->sections[secndx]->get_size() - 1 );
+	VirtualOffset_t sec_start=(VirtualOffset_t)(elfiop->sections[secndx]->get_address());
+	VirtualOffset_t sec_end=(VirtualOffset_t)(elfiop->sections[secndx]->get_address() + elfiop->sections[secndx]->get_size() - 1 );
 
 	/* look through each section */
 	for (int segndx=1; segndx<segnum; segndx++)
@@ -386,8 +395,8 @@ bool PopulateCFG::is_in_relro_segment(const int secndx)
 
 		if(type==PT_GNU_RELRO)
 		{
-			virtual_offset_t seg_start=(virtual_offset_t)(real_elfiop->segments[segndx]->get_virtual_address());
-			virtual_offset_t seg_end=(virtual_offset_t)(real_elfiop->segments[segndx]->get_virtual_address() + real_elfiop->segments[segndx]->get_memory_size() - 1 );
+			VirtualOffset_t seg_start=(VirtualOffset_t)(real_elfiop->segments[segndx]->get_virtual_address());
+			VirtualOffset_t seg_end=(VirtualOffset_t)(real_elfiop->segments[segndx]->get_virtual_address() + real_elfiop->segments[segndx]->get_memory_size() - 1 );
 
 			// check if start lies within 
 			if(seg_start <= sec_start  && sec_start <= seg_end)
@@ -409,7 +418,7 @@ bool PopulateCFG::is_in_relro_segment(const int secndx)
 void PopulateCFG::fill_in_scoops(FileIR_t *firp)
 {
 
-	auto max_base_id=firp->GetMaxBaseID();
+	auto max_base_id=firp->getMaxBaseID();
 	auto secnum = elfiop->sections.size();
 	auto secndx=0;
 
@@ -439,18 +448,25 @@ void PopulateCFG::fill_in_scoops(FileIR_t *firp)
 		string name=elfiop->sections[secndx]->get_name();
 
 		/* start address */
+		/*
 		auto startaddr=new AddressID_t();
 		assert(startaddr);
-		startaddr->SetVirtualOffset( elfiop->sections[secndx]->get_address());
-		startaddr->SetFileID(firp->GetFile()->GetBaseID());
-		firp->GetAddresses().insert(startaddr);
+		startaddr->setVirtualOffset( elfiop->sections[secndx]->get_address());
+		startaddr->setFileID(firp->getFile()->getBaseID());
+		firp->getAddresses().insert(startaddr);
+		*/
+		auto startaddr=firp->addNewAddress(firp->getFile()->getBaseID(), elfiop->sections[secndx]->get_address());
 
 		/* end */
+		/*
 		auto endaddr=new AddressID_t();
 		assert(endaddr);
-		endaddr->SetVirtualOffset( elfiop->sections[secndx]->get_address() + elfiop->sections[secndx]->get_size()-1);
-		endaddr->SetFileID(firp->GetFile()->GetBaseID());
-		firp->GetAddresses().insert(endaddr);
+		endaddr->setVirtualOffset( elfiop->sections[secndx]->get_address() + elfiop->sections[secndx]->get_size()-1);
+		endaddr->setFileID(firp->getFile()->getBaseID());
+		firp->getAddresses().insert(endaddr);
+		*/
+		auto endaddr=firp->addNewAddress(firp->getFile()->getBaseID(), elfiop->sections[secndx]->get_address() + elfiop->sections[secndx]->get_size()-1);
+
 
 		string the_contents;
 		the_contents.resize(elfiop->sections[secndx]->get_size()); 
@@ -467,14 +483,18 @@ void PopulateCFG::fill_in_scoops(FileIR_t *firp)
 			( elfiop->sections[secndx]->isExecutable() << 0 ) ;
 
 		bool is_relro=is_in_relro_segment(secndx);
-		DataScoop_t *newscoop=new DataScoop_t(max_base_id++, name, startaddr, endaddr, NULL, permissions, is_relro, the_contents);
 		scoops_detected++;
+		/*
+		DataScoop_t *newscoop=new DataScoop_t(max_base_id++, name, startaddr, endaddr, NULL, permissions, is_relro, the_contents);
 		assert(newscoop);
-		firp->GetDataScoops().insert(newscoop);
+		firp->getDataScoops().insert(newscoop);
+		*/
+		auto newscoop=firp->addNewDataScoop( name, startaddr, endaddr, NULL, permissions, is_relro, the_contents, max_base_id++ );
+		(void)newscoop; // just give it to the IR
 
 		cout<<"Allocated new scoop for section "<<name
-		    <<"("<<hex<<startaddr->GetVirtualOffset()<<"-"
-		    <<hex<<endaddr->GetVirtualOffset()<<")"
+		    <<"("<<hex<<startaddr->getVirtualOffset()<<"-"
+		    <<hex<<endaddr->getVirtualOffset()<<")"
 		    <<" perms="<<permissions<<" relro="<<boolalpha<<is_relro<<endl;
 
 	}
@@ -484,25 +504,25 @@ void PopulateCFG::fill_in_scoops(FileIR_t *firp)
 void PopulateCFG::detect_scoops_in_code(FileIR_t *firp)
 {
 	// data for this function
-	auto already_scoopified=set<virtual_offset_t>();
+	auto already_scoopified=set<VirtualOffset_t>();
 
 	// only valid for arm64
-	if(firp->GetArchitecture()->getMachineType() != admtAarch64) return;
+	if(firp->getArchitecture()->getMachineType() != admtAarch64) return;
 
 	// check each insn for an ldr with a pcrel operand.
-	for(auto insn : firp->GetInstructions())
+	for(auto insn : firp->getInstructions())
 	{
 		// look for ldr's with a pcrel operand
-		const auto d=DecodedInstruction_t(insn);
-		if(d.getMnemonic()!="ldr") continue;	 // only valid on arm.
-		const auto op0=d.getOperand(0);
-		const auto op1=d.getOperand(1);
-	       	if( !op1.isPcrel()) continue;
+		const auto d=DecodedInstruction_t::factory(insn);
+		if(d->getMnemonic()!="ldr") continue;	 // only valid on arm.
+		const auto op0=d->getOperand(0);
+		const auto op1=d->getOperand(1);
+	       	if( !op1->isPcrel()) continue;
 
 		// sanity check that it's a memory operation, and extract fields
-		assert(op1.isMemory());
-		const auto referenced_address=op1.getMemoryDisplacement();
-		const auto op0_str=op0.getString();
+		assert(op1->isMemory());
+		const auto referenced_address=op1->getMemoryDisplacement();
+		const auto op0_str=op0->getString();
 		const auto referenced_size=  // could use API call?
 			op0_str[0]=='w' ? 4  : 
 			op0_str[0]=='x' ? 8  : 
@@ -531,25 +551,33 @@ void PopulateCFG::detect_scoops_in_code(FileIR_t *firp)
 		const auto sec_data=sec->get_data();
 		const auto sec_start=sec->get_address();
 		const auto the_contents=string(&sec_data[referenced_address-sec_start],referenced_size);
-		const auto fileid=firp->GetFile()->GetBaseID();
+		const auto fileid=firp->getFile()->getBaseID();
 
 
+		/*
 		auto start_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE,fileid,referenced_address);
 		assert(start_addr);
-		firp->GetAddresses().insert(start_addr);
+		firp->getAddresses().insert(start_addr);
 
 		auto end_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE,fileid,referenced_address+referenced_size-1);
 		assert(end_addr);
-		firp->GetAddresses().insert(end_addr);
+		firp->getAddresses().insert(end_addr);
+		*/
+		auto start_addr=firp->addNewAddress(fileid,referenced_address);
+		auto end_addr  =firp->addNewAddress(fileid,referenced_address+referenced_size-1);
 
 		const auto name="data_in_text_"+to_string(referenced_address);
 		const auto permissions=0x4; /* R-- */
 		const auto is_relro=false;
+		/*
 		auto newscoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, name, start_addr, end_addr, NULL, permissions, is_relro, the_contents);
-		firp->GetDataScoops().insert(newscoop);
+		firp->getDataScoops().insert(newscoop);
+		*/
+		auto newscoop=firp->addNewDataScoop(name, start_addr, end_addr, NULL, permissions, is_relro, the_contents);
+		(void)newscoop;
 
-		cout<< "Allocated data in text segment "<<name<<"=("<<start_addr->GetVirtualOffset()<<"-"
-		    << end_addr->GetVirtualOffset()<<")"<<endl;
+		cout<< "Allocated data in text segment "<<name<<"=("<<start_addr->getVirtualOffset()<<"-"
+		    << end_addr->getVirtualOffset()<<")"<<endl;
 	}
 }
 
@@ -563,14 +591,14 @@ void PopulateCFG::fill_in_landing_pads(FileIR_t *firp)
 
 	map<Function_t*,set<Instruction_t*> > insns_to_add_to_funcs;
 
-	// for_each(firp->GetInstructions().begin(), firp->GetInstructions().end(), [&](Instruction_t* t)
-	for(const auto t : firp->GetInstructions())
+	// for_each(firp->getInstructions().begin(), firp->getInstructions().end(), [&](Instruction_t* t)
+	for(const auto t : firp->getInstructions())
 	{
-		if(t->GetFunction()==NULL)
+		if(t->getFunction()==NULL)
 			continue;
 		auto lp=eh_frame_rep_ptr->find_lp(t);
-		if(lp && lp->GetFunction()==NULL)
-			insns_to_add_to_funcs[t->GetFunction()].insert(lp);
+		if(lp && lp->getFunction()==NULL)
+			insns_to_add_to_funcs[t->getFunction()].insert(lp);
 	};
 
 
@@ -588,25 +616,25 @@ void PopulateCFG::fill_in_landing_pads(FileIR_t *firp)
 			insns.erase(it);
 
 			assert(insn);
-			if(insn->GetFunction()!=NULL)
+			if(insn->getFunction()!=NULL)
 				continue;
 
 			auto lp=eh_frame_rep_ptr->find_lp(insn);
-			if(lp && lp->GetFunction()==NULL)
+			if(lp && lp->getFunction()==NULL)
 				insns.insert(lp);
 
-			insn->SetFunction(func);
-			cout<<"	Adding "<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<"@"<<hex<<insn->GetAddress()->GetVirtualOffset()<<dec<<endl;
+			insn->setFunction(func);
+			cout<<"	Adding "<<insn->getBaseID()<<":"<<insn->getDisassembly()<<"@"<<hex<<insn->getAddress()->getVirtualOffset()<<dec<<endl;
 			insn_count++;
 			
 
-			auto target=insn->GetTarget();
-			auto fallthru=insn->GetFallthrough();
+			auto target=insn->getTarget();
+			auto fallthru=insn->getFallthrough();
 
 			if(target) insns.insert(target);
 			if(fallthru) insns.insert(fallthru);
 		}
-		cout<<"Found LP outside of function "<<func->GetName()<<" added "<<insn_count<<" instructions"<<endl;
+		cout<<"Found LP outside of function "<<func->getName()<<" added "<<insn_count<<" instructions"<<endl;
 	};
 	
 }
@@ -644,20 +672,20 @@ int PopulateCFG::executeStep(IRDBObjects_t *const irdb_objects)
 	{
 		const auto pqxx_interface = irdb_objects->getDBInterface();
 		// now set the DB interface for THIS PLUGIN LIBRARY -- VERY IMPORTANT
-		BaseObj_t::SetInterface(pqxx_interface);	
+		BaseObj_t::setInterface(pqxx_interface);	
 
 		const auto variant = irdb_objects->addVariant(variant_id);
-		for(File_t* file : variant->GetFiles())
+		for(File_t* file : variant->getFiles())
 		{
-			const auto firp = irdb_objects->addFileIR(variant_id, file->GetBaseID());
+			const auto firp = irdb_objects->addFileIR(variant_id, file->getBaseID());
 			assert(firp);
-                        cout<<"Filling in cfg for "<<firp->GetFile()->GetURL()<<endl;
+                        cout<<"Filling in cfg for "<<firp->getFile()->getURL()<<endl;
 
 			/* get the OID of the file */
-			const int elfoid=firp->GetFile()->GetELFOID();
+			const int elfoid=firp->getFile()->getELFOID();
 
 			pqxx::largeobject lo(elfoid);
-                	lo.to_file(pqxx_interface->GetTransaction(),"readeh_tmp_file.exe");
+                	lo.to_file(pqxx_interface->getTransaction(),"readeh_tmp_file.exe");
 
 			elfiop.reset(new exeio());
 			elfiop->load(string("readeh_tmp_file.exe"));
@@ -699,8 +727,8 @@ int PopulateCFG::executeStep(IRDBObjects_t *const irdb_objects)
 
 
 extern "C"
-shared_ptr<Transform_SDK::TransformStep_t> GetTransformStep(void)
+shared_ptr<TransformStep_t> getTransformStep(void)
 {
-	const shared_ptr<Transform_SDK::TransformStep_t> the_step(new PopulateCFG());
+	const shared_ptr<TransformStep_t> the_step(new PopulateCFG());
 	return the_step;
 }

@@ -21,6 +21,8 @@
 #include "instruction_descriptor.h"
 #include "function_descriptor.h"
 
+using namespace IRDB_SDK;
+
 wahoo::Instruction::Instruction()
 {
   m_address = 0;
@@ -36,7 +38,7 @@ wahoo::Instruction::Instruction()
   m_data = NULL;
 }
 
-wahoo::Instruction::Instruction(libIRDB::virtual_offset_t  p_address, int p_size, Function* p_func)
+wahoo::Instruction::Instruction(VirtualOffset_t  p_address, int p_size, Function* p_func)
 {
   m_address = p_address;
   m_size = p_size;

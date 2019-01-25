@@ -28,16 +28,17 @@
 #include <map>
 #include <string.h>
 #include <assert.h>
-//#include <bea_deprecated.hpp>
 
 #undef EIP
 
 using namespace libIRDB;
 using namespace std;
 
+#if 0
+
 // forward decls for this file 
 static string qualified_addressify(FileIR_t* fileIRp, Instruction_t *insn);
-static string labelfy(Instruction_t* insn);
+static string labelfy(IRDB_SDK::Instruction_t* insn);
 
 
 //
@@ -82,7 +83,7 @@ static bool needs_short_branch_rewrite(Instruction_t* newinsn, const DecodedInst
 
 	/* 64-bit has more needs than this */
 	// if(disasm.Archi==32)
-	if(FileIR_t::GetArchitectureBitWidth()==32)
+	if(FileIR_t::getArchitectureBitWidth()==32)
 		return false;
 
 	// if(disasm.Instruction.BranchType==0)		/* non-branches, jumps, calls and returns don't need this rewrite */
@@ -99,9 +100,9 @@ static bool needs_short_branch_rewrite(Instruction_t* newinsn, const DecodedInst
 		return false;
 
 	/* all other branches (on x86-64) need further checking */
-	if(!newinsn->GetTarget())	/* no specified target, no need to modify it */
+	if(!newinsn->getTarget())	/* no specified target, no need to modify it */
 		return false;
-	string new_target=labelfy(newinsn->GetTarget());
+	string new_target=labelfy(newinsn->getTarget());
 	if (new_target.c_str()[0]=='0')	/* if we're jumping back to the base instruction */
 		return true;
 	return false;
@@ -111,8 +112,9 @@ static bool needs_short_branch_rewrite(Instruction_t* newinsn, const DecodedInst
 //
 // create a label for the given instruction
 //
-static string qualified_labelfy(FileIR_t* fileIRp, Instruction_t* insn)
+static string qualified_labelfy(FileIR_t* fileIRp, IRDB_SDK::Instruction_t* p_insn)
 {
+	auto insn=dynamic_cast<Instruction_t*>(p_insn);
 	if(!needs_spri_rule(insn, insnMap[insn]))
 		return qualified_addressify(fileIRp, insn);
 
@@ -124,13 +126,10 @@ static long long int label_offset=0;
 static void update_label_offset(FileIR_t *firp)
 {
 	int max=0;
-	for(set<Instruction_t*>::iterator it=firp->GetInstructions().begin();
-	    it!=firp->GetInstructions().end();
-	    ++it)
+	for(auto insn : firp->GetInstructions())
 	{
-		Instruction_t *insn=*it;
-		if(insn->GetBaseID()>max)
-			max=insn->GetBaseID();
+		if(insn->getBaseID()>max)
+			max=insn->getBaseID();
 	}
 	label_offset+=max+1;
 }
@@ -140,12 +139,14 @@ static long long int IDToSPRIID(int id)
 	return id+label_offset;
 }
 
-static string labelfy(Instruction_t* insn)
+static string labelfy(IRDB_SDK::Instruction_t* p_insn)
 {
+	auto insn=dynamic_cast<Instruction_t*>(p_insn);
+
 	if(!needs_spri_rule(insn, insnMap[insn]))
 		return addressify(insn);
 
-	return string("LI_") + to_string(IDToSPRIID(insn->GetBaseID()));
+	return string("LI_") + to_string(IDToSPRIID(insn->getBaseID()));
 }
 
 
@@ -160,7 +161,7 @@ static string addressify(Instruction_t* insn)
 	if(!old_insn)
 		return labelfy(insn);
 
-	s<<"0x"<<std::hex<<old_insn->GetAddress()->GetVirtualOffset();
+	s<<"0x"<<std::hex<<old_insn->getAddress()->getVirtualOffset();
 
 	return s.str();
 	
@@ -185,7 +186,7 @@ static string URLToFile(string url)
 
 static string qualify(FileIR_t* fileIRp)
 {
-	return URLToFile(fileIRp->GetFile()->GetURL()) + "+" ;
+	return URLToFile(fileIRp->getFile()->GetURL()) + "+" ;
 }
 
 
@@ -196,10 +197,10 @@ static string qualify_address(FileIR_t* fileIRp, int addr)
 	return ss.str();
 }
 
-static string better_qualify_address(FileIR_t* fileIRp, AddressID_t* addr)
+static string better_qualify_address(FileIR_t* fileIRp, IRDB_SDK::AddressID_t* addr)
 {
-	db_id_t fileID=addr->GetFileID();
-	virtual_offset_t off=addr->GetVirtualOffset();
+	db_id_t fileID=addr->getFileID();
+	virtual_offset_t off=addr->getVirtualOffset();
 
 	/* in theory, we could have an address from any file..
 	 * but this appears to be broken.  NOT_IN_DATABASE means we're in the spri address space,
@@ -253,7 +254,7 @@ static string getPostCallbackLabel(Instruction_t *newinsn)
 static string get_relocation_string(FileIR_t* fileIRp, ostream& fout, int offset, string type, Instruction_t* insn) 
 {
 	stringstream ss;
-	ss<<labelfy(insn)<<" rl " << offset << " " << type <<  " " << URLToFile(fileIRp->GetFile()->GetURL()) << endl;
+	ss<<labelfy(insn)<<" rl " << offset << " " << type <<  " " << URLToFile(fileIRp->getFile()->GetURL()) << endl;
 	return ss.str();
 }
 
@@ -288,26 +289,26 @@ void emit_jump(FileIR_t* fileIRp, ostream& fout, const DecodedInstruction_t& dis
 
 	string label=labelfy(newinsn);
 	string complete_instr=disasm.getDisassembly();
-	string address_string=disasm.getOperand(0).getString();
+	string address_string=disasm.getOperand(0)->getString();
 
 
 	/* if we have a target instruction in the database */
-	if(newinsn->GetTarget() || needs_short_branch_rewrite(newinsn,disasm))
+	if(newinsn->getTarget() || needs_short_branch_rewrite(newinsn,disasm))
 	{
 		/* change the target to be symbolic */
 
 		/* first get the new target */
 		string new_target;
-		if(newinsn->GetTarget())
-			new_target=labelfy(newinsn->GetTarget());
+		if(newinsn->getTarget())
+			new_target=labelfy(newinsn->getTarget());
 		/* if this is a short branch, write this branch to jump to the next insn */
 		if(needs_short_branch_rewrite(newinsn,disasm))
 		{
 			new_target=get_short_branch_label(newinsn);
 
 			/* also get the real target if it's a short branch */
-			if(newinsn->GetTarget())
-				original_target=labelfy(newinsn->GetTarget());
+			if(newinsn->getTarget())
+				original_target=labelfy(newinsn->getTarget());
 			else
 				original_target=address_string;
 		}
@@ -323,7 +324,7 @@ void emit_jump(FileIR_t* fileIRp, ostream& fout, const DecodedInstruction_t& dis
 		//assert(disasm.Argument1.SegmentReg==0);
 
 		// if(disasm.Archi==64)
-		if(FileIR_t::GetArchitectureBitWidth()==64)
+		if(FileIR_t::getArchitectureBitWidth()==64)
 		{
 			auto converted=convert_jump_for_64bit(newinsn,final, emit_later,new_target);
 			(void)converted; // unused?
@@ -388,7 +389,7 @@ this will never work again?
 			else
 			{
 				// assert this is the "main" file and no relocation is necessary.
-				assert(strstr(fileIRp->GetFile()->GetURL().c_str(),"a.ncexe")!=0);
+				assert(strstr(fileIRp->getFile()->GetURL().c_str(),"a.ncexe")!=0);
 			}
 		}
 #endif
@@ -410,43 +411,17 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 
 	/* Disassemble the instruction */
 	//int instr_len = Disassemble(newinsn,disasm);
-	const auto disasm=DecodedInstruction_t(newinsn);
-
-
-// not needed after library fix.
-#if 0
-	/* if this instruction has a prefix, re-disassemble it showing the segment regs */
-	if(
-		disasm.Prefix.FSPrefix || 
-		disasm.Prefix.SSPrefix || 
-		disasm.Prefix.GSPrefix || 
-		disasm.Prefix.ESPrefix || 
-		disasm.Prefix.CSPrefix || 
-		disasm.Prefix.DSPrefix 
-	  )
-	
-	{
-		memset(&disasm, 0, sizeof(DISASM));
-
-		disasm.Options = NasmSyntax + PrefixedNumeral + ShowSegmentRegs;
-		disasm.Archi = fileIRp->GetArchitectureBitWidth();
-		disasm.EIP = (UIntPtr)newinsn->GetDataBits().c_str();
-		disasm.VirtualAddr = old_insn ? old_insn->GetAddress()->GetVirtualOffset() : 0;
-
-		/* Disassemble the instruction */
-		int instr_len = Disasm(&disasm);
-	}
-#endif
-
+	const auto p_disasm=DecodedInstruction_t::factory(newinsn);
+	const auto &disasm=*p_disasm;
 
 	string label=labelfy(newinsn);
-	string complete_instr=disasm.getDisassembly(); //string(disasm.CompleteInstr);
-	string address_string=disasm.getOperand(0).getString(); // string(disasm.Argument1.ArgMnemonic);
+	string complete_instr=disasm.getDisassembly(); 
+	string address_string=disasm.getOperand(0)->getString(); 
 
 	/* Emit any callback functions */
-	if (!newinsn->GetCallback().empty())
+	if (!newinsn->getCallback().empty())
 	{
-		fout << "\t"+label+"\t () " << newinsn->GetCallback() << " # acts as a call <callback> insn" << endl;
+		fout << "\t"+label+"\t () " << newinsn->getCallback() << " # acts as a call <callback> insn" << endl;
 		fout << "\t"+ getPostCallbackLabel(newinsn)+" ** ";
 	}
 	else
@@ -470,7 +445,7 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 		//(disasm.Argument1.ArgType & CONSTANT_TYPE)!=0          // and has a constant argument type 1
 		disasm.isBranch()  &&
 		!disasm.isReturn() &&
-		disasm.getOperand(0).isConstant() 
+		disasm.getOperand(0)->isConstant() 
 	  )
 	{
 		emit_jump(fileIRp, fout, disasm,newinsn,old_insn, original_target, emit_later);
@@ -553,19 +528,20 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 		fout<<endl;
 	}
 
-	for(set<Relocation_t*>::iterator it=newinsn->GetRelocations().begin(); it!=newinsn->GetRelocations().end(); ++it)
+	//for(set<Relocation_t*>::iterator it=newinsn->GetRelocations().begin(); it!=newinsn->GetRelocations().end(); ++it)
+	for(auto this_reloc : newinsn->getRelocations())
 	{
-		Relocation_t* this_reloc=*it;
-		emit_relocation(fileIRp, fout, this_reloc->GetOffset(),this_reloc->GetType(), newinsn);
+		//Relocation_t* this_reloc=*it;
+		emit_relocation(fileIRp, fout, this_reloc->getOffset(),this_reloc->getType(), newinsn);
 	}
 
-	ICFS_t *IB_targets = newinsn->GetIBTargets();
+	auto IB_targets = newinsn->getIBTargets();
 	if (NULL != IB_targets) 
 	{
-		if (IB_targets->IsComplete())
+		if (IB_targets->isComplete())
 		{
 			// Iterate through all IB targets and produce SPRI rules for IBTL (IB Target Limitation).
-			for (InstructionSet_t::iterator TargIter = IB_targets->begin(); TargIter != IB_targets->end(); ++TargIter)
+			for (auto TargIter = IB_targets->begin(); TargIter != IB_targets->end(); ++TargIter)
 			{
 			    fout << "\t" << labelfy(newinsn) << " IL " << qualified_labelfy(fileIRp, *TargIter) << endl;
 			}
@@ -582,19 +558,19 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 static bool needs_spri_rule(Instruction_t* newinsn,Instruction_t* oldinsn)
 {
 	// check if this is an inserted instruction 
-	if(newinsn->GetOriginalAddressID()==BaseObj_t::NOT_IN_DATABASE)
+	if(newinsn->getOriginalAddressID()==BaseObj_t::NOT_IN_DATABASE)
 		return true;
 
 	assert(oldinsn);
-	assert(newinsn->GetOriginalAddressID()==oldinsn->GetAddress()->GetBaseID());
+	assert(newinsn->getOriginalAddressID()==oldinsn->getAddress()->getBaseID());
 
 
 	/* We moved the instruction  to a new address*/
-	if(newinsn->GetAddress()->GetVirtualOffset()!=oldinsn->GetAddress()->GetVirtualOffset())
+	if(newinsn->getAddress()->getVirtualOffset()!=oldinsn->getAddress()->getVirtualOffset())
 		return true;
 
 	/* We moved the instruction to a new file? */
-	if(newinsn->GetAddress()->GetFileID()!=oldinsn->GetAddress()->GetFileID())
+	if(newinsn->getAddress()->getFileID()!=oldinsn->getAddress()->getFileID())
 	{
 		//	
 		// coders:  verify this is OK before allowing an insn to change files. 
@@ -604,10 +580,10 @@ static bool needs_spri_rule(Instruction_t* newinsn,Instruction_t* oldinsn)
 	}
 
 
-	Instruction_t *newFT=newinsn->GetFallthrough();
-	Instruction_t *newTG=newinsn->GetTarget();
-	Instruction_t *oldFT=oldinsn->GetFallthrough();
-	Instruction_t *oldTG=oldinsn->GetTarget();
+	auto newFT=newinsn->getFallthrough();
+	auto newTG=newinsn->getTarget();
+	auto oldFT=oldinsn->getFallthrough();
+	auto oldTG=oldinsn->getTarget();
 
 	//
 	// check that both have a fallthrough or both don't have a fallthrough
@@ -621,15 +597,15 @@ static bool needs_spri_rule(Instruction_t* newinsn,Instruction_t* oldinsn)
 		return true;
 
 	// if there's a fallthrough, but it is different, return true
-	if(newFT && newFT->GetOriginalAddressID()!=oldFT->GetAddress()->GetBaseID())
+	if(newFT && newFT->getOriginalAddressID()!=oldFT->getAddress()->getBaseID())
 		return true;
 		
 	// if there's a target, but it is different, return true
-	if(newTG && newTG->GetOriginalAddressID()!=oldTG->GetAddress()->GetBaseID())
+	if(newTG && newTG->getOriginalAddressID()!=oldTG->getAddress()->getBaseID())
 		return true;
 
 	// data bits themselves changed
-	if(newinsn->GetDataBits() != oldinsn->GetDataBits())
+	if(newinsn->getDataBits() != oldinsn->getDataBits())
 		return true;
 
 	return false;
@@ -645,10 +621,10 @@ static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& f
 	Instruction_t* old_insn=insnMap[newinsn];
 
 	fout << endl << "# Orig addr: "<<addressify(newinsn)<<" insn_id: "<< std::dec 
-	     << newinsn->GetBaseID()<<" with comment "<<newinsn->GetComment()<<endl;
-	if (newinsn->GetIndirectBranchTargetAddress())
+	     << newinsn->getBaseID()<<" with comment "<<newinsn->getComment()<<endl;
+	if (newinsn->getIndirectBranchTargetAddress())
 		fout << "# Orig addr: "<<addressify(newinsn)<<" indirect branch target: "
-		     <<newinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset() << endl;
+		     <<newinsn->getIndirectBranchTargetAddress()->getVirtualOffset() << endl;
 
 	bool redirected_addr=false;
 	bool redirected_ibt=false;
@@ -666,23 +642,24 @@ static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& f
 	}
 
 	/* if this insn is an IB target, emit the redirect appropriately */
-	if (newinsn->GetIndirectBranchTargetAddress()) 
+	if (newinsn->getIndirectBranchTargetAddress()) 
 	{
 		redirected_ibt=true;
 		/* If the IBT address isn't this insns address, redirect appropriately.
 		 * If this insn isn't an unmoved insn target, always redirect appropriately.
 		 */
-		if((old_insn && (*newinsn->GetIndirectBranchTargetAddress()) != (*old_insn->GetAddress()))
-			||  !redirected_addr)
+		// if((old_insn && (*newinsn->getIndirectBranchTargetAddress()) != (*old_insn->getAddress()))
+		// 	||  !redirected_addr)
+		assert(0); // couldn't make this work
 		{
 			// use the better qualify address to check for file matches.
 			fout << "# because has indir "<<endl;
-			fout << better_qualify_address(fileIRp,newinsn->GetIndirectBranchTargetAddress()) 
+			fout << better_qualify_address(fileIRp,newinsn->getIndirectBranchTargetAddress()) 
 			     <<" -> ."<<endl;
 		}
 
 		/* i don't understand this part.  hopefully this is right */
-		if(!newinsn->GetCallback().empty())
+		if(!newinsn->getCallback().empty())
 			fout << ". -> "<< getPostCallbackLabel(newinsn) <<endl;
 	}
 	// if there's a corresponding "old" instruction (i.e., in Variant 0, aka from the binary) 
@@ -693,7 +670,7 @@ static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& f
 
 		/* check to see if this address an IBT somewhere else */
 		/* and we havne't already redirected it */
-		if (ibts.find(*old_insn->GetAddress()) == ibts.end() && !redirected_ibt && !redirected_addr)
+		if (ibts.find(*old_insn->getAddress()) == ibts.end() && !redirected_ibt && !redirected_addr)
 		{
 
 			// with ILR turned off, we don't try to redirect to 0
@@ -715,7 +692,7 @@ static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& f
 		// this may be tricky because it seems we are overloading the indirect branch 
 		// target address to mean two things for instructions with callbacks.  Good luck if 
 		// you're reading this. 
-		assert(newinsn->GetCallback().empty());
+		assert(newinsn->getCallback().empty());
 		
 	}
 
@@ -723,17 +700,17 @@ static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& f
 
 
 	/* if there's a fallthrough instruction, jump to it. */
-	if(newinsn->GetFallthrough())
+	if(newinsn->getFallthrough())
 	{	
-		fout << ". -> " << qualified_labelfy(fileIRp,newinsn->GetFallthrough())<<endl;
+		fout << ". -> " << qualified_labelfy(fileIRp,newinsn->getFallthrough())<<endl;
 	}
 	else
 	{
 		//DISASM disasm;
 		//disasm.Options = NasmSyntax + PrefixedNumeral + ShowSegmentRegs;
-		//disasm.Archi = fileIRp->GetArchitectureBitWidth();
-		//disasm.EIP = (UIntPtr)newinsn->GetDataBits().c_str();
-		//disasm.VirtualAddr = old_insn ? old_insn->GetAddress()->GetVirtualOffset() : 0;
+		//disasm.Archi = fileIRp->getArchitectureBitWidth();
+		//disasm.EIP = (UIntPtr)newinsn->getDataBits().c_str();
+		//disasm.VirtualAddr = old_insn ? old_insn->getAddress()->getVirtualOffset() : 0;
 		const auto disasm=DecodedInstruction_t(newinsn);
 
 		/* Disassemble the instruction */
@@ -747,7 +724,7 @@ static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& f
 		{
 			assert(old_insn);	/* it's an error to insert a new, non-unconditional branch instruction
 						 * and not specify it's fallthrough */
-			fout << ". -> " << qualify(fileIRp)<< "0x" << std::hex << old_insn->GetAddress()->GetVirtualOffset()+instr_len <<endl;
+			fout << ". -> " << qualify(fileIRp)<< "0x" << std::hex << old_insn->getAddress()->getVirtualOffset()+instr_len <<endl;
 		}
 	}
 
@@ -787,8 +764,8 @@ static void generate_insn_to_insn_maps(FileIR_t *fileIRp, FileIR_t *orig_fileIRp
 
 	/* loop through each insn in the original program */
 	for(
-		std::set<Instruction_t*>::const_iterator it=orig_fileIRp->GetInstructions().begin();
-		it!=orig_fileIRp->GetInstructions().end();
+		auto it=orig_fileIRp->getInstructions().begin();
+		it!=orig_fileIRp->getInstructions().end();
 		++it
 	   )
 	{
@@ -797,12 +774,12 @@ static void generate_insn_to_insn_maps(FileIR_t *fileIRp, FileIR_t *orig_fileIRp
 		assert(insn);
 
 		/* get it's ID */
-		db_id_t address_id=insn->GetAddress()->GetBaseID();
+		db_id_t address_id=insn->getAddress()->getBaseID();
 		assert(address_id!=-1);
 
 		/* sanity check */
-		assert(insn->GetAddress()->GetFileID()!=-1);	
-		assert(insn->GetAddress()->GetVirtualOffset()!=0);	
+		assert(insn->getAddress()->getFileID()!=-1);	
+		assert(insn->getAddress()->getVirtualOffset()!=0);	
 
 		/* insert into map */
 		idMap[address_id]=insn;
@@ -819,7 +796,7 @@ static void generate_insn_to_insn_maps(FileIR_t *fileIRp, FileIR_t *orig_fileIRp
 		Instruction_t *insn=*it;
 		assert(insn);
 
-		db_id_t orig_addr=insn->GetOriginalAddressID();
+		db_id_t orig_addr=insn->getOriginalAddressID();
 
 		/* no mapping if this is true */
 		if(orig_addr==-1)
@@ -841,14 +818,14 @@ void FileIR_t::GenerateSPRI(ostream &fout, bool with_ilr)
 	assert(orig_varidp.IsRegistered()==true);
 
 	for(
-		set<File_t*>::iterator it=orig_varidp.GetFiles().begin();
-		it!=orig_varidp.GetFiles().end();
+		set<File_t*>::iterator it=orig_varidp.getFiles().begin();
+		it!=orig_varidp.getFiles().end();
 		++it
 	   )
 	{
 			File_t* the_file=*it;
 
-			if(the_file->GetBaseID()==fileptr->orig_fid)
+			if(the_file->getBaseID()==fileptr->orig_fid)
 			{
 				fout <<"# Generating spri for "<< the_file->GetURL()<<endl;
 
@@ -877,7 +854,7 @@ static void generate_IBT_set(FileIR_t* fileIRp)
 	   )
 	{
 		Instruction_t *insn=*it;
-		AddressID_t *ibt=insn->GetIndirectBranchTargetAddress();
+		AddressID_t *ibt=insn->getIndirectBranchTargetAddress();
 
 		if(ibt)
 		{
@@ -910,24 +887,26 @@ static void generate_unmoved_insn_targets_set(FileIR_t* fileIRp)
 			!needs_spri_rule(insn, insnMap[insn])
 		  )
 		{
-			unmoved_insn_targets.insert(insn->GetTarget());
-			unmoved_insn_targets.insert(insn->GetFallthrough());
+			unmoved_insn_targets.insert(insn->getTarget());
+			unmoved_insn_targets.insert(insn->getFallthrough());
 		}
 
 	}
 
 }
-
+#endif
 
 void FileIR_t::GenerateSPRI(FileIR_t *orig_fileIRp, ostream &fout, bool with_ilr)
 {
+	assert(0);
+	/*
 	//Resolve (assemble) any instructions in the registry.
 	AssembleRegistry();
 
 	// give 'this' a name
 	FileIR_t *fileIRp=this;
 
-	SetBaseIDS(); // need unique ID to generate unique label name
+	setBaseIDS(); // need unique ID to generate unique label name
 
 	// generate the map from new instruction to old instruction needed for this transform.
 	generate_insn_to_insn_maps(fileIRp, orig_fileIRp);
@@ -962,5 +941,6 @@ void FileIR_t::GenerateSPRI(FileIR_t *orig_fileIRp, ostream &fout, bool with_ilr
 	update_label_offset(fileIRp);
 
 	fout<<"#DEBUG: maximum ID is "<<label_offset<<endl;
+	*/
 }
 

@@ -29,39 +29,39 @@ using namespace std;
 
 
 
-void InstructionPredecessors_t::AddPreds(const Instruction_t* before, const InstructionSet_t& afterset)
+void InstructionPredecessors_t::AddPreds(const IRDB_SDK::Instruction_t* before, const InstructionSet_t& afterset)
 {
-	for(InstructionSet_t::const_iterator it=afterset.begin(); it!=afterset.end(); ++it)
+	for(auto it=afterset.begin(); it!=afterset.end(); ++it)
 	{
-		pred_map[*it].insert((libIRDB::Instruction_t*)before);
+		pred_map[*it].insert(const_cast<IRDB_SDK::Instruction_t*>(before));
 	}
 }
 
-void InstructionPredecessors_t::AddPred(const Instruction_t* before, const Instruction_t* after)
+void InstructionPredecessors_t::AddPred(const IRDB_SDK::Instruction_t* before, const IRDB_SDK::Instruction_t* after)
 {
 	assert(before);
 	if(!after) return;
 
 	if(getenv("DUMP_PRED_CREATE"))
-		cout<<"Found "<<after->GetBaseID()<<":"<<after->getDisassembly() << " follows "<< before->GetBaseID()<<":"<<before->getDisassembly()<<endl;
-	pred_map[after].insert((Instruction_t*)before);
+		cout<<"Found "<<after->getBaseID()<<":"<<after->getDisassembly() << " follows "<< before->getBaseID()<<":"<<before->getDisassembly()<<endl;
+	pred_map[after].insert(const_cast<IRDB_SDK::Instruction_t*>(before));
 	
 }
 
-void InstructionPredecessors_t::AddFile(const FileIR_t* firp2)
+void InstructionPredecessors_t::AddFile(const IRDB_SDK::FileIR_t* firp2)
 {
-	FileIR_t* firp=(FileIR_t*)firp2; // discarding const qualifier because we know we won't change the set
-	for(InstructionSet_t::const_iterator it=firp->GetInstructions().begin();
-		it!=firp->GetInstructions().end();
+	auto firp=const_cast<IRDB_SDK::FileIR_t*>(firp2); // discarding const qualifier because we know we won't change the set
+	for(auto it=firp->getInstructions().begin();
+		it!=firp->getInstructions().end();
 		++it)
 	{
-		Instruction_t* insn=*it;
-		AddPred(insn, insn->GetTarget());
-		AddPred(insn, insn->GetFallthrough());
+		auto insn=*it;
+		AddPred(insn, insn->getTarget());
+		AddPred(insn, insn->getFallthrough());
 
 		// if we have a complete list, then explicitly add them.
-	        if(insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
-        	      	AddPreds(insn, *insn->GetIBTargets());
+	        if(insn->getIBTargets() && insn->getIBTargets()->isComplete())
+        	      	AddPreds(insn, *insn->getIBTargets());
 		
 	}
 }

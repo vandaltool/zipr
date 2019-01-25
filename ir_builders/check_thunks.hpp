@@ -23,10 +23,10 @@
 #define check_thunks_hpp
 
 #include <set>
-#include "libIRDB-core.hpp"
+#include <irdb-core>
 
-void find_all_module_starts(libIRDB::FileIR_t* firp, std::set<libIRDB::virtual_offset_t>& thunk_bases);
-void check_for_thunks(libIRDB::FileIR_t* firp, const std::set<libIRDB::virtual_offset_t>& thunk_bases);
+void find_all_module_starts(IRDB_SDK::FileIR_t* firp, std::set<IRDB_SDK::VirtualOffset_t>& thunk_bases);
+void check_for_thunks(IRDB_SDK::FileIR_t* firp, const std::set<IRDB_SDK::VirtualOffset_t>& thunk_bases);
 
 
 #endif

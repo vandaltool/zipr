@@ -16,26 +16,26 @@ class ElfDependencies_t : public Transform
 {
 	public:
 
-		ElfDependencies_t(FileIR_t* firp);
+		ElfDependencies_t(IRDB_SDK::FileIR_t* firp);
 		void prependLibraryDepedencies(const string& libName) { transformer->prependLibraryDepedencies(libName); }
 		void appendLibraryDepedencies(const string& libName)  { transformer->appendLibraryDepedencies(libName); }
 
 		// return scoop and offset
-		pair<DataScoop_t*,int> appendGotEntry(const string &symbolName)  { return transformer->appendGotEntry(symbolName); }
+		pair<IRDB_SDK::DataScoop_t*,int> appendGotEntry(const string &symbolName)  { return transformer->appendGotEntry(symbolName); }
 
 		// return instruction that's the plt entry.
-		Instruction_t* appendPltEntry(const string &symbolName)  { return transformer->appendPltEntry(symbolName); }
+		IRDB_SDK::Instruction_t* appendPltEntry(const string &symbolName)  { return transformer->appendPltEntry(symbolName); }
 
 	private:
 
 	class ElfDependenciesBase_t : public Transform
 	{
 		public:
-			ElfDependenciesBase_t(FileIR_t* firp) : Transform(NULL, firp, NULL) {}
+			ElfDependenciesBase_t(IRDB_SDK::FileIR_t* firp) : Transform(NULL, firp, NULL) {}
 			virtual void prependLibraryDepedencies(const string &libraryName)=0;
 			virtual void appendLibraryDepedencies(const string &libraryName)=0;
-			virtual pair<DataScoop_t*,int> appendGotEntry(const string &name)=0; 
-			virtual Instruction_t* appendPltEntry(const string &name)=0; 
+			virtual pair<IRDB_SDK::DataScoop_t*,int> appendGotEntry(const string &name)=0; 
+			virtual IRDB_SDK::Instruction_t* appendPltEntry(const string &name)=0; 
 
 	};
 
@@ -44,19 +44,18 @@ class ElfDependencies_t : public Transform
 	{
 
 		public:
-			ElfDependenciesImpl_t(FileIR_t* fipr);
+			ElfDependenciesImpl_t(IRDB_SDK::FileIR_t* fipr);
 
 			virtual void prependLibraryDepedencies(const string& libraryName);
 			virtual void appendLibraryDepedencies(const string& libraryName);
-			virtual pair<DataScoop_t*,int> appendGotEntry(const string& name); 
-			virtual Instruction_t* appendPltEntry(const string& name); 
+			virtual pair<IRDB_SDK::DataScoop_t*,int> appendGotEntry(const string& name); 
+			virtual IRDB_SDK::Instruction_t* appendPltEntry(const string& name); 
 			
 
 		private:
 			bool add_dl_support();
-			Instruction_t* find_runtime_resolve(DataScoop_t* gotplt_scoop);
-			DataScoop_t* add_got_entry(const std::string& name);
-			//bool add_got_entries();
+			IRDB_SDK::Instruction_t* find_runtime_resolve(IRDB_SDK::DataScoop_t* gotplt_scoop);
+			IRDB_SDK::DataScoop_t* add_got_entry(const std::string& name);
 			bool add_libdl_as_needed_support(string libName);
 			bool execute();
 

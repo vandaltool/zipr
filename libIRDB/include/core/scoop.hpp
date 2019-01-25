@@ -18,12 +18,13 @@
  *
  */
 
-#ifndef libirdb_data_scoop_hpp
-#define libirdb_data_scoop_hpp
+
+namespace libIRDB
+{
 
 class DataScoopByAddressComp_t;
 
-class DataScoop_t : public BaseObj_t
+class DataScoop_t : public BaseObj_t, virtual public IRDB_SDK::DataScoop_t
 {
 
 	public:
@@ -58,40 +59,40 @@ class DataScoop_t : public BaseObj_t
 				contents(p_contents)
 		{
 			assert(start && end);
-			SetBaseID(id);
+			setBaseID(id);
 		}
 
 		virtual ~DataScoop_t() { /* management of addresses and types is explicit */ } 
 
-		const std::string GetName() const { return name; }
-		const std::string& GetContents() const { return contents; }
-		std::string &GetContents() { return contents; }
-		libIRDB::AddressID_t* GetStart() const { return start; }
-		libIRDB::AddressID_t* GetEnd() const { return end; }
-		libIRDB::Type_t* GetType() const { return type; }
-		libIRDB::virtual_offset_t GetSize() { assert(start && end); return end->GetVirtualOffset() - start->GetVirtualOffset() + 1 ; }
+		const std::string getName() const { return name; }
+		const std::string& getContents() const { return contents; }
+		std::string &getContents() { return contents; }
+		IRDB_SDK::AddressID_t* getStart() const { return start; }
+		IRDB_SDK::AddressID_t* getEnd() const { return end; }
+		IRDB_SDK::Type_t* getType() const { return type; }
+		IRDB_SDK::VirtualOffset_t getSize() const { assert(start && end); return end->getVirtualOffset() - start->getVirtualOffset() + 1 ; }
 		bool isReadable() const  { return (permissions & permissions_r) == permissions_r; }
 		bool isWriteable() const { return (permissions & permissions_w) == permissions_w; };
 		bool isExecuteable() const { return (permissions & permissions_x) == permissions_x; };
 		bool isRelRo() const { return is_relro; };
-		int  getRawPerms() const { return permissions; }
+		uint8_t  getRawPerms() const { return permissions; }
 		void  setRawPerms(int newperms) { permissions=newperms; }
 
-		void SetName(const std::string &n) { name=n; }
-		void SetContents(const std::string &n) { contents=n; }
-		void SetStart( libIRDB::AddressID_t* addr) { assert(addr); start=addr; }
-		void SetEnd( libIRDB::AddressID_t* addr ) { assert(addr); end=addr; }
-		void SetType( libIRDB::Type_t*  t) { type=t; }
+		void setName(const std::string &n) { name=n; }
+		void setContents(const std::string &n) { contents=n; }
+		void setStart( IRDB_SDK::AddressID_t* addr) { assert(addr); start=dynamic_cast<AddressID_t*>(addr); assert(start); }
+		void setEnd  ( IRDB_SDK::AddressID_t* addr) { assert(addr); end  =dynamic_cast<AddressID_t*>(addr); assert(end  ); }
+		void setType( IRDB_SDK::Type_t*  t) { type=dynamic_cast<Type_t*>(t); }
 
-		void SetReadable() { permissions |= permissions_r; }
-		void SetWriteable() { permissions |= permissions_w; }
-		void SetExecuteable() { permissions |= permissions_x; }
-		void SetRelRo() { is_relro = true; }
+		void setReadable() { permissions |= permissions_r; }
+		void setWriteable() { permissions |= permissions_w; }
+		void setExecuteable() { permissions |= permissions_x; }
+		void setRelRo() { is_relro = true; }
 
-		void ClearReadable() { permissions &= ~permissions_r; }
-		void ClearWriteable() { permissions &= ~permissions_w; }
-		void ClearExecuteable() { permissions &= ~permissions_x; }
-		void ClearRelRo() { is_relro=false; }
+		void clearReadable() { permissions &= ~permissions_r; }
+		void clearWriteable() { permissions &= ~permissions_w; }
+		void clearExecuteable() { permissions &= ~permissions_x; }
+		void clearRelRo() { is_relro=false; }
 
                 std::string WriteToDB(File_t *fid, db_id_t newid);
 		std::string WriteToDBRange(File_t *fid, db_id_t newid, int start, int end, std::string table_name);
@@ -104,9 +105,9 @@ class DataScoop_t : public BaseObj_t
 		const static int permissions_x=1;
 
 		std::string name;
-		libIRDB::AddressID_t* start;
-		libIRDB::AddressID_t* end;
-		libIRDB::Type_t* type;
+		AddressID_t* start;
+		AddressID_t* end;
+		Type_t* type;
 		int permissions;
 		bool is_relro;
 		std::string contents;
@@ -125,12 +126,12 @@ class DataScoopByAddressComp_t {
 		   )
 			throw std::logic_error("Cannot order scoops that have null elements.");
 
-		return std::make_tuple(lhs->start->GetVirtualOffset(), lhs) <
-		       std::make_tuple(rhs->start->GetVirtualOffset(), rhs);
+		return std::make_tuple(lhs->start->getVirtualOffset(), lhs) <
+		       std::make_tuple(rhs->start->getVirtualOffset(), rhs);
 	}
 };
 
-typedef std::set<DataScoop_t*> DataScoopSet_t;
-typedef std::set<DataScoop_t*, DataScoopByAddressComp_t> DataScoopByAddressSet_t;
+using DataScoopSet_t          = IRDB_SDK::DataScoopSet_t;
+using DataScoopByAddressSet_t = std::set<DataScoop_t*, DataScoopByAddressComp_t>;
 
-#endif
+}

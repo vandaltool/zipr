@@ -1,9 +1,3 @@
-#ifndef libRIDB_decodedoperandcsarm_hpp
-#define libRIDB_decodedoperandcsarm_hpp
-
-#include <memory>
-#include <core/decode_base.hpp>
-#include <core/operand_base.hpp>
 
 namespace libIRDB
 {
@@ -11,8 +5,9 @@ namespace libIRDB
 using namespace std;
 using namespace libIRDB;
 
+class DecodedOperandCapstoneARM64_t;
 
-class DecodedOperandCapstoneARM64_t : public DecodedOperandCapstone_t
+class DecodedOperandCapstoneARM64_t : virtual public IRDB_SDK::DecodedOperand_t
 {
 	public:
 		DecodedOperandCapstoneARM64_t() =delete;
@@ -60,4 +55,3 @@ class DecodedOperandCapstoneARM64_t : public DecodedOperandCapstone_t
 };
 
 }
-#endif

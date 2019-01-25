@@ -1,3 +1,4 @@
+#include <irdb-core>
 #include <libIRDB-core.hpp>
 #include <dlfcn.h> 
 #include <vector>
@@ -14,8 +15,7 @@
 
 
 using namespace std;
-using namespace libIRDB;
-using namespace Transform_SDK;
+using namespace IRDB_SDK;
 
 #define ALLOF(a) begin(a),end(a)
 
@@ -67,7 +67,7 @@ class ThanosPlugin_t
 	static const unique_ptr<IRDBObjects_t> shared_objects;
 };
 // initialize private static data member
-const unique_ptr<IRDBObjects_t> ThanosPlugin_t::shared_objects(new IRDBObjects_t());
+const unique_ptr<IRDBObjects_t> ThanosPlugin_t::shared_objects(new libIRDB::IRDBObjects_t());
 
 using PluginList_t = vector<unique_ptr<ThanosPlugin_t>>;
 PluginList_t getPlugins(const int argc, char const *const argv[]); 
@@ -240,11 +240,11 @@ int ThanosPlugin_t::runPlugin()
 		return -1;
         }
         
-       	const void *const sym = dlsym(dlhdl, "GetTransformStep"); 
+       	const void *const sym = dlsym(dlhdl, "getTransformStep"); 
         if(sym == NULL)
         {
         	const auto err=dlerror();
-                *thanos_log<<"Cannot find GetTransformStep in "<<step_name<<": "<<err<<endl;
+                *thanos_log<<"Cannot find getTransformStep in "<<step_name<<": "<<err<<endl;
 		return -1;
         }
 
@@ -351,7 +351,7 @@ int ThanosPlugin_t::executeStep(TransformStep_t& the_step, const bool are_debugg
 		else
 		{
 		    // commit changes (in case this step fails) and reset interface
-		    pqxx_interface->Commit();
+		    pqxx_interface->commit();
 		    pqxx_interface = shared_objects->resetDBInterface();
 		}
 	}
@@ -392,7 +392,7 @@ int ThanosPlugin_t::executeStep(TransformStep_t& the_step, const bool are_debugg
 		else if(are_debugging)
 		{
 			// commit changes (in case next step fails) and reset interface 
-			pqxx_interface->Commit();
+			pqxx_interface->commit();
 			pqxx_interface = shared_objects->resetDBInterface();
 		}
 	}
@@ -407,7 +407,7 @@ int ThanosPlugin_t::executeStep(TransformStep_t& the_step, const bool are_debugg
 		else
 		{
 			// commit changes (in case next step fails) and reset interface 
-			pqxx_interface->Commit();
+			pqxx_interface->commit();
 			pqxx_interface = shared_objects->resetDBInterface();
 		}
 	}
@@ -427,7 +427,7 @@ int ThanosPlugin_t::saveChanges()
         else
         {
         	// commit changes and reset interface 
-        	pqxx_interface->Commit();
+        	pqxx_interface->commit();
         	pqxx_interface = shared_objects->resetDBInterface();
        		return 0;
         }

@@ -2,8 +2,8 @@
 #include <vector>
 #include <string>
 
-#include <libIRDB-core.hpp>
-#include <libIRDB-core.hpp>
+#include <irdb-core>
+#include <irdb-core>
 #include "instruction_descriptor.h"
 
 //class wahoo::Instruction;
@@ -16,14 +16,14 @@ class Function
 {
   public:
     Function();
-    Function(libIRDB::virtual_offset_t);
-    Function(string, libIRDB::virtual_offset_t, int);
+    Function(IRDB_SDK::VirtualOffset_t);
+    Function(string, IRDB_SDK::VirtualOffset_t, int);
     ~Function();
 
     string                    getName() const { return m_name; }
     void                      setName(const string p_name) { m_name = p_name; }
-    libIRDB::virtual_offset_t getAddress() const { return m_address; }
-    void                      setAddress(const libIRDB::virtual_offset_t p_address) { m_address = p_address; }
+    IRDB_SDK::VirtualOffset_t getAddress() const { return m_address; }
+    void                      setAddress(const IRDB_SDK::VirtualOffset_t p_address) { m_address = p_address; }
     int                       getSize() const { return m_size; }
     void                      setSize(const int p_size) { m_size = p_size; }
     int                       getFrameSize() const { return m_frameSize; }
@@ -33,9 +33,9 @@ class Function
 
 	
     bool operator == (const Function &);
-    bool operator == (const libIRDB::virtual_offset_t);
+    bool operator == (const IRDB_SDK::VirtualOffset_t);
     bool operator != (const Function &);
-    bool operator != (const libIRDB::virtual_offset_t);
+    bool operator != (const IRDB_SDK::VirtualOffset_t);
 
     bool isSafe() const { return m_isSafe; }
     void setSafe() { m_isSafe = true; }
@@ -68,7 +68,7 @@ class Function
 
     int            m_functionID;
     string         m_name;
-    libIRDB::virtual_offset_t    m_address;
+    IRDB_SDK::VirtualOffset_t    m_address;
     int            m_size;
     int            m_frameSize;
     bool           m_isSafe;

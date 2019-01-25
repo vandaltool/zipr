@@ -28,9 +28,7 @@ files=  '''
 	decode_csarm.cpp
 	operand_csarm.cpp
 	IRDB_Objects.cpp
-	decode_dispatch.cpp
 	decode_base.cpp
-	operand_dispatch.cpp
 '''
 unused_files='''
 	decode_bea.cpp
@@ -41,6 +39,7 @@ unused_files='''
 
 cpppath=''' 
 	.
+	$IRDB_SDK/include/
 	$SECURITY_TRANSFORMS_HOME/include/
 	$SECURITY_TRANSFORMS_HOME/libIRDB/include/
 	$SECURITY_TRANSFORMS_HOME/libcapstone/include/capstone/
@@ -51,7 +50,7 @@ libpath='''
 
 #globs=glob.glob(os.environ['SECURITY_TRANSFORMS_HOME']+'/libcapstone/zipr_unpack/*.o')
 
-myenv.Append(CCFLAGS=" -Wall -std=c++11 ")
+myenv.Append(CCFLAGS=" -Wall -std=c++11 -fmax-errors=2 ")
 myenv.Append(LIBPATH=libpath)
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath))

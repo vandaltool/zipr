@@ -19,7 +19,7 @@
  *
  */
 
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 #include <libIRDB-util.hpp>
 #include <iostream>
 #include <fstream>
@@ -43,7 +43,7 @@
 #include "fill_in_indtargs.hpp"
 #include "libMEDSAnnotation.h"
 
-using namespace libIRDB;
+using namespace IRDB_SDK;
 using namespace std;
 using namespace EXEIO;
 using namespace MEDS_Annotation;
@@ -52,23 +52,22 @@ using namespace MEDS_Annotation;
 /*
  * defines 
  */
-#define arch_ptr_bytes() (firp->GetArchitectureBitWidth()/8)
 #define ALLOF(a) begin(a),end(a)
 
 extern void read_ehframe(FileIR_t* firp, EXEIO::exeio* );
 
 
 
-class PopulateIndTargs_t : public libIRDB::Transform_SDK::TransformStep_t
+class PopulateIndTargs_t : public TransformStep_t
 {
 
 // record all full addresses and page-addresses found per function (or null for no function
-using PerFuncAddrSet_t=set<virtual_offset_t>;
+using PerFuncAddrSet_t=set<VirtualOffset_t>;
 map<Function_t*,PerFuncAddrSet_t> all_adrp_results;
 map<Function_t*,PerFuncAddrSet_t> all_add_adrp_results;
 
 // record all full addresses and page-addresses found that are spilled to the stack
-using SpillPoint_t = pair<Function_t*, virtual_offset_t>;
+using SpillPoint_t = pair<Function_t*, VirtualOffset_t>;
 map<SpillPoint_t,PerFuncAddrSet_t> spilled_add_adrp_results;
 map<SpillPoint_t,PerFuncAddrSet_t> spilled_adrps;
 
@@ -87,13 +86,13 @@ public:
 
 
 // the bounds of the executable sections in the pgm.
-set< pair <virtual_offset_t,virtual_offset_t>  > bounds;
+set< pair <VirtualOffset_t,VirtualOffset_t>  > bounds;
 
 // the set of (possible) targets we've found.
-map<virtual_offset_t,ibt_provenance_t> targets;
+map<VirtualOffset_t,ibt_provenance_t> targets;
 
 // the set of ranges represented by the eh_frame section, could be empty for non-elf files.
-set< pair< virtual_offset_t, virtual_offset_t> > ranges;
+set< pair< VirtualOffset_t, VirtualOffset_t> > ranges;
 
 // a way to map an instruction to its set of (direct) predecessors. 
 map< Instruction_t* , InstructionSet_t > preds;
@@ -102,16 +101,16 @@ map< Instruction_t* , InstructionSet_t > preds;
 map< Instruction_t*, fii_icfs > jmptables;
 
 // a map of virtual offset -> instruction for quick access.
-map<virtual_offset_t,Instruction_t*> lookupInstructionMap;
+map<VirtualOffset_t,Instruction_t*> lookupInstructionMap;
 
 // the set of things that are partially unpinned already.
 set<Instruction_t*> already_unpinned;
 
 long total_unpins=0;
 
-void range(virtual_offset_t start, virtual_offset_t end)
+void range(VirtualOffset_t start, VirtualOffset_t end)
 { 	
-	pair<virtual_offset_t,virtual_offset_t> foo(start,end);
+	pair<VirtualOffset_t,VirtualOffset_t> foo(start,end);
 	ranges.insert(foo);
 }
 
@@ -119,7 +118,7 @@ void range(virtual_offset_t start, virtual_offset_t end)
 /*   
  * is_in_range - determine if an address is referenced by the eh_frame section 
  */
-bool is_in_range(virtual_offset_t p)
+bool is_in_range(VirtualOffset_t p)
 {
 	for(auto  bound : ranges)
 	{
@@ -139,7 +138,7 @@ void process_ranges(FileIR_t* firp)
 
 }
 
-bool possible_target(virtual_offset_t p, virtual_offset_t from_addr, ibt_provenance_t prov)
+bool possible_target(VirtualOffset_t p, VirtualOffset_t from_addr, ibt_provenance_t prov)
 {
 	if(is_possible_target(p,from_addr))
 	{
@@ -156,7 +155,7 @@ bool possible_target(virtual_offset_t p, virtual_offset_t from_addr, ibt_provena
 	return false;
 }
 
-bool is_possible_target(virtual_offset_t p, virtual_offset_t addr)
+bool is_possible_target(VirtualOffset_t p, VirtualOffset_t addr)
 {
 	for(auto bound : bounds)
 	{
@@ -171,7 +170,7 @@ bool is_possible_target(virtual_offset_t p, virtual_offset_t addr)
 
 }
 
-EXEIO::section*  find_section(virtual_offset_t addr, EXEIO::exeio *elfiop)
+EXEIO::section*  find_section(VirtualOffset_t addr, EXEIO::exeio *elfiop)
 {
          for ( int i = 0; i < elfiop->sections.size(); ++i )
          {   
@@ -189,23 +188,23 @@ EXEIO::section*  find_section(virtual_offset_t addr, EXEIO::exeio *elfiop)
 
 void handle_argument(
 		     const DecodedInstruction_t& decoded_insn, 
-		     const DecodedOperand_t *arg, 
+		     const DecodedOperand_t &arg, 
 		     Instruction_t* insn, 
 		     ibt_provenance_t::provtype_t pt = ibt_provenance_t::ibtp_text
 		    )
 {
-	if(arg->isMemory() && decoded_insn.getMnemonic()=="lea") 
+	if(arg.isMemory() && decoded_insn.getMnemonic()=="lea") 
 	{
-		if(arg->isPcrel()) 
+		if(arg.isPcrel()) 
 		{
 			assert(insn);
-			assert(insn->GetAddress());
-			possible_target(arg->getMemoryDisplacement() + insn->GetAddress()->GetVirtualOffset() +
-				insn->GetDataBits().length(), insn->GetAddress()->GetVirtualOffset(), pt);
+			assert(insn->getAddress());
+			possible_target(arg.getMemoryDisplacement() + insn->getAddress()->getVirtualOffset() +
+				insn->getDataBits().length(), insn->getAddress()->getVirtualOffset(), pt);
 		}
 		else
 		{
-			possible_target(arg->getMemoryDisplacement(), insn->GetAddress()->GetVirtualOffset(), pt);
+			possible_target(arg.getMemoryDisplacement(), insn->getAddress()->getVirtualOffset(), pt);
 		}
 	}
 }
@@ -214,14 +213,14 @@ void handle_argument(
 void lookupInstruction_init(FileIR_t *firp)
 {
 	lookupInstructionMap.clear();
-	for(auto insn : firp->GetInstructions())
+	for(auto insn : firp->getInstructions())
         {
-		const auto addr=insn->GetAddress()->GetVirtualOffset();
+		const auto addr=insn->getAddress()->getVirtualOffset();
 		lookupInstructionMap[addr]=insn;
 	}
 }
 
-Instruction_t *lookupInstruction(FileIR_t *firp, virtual_offset_t virtual_offset)
+Instruction_t *lookupInstruction(FileIR_t *firp, VirtualOffset_t virtual_offset)
 {
 	if(lookupInstructionMap.find(virtual_offset)!=lookupInstructionMap.end())
 		return lookupInstructionMap[virtual_offset];
@@ -230,9 +229,9 @@ Instruction_t *lookupInstruction(FileIR_t *firp, virtual_offset_t virtual_offset
 
 void mark_targets(FileIR_t *firp)
 {
-        for(auto insn : firp->GetInstructions())
+        for(auto insn : firp->getInstructions())
 	{
-		auto addr=insn->GetAddress()->GetVirtualOffset();
+		auto addr=insn->getAddress()->getVirtualOffset();
 
 		/* lookup in the list of targets */
 		if(targets.find(addr)!=targets.end())
@@ -253,12 +252,14 @@ void mark_targets(FileIR_t *firp)
 			{
 				if(getenv("IB_VERBOSE")!=nullptr)
 					cout<<"Setting pin at "<<hex<<addr<<endl;
+				/*
 				AddressID_t* newaddr = new AddressID_t;
-				newaddr->SetFileID(insn->GetAddress()->GetFileID());
-				newaddr->SetVirtualOffset(insn->GetAddress()->GetVirtualOffset());
-				
-				insn->SetIndirectBranchTargetAddress(newaddr);
-				firp->GetAddresses().insert(newaddr);
+				newaddr->SetFileID(insn->getAddress()->getFileID());
+				newaddr->setVirtualOffset(insn->getAddress()->getVirtualOffset());
+				firp->getAddresses().insert(newaddr);
+				*/
+				auto newaddr=firp->addNewAddress(insn->getAddress()->getFileID(), insn->getAddress()->getVirtualOffset());
+				insn->setIndirectBranchTargetAddress(newaddr);
 			}
 		}
 	}
@@ -267,22 +268,21 @@ void mark_targets(FileIR_t *firp)
 
 bool CallToPrintfFollows(FileIR_t *firp, Instruction_t* insn, const string& arg_str)
 {
-	for(Instruction_t* ptr=insn->GetFallthrough(); ptr!=nullptr; ptr=ptr->GetFallthrough())
+	for(auto ptr=insn->getFallthrough(); ptr!=nullptr; ptr=ptr->getFallthrough())
 	{
-		DecodedInstruction_t d(ptr);
-		// Disassemble(ptr,d);
-		if(d.getMnemonic() == string("call"))
+		auto d=DecodedInstruction_t ::factory(ptr);
+		if(d->getMnemonic() == string("call"))
 		{
 			// check we have a target
-			if(ptr->GetTarget()==nullptr)
+			if(ptr->getTarget()==nullptr)
 				return false;
 
 			// check the target has a function 
-			if(ptr->GetTarget()->GetFunction()==nullptr)
+			if(ptr->getTarget()->getFunction()==nullptr)
 				return false;
 
 			// check if we're calling printf.
-			if(ptr->GetTarget()->GetFunction()->GetName().find("printf")==string::npos)
+			if(ptr->getTarget()->getFunction()->getName().find("printf")==string::npos)
 				return false;
 
 			// found it
@@ -290,7 +290,7 @@ bool CallToPrintfFollows(FileIR_t *firp, Instruction_t* insn, const string& arg_
 		}
 
 		// found reference to argstring, assume it's a write and exit
-		if(d.getDisassembly()/*string(d.CompleteInstr)*/.find(arg_str)!= string::npos)
+		if(d->getDisassembly().find(arg_str)!= string::npos)
 			return false;
 	}
 
@@ -301,50 +301,50 @@ bool texttoprintf(FileIR_t *firp,Instruction_t* insn)
 {
 	string dst="";
 	// note that dst is an output parameter of IsParameterWrite and an input parameter to CallFollows
-	if(IsParameterWrite(firp,insn, dst) && CallToPrintfFollows(firp,insn,dst))
+	if(libIRDB::IsParameterWrite(firp,insn, dst) && CallToPrintfFollows(firp,insn,dst))
 	{
 		return true;
 	}
 	return false;
 }
 
-void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<virtual_offset_t>& thunk_bases)
+void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<VirtualOffset_t>& thunk_bases)
 {
 
-        for(auto insn : firp->GetInstructions())
+        for(auto insn : firp->getInstructions())
         {
-		DecodedInstruction_t disasm(insn);
-                virtual_offset_t instr_len = disasm.length(); // Disassemble(insn,disasm);
+		auto disasm=DecodedInstruction_t::factory(insn);
+                VirtualOffset_t instr_len = disasm->length(); // Disassemble(insn,disasm);
 
-                assert(instr_len==insn->GetDataBits().size());
+                assert(instr_len==insn->getDataBits().size());
 
-		const auto mt=firp->GetArchitecture()->getMachineType();
+		const auto mt=firp->getArchitecture()->getMachineType();
 
 		if(mt==admtX86_64 || mt==admtI386)
 		{
 			// work for both 32- and 64-bit.
-			check_for_PIC_switch_table32_type2(firp, insn,disasm, elfiop, thunk_bases);
-			check_for_PIC_switch_table32_type3(firp, insn,disasm, elfiop, thunk_bases);
+			check_for_PIC_switch_table32_type2(firp, insn, *disasm, elfiop, thunk_bases);
+			check_for_PIC_switch_table32_type3(firp, insn, *disasm, elfiop, thunk_bases);
 
-			if (firp->GetArchitectureBitWidth()==32)
-				check_for_PIC_switch_table32(firp, insn,disasm, elfiop, thunk_bases);
-			else if (firp->GetArchitectureBitWidth()==64)
-				check_for_PIC_switch_table64(firp, insn,disasm, elfiop);
+			if (firp->getArchitectureBitWidth()==32)
+				check_for_PIC_switch_table32(firp, insn, *disasm, elfiop, thunk_bases);
+			else if (firp->getArchitectureBitWidth()==64)
+				check_for_PIC_switch_table64(firp, insn, *disasm, elfiop);
 			else
 				assert(0);
 
-			check_for_nonPIC_switch_table(firp, insn,disasm, elfiop);
-			check_for_nonPIC_switch_table_pattern2(firp, insn,disasm, elfiop);
+			check_for_nonPIC_switch_table(firp, insn, *disasm, elfiop);
+			check_for_nonPIC_switch_table_pattern2(firp, insn, *disasm, elfiop);
 		}
 		else if(mt==admtAarch64)
 		{
-			check_for_arm_switch_type1(firp,insn, disasm, elfiop);
+			check_for_arm_switch_type1(firp,insn,  *disasm, elfiop);
 		}
 		else
 			throw invalid_argument("Cannot determine machine type");
 
 		/* other branches can't indicate an indirect branch target */
-		if(disasm.isBranch()) // disasm.Instruction.BranchType)
+		if(disasm->isBranch()) // disasm.Instruction.BranchType)
 			continue;
 
 		ibt_provenance_t::provtype_t prov=0;
@@ -354,22 +354,22 @@ void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<vir
 		}
 		else
 		{
-			cout<<"TextToPrintf analysis of '"<<disasm.getDisassembly()<<"' successful at " <<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
+			cout<<"TextToPrintf analysis of '"<<disasm->getDisassembly()<<"' successful at " <<hex<<insn->getAddress()->getVirtualOffset()<<endl;
 			prov=ibt_provenance_t::ibtp_texttoprintf;
 		}
 		/* otherwise, any immediate is a possible branch target */
-		for(const auto& op: disasm.getOperands())
+		for(const auto& op: disasm->getOperands())
 		{
-			if(op.isConstant())
-				possible_target(op.getConstant(), 0, prov);
+			if(op->isConstant())
+				possible_target(op->getConstant(), 0, prov);
 		}
 
 		for(auto i=0;i<4;i++)
 		{
-			if(disasm.hasOperand(i))
+			if(disasm->hasOperand(i))
 			{
-				const auto op=disasm.getOperand(i);
-				handle_argument(disasm, &op, insn, prov);
+				const auto op=disasm->getOperand(i);
+				handle_argument(*disasm, *op, insn, prov);
 			}
 		}
 	}
@@ -386,10 +386,10 @@ void get_executable_bounds(FileIR_t *firp, const section* shdr)
 	if( !shdr->isExecutable() )
 		return;
 
-	virtual_offset_t first=shdr->get_address();
-	virtual_offset_t second=shdr->get_address()+shdr->get_size();
+	VirtualOffset_t first=shdr->get_address();
+	VirtualOffset_t second=shdr->get_address()+shdr->get_size();
 
-	bounds.insert(pair<virtual_offset_t,virtual_offset_t>(first,second));
+	bounds.insert(pair<VirtualOffset_t,VirtualOffset_t>(first,second));
 
 
 }
@@ -416,7 +416,7 @@ void infer_targets(FileIR_t *firp, section* shdr)
 	const char* data=shdr->get_data() ; // C(char*)malloc(shdr->sh_size);
 
 	assert(arch_ptr_bytes()==4 || arch_ptr_bytes()==8);
-	for(int i=0;i+arch_ptr_bytes()<=shdr->get_size();i++)
+	for(auto i=0u;i+arch_ptr_bytes()<=(size_t)shdr->get_size();i++)
 	{
 		// even on 64-bit, pointers might be stored as 32-bit, as a 
 		// elf object has the 32-bit limitations.
@@ -425,7 +425,7 @@ void infer_targets(FileIR_t *firp, section* shdr)
 		if(arch_ptr_bytes()==4)
 			p=*(int*)&data[i];
 		else
-			p=*(virtual_offset_t*)&data[i];	// 64 or 32-bit depending on sizeof uintptr_t, may need porting for cross platform analysis.
+			p=*(VirtualOffset_t*)&data[i];	// 64 or 32-bit depending on sizeof uintptr_t, may need porting for cross platform analysis.
 
 
 
@@ -456,30 +456,30 @@ void infer_targets(FileIR_t *firp, section* shdr)
 void handle_scoop_scanning(FileIR_t* firp)
 {
 	// check for addresses in scoops in the text section. 
-	for(auto scoop : firp->GetDataScoops())
+	for(auto scoop : firp->getDataScoops())
 	{
 		// test if scoop was added by fill_in_cfg -- make this test better.
-		if(scoop->GetName().find("data_in_text_")==string::npos) continue;
+		if(scoop->getName().find("data_in_text_")==string::npos) continue;
 
 
 		// at the moment, FIC only creates 4-, 8-, and 16- bytes scoops
 		// change this code if FIC chagnes.
-		if(scoop->GetSize() == 4 ) 
+		if(scoop->getSize() == 4 ) 
 		{
 			// may be a 4-byter, which can't hold an address.
 			continue; 
 		}
-		if(scoop->GetSize() == 8 )
+		if(scoop->getSize() == 8 )
 		{
 			// check to see if the scoop has an IBTA 
-			const auto addr=*(uint64_t*)(scoop->GetContents().c_str());
-			possible_target(addr, scoop->GetStart()->GetVirtualOffset(), ibt_provenance_t::ibtp_unknown);
+			const auto addr=*(uint64_t*)(scoop->getContents().c_str());
+			possible_target(addr, scoop->getStart()->getVirtualOffset(), ibt_provenance_t::ibtp_unknown);
 		}
 		else
 		{
 			// we may see 16 indicating that a ldr q-word happened.
 			// this isn't likely an IBT, so we skip scanning it.
-			assert(scoop->GetSize() == 16 );	 
+			assert(scoop->getSize() == 16 );	 
 		}
 	}
 }
@@ -511,12 +511,12 @@ set<Instruction_t*> find_in_function(string needle, Function_t *haystack)
 
 	assert(0 == regcomp(&preg, needle.c_str(), REG_EXTENDED));
 
-	for (auto candidate :  haystack->GetInstructions())
+	for (auto candidate :  haystack->getInstructions())
 	{
-		auto disasm=DecodedInstruction_t(candidate);
+		auto disasm=DecodedInstruction_t::factory(candidate);
 
 		// check it's the requested type
-		if(regexec(&preg, disasm.getDisassembly().c_str(), 0, nullptr, 0) == 0)
+		if(regexec(&preg, disasm->getDisassembly().c_str(), 0, nullptr, 0) == 0)
 		{
 			found_instructions.insert(candidate);
 		}
@@ -584,17 +584,17 @@ bool backup_until(const string &insn_type_regex_str,
 	
 
        		// get I7's disassembly
-		const auto disasm=DecodedInstruction_t(prev);
+		const auto disasm=DecodedInstruction_t::factory(prev);
 
        		// check it's the requested type
-       		if(regexec(&preg, disasm.getDisassembly().c_str(), 0, nullptr, 0) == 0)
+       		if(regexec(&preg, disasm->getDisassembly().c_str(), 0, nullptr, 0) == 0)
 			return true;
 
 		if(stop_if_set!="")
 		{
-			for(const auto operand : disasm.getOperands())
+			for(const auto operand : disasm->getOperands())
 			{
-				if(operand.isWritten() && regexec(&stop_expression, operand.getString().c_str(), 0, nullptr, 0) == 0)
+				if(operand->isWritten() && regexec(&stop_expression, operand->getString().c_str(), 0, nullptr, 0) == 0)
 					return false;
 			}
 		}
@@ -609,15 +609,15 @@ bool backup_until(const string &insn_type_regex_str,
 		for(const auto pred : mypreds)
 		{
 			prev=pred;// mark that we are here, in case we return true here.
-			const auto disasm=DecodedInstruction_t(pred);
+			const auto disasm=DecodedInstruction_t::factory(pred);
        			// check it's the requested type
-       			if(regexec(&preg, disasm.getDisassembly().c_str(), 0, nullptr, 0) == 0)
+       			if(regexec(&preg, disasm->getDisassembly().c_str(), 0, nullptr, 0) == 0)
 				return true;
 			if(stop_if_set!="")
 			{
-				for(const auto operand : disasm.getOperands())
+				for(const auto operand : disasm->getOperands())
 				{
-					if(operand.isWritten() && regexec(&stop_expression, operand.getString().c_str(), 0, nullptr, 0) == 0)
+					if(operand->isWritten() && regexec(&stop_expression, operand->getString().c_str(), 0, nullptr, 0) == 0)
 						return false;
 				}
 			}
@@ -688,7 +688,7 @@ notes:
         if(d10.getMnemonic() != "br") return;
 
 	// grab the reg
-	const auto i10_reg=d10.getOperand(0).getString();
+	const auto i10_reg=d10.getOperand(0)->getString();
 
 	// try to find I9
 	auto i9=(Instruction_t*)nullptr;
@@ -704,9 +704,10 @@ notes:
 
 	// Extract the I9 fields.
 	assert(i9);
-	const auto d9              = DecodedInstruction_t(i9);
-	const auto offset_reg      = d9.getOperand(1).getString();
-	const auto table_entry_reg = d9.getOperand(2).getString();
+	const auto d9p             = DecodedInstruction_t::factory(i9);
+	const auto &d9             = *d9p;
+	const auto offset_reg      = d9.getOperand(1)->getString();
+	const auto table_entry_reg = d9.getOperand(2)->getString();
 
 
 	// try to find I8
@@ -721,8 +722,9 @@ notes:
 
 	// extract the I8 fields
 	assert(i8);
-	const auto d8             = DecodedInstruction_t(i8);
-	const auto jump_base_addr = d8.getOperand(1).getConstant();
+	const auto d8p            = DecodedInstruction_t::factory(i8);
+	const auto &d8            = *d8p;
+	const auto jump_base_addr = d8.getOperand(1)->getConstant();
 
 	// try to find I7
 	auto i7=(Instruction_t*)nullptr;
@@ -736,8 +738,9 @@ notes:
 
 	// extract the I7 fields
 	assert(i7);
-	const auto d7               = DecodedInstruction_t(i7);
-	const auto memory_op_string = d7.getOperand(1).getString();
+	const auto d7p              = DecodedInstruction_t::factory(i7);
+	const auto &d7              = *d7p;
+	const auto memory_op_string = d7.getOperand(1)->getString();
 	const auto plus_pos         = memory_op_string.find(" +");
 	const auto table_base_reg   = memory_op_string.substr(0,plus_pos);
 	const auto table_index_reg  = memory_op_string.substr(plus_pos+3);
@@ -768,9 +771,10 @@ notes:
 
 		// extract the I6 fields
 		assert(i6);
-		const auto d6                = DecodedInstruction_t(i6);
-		const auto table_page_reg    = d6.getOperand(1).getString();
-		const auto table_page_offset = d6.getOperand(2).getConstant();
+		const auto d6p                = DecodedInstruction_t::factory(i6);
+		const auto &d6                = *d6p;
+		const auto table_page_reg    = d6.getOperand(1)->getString();
+		const auto table_page_offset = d6.getOperand(2)->getConstant();
 
 		// try to find I5
 		auto i5=(Instruction_t*)nullptr;
@@ -785,14 +789,15 @@ notes:
 		{
 			// extract i5 fields
 			assert(i5);
-			const auto d5         = DecodedInstruction_t(i5);
-			const auto table_page = d5.getOperand(1).getConstant();
+			const auto d5p        = DecodedInstruction_t::factory(i5);
+			const auto &d5        = *d5p;
+			const auto table_page = d5.getOperand(1)->getConstant();
 			const auto table_addr=table_page+table_page_offset;
 			all_table_bases= PerFuncAddrSet_t({table_addr});
 		}
 		else
 		{
-			for(auto adrp_value : all_adrp_results[i10->GetFunction()])
+			for(auto adrp_value : all_adrp_results[i10->getFunction()])
 			{
 				all_table_bases.insert(adrp_value+table_page_offset);
 			}
@@ -810,25 +815,26 @@ notes:
 	                     ))
 	{
 		assert(i6);
-		const auto d6                = DecodedInstruction_t(i6);
+		const auto d6p                = DecodedInstruction_t::factory(i6);
+		const auto &d6                = *d6p;
 		// found reload of table address from spill location!
                 // reloads write to the stack with a constant offset.
                 const auto reload_op1=d6.getOperand(1);
-                assert(reload_op1.isMemory());
-                const auto reload_op1_string=reload_op1.getString();
+                assert(reload_op1->isMemory());
+                const auto reload_op1_string=reload_op1->getString();
 
                 // needs to have a base reg, which is either sp or x29
-                const auto hasbr   = (reload_op1.hasBaseRegister()) ;
+                const auto hasbr   = (reload_op1->hasBaseRegister()) ;
                 const auto okbr    = (reload_op1_string.substr(0,2)=="sp" || reload_op1_string.substr(0,3)=="x29" ) ;
-                const auto hasdisp = (reload_op1.hasMemoryDisplacement()) ;
-                const auto hasir   = (reload_op1.hasIndexRegister()) ;
+                const auto hasdisp = (reload_op1->hasMemoryDisplacement()) ;
+                const auto hasir   = (reload_op1->hasIndexRegister()) ;
 		const auto ok      = hasbr && okbr && hasdisp && !hasir;
 
 		if(ok)
 		{
 			// extract fields
-			const auto reload_disp=reload_op1.getMemoryDisplacement();
-			const auto reload_loc=SpillPoint_t({i10->GetFunction(),reload_disp});
+			const auto reload_disp=reload_op1->getMemoryDisplacement();
+			const auto reload_loc=SpillPoint_t({i10->getFunction(),reload_disp});
 			const auto &spills=spilled_add_adrp_results[reload_loc];
 			if(spills.size()>0)  
 			{
@@ -849,15 +855,16 @@ notes:
 	                     ))
 	{
 		assert(i6);
-		const auto d6             = DecodedInstruction_t(i6);
+		const auto d6p             = DecodedInstruction_t::factory(i6);
+		const auto &d6             = *d6p;
                 const auto reload_op1     = d6.getOperand(1);
-		const auto reload_op1_str = reload_op1.getString();
+		const auto reload_op1_str = reload_op1->getString();
 		const auto is_dreg        = reload_op1_str[0]=='d';
 
 		if(is_dreg)
 		{
 
-			const auto reload_loc = DregSpillPoint_t({i6->GetFunction(), reload_op1_str});
+			const auto reload_loc = DregSpillPoint_t({i6->getFunction(), reload_op1_str});
 			const auto spills     = spilled_to_dreg[reload_loc];
 			if(spills.size()>0)  
 			{
@@ -906,11 +913,11 @@ notes:
 				{
 					if(i1!=new_i1) /* sanity check that we got to the same place */
 						break;
-					const auto d1    = DecodedInstruction_t(i1);
-					const auto d1op1 =  d1.getOperand(1);
-					if(d1op1.isConstant())
+					const auto d1    = DecodedInstruction_t::factory(i1);
+					const auto d1op1 =  d1->getOperand(1);
+					if(d1op1->isConstant())
 					{
-						my_bound=d1op1.getConstant();
+						my_bound=d1op1->getConstant();
 					}
 					break;
 
@@ -923,11 +930,11 @@ notes:
 							))
 				{
 					// track backwards on reg 2 if we find a mov <reg1>, <reg2>
-					const auto d1        = DecodedInstruction_t(new_i1);
-					const auto new_d1op1 =  d1.getOperand(1);
-					if(new_d1op1.isRegister())
+					const auto d1        = DecodedInstruction_t::factory(new_i1);
+					const auto new_d1op1 = d1->getOperand(1);
+					if(new_d1op1->isRegister())
 					{
-						next_reg=new_d1op1.getString();
+						next_reg=new_d1op1->getString();
 						continue;
 					}
 					else
@@ -957,13 +964,13 @@ notes:
 	//   calculate any possible targets for this switch.
 
 	// consider each jump table
-	auto my_targets=set<virtual_offset_t>();
+	auto my_targets=set<VirtualOffset_t>();
 	auto valid_table_count=0u;
 	for(auto cur_table_addr : all_table_bases)
 	{
 
 		// try to find switch table jumps
-		const auto i10_func=i10->GetFunction();
+		const auto i10_func=i10->getFunction();
 
 		// find the section with the jump table
 		const auto table_section=find_section(cur_table_addr,elfiop);
@@ -997,7 +1004,7 @@ notes:
 		if(do_verbose)
 		{
 			// log that we've found a table, etc.
-			cout << "Found ARM type1 at 0x"<<hex<<i10->GetAddress()->GetVirtualOffset()
+			cout << "Found ARM type1 at 0x"<<hex<<i10->getAddress()->getVirtualOffset()
 			     << " with my_bound = 0x"<<hex<<my_bound
 			     << ", table_entry_size = "<<dec<<table_entry_size
 			     << ", jump_base_addr = 0x"<<hex<<jump_base_addr
@@ -1011,7 +1018,8 @@ notes:
 
 		// look at each table entry
 		auto target_count=0U;
-		auto this_table_targets=vector<tuple<virtual_offset_t, virtual_offset_t, ibt_provenance_t> >();
+		using OffOffProvTuple_t = tuple<VirtualOffset_t, VirtualOffset_t, ibt_provenance_t> ;
+		auto this_table_targets=vector<OffOffProvTuple_t>();
 		for ( ; getEntryPtr(target_count)+table_entry_size < table_section_end_ptr ; target_count++ )
 		{
 			const auto entry_ptr      = getEntryPtr(target_count);
@@ -1036,7 +1044,7 @@ notes:
 					cout<<" -- no target insn!"<<endl;
 				break;
 			}
-			const auto ibtarget_func=ibtarget->GetFunction();
+			const auto ibtarget_func=ibtarget->getFunction();
 			if( i10_func == nullptr )
 			{
 				// finding switch in non-function is OK.
@@ -1062,7 +1070,7 @@ notes:
 					cout<<" -- not valid target!"<<endl;
 				break;
 			}
-			if(firp->FindScoop(candidate_ibta)!=nullptr)
+			if(firp->findScoop(candidate_ibta)!=nullptr)
 			{
 				if(do_verbose)
 					cout<<" -- not valid target due to data-in-text detection!"<<endl;
@@ -1106,7 +1114,7 @@ notes:
 /*
  * check_for_PIC_switch_table32 - look for switch tables in PIC code for 32-bit code.
  */
-void check_for_PIC_switch_table32(FileIR_t *firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
+void check_for_PIC_switch_table32(FileIR_t *firp, Instruction_t* insn, const DecodedInstruction_t& disasm, EXEIO::exeio* elfiop, const set<VirtualOffset_t> &thunk_bases)
 {
 
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type1;
@@ -1143,15 +1151,15 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 		return;
 
 	// return if it's a jump to a constant address, these are common
-        if(disasm.getOperand(0).isConstant() )
+        if(disasm.getOperand(0)->isConstant() )
 		return;
 
 	// return if it's a jump to a memory address
-        if(disasm.getOperand(0).isMemory() )
+        if(disasm.getOperand(0)->isMemory() )
 		return;
 
-	assert(disasm.getOperand(0).isRegister());
-	const auto I5_reg=disasm.getOperand(0).getString();
+	assert(disasm.getOperand(0)->isRegister());
+	const auto I5_reg=disasm.getOperand(0)->getString();
 	auto jmp_reg=string();
 	auto add_reg=string();
 
@@ -1163,20 +1171,22 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 		auto mov_insn=static_cast<Instruction_t*>(nullptr);
 		if(!backup_until(string()+"mov "+I5_reg, mov_insn, I5, I5_reg))
 			return;
-		const auto mov_insn_disasm=DecodedInstruction_t(mov_insn);
-		if(!mov_insn_disasm.getOperand(1).isRegister())
+		const auto p_mov_insn_disasm=DecodedInstruction_t::factory(mov_insn);
+		const auto &mov_insn_disasm=*p_mov_insn_disasm;
+		if(!mov_insn_disasm.getOperand(1)->isRegister())
 			return;
-		const auto mov_reg=mov_insn_disasm.getOperand(1).getString();
+		const auto mov_reg=mov_insn_disasm.getOperand(1)->getString();
 		if(!backup_until(string()+"add "+mov_reg, I4, mov_insn, mov_reg))
 				return;
 		jmp_reg=mov_reg;
 	}
 	else 
 	{
-		const auto d4=DecodedInstruction_t(I4);
+		const auto p_d4=DecodedInstruction_t::factory(I4);
+		const auto &d4=*p_d4;
 		if(d4.getMnemonic()=="lea")
 		{
-			const auto base_reg=d4.getOperand(1).getBaseRegister();
+			const auto base_reg=d4.getOperand(1)->getBaseRegister();
 			switch(base_reg)
 			{
 				case 0/*REG0*/: jmp_reg="eax"; break;
@@ -1191,7 +1201,7 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 					// no base register;
 					return;
 			}
-			const auto index_reg=d4.getOperand(1).getBaseRegister();
+			const auto index_reg=d4.getOperand(1)->getBaseRegister();
 			switch(index_reg)
 			{
 				case 0/*REG0*/: add_reg="eax"; break;
@@ -1210,9 +1220,9 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 		else
 		{
 			jmp_reg=I5_reg;
-			if(!d4.getOperand(1).isRegister())
+			if(!d4.getOperand(1)->isRegister())
 				return;
-			add_reg=d4.getOperand(1).getString();
+			add_reg=d4.getOperand(1)->getString();
 		}
 	}
 
@@ -1234,27 +1244,28 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 	{
 		//DISASM dcmp;
 		//Disassemble(Icmp,dcmp);
-		DecodedInstruction_t dcmp(Icmp);	
-		table_size = dcmp.getImmediate(); //Instruction.Immediat;
+		auto dcmp=DecodedInstruction_t::factory(Icmp);	
+		table_size = dcmp->getImmediate(); //Instruction.Immediat;
 		if(table_size<=0)
 			table_size=std::numeric_limits<int>::max();
 	}
 
 	// grab the offset out of the lea.
-	const auto d2=DecodedInstruction_t(I3);
+	const auto p_d2=DecodedInstruction_t::factory(I3);
+	const auto &d2=*p_d2;
 
 	// get the offset from the thunk
 	auto table_offset=d2.getAddress(); 
 	if(table_offset==0)
 		return;
 
-	cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()
+	cout<<hex<<"Found switch dispatch at "<<I3->getAddress()->getVirtualOffset()
 	    << " with table_offset="<<table_offset <<" and table_size="<<table_size<<endl;
 		
 	/* iterate over all thunk_bases/module_starts */
 	for(auto thunk_base : thunk_bases)
 	{
-		virtual_offset_t table_base=thunk_base+table_offset;
+		VirtualOffset_t table_base=thunk_base+table_offset;
 
 		// find the section with the data table
         	EXEIO::section *pSec=find_section(table_base,elfiop);
@@ -1267,7 +1278,7 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 			continue;
 
 		// get the base offset into the section
-        	virtual_offset_t offset=table_base-pSec->get_address();
+        	VirtualOffset_t offset=table_base-pSec->get_address();
 		int i;
 		for(i=0;i<3;i++)
 		{
@@ -1294,7 +1305,7 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
                         		break;
 	
                 		const int32_t *table_entry_ptr=(const int32_t*)&(secdata[offset+i*4]);
-                		virtual_offset_t table_entry=*table_entry_ptr;
+                		VirtualOffset_t table_entry=*table_entry_ptr;
 	
 				if(getenv("IB_VERBOSE")!=0)
 					cout<<"Found switch table (thunk-relative) entry["<<dec<<i<<"], "<<hex<<thunk_base+table_entry<<endl;
@@ -1312,11 +1323,11 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 			// valid switch table? may or may not have default: in the switch
 			// table size = 8, #entries: 9 b/c of default
 			cout << "pic32 (base pattern): table size: " << table_size << " ibtargets.size: " << ibtargets.size() << endl;
-			jmptables[I5].AddTargets(ibtargets);
+			jmptables[I5].addTargets(ibtargets);
 			if (table_size == ibtargets.size() || table_size == (ibtargets.size()-1))
 			{
 				cout << "pic32 (base pattern): valid switch table detected ibtp_switchtable_type1" << endl;
-				jmptables[I5].SetAnalysisStatus(ICFS_Analysis_Complete);
+				jmptables[I5].setAnalysisStatus(iasAnalysisComplete);
 			
 			}
 		}
@@ -1332,7 +1343,7 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 
 
 
-void check_for_PIC_switch_table32_type2(FileIR_t *firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
+void check_for_PIC_switch_table32_type2(FileIR_t *firp, Instruction_t* insn, const DecodedInstruction_t& disasm, EXEIO::exeio* elfiop, const set<VirtualOffset_t> &thunk_bases)
 {
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type2;
 	auto ibtargets = InstructionSet_t();
@@ -1354,12 +1365,12 @@ I5:   0x809900e <text_handler+51>: jmp    ecx
 		return;
 
 	// return if it's a jump to a constant address, these are common
-        if(disasm.getOperand(0).isConstant() /*disasm.Argument1.ArgType&CONSTANT_TYPE*/)
+        if(disasm.getOperand(0)->isConstant() /*disasm.Argument1.ArgType&CONSTANT_TYPE*/)
 		return;
 
 	// return if it's a jump to a memory address
         //if(disasm.Argument1.ArgType&MEMORY_TYPE)
-        if(disasm.getOperand(0).isMemory())
+        if(disasm.getOperand(0)->isMemory())
 		return;
 
 	// has to be a jump to a register now
@@ -1368,8 +1379,8 @@ I5:   0x809900e <text_handler+51>: jmp    ecx
 	if(!backup_until("add", I4, I5))
 		return;
 
-	const auto d4=DecodedInstruction_t(I4);
-	if(!d4.hasOperand(1) || !d4.getOperand(1).isMemory())
+	const auto d4=DecodedInstruction_t::factory(I4);
+	if(!d4->hasOperand(1) || !d4->getOperand(1)->isMemory())
 		return;
 
 	// found that sometimes I3 is set a different way, 
@@ -1378,17 +1389,12 @@ I5:   0x809900e <text_handler+51>: jmp    ecx
 //	if(!backup_until("lea", I3, I4))
 //		return;
 
-	// grab the offset out of the lea.
-	//DISASM d2;
-	//Disassemble(I3,d2);
-	//DecodedInstruction_t d2(I3);
-
 	// get the offset from the thunk
-	virtual_offset_t table_offset=d4.getOperand(1).getMemoryDisplacement(); //d2.getAddress(); // d2.Instruction.AddrValue;
+	VirtualOffset_t table_offset=d4->getOperand(1)->getMemoryDisplacement(); 
 	if(table_offset==0)
 		return;
 
-cout<<hex<<"Found (type2) switch dispatch at "<<I5->GetAddress()->GetVirtualOffset()<< " with table_offset="<<table_offset<<endl;
+	cout<<hex<<"Found (type2) switch dispatch at "<<I5->getAddress()->getVirtualOffset()<< " with table_offset="<<table_offset<<endl;
 		
 	/* iterate over all thunk_bases/module_starts */
 	for(auto thunk_base : thunk_bases )
@@ -1406,7 +1412,7 @@ cout<<hex<<"Found (type2) switch dispatch at "<<I5->GetAddress()->GetVirtualOffs
 			continue;
 
 		// get the base offset into the section
-        	virtual_offset_t offset=table_base-pSec->get_address();
+        	VirtualOffset_t offset=table_base-pSec->get_address();
 		int i;
 		for(i=0;i<3;i++)
 		{
@@ -1414,7 +1420,7 @@ cout<<hex<<"Found (type2) switch dispatch at "<<I5->GetAddress()->GetVirtualOffs
                         	break;
 
                 	const int32_t *table_entry_ptr=(const int32_t*)&(secdata[offset+i*4]);
-                	virtual_offset_t table_entry=*table_entry_ptr;
+                	VirtualOffset_t table_entry=*table_entry_ptr;
 
 // cout<<"Checking target base:" << std::hex << table_base+table_entry << ", " << table_base+i*4<<endl;
 			if(!is_possible_target(table_base+table_entry,table_base+i*4) && !is_possible_target(thunk_base+table_entry,table_base+i*4))
@@ -1432,7 +1438,7 @@ cout<<hex<<"Found (type2) switch dispatch at "<<I5->GetAddress()->GetVirtualOffs
                         		break;
 	
                 		const int32_t *table_entry_ptr=(const int32_t*)&(secdata[offset+i*4]);
-                		virtual_offset_t table_entry=*table_entry_ptr;
+                		VirtualOffset_t table_entry=*table_entry_ptr;
 	
 				if(getenv("IB_VERBOSE")!=0)
 					cout<<"Found switch table (thunk-relative) entry["<<dec<<i<<"], "<<hex<<table_base+table_entry<<" or "<<thunk_base+table_entry<<endl;
@@ -1457,7 +1463,7 @@ cout<<hex<<"Found (type2) switch dispatch at "<<I5->GetAddress()->GetVirtualOffs
 
 		// now, try next thunk base 
 	}
-	jmptables[I5].AddTargets(ibtargets);
+	jmptables[I5].addTargets(ibtargets);
 }
 
 
@@ -1468,9 +1474,9 @@ cout<<hex<<"Found (type2) switch dispatch at "<<I5->GetAddress()->GetVirtualOffs
  *
  * nb: also works for 64-bit.
  */
-void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop, const set<virtual_offset_t> &thunk_bases)
+void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, const DecodedInstruction_t& disasm, EXEIO::exeio* elfiop, const set<VirtualOffset_t> &thunk_bases)
 {
-	uint32_t ptrsize=firp->GetArchitectureBitWidth()/8;
+	uint32_t ptrsize=firp->getArchitectureBitWidth()/8;
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type3;
 
         Instruction_t* I5=insn;
@@ -1479,20 +1485,20 @@ void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, Dec
 		return;
 
 	// return if it's not a jump to a memory address
-        if(!(disasm.getOperand(0).isMemory()))
+        if(!(disasm.getOperand(0)->isMemory()))
 		return;
 
 	/* return if there's no displacement */
-        if(disasm.getOperand(0).getMemoryDisplacement()==0)
+        if(disasm.getOperand(0)->getMemoryDisplacement()==0)
 		return;
 
-        if(!disasm.getOperand(0).hasIndexRegister() || disasm.getOperand(0).getScaleValue()!=ptrsize)
+        if(!disasm.getOperand(0)->hasIndexRegister() || disasm.getOperand(0)->getScaleValue()!=ptrsize)
 		return;
 
 	// grab the table base out of the jmp.
-	virtual_offset_t table_base=disasm.getOperand(0).getMemoryDisplacement();//disasm.Argument1.Memory.Displacement;
-        if(disasm.getOperand(0).isPcrel())
-		table_base+=insn->GetDataBits().size()+insn->GetAddress()->GetVirtualOffset();
+	VirtualOffset_t table_base=disasm.getOperand(0)->getMemoryDisplacement();
+	if(disasm.getOperand(0)->isPcrel())
+		table_base+=insn->getDataBits().size()+insn->getAddress()->getVirtualOffset();
 
 	if(table_base==0)
 		return;
@@ -1507,8 +1513,8 @@ void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, Dec
 	if(backup_until("cmp ", cmp_insn, insn))
 	{
 		assert(cmp_insn);
-		const auto cmp_decode=DecodedInstruction_t(cmp_insn);
-		table_max=cmp_decode.getImmediate();
+		const auto cmp_decode=DecodedInstruction_t::factory(cmp_insn);
+		table_max=cmp_decode->getImmediate();
 	}
 	
 
@@ -1518,12 +1524,12 @@ void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, Dec
 		return;
 
 	// get the base offset into the section
-	virtual_offset_t offset=table_base-pSec->get_address();
+	VirtualOffset_t offset=table_base-pSec->get_address();
 
 
 	// check to see if stars already marked this complete.
 	// if so, just figure out the table size
-	if(jmptables[insn].GetAnalysisStatus()==ICFS_Analysis_Complete)
+	if(jmptables[insn].getAnalysisStatus()==iasAnalysisComplete)
 	{
 		// we already know it's a type3, we can just record the type and table base.
 		jmptables[insn].AddSwitchType(prov);
@@ -1539,14 +1545,14 @@ void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, Dec
 
 			const void *table_entry_ptr=(const int*)&(secdata[offset+i*ptrsize]);
 
-			virtual_offset_t table_entry=0;
+			VirtualOffset_t table_entry=0;
 			switch(ptrsize)
 			{
 				case 4:
-					table_entry=(virtual_offset_t)*(int*)table_entry_ptr;
+					table_entry=(VirtualOffset_t)*(int*)table_entry_ptr;
 					break;
 				case 8:
-					table_entry=(virtual_offset_t)*(int**)table_entry_ptr;
+					table_entry=(VirtualOffset_t)*(int**)table_entry_ptr;
 					break;
 				default:
 					assert(0);
@@ -1560,7 +1566,7 @@ void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, Dec
 		jmptables[insn].SetTableSize(i);
 		if(getenv("IB_VERBOSE"))
 		{
-			cout<<"Found type3 at "<<hex<<insn->GetAddress()->GetVirtualOffset()
+			cout<<"Found type3 at "<<hex<<insn->getAddress()->getVirtualOffset()
 			    <<" already complete, setting base to "<<hex<<table_base<<" and size to "<<dec<<i<<endl;
 		}
 		return;
@@ -1575,14 +1581,14 @@ void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, Dec
 
 		const void *table_entry_ptr=(const int*)&(secdata[offset+i*ptrsize]);
 
-		virtual_offset_t table_entry=0;
+		VirtualOffset_t table_entry=0;
 		switch(ptrsize)
 		{
 			case 4:
-				table_entry=(virtual_offset_t)*(int*)table_entry_ptr;
+				table_entry=(VirtualOffset_t)*(int*)table_entry_ptr;
 				break;
 			case 8:
-				table_entry=(virtual_offset_t)*(int**)table_entry_ptr;
+				table_entry=(VirtualOffset_t)*(int**)table_entry_ptr;
 				break;
 			default:
 				assert(0);
@@ -1593,7 +1599,7 @@ void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, Dec
 
 		/* if there's no base register and no index reg, */
 		/* then this jmp can't have more than one valid table entry */
-		if( !disasm.getOperand(0).hasBaseRegister() && !disasm.getOperand(0).hasIndexRegister()) 
+		if( !disasm.getOperand(0)->hasBaseRegister() && !disasm.getOperand(0)->hasIndexRegister()) 
 		{
 			/* but the table can have 1 valid entry. */
 			if(pSec->get_name()==".got.plt")
@@ -1602,10 +1608,10 @@ void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, Dec
 				if(ibtarget)
 				{
 					jmptables[I5].insert(ibtarget);
-					jmptables[I5].SetAnalysisStatus(ICFS_Analysis_Module_Complete);
+					jmptables[I5].setAnalysisStatus(iasAnalysisModuleComplete);
 					possible_target(table_entry,table_base+0*ptrsize, ibt_provenance_t::ibtp_gotplt);
 					if(getenv("IB_VERBOSE")!=0)
-						cout<<hex<<"Found  plt dispatch ("<<disasm.getDisassembly()<<"') at "<<I5->GetAddress()->GetVirtualOffset()<< endl;
+						cout<<hex<<"Found  plt dispatch ("<<disasm.getDisassembly()<<"') at "<<I5->getAddress()->getVirtualOffset()<< endl;
 					return;
 				}
 			}
@@ -1615,7 +1621,7 @@ void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, Dec
 				possible_target(table_entry,table_base+0*ptrsize, ibt_provenance_t::ibtp_rodata);
 			if(getenv("IB_VERBOSE")!=0)
 				cout<<hex<<"Found  constant-memory dispatch from non- .got.plt location ("<<disasm.getDisassembly()<<"') at "
-				    <<I5->GetAddress()->GetVirtualOffset()<< endl;
+				    <<I5->getAddress()->getVirtualOffset()<< endl;
 			return;
 		}
 		if(!is_possible_target(table_entry,table_base+i*ptrsize))
@@ -1623,7 +1629,7 @@ void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, Dec
 			if(getenv("IB_VERBOSE")!=0)
 			{
 				cout<<hex<<"Found (type3) candidate for switch dispatch for '"<<disasm.getDisassembly()<<"' at "
-				    <<I5->GetAddress()->GetVirtualOffset()<< " with table_base="<<table_base<<endl;
+				    <<I5->getAddress()->getVirtualOffset()<< " with table_base="<<table_base<<endl;
 				cout<<"Found table_entry "<<hex<<table_entry<<" is not valid\n"<<endl;
 			}
 			return;	
@@ -1631,7 +1637,7 @@ void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, Dec
 	}
 
 
-	cout<<hex<<"Definitely found (type3) switch dispatch at "<<I5->GetAddress()->GetVirtualOffset()<< " with table_base="<<table_base<<endl;
+	cout<<hex<<"Definitely found (type3) switch dispatch at "<<I5->getAddress()->getVirtualOffset()<< " with table_base="<<table_base<<endl;
 
 	/* did we finish the loop or break out? */
 	if(i==3)
@@ -1647,24 +1653,24 @@ void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, Dec
 			{
 				if(getenv("IB_VERBOSE")!=0)
 				{
-					cout<<hex<<"Switch dispatch at "<<I5->GetAddress()->GetVirtualOffset()<< " with table_base="
+					cout<<hex<<"Switch dispatch at "<<I5->getAddress()->getVirtualOffset()<< " with table_base="
 					    <<table_base<<" is complete!"<<endl;
 				}
-				jmptables[insn].SetAnalysisStatus(ICFS_Analysis_Complete);
+				jmptables[insn].setAnalysisStatus(iasAnalysisComplete);
 			}
 			if((int)(offset+i*ptrsize+ptrsize) > (int)pSec->get_size() || i > table_max)
 				return;
 
 			const void *table_entry_ptr=(const int*)&(secdata[offset+i*ptrsize]);
 
-			virtual_offset_t table_entry=0;
+			VirtualOffset_t table_entry=0;
 			switch(ptrsize)
 			{
 				case 4:
-					table_entry=(virtual_offset_t)*(int*)table_entry_ptr;
+					table_entry=(VirtualOffset_t)*(int*)table_entry_ptr;
 					break;
 				case 8:
-					table_entry=(virtual_offset_t)*(int**)table_entry_ptr;
+					table_entry=(VirtualOffset_t)*(int**)table_entry_ptr;
 					break;
 				default:
 					assert(0);
@@ -1694,7 +1700,7 @@ void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, Dec
  * if so, see if we can trace back a few instructions to find a
  * the start of the table.
  */
-void check_for_PIC_switch_table64(FileIR_t* firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop)
+void check_for_PIC_switch_table64(FileIR_t* firp, Instruction_t* insn, const DecodedInstruction_t& p_disasm, EXEIO::exeio* elfiop)
 {
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type4;
 /* here's the pattern we're looking for */
@@ -1767,14 +1773,14 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	Instruction_t* I5=nullptr;
 	Instruction_t* I1=nullptr;
 	// check if I8 is a jump
-	if(strstr(disasm.getMnemonic().c_str()/*Instruction.Mnemonic*/, "jmp")==nullptr)
+	if(strstr(p_disasm.getMnemonic().c_str(), "jmp")==nullptr)
 		return;
 
 	// return if it's a jump to a constant address, these are common
-	if(disasm.getOperand(0).isConstant()) //disasm.Argument1.ArgType&CONSTANT_TYPE)
+	if(p_disasm.getOperand(0)->isConstant()) 
 		return;
 	// return if it's a jump to a memory address
-	if(disasm.getOperand(0).isMemory()) // Argument1.ArgType&MEMORY_TYPE)
+	if(p_disasm.getOperand(0)->isMemory()) 
 		return;
 
 	// has to be a jump to a register now
@@ -1787,30 +1793,29 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	 * Backup and find the instruction that's an add or lea before I8.
 	 */
 	table_index_str = "(add ";
-	table_index_str += disasm.getOperand(0).getString(); //Argument1.ArgMnemonic;
+	table_index_str += p_disasm.getOperand(0)->getString(); 
 	table_index_str += "|lea ";
-	table_index_str += disasm.getOperand(0).getString(); //Argument1.ArgMnemonic;
+	table_index_str += p_disasm.getOperand(0)->getString(); 
 	table_index_str += ")";
 
-	const auto cmp_str = string("cmp ") + disasm.getOperand(0).getString(); //Argument1.ArgMnemonic;
+	const auto cmp_str = string("cmp ") + p_disasm.getOperand(0)->getString(); 
 
 	// this was completely broken because argument2 had a null mnemonic, which we found out because getOperand(1) threw an exception.
 	// i suspect it's attempting to find a compare of operand1 on the RHS of a compare, but i need better regex foo to get that.
 	// for now, repeat what was working.
-	const auto cmp_str2 = string("cmp "); // + disasm.getOperand(1).getString(); //Argument2.ArgMnemonic;
+	const auto cmp_str2 = string("cmp "); 
 
 	if(!backup_until(table_index_str.c_str(), I7, I8))
 		return;
 
-	// Disassemble(I7,disasm);
-	disasm=DecodedInstruction_t(I7);
+	const auto d7=DecodedInstruction_t::factory(I7);
 
 	// Check if lea instruction is being used as add (scale=1, disp=0)
-	if(strstr(disasm.getMnemonic().c_str() /* Instruction.Mnemonic*/, "lea"))
+	if(strstr(d7->getMnemonic().c_str(), "lea"))
 	{
-		if(!(disasm.getOperand(1).isMemory() /*disasm.Argument2.ArgType&MEMORY_TYPE)*/))
+		if(!(d7->getOperand(1)->isMemory() ))
 			return;
-		if(!(disasm.getOperand(1).getScaleValue() /* .Argument2.Memory.Scale */ == 1 && disasm.getOperand(1).getMemoryDisplacement() /*Argument2.Memory.Displacement*/ == 0))
+		if(!(d7->getOperand(1)->getScaleValue() == 1 && d7->getOperand(1)->getMemoryDisplacement() == 0))
 			return;
 	} 
 	// backup and find the instruction that's an movsxd before I7
@@ -1823,9 +1828,8 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 
 	string lea_string="lea ";
 	
-	// Disassemble(I6,disasm);
-	disasm=DecodedInstruction_t(I6);
-	if( disasm.getOperand(1).isMemory() /* (disasm.Argument2.ArgType&MEMORY_TYPE)	 == MEMORY_TYPE*/)
+	const auto d6=DecodedInstruction_t::factory(I6);
+	if( d6->getOperand(1)->isMemory() )
 	{
 		// try to be smarter for memory types.
 
@@ -1835,9 +1839,9 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		 * for the base of the jump table.
 		 */
 		string base_reg="";
-		if(!disasm.getOperand(1).hasBaseRegister() /*Argument2.Memory.BaseRegister*/)
+		if(!d6->getOperand(1)->hasBaseRegister() )
 			return;
-		switch(disasm.getOperand(1).getBaseRegister() /*Argument2.Memory.BaseRegister*/)
+		switch(d6->getOperand(1)->getBaseRegister() )
 		{
 			case 0/*REG0*/: base_reg="rax"; break;
 			case 1/*REG1*/: base_reg="rcx"; break;
@@ -1876,14 +1880,13 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	  * Convert to return set
 		*/
 
-	set<Instruction_t*>::const_iterator found_leas_it;
-	set<Instruction_t*> found_leas;
+	auto found_leas=InstructionSet_t();
 	
 	
-	if (I6->GetFunction())
+	if (I6->getFunction())
 	{
 		cout << "Using find_in_function method." << endl;
-		found_leas=find_in_function(lea_string,I6->GetFunction());
+		found_leas=find_in_function(lea_string,I6->getFunction());
 	}
 	else
 	{
@@ -1904,66 +1907,58 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	/*
 	 * Check each one that is returned.
 	 */
-	found_leas_it = found_leas.begin();
+	auto found_leas_it = found_leas.begin();
 	for (; found_leas_it != found_leas.end(); found_leas_it++) 
 	{
-		Instruction_t *I5_cur = *found_leas_it;
-		//Disassemble(I5_cur,disasm);
-		disasm=DecodedInstruction_t(I5_cur);
+		auto I5_cur = *found_leas_it;
+		auto d5p=DecodedInstruction_t::factory(I5_cur);
+		auto &d5=*d5p;
 
-		if(!(disasm.getOperand(1).isMemory() /*Argument2.ArgType&MEMORY_TYPE*/))
-			//return;
+		if(!(d5.getOperand(1)->isMemory() ))
 			continue;
-		if(!(disasm.getOperand(1).isPcrel() /*Argument2.ArgType&RELATIVE_*/))
-			//return;
+		if(!(d5.getOperand(1)->isPcrel() ))
 			continue;
 
 		// note that we'd normally have to add the displacement to the
 		// instruction address (and include the instruction's size, etc.
 		// but, fix_calls has already removed this oddity so we can relocate
 		// the instruction.
-		virtual_offset_t D1=strtol(disasm.getOperand(1).getString().c_str()/*Argument2.ArgMnemonic*/, nullptr, 0);
-		D1+=I5_cur->GetAddress()->GetVirtualOffset();
+		VirtualOffset_t D1=strtol(d5.getOperand(1)->getString().c_str(), nullptr, 0);
+		D1+=I5_cur->getAddress()->getVirtualOffset();
 
 		// find the section with the data table
-		EXEIO::section *pSec=find_section(D1,elfiop);
+		auto pSec=find_section(D1,elfiop);
 
 		// sanity check there's a section
 		if(!pSec)
-			//return;
 			continue;
 
 		const char* secdata=pSec->get_data();
 
 		// if the section has no data, abort 
 		if(!secdata)
-			//return;
 			continue;
 
 		auto table_size = 0U;
 		if(backup_until(cmp_str.c_str(), I1, I8))
 		{
-			//DISASM d1;
-			//Disassemble(I1,d1);
-			DecodedInstruction_t d1(I1);
-			table_size = d1.getImmediate(); // Instruction.Immediat;
+			auto d1=DecodedInstruction_t::factory(I1);
+			table_size = d1->getImmediate(); // Instruction.Immediat;
 			if (table_size <= 4)
 			{
-				cout<<"pic64: found I1 ('"<<d1.getDisassembly()/*CompleteInstr*/<<"'), but could not find size of switch table"<<endl;
+				cout<<"pic64: found I1 ('"<<d1->getDisassembly()<<"'), but could not find size of switch table"<<endl;
 				// set table_size to be very large, so we can still do pinning appropriately
 				table_size=std::numeric_limits<int>::max();
 			}
 		}
 		else if(backup_until(cmp_str2.c_str(), I1, I8))
 		{
-			//DISASM d1;
-			//Disassemble(I1,d1);
-			DecodedInstruction_t d1(I1);
-			table_size = d1.getImmediate()/*Instruction.Immediat*/;
+			auto d1=DecodedInstruction_t::factory(I1);
+			table_size = d1->getImmediate()/*Instruction.Immediat*/;
 			if (table_size <= 4)
 			{
 				// set table_size to be very large, so we can still do pinning appropriately
-				cout<<"pic64: found I1 ('"<<d1.getDisassembly()/*CompleteInstr*/<<"'), but could not find size of switch table"<<endl;
+				cout<<"pic64: found I1 ('"<<d1->getDisassembly()<<"'), but could not find size of switch table"<<endl;
 				table_size=std::numeric_limits<int>::max();
 			}
 		}
@@ -1976,8 +1971,8 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 			table_size=std::numeric_limits<int>::max();
 		}
 
-		set<Instruction_t *> ibtargets;
-		virtual_offset_t offset=D1-pSec->get_address();
+		auto ibtargets=InstructionSet_t();
+		auto offset=D1-pSec->get_address();
 		auto entry=0U;
 		auto found_table_error = false;
 		do
@@ -1990,7 +1985,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 			}
 
 			const int *table_entry_ptr=(const int*)&(secdata[offset]);
-			virtual_offset_t table_entry=*table_entry_ptr;
+			VirtualOffset_t table_entry=*table_entry_ptr;
 
 			if(!possible_target(D1+table_entry, 0/* from addr unknown */,prov))
 			{
@@ -2000,13 +1995,13 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 
 			if(getenv("IB_VERBOSE"))
 			{
-				cout<<"Found possible table entry, at: "<< std::hex << I8->GetAddress()->GetVirtualOffset()
-			    		<< " insn: " << disasm.getDisassembly()/*CompleteInstr*/<< " d1: "
+				cout<<"Found possible table entry, at: "<< std::hex << I8->getAddress()->getVirtualOffset()
+			    		<< " insn: " << d5.getDisassembly()<< " d1: "
 			    		<< D1 << " table_entry:" << table_entry 
 			    		<< " target: "<< D1+table_entry << std::dec << endl;
 			}
 
-			Instruction_t *ibtarget = lookupInstruction(firp, D1+table_entry);
+			auto ibtarget = lookupInstruction(firp, D1+table_entry);
 			if (ibtarget && ibtargets.size() <= table_size)
 			{
 				if(getenv("IB_VERBOSE"))
@@ -2030,18 +2025,18 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		// table size = 8, #entries: 9 b/c of default
 		cout << "pic64: detected table size (max_int means no found): 0x"<< hex << table_size << " #entries: 0x" << entry << " ibtargets.size: " << ibtargets.size() << endl;
 
-		jmptables[I8].AddTargets(ibtargets);
+		jmptables[I8].addTargets(ibtargets);
 		// note that there may be an off-by-one error here as table size depends on whether instruction I2 is a jb or jbe.
 		if (!found_table_error)
 		{
-			cout << "pic64: valid switch table for "<<hex<<I8->GetAddress()->GetVirtualOffset()
+			cout << "pic64: valid switch table for "<<hex<<I8->getAddress()->getVirtualOffset()
 			     <<"detected ibtp_switchtable_type4" << endl;
-			jmptables[I8].SetAnalysisStatus(ICFS_Analysis_Complete);
+			jmptables[I8].setAnalysisStatus(iasAnalysisComplete);
 		}
 		else
 		{
 			cout << "pic64: INVALID switch table detected for, "
-			     <<hex<<I8->GetAddress()->GetVirtualOffset()<<"type=ibtp_switchtable_type4" << endl;
+			     <<hex<<I8->getAddress()->getVirtualOffset()<<"type=ibtp_switchtable_type4" << endl;
 		}
 	}
 }
@@ -2059,7 +2054,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 
 	nb: handles both 32 and 64 bit
 */
-void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop)
+void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn, const DecodedInstruction_t& p_disasm, EXEIO::exeio* elfiop)
 {
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type5;
 	Instruction_t *I1 = nullptr;
@@ -2068,27 +2063,23 @@ void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn,
 	assert(IJ);
 
 	// check if IJ is a jump
-	//if(strstr(disasm.Instruction.Mnemonic, "jmp")==nullptr)
-	if(strstr(disasm.getMnemonic().c_str(), "jmp")==nullptr)
+	if(strstr(p_disasm.getMnemonic().c_str(), "jmp")==nullptr)
 		return;
 
 	// look for a memory type
-	//if(!(disasm.Argument1.ArgType&MEMORY_TYPE))
-	if(!(disasm.getOperand(0).isMemory()))
+	if(!(p_disasm.getOperand(0)->isMemory()))
 		return;
 
 	// make sure there's a scaling factor
-	//if (disasm.Argument1.Memory.Scale < 4)
-	//if (disasm.getOperand(0).getScaleValue() < 4) assumes scale is meaningful here?  
-	if (!disasm.getOperand(0).hasIndexRegister() || disasm.getOperand(0).getScaleValue() < 4)
+	if (!p_disasm.getOperand(0)->hasIndexRegister() || p_disasm.getOperand(0)->getScaleValue() < 4)
 		return;
 
 	// extract start of jmp table
-	virtual_offset_t table_offset = disasm.getAddress(); // disasm.Instruction.AddrValue;
+	VirtualOffset_t table_offset = p_disasm.getAddress(); // disasm.Instruction.AddrValue;
 	if(table_offset==0)
 		return;
 
-	cout<<hex<<"(nonPIC-pattern2): Found switch dispatch at 0x"<<hex<<IJ->GetAddress()->GetVirtualOffset()<< " with table_offset="<<hex<<table_offset<<dec<<endl;
+	cout<<hex<<"(nonPIC-pattern2): Found switch dispatch at 0x"<<hex<<IJ->getAddress()->getVirtualOffset()<< " with table_offset="<<hex<<table_offset<<dec<<endl;
 
 	if(!backup_until("cmp", I1, IJ))
 	{
@@ -2098,17 +2089,16 @@ void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn,
 
 	// extract size off the comparison
 	// make sure not off by one
-	//DISASM d1;
-	//Disassemble(I1,d1);
-	DecodedInstruction_t d1(I1);
-	virtual_offset_t table_size = d1.getImmediate()/*d1.Instruction.Immediat*/;
+	auto d1p=DecodedInstruction_t::factory(I1);
+	auto &d1=*d1p;
+	VirtualOffset_t table_size = d1.getImmediate()/*d1.Instruction.Immediat*/;
 
 	if (table_size <= 0) return;
 
 	cout<<"(nonPIC-pattern2): size of jmp table: "<< table_size << endl;
 
 	// find the section with the data table
-    	EXEIO::section *pSec=find_section(table_offset,elfiop);
+    	auto pSec=find_section(table_offset,elfiop);
 	if(!pSec)
 	{
 		return;
@@ -2120,10 +2110,10 @@ void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn,
 		return;
 
 	// get the base offset into the section
-    	virtual_offset_t offset=table_offset-pSec->get_address();
+    	auto offset=table_offset-pSec->get_address();
 	auto i=0U;
 
-	set<Instruction_t*> ibtargets;
+	InstructionSet_t ibtargets;
 	for(i=0;i<table_size;++i)
 	{
 		if((int)(offset+i*arch_ptr_bytes()+sizeof(int)) > (int)pSec->get_size())
@@ -2132,8 +2122,8 @@ void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn,
 			return;
 		}
 
-		const virtual_offset_t *table_entry_ptr=(const virtual_offset_t*)&(secdata[offset+i*arch_ptr_bytes()]);
-		virtual_offset_t table_entry=*table_entry_ptr;
+		const VirtualOffset_t *table_entry_ptr=(const VirtualOffset_t*)&(secdata[offset+i*arch_ptr_bytes()]);
+		VirtualOffset_t table_entry=*table_entry_ptr;
 		possible_target(table_entry,0,prov);
 
 		Instruction_t *ibtarget = lookupInstruction(firp, table_entry);
@@ -2150,8 +2140,8 @@ void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn,
 
 	cout << "(non-PIC) valid switch table found - ibtp_switchtable_type5" << endl;
 
-	jmptables[IJ].AddTargets(ibtargets);
-	jmptables[IJ].SetAnalysisStatus(ICFS_Analysis_Complete);
+	jmptables[IJ].addTargets(ibtargets);
+	jmptables[IJ].setAnalysisStatus(iasAnalysisComplete);
 }
 
 /*
@@ -2167,26 +2157,25 @@ void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn,
 
 	nb: handles both 32 and 64 bit
 */
-void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DecodedInstruction_t disasm, EXEIO::exeio* elfiop)
+void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, const DecodedInstruction_t& p_disasm, EXEIO::exeio* elfiop)
 {
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type6;
 	Instruction_t *I1 = nullptr;
-	//Instruction_t *I2 = nullptr;
 	Instruction_t *I4 = nullptr;
 	Instruction_t *IJ = insn;
 
 	if (!IJ) return;
 
 	// check if IJ is a jump
-	if(strstr(disasm.getMnemonic().c_str()/*disasm.Instruction.Mnemonic*/, "jmp")==nullptr)
+	if(strstr(p_disasm.getMnemonic().c_str()/*disasm.Instruction.Mnemonic*/, "jmp")==nullptr)
 		return;
 
 	// return if it's a jump to a constant address, these are common
-	if(disasm.getOperand(0).isConstant() /*disasm.Argument1.ArgType&CONSTANT_TYPE*/)
+	if(p_disasm.getOperand(0)->isConstant() /*disasm.Argument1.ArgType&CONSTANT_TYPE*/)
 		return;
 
 	// return if it's a jump to a memory address
-	if(disasm.getOperand(0).isMemory() /*disasm.Argument1.ArgType&MEMORY_TYPE*/)
+	if(p_disasm.getOperand(0)->isMemory() /*disasm.Argument1.ArgType&MEMORY_TYPE*/)
 		return;
 
 	// has to be a jump to a register now
@@ -2198,18 +2187,19 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DecodedI
 	// extract start of jmp table
 	// DISASM d4;
 	// Disassemble(I4,d4);
-	DecodedInstruction_t d4(I4);
+	auto d4p=DecodedInstruction_t::factory(I4);
+	auto &d4=*d4p;
 
 	// make sure there's a scaling factor
-	if (d4.getOperand(1).isMemory() && d4.getOperand(1).getScaleValue() /*d4.Argument2.Memory.Scale*/ < 4)
+	if (d4.getOperand(1)->isMemory() && d4.getOperand(1)->getScaleValue() < 4)
 		return;
 
-	virtual_offset_t table_offset=d4.getAddress(); // d4.Instruction.AddrValue;
+	VirtualOffset_t table_offset=d4.getAddress(); 
 	if(table_offset==0)
 		return;
 
 	if(getenv("IB_VERBOSE"))
-		cout<<hex<<"(nonPIC): Found switch dispatch at 0x"<<hex<<I4->GetAddress()->GetVirtualOffset()<< " with table_offset="<<hex<<table_offset<<dec<<endl;
+		cout<<hex<<"(nonPIC): Found switch dispatch at 0x"<<hex<<I4->getAddress()->getVirtualOffset()<< " with table_offset="<<hex<<table_offset<<dec<<endl;
 
 	if(!backup_until("cmp", I1, I4))
 	{
@@ -2219,17 +2209,16 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DecodedI
 
 	// extract size off the comparison
 	// make sure not off by one
-	//DISASM d1;
-	//Disassemble(I1,d1);
-	DecodedInstruction_t d1(I1);
-	virtual_offset_t table_size = d1.getImmediate(); // d1.Instruction.Immediat;
+	auto d1p=DecodedInstruction_t::factory(I1);
+	auto &d1=*d1p;
+	auto table_size = d1.getImmediate(); // d1.Instruction.Immediat;
 	if (table_size <= 0) return;
 
 	if(getenv("IB_VERBOSE"))
 		cout<<"(nonPIC): size of jmp table: "<< table_size << endl;
 
 	// find the section with the data table
-	EXEIO::section *pSec=find_section(table_offset,elfiop);
+	auto pSec=find_section(table_offset,elfiop);
 	if(!pSec)
 	{
 		cout<<hex<<"(nonPIC): could not find jump table in section"<<endl;
@@ -2242,13 +2231,13 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DecodedI
 		return;
 
 	// get the base offset into the section
-	virtual_offset_t offset=table_offset-pSec->get_address();
+	auto offset=table_offset-pSec->get_address();
 	auto i=0U;
 
 	if(getenv("IB_VERBOSE"))
-		cout << hex << "offset: " << offset << " arch bit width: " << dec << firp->GetArchitectureBitWidth() << endl;
+		cout << hex << "offset: " << offset << " arch bit width: " << dec << firp->getArchitectureBitWidth() << endl;
 
-	set<Instruction_t*> ibtargets;
+	InstructionSet_t ibtargets;
 	for(i=0;i<table_size;++i)
 	{
 		if((int)(offset+i*arch_ptr_bytes()+sizeof(int)) > (int)pSec->get_size())
@@ -2257,22 +2246,22 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DecodedI
 			return;
 		}
 
-		virtual_offset_t table_entry=0;
-		if (firp->GetArchitectureBitWidth()==32)
+		VirtualOffset_t table_entry=0;
+		if (firp->getArchitectureBitWidth()==32)
 		{
 			const int *table_entry_ptr=(const int*)&(secdata[offset+i*arch_ptr_bytes()]);
 			table_entry=*table_entry_ptr;
 		}
-		else if (firp->GetArchitectureBitWidth()==64)
+		else if (firp->getArchitectureBitWidth()==64)
 		{
-			const virtual_offset_t *table_entry_ptr=(const virtual_offset_t*)&(secdata[offset+i*arch_ptr_bytes()]);
+			const VirtualOffset_t *table_entry_ptr=(const VirtualOffset_t*)&(secdata[offset+i*arch_ptr_bytes()]);
 			table_entry=*table_entry_ptr;
 		}
 		else 
 			assert(0 && "Unknown arch size.");
 
 		possible_target(table_entry, 0 /* from addr unknown */, prov);
-		Instruction_t *ibtarget = lookupInstruction(firp, table_entry);
+		auto ibtarget = lookupInstruction(firp, table_entry);
 		if (!ibtarget) {
 			if(getenv("IB_VERBOSE"))
 				cout << "0x" << hex << table_entry << " is not an instruction, invalid switch table" << endl;
@@ -2285,24 +2274,19 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, DecodedI
 	}
 
 	cout << "(non-PIC) valid switch table found - prov=ibt_provenance_t::ibtp_switchtable_type6" << endl;
-	jmptables[IJ].AddTargets(ibtargets);
-	jmptables[IJ].SetAnalysisStatus(ICFS_Analysis_Complete);
+	jmptables[IJ].addTargets(ibtargets);
+	jmptables[IJ].setAnalysisStatus(iasAnalysisComplete);
 }
 
 void calc_preds(FileIR_t* firp)
 {
         preds.clear();
-        for(
-                set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
-                it!=firp->GetInstructions().end();
-                ++it
-           )
+        for(auto insn : firp->getInstructions())
         {
-                Instruction_t* insn=*it;
-                if(insn->GetTarget())
-                        preds[insn->GetTarget()].insert(insn);
-                if(insn->GetFallthrough())
-                        preds[insn->GetFallthrough()].insert(insn);
+                if(insn->getTarget())
+                        preds[insn->getTarget()].insert(insn);
+                if(insn->getFallthrough())
+                        preds[insn->getFallthrough()].insert(insn);
         }
 }
 
@@ -2312,11 +2296,11 @@ void handle_takes_address_annot(FileIR_t* firp,Instruction_t* insn, MEDS_TakesAd
 	if(p_takes_address_annotation->isCode())
 	{
 		const auto refd_addr=referenced_addr;
-		possible_target(refd_addr,insn->GetAddress()->GetVirtualOffset(), ibt_provenance_t::ibtp_text);
+		possible_target(refd_addr,insn->getAddress()->getVirtualOffset(), ibt_provenance_t::ibtp_text);
 	}
 	else
 	{
-		all_add_adrp_results[insn->GetFunction()].insert(referenced_addr);
+		all_add_adrp_results[insn->getFunction()].insert(referenced_addr);
 	}
 }
 
@@ -2324,7 +2308,7 @@ void handle_ib_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBAnnotation* p_ib
 {
 	if(p_ib_annotation->IsComplete())
 	{
-		jmptables[insn].SetAnalysisStatus(ICFS_Analysis_Complete);
+		jmptables[insn].setAnalysisStatus(iasAnalysisComplete);
 	}
 }
 void handle_ibt_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBTAnnotation* p_ibt_annotation)
@@ -2341,21 +2325,21 @@ void handle_ibt_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBTAnnotation* p_
 /* meds annotations
  *                typedef enum { SWITCH, RET, DATA, UNREACHABLE, ADDRESSED, UNKNOWN } ibt_reason_code_t;
  */
-	//cout<<"at handl_ibt with addr="<<hex<<insn->GetAddress()->GetVirtualOffset()<<" code="<<p_ibt_annotation->GetReason()<<endl;
+	//cout<<"at handl_ibt with addr="<<hex<<insn->getAddress()->getVirtualOffset()<<" code="<<p_ibt_annotation->GetReason()<<endl;
 	switch(p_ibt_annotation->GetReason())
 	{
 		case MEDS_IBTAnnotation::SWITCH:
 		case MEDS_IBTAnnotation::INDIRCALL:
 		{
-			possible_target((EXEIO::virtual_offset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
+			possible_target((VirtualOffset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
 				0,ibt_provenance_t::ibtp_stars_switch);
-			libIRDB::virtual_offset_t  addr=(libIRDB::virtual_offset_t)p_ibt_annotation->GetXrefAddr();
-			Instruction_t* fromib=lookupInstruction(firp, addr);
-			Instruction_t* ibt=lookupInstruction(firp, p_ibt_annotation->getVirtualOffset().getOffset());
+			auto addr=(VirtualOffset_t)p_ibt_annotation->GetXrefAddr();
+			auto fromib=lookupInstruction(firp, addr);
+			auto ibt=lookupInstruction(firp, p_ibt_annotation->getVirtualOffset().getOffset());
 			if(fromib && ibt)
 			{
 				if(getenv("IB_VERBOSE")!=nullptr)
-					cout<<hex<<"Adding call/switch icfs: "<<fromib->GetAddress()->GetVirtualOffset()<<"->"<<ibt->GetAddress()->GetVirtualOffset()<<endl;
+					cout<<hex<<"Adding call/switch icfs: "<<fromib->getAddress()->getVirtualOffset()<<"->"<<ibt->getAddress()->getVirtualOffset()<<endl;
 				jmptables[fromib].insert(ibt);
 			}
 			else
@@ -2367,18 +2351,18 @@ void handle_ibt_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBTAnnotation* p_
 		case MEDS_IBTAnnotation::RET:
 		{
 			/* we are not going to mark return points as IBTs yet.  that's fix-calls job */
-			// possible_target((EXEIO::virtual_offset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
+			// possible_target((VirtualOffset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
 			// 	0,ibt_provenance_t::ibtp_stars_ret);
 
 
-			libIRDB::virtual_offset_t  fromaddr=(libIRDB::virtual_offset_t)p_ibt_annotation->GetXrefAddr();
-			Instruction_t* fromib=lookupInstruction(firp, fromaddr);
-			libIRDB::virtual_offset_t  toaddr=p_ibt_annotation->getVirtualOffset().getOffset();
-			Instruction_t* ibt=lookupInstruction(firp, toaddr);
+			auto fromaddr=(VirtualOffset_t)p_ibt_annotation->GetXrefAddr();
+			auto fromib=lookupInstruction(firp, fromaddr);
+			auto toaddr=p_ibt_annotation->getVirtualOffset().getOffset();
+			auto ibt=lookupInstruction(firp, toaddr);
 			if(fromib && ibt)
 			{
 				if(getenv("IB_VERBOSE")!=nullptr)
-					cout<<hex<<"Adding ret icfs: "<<fromib->GetAddress()->GetVirtualOffset()<<"->"<<ibt->GetAddress()->GetVirtualOffset()<<endl;
+					cout<<hex<<"Adding ret icfs: "<<fromib->getAddress()->getVirtualOffset()<<"->"<<ibt->getAddress()->getVirtualOffset()<<endl;
 				jmptables[fromib].insert(ibt);
 			}
 			else
@@ -2389,7 +2373,7 @@ void handle_ibt_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBTAnnotation* p_
 		}
 		case MEDS_IBTAnnotation::DATA:
 		{
-			possible_target((EXEIO::virtual_offset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
+			possible_target((VirtualOffset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
 				0,ibt_provenance_t::ibtp_stars_data);
 			if(getenv("IB_VERBOSE")!=nullptr)
 				cout<<hex<<"detected stars data ibt at"<<p_ibt_annotation->getVirtualOffset().getOffset()<<endl;
@@ -2397,7 +2381,7 @@ void handle_ibt_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBTAnnotation* p_
 		}
 		case MEDS_IBTAnnotation::UNREACHABLE:
 		{
-			possible_target((EXEIO::virtual_offset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
+			possible_target((VirtualOffset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
 				0,ibt_provenance_t::ibtp_stars_unreachable);
 			if(getenv("IB_VERBOSE")!=nullptr)
 				cout<<hex<<"detected stars unreachable ibt at"<<p_ibt_annotation->getVirtualOffset().getOffset()<<endl;
@@ -2405,7 +2389,7 @@ void handle_ibt_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBTAnnotation* p_
 		}
 		case MEDS_IBTAnnotation::ADDRESSED:
 		{
-			possible_target((EXEIO::virtual_offset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
+			possible_target((VirtualOffset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
 				0,ibt_provenance_t::ibtp_stars_addressed);
 			if(getenv("IB_VERBOSE")!=nullptr)
 				cout<<hex<<"detected stars addresssed ibt at"<<p_ibt_annotation->getVirtualOffset().getOffset()<<endl;
@@ -2413,7 +2397,7 @@ void handle_ibt_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBTAnnotation* p_
 		}
 		case MEDS_IBTAnnotation::UNKNOWN:
 		{
-			possible_target((EXEIO::virtual_offset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
+			possible_target((VirtualOffset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
 				0,ibt_provenance_t::ibtp_stars_unknown);
 			if(getenv("IB_VERBOSE")!=nullptr)
 				cout<<hex<<"detected stars unknown ibt at"<<p_ibt_annotation->getVirtualOffset().getOffset()<<endl;
@@ -2434,7 +2418,7 @@ void read_stars_xref_file(FileIR_t* firp)
 	const auto BINARY_NAME=string("a.ncexe");
 	const auto SHARED_OBJECTS_DIR=string("shared_objects");
 
-	const auto fileBasename = string(basename((char*)firp->GetFile()->GetURL().c_str()));
+	const auto fileBasename = string(basename((char*)firp->getFile()->getURL().c_str()));
 
 	auto annotationParser=MEDS_AnnotationParser();
 	// need to map filename to integer annotation file produced by STARS
@@ -2453,10 +2437,10 @@ void read_stars_xref_file(FileIR_t* firp)
 		cout<<"Warning:  annotation parser reports error: "<<s<<endl;
 	}
 
-        for(auto insn : firp->GetInstructions())
+        for(auto insn : firp->getInstructions())
 	{
-		const auto irdb_vo = insn->GetAddress()->GetVirtualOffset();
-		const auto vo=VirtualOffset(irdb_vo);
+		const auto irdb_vo = insn->getAddress()->getVirtualOffset();
+		const auto vo=VirtualOffset_t(irdb_vo);
 
 		/* find it in the annotations */
 		const auto ret = annotationParser.getAnnotations().equal_range(vo);
@@ -2489,18 +2473,18 @@ void process_dynsym(FileIR_t* firp)
 	auto target=(unsigned int)0;
 	while( fscanf(dynsymfile, "%x", &target) != -1)
 	{
-		possible_target((virtual_offset_t)target,0,ibt_provenance_t::ibtp_dynsym);
+		possible_target((VirtualOffset_t)target,0,ibt_provenance_t::ibtp_dynsym);
 	}
 }
 
 
 ICFS_t* setup_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop, ibt_provenance_t allowed)
 {
-	auto hn=new ICFS_t(ICFS_Analysis_Module_Complete);
+	auto hn=firp->addNewICFS(nullptr, {}, iasAnalysisModuleComplete);
 
-        for(auto insn: firp->GetInstructions())
+        for(auto insn: firp->getInstructions())
 	{
-		auto prov=targets[insn->GetAddress()->GetVirtualOffset()];
+		auto prov=targets[insn->getAddress()->getVirtualOffset()];
 
 		if(prov.isEmpty())
 			continue;
@@ -2512,7 +2496,7 @@ ICFS_t* setup_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop, ibt_provenance_t al
 	}
 
 	if(hn->size() < 1000 && !elfiop->isDynamicallyLinked())
-		hn->SetAnalysisStatus(ICFS_Analysis_Complete);
+		hn->setAnalysisStatus(iasAnalysisComplete);
 
 	return hn;
 }
@@ -2556,7 +2540,7 @@ ICFS_t* setup_call_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop)
 	 * ibt_provenance_t::ibtp_switchtable_type10
 	 */
 
-	ICFS_t* ret=setup_hellnode(firp,elfiop,allowed);
+	auto ret=setup_hellnode(firp,elfiop,allowed);
 
 	cout<<"# ATTRIBUTE fill_in_indtargs::call_hellnode_size="<<dec<<ret->size()<<endl;
 	return ret;
@@ -2600,7 +2584,7 @@ ICFS_t* setup_jmp_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop)
 	 * ibt_provenance_t::ibtp_switchtable_type10
 	 */
 
-	ICFS_t* ret=setup_hellnode(firp,elfiop,allowed);
+	auto ret=setup_hellnode(firp,elfiop,allowed);
 	cout<<"# ATTRIBUTE fill_in_indtargs::jmp_hellnode_size="<<dec<<ret->size()<<endl;
 	return ret;
 
@@ -2649,7 +2633,7 @@ ICFS_t* setup_ret_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop)
 	 * ibt_provenance_t::ibtp_gotplt  
 	 */
 
-	ICFS_t* ret_hell_node=setup_hellnode(firp,elfiop,allowed);
+	auto ret_hell_node=setup_hellnode(firp,elfiop,allowed);
 	cout<<"# ATTRIBUTE fill_in_indtargs::basicret_hellnode_size="<<dec<<ret_hell_node->size()<<endl;
 
 	cout<<"# ATTRIBUTE fill_in_indtargs::fullret_hellnode_size="<<dec<<ret_hell_node->size()<<endl;
@@ -2661,19 +2645,12 @@ void mark_return_points(FileIR_t* firp)
 {
 
 	// add unmarked return points.  fix_calls will deal with whether they need to be pinned or not later.
-        for(
-		InstructionSet_t::const_iterator it=firp->GetInstructions().begin();
-                it!=firp->GetInstructions().end();
-                ++it
-           )
+        for(auto insn : firp->getInstructions())
 	{
-		Instruction_t* insn=*it;
-		//DISASM d;
-		//Disassemble(insn,d);
-		DecodedInstruction_t d(insn);
-		if(string("call")==d.getMnemonic() /*.Instruction.Mnemonic*/ && insn->GetFallthrough())
+		auto d=DecodedInstruction_t::factory(insn);
+		if(string("call")==d->getMnemonic() && insn->getFallthrough())
 		{
-			targets[insn->GetFallthrough()->GetAddress()->GetVirtualOffset()].add(ibt_provenance_t::ibtp_ret);
+			targets[insn->getFallthrough()->getAddress()->getVirtualOffset()].add(ibt_provenance_t::ibtp_ret);
 		}
 	}
 }
@@ -2682,25 +2659,19 @@ void mark_return_points(FileIR_t* firp)
 void print_icfs(FileIR_t* firp)
 {
 	cout<<"Printing ICFS sets."<<endl;
-        for(
-		InstructionSet_t::const_iterator it=firp->GetInstructions().begin();
-                it!=firp->GetInstructions().end();
-                ++it
-           )
+        for(auto insn : firp->getInstructions())
 	{
-		Instruction_t* insn=*it;
-		ICFS_t *icfs=insn->GetIBTargets();
+		auto icfs=insn->getIBTargets();
 
 		// not an IB
 		if(!icfs)
 			continue;
 
-		cout<<hex<<insn->GetAddress()->GetVirtualOffset()<<" -> ";
+		cout<<hex<<insn->getAddress()->getVirtualOffset()<<" -> ";
 
-		for(ICFS_t::const_iterator icfsit=icfs->begin(); icfsit!=icfs->end(); ++icfsit)
+		for(auto target : *icfs)
 		{
-			Instruction_t* target=*icfsit;
-			cout<<hex<<target->GetAddress()->GetVirtualOffset()<<" ";
+			cout<<hex<<target->getAddress()->getVirtualOffset()<<" ";
 		}
 		cout<<endl;
 	}
@@ -2728,51 +2699,44 @@ void setup_icfs(FileIR_t* firp, EXEIO::exeio* elfiop)
 
 
 	// setup calls, jmps and ret hell nodes.
-	ICFS_t *call_hell = setup_call_hellnode(firp,elfiop);
-	firp->GetAllICFS().insert(call_hell);
-
-	ICFS_t *jmp_hell = setup_jmp_hellnode(firp,elfiop);
-	firp->GetAllICFS().insert(jmp_hell);
-
-	ICFS_t *ret_hell = setup_ret_hellnode(firp,elfiop);
-	firp->GetAllICFS().insert(ret_hell);
-
+	auto call_hell = setup_call_hellnode(firp,elfiop);
+	auto jmp_hell = setup_jmp_hellnode(firp,elfiop);
+	auto ret_hell = setup_ret_hellnode(firp,elfiop);
 
 	// for each instruction 
-        for(
-                set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
-                it!=firp->GetInstructions().end();
-                ++it
-           )
+        for(auto insn : firp->getInstructions())
 	{
 
 		// if we already got it complete (via stars or FII)
-		Instruction_t* insn=*it;
-
-		if(insn->GetIndirectBranchTargetAddress()!=nullptr)
+		if(insn->getIndirectBranchTargetAddress()!=nullptr)
 			total_ibta_set++;
 			
 
 		// warning check
-		ibt_provenance_t prov=targets[insn->GetAddress()->GetVirtualOffset()];
+		ibt_provenance_t prov=targets[insn->getAddress()->getVirtualOffset()];
 
 		// stars calls it data, but printw arning if we didn't find it in data or as a printf addr.
 		if(prov.isPartiallySet(stars_data) && !prov.isPartiallySet(non_stars_data))
 		{
 			//ofstream fout("warning.txt", ofstream::out | ofstream::app);
-			cerr<<"STARS found an IBT in data that FII wasn't able to classify at "<<hex<<insn->GetAddress()->GetVirtualOffset()<<"."<<endl;
+			cerr<<"STARS found an IBT in data that FII wasn't able to classify at "<<hex<<insn->getAddress()->getVirtualOffset()<<"."<<endl;
 		}
 
 		// create icfs for complete jump tables.
-		if(jmptables[insn].IsComplete())
+		if(jmptables[insn].isComplete())
 		{
+			
 			// get the strcuture into the IRDB	
-			ICFS_t* nn=new ICFS_t(jmptables[insn]);
+			/*
+			auto nn=new ICFS_t(jmptables[insn]);
 			firp->GetAllICFS().insert(nn);
 			insn->SetIBTargets(nn);
+			*/
+			auto nn=firp->addNewICFS(insn,jmptables[insn]);
+
 			if(getenv("IB_VERBOSE")!=0)
 			{
-				cout<<"IB complete for "<<hex<<insn->GetAddress()->GetVirtualOffset()
+				cout<<"IB complete for "<<hex<<insn->getAddress()->getVirtualOffset()
 					<<":"<<insn->getDisassembly()<<" with "<<dec<<nn->size()<<" targets."<<endl;
 			}
 
@@ -2781,32 +2745,28 @@ void setup_icfs(FileIR_t* firp, EXEIO::exeio* elfiop)
 		}
 
 		// disassemble the instruction, and figure out which type of hell node we need.
-		//DISASM d;
-		//Disassemble(insn,d);
-		DecodedInstruction_t d(insn);
-		if(d.isReturn()) // string("ret")==d.getMnemonic() /*Instruction.Mnemonic*/ || string("retn")==d.getMnemonic() /*d.Instruction.Mnemonic*/)
+		auto d=DecodedInstruction_t::factory(insn);
+		if(d->isReturn()) 
 		{
 			if(getenv("IB_VERBOSE")!=0)
-				cout<<"using ret hell node for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
-			insn->SetIBTargets(ret_hell);
+				cout<<"using ret hell node for "<<hex<<insn->getAddress()->getVirtualOffset()<<endl;
+			insn->setIBTargets(ret_hell);
 			ret_hell->insert(ALLOF(jmptables[insn])); // insert any partially analyzed results from rets.
 		}
-		//else if ( (string("call ")==d.Instruction.Mnemonic) && ((d.Argument1.ArgType&0xffff0000&CONSTANT_TYPE)!=CONSTANT_TYPE))
-		else if ( d.isCall() /* (string("call")==d.getMnemonic()) */ && (!d.getOperand(0).isConstant()))
+		else if ( d->isCall() && (!d->getOperand(0)->isConstant()))
 		{
 			if(getenv("IB_VERBOSE")!=0)
-				cout<<"using call hell node for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
+				cout<<"using call hell node for "<<hex<<insn->getAddress()->getVirtualOffset()<<endl;
 			// indirect call 
-			insn->SetIBTargets(call_hell);
+			insn->setIBTargets(call_hell);
 			call_hell->insert(ALLOF(jmptables[insn])); // insert any partially analyzed results from calls.
 		}
-		//else if ( (string("jmp ")==d.Instruction.Mnemonic) && ((d.Argument1.ArgType&0xffff0000&CONSTANT_TYPE)!=CONSTANT_TYPE))
-		else if ( d.isUnconditionalBranch() /*(string("jmp")==d.getMnemonic()) */&& (!d.getOperand(0).isConstant()))
+		else if ( d->isUnconditionalBranch() && (!d->getOperand(0)->isConstant()))
 		{
 			if(getenv("IB_VERBOSE")!=0)
-				cout<<"using jmp hell node for "<<hex<<insn->GetAddress()->GetVirtualOffset()<<endl;
+				cout<<"using jmp hell node for "<<hex<<insn->getAddress()->getVirtualOffset()<<endl;
 			// indirect jmp 
-			insn->SetIBTargets(jmp_hell);
+			insn->setIBTargets(jmp_hell);
 			jmp_hell->insert(ALLOF(jmptables[insn])); // insert any partially analyzed results from jmps.
 		}
 
@@ -2824,35 +2784,35 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 	map<string,int> unpin_counts;
 	map<string,int> missed_unpins;
 
-	for(auto scoop : firp->GetDataScoops())
+	for(auto scoop : firp->getDataScoops())
 	{
 		// 4 or 8 
-		const auto ptrsize=firp->GetArchitectureBitWidth()/8;
-		const char *scoop_contents=scoop->GetContents().c_str();
-		if(scoop->GetName()==".init_array" || scoop->GetName()==".fini_array" || scoop->GetName()==".got.plt" || scoop->GetName()==".got")
+		const auto ptrsize=firp->getArchitectureBitWidth()/8;
+		const char *scoop_contents=scoop->getContents().c_str();
+		if(scoop->getName()==".init_array" || scoop->getName()==".fini_array" || scoop->getName()==".got.plt" || scoop->getName()==".got")
 		{
-			const auto start_offset= (scoop->GetName()==".got.plt") ? 3*ptrsize : 0u;
-			for(auto i=start_offset; i+ptrsize <= scoop->GetSize() ; i+=ptrsize)
+			const auto start_offset= (scoop->getName()==".got.plt") ? 3*ptrsize : 0u;
+			for(auto i=start_offset; i+ptrsize <= scoop->getSize() ; i+=ptrsize)
 			{
 				const auto vo=
-					ptrsize==4 ? (virtual_offset_t)*(uint32_t*)&scoop_contents[i] : 
-					ptrsize==8 ? (virtual_offset_t)*(uint64_t*)&scoop_contents[i] :
+					ptrsize==4 ? (VirtualOffset_t)*(uint32_t*)&scoop_contents[i] : 
+					ptrsize==8 ? (VirtualOffset_t)*(uint64_t*)&scoop_contents[i] :
 					throw domain_error("Invalid ptr size");
 
 
 				auto insn=lookupInstruction(firp,vo);
 
 				// OK for .got scoop to miss, some entries are empty.
-				if(scoop->GetName()==".got" && insn==nullptr)
+				if(scoop->getName()==".got" && insn==nullptr)
 				{
 					if(getenv("UNPIN_VERBOSE")!=0)
-						cout<<"Skipping "<<scoop->GetName()<<" unpin for "<<hex<<vo<<" due to no instruction at vo"<<endl;
+						cout<<"Skipping "<<scoop->getName()<<" unpin for "<<hex<<vo<<" due to no instruction at vo"<<endl;
 					continue;
 				}
 				if(vo==0)
 				{
 					// some segments may be null terminated.
-					assert(i+ptrsize==scoop->GetSize());
+					assert(i+ptrsize==scoop->getSize());
 					break;
 				}
 
@@ -2863,8 +2823,8 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 				if( targets[vo].areOnlyTheseSet(
 					ibt_provenance_t::ibtp_initarray | 
 					ibt_provenance_t::ibtp_finiarray | 
-					ibt_provenance_t::ibtp_gotplt | 
-					ibt_provenance_t::ibtp_got | 
+					ibt_provenance_t::ibtp_gotplt    | 
+					ibt_provenance_t::ibtp_got       | 
 					ibt_provenance_t::ibtp_stars_data)
 				  )
 				{
@@ -2895,54 +2855,60 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 					{
 						// mark as unpinned
 						already_unpinned.insert(insn);
-						unpin_counts[scoop->GetName()]++;
+						unpin_counts[scoop->getName()]++;
 
 						// add reloc to IR.
-						Relocation_t* nr=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, i, "data_to_insn_ptr", insn);
+						auto nr=firp->addNewRelocation(scoop, i, "data_to_insn_ptr", insn);
 						assert(nr);
-						firp->GetRelocations().insert(nr);
-						scoop->GetRelocations().insert(nr);
+						/*
+						Relocation_t* nr=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, i, "data_to_insn_ptr", insn);
+						firp->getRelocations().insert(nr);
+						scoop->getRelocations().insert(nr);
+						*/
 
 						if(getenv("UNPIN_VERBOSE")!=0)
-							cout<<"Unpinning "+scoop->GetName()+" entry at offset "<<dec<<i<<endl;
-						if(insn->GetIndirectBranchTargetAddress()==nullptr)
+							cout<<"Unpinning "+scoop->getName()+" entry at offset "<<dec<<i<<endl;
+						if(insn->getIndirectBranchTargetAddress()==nullptr)
 						{
 							// add ibta to mark as unpipnned
-							const auto fileid=insn->GetAddress()->GetFileID();
+							const auto fileid=insn->getAddress()->getFileID();
+							/*
 							auto newaddr = new AddressID_t(BaseObj_t::NOT_IN_DATABASE,fileid,0);
 							assert(newaddr);
-							firp->GetAddresses().insert(newaddr);
-							insn->SetIndirectBranchTargetAddress(newaddr);
+							firp->getAddresses().insert(newaddr);
+							*/
+							auto newaddr=firp->addNewAddress(fileid,0);
+							insn->setIndirectBranchTargetAddress(newaddr);
 						}
 						else
 						{
 							// just mark as unpinned.
-							insn->GetIndirectBranchTargetAddress()->SetVirtualOffset(0);
+							insn->getIndirectBranchTargetAddress()->setVirtualOffset(0);
 						}	
 					}
 				}
 				else
 				{
 					if(getenv("UNPIN_VERBOSE")!=0)
-						cout<<"Skipping "<<scoop->GetName()<<" unpin for "<<hex<<vo<<" due to other references at offset="<<dec<<i<<endl;
-					missed_unpins[scoop->GetName()]++;
+						cout<<"Skipping "<<scoop->getName()<<" unpin for "<<hex<<vo<<" due to other references at offset="<<dec<<i<<endl;
+					missed_unpins[scoop->getName()]++;
 				}
 			}
 		}
-		else if(scoop->GetName()==".dynsym")
+		else if(scoop->getName()==".dynsym")
 		{
-			const auto ptrsize=firp->GetArchitectureBitWidth()/8;
-			const auto scoop_contents=scoop->GetContents().c_str();
+			const auto ptrsize=firp->getArchitectureBitWidth()/8;
+			const auto scoop_contents=scoop->getContents().c_str();
 			const auto symsize= 
 				ptrsize==8 ?  sizeof(Elf64_Sym) :
 				ptrsize==4 ?  sizeof(Elf32_Sym) :
 				throw domain_error("Cannot detect ptr size -> ELF symbol mapping");
 
 			auto table_entry_no=0U;
-			for(auto i=0U;i+symsize<scoop->GetSize(); i+=symsize, table_entry_no++)
+			for(auto i=0U;i+symsize<scoop->getSize(); i+=symsize, table_entry_no++)
 			{
 				int addr_offset=0;
-				virtual_offset_t vo=0;
+				VirtualOffset_t vo=0;
 				int st_info_field=0;
 				int shndx=0;
 				switch(ptrsize)
@@ -3002,34 +2968,41 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 
 						// when/if these asserts fail, convert to if and guard the reloc creation.
 
-						unpin_counts[scoop->GetName()]++;
+						unpin_counts[scoop->getName()]++;
+						/*
 						auto nr=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, i+addr_offset, "data_to_insn_ptr", insn);
 						assert(nr);
 
 						// add reloc to IR.
-						firp->GetRelocations().insert(nr);
-						scoop->GetRelocations().insert(nr);
+						firp->getRelocations().insert(nr);
+						scoop->getRelocations().insert(nr);
+						*/
+						auto nr=firp->addNewRelocation(scoop, i+addr_offset, "data_to_insn_ptr", insn);
+						(void)nr;
 
-                                                if(insn->GetIndirectBranchTargetAddress()==nullptr)
+                                                if(insn->getIndirectBranchTargetAddress()==nullptr)
                                                 {
+							/*
                                                         auto newaddr = new AddressID_t;
                                                         assert(newaddr);
-                                                        newaddr->SetFileID(insn->GetAddress()->GetFileID());
-                                                        newaddr->SetVirtualOffset(0);   // unpinne
+                                                        newaddr->SetFileID(insn->getAddress()->getFileID());
+                                                        newaddr->setVirtualOffset(0);   // unpinne
 
-                                                        firp->GetAddresses().insert(newaddr);
-                                                        insn->SetIndirectBranchTargetAddress(newaddr);
+                                                        firp->getAddresses().insert(newaddr);
+							*/
+							auto newaddr=firp->addNewAddress(insn->getAddress()->getFileID(),0);
+                                                        insn->setIndirectBranchTargetAddress(newaddr);
                                                 }
 						else
                                                 {
-                                                        insn->GetIndirectBranchTargetAddress()->SetVirtualOffset(0);
+                                                        insn->getIndirectBranchTargetAddress()->setVirtualOffset(0);
                                                 }
 					}
 					else
 					{
 						if(getenv("UNPIN_VERBOSE")!=0)
 							cout<<"Skipping .dynsm unpin for "<<hex<<vo<<" due to other references."<<dec<<i<<endl;
-						missed_unpins[scoop->GetName()]++;
+						missed_unpins[scoop->getName()]++;
 					}
 				}
 			}
@@ -3037,7 +3010,7 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 		else
 		{
 			if(getenv("UNPIN_VERBOSE")!=0)
-				cout<<"Skipping unpin of section "<<scoop->GetName()<<endl;
+				cout<<"Skipping unpin of section "<<scoop->getName()<<endl;
 		}
 			
 	}
@@ -3062,11 +3035,11 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 
 }
 
-DataScoop_t* find_scoop(FileIR_t *firp, const virtual_offset_t &vo)
+DataScoop_t* find_scoop(FileIR_t *firp, const VirtualOffset_t &vo)
 {
-	for(auto s : firp->GetDataScoops())
+	for(auto s : firp->getDataScoops())
 	{
-		if( s->GetStart()->GetVirtualOffset()<=vo && vo<s->GetEnd()->GetVirtualOffset() )
+		if( s->getStart()->getVirtualOffset()<=vo && vo<s->getEnd()->getVirtualOffset() )
 			return s;
 	}
 	return nullptr;
@@ -3085,7 +3058,7 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 
 	if(getenv("UNPIN_VERBOSE"))
 	{
-		cout<<"Unpinning type3 switch, dispatch is "<<hex<<insn->GetAddress()->GetVirtualOffset()<<":"
+		cout<<"Unpinning type3 switch, dispatch is "<<hex<<insn->getAddress()->getVirtualOffset()<<":"
 		    <<insn->getDisassembly()<<" with tabSz="<<jmptables[insn].GetTableSize()<<endl; 
 	}
 
@@ -3101,27 +3074,27 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 		ibt_provenance_t::ibtp_stars_switch ;  	// found as stars switch
 
 	// ptr size
-	int ptrsize=firp->GetArchitectureBitWidth()/8;
+	int ptrsize=firp->getArchitectureBitWidth()/8;
 
 	// offset from start of scoop
-	virtual_offset_t scoop_off=jmptables[insn].GetTableStart() - scoop->GetStart()->GetVirtualOffset();
+	VirtualOffset_t scoop_off=jmptables[insn].GetTableStart() - scoop->getStart()->getVirtualOffset();
 
 	// scoop contents
-	const char *scoop_contents=scoop->GetContents().c_str();
+	const char *scoop_contents=scoop->getContents().c_str();
 
 
 	for(int i=0; i<jmptables[insn].GetTableSize(); i++)
 	{
 
 		// grab the value out of the scoop
-		virtual_offset_t table_entry=0;		
+		VirtualOffset_t table_entry=0;		
 		switch(ptrsize)
 		{
 			case 4:
-				table_entry=(virtual_offset_t)*(int*)&scoop_contents[scoop_off];
+				table_entry=(VirtualOffset_t)*(int*)&scoop_contents[scoop_off];
 				break;
 			case 8:
-				table_entry=(virtual_offset_t)*(int**)&scoop_contents[scoop_off];
+				table_entry=(VirtualOffset_t)*(int**)&scoop_contents[scoop_off];
 				break;
 			default:
 				assert(0);
@@ -3160,28 +3133,36 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 					already_unpinned.insert(ibt);
 
 					// add reloc to IR.
+					/*
 					auto nr=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, scoop_off, "data_to_insn_ptr", ibt);
 					assert(nr);
-					firp->GetRelocations().insert(nr);
-					scoop->GetRelocations().insert(nr);
+					firp->getRelocations().insert(nr);
+					scoop->getRelocations().insert(nr);
+					*/
+					auto nr=firp->addNewRelocation(scoop,scoop_off, "data_to_insn_ptr", ibt);
+					(void)nr;
+
 
 					// remove rodata reference for hell nodes.
 					targets[table_entry]=newprov;
 					switch_targs.insert(ibt);
 
-                                         if(ibt->GetIndirectBranchTargetAddress()==nullptr)
+                                         if(ibt->getIndirectBranchTargetAddress()==nullptr)
                                          {
+						 /*
                                                  auto newaddr = new AddressID_t;
                                                  assert(newaddr);
-                                                 newaddr->SetFileID(ibt->GetAddress()->GetFileID());
-                                                 newaddr->SetVirtualOffset(0);   // unpinne
+                                                 newaddr->SetFileID(ibt->getAddress()->getFileID());
+                                                 newaddr->setVirtualOffset(0);   // unpinne
 
-                                                 firp->GetAddresses().insert(newaddr);
-                                                 ibt->SetIndirectBranchTargetAddress(newaddr);
+                                                 firp->getAddresses().insert(newaddr);
+						 */
+						 auto newaddr=firp->addNewAddress(ibt->getAddress()->getFileID(),0);
+                                                 ibt->setIndirectBranchTargetAddress(newaddr);
                                          }
 				         else
                                          {
-                                                 ibt->GetIndirectBranchTargetAddress()->SetVirtualOffset(0);
+                                                 ibt->getIndirectBranchTargetAddress()->setVirtualOffset(0);
                                          }
 				}
 			}
@@ -3204,8 +3185,8 @@ void unpin_switches(FileIR_t *firp, int do_unpin_opt)
 
 	// for each instruction 
         for(
-                set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
-                it!=firp->GetInstructions().end();
+                set<Instruction_t*>::const_iterator it=firp->getInstructions().begin();
+                it!=firp->getInstructions().end();
                 ++it
 	   )
 
@@ -3219,10 +3200,10 @@ void unpin_switches(FileIR_t *firp, int do_unpin_opt)
 			continue;
 
 		// sanity check we have a good switch 
-		if(insn->GetIBTargets()==nullptr) continue;
+		if(insn->getIBTargets()==nullptr) continue;
 
 		// sanity check we have a good switch 
-		if(insn->GetIBTargets()->GetAnalysisStatus()!=ICFS_Analysis_Complete) continue;
+		if(insn->getIBTargets()->getAnalysisStatus()!=iasAnalysisComplete) continue;
 
 		// find the scoop, try next if we fail.
 		DataScoop_t* scoop=find_scoop(firp,jmptables[insn].GetTableStart());
@@ -3243,13 +3224,13 @@ void print_unpins(FileIR_t *firp)
 	if(getenv("UNPIN_VERBOSE") == nullptr)
 		return;
 
-	for(auto scoop : firp->GetDataScoops())
+	for(auto scoop : firp->getDataScoops())
 	{
 		assert(scoop);
-		for(auto reloc : scoop->GetRelocations())
+		for(auto reloc : scoop->getRelocations())
 		{
 			assert(reloc);
-			cout<<"Found relocation in "<<scoop->GetName()<<" of type "<<reloc->GetType()<<" at offset "<<hex<<reloc->GetOffset()<<endl;
+			cout<<"Found relocation in "<<scoop->getName()<<" of type "<<reloc->getType()<<" at offset "<<hex<<reloc->getOffset()<<endl;
 		}
 	}
 }
@@ -3262,7 +3243,7 @@ void unpin_well_analyzed_ibts(FileIR_t *firp, int64_t do_unpin_opt)
 	print_unpins(firp);
 }
 
-bool find_arm_address_gen(Instruction_t* insn, const string& reg, virtual_offset_t& address, bool& page_only) 
+bool find_arm_address_gen(Instruction_t* insn, const string& reg, VirtualOffset_t& address, bool& page_only) 
 {
 	// init output args, just in case.
 	address=0;
@@ -3276,11 +3257,11 @@ bool find_arm_address_gen(Instruction_t* insn, const string& reg, virtual_offset
 			 true))                    /* try hard to find the other half, more expensive */
 	{
 		assert(adrp_insn);
-		const auto adrp_disasm=DecodedInstruction_t(adrp_insn);
-		const auto page_no=adrp_disasm.getOperand(1).getConstant();
+		const auto adrp_disasm=DecodedInstruction_t::factory(adrp_insn);
+		const auto page_no=adrp_disasm->getOperand(1)->getConstant();
 
-		cout<<"Found spilled page_no at "<<hex<<insn->GetAddress()->GetVirtualOffset()<<" in: "<<endl;
-		cout<<"\t"<<adrp_disasm.getDisassembly()<<endl;
+		cout<<"Found spilled page_no at "<<hex<<insn->getAddress()->getVirtualOffset()<<" in: "<<endl;
+		cout<<"\t"<<adrp_disasm->getDisassembly()<<endl;
 		cout<<"\t"<<insn->getDisassembly()<<endl;
 		page_only=true;
 		address=page_no;
@@ -3295,15 +3276,15 @@ bool find_arm_address_gen(Instruction_t* insn, const string& reg, virtual_offset
 			 true))                   /* try hard to find the other half, more expensive */
 	{
 		assert(add_insn);
-		const auto add_disasm=DecodedInstruction_t(add_insn);
-		const auto add_op1=add_disasm.getOperand(1);
-		const auto add_op2=add_disasm.getOperand(2);
-		if(!add_op1.isRegister()) return false;
-		if( add_op1.getString()=="x29") return false; // skip arm SP.
-		if(!add_op2.isConstant()) return false;
+		const auto add_disasm=DecodedInstruction_t::factory(add_insn);
+		const auto add_op1=add_disasm->getOperand(1);
+		const auto add_op2=add_disasm->getOperand(2);
+		if(!add_op1->isRegister()) return false;
+		if( add_op1->getString()=="x29") return false; // skip arm SP.
+		if(!add_op2->isConstant()) return false;
 
-		const auto add_op1_reg=add_op1.getString();
-		const auto add_op2_constant=add_op2.getConstant();
+		const auto add_op1_reg=add_op1->getString();
+		const auto add_op2_constant=add_op2->getConstant();
 
 		// try to find an adrp
 		auto adrp_insn=(Instruction_t*)nullptr;
@@ -3315,12 +3296,12 @@ bool find_arm_address_gen(Instruction_t* insn, const string& reg, virtual_offset
 			return false;
 		assert(adrp_insn);
 
-		const auto adrp_disasm=DecodedInstruction_t(adrp_insn);
-		const auto adrp_page=adrp_disasm.getOperand(1).getConstant();
+		const auto adrp_disasm=DecodedInstruction_t::factory(adrp_insn);
+		const auto adrp_page=adrp_disasm->getOperand(1)->getConstant();
 		const auto spilled_address=adrp_page+add_op2_constant;
-		cout<<"Found spilled address at "<<hex<<insn->GetAddress()->GetVirtualOffset()<<" in: "<<endl;
-		cout<<"\t"<<adrp_disasm.getDisassembly()<<endl;
-		cout<<"\t"<<add_disasm.getDisassembly()<<endl;
+		cout<<"Found spilled address at "<<hex<<insn->getAddress()->getVirtualOffset()<<" in: "<<endl;
+		cout<<"\t"<<adrp_disasm->getDisassembly()<<endl;
+		cout<<"\t"<<add_disasm->getDisassembly()<<endl;
 		cout<<"\t"<<insn->getDisassembly()<<endl;
 		page_only=false;
 		address=spilled_address;
@@ -3335,7 +3316,7 @@ void find_all_arm_unks(FileIR_t* firp)
 		{
 
 			auto page_only=true;
-			auto address=virtual_offset_t(0);
+			auto address=VirtualOffset_t(0);
 			if(find_arm_address_gen(insn,reg, address, page_only))
 			{
 				if(page_only)
@@ -3346,34 +3327,34 @@ void find_all_arm_unks(FileIR_t* firp)
 		};
 	const auto do_verbose=getenv("IB_VERBOSE");
 	/* only valid for arm */
-	if(firp->GetArchitecture()->getMachineType() != admtAarch64) return;
+	if(firp->getArchitecture()->getMachineType() != admtAarch64) return;
 
 	/* find adrps */
-	for(auto insn : firp->GetInstructions())
+	for(auto insn : firp->getInstructions())
 	{
-		const auto d=DecodedInstruction_t(insn);
-		if(d.getMnemonic()!="adrp") continue;
-		const auto op1=d.getOperand(1);
-		const auto op1_constant=op1.getConstant();
-		all_adrp_results[insn->GetFunction()].insert(op1_constant);
+		const auto d=DecodedInstruction_t::factory(insn);
+		if(d->getMnemonic()!="adrp") continue;
+		const auto op1=d->getOperand(1);
+		const auto op1_constant=op1->getConstant();
+		all_adrp_results[insn->getFunction()].insert(op1_constant);
 	}
 
 	/* find add/adrp pairs */
-	for(auto insn : firp->GetInstructions())
+	for(auto insn : firp->getInstructions())
 	{
-		const auto d=DecodedInstruction_t(insn);
-		if(d.getMnemonic()!="add") continue;
-		if(!d.hasOperand(1)) continue;
-		if(!d.hasOperand(2)) continue;
-		const auto op0=d.getOperand(1);
-		const auto op1=d.getOperand(1);
-		const auto op2=d.getOperand(2);
-		if(!op1.isRegister()) continue;
-		if(op1.getString()=="x29") continue; // skip arm SP.
-		if(!op2.isConstant()) continue;
+		const auto d=DecodedInstruction_t::factory(insn);
+		if(d->getMnemonic()!="add") continue;
+		if(!d->hasOperand(1)) continue;
+		if(!d->hasOperand(2)) continue;
+		const auto op0=d->getOperand(1);
+		const auto op1=d->getOperand(1);
+		const auto op2=d->getOperand(2);
+		if(!op1->isRegister()) continue;
+		if(op1->getString()=="x29") continue; // skip arm SP.
+		if(!op2->isConstant()) continue;
 
-		const auto op1_reg=op1.getString();
-		const auto op2_constant=op2.getConstant();
+		const auto op1_reg=op1->getString();
+		const auto op2_constant=op2->getConstant();
 
 		// try to find an adrp
 		auto adrp_insn=(Instruction_t*)nullptr;
@@ -3385,25 +3366,25 @@ void find_all_arm_unks(FileIR_t* firp)
 			continue;
 		assert(adrp_insn);
 
-		const auto adrp_disasm=DecodedInstruction_t(adrp_insn);
-		const auto adrp_page=adrp_disasm.getOperand(1).getConstant();
+		const auto adrp_disasm=DecodedInstruction_t::factory(adrp_insn);
+		const auto adrp_page=adrp_disasm->getOperand(1)->getConstant();
 		const auto unk_value=adrp_page+op2_constant;
 
-		all_add_adrp_results     [ insn->GetFunction()     ].insert(unk_value);
-		all_add_adrp_results     [ adrp_insn->GetFunction()].insert(unk_value);
-		per_reg_add_adrp_results [ op0.getString()         ].insert(unk_value);
+		all_add_adrp_results     [ insn->getFunction()     ].insert(unk_value);
+		all_add_adrp_results     [ adrp_insn->getFunction()].insert(unk_value);
+		per_reg_add_adrp_results [ op0->getString()        ].insert(unk_value);
 
 		/* check for scoops at the unk address.
 		 * if found, we assume that the unk points at data.
 		 * else, we mark it as a possible code target.
 		 */
-		if(firp->FindScoop(unk_value)==nullptr)
+		if(firp->findScoop(unk_value)==nullptr)
 			possible_target(unk_value, 0, ibt_provenance_t::ibtp_text);
 		
 		/* verbose logging */
 		if(do_verbose) 
-			cout << "Detected ARM unk="<<hex<<unk_value<<" for "<<d.getDisassembly()
-			     << " and "<<adrp_disasm.getDisassembly()<<endl;
+			cout << "Detected ARM unk="<<hex<<unk_value<<" for "<<d->getDisassembly()
+			     << " and "<<adrp_disasm->getDisassembly()<<endl;
 
 	}
 	/* find spilled adrp's and add/adrp pairs 
@@ -3420,91 +3401,91 @@ void find_all_arm_unks(FileIR_t* firp)
 	 *
 	 * we record these later, in case we find a switch dispatch that has a spilled jump table address.
 	 */
-	for(auto insn : firp->GetInstructions())
+	for(auto insn : firp->getInstructions())
 	{
 		// look for a spill of an address
-		const auto d=DecodedInstruction_t(insn);
+		const auto d=DecodedInstruction_t::factory(insn);
 
 		// spills are str instructions
-		if(d.getMnemonic()!="str") continue;
+		if(d->getMnemonic()!="str") continue;
 
 		// spills of an address are writing an X register. 
-		const auto spill_op0_reg=d.getOperand(0).getString();
+		const auto spill_op0_reg=d->getOperand(0)->getString();
 		if(spill_op0_reg[0]!='x') continue;
 
 		// spills write to the stack with a constant offset.
-		const auto spill_op1=d.getOperand(1);
-		assert(spill_op1.isMemory());
-		const auto spill_op1_string=spill_op1.getString();
+		const auto spill_op1=d->getOperand(1);
+		assert(spill_op1->isMemory());
+		const auto spill_op1_string=spill_op1->getString();
 		// needs to have a base reg, which is either sp or x29
-		if(!spill_op1.hasBaseRegister()) continue;
+		if(!spill_op1->hasBaseRegister()) continue;
 		if( spill_op1_string.substr(0,2)!="sp" && spill_op1_string.substr(0,3)!="x29" ) continue;
-		if(!spill_op1.hasMemoryDisplacement()) continue;
-		if( spill_op1.hasIndexRegister()) continue;
+		if(!spill_op1->hasMemoryDisplacement()) continue;
+		if( spill_op1->hasIndexRegister()) continue;
 
-		const auto spill_disp=spill_op1.getMemoryDisplacement();
+		const auto spill_disp=spill_op1->getMemoryDisplacement();
 
 		// found str <x-reg> [sp+const]
 
-		reg_to_spilled_addr(insn, spill_op0_reg, SpillPoint_t({insn->GetFunction(),spill_disp  }));
+		reg_to_spilled_addr(insn, spill_op0_reg, SpillPoint_t({insn->getFunction(),spill_disp  }));
 
 
 	}
-	for(auto insn : firp->GetInstructions())
+	for(auto insn : firp->getInstructions())
 	{
 		// look for a spill of an address
-		const auto d=DecodedInstruction_t(insn);
+		const auto d=DecodedInstruction_t::factory(insn);
 
 		// spills are str instructions
-		if(d.getMnemonic()!="stp") continue;
+		if(d->getMnemonic()!="stp") continue;
 
 		// spills of an address are writing an X register. 
-		const auto spill_op0_reg=d.getOperand(0).getString();
-		const auto spill_op1_reg=d.getOperand(1).getString();
+		const auto spill_op0_reg=d->getOperand(0)->getString();
+		const auto spill_op1_reg=d->getOperand(1)->getString();
 		if(spill_op0_reg[0]!='x') continue;
 
 		// spills write to the stack with a constant offset.
-		const auto spill_op2=d.getOperand(2);
-		assert(spill_op2.isMemory());
-		const auto spill_op2_string=spill_op2.getString();
+		const auto spill_op2=d->getOperand(2);
+		assert(spill_op2->isMemory());
+		const auto spill_op2_string=spill_op2->getString();
 		// needs to have a base reg, which is either sp or x29
-		if(!spill_op2.hasBaseRegister()) continue;
+		if(!spill_op2->hasBaseRegister()) continue;
 		if( spill_op2_string.substr(0,2)!="sp" && spill_op2_string.substr(0,3)!="x29" ) continue;
-		if(!spill_op2.hasMemoryDisplacement()) continue;
-		if( spill_op2.hasIndexRegister()) continue;
+		if(!spill_op2->hasMemoryDisplacement()) continue;
+		if( spill_op2->hasIndexRegister()) continue;
 
-		const auto spill_disp=spill_op2.getMemoryDisplacement();
+		const auto spill_disp=spill_op2->getMemoryDisplacement();
 
 		// found stp <xreg> <xreg> [sp+const]
 
-		reg_to_spilled_addr(insn, spill_op0_reg, SpillPoint_t({insn->GetFunction(),spill_disp  }));
-		reg_to_spilled_addr(insn, spill_op1_reg, SpillPoint_t({insn->GetFunction(),spill_disp+8}));
+		reg_to_spilled_addr(insn, spill_op0_reg, SpillPoint_t({insn->getFunction(),spill_disp  }));
+		reg_to_spilled_addr(insn, spill_op1_reg, SpillPoint_t({insn->getFunction(),spill_disp+8}));
 
 
 	}
 
 	// look for spilling an address into a d-register.
-	for(auto insn : firp->GetInstructions())
+	for(auto insn : firp->getInstructions())
 	{
 		// look for moves to d-regs via fmov.
-		const auto d       = DecodedInstruction_t(insn);
-		if( d.getMnemonic()!="fmov" ) continue;
+		const auto d       = DecodedInstruction_t::factory(insn);
+		if( d->getMnemonic()!="fmov" ) continue;
 
 		// look for a spill of an address
-		const auto op0     = d.getOperand(0);
-		const auto op1     = d.getOperand(1);
-		const auto op0_str = op0.getString();
-		const auto op1_str = op1.getString();
+		const auto op0     = d->getOperand(0);
+		const auto op1     = d->getOperand(1);
+		const auto op0_str = op0->getString();
+		const auto op1_str = op1->getString();
 
 		// spills to d-regs are fmov instructions with a d-reg dest and an xreg src.
 		if( op0_str[0]     !='d'    ) continue;
 		if( op1_str[0]     !='x'    ) continue;
 
 		auto page_only=true;
-		auto address=virtual_offset_t(0);
+		auto address=VirtualOffset_t(0);
 		if(find_arm_address_gen(insn,op1_str, address, page_only))
 		{
-			const auto spill_loc = DregSpillPoint_t({insn->GetFunction(), op0_str});
+			const auto spill_loc = DregSpillPoint_t({insn->getFunction(), op0_str});
 			spilled_to_dreg[spill_loc].insert(address);
 
 		}
@@ -3520,7 +3501,7 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, int64_t do_unpin_opt)
 {
 	calc_preds(firp);
 
-	set<virtual_offset_t> thunk_bases;
+	set<VirtualOffset_t> thunk_bases;
 	find_all_module_starts(firp,thunk_bases);
 
 	// reset global vars
@@ -3596,8 +3577,8 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, int64_t do_unpin_opt)
 
 bool split_eh_frame_opt=true;
 int64_t do_unpin_opt=numeric_limits<int64_t>::max() ;
-db_id_t variant_id=BaseObj_t::NOT_IN_DATABASE;
-set<virtual_offset_t> forced_pins;
+DatabaseID_t variant_id=BaseObj_t::NOT_IN_DATABASE;
+set<VirtualOffset_t> forced_pins;
 
 int parseArgs(const vector<string> step_args)
 {
@@ -3662,7 +3643,7 @@ int parseArgs(const vector<string> step_args)
 	for (; argc_iter < step_args.size(); argc_iter++)
 	{
 		char *end_ptr;
-		virtual_offset_t offset = strtol(step_args[argc_iter].c_str(), &end_ptr, 0);
+		VirtualOffset_t offset = strtol(step_args[argc_iter].c_str(), &end_ptr, 0);
 		if (*end_ptr == '\0')
 		{
 			cout << "force pinning: 0x" << std::hex << offset << endl;
@@ -3684,7 +3665,7 @@ int executeStep(IRDBObjects_t *const irdb_objects)
 	{
 		/* setup the interface to the sql server */
 		const auto pqxx_interface=irdb_objects->getDBInterface();
-		BaseObj_t::SetInterface(pqxx_interface);
+		BaseObj_t::setInterface(pqxx_interface);
 
 		auto  pidp = irdb_objects->addVariant(variant_id);
 		assert(pidp);
@@ -3692,28 +3673,28 @@ int executeStep(IRDBObjects_t *const irdb_objects)
 		// pidp=new VariantID_t(atoi(argv[1]));
 
 
-		assert(pidp->IsRegistered()==true);
+		assert(pidp->isRegistered()==true);
 
 		cout<<"New Variant, after reading registration, is: "<<*pidp << endl;
 
-		for(const auto &this_file : pidp->GetFiles()) 
+		for(const auto &this_file : pidp->getFiles()) 
 		{
 			assert(this_file);
 
-			cout<<"Analyzing file "<<this_file->GetURL()<<endl;
+			cout<<"Analyzing file "<<this_file->getURL()<<endl;
 
 			// read the db  
-                        auto firp = irdb_objects->addFileIR(variant_id, this_file->GetBaseID());
+                        auto firp = irdb_objects->addFileIR(variant_id, this_file->getBaseID());
 			// firp=new FileIR_t(*pidp, this_file);
 			assert(firp);
 
-			firp->SetBaseIDS();
-			firp->AssembleRegistry();
+			firp->setBaseIDS();
+			firp->assembleRegistry();
 
 			// read the executeable file
-			int elfoid=firp->GetFile()->GetELFOID();
+			int elfoid=firp->getFile()->getELFOID();
 		        pqxx::largeobject lo(elfoid);
-        		lo.to_file(pqxx_interface->GetTransaction(),"readeh_tmp_file.exe");
+        		lo.to_file(pqxx_interface->getTransaction(),"readeh_tmp_file.exe");
         		auto elfiop=unique_ptr<EXEIO::exeio>(new EXEIO::exeio);
         		elfiop->load(string("readeh_tmp_file.exe"));
 
@@ -3756,27 +3737,25 @@ std::string getStepName(void) const override
 };
 
 
-shared_ptr<Transform_SDK::TransformStep_t> curInvocation;
+shared_ptr<TransformStep_t> curInvocation;
 
-bool possible_target(virtual_offset_t p, virtual_offset_t from_addr, ibt_provenance_t prov)
+bool possible_target(VirtualOffset_t p, VirtualOffset_t from_addr, ibt_provenance_t prov)
 {
 	assert(curInvocation);
 	return (dynamic_cast<PopulateIndTargs_t*>(curInvocation.get()))->possible_target(p,from_addr,prov);
 }
 
-void range(virtual_offset_t start, virtual_offset_t end)
+void range(VirtualOffset_t start, VirtualOffset_t end)
 {
 	assert(curInvocation);
 	return (dynamic_cast<PopulateIndTargs_t*>(curInvocation.get()))->range(start,end);
 }
 
 extern "C"
-shared_ptr<Transform_SDK::TransformStep_t> GetTransformStep(void)
+shared_ptr<TransformStep_t> getTransformStep(void)
 {
         curInvocation.reset(new PopulateIndTargs_t());
 	return curInvocation;
-
-	//return shared_ptr<Transform_SDK::TransformStep_t>(new PopulateIndTargs_t());
 }
 
 

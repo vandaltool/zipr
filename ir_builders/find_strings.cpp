@@ -65,7 +65,7 @@ typedef struct elf_info {
 	::Elf64_Addr got;
 #endif
 	int secnum;
-	virtual_offset_t got;
+	VirtualOffset_t got;
 	char const **sec_data;
 	exeio *elfiop;
 } elf_info_t;

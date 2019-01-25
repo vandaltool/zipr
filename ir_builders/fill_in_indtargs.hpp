@@ -19,7 +19,7 @@
  *
  */
 
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 #include <iostream>
 #include <limits>
 #include <stdlib.h>
@@ -36,14 +36,11 @@
 #include <exeio.h>
 #include "check_thunks.hpp"
 
-using namespace libIRDB;
-using namespace std;
-using namespace EXEIO;
 
 /*
  * defines 
  */
-#define arch_ptr_bytes() (firp->GetArchitectureBitWidth()/8)
+#define arch_ptr_bytes() (firp->getArchitectureBitWidth()/8u)
 
 /* 
  * global variables 
@@ -114,7 +111,7 @@ class ibt_provenance_t
 	private:
 
 		provtype_t value;
-		friend ostream& operator<<(ostream& out, const ibt_provenance_t& prov);
+		friend std::ostream& operator<<(std::ostream& out, const ibt_provenance_t& prov);
 		
 };
 
@@ -169,16 +166,16 @@ static inline std::ostream& operator<<(std::ostream& out, const ibt_provenance_t
  * Forward prototypes 
  */
 
-bool is_possible_target(virtual_offset_t p, virtual_offset_t addr);
-bool possible_target(virtual_offset_t p, virtual_offset_t from_addr, ibt_provenance_t prov=ibt_provenance_t::ibtp_unknown);
+bool is_possible_target(IRDB_SDK::VirtualOffset_t p, IRDB_SDK::VirtualOffset_t addr);
+bool possible_target(IRDB_SDK::VirtualOffset_t p, IRDB_SDK::VirtualOffset_t from_addr, ibt_provenance_t prov=ibt_provenance_t::ibtp_unknown);
 
 
-class fii_icfs : public ICFS_t
+class fii_icfs  : public IRDB_SDK::InstructionSet_t
 {
 	public:
 		// get/set table start
-		virtual_offset_t GetTableStart() {return table_start; }
-		void SetTableStart(virtual_offset_t s) {table_start=s; }
+		IRDB_SDK::VirtualOffset_t GetTableStart() {return table_start; }
+		void SetTableStart(IRDB_SDK::VirtualOffset_t s) {table_start=s; }
 
 		// get/set switch type
 		ibt_provenance_t GetSwitchType() { return switch_type; }
@@ -187,13 +184,40 @@ class fii_icfs : public ICFS_t
 		// get/set table size
 		int GetTableSize() { return table_size; }
 		void SetTableSize(int s) { table_size=s; }
+
+                void addTargets(const IRDB_SDK::InstructionSet_t &other)
+                {
+                        insert(std::begin(other), std::end(other));
+                }
+		bool isIncomplete() const {
+                        return getAnalysisStatus() == IRDB_SDK::iasAnalysisIncomplete;
+                }
+
+                bool isComplete() const {
+                        return getAnalysisStatus() == IRDB_SDK::iasAnalysisComplete;
+                }
+
+                bool isModuleComplete() const {
+                        return getAnalysisStatus() == IRDB_SDK::iasAnalysisModuleComplete;
+                }
+
+                void setAnalysisStatus(const IRDB_SDK::ICFSAnalysisStatus_t p_status) {
+                        m_icfs_analysis_status = p_status;
+                }
+
+		IRDB_SDK::ICFSAnalysisStatus_t getAnalysisStatus() const {
+                        return m_icfs_analysis_status;
+                }
+
+
 	private:
 
-		virtual_offset_t table_start;
+		IRDB_SDK::VirtualOffset_t table_start;
 		ibt_provenance_t switch_type;
 		int table_size;
+		IRDB_SDK::ICFSAnalysisStatus_t m_icfs_analysis_status;
 
 };
 
-void split_eh_frame(FileIR_t* firp);
+void split_eh_frame(IRDB_SDK::FileIR_t* firp);
 

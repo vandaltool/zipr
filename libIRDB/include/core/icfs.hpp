@@ -18,10 +18,11 @@
  *
  */
 
-class Instruction_t;
-typedef std::set<Instruction_t*> InstructionSet_t;
-
-typedef enum ICFS_Analysis_Status_t { ICFS_Analysis_Incomplete, ICFS_Analysis_Module_Complete, ICFS_Analysis_Complete } ICFS_Analysis_Status_t; 
+namespace libIRDB
+{
+using InstructionSet_t       = IRDB_SDK::InstructionSet_t;
+using ICFS_Analysis_Status_t = IRDB_SDK::ICFSAnalysisStatus_t;
+using ICFSSet_t              = IRDB_SDK::ICFSSet_t;
 
 // these must match the allowed values for type icfs_analysis_result in Postgres DB
 #define ICFS_ANALYSIS_INCOMPLETE_STR "icfs_analysis_incomplete"
@@ -29,44 +30,45 @@ typedef enum ICFS_Analysis_Status_t { ICFS_Analysis_Incomplete, ICFS_Analysis_Mo
 #define ICFS_ANALYSIS_COMPLETE_STR "icfs_analysis_complete"
 
 // Keep track of instruction control flow sets
-class ICFS_t : public InstructionSet_t, public BaseObj_t
+class ICFS_t : virtual public InstructionSet_t, public BaseObj_t, virtual public IRDB_SDK::ICFS_t
 {
 	public:
-		ICFS_t(): BaseObj_t(NULL), m_icfs_analysis_status(ICFS_Analysis_Incomplete) {}
+		virtual ~ICFS_t(){}
+		ICFS_t(): BaseObj_t(NULL), m_icfs_analysis_status(IRDB_SDK::iasAnalysisIncomplete) {}
 		ICFS_t(const ICFS_Analysis_Status_t p_status) : BaseObj_t(NULL), m_icfs_analysis_status(p_status) {}
-		ICFS_t(db_id_t p_set_id, const ICFS_Analysis_Status_t p_status = ICFS_Analysis_Incomplete);
+		ICFS_t(db_id_t p_set_id, const ICFS_Analysis_Status_t p_status = IRDB_SDK::iasAnalysisIncomplete);
 		ICFS_t(db_id_t p_set_id, const std::string);
 		std::string WriteToDB(File_t *fid);
 		 
 
 		// this is bad -- you loose data with this operator=.
 
-		void SetTargets(const InstructionSet_t &other) 
+		void setTargets(const InstructionSet_t &other) 
 		{
 			InstructionSet_t::operator=(other);
 		}
-		void AddTargets(const InstructionSet_t &other) 
+		void addTargets(const InstructionSet_t &other) 
 		{
 			insert(std::begin(other), std::end(other)); 
 		}
 
-		bool IsIncomplete() const {
-			return GetAnalysisStatus() == ICFS_Analysis_Incomplete;
+		bool isIncomplete() const {
+			return getAnalysisStatus() == IRDB_SDK::iasAnalysisIncomplete;
 		}
 
-		bool IsComplete() const {
-			return GetAnalysisStatus() == ICFS_Analysis_Complete;
+		bool isComplete() const {
+			return getAnalysisStatus() == IRDB_SDK::iasAnalysisComplete;
 		}
 
-		bool IsModuleComplete() const {
-			return GetAnalysisStatus() == ICFS_Analysis_Module_Complete;
+		bool isModuleComplete() const {
+			return getAnalysisStatus() == IRDB_SDK::iasAnalysisModuleComplete;
 		}
 
-		void SetAnalysisStatus(const ICFS_Analysis_Status_t p_status) {
+		void setAnalysisStatus(const ICFS_Analysis_Status_t p_status) {
 			m_icfs_analysis_status = p_status;
 		}
 
-		ICFS_Analysis_Status_t GetAnalysisStatus() const { 
+		ICFS_Analysis_Status_t getAnalysisStatus() const { 
 			return m_icfs_analysis_status;
 		}
 
@@ -74,4 +76,4 @@ class ICFS_t : public InstructionSet_t, public BaseObj_t
 		ICFS_Analysis_Status_t m_icfs_analysis_status;
 };
 
-typedef std::set<ICFS_t*> ICFSSet_t;
+}

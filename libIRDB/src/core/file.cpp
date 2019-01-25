@@ -56,7 +56,7 @@ File_t::File_t(const db_id_t &myfile_id, const db_id_t &my_orig_fid, const std::
 	ehcss_table_name(ehcss), 
 	elfoid(myoid)
 {
-	SetBaseID(myfile_id);
+	setBaseID(myfile_id);
 }
 
 
@@ -90,6 +90,6 @@ void File_t::CreateTables()
 	buffer << t.rdbuf();
 
 
-	dbintr->IssueQuery(buffer.str().c_str());	
+	dbintr->issueQuery(buffer.str().c_str());	
 
 }

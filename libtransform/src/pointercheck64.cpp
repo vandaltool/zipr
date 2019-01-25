@@ -31,7 +31,7 @@ Instruction_t* PointerCheck64::addCallbackHandlerSequence(Instruction_t *p_orig,
 		Instruction_t* exit_sequence = addNewAssembly("mov rax, 60");
 		Instruction_t* i = addNewAssembly(exit_sequence, "mov rdi, 25");
 		i = addNewAssembly(i, "syscall");
-		i->SetFallthrough(p_fallthrough); 
+		i->setFallthrough(p_fallthrough); 
 		return exit_sequence;
 	}
 	else
@@ -70,11 +70,11 @@ int PointerCheck64::execute()
 		{
 			Instruction_t* insn=*it;
 
-			if (insn && insn->GetAddress())
+			if (insn && insn->getAddress())
 			{
 				int policy = POLICY_EXIT; 
 
-				virtual_offset_t irdb_vo = insn->GetAddress()->GetVirtualOffset();
+				virtual_offset_t irdb_vo = insn->getAddress()->GetVirtualOffset();
 				if (irdb_vo == 0) continue;
 
 				VirtualOffset vo(irdb_vo);
@@ -108,7 +108,7 @@ int PointerCheck64::execute()
 					continue;
 				}
 
-				if (!insn->GetFallthrough())
+				if (!insn->getFallthrough())
 				{
 					logMessage(__func__, "Warning: no fall through for instruction -- skipping");
 					continue;

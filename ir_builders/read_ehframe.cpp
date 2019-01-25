@@ -22,7 +22,7 @@
 
 
 
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 #include <libIRDB-cfg.hpp>
 #include <utils.hpp>
 #include <iostream>
@@ -42,8 +42,8 @@
 #include "fill_in_indtargs.hpp"
 
 
-using namespace libIRDB;
 using namespace std;
+using namespace IRDB_SDK;
 
 
 
@@ -797,7 +797,7 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
 				cout<<"absptr pc_end 0x"<<std::hex<<(pc_begin+pc_range+offset)<<endl;
 			}
 #ifndef TEST
-			extern void range(virtual_offset_t, virtual_offset_t);
+			extern void range(VirtualOffset_t, VirtualOffset_t);
 			range(pc_begin,pc_begin+pc_range);
 #endif
           		if (pc_begin == 0)
@@ -819,7 +819,7 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
 			}
 
 #ifndef TEST
-			extern void range(virtual_offset_t, virtual_offset_t);
+			extern void range(VirtualOffset_t, VirtualOffset_t);
 			range(pc_begin,pc_begin+pc_range);
 #endif
 
@@ -847,7 +847,7 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
 void read_ehframe(FileIR_t* virp, EXEIO::exeio* exeiop)
 {
 
-	ptrsize=virp->GetArchitectureBitWidth()/(8*sizeof(char));
+	ptrsize=virp->getArchitectureBitWidth()/(8*sizeof(char));
 	// 64/8 = 8
 	// 32/8 = 4
 
@@ -856,18 +856,16 @@ void read_ehframe(FileIR_t* virp, EXEIO::exeio* exeiop)
 	if(!elfiop)
 		return;	// skip entire analysis for non-elf files as eh-frame is way different.
 
-	const auto eh_frame_it=find_if(virp->GetDataScoops().begin(), virp->GetDataScoops().end(),
-		[](const DataScoop_t* scoop) { return scoop->GetName()==".eh_frame"; });
+	const auto eh_frame_it=find_if(virp->getDataScoops().begin(), virp->getDataScoops().end(),
+		[](const DataScoop_t* scoop) { return scoop->getName()==".eh_frame"; });
 
 	// either no eh_frame in the elf file, or fill_in_indtargs removed it because
 	// it was asked to import the EH IR. 
-	if(eh_frame_it==virp->GetDataScoops().end())
+	if(eh_frame_it==virp->getDataScoops().end())
 		return;
 
 	int secndx=0;
 	int secnum=elfiop->sections.size(); 
-	//ELFIO::Elf_Half strndx = elfiop->get_section_name_str_index();
-	//const char* strtab=elfiop->sections[strndx]->get_data();
 
        	/* Locate desired section */
        	bool found=false;
@@ -895,9 +893,7 @@ void read_ehframe(FileIR_t* virp, EXEIO::exeio* exeiop)
 	cout<<"Found .eh_frame section addr is "<<std::dec<<eh_frame_addr<<endl;
 	int total_size=0;
 
-// 	char *p=&strtab[ sechdrs[secndx+1].sh_name];
 	const char *p=elfiop->sections[secndx+1]->get_name().c_str(); 
-#if 1
         if (strcmp(".gcc_except_table",p)!=0)
 	{
 		cout<<"Did not find .gcc_except_table immediately after .eh_frame\n";
@@ -909,32 +905,15 @@ void read_ehframe(FileIR_t* virp, EXEIO::exeio* exeiop)
 		(elfiop->sections[eh_frame_index+1]->get_address()+
 		 elfiop->sections[eh_frame_index+1]->get_size()   ) - (uintptr_t)eh_frame_addr;
 	}
-#else
-	total_size=elfiop->sections[eh_frame_index]->get_size()+1;
-#endif
 	eh_frame_data_total_size=total_size;
 	
 	
-#if 0
-	// collect eh_frame and gcc_except_table into one memory region
-        eh_frame_data=(char*)calloc(1,total_size);
-	memcpy(eh_frame_data,elfiop->sections[eh_frame_index]->get_data(),
-		elfiop->sections[eh_frame_index]->get_size());
-
-        if (strcmp(".gcc_except_table",p)==0)
-	{
-		memcpy(eh_frame_data+elfiop->sections[eh_frame_index]->get_size(),
-			elfiop->sections[eh_frame_index+1]->get_data(),
-			elfiop->sections[eh_frame_index+1]->get_size());
-	}
-#else
 	// calc the size needed to safely walk the EH frame data.  apparently walking assumes a null value in memory
 	// after the section is loaded (or properly using eh_frame_hdr, which we aren't doing)
 	//eh_frame_data=(char*)elfiop->sections[eh_frame_index]->get_data();
 	int newsize=elfiop->sections[eh_frame_index]->get_size()+4;
 	eh_frame_data=(char*)calloc(1,newsize);
 	memcpy(eh_frame_data, (void*)elfiop->sections[eh_frame_index]->get_data(), elfiop->sections[eh_frame_index]->get_size());
-#endif
 
 	uintptr_t offset;
 //	careful with offset and eh_offset as it can only be used for eh_frame_data offsetting, not offsetting into other addrs.
@@ -943,7 +922,6 @@ void read_ehframe(FileIR_t* virp, EXEIO::exeio* exeiop)
 
 	struct object ob;
 	register_frame_info( eh_frame_data, &ob);
-//classify_object_over_fdes (struct object *ob, fde *this_fde)
 	classify_object_over_fdes(&ob,ob.u.single);
 	linear_search_fdes (&ob,ob.u.single,offset); 
 

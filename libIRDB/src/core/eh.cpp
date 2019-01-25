@@ -32,9 +32,9 @@ using namespace std;
 
 bool libIRDB::operator<(const EhProgram_t&a, const EhProgram_t&b)
 {
-        return  tie(a.cie_program,a.fde_program,a.code_alignment_factor,a.data_alignment_factor,a.return_register, a.ptrsize, a.GetRelocations())
+        return  tie(a.cie_program,a.fde_program,a.code_alignment_factor,a.data_alignment_factor,a.return_register, a.ptrsize, a.getRelocations())
                 <
-                tie(b.cie_program,b.fde_program,b.code_alignment_factor,b.data_alignment_factor,b.return_register, b.ptrsize, b.GetRelocations());
+                tie(b.cie_program,b.fde_program,b.code_alignment_factor,b.data_alignment_factor,b.return_register, b.ptrsize, b.getRelocations());
 }
 
 namespace std
@@ -92,15 +92,9 @@ vector<std::string> EhProgram_t::WriteToDB(File_t* fid)    // writes to DB, ID i
 	string encoded_cie_program=vec_to_encoded_string(cie_program);
 	string encoded_fde_program=vec_to_encoded_string(fde_program);
 
-/*
-	string q;
-	q ="insert into " + fid->GetEhProgramTableName();
-	q+="(eh_pgm_id,caf,daf,return_register,ptrsize,cie_program,fde_program) "+
-		string(" VALUES (") +
-*/
 
 	return {
-		to_string(GetBaseID()),
+		to_string(getBaseID()),
 		to_string(+code_alignment_factor),
 		to_string(+data_alignment_factor),
 		to_string(+return_register),
@@ -129,36 +123,36 @@ std::string EhCallSite_t::WriteToDB(File_t* fid)    // writes to DB, ID is not -
 
 	auto landing_pad_id=BaseObj_t::NOT_IN_DATABASE;
 	if(landing_pad != NULL)
-		landing_pad_id=landing_pad->GetBaseID();
+		landing_pad_id=landing_pad->getBaseID();
 
 	const auto ttov_str=vec_to_string(ttov);
 
-	q ="insert into " + fid->GetEhCallSiteTableName();
+	q ="insert into " + fid->getEhCallSiteTableName();
 	q+="(ehcs_id,tt_encoding,ttov,lp_insn_id) "+
 		string(" VALUES (") +
-		string("'") + to_string(GetBaseID())         + string("', ") +
+		string("'") + to_string(getBaseID())         + string("', ") +
 		string("'") + to_string(+tt_encoding)        + string("', ") +
 		string("'") + ttov_str        + string("', ") +
 		string("'") + to_string(landing_pad_id)      + string("') ;");
 	return q;
 }
 
-bool EhCallSite_t::GetHasCleanup() const 
+bool EhCallSite_t::getHasCleanup() const 
 {
 	const auto ttov_it=find(ttov.begin(), ttov.end(), 0);
 	return ttov_it!=ttov.end();
 }
 
-void EhCallSite_t::SetHasCleanup(bool p_has_cleanup) 
+void EhCallSite_t::setHasCleanup(bool p_has_cleanup) 
 {
 	if(p_has_cleanup)
 	{
-		if(!GetHasCleanup())
+		if(!getHasCleanup())
 			ttov.push_back(0);
 	}
 	else
 	{
-		if(GetHasCleanup())
+		if(getHasCleanup())
 		{
 			const auto ttov_it=find(ttov.begin(), ttov.end(), 0);
 			ttov.erase(ttov_it);

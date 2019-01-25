@@ -12,28 +12,32 @@ using namespace std;
 using namespace libIRDB;
 
 
-unique_ptr<DecodedInstructionCapstone_t> DecodedInstructionCapstone_t::factory(const libIRDB::Instruction_t* i)
+unique_ptr<IRDB_SDK::DecodedInstruction_t> IRDB_SDK::DecodedInstruction_t::factory(const IRDB_SDK::Instruction_t* p_i)
 {
-	auto op=FileIR_t::GetArchitecture()->getMachineType()==admtAarch64 ? (DecodedInstructionCapstone_t*)new DecodedInstructionCapstoneARM64_t(i) : 
-		FileIR_t::GetArchitecture()->getMachineType()==admtX86_64  ? (DecodedInstructionCapstone_t*)new DecodedInstructionCapstoneX86_t  (i) : 
-		FileIR_t::GetArchitecture()->getMachineType()==admtI386    ? (DecodedInstructionCapstone_t*)new DecodedInstructionCapstoneX86_t  (i) : 
+	const auto i=dynamic_cast<const libIRDB::Instruction_t*>(p_i);
+	assert(i);
+	auto op=IRDB_SDK::FileIR_t::getArchitecture()->getMachineType()==IRDB_SDK::admtAarch64 ? (IRDB_SDK::DecodedInstruction_t*)new DecodedInstructionCapstoneARM64_t(i) : 
+		IRDB_SDK::FileIR_t::getArchitecture()->getMachineType()==IRDB_SDK::admtX86_64  ? (IRDB_SDK::DecodedInstruction_t*)new DecodedInstructionCapstoneX86_t  (i) : 
+		IRDB_SDK::FileIR_t::getArchitecture()->getMachineType()==IRDB_SDK::admtI386    ? (IRDB_SDK::DecodedInstruction_t*)new DecodedInstructionCapstoneX86_t  (i) : 
 		throw invalid_argument("Unknown machine type");
-	return unique_ptr<DecodedInstructionCapstone_t>(op);
+	return unique_ptr<DecodedInstruction_t>(op);
 }
-unique_ptr<DecodedInstructionCapstone_t> DecodedInstructionCapstone_t::factory(const virtual_offset_t start_addr, const void *data, uint32_t max_len)
+
+unique_ptr<IRDB_SDK::DecodedInstruction_t> IRDB_SDK::DecodedInstruction_t::factory(const IRDB_SDK::VirtualOffset_t start_addr, const void *data, uint32_t max_len)
 {
-	auto op=FileIR_t::GetArchitecture()->getMachineType()==admtAarch64 ? (DecodedInstructionCapstone_t*)new DecodedInstructionCapstoneARM64_t(start_addr,data,max_len) : 
-		FileIR_t::GetArchitecture()->getMachineType()==admtX86_64  ? (DecodedInstructionCapstone_t*)new DecodedInstructionCapstoneX86_t  (start_addr,data,max_len) : 
-		FileIR_t::GetArchitecture()->getMachineType()==admtI386    ? (DecodedInstructionCapstone_t*)new DecodedInstructionCapstoneX86_t  (start_addr,data,max_len) : 
+	auto op=IRDB_SDK::FileIR_t::getArchitecture()->getMachineType()==IRDB_SDK::admtAarch64 ? (IRDB_SDK::DecodedInstruction_t*)new DecodedInstructionCapstoneARM64_t(start_addr,data,max_len) : 
+		IRDB_SDK::FileIR_t::getArchitecture()->getMachineType()==IRDB_SDK::admtX86_64  ? (IRDB_SDK::DecodedInstruction_t*)new DecodedInstructionCapstoneX86_t  (start_addr,data,max_len) : 
+		IRDB_SDK::FileIR_t::getArchitecture()->getMachineType()==IRDB_SDK::admtI386    ? (IRDB_SDK::DecodedInstruction_t*)new DecodedInstructionCapstoneX86_t  (start_addr,data,max_len) : 
 		throw invalid_argument("Unknown machine type");
-	return unique_ptr<DecodedInstructionCapstone_t>(op);
+	return unique_ptr<DecodedInstruction_t>(op);
 }
-unique_ptr<DecodedInstructionCapstone_t> DecodedInstructionCapstone_t::factory(const virtual_offset_t start_addr, const void *data, const void* endptr)
+
+unique_ptr<IRDB_SDK::DecodedInstruction_t> IRDB_SDK::DecodedInstruction_t::factory(const IRDB_SDK::VirtualOffset_t start_addr, const void *data, const void* endptr)
 {
-	auto op=FileIR_t::GetArchitecture()->getMachineType()==admtAarch64 ? (DecodedInstructionCapstone_t*)new DecodedInstructionCapstoneARM64_t(start_addr,data,endptr) : 
-		FileIR_t::GetArchitecture()->getMachineType()==admtX86_64  ? (DecodedInstructionCapstone_t*)new DecodedInstructionCapstoneX86_t  (start_addr,data,endptr) : 
-		FileIR_t::GetArchitecture()->getMachineType()==admtI386    ? (DecodedInstructionCapstone_t*)new DecodedInstructionCapstoneX86_t  (start_addr,data,endptr) : 
+	auto op=IRDB_SDK::FileIR_t::getArchitecture()->getMachineType()==IRDB_SDK::admtAarch64 ? (IRDB_SDK::DecodedInstruction_t*)new DecodedInstructionCapstoneARM64_t(start_addr,data,endptr) : 
+		IRDB_SDK::FileIR_t::getArchitecture()->getMachineType()==IRDB_SDK::admtX86_64  ? (IRDB_SDK::DecodedInstruction_t*)new DecodedInstructionCapstoneX86_t  (start_addr,data,endptr) : 
+		IRDB_SDK::FileIR_t::getArchitecture()->getMachineType()==IRDB_SDK::admtI386    ? (IRDB_SDK::DecodedInstruction_t*)new DecodedInstructionCapstoneX86_t  (start_addr,data,endptr) : 
 		throw invalid_argument("Unknown machine type");
-	return unique_ptr<DecodedInstructionCapstone_t>(op);
+	return unique_ptr<DecodedInstruction_t>(op);
 }
 

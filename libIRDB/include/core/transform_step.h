@@ -1,10 +1,8 @@
-#ifndef TransformStep_h
-#define TransformStep_h
 
 
-namespace Transform_SDK
+namespace libIRDB
 {
-	class TransformStep_t
+	class TransformStep_t : virtual public IRDB_SDK::TransformStep_t
 	{
 		public:
 			// Step names must be unique, allows arguments to
@@ -17,7 +15,7 @@ namespace Transform_SDK
 				return 0; // success
 			}
 				
-			virtual int executeStep(libIRDB::IRDBObjects_t *const irdb_objects)
+			virtual int executeStep(IRDB_SDK::IRDBObjects_t *const irdb_objects)
 			{
 				return 0; // success
 			}
@@ -30,6 +28,5 @@ namespace Transform_SDK
 }
 
 extern "C"
-std::shared_ptr<Transform_SDK::TransformStep_t> GetTransformStep(void);    
+std::shared_ptr<IRDB_SDK::TransformStep_t> GetTransformStep(void);    
 
-#endif

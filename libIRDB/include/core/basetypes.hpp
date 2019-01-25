@@ -18,6 +18,38 @@
  *
  */
 
-typedef uintptr_t virtual_offset_t;
-typedef int db_id_t;
-typedef int schema_version_t;
+
+namespace libIRDB
+{
+	using  virtual_offset_t = IRDB_SDK::VirtualOffset_t;
+	using  db_id_t = IRDB_SDK::DatabaseID_t;
+	using  schema_version_t = IRDB_SDK::SchemaVersionID_t;
+
+	// forward decls
+	class AddressID_t;
+	class ArchitectureDescription_t;
+   	class BaseObj_t;
+   	class DatabaseError_t;
+   	class DBinterface_t;
+   	class Doip_t;
+   	class EhProgram_t;
+   	class EhCallSite_t;
+   	class File_t;
+   	class FileIR_t;
+   	class Function_t;
+   	class ICFS_t;
+   	class Instruction_t;
+   	class IRDBObjects_t;
+   	class pqxxDB_t;
+   	class Relocation_t;
+   	class DataScoop_t;
+   	class Type_t;
+   	class BasicType_t;
+   	class PointerType_t;
+   	class AggregateType_t;
+   	class FuncType_t;
+   	class VariantID_t;
+	class DecodedInstructionDispatcher_t;
+ 	class DecodedOperandDispatcher_t;
+
+}

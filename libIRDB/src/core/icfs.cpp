@@ -27,13 +27,13 @@ using namespace std;
 static string getICFSAnalysisStatus(const ICFS_Analysis_Status_t p_status) {
 	// strings must match DB definition
 	switch (p_status) {
-		case ICFS_Analysis_Incomplete:
+		case IRDB_SDK::iasAnalysisIncomplete:
 			return string("icfs_analysis_incomplete");
 			break;
-		case ICFS_Analysis_Module_Complete:
+		case IRDB_SDK::iasAnalysisModuleComplete:
 			return string("icfs_analysis_module_complete");
 			break;
-		case ICFS_Analysis_Complete:
+		case IRDB_SDK::iasAnalysisComplete:
 			return string("icfs_analysis_complete");
 			break;
 		default:
@@ -47,19 +47,19 @@ static string getICFSAnalysisStatus(const ICFS_Analysis_Status_t p_status) {
 
 ICFS_t::ICFS_t(db_id_t p_set_id, const ICFS_Analysis_Status_t p_status) : BaseObj_t(NULL)
 {
-	SetBaseID(p_set_id);
-	SetAnalysisStatus(p_status);	
+	setBaseID(p_set_id);
+	setAnalysisStatus(p_status);	
 }
 
 ICFS_t::ICFS_t(db_id_t p_set_id, const string p_statusString) : BaseObj_t(NULL)
 {
-	SetBaseID(p_set_id);
+	setBaseID(p_set_id);
 	if (p_statusString == "icfs_analysis_incomplete") {
-		SetAnalysisStatus(ICFS_Analysis_Incomplete);	
+		setAnalysisStatus(IRDB_SDK::iasAnalysisIncomplete);	
 	} else if (p_statusString == "icfs_analysis_module_complete") {
-		SetAnalysisStatus(ICFS_Analysis_Module_Complete);	
+		setAnalysisStatus(IRDB_SDK::iasAnalysisModuleComplete);	
 	} else if (p_statusString == "icfs_analysis_complete") {
-		SetAnalysisStatus(ICFS_Analysis_Complete);	
+		setAnalysisStatus(IRDB_SDK::iasAnalysisComplete);	
 	} else {
 		std::cerr << "error: unknown ICFS analysis status string: " << p_statusString << std::endl;
 		assert(0);
@@ -70,9 +70,9 @@ string ICFS_t::WriteToDB(File_t *fid)
 {
 	assert(fid);
 
-	db_id_t icfs_id = GetBaseID();
+	db_id_t icfs_id = getBaseID();
 
-	string analysis_status = getICFSAnalysisStatus(GetAnalysisStatus());
+	string analysis_status = getICFSAnalysisStatus(getAnalysisStatus());
 
 	string q=string("insert into ") + fid->icfs_table_name + 
 		string(" (icfs_id, icfs_status) VALUES (") + 
@@ -82,10 +82,10 @@ string ICFS_t::WriteToDB(File_t *fid)
 	for (InstructionSet_t::const_iterator it = this->begin(); 
 		it != this->end(); ++it)
 	{
-		Instruction_t *insn = *it;		
+		auto insn = *it;		
 		assert(insn);
 
-		db_id_t address_id = insn->GetAddress()->GetBaseID();
+		auto address_id = insn->getAddress()->getBaseID();
 
 		q += string("insert into ") + fid->icfs_map_table_name +
 			string(" (icfs_id, address_id) VALUES(") +

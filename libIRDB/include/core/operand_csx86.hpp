@@ -1,9 +1,3 @@
-#ifndef libRIDB_decodedoperandcsx86_hpp
-#define libRIDB_decodedoperandcsx86_hpp
-
-#include <memory>
-#include <core/decode_base.hpp>
-#include <core/operand_base.hpp>
 
 namespace libIRDB
 {
@@ -11,13 +5,12 @@ namespace libIRDB
 using namespace std;
 using namespace libIRDB;
 
+class DecodedInstructionCapstoneX86_t;
 
-class DecodedOperandCapstoneX86_t : public DecodedOperandCapstone_t
+class DecodedOperandCapstoneX86_t : virtual public IRDB_SDK::DecodedOperand_t
 {
 	public:
 		DecodedOperandCapstoneX86_t() =delete;
-		//DecodedOperandCapstoneX86_t& operator=(const DecodedOperandCapstoneX86_t& copy);
-		//DecodedOperandCapstoneX86_t(const DecodedOperandCapstoneX86_t& copy);
 		virtual ~DecodedOperandCapstoneX86_t();
 
 		virtual bool isConstant() const override;
@@ -63,4 +56,3 @@ class DecodedOperandCapstoneX86_t : public DecodedOperandCapstone_t
 };
 
 }
-#endif

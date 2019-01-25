@@ -19,7 +19,7 @@
  */
 
 
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 #include <libIRDB-cfg.hpp>
 #include <utils.hpp>
 #include <iostream>
@@ -33,9 +33,9 @@
 #include "fill_in_indtargs.hpp"
 
 
-using namespace libIRDB;
 using namespace std;
 using namespace EXEIO;
+using namespace IRDB_SDK;
 
 // macros
 #define ALLOF(a) begin(a),end(a)
@@ -44,7 +44,7 @@ using namespace EXEIO;
 // externs
 extern void read_ehframe(FileIR_t* firp, EXEIO::exeio* );
 
-class FixCalls_t : public libIRDB::Transform_SDK::TransformStep_t
+class FixCalls_t : public TransformStep_t
 {
 
 public:
@@ -52,32 +52,32 @@ public:
 class Range_t
 {
         public:
-                Range_t(virtual_offset_t p_s, virtual_offset_t p_e) : m_start(p_s), m_end(p_e) { }
+                Range_t(VirtualOffset_t p_s, VirtualOffset_t p_e) : m_start(p_s), m_end(p_e) { }
                 Range_t() : m_start(0), m_end(0) { }
 
-                virtual virtual_offset_t GetStart() const { return m_start; }
-                virtual virtual_offset_t GetEnd() const { return m_end; }
-                virtual void SetStart(virtual_offset_t s) { m_start=s; }
-                virtual void SetEnd(virtual_offset_t e) { m_end=e; }
+                virtual VirtualOffset_t getStart() const { return m_start; }
+                virtual VirtualOffset_t getEnd() const { return m_end; }
+                virtual void setStart(VirtualOffset_t s) { m_start=s; }
+                virtual void setEnd(VirtualOffset_t e) { m_end=e; }
 
         protected:
 
-                virtual_offset_t m_start, m_end;
+                VirtualOffset_t m_start, m_end;
 };
 
 struct Range_tCompare
 {
         bool operator() (const Range_t &first, const Range_t &second) const
         {
-                return first.GetEnd() < second.GetStart();
+                return first.getEnd() < second.getStart();
         }
 };
 
-using RangeSet_t = std::set<Range_t, Range_tCompare>;
+using Rangeset_t = std::set<Range_t, Range_tCompare>;
 
 
 
-RangeSet_t eh_frame_ranges;
+Rangeset_t eh_frame_ranges;
 size_t no_target_insn=0;
 size_t no_fallthrough_insn=0;
 size_t target_not_in_function=0;
@@ -95,7 +95,7 @@ size_t not_calls=0;
 bool opt_fix_icalls = false;
 bool opt_fix_safefn = true;
 
-bool check_entry(bool &found, ControlFlowGraph_t* cfg)
+bool check_entry(bool &found, libIRDB::ControlFlowGraph_t* cfg)
 {
 
 	auto entry=cfg->GetEntry();
@@ -103,15 +103,16 @@ bool check_entry(bool &found, ControlFlowGraph_t* cfg)
 
 	for(auto insn : entry->GetInstructions())
 	{
-		DecodedInstruction_t disasm(insn);
+		auto disasmp = DecodedInstruction_t::factory(insn);
+		auto &disasm = *disasmp;
 		if(disasm.setsStackPointer()) {
 			return false;
 		} else {
 			if(getenv("VERBOSE_FIX_CALLS"))
 			{
-				virtual_offset_t addr = 0;
-				if (insn->GetAddress())
-					addr = insn->GetAddress()->GetVirtualOffset();
+				VirtualOffset_t addr = 0;
+				if (insn->getAddress())
+					addr = insn->getAddress()->getVirtualOffset();
 				cout<<"check_entry: does not set stack pointer?"<< " address="
 				    <<hex<<addr<<": "<<insn->getDisassembly()<<endl;
 			}
@@ -122,9 +123,9 @@ bool check_entry(bool &found, ControlFlowGraph_t* cfg)
 			found=true;
 			if(getenv("VERBOSE_FIX_CALLS"))
 			{
-				virtual_offset_t addr = 0;
-				if (insn->GetAddress())
-					addr = insn->GetAddress()->GetVirtualOffset();
+				VirtualOffset_t addr = 0;
+				if (insn->getAddress())
+					addr = insn->getAddress()->getVirtualOffset();
 				cout<<"Needs fix (check_entry): [esp]"<< " address="
 				    <<hex<<addr<<": "<<insn->getDisassembly()<<endl;
 			}
@@ -135,20 +136,20 @@ bool check_entry(bool &found, ControlFlowGraph_t* cfg)
 	return false;
 }
 
-using ControlFlowGraphMap_t = map<Function_t*, ControlFlowGraph_t*>;
+using ControlFlowGraphMap_t = map<Function_t*, libIRDB::ControlFlowGraph_t*>;
 ControlFlowGraphMap_t cfg_optimizer;
 
 bool call_needs_fix(Instruction_t* insn)
 {
 
-	for(auto reloc : insn->GetRelocations())
+	for(auto reloc : insn->getRelocations())
 	{
-		if(string("safefr") == reloc->GetType())
+		if(string("safefr") == reloc->getType())
 			return false;
 	}
 
-	auto target=insn->GetTarget();
-	auto fallthru=insn->GetFallthrough();
+	auto target=insn->getTarget();
+	auto fallthru=insn->getFallthrough();
 
 	string pattern;
 
@@ -162,9 +163,9 @@ bool call_needs_fix(Instruction_t* insn)
 	{
 		if(getenv("VERBOSE_FIX_CALLS"))
 		{
-			virtual_offset_t addr = 0;
-			if (insn->GetAddress())
-				addr = insn->GetAddress()->GetVirtualOffset();
+			VirtualOffset_t addr = 0;
+			if (insn->getAddress())
+				addr = insn->getAddress()->getVirtualOffset();
 			cout<<"Needs fix: No fallthrough"<< " address="
 			    <<hex<<addr<<": "<<insn->getDisassembly()<<endl;
 		}
@@ -172,7 +173,7 @@ bool call_needs_fix(Instruction_t* insn)
 		return true;
 	}
 
-	auto addr=fallthru->GetAddress()->GetVirtualOffset();
+	auto addr=fallthru->getAddress()->getVirtualOffset();
 	auto rangeiter=eh_frame_ranges.find(Range_t(addr,addr));
 	if(rangeiter != eh_frame_ranges.end())	// found an eh_frame addr entry for this call
 	{
@@ -180,7 +181,7 @@ bool call_needs_fix(Instruction_t* insn)
 		return true;
 	}
 
-	if (!opt_fix_icalls && insn->GetIBTargets() && insn->GetIBTargets()->size() > 0) 
+	if (!opt_fix_icalls && insn->getIBTargets() && insn->getIBTargets()->size() > 0) 
 	{
 		/* do not fix indirect calls */
 		no_fix_for_ib++;
@@ -191,8 +192,8 @@ bool call_needs_fix(Instruction_t* insn)
 	if(!target)
 	{
 		/* call 0's aren't to real locations */
-		DecodedInstruction_t disasm(insn);
-		if(disasm.getOperand(0).isConstant() && disasm.getAddress()==0)
+		auto disasm=DecodedInstruction_t::factory(insn);
+		if(disasm->getOperand(0)->isConstant() && disasm->getAddress()==0)
 		{
 			return false;
 		}
@@ -200,9 +201,9 @@ bool call_needs_fix(Instruction_t* insn)
 
 		if(getenv("VERBOSE_FIX_CALLS"))
 		{
-			virtual_offset_t addr = 0;
-			if (insn->GetAddress())
-				addr = insn->GetAddress()->GetVirtualOffset();
+			VirtualOffset_t addr = 0;
+			if (insn->getAddress())
+				addr = insn->getAddress()->getVirtualOffset();
 			cout<<"Needs fix: No target instruction"<< " address="
 			    <<hex<<addr<<": "<<insn->getDisassembly()<<endl;
 		}
@@ -216,16 +217,16 @@ bool call_needs_fix(Instruction_t* insn)
   	 */
 
 
-	auto func=target->GetFunction();
+	auto func=target->getFunction();
 
 	/* if there's no function for this instruction */
 	if(!func)
 	{
 		if(getenv("VERBOSE_FIX_CALLS"))
 		{
-			virtual_offset_t addr = 0;
-			if (insn->GetAddress())
-				addr = insn->GetAddress()->GetVirtualOffset();
+			VirtualOffset_t addr = 0;
+			if (insn->getAddress())
+				addr = insn->getAddress()->getVirtualOffset();
 			cout<<"Needs fix: Target not in a function"<< " address="
 			    <<hex<<addr<<": "<<insn->getDisassembly()<<endl;
 		}
@@ -241,7 +242,7 @@ bool call_needs_fix(Instruction_t* insn)
 
 	if(!is_found)
 		/* build a cfg for this function */
-		cfg_optimizer[func]=new ControlFlowGraph_t(func);
+		cfg_optimizer[func]=new libIRDB::ControlFlowGraph_t(func);
 
 	auto cfg=cfg_optimizer[func];
 	
@@ -268,9 +269,9 @@ bool call_needs_fix(Instruction_t* insn)
 		{
 			if(getenv("VERBOSE_FIX_CALLS"))
 			{
-				virtual_offset_t addr = 0;
-				if (insn->GetAddress())
-					addr = insn->GetAddress()->GetVirtualOffset();
+				VirtualOffset_t addr = 0;
+				if (insn->getAddress())
+					addr = insn->getAddress()->getVirtualOffset();
 				cout<<"Needs fix: (via check_entry) Thunk detected"<< " address="
 				    <<hex<<addr<<": "<<insn->getDisassembly()<<endl;
 			}
@@ -416,15 +417,16 @@ string adjust_esp_offset(string newbits, int offset)
  */ 
 void convert_to_jump(Instruction_t* insn, int offset)
 {
-	string newbits=insn->GetDataBits();
-	DecodedInstruction_t d(insn);
+	string newbits=insn->getDataBits();
+	auto dp=DecodedInstruction_t::factory(insn);
+	auto &d=*dp;
 
 	/* this case is odd, handle it specially (and more easily to understand) */
 	if(strcmp(d.getDisassembly().c_str(), "call qword [rsp]")==0)
 	{
 		char buf[100];
 		sprintf(buf,"jmp qword [rsp+%d]", offset);
-		insn->Assemble(buf);
+		insn->assemble(buf);
 		return;
 	}
 
@@ -487,7 +489,7 @@ void convert_to_jump(Instruction_t* insn, int offset)
 	}
 
 	/* set the instruction's bits */
-	insn->SetDataBits(newbits);
+	insn->setDataBits(newbits);
 	return;
 }
 
@@ -497,31 +499,32 @@ void convert_to_jump(Instruction_t* insn, int offset)
  */
 void fix_call(Instruction_t* insn, FileIR_t *firp, bool can_unpin)
 {
-	if(firp->GetArchitecture()->getMachineType()==admtAarch64)
+	if(firp->getArchitecture()->getMachineType()==admtAarch64)
 		return;
 
 	/* record the possibly new indirect branch target if this call gets fixed */
-	Instruction_t* newindirtarg=insn->GetFallthrough();
+	Instruction_t* newindirtarg=insn->getFallthrough();
 
         /* Disassemble the instruction */
-	DecodedInstruction_t disasm(insn);
+	auto disasmp=DecodedInstruction_t::factory (insn);
+	auto &disasm=*disasmp;
 
 	/* if this instruction is an inserted call instruction than we don't need to 
 	 * convert it for correctness' sake.
 	 */
-	if(insn->GetAddress()->GetVirtualOffset()==0)
+	if(insn->getAddress()->getVirtualOffset()==0)
 		return;
 
 	/* if the first byte isn't a call opcode, there's some odd prefixing and we aren't handling it.
 	 * this comes up most frequently in a call gs:0x10 instruction where an override prefix specifes the gs: part.
 	 */
-	if((insn->GetDataBits()[0]&0x40)==0x40)
+	if((insn->getDataBits()[0]&0x40)==0x40)
 	{
 		// ignore rex prefixes
 	}
-	else if( (insn->GetDataBits()[0]!=(char)0xff) && 
-		 (insn->GetDataBits()[0]!=(char)0xe8) && 
-		 (insn->GetDataBits()[0]!=(char)0x9a) )
+	else if( (insn->getDataBits()[0]!=(char)0xff) && 
+		 (insn->getDataBits()[0]!=(char)0xe8) && 
+		 (insn->getDataBits()[0]!=(char)0x9a) )
 	{
 		cout<<"Found odd prefixing.\n  Not handling **********************************************"<<endl;
 		assert(0);
@@ -530,55 +533,61 @@ void fix_call(Instruction_t* insn, FileIR_t *firp, bool can_unpin)
 
 	if(getenv("VERBOSE_FIX_CALLS"))
 	{
-		cout<<"Doing a fix_call on "<<std::hex<<insn->GetAddress()->GetVirtualOffset()<< " which is "<<disasm.getDisassembly() /*.CompleteInstr*/<<endl;
+		cout<<"Doing a fix_call on "<<std::hex<<insn->getAddress()->getVirtualOffset()<< " which is "<<disasm.getDisassembly() /*.CompleteInstr*/<<endl;
 	}
 
 
-	virtual_offset_t next_addr=insn->GetAddress()->GetVirtualOffset() + insn->GetDataBits().length();
+	VirtualOffset_t next_addr=insn->getAddress()->getVirtualOffset() + insn->getDataBits().length();
 
 	/* create a new instruction and a new addresss for it that do not correspond to any original program address */
-	Instruction_t *callinsn=new Instruction_t();
-	AddressID_t *calladdr=new AddressID_t;
-       	calladdr->SetFileID(insn->GetAddress()->GetFileID());
+	/*
+	 Instruction_t *callinsn=new Instruction_t();
+	 firp->getInstructions().insert(callinsn);
+	 */
+	auto callinsn=firp->addNewInstruction();
+	/*
+	 AddressID_t *calladdr=new AddressID_t;
+	 firp->getAddresses().insert(calladdr);
+       	 calladdr->setFileID(insn->getAddress()->getFileID());
+	*/
+	auto calladdr=firp->addNewAddress(insn->getAddress()->getFileID(),0);
 
 	/* set the fields in the new instruction */
-	callinsn->SetAddress(calladdr);
-	callinsn->SetTarget(insn->GetTarget());
-	callinsn->SetFallthrough(NULL);
-	callinsn->SetFunction(insn->GetFunction());
-	callinsn->SetComment(insn->GetComment()+" Jump part");
+	callinsn->setAddress(calladdr);
+	callinsn->setTarget(insn->getTarget());
+	callinsn->setFallthrough(NULL);
+	callinsn->setFunction(insn->getFunction());
+	callinsn->setComment(insn->getComment()+" Jump part");
 
 	/* handle ib targets */
-	callinsn->SetIBTargets(insn->GetIBTargets());
-	insn->SetIBTargets(NULL);
+	callinsn->setIBTargets(insn->getIBTargets());
+	insn->setIBTargets(NULL);
 
 	// We need the control transfer instruction to be from the orig program because 
 	// if for some reason it's fallthrough/target isn't in the DB, we need to correctly 
 	// emit fallthrough/target rules
-	callinsn->SetOriginalAddressID(insn->GetOriginalAddressID());
-	insn->SetOriginalAddressID(BaseObj_t::NOT_IN_DATABASE);
+	callinsn->setOriginalAddressID(insn->getOriginalAddressID());
+	insn->setOriginalAddressID(BaseObj_t::NOT_IN_DATABASE);
 
 	/* set the new instruction's data bits to be a jmp instead of a call */
 	string newbits="";
 
 	/* add 4 (8) if it's an esp(rsp) indirect branch for x86-32 (-64) */ 
-	callinsn->SetDataBits(insn->GetDataBits());
-	convert_to_jump(callinsn,firp->GetArchitectureBitWidth()/8);		
+	callinsn->setDataBits(insn->getDataBits());
+	convert_to_jump(callinsn,firp->getArchitectureBitWidth()/8);		
 
 	/* the jump instruction should NOT be indirectly reachable.  We should
 	 * land at the push
 	 */
-	fix_other_pcrel(firp, callinsn, insn->GetAddress()->GetVirtualOffset());
-	callinsn->SetIndirectBranchTargetAddress(NULL);
+	fix_other_pcrel(firp, callinsn, insn->getAddress()->getVirtualOffset());
+	callinsn->setIndirectBranchTargetAddress(NULL);
 
 	/* add the new insn and new address into the list of valid calls and addresses */
-	firp->GetAddresses().insert(calladdr);
-	firp->GetInstructions().insert(callinsn);
 
 
 	/* Convert the old call instruction into a push return_address instruction */
-	insn->SetFallthrough(callinsn);
-	insn->SetTarget(NULL);
+	insn->setFallthrough(callinsn);
+	insn->setTarget(NULL);
 	newbits=string("");
 	newbits.resize(5);
 	newbits[0]=0x68;	/* assemble an instruction push next_addr */
@@ -586,63 +595,73 @@ void fix_call(Instruction_t* insn, FileIR_t *firp, bool can_unpin)
 	newbits[2]=(next_addr>>8) & 0xff;
 	newbits[3]=(next_addr>>16) & 0xff;
 	newbits[4]=(next_addr>>24) & 0xff;
-	insn->SetDataBits(newbits);
-	insn->SetComment(insn->GetComment()+" Push part");
+	insn->setDataBits(newbits);
+	insn->setComment(insn->getComment()+" Push part");
 
 	/* create a relocation for this instruction */
+	/*
 	Relocation_t* reloc=new Relocation_t;
-	if(firp->GetArchitectureBitWidth()==32)
-	{
-		reloc->SetOffset(1);
-		reloc->SetType("32-bit");
-	}
-	else
-	{
-		assert(firp->GetArchitectureBitWidth()==64);
-		reloc->SetOffset(0);
-		reloc->SetType("push64");
-	}
+	insn->getRelocations().insert(reloc);
+	firp->getRelocations().insert(reloc);
+	*/
+	auto reloc= firp->getArchitectureBitWidth()==32 ? firp->addNewRelocation(insn, 1, "32-bit") :
+		/*
+		reloc->setOffset(1);
+		reloc->setType("32-bit");
+		*/
+		    firp->getArchitectureBitWidth()==64 ? firp->addNewRelocation(insn, 0, "push64") :
+		/*
+		reloc->setOffset(0);
+		reloc->setType("push64");
+		*/
+		    throw invalid_argument("odd bit width?");
 
 
-	insn->GetRelocations().insert(reloc);
-	firp->GetRelocations().insert(reloc);
 
 	/* If the fallthrough is not marked as indirectly branchable-to, then mark it so */
-	if(newindirtarg && !newindirtarg->GetIndirectBranchTargetAddress())
+	if(newindirtarg && !newindirtarg->getIndirectBranchTargetAddress())
 	{
 		/* create a new address for the IBTA */
+		/*
 		AddressID_t* newaddr = new AddressID_t;
 		assert(newaddr);
-		newaddr->SetFileID(newindirtarg->GetAddress()->GetFileID());
-		newaddr->SetVirtualOffset(newindirtarg->GetAddress()->GetVirtualOffset());
+		newaddr->setFileID(newindirtarg->getAddress()->getFileID());
+		newaddr->setVirtualOffset(newindirtarg->getAddress()->getVirtualOffset());
+		firp->getAddresses().insert(newaddr);
+		*/
+		auto newaddr=firp->addNewAddress(newindirtarg->getAddress()->getFileID(), newindirtarg->getAddress()->getVirtualOffset());
 
 		/* set the instruction and include this address in the list of addrs */
-		newindirtarg->SetIndirectBranchTargetAddress(newaddr);
-		firp->GetAddresses().insert(newaddr);
+		newindirtarg->setIndirectBranchTargetAddress(newaddr);
 	
 		// if we're marking this as an IBTA, determine whether we can unpin it or not 
 		if(can_unpin)
 		{
 			if(getenv("VERBOSE_FIX_CALLS"))
 			{
-				cout<<"Setting unpin for type="<< reloc->GetType()<< " address="
-				    <<hex<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<endl;
+				cout<<"setting unpin for type="<< reloc->getType()<< " address="
+				    <<hex<<insn->getBaseID()<<":"<<insn->getDisassembly()<<endl;
 			}
 			// set newindirtarg as unpinned
-                        newindirtarg->GetIndirectBranchTargetAddress()->SetVirtualOffset(0);
-      			reloc->SetWRT(newindirtarg);
+                        newindirtarg->getIndirectBranchTargetAddress()->setVirtualOffset(0);
+      			reloc->setWRT(newindirtarg);
 		}
 	}
 
 
 	// mark in the IR what the fallthrough of this insn is.
+	/* 
 	Relocation_t* fix_call_reloc=new Relocation_t(); 
-	fix_call_reloc->SetOffset(0);
-	fix_call_reloc->SetType("fix_call_fallthrough");
-	fix_call_reloc->SetWRT(newindirtarg);
-	callinsn->GetRelocations().insert(fix_call_reloc);
-	firp->GetRelocations().insert(fix_call_reloc);
-
+	callinsn->getRelocations().insert(fix_call_reloc);
+	firp->getRelocations().insert(fix_call_reloc);
+	*/
+	auto fix_call_reloc=firp->addNewRelocation(callinsn, 0, "fix_call_fallthrough", newindirtarg);
+	(void)fix_call_reloc; // not used, just give to IR
+	/*
+	fix_call_reloc->setOffset(0);
+	fix_call_reloc->setType("fix_call_fallthrough");
+	fix_call_reloc->setWRT(newindirtarg);
+	*/
 }
 
 
@@ -652,8 +671,8 @@ void fix_call(Instruction_t* insn, FileIR_t *firp, bool can_unpin)
 bool is_call(Instruction_t* insn)
 {
         /* Disassemble the instruction */
-	DecodedInstruction_t disasm(insn);
-	return disasm.isCall(); // (disasm.Instruction.BranchType==CallType);
+	auto disasm=DecodedInstruction_t::factory (insn);
+	return disasm->isCall(); 
 }
 
 bool can_skip_safe_function(Instruction_t *call_insn) 
@@ -662,31 +681,31 @@ bool can_skip_safe_function(Instruction_t *call_insn)
 		return false;
 	if (!is_call(call_insn))
 		return false;
-	Instruction_t *target=call_insn->GetTarget();
+	Instruction_t *target=call_insn->getTarget();
 	if (!target)
 		return false;
-	Function_t* func=target->GetFunction();
+	auto func=target->getFunction();
 	if (!func)
 		return false;
 
 	/* if the call instruction isn't to a function entry point */
-	if(func->GetEntryPoint()!=target)
+	if(func->getEntryPoint()!=target)
 	{
 		return false;
 	}
 
-	if (func->IsSafe())
+	if (func->isSafe())
 	{
-		cout << "Function " << func->GetName() << " is safe" << endl;
+		cout << "Function " << func->getName() << " is safe" << endl;
 	}
 
-	return func->IsSafe();
+	return func->isSafe();
 }
 
 
 template <class T> struct insn_less : binary_function <T,T,bool> {
   bool operator() (const T& x, const T& y) const {
-        return  x->GetBaseID()  <   y->GetBaseID()  ;}
+        return  x->getBaseID()  <   y->getBaseID()  ;}
 };
 
 
@@ -696,15 +715,18 @@ template <class T> struct insn_less : binary_function <T,T,bool> {
 void mark_as_unpinned_ibt(FileIR_t* firp, Instruction_t* ret_point)
 {
 	if( ret_point == NULL ) return;
-	if( ret_point->GetIndirectBranchTargetAddress() != NULL ) return;
+	if( ret_point->getIndirectBranchTargetAddress() != NULL ) return;
 	
+	/*
 	auto newaddr = new AddressID_t;
 	assert(newaddr);
-	newaddr->SetFileID(ret_point->GetAddress()->GetFileID());
-	newaddr->SetVirtualOffset(0);	// unpinne
+	newaddr->setFileID(ret_point->getAddress()->getFileID());
+	newaddr->setVirtualOffset(0);	// unpinne
 	
-	firp->GetAddresses().insert(newaddr);
-	ret_point->SetIndirectBranchTargetAddress(newaddr);
+	firp->getAddresses().insert(newaddr);
+	*/
+	auto newaddr=firp->addNewAddress(ret_point->getAddress()->getFileID(),0);
+	ret_point->setIndirectBranchTargetAddress(newaddr);
 	
 }
 
@@ -715,7 +737,7 @@ void mark_as_unpinned_ibt(FileIR_t* firp, Instruction_t* ret_point)
 void fix_all_calls(FileIR_t* firp, bool fix_all)
 {
 
-	auto sorted_insns = set<Instruction_t*,insn_less<Instruction_t*> >(ALLOF(firp->GetInstructions()));
+	auto sorted_insns = set<Instruction_t*,insn_less<Instruction_t*> >(ALLOF(firp->getInstructions()));
 
 	for(auto insn : sorted_insns)
 	{
@@ -755,8 +777,8 @@ void fix_all_calls(FileIR_t* firp, bool fix_all)
 			else
 			{
 				if(getenv("VERBOSE_FIX_CALLS"))
-					cout<<"No fix needed, marking ret site IBT, for "<<insn->GetAddress()->GetVirtualOffset()<<":"<<insn->getDisassembly()<<endl;
-				mark_as_unpinned_ibt(firp, insn->GetFallthrough());
+					cout<<"No fix needed, marking ret site IBT, for "<<insn->getAddress()->getVirtualOffset()<<":"<<insn->getDisassembly()<<endl;
+				mark_as_unpinned_ibt(firp, insn->getFallthrough());
 				not_fixed_calls++;
 			}
 		}
@@ -764,7 +786,7 @@ void fix_all_calls(FileIR_t* firp, bool fix_all)
 		else
 		{
 			if(getenv("VERBOSE_FIX_CALLS"))
-				cout<<"Not a call "<<insn->GetAddress()->GetVirtualOffset()<<":"<<insn->getDisassembly()<<endl;
+				cout<<"Not a call "<<insn->getAddress()->getVirtualOffset()<<":"<<insn->getDisassembly()<<endl;
 			not_calls++;
 		}
 	}
@@ -792,10 +814,10 @@ void fix_all_calls(FileIR_t* firp, bool fix_all)
 //
 void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 {
-	DecodedInstruction_t disasm(insn);
-	const auto &operands=disasm.getOperands();
-	const auto relop_it=find_if(ALLOF(operands),[](const DecodedOperand_t& op)
-		{ return op.isPcrel() ; } );
+	auto disasm=DecodedInstruction_t::factory(insn);
+	const auto &operands=disasm->getOperands();
+	const auto relop_it=find_if(ALLOF(operands),[](const shared_ptr<DecodedOperand_t>& op)
+		{ return op->isPcrel() ; } );
 	const bool is_rel= relop_it!=operands.end(); 
 
 	/* if this has already been fixed, we can skip it */
@@ -804,26 +826,26 @@ void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 
 	if(is_rel)
 	{
-		const auto the_arg=*relop_it;	
-		const auto mt=firp->GetArchitecture()->getMachineType();
+		const auto &the_arg=*(relop_it->get());	
+		const auto mt=firp->getArchitecture()->getMachineType();
 		if(mt==admtAarch64)
 		{
 			// figure out how to rewrite pcrel arm insns, then change the virt addr
-			// insn->GetAddress()->SetVirtualOffset(0);	
+			// insn->getAddress()->setVirtualOffset(0);	
 		}
 		else if(mt==admtX86_64 ||  mt==admtI386)
 		{
 			assert(the_arg.isMemory());
-			auto offset=disasm.getMemoryDisplacementOffset(the_arg, insn); 
+			auto offset=disasm->getMemoryDisplacementOffset(&the_arg, insn); 
 			assert(offset>=0 && offset <=15);
 			auto size=the_arg.getMemoryDisplacementEncodingSize(); 
 			assert(size==1 || size==2 || size==4 || size==8);
 
 			if(getenv("VERBOSE_FIX_CALLS"))
 			{
-				cout<<"Found insn with pcrel memory operand: "<<disasm.getDisassembly()/*.CompleteInstr */
-				    <<" Displacement="<<std::hex<<the_arg.getMemoryDisplacement() /*the_arg->Memory.Displacement*/<<std::dec
-				    <<" size="<<the_arg.getMemoryDisplacementEncodingSize() /*the_arg->Memory.DisplacementSize*/<<" Offset="<<offset;
+				cout<<"Found insn with pcrel memory operand: "<<disasm->getDisassembly()
+				    <<" Displacement="<<std::hex<<the_arg.getMemoryDisplacement() << dec
+				    <<" size="<<the_arg.getMemoryDisplacementEncodingSize() <<" Offset="<<offset;
 			}
 
 			/* convert [rip_pc+displacement] addresssing mode into [rip_0+displacement] where rip_pc is the actual PC of the insn, 
@@ -832,7 +854,7 @@ void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 			 */
 
 			/* get the data */
-			string data=insn->GetDataBits();
+			string data=insn->getDataBits();
 			char cstr[20]={}; 
 			memcpy(cstr,data.c_str(), data.length());
 			void *offsetptr=&cstr[offset];
@@ -859,22 +881,26 @@ void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 
 			/* put the data back into the insn */
 			data.replace(0, data.length(), cstr, data.length());
-			insn->SetDataBits(data);
+			insn->setDataBits(data);
 
 			other_fixes++;
 
-			disasm=DecodedInstruction_t(insn);
+			disasm=DecodedInstruction_t::factory(insn);
 			if(getenv("VERBOSE_FIX_CALLS"))
-				cout<<" Converted to: "<<disasm.getDisassembly() /*CompleteInstr*/<<endl;
+				cout<<" Converted to: "<<disasm->getDisassembly() << endl;
 
 			// and it's important to set the VO to 0, so that the pcrel-ness is calculated correctly.
-			insn->GetAddress()->SetVirtualOffset(0);	
+			insn->getAddress()->setVirtualOffset(0);	
 		}
 
 		// now that we've done the rewriting, go ahead and add the reloc.
+		/*
 		auto reloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, 0,"pcrel");
-		insn->GetRelocations().insert(reloc);
-		firp->GetRelocations().insert(reloc);
+		insn->getRelocations().insert(reloc);
+		firp->getRelocations().insert(reloc);
+		*/
+		auto reloc=firp->addNewRelocation(insn,0,"pcrel");
+		(void)reloc; // not used, only given to the IR
 
 	}
 }
@@ -885,14 +911,17 @@ void fix_safefr(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 	if(virt_offset==0 || virt_offset==(uintptr_t)-1)
 		return;
 
-	for(auto reloc : insn->GetRelocations())
+	for(auto reloc : insn->getRelocations())
 	{
 		assert(reloc);
-		if( reloc->GetType() == "safefr" )
+		if( reloc->getType() == "safefr" )
 		{
-			auto addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, insn->GetAddress()->GetFileID(), 0);
-			firp->GetAddresses().insert(addr);
-			insn->SetAddress(addr);
+			/*
+			auto addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, insn->getAddress()->getFileID(), 0);
+			firp->getAddresses().insert(addr);
+			*/
+			auto addr=firp->addNewAddress(insn->getAddress()->getFileID(), 0);
+			insn->setAddress(addr);
 		}
 	}
 }
@@ -901,10 +930,10 @@ void fix_safefr(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 void fix_other_pcrel(FileIR_t* firp)
 {
 
-	for(auto insn : firp->GetInstructions())
+	for(auto insn : firp->getInstructions())
 	{
-		fix_other_pcrel(firp,insn, insn->GetAddress()->GetVirtualOffset());
-		fix_safefr(firp,insn, insn->GetAddress()->GetVirtualOffset());
+		fix_other_pcrel(firp,insn, insn->getAddress()->getVirtualOffset());
+		fix_safefr(firp,insn, insn->getAddress()->getVirtualOffset());
 	}
 	cout << "# ATTRIBUTE fix_calls::other_fixes="<<std::dec<<other_fixes<<endl;
 }
@@ -981,7 +1010,7 @@ int parseArgs(const vector<string> step_args)
 	return 0;
 }
 
-db_id_t variant_id=BaseObj_t::NOT_IN_DATABASE;
+DatabaseID_t variant_id=BaseObj_t::NOT_IN_DATABASE;
 
 
 int executeStep(IRDBObjects_t *const irdb_objects)
@@ -992,26 +1021,26 @@ int executeStep(IRDBObjects_t *const irdb_objects)
 	{
 		/* setup the interface to the sql server */
                 const auto pqxx_interface=irdb_objects->getDBInterface();
-                BaseObj_t::SetInterface(pqxx_interface);
+                BaseObj_t::setInterface(pqxx_interface);
 
 		auto  pidp = irdb_objects->addVariant(variant_id);
 		cout<<"Fixing calls->push/jmp in variant "<<*pidp<< "." <<endl;
 
-		assert(pidp->IsRegistered()==true);
+		assert(pidp->isRegistered()==true);
 
-		for(const auto &this_file : pidp->GetFiles())
+		for(const auto &this_file : pidp->getFiles())
                 {
                         assert(this_file);
 
 			// read the db  
-			auto firp = irdb_objects->addFileIR(variant_id, this_file->GetBaseID());
+			auto firp = irdb_objects->addFileIR(variant_id, this_file->getBaseID());
 	
 			assert(firp && pidp);
 	
 			eh_frame_ranges.clear();
-                        int elfoid=firp->GetFile()->GetELFOID();
+                        int elfoid=firp->getFile()->getELFOID();
                         pqxx::largeobject lo(elfoid);
-                        lo.to_file(pqxx_interface->GetTransaction(),"readeh_tmp_file.exe");
+                        lo.to_file(pqxx_interface->getTransaction(),"readeh_tmp_file.exe");
                         EXEIO::exeio*    elfiop=new EXEIO::exeio;
                         elfiop->load(string("readeh_tmp_file.exe"));
                         EXEIO::dump::header(cout,*elfiop);
@@ -1044,7 +1073,7 @@ int executeStep(IRDBObjects_t *const irdb_objects)
 	return 0;
 }
 
-void range(virtual_offset_t a, virtual_offset_t b)
+void range(VirtualOffset_t a, VirtualOffset_t b)
 {
 	// we've found examples of ranges being 0 sized, and it's a bit weird what that means.
 	// it applies to 0 instructions?
@@ -1074,22 +1103,22 @@ std::string getStepName(void) const override
 
 }; // end class FixCalls_t
 
-shared_ptr<Transform_SDK::TransformStep_t> curInvocation;
+shared_ptr<TransformStep_t> curInvocation;
 
-bool possible_target(virtual_offset_t p, virtual_offset_t from_addr, ibt_provenance_t prov)
+bool possible_target(VirtualOffset_t p, VirtualOffset_t from_addr, ibt_provenance_t prov)
 {
         assert(curInvocation);
         return (dynamic_cast<FixCalls_t*>(curInvocation.get()))->possible_target(p,from_addr,prov);
 }
 
-void range(virtual_offset_t start, virtual_offset_t end)
+void range(VirtualOffset_t start, VirtualOffset_t end)
 {
         assert(curInvocation);
         return (dynamic_cast<FixCalls_t*>(curInvocation.get()))->range(start,end);
 }
 
 extern "C"
-shared_ptr<Transform_SDK::TransformStep_t> GetTransformStep(void)
+shared_ptr<TransformStep_t> getTransformStep(void)
 {
         curInvocation.reset(new FixCalls_t());
         return curInvocation;

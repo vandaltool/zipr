@@ -25,18 +25,18 @@
 class InstructionPredecessors_t
 {
 	private:
-	typedef std::map<const Instruction_t*, InstructionSet_t> PredMap_t;
+	typedef std::map<const IRDB_SDK::Instruction_t*, InstructionSet_t> PredMap_t;
 
 	public:
-	InstructionPredecessors_t(const FileIR_t* f=NULL) {Init(); if(f) AddFile(f);}
+	InstructionPredecessors_t(const IRDB_SDK::FileIR_t* f=NULL) {Init(); if(f) AddFile(f);}
         virtual ~InstructionPredecessors_t() {;}
-	virtual void AddFile(const FileIR_t* );
+	virtual void AddFile(const IRDB_SDK::FileIR_t* );
 
-	InstructionSet_t& operator[] (const Instruction_t* i)  
+	InstructionSet_t& operator[] (const IRDB_SDK::Instruction_t* i)  
 		{
 			return pred_map[i];
 		}
-	const InstructionSet_t& operator[] (const Instruction_t* i)  const
+	const InstructionSet_t& operator[] (const IRDB_SDK::Instruction_t* i)  const
 		{ 
 			PredMap_t::const_iterator it=pred_map.find(i);
 			if (it!= pred_map.end()) 
@@ -50,8 +50,8 @@ class InstructionPredecessors_t
 
 	private:
 
-	virtual void AddPred(const Instruction_t* before, const Instruction_t* after);
-	virtual void AddPreds(const Instruction_t* before, const InstructionSet_t& after);
+	virtual void AddPred(const IRDB_SDK::Instruction_t* before, const IRDB_SDK::Instruction_t* after);
+	virtual void AddPreds(const IRDB_SDK::Instruction_t* before, const IRDB_SDK::InstructionSet_t& after);
 
 	PredMap_t pred_map;
 };

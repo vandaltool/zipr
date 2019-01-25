@@ -11,7 +11,7 @@ installed=[]
 if 'build_tools' not in myenv or myenv['build_tools'] is None or int(myenv['build_tools']) == 1:
 
 	cpppath=''' 
-		 $SECURITY_TRANSFORMS_HOME/include 
+		 $IRDB_SDK/include 
 		 $SECURITY_TRANSFORMS_HOME/libIRDB/include 
 		 $SECURITY_TRANSFORMS_HOME/libMEDSannotation/include 
 		 $SECURITY_TRANSFORMS_HOME/libEXEIO/include 
@@ -56,10 +56,10 @@ if 'build_tools' not in myenv or myenv['build_tools'] is None or int(myenv['buil
 
 
 	# ilr goes to $sectrans/plugins_install
-	pgm=myenv.Program(target="ilr.exe",  source=Split("ilr.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
-	install=myenv.Install("$SECURITY_TRANSFORMS_HOME/plugins_install/", pgm)
-	Default(install)
-	installed=installed+install
+	# pgm=myenv.Program(target="ilr.exe",  source=Split("ilr.cpp"), LIBPATH=LIBPATH, LIBS=LIBS)
+	# install=myenv.Install("$SECURITY_TRANSFORMS_HOME/plugins_install/", pgm)
+	# Default(install)
+	# installed=installed+install
 
 Return('installed')
 

@@ -19,7 +19,7 @@ IRDBObjects_t::~IRDBObjects_t()
         // explicitly deleted.
 }
 
-FileIR_t* IRDBObjects_t::addFileIR(const db_id_t variant_id, const db_id_t file_id)
+IRDB_SDK::FileIR_t* IRDBObjects_t::addFileIR(const IRDB_SDK::DatabaseID_t variant_id, const IRDB_SDK::DatabaseID_t file_id)
 {
         const auto it = file_IR_map.find(file_id);
         
@@ -44,12 +44,12 @@ FileIR_t* IRDBObjects_t::addFileIR(const db_id_t variant_id, const db_id_t file_
 		}
 
 		// make sure static variable is set in the calling module -- IMPORTANT
-		the_fileIR->SetArchitecture();
+		the_fileIR->setArchitecture();
 		return the_fileIR.get();
         }
 }
 
-int IRDBObjects_t::writeBackFileIR(const db_id_t file_id, ostream *verbose_logging)
+int IRDBObjects_t::writeBackFileIR(const IRDB_SDK::DatabaseID_t file_id, ostream *verbose_logging)
 {
         const auto it = file_IR_map.find(file_id);
         
@@ -61,28 +61,28 @@ int IRDBObjects_t::writeBackFileIR(const db_id_t file_id, ostream *verbose_loggi
                     
 	try
 	{
-		// cout<<"Writing changes for "<<the_file->GetURL()<<endl;
+		// cout<<"Writing changes for "<<the_file->getURL()<<endl;
 		// make sure static variable is set in the calling module -- IMPORTANT
 		const auto & the_fileIR = (it->second).fileIR;
-		the_fileIR->SetArchitecture();
-		the_fileIR->WriteToDB(verbose_logging);
+		the_fileIR->setArchitecture();
+		the_fileIR->writeToDB(verbose_logging);
         	return 0;
 	}
 	catch (DatabaseError_t pnide)
 	{
-		cerr << "Unexpected database error: " << pnide << "file url: " << the_file->GetURL() << endl;
+		cerr << "Unexpected database error: " << pnide << "file url: " << the_file->getURL() << endl;
 		return -1;
 	}
 	catch (...)
 	{
-		cerr << "Unexpected error file url: " << the_file->GetURL() << endl;
+		cerr << "Unexpected error file url: " << the_file->getURL() << endl;
 		return -1;
 	}
 	assert(0); // should not reach
         
 }
 
-void IRDBObjects_t::deleteFileIR(const db_id_t file_id)
+void IRDBObjects_t::deleteFileIR(const IRDB_SDK::DatabaseID_t file_id)
 {
         const auto it = file_IR_map.find(file_id);
         
@@ -96,19 +96,19 @@ void IRDBObjects_t::deleteFileIR(const db_id_t file_id)
 	}
 }
 
-bool IRDBObjects_t::filesAlreadyPresent(const set<File_t*>& the_files) const
+bool IRDBObjects_t::filesAlreadyPresent(const FileSet_t& the_files) const
 {
 	// look for a missing file
-	const auto missing_file_it=find_if(ALLOF(the_files), [&](const File_t* const f)
+	const auto missing_file_it=find_if(ALLOF(the_files), [&](const IRDB_SDK::File_t* const f)
 		{
-			return (file_IR_map.find(f->GetBaseID()) == file_IR_map.end());
+			return (file_IR_map.find(f->getBaseID()) == file_IR_map.end());
 		});
         
 	// return true if no files missing
         return missing_file_it==the_files.end();
 }
 
-VariantID_t* IRDBObjects_t::addVariant(const db_id_t variant_id)
+IRDB_SDK::VariantID_t* IRDBObjects_t::addVariant(const IRDB_SDK::DatabaseID_t variant_id)
 {
         const auto var_it = variant_map.find(variant_id);      
 
@@ -120,23 +120,23 @@ VariantID_t* IRDBObjects_t::addVariant(const db_id_t variant_id)
 	variant_map[variant_id].reset(new VariantID_t(variant_id));	
 	auto the_variant = variant_map[variant_id].get();
 
-	assert(the_variant->IsRegistered()==true);
+	assert(the_variant->isRegistered()==true);
 	// disallow variants that share shallow copies to both be read in
         // to prevent desynchronization. 
-        assert(!filesAlreadyPresent(the_variant->GetFiles()));
+        assert(!filesAlreadyPresent(the_variant->getFiles()));
 
         // add files
-	for(auto &curr_file : the_variant->GetFiles())
+	for(auto &curr_file : the_variant->getFiles())
 	{
-            file_IR_map[curr_file->GetBaseID()]=FileIRInfo_t();
-	    file_IR_map[curr_file->GetBaseID()].file = curr_file;
+            file_IR_map[curr_file->getBaseID()]=FileIRInfo_t();
+	    file_IR_map[curr_file->getBaseID()].file = dynamic_cast<File_t*>(curr_file);
         }
         
         return the_variant;
 }
 
 
-int IRDBObjects_t::writeBackVariant(const db_id_t variant_id)
+int IRDBObjects_t::writeBackVariant(const IRDB_SDK::DatabaseID_t variant_id)
 {
         const auto it = variant_map.find(variant_id);
         
@@ -163,7 +163,7 @@ int IRDBObjects_t::writeBackVariant(const db_id_t variant_id)
         
 }
 
-void IRDBObjects_t::deleteVariant(const db_id_t variant_id)
+void IRDBObjects_t::deleteVariant(const IRDB_SDK::DatabaseID_t variant_id)
 {
         const auto var_it = variant_map.find(variant_id);
         
@@ -171,9 +171,9 @@ void IRDBObjects_t::deleteVariant(const db_id_t variant_id)
 		return;
 
 	// remove files and file IRs
-	for(const auto file : var_it->second->GetFiles())
+	for(const auto file : var_it->second->getFiles())
 	{
-		file_IR_map.erase(file->GetBaseID());
+		file_IR_map.erase(file->getBaseID());
 	}
     
 	// remove variant
@@ -187,7 +187,7 @@ int IRDBObjects_t::writeBackAll(ostream *verbose_logging)
         // Write back FileIRs
 	for(auto &file_pair : file_IR_map)
         {
-		const int result = IRDBObjects_t::writeBackFileIR((file_pair.second.file)->GetBaseID(), verbose_logging);
+		const int result = IRDBObjects_t::writeBackFileIR((file_pair.second.file)->getBaseID(), verbose_logging);
 		if(result != 0)
 		{
 			ret_status = -1;
@@ -197,7 +197,7 @@ int IRDBObjects_t::writeBackAll(ostream *verbose_logging)
         // Write back Variants
 	for(auto & variant_pair : variant_map)
         {
-		const int result = IRDBObjects_t::writeBackVariant((variant_pair.second)->GetBaseID());
+		const int result = IRDBObjects_t::writeBackVariant((variant_pair.second)->getBaseID());
 		if(result != 0)
 		{
 			ret_status = -1;
@@ -211,19 +211,19 @@ void IRDBObjects_t::deleteAll(void)
         // Delete Variants (also deletes all files)
 	for( auto &variant_pair : variant_map)
         {
-		IRDBObjects_t::deleteVariant((variant_pair.second)->GetBaseID());
+		IRDBObjects_t::deleteVariant((variant_pair.second)->getBaseID());
         }
 }
 
-pqxxDB_t* IRDBObjects_t::getDBInterface() const
+IRDB_SDK::pqxxDB_t* IRDBObjects_t::getDBInterface() const
 {
         return pqxx_interface.get();
 }
 
-pqxxDB_t* IRDBObjects_t::resetDBInterface()
+IRDB_SDK::pqxxDB_t* IRDBObjects_t::resetDBInterface()
 {
 	pqxx_interface.reset(new pqxxDB_t());  // Aborts if Commit() has not been called
-	BaseObj_t::SetInterface(pqxx_interface.get());
+	BaseObj_t::setInterface(pqxx_interface.get());
 	return pqxx_interface.get();
 }
 
@@ -235,7 +235,20 @@ void IRDBObjects_t::tidyIR(void)
         {
 		const auto &file_ir_info = variant_pair.second;
 		auto fileIR=file_ir_info.fileIR.get();
-		fileIR->AssembleRegistry();
-		fileIR->SetBaseIDS();
+		fileIR->assembleRegistry();
+		fileIR->setBaseIDS();
         }
 }
+
+void FileIR_t::moveRelocation(IRDB_SDK::Relocation_t* reloc, IRDB_SDK::Instruction_t* from, IRDB_SDK::Instruction_t* to) 
+{
+	auto irdb_from=dynamic_cast<libIRDB::Instruction_t*>(from);
+	auto irdb_to  =dynamic_cast<libIRDB::Instruction_t*>(to);
+
+	irdb_to  ->GetRelocations().insert(reloc);
+	irdb_from->GetRelocations().erase (reloc);
+
+
+
+}
+

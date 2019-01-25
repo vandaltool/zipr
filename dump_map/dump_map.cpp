@@ -20,14 +20,14 @@
 
 #include <stdlib.h>
 #include <fstream>
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 #include <libgen.h>
 #include <iomanip>
 #include <algorithm>
 
 
 using namespace std;
-using namespace libIRDB;
+using namespace IRDB_SDK;
 
 void usage(char* name)
 {
@@ -37,16 +37,16 @@ void usage(char* name)
 
 void dump_icfs(Instruction_t* insn)
 {
-	if(insn->GetIBTargets()==NULL)	
+	if(insn->getIBTargets()==NULL)	
 		return;	
 	
-	cout<<"\tComplete: "<<boolalpha<<insn->GetIBTargets()->IsComplete()<<endl;
-	cout<<"\tModComplete: "<<boolalpha<<insn->GetIBTargets()->IsModuleComplete()<<endl;
+	cout<<"\tComplete: "<<boolalpha<<insn->getIBTargets()->isComplete()<<endl;
+	cout<<"\tModComplete: "<<boolalpha<<insn->getIBTargets()->isModuleComplete()<<endl;
 	cout<<"\tTargets: "<<endl;
-	for_each(insn->GetIBTargets()->begin(), insn->GetIBTargets()->end(), [&](const Instruction_t* targ)
+	for_each(insn->getIBTargets()->begin(), insn->getIBTargets()->end(), [&](const Instruction_t* targ)
 	{
-		const auto d=DecodedInstruction_t(targ);
-		cout<<"\t"<<targ->GetBaseID()<<":"<<d.getDisassembly()<<endl;
+		const auto d=DecodedInstruction_t::factory(targ);
+		cout<<"\t"<<targ->getBaseID()<<":"<<d->getDisassembly()<<endl;
 	});
 }
 
@@ -58,37 +58,35 @@ int main(int argc, char **argv)
                 exit(1);
         }
 
-	auto dump_icfs_flag=(db_id_t)BaseObj_t::NOT_IN_DATABASE; 
+	auto dump_icfs_flag=(DatabaseID_t)BaseObj_t::NOT_IN_DATABASE; 
 	auto dump_icfs_str=getenv("DUMP_ICFS");
 	if(dump_icfs_str)
-		dump_icfs_flag=(db_id_t)strtoull(dump_icfs_str,NULL,0);
+		dump_icfs_flag=(DatabaseID_t)strtoull(dump_icfs_str,NULL,0);
 		
 
         string programName(argv[0]);
         int variantID = atoi(argv[1]);
 
-        VariantID_t *pidp=NULL;
-
         /* setup the interface to the sql server */
-        pqxxDB_t pqxx_interface;
-        BaseObj_t::SetInterface(&pqxx_interface);
+        auto pqxx_interface=pqxxDB_t::factory();
+        BaseObj_t::setInterface(pqxx_interface.get());
 
-        pidp=new VariantID_t(variantID);
-        assert(pidp->IsRegistered()==true);
+        auto pidp=VariantID_t::factory(variantID);
+        assert(pidp->isRegistered()==true);
 
 
 
         bool one_success = false;
-        for(set<File_t*>::iterator it=pidp->GetFiles().begin();
-            it!=pidp->GetFiles().end();
+        for(set<File_t*>::iterator it=pidp->getFiles().begin();
+            it!=pidp->getFiles().end();
                 ++it)
         {
                 File_t* this_file = *it;
                 try
                 {
-                	FileIR_t *firp = new FileIR_t(*pidp, this_file);
+                	auto firp = FileIR_t::factory(pidp.get(), this_file);
 	
-			cout<<"file: "<<this_file->GetURL()<<endl;
+			cout<<"file: "<<this_file->getURL()<<endl;
 			cout<<setw(9)<<"ID"<<" "
 			    <<setw(10)<<"Addr."<<" "
 			    <<setw(10)<<"IBTA"<<" "
@@ -99,29 +97,29 @@ int main(int argc, char **argv)
 
                 	assert(firp && pidp);
 
-			for(InstructionSet_t::iterator it=firp->GetInstructions().begin(); it!=firp->GetInstructions().end(); ++it)
+			for(auto it=firp->getInstructions().begin(); it!=firp->getInstructions().end(); ++it)
 			{
 				Instruction_t* insn=*it;
 				assert(insn);
-				cout<<hex<<setw(9)<<insn->GetBaseID()<<" "<<hex<<setw(10)<<insn->GetAddress()->GetVirtualOffset();
+				cout<<hex<<setw(9)<<insn->getBaseID()<<" "<<hex<<setw(10)<<insn->getAddress()->getVirtualOffset();
 				
 				cout<<" "<<hex<<setw(10)<<
-					(insn->GetIndirectBranchTargetAddress() ? 
-						insn->GetIndirectBranchTargetAddress()->GetVirtualOffset() :
+					(insn->getIndirectBranchTargetAddress() ? 
+						insn->getIndirectBranchTargetAddress()->getVirtualOffset() :
 						0
 					)
 				    <<" ";
-				cout<<hex<<setw(9)<<(insn->GetFallthrough()  ? insn->GetFallthrough()->GetBaseID() : -1) << " ";
-				cout<<hex<<setw(9)<<(insn->GetTarget()  ? insn->GetTarget()->GetBaseID() : -1) << " ";
-				if(insn->GetFunction() && insn->GetFunction()->GetEntryPoint())
-					cout<<hex<<setw(9)<<insn->GetFunction()->GetEntryPoint()->GetBaseID();
+				cout<<hex<<setw(9)<<(insn->getFallthrough()  ? insn->getFallthrough()->getBaseID() : -1) << " ";
+				cout<<hex<<setw(9)<<(insn->getTarget()  ? insn->getTarget()->getBaseID() : -1) << " ";
+				if(insn->getFunction() && insn->getFunction()->getEntryPoint())
+					cout<<hex<<setw(9)<<insn->getFunction()->getEntryPoint()->getBaseID();
 				else
 					cout<<setw(9)<<"NoFunc";
 					
-				const auto d=DecodedInstruction_t(insn);
-				cout<<" "<<d.getDisassembly()<<"("<<insn->GetComment()<<")"<<endl;
+				const auto d=DecodedInstruction_t::factory(insn);
+				cout<<" "<<d->getDisassembly()<<"("<<insn->getComment()<<")"<<endl;
 	
-				if(dump_icfs_flag == insn->GetBaseID())
+				if(dump_icfs_flag == insn->getBaseID())
 					dump_icfs(insn);
 			}
 
@@ -130,11 +128,11 @@ int main(int argc, char **argv)
                 }
                 catch (DatabaseError_t pnide)
                 {
-                        cerr << programName << ": Unexpected database error: " << pnide << "file url: " << this_file->GetURL() << endl;
+                        cerr << programName << ": Unexpected database error: " << pnide << "file url: " << this_file->getURL() << endl;
                 }
                 catch (...)
                 {
-                        cerr << programName << ": Unexpected error file url: " << this_file->GetURL() << endl;
+                        cerr << programName << ": Unexpected error file url: " << this_file->getURL() << endl;
                 }
         } // end file iterator
 
@@ -142,7 +140,7 @@ int main(int argc, char **argv)
         if (one_success)
 	{
 		cout<<"Commiting changes...\n";
-                pqxx_interface.Commit();
+                pqxx_interface->commit();
 	}
 
         return 0;

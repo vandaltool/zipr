@@ -20,14 +20,14 @@
 
 #include <stdlib.h>
 #include <fstream>
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 #include <libgen.h>
 #include <iomanip>
 #include <algorithm>
 
 
 using namespace std;
-using namespace libIRDB;
+using namespace IRDB_SDK;
 
 void usage(char* name)
 {
@@ -48,39 +48,40 @@ int main(int argc, char **argv)
         string programName(argv[0]);
         int variantID = atoi(argv[1]);
 
-        VariantID_t *pidp=NULL;
 
         /* setup the interface to the sql server */
-        pqxxDB_t pqxx_interface;
-        BaseObj_t::SetInterface(&pqxx_interface);
+        auto pqxx_interface=pqxxDB_t::factory();
+        BaseObj_t::setInterface(pqxx_interface.get());
 
-        pidp=new VariantID_t(variantID);
-        assert(pidp->IsRegistered()==true);
+        auto pidp=VariantID_t::factory(variantID);
+        assert(pidp->isRegistered()==true);
 
 
 
         bool one_success = false;
-        for(set<File_t*>::iterator it=pidp->GetFiles().begin();
-            it!=pidp->GetFiles().end();
+        for(set<File_t*>::iterator it=pidp->getFiles().begin();
+            it!=pidp->getFiles().end();
                 ++it)
         {
                 File_t* this_file = *it;
                 try
                 {
-                	FileIR_t *firp = new FileIR_t(*pidp, this_file);
+                	auto firp = FileIR_t::factory(pidp.get(), this_file);
 
                 	assert(firp && pidp);
 
-			for(auto insn : firp->GetInstructions())
+			for(auto insn : firp->getInstructions())
 			{
 				assert(insn);
-				const auto d=DecodedInstruction_t(insn);
+				const auto p_d=DecodedInstruction_t::factory(insn);
+				const auto &d=*p_d;
 				const auto &operands=d.getOperands();
 
 				cout<<" "<<d.getDisassembly()<<endl;
 				int op_count=0;
-				for(auto op : operands)
+				for(const auto p_op : operands)
 				{
+					const auto &op=*p_op;
 					auto readWriteString= string();
 					if(op.isRead()) readWriteString += "READ ";
 					if(op.isWritten()) readWriteString += "WRITE ";
@@ -104,11 +105,11 @@ int main(int argc, char **argv)
                 }
                 catch (DatabaseError_t pnide)
                 {
-                        cerr << programName << ": Unexpected database error: " << pnide << "file url: " << this_file->GetURL() << endl;
+                        cerr << programName << ": Unexpected database error: " << pnide << "file url: " << this_file->getURL() << endl;
                 }
                 catch (...)
                 {
-                        cerr << programName << ": Unexpected error file url: " << this_file->GetURL() << endl;
+                        cerr << programName << ": Unexpected error file url: " << this_file->getURL() << endl;
                 }
         } // end file iterator
 
@@ -116,7 +117,7 @@ int main(int argc, char **argv)
         if (one_success)
 	{
 		cout<<"Commiting changes...\n";
-                pqxx_interface.Commit();
+                pqxx_interface->commit();
 	}
 
         return 0;

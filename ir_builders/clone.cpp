@@ -20,13 +20,13 @@
 
 
 
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 #include <iostream>
 #include <fstream>
 
 #include <stdlib.h>
 
-using namespace libIRDB;
+using namespace IRDB_SDK;
 using namespace std;
 
 int main(int argc, char* argv[])
@@ -40,28 +40,24 @@ int main(int argc, char* argv[])
 
 
 	/* setup the interface to the sql server */
-	pqxxDB_t pqxx_interface;
-	BaseObj_t::SetInterface(&pqxx_interface);
+	auto pqxx_interface=pqxxDB_t::factory();
+	BaseObj_t::setInterface(pqxx_interface.get());
 
 
-	VariantID_t *pidp=NULL;
-	VariantID_t *newpidp=NULL;
 	try 
 	{
-		pidp=new VariantID_t(atoi(argv[1]));
+		auto pidp=VariantID_t::factory(atoi(argv[1]));
+		assert(pidp->isRegistered()==true);
 
-		assert(pidp->IsRegistered()==true);
-
-		newpidp=pidp->Clone();
-
-		assert(newpidp->IsRegistered()==true);
+		auto newpidp=pidp->clone();
+		assert(newpidp->isRegistered()==true);
 
 		cout<<"Cloned Variant is: "<<*newpidp << endl;
 
 		// commit the changes to the db if all went well 
-		pqxx_interface.Commit();
+		pqxx_interface->commit();
 
-		db_id_t newpid_id=newpidp->GetBaseID();
+		auto  newpid_id=newpidp->getBaseID();
 		ofstream f;
 		f.open(argv[2]);
 		if(!f.is_open())
@@ -80,8 +76,6 @@ int main(int argc, char* argv[])
         }
 
 
-	delete newpidp;
-	delete pidp;
 
 	return 0;
 }

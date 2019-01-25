@@ -1,7 +1,16 @@
 
 #include <libIRDB-core.hpp>
+#include <core/decode_base.hpp>
+#include <core/decode_csx86.hpp>
+#include <core/decode_csarm.hpp>
+
+#include <core/operand_base.hpp>
+#include <core/operand_csx86.hpp>
+#include <core/operand_csarm.hpp>
+
 #include <core/decode_dispatch.hpp>
 #include <core/operand_dispatch.hpp>
+
 
 using namespace libIRDB;
 using namespace std;
@@ -83,9 +92,9 @@ bool DecodedInstructionDispatcher_t::hasOperand(const int op_num) const
 }
 
 // 0-based.  first operand is numbered 0.
-DecodedOperandDispatcher_t DecodedInstructionDispatcher_t::getOperand(const int op_num) const
+unique_ptr<DecodedOperand_t> DecodedInstructionDispatcher_t::getOperand(const int op_num) const
 {
-	return DecodedOperandDispatcher_t(cs->getOperand(op_num));
+	return unique_ptr<DecodedOperand_t>(new DecodedOperandDispatcher_t(cs->getOperand(op_num)));
 }
 
 DecodedOperandMetaVector_t DecodedInstructionDispatcher_t::getOperands() const

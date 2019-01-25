@@ -23,11 +23,11 @@
 #include <string>
 #include <set>
 #include <stdlib.h>
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 
 
 #include "meds_all.h"
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 //#include "elfio/elfio.hpp"
 
 
@@ -35,7 +35,7 @@
 
 
 using namespace std;
-using namespace libIRDB;
+using namespace IRDB_SDK;
 
 template <class T>
 void ignore_result(T /* res */) { }
@@ -54,7 +54,7 @@ Rewriter::~Rewriter()
 {
 }
 
-wahoo::Function* Rewriter::ensureFunctionExists(const libIRDB::virtual_offset_t p_addr)
+wahoo::Function* Rewriter::ensureFunctionExists(const VirtualOffset_t p_addr)
 {
 	if (m_functions.count(p_addr) > 0)
 		return m_functions[p_addr];
@@ -65,7 +65,7 @@ wahoo::Function* Rewriter::ensureFunctionExists(const libIRDB::virtual_offset_t 
 	return fn;
 }
 
-wahoo::Instruction* Rewriter::ensureInstructionExists(const libIRDB::virtual_offset_t p_addr)
+wahoo::Instruction* Rewriter::ensureInstructionExists(const VirtualOffset_t p_addr)
 {
 	if (m_instructions.count(p_addr) > 0)
 		return m_instructions[p_addr];
@@ -82,7 +82,7 @@ wahoo::Instruction* Rewriter::ensureInstructionExists(const libIRDB::virtual_off
 void Rewriter::readAnnotationFile(char p_filename[])
 {
 	FILE* fin=NULL;
-	libIRDB::virtual_offset_t addr = 0, prevStackDeallocPC = 0;
+	VirtualOffset_t addr = 0, prevStackDeallocPC = 0;
 	union { int size, type;} size_type_u;
 	char type[200];
 	char scope[200];
@@ -323,7 +323,7 @@ void Rewriter::readAnnotationFile(char p_filename[])
 			}
 			else if (strcmp(scope, "BELONGTO") == 0)
 			{
-				libIRDB::virtual_offset_t func_addr;
+				VirtualOffset_t func_addr;
 				ignore_result(fscanf(fin, "%p", (void**)&func_addr));
                     		instrmap_hash_key_t* key = (instrmap_hash_key_t*)spri_allocate_type(sizeof(instrmap_hash_key_t));
                     		instrmap_hash_value_t* val = (instrmap_hash_value_t*)spri_allocate_type(sizeof(instrmap_hash_value_t));
@@ -641,14 +641,14 @@ void Rewriter::readElfFile(char p_filename[])
 	sprintf(buf, "%s -d --prefix-addresses %s | grep \"^[0-9]\"", objdump, p_filename);
 	printf("Running objdump, like so: %s\n", buf);
 	FILE* pin=popen(buf, "r");
-	libIRDB::virtual_offset_t addr;
+	VirtualOffset_t addr;
 
 	assert(pin);
 
 	
 	void* tmp=NULL;
 	ignore_result(fscanf(pin, "%p", &tmp));
-	addr=(libIRDB::virtual_offset_t)tmp;
+	addr=(VirtualOffset_t)tmp;
 	ignore_result(fgets(buf,sizeof(buf),pin));
 	do 
 	{
@@ -658,7 +658,7 @@ void Rewriter::readElfFile(char p_filename[])
 			m_instructions[addr]=new wahoo::Instruction(addr,-1,NULL);
 		}
 		ignore_result(fscanf(pin,"%p", &tmp));
-		addr=(libIRDB::virtual_offset_t)tmp;
+		addr=(VirtualOffset_t)tmp;
 		ignore_result(fgets(buf,sizeof(buf),pin));
 	} while(!feof(pin));
 
@@ -693,7 +693,8 @@ void Rewriter::disassemble()
       		wahoo::Instruction *instr = instructions[j];
 
 		const auto instr_data=(void*)(getElfReader()->getInstructionBuffer(instr->getAddress()));
-		const auto disasm=DecodedInstruction_t(instr->getAddress(), instr_data, 16);
+		const auto p_disasm=DecodedInstruction_t::factory(instr->getAddress(), instr_data, 16);
+		const auto &disasm=*p_disasm;
 
 
 		/* maybe this isn't in a section so getInstructionBuffer returns 0 */
@@ -718,7 +719,7 @@ void Rewriter::disassemble()
     	}
 }
 
-void Rewriter::addSimpleRewriteRule(wahoo::Function* p_func, char *p_origInstr, int p_origSize, libIRDB::virtual_offset_t p_origAddress, char *p_newInstr)
+void Rewriter::addSimpleRewriteRule(wahoo::Function* p_func, char *p_origInstr, int p_origSize, VirtualOffset_t p_origAddress, char *p_newInstr)
 {
   char buf[1024];
   char aspri[2048];
@@ -753,7 +754,7 @@ void Rewriter::commitFn2SPRI(wahoo::Function *p_func, FILE *p_fp)
 vector<wahoo::Function*> Rewriter::getCandidateFunctions()
 {
   vector<wahoo::Function*> candidates;
-  for (map<libIRDB::virtual_offset_t, wahoo::Function*>::iterator it = m_functions.begin(); it != m_functions.end(); ++it)
+  for (map<VirtualOffset_t, wahoo::Function*>::iterator it = m_functions.begin(); it != m_functions.end(); ++it)
   {
     wahoo::Function* f = it->second;
 
@@ -769,7 +770,7 @@ vector<wahoo::Function*> Rewriter::getCandidateFunctions()
 vector<wahoo::Function*> Rewriter::getNonCandidateFunctions()
 {
   vector<wahoo::Function*> nonCandidates;
-  for (map<libIRDB::virtual_offset_t, wahoo::Function*>::iterator it = m_functions.begin(); it != m_functions.end(); ++it)
+  for (map<VirtualOffset_t, wahoo::Function*>::iterator it = m_functions.begin(); it != m_functions.end(); ++it)
   {
     wahoo::Function* f = it->second;
 
@@ -786,7 +787,7 @@ vector<wahoo::Function*> Rewriter::getAllFunctions()
 {
   vector<wahoo::Function*> allFunctions;
 
-  for (map<libIRDB::virtual_offset_t, wahoo::Function*>::iterator it = m_functions.begin(); it != m_functions.end(); ++it)
+  for (map<VirtualOffset_t, wahoo::Function*>::iterator it = m_functions.begin(); it != m_functions.end(); ++it)
   {
     wahoo::Function* f = it->second;
 
@@ -802,7 +803,7 @@ vector<wahoo::Instruction*> Rewriter::getAllInstructions()
 {
   vector<wahoo::Instruction*> allInstructions;
 
-  for (map<libIRDB::virtual_offset_t, wahoo::Instruction*>::iterator it = m_instructions.begin(); it != m_instructions.end(); ++it)
+  for (map<VirtualOffset_t, wahoo::Instruction*>::iterator it = m_instructions.begin(); it != m_instructions.end(); ++it)
   {
     wahoo::Instruction* instr = it->second;
 
@@ -827,7 +828,7 @@ map<wahoo::Function*, double> Rewriter::getFunctionCoverage(char *p_instructionF
     return coverage;
   }
 
-  set<libIRDB::virtual_offset_t> visitedInstructions;
+  set<VirtualOffset_t> visitedInstructions;
 
   infile.seekg(0,ios::end);
   size_t size = infile.tellg();
@@ -844,7 +845,7 @@ map<wahoo::Function*, double> Rewriter::getFunctionCoverage(char *p_instructionF
     
     infile>>hex>>address;
 
-    visitedInstructions.insert((libIRDB::virtual_offset_t) address);
+    visitedInstructions.insert((VirtualOffset_t) address);
   }
 
   vector<wahoo::Instruction*> allInstructions = getAllInstructions();

@@ -1,7 +1,4 @@
-#ifndef libRIDB_decodedoperandcsbase_hpp
-#define libRIDB_decodedoperandcsbase_hpp
-
-#include <memory>
+#if 0
 namespace libIRDB
 {
 
@@ -9,7 +6,7 @@ using namespace std;
 using namespace libIRDB;
 
 
-class DecodedOperandCapstone_t
+class DecodedOperandCapstone_t : virtual public IRDB_SDK::DecodedOperand_t 
 {
 	public:
 		virtual bool isConstant() const=0;

@@ -18,32 +18,20 @@
  *
  */
 
-#ifndef _IRDB_TYPE_H_
-#define _IRDB_TYPE_H_
+namespace libIRDB
+{
+using IRDB_Type    = IRDB_SDK::IRDBType_t;
+using TypeSet_t    = IRDB_SDK::TypeSet_t;
+using TypeVector_t = IRDB_SDK::TypeVector_t;
 
-// add as many types as you want here
-// MUST MATCH code in meds2pdb!!!
-typedef enum IRDB_Type {
-	T_UNKNOWN = 0,     // must be 0, leave this value alone
-	T_NUMERIC = 1, T_POINTER = 2, 
-	T_VOID = 10, T_VARIADIC = 11, T_INT = 12, T_CHAR = 13, T_FLOAT = 14, T_DOUBLE = 15, 
-	T_TYPEDEF = 21, T_SUBTYPE = 22, 
-	T_FUNC = 100, T_AGGREGATE = 101
-} IRDB_Type;
-
-class Type_t;
-
-typedef std::set<Type_t*> TypeSet_t;
-typedef std::vector<Type_t*> TypeVector_t;
-
-class Type_t : public BaseObj_t
+class Type_t : public BaseObj_t, virtual public IRDB_SDK::Type_t
 {
 	public:
 		Type_t() : BaseObj_t(NULL) {
-			typeID = T_UNKNOWN;
+			typeID = IRDB_SDK::itUnknown;
 		}	
 		Type_t(db_id_t dbid, IRDB_Type t, std::string n) : BaseObj_t(NULL) {
-			SetBaseID(dbid);
+			setBaseID(dbid);
 			typeID = t;
 			name = n;
 		}	
@@ -51,49 +39,49 @@ class Type_t : public BaseObj_t
 
 		virtual std::string WriteToDB(File_t *fid, db_id_t newid) = 0;
 
-		std::string GetName() const { return name; }
-		void SetName(std::string newname) { name=newname; }
-		IRDB_Type GetTypeID() const { return typeID; }
-		void SetTypeID(IRDB_Type t) { typeID = t; }
+		std::string getName() const { return name; }
+		void setName(const std::string& newname) { name=newname; }
+		IRDB_Type getTypeID() const { return typeID; }
+		void setTypeID(IRDB_Type t) { typeID = t; }
 
-		virtual bool IsUnknownType() const { return typeID == T_UNKNOWN; }
-		virtual bool IsVariadicType() const { return typeID == T_VARIADIC; }
-		virtual bool IsAggregateType() const { return typeID == T_AGGREGATE; }
-		virtual bool IsFuncType() const { return typeID == T_FUNC; }
-		virtual bool IsBasicType() const { return false; }
-		virtual bool IsPointerType() const { return false; }
-		virtual bool IsNumericType() const { return false; }
+		virtual bool isUnknownType() const { return typeID == IRDB_SDK::itUnknown; }
+		virtual bool isVariadicType() const { return typeID == IRDB_SDK::itVariadic; }
+		virtual bool isAggregateType() const { return typeID == IRDB_SDK::itAggregate; }
+		virtual bool isFuncType() const { return typeID == IRDB_SDK::itFunc; }
+		virtual bool isBasicType() const { return false; }
+		virtual bool isPointerType() const { return false; }
+		virtual bool isNumericType() const { return false; }
 
 	private:
 		std::string name;
 		IRDB_Type typeID;
 };
 
-class BasicType_t : public Type_t
+class BasicType_t : public Type_t, virtual public IRDB_SDK::BasicType_t
 {
 	public:
 		BasicType_t() : Type_t() {}	
 		BasicType_t(db_id_t id, IRDB_Type type, std::string p_name) : Type_t(id, type, p_name) {}
 		virtual ~BasicType_t() {}
 
-		virtual bool IsBasicType() const { return true; }
-		virtual bool IsNumericType() const;
+		virtual bool isBasicType() const { return true; }
+		virtual bool isNumericType() const;
 
 		std::string WriteToDB(File_t *fid, db_id_t newid);
 };
 
-class PointerType_t : public Type_t
+class PointerType_t : public Type_t, virtual public IRDB_SDK::PointerType_t
 {
 	public:
-		PointerType_t() : Type_t() { SetTypeID(T_POINTER); referentType = NULL; }	
-		PointerType_t(db_id_t id, Type_t* ref, std::string p_name) : Type_t(id, T_POINTER, p_name) {
-			SetReferentType(ref);
+		PointerType_t() : Type_t() { setTypeID(IRDB_SDK::itPointer); referentType = NULL; }	
+		PointerType_t(db_id_t id, Type_t* ref, std::string p_name) : Type_t(id, IRDB_SDK::itPointer, p_name) {
+			setReferentType(ref);
 		}
 		virtual ~PointerType_t() {}
-		virtual bool IsPointerType() const { return true; }
+		virtual bool isPointerType() const { return true; }
 
-		Type_t* GetReferentType() const { return referentType; }
-		void SetReferentType(Type_t* r) { referentType = r; }
+		IRDB_SDK::Type_t* getReferentType() const { return referentType; }
+		void setReferentType(IRDB_SDK::Type_t* r) { referentType = dynamic_cast<Type_t*>(r); if(r) assert(referentType); }
 
 		std::string WriteToDB(File_t *fid, db_id_t newid);
 
@@ -101,22 +89,22 @@ class PointerType_t : public Type_t
 		Type_t* referentType; 
 };
 
-class AggregateType_t : public Type_t
+class AggregateType_t : public Type_t, virtual public IRDB_SDK::AggregateType_t
 {
 	public:
-		AggregateType_t() : Type_t() { SetTypeID(T_AGGREGATE); }	
-		AggregateType_t(db_id_t id, std::string p_name) : Type_t(id, T_AGGREGATE, p_name) {}
+		AggregateType_t() : Type_t() { setTypeID(IRDB_SDK::itAggregate); }	
+		AggregateType_t(db_id_t id, std::string p_name) : Type_t(id, IRDB_SDK::itAggregate, p_name) {}
 		virtual ~AggregateType_t() {}
-		virtual bool IsAggregateType() const { return true; }
+		virtual bool isAggregateType() const { return true; }
 
-		void AddAggregatedType(Type_t *t, int pos);
-		virtual size_t GetNumAggregatedTypes() const { return refTypes.size(); } 
-		Type_t* GetAggregatedType(unsigned int pos) const { 
+		void addAggregatedType(IRDB_SDK::Type_t *t, int pos);
+		virtual size_t getNumAggregatedTypes() const { return refTypes.size(); } 
+		IRDB_SDK::Type_t* getAggregatedType(unsigned int pos) const { 
 			return (pos < (unsigned int)refTypes.size()) ? refTypes.at(pos) : NULL;
 		}
 
 		std::string toString() {
-			return GetName();
+			return getName();
 		}
 
 		std::string WriteToDB(File_t *fid, db_id_t newid);
@@ -125,21 +113,21 @@ class AggregateType_t : public Type_t
 		TypeVector_t refTypes;
 };
 
-class FuncType_t : public Type_t
+class FuncType_t : public Type_t, virtual public IRDB_SDK::FuncType_t
 {
 	public:
-		FuncType_t() : Type_t() { SetTypeID(T_FUNC); _init(); }	
-		FuncType_t(db_id_t id, std::string p_name) : Type_t(id, T_FUNC, p_name) { _init(); }
+		FuncType_t() : Type_t() { setTypeID(IRDB_SDK::itFunc); _init(); }	
+		FuncType_t(db_id_t id, std::string p_name) : Type_t(id, IRDB_SDK::itFunc, p_name) { _init(); }
 		virtual ~FuncType_t() {}
 
-		virtual bool IsFuncType() const { return true; }
+		virtual bool isFuncType() const { return true; }
 
 		std::string WriteToDB(File_t *fid, db_id_t newid);
 
-		Type_t* GetReturnType() const { return returnType; }
-		void SetReturnType(Type_t *t) { returnType = t; }
-		AggregateType_t* GetArgumentsType() const { return argsType; }
-		void SetArgumentsType(AggregateType_t *t) { argsType = t; }
+		IRDB_SDK::Type_t* getReturnType() const { return returnType; }
+		void setReturnType(IRDB_SDK::Type_t *t) { returnType = dynamic_cast<Type_t*>(t); if(t) assert(returnType); }
+		IRDB_SDK::AggregateType_t* getArgumentsType() const { return argsType; }
+		void setArgumentsType(IRDB_SDK::AggregateType_t *t) { argsType = dynamic_cast<AggregateType_t*>(t); if(t) assert(argsType);  }
 
 	private:
 		void _init() {
@@ -152,4 +140,4 @@ class FuncType_t : public Type_t
 		AggregateType_t*   argsType;
 };
 
-#endif
+}

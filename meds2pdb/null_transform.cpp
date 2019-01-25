@@ -20,7 +20,7 @@
 
 #include <iostream>
 
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 
 // #include "elfio/elfio.hpp"
 
@@ -49,9 +49,9 @@ using namespace wahoo;
 void NullTransform::rewrite()
 {
   // only transform instructions contained in well-defined functions
-  for (map<libIRDB::virtual_offset_t, wahoo::Function*>::iterator it = m_functions.begin(); it != m_functions.end(); ++it)
+  for (map<VirtualOffset_t, wahoo::Function*>::iterator it = m_functions.begin(); it != m_functions.end(); ++it)
   {
-	  libIRDB::virtual_offset_t addr = it->first;
+	  VirtualOffset_t addr = it->first;
     wahoo::Function* f = it->second;
     if (!f)
     {

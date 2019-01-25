@@ -31,8 +31,8 @@ vector<string> AddressID_t::WriteToDB(File_t *fid, db_id_t newid, bool p_withHea
 {
         assert(fid);
 	
-	if(GetBaseID()==NOT_IN_DATABASE)
-		SetBaseID(newid);
+	if(getBaseID()==NOT_IN_DATABASE)
+		setBaseID(newid);
 
 /*
 	string q;
@@ -46,10 +46,10 @@ vector<string> AddressID_t::WriteToDB(File_t *fid, db_id_t newid, bool p_withHea
 	q +=
 */
 	return {
-		to_string(GetBaseID()),
+		to_string(getBaseID()),
 		to_string(fileID),
 		to_string(virtual_offset),
-		to_string(GetDoipID())
+		to_string(getDoipID())
 		};
 
 }

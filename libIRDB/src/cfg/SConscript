@@ -11,6 +11,7 @@ files=  '''
 	BasicBlock.cpp  callgraph.cpp  CFG.cpp domgraph.cpp criticaledge.cpp
 	'''
 cpppath=''' 
+	$IRDB_SDK/include/
 	$SECURITY_TRANSFORMS_HOME/include/
 	$SECURITY_TRANSFORMS_HOME/libIRDB/include/
 	'''

@@ -23,7 +23,7 @@
 
 
 
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 #include <libIRDB-cfg.hpp>
 #include <utils.hpp>
 #include <iostream>
@@ -36,7 +36,7 @@
 #include "fill_in_indtargs.hpp"
 
 
-using namespace libIRDB;
+using namespace IRDB_SDK;
 using namespace std;
 
 #define HIWORD(a) ((a)&0xFFFF0000)
@@ -45,35 +45,19 @@ using namespace std;
 /*
  * check_for_thunk_offsets - check non-function thunks for extra offsets 
  */
-void check_for_thunk_offsets(FileIR_t* firp, virtual_offset_t thunk_base)
+void check_for_thunk_offsets(FileIR_t* firp, VirtualOffset_t thunk_base)
 {
 
-
-
-	for(
-		set<Instruction_t*>::iterator it=firp->GetInstructions().begin();
-		it!=firp->GetInstructions().end();
-		++it
-	   )
+	for(auto insn : firp->getInstructions())
 	{
-		// if it has a targ and fallthrough (quick test) it might be a call 
-		Instruction_t* insn=*it;
-		//DISASM d;
-		//Disassemble(insn,d);
-		const auto d=DecodedInstruction_t(insn);
-	
-		//if(string(d.Instruction.Mnemonic)==string("add "))
-		if(d.getMnemonic()=="add")
+		const auto d=DecodedInstruction_t::factory(insn);
+		if(d->getMnemonic()=="add")
 		{
 			// check that arg2 is a constant
-			// if(HIWORD(d.Argument2.ArgType)!=CONSTANT_TYPE+ABSOLUTE_)
-			if(!d.getOperand(1).isConstant())
+			if(!d->getOperand(1)->isConstant())
 				continue;
 
-			// string add_offset=string(d.Argument2.ArgMnemonic);
-			//const auto add_offset=d.getOperand(1).getString();
-
-			virtual_offset_t addoff=d.getOperand(1).getConstant(); //strtol(add_offset.c_str(),NULL,16);
+			auto addoff=d->getOperand(1)->getConstant(); 
 
 			/* bounds check gently */
 			if(0<addoff && addoff<100)
@@ -82,18 +66,15 @@ void check_for_thunk_offsets(FileIR_t* firp, virtual_offset_t thunk_base)
 			possible_target(thunk_base+addoff, 0, ibt_provenance_t::ibtp_text);
 		}
 		// else if(string(d.Instruction.Mnemonic)==string("lea "))
-		if(d.getMnemonic()=="lea")
+		if(d->getMnemonic()=="lea")
 		{
-			// assert (d.Argument2.ArgType==MEMORY_TYPE);
-			assert (d.getOperand(1).isMemory());
+			assert (d->getOperand(1)->isMemory());
 
 			/* no indexing please! */
-			// if(d.Argument2.Memory.IndexRegister!=0)
-			if(d.getOperand(1).hasIndexRegister())
+			if(d->getOperand(1)->hasIndexRegister())
 				continue;
 
-			// virtual_offset_t leaoff=d.Argument2.Memory.Displacement;
-			virtual_offset_t leaoff=d.getOperand(1).getMemoryDisplacement();
+			auto leaoff=d->getOperand(1)->getMemoryDisplacement();
 
 			/* bounds check gently */
 			if(0<leaoff && leaoff<100)
@@ -110,12 +91,10 @@ void check_for_thunk_offsets(FileIR_t* firp, virtual_offset_t thunk_base)
 void check_for_thunk_offsets(FileIR_t* firp, Instruction_t *thunk_insn, string reg, uint64_t offset)
 {
 
-	virtual_offset_t thunk_base=thunk_insn->GetFallthrough()->GetAddress()->GetVirtualOffset()+offset;
-	//virtual_offset_t thunk_call_addr=thunk_insn->GetAddress()->GetVirtualOffset();
-	//virtual_offset_t thunk_call_offset=strtol(offset.c_str(),NULL,16);
+	auto thunk_base=thunk_insn->getFallthrough()->getAddress()->getVirtualOffset()+offset;
 
 	/* don't check inserted thunk addresses */
-	if(thunk_insn->GetAddress()->GetVirtualOffset()==0)
+	if(thunk_insn->getAddress()->getVirtualOffset()==0)
 		return;
 
 	check_for_thunk_offsets(firp,thunk_base);
@@ -133,39 +112,25 @@ void check_func_for_thunk_offsets(Function_t *func, Instruction_t* thunk_insn,
 
 
 
-	virtual_offset_t thunk_base=thunk_insn->GetFallthrough()->GetAddress()->GetVirtualOffset()+offset;
-	//virtual_offset_t thunk_call_addr=thunk_insn->GetAddress()->GetVirtualOffset();
-	//virtual_offset_t thunk_call_offset=strtol(offset.c_str(),NULL,16);
+	auto thunk_base=thunk_insn->getFallthrough()->getAddress()->getVirtualOffset()+offset;
 
 
 	/* don't check inserted thunk addresses */
-	if(thunk_insn->GetAddress()->GetVirtualOffset()==0)
+	if(thunk_insn->getAddress()->getVirtualOffset()==0)
 		return;
 
-	for(
-		set<Instruction_t*>::iterator it=func->GetInstructions().begin();
-		it!=func->GetInstructions().end();
-		++it
-	   )
+	for(auto insn : func->getInstructions())
 	{
 		// if it has a targ and fallthrough (quick test) it might be a call 
-		Instruction_t* insn=*it;
-		// DISASM d;
-		// Disassemble(insn,d);
-		const auto d=DecodedInstruction_t(insn);
+		const auto d=DecodedInstruction_t::factory(insn);
 	
-		// if(string(d.Instruction.Mnemonic)==string("add "))
-		if(d.getMnemonic()=="add")
+		if(d->getMnemonic()=="add")
 		{
 			// check that arg2 is a constant
-			// if(HIWORD(d.Argument2.ArgType)!=CONSTANT_TYPE+ABSOLUTE_)
-			if(!d.getOperand(1).isConstant())
+			if(!d->getOperand(1)->isConstant())
 				continue;
 
-			// string add_offset=string(d.Argument2.ArgMnemonic);
-			// const auto add_offset=d.getOperand(1).getString(); 
-
-			virtual_offset_t addoff=d.getOperand(1).getConstant(); //strtol(add_offset.c_str(),NULL,16);
+			auto addoff=d->getOperand(1)->getConstant(); 
 
 			/* bounds check gently */
 			if(0<addoff && addoff<100)
@@ -176,19 +141,15 @@ void check_func_for_thunk_offsets(Function_t *func, Instruction_t* thunk_insn,
 //			     <<" addoff: " << addoff << " total: "<< (thunk_base+addoff)<<endl;
 			possible_target(thunk_base+addoff, 0, ibt_provenance_t::ibtp_text);
 		}
-		// else if(string(d.Instruction.Mnemonic)==string("lea "))
-		else if(d.getMnemonic()=="lea")
+		else if(d->getMnemonic()=="lea")
 		{
-			// assert (d.Argument2.ArgType==MEMORY_TYPE);
-			assert (d.getOperand(1).isMemory()); 
+			assert (d->getOperand(1)->isMemory()); 
 
 			/* no indexing please! */
-			// if(d.Argument2.Memory.IndexRegister!=0)
-			if(!d.getOperand(1).hasIndexRegister())
+			if(!d->getOperand(1)->hasIndexRegister())
 				continue;
 
-			// virtual_offset_t leaoff=d.Argument2.Memory.Displacement;
-			virtual_offset_t leaoff=d.getOperand(1).getMemoryDisplacement();
+			VirtualOffset_t leaoff=d->getOperand(1)->getMemoryDisplacement();
 
 			/* bounds check gently */
 			if(0<leaoff && leaoff<100)
@@ -210,20 +171,15 @@ void check_func_for_thunk_offsets(Function_t *func, Instruction_t* thunk_insn,
  */
 bool is_thunk_load(Instruction_t* insn, string &reg)
 {
-	//DISASM d;
-	//Disassemble(insn,d);
-	const auto d=DecodedInstruction_t(insn);
+	const auto d=DecodedInstruction_t::factory(insn);
 
-	//if(string(d.Instruction.Mnemonic)!=string("mov "))
-	if(d.getMnemonic()!="mov")
+	if(d->getMnemonic()!="mov")
 		return false;
 
-	//if(d.Argument2.ArgType!=MEMORY_TYPE || string(d.Argument2.ArgMnemonic)!=string("esp"))
-	if(!d.getOperand(1).isMemory() || d.getOperand(1).getString()!="esp")
+	if(!d->getOperand(1)->isMemory() || d->getOperand(1)->getString()!="esp")
 		return false;
 
-	// reg=string(d.Argument1.ArgMnemonic);
-	reg=d.getOperand(0).getString();
+	reg=d->getOperand(0)->getString();
 	return true;
 }
 
@@ -232,15 +188,8 @@ bool is_thunk_load(Instruction_t* insn, string &reg)
  */
 bool is_ret(Instruction_t* insn)
 {
-	//DISASM d;
-	//Disassemble(insn,d);
-	const auto d=DecodedInstruction_t(insn);
-	return d.isReturn(); 
-
-//	if(d.Instruction.BranchType!=RetType)
-//		return false;
-//	
-//	return true;
+	const auto d=DecodedInstruction_t::factory(insn);
+	return d->isReturn(); 
 }
 
 /*
@@ -248,14 +197,12 @@ bool is_ret(Instruction_t* insn)
  */
 bool is_pop(Instruction_t* insn, string &reg)
 {
-        //DISASM d;
-        //Disassemble(insn,d);
-	const auto d=DecodedInstruction_t(insn);
+	const auto d=DecodedInstruction_t::factory(insn);
 
-        if(d.getMnemonic()!="pop")
+        if(d->getMnemonic()!="pop")
                 return false;
 
-	reg=d.getOperand(0).getString();
+	reg=d->getOperand(0)->getString();
         return true;
 }
 
@@ -267,29 +214,26 @@ bool is_pop(Instruction_t* insn, string &reg)
 /* note: reg is output paramater */
 bool is_thunk_call(Instruction_t* insn, string &reg)
 {
-	//DISASM d;
-	//Disassemble(insn,d);
-	const auto d=DecodedInstruction_t(insn);
+	const auto d=DecodedInstruction_t::factory(insn);
 
 	/* not a call */
-	//if(d.Instruction.BranchType!=CallType)
-	if(!d.isCall())
+	if(!d->isCall())
 		return false;
 
 	/* no target in IRDB */
-	if(insn->GetTarget()==NULL)
+	if(insn->getTarget()==NULL)
 		return false;
 
 	/* Target not the right type of load */
-	if(!is_thunk_load(insn->GetTarget(),reg))
+	if(!is_thunk_load(insn->getTarget(),reg))
 		return false;
 
 	/* target has no FT? */
-	if(!insn->GetTarget()->GetFallthrough())
+	if(!insn->getTarget()->getFallthrough())
 		return false;
 
 	/* target's FT is a return insn */
-	if(!is_ret(insn->GetTarget()->GetFallthrough()))
+	if(!is_ret(insn->getTarget()->getFallthrough()))
 		return false;
 
 	return true;
@@ -297,27 +241,24 @@ bool is_thunk_call(Instruction_t* insn, string &reg)
 
 bool is_thunk_call_type2(Instruction_t* insn, string &reg, Instruction_t** newinsn)
 {
-	//DISASM d;
-	//Disassemble(insn,d);
-	const auto d=DecodedInstruction_t(insn);
+	const auto d=DecodedInstruction_t::factory(insn);
 
 	/* not a call */
-	//if(d.Instruction.BranchType!=CallType)
-	if(!d.isCall())
+	if(!d->isCall())
 		return false;
 
 	/* no target in IRDB */
-	if(insn->GetTarget()==NULL)
+	if(insn->getTarget()==NULL)
 		return false;
 
-	if(insn->GetTarget() != insn->GetFallthrough())
+	if(insn->getTarget() != insn->getFallthrough())
 		return false;
 
 	/* target's FT is a return insn */
-	if(!is_pop(insn->GetTarget(), reg))
+	if(!is_pop(insn->getTarget(), reg))
 		return false;
 
-	*newinsn=insn->GetTarget()->GetFallthrough();
+	*newinsn=insn->getTarget()->getFallthrough();
 
 	return true;
 }
@@ -328,29 +269,23 @@ bool is_thunk_call_type2(Instruction_t* insn, string &reg, Instruction_t** newin
 /* note: offset is an output parameter */
 bool is_thunk_add(Instruction_t *insn, string reg, uint64_t &offset)
 {
-	//DISASM d;
-	//Disassemble(insn,d);
-	const auto d=DecodedInstruction_t(insn);
+	const auto d=DecodedInstruction_t::factory(insn);
 
 	// make sure it's an add instruction 
-	//if(string(d.Instruction.Mnemonic)!=string("add "))
-	if(d.getMnemonic()!="add")
+	if(d->getMnemonic()!="add")
 		return false;
 
 	// check that it's an add of the proper reg
-	if(d.getOperand(0).getString()!=reg)
+	if(d->getOperand(0)->getString()!=reg)
 		return false;
 
 	// check that arg2 is a constant
-	//if(HIWORD(d.Argument2.ArgType)!=CONSTANT_TYPE+ABSOLUTE_)
-	if(!d.getOperand(1).isConstant())
+	if(!d->getOperand(1)->isConstant())
 		return false;
 
-	// offset=string(d.Argument2.ArgMnemonic);
-	//offset=d.getOperand(1).getString();
-	offset=d.getOperand(1).getConstant();
+	offset=d->getOperand(1)->getConstant();
 
-	virtual_offset_t intoff=d.getOperand(1).getConstant(); // strtol(offset.c_str(),NULL,16);
+	auto intoff=d->getOperand(1)->getConstant(); 
 
 	/* bounds check gently */
 	if(0<intoff && intoff<100)
@@ -365,23 +300,18 @@ bool is_thunk_add(Instruction_t *insn, string reg, uint64_t &offset)
 void check_func_for_thunk_calls(Function_t* func)
 {
 	// for each insn in the func 
-	for(
-		set<Instruction_t*>::iterator it=func->GetInstructions().begin();
-		it!=func->GetInstructions().end();
-		++it
-	   )
+	for(auto insn : func->getInstructions())
 	{
 		// if it has a targ and fallthrough (quick test) it might be a call 
-		Instruction_t* insn=*it;
 		/* check if we might be calling a thunk */
-		if(insn->GetFallthrough() && insn->GetTarget())
+		if(insn->getFallthrough() && insn->getTarget())
 		{
 
 			// check for a call, followed by an add of reg (note the output params of reg and offset)
 			string reg;
 			uint64_t offset=0;
 			if(is_thunk_call(insn,reg) && 
-				is_thunk_add(insn->GetFallthrough(),reg,offset))
+				is_thunk_add(insn->getFallthrough(),reg,offset))
 			{
 				check_func_for_thunk_offsets(func,insn,reg,offset);
 			}
@@ -394,29 +324,24 @@ void check_func_for_thunk_calls(Function_t* func)
 void check_non_funcs_for_thunks(FileIR_t *firp)
 {
 	// for each insn in the func 
-	for(
-		set<Instruction_t*>::iterator it=firp->GetInstructions().begin();
-		it!=firp->GetInstructions().end();
-		++it
-	   )
+	for(auto insn :  firp->getInstructions())
 	{
 		// if it has a targ and fallthrough (quick test) it might be a call 
-		Instruction_t* insn=*it;
 
 		/* these instructions/thunks are checked with the functions */
 
 		/* check if we might be calling a thunk */
-		if(insn->GetFallthrough() && insn->GetTarget())
+		if(insn->getFallthrough() && insn->getTarget())
 		{
 
 			// check for a call, followed by an add of reg (note the output params of reg and offset)
 			string reg; 
 			uint64_t offset=0;
 			if(is_thunk_call(insn,reg) && 
-				is_thunk_add(insn->GetFallthrough(),reg,offset))
+				is_thunk_add(insn->getFallthrough(),reg,offset))
 			{
 				cout<<"Found non-function thunk at "<<	
-					insn->GetAddress()->GetVirtualOffset()<<endl;
+					insn->getAddress()->getVirtualOffset()<<endl;
 				check_for_thunk_offsets(firp,insn,reg,offset);
 			}
 		}
@@ -439,47 +364,38 @@ void check_non_funcs_for_thunks(FileIR_t *firp)
  *  If L1+k1+k2 is found, and points at a code address (outside this function?), mark it as an indirect branch target.
  * 
  */
-void check_for_thunks(FileIR_t* firp, const std::set<virtual_offset_t>&  thunk_bases)
+void check_for_thunks(FileIR_t* firp, const std::set<VirtualOffset_t>&  thunk_bases)
 {
 	/* thunk bases is the module start's found for this firp */
 
 	cout<<"Starting check for thunks"<<endl;
 
-	for(set<virtual_offset_t>::iterator it=thunk_bases.begin(); it!=thunk_bases.end(); ++it)
-	{
-		virtual_offset_t offset=*it;
+	for(auto offset : thunk_bases)
 		check_for_thunk_offsets(firp,offset);
-	}
 }
 
-void find_all_module_starts(FileIR_t* firp, set<virtual_offset_t> &thunk_bases)
+void find_all_module_starts(FileIR_t* firp, set<VirtualOffset_t> &thunk_bases)
 {
 	thunk_bases.clear();
 
 	cout<<"Finding thunk bases"<<endl;
 
 	// for each insn in the func 
-	for(
-		set<Instruction_t*>::iterator it=firp->GetInstructions().begin();
-		it!=firp->GetInstructions().end();
-		++it
-	   )
+	for(auto insn : firp->getInstructions())
 	{
 		// if it has a targ and fallthrough (quick test) it might be a call 
-		Instruction_t* insn=*it;
-
 		/* check if we might be calling a thunk */
-		if(insn->GetFallthrough() && insn->GetTarget())
+		if(insn->getFallthrough() && insn->getTarget())
 		{
 			// check for a call, followed by an add of reg (note the output params of reg and offset)
 			string reg; 
 			uint64_t offset=0;
 			if(is_thunk_call(insn,reg) && 
-				is_thunk_add(insn->GetFallthrough(),reg,offset))
+				is_thunk_add(insn->getFallthrough(),reg,offset))
 			{
-				virtual_offset_t thunk_base=insn->GetFallthrough()->GetAddress()->GetVirtualOffset()+ offset;
+				auto thunk_base=insn->getFallthrough()->getAddress()->getVirtualOffset()+ offset;
 				if(thunk_bases.find(thunk_base)==thunk_bases.end())
-					cout<<"Found new thunk at "<<insn->GetAddress()->GetVirtualOffset()<<" with base: "<<hex<<thunk_base<<endl;
+					cout<<"Found new thunk at "<<insn->getAddress()->getVirtualOffset()<<" with base: "<<hex<<thunk_base<<endl;
 				thunk_bases.insert(thunk_base);
 			}
 			Instruction_t* newinsn=NULL;
@@ -487,9 +403,9 @@ void find_all_module_starts(FileIR_t* firp, set<virtual_offset_t> &thunk_bases)
 			{
 				if(newinsn && is_thunk_add(newinsn,reg,offset))
 				{
-					virtual_offset_t thunk_base=insn->GetFallthrough()->GetAddress()->GetVirtualOffset()+ offset;
+					VirtualOffset_t thunk_base=insn->getFallthrough()->getAddress()->getVirtualOffset()+ offset;
 					if(thunk_bases.find(thunk_base)==thunk_bases.end())
-						cout<<"Found new thunk at "<<insn->GetAddress()->GetVirtualOffset()<<" with base: "<<hex<<thunk_base<<endl;
+						cout<<"Found new thunk at "<<insn->getAddress()->getVirtualOffset()<<" with base: "<<hex<<thunk_base<<endl;
 					thunk_bases.insert(thunk_base);
 				}
 			}

@@ -48,7 +48,7 @@ long constants_key_compare(void* key1, void* key2)
 }
 
 
-constant_hash_value_t * add_constant_ref(libIRDB::virtual_offset_t pc,int the_const, constant_hash_field_t the_field, constant_hash_type_t the_type)
+constant_hash_value_t * add_constant_ref(VirtualOffset_t pc,int the_const, constant_hash_field_t the_field, constant_hash_type_t the_type)
 {
         constant_hash_key_t *chk=(constant_hash_key_t*)spri_allocate_type(sizeof(constant_hash_key_t ));
         constant_hash_value_t *chv=(constant_hash_value_t*)spri_allocate_type(sizeof(constant_hash_value_t ));
@@ -64,7 +64,7 @@ constant_hash_value_t * add_constant_ref(libIRDB::virtual_offset_t pc,int the_co
 
 }
 
-constant_hash_value_t * get_constant_ref(libIRDB::virtual_offset_t pc, int the_const, constant_hash_field_t the_field)
+constant_hash_value_t * get_constant_ref(VirtualOffset_t pc, int the_const, constant_hash_field_t the_field)
 {
 	constant_hash_key_t chk={pc, the_const, the_field};
 	constant_hash_value_t *chv=(constant_hash_value_t*)Hashtable_get(constants_hash, &chk);

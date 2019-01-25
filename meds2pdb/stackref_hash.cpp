@@ -47,7 +47,7 @@ long stackrefs_key_compare(void* key1, void* key2)
 
 
 /* add something to the stackrefs_hash hashtable */
-stackref_hash_value_t *add_stack_ref(libIRDB::virtual_offset_t pc,int size, int offset)
+stackref_hash_value_t *add_stack_ref(VirtualOffset_t pc,int size, int offset)
 {
        	stackref_hash_key_t *sshk=(stackref_hash_key_t*)spri_allocate_type(sizeof(stackref_hash_key_t ));
        	stackref_hash_value_t *sshv=(stackref_hash_value_t*)spri_allocate_type(sizeof(stackref_hash_value_t ));
@@ -64,7 +64,7 @@ stackref_hash_value_t *add_stack_ref(libIRDB::virtual_offset_t pc,int size, int 
 	return sshv;
 }
 
-stackref_hash_value_t *add_stack_ref_field(stackref_hash_value_t* parent, libIRDB::virtual_offset_t pc, int size, int offset)
+stackref_hash_value_t *add_stack_ref_field(stackref_hash_value_t* parent, VirtualOffset_t pc, int size, int offset)
 {
        	stackref_hash_key_t *sshk=(stackref_hash_key_t*)spri_allocate_type(sizeof(stackref_hash_key_t ));
        	stackref_hash_value_t *sshv=(stackref_hash_value_t*)spri_allocate_type(sizeof(stackref_hash_value_t ));

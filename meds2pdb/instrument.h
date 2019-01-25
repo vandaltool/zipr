@@ -31,8 +31,8 @@
 
 /*
 no needed for SPRI
-void add_smp_instrumentation(strata_fragment_t *frag, libIRDB::virtual_offset_t PC, insn_t *insn);
-void add_smp_postinstrumentation(strata_fragment_t *frag, libIRDB::virtual_offset_t PC, insn_t *insn);
+void add_smp_instrumentation(strata_fragment_t *frag, VirtualOffset_t PC, insn_t *insn);
+void add_smp_postinstrumentation(strata_fragment_t *frag, VirtualOffset_t PC, insn_t *insn);
 */
 
 
@@ -58,7 +58,7 @@ struct reg_values
 
 /*
 no needed for SPRI
-libIRDB::virtual_offset_t targ_watched_called_instrument(libIRDB::virtual_offset_t next_PC, watch *w, strata_fragment_t *frag);
+VirtualOffset_t targ_watched_called_instrument(VirtualOffset_t next_PC, watch *w, strata_fragment_t *frag);
 */
 
 

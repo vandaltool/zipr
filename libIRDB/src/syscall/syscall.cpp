@@ -18,17 +18,16 @@
  *
  */
 
-//#include <libIRDB-core.hpp>
-//#include <libIRDB-util.hpp>
-#include <stdlib.h>
+#include <libIRDB-core.hpp>
 #include <libIRDB-syscall.hpp>
+#include <stdlib.h>
 
 using namespace std;
 using namespace libIRDB;
 
-SyscallNumber_t Syscalls_t::FindSystemCallNumber(Instruction_t* insn, const libIRDB::InstructionPredecessors_t& preds)
+SyscallNumber_t Syscalls_t::FindSystemCallNumber(IRDB_SDK::Instruction_t* insn, const libIRDB::InstructionPredecessors_t& preds)
 {
-	Instruction_t *pred_insn=NULL;
+	IRDB_SDK::Instruction_t *pred_insn=NULL;
 
 	for( const InstructionSet_t *cs_preds=&preds[insn];
 		cs_preds->size()==1;
@@ -36,7 +35,6 @@ SyscallNumber_t Syscalls_t::FindSystemCallNumber(Instruction_t* insn, const libI
 	   )
 	{
 		pred_insn=*(cs_preds->begin());
-		// cout<<"Pred is "<<pred_insn->getDisassembly()<<endl;
 
 		string disass=pred_insn->getDisassembly();
 
@@ -62,28 +60,28 @@ SyscallNumber_t Syscalls_t::FindSystemCallNumber(Instruction_t* insn, const libI
 
 }
 
-bool Syscalls_t::FindSystemCalls(const FileIR_t *firp2)
+bool Syscalls_t::FindSystemCalls(const IRDB_SDK::FileIR_t *firp2)
 {
-	FileIR_t* firp=(FileIR_t*)firp2; // discard const qualifer, but we aren't changing anything.
+	auto firp=const_cast<IRDB_SDK::FileIR_t*>(firp2); // discard const qualifer, but we aren't changing anything.
 	assert(firp);
 	libIRDB::InstructionPredecessors_t preds;
 	preds.AddFile(firp);
 
 	bool found_one=false;
-	for(InstructionSet_t::iterator it=firp->GetInstructions().begin();
-			it!=firp->GetInstructions().end();
+	for(auto it=firp->getInstructions().begin();
+			it!=firp->getInstructions().end();
 			++it
 	   )
 	{
-		Instruction_t* insn=*it;
-		if(insn->IsSyscall())
+		auto insn=*it;
+		if(insn->getDisassembly()=="int 0x80") 
 		{
 			SyscallNumber_t num=FindSystemCallNumber(insn, preds);
 			syscalls.insert(SyscallSite_t(insn,num));
 			found_one=true;
 
 			if(getenv("PRINTSYSCALLSFOUND"))
-				cout<<"Found system call "<< insn->GetBaseID()<< ":'"<< insn->getDisassembly() << "' with eax value "<< (size_t)num<<endl;
+				cout<<"Found system call "<< insn->getBaseID()<< ":'"<< insn->getDisassembly() << "' with eax value "<< (size_t)num<<endl;
 		}
 	}
 	return found_one;

@@ -24,30 +24,19 @@
 typedef enum 
 {
 	SNT_Unknown=-1,
-#ifdef CGC
-       SNT_terminate=1,
-       SNT_transmit=2,
-       SNT_receive=3,
-       SNT_fdwait=4,
-       SNT_allocate=5,
-       SNT_deallocate=6,
-       SNT_random=7
-#else
-/* LINUX here? */
-#endif
 } SyscallNumber_t;
 
 class  SyscallSite_t
 {
 	public:
-		SyscallSite_t(libIRDB::Instruction_t* p_site, libIRDB::SyscallNumber_t p_num) : site(p_site), num(p_num) {}
+		SyscallSite_t(IRDB_SDK::Instruction_t* p_site, libIRDB::SyscallNumber_t p_num) : site(p_site), num(p_num) {}
 
 		bool operator<(const libIRDB::SyscallSite_t& rhs) const { return this->site < rhs.site; }
-		libIRDB::Instruction_t* GetSyscallSite() { return site; }
-		libIRDB::Instruction_t* GetSite() const { return site; }
+		IRDB_SDK::Instruction_t* GetSyscallSite() { return site; }
+		IRDB_SDK::Instruction_t* GetSite() const { return site; }
 		libIRDB::SyscallNumber_t GetSyscallNumber() const { return num; }
 	private:
-		libIRDB::Instruction_t* site;
+		IRDB_SDK::Instruction_t* site;
 		libIRDB::SyscallNumber_t num;
 };
 typedef std::set<SyscallSite_t>  SyscallSiteSet_t;
@@ -55,14 +44,14 @@ typedef std::set<SyscallSite_t>  SyscallSiteSet_t;
 class Syscalls_t
 {
 	public:
-		Syscalls_t(FileIR_t *the_firp=NULL) { if(the_firp) FindSystemCalls(the_firp); }
+		Syscalls_t(IRDB_SDK::FileIR_t *the_firp=NULL) { if(the_firp) FindSystemCalls(the_firp); }
 
 
-		bool FindSystemCalls(const libIRDB::FileIR_t* firp);
+		bool FindSystemCalls(const IRDB_SDK::FileIR_t* firp);
 
 		const libIRDB::SyscallSiteSet_t& GetSyscalls() {return syscalls;}
 	protected:
-		libIRDB::SyscallNumber_t FindSystemCallNumber(libIRDB::Instruction_t* insn, 
+		libIRDB::SyscallNumber_t FindSystemCallNumber(IRDB_SDK::Instruction_t* insn, 
 			const libIRDB::InstructionPredecessors_t& preds);
 
 	private:

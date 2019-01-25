@@ -18,46 +18,38 @@
  *
  */
 
+namespace libIRDB
+{
 
 #define CURRENT_SCHEMA 2
 
-class VariantID_t;
+using FileSet_t = IRDB_SDK::FileSet_t;
 
-std::ostream& operator<<(std::ostream& out, const libIRDB::VariantID_t& pid);
-
-using FileSet_t = std::set<File_t*>;
-
-class VariantID_t : public BaseObj_t
+class VariantID_t : public BaseObj_t, virtual public IRDB_SDK::VariantID_t
 {
     public:
         VariantID_t();        		// create a Variant ID not in the database 
         VariantID_t(db_id_t pid);       // read from the DB
 	~VariantID_t();     // Deletes the File_t objects -- beware dangling File_t* in FileIR_t objects!  
 
-        bool IsRegistered();               
-        bool Register();    // accesses DB
+        bool isRegistered() const;               
+        bool registerID();    // accesses DB
 
-        VariantID_t* Clone(bool deep=true);       // accesses DB
+	IRDB_SDK::VariantID_t* clone(bool deep=true);       // accesses DB
 
 	void WriteToDB();
 
 	void DropFromDB();
 
-	FileSet_t&    GetFiles() { return files; }
-	const FileSet_t&    GetFiles() const { return files; }
+	const FileSet_t&    getFiles() const { return files; }
 
-	std::string GetName() { return name; }
-	void SetName(std::string newname) { name=newname;}
+	std::string getName() const { return name; }
+	void setName(std::string newname) { name=newname;}
 
-	File_t* GetMainFile() const;
+	IRDB_SDK::File_t* getMainFile() const;
 
-	friend std::ostream& libIRDB::operator<<(std::ostream& out, const VariantID_t& pid);
-	//friend class FileIR_T;
-	//friend class Function_t;
-	//friend class AddressID_t;
-	//friend class Instruction_t;
 
-	db_id_t GetOriginalVariantID() const { return orig_pid;}
+	db_id_t getOriginalVariantID() const { return orig_pid;}
 	
 	void CloneFiles(FileSet_t& files);
 	File_t* CloneFile(File_t* fptr);
@@ -76,4 +68,9 @@ class VariantID_t : public BaseObj_t
         void  ReadFilesFromDB();
 
 };
+
+
+
+
+}
 

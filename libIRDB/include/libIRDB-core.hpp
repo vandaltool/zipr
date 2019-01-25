@@ -31,12 +31,8 @@
 #include <ctime>
 #include <stdint.h>
 
-namespace libIRDB 
-{
-
-class VariantID_t; // forward decl for many classes
-class File_t; // forward decl for many classes
-class Instruction_t; // forward decl for many classes
+// include SDK
+#include <irdb-core>
 
 #include <core/basetypes.hpp>
 #include <core/dbinterface.hpp>
@@ -57,9 +53,6 @@ class Instruction_t; // forward decl for many classes
 #include <core/pqxxdb.hpp>
 #include <core/IRDB_Objects.hpp>
 #include <core/transform_step.h>
-
-};
-
 #include <core/decode.hpp>
 
 #endif

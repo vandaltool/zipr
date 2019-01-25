@@ -106,10 +106,10 @@ int IntegerTransform32::execute()
 		{
 			Instruction_t* insn=*it;
 
-			if (insn && insn->GetAddress())
+			if (insn && insn->getAddress())
 			{
 				int policy = POLICY_DEFAULT; // use Strata default settings
-				virtual_offset_t irdb_vo = insn->GetAddress()->GetVirtualOffset();
+				virtual_offset_t irdb_vo = insn->getAddress()->GetVirtualOffset();
 				if (irdb_vo == 0) continue;
 
 				VirtualOffset vo(irdb_vo);
@@ -183,7 +183,7 @@ int IntegerTransform32::execute()
 					continue;
 				}
 
-				if (!insn->GetFallthrough())
+				if (!insn->getFallthrough())
 				{
 					logMessage(__func__, "Warning: no fall through for instruction -- skipping");
 					continue;
@@ -268,7 +268,7 @@ void IntegerTransform32::addSignednessCheck(Instruction_t *p_instruction, const 
 	  return;
 	}
 
-    db_id_t fileID = p_instruction->GetAddress()->GetFileID();
+    DatabaseID_t fileID = p_instruction->getAddress()->getFileID();
     Function_t* func = p_instruction->GetFunction();
 
 	Instruction_t* pushf_i = allocateNewInstruction(fileID, func);
@@ -279,8 +279,8 @@ void IntegerTransform32::addSignednessCheck(Instruction_t *p_instruction, const 
 
 	addPushf(pushf_i, test_i);
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
-	pushf_i->SetFallthrough(test_i); 
-	pushf_i->SetComment("-- in signedness check");
+	pushf_i->setFallthrough(test_i); 
+	pushf_i->setComment("-- in signedness check");
 	addTestRegister(test_i, p_annotation.getRegister(), jns_i);
 	addJns(jns_i, nop_i, popf_i);
 	addNop(nop_i, popf_i);
@@ -300,9 +300,9 @@ void IntegerTransform32::addSignednessCheck(Instruction_t *p_instruction, const 
 	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
 	{
 		// implement saturating arithmetic on register, i.e.: mov <reg>, value
-		Instruction_t* saturate_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+		Instruction_t* saturate_i = allocateNewInstruction(p_instruction->getAddress()->getFileID(), p_instruction->GetFunction());
 
-		addCallbackHandler(detector, originalInstrumentInstr, nop_i, saturate_i, p_policy, p_instruction->GetAddress());
+		addCallbackHandler(detector, originalInstrumentInstr, nop_i, saturate_i, p_policy, p_instruction->getAddress());
 		if (p_annotation.isSigned())
 			addMaxSaturation(saturate_i, p_annotation.getRegister(), p_annotation, popf_i);
 		else
@@ -310,7 +310,7 @@ void IntegerTransform32::addSignednessCheck(Instruction_t *p_instruction, const 
 	}
 	else
 	{
-		addCallbackHandler(detector, originalInstrumentInstr, nop_i, popf_i, p_policy, p_instruction->GetAddress());
+		addCallbackHandler(detector, originalInstrumentInstr, nop_i, popf_i, p_policy, p_instruction->getAddress());
 	}
 	addPopf(popf_i, originalInstrumentInstr);
 
@@ -499,7 +499,7 @@ void IntegerTransform32::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_inst
 	//            fallthrough-->originalNext
 	//
 
-	db_id_t fileID = p_instruction->GetAddress()->GetFileID();
+	DatabaseID_t fileID = p_instruction->getAddress()->getFileID();
 	Function_t* func = p_instruction->GetFunction();
 
 	Instruction_t* pushr1_i = allocateNewInstruction(fileID, func);
@@ -521,18 +521,18 @@ void IntegerTransform32::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_inst
 		addRR_annot.setUnknownSign();
 
 	string msg = "Originally: " + p_instruction->getDisassembly();
-	Instruction_t* originalNextInstr = p_instruction->GetFallthrough();
-	AddressID_t *originalAddress = p_instruction->GetAddress();
+	Instruction_t* originalNextInstr = p_instruction->getFallthrough();
+	AddressID_t *originalAddress = p_instruction->getAddress();
 
 	addPushRegister(pushr1_i, p_reg1, pushf_i);
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushr1_i);
-	pushr1_i->SetFallthrough(pushf_i);
-	pushr1_i->SetComment("-- carefullyInsertBefore NoFlagRegPlusReg");
+	pushr1_i->setFallthrough(pushf_i);
+	pushr1_i->setComment("-- carefullyInsertBefore NoFlagRegPlusReg");
 
 	addPushf(pushf_i, addRR_i);
 
 	addAddRegisters(addRR_i, p_reg1, p_reg2, popf_i);
-	addRR_i->SetComment(msg);
+	addRR_i->setComment(msg);
 
 	addPopf(popf_i, popr1_i);
 	addPopRegister(popr1_i, p_reg1, originalInstrumentInstr);
@@ -564,7 +564,7 @@ void IntegerTransform32::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_inst
 		Instruction_t* popR1sat_i = allocateNewInstruction(fileID, func);
 		Instruction_t* saturate_i = allocateNewInstruction(fileID, func);
 
-		addRR_i->SetFallthrough(j_i);
+		addRR_i->setFallthrough(j_i);
 	
 		if (p_annotation.isSigned())
 		{
@@ -649,7 +649,7 @@ void IntegerTransform32::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p
 	// Note: if r3 == r1, code still works (though inefficiently)
 	//
 
-	db_id_t fileID = p_instruction->GetAddress()->GetFileID();
+	DatabaseID_t fileID = p_instruction->getAddress()->getFileID();
 	Function_t* func = p_instruction->GetFunction();
 
 	Instruction_t* pushR3_i = allocateNewInstruction(fileID, func);
@@ -671,14 +671,14 @@ void IntegerTransform32::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p
 		addR3Constant_annot.setUnknownSign();
 
 	string msg = "Originally: " + p_instruction->getDisassembly();
-	Instruction_t* originalNextInstr = p_instruction->GetFallthrough();
+	Instruction_t* originalNextInstr = p_instruction->getFallthrough();
 
-	AddressID_t *originalAddress = p_instruction->GetAddress();
+	AddressID_t *originalAddress = p_instruction->getAddress();
 
 	addPushRegister(pushR3_i, p_reg3, pushf_i);
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushR3_i);
-	pushR3_i->SetComment("in lea -- RegPlusConstant");
-	pushR3_i->SetFallthrough(pushf_i);  
+	pushR3_i->setComment("in lea -- RegPlusConstant");
+	pushR3_i->setFallthrough(pushf_i);  
 	addPushf(pushf_i, movR3R1_i);
 
 	addMovRegisters(movR3R1_i, p_reg3, p_reg1, addR3Constant_i);
@@ -686,7 +686,7 @@ void IntegerTransform32::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p
 	addPopf(popf_i, popR3_i);
 	addPopRegister(popR3_i, p_reg3, originalInstrumentInstr);
 
-	addR3Constant_i->SetComment(msg);
+	addR3Constant_i->setComment(msg);
 	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
 	{
 	//          (jno|jnc <restore>)    ; SIGNED|UNSIGNED
@@ -709,7 +709,7 @@ void IntegerTransform32::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p
 		Instruction_t* popR3sat_i = allocateNewInstruction(fileID, func);
 		Instruction_t* saturate_i = allocateNewInstruction(fileID, func);
 
-		addR3Constant_i->SetFallthrough(j_i);
+		addR3Constant_i->setFallthrough(j_i);
 	
 		if (p_annotation.isSigned())
 		{
@@ -770,7 +770,7 @@ void IntegerTransform32::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *
 	//
 	// Note: if r3 == r1, code still works (though inefficiently)
 	//
-	db_id_t fileID = p_instruction->GetAddress()->GetFileID();
+	DatabaseID_t fileID = p_instruction->getAddress()->getFileID();
 	Function_t* func = p_instruction->GetFunction();
 
 	Instruction_t* pushR3_i = allocateNewInstruction(fileID, func);
@@ -792,14 +792,14 @@ void IntegerTransform32::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *
 		mulR3Constant_annot.setUnknownSign();
 
 	string msg = "Originally: " + p_instruction->getDisassembly();
-	Instruction_t* originalNextInstr = p_instruction->GetFallthrough();
+	Instruction_t* originalNextInstr = p_instruction->getFallthrough();
 
-	AddressID_t *originalAddress = p_instruction->GetAddress();
+	AddressID_t *originalAddress = p_instruction->getAddress();
 
 	addPushRegister(pushR3_i, p_reg3, pushf_i);
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushR3_i);
-	pushR3_i->SetFallthrough(pushf_i);
-	pushR3_i->SetComment("in lea -- Reg * Constant"); 
+	pushR3_i->setFallthrough(pushf_i);
+	pushR3_i->setComment("in lea -- Reg * Constant"); 
 	addPushf(pushf_i, movR3R1_i);
 
 	addMovRegisters(movR3R1_i, p_reg3, p_reg1, mulR3Constant_i);
@@ -807,7 +807,7 @@ void IntegerTransform32::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *
 	addPopf(popf_i, popR3_i);
 	addPopRegister(popR3_i, p_reg3, originalInstrumentInstr);
 
-	mulR3Constant_i->SetComment(msg);
+	mulR3Constant_i->setComment(msg);
 
 	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
 	{
@@ -824,7 +824,7 @@ void IntegerTransform32::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *
 		Instruction_t* popR3sat_i = allocateNewInstruction(fileID, func);
 		Instruction_t* saturate_i = allocateNewInstruction(fileID, func);
 
-		mulR3Constant_i->SetFallthrough(jo_i);
+		mulR3Constant_i->setFallthrough(jo_i);
 		addOverflowCheckForLea(mulR3Constant_i, mulR3Constant_annot, p_policy, originalAddress);
 	
 		addJo(jo_i, popf_i, popfsat_i);
@@ -843,7 +843,7 @@ void IntegerTransform32::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *
 
 void IntegerTransform32::handleFISTTruncation(Instruction_t *p_instruction){
     cerr << "IntegerTransform32::handleFISTTruncation(): instr: " << p_instruction->getDisassembly() << " address: "
-    << p_instruction->GetAddress() << endl;
+    << p_instruction->getAddress() << endl;
 	int len=0;
     
 	//We skip the qword case.
@@ -870,7 +870,7 @@ void IntegerTransform32::handleFISTTruncation(Instruction_t *p_instruction){
 
 void IntegerTransform32::addFistpTruncationCheck(Instruction_t *p_instruction, int len){
 	if(len!=32 && len!=16) return;
-    db_id_t fileID = p_instruction->GetAddress()->GetFileID();
+    DatabaseID_t fileID = p_instruction->getAddress()->getFileID();
 	Function_t* func = p_instruction->GetFunction();
     string dataBits;
     
@@ -945,7 +945,7 @@ void IntegerTransform32::addFistpTruncationCheck(Instruction_t *p_instruction, i
     
     addPusha(pusha_i, pushf_i);//pusha
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pusha_i);
-	pusha_i->SetFallthrough(pushf_i);
+	pusha_i->setFallthrough(pushf_i);
     
     addPushf(pushf_i, sub_esp_0x70);//pushf
     
@@ -956,55 +956,55 @@ void IntegerTransform32::addFistpTruncationCheck(Instruction_t *p_instruction, i
     dataBits[3] = 0x00;
     dataBits[4] = 0x00;
     dataBits[5] = 0x00;
-    sub_esp_0x70->SetFallthrough(fst_esp);
-    sub_esp_0x70->SetDataBits(dataBits);
-    sub_esp_0x70->SetComment(sub_esp_0x70->getDisassembly());
+    sub_esp_0x70->setFallthrough(fst_esp);
+    sub_esp_0x70->setDataBits(dataBits);
+    sub_esp_0x70->setComment(sub_esp_0x70->getDisassembly());
 	addInstruction(sub_esp_0x70, dataBits, fst_esp, NULL);
     
     dataBits.resize(3);//fst [esp]
     dataBits[0] = 0xd9;
     dataBits[1] = 0x14;
     dataBits[2] = 0x24;
-    fst_esp->SetFallthrough(fsave_esp_4);
-    fst_esp->SetDataBits(dataBits);
-    fst_esp->SetComment(fst_esp->getDisassembly());
+    fst_esp->setFallthrough(fsave_esp_4);
+    fst_esp->setDataBits(dataBits);
+    fst_esp->setComment(fst_esp->getDisassembly());
         addInstruction(fst_esp, dataBits, fsave_esp_4, NULL);
     dataBits.resize(1);//fsave [esp+4]
     dataBits[0] = 0x9b;
-    fsave_esp_4->SetFallthrough(pushretaddress);
-    fsave_esp_4->SetDataBits(dataBits);
-    fsave_esp_4->SetComment(fsave_wait->getDisassembly());
+    fsave_esp_4->setFallthrough(pushretaddress);
+    fsave_esp_4->setDataBits(dataBits);
+    fsave_esp_4->setComment(fsave_wait->getDisassembly());
         addInstruction(fsave_wait, dataBits, fsave_esp_4, NULL);
     dataBits.resize(4);
     dataBits[0] = 0xdd;
     dataBits[1] = 0x74;
     dataBits[2] = 0x24;
     dataBits[3] = 0x04;
-    fsave_esp_4->SetFallthrough(pushretaddress);
-    fsave_esp_4->SetDataBits(dataBits);
-    fsave_esp_4->SetComment(fsave_esp_4->getDisassembly());
+    fsave_esp_4->setFallthrough(pushretaddress);
+    fsave_esp_4->setDataBits(dataBits);
+    fsave_esp_4->setComment(fsave_esp_4->getDisassembly());
         addInstruction(fsave_esp_4, dataBits, pushretaddress, NULL);
     
     virtual_offset_t AfterTheCheckerReturn = getAvailableAddress();
-	nop->GetAddress()->SetVirtualOffset(AfterTheCheckerReturn);
-	nop->GetAddress()->SetFileID(BaseObj_t::NOT_IN_DATABASE);
+	nop->getAddress()->SetVirtualOffset(AfterTheCheckerReturn);
+	nop->getAddress()->SetFileID(BaseObj_t::NOT_IN_DATABASE);
     
     dataBits.resize(5);//push return_address
     dataBits[0] = 0x68;
     virtual_offset_t *tmp;
     tmp = (virtual_offset_t *) &dataBits[1];
     *tmp = AfterTheCheckerReturn;
-    pushretaddress->SetDataBits(dataBits);
-    pushretaddress->SetComment(pushretaddress->getDisassembly());
-    pushretaddress->SetFallthrough(nop);
+    pushretaddress->setDataBits(dataBits);
+    pushretaddress->setComment(pushretaddress->getDisassembly());
+    pushretaddress->setFallthrough(nop);
 	
     
 	dataBits.resize(1);//nop
 	dataBits[0] = 0x90;
-	nop->SetDataBits(dataBits);
-	nop->SetComment(nop->getDisassembly() + " -- with callback to floating number check") ;
-	nop->SetFallthrough(frstor_esp_4);
-	nop->SetIndirectBranchTargetAddress(nop->GetAddress());
+	nop->setDataBits(dataBits);
+	nop->setComment(nop->getDisassembly() + " -- with callback to floating number check") ;
+	nop->setFallthrough(frstor_esp_4);
+	nop->SetIndirectBranchTargetAddress(nop->getAddress());
 	if(len==32)
         nop->SetCallback(string("FloatingRangeCheck32"));
     else
@@ -1015,14 +1015,14 @@ void IntegerTransform32::addFistpTruncationCheck(Instruction_t *p_instruction, i
     dataBits[1] = 0x64;
     dataBits[2] = 0x24;
     dataBits[3] = 0x04;
-    frstor_esp_4->SetDataBits(dataBits);
-    frstor_esp_4->SetFallthrough(test_eax_0);
-    frstor_esp_4->SetComment(frstor_esp_4->getDisassembly());
+    frstor_esp_4->setDataBits(dataBits);
+    frstor_esp_4->setFallthrough(test_eax_0);
+    frstor_esp_4->setComment(frstor_esp_4->getDisassembly());
     dataBits.resize(2);//test eax, eax
     dataBits[0] = 0x85;
     dataBits[1] = 0xC0;
-    test_eax_0->SetDataBits(dataBits);
-    test_eax_0->SetFallthrough(jz_eax_0);
+    test_eax_0->setDataBits(dataBits);
+    test_eax_0->setFallthrough(jz_eax_0);
     addInstruction(test_eax_0, dataBits, jz_eax_0, NULL);
     addJz(jz_eax_0, test_eax_1, add_esp_0x70_label0);
     
@@ -1037,9 +1037,9 @@ void IntegerTransform32::addFistpTruncationCheck(Instruction_t *p_instruction, i
     dataBits[3] = 0x00;
     dataBits[4] = 0x00;
     dataBits[5] = 0x00;
-    add_esp_0x70_label0->SetFallthrough(popf_label0);
-    add_esp_0x70_label0->SetDataBits(dataBits);
-    add_esp_0x70_label0->SetComment(add_esp_0x70_label0->getDisassembly());
+    add_esp_0x70_label0->setFallthrough(popf_label0);
+    add_esp_0x70_label0->setDataBits(dataBits);
+    add_esp_0x70_label0->setComment(add_esp_0x70_label0->getDisassembly());
 	addInstruction(add_esp_0x70_label0, dataBits, popf_label0, NULL);
     
     addPopf(popf_label0, popa_label0);
@@ -1048,7 +1048,7 @@ void IntegerTransform32::addFistpTruncationCheck(Instruction_t *p_instruction, i
 	
 	dataBits.resize(2);
 	dataBits[0] = 0xeb;
-	jmpOriginalInst->SetComment("Jump to original Inst");
+	jmpOriginalInst->setComment("Jump to original Inst");
 	addInstruction(jmpOriginalInst,dataBits,NULL, originalInstrumentInstr);
     
     //label 1:
@@ -1059,9 +1059,9 @@ void IntegerTransform32::addFistpTruncationCheck(Instruction_t *p_instruction, i
     dataBits[2] = 0x00;
     dataBits[3] = 0x00;
     dataBits[4] = 0x00;
-    test_eax_1->SetDataBits(dataBits);
-    test_eax_1->SetComment(test_eax_1->getDisassembly()) ;
-    test_eax_1->SetFallthrough(jz_eax_1);
+    test_eax_1->setDataBits(dataBits);
+    test_eax_1->setComment(test_eax_1->getDisassembly()) ;
+    test_eax_1->setFallthrough(jz_eax_1);
     addInstruction(test_eax_1, dataBits, jz_eax_1, NULL);
     addJz(jz_eax_1,  add_esp_0x70_label1, add_esp_0x70_label2);
     
@@ -1073,9 +1073,9 @@ void IntegerTransform32::addFistpTruncationCheck(Instruction_t *p_instruction, i
     dataBits[3] = 0x00;
     dataBits[4] = 0x00;
     dataBits[5] = 0x00;
-    add_esp_0x70_label1->SetFallthrough(popf_label1);
-    add_esp_0x70_label1->SetDataBits(dataBits);
-    add_esp_0x70_label1->SetComment(add_esp_0x70_label1->getDisassembly());
+    add_esp_0x70_label1->setFallthrough(popf_label1);
+    add_esp_0x70_label1->setDataBits(dataBits);
+    add_esp_0x70_label1->setComment(add_esp_0x70_label1->getDisassembly());
 	addInstruction(add_esp_0x70_label1, dataBits, popf_label1, NULL);
     addPopf(popf_label1, popa_label1);
     
@@ -1088,20 +1088,20 @@ void IntegerTransform32::addFistpTruncationCheck(Instruction_t *p_instruction, i
         string instrStr= originalInstrumentInstr->getDisassembly();
         string addExpr = instrStr.substr(instrStr.find(" ")+1);
         mov0x7FFFFFFF->Assemble("mov "+ addExpr + ", 0x7FFFFFFF");
-        mov0x7FFFFFFF->SetComment(mov0x7FFFFFFF->getDisassembly());
+        mov0x7FFFFFFF->setComment(mov0x7FFFFFFF->getDisassembly());
 		addInstruction(mov0x7FFFFFFF, mov0x7FFFFFFF->GetDataBits(), fstpST0, NULL);
-		popa_label1->SetComment("just before " + mov0x7FFFFFFF->getDisassembly());
+		popa_label1->setComment("just before " + mov0x7FFFFFFF->getDisassembly());
 		
 		dataBits.resize(2);//fstp st(0)
     	dataBits[0] = 0xDD;
     	dataBits[1] = 0xD8;
-		fstpST0->SetDataBits(dataBits);
-		fstpST0->SetFallthrough(jmpOriginalInstNext);
+		fstpST0->setDataBits(dataBits);
+		fstpST0->setFallthrough(jmpOriginalInstNext);
 		addInstruction(fstpST0, dataBits, jmpOriginalInstNext, NULL);
         
 		dataBits.resize(2);
 		dataBits[0] = 0xeb;
-		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
+		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->getFallthrough());
     }
     else{
     	Instruction_t* mov0x7FFF = allocateNewInstruction(fileID, func);
@@ -1112,22 +1112,22 @@ void IntegerTransform32::addFistpTruncationCheck(Instruction_t *p_instruction, i
         string instrStr= originalInstrumentInstr->getDisassembly();
         string addExpr = instrStr.substr(instrStr.find(" ")+1);
         mov0x7FFF->Assemble("mov "+ addExpr + ", 0x7FFF");
-        mov0x7FFF->SetComment(mov0x7FFF->getDisassembly());
+        mov0x7FFF->setComment(mov0x7FFF->getDisassembly());
         
-		//mov0x7FFF->SetFallthrough(fstpST0);
+		//mov0x7FFF->setFallthrough(fstpST0);
 		addInstruction(mov0x7FFF, mov0x7FFF->GetDataBits(), fstpST0, NULL);
         
 		dataBits.resize(2);//fstp st(0)
     	dataBits[0] = 0xDD;
     	dataBits[1] = 0xD8;
         
-		fstpST0->SetDataBits(dataBits);
-		fstpST0->SetFallthrough(jmpOriginalInstNext);
+		fstpST0->setDataBits(dataBits);
+		fstpST0->setFallthrough(jmpOriginalInstNext);
 		addInstruction(fstpST0, dataBits, jmpOriginalInstNext, NULL);
 		
 		dataBits.resize(2);
 		dataBits[0] = 0xeb;
-		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
+		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->getFallthrough());
     }
     
     dataBits.resize(6);//add esp,0x70
@@ -1137,9 +1137,9 @@ void IntegerTransform32::addFistpTruncationCheck(Instruction_t *p_instruction, i
     dataBits[3] = 0x00;
     dataBits[4] = 0x00;
     dataBits[5] = 0x00;
-    add_esp_0x70_label2->SetFallthrough(popf_label2);
-    add_esp_0x70_label2->SetDataBits(dataBits);
-    add_esp_0x70_label2->SetComment(add_esp_0x70_label2->getDisassembly());
+    add_esp_0x70_label2->setFallthrough(popf_label2);
+    add_esp_0x70_label2->setDataBits(dataBits);
+    add_esp_0x70_label2->setComment(add_esp_0x70_label2->getDisassembly());
     addInstruction(add_esp_0x70_label2, dataBits, popf_label2, NULL);
     
     addPopf(popf_label2, popa_label2);
@@ -1152,8 +1152,8 @@ void IntegerTransform32::addFistpTruncationCheck(Instruction_t *p_instruction, i
         string instrStr= originalInstrumentInstr->getDisassembly();
         string addExpr = instrStr.substr(instrStr.find(" ")+1);
         mov0x80000000->Assemble("mov "+ addExpr + ", 0x80000001");
-        mov0x80000000->SetComment(mov0x80000000->getDisassembly());
-       	mov0x80000000->SetFallthrough(fstpST0);
+        mov0x80000000->setComment(mov0x80000000->getDisassembly());
+       	mov0x80000000->setFallthrough(fstpST0);
 		addInstruction(mov0x80000000, mov0x80000000->GetDataBits(), fstpST0, NULL);
 		
 		dataBits.resize(2);//fstp st(0)
@@ -1164,7 +1164,7 @@ void IntegerTransform32::addFistpTruncationCheck(Instruction_t *p_instruction, i
         
 		dataBits.resize(2);
 		dataBits[0] = 0xeb;
-		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
+		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->getFallthrough());
     }
     else{
     	Instruction_t* mov0x8000 = allocateNewInstruction(fileID, func);
@@ -1175,7 +1175,7 @@ void IntegerTransform32::addFistpTruncationCheck(Instruction_t *p_instruction, i
         string instrStr= originalInstrumentInstr->getDisassembly();
         string addExpr = instrStr.substr(instrStr.find(" ")+1);
         mov0x8000->Assemble("mov "+ addExpr + ", 0x8001");
-        mov0x8000->SetComment(mov0x8000->getDisassembly());
+        mov0x8000->setComment(mov0x8000->getDisassembly());
         
 		addInstruction(mov0x8000, mov0x8000->GetDataBits(), fstpST0, NULL);
         
@@ -1186,7 +1186,7 @@ void IntegerTransform32::addFistpTruncationCheck(Instruction_t *p_instruction, i
 		addInstruction(fstpST0, dataBits, jmpOriginalInstNext, NULL);
 		dataBits.resize(2);
 		dataBits[0] = 0xeb;
-		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
+		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->getFallthrough());
     }
     
 	m_numFP++;
@@ -1195,7 +1195,7 @@ void IntegerTransform32::addFistpTruncationCheck(Instruction_t *p_instruction, i
 
 void IntegerTransform32::addFistTruncationCheck(Instruction_t *p_instruction, int len){
     if(len!=32 && len!=16) return;
-    db_id_t fileID = p_instruction->GetAddress()->GetFileID();
+    DatabaseID_t fileID = p_instruction->getAddress()->getFileID();
 	Function_t* func = p_instruction->GetFunction();
     string dataBits;
     
@@ -1268,7 +1268,7 @@ void IntegerTransform32::addFistTruncationCheck(Instruction_t *p_instruction, in
     
     addPusha(pusha_i, pushf_i);//pusha
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pusha_i);
-	pusha_i->SetFallthrough(pushf_i);
+	pusha_i->setFallthrough(pushf_i);
     
     addPushf(pushf_i, sub_esp_0x70);//pushf
     
@@ -1279,55 +1279,55 @@ void IntegerTransform32::addFistTruncationCheck(Instruction_t *p_instruction, in
     dataBits[3] = 0x00;
     dataBits[4] = 0x00;
     dataBits[5] = 0x00;
-    sub_esp_0x70->SetFallthrough(fst_esp);
-    sub_esp_0x70->SetDataBits(dataBits);
-    sub_esp_0x70->SetComment(sub_esp_0x70->getDisassembly());
+    sub_esp_0x70->setFallthrough(fst_esp);
+    sub_esp_0x70->setDataBits(dataBits);
+    sub_esp_0x70->setComment(sub_esp_0x70->getDisassembly());
 	addInstruction(sub_esp_0x70, dataBits, fst_esp, NULL);
     
     dataBits.resize(3);//fst [esp]
     dataBits[0] = 0xd9;
     dataBits[1] = 0x14;
     dataBits[2] = 0x24;
-    fst_esp->SetFallthrough(fsave_esp_4);
-    fst_esp->SetDataBits(dataBits);
-    fst_esp->SetComment(fst_esp->getDisassembly());
+    fst_esp->setFallthrough(fsave_esp_4);
+    fst_esp->setDataBits(dataBits);
+    fst_esp->setComment(fst_esp->getDisassembly());
         addInstruction(fst_esp, dataBits, fsave_esp_4, NULL);
     dataBits.resize(1);//fsave [esp+4]
     dataBits[0] = 0x9b;
-    fsave_esp_4->SetFallthrough(pushretaddress);
-    fsave_esp_4->SetDataBits(dataBits);
-    fsave_esp_4->SetComment(fsave_wait->getDisassembly());
+    fsave_esp_4->setFallthrough(pushretaddress);
+    fsave_esp_4->setDataBits(dataBits);
+    fsave_esp_4->setComment(fsave_wait->getDisassembly());
         addInstruction(fsave_wait, dataBits, fsave_esp_4, NULL);
     dataBits.resize(4);
     dataBits[0] = 0xdd;
     dataBits[1] = 0x74;
     dataBits[2] = 0x24;
     dataBits[3] = 0x04;
-    fsave_esp_4->SetFallthrough(pushretaddress);
-    fsave_esp_4->SetDataBits(dataBits);
-    fsave_esp_4->SetComment(fsave_esp_4->getDisassembly());
+    fsave_esp_4->setFallthrough(pushretaddress);
+    fsave_esp_4->setDataBits(dataBits);
+    fsave_esp_4->setComment(fsave_esp_4->getDisassembly());
         addInstruction(fsave_esp_4, dataBits, pushretaddress, NULL);
     
     virtual_offset_t AfterTheCheckerReturn = getAvailableAddress();
-	nop->GetAddress()->SetVirtualOffset(AfterTheCheckerReturn);
-	nop->GetAddress()->SetFileID(BaseObj_t::NOT_IN_DATABASE);
+	nop->getAddress()->SetVirtualOffset(AfterTheCheckerReturn);
+	nop->getAddress()->SetFileID(BaseObj_t::NOT_IN_DATABASE);
     
     dataBits.resize(5);//push return_address
     dataBits[0] = 0x68;
     virtual_offset_t *tmp;
     tmp = (virtual_offset_t *) &dataBits[1];
     *tmp = AfterTheCheckerReturn;
-    pushretaddress->SetDataBits(dataBits);
-    pushretaddress->SetComment(pushretaddress->getDisassembly());
-    pushretaddress->SetFallthrough(nop);
+    pushretaddress->setDataBits(dataBits);
+    pushretaddress->setComment(pushretaddress->getDisassembly());
+    pushretaddress->setFallthrough(nop);
 	
     
 	dataBits.resize(1);//nop
 	dataBits[0] = 0x90;
-	nop->SetDataBits(dataBits);
-	nop->SetComment(nop->getDisassembly() + " -- with callback to floating number check") ;
-	nop->SetFallthrough(frstor_esp_4);
-	nop->SetIndirectBranchTargetAddress(nop->GetAddress());
+	nop->setDataBits(dataBits);
+	nop->setComment(nop->getDisassembly() + " -- with callback to floating number check") ;
+	nop->setFallthrough(frstor_esp_4);
+	nop->SetIndirectBranchTargetAddress(nop->getAddress());
 	if(len==32)
         nop->SetCallback(string("FloatingRangeCheck32"));
     else
@@ -1338,14 +1338,14 @@ void IntegerTransform32::addFistTruncationCheck(Instruction_t *p_instruction, in
     dataBits[1] = 0x64;
     dataBits[2] = 0x24;
     dataBits[3] = 0x04;
-    frstor_esp_4->SetDataBits(dataBits);
-    frstor_esp_4->SetFallthrough(test_eax_0);
-    frstor_esp_4->SetComment(frstor_esp_4->getDisassembly());
+    frstor_esp_4->setDataBits(dataBits);
+    frstor_esp_4->setFallthrough(test_eax_0);
+    frstor_esp_4->setComment(frstor_esp_4->getDisassembly());
     dataBits.resize(2);//test eax, eax
     dataBits[0] = 0x85;
     dataBits[1] = 0xC0;
-    test_eax_0->SetDataBits(dataBits);
-    test_eax_0->SetFallthrough(jz_eax_0);
+    test_eax_0->setDataBits(dataBits);
+    test_eax_0->setFallthrough(jz_eax_0);
     addInstruction(test_eax_0, dataBits, jz_eax_0, NULL);
     addJz(jz_eax_0, test_eax_1, add_esp_0x70_label0);
     
@@ -1360,9 +1360,9 @@ void IntegerTransform32::addFistTruncationCheck(Instruction_t *p_instruction, in
     dataBits[3] = 0x00;
     dataBits[4] = 0x00;
     dataBits[5] = 0x00;
-    add_esp_0x70_label0->SetFallthrough(popf_label0);
-    add_esp_0x70_label0->SetDataBits(dataBits);
-    add_esp_0x70_label0->SetComment(add_esp_0x70_label0->getDisassembly());
+    add_esp_0x70_label0->setFallthrough(popf_label0);
+    add_esp_0x70_label0->setDataBits(dataBits);
+    add_esp_0x70_label0->setComment(add_esp_0x70_label0->getDisassembly());
 	addInstruction(add_esp_0x70_label0, dataBits, popf_label0, NULL);
     
     addPopf(popf_label0, popa_label0);
@@ -1371,7 +1371,7 @@ void IntegerTransform32::addFistTruncationCheck(Instruction_t *p_instruction, in
 	
 	dataBits.resize(2);
 	dataBits[0] = 0xeb;
-	jmpOriginalInst->SetComment("Jump to original Inst");
+	jmpOriginalInst->setComment("Jump to original Inst");
 	addInstruction(jmpOriginalInst,dataBits,NULL, originalInstrumentInstr);
     
     //label 1:
@@ -1382,9 +1382,9 @@ void IntegerTransform32::addFistTruncationCheck(Instruction_t *p_instruction, in
     dataBits[2] = 0x00;
     dataBits[3] = 0x00;
     dataBits[4] = 0x00;
-    test_eax_1->SetDataBits(dataBits);
-    test_eax_1->SetComment(test_eax_1->getDisassembly()) ;
-    test_eax_1->SetFallthrough(jz_eax_1);
+    test_eax_1->setDataBits(dataBits);
+    test_eax_1->setComment(test_eax_1->getDisassembly()) ;
+    test_eax_1->setFallthrough(jz_eax_1);
     addInstruction(test_eax_1, dataBits, jz_eax_1, NULL);
     addJz(jz_eax_1,  add_esp_0x70_label1, add_esp_0x70_label2);
     
@@ -1396,9 +1396,9 @@ void IntegerTransform32::addFistTruncationCheck(Instruction_t *p_instruction, in
     dataBits[3] = 0x00;
     dataBits[4] = 0x00;
     dataBits[5] = 0x00;
-    add_esp_0x70_label1->SetFallthrough(popf_label1);
-    add_esp_0x70_label1->SetDataBits(dataBits);
-    add_esp_0x70_label1->SetComment(add_esp_0x70_label1->getDisassembly());
+    add_esp_0x70_label1->setFallthrough(popf_label1);
+    add_esp_0x70_label1->setDataBits(dataBits);
+    add_esp_0x70_label1->setComment(add_esp_0x70_label1->getDisassembly());
 	addInstruction(add_esp_0x70_label1, dataBits, popf_label1, NULL);
     addPopf(popf_label1, popa_label1);
     
@@ -1411,20 +1411,20 @@ void IntegerTransform32::addFistTruncationCheck(Instruction_t *p_instruction, in
         string instrStr= originalInstrumentInstr->getDisassembly();
         string addExpr = instrStr.substr(instrStr.find(" ")+1);
         mov0x7FFFFFFF->Assemble("mov "+ addExpr + ", 0x7FFFFFFF");
-        mov0x7FFFFFFF->SetComment(mov0x7FFFFFFF->getDisassembly());
+        mov0x7FFFFFFF->setComment(mov0x7FFFFFFF->getDisassembly());
 		addInstruction(mov0x7FFFFFFF, mov0x7FFFFFFF->GetDataBits(), jmpOriginalInstNext, NULL);
-		popa_label1->SetComment("just before " + mov0x7FFFFFFF->getDisassembly());
+		popa_label1->setComment("just before " + mov0x7FFFFFFF->getDisassembly());
 		
 		//dataBits.resize(2);//fstp st(0)
     	//dataBits[0] = 0xDD;
     	//dataBits[1] = 0xD8;
-		//fstpST0->SetDataBits(dataBits);
-		//fstpST0->SetFallthrough(jmpOriginalInstNext);
+		//fstpST0->setDataBits(dataBits);
+		//fstpST0->setFallthrough(jmpOriginalInstNext);
 		//addInstruction(fstpST0, dataBits, jmpOriginalInstNext, NULL);
         
 		dataBits.resize(2);
 		dataBits[0] = 0xeb;
-		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
+		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->getFallthrough());
     }
     else{
     	Instruction_t* mov0x7FFF = allocateNewInstruction(fileID, func);
@@ -1435,22 +1435,22 @@ void IntegerTransform32::addFistTruncationCheck(Instruction_t *p_instruction, in
         string instrStr= originalInstrumentInstr->getDisassembly();
         string addExpr = instrStr.substr(instrStr.find(" ")+1);
         mov0x7FFF->Assemble("mov "+ addExpr + ", 0x7FFF");
-        mov0x7FFF->SetComment(mov0x7FFF->getDisassembly());
+        mov0x7FFF->setComment(mov0x7FFF->getDisassembly());
         
-		//mov0x7FFF->SetFallthrough(fstpST0);
+		//mov0x7FFF->setFallthrough(fstpST0);
 		addInstruction(mov0x7FFF, mov0x7FFF->GetDataBits(), jmpOriginalInstNext, NULL);
         
 		//dataBits.resize(2);//fstp st(0)
     	//dataBits[0] = 0xDD;
     	//dataBits[1] = 0xD8;
         
-		//fstpST0->SetDataBits(dataBits);
-		//fstpST0->SetFallthrough(jmpOriginalInstNext);
+		//fstpST0->setDataBits(dataBits);
+		//fstpST0->setFallthrough(jmpOriginalInstNext);
 		//addInstruction(fstpST0, dataBits, jmpOriginalInstNext, NULL);
 		
 		dataBits.resize(2);
 		dataBits[0] = 0xeb;
-		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
+		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->getFallthrough());
     }
     
     dataBits.resize(6);//add esp,0x70
@@ -1460,9 +1460,9 @@ void IntegerTransform32::addFistTruncationCheck(Instruction_t *p_instruction, in
     dataBits[3] = 0x00;
     dataBits[4] = 0x00;
     dataBits[5] = 0x00;
-    add_esp_0x70_label2->SetFallthrough(popf_label2);
-    add_esp_0x70_label2->SetDataBits(dataBits);
-    add_esp_0x70_label2->SetComment(add_esp_0x70_label2->getDisassembly());
+    add_esp_0x70_label2->setFallthrough(popf_label2);
+    add_esp_0x70_label2->setDataBits(dataBits);
+    add_esp_0x70_label2->setComment(add_esp_0x70_label2->getDisassembly());
     addInstruction(add_esp_0x70_label2, dataBits, popf_label2, NULL);
     
     addPopf(popf_label2, popa_label2);
@@ -1475,8 +1475,8 @@ void IntegerTransform32::addFistTruncationCheck(Instruction_t *p_instruction, in
         string instrStr= originalInstrumentInstr->getDisassembly();
         string addExpr = instrStr.substr(instrStr.find(" ")+1);
         mov0x80000000->Assemble("mov "+ addExpr + ", 0x80000001");
-        mov0x80000000->SetComment(mov0x80000000->getDisassembly());
-       	//mov0x80000000->SetFallthrough(fstpST0);
+        mov0x80000000->setComment(mov0x80000000->getDisassembly());
+       	//mov0x80000000->setFallthrough(fstpST0);
 		addInstruction(mov0x80000000, mov0x80000000->GetDataBits(), jmpOriginalInstNext, NULL);
 		
 		//dataBits.resize(2);//fstp st(0)
@@ -1487,7 +1487,7 @@ void IntegerTransform32::addFistTruncationCheck(Instruction_t *p_instruction, in
         
 		dataBits.resize(2);
 		dataBits[0] = 0xeb;
-		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
+		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->getFallthrough());
     }
     else{
     	Instruction_t* mov0x8000 = allocateNewInstruction(fileID, func);
@@ -1498,7 +1498,7 @@ void IntegerTransform32::addFistTruncationCheck(Instruction_t *p_instruction, in
         string instrStr= originalInstrumentInstr->getDisassembly();
         string addExpr = instrStr.substr(instrStr.find(" ")+1);
         mov0x8000->Assemble("mov "+ addExpr + ", 0x8001");
-        mov0x8000->SetComment(mov0x8000->getDisassembly());
+        mov0x8000->setComment(mov0x8000->getDisassembly());
         
 		addInstruction(mov0x8000, mov0x8000->GetDataBits(), jmpOriginalInstNext, NULL);
         
@@ -1509,7 +1509,7 @@ void IntegerTransform32::addFistTruncationCheck(Instruction_t *p_instruction, in
 		//addInstruction(fstpST0, dataBits, jmpOriginalInstNext, NULL);
 		dataBits.resize(2);
 		dataBits[0] = 0xeb;
-		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
+		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->getFallthrough());
     }
     
 	m_numFP++;
@@ -1542,16 +1542,16 @@ void IntegerTransform32::handleInfiniteLoop(Instruction_t *p_instruction, const 
 
 	logMessage(__func__, "handling infinite loop");
 
-    db_id_t fileID = p_instruction->GetAddress()->GetFileID();
+    DatabaseID_t fileID = p_instruction->getAddress()->getFileID();
     Function_t* func = p_instruction->GetFunction();
 
-	AddressID_t *originalAddress = p_instruction->GetAddress();
+	AddressID_t *originalAddress = p_instruction->getAddress();
 	Instruction_t* nop_i = allocateNewInstruction(fileID, func);
 
 	addNop(nop_i, p_instruction);
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, nop_i);
 
-	addCallbackHandler(string(INFINITE_LOOP_DETECTOR), originalInstrumentInstr, nop_i, nop_i->GetFallthrough(), p_policy, originalAddress);
+	addCallbackHandler(string(INFINITE_LOOP_DETECTOR), originalInstrumentInstr, nop_i, nop_i->getFallthrough(), p_policy, originalAddress);
 }
 
 //
@@ -1573,7 +1573,7 @@ void IntegerTransform32::handleInfiniteLoop(Instruction_t *p_instruction, const 
 // p_addressOriginalInstruction is set when we call method from lea instrumentation
 void IntegerTransform32::addOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
-	assert(getFileIR() && p_instruction && p_instruction->GetFallthrough());
+	assert(getFileIR() && p_instruction && p_instruction->getFallthrough());
 	
 	RegisterName targetReg = getTargetRegister(p_instruction);
 	if (targetReg == rn_UNKNOWN) 
@@ -1586,7 +1586,7 @@ void IntegerTransform32::addOverflowCheck(Instruction_t *p_instruction, const ME
 		return;
 	}
 
-cerr << __func__ <<  ": instr: " << p_instruction->getDisassembly() << " address: " << std::hex << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
+cerr << __func__ <<  ": instr: " << p_instruction->getDisassembly() << " address: " << std::hex << p_instruction->getAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
 
 	string detector(INTEGER_OVERFLOW_DETECTOR);
 	string dataBits;
@@ -1595,14 +1595,14 @@ cerr << __func__ <<  ": instr: " << p_instruction->getDisassembly() << " address
 	// update to cleaner style
 	Function_t* origFunction = p_instruction->GetFunction();
 	AddressID_t *jncond_a =new AddressID_t;
-	jncond_a->SetFileID(p_instruction->GetAddress()->GetFileID());
+	jncond_a->SetFileID(p_instruction->getAddress()->getFileID());
 	Instruction_t* jncond_i = new Instruction_t;
 	jncond_i->SetFunction(origFunction);
 	jncond_i->SetAddress(jncond_a);
 
 	// set fallthrough for the original instruction
-	Instruction_t* nextOrig_i = p_instruction->GetFallthrough();
-	p_instruction->SetFallthrough(jncond_i); 
+	Instruction_t* nextOrig_i = p_instruction->getFallthrough();
+	p_instruction->setFallthrough(jncond_i); 
 
 	// jncond 
 	dataBits.resize(2);
@@ -1645,23 +1645,23 @@ cerr << __func__ <<  ": instr: " << p_instruction->getDisassembly() << " address
 		cerr << "integertransform: SIGNED OVERFLOW: " << detector << endl;
 	}
 
-	jncond_i->SetDataBits(dataBits);
-	jncond_i->SetComment(jncond_i->getDisassembly());
-	jncond_i->SetTarget(nextOrig_i); 
+	jncond_i->setDataBits(dataBits);
+	jncond_i->setComment(jncond_i->getDisassembly());
+	jncond_i->setTarget(nextOrig_i); 
 
-	p_instruction->SetFallthrough(jncond_i); 
+	p_instruction->setFallthrough(jncond_i); 
 
 	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
 	{
 		// implement saturating arithmetic, e.g.:
 		// mov <reg>, value
-		Instruction_t* saturate_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+		Instruction_t* saturate_i = allocateNewInstruction(p_instruction->getAddress()->getFileID(), p_instruction->GetFunction());
 
 		if (p_annotation.flowsIntoCriticalSink() && p_annotation.getBitWidth() == 32)
 		{
 			logMessage(__func__, "OVERFLOW UNSIGNED 32: CRITICAL SINK: saturate by masking");
 
-			db_id_t fileID = p_instruction->GetAddress()->GetFileID();
+			DatabaseID_t fileID = p_instruction->getAddress()->getFileID();
 			Function_t* func = p_instruction->GetFunction();
 			Instruction_t* pushf_i = allocateNewInstruction(fileID, func);
 			Instruction_t* popf_i = allocateNewInstruction(fileID, func);
@@ -1681,7 +1681,7 @@ cerr << __func__ <<  ": instr: " << p_instruction->getDisassembly() << " address
 		addCallbackHandler(detector, p_instruction, jncond_i, nextOrig_i, p_policy);
 	}
 
-	getFileIR()->GetAddresses().insert(jncond_a);
+	getFileIR()->getAddresses().insert(jncond_a);
 	getFileIR()->GetInstructions().insert(jncond_i);
 
 	if (p_annotation.isUnderflow())
@@ -1712,12 +1712,12 @@ void IntegerTransform32::addUnderflowCheck(Instruction_t *p_instruction, const M
 	RegisterName targetReg = getTargetRegister(p_instruction);
 	if (targetReg == rn_UNKNOWN)
 	{
-		cerr << "IntegerTransform32::addUnderflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << "-- SKIP b/c no target registers" << endl;
+		cerr << "IntegerTransform32::addUnderflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->getAddress() << " annotation: " << p_annotation.toString() << "-- SKIP b/c no target registers" << endl;
 		m_numUnderflowsSkipped++;
 		return;
 	}
 	
-	cerr << "IntegerTransform32::addUnderflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << endl;
+	cerr << "IntegerTransform32::addUnderflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->getAddress() << " annotation: " << p_annotation.toString() << endl;
 
 	string detector(INTEGER_OVERFLOW_DETECTOR);
 	string dataBits;
@@ -1726,14 +1726,14 @@ void IntegerTransform32::addUnderflowCheck(Instruction_t *p_instruction, const M
 	// update to cleaner style
 	Function_t* origFunction = p_instruction->GetFunction();
 	AddressID_t *jncond_a =new AddressID_t;
-	jncond_a->SetFileID(p_instruction->GetAddress()->GetFileID());
+	jncond_a->SetFileID(p_instruction->getAddress()->getFileID());
 	Instruction_t* jncond_i = new Instruction_t;
 	jncond_i->SetFunction(origFunction);
 	jncond_i->SetAddress(jncond_a);
 
 	// set fallthrough for the original instruction
-	Instruction_t* nextOrig_i = p_instruction->GetFallthrough();
-	p_instruction->SetFallthrough(jncond_i); 
+	Instruction_t* nextOrig_i = p_instruction->getFallthrough();
+	p_instruction->setFallthrough(jncond_i); 
 
 	// jncond 
 	dataBits.resize(2);
@@ -1778,17 +1778,17 @@ void IntegerTransform32::addUnderflowCheck(Instruction_t *p_instruction, const M
 		cerr << "integertransform: UNDERFLOW UNKONWN: assume signed for now: " << detector << endl;
 	}
 
-	jncond_i->SetDataBits(dataBits);
-	jncond_i->SetComment(jncond_i->getDisassembly());
-	jncond_i->SetTarget(nextOrig_i); 
+	jncond_i->setDataBits(dataBits);
+	jncond_i->setComment(jncond_i->getDisassembly());
+	jncond_i->setTarget(nextOrig_i); 
 
-	p_instruction->SetFallthrough(jncond_i); 
+	p_instruction->setFallthrough(jncond_i); 
 
 	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
 	{
 		// implement saturating arithmetic, e.g.:
 		// mov <reg>, value
-		Instruction_t* saturate_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+		Instruction_t* saturate_i = allocateNewInstruction(p_instruction->getAddress()->getFileID(), p_instruction->GetFunction());
 
 		addCallbackHandler(detector, p_instruction, jncond_i, saturate_i, p_policy);
 		addMinSaturation(saturate_i, targetReg, p_annotation, nextOrig_i);
@@ -1798,7 +1798,7 @@ void IntegerTransform32::addUnderflowCheck(Instruction_t *p_instruction, const M
 		addCallbackHandler(detector, p_instruction, jncond_i, nextOrig_i, p_policy);
 	}
 
-	getFileIR()->GetAddresses().insert(jncond_a);
+	getFileIR()->getAddresses().insert(jncond_a);
 	getFileIR()->GetInstructions().insert(jncond_i);
 
 	m_numUnderflows++;
@@ -1822,7 +1822,7 @@ void IntegerTransform32::addTruncationCheck(Instruction_t *p_instruction, const 
 	assert(getFileIR() && p_instruction);
 	assert(p_annotation.getTruncationFromWidth() == 32 && p_annotation.getTruncationToWidth() == 8 || p_annotation.getTruncationToWidth() == 16);
 
-	cerr << __func__ << ": instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
+	cerr << __func__ << ": instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->getAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
 
 	string detector; 
 
@@ -1866,9 +1866,9 @@ void IntegerTransform32::addTruncationCheck(Instruction_t *p_instruction, const 
 	//             mov [ebp+var_4], al    ; <originalInstruction>
 	//
 
-	db_id_t fileID = p_instruction->GetAddress()->GetFileID();
+	DatabaseID_t fileID = p_instruction->getAddress()->getFileID();
 	Function_t* func = p_instruction->GetFunction();
-	AddressID_t *saveAddress = p_instruction->GetAddress();
+	AddressID_t *saveAddress = p_instruction->getAddress();
 
 	Instruction_t* pushf_i = allocateNewInstruction(fileID, func);
 	Instruction_t* test_i = allocateNewInstruction(fileID, func);
@@ -1883,9 +1883,9 @@ void IntegerTransform32::addTruncationCheck(Instruction_t *p_instruction, const 
 
 	addPushf(pushf_i, test_i);
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
-	pushf_i->SetFallthrough(test_i); 
-	pushf_i->SetComment("-- in truncation");
-	originalInstrumentInstr->SetComment("-- in truncation (was original)");
+	pushf_i->setFallthrough(test_i); 
+	pushf_i->setComment("-- in truncation");
+	originalInstrumentInstr->setComment("-- in truncation (was original)");
 
 	unsigned mask = 0;
 	unsigned mask2 = 0;
@@ -1925,12 +1925,12 @@ void IntegerTransform32::addTruncationCheck(Instruction_t *p_instruction, const 
 
 		if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC) {
 			addNop(nop_i, saturate_i);
-			nop_i->SetComment("UNSIGNED TRUNC: fallthrough: saturating arithmetic instruction");
+			nop_i->setComment("UNSIGNED TRUNC: fallthrough: saturating arithmetic instruction");
 			addCallbackHandler(detector, originalInstrumentInstr, nop_i, saturate_i, p_policy, saveAddress);
 		}
 		else {
 			addNop(nop_i, popf_i);
-			nop_i->SetComment(string("UNSIGNED TRUNC: fallthrough: popf"));
+			nop_i->setComment(string("UNSIGNED TRUNC: fallthrough: popf"));
 			addCallbackHandler(detector, originalInstrumentInstr, nop_i, popf_i, p_policy, saveAddress);
 		}
 	}
@@ -1968,19 +1968,19 @@ void IntegerTransform32::addTruncationCheck(Instruction_t *p_instruction, const 
 		Instruction_t* s_jae_i = allocateNewInstruction(fileID, func);
 
 		addJz(jz_i, s_cmp_i, popf_i); // target = popf_i, fall-through = s_cmp_i
-		jz_i->SetComment(string("jz - SIGNED or UNKNOWNSIGN TRUNC"));
+		jz_i->setComment(string("jz - SIGNED or UNKNOWNSIGN TRUNC"));
 		addCmpRegisterMask(s_cmp_i, p_annotation.getRegister(), mask2, s_jae_i);
 		addJae(s_jae_i, nop_i, popf_i); // target = popf_i, fall-through = nop_i
-		s_jae_i->SetComment(string("jae - SIGNED or UNKNOWNSIGN TRUNC"));
+		s_jae_i->setComment(string("jae - SIGNED or UNKNOWNSIGN TRUNC"));
 
 		if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC) {
 			addNop(nop_i, saturate_i);
-			nop_i->SetComment("SIGNED or UNKNOWNSIGN TRUNC: fallthrough: saturating arithmetic instruction");
+			nop_i->setComment("SIGNED or UNKNOWNSIGN TRUNC: fallthrough: saturating arithmetic instruction");
 			addCallbackHandler(detector, originalInstrumentInstr, nop_i, saturate_i, p_policy, saveAddress);
 		}
 		else {
 			addNop(nop_i, popf_i);
-			nop_i->SetComment(string("SIGNED or UNKNOWNSIGN TRUNC: fallthrough: popf"));
+			nop_i->setComment(string("SIGNED or UNKNOWNSIGN TRUNC: fallthrough: popf"));
 			addCallbackHandler(detector, originalInstrumentInstr, nop_i, popf_i, p_policy, saveAddress);
 		}
 	} // end of SIGNED and UNKNOWNSIGN case
@@ -1994,7 +1994,7 @@ void IntegerTransform32::addSaturation(Instruction_t *p_instruction, RegisterNam
 {
 	assert(getFileIR() && p_instruction);
 
-	p_instruction->SetFallthrough(p_fallthrough);
+	p_instruction->setFallthrough(p_fallthrough);
 
 	addMovRegisterUnsignedConstant(p_instruction, p_reg, p_value, p_fallthrough);
 }
@@ -2003,7 +2003,7 @@ void IntegerTransform32::addZeroSaturation(Instruction_t *p_instruction, Registe
 {
 	assert(getFileIR() && p_instruction);
 
-	p_instruction->SetFallthrough(p_fallthrough);
+	p_instruction->setFallthrough(p_fallthrough);
 
 	addMovRegisterUnsignedConstant(p_instruction, p_reg, 0, p_fallthrough);
 }
@@ -2018,7 +2018,7 @@ void IntegerTransform32::addZeroSaturation(Instruction_t *p_instruction, Registe
 //
 void IntegerTransform32::addOverflowCheckUnknownSign(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
-	assert(getFileIR() && p_instruction && p_instruction->GetFallthrough());
+	assert(getFileIR() && p_instruction && p_instruction->getFallthrough());
 
 	RegisterName targetReg = getTargetRegister(p_instruction);
 	if (targetReg == rn_UNKNOWN)
@@ -2028,7 +2028,7 @@ void IntegerTransform32::addOverflowCheckUnknownSign(Instruction_t *p_instructio
 		return;
 	}
 
-cerr << __func__ << ": instr: " << p_instruction->getDisassembly() << " address: " << std::hex << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
+cerr << __func__ << ": instr: " << p_instruction->getDisassembly() << " address: " << std::hex << p_instruction->getAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
 	
 	// set detector/handler
 	string detector(OVERFLOW_UNKNOWN_SIGN_DETECTOR);
@@ -2043,26 +2043,26 @@ cerr << __func__ << ": instr: " << p_instruction->getDisassembly() << " address:
 	}
 
 	// for now assume we're dealing with add/sub 32 bit
-	db_id_t fileID = p_instruction->GetAddress()->GetFileID();
+	DatabaseID_t fileID = p_instruction->getAddress()->getFileID();
 	Function_t* func = p_instruction->GetFunction();
 
-	Instruction_t* jno_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
-	Instruction_t* jnc_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
-	Instruction_t* nop_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+	Instruction_t* jno_i = allocateNewInstruction(p_instruction->getAddress()->getFileID(), p_instruction->GetFunction());
+	Instruction_t* jnc_i = allocateNewInstruction(p_instruction->getAddress()->getFileID(), p_instruction->GetFunction());
+	Instruction_t* nop_i = allocateNewInstruction(p_instruction->getAddress()->getFileID(), p_instruction->GetFunction());
 
 	// save fallthrough from original instruction
-	Instruction_t* nextOrig_i = p_instruction->GetFallthrough();
+	Instruction_t* nextOrig_i = p_instruction->getFallthrough();
 
 	// instrument for both jno and jnc
 	// redundant for imul, but that's ok, optimize later
-	p_instruction->SetFallthrough(jno_i); 
+	p_instruction->setFallthrough(jno_i); 
 	addJno(jno_i, jnc_i, nextOrig_i);
 	addJnc(jnc_i, nop_i, nextOrig_i);
 	addNop(nop_i, nextOrig_i);
 
 	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC) 
 	{
-		Instruction_t* saturate_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+		Instruction_t* saturate_i = allocateNewInstruction(p_instruction->getAddress()->getFileID(), p_instruction->GetFunction());
 		addCallbackHandler(detector, p_instruction, nop_i, saturate_i, p_policy);
 		addMaxSaturation(saturate_i, targetReg, p_annotation, nextOrig_i);
 	}
@@ -2094,7 +2094,7 @@ cerr << __func__ << ": instr: " << p_instruction->getDisassembly() << " address:
 // p_addressOriginalInstruction is set when we call method from lea instrumentation
 void IntegerTransform32::addOverflowCheckForLea(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy, AddressID_t *p_addressOriginalInstruction)
 {
-	assert(getFileIR() && p_instruction && p_instruction->GetFallthrough());
+	assert(getFileIR() && p_instruction && p_instruction->getFallthrough());
 	
 cerr << __func__ << ": comment: " << p_instruction->GetComment() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
 
@@ -2102,11 +2102,11 @@ cerr << __func__ << ": comment: " << p_instruction->GetComment() << " annotation
 	string detector(INTEGER_OVERFLOW_DETECTOR);
 
 	// this will be either jno or jnc
-	Instruction_t* jncond_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+	Instruction_t* jncond_i = allocateNewInstruction(p_instruction->getAddress()->getFileID(), p_instruction->GetFunction());
 
 	// set fallthrough for the original instruction
-	Instruction_t* nextOrig_i = p_instruction->GetFallthrough();
-	p_instruction->SetFallthrough(jncond_i); 
+	Instruction_t* nextOrig_i = p_instruction->getFallthrough();
+	p_instruction->setFallthrough(jncond_i); 
 
 	// jncond 
 	int isMultiply = isMultiplyInstruction(p_instruction);
@@ -2152,7 +2152,7 @@ cerr << __func__ << ": comment: " << p_instruction->GetComment() << " annotation
 		else if (p_annotation.getBitWidth() == 8)
 			detector = string(ADDSUB_OVERFLOW_DETECTOR_UNKNOWN_8);
 
-		jnc_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+		jnc_i = allocateNewInstruction(p_instruction->getAddress()->getFileID(), p_instruction->GetFunction());
 
 		addJno(jncond_i, jnc_i, nextOrig_i);
 		addJnc(jnc_i, NULL, nextOrig_i); // fallthrough will be set by the callback handler

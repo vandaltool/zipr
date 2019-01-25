@@ -75,10 +75,7 @@ inline bool is_in_set(const std::set<S>& container, const S& key)
 template <class T, class S> 
 inline S const& find_map_object( const std::map< T , S > &a_map, const T& key)
 {
-	typename std::map< T , S >::const_iterator it;
-
-	it=a_map.find(key);
-
+	const auto it=a_map.find(key);
 	assert(it!=a_map.end());
 
 	return (*it).second;

@@ -1,8 +1,3 @@
-#ifndef libRIDB_decodedoperand_dispatch_hpp
-#define libRIDB_decodedoperand_dispatch_hpp
-
-#include <core/decode_csx86.hpp>
-#include <core/operand_csx86.hpp>
 namespace libIRDB
 {
 
@@ -10,7 +5,7 @@ using namespace std;
 using namespace libIRDB;
 
 
-class DecodedOperandDispatcher_t
+class DecodedOperandDispatcher_t : virtual public IRDB_SDK::DecodedOperand_t
 {
 	public:
 		DecodedOperandDispatcher_t() =delete;
@@ -58,4 +53,3 @@ class DecodedOperandDispatcher_t
 };
 
 }
-#endif

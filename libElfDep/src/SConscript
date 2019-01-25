@@ -9,6 +9,7 @@ myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 files="elfdep.cpp"
 
 cpppath='''
+         $IRDB_SDK/include
          $SECURITY_TRANSFORMS_HOME/libIRDB/include
          $SECURITY_TRANSFORMS_HOME/libtransform/include
          $SECURITY_TRANSFORMS_HOME/libEXEIO/include/

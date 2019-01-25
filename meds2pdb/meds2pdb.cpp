@@ -29,11 +29,11 @@
 #include <stdlib.h>
 #include "MEDS_AnnotationParser.hpp"
 #include "MEDS_FuncPrototypeAnnotation.hpp"
-#include "libIRDB-core.hpp"
+#include <irdb-core>
 
 using namespace std;
 using namespace pqxx;
-using namespace libIRDB;
+using namespace IRDB_SDK;
 using namespace MEDS_Annotation;
 
 #include <sstream>
@@ -58,7 +58,7 @@ inline std::string my_to_string (const T& t)
 
 int next_address_id=0;
 
-map<libIRDB::virtual_offset_t,int> address_to_instructionid_map;
+map<VirtualOffset_t,int> address_to_instructionid_map;
 map<wahoo::Instruction*,int> instruction_to_addressid_map;
 
 // extract the file id from the md5 hash and the program name
@@ -104,7 +104,7 @@ void insert_instructions(int fileID, const vector<wahoo::Instruction*> &instruct
     		char buf[128];
 
 		wahoo::Instruction *instruction = instructions[i];
-		libIRDB::virtual_offset_t   addr = instruction->getAddress();
+		auto   addr = instruction->getAddress();
 
 		// assign an instruction id
 		address_to_instructionid_map[addr]=next_address_id++;
@@ -204,7 +204,6 @@ void insert_functions(int fileID, const vector<wahoo::Function*> &functions  )
       if (j >= functions.size()) break;
       wahoo::Function *f = functions[j];
       string functionName = f->getName();
-      //libIRDB::virtual_offset_t functionAddress = f->getAddress();
       int functionFrameSize =  f->getFrameSize(); 
 
       int function_id = j;
@@ -249,7 +248,7 @@ void update_functions(int fileID, const vector<wahoo::Function*> &functions  )
         if (j >= functions.size()) break;
       	wahoo::Function *f = functions[j];
       	string functionName = f->getName();
-	libIRDB::virtual_offset_t functionAddress = f->getAddress();
+	auto functionAddress = f->getAddress();
       	//int functionSize = f->getSize();
       	int function_id = f->getFunctionID();
       	//int outArgsRegionSize = f->getOutArgsRegionSize();
@@ -347,7 +346,7 @@ void update_function_prototype(const vector<wahoo::Function*> &functions, char* 
 			if (j >= functions.size()) break;
 			wahoo::Function *f = functions[j];
       			int function_id = f->getFunctionID();
-			libIRDB::virtual_offset_t functionAddress = f->getAddress();
+			auto functionAddress = f->getAddress();
 			VirtualOffset vo(functionAddress);
 
 			//MEDS_FuncPrototypeAnnotation* fn_prototype_annot = NULL; 
@@ -385,33 +384,33 @@ void update_function_prototype(const vector<wahoo::Function*> &functions, char* 
 				// (3) define new function type (combo (1) + (2))
 				int aggregate_type_id = getNewTypeId();
 				int func_type_id = getNewTypeId();
-				int basic_type_id = T_UNKNOWN;
+				int basic_type_id = IRDB_SDK::itUnknown;
 
 				for (auto i = 0U; i < args->size(); ++i)
 				{
 					if ((*args)[i].isNumericType())
-						basic_type_id = T_NUMERIC;
+						basic_type_id = itNumeric;
 					else if ((*args)[i].isPointerType())
-						basic_type_id = T_POINTER;
+						basic_type_id = itPointer;
 
 					q += "INSERT into " + typesTable + " (type_id, type, name, ref_type_id, pos) VALUES (";
 					q += txn.quote(my_to_string(aggregate_type_id)) + ",";
-					q += txn.quote(my_to_string(T_AGGREGATE)) + ",";
+					q += txn.quote(my_to_string(itAggregate)) + ",";
 
 					q += txn.quote(string(f->getName()) + "_arg") + ",";
 					q += txn.quote(my_to_string(basic_type_id)) + ",";
 					q += txn.quote(my_to_string(i)) + ");";
 				}
 
-				int return_type_id = T_UNKNOWN;
+				int return_type_id = itUnknown;
 				if (returnArg) 
 				{
 					if (returnArg->isNumericType())
-						return_type_id = T_NUMERIC;
+						return_type_id = itNumeric;
 					else if (returnArg->isPointerType())
-						return_type_id = T_POINTER;
+						return_type_id = itPointer;
 					else
-						return_type_id = T_UNKNOWN;
+						return_type_id = itUnknown;
 				}
 
 				// new function type id (ok to have duplicate prototypes)
@@ -421,7 +420,7 @@ void update_function_prototype(const vector<wahoo::Function*> &functions, char* 
 				q += "INSERT into " + typesTable + " (type_id, type, name, ref_type_id, ref_type_id2) VALUES (";
 
 				q += txn.quote(my_to_string(func_type_id)) + ",";
-				q += txn.quote(my_to_string(T_FUNC)) + ",";
+				q += txn.quote(my_to_string(itFunc)) + ",";
 				q += txn.quote(string(f->getName()) + "_func") + ",";
 				q += txn.quote(my_to_string(return_type_id)) + ",";
 				q += txn.quote(my_to_string(aggregate_type_id)) + ");";

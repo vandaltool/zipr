@@ -31,25 +31,25 @@ pqxxDB_t::pqxxDB_t() : DBinterface_t(), txn(conn)
 	/* no other init needed */
 }
 
-void pqxxDB_t::IssueQuery(std::string query)
+void pqxxDB_t::issueQuery(std::string query)
 {
 	results=txn.exec(query);
 	results_iter=results.begin();
 }
 
-void pqxxDB_t::IssueQuery(std::stringstream & query)
+void pqxxDB_t::issueQuery(std::stringstream & query)
 {
 	results=txn.exec(query);
 	results_iter=results.begin();
 }
 
-void pqxxDB_t::MoveToNextRow()
+void pqxxDB_t::moveToNextRow()
 {
-	assert(!IsDone());
+	assert(!isDone());
 	++results_iter;
 }
 
-std::string pqxxDB_t::GetResultColumn(std::string colname)
+std::string pqxxDB_t::getResultColumn(std::string colname)
 {
 	if(results_iter[colname].is_null())
 		return std::string("");
@@ -61,14 +61,17 @@ std::string pqxxDB_t::GetResultColumn(std::string colname)
 //	return results_iter[colname].as<std::string>();
 }
 
-bool pqxxDB_t::IsDone()
+bool pqxxDB_t::isDone()
 {
 	return results_iter==results.end();
 }
 
-void pqxxDB_t::Commit()
+void pqxxDB_t::commit()
 {
 	txn.commit();
 }
 
-
+unique_ptr<IRDB_SDK::pqxxDB_t> IRDB_SDK::pqxxDB_t::factory()
+{
+	return unique_ptr<IRDB_SDK::pqxxDB_t>(new libIRDB::pqxxDB_t);
+}

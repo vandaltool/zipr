@@ -18,25 +18,27 @@
  *
  */
 
+namespace libIRDB
+{
 
 
-class pqxxDB_t : public DBinterface_t
+class pqxxDB_t : public DBinterface_t, virtual public IRDB_SDK::pqxxDB_t
 {
 	public:
 		pqxxDB_t();
-		~pqxxDB_t() override
+		virtual ~pqxxDB_t() override
         	{
                     // do nothing
         	};
-		void IssueQuery(std::string query);
-		void IssueQuery(std::stringstream & query);
-		void MoveToNextRow();
-		std::string GetResultColumn(std::string colname);
-		bool IsDone();
-		void Commit();
+		void issueQuery(std::string query);
+		void issueQuery(std::stringstream & query);
+		void moveToNextRow();
+		std::string getResultColumn(std::string colname);
+		bool isDone();
+		void commit();
 
-		pqxx::connection& GetConnection() { return conn; }
-		pqxx::work& GetTransaction() { return txn; }
+		pqxx::connection& getConnection() { return conn; }
+		pqxx::work& getTransaction() { return txn; }
 
 	private:
 		pqxx::connection conn;
@@ -45,3 +47,4 @@ class pqxxDB_t : public DBinterface_t
 		pqxx::result::const_iterator results_iter;
 
 };
+}

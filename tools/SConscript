@@ -5,15 +5,15 @@ Import('env')
 tools=[]
 
 dirs='''
-	cover
-	fix_rets
-	safefr
 	selective_cfi
-	spasm
-	hook_start
 	'''
 
 nobuild_dirs='''
+	cover
+	fix_rets
+	safefr
+	spasm
+	hook_start
 	cookbook
 	simple_cdi
 	ret_shadow_stack

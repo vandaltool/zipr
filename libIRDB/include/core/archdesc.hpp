@@ -18,21 +18,25 @@
  *
  */
 
+namespace libIRDB
+{
 
-enum ADFileType_t { AD_ELF, AD_CGC, AD_PE, AD_NONE };
-enum ADMachineType_t { admtAarch64,  admtX86_64, admtI386, admtNone }; 
 
-class ArchitectureDescription_t
+using ADFileType_t    = IRDB_SDK::ADFileType_t;
+using ADMachineType_t = IRDB_SDK::ADMachineType_t;
+
+class ArchitectureDescription_t : virtual public IRDB_SDK::ArchitectureDescription_t
 {
 	public:
 
-		ArchitectureDescription_t() : bits(0), ft(AD_NONE), mt(admtNone) {}
+		virtual ~ArchitectureDescription_t() {}
+		ArchitectureDescription_t() : bits(0), ft(IRDB_SDK::adftNone), mt(IRDB_SDK::admtNone) {}
 
-		int GetBitWidth() const 		{ return bits; }	
-		void SetBitWidth(const int _bits) 	{ bits=_bits; }	
+		int getBitWidth() const 		{ return bits; }	
+		void setBitWidth(const int _bits) 	{ bits=_bits; }	
 
-		ADFileType_t GetFileType() const	{ return ft; }	
-		void SetFileType(const ADFileType_t t) 	{ ft=t; }
+		ADFileType_t getFileType() const	{ return ft; }	
+		void setFileType(const ADFileType_t t) 	{ ft=t; }
 
 		ADMachineType_t getMachineType() const 		{ return mt; }	
 		void setMachineType(const ADMachineType_t t) 	{ mt=t; }
@@ -44,3 +48,4 @@ class ArchitectureDescription_t
 		ADMachineType_t mt;
 };
 
+}

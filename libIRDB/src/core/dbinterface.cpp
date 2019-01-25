@@ -23,9 +23,9 @@
 #include <iostream>
 #include <stdlib.h>
 
-using namespace libIRDB;
+using namespace std;
 
-std::ostream& libIRDB::operator<<(std::ostream& output, const DatabaseError_t& p)
+ostream& libIRDB::operator<<(ostream& output, const libIRDB::DatabaseError_t& p)
 {
 	switch(p.GetErrorCode())
 	{
@@ -36,10 +36,18 @@ std::ostream& libIRDB::operator<<(std::ostream& output, const DatabaseError_t& p
 			output<<"Variant not detected in database";
 			break;
 		default:
-			std::cerr<<"Cannot print database error code, aborting program...\n";
-			exit(-100); 
+			output<<"Cannot print database error code.";
+			break;
 	}
+	return output;
+}
 
+ostream& IRDB_SDK::operator<<(ostream& output, const IRDB_SDK::DatabaseError_t& p)
+{
+	const auto p_p = &p;
+	const auto real_p=dynamic_cast<const libIRDB::DatabaseError_t* const>(p_p);
+	assert(real_p);
+	output << *real_p;
 	return output;
 }
 

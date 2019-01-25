@@ -1,5 +1,10 @@
 
 #include <libIRDB-core.hpp>
+#include <core/decode_base.hpp>
+#include <core/decode_csarm.hpp>
+#include <core/operand_base.hpp>
+#include <core/operand_csarm.hpp>
+
 
 #include <capstone.h>
 #include <arm64.h>
@@ -121,13 +126,13 @@ DecodedInstructionCapstoneARM64_t::DecodedInstructionCapstoneARM64_t(const Instr
 	if(!cs_handle) cs_handle=new CapstoneHandle_t(NULL);
 	if(!i) throw std::invalid_argument("No instruction given to DecodedInstruction_t(Instruction_t*)");
 
-        const auto length=i->GetDataBits().size();
-	const auto &databits=i->GetDataBits();
+        const auto length=i->getDataBits().size();
+	const auto &databits=i->getDataBits();
 	const auto data=databits.data();
-	const auto address=i->GetAddress()->GetVirtualOffset();
+	const auto address=i->getAddress()->getVirtualOffset();
         Disassemble(address,data,length);
 
-	if(!valid()) throw std::invalid_argument("The Instruction_t::GetDataBits field is not a valid instruction.");
+	if(!valid()) throw std::invalid_argument("The Instruction_t::getDataBits field is not a valid instruction.");
 }
 
 DecodedInstructionCapstoneARM64_t::DecodedInstructionCapstoneARM64_t(const virtual_offset_t start_addr, const void *data, uint32_t max_len)
@@ -236,23 +241,23 @@ bool DecodedInstructionCapstoneARM64_t::hasOperand(const int op_num) const
 }
 
 // 0-based.  first operand is numbered 0.
-shared_ptr<DecodedOperandCapstone_t> DecodedInstructionCapstoneARM64_t::getOperand(const int op_num) const
+shared_ptr<DecodedOperand_t> DecodedInstructionCapstoneARM64_t::getOperand(const int op_num) const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	if(!hasOperand(op_num)) throw std::logic_error(string("Called ")+__FUNCTION__+" on without hasOperand()==true");
 
-	return shared_ptr<DecodedOperandCapstone_t>(new DecodedOperandCapstoneARM64_t(my_insn,(uint8_t)op_num));
+	return shared_ptr<DecodedOperand_t>(new DecodedOperandCapstoneARM64_t(my_insn,(uint8_t)op_num));
 	
 }
 
-DecodedOperandCapstoneVector_t DecodedInstructionCapstoneARM64_t::getOperands() const
+DecodedOperandVector_t DecodedInstructionCapstoneARM64_t::getOperands() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
 	const auto &arm = (the_insn->detail->arm64);
 	const auto opcount=arm.op_count;
 
-	auto ret_val=DecodedOperandCapstoneVector_t();
+	auto ret_val=DecodedOperandVector_t();
 	
 	for(auto i=0;i<opcount;i++)
 		ret_val.push_back(getOperand(i));
@@ -319,7 +324,7 @@ uint32_t DecodedInstructionCapstoneARM64_t::getPrefixCount() const
 	return 0;
 }
 
-virtual_offset_t DecodedInstructionCapstoneARM64_t::getMemoryDisplacementOffset(const DecodedOperandCapstone_t& t, const Instruction_t* insn) const
+IRDB_SDK::VirtualOffset_t DecodedInstructionCapstoneARM64_t::getMemoryDisplacementOffset(const IRDB_SDK::DecodedOperand_t* t, const IRDB_SDK::Instruction_t* insn) const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	assert(0);

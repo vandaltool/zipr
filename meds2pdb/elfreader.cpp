@@ -21,11 +21,12 @@
 #include <iostream>
 #include <string.h>
 #include <stdio.h>
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 #include "elfreader.h"
+#include <libIRDB-core.hpp>
 
 using namespace std;
-//using namespace ELFIO;
+using namespace IRDB_SDK;
 using namespace EXEIO;
 
 ElfReader::ElfReader(char *p_elfFile)
@@ -79,7 +80,7 @@ ElfReader::~ElfReader()
 /*
 * Read <p_numBytes> from ELF file for location <p_pc>
 */
-string ElfReader::read(libIRDB::virtual_offset_t p_pc, unsigned p_numBytes) const
+string ElfReader::read(VirtualOffset_t p_pc, unsigned p_numBytes) const
 {
   for ( int i = 0; i < m_reader->sections.size(); ++i ) 
   {    
@@ -102,7 +103,7 @@ string ElfReader::read(libIRDB::virtual_offset_t p_pc, unsigned p_numBytes) cons
 * No bounds checking is done on <p_buf>
 * Return false if address not in valid sections
 */
-bool ElfReader::read(libIRDB::virtual_offset_t p_pc, unsigned p_numBytes, char* p_buf) const
+bool ElfReader::read(VirtualOffset_t p_pc, unsigned p_numBytes, char* p_buf) const
 {
   for ( int i = 0; i < m_reader->sections.size(); ++i ) 
   {    
@@ -123,7 +124,7 @@ bool ElfReader::read(libIRDB::virtual_offset_t p_pc, unsigned p_numBytes, char* 
 /*
 * Return buffer for instruction off the ELF file
 */
-const char* ElfReader::getInstructionBuffer(libIRDB::virtual_offset_t p_pc) const
+const char* ElfReader::getInstructionBuffer(VirtualOffset_t p_pc) const
 {
   for ( int i = 0; i < m_reader->sections.size(); ++i ) 
   {    
@@ -138,5 +139,19 @@ const char* ElfReader::getInstructionBuffer(libIRDB::virtual_offset_t p_pc) cons
     }
   }
   return NULL;
+}
+
+void ElfReader::SetArchitecture()
+{
+	const auto width =
+		(isElf32() || isPe32()) ? 32 :
+		(isElf64() || isPe64()) ? 64 :
+		throw std::invalid_argument("Unknown architecture.");
+	const auto mt = m_reader->getMachineType() == EXEIO::mtI386 ? IRDB_SDK::admtI386 :
+			m_reader->getMachineType() == EXEIO::mtX86_64 ? IRDB_SDK::admtX86_64 :
+			m_reader->getMachineType() == EXEIO::mtAarch64 ? IRDB_SDK::admtAarch64 :
+			throw std::invalid_argument("Unknown architecture.");
+
+	libIRDB::FileIR_t::setArchitecture(width,mt);
 }
 

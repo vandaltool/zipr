@@ -10,7 +10,7 @@ class Provenance_t
 		enum class ProvType { IndJump = 0, IndCall = 1, Ret = 2 };
 		std::bitset<3> prov;
 	public:
-		Provenance_t() {prov = bitset<3>();}
+		Provenance_t() {prov = std::bitset<3>();}
 		virtual ~Provenance_t() {;}
 
 		void addReturn()

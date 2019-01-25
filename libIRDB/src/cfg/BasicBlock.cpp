@@ -28,6 +28,8 @@ using namespace libIRDB;
 using namespace std;
 
 
+#define ALLOF(a) begin((a)), end((a))
+
 BasicBlock_t::BasicBlock_t() 
 	: is_exit_block(false)
 {
@@ -37,11 +39,11 @@ BasicBlock_t::BasicBlock_t()
 
 void BasicBlock_t::BuildBlock
 	(
-		Instruction_t* insn, 
-		const map<Instruction_t*,BasicBlock_t*> &insn2block_map
+		IRDB_SDK::Instruction_t* insn, 
+		const map<IRDB_SDK::Instruction_t*,BasicBlock_t*> &insn2block_map
 	)
 {
-	const auto &func=insn->GetFunction();
+	const auto &func=insn->getFunction();
 	assert(insn);
 	/* loop through the instructions for this block */
 	while(insn)
@@ -49,8 +51,8 @@ void BasicBlock_t::BuildBlock
 		/* insert this instruction */
 		instructions.push_back(insn);
 
-		Instruction_t* target_insn=insn->GetTarget();
-		Instruction_t* ft_insn=insn->GetFallthrough();
+		auto target_insn=insn->getTarget();
+		auto ft_insn=insn->getFallthrough();
 
 		/* determine if there's a target block */
 		BasicBlock_t* target_block=NULL;
@@ -70,27 +72,27 @@ void BasicBlock_t::BuildBlock
 		}
 
 		/* This is also the end of the block if this is a function exit instruction */
-		if(insn->IsFunctionExit()) 
+		if(insn->isFunctionExit()) 
 		{
 			is_exit_block=true;
 		}
 
 		// handle fixed-call fallthroughs.
-		for_each(insn->GetRelocations().begin(), insn->GetRelocations().end(), [this,&insn2block_map](Relocation_t* reloc)
+		for_each(ALLOF(insn->getRelocations()),  [this,&insn2block_map](IRDB_SDK::Relocation_t* reloc)
 		{
 			// and has a reloc that's a pcrel with a WRT object 
 			// possible for a call to have a null fallthrouth (and consequently null WRT)
 			// becauase the call may be the last insn in a section, etc.
-			if( reloc->GetType()==string("fix_call_fallthrough") && reloc->GetWRT()!=NULL) 
+			if( reloc->getType()==string("fix_call_fallthrough") && reloc->getWRT()!=NULL) 
 			{
-				assert(reloc->GetWRT()!=NULL);
-				Instruction_t* fix_call_fallthrough_insn=dynamic_cast<Instruction_t*>(reloc->GetWRT());
+				assert(reloc->getWRT()!=NULL);
+				auto fix_call_fallthrough_insn=dynamic_cast<Instruction_t*>(reloc->getWRT());
 				assert(fix_call_fallthrough_insn);
 
 				// this block has a fallthrough to the return block.
 				if(is_in_container(insn2block_map,fix_call_fallthrough_insn))
 				{
-					BasicBlock_t* fix_call_fallthrough_blk=find_map_object(insn2block_map,fix_call_fallthrough_insn);
+					BasicBlock_t* fix_call_fallthrough_blk=find_map_object(insn2block_map,static_cast<IRDB_SDK::Instruction_t*>(fix_call_fallthrough_insn));
 					successors.insert(fix_call_fallthrough_blk);
 					fix_call_fallthrough_blk->GetPredecessors().insert(this);
 				}
@@ -116,7 +118,7 @@ void BasicBlock_t::BuildBlock
 			break;
 
 		/* check for a fallthrough out of the function */
-		if(ft_insn && ft_insn->GetFunction() != func) //  !is_in_container(func->GetInstructions(),ft_insn))
+		if(ft_insn && ft_insn->getFunction() != func) 
 			break;
 
 
@@ -128,11 +130,11 @@ void BasicBlock_t::BuildBlock
 
 	insn=instructions[instructions.size()-1]; // get last instruction.
 	assert(insn);
-	if(insn->GetIBTargets())
+	if(insn->getIBTargets())
 	{
-		for_each(insn->GetIBTargets()->begin(), insn->GetIBTargets()->end(), [this,&insn2block_map,func](Instruction_t* target)
+		for_each(ALLOF(*insn->getIBTargets()), [this,&insn2block_map,func](IRDB_SDK::Instruction_t* target)
 		{
-			if(is_in_container(insn2block_map,target) && target!=func->GetEntryPoint())	// don't link calls to the entry block.
+			if(is_in_container(insn2block_map,target) && target!=func->getEntryPoint())	// don't link calls to the entry block.
 			{
 				BasicBlock_t* target_block=find_map_object(insn2block_map,target);
 				target_block->GetPredecessors().insert(this);
@@ -151,7 +153,7 @@ std::ostream& libIRDB::operator<<(std::ostream& os, const BasicBlock_t& block)
 	for(auto i=0U;i<block.instructions.size();i++)
 	{
 		const auto insn=block.instructions[i];
-		os<<"\t Instruction "<<std::dec<<i<<" at " << std::hex << insn->GetAddress()->GetVirtualOffset() << " with id " << std::dec << insn->GetBaseID() << " " << insn->GetComment() << endl;
+		os<<"\t Instruction "<<std::dec<<i<<" at " << std::hex << insn->getAddress()->getVirtualOffset() << " with id " << std::dec << insn->getBaseID() << " " << insn->getComment() << endl;
 	}
 	os<<"\t ---- done block print -----" <<endl;
 	os<<endl;
@@ -165,8 +167,8 @@ bool BasicBlock_t::EndsInBranch()
 	const auto branch=instructions[instructions.size()-1];	
 	assert(branch);
 
-	const auto d=DecodedInstruction_t(branch);
-	return d.isBranch();
+	const auto d=DecodedInstruction_t::factory(branch);
+	return d->isBranch();
 
 	
 }
@@ -175,13 +177,14 @@ bool BasicBlock_t::EndsInIndirectBranch()
 	const auto *branch=instructions[instructions.size()-1];	
 	assert(branch);
 
-	const auto d=DecodedInstruction_t(branch);
+	const auto p_d=DecodedInstruction_t::factory(branch);
+	const auto &d =*p_d;
 
 	if(d.isReturn())
 		return true;
 	if(d.isUnconditionalBranch() || d.isCall())
 	{
-		if(!d.getOperand(0).isConstant())
+		if(!d.getOperand(0)->isConstant())
 			/* not a constant type */
 			return true;
 		return false;
@@ -195,12 +198,12 @@ bool BasicBlock_t::EndsInConditionalBranch()
 		return false;
 	const auto branch=instructions[instructions.size()-1];	
 	assert(branch);
-	const auto d=DecodedInstruction_t(branch);
+	const auto d=DecodedInstruction_t::factory(branch);
 
-	return d.isConditionalBranch(); 
+	return d->isConditionalBranch(); 
 }
 
-Instruction_t* BasicBlock_t::GetBranchInstruction()
+IRDB_SDK::Instruction_t* BasicBlock_t::GetBranchInstruction()
 
 {
 	if(!EndsInBranch())

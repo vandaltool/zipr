@@ -1,8 +1,12 @@
 
 #include <libIRDB-core.hpp>
 #include <memory>
-#include <core/operand_csx86.hpp>
+#include <core/decode_base.hpp>
 #include <core/decode_csx86.hpp>
+#include <core/operand_base.hpp>
+#include <core/operand_csx86.hpp>
+
+
 
 using namespace std;
 using namespace libIRDB;

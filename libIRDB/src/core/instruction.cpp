@@ -46,7 +46,7 @@ Instruction_t::Instruction_t() :
 	eh_pgm(NULL),
 	eh_cs(NULL)
 {
-	SetBaseID(NOT_IN_DATABASE);
+	setBaseID(NOT_IN_DATABASE);
 }
 
 Instruction_t::Instruction_t(db_id_t id, 
@@ -73,7 +73,7 @@ Instruction_t::Instruction_t(db_id_t id,
 	eh_pgm(NULL),
 	eh_cs(NULL)
 {
-	SetBaseID(id);
+	setBaseID(id);
 }
 
 /*
@@ -83,9 +83,9 @@ int Instruction_t::Disassemble(DISASM &disasm) const
   	memset(&disasm, 0, sizeof(DISASM));
   
   	disasm.Options = NasmSyntax + PrefixedNumeral;
-	disasm.Archi = FileIR_t::GetArchitectureBitWidth();
-  	disasm.EIP = (UIntPtr) GetDataBits().c_str();
-  	disasm.VirtualAddr = GetAddress()->GetVirtualOffset();
+	disasm.Archi = FileIR_t::getArchitectureBitWidth();
+  	disasm.EIP = (UIntPtr) getDataBits().c_str();
+  	disasm.VirtualAddr = getAddress()->getVirtualOffset();
   	int instr_len = Disasm(&disasm);
  	 
   	return instr_len;  
@@ -98,15 +98,15 @@ std::string Instruction_t::getDisassembly() const
 //  	Disassemble(this,disasm);
 //  	return std::string(disasm.CompleteInstr);
 
-	const auto d=DecodedInstruction_t(this);
-	return d.getDisassembly();
+	const auto d=DecodedInstruction_t::factory(this);
+	return d->getDisassembly();
 }
 
 // 
 // Given an instruction in assembly, returns the raw bits in a string
 // On error, return the empty string
 //
-bool Instruction_t::Assemble(string assembly)
+bool Instruction_t::assemble(string assembly)
 {
    const string assemblyFile = "tmp.asm"; 
    const string binaryOutputFile = "tmp.bin";
@@ -124,7 +124,7 @@ bool Instruction_t::Assemble(string assembly)
      return false;
    }
 
-   asmFile<<"BITS "<<std::dec<<FileIR_t::GetArchitectureBitWidth()<<endl; 
+   asmFile<<"BITS "<<std::dec<<FileIR_t::getArchitectureBitWidth()<<endl; 
 
    asmFile<<assembly<<endl;
    asmFile.close();
@@ -161,7 +161,7 @@ bool Instruction_t::Assemble(string assembly)
 
     // should erase those 2 files here
 
-    this->SetDataBits(rawBits);
+    this->setDataBits(rawBits);
     return true;
 }
 
@@ -171,29 +171,29 @@ vector<string> Instruction_t::WriteToDB(File_t *fid, db_id_t newid)
 	assert(fid);
 	assert(my_address);
 
-	if(GetBaseID()==NOT_IN_DATABASE)
-		SetBaseID(newid);
+	if(getBaseID()==NOT_IN_DATABASE)
+		setBaseID(newid);
 
 	auto func_id=NOT_IN_DATABASE;
-	if(my_function) func_id=my_function->GetBaseID();
+	if(my_function) func_id=my_function->getBaseID();
 
 	auto ft_id=NOT_IN_DATABASE;
-	if(fallthrough) ft_id=fallthrough->GetBaseID();
+	if(fallthrough) ft_id=fallthrough->getBaseID();
 
 	auto targ_id=NOT_IN_DATABASE;
-	if(target) targ_id=target->GetBaseID();
+	if(target) targ_id=target->getBaseID();
 
 	auto icfs_id=NOT_IN_DATABASE;
-	if (icfs) icfs_id=icfs->GetBaseID();
+	if (icfs) icfs_id=icfs->getBaseID();
 
 	auto indirect_bt_id=NOT_IN_DATABASE;
-	if(indTarg) indirect_bt_id=indTarg->GetBaseID();
+	if(indTarg) indirect_bt_id=indTarg->getBaseID();
 
 	auto eh_pgm_id=NOT_IN_DATABASE;
-	if(eh_pgm) eh_pgm_id=eh_pgm->GetBaseID();
+	if(eh_pgm) eh_pgm_id=eh_pgm->getBaseID();
 
 	auto eh_css_id=NOT_IN_DATABASE;
-	if(eh_cs) eh_css_id=eh_cs->GetBaseID();
+	if(eh_cs) eh_css_id=eh_cs->getBaseID();
 
 	ostringstream hex_data;
 	hex_data << setfill('0') << hex;;
@@ -202,8 +202,8 @@ vector<string> Instruction_t::WriteToDB(File_t *fid, db_id_t newid)
 
 
 	return {
-		to_string(GetBaseID()),
-                to_string(my_address->GetBaseID()),
+		to_string(getBaseID()),
+                to_string(my_address->getBaseID()),
                 to_string(func_id),
                 to_string(orig_address_id),
                 to_string(ft_id),
@@ -215,24 +215,24 @@ vector<string> Instruction_t::WriteToDB(File_t *fid, db_id_t newid)
                 callback,
                 comment,
                 to_string(indirect_bt_id),
-                to_string(GetDoipID()) };
+                to_string(getDoipID()) };
 }
 
 
 /* return true if this instructino exits the function -- true if there's no function, because each instruction is it's own function? */
-bool Instruction_t::IsFunctionExit() const 
+bool Instruction_t::isFunctionExit() const 
 { 
 	if(!my_function) 
 		return true;  
 
 	/* if there's a target that's outside this function */
-	Instruction_t *target=GetTarget();
-	if(target && target->GetFunction()!=GetFunction()) // !is_in_set(my_function->GetInstructions(),target))
+	auto target=getTarget();
+	if(target && target->getFunction()!=getFunction()) // !is_in_set(my_function->GetInstructions(),target))
 		return true;
 
 	/* if there's a fallthrough that's outside this function */
-	Instruction_t *ft=GetFallthrough();
-	if(fallthrough && ft->GetFunction()!=GetFunction()) // !is_in_set(my_function->GetInstructions(),ft))
+	auto ft=getFallthrough();
+	if(fallthrough && ft->getFunction()!=getFunction()) // !is_in_set(my_function->GetInstructions(),ft))
 		return true;
 
 	/* some instructions have no next-isntructions defined in the db, and we call them function exits */
@@ -242,36 +242,23 @@ bool Instruction_t::IsFunctionExit() const
 	return false;
 }
 
-
-/*
-bool Instruction_t::SetsStackPointer(ARGTYPE* arg)
+IRDB_SDK::Function_t* Instruction_t::getFunction() const
 {
-	if((arg->AccessMode & WRITE ) == 0)
-		return false;
-	int access_type=arg->ArgType;
-
-	if(access_type==REGISTER_TYPE + GENERAL_REG +REG4)
-		return true;
-	return false;
-	
+	return my_function;
 }
 
-bool Instruction_t::SetsStackPointer(DISASM* disasm)
-{
-	if(strstr(disasm->Instruction.Mnemonic, "push")!=NULL)
-		return true;
-	if(strstr(disasm->Instruction.Mnemonic, "pop")!=NULL)
-		return true;
-	if(strstr(disasm->Instruction.Mnemonic, "call")!=NULL)
-		return true;
-	if(disasm->Instruction.ImplicitModifiedRegs==REGISTER_TYPE+GENERAL_REG+REG4)
-		return true;
 
-	if(SetsStackPointer(&disasm->Argument1)) return true;
-	if(SetsStackPointer(&disasm->Argument2)) return true;
-	if(SetsStackPointer(&disasm->Argument3)) return true;
+IRDB_SDK::EhProgram_t*  Instruction_t::getEhProgram()  const  { return eh_pgm; }
+IRDB_SDK::EhCallSite_t* Instruction_t::getEhCallSite() const  { return eh_cs; }
+IRDB_SDK::AddressID_t*  Instruction_t::getIndirectBranchTargetAddress() const { return indTarg; }
 
-	return false;
+void Instruction_t::setAddress     (IRDB_SDK::AddressID_t* newaddr)   { my_address=dynamic_cast<AddressID_t*>(newaddr); }
+void Instruction_t::setFunction    (IRDB_SDK::Function_t* func   )    { my_function=dynamic_cast<Function_t*>(func);}
+void Instruction_t::setFallthrough (IRDB_SDK::Instruction_t* i)       { fallthrough=dynamic_cast<Instruction_t*>(i); }
+void Instruction_t::setTarget      (IRDB_SDK::Instruction_t* i)       { target=dynamic_cast<Instruction_t*>(i); }
+void Instruction_t::setIBTargets   (IRDB_SDK::ICFS_t *p_icfs)         { icfs=dynamic_cast<ICFS_t*>(p_icfs); }
+void Instruction_t::setEhProgram(IRDB_SDK::EhProgram_t* orig)         { eh_pgm=dynamic_cast<EhProgram_t*>(orig); }
+void Instruction_t::setEhCallSite(IRDB_SDK::EhCallSite_t* orig)       { eh_cs=dynamic_cast<EhCallSite_t*>(orig); }
+void Instruction_t::setIndirectBranchTargetAddress(IRDB_SDK::AddressID_t* myIndTarg)  { indTarg=dynamic_cast<AddressID_t*>(myIndTarg); }
 
-}
-*/
+

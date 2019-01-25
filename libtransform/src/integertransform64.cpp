@@ -102,7 +102,7 @@ int IntegerTransform64::execute()
 		{
 			Instruction_t* insn=*it;
 
-			if (insn && insn->GetAddress())
+			if (insn && insn->getAddress())
 			{
 				int policy = POLICY_DEFAULT; 
 
@@ -119,7 +119,7 @@ int IntegerTransform64::execute()
 					policy = POLICY_CONTINUE;
 				}
 
-				virtual_offset_t irdb_vo = insn->GetAddress()->GetVirtualOffset();
+				virtual_offset_t irdb_vo = insn->getAddress()->GetVirtualOffset();
 				if (irdb_vo == 0) continue;
 
 				VirtualOffset vo(irdb_vo);
@@ -154,7 +154,7 @@ int IntegerTransform64::execute()
 					continue;
 				}
 
-				if (!insn->GetFallthrough())
+				if (!insn->getFallthrough())
 				{
 					logMessage(__func__, "Warning: no fall through for instruction -- skipping");
 					continue;
@@ -314,7 +314,7 @@ bool IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction,
 {
 	char tmpbuf[1024];
 
-	assert(getFileIR() && p_instruction && p_instruction->GetFallthrough());
+	assert(getFileIR() && p_instruction && p_instruction->getFallthrough());
 	RegisterName targetReg = getTargetRegister(p_instruction);
 	if (targetReg == rn_UNKNOWN)
 	{
@@ -332,18 +332,18 @@ bool IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction,
 		return false;
 	}
 
-	Instruction_t* jncond_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
-	Instruction_t* nop_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+	Instruction_t* jncond_i = allocateNewInstruction(p_instruction->getAddress()->getFileID(), p_instruction->GetFunction());
+	Instruction_t* nop_i = allocateNewInstruction(p_instruction->getAddress()->getFileID(), p_instruction->GetFunction());
 	Instruction_t* policy_i;
 
-	Instruction_t* next_i = p_instruction->GetFallthrough();
-	p_instruction->SetFallthrough(jncond_i); 
+	Instruction_t* next_i = p_instruction->getFallthrough();
+	p_instruction->setFallthrough(jncond_i); 
 
 	setAssembly(nop_i, "nop");  
 
 	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
 	{
-		policy_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+		policy_i = allocateNewInstruction(p_instruction->getAddress()->getFileID(), p_instruction->GetFunction());
 	}
 	else
 	{
@@ -360,7 +360,7 @@ bool IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction,
 	}
 	else
 	{ 	// unknown sign
-		Instruction_t* jnc_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+		Instruction_t* jnc_i = allocateNewInstruction(p_instruction->getAddress()->getFileID(), p_instruction->GetFunction());
 		addJno(jncond_i, jnc_i, next_i); 
 		addJnc(jnc_i, policy_i, next_i); 
 	}
@@ -381,8 +381,8 @@ bool IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction,
 	std::string detector = p_annotation.isOverflow() ? OVERFLOW64_DETECTOR : UNDERFLOW64_DETECTOR;
 
 	Instruction_t* cb = addCallbackHandlerSequence(p_instruction, next_i, detector, p_policy);
-	nop_i->SetFallthrough(cb);
-	cb->SetComment("underflow callback/instrumentation");
+	nop_i->setFallthrough(cb);
+	cb->setComment("underflow callback/instrumentation");
 
 	return true;
 }
@@ -490,7 +490,7 @@ Instruction_t* IntegerTransform64::addCallbackHandlerSequence(Instruction_t *p_o
 	char tmpbuf[1024];
 
 	Instruction_t* lea = addNewAssembly("lea rsp, [rsp-128]");  // red zone 
-	lea->SetComment("callback: " + p_detector);
+	lea->setComment("callback: " + p_detector);
 
     // must save flags as strata will perturb them
     Instruction_t* saveFlags = addNewAssembly(lea, "pushf");
@@ -499,21 +499,21 @@ Instruction_t* IntegerTransform64::addCallbackHandlerSequence(Instruction_t *p_o
 	// pass in p_policy 
 	sprintf(tmpbuf,"push 0x%08x", p_policy);  
 	Instruction_t* instr = addNewAssembly(saveFlags, tmpbuf);
-	sprintf(tmpbuf,"push 0x%08x", p_orig->GetAddress()->GetVirtualOffset()); 
+	sprintf(tmpbuf,"push 0x%08x", p_orig->getAddress()->GetVirtualOffset()); 
 	instr = addNewAssembly(instr, tmpbuf);
 
-	Instruction_t* call = allocateNewInstruction(p_orig->GetAddress()->GetFileID(), p_orig->GetFunction());
-	instr->SetFallthrough(call);
+	Instruction_t* call = allocateNewInstruction(p_orig->getAddress()->getFileID(), p_orig->GetFunction());
+	instr->setFallthrough(call);
 	setAssembly(call, "call 0"); 
 		
 	addCallbackHandler64(call, p_detector, 2); // 2 args for now
 
-	assert(call->GetTarget());
+	assert(call->getTarget());
 
 	instr = addNewAssembly(call, "lea rsp, [rsp+16]");  
 	instr = addNewAssembly(instr, "popf");  
 	instr = addNewAssembly(instr, "lea rsp, [rsp+128]");  
-	instr->SetFallthrough(p_fallthrough);
+	instr->setFallthrough(p_fallthrough);
 
 	return lea;
 }
@@ -553,16 +553,16 @@ Instruction_t* IntegerTransform64::addCallbackHandlerSequence(Instruction_t *p_o
 //
 void IntegerTransform64::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const RegisterName& p_reg1, const RegisterName& p_reg2, const RegisterName& p_reg3, int p_policy)
 {
-	assert(p_instruction && p_instruction->GetFallthrough());
+	assert(p_instruction && p_instruction->getFallthrough());
 
 	cerr << __func__ << ": r3 <-- r1+r2: r1: " << Register::toString(p_reg1) << " r2: " << Register::toString(p_reg2) << " target register: " << Register::toString(p_reg3) << "  annotation: " << p_annotation.toString() << endl;
 
-	Instruction_t *origFallthrough = p_instruction->GetFallthrough();
+	Instruction_t *origFallthrough = p_instruction->getFallthrough();
 	Instruction_t *instr, *first, *saturation_policy;
 	Instruction_t *restore = addNewAssembly("popf");
 
 	saturation_policy = addNewAssembly("nop");
-	saturation_policy->SetComment("lea overflow instrumentation(reg+reg): policy code sequence");
+	saturation_policy->setComment("lea overflow instrumentation(reg+reg): policy code sequence");
 
 	// Original code sequence:
 	//   lea r3, [r1+r2]
@@ -579,11 +579,11 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_inst
 	//            fallthrough--><policy>
 	//
 //	first = addNewAssembly("push " + Register::toString(p_reg1)); 
-//	first->SetComment("lea overflow instrumentation(reg+reg): start");
+//	first->setComment("lea overflow instrumentation(reg+reg): start");
 //	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, first);
 
 	Instruction_t* originalInstrumentInstr = IRDBUtility::insertAssemblyBefore(getFileIR(), p_instruction, "lea rsp, [rsp-128]" , NULL);
-	p_instruction->SetComment("lea overflow instrumentation(reg+reg): start");
+	p_instruction->setComment("lea overflow instrumentation(reg+reg): start");
 	instr = addNewAssembly(p_instruction, std::string("push ") + Register::toString(p_reg1));
 	instr = addNewAssembly(instr, "pushf");
 
@@ -591,23 +591,23 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_inst
 	if (p_annotation.isSigned())
 	{
 		instr = addNewAssembly(instr, "jno 0x22");
-		instr->SetFallthrough(saturation_policy);
-		instr->SetTarget(restore);
-		instr->SetComment("signed: lea: reg+reg");
+		instr->setFallthrough(saturation_policy);
+		instr->setTarget(restore);
+		instr->setComment("signed: lea: reg+reg");
 	}
 	else if (p_annotation.isUnsigned())
 	{
 		instr = addNewAssembly(instr, "jnc 0x22");
-		instr->SetFallthrough(saturation_policy);
-		instr->SetTarget(restore);
+		instr->setFallthrough(saturation_policy);
+		instr->setTarget(restore);
 	}
 	else
 	{
 		Instruction_t *instr2 = addNewAssembly(instr, "jno 0x22"); // this generates bogus assembly code, why?
-		instr2->SetTarget(restore);
+		instr2->setTarget(restore);
 		instr = addNewAssembly(instr2, "jnc 0x22");
-		instr->SetFallthrough(saturation_policy);
-		instr->SetTarget(restore);
+		instr->setFallthrough(saturation_policy);
+		instr->setTarget(restore);
 	}
 
 	// <policy>                  
@@ -623,18 +623,18 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_inst
 	//
 	Instruction_t *popf = addNewAssembly("popf");
 	Instruction_t *callback = addCallbackHandlerSequence(p_instruction, popf, OVERFLOW64_DETECTOR, p_policy);
-	saturation_policy->SetFallthrough(callback);
+	saturation_policy->setFallthrough(callback);
 	instr = addNewAssembly(popf, "pop " + Register::toString(p_reg1));
 	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
 	{
 		instr = addNewMaxSaturation(instr, p_reg3, p_annotation);
 		instr = addNewAssembly(instr, "lea rsp, [rsp+128]");
-		instr->SetFallthrough(origFallthrough);
+		instr->setFallthrough(origFallthrough);
 	}
 	else
 	{
 		instr = addNewAssembly(instr, "lea rsp, [rsp+128]");
-		instr->SetFallthrough(originalInstrumentInstr);
+		instr->setFallthrough(originalInstrumentInstr);
 	}
 
 	// <restore>
@@ -644,10 +644,10 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_inst
 	// <orig>: lea r3, [r1+r2]        ; original instruction        
 	//         <originalNext>         ; original next instruction
 	//
-	restore->SetComment("lea overflow instrumentation(reg+reg): restore");
+	restore->setComment("lea overflow instrumentation(reg+reg): restore");
 	instr = addNewAssembly(restore, "pop " + Register::toString(p_reg1));
 	instr = addNewAssembly(instr, "lea rsp, [rsp+128]");
-	instr->SetFallthrough(originalInstrumentInstr);
+	instr->setFallthrough(originalInstrumentInstr);
 }
 
 // Example annotation to handle
@@ -685,15 +685,15 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_inst
 //
 void IntegerTransform64::addOverflowCheckNoFlag_RegTimesReg(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const RegisterName& p_reg1, const RegisterName& p_reg2, const RegisterName& p_reg3, int p_policy)
 {
-	assert(p_instruction && p_instruction->GetFallthrough());
+	assert(p_instruction && p_instruction->getFallthrough());
 
 	cerr << __func__ << ": r3 <-- r1*r2: r1: " << Register::toString(p_reg1) << " r2: " << Register::toString(p_reg2) << " target register: " << Register::toString(p_reg3) << "  annotation: " << p_annotation.toString() << endl;
 
-	Instruction_t *origFallthrough = p_instruction->GetFallthrough();
+	Instruction_t *origFallthrough = p_instruction->getFallthrough();
 	Instruction_t *instr, *first, *saturation_policy;
 	Instruction_t *restore = addNewAssembly("popf");
 	saturation_policy = addNewAssembly("nop");
-	saturation_policy->SetComment("lea overflow instrumentation(reg*reg): policy code sequence");
+	saturation_policy->setComment("lea overflow instrumentation(reg*reg): policy code sequence");
 
 
 	// Original code sequence:
@@ -709,14 +709,14 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegTimesReg(Instruction_t *p_ins
 	//           fallthrough--><policy>
 	//
 	Instruction_t* originalInstrumentInstr = IRDBUtility::insertAssemblyBefore(getFileIR(), p_instruction, "lea rsp, [rsp-128]" , NULL);
-	p_instruction->SetComment("lea overflow instrumentation(reg*reg): start");
+	p_instruction->setComment("lea overflow instrumentation(reg*reg): start");
 	instr = addNewAssembly(p_instruction, std::string("push ") + Register::toString(p_reg1));
 	instr = addNewAssembly(instr, "pushf");
 
 	instr = addNewAssembly(instr, "imul " + Register::toString(p_reg1) + "," + Register::toString(p_reg2));
 	instr = addNewAssembly(instr, "jno 0x22");
-	instr->SetFallthrough(saturation_policy);
-	instr->SetTarget(restore);
+	instr->setFallthrough(saturation_policy);
+	instr->setTarget(restore);
 
 	// <policy>                  
 	//         nop                    ;
@@ -731,18 +731,18 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegTimesReg(Instruction_t *p_ins
 	//
 	Instruction_t *popf = addNewAssembly("popf");
 	Instruction_t *callback = addCallbackHandlerSequence(p_instruction, popf, OVERFLOW64_DETECTOR, p_policy);
-	saturation_policy->SetFallthrough(callback);
+	saturation_policy->setFallthrough(callback);
 	instr = addNewAssembly(popf, "pop " + Register::toString(p_reg1));
 	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
 	{
 		instr = addNewMaxSaturation(instr, p_reg3, p_annotation);
 		instr = addNewAssembly(instr, "lea rsp, [rsp+128]");
-		instr->SetFallthrough(origFallthrough);
+		instr->setFallthrough(origFallthrough);
 	}
 	else
 	{
 		instr = addNewAssembly(instr, "lea rsp, [rsp+128]");
-		instr->SetFallthrough(originalInstrumentInstr);
+		instr->setFallthrough(originalInstrumentInstr);
 	}
 
 	// <restore>
@@ -752,10 +752,10 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegTimesReg(Instruction_t *p_ins
 	// <orig>: lea r3, [r1*r2]        ; original instruction        
 	//         <originalNext>         ; original next instruction
 	//
-	restore->SetComment("lea overflow instrumentation(reg*reg): restore");
+	restore->setComment("lea overflow instrumentation(reg*reg): restore");
 	instr = addNewAssembly(restore, "pop " + Register::toString(p_reg1));
 	instr = addNewAssembly(instr, "lea rsp, [rsp+128]");
-	instr->SetFallthrough(originalInstrumentInstr);
+	instr->setFallthrough(originalInstrumentInstr);
 }
 
 // Example annotation to handle
@@ -793,7 +793,7 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegTimesReg(Instruction_t *p_ins
 //
 void IntegerTransform64::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const RegisterName& p_reg1, const int p_constant, const RegisterName& p_reg3, int p_policy)
 {
-	assert(p_instruction && p_instruction->GetFallthrough());
+	assert(p_instruction && p_instruction->getFallthrough());
 
 	if (p_annotation.isUnsigned() && (p_constant < 0)) {
 	  logMessage(__func__, "lea reg+neg constant pattern: skip this annotation type (prone to false positives)");
@@ -803,11 +803,11 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p
 
 	cerr << __func__ << ": r3 <-- r1+k: r1: " << Register::toString(p_reg1) << " k: " << p_constant << " target register: " << Register::toString(p_reg3) << "  annotation: " << p_annotation.toString() << endl;
 
-	Instruction_t *origFallthrough = p_instruction->GetFallthrough();
+	Instruction_t *origFallthrough = p_instruction->getFallthrough();
 	Instruction_t *instr, *first, *saturation_policy;
 	Instruction_t *restore = addNewAssembly("popf");
 	saturation_policy = addNewAssembly("nop");
-	saturation_policy->SetComment("lea overflow instrumentation(reg+k): policy code sequence");
+	saturation_policy->setComment("lea overflow instrumentation(reg+k): policy code sequence");
 
 	// Original code sequence:
 	//   lea r3, [r1+k]
@@ -826,18 +826,18 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p
 	//
 /*
 	first = addNewAssembly("push " + Register::toString(p_reg1)); 
-	first->SetComment("lea overflow instrumentation(reg+k): start");
+	first->setComment("lea overflow instrumentation(reg+k): start");
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, first);
 	instr = addNewAssembly(first, "pushf");
 	*/
 
 	Instruction_t* originalInstrumentInstr = IRDBUtility::insertAssemblyBefore(getFileIR(), p_instruction, "lea rsp, [rsp-128]" , NULL);
-	p_instruction->SetComment("lea overflow instrumentation(reg+k): start");
+	p_instruction->setComment("lea overflow instrumentation(reg+k): start");
 	instr = addNewAssembly(p_instruction, std::string("push ") + Register::toString(p_reg1));
 	instr = addNewAssembly(instr, "pushf");
 //-------------------
 	// make sure we set the fallthrough post careful insertion
-//	first->SetFallthrough(instr);
+//	first->setFallthrough(instr);
 
 	std::ostringstream s;
 	if (p_constant >= 0) {
@@ -852,22 +852,22 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p
 	if (p_annotation.isSigned())
 	{
 		instr = addNewAssembly(instr, "jno 0x22");
-		instr->SetFallthrough(saturation_policy);
-		instr->SetTarget(restore);
+		instr->setFallthrough(saturation_policy);
+		instr->setTarget(restore);
 	}
 	else if (p_annotation.isUnsigned())
 	{
 		instr = addNewAssembly(instr, "jnc 0x22");
-		instr->SetFallthrough(saturation_policy);
-		instr->SetTarget(restore);
+		instr->setFallthrough(saturation_policy);
+		instr->setTarget(restore);
 	}
 	else
 	{
 		Instruction_t *instr2 = addNewAssembly(instr, "jno 0x22");
-		instr2->SetTarget(restore);
+		instr2->setTarget(restore);
 		instr = addNewAssembly(instr2, "jnc 0x22");
-		instr->SetFallthrough(saturation_policy);
-		instr->SetTarget(restore);
+		instr->setFallthrough(saturation_policy);
+		instr->setTarget(restore);
 	}
 
 	// <policy>                  
@@ -883,18 +883,18 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p
 	//
 	Instruction_t *popf = addNewAssembly("popf");
 	Instruction_t *callback = addCallbackHandlerSequence(p_instruction, popf, OVERFLOW64_DETECTOR, p_policy);
-	saturation_policy->SetFallthrough(callback);
+	saturation_policy->setFallthrough(callback);
 	instr = addNewAssembly(popf, "pop " + Register::toString(p_reg1));
 	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
 	{
 		instr = addNewMaxSaturation(instr, p_reg3, p_annotation);
 		instr = addNewAssembly(instr, "lea rsp, [rsp+128]");
-		instr->SetFallthrough(origFallthrough);
+		instr->setFallthrough(origFallthrough);
 	}
 	else
 	{
 		instr = addNewAssembly(instr, "lea rsp, [rsp+128]");
-		instr->SetFallthrough(originalInstrumentInstr);
+		instr->setFallthrough(originalInstrumentInstr);
 	}
 
 	// <restore>
@@ -904,11 +904,11 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p
 	// <orig>: lea r3, [r1+k]         ; original instruction        
 	//         <originalNext>         ; original next instruction
 	//
-	restore->SetComment("lea overflow instrumentation(reg+k): restore");
+	restore->setComment("lea overflow instrumentation(reg+k): restore");
 	instr = addNewAssembly(restore, "pop " + Register::toString(p_reg1));
 	instr = addNewAssembly(instr, "lea rsp, [rsp+128]");
-	instr->SetFallthrough(originalInstrumentInstr);
-	originalInstrumentInstr->SetFallthrough(origFallthrough);
+	instr->setFallthrough(originalInstrumentInstr);
+	originalInstrumentInstr->setFallthrough(origFallthrough);
 }
 
 
@@ -945,15 +945,15 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p
 //
 void IntegerTransform64::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const RegisterName& p_reg1, const int p_constant, const RegisterName& p_reg3, int p_policy)
 {
-	assert(p_instruction && p_instruction->GetFallthrough());
+	assert(p_instruction && p_instruction->getFallthrough());
 
 	cerr << __func__ << ": r3 <-- r1*k: r1: " << Register::toString(p_reg1) << " k: " << p_constant << " target register: " << Register::toString(p_reg3) << "  annotation: " << p_annotation.toString() << endl;
 
-	Instruction_t *origFallthrough = p_instruction->GetFallthrough();
+	Instruction_t *origFallthrough = p_instruction->getFallthrough();
 	Instruction_t *instr, *first, *saturation_policy;
 	Instruction_t *restore = addNewAssembly("popf");
 	saturation_policy = addNewAssembly("nop");
-	saturation_policy->SetComment("lea overflow instrumentation(reg*k): policy code sequence");
+	saturation_policy->setComment("lea overflow instrumentation(reg*k): policy code sequence");
 
 	// Original code sequence:
 	//   lea r3, [r1*k]
@@ -969,25 +969,25 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *
 	//
 	/*
 	first = addNewAssembly("push " + Register::toString(p_reg1)); 
-	first->SetComment("lea overflow instrumentation(reg*k): start");
+	first->setComment("lea overflow instrumentation(reg*k): start");
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, first);
 	instr = addNewAssembly(first, "pushf");
 	*/
 
 	Instruction_t* originalInstrumentInstr = IRDBUtility::insertAssemblyBefore(getFileIR(), p_instruction, "lea rsp, [rsp-128]" , NULL);
-	p_instruction->SetComment("lea overflow instrumentation(reg*k): start");
+	p_instruction->setComment("lea overflow instrumentation(reg*k): start");
 	instr = addNewAssembly(p_instruction, std::string("push ") + Register::toString(p_reg1));
 	instr = addNewAssembly(instr, "pushf");
 /*--------------*/
 	// make sure we set the fallthrough post careful insertion
-//	first->SetFallthrough(instr);
+//	first->setFallthrough(instr);
 
 	std::ostringstream s;
 	s << "imul " << Register::toString(p_reg1) << "," << p_constant;
 	instr = addNewAssembly(instr, s.str());
 	instr = addNewAssembly(instr, "jno 0x22");
-	instr->SetFallthrough(saturation_policy);
-	instr->SetTarget(restore);
+	instr->setFallthrough(saturation_policy);
+	instr->setTarget(restore);
 
 	// <policy>                  
 	//         nop                    ;
@@ -1002,18 +1002,18 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *
 	//
 	Instruction_t *popf = addNewAssembly("popf");
 	Instruction_t *callback = addCallbackHandlerSequence(p_instruction, popf, OVERFLOW64_DETECTOR, p_policy);
-	saturation_policy->SetFallthrough(callback);
+	saturation_policy->setFallthrough(callback);
 	instr = addNewAssembly(popf, "pop " + Register::toString(p_reg1));
 	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
 	{
 		instr = addNewMaxSaturation(instr, p_reg3, p_annotation);
 		instr = addNewAssembly(instr, "lea rsp, [rsp+128]");
-		instr->SetFallthrough(origFallthrough);
+		instr->setFallthrough(origFallthrough);
 	}
 	else
 	{
 		instr = addNewAssembly(instr, "lea rsp, [rsp+128]");
-		instr->SetFallthrough(originalInstrumentInstr);
+		instr->setFallthrough(originalInstrumentInstr);
 	}
 
 	// <restore>
@@ -1023,11 +1023,11 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *
 	// <orig>: lea r3, [r1*k]        ; original instruction        
 	//         <originalNext>         ; original next instruction
 	//
-	restore->SetComment("lea overflow instrumentation(reg*reg): restore");
+	restore->setComment("lea overflow instrumentation(reg*reg): restore");
 	instr = addNewAssembly(restore, "pop " + Register::toString(p_reg1));
 	instr = addNewAssembly(instr, "lea rsp, [rsp+128]");
-	instr->SetFallthrough(originalInstrumentInstr);
-	originalInstrumentInstr->SetFallthrough(origFallthrough);
+	instr->setFallthrough(originalInstrumentInstr);
+	originalInstrumentInstr->setFallthrough(origFallthrough);
 }
 
 //
@@ -1045,7 +1045,7 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *
 
 bool IntegerTransform64::addTruncationCheck32(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
-	assert(p_instruction && p_instruction->GetFallthrough() &&
+	assert(p_instruction && p_instruction->getFallthrough() &&
 		p_annotation.getTruncationFromWidth() == 32 && 
 		(p_annotation.getTruncationToWidth() == 16 || p_annotation.getTruncationToWidth() == 8) &&
 		isMovInstruction(p_instruction));
@@ -1094,7 +1094,7 @@ bool IntegerTransform64::addTruncationCheck32(Instruction_t *p_instruction, cons
 	unsigned mask = 0, mask2 = 0;
 	string saturationValue = "0x0";
 
-	p_instruction->SetComment("monitor for truncation32");
+	p_instruction->setComment("monitor for truncation32");
 
 	if (p_annotation.getTruncationToWidth() == 16) 
 	{
@@ -1161,14 +1161,14 @@ bool IntegerTransform64::addTruncationCheck32(Instruction_t *p_instruction, cons
 	//
 
 	char buf[MAX_ASSEMBLY_SIZE];
-	Instruction_t *origFallthrough = p_instruction->GetFallthrough();
+	Instruction_t *origFallthrough = p_instruction->getFallthrough();
 	Instruction_t *instr, *save, *test;
 	Instruction_t *restore = addNewAssembly("popf");
-	restore->SetComment("trunc: restore flags");
+	restore->setComment("trunc: restore flags");
 
 /*
 	save = addNewAssembly("pushf");
-	save->SetComment("start truncation sequence");
+	save->setComment("start truncation sequence");
 */
 
 	if (p_annotation.isSigned())
@@ -1188,16 +1188,16 @@ bool IntegerTransform64::addTruncationCheck32(Instruction_t *p_instruction, cons
 /*--------------*/
 //	Instruction_t* originalInstrumentInstr = IRDBUtility::insertAssemblyBefore(getFileIR(), p_instruction, std::string("pushf"), NULL);
 	Instruction_t* originalInstrumentInstr = IRDBUtility::insertAssemblyBefore(getFileIR(), p_instruction, "lea rsp, [rsp-128]" , NULL);
-	p_instruction->SetComment("start truncation sequence");
+	p_instruction->setComment("start truncation sequence");
 	instr = addNewAssembly(p_instruction, "pushf");
 	test = addNewAssembly(instr, buf);
 /*--------------*/
- //   p_instruction->SetFallthrough(test);
+ //   p_instruction->setFallthrough(test);
 
-//	save->SetFallthrough(test);
+//	save->setFallthrough(test);
 
     instr = addNewAssembly(restore, "lea rsp, [rsp+128]");
-	instr->SetFallthrough(originalInstrumentInstr);
+	instr->setFallthrough(originalInstrumentInstr);
 
 	if (p_annotation.isUnsigned())
 	{
@@ -1205,8 +1205,8 @@ bool IntegerTransform64::addTruncationCheck32(Instruction_t *p_instruction, cons
 		Instruction_t *nop = addNewAssembly("nop");
 
 		instr = addNewAssembly(test, "jz 0x22"); // bogus jump target for now
-		instr->SetTarget(restore);
-		instr->SetFallthrough(nop);
+		instr->setTarget(restore);
+		instr->setFallthrough(nop);
 	
 		Instruction_t *callback; 
 
@@ -1214,16 +1214,16 @@ bool IntegerTransform64::addTruncationCheck32(Instruction_t *p_instruction, cons
 		{
 			string saturationInstruction = "mov " + p_annotation.getTarget2() + ", " + saturationValue;
 			Instruction_t *saturation = addNewAssembly(saturationInstruction);
-			saturation->SetComment("trunc/unsigned/saturate");
+			saturation->setComment("trunc/unsigned/saturate");
 			
 			callback = addCallbackHandlerSequence(p_instruction, saturation, detector, p_policy);
-			nop->SetFallthrough(callback);
-			saturation->SetFallthrough(restore);
+			nop->setFallthrough(callback);
+			saturation->setFallthrough(restore);
 		}
 		else
 		{
 			callback = addCallbackHandlerSequence(p_instruction, restore, detector, p_policy);
-			nop->SetFallthrough(callback);
+			nop->setFallthrough(callback);
 		}
 	}
 	else
@@ -1253,15 +1253,15 @@ bool IntegerTransform64::addTruncationCheck32(Instruction_t *p_instruction, cons
 		Instruction_t *nop = addNewAssembly("nop");
 
 		instr = addNewAssembly(test, "jz 0x22"); // bogus jump target for now
-		instr->SetTarget(restore);
+		instr->setTarget(restore);
 		
 		std::ostringstream s;
 		s << "cmp " << Register::toString(p_annotation.getRegister()) << ", 0x" << hex << mask2 << dec;
 		instr = addNewAssembly(instr, s.str());
 
 		instr = addNewAssembly(instr, "jae 0x22"); 
-		instr->SetTarget(restore);
-		instr->SetFallthrough(nop);
+		instr->setTarget(restore);
+		instr->setFallthrough(nop);
 
 		Instruction_t *callback; 
 
@@ -1270,18 +1270,18 @@ bool IntegerTransform64::addTruncationCheck32(Instruction_t *p_instruction, cons
 			string saturationInstruction = "mov " + p_annotation.getTarget2() + ", " + saturationValue;
 			Instruction_t *saturation = addNewAssembly(saturationInstruction);
 			if (p_annotation.isSigned())
-				saturation->SetComment("trunc/signed/saturate");
+				saturation->setComment("trunc/signed/saturate");
 			else
-				saturation->SetComment("trunc/unknown/saturate");
+				saturation->setComment("trunc/unknown/saturate");
 			
 			callback = addCallbackHandlerSequence(p_instruction, saturation, detector, p_policy);
-			nop->SetFallthrough(callback);
-			saturation->SetFallthrough(restore);
+			nop->setFallthrough(callback);
+			saturation->setFallthrough(restore);
 		}
 		else
 		{
 			callback = addCallbackHandlerSequence(p_instruction, restore, detector, p_policy);
-			nop->SetFallthrough(callback);
+			nop->setFallthrough(callback);
 		}
 	}
 
@@ -1328,7 +1328,7 @@ string IntegerTransform64::buildSaturationAssembly(Instruction_t *p_instruction,
 
 bool IntegerTransform64::addTruncationCheck64(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
-	assert(p_instruction && p_instruction->GetFallthrough() &&
+	assert(p_instruction && p_instruction->getFallthrough() &&
 		p_annotation.getTruncationFromWidth() == 64 && 
 		(p_annotation.getTruncationToWidth() == 32 || p_annotation.getTruncationToWidth() == 16 || p_annotation.getTruncationToWidth() == 8) &&
 		isMovInstruction(p_instruction));
@@ -1398,7 +1398,7 @@ bool IntegerTransform64::addTruncationCheck64(Instruction_t *p_instruction, cons
 	long long unsigned mask = 0, mask2 = 0;
 	string saturationValue = "0x0";
 
-	p_instruction->SetComment("monitor for truncation64");
+	p_instruction->setComment("monitor for truncation64");
 
 	if (p_annotation.getTruncationToWidth() == 32) 
 	{
@@ -1493,15 +1493,15 @@ bool IntegerTransform64::addTruncationCheck64(Instruction_t *p_instruction, cons
 	//
 
 	char buf[MAX_ASSEMBLY_SIZE];
-	Instruction_t *origFallthrough = p_instruction->GetFallthrough();
+	Instruction_t *origFallthrough = p_instruction->getFallthrough();
 	Instruction_t *instr, *save, *test, *pushf;
 	Instruction_t *restore = addNewAssembly("popf");
-	restore->SetComment("trunc: restore flags");
+	restore->setComment("trunc: restore flags");
 	Instruction_t *restoreReg = addNewAssembly("pop " + Register::toString(borrowReg));
 
 /*
 	save = addNewAssembly("push " + Register::toString(borrowReg));
-	save->SetComment("start truncation sequence");
+	save->setComment("start truncation sequence");
 
 	pushf = addNewAssembly(save, "pushf");
 
@@ -1524,7 +1524,7 @@ bool IntegerTransform64::addTruncationCheck64(Instruction_t *p_instruction, cons
 //	Instruction_t* originalInstrumentInstr = IRDBUtility::insertAssemblyBefore(getFileIR(), p_instruction, std::string("push ") + Register::toString(borrowReg), NULL);
 //	Instruction_t* lea = addNewAssembly("lea rsp, [rsp-128]");  // red zone 
 	Instruction_t* originalInstrumentInstr = IRDBUtility::insertAssemblyBefore(getFileIR(), p_instruction, "lea rsp, [rsp-128]" , NULL);
-	p_instruction->SetComment("start truncation sequence");
+	p_instruction->setComment("start truncation sequence");
 	instr = addNewAssembly(p_instruction, std::string("push ") + Register::toString(borrowReg));
 	instr = addNewAssembly(instr, "pushf");
 	if (p_annotation.isSigned())
@@ -1540,11 +1540,11 @@ bool IntegerTransform64::addTruncationCheck64(Instruction_t *p_instruction, cons
 	//             test eax, <reg>        ; (for 8 bit) 
 /*--------------*/
 
-//	save->SetFallthrough(pushf);
+//	save->setFallthrough(pushf);
 
-    restore->SetFallthrough(restoreReg);
+    restore->setFallthrough(restoreReg);
 	instr = addNewAssembly(restoreReg, "lea rsp, [rsp+128]");
-	instr->SetFallthrough(originalInstrumentInstr);
+	instr->setFallthrough(originalInstrumentInstr);
 
 	if (p_annotation.isUnsigned())
 	{
@@ -1552,8 +1552,8 @@ bool IntegerTransform64::addTruncationCheck64(Instruction_t *p_instruction, cons
 		Instruction_t *nop = addNewAssembly("nop");
 
 		instr = addNewAssembly(test, "jz 0x22"); // bogus jump target for now
-		instr->SetTarget(restore);
-		instr->SetFallthrough(nop);
+		instr->setTarget(restore);
+		instr->setFallthrough(nop);
 	
 		Instruction_t *callback; 
 
@@ -1561,16 +1561,16 @@ bool IntegerTransform64::addTruncationCheck64(Instruction_t *p_instruction, cons
 		{
 			string saturationInstruction = "mov " + p_annotation.getTarget2() + ", " + saturationValue;
 			Instruction_t *saturation = addNewAssembly(saturationInstruction);
-			saturation->SetComment("trunc/unsigned/saturate");
+			saturation->setComment("trunc/unsigned/saturate");
 			
 			callback = addCallbackHandlerSequence(p_instruction, saturation, detector, p_policy);
-			nop->SetFallthrough(callback);
-			saturation->SetFallthrough(restore);
+			nop->setFallthrough(callback);
+			saturation->setFallthrough(restore);
 		}
 		else
 		{
 			callback = addCallbackHandlerSequence(p_instruction, restore, detector, p_policy);
-			nop->SetFallthrough(callback);
+			nop->setFallthrough(callback);
 		}
 	}
 	else
@@ -1603,7 +1603,7 @@ bool IntegerTransform64::addTruncationCheck64(Instruction_t *p_instruction, cons
 		Instruction_t *nop = addNewAssembly("nop");
 
 		instr = addNewAssembly(test, "jz 0x22"); // bogus jump target for now
-		instr->SetTarget(restore);
+		instr->setTarget(restore);
 		
 		std::ostringstream s;
 		s << "mov " << Register::toString(borrowReg) << ", 0x" << hex << mask2 << dec;
@@ -1614,8 +1614,8 @@ bool IntegerTransform64::addTruncationCheck64(Instruction_t *p_instruction, cons
 		instr = addNewAssembly(instr, s2.str());
 
 		instr = addNewAssembly(instr, "jae 0x22"); 
-		instr->SetTarget(restore);
-		instr->SetFallthrough(nop);
+		instr->setTarget(restore);
+		instr->setFallthrough(nop);
 
 		Instruction_t *callback; 
 
@@ -1624,18 +1624,18 @@ bool IntegerTransform64::addTruncationCheck64(Instruction_t *p_instruction, cons
 			string saturationInstruction = "mov " + p_annotation.getTarget2() + ", " + saturationValue;
 			Instruction_t *saturation = addNewAssembly(saturationInstruction);
 			if (p_annotation.isSigned())
-				saturation->SetComment("trunc/signed/saturate");
+				saturation->setComment("trunc/signed/saturate");
 			else
-				saturation->SetComment("trunc/unknown/saturate");
+				saturation->setComment("trunc/unknown/saturate");
 			
 			callback = addCallbackHandlerSequence(p_instruction, saturation, detector, p_policy);
-			nop->SetFallthrough(callback);
-			saturation->SetFallthrough(restore);
+			nop->setFallthrough(callback);
+			saturation->setFallthrough(restore);
 		}
 		else
 		{
 			callback = addCallbackHandlerSequence(p_instruction, restore, detector, p_policy);
-			nop->SetFallthrough(callback);
+			nop->setFallthrough(callback);
 		}
 	}
 
@@ -1658,7 +1658,7 @@ bool IntegerTransform64::addSignednessCheck(Instruction_t *p_instruction, const 
 		return false;
 
 	string detector = p_annotation.isSigned() ? SIGNEDNESS64_DETECTOR_SIGNED : SIGNEDNESS64_DETECTOR_UNSIGNED;
-	Instruction_t *origFallthrough = p_instruction->GetFallthrough();
+	Instruction_t *origFallthrough = p_instruction->getFallthrough();
 
 	Instruction_t* originalInstrumentInstr = IRDBUtility::insertAssemblyBefore(getFileIR(), p_instruction, std::string("lea rsp, [rsp-128]"), NULL);
 	Instruction_t *save = addNewAssembly(p_instruction, "pushf");
@@ -1666,15 +1666,15 @@ bool IntegerTransform64::addSignednessCheck(Instruction_t *p_instruction, const 
 	std::ostringstream s;
 	s << "test " << Register::toString(p_annotation.getRegister()) << "," << Register::toString(p_annotation.getRegister());
 	Instruction_t *test = addNewAssembly(save, s.str());
-	originalInstrumentInstr->SetFallthrough(origFallthrough);
+	originalInstrumentInstr->setFallthrough(origFallthrough);
 
 	Instruction_t *jns = addNewAssembly(test, "jns 0x22");
 	Instruction_t *nop = addNewAssembly(jns, "nop");
 	Instruction_t *restore = addNewAssembly("popf");
 	Instruction_t *learestore = addNewAssembly(restore, "lea rsp, [rsp+128]");
-	learestore->SetFallthrough(originalInstrumentInstr);
+	learestore->setFallthrough(originalInstrumentInstr);
 
-	jns->SetTarget(restore);
+	jns->setTarget(restore);
 
 	Instruction_t *callback = NULL; 
 
@@ -1684,18 +1684,18 @@ bool IntegerTransform64::addSignednessCheck(Instruction_t *p_instruction, const 
 		Instruction_t *saturation = addNewMaxSaturation(nop, p_annotation.getRegister(), p_annotation);
 
 		if (p_annotation.isSigned())
-			saturation->SetComment("signedness/signed/saturate");
+			saturation->setComment("signedness/signed/saturate");
 		else
-			saturation->SetComment("signedness/unsigned/saturate");
+			saturation->setComment("signedness/unsigned/saturate");
 			
 		callback = addCallbackHandlerSequence(p_instruction, saturation, detector, p_policy);
-		nop->SetFallthrough(callback);
-		saturation->SetFallthrough(restore);
+		nop->setFallthrough(callback);
+		saturation->setFallthrough(restore);
 	}
 	else
 	{
 		callback = addCallbackHandlerSequence(p_instruction, restore, detector, p_policy);
-		nop->SetFallthrough(callback);
+		nop->setFallthrough(callback);
 	}
 	
 	return true;

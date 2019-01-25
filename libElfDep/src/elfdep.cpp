@@ -40,106 +40,106 @@ using namespace libTransform;
 // static helpers
 
 // use this to determine whether a scoop has a given name.
-static struct ScoopFinder : binary_function<const DataScoop_t*,const string,bool>
+static struct ScoopFinder : binary_function<const IRDB_SDK::DataScoop_t*,const string,bool>
 {
 	// declare a simple scoop finder function that finds scoops by name
-	bool operator()(const DataScoop_t* scoop, const string& name) const
+	bool operator()(const IRDB_SDK::DataScoop_t* scoop, const string& name) const
 	{
-		return (scoop->GetName() == name);
+		return (scoop->getName() == name);
 	};
 } finder;
 
-static DataScoop_t* find_scoop(FileIR_t *firp,const string &name)
+static IRDB_SDK::DataScoop_t* find_scoop(IRDB_SDK::FileIR_t *firp,const string &name)
 {
-	auto it=find_if(firp->GetDataScoops().begin(), firp->GetDataScoops().end(), bind2nd(finder, name)) ;
-	if( it != firp->GetDataScoops().end() )
+	auto it=find_if(firp->getDataScoops().begin(), firp->getDataScoops().end(), bind2nd(finder, name)) ;
+	if( it != firp->getDataScoops().end() )
 		return *it;
 	return NULL;
 };
 
-static unsigned int add_to_scoop(const string &str, DataScoop_t* scoop) 
+static unsigned int add_to_scoop(const string &str, IRDB_SDK::DataScoop_t* scoop) 
 {
 	// assert that this scoop is unpinned.  may need to enable --step move_globals --step-option move_globals:--cfi
-	assert(scoop->GetStart()->GetVirtualOffset()==0);
+	assert(scoop->getStart()->getVirtualOffset()==0);
 	int len=str.length();
-	scoop->SetContents(scoop->GetContents()+str);
-	virtual_offset_t oldend=scoop->GetEnd()->GetVirtualOffset();
+	scoop->setContents(scoop->getContents()+str);
+	virtual_offset_t oldend=scoop->getEnd()->getVirtualOffset();
 	virtual_offset_t newend=oldend+len;
-	scoop->GetEnd()->SetVirtualOffset(newend);
+	scoop->getEnd()->setVirtualOffset(newend);
 	return oldend+1;
 };
 
 template<int ptrsize>
-static void insert_into_scoop_at(const string &str, DataScoop_t* scoop, FileIR_t* firp, const unsigned int at) 
+static void insert_into_scoop_at(const string &str, IRDB_SDK::DataScoop_t* scoop, IRDB_SDK::FileIR_t* firp, const unsigned int at) 
 {
 	// assert that this scoop is unpinned.  may need to enable --step move_globals --step-option move_globals:--cfi
-	assert(scoop->GetStart()->GetVirtualOffset()==0);
+	assert(scoop->getStart()->getVirtualOffset()==0);
 	int len=str.length();
-	string new_scoop_contents=scoop->GetContents();
+	string new_scoop_contents=scoop->getContents();
 	new_scoop_contents.insert(at,str);
-	scoop->SetContents(new_scoop_contents);
+	scoop->setContents(new_scoop_contents);
 
-	virtual_offset_t oldend=scoop->GetEnd()->GetVirtualOffset();
+	virtual_offset_t oldend=scoop->getEnd()->getVirtualOffset();
 	virtual_offset_t newend=oldend+len;
-	scoop->GetEnd()->SetVirtualOffset(newend);
+	scoop->getEnd()->setVirtualOffset(newend);
 
 	// update each reloc to point to the new location.
-	for_each(scoop->GetRelocations().begin(), scoop->GetRelocations().end(), [str,at](Relocation_t* reloc)
+	for_each(scoop->getRelocations().begin(), scoop->getRelocations().end(), [str,at](IRDB_SDK::Relocation_t* reloc)
 	{
-		if((unsigned int)reloc->GetOffset()>=at)
-			reloc->SetOffset(reloc->GetOffset()+str.size());
+		if((unsigned int)reloc->getOffset()>=at)
+			reloc->setOffset(reloc->getOffset()+str.size());
 		
 	});
 
 	// check relocations for pointers to this object.
 	// we'll update dataptr_to_scoop relocs, but nothing else
 	// so assert if we find something else
-	for_each(firp->GetRelocations().begin(), firp->GetRelocations().end(), [scoop](Relocation_t* reloc)
+	for_each(firp->getRelocations().begin(), firp->getRelocations().end(), [scoop](IRDB_SDK::Relocation_t* reloc)
 	{
-		DataScoop_t* wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
-		assert(wrt != scoop || reloc->GetType()=="dataptr_to_scoop");
+		auto wrt=dynamic_cast<libIRDB::DataScoop_t*>(reloc->getWRT());
+		assert(wrt != scoop || reloc->getType()=="dataptr_to_scoop");
 	});
 
 	// for each scoop
-	for_each(firp->GetDataScoops().begin(), firp->GetDataScoops().end(), [&str,scoop,firp,at](DataScoop_t* scoop_to_update)
+	for_each(firp->getDataScoops().begin(), firp->getDataScoops().end(), [&str,scoop,firp,at](IRDB_SDK::DataScoop_t* scoop_to_update)
 	{
 		// for each relocation for that scoop
-		for_each(scoop_to_update->GetRelocations().begin(), scoop_to_update->GetRelocations().end(), [&str,scoop,firp,scoop_to_update,at](Relocation_t* reloc)
+		for_each(scoop_to_update->getRelocations().begin(), scoop_to_update->getRelocations().end(), [&str,scoop,firp,scoop_to_update,at](IRDB_SDK::Relocation_t* reloc)
 		{
 			// if it's a reloc that's wrt scoop
-			DataScoop_t* wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
+			auto wrt=dynamic_cast<libIRDB::DataScoop_t*>(reloc->getWRT());
 			if(wrt==scoop)
 			{
 				// then we need to update the scoop
-				if(reloc->GetType()=="dataptr_to_scoop")
+				if(reloc->getType()=="dataptr_to_scoop")
 				{
-					string contents=scoop_to_update->GetContents();
+					string contents=scoop_to_update->getContents();
 					// subtract the stringsize from the (implicitly stored) addend
 					// taking pointer size into account.
 					switch(ptrsize)
 					{
 						case 4:
 						{
-							unsigned int val=*((unsigned int*)&contents.c_str()[reloc->GetOffset()]); 
+							unsigned int val=*((unsigned int*)&contents.c_str()[reloc->getOffset()]); 
 							if(val>=at)
 								val +=str.size();
-							contents.replace(reloc->GetOffset(), ptrsize, (const char*)&val, ptrsize);
+							contents.replace(reloc->getOffset(), ptrsize, (const char*)&val, ptrsize);
 							break;
 						
 						}
 						case 8:
 						{
-							unsigned long long val=*((long long*)&contents.c_str()[reloc->GetOffset()]); 
+							unsigned long long val=*((long long*)&contents.c_str()[reloc->getOffset()]); 
 							if(val>=at)
 								val +=str.size();
-							contents.replace(reloc->GetOffset(), ptrsize, (const char*)&val, ptrsize);
+							contents.replace(reloc->getOffset(), ptrsize, (const char*)&val, ptrsize);
 							break;
 
 						}
 						default: 
 							assert(0);
 					}
-					scoop_to_update->SetContents(contents);
+					scoop_to_update->setContents(contents);
 				}
 			}	
 
@@ -149,7 +149,7 @@ static void insert_into_scoop_at(const string &str, DataScoop_t* scoop, FileIR_t
 };
 
 template<int ptrsize>
-static void prefix_scoop(const string &str, DataScoop_t* scoop, FileIR_t* firp) 
+static void prefix_scoop(const string &str, IRDB_SDK::DataScoop_t* scoop, IRDB_SDK::FileIR_t* firp) 
 {
 	insert_into_scoop_at<ptrsize>(str,scoop,firp,0);
 };
@@ -160,15 +160,15 @@ static void prefix_scoop(const string &str, DataScoop_t* scoop, FileIR_t* firp)
 
 
 // constructors
-ElfDependencies_t::ElfDependencies_t(FileIR_t* firp)
+ElfDependencies_t::ElfDependencies_t(IRDB_SDK::FileIR_t* firp)
 	: Transform(NULL,firp,NULL)
 {
 	typedef ElfDependencies_t::ElfDependenciesImpl_t<Elf64_Sym, Elf64_Rela, Elf64_Dyn, R_X86_64_GLOB_DAT, 32, 8> ElfDependencies64_t;
 	typedef ElfDependencies_t::ElfDependenciesImpl_t<Elf32_Sym, Elf32_Rel, Elf32_Dyn, R_386_GLOB_DAT, 8, 4> ElfDependencies32_t;
 
-	if(firp->GetArchitectureBitWidth()==32)
+	if(firp->getArchitectureBitWidth()==32)
 		transformer.reset(new ElfDependencies32_t(firp));
-	else if(firp->GetArchitectureBitWidth()==64)
+	else if(firp->getArchitectureBitWidth()==64)
 		transformer.reset(new ElfDependencies64_t(firp));
 	else
 		assert(0);
@@ -176,21 +176,21 @@ ElfDependencies_t::ElfDependencies_t(FileIR_t* firp)
 
 
 template<typename T_Elf_Sym, typename T_Elf_Rela, typename T_Elf_Dyn, int reloc_type, int rela_shift, int ptrsize>
-ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>::ElfDependenciesImpl_t(FileIR_t* firp)
+ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>::ElfDependenciesImpl_t(IRDB_SDK::FileIR_t* firp)
 	: ElfDependencies_t::ElfDependenciesBase_t(firp)
 {
 }
 
 
 template<typename T_Elf_Sym, typename T_Elf_Rela, typename T_Elf_Dyn, int reloc_type, int rela_shift, int ptrsize>
-pair<DataScoop_t*,int> ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>::appendGotEntry(const string &name)
+pair<IRDB_SDK::DataScoop_t*,int> ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>::appendGotEntry(const string &name)
 {
 	auto got_scoop=add_got_entry(name);
 	return {got_scoop,0};
 }
 
 template<typename T_Elf_Sym, typename T_Elf_Rela, typename T_Elf_Dyn, int reloc_type, int rela_shift, int ptrsize>
-Instruction_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>::appendPltEntry(const string &name)
+IRDB_SDK::Instruction_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>::appendPltEntry(const string &name)
 {
 
 	static int labelcounter=0;
@@ -204,9 +204,9 @@ Instruction_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_E
 	
 	auto newreloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, 0, "pcrel", got_scoop);
 
-	newinsn->GetRelocations().insert(newreloc);
-	getFileIR()->GetRelocations().insert(newreloc);
-	newinsn->GetAddress()->SetFileID(getFileIR()->GetFile()->GetBaseID());
+	dynamic_cast<libIRDB::Instruction_t*>(newinsn)->GetRelocations().insert(newreloc);
+	dynamic_cast<libIRDB::FileIR_t*>(getFileIR())->GetRelocations().insert(newreloc);
+	newinsn->getAddress()->setFileID(getFileIR()->getFile()->getBaseID());
 
 	return newinsn;
 }
@@ -219,28 +219,28 @@ Instruction_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_E
 // we need a use case to test this code -- it was copied from CFI.
 
 template<typename T_Elf_Sym, typename T_Elf_Rela, typename T_Elf_Dyn, int reloc_type, int rela_shift, int ptrsize>
-Instruction_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>::find_runtime_resolve(DataScoop_t* gotplt_scoop)
+IRDB_SDK::Instruction_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>::find_runtime_resolve(IRDB_SDK::DataScoop_t* gotplt_scoop)
 {
 	const auto firp=getFileIR();
 	// find any data_to_insn_ptr reloc for the gotplt scoop
-	auto it=find_if(gotplt_scoop->GetRelocations().begin(), gotplt_scoop->GetRelocations().end(), [](Relocation_t* reloc)
+	auto it=find_if(gotplt_scoop->getRelocations().begin(), gotplt_scoop->getRelocations().end(), [](IRDB_SDK::Relocation_t* reloc)
 	{
-		return reloc->GetType()=="data_to_insn_ptr";
+		return reloc->getType()=="data_to_insn_ptr";
 	});
 	// there _should_ be one.
-	assert(it!=gotplt_scoop->GetRelocations().end());
+	assert(it!=gotplt_scoop->getRelocations().end());
 
 	Relocation_t* reloc=*it;
-	Instruction_t* wrt=dynamic_cast<Instruction_t*>(reloc->GetWRT());
+	auto wrt=dynamic_cast<Instruction_t*>(reloc->getWRT());
 	assert(wrt);	// should be a WRT
 	assert(wrt->getDisassembly().find("push ") != string::npos);	// should be push K insn
-	return wrt->GetFallthrough();	// jump to the jump, or not.. doesn't matter.  zopt will fix
+	return wrt->getFallthrough();	// jump to the jump, or not.. doesn't matter.  zopt will fix
 }
 
 template<typename T_Elf_Sym, typename T_Elf_Rela, typename T_Elf_Dyn, int reloc_type, int rela_shift, int ptrsize>
-DataScoop_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>::add_got_entry(const std::string& name)
+IRDB_SDK::DataScoop_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>::add_got_entry(const std::string& name)
 {
-	const auto firp=getFileIR();
+	const auto firp=dynamic_cast<libIRDB::FileIR_t*>(getFileIR());
 	// find relevant scoops
 	auto dynamic_scoop=find_scoop(firp,".dynamic");
 	// auto gotplt_scoop=find_scoop(firp,".got.plt");
@@ -252,7 +252,7 @@ DataScoop_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf
 	auto relscoop=relaplt_scoop!=NULL ?  relaplt_scoop : relplt_scoop;
 	auto gnu_version_scoop=find_scoop(firp,".gnu.version");
 	assert(gnu_version_scoop);
-	assert(gnu_version_scoop->GetStart()->GetVirtualOffset()==0);
+	assert(gnu_version_scoop->getStart()->getVirtualOffset()==0);
 
 	if (!relscoop) 
 		throw std::logic_error("Cannot find rela.plt or rel.plt. Did you remember to use move_globals with --elf_tables?");
@@ -263,9 +263,9 @@ DataScoop_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf
 
 
 	// create a new, unpinned, rw+relro scoop that's an empty pointer.
-	AddressID_t* start_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, firp->GetFile()->GetBaseID(), 0);
-	AddressID_t* end_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, firp->GetFile()->GetBaseID(), ptrsize-1);
-	DataScoop_t* external_func_addr_scoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE,
+	auto start_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, firp->getFile()->getBaseID(), 0);
+	auto end_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, firp->getFile()->getBaseID(), ptrsize-1);
+	auto external_func_addr_scoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE,
 		name, start_addr,end_addr, NULL, 6, true, new_got_entry_str);
 
 	firp->GetAddresses().insert(start_addr);
@@ -291,9 +291,9 @@ DataScoop_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf
 
 	// find the rela count.  can't insert before that.
 	int rela_count=0;
-	for(int i=0;i+sizeof(T_Elf_Dyn)<dynamic_scoop->GetSize(); i+=sizeof(T_Elf_Dyn))
+	for(int i=0;i+sizeof(T_Elf_Dyn)<dynamic_scoop->getSize(); i+=sizeof(T_Elf_Dyn))
 	{
-		T_Elf_Dyn &dyn_entry=*(T_Elf_Dyn*)&dynamic_scoop->GetContents().c_str()[i];
+		T_Elf_Dyn &dyn_entry=*(T_Elf_Dyn*)&dynamic_scoop->getContents().c_str()[i];
 		if(dyn_entry.d_tag==DT_RELACOUNT)	 // diff than rela size.
 		{
 			// add to the size
@@ -314,15 +314,15 @@ DataScoop_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf
 	unsigned int at=rela_count*sizeof(T_Elf_Rela);
 	insert_into_scoop_at<ptrsize>(dl_rel_str, relscoop, firp, at);
 
-	Relocation_t* dl_reloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE,  at+((uintptr_t)&dl_rel.r_offset -(uintptr_t)&dl_rel), "dataptr_to_scoop", external_func_addr_scoop);
-	relscoop->GetRelocations().insert(dl_reloc);
+	auto dl_reloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE,  at+((uintptr_t)&dl_rel.r_offset -(uintptr_t)&dl_rel), "dataptr_to_scoop", external_func_addr_scoop);
+	dynamic_cast<libIRDB::Instruction_t*>(relscoop)->GetRelocations().insert(dl_reloc);
 	firp->GetRelocations().insert(dl_reloc);
 
-	for(int i=0;i+sizeof(T_Elf_Dyn)<dynamic_scoop->GetSize(); i+=sizeof(T_Elf_Dyn))
+	for(int i=0;i+sizeof(T_Elf_Dyn)<dynamic_scoop->getSize(); i+=sizeof(T_Elf_Dyn))
 	{
 		// cast the index'd c_str to an Elf_Dyn pointer and deref it to assign to a 
 		// reference structure.  That way editing the structure directly edits the string.
-		T_Elf_Dyn &dyn_entry=*(T_Elf_Dyn*)&dynamic_scoop->GetContents().c_str()[i];
+		T_Elf_Dyn &dyn_entry=*(T_Elf_Dyn*)&dynamic_scoop->getContents().c_str()[i];
 		if(dyn_entry.d_tag==DT_RELASZ)
 			// add to the size
 			dyn_entry.d_un.d_val+=sizeof(T_Elf_Rela);
@@ -416,7 +416,7 @@ bool ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,rel
 template<typename T_Elf_Sym, typename T_Elf_Rela, typename T_Elf_Dyn, int reloc_type, int rela_shift, int ptrsize>
 void ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,reloc_type,rela_shift,ptrsize>::appendLibraryDepedencies(const string &libraryName)
 {
-	const auto firp=getFileIR();
+	const auto firp=dynamic_cast<FileIR_t*>(getFileIR());
 
 	auto dynamic_scoop=find_scoop(firp,".dynamic");
 	auto dynstr_scoop=find_scoop(firp,".dynstr");
@@ -426,7 +426,7 @@ void ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,rel
 		throw std::logic_error("Cannot change libraries in statically linked program");
 
 	// may need to enable --step move_globals --step-option move_globals:--cfi
-	if(dynamic_scoop->GetStart()->GetVirtualOffset()!=0)
+	if(dynamic_scoop->getStart()->getVirtualOffset()!=0)
 	{
 		cerr<<"Cannot find relocation-scoop pair:  Did you enable '--step move_globals --step-option move_globals:--cfi' ? "<<endl;
 		exit(1);
@@ -449,9 +449,9 @@ void ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,rel
 	while(1)
 	{
 		// assert we don't run off the end.
-		assert((index+1)*sizeof(T_Elf_Dyn) <= dynamic_scoop->GetContents().size());
+		assert((index+1)*sizeof(T_Elf_Dyn) <= dynamic_scoop->getContents().size());
 
-		const auto dyn_ptr=(T_Elf_Dyn*) & dynamic_scoop->GetContents().c_str()[index*sizeof(T_Elf_Dyn)];
+		const auto dyn_ptr=(T_Elf_Dyn*) & dynamic_scoop->getContents().c_str()[index*sizeof(T_Elf_Dyn)];
 	
 		if(memcmp(dyn_ptr,&null_dynamic_entry,sizeof(T_Elf_Dyn)) == 0 )
 		{
@@ -460,14 +460,16 @@ void ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,rel
 			for(auto i=0U; i<sizeof(T_Elf_Dyn); i++)
 			{
 				// copy new_dynamic_entry ontop of null entry.
-				dynamic_scoop->GetContents()[index*sizeof(T_Elf_Dyn) + i ] = ((char*)&new_dynamic_entry)[i];
+				auto str=dynamic_scoop->getContents();
+				str[index*sizeof(T_Elf_Dyn) + i ] = ((char*)&new_dynamic_entry)[i];
+				dynamic_scoop->setContents(str);
 			}
 
 			// check if there's room for the new null entry
-			if((index+2)*sizeof(T_Elf_Dyn) <= dynamic_scoop->GetContents().size())
+			if((index+2)*sizeof(T_Elf_Dyn) <= dynamic_scoop->getContents().size())
 			{
 				/* yes */
-				const auto next_entry=(T_Elf_Dyn*)&dynamic_scoop->GetContents().c_str()[(index+1)*sizeof(T_Elf_Dyn)];
+				const auto next_entry=(T_Elf_Dyn*)&dynamic_scoop->getContents().c_str()[(index+1)*sizeof(T_Elf_Dyn)];
 				// assert it's actually null 
 				assert(memcmp(next_entry,&null_dynamic_entry,sizeof(T_Elf_Dyn)) == 0 );
 			}
@@ -499,7 +501,7 @@ void ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,rel
 		throw std::logic_error("Cannot change libraries in statically linked program");
 
 	// may need to enable --step move_globals --step-option move_globals:--cfi
-	if(dynamic_scoop->GetStart()->GetVirtualOffset()!=0)
+	if(dynamic_scoop->getStart()->getVirtualOffset()!=0)
 	{
 		cerr<<"Cannot find relocation-scoop pair:  Did you enable '--step move_globals --step-option move_globals:--cfi' ? "<<endl;
 		exit(1);

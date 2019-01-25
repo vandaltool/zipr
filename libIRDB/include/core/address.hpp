@@ -18,18 +18,22 @@
  *
  */
 
+namespace libIRDB
+{
+
 
 //
 // An address in a variant.
 //
-typedef uintptr_t virtual_offset_t;
-class AddressID_t : public BaseObj_t
+using virtual_offset_t = IRDB_SDK::VirtualOffset_t;
+class AddressID_t : virtual public IRDB_SDK::AddressID_t, public BaseObj_t
 {
     public:
+	virtual ~AddressID_t() {}
 	AddressID_t() : BaseObj_t(NULL), fileID(NOT_IN_DATABASE), virtual_offset(0) 
-		{ SetBaseID(NOT_IN_DATABASE); }
+		{ setBaseID(NOT_IN_DATABASE); }
 	AddressID_t(db_id_t myid, db_id_t myfileID, virtual_offset_t voff) : BaseObj_t(NULL), fileID(myfileID), virtual_offset(voff) 
-		{ SetBaseID(myid); }
+		{ setBaseID(myid); }
 
 	AddressID_t& operator=(const AddressID_t &rhs) {
 		if (this != &rhs)
@@ -41,18 +45,18 @@ class AddressID_t : public BaseObj_t
 		return *this;
  	}
 
-        db_id_t GetFileID() const { return fileID; }
-        void SetFileID(db_id_t thefileID) { fileID=thefileID; }
+        db_id_t getFileID() const { return fileID; }
+        void setFileID(db_id_t thefileID) { fileID=thefileID; }
 
-        virtual_offset_t GetVirtualOffset() { return virtual_offset; }
-        void SetVirtualOffset(virtual_offset_t voff) { virtual_offset=voff; }
+        virtual_offset_t getVirtualOffset() const { return virtual_offset; }
+        void setVirtualOffset(virtual_offset_t voff) { virtual_offset=voff; }
 
 	std::vector<std::string> WriteToDB(File_t *vid, db_id_t newid, bool p_withHeader);
 
-	inline bool operator<(const AddressID_t& cmp) const 
+	bool operator<(const AddressID_t& cmp) const 
 		{ return fileID < cmp.fileID || (fileID == cmp.fileID && virtual_offset < cmp.virtual_offset);} 
 
-	inline bool operator!=(const AddressID_t& cmp) const 
+	bool operator!=(const AddressID_t& cmp) const 
 		{ return fileID != cmp.fileID || virtual_offset != cmp.virtual_offset; }  
 
 
@@ -65,3 +69,4 @@ class AddressID_t : public BaseObj_t
 	void Register(VariantID_t *vid);
 
 };
+}

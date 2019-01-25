@@ -10,6 +10,7 @@ myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 files="Rewrite_Utility.cpp  transform.cpp"
 
 cpppath='''
+         $IRDB_SDK/include
          $SECURITY_TRANSFORMS_HOME/include
          $SECURITY_TRANSFORMS_HOME/libIRDB/include
          $SECURITY_TRANSFORMS_HOME/libtransform/include

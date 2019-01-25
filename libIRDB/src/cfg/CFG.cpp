@@ -30,43 +30,43 @@ using namespace libIRDB;
 /*
  *  FindTargets - locate all possible instructions that are the target of a jump instruction
  */
-static InstructionSet_t FindBlockStarts(Function_t* func) 
+static InstructionSet_t FindBlockStarts(IRDB_SDK::Function_t* func) 
 {
 
 	InstructionSet_t targets;
 	InstructionSet_t found_fallthrough_to;
 
-	if(func->GetEntryPoint())
+	if(func->getEntryPoint())
 		/* the entry point of the function is a target instruction for this CFG */
-		targets.insert(func->GetEntryPoint());
+		targets.insert(func->getEntryPoint());
 
 	/* for each instruction, decide if it's a block start based on whether or not 
 	 * it can be indirectly branched to.  Also mark direct targets as block starts.
 	 */
-	for(InstructionSet_t::iterator it=func->GetInstructions().begin();
-		it!=func->GetInstructions().end();
+	for(auto it=func->getInstructions().begin();
+		it!=func->getInstructions().end();
 		++it
 	   )
 	{
 		/* Get the instruction */
-		Instruction_t* insn=*it;
+		auto insn=*it;
 
 		/* If this instruction might be an indirect branch target, then mark it as a block start */
-		if(insn->GetIndirectBranchTargetAddress())
+		if(insn->getIndirectBranchTargetAddress())
 		{
 			targets.insert(insn);
 		}
 
 		/* get target and fallthrough */
-		Instruction_t* target=insn->GetTarget();
-		Instruction_t* ft=insn->GetFallthrough();
+		auto target=insn->getTarget();
+		auto ft=insn->getFallthrough();
 
 		/* if this instruction has a target, and the target is in this function, mark the target as a block start */
-		if(target && is_in_container(func->GetInstructions(), target))
+		if(target && is_in_container(func->getInstructions(), target))
 			targets.insert(target);
 
 		/* there is a target, and a failthrough, and the fallthrough is in this function */
-		if(target && ft && is_in_container(func->GetInstructions(), ft))
+		if(target && ft && is_in_container(func->getInstructions(), ft))
 			targets.insert(ft);
 
 		// we already found a fallthrough to ft, so we have 2+ fallthroughs to ft.  mark it as a control flow merge.
@@ -82,14 +82,14 @@ static InstructionSet_t FindBlockStarts(Function_t* func)
 	return targets;
 }
 
-ControlFlowGraph_t::ControlFlowGraph_t(Function_t* func) :
-	entry(NULL), function(func)
+ControlFlowGraph_t::ControlFlowGraph_t(IRDB_SDK::Function_t* func) :
+	entry(NULL), function(dynamic_cast<Function_t*>(func))
 {
 	Build(func);	
 }
 
 
-void ControlFlowGraph_t::alloc_blocks(const InstructionSet_t &starts, map<Instruction_t*,BasicBlock_t*>& insn2block_map)
+void ControlFlowGraph_t::alloc_blocks(const InstructionSet_t &starts, map<IRDB_SDK::Instruction_t*,BasicBlock_t*>& insn2block_map)
 {
 	/* create a basic block for each instruction that starts a block */
 	for(const auto &insn : starts)
@@ -106,7 +106,7 @@ void ControlFlowGraph_t::alloc_blocks(const InstructionSet_t &starts, map<Instru
 	}
 }
 
-void ControlFlowGraph_t::build_blocks(const map<Instruction_t*,BasicBlock_t*>& insn2block_map)
+void ControlFlowGraph_t::build_blocks(const map<IRDB_SDK::Instruction_t*,BasicBlock_t*>& insn2block_map)
 {
 
 	/* Ask the basic block to set the fields for each block that need to be set */
@@ -126,7 +126,7 @@ void ControlFlowGraph_t::build_blocks(const map<Instruction_t*,BasicBlock_t*>& i
 
 }
 
-void ControlFlowGraph_t::find_unblocked_instructions(InstructionSet_t &starts, Function_t* func)
+void ControlFlowGraph_t::find_unblocked_instructions(InstructionSet_t &starts, IRDB_SDK::Function_t* func)
 {
 	auto mapped_instructions=InstructionSet_t();
 	auto missed_instructions=InstructionSet_t();
@@ -134,23 +134,23 @@ void ControlFlowGraph_t::find_unblocked_instructions(InstructionSet_t &starts, F
 		mapped_instructions.insert(ALLOF(block->GetInstructions()));
 
 	auto my_inserter=inserter(missed_instructions,missed_instructions.end());
-	set_difference(ALLOF(func->GetInstructions()), ALLOF(mapped_instructions), my_inserter);
+	set_difference(ALLOF(func->getInstructions()), ALLOF(mapped_instructions), my_inserter);
 	starts.insert(ALLOF(missed_instructions));
 }
 
 
 
-void ControlFlowGraph_t::Build(Function_t* func)
+void ControlFlowGraph_t::Build(IRDB_SDK::Function_t* func)
 {
 	auto starts=FindBlockStarts(func);
 
-	auto insn2block_map=map<Instruction_t*,BasicBlock_t*> ();
+	auto insn2block_map=map<IRDB_SDK::Instruction_t*,BasicBlock_t*> ();
 
 	alloc_blocks(starts, insn2block_map);
 	build_blocks(insn2block_map);
 	/* record the entry block */
-	if(func->GetEntryPoint())
-		entry=insn2block_map[func->GetEntryPoint()];
+	if(func->getEntryPoint())
+		entry=insn2block_map[func->getEntryPoint()];
 
 	/* most functions are done now. */
 	/* however, if a function has a (direct) side entrance, 
@@ -184,12 +184,12 @@ CFG_EdgeType ControlFlowGraph_t::GetEdgeType(const BasicBlock_t *p_src, const Ba
 
 	auto edgeType = CFG_EdgeType();
 
-	if (last_in_src->GetFallthrough() == first_in_tgt)
+	if (last_in_src->getFallthrough() == first_in_tgt)
 	{
 		edgeType.insert(CFG_FallthroughEdge);
 	}
 
-	if (last_in_src->GetTarget() == first_in_tgt)
+	if (last_in_src->getTarget() == first_in_tgt)
 	{
 		edgeType.insert(CFG_TargetEdge);
 	}

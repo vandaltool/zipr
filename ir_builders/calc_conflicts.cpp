@@ -43,7 +43,7 @@ int bad_fallthrough_count=0;
 using namespace libIRDB;
 using namespace std;
 
-set< pair<db_id_t,int> > missed_instructions;
+set< pair<DatabaseID_t,int> > missed_instructions;
 int failed_target_count=0;
 
 pqxxDB_t pqxx_interface;
@@ -65,7 +65,7 @@ void count_conflicts (FileIR_t* virp)
 	{
 		Instruction_t *insn=*it;
 
-		virtual_offset_t vo=insn->GetAddress()->GetVirtualOffset();
+		VirtualOffset_t vo=insn->GetAddress()->GetVirtualOffset();
 
 		for(int i=0;i<insn->GetDataBits().length();i++)
 			conflict_map[(vo+i)]++;

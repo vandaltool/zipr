@@ -42,7 +42,7 @@ string DataScoop_t::WriteToDBRange(File_t *fid, db_id_t newid, int start, int en
 
  */
 
-	db_id_t type_id=(GetType() ? GetType()->GetBaseID() : BaseObj_t::NOT_IN_DATABASE);
+	db_id_t type_id=(getType() ? getType()->getBaseID() : BaseObj_t::NOT_IN_DATABASE);
 
         ostringstream hex_data;
 
@@ -50,22 +50,22 @@ string DataScoop_t::WriteToDBRange(File_t *fid, db_id_t newid, int start, int en
         string q=string("insert into ")+table_name+
                 string(" (scoop_id, name, type_id, start_address_id, end_address_id, data, permissions, relro) ")+
                 string(" VALUES (") +
-                string("'") + to_string(GetBaseID()) + string("', ") +
-                string("'") + GetName()  + string("', ") +
+                string("'") + to_string(getBaseID()) + string("', ") +
+                string("'") + getName()  + string("', ") +
                 string("'") + to_string(type_id) + string("', ") +
-                string("'") + to_string(GetStart()->GetBaseID()) + string("', ") +
-                string("'") + to_string(GetEnd()->GetBaseID()) + string("', ") +
+                string("'") + to_string(getStart()->getBaseID()) + string("', ") +
+                string("'") + to_string(getEnd()->getBaseID()) + string("', ") +
                 string("'") + /* empty data field -- for now  + */ string("', ") +
                 string("'") + to_string(permissions) + string("', ") + 
                 string("'") + to_string(is_relro) + string("'); ") ;
 	// add the table row with empty data field.
-	dbintr->IssueQuery(q);
+	dbintr->issueQuery(q);
 
 
 	// now try to append the data to the field in chunks.
 
 	string query_start="update "+table_name+" set data = data || decode('";
-	string query_end="', 'hex') where scoop_id="+ string("'") + to_string(GetBaseID()) + string("'; ") ;
+	string query_end="', 'hex') where scoop_id="+ string("'") + to_string(getBaseID()) + string("'; ") ;
 
 
         hex_data << query_start << setfill('0') << hex;
@@ -85,7 +85,7 @@ string DataScoop_t::WriteToDBRange(File_t *fid, db_id_t newid, int start, int en
 			hex_data << query_end;
 
 			// append this chunk to the db.
-			dbintr->IssueQuery(hex_data.str());
+			dbintr->issueQuery(hex_data.str());
 
 			// restart 
 			hex_data.str("");	// reset to empty
@@ -96,7 +96,7 @@ string DataScoop_t::WriteToDBRange(File_t *fid, db_id_t newid, int start, int en
 	hex_data << query_end;
 
 	// append this chunk to the db.
-	dbintr->IssueQuery(hex_data.str());
+	dbintr->issueQuery(hex_data.str());
 
 	return "";
 }

@@ -1,15 +1,15 @@
 #ifndef fill_in_cfg_hpp
 #define fill_in_cfg_hpp
 
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 #include <stdlib.h>
 #include <map>
 #include <exeio.h>
 
-class PopulateCFG : public libIRDB::Transform_SDK::TransformStep_t
+class PopulateCFG : public IRDB_SDK::TransformStep_t
 {
     public:
-        PopulateCFG(libIRDB::db_id_t p_variant_id = 0,
+        PopulateCFG(IRDB_SDK::DatabaseID_t p_variant_id = 0,
                     bool p_fix_landing_pads = true
             )
             :
@@ -39,37 +39,37 @@ class PopulateCFG : public libIRDB::Transform_SDK::TransformStep_t
 		return std::string("fill_in_cfg");
 	}
         int parseArgs(const std::vector<std::string> step_args) override;
-	int executeStep(libIRDB::IRDBObjects_t *const) override;
+	int executeStep(IRDB_SDK::IRDBObjects_t *const) override;
     
     private: // methods
         
         // main workers
-        void fill_in_cfg(libIRDB::FileIR_t *);
-        void fill_in_scoops(libIRDB::FileIR_t *);
-        void detect_scoops_in_code(libIRDB::FileIR_t *firp);
-        void fill_in_landing_pads(libIRDB::FileIR_t *);
+        void fill_in_cfg(IRDB_SDK::FileIR_t *);
+        void fill_in_scoops(IRDB_SDK::FileIR_t *);
+        void detect_scoops_in_code(IRDB_SDK::FileIR_t *firp);
+        void fill_in_landing_pads(IRDB_SDK::FileIR_t *);
         
         // helpers
         void populate_instruction_map
 	(
-		std::map< std::pair<libIRDB::db_id_t,libIRDB::virtual_offset_t>, libIRDB::Instruction_t*>&,
-		libIRDB::FileIR_t *
+		std::map< std::pair<IRDB_SDK::DatabaseID_t,IRDB_SDK::VirtualOffset_t>, IRDB_SDK::Instruction_t*>&,
+		IRDB_SDK::FileIR_t *
 	);
         
         void set_fallthrough
 	(
-                std::map< std::pair<libIRDB::db_id_t,libIRDB::virtual_offset_t>, libIRDB::Instruction_t*>&,
-                libIRDB::DecodedInstruction_t *, libIRDB::Instruction_t *, libIRDB::FileIR_t *
+                std::map< std::pair<IRDB_SDK::DatabaseID_t,IRDB_SDK::VirtualOffset_t>, IRDB_SDK::Instruction_t*>&,
+                IRDB_SDK::DecodedInstruction_t *, IRDB_SDK::Instruction_t *, IRDB_SDK::FileIR_t *
 	);
         
         void set_target
 	(
-                std::map< std::pair<libIRDB::db_id_t,libIRDB::virtual_offset_t>, libIRDB::Instruction_t*>&,
-                libIRDB::DecodedInstruction_t *, libIRDB::Instruction_t *, libIRDB::FileIR_t *
+                std::map< std::pair<IRDB_SDK::DatabaseID_t,IRDB_SDK::VirtualOffset_t>, IRDB_SDK::Instruction_t*>&,
+                IRDB_SDK::DecodedInstruction_t *, IRDB_SDK::Instruction_t *, IRDB_SDK::FileIR_t *
 	);
         
-        libIRDB::File_t* find_file(libIRDB::FileIR_t *, libIRDB::db_id_t);
-        void add_new_instructions(libIRDB::FileIR_t *);
+        IRDB_SDK::File_t* find_file(IRDB_SDK::FileIR_t *, IRDB_SDK::DatabaseID_t);
+        void add_new_instructions(IRDB_SDK::FileIR_t *);
         bool is_in_relro_segment(const int);
     
     private: //data
@@ -85,11 +85,11 @@ class PopulateCFG : public libIRDB::Transform_SDK::TransformStep_t
 	size_t scoops_detected=0;
         
         // non-optional
-	libIRDB::db_id_t variant_id;        
+	IRDB_SDK::DatabaseID_t variant_id;        
         bool fix_landing_pads;
         
         std::unique_ptr<EXEIO::exeio> elfiop;
-        std::set< std::pair<libIRDB::db_id_t,libIRDB::virtual_offset_t> > missed_instructions;
+        std::set< std::pair<IRDB_SDK::DatabaseID_t,IRDB_SDK::VirtualOffset_t> > missed_instructions;
 };
 
 #endif

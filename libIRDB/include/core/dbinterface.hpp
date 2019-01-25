@@ -18,11 +18,14 @@
  *
  */
 
+namespace libIRDB
+{
+using DatabaseErrorType_t = IRDB_SDK::DatabaseErrorType_t;
 
-class DatabaseError_t
+class DatabaseError_t : virtual public IRDB_SDK::DatabaseError_t
 {
 	public: 
-		enum DatabaseErrorType_t {VariantNotInDatabase, VariantTableNotRegistered};
+		virtual ~DatabaseError_t() { }
 		DatabaseError_t(DatabaseErrorType_t the_err) : err(the_err) {}
 		DatabaseErrorType_t GetErrorCode() const { return err; }
 	private:
@@ -33,16 +36,17 @@ std::ostream& operator<<(std::ostream& output, const DatabaseError_t& p);
 
 
 // an interface to a database
-class DBinterface_t
+class DBinterface_t : virtual public IRDB_SDK::DBinterface_t
 {
 	public:
 		DBinterface_t() {};
 		virtual ~DBinterface_t() {};
-                virtual void IssueQuery(std::string query)=0;
-                virtual void MoveToNextRow()=0;
-                virtual std::string GetResultColumn(std::string colname)=0;
-                virtual bool IsDone()=0;
-                virtual void Commit()=0;
+                virtual void issueQuery(std::string query)=0;
+                virtual void moveToNextRow()=0;
+                virtual std::string getResultColumn(std::string colname)=0;
+                virtual bool isDone()=0;
+                virtual void commit()=0;
 
 };
 
+}

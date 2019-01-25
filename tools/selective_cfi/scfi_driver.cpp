@@ -20,13 +20,13 @@
 
 #include <stdlib.h>
 #include <fstream>
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 #include <libgen.h>
 
 #include "scfi_instr.hpp"
 
 using namespace std;
-using namespace libIRDB;
+using namespace IRDB_SDK;
 
 
 #define BINARY_NAME "a.ncexe"
@@ -206,59 +206,53 @@ int main(int argc, char **argv)
         string programName(argv[0]);
         int variantID = atoi(argv[1]);
 
-        VariantID_t *pidp=NULL;
-
         /* setup the interface to the sql server */
-        pqxxDB_t pqxx_interface;
-        BaseObj_t::SetInterface(&pqxx_interface);
+        auto pqxx_interface=pqxxDB_t::factory();
+        BaseObj_t::setInterface(pqxx_interface.get());
 
-        pidp=new VariantID_t(variantID);
-        assert(pidp->IsRegistered()==true);
+        auto pidp=VariantID_t::factory(variantID);
+        assert(pidp->isRegistered()==true);
 
 	cout<<"selective_cfi.exe started\n";
 
         bool one_success = false;
 	bool seen_failures = false;
-        for(set<File_t*>::iterator it=pidp->GetFiles().begin();
-            it!=pidp->GetFiles().end();
-                ++it)
+        for(auto this_file : pidp->getFiles()) 
         {
-                File_t* this_file = *it;
-                FileIR_t *firp = new FileIR_t(*pidp, this_file);
+                auto firp = FileIR_t::factory(pidp.get(), this_file);
 
-		cout<<"Transforming "<<this_file->GetURL()<<endl;
+		cout<<"Transforming "<<this_file->getURL()<<endl;
 
                 assert(firp && pidp);
 
                 try
                 {
-			SCFI_Instrument scfii(firp, nonce_size, exe_nonce_size, do_coloring, do_color_exe_nonces, do_common_slow_path, do_jumps, do_calls, do_rets, do_safefn, do_multimodule, do_exe_nonce_for_call);
+			SCFI_Instrument scfii(firp.get(), nonce_size, exe_nonce_size, do_coloring, do_color_exe_nonces, do_common_slow_path, do_jumps, do_calls, do_rets, do_safefn, do_multimodule, do_exe_nonce_for_call);
 
 
 			int success=scfii.execute();
 
                         if (success)
                         {
-				cout<<"Writing changes for "<<this_file->GetURL()<<endl;
+				cout<<"Writing changes for "<<this_file->getURL()<<endl;
                                 one_success = true;
-                                firp->WriteToDB();
-                                delete firp;
+                                firp->writeToDB();
                         }
 			else
 			{
 				seen_failures = true;
-				cout<<"Skipping (no changes) "<<this_file->GetURL()<<endl;
+				cout<<"Skipping (no changes) "<<this_file->getURL()<<endl;
 			}
                 }
                 catch (DatabaseError_t pnide)
                 {
 			seen_failures = true;
-                        cerr << programName << ": Unexpected database error: " << pnide << "file url: " << this_file->GetURL() << endl;
+                        cerr << programName << ": Unexpected database error: " << pnide << "file url: " << this_file->getURL() << endl;
                 }
                 catch (...)
                 {
 			seen_failures = true;
-                        cerr << programName << ": Unexpected error file url: " << this_file->GetURL() << endl;
+                        cerr << programName << ": Unexpected error file url: " << this_file->getURL() << endl;
                 }
         } // end file iterator
 
@@ -266,7 +260,7 @@ int main(int argc, char **argv)
         if (one_success)
 	{
 		cout<<"Commiting changes...\n";
-                pqxx_interface.Commit();
+                pqxx_interface->commit();
 	}
 
 	if(seen_failures)

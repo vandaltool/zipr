@@ -46,45 +46,35 @@ Callgraph_t::~Callgraph_t()
 
 static bool IsCallSite(Instruction_t* insn)
 {
-	//DISASM insnd;
-	//Disassemble(insn,insnd);
-	//return NULL!=(strstr(insnd.Instruction.Mnemonic,"call"));
-
-	const auto d=DecodedInstruction_t(insn);
-	return d.isCall();
+	const auto d=DecodedInstruction_t::factory(insn);
+	return d->isCall();
 }
 
 static bool IsTailJmpSite(Instruction_t* insn)
 {
-	//DISASM insnd;
-	//Disassemble(insn,insnd);
-	const auto d=DecodedInstruction_t(insn);
-	// if(strstr(insnd.Instruction.Mnemonic,"jmp")==NULL)
-	if(d.isBranch())
+	const auto d=DecodedInstruction_t::factory(insn);
+	if(d->isBranch())
 		return false;
 
-	if(insn->GetTarget()==NULL)
+	if(insn->getTarget()==NULL)
 		return true;
 
-	if(insn->GetFunction() != insn->GetTarget()->GetFunction())
+	if(insn->getFunction() != insn->getTarget()->getFunction())
 		return true;
 	return false;
 }
 
 static bool IsPushJmpSite(Instruction_t* insn)
 {
-	//DISASM insnd;
-	//Disassemble(insn,insnd);
-	const auto d=DecodedInstruction_t(insn);
-	if(d.getMnemonic()!="push" || insn->GetFallthrough()==NULL)
+	const auto d=DecodedInstruction_t::factory(insn);
+	if(d->getMnemonic()!="push" || insn->getFallthrough()==NULL)
 		return false;
 
-	if(insn->GetRelocations().size()==0)
+	if(insn->getRelocations().size()==0)
 		return false;
 
-	const auto d2=DecodedInstruction_t(insn->GetFallthrough());
-	//if(strstr(insnd.Instruction.Mnemonic,"jmp")==NULL)
-	if(!d2.isBranch())
+	const auto d2=DecodedInstruction_t::factory(insn->getFallthrough());
+	if(!d2->isBranch())
 		return false;
 
 	return true;
@@ -92,12 +82,12 @@ static bool IsPushJmpSite(Instruction_t* insn)
 
 void Callgraph_t::MarkCallSite(Instruction_t* insn)
 {
-	Function_t* from_func=insn->GetFunction();
-	Instruction_t* to_insn=insn->GetTarget();
-	Function_t* to_func= to_insn==NULL? NULL : to_insn->GetFunction();
+	auto from_func=insn->getFunction();
+	auto to_insn=insn->getTarget();
+	auto to_func= to_insn==NULL? NULL : to_insn->getFunction();
 
-	CallGraphNode_t* from_node = FindNode(from_func);
-	CallGraphNode_t* to_node = FindNode(to_func);
+	auto from_node = FindNode(from_func);
+	auto to_node = FindNode(to_func);
 
 	if (!from_node)
 		from_node = &GetDefaultHellNode();
@@ -110,40 +100,40 @@ void Callgraph_t::MarkCallSite(Instruction_t* insn)
 	callers[to_node].insert(from_node);
 }
 
-void Callgraph_t::CreateNodes(libIRDB::FileIR_t *firp)
+void Callgraph_t::CreateNodes(IRDB_SDK::FileIR_t *firp)
 {
-	set<Function_t*> &fns=firp->GetFunctions();
-	for(set<Function_t*>::iterator it=fns.begin(); fns.end() != it; ++it)
+	const FunctionSet_t &fns=firp->getFunctions();
+	for(auto it=fns.begin(); fns.end() != it; ++it)
 	{
-		Function_t *fn=*it;
+		auto fn=*it;
 		if (fn) {
-			CallGraphNode_t *newnode = new CallGraphNode_t(fn);
+			auto newnode = new CallGraphNode_t(fn);
 			nodes[fn] = newnode;
 //			cout << "Added CGNode: " << GetNodeName(newnode) << endl;
 		}
 	}
 }
 
-void Callgraph_t::AddFile(libIRDB::FileIR_t* const firp)
+void Callgraph_t::AddFile(IRDB_SDK::FileIR_t* const firp)
 {
 	// Create CG Nodes from functions
 	CreateNodes(firp);
 
 	// for each instruction 
-	auto &insns=firp->GetInstructions();
+	auto &insns=firp->getInstructions();
 
 	for(auto it=insns.begin(); insns.end() != it; ++it)
 	{
-		auto insn=*it;
+		auto insn=dynamic_cast<Instruction_t*>(*it);
 		if(IsCallSite(insn) || IsTailJmpSite(insn))
 			MarkCallSite(insn);
 		if(IsPushJmpSite(insn))
-			MarkCallSite(insn->GetFallthrough());
+			MarkCallSite(dynamic_cast<Instruction_t*>(insn->getFallthrough()));
 
-		if(insn->GetFunction() && insn->GetFunction()->GetEntryPoint()==insn
-			&& insn->GetIndirectBranchTargetAddress())
+		if(insn->getFunction() && insn->getFunction()->getEntryPoint()==insn
+			&& insn->getIndirectBranchTargetAddress())
 		{
-				auto node = FindNode(insn->GetFunction());
+				auto node = FindNode(insn->getFunction());
 				assert(node);
 				callees[&GetDefaultHellNode()].insert(node);
 				callers[node].insert(&GetDefaultHellNode());
@@ -245,12 +235,12 @@ cerr << "adding " << GetNodeName(*it) << " to ancestor list " << hex << *it << d
 	}
 }
 
-CallGraphNode_t* Callgraph_t::FindNode(Function_t* const fn)
+CallGraphNode_t* Callgraph_t::FindNode(IRDB_SDK::Function_t* const fn)
 {
 	return nodes[fn];
 }
 
-void Callgraph_t::GetAncestors(Function_t* const fn, CallGraphNodeSet_t &ancestors, bool skipHellNode)
+void Callgraph_t::GetAncestors(IRDB_SDK::Function_t* const fn, CallGraphNodeSet_t &ancestors, bool skipHellNode)
 {
 	auto node = FindNode(fn);
 	if (node)

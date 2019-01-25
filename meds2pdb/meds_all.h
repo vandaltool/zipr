@@ -29,7 +29,9 @@
 #include <string.h>
 #include <assert.h>
 
-#include <libIRDB-core.hpp>
+#include <irdb-core>
+
+using namespace IRDB_SDK;
 
 #include "strata_defines.h"
 

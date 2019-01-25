@@ -21,7 +21,7 @@
 
 class BasicBlock_t;
 typedef std::set<BasicBlock_t*> BasicBlockSet_t;
-typedef std::vector<Instruction_t*> InstructionVector_t;
+typedef std::vector<IRDB_SDK::Instruction_t*> InstructionVector_t;
 
 class BasicBlock_t
 {
@@ -37,7 +37,7 @@ class BasicBlock_t
 		BasicBlockSet_t&     GetSuccessors()   { return successors; }
 		BasicBlockSet_t&     GetIndirectTargets() { return indirect_targets; }
 		BasicBlock_t* GetFallthrough();
-		BasicBlock_t* GetTarget();
+		BasicBlock_t* getTarget();
 
 		// for const correctness if you aren't modifying.
 		const InstructionVector_t& GetInstructions() const { return instructions; }
@@ -48,13 +48,13 @@ class BasicBlock_t
 		bool EndsInBranch();
 		bool EndsInIndirectBranch();
 		bool EndsInConditionalBranch();
-		Instruction_t* GetBranchInstruction();
+		IRDB_SDK::Instruction_t* GetBranchInstruction();
 		void dump(std::ostream &os=std::cout) const { os<<*this; }
 
 	protected:
 
-		void BuildBlock( Instruction_t* insn,
-                		const std::map<Instruction_t*,BasicBlock_t*> &insn2block_map
+		void BuildBlock( IRDB_SDK::Instruction_t* insn,
+                		const std::map<IRDB_SDK::Instruction_t*,BasicBlock_t*> &insn2block_map
         			);
 
 

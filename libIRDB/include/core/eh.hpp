@@ -18,14 +18,19 @@
  *
  */
 
+namespace libIRDB
+{
+using EhProgramInstruction_t = IRDB_SDK::EhProgramInstruction_t;
+using EhProgramListing_t     = IRDB_SDK::EhProgramListing_t;
+using EhProgramSet_t         = IRDB_SDK::EhProgramSet_t;
+using TTOrderVector_t        = IRDB_SDK::TTOrderVector_t;
+using EhCallSiteSet_t        = IRDB_SDK::EhCallSiteSet_t;
 
-typedef std::string EhProgramInstruction_t;
-typedef std::vector<EhProgramInstruction_t> EhProgramListing_t;
-
-class EhProgram_t : public BaseObj_t
+class EhProgram_t : public BaseObj_t, virtual public IRDB_SDK::EhProgram_t
 {
 	public:
 
+	virtual ~EhProgram_t(){}
 	EhProgram_t(const EhProgram_t& orig)
 		: 
 		BaseObj_t(NULL)
@@ -36,50 +41,51 @@ class EhProgram_t : public BaseObj_t
 		data_alignment_factor=orig.data_alignment_factor;
 		return_register=orig.return_register;
 		ptrsize=orig.ptrsize;
-		SetBaseID(BaseObj_t::NOT_IN_DATABASE);
-		GetRelocations()=orig.GetRelocations();
+		setBaseID(BaseObj_t::NOT_IN_DATABASE);
+		GetRelocations()=orig.getRelocations();
 		
 	}
-	EhProgram_t(db_id_t id, const uint64_t caf, const int64_t daf, const uint8_t rr, const uint8_t p_ptrsize)
+	EhProgram_t(db_id_t id, const uint64_t caf, const int64_t daf, const uint8_t rr, const uint8_t p_ptrsize,
+			const EhProgramListing_t& ciep, const EhProgramListing_t& fdep)
 		: 
 		BaseObj_t(NULL), 
-		code_alignment_factor(0), 
-		data_alignment_factor(0), 
+		code_alignment_factor(caf), 
+		data_alignment_factor(daf), 
 		return_register(rr), 
-		ptrsize(p_ptrsize) 
+		ptrsize(p_ptrsize) ,
+		cie_program(ciep),
+		fde_program(fdep)
 	{ 
-		SetDataAlignmentFactor(daf);
-		SetCodeAlignmentFactor(caf);
-		SetBaseID(id); 
+		setBaseID(id); 
 	}
 
 
 	EhProgramListing_t& GetCIEProgram() { return cie_program; }
-	const EhProgramListing_t& GetCIEProgram() const { return cie_program; }
+	const EhProgramListing_t& getCIEProgram() const { return cie_program; }
 
 	EhProgramListing_t& GetFDEProgram() { return fde_program; }
-	const EhProgramListing_t& GetFDEProgram() const { return fde_program; }
+	const EhProgramListing_t& getFDEProgram() const { return fde_program; }
 
-        uint64_t GetCodeAlignmentFactor() const { return code_alignment_factor; }
-        void SetCodeAlignmentFactor(const uint64_t caf) 
+        uint64_t getCodeAlignmentFactor() const { return code_alignment_factor; }
+        void setCodeAlignmentFactor(const uint64_t caf) 
 	{ 	
 		if ( ((uint8_t)caf) != caf  ) throw std::logic_error(std::string()+"Invalid code alignment factor in call to "+__FUNCTION__);
 		code_alignment_factor=(uint8_t)caf; 
 	}
 
-        int64_t GetDataAlignmentFactor() const { return data_alignment_factor; }
-        void SetDataAlignmentFactor(const int64_t daf) 
+        int64_t getDataAlignmentFactor() const { return data_alignment_factor; }
+        void setDataAlignmentFactor(const int64_t daf) 
 	{ 
 		if ( (( int8_t)daf) != daf  ) throw std::logic_error(std::string()+"Invalid datat alignment factor in call to "+__FUNCTION__);
 		data_alignment_factor=(int8_t)daf; 
 	}
 
-        int64_t GetReturnRegNumber() const { return return_register; }
-        void SetReturnRegNumber(const uint8_t rr) { return_register=rr; }
+        int64_t getReturnRegNumber() const { return return_register; }
+        void setReturnRegNumber(const uint8_t rr) { return_register=rr; }
 
         std::vector<std::string> WriteToDB(File_t* fid);    // writes to DB, ID is not -1.
 
-        uint8_t GetPointerSize() const { return ptrsize; }
+        uint8_t getPointerSize() const { return ptrsize; }
 
 
 	friend bool operator<(const EhProgram_t&a, const EhProgram_t&b);
@@ -88,48 +94,49 @@ class EhProgram_t : public BaseObj_t
 
 	private:
 
-	EhProgramListing_t cie_program;
-	EhProgramListing_t fde_program;
         uint8_t code_alignment_factor;
         int8_t data_alignment_factor;
         int8_t return_register;
 	uint8_t ptrsize; // needed for interpreting programs
+	EhProgramListing_t cie_program;
+	EhProgramListing_t fde_program;
 
 };
 bool operator<(const EhProgram_t&a, const EhProgram_t&b);
 
-typedef std::set<EhProgram_t*> EhProgramSet_t;
-typedef std::vector<int> TTOrderVector_t;
 
-class EhCallSite_t : public BaseObj_t
+class EhCallSite_t : public BaseObj_t, virtual public IRDB_SDK::EhCallSite_t
 {
 	public:
 
-	EhCallSite_t(const db_id_t id, const uint64_t enc=0, Instruction_t* lp=NULL) : 
+	virtual ~EhCallSite_t(){}
+	EhCallSite_t(const db_id_t id, const uint64_t enc=0, IRDB_SDK::Instruction_t* lp=NULL) : 
 		BaseObj_t(NULL), 
 		tt_encoding(enc), 
 		landing_pad(lp)
-	{ SetBaseID(id); }
+	{ setBaseID(id); }
 
-	uint64_t GetTTEncoding() const { return tt_encoding; }
-	void SetTTEncoding(const uint64_t p_tt) { tt_encoding=p_tt; }
+	uint64_t getTTEncoding() const { return tt_encoding; }
+	void setTTEncoding(const uint64_t p_tt) { tt_encoding=p_tt; }
 
-	Instruction_t* GetLandingPad() const { return landing_pad; }
-	void SetLandingPad(Instruction_t* lp) { landing_pad=lp; }
+	IRDB_SDK::Instruction_t* getLandingPad() const { return landing_pad; }
+	void setLandingPad(IRDB_SDK::Instruction_t* lp) { landing_pad=dynamic_cast<Instruction_t*>(lp); if(lp) assert(landing_pad);  }
 
-	bool GetHasCleanup() const ;
-	void SetHasCleanup(bool p_has_cleanup=true) ;
+	bool getHasCleanup() const ;
+	void setHasCleanup(bool p_has_cleanup=true) ;
 
 	TTOrderVector_t& GetTTOrderVector() { return ttov; }
-	const TTOrderVector_t& GetTTOrderVector() const { return ttov; }
+	const TTOrderVector_t& getTTOrderVector() const { return ttov; }
+	void setTTOrderVector(const TTOrderVector_t& p_ttov) { ttov=p_ttov; }
 
         std::string WriteToDB(File_t* fid);    // writes to DB, ID is not -1.
+
 
 	private:
 
 	uint64_t tt_encoding;
-	Instruction_t* landing_pad;
+	IRDB_SDK::Instruction_t* landing_pad;
 	TTOrderVector_t ttov;
 };
 
-typedef std::set<EhCallSite_t*> EhCallSiteSet_t;
+}

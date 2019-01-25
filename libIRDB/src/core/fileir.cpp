@@ -77,8 +77,8 @@ static void UpdateEntryPoints(
 		db_id_t func_entry_id=(*it).second;
 
 		assert(func_entry_id==-1 || insnMap.at(func_entry_id));
-		func->SetEntryPoint(insnMap.at(func_entry_id));
-//		cout<<"Function named "<<func->GetName()<< " getting entry point set to "<<insnMap[func_entry_id]->GetComment()<<"."<<endl;
+		func->setEntryPoint(insnMap.at(func_entry_id));
+//		cout<<"Function named "<<func->getName()<< " getting entry point set to "<<insnMap[func_entry_id]->getComment()<<"."<<endl;
 	}
 		
 }
@@ -93,7 +93,7 @@ static void UpdateUnresolvedEhCallSites(
 		const auto& insnid=i.second;
 		const auto& insn=insnMap.at(insnid);
 		assert(insn);
-		ehcs->SetLandingPad(insn);
+		ehcs->setLandingPad(insn);
 	}
 }
 
@@ -110,45 +110,25 @@ FileIR_t::FileIR_t(const VariantID_t &newprogid, File_t* fid)
 	orig_variant_ir_p=NULL;
 
 	if(fid==NULL)
-		fileptr=newprogid.GetMainFile();
+		fileptr=dynamic_cast<File_t*>(newprogid.getMainFile());
 	else
 		fileptr=fid;
 
-	if(progid.IsRegistered())
+	if(progid.isRegistered())
 	{
 		ReadFromDB();
-		SetArchitecture();
+		setArchitecture();
 	}
 
 }
 
 FileIR_t::~FileIR_t()
 {
-	for(std::set<Function_t*>::const_iterator i=funcs.begin(); i!=funcs.end(); ++i)
-	{
-		delete *i;
-	}
-
-
-	for(std::set<Instruction_t*>::const_iterator i=insns.begin(); i!=insns.end(); ++i)
-	{
-		delete *i;
-	}
-
-	for(std::set<AddressID_t*>::const_iterator i=addrs.begin(); i!=addrs.end(); ++i)
-	{
-		delete *i;
-	}
-
-	for(std::set<Relocation_t*>::const_iterator i=relocs.begin(); i!=relocs.end(); ++i)
-	{
-		delete *i;
-	}
-
-	for(std::set<Type_t*>::const_iterator i=types.begin(); i!=types.end(); ++i)
-	{
-		delete *i;
-	}
+	for(auto i : funcs ) delete i;
+	for(auto i : insns ) delete i;
+	for(auto i : addrs ) delete i;
+	for(auto i : relocs) delete i;
+	for(auto i : types ) delete i;
 
 	// @todo: clear icfs_t
 }
@@ -193,8 +173,11 @@ void FileIR_t::ReadFromDB()
 }
 
 
-void  FileIR_t::ChangeRegistryKey(Instruction_t *orig, Instruction_t *updated)
+void  FileIR_t::changeRegistryKey(IRDB_SDK::Instruction_t *p_orig, IRDB_SDK::Instruction_t *p_updated)
 {
+	auto orig=dynamic_cast<libIRDB::Instruction_t*>(p_orig);
+	auto updated=dynamic_cast<libIRDB::Instruction_t*>(p_updated);
+
 	if(assembly_registry.find(orig) != assembly_registry.end())
 	{
 		assembly_registry[updated] = assembly_registry[orig];
@@ -203,7 +186,7 @@ void  FileIR_t::ChangeRegistryKey(Instruction_t *orig, Instruction_t *updated)
 	}
 }
 
-void FileIR_t::AssembleRegistry()
+void FileIR_t::assembleRegistry()
 {
 	if(assembly_registry.size() == 0)
 		return;
@@ -221,14 +204,11 @@ void FileIR_t::AssembleRegistry()
 	if(!asmFile.is_open())
 		assert(false);
 
-	asmFile<<"BITS "<<std::dec<<GetArchitectureBitWidth()<<endl; 
+	asmFile<<"BITS "<<std::dec<<getArchitectureBitWidth()<<endl; 
 
-	for(registry_type::iterator it = assembly_registry.begin();
-		it != assembly_registry.end();
-		it++
-		)
+	for(auto it : assembly_registry)
 	{
-		asmFile<<it->second<<endl;
+		asmFile<<it.second<<endl;
 	}
 	asmFile.close();
 
@@ -236,11 +216,6 @@ void FileIR_t::AssembleRegistry()
 	actual_exit = command_to_stream(command,cout); // system(command.c_str());
 	assert(actual_exit == 0);
 	
-	
-	//DISASM disasm;
-	//memset(&disasm, 0, sizeof(DISASM));
-	//disasm.Archi=GetArchitectureBitWidth();
-
 	ifstream binreader;
 	unsigned int filesize;
 	binreader.open(binaryOutputFile.c_str(),ifstream::in|ifstream::binary);
@@ -256,8 +231,6 @@ void FileIR_t::AssembleRegistry()
 	binreader.read((char*)binary_stream,filesize);
 	binreader.close();
 
-	//unsigned int instr_index = 0;
-	//for(unsigned int index=0; index < filesize; instr_index++)
 	unsigned int index = 0;
 	registry_type::iterator reg_val =  assembly_registry.begin();
 
@@ -271,12 +244,13 @@ void FileIR_t::AssembleRegistry()
 		// disasm.EIP =  (UIntPtr)&binary_stream[index];
 		// int instr_len = Disasm(&disasm);
 
-		const auto disasm=DecodedInstruction_t
+		const auto p_disasm=DecodedInstruction_t::factory
 			(
 				/* fake start addr doesn't matter */0x1000, 
 				(void*)&binary_stream[index], 
 				(void*)&binary_stream[filesize]
 			);
+		const auto& disasm=*p_disasm;
 
 		assert(disasm.valid());
 		const auto instr_len=disasm.length();
@@ -288,8 +262,8 @@ void FileIR_t::AssembleRegistry()
 			rawBits[i] = binary_stream[index];
 		}
 
-		instr->SetDataBits(rawBits);
-//		*verbose_logging << "doing instruction:" << ((Instruction_t*)instr)->getDisassembly() << " comment: " << ((Instruction_t*)instr)->GetComment() << endl;
+		instr->setDataBits(rawBits);
+//		*verbose_logging << "doing instruction:" << ((Instruction_t*)instr)->getDisassembly() << " comment: " << ((Instruction_t*)instr)->getComment() << endl;
 		reg_val++;
 	}
 
@@ -300,18 +274,24 @@ void FileIR_t::AssembleRegistry()
 
 }
 
-void FileIR_t::RegisterAssembly(Instruction_t *instr, string assembly)
+void FileIR_t::registerAssembly(IRDB_SDK::Instruction_t *p_instr, string assembly)
 {
+	auto instr=dynamic_cast<Instruction_t*>(p_instr);
+	assert(instr);
 	assembly_registry[instr] = assembly;
 }
 
-void FileIR_t::UnregisterAssembly(Instruction_t *instr)
+void FileIR_t::unregisterAssembly(IRDB_SDK::Instruction_t *p_instr)
 {
+	auto instr=dynamic_cast<Instruction_t*>(p_instr);
+	assert(instr);
 	assembly_registry.erase(instr);
 }
 
-std::string FileIR_t::LookupAssembly(Instruction_t *instr)
+std::string FileIR_t::lookupAssembly(IRDB_SDK::Instruction_t *p_instr)
 {
+	auto instr=dynamic_cast<Instruction_t*>(p_instr);
+	assert(instr);
 	if (assembly_registry.find(instr) != assembly_registry.end())
 		return assembly_registry[instr];
 	else
@@ -329,23 +309,23 @@ std::map<db_id_t,Function_t*> FileIR_t::ReadFuncsFromDB
 
 	auto q=std::string("select * from ") + fileptr->function_table_name + " ; ";
 
-	dbintr->IssueQuery(q);
+	dbintr->issueQuery(q);
 
-	while(!dbintr->IsDone())
+	while(!dbintr->isDone())
 	{
 // function_id | file_id | name | stack_frame_size | out_args_region_size | use_frame_pointer | is_safe | doip_id
 
-		db_id_t fid=atoi(dbintr->GetResultColumn("function_id").c_str());
-		db_id_t entry_point_id=atoi(dbintr->GetResultColumn("entry_point_id").c_str());
-		std::string name=dbintr->GetResultColumn("name");
-		int sfsize=atoi(dbintr->GetResultColumn("stack_frame_size").c_str());
-		int oasize=atoi(dbintr->GetResultColumn("out_args_region_size").c_str());
-		db_id_t function_type_id=atoi(dbintr->GetResultColumn("type_id").c_str());
+		db_id_t fid=atoi(dbintr->getResultColumn("function_id").c_str());
+		db_id_t entry_point_id=atoi(dbintr->getResultColumn("entry_point_id").c_str());
+		std::string name=dbintr->getResultColumn("name");
+		int sfsize=atoi(dbintr->getResultColumn("stack_frame_size").c_str());
+		int oasize=atoi(dbintr->getResultColumn("out_args_region_size").c_str());
+		db_id_t function_type_id=atoi(dbintr->getResultColumn("type_id").c_str());
 // postgresql encoding of boolean can be 'true', '1', 'T', 'y'
 		bool useFP=false;
 		bool isSafe=false;
-		string useFPString=dbintr->GetResultColumn("use_frame_pointer"); 
-		string isSafeString=dbintr->GetResultColumn("is_safe"); 
+		string useFPString=dbintr->getResultColumn("use_frame_pointer"); 
+		string isSafeString=dbintr->getResultColumn("is_safe"); 
 		const char *useFPstr=useFPString.c_str();
 		const char *isSafestr=isSafeString.c_str();
 		if (strlen(useFPstr) > 0)
@@ -361,7 +341,7 @@ std::map<db_id_t,Function_t*> FileIR_t::ReadFuncsFromDB
 		}
 
 		// handle later?
-		//db_id_t doipid=atoi(dbintr->GetResultColumn("doip_id").c_str());
+		//db_id_t doipid=atoi(dbintr->getResultColumn("doip_id").c_str());
 
 		FuncType_t* fnType = NULL;
 		if (typesMap.count(function_type_id) > 0)
@@ -376,7 +356,7 @@ std::map<db_id_t,Function_t*> FileIR_t::ReadFuncsFromDB
 
 		funcs.insert(newfunc);
 
-		dbintr->MoveToNextRow();
+		dbintr->moveToNextRow();
 	}
 
 	return idMap;
@@ -390,9 +370,9 @@ std::map<db_id_t,EhCallSite_t*> FileIR_t::ReadEhCallSitesFromDB
 {
 	auto ehcsMap=std::map<db_id_t,EhCallSite_t*>();
 
-	std::string q= "select * from " + fileptr->GetEhCallSiteTableName() + " ; ";
+	std::string q= "select * from " + fileptr->getEhCallSiteTableName() + " ; ";
 
-	for(dbintr->IssueQuery(q); !dbintr->IsDone(); dbintr->MoveToNextRow())
+	for(dbintr->issueQuery(q); !dbintr->isDone(); dbintr->moveToNextRow())
 	{
 		const auto string_to_vec=[&](const string& str ) ->  vector<int>
 		{
@@ -410,10 +390,10 @@ std::map<db_id_t,EhCallSite_t*> FileIR_t::ReadEhCallSitesFromDB
 		 */
 
 
-		const auto eh_cs_id=atoi(dbintr->GetResultColumn("ehcs_id").c_str());
-		const auto tt_encoding=atoi(dbintr->GetResultColumn("tt_encoding").c_str());
-		const auto &ttov=string(dbintr->GetResultColumn("ttov").c_str());
-		const auto lp_insn_id=atoi(dbintr->GetResultColumn("lp_insn_id").c_str());
+		const auto eh_cs_id=atoi(dbintr->getResultColumn("ehcs_id").c_str());
+		const auto tt_encoding=atoi(dbintr->getResultColumn("tt_encoding").c_str());
+		const auto &ttov=string(dbintr->getResultColumn("ttov").c_str());
+		const auto lp_insn_id=atoi(dbintr->getResultColumn("lp_insn_id").c_str());
 
 		auto newEhCs=new EhCallSite_t(eh_cs_id,tt_encoding,NULL); // create the call site with an unresolved LP
 		newEhCs->GetTTOrderVector()=string_to_vec(ttov);
@@ -431,7 +411,7 @@ std::map<db_id_t,EhProgram_t*> FileIR_t::ReadEhPgmsFromDB()
 	auto idMap = std::map<db_id_t,EhProgram_t*>();
 
 	auto q=std::string("select * from ") + fileptr->ehpgm_table_name + " ; ";
-	dbintr->IssueQuery(q);
+	dbintr->issueQuery(q);
 
 	auto decode_pgm=[](const string& encoded_pgm, EhProgramListing_t& decoded_pgm)
 	{
@@ -484,7 +464,7 @@ std::map<db_id_t,EhProgram_t*> FileIR_t::ReadEhPgmsFromDB()
 		
 	};
 
-	while(!dbintr->IsDone())
+	while(!dbintr->isDone())
 	{
 		/* 
 		 * eh_pgm_id       integer,
@@ -496,21 +476,21 @@ std::map<db_id_t,EhProgram_t*> FileIR_t::ReadEhPgmsFromDB()
 		 */
 
 
-		const auto eh_pgm_id=atoi(dbintr->GetResultColumn("eh_pgm_id").c_str());
-		const auto caf=atoi(dbintr->GetResultColumn("caf").c_str());
-		const auto daf=atoi(dbintr->GetResultColumn("daf").c_str());
-		const auto rr=atoi(dbintr->GetResultColumn("return_register").c_str());
-		const auto ptrsize=atoi(dbintr->GetResultColumn("ptrsize").c_str());
-		const auto& encoded_cie_program = dbintr->GetResultColumn("cie_program");
-		const auto& encoded_fde_program = dbintr->GetResultColumn("fde_program");
+		const auto eh_pgm_id=atoi(dbintr->getResultColumn("eh_pgm_id").c_str());
+		const auto caf=atoi(dbintr->getResultColumn("caf").c_str());
+		const auto daf=atoi(dbintr->getResultColumn("daf").c_str());
+		const auto rr=atoi(dbintr->getResultColumn("return_register").c_str());
+		const auto ptrsize=atoi(dbintr->getResultColumn("ptrsize").c_str());
+		const auto& encoded_cie_program = dbintr->getResultColumn("cie_program");
+		const auto& encoded_fde_program = dbintr->getResultColumn("fde_program");
 
-		auto new_ehpgm=new EhProgram_t(eh_pgm_id, caf, daf, rr, ptrsize);
+		auto new_ehpgm=new EhProgram_t(eh_pgm_id, caf, daf, rr, ptrsize, {}, {});
 		decode_pgm(encoded_cie_program, new_ehpgm->GetCIEProgram());
 		decode_pgm(encoded_fde_program, new_ehpgm->GetFDEProgram());
 
 		idMap[eh_pgm_id]=new_ehpgm;
 		eh_pgms.insert(new_ehpgm);
-		dbintr->MoveToNextRow();
+		dbintr->moveToNextRow();
 	}
 
 	return idMap;
@@ -525,9 +505,9 @@ std::map<db_id_t,AddressID_t*> FileIR_t::ReadAddrsFromDB
 	std::string q= "select * from " + fileptr->address_table_name + " ; ";
 
 
-	dbintr->IssueQuery(q);
+	dbintr->issueQuery(q);
 
-	while(!dbintr->IsDone())
+	while(!dbintr->isDone())
 	{
 //   address_id            integer PRIMARY KEY,
 //  file_id               integer REFERENCES file_info,
@@ -535,12 +515,12 @@ std::map<db_id_t,AddressID_t*> FileIR_t::ReadAddrsFromDB
 //  doip_id               integer DEFAULT -1
 
 
-		db_id_t aid=atoi(dbintr->GetResultColumn("address_id").c_str());
-		db_id_t file_id=atoi(dbintr->GetResultColumn("file_id").c_str());
-		virtual_offset_t vaddr=strtovo(dbintr->GetResultColumn("vaddress_offset"));
+		db_id_t aid=atoi(dbintr->getResultColumn("address_id").c_str());
+		db_id_t file_id=atoi(dbintr->getResultColumn("file_id").c_str());
+		virtual_offset_t vaddr=strtovo(dbintr->getResultColumn("vaddress_offset"));
 
 		// handle later?
-		//db_id_t doipid=atoi(dbintr->GetResultColumn("doip_id").c_str());
+		//db_id_t doipid=atoi(dbintr->getResultColumn("doip_id").c_str());
 
 		AddressID_t *newaddr=new AddressID_t(aid,file_id,vaddr);
 
@@ -550,7 +530,7 @@ std::map<db_id_t,AddressID_t*> FileIR_t::ReadAddrsFromDB
 
 		addrs.insert(newaddr);
 
-		dbintr->MoveToNextRow();
+		dbintr->moveToNextRow();
 	}
 
 	return idMap;
@@ -587,9 +567,9 @@ std::map<db_id_t,Instruction_t*> FileIR_t::ReadInsnsFromDB
 	std::string q= "select * from " + fileptr->instruction_table_name + " ; ";
 
 
-	dbintr->IssueQuery(q);
+	dbintr->issueQuery(q);
 
-	while(!dbintr->IsDone())
+	while(!dbintr->isDone())
 	{
 
 //  address_id                integer REFERENCES #PROGNAME#_address,
@@ -604,23 +584,23 @@ std::map<db_id_t,Instruction_t*> FileIR_t::ReadInsnsFromDB
 //  doip_id                   integer DEFAULT -1
 
 
-		db_id_t instruction_id=atoi(dbintr->GetResultColumn("instruction_id").c_str());
-		db_id_t aid=atoi(dbintr->GetResultColumn("address_id").c_str());
-		db_id_t parent_func_id=atoi(dbintr->GetResultColumn("parent_function_id").c_str());
-		db_id_t orig_address_id=atoi(dbintr->GetResultColumn("orig_address_id").c_str());
-		db_id_t fallthrough_address_id=atoi(dbintr->GetResultColumn("fallthrough_address_id").c_str());
-		db_id_t targ_address_id=atoi(dbintr->GetResultColumn("target_address_id").c_str());
-		db_id_t icfs_id=atoi(dbintr->GetResultColumn("icfs_id").c_str());
-		db_id_t eh_pgm_id=atoi(dbintr->GetResultColumn("ehpgm_id").c_str());
-		db_id_t eh_cs_id=atoi(dbintr->GetResultColumn("ehcss_id").c_str());
-		std::string encoded_data=(dbintr->GetResultColumn("data"));
+		db_id_t instruction_id=atoi(dbintr->getResultColumn("instruction_id").c_str());
+		db_id_t aid=atoi(dbintr->getResultColumn("address_id").c_str());
+		db_id_t parent_func_id=atoi(dbintr->getResultColumn("parent_function_id").c_str());
+		db_id_t orig_address_id=atoi(dbintr->getResultColumn("orig_address_id").c_str());
+		db_id_t fallthrough_address_id=atoi(dbintr->getResultColumn("fallthrough_address_id").c_str());
+		db_id_t targ_address_id=atoi(dbintr->getResultColumn("target_address_id").c_str());
+		db_id_t icfs_id=atoi(dbintr->getResultColumn("icfs_id").c_str());
+		db_id_t eh_pgm_id=atoi(dbintr->getResultColumn("ehpgm_id").c_str());
+		db_id_t eh_cs_id=atoi(dbintr->getResultColumn("ehcss_id").c_str());
+		std::string encoded_data=(dbintr->getResultColumn("data"));
 		std::string data=encoded_to_raw_string(encoded_data);
-		std::string callback=(dbintr->GetResultColumn("callback"));
-		std::string comment=(dbintr->GetResultColumn("comment"));
-		db_id_t indirect_branch_target_address_id = atoi(dbintr->GetResultColumn("ind_target_address_id").c_str());
-		db_id_t doipid=atoi(dbintr->GetResultColumn("doip_id").c_str());
+		std::string callback=(dbintr->getResultColumn("callback"));
+		std::string comment=(dbintr->getResultColumn("comment"));
+		db_id_t indirect_branch_target_address_id = atoi(dbintr->getResultColumn("ind_target_address_id").c_str());
+		db_id_t doipid=atoi(dbintr->getResultColumn("doip_id").c_str());
 
-		std::string isIndStr=(dbintr->GetResultColumn("ind_target_address_id"));
+		std::string isIndStr=(dbintr->getResultColumn("ind_target_address_id"));
 
                 auto indTarg=(AddressID_t*)NULL;
 		if (indirect_branch_target_address_id != NOT_IN_DATABASE) 
@@ -635,13 +615,13 @@ std::map<db_id_t,Instruction_t*> FileIR_t::ReadInsnsFromDB
 			orig_address_id,
 			data, callback, comment, indTarg, doipid);
 
-		if(eh_pgm_id != NOT_IN_DATABASE) newinsn->SetEhProgram(ehpgmMap.at(eh_pgm_id));
-		if(eh_cs_id != NOT_IN_DATABASE) newinsn->SetEhCallSite(ehcsMap.at(eh_cs_id));
+		if(eh_pgm_id != NOT_IN_DATABASE) newinsn->setEhProgram(ehpgmMap.at(eh_pgm_id));
+		if(eh_cs_id != NOT_IN_DATABASE) newinsn->setEhCallSite(ehcsMap.at(eh_cs_id));
 	
 		if(parent_func)
 		{
 			parent_func->GetInstructions().insert(newinsn);
-			newinsn->SetFunction(funcMap.at(parent_func_id));
+			newinsn->setFunction(funcMap.at(parent_func_id));
 		}
 
 //std::cout<<"Found address "<<aid<<"."<<std::endl;
@@ -655,7 +635,7 @@ std::map<db_id_t,Instruction_t*> FileIR_t::ReadInsnsFromDB
 
 		if (icfs_id == NOT_IN_DATABASE)
 		{
-			newinsn->SetIBTargets(NULL);
+			newinsn->setIBTargets(NULL);
 		}
 		else
 		{
@@ -664,18 +644,18 @@ std::map<db_id_t,Instruction_t*> FileIR_t::ReadInsnsFromDB
 			unresolvedICFS[newinsn] = icfs_id;
 		}
 
-		dbintr->MoveToNextRow();
+		dbintr->moveToNextRow();
 	}
 
 	for(std::map<db_id_t,Instruction_t*>::const_iterator i=idMap.begin(); i!=idMap.end(); ++i)
 	{
 		Instruction_t *instr=(*i).second;
-		db_id_t fallthroughid=fallthroughs[instr->GetBaseID()];
+		db_id_t fallthroughid=fallthroughs[instr->getBaseID()];
 		if(idMap[fallthroughid])	
-			instr->SetFallthrough(idMap[fallthroughid]);
-		db_id_t targetid=targets[instr->GetBaseID()];
+			instr->setFallthrough(idMap[fallthroughid]);
+		db_id_t targetid=targets[instr->getBaseID()];
 		if(idMap[targetid])	
-			instr->SetTarget(idMap[targetid]);
+			instr->setTarget(idMap[targetid]);
 	}
 
 
@@ -688,19 +668,19 @@ void FileIR_t::ReadRelocsFromDB
 	)
 {
 	std::string q= "select * from " + fileptr->relocs_table_name + " ; ";
-	dbintr->IssueQuery(q);
+	dbintr->issueQuery(q);
 
-	while(!dbintr->IsDone())
+	while(!dbintr->isDone())
 	{
-                db_id_t reloc_id=atoi(dbintr->GetResultColumn("reloc_id").c_str());
-                int reloc_offset=atoi(dbintr->GetResultColumn("reloc_offset").c_str());
-                std::string reloc_type=(dbintr->GetResultColumn("reloc_type"));
-                db_id_t instruction_id=atoi(dbintr->GetResultColumn("instruction_id").c_str());
+                db_id_t reloc_id=atoi(dbintr->getResultColumn("reloc_id").c_str());
+                int reloc_offset=atoi(dbintr->getResultColumn("reloc_offset").c_str());
+                std::string reloc_type=(dbintr->getResultColumn("reloc_type"));
+                db_id_t instruction_id=atoi(dbintr->getResultColumn("instruction_id").c_str());
 
 		// handle later?
-                //db_id_t doipid=atoi(dbintr->GetResultColumn("doip_id").c_str());
-                db_id_t wrt_id=atoi(dbintr->GetResultColumn("wrt_id").c_str());
-                uint32_t addend=atoi(dbintr->GetResultColumn("addend").c_str());
+                //db_id_t doipid=atoi(dbintr->getResultColumn("doip_id").c_str());
+                db_id_t wrt_id=atoi(dbintr->getResultColumn("wrt_id").c_str());
+                uint32_t addend=atoi(dbintr->getResultColumn("addend").c_str());
 
 
 		BaseObj_t* wrt_obj=objMap[wrt_id];	 // might be null.
@@ -711,13 +691,13 @@ void FileIR_t::ReadRelocsFromDB
 		objMap[instruction_id]->GetRelocations().insert(reloc);
 		relocs.insert(reloc);
 
-		dbintr->MoveToNextRow();
+		dbintr->moveToNextRow();
 	}
 
 }
 
 
-void FileIR_t::WriteToDB(ostream *verbose_logging)
+void FileIR_t::writeToDB(ostream *verbose_logging)
 {
 //     	const auto WriteIRDB_start = clock();
 
@@ -725,113 +705,120 @@ void FileIR_t::WriteToDB(ostream *verbose_logging)
 	assert(pqIntr);
 
 	//Resolve (assemble) any instructions in the registry.
-	AssembleRegistry();
+	assembleRegistry();
 
 	/* assign each item a unique ID */
-	SetBaseIDS();
+	setBaseIDS();
 
 	CleanupICFS(verbose_logging);
 
 	db_id_t j=-1;
 
-	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->instruction_table_name 	+ string(" cascade;"));
-	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->icfs_table_name 		+ string(" cascade;"));
-	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->icfs_map_table_name 	+ string(" cascade;"));
-	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->function_table_name    	+ string(" cascade;"));
-	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->address_table_name     	+ string(" cascade;"));
-	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->relocs_table_name     	+ string(" cascade;"));
-	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->types_table_name     	+ string(" cascade;"));
-	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->scoop_table_name     	+ string(" cascade;"));
-	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->scoop_table_name+"_part2"+ string(" cascade;"));
-	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->ehpgm_table_name     	+ string(" cascade;"));
-	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->ehcss_table_name     	+ string(" cascade;"));
+	dbintr->issueQuery(string("TRUNCATE TABLE ")+ fileptr->instruction_table_name 	+ string(" cascade;"));
+	dbintr->issueQuery(string("TRUNCATE TABLE ")+ fileptr->icfs_table_name 		+ string(" cascade;"));
+	dbintr->issueQuery(string("TRUNCATE TABLE ")+ fileptr->icfs_map_table_name 	+ string(" cascade;"));
+	dbintr->issueQuery(string("TRUNCATE TABLE ")+ fileptr->function_table_name    	+ string(" cascade;"));
+	dbintr->issueQuery(string("TRUNCATE TABLE ")+ fileptr->address_table_name     	+ string(" cascade;"));
+	dbintr->issueQuery(string("TRUNCATE TABLE ")+ fileptr->relocs_table_name     	+ string(" cascade;"));
+	dbintr->issueQuery(string("TRUNCATE TABLE ")+ fileptr->types_table_name     	+ string(" cascade;"));
+	dbintr->issueQuery(string("TRUNCATE TABLE ")+ fileptr->scoop_table_name     	+ string(" cascade;"));
+	dbintr->issueQuery(string("TRUNCATE TABLE ")+ fileptr->scoop_table_name+"_part2"+ string(" cascade;"));
+	dbintr->issueQuery(string("TRUNCATE TABLE ")+ fileptr->ehpgm_table_name     	+ string(" cascade;"));
+	dbintr->issueQuery(string("TRUNCATE TABLE ")+ fileptr->ehcss_table_name     	+ string(" cascade;"));
 
 	/* and now that everything has an ID, let's write to the DB */
 
 // write out the types
 	string q=string("");
-	for(std::set<Type_t*>::const_iterator t=types.begin(); t!=types.end(); ++t)
+	for(auto t=types.begin(); t!=types.end(); ++t)
 	{
-		q+=(*t)->WriteToDB(fileptr,j); // @TODO: wtf is j?
+		auto real_t=dynamic_cast<Type_t*>(*t);
+		assert(real_t);
+		q+=real_t->WriteToDB(fileptr,j); // @TODO: wtf is j?
 		if(q.size()>1024*1024)
 		{
-			dbintr->IssueQuery(q);
+			dbintr->issueQuery(q);
 			q=string("");
 		}
 	}
-	dbintr->IssueQuery(q);
+	dbintr->issueQuery(q);
 	
 
 // write out functions 
 	auto withHeader=true;
 	q=string("");
-	for(std::set<Function_t*>::const_iterator f=funcs.begin(); f!=funcs.end(); ++f)
+	for(auto f=funcs.begin(); f!=funcs.end(); ++f)
 	{
-		q+=(*f)->WriteToDB(fileptr,j);
+		auto real_f=dynamic_cast<Function_t*>(*f);
+		assert(real_f);
+		q+=real_f->WriteToDB(fileptr,j);
 		if(q.size()>1024*1024)
 		{
-			dbintr->IssueQuery(q);
+			dbintr->issueQuery(q);
 			q=string("");
 		}
 	}
-	dbintr->IssueQuery(q);
+	dbintr->issueQuery(q);
 
 
 // write out addresses
-	pqxx::tablewriter W_addrs(pqIntr->GetTransaction(),fileptr->address_table_name);
+	pqxx::tablewriter W_addrs(pqIntr->getTransaction(),fileptr->address_table_name);
 	for(const auto &a : addrs)
 	{
-		W_addrs << a->WriteToDB(fileptr,j,withHeader);
+		auto real_a=dynamic_cast<AddressID_t*>(a);
+		assert(real_a);
+		W_addrs << real_a->WriteToDB(fileptr,j,withHeader);
 	}
 	W_addrs.complete();
 
 // write out instructions
 
-	pqxx::tablewriter W(pqIntr->GetTransaction(),fileptr->instruction_table_name);
-	for(std::set<Instruction_t*>::const_iterator i=insns.begin(); i!=insns.end(); ++i)
+	pqxx::tablewriter W(pqIntr->getTransaction(),fileptr->instruction_table_name);
+	for(auto i=insns.begin(); i!=insns.end(); ++i)
 	{	
-		Instruction_t const * const insnp=*i;
+		auto insnp=dynamic_cast<Instruction_t*>(*i);
 		//DISASM disasm;
 		//Disassemble(insnp,disasm);
-		const auto disasm=DecodedInstruction_t(insnp);
+		const auto p_disasm=DecodedInstruction_t::factory(insnp);
+		const auto& disasm=*p_disasm;
 
-		if(insnp->GetOriginalAddressID() == NOT_IN_DATABASE)
+		if(insnp->getOriginalAddressID() == NOT_IN_DATABASE)
 		{
 
-			// if(insnp->GetFallthrough()==NULL && disasm.Instruction.BranchType!=RetType && disasm.Instruction.BranchType!=JmpType )
-			if(insnp->GetFallthrough()==NULL && !disasm.isReturn() && !disasm.isUnconditionalBranch())
+			// if(insnp->getFallthrough()==NULL && disasm.Instruction.BranchType!=RetType && disasm.Instruction.BranchType!=JmpType )
+			if(insnp->getFallthrough()==NULL && !disasm.isReturn() && !disasm.isUnconditionalBranch())
 			{
 				// instructions that fall through are required to either specify a fallthrough that's
 				// in the IRDB, or have an associated "old" instruction.  
 				// without these bits of information, the new instruction can't possibly execute correctly.
 				// and we won't have the information necessary to emit spri.
 
-				*verbose_logging << "NULL fallthrough: offending instruction:" << ((Instruction_t*)insnp)->getDisassembly() << " comment: " << ((Instruction_t*)insnp)->GetComment() << endl;
+				*verbose_logging << "NULL fallthrough: offending instruction:" << ((Instruction_t*)insnp)->getDisassembly() << " comment: " << ((Instruction_t*)insnp)->getComment() << endl;
 				assert(0);
 				abort();
 			}
-			//if(insnp->GetTarget()==NULL && disasm.Instruction.BranchType!=0 && 
+			//if(insnp->getTarget()==NULL && disasm.Instruction.BranchType!=0 && 
 			//	disasm.Instruction.BranchType!=RetType &&
 			//	// not an indirect branch
 			//	((disasm.Instruction.BranchType!=JmpType && disasm.Instruction.BranchType!=CallType) ||
 			//	 disasm.Argument1.ArgType&CONSTANT_TYPE))
 
-			if(insnp->GetTarget()==NULL && disasm.isBranch() && !disasm.isReturn() &&
+			if(insnp->getTarget()==NULL && disasm.isBranch() && !disasm.isReturn() &&
 				// not an indirect branch
-				( (!disasm.isUnconditionalBranch() && !disasm.isCall()) || disasm.getOperand(0).isConstant())
+				( (!disasm.isUnconditionalBranch() && !disasm.isCall()) || disasm.getOperand(0)->isConstant())
 			  )
 			{
 				// direct branches are required to either specify a target that's
 				// in the IRDB, or have an associated "old" instruction.  
 				// without these bits of information, the new instruction can't possibly execute correctly.
 				// and we won't have the information necessary to emit spri.
-				*verbose_logging << "Call must have a target; offending instruction:" << ((Instruction_t*)insnp)->getDisassembly() << " comment: " << ((Instruction_t*)insnp)->GetComment() << endl;
+				*verbose_logging << "Call must have a target; offending instruction:" << ((Instruction_t*)insnp)->getDisassembly() << " comment: " << ((Instruction_t*)insnp)->getComment() << endl;
 				assert(0);
 				abort();
 			}
 		}
 
-		const auto &insn_values=(*i)->WriteToDB(fileptr,j);
+		const auto &insn_values=insnp->WriteToDB(fileptr,j);
 		W << insn_values;
 
 	}
@@ -839,166 +826,158 @@ void FileIR_t::WriteToDB(ostream *verbose_logging)
 
 
 // icfs 
-	for (ICFSSet_t::iterator it = GetAllICFS().begin(); it != GetAllICFS().end(); ++it)
+	for (auto it = GetAllICFS().begin(); it != GetAllICFS().end(); ++it)
 	{
-		ICFS_t* icfs = *it;
+		ICFS_t* icfs = dynamic_cast<ICFS_t*>(*it);
 		assert(icfs);
 		string q = icfs->WriteToDB(fileptr);
-		dbintr->IssueQuery(q);
+		dbintr->issueQuery(q);
 	}
 
 // scoops
-	for(DataScoopSet_t::const_iterator it=scoops.begin(); it!=scoops.end(); ++it)
+	for(auto it=scoops.begin(); it!=scoops.end(); ++it)
 	{
-		DataScoop_t* scoop = *it;
+		DataScoop_t* scoop = dynamic_cast<DataScoop_t*>(*it);
 		assert(scoop);
 		string q = scoop->WriteToDB(fileptr,j);
-		dbintr->IssueQuery(q);
+		dbintr->issueQuery(q);
 	}
 
 // ehpgms 
-	pqxx::tablewriter W_eh(pqIntr->GetTransaction(),fileptr->ehpgm_table_name);
+	pqxx::tablewriter W_eh(pqIntr->getTransaction(),fileptr->ehpgm_table_name);
 	for(const auto& i : eh_pgms)
 	{
-		W_eh << i->WriteToDB(fileptr);
+		W_eh << dynamic_cast<EhProgram_t*>(i)->WriteToDB(fileptr);
 	}
 	W_eh.complete();
 
 // eh css
 	for(const auto& i : eh_css)
 	{
-		string q = i->WriteToDB(fileptr);
-		dbintr->IssueQuery(q);
+		string q = dynamic_cast<EhCallSite_t*>(i)->WriteToDB(fileptr);
+		dbintr->issueQuery(q);
 	}
 
 
 // all relocs
-	pqxx::tablewriter W_reloc(pqIntr->GetTransaction(),fileptr->relocs_table_name);
+	pqxx::tablewriter W_reloc(pqIntr->getTransaction(),fileptr->relocs_table_name);
 
 // eh css relocs
 	for(const auto& i : eh_css)
 	{
-		const auto &relocs=i->GetRelocations();
+		const auto &relocs=i->getRelocations();
 		for(auto& reloc : relocs)
-			W_reloc << reloc->WriteToDB(fileptr,i);
+			W_reloc << dynamic_cast<Relocation_t*>(reloc)->WriteToDB(fileptr,dynamic_cast<BaseObj_t*>(i));
 	}
 
 // eh pgms relocs
 	for(const auto& i : eh_pgms)
 	{
-		const auto &relocs=i->GetRelocations();
+		const auto &relocs=i->getRelocations();
 		for(auto& reloc : relocs)
-			W_reloc << reloc->WriteToDB(fileptr,i);
+			W_reloc << dynamic_cast<Relocation_t*>(reloc)->WriteToDB(fileptr,dynamic_cast<BaseObj_t*>(i));
 	}
 // scoops relocs
 	for(const auto& i : scoops)
 	{
-		const auto &relocs=i->GetRelocations();
+		const auto &relocs=i->getRelocations();
 		for(auto& reloc : relocs)
-			W_reloc << reloc->WriteToDB(fileptr,i);
+			W_reloc << dynamic_cast<Relocation_t*>(reloc)->WriteToDB(fileptr,dynamic_cast<BaseObj_t*>(i));
 	}
 // write out instruction's relocs
 	for(const auto& i : insns)
 	{
-		const auto &relocs=i->GetRelocations();
+		const auto &relocs=i->getRelocations();
 		for(auto& reloc : relocs)
-			W_reloc << reloc->WriteToDB(fileptr,i);
+			W_reloc << dynamic_cast<Relocation_t*>(reloc)->WriteToDB(fileptr,dynamic_cast<BaseObj_t*>(i));
 	}
 	W_reloc.complete();
-
-/*	std::cout << std::dec; 
-
-	const auto WriteIRDB_end = clock();
-	const auto read_time = (double)(ReadIRDB_end-ReadIRDB_start)/ CLOCKS_PER_SEC;
-	const auto write_time = (double)(WriteIRDB_end-WriteIRDB_start)/ CLOCKS_PER_SEC;
-	const auto wall_time = (double)(WriteIRDB_end-ReadIRDB_start)/ CLOCKS_PER_SEC;
-	const auto transform_time=wall_time - read_time - write_time; 
-    	std::cout << std::fixed << std::setprecision(2) << "#ATTRIBUTE ReadIRDB_WallClock=" << read_time <<endl;
-    	std::cout << std::fixed << std::setprecision(2) << "#ATTRIBUTE WriteIRDB_WallClock=" << write_time << endl;
-    	std::cout << std::fixed << std::setprecision(2) << "#ATTRIBUTE TotalIRDB_WallClock=" << wall_time << endl;
-    	std::cout << std::fixed << std::setprecision(2) << "#ATTRIBUTE TransformIRDB_WallClock=" << transform_time << endl;
-*/
 
 }
 
 
-db_id_t FileIR_t::GetMaxBaseID()
+db_id_t FileIR_t::getMaxBaseID() const
 {
 #define MAX(a,b) (((a)>(b)) ? (a) : (b))
 
 	/* find the highest database ID */
 	db_id_t j=0;
 	for(auto i=funcs.begin(); i!=funcs.end(); ++i)
-		j=MAX(j,(*i)->GetBaseID());
+		j=MAX(j,(*i)->getBaseID());
 	for(auto i=addrs.begin(); i!=addrs.end(); ++i)
-		j=MAX(j,(*i)->GetBaseID());
+		j=MAX(j,(*i)->getBaseID());
 	for(auto i=insns.begin(); i!=insns.end(); ++i)
-		j=MAX(j,(*i)->GetBaseID());
+		j=MAX(j,(*i)->getBaseID());
 	for(auto i=relocs.begin(); i!=relocs.end(); ++i)
-		j=MAX(j,(*i)->GetBaseID());
+		j=MAX(j,(*i)->getBaseID());
 	for(auto i=types.begin(); i!=types.end(); ++i)
-		j=MAX(j,(*i)->GetBaseID());
+		j=MAX(j,(*i)->getBaseID());
 	for(auto i=scoops.begin(); i!=scoops.end(); ++i)
-		j=MAX(j,(*i)->GetBaseID());
+		j=MAX(j,(*i)->getBaseID());
 	for(auto i=icfs_set.begin(); i!=icfs_set.end(); ++i)
-		j=MAX(j,(*i)->GetBaseID());
+		j=MAX(j,(*i)->getBaseID());
 	for(auto i=eh_pgms.begin(); i!=eh_pgms.end(); ++i)
-		j=MAX(j,(*i)->GetBaseID());
+		j=MAX(j,(*i)->getBaseID());
 	for(auto i=eh_css.begin(); i!=eh_css.end(); ++i)
-		j=MAX(j,(*i)->GetBaseID());
+		j=MAX(j,(*i)->getBaseID());
 
 	return j+1;	 // easy to off-by-one this so we do it for a user just in case.
 }
 
-void FileIR_t::SetBaseIDS()
+void FileIR_t::setBaseIDS()
 {
-	auto j=GetMaxBaseID();
+	auto j=getMaxBaseID();
 	/* increment past the max ID so we don't duplicate */
 	j++;
 	/* for anything that's not yet in the DB, assign an ID to it */
 	for(auto i=funcs.begin(); i!=funcs.end(); ++i)
-		if((*i)->GetBaseID()==NOT_IN_DATABASE)
-			(*i)->SetBaseID(j++);
+		if((*i)->getBaseID()==NOT_IN_DATABASE)
+			(*i)->setBaseID(j++);
 	for(auto i=addrs.begin(); i!=addrs.end(); ++i)
-		if((*i)->GetBaseID()==NOT_IN_DATABASE)
-			(*i)->SetBaseID(j++);
+		if((*i)->getBaseID()==NOT_IN_DATABASE)
+			(*i)->setBaseID(j++);
 	for(auto i=insns.begin(); i!=insns.end(); ++i)
-		if((*i)->GetBaseID()==NOT_IN_DATABASE)
-			(*i)->SetBaseID(j++);
+		if((*i)->getBaseID()==NOT_IN_DATABASE)
+			(*i)->setBaseID(j++);
 	for(auto i=relocs.begin(); i!=relocs.end(); ++i)
-		if((*i)->GetBaseID()==NOT_IN_DATABASE)
-			(*i)->SetBaseID(j++);
+		if((*i)->getBaseID()==NOT_IN_DATABASE)
+			(*i)->setBaseID(j++);
 	for(auto i=types.begin(); i!=types.end(); ++i)
-		if((*i)->GetBaseID()==NOT_IN_DATABASE)
-			(*i)->SetBaseID(j++);
+		if((*i)->getBaseID()==NOT_IN_DATABASE)
+			(*i)->setBaseID(j++);
 	for(auto i=scoops.begin(); i!=scoops.end(); ++i)
-		if((*i)->GetBaseID()==NOT_IN_DATABASE)
-			(*i)->SetBaseID(j++);
+		if((*i)->getBaseID()==NOT_IN_DATABASE)
+			(*i)->setBaseID(j++);
 	for(auto i=icfs_set.begin(); i!=icfs_set.end(); ++i)
-		if((*i)->GetBaseID()==NOT_IN_DATABASE)
-			(*i)->SetBaseID(j++);
+		if((*i)->getBaseID()==NOT_IN_DATABASE)
+			(*i)->setBaseID(j++);
 	for(auto i=eh_pgms.begin(); i!=eh_pgms.end(); ++i)
-		if((*i)->GetBaseID()==NOT_IN_DATABASE)
-			(*i)->SetBaseID(j++);
+		if((*i)->getBaseID()==NOT_IN_DATABASE)
+			(*i)->setBaseID(j++);
 	for(auto i=eh_css.begin(); i!=eh_css.end(); ++i)
-		if((*i)->GetBaseID()==NOT_IN_DATABASE)
-			(*i)->SetBaseID(j++);
+		if((*i)->getBaseID()==NOT_IN_DATABASE)
+			(*i)->setBaseID(j++);
 }
 
-int FileIR_t::GetArchitectureBitWidth()
+const  IRDB_SDK::ArchitectureDescription_t* IRDB_SDK::FileIR_t::getArchitecture() 
+{ 
+		return libIRDB::FileIR_t::archdesc; 
+}
+
+uint32_t IRDB_SDK::FileIR_t::getArchitectureBitWidth()
 {
-	return archdesc->GetBitWidth();
+	return libIRDB::FileIR_t::archdesc->getBitWidth();
 }
 
-void FileIR_t::SetArchitecture(const int width, const ADMachineType_t mt) 
+void FileIR_t::setArchitecture(const int width, const ADMachineType_t mt) 
 {
 	if(archdesc==NULL)
 		archdesc=new ArchitectureDescription_t;
-	archdesc->SetBitWidth(width); 
+	archdesc->setBitWidth(width); 
 	archdesc->setMachineType(mt); 
 }	
 
-void FileIR_t::SetArchitecture()
+void FileIR_t::setArchitecture()
 {
 
 	/* the first 16 bytes of an ELF file define the magic number and ELF Class. */
@@ -1012,34 +991,34 @@ void FileIR_t::SetArchitecture()
 	auto myinter=BaseObj_t::GetInterface();
 	auto *mypqxxintr=dynamic_cast<pqxxDB_t*>(myinter);
 
-	const auto elfoid=GetFile()->GetELFOID();
-        pqxx::largeobjectaccess loa(mypqxxintr->GetTransaction(), elfoid, PGSTD::ios::in);
+	const auto elfoid=getFile()->getELFOID();
+        pqxx::largeobjectaccess loa(mypqxxintr->getTransaction(), elfoid, PGSTD::ios::in);
 
 
         loa.cread((char*)&hdr_union, sizeof(hdr_union));
 
 	const auto e_ident=hdr_union.ehdr32.e_ident;
 
-	archdesc=new ArchitectureDescription_t;
+	libIRDB::FileIR_t::archdesc=new ArchitectureDescription_t;
 
 	if((e_ident[EI_MAG0]==ELFMAG0) && 
 	   (e_ident[EI_MAG1]==ELFMAG1) && 
 	   (e_ident[EI_MAG2]==ELFMAG2) && 
 	   (e_ident[EI_MAG3]==ELFMAG3))
 	{
-		archdesc->SetFileType(AD_ELF);
+		libIRDB::FileIR_t::archdesc->setFileType(IRDB_SDK::adftELF);
 	}
 	else if((e_ident[EI_MAG0]==ELFMAG0) && 
 	   (e_ident[EI_MAG1]=='C') && 
 	   (e_ident[EI_MAG2]=='G') && 
 	   (e_ident[EI_MAG3]=='C'))
 	{
-		archdesc->SetFileType(AD_ELF);
+		libIRDB::FileIR_t::archdesc->setFileType(IRDB_SDK::adftELF);
 	}
 	else if((e_ident[EI_MAG0]=='M') &&
 	   (e_ident[EI_MAG1]=='Z'))
 	{
-		archdesc->SetFileType(AD_PE);
+		libIRDB::FileIR_t::archdesc->setFileType(IRDB_SDK::adftPE);
 	}
 	else
 	{
@@ -1048,11 +1027,11 @@ void FileIR_t::SetArchitecture()
 	}
 
 
-	if (archdesc->GetFileType() == AD_PE)
+	if (libIRDB::FileIR_t::archdesc->getFileType() == IRDB_SDK::adftPE)
 	{
 		// just assume x86-64 bit for Windows, o/w could also extract from file
-		archdesc->SetBitWidth(64);
-		archdesc->setMachineType(admtX86_64);
+		libIRDB::FileIR_t::archdesc->setBitWidth(64);
+		libIRDB::FileIR_t::archdesc->setMachineType(IRDB_SDK::admtX86_64);
 	}
 	else
 	{
@@ -1060,20 +1039,20 @@ void FileIR_t::SetArchitecture()
 		{
 			case ELFCLASS32:
 			{
-				archdesc->SetBitWidth(32);
+				libIRDB::FileIR_t::archdesc->setBitWidth(32);
 				if(hdr_union.ehdr32.e_machine!=EM_386)
 					throw std::invalid_argument("Arch not supported.  32-bit archs supported:  I386");
-				archdesc->setMachineType(admtI386);
+				libIRDB::FileIR_t::archdesc->setMachineType(IRDB_SDK::admtI386);
 				break;
 			}
 			case ELFCLASS64:
 			{
-				archdesc->SetBitWidth(64);
+				libIRDB::FileIR_t::archdesc->setBitWidth(64);
 				const auto mt= 
-					hdr_union.ehdr64.e_machine==EM_AARCH64 ? admtAarch64 : 
-					hdr_union.ehdr64.e_machine==EM_X86_64  ? admtX86_64 : 
+					hdr_union.ehdr64.e_machine==EM_AARCH64 ? IRDB_SDK::admtAarch64 : 
+					hdr_union.ehdr64.e_machine==EM_X86_64  ? IRDB_SDK::admtX86_64 : 
 					throw std::invalid_argument("Arch not supported.  64-bit archs supported:  Aarch64, X86-64");
-				archdesc->setMachineType(mt);
+				libIRDB::FileIR_t::archdesc->setMachineType(mt);
 				break;
 			}
 			default:
@@ -1105,9 +1084,9 @@ std::map<db_id_t, Type_t*> FileIR_t::ReadTypesFromDB (TypeSet_t& types)
 
 //	cout << "pass1: query: " << q;
 
-	dbintr->IssueQuery(q);
+	dbintr->issueQuery(q);
 
-	while(!dbintr->IsDone())
+	while(!dbintr->isDone())
 	{
 //  type_id            integer,     
 //  type               integer DEFAULT 0,    -- possible types (0: UNKNOWN)
@@ -1117,160 +1096,163 @@ std::map<db_id_t, Type_t*> FileIR_t::ReadTypesFromDB (TypeSet_t& types)
 //  ref_type_id2       integer DEFAULT -1,   -- for func types
 //  doip_id            integer DEFAULT -1    -- the DOIP
 
-		db_id_t tid=atoi(dbintr->GetResultColumn("type_id").c_str());
-		IRDB_Type type=(IRDB_Type)atoi(dbintr->GetResultColumn("type").c_str());
-		std::string name=dbintr->GetResultColumn("name");
+		db_id_t tid=atoi(dbintr->getResultColumn("type_id").c_str());
+		IRDB_Type type=(IRDB_Type)atoi(dbintr->getResultColumn("type").c_str());
+		std::string name=dbintr->getResultColumn("name");
 		BasicType_t *t = NULL;	
 
 //		cout << "fileir::ReadFromDB(): pass1: " << name << endl;
-		switch(type) {
-				case T_UNKNOWN:
-				case T_VOID:
-				case T_NUMERIC:
-				case T_VARIADIC:
-				case T_INT:
-				case T_CHAR:
-				case T_FLOAT:
-				case T_DOUBLE:
-					t = new BasicType_t(tid, type, name);	
-					types.insert(t);
-					tMap[tid] = t;
-					break;
+		switch(type) 
+		{
+			case IRDB_SDK::itUnknown:
+			case IRDB_SDK::itVoid:
+			case IRDB_SDK::itNumeric:
+			case IRDB_SDK::itVariadic:
+			case IRDB_SDK::itInt:
+			case IRDB_SDK::itChar:
+			case IRDB_SDK::itFloat:
+			case IRDB_SDK::itDouble:
+				t = new BasicType_t(tid, type, name);	
+				types.insert(t);
+				tMap[tid] = t;
+				break;
 
-				case T_POINTER:
-					// do nothing for pointers
-					break;
+			case IRDB_SDK::itPointer:
+				// do nothing for pointers
+				break;
 
-				default:
-					cerr << "ReadTypesFromDB(): ERROR: pass 1 should only see basic types or pointer"  << endl;
-					assert(0); 
-					break;						
+			default:
+				cerr << "ReadTypesFromDB(): ERROR: pass 1 should only see basic types or pointer"  << endl;
+				assert(0); 
+				break;						
 		}
 
-		dbintr->MoveToNextRow();
+		dbintr->moveToNextRow();
 	} // end pass1
 
 	char query[2048];
 
 	// pass2 get pointers
-	sprintf(query,"select * from %s WHERE type = %d;", fileptr->types_table_name.c_str(), T_POINTER);
-	dbintr->IssueQuery(query);
+	sprintf(query,"select * from %s WHERE type = %d;", fileptr->types_table_name.c_str(), IRDB_SDK::itPointer);
+	dbintr->issueQuery(query);
 
-	while(!dbintr->IsDone())
+	while(!dbintr->isDone())
 	{
-		db_id_t tid=atoi(dbintr->GetResultColumn("type_id").c_str());
-		IRDB_Type type=(IRDB_Type)atoi(dbintr->GetResultColumn("type").c_str());
-		std::string name=dbintr->GetResultColumn("name");
-		db_id_t ref1=atoi(dbintr->GetResultColumn("ref_type_id").c_str());
+		db_id_t tid=atoi(dbintr->getResultColumn("type_id").c_str());
+		IRDB_Type type=(IRDB_Type)atoi(dbintr->getResultColumn("type").c_str());
+		std::string name=dbintr->getResultColumn("name");
+		db_id_t ref1=atoi(dbintr->getResultColumn("ref_type_id").c_str());
 //		cout << "fileir::ReadFromDB(): pass2 (pointers): " << name << endl;
-		switch(type) {
-				case T_POINTER:
-					{
+		switch(type) 
+		{
+			case IRDB_SDK::itPointer:
+			{
 //						cout << "   pointer type: ref1: " << ref1 << endl;
-						Type_t *referentType = NULL;
-						if (ref1 >= 0) 
-						{
-							assert(tMap.count(ref1) > 0);
-							referentType = tMap[ref1];
-						}
-						PointerType_t *ptr = new PointerType_t(tid, referentType, name);	
-						types.insert(ptr);
-						tMap[tid] = ptr;
-					}
-					break;
+				Type_t *referentType = NULL;
+				if (ref1 >= 0) 
+				{
+					assert(tMap.count(ref1) > 0);
+					referentType = tMap[ref1];
+				}
+				PointerType_t *ptr = new PointerType_t(tid, referentType, name);	
+				types.insert(ptr);
+				tMap[tid] = ptr;
+			}
+			break;
 
-				default:
-					cerr << "ReadTypesFromDB(): ERROR: pass3: unhandled type id = "  << type << endl;
-					assert(0); // not yet handled
-					break;						
+			default:
+				cerr << "ReadTypesFromDB(): ERROR: pass3: unhandled type id = "  << type << endl;
+				assert(0); // not yet handled
+				break;						
 
 		}
 
-		dbintr->MoveToNextRow();
+		dbintr->moveToNextRow();
 	} // end pass3
 
 	// pass3 get all aggregates
-	sprintf(query,"select * from %s WHERE type = %d order by type_id, pos;", fileptr->types_table_name.c_str(), T_AGGREGATE);
-	dbintr->IssueQuery(query);
+	sprintf(query,"select * from %s WHERE type = %d order by type_id, pos;", fileptr->types_table_name.c_str(), IRDB_SDK::itAggregate);
+	dbintr->issueQuery(query);
 
-	while(!dbintr->IsDone())
+	while(!dbintr->isDone())
 	{
-		db_id_t tid=atoi(dbintr->GetResultColumn("type_id").c_str());
-		IRDB_Type type=(IRDB_Type)atoi(dbintr->GetResultColumn("type").c_str());
-		std::string name=dbintr->GetResultColumn("name");
-		db_id_t ref1=atoi(dbintr->GetResultColumn("ref_type_id").c_str());
-		int pos=atoi(dbintr->GetResultColumn("pos").c_str());
+		db_id_t tid=atoi(dbintr->getResultColumn("type_id").c_str());
+		IRDB_Type type=(IRDB_Type)atoi(dbintr->getResultColumn("type").c_str());
+		std::string name=dbintr->getResultColumn("name");
+		db_id_t ref1=atoi(dbintr->getResultColumn("ref_type_id").c_str());
+		int pos=atoi(dbintr->getResultColumn("pos").c_str());
 		AggregateType_t *agg = NULL;	
 //		cout << "fileir::ReadFromDB(): pass3 (aggregates): " << name << endl;
-		switch(type) {
-				case T_AGGREGATE:
-					{
-						if (tMap.count(tid) == 0)  // new aggregate
-						{	
+		switch(type) 
+		{
+			case IRDB_SDK::itAggregate:
+			{
+				if (tMap.count(tid) == 0)  // new aggregate
+				{	
 //		cout << "fileir::ReadFromDB(): pass3: new aggregate type: typeid: " << tid << " name: " << name << endl;
-							agg = new AggregateType_t(tid, name);	
-							types.insert(agg);
-							tMap[tid] = agg;
-						}
-						else
-							agg = dynamic_cast<AggregateType_t*>(tMap[tid]);
+					agg = new AggregateType_t(tid, name);	
+					types.insert(agg);
+					tMap[tid] = agg;
+				}
+				else
+					agg = dynamic_cast<AggregateType_t*>(tMap[tid]);
 
-						assert(agg);
-						// ref1 has the id of a basic type, look it up
-						Type_t *ref = tMap[ref1];
-						assert(ref);
-						agg->AddAggregatedType(ref, pos);
-					}
-					break;
+				assert(agg);
+				// ref1 has the id of a basic type, look it up
+				Type_t *ref = tMap[ref1];
+				assert(ref);
+				agg->addAggregatedType(ref, pos);
+			}
+			break;
 
-				default:
-					cerr << "ReadTypesFromDB(): ERROR: pass2: unhandled type id = "  << type << endl;
-					assert(0); // not yet handled
-					break;						
+			default:
+				cerr << "ReadTypesFromDB(): ERROR: pass2: unhandled type id = "  << type << endl;
+				assert(0); // not yet handled
+				break;						
 
 		}
 
-		dbintr->MoveToNextRow();
+		dbintr->moveToNextRow();
 	} // end pass3
 
 	// pass4 get all functions
-	sprintf(query,"select * from %s WHERE type = %d;", fileptr->types_table_name.c_str(), T_FUNC);
-	dbintr->IssueQuery(query);
+	sprintf(query,"select * from %s WHERE type = %d;", fileptr->types_table_name.c_str(), IRDB_SDK::itFunc);
+	dbintr->issueQuery(query);
 
-	while(!dbintr->IsDone())
+	while(!dbintr->isDone())
 	{
-		db_id_t tid=atoi(dbintr->GetResultColumn("type_id").c_str());
-		IRDB_Type type=(IRDB_Type)atoi(dbintr->GetResultColumn("type").c_str());
-		std::string name=dbintr->GetResultColumn("name");
-		db_id_t ref1=atoi(dbintr->GetResultColumn("ref_type_id").c_str());
-		db_id_t ref2=atoi(dbintr->GetResultColumn("ref_type_id2").c_str());
+		db_id_t tid=atoi(dbintr->getResultColumn("type_id").c_str());
+		IRDB_Type type=(IRDB_Type)atoi(dbintr->getResultColumn("type").c_str());
+		std::string name=dbintr->getResultColumn("name");
+		db_id_t ref1=atoi(dbintr->getResultColumn("ref_type_id").c_str());
+		db_id_t ref2=atoi(dbintr->getResultColumn("ref_type_id2").c_str());
 		FuncType_t *fn = NULL;	
 
-		switch(type) {
-				case T_FUNC:
-					{
-					assert(tMap.count(tid) == 0);
+		switch(type) 
+		{
+			case IRDB_SDK::itFunc:
+			{
+				assert(tMap.count(tid) == 0);
 
-					fn = new FuncType_t(tid, name);	
-					types.insert(fn);
-					tMap[tid] = fn;
-					assert(tMap[ref1]); // return type
-					assert(tMap[ref2]); // argument type (which is an aggregate)
-					fn->SetReturnType(tMap[ref1]);
-					AggregateType_t *args = dynamic_cast<AggregateType_t*>(tMap[ref2]);
-					assert(args);
-					fn->SetArgumentsType(args);
-					}
-					break;
-
-				default:
-					cerr << "ReadTypesFromDB(): ERROR: pass4: unhandled type id = "  << type << endl;
-					assert(0); // not yet handled
-					break;						
+				fn = new FuncType_t(tid, name);	
+				types.insert(fn);
+				tMap[tid] = fn;
+				assert(tMap[ref1]); // return type
+				assert(tMap[ref2]); // argument type (which is an aggregate)
+				fn->setReturnType(tMap[ref1]);
+				AggregateType_t *args = dynamic_cast<AggregateType_t*>(tMap[ref2]);
+				assert(args);
+				fn->setArgumentsType(args);
+				break;
+			}
+			default:
+				cerr << "ReadTypesFromDB(): ERROR: pass4: unhandled type id = "  << type << endl;
+				assert(0); // not yet handled
+				break;						
 
 		}
 
-		dbintr->MoveToNextRow();
+		dbintr->moveToNextRow();
 	} // end pass4
 
 	return tMap;
@@ -1283,34 +1265,34 @@ void FileIR_t::ReadAllICFSFromDB(std::map<db_id_t,Instruction_t*> &addr2instMap,
 
 	// retrieve all sets
 	std::string q= "select * from " + fileptr->icfs_table_name + " ; ";
-	dbintr->IssueQuery(q);
+	dbintr->issueQuery(q);
 
-	while(!dbintr->IsDone())
+	while(!dbintr->isDone())
 	{
-		db_id_t icfs_id = atoi(dbintr->GetResultColumn("icfs_id").c_str());
-		string statusString=dbintr->GetResultColumn("icfs_status"); 
+		db_id_t icfs_id = atoi(dbintr->getResultColumn("icfs_id").c_str());
+		string statusString=dbintr->getResultColumn("icfs_status"); 
 
 		ICFS_t* icfs = new ICFS_t(icfs_id, statusString);		
 		GetAllICFS().insert(icfs);
 
 		icfsMap[icfs_id] = icfs;
-		dbintr->MoveToNextRow();
+		dbintr->moveToNextRow();
 	}
 
 	ICFSSet_t all_icfs = GetAllICFS();
 
 	// for each set, populate its members
-	for (ICFSSet_t::iterator it = all_icfs.begin(); it != all_icfs.end(); ++it)
+	for (auto it = all_icfs.begin(); it != all_icfs.end(); ++it)
 	{
 		char query2[2048];
-		ICFS_t *icfs = *it;
+		auto icfs = dynamic_cast<ICFS_t*>(*it);
 		assert(icfs);
-		int icfsid = icfs->GetBaseID();
+		int icfsid = icfs->getBaseID();
 		sprintf(query2,"select * from %s WHERE icfs_id = %d;", fileptr->icfs_map_table_name.c_str(), icfsid);
-		dbintr->IssueQuery(query2);
-		while(!dbintr->IsDone())
+		dbintr->issueQuery(query2);
+		while(!dbintr->isDone())
 		{
-			db_id_t address_id = atoi(dbintr->GetResultColumn("address_id").c_str());
+			db_id_t address_id = atoi(dbintr->getResultColumn("address_id").c_str());
 			Instruction_t* instruction = addr2instMap[address_id];
 			if (instruction) 
 			{
@@ -1322,15 +1304,15 @@ void FileIR_t::ReadAllICFSFromDB(std::map<db_id_t,Instruction_t*> &addr2instMap,
 			// if we encounter an unresolved address, we should mark the ICFS
 			//      as unresolved
 
-			dbintr->MoveToNextRow();
+			dbintr->moveToNextRow();
 		}					
 	}
 
 	// backpatch all unresolved instruction -> ICFS
 	std::map<Instruction_t*, db_id_t>::iterator uit;
-	for (std::map<Instruction_t*, db_id_t>::iterator uit = unresolvedICFS.begin(); uit != unresolvedICFS.end(); ++uit)
+	for (auto uit = unresolvedICFS.begin(); uit != unresolvedICFS.end(); ++uit)
 	{
-		Instruction_t* unresolved = uit->first;
+		auto unresolved = dynamic_cast<Instruction_t*>(uit->first);
 		db_id_t icfs_id = uit->second;
 
 		assert(unresolved);
@@ -1338,7 +1320,7 @@ void FileIR_t::ReadAllICFSFromDB(std::map<db_id_t,Instruction_t*> &addr2instMap,
 		ICFS_t *icfs = icfsMap[icfs_id];
 		assert(icfs);
 
-		unresolved->SetIBTargets(icfs);
+		unresolved->setIBTargets(icfs);
 	}
 }
 
@@ -1347,7 +1329,7 @@ void FileIR_t::GarbageCollectICFS(ostream* verbose_logging)
 	auto used_icfs= ICFSSet_t();
 	// get the IBTarget of each instruction into used_icfs
 	transform(     ALLOF(insns), inserter(used_icfs, begin(used_icfs)), 
-	               [](const Instruction_t* insn) -> ICFS_t* { return insn->GetIBTargets(); } 
+	               [](const IRDB_SDK::Instruction_t* insn) -> IRDB_SDK::ICFS_t* { return insn->getIBTargets(); } 
 	         );
 	// we likely inserted null into the set, which we just will remove as a special ase.
 	used_icfs.erase(nullptr);
@@ -1358,18 +1340,17 @@ void FileIR_t::GarbageCollectICFS(ostream* verbose_logging)
 
 void FileIR_t::DedupICFS(ostream *verbose_logging)
 {
-	std::set<ICFS_t> unique_icfs;
+	std::set<InstructionSet_t> unique_icfs;
 
-	ICFSSet_t& all_icfs=this->GetAllICFS();
+	auto& all_icfs=this->GetAllICFS();
 
 	// detect duplicate icfs
 	ICFSSet_t duplicates;
-	std::pair<std::set<ICFS_t>::iterator,bool> ret;
-	for(ICFSSet_t::iterator it=all_icfs.begin(); it!=all_icfs.end(); ++it)
+	for(auto it=all_icfs.begin(); it!=all_icfs.end(); ++it)
 	{
-		ICFS_t* p=*it;
+		auto p=dynamic_cast<ICFS_t*>(*it);
 		assert(p);
-		ret = unique_icfs.insert( *p );
+		auto ret = unique_icfs.insert( *p );
 		if (!ret.second) {
 			duplicates.insert(p);
 		}
@@ -1382,40 +1363,40 @@ void FileIR_t::DedupICFS(ostream *verbose_logging)
 	}
 
 	// remove duplicate icfs
-	for(ICFSSet_t::const_iterator it=duplicates.begin(); it!=duplicates.end(); ++it)
+	for(auto it=duplicates.begin(); it!=duplicates.end(); ++it)
 	{
-		ICFS_t* icfs = *it;
+		auto icfs=*it;
 		all_icfs.erase(icfs);
 	}
 
 	// build duplicate icfs map
-	std::map<ICFS_t*, ICFS_t*> duplicate_map;
-	for(ICFSSet_t::const_iterator it=duplicates.begin(); it!=duplicates.end(); ++it)
+	std::map<IRDB_SDK::ICFS_t*, IRDB_SDK::ICFS_t*> duplicate_map;
+	for(auto it=duplicates.begin(); it!=duplicates.end(); ++it)
 	{
-		ICFS_t* icfs = *it;
-		for(ICFSSet_t::iterator it=all_icfs.begin(); it!=all_icfs.end(); ++it)
+		auto icfs = *it;
+		for(auto it=all_icfs.begin(); it!=all_icfs.end(); ++it)
 		{
-			ICFS_t* t = *it;
+			auto t = *it;
 
 			assert(t);
 			if (*icfs == *t)
 			{
 				duplicate_map[icfs] = t;
-				*verbose_logging << "FileIR_t::DedupICFS(): remap: icfs id " << icfs->GetBaseID() << " --> icsf id " << t->GetBaseID() << endl;
+				*verbose_logging << "FileIR_t::DedupICFS(): remap: icfs id " << icfs->getBaseID() << " --> icsf id " << t->getBaseID() << endl;
 				break;
 			}
 		}
 	}
 
 	// reassign ibtargets 
-	for(set<Instruction_t*>::const_iterator it=this->GetInstructions().begin();
+	for(auto it=this->GetInstructions().begin();
 		it!=this->GetInstructions().end();
    		++it)
 	{
-		Instruction_t* instr=*it;
-		if(instr->GetIBTargets() && duplicate_map[instr->GetIBTargets()])
+		auto instr=*it;
+		if(instr->getIBTargets() && duplicate_map[instr->getIBTargets()])
 		{ 
-			instr->SetIBTargets(duplicate_map[instr->GetIBTargets()]);
+			instr->setIBTargets(duplicate_map[instr->getIBTargets()]);
 		}
 	}
 }
@@ -1448,12 +1429,12 @@ std::map<db_id_t,DataScoop_t*> FileIR_t::ReadScoopsFromDB
 	//
 	// read part 2 of the scoops.
         //std::string q= "select * from " + fileptr->scoop_table_name + "_part2 ; ";
-        //dbintr->IssueQuery(q);
-        //while(!dbintr->IsDone())
+        //dbintr->issueQuery(q);
+        //while(!dbintr->isDone())
 	//{
-        //        db_id_t sid=atoi(dbintr->GetResultColumn("scoop_id").c_str());
-	//	bonus_contents[sid]=dbintr->GetResultColumn("data");
-	//	dbintr->MoveToNextRow();
+        //        db_id_t sid=atoi(dbintr->getResultColumn("scoop_id").c_str());
+	//	bonus_contents[sid]=dbintr->getResultColumn("data");
+	//	dbintr->moveToNextRow();
 	//}
 
 
@@ -1469,78 +1450,75 @@ std::map<db_id_t,DataScoop_t*> FileIR_t::ReadScoopsFromDB
 	// data               bytea                      -- the actual bytes of the scoop
 
         string q= "select scoop_id,name,type_id,start_address_id,end_address_id,permissions,relro from " + fileptr->scoop_table_name + " ; ";
-        dbintr->IssueQuery(q);
-        while(!dbintr->IsDone())
+        dbintr->issueQuery(q);
+        while(!dbintr->isDone())
         {
 
-                db_id_t sid=atoi(dbintr->GetResultColumn("scoop_id").c_str());
-                std::string name=dbintr->GetResultColumn("name");
-                db_id_t type_id=atoi(dbintr->GetResultColumn("type_id").c_str());
+                db_id_t sid=atoi(dbintr->getResultColumn("scoop_id").c_str());
+                std::string name=dbintr->getResultColumn("name");
+                db_id_t type_id=atoi(dbintr->getResultColumn("type_id").c_str());
 		Type_t *type=typeMap[type_id];
-                db_id_t start_id=atoi(dbintr->GetResultColumn("start_address_id").c_str());
+                db_id_t start_id=atoi(dbintr->getResultColumn("start_address_id").c_str());
 		AddressID_t* start_addr=addrMap[start_id];
-                db_id_t end_id=atoi(dbintr->GetResultColumn("end_address_id").c_str());
+                db_id_t end_id=atoi(dbintr->getResultColumn("end_address_id").c_str());
 		AddressID_t* end_addr=addrMap[end_id];
-                int permissions=atoi(dbintr->GetResultColumn("permissions").c_str());
-                bool is_relro=atoi(dbintr->GetResultColumn("relro").c_str()) != 0 ;
+                int permissions=atoi(dbintr->getResultColumn("permissions").c_str());
+                bool is_relro=atoi(dbintr->getResultColumn("relro").c_str()) != 0 ;
 
 		DataScoop_t* newscoop=new DataScoop_t(sid,name,start_addr,end_addr,type,permissions,is_relro,"");
 		assert(newscoop);
 		GetDataScoops().insert(newscoop);
-		dbintr->MoveToNextRow();
+		dbintr->moveToNextRow();
 
 		scoopMap[sid]=newscoop;
 	}
 
-	for(DataScoopSet_t::iterator it=GetDataScoops().begin(); it!=GetDataScoops().end(); ++it)
+	for(auto it=getDataScoops().begin(); it!=getDataScoops().end(); ++it)
 	{
-		DataScoop_t* scoop=*it;
+		DataScoop_t* scoop=dynamic_cast<DataScoop_t*>(*it);
 
-        	q= "select length(data) from " + fileptr->scoop_table_name + " where scoop_id='"+to_string(scoop->GetBaseID())+"'; ";
-        	dbintr->IssueQuery(q);
-		if(!dbintr->IsDone())
+        	q= "select length(data) from " + fileptr->scoop_table_name + " where scoop_id='"+to_string(scoop->getBaseID())+"'; ";
+        	dbintr->issueQuery(q);
+		if(!dbintr->isDone())
 		{
-			int data_len=atoi(dbintr->GetResultColumn("length").c_str());
+			int data_len=atoi(dbintr->getResultColumn("length").c_str());
 			for(int i=0;i<data_len;i+=SCOOP_CHUNK_SIZE)
 			{
 				string start_pos=to_string(i);
 				string len_to_get=to_string(SCOOP_CHUNK_SIZE);
 				string field="substr(data,"+start_pos+","+len_to_get+")";
-				q= "select "+field+" from " + fileptr->scoop_table_name + " where scoop_id='"+to_string(scoop->GetBaseID())+"'; ";
-				dbintr->IssueQuery(q);
+				q= "select "+field+" from " + fileptr->scoop_table_name + " where scoop_id='"+to_string(scoop->getBaseID())+"'; ";
+				dbintr->issueQuery(q);
 
-				scoop->GetContents()+=dbintr->GetResultColumn("substr");
+				scoop->getContents()+=dbintr->getResultColumn("substr");
 
 			}
 		}
 
 
 		// read part 2 from db
-        	q= "select length(data) from " + fileptr->scoop_table_name + "_part2 where scoop_id='"+to_string(scoop->GetBaseID())+"'; ";
-        	dbintr->IssueQuery(q);
-		if(!dbintr->IsDone())
+        	q= "select length(data) from " + fileptr->scoop_table_name + "_part2 where scoop_id='"+to_string(scoop->getBaseID())+"'; ";
+        	dbintr->issueQuery(q);
+		if(!dbintr->isDone())
 		{
-			int part2_len=atoi(dbintr->GetResultColumn("length").c_str());
+			int part2_len=atoi(dbintr->getResultColumn("length").c_str());
 			for(int i=0;i<part2_len; i+=SCOOP_CHUNK_SIZE)
 			{
 				string start_pos=to_string(i);
 				string len_to_get=to_string(SCOOP_CHUNK_SIZE);
 				string field="substr(data,"+start_pos+","+len_to_get+")";
-				q= "select "+field+" from " + fileptr->scoop_table_name + "_part2 where scoop_id='"+to_string(scoop->GetBaseID())+"'; ";
-				dbintr->IssueQuery(q);
+				q= "select "+field+" from " + fileptr->scoop_table_name + "_part2 where scoop_id='"+to_string(scoop->getBaseID())+"'; ";
+				dbintr->issueQuery(q);
 
-				scoop->GetContents()+=dbintr->GetResultColumn("substr");
+				scoop->getContents()+=dbintr->getResultColumn("substr");
 
 			}
 		}
 	}
-	for(	DataScoopSet_t::const_iterator it=GetDataScoops().begin();
-		it!=GetDataScoops().end();
-		++it
-	   )
+	for(auto s : getDataScoops())
 	{
-		DataScoop_t* scoop=*it;
-		assert(scoop->GetContents().size() == scoop->GetSize());
+		auto scoop=dynamic_cast<DataScoop_t*>(s);
+		assert(scoop->getContents().size() == scoop->getSize());
 	}
 
 
@@ -1549,37 +1527,42 @@ std::map<db_id_t,DataScoop_t*> FileIR_t::ReadScoopsFromDB
 
 
 // Lookup a scoop by address
-DataScoop_t* FileIR_t::FindScoop(const libIRDB::virtual_offset_t &addr)
+IRDB_SDK::DataScoop_t* FileIR_t::findScoop(const IRDB_SDK::VirtualOffset_t &addr) const
 {
-	for(DataScoopSet_t::iterator it=scoops.begin(); it!=scoops.end(); ++it)
+	for(auto it=scoops.begin(); it!=scoops.end(); ++it)
 	{
+		auto s=dynamic_cast<DataScoop_t*>(*it);
 		// we're doing <= in both comparisons here intentionally.
 		// scoop addresses are the start/end address are inclusive
 		// so that start+size-1 == end.
-		if( (*it)->GetStart()->GetVirtualOffset() <= addr && addr <= (*it)->GetEnd()->GetVirtualOffset() )
+		if( s->getStart()->getVirtualOffset() <= addr && addr <= s->getEnd()->getVirtualOffset() )
 			return *it;
 	}
 	return NULL;
 }
 
 
-void FileIR_t::SplitScoop(
-		DataScoop_t *tosplit, 
-		const libIRDB::virtual_offset_t &addr, 
+void FileIR_t::splitScoop(
+		IRDB_SDK::DataScoop_t *p_tosplit, 
+		const IRDB_SDK::VirtualOffset_t &addr, 
 		size_t size, 
-		DataScoop_t* &before,
-		DataScoop_t* &containing, 
-		DataScoop_t* &after,
-		db_id_t *max_id_ptr	 /* in and out param */
+		IRDB_SDK::DataScoop_t* &p_before,
+		IRDB_SDK::DataScoop_t* &p_containing, 
+		IRDB_SDK::DataScoop_t* &p_after,
+		IRDB_SDK::DatabaseID_t *max_id_ptr	 /* in and out param */
 	)
 {
+	auto tosplit=dynamic_cast<DataScoop_t*>(p_tosplit);
+	auto before=dynamic_cast<DataScoop_t*>(p_before);
+	auto containing=dynamic_cast<DataScoop_t*>(p_containing);
+	auto after=dynamic_cast<DataScoop_t*>(p_after);
 
 	// init output params.
 	before=containing=after=NULL;
 
 
-	if(tosplit->GetStart()->GetVirtualOffset() == addr &&
-		tosplit->GetEnd()->GetVirtualOffset() == addr+size-1)
+	if(tosplit->getStart()->getVirtualOffset() == addr &&
+		tosplit->getEnd()->getVirtualOffset() == addr+size-1)
 	{
 		// no split necessary
 		containing=tosplit;
@@ -1588,7 +1571,7 @@ void FileIR_t::SplitScoop(
 
 	auto calcd_max_id=db_id_t(0);
 	if(max_id_ptr==NULL)
-		calcd_max_id = GetMaxBaseID();
+		calcd_max_id = getMaxBaseID();
 
 	auto &max_id = max_id_ptr == NULL ? calcd_max_id : *max_id_ptr ;
 	
@@ -1602,8 +1585,8 @@ void FileIR_t::SplitScoop(
 
 	max_id=rounded_max + multiple; // and skip forward so we're passed the highest.
 
-	const bool needs_before = addr!=tosplit->GetStart()->GetVirtualOffset();
-	const bool needs_after = addr+size-1 != tosplit->GetEnd()->GetVirtualOffset();
+	const bool needs_before = addr!=tosplit->getStart()->getVirtualOffset();
+	const bool needs_after = addr+size-1 != tosplit->getEnd()->getVirtualOffset();
 
 
 	if(needs_before)
@@ -1612,27 +1595,27 @@ void FileIR_t::SplitScoop(
 		// const AddressID_t* before_start=NULL;
 	
 		const auto before_start=new AddressID_t;
-		before_start->SetBaseID(max_id++);
-		before_start->SetFileID(tosplit->GetStart()->GetFileID());
-		before_start->SetVirtualOffset(tosplit->GetStart()->GetVirtualOffset());
+		before_start->setBaseID(max_id++);
+		before_start->setFileID(tosplit->getStart()->getFileID());
+		before_start->setVirtualOffset(tosplit->getStart()->getVirtualOffset());
 
 		// const AddressID_t* before_end=new AddressID_t;
 		const auto before_end=new AddressID_t;
-		before_end->SetBaseID(max_id++);
-		before_end->SetFileID(tosplit->GetStart()->GetFileID());
-		before_end->SetVirtualOffset(addr-1);
+		before_end->setBaseID(max_id++);
+		before_end->setFileID(tosplit->getStart()->getFileID());
+		before_end->setVirtualOffset(addr-1);
 
 		before=new DataScoop_t;
-		before->SetBaseID(max_id++);
-		before->SetName(tosplit->GetName()+"3");
-		before->SetStart(before_start);
-		before->SetEnd(before_end);
+		before->setBaseID(max_id++);
+		before->setName(tosplit->getName()+"3");
+		before->setStart(before_start);
+		before->setEnd(before_end);
 		before->setRawPerms(tosplit->getRawPerms());
-		before->GetContents().resize(before_end->GetVirtualOffset() - before_start->GetVirtualOffset()+1);
+		before->getContents().resize(before_end->getVirtualOffset() - before_start->getVirtualOffset()+1);
 
 		// copy bytes
-		for(virtual_offset_t i=before_start->GetVirtualOffset() ; i <= before_end->GetVirtualOffset(); i++)
-			before->GetContents()[i-before_start->GetVirtualOffset()] = tosplit->GetContents()[i-tosplit->GetStart()->GetVirtualOffset()];
+		for(virtual_offset_t i=before_start->getVirtualOffset() ; i <= before_end->getVirtualOffset(); i++)
+			before->getContents()[i-before_start->getVirtualOffset()] = tosplit->getContents()[i-tosplit->getStart()->getVirtualOffset()];
 	
 
 		GetAddresses().insert(before_start);
@@ -1643,26 +1626,26 @@ void FileIR_t::SplitScoop(
 	// setup containing
 	// AddressID_t* containing_start=new AddressID_t;
 	const auto containing_start=new AddressID_t;
-	containing_start->SetBaseID(max_id++);
-	containing_start->SetFileID(tosplit->GetStart()->GetFileID());
-	containing_start->SetVirtualOffset(addr);
+	containing_start->setBaseID(max_id++);
+	containing_start->setFileID(tosplit->getStart()->getFileID());
+	containing_start->setVirtualOffset(addr);
 
 	//AddressID_t* containing_end=new AddressID_t;
 	const auto containing_end=new AddressID_t;
-	containing_end->SetBaseID(max_id++);
-	containing_end->SetFileID(tosplit->GetStart()->GetFileID());
-	containing_end->SetVirtualOffset(addr+size-1);
+	containing_end->setBaseID(max_id++);
+	containing_end->setFileID(tosplit->getStart()->getFileID());
+	containing_end->setVirtualOffset(addr+size-1);
 
 	containing=new DataScoop_t;
-	containing->SetBaseID(max_id++);
-	containing->SetName(tosplit->GetName()+"3");
-	containing->SetStart(containing_start);
-	containing->SetEnd(containing_end);
+	containing->setBaseID(max_id++);
+	containing->setName(tosplit->getName()+"3");
+	containing->setStart(containing_start);
+	containing->setEnd(containing_end);
 	containing->setRawPerms(tosplit->getRawPerms());
-	containing->GetContents().resize(containing_end->GetVirtualOffset() - containing_start->GetVirtualOffset()+1);
+	containing->getContents().resize(containing_end->getVirtualOffset() - containing_start->getVirtualOffset()+1);
 	// copy bytes
-	for(virtual_offset_t i=containing_start->GetVirtualOffset() ; i <= containing_end->GetVirtualOffset(); i++)
-		containing->GetContents()[i-containing_start->GetVirtualOffset()] = tosplit->GetContents()[i-tosplit->GetStart()->GetVirtualOffset()];
+	for(virtual_offset_t i=containing_start->getVirtualOffset() ; i <= containing_end->getVirtualOffset(); i++)
+		containing->getContents()[i-containing_start->getVirtualOffset()] = tosplit->getContents()[i-tosplit->getStart()->getVirtualOffset()];
 
 	GetAddresses().insert(containing_start);
 	GetAddresses().insert(containing_end);
@@ -1674,26 +1657,26 @@ void FileIR_t::SplitScoop(
 		// setup after
 		// AddressID_t* after_start=new AddressID_t;
 		const auto after_start=new AddressID_t;
-		after_start->SetBaseID(max_id++);
-		after_start->SetFileID(tosplit->GetStart()->GetFileID());
-		after_start->SetVirtualOffset(addr+size);
+		after_start->setBaseID(max_id++);
+		after_start->setFileID(tosplit->getStart()->getFileID());
+		after_start->setVirtualOffset(addr+size);
 
 		// AddressID_t* after_end=new AddressID_t;
 		const auto after_end=new AddressID_t;
-		after_end->SetBaseID(max_id++);
-		after_end->SetFileID(tosplit->GetStart()->GetFileID());
-		after_end->SetVirtualOffset(tosplit->GetEnd()->GetVirtualOffset());
+		after_end->setBaseID(max_id++);
+		after_end->setFileID(tosplit->getStart()->getFileID());
+		after_end->setVirtualOffset(tosplit->getEnd()->getVirtualOffset());
 
 		after=new DataScoop_t;
-		after->SetBaseID(max_id++);
-		after->SetName(tosplit->GetName()+"3");
-		after->SetStart(after_start);
-		after->SetEnd(after_end);
+		after->setBaseID(max_id++);
+		after->setName(tosplit->getName()+"3");
+		after->setStart(after_start);
+		after->setEnd(after_end);
 		after->setRawPerms(tosplit->getRawPerms());
-		after->GetContents().resize(after_end->GetVirtualOffset() - after_start->GetVirtualOffset()+1);
+		after->getContents().resize(after_end->getVirtualOffset() - after_start->getVirtualOffset()+1);
 		// copy bytes
-		for(virtual_offset_t i=after_start->GetVirtualOffset() ; i <= after_end->GetVirtualOffset(); i++)
-			after->GetContents()[i-after_start->GetVirtualOffset()] = tosplit->GetContents()[i-tosplit->GetStart()->GetVirtualOffset()];
+		for(virtual_offset_t i=after_start->getVirtualOffset() ; i <= after_end->getVirtualOffset(); i++)
+			after->getContents()[i-after_start->getVirtualOffset()] = tosplit->getContents()[i-tosplit->getStart()->getVirtualOffset()];
 
 		GetAddresses().insert(after_start);
 		GetAddresses().insert(after_end);
@@ -1706,23 +1689,23 @@ void FileIR_t::SplitScoop(
 	// adjust the reloc's offset accordingly before inserting into the correct scoop's reloc set.
 	while(!tosplit->GetRelocations().empty())
 	{
-		Relocation_t* reloc=*(tosplit->GetRelocations().begin());
-		tosplit->GetRelocations().erase(tosplit->GetRelocations().begin());
+		auto reloc=dynamic_cast<Relocation_t*>(*(tosplit->getRelocations().begin()));
+		tosplit->GetRelocations().erase(tosplit->getRelocations().begin());
 
-		virtual_offset_t reloc_start=reloc->GetOffset()+tosplit->GetStart()->GetVirtualOffset();
+		virtual_offset_t reloc_start=reloc->getOffset()+tosplit->getStart()->getVirtualOffset();
 
-		if(reloc_start < containing->GetStart()->GetVirtualOffset() )
+		if(reloc_start < containing->getStart()->getVirtualOffset() )
 		{
 			before->GetRelocations().insert(reloc);
 		}
-		else if(reloc_start > containing->GetEnd()->GetVirtualOffset() )
+		else if(reloc_start > containing->getEnd()->getVirtualOffset() )
 		{
-			reloc->SetOffset(reloc_start-after->GetStart()->GetVirtualOffset());
+			reloc->setOffset(reloc_start-after->getStart()->getVirtualOffset());
 			after->GetRelocations().insert(reloc);
 		}
 		else
 		{
-			reloc->SetOffset(reloc_start-containing->GetStart()->GetVirtualOffset());
+			reloc->setOffset(reloc_start-containing->getStart()->getVirtualOffset());
 			containing->GetRelocations().insert(reloc);
 		}
 	
@@ -1731,41 +1714,177 @@ void FileIR_t::SplitScoop(
 	/* look at each relocation in the IR */
 	for(auto & r : GetRelocations())
 	{
-		if(r->GetWRT()==tosplit)
+		if(r->getWRT()==tosplit)
 		{
-			const auto &addend=r->GetAddend();
-			const auto containing_start_offset=(containing -> GetStart()->GetVirtualOffset() - 
-				tosplit->GetStart()->GetVirtualOffset());
-			const auto containing_end_offset=containing_start_offset+containing->GetSize();
-			if(needs_before && addend<before->GetSize())
+			const auto &addend=r->getAddend();
+			const auto containing_start_offset=(containing -> getStart()->getVirtualOffset() - 
+				tosplit->getStart()->getVirtualOffset());
+			const auto containing_end_offset=containing_start_offset+containing->getSize();
+			if(needs_before && addend<before->getSize())
 			{
-				r->SetWRT(before);
+				r->setWRT(before);
 			}
 			else if( addend < containing_end_offset)
 			{
-				r->SetWRT(containing);
-				r->SetAddend(addend-containing_start_offset);
+				r->setWRT(containing);
+				r->setAddend(addend-containing_start_offset);
 			}
 			else 		
 			{
 				assert(needs_after);
-				const auto after_start_offset=(after -> GetStart()->GetVirtualOffset() - 
-					tosplit->GetStart()->GetVirtualOffset());
-				r->SetWRT(after);
-				r->SetAddend(addend-after_start_offset);
+				const auto after_start_offset=(after -> getStart()->getVirtualOffset() - 
+					tosplit->getStart()->getVirtualOffset());
+				r->setWRT(after);
+				r->setAddend(addend-after_start_offset);
 			}
 		}
 	}
 	
 
-	GetAddresses().erase(tosplit->GetStart());
-	GetAddresses().erase(tosplit->GetEnd());
+	GetAddresses().erase(tosplit->getStart());
+	GetAddresses().erase(tosplit->getEnd());
 	GetDataScoops().erase(tosplit);
 
-	delete tosplit->GetStart();
-	delete tosplit->GetEnd();
+	delete tosplit->getStart();
+	delete tosplit->getEnd();
 	delete tosplit;
 
 	return;
 }
+
+
+IRDB_SDK::EhCallSite_t* FileIR_t::addEhCallSite_t(IRDB_SDK::Instruction_t* for_insn, const uint64_t enc, IRDB_SDK::Instruction_t* lp) 
+{
+	auto new_ehcs = new libIRDB::EhCallSite_t(BaseObj_t::NOT_IN_DATABASE, enc, lp);
+	GetAllEhCallSites().insert(new_ehcs);
+        for_insn->setEhCallSite(new_ehcs);
+	return new_ehcs;
+
+}
+
+IRDB_SDK::Relocation_t* FileIR_t::addNewRelocation(
+	IRDB_SDK::BaseObj_t* p_from_obj,
+	int32_t p_offset,
+	string _type,
+	IRDB_SDK::BaseObj_t* p_wrt_obj,
+	int32_t p_addend)
+{
+	const auto from_obj=dynamic_cast<libIRDB::BaseObj_t*>(p_from_obj);
+	auto newreloc=new libIRDB::Relocation_t(BaseObj_t::NOT_IN_DATABASE, p_offset, "type_table_entry", p_wrt_obj, p_addend);
+	from_obj->GetRelocations().insert(newreloc);
+	GetRelocations().insert(newreloc);
+	
+	return newreloc;
+}
+
+EhProgram_t* FileIR_t::addEhProgram(
+	IRDB_SDK::Instruction_t* insn,
+	const uint64_t caf,
+	const int64_t daf,
+	const uint8_t rr,
+	const uint8_t p_ptrsize,
+	const EhProgramListing_t& p_cie_program,
+	const EhProgramListing_t& p_fde_program)
+{
+	auto newehpgm=new EhProgram_t(BaseObj_t::NOT_IN_DATABASE, caf,daf,rr,p_ptrsize, p_cie_program, p_fde_program);
+	assert(newehpgm);
+	GetAllEhPrograms().insert(newehpgm);
+	if(insn)
+		insn->setEhProgram(newehpgm);
+	return newehpgm;
+}
+
+
+
+void FileIR_t::removeScoop(IRDB_SDK::DataScoop_t* s)
+{
+	auto remove_reloc=[&](IRDB_SDK::Relocation_t* r) -> void
+        {
+                GetRelocations().erase(r);
+                delete r;
+        };
+
+        auto remove_address=[&](IRDB_SDK::AddressID_t* a) -> void
+        {
+                GetAddresses().erase(a);
+                for(auto &r : a->getRelocations()) remove_reloc(r);
+                for(auto &r : getRelocations()) assert(r->getWRT() != a);
+                delete a;
+        };
+
+        auto remove_scoop=[&] (IRDB_SDK::DataScoop_t* s) -> void
+        {
+                if(s==NULL)
+                        return;
+                GetDataScoops().erase(s);
+                remove_address(s->getStart());
+                remove_address(s->getEnd());
+                for(auto &r : s->getRelocations()) remove_reloc(r);
+                for(auto &r : GetRelocations()) assert(r->getWRT() != s);
+                delete s;
+        };
+
+	remove_scoop(s);
+}
+
+IRDB_SDK::AddressID_t* FileIR_t::addNewAddress(const IRDB_SDK::DatabaseID_t& myfileID, const IRDB_SDK::VirtualOffset_t& voff) 
+{
+	auto newaddr = new libIRDB::AddressID_t(BaseObj_t::NOT_IN_DATABASE, myfileID, voff);
+	GetAddresses().insert(newaddr);
+	return newaddr;
+}
+
+
+IRDB_SDK::ICFS_t* FileIR_t::addNewICFS(
+	IRDB_SDK::Instruction_t* insn,
+	const IRDB_SDK::InstructionSet_t& targets,
+	const IRDB_SDK::ICFSAnalysisStatus_t& status)
+{
+	auto newicfs=new libIRDB::ICFS_t(BaseObj_t::NOT_IN_DATABASE, status);
+	newicfs->setTargets(targets);
+	if(insn)
+		insn->setIBTargets(newicfs);
+	GetAllICFS().insert(newicfs);
+	return newicfs;
+}
+
+IRDB_SDK::Instruction_t* FileIR_t::addNewInstruction(
+	IRDB_SDK::AddressID_t* addr,
+	IRDB_SDK::Function_t* func,
+	const string& bits,
+	const string& comment,
+	IRDB_SDK::AddressID_t* indTarg)
+{
+	auto irdb_func    = dynamic_cast<libIRDB::Function_t* >(func);
+	auto irdb_addr    = dynamic_cast<libIRDB::AddressID_t*>(addr);
+	auto irdb_indTarg = dynamic_cast<libIRDB::AddressID_t*>(indTarg);
+
+	auto newinsn=new libIRDB::Instruction_t(BaseObj_t::NOT_IN_DATABASE, irdb_addr, irdb_func, BaseObj_t::NOT_IN_DATABASE, bits, "", comment, irdb_indTarg, BaseObj_t::NOT_IN_DATABASE);
+	
+	GetInstructions().insert(newinsn);
+
+	if(irdb_func)
+		irdb_func->GetInstructions().insert(newinsn);
+	return newinsn;
+}
+
+IRDB_SDK::DataScoop_t* FileIR_t::addNewDataScoop(
+	const string& p_name,
+	IRDB_SDK::AddressID_t* p_start,
+	IRDB_SDK::AddressID_t* p_end,
+	IRDB_SDK::Type_t* p_type,
+	uint8_t p_permissions,
+	bool p_is_relro,
+	const string& p_contents,
+	IRDB_SDK::DatabaseID_t id)
+{
+	auto irdb_start    = dynamic_cast<libIRDB::AddressID_t*>(p_start);
+	auto irdb_end      = dynamic_cast<libIRDB::AddressID_t*>(p_end);
+	auto irdb_type     = dynamic_cast<libIRDB::Type_t*>     (p_type);
+
+	auto newscoop=new libIRDB::DataScoop_t(id, p_name,irdb_start,irdb_end,irdb_type,p_permissions, p_is_relro, p_contents);
+	GetDataScoops().insert(newscoop);
+	return newscoop;
+}
+
 

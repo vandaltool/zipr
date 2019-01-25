@@ -61,7 +61,7 @@ VariantID_t::VariantID_t(db_id_t pid) : BaseObj_t(NULL)
 
        	try 
 	{
-		BaseObj_t::dbintr->IssueQuery(q);
+		BaseObj_t::dbintr->issueQuery(q);
 	}
 	catch (const std::exception &e)
 	{
@@ -72,29 +72,29 @@ VariantID_t::VariantID_t(db_id_t pid) : BaseObj_t(NULL)
 		throw DatabaseError_t(DatabaseError_t::VariantTableNotRegistered); 
 	};
 	
-	if(BaseObj_t::dbintr->IsDone())
+	if(BaseObj_t::dbintr->isDone())
 		throw DatabaseError_t(DatabaseError_t::VariantNotInDatabase); 
 
-        SetBaseID(atoi(BaseObj_t::dbintr->GetResultColumn("variant_id").c_str()));
-        schema_ver=atoi(BaseObj_t::dbintr->GetResultColumn("schema_version_id").c_str());
-        orig_pid=atoi(BaseObj_t::dbintr->GetResultColumn("orig_variant_id").c_str());
-        name=(BaseObj_t::dbintr->GetResultColumn("name"));
+        setBaseID(atoi(BaseObj_t::dbintr->getResultColumn("variant_id").c_str()));
+        schema_ver=atoi(BaseObj_t::dbintr->getResultColumn("schema_version_id").c_str());
+        orig_pid=atoi(BaseObj_t::dbintr->getResultColumn("orig_variant_id").c_str());
+        name=(BaseObj_t::dbintr->getResultColumn("name"));
 
 
-	BaseObj_t::dbintr->MoveToNextRow();
-	assert(BaseObj_t::dbintr->IsDone());
+	BaseObj_t::dbintr->moveToNextRow();
+	assert(BaseObj_t::dbintr->isDone());
 
         ReadFilesFromDB();
 }
 
-bool VariantID_t::IsRegistered()
+bool VariantID_t::isRegistered() const
 {
-	return GetBaseID()!=BaseObj_t::NOT_IN_DATABASE;
+	return getBaseID()!=BaseObj_t::NOT_IN_DATABASE;
 }
 
-bool VariantID_t::Register()
+bool VariantID_t::registerID()
 {
-	assert(!IsRegistered());
+	assert(!isRegistered());
 
 	std::string q;
 	q="insert into variant_info (schema_version_id,name) "
@@ -105,35 +105,35 @@ bool VariantID_t::Register()
 	q+="')";
 	q+="returning variant_id;";
 
-	dbintr->IssueQuery(q);
-	assert(!BaseObj_t::dbintr->IsDone());
+	dbintr->issueQuery(q);
+	assert(!BaseObj_t::dbintr->isDone());
 
-	db_id_t newid=atoi(dbintr->GetResultColumn("variant_id").c_str());
+	db_id_t newid=atoi(dbintr->getResultColumn("variant_id").c_str());
 
 	/* set IDs */
-	SetBaseID(newid);
+	setBaseID(newid);
 	if(NOT_IN_DATABASE==orig_pid)
 		orig_pid=newid;
 
-	BaseObj_t::dbintr->MoveToNextRow();
-	assert(BaseObj_t::dbintr->IsDone());
+	BaseObj_t::dbintr->moveToNextRow();
+	assert(BaseObj_t::dbintr->isDone());
 
 	return true;
 }    
 
-VariantID_t* VariantID_t::Clone(bool deep)
+IRDB_SDK::VariantID_t* VariantID_t::clone(bool deep)
 {
-	assert(IsRegistered());	// cannot clone something that's not registered 
+	assert(isRegistered());	// cannot clone something that's not registered 
 
 	// create the new program id 
 	VariantID_t *ret=new VariantID_t;
 	
 	// set the inhereted fields 
-	ret->SetName(name+"_cloneof"+to_string(GetBaseID()));
+	ret->setName(name+"_cloneof"+to_string(getBaseID()));
 	ret->orig_pid=orig_pid;
 
 	// register the new VID to the database. 
-	ret->Register();
+	ret->registerID();
 	// and write it to the database
 	ret->WriteToDB();
 
@@ -144,11 +144,11 @@ VariantID_t* VariantID_t::Clone(bool deep)
 	// the old variant depended upon.  The new rows will indicate that the 
 	// new variant also depends on those files 
 	q="insert into variant_dependency (variant_id, file_id, doip_id) select '";
-	q+=to_string(ret->GetBaseID());
+	q+=to_string(ret->getBaseID());
 	q+="', file_id, doip_id from variant_dependency where variant_id='";
-	q+=to_string(GetBaseID());
+	q+=to_string(getBaseID());
 	q+="';";
-	dbintr->IssueQuery(q);
+	dbintr->issueQuery(q);
 
 	if(deep)
 		ret->CloneFiles(files);
@@ -159,7 +159,10 @@ VariantID_t* VariantID_t::Clone(bool deep)
 void VariantID_t::CloneFiles(FileSet_t &files)
 {
 	for(auto fiter=files.begin(); fiter!=files.end(); ++fiter)
-		files.insert(CloneFile(*fiter));
+	{
+		auto the_file=dynamic_cast<File_t*>(*fiter);
+		files.insert(CloneFile(the_file));
+	}
 }
 
 File_t* VariantID_t::CloneFile(File_t* fptr)
@@ -181,15 +184,15 @@ File_t* VariantID_t::CloneFile(File_t* fptr)
             to_string(fptr->hash) + "', '" +
             to_string(fptr->arch) + "', '" +
             to_string(fptr->elfoid) + "', '" +
-            to_string(fptr->GetDoipID()) + 
+            to_string(fptr->getDoipID()) + 
 	    "' ) ";
 	q+=" returning file_id; ";
 
 
-        dbintr->IssueQuery(q);
-        assert(!BaseObj_t::dbintr->IsDone());
+        dbintr->issueQuery(q);
+        assert(!BaseObj_t::dbintr->isDone());
 
-        db_id_t newfid=atoi(dbintr->GetResultColumn("file_id").c_str());
+        db_id_t newfid=atoi(dbintr->getResultColumn("file_id").c_str());
 
 	std::string atn="atnfid"+to_string(newfid);
 	std::string ftn="ftnfid"+to_string(newfid);
@@ -217,10 +220,10 @@ File_t* VariantID_t::CloneFile(File_t* fptr)
 	q+=to_string(newfid);
 	q+="' ; ";
 	
-        dbintr->IssueQuery(q);
+        dbintr->issueQuery(q);
 
 	File_t* newfile=new File_t(newfid, fptr->orig_fid, fptr->url, fptr->hash, fptr->arch, 
-		fptr->elfoid, atn, ftn, itn, icfs, icfsmap, rtn, typ, dtn, ehp, css, fptr->GetDoipID());
+		fptr->elfoid, atn, ftn, itn, icfs, icfsmap, rtn, typ, dtn, ehp, css, fptr->getDoipID());
 
 	newfile->CreateTables();
 
@@ -228,57 +231,57 @@ File_t* VariantID_t::CloneFile(File_t* fptr)
         q="drop table ";
         q+=itn;
         q+=" ; ";
-        dbintr->IssueQuery(q);
+        dbintr->issueQuery(q);
 
         q="drop table ";
         q+=icfsmap;
         q+=" ; ";
-        dbintr->IssueQuery(q);
+        dbintr->issueQuery(q);
 
         q="drop table ";
         q+=icfs;
         q+=" ; ";
-        dbintr->IssueQuery(q);
+        dbintr->issueQuery(q);
 
         q="drop table ";
         q+=atn;
         q+=" ; ";
-        dbintr->IssueQuery(q);
+        dbintr->issueQuery(q);
 
         q="drop table ";
         q+=ftn;
         q+=" ; ";
-        dbintr->IssueQuery(q);
+        dbintr->issueQuery(q);
 
         q="drop table ";
         q+=rtn;
         q+=" ; ";
-        dbintr->IssueQuery(q);
+        dbintr->issueQuery(q);
 
         q="drop table ";
         q+=typ;
         q+=" ; ";
-        dbintr->IssueQuery(q);
+        dbintr->issueQuery(q);
 
         q="drop table ";
         q+=dtn;
         q+=" ; ";
-        dbintr->IssueQuery(q);
+        dbintr->issueQuery(q);
 
         q="drop table ";
         q+=dtn_part2;
         q+=" ; ";
-        dbintr->IssueQuery(q);
+        dbintr->issueQuery(q);
 
         q="drop table ";
         q+=ehp;
         q+=" ; ";
-        dbintr->IssueQuery(q);
+        dbintr->issueQuery(q);
 
         q="drop table ";
         q+=css;
         q+=" ; ";
-        dbintr->IssueQuery(q);
+        dbintr->issueQuery(q);
 
 
         // next issue SQL to clone each table
@@ -287,87 +290,87 @@ File_t* VariantID_t::CloneFile(File_t* fptr)
         q+=" from ";
         q+=fptr->address_table_name;
         q+=" ;";
-        dbintr->IssueQuery(q);
+        dbintr->issueQuery(q);
 
         q="select * into ";
         q+=itn;
         q+=" from ";
         q+=fptr->instruction_table_name;
         q+=" ;";
-        dbintr->IssueQuery(q);
+        dbintr->issueQuery(q);
 
         q="select * into ";
         q+=icfs;
         q+=" from ";
         q+=fptr->icfs_table_name;
         q+=" ;";
-        dbintr->IssueQuery(q);
+        dbintr->issueQuery(q);
 
         q="select * into ";
         q+=icfsmap;
         q+=" from ";
         q+=fptr->icfs_map_table_name;
         q+=" ;";
-        dbintr->IssueQuery(q);
+        dbintr->issueQuery(q);
 
         q="select * into ";
         q+=ftn;
         q+=" from ";
         q+=fptr->function_table_name;
         q+=" ;";
-        dbintr->IssueQuery(q);
+        dbintr->issueQuery(q);
 
         q="select * into ";
         q+=rtn;
         q+=" from ";
         q+=fptr->relocs_table_name;
         q+=" ;";
-        dbintr->IssueQuery(q);
+        dbintr->issueQuery(q);
 
         q="select * into ";
         q+=typ;
         q+=" from ";
         q+=fptr->types_table_name;
         q+=" ;";
-        dbintr->IssueQuery(q);
+        dbintr->issueQuery(q);
 
         q="select * into ";
         q+=dtn;
         q+=" from ";
         q+=fptr->scoop_table_name;
         q+=" ;";
-        dbintr->IssueQuery(q);
+        dbintr->issueQuery(q);
 
         q="select * into ";
         q+=dtn_part2;
         q+=" from ";
         q+=fptr->scoop_table_name+"_part2";
         q+=" ;";
-        dbintr->IssueQuery(q);
+        dbintr->issueQuery(q);
 
         q="select * into ";
         q+=ehp;
         q+=" from ";
         q+=fptr->ehpgm_table_name;
         q+=" ;";
-        dbintr->IssueQuery(q);
+        dbintr->issueQuery(q);
 
         q="select * into ";
         q+=css;
         q+=" from ";
         q+=fptr->ehcss_table_name;
         q+=" ;";
-        dbintr->IssueQuery(q);
+        dbintr->issueQuery(q);
 
 	// update the variant dependency table to represent the deep clone 
 	q =     "update variant_dependency set file_id='" + 
 		to_string(newfid) + 
 		"' where variant_id='" +
-		to_string(GetBaseID()) + 
+		to_string(getBaseID()) + 
 		"' AND file_id='" +
-		to_string(fptr->GetBaseID()) + 
+		to_string(fptr->getBaseID()) + 
 		"' ;";
-        dbintr->IssueQuery(q);
+        dbintr->issueQuery(q);
 
 
 	return newfile;
@@ -376,26 +379,25 @@ File_t* VariantID_t::CloneFile(File_t* fptr)
 
 void VariantID_t::WriteToDB()
 {
-	assert(IsRegistered());
+	assert(isRegistered());
 
 	std::string q="update variant_info SET ";
 	q+=" schema_version_id = '" + to_string(schema_ver) + "', ";
 	q+=" name = '"  + name  + "', ";
 	q+=" orig_variant_id = '" + to_string(orig_pid) + "', ";
-	q+=" doip_id = '" + to_string(GetDoipID()) + "' ";
-	q+=" where variant_id = '" + to_string(GetBaseID()) + "';";
+	q+=" doip_id = '" + to_string(getDoipID()) + "' ";
+	q+=" where variant_id = '" + to_string(getBaseID()) + "';";
 
-	dbintr->IssueQuery(q);
+	dbintr->issueQuery(q);
 }
 
-std::ostream& libIRDB::operator<<(std::ostream& out, const VariantID_t& pid)
+std::ostream& IRDB_SDK::operator<<(std::ostream& out, const IRDB_SDK::VariantID_t& pid)
 {
 
-	out << "("
-		"variant_id="<<pid.GetBaseID()<<":"
-		"schema="<<pid.schema_ver<<":"
-		"orig_pid="<<pid.orig_pid<<":"
-		"name="<<pid.name<<":"
+	out << "(" << 
+		"variant_id=" << pid.getBaseID()            << ":" <<
+		"orig_pid="   << pid.getOriginalVariantID() << ":" <<
+		"name="       << pid.getName()              << 
 		")" ;
 	return out;
 }
@@ -403,21 +405,21 @@ std::ostream& libIRDB::operator<<(std::ostream& out, const VariantID_t& pid)
 
 void VariantID_t::DropFromDB()
 {
-	assert(IsRegistered());
+	assert(isRegistered());
 
 	string q;
-	q+=string("delete from variant_dependency where variant_id = '") + to_string(GetBaseID()) + string("';");
-	q+=string("delete from variant_info where variant_id = '") + to_string(GetBaseID()) + string("';");
+	q+=string("delete from variant_dependency where variant_id = '") + to_string(getBaseID()) + string("';");
+	q+=string("delete from variant_info where variant_id = '") + to_string(getBaseID()) + string("';");
 
-	dbintr->IssueQuery(q);
+	dbintr->issueQuery(q);
 
-	SetBaseID(NOT_IN_DATABASE);
+	setBaseID(NOT_IN_DATABASE);
 	orig_pid=NOT_IN_DATABASE;
         schema_ver=CURRENT_SCHEMA;
 }
 
 
-File_t* VariantID_t::GetMainFile() const
+IRDB_SDK::File_t* VariantID_t::getMainFile() const
 {
 	for(
 		auto it=files.begin();
@@ -425,7 +427,7 @@ File_t* VariantID_t::GetMainFile() const
 		++it
 	   )
 	{
-		if ((*it)->GetURL().find("a.ncexe") != string::npos)
+		if ((*it)->getURL().find("a.ncexe") != string::npos)
 			return *it;
 	}
 	/* we should have found the main file somewhere. */
@@ -443,32 +445,32 @@ void VariantID_t::ReadFilesFromDB()
 		" file_info.scoop_table_name, file_info.ehpgm_table_name, file_info.ehcss_table_name, file_info.file_id, file_info.url, file_info.hash,"
 		" file_info.arch, file_info.type, file_info.elfoid, file_info.doip_id "
 		" from file_info,variant_dependency "
-		" where variant_dependency.variant_id = '" + to_string(GetBaseID()) + "' AND "
+		" where variant_dependency.variant_id = '" + to_string(getBaseID()) + "' AND "
 		" file_info.file_id = variant_dependency.file_id ; "; 
 
-	dbintr->IssueQuery(q);
+	dbintr->issueQuery(q);
 
-	while(!dbintr->IsDone())
+	while(!dbintr->isDone())
 	{
 // file_info.file_id, file_info.url, file_info.hash, file_info.arch, file_info.type, file_info.doip_id
 
-		db_id_t file_id=atoi(dbintr->GetResultColumn("file_id").c_str());
-		db_id_t orig_fid=atoi(dbintr->GetResultColumn("orig_file_id").c_str());
-		std::string url=dbintr->GetResultColumn("url");
-		std::string hash=dbintr->GetResultColumn("hash");
-		std::string type=dbintr->GetResultColumn("type");
-		int oid=atoi(dbintr->GetResultColumn("elfoid").c_str());
-		db_id_t doipid=atoi(dbintr->GetResultColumn("doip_id").c_str());
-        	std::string atn=(BaseObj_t::dbintr->GetResultColumn("address_table_name"));
-        	std::string ftn=(BaseObj_t::dbintr->GetResultColumn("function_table_name"));
-        	std::string itn=(BaseObj_t::dbintr->GetResultColumn("instruction_table_name"));
-        	std::string dtn=(BaseObj_t::dbintr->GetResultColumn("scoop_table_name"));
-        	std::string ehp=(BaseObj_t::dbintr->GetResultColumn("ehpgm_table_name"));
-        	std::string css=(BaseObj_t::dbintr->GetResultColumn("ehcss_table_name"));
-        	std::string icfs=(BaseObj_t::dbintr->GetResultColumn("icfs_table_name"));
-        	std::string icfs_map=(BaseObj_t::dbintr->GetResultColumn("icfs_map_table_name"));
-        	std::string rtn=(BaseObj_t::dbintr->GetResultColumn("relocs_table_name"));
-        	std::string typ=(BaseObj_t::dbintr->GetResultColumn("types_table_name"));
+		db_id_t file_id=atoi(dbintr->getResultColumn("file_id").c_str());
+		db_id_t orig_fid=atoi(dbintr->getResultColumn("orig_file_id").c_str());
+		std::string url=dbintr->getResultColumn("url");
+		std::string hash=dbintr->getResultColumn("hash");
+		std::string type=dbintr->getResultColumn("type");
+		int oid=atoi(dbintr->getResultColumn("elfoid").c_str());
+		db_id_t doipid=atoi(dbintr->getResultColumn("doip_id").c_str());
+        	std::string atn=(BaseObj_t::dbintr->getResultColumn("address_table_name"));
+        	std::string ftn=(BaseObj_t::dbintr->getResultColumn("function_table_name"));
+        	std::string itn=(BaseObj_t::dbintr->getResultColumn("instruction_table_name"));
+        	std::string dtn=(BaseObj_t::dbintr->getResultColumn("scoop_table_name"));
+        	std::string ehp=(BaseObj_t::dbintr->getResultColumn("ehpgm_table_name"));
+        	std::string css=(BaseObj_t::dbintr->getResultColumn("ehcss_table_name"));
+        	std::string icfs=(BaseObj_t::dbintr->getResultColumn("icfs_table_name"));
+        	std::string icfs_map=(BaseObj_t::dbintr->getResultColumn("icfs_map_table_name"));
+        	std::string rtn=(BaseObj_t::dbintr->getResultColumn("relocs_table_name"));
+        	std::string typ=(BaseObj_t::dbintr->getResultColumn("types_table_name"));
 
 
 		File_t *newfile=new File_t(file_id,orig_fid,url,hash,type,oid,atn,ftn,itn,icfs,icfs_map,rtn,typ,dtn,ehp,css,doipid);
@@ -478,6 +480,26 @@ void VariantID_t::ReadFilesFromDB()
 
 		files.insert(newfile);
 
-		dbintr->MoveToNextRow();
+		dbintr->moveToNextRow();
 	}
 }
+
+
+namespace IRDB_SDK
+{
+
+unique_ptr<VariantID_t> VariantID_t::factory(const DatabaseID_t& id)
+{
+        return unique_ptr<VariantID_t>(new libIRDB::VariantID_t(id));
+}
+
+unique_ptr<FileIR_t> FileIR_t::factory(VariantID_t *p_progid, File_t* p_fid)
+{
+	const auto progid=dynamic_cast<libIRDB::VariantID_t*>(p_progid);
+	const auto fid=dynamic_cast<libIRDB::File_t*>(p_fid);
+        return unique_ptr<FileIR_t>(new libIRDB::FileIR_t(*progid,fid));
+}
+
+
+}
+

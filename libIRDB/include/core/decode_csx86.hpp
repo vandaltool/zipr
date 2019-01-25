@@ -1,11 +1,3 @@
-#ifndef libirdb_decodecsx86_hpp
-#define libirdb_decodecsx86_hpp
-
-#include <stdint.h>
-#include <vector>
-#include <memory>
-#include <core/decode_base.hpp>
-#include <core/operand_base.hpp>
 
 namespace libIRDB
 {
@@ -14,14 +6,10 @@ using namespace libIRDB;
 using namespace std;
 
 class DecodedOperandCapstoneX86_t;
-class DecodedInstructionCapstoneX86_t : public DecodedInstructionCapstone_t
+class DecodedInstructionCapstoneX86_t : virtual public DecodedInstruction_t
 {
 	public:
 		DecodedInstructionCapstoneX86_t()=delete;
-		DecodedInstructionCapstoneX86_t(const Instruction_t*);
-		DecodedInstructionCapstoneX86_t(const virtual_offset_t start_addr, const void *data, uint32_t max_len);
-		DecodedInstructionCapstoneX86_t(const virtual_offset_t start_addr, const void *data, const void* endptr);
-		DecodedInstructionCapstoneX86_t(const DecodedInstructionCapstoneX86_t& copy);
 		DecodedInstructionCapstoneX86_t& operator=(const DecodedInstructionCapstoneX86_t& copy);
 
 		virtual ~DecodedInstructionCapstoneX86_t();
@@ -44,12 +32,12 @@ class DecodedInstructionCapstoneX86_t : public DecodedInstructionCapstone_t
 		virtual bool hasRelevantOperandSizePrefix() const override; 
 		virtual bool hasRexWPrefix() const override; 
 		virtual bool hasImplicitlyModifiedRegs() const override;
- 		virtual virtual_offset_t getMemoryDisplacementOffset(const DecodedOperandCapstone_t& t, const Instruction_t* insn) const override;
+ 		virtual IRDB_SDK::VirtualOffset_t getMemoryDisplacementOffset(const DecodedOperand_t* t, const IRDB_SDK::Instruction_t* insn) const override;
 
 		// 0-based.  first operand is numbered 0.
 		virtual bool hasOperand(const int op_num) const override;
-		virtual std::shared_ptr<DecodedOperandCapstone_t> getOperand(const int op_num) const override;
-		virtual DecodedOperandCapstoneVector_t getOperands() const override;
+		virtual std::shared_ptr<DecodedOperand_t> getOperand(const int op_num) const override;
+		virtual DecodedOperandVector_t getOperands() const override;
 
 	private:
 
@@ -70,12 +58,15 @@ class DecodedInstructionCapstoneX86_t : public DecodedInstructionCapstone_t
 		static CapstoneHandle_t *cs_handle;
 
 
+		friend class DecodedInstruction_t;
 		friend class DecodedOperandCapstoneX86_t;
 
 		DecodedInstructionCapstoneX86_t(const shared_ptr<void> &my_insn);
-
+		DecodedInstructionCapstoneX86_t(const Instruction_t*);
+		DecodedInstructionCapstoneX86_t(const virtual_offset_t start_addr, const void *data, uint32_t max_len);
+		DecodedInstructionCapstoneX86_t(const virtual_offset_t start_addr, const void *data, const void* endptr);
+		DecodedInstructionCapstoneX86_t(const DecodedInstructionCapstoneX86_t& copy);
 };
 
 }
 
-#endif
