@@ -57,3 +57,6 @@
 [submodule "zipr_install"]
 	path = zipr_install
 	url = git@git.zephyr-software.com:allnp/zipr_install.git
+[submodule "irdb-sdk"]
+	path = irdb-sdk
+	url = git@git.zephyr-software.com:allnp/irdb-sdk.git
