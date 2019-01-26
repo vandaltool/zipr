@@ -35,25 +35,25 @@
 
 
 typedef		std::set<Dollop_t*> DollopList_t;
-typedef		std::map<libIRDB::Instruction_t*,Dollop_t*>  InsnToDollopMap_t;
+typedef		std::map<IRDB_SDK::Instruction_t*,Dollop_t*>  InsnToDollopMap_t;
 typedef		std::list<DollopPatch_t*>  DollopPatchList_t;
 typedef		std::map<Dollop_t*, DollopPatchList_t > DollopToDollopPatchListMap_t;
 
 class ZiprDollopManager_t : public DollopManager_t {
 	public:
-		ZiprDollopManager_t() : m_refresh_stats(true), m_zipr(NULL) {}
+		ZiprDollopManager_t() : m_refresh_stats(true), m_zipr(nullptr) {}
 		ZiprDollopManager_t(Zipr_SDK::Zipr_t *zipr) : m_refresh_stats(true), m_zipr(zipr) {}
 
 		/*
 		 * Adders.
 		 */
 		void AddDollops(Dollop_t *dollop_head);
-		Zipr_SDK::Dollop_t *AddNewDollops(libIRDB::Instruction_t *start);
+		Zipr_SDK::Dollop_t *AddNewDollops(IRDB_SDK::Instruction_t *start);
 
 		/*
 		 * Getters.
 		 */
-		Zipr_SDK::Dollop_t *GetContainingDollop(libIRDB::Instruction_t *insn);
+		Zipr_SDK::Dollop_t *getContainingDollop(IRDB_SDK::Instruction_t *insn);
 
 		size_t Size() {
 			return m_dollops.size();
@@ -89,8 +89,8 @@ class ZiprDollopManager_t : public DollopManager_t {
 		DollopList_t::iterator dollops_end() {
 			return m_dollops.end();
 		}
-		DollopList_t& GetDollops() { return m_dollops; }
-		const DollopList_t& GetDollops() const { return m_dollops; }
+		DollopList_t& getDollops() { return m_dollops; }
+		const DollopList_t& getDollops() const { return m_dollops; }
 
 		/*
 		 * Printing/output functions.

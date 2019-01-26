@@ -4,7 +4,7 @@
 
 int main() {
 	printf("Type your answer: ");
-	char *answer = readline(NULL);
+	char *answer = readline(nullptr);
 	printf("%s is wrong.\n", answer);
 	return 0;
 }

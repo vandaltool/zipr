@@ -66,7 +66,7 @@ bool TestBinarySearchMaxRange()
 	cout << "Looking for 0x" << std::hex << (RangeAddress_t)-1 << ":" << endl;
 	foundRange = m.FindFreeRange(RangeAddress_t((RangeAddress_t)-1));
 	assert(m.IsValidRange(foundRange));
-	cout << "Found: 0x" << std::hex << (*foundRange).GetStart() << " - 0x" << (*foundRange).GetEnd() << endl;
+	cout << "Found: 0x" << std::hex << (*foundRange).getStart() << " - 0x" << (*foundRange).getEnd() << endl;
 
 	return true;
 }
@@ -90,42 +90,42 @@ bool TestBinarySearch()
 	cout << "Looking for 0x" << std::hex << 258 << ":" << endl;
 	foundRange = m.FindFreeRange(RangeAddress_t(258));
 	assert(m.IsValidRange(foundRange));
-	cout << "Found: 0x" << std::hex << (*foundRange).GetStart() << " - 0x" << (*foundRange).GetEnd() << endl;
+	cout << "Found: 0x" << std::hex << (*foundRange).getStart() << " - 0x" << (*foundRange).getEnd() << endl;
 
 	cout << "Looking for 0x" << std::hex << 335 << ":" << endl;
 	foundRange = m.FindFreeRange(RangeAddress_t(335));
 	assert(m.IsValidRange(foundRange));
-	cout << "Found: 0x" << std::hex << (*foundRange).GetStart() << " - 0x" << (*foundRange).GetEnd() << endl;
+	cout << "Found: 0x" << std::hex << (*foundRange).getStart() << " - 0x" << (*foundRange).getEnd() << endl;
 
 	cout << "Looking for 0x" << std::hex << 301 << ":" << endl;
 	foundRange = m.FindFreeRange(RangeAddress_t(301));
 	assert(m.IsValidRange(foundRange));
-	cout << "Found: 0x" << std::hex << (*foundRange).GetStart() << " - 0x" << (*foundRange).GetEnd() << endl;
+	cout << "Found: 0x" << std::hex << (*foundRange).getStart() << " - 0x" << (*foundRange).getEnd() << endl;
 	
 	cout << "Looking for 0x" << std::hex << 316 << ":" << endl;
 	foundRange = m.FindFreeRange(RangeAddress_t(316));
 	assert(m.IsValidRange(foundRange));
-	cout << "Found: 0x" << std::hex << (*foundRange).GetStart() << " - 0x" << (*foundRange).GetEnd() << endl;
+	cout << "Found: 0x" << std::hex << (*foundRange).getStart() << " - 0x" << (*foundRange).getEnd() << endl;
 	
 	cout << "Looking for 0x" << std::hex << 338 << ":" << endl;
 	foundRange = m.FindFreeRange(RangeAddress_t(338));
 	assert(m.IsValidRange(foundRange));
-	cout << "Found: 0x" << std::hex << (*foundRange).GetStart() << " - 0x" << (*foundRange).GetEnd() << endl;
+	cout << "Found: 0x" << std::hex << (*foundRange).getStart() << " - 0x" << (*foundRange).getEnd() << endl;
 	
 	cout << "Looking for 0x" << std::hex << 401 << ":" << endl;
 	foundRange = m.FindFreeRange(RangeAddress_t(401));
 	assert(m.IsValidRange(foundRange));
-	cout << "Found: 0x" << std::hex << (*foundRange).GetStart() << " - 0x" << (*foundRange).GetEnd() << endl;
+	cout << "Found: 0x" << std::hex << (*foundRange).getStart() << " - 0x" << (*foundRange).getEnd() << endl;
 	
 	cout << "Looking for 0x" << std::hex << 450 << ":" << endl;
 	foundRange = m.FindFreeRange(RangeAddress_t(450));
 	assert(m.IsValidRange(foundRange));
-	cout << "Found: 0x" << std::hex << (*foundRange).GetStart() << " - 0x" << (*foundRange).GetEnd() << endl;
+	cout << "Found: 0x" << std::hex << (*foundRange).getStart() << " - 0x" << (*foundRange).getEnd() << endl;
 	
 	cout << "Looking for 0x" << std::hex << 512 << ":" << endl;
 	foundRange = m.FindFreeRange(RangeAddress_t(512));
 	assert(m.IsValidRange(foundRange));
-	cout << "Found: 0x" << std::hex << (*foundRange).GetStart() << " - 0x" << (*foundRange).GetEnd() << endl;
+	cout << "Found: 0x" << std::hex << (*foundRange).getStart() << " - 0x" << (*foundRange).getEnd() << endl;
 	
 	cout << "Looking for 0x" << std::hex << 400 << ": (but won't find)" << endl;
 	foundRange = m.FindFreeRange(RangeAddress_t(400));
@@ -236,7 +236,7 @@ bool TestClearAllIteratively()
 		return false;
 	while (m.GetRangeCount())
 	{
-		removableRange = m.GetFreeRange(0);
+		removableRange = m.getFreeRange(0);
 		m.RemoveFreeRange(removableRange);
 	}	
 	m.PrintMemorySpace(cout);
@@ -274,8 +274,8 @@ bool TestClearSomeIteratively()
 	 */
 	while (m.GetRangeCount() != 1)
 	{
-		removableRange = m.GetFreeRange(0);
-		if (removableRange.GetEnd() == 4096)
+		removableRange = m.getFreeRange(0);
+		if (removableRange.getEnd() == 4096)
 			continue;
 		m.RemoveFreeRange(removableRange);
 	}
@@ -283,7 +283,7 @@ bool TestClearSomeIteratively()
 	return m.GetRangeCount() == 1;
 }
 
-bool TestGetNearbyFreeRanges()
+bool TestgetNearbyFreeRanges()
 {
 	ZiprMemorySpace_t m;
 	int result_count = 0;
@@ -296,7 +296,7 @@ bool TestGetNearbyFreeRanges()
 
 	m.PrintMemorySpace(cout);
 
-	result = m.GetNearbyFreeRanges(RangeAddress_t(1000));
+	result = m.getNearbyFreeRanges(RangeAddress_t(1000));
 	for (result_it = result.first, result_it_end = result.second;
 	     result_it != result_it_end;
 			 result_it++, result_count++) {}
@@ -334,6 +334,6 @@ int main(int argc, char *argv[])
 	INVOKE(TestClearAllIteratively);
 	INVOKE(TestClearSomeIteratively);
 	INVOKE(TestEraseOneByter);
-	INVOKE(TestGetNearbyFreeRanges);
+	INVOKE(TestgetNearbyFreeRanges);
 	INVOKE(TestCopyConstructor);
 }

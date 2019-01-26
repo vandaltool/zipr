@@ -6,6 +6,7 @@ namespace zipr
 }
 
 using namespace zipr ;
+using namespace IRDB_SDK;
 
 
 ZiprSizerX86_t::ZiprSizerX86_t(Zipr_SDK::Zipr_t* p_zipr_obj) : ZiprSizerBase_t(p_zipr_obj,10,5,2,5,1)
@@ -17,7 +18,7 @@ size_t ZiprSizerX86_t::DetermineInsnSize(Instruction_t* insn, bool account_for_j
 
 	int required_size=0;
 
-	switch(insn->GetDataBits()[0])
+	switch(insn->getDataBits()[0])
 	{
 		case (char)0x70:
 		case (char)0x71:
@@ -66,8 +67,8 @@ size_t ZiprSizerX86_t::DetermineInsnSize(Instruction_t* insn, bool account_for_j
 
 		default:
 		{
-			required_size=insn->GetDataBits().size();
-			if (insn->GetCallback()!="") required_size=CALLBACK_TRAMPOLINE_SIZE;
+			required_size=insn->getDataBits().size();
+			if (insn->getCallback()!="") required_size=CALLBACK_TRAMPOLINE_SIZE;
 			break;
 		}
 	}
@@ -98,19 +99,19 @@ RangeAddress_t ZiprSizerX86_t::PlopDollopEntryWithTarget(
         if (override_target != 0)
                 target_addr = override_target;
 
-        if(insn->GetDataBits().length() >2)
+        if(insn->getDataBits().length() >2)
         {
                 memory_space.PlopBytes(ret,
-                                       insn->GetDataBits().c_str(),
-                                       insn->GetDataBits().length()
+                                       insn->getDataBits().c_str(),
+                                       insn->getDataBits().length()
                                       );
                 m_zipr_obj.GetPatcher()->ApplyPatch(ret, target_addr);
-                ret+=insn->GetDataBits().length();
+                ret+=insn->getDataBits().length();
                 return ret;
         }
 
         // call, jmp, jcc of length 2.
-        char b=insn->GetDataBits()[0];
+        char b=insn->getDataBits()[0];
         switch(b)
         {
                 case (char)0x70:
@@ -132,7 +133,7 @@ RangeAddress_t ZiprSizerX86_t::PlopDollopEntryWithTarget(
                 {
                 // two byte JCC
                         char bytes[]={(char)0x0f,(char)0xc0,(char)0x0,(char)0x0,(char)0x0,(char)0x0 };  // 0xc0 is a placeholder, overwritten next statement
-                        bytes[1]=insn->GetDataBits()[0]+0x10;           // convert to jcc with 4-byte offset.
+                        bytes[1]=insn->getDataBits()[0]+0x10;           // convert to jcc with 4-byte offset.
                         memory_space.PlopBytes(ret,bytes, sizeof(bytes));
                         m_zipr_obj.GetPatcher()->ApplyPatch(ret, target_addr);
                         ret+=sizeof(bytes);
@@ -142,7 +143,7 @@ RangeAddress_t ZiprSizerX86_t::PlopDollopEntryWithTarget(
                 {
                         // two byte JMP
                         char bytes[]={(char)0xe9,(char)0x0,(char)0x0,(char)0x0,(char)0x0 };
-                        bytes[1]=insn->GetDataBits()[0]+0x10;           // convert to jcc with 4-byte offset.
+                        bytes[1]=insn->getDataBits()[0]+0x10;           // convert to jcc with 4-byte offset.
                         memory_space.PlopBytes(ret,bytes, sizeof(bytes));
                         m_zipr_obj.GetPatcher()->ApplyPatch(ret, target_addr);
                         ret+=sizeof(bytes);
@@ -159,7 +160,7 @@ RangeAddress_t ZiprSizerX86_t::PlopDollopEntryWithTarget(
                         // jmp fallthrough
                         // +5: jmp target
                         char bytes[]={0,0x5};
-                        DollopEntry_t *fallthrough_de = NULL;
+                        DollopEntry_t *fallthrough_de = nullptr;
 
                         fallthrough_de = entry->MemberOfDollop()->FallthroughDollopEntry(entry);
 
@@ -181,7 +182,7 @@ RangeAddress_t ZiprSizerX86_t::PlopDollopEntryWithTarget(
 
                         assert(fallthrough_de && fallthrough_de->IsPlaced());
 
-                        bytes[0]=insn->GetDataBits()[0];
+                        bytes[0]=insn->getDataBits()[0];
                         memory_space.PlopBytes(ret,bytes, sizeof(bytes));
 			                        memory_space.PlopBytes(ret,bytes, sizeof(bytes));
                         ret+=sizeof(bytes);

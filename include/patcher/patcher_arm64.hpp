@@ -37,7 +37,7 @@ class ZiprPatcherARM64_t : public ZiprPatcherBase_t
 {
 	// data
         zipr::ZiprImpl_t* m_parent;
-        libIRDB::FileIR_t* m_firp;
+        IRDB_SDK::FileIR_t* m_firp;
         Zipr_SDK::MemorySpace_t &memory_space;
 
 	std::map<RangeAddress_t, RangeAddress_t> redirect_map;

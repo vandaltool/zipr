@@ -33,20 +33,41 @@
 
 class Stats_t;
 
+class DataScoopByAddressComp_t 
+{
+        public:
+        bool operator()(const IRDB_SDK::DataScoop_t *lhs, const IRDB_SDK::DataScoop_t *rhs) {
+
+                if (!lhs ||
+                    !rhs ||
+                    !lhs->getStart() ||
+                    !rhs->getStart()
+                   )
+                        throw std::logic_error("Cannot order scoops that have null elements.");
+
+                return std::make_tuple(lhs->getStart()->getVirtualOffset(), lhs) <
+                       std::make_tuple(rhs->getStart()->getVirtualOffset(), rhs);
+        }
+};
+using DataScoopByAddressSet_t = std::set<IRDB_SDK::DataScoop_t*, DataScoopByAddressComp_t>;
+
+
+
+
 class pin_sorter_t 
 {
 	public:
 		bool operator() (const UnresolvedPinned_t& p1, const UnresolvedPinned_t& p2)
 		{
-			assert(p1.GetInstruction());
-			assert(p2.GetInstruction());
-			assert(p1.GetInstruction()->GetIndirectBranchTargetAddress()
-			       && p1.GetInstruction()->GetIndirectBranchTargetAddress()->GetVirtualOffset()!=0);
-			assert(p2.GetInstruction()->GetIndirectBranchTargetAddress()
-			       && p2.GetInstruction()->GetIndirectBranchTargetAddress()->GetVirtualOffset()!=0);
+			assert(p1.getInstrution());
+			assert(p2.getInstrution());
+			assert(p1.getInstrution()->getIndirectBranchTargetAddress()
+			       && p1.getInstrution()->getIndirectBranchTargetAddress()->getVirtualOffset()!=0);
+			assert(p2.getInstrution()->getIndirectBranchTargetAddress()
+			       && p2.getInstrution()->getIndirectBranchTargetAddress()->getVirtualOffset()!=0);
 
-			return p1.GetInstruction()->GetIndirectBranchTargetAddress()->GetVirtualOffset() < 
-				p2.GetInstruction()->GetIndirectBranchTargetAddress()->GetVirtualOffset() ;
+			return p1.getInstrution()->getIndirectBranchTargetAddress()->getVirtualOffset() < 
+				p2.getInstrution()->getIndirectBranchTargetAddress()->getVirtualOffset() ;
 		}
 };
 
@@ -56,8 +77,11 @@ class ZiprImpl_t : public Zipr_t
 
 	public:
 		ZiprImpl_t(int argc, char **argv) :
-			m_stats(NULL),
-			m_firp(NULL),
+			m_stats(nullptr),
+			m_firp(nullptr),
+			m_variant_id(nullptr),
+			m_pqxx_interface(IRDB_SDK::pqxxDB_t::factory()),
+			lo(nullptr),
 			m_error(false),
 			m_dollop_mgr(this),
 			elfiop(new ELFIO::elfio), 
@@ -78,6 +102,7 @@ class ZiprImpl_t : public Zipr_t
 			m_seed("seed", 0),
 			m_dollop_map_filename("dollop_map_filename", "dollop.map"),
 			m_paddable_minimum_distance("paddable_minimum_distance", 5*1024)
+
 
 		{ 
 			Init();
@@ -125,7 +150,7 @@ class ZiprImpl_t : public Zipr_t
 		 *
 		 */
 		void AskPluginsAboutPlopping();
-		bool AskPluginsAboutPlopping(libIRDB::Instruction_t *);
+		bool AskPluginsAboutPlopping(IRDB_SDK::Instruction_t *);
 
 		void RecordNewPatch(const std::pair<RangeAddress_t, UnresolvedUnpinnedPatch_t>& p)
 		{
@@ -141,7 +166,7 @@ class ZiprImpl_t : public Zipr_t
                         assert(patch_it != m_PatchAtAddrs.end());
                         m_PatchAtAddrs.erase(patch_it);
 		}
-		libIRDB::Instruction_t *FindPatchTargetAtAddr(RangeAddress_t addr);
+		IRDB_SDK::Instruction_t *FindPatchTargetAtAddr(RangeAddress_t addr);
 		void PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr);
 		void AddPatch(const UnresolvedUnpinned_t& uu, const Patch_t& thepatch)
 		{
@@ -150,14 +175,14 @@ class ZiprImpl_t : public Zipr_t
 
 
                 virtual Zipr_SDK::MemorySpace_t *GetMemorySpace() { return &memory_space; }
-		virtual Zipr_SDK::DollopManager_t *GetDollopManager() { return &m_dollop_mgr; }
-                virtual ELFIO::elfio *GetELFIO() { return elfiop; }
-                virtual libIRDB::FileIR_t *GetFileIR() { return m_firp; }
+		virtual Zipr_SDK::DollopManager_t *getDollopManager() { return &m_dollop_mgr; }
+                virtual ELFIO::elfio *getELFIO() { return elfiop; }
+                virtual IRDB_SDK::FileIR_t *getFileIR() { return m_firp; }
                 virtual Zipr_SDK::InstructionLocationMap_t *GetLocationMap() { return &final_insn_locations; }
 		virtual Zipr_SDK::PlacementQueue_t* GetPlacementQueue() { return &placement_queue; }  
 		virtual Zipr_SDK::RangeAddress_t PlaceUnplacedScoops(Zipr_SDK::RangeAddress_t max);
-		Stats_t* GetStats() { return m_stats; }
-		ZiprSizerBase_t* GetSizer() { return sizer; }
+		Stats_t* getStats() { return m_stats; }
+		ZiprSizerBase_t* getSizer() { return sizer; }
 		ZiprPatcherBase_t* GetPatcher() { return patcher; }
 		ZiprPinnerBase_t* GetPinner() { return pinner; }
 
@@ -185,7 +210,7 @@ class ZiprImpl_t : public Zipr_t
 		 * Input: A map of section addresses to integers in order of address
 		 * Output:  A new scoop with RX perms for each allocatable/executable series-of-segments.
 		 * Uses: elfio
-		 * Effects: libIRDB IR.
+		 * Effects: IRDB_SDK IR.
  	         *
 		 * Creates a scoop for the executable instructions in the IR.
 		 */
@@ -194,10 +219,10 @@ class ZiprImpl_t : public Zipr_t
         
 	
 		/* 
-		 * Input: the libIRDB IR, memory_space
+		 * Input: the IRDB_SDK IR, memory_space
 		 * Output:  a revised version of the IR taking memory into account 
-		 * Uses: libIRDB IR
-		 * Effects: libIRDB IR.
+		 * Uses: IRDB_SDK IR
+		 * Effects: IRDB_SDK IR.
  	         *
 		 * Creates a scoop for the executable instructions in the IR.
 		 */
@@ -308,11 +333,11 @@ class ZiprImpl_t : public Zipr_t
 		 * may be plopping this instruction and want
 		 * to do some calculations.
 		 */
-		size_t DetermineInsnSize(libIRDB::Instruction_t*, bool account_for_trampoline);
+		size_t DetermineInsnSize(IRDB_SDK::Instruction_t*, bool account_for_trampoline);
 
 		// patching
-		void ApplyPatches(libIRDB::Instruction_t* insn);
-		void PatchInstruction(RangeAddress_t addr, libIRDB::Instruction_t* insn);
+		void ApplyPatches(IRDB_SDK::Instruction_t* insn);
+		void PatchInstruction(RangeAddress_t addr, IRDB_SDK::Instruction_t* insn);
 		void RewritePCRelOffset(RangeAddress_t from_addr,RangeAddress_t to_addr, int insn_length, int offset_pos);
 		void ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr);
 		void ApplyNopToPatch(RangeAddress_t addr);
@@ -322,7 +347,7 @@ class ZiprImpl_t : public Zipr_t
 		// outputing new .exe
 		void FillSection(ELFIO::section* sec, FILE* fexe);
 		void OutputBinaryFile(const std::string &name);
-		libIRDB::DataScoop_t* FindScoop(const RangeAddress_t &addr);
+		IRDB_SDK::DataScoop_t* FindScoop(const RangeAddress_t &addr);
 		void WriteScoop(ELFIO::section* sec, std::FILE* fexe);
 
 
@@ -333,17 +358,17 @@ class ZiprImpl_t : public Zipr_t
 		RangeAddress_t FindCallbackAddress(RangeAddress_t end_of_new_space,RangeAddress_t start_addr, const std::string &callback);
 
 #if 0
-		libIRDB::Instruction_t *FindPinnedInsnAtAddr(RangeAddress_t addr);
+		IRDB_SDK::Instruction_t *FindPinnedInsnAtAddr(RangeAddress_t addr);
 
-// 		bool ShouldPinImmediately(libIRDB::Instruction_t *upinsn);
+// 		bool ShouldPinImmediately(IRDB_SDK::Instruction_t *upinsn);
 // 		bool IsPinFreeZone(RangeAddress_t addr, int size);
 
 		// routines to deal with a "68 sled"
 // 		int Calc68SledSize(RangeAddress_t addr, size_t sled_overhead=6);
 // 		RangeAddress_t Do68Sled(RangeAddress_t addr);
 // 		void Update68Sled(Sled_t, Sled_t &);
-// 		libIRDB::Instruction_t* Emit68Sled(Sled_t sled);
-// 		libIRDB::Instruction_t* Emit68Sled(RangeAddress_t addr, Sled_t sled, libIRDB::Instruction_t* next_sled);
+// 		IRDB_SDK::Instruction_t* Emit68Sled(Sled_t sled);
+// 		IRDB_SDK::Instruction_t* Emit68Sled(RangeAddress_t addr, Sled_t sled, IRDB_SDK::Instruction_t* next_sled);
 		/*
 		 * The goal here is to simply clear out chain entries
 		 * that may be in the way. This will not clear out 
@@ -363,9 +388,12 @@ class ZiprImpl_t : public Zipr_t
 		Stats_t *m_stats;
 
 		// data for the stuff we're rewriting.
-		libIRDB::FileIR_t* m_firp;
-		libIRDB::VariantID_t *m_variant_id;
-		libIRDB::pqxxDB_t m_pqxx_interface;
+		IRDB_SDK::FileIR_t* m_firp;
+		IRDB_SDK::VariantID_t* m_variant_id;
+
+		std::unique_ptr<IRDB_SDK::FileIR_t> m_firp_p;
+		std::unique_ptr<IRDB_SDK::VariantID_t> m_variant_id_p;
+		std::unique_ptr<IRDB_SDK::pqxxDB_t> m_pqxx_interface;
 		pqxx::largeobject *lo;
 
 
@@ -382,7 +410,7 @@ class ZiprImpl_t : public Zipr_t
 		ZiprDollopManager_t m_dollop_mgr;
 
 		// final mapping of instruction to address.
-		// std::map<libIRDB::Instruction_t*,RangeAddress_t> 
+		// std::map<IRDB_SDK::Instruction_t*,RangeAddress_t> 
 		Zipr_SDK::InstructionLocationMap_t final_insn_locations; 
 		std::map<RangeAddress_t,UnresolvedUnpinnedPatch_t> m_PatchAtAddrs; 
 
@@ -406,11 +434,11 @@ class ZiprImpl_t : public Zipr_t
 		/*
 		 * Scoops
 		 */
-		libIRDB::DataScoopSet_t m_zipr_scoops;
+		IRDB_SDK::DataScoopSet_t m_zipr_scoops;
 
 		ZiprPluginManager_t plugman;
 
-		std::map<libIRDB::Instruction_t*,
+		std::map<IRDB_SDK::Instruction_t*,
 		std::unique_ptr<std::list<DLFunctionHandle_t>>> plopping_plugins;
 		
 		// Options

@@ -11,8 +11,8 @@ class ZiprArchitectureHelperBase_t
 	protected:
 		ZiprArchitectureHelperBase_t(Zipr_SDK::Zipr_t* p_zipr_obj);
 	public:
-		virtual libIRDB::Instruction_t* createNewJumpInstruction(libIRDB::FileIR_t *p_firp, libIRDB::Instruction_t* p_existing)=0;
-		virtual libIRDB::Instruction_t* createNewHaltInstruction(libIRDB::FileIR_t *p_firp, libIRDB::Instruction_t* p_existing)=0;
+		virtual IRDB_SDK::Instruction_t* createNewJumpInstruction(IRDB_SDK::FileIR_t *p_firp, IRDB_SDK::Instruction_t* p_existing)=0;
+		virtual IRDB_SDK::Instruction_t* createNewHaltInstruction(IRDB_SDK::FileIR_t *p_firp, IRDB_SDK::Instruction_t* p_existing)=0;
 		static std::unique_ptr<ZiprArchitectureHelperBase_t> factory(Zipr_SDK::Zipr_t* zipr_obj);
 
 		ZiprPinnerBase_t * getPinner () const { return m_pinner .get(); }

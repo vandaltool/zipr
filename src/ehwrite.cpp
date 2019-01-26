@@ -1,6 +1,6 @@
 
 #include <zipr_all.h>
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 #include <Rewrite_Utility.hpp>
 #include <iostream>
 #include <stdlib.h>
@@ -20,7 +20,7 @@
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
 
-using namespace libIRDB;
+using namespace IRDB_SDK;
 using namespace std;
 using namespace zipr;
 using namespace ELFIO;
@@ -47,40 +47,40 @@ template <int ptrsize>
 bool EhWriterImpl_t<ptrsize>::CIErepresentation_t::canSupport(Instruction_t* insn) const
 {
 	// if the insn is missing info, we can support it.
-	if(insn==NULL)
+	if(insn==nullptr)
 		return true;
-	if(insn->GetEhProgram()==NULL)
+	if(insn->getEhProgram()==nullptr)
 		return true;
 
 	// all info here.
 
 
 	// check that the program,CAF, DAF and RR match.  if not, can't support
-	if(insn->GetEhProgram()->GetCIEProgram() != pgm || 
-	   insn->GetEhProgram()->GetCodeAlignmentFactor() != code_alignment_factor || 
-	   insn->GetEhProgram()->GetDataAlignmentFactor() != data_alignment_factor || 
-	   insn->GetEhProgram()->GetReturnRegNumber() != (int64_t)return_reg 
+	if(insn->getEhProgram()->getCIEProgram() != pgm || 
+	   insn->getEhProgram()->getCodeAlignmentFactor() != code_alignment_factor || 
+	   insn->getEhProgram()->getDataAlignmentFactor() != data_alignment_factor || 
+	   insn->getEhProgram()->getReturnRegNumber() != (int64_t)return_reg 
 	  )
 		return false;
 
 	auto personality_it=find_if(
-		insn->GetEhProgram()->GetRelocations().begin(), 
-		insn->GetEhProgram()->GetRelocations().end(),
-		[](const Relocation_t* r) { return r->GetType()=="personality"; });
+		insn->getEhProgram()->getRelocations().begin(), 
+		insn->getEhProgram()->getRelocations().end(),
+		[](const Relocation_t* r) { return r->getType()=="personality"; });
 
 	// lastly, check for a compatible personality reloc.
 	// if incoming has no personality, we better have no personality to match.
-	if(personality_it==insn->GetEhProgram()->GetRelocations().end())
+	if(personality_it==insn->getEhProgram()->getRelocations().end())
 	{
-		return personality_reloc==NULL;
+		return personality_reloc==nullptr;
 	}
 
 	// incomming has personality, but do we?
-	if(personality_reloc==NULL) return false;
+	if(personality_reloc==nullptr) return false;
 
 	// compare personalities.
-	if(personality_reloc->GetWRT() != (*personality_it)->GetWRT()) return false;
-	if(personality_reloc->GetAddend() != (*personality_it)->GetAddend()) return false;
+	if(personality_reloc->getWRT() != (*personality_it)->getWRT()) return false;
+	if(personality_reloc->getAddend() != (*personality_it)->getAddend()) return false;
 
 	return true;
 }
@@ -89,20 +89,20 @@ template <int ptrsize>
 EhWriterImpl_t<ptrsize>::CIErepresentation_t::CIErepresentation_t(Instruction_t* insn, EhWriterImpl_t<ptrsize>* ehw)
 	: has_been_output(false)
 {
-	assert(insn && ehw && insn->GetEhProgram());
+	assert(insn && ehw && insn->getEhProgram());
 
-	pgm = insn->GetEhProgram()->GetCIEProgram();
-	code_alignment_factor = insn->GetEhProgram()->GetCodeAlignmentFactor();
-	data_alignment_factor = insn->GetEhProgram()->GetDataAlignmentFactor();
-	return_reg = insn->GetEhProgram()->GetReturnRegNumber();
+	pgm = insn->getEhProgram()->getCIEProgram();
+	code_alignment_factor = insn->getEhProgram()->getCodeAlignmentFactor();
+	data_alignment_factor = insn->getEhProgram()->getDataAlignmentFactor();
+	return_reg = insn->getEhProgram()->getReturnRegNumber();
 
 	auto personality_it=find_if(
-		insn->GetEhProgram()->GetRelocations().begin(), 
-		insn->GetEhProgram()->GetRelocations().end(),
-		[](const Relocation_t* r) { return r->GetType()=="personality";});
+		insn->getEhProgram()->getRelocations().begin(), 
+		insn->getEhProgram()->getRelocations().end(),
+		[](const Relocation_t* r) { return r->getType()=="personality";});
 
-	personality_reloc = (personality_it==insn->GetEhProgram()->GetRelocations().end())
-		? (Relocation_t*)NULL
+	personality_reloc = (personality_it==insn->getEhProgram()->getRelocations().end())
+		? (Relocation_t*)nullptr
 		: *personality_it;
 }
 
@@ -112,20 +112,20 @@ void EhWriterImpl_t<ptrsize>::print_pers(Instruction_t* insn, EhWriterImpl_t<ptr
 {
 	const auto pretty_print= [&](Relocation_t* pr)
 		{
-			if(pr==NULL)
+			if(pr==nullptr)
 			{
 				cout<<"Found no personality reloc"<<endl;
 				return;
 			}
-			const auto personality_scoop=dynamic_cast<DataScoop_t*>(pr->GetWRT());
-			const auto personality_insn=dynamic_cast<Instruction_t*>(pr->GetWRT());
+			const auto personality_scoop=dynamic_cast<DataScoop_t*>(pr->getWRT());
+			const auto personality_insn=dynamic_cast<Instruction_t*>(pr->getWRT());
 
-			if(pr->GetWRT()==NULL)
+			if(pr->getWRT()==nullptr)
 				cout<<"\tFound null personality"<<endl;
 			else if(personality_scoop)
-				cout<<"\tFound personlity scoop "<<personality_scoop->GetName()<<"+0x"<<hex<<pr->GetAddend()<<endl;
+				cout<<"\tFound personlity scoop "<<personality_scoop->getName()<<"+0x"<<hex<<pr->getAddend()<<endl;
 			else if(personality_insn)
-				cout<<"\tFound personlity instruction "<<hex<<personality_insn->GetBaseID()<<dec<<":"<<hex<<personality_insn->getDisassembly()<<endl;
+				cout<<"\tFound personlity instruction "<<hex<<personality_insn->getBaseID()<<dec<<":"<<hex<<personality_insn->getDisassembly()<<endl;
 			else
 				cout<<"\tFound reloc: unexpected type? "<<endl;
 		};
@@ -133,12 +133,12 @@ void EhWriterImpl_t<ptrsize>::print_pers(Instruction_t* insn, EhWriterImpl_t<ptr
 	cout<<"  CIE-Personality addr= "<<hex<<cie->personality_reloc<<dec<<endl;
 	pretty_print(cie->GetPersonalityReloc());
 	const auto personality_it=find_if(
-		insn->GetEhProgram()->GetRelocations().begin(), 
-		insn->GetEhProgram()->GetRelocations().end(),
-		[](const Relocation_t* r) { return r->GetType()=="personality"; });
+		insn->getEhProgram()->getRelocations().begin(), 
+		insn->getEhProgram()->getRelocations().end(),
+		[](const Relocation_t* r) { return r->getType()=="personality"; });
 
-	const auto pr = (personality_it==insn->GetEhProgram()->GetRelocations().end())
-		? (Relocation_t*)NULL
+	const auto pr = (personality_it==insn->getEhProgram()->getRelocations().end())
+		? (Relocation_t*)nullptr
 		: *personality_it;
 	cout<<"  insn personality addr= "<<hex<<pr<<dec<<endl;
 	pretty_print(pr);
@@ -151,7 +151,7 @@ template <int ptrsize>
 EhWriterImpl_t<ptrsize>::FDErepresentation_t::FDErepresentation_t(Instruction_t* insn, EhWriterImpl_t<ptrsize>* ehw)
 	: 
 		lsda(insn),
-		cie(NULL)
+		cie(nullptr)
 {
 	auto cie_it=find_if( ehw->all_cies.begin(), ehw->all_cies.end(), [&](const CIErepresentation_t* candidate)
 			{
@@ -163,13 +163,13 @@ EhWriterImpl_t<ptrsize>::FDErepresentation_t::FDErepresentation_t(Instruction_t*
 		cie=new CIErepresentation_t(insn,ehw);
 		ehw->all_cies.push_back(cie);
 
-		if(getenv("EH_VERBOSE")!=NULL)
+		if(getenv("EH_VERBOSE")!=nullptr)
 			cout<<"Creating new CIE representation"<<endl;
 	}
 	else
 	{
 		cie=*cie_it;
-		if(getenv("EH_VERBOSE")!=NULL)
+		if(getenv("EH_VERBOSE")!=nullptr)
 		{
 			cout<<"Re-using CIE representation"<<endl;
 			print_pers(insn, cie);
@@ -178,8 +178,8 @@ EhWriterImpl_t<ptrsize>::FDErepresentation_t::FDErepresentation_t(Instruction_t*
 
 	start_addr=ehw->zipr_obj.GetLocationMap()->at(insn);
 	last_advance_addr=start_addr;
-	end_addr=start_addr+insn->GetDataBits().size();
-	pgm=EhProgramListingManip_t(insn->GetEhProgram()->GetFDEProgram());
+	end_addr=start_addr+insn->getDataBits().size();
+	pgm=EhProgramListingManip_t(insn->getEhProgram()->getFDEProgram());
 }
 
 
@@ -621,7 +621,7 @@ template <int ptrsize>
 EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::LSDArepresentation_t(Instruction_t* insn)
 	// if there are call sites, use the call site encoding.  if not, set to omit for initializer.
 	//  extend/canExtend should be able to extend an omit to a non-omit.
-	: tt_encoding( insn->GetEhCallSite() ? insn->GetEhCallSite()->GetTTEncoding() : 0xff)
+	: tt_encoding( insn->getEhCallSite() ? insn->getEhCallSite()->getTTEncoding() : 0xff)
 {
 		
 	extend(insn);
@@ -631,22 +631,22 @@ EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::LSDArepresen
 
 static const auto RelocsEqual=[](const Relocation_t* a, const Relocation_t* b) -> bool
 {
-	if(a==NULL && b==NULL)
+	if(a==nullptr && b==nullptr)
 		return true;
-	if(a==NULL || b==NULL)
+	if(a==nullptr || b==nullptr)
 		return false;
 	return 
-		forward_as_tuple(a->GetType(), a->GetOffset(), a->GetWRT(), a->GetAddend()) == 
-		forward_as_tuple(b->GetType(), b->GetOffset(), b->GetWRT(), b->GetAddend());
+		forward_as_tuple(a->getType(), a->getOffset(), a->getWRT(), a->getAddend()) == 
+		forward_as_tuple(b->getType(), b->getOffset(), b->getWRT(), b->getAddend());
 };
 
 template <int ptrsize>
 bool EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::canExtend(Instruction_t* insn) const
 {
-	if(insn->GetEhCallSite() == NULL)
+	if(insn->getEhCallSite() == nullptr)
 		return true;
 
-	const auto insn_tt_encoding = insn->GetEhCallSite()->GetTTEncoding();
+	const auto insn_tt_encoding = insn->getEhCallSite()->getTTEncoding();
 
 	// no type table
 	if(tt_encoding==0xff || insn_tt_encoding==0xff) // DW_EH_PE_omit (0xff)
@@ -664,46 +664,46 @@ bool EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::canExte
 	const auto tt_entry_size=4;
 
 	const auto mismatch_tt_entry = find_if(
-		insn->GetEhCallSite()->GetRelocations().begin(),
-		insn->GetEhCallSite()->GetRelocations().end(),
+		insn->getEhCallSite()->getRelocations().begin(),
+		insn->getEhCallSite()->getRelocations().end(),
 		[&](const Relocation_t* candidate_reloc)
 			{
-				const auto tt_index=candidate_reloc->GetOffset()/tt_entry_size;
+				const auto tt_index=candidate_reloc->getOffset()/tt_entry_size;
 				if(tt_index>=(int64_t)type_table.size())
 					return false;
 				const auto &tt_entry=type_table.at(tt_index);
 	
-				if(tt_entry==NULL) // entry is empty, so no conflict
+				if(tt_entry==nullptr) // entry is empty, so no conflict
 					return false;
 				return !RelocsEqual(candidate_reloc, tt_entry);
 			}
 		);
 
 	// return true if we found no mismatches
-	return (mismatch_tt_entry == insn->GetEhCallSite()->GetRelocations().end());
+	return (mismatch_tt_entry == insn->getEhCallSite()->getRelocations().end());
 }
 
 template <int ptrsize>
 void EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::extend(Instruction_t* insn)
 {
 	// if there's no call site info, the LSDA doesn't need an extension.
-	if(insn->GetEhCallSite() == NULL)
+	if(insn->getEhCallSite() == nullptr)
 		return;
 
-	const auto insn_tt_encoding = insn->GetEhCallSite()->GetTTEncoding();
+	const auto insn_tt_encoding = insn->getEhCallSite()->getTTEncoding();
 
 	// FIXME: optimization possibilty:  see if the last call site in the table
 	// has the same set of catch-types + landing_pad and is "close enough" to this insn.
 	// if so, combine.  
 
-	cout<<"Creating call sites in LSDA for "<<hex<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<endl;
+	cout<<"Creating call sites in LSDA for "<<hex<<insn->getBaseID()<<":"<<insn->getDisassembly()<<endl;
 
 	// just create a new entry in the CS table.. 
 	auto cs=(call_site_t){0}; 
 
 	cs.cs_insn_start=insn;
 	cs.cs_insn_end=insn;
-	cs.landing_pad=insn->GetEhCallSite()->GetLandingPad();
+	cs.landing_pad=insn->getEhCallSite()->getLandingPad();
 
 	if(tt_encoding == 0xff /* omit */)
 	{
@@ -729,38 +729,38 @@ void EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::extend(
 	// the set will be (non-duplicating) inserted as a "entry" (really multiple entries) 
 	// into the action table,
 	// Each reloc will also get a non-duplicating insert into the type table.
-	for(const auto &reloc : insn->GetEhCallSite()->GetRelocations())
+	for(const auto &reloc : insn->getEhCallSite()->getRelocations())
 	{
-		const auto wrt_scoop=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
-		if(reloc->GetWRT()==NULL)
-			cout<<"\tFound reloc: NULL (catch all)"<<endl;
+		const auto wrt_scoop=dynamic_cast<DataScoop_t*>(reloc->getWRT());
+		if(reloc->getWRT()==nullptr)
+			cout<<"\tFound reloc: nullptr (catch all)"<<endl;
 		else if(wrt_scoop)
-			cout<<"\tFound reloc: scoop "<<wrt_scoop->GetName()<<"+0x"<<hex<<reloc->GetAddend()<<endl;
+			cout<<"\tFound reloc: scoop "<<wrt_scoop->getName()<<"+0x"<<hex<<reloc->getAddend()<<endl;
 		else
 			cout<<"\tFound reloc: unexpected type? "<<endl;
 
 		// for now, this is the only supported reloc type on a EhCallSite 
-		assert(reloc->GetType()=="type_table_entry");
+		assert(reloc->getType()=="type_table_entry");
 		auto tt_it=find_if(type_table.begin(),type_table.end(), 
-			[reloc](const Relocation_t* candidate) { return candidate!=NULL && RelocsEqual(candidate,reloc); });
+			[reloc](const Relocation_t* candidate) { return candidate!=nullptr && RelocsEqual(candidate,reloc); });
 		if(tt_it==type_table.end())
 		{
-			const auto tt_encoding = insn->GetEhCallSite()->GetTTEncoding();
+			const auto tt_encoding = insn->getEhCallSite()->getTTEncoding();
 			assert(
 			       (tt_encoding&0xf)==0x3 ||  		// encoding contains DW_EH_PE_udata4
 			       (tt_encoding&0xf)==0xb ||  		// encoding contains DW_EH_PE_sdata4
 			       ((tt_encoding&0xf)==0x0 && ptrsize==4)  	// encoding contains DW_EH_PE_absptr && ptrsize==4
 				);
 			const auto tt_entry_size=4;
-			const auto tt_index= reloc->GetOffset()/tt_entry_size;
+			const auto tt_index= reloc->getOffset()/tt_entry_size;
 			if(tt_index>=(int64_t)type_table.size())
 				type_table.resize(tt_index+1);
-			assert(type_table.at(tt_index)==NULL || RelocsEqual(type_table.at(tt_index),reloc));	
+			assert(type_table.at(tt_index)==nullptr || RelocsEqual(type_table.at(tt_index),reloc));	
 			type_table[tt_index]=reloc;	
 		}
 	}
 
-	cs.actions=insn->GetEhCallSite()->GetTTOrderVector();
+	cs.actions=insn->getEhCallSite()->getTTOrderVector();
 
 	auto at_it=find(action_table.begin(),action_table.end(), cs.actions);
 	if(at_it==action_table.end())
@@ -797,7 +797,7 @@ bool EhWriterImpl_t<ptrsize>::FDErepresentation_t::canExtend(Instruction_t* insn
 	if(!cie->canSupport(insn))
 		return false; // can't change the CIE.
 
-	return pgm.canExtend(insn->GetEhProgram()->GetFDEProgram()) && 
+	return pgm.canExtend(insn->getEhProgram()->getFDEProgram()) && 
 		lsda.canExtend(insn);
 
 
@@ -807,12 +807,12 @@ template <int ptrsize>
 void EhWriterImpl_t<ptrsize>::FDErepresentation_t::extend(Instruction_t* insn, EhWriterImpl_t<ptrsize>* ehw)
 {
 	const auto insn_addr=ehw->zipr_obj.GetLocationMap()->at(insn);
-	const auto new_end_addr=insn_addr+insn->GetDataBits().size();
+	const auto new_end_addr=insn_addr+insn->getDataBits().size();
 	const auto incr_amnt=insn_addr-last_advance_addr;
 	last_advance_addr=insn_addr;
 
 	// add appropriate instructions to the pgm.
-	pgm.extend((incr_amnt)/cie->code_alignment_factor, insn->GetEhProgram()->GetFDEProgram());
+	pgm.extend((incr_amnt)/cie->code_alignment_factor, insn->getEhProgram()->getFDEProgram());
 
 	lsda.extend(insn);
 
@@ -831,13 +831,13 @@ template<int ptrsize>
 void EhWriterImpl_t<ptrsize>::BuildFDEs()
 {
 	// build a map of the instructions in program order
-	map<virtual_offset_t,Instruction_t*> insn_in_order;
+	map<VirtualOffset_t,Instruction_t*> insn_in_order;
 	for(const auto& this_pair : *zipr_obj.GetLocationMap())
 		insn_in_order[this_pair.second]=this_pair.first;
 
 
 	// build the fdes (and cies/lsdas) for this insn, starting with a null fde in case none exist
-	auto current_fde=(FDErepresentation_t*)NULL;
+	auto current_fde=(FDErepresentation_t*)nullptr;
 	auto insns_with_frame=0;
 
 	// for_each instruction in program order
@@ -847,7 +847,7 @@ void EhWriterImpl_t<ptrsize>::BuildFDEs()
 		const auto &this_addr=this_pair.first;
 
 		// no eh pgm or call site?  no worries, just ignore this insn
-		if(this_insn->GetEhProgram()==NULL && this_insn->GetEhCallSite()==NULL)
+		if(this_insn->getEhProgram()==nullptr && this_insn->getEhCallSite()==nullptr)
 			continue;
 
 		insns_with_frame++;
@@ -857,25 +857,25 @@ void EhWriterImpl_t<ptrsize>::BuildFDEs()
 		// end this fde
 		if(current_fde && !current_fde->canExtend(this_insn, this))
 		{
-			if(getenv("EH_VERBOSE")!=NULL)
-				cout<<"Ending FDE because insn "<<hex<<this_insn->GetBaseID()<<":"<<this_insn->getDisassembly()<<" doesn't fit at " << this_addr<< endl;
-			current_fde=NULL;
+			if(getenv("EH_VERBOSE")!=nullptr)
+				cout<<"Ending FDE because insn "<<hex<<this_insn->getBaseID()<<":"<<this_insn->getDisassembly()<<" doesn't fit at " << this_addr<< endl;
+			current_fde=nullptr;
 		}
 
 
 		// if we need to start a new fde, create one.
-		if(current_fde==NULL)
+		if(current_fde==nullptr)
 		{
-			if(getenv("EH_VERBOSE")!=NULL)
-				cout<<"Creating new FDE for "<<hex<<this_insn->GetBaseID()<<":"<<this_insn->getDisassembly()<< " at " << this_addr<<endl;
+			if(getenv("EH_VERBOSE")!=nullptr)
+				cout<<"Creating new FDE for "<<hex<<this_insn->getBaseID()<<":"<<this_insn->getDisassembly()<< " at " << this_addr<<endl;
 			current_fde=new FDErepresentation_t(this_insn,this);
 			all_fdes.push_back(current_fde);
 		}
 		else
 		{
-			if(getenv("EH_VERBOSE")!=NULL)
+			if(getenv("EH_VERBOSE")!=nullptr)
 			{
-				cout<<"Extending new FDE for "<<hex<<this_insn->GetBaseID()<<":"<<this_insn->getDisassembly()<<" at " << this_addr <<endl;
+				cout<<"Extending new FDE for "<<hex<<this_insn->getBaseID()<<":"<<this_insn->getDisassembly()<<" at " << this_addr <<endl;
 				print_pers(this_insn,current_fde->cie);
 
 			}
@@ -951,7 +951,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 				lsda->callsite_table.end(),
 				[&](const typename FDErepresentation_t::LSDArepresentation_t::call_site_t& candidate)
 				{
-					if(candidate.landing_pad==NULL)
+					if(candidate.landing_pad==nullptr)
 						return false;
 					const auto lp_addr=zipr_obj.GetLocationMap()->at(candidate.landing_pad);
 					return (lp_addr==fde->start_addr);
@@ -992,7 +992,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 		const auto landing_pad_base=calc_landing_pad_base();
 
 		// how to output actions
-		const auto output_action=[&](const libIRDB::TTOrderVector_t &act, const uint32_t act_num) -> void
+		const auto output_action=[&](const IRDB_SDK::TTOrderVector_t &act, const uint32_t act_num) -> void
 		{
 			const auto &ttov=act;
 			const auto biggest_ttov_index=ttov.size()-1;
@@ -1014,7 +1014,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 		const auto output_callsite=[&](const typename FDErepresentation_t::LSDArepresentation_t::call_site_t &cs, const uint32_t cs_num) -> void
 		{
 			const auto cs_start_addr=zipr_obj.GetLocationMap()->at(cs.cs_insn_start);
-			const auto cs_end_addr=zipr_obj.GetLocationMap()->at(cs.cs_insn_start)+cs.cs_insn_start->GetDataBits().size();
+			const auto cs_end_addr=zipr_obj.GetLocationMap()->at(cs.cs_insn_start)+cs.cs_insn_start->getDataBits().size();
 			const auto cs_len=cs_end_addr-cs_start_addr;
 			out<<"LSDA"<<dec<<lsda_num<<"_cs_tab_entry"<<cs_num<<"_start:"<<endl;
         		out<<"	# 1) start of call site relative to FDE start addr (call site encoding)"<<endl;
@@ -1115,12 +1115,12 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 			out<<"LSDA"<<dec<<lsda_num<<"_type_table_start:"<<endl;
 			for_each( lsda->type_table.rbegin(), lsda->type_table.rend(),  [&](const Relocation_t* reloc)
 			{
-				if(reloc==NULL)
+				if(reloc==nullptr)
 				{
 					// indicates a catch all or empty type table entry
 					out<<"	.int 0x0 # not used!"<<endl;
 				}
-				else if(reloc->GetWRT()==NULL)
+				else if(reloc->getWRT()==nullptr)
 				{
 					// indicates a catch all or empty type table entry
 					out<<"	.int 0x0 # catch all "<<endl;
@@ -1128,9 +1128,9 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 				else
 				{
 					// indicates a catch of a paritcular type
-					const auto scoop=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
+					const auto scoop=dynamic_cast<DataScoop_t*>(reloc->getWRT());
 					assert(scoop);
-					const auto final_addr=scoop->GetStart()->GetVirtualOffset() + reloc->GetAddend();
+					const auto final_addr=scoop->getStart()->getVirtualOffset() + reloc->getAddend();
 					if(((lsda->tt_encoding)&0x10) == 0x10) // if encoding contains pcrel (0x10).
 						out<<"	.int 0x"<<hex<<final_addr<<" - . "<<endl;
 					else
@@ -1156,9 +1156,9 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 		const auto cie_pos_it=std::find(all_cies.begin(), all_cies.end(), cie);
 		assert(cie_pos_it!=all_cies.end());
 
-		const auto personality_scoop=cie->personality_reloc ? dynamic_cast<DataScoop_t*>  (cie->personality_reloc->GetWRT()) : (DataScoop_t*)NULL;
-		const auto personality_insn =cie->personality_reloc ? dynamic_cast<Instruction_t*>(cie->personality_reloc->GetWRT()) : (Instruction_t*)NULL;
-		const auto personality_addend=cie->personality_reloc ? cie->personality_reloc->GetAddend() : 0;
+		const auto personality_scoop=cie->personality_reloc ? dynamic_cast<DataScoop_t*>  (cie->personality_reloc->getWRT()) : (DataScoop_t*)nullptr;
+		const auto personality_insn =cie->personality_reloc ? dynamic_cast<Instruction_t*>(cie->personality_reloc->getWRT()) : (Instruction_t*)nullptr;
+		const auto personality_addend=cie->personality_reloc ? cie->personality_reloc->getAddend() : 0;
 
 		const auto cie_pos=cie_pos_it-all_cies.begin();
 
@@ -1178,7 +1178,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 		out<<""<<endl;
 		if(personality_scoop)
 		{
-			auto personality_value=personality_scoop->GetStart()->GetVirtualOffset()+personality_addend;
+			auto personality_value=personality_scoop->getStart()->getVirtualOffset()+personality_addend;
 			out<<"        #encode the P (personality encoding + personality routine)"<<endl;
 			out<<"        .byte 0x80 | 0x10 | 0x0B        #  personality pointer encoding DH_EH_PE_indirect (0x80) | pcrel | sdata4"<<endl;
 			out<<"        .int "<<personality_value<<" - .               # actual personality routine, encoded as noted in prev line."<<endl;
@@ -1193,7 +1193,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 		}
 		else
 		{
-			assert(cie->personality_reloc==NULL || cie->personality_reloc->GetWRT()==NULL);
+			assert(cie->personality_reloc==nullptr || cie->personality_reloc->getWRT()==nullptr);
 			out<<"        #encode the P (personality encoding + personality routine)"<<endl;
 			out<<"        .byte  0x0B        #  personality pointer encoding sdata4"<<endl;
 			out<<"        .int 0               # actual personality routine, encoded as noted in prev line."<<endl;
@@ -1318,17 +1318,17 @@ void EhWriterImpl_t<ptrsize>::CompileEhOutput()
 
 	// find maximum used scoop address.
 	const auto max_used_addr=std::max_element(
-		zipr_obj.GetFileIR()->GetDataScoops().begin(),
-		zipr_obj.GetFileIR()->GetDataScoops().end(),
+		zipr_obj.getFileIR()->getDataScoops().begin(),
+		zipr_obj.getFileIR()->getDataScoops().end(),
 		[&](const DataScoop_t* a, const DataScoop_t* b)
 		{
-			assert(a && b && a->GetEnd() && b->GetEnd()) ;
-			return a->GetEnd()->GetVirtualOffset() < b->GetEnd()->GetVirtualOffset();
+			assert(a && b && a->getEnd() && b->getEnd()) ;
+			return a->getEnd()->getVirtualOffset() < b->getEnd()->getVirtualOffset();
 		}
 		);
 
 	// round it up and stringify it.
-	const auto eh_frame_hdr_addr=page_round_up((*max_used_addr)->GetEnd()->GetVirtualOffset());
+	const auto eh_frame_hdr_addr=page_round_up((*max_used_addr)->getEnd()->getVirtualOffset());
 	const auto eh_frame_hdr_addr_str=to_hex_string(eh_frame_hdr_addr);
 
 	// create and execute the command to build the ehframe.
@@ -1357,17 +1357,18 @@ void EhWriterImpl_t<ptrsize>::ScoopifyEhOutput()
 
 		// if sec is missing, don't scoopify.
 
-		if(sec==NULL) return;
-		const auto data=string(sec->get_data(), sec->get_size());
-		const auto start_vo=sec->get_address();
-		const auto start_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, BaseObj_t::NOT_IN_DATABASE, start_vo);
-		const auto end_vo=sec->get_address()+sec->get_size()-1;
-		const auto end_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, BaseObj_t::NOT_IN_DATABASE, end_vo);
-		const auto new_scoop=new DataScoop_t(zipr_obj.GetFileIR()->GetMaxBaseID()+1, secname, start_addr,end_addr,NULL,4,false,data);
+		if(sec==nullptr) return;
+		const auto data      = string(sec->get_data(), sec->get_size());
+		const auto start_vo  = sec->get_address();
+		const auto start_addr= zipr_obj.getFileIR()->addNewAddress(BaseObj_t::NOT_IN_DATABASE, start_vo);
+		const auto end_vo    = sec->get_address()+sec->get_size()-1;
+		const auto end_addr  = zipr_obj.getFileIR()->addNewAddress(BaseObj_t::NOT_IN_DATABASE, end_vo);
+		const auto new_scoop = zipr_obj.getFileIR()->addNewDataScoop(secname, start_addr,end_addr,nullptr,4,false,data);
+		(void)new_scoop;
 
-		zipr_obj.GetFileIR()->GetAddresses().insert(start_addr);
-		zipr_obj.GetFileIR()->GetAddresses().insert(end_addr);
-		zipr_obj.GetFileIR()->GetDataScoops().insert(new_scoop);
+		//zipr_obj.getFileIR()->getAddresses().insert(start_addr);
+		//zipr_obj.getFileIR()->getAddresses().insert(end_addr);
+		//zipr_obj.getFileIR()->getDataScoops().insert(new_scoop);
 	};
 
 	to_scoop(".eh_frame_hdr");	

@@ -33,7 +33,7 @@ namespace zipr
 {
 #include "patcher/patcher_arm64.hpp"
 }
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 #include <Rewrite_Utility.hpp>
 #include <iostream>
 #include <stdlib.h>
@@ -51,7 +51,7 @@ namespace zipr
 
 #define ALLOF(a) begin(a),end(a)
 
-using namespace libIRDB;
+using namespace IRDB_SDK;
 using namespace std;
 using namespace zipr;
 using namespace ELFIO;
@@ -59,7 +59,7 @@ using namespace IRDBUtility;
 
 ZiprPatcherARM64_t::ZiprPatcherARM64_t(Zipr_SDK::Zipr_t* p_parent) :
 	m_parent(dynamic_cast<zipr::ZiprImpl_t*>(p_parent)),     // upcast to ZiprImpl
-        m_firp(p_parent->GetFileIR()),
+        m_firp(p_parent->getFileIR()),
         memory_space(*p_parent->GetMemorySpace())
 
 { 
@@ -158,8 +158,8 @@ void ZiprPatcherARM64_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_
 			if(redirect_it==redirect_map.end())
 			{
 				// allocate new space in memory
-				const auto tramp_range=memory_space.GetFreeRange(tramp_size);
-				tramp_start=tramp_range.GetStart();
+				const auto tramp_range=memory_space.getFreeRange(tramp_size);
+				tramp_start=tramp_range.getStart();
 				// don't be too fancy, just reserve 12 bytes.
 				memory_space.SplitFreeRange({tramp_start,tramp_start+tramp_size});
 				// record that we had to trampoline this!
@@ -198,7 +198,7 @@ void ZiprPatcherARM64_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_
 			memory_space.PlopBytes(L2, branch_bytes.c_str(), 4);
 			ApplyPatch(L2,to_addr);// make it jump to +8
 
-			const auto disasm_str=DecodedInstruction_t(from_addr, (const void*)&full_word, 4).getDisassembly();
+			const auto disasm_str=DecodedInstruction_t::factory(from_addr, (const void*)&full_word, 4)->getDisassembly();
 
 			cout << "Had to trampline "<<disasm_str<< " at "<<hex<<from_addr
 			     << " to " << L0 << " - " << L0+tramp_size<< " for target "<<to_addr<<endl;

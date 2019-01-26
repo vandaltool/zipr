@@ -47,7 +47,7 @@ enum UnresolvedType_t
 class UnresolvedInfo_t
 {
 	public:
-		virtual libIRDB::Instruction_t* GetInstruction() const  =0 ;
+		virtual IRDB_SDK::Instruction_t* getInstrution() const  =0 ;
 	private:
 };
 
@@ -55,9 +55,9 @@ class UnresolvedInfo_t
 class UnresolvedPinned_t : public UnresolvedInfo_t
 {
 	public:
-		UnresolvedPinned_t(libIRDB::Instruction_t* p_from) : from_instruction(p_from), m_range(0,0), m_updated_address(0) { assert(p_from); }
-		UnresolvedPinned_t(libIRDB::Instruction_t* p_from, Range_t range) : from_instruction(p_from), m_range(range), m_updated_address(0) { assert(p_from); }
-		libIRDB::Instruction_t* GetInstruction() const { return from_instruction; }
+		UnresolvedPinned_t(IRDB_SDK::Instruction_t* p_from) : from_instruction(p_from), m_range(0,0), m_updated_address(0) { assert(p_from); }
+		UnresolvedPinned_t(IRDB_SDK::Instruction_t* p_from, Range_t range) : from_instruction(p_from), m_range(range), m_updated_address(0) { assert(p_from); }
+		IRDB_SDK::Instruction_t* getInstrution() const { return from_instruction; }
 
 		/*
 		 * Use the range to store the place where 
@@ -68,7 +68,7 @@ class UnresolvedPinned_t : public UnresolvedInfo_t
 		void SetRange(Range_t range) { m_range = range; };
 		bool HasRange()
 		{
-			return m_range.GetStart() != 0 || m_range.GetEnd() != 0;
+			return m_range.getStart() != 0 || m_range.getEnd() != 0;
 		};
 
 		/*
@@ -91,7 +91,7 @@ class UnresolvedPinned_t : public UnresolvedInfo_t
 		};
 
 	private:
-		libIRDB::Instruction_t* from_instruction;
+		IRDB_SDK::Instruction_t* from_instruction;
 		Range_t m_range;
 		RangeAddress_t m_updated_address;
 
@@ -112,10 +112,10 @@ class Patch_t
 	public:
 		Patch_t(RangeAddress_t p_from_addr, UnresolvedType_t p_t) : from_addr(p_from_addr), type(p_t) {}
 
-		RangeAddress_t GetAddress() const { return from_addr; }
-		UnresolvedType_t GetType() { return type; }
-		void SetType(UnresolvedType_t p_t) { type = p_t; }
-		size_t GetSize() { 
+		RangeAddress_t getAddress() const { return from_addr; }
+		UnresolvedType_t getType() { return type; }
+		void setType(UnresolvedType_t p_t) { type = p_t; }
+		size_t getSize() { 
 			switch (type) {
 				case UncondJump_rel8:
 					return 2;
@@ -135,12 +135,12 @@ class Patch_t
 class UnresolvedUnpinned_t  : public UnresolvedInfo_t
 {
 	public:
-		UnresolvedUnpinned_t(UnresolvedPinned_t up) : from_instruction(up.GetInstruction()) {}
-		UnresolvedUnpinned_t(libIRDB::Instruction_t* p_from) : from_instruction(p_from) 
+		UnresolvedUnpinned_t(UnresolvedPinned_t up) : from_instruction(up.getInstrution()) {}
+		UnresolvedUnpinned_t(IRDB_SDK::Instruction_t* p_from) : from_instruction(p_from) 
 		{ assert(p_from); }
-		libIRDB::Instruction_t* GetInstruction() const { assert(from_instruction); return from_instruction; }
+		IRDB_SDK::Instruction_t* getInstrution() const { assert(from_instruction); return from_instruction; }
 	private:
-		libIRDB::Instruction_t *from_instruction;
+		IRDB_SDK::Instruction_t *from_instruction;
 		
 	friend bool operator< (const UnresolvedUnpinned_t& lhs, const UnresolvedUnpinned_t& rhs);
 };

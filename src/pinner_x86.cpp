@@ -18,7 +18,7 @@ namespace zipr
 #include <Rewrite_Utility.hpp>
 
 using namespace std;
-using namespace libIRDB;
+using namespace IRDB_SDK;
 using namespace zipr;
 using namespace IRDBUtility;
 
@@ -32,11 +32,11 @@ static int ceildiv(int a, int b)
 ZiprPinnerX86_t::ZiprPinnerX86_t(Zipr_SDK::Zipr_t* p_parent) : 
 	m_parent(dynamic_cast<zipr::ZiprImpl_t*>(p_parent)),	 // upcast to ZiprImpl
 	memory_space(*p_parent->GetMemorySpace()),
-	m_dollop_mgr(*p_parent->GetDollopManager()),
-	m_firp(p_parent->GetFileIR()),
+	m_dollop_mgr(*p_parent->getDollopManager()),
+	m_firp(p_parent->getFileIR()),
 	placement_queue(*p_parent->GetPlacementQueue()),
 	m_verbose(false), // fixme
-	m_stats(m_parent->GetStats()),
+	m_stats(m_parent->getStats()),
 	final_insn_locations(*p_parent->GetLocationMap())
 {
 		
@@ -93,7 +93,7 @@ void  ZiprPinnerX86_t::doPinning()
 void ZiprPinnerX86_t::AddPinnedInstructions()
 {
 	// find the big chunk of free memory in case we need it for unassigned pins.
-	virtual_offset_t next_pin_addr=memory_space.GetInfiniteFreeRange().GetStart();
+	VirtualOffset_t next_pin_addr=memory_space.getInfiniteFreeRange().getStart();
 
 
 	/*
@@ -103,18 +103,18 @@ void ZiprPinnerX86_t::AddPinnedInstructions()
 	RecordPinnedInsnAddrs();
 
 	for(
-	    set<Instruction_t*>::const_iterator it=m_firp->GetInstructions().begin();
-	    it!=m_firp->GetInstructions().end();
+	    set<Instruction_t*>::const_iterator it=m_firp->getInstructions().begin();
+	    it!=m_firp->getInstructions().end();
 	    ++it
 	   )
 	{
 		Instruction_t* insn=*it;
 		assert(insn);
 
-		if(insn->GetIndirectBranchTargetAddress()==NULL)
+		if(insn->getIndirectBranchTargetAddress()==nullptr)
 			continue;
 
-		if(insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()==0)
+		if(insn->getIndirectBranchTargetAddress()->getVirtualOffset()==0)
                 {
                         // Unpinned IBT. Create dollop and add it to placement
                         // queue straight away--there are no pinning considerations.
@@ -124,9 +124,9 @@ void ZiprPinnerX86_t::AddPinnedInstructions()
                 }
 
 		// deal with unassigned IBTAs.
-		if(insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()==0)
+		if(insn->getIndirectBranchTargetAddress()->getVirtualOffset()==0)
 		{
-			insn->GetIndirectBranchTargetAddress()->SetVirtualOffset(next_pin_addr);
+			insn->getIndirectBranchTargetAddress()->setVirtualOffset(next_pin_addr);
 			next_pin_addr+=5;// sizeof pin
 		}
 
@@ -137,8 +137,8 @@ void ZiprPinnerX86_t::AddPinnedInstructions()
 void ZiprPinnerX86_t::RecordPinnedInsnAddrs()
 {
 	for(
-		set<Instruction_t*>::const_iterator it=m_firp->GetInstructions().begin();
-		it!=m_firp->GetInstructions().end();
+		set<Instruction_t*>::const_iterator it=m_firp->getInstructions().begin();
+		it!=m_firp->getInstructions().end();
 		++it
 		)
 	{
@@ -146,14 +146,14 @@ void ZiprPinnerX86_t::RecordPinnedInsnAddrs()
 		Instruction_t* insn=*it;
 		assert(insn);
 
-		if(!insn->GetIndirectBranchTargetAddress()
-		   || insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()==0) 
+		if(!insn->getIndirectBranchTargetAddress()
+		   || insn->getIndirectBranchTargetAddress()->getVirtualOffset()==0) 
 		{
 			continue;
 		}
 		ibta_addr=(RangeAddress_t)insn->
-		                          GetIndirectBranchTargetAddress()->
-		                          GetVirtualOffset();
+		                          getIndirectBranchTargetAddress()->
+		                          getVirtualOffset();
 		/*
 		* Record the size of thing that we are pinning.
 		* We are going to use this information for doing
@@ -176,7 +176,7 @@ void ZiprPinnerX86_t::RecordPinnedInsnAddrs()
 		* record the size of the instruction itself.
 		*/
 		if (ShouldPinImmediately(insn))
-			m_InsnSizeAtAddrs[ibta_addr]=std::pair<Instruction_t*, size_t>(insn,insn->GetDataBits().length());
+			m_InsnSizeAtAddrs[ibta_addr]=std::pair<Instruction_t*, size_t>(insn,insn->getDataBits().length());
 		else					 
 			m_InsnSizeAtAddrs[ibta_addr]=std::pair<Instruction_t*, size_t>(insn,2);
 	}
@@ -185,50 +185,48 @@ void ZiprPinnerX86_t::RecordPinnedInsnAddrs()
 
 bool ZiprPinnerX86_t::ShouldPinImmediately(Instruction_t *upinsn)
 {
-	//DISASM d;
-	//Disassemble(upinsn,d);
-	DecodedInstruction_t d(upinsn);
-	Instruction_t *pin_at_next_byte = NULL;
-	AddressID_t *upinsn_ibta = NULL, *ft_ibta = NULL;
+	auto d=DecodedInstruction_t::factory (upinsn);
+	Instruction_t *pin_at_next_byte = nullptr;
+	AddressID_t *upinsn_ibta = nullptr, *ft_ibta = nullptr;
 
-	if(d.isReturn() /* d.Instruction.BranchType==RetType */)
+	if(d->isReturn() )
 		return true;
 
-	upinsn_ibta=upinsn->GetIndirectBranchTargetAddress();
-	assert(upinsn_ibta!=NULL && upinsn_ibta->GetVirtualOffset()!=0);
+	upinsn_ibta=upinsn->getIndirectBranchTargetAddress();
+	assert(upinsn_ibta!=nullptr && upinsn_ibta->getVirtualOffset()!=0);
 
-	if (upinsn->GetFallthrough() != NULL)
-		ft_ibta=upinsn->GetFallthrough()->GetIndirectBranchTargetAddress();
+	if (upinsn->getFallthrough() != nullptr)
+		ft_ibta=upinsn->getFallthrough()->getIndirectBranchTargetAddress();
 
 	/* careful with 1 byte instructions that have a pinned fallthrough */ 
-	if(upinsn->GetDataBits().length()==1)
+	if(upinsn->getDataBits().length()==1)
 	{
-		if(upinsn->GetFallthrough()==NULL)
+		if(upinsn->getFallthrough()==nullptr)
 			return true;
-		ft_ibta=upinsn->GetFallthrough()->GetIndirectBranchTargetAddress();
-		if((ft_ibta && ft_ibta->GetVirtualOffset()!=0) && (upinsn_ibta->GetVirtualOffset()+1) == ft_ibta->GetVirtualOffset())
+		ft_ibta=upinsn->getFallthrough()->getIndirectBranchTargetAddress();
+		if((ft_ibta && ft_ibta->getVirtualOffset()!=0) && (upinsn_ibta->getVirtualOffset()+1) == ft_ibta->getVirtualOffset())
 			return true;
 	}
 
 	// find the insn pinned at the next byte.
-	pin_at_next_byte = FindPinnedInsnAtAddr(upinsn_ibta->GetVirtualOffset() + 1);
+	pin_at_next_byte = FindPinnedInsnAtAddr(upinsn_ibta->getVirtualOffset() + 1);
 	if ( pin_at_next_byte && 
 
 	/* upinsn has lock prefix */
-		upinsn->GetDataBits()[0]==(char)(0xF0) 	&&
+		upinsn->getDataBits()[0]==(char)(0xF0) 	&&
 	/*
 	 * upinsn:  lock cmpxchange op1 op2 [pinned at x]
 	 *          x    x+1        x+2 x+3
 	 * 
 	 * AND pin_at_next_byte (x+1) is:
 	 */
-		pin_at_next_byte->GetDataBits() == upinsn->GetDataBits().substr(1,upinsn->GetDataBits().length()-1) &&  
+		pin_at_next_byte->getDataBits() == upinsn->getDataBits().substr(1,upinsn->getDataBits().length()-1) &&  
 	/*
          *               cmpxchange op1 op2 [pinned at x+1]
 	 *               x+1        x+2 x+3
 	 * AND  pin_at_next_byte->fallthrough() == upinsn->Fallthrough()
 	 */
-		pin_at_next_byte->GetFallthrough() == upinsn->GetFallthrough() ) 
+		pin_at_next_byte->getFallthrough() == upinsn->getFallthrough() ) 
 	/*
 	 *
 	 * x should become nop, put down immediately
@@ -237,8 +235,8 @@ bool ZiprPinnerX86_t::ShouldPinImmediately(Instruction_t *upinsn)
 	{
 		if (m_verbose)
 			cout<<"Using pin_at_next_byte special case, addrs="<<
-				upinsn_ibta->GetVirtualOffset()<<","<<
-				pin_at_next_byte->GetAddress()->GetVirtualOffset()<<endl;
+				upinsn_ibta->getVirtualOffset()<<","<<
+				pin_at_next_byte->getAddress()->getVirtualOffset()<<endl;
 		/*
 		 * Because upinsn is longer than 
 		 * 1 byte, we must be somehow
@@ -248,18 +246,18 @@ bool ZiprPinnerX86_t::ShouldPinImmediately(Instruction_t *upinsn)
 		/*
 		 * Make pin_at_next_byte look like upinsn.
 		 */
-		pin_at_next_byte->SetDataBits(upinsn->GetDataBits());
-		pin_at_next_byte->SetComment(upinsn->GetComment());
-		pin_at_next_byte->SetCallback(upinsn->GetCallback());
-		pin_at_next_byte->SetFallthrough(upinsn->GetFallthrough());
-		pin_at_next_byte->SetTarget(upinsn->GetTarget());
+		pin_at_next_byte->setDataBits(upinsn->getDataBits());
+		pin_at_next_byte->setComment(upinsn->getComment());
+		pin_at_next_byte->setCallback(upinsn->getCallback());
+		pin_at_next_byte->setFallthrough(upinsn->getFallthrough());
+		pin_at_next_byte->setTarget(upinsn->getTarget());
 		/*
 		 * Convert upins to nop.
 		 */
-		string dataBits = upinsn->GetDataBits();
+		string dataBits = upinsn->getDataBits();
 		dataBits.resize(1);
 		dataBits[0] = 0x90;
-		upinsn->SetDataBits(dataBits);
+		upinsn->setDataBits(dataBits);
 
 		return true;
 	}
@@ -279,7 +277,7 @@ void ZiprPinnerX86_t::PreReserve2ByteJumpTargets()
 		{
 			UnresolvedPinned_t up=*it;
 			bool found_close_target = false;
-			Instruction_t* upinsn=up.GetInstruction();
+			Instruction_t* upinsn=up.getInstrution();
 
 			RangeAddress_t addr;
 			
@@ -289,7 +287,7 @@ void ZiprPinnerX86_t::PreReserve2ByteJumpTargets()
 			}
 			else
 			{
-				addr=upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset();
+				addr=upinsn->getIndirectBranchTargetAddress()->getVirtualOffset();
 			}
 			
 			if (m_AddrInSled[addr])
@@ -332,11 +330,11 @@ void ZiprPinnerX86_t::PreReserve2ByteJumpTargets()
 							(void*)(addr+1),
 							(void*)(addr+i),
 							(void*)(addr+i+size),
-							(upinsn->GetIndirectBranchTargetAddress() != NULL) ?
-							(void*)(uintptr_t)upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset() : 0x0);
+							(upinsn->getIndirectBranchTargetAddress() != nullptr) ?
+							(void*)(uintptr_t)upinsn->getIndirectBranchTargetAddress()->getVirtualOffset() : 0x0);
 
 						up.SetRange(Range_t(addr+i, addr+i+size));
-						for (unsigned int j = up.GetRange().GetStart(); j<up.GetRange().GetEnd(); j++)
+						for (unsigned int j = up.GetRange().getStart(); j<up.GetRange().getEnd(); j++)
 						{
 							memory_space.SplitFreeRange(j);
 						}
@@ -352,16 +350,16 @@ void ZiprPinnerX86_t::PreReserve2ByteJumpTargets()
 						 * size: size of the amount of prereserved memory
 						 */
 						UnresolvedUnpinned_t uu(up);
-						Patch_t patch(up.GetRange().GetStart(),
+						Patch_t patch(up.GetRange().getStart(),
 						              UnresolvedType_t::UncondJump_rel32);
 						if (size == 2)
-							patch.SetType(UnresolvedType_t::UncondJump_rel8);
+							patch.setType(UnresolvedType_t::UncondJump_rel8);
 						UnresolvedUnpinnedPatch_t uup(uu, patch);
 
 						if (m_verbose)
 							cout << "Adding a chain entry at address "
-							     << std::hex << up.GetRange().GetStart() << endl;
-						m_parent->RecordNewPatch(std::pair<RangeAddress_t, UnresolvedUnpinnedPatch_t>(up.GetRange().GetStart(),uup));
+							     << std::hex << up.GetRange().getStart() << endl;
+						m_parent->RecordNewPatch(std::pair<RangeAddress_t, UnresolvedUnpinnedPatch_t>(up.GetRange().getStart(),uup));
 
 						found_close_target = true;
 						break;
@@ -404,10 +402,10 @@ void ZiprPinnerX86_t::PreReserve2ByteJumpTargets()
 
 				RangeAddress_t end_of_sled = Do68Sled(addr);
 
-				m_firp->AssembleRegistry();
+				m_firp->assembleRegistry();
 				for (RangeAddress_t i = addr; i<end_of_sled; i++)
 				{
-					Instruction_t *found_pinned_insn = NULL;
+					Instruction_t *found_pinned_insn = nullptr;
 					found_pinned_insn = FindPinnedInsnAtAddr(i);
 					if (found_pinned_insn)
 					{
@@ -424,7 +422,7 @@ void ZiprPinnerX86_t::PreReserve2ByteJumpTargets()
 			}
 			else
 			{
-				UnresolvedPinned_t new_up = UnresolvedPinned_t(up.GetInstruction(), up.GetRange());
+				UnresolvedPinned_t new_up = UnresolvedPinned_t(up.getInstrution(), up.GetRange());
 				if (up.HasUpdatedAddress())
 				{
 					new_up.SetUpdatedAddress(up.GetUpdatedAddress());
@@ -439,8 +437,8 @@ void ZiprPinnerX86_t::PreReserve2ByteJumpTargets()
 
 void ZiprPinnerX86_t::InsertJumpPoints68SledArea(Sled_t &sled)
 {
-	for (RangeAddress_t addr = sled.SledRange().GetStart();
-	     addr < sled.SledRange().GetEnd();
+	for (RangeAddress_t addr = sled.SledRange().getStart();
+	     addr < sled.SledRange().getEnd();
 			 addr++)
 	{
 		bool is_pin_point = false, is_patch_point = false;
@@ -448,7 +446,7 @@ void ZiprPinnerX86_t::InsertJumpPoints68SledArea(Sled_t &sled)
 		 * There is the possibility that the sled is being put here
 		 * because we have a pin that cannot be properly handled.
 		 */
-		is_pin_point = (NULL != FindPinnedInsnAtAddr(addr));
+		is_pin_point = (nullptr != FindPinnedInsnAtAddr(addr));
 		if (m_verbose && is_pin_point)
 			cout << "There is a pin at 0x" << std::hex << addr
 			     << " inside a sled." << endl;
@@ -477,14 +475,14 @@ void ZiprPinnerX86_t::InsertJumpPoints68SledArea(Sled_t &sled)
 
 Instruction_t* ZiprPinnerX86_t::Emit68Sled(RangeAddress_t addr, Sled_t sled, Instruction_t* next_sled)
 {
-	Instruction_t *sled_start_insn = NULL;
-	unsigned int sled_number = addr - sled.SledRange().GetStart();
-	size_t sled_size = sled.SledRange().GetEnd() - sled.SledRange().GetStart();
+	Instruction_t *sled_start_insn = nullptr;
+	unsigned int sled_number = addr - sled.SledRange().getStart();
+	size_t sled_size = sled.SledRange().getEnd() - sled.SledRange().getStart();
 
 	sled_start_insn = FindPinnedInsnAtAddr(addr);
 	if (!sled_start_insn)
 		sled_start_insn = FindPatchTargetAtAddr(addr);
-	assert(sled_start_insn != NULL);	
+	assert(sled_start_insn != nullptr);	
 
 	if (m_verbose)
 		cout << "Begin emitting the 68 sled @ " << addr << "." << endl;
@@ -515,27 +513,27 @@ Instruction_t* ZiprPinnerX86_t::Emit68Sled(RangeAddress_t addr, Sled_t sled, Ins
 
 	string stack_reg="rsp";
 	string decoration="qword";
-	if(m_firp->GetArchitectureBitWidth()!=64)
+	if(m_firp->getArchitectureBitWidth()!=64)
 	{
 		decoration="dword";
 		stack_reg="esp";
 	}
-	const int stack_push_size=m_firp->GetArchitectureBitWidth()/8;
+	const int stack_push_size=m_firp->getArchitectureBitWidth()/8;
 
 	string lea_string=string("lea ")+stack_reg+", ["+stack_reg+"+" + to_string(stack_push_size*number_of_pushed_values)+"]"; 
-	Instruction_t *lea=addNewAssembly(m_firp, NULL, lea_string);
-	lea->SetFallthrough(sled_start_insn);
+	Instruction_t *lea=addNewAssembly(m_firp, nullptr, lea_string);
+	lea->setFallthrough(sled_start_insn);
 
 	Instruction_t *old_cmp=lea;
 
 	for(int i=0;i<number_of_pushed_values;i++)
 	{
 		string cmp_str="cmp "+decoration+" ["+stack_reg+"+ "+to_string(i*stack_push_size)+"], "+to_string(pushed_values[i]);
-		Instruction_t* cmp=addNewAssembly(m_firp, NULL, cmp_str); 
-		Instruction_t *jne=addNewAssembly(m_firp, NULL, "jne 0"); 
-		cmp->SetFallthrough(jne);
-		jne->SetTarget(next_sled);
-		jne->SetFallthrough(old_cmp);
+		Instruction_t* cmp=addNewAssembly(m_firp, nullptr, cmp_str); 
+		Instruction_t *jne=addNewAssembly(m_firp, nullptr, "jne 0"); 
+		cmp->setFallthrough(jne);
+		jne->setTarget(next_sled);
+		jne->setFallthrough(old_cmp);
 
 		cout<<"Adding 68-sled bit:  "+cmp_str+", jne 0 for sled at 0x"<<hex<<addr<<" entry="<<dec<<sled_number<<endl;
 
@@ -551,7 +549,7 @@ Instruction_t* ZiprPinnerX86_t::Emit68Sled(RangeAddress_t addr, Sled_t sled, Ins
 Instruction_t* ZiprPinnerX86_t::Emit68Sled(Sled_t sled)// RangeAddress_t addr, int sled_size)
 {
 
-	Instruction_t *top_of_sled=addNewAssembly(m_firp, NULL, "hlt"); 
+	Instruction_t *top_of_sled=addNewAssembly(m_firp, nullptr, "hlt"); 
 
 	for (std::set<RangeAddress_t>::reverse_iterator
 	     addr_iter=sled.JumpPointsReverseBegin();
@@ -580,8 +578,8 @@ Instruction_t* ZiprPinnerX86_t::Emit68Sled(Sled_t sled)// RangeAddress_t addr, i
  */
 void ZiprPinnerX86_t::Update68Sled(Sled_t new_sled, Sled_t &existing_sled)
 {
-	Range_t clearable_sled_range(new_sled.SledRange().GetStart(),
-	                             existing_sled.SledRange().GetStart());
+	Range_t clearable_sled_range(new_sled.SledRange().getStart(),
+	                             existing_sled.SledRange().getStart());
 	Sled_t clearable_sled(memory_space, clearable_sled_range);
 
 	if (m_verbose)
@@ -605,8 +603,8 @@ void ZiprPinnerX86_t::Update68Sled(Sled_t new_sled, Sled_t &existing_sled)
 	 * Put in PUSHs in the new_sled.
 	 */
 	size_t i=0;
-	RangeAddress_t addr=new_sled.SledRange().GetStart();
-	for(;i<existing_sled.SledRange().GetStart()-new_sled.SledRange().GetStart();
+	RangeAddress_t addr=new_sled.SledRange().getStart();
+	for(;i<existing_sled.SledRange().getStart()-new_sled.SledRange().getStart();
 	    i++)
 	{
 		if (m_verbose)
@@ -667,8 +665,8 @@ void ZiprPinnerX86_t::Update68Sled(Sled_t new_sled, Sled_t &existing_sled)
 			RangeAddress_t addr=(*it).second;
 			UnresolvedPinned_t up=(*it).first;
 
-			cout << std::hex << up.GetInstruction() << " 5b vs " << disambiguation_to_update << endl;
-			if (up.GetInstruction() == disambiguation_to_update)
+			cout << std::hex << up.getInstrution() << " 5b vs " << disambiguation_to_update << endl;
+			if (up.getInstrution() == disambiguation_to_update)
 			{
 				five_byte_pins.erase(it);
 				UnresolvedPinned_t cup(sled_disambiguation);
@@ -715,7 +713,7 @@ RangeAddress_t ZiprPinnerX86_t::Do68Sled(RangeAddress_t addr)
 			/*
 			 * Return the final address of the updated sled.
 			 */
-			return sled_i.SledRange().GetEnd();
+			return sled_i.SledRange().getEnd();
 		}
 	}
 
@@ -831,7 +829,7 @@ void ZiprPinnerX86_t::Clear68SledArea(Sled_t sled)
 		size_t clear_size = 0;
 		if (m_verbose)
 			cout << "Testing " << std::hex << addr << endl;
-		if (!(sled.SledRange().GetStart() <= addr && addr <= sled.SledRange().GetEnd()))
+		if (!(sled.SledRange().getStart() <= addr && addr <= sled.SledRange().getEnd()))
 		{	
 			if (m_verbose)
 				cout << std::hex << addr << " outside sled range." << endl;
@@ -840,7 +838,7 @@ void ZiprPinnerX86_t::Clear68SledArea(Sled_t sled)
 		if (FindPatchTargetAtAddr(addr))
 		{
 			UnresolvedUnpinnedPatch_t uup = m_parent->FindPatch(addr);
-			clear_size = uup.second.GetSize();
+			clear_size = uup.second.getSize();
 
 			if (m_verbose)
 				cout << "Need to clear a " << std::dec << clear_size
@@ -848,7 +846,7 @@ void ZiprPinnerX86_t::Clear68SledArea(Sled_t sled)
 		}
 		else if (FindPinnedInsnAtAddr(addr))
 		{
-			std::map<RangeAddress_t, std::pair<libIRDB::Instruction_t*, size_t> >
+			std::map<RangeAddress_t, std::pair<IRDB_SDK::Instruction_t*, size_t> >
 			   ::iterator pinned_it = m_InsnSizeAtAddrs.find(addr);
 
 			assert(pinned_it != m_InsnSizeAtAddrs.end());
@@ -863,7 +861,7 @@ void ZiprPinnerX86_t::Clear68SledArea(Sled_t sled)
 		else
 			assert(false);
 
-		clear_size = std::min(sled.SledRange().GetEnd(), addr+clear_size) - addr;
+		clear_size = std::min(sled.SledRange().getEnd(), addr+clear_size) - addr;
 		if (m_verbose)
 			cout << "Need to clear " << std::dec << clear_size << " bytes." << endl;
 
@@ -929,7 +927,7 @@ int ZiprPinnerX86_t::Calc68SledSize(RangeAddress_t addr, size_t sled_overhead)
 bool ZiprPinnerX86_t::IsPinFreeZone(RangeAddress_t addr, int size)
 {
 	for(int i=0;i<size;i++)
-		if(FindPinnedInsnAtAddr(addr+i)!=NULL)
+		if(FindPinnedInsnAtAddr(addr+i)!=nullptr)
 			return false;
 	return true;
 }
@@ -952,11 +950,11 @@ void ZiprPinnerX86_t::ReservePinnedInstructions()
 	{
 		char bytes[]={(char)0xeb,(char)0}; // jmp rel8
 		UnresolvedPinned_t up=*it;
-		Instruction_t* upinsn=up.GetInstruction();
-		RangeAddress_t addr=(unsigned)upinsn->GetIndirectBranchTargetAddress()
-		                                    ->GetVirtualOffset();
+		Instruction_t* upinsn=up.getInstrution();
+		RangeAddress_t addr=(unsigned)upinsn->getIndirectBranchTargetAddress()
+		                                    ->getVirtualOffset();
 
-		if(upinsn->GetIndirectBranchTargetAddress()->GetFileID() ==
+		if(upinsn->getIndirectBranchTargetAddress()->getFileID() ==
 		   BaseObj_t::NOT_IN_DATABASE)
 			continue;
 
@@ -969,11 +967,11 @@ void ZiprPinnerX86_t::ReservePinnedInstructions()
 		if(ShouldPinImmediately(upinsn))
 		{
 			if (m_verbose)
-				printf("Final pinning %p-%p.  fid=%d\n", (void*)addr, (void*)(addr+upinsn->GetDataBits().size()-1),
-				upinsn->GetAddress()->GetFileID());
-			for(unsigned int i=0;i<upinsn->GetDataBits().size();i++)
+				printf("Final pinning %p-%p.  fid=%d\n", (void*)addr, (void*)(addr+upinsn->getDataBits().size()-1),
+				upinsn->getAddress()->getFileID());
+			for(unsigned int i=0;i<upinsn->getDataBits().size();i++)
 			{
-				memory_space[addr+i]=upinsn->GetDataBits()[i];
+				memory_space[addr+i]=upinsn->getDataBits()[i];
 				memory_space.SplitFreeRange(addr+i);
 				m_stats->total_other_space++;
 			}
@@ -983,12 +981,12 @@ void ZiprPinnerX86_t::ReservePinnedInstructions()
 
 		if (m_verbose) {
 			printf("Working two byte pinning decision at %p for: ", (void*)addr);
-			printf("%s\n", upinsn->GetComment().c_str());
+			printf("%s\n", upinsn->getComment().c_str());
 		}
 
 
 		// if the byte at x+1 is free, we can try a 2-byte jump (which may end up being converted to a 5-byte jump later).
-		if (FindPinnedInsnAtAddr(addr+1)==NULL)
+		if (FindPinnedInsnAtAddr(addr+1)==nullptr)
 		{
 			/* so common it's not worth printing 
 			if (m_verbose)
@@ -996,7 +994,7 @@ void ZiprPinnerX86_t::ReservePinnedInstructions()
 				printf("Can fit two-byte pin (%p-%p).  fid=%d\n", 
 					(void*)addr,
 					(void*)(addr+sizeof(bytes)-1),
-					upinsn->GetAddress()->GetFileID());
+					upinsn->getAddress()->getFileID());
 			}
 			*/
 		
@@ -1051,15 +1049,15 @@ void ZiprPinnerX86_t::ReservePinnedInstructions()
 					   (char)0x00,(char)0x00, /* all these bytes but they */
 					   (char)0x00};           /* make counting easier (see*/
 					   		          /* below). */
-			Instruction_t *lea_insn = NULL;
+			Instruction_t *lea_insn = nullptr;
 
-			if(m_firp->GetArchitectureBitWidth()==64)
-				lea_insn = addNewAssembly(m_firp, NULL, "lea rsp, [rsp+8]");
+			if(m_firp->getArchitectureBitWidth()==64)
+				lea_insn = addNewAssembly(m_firp, nullptr, "lea rsp, [rsp+8]");
 			else
-				lea_insn = addNewAssembly(m_firp, NULL, "lea esp, [esp+4]");
+				lea_insn = addNewAssembly(m_firp, nullptr, "lea esp, [esp+4]");
 
-			m_firp->AssembleRegistry();
-			lea_insn->SetFallthrough(upinsn);
+			m_firp->assembleRegistry();
+			lea_insn->setFallthrough(upinsn);
 
 			/*
 			 * Write the push opcode.
@@ -1129,9 +1127,9 @@ void ZiprPinnerX86_t::ReservePinnedInstructions()
 			{
 				// get this entry
 				UnresolvedPinned_t up=*it;
-				Instruction_t* upinsn=up.GetInstruction();
-				RangeAddress_t addr=(unsigned)upinsn->GetIndirectBranchTargetAddress()
-		                                    ->GetVirtualOffset();
+				Instruction_t* upinsn=up.getInstrution();
+				RangeAddress_t addr=(unsigned)upinsn->getIndirectBranchTargetAddress()
+		                                    ->getVirtualOffset();
 
 				// is the entry within the sled?
 				if(addr>=end_of_sled)
@@ -1154,7 +1152,7 @@ void ZiprPinnerX86_t::ReservePinnedInstructions()
 			--it;
 
 			// resolve any new instructions added for the sled.
-			m_firp->AssembleRegistry();
+			m_firp->assembleRegistry();
 		}
 		else
 			assert(0); // impossible to reach, right?
@@ -1173,7 +1171,7 @@ void ZiprPinnerX86_t::ExpandPinnedInstructions()
 		)
 	{
 		UnresolvedPinned_t up=*it;
-		Instruction_t* upinsn=up.GetInstruction();
+		Instruction_t* upinsn=up.getInstrution();
 		RangeAddress_t addr=0;
 
 		/*
@@ -1187,7 +1185,7 @@ void ZiprPinnerX86_t::ExpandPinnedInstructions()
 		}
 		else
 		{
-			addr = upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset();
+			addr = upinsn->getIndirectBranchTargetAddress()->getVirtualOffset();
 		}
 
 		if (m_AddrInSled[addr])
@@ -1210,8 +1208,8 @@ void ZiprPinnerX86_t::ExpandPinnedInstructions()
 		if (m_verbose && can_update)
 			printf("Found %p can be updated to 5-byte jmp\n", (void*)addr);
 
-		can_update &= !m_AddrInSled[up.GetRange().GetStart()];
-		if (m_verbose && can_update && m_AddrInSled[up.GetRange().GetStart()])
+		can_update &= !m_AddrInSled[up.GetRange().getStart()];
+		if (m_verbose && can_update && m_AddrInSled[up.GetRange().getStart()])
 			printf("%p was already fixed into a sled. Cannot update.\n", (void*)addr);
 		if(can_update)
 		{
@@ -1220,7 +1218,7 @@ void ZiprPinnerX86_t::ExpandPinnedInstructions()
 			/*
 			 * Unreserve those bytes that we reserved before!
 			 */
-			for (unsigned int j = up.GetRange().GetStart(); j<up.GetRange().GetEnd(); j++)
+			for (unsigned int j = up.GetRange().getStart(); j<up.GetRange().getEnd(); j++)
 			{
 				if (!m_AddrInSled[j])
 					memory_space.MergeFreeRange(j);
@@ -1232,8 +1230,8 @@ void ZiprPinnerX86_t::ExpandPinnedInstructions()
 			 */
 			if (m_verbose)
 				cout << "Erasing chain entry at 0x" 
-				     << std::hex << up.GetRange().GetStart() << endl;
-			m_parent->RemovePatch(up.GetRange().GetStart());
+				     << std::hex << up.GetRange().getStart() << endl;
+			m_parent->RemovePatch(up.GetRange().getStart());
 
 
 			up.SetRange(Range_t(0,0));
@@ -1267,7 +1265,7 @@ void ZiprPinnerX86_t::Fix2BytePinnedInstructions()
 		)
 	{
 		UnresolvedPinned_t up=*it;
-		Instruction_t* upinsn=up.GetInstruction();
+		Instruction_t* upinsn=up.getInstrution();
 		RangeAddress_t addr;
 		
 		if (up.HasUpdatedAddress())
@@ -1276,7 +1274,7 @@ void ZiprPinnerX86_t::Fix2BytePinnedInstructions()
 		}
 		else
 		{
-			addr=upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset();
+			addr=upinsn->getIndirectBranchTargetAddress()->getVirtualOffset();
 		}
 
 		/*
@@ -1295,7 +1293,7 @@ void ZiprPinnerX86_t::Fix2BytePinnedInstructions()
 			 */
 			if (up.HasRange())
 			{
-				for (unsigned int j = up.GetRange().GetStart(); j<up.GetRange().GetEnd(); j++)
+				for (unsigned int j = up.GetRange().getStart(); j<up.GetRange().getEnd(); j++)
 				{
 					if (!m_AddrInSled[j])
 						memory_space.MergeFreeRange(j);
@@ -1312,29 +1310,29 @@ void ZiprPinnerX86_t::Fix2BytePinnedInstructions()
 			 * Do this here because some/most of the algorithms
 			 * that we use below assume that it is unreserved.
 			 */
-			for (unsigned int j = up.GetRange().GetStart(); j<up.GetRange().GetEnd(); j++)
+			for (unsigned int j = up.GetRange().getStart(); j<up.GetRange().getEnd(); j++)
 			{
 				if (!m_AddrInSled[j])
 					memory_space.MergeFreeRange(j);
 			}
 
-			if (m_AddrInSled[up.GetRange().GetStart()])
+			if (m_AddrInSled[up.GetRange().getStart()])
 			{
 				if (m_verbose)
 					printf("Using previously reserved spot of 2-byte->x-byte conversion "
 					"(%p-%p)->(%p-%p) (orig: %p) because it was subsumed under sled\n", 
 					(void*)addr,
 					(void*)(addr+1),
-					(void*)(up.GetRange().GetStart()),
-					(void*)(up.GetRange().GetEnd()),
-					(upinsn->GetIndirectBranchTargetAddress() != NULL) ?
-					(void*)(uintptr_t)upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset() : 0x0);
+					(void*)(up.GetRange().getStart()),
+					(void*)(up.GetRange().getEnd()),
+					(upinsn->getIndirectBranchTargetAddress() != nullptr) ?
+					(void*)(uintptr_t)upinsn->getIndirectBranchTargetAddress()->getVirtualOffset() : 0x0);
 
 				/*
 				 * We simply patch the jump to this target and do not add
 				 * it to any list for further processing. We are done.
 				 */
-				PatchJump(addr, up.GetRange().GetStart());
+				PatchJump(addr, up.GetRange().getStart());
 				two_byte_pins.erase(it++);
 			}
 			else if (up.GetRange().Is5ByteRange()) 
@@ -1344,14 +1342,14 @@ void ZiprPinnerX86_t::Fix2BytePinnedInstructions()
 					"(%p-%p)->(%p-%p) (orig: %p)\n", 
 					(void*)addr,
 					(void*)(addr+1),
-					(void*)(up.GetRange().GetStart()),
-					(void*)(up.GetRange().GetEnd()),
-					(upinsn->GetIndirectBranchTargetAddress() != NULL) ?
-					(void*)(uintptr_t)upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset() : 0x0);
+					(void*)(up.GetRange().getStart()),
+					(void*)(up.GetRange().getEnd()),
+					(upinsn->getIndirectBranchTargetAddress() != nullptr) ?
+					(void*)(uintptr_t)upinsn->getIndirectBranchTargetAddress()->getVirtualOffset() : 0x0);
 
-				five_byte_pins[up] = up.GetRange().GetStart();
-				memory_space.PlopJump(up.GetRange().GetStart());
-				PatchJump(addr, up.GetRange().GetStart());
+				five_byte_pins[up] = up.GetRange().getStart();
+				memory_space.PlopJump(up.GetRange().getStart());
+				PatchJump(addr, up.GetRange().getStart());
 
 				two_byte_pins.erase(it++);
 			}
@@ -1368,26 +1366,26 @@ void ZiprPinnerX86_t::Fix2BytePinnedInstructions()
 				 * target location.
 				 */
 				UnresolvedPinned_t new_up = 
-					UnresolvedPinned_t(up.GetInstruction());
-				new_up.SetUpdatedAddress(up.GetRange().GetStart());
+					UnresolvedPinned_t(up.getInstrution());
+				new_up.SetUpdatedAddress(up.GetRange().getStart());
 				new_up.SetRange(up.GetRange());
 
 				char bytes[]={(char)0xeb,(char)0}; // jmp rel8
 				for(unsigned int i=0;i<sizeof(bytes);i++)
 				{
-					assert(memory_space.find(up.GetRange().GetStart()+i) == memory_space.end() );
-					memory_space[up.GetRange().GetStart()+i]=bytes[i];
-					memory_space.SplitFreeRange(up.GetRange().GetStart()+i);
-					assert(!memory_space.IsByteFree(up.GetRange().GetStart()+i));
+					assert(memory_space.find(up.GetRange().getStart()+i) == memory_space.end() );
+					memory_space[up.GetRange().getStart()+i]=bytes[i];
+					memory_space.SplitFreeRange(up.GetRange().getStart()+i);
+					assert(!memory_space.IsByteFree(up.GetRange().getStart()+i));
 				}
 
 				if (m_verbose)
 					printf("Patching 2 byte to 2 byte: %p to %p (orig: %p)\n", 
 					(void*)addr,
-					(void*)up.GetRange().GetStart(),
-					(void*)(uintptr_t)upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset());
+					(void*)up.GetRange().getStart(),
+					(void*)(uintptr_t)upinsn->getIndirectBranchTargetAddress()->getVirtualOffset());
 
-				PatchJump(addr, up.GetRange().GetStart());
+				PatchJump(addr, up.GetRange().getStart());
 
 				two_byte_pins.erase(it++);
 				two_byte_pins.insert(new_up);
@@ -1430,7 +1428,7 @@ void ZiprPinnerX86_t::OptimizePinnedInstructions()
 			continue;
 		}
 
-		UnresolvedUnpinned_t uu(up.GetInstruction());
+		UnresolvedUnpinned_t uu(up.getInstrution());
 		Patch_t	thepatch(addr,UncondJump_rel32);
 		m_parent->AddPatch(uu,thepatch);
 		memory_space.PlopJump(addr);
@@ -1446,10 +1444,10 @@ void ZiprPinnerX86_t::OptimizePinnedInstructions()
 			if (m_verbose)
 			{
 				//DISASM d;
-				//Disassemble(uu.GetInstruction(),d);
-				DecodedInstruction_t d(uu.GetInstruction());
+				//Disassemble(uu.getInstrution(),d);
+				auto d=DecodedInstruction_t::factory(uu.getInstrution());
 				printf("Converting 5-byte pinned jump at %p-%p to patch to %d:%s\n", 
-				       (void*)addr,(void*)(addr+4), uu.GetInstruction()->GetBaseID(), d.getDisassembly().c_str()/*.CompleteInstr*/);
+				       (void*)addr,(void*)(addr+4), uu.getInstrution()->getBaseID(), d->getDisassembly().c_str()/*.CompleteInstr*/);
 			}
 			m_stats->total_tramp_space+=5;
 		}
@@ -1464,10 +1462,10 @@ void ZiprPinnerX86_t::OptimizePinnedInstructions()
 
 Instruction_t *ZiprPinnerX86_t::FindPinnedInsnAtAddr(RangeAddress_t addr)
 {
-        std::map<RangeAddress_t,std::pair<libIRDB::Instruction_t*, size_t> >::iterator it=m_InsnSizeAtAddrs.find(addr);
+        std::map<RangeAddress_t,std::pair<IRDB_SDK::Instruction_t*, size_t> >::iterator it=m_InsnSizeAtAddrs.find(addr);
         if(it!=m_InsnSizeAtAddrs.end())
                 return it->second.first;
-        return NULL;
+        return nullptr;
 }
 
 

@@ -36,9 +36,10 @@
 #include <set>
 #include <list>
 #include <map>
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 #include <Rewrite_Utility.hpp>
 #include <algorithm>
+#include <memory>
 
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
@@ -48,6 +49,7 @@
 namespace zipr
 {
 
+using namespace std;
 using namespace Zipr_SDK;
 
 #define PAGE_SIZE 4096

@@ -33,13 +33,13 @@ using namespace std;
 
 ZiprOptionsNamespace_t *ZiprMemorySpace_t::RegisterOptions(ZiprOptionsNamespace_t *global) {
 	global->AddOption(&m_verbose);
-	return NULL;
+	return nullptr;
 }
 
 void ZiprMemorySpace_t::SplitFreeRange(Range_t split_from)
 {
 	RangeAddress_t counter, end;
-	for (counter = split_from.GetStart(), end = split_from.GetEnd();
+	for (counter = split_from.getStart(), end = split_from.getEnd();
 	     counter!=end;
 	     counter++)
 	{
@@ -53,32 +53,32 @@ void ZiprMemorySpace_t::SplitFreeRange(RangeAddress_t addr)
 	assert(IsValidRange(it));
 
 	const auto r=*it;
-	if(r.GetStart()==r.GetEnd())
+	if(r.getStart()==r.getEnd())
 	{
-		assert(addr==r.GetEnd());
+		assert(addr==r.getEnd());
 		free_ranges.erase(it);
 	}
-	else if(addr==r.GetStart())
+	else if(addr==r.getStart())
 	{
 		free_ranges.erase(it);
-		free_ranges.insert(Range_t(r.GetStart()+1, r.GetEnd()));
+		free_ranges.insert(Range_t(r.getStart()+1, r.getEnd()));
 	}
-	else if(addr==r.GetEnd())
+	else if(addr==r.getEnd())
 	{
 		free_ranges.erase(it);
-		free_ranges.insert(Range_t(r.GetStart(), r.GetEnd()-1));
+		free_ranges.insert(Range_t(r.getStart(), r.getEnd()-1));
 	}
 	else // split range 
 	{
 		free_ranges.erase(it);
-		free_ranges.insert(Range_t(r.GetStart(), addr-1));
-		free_ranges.insert(Range_t(addr+1, r.GetEnd()));
+		free_ranges.insert(Range_t(r.getStart(), addr-1));
+		free_ranges.insert(Range_t(addr+1, r.getEnd()));
 	}
 }
 void ZiprMemorySpace_t::MergeFreeRange(Range_t range)
 {
 	RangeAddress_t counter, end;
-	for (counter = range.GetStart(), end = range.GetEnd();
+	for (counter = range.getStart(), end = range.getEnd();
 	     counter!=end;
 	     counter++)
 	{
@@ -108,17 +108,17 @@ void ZiprMemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 	if(itp1!=free_ranges.end())
 	{
 		r=*itp1;
-		assert((addr+1) == r.GetStart());
+		assert((addr+1) == r.getStart());
 		/*
 		 * Make the beginning of this range
 		 * one byte smaller!
 		 */
-		Range_t nnr(addr, r.GetEnd());
+		Range_t nnr(addr, r.getEnd());
 		if (m_verbose)
 		{
 			printf("Expanded range: ");
-			printf("from: (%p - %p) ", (void*)r.GetStart(), (void*)r.GetEnd());
-			printf("to: (%p - %p) \n", (void*)nnr.GetStart(), (void*)nnr.GetEnd());
+			printf("from: (%p - %p) ", (void*)r.getStart(), (void*)r.getEnd());
+			printf("to: (%p - %p) \n", (void*)nnr.getStart(), (void*)nnr.getEnd());
 		}
 		nr = nnr;
 		/*
@@ -131,10 +131,10 @@ void ZiprMemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 			if (m_verbose)
 			{
 				printf("Expanded range: ");
-				printf("from: (%p - %p) ", (void*)nr.GetStart(), (void*)nr.GetEnd());
-				printf("to: (%p - %p) \n", (void*)r2.GetStart(), (void*)nnr.GetEnd());
+				printf("from: (%p - %p) ", (void*)nr.getStart(), (void*)nr.getEnd());
+				printf("to: (%p - %p) \n", (void*)r2.getStart(), (void*)nnr.getEnd());
 			}
-			nr.SetStart(r2.GetStart());	
+			nr.SetStart(r2.getStart());	
 			free_ranges.erase(r2);
 			
 		}
@@ -150,17 +150,17 @@ void ZiprMemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 	{
 		r=*itm1;
 	
-		assert((addr-1) == r.GetEnd()) ;
+		assert((addr-1) == r.getEnd()) ;
 		/*
 		 * Make the end of this range one byte
 		 * bigger
 		 */
-		Range_t nnr(r.GetStart(), addr);
+		Range_t nnr(r.getStart(), addr);
 		if (m_verbose)
 		{
 			printf("Expanded range: ");
-			printf("from: (%p - %p) ", (void*)r.GetStart(), (void*)r.GetEnd());
-			printf("to: (%p - %p) \n", (void*)nnr.GetStart(), (void*)nnr.GetEnd());
+			printf("from: (%p - %p) ", (void*)r.getStart(), (void*)r.getEnd());
+			printf("to: (%p - %p) \n", (void*)nnr.getStart(), (void*)nnr.getEnd());
 		}
 		nr = nnr;
 		free_ranges.erase(itm1);
@@ -180,7 +180,7 @@ void ZiprMemorySpace_t::PrintMemorySpace(std::ostream &out)
 {
 	for(auto r : free_ranges)
 	{
-		out <<"0x"<<std::hex<<r.GetStart()<<" - 0x"<<std::hex<<r.GetEnd()<<endl;
+		out <<"0x"<<std::hex<<r.getStart()<<" - 0x"<<std::hex<<r.getEnd()<<endl;
 	}
 }
 
@@ -196,7 +196,7 @@ bool ZiprMemorySpace_t::IsValidRange(RangeSet_t::iterator it)
 }
 
 std::pair<RangeSet_t::const_iterator,RangeSet_t::const_iterator>
-	ZiprMemorySpace_t::GetNearbyFreeRanges(const RangeAddress_t hint,size_t count)
+	ZiprMemorySpace_t::getNearbyFreeRanges(const RangeAddress_t hint,size_t count)
 {
 	const auto search=Range_t(hint, hint+1);
 	const auto result = free_ranges.lower_bound(search);
@@ -211,7 +211,7 @@ Range_t ZiprMemorySpace_t::GetLargeRange(void)
 {
 	for(auto r : free_ranges)
 	{
-		if(r.GetEnd()==(RangeAddress_t)-1)
+		if(r.getEnd()==(RangeAddress_t)-1)
 			return r;
 	}
 	return Range_t(0,0);
@@ -219,41 +219,41 @@ Range_t ZiprMemorySpace_t::GetLargeRange(void)
 
 bool ZiprMemorySpace_t::SortRangeBySize(const Range_t &a, const Range_t &b)
 {
-	return (a.GetEnd() - a.GetStart()) <= (b.GetEnd() - b.GetStart());
+	return (a.getEnd() - a.getStart()) <= (b.getEnd() - b.getStart());
 }
 
-std::list<Range_t> ZiprMemorySpace_t::GetFreeRanges(size_t size)
+std::list<Range_t> ZiprMemorySpace_t::getFreeRanges(size_t size)
 {
 	auto result=list<Range_t>();
 	for(auto r : free_ranges)
 	{
-		if(r.GetEnd() - r.GetStart() >= (unsigned) size)
+		if(r.getEnd() - r.getStart() >= (unsigned) size)
 			result.push_back(r);
 	}
 	result.sort(SortRangeBySize);
 	return result;
 }
 
-Range_t ZiprMemorySpace_t::GetInfiniteFreeRange()
+Range_t ZiprMemorySpace_t::getInfiniteFreeRange()
 {
 	for(auto r : free_ranges)
 	{
-		if(r.GetEnd()==(RangeAddress_t)-1)
+		if(r.getEnd()==(RangeAddress_t)-1)
 			return r;
 	}
 	assert(false);
 	return Range_t(0,0);
 }
 
-Range_t ZiprMemorySpace_t::GetFreeRange(int size)
+Range_t ZiprMemorySpace_t::getFreeRange(int size)
 {
 	vector<Range_t> v;
 	Range_t big_range;
 	for(auto r : free_ranges)
 	{
-		if(r.GetEnd()==(RangeAddress_t)-1)
+		if(r.getEnd()==(RangeAddress_t)-1)
 			big_range=r;
-		else if(r.GetEnd() - r.GetStart() >= (unsigned) size)
+		else if(r.getEnd() - r.getStart() >= (unsigned) size)
 			v.push_back(r);
 
 		// that's enough randomization
@@ -288,18 +288,18 @@ void ZiprMemorySpace_t::AddFreeRange(Range_t newRange, bool original)
 {
 	if (original)
 	{
-		original_free_ranges.insert(Range_t(newRange.GetStart(),newRange.GetEnd()));
+		original_free_ranges.insert(Range_t(newRange.getStart(),newRange.getEnd()));
 	}
 	AddFreeRange(newRange);
 }
 
 void ZiprMemorySpace_t::AddFreeRange(Range_t newRange)
 {
-	free_ranges.insert(Range_t(newRange.GetStart(), newRange.GetEnd()));
+	free_ranges.insert(Range_t(newRange.getStart(), newRange.getEnd()));
 }
 void ZiprMemorySpace_t::RemoveFreeRange(Range_t oldRange)
 {
-	free_ranges.erase(Range_t(oldRange.GetStart(), oldRange.GetEnd()));
+	free_ranges.erase(Range_t(oldRange.getStart(), oldRange.getEnd()));
 }
 
 int ZiprMemorySpace_t::GetRangeCount()

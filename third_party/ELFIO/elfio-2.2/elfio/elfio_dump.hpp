@@ -283,7 +283,7 @@ static struct section_type_table_t {
     const char*      str;
 } section_type_table [] = 
 {
-    { SHT_NULL         , "NULL"          },
+    { SHT_nullptr         , "nullptr"          },
     { SHT_PROGBITS     , "PROGBITS"      },
     { SHT_SYMTAB       , "SYMTAB"        },
     { SHT_STRTAB       , "STRTAB"        },
@@ -308,7 +308,7 @@ static struct segment_type_table_t {
     const char*    str;
 } segment_type_table [] = 
 {
-    { PT_NULL   , "NULL"    },
+    { PT_nullptr   , "nullptr"    },
     { PT_LOAD   , "LOAD"    },
     { PT_DYNAMIC, "DYNAMIC" },
     { PT_INTERP , "INTERP"  },
@@ -375,7 +375,7 @@ static struct dynamic_tag_t {
     const char*    str;
 } dynamic_tag_table [] = 
 {
-    { DT_NULL           , "NULL"            },
+    { DT_nullptr           , "nullptr"            },
     { DT_NEEDED         , "NEEDED"          },
     { DT_PLTRELSZ       , "PLTRELSZ"        },
     { DT_PLTGOT         , "PLTGOT"          },
@@ -731,7 +731,7 @@ class dump
                         std::string str;
                         dynamic.get_entry( i, tag, value, str );
                         dynamic_tag( out, i, tag, value, str, reader.get_class() );
-                        if ( DT_NULL == tag ) {
+                        if ( DT_nullptr == tag ) {
                             break;
                         }
                     }

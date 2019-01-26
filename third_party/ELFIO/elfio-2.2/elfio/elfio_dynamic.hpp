@@ -128,7 +128,7 @@ class dynamic_section_accessor
         // Check unusual case when dynamic section has no data
         if( dynamic_section->get_data() == 0 ||
             ( index + 1 ) * dynamic_section->get_entry_size() > dynamic_section->get_size() ) {
-            tag   = DT_NULL;
+            tag   = DT_nullptr;
             value = 0;
             return;
         }
@@ -138,7 +138,7 @@ class dynamic_section_accessor
                 index * dynamic_section->get_entry_size() );
         tag = convertor( pEntry->d_tag );
         switch ( tag ) {
-        case DT_NULL:
+        case DT_nullptr:
         case DT_SYMBOLIC:
         case DT_TEXTREL:
         case DT_BIND_NOW:
@@ -191,7 +191,7 @@ class dynamic_section_accessor
         T entry;
 
         switch ( tag ) {
-        case DT_NULL:
+        case DT_nullptr:
         case DT_SYMBOLIC:
         case DT_TEXTREL:
         case DT_BIND_NOW:

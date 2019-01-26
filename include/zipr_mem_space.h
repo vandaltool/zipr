@@ -51,11 +51,11 @@ class ZiprMemorySpace_t : public MemorySpace_t
 		void MergeFreeRange(Range_t range);
 		void MergeFreeRange(RangeAddress_t addr);
 		RangeSet_t::iterator FindFreeRange(RangeAddress_t addr);
-		Range_t GetFreeRange(int size);
-		Range_t GetInfiniteFreeRange();
-		std::list<Range_t> GetFreeRanges(size_t size = 0);
+		Range_t getFreeRange(int size);
+		Range_t getInfiniteFreeRange();
+		std::list<Range_t> getFreeRanges(size_t size = 0);
 		std::pair<RangeSet_t::const_iterator,RangeSet_t::const_iterator>
-			GetNearbyFreeRanges(const RangeAddress_t hint, size_t count = 0);
+			getNearbyFreeRanges(const RangeAddress_t hint, size_t count = 0);
 		void AddFreeRange(Range_t newRange);
 		void AddFreeRange(Range_t newRange, bool original);
 		void RemoveFreeRange(Range_t newRange);
@@ -67,7 +67,7 @@ class ZiprMemorySpace_t : public MemorySpace_t
 		bool IsValidRange(RangeSet_t::iterator it);
 
 		int GetRangeCount();
-		RangeSet_t GetOriginalFreeRanges() const { return original_free_ranges; }
+		RangeSet_t getOriginalFreeRanges() const { return original_free_ranges; }
 
 		void PrintMemorySpace(std::ostream &out);
 

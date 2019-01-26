@@ -65,7 +65,7 @@ ZiprOption_t *ZiprOptionsNamespace_t::OptionByKey(string key) {
 		if ((*it)->Key() == key)
 			return *it;
 	}
-	return NULL;
+	return nullptr;
 }
 
 void ZiprOptionsNamespace_t::PrintUsage(int tabs, ostream &out) {
@@ -202,7 +202,7 @@ ZiprOptionsNamespace_t *ZiprOptions_t::Namespace(string ns) {
 		if ((*it)->Namespace() == ns)
 			return *it;
 	}
-	return NULL;
+	return nullptr;
 }
 
 void ZiprOptions_t::AddNamespace(ZiprOptionsNamespace_t *ns) {

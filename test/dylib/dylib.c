@@ -16,7 +16,7 @@ int dynamic_function_b(char *b, int n, ...) {
 	va_start(ap, n);
 	for (i; i<n; i++)
 	{
-		char *t = NULL;
+		char *t = nullptr;
 		t = va_arg(ap, char *);
 		printf("%d: %s\n", i+1, t);
 	}

@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
 	ZiprDoubleOption_t local_g_option("g", 2.4);
 
 	local_b_option.SetRequired(true);
-	local_b_option.SetDescription("Set the B option.");
+	local_b_option.setDescription("Set the B option.");
 	local_d_option.SetRequired(true);
 
 	global_ns.AddOption(&global_a_option);

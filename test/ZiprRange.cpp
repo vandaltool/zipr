@@ -66,12 +66,12 @@ bool TestRangeSpeed() {
 	for (i = 0; (clock()-timeStart)/CLOCKS_PER_SEC < 10; i++)
 	{
 		volatile RangeAddress_t found_start = 0;
-		auto placement = m.GetFreeRange(d->Size());
+		auto placement = m.getFreeRange(d->Size());
 
-		found_start = placement.GetStart();
+		found_start = placement.getStart();
 		found_start++;
 	}
-	cout<<"In 10 seconds, executed "<<dec<<i<<" iterations of GetFreeRange()"<<endl;
+	cout<<"In 10 seconds, executed "<<dec<<i<<" iterations of getFreeRange()"<<endl;
 
 	return true;
 }

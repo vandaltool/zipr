@@ -29,7 +29,7 @@
  **************************************************************************/
 
 #include <zipr_all.h>
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 #include <Rewrite_Utility.hpp>
 #include <iostream>
 #include <stdlib.h>
@@ -47,7 +47,7 @@
 
 #define ALLOF(a) begin(a),end(a)
 
-using namespace libIRDB;
+using namespace IRDB_SDK;
 using namespace std;
 using namespace zipr;
 using namespace ELFIO;
@@ -89,7 +89,7 @@ void ZiprImpl_t::Init()
 
 	bss_needed=0;
 	use_stratafier_mode=false;
-	ostream *error = &cout, *warn = NULL;
+	ostream *error = &cout, *warn = nullptr;
 
 	m_zipr_options.AddNamespace(new ZiprOptionsNamespace_t("global"));
 	m_zipr_options.AddNamespace(RegisterOptions(m_zipr_options.Namespace("global")));
@@ -97,31 +97,33 @@ void ZiprImpl_t::Init()
 	/*
 	 * Parse once to read the global and zipr options.
 	 */
-	m_zipr_options.Parse(NULL, NULL);
+	m_zipr_options.Parse(nullptr, nullptr);
 	if (m_variant.RequirementMet()) {
 		/* setup the interface to the sql server */
-		BaseObj_t::SetInterface(&m_pqxx_interface);
+		BaseObj_t::setInterface(m_pqxx_interface.get());
 
-		m_variant_id=new VariantID_t(m_variant);
+		m_variant_id_p=VariantID_t::factory(m_variant);
+		m_variant_id=m_variant_id_p.get();
 		assert(m_variant_id);
-		assert(m_variant_id->IsRegistered()==true);
+		assert(m_variant_id->isRegistered()==true);
 
 		if (m_verbose)
 			cout<<"New Variant, after reading registration, is: "<<*m_variant_id << endl;
 
-		for(set<File_t*>::iterator it=m_variant_id->GetFiles().begin();
-		                           it!=m_variant_id->GetFiles().end();
+		for(set<File_t*>::iterator it=m_variant_id->getFiles().begin();
+		                           it!=m_variant_id->getFiles().end();
 		                         ++it
 		   )
 		{
 			File_t* this_file=*it;
 			assert(this_file);
 			// only do a.ncexe for now.
-			if(this_file->GetURL().find("a.ncexe")==string::npos)
+			if(this_file->getURL().find("a.ncexe")==string::npos)
 				continue;
 
 			// read the db
-			m_firp=new FileIR_t(*m_variant_id, this_file);
+			m_firp_p=FileIR_t::factory(m_variant_id, this_file);
+			m_firp=m_firp_p.get();
 			assert(m_firp);
 
 		}
@@ -154,10 +156,10 @@ void ZiprImpl_t::Init()
 
 ZiprImpl_t::~ZiprImpl_t()
 {
-	delete m_firp;
+	// delete m_firp; // taken care of by the unique_ptr the factory returns.
 	try
 	{
-		m_pqxx_interface.Commit();
+		m_pqxx_interface->commit();
 	}
 	catch (DatabaseError_t pnide)
 	{
@@ -172,24 +174,24 @@ ZiprOptionsNamespace_t *ZiprImpl_t::RegisterOptions(ZiprOptionsNamespace_t *glob
 	m_variant.SetRequired(true);
 
 
-	m_add_sections.SetDescription("Enable writing of section headers using elfwriter.");
-	m_bss_opts.SetDescription("Enable/Disable optimizing BSS segments so they aren't written to the binary.");
-	m_verbose.SetDescription("Enable verbose output");
-	m_apply_nop.SetDescription("Apply NOP to patches that fallthrough.");
-	m_variant.SetDescription("Variant ID.");
-	m_output_filename.SetDescription("Output file name.");
-	m_architecture.SetDescription("Override default system "
+	m_add_sections.setDescription("Enable writing of section headers using elfwriter.");
+	m_bss_opts.setDescription("Enable/Disable optimizing BSS segments so they aren't written to the binary.");
+	m_verbose.setDescription("Enable verbose output");
+	m_apply_nop.setDescription("Apply NOP to patches that fallthrough.");
+	m_variant.setDescription("Variant ID.");
+	m_output_filename.setDescription("Output file name.");
+	m_architecture.setDescription("Override default system "
 		"architecture detection");
-	m_replop.SetDescription("Replop all dollops.");
-	m_objcopy.SetDescription("Set the path of objcopy to use.");
-	m_callbacks.SetDescription("Set the path of the file "
+	m_replop.setDescription("Replop all dollops.");
+	m_objcopy.setDescription("Set the path of objcopy to use.");
+	m_callbacks.setDescription("Set the path of the file "
 		"which contains any required callbacks.");
-	m_seed.SetDescription("Seed the random number generator with this value.");
-	m_dollop_map_filename.SetDescription("Specify filename to save dollop map.");
-	m_paddable_minimum_distance.SetDescription("Specify the minimum size of a gap to be filled.");
+	m_seed.setDescription("Seed the random number generator with this value.");
+	m_dollop_map_filename.setDescription("Specify filename to save dollop map.");
+	m_paddable_minimum_distance.setDescription("Specify the minimum size of a gap to be filled.");
 
-	// our pid is a fine default value -- had issues with time(NULL) as two copies of zipr from 
-	// were getting the same time(NULL) return value since we invoked them in parallel.
+	// our pid is a fine default value -- had issues with time(nullptr) as two copies of zipr from 
+	// were getting the same time(nullptr) return value since we invoked them in parallel.
 	m_seed.SetValue((int)getpid());	
 
 	zipr_namespace->AddOption(&m_output_filename);
@@ -218,8 +220,8 @@ void ZiprImpl_t::CreateBinaryFile()
 
 
 	/* load the elfiop for the orig. binary */
-	lo = new pqxx::largeobject(m_firp->GetFile()->GetELFOID());
-	lo->to_file(m_pqxx_interface.GetTransaction(),string(m_output_filename).c_str());
+	lo = new pqxx::largeobject(m_firp->getFile()->getELFOID());
+	lo->to_file(m_pqxx_interface->getTransaction(),string(m_output_filename).c_str());
 
 	/* use ELFIO to load the sections */
 	assert(elfiop);
@@ -230,7 +232,7 @@ void ZiprImpl_t::CreateBinaryFile()
 	{
 		if (m_verbose)
 			cout << "Doing architecture autodetection." << endl;
-		m_architecture.SetValue(libIRDB::FileIR_t::GetArchitectureBitWidth());
+		m_architecture.SetValue(IRDB_SDK::FileIR_t::getArchitectureBitWidth());
 		if (m_verbose)
 			cout << "Autodetected to " << (int)m_architecture << endl;
 	}
@@ -355,9 +357,12 @@ void ZiprImpl_t::CreateExecutableScoops(const std::map<RangeAddress_t, int> &ord
 		}
 
 		// setup start of scoop.
+		/*
 		AddressID_t *text_start=new AddressID_t();
-		text_start->SetVirtualOffset(sec->get_address());
-		m_firp->GetAddresses().insert(text_start);
+		text_start->setVirtualOffset(sec->get_address());
+		m_firp->getAddresses().insert(text_start);
+		*/
+		auto text_start=m_firp->addNewAddress(m_firp->getFile()->getBaseID(), sec->get_address());
 
 		/*
 		 * ... walk the subsequent sections and coalesce as many as possible
@@ -384,18 +389,21 @@ void ZiprImpl_t::CreateExecutableScoops(const std::map<RangeAddress_t, int> &ord
 		}
 
 		// setup end of scoop address
+		/*
 		auto text_end=new AddressID_t();
+		// insert into IR
+		m_firp->getAddresses().insert(text_end);
+		*/
+		auto text_end=m_firp->addNewAddress(m_firp->getFile()->getBaseID(),0);
 
 		// two cases for end-of-scoop 
 		if (it==ordered_sections.end())
 			// 1 ) this is the last section
-			text_end->SetVirtualOffset(page_round_up(sec->get_address()+sec->get_size()-1)-1);
+			text_end->setVirtualOffset(page_round_up(sec->get_address()+sec->get_size()-1)-1);
 		else
 			// 2 ) another section gets in the way.
-			text_end->SetVirtualOffset(sec->get_address()-1);
+			text_end->setVirtualOffset(sec->get_address()-1);
 
-		// insert into IR
-		m_firp->GetAddresses().insert(text_end);
 
 
 		// setup a scoop for this section.
@@ -405,13 +413,16 @@ void ZiprImpl_t::CreateExecutableScoops(const std::map<RangeAddress_t, int> &ord
 		if(count==1)
 			text_name=".text"; // use the name .text first.
 
-		text_contents.resize(text_end->GetVirtualOffset() - text_start->GetVirtualOffset()+1);
-		DataScoop_t* text_scoop=new DataScoop_t(m_firp->GetMaxBaseID()+1, text_name,  text_start, text_end, NULL, 5 /*R-X*/, false, text_contents);
-		m_firp->GetDataScoops().insert(text_scoop);
+		text_contents.resize(text_end->getVirtualOffset() - text_start->getVirtualOffset()+1);
+		//
+		// DataScoop_t* text_scoop=new DataScoop_t(m_firp->GetMaxBaseID()+1, text_name,  text_start, text_end, nullptr, 5 /*R-X*/, false, text_contents);
+		// m_firp->getDataScoops().insert(text_scoop);
+		//
+		auto text_scoop=m_firp->addNewDataScoop(text_name,  text_start, text_end, nullptr, 5 /*R-X*/, false, text_contents);
 	
-		cout<<"Adding scoop "<<text_scoop->GetName()<<hex<<" at "<<hex<<text_start->GetVirtualOffset()<<" - "<<text_end->GetVirtualOffset()<<endl;
+		cout<<"Adding scoop "<<text_scoop->getName()<<hex<<" at "<<hex<<text_start->getVirtualOffset()<<" - "<<text_end->getVirtualOffset()<<endl;
 		m_zipr_scoops.insert(text_scoop);
-		memory_space.AddFreeRange(Range_t(text_start->GetVirtualOffset(),text_end->GetVirtualOffset()), true);
+		memory_space.AddFreeRange(Range_t(text_start->getVirtualOffset(),text_end->getVirtualOffset()), true);
 	}
 }
 
@@ -421,10 +432,10 @@ RangeAddress_t ZiprImpl_t::PlaceUnplacedScoops(RangeAddress_t max_addr)
 	max_addr=plugman.PlaceScoopsBegin(max_addr);
 
 	auto scoops_by_perms= map<int,DataScoopSet_t>();
-	for(auto scoop : m_firp->GetDataScoops())
+	for(auto scoop : m_firp->getDataScoops())
 	{
 		// check if placed.
-		if(scoop->GetStart()->GetVirtualOffset()==0)
+		if(scoop->getStart()->getVirtualOffset()==0)
 			scoops_by_perms[scoop->isRelRo() << 16 | scoop->getRawPerms()].insert(scoop);
 	}
 	
@@ -436,22 +447,22 @@ RangeAddress_t ZiprImpl_t::PlaceUnplacedScoops(RangeAddress_t max_addr)
 		for(auto &scoop  : p.second)
 		{
 			max_addr=align_up_to(max_addr,(RangeAddress_t)16);	// 16 byte align.
-			scoop->GetStart()->SetVirtualOffset(scoop->GetStart()->GetVirtualOffset()+max_addr);
-			scoop->GetEnd()->SetVirtualOffset(scoop->GetEnd()->GetVirtualOffset()+max_addr);
+			scoop->getStart()->setVirtualOffset(scoop->getStart()->getVirtualOffset()+max_addr);
+			scoop->getEnd()->setVirtualOffset(scoop->getEnd()->getVirtualOffset()+max_addr);
 
 			// update so we actually place things at diff locations.
-			max_addr=scoop->GetEnd()->GetVirtualOffset()+1;
+			max_addr=scoop->getEnd()->getVirtualOffset()+1;
 
-			cout<<"Placing scoop "<<scoop->GetName()<<" at "
-			    <<hex<<scoop->GetStart()->GetVirtualOffset()<<"-"
-			    <<hex<<scoop->GetEnd()->GetVirtualOffset()<<endl;
+			cout<<"Placing scoop "<<scoop->getName()<<" at "
+			    <<hex<<scoop->getStart()->getVirtualOffset()<<"-"
+			    <<hex<<scoop->getEnd()->getVirtualOffset()<<endl;
 		}
 	}
 
 
 	// assert we unpinned everything 
-	for(const auto s : m_firp->GetDataScoops())
-		assert(s->GetStart()->GetVirtualOffset()!=0);
+	for(const auto s : m_firp->getDataScoops())
+		assert(s->getStart()->getVirtualOffset()!=0);
 	
 	
 	max_addr=plugman.PlaceScoopsEnd(max_addr);
@@ -461,11 +472,6 @@ RangeAddress_t ZiprImpl_t::PlaceUnplacedScoops(RangeAddress_t max_addr)
 
 void ZiprImpl_t::FindFreeRanges(const std::string &name)
 {
-	DataScoop_t *textra_scoop = nullptr;
-	AddressID_t *textra_start_addr = new AddressID_t(),
-	            *textra_end_addr = new AddressID_t();
-	RangeAddress_t textra_start, textra_end;
-	string textra_contents, textra_name;
 	RangeAddress_t max_addr=0;
 	std::map<RangeAddress_t, int> ordered_sections;
 	DataScoopByAddressSet_t sorted_scoop_set;
@@ -528,26 +534,26 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 	 * Only put pinned data scoops into the list of
 	 * scoops to consider for adding gap filling.
 	 */
-	copy_if(ALLOF(m_firp->GetDataScoops()),
+	copy_if(ALLOF(m_firp->getDataScoops()),
 	        inserter(sorted_scoop_set, sorted_scoop_set.begin()),
 	        [](DataScoop_t* ds)
 	        {
-	        	return ds->GetStart()->GetVirtualOffset() != 0;
+	        	return ds->getStart()->getVirtualOffset() != 0;
 	        }
 	);
 	for( auto it=sorted_scoop_set.begin(); it!=sorted_scoop_set.end(); ++it )
 	{
 		auto this_scoop=*it;
-		DataScoop_t* next_scoop=NULL;
-		RangeAddress_t this_end = this_scoop->GetEnd()->GetVirtualOffset(),
+		DataScoop_t* next_scoop=nullptr;
+		RangeAddress_t this_end = this_scoop->getEnd()->getVirtualOffset(),
 		               next_start = 0;
 
-		assert(this_scoop->GetStart()->GetVirtualOffset()!=0);
+		assert(this_scoop->getStart()->getVirtualOffset()!=0);
 
 		if (m_verbose)
 			cout << "There's a scoop between " << std::hex
-			     << this_scoop->GetStart()->GetVirtualOffset()
-			     << " and " << std::hex << this_scoop->GetEnd()->GetVirtualOffset()
+			     << this_scoop->getStart()->getVirtualOffset()
+			     << " and " << std::hex << this_scoop->getEnd()->getVirtualOffset()
 			     << " with permissions " << std::hex << this_scoop->getRawPerms()
 			     << endl;
 
@@ -557,7 +563,7 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 		if (std::next(it,1) != sorted_scoop_set.end())
 		{
 			next_scoop = *std::next(it,1);
-			next_start = next_scoop->GetStart()->GetVirtualOffset();
+			next_start = next_scoop->getStart()->getVirtualOffset();
 			unsigned int new_padding_scoop_size = 0;
 			RangeAddress_t new_padding_scoop_start = this_end + 1;
 			RangeAddress_t new_padding_scoop_end = next_start - 1;
@@ -624,37 +630,43 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 			    (!this_scoop->isWriteable() || !next_scoop->isWriteable())
 				 )
 			{
-				DataScoop_t *new_padding_scoop = nullptr;
 				string new_padding_scoop_contents, new_padding_scoop_name;
 				int new_padding_scoop_perms = 0x5 /* r-x */;
-				AddressID_t *new_padding_scoop_start_addr = nullptr,
-				            *new_padding_scoop_end_addr = nullptr;
 
 				new_padding_scoop_name = "zipr_scoop_"+
 				                         to_string(new_padding_scoop_start);
 
+				/*
+				DataScoop_t *new_padding_scoop = nullptr;
+				AddressID_t *new_padding_scoop_start_addr = nullptr,
+				            *new_padding_scoop_end_addr = nullptr;
 				new_padding_scoop_start_addr = new AddressID_t();
+				new_padding_scoop_start_addr->setVirtualOffset(new_padding_scoop_start);
+				m_firp->getAddresses().insert(new_padding_scoop_start_addr);
+				*/
+				auto new_padding_scoop_start_addr=m_firp->addNewAddress(m_firp->getFile()->getBaseID(), new_padding_scoop_start);
+				/*
 				new_padding_scoop_end_addr = new AddressID_t();
-				new_padding_scoop_start_addr->SetVirtualOffset(new_padding_scoop_start);
-				new_padding_scoop_end_addr->SetVirtualOffset(new_padding_scoop_end);
-				m_firp->GetAddresses().insert(new_padding_scoop_start_addr);
-				m_firp->GetAddresses().insert(new_padding_scoop_end_addr);
+				new_padding_scoop_end_addr->setVirtualOffset(new_padding_scoop_end);
+				m_firp->getAddresses().insert(new_padding_scoop_end_addr);
+				*/
+				auto new_padding_scoop_end_addr  =m_firp->addNewAddress(m_firp->getFile()->getBaseID(), new_padding_scoop_end);
 
 				cout << "Gap filling with a scoop between 0x"
 				     << std::hex << new_padding_scoop_start << " and 0x"
 				     << std::hex << new_padding_scoop_end
 				     << endl;
 
-				new_padding_scoop = new DataScoop_t(m_firp->GetMaxBaseID()+1,
+				auto new_padding_scoop = m_firp->addNewDataScoop(
 				                                    new_padding_scoop_name,
 				                                    new_padding_scoop_start_addr,
 				                                    new_padding_scoop_end_addr,
-				                                    NULL,
+				                                    nullptr,
 				                                    new_padding_scoop_perms,
 				                                    false,
 				                                    new_padding_scoop_contents);
-				new_padding_scoop_contents.resize(new_padding_scoop->GetSize());
-				new_padding_scoop->SetContents(new_padding_scoop_contents);
+				new_padding_scoop_contents.resize(new_padding_scoop->getSize());
+				new_padding_scoop->setContents(new_padding_scoop_contents);
 
 				/*
 				 * Insert this scoop into a list of scoops that Zipr added.
@@ -678,11 +690,11 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 	auto max_addr_zipr_scoops_result = max_element(ALLOF(m_zipr_scoops),
 		[](DataScoop_t *a, DataScoop_t *b)
 		{
-			return a->GetEnd()->GetVirtualOffset() <
-			       b->GetEnd()->GetVirtualOffset();
+			return a->getEnd()->getVirtualOffset() <
+			       b->getEnd()->getVirtualOffset();
 		}
 	);
-	assert(max_addr>=(*max_addr_zipr_scoops_result)->GetEnd()->GetVirtualOffset());
+	assert(max_addr>=(*max_addr_zipr_scoops_result)->getEnd()->getVirtualOffset());
 
 	max_addr=PlaceUnplacedScoops(max_addr);
 
@@ -695,58 +707,66 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 	 * TODO
 	 *
 	 * Make a scoop out of this. Insert it into m_zipr_scoops
-	 * and m_firp->GetDataScoops()
+	 * and m_firp->getDataScoops()
 	 */
-	textra_start = new_free_page;
-	textra_end = (RangeAddress_t)-1;
-	textra_name = "textra";
+	auto textra_start = RangeAddress_t(new_free_page);
+	auto textra_end   = (RangeAddress_t)-1;
+	auto textra_name  = string("textra");
 
-	textra_start_addr->SetVirtualOffset(textra_start);
-	textra_end_addr->SetVirtualOffset(textra_end);
+	/*
+	DataScoop_t *textra_scoop = nullptr;
+	AddressID_t *textra_start_addr = new AddressID_t(),
+	            *textra_end_addr = new AddressID_t();
+		    */
+	// textra_start_addr->setVirtualOffset(textra_start);
+	// textra_end_addr->setVirtualOffset(textra_end);
+	// m_firp->getAddresses().insert(textra_start_addr);
+	// m_firp->getAddresses().insert(textra_end_addr);
+	auto textra_start_addr=m_firp->addNewAddress(m_firp->getFile()->getBaseID(), textra_start);
+	auto textra_end_addr  =m_firp->addNewAddress(m_firp->getFile()->getBaseID(), textra_end);
 
 	cout << "New free space: 0x" << std::hex << textra_start
 	     << "-0x"
 	     << std::hex << textra_end
 	     << endl;
 
-	textra_scoop = new DataScoop_t(m_firp->GetMaxBaseID()+1,
-	                                    textra_name,
-	                                    textra_start_addr,
-	                                    textra_end_addr,
-	                                    NULL,
-	                                     /* r-x */5,
-	                                    false,
-	                                    textra_contents);
+	auto textra_contents=string();
+	auto textra_scoop = m_firp->addNewDataScoop(
+	    textra_name,
+	    textra_start_addr,
+	    textra_end_addr,
+	    nullptr,
+	     /* r-x */5,
+	    false,
+	    textra_contents);
 
 	/*
 	 * Normally we would have to resize the underlying contents here.
 	 * Unfortunately that's not a smart idea since it will be really big.
 	 * Instead, we are going to do a batch resizing below.
 	textra_contents.resize(textra_end - textra_start + 1);
-	textra_scoop->SetContents(textra_contents);
+	textra_scoop->setContents(textra_contents);
 	 */
 
 	m_zipr_scoops.insert(textra_scoop);
-	m_firp->GetAddresses().insert(textra_start_addr);
-	m_firp->GetAddresses().insert(textra_end_addr);
 
 	memory_space.AddFreeRange(Range_t(new_free_page,(RangeAddress_t)-1), true);
 	if (m_verbose)
 		printf("Adding (mysterious) free range 0x%p to EOF\n", (void*)new_free_page);
 	start_of_new_space=new_free_page;
 
-	for(auto scoop : m_firp->GetDataScoops())
+	for(auto scoop : m_firp->getDataScoops())
 	{
 		if(scoop->isExecuteable()) continue;
 		// put scoops in memory to make sure they are busy,
 		// just in case they overlap with free ranges.
 		// this came up on Aarch64 because data is in the .text segment.
-		cout<<"Pre-allocating scoop "<<scoop->GetName() << "=("
-		    << scoop->GetStart()->GetVirtualOffset() << "-" 
-		    << scoop->GetEnd()  ->GetVirtualOffset() << ")"<<endl;
-		memory_space.PlopBytes(scoop->GetStart()->GetVirtualOffset(), 
-		                       scoop->GetContents().c_str(),
-				       scoop->GetContents().size()
+		cout<<"Pre-allocating scoop "<<scoop->getName() << "=("
+		    << scoop->getStart()->getVirtualOffset() << "-" 
+		    << scoop->getEnd()  ->getVirtualOffset() << ")"<<endl;
+		memory_space.PlopBytes(scoop->getStart()->getVirtualOffset(), 
+		                       scoop->getContents().c_str(),
+				       scoop->getContents().size()
 				      );
 	}
 }
@@ -756,14 +776,14 @@ Instruction_t *ZiprImpl_t::FindPatchTargetAtAddr(RangeAddress_t addr)
 {
         std::map<RangeAddress_t,UnresolvedUnpinnedPatch_t>::iterator it=m_PatchAtAddrs.find(addr);
         if(it!=m_PatchAtAddrs.end())
-                return it->second.first.GetInstruction();
-        return NULL;
+                return it->second.first.getInstrution();
+        return nullptr;
 }
 
 
 void ZiprImpl_t::WriteDollops()
 {
-	for (auto & dollop_to_write : m_dollop_mgr.GetDollops()  ) 
+	for (auto & dollop_to_write : m_dollop_mgr.getDollops()  ) 
 	{
 		assert(dollop_to_write != nullptr);
 		// skip unplaced dollops as they aren't necessary
@@ -814,7 +834,7 @@ void ZiprImpl_t::ReplopDollopEntriesWithTargets()
 {
 	for (auto entry_to_write : m_des_to_replop)
 	{
-		Instruction_t *src_insn = NULL;
+		Instruction_t *src_insn = nullptr;
 		RangeAddress_t src_insn_addr;
 
 		src_insn = entry_to_write->Instruction();
@@ -836,15 +856,15 @@ void ZiprImpl_t::PlaceDollops()
 	{
 		const auto uu = p.first;
 		const auto patch = p.second;
-		auto target_insn = uu.GetInstruction();
-		auto target_dollop = m_dollop_mgr.GetContainingDollop(target_insn);
+		auto target_insn = uu.getInstrution();
+		auto target_dollop = m_dollop_mgr.getContainingDollop(target_insn);
 		assert(target_dollop);
 
-		placement_queue.insert(pair<Dollop_t*,RangeAddress_t>(target_dollop,patch.GetAddress()));
+		placement_queue.insert(pair<Dollop_t*,RangeAddress_t>(target_dollop,patch.getAddress()));
 		if (m_verbose) 
 		{
-			cout << "Original: " << hex << target_insn-> GetAddress()-> GetVirtualOffset() << " "
-			     << "vs. Patch: " << patch.GetAddress() << endl;
+			cout << "Original: " << hex << target_insn-> getAddress()-> getVirtualOffset() << " "
+			     << "vs. Patch: " << patch.getAddress() << endl;
 		}
 		count_pins++;
 	}
@@ -878,7 +898,7 @@ void ZiprImpl_t::PlaceDollops()
 		if (m_vverbose)
 		{
 			cout << "Placing dollop with original starting address: " << hex
-			     << to_place->front()->Instruction()->GetAddress()->GetVirtualOffset() << endl;
+			     << to_place->front()->Instruction()->getAddress()->getVirtualOffset() << endl;
 		}
 
 		if (to_place->IsPlaced())
@@ -902,7 +922,7 @@ void ZiprImpl_t::PlaceDollops()
 
 			if (m_verbose)
 				cout << placer->ToString() << " placed this dollop between " 
-				     << hex << placement.GetStart() << " and " << placement.GetEnd()
+				     << hex << placement.getStart() << " and " << placement.getEnd()
 				     << endl;
 
 			/*
@@ -932,11 +952,11 @@ void ZiprImpl_t::PlaceDollops()
 			 * possibility of the validity of the placement in (2).
 			 */
 			const auto has_fallthrough = to_place->FallthroughDollop() != nullptr;
-			const auto ibta=has_fallthrough ? to_place->FallthroughDollop()-> front()-> Instruction()-> GetIndirectBranchTargetAddress() : 0; 
+			const auto ibta=has_fallthrough ? to_place->FallthroughDollop()-> front()-> Instruction()-> getIndirectBranchTargetAddress() : 0; 
 			initial_placement_abuts_pin = has_fallthrough && 
 		   	                              ibta && 
-		   	                              ibta -> GetVirtualOffset()!=0   && 
-		   	                              ibta-> GetVirtualOffset() == (placement.GetStart() + to_place->GetSize() - sizer->TRAMPOLINE_SIZE);
+		   	                              ibta -> getVirtualOffset()!=0   && 
+		   	                              ibta-> getVirtualOffset() == (placement.getStart() + to_place->getSize() - sizer->TRAMPOLINE_SIZE);
 			/*
 			 * If this dollop has a fallthrough, find out where that 
 			 * fallthrough is (or is going to be) placed. That way
@@ -967,7 +987,7 @@ void ZiprImpl_t::PlaceDollops()
 					Range_t fallthrough_placement;
 					bool fallthrough_allowed_coalescing = false;
 					bool fallthrough_allowed_fallthrough = false;
-					DLFunctionHandle_t fallthrough_placer = NULL;
+					DLFunctionHandle_t fallthrough_placer = nullptr;
 					/*
 					 * Prospectively get the place for this dollop. That way 
 					 * we can determine whether or not we need to use a fallthrough!
@@ -979,17 +999,17 @@ void ZiprImpl_t::PlaceDollops()
 		                                    fallthrough_allowed_fallthrough,
 		                                    fallthrough_placer))
 					{
-						fallthrough_dollop_place = fallthrough_placement.GetStart();
+						fallthrough_dollop_place = fallthrough_placement.getStart();
 						fallthrough_has_preplacement = true;
 					}
 				}
 			}
 			initial_placement_abuts_fallthrough = to_place->FallthroughDollop() &&
 			                                           fallthrough_has_preplacement &&
-			                                           fallthrough_dollop_place == (placement.GetStart() + to_place->GetSize() - sizer->TRAMPOLINE_SIZE);
+			                                           fallthrough_dollop_place == (placement.getStart() + to_place->getSize() - sizer->TRAMPOLINE_SIZE);
 
 
-			auto fits_entirely = (to_place->GetSize() <= (placement.GetEnd()-placement.GetStart()));
+			auto fits_entirely = (to_place->getSize() <= (placement.getEnd()-placement.getStart()));
 
 			if (m_verbose)
 			{
@@ -1001,12 +1021,12 @@ void ZiprImpl_t::PlaceDollops()
 				     << fits_entirely << endl;
 			}
 
-			if ( ((placement.GetEnd()-placement.GetStart()) < minimum_valid_req_size) &&
+			if ( ((placement.getEnd()-placement.getStart()) < minimum_valid_req_size) &&
 			    !(initial_placement_abuts_pin || initial_placement_abuts_fallthrough || fits_entirely)
 			   )
 			{
 				if (m_verbose)
-					cout << "Bad GetNearbyFreeRange() result." << endl;
+					cout << "Bad getNearbyFreeRange() result." << endl;
 				placed = false;
 			}
 		}
@@ -1018,7 +1038,7 @@ void ZiprImpl_t::PlaceDollops()
 			 * TODO: Re-enable this ONCE we figure out why the dollop
 			 * sizes are not being recalculated correctly.
 			 */
-			//placement = memory_space.GetFreeRange(to_place->GetSize());
+			//placement = memory_space.getFreeRange(to_place->getSize());
 			placement = sizer->DoPlacement(minimum_valid_req_size);
 
 			/*
@@ -1029,24 +1049,24 @@ void ZiprImpl_t::PlaceDollops()
 			allowed_coalescing = true;
 		}
 
-		cur_addr = placement.GetStart();
+		cur_addr = placement.getStart();
 		//cout << "Adjusting cur_addr to " << std::hex << cur_addr << " at A." << endl;
-		has_fallthrough = (to_place->FallthroughDollop() != NULL);
+		has_fallthrough = (to_place->FallthroughDollop() != nullptr);
 
 		if (m_vverbose)
 		{
-			cout << "Dollop size=" << dec << to_place->GetSize() << ".  Placing in hole size="
-			     << (placement.GetEnd() - placement.GetStart()) << " hole at " << hex << cur_addr << endl;
+			cout << "Dollop size=" << dec << to_place->getSize() << ".  Placing in hole size="
+			     << (placement.getEnd() - placement.getStart()) << " hole at " << hex << cur_addr << endl;
 			cout << "Dollop " << ((has_fallthrough) ? "has " : "does not have ")
 		  	     << "a fallthrough" << endl;
 		}
 
 		const auto has_pinned_ibta=
-				to_place->front()->Instruction()->GetIndirectBranchTargetAddress() && 
-				to_place->front()->Instruction()->GetIndirectBranchTargetAddress()->GetVirtualOffset()!=0 ;
+				to_place->front()->Instruction()->getIndirectBranchTargetAddress() && 
+				to_place->front()->Instruction()->getIndirectBranchTargetAddress()->getVirtualOffset()!=0 ;
 		const auto pinned_ibta_addr = has_pinned_ibta ?  
-				to_place-> front()-> Instruction()-> GetIndirectBranchTargetAddress()-> GetVirtualOffset() : 
-				virtual_offset_t(0);
+				to_place-> front()-> Instruction()-> getIndirectBranchTargetAddress()-> getVirtualOffset() : 
+				VirtualOffset_t(0);
 		if (has_pinned_ibta && cur_addr == pinned_ibta_addr)
 		{
 			unsigned int space_to_clear = sizer->SHORT_PIN_SIZE;
@@ -1084,7 +1104,7 @@ void ZiprImpl_t::PlaceDollops()
 			  // and it's already placed.
 		    	  to_place->FallbackDollop()->IsPlaced() && 
 			  // and the place is adjacent to us
-			  ( to_place->FallbackDollop()->Place() + to_place->FallbackDollop()->GetSize() - sizer->TRAMPOLINE_SIZE) == placement.GetStart()
+			  ( to_place->FallbackDollop()->Place() + to_place->FallbackDollop()->getSize() - sizer->TRAMPOLINE_SIZE) == placement.getStart()
 			)
 		{
 			/*
@@ -1103,7 +1123,7 @@ void ZiprImpl_t::PlaceDollops()
 			 */
 		}
 
-		assert(to_place->GetSize() != 0);
+		assert(to_place->getSize() != 0);
 
 		do 
 		{
@@ -1138,10 +1158,10 @@ void ZiprImpl_t::PlaceDollops()
 
 			to_place->Place(cur_addr);
 
-			// cout << "to_place->GetSize(): " << to_place->GetSize() << endl;
+			// cout << "to_place->getSize(): " << to_place->getSize() << endl;
 
-			fits_entirely = (to_place->GetSize() <= (placement.GetEnd()-cur_addr));
-			all_fallthroughs_fit = (wcds <= (placement.GetEnd()-cur_addr));
+			fits_entirely = (to_place->getSize() <= (placement.getEnd()-cur_addr));
+			all_fallthroughs_fit = (wcds <= (placement.getEnd()-cur_addr));
 
 			auto dit = to_place->begin();
 			auto dit_end = to_place->end();
@@ -1153,15 +1173,15 @@ void ZiprImpl_t::PlaceDollops()
 				 */
 				const auto handle_reloc=[&](const Relocation_t* reloc)
 				{
-					auto wrt_insn=dynamic_cast<Instruction_t*>(reloc->GetWRT());
+					auto wrt_insn=dynamic_cast<Instruction_t*>(reloc->getWRT());
 					if(wrt_insn)
 					{
-						auto containing=m_dollop_mgr.GetContainingDollop(wrt_insn);
+						auto containing=m_dollop_mgr.getContainingDollop(wrt_insn);
 						assert(containing!=nullptr);
 						if(!containing->IsPlaced())
 						{
 							placement_queue.insert(pair<Dollop_t*, RangeAddress_t>( containing, cur_addr));
-							// cout<<"Adding to placement queue for reloc of type="<<reloc->GetType()<<endl;
+							// cout<<"Adding to placement queue for reloc of type="<<reloc->getType()<<endl;
 						}
 					}
 				};
@@ -1169,11 +1189,11 @@ void ZiprImpl_t::PlaceDollops()
 
 				// make sure each instruction referenced via a relocation is placed in a dollop
 				auto insn=dollop_entry->Instruction();
-				for(auto &reloc : insn->GetRelocations())
+				for(auto &reloc : insn->getRelocations())
 					handle_reloc(reloc);
-				auto ehpgm=insn->GetEhProgram();
+				auto ehpgm=insn->getEhProgram();
 				if(ehpgm)
-					for(auto &reloc : ehpgm->GetRelocations())
+					for(auto &reloc : ehpgm->getRelocations())
 						handle_reloc(reloc);
 
 				/*
@@ -1213,10 +1233,10 @@ void ZiprImpl_t::PlaceDollops()
 				 */
 				const auto de_and_fallthrough_fit = 
 					// does this fit, i.e., end>current+rest_of_dollop
-					(placement.GetEnd()>= (cur_addr+DetermineDollopEntrySize(dollop_entry, true)));
+					(placement.getEnd()>= (cur_addr+DetermineDollopEntrySize(dollop_entry, true)));
 				const auto is_last_insn           = next(dit)==dit_end; /* last */ 
 				const auto has_fallthrough_dollop = to_place->FallthroughDollop()!=nullptr ;
-				const auto fits_with_fallthrough  = placement.GetEnd()>=(cur_addr+ DetermineDollopEntrySize(dollop_entry, has_fallthrough_dollop));
+				const auto fits_with_fallthrough  = placement.getEnd()>=(cur_addr+ DetermineDollopEntrySize(dollop_entry, has_fallthrough_dollop));
 				const auto last_de_fits           = is_last_insn && fits_with_fallthrough;
 				const auto could_fit_here         = 
 					de_and_fallthrough_fit              || 
@@ -1225,7 +1245,7 @@ void ZiprImpl_t::PlaceDollops()
 					initial_placement_abuts_pin         || 
 					initial_placement_abuts_fallthrough ;
 				const auto tramp_fits             =
-				        (placement.GetEnd() - (cur_addr + DetermineDollopEntrySize( dollop_entry, false))) < sizer->TRAMPOLINE_SIZE;
+				        (placement.getEnd() - (cur_addr + DetermineDollopEntrySize( dollop_entry, false))) < sizer->TRAMPOLINE_SIZE;
 				const auto allowed_override       = 
 					allowed_coalescing    || 
 					could_fit_here        || 
@@ -1272,9 +1292,9 @@ void ZiprImpl_t::PlaceDollops()
 					const auto next_cur_addr=cur_addr+wcsz;
 					if (m_vverbose) 
 					{
-						DecodedInstruction_t d(dollop_entry->Instruction());
-						cout << "Placing " << hex << dollop_entry->Instruction()->GetBaseID() 
-						     << ":" << d.getDisassembly() << " at "
+						auto d=DecodedInstruction_t::factory(dollop_entry->Instruction());
+						cout << "Placing " << hex << dollop_entry->Instruction()->getBaseID() 
+						     << ":" << d->getDisassembly() << " at "
 						     << cur_addr << "-" << next_cur_addr << endl;
 					}
 					cur_addr=next_cur_addr;
@@ -1335,8 +1355,8 @@ void ZiprImpl_t::PlaceDollops()
 				 * first instruction is pinned AND the last entry of this
 				 * dollop abuts that pin.
 				 */
-				const auto has_ibta         = fallthrough-> front()-> Instruction()-> GetIndirectBranchTargetAddress();
-				const auto pinned_ibta_addr = has_ibta ? fallthrough-> front()-> Instruction()-> GetIndirectBranchTargetAddress()-> GetVirtualOffset() : virtual_offset_t(0);
+				const auto has_ibta         = fallthrough-> front()-> Instruction()-> getIndirectBranchTargetAddress();
+				const auto pinned_ibta_addr = has_ibta ? fallthrough-> front()-> Instruction()-> getIndirectBranchTargetAddress()-> getVirtualOffset() : VirtualOffset_t(0);
 				const auto is_pinned_ibta_addr = has_ibta && pinned_ibta_addr!=0;
 				const auto is_pinned_here = (cur_addr == pinned_ibta_addr ) ;
 				if ( has_ibta && is_pinned_ibta_addr && is_pinned_here )
@@ -1397,7 +1417,7 @@ void ZiprImpl_t::PlaceDollops()
 				 */
 				fallthrough_wcis=DetermineDollopEntrySize(fallthrough-> front(),
 																													 true);
-				remaining_size = placement.GetEnd() - cur_addr;
+				remaining_size = placement.getEnd() - cur_addr;
 
 				/*
 				 * We compare remaining_size to min(fallthroughs_wdcs,
@@ -1419,7 +1439,7 @@ void ZiprImpl_t::PlaceDollops()
 				{
 
 					string patch_jump_string;
-					Instruction_t *patch = archhelper->createNewJumpInstruction(m_firp, NULL);
+					Instruction_t *patch = archhelper->createNewJumpInstruction(m_firp, nullptr);
 					DollopEntry_t *patch_de = new DollopEntry_t(patch, to_place);
 
 					patch_de->TargetDollop(fallthrough);
@@ -1480,15 +1500,15 @@ void ZiprImpl_t::PlaceDollops()
 		 * Reserve the range that we just used.
 		 */
 		if (m_vverbose)
-			cout << "Reserving " << std::hex << placement.GetStart()
+			cout << "Reserving " << std::hex << placement.getStart()
 			     << ", " << std::hex << cur_addr << "." << endl;
-		memory_space.SplitFreeRange(Range_t(placement.GetStart(), cur_addr));
+		memory_space.SplitFreeRange(Range_t(placement.getStart(), cur_addr));
 	}
 }
 
 void ZiprImpl_t::RecalculateDollopSizes()
 {
-	for (auto &dollop : m_dollop_mgr.GetDollops())
+	for (auto &dollop : m_dollop_mgr.getDollops())
 		dollop->ReCalculateSize();
 }
 
@@ -1500,7 +1520,7 @@ void ZiprImpl_t::CreateDollops()
 				<< " dollops for the pins."
 				<< endl;
 	for (auto patch : patch_list )
-		m_dollop_mgr.AddNewDollops(patch.first.GetInstruction());
+		m_dollop_mgr.AddNewDollops(patch.first.getInstrution());
 
 	if (m_verbose)
 		cout << "Done creating dollops for the pins! Updating all Targets" << endl;
@@ -1615,7 +1635,7 @@ bool ZiprImpl_t::AskPluginsAboutPlopping(Instruction_t *insn)
 				ZiprPluginInterface_t *zipr_plopping_plugin =
 					dynamic_cast<ZiprPluginInterface_t*>(pp);
 				cout << zipr_plopping_plugin->ToString()
-				     << " will plop "<<dec<<insn->GetBaseID() << ":"
+				     << " will plop "<<dec<<insn->getBaseID() << ":"
 				     << insn->getDisassembly() << endl;
 			}
 
@@ -1628,7 +1648,7 @@ bool ZiprImpl_t::AskPluginsAboutPlopping(Instruction_t *insn)
 void ZiprImpl_t::AskPluginsAboutPlopping()
 {
 
-	for(auto &insn : m_firp->GetInstructions())
+	for(auto &insn : m_firp->getInstructions())
 		AskPluginsAboutPlopping(insn);
 }
 
@@ -1638,23 +1658,23 @@ void ZiprImpl_t::UpdatePins()
 	{
 		UnresolvedUnpinned_t uu=(*patch_list.begin()).first;
 		Patch_t p=(*patch_list.begin()).second;
-		Dollop_t *target_dollop = NULL;
-		DollopEntry_t *target_dollop_entry = NULL;
-		Instruction_t *target_dollop_entry_instruction = NULL;
+		Dollop_t *target_dollop = nullptr;
+		DollopEntry_t *target_dollop_entry = nullptr;
+		Instruction_t *target_dollop_entry_instruction = nullptr;
 		RangeAddress_t patch_addr, target_addr;
-		target_dollop = m_dollop_mgr.GetContainingDollop(uu.GetInstruction());
-		assert(target_dollop != NULL);
-		DLFunctionHandle_t patcher = NULL;
+		target_dollop = m_dollop_mgr.getContainingDollop(uu.getInstrution());
+		assert(target_dollop != nullptr);
+		DLFunctionHandle_t patcher = nullptr;
 
 		target_dollop_entry = target_dollop->front();
-		assert(target_dollop_entry != NULL);
+		assert(target_dollop_entry != nullptr);
 
 		target_dollop_entry_instruction  = target_dollop_entry->Instruction();
-		assert(target_dollop_entry_instruction != NULL &&
-		       target_dollop_entry_instruction == uu.GetInstruction());
+		assert(target_dollop_entry_instruction != nullptr &&
+		       target_dollop_entry_instruction == uu.getInstrution());
 
 
-		patch_addr = p.GetAddress();
+		patch_addr = p.getAddress();
 		target_addr = target_dollop_entry->Place();
 
 		if (final_insn_locations.end() != final_insn_locations.find(target_dollop_entry->Instruction()))
@@ -1682,12 +1702,12 @@ void ZiprImpl_t::UpdatePins()
 
 			if (m_verbose)
 			{
-				const auto d=DecodedInstruction_t(target_dollop_entry_instruction);
+				const auto d=DecodedInstruction_t::factory(target_dollop_entry_instruction);
 				cout << "Patching pin at " << hex << patch_addr << " to "
-				     << target_addr << ": " << d.getDisassembly() << endl;
+				     << target_addr << ": " << d->getDisassembly() << endl;
 			}
-			assert(target_dollop_entry_instruction != NULL &&
-			       target_dollop_entry_instruction == uu.GetInstruction());
+			assert(target_dollop_entry_instruction != nullptr &&
+			       target_dollop_entry_instruction == uu.getInstrution());
 
 		}
 
@@ -1800,9 +1820,9 @@ RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t *entry, RangeAddress_t
 	if(old_loc != 0 && old_loc != placed_address )
 	{
 		static int count=0;
-		cout<<"Warning, Moving instruction "<<hex<<insn->GetBaseID()<<":"<<insn->GetComment()
+		cout<<"Warning, Moving instruction "<<hex<<insn->getBaseID()<<":"<<insn->getComment()
 		    <<" from "<<hex<<old_loc<<" to "<<placed_address<<endl;
-		cout<<"Happened for "<<dec<<count++<<" out of "<<m_firp->GetInstructions().size()<<" instructions"<<endl;
+		cout<<"Happened for "<<dec<<count++<<" out of "<<m_firp->getInstructions().size()<<" instructions"<<endl;
 	}
 
 	final_insn_locations[insn] = placed_address;
@@ -1822,13 +1842,13 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntry(
 	if (override_place != 0)
 		addr = ret = override_place;
 
-	const auto d=DecodedInstruction_t(insn);
+	const auto d=DecodedInstruction_t::factory(insn);
 
-	string raw_data = insn->GetDataBits();
-	string orig_data = insn->GetDataBits();
+	string raw_data = insn->getDataBits();
+	string orig_data = insn->getDataBits();
 
 
-	if(entry->TargetDollop() && entry->Instruction()->GetCallback()=="")
+	if(entry->TargetDollop() && entry->Instruction()->getCallback()=="")
 	{
 		RangeAddress_t target_address = 0;
 		auto target_insn = entry->TargetDollop()->front()->Instruction();
@@ -1854,11 +1874,11 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntry(
 		}
 		ret=PlopDollopEntryWithTarget(entry, addr, target_address);
 	}
-	else if(entry->Instruction()->GetCallback()!="")
+	else if(entry->Instruction()->getCallback()!="")
 	{
 		if (m_verbose)
 			cout << "Plopping at " << hex << addr << " with callback to " 
-			     << entry->Instruction()->GetCallback() << endl;
+			     << entry->Instruction()->getCallback() << endl;
 
 		ret=PlopDollopEntryWithCallback(entry, addr);
 	}
@@ -1866,15 +1886,15 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntry(
 	{
 		if (m_verbose)
 			cout << "Plopping non-ctl "<<insn->getDisassembly()<<" at " << hex << addr << endl;
-		memory_space.PlopBytes(addr, insn->GetDataBits().c_str(), insn->GetDataBits().length());
-		ret+=insn->GetDataBits().length();
+		memory_space.PlopBytes(addr, insn->getDataBits().c_str(), insn->getDataBits().length());
+		ret+=insn->getDataBits().length();
 	}
 
 	/* Reset the data bits for the instruction back to th
 	 * need to re-plop this instruction later.  we need t
 	 * so we can replop appropriately. 
 	 */
-	insn->SetDataBits(orig_data);
+	insn->setDataBits(orig_data);
 	return ret;
 }
 
@@ -1900,19 +1920,19 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntryWithTarget(
 	if (override_target != 0)
 		target_addr = override_target;
 
-	if(insn->GetDataBits().length() >2) 
+	if(insn->getDataBits().length() >2) 
 	{
 		memory_space.PlopBytes(ret,
-		                       insn->GetDataBits().c_str(),
-		                       insn->GetDataBits().length()
+		                       insn->getDataBits().c_str(),
+		                       insn->getDataBits().length()
 		                      );
 		ApplyPatch(ret, target_addr);
-		ret+=insn->GetDataBits().length();
+		ret+=insn->getDataBits().length();
 		return ret;
 	}
 
 	// call, jmp, jcc of length 2.
-	char b=insn->GetDataBits()[0];
+	char b=insn->getDataBits()[0];
 	switch(b)
 	{
 		case (char)0x70:
@@ -1934,7 +1954,7 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntryWithTarget(
 		{
 		// two byte JCC
 			char bytes[]={(char)0x0f,(char)0xc0,(char)0x0,(char)0x0,(char)0x0,(char)0x0 }; 	// 0xc0 is a placeholder, overwritten next statement
-			bytes[1]=insn->GetDataBits()[0]+0x10;		// convert to jcc with 4-byte offset.
+			bytes[1]=insn->getDataBits()[0]+0x10;		// convert to jcc with 4-byte offset.
 			memory_space.PlopBytes(ret,bytes, sizeof(bytes));
 			ApplyPatch(ret, target_addr);
 			ret+=sizeof(bytes);
@@ -1945,7 +1965,7 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntryWithTarget(
 		{
 			// two byte JMP
 			char bytes[]={(char)0xe9,(char)0x0,(char)0x0,(char)0x0,(char)0x0 }; 	
-			bytes[1]=insn->GetDataBits()[0]+0x10;		// convert to jcc with 4-byte offset.
+			bytes[1]=insn->getDataBits()[0]+0x10;		// convert to jcc with 4-byte offset.
 			memory_space.PlopBytes(ret,bytes, sizeof(bytes));
 			ApplyPatch(ret, target_addr);
 			ret+=sizeof(bytes);
@@ -1963,7 +1983,7 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntryWithTarget(
 			// jmp fallthrough
 			// +5: jmp target
 			char bytes[]={0,0x5};
-			DollopEntry_t *fallthrough_de = NULL;
+			DollopEntry_t *fallthrough_de = nullptr;
 
 			fallthrough_de = entry->MemberOfDollop()->FallthroughDollopEntry(entry);
 
@@ -1985,7 +2005,7 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntryWithTarget(
 
 			assert(fallthrough_de && fallthrough_de->IsPlaced());
 
-			bytes[0]=insn->GetDataBits()[0];
+			bytes[0]=insn->getDataBits()[0];
 			memory_space.PlopBytes(ret,bytes, sizeof(bytes));
 			ret+=sizeof(bytes);
 
@@ -2026,15 +2046,15 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntryWithCallback(
 	}
 
 	// pop bogus ret addr
-	if(m_firp->GetArchitectureBitWidth()==64)
+	if(m_firp->getArchitectureBitWidth()==64)
 	{
-		char bytes[]={(char)0x48,(char)0x8d,(char)0x64,(char)0x24,(char)(m_firp->GetArchitectureBitWidth()/0x08)}; // lea rsp, [rsp+8]
+		char bytes[]={(char)0x48,(char)0x8d,(char)0x64,(char)0x24,(char)(m_firp->getArchitectureBitWidth()/0x08)}; // lea rsp, [rsp+8]
 		memory_space.PlopBytes(at, bytes, sizeof(bytes));
 		at+=sizeof(bytes);
 	}
-	else if(m_firp->GetArchitectureBitWidth()==32)
+	else if(m_firp->getArchitectureBitWidth()==32)
 	{
-		char bytes[]={(char)0x8d,(char)0x64,(char)0x24,(char)(m_firp->GetArchitectureBitWidth()/0x08)}; // lea esp, [esp+4]
+		char bytes[]={(char)0x8d,(char)0x64,(char)0x24,(char)(m_firp->getArchitectureBitWidth()/0x08)}; // lea esp, [esp+4]
 		memory_space.PlopBytes(at, bytes, sizeof(bytes));
 		at+=sizeof(bytes);
 	}
@@ -2050,13 +2070,13 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntryWithCallback(
 
 DataScoop_t* ZiprImpl_t::FindScoop(const RangeAddress_t &addr)
 {
-	const auto find_it=find_if(ALLOF(m_firp->GetDataScoops()),
+	const auto find_it=find_if(ALLOF(m_firp->getDataScoops()),
 		[&](const DataScoop_t* scoop)
 		{
-			return scoop->GetStart()->GetVirtualOffset() <= addr &&
-			       addr < scoop->GetEnd()->GetVirtualOffset()    ;
+			return scoop->getStart()->getVirtualOffset() <= addr &&
+			       addr < scoop->getEnd()->getVirtualOffset()    ;
 		});
-	return find_it==m_firp->GetDataScoops().end() ?  nullptr : *find_it;
+	return find_it==m_firp->getDataScoops().end() ?  nullptr : *find_it;
 }
 
 void ZiprImpl_t::WriteScoop(section* sec, FILE* fexe)
@@ -2073,8 +2093,8 @@ void ZiprImpl_t::WriteScoop(section* sec, FILE* fexe)
 		if(!scoop)
 			continue;
 
-		const string &the_contents=scoop->GetContents();
-		char  b=the_contents[i-scoop->GetStart()->GetVirtualOffset()];
+		const string &the_contents=scoop->getContents();
+		char  b=the_contents[i-scoop->getStart()->getVirtualOffset()];
 
 		if( sec->get_type()  ==  SHT_NOBITS )
 		{
@@ -2097,15 +2117,15 @@ void ZiprImpl_t::WriteScoop(section* sec, FILE* fexe)
 	}
 }
 
-static bool InScoop(virtual_offset_t addr, DataScoop_t* scoop)
+static bool InScoop(VirtualOffset_t addr, DataScoop_t* scoop)
 {
-	if(scoop->GetStart()->GetVirtualOffset()==0)
+	if(scoop->getStart()->getVirtualOffset()==0)
 		return false;
 
 	// check before
-	if(addr < scoop->GetStart()->GetVirtualOffset())
+	if(addr < scoop->getStart()->getVirtualOffset())
 		return false;
-	if(scoop->GetEnd()->GetVirtualOffset()<addr)
+	if(scoop->getEnd()->getVirtualOffset()<addr)
 		return false;
 	return true;
 
@@ -2115,13 +2135,13 @@ void ZiprImpl_t::FillSection(section* sec, FILE* fexe)
 {
 	RangeAddress_t start=sec->get_address();
 	RangeAddress_t end=sec->get_size()+start;
-	DataScoop_t* scoop=NULL;
+	DataScoop_t* scoop=nullptr;
 
 	if (m_verbose)
 		printf("Dumping addrs %p-%p\n", (void*)start, (void*)end);
 	for(RangeAddress_t i=start;i<end;i++)
 	{
-		if(scoop==NULL || InScoop(i,scoop))
+		if(scoop==nullptr || InScoop(i,scoop))
 		{
 			scoop=FindScoop(i);
 		}
@@ -2173,7 +2193,7 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 			continue;
 
 #ifdef EXTEND_SECTIONS
-		section* next_sec = NULL;
+		section* next_sec = nullptr;
 		if ((i+1)<total_sections)
 		{
 			next_sec = rewrite_headers_elfiop->sections[i+1];
@@ -2237,12 +2257,12 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 
 
 	string elfwriter_filename="c.out";
-	ElfWriter *ew=NULL;
-	if(m_firp->GetArchitectureBitWidth()==64)
+	ElfWriter *ew=nullptr;
+	if(m_firp->getArchitectureBitWidth()==64)
 	{
 		ew=new ElfWriter64(m_firp, m_add_sections, m_bss_opts);
 	}
-	else if(m_firp->GetArchitectureBitWidth()==32)
+	else if(m_firp->getArchitectureBitWidth()==32)
 	{
 		ew=new ElfWriter32(m_firp, m_add_sections, m_bss_opts);
 	}
@@ -2275,7 +2295,7 @@ int find_magic_segment_index(ELFIO::elfio *elfiop)
 {
         ELFIO::Elf_Half n = elfiop->segments.size();
 	ELFIO::Elf_Half i=0;
-	ELFIO::segment* last_seg=NULL;
+	ELFIO::segment* last_seg=nullptr;
 	int last_seg_index=-1;
         for ( i = 0; i < n; ++i )
         {
@@ -2307,7 +2327,7 @@ void ZiprImpl_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_ad
 	if(use_stratafier_mode)
 	{
 		string objcopy_cmd = "", stratafier_cmd = "", sstrip_cmd;
-		//objcopy_cmd= m_opts.GetObjcopyPath() + string(" --add-section .strata=")+bin_to_add+" "+
+		//objcopy_cmd= m_opts.getObjcopyPath() + string(" --add-section .strata=")+bin_to_add+" "+
 		objcopy_cmd= string(m_objcopy) + string(" --add-section .strata=")+bin_to_add+" "+
 			string("--change-section-address .strata=")+to_string(sec_start)+" "+
 			string("--set-section-flags .strata=alloc,code ")+" "+
@@ -2423,7 +2443,7 @@ void ZiprImpl_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_ad
 /*
 FIXME
 */
-static RangeAddress_t GetCallbackStartAddr()
+static RangeAddress_t getCallbackStartAddr()
 {
 	// add option later, or write code to fix this
 	const RangeAddress_t callback_start_addr=0x8048000;
@@ -2434,9 +2454,9 @@ return 0;
 
 string ZiprImpl_t::AddCallbacksToNewSegment(const string& tmpname, RangeAddress_t end_of_new_space)
 {
-	const RangeAddress_t callback_start_addr=GetCallbackStartAddr();
+	const RangeAddress_t callback_start_addr=getCallbackStartAddr();
 
-	//if(m_opts.GetCallbackFileName() == "" )
+	//if(m_opts.getCallbackFileName() == "" )
 	if(m_callbacks == "" )
 		return tmpname;
 	string tmpname2=tmpname+"2";	
@@ -2445,13 +2465,13 @@ string ZiprImpl_t::AddCallbacksToNewSegment(const string& tmpname, RangeAddress_
 	printf("Strata symbols are at %p+addr(symbol)\n", (void*)(end_of_new_space-callback_start_addr));
 #if 0
 	string cmd= string("$STRATAFIER/strata_to_data ")+
-		m_opts.GetCallbackFileName()+string(" ")+tmpname2+" "+to_hex_string(callback_start_addr);
+		m_opts.getCallbackFileName()+string(" ")+tmpname2+" "+to_hex_string(callback_start_addr);
 #else
 	/*
 		objcopy -O binary /home/jdh8d/umbrella/uvadev.peasoup/zipr_install/bin/callbacks.exe b.out.to_insert2
 	*/
 
-	//string cmd= m_opts.GetObjcopyPath() + string(" -O binary ")+ m_opts.GetCallbackFileName()+string(" ")+tmpname2;
+	//string cmd= m_opts.getObjcopyPath() + string(" -O binary ")+ m_opts.getCallbackFileName()+string(" ")+tmpname2;
 	string cmd= string(m_objcopy) + string(" -O binary ")+string(m_callbacks)+string(" ")+tmpname2;
 #endif
 	printf("Attempting: %s\n", cmd.c_str());
@@ -2489,7 +2509,7 @@ static RangeAddress_t getSymbolAddress(const string &symbolFilename, const strin
         string addressString = string(address);
         pclose(fp);
 
-        RangeAddress_t ret= (uintptr_t) strtoull(addressString.c_str(),NULL,16);
+        RangeAddress_t ret= (uintptr_t) strtoull(addressString.c_str(),nullptr,16);
 
         //TODO: throw exception if address is not found.
         //for now assert the address string isn't empty
@@ -2513,7 +2533,7 @@ RangeAddress_t ZiprImpl_t::FindCallbackAddress(RangeAddress_t end_of_new_space, 
 	if(callback_addrs.find(callback)==callback_addrs.end())
 	{
 
-		//RangeAddress_t addr=getSymbolAddress(m_opts.GetCallbackFileName(),callback);
+		//RangeAddress_t addr=getSymbolAddress(m_opts.getCallbackFileName(),callback);
 		RangeAddress_t addr=getSymbolAddress(m_callbacks,callback);
 
 		if(addr!=0)
@@ -2544,8 +2564,8 @@ void ZiprImpl_t::UpdateCallbacks()
 		DollopEntry_t *entry=it->first;
 		Instruction_t *insn = entry->Instruction();
 		RangeAddress_t at=it->second;
-		RangeAddress_t to=0x0;//FindCallbackAddress(end_of_new_space,start_addr,insn->GetCallback());
-		DLFunctionHandle_t patcher = NULL;
+		RangeAddress_t to=0x0;//FindCallbackAddress(end_of_new_space,start_addr,insn->getCallback());
+		DLFunctionHandle_t patcher = nullptr;
 
 		if (plugman.DoesPluginRetargetCallback(at, entry, to, patcher))
 		{
@@ -2559,7 +2579,7 @@ void ZiprImpl_t::UpdateCallbacks()
 
 		if(to)
 		{
-			cout<<"Patching callback "<< insn->GetCallback()<<" at "<<std::hex<<at<<" to jump to "<<to<<endl;
+			cout<<"Patching callback "<< insn->getCallback()<<" at "<<std::hex<<at<<" to jump to "<<to<<endl;
 			PatchCall(at,to);
 		}
 		else
@@ -2579,13 +2599,13 @@ void ZiprImpl_t::dump_scoop_map()
 	    <<left<<setw(10)<<"Perms"
 	    <<left<<setw(10)<<"Name"<<endl;
 
-	for(const auto &scoop : m_firp->GetDataScoops())
+	for(const auto &scoop : m_firp->getDataScoops())
 	{
-		ofs << hex << setw(10)<<scoop->GetBaseID()
-		    <<hex<<left<<setw(10)<<scoop->GetStart()->GetVirtualOffset()
-		    <<hex<<left<<setw(10)<< scoop->GetSize()
+		ofs << hex << setw(10)<<scoop->getBaseID()
+		    <<hex<<left<<setw(10)<<scoop->getStart()->getVirtualOffset()
+		    <<hex<<left<<setw(10)<< scoop->getSize()
 		    <<hex<<left<<setw(10)<< scoop->getRawPerms()
-		    <<hex<<left<<setw(10)<< scoop->GetName()
+		    <<hex<<left<<setw(10)<< scoop->getName()
 		    << endl;
 	}
 }
@@ -2601,18 +2621,18 @@ void ZiprImpl_t::dump_instruction_map()
 	    <<left<<setw(10)<<"FuncID"
 	    <<left<<"Disassembly"<<endl;
 
-	for(std::map<libIRDB::Instruction_t*,RangeAddress_t>::iterator it=final_insn_locations.begin();
+	for(std::map<IRDB_SDK::Instruction_t*,RangeAddress_t>::iterator it=final_insn_locations.begin();
 		it!=final_insn_locations.end(); ++it)
 	{
 		Instruction_t* insn=it->first;
-		AddressID_t* ibta=insn->GetIndirectBranchTargetAddress();
+		AddressID_t* ibta=insn->getIndirectBranchTargetAddress();
 		RangeAddress_t addr=it->second;
 
-		ofs << hex << setw(10)<<insn->GetBaseID()
-		    <<hex<<left<<setw(10)<<insn->GetAddress()->GetVirtualOffset()
-		    <<hex<<left<<setw(10)<< (ibta ? ibta->GetVirtualOffset() : 0)
+		ofs << hex << setw(10)<<insn->getBaseID()
+		    <<hex<<left<<setw(10)<<insn->getAddress()->getVirtualOffset()
+		    <<hex<<left<<setw(10)<< (ibta ? ibta->getVirtualOffset() : 0)
 		    <<hex<<left<<setw(10)<<addr
-		    <<hex<<left<<setw(10)<<( insn->GetFunction() ? insn->GetFunction()->GetBaseID() : -1 )
+		    <<hex<<left<<setw(10)<<( insn->getFunction() ? insn->getFunction()->getBaseID() : -1 )
 		    << left<<insn->getDisassembly()<<endl;
 
 		
@@ -2627,8 +2647,8 @@ void ZiprImpl_t::UpdateScoops()
 	   )
 	{
 		DataScoop_t* scoop=*it;
-		virtual_offset_t first_valid_address=0;
-		virtual_offset_t last_valid_address=0;
+		VirtualOffset_t first_valid_address=0;
+		VirtualOffset_t last_valid_address=0;
 
 		if(!scoop->isExecuteable())
 		{
@@ -2643,7 +2663,7 @@ void ZiprImpl_t::UpdateScoops()
 		 * beforehand about shrinking.
 		 */
 
-		if (scoop->GetName() == "textra")
+		if (scoop->getName() == "textra")
 		{
 			/*
 			 * We have to do special handling for the textra scoop.
@@ -2653,11 +2673,11 @@ void ZiprImpl_t::UpdateScoops()
 			 */
 			auto frit=memory_space.FindFreeRange((RangeAddress_t) -1);
 			assert(memory_space.IsValidRange(frit));
-			scoop->GetEnd()->SetVirtualOffset(frit->GetStart());
+			scoop->getEnd()->setVirtualOffset(frit->getStart());
 		}
 
-		for(auto i=scoop->GetStart()->GetVirtualOffset();
-		    i<= scoop->GetEnd()->GetVirtualOffset();
+		for(auto i=scoop->getStart()->getVirtualOffset();
+		    i<= scoop->getEnd()->getVirtualOffset();
 		    i++ )
 		{
 			if( ! memory_space.IsByteFree(i) )
@@ -2673,64 +2693,70 @@ void ZiprImpl_t::UpdateScoops()
 
 		if(last_valid_address==0 || first_valid_address==0)
 		{
+			if (m_verbose)
+				cout << "Removing an empty scoop (" << scoop->getName() << ")." << endl;
+			/*
 			assert(first_valid_address==0);
 			assert(last_valid_address==0);
-			m_firp->GetAddresses().erase(scoop->GetStart());
-			m_firp->GetAddresses().erase(scoop->GetEnd());
+			m_firp->getAddresses().erase(scoop->getStart());
+			m_firp->getAddresses().erase(scoop->getEnd());
 
-			if (m_verbose)
-				cout << "Removing an empty scoop (" << scoop->GetName() << ")." << endl;
 
-			m_firp->GetDataScoops().erase(*it);
-			it = m_zipr_scoops.erase(it);
+			m_firp->getDataScoops().erase(*it);
 
 			// Delete addresses and then the scoop itself.
-			delete scoop->GetStart();
-			delete scoop->GetEnd();
+			delete scoop->getStart();
+			delete scoop->getEnd();
 			delete scoop;
-			scoop=NULL;
+			*/
+			it = m_zipr_scoops.erase(it);
+			m_firp->removeScoop(scoop);
+			scoop=nullptr;
 		}
 		else
 		{
-			if ((scoop->GetStart()->GetVirtualOffset() != first_valid_address ||
-			   scoop->GetEnd()->GetVirtualOffset() != last_valid_address) &&
+			if ((scoop->getStart()->getVirtualOffset() != first_valid_address ||
+			   scoop->getEnd()->getVirtualOffset() != last_valid_address) &&
 			   m_verbose)
 			{
-				cout <<"Shrinking scoop "<<scoop->GetName()
+				cout <<"Shrinking scoop "<<scoop->getName()
 				     <<" to "
 				     << std::hex << first_valid_address << "-"
 				     << std::hex << last_valid_address << endl;
 			}
 			else if (m_verbose)
 			{
-				cout<<"Leaving scoop "<<scoop->GetName()<<" alone. "<<endl;
+				cout<<"Leaving scoop "<<scoop->getName()<<" alone. "<<endl;
 			}
 
-			cout << "Updating a scoop named " << scoop->GetName() << endl;
+			cout << "Updating a scoop named " << scoop->getName() << endl;
 			assert(first_valid_address!=0);
 			assert(last_valid_address!=0);
-			scoop->GetStart()->SetVirtualOffset(first_valid_address);
-			scoop->GetEnd()->SetVirtualOffset(last_valid_address);
+			scoop->getStart()->setVirtualOffset(first_valid_address);
+			scoop->getEnd()->setVirtualOffset(last_valid_address);
 
 			/*
 			 * Resize the contents.
 			 */
-			string scoop_contents = scoop->GetContents();
-			scoop_contents.resize(scoop->GetEnd()->GetVirtualOffset() -
-			                      scoop->GetStart()->GetVirtualOffset() + 1);
-			scoop->SetContents(scoop_contents);
-			assert(scoop->GetSize() == scoop_contents.size());
+			string scoop_contents = scoop->getContents();
+			scoop_contents.resize(scoop->getEnd()->getVirtualOffset() -
+			                      scoop->getStart()->getVirtualOffset() + 1);
+			scoop->setContents(scoop_contents);
+			assert(scoop->getSize() == scoop_contents.size());
 
 			/*
 			 * And now update the contents.
 			 */
-			for(virtual_offset_t i=scoop->GetStart()->GetVirtualOffset();
-			    i<= scoop->GetEnd()->GetVirtualOffset();
+			for(VirtualOffset_t i=scoop->getStart()->getVirtualOffset();
+			    i<= scoop->getEnd()->getVirtualOffset();
 			    i++)
 			{
-				scoop->GetContents()[i-scoop->GetStart()->GetVirtualOffset()]=memory_space[i];
+				auto str=scoop->getContents();
+				str[i-scoop->getStart()->getVirtualOffset()]=memory_space[i];
+				scoop->setContents(str);
 			}
-			m_firp->GetDataScoops().insert(scoop);
+			// m_firp->getDataScoops().insert(scoop); we added this earlier when we created the obj.
+			// jdh -- a bit worried that this'll break assumptions in other places
 			++it;
 		}
 	}
@@ -2739,28 +2765,28 @@ void ZiprImpl_t::UpdateScoops()
 
 void  ZiprImpl_t::FixNoFallthroughs()
 {
-        auto hlt=archhelper->createNewHaltInstruction(m_firp, NULL);
-        auto jmp=archhelper->createNewJumpInstruction(m_firp, NULL);
+        auto hlt=archhelper->createNewHaltInstruction(m_firp, nullptr);
+        auto jmp=archhelper->createNewJumpInstruction(m_firp, nullptr);
 
-	hlt->SetFallthrough(jmp);
-	jmp->SetTarget(hlt);
+	hlt->setFallthrough(jmp);
+	jmp->setTarget(hlt);
 
-	for(const auto insn : m_firp->GetInstructions())
+	for(const auto insn : m_firp->getInstructions())
 	{
 		if(insn==hlt) continue;
 		if(insn==jmp) continue;
 
-		if(insn->GetFallthrough()==NULL)
+		if(insn->getFallthrough()==nullptr)
 		{
-			const auto d=DecodedInstruction_t(insn);
-			if(d.isConditionalBranch())
-				insn->SetFallthrough(hlt);
+			const auto d=DecodedInstruction_t::factory(insn);
+			if(d->isConditionalBranch())
+				insn->setFallthrough(hlt);
 		}
-		if(insn->GetTarget()==NULL)
+		if(insn->getTarget()==nullptr)
 		{
-			const auto d=DecodedInstruction_t(insn);
-			if(d.isBranch() && !d.isReturn() && d.hasOperand(0) && d.getOperand(0).isConstant())
-				insn->SetTarget(hlt);
+			const auto d=DecodedInstruction_t::factory(insn);
+			if(d->isBranch() && !d->isReturn() && d->hasOperand(0) && d->getOperand(0)->isConstant())
+				insn->setTarget(hlt);
 		}
 		
 	}
@@ -2770,30 +2796,30 @@ void  ZiprImpl_t::FixNoFallthroughs()
 
 void  ZiprImpl_t::FixTwoByteWithPrefix()
 {
-	for(const auto insn : m_firp->GetInstructions())
+	for(const auto insn : m_firp->getInstructions())
 	{
-		const auto d=DecodedInstruction_t(insn);
-		if(!d.isBranch()) continue;	// skip non-branches
-		if(d.isReturn()) continue;	// skip returns
-		if(d.getOperands().size()!=1) continue;	// skip branches that have no operands or more than one
-		if(!d.getOperand(0).isConstant()) continue;	// skip anything where the operand isn't a constant
-		if(d.getPrefixCount()==0) continue;	// prevents arm instructions from being xformed.
+		const auto d=DecodedInstruction_t::factory(insn);
+		if(!d->isBranch()) continue;	// skip non-branches
+		if(d->isReturn()) continue;	// skip returns
+		if(d->getOperands().size()!=1) continue;	// skip branches that have no operands or more than one
+		if(!d->getOperand(0)->isConstant()) continue;	// skip anything where the operand isn't a constant
+		if(d->getPrefixCount()==0) continue;	// prevents arm instructions from being xformed.
 
 		
 		while (true)
 		{
-			const auto b=insn->GetDataBits()[0];
+			const auto b=insn->getDataBits()[0];
 			// basic prefix check
 			const auto prefixes=set<uint8_t>({0x2e, 0x3e, 0x64, 0x65, 0xf2, 0xf3});
 			if(prefixes.find(b)!=end(prefixes))
 			{
 				// remove prefix 
-				insn->SetDataBits(insn->GetDataBits().erase(0,1));	
+				insn->setDataBits(insn->getDataBits().erase(0,1));	
 			}
 			// remove rex prefix when unnecessary 
-			else if(m_firp->GetArchitectureBitWidth()==64 && (b&0xf0)==0x40 /* has rex prefix */)
+			else if(m_firp->getArchitectureBitWidth()==64 && (b&0xf0)==0x40 /* has rex prefix */)
 			{
-				insn->SetDataBits(insn->GetDataBits().erase(0,1));	
+				insn->setDataBits(insn->getDataBits().erase(0,1));	
 			}
 			else 
 				break;
@@ -2808,9 +2834,9 @@ void  ZiprImpl_t::FixMultipleFallthroughs()
 	auto count=0;
 	auto fallthrough_from=map<Instruction_t*, InstructionSet_t>();
 	
-	for(auto & insn : m_firp->GetInstructions())
+	for(auto & insn : m_firp->getInstructions())
 	{
-		auto ft=insn->GetFallthrough();
+		auto ft=insn->getFallthrough();
 		if(ft)
 			fallthrough_from[ft].insert(insn);
 	};
@@ -2824,17 +2850,17 @@ void  ZiprImpl_t::FixMultipleFallthroughs()
 			for_each(next(p.second.begin()), p.second.end(), [&](Instruction_t* from)
 			{
 			
-				auto newjmp=archhelper->createNewJumpInstruction(m_firp,NULL);
+				auto newjmp=archhelper->createNewJumpInstruction(m_firp,nullptr);
 				count++;
-				newjmp->SetTarget(ft);
-				from->SetFallthrough(newjmp);
+				newjmp->setTarget(ft);
+				from->setFallthrough(newjmp);
 
 			});
 		};
 	}
 
 	// after we've inserted all the jumps, assemble them.
-	m_firp->AssembleRegistry();
+	m_firp->assembleRegistry();
 
 	cout<<"# ATTRIBUTE Zipr::jumps_inserted_for_multiple_fallthroughs="<<dec<<count<<endl;
 }
@@ -2843,22 +2869,22 @@ void  ZiprImpl_t::FixMultipleFallthroughs()
 void  ZiprImpl_t::RelayoutEhInfo()
 {
 	const auto found_eh_ir_it = find_if( 
-		m_firp->GetInstructions().begin(), 
-		m_firp->GetInstructions().end(),
+		m_firp->getInstructions().begin(), 
+		m_firp->getInstructions().end(),
 	 	[](const Instruction_t* i)
 			{ 
-				return (i->GetEhProgram()!=NULL || i->GetEhCallSite()!=NULL);
+				return (i->getEhProgram()!=nullptr || i->getEhCallSite()!=nullptr);
 			} 
 		);
 
 	// do nothing if we didn't find any IR.
-	if(found_eh_ir_it==m_firp->GetInstructions().end())
+	if(found_eh_ir_it==m_firp->getInstructions().end())
 		return;
 		
-	auto eh = (EhWriter_t *)NULL;
-	if(m_firp->GetArchitectureBitWidth()==64)
+	auto eh = (EhWriter_t *)nullptr;
+	if(m_firp->getArchitectureBitWidth()==64)
 		eh=new EhWriterImpl_t<8>(*this);
-	else if(m_firp->GetArchitectureBitWidth()==32)
+	else if(m_firp->getArchitectureBitWidth()==32)
 		eh=new EhWriterImpl_t<4>(*this);
 	else
 		assert(0);

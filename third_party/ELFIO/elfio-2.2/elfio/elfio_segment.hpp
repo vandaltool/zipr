@@ -150,7 +150,7 @@ class segment_impl : public segment
         stream.seekg( header_offset );
         stream.read( reinterpret_cast<char*>( &ph ), sizeof( ph ) );
 
-        if ( PT_NULL != get_type() && 0 != get_file_size() ) {
+        if ( PT_nullptr != get_type() && 0 != get_file_size() ) {
             stream.seekg( (*convertor)( ph.p_offset ) );
             Elf_Xword size = get_file_size();
             data = new char[size];

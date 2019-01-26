@@ -36,7 +36,7 @@ namespace zipr
 #include "patcher/patcher_x86.hpp"
 }
 
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 #include <Rewrite_Utility.hpp>
 #include <iostream>
 #include <stdlib.h>
@@ -54,7 +54,7 @@ namespace zipr
 
 #define ALLOF(a) begin(a),end(a)
 
-using namespace libIRDB;
+using namespace IRDB_SDK;
 using namespace std;
 using namespace zipr;
 using namespace ELFIO;
@@ -62,10 +62,10 @@ using namespace IRDBUtility;
 
 unique_ptr<ZiprPatcherBase_t> ZiprPatcherBase_t::factory(Zipr_SDK::Zipr_t* p_parent)
 {
-	auto l_firp=p_parent->GetFileIR();
-        auto ret= l_firp->GetArchitecture()->getMachineType() == admtX86_64   ?  (ZiprPatcherBase_t*)new ZiprPatcherX86_t  (p_parent) :
-                  l_firp->GetArchitecture()->getMachineType() == admtI386     ?  (ZiprPatcherBase_t*)new ZiprPatcherX86_t  (p_parent) :
-                  l_firp->GetArchitecture()->getMachineType() == admtAarch64  ?  (ZiprPatcherBase_t*)new ZiprPatcherARM64_t(p_parent) :
+	auto l_firp=p_parent->getFileIR();
+        auto ret= l_firp->getArchitecture()->getMachineType() == admtX86_64   ?  (ZiprPatcherBase_t*)new ZiprPatcherX86_t  (p_parent) :
+                  l_firp->getArchitecture()->getMachineType() == admtI386     ?  (ZiprPatcherBase_t*)new ZiprPatcherX86_t  (p_parent) :
+                  l_firp->getArchitecture()->getMachineType() == admtAarch64  ?  (ZiprPatcherBase_t*)new ZiprPatcherARM64_t(p_parent) :
                   throw domain_error("Cannot init architecture");
 
         return unique_ptr<ZiprPatcherBase_t>(ret);

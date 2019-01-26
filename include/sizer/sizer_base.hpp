@@ -25,7 +25,7 @@ class ZiprSizerBase_t
 		 * space to accomodate for the fallthroughs.
 		 */
 		virtual size_t DetermineDollopSizeInclFallthrough(Dollop_t *dollop) const;
-		virtual size_t DetermineInsnSize(libIRDB::Instruction_t*, bool account_for_jump = true) const =0;
+		virtual size_t DetermineInsnSize(IRDB_SDK::Instruction_t*, bool account_for_jump = true) const =0;
 		virtual Range_t DoPlacement(size_t pminimum_valid_req_size) const;
 		virtual RangeAddress_t PlopDollopEntryWithTarget( DollopEntry_t *entry, RangeAddress_t override_place, RangeAddress_t override_target) const =0;
 

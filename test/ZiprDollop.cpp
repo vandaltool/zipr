@@ -44,17 +44,17 @@ printf(" fail\n"); \
  * with no fallthrough properly excludes the remaining
  * instructions.
  */
-bool TestGetContainingDollopNoFallthrough() {
+bool TestgetContainingDollopNoFallthrough() {
 	ZiprDollopManager_t dollop_man;
-	libIRDB::Instruction_t *insn_a = new libIRDB::Instruction_t();
-	libIRDB::Instruction_t *insn_b = new libIRDB::Instruction_t();
-	Dollop_t *dollop_a = NULL;
+	IRDB_SDK::Instruction_t *insn_a = new IRDB_SDK::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_b = new IRDB_SDK::Instruction_t();
+	Dollop_t *dollop_a = nullptr;
 
 	dollop_a = Dollop_t::CreateNewDollop(insn_a);
 	dollop_man.AddDollops(dollop_a);
 
-	return dollop_man.GetContainingDollop(insn_b) == NULL &&
-	       dollop_man.GetContainingDollop(insn_a) == dollop_a;
+	return dollop_man.getContainingDollop(insn_b) == nullptr &&
+	       dollop_man.getContainingDollop(insn_a) == dollop_a;
 }
 
 /*
@@ -62,36 +62,36 @@ bool TestGetContainingDollopNoFallthrough() {
  * with a fallthrough properly contains the linked
  * instructions.
  */
-bool TestGetContainingDollopFallthrough(void) {
+bool TestgetContainingDollopFallthrough(void) {
 	ZiprDollopManager_t dollop_man;
-	libIRDB::Instruction_t *insn_a = new libIRDB::Instruction_t();
-	libIRDB::Instruction_t *insn_b = new libIRDB::Instruction_t();
-	Dollop_t *dollop_a = NULL;
+	IRDB_SDK::Instruction_t *insn_a = new IRDB_SDK::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_b = new IRDB_SDK::Instruction_t();
+	Dollop_t *dollop_a = nullptr;
 
-	insn_a->SetFallthrough(insn_b);
+	insn_a->setFallthrough(insn_b);
 
 	dollop_a = Dollop_t::CreateNewDollop(insn_a);
 	dollop_man.AddDollops(dollop_a);
 
-	return dollop_man.GetContainingDollop(insn_b) == dollop_a &&
-	       dollop_man.GetContainingDollop(insn_a) == dollop_a;
+	return dollop_man.getContainingDollop(insn_b) == dollop_a &&
+	       dollop_man.getContainingDollop(insn_a) == dollop_a;
 }
 
 /*
- * Test whether GetContainingDollop works
+ * Test whether getContainingDollop works
  * properly when there is more than one
  * dollop in the manager.
  */
-bool TestGetContainingDollop(void) {
+bool TestgetContainingDollop(void) {
 	ZiprDollopManager_t dollop_man;
-	libIRDB::Instruction_t *insn_a = new libIRDB::Instruction_t();
-	libIRDB::Instruction_t *insn_b = new libIRDB::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_a = new IRDB_SDK::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_b = new IRDB_SDK::Instruction_t();
 	Dollop_t *dollop_a = Dollop_t::CreateNewDollop(insn_a);
 	Dollop_t *dollop_b = Dollop_t::CreateNewDollop(insn_b);
 	dollop_man.AddDollops(dollop_a);
 	dollop_man.AddDollops(dollop_b);
-	return dollop_man.GetContainingDollop(insn_a) == dollop_a &&
-	       dollop_man.GetContainingDollop(insn_b) == dollop_b;
+	return dollop_man.getContainingDollop(insn_a) == dollop_a &&
+	       dollop_man.getContainingDollop(insn_b) == dollop_b;
 }
 
 /*
@@ -100,16 +100,16 @@ bool TestGetContainingDollop(void) {
  */
 bool TestAddDollopEntry(void) {
 	ZiprDollopManager_t dollop_man;
-	libIRDB::Instruction_t *insn = new libIRDB::Instruction_t();
+	IRDB_SDK::Instruction_t *insn = new IRDB_SDK::Instruction_t();
 	dollop_man.AddDollops(Dollop_t::CreateNewDollop(insn));
 	return 1 == dollop_man.Size();
 }
 
 bool TestDollopPatch(void) {
-	Dollop_t *a = NULL;
+	Dollop_t *a = nullptr;
 	DollopPatch_t patch;
 
-	libIRDB::Instruction_t *insn_a = new libIRDB::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_a = new IRDB_SDK::Instruction_t();
 	a = Dollop_t::CreateNewDollop(insn_a);
 
 	patch.Target(a);
@@ -122,8 +122,8 @@ bool TestDollopPatchDollopManager(void) {
 	DollopPatch_t patch_a, patch_b;
 	Dollop_t *dollop_a, *dollop_b;
 
-	libIRDB::Instruction_t *insn_a = new libIRDB::Instruction_t();
-	libIRDB::Instruction_t *insn_b = new libIRDB::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_a = new IRDB_SDK::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_b = new IRDB_SDK::Instruction_t();
 
 	dollop_a = Dollop_t::CreateNewDollop(insn_a);
 	dollop_b = Dollop_t::CreateNewDollop(insn_b);
@@ -148,10 +148,10 @@ bool TestAddNewDollopSplitsExistingDollop(void) {
 	ZiprDollopManager_t dollop_man;
 	Dollop_t *a, *b;
 
-	libIRDB::Instruction_t *insn_a = new libIRDB::Instruction_t();
-	libIRDB::Instruction_t *insn_b = new libIRDB::Instruction_t();
-	libIRDB::Instruction_t *insn_c = new libIRDB::Instruction_t();
-	libIRDB::Instruction_t *insn_d = new libIRDB::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_a = new IRDB_SDK::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_b = new IRDB_SDK::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_c = new IRDB_SDK::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_d = new IRDB_SDK::Instruction_t();
 
 	/*
 	 * a targets c
@@ -161,13 +161,13 @@ bool TestAddNewDollopSplitsExistingDollop(void) {
 	 * A: a, b, c, d
 	 */
 
-	insn_a->SetFallthrough(insn_b);
-	insn_b->SetFallthrough(insn_c);
-	insn_c->SetFallthrough(insn_d);
+	insn_a->setFallthrough(insn_b);
+	insn_b->setFallthrough(insn_c);
+	insn_c->setFallthrough(insn_d);
 
 	a = Dollop_t::CreateNewDollop(insn_a);
 	dollop_man.AddDollops(a);
-	success = (a->GetDollopEntryCount() == 4) && dollop_man.Size() == 1;
+	success = (a->getDollopEntryCount() == 4) && dollop_man.Size() == 1;
 
 
 	cout << "Before AddNewDollops()." << endl;
@@ -178,8 +178,8 @@ bool TestAddNewDollopSplitsExistingDollop(void) {
 	cout << "After AddNewDollops()." << endl;
 	cout << dollop_man << endl;
 	return success &&
-	       a->GetDollopEntryCount() == 2 &&
-	       b->GetDollopEntryCount() == 2 &&
+	       a->getDollopEntryCount() == 2 &&
+	       b->getDollopEntryCount() == 2 &&
 				 dollop_man.Size() == 2 &&
 				 a->FallthroughDollop() == b &&
 				 b->FallbackDollop() == a;
@@ -189,13 +189,13 @@ bool TestUpdateTargetsDollopManager(void) {
 	bool success = true;
 	ZiprDollopManager_t dollop_man;
 	Dollop_t *a, *c;
-	Dollop_t *original_insn_d_container = NULL;
-	Dollop_t *updated_insn_d_container = NULL;
+	Dollop_t *original_insn_d_container = nullptr;
+	Dollop_t *updated_insn_d_container = nullptr;
 
-	libIRDB::Instruction_t *insn_a = new libIRDB::Instruction_t();
-	libIRDB::Instruction_t *insn_b = new libIRDB::Instruction_t();
-	libIRDB::Instruction_t *insn_c = new libIRDB::Instruction_t();
-	libIRDB::Instruction_t *insn_d = new libIRDB::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_a = new IRDB_SDK::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_b = new IRDB_SDK::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_c = new IRDB_SDK::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_d = new IRDB_SDK::Instruction_t();
 
 	/*
 	 * a targets c
@@ -207,11 +207,11 @@ bool TestUpdateTargetsDollopManager(void) {
 	 * C: c, d
 	 */
 
-	insn_a->SetFallthrough(insn_b);
-	insn_c->SetFallthrough(insn_d);
+	insn_a->setFallthrough(insn_b);
+	insn_c->setFallthrough(insn_d);
 
-	insn_a->SetTarget(insn_c);
-	insn_b->SetTarget(insn_d);
+	insn_a->setTarget(insn_c);
+	insn_b->setTarget(insn_d);
 
 	a = Dollop_t::CreateNewDollop(insn_a);
 	c = Dollop_t::CreateNewDollop(insn_c);
@@ -222,7 +222,7 @@ bool TestUpdateTargetsDollopManager(void) {
 	dollop_man.AddDollops(a);
 	dollop_man.AddDollops(c);
 
-	original_insn_d_container = dollop_man.GetContainingDollop(insn_d);
+	original_insn_d_container = dollop_man.getContainingDollop(insn_d);
 
 	success &= (original_insn_d_container == c);
 
@@ -253,9 +253,9 @@ bool TestUpdateTargetsDollopManager(void) {
 	cout << "C: " << endl;
 	cout << (*c) << endl;
 */
-	updated_insn_d_container = dollop_man.GetContainingDollop(insn_d);
-	return c->GetDollopEntryCount() == 1 &&
-	       a->GetDollopEntryCount() == 2 &&
+	updated_insn_d_container = dollop_man.getContainingDollop(insn_d);
+	return c->getDollopEntryCount() == 1 &&
+	       a->getDollopEntryCount() == 2 &&
 				 dollop_man.Size() == 3 &&
 				 updated_insn_d_container != original_insn_d_container &&
 				 success;
@@ -268,8 +268,8 @@ bool TestDollopPatchMapDollopManager(void) {
 	Dollop_t *dollop_a, *dollop_c;
 	std::list<DollopPatch_t *>::const_iterator patches_it, patches_it_end;
 
-	libIRDB::Instruction_t *insn_a = new libIRDB::Instruction_t();
-	libIRDB::Instruction_t *insn_c = new libIRDB::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_a = new IRDB_SDK::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_c = new IRDB_SDK::Instruction_t();
 
 	dollop_a = Dollop_t::CreateNewDollop(insn_a);
 	dollop_c = Dollop_t::CreateNewDollop(insn_c);
@@ -311,8 +311,8 @@ bool TestDollopFallthroughDollopEntry(void) {
 
 	a = new Dollop_t();
 
-	libIRDB::Instruction_t *insn_a = new libIRDB::Instruction_t();
-	libIRDB::Instruction_t *insn_b = new libIRDB::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_a = new IRDB_SDK::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_b = new IRDB_SDK::Instruction_t();
 	
 	aa = new DollopEntry_t(insn_a, a);
 	bb = new DollopEntry_t(insn_b, a);
@@ -321,23 +321,23 @@ bool TestDollopFallthroughDollopEntry(void) {
 	a->push_back(bb);
 
 	return bb == a->FallthroughDollopEntry(aa) &&
-	       NULL == a->FallthroughDollopEntry(bb) &&
-	       NULL == a->FallthroughDollopEntry(NULL);
+	       nullptr == a->FallthroughDollopEntry(bb) &&
+	       nullptr == a->FallthroughDollopEntry(nullptr);
 }
 
 bool TestDollopSplit(void) {
 	Dollop_t *a, *b;
 
-	libIRDB::Instruction_t *insn_a = new libIRDB::Instruction_t();
-	libIRDB::Instruction_t *insn_b = new libIRDB::Instruction_t();
-	libIRDB::Instruction_t *insn_c = new libIRDB::Instruction_t();
-	libIRDB::Instruction_t *insn_d = new libIRDB::Instruction_t();
-	libIRDB::Instruction_t *insn_e = new libIRDB::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_a = new IRDB_SDK::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_b = new IRDB_SDK::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_c = new IRDB_SDK::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_d = new IRDB_SDK::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_e = new IRDB_SDK::Instruction_t();
 
-	insn_a->SetFallthrough(insn_b);
-	insn_b->SetFallthrough(insn_c);
-	insn_c->SetFallthrough(insn_d);
-	insn_d->SetFallthrough(insn_e);
+	insn_a->setFallthrough(insn_b);
+	insn_b->setFallthrough(insn_c);
+	insn_c->setFallthrough(insn_d);
+	insn_d->setFallthrough(insn_e);
 
 	a = Dollop_t::CreateNewDollop(insn_a);
 
@@ -351,20 +351,20 @@ bool TestDollopSplit(void) {
 	cout << "Dollop B: " << endl;
 	cout << *b << endl;
 
-	return a->GetDollopEntryCount() == 1 && b->GetDollopEntryCount() == 4 &&
+	return a->getDollopEntryCount() == 1 && b->getDollopEntryCount() == 4 &&
 	       a->FallthroughDollop() == b && b->FallbackDollop() == a;
 }
 
 bool TestDollopEntryEquals(void) {
 	DollopEntry_t *a, *b, *c, *d;
 
-	libIRDB::Instruction_t *insn_a = new libIRDB::Instruction_t();
-	libIRDB::Instruction_t *insn_b = new libIRDB::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_a = new IRDB_SDK::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_b = new IRDB_SDK::Instruction_t();
 
-	a = new DollopEntry_t(insn_a, NULL);
-	b = new DollopEntry_t(insn_b, NULL);
-	c = new DollopEntry_t(insn_a, NULL);
-	d = new DollopEntry_t(insn_a, NULL);
+	a = new DollopEntry_t(insn_a, nullptr);
+	b = new DollopEntry_t(insn_b, nullptr);
+	c = new DollopEntry_t(insn_a, nullptr);
+	d = new DollopEntry_t(insn_a, nullptr);
 	d->TargetDollop((Dollop_t*)0x5000);
 
 	return *a != *b &&
@@ -405,17 +405,17 @@ bool TestCreateDollopsFromOverlappingInstructions(void) {
 	ZiprDollopManager_t dollop_man;
 	Dollop_t *a, *b, *e, *b_fallthrough;
 
-	libIRDB::Instruction_t *insn_a = new libIRDB::Instruction_t();
-	libIRDB::Instruction_t *insn_b = new libIRDB::Instruction_t();
-	libIRDB::Instruction_t *insn_bf= new libIRDB::Instruction_t();
-	libIRDB::Instruction_t *insn_c = new libIRDB::Instruction_t();
-	libIRDB::Instruction_t *insn_d = new libIRDB::Instruction_t();
-	libIRDB::Instruction_t *insn_e = new libIRDB::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_a = new IRDB_SDK::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_b = new IRDB_SDK::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_bf= new IRDB_SDK::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_c = new IRDB_SDK::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_d = new IRDB_SDK::Instruction_t();
+	IRDB_SDK::Instruction_t *insn_e = new IRDB_SDK::Instruction_t();
 
-	insn_a->SetFallthrough(insn_c);
-	insn_b->SetFallthrough(insn_c);
-	insn_e->SetFallthrough(insn_c);
-	insn_c->SetFallthrough(insn_d);
+	insn_a->setFallthrough(insn_c);
+	insn_b->setFallthrough(insn_c);
+	insn_e->setFallthrough(insn_c);
+	insn_c->setFallthrough(insn_d);
 
 	b_fallthrough = Dollop_t::CreateNewDollop(insn_bf);
 	b = Dollop_t::CreateNewDollop(insn_b);
@@ -438,10 +438,10 @@ bool TestCreateDollopsFromOverlappingInstructions(void) {
 
 	return success &&
 	       dollop_man.Size() == 5 &&
-	       dollop_man.GetContainingDollop(insn_b) == b &&
-	       dollop_man.GetContainingDollop(insn_a) == a &&
+	       dollop_man.getContainingDollop(insn_b) == b &&
+	       dollop_man.getContainingDollop(insn_a) == a &&
 	       a->FallthroughDollop() == b->FallthroughDollop() &&
-				 dollop_man.GetContainingDollop(insn_c)->FallthroughDollop() ==
+				 dollop_man.getContainingDollop(insn_c)->FallthroughDollop() ==
 				 b_fallthrough;
 }
 
@@ -450,9 +450,9 @@ int main(int argc, char *argv[])
 	INVOKE(TestAddDollopEntry);
 	INVOKE(TestDollopEntryEquals);
 	INVOKE(TestDollopSplit);
-	INVOKE(TestGetContainingDollop);
-	INVOKE(TestGetContainingDollopFallthrough);
-	INVOKE(TestGetContainingDollopNoFallthrough);
+	INVOKE(TestgetContainingDollop);
+	INVOKE(TestgetContainingDollopFallthrough);
+	INVOKE(TestgetContainingDollopNoFallthrough);
 	INVOKE(TestDollopPatch);
 	INVOKE(TestDollopPatchDollopManager);
 	INVOKE(TestDollopPatchMapDollopManager);

@@ -9,7 +9,7 @@ class ZiprSizerARM64_t : public ZiprSizerBase_t
 
 	public:
 	ZiprSizerARM64_t(Zipr_SDK::Zipr_t* p_zipr_obj);
-	size_t DetermineInsnSize(libIRDB::Instruction_t*, bool account_for_jump = true) const override;
+	size_t DetermineInsnSize(IRDB_SDK::Instruction_t*, bool account_for_jump = true) const override;
 	virtual RangeAddress_t PlopDollopEntryWithTarget(DollopEntry_t *entry, RangeAddress_t override_place, RangeAddress_t override_target) const override;
 
 

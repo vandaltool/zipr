@@ -5,13 +5,13 @@
 using namespace zipr;
 using namespace std;
 using namespace Zipr_SDK;
-using namespace libIRDB;
+using namespace IRDB_SDK;
 
 namespace zipr {
 
 	Dollop_t *ZiprDollopManager_t::AddNewDollops(Instruction_t *start) {
-		Dollop_t *new_dollop = NULL;
-		Dollop_t *existing_dollop = GetContainingDollop(start);
+		Dollop_t *new_dollop = nullptr;
+		Dollop_t *existing_dollop = getContainingDollop(start);
 
 		/*
 		 * This is the target dollop *only*
@@ -22,7 +22,7 @@ namespace zipr {
 			/*
 			 * There is a target dollop. But, do we need to split it?
 			 */
-			if (existing_dollop->GetDollopEntryCount() &&
+			if (existing_dollop->getDollopEntryCount() &&
 			    existing_dollop->front()->Instruction() == start) {
 				/*
 				 * Just return the existing dollop.
@@ -42,23 +42,23 @@ namespace zipr {
 			 * There is no target dollop. Let's create one!
 			 */
 			std::list<DollopEntry_t*>::iterator it, it_end;
-			Dollop_t *original_new_dollop = NULL, *previous_dollop = NULL;
-			Instruction_t *fallthrough = NULL;
+			Dollop_t *original_new_dollop = nullptr, *previous_dollop = nullptr;
+			Instruction_t *fallthrough = nullptr;
 			original_new_dollop = new_dollop = Dollop_t::CreateNewDollop(start,this);
 
 			for (it = new_dollop->begin(), it_end = new_dollop->end();
 			     it != it_end;
 					 it++)
 			{
-				Dollop_t *containing_dollop = GetContainingDollop((*it)->Instruction());
+				Dollop_t *containing_dollop = getContainingDollop((*it)->Instruction());
 				if (containing_dollop) 
 				{
-					Dollop_t *fallthrough_dollop = NULL;
+					Dollop_t *fallthrough_dollop = nullptr;
 					if (true)
 						cout << "Found an instruction in a new dollop that "
 						     << "is already in a dollop: " << std::hex
-								 << ((NULL!=(*it)->Instruction()->GetAddress()) ?
-								    (*it)->Instruction()->GetAddress()->GetVirtualOffset():0x0)
+								 << ((nullptr!=(*it)->Instruction()->getAddress()) ?
+								    (*it)->Instruction()->getAddress()->getVirtualOffset():0x0)
 								 << endl;
 					/*
 					 * Reliably get a pointer to the containing dollop.
@@ -97,7 +97,7 @@ namespace zipr {
 			 */
 			while ((fallthrough = new_dollop->back()
 			                                ->Instruction()
-			                                ->GetFallthrough()) != NULL)
+			                                ->getFallthrough()) != nullptr)
 			{
 				/*
 				 * Look FIRST for a containing dollop.
@@ -111,7 +111,7 @@ namespace zipr {
 				 * means that it is the first instruction
 				 * in the containing dollop.
 				 */
-				Dollop_t *existing_dollop = GetContainingDollop(fallthrough);
+				Dollop_t *existing_dollop = getContainingDollop(fallthrough);
 				if (existing_dollop)
 				{
 					assert(existing_dollop->front()->Instruction() == fallthrough);
@@ -142,8 +142,8 @@ namespace zipr {
 	size_t ZiprDollopManager_t::DetermineDollopEntrySize(DollopEntry_t *entry) 
 	{
 		const auto l_zipr=dynamic_cast<ZiprImpl_t*>(m_zipr);
-		const auto sizer=l_zipr->GetSizer();
-		if (m_zipr != NULL)
+		const auto sizer=l_zipr->getSizer();
+		if (m_zipr != nullptr)
 			return m_zipr->DetermineDollopEntrySize(entry, false);
 		else
 			return sizer->DetermineInsnSize(entry->Instruction(), false);
@@ -159,17 +159,17 @@ namespace zipr {
 		}
 	}
 
-	Dollop_t *ZiprDollopManager_t::GetContainingDollop(libIRDB::Instruction_t *insn) {
+	Dollop_t *ZiprDollopManager_t::getContainingDollop(IRDB_SDK::Instruction_t *insn) {
 		InsnToDollopMap_t::iterator it=m_insn_to_dollop.find(insn);
 		if(it!=m_insn_to_dollop.end())
 			return it->second;
-		return NULL;
+		return nullptr;
 			
 	}
 
 	void ZiprDollopManager_t::AddDollops(Dollop_t *dollop_head) {
 		Dollop_t *dollop = dollop_head;
-		while (dollop != NULL)
+		while (dollop != nullptr)
 		{
 			AddDollop(dollop);
 			dollop = dollop->FallthroughDollop();
@@ -210,14 +210,14 @@ namespace zipr {
 	bool ZiprDollopManager_t::UpdateTargets(Dollop_t *dollop) {
 		const auto handle_reloc=[this](const Relocation_t* reloc) 
 		{
-			auto wrt_insn=dynamic_cast<Instruction_t*>(reloc->GetWRT());
+			auto wrt_insn=dynamic_cast<Instruction_t*>(reloc->getWRT());
 			if(wrt_insn)
 			{
 				// we don't bother marking a change because
 				// we only need to do this once for relocs
 				// and we are certain to get here once for every dollop
 				AddNewDollops(wrt_insn);	
-				cout<<"Adding new dollop for reloc of type="<<reloc->GetType()<<endl;
+				cout<<"Adding new dollop for reloc of type="<<reloc->getType()<<endl;
 
 			}
 		};
@@ -227,9 +227,9 @@ namespace zipr {
 		for (auto &entry : local_dollop )
 		{
 			auto insn=entry->Instruction();
-			if (insn->GetTarget()) 
+			if (insn->getTarget()) 
 			{
-				auto new_target=AddNewDollops(insn->GetTarget());
+				auto new_target=AddNewDollops(insn->getTarget());
 
 				/*
 				 * In the case there is a change, we have to restart.
@@ -247,11 +247,11 @@ namespace zipr {
 			}
 
 			// make sure each instruction referenced via a relocation is placed in a dollop
-			for(auto &reloc : insn->GetRelocations())
+			for(auto &reloc : insn->getRelocations())
 				handle_reloc(reloc);
-			auto ehpgm=insn->GetEhProgram();
+			auto ehpgm=insn->getEhProgram();
 			if(ehpgm)
-				for(auto &reloc : ehpgm->GetRelocations())
+				for(auto &reloc : ehpgm->getRelocations())
 					handle_reloc(reloc);
 		}
 			
@@ -302,7 +302,7 @@ namespace zipr {
 				 dollop_it++)
 		{
 			Dollop_t *dollop = *dollop_it;
-			m_total_dollop_entries += dollop->GetDollopEntryCount();
+			m_total_dollop_entries += dollop->getDollopEntryCount();
 			if (dollop->WasTruncated())
 				m_truncated_dollops++;
 		}
@@ -333,7 +333,7 @@ namespace zipr {
 		const std::string &map_filename)
 	{
 		const ZiprMemorySpace_t &memory_space = static_cast<const ZiprMemorySpace_t &>(_memory_space);
-		RangeSet_t original_ranges = memory_space.GetOriginalFreeRanges();
+		RangeSet_t original_ranges = memory_space.getOriginalFreeRanges();
 		RangeSet_t::const_iterator range_it, range_it_end;
 		ofstream map_output(map_filename.c_str(), std::ofstream::out);
 
@@ -356,24 +356,24 @@ namespace zipr {
 			map<RangeAddress_t, Dollop_t*>::const_iterator dollops_in_range_it,
 			                                               dollops_in_range_end;
 			RangeAddress_t previous_dollop_end = 0;
-			Dollop_t *dollop_to_print = NULL;
+			Dollop_t *dollop_to_print = nullptr;
 
 			for (dollop_it = m_dollops.begin(), dollop_it_end = m_dollops.end();
 			     dollop_it != dollop_it_end;
 					 dollop_it++)
 			{
 				Dollop_t *dollop = (*dollop_it);
-				if (current_range.GetStart() <= dollop->Place() &&
-				    current_range.GetEnd() >= dollop->Place())
+				if (current_range.getStart() <= dollop->Place() &&
+				    current_range.getEnd() >= dollop->Place())
 					dollops_in_range[dollop->Place()] = dollop;
 			}
 			
 			map_output << "==========" << endl;
-			map_output << "Range: 0x" << std::hex << current_range.GetStart()
-			           << " - 0x" << std::hex << current_range.GetEnd() 
+			map_output << "Range: 0x" << std::hex << current_range.getStart()
+			           << " - 0x" << std::hex << current_range.getEnd() 
 								 << endl;
 			
-			previous_dollop_end = current_range.GetStart();
+			previous_dollop_end = current_range.getStart();
 			unsigned byte_print_counter = 0;
 			for (dollops_in_range_it = dollops_in_range.begin(),
 			     dollops_in_range_end = dollops_in_range.end();
@@ -386,7 +386,7 @@ namespace zipr {
 					for (unsigned i=0;i<(dollop_to_print->Place()-previous_dollop_end);i++)
 					{
 						if (!((byte_print_counter) % LINE_LENGTH)) 
-							PRINT_LINE_HEADER((current_range.GetStart()+byte_print_counter))
+							PRINT_LINE_HEADER((current_range.getStart()+byte_print_counter))
 						map_output << "_";
 						byte_print_counter++;
 					}
@@ -398,42 +398,42 @@ namespace zipr {
 					           << ") EMPTY" << endl;
 #endif
 				}
-				for (unsigned i=0;i<(dollop_to_print->GetSize());i++)
+				for (unsigned i=0;i<(dollop_to_print->getSize());i++)
 				{
 					if (!((byte_print_counter) % LINE_LENGTH))
-						PRINT_LINE_HEADER((current_range.GetStart()+byte_print_counter))
+						PRINT_LINE_HEADER((current_range.getStart()+byte_print_counter))
 					map_output << "X";
 					byte_print_counter++;
 				}
 #if 0
 				map_output << "0x" << std::hex << dollop_to_print->Place()
 				           << " - 0x" << std::hex
-									 <<(dollop_to_print->Place()+dollop_to_print->GetSize())
-									 << ": (" << std::dec << dollop_to_print->GetSize()
+									 <<(dollop_to_print->Place()+dollop_to_print->getSize())
+									 << ": (" << std::dec << dollop_to_print->getSize()
 									 << ") "
 									 << endl;
 
 #endif
 				previous_dollop_end = dollop_to_print->Place() + 
-				                      dollop_to_print->GetSize();
+				                      dollop_to_print->getSize();
 			}
 
-			if (dollop_to_print && current_range.GetEnd() != (RangeAddress_t)-1 &&
-			   (previous_dollop_end < current_range.GetEnd())) 
+			if (dollop_to_print && current_range.getEnd() != (RangeAddress_t)-1 &&
+			   (previous_dollop_end < current_range.getEnd())) 
 			{
-				for (unsigned i=0;i<(current_range.GetEnd() - previous_dollop_end);i++)
+				for (unsigned i=0;i<(current_range.getEnd() - previous_dollop_end);i++)
 				{
 					if (!((byte_print_counter) % LINE_LENGTH))
-						PRINT_LINE_HEADER((current_range.GetStart()+byte_print_counter))
+						PRINT_LINE_HEADER((current_range.getStart()+byte_print_counter))
 					map_output << "_";
 					byte_print_counter++;
 				}
 #if 0
 				map_output << "0x" << std::hex << dollop_to_print->Place()
 				           << " - 0x" << std::hex
-				           <<(dollop_to_print->Place()+dollop_to_print->GetSize())
+				           <<(dollop_to_print->Place()+dollop_to_print->getSize())
 				           << ": (" << std::dec 
-				           << (current_range.GetEnd() - previous_dollop_end)
+				           << (current_range.getEnd() - previous_dollop_end)
 				           << ") EMPTY" << endl;
 #endif
 			}

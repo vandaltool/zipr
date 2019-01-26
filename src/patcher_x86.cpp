@@ -33,7 +33,7 @@ namespace zipr
 {
 #include "patcher/patcher_x86.hpp"
 }
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 #include <Rewrite_Utility.hpp>
 #include <iostream>
 #include <stdlib.h>
@@ -51,7 +51,7 @@ namespace zipr
 
 #define ALLOF(a) begin(a),end(a)
 
-using namespace libIRDB;
+using namespace IRDB_SDK;
 using namespace std;
 using namespace zipr;
 using namespace ELFIO;
@@ -59,7 +59,7 @@ using namespace IRDBUtility;
 
 ZiprPatcherX86_t::ZiprPatcherX86_t(Zipr_SDK::Zipr_t* p_parent) :
 	m_parent(dynamic_cast<zipr::ZiprImpl_t*>(p_parent)),     // upcast to ZiprImpl
-	m_firp(p_parent->GetFileIR()),
+	m_firp(p_parent->getFileIR()),
 	memory_space(*p_parent->GetMemorySpace())
 {
 }
@@ -145,7 +145,7 @@ void ZiprPatcherX86_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_ad
 		}
 		default:
 		{
-			if(m_firp->GetArchitectureBitWidth()==64) /* 64-bit x86 machine  assumed */
+			if(m_firp->getArchitectureBitWidth()==64) /* 64-bit x86 machine  assumed */
 			{
 				/* check for REX prefix */
 				if((unsigned char)0x40 <= insn_first_byte  && insn_first_byte <= (unsigned char)0x4f)

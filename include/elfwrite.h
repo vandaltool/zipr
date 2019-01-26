@@ -91,21 +91,21 @@ class ElfWriter
 	};
 	typedef std::vector<LoadSegment_t*> LoadSegmentVector_t;
 	
-	typedef std::map<libIRDB::virtual_offset_t, PageData_t> PageMap_t;
+	typedef std::map<IRDB_SDK::VirtualOffset_t, PageData_t> PageMap_t;
 
 	public: 
-		ElfWriter(libIRDB::FileIR_t* firp, bool write_sections, bool bss_opts) : m_firp(firp), m_write_sections(write_sections), m_bss_opts(bss_opts) { }
+		ElfWriter(IRDB_SDK::FileIR_t* firp, bool write_sections, bool bss_opts) : m_firp(firp), m_write_sections(write_sections), m_bss_opts(bss_opts) { }
 		virtual ~ElfWriter() {}
-		void Write(const ELFIO::elfio *elfiop, libIRDB::FileIR_t* firp, const std::string &out_file, const std::string &infile);
+		void Write(const ELFIO::elfio *elfiop, IRDB_SDK::FileIR_t* firp, const std::string &out_file, const std::string &infile);
 
 
 	protected:
 
-		virtual int GetFileHeaderSize()=0;
-		virtual int GetSegHeaderSize()=0;
+		virtual int getFileHeaderSize()=0;
+		virtual int getSegHeaderSize()=0;
 		virtual void LoadEhdr(FILE* fin)=0;
 		virtual void LoadPhdrs(FILE* fin)=0;
-		virtual void CreateNewPhdrs(const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr)=0;
+		virtual void CreateNewPhdrs(const IRDB_SDK::VirtualOffset_t &min_addr, const IRDB_SDK::VirtualOffset_t &max_addr)=0;
 		virtual void WriteElf(FILE* fout)=0;
 		virtual void AddSections(FILE* fout)=0;
 	
@@ -122,15 +122,15 @@ class ElfWriter
 
 
 	protected:
-		libIRDB::FileIR_t* m_firp;
+		IRDB_SDK::FileIR_t* m_firp;
 		bool m_write_sections;
 		bool m_bss_opts;
 	private:
-		libIRDB::virtual_offset_t DetectMinAddr(const ELFIO::elfio *elfiop, libIRDB::FileIR_t* firp, const std::string &out_file);
-		libIRDB::virtual_offset_t DetectMaxAddr(const ELFIO::elfio *elfiop, libIRDB::FileIR_t* firp, const std::string &out_file);
+		IRDB_SDK::VirtualOffset_t DetectMinAddr(const ELFIO::elfio *elfiop, IRDB_SDK::FileIR_t* firp, const std::string &out_file);
+		IRDB_SDK::VirtualOffset_t DetectMaxAddr(const ELFIO::elfio *elfiop, IRDB_SDK::FileIR_t* firp, const std::string &out_file);
 
-		void CreatePagemap(const ELFIO::elfio *elfiop, libIRDB::FileIR_t* firp, const std::string &out_file);
-		void CreateSegmap(const ELFIO::elfio *elfiop, libIRDB::FileIR_t* firp, const std::string &out_file);
+		void CreatePagemap(const ELFIO::elfio *elfiop, IRDB_SDK::FileIR_t* firp, const std::string &out_file);
+		void CreateSegmap(const ELFIO::elfio *elfiop, IRDB_SDK::FileIR_t* firp, const std::string &out_file);
 		void SortSegmap();
 
 
@@ -147,32 +147,32 @@ class ElfWriterImpl : public ElfWriter
 {
 	public:
 
-		ElfWriterImpl(libIRDB::FileIR_t* firp, bool write_sections, bool bss_opts ) : ElfWriter(firp, write_sections, bss_opts) { } 
+		ElfWriterImpl(IRDB_SDK::FileIR_t* firp, bool write_sections, bool bss_opts ) : ElfWriter(firp, write_sections, bss_opts) { } 
 	
 	protected:
-		int GetFileHeaderSize()  { return sizeof(T_Elf_Ehdr); } 
-		int GetSegHeaderSize()  { return sizeof(T_Elf_Phdr); } 
+		int getFileHeaderSize()  { return sizeof(T_Elf_Ehdr); } 
+		int getSegHeaderSize()  { return sizeof(T_Elf_Phdr); } 
 		void LoadEhdr(FILE* fin);
 		void LoadPhdrs(FILE* fin);
-		void CreateNewPhdrs(const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr);
-		bool CreateNewPhdrs_PostAllocate(const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr);
-		bool CreateNewPhdrs_FirstPageAllocate(const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr) ;
-		bool readonly_space_at(const libIRDB::virtual_offset_t addr, const unsigned int size);
-		int locate_segment_index(const libIRDB::virtual_offset_t addr);
+		void CreateNewPhdrs(const IRDB_SDK::VirtualOffset_t &min_addr, const IRDB_SDK::VirtualOffset_t &max_addr);
+		bool CreateNewPhdrs_PostAllocate(const IRDB_SDK::VirtualOffset_t &min_addr, const IRDB_SDK::VirtualOffset_t &max_addr);
+		bool CreateNewPhdrs_FirstPageAllocate(const IRDB_SDK::VirtualOffset_t &min_addr, const IRDB_SDK::VirtualOffset_t &max_addr) ;
+		bool readonly_space_at(const IRDB_SDK::VirtualOffset_t addr, const unsigned int size);
+		int locate_segment_index(const IRDB_SDK::VirtualOffset_t addr);
 		unsigned int count_filesz_to_seg(unsigned int seg);
-		bool CreateNewPhdrs_GapAllocate(const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr);
-		bool CreateNewPhdrs_PreAllocate(const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr);
+		bool CreateNewPhdrs_GapAllocate(const IRDB_SDK::VirtualOffset_t &min_addr, const IRDB_SDK::VirtualOffset_t &max_addr);
+		bool CreateNewPhdrs_PreAllocate(const IRDB_SDK::VirtualOffset_t &min_addr, const IRDB_SDK::VirtualOffset_t &max_addr);
 		bool CreateNewPhdrs_internal(
-			const libIRDB::virtual_offset_t &min_addr, 
-			const libIRDB::virtual_offset_t &max_addr,
+			const IRDB_SDK::VirtualOffset_t &min_addr, 
+			const IRDB_SDK::VirtualOffset_t &max_addr,
 			const int &first_seg_file_offset,
 			const bool &add_pt_load_for_phdr,
 			const size_t phdr_map_offset,
-			libIRDB::virtual_offset_t new_phdr_addr
+			IRDB_SDK::VirtualOffset_t new_phdr_addr
 			);
-		libIRDB::DataScoop_t* find_scoop_by_name(const std::string& name, libIRDB::FileIR_t* );
+		IRDB_SDK::DataScoop_t* find_scoop_by_name(const std::string& name, IRDB_SDK::FileIR_t* );
 		void AddSections(FILE* fout);
-		void update_phdr_for_scoop_sections(libIRDB::FileIR_t* );
+		void update_phdr_for_scoop_sections(IRDB_SDK::FileIR_t* );
 		void WriteElf(FILE* fout);
 	private:
 		unsigned int DetermineMaxPhdrSize();

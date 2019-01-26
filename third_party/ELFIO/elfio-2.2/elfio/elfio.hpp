@@ -491,7 +491,7 @@ class elfio
                 sections_[i]->save( f, headerPosition, (std::streamoff)current_file_pos );
 
                 if ( SHT_NOBITS != sections_[i]->get_type() &&
-                     SHT_NULL   != sections_[i]->get_type() ) {
+                     SHT_nullptr   != sections_[i]->get_type() ) {
                     current_file_pos += sections_[i]->get_size();
                 }
             }
@@ -530,7 +530,7 @@ class elfio
                 }
                 sec->save( f, headerPosition, (std::streamoff)current_data_pos );
 
-                if ( SHT_NOBITS != sec->get_type() && SHT_NULL != sec->get_type() ) {
+                if ( SHT_NOBITS != sec->get_type() && SHT_nullptr != sec->get_type() ) {
                     current_data_pos += sec->get_size();
                 }
                 else {

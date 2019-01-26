@@ -346,7 +346,7 @@ typedef uint64_t Elf64_Off;
 #define SHN_HIRESERVE 0xFFFF
 
 // Section types
-#define SHT_NULL                   0
+#define SHT_nullptr                   0
 #define SHT_PROGBITS               1
 #define SHT_SYMTAB                 2
 #define SHT_STRTAB                 3
@@ -473,7 +473,7 @@ typedef uint64_t Elf64_Off;
 #define R_X86_64_GNU_VTENTRY    251
 
 // Segment types
-#define PT_NULL             0
+#define PT_nullptr             0
 #define PT_LOAD             1
 #define PT_DYNAMIC          2
 #define PT_INTERP           3
@@ -494,7 +494,7 @@ typedef uint64_t Elf64_Off;
 #define PF_MASKPROC 0xf0000000 // Unspecified
 
 // Dynamic Array Tags
-#define DT_NULL              0
+#define DT_nullptr              0
 #define DT_NEEDED            1
 #define DT_PLTRELSZ          2
 #define DT_PLTGOT            3

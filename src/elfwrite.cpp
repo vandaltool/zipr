@@ -1,6 +1,6 @@
 
 #include <zipr_all.h>
-#include <libIRDB-core.hpp> 
+#include <irdb-core>
 #include <Rewrite_Utility.hpp>
 #include <iostream>
 #include <stdlib.h> 
@@ -19,7 +19,7 @@
 #include "elfio/elfio_dump.hpp"
 //#include "beaengine/BeaEngine.h"
 
-using namespace libIRDB;
+using namespace IRDB_SDK;
 using namespace std;
 using namespace zipr;
 using namespace ELFIO;
@@ -42,8 +42,8 @@ void ElfWriter::Write(const ELFIO::elfio *elfiop, FileIR_t* firp, const string &
 	CreatePagemap(elfiop, firp, out_file);
 	CreateSegmap(elfiop, firp, out_file);
 	//SortSegmap();
-	virtual_offset_t min_addr=DetectMinAddr(elfiop, firp, out_file);
-	virtual_offset_t max_addr=DetectMaxAddr(elfiop, firp, out_file);
+	VirtualOffset_t min_addr=DetectMinAddr(elfiop, firp, out_file);
+	VirtualOffset_t max_addr=DetectMaxAddr(elfiop, firp, out_file);
 
 	LoadEhdr(fin);
 	LoadPhdrs(fin);
@@ -57,30 +57,30 @@ void ElfWriter::Write(const ELFIO::elfio *elfiop, FileIR_t* firp, const string &
 
 }
 
-virtual_offset_t ElfWriter::DetectMinAddr(const ELFIO::elfio *elfiop, FileIR_t* firp, const string &out_file)
+VirtualOffset_t ElfWriter::DetectMinAddr(const ELFIO::elfio *elfiop, FileIR_t* firp, const string &out_file)
 {
-	virtual_offset_t min_addr=(*(firp->GetDataScoops().begin()))->GetStart()->GetVirtualOffset();
-	for(DataScoopSet_t::iterator it=firp->GetDataScoops().begin(); it!=firp->GetDataScoops().end(); ++it)
+	VirtualOffset_t min_addr=(*(firp->getDataScoops().begin()))->getStart()->getVirtualOffset();
+	for(DataScoopSet_t::iterator it=firp->getDataScoops().begin(); it!=firp->getDataScoops().end(); ++it)
 	{
 		DataScoop_t* scoop=*it;
 
-		if(scoop->GetStart()->GetVirtualOffset() < min_addr)
-			min_addr=scoop->GetStart()->GetVirtualOffset();
+		if(scoop->getStart()->getVirtualOffset() < min_addr)
+			min_addr=scoop->getStart()->getVirtualOffset();
 
 	}
 	return min_addr;
 
 }
 
-virtual_offset_t ElfWriter::DetectMaxAddr(const ELFIO::elfio *elfiop, FileIR_t* firp, const string &out_file)
+VirtualOffset_t ElfWriter::DetectMaxAddr(const ELFIO::elfio *elfiop, FileIR_t* firp, const string &out_file)
 {
-	virtual_offset_t max_addr=(*(firp->GetDataScoops().begin()))->GetEnd()->GetVirtualOffset();
-	for(DataScoopSet_t::iterator it=firp->GetDataScoops().begin(); it!=firp->GetDataScoops().end(); ++it)
+	VirtualOffset_t max_addr=(*(firp->getDataScoops().begin()))->getEnd()->getVirtualOffset();
+	for(DataScoopSet_t::iterator it=firp->getDataScoops().begin(); it!=firp->getDataScoops().end(); ++it)
 	{
 		DataScoop_t* scoop=*it;
 
-		if(scoop->GetEnd()->GetVirtualOffset() > max_addr)
-			max_addr=scoop->GetEnd()->GetVirtualOffset();
+		if(scoop->getEnd()->getVirtualOffset() > max_addr)
+			max_addr=scoop->getEnd()->getVirtualOffset();
 
 	}
 	return max_addr;
@@ -90,27 +90,27 @@ virtual_offset_t ElfWriter::DetectMaxAddr(const ELFIO::elfio *elfiop, FileIR_t* 
 void ElfWriter::CreatePagemap(const ELFIO::elfio *elfiop, FileIR_t* firp, const string &out_file)
 {
 
-	for(DataScoopSet_t::iterator it=firp->GetDataScoops().begin(); it!=firp->GetDataScoops().end(); ++it)
+	for(DataScoopSet_t::iterator it=firp->getDataScoops().begin(); it!=firp->getDataScoops().end(); ++it)
 	{
 		DataScoop_t* scoop=*it;
 
-		AddressID_t* scoop_addr=scoop->GetStart();
-		virtual_offset_t start_addr=scoop_addr->GetVirtualOffset();
-		virtual_offset_t end_addr=scoop->GetEnd()->GetVirtualOffset();
+		AddressID_t* scoop_addr=scoop->getStart();
+		VirtualOffset_t start_addr=scoop_addr->getVirtualOffset();
+		VirtualOffset_t end_addr=scoop->getEnd()->getVirtualOffset();
 
 		// we'll deal with unpinned scoops later.
-		if(scoop_addr->GetVirtualOffset()==0)
+		if(scoop_addr->getVirtualOffset()==0)
 		{
 			assert(0); // none for now?
 			continue;
 		}
 
-		for(virtual_offset_t i=page_align(start_addr); i<=end_addr; i+=PAGE_SIZE)
+		for(VirtualOffset_t i=page_align(start_addr); i<=end_addr; i+=PAGE_SIZE)
 		{
 			PageData_t &pagemap_i=pagemap[i];
-			//cout<<"Writing scoop "<<scoop->GetName()<<" to page: "<<hex<<i<<", perms="<<scoop->getRawPerms()
-			//    << " start="<<hex<< scoop->GetStart()->GetVirtualOffset()
-			//    << " end="<<hex<< scoop->GetEnd()->GetVirtualOffset() <<endl;
+			//cout<<"Writing scoop "<<scoop->getName()<<" to page: "<<hex<<i<<", perms="<<scoop->getRawPerms()
+			//    << " start="<<hex<< scoop->getStart()->getVirtualOffset()
+			//    << " end="<<hex<< scoop->getEnd()->getVirtualOffset() <<endl;
 			pagemap_i.union_permissions(scoop->getRawPerms());
 			pagemap_i.is_relro |= scoop->isRelRo();
 			for(int j=0;j<PAGE_SIZE;j++)
@@ -122,11 +122,11 @@ void ElfWriter::CreatePagemap(const ELFIO::elfio *elfiop, FileIR_t* firp, const 
 					continue;
 
 				// get the data out of the scoop and put it into the page map.
-				virtual_offset_t offset=i+j-start_addr;
-				if(offset<scoop->GetContents().size())
+				VirtualOffset_t offset=i+j-start_addr;
+				if(offset<scoop->getContents().size())
 				{
-					// cout<<"Updating page["<<hex<<i<<"+"<<j<<"("<<(i+j)<<")]="<<hex<<(int)scoop->GetContents()[ offset ]<<endl; 
-					pagemap_i.data[j]=scoop->GetContents()[ offset ]; 
+					// cout<<"Updating page["<<hex<<i<<"+"<<j<<"("<<(i+j)<<")]="<<hex<<(int)scoop->getContents()[ offset ]<<endl; 
+					pagemap_i.data[j]=scoop->getContents()[ offset ]; 
 					pagemap_i.inuse[j]=true;
 				}
 			}
@@ -267,7 +267,7 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr, T_Elf_Sym, T_Elf
 
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
 void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr, T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::CreateNewPhdrs(
-	const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr) 
+	const IRDB_SDK::VirtualOffset_t &min_addr, const IRDB_SDK::VirtualOffset_t &max_addr) 
 {
 	
 	if(CreateNewPhdrs_GapAllocate(min_addr, max_addr))
@@ -300,7 +300,7 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr, T_Elf_Sym, T_Elf
 
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
 bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::CreateNewPhdrs_PostAllocate(
-	const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr) 
+	const IRDB_SDK::VirtualOffset_t &min_addr, const IRDB_SDK::VirtualOffset_t &max_addr) 
 {
 	// post allocation not enabled, yet.
 	return false;
@@ -308,7 +308,7 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
 bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::CreateNewPhdrs_FirstPageAllocate(
-	const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr) 
+	const IRDB_SDK::VirtualOffset_t &min_addr, const IRDB_SDK::VirtualOffset_t &max_addr) 
 {
 	// check to see if there's room on the first page for 
 	unsigned int phdr_size=DetermineMaxPhdrSize();
@@ -323,12 +323,12 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
 bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr, T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::readonly_space_at(
-	const libIRDB::virtual_offset_t addr, const unsigned int size)
+	const IRDB_SDK::VirtualOffset_t addr, const unsigned int size)
 {
 	for(unsigned int i=0;i<size;i++)
 	{
-		libIRDB::virtual_offset_t page=page_align(addr+i);
-		libIRDB::virtual_offset_t page_offset=addr+i-page;
+		IRDB_SDK::VirtualOffset_t page=page_align(addr+i);
+		IRDB_SDK::VirtualOffset_t page_offset=addr+i-page;
 	
 		// page not allocated yet, go ahead and call this byte free.
 		if(pagemap.find(page) == pagemap.end())
@@ -345,7 +345,7 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr, T_Elf_Shdr,T_Elf_Sym, T_Elf
 }
 
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
-int ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::locate_segment_index(const libIRDB::virtual_offset_t addr)
+int ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::locate_segment_index(const IRDB_SDK::VirtualOffset_t addr)
 {
 	// segment's are sorted by address.
 	for(unsigned int i=0;i<segvec.size();i++)
@@ -379,7 +379,7 @@ unsigned int ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym
 
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
 bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::CreateNewPhdrs_GapAllocate(
-	const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr) 
+	const IRDB_SDK::VirtualOffset_t &min_addr, const IRDB_SDK::VirtualOffset_t &max_addr) 
 {
 	/* for shared objects, we need the PHDR file offset to be equal to the  
 	 * memory offset because the kernel passes base_address+Ehdr::ph_off via
@@ -393,7 +393,7 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 
 	// first, find the first free space that's big enough.
 	unsigned int phdr_size=DetermineMaxPhdrSize();
-	libIRDB::virtual_offset_t new_phdr_addr=0;
+	IRDB_SDK::VirtualOffset_t new_phdr_addr=0;
 	for(unsigned int i=min_addr;i<max_addr; i++)
 	{
 		if(readonly_space_at(i,phdr_size))
@@ -422,8 +422,8 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 	int pages_to_extend=0;	// extend the segment by a page.
 	for(unsigned int i=0;i<phdr_size; i++)
 	{
-		libIRDB::virtual_offset_t this_addr=new_phdr_addr+i;
-		libIRDB::virtual_offset_t this_page=page_align(this_addr);
+		IRDB_SDK::VirtualOffset_t this_addr=new_phdr_addr+i;
+		IRDB_SDK::VirtualOffset_t this_page=page_align(this_addr);
 		// find segment for phdr+i
 		int seg=locate_segment_index(this_addr);
 
@@ -455,9 +455,9 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 	// mark the bytes of the pages as readable, and in-use.
 	for(unsigned int i=0;i<phdr_size; i++)
 	{
-		libIRDB::virtual_offset_t this_addr=new_phdr_addr+i;
-		libIRDB::virtual_offset_t this_page=page_align(this_addr);
-		libIRDB::virtual_offset_t this_offset=this_addr-this_page;
+		IRDB_SDK::VirtualOffset_t this_addr=new_phdr_addr+i;
+		IRDB_SDK::VirtualOffset_t this_page=page_align(this_addr);
+		IRDB_SDK::VirtualOffset_t this_offset=this_addr-this_page;
 		pagemap[this_page].inuse[this_offset]=true;
 		pagemap[this_page].union_permissions(0x4); // add read permission
 	}
@@ -473,7 +473,7 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
 bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::CreateNewPhdrs_PreAllocate(
-	const libIRDB::virtual_offset_t &min_addr, const libIRDB::virtual_offset_t &max_addr) 
+	const IRDB_SDK::VirtualOffset_t &min_addr, const IRDB_SDK::VirtualOffset_t &max_addr) 
 {
 	auto phdr_size=DetermineMaxPhdrSize();
 	auto aligned_phdr_size=page_round_up(phdr_size);
@@ -485,21 +485,21 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 	if(total_header_size > min_addr)
 		return false;
 
-	libIRDB::virtual_offset_t new_phdr_addr=(T_Elf_Addr)page_align(min_addr)-PAGE_SIZE+sizeof(T_Elf_Ehdr);
+	IRDB_SDK::VirtualOffset_t new_phdr_addr=(T_Elf_Addr)page_align(min_addr)-PAGE_SIZE+sizeof(T_Elf_Ehdr);
 	return CreateNewPhdrs_internal(min_addr,max_addr,aligned_phdr_size,true, sizeof(T_Elf_Ehdr), new_phdr_addr);
 }
 
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
 DataScoop_t* ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::find_scoop_by_name(const string& name, FileIR_t* firp)
 {
-	for(DataScoopSet_t::iterator it=firp->GetDataScoops().begin(); it!=firp->GetDataScoops().end(); ++it)
+	for(DataScoopSet_t::iterator it=firp->getDataScoops().begin(); it!=firp->getDataScoops().end(); ++it)
 	{
 		DataScoop_t* scoop=*it;
-		if(scoop->GetName()==name)
+		if(scoop->getName()==name)
 			return scoop;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
@@ -534,10 +534,10 @@ void  ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf
 
 				if(scoop)
 				{
-					new_phdrs[i].p_vaddr=scoop->GetStart()->GetVirtualOffset();
-					new_phdrs[i].p_paddr=scoop->GetStart()->GetVirtualOffset();
-					new_phdrs[i].p_filesz= scoop->GetEnd()->GetVirtualOffset() - scoop->GetStart()->GetVirtualOffset() + 1;
-					new_phdrs[i].p_memsz = scoop->GetEnd()->GetVirtualOffset() - scoop->GetStart()->GetVirtualOffset() + 1;
+					new_phdrs[i].p_vaddr=scoop->getStart()->getVirtualOffset();
+					new_phdrs[i].p_paddr=scoop->getStart()->getVirtualOffset();
+					new_phdrs[i].p_filesz= scoop->getEnd()->getVirtualOffset() - scoop->getStart()->getVirtualOffset() + 1;
+					new_phdrs[i].p_memsz = scoop->getEnd()->getVirtualOffset() - scoop->getStart()->getVirtualOffset() + 1;
 
 					new_phdrs[i].p_offset=0;
 					for(unsigned j=0;j<new_phdrs.size(); j++)
@@ -559,12 +559,12 @@ void  ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf
 
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
 bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::CreateNewPhdrs_internal(
-	const libIRDB::virtual_offset_t &min_addr, 
-	const libIRDB::virtual_offset_t &max_addr,
+	const IRDB_SDK::VirtualOffset_t &min_addr, 
+	const IRDB_SDK::VirtualOffset_t &max_addr,
 	const int &first_seg_file_offset,
 	const bool &add_pt_load_for_phdr,
 	const size_t phdr_map_offset,
-	libIRDB::virtual_offset_t new_phdr_addr
+	IRDB_SDK::VirtualOffset_t new_phdr_addr
 	) 
 {
 	
@@ -656,7 +656,7 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 
 		auto size=newheaderphdr.p_vaddr+newheaderphdr.p_memsz; 
 		auto start_addr=newheaderphdr.p_vaddr;
-		for(virtual_offset_t i=page_align(newheaderphdr.p_vaddr); i<newheaderphdr.p_vaddr+newheaderphdr.p_memsz; i+=PAGE_SIZE)
+		for(VirtualOffset_t i=page_align(newheaderphdr.p_vaddr); i<newheaderphdr.p_vaddr+newheaderphdr.p_memsz; i+=PAGE_SIZE)
 		{
 			cout<<"Updating pagemap for new phdr. To page: "<<hex<<i<<", perms="<<newheaderphdr.p_flags
 			    << " start="<<hex<< newheaderphdr.p_vaddr
@@ -686,8 +686,8 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 	newphdrphdr.p_offset =phdr_map_offset;
 	newphdrphdr.p_vaddr = new_phdr_addr;
 	newphdrphdr.p_paddr = new_phdr_addr;
-	newphdrphdr.p_filesz =(ELFIO::Elf_Xword)(new_phdrs.size()+1)*GetSegHeaderSize();
-	newphdrphdr.p_memsz =(ELFIO::Elf_Xword)(new_phdrs.size()+1)*GetSegHeaderSize();
+	newphdrphdr.p_filesz =(ELFIO::Elf_Xword)(new_phdrs.size()+1)*getSegHeaderSize();
+	newphdrphdr.p_memsz =(ELFIO::Elf_Xword)(new_phdrs.size()+1)*getSegHeaderSize();
 	newphdrphdr.p_align =0x1000;
 	new_phdrs.insert(new_phdrs.begin(),newphdrphdr);
 
@@ -818,37 +818,37 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 	vector<T_Elf_Shdr> shdrs;
 
 	// add each scoop name to the string table
-	for_each(m_firp->GetDataScoops().begin(), m_firp->GetDataScoops().end(), [&](DataScoop_t* scoop)
+	for_each(m_firp->getDataScoops().begin(), m_firp->getDataScoops().end(), [&](DataScoop_t* scoop)
 	{
-		strtab.AddString(scoop->GetName());
+		strtab.AddString(scoop->getName());
 	});
 
 
 	string zipr_symtab=".scoop_symtab";
 	strtab.AddString(zipr_symtab);
-	string null_symtab="NULL";
+	string null_symtab="nullptr";
 	strtab.AddString(null_symtab);
 
 
 	// locate a file offset for each scoop by examining the output phdrs.
-	for_each(m_firp->GetDataScoops().begin(), m_firp->GetDataScoops().end(), [&](DataScoop_t* scoop)
+	for_each(m_firp->getDataScoops().begin(), m_firp->getDataScoops().end(), [&](DataScoop_t* scoop)
 	{
 		auto finder=find_if(new_phdrs.begin(), new_phdrs.end(), [scoop](const T_Elf_Phdr& phdr)
 		{
-			return (phdr.p_vaddr <= scoop->GetStart()->GetVirtualOffset() && 
-				scoop->GetStart()->GetVirtualOffset() < phdr.p_vaddr+phdr.p_memsz);
+			return (phdr.p_vaddr <= scoop->getStart()->getVirtualOffset() && 
+				scoop->getStart()->getVirtualOffset() < phdr.p_vaddr+phdr.p_memsz);
 	 	});
 		// assert we found it.
 		assert(finder!=new_phdrs.end());
 		const T_Elf_Phdr& phdr=*finder;
 
-		size_t filepos=phdr.p_offset + (scoop->GetStart()->GetVirtualOffset()-phdr.p_vaddr);
+		size_t filepos=phdr.p_offset + (scoop->getStart()->getVirtualOffset()-phdr.p_vaddr);
 		file_positions[scoop]=filepos;
 	});
 
 	T_Elf_Shdr null_shdr;
 	memset(&null_shdr,0,sizeof(null_shdr));
-	null_shdr.sh_type=SHT_NULL;
+	null_shdr.sh_type=SHT_nullptr;
 	null_shdr. sh_name =strtab.location(null_symtab);
 
 	shdrs.push_back(null_shdr);
@@ -882,19 +882,19 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 
 
 	// for each scoop, pushback an shdr
-	for_each(m_firp->GetDataScoops().begin(), m_firp->GetDataScoops().end(), [&](DataScoop_t* scoop)
+	for_each(m_firp->getDataScoops().begin(), m_firp->getDataScoops().end(), [&](DataScoop_t* scoop)
 	{
 
 		T_Elf_Shdr shdr;
-		shdr. sh_name =strtab.location(scoop->GetName());
+		shdr. sh_name =strtab.location(scoop->getName());
 
 		auto it=find_if(begin(section_type_map), end(section_type_map), [&scoop](const section_type_map_t &sm)	
 				{
-					return scoop->GetName()==sm.name;
+					return scoop->getName()==sm.name;
 				});
 		if(end(section_type_map) != it)
 		{
-			cout<<"Setting ent-size for "<<scoop->GetName()<<" to "<<dec<<it->sh_ent_size<<endl;
+			cout<<"Setting ent-size for "<<scoop->getName()<<" to "<<dec<<it->sh_ent_size<<endl;
 			shdr. sh_type = it->type;	// sht_progbits, sht, sht_strtab, sht_symtab, ...
 			shdr. sh_entsize = it->sh_ent_size;	
 		}
@@ -908,29 +908,29 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 			shdr. sh_flags |= SHF_EXECINSTR; 
 		if(scoop->isWriteable())
 			shdr. sh_flags |= SHF_WRITE; 
-		shdr. sh_addr = scoop->GetStart()->GetVirtualOffset();
+		shdr. sh_addr = scoop->getStart()->getVirtualOffset();
 		shdr. sh_offset =file_positions[scoop];
-		shdr. sh_size = scoop->GetEnd()->GetVirtualOffset() - scoop->GetStart()->GetVirtualOffset() + 1;
+		shdr. sh_size = scoop->getEnd()->getVirtualOffset() - scoop->getStart()->getVirtualOffset() + 1;
 		shdr. sh_link = SHN_UNDEF;	
 		shdr. sh_info = 0 ;
-		shdr. sh_addralign= 0 ; // scoop->GetAlign(); doesn't exist?
+		shdr. sh_addralign= 0 ; // scoop->getAlign(); doesn't exist?
 	
 		shdrs.push_back(shdr);
 	});
-	auto scoop_it=m_firp->GetDataScoops().begin();
+	auto scoop_it=m_firp->getDataScoops().begin();
 	for(unsigned int i=1; i<shdrs.size(); i++)	 // skip null shdr
 	{
  		T_Elf_Shdr & shdr = shdrs[i];
 		auto map_it=find_if(begin(section_type_map), end(section_type_map), [&scoop_it](const section_type_map_t &sm)	
 			{
-				return (*scoop_it)->GetName()==sm.name;
+				return (*scoop_it)->getName()==sm.name;
 			});
 		if(end(section_type_map) != map_it && map_it->link!="")
 		{
-			auto link_it=m_firp->GetDataScoops().begin();
+			auto link_it=m_firp->getDataScoops().begin();
 			for(unsigned int j=1; j<shdrs.size(); j++) // skip null shdr
 			{
-				if((*link_it)->GetName() == map_it->link)
+				if((*link_it)->getName() == map_it->link)
 				{
 					shdr.sh_link=j;
 					break;

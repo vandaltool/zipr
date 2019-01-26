@@ -7,11 +7,13 @@ namespace zipr
 
 
 using namespace zipr ;
+using namespace IRDB_SDK;
+
 
 static bool is_tbz_type(Instruction_t* insn)
 {
-	const auto d=DecodedInstruction_t(insn);
-	return d.getMnemonic()=="tbz" || d.getMnemonic()=="tbnz";
+	const auto d=DecodedInstruction_t::factory(insn);
+	return d->getMnemonic()=="tbz" || d->getMnemonic()=="tbnz";
 
 }
 
@@ -55,7 +57,7 @@ RangeAddress_t ZiprSizerARM64_t::TBZPlopDollopEntryWithTarget(
 	const auto branch_bytes=string("\x00\x00\x00\x014",4);
 
 	// put the tbz first.
-	memory_space.PlopBytes(addr, insn->GetDataBits().c_str(), 4);
+	memory_space.PlopBytes(addr, insn->getDataBits().c_str(), 4);
 	m_zipr_obj.GetPatcher()->ApplyPatch(addr,addr+8);// make it jump to L2
 
 	// now drop down a uncond jump for L1, and make it go to L3
@@ -82,7 +84,7 @@ RangeAddress_t ZiprSizerARM64_t::DefaultPlopDollopEntryWithTarget(
 	const auto insn        = entry->Instruction();
 
 	// plop instruction an d make it target the right address.
-	memory_space.PlopBytes(addr, insn->GetDataBits().c_str(), 4);
+	memory_space.PlopBytes(addr, insn->getDataBits().c_str(), 4);
 	m_zipr_obj.GetPatcher()->ApplyPatch(addr, target_addr);
 
 	return addr+4;

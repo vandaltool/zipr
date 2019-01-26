@@ -65,8 +65,8 @@ class Sled_t
 			 *        <--------------->
 			 *             existing
 			 */
-			return candidate.SledRange().GetStart() <= m_range.GetEnd() &&
-			       candidate.SledRange().GetEnd() >= m_range.GetStart();
+			return candidate.SledRange().getStart() <= m_range.getEnd() &&
+			       candidate.SledRange().getEnd() >= m_range.getStart();
 		}
 		void MergeSledJumpPoints(Sled_t merging)
 		{
@@ -95,17 +95,17 @@ class Sled_t
 			 *        <--------------->
 			 *             existing
 			 */
-			assert(merging.SledRange().GetStart() <= m_range.GetEnd() &&
-			       merging.SledRange().GetEnd() >= m_range.GetStart());
+			assert(merging.SledRange().getStart() <= m_range.getEnd() &&
+			       merging.SledRange().getEnd() >= m_range.getStart());
 
 			/*
 			 * First, extend our range.
 			 */
-			m_range.SetStart(std::min(merging.SledRange().GetStart(),
-			                          m_range.GetStart()));
+			m_range.SetStart(std::min(merging.SledRange().getStart(),
+			                          m_range.getStart()));
 
-			m_range.SetEnd(std::max(merging.SledRange().GetEnd(),
-			                          m_range.GetEnd()));
+			m_range.SetEnd(std::max(merging.SledRange().getEnd(),
+			                          m_range.getEnd()));
 
 			/*
 			 * Second, merge in the jump points to this one.
@@ -113,11 +113,11 @@ class Sled_t
 			MergeSledJumpPoints(merging);
 		}
 
-		libIRDB::Instruction_t *Disambiguation(void) const
+		IRDB_SDK::Instruction_t *Disambiguation(void) const
 		{
 			return m_disambiguation;
 		}
-		void Disambiguation(libIRDB::Instruction_t *disambiguation)
+		void Disambiguation(IRDB_SDK::Instruction_t *disambiguation)
 		{
 			m_disambiguation = disambiguation;
 		}
@@ -147,7 +147,7 @@ class Sled_t
 
 	private:
 		const Zipr_SDK::MemorySpace_t &m_memory_space;
-		libIRDB::Instruction_t *m_disambiguation;
+		IRDB_SDK::Instruction_t *m_disambiguation;
 		std::set<RangeAddress_t> m_jmp_pts;
 		Range_t m_range;
 		bool m_verbose;
@@ -156,14 +156,14 @@ class Sled_t
 inline std::ostream &operator<<(std::ostream &out, const Sled_t &sled)
 {
 	return out << "Sled (" 
-	           << std::hex << sled.m_range.GetStart()
-	           << std::hex << " - " << sled.m_range.GetEnd()
+	           << std::hex << sled.m_range.getStart()
+	           << std::hex << " - " << sled.m_range.getEnd()
 	           << ") with disambiguation "
 	           << std::hex << sled.Disambiguation();
 }
 inline bool operator<(const Sled_t &lhs, const Sled_t &rhs)
 {
-	return lhs.SledRange().GetStart() < rhs.SledRange().GetStart();
+	return lhs.SledRange().getStart() < rhs.SledRange().getStart();
 }
 
 #endif //sled_h

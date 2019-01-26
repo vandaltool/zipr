@@ -42,7 +42,7 @@
 
 using namespace std;
 using namespace Zipr_SDK;
-using namespace libIRDB;
+using namespace IRDB_SDK;
 using namespace zipr;
 
 
@@ -195,13 +195,13 @@ void ZiprPluginManager_t::open_plugins
 
     	DIR *dp;
     	struct dirent *dirp;
-    	if((dp  = opendir(dir.c_str())) == NULL) 
+    	if((dp  = opendir(dir.c_str())) == nullptr) 
 	{
         	cout << "Error(" << errno << ") opening plugins directory: " << dir << endl;
 		exit(1);
     	}
 
-    	while ((dirp = readdir(dp)) != NULL) 
+    	while ((dirp = readdir(dp)) != nullptr) 
 	{
 		string basename = string(dirp->d_name);
 		string name=dir+basename;

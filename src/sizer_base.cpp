@@ -11,16 +11,16 @@ namespace zipr
 #include <Rewrite_Utility.hpp>
 
 using namespace std;
-using namespace libIRDB;
+using namespace IRDB_SDK;
 using namespace zipr;
 
 
 unique_ptr<ZiprSizerBase_t> ZiprSizerBase_t::factory(Zipr_SDK::Zipr_t* p_zipr_obj)
 {
-	auto l_firp=p_zipr_obj->GetFileIR();
-	auto ret= l_firp->GetArchitecture()->getMachineType() == admtX86_64   ?  (ZiprSizerBase_t*)new ZiprSizerX86_t  (p_zipr_obj) :
-	          l_firp->GetArchitecture()->getMachineType() == admtI386     ?  (ZiprSizerBase_t*)new ZiprSizerX86_t  (p_zipr_obj) :
-	          l_firp->GetArchitecture()->getMachineType() == admtAarch64  ?  (ZiprSizerBase_t*)new ZiprSizerARM64_t(p_zipr_obj) :
+	auto l_firp=p_zipr_obj->getFileIR();
+	auto ret= l_firp->getArchitecture()->getMachineType() == admtX86_64   ?  (ZiprSizerBase_t*)new ZiprSizerX86_t  (p_zipr_obj) :
+	          l_firp->getArchitecture()->getMachineType() == admtI386     ?  (ZiprSizerBase_t*)new ZiprSizerX86_t  (p_zipr_obj) :
+	          l_firp->getArchitecture()->getMachineType() == admtAarch64  ?  (ZiprSizerBase_t*)new ZiprSizerARM64_t(p_zipr_obj) :
 	          throw domain_error("Cannot init architecture");
 
 	return unique_ptr<ZiprSizerBase_t>(ret);
@@ -46,18 +46,18 @@ ZiprSizerBase_t::ZiprSizerBase_t(Zipr_SDK::Zipr_t* p_zipr_obj,
 
 Range_t ZiprSizerBase_t::DoPlacement(const size_t size) const
 {
-	auto new_place=memory_space.GetFreeRange(size+ALIGNMENT-1);	
-	auto aligned_start=(new_place.GetStart()+ALIGNMENT-1)&~(ALIGNMENT-1);
-	return { aligned_start, new_place.GetEnd() };
+	auto new_place=memory_space.getFreeRange(size+ALIGNMENT-1);	
+	auto aligned_start=(new_place.getStart()+ALIGNMENT-1)&~(ALIGNMENT-1);
+	return { aligned_start, new_place.getEnd() };
 }
 
 
 size_t ZiprSizerBase_t::DetermineDollopSizeInclFallthrough(Dollop_t *dollop) const
 {
         size_t fallthroughs_wcds = 0;
-        Dollop_t *fallthrough_it = NULL;
+        Dollop_t *fallthrough_it = nullptr;
         for (fallthrough_it = dollop;
-             fallthrough_it != NULL;
+             fallthrough_it != nullptr;
                          fallthrough_it = fallthrough_it->FallthroughDollop())
         {
                 if (fallthrough_it->IsPlaced())
@@ -68,12 +68,12 @@ size_t ZiprSizerBase_t::DetermineDollopSizeInclFallthrough(Dollop_t *dollop) con
                          */
                         break;
 
-                fallthroughs_wcds += fallthrough_it->GetSize();
+                fallthroughs_wcds += fallthrough_it->getSize();
                 /*
                  * For every dollop that we consolidate,
                  * we will lose TRAMPOLINE_SIZE bytes by
                  * not having to jump to the fallthrough.
-                 * That space is included in GetSize()
+                 * That space is included in getSize()
                  * result, so we subtract it here.
                  */
                 if (fallthrough_it->FallthroughDollop())
