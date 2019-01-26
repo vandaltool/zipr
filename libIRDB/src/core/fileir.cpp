@@ -1765,12 +1765,12 @@ IRDB_SDK::EhCallSite_t* FileIR_t::addEhCallSite_t(IRDB_SDK::Instruction_t* for_i
 IRDB_SDK::Relocation_t* FileIR_t::addNewRelocation(
 	IRDB_SDK::BaseObj_t* p_from_obj,
 	int32_t p_offset,
-	string _type,
+	string p_type,
 	IRDB_SDK::BaseObj_t* p_wrt_obj,
 	int32_t p_addend)
 {
 	const auto from_obj=dynamic_cast<libIRDB::BaseObj_t*>(p_from_obj);
-	auto newreloc=new libIRDB::Relocation_t(BaseObj_t::NOT_IN_DATABASE, p_offset, "type_table_entry", p_wrt_obj, p_addend);
+	auto newreloc=new libIRDB::Relocation_t(BaseObj_t::NOT_IN_DATABASE, p_offset, p_type, p_wrt_obj, p_addend);
 	from_obj->GetRelocations().insert(newreloc);
 	GetRelocations().insert(newreloc);
 	

@@ -119,7 +119,7 @@ class FileIR_t : public BaseObj_t, virtual public IRDB_SDK::FileIR_t
 			const EhProgramListing_t& p_cie_program={},
 			const EhProgramListing_t& p_fde_program={}
 			) ;
-		virtual IRDB_SDK::AddressID_t* addNewAddress(const IRDB_SDK::DatabaseID_t& myfileID, const IRDB_SDK::VirtualOffset_t& voff) ;
+		virtual IRDB_SDK::AddressID_t* addNewAddress(const IRDB_SDK::DatabaseID_t& myfileID, const IRDB_SDK::VirtualOffset_t& voff=0) ;
 		virtual IRDB_SDK::ICFS_t*      addNewICFS   (
 			IRDB_SDK::Instruction_t* insn=nullptr, 
 			const IRDB_SDK::InstructionSet_t& targets={}, 
