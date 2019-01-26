@@ -32,14 +32,14 @@
 #include <zipr_sdk.h>
 #include <string>
 #include <algorithm>
-#include "utils.hpp"
+// #include "utils.hpp"
 #include "Rewrite_Utility.hpp"
 #include "unpin.h"
 #include <memory>
 #include <inttypes.h>
 
 
-using namespace libIRDB;
+using namespace IRDB_SDK;
 using namespace std;
 using namespace Zipr_SDK;
 using namespace ELFIO;
@@ -61,10 +61,10 @@ static std::string findAndReplace(const std::string& in_str, const std::string& 
 
 static bool has_cfi_reloc(Instruction_t* insn)
 {
-	for(auto reloc : insn->GetRelocations())
+	for(auto reloc : insn->getRelocations())
 	{
 		/* check for a nonce relocation */
-		if ( reloc -> GetType().find("cfi_nonce") != string::npos )
+		if ( reloc -> getType().find("cfi_nonce") != string::npos )
 		{
 			return true;
 		}
@@ -85,13 +85,13 @@ ZiprOptionsNamespace_t *Unpin_t::RegisterOptions(ZiprOptionsNamespace_t *global)
 	auto unpin_ns = new ZiprOptionsNamespace_t("unpin");
 	global->AddOption(&m_verbose);
 
-	m_should_cfi_pin.SetDescription("Pin CFI instructions.");
+	m_should_cfi_pin.setDescription("Pin CFI instructions.");
 	unpin_ns->AddOption(&m_should_cfi_pin);
 
-	m_on.SetDescription("Turn unpin plugin on/off.");
+	m_on.setDescription("Turn unpin plugin on/off.");
 	unpin_ns->AddOption(&m_on);
 
-	m_max_unpins.SetDescription("Set how many unpins are allowed, useful for debugging.");
+	m_max_unpins.setDescription("Set how many unpins are allowed, useful for debugging.");
 	unpin_ns->AddOption(&m_max_unpins);
 
 	return unpin_ns;
@@ -113,21 +113,21 @@ void Unpin_t::DoUnpinForFixedCalls()
 	auto insn_unpins=0;
 	auto missed_unpins=0;
 
-	for(auto from_insn : zo->GetFileIR()->GetInstructions())
+	for(auto from_insn : zo->getFileIR()->getInstructions())
 	{
-		for(auto reloc : from_insn->GetRelocations())
+		for(auto reloc : from_insn->getRelocations())
 		{
 			// this probably won't work on shared objects.
 			// complicated with the push64-reloc plugin also rewriting these things?
-			if(reloc->GetType()==string("32-bit") || reloc->GetType()==string("push64"))
+			if(reloc->getType()==string("32-bit") || reloc->getType()==string("push64"))
 			{
 				// skip if there's no WRT, that means it's unpinned for something besides a fixed call.
-				if(reloc->GetWRT()==NULL)
+				if(reloc->getWRT()==NULL)
 					continue;
 
 				// getWRT returns an BaseObj, but this reloc type expects an instruction
 				// safe cast and check.
-				auto wrt_insn=dynamic_cast<Instruction_t*>(reloc->GetWRT());
+				auto wrt_insn=dynamic_cast<Instruction_t*>(reloc->getWRT());
 				assert(wrt_insn);
 		
 				unpins++;
@@ -150,13 +150,13 @@ void Unpin_t::DoUnpinForScoops()
 	auto missed_unpins=0;
 	auto scoop_unpins=0;
 
-	for(auto scoop : zo->GetFileIR()->GetDataScoops())
+	for(auto scoop : zo->getFileIR()->getDataScoops())
 	{
-		for(auto reloc : scoop->GetRelocations())
+		for(auto reloc : scoop->getRelocations())
 		{
-			if(reloc->GetType()==string("data_to_insn_ptr"))
+			if(reloc->getType()==string("data_to_insn_ptr"))
 			{
-				auto insn=dynamic_cast<Instruction_t*>(reloc->GetWRT());
+				auto insn=dynamic_cast<Instruction_t*>(reloc->getWRT());
 				// getWRT returns an BaseObj, but this reloc type expects an instruction
 				// safe cast and check.
 				assert(insn);
@@ -188,14 +188,14 @@ Zipr_SDK::ZiprPreference Unpin_t::RetargetCallback(
 	auto& ms=*zo->GetMemorySpace();
 	auto  insn = callback_entry->Instruction();
 	auto& locMap=*(zo->GetLocationMap());
-	for(auto reloc : insn->GetRelocations())
+	for(auto reloc : insn->getRelocations())
 	{
-		if (reloc->GetType()==string("callback_to_scoop"))
+		if (reloc->getType()==string("callback_to_scoop"))
 		{
-			auto wrt = dynamic_cast<DataScoop_t*>(reloc->GetWRT());
-			auto addend = reloc->GetAddend();
+			auto wrt = dynamic_cast<DataScoop_t*>(reloc->getWRT());
+			auto addend = reloc->getAddend();
 
-			target_address = wrt->GetStart()->GetVirtualOffset() + addend;
+			target_address = wrt->getStart()->getVirtualOffset() + addend;
 		
 			if (m_verbose) {
 				cout << "Unpin::callback_to_scoop: target_addr "
@@ -216,29 +216,29 @@ void Unpin_t::DoUpdate()
 // scan for instructions that were placed, and now need an update.
 void Unpin_t::DoUpdateForInstructions()
 {
-	for(auto from_insn : zo->GetFileIR()->GetInstructions())
+	for(auto from_insn : zo->getFileIR()->getInstructions())
 	{
-		for(auto reloc : from_insn->GetRelocations())
+		for(auto reloc : from_insn->getRelocations())
 		{
 			// this probably won't work on shared objects.
 			// complicated with the push64-reloc plugin also rewriting these things?
-			if(reloc->GetType()==string("32-bit") || reloc->GetType()==string("push64"))
+			if(reloc->getType()==string("32-bit") || reloc->getType()==string("push64"))
 				HandleRetAddrReloc(from_insn,reloc);
 
 			// instruction has a pcrel memory operand.
-			else if(reloc->GetType()==string("pcrel")) //  && reloc->GetWRT()!=NULL)
+			else if(reloc->getType()==string("pcrel")) //  && reloc->getWRT()!=NULL)
 				HandlePcrelReloc(from_insn,reloc);
 
 			// instruction has a absolute  memory operand that needs it's displacement updated.
-			else if(reloc->GetType()==string("absoluteptr_to_scoop"))
+			else if(reloc->getType()==string("absoluteptr_to_scoop"))
 				HandleAbsptrReloc(from_insn,reloc);
 
 			// instruction has an immediate that needs an update.
-			else if(reloc->GetType()==string("immedptr_to_scoop"))
+			else if(reloc->getType()==string("immedptr_to_scoop"))
 				HandleImmedptrReloc(from_insn,reloc);
 
 			// deal with a callback, think this isn't used anymore
-			else if(reloc->GetType()==string("callback_to_scoop"))
+			else if(reloc->getType()==string("callback_to_scoop"))
 				HandleCallbackReloc(from_insn,reloc);
 		}
 	}
@@ -246,27 +246,28 @@ void Unpin_t::DoUpdateForInstructions()
 
 void Unpin_t::DoUpdateForScoops()
 {
-	auto byte_width=zo->GetFileIR()->GetArchitectureBitWidth()/8;
-	for(auto scoop : zo->GetFileIR()->GetDataScoops())
+	auto byte_width=zo->getFileIR()->getArchitectureBitWidth()/8;
+	for(auto scoop : zo->getFileIR()->getDataScoops())
 	{
-		assert(scoop->GetEnd()->GetVirtualOffset() - scoop->GetStart()->GetVirtualOffset()+1 == scoop->GetSize());
-		assert(scoop->GetContents().size() == scoop->GetSize());
-		auto scoop_contents=scoop->GetContents();
+		if(scoop->isExecuteable()) continue;
+		assert(scoop->getEnd()->getVirtualOffset() - scoop->getStart()->getVirtualOffset()+1 == scoop->getSize());
+		assert(scoop->getContents().size() == scoop->getSize());
+		auto scoop_contents=scoop->getContents();
 
-		for(auto reloc : scoop->GetRelocations())
+		for(auto reloc : scoop->getRelocations())
 		{
-			if(reloc->GetType()==string("data_to_insn_ptr"))
+			if(reloc->getType()==string("data_to_insn_ptr"))
 			{
-				virtual_offset_t reloff=reloc->GetOffset();
-				Instruction_t* insn=dynamic_cast<Instruction_t*>(reloc->GetWRT());
+				VirtualOffset_t reloff=reloc->getOffset();
+				Instruction_t* insn=dynamic_cast<Instruction_t*>(reloc->getWRT());
 				// getWRT returns an BaseObj, but this reloc type expects an instruction
 				// safe cast and check.
 				assert(insn);
 				Zipr_SDK::InstructionLocationMap_t &locMap=*(zo->GetLocationMap());
-				libIRDB::virtual_offset_t newLoc=locMap[insn];
+				IRDB_SDK::VirtualOffset_t newLoc=locMap[insn];
 
-				cout<<"Unpin::Unpinned data_to_insn_ptr insn ("<<hex<<insn->GetBaseID()<<":"
-				    <<insn->getDisassembly()<<") with offset="<<hex<<reloc->GetOffset()
+				cout<<"Unpin::Unpinned data_to_insn_ptr insn ("<<hex<<insn->getBaseID()<<":"
+				    <<insn->getDisassembly()<<") with offset="<<hex<<reloc->getOffset()
 				    <<".  Insn moved to "<<hex<<newLoc<<endl;
 
 				bool found=should_cfi_pin(insn);
@@ -279,7 +280,7 @@ void Unpin_t::DoUpdateForScoops()
 				else
 				{
 					// determine how big the ptr is.
-					int ptrsize=zo->GetFileIR()->GetArchitectureBitWidth()/8;
+					int ptrsize=zo->getFileIR()->getArchitectureBitWidth()/8;
 					char addr[ptrsize];
 		
 					// convert it to bytes.
@@ -300,41 +301,41 @@ void Unpin_t::DoUpdateForScoops()
 				}
 				
 			}
-			else if(reloc->GetType()==string("dataptr_to_scoop"))
+			else if(reloc->getType()==string("dataptr_to_scoop"))
 			{
-				DataScoop_t *wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
+				DataScoop_t *wrt=dynamic_cast<DataScoop_t*>(reloc->getWRT());
 				assert(wrt);
 
-				virtual_offset_t val_to_patch=0;
+				VirtualOffset_t val_to_patch=0;
                 		const char* data=scoop_contents.c_str();
 
 				if(byte_width==4)
-					val_to_patch=*(int*)&data[reloc->GetOffset()];
+					val_to_patch=*(int*)&data[reloc->getOffset()];
 				else if(byte_width==8)
-					val_to_patch=*(long long*)&data[reloc->GetOffset()];
+					val_to_patch=*(long long*)&data[reloc->getOffset()];
 				else
 					assert(0);
 
 				// wrt scoop should be placed.
-				assert(wrt->GetStart()->GetVirtualOffset() !=0 );
-				virtual_offset_t new_val_to_patch=val_to_patch + wrt->GetStart()->GetVirtualOffset();
+				assert(wrt->getStart()->getVirtualOffset() !=0 );
+				VirtualOffset_t new_val_to_patch=val_to_patch + wrt->getStart()->getVirtualOffset();
 
                                 if(byte_width==4)
                                 {
                                         unsigned int intnewval=(unsigned int)new_val_to_patch;     // 64->32 narrowing OK. 
-                                        scoop_contents.replace(reloc->GetOffset(), byte_width, (char*)&intnewval, byte_width);
+                                        scoop_contents.replace(reloc->getOffset(), byte_width, (char*)&intnewval, byte_width);
                                 }
                                 else if(byte_width==8)
                                 {
-                                        scoop_contents.replace(reloc->GetOffset(), byte_width, (char*)&new_val_to_patch, byte_width);
+                                        scoop_contents.replace(reloc->getOffset(), byte_width, (char*)&new_val_to_patch, byte_width);
                                 }
                                 else
                                         assert(0);
 
-				cout<<"Patched "<<scoop->GetName()<<"+"<<hex<<reloc->GetOffset()<<" to value "<<hex<<new_val_to_patch<<endl;
+				cout<<"Patched "<<scoop->getName()<<"+"<<hex<<reloc->getOffset()<<" to value "<<hex<<new_val_to_patch<<endl;
 			}
 		}
-		scoop->SetContents(scoop_contents);
+		scoop->setContents(scoop_contents);
 	}
 }
 
@@ -343,7 +344,7 @@ extern "C"
 Zipr_SDK::ZiprPluginInterface_t* GetPluginInterface(
 	Zipr_SDK::Zipr_t* zipr_object)
 {
-	const auto mt=zipr_object->GetFileIR()->GetArchitecture()->getMachineType();
+	const auto mt=zipr_object->getFileIR()->getArchitecture()->getMachineType();
 
 	return 
 		mt==admtX86_64  ? (Unpin_t*)new UnpinX86_t    (zipr_object) :

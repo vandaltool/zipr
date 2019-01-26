@@ -16,6 +16,7 @@ Import('env')
 myenv=env
 myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 myenv.Replace(ZIPR_HOME=os.environ['ZIPR_HOME'])
+myenv.Replace(IRDB_SDK=os.environ['IRDB_SDK'])
 myenv.Replace(ZIPR_SDK=os.environ['ZIPR_SDK'])
 myenv.Replace(ZIPR_INSTALL=os.environ['ZIPR_INSTALL'])
 myenv.Replace(do_cgc=ARGUMENTS.get("do_cgc",0))
@@ -30,8 +31,9 @@ files=  '''
 cpppath=''' 
 	.
 	$ZIPR_HOME/third_party/ELFIO/elfio-2.2	
-	$SECURITY_TRANSFORMS_HOME/include/
-	$SECURITY_TRANSFORMS_HOME/libIRDB/include/
+	$IRDB_SDK/include/
+	$SECURITY_TRANSFORMS_HOME/include
+	$SECURITY_TRANSFORMS_HOME/libIRDB/include
 	$SECURITY_TRANSFORMS_HOME/libtransform/include
 	$ZIPR_HOME/include/
 	$ZIPR_SDK/include/

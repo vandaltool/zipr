@@ -39,7 +39,7 @@
 #include <inttypes.h>
 
 
-using namespace libIRDB;
+using namespace IRDB_SDK;
 using namespace std;
 using namespace Zipr_SDK;
 using namespace ELFIO;
@@ -49,12 +49,12 @@ using namespace ELFIO;
 void UnpinX86_t::HandleRetAddrReloc(Instruction_t* from_insn, Relocation_t* reloc)
 {
 	// skip if there's no WRT, that means it's unpinned for something besides a fixed call.
-	if(reloc->GetWRT()==NULL)
+	if(reloc->getWRT()==NULL)
 		return;
 
 	// getWRT returns an BaseObj, but this reloc type expects an instruction
 	// safe cast and check.
-	auto wrt_insn=dynamic_cast<Instruction_t*>(reloc->GetWRT());
+	auto wrt_insn=dynamic_cast<Instruction_t*>(reloc->getWRT());
 	assert(wrt_insn);
 	if(should_cfi_pin(wrt_insn)) 
 		return;
@@ -63,14 +63,14 @@ void UnpinX86_t::HandleRetAddrReloc(Instruction_t* from_insn, Relocation_t* relo
 	auto from_insn_location=locMap[from_insn];
 
 	// 32-bit code and main executables just push a full 32-bit addr.
-	if(zo->GetELFIO()->get_type()==ET_EXEC)
+	if(zo->getELFIO()->get_type()==ET_EXEC)
 	{
 // not handled in push64_relocs which is disabled for shared objects.
 		// expecting a 32-bit push, length=5
-		assert(from_insn->GetDataBits()[0]==0x68);
-		assert(from_insn->GetDataBits().size()==5);
+		assert(from_insn->getDataBits()[0]==0x68);
+		assert(from_insn->getDataBits().size()==5);
 		// down and upcast to ensure we fit in 31-bits.
-		assert(wrt_insn_location == (libIRDB::virtual_offset_t)(int)wrt_insn_location);
+		assert(wrt_insn_location == (IRDB_SDK::VirtualOffset_t)(int)wrt_insn_location);
 		assert(sizeof(int)==4); // paranoid.
 
 		unsigned char newpush[5];
@@ -78,10 +78,10 @@ void UnpinX86_t::HandleRetAddrReloc(Instruction_t* from_insn, Relocation_t* relo
 		*(int*)&newpush[1]=(int)wrt_insn_location;
 
 		cout<<"Unpin::Updating push32/push64-exe insn:"
-		    <<dec<<from_insn->GetBaseID()<<":"<<from_insn->getDisassembly()<<"@"<<hex<<from_insn_location<<" to point at "
-		    <<dec<<wrt_insn ->GetBaseID()<<":"<<wrt_insn ->getDisassembly()<<"@"<<hex<<wrt_insn_location <<endl;
+		    <<dec<<from_insn->getBaseID()<<":"<<from_insn->getDisassembly()<<"@"<<hex<<from_insn_location<<" to point at "
+		    <<dec<<wrt_insn ->getBaseID()<<":"<<wrt_insn ->getDisassembly()<<"@"<<hex<<wrt_insn_location <<endl;
 
-		for(auto i=0U;i<from_insn->GetDataBits().size();i++)
+		for(auto i=0U;i<from_insn->getDataBits().size();i++)
 		{ 
 			unsigned char newbyte=newpush[i];
 			ms[from_insn_location+i]=newbyte;
@@ -97,32 +97,32 @@ void UnpinX86_t::HandleRetAddrReloc(Instruction_t* from_insn, Relocation_t* relo
 void UnpinX86_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* reloc)
 {
 	// decode the instruction and find the pcrel operand
-	const auto disasm=DecodedInstruction_t(from_insn);
-	const auto operands=disasm.getOperands();
-	const auto the_arg_it=find_if(ALLOF(operands),[](const DecodedOperand_t& op){ return op.isPcrel(); });
-	const auto bo_wrt=reloc->GetWRT();
-	const auto scoop_wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
-	const auto insn_wrt=dynamic_cast<Instruction_t*>(reloc->GetWRT());
+	const auto disasm=DecodedInstruction_t::factory(from_insn);
+	const auto operands=disasm->getOperands();
+	const auto the_arg_it=find_if(ALLOF(operands),[](const shared_ptr<DecodedOperand_t>& op){ return op->isPcrel(); });
+	const auto bo_wrt=reloc->getWRT();
+	const auto scoop_wrt=dynamic_cast<DataScoop_t*>(reloc->getWRT());
+	const auto insn_wrt=dynamic_cast<Instruction_t*>(reloc->getWRT());
 	assert(the_arg_it!=operands.end());
 	const auto the_arg=*the_arg_it;
-	const auto mt=firp.GetArchitecture()->getMachineType();
+	const auto mt=firp.getArchitecture()->getMachineType();
 
 	// get the new insn addr 	
-	const auto from_insn_location=(virtual_offset_t)locMap[from_insn];
+	const auto from_insn_location=(VirtualOffset_t)locMap[from_insn];
 
 	// get WRT info
-	libIRDB::virtual_offset_t to_addr=0xdeadbeef; // noteable value that shouldn't be used.
+	IRDB_SDK::VirtualOffset_t to_addr=0xdeadbeef; // noteable value that shouldn't be used.
 	string convert_string;
 
 	if(scoop_wrt)
 	{
-		to_addr=scoop_wrt->GetStart()->GetVirtualOffset();
-		convert_string=string("scoop ")+scoop_wrt->GetName();
+		to_addr=scoop_wrt->getStart()->getVirtualOffset();
+		convert_string=string("scoop ")+scoop_wrt->getName();
 	}
 	else if(insn_wrt)
 	{
 		to_addr=locMap[insn_wrt];
-		convert_string=string("insn ")+to_string(insn_wrt->GetBaseID())+
+		convert_string=string("insn ")+to_string(insn_wrt->getBaseID())+
 			       ":"+insn_wrt->getDisassembly();
 	}
 	else 
@@ -132,89 +132,89 @@ void UnpinX86_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* reloc)
 		convert_string=string("no-object");
 	}
 
-	const auto rel_addr1=the_arg.getMemoryDisplacement()+from_insn->GetDataBits().size();
-	const auto disp_offset=(int)disasm.getMemoryDisplacementOffset(the_arg,from_insn); 
-	const auto disp_size=(int)the_arg.getMemoryDisplacementEncodingSize(); 
+	const auto rel_addr1=the_arg->getMemoryDisplacement()+from_insn->getDataBits().size();
+	const auto disp_offset=(int)disasm->getMemoryDisplacementOffset(the_arg.get(),from_insn); 
+	const auto disp_size=(int)the_arg->getMemoryDisplacementEncodingSize(); 
 	assert(disp_size==4);
-	assert(0<disp_offset && disp_offset<=from_insn->GetDataBits().size() - disp_size);
+	assert(0<disp_offset && disp_offset<=from_insn->getDataBits().size() - disp_size);
 		
-	const auto new_disp=(int)(rel_addr1 + to_addr - from_insn->GetDataBits().size()-from_insn_location);
-	const auto newbits=from_insn->GetDataBits().replace(disp_offset, disp_size, (char*)&new_disp, disp_size); 
-	from_insn->SetDataBits(newbits);
+	const auto new_disp=(int)(rel_addr1 + to_addr - from_insn->getDataBits().size()-from_insn_location);
+	const auto newbits=from_insn->getDataBits().replace(disp_offset, disp_size, (char*)&new_disp, disp_size); 
+	from_insn->setDataBits(newbits);
 	ms.PlopBytes(from_insn_location, newbits.c_str(), newbits.size());
-	const auto disasm2=DecodedInstruction_t(from_insn);
+	const auto disasm2=DecodedInstruction_t::factory(from_insn);
 	cout<<"unpin:pcrel:new_disp="<<hex<<new_disp<<endl;
 	cout<<"unpin:pcrel:new_insn_addr="<<hex<<from_insn_location<<endl;
-	cout<<"unpin:pcrel:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.getDisassembly() 
-	    <<" to "<<disasm2.getDisassembly() <<" wrt "<< convert_string <<endl;
+	cout<<"unpin:pcrel:Converting "<<hex<<from_insn->getBaseID()<<":"<<disasm->getDisassembly() 
+	    <<" to "<<disasm2->getDisassembly() <<" wrt "<< convert_string <<endl;
 
 }
 
 void UnpinX86_t::HandleAbsptrReloc(Instruction_t* from_insn, Relocation_t* reloc)
 {
-	const auto disasm=DecodedInstruction_t(from_insn);
-	const auto operands=disasm.getOperands();
+	const auto disasm=DecodedInstruction_t::factory(from_insn);
+	const auto operands=disasm->getOperands();
 
 	// push/pop from memory might have a memory operand with no string to represent the implicit stack operand.
-	const auto the_arg_it=find_if(ALLOF(operands),[](const DecodedOperand_t& op){ return op.isMemory() && op.getString()!=""; });
-	DataScoop_t* wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
+	const auto the_arg_it=find_if(ALLOF(operands),[](const shared_ptr<DecodedOperand_t>& op){ return op->isMemory() && op->getString()!=""; });
+	DataScoop_t* wrt=dynamic_cast<DataScoop_t*>(reloc->getWRT());
 	assert(wrt);
 	assert(the_arg_it!=operands.end());
 	const auto &the_arg=*the_arg_it;
-	virtual_offset_t rel_addr1=the_arg.getMemoryDisplacement(); 
+	VirtualOffset_t rel_addr1=the_arg->getMemoryDisplacement(); 
 
-	int disp_offset=disasm.getMemoryDisplacementOffset(the_arg,from_insn); 
-	int disp_size=the_arg.getMemoryDisplacementEncodingSize(); 
+	int disp_offset=disasm->getMemoryDisplacementOffset(the_arg.get(),from_insn); 
+	int disp_size=the_arg->getMemoryDisplacementEncodingSize(); 
 	assert(disp_size==4);
-	assert(0<disp_offset && disp_offset<=from_insn->GetDataBits().size() - disp_size);
-	assert(reloc->GetWRT());
+	assert(0<disp_offset && disp_offset<=from_insn->getDataBits().size() - disp_size);
+	assert(reloc->getWRT());
 
-	unsigned int new_disp=the_arg.getMemoryDisplacement() + wrt->GetStart()->GetVirtualOffset();
-	from_insn->SetDataBits(from_insn->GetDataBits().replace(disp_offset, disp_size, (char*)&new_disp, disp_size));
+	unsigned int new_disp=the_arg->getMemoryDisplacement() + wrt->getStart()->getVirtualOffset();
+	from_insn->setDataBits(from_insn->getDataBits().replace(disp_offset, disp_size, (char*)&new_disp, disp_size));
 	// update the instruction in the memory space.
-	libIRDB::virtual_offset_t from_insn_location=locMap[from_insn];
-	for(unsigned int i=0;i<from_insn->GetDataBits().size();i++)
+	IRDB_SDK::VirtualOffset_t from_insn_location=locMap[from_insn];
+	for(unsigned int i=0;i<from_insn->getDataBits().size();i++)
 	{ 
-		unsigned char newbyte=from_insn->GetDataBits()[i];
+		unsigned char newbyte=from_insn->getDataBits()[i];
 		ms[from_insn_location+i]=newbyte;
 
 		//cout<<"Updating push["<<i<<"] from "<<hex<<oldbyte<<" to "<<newbyte<<endl;
 	}
-	const auto disasm2=DecodedInstruction_t(from_insn);
-	cout<<"unpin:absptr_to_scoop:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.getDisassembly()
-	    <<" to "<<disasm2.getDisassembly() <<" for scoop: "<<wrt->GetName()<<endl;
+	const auto disasm2=DecodedInstruction_t::factory(from_insn);
+	cout<<"unpin:absptr_to_scoop:Converting "<<hex<<from_insn->getBaseID()<<":"<<disasm->getDisassembly()
+	    <<" to "<<disasm2->getDisassembly() <<" for scoop: "<<wrt->getName()<<endl;
 }
 
 void UnpinX86_t::HandleImmedptrReloc(Instruction_t* from_insn, Relocation_t* reloc)
 {
-	DataScoop_t* wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
+	DataScoop_t* wrt=dynamic_cast<DataScoop_t*>(reloc->getWRT());
 	assert(wrt);
 
-	const auto disasm=DecodedInstruction_t(from_insn);
-	virtual_offset_t rel_addr2=disasm.getImmediate(); 
-	virtual_offset_t new_addr = rel_addr2 + wrt->GetStart()->GetVirtualOffset();
+	const auto disasm=DecodedInstruction_t::factory(from_insn);
+	VirtualOffset_t rel_addr2=disasm->getImmediate(); 
+	VirtualOffset_t new_addr = rel_addr2 + wrt->getStart()->getVirtualOffset();
 
-	from_insn->SetDataBits(from_insn->GetDataBits().replace(from_insn->GetDataBits().size()-4, 4, (char*)&new_addr, 4));
+	from_insn->setDataBits(from_insn->getDataBits().replace(from_insn->getDataBits().size()-4, 4, (char*)&new_addr, 4));
 
-	libIRDB::virtual_offset_t from_insn_location=locMap[from_insn];
-	for(unsigned int i=0;i<from_insn->GetDataBits().size();i++)
+	IRDB_SDK::VirtualOffset_t from_insn_location=locMap[from_insn];
+	for(unsigned int i=0;i<from_insn->getDataBits().size();i++)
 	{ 
-		unsigned char newbyte=from_insn->GetDataBits()[i];
+		unsigned char newbyte=from_insn->getDataBits()[i];
 		ms[from_insn_location+i]=newbyte;
 
 		//cout<<"Updating push["<<i<<"] from "<<hex<<oldbyte<<" to "<<newbyte<<endl;
 	}
 
-	const auto disasm2=DecodedInstruction_t(from_insn);
-	cout<<"unpin:immedptr_to_scoop:Converting "<<hex<<from_insn->GetBaseID()<<":"<<disasm.getDisassembly() 
-	    <<" to "<<disasm2.getDisassembly() <<" for scoop: "<<wrt->GetName()<<endl;
+	const auto disasm2=DecodedInstruction_t::factory(from_insn);
+	cout<<"unpin:immedptr_to_scoop:Converting "<<hex<<from_insn->getBaseID()<<":"<<disasm->getDisassembly() 
+	    <<" to "<<disasm2->getDisassembly() <<" for scoop: "<<wrt->getName()<<endl;
 
 }
 
 void UnpinX86_t::HandleCallbackReloc(Instruction_t* from_insn, Relocation_t* reloc)
 {
-	DataScoop_t *wrt = dynamic_cast<DataScoop_t*>(reloc->GetWRT());
-	int addend = reloc->GetAddend();
+	DataScoop_t *wrt = dynamic_cast<DataScoop_t*>(reloc->getWRT());
+	int addend = reloc->getAddend();
 	char bytes[]={(char)0x48,
 		      (char)0x8d,
 		      (char)0x64,
@@ -225,7 +225,7 @@ void UnpinX86_t::HandleCallbackReloc(Instruction_t* from_insn, Relocation_t* rel
 
 	if (m_verbose)
 		cout << "The call insn is " 
-		     << from_insn->GetDataBits().length() << " bytes long." << endl;
+		     << from_insn->getDataBits().length() << " bytes long." << endl;
 	
 	call_addr = locMap[from_insn];
 
@@ -238,14 +238,14 @@ void UnpinX86_t::HandleCallbackReloc(Instruction_t* from_insn, Relocation_t* rel
 	 * Put down the bogus pop.
 	 */
 	at = call_addr + 1;
-	at = call_addr + from_insn->GetDataBits().length();
+	at = call_addr + from_insn->getDataBits().length();
 	ms.PlopBytes(at, bytes, sizeof(bytes));
 
 	/*
 	 * Turn off the following flags so that this
 	 * is left alone when it is being plopped.
 	 */
-	from_insn->SetTarget(NULL);
-	from_insn->SetCallback("");
+	from_insn->setTarget(NULL);
+	from_insn->setCallback("");
 }
 

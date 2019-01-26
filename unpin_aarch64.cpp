@@ -39,7 +39,7 @@
 #include <inttypes.h>
 
 
-using namespace libIRDB;
+using namespace IRDB_SDK;
 using namespace std;
 using namespace Zipr_SDK;
 using namespace ELFIO;
@@ -54,32 +54,32 @@ void UnpinAarch64_t::HandleRetAddrReloc(Instruction_t* from_insn, Relocation_t* 
 void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* reloc)
 {
 	// decode the instruction and find the pcrel operand
-	const auto disasm=DecodedInstruction_t(from_insn);
-	const auto operands=disasm.getOperands();
-	const auto the_arg_it=find_if(ALLOF(operands),[](const DecodedOperand_t& op){ return op.isPcrel(); });
-	const auto bo_wrt=reloc->GetWRT();
-	const auto scoop_wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
-	const auto insn_wrt=dynamic_cast<Instruction_t*>(reloc->GetWRT());
+	const auto disasm=DecodedInstruction_t::factory(from_insn);
+	const auto operands=disasm->getOperands();
+	const auto the_arg_it=find_if(ALLOF(operands),[](const shared_ptr<DecodedOperand_t>& op){ return op->isPcrel(); });
+	const auto bo_wrt=reloc->getWRT();
+	const auto scoop_wrt=dynamic_cast<DataScoop_t*>(reloc->getWRT());
+	const auto insn_wrt=dynamic_cast<Instruction_t*>(reloc->getWRT());
 	assert(the_arg_it!=operands.end());
 	const auto the_arg=*the_arg_it;
-	const auto mt=firp.GetArchitecture()->getMachineType();
+	const auto mt=firp.getArchitecture()->getMachineType();
 
 	// get the new insn addr 	
-	const auto from_insn_location=(virtual_offset_t)locMap[from_insn];
+	const auto from_insn_location=(VirtualOffset_t)locMap[from_insn];
 
 	// get WRT info
-	libIRDB::virtual_offset_t to_addr=0xdeadbeef; // noteable value that shouldn't be used.
+	IRDB_SDK::VirtualOffset_t to_addr=0xdeadbeef; // noteable value that shouldn't be used.
 	string convert_string;
 
 	if(scoop_wrt)
 	{
-		to_addr=scoop_wrt->GetStart()->GetVirtualOffset();
-		convert_string=string("scoop ")+scoop_wrt->GetName();
+		to_addr=scoop_wrt->getStart()->getVirtualOffset();
+		convert_string=string("scoop ")+scoop_wrt->getName();
 	}
 	else if(insn_wrt)
 	{
 		to_addr=locMap[insn_wrt];
-		convert_string=string("insn ")+to_string(insn_wrt->GetBaseID())+
+		convert_string=string("insn ")+to_string(insn_wrt->getBaseID())+
 			       ":"+insn_wrt->getDisassembly();
 	}
 	else 
@@ -92,23 +92,23 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 
 	assert(bo_wrt==nullptr); // not yet imp'd WRT offsetting.
 	assert(to_addr==0); // not yet imp'd WRT offsetting.
-	const auto mnemonic        = disasm.getMnemonic();
+	const auto mnemonic        = disasm->getMnemonic();
 	const auto is_adr_type     = mnemonic=="adr";
 	const auto is_adrp_type    = mnemonic=="adrp";
 	const auto is_ldr_type     = mnemonic=="ldr";
-	const auto is_ldr_int_type = is_ldr_type && disasm.getOperand(0).isGeneralPurposeRegister();
-	const auto is_ldr_fp_type  = is_ldr_type && disasm.getOperand(0).isFpuRegister();
+	const auto is_ldr_int_type = is_ldr_type && disasm->getOperand(0)->isGeneralPurposeRegister();
+	const auto is_ldr_fp_type  = is_ldr_type && disasm->getOperand(0)->isFpuRegister();
 	const auto is_ldrsw_type   = mnemonic=="ldrsw";
 	const auto mask1 =(1<< 1)-1;
 	const auto mask2 =(1<< 2)-1;
 	const auto mask5 =(1<< 5)-1;
 	const auto mask12=(1<<12)-1;
 	const auto mask19=(1<<19)-1;
-	const auto orig_insn_addr=from_insn->GetAddress()->GetVirtualOffset(); // original location
+	const auto orig_insn_addr=from_insn->getAddress()->getVirtualOffset(); // original location
 	const auto insn_bytes_len=4;	// arm is always 4.
 	uint8_t insn_bytes[insn_bytes_len]; // compiler disallows init on some platforms.
 	// but memcpy should init it sufficiently.
-	memcpy(insn_bytes, from_insn->GetDataBits().c_str(), insn_bytes_len);
+	memcpy(insn_bytes, from_insn->getDataBits().c_str(), insn_bytes_len);
 	const auto full_insn=*(uint32_t*)insn_bytes;
 	const auto op_byte=insn_bytes[3];
 
@@ -131,7 +131,7 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 		const auto orig_insn_pageno = orig_insn_addr>>shift_dist;
 		const auto new_insn_pageno  = from_insn_location>>shift_dist;
 		const auto new_imm21_ext = imm21_ext + (int64_t)orig_insn_pageno - 
-				(int64_t)new_insn_pageno + (int64_t)reloc->GetAddend()+(int64_t)to_addr;
+				(int64_t)new_insn_pageno + (int64_t)reloc->getAddend()+(int64_t)to_addr;
 
 		// make sure no overflow.
 		if(((new_imm21_ext << 43) >> 43) == new_imm21_ext)
@@ -146,7 +146,7 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 			{
 				cout << "Relocating a adr(p) pcrel relocation with orig_pageno=" << hex
 				     << (orig_insn_pageno << 12) << " offset=(page-pc+" << imm21_ext << ")"  << endl;
-				cout << "Based on: " << disasm.getDisassembly() << hex << " originally at "  << orig_insn_addr
+				cout << "Based on: " << disasm->getDisassembly() << hex << " originally at "  << orig_insn_addr
 				     << " now located at : 0x" << hex << from_insn_location << " with offset=(page-pc + "
 				     << new_imm21_ext << ")" << endl;
 			}
@@ -165,10 +165,10 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 			 * L2: b ft
 			 */
 			const auto tramp_size=3*4; // 3 insns, 4 bytes each
-			const auto address_to_generate=imm21_ext+orig_insn_addr+(int64_t)reloc->GetAddend()+(int64_t)to_addr;
+			const auto address_to_generate=imm21_ext+orig_insn_addr+(int64_t)reloc->getAddend()+(int64_t)to_addr;
 			const auto destreg=full_insn&mask5;
-			const auto tramp_range=ms.GetFreeRange(tramp_size);
-			const auto tramp_start=tramp_range.GetStart();
+			const auto tramp_range=ms.getFreeRange(tramp_size);
+			const auto tramp_start=tramp_range.getStart();
 			// don't be too fancy, just reserve 12 bytes.
 			ms.SplitFreeRange({tramp_start,tramp_start+12});
 
@@ -218,7 +218,7 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 			zo->ApplyPatch(L2,FT);
 
 			// should be few enough of these to always print
-			cout<< "Had to trampoline " << disasm.getDisassembly() << "@"<<FA<<" to "
+			cout<< "Had to trampoline " << disasm->getDisassembly() << "@"<<FA<<" to "
 			    << hex << L0 << "-" << L0+tramp_size << endl;
 		}
 	}
@@ -228,8 +228,8 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 		// ldr s/d/q reg  : opc2 0111 0 0 imm19 Rt5, opc2 indicate size (00,01,10 -> s/d/q)
 		const auto imm19    = ((int64_t)full_insn >> 5 ) & mask19;
 		const auto imm19_ext= (imm19 << 45) >> 45;
-		const auto referenced_addr=(imm19_ext<<2)+from_insn->GetAddress()->GetVirtualOffset()+4;
-		const auto new_imm19_ext  =((int64_t)referenced_addr-(int64_t)from_insn_location-4+(int64_t)reloc->GetAddend()+(int64_t)to_addr)>>2;
+		const auto referenced_addr=(imm19_ext<<2)+from_insn->getAddress()->getVirtualOffset()+4;
+		const auto new_imm19_ext  =((int64_t)referenced_addr-(int64_t)from_insn_location-4+(int64_t)reloc->getAddend()+(int64_t)to_addr)>>2;
 		if( ((new_imm19_ext << 45) >> 45) == new_imm19_ext)
 		{
 			const auto clean_new_insn = full_insn & ~(mask19 << 5);
@@ -240,14 +240,14 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 			{
 				cout << "Relocating a ldr pcrel relocation with orig_addr=" << hex
 				     << (referenced_addr) << " offset=(pc+" << imm19_ext << ")"  << endl;
-				cout << "Based on: " << disasm.getDisassembly() 
+				cout << "Based on: " << disasm->getDisassembly() 
 				     << " now located at : 0x" << hex << from_insn_location << " with offset=(pc + "
 				     << new_imm19_ext << ")" << endl;
 			}
 		}
 		else
 		{
-			const auto address_to_generate=(imm19_ext<<2)+orig_insn_addr+(int64_t)reloc->GetAddend()+(int64_t)to_addr;
+			const auto address_to_generate=(imm19_ext<<2)+orig_insn_addr+(int64_t)reloc->getAddend()+(int64_t)to_addr;
 			const auto destreg=full_insn&mask5;
 			const auto FA=from_insn_location;
 			const auto FT=from_insn_location+4;
@@ -268,8 +268,8 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 				 * L2: b ft
 				 */
 				const auto tramp_size=3*4; // 3 insns, 4 bytes each
-				const auto tramp_range=ms.GetFreeRange(tramp_size);
-				const auto tramp_start=tramp_range.GetStart();
+				const auto tramp_range=ms.getFreeRange(tramp_size);
+				const auto tramp_start=tramp_range.getStart();
 				// don't be too fancy, just reserve 12 bytes.
 				ms.SplitFreeRange({tramp_start,tramp_start+12});
 
@@ -319,7 +319,7 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 				zo->ApplyPatch(L2,FT);
 
 				// should be few enough of these to always print
-				cout<< "Had to trampoline " << disasm.getDisassembly() << "@"<<FA<<" to "
+				cout<< "Had to trampoline " << disasm->getDisassembly() << "@"<<FA<<" to "
 				    << hex << L0 << "-" << L0+tramp_size-1 << endl;
 
 			}
@@ -342,8 +342,8 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 
 				// allocate and reserve space for the code.
 				const auto tramp_size=5*4; // 3 insns, 4 bytes each
-				const auto tramp_range=ms.GetFreeRange(tramp_size);
-				const auto tramp_start=tramp_range.GetStart();
+				const auto tramp_range=ms.getFreeRange(tramp_size);
+				const auto tramp_start=tramp_range.getStart();
 				// don't be too fancy, just reserve 12 bytes.
 				ms.SplitFreeRange({tramp_start,tramp_start+12});
 
@@ -428,7 +428,7 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 				zo->ApplyPatch(L4,FT);
 
 				// should be few enough of these to always print
-				cout<< "Had to trampoline " << disasm.getDisassembly() << "@"<<FA<<" to "
+				cout<< "Had to trampoline " << disasm->getDisassembly() << "@"<<FA<<" to "
 				    << hex << L0 << "-" << L0+tramp_size-1 << endl;
 
 			}
@@ -442,8 +442,8 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 		// ldrsw x reg    : 1001 1000 imm19 Rt
 		const auto imm19    = ((int64_t)full_insn >> 5 ) & mask19;
 		const auto imm19_ext= (imm19 << 45) >> 45;
-		const auto referenced_addr=(imm19_ext<<2)+from_insn->GetAddress()->GetVirtualOffset()+4;
-		const auto new_imm19_ext  =((int64_t)referenced_addr-(int64_t)from_insn_location-4+(int64_t)reloc->GetAddend()+(int64_t)to_addr)>>2;
+		const auto referenced_addr=(imm19_ext<<2)+from_insn->getAddress()->getVirtualOffset()+4;
+		const auto new_imm19_ext  =((int64_t)referenced_addr-(int64_t)from_insn_location-4+(int64_t)reloc->getAddend()+(int64_t)to_addr)>>2;
 		if( ((new_imm19_ext << 45) >> 45) == new_imm19_ext)
 		{
 			const auto clean_new_insn = full_insn & ~(mask19 << 5);
@@ -454,7 +454,7 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 			{
 				cout << "Relocating a ldrsw pcrel relocation with orig_addr=" << hex
 				     << (referenced_addr) << " offset=(pc+" << imm19_ext << ")"  << endl;
-				cout << "Based on: " << disasm.getDisassembly() 
+				cout << "Based on: " << disasm->getDisassembly() 
 				     << " now located at : 0x" << hex << from_insn_location << " with offset=(pc + "
 				     << new_imm19_ext << ")" << endl;
 			}
@@ -472,10 +472,10 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 			 * L2: b ft
 			 */
 			const auto tramp_size=3*4; // 3 insns, 4 bytes each
-			const auto address_to_generate=(imm19_ext<<2)+orig_insn_addr+(int64_t)reloc->GetAddend()+(int64_t)to_addr;
+			const auto address_to_generate=(imm19_ext<<2)+orig_insn_addr+(int64_t)reloc->getAddend()+(int64_t)to_addr;
 			const auto destreg=full_insn&mask5;
-			const auto tramp_range=ms.GetFreeRange(tramp_size);
-			const auto tramp_start=tramp_range.GetStart();
+			const auto tramp_range=ms.getFreeRange(tramp_size);
+			const auto tramp_start=tramp_range.getStart();
 			// don't be too fancy, just reserve 12 bytes.
 			ms.SplitFreeRange({tramp_start,tramp_start+12});
 
@@ -525,7 +525,7 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 			zo->ApplyPatch(L2,FT);
 
 			// should be few enough of these to always print
-			cout<< "Had to trampoline " << disasm.getDisassembly() << "@"<<FA<<" to "
+			cout<< "Had to trampoline " << disasm->getDisassembly() << "@"<<FA<<" to "
 			    << hex << L0 << "-" << L0+tramp_size-1 << endl;
 		}
 	}

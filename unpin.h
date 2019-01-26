@@ -31,7 +31,7 @@
 #ifndef unpin_h
 #define unpin_h
 
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 #include <zipr_sdk.h>
 
 class Unpin_t : public Zipr_SDK::ZiprPluginInterface_t
@@ -48,7 +48,7 @@ class Unpin_t : public Zipr_SDK::ZiprPluginInterface_t
 		                missed_unpins(0),
                 		ms(*zo->GetMemorySpace()),
                 		locMap(*(zo->GetLocationMap())),
-                		firp(*(zo->GetFileIR()))
+                		firp(*(zo->getFileIR()))
 
 		{ }
 
@@ -74,13 +74,13 @@ class Unpin_t : public Zipr_SDK::ZiprPluginInterface_t
 			Zipr_SDK::RangeAddress_t &target_address);
 	protected:
 		// designed for arch-specific override.
-		virtual void HandleRetAddrReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc)=0;
-		virtual void HandlePcrelReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc)=0;
-		virtual void HandleAbsptrReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc)=0;
-		virtual void HandleImmedptrReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc)=0;
-		virtual void HandleCallbackReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc)=0;
+		virtual void HandleRetAddrReloc(IRDB_SDK::Instruction_t* from_insn,IRDB_SDK::Relocation_t* reloc)=0;
+		virtual void HandlePcrelReloc(IRDB_SDK::Instruction_t* from_insn,IRDB_SDK::Relocation_t* reloc)=0;
+		virtual void HandleAbsptrReloc(IRDB_SDK::Instruction_t* from_insn,IRDB_SDK::Relocation_t* reloc)=0;
+		virtual void HandleImmedptrReloc(IRDB_SDK::Instruction_t* from_insn,IRDB_SDK::Relocation_t* reloc)=0;
+		virtual void HandleCallbackReloc(IRDB_SDK::Instruction_t* from_insn,IRDB_SDK::Relocation_t* reloc)=0;
 
-		bool should_cfi_pin(Instruction_t* insn);
+		bool should_cfi_pin(IRDB_SDK::Instruction_t* insn);
 
 		// workhorses 
 		void DoUnpin();
@@ -102,7 +102,7 @@ class Unpin_t : public Zipr_SDK::ZiprPluginInterface_t
 		int missed_unpins=0;
 		Zipr_SDK::MemorySpace_t& ms;
 		Zipr_SDK::InstructionLocationMap_t& locMap;
-		libIRDB::FileIR_t& firp;
+		IRDB_SDK::FileIR_t& firp;
 
 };
 
@@ -117,11 +117,11 @@ class UnpinX86_t : public Unpin_t
 		}
 	protected:
 		// designed for arch-specific override.
-		void HandleRetAddrReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc) override;
-		void HandlePcrelReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc) override;
-		void HandleAbsptrReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc) override;
-		void HandleImmedptrReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc) override;
-		void HandleCallbackReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc) override;
+		void HandleRetAddrReloc(IRDB_SDK::Instruction_t* from_insn,IRDB_SDK::Relocation_t* reloc) override;
+		void HandlePcrelReloc(IRDB_SDK::Instruction_t* from_insn,IRDB_SDK::Relocation_t* reloc) override;
+		void HandleAbsptrReloc(IRDB_SDK::Instruction_t* from_insn,IRDB_SDK::Relocation_t* reloc) override;
+		void HandleImmedptrReloc(IRDB_SDK::Instruction_t* from_insn,IRDB_SDK::Relocation_t* reloc) override;
+		void HandleCallbackReloc(IRDB_SDK::Instruction_t* from_insn,IRDB_SDK::Relocation_t* reloc) override;
 
 
 };
@@ -136,11 +136,11 @@ class UnpinAarch64_t : public Unpin_t
 		}
 	protected:
 		// designed for arch-specific override.
-		void HandleRetAddrReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc) override;
-		void HandlePcrelReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc) override;
-		void HandleAbsptrReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc) override;
-		void HandleImmedptrReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc) override;
-		void HandleCallbackReloc(libIRDB::Instruction_t* from_insn,libIRDB::Relocation_t* reloc) override;
+		void HandleRetAddrReloc(IRDB_SDK::Instruction_t* from_insn,IRDB_SDK::Relocation_t* reloc) override;
+		void HandlePcrelReloc(IRDB_SDK::Instruction_t* from_insn,IRDB_SDK::Relocation_t* reloc) override;
+		void HandleAbsptrReloc(IRDB_SDK::Instruction_t* from_insn,IRDB_SDK::Relocation_t* reloc) override;
+		void HandleImmedptrReloc(IRDB_SDK::Instruction_t* from_insn,IRDB_SDK::Relocation_t* reloc) override;
+		void HandleCallbackReloc(IRDB_SDK::Instruction_t* from_insn,IRDB_SDK::Relocation_t* reloc) override;
 
 
 };
