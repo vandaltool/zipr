@@ -17,6 +17,7 @@ myenv=env
 myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 myenv.Replace(ZIPR_HOME=os.environ['ZIPR_HOME'])
 myenv.Replace(ZIPR_SDK=os.environ['ZIPR_SDK'])
+myenv.Replace(IRDB_SDK=os.environ['IRDB_SDK'])
 myenv.Replace(ZIPR_INSTALL=os.environ['ZIPR_INSTALL'])
 myenv.Replace(do_cgc=ARGUMENTS.get("do_cgc",0))
 
@@ -29,6 +30,7 @@ files=  '''
 # ELFIO needs to be first so we get the zipr version instead of the sectrans version.  the zipr version is modified to include get_offset.
 cpppath=''' 
 	.
+	$IRDB_SDK/include/
 	$ZIPR_HOME/third_party/ELFIO/elfio-2.2	
 	$SECURITY_TRANSFORMS_HOME/include/
 	$SECURITY_TRANSFORMS_HOME/libIRDB/include/

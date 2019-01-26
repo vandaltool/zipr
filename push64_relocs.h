@@ -31,14 +31,14 @@
 #ifndef push_relocs_h
 #define push_relocs_h
 
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 
 class Push64Relocs_t : public Zipr_SDK::ZiprPluginInterface_t
 {
 	public:
 		Push64Relocs_t(Zipr_SDK::MemorySpace_t *p_ms,
 			ELFIO::elfio *p_elfio,
-			libIRDB::FileIR_t *p_firp,
+			IRDB_SDK::FileIR_t *p_firp,
 			Zipr_SDK::InstructionLocationMap_t *p_fil);
 		virtual void PinningBegin()
 		{
@@ -47,10 +47,10 @@ class Push64Relocs_t : public Zipr_SDK::ZiprPluginInterface_t
 		{ 
 			if(m_elfio.get_type()==ET_EXEC)
 			{
-				cout<<"Push64_reloc: elide PinningEnd as type==ET_EXEC"<<endl;
+				std::cout<<"Push64_reloc: elide PinningEnd as type==ET_EXEC"<<std::endl;
 				return;
 			}
-			cout<<"Push64Plugin: Ending  pinning, applying push64 relocs."<<endl;
+			std::cout<<"Push64Plugin: Ending  pinning, applying push64 relocs."<<std::endl;
 			HandlePush64Relocs(); 
 		}
 		virtual void DollopBegin()
@@ -66,10 +66,10 @@ class Push64Relocs_t : public Zipr_SDK::ZiprPluginInterface_t
 		{
 			if(m_elfio.get_type()==ET_EXEC)
 			{
-				cout<<"Push64_reloc: elide CallbackLinkingEnd as type==ET_EXEC"<<endl;
+				std::cout<<"Push64_reloc: elide CallbackLinkingEnd as type==ET_EXEC"<<std::endl;
 				return;
 			}
-			cout<<"Push64Plugin: CBLinkEnd, updating adds."  <<endl;
+			std::cout<<"Push64Plugin: CBLinkEnd, updating adds."  <<std::endl;
 			UpdatePush64Adds(); 
 		}
 
@@ -80,30 +80,30 @@ class Push64Relocs_t : public Zipr_SDK::ZiprPluginInterface_t
 		void UpdatePush64Adds();
 
 		// subsidiary workhorses 
-		void HandlePush64Relocation(libIRDB::Instruction_t* insn, libIRDB::Relocation_t *reloc);
+		void HandlePush64Relocation(IRDB_SDK::Instruction_t* insn, IRDB_SDK::Relocation_t *reloc);
 
 		// helpers
-		bool IsPcrelRelocation(libIRDB::Relocation_t *reloc)
+		bool IsPcrelRelocation(IRDB_SDK::Relocation_t *reloc)
 		{ return IsRelocationWithType(reloc,"pcrel"); }
-		bool IsAdd64Relocation(libIRDB::Relocation_t *reloc)
+		bool IsAdd64Relocation(IRDB_SDK::Relocation_t *reloc)
 		{ return IsRelocationWithType(reloc,"add64"); }
-		bool IsPush64Relocation(libIRDB::Relocation_t *reloc)
+		bool IsPush64Relocation(IRDB_SDK::Relocation_t *reloc)
 		{ return IsRelocationWithType(reloc,"push64"); }
-		bool Is32BitRelocation(libIRDB::Relocation_t *reloc)
+		bool Is32BitRelocation(IRDB_SDK::Relocation_t *reloc)
 		{ return IsRelocationWithType(reloc,"push64"); }
 
-		libIRDB::Relocation_t* FindPcrelRelocation(libIRDB::Instruction_t* insn)
+		IRDB_SDK::Relocation_t* FindPcrelRelocation(IRDB_SDK::Instruction_t* insn)
 		{ return FindRelocationWithType(insn,"pcrel"); }
-		libIRDB::Relocation_t* FindAdd64Relocation(libIRDB::Instruction_t* insn)
+		IRDB_SDK::Relocation_t* FindAdd64Relocation(IRDB_SDK::Instruction_t* insn)
 		{ return FindRelocationWithType(insn,"add64"); }
-		libIRDB::Relocation_t* FindPush64Relocation(libIRDB::Instruction_t* insn)
+		IRDB_SDK::Relocation_t* FindPush64Relocation(IRDB_SDK::Instruction_t* insn)
 		{ return FindRelocationWithType(insn,"push64"); }
-		libIRDB::Relocation_t* Find32BitRelocation(libIRDB::Instruction_t* insn)
+		IRDB_SDK::Relocation_t* Find32BitRelocation(IRDB_SDK::Instruction_t* insn)
 		{ return FindRelocationWithType(insn,"32-bit"); }
 
-		libIRDB::Relocation_t* FindPushRelocation(libIRDB::Instruction_t* insn)
+		IRDB_SDK::Relocation_t* FindPushRelocation(IRDB_SDK::Instruction_t* insn)
 		{ 
-			libIRDB::Relocation_t* reloc=NULL;
+			IRDB_SDK::Relocation_t* reloc=NULL;
 			if(reloc=FindPush64Relocation(insn))
 			{
 				return reloc; 
@@ -115,8 +115,8 @@ class Push64Relocs_t : public Zipr_SDK::ZiprPluginInterface_t
 			return NULL;
 		}
 
-		bool IsRelocationWithType(libIRDB::Relocation_t *reloc, std::string type);
-		libIRDB::Relocation_t* FindRelocationWithType(libIRDB::Instruction_t* insn, std::string type);
+		bool IsRelocationWithType(IRDB_SDK::Relocation_t *reloc, std::string type);
+		IRDB_SDK::Relocation_t* FindRelocationWithType(IRDB_SDK::Instruction_t* insn, std::string type);
 
 
 
@@ -124,11 +124,11 @@ class Push64Relocs_t : public Zipr_SDK::ZiprPluginInterface_t
 		// references to input
 		Zipr_SDK::MemorySpace_t &m_memory_space;	
 		ELFIO::elfio&  m_elfio;
-		libIRDB::FileIR_t& m_firp;
+		IRDB_SDK::FileIR_t& m_firp;
 		Zipr_SDK::InstructionLocationMap_t &final_insn_locations;
 
 		// local data.
-		libIRDB::InstructionSet_t plopped_relocs;
+		IRDB_SDK::InstructionSet_t plopped_relocs;
 
 		Zipr_SDK::ZiprBooleanOption_t m_verbose;
 
