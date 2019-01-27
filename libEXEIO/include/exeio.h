@@ -32,6 +32,7 @@ namespace EXEIO
 			virtual const char* get_data() const =0;
 			virtual std::string get_name() const =0;
 			virtual int get_size() const =0;
+			virtual int get_type() const =0;
 			virtual EXEIO::virtual_offset_t get_address() const =0;
 			virtual bool mightContainStrings() const =0;
 	};		

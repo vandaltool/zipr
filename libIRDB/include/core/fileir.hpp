@@ -143,6 +143,10 @@ class FileIR_t : public BaseObj_t, virtual public IRDB_SDK::FileIR_t
 
 		virtual void removeScoop(IRDB_SDK::DataScoop_t* s) ;
 		virtual void moveRelocation(IRDB_SDK::Relocation_t* reloc, IRDB_SDK::Instruction_t* from, IRDB_SDK::Instruction_t* to) ;
+		virtual IRDB_SDK::EhProgram_t* copyEhProgram(const IRDB_SDK::EhProgram_t& orig);
+
+		virtual void   setAllEhPrograms(const EhProgramSet_t& new_pgms)  { eh_pgms=new_pgms; }
+
 
 
 

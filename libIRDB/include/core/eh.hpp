@@ -65,6 +65,9 @@ class EhProgram_t : public BaseObj_t, virtual public IRDB_SDK::EhProgram_t
 
 	EhProgramListing_t& GetFDEProgram() { return fde_program; }
 	const EhProgramListing_t& getFDEProgram() const { return fde_program; }
+	void setCIEProgram(const EhProgramListing_t& p) { cie_program=p; }
+	void setFDEProgram(const EhProgramListing_t& p) { fde_program=p; }
+
 
         uint64_t getCodeAlignmentFactor() const { return code_alignment_factor; }
         void setCodeAlignmentFactor(const uint64_t caf) 

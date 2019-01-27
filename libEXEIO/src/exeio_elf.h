@@ -31,6 +31,7 @@ namespace EXEIO
 			const char* get_data() const { return s->get_data(); }
 			std::string get_name() const { return s->get_name(); }
 			int get_size() const { return s->get_size(); }
+			int get_type() const { return s->get_type(); }
 			EXEIO::virtual_offset_t get_address() const { return s->get_address(); }
 			bool mightContainStrings() const { assert(0); }
 

@@ -32,6 +32,7 @@ namespace EXEIO
 			const char* get_data() const  { return s->get_raw_data().c_str(); }
 			std::string get_name() const { return s->get_name(); }
 			int get_size() const  { return s->get_virtual_size(); }
+			int get_type() const  { assert(0); } // not imp'd yet
 			EXEIO::virtual_offset_t get_address() const { 
 				EXEIO::virtual_offset_t base = b->get_image_base_64();
 				return base + s->get_virtual_address(); 

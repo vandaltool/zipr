@@ -1887,4 +1887,14 @@ IRDB_SDK::DataScoop_t* FileIR_t::addNewDataScoop(
 	return newscoop;
 }
 
+IRDB_SDK::EhProgram_t* FileIR_t::copyEhProgram(const IRDB_SDK::EhProgram_t& orig)
+{
+	const auto ehpgm=dynamic_cast<const libIRDB::EhProgram_t*>(&orig);
+	assert(ehpgm);
+	auto new_eh_pgm=new libIRDB::EhProgram_t(*ehpgm);
+        GetAllEhPrograms().insert(new_eh_pgm);
+	return new_eh_pgm;
+}
+
+
 
