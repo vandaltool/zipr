@@ -1552,11 +1552,11 @@ void FileIR_t::splitScoop(
 		IRDB_SDK::DatabaseID_t *max_id_ptr	 /* in and out param */
 	)
 {
-	auto tosplit=dynamic_cast<DataScoop_t*>(p_tosplit);
-	auto before=dynamic_cast<DataScoop_t*>(p_before);
-	auto containing=dynamic_cast<DataScoop_t*>(p_containing);
-	auto after=dynamic_cast<DataScoop_t*>(p_after);
-
+	auto tosplit    = dynamic_cast<DataScoop_t*>(p_tosplit);
+	auto before     = dynamic_cast<DataScoop_t*>(p_before);
+	auto containing = dynamic_cast<DataScoop_t*>(p_containing);
+	auto after      = dynamic_cast<DataScoop_t*>(p_after);
+ 
 	// init output params.
 	before=containing=after=NULL;
 
@@ -1565,7 +1565,7 @@ void FileIR_t::splitScoop(
 		tosplit->getEnd()->getVirtualOffset() == addr+size-1)
 	{
 		// no split necessary
-		containing=tosplit;
+		p_containing=tosplit;
 		return;
 	}
 
@@ -1748,6 +1748,11 @@ void FileIR_t::splitScoop(
 	delete tosplit->getStart();
 	delete tosplit->getEnd();
 	delete tosplit;
+
+	// set output parameters before returning.
+	p_before    = before;
+	p_containing= containing;
+	p_after     = after;
 
 	return;
 }
