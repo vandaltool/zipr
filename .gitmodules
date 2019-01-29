@@ -60,3 +60,6 @@
 [submodule "irdb-sdk"]
 	path = irdb-sdk
 	url = git@git.zephyr-software.com:allnp/irdb-sdk.git
+[submodule "zipr_xeon_plugin"]
+	path = zipr_xeon_plugin
+	url = git@git.zephyr-software.com:allnp/xeon_plugin

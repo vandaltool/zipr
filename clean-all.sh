@@ -10,6 +10,11 @@ if [ "$PEASOUP_UMBRELLA_DIR" != "$FULL_BUILD_LOC" ]; then
     exit 1;
 fi
 
+if [ "$(ls -A "$PEDI_HOME" 2> /dev/null)" == "" ]; then
+        echo "pedi submodule is empty. Did you clone using --recursive?";
+        exit 1;
+fi
+
 use_strata=0
 if [[ $use_strata = 1 ]] ; then
 	# stratafier

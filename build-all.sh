@@ -29,6 +29,11 @@ mkdir -p $ZEST_RUNTIME/lib64
 mkdir -p $ZEST_RUNTIME/bin
 mkdir -p $ZEST_RUNTIME/sbin
 
+if [ "$(ls -A "$PEDI_HOME" 2> /dev/null)" == "" ]; then
+	echo "pedi submodule is empty. Did you clone using --recursive?";
+	exit 1;
+fi 
+
 if [ ! -f manifest.txt.config -o ! -d "$PS_INSTALL" ]; then
 	mkdir -p "$PS_INSTALL"
 	$PEDI_HOME/pedi --setup -m manifest.txt -l ida -l ida_key -l ps -l zipr -l stars -i $PS_INSTALL
@@ -113,6 +118,11 @@ fi
 if [ -d $ZIPR_SCFI_PLUGIN ]; then
 	cd $ZIPR_SCFI_PLUGIN
 	scons  $SCONSDEBUG || exit 1
+fi
+
+if [ -d $ZIPR_XEON_PLUGIN ]; then
+        cd $ZIPR_XEON_PLUGIN
+        scons  $SCONSDEBUG || exit
 fi
 
 cd $PEASOUP_UMBRELLA_DIR/zipr_large_only_plugin/
