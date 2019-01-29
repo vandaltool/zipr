@@ -2738,23 +2738,21 @@ void ZiprImpl_t::UpdateScoops()
 			/*
 			 * Resize the contents.
 			 */
-			string scoop_contents = scoop->getContents();
+			auto scoop_contents = scoop->getContents();
 			scoop_contents.resize(scoop->getEnd()->getVirtualOffset() -
 			                      scoop->getStart()->getVirtualOffset() + 1);
-			scoop->setContents(scoop_contents);
 			assert(scoop->getSize() == scoop_contents.size());
 
 			/*
 			 * And now update the contents.
 			 */
-			for(VirtualOffset_t i=scoop->getStart()->getVirtualOffset();
+			for(auto i=scoop->getStart()->getVirtualOffset();
 			    i<= scoop->getEnd()->getVirtualOffset();
 			    i++)
 			{
-				auto str=scoop->getContents();
-				str[i-scoop->getStart()->getVirtualOffset()]=memory_space[i];
-				scoop->setContents(str);
+				scoop_contents[i-scoop->getStart()->getVirtualOffset()]=memory_space[i];
 			}
+			scoop->setContents(scoop_contents);
 			// m_firp->getDataScoops().insert(scoop); we added this earlier when we created the obj.
 			// jdh -- a bit worried that this'll break assumptions in other places
 			++it;
