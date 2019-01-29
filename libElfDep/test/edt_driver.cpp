@@ -2,11 +2,11 @@
 #include <fstream>
 #include <string>
 #include "edt.hpp"
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 #include <getopt.h>
 
 using namespace std;
-using namespace libIRDB;
+using namespace IRDB_SDK;
 using namespace ElfDep_Tester;
 
 void usage(string programName)
@@ -21,8 +21,7 @@ int main(int argc, char **argv)
 	char *strtolError = NULL;
 	int transformExitCode = 0;
 	int variantID = -1; 
-	VariantID_t *pidp = NULL;
-	pqxxDB_t pqxx_interface;
+	auto pqxx_interface=pqxxDB_t::factory();
 	int exit_code=0;
 
 	/*
@@ -69,21 +68,21 @@ int main(int argc, char **argv)
 
 
 	/* setup the interface to the sql server */
-	BaseObj_t::SetInterface(&pqxx_interface);
+	BaseObj_t::setInterface(pqxx_interface.get());
 
-	pidp=new VariantID_t(variantID);
-	assert(pidp && pidp->IsRegistered()==true);
+	auto pidp=VariantID_t::factory(variantID);
+	assert(pidp && pidp->isRegistered()==true);
 
-	for(set<File_t*>::iterator it=pidp->GetFiles().begin();
-	    it!=pidp->GetFiles().end();
+	for(set<File_t*>::iterator it=pidp->getFiles().begin();
+	    it!=pidp->getFiles().end();
 		++it)
 	{
 		try 
 		{
 			/* read the IR from the DB */
 			File_t* this_file = *it;
-			FileIR_t *firp = new FileIR_t(*pidp, this_file);
-			cout<<"Transforming "<<this_file->GetURL()<<endl;
+			auto firp = FileIR_t::factory(pidp.get(), this_file);
+			cout<<"Transforming "<<this_file->getURL()<<endl;
 			assert(firp && pidp);
 
 
@@ -91,7 +90,7 @@ int main(int argc, char **argv)
 			 * Create a transformation and then
 			 * invoke its execution.
 			 */
-				auto ed=ElfDep_Tester_t(firp);
+				auto ed=ElfDep_Tester_t(firp.get());
 				transformExitCode = ed.execute();
 			/*
 			 * If everything about the transformation
@@ -102,9 +101,8 @@ int main(int argc, char **argv)
 			{
 				if(getenv("MG_NOUPDATE")==NULL)
 				{
-					firp->WriteToDB();
+					firp->writeToDB();
 				}
-				delete firp;
 			}
 			else
 			{
@@ -129,8 +127,7 @@ int main(int argc, char **argv)
 			exit(1);
 		}
 	}
-	pqxx_interface.Commit();
-	delete pidp;
+	pqxx_interface->commit();
 
 	return exit_code;
 }

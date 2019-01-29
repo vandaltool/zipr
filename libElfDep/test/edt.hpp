@@ -1,14 +1,14 @@
 
 #include <string>
 #include <set>
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 #include <transform.hpp>
 
 namespace ElfDep_Tester
 {
 
 using namespace libTransform;
-using namespace libIRDB;
+using namespace IRDB_SDK;
 using namespace std;
 
 

@@ -9,10 +9,12 @@ myenv=env.Clone()
 myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 myenv.Replace(ZIPR_HOME=os.environ['ZIPR_HOME'])
 myenv.Replace(ZIPR_SDK=os.environ['ZIPR_SDK'])
+myenv.Replace(IRDB_SDK=os.environ['IRDB_SDK'])
 myenv.Replace(ZIPR_INSTALL=os.environ['ZIPR_INSTALL'])
 myenv.Replace(CXXFLAGS = " -g -std=c++11 -Wall ")
 
 cpppath=''' 
+	 $IRDB_SDK/include 
 	 $SECURITY_TRANSFORMS_HOME/include 
 	 $SECURITY_TRANSFORMS_HOME/libIRDB/include 
 	 $SECURITY_TRANSFORMS_HOME/libMEDSannotation/include 
