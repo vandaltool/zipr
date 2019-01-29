@@ -315,7 +315,7 @@ IRDB_SDK::DataScoop_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_
 	insert_into_scoop_at<ptrsize>(dl_rel_str, relscoop, firp, at);
 
 	auto dl_reloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE,  at+((uintptr_t)&dl_rel.r_offset -(uintptr_t)&dl_rel), "dataptr_to_scoop", external_func_addr_scoop);
-	dynamic_cast<libIRDB::Instruction_t*>(relscoop)->GetRelocations().insert(dl_reloc);
+	dynamic_cast<libIRDB::DataScoop_t*>(relscoop)->GetRelocations().insert(dl_reloc);
 	firp->GetRelocations().insert(dl_reloc);
 
 	for(int i=0;i+sizeof(T_Elf_Dyn)<dynamic_scoop->getSize(); i+=sizeof(T_Elf_Dyn))
