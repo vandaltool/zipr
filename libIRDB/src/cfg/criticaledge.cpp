@@ -88,3 +88,12 @@ void CriticalEdgeAnalyzer_t::init()
 		}
 	}
 }
+
+unique_ptr<IRDB_SDK::CriticalEdges_t> IRDB_SDK::CriticalEdges_t::factory(
+	const IRDB_SDK::ControlFlowGraph_t &p_cfg, 
+	const bool p_conservative)
+{
+	auto real_cfg = dynamic_cast<const libIRDB::ControlFlowGraph_t*>(&p_cfg);
+	return unique_ptr<IRDB_SDK::CriticalEdges_t>(new libIRDB::CriticalEdgeAnalyzer_t(
+				real_cfg, p_conservative));
+}
