@@ -19,56 +19,57 @@
  */
 
 
-class BasicBlock_t;
-typedef std::set<BasicBlock_t*> BasicBlockSet_t;
-typedef std::vector<IRDB_SDK::Instruction_t*> InstructionVector_t;
-
-class BasicBlock_t
+namespace libIRDB
 {
+	using namespace std;
 
-	public:
-		BasicBlock_t();
+	class BasicBlock_t : public IRDB_SDK::BasicBlock_t
+	{
 
-		bool GetIsExitBlock() { return is_exit_block; }
-		void SetIsExitBlock(bool is_exit) { is_exit_block=is_exit; }
+		public:
+			BasicBlock_t();
+			virtual ~BasicBlock_t() { }
 
-		InstructionVector_t& GetInstructions() { return instructions; }
-		BasicBlockSet_t&     GetPredecessors() { return predecessors; }
-		BasicBlockSet_t&     GetSuccessors()   { return successors; }
-		BasicBlockSet_t&     GetIndirectTargets() { return indirect_targets; }
-		BasicBlock_t* GetFallthrough();
-		BasicBlock_t* getTarget();
+			bool getIsExitBlock() const { return is_exit_block; }
+			void setIsExitBlock(bool is_exit) { is_exit_block=is_exit; }
 
-		// for const correctness if you aren't modifying.
-		const InstructionVector_t& GetInstructions() const { return instructions; }
-		const BasicBlockSet_t&     GetPredecessors() const { return predecessors; }
-		const BasicBlockSet_t&     GetSuccessors()   const { return successors; }
-		const BasicBlockSet_t&     GetIndirectTargets() const { return indirect_targets; }
+			IRDB_SDK::InstructionVector_t& GetInstructions() { return instructions; }
+			IRDB_SDK::BasicBlockSet_t&     GetPredecessors() { return predecessors; }
+			IRDB_SDK::BasicBlockSet_t&     GetSuccessors()   { return successors; }
+			IRDB_SDK::BasicBlockSet_t&     GetIndirectTargets() { return indirect_targets; }
 
-		bool EndsInBranch();
-		bool EndsInIndirectBranch();
-		bool EndsInConditionalBranch();
-		IRDB_SDK::Instruction_t* GetBranchInstruction();
-		void dump(std::ostream &os=std::cout) const { os<<*this; }
+			// for const correctness if you aren't modifying.
+			const IRDB_SDK::InstructionVector_t& getInstructions()    const { return instructions; }
+			const IRDB_SDK::BasicBlockSet_t&     getPredecessors()    const { return predecessors; }
+			const IRDB_SDK::BasicBlockSet_t&     getSuccessors()      const { return successors; }
+			const IRDB_SDK::BasicBlockSet_t&     getIndirectTargets() const { return indirect_targets; }
+//			      IRDB_SDK::BasicBlock_t   *     getFallthrough()     const ;
+//			      IRDB_SDK::BasicBlock_t   *     getTarget()          const ;
 
-	protected:
+			bool endsInBranch() const;
+			bool endsInIndirectBranch() const;
+			bool endsInConditionalBranch() const;
+			IRDB_SDK::Instruction_t* getBranchInstruction() const;
+			void dump(ostream &os=cout) const ; 
 
-		void BuildBlock( IRDB_SDK::Instruction_t* insn,
-                		const std::map<IRDB_SDK::Instruction_t*,BasicBlock_t*> &insn2block_map
-        			);
+		protected:
+
+			void BuildBlock( IRDB_SDK::Instruction_t* insn,
+					const map<IRDB_SDK::Instruction_t*,BasicBlock_t*> &insn2block_map
+					);
 
 
-	private:
+		private:
 
-		InstructionVector_t instructions;
-		BasicBlockSet_t  predecessors;
-		BasicBlockSet_t  successors;
-		BasicBlockSet_t  indirect_targets;
-		bool is_exit_block;
+			IRDB_SDK::InstructionVector_t instructions;
+			IRDB_SDK::BasicBlockSet_t  predecessors;
+			IRDB_SDK::BasicBlockSet_t  successors;
+			IRDB_SDK::BasicBlockSet_t  indirect_targets;
+			bool is_exit_block;
 
-	friend std::ostream& operator<<(std::ostream& os, const BasicBlock_t& block);
-	friend class ControlFlowGraph_t;
-};
+		friend ostream& operator<<(ostream& os, const BasicBlock_t& block);
+		friend class ControlFlowGraph_t;
+	};
 
-std::ostream& operator<<(std::ostream& os, const BasicBlock_t& block);
 
+}

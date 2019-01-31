@@ -25,59 +25,66 @@
 using namespace std;
 using namespace libIRDB;
 
-CriticalEdgeAnalyzer_t::CriticalEdgeAnalyzer_t(const ControlFlowGraph_t& p_cfg, const bool p_conservative) :
+#define ALLOF(a) begin(a),end(a)
+
+CriticalEdgeAnalyzer_t::CriticalEdgeAnalyzer_t(const ControlFlowGraph_t* p_cfg, const bool p_conservative) :
 	m_cfg(p_cfg),
 	m_conservative(p_conservative)
 {
+	init();
 }
 
 /*
 *   Critical edge between two nodes is where the source node has multiple successsors,
 *   and the target node has multiple predecessors 
 */
-BasicBlockEdgeSet_t CriticalEdgeAnalyzer_t::GetAllCriticalEdges() const
+void CriticalEdgeAnalyzer_t::init()
 {
-	BasicBlockEdgeSet_t criticals; 
-	for (const auto &src : m_cfg.GetBlocks())
+	for (const auto &src : m_cfg->getBlocks())
 	{
-		auto num_successors = src->GetSuccessors().size();
+		auto num_successors = src->getSuccessors().size();
 		if (!m_conservative)
 		{
 			// in aggressive (non conservative) mode, ignore indirect edges
 			// when counting number of successors
-			num_successors = count_if(
-				src->GetSuccessors().begin(), src->GetSuccessors().end(),
-				[&] (const BasicBlock_t* bb_tgt) {
-					CFG_EdgeType myEdgeType = m_cfg.GetEdgeType(src, bb_tgt);
-					return myEdgeType.find(CFG_TargetEdge)!=myEdgeType.end() || 
-					       myEdgeType.find(CFG_FallthroughEdge)!=myEdgeType.end();
-					});
+			num_successors = count_if
+				(
+					ALLOF(src->getSuccessors()),
+					[&] (const IRDB_SDK::BasicBlock_t* bb_tgt) 
+					{
+						auto myEdgeType = m_cfg->getEdgeType(src, bb_tgt);
+						return myEdgeType.find(IRDB_SDK::cetTargetEdge)!=myEdgeType.end() || 
+						       myEdgeType.find(IRDB_SDK::cetFallthroughEdge)!=myEdgeType.end();
+					}
+				);
 		}
 
 		if (num_successors <= 1) continue;
 
-		for (const auto &tgt : src->GetSuccessors())
+		for (const auto &tgt : src->getSuccessors())
 		{
-			auto num_predecessors = tgt->GetPredecessors().size();
+			auto num_predecessors = tgt->getPredecessors().size();
 			if (!m_conservative)
 			{
 				// in aggressive (non conservative) mode, ignore indirect edges
 				// when counting number of predecessors
-				num_predecessors = count_if(
-					tgt->GetPredecessors().begin(), tgt->GetPredecessors().end(),
-					[&] (const BasicBlock_t* bb_pred) {
-						CFG_EdgeType myEdgeType = m_cfg.GetEdgeType(bb_pred, tgt);
-						return myEdgeType.find(CFG_TargetEdge)!=myEdgeType.end() || 
-						       myEdgeType.find(CFG_FallthroughEdge)!=myEdgeType.end();
-						});
+				num_predecessors = count_if
+					(
+						ALLOF(tgt->getPredecessors()),
+						[&] (const IRDB_SDK::BasicBlock_t* bb_pred) 
+						{
+							auto myEdgeType = m_cfg->getEdgeType(bb_pred, tgt);
+							return myEdgeType.find(IRDB_SDK::cetTargetEdge)!=myEdgeType.end() || 
+							       myEdgeType.find(IRDB_SDK::cetFallthroughEdge)!=myEdgeType.end();
+						}
+					);
 			}
 
 			if (num_predecessors > 1)
 			{
-				BasicBlockEdge_t e(src, tgt);
+				auto e=IRDB_SDK::BasicBlockEdge_t(src, tgt);
 				criticals.insert(e);
 			}
 		}
 	}
-	return criticals;
 }

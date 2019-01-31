@@ -18,39 +18,35 @@
  *
  */
 
-enum CFG_EdgeTypeEnum { CFG_FallthroughEdge, CFG_TargetEdge, CFG_IndirectEdge };
-typedef std::set<CFG_EdgeTypeEnum> CFG_EdgeType;
-
-class ControlFlowGraph_t
+namespace libIRDB
 {
-	public:
-		ControlFlowGraph_t(IRDB_SDK::Function_t* func);
-		BasicBlock_t* GetEntry() const { return entry; }
-		IRDB_SDK::Function_t* getFunction() const { return function; }
-		BasicBlockSet_t& GetBlocks()   { return blocks; }
-		const BasicBlockSet_t& GetBlocks()   const { return blocks; }
-		void dump(std::ostream &os=std::cout) const { os<<*this; }
-		bool HasEdge(BasicBlock_t *p_src, BasicBlock_t *p_tgt) const;
-		CFG_EdgeType GetEdgeType(const BasicBlock_t *p_src, const BasicBlock_t *p_tgt) const;
+	using namespace std;
 
-	private:
-	// methods 
-		void Build(IRDB_SDK::Function_t *func);
-		void alloc_blocks(const IRDB_SDK::InstructionSet_t &starts, map<IRDB_SDK::Instruction_t*,BasicBlock_t*>& insn2block_map);
-		void build_blocks(const map<IRDB_SDK::Instruction_t*,BasicBlock_t*>& insn2block_map);
-		void find_unblocked_instructions(InstructionSet_t &starts, IRDB_SDK::Function_t* func);
+	class ControlFlowGraph_t : public IRDB_SDK::ControlFlowGraph_t
+	{
+		public:
+			ControlFlowGraph_t(IRDB_SDK::Function_t* func);
+			virtual ~ControlFlowGraph_t() { }
+			IRDB_SDK::BasicBlock_t* getEntry() const { return entry; }
+			IRDB_SDK::Function_t* getFunction() const { return function; }
+			IRDB_SDK::BasicBlockSet_t& GetBlocks()   { return blocks; }
+			const IRDB_SDK::BasicBlockSet_t& getBlocks()   const { return blocks; }
+			void dump(ostream &os=cout) const; 
+			bool hasEdge(IRDB_SDK::BasicBlock_t *p_src, IRDB_SDK::BasicBlock_t *p_tgt) const;
+			IRDB_SDK::CFGEdgeType_t getEdgeType(const IRDB_SDK::BasicBlock_t *p_src, const IRDB_SDK::BasicBlock_t *p_tgt) const;
 
-	// data
-		BasicBlockSet_t blocks;
-		BasicBlock_t* entry;
-		IRDB_SDK::Function_t* function;
+		private:
+		// methods 
+			void Build(IRDB_SDK::Function_t *func);
+			void alloc_blocks(const IRDB_SDK::InstructionSet_t &starts, map<IRDB_SDK::Instruction_t*,BasicBlock_t*>& insn2block_map);
+			void build_blocks(const map<IRDB_SDK::Instruction_t*,BasicBlock_t*>& insn2block_map);
+			void find_unblocked_instructions(InstructionSet_t &starts, IRDB_SDK::Function_t* func);
 
-	/* friends */
-	public:
-		friend std::ostream& operator<<(std::ostream& os, const ControlFlowGraph_t& cfg);
-};
+		// data
+			IRDB_SDK::BasicBlockSet_t blocks;
+			IRDB_SDK::BasicBlock_t* entry;
+			IRDB_SDK::Function_t* function;
 
+	};
 
-std::ostream& operator<<(std::ostream& os, const ControlFlowGraph_t& cfg);
-
-
+}

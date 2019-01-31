@@ -20,7 +20,7 @@
 
 
 #include <irdb-core>
-#include <libIRDB-cfg.hpp>
+#include <irdb-cfg>
 #include <utils.hpp>
 #include <iostream>
 #include <stdlib.h>
@@ -95,13 +95,13 @@ size_t not_calls=0;
 bool opt_fix_icalls = false;
 bool opt_fix_safefn = true;
 
-bool check_entry(bool &found, libIRDB::ControlFlowGraph_t* cfg)
+bool check_entry(bool &found, ControlFlowGraph_t* cfg)
 {
 
-	auto entry=cfg->GetEntry();
+	auto entry=cfg->getEntry();
 	found=false;
 
-	for(auto insn : entry->GetInstructions())
+	for(auto insn : entry->getInstructions())
 	{
 		auto disasmp = DecodedInstruction_t::factory(insn);
 		auto &disasm = *disasmp;
@@ -136,7 +136,7 @@ bool check_entry(bool &found, libIRDB::ControlFlowGraph_t* cfg)
 	return false;
 }
 
-using ControlFlowGraphMap_t = map<Function_t*, libIRDB::ControlFlowGraph_t*>;
+using ControlFlowGraphMap_t = map<Function_t*, shared_ptr<ControlFlowGraph_t> >;
 ControlFlowGraphMap_t cfg_optimizer;
 
 bool call_needs_fix(Instruction_t* insn)
@@ -242,16 +242,16 @@ bool call_needs_fix(Instruction_t* insn)
 
 	if(!is_found)
 		/* build a cfg for this function */
-		cfg_optimizer[func]=new libIRDB::ControlFlowGraph_t(func);
+		cfg_optimizer[func]=shared_ptr<ControlFlowGraph_t>(move(ControlFlowGraph_t::factory(func)));
 
-	auto cfg=cfg_optimizer[func];
+	auto cfg=cfg_optimizer[func].get();
 	
 
 
-	assert(cfg->GetEntry());
+	assert(cfg->getEntry());
 	
 	/* if the call instruction isn't to a function entry point */
-	if(cfg->GetEntry()->GetInstructions()[0]!=target)
+	if(cfg->getEntry()->getInstructions()[0]!=target)
 	{
 		call_to_not_entry++;
 		/* then we need to fix it */

@@ -89,7 +89,7 @@ ControlFlowGraph_t::ControlFlowGraph_t(IRDB_SDK::Function_t* func) :
 }
 
 
-void ControlFlowGraph_t::alloc_blocks(const InstructionSet_t &starts, map<IRDB_SDK::Instruction_t*,BasicBlock_t*>& insn2block_map)
+void ControlFlowGraph_t::alloc_blocks(const IRDB_SDK::InstructionSet_t &starts, map<IRDB_SDK::Instruction_t*,BasicBlock_t*>& insn2block_map)
 {
 	/* create a basic block for each instruction that starts a block */
 	for(const auto &insn : starts)
@@ -115,7 +115,7 @@ void ControlFlowGraph_t::build_blocks(const map<IRDB_SDK::Instruction_t*,BasicBl
 		const auto insn=it.first;
 		const auto block=it.second;
 
-		if(block->GetInstructions().size()>0) // already built
+		if(block->getInstructions().size()>0) // already built
 			continue;
 
 		assert(insn && block);
@@ -126,12 +126,12 @@ void ControlFlowGraph_t::build_blocks(const map<IRDB_SDK::Instruction_t*,BasicBl
 
 }
 
-void ControlFlowGraph_t::find_unblocked_instructions(InstructionSet_t &starts, IRDB_SDK::Function_t* func)
+void ControlFlowGraph_t::find_unblocked_instructions(IRDB_SDK::InstructionSet_t &starts, IRDB_SDK::Function_t* func)
 {
 	auto mapped_instructions=InstructionSet_t();
 	auto missed_instructions=InstructionSet_t();
 	for(const auto block : GetBlocks())
-		mapped_instructions.insert(ALLOF(block->GetInstructions()));
+		mapped_instructions.insert(ALLOF(block->getInstructions()));
 
 	auto my_inserter=inserter(missed_instructions,missed_instructions.end());
 	set_difference(ALLOF(func->getInstructions()), ALLOF(mapped_instructions), my_inserter);
@@ -166,37 +166,37 @@ void ControlFlowGraph_t::Build(IRDB_SDK::Function_t* func)
 }
 
 // returns true iff there's an edge from <p_src> to <p_tgt> in the CFG
-bool ControlFlowGraph_t::HasEdge(BasicBlock_t *p_src, BasicBlock_t *p_tgt) const
+bool ControlFlowGraph_t::hasEdge(IRDB_SDK::BasicBlock_t *p_src, IRDB_SDK::BasicBlock_t *p_tgt) const
 {
 	const auto src_exists = blocks.find(p_src) != blocks.end();
 	const auto tgt_exists = blocks.find(p_tgt) != blocks.end();
 
 	if (!src_exists || !tgt_exists) return false;
 
-	const auto successors = p_src->GetSuccessors();
+	const auto successors = p_src->getSuccessors();
 	return successors.find(p_tgt) != successors.end();
 }
 
-CFG_EdgeType ControlFlowGraph_t::GetEdgeType(const BasicBlock_t *p_src, const BasicBlock_t *p_tgt) const
+IRDB_SDK::CFGEdgeType_t ControlFlowGraph_t::getEdgeType(const IRDB_SDK::BasicBlock_t *p_src, const IRDB_SDK::BasicBlock_t *p_tgt) const
 {
-	const auto last_in_src = p_src->GetInstructions()[p_src->GetInstructions().size()-1];
-	const auto first_in_tgt = p_tgt->GetInstructions()[0];
+	const auto last_in_src = p_src->getInstructions()[p_src->getInstructions().size()-1];
+	const auto first_in_tgt = p_tgt->getInstructions()[0];
 
-	auto edgeType = CFG_EdgeType();
+	auto edgeType = IRDB_SDK::CFGEdgeType_t();
 
 	if (last_in_src->getFallthrough() == first_in_tgt)
 	{
-		edgeType.insert(CFG_FallthroughEdge);
+		edgeType.insert(IRDB_SDK::cetFallthroughEdge);
 	}
 
 	if (last_in_src->getTarget() == first_in_tgt)
 	{
-		edgeType.insert(CFG_TargetEdge);
+		edgeType.insert(IRDB_SDK::cetTargetEdge);
 	}
 
 	if (edgeType.size() == 0)
 	{
-		edgeType.insert(CFG_IndirectEdge);
+		edgeType.insert(IRDB_SDK::cetIndirectEdge);
 	}
 
 	return edgeType;
@@ -205,50 +205,50 @@ CFG_EdgeType ControlFlowGraph_t::GetEdgeType(const BasicBlock_t *p_src, const Ba
 /*
  *  output operator
  */
-ostream& libIRDB::operator<<(ostream& os, const ControlFlowGraph_t& cfg)
+ostream& IRDB_SDK::operator<<(ostream& os, const IRDB_SDK::ControlFlowGraph_t& cfg)
+{
+	cfg.dump(os);
+	return os;
+}
+
+void ControlFlowGraph_t::dump(ostream& os) const
 {
 	int i=0;
 
-	map<BasicBlock_t*,int> blk_numbers;
-	for(
-		set<BasicBlock_t*>::const_iterator it=cfg.blocks.begin();
-		it!=cfg.blocks.end();
-		++it
-	   )
+	auto blk_numbers = map<IRDB_SDK::BasicBlock_t*,int>();
+	for(auto blk : getBlocks() ) 
 	{
-			blk_numbers[*it]=i++;
+			blk_numbers[blk]=i++;
 	}
 	
 
-	for(
-		set<BasicBlock_t*>::const_iterator it=cfg.blocks.begin();
-		it!=cfg.blocks.end();
-		++it
-	   )
+	for(auto block : getBlocks())
 	{
-		BasicBlock_t *block=*it;
-
-		if(block==cfg.GetEntry())
+		if(block==getEntry())
 			os<<"**** Entry    ";
 		else
 			os<<"---- NotEntry ";
 		os<<"block "<<std::dec<<blk_numbers[block]<<endl;
 		os<<"Successors: ";
-		for_each(block->GetSuccessors().begin(), block->GetSuccessors().end(), [&](BasicBlock_t* succ)
+		for(auto succ : block->getSuccessors())
 		{
 			os<<blk_numbers[succ]<<", ";
 			
-		});
+		};
 		os<<endl;
 		os<<"Predecessors: ";
-		for_each(block->GetPredecessors().begin(), block->GetPredecessors().end(), [&](BasicBlock_t* pred)
+		for(auto pred : block->getPredecessors())
 		{
 			os<<blk_numbers[pred]<<", ";
-		});
+		};
 		os<<endl;
 		os << *block;
 	}
 
-	return os;
+}
+
+unique_ptr<IRDB_SDK::ControlFlowGraph_t> IRDB_SDK::ControlFlowGraph_t::factory(IRDB_SDK::Function_t* func)
+{
+	return unique_ptr<IRDB_SDK::ControlFlowGraph_t>(new libIRDB::ControlFlowGraph_t(func));
 }
 

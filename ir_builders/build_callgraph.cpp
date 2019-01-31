@@ -20,8 +20,8 @@
 
 
 
-#include <libIRDB-core.hpp>
-#include <libIRDB-cfg.hpp>
+#include <irdb=-sdk>
+#include <irdb-cfg>
 #include <utils.hpp> // to_string function from libIRDB
 #include <iostream>
 #include <fstream>
@@ -29,7 +29,6 @@
 #include <string.h>
 #include <assert.h>
 
-using namespace libIRDB;
 using namespace std;
 
 //
@@ -62,7 +61,7 @@ main(int argc, char* argv[])
 		varidp=new VariantID_t(atoi(argv[1]));
 
 		// A callgraph 
-		Callgraph_t *cg=new Callgraph_t;
+		auto cg=Callgraph_t::factory();
 
 		assert(varidp->IsRegistered()==true);
 

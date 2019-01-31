@@ -23,7 +23,6 @@
 
 
 #include <irdb-core>
-#include <libIRDB-cfg.hpp>
 #include <utils.hpp>
 #include <iostream>
 #include <stdlib.h>

@@ -18,16 +18,22 @@
  *
  */
 
-typedef std::tuple<BasicBlock_t*, BasicBlock_t*> BasicBlockEdge_t;
-typedef std::set<BasicBlockEdge_t> BasicBlockEdgeSet_t;
-
-class CriticalEdgeAnalyzer_t
+namespace libIRDB
 {
-	public:
-		CriticalEdgeAnalyzer_t(const ControlFlowGraph_t &p_cfg, const bool p_conservative=true);
-		BasicBlockEdgeSet_t GetAllCriticalEdges() const;
+	using namespace std;
 
-	private:
-		const ControlFlowGraph_t m_cfg;
-		const bool m_conservative;
-};
+	class CriticalEdgeAnalyzer_t : public IRDB_SDK::CriticalEdges_t
+	{
+		public:
+			CriticalEdgeAnalyzer_t(const ControlFlowGraph_t *p_cfg, const bool p_conservative=true);
+			virtual ~CriticalEdgeAnalyzer_t() { }
+			const IRDB_SDK::BasicBlockEdgeSet_t& getAllCriticalEdges() const { return criticals; }
+
+		private:
+			void init();
+			const IRDB_SDK::ControlFlowGraph_t *m_cfg;
+			const bool m_conservative;
+		        IRDB_SDK::BasicBlockEdgeSet_t criticals;
+
+	};
+}

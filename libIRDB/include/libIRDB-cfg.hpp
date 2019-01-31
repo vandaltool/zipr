@@ -23,6 +23,7 @@
 
 
 /* Building a CFG depends on core functionality */
+#include <irdb-cfg>
 #include <libIRDB-core.hpp>
 
 #include <vector>
@@ -30,17 +31,11 @@
 #include <map>
 #include <ostream>
 
-namespace libIRDB 
-{
-
-	using namespace std;
-
 #include <cfg/BasicBlock.hpp>
 #include <cfg/CFG.hpp>
 #include <cfg/callgraph.hpp>
 #include <cfg/domgraph.hpp>
 #include <cfg/criticaledge.hpp>
 
-};
 
 #endif

@@ -146,23 +146,8 @@ void BasicBlock_t::BuildBlock
 }
 
 
-std::ostream& libIRDB::operator<<(std::ostream& os, const BasicBlock_t& block)
-{
-	os<<block.is_exit_block;
-	os<<"\t ---- Starting block print -----" <<endl;
-	for(auto i=0U;i<block.instructions.size();i++)
-	{
-		const auto insn=block.instructions[i];
-		os<<"\t Instruction "<<std::dec<<i<<" at " << std::hex << insn->getAddress()->getVirtualOffset() << " with id " << std::dec << insn->getBaseID() << " " << insn->getComment() << endl;
-	}
-	os<<"\t ---- done block print -----" <<endl;
-	os<<endl;
 
-	return os;
-}
-
-
-bool BasicBlock_t::EndsInBranch() 
+bool BasicBlock_t::endsInBranch()  const
 {
 	const auto branch=instructions[instructions.size()-1];	
 	assert(branch);
@@ -172,7 +157,7 @@ bool BasicBlock_t::EndsInBranch()
 
 	
 }
-bool BasicBlock_t::EndsInIndirectBranch() 
+bool BasicBlock_t::endsInIndirectBranch()  const
 {
 	const auto *branch=instructions[instructions.size()-1];	
 	assert(branch);
@@ -192,9 +177,9 @@ bool BasicBlock_t::EndsInIndirectBranch()
 	}
 	return false;
 }
-bool BasicBlock_t::EndsInConditionalBranch() 
+bool BasicBlock_t::endsInConditionalBranch() const
 {
-	if(!EndsInBranch())
+	if(!endsInBranch())
 		return false;
 	const auto branch=instructions[instructions.size()-1];	
 	assert(branch);
@@ -203,13 +188,32 @@ bool BasicBlock_t::EndsInConditionalBranch()
 	return d->isConditionalBranch(); 
 }
 
-IRDB_SDK::Instruction_t* BasicBlock_t::GetBranchInstruction()
+IRDB_SDK::Instruction_t* BasicBlock_t::getBranchInstruction() const
 
 {
-	if(!EndsInBranch())
+	if(!endsInBranch())
 		return NULL;
 
 	auto branch=instructions[instructions.size()-1];	
 	return branch;
+}
+
+
+std::ostream& IRDB_SDK::operator<<(std::ostream& os, const IRDB_SDK::BasicBlock_t& block)
+{
+	block.dump(os);
+	return os;
+}
+void  BasicBlock_t::dump(std::ostream& os) const
+{
+	os<<getIsExitBlock();
+	os<<"\t ---- Starting block print -----" <<endl;
+	for(auto i=0U;i<getInstructions().size();i++)
+	{
+		const auto insn=getInstructions()[i];
+		os<<"\t Instruction "<<std::dec<<i<<" at " << std::hex << insn->getAddress()->getVirtualOffset() << " with id " << std::dec << insn->getBaseID() << " " << insn->getComment() << endl;
+	}
+	os<<"\t ---- done block print -----" <<endl;
+	os<<endl;
 }
 

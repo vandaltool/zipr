@@ -21,7 +21,7 @@
 
 
 #include <libIRDB-core.hpp>
-#include <libIRDB-cfg.hpp>
+#include <irdb-cfg.hpp>
 #include <iostream>
 #include <stdlib.h>
 #include <cctype>
