@@ -28,7 +28,7 @@ using namespace std;
 template <class T>
 inline string to_string (const T& t)
 {
-	auto ss=stringstream();
+	stringstream ss;
 	ss << t;
 	return ss.str();
 }
