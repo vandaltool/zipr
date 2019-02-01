@@ -33,7 +33,6 @@
 #include <irdb-core>
 #include <string>
 #include <algorithm>
-#include "utils.hpp"
 #include "Rewrite_Utility.hpp"
 #include "push64_relocs.h"
 
@@ -83,7 +82,7 @@ Relocation_t* Push64Relocs_t::FindRelocationWithType(Instruction_t* insn, std::s
 void Push64Relocs_t::HandlePush64Relocation(Instruction_t *insn, Relocation_t *reloc)
 {
 	// Instruction_t *push_insn = NULL, *jmp_insn = NULL;
-	virtual_offset_t push_addr = 0;
+	VirtualOffset_t push_addr = 0;
 	string databits = "";
 	uint8_t push_data_bits[PUSH_DATA_BITS_MAX_LEN] = {0,};
 	int push_data_bits_len = 0;
@@ -104,7 +103,7 @@ void Push64Relocs_t::HandlePush64Relocation(Instruction_t *insn, Relocation_t *r
 	 * we know that the opcode is one byte.
 	 * The pushed value will start at the 1th offset.
 	 */
-	push_addr = *((virtual_offset_t*)(&push_data_bits[1]));
+	push_addr = *((VirtualOffset_t*)(&push_data_bits[1]));
 
 	if (m_verbose)
 		cout << "push_addr: 0x" << std::hex << push_addr << endl;
