@@ -1,6 +1,6 @@
 
 #include "edt.hpp"
-#include <libElfDep.hpp>
+#include <irdb-elfdep>
 #include <algorithm> 
 
 using namespace IRDB_SDK;
@@ -20,10 +20,10 @@ ElfDep_Tester_t::ElfDep_Tester_t(FileIR_t* firp)
 int ElfDep_Tester_t::execute()
 {
 	// insert the PLT and GOT entries needed
-	auto ed=libIRDB::ElfDependencies_t(getFileIR());
-	(void)ed.appendLibraryDepedencies("libelf_dep_test.so");
-	auto edpcb=ed.appendPltEntry("elf_dep_test_callback");
-	auto edvar=ed.appendGotEntry("elf_dep_test_var");
+	auto ed=ElfDependencies_t::factory(getFileIR());
+	(void)ed->appendLibraryDepedencies("libelf_dep_test.so");
+	auto edpcb=ed->appendPltEntry("elf_dep_test_callback");
+	auto edvar=ed->appendGotEntry("elf_dep_test_var");
 	auto edvar_scoop=edvar.first;
 	auto edvar_offset=edvar.second;
 
