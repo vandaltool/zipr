@@ -23,18 +23,14 @@
 
 
 /* Building a CFG depends on core functionality */
-#include <libIRDB-core.hpp>
-#include <libIRDB-util.hpp>
 
 #include <vector>
 #include <set>
 #include <map>
 #include <ostream>
 
-namespace libIRDB 
-{
+
 #include <syscall/syscall.hpp>
-};
 
 
 #endif

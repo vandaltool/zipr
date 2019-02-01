@@ -20,7 +20,8 @@
 
 
 #include <libIRDB-cfg.hpp>
-#include <utils.hpp>
+#include <irdb-util>
+#include <algorithm>
 
 using namespace std;
 using namespace libIRDB;

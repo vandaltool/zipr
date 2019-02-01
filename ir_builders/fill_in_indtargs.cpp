@@ -20,7 +20,7 @@
  */
 
 #include <irdb-core>
-#include <libIRDB-util.hpp>
+#include <irdb-util>
 #include <iostream>
 #include <fstream>
 #include <limits>
@@ -301,7 +301,7 @@ bool texttoprintf(FileIR_t *firp,Instruction_t* insn)
 {
 	string dst="";
 	// note that dst is an output parameter of IsParameterWrite and an input parameter to CallFollows
-	if(libIRDB::IsParameterWrite(firp,insn, dst) && CallToPrintfFollows(firp,insn,dst))
+	if(isParameterWrite(firp,insn, dst) && CallToPrintfFollows(firp,insn,dst))
 	{
 		return true;
 	}

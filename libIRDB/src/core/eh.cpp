@@ -19,13 +19,14 @@
  */
 
 #include <all.hpp>
-#include <utils.hpp>
+#include <irdb-util>
 #include <tuple>
 #include <functional>
 #include <assert.h>
 #include <sstream>
 #include <iostream>
 #include <iomanip>
+#include <algorithm>
 
 using namespace libIRDB;
 using namespace std;

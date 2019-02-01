@@ -19,7 +19,6 @@
  */
 
 
-#include "utils.hpp"
 #include "Rewrite_Utility.hpp"
 #include <stdlib.h>
 #include <memory>
@@ -28,6 +27,7 @@
 #include <elf.h>
 #include <libElfDep.hpp>
 #include <iterator>
+#include <algorithm>
 
 using namespace libIRDB;
 using namespace std;

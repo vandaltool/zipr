@@ -1,8 +1,9 @@
 #include <map>
 #include <libIRDB-core.hpp>
-#include <utils.hpp>
+#include <irdb-util>
 #include <utility>
 #include <memory>
+#include <algorithm>
 #include <assert.h>
 
 

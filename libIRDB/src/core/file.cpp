@@ -20,13 +20,13 @@
 
 
 #include <all.hpp>
-#include <utils.hpp>
+#include <irdb-util>
 #include <stdlib.h>
 #include <unistd.h>
 #include <fstream>
 #include <iostream>
 
-#include <utils.hpp>
+#include <irdb-util>
 
 using namespace libIRDB;
 using namespace std;

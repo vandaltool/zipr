@@ -3,7 +3,7 @@
 
 #include "Provenance.hpp"
 
-class IBTProvenance_t
+class IBTProvenance_t : public IRDB_SDK::IBTProvenance_t
 {
 	private:
 
@@ -19,10 +19,14 @@ class IBTProvenance_t
 	void AddProvs(const Provenance_t& p, const InstructionSet_t& after) ;
 
 	public:
-	IBTProvenance_t(const IRDB_SDK::FileIR_t* f=NULL) {Init(); if(f) AddFile(f);}
+	IBTProvenance_t(const IRDB_SDK::FileIR_t* f=NULL) {Init(); if(f) addFile(f);}
 	virtual ~IBTProvenance_t() {} 	// default destructor not OK for some reason?
-	void AddFile(const IRDB_SDK::FileIR_t* );
+	void addFile(const IRDB_SDK::FileIR_t* );
         
+	const Provenance_t& getProvenance (const IRDB_SDK::Instruction_t* i)  const
+	{
+		return (*this)[i];
+	}
 
 	const Provenance_t& operator[] (const IRDB_SDK::Instruction_t* i)  const
 	{ 

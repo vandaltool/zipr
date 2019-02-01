@@ -21,42 +21,41 @@
 #ifndef irdb_syscall_hpp
 #define irdb_syscall_hpp
 
-typedef enum 
+namespace libIRDB
 {
-	SNT_Unknown=-1,
-} SyscallNumber_t;
 
-class  SyscallSite_t
-{
-	public:
-		SyscallSite_t(IRDB_SDK::Instruction_t* p_site, libIRDB::SyscallNumber_t p_num) : site(p_site), num(p_num) {}
+	class  SyscallSite_t : public IRDB_SDK::SyscallSite_t
+	{
+		public:
+			SyscallSite_t(IRDB_SDK::Instruction_t* p_site, IRDB_SDK::SyscallNumber_t p_num) : site(p_site), num(p_num) {}
 
-		bool operator<(const libIRDB::SyscallSite_t& rhs) const { return this->site < rhs.site; }
-		IRDB_SDK::Instruction_t* GetSyscallSite() { return site; }
-		IRDB_SDK::Instruction_t* GetSite() const { return site; }
-		libIRDB::SyscallNumber_t GetSyscallNumber() const { return num; }
-	private:
-		IRDB_SDK::Instruction_t* site;
-		libIRDB::SyscallNumber_t num;
-};
-typedef std::set<SyscallSite_t>  SyscallSiteSet_t;
+			IRDB_SDK::Instruction_t*  getSyscallSite()   const { return site; }
+			IRDB_SDK::Instruction_t*  getSite()          const { return site; }
+			IRDB_SDK::SyscallNumber_t getSyscallNumber() const { return num; }
 
-class Syscalls_t
-{
-	public:
-		Syscalls_t(IRDB_SDK::FileIR_t *the_firp=NULL) { if(the_firp) FindSystemCalls(the_firp); }
+		private:
+			IRDB_SDK::Instruction_t* site;
+			IRDB_SDK::SyscallNumber_t num;
+	};
+
+	class Syscalls_t : public IRDB_SDK::Syscalls_t
+	{
+		public:
+			Syscalls_t(IRDB_SDK::FileIR_t *the_firp=NULL) { if(the_firp) FindSystemCalls(the_firp); }
+			virtual ~Syscalls_t();
 
 
-		bool FindSystemCalls(const IRDB_SDK::FileIR_t* firp);
 
-		const libIRDB::SyscallSiteSet_t& GetSyscalls() {return syscalls;}
-	protected:
-		libIRDB::SyscallNumber_t FindSystemCallNumber(IRDB_SDK::Instruction_t* insn, 
-			const libIRDB::InstructionPredecessors_t& preds);
+			const IRDB_SDK::SyscallSiteSet_t& getSyscalls() {return syscalls;}
+		protected:
+			IRDB_SDK::SyscallNumber_t FindSystemCallNumber(IRDB_SDK::Instruction_t* insn, 
+				const IRDB_SDK::InstructionPredecessors_t& preds);
 
-	private:
-		libIRDB::SyscallSiteSet_t syscalls;
-};
+			bool FindSystemCalls(const IRDB_SDK::FileIR_t* firp);
+		private:
+			IRDB_SDK::SyscallSiteSet_t syscalls;
+	};
 
+}
 #endif
 

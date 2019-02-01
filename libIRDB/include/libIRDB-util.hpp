@@ -23,6 +23,8 @@
 
 
 /* Building a CFG depends on core functionality */
+#include <irdb-core>
+#include <irdb-util>
 #include <libIRDB-core.hpp>
 
 #include <vector>

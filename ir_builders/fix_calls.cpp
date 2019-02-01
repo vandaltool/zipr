@@ -21,7 +21,7 @@
 
 #include <irdb-core>
 #include <irdb-cfg>
-#include <utils.hpp>
+#include <algorithm>
 #include <iostream>
 #include <stdlib.h>
 #include <assert.h>

@@ -22,7 +22,7 @@
 #define insn_preds_h
 
 
-class InstructionPredecessors_t
+class InstructionPredecessors_t : public IRDB_SDK::InstructionPredecessors_t
 {
 	private:
 	typedef std::map<const IRDB_SDK::Instruction_t*, InstructionSet_t> PredMap_t;
@@ -31,6 +31,8 @@ class InstructionPredecessors_t
 	InstructionPredecessors_t(const IRDB_SDK::FileIR_t* f=NULL) {Init(); if(f) AddFile(f);}
         virtual ~InstructionPredecessors_t() {;}
 	virtual void AddFile(const IRDB_SDK::FileIR_t* );
+
+	virtual const InstructionSet_t& getPredecessors(const IRDB_SDK::Instruction_t* i)  const { return (*this)[i]; } 
 
 	InstructionSet_t& operator[] (const IRDB_SDK::Instruction_t* i)  
 		{

@@ -21,13 +21,14 @@
 
 #include <libIRDB-core.hpp>
 #include <libIRDB-util.hpp>
-#include <utils.hpp>
+#include <irdb-util>
+#include <algorithm>
 
 using namespace libIRDB;
 using namespace std;
 
 // Does instruction potentially write to a parameter to a call?
-bool libIRDB::IsParameterWrite(const IRDB_SDK::FileIR_t *firp, IRDB_SDK::Instruction_t* insn, string& output_dst)
+bool IRDB_SDK::isParameterWrite(const IRDB_SDK::FileIR_t *firp, IRDB_SDK::Instruction_t* insn, string& output_dst)
 {
 	const auto p_d=DecodedInstruction_t::factory(insn);
 	const auto &d=*p_d;
@@ -103,7 +104,7 @@ bool libIRDB::IsParameterWrite(const IRDB_SDK::FileIR_t *firp, IRDB_SDK::Instruc
 //    (1) call instruction
 //    (2) call converted to push/jmp pair
 //
-static IRDB_SDK::Instruction_t* IsOrWasCall(const IRDB_SDK::FileIR_t *firp, IRDB_SDK::Instruction_t* insn)
+IRDB_SDK::Instruction_t* isOrWasCall(const IRDB_SDK::FileIR_t *firp, IRDB_SDK::Instruction_t* insn)
 {
 	if (firp == NULL || insn == NULL)
 		return NULL;
@@ -137,7 +138,7 @@ static IRDB_SDK::Instruction_t* IsOrWasCall(const IRDB_SDK::FileIR_t *firp, IRDB
 }
 
 // Does a call follow the instruction?
-bool libIRDB::CallFollows(const IRDB_SDK::FileIR_t *firp, IRDB_SDK::Instruction_t* insn, const string& reg_arg_str, const std::string &fn_pattern)
+bool IRDB_SDK::callFollows(const IRDB_SDK::FileIR_t *firp, IRDB_SDK::Instruction_t* insn, const string& reg_arg_str, const std::string &fn_pattern)
 {
 	const std::set<std::string> param_regs = {"rdi", "rsi", "rdx", "rcx", "r8", "r9"};
 	const bool original_is_param_register = param_regs.find(reg_arg_str) != param_regs.end();
@@ -149,7 +150,7 @@ bool libIRDB::CallFollows(const IRDB_SDK::FileIR_t *firp, IRDB_SDK::Instruction_
 	{
 		const auto p_d=DecodedInstruction_t::factory(ptr);
 		const auto &d=*p_d;
-		const auto tgt = IsOrWasCall(firp, ptr);
+		const auto tgt = isOrWasCall(firp, ptr);
 
 		if (tgt) 
 		{
@@ -180,7 +181,7 @@ bool libIRDB::CallFollows(const IRDB_SDK::FileIR_t *firp, IRDB_SDK::Instruction_
 			if (original_is_param_register)
 			{
 				std::string arg;
-				if (IsParameterWrite(firp, ptr, arg))
+				if (isParameterWrite(firp, ptr, arg))
 				{
 //					std::cout << "CallFollows(): " << ptr->getDisassembly() << ": detected write parameter" << std::endl;
  					if (arg == reg_arg_str)
@@ -190,8 +191,8 @@ bool libIRDB::CallFollows(const IRDB_SDK::FileIR_t *firp, IRDB_SDK::Instruction_
 					}
 					else 
 					{
-//						if (std::string(d.Argument2.ArgMnemonic) == reg_arg_str) {
-						if (d.hasOperand(1) && d.getOperand(1)->getString() == reg_arg_str) {
+						if (d.hasOperand(1) && d.getOperand(1)->getString() == reg_arg_str) 
+						{
 //							std::cout << "CallFollows(): " << ptr->getDisassembly() << ": copy of original detected: add to live list: " << arg << std::endl;
 							live_params.insert(arg);
 						}
@@ -218,26 +219,26 @@ bool libIRDB::CallFollows(const IRDB_SDK::FileIR_t *firp, IRDB_SDK::Instruction_
 	return false;
 }
 
-bool libIRDB::FlowsIntoCall(const IRDB_SDK::FileIR_t *firp, IRDB_SDK::Instruction_t* insn)
+bool IRDB_SDK::flowsIntoCall(const IRDB_SDK::FileIR_t *firp, IRDB_SDK::Instruction_t* insn)
 {
 	string param_write;
-	if (!libIRDB::IsParameterWrite(firp, insn, param_write))
+	if (!isParameterWrite(firp, insn, param_write))
 		return false;
 
-	return CallFollows(firp, insn, param_write);
+	return callFollows(firp, insn, param_write);
 }
 
-bool libIRDB::LeaFlowsIntoCall(const IRDB_SDK::FileIR_t *firp, IRDB_SDK::Instruction_t* insn)
+bool IRDB_SDK::leaFlowsIntoCall(const IRDB_SDK::FileIR_t *firp, IRDB_SDK::Instruction_t* insn)
 {
 	const auto d=DecodedInstruction_t::factory(insn);
 
 	if (d->getMnemonic()!="lea")
 		return false;
 
-	return FlowsIntoCall(firp, insn);
+	return flowsIntoCall(firp, insn);
 }
 
-bool libIRDB::LeaFlowsIntoPrintf(const IRDB_SDK::FileIR_t *firp, IRDB_SDK::Instruction_t* insn)
+bool IRDB_SDK::leaFlowsIntoPrintf(const IRDB_SDK::FileIR_t *firp, IRDB_SDK::Instruction_t* insn)
 {
 	const auto d=DecodedInstruction_t::factory(insn);
 
@@ -247,8 +248,8 @@ bool libIRDB::LeaFlowsIntoPrintf(const IRDB_SDK::FileIR_t *firp, IRDB_SDK::Instr
 //	std::cout << "LeaFlowsIntoCall(): investigating " << insn->getDisassembly() << endl;
 
 	string param_write;
-	if (!libIRDB::IsParameterWrite(firp, insn, param_write))
+	if (!isParameterWrite(firp, insn, param_write))
 		return false;
 
-	return CallFollows(firp, insn, param_write, "printf");
+	return callFollows(firp, insn, param_write, "printf");
 }

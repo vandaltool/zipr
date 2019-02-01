@@ -23,8 +23,8 @@
 
 
 #include <irdb-core>
-#include <utils.hpp>
 #include <iostream>
+#include <algorithm>
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>

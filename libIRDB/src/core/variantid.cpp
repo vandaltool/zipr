@@ -21,9 +21,18 @@
 
 
 #include <all.hpp>
-#include <utils.hpp>
+#include <irdb-util>
 #include <stdlib.h>
 using namespace std;
+
+template <class T>
+inline string to_string (const T& t)
+{
+	auto ss=stringstream();
+	ss << t;
+	return ss.str();
+}
+
 
 
 /*

@@ -20,14 +20,16 @@
  */
 
 #include <all.hpp>
-#include <utils.hpp>
+#include <irdb-util>
 #include <cstdlib>
 #include <map>
 #include <fstream>
 #include <elf.h>
 #include <stdlib.h>
+#include <algorithm>
 #include <sys/wait.h>
 #include <iomanip>
+#include <irdb-util>
 
 using namespace libIRDB;
 using namespace std;
@@ -99,7 +101,7 @@ static void UpdateUnresolvedEhCallSites(
 
 static virtual_offset_t strtovo(std::string s)
 {
-        return strtoint<virtual_offset_t>(s);
+        return IRDB_SDK::strtoint<virtual_offset_t>(s);
 }
 
 // Create a Variant from the database

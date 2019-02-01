@@ -21,7 +21,7 @@
 
 
 #include <all.hpp>
-#include <utils.hpp> // to_string function from libIRDB
+#include <irdb-util> // to_string function from libIRDB
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>

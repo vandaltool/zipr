@@ -23,7 +23,7 @@
 #include <ostream>
 #include <libIRDB-core.hpp>
 #include <libIRDB-cfg.hpp>
-#include <utils.hpp>
+#include <irdb-util>
 
 using namespace libIRDB;
 using namespace std;

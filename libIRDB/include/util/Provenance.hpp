@@ -3,7 +3,7 @@
 
 #include <bitset>
 
-class Provenance_t
+class Provenance_t : public IRDB_SDK::Provenance_t
 {
 	private:
 		// ProvType enum values are explicit to show they are in bounds of the bitset

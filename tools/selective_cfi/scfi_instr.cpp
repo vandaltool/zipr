@@ -19,7 +19,7 @@
  */
 
 
-#include "utils.hpp"
+#include <algorithm>
 #include "scfi_instr.hpp"
 #include "Rewrite_Utility.hpp"
 #include "color_map.hpp"
@@ -1160,8 +1160,8 @@ static unsigned int  add_to_scoop(const string &str, DataScoop_t* scoop)
 	assert(scoop->getStart()->getVirtualOffset()==0);
 	int len=str.length();
 	scoop->setContents(scoop->getContents()+str);
-	virtual_offset_t oldend=scoop->getEnd()->getVirtualOffset();
-	virtual_offset_t newend=oldend+len;
+	auto oldend=scoop->getEnd()->getVirtualOffset();
+	auto newend=oldend+len;
 	scoop->getEnd()->setVirtualOffset(newend);
 	return oldend+1;
 };
@@ -1176,8 +1176,8 @@ static void insert_into_scoop_at(const string &str, DataScoop_t* scoop, FileIR_t
 	new_scoop_contents.insert(at,str);
 	scoop->setContents(new_scoop_contents);
 
-	virtual_offset_t oldend=scoop->getEnd()->getVirtualOffset();
-	virtual_offset_t newend=oldend+len;
+	auto oldend=scoop->getEnd()->getVirtualOffset();
+	auto newend=oldend+len;
 	scoop->getEnd()->setVirtualOffset(newend);
 
 	// update each reloc to point to the new location.

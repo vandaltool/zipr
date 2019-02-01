@@ -2,7 +2,7 @@
 #include <bitset>
 #include <libIRDB-core.hpp>
 #include <libIRDB-util.hpp>
-#include <utils.hpp>
+#include <irdb-util>
 
 using namespace libIRDB;
 using namespace std;
@@ -11,7 +11,7 @@ using namespace std;
 Provenance_t IBTProvenance_t::empty;
 
 
-void IBTProvenance_t::AddFile(const IRDB_SDK::FileIR_t* firp)
+void IBTProvenance_t::addFile(const IRDB_SDK::FileIR_t* firp)
 {
 
         using ICFSProvMap_t =  std::map<const IRDB_SDK::ICFS_t*, Provenance_t>;
@@ -25,7 +25,7 @@ void IBTProvenance_t::AddFile(const IRDB_SDK::FileIR_t* firp)
 		if(!ibTargets)
 			continue;
 
-		auto this_prov=Provenance_t();
+		libIRDB::Provenance_t this_prov;
 		const auto p_IndBranchAsm=DecodedInstruction_t::factory(insn);
 		const auto &IndBranchAsm=*p_IndBranchAsm;
 		const auto isIndJmp = IndBranchAsm.isUnconditionalBranch() && !IndBranchAsm.getOperand(0)->isConstant();
@@ -61,5 +61,10 @@ void IBTProvenance_t::AddFile(const IRDB_SDK::FileIR_t* firp)
 			prov_map[insn].addProv(icfs_prov_map[icfs]);
 		}
 	}
+}
+
+unique_ptr<IRDB_SDK::IBTProvenance_t> IRDB_SDK::IBTProvenance_t::factory(const IRDB_SDK::FileIR_t* f)
+{
+	return unique_ptr<IRDB_SDK::IBTProvenance_t>(new libIRDB::IBTProvenance_t(f));
 }
 

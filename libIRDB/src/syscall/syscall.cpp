@@ -18,18 +18,27 @@
  *
  */
 
-#include <libIRDB-core.hpp>
+#include <irdb-core>
+#include <irdb-util>
+#include <irdb-syscall>
 #include <libIRDB-syscall.hpp>
 #include <stdlib.h>
 
 using namespace std;
 using namespace libIRDB;
 
-SyscallNumber_t Syscalls_t::FindSystemCallNumber(IRDB_SDK::Instruction_t* insn, const libIRDB::InstructionPredecessors_t& preds)
+Syscalls_t::~Syscalls_t()
 {
-	IRDB_SDK::Instruction_t *pred_insn=NULL;
+	for(auto site : syscalls)
+		delete site;
+	syscalls.clear();
+}
 
-	for( const InstructionSet_t *cs_preds=&preds[insn];
+IRDB_SDK::SyscallNumber_t Syscalls_t::FindSystemCallNumber(IRDB_SDK::Instruction_t* insn, const IRDB_SDK::InstructionPredecessors_t& preds)
+{
+	IRDB_SDK::Instruction_t *pred_insn=nullptr;
+
+	for( auto cs_preds=&preds[insn];
 		cs_preds->size()==1;
 		cs_preds=&preds[pred_insn]
 	   )
@@ -47,16 +56,16 @@ SyscallNumber_t Syscalls_t::FindSystemCallNumber(IRDB_SDK::Instruction_t* insn, 
 			if(loc ==string::npos)
 			{
 				// no, quit looking backwards 
-				return SNT_Unknown;
+				return IRDB_SDK::sntUnknown;
 			}
-			size_t val=strtol(disass.substr(loc+to_find.length()).c_str(),NULL,16);
+			size_t val=strtol(disass.substr(loc+to_find.length()).c_str(),nullptr,16);
 			// check to see if it's a mov of eax
 
-			return (SyscallNumber_t)val;
+			return (IRDB_SDK::SyscallNumber_t)val;
 		}
 	}
 
-	return SNT_Unknown;
+	return IRDB_SDK::sntUnknown;
 
 }
 
@@ -64,20 +73,16 @@ bool Syscalls_t::FindSystemCalls(const IRDB_SDK::FileIR_t *firp2)
 {
 	auto firp=const_cast<IRDB_SDK::FileIR_t*>(firp2); // discard const qualifer, but we aren't changing anything.
 	assert(firp);
-	libIRDB::InstructionPredecessors_t preds;
-	preds.AddFile(firp);
+	auto predsp=IRDB_SDK::InstructionPredecessors_t::factory(firp);
+	auto &preds = * predsp;
 
 	bool found_one=false;
-	for(auto it=firp->getInstructions().begin();
-			it!=firp->getInstructions().end();
-			++it
-	   )
+	for(auto insn : firp->getInstructions())
 	{
-		auto insn=*it;
 		if(insn->getDisassembly()=="int 0x80") 
 		{
-			SyscallNumber_t num=FindSystemCallNumber(insn, preds);
-			syscalls.insert(SyscallSite_t(insn,num));
+			auto num=FindSystemCallNumber(insn, preds);
+			syscalls.insert(new libIRDB::SyscallSite_t(insn,num));
 			found_one=true;
 
 			if(getenv("PRINTSYSCALLSFOUND"))

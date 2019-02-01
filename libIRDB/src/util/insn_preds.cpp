@@ -22,7 +22,7 @@
 #include <map>
 #include <libIRDB-core.hpp>
 #include <libIRDB-util.hpp>
-#include <utils.hpp>
+#include <irdb-util>
 
 using namespace libIRDB;
 using namespace std;
@@ -65,3 +65,9 @@ void InstructionPredecessors_t::AddFile(const IRDB_SDK::FileIR_t* firp2)
 		
 	}
 }
+
+unique_ptr<IRDB_SDK::InstructionPredecessors_t> IRDB_SDK::InstructionPredecessors_t::factory(IRDB_SDK::FileIR_t* firp)
+{
+	return unique_ptr<IRDB_SDK::InstructionPredecessors_t>(new libIRDB::InstructionPredecessors_t(firp));
+}
+

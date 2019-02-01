@@ -19,7 +19,7 @@
  */
 
 #include "all.hpp" 
-#include <utils.hpp>
+#include <irdb-util>
 
 using namespace std;
 using namespace libIRDB;
