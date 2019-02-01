@@ -48,13 +48,12 @@ cpppath='''
 	'''
 
 libs='''
-	IRDB-core 
-	IRDB-cfg 
-	transform 
+	irdb-core 
+	irdb-cfg 
+	irdb-transform 
 	dl 
 	EXEIO
 	StructDiv
-	pqxx
 	'''
 
 libpath='''

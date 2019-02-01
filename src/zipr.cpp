@@ -217,13 +217,15 @@ void ZiprImpl_t::CreateBinaryFile()
 {
 
 
+#if 0
 	/* load the elfiop for the orig. binary */
 	lo = new pqxx::largeobject(m_firp->getFile()->getELFOID());
 	lo->to_file(m_pqxx_interface->getTransaction(),string(m_output_filename).c_str());
 
 	/* use ELFIO to load the sections */
 	assert(elfiop);
-	elfiop->load(m_output_filename);
+#endif
+	elfiop->load("a.ncexe");
 	ELFIO::dump::section_headers(cout,*elfiop);
 
 	if (m_architecture == 0)

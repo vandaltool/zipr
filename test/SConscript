@@ -47,10 +47,9 @@ cpppath='''
 	'''
 
 libs='''
-	IRDB-core 
-	IRDB-cfg 
-	pqxx  
-	transform 
+	irdb-core 
+	irdb-cfg 
+	irdb-transform 
 	dl 
 	EXEIO
 	'''
