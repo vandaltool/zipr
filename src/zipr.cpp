@@ -846,6 +846,7 @@ void ZiprImpl_t::ReplopDollopEntriesWithTargets()
 
 void ZiprImpl_t::PlaceDollops()
 {
+
 	auto count_pins=0u;
 
 	/*
@@ -874,6 +875,28 @@ void ZiprImpl_t::PlaceDollops()
 
 	cout<<"# ATTRIBUTE Zipr::pins_detected="<<dec<<count_pins<<endl;
 	cout<<"# ATTRIBUTE Zipr::placement_queue_size="<<dec<<placement_queue.size()<<endl;
+
+	/* 
+         * used to check if a reference dollop needs to be added to the placement queue
+        */
+        const auto handle_reloc=[&](const Relocation_t* reloc)
+        {
+        	auto wrt_insn=dynamic_cast<Instruction_t*>(reloc->getWRT());
+                if(wrt_insn)
+                {
+                	auto containing=m_dollop_mgr.getContainingDollop(wrt_insn);
+                        assert(containing!=nullptr);
+                        if(!containing->IsPlaced())
+                        {
+                        	placement_queue.insert(pair<Dollop_t*, RangeAddress_t>( containing, wrt_insn->getAddress()->getVirtualOffset()));
+                        }
+                }
+        };
+
+	// Make sure each instruction referenced in a relocation (regardless
+	// of if that relocation is on an instruction or a scoop) gets placed.
+	for(auto &reloc : m_firp->getRelocations())
+        	handle_reloc(reloc);	
 
 	while (!placement_queue.empty())
 	{
@@ -1167,35 +1190,8 @@ void ZiprImpl_t::PlaceDollops()
 			auto dit_end = to_place->end();
 			for ( /* empty */; dit != dit_end; dit++)
 			{
-				DollopEntry_t *dollop_entry = *dit;
-				/* 
-				 * first, check if we need to add any reference dollops to the placement queue
-				 */
-				const auto handle_reloc=[&](const Relocation_t* reloc)
-				{
-					auto wrt_insn=dynamic_cast<Instruction_t*>(reloc->getWRT());
-					if(wrt_insn)
-					{
-						auto containing=m_dollop_mgr.getContainingDollop(wrt_insn);
-						assert(containing!=nullptr);
-						if(!containing->IsPlaced())
-						{
-							placement_queue.insert(pair<Dollop_t*, RangeAddress_t>( containing, cur_addr));
-							// cout<<"Adding to placement queue for reloc of type="<<reloc->getType()<<endl;
-						}
-					}
-				};
-
-
-				// make sure each instruction referenced via a relocation is placed in a dollop
-				auto insn=dollop_entry->Instruction();
-				for(auto &reloc : insn->getRelocations())
-					handle_reloc(reloc);
-				auto ehpgm=insn->getEhProgram();
-				if(ehpgm)
-					for(auto &reloc : ehpgm->getRelocations())
-						handle_reloc(reloc);
-
+				DollopEntry_t *dollop_entry = *dit;	
+								
 				/*
 				 * There are several ways that a dollop could end:
 				 * 1. There is no more fallthrough (handled above with
