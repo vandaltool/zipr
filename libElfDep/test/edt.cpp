@@ -1,18 +1,15 @@
 
 #include "edt.hpp"
 #include <libElfDep.hpp>
-#include <Rewrite_Utility.hpp>
 #include <algorithm> 
 
-using namespace libTransform;
 using namespace IRDB_SDK;
 using namespace std;
-using namespace IRDBUtility;
 using namespace ElfDep_Tester;
 
 
 ElfDep_Tester_t::ElfDep_Tester_t(FileIR_t* firp)
-	: Transform (NULL, firp, NULL)
+	: Transform (firp)
 {
 }
 
