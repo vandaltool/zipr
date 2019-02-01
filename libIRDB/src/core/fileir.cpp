@@ -1866,6 +1866,11 @@ IRDB_SDK::Instruction_t* FileIR_t::addNewInstruction(
 	auto irdb_addr    = dynamic_cast<libIRDB::AddressID_t*>(addr);
 	auto irdb_indTarg = dynamic_cast<libIRDB::AddressID_t*>(indTarg);
 
+	if(irdb_addr==nullptr)
+	{
+		irdb_addr=dynamic_cast<libIRDB::AddressID_t*>(addNewAddress(getFile()->getBaseID(), 0));
+	}
+
 	auto newinsn=new libIRDB::Instruction_t(BaseObj_t::NOT_IN_DATABASE, irdb_addr, irdb_func, BaseObj_t::NOT_IN_DATABASE, bits, "", comment, irdb_indTarg, BaseObj_t::NOT_IN_DATABASE);
 	
 	GetInstructions().insert(newinsn);
