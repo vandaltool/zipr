@@ -33,7 +33,6 @@
 #include <irdb-core>
 #include <string>
 #include <algorithm>
-#include "Rewrite_Utility.hpp"
 #include "push64_relocs.h"
 
 using namespace IRDB_SDK;
