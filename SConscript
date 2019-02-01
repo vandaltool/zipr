@@ -67,15 +67,23 @@ libcapstone=os.environ['SECURITY_TRANSFORMS_HOME']+"/lib/libcapstone.so"
 
 libehp=env.SConscript("libehp/SConscript", variant_dir='scons_build/libehp')
 libehp=env.Install("$SECURITY_TRANSFORMS_HOME/lib", libehp);
-libtransform=SConscript("libtransform/SConscript", variant_dir='scons_build/libtransform')
+
+libIRDBcore=env.SConscript("libIRDB-core/src/SConscript", variant_dir='scons_build/libIRDB-core')
+Depends(libIRDBcore,libcapstone)
+
+libIRDBcfg=env.SConscript("libIRDB-cfg/src/SConscript", variant_dir='scons_build/libIRDB-cfg')
+libIRDButil=env.SConscript("libIRDB-util/src/SConscript", variant_dir='scons_build/libIRDB-util')
+libIRDBsyscall=env.SConscript("libIRDB-syscall/src/SConscript", variant_dir='scons_build/libIRDB-syscall')
+libElfDep=SConscript("libIRDB-elfdep/src/SConscript", variant_dir='scons_build/libIRDB-elfdep')
+libtransform=SConscript("libIRDB-transform/src/SConscript", variant_dir='scons_build/libIRDB-transform')
 libEXEIO=SConscript("libEXEIO/SConscript", variant_dir='scons_build/libEXEIO')
 #libbea=SConscript("beaengine/SConscript", variant_dir='scons_build/beaengine')
+
 libMEDSannotation=SConscript("libMEDSannotation/SConscript", variant_dir='scons_build/libMEDSannotation')
 # libxform=SConscript("xform/SConscript", variant_dir='scons_build/libxform')
-libIRDB=SConscript("libIRDB/SConscript", variant_dir='scons_build/libIRDB')
-Depends(libIRDB,libcapstone)
+# libIRDB=SConscript("libIRDB/SConscript", variant_dir='scons_build/libIRDB')
+# Depends(libIRDB,libcapstone)
 libStructDiv=SConscript("libStructDiv/SConscript", variant_dir='scons_build/libStructDiv')
-libElfDep=SConscript("libElfDep/SConscript", variant_dir='scons_build/libElfDep')
 thanos=SConscript("thanos/SConscript", variant_dir='scons_build/thanos')
 rida=SConscript("rida/SConscript", variant_dir='scons_build/rida')
 meds2pdb=SConscript("meds2pdb/SConscript", variant_dir='scons_build/meds2pdb')
@@ -91,10 +99,10 @@ if 'build_tools' not in env or env['build_tools'] is None or int(env['build_tool
 		Depends(pedi,tools)
 
 if "PEDI_HOME" in os.environ:
-	Depends(pedi, (libehp,libtransform,libEXEIO,libMEDSannotation,libIRDB,libStructDiv,libElfDep, libcapstone, thanos, rida, meds2pdb, dump_map, dump_insns, ir_builders))
+	Depends(pedi, (libIRDBcore, libIRDBcfg, libIRDButil, libIRDBcore, libehp,libtransform,libEXEIO,libMEDSannotation,libStructDiv,libElfDep, libcapstone, thanos, rida, meds2pdb, dump_map, dump_insns, ir_builders))
 	Default( pedi )
 else:
 
-	Default(libehp,libtransform,libEXEIO,libMEDSannotation,libIRDB,libStructDiv,libElfDep, libcapstone, thanos, rida, meds2pdb, dump_map, dump_insns, ir_builders)
+	Default(libIRDBcore, libIRDBcfg, libIRDButil, libIRDBcore, libehp,libtransform,libEXEIO,libMEDSannotation,libStructDiv,libElfDep, libcapstone, thanos, rida, meds2pdb, dump_map, dump_insns, ir_builders)
 	if 'build_tools' not in env or env['build_tools'] is None or int(env['build_tools']) == 1:
 		Default(tools)

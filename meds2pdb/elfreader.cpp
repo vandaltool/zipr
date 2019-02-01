@@ -22,8 +22,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <irdb-core>
-#include "elfreader.h"
 #include <libIRDB-core.hpp>
+#include "elfreader.h"
 
 using namespace std;
 using namespace IRDB_SDK;
