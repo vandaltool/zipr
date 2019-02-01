@@ -45,7 +45,7 @@ if "PEDI_HOME" in os.environ:
 			source = "./SConscript",
 			action = os.environ['PEDI_HOME']+"/pedi -m manifest.txt " )
 
-env['BASE_IRDB_LIBS']="IRDB-core", "pqxx", "pq", "EXEIO"
+env['BASE_IRDB_LIBS']="irdb-core", "pqxx", "pq"
 
 if sysname != "SunOS":
 	libPEBLISS=SConscript("pebliss/trunk/pe_lib/SConscript", variant_dir='scons_build/libPEBLISS')

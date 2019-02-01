@@ -5,7 +5,7 @@ myenv=env
 myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 
 
-libname="IRDB-syscall"
+libname="irdb-syscall"
 files=  '''
 	syscall.cpp
 	'''
@@ -21,7 +21,7 @@ myenv.Append(CXXFLAGS = " -std=c++11 ")
 
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath))
-lib=myenv.SharedLibrary(libname, Split(files), LIBS=Split("IRDB-core IRDB-util"), LIBPATH=Split("$SECURITY_TRANSFORMS_HOME/lib"))
+lib=myenv.SharedLibrary(libname, Split(files), LIBS=Split("irdb-core irdb-util"), LIBPATH=Split("$SECURITY_TRANSFORMS_HOME/lib"))
 
 install=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
 Default(install)

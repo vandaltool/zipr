@@ -6,7 +6,7 @@ myenv=env.Clone()
 myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 
 
-libname="IRDB-core"
+libname="irdb-core"
 files=  '''
 	address.cpp
 	baseobj.cpp

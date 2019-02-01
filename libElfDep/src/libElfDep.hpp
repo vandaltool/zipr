@@ -1,6 +1,7 @@
 
 #include <irdb-core>
 #include <irdb-transform>
+#include <irdb-elfdep>
 #include <string>
 #include <memory>
 
@@ -10,7 +11,7 @@ namespace libIRDB
 
 using namespace std;
 
-class ElfDependencies_t : public IRDB_SDK::Transform
+class ElfDependencies_t : public IRDB_SDK::Transform, public IRDB_SDK::ElfDependencies_t
 {
 	public:
 

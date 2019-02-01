@@ -21,11 +21,11 @@
 
 #include <irdb-core>
 #include <irdb-transform>
+#include <irdb-elfdep>
 #include <libIRDB-core.hpp>
 #include <stdlib.h>
 #include <memory>
 #include <math.h>
-#include <exeio.h>
 #include <elf.h>
 #include <libElfDep.hpp>
 #include <iterator>
@@ -519,3 +519,9 @@ void ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_Rela,T_Elf_Dyn,rel
 
 	prefix_scoop<ptrsize>(new_dynamic_entry_str,  dynamic_scoop, firp) ;
 }
+
+unique_ptr<IRDB_SDK::ElfDependencies_t> IRDB_SDK::ElfDependencies_t::factory(IRDB_SDK::FileIR_t* firp)
+{
+	return unique_ptr<IRDB_SDK::ElfDependencies_t>(new libIRDB::ElfDependencies_t(firp));
+}
+
