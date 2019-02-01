@@ -32,7 +32,6 @@
 #include <zipr_sdk.h>
 #include <string>
 #include <algorithm>
-#include "Rewrite_Utility.hpp"
 #include "unpin.h"
 #include <memory>
 #include <inttypes.h>
