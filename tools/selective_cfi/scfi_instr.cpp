@@ -21,22 +21,16 @@
 
 #include <algorithm>
 #include "scfi_instr.hpp"
-#include "Rewrite_Utility.hpp"
 #include "color_map.hpp"
 #include <stdlib.h>
 #include <memory>
 #include <math.h>
 #include <exeio.h>
 #include <elf.h>
-//#include "elfio/elfio.hpp"
-//#include "elfio/elfio_dump.hpp"
-
-
 
 
 using namespace std;
 using namespace IRDB_SDK;
-using namespace IRDBUtility;
 
 string getRetDataBits()
 {
@@ -204,8 +198,8 @@ bool SCFI_Instrument::mark_targets()
 	firp->assembleRegistry();
 	firp->setBaseIDS();	
 	// create new preds (we've added instructions)
-	libIRDB::InstructionPredecessors_t newPreds;
-	newPreds.AddFile(firp);
+	auto newPredsp=InstructionPredecessors_t::factory(firp);
+	auto &newPreds=*newPredsp;
 	// Make sure the new insns added in this loop are not processed in this loop
 	// (ok since none of the them should receive nonces)
 	auto insn_set = firp->getInstructions();
@@ -220,7 +214,7 @@ bool SCFI_Instrument::mark_targets()
 			{
 				if(the_pred->getFallthrough()==insn)
 				{
-					Instruction_t* jmp=addNewAssembly(firp,NULL, "jmp 0x0");
+					Instruction_t* jmp=addNewAssembly("jmp 0x0");
 					the_pred->setFallthrough(jmp);
 					jmp->setTarget(insn);
 				}
@@ -505,7 +499,7 @@ void SCFI_Instrument::AddJumpCFI(Instruction_t* insn)
 
 	string pushbits=change_to_push(insn);
 	cout<<"Converting ' "<<insn->getDisassembly()<<"' to '";
-	Instruction_t* after=insertDataBitsBefore(firp,insn,pushbits); 
+	Instruction_t* after=insertDataBitsBefore(insn,pushbits); 
 	move_relocs(after,insn);
 	
 	after->setDataBits(getRetDataBits());
@@ -551,16 +545,16 @@ void SCFI_Instrument::AddCallCFIWithExeNonce(Instruction_t* insn)
 
         // insert the pop/checking code.
 	string pushbits=change_to_push(insn);
-   call=insertDataBitsBefore(firp, insn, pushbits);
-        insertAssemblyAfter(firp,insn,string("pop ")+reg);
+   call=insertDataBitsBefore(insn, pushbits);
+        insertAssemblyAfter(insn,string("pop ")+reg);
 
 	// keep any relocs on the push instruction, as those may need updating.
 	insn->setRelocations(call->getRelocations());
 	call->setRelocations({});
 
        	// Jump to non-exe nonce check code
-	stub = addNewAssembly(firp, NULL, string("push ")+reg);
-    	Instruction_t* ret = insertDataBitsAfter(firp, stub, getRetDataBits());
+	stub = addNewAssembly(string("push ")+reg);
+    	Instruction_t* ret = insertDataBitsAfter(stub, getRetDataBits());
     	ret->setIBTargets(call->getIBTargets());
 	
         if(do_exe_nonce_for_call)
@@ -597,7 +591,7 @@ void SCFI_Instrument::AddExecutableNonce(Instruction_t* insn)
 Instruction_t* SCFI_Instrument::GetExeNonceSlowPath(Instruction_t* insn)
 {
     // Jump to non-exe nonce check code
-    Instruction_t* ret = addNewDatabits(firp, NULL, getRetDataBits());
+    Instruction_t* ret = addNewDataBits(getRetDataBits());
     ret->setIBTargets(insn->getIBTargets()); 
     AddReturnCFI(ret);
     return ret;
@@ -652,9 +646,9 @@ void SCFI_Instrument::InsertExeNonceComparisons(Instruction_t* insn,
     {
         NoncePart_t theNoncePart = *it;
 	cout << "ADDING CMP FOR BYTE POS: " << theNoncePart.bytePos << "FOR NONCE WITH POSITION: " << noncePos << "AND SIZE: " << nonceSz << endl;
-        tmp=insertAssemblyAfter(firp,tmp,string("cmp ")+decoration+
+        tmp=insertAssemblyAfter(tmp,string("cmp ")+decoration+
 		" ["+reg+"+"+to_string(theNoncePart.bytePos)+"], "+to_string(theNoncePart.val));
-        jne=tmp=insertAssemblyAfter(firp,tmp,"jne 0");
+        jne=tmp=insertAssemblyAfter(tmp,"jne 0");
         jne->setTarget(exeNonceSlowPath);
     }
 }
@@ -688,7 +682,7 @@ void SCFI_Instrument::AddReturnCFIForExeNonce(Instruction_t* insn, ColoredSlotVa
 		cout<<"Found relatively rare ret_with_pop insn: "<<d.getDisassembly() <<endl;
 		char buf[30];
 		sprintf(buf, "pop %s [%s+%d]", worddec.c_str(), rspreg.c_str(), sp_adjust);
-		Instruction_t* newafter=insertAssemblyBefore(firp,insn,buf);
+		Instruction_t* newafter=insertAssemblyBefore(insn,buf);
 
 		if(sp_adjust>0)
 		{
@@ -699,7 +693,7 @@ void SCFI_Instrument::AddReturnCFIForExeNonce(Instruction_t* insn, ColoredSlotVa
 		insn=newafter;
 		//Needed b/c AddReturnCFI may be called on this ret insn
                 //But also clean up and change ret_with_pop to ret (as it should be now) to be safe
-                setInstructionAssembly(firp,insn, string("ret"), insn->getFallthrough(), insn->getTarget()); 
+                setInstructionAssembly(insn, string("ret"), insn->getFallthrough(), insn->getTarget()); 
 	}
         //TODO: Handle uncommon slow path
 		
@@ -718,7 +712,7 @@ void SCFI_Instrument::AddReturnCFIForExeNonce(Instruction_t* insn, ColoredSlotVa
 	// 	ret             ; ignore race condition for now
 
 	// insert the mov/checking code.
-	insertAssemblyBefore(firp,insn,string("mov ")+reg+string(", [")+rspreg+string("]"));
+	insertAssemblyBefore(insn,string("mov ")+reg+string(", [")+rspreg+string("]"));
         InsertExeNonceComparisons(insn, nonce, nonce_size, nonce_pos, exeNonceSlowPath);
        	// leave the ret instruction (risk of successful race condition exploit << performance benefit)
 
@@ -759,7 +753,7 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 		cout<<"Found relatively rare ret_with_pop insn: "<<d.getDisassembly()<<endl;
 		char buf[30];
 		sprintf(buf, "pop %s [%s+%d]", worddec.c_str(), rspreg.c_str(), sp_adjust);
-		Instruction_t* newafter=insertAssemblyBefore(firp,insn,buf);
+		Instruction_t* newafter=insertAssemblyBefore(insn,buf);
 
 		if(sp_adjust>0)
 		{
@@ -769,7 +763,7 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 		// rewrite the "old" isntruction, as that's what insertAssemblyBefore returns
 		insn=newafter;
 		//Clean up and change ret_with_pop to ret (as it should be now) to be safe
-                setInstructionAssembly(firp,insn, string("ret"), insn->getFallthrough(), insn->getTarget()); 
+                setInstructionAssembly(insn, string("ret"), insn->getFallthrough(), insn->getTarget()); 
 	}
 		
 	int size=1;
@@ -832,18 +826,18 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 	}
 
 	// insert the pop/checking code.
-	insertAssemblyBefore(firp,insn,string("pop ")+reg);
+	insertAssemblyBefore(insn,string("pop ")+reg);
         if(nonce_size != 8)
         {
-            tmp=insertAssemblyAfter(firp,insn,string("cmp ")+decoration+
+            tmp=insertAssemblyAfter(insn,string("cmp ")+decoration+
 		" ["+reg+"-"+to_string(nonce_offset)+"], "+to_string(nonce));
         }
         else
         {
-            tmp=insertAssemblyAfter(firp,insn,string("cmp ")+decoration+
+            tmp=insertAssemblyAfter(insn,string("cmp ")+decoration+
 		" ["+reg+"-"+to_string(nonce_offset)+"], "+to_string((uint32_t) nonce)); // upper 32 bits chopped off by cast
-            jne=tmp=insertAssemblyAfter(firp,tmp,"jne 0");
-            tmp=insertAssemblyAfter(firp,tmp,string("cmp ")+decoration+
+            jne=tmp=insertAssemblyAfter(tmp,"jne 0");
+            tmp=insertAssemblyAfter(tmp,string("cmp ")+decoration+
 		" ["+reg+"-"+to_string(nonce_offset - 4)+"], "+to_string((uint32_t) (nonce >> 32)));
             // set the jne's target to itself, and create a reloc that zipr/strata will have to resolve.
             jne->setTarget(jne);	// needed so spri/spasm/irdb don't freak out about missing target for new insn.
@@ -853,10 +847,10 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
             cout<<"Setting slow path for: "<<slow_cfi_path_reloc_string<<endl;
         }
         
-        jne=tmp=insertAssemblyAfter(firp,tmp,"jne 0");
+        jne=tmp=insertAssemblyAfter(tmp,"jne 0");
 	// convert the ret instruction to a jmp ecx
 	cout<<"Converting "<<hex<<tmp->getFallthrough()->getBaseID()<<":"<<tmp->getFallthrough()->getDisassembly()<<"to jmp+reg"<<endl;
-	setInstructionAssembly(firp,tmp->getFallthrough(), string("jmp ")+reg, NULL,NULL);
+	setInstructionAssembly(tmp->getFallthrough(), string("jmp ")+reg, NULL,NULL);
 
 	// set the jne's target to itself, and create a reloc that zipr/strata will have to resolve.
 	jne->setTarget(jne);	// needed so spri/spasm/irdb don't freak out about missing target for new insn.
@@ -1411,7 +1405,7 @@ bool SCFI_Instrument::add_got_entries()
 	// add "function" for zestcfi"
 	// for now, return that the target is allowed.  the nonce plugin will have to have a slow path for this later.
 	assert(firp->getArchitectureBitWidth()==64); // fixme for 32-bit, should jmp to ecx.
-	zestcfi_function_entry=addNewAssembly(firp,NULL,"jmp r11");
+	zestcfi_function_entry=addNewAssembly("jmp r11");
 
 	// this jump can target any IBT in the module.
 	// ICFS_t *newicfs=new ICFS_t;

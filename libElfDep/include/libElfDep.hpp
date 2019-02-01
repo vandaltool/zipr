@@ -1,6 +1,6 @@
 
-#include <libIRDB-core.hpp>
-#include <transform.hpp>
+#include <irdb-core>
+#include <irdb-transform>
 #include <string>
 #include <memory>
 
@@ -8,11 +8,9 @@
 namespace libIRDB
 {
 
-using namespace libIRDB;
 using namespace std;
-using namespace libTransform;
 
-class ElfDependencies_t : public Transform
+class ElfDependencies_t : public IRDB_SDK::Transform
 {
 	public:
 
@@ -31,7 +29,7 @@ class ElfDependencies_t : public Transform
 	class ElfDependenciesBase_t : public Transform
 	{
 		public:
-			ElfDependenciesBase_t(IRDB_SDK::FileIR_t* firp) : Transform(NULL, firp, NULL) {}
+			ElfDependenciesBase_t(IRDB_SDK::FileIR_t* firp) : Transform(firp) {}
 			virtual void prependLibraryDepedencies(const string &libraryName)=0;
 			virtual void appendLibraryDepedencies(const string &libraryName)=0;
 			virtual pair<IRDB_SDK::DataScoop_t*,int> appendGotEntry(const string &name)=0; 

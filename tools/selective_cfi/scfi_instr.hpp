@@ -22,7 +22,8 @@
 #define scfi_instrument_hpp
 
 #include <irdb-core>
-#include <libIRDB-util.hpp>
+#include <irdb-util>
+#include <irdb-transform>
 #include "color_map.hpp"
 #include <iostream>
 #include <iomanip>
@@ -30,7 +31,7 @@
 
 
 
-class SCFI_Instrument
+class SCFI_Instrument : public IRDB_SDK::Transform
 {
 	public:
 		SCFI_Instrument(IRDB_SDK::FileIR_t *the_firp, 
@@ -47,6 +48,7 @@ class SCFI_Instrument
 				bool p_do_exe_nonce_for_call=false
 			) 
 			: 
+			  Transform(the_firp),
 		  	  firp(the_firp), 
                           nonce_size(p_nonce_size),
                           exe_nonce_size(p_exe_nonce_size),
@@ -61,7 +63,10 @@ class SCFI_Instrument
 			  do_exe_nonce_for_call(p_do_exe_nonce_for_call), 
 			  ret_shared(NULL),
 			  zestcfi_function_entry(NULL),
-			  ExecutableNonceValue("\x90", 1)
+			  ExecutableNonceValue("\x90", 1),
+			  predsp(IRDB_SDK::InstructionPredecessors_t::factory(firp)),
+			  preds(*predsp)
+
 		{ 
 			std::cout<<std::boolalpha;
 			std::cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::do_coloring="<<p_do_coloring<<std::endl;
@@ -72,7 +77,6 @@ class SCFI_Instrument
 			std::cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::do_rets="<<p_do_rets<<std::endl;
 			std::cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::do_safefn="<<p_do_safefn<<std::endl;
 			std::cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::do_multimodule="<<p_do_multimodule<<std::endl;
-			preds.AddFile(the_firp); 
 
 		}
 		bool execute();
@@ -142,7 +146,6 @@ class SCFI_Instrument
 
 	private: // data
 		// predecessors of instructions.
-		libIRDB::InstructionPredecessors_t preds;
 		IRDB_SDK::FileIR_t* firp;
                 const int nonce_size;
                 const int exe_nonce_size;
@@ -196,6 +199,9 @@ class SCFI_Instrument
 
 		void mov_reloc(IRDB_SDK::Instruction_t* from, IRDB_SDK::Instruction_t* to, std::string type );
 		void move_relocs(IRDB_SDK::Instruction_t* from, IRDB_SDK::Instruction_t* to);
+
+		std::unique_ptr<IRDB_SDK::InstructionPredecessors_t> predsp;
+		IRDB_SDK::InstructionPredecessors_t &preds;
 
 };
 

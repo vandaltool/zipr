@@ -19,7 +19,9 @@
  */
 
 
-#include "Rewrite_Utility.hpp"
+#include <irdb-core>
+#include <irdb-transform>
+#include <libIRDB-core.hpp>
 #include <stdlib.h>
 #include <memory>
 #include <math.h>
@@ -31,7 +33,7 @@
 
 using namespace libIRDB;
 using namespace std;
-using namespace libTransform;
+using IRDB_SDK::VirtualOffset_t;
 
 // defines
 #define REV_ALLOF(a) rbegin(a), rend(a)
@@ -63,8 +65,8 @@ static unsigned int add_to_scoop(const string &str, IRDB_SDK::DataScoop_t* scoop
 	assert(scoop->getStart()->getVirtualOffset()==0);
 	int len=str.length();
 	scoop->setContents(scoop->getContents()+str);
-	virtual_offset_t oldend=scoop->getEnd()->getVirtualOffset();
-	virtual_offset_t newend=oldend+len;
+	VirtualOffset_t oldend=scoop->getEnd()->getVirtualOffset();
+	VirtualOffset_t newend=oldend+len;
 	scoop->getEnd()->setVirtualOffset(newend);
 	return oldend+1;
 };
@@ -79,8 +81,8 @@ static void insert_into_scoop_at(const string &str, IRDB_SDK::DataScoop_t* scoop
 	new_scoop_contents.insert(at,str);
 	scoop->setContents(new_scoop_contents);
 
-	virtual_offset_t oldend=scoop->getEnd()->getVirtualOffset();
-	virtual_offset_t newend=oldend+len;
+	VirtualOffset_t oldend=scoop->getEnd()->getVirtualOffset();
+	VirtualOffset_t newend=oldend+len;
 	scoop->getEnd()->setVirtualOffset(newend);
 
 	// update each reloc to point to the new location.
@@ -161,7 +163,7 @@ static void prefix_scoop(const string &str, IRDB_SDK::DataScoop_t* scoop, IRDB_S
 
 // constructors
 ElfDependencies_t::ElfDependencies_t(IRDB_SDK::FileIR_t* firp)
-	: Transform(NULL,firp,NULL)
+	: Transform(firp)
 {
 	typedef ElfDependencies_t::ElfDependenciesImpl_t<Elf64_Sym, Elf64_Rela, Elf64_Dyn, R_X86_64_GLOB_DAT, 32, 8> ElfDependencies64_t;
 	typedef ElfDependencies_t::ElfDependenciesImpl_t<Elf32_Sym, Elf32_Rel, Elf32_Dyn, R_386_GLOB_DAT, 8, 4> ElfDependencies32_t;

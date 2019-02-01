@@ -1,40 +1,22 @@
-/*
- * Copyright (c) 2013, 2014 - University of Virginia 
- *
- * This file may be used and modified for non-commercial purposes as long as 
- * all copyright, permission, and nonwarranty notices are preserved.  
- * Redistribution is prohibited without prior written consent from the University 
- * of Virginia.
- *
- * Please contact the authors for restrictions applying to commercial use.
- *
- * THIS SOURCE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
- * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
- * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
- *
- * Author: University of Virginia
- * e-mail: jwd@virginia.com
- * URL   : http://www.cs.virginia.edu/
- *
- */
 
-#include "Rewrite_Utility.hpp"
-
+#include <irdb-transform>
 #include <libIRDB-core.hpp>
 
 // Copied from PnTransform
 // @todo: create a utility library with the one interface
 
+
 using namespace std;
+using namespace IRDB_SDK;
 
-namespace IRDBUtility
-{
+void copyInstruction(Instruction_t* src, Instruction_t* dest);
+Instruction_t* copyInstruction(FileIR_t* virp, Instruction_t* instr);
+Instruction_t* allocateNewInstruction(FileIR_t* virp, DatabaseID_t p_fileID,Function_t* func);
+Instruction_t* allocateNewInstruction(FileIR_t* virp, Instruction_t *template_instr);
 
-void setExitCode(FileIR_t* virp, IRDB_SDK::Instruction_t* exit_code);
 
 
-
-void setInstructionsDetails(FileIR_t* virp, IRDB_SDK::Instruction_t *p_instr, string p_dataBits, IRDB_SDK::Instruction_t *p_fallThrough, IRDB_SDK::Instruction_t *p_target)
+void setInstructionsDetails(FileIR_t* virp, Instruction_t *p_instr, string p_dataBits, Instruction_t *p_fallThrough, Instruction_t *p_target)
 {
         if (p_instr == NULL) return;
 
@@ -56,9 +38,9 @@ void setInstructionsDetails(FileIR_t* virp, IRDB_SDK::Instruction_t *p_instr, st
 //This duplicate is returned since the user already has a pointer to first.
 //To insert before an instruction is the same as modifying the original instruction, and inserting after it
 //a copy of the original instruction 
-IRDB_SDK::Instruction_t* insertAssemblyBefore(IRDB_SDK::FileIR_t* virp, IRDB_SDK::Instruction_t* first, string assembly, IRDB_SDK::Instruction_t *target)
+Instruction_t* IRDB_SDK::insertAssemblyBefore(FileIR_t* virp, Instruction_t* first, string assembly, Instruction_t *target)
 {
-	IRDB_SDK::Instruction_t* next = copyInstruction(virp,first);
+	Instruction_t* next = copyInstruction(virp,first);
 
 	//In case the fallthrough is null, generate spri has to have a 
 	//place to jump, which is determined by the original address.
@@ -77,25 +59,27 @@ IRDB_SDK::Instruction_t* insertAssemblyBefore(IRDB_SDK::FileIR_t* virp, IRDB_SDK
         //same from the copy of first (unlike with relocations and IBT's).
 
 	virp->changeRegistryKey(first,next);
-	setInstructionAssembly(virp,first,assembly,next,target);
+	IRDB_SDK::setInstructionAssembly(virp,first,assembly,next,target);
 
 	return next;
 }
 
-IRDB_SDK::Instruction_t* insertAssemblyBefore(FileIR_t* virp, IRDB_SDK::Instruction_t* first, string assembly)
+#if 0
+Instruction_t* insertAssemblyBefore(FileIR_t* virp, Instruction_t* first, string assembly)
 {
 	return insertAssemblyBefore(virp,first,assembly,NULL);
 }
 
 
-IRDB_SDK::Instruction_t* insertDataBitsBefore(FileIR_t* virp, IRDB_SDK::Instruction_t* first, string dataBits)
+Instruction_t* insertDataBitsBefore(FileIR_t* virp, Instruction_t* first, string dataBits)
 {
         return insertDataBitsBefore(virp,first,dataBits,NULL);
 }
+#endif
 
-IRDB_SDK::Instruction_t* insertDataBitsBefore(FileIR_t* virp, IRDB_SDK::Instruction_t* first, string dataBits, IRDB_SDK::Instruction_t *target)
+Instruction_t* IRDB_SDK::insertDataBitsBefore(FileIR_t* virp, Instruction_t* first, string dataBits, Instruction_t *target)
 {
-	IRDB_SDK::Instruction_t* next = copyInstruction(virp,first);
+	Instruction_t* next = copyInstruction(virp,first);
 
         //In case the fallthrough is null, generate spri has to have a 
         //place to jump, which is determined by the original address.
@@ -119,37 +103,41 @@ IRDB_SDK::Instruction_t* insertDataBitsBefore(FileIR_t* virp, IRDB_SDK::Instruct
         return next;
 }
 
-IRDB_SDK::Instruction_t* insertAssemblyAfter(IRDB_SDK::FileIR_t* virp, IRDB_SDK::Instruction_t* first, string assembly, IRDB_SDK::Instruction_t *target)
+Instruction_t* IRDB_SDK::insertAssemblyAfter(FileIR_t* virp, Instruction_t* first, string assembly, Instruction_t *target)
 {
-	IRDB_SDK::Instruction_t *new_instr = allocateNewInstruction(virp,first);
-        setInstructionAssembly(virp,new_instr,assembly,first->getFallthrough(), target);
+	Instruction_t *new_instr = allocateNewInstruction(virp,first);
+	IRDB_SDK::setInstructionAssembly(virp,new_instr,assembly,first->getFallthrough(), target);
         first->setFallthrough(new_instr);
         return new_instr;
 }
 
-IRDB_SDK::Instruction_t* insertAssemblyAfter(IRDB_SDK::FileIR_t* virp, IRDB_SDK::Instruction_t* first, string assembly)
+#if 0
+Instruction_t* insertAssemblyAfter(FileIR_t* virp, Instruction_t* first, string assembly)
 {
         return insertAssemblyAfter(virp,first,assembly,NULL);
 
 }
+#endif
 
-IRDB_SDK::Instruction_t* insertDataBitsAfter(IRDB_SDK::FileIR_t* virp, IRDB_SDK::Instruction_t* first, string dataBits, IRDB_SDK::Instruction_t *target)
+Instruction_t* IRDB_SDK::insertDataBitsAfter(FileIR_t* virp, Instruction_t* first, string dataBits, Instruction_t *target)
 {
-	IRDB_SDK::Instruction_t *new_instr = allocateNewInstruction(virp,first);
+	Instruction_t *new_instr = allocateNewInstruction(virp,first);
         setInstructionsDetails(virp,new_instr,dataBits,first->getFallthrough(), target);
         first->setFallthrough(new_instr);
 
         return new_instr;
 }
 
-IRDB_SDK::Instruction_t* insertDataBitsAfter(IRDB_SDK::FileIR_t* virp, IRDB_SDK::Instruction_t* first, string dataBits)
+#if 0
+Instruction_t* insertDataBitsAfter(FileIR_t* virp, Instruction_t* first, string dataBits)
 {
         return insertDataBitsAfter(virp,first,dataBits,NULL);
 }
+#endif
 
-IRDB_SDK::Instruction_t* addNewDatabits(IRDB_SDK::FileIR_t* firp, IRDB_SDK::Instruction_t *p_instr, string p_bits)
+Instruction_t* IRDB_SDK::addNewDataBits(FileIR_t* firp, Instruction_t *p_instr, string p_bits)
 {
-	IRDB_SDK::Instruction_t* newinstr;
+	Instruction_t* newinstr;
         if (p_instr)
                 newinstr = allocateNewInstruction(firp,p_instr->getAddress()->getFileID(), p_instr->getFunction());
         else
@@ -166,9 +154,15 @@ IRDB_SDK::Instruction_t* addNewDatabits(IRDB_SDK::FileIR_t* firp, IRDB_SDK::Inst
         return newinstr;
 }
 
-IRDB_SDK::Instruction_t* addNewAssembly(FileIR_t* firp, IRDB_SDK::Instruction_t *p_instr, string p_asm)
+Instruction_t* IRDB_SDK::addNewDataBits(FileIR_t* firp, string p_bits)
 {
-	IRDB_SDK::Instruction_t* newinstr;
+	return IRDB_SDK::addNewDataBits(firp,nullptr,p_bits);
+}
+
+
+Instruction_t* IRDB_SDK::addNewAssembly(FileIR_t* firp, Instruction_t *p_instr, string p_asm)
+{
+	Instruction_t* newinstr;
         if (p_instr)
                 newinstr = allocateNewInstruction(firp,p_instr->getAddress()->getFileID(), p_instr->getFunction());
         else
@@ -185,31 +179,32 @@ IRDB_SDK::Instruction_t* addNewAssembly(FileIR_t* firp, IRDB_SDK::Instruction_t 
         return newinstr;
 }
 
-
-
-
+Instruction_t* IRDB_SDK::addNewAssembly(FileIR_t* firp, string p_asm)
+{
+	return IRDB_SDK::addNewAssembly(firp,nullptr,p_asm);
+}
 
 
 //Does not insert into any variant
-IRDB_SDK::Instruction_t* copyInstruction(IRDB_SDK::Instruction_t* instr)
+Instruction_t* copyInstruction(Instruction_t* instr)
 {
-	IRDB_SDK::Instruction_t* cpy = new libIRDB::Instruction_t();
+	Instruction_t* cpy = new libIRDB::Instruction_t();
 
 	copyInstruction(instr,cpy);
 
 	return cpy;
 }
 
-IRDB_SDK::Instruction_t* copyInstruction(IRDB_SDK::FileIR_t* virp, IRDB_SDK::Instruction_t* instr)
+Instruction_t* copyInstruction(FileIR_t* virp, Instruction_t* instr)
 {
-	IRDB_SDK::Instruction_t* cpy = allocateNewInstruction(virp,instr);
+	Instruction_t* cpy = allocateNewInstruction(virp,instr);
 
 	copyInstruction(instr,cpy);
 
 	return cpy;
 }
 
-void copyInstruction(IRDB_SDK::Instruction_t* src, IRDB_SDK::Instruction_t* dest)
+void copyInstruction(Instruction_t* src, Instruction_t* dest)
 {
 	auto real_dest=dynamic_cast<libIRDB::Instruction_t*>(dest);
 	dest->setDataBits(src->getDataBits());
@@ -223,7 +218,7 @@ void copyInstruction(IRDB_SDK::Instruction_t* src, IRDB_SDK::Instruction_t* dest
 	dest->setEhCallSite(src->getEhCallSite());
 }
 
-IRDB_SDK::Instruction_t* allocateNewInstruction(IRDB_SDK::FileIR_t* virp, IRDB_SDK::DatabaseID_t p_fileID,IRDB_SDK::Function_t* func)
+Instruction_t* allocateNewInstruction(FileIR_t* virp, DatabaseID_t p_fileID,Function_t* func)
 {
 	auto instr = new libIRDB::Instruction_t();
 	auto a     = new libIRDB::AddressID_t();
@@ -250,14 +245,14 @@ IRDB_SDK::Instruction_t* allocateNewInstruction(IRDB_SDK::FileIR_t* virp, IRDB_S
 	return instr;
 }
 
-IRDB_SDK::Instruction_t* allocateNewInstruction(IRDB_SDK::FileIR_t* virp, IRDB_SDK::Instruction_t *template_instr)
+Instruction_t* allocateNewInstruction(FileIR_t* virp, Instruction_t *template_instr)
 {
 	Function_t *func = template_instr->getFunction();
 	DatabaseID_t fileID = template_instr->getAddress()->getFileID();
 	return allocateNewInstruction(virp, fileID, func);
 }
 
-void setInstructionAssembly(IRDB_SDK::FileIR_t* virp,IRDB_SDK::Instruction_t *p_instr, string p_assembly, IRDB_SDK::Instruction_t *p_fallThrough, IRDB_SDK::Instruction_t *p_target)
+void IRDB_SDK::setInstructionAssembly(FileIR_t* virp,Instruction_t *p_instr, const string& p_assembly, Instruction_t *p_fallThrough, Instruction_t *p_target)
 {
 	if (p_instr == NULL) return;
 	
@@ -273,5 +268,9 @@ void setInstructionAssembly(IRDB_SDK::FileIR_t* virp,IRDB_SDK::Instruction_t *p_
 	real_virp->GetInstructions().insert(p_instr);
 }
 
-
+void IRDB_SDK::setInstructionAssembly(FileIR_t* virp,Instruction_t *p_instr, const string& p_assembly)
+{
+	IRDB_SDK::setInstructionAssembly(virp,p_instr,p_assembly, p_instr->getFallthrough(), p_instr->getTarget());
 }
+
+

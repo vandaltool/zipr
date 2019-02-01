@@ -18,26 +18,66 @@
  *
  */
 
-#include "transform.hpp"
-#include "Rewrite_Utility.hpp"
-#include <libIRDB-core.hpp>
-#define OPTIMIZE_ASSEMBLY
+#include <irdb-transform>
 
 using namespace IRDB_SDK;
-using namespace MEDS_Annotation;
-using namespace libTransform;
 
-// 20130415 Anh added support for additional registers for various utility functions
-// 20130415 Anh added assert() statements for unhandled registers
-
-Transform::Transform(VariantID_t *p_variantID, FileIR_t *p_fileIR, set<std::string> *p_filteredFunctions)
+Transform::Transform(FileIR_t *p_fileIR)
+	:
+	m_fileIR (p_fileIR) 
 {
-	m_variantID = p_variantID;                  // Current variant ID
-	m_fileIR = dynamic_cast<libIRDB::FileIR_t*>(p_fileIR);                  		// File IR (off the database) for variant
 	assert(m_fileIR);
-	m_filteredFunctions = p_filteredFunctions;  // Blacklisted funtions
 }
 
+FileIR_t* Transform::getFileIR() 
+{ 
+	return m_fileIR; 
+}
+
+Instruction_t* Transform::insertAssemblyBefore(Instruction_t* before, const string &the_asm, Instruction_t* target)
+{
+	return IRDB_SDK::insertAssemblyBefore(getFileIR(), before, the_asm, target);
+}
+
+
+Instruction_t* Transform::insertAssemblyAfter(Instruction_t* before, const string &the_asm, Instruction_t* target)
+{
+	return IRDB_SDK::insertAssemblyAfter(getFileIR(), before, the_asm, target);
+}
+
+Instruction_t* Transform::insertDataBitsBefore(Instruction_t* before, const string &the_asm, Instruction_t* target)
+{
+	return IRDB_SDK::insertDataBitsBefore(getFileIR(), before, the_asm, target);
+}
+
+Instruction_t* Transform::insertDataBitsAfter(Instruction_t* before, const string &the_asm, Instruction_t* target)
+{
+	return IRDB_SDK::insertDataBitsAfter(getFileIR(), before, the_asm, target);
+}
+
+Instruction_t* Transform::addNewDataBits(const string& p_bits)
+{
+	return IRDB_SDK::addNewDataBits(getFileIR(), p_bits);
+}
+
+Instruction_t* Transform::addNewAssembly(const string& p_bits)
+{
+	return IRDB_SDK::addNewAssembly(getFileIR(), p_bits);
+}
+
+void Transform::setInstructionAssembly(Instruction_t* instr, const string& p_asm, Instruction_t *p_new_fallthrough, Instruction_t* p_new_target)
+{
+	return IRDB_SDK::setInstructionAssembly(getFileIR(), instr, p_asm, p_new_fallthrough, p_new_target);
+}
+
+void Transform::setInstructionAssembly(Instruction_t* instr, const string& p_asm)
+{
+	return IRDB_SDK::setInstructionAssembly(getFileIR(), instr, p_asm);
+}
+
+
+
+#if 0
 void Transform::addInstruction(Instruction_t *p_instr, string p_dataBits, Instruction_t *p_fallThrough, Instruction_t *p_target)
 {
 	if (p_instr == NULL) return;
@@ -123,15 +163,6 @@ cerr << "(2) carefullyInsertBefore: @: 0x" << std::hex << p_instrumented->getAdd
 #endif
 }
 
-Instruction_t* Transform::insertAssemblyBefore(Instruction_t* before, const string &the_asm, Instruction_t* target)
-{
-	return IRDBUtility::insertAssemblyBefore(getFileIR(), before, the_asm, target);
-}
-
-Instruction_t* Transform::insertAssemblyAfter(Instruction_t* before, const string &the_asm, Instruction_t* target)
-{
-	return IRDBUtility::insertAssemblyAfter(getFileIR(), before, the_asm, target);
-}
 
 void Transform::addPushf(Instruction_t *p_pushf_i, Instruction_t *p_fallThrough)
 {
@@ -1549,5 +1580,6 @@ void libTransform::convertToLowercase(string &str)
 	}
 }
 
-FileIR_t* Transform::getFileIR() { return dynamic_cast<FileIR_t*>(m_fileIR); }
+#endif
+
 
