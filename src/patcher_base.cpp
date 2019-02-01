@@ -37,7 +37,6 @@ namespace zipr
 }
 
 #include <irdb-core>
-#include <Rewrite_Utility.hpp>
 #include <iostream>
 #include <stdlib.h>
 #include <string.h>
@@ -58,7 +57,6 @@ using namespace IRDB_SDK;
 using namespace std;
 using namespace zipr;
 using namespace ELFIO;
-using namespace IRDBUtility;
 
 unique_ptr<ZiprPatcherBase_t> ZiprPatcherBase_t::factory(Zipr_SDK::Zipr_t* p_parent)
 {

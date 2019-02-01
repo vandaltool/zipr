@@ -13,7 +13,7 @@ class ZiprArchitectureHelperARM64_t : public ZiprArchitectureHelperBase_t
 			// it includes a 26-bit immediate, which is +/- 128MB, which should be a good enough "jump anywhere"
 			// for now.
 			const auto bits =string("\x00\x00\x00\x014",4);
-			auto ret=IRDBUtility::addNewDatabits(p_firp, p_existing, bits);
+			auto ret=IRDB_SDK::addNewDataBits(p_firp, p_existing, bits);
 			const auto d=IRDB_SDK::DecodedInstruction_t::factory(ret);
 			assert(d->valid());
 			return ret;
@@ -24,7 +24,7 @@ class ZiprArchitectureHelperARM64_t : public ZiprArchitectureHelperBase_t
 			// 1101 0100  0100 0000  0000 0000  0000 0000
 			// 0xd4400000
 			const auto bits =string("\x00\x00\x40\xd4",4);
-			auto ret=IRDBUtility::addNewDatabits(p_firp, p_existing, bits);
+			auto ret=IRDB_SDK::addNewDataBits(p_firp, p_existing, bits);
 			const auto d=IRDB_SDK::DecodedInstruction_t::factory(ret);
 			assert(d->valid());
 			return ret;

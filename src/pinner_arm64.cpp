@@ -5,7 +5,6 @@ namespace zipr
 #include <pinner/pinner_arm64.hpp>
 }
 #include <memory>
-#include <Rewrite_Utility.hpp>
 
 using namespace std;
 using namespace IRDB_SDK;

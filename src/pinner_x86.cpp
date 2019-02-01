@@ -15,12 +15,10 @@ namespace zipr
 #include <pinner/pinner_x86.hpp>
 }
 #include <memory>
-#include <Rewrite_Utility.hpp>
 
 using namespace std;
 using namespace IRDB_SDK;
 using namespace zipr;
-using namespace IRDBUtility;
 
 static int ceildiv(int a, int b)
 {

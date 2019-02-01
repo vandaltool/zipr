@@ -1,7 +1,6 @@
 
 #include <zipr_all.h>
 #include <irdb-core>
-#include <Rewrite_Utility.hpp>
 #include <iostream>
 #include <stdlib.h>
 #include <string.h>

@@ -1,7 +1,6 @@
 
 #include <zipr_all.h>
 #include <irdb-core>
-#include <Rewrite_Utility.hpp>
 #include <iostream>
 #include <stdlib.h> 
 #include <string.h>
@@ -17,7 +16,6 @@
     
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
-//#include "beaengine/BeaEngine.h"
 
 using namespace IRDB_SDK;
 using namespace std;

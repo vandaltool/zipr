@@ -34,7 +34,6 @@ namespace zipr
 #include "patcher/patcher_x86.hpp"
 }
 #include <irdb-core>
-#include <Rewrite_Utility.hpp>
 #include <iostream>
 #include <stdlib.h>
 #include <string.h>
@@ -55,7 +54,6 @@ using namespace IRDB_SDK;
 using namespace std;
 using namespace zipr;
 using namespace ELFIO;
-using namespace IRDBUtility;
 
 ZiprPatcherX86_t::ZiprPatcherX86_t(Zipr_SDK::Zipr_t* p_parent) :
 	m_parent(dynamic_cast<zipr::ZiprImpl_t*>(p_parent)),     // upcast to ZiprImpl
