@@ -1284,6 +1284,9 @@ void SCFI_Instrument::add_got_entry(const std::string& name)
 	auto relaplt_scoop=find_scoop(firp,".rela.dyn coalesced w/.rela.plt");
 	auto relplt_scoop=find_scoop(firp,".rel.dyn coalesced w/.rel.plt");
 	auto relscoop=relaplt_scoop!=NULL ?  relaplt_scoop : relplt_scoop;
+	auto gnu_version_scoop=find_scoop(firp,".gnu.version");
+	assert(gnu_version_scoop);
+	assert(gnu_version_scoop->getStart()->getVirtualOffset()==0);
 
 	// add 0-init'd pointer to table
 	string new_got_entry_str(ptrsize,0);	 // zero-init a pointer-sized string
@@ -1318,6 +1321,10 @@ void SCFI_Instrument::add_got_entry(const std::string& name)
 	dl_sym.st_info=((STB_GLOBAL<<4)| (STT_OBJECT));
 	string dl_sym_str((const char*)&dl_sym, sizeof(T_Elf_Sym));
 	unsigned int dl_pos=add_to_scoop(dl_sym_str,dynsym_scoop);
+
+	// update the gnu.version section so that the new symbol has a version.
+	const auto new_version_str=string("\0\0", 2);	 // \0\0 means *local*, as in, don't index the gnu.verneeded array.
+	add_to_scoop(new_version_str,gnu_version_scoop);
 
 	// find the rela count.  can't insert before that.
 	int rela_count=0;
