@@ -208,20 +208,6 @@ namespace zipr {
 	}
 
 	bool ZiprDollopManager_t::UpdateTargets(Dollop_t *dollop) {
-		const auto handle_reloc=[this](const Relocation_t* reloc) 
-		{
-			auto wrt_insn=dynamic_cast<Instruction_t*>(reloc->getWRT());
-			if(wrt_insn)
-			{
-				// we don't bother marking a change because
-				// we only need to do this once for relocs
-				// and we are certain to get here once for every dollop
-				AddNewDollops(wrt_insn);	
-				cout<<"Adding new dollop for reloc of type="<<reloc->getType()<<endl;
-
-			}
-		};
-
 		auto changed = false;
 		const auto local_dollop=list<DollopEntry_t*>(dollop->begin(), dollop->end());
 		for (auto &entry : local_dollop )
@@ -245,20 +231,34 @@ namespace zipr {
 					changed = true;
 				}
 			}
-
-			// make sure each instruction referenced via a relocation is placed in a dollop
-			for(auto &reloc : insn->getRelocations())
-				handle_reloc(reloc);
-			auto ehpgm=insn->getEhProgram();
-			if(ehpgm)
-				for(auto &reloc : ehpgm->getRelocations())
-					handle_reloc(reloc);
 		}
 			
 		return changed;
 	}
 
 	void ZiprDollopManager_t::UpdateAllTargets(void) {
+		// Used to make sure dollops are created for instructions referenced by
+                // relocations. 
+                const auto handle_reloc=[this](const Relocation_t* reloc)
+                {
+                        auto wrt_insn=dynamic_cast<Instruction_t*>(reloc->getWRT());
+                        if(wrt_insn)
+                        {
+                                // we don't bother marking a change because
+                                // we only need to do this once for relocs
+                                // and we are certain to get here once for every dollop
+                                AddNewDollops(wrt_insn);
+                                cout<<"Adding new dollop for reloc of type="<<reloc->getType()<<endl;
+
+                        }
+                };
+	
+		// Make sure dollops are created for instructions referenced by
+                // relocations.
+		for(auto &reloc : m_zipr->getFileIR()->getRelocations())
+                	handle_reloc(reloc);
+
+
 		auto changed = false;
 		auto changed_count=0;
 		auto update_count=0;
