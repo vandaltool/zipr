@@ -63,6 +63,7 @@ Export('env')
 
 # get the libcapstone.so.[version] file regardless of the version extension
 libcapstone_path = Glob(os.environ['SECURITY_TRANSFORMS_HOME']+'/libcapstone/libcapstone.so.*')
+assert len(libcapstone_path) <= 1, "More than one candidate for libcapstone.so.[version]?!"
 
 libcapstone_path = env.Install("$SECURITY_TRANSFORMS_HOME/lib/", libcapstone_path)
 
