@@ -19,24 +19,18 @@
  */
 
 
-#include "utils.hpp"
+#include <algorithm>
 #include "scfi_instr.hpp"
-#include "Rewrite_Utility.hpp"
 #include "color_map.hpp"
 #include <stdlib.h>
 #include <memory>
 #include <math.h>
 #include <exeio.h>
 #include <elf.h>
-//#include "elfio/elfio.hpp"
-//#include "elfio/elfio_dump.hpp"
-
-
 
 
 using namespace std;
-using namespace libIRDB;
-using namespace IRDBUtility;
+using namespace IRDB_SDK;
 
 string getRetDataBits()
 {
@@ -51,10 +45,10 @@ string getRetDataBits()
 Relocation_t* SCFI_Instrument::FindRelocation(Instruction_t* insn, string type)
 {
         RelocationSet_t::iterator rit;
-        for( rit=insn->GetRelocations().begin(); rit!=insn->GetRelocations().end(); ++rit)
+        for( rit=insn->getRelocations().begin(); rit!=insn->getRelocations().end(); ++rit)
         {
                 Relocation_t& reloc=*(*rit);
-                if(reloc.GetType()==type)
+                if(reloc.getType()==type)
                 {
                         return &reloc;
                 }
@@ -64,22 +58,22 @@ Relocation_t* SCFI_Instrument::FindRelocation(Instruction_t* insn, string type)
 
 bool SCFI_Instrument::isSafeFunction(Instruction_t* insn)
 {
-	return (insn && insn->GetFunction() && insn->GetFunction()->IsSafe());
+	return (insn && insn->getFunction() && insn->getFunction()->isSafe());
 }
 
 bool SCFI_Instrument::isCallToSafeFunction(Instruction_t* insn)
 {
-	if (insn && insn->GetTarget() && insn->GetTarget()->GetFunction())
+	if (insn && insn->getTarget() && insn->getTarget()->getFunction())
 	{
 		if(getenv("SCFI_VERBOSE")!=NULL)
 		{
-			if (insn->GetTarget()->GetFunction()->IsSafe())
+			if (insn->getTarget()->getFunction()->isSafe())
 			{
-				cout << "Function " << insn->GetTarget()->GetFunction()->GetName() << " is deemed safe" << endl;
+				cout << "Function " << insn->getTarget()->getFunction()->getName() << " is deemed safe" << endl;
 			}
 		}
 
-		return insn->GetTarget()->GetFunction()->IsSafe();
+		return insn->getTarget()->getFunction()->isSafe();
 	}
 
 	return false;
@@ -87,9 +81,12 @@ bool SCFI_Instrument::isCallToSafeFunction(Instruction_t* insn)
 
 Relocation_t* SCFI_Instrument::create_reloc(Instruction_t* insn)
 {
-        Relocation_t* reloc=new Relocation_t;
-        insn->GetRelocations().insert(reloc);
-        firp->GetRelocations().insert(reloc);
+        /*
+	 * Relocation_t* reloc=new Relocation_t;
+        insn->getRelocations().insert(reloc);
+        firp->getRelocations().insert(reloc);
+	*/
+	auto reloc=firp->addNewRelocation(insn,0,"error-if-seen"); // will update offset and type in caller
 
 	return reloc;
 }
@@ -116,7 +113,7 @@ unsigned int SCFI_Instrument::GetExeNonceOffset(Instruction_t* insn)
 {
         if(exe_nonce_color_map)
 	{
-		assert(insn->GetIBTargets());
+		assert(insn->getIBTargets());
                 // We can't know the offset yet because this nonce may need to get
                 // shoved into multiple exe nonces, so just return the position.
 		cout << "EXE NONCE OFFSET IS: "<< exe_nonce_color_map->GetColorOfIB(insn).GetPosition() << endl;
@@ -130,7 +127,7 @@ NonceValueType_t SCFI_Instrument::GetExeNonce(Instruction_t* insn)
 {
 	if(exe_nonce_color_map)
 	{
-		assert(insn->GetIBTargets());
+		assert(insn->getIBTargets());
 		return exe_nonce_color_map->GetColorOfIB(insn).GetNonceValue();
 	}
         // Otherwise, all nonces are the same
@@ -158,7 +155,7 @@ unsigned int SCFI_Instrument::GetNonceOffset(Instruction_t* insn)
 {
 	if(color_map)
 	{
-		assert(insn->GetIBTargets());
+		assert(insn->getIBTargets());
 		return (color_map->GetColorOfIB(insn).GetPosition()+1) * GetNonceSize(insn);
 	}
 	return GetNonceSize(insn);
@@ -170,7 +167,7 @@ NonceValueType_t SCFI_Instrument::GetNonce(Instruction_t* insn)
 	/* for now, it's just f4 as the nonce */
 	if(color_map)
 	{
-		assert(insn->GetIBTargets());
+		assert(insn->getIBTargets());
 		return color_map->GetColorOfIB(insn).GetNonceValue();
 	}
         // Otherwise, all nonces are the same
@@ -198,32 +195,28 @@ bool SCFI_Instrument::mark_targets()
 {
 	int targets=0, ind_targets=0, exe_nonce_targets=0;
 	// Make sure no unresolved instructions are in the insn set
-	firp->AssembleRegistry();
-	firp->SetBaseIDS();	
+	firp->assembleRegistry();
+	firp->setBaseIDS();	
 	// create new preds (we've added instructions)
-	InstructionPredecessors_t newPreds;
-	newPreds.AddFile(firp);
+	auto newPredsp=InstructionPredecessors_t::factory(firp);
+	auto &newPreds=*newPredsp;
 	// Make sure the new insns added in this loop are not processed in this loop
 	// (ok since none of the them should receive nonces)
-	auto insn_set = firp->GetInstructions();
-	for(InstructionSet_t::iterator it=insn_set.begin();
-		it!=insn_set.end();
-		++it)
+	auto insn_set = firp->getInstructions();
+	for(auto insn : insn_set) 
 	{
 		targets++;
-		Instruction_t* insn=*it;
-		if(insn->GetIndirectBranchTargetAddress())
+		if(insn->getIndirectBranchTargetAddress())
 		{
 
 			// make sure there are no fallthroughs to nonces.
-			for(InstructionSet_t::iterator pred_it=newPreds[insn].begin(); pred_it!=newPreds[insn].end(); ++pred_it)
+			for(auto the_pred : newPreds[insn])
 			{
-				Instruction_t* the_pred=*pred_it;
-				if(the_pred->GetFallthrough()==insn)
+				if(the_pred->getFallthrough()==insn)
 				{
-					Instruction_t* jmp=addNewAssembly(firp,NULL, "jmp 0x0");
-					the_pred->SetFallthrough(jmp);
-					jmp->SetTarget(insn);
+					Instruction_t* jmp=addNewAssembly("jmp 0x0");
+					the_pred->setFallthrough(jmp);
+					jmp->setTarget(insn);
 				}
 			}
 
@@ -249,9 +242,9 @@ bool SCFI_Instrument::mark_targets()
 					type=string("cfi_nonce=(pos=") +  to_string(position) + ",nv="
 						+ to_string(noncevalue) + ",sz="+ to_string(size)+ ")";
 					Relocation_t* reloc=create_reloc(insn);
-					reloc->SetOffset(-position*size);
-					reloc->SetType(type);
-					cout<<"Created reloc='"+type+"' for "<<std::hex<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<endl;
+					reloc->setOffset(-position*size);
+					reloc->setType(type);
+					cout<<"Created reloc='"+type+"' for "<<std::hex<<insn->getBaseID()<<":"<<insn->getDisassembly()<<endl;
 				}
 			}
 			else
@@ -259,26 +252,26 @@ bool SCFI_Instrument::mark_targets()
 				type=string("cfi_nonce=(pos=") +  to_string(-((int) GetNonceOffset(insn))) + ",nv="
                                     + to_string(GetNonce(insn)) + ",sz="+ to_string(GetNonceSize(insn))+ ")";
 				Relocation_t* reloc=create_reloc(insn);
-				reloc->SetOffset(-((int) GetNonceOffset(insn)));
-				reloc->SetType(type);
-				cout<<"Created reloc='"+type+"' for "<<std::hex<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<endl;
+				reloc->setOffset(-((int) GetNonceOffset(insn)));
+				reloc->setType(type);
+				cout<<"Created reloc='"+type+"' for "<<std::hex<<insn->getBaseID()<<":"<<insn->getDisassembly()<<endl;
 			}
 		}
 
-		if(do_exe_nonce_for_call && DecodedInstruction_t(insn).isCall()) 
+		if(do_exe_nonce_for_call && DecodedInstruction_t::factory(insn)->isCall()) 
                 {
 		    ++exe_nonce_targets;
                  
                     if(do_color_exe_nonces)
                     {
                         // The colors we want are not on the call, but on its return target.
-                        ColoredSlotValues_t v=exe_nonce_color_map->GetColorsOfIBT(insn->GetFallthrough());
+                        ColoredSlotValues_t v=exe_nonce_color_map->GetColorsOfIBT(insn->getFallthrough());
 			
 			// The return target gets a regular nonce as well, so there may be an inserted jmp
 			// in the way of the original IBT that has our colors.
 			if(v.size() == 0)
 			{
-			    v=exe_nonce_color_map->GetColorsOfIBT(insn->GetFallthrough()->GetTarget());
+			    v=exe_nonce_color_map->GetColorsOfIBT(insn->getFallthrough()->getTarget());
 			}
 
                         int nonceSz=GetExeNonceSize(insn); //Multiple sizes not yet supported	
@@ -345,9 +338,9 @@ void SCFI_Instrument::CreateExeNonceReloc(Instruction_t* insn, NonceValueType_t 
     string type=string("cfi_exe_nonce=(pos=") +  to_string(bytePos) + ",nv="
         + to_string(nonceVal) + ",sz="+ to_string(nonceSz)+ ")";
     Relocation_t* reloc=create_reloc(insn);
-    reloc->SetOffset(bytePos);
-    reloc->SetType(type);
-    cout<<"Created reloc='"+type+"' for "<<std::hex<<insn->GetBaseID()<<":"<<insn->getDisassembly()<<endl;
+    reloc->setOffset(bytePos);
+    reloc->setType(type);
+    cout<<"Created reloc='"+type+"' for "<<std::hex<<insn->getBaseID()<<":"<<insn->getDisassembly()<<endl;
 }
 
 
@@ -448,19 +441,14 @@ void SCFI_Instrument::PlaceExeNonceReloc(Instruction_t* insn, NonceValueType_t n
  */
 static string change_to_push(Instruction_t *insn)
 {
-	string newbits=insn->GetDataBits();
+	string newbits=insn->getDataBits();
 
-	//DISASM d; 
-	//Disassemble(insn,d);
-	const auto d=DecodedInstruction_t(insn);
+	const auto dp=DecodedInstruction_t::factory(insn);
+	const auto &d=*dp;
 
 	int opcode_offset=0;
 
-
-	// FIXME: assumes REX is only prefix on jmp insn.  
-	// does not assume rex exists.
-	//if(d.Prefix.REX.state == InUsePrefix)
-		opcode_offset=d.getPrefixCount();
+	opcode_offset=d.getPrefixCount();
 
 	unsigned char modregrm = (newbits[1+opcode_offset]);
 	modregrm &= 0xc7;
@@ -472,51 +460,35 @@ static string change_to_push(Instruction_t *insn)
 }
 
 
-void mov_reloc(Instruction_t* from, Instruction_t* to, string type )
+void SCFI_Instrument::mov_reloc(Instruction_t* from, Instruction_t* to, string type )
 {
-	for(
-		/* start */
-		RelocationSet_t::iterator it=from->GetRelocations().begin();
-
-		/* continue */
-		it!=from->GetRelocations().end();
-		
-		/* increment */
-		/* empty */
-	   )
+	// need to copy because moveReloc will destroy the iterator used for copying 
+	auto copy_of_relocs=from->getRelocations();
+	for(auto reloc : copy_of_relocs)
 	{
-		Relocation_t* reloc=*it;
 
-		if(reloc->GetType()==type)
+		if(reloc->getType()==type)
 		{
-			to->GetRelocations().insert(reloc);	
-	
+			firp->moveRelocation(reloc,from,to);
 			// odd standards-conforming way to delete object while iterating.
-			from->GetRelocations().erase(it++);	
-		}
-		else
-		{
-			it++;
+			//to->getRelocations().insert(reloc);	
+			//from->getRelocations().erase(it++);	
 		}
 	}
 		
 }
 
 
-static void move_relocs(Instruction_t* from, Instruction_t* to)
+void SCFI_Instrument::move_relocs(Instruction_t* from, Instruction_t* to)
 {
-	for(auto it=from->GetRelocations().begin(); it!=from->GetRelocations().end(); ) 
+	auto copy_of_relocs=from->getRelocations();
+	for(auto reloc : copy_of_relocs)
 	{
-		auto current=it++;
-		Relocation_t* reloc=*current;
-		if(reloc->GetType()=="fix_call_fallthrough")
+		if(reloc->getType()!="fix_call_fallthrough")
 		{
-			// don't move it.
-		}
-		else
-		{
-			to->GetRelocations().insert(reloc);
-			from->GetRelocations().erase(current);
+			firp->moveRelocation(reloc,from,to);
+			// to->getRelocations().insert(reloc);
+			// from->getRelocations().erase(current);
 		}
 	}
 }
@@ -527,10 +499,10 @@ void SCFI_Instrument::AddJumpCFI(Instruction_t* insn)
 
 	string pushbits=change_to_push(insn);
 	cout<<"Converting ' "<<insn->getDisassembly()<<"' to '";
-	Instruction_t* after=insertDataBitsBefore(firp,insn,pushbits); 
+	Instruction_t* after=insertDataBitsBefore(insn,pushbits); 
 	move_relocs(after,insn);
 	
-	after->SetDataBits(getRetDataBits());
+	after->setDataBits(getRetDataBits());
 	cout <<insn->getDisassembly()<<" + ret' "<<endl ;
 
 	// move any pc-rel relocation bits to the push, which will access memory now 
@@ -555,7 +527,7 @@ void SCFI_Instrument::AddJumpCFI(Instruction_t* insn)
 void SCFI_Instrument::AddCallCFIWithExeNonce(Instruction_t* insn)
 {
 	string reg="ecx";       // 32-bit reg 
-        if(firp->GetArchitectureBitWidth()==64)
+        if(firp->getArchitectureBitWidth()==64)
                 reg="r11";      // 64-bit reg.
 
         Instruction_t* call=NULL, *stub=NULL;
@@ -573,17 +545,17 @@ void SCFI_Instrument::AddCallCFIWithExeNonce(Instruction_t* insn)
 
         // insert the pop/checking code.
 	string pushbits=change_to_push(insn);
-   call=insertDataBitsBefore(firp, insn, pushbits);
-        insertAssemblyAfter(firp,insn,string("pop ")+reg);
+   call=insertDataBitsBefore(insn, pushbits);
+        insertAssemblyAfter(insn,string("pop ")+reg);
 
 	// keep any relocs on the push instruction, as those may need updating.
-	insn->GetRelocations()=call->GetRelocations();
-	call->GetRelocations().clear();
+	insn->setRelocations(call->getRelocations());
+	call->setRelocations({});
 
        	// Jump to non-exe nonce check code
-	stub = addNewAssembly(firp, NULL, string("push ")+reg);
-    	Instruction_t* ret = insertDataBitsAfter(firp, stub, getRetDataBits());
-    	ret->SetIBTargets(call->GetIBTargets());
+	stub = addNewAssembly(string("push ")+reg);
+    	Instruction_t* ret = insertDataBitsAfter(stub, getRetDataBits());
+    	ret->setIBTargets(call->getIBTargets());
 	
         if(do_exe_nonce_for_call)
         {
@@ -598,13 +570,13 @@ void SCFI_Instrument::AddCallCFIWithExeNonce(Instruction_t* insn)
         }	
  
 	// convert the indirct call to a direct call to the stub.
-        string call_bits=call->GetDataBits();
+        string call_bits=call->getDataBits();
         call_bits.resize(5);
         call_bits[0]=0xe8;
-        call->SetTarget(stub);
-        call->SetDataBits(call_bits);
-        call->SetComment("Direct call to cfi stub");
-        call->SetIBTargets(NULL);       // lose info about branch targets.
+        call->setTarget(stub);
+        call->setDataBits(call_bits);
+        call->setComment("Direct call to cfi stub");
+        call->setIBTargets(NULL);       // lose info about branch targets.
 
 	return;
 }
@@ -619,8 +591,8 @@ void SCFI_Instrument::AddExecutableNonce(Instruction_t* insn)
 Instruction_t* SCFI_Instrument::GetExeNonceSlowPath(Instruction_t* insn)
 {
     // Jump to non-exe nonce check code
-    Instruction_t* ret = addNewDatabits(firp, NULL, getRetDataBits());
-    ret->SetIBTargets(insn->GetIBTargets()); 
+    Instruction_t* ret = addNewDataBits(getRetDataBits());
+    ret->setIBTargets(insn->getIBTargets()); 
     AddReturnCFI(ret);
     return ret;
 }
@@ -641,7 +613,7 @@ void SCFI_Instrument::InsertExeNonceComparisons(Instruction_t* insn,
         noncePartSz = nonceSz;
     
     string reg="ecx";	// 32-bit reg 
-    if(firp->GetArchitectureBitWidth()==64)
+    if(firp->getArchitectureBitWidth()==64)
         reg="r11";	// 64-bit reg.
     
     string decoration="";
@@ -674,10 +646,10 @@ void SCFI_Instrument::InsertExeNonceComparisons(Instruction_t* insn,
     {
         NoncePart_t theNoncePart = *it;
 	cout << "ADDING CMP FOR BYTE POS: " << theNoncePart.bytePos << "FOR NONCE WITH POSITION: " << noncePos << "AND SIZE: " << nonceSz << endl;
-        tmp=insertAssemblyAfter(firp,tmp,string("cmp ")+decoration+
+        tmp=insertAssemblyAfter(tmp,string("cmp ")+decoration+
 		" ["+reg+"+"+to_string(theNoncePart.bytePos)+"], "+to_string(theNoncePart.val));
-        jne=tmp=insertAssemblyAfter(firp,tmp,"jne 0");
-        jne->SetTarget(exeNonceSlowPath);
+        jne=tmp=insertAssemblyAfter(tmp,"jne 0");
+        jne->setTarget(exeNonceSlowPath);
     }
 }
 
@@ -689,29 +661,28 @@ void SCFI_Instrument::AddReturnCFIForExeNonce(Instruction_t* insn, ColoredSlotVa
 		return;
 
 	string reg="ecx";	// 32-bit reg 
-	if(firp->GetArchitectureBitWidth()==64)
+	if(firp->getArchitectureBitWidth()==64)
 		reg="r11";	// 64-bit reg.
 
 	string rspreg="esp";	// 32-bit reg 
-	if(firp->GetArchitectureBitWidth()==64)
+	if(firp->getArchitectureBitWidth()==64)
 		rspreg="rsp";	// 64-bit reg.
 
 	string worddec="dword";	// 32-bit reg 
-	if(firp->GetArchitectureBitWidth()==64)
+	if(firp->getArchitectureBitWidth()==64)
 		worddec="qword";	// 64-bit reg.
 
 	
-	//DISASM d;
-	//Disassemble(insn,d);
-	const auto d=DecodedInstruction_t(insn);
+	const auto dp=DecodedInstruction_t::factory(insn);
+	const auto &d=*dp;
 
-	if(d.hasOperand(0)) // d.Argument1.ArgType!=NO_ARGUMENT)
+	if(d.hasOperand(0)) 
 	{
-		unsigned int sp_adjust=d.getImmediate() /*d.Instruction.Immediat*/-firp->GetArchitectureBitWidth()/8;
-		cout<<"Found relatively rare ret_with_pop insn: "<<d.getDisassembly() /*CompleteInstr*/<<endl;
+		unsigned int sp_adjust=d.getImmediate() -firp->getArchitectureBitWidth()/8;
+		cout<<"Found relatively rare ret_with_pop insn: "<<d.getDisassembly() <<endl;
 		char buf[30];
 		sprintf(buf, "pop %s [%s+%d]", worddec.c_str(), rspreg.c_str(), sp_adjust);
-		Instruction_t* newafter=insertAssemblyBefore(firp,insn,buf);
+		Instruction_t* newafter=insertAssemblyBefore(insn,buf);
 
 		if(sp_adjust>0)
 		{
@@ -722,7 +693,7 @@ void SCFI_Instrument::AddReturnCFIForExeNonce(Instruction_t* insn, ColoredSlotVa
 		insn=newafter;
 		//Needed b/c AddReturnCFI may be called on this ret insn
                 //But also clean up and change ret_with_pop to ret (as it should be now) to be safe
-                setInstructionAssembly(firp,insn, string("ret"), insn->GetFallthrough(), insn->GetTarget()); 
+                setInstructionAssembly(insn, string("ret"), insn->getFallthrough(), insn->getTarget()); 
 	}
         //TODO: Handle uncommon slow path
 		
@@ -741,7 +712,7 @@ void SCFI_Instrument::AddReturnCFIForExeNonce(Instruction_t* insn, ColoredSlotVa
 	// 	ret             ; ignore race condition for now
 
 	// insert the mov/checking code.
-	insertAssemblyBefore(firp,insn,string("mov ")+reg+string(", [")+rspreg+string("]"));
+	insertAssemblyBefore(insn,string("mov ")+reg+string(", [")+rspreg+string("]"));
         InsertExeNonceComparisons(insn, nonce, nonce_size, nonce_pos, exeNonceSlowPath);
        	// leave the ret instruction (risk of successful race condition exploit << performance benefit)
 
@@ -763,28 +734,26 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 
 
 	string reg="ecx";	// 32-bit reg 
-	if(firp->GetArchitectureBitWidth()==64)
+	if(firp->getArchitectureBitWidth()==64)
 		reg="r11";	// 64-bit reg.
 
 	string rspreg="esp";	// 32-bit reg 
-	if(firp->GetArchitectureBitWidth()==64)
+	if(firp->getArchitectureBitWidth()==64)
 		rspreg="rsp";	// 64-bit reg.
 
 	string worddec="dword";	// 32-bit reg 
-	if(firp->GetArchitectureBitWidth()==64)
+	if(firp->getArchitectureBitWidth()==64)
 		worddec="qword";	// 64-bit reg.
 
-	
-	//DISASM d;
-	//Disassemble(insn,d);
-	const auto d=DecodedInstruction_t(insn);
+	const auto dp=DecodedInstruction_t::factory(insn);
+	const auto &d=*dp;
 	if(d.hasOperand(0)) // d.Argument1.ArgType!=NO_ARGUMENT)
 	{
-		unsigned int sp_adjust=d.getImmediate() /* Instruction.Immediat*/-firp->GetArchitectureBitWidth()/8;
+		unsigned int sp_adjust=d.getImmediate() /* Instruction.Immediat*/-firp->getArchitectureBitWidth()/8;
 		cout<<"Found relatively rare ret_with_pop insn: "<<d.getDisassembly()<<endl;
 		char buf[30];
 		sprintf(buf, "pop %s [%s+%d]", worddec.c_str(), rspreg.c_str(), sp_adjust);
-		Instruction_t* newafter=insertAssemblyBefore(firp,insn,buf);
+		Instruction_t* newafter=insertAssemblyBefore(insn,buf);
 
 		if(sp_adjust>0)
 		{
@@ -794,7 +763,7 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 		// rewrite the "old" isntruction, as that's what insertAssemblyBefore returns
 		insn=newafter;
 		//Clean up and change ret_with_pop to ret (as it should be now) to be safe
-                setInstructionAssembly(firp,insn, string("ret"), insn->GetFallthrough(), insn->GetTarget()); 
+                setInstructionAssembly(insn, string("ret"), insn->getFallthrough(), insn->getTarget()); 
 	}
 		
 	int size=1;
@@ -857,37 +826,37 @@ void SCFI_Instrument::AddReturnCFI(Instruction_t* insn, ColoredSlotValue_t *v)
 	}
 
 	// insert the pop/checking code.
-	insertAssemblyBefore(firp,insn,string("pop ")+reg);
+	insertAssemblyBefore(insn,string("pop ")+reg);
         if(nonce_size != 8)
         {
-            tmp=insertAssemblyAfter(firp,insn,string("cmp ")+decoration+
+            tmp=insertAssemblyAfter(insn,string("cmp ")+decoration+
 		" ["+reg+"-"+to_string(nonce_offset)+"], "+to_string(nonce));
         }
         else
         {
-            tmp=insertAssemblyAfter(firp,insn,string("cmp ")+decoration+
+            tmp=insertAssemblyAfter(insn,string("cmp ")+decoration+
 		" ["+reg+"-"+to_string(nonce_offset)+"], "+to_string((uint32_t) nonce)); // upper 32 bits chopped off by cast
-            jne=tmp=insertAssemblyAfter(firp,tmp,"jne 0");
-            tmp=insertAssemblyAfter(firp,tmp,string("cmp ")+decoration+
+            jne=tmp=insertAssemblyAfter(tmp,"jne 0");
+            tmp=insertAssemblyAfter(tmp,string("cmp ")+decoration+
 		" ["+reg+"-"+to_string(nonce_offset - 4)+"], "+to_string((uint32_t) (nonce >> 32)));
             // set the jne's target to itself, and create a reloc that zipr/strata will have to resolve.
-            jne->SetTarget(jne);	// needed so spri/spasm/irdb don't freak out about missing target for new insn.
+            jne->setTarget(jne);	// needed so spri/spasm/irdb don't freak out about missing target for new insn.
             Relocation_t* reloc=create_reloc(jne);
-            reloc->SetType(slow_cfi_path_reloc_string); 
-            reloc->SetOffset(0);
+            reloc->setType(slow_cfi_path_reloc_string); 
+            reloc->setOffset(0);
             cout<<"Setting slow path for: "<<slow_cfi_path_reloc_string<<endl;
         }
         
-        jne=tmp=insertAssemblyAfter(firp,tmp,"jne 0");
+        jne=tmp=insertAssemblyAfter(tmp,"jne 0");
 	// convert the ret instruction to a jmp ecx
-	cout<<"Converting "<<hex<<tmp->GetFallthrough()->GetBaseID()<<":"<<tmp->GetFallthrough()->getDisassembly()<<"to jmp+reg"<<endl;
-	setInstructionAssembly(firp,tmp->GetFallthrough(), string("jmp ")+reg, NULL,NULL);
+	cout<<"Converting "<<hex<<tmp->getFallthrough()->getBaseID()<<":"<<tmp->getFallthrough()->getDisassembly()<<"to jmp+reg"<<endl;
+	setInstructionAssembly(tmp->getFallthrough(), string("jmp ")+reg, NULL,NULL);
 
 	// set the jne's target to itself, and create a reloc that zipr/strata will have to resolve.
-	jne->SetTarget(jne);	// needed so spri/spasm/irdb don't freak out about missing target for new insn.
+	jne->setTarget(jne);	// needed so spri/spasm/irdb don't freak out about missing target for new insn.
 	Relocation_t* reloc=create_reloc(jne);
-	reloc->SetType(slow_cfi_path_reloc_string); 
-	reloc->SetOffset(0);
+	reloc->setType(slow_cfi_path_reloc_string); 
+	reloc->setOffset(0);
 	cout<<"Setting slow path for: "<<slow_cfi_path_reloc_string<<endl;
 	
 	return;
@@ -914,13 +883,10 @@ static void display_histogram(std::ostream& out, std::string attr_label, std::ma
 
 bool SCFI_Instrument::is_plt_style_jmp(Instruction_t* insn) 
 {
-	//DISASM d;
-	//Disassemble(insn,d);
-	const auto d=DecodedInstruction_t(insn);
-	if(d.getOperand(0).isMemory()) // (d.Argument1.ArgType&MEMORY_TYPE)==MEMORY_TYPE)
+	const auto d=DecodedInstruction_t::factory(insn);
+	if(d->getOperand(0)->isMemory()) 
 	{
-		//if(d.Argument1.Memory.BaseRegister == 0 && d.Argument1.Memory.IndexRegister == 0)  
-		if(!d.getOperand(0).hasBaseRegister() && !d.getOperand(0).hasIndexRegister() )  
+		if(!d->getOperand(0)->hasBaseRegister() && !d->getOperand(0)->hasIndexRegister() )  
 			return true;
 		return false;
 	}
@@ -935,7 +901,7 @@ bool SCFI_Instrument::is_jmp_a_fixed_call(Instruction_t* insn)
 	Instruction_t* pred=*(preds[insn].begin());
 	assert(pred);
 
-	if(pred->GetDataBits()[0]==0x68)
+	if(pred->getDataBits()[0]==0x68)
 		return true;
 	return false;
 }
@@ -966,15 +932,9 @@ bool SCFI_Instrument::instrument_jumps()
 	// for each instruction
 	// But make sure the new insns added in this loop are not processed in this loop
         // (ok since none of the them should need to be protected)
-        auto insn_set = firp->GetInstructions();
-	for(InstructionSet_t::iterator it=insn_set.begin();
-		it!=insn_set.end();
-		++it)
+        auto insn_set = firp->getInstructions();
+	for(auto insn : insn_set)
 	{
-		Instruction_t* insn=*it;
-		//DISASM d;
-		//Disassemble(insn,d);
-
 
 		// we always have to protect the zestcfi dispatcher, that we just added.
 		if(zestcfi_function_entry==insn)
@@ -985,17 +945,18 @@ bool SCFI_Instrument::instrument_jumps()
 			continue;
 		}
 
-		if(insn->GetBaseID()==BaseObj_t::NOT_IN_DATABASE)
+		if(insn->getBaseID()==BaseObj_t::NOT_IN_DATABASE)
 			continue;
 
-		const auto d=DecodedInstruction_t(insn);
+		const auto dp=DecodedInstruction_t::factory(insn);
+		const auto &d=*dp;
 
-		if (insn->GetFunction())
-			cerr<<"Looking at: "<<insn->getDisassembly()<< " from func: " << insn->GetFunction()->GetName() << endl;
+		if (insn->getFunction())
+			cerr<<"Looking at: "<<insn->getDisassembly()<< " from func: " << insn->getFunction()->getName() << endl;
 		else
 			cerr<<"Looking at: "<<insn->getDisassembly()<< " but no associated function" << endl;
 
-		if(d.isCall() /*string(d.Instruction.Mnemonic)==string("call ")*/ && (protect_safefn && !do_exe_nonce_for_call))
+		if(d.isCall()  && (protect_safefn && !do_exe_nonce_for_call))
 		{
                 	cerr<<"Fatal Error: Found call instruction!"<<endl;
                 	cerr<<"FIX_CALLS_FIX_ALL_CALLS=1 should be set in the environment, or"<<endl;
@@ -1010,29 +971,25 @@ bool SCFI_Instrument::instrument_jumps()
 		bool safefn = isSafeFunction(insn);
 
 		if (safefn) {
-			if (insn->GetFunction())
-				cerr << insn->GetFunction()->GetName() << " is safe" << endl;
+			if (insn->getFunction())
+				cerr << insn->getFunction()->getName() << " is safe" << endl;
 		}
 
 	
 		
-		//switch(d.Instruction.BranchType)
-		//{
-		//case  JmpType:
 		if(d.isUnconditionalBranch())
 		{
-			//if((d.Argument1.ArgType&CONSTANT_TYPE)!=CONSTANT_TYPE)
-			if(!d.getOperand(0).isConstant()) 
+			if(!d.getOperand(0)->isConstant()) 
 			{
 				bool is_fixed_call=is_jmp_a_fixed_call(insn);
 				bool is_plt_style=is_plt_style_jmp(insn);
 				bool is_any_call_style = (is_fixed_call || is_plt_style);
 				if(do_jumps && !is_any_call_style)
 				{
-					if (insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
+					if (insn->getIBTargets() && insn->getIBTargets()->isComplete())
 					{
 						cfi_branch_jmp_complete++;
-						jmps[insn->GetIBTargets()->size()]++;
+						jmps[insn->getIBTargets()->size()]++;
 					}
 
 					cfi_checks++;
@@ -1042,10 +999,10 @@ bool SCFI_Instrument::instrument_jumps()
 				}
 				else if(do_calls && is_any_call_style)
 				{
-					if (insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
+					if (insn->getIBTargets() && insn->getIBTargets()->isComplete())
 					{
 						cfi_branch_call_complete++;
-						calls[insn->GetIBTargets()->size()]++;
+						calls[insn->getIBTargets()->size()]++;
 					}
 
 					cfi_checks++;
@@ -1064,7 +1021,6 @@ bool SCFI_Instrument::instrument_jumps()
 				}
 			}
 		}
-		// case  CallType:
 		else if(d.isCall())
 		{
 
@@ -1073,9 +1029,7 @@ bool SCFI_Instrument::instrument_jumps()
 			//    (1) --no-fix-safefn in fixcalls leaves call as call (instead of push/jmp)
 			//    (2) and here, we don't plop down a nonce
 			//    see (3) below where we don't instrument returns for safe functions
-
-			// bool isDirectCall = (d.Argument1.ArgType&CONSTANT_TYPE)==CONSTANT_TYPE;
-			bool isDirectCall = d.getOperand(0).isConstant();
+			bool isDirectCall = d.getOperand(0)->isConstant();
 			if (!protect_safefn)
 			{
 
@@ -1087,23 +1041,22 @@ bool SCFI_Instrument::instrument_jumps()
 			}
 
 			AddExecutableNonce(insn);	// for all calls
-			if(!isDirectCall) // (d.Argument1.ArgType&CONSTANT_TYPE)!=CONSTANT_TYPE)
+			if(!isDirectCall) 
 			{
 				// for indirect calls.
 				AddCallCFIWithExeNonce(insn);
 			}
 		}
-		// case  RetType: 
 		else if (d.isReturn()) 
 		{
-			if (insn->GetFunction())
-				cerr << "found ret type  protect_safefn: " << protect_safefn << "  safefn: " << safefn <<  " function: " << insn->GetFunction()->GetName() << endl;
+			if (insn->getFunction())
+				cerr << "found ret type  protect_safefn: " << protect_safefn << "  safefn: " << safefn <<  " function: " << insn->getFunction()->getName() << endl;
 			else
 				cerr << "found ret type  protect_safefn: " << protect_safefn << "  safefn: " << safefn << " no functions associated with instruction!! wtf???" << endl;
-			if (insn->GetIBTargets() && insn->GetIBTargets()->IsComplete())
+			if (insn->getIBTargets() && insn->getIBTargets()->isComplete())
 			{
 				cfi_branch_ret_complete++;
-				rets[insn->GetIBTargets()->size()]++;
+				rets[insn->getIBTargets()->size()]++;
 			}
 
 			// (3) and here, we don't instrument returns for safe function
@@ -1123,10 +1076,9 @@ bool SCFI_Instrument::instrument_jumps()
 				AddReturnCFI(insn);
 			}
 		}
-		else // default:
+		else 
 		{
 		}
-		//}
 	}
 	
 	cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::cfi_jmp_checks="<<std::dec<<cfi_branch_jmp_checks<<endl;
@@ -1184,14 +1136,14 @@ static struct ScoopFinder : binary_function<const DataScoop_t*,const string,bool
 	// declare a simple scoop finder function that finds scoops by name
 	bool operator()(const DataScoop_t* scoop, const string& name) const
 	{
-		return (scoop->GetName() == name);
+		return (scoop->getName() == name);
 	};
 } finder;
 
 static DataScoop_t* find_scoop(FileIR_t *firp,const string &name)
 {
-	auto it=find_if(firp->GetDataScoops().begin(), firp->GetDataScoops().end(), bind2nd(finder, name)) ;
-	if( it != firp->GetDataScoops().end() )
+	auto it=find_if(firp->getDataScoops().begin(), firp->getDataScoops().end(), bind2nd(finder, name)) ;
+	if( it != firp->getDataScoops().end() )
 		return *it;
 	return NULL;
 };
@@ -1199,12 +1151,12 @@ static DataScoop_t* find_scoop(FileIR_t *firp,const string &name)
 static unsigned int  add_to_scoop(const string &str, DataScoop_t* scoop) 
 {
 	// assert that this scoop is unpinned.  may need to enable --step move_globals --step-option move_globals:--elftables-only
-	assert(scoop->GetStart()->GetVirtualOffset()==0);
+	assert(scoop->getStart()->getVirtualOffset()==0);
 	int len=str.length();
-	scoop->SetContents(scoop->GetContents()+str);
-	virtual_offset_t oldend=scoop->GetEnd()->GetVirtualOffset();
-	virtual_offset_t newend=oldend+len;
-	scoop->GetEnd()->SetVirtualOffset(newend);
+	scoop->setContents(scoop->getContents()+str);
+	auto oldend=scoop->getEnd()->getVirtualOffset();
+	auto newend=oldend+len;
+	scoop->getEnd()->setVirtualOffset(newend);
 	return oldend+1;
 };
 
@@ -1212,73 +1164,73 @@ template<int ptrsize>
 static void insert_into_scoop_at(const string &str, DataScoop_t* scoop, FileIR_t* firp, const unsigned int at) 
 {
 	// assert that this scoop is unpinned.  may need to enable --step move_globals --step-option move_globals:--cfi
-	assert(scoop->GetStart()->GetVirtualOffset()==0);
+	assert(scoop->getStart()->getVirtualOffset()==0);
 	int len=str.length();
-	string new_scoop_contents=scoop->GetContents();
+	string new_scoop_contents=scoop->getContents();
 	new_scoop_contents.insert(at,str);
-	scoop->SetContents(new_scoop_contents);
+	scoop->setContents(new_scoop_contents);
 
-	virtual_offset_t oldend=scoop->GetEnd()->GetVirtualOffset();
-	virtual_offset_t newend=oldend+len;
-	scoop->GetEnd()->SetVirtualOffset(newend);
+	auto oldend=scoop->getEnd()->getVirtualOffset();
+	auto newend=oldend+len;
+	scoop->getEnd()->setVirtualOffset(newend);
 
 	// update each reloc to point to the new location.
-	for_each(scoop->GetRelocations().begin(), scoop->GetRelocations().end(), [str,at](Relocation_t* reloc)
+	for_each(scoop->getRelocations().begin(), scoop->getRelocations().end(), [str,at](Relocation_t* reloc)
 	{
-		if((unsigned int)reloc->GetOffset()>=at)
-			reloc->SetOffset(reloc->GetOffset()+str.size());
+		if((unsigned int)reloc->getOffset()>=at)
+			reloc->setOffset(reloc->getOffset()+str.size());
 		
 	});
 
 	// check relocations for pointers to this object.
 	// we'll update dataptr_to_scoop relocs, but nothing else
 	// so assert if we find something else
-	for_each(firp->GetRelocations().begin(), firp->GetRelocations().end(), [scoop](Relocation_t* reloc)
+	for_each(firp->getRelocations().begin(), firp->getRelocations().end(), [scoop](Relocation_t* reloc)
 	{
-		DataScoop_t* wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
-		assert(wrt != scoop || reloc->GetType()=="dataptr_to_scoop");
+		DataScoop_t* wrt=dynamic_cast<DataScoop_t*>(reloc->getWRT());
+		assert(wrt != scoop || reloc->getType()=="dataptr_to_scoop");
 	});
 
 	// for each scoop
-	for_each(firp->GetDataScoops().begin(), firp->GetDataScoops().end(), [&str,scoop,firp,at](DataScoop_t* scoop_to_update)
+	for_each(firp->getDataScoops().begin(), firp->getDataScoops().end(), [&str,scoop,firp,at](DataScoop_t* scoop_to_update)
 	{
 		// for each relocation for that scoop
-		for_each(scoop_to_update->GetRelocations().begin(), scoop_to_update->GetRelocations().end(), [&str,scoop,firp,scoop_to_update,at](Relocation_t* reloc)
+		for_each(scoop_to_update->getRelocations().begin(), scoop_to_update->getRelocations().end(), [&str,scoop,firp,scoop_to_update,at](Relocation_t* reloc)
 		{
 			// if it's a reloc that's wrt scoop
-			DataScoop_t* wrt=dynamic_cast<DataScoop_t*>(reloc->GetWRT());
+			DataScoop_t* wrt=dynamic_cast<DataScoop_t*>(reloc->getWRT());
 			if(wrt==scoop)
 			{
 				// then we need to update the scoop
-				if(reloc->GetType()=="dataptr_to_scoop")
+				if(reloc->getType()=="dataptr_to_scoop")
 				{
-					string contents=scoop_to_update->GetContents();
+					string contents=scoop_to_update->getContents();
 					// subtract the stringsize from the (implicitly stored) addend
 					// taking pointer size into account.
 					switch(ptrsize)
 					{
 						case 4:
 						{
-							unsigned int val=*((unsigned int*)&contents.c_str()[reloc->GetOffset()]); 
+							unsigned int val=*((unsigned int*)&contents.c_str()[reloc->getOffset()]); 
 							if(val>=at)
 								val +=str.size();
-							contents.replace(reloc->GetOffset(), ptrsize, (const char*)&val, ptrsize);
+							contents.replace(reloc->getOffset(), ptrsize, (const char*)&val, ptrsize);
 							break;
 						
 						}
 						case 8:
 						{
-							unsigned long long val=*((long long*)&contents.c_str()[reloc->GetOffset()]); 
+							unsigned long long val=*((long long*)&contents.c_str()[reloc->getOffset()]); 
 							if(val>=at)
 								val +=str.size();
-							contents.replace(reloc->GetOffset(), ptrsize, (const char*)&val, ptrsize);
+							contents.replace(reloc->getOffset(), ptrsize, (const char*)&val, ptrsize);
 							break;
 
 						}
 						default: 
 							assert(0);
 					}
-					scoop_to_update->SetContents(contents);
+					scoop_to_update->setContents(contents);
 				}
 			}	
 
@@ -1308,18 +1260,18 @@ template<typename T_Elf_Sym, typename T_Elf_Rela, typename T_Elf_Dyn, int reloc_
 Instruction_t* SCFI_Instrument::find_runtime_resolve(DataScoop_t* gotplt_scoop)
 {
 	// find any data_to_insn_ptr reloc for the gotplt scoop
-	auto it=find_if(gotplt_scoop->GetRelocations().begin(), gotplt_scoop->GetRelocations().end(), [](Relocation_t* reloc)
+	auto it=find_if(gotplt_scoop->getRelocations().begin(), gotplt_scoop->getRelocations().end(), [](Relocation_t* reloc)
 	{
-		return reloc->GetType()=="data_to_insn_ptr";
+		return reloc->getType()=="data_to_insn_ptr";
 	});
 	// there _should_ be one.
-	assert(it!=gotplt_scoop->GetRelocations().end());
+	assert(it!=gotplt_scoop->getRelocations().end());
 
 	Relocation_t* reloc=*it;
-	Instruction_t* wrt=dynamic_cast<Instruction_t*>(reloc->GetWRT());
+	Instruction_t* wrt=dynamic_cast<Instruction_t*>(reloc->getWRT());
 	assert(wrt);	// should be a WRT
 	assert(wrt->getDisassembly().find("push ") != string::npos);	// should be push K insn
-	return wrt->GetFallthrough();	// jump to the jump, or not.. doesn't matter.  zopt will fix
+	return wrt->getFallthrough();	// jump to the jump, or not.. doesn't matter.  zopt will fix
 }
 
 template<typename T_Elf_Sym, typename T_Elf_Rela, typename T_Elf_Dyn, int reloc_type, int rela_shift, int ptrsize>
@@ -1332,20 +1284,32 @@ void SCFI_Instrument::add_got_entry(const std::string& name)
 	auto relaplt_scoop=find_scoop(firp,".rela.dyn coalesced w/.rela.plt");
 	auto relplt_scoop=find_scoop(firp,".rel.dyn coalesced w/.rel.plt");
 	auto relscoop=relaplt_scoop!=NULL ?  relaplt_scoop : relplt_scoop;
+	auto gnu_version_scoop=find_scoop(firp,".gnu.version");
+	assert(gnu_version_scoop);
+	assert(gnu_version_scoop->getStart()->getVirtualOffset()==0);
 
 	// add 0-init'd pointer to table
 	string new_got_entry_str(ptrsize,0);	 // zero-init a pointer-sized string
 
 
 	// create a new, unpinned, rw+relro scoop that's an empty pointer.
-	AddressID_t* start_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, firp->GetFile()->GetBaseID(), 0);
-	AddressID_t* end_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, firp->GetFile()->GetBaseID(), ptrsize-1);
+	/*
+	AddressID_t* start_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, firp->getFile()->getBaseID(), 0);
+	firp->GetAddresses().insert(start_addr);
+	*/
+	auto start_addr=firp->addNewAddress(firp->getFile()->getBaseID(), 0);
+	/*
+	AddressID_t* end_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, firp->getFile()->getBaseID(), ptrsize-1);
+	firp->GetAddresses().insert(end_addr);
+	*/
+	auto end_addr=firp->addNewAddress(firp->getFile()->getBaseID(), ptrsize-1);
+
+	/*
 	DataScoop_t* external_func_addr_scoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE,
 		name, start_addr,end_addr, NULL, 6, true, new_got_entry_str);
-
-	firp->GetAddresses().insert(start_addr);
-	firp->GetAddresses().insert(end_addr);
-	firp->GetDataScoops().insert(external_func_addr_scoop);
+	firp->getDataScoops().insert(external_func_addr_scoop);
+	*/
+	auto external_func_addr_scoop=firp->addNewDataScoop(name, start_addr,end_addr, NULL, 6, true, new_got_entry_str);
 
 	// add string to string table 
 	auto dl_str_pos=add_to_scoop(name+'\0', dynstr_scoop);
@@ -1358,11 +1322,15 @@ void SCFI_Instrument::add_got_entry(const std::string& name)
 	string dl_sym_str((const char*)&dl_sym, sizeof(T_Elf_Sym));
 	unsigned int dl_pos=add_to_scoop(dl_sym_str,dynsym_scoop);
 
+	// update the gnu.version section so that the new symbol has a version.
+	const auto new_version_str=string("\0\0", 2);	 // \0\0 means *local*, as in, don't index the gnu.verneeded array.
+	add_to_scoop(new_version_str,gnu_version_scoop);
+
 	// find the rela count.  can't insert before that.
 	int rela_count=0;
-	for(int i=0;i+sizeof(T_Elf_Dyn)<dynamic_scoop->GetSize(); i+=sizeof(T_Elf_Dyn))
+	for(int i=0;i+sizeof(T_Elf_Dyn)<dynamic_scoop->getSize(); i+=sizeof(T_Elf_Dyn))
 	{
-		T_Elf_Dyn &dyn_entry=*(T_Elf_Dyn*)&dynamic_scoop->GetContents().c_str()[i];
+		T_Elf_Dyn &dyn_entry=*(T_Elf_Dyn*)&dynamic_scoop->getContents().c_str()[i];
 		if(dyn_entry.d_tag==DT_RELACOUNT)	 // diff than rela size.
 		{
 			// add to the size
@@ -1382,15 +1350,19 @@ void SCFI_Instrument::add_got_entry(const std::string& name)
 	unsigned int at=rela_count*sizeof(T_Elf_Rela);
 	insert_into_scoop_at<ptrsize>(dl_rel_str, relscoop, firp, at);
 
-	Relocation_t* dl_reloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE,  at+((uintptr_t)&dl_rel.r_offset -(uintptr_t)&dl_rel), "dataptr_to_scoop", external_func_addr_scoop);
-	relscoop->GetRelocations().insert(dl_reloc);
-	firp->GetRelocations().insert(dl_reloc);
-
-	for(int i=0;i+sizeof(T_Elf_Dyn)<dynamic_scoop->GetSize(); i+=sizeof(T_Elf_Dyn))
+	/*
+	 * Relocation_t* dl_reloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE,  at+((uintptr_t)&dl_rel.r_offset -(uintptr_t)&dl_rel), "dataptr_to_scoop", external_func_addr_scoop);
+	relscoop->getRelocations().insert(dl_reloc);
+	firp->getRelocations().insert(dl_reloc);
+	*/
+	auto dl_reloc=firp->addNewRelocation(relscoop,at+((uintptr_t)&dl_rel.r_offset -(uintptr_t)&dl_rel), "dataptr_to_scoop", external_func_addr_scoop);
+	(void)dl_reloc;
+	
+	for(int i=0;i+sizeof(T_Elf_Dyn)<dynamic_scoop->getSize(); i+=sizeof(T_Elf_Dyn))
 	{
 		// cast the index'd c_str to an Elf_Dyn pointer and deref it to assign to a 
 		// reference structure.  That way editing the structure directly edits the string.
-		T_Elf_Dyn &dyn_entry=*(T_Elf_Dyn*)&dynamic_scoop->GetContents().c_str()[i];
+		T_Elf_Dyn &dyn_entry=*(T_Elf_Dyn*)&dynamic_scoop->getContents().c_str()[i];
 		if(dyn_entry.d_tag==DT_RELASZ)
 			// add to the size
 			dyn_entry.d_un.d_val+=sizeof(T_Elf_Rela);
@@ -1439,34 +1411,39 @@ bool SCFI_Instrument::add_got_entries()
 
 	// add "function" for zestcfi"
 	// for now, return that the target is allowed.  the nonce plugin will have to have a slow path for this later.
-	assert(firp->GetArchitectureBitWidth()==64); // fixme for 32-bit, should jmp to ecx.
-	zestcfi_function_entry=addNewAssembly(firp,NULL,"jmp r11");
+	assert(firp->getArchitectureBitWidth()==64); // fixme for 32-bit, should jmp to ecx.
+	zestcfi_function_entry=addNewAssembly("jmp r11");
 
 	// this jump can target any IBT in the module.
-	ICFS_t *newicfs=new ICFS_t;
-	for_each(firp->GetInstructions().begin(), firp->GetInstructions().end(), [&](Instruction_t* insn)
+	// ICFS_t *newicfs=new ICFS_t;
+	// firp->GetAllICFS().insert(newicfs);
+	auto newicfs=firp->addNewICFS();
+	for_each(firp->getInstructions().begin(), firp->getInstructions().end(), [&](Instruction_t* insn)
 	{
-		if(insn->GetIndirectBranchTargetAddress() != NULL )
+		if(insn->getIndirectBranchTargetAddress() != NULL )
 			newicfs->insert(insn);
 	});
-	zestcfi_function_entry->SetIBTargets(newicfs);
-	firp->GetAllICFS().insert(newicfs);
-	firp->AssembleRegistry();
+	zestcfi_function_entry->setIBTargets(newicfs);
+	firp->assembleRegistry();
 	
 
 	// add a relocation so that the zest_cfi "function"  gets pointed to by the symbol
+	/*
 	Relocation_t* zestcfi_reloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE,  zestcfi_pos+((uintptr_t)&zestcfi_sym.st_value - (uintptr_t)&zestcfi_sym), "data_to_insn_ptr", zestcfi_function_entry);
-	dynsym_scoop->GetRelocations().insert(zestcfi_reloc);
-	firp->GetRelocations().insert(zestcfi_reloc);
+	dynsym_scoop->getRelocations().insert(zestcfi_reloc);
+	firp->getRelocations().insert(zestcfi_reloc);
+	*/
+	auto zestcfi_reloc=firp->addNewRelocation(dynsym_scoop,zestcfi_pos+((uintptr_t)&zestcfi_sym.st_value - (uintptr_t)&zestcfi_sym), "data_to_insn_ptr", zestcfi_function_entry);
+	(void)zestcfi_reloc;
 
 
 	// update strtabsz after got/etc entries are added.
-	for(int i=0;i+sizeof(T_Elf_Dyn)<dynamic_scoop->GetSize(); i+=sizeof(T_Elf_Dyn))
+	for(int i=0;i+sizeof(T_Elf_Dyn)<dynamic_scoop->getSize(); i+=sizeof(T_Elf_Dyn))
 	{
-		T_Elf_Dyn &dyn_entry=*(T_Elf_Dyn*)&dynamic_scoop->GetContents().c_str()[i];
+		T_Elf_Dyn &dyn_entry=*(T_Elf_Dyn*)&dynamic_scoop->getContents().c_str()[i];
 		if(dyn_entry.d_tag==DT_STRSZ)
 		{
-			dyn_entry.d_un.d_val=dynstr_scoop->GetContents().size();
+			dyn_entry.d_un.d_val=dynstr_scoop->getContents().size();
 		}
 	}
 
@@ -1527,9 +1504,9 @@ bool SCFI_Instrument::add_libdl_as_needed_support()
 	while(1)
 	{
 		// assert we don't run off the end.
-		assert((index+1)*sizeof(T_Elf_Dyn) <= dynamic_scoop->GetContents().size());
+		assert((index+1)*sizeof(T_Elf_Dyn) <= dynamic_scoop->getContents().size());
 
-		T_Elf_Dyn* dyn_ptr=(T_Elf_Dyn*) & dynamic_scoop->GetContents().c_str()[index*sizeof(T_Elf_Dyn)];
+		T_Elf_Dyn* dyn_ptr=(T_Elf_Dyn*) & dynamic_scoop->getContents().c_str()[index*sizeof(T_Elf_Dyn)];
 	
 		if(memcmp(dyn_ptr,&null_dynamic_entry,sizeof(T_Elf_Dyn)) == 0 )
 		{
@@ -1538,14 +1515,16 @@ bool SCFI_Instrument::add_libdl_as_needed_support()
 			for(unsigned int i=0; i<sizeof(T_Elf_Dyn); i++)
 			{
 				// copy new_dynamic_entry ontop of null entry.
-				dynamic_scoop->GetContents()[index*sizeof(T_Elf_Dyn) + i ] = ((char*)&new_dynamic_entry)[i];
+				auto str=dynamic_scoop->getContents();
+				str[index*sizeof(T_Elf_Dyn) + i ] = ((char*)&new_dynamic_entry)[i];
+				dynamic_scoop->setContents(str);
 			}
 
 			// check if there's room for the new null entry
-			if((index+2)*sizeof(T_Elf_Dyn) <= dynamic_scoop->GetContents().size())
+			if((index+2)*sizeof(T_Elf_Dyn) <= dynamic_scoop->getContents().size())
 			{
 				/* yes */
-				T_Elf_Dyn* next_entry=(T_Elf_Dyn*)&dynamic_scoop->GetContents().c_str()[(index+1)*sizeof(T_Elf_Dyn)];
+				T_Elf_Dyn* next_entry=(T_Elf_Dyn*)&dynamic_scoop->getContents().c_str()[(index+1)*sizeof(T_Elf_Dyn)];
 				// assert it's actually null 
 				assert(memcmp(next_entry,&null_dynamic_entry,sizeof(T_Elf_Dyn)) == 0 );
 			}
@@ -1562,7 +1541,7 @@ bool SCFI_Instrument::add_libdl_as_needed_support()
 
 #if 0
 	cout<<".dynamic contents after scfi update:"<<hex<<endl;
-	const string &dynstr_contents=dynamic_scoop->GetContents();
+	const string &dynstr_contents=dynamic_scoop->getContents();
 	for(unsigned int i=0;i<dynstr_contents.size(); i+=16)
 	{
 		cout<<*(long long*) &dynstr_contents.c_str()[i] <<" "
@@ -1585,7 +1564,7 @@ bool SCFI_Instrument::execute()
 	// do not move later.
 	if(do_multimodule)
 	{
-		if(firp->GetArchitectureBitWidth()==64)
+		if(firp->getArchitectureBitWidth()==64)
 			success = success && add_dl_support<Elf64_Sym, Elf64_Rela, Elf64_Dyn, R_X86_64_GLOB_DAT, 32, 8>();
 		else
 			success = success && add_dl_support<Elf32_Sym, Elf32_Rel, Elf32_Dyn, R_386_GLOB_DAT, 8, 4>();

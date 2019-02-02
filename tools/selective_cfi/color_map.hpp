@@ -21,7 +21,7 @@
 #ifndef color_map_hpp
 #define color_map_hpp
 
-#include <libIRDB-core.hpp>
+#include <irdb-core>
 #include <stdint.h>
 
 
@@ -73,16 +73,16 @@ typedef std::map<int,ColoredSlotValue_t> ColoredSlotValues_t;
 class ColoredInstructionNonces_t 
 {
 	public:
-		ColoredInstructionNonces_t(libIRDB::FileIR_t *the_firp)
+		ColoredInstructionNonces_t(IRDB_SDK::FileIR_t *the_firp)
 			: firp(the_firp), slot_size(1), slot_values(255) { }
-		ColoredInstructionNonces_t(libIRDB::FileIR_t *the_firp, int the_slot_size)
+		ColoredInstructionNonces_t(IRDB_SDK::FileIR_t *the_firp, int the_slot_size)
 			: firp(the_firp), slot_size(the_slot_size), 
                           slot_values(MaxNonceValForSlotSize(the_slot_size))  { }               
-		ColoredSlotValues_t  GetColorsOfIBT (libIRDB::Instruction_t* i) 
+		ColoredSlotValues_t  GetColorsOfIBT (IRDB_SDK::Instruction_t* i) 
 		{ return color_assignments[i]; }
 
-		ColoredSlotValue_t  GetColorOfIB (libIRDB::Instruction_t* i) 
-		{ assert(i->GetIBTargets()); return slot_assignments[*i->GetIBTargets()]; }
+		ColoredSlotValue_t  GetColorOfIB (IRDB_SDK::Instruction_t* i) 
+		{ assert(i->getIBTargets()); return slot_assignments[*i->getIBTargets()]; }
 
 		int NumberSlotsUsed() { return slots_used.size(); }
 
@@ -94,7 +94,7 @@ class ColoredInstructionNonces_t
 		bool create();
 
 		// the IR we're working on.
-		libIRDB::FileIR_t* firp;
+		IRDB_SDK::FileIR_t* firp;
 
 		// used to describe how big a nonce slot is.  for now, 1 byte.
 		const int slot_size;
@@ -106,11 +106,11 @@ class ColoredInstructionNonces_t
 		// information for each IBT.
 		// a map for each instruction, which contains a ColorSlotValue_t for each slot used.
 		//  instruction -> ( int-> slot_value )
-		std::map<libIRDB::Instruction_t*, ColoredSlotValues_t> color_assignments;
+		std::map<IRDB_SDK::Instruction_t*, ColoredSlotValues_t> color_assignments;
 
 		// information for each IB (as indexed by the IBs ICFS).
 		// the slot that each IB uses. ICFS_t -> slot_value
-		std::map<libIRDB::ICFS_t, ColoredSlotValue_t> slot_assignments;
+		std::map<IRDB_SDK::InstructionSet_t, ColoredSlotValue_t> slot_assignments;
 
                 NonceValueType_t MaxNonceValForSlotSize(int slot_size)
                 {
@@ -128,12 +128,12 @@ class ColoredInstructionNonces_t
 // a simple way to sort ICFS.   
 
 class UniqueICFSSetSorter_t;
-typedef std::set<libIRDB::ICFS_t, UniqueICFSSetSorter_t> UniqueICFSSet_t;
+typedef std::set<IRDB_SDK::InstructionSet_t, UniqueICFSSetSorter_t> UniqueICFSSet_t;
 
 class UniqueICFSSetSorter_t
 {
         public:
-                bool operator() (const libIRDB::ICFS_t& a, const libIRDB::ICFS_t& b) const
+                bool operator() (const IRDB_SDK::InstructionSet_t& a, const IRDB_SDK::InstructionSet_t& b) const
                 {
                         if(a.size() == b.size()) return a<b;
                         return a.size() < b.size() ;

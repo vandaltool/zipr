@@ -2,7 +2,7 @@
 #include "color_map.hpp"
 
 using namespace std;
-using namespace libIRDB;
+using namespace IRDB_SDK;
 
 
 bool ColoredInstructionNonces_t::create()
@@ -10,7 +10,7 @@ bool ColoredInstructionNonces_t::create()
 	UniqueICFSSet_t unique_icfs;
 
 	assert(firp);
-	const ICFSSet_t& all_icfs=firp->GetAllICFS();
+	const ICFSSet_t& all_icfs=firp->getAllICFS();
 	for(ICFSSet_t::iterator it=all_icfs.begin(); it!=all_icfs.end(); ++it)
 	{
 		ICFS_t* p=*it;
@@ -19,9 +19,10 @@ bool ColoredInstructionNonces_t::create()
 	}
 
 	ColoredSlotValue_t v;
-	for(UniqueICFSSet_t::iterator it=unique_icfs.begin(); it!=unique_icfs.end(); ++it)
+	for(auto the_icfs : unique_icfs)
 	{
-		const ICFS_t& the_icfs=*it;
+		// const ICFS_t& the_icfs=*it;
+		// const auto the_icfs=*it;
 
 		for(auto slot_no=0U; /* loop until break */ ; slot_no++)
 		{
@@ -39,9 +40,8 @@ bool ColoredInstructionNonces_t::create()
 			}
 
 			// check if any of the targets for this branch already have a slot filled.
-			for(ICFS_t::iterator it2=the_icfs.begin(); it2!=the_icfs.end(); ++it2)
+			for(auto target : the_icfs)
 			{
-				Instruction_t* target=*it2;
 				if(color_assignments[target][slot_no].IsValid())
 					goto next_slot;
 			}
@@ -56,7 +56,7 @@ bool ColoredInstructionNonces_t::create()
 				Instruction_t* target=*it2;
 				color_assignments[target][slot_no]=v;
 				cout<<"Setting slot[-"<<hex<<v.GetPosition()<<"]=color["<<hex<<v.GetNonceValue()<<dec<<"]"
-				    << " for "<<hex<<target->GetBaseID()<<":"<<target->getDisassembly()
+				    << " for "<<hex<<target->getBaseID()<<":"<<target->getDisassembly()
 				    << endl;
 			}
 
@@ -74,16 +74,15 @@ bool ColoredInstructionNonces_t::create()
 
 #if 1 /* debug code */
 	UniqueICFSSet_t used_icfs;
-	for(InstructionSet_t::iterator it=firp->GetInstructions().begin(); it!=firp->GetInstructions().end(); ++it)
+	for(auto insn : firp->getInstructions())
 	{
-		Instruction_t* insn=*it;
-		if(insn->GetIBTargets())
+		if(insn->getIBTargets())
 		{
 			v=GetColorOfIB(insn);
 			cout<<"IB assigned " <<"slot[-"<<v.GetPosition()<<"]=color["<<hex<<v.GetNonceValue()<<dec<<"]"
-			    << " for "<<insn->GetBaseID()<<":"<<insn->getDisassembly() << endl;
+			    << " for "<<insn->getBaseID()<<":"<<insn->getDisassembly() << endl;
 
-			used_icfs.insert(*insn->GetIBTargets());
+			used_icfs.insert(*insn->getIBTargets());
 	
 		}
 	}

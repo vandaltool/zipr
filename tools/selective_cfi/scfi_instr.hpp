@@ -21,8 +21,9 @@
 #ifndef scfi_instrument_hpp
 #define scfi_instrument_hpp
 
-#include <libIRDB-core.hpp>
-#include <libIRDB-util.hpp>
+#include <irdb-core>
+#include <irdb-util>
+#include <irdb-transform>
 #include "color_map.hpp"
 #include <iostream>
 #include <iomanip>
@@ -30,10 +31,10 @@
 
 
 
-class SCFI_Instrument
+class SCFI_Instrument : public IRDB_SDK::Transform
 {
 	public:
-		SCFI_Instrument(libIRDB::FileIR_t *the_firp, 
+		SCFI_Instrument(IRDB_SDK::FileIR_t *the_firp, 
                                 int p_nonce_size=1,
                                 int p_exe_nonce_size=4,
 				bool p_do_coloring=true,
@@ -47,6 +48,7 @@ class SCFI_Instrument
 				bool p_do_exe_nonce_for_call=false
 			) 
 			: 
+			  Transform(the_firp),
 		  	  firp(the_firp), 
                           nonce_size(p_nonce_size),
                           exe_nonce_size(p_exe_nonce_size),
@@ -61,7 +63,10 @@ class SCFI_Instrument
 			  do_exe_nonce_for_call(p_do_exe_nonce_for_call), 
 			  ret_shared(NULL),
 			  zestcfi_function_entry(NULL),
-			  ExecutableNonceValue("\x90", 1)
+			  ExecutableNonceValue("\x90", 1),
+			  predsp(IRDB_SDK::InstructionPredecessors_t::factory(firp)),
+			  preds(*predsp)
+
 		{ 
 			std::cout<<std::boolalpha;
 			std::cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::do_coloring="<<p_do_coloring<<std::endl;
@@ -72,7 +77,6 @@ class SCFI_Instrument
 			std::cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::do_rets="<<p_do_rets<<std::endl;
 			std::cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::do_safefn="<<p_do_safefn<<std::endl;
 			std::cout<<"# ATTRIBUTE Selective_Control_Flow_Integrity::do_multimodule="<<p_do_multimodule<<std::endl;
-			preds.AddFile(the_firp); 
 
 		}
 		bool execute();
@@ -90,7 +94,7 @@ class SCFI_Instrument
 		bool add_got_entries();
 
 		template<typename T_Elf_Sym, typename T_Elf_Rela, typename T_Elf_Dyn, int reloc_type, int rela_shift, int ptrsize>
-		libIRDB::Instruction_t* find_runtime_resolve(libIRDB::DataScoop_t* gotplt_scoop);
+		IRDB_SDK::Instruction_t* find_runtime_resolve(IRDB_SDK::DataScoop_t* gotplt_scoop);
 
 		template<typename T_Elf_Sym, typename T_Elf_Rela, typename T_Elf_Dyn, int reloc_type, int rela_shift, int ptrsize>
 		void add_got_entry(const std::string& name);
@@ -103,47 +107,46 @@ class SCFI_Instrument
 		bool instrument_jumps();
 
 		// helper
-                libIRDB::Instruction_t* GetExeNonceSlowPath(libIRDB::Instruction_t* insn);
-		libIRDB::Relocation_t* create_reloc(libIRDB::Instruction_t* insn);
-		libIRDB::Relocation_t* FindRelocation(libIRDB::Instruction_t* insn, std::string type);
-		bool isSafeFunction(libIRDB::Instruction_t* insn);
-		bool isCallToSafeFunction(libIRDB::Instruction_t* insn);
-		bool is_jmp_a_fixed_call(libIRDB::Instruction_t* insn);
-		bool is_plt_style_jmp(libIRDB::Instruction_t* insn);
+                IRDB_SDK::Instruction_t* GetExeNonceSlowPath(IRDB_SDK::Instruction_t* insn);
+		IRDB_SDK::Relocation_t* create_reloc(IRDB_SDK::Instruction_t* insn);
+		IRDB_SDK::Relocation_t* FindRelocation(IRDB_SDK::Instruction_t* insn, std::string type);
+		bool isSafeFunction(IRDB_SDK::Instruction_t* insn);
+		bool isCallToSafeFunction(IRDB_SDK::Instruction_t* insn);
+		bool is_jmp_a_fixed_call(IRDB_SDK::Instruction_t* insn);
+		bool is_plt_style_jmp(IRDB_SDK::Instruction_t* insn);
 
 
 
 		// add instrumentation
-		bool add_scfi_instrumentation(libIRDB::Instruction_t* insn);
-		bool needs_scfi_instrumentation(libIRDB::Instruction_t* insn);
+		bool add_scfi_instrumentation(IRDB_SDK::Instruction_t* insn);
+		bool needs_scfi_instrumentation(IRDB_SDK::Instruction_t* insn);
 
 		// return instrumentation
-		void  AddReturnCFI(libIRDB::Instruction_t* insn, ColoredSlotValue_t *v=NULL);
-		void  AddReturnCFIForExeNonce(libIRDB::Instruction_t* insn, ColoredSlotValue_t *v=NULL);
+		void  AddReturnCFI(IRDB_SDK::Instruction_t* insn, ColoredSlotValue_t *v=NULL);
+		void  AddReturnCFIForExeNonce(IRDB_SDK::Instruction_t* insn, ColoredSlotValue_t *v=NULL);
 
 		// jump instrumentation
-		void AddJumpCFI(libIRDB::Instruction_t* insn);
+		void AddJumpCFI(IRDB_SDK::Instruction_t* insn);
 
 		// call instrumentation with executable nonce
-		void AddCallCFIWithExeNonce(libIRDB::Instruction_t* insn);
+		void AddCallCFIWithExeNonce(IRDB_SDK::Instruction_t* insn);
 
 		// for all calls
-		void AddExecutableNonce(libIRDB::Instruction_t* insn);
+		void AddExecutableNonce(IRDB_SDK::Instruction_t* insn);
 
 		// Nonce Manipulation.
-		NonceValueType_t GetNonce(libIRDB::Instruction_t* insn);
-		unsigned int GetNonceSize(libIRDB::Instruction_t* insn);
-		unsigned int GetNonceOffset(libIRDB::Instruction_t*);
+		NonceValueType_t GetNonce(IRDB_SDK::Instruction_t* insn);
+		unsigned int GetNonceSize(IRDB_SDK::Instruction_t* insn);
+		unsigned int GetNonceOffset(IRDB_SDK::Instruction_t*);
 
-		unsigned int GetExeNonceOffset(libIRDB::Instruction_t* insn);
-		NonceValueType_t GetExeNonce(libIRDB::Instruction_t* insn);
-                unsigned int GetExeNonceSize(libIRDB::Instruction_t* insn);
+		unsigned int GetExeNonceOffset(IRDB_SDK::Instruction_t* insn);
+		NonceValueType_t GetExeNonce(IRDB_SDK::Instruction_t* insn);
+                unsigned int GetExeNonceSize(IRDB_SDK::Instruction_t* insn);
 
 
 	private: // data
 		// predecessors of instructions.
-		libIRDB::InstructionPredecessors_t preds;
-		libIRDB::FileIR_t* firp;
+		IRDB_SDK::FileIR_t* firp;
                 const int nonce_size;
                 const int exe_nonce_size;
 		const bool do_coloring;
@@ -157,8 +160,8 @@ class SCFI_Instrument
 		const bool do_exe_nonce_for_call;
 		std::unique_ptr<ColoredInstructionNonces_t> color_map;
                 std::unique_ptr<ColoredInstructionNonces_t> exe_nonce_color_map;
-		const libIRDB::Instruction_t *ret_shared;
-		libIRDB::Instruction_t *zestcfi_function_entry;
+		const IRDB_SDK::Instruction_t *ret_shared;
+		IRDB_SDK::Instruction_t *zestcfi_function_entry;
 		std::string ExecutableNonceValue;
                 
                 // Exe Nonce helpers
@@ -188,10 +191,18 @@ class SCFI_Instrument
                  */
                 std::vector<NoncePart_t> GetExeNonceFit(NonceValueType_t nonceVal, int nonceSz, int noncePos);
 		int GetNonceBytePos(int nonceSz, int noncePos);
-                void CreateExeNonceReloc(libIRDB::Instruction_t* insn, NonceValueType_t nonceVal, int nonceSz, int bytePos);
-                void PlaceExeNonceReloc(libIRDB::Instruction_t* insn, NonceValueType_t nonceVal, int nonceSz, int noncePos);
-                void InsertExeNonceComparisons(libIRDB::Instruction_t* insn, NonceValueType_t nonceVal, int nonceSz, 
-                                                              int noncePos, libIRDB::Instruction_t* exeNonceSlowPath );
+                void CreateExeNonceReloc(IRDB_SDK::Instruction_t* insn, NonceValueType_t nonceVal, int nonceSz, int bytePos);
+                void PlaceExeNonceReloc(IRDB_SDK::Instruction_t* insn, NonceValueType_t nonceVal, int nonceSz, int noncePos);
+                void InsertExeNonceComparisons(IRDB_SDK::Instruction_t* insn, NonceValueType_t nonceVal, int nonceSz, 
+                                                              int noncePos, IRDB_SDK::Instruction_t* exeNonceSlowPath );
+
+
+		void mov_reloc(IRDB_SDK::Instruction_t* from, IRDB_SDK::Instruction_t* to, std::string type );
+		void move_relocs(IRDB_SDK::Instruction_t* from, IRDB_SDK::Instruction_t* to);
+
+		std::unique_ptr<IRDB_SDK::InstructionPredecessors_t> predsp;
+		IRDB_SDK::InstructionPredecessors_t &preds;
+
 };
 
 #endif

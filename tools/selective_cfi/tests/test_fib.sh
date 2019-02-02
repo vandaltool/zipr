@@ -71,12 +71,12 @@ protect()
 
 clean()
 {
-	rm out
-	rm correct
+	rm -f out
+	rm -f correct
 	rm -Rf fib.exe* peasoup_exe* lib*.so*
 
  	for config in "${configs[@]}"; do
-                rm *."$config"
+                rm -f *."$config"
         done	
 }
 

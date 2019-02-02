@@ -1,0 +1,63 @@
+import os
+import glob
+
+Import('env')
+myenv=env.Clone()
+myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
+
+
+libname="irdb-core"
+files=  '''
+	address.cpp
+	baseobj.cpp
+	dbinterface.cpp
+	file.cpp
+	fileir.cpp
+	function.cpp
+	generate_spri.cpp
+	icfs.cpp
+	instruction.cpp
+	pqxxdb.cpp
+	type.cpp
+	scoop.cpp
+	variantid.cpp
+	eh.cpp
+	reloc.cpp
+	decode_csx86.cpp
+	operand_csx86.cpp
+	decode_csarm.cpp
+	operand_csarm.cpp
+	IRDB_Objects.cpp
+	decode_base.cpp
+'''
+unused_files='''
+	decode_bea.cpp
+	operand_bea.cpp
+	'''
+
+# bea engine listed for core components.
+
+cpppath=''' 
+	.
+	$IRDB_SDK/include/
+	$SECURITY_TRANSFORMS_HOME/include/
+	$SECURITY_TRANSFORMS_HOME/libIRDB-core/include/
+	$SECURITY_TRANSFORMS_HOME/libcapstone/include/capstone/
+	'''
+libpath='''
+	$SECURITY_TRANSFORMS_HOME/lib
+        '''
+
+#globs=glob.glob(os.environ['SECURITY_TRANSFORMS_HOME']+'/libcapstone/zipr_unpack/*.o')
+
+myenv.Append(CCFLAGS=" -Wall -std=c++11 -fmax-errors=2 ")
+myenv.Append(LIBPATH=libpath)
+
+myenv=myenv.Clone(CPPPATH=Split(cpppath))
+mylib=myenv.SharedLibrary(libname, Split(files), LIBS=Split("pqxx capstone"))
+
+install=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", mylib)
+Default(install)
+
+Return('install')
+
