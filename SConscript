@@ -61,8 +61,13 @@ if "CYGWIN" in sysname:
 
 Export('env')
 
-env.Install("$SECURITY_TRANSFORMS_HOME/lib/", "$SECURITY_TRANSFORMS_HOME/libcapstone/libcapstone.so.4")
-env.Command(os.environ['SECURITY_TRANSFORMS_HOME']+"/lib/libcapstone.so", os.environ['SECURITY_TRANSFORMS_HOME']+"/lib/libcapstone.so.4", "ln -s $SOURCE.abspath $TARGET.abspath")
+# get the libcapstone.so.[version] file regardless of the version extension
+libcapstone_path = Glob(os.environ['SECURITY_TRANSFORMS_HOME']+'/libcapstone/libcapstone.so.*')
+assert len(libcapstone_path) <= 1, "More than one candidate for libcapstone.so.[version]?!"
+
+libcapstone_path = env.Install("$SECURITY_TRANSFORMS_HOME/lib/", libcapstone_path)
+
+env.Command(os.environ['SECURITY_TRANSFORMS_HOME']+"/lib/libcapstone.so", libcapstone_path, "ln -s $SOURCE.abspath $TARGET.abspath")
 libcapstone=os.environ['SECURITY_TRANSFORMS_HOME']+"/lib/libcapstone.so"
 
 libehp=env.SConscript("libehp/SConscript", variant_dir='scons_build/libehp')
