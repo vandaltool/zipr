@@ -181,13 +181,6 @@ test_foo-ubuntu16:
   script:
     - ./cicd_tests/test_fib.sh
 
-test_fib-centos75:
-  <<: *test_fib
-  tags:
-    - centos75
-  variables:
-    OS: 'centos75'
-
 test_fib-ubuntu16:
   <<: *test_fib
   tags:
