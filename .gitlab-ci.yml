@@ -169,6 +169,31 @@ test_foo-ubuntu16:
     - ubuntu16
   variables:
     OS: 'ubuntu16'
+
+
+#
+# CFI test_fib
+#
+
+# template
+.test_fib: &test_fib
+  stage: test
+  script:
+    - ./cicd_tests/test_fib.sh
+
+test_fib-centos75:
+  <<: *test_fib
+  tags:
+    - centos75
+  variables:
+    OS: 'centos75'
+
+test_fib-ubuntu16:
+  <<: *test_fib
+  tags:
+    - ubuntu16
+  variables:
+    OS: 'ubuntu16'
               
 
 #
