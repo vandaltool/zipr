@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../cfi_smokescreen_configs.sh 
+source ../cfi_all_configs.sh 
 
 get_correct()
 {
