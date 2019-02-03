@@ -6,9 +6,9 @@ trap clean EXIT
 
 cd $CICD_MODULE_WORK_DIR/peasoup_umbrella
 source set_env_vars
-cd ./security_transforms/cicd_tests
+cd ./security_transforms/tools/selective_cfi/tests/cicd_tests/foo_src
 
-source cfi_smokescreen_configs.sh 
+source ../cfi_smokescreen_configs.sh 
 
 get_correct()
 {
