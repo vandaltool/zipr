@@ -23,25 +23,32 @@
 
 #include <string>
 #include <set>
+#include <irdb-util>
 
 namespace MEDS_Annotation 
 {
 
 
-
+#if 0
 enum RegisterName 
 {
-	rn_UNKNOWN, 
-	rn_EFLAGS, 
-	rn_RIP,
-	rn_EAX, rn_EBX, rn_ECX, rn_EDX, rn_ESI, rn_EDI, rn_EBP, rn_ESP, rn_R8D, rn_R9D, rn_R10D, rn_R11D, rn_R12D, rn_R13D, rn_R14D, rn_R15D, 
-	rn_RAX, rn_RBX, rn_RCX, rn_RDX, rn_RBP, rn_RSP, rn_RSI, rn_RDI, rn_R8,  rn_R9,  rn_R10,  rn_R11,  rn_R12,  rn_R13,  rn_R14,  rn_R15, 
-	rn_AX, rn_BX, rn_CX, rn_DX, rn_BP, rn_SP, rn_SI, rn_DI, rn_R8W, rn_R9W, rn_R10W, rn_R11W, rn_R12W, rn_R13W, rn_R14W, rn_R15W, 
-	rn_AH, rn_BH, rn_CH, rn_DH, rn_SIH, rn_DIH, rn_BPH, rn_SPH, /* 'H' versions of regs only exist for lower 8 regs */ 
-	rn_AL, rn_BL, rn_CL, rn_DL, rn_SIL, rn_DIL, rn_BPL, rn_SPL, rn_R8B, rn_R9B, rn_R10B, rn_R11B, rn_R12B, rn_R13B, rn_R14B, rn_R15B, 
+	IRDB_SDK::rn_UNKNOWN, 
+	IRDB_SDK::rn_EFLAGS, 
+	IRDB_SDK::rn_RIP,
+	IRDB_SDK::rn_EAX, IRDB_SDK::rn_EBX, IRDB_SDK::rn_ECX, IRDB_SDK::rn_EDX, IRDB_SDK::rn_ESI, IRDB_SDK::rn_EDI, IRDB_SDK::rn_EBP, IRDB_SDK::rn_ESP, IRDB_SDK::rn_R8D, IRDB_SDK::rn_R9D, IRDB_SDK::rn_R10D, IRDB_SDK::rn_R11D, IRDB_SDK::rn_R12D, IRDB_SDK::rn_R13D, IRDB_SDK::rn_R14D, IRDB_SDK::rn_R15D, 
+	IRDB_SDK::rn_RAX, IRDB_SDK::rn_RBX, IRDB_SDK::rn_RCX, IRDB_SDK::rn_RDX, IRDB_SDK::rn_RBP, IRDB_SDK::rn_RSP, IRDB_SDK::rn_RSI, IRDB_SDK::rn_RDI, IRDB_SDK::rn_R8,  IRDB_SDK::rn_R9,  IRDB_SDK::rn_R10,  IRDB_SDK::rn_R11,  IRDB_SDK::rn_R12,  IRDB_SDK::rn_R13,  IRDB_SDK::rn_R14,  IRDB_SDK::rn_R15, 
+	IRDB_SDK::rn_AX, IRDB_SDK::rn_BX, IRDB_SDK::rn_CX, IRDB_SDK::rn_DX, IRDB_SDK::rn_BP, IRDB_SDK::rn_SP, IRDB_SDK::rn_SI, IRDB_SDK::rn_DI, IRDB_SDK::rn_R8W, IRDB_SDK::rn_R9W, IRDB_SDK::rn_R10W, IRDB_SDK::rn_R11W, IRDB_SDK::rn_R12W, IRDB_SDK::rn_R13W, IRDB_SDK::rn_R14W, IRDB_SDK::rn_R15W, 
+	IRDB_SDK::rn_AH, IRDB_SDK::rn_BH, IRDB_SDK::rn_CH, IRDB_SDK::rn_DH, IRDB_SDK::rn_SIH, IRDB_SDK::rn_DIH, IRDB_SDK::rn_BPH, IRDB_SDK::rn_SPH, /* 'H' versions of regs only exist for lower 8 regs */ 
+	IRDB_SDK::rn_AL, IRDB_SDK::rn_BL, IRDB_SDK::rn_CL, IRDB_SDK::rn_DL, IRDB_SDK::rn_SIL, IRDB_SDK::rn_DIL, IRDB_SDK::rn_BPL, IRDB_SDK::rn_SPL, IRDB_SDK::rn_R8B, IRDB_SDK::rn_R9B, IRDB_SDK::rn_R10B, IRDB_SDK::rn_R11B, IRDB_SDK::rn_R12B, IRDB_SDK::rn_R13B, IRDB_SDK::rn_R14B, IRDB_SDK::rn_R15B, 
 };
 
 typedef std::set<RegisterName> RegisterSet_t;
+#endif
+using RegisterName   = IRDB_SDK::RegisterID;
+using RegisterName_t = IRDB_SDK::RegisterID_t;
+using RegisterSet_t  = std::set<RegisterName_t>;
+
+
 
 
 class Register 

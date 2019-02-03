@@ -22,6 +22,7 @@ files=  '''
 	'''
 cpppath=''' 
 	./include/
+	$IRDB_SDK/include/
 	'''
 
 #CFLAGS="-fPIC  "

@@ -189,7 +189,7 @@ long long MEDS_FPTRShadowAnnotation::getConstantValue(bool &p_valid) const
 // 80822cc      3 INSTR FPTRSHADOW  EAX SHADOWID 6
 bool MEDS_FPTRShadowAnnotation::isRegister() const
 {
-	return Register::getRegister(getExpression()) != rn_UNKNOWN;
+	return Register::getRegister(getExpression()) != IRDB_SDK::rn_UNKNOWN;
 }
 
 // 805829d      3 INSTR FPTRCHECK  [EBP-40] SHADOWID 5
@@ -207,7 +207,7 @@ const RegisterName MEDS_FPTRShadowAnnotation::getRegister() const
 	}
 	else
 	{
-		return rn_UNKNOWN;
+		return IRDB_SDK::rn_UNKNOWN;
 	}
 }
 
@@ -226,7 +226,7 @@ uintptr_t MEDS_FPTRShadowAnnotation::computeRIPAddress()
 
 	parseRegister(getExpression().c_str(), &reg, &offset);
 
-	if (reg == rn_RIP) 
+	if (reg == IRDB_SDK::rn_RIP) 
 	{
 		return getVirtualOffset().getOffset() + getInstructionSize() + offset;
 	}

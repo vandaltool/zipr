@@ -63,8 +63,8 @@ typedef enum {
 // wrapper class around MEDS typing system
 class MEDS_Arg {
 	public:
-		MEDS_Arg() { m_type = MEDS_TYPE_UNKNOWN; m_reg = rn_UNKNOWN; }
-		MEDS_Arg(int p_type, RegisterName p_reg = rn_UNKNOWN) { m_type = (MEDS_ArgType) p_type; m_reg = p_reg; }
+		MEDS_Arg() { m_type = MEDS_TYPE_UNKNOWN; m_reg = IRDB_SDK::rn_UNKNOWN; }
+		MEDS_Arg(int p_type, RegisterName p_reg = IRDB_SDK::rn_UNKNOWN) { m_type = (MEDS_ArgType) p_type; m_reg = p_reg; }
 		virtual ~MEDS_Arg() {}
 		bool isNumericType() { return m_type == MEDS_TYPE_NUMERIC; }
 		bool isPointerType() { 
