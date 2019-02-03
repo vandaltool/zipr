@@ -14,7 +14,6 @@ main()
 
 	git submodule sync 
 	git submodule update --init --recursive
-	git checkoutall
 
 	local orig_dir=$(pwd)
 
