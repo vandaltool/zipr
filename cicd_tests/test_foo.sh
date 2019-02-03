@@ -60,8 +60,8 @@ protect()
 			echo Protecting file "$file" with config "$config"
 			"$config" ./"$file" ./"$file"".""$config"
 			varient_array_name="$(echo "$file" | sed -e 's/\./_/g')""_varients"
-			declare -n varient_array="$varient_array_name"
-			varient_array+=("$file"".""$config")
+			varient_file="$file"".""$config"
+                        eval $varient_array_name+=\(\$varient_file\)			
 		done	
 	done
 	
