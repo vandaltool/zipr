@@ -169,13 +169,6 @@ test_foo-ubuntu16:
     - ubuntu16
   variables:
     OS: 'ubuntu16'
-
-test_foo-centos75:
-  <<: *test_foo
-  tags:
-    - centos75
-  variables:
-    OS: 'centos75'
               
 
 #
