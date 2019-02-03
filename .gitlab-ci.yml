@@ -145,6 +145,50 @@ xform-cat-centos75:
   variables:
     OS: 'centos75'  
 
+
+#
+# CFI test_foo
+#
+
+# template
+.test_foo: &test_foo
+  stage: test
+  script:
+    - ./cicd_tests/test_foo.sh
+
+test_foo-ubuntu18:
+  <<: *test_foo
+  tags:
+    - ubuntu18
+  variables:
+    OS: 'ubuntu18'
+
+test_foo-ubuntu16:
+  <<: *test_foo
+  tags:
+    - ubuntu16
+  variables:
+    OS: 'ubuntu16'
+
+
+#
+# CFI test_fib
+#
+
+# template
+.test_fib: &test_fib
+  stage: test
+  script:
+    - ./cicd_tests/test_fib.sh
+
+test_fib-ubuntu16:
+  <<: *test_fib
+  tags:
+    - ubuntu16
+  variables:
+    OS: 'ubuntu16'
+              
+
 #
 # elfdep test
 #
@@ -175,4 +219,3 @@ elfdep-centos75:
     - centos75
   variables:
     OS: 'centos75'  
-
