@@ -1,0 +1,27 @@
+import os
+
+Import('env')
+myenv=env
+
+
+libname="irdb-deep"
+files=  '''
+	deep.cpp
+	'''
+cpppath=''' 
+	$IRDB_SDK/include/
+	$SECURITY_TRANSFORMS_HOME/include/
+	$SECURITY_TRANSFORMS_HOME/libMEDSannotation/include
+	$SMPSA_HOME/include/
+	'''
+
+#myenv.Append(CCFLAGS=" -Wall -W -Wextra -Wconversion ")
+
+myenv=myenv.Clone(CPPPATH=Split(cpppath))
+myenv.Append(CXXFLAGS = " -std=c++11 ")
+lib=myenv.SharedLibrary(libname, Split(files), LIBS=Split("irdb-core irdb-util irdb-transform stars MEDSannotation"), LIBPATH=Split("$SECURITY_TRANSFORMS_HOME/lib"))
+
+install=env.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
+Default(install)
+
+Return('install')

@@ -10,6 +10,7 @@ files=  '''
 	insn_preds.cpp
         IBT_Provenance.cpp
 	params.cpp
+	registers.cpp
 	'''
 cpppath=''' 
 	$IRDB_SDK/include/

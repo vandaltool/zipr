@@ -24,6 +24,7 @@
 #include <string>
 #include <set>
 #include <irdb-util>
+#include <irdb-deep>
 
 namespace MEDS_Annotation 
 {
@@ -46,7 +47,7 @@ typedef std::set<RegisterName> RegisterSet_t;
 #endif
 using RegisterName   = IRDB_SDK::RegisterID;
 using RegisterName_t = IRDB_SDK::RegisterID_t;
-using RegisterSet_t  = std::set<RegisterName_t>;
+using RegisterSet_t  = IRDB_SDK::RegisterIDSet_t;
 
 
 

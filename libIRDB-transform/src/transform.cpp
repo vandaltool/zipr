@@ -34,6 +34,11 @@ FileIR_t* Transform::getFileIR()
 	return m_fileIR; 
 }
 
+const FileIR_t* Transform::getFileIR() const
+{ 
+	return m_fileIR; 
+}
+
 Instruction_t* Transform::insertAssemblyBefore(Instruction_t* before, const string &the_asm, Instruction_t* target)
 {
 	return IRDB_SDK::insertAssemblyBefore(getFileIR(), before, the_asm, target);

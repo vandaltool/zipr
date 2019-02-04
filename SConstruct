@@ -13,16 +13,17 @@ env.Replace(CFLAGS="-fPIC  -fmax-errors=2 -Wall -Werror -fmax-errors=2")
 env.Replace(CXXFLAGS="-fPIC  -fmax-errors=2 -Wall -Werror -fmax-errors=2 ")
 env.Replace(LINKFLAGS="-fPIC -fmax-errors=2 -Wall -Werror -fmax-errors=2 ")
 
-# parse arguments
+# parse arguments into env and set default values.
 env.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 env.Replace(IRDB_SDK=os.environ['IRDB_SDK'])
-#env.Replace(SMPSA_HOME=os.environ['SMPSA_HOME'])
+env.Replace(SMPSA_HOME=os.environ['SMPSA_HOME'])
 env.Replace(do_64bit_build=ARGUMENTS.get("do_64bit_build",None))
 env.Replace(debug=ARGUMENTS.get("debug",0))
-env.Replace(build_appfw=ARGUMENTS.get("build_appfw", 0))
+env.Replace(build_deep=ARGUMENTS.get("build_deep", 0))
 env.Replace(build_tools=ARGUMENTS.get("build_tools", 1))
 env.Replace(build_stars=ARGUMENTS.get("build_stars", 1))
 env.Replace(build_cgc=ARGUMENTS.get("build_cgc", 0))
+
 if 'PEDI_HOME' in os.environ:
 	env.Replace(PEDI_HOME=os.environ['PEDI_HOME'])
 
