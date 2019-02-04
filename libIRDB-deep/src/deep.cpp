@@ -15,6 +15,15 @@ using namespace MEDS_Annotation;
 StarsDeepAnalysis_t::StarsDeepAnalysis_t(IRDB_SDK::FileIR_t* firp, const vector<string>& options)
 	: Transform(firp)
 {
+	for(const auto s : options)
+	{
+		if(s=="SetDeepLoopAnalyses=true")
+			stars_analysis_engine.GetSTARSOptions().SetDeepLoopAnalyses(true);
+		else if(s=="SetConstantPropagation=true")
+			stars_analysis_engine.GetSTARSOptions().SetConstantPropagation(true);
+		else
+			throw invalid_argument("Unknown option: "+s);
+	}
 	stars_analysis_engine.do_STARS(getFileIR());
 }
 
