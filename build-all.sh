@@ -100,6 +100,9 @@ scons $SCONSDEBUG -j 3 || exit 1
 cd $SMPSA_HOME
 scons $SCONSDEBUG -j 3 || exit 1
 
+cd $SECURITY_TRANSFORMS_HOME
+scons build_deep=1 $SCONSDEBUG -j 3 || exit 1
+
 cd $PEASOUP_HOME
 make || exit 1
 
