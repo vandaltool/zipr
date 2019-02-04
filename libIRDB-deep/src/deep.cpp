@@ -5,6 +5,7 @@
 #include "deep.hpp"
 #include <MEDS_DeadRegAnnotation.hpp>
 #include <MEDS_MemoryRangeAnnotation.hpp>
+#include <MEDS_SafeFuncAnnotation.hpp>
 
 
 using namespace libIRDB;
@@ -26,6 +27,35 @@ StarsDeepAnalysis_t::StarsDeepAnalysis_t(IRDB_SDK::FileIR_t* firp, const vector<
 	}
 	stars_analysis_engine.do_STARS(getFileIR());
 }
+
+unique_ptr<IRDB_SDK::FunctionSet_t> StarsDeepAnalysis_t::getLeafFunctions()      const 
+{
+	auto ret=unique_ptr<IRDB_SDK::FunctionSet_t>(new IRDB_SDK::FunctionSet_t);
+	auto &ret_map=*ret;
+	auto meds_ap=stars_analysis_engine.getAnnotations();
+
+	for(auto func : getFileIR()->getFunctions())
+	{
+		auto the_range = meds_ap.getFuncAnnotations().equal_range(func->getName());
+	        /* for each annotation for this instruction */
+       		for (auto it = the_range.first; it != the_range.second; ++it)
+		{
+		 	auto p_annotation=dynamic_cast<MEDS_SafeFuncAnnotation*>(it->second);
+			if(p_annotation==nullptr)
+                                continue;
+
+                        /* bad annotation? */
+                        if(!p_annotation->isLeaf())
+                                continue;
+
+                        /* record dead reg set */
+                        ret_map.insert(func);
+		}
+        }
+
+	return ret;
+}
+
 
 unique_ptr<IRDB_SDK::DeadRegisterMap_t> StarsDeepAnalysis_t::getDeadRegisters()      const 
 {
