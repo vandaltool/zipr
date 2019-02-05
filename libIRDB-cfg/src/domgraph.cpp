@@ -2,7 +2,8 @@
 #include <libIRDB-cfg.hpp>
 #include <algorithm>
 #include <irdb-util>
-
+#include <irdb-cfg>
+#include <memory>
 
 
 using namespace std;
@@ -346,3 +347,12 @@ void DominatorGraph_t::dump(ostream& os) const
 	};
 
 }
+
+// constructor 
+unique_ptr<IRDB_SDK::DominatorGraph_t>
+IRDB_SDK::DominatorGraph_t::factory(const ControlFlowGraph_t* p_cfg, const bool needs_postdoms, const bool needs_idoms)
+{
+	const auto real_cfg=dynamic_cast<const libIRDB::ControlFlowGraph_t*>(p_cfg);
+	return unique_ptr<IRDB_SDK::DominatorGraph_t>(new libIRDB::DominatorGraph_t(real_cfg, needs_postdoms, needs_idoms));
+}
+
