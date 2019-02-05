@@ -66,6 +66,9 @@ do_tests()
 				zafl)
 					zafl.sh $progpath $protected --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
+				zafl_domgraph)
+					zafl.sh $progpath $protected -d --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+				;;
 				zafl0)
 					ZAFL_LIMIT_END=0 zafl.sh $progpath $protected --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
