@@ -170,6 +170,13 @@ test_foo-ubuntu16:
   variables:
     OS: 'ubuntu16'
 
+test_foo-ubuntu16:
+  <<: *test_foo
+  tags:
+    - centos75
+  variables:
+    OS: 'centos75'
+
 
 #
 # CFI test_fib
@@ -187,6 +194,20 @@ test_fib-ubuntu16:
     - ubuntu16
   variables:
     OS: 'ubuntu16'
+
+test_fib-ubuntu18:
+  <<: *test_fib
+  tags:
+    - ubuntu18
+  variables:
+    OS: 'ubuntu18'
+
+test_fib-centos75:
+  <<: *test_fib
+  tags:
+    - centos75
+  variables:
+    OS: 'centos75'
               
 
 #

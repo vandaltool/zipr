@@ -1285,34 +1285,22 @@ void SCFI_Instrument::add_got_entry(const std::string& name)
 	auto relplt_scoop=find_scoop(firp,".rel.dyn coalesced w/.rel.plt");
 	auto relscoop=relaplt_scoop!=NULL ?  relaplt_scoop : relplt_scoop;
 	auto gnu_version_scoop=find_scoop(firp,".gnu.version");
-	assert(gnu_version_scoop);
-	assert(gnu_version_scoop->getStart()->getVirtualOffset()==0);
+
+	// if versioning info is avail in this binary, assert that we unpinned it.
+	if(gnu_version_scoop)
+		assert(gnu_version_scoop->getStart()->getVirtualOffset()==0);
 
 	// add 0-init'd pointer to table
 	string new_got_entry_str(ptrsize,0);	 // zero-init a pointer-sized string
 
 
 	// create a new, unpinned, rw+relro scoop that's an empty pointer.
-	/*
-	AddressID_t* start_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, firp->getFile()->getBaseID(), 0);
-	firp->GetAddresses().insert(start_addr);
-	*/
-	auto start_addr=firp->addNewAddress(firp->getFile()->getBaseID(), 0);
-	/*
-	AddressID_t* end_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, firp->getFile()->getBaseID(), ptrsize-1);
-	firp->GetAddresses().insert(end_addr);
-	*/
-	auto end_addr=firp->addNewAddress(firp->getFile()->getBaseID(), ptrsize-1);
-
-	/*
-	DataScoop_t* external_func_addr_scoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE,
-		name, start_addr,end_addr, NULL, 6, true, new_got_entry_str);
-	firp->getDataScoops().insert(external_func_addr_scoop);
-	*/
+	const auto start_addr=firp->addNewAddress(firp->getFile()->getBaseID(), 0);
+	const auto end_addr=firp->addNewAddress(firp->getFile()->getBaseID(), ptrsize-1);
 	auto external_func_addr_scoop=firp->addNewDataScoop(name, start_addr,end_addr, NULL, 6, true, new_got_entry_str);
 
 	// add string to string table 
-	auto dl_str_pos=add_to_scoop(name+'\0', dynstr_scoop);
+	const auto dl_str_pos=add_to_scoop(name+'\0', dynstr_scoop);
 
 	// add symbol to dlsym
 	T_Elf_Sym dl_sym;
@@ -1322,9 +1310,13 @@ void SCFI_Instrument::add_got_entry(const std::string& name)
 	string dl_sym_str((const char*)&dl_sym, sizeof(T_Elf_Sym));
 	unsigned int dl_pos=add_to_scoop(dl_sym_str,dynsym_scoop);
 
-	// update the gnu.version section so that the new symbol has a version.
-	const auto new_version_str=string("\0\0", 2);	 // \0\0 means *local*, as in, don't index the gnu.verneeded array.
-	add_to_scoop(new_version_str,gnu_version_scoop);
+	// if versioning info is avail in this binary, we are required to add a new entry for the new symbol
+	if(gnu_version_scoop)
+	{
+		// update the gnu.version section so that the new symbol has a version.
+		const auto new_version_str=string("\0\0", 2);	 // \0\0 means *local*, as in, don't index the gnu.verneeded array.
+		add_to_scoop(new_version_str,gnu_version_scoop);
+	}
 
 	// find the rela count.  can't insert before that.
 	int rela_count=0;

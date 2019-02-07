@@ -262,30 +262,22 @@ IRDB_SDK::DataScoop_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_
 	auto relplt_scoop=find_scoop(firp,".rel.dyn coalesced w/.rel.plt");
 	auto relscoop=relaplt_scoop!=NULL ?  relaplt_scoop : relplt_scoop;
 	auto gnu_version_scoop=find_scoop(firp,".gnu.version");
-	assert(gnu_version_scoop);
-	assert(gnu_version_scoop->getStart()->getVirtualOffset()==0);
+
+
+	// if there is versioning info in this binary, assert we unpinned it.
+	if(gnu_version_scoop)
+		assert(gnu_version_scoop->getStart()->getVirtualOffset()==0);
 
 	if (!relscoop) 
 		throw std::logic_error("Cannot find rela.plt or rel.plt. Did you remember to use move_globals with --elf_tables?");
 
 	// add 0-init'd pointer to table
-	string new_got_entry_str(ptrsize,0);	 // zero-init a pointer-sized string
-	//auto dl_got_entry_pos=add_to_scoop(new_got_entry_str,gotplt_scoop);
+	auto new_got_entry_str=string(ptrsize,0);	 // zero-init a pointer-sized string
 
 
 	// create a new, unpinned, rw+relro scoop that's an empty pointer.
-	/*
-	auto start_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, firp->getFile()->getBaseID(), 0);
-	auto end_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, firp->getFile()->getBaseID(), ptrsize-1);
-	auto external_func_addr_scoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE,
-		name, start_addr,end_addr, NULL, 6, true, new_got_entry_str);
-
-	firp->GetAddresses().insert(start_addr);
-	firp->GetAddresses().insert(end_addr);
-	firp->GetDataScoops().insert(external_func_addr_scoop);
-	*/
-	auto start_addr=firp->addNewAddress(firp->getFile()->getBaseID(), 0);
-	auto end_addr  =firp->addNewAddress(firp->getFile()->getBaseID(), ptrsize-1);
+	const auto start_addr=firp->addNewAddress(firp->getFile()->getBaseID(), 0);
+	const auto end_addr  =firp->addNewAddress(firp->getFile()->getBaseID(), ptrsize-1);
 	auto external_func_addr_scoop=firp->addNewDataScoop(name,start_addr,end_addr,NULL,6,true,new_got_entry_str);
 
 	// add string to string table 
@@ -299,9 +291,13 @@ IRDB_SDK::DataScoop_t* ElfDependencies_t::ElfDependenciesImpl_t<T_Elf_Sym,T_Elf_
 	string dl_sym_str((const char*)&dl_sym, sizeof(T_Elf_Sym));
 	unsigned int dl_pos=add_to_scoop(dl_sym_str,dynsym_scoop);
 
-	// update the gnu.version section so that the new symbol has a version.
-	const auto new_version_str=string("\0\0", 2);	 // \0\0 means *local*, as in, don't index the gnu.verneeded array.
-	add_to_scoop(new_version_str,gnu_version_scoop);
+	// if there is versioning info in this binary, update it.
+	if(gnu_version_scoop)
+	{
+		// update the gnu.version section so that the new symbol has a version.
+		const auto new_version_str=string("\0\0", 2);	 // \0\0 means *local*, as in, don't index the gnu.verneeded array.
+		add_to_scoop(new_version_str,gnu_version_scoop);
+	}
 
 	
 
