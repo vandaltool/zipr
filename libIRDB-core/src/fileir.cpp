@@ -1003,24 +1003,20 @@ void FileIR_t::setArchitecture()
 
 	libIRDB::FileIR_t::archdesc=new ArchitectureDescription_t;
 
+	auto is_elf=false;
+	auto is_pe=false;
+
 	if((e_ident[EI_MAG0]==ELFMAG0) && 
 	   (e_ident[EI_MAG1]==ELFMAG1) && 
 	   (e_ident[EI_MAG2]==ELFMAG2) && 
 	   (e_ident[EI_MAG3]==ELFMAG3))
 	{
-		libIRDB::FileIR_t::archdesc->setFileType(IRDB_SDK::adftELF);
-	}
-	else if((e_ident[EI_MAG0]==ELFMAG0) && 
-	   (e_ident[EI_MAG1]=='C') && 
-	   (e_ident[EI_MAG2]=='G') && 
-	   (e_ident[EI_MAG3]=='C'))
-	{
-		libIRDB::FileIR_t::archdesc->setFileType(IRDB_SDK::adftELF);
+		is_elf=true;
 	}
 	else if((e_ident[EI_MAG0]=='M') &&
 	   (e_ident[EI_MAG1]=='Z'))
 	{
-		libIRDB::FileIR_t::archdesc->setFileType(IRDB_SDK::adftPE);
+		is_pe=true;
 	}
 	else
 	{
@@ -1029,18 +1025,24 @@ void FileIR_t::setArchitecture()
 	}
 
 
-	if (libIRDB::FileIR_t::archdesc->getFileType() == IRDB_SDK::adftPE)
+	if (is_pe) // libIRDB::FileIR_t::archdesc->getFileType() == IRDB_SDK::adftPE)
 	{
+		libIRDB::FileIR_t::archdesc->setFileType(IRDB_SDK::adftPE);
 		// just assume x86-64 bit for Windows, o/w could also extract from file
 		libIRDB::FileIR_t::archdesc->setBitWidth(64);
 		libIRDB::FileIR_t::archdesc->setMachineType(IRDB_SDK::admtX86_64);
 	}
-	else
+	else if(is_elf)
 	{
 		switch(e_ident[4])
 		{
 			case ELFCLASS32:
 			{
+
+				if(hdr_union.ehdr32.e_type == ET_DYN)
+					libIRDB::FileIR_t::archdesc->setFileType(IRDB_SDK::adftELFSO);
+				else
+					libIRDB::FileIR_t::archdesc->setFileType(IRDB_SDK::adftELFEXE);
 				libIRDB::FileIR_t::archdesc->setBitWidth(32);
 				if(hdr_union.ehdr32.e_machine!=EM_386)
 					throw std::invalid_argument("Arch not supported.  32-bit archs supported:  I386");
@@ -1049,6 +1051,10 @@ void FileIR_t::setArchitecture()
 			}
 			case ELFCLASS64:
 			{
+				if(hdr_union.ehdr64.e_type == ET_DYN)
+					libIRDB::FileIR_t::archdesc->setFileType(IRDB_SDK::adftELFSO);
+				else
+					libIRDB::FileIR_t::archdesc->setFileType(IRDB_SDK::adftELFEXE);
 				libIRDB::FileIR_t::archdesc->setBitWidth(64);
 				const auto mt= 
 					hdr_union.ehdr64.e_machine==EM_AARCH64 ? IRDB_SDK::admtAarch64 : 
