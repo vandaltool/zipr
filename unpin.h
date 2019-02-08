@@ -32,7 +32,7 @@
 #define unpin_h
 
 #include <irdb-core>
-#include <zipr_sdk.h>
+#include <zipr-sdk>
 
 class Unpin_t : public Zipr_SDK::ZiprPluginInterface_t
 {
@@ -46,8 +46,8 @@ class Unpin_t : public Zipr_SDK::ZiprPluginInterface_t
 				m_max_unpins("max-unpins",-1), 
 				unpins(0),
 		                missed_unpins(0),
-                		ms(*zo->GetMemorySpace()),
-                		locMap(*(zo->GetLocationMap())),
+                		ms(*zo->getMemorySpace()),
+                		locMap(*(zo->getLocationMap())),
                 		firp(*(zo->getFileIR()))
 
 		{ }
@@ -55,23 +55,23 @@ class Unpin_t : public Zipr_SDK::ZiprPluginInterface_t
 		virtual ~Unpin_t() 
 		{ } 
 
-		virtual void PinningBegin()
+		virtual void doPinningBegin() override
 		{
 			if(!m_on) return;
 			DoUnpin();
 		}
-		virtual void CallbackLinkingEnd()
+		virtual void doCallbackLinkingEnd() override
 		{
 			if(!m_on) return;
 			DoUpdate();
 		}
 
-		virtual Zipr_SDK::ZiprOptionsNamespace_t *RegisterOptions(Zipr_SDK::ZiprOptionsNamespace_t *);
+		virtual Zipr_SDK::ZiprOptionsNamespace_t *registerOptions(Zipr_SDK::ZiprOptionsNamespace_t *) override;
 
-		Zipr_SDK::ZiprPreference RetargetCallback(
+		Zipr_SDK::ZiprPreference retargetCallback(
 			const Zipr_SDK::RangeAddress_t &callback_address,
 			const Zipr_SDK::DollopEntry_t *callback_entry,
-			Zipr_SDK::RangeAddress_t &target_address);
+			Zipr_SDK::RangeAddress_t &target_address) override;
 	protected:
 		// designed for arch-specific override.
 		virtual void HandleRetAddrReloc(IRDB_SDK::Instruction_t* from_insn,IRDB_SDK::Relocation_t* reloc)=0;

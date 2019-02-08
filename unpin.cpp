@@ -29,7 +29,6 @@
  **************************************************************************/
 
 
-#include <zipr_sdk.h>
 #include <string>
 #include <algorithm>
 #include "unpin.h"
@@ -40,7 +39,6 @@
 using namespace IRDB_SDK;
 using namespace std;
 using namespace Zipr_SDK;
-using namespace ELFIO;
 
 
 #define ALLOF(a) begin(a),end(a)
@@ -78,19 +76,19 @@ bool Unpin_t::should_cfi_pin(Instruction_t* insn)
 	return m_should_cfi_pin;
 }
 
-ZiprOptionsNamespace_t *Unpin_t::RegisterOptions(ZiprOptionsNamespace_t *global)
+ZiprOptionsNamespace_t *Unpin_t::registerOptions(ZiprOptionsNamespace_t *global)
 {
 	auto unpin_ns = new ZiprOptionsNamespace_t("unpin");
-	global->AddOption(&m_verbose);
+	global->addOption(&m_verbose);
 
 	m_should_cfi_pin.setDescription("Pin CFI instructions.");
-	unpin_ns->AddOption(&m_should_cfi_pin);
+	unpin_ns->addOption(&m_should_cfi_pin);
 
 	m_on.setDescription("Turn unpin plugin on/off.");
-	unpin_ns->AddOption(&m_on);
+	unpin_ns->addOption(&m_on);
 
 	m_max_unpins.setDescription("Set how many unpins are allowed, useful for debugging.");
-	unpin_ns->AddOption(&m_max_unpins);
+	unpin_ns->addOption(&m_max_unpins);
 
 	return unpin_ns;
 }
@@ -171,21 +169,21 @@ void Unpin_t::DoUnpinForScoops()
 	cout<<"# ATTRIBUTE Zipr_Unpinning::scoop_unpin_missed_unpins="<<dec<<missed_unpins<<endl;
 }
 
-Zipr_SDK::ZiprPreference Unpin_t::RetargetCallback(
+Zipr_SDK::ZiprPreference Unpin_t::retargetCallback(
 	const RangeAddress_t &callback_address,
 	const DollopEntry_t *callback_entry,
 	RangeAddress_t &target_address)
 {
-	if(!m_on) return Zipr_SDK::ZiprPluginInterface_t::RetargetCallback(callback_address, callback_entry, target_address);
+	if(!m_on) return Zipr_SDK::ZiprPluginInterface_t::retargetCallback(callback_address, callback_entry, target_address);
 
 	unpins++;// unpinning a call to a scoop.
 	if(m_max_unpins != -1 && unpins>=m_max_unpins)
-		return Zipr_SDK::ZiprPluginInterface_t::RetargetCallback(callback_address, callback_entry, target_address);
+		return Zipr_SDK::ZiprPluginInterface_t::retargetCallback(callback_address, callback_entry, target_address);
 
 
-	auto& ms=*zo->GetMemorySpace();
-	auto  insn = callback_entry->Instruction();
-	auto& locMap=*(zo->GetLocationMap());
+	auto& ms=*zo->getMemorySpace();
+	auto  insn = callback_entry->getInstruction();
+	auto& locMap=*(zo->getLocationMap());
 	for(auto reloc : insn->getRelocations())
 	{
 		if (reloc->getType()==string("callback_to_scoop"))
@@ -261,7 +259,7 @@ void Unpin_t::DoUpdateForScoops()
 				// getWRT returns an BaseObj, but this reloc type expects an instruction
 				// safe cast and check.
 				assert(insn);
-				Zipr_SDK::InstructionLocationMap_t &locMap=*(zo->GetLocationMap());
+				Zipr_SDK::InstructionLocationMap_t &locMap=*(zo->getLocationMap());
 				IRDB_SDK::VirtualOffset_t newLoc=locMap[insn];
 
 				cout<<"Unpin::Unpinned data_to_insn_ptr insn ("<<hex<<insn->getBaseID()<<":"

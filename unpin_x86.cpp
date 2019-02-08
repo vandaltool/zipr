@@ -29,7 +29,6 @@
  **************************************************************************/
 
 
-#include <zipr_sdk.h>
 #include <string>
 #include <algorithm>
 #include "unpin.h"
@@ -40,7 +39,6 @@
 using namespace IRDB_SDK;
 using namespace std;
 using namespace Zipr_SDK;
-using namespace ELFIO;
 
 #define ALLOF(a) begin(a),end(a)
 
@@ -61,7 +59,8 @@ void UnpinX86_t::HandleRetAddrReloc(Instruction_t* from_insn, Relocation_t* relo
 	auto from_insn_location=locMap[from_insn];
 
 	// 32-bit code and main executables just push a full 32-bit addr.
-	if(zo->getELFIO()->get_type()==ET_EXEC)
+	// if(zo->getELFIO()->get_type()==ET_EXEC)
+	if(zo->getFileIR()->getArchitecture()->getFileType()==adftELFEXE)
 	{
 // not handled in push64_relocs which is disabled for shared objects.
 		// expecting a 32-bit push, length=5
@@ -139,7 +138,7 @@ void UnpinX86_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* reloc)
 	const auto new_disp=(int)(rel_addr1 + to_addr - from_insn->getDataBits().size()-from_insn_location);
 	const auto newbits=from_insn->getDataBits().replace(disp_offset, disp_size, (char*)&new_disp, disp_size); 
 	from_insn->setDataBits(newbits);
-	ms.PlopBytes(from_insn_location, newbits.c_str(), newbits.size());
+	ms.plopBytes(from_insn_location, newbits.c_str(), newbits.size());
 	const auto disasm2=DecodedInstruction_t::factory(from_insn);
 	cout<<"unpin:pcrel:new_disp="<<hex<<new_disp<<endl;
 	cout<<"unpin:pcrel:new_insn_addr="<<hex<<from_insn_location<<endl;
@@ -237,7 +236,7 @@ void UnpinX86_t::HandleCallbackReloc(Instruction_t* from_insn, Relocation_t* rel
 	 */
 	at = call_addr + 1;
 	at = call_addr + from_insn->getDataBits().length();
-	ms.PlopBytes(at, bytes, sizeof(bytes));
+	ms.plopBytes(at, bytes, sizeof(bytes));
 
 	/*
 	 * Turn off the following flags so that this

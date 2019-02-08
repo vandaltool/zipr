@@ -29,7 +29,6 @@
  **************************************************************************/
 
 
-#include <zipr_sdk.h>
 #include <string>
 #include <algorithm>
 #include "unpin.h"
@@ -40,7 +39,6 @@
 using namespace IRDB_SDK;
 using namespace std;
 using namespace Zipr_SDK;
-using namespace ELFIO;
 
 
 #define ALLOF(a) begin(a),end(a)
@@ -139,7 +137,7 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 			const auto clean_new_insn= full_insn & ~(mask2<<29) & ~ (mask19 << 5);
 			const auto new_insn      = clean_new_insn | ((new_immlo2&mask2) << 29) | ((new_immhi19&mask19)<<5);
 			// put the new instruction in the output
-			ms.PlopBytes(from_insn_location, (const char*)&new_insn, insn_bytes_len);
+			ms.plopBytes(from_insn_location, (const char*)&new_insn, insn_bytes_len);
 			if (m_verbose)
 			{
 				cout << "Relocating a adr(p) pcrel relocation with orig_pageno=" << hex
@@ -168,7 +166,7 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 			const auto tramp_range=ms.getFreeRange(tramp_size);
 			const auto tramp_start=tramp_range.getStart();
 			// don't be too fancy, just reserve 12 bytes.
-			ms.SplitFreeRange({tramp_start,tramp_start+12});
+			ms.splitFreeRange({tramp_start,tramp_start+12});
 
 
 			const auto FA=from_insn_location;
@@ -190,8 +188,8 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 
 			// put an uncond branch at where the adr was.
 			// and make it point at L0
-			ms.PlopBytes(FA,branch_bytes.c_str(),4);
-			zo->ApplyPatch(FA,L0);
+			ms.plopBytes(FA,branch_bytes.c_str(),4);
+			zo->applyPatch(FA,L0);
 
 			// adrp: 1 imm2lo 1 0000 immhi19 Rd
 			auto adrp_bytes=string("\x00\x00\x00\x90",4);
@@ -200,7 +198,7 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 			adrp_word |=  ((relocd_immlo2&mask2) << 29) | ((relocd_immhi19&mask19)<<5);
 			cout << "Tramp for "<<L0<<", relocd_immlo2=" << relocd_immlo2
 			     << ", relocd_immhi19=" << relocd_immhi19 << endl;
-			ms.PlopBytes(L0,(char*)&adrp_word,4);
+			ms.plopBytes(L0,(char*)&adrp_word,4);
 
 			// add64 imm12 = 1001 0001 00 imm12 Rn Rd
 			auto add_bytes=string("\x00\x00\x00\x91",4);
@@ -208,12 +206,12 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 			add_word|=destreg<<0;
 			add_word|=destreg<<5;
 			add_word|=address_to_generate_page_offset << 10 ;
-			ms.PlopBytes(L1,(char*)&add_word,4);
+			ms.plopBytes(L1,(char*)&add_word,4);
 
 			// put an uncond branch the end of the trampoline
 			// and make it jump at FT
-			ms.PlopBytes(L2,branch_bytes.c_str(),4);
-			zo->ApplyPatch(L2,FT);
+			ms.plopBytes(L2,branch_bytes.c_str(),4);
+			zo->applyPatch(L2,FT);
 
 			// should be few enough of these to always print
 			cout<< "Had to trampoline " << disasm->getDisassembly() << "@"<<FA<<" to "
@@ -233,7 +231,7 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 			const auto clean_new_insn = full_insn & ~(mask19 << 5);
 			const auto new_insn       = clean_new_insn | ((new_imm19_ext & mask19)<<5);
 			// put the new instruction in the output
-			ms.PlopBytes(from_insn_location, (const char*)&new_insn, insn_bytes_len);
+			ms.plopBytes(from_insn_location, (const char*)&new_insn, insn_bytes_len);
 			if (m_verbose)
 			{
 				cout << "Relocating a ldr pcrel relocation with orig_addr=" << hex
@@ -269,7 +267,7 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 				const auto tramp_range=ms.getFreeRange(tramp_size);
 				const auto tramp_start=tramp_range.getStart();
 				// don't be too fancy, just reserve 12 bytes.
-				ms.SplitFreeRange({tramp_start,tramp_start+12});
+				ms.splitFreeRange({tramp_start,tramp_start+12});
 
 
 				// and give the bytes some names
@@ -288,15 +286,15 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 
 				// put an uncond branch at where the adr was.
 				// and make it point at L0
-				ms.PlopBytes(FA,branch_bytes.c_str(),4);
-				zo->ApplyPatch(FA,L0);
+				ms.plopBytes(FA,branch_bytes.c_str(),4);
+				zo->applyPatch(FA,L0);
 
 				// adrp: 1 imm2lo 1 0000 immhi19 Rd
 				auto adrp_bytes=string("\x00\x00\x00\x90",4);
 				auto adrp_word =*(int*)adrp_bytes.c_str();
 				adrp_word|=destreg<<0;
 				adrp_word |=  ((relocd_immlo2&mask2) << 29) | ((relocd_immhi19&mask19)<<5);
-				ms.PlopBytes(L0,(char*)&adrp_word,4);
+				ms.plopBytes(L0,(char*)&adrp_word,4);
 
 				// convert: ldr w/x reg : 0 x1 011 0 00 ---imm19---- Rt5    x1 indicates size (0,1 -> w/x) 
 				// to     : ldr x/w reg : 1 x1 111 0 01 01 imm12 Rn5 Rt5    x1 indciates size (0,1 -> w/x)
@@ -309,12 +307,12 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 				new_ldr_word|=destreg<<5; // Rn
 				new_ldr_word|=scaled_page_offset << 10 ; // imm12
 				new_ldr_word|=orig_ldr_size_bit << 30; // x1
-				ms.PlopBytes(L1,(char*)&new_ldr_word,4);
+				ms.plopBytes(L1,(char*)&new_ldr_word,4);
 
 				// put an uncond branch the end of the trampoline
 				// and make it jump at FT
-				ms.PlopBytes(L2,branch_bytes.c_str(),4);
-				zo->ApplyPatch(L2,FT);
+				ms.plopBytes(L2,branch_bytes.c_str(),4);
+				zo->applyPatch(L2,FT);
 
 				// should be few enough of these to always print
 				cout<< "Had to trampoline " << disasm->getDisassembly() << "@"<<FA<<" to "
@@ -343,7 +341,7 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 				const auto tramp_range=ms.getFreeRange(tramp_size);
 				const auto tramp_start=tramp_range.getStart();
 				// don't be too fancy, just reserve 12 bytes.
-				ms.SplitFreeRange({tramp_start,tramp_start+12});
+				ms.splitFreeRange({tramp_start,tramp_start+12});
 
 
 				// give the bytes some names
@@ -363,20 +361,20 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 
 				// put an uncond branch at where the adr was.
 				// and make it point at L0
-				ms.PlopBytes(FA,branch_bytes.c_str(),4);
-				zo->ApplyPatch(FA,L0);
+				ms.plopBytes(FA,branch_bytes.c_str(),4);
+				zo->applyPatch(FA,L0);
 
 				// put save of x0 in place.
 				// diassembly: f81803e0        stur    x0, [sp, #-128]
 				const auto strx0_bytes=string("\xe0\x03\x18\xf8",4);
-				ms.PlopBytes(L0,strx0_bytes.c_str(),4);
+				ms.plopBytes(L0,strx0_bytes.c_str(),4);
 
 				// adrp: 1 imm2lo 1 0000 immhi19 Rd
 				auto adrp_bytes=string("\x00\x00\x00\x90",4);
 				auto adrp_word =*(int*)adrp_bytes.c_str();
 				// adrp_word|=destreg<<0; ; destreg for this insn is x0.
 				adrp_word |=  ((relocd_immlo2&mask2) << 29) | ((relocd_immhi19&mask19)<<5);
-				ms.PlopBytes(L1,(char*)&adrp_word,4);
+				ms.plopBytes(L1,(char*)&adrp_word,4);
 
 
 				// convert: ldr   s/d/q reg: opc2  01 11 00 imm19 Rt5, opc2 indicate size (00,01,10 -> s/d/q)
@@ -412,18 +410,18 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 				new_ldr_word|=((address_to_generate_page_offset/ldr_size) << 10); // imm12
 				new_ldr_word|=(new_ldr_size_bits<<30); // size2
 				new_ldr_word|=(new_ldr_opc2_bits<<22); // opc2
-				ms.PlopBytes(L2,(char*)&new_ldr_word,4);
+				ms.plopBytes(L2,(char*)&new_ldr_word,4);
 
 
 				// drop in the restore of x0
 				// disassembly:   f85803e0        ldur    x0, [sp, #-128]
 				const auto ldrx0_bytes=string("\xe0\x03\x58\xf8",4);
-				ms.PlopBytes(L3,ldrx0_bytes.c_str(),4);
+				ms.plopBytes(L3,ldrx0_bytes.c_str(),4);
 
 				// put an uncond branch the end of the trampoline
 				// and make it jump at FT
-				ms.PlopBytes(L4,branch_bytes.c_str(),4);
-				zo->ApplyPatch(L4,FT);
+				ms.plopBytes(L4,branch_bytes.c_str(),4);
+				zo->applyPatch(L4,FT);
 
 				// should be few enough of these to always print
 				cout<< "Had to trampoline " << disasm->getDisassembly() << "@"<<FA<<" to "
@@ -447,7 +445,7 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 			const auto clean_new_insn = full_insn & ~(mask19 << 5);
 			const auto new_insn       = clean_new_insn | ((new_imm19_ext & mask19)<<5);
 			// put the new instruction in the output
-			ms.PlopBytes(from_insn_location, (const char*)&new_insn, insn_bytes_len);
+			ms.plopBytes(from_insn_location, (const char*)&new_insn, insn_bytes_len);
 			if (m_verbose)
 			{
 				cout << "Relocating a ldrsw pcrel relocation with orig_addr=" << hex
@@ -475,7 +473,7 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 			const auto tramp_range=ms.getFreeRange(tramp_size);
 			const auto tramp_start=tramp_range.getStart();
 			// don't be too fancy, just reserve 12 bytes.
-			ms.SplitFreeRange({tramp_start,tramp_start+12});
+			ms.splitFreeRange({tramp_start,tramp_start+12});
 
 
 			const auto FA=from_insn_location;
@@ -496,15 +494,15 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 
 			// put an uncond branch at where the adr was.
 			// and make it point at L0
-			ms.PlopBytes(FA,branch_bytes.c_str(),4);
-			zo->ApplyPatch(FA,L0);
+			ms.plopBytes(FA,branch_bytes.c_str(),4);
+			zo->applyPatch(FA,L0);
 
 			// adrp: 1 imm2lo 1 0000 immhi19 Rd
 			auto adrp_bytes=string("\x00\x00\x00\x90",4);
 			auto adrp_word =*(int*)adrp_bytes.c_str();
 			adrp_word|=destreg<<0;
 			adrp_word |=  ((relocd_immlo2&mask2) << 29) | ((relocd_immhi19&mask19)<<5);
-			ms.PlopBytes(L0,(char*)&adrp_word,4);
+			ms.plopBytes(L0,(char*)&adrp_word,4);
 
 			// convert: ldrsw x reg : 1001 1000 ---imm19--- Rt
 			// to     : ldrsw x reg : 1011 1001 10 imm12 Rn Rt
@@ -515,12 +513,12 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 			new_ldr_word|=destreg<<0; // Rt
 			new_ldr_word|=destreg<<5; // Rn
 			new_ldr_word|=scaled_page_offset << 10 ; // imm12
-			ms.PlopBytes(L1,(char*)&new_ldr_word,4);
+			ms.plopBytes(L1,(char*)&new_ldr_word,4);
 
 			// put an uncond branch the end of the trampoline
 			// and make it jump at FT
-			ms.PlopBytes(L2,branch_bytes.c_str(),4);
-			zo->ApplyPatch(L2,FT);
+			ms.plopBytes(L2,branch_bytes.c_str(),4);
+			zo->applyPatch(L2,FT);
 
 			// should be few enough of these to always print
 			cout<< "Had to trampoline " << disasm->getDisassembly() << "@"<<FA<<" to "
