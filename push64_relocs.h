@@ -32,20 +32,18 @@
 #define push_relocs_h
 
 #include <irdb-core>
+#include <zipr-sdk>
 
 class Push64Relocs_t : public Zipr_SDK::ZiprPluginInterface_t
 {
 	public:
 		Push64Relocs_t(Zipr_SDK::MemorySpace_t *p_ms,
-			ELFIO::elfio *p_elfio,
 			IRDB_SDK::FileIR_t *p_firp,
 			Zipr_SDK::InstructionLocationMap_t *p_fil);
-		virtual void PinningBegin()
-		{
-		}
-		virtual void PinningEnd()
+		virtual void doPinningEnd() override
 		{ 
-			if(m_elfio.get_type()==ET_EXEC)
+			// if(m_elfio.get_type()==ET_EXEC)
+			if(m_firp.getArchitecture()->getFileType()==IRDB_SDK::adftELFEXE)
 			{
 				std::cout<<"Push64_reloc: elide PinningEnd as type==ET_EXEC"<<std::endl;
 				return;
@@ -53,18 +51,10 @@ class Push64Relocs_t : public Zipr_SDK::ZiprPluginInterface_t
 			std::cout<<"Push64Plugin: Ending  pinning, applying push64 relocs."<<std::endl;
 			HandlePush64Relocs(); 
 		}
-		virtual void DollopBegin()
+		virtual void doCallbackLinkingEnd() override
 		{
-		}
-		virtual void DollopEnd()
-		{
-		}
-		virtual void CallbackLinkingBegin()
-		{
-		}
-		virtual void CallbackLinkingEnd()
-		{
-			if(m_elfio.get_type()==ET_EXEC)
+			// if(m_elfio.get_type()==ET_EXEC)
+			if(m_firp.getArchitecture()->getFileType()==IRDB_SDK::adftELFEXE)
 			{
 				std::cout<<"Push64_reloc: elide CallbackLinkingEnd as type==ET_EXEC"<<std::endl;
 				return;
@@ -73,7 +63,7 @@ class Push64Relocs_t : public Zipr_SDK::ZiprPluginInterface_t
 			UpdatePush64Adds(); 
 		}
 
-		virtual Zipr_SDK::ZiprOptionsNamespace_t *RegisterOptions(Zipr_SDK::ZiprOptionsNamespace_t *);
+		virtual Zipr_SDK::ZiprOptionsNamespace_t *registerOptions(Zipr_SDK::ZiprOptionsNamespace_t *) override;
 	private:
 		// main workhorses
 		void HandlePush64Relocs();
@@ -123,7 +113,6 @@ class Push64Relocs_t : public Zipr_SDK::ZiprPluginInterface_t
 
 		// references to input
 		Zipr_SDK::MemorySpace_t &m_memory_space;	
-		ELFIO::elfio&  m_elfio;
 		IRDB_SDK::FileIR_t& m_firp;
 		Zipr_SDK::InstructionLocationMap_t &final_insn_locations;
 

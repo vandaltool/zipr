@@ -29,32 +29,27 @@
  **************************************************************************/
 
 
-#include <zipr_sdk.h>
-#include <irdb-core>
 #include <string>
 #include <algorithm>
 #include "push64_relocs.h"
 
 using namespace IRDB_SDK;
-using namespace std;
 using namespace Zipr_SDK;
-using namespace ELFIO;
+using namespace std;
 
 #define ALLOF(a) begin(a), end(a)
 
 Push64Relocs_t::Push64Relocs_t(MemorySpace_t *p_ms,
-	elfio *p_elfio,
 	FileIR_t *p_firp,
 	InstructionLocationMap_t *p_fil) :
 		m_memory_space(*p_ms), 
-		m_elfio(*p_elfio),
 		m_firp(*p_firp),
 		final_insn_locations(*p_fil),
 		m_verbose("verbose")
 {
 }
-ZiprOptionsNamespace_t *Push64Relocs_t::RegisterOptions(ZiprOptionsNamespace_t *global) {
-	global->AddOption(&m_verbose);
+ZiprOptionsNamespace_t *Push64Relocs_t::registerOptions(ZiprOptionsNamespace_t *global) {
+	global->addOption(&m_verbose);
 	return NULL;
 }
 
@@ -298,9 +293,9 @@ void Push64Relocs_t::UpdatePush64Adds()
 			if (change_to_add)
 			{
 				char add = (char)0x04;
-				m_memory_space.PlopBytes(add_addr+rex_skip+1, (const char*)&add, 1);
+				m_memory_space.plopBytes(add_addr+rex_skip+1, (const char*)&add, 1);
 			}
-			m_memory_space.PlopBytes(add_addr+rex_skip+3, (const char*)&relocated_value, 4);
+			m_memory_space.plopBytes(add_addr+rex_skip+3, (const char*)&relocated_value, 4);
 		}
 	}
 }
@@ -309,9 +304,8 @@ extern "C"
 Zipr_SDK::ZiprPluginInterface_t* GetPluginInterface(
 	Zipr_SDK::Zipr_t* zipr_object)
 {
-	Zipr_SDK::MemorySpace_t *p_ms=zipr_object->GetMemorySpace(); 
-	ELFIO::elfio *p_elfio=zipr_object->getELFIO(); 
-	IRDB_SDK::FileIR_t *p_firp=zipr_object->getFileIR();
-	Zipr_SDK::InstructionLocationMap_t *p_fil=zipr_object->GetLocationMap(); 
-	return new Push64Relocs_t(p_ms,p_elfio,p_firp,p_fil);
+	auto *p_ms=zipr_object->getMemorySpace(); 
+	auto *p_firp=zipr_object->getFileIR();
+	auto *p_fil=zipr_object->getLocationMap(); 
+	return new Push64Relocs_t(p_ms,p_firp,p_fil);
 }
