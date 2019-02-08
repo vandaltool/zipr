@@ -1778,8 +1778,9 @@ IRDB_SDK::Relocation_t* FileIR_t::addNewRelocation(
 {
 	const auto from_obj=dynamic_cast<libIRDB::BaseObj_t*>(p_from_obj);
 	auto newreloc=new libIRDB::Relocation_t(BaseObj_t::NOT_IN_DATABASE, p_offset, p_type, p_wrt_obj, p_addend);
-	from_obj->GetRelocations().insert(newreloc);
 	GetRelocations().insert(newreloc);
+	if(from_obj)
+		from_obj->GetRelocations().insert(newreloc);
 	
 	return newreloc;
 }
