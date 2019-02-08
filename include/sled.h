@@ -101,10 +101,10 @@ class Sled_t
 			/*
 			 * First, extend our range.
 			 */
-			m_range.SetStart(std::min(merging.SledRange().getStart(),
+			m_range.setStart(std::min(merging.SledRange().getStart(),
 			                          m_range.getStart()));
 
-			m_range.SetEnd(std::max(merging.SledRange().getEnd(),
+			m_range.setEnd(std::max(merging.SledRange().getEnd(),
 			                          m_range.getEnd()));
 
 			/*

@@ -13,9 +13,9 @@ using namespace zipr;
 ZiprPinnerARM64_t::ZiprPinnerARM64_t(Zipr_SDK::Zipr_t* p_parent) :
 	m_parent(dynamic_cast<zipr::ZiprImpl_t*>(p_parent)),     // upcast to ZiprImpl
 	m_firp(p_parent->getFileIR()),
-	memory_space(*m_parent->GetMemorySpace()),
+	memory_space(*m_parent->getMemorySpace()),
 	m_dollop_mgr(*p_parent->getDollopManager()),
-        placement_queue(*p_parent->GetPlacementQueue())
+        placement_queue(*p_parent->getPlacementQueue())
 
 {
 }
@@ -34,7 +34,7 @@ void  ZiprPinnerARM64_t::doPinning()
                 {
                         // Unpinned IBT. Create dollop and add it to placement
                         // queue straight away--there are no pinning considerations.
-                        auto newDoll=m_dollop_mgr.AddNewDollops(insn);
+                        auto newDoll=m_dollop_mgr.addNewDollops(insn);
                         placement_queue.insert(pair<Dollop_t*,RangeAddress_t>(newDoll, 0));
                         continue;
                 }
@@ -48,7 +48,7 @@ void  ZiprPinnerARM64_t::doPinning()
 		{
 			assert(memory_space.find(ibta_addr+i) == memory_space.end() );
 			memory_space[ibta_addr+i]=bytes[i];
-			memory_space.SplitFreeRange(ibta_addr+i);
+			memory_space.splitFreeRange(ibta_addr+i);
 		}
 		// insert a patch to patch the branch later.
 		const auto patch=Patch_t(ibta_addr, UnresolvedType_t::UncondJump_rel26);

@@ -25,9 +25,9 @@ class ZiprPluginManager_t : public ZiprPluginInterface_t
 				m_verbose("verbose"),
 				m_opts(p_opts)
 			{
-				ZiprOptionsNamespace_t *opts_global_ns = m_opts->Namespace("global");
+				ZiprOptionsNamespace_t *opts_global_ns = m_opts->getNamespace("global");
 				if (opts_global_ns)
-					opts_global_ns->AddOption(&m_verbose);
+					opts_global_ns->addOption(&m_verbose);
 				open_plugins(zipr_obj, p_opts);
 			}
 

@@ -34,8 +34,8 @@ RangeAddress_t ZiprSizerARM64_t::PlopDollopEntryWithTarget(
         RangeAddress_t override_place,
         RangeAddress_t override_target) const
 {
-        assert(entry->TargetDollop());
-	if(is_tbz_type(entry->Instruction()))
+        assert(entry->getTargetDollop());
+	if(is_tbz_type(entry->getInstruction()))
 		return  TBZPlopDollopEntryWithTarget(entry,override_place,override_target);
 	return  DefaultPlopDollopEntryWithTarget(entry,override_place,override_target);
 }
@@ -51,9 +51,9 @@ RangeAddress_t ZiprSizerARM64_t::TBZPlopDollopEntryWithTarget(
  * L2: b <target>
  * L3: # fallthrough
  */ 
-        const auto addr        = (override_place  == 0) ? entry->Place()                 : override_place;
-        const auto target_addr = (override_target == 0) ? entry->TargetDollop()->Place() : override_target;
-	const auto insn        = entry->Instruction();
+        const auto addr        = (override_place  == 0) ? entry->getPlace()                 : override_place;
+        const auto target_addr = (override_target == 0) ? entry->getTargetDollop()->getPlace() : override_target;
+	const auto insn        = entry->getInstruction();
 	const auto branch_bytes=string("\x00\x00\x00\x014",4);
 
 	// put the tbz first.
@@ -79,9 +79,9 @@ RangeAddress_t ZiprSizerARM64_t::DefaultPlopDollopEntryWithTarget(
         RangeAddress_t override_place,
         RangeAddress_t override_target) const
 {
-        const auto addr        = (override_place  == 0) ? entry->Place()                 : override_place;
-        const auto target_addr = (override_target == 0) ? entry->TargetDollop()->Place() : override_target;
-	const auto insn        = entry->Instruction();
+        const auto addr        = (override_place  == 0) ? entry->getPlace()                 : override_place;
+        const auto target_addr = (override_target == 0) ? entry->getTargetDollop()->getPlace() : override_target;
+	const auto insn        = entry->getInstruction();
 
 	// plop instruction an d make it target the right address.
 	memory_space.PlopBytes(addr, insn->getDataBits().c_str(), 4);

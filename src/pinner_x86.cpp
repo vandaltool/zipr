@@ -29,13 +29,13 @@ static int ceildiv(int a, int b)
 
 ZiprPinnerX86_t::ZiprPinnerX86_t(Zipr_SDK::Zipr_t* p_parent) : 
 	m_parent(dynamic_cast<zipr::ZiprImpl_t*>(p_parent)),	 // upcast to ZiprImpl
-	memory_space(*p_parent->GetMemorySpace()),
+	memory_space(*p_parent->getMemorySpace()),
 	m_dollop_mgr(*p_parent->getDollopManager()),
 	m_firp(p_parent->getFileIR()),
-	placement_queue(*p_parent->GetPlacementQueue()),
+	placement_queue(*p_parent->getPlacementQueue()),
 	m_verbose(false), // fixme
 	m_stats(m_parent->getStats()),
-	final_insn_locations(*p_parent->GetLocationMap())
+	final_insn_locations(*p_parent->getLocationMap())
 {
 		
 }
@@ -116,7 +116,7 @@ void ZiprPinnerX86_t::AddPinnedInstructions()
                 {
                         // Unpinned IBT. Create dollop and add it to placement
                         // queue straight away--there are no pinning considerations.
-                        Dollop_t *newDoll=m_dollop_mgr.AddNewDollops(insn);
+                        Dollop_t *newDoll=m_dollop_mgr.addNewDollops(insn);
 			placement_queue.insert(pair<Dollop_t*,RangeAddress_t>(newDoll, 0));
 			continue;
                 }
@@ -318,7 +318,7 @@ void ZiprPinnerX86_t::PreReserve2ByteJumpTargets()
 				//	printf("Looking for %d-byte jump targets to pre-reserve.\n", size);
 				for(int i=120;i>=-120;i--)
 				{
-					if(memory_space.AreBytesFree(addr+i,size))
+					if(memory_space.areBytesFree(addr+i,size))
 					{
 						if (m_verbose)
 							printf("Found location for 2-byte->%d-byte conversion "
@@ -334,7 +334,7 @@ void ZiprPinnerX86_t::PreReserve2ByteJumpTargets()
 						up.SetRange(Range_t(addr+i, addr+i+size));
 						for (unsigned int j = up.GetRange().getStart(); j<up.GetRange().getEnd(); j++)
 						{
-							memory_space.SplitFreeRange(j);
+							memory_space.splitFreeRange(j);
 						}
 
 						/*
@@ -615,10 +615,10 @@ void ZiprPinnerX86_t::Update68Sled(Sled_t new_sled, Sled_t &existing_sled)
 		 * Do not assert that we are writing into a free space.
 		 * We may be writing over a PUSH that was there before!
 		 */
-		assert(memory_space.IsByteFree(addr+i) || memory_space[addr+i]==0x68);
+		assert(memory_space.isByteFree(addr+i) || memory_space[addr+i]==0x68);
 		memory_space[addr+i] = 0x68;
 		m_AddrInSled[addr+i] = true;
-		memory_space.SplitFreeRange(addr+i);
+		memory_space.splitFreeRange(addr+i);
 	}
 
 	existing_sled.MergeSled(new_sled);
@@ -732,8 +732,8 @@ RangeAddress_t ZiprPinnerX86_t::Do68Sled(RangeAddress_t addr)
 		     << "(" << addr+sled_size << "."
 		     << addr+sled_size+sled_overhead << ")." << endl;
 	for (size_t i=0;i<sled_overhead;i++)
-		if (!memory_space.IsByteFree(addr+sled_size+i))
-			memory_space.MergeFreeRange(addr+sled_size+i);
+		if (!memory_space.isByteFree(addr+sled_size+i))
+			memory_space.mergeFreeRange(addr+sled_size+i);
 
 	/*
 	 * Put down the sled.
@@ -745,10 +745,10 @@ RangeAddress_t ZiprPinnerX86_t::Do68Sled(RangeAddress_t addr)
 			     << std::hex << addr+i 
 					 << " for sled at 0x"
 					 << std::hex << addr << endl;
-		assert(memory_space.IsByteFree(addr+i));
+		assert(memory_space.isByteFree(addr+i));
 		memory_space[addr+i]=0x68;
 		m_AddrInSled[addr+i] = true;
-		memory_space.SplitFreeRange(addr+i);
+		memory_space.splitFreeRange(addr+i);
 	}
 	/*
 	 * Put down the NOPs
@@ -761,10 +761,10 @@ RangeAddress_t ZiprPinnerX86_t::Do68Sled(RangeAddress_t addr)
 					 << " for sled at 0x"
 					 << std::hex << addr << endl;
 
-		assert(memory_space.IsByteFree(addr+sled_size+i));
+		assert(memory_space.isByteFree(addr+sled_size+i));
 		memory_space[addr+sled_size+i] = 0x90;
 		m_AddrInSled[addr+sled_size+i] = true;
-		memory_space.SplitFreeRange(addr+sled_size+i);
+		memory_space.splitFreeRange(addr+sled_size+i);
 	}
 
 	/*
@@ -788,9 +788,9 @@ RangeAddress_t ZiprPinnerX86_t::Do68Sled(RangeAddress_t addr)
 	 */
 	for(size_t i=0;i<jmp_overhead;i++)
 	{
-		assert(memory_space.IsByteFree(addr+sled_size+nop_overhead+i));
+		assert(memory_space.isByteFree(addr+sled_size+nop_overhead+i));
 		memory_space[addr+sled_size+nop_overhead+i]=jmp_rel32_bytes[i];
-		memory_space.SplitFreeRange(addr+sled_size+nop_overhead+i);
+		memory_space.splitFreeRange(addr+sled_size+nop_overhead+i);
 		//m_AddrInSled[addr+sled_size+nop_overhead+i] = true;
 	}
 
@@ -869,9 +869,9 @@ void ZiprPinnerX86_t::Clear68SledArea(Sled_t sled)
 			 * We do want to free this space, but only if it
 			 * is already in use.
 			 */
-			if (!memory_space.IsByteFree(addr))
-				memory_space.MergeFreeRange(Range_t(addr, addr+clear_size));
-			assert(memory_space.IsByteFree(addr));
+			if (!memory_space.isByteFree(addr))
+				memory_space.mergeFreeRange(Range_t(addr, addr+clear_size));
+			assert(memory_space.isByteFree(addr));
 		}
 	}
 }
@@ -970,7 +970,7 @@ void ZiprPinnerX86_t::ReservePinnedInstructions()
 			for(unsigned int i=0;i<upinsn->getDataBits().size();i++)
 			{
 				memory_space[addr+i]=upinsn->getDataBits()[i];
-				memory_space.SplitFreeRange(addr+i);
+				memory_space.splitFreeRange(addr+i);
 				m_stats->total_other_space++;
 			}
 			final_insn_locations[upinsn] = addr;
@@ -1004,7 +1004,7 @@ void ZiprPinnerX86_t::ReservePinnedInstructions()
 			{
 				assert(memory_space.find(addr+i) == memory_space.end() );
 				memory_space[addr+i]=bytes[i];
-				memory_space.SplitFreeRange(addr+i);
+				memory_space.splitFreeRange(addr+i);
 			}
 			// insert the 2-byte pin to be patched later.
 			up.SetRange(Range_t(addr, addr+2));
@@ -1064,7 +1064,7 @@ void ZiprPinnerX86_t::ReservePinnedInstructions()
 			 * to the adjacent pinned address.
 			 */
 			memory_space[addr] = push_bytes[0];
-			memory_space.SplitFreeRange(addr);
+			memory_space.splitFreeRange(addr);
 
 			addr += sizeof(push_bytes);
 
@@ -1073,7 +1073,7 @@ void ZiprPinnerX86_t::ReservePinnedInstructions()
 			{
 				assert(memory_space.find(addr+i) == memory_space.end() );
 				memory_space[addr+i]=bytes[i];
-				memory_space.SplitFreeRange(addr+i);
+				memory_space.splitFreeRange(addr+i);
 			}
 
 			if (m_verbose)
@@ -1202,7 +1202,7 @@ void ZiprPinnerX86_t::ExpandPinnedInstructions()
 		}
 
 		char bytes[]={(char)0xe9,(char)0,(char)0,(char)0,(char)0}; // jmp rel8
-		bool can_update=memory_space.AreBytesFree(addr+2,sizeof(bytes)-2);
+		bool can_update=memory_space.areBytesFree(addr+2,sizeof(bytes)-2);
 		if (m_verbose && can_update)
 			printf("Found %p can be updated to 5-byte jmp\n", (void*)addr);
 
@@ -1211,7 +1211,7 @@ void ZiprPinnerX86_t::ExpandPinnedInstructions()
 			printf("%p was already fixed into a sled. Cannot update.\n", (void*)addr);
 		if(can_update)
 		{
-			memory_space.PlopJump(addr);
+			memory_space.plopJump(addr);
 
 			/*
 			 * Unreserve those bytes that we reserved before!
@@ -1219,7 +1219,7 @@ void ZiprPinnerX86_t::ExpandPinnedInstructions()
 			for (unsigned int j = up.GetRange().getStart(); j<up.GetRange().getEnd(); j++)
 			{
 				if (!m_AddrInSled[j])
-					memory_space.MergeFreeRange(j);
+					memory_space.mergeFreeRange(j);
 			}
 		
 			/*
@@ -1294,7 +1294,7 @@ void ZiprPinnerX86_t::Fix2BytePinnedInstructions()
 				for (unsigned int j = up.GetRange().getStart(); j<up.GetRange().getEnd(); j++)
 				{
 					if (!m_AddrInSled[j])
-						memory_space.MergeFreeRange(j);
+						memory_space.mergeFreeRange(j);
 				}
 			}
 			two_byte_pins.erase(it++);
@@ -1311,7 +1311,7 @@ void ZiprPinnerX86_t::Fix2BytePinnedInstructions()
 			for (unsigned int j = up.GetRange().getStart(); j<up.GetRange().getEnd(); j++)
 			{
 				if (!m_AddrInSled[j])
-					memory_space.MergeFreeRange(j);
+					memory_space.mergeFreeRange(j);
 			}
 
 			if (m_AddrInSled[up.GetRange().getStart()])
@@ -1333,7 +1333,7 @@ void ZiprPinnerX86_t::Fix2BytePinnedInstructions()
 				PatchJump(addr, up.GetRange().getStart());
 				two_byte_pins.erase(it++);
 			}
-			else if (up.GetRange().Is5ByteRange()) 
+			else if (up.GetRange().is5ByteRange()) 
 			{
 				if (m_verbose)
 					printf("Using previously reserved spot of 2-byte->5-byte conversion "
@@ -1346,12 +1346,12 @@ void ZiprPinnerX86_t::Fix2BytePinnedInstructions()
 					(void*)(uintptr_t)upinsn->getIndirectBranchTargetAddress()->getVirtualOffset() : 0x0);
 
 				five_byte_pins[up] = up.GetRange().getStart();
-				memory_space.PlopJump(up.GetRange().getStart());
+				memory_space.plopJump(up.GetRange().getStart());
 				PatchJump(addr, up.GetRange().getStart());
 
 				two_byte_pins.erase(it++);
 			}
-			else if (up.HasRange() && up.GetRange().Is2ByteRange()) 
+			else if (up.HasRange() && up.GetRange().is2ByteRange()) 
 			{
 				/*
 				 * Add jump to the reserved space.
@@ -1373,8 +1373,8 @@ void ZiprPinnerX86_t::Fix2BytePinnedInstructions()
 				{
 					assert(memory_space.find(up.GetRange().getStart()+i) == memory_space.end() );
 					memory_space[up.GetRange().getStart()+i]=bytes[i];
-					memory_space.SplitFreeRange(up.GetRange().getStart()+i);
-					assert(!memory_space.IsByteFree(up.GetRange().getStart()+i));
+					memory_space.splitFreeRange(up.GetRange().getStart()+i);
+					assert(!memory_space.isByteFree(up.GetRange().getStart()+i));
 				}
 
 				if (m_verbose)
@@ -1429,7 +1429,7 @@ void ZiprPinnerX86_t::OptimizePinnedInstructions()
 		UnresolvedUnpinned_t uu(up.getInstrution());
 		Patch_t	thepatch(addr,UncondJump_rel32);
 		m_parent->AddPatch(uu,thepatch);
-		memory_space.PlopJump(addr);
+		memory_space.plopJump(addr);
 
 
 		bool can_optimize=false; // fixme

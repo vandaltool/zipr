@@ -32,7 +32,7 @@ using namespace zipr;
 using namespace std;
 
 ZiprOptionsNamespace_t *ZiprMemorySpace_t::RegisterOptions(ZiprOptionsNamespace_t *global) {
-	global->AddOption(&m_verbose);
+	global->addOption(&m_verbose);
 	return nullptr;
 }
 
@@ -134,7 +134,7 @@ void ZiprMemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 				printf("from: (%p - %p) ", (void*)nr.getStart(), (void*)nr.getEnd());
 				printf("to: (%p - %p) \n", (void*)r2.getStart(), (void*)nnr.getEnd());
 			}
-			nr.SetStart(r2.getStart());	
+			nr.setStart(r2.getStart());	
 			free_ranges.erase(r2);
 			
 		}

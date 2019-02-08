@@ -19,7 +19,7 @@
  */
 
 #include <zipr_all.h>
-#include <zipr_sdk.h>
+#include <zipr-sdk>
 
 using namespace zipr;
 using namespace std;
@@ -67,36 +67,36 @@ int main(int argc, char *argv[])
 	cout << "Constructing ZiprDoubleOption_t('g', 2.4)." << endl;
 	ZiprDoubleOption_t local_g_option("g", 2.4);
 
-	local_b_option.SetRequired(true);
+	local_b_option.setRequired(true);
 	local_b_option.setDescription("Set the B option.");
-	local_d_option.SetRequired(true);
+	local_d_option.setRequired(true);
 
-	global_ns.AddOption(&global_a_option);
-	global_ns.AddOption(&global_shadow_a_option);
-	local_ns.AddOption(&local_b_option);
-	local_ns.AddOption(&local_shadow_b_option);
-	local_ns.AddOption(&local_c_option);
+	global_ns.addOption(&global_a_option);
+	global_ns.addOption(&global_shadow_a_option);
+	local_ns.addOption(&local_b_option);
+	local_ns.addOption(&local_shadow_b_option);
+	local_ns.addOption(&local_c_option);
 	//local_ns.AddOption(&local_shadow_c_option);
-	local_ns.AddOption(&local_d_option);
-	local_ns.AddOption(&local_e_option);
-	local_ns.AddOption(&local_shadow_e_option);
-	local_ns.AddOption(&local_f_option);
-	local_ns.AddOption(&local_g_option);
+	local_ns.addOption(&local_d_option);
+	local_ns.addOption(&local_e_option);
+	local_ns.addOption(&local_shadow_e_option);
+	local_ns.addOption(&local_f_option);
+	local_ns.addOption(&local_g_option);
 
-	options.AddNamespace(&global_ns);
-	options.AddNamespace(&local_ns);
+	options.addNamespace(&global_ns);
+	options.addNamespace(&local_ns);
 
-	options.Parse(&cout);
+	options.parse(&cout);
 
-	if (!options.RequirementsMet())
+	if (!options.areRequirementsMet())
 	{
 		cout << "Usage: " << endl;
-		options.PrintUsage(cout);
+		options.printUsage(cout);
 	}
 
-	options.PrintNamespaces();
-	cout << "global_shadow_a_option: " << global_shadow_a_option.Value() << endl;
-	cout << "local_shadow_b_option: " << local_shadow_b_option.StringValue() << endl;
+	options.printNamespaces();
+	cout << "global_shadow_a_option: " << global_shadow_a_option.getValue() << endl;
+	cout << "local_shadow_b_option: " << local_shadow_b_option.getStringValue() << endl;
 	if (global_a_option == "avl") {
 		cout << "global_a_option is avl (" << global_a_option.substr(0,1) << ")." << endl;
 	} else {
@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
 		cout << "local_c_option is true." << endl;
 	}
 	if (local_d_option == 55) {
-		cout << "local_d_option is " << local_d_option.Value() << endl;
+		cout << "local_d_option is " << local_d_option.getValue() << endl;
 	}
 	cout << "local_e_option: " << ((int)local_e_option) << endl;
 	if (local_shadow_e_option == local_e_option) {

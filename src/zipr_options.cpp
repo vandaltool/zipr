@@ -18,10 +18,11 @@
  *
  */
 
-#include <zipr_sdk.h>
+#include <zipr-sdk>
 #include <unistd.h>
 #include <iostream>
 #include <cstddef>
+#include <iomanip>
 
 #ifndef IMPLEMENTATION_DEBUG
 #define IMPLEMENTATION_DEBUG 0
@@ -30,71 +31,71 @@
 using namespace Zipr_SDK;
 using namespace std;
 
-void ZiprOptionsNamespace_t::PrintNamespace() {
+void ZiprOptionsNamespace_t::printNamespace() {
 	ZiprOptionsNamespace_t::const_iterator it, it_end = end();
 	for (it = begin(); it != it_end; it++) {
-		cout << (*it)->Key() << ": " << (*it)->StringValue() << endl;
+		cout << (*it)->getKey() << ": " << (*it)->getStringValue() << endl;
 	}
 }
 
-bool ZiprOptionsNamespace_t::RequirementsMet() {
+bool ZiprOptionsNamespace_t::areRequirementsMet() {
 	ZiprOptionsNamespace_t::const_iterator it, it_end = end();
 	for (it = begin(); it != it_end; it++) {
-		if (!(*it)->RequirementMet())
+		if (!(*it)->areRequirementMet())
 			return false;
 	}
 	return true;
 }
 
-void ZiprOptionsNamespace_t::AddOption(ZiprOption_t *option) {
-	ZiprOption_t *existing_option = OptionByKey(option->Key());
+void ZiprOptionsNamespace_t::addOption(ZiprOption_t *option) {
+	ZiprOption_t *existing_option = optionByKey(option->getKey());
 	if (existing_option) {
 #if IMPLEMENTATION_DEBUG
 		cout << "Found an existing option. Adding an observer." << endl;
 #endif
-	existing_option->AddObserver(option);
+	existing_option->addObserver(option);
 	}
 	else {
 		insert(option);
 	}
 }
 
-ZiprOption_t *ZiprOptionsNamespace_t::OptionByKey(string key) {
+ZiprOption_t *ZiprOptionsNamespace_t::optionByKey(const string& key) {
 	ZiprOptionsNamespace_t::const_iterator it, it_end = end();
 	for (it = begin(); it != it_end; it++) {
-		if ((*it)->Key() == key)
+		if ((*it)->getKey() == key)
 			return *it;
 	}
 	return nullptr;
 }
 
-void ZiprOptionsNamespace_t::PrintUsage(int tabs, ostream &out) {
+void ZiprOptionsNamespace_t::printUsage(int tabs, ostream &out) {
 	ZiprOptionsNamespace_t::const_iterator it, it_end = end();
 	for (it = begin(); it != it_end; it++) {
-		string description = (*it)->Description();
+		string description = (*it)->getDescription();
 		{ int t = 0; for (; t<tabs; t++) cout << "\t"; }
 		out << std::setw(2);
-		if (!(*it)->Required())
+		if (!(*it)->isRequired())
 			out << "[";
 		else
 			out << "";
-		out << "--" + Namespace() << ":" << description;
-		if (!(*it)->Required())
+		out << "--" + getNamespace() << ":" << description;
+		if (!(*it)->isRequired())
 			out << " ]";
 		out << endl;
 	}
 }
 
-void ZiprOptions_t::PrintUsage(ostream &out) {
+void ZiprOptions_t::printUsage(ostream &out) {
 	set<ZiprOptionsNamespace_t*>::const_iterator it, it_end = m_namespaces.end();
 	for (it = m_namespaces.begin(); it != it_end; it++)
-		(*it)->PrintUsage(1, out);
+		(*it)->printUsage(1, out);
 }	
 
-bool ZiprOptions_t::RequirementsMet() {
+bool ZiprOptions_t::areRequirementsMet() {
 	set<ZiprOptionsNamespace_t*>::const_iterator it, it_end = m_namespaces.end();
 	for (it = m_namespaces.begin(); it != it_end; it++)
-		if (!(*it)->RequirementsMet())
+		if (!(*it)->areRequirementsMet())
 			return false;
 	return true;
 }
@@ -106,7 +107,7 @@ ZiprOptions_t::ZiprOptions_t(int argc, char **argv) {
 	}
 }
 
-bool ZiprOptions_t::Parse(ostream *error, ostream *warn) {
+bool ZiprOptions_t::parse(ostream *error, ostream *warn) {
 	vector<string>::const_iterator it, it_end = m_arguments.end();
 	bool success = true;
 
@@ -142,14 +143,14 @@ bool ZiprOptions_t::Parse(ostream *error, ostream *warn) {
 		cout << "ns: " << ns << endl;
 		cout << "key: " << key << endl;
 #endif
-		if (!(option_ns = Namespace(ns))) {
+		if (!(option_ns = getNamespace(ns))) {
 			if (error)
 				*error << "Invalid namespace: " << ns << endl;
 			success = false;
 			continue;
 			//return false;
 		}
-		if (!(option_option = option_ns->OptionByKey(key))) {
+		if (!(option_option = option_ns->optionByKey(key))) {
 			if (error)
 				*error << "Error: namespace "
 				       << ns
@@ -168,7 +169,7 @@ bool ZiprOptions_t::Parse(ostream *error, ostream *warn) {
 		    (0 != (location = (*(it+1)).find_first_of("--")))) {
 			next_is_option_value = true;
 		}
-		if (option_option->NeedsValue()) {
+		if (option_option->getNeedsValue()) {
 			if ((it + 1) == it_end || !next_is_option_value)
 			{
 				if (error)
@@ -177,51 +178,51 @@ bool ZiprOptions_t::Parse(ostream *error, ostream *warn) {
 				continue;
 				//return false;
 			}
-			option_option->SetValue(*(++it));
-		} else if (option_option->TakesValue()) {
+			option_option->setValue(*(++it));
+		} else if (option_option->getTakesValue()) {
 			/*
 			 * Check to see if the next argument starts with --.
 			 * If it does, we consider it the next option
 			 * and not the value to the previous option.
 			 */
 			if (next_is_option_value) {
-				option_option->SetValue(*(++it));
+				option_option->setValue(*(++it));
 			} else {
-				option_option->Set();
+				option_option->setOption();
 			}
 		} else {
-			option_option->Set();
+			option_option->setOption();
 		}
 	}
 	return success;
 }
 
-ZiprOptionsNamespace_t *ZiprOptions_t::Namespace(string ns) {
+ZiprOptionsNamespace_t *ZiprOptions_t::getNamespace(const string& ns) {
 	set<ZiprOptionsNamespace_t*>::const_iterator it, it_end = m_namespaces.end();
 	for (it = m_namespaces.begin(); it != it_end; it++) {
-		if ((*it)->Namespace() == ns)
+		if ((*it)->getNamespace() == ns)
 			return *it;
 	}
 	return nullptr;
 }
 
-void ZiprOptions_t::AddNamespace(ZiprOptionsNamespace_t *ns) {
+void ZiprOptions_t::addNamespace(ZiprOptionsNamespace_t *ns) {
 	if (ns)
 		m_namespaces.insert(ns);
 }
 
-void ZiprOptionsNamespace_t::MergeNamespace(ZiprOptionsNamespace_t *in) {
+void ZiprOptionsNamespace_t::mergeNamespace(ZiprOptionsNamespace_t *in) {
 	if (!in) return;
 	set<ZiprOption_t*>::const_iterator it, it_end = in->end();
 	for (it = in->begin(); it != it_end; it++)
-		AddOption(*it);
+		addOption(*it);
 }
 
-void ZiprOptions_t::PrintNamespaces() {
+void ZiprOptions_t::printNamespaces() {
 	set<ZiprOptionsNamespace_t*>::const_iterator it, it_end = m_namespaces.end();
 
 	for (it = m_namespaces.begin(); it != it_end; it++) {
-		cout << (*it)->Namespace() << endl;
-		(*it)->PrintNamespace();
+		cout << (*it)->getNamespace() << endl;
+		(*it)->printNamespace();
 	}
 }

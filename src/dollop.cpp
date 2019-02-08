@@ -34,7 +34,7 @@ namespace Zipr_SDK {
 		m_size = CalculateSize();
 	}
 
-	void Dollop_t::ReCalculateSize()
+	void Dollop_t::reCalculateSize()
 	{
 		m_size = CalculateSize();
 	}
@@ -45,7 +45,7 @@ namespace Zipr_SDK {
 		auto total_dollop_entry_size = (size_t)0;
 		assert(m_dollop_mgr);
 		for (auto cur_de : *this )
-			total_dollop_entry_size += m_dollop_mgr->DetermineDollopEntrySize(cur_de);
+			total_dollop_entry_size += m_dollop_mgr->determineDollopEntrySize(cur_de);
 
 		// now determine if we need to add space for a trampoline.
 
@@ -55,7 +55,7 @@ namespace Zipr_SDK {
 
 		// no need for a trampoline if there is no fallthrough
 		const auto has_fallthrough = m_fallthrough_dollop || 
-		                             (back() && back()->Instruction() && back()->Instruction()->getFallthrough())
+		                             (back() && back()->getInstruction() && back()->getInstruction()->getFallthrough())
 					     ;
 		if (!has_fallthrough)
 			return total_dollop_entry_size;
@@ -68,7 +68,7 @@ namespace Zipr_SDK {
 		assert(l_zipr_impl);
 		return 	total_dollop_entry_size + l_zipr_impl->getSizer()->TRAMPOLINE_SIZE;
 	}
-	DollopEntry_t *Dollop_t::FallthroughDollopEntry(DollopEntry_t *entry) const
+	DollopEntry_t *Dollop_t::setFallthroughDollopEntry(DollopEntry_t *entry) const
 	{
 		const auto found_entry = find(ALLOF(*this), entry);
 		if (found_entry == end())
@@ -77,19 +77,19 @@ namespace Zipr_SDK {
 		return next_entry == end() ? nullptr : *next_entry ;
 	}
 
-	void Dollop_t::WasCoalesced(bool coalesced)
+	void Dollop_t::setCoalesced(bool coalesced)
 	{
 		m_coalesced = coalesced;
 		m_size = CalculateSize();
 	}
 
-	void Dollop_t::FallthroughPatched(bool patched)
+	void Dollop_t::setFallthroughPatched(bool patched)
 	{
 		m_fallthrough_patched = patched;
 		m_size = CalculateSize();
 	}
 
-	Dollop_t *Dollop_t::Split(IRDB_SDK::Instruction_t *split_point) {
+	Dollop_t *Dollop_t::split(IRDB_SDK::Instruction_t *split_point) {
 		/*
 		 * 1. Find the matching dollop entry.
 		 */
@@ -102,7 +102,7 @@ namespace Zipr_SDK {
 //				std::cout << "Checking "
 //				          << std::hex << query.Instruction() << " ?= "
 //									<< std::hex << p->Instruction() << "." << std::endl;
-				return query.Instruction() == p->Instruction();
+				return query.getInstruction() == p->getInstruction();
 			});
 		/*
 		 * No matching split point. Just return nullptr.
@@ -123,10 +123,10 @@ namespace Zipr_SDK {
 		 *         |-----
 		 */
 		if (m_fallthrough_dollop)
-			m_fallthrough_dollop->FallbackDollop(new_dollop);
-		new_dollop->FallbackDollop(this);
+			m_fallthrough_dollop->setFallbackDollop(new_dollop);
+		new_dollop->setFallbackDollop(this);
 
-		new_dollop->FallthroughDollop(m_fallthrough_dollop);
+		new_dollop->setFallthroughDollop(m_fallthrough_dollop);
 		m_fallthrough_dollop = new_dollop;
 
 		/*
@@ -155,7 +155,7 @@ namespace Zipr_SDK {
 		return new_dollop;
 	}
 
-	void Dollop_t::RemoveDollopEntries(
+	void Dollop_t::removeDollopEntries(
 		std::list<DollopEntry_t*>::iterator first_to_remove, 
 		std::list<DollopEntry_t*>::iterator last_to_remove) {
 		erase(first_to_remove, last_to_remove);
@@ -189,7 +189,7 @@ namespace Zipr_SDK {
 		return !operator==(comp);
 	}
 
-	Dollop_t *Dollop_t::CreateNewDollop(IRDB_SDK::Instruction_t *start,
+	Dollop_t *Dollop_t::createNewDollop(IRDB_SDK::Instruction_t *start,
 	                                    Zipr_SDK::DollopManager_t *mgr) {
 		return new Zipr_SDK::Dollop_t(start, mgr);
 	}
@@ -203,21 +203,21 @@ namespace Zipr_SDK {
 				 it++) {
 			out << std::hex << *(*it) << std::endl;
 		}
-		if ((fallback = d.FallbackDollop()) != nullptr)
+		if ((fallback = d.getFallbackDollop()) != nullptr)
 			out << "Fallback: " << std::hex << fallback << std::endl;
-		if ((fallthrough = d.FallthroughDollop()) != nullptr)
+		if ((fallthrough = d.getFallthroughDollop()) != nullptr)
 			out << "Fallthrough: " << std::hex << fallthrough << std::endl;
 		return out;
 	}
 
 	std::ostream &operator<<(std::ostream &out, const DollopPatch_t &p) {
-		out << std::hex << &p << ":" << std::hex << p.Target();
+		out << std::hex << &p << ":" << std::hex << p.getTarget();
 		return out;
 	}
 
 	std::ostream &operator<<(std::ostream &out, const DollopEntry_t &p) {
-		out << "Instruction: " << std::hex << p.Instruction() << std::endl;
-		out << "Target Dollop: " << std::hex << p.TargetDollop() << std::endl;
+		out << "Instruction: " << std::hex << p.getInstruction() << std::endl;
+		out << "Target Dollop: " << std::hex << p.getTargetDollop() << std::endl;
 		return out;
 	}
 }

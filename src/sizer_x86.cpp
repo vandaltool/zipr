@@ -85,12 +85,12 @@ RangeAddress_t ZiprSizerX86_t::PlopDollopEntryWithTarget(
         RangeAddress_t override_place,
         RangeAddress_t override_target) const
 {
-        auto insn = entry->Instruction();
+        auto insn = entry->getInstruction();
 
-        assert(entry->TargetDollop());
+        assert(entry->getTargetDollop());
 
-        auto addr = entry->Place();
-        auto target_addr = entry->TargetDollop()->Place();
+        auto addr = entry->getPlace();
+        auto target_addr = entry->getTargetDollop()->getPlace();
         auto ret = addr;
 
         if (override_place != 0)
@@ -101,7 +101,7 @@ RangeAddress_t ZiprSizerX86_t::PlopDollopEntryWithTarget(
 
         if(insn->getDataBits().length() >2)
         {
-                memory_space.PlopBytes(ret,
+                memory_space.plopBytes(ret,
                                        insn->getDataBits().c_str(),
                                        insn->getDataBits().length()
                                       );
@@ -134,7 +134,7 @@ RangeAddress_t ZiprSizerX86_t::PlopDollopEntryWithTarget(
                 // two byte JCC
                         char bytes[]={(char)0x0f,(char)0xc0,(char)0x0,(char)0x0,(char)0x0,(char)0x0 };  // 0xc0 is a placeholder, overwritten next statement
                         bytes[1]=insn->getDataBits()[0]+0x10;           // convert to jcc with 4-byte offset.
-                        memory_space.PlopBytes(ret,bytes, sizeof(bytes));
+                        memory_space.plopBytes(ret,bytes, sizeof(bytes));
                         m_zipr_obj.GetPatcher()->ApplyPatch(ret, target_addr);
                         ret+=sizeof(bytes);
                         return ret;
@@ -144,7 +144,7 @@ RangeAddress_t ZiprSizerX86_t::PlopDollopEntryWithTarget(
                         // two byte JMP
                         char bytes[]={(char)0xe9,(char)0x0,(char)0x0,(char)0x0,(char)0x0 };
                         bytes[1]=insn->getDataBits()[0]+0x10;           // convert to jcc with 4-byte offset.
-                        memory_space.PlopBytes(ret,bytes, sizeof(bytes));
+                        memory_space.plopBytes(ret,bytes, sizeof(bytes));
                         m_zipr_obj.GetPatcher()->ApplyPatch(ret, target_addr);
                         ret+=sizeof(bytes);
                         return ret;
@@ -162,7 +162,7 @@ RangeAddress_t ZiprSizerX86_t::PlopDollopEntryWithTarget(
                         char bytes[]={0,0x5};
                         DollopEntry_t *fallthrough_de = nullptr;
 
-                        fallthrough_de = entry->MemberOfDollop()->FallthroughDollopEntry(entry);
+                        fallthrough_de = entry->getMemberOfDollop()->setFallthroughDollopEntry(entry);
 
                         /*
                          * This means that we have a fallthrough for this dollop entry
@@ -172,26 +172,25 @@ RangeAddress_t ZiprSizerX86_t::PlopDollopEntryWithTarget(
                          */
                         if (!fallthrough_de)
                         {
-                                if(entry->MemberOfDollop()->FallthroughDollop())
-                                        fallthrough_de = entry->MemberOfDollop()->FallthroughDollop()->front();
+                                if(entry->getMemberOfDollop()->getFallthroughDollop())
+                                        fallthrough_de = entry->getMemberOfDollop()->getFallthroughDollop()->front();
                                 else
                                         // even a cond branch may have a null fallthrough, account for that here
                                         // by plopping nothing
                                         return ret;
                         }
 
-                        assert(fallthrough_de && fallthrough_de->IsPlaced());
+                        assert(fallthrough_de && fallthrough_de->isPlaced());
 
                         bytes[0]=insn->getDataBits()[0];
-                        memory_space.PlopBytes(ret,bytes, sizeof(bytes));
-			                        memory_space.PlopBytes(ret,bytes, sizeof(bytes));
+                        memory_space.plopBytes(ret,bytes, sizeof(bytes));
                         ret+=sizeof(bytes);
 
-                        memory_space.PlopJump(ret);
-                        m_zipr_obj.GetPatcher()->ApplyPatch(ret, fallthrough_de->Place());
+                        memory_space.plopJump(ret);
+                        m_zipr_obj.GetPatcher()->ApplyPatch(ret, fallthrough_de->getPlace());
                         ret+=5;
 
-                        memory_space.PlopJump(ret);
+                        memory_space.plopJump(ret);
                         m_zipr_obj.GetPatcher()->ApplyPatch(ret, target_addr);
                         ret+=5;
 

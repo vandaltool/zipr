@@ -58,7 +58,7 @@ using namespace ELFIO;
 ZiprPatcherX86_t::ZiprPatcherX86_t(Zipr_SDK::Zipr_t* p_parent) :
 	m_parent(dynamic_cast<zipr::ZiprImpl_t*>(p_parent)),     // upcast to ZiprImpl
 	m_firp(p_parent->getFileIR()),
-	memory_space(*p_parent->GetMemorySpace())
+	memory_space(*p_parent->getMemorySpace())
 {
 }
 
@@ -163,7 +163,7 @@ void ZiprPatcherX86_t::PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)
 {
 	uintptr_t off=to_addr-at_addr-2;
 
-	assert(!memory_space.IsByteFree(at_addr));
+	assert(!memory_space.isByteFree(at_addr));
 	
 	switch(memory_space[at_addr])
 	{
@@ -176,7 +176,7 @@ void ZiprPatcherX86_t::PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)
 		{
 			assert(off==(uintptr_t)(char)off);
 
-			assert(!memory_space.IsByteFree(at_addr+1));
+			assert(!memory_space.isByteFree(at_addr+1));
 			memory_space[at_addr+1]=(char)off;
 			break;
 		}
@@ -193,14 +193,14 @@ void ZiprPatcherX86_t::PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr)
 {
         uintptr_t off=to_addr-at_addr-5;
 
-        assert(!memory_space.IsByteFree(at_addr));
+        assert(!memory_space.isByteFree(at_addr));
 
         switch(memory_space[at_addr])
         {
                 case (char)0xe8:        /* 5byte call */
                 {
                         assert(off==(uintptr_t)off);
-                        assert(!memory_space.AreBytesFree(at_addr+1,4));
+                        assert(!memory_space.areBytesFree(at_addr+1,4));
 
                         memory_space[at_addr+1]=(char)(off>> 0)&0xff;
                         memory_space[at_addr+2]=(char)(off>> 8)&0xff;
@@ -217,7 +217,7 @@ void ZiprPatcherX86_t::PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr)
 void ZiprPatcherX86_t::CallToNop(RangeAddress_t at_addr)
 {
         char bytes[]={(char)0x90,(char)0x90,(char)0x90,(char)0x90,(char)0x90}; // nop;nop;nop;nop;nop
-        memory_space.PlopBytes(at_addr,bytes,sizeof(bytes));
+        memory_space.plopBytes(at_addr,bytes,sizeof(bytes));
 }
 
 

@@ -46,6 +46,30 @@ class ZiprMemorySpace_t : public MemorySpace_t
 
 
 		// range operatations
+		void splitFreeRange(RangeAddress_t addr) { return SplitFreeRange(addr); } 
+		void splitFreeRange(Range_t range)       { return SplitFreeRange(range); } 
+		void mergeFreeRange(RangeAddress_t addr) { return MergeFreeRange(addr); } 
+		void mergeFreeRange(Range_t range)       { return MergeFreeRange(range); } 
+		RangeSet_t::iterator findFreeRange(RangeAddress_t addr) { return FindFreeRange(addr); } 
+		void addFreeRange(Range_t newRange)                { return AddFreeRange(newRange); } 
+		void addFreeRange(Range_t newRange, bool original) { return AddFreeRange(newRange, original); } 
+		void removeFreeRange(Range_t newRange) {return removeFreeRange(newRange); } 
+		Range_t getLargeRange(void) { return GetLargeRange(); } 
+		bool areBytesFree(RangeAddress_t addr, int num_bytes) { return AreBytesFree(addr,num_bytes); } 
+		bool isByteFree(RangeAddress_t addr) { return IsByteFree(addr); } 
+		bool isValidRange(RangeSet_t::iterator it) { return IsValidRange(it); } 
+		void printMemorySpace(std::ostream &out) { return PrintMemorySpace(out); } 
+		void plopBytes(RangeAddress_t addr, const char the_byte[], int num) { return PlopBytes(addr,the_byte,num); } 
+		void plopByte(RangeAddress_t addr, char the_byte) { return PlopByte(addr,the_byte); } 
+		void plopJump(RangeAddress_t addr) { return PlopJump(addr); } 
+		RangeAddress_t getMinPlopped() const { return min_plopped; }
+		RangeAddress_t getMaxPlopped() const { return max_plopped; }
+		ZiprOptionsNamespace_t *registerOptions(ZiprOptionsNamespace_t* ns) { return RegisterOptions(ns); } 
+		int getRangeCount() { return getRangeCount(); } 
+
+
+
+		// range operations
 		void SplitFreeRange(RangeAddress_t addr);
 		void SplitFreeRange(Range_t split_from);
 		void MergeFreeRange(Range_t range);

@@ -19,7 +19,6 @@
  */
 
 #include <zipr_all.h>
-#include <zipr_sdk.h>
 
 using namespace zipr;
 using namespace std;
@@ -57,7 +56,7 @@ bool TestRangeSpeed() {
 	for (int i = 0;
 	     i<25;
 			 i++) {
-		m.AddFreeRange(Range_t(100*i, (100*(i+1))-1));
+		m.addFreeRange(Range_t(100*i, (100*(i+1))-1));
 	}
 
 	//m.PrintMemorySpace(cout);

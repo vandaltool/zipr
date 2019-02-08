@@ -31,7 +31,7 @@
 #ifndef zipr_dollop_man_h
 #define zipr_dollop_man_h 
 
-#include <dollop.h>
+#include <zipr-sdk>
 
 
 typedef		std::set<Dollop_t*> DollopList_t;
@@ -39,7 +39,8 @@ typedef		std::map<IRDB_SDK::Instruction_t*,Dollop_t*>  InsnToDollopMap_t;
 typedef		std::list<DollopPatch_t*>  DollopPatchList_t;
 typedef		std::map<Dollop_t*, DollopPatchList_t > DollopToDollopPatchListMap_t;
 
-class ZiprDollopManager_t : public DollopManager_t {
+class ZiprDollopManager_t : public DollopManager_t 
+{
 	public:
 		ZiprDollopManager_t() : m_refresh_stats(true), m_zipr(nullptr) {}
 		ZiprDollopManager_t(Zipr_SDK::Zipr_t *zipr) : m_refresh_stats(true), m_zipr(zipr) {}
@@ -47,7 +48,11 @@ class ZiprDollopManager_t : public DollopManager_t {
 		/*
 		 * Adders.
 		 */
+		void addDollops(Dollop_t *dollop_head) { return AddDollops(dollop_head); }
 		void AddDollops(Dollop_t *dollop_head);
+
+
+		Zipr_SDK::Dollop_t *addNewDollops(IRDB_SDK::Instruction_t *start) { return AddNewDollops(start); } 
 		Zipr_SDK::Dollop_t *AddNewDollops(IRDB_SDK::Instruction_t *start);
 
 		/*
@@ -55,6 +60,7 @@ class ZiprDollopManager_t : public DollopManager_t {
 		 */
 		Zipr_SDK::Dollop_t *getContainingDollop(IRDB_SDK::Instruction_t *insn);
 
+		size_t getSize() { return Size(); } 
 		size_t Size() {
 			return m_dollops.size();
 		}
@@ -62,9 +68,12 @@ class ZiprDollopManager_t : public DollopManager_t {
 		/*
 		 * Patch functions.
 		 */
+		void addDollopPatch(Zipr_SDK::DollopPatch_t *new_patch) { return AddDollopPatch(new_patch); } 
 		void AddDollopPatch(Zipr_SDK::DollopPatch_t *new_patch) {
-			m_patches_to_dollops[new_patch->Target()].push_back(new_patch);
+			m_patches_to_dollops[new_patch->getTarget()].push_back(new_patch);
 		}
+
+		std::list<DollopPatch_t*> getPatchesToDollop(Dollop_t *target) { return PatchesToDollop(target); } 
 		std::list<DollopPatch_t*> PatchesToDollop(Dollop_t *target) {
 			/*
 			 * FIXME: This will throw an exception if target is
@@ -77,12 +86,18 @@ class ZiprDollopManager_t : public DollopManager_t {
 		/*
 		 * Dollop target update functions.
 		 */
-		bool UpdateTargets(Dollop_t *);
+		bool updateTargets(Dollop_t *t) { return UpdateTargets(t); } 
+		bool UpdateTargets(Dollop_t *t);
+
+		void updateAllTargets() { return UpdateAllTargets(); }
 		void UpdateAllTargets();
 
 		/*
 		 * Iteration functions.
 		 */
+		DollopList_t::iterator begin() { return dollops_begin(); } 
+		DollopList_t::iterator end()   { return dollops_end();   }  
+
 		DollopList_t::iterator dollops_begin() {
 			return m_dollops.begin();
 		}
@@ -95,16 +110,22 @@ class ZiprDollopManager_t : public DollopManager_t {
 		/*
 		 * Printing/output functions.
 		 */
-		void PrintDollopPatches(const std::ostream &);
+		void printDollopPatches(const std::ostream &o) { return PrintDollopPatches(o); } 
+		void PrintDollopPatches(const std::ostream &o);
+
 		friend std::ostream &operator<<(std::ostream &out,
 		                                const ZiprDollopManager_t &dollop_man);
+
+		void printStats(std::ostream &out) { return PrintStats(out); } 
 		void PrintStats(std::ostream &out);
-		void PrintPlacementMap(const MemorySpace_t &memory_space,
-		                       const std::string &map_filename);
+
+		void printPlacementMap(const MemorySpace_t &memory_space, const std::string &map_filename) { return PrintPlacementMap(memory_space,map_filename); }
+		void PrintPlacementMap(const MemorySpace_t &memory_space, const std::string &map_filename);
 	
 		/*
 		 * Helper functions.
 		 */
+		size_t determineDollopEntrySize(DollopEntry_t *entry) { return DetermineDollopEntrySize(entry); } 
 		size_t DetermineDollopEntrySize(DollopEntry_t *entry);
 
 		Zipr_SDK::Zipr_t* GetZipr() const { return m_zipr; }
@@ -112,7 +133,7 @@ class ZiprDollopManager_t : public DollopManager_t {
 		/*
 		 * Helper functions.
 		 */
-		void AddDollop(Dollop_t *dollop);
+		void addDollop(Dollop_t *dollop);
 		void CalculateStats();
 
 		/*

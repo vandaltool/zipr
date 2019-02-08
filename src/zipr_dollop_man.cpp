@@ -23,7 +23,7 @@ namespace zipr {
 			 * There is a target dollop. But, do we need to split it?
 			 */
 			if (existing_dollop->getDollopEntryCount() &&
-			    existing_dollop->front()->Instruction() == start) {
+			    existing_dollop->front()->getInstruction() == start) {
 				/*
 				 * Just return the existing dollop.
 				 */
@@ -33,7 +33,7 @@ namespace zipr {
 				/*
 				 * Split at this dollop to make a new one!
 				 */
-				AddDollops(new_dollop = existing_dollop->Split(start));
+				addDollops(new_dollop = existing_dollop->split(start));
 				return new_dollop;
 			}
 		}
@@ -44,26 +44,26 @@ namespace zipr {
 			std::list<DollopEntry_t*>::iterator it, it_end;
 			Dollop_t *original_new_dollop = nullptr, *previous_dollop = nullptr;
 			Instruction_t *fallthrough = nullptr;
-			original_new_dollop = new_dollop = Dollop_t::CreateNewDollop(start,this);
+			original_new_dollop = new_dollop = Dollop_t::createNewDollop(start,this);
 
 			for (it = new_dollop->begin(), it_end = new_dollop->end();
 			     it != it_end;
 					 it++)
 			{
-				Dollop_t *containing_dollop = getContainingDollop((*it)->Instruction());
+				Dollop_t *containing_dollop = getContainingDollop((*it)->getInstruction());
 				if (containing_dollop) 
 				{
 					Dollop_t *fallthrough_dollop = nullptr;
 					if (true)
 						cout << "Found an instruction in a new dollop that "
 						     << "is already in a dollop: " << std::hex
-								 << ((nullptr!=(*it)->Instruction()->getAddress()) ?
-								    (*it)->Instruction()->getAddress()->getVirtualOffset():0x0)
+								 << ((nullptr!=(*it)->getInstruction()->getAddress()) ?
+								    (*it)->getInstruction()->getAddress()->getVirtualOffset():0x0)
 								 << endl;
 					/*
 					 * Reliably get a pointer to the containing dollop.
 					 */
-					fallthrough_dollop = AddNewDollops((*it)->Instruction());
+					fallthrough_dollop = addNewDollops((*it)->getInstruction());
 					
 					/*
 					 * Link this dollop to that one. Do this before
@@ -71,18 +71,18 @@ namespace zipr {
 					 * will recalculate the size and needs to know about
 					 * the updated fallthrough dollop!
 					 */
-					new_dollop->FallthroughDollop(fallthrough_dollop);
-					fallthrough_dollop->FallbackDollop(new_dollop);
+					new_dollop->setFallthroughDollop(fallthrough_dollop);
+					fallthrough_dollop->setFallbackDollop(new_dollop);
 
 					/*
 					 * Delete the overlapping instructions.
 					 */
-					new_dollop->RemoveDollopEntries(it, it_end);
+					new_dollop->removeDollopEntries(it, it_end);
 
 					/*
 					 * Put the new dollop in!
 					 */
-					AddDollop(new_dollop);
+					addDollop(new_dollop);
 
 					return new_dollop;
 				}
@@ -95,9 +95,7 @@ namespace zipr {
 			 * entries here. So, we attempt to link
 			 * to those, where possible.
 			 */
-			while ((fallthrough = new_dollop->back()
-			                                ->Instruction()
-			                                ->getFallthrough()) != nullptr)
+			while ((fallthrough = new_dollop->back() ->getInstruction() ->getFallthrough()) != nullptr)
 			{
 				/*
 				 * Look FIRST for a containing dollop.
@@ -114,9 +112,9 @@ namespace zipr {
 				Dollop_t *existing_dollop = getContainingDollop(fallthrough);
 				if (existing_dollop)
 				{
-					assert(existing_dollop->front()->Instruction() == fallthrough);
-					new_dollop->FallthroughDollop(existing_dollop);
-					existing_dollop->FallbackDollop(new_dollop);
+					assert(existing_dollop->front()->getInstruction() == fallthrough);
+					new_dollop->setFallthroughDollop(existing_dollop);
+					existing_dollop->setFallbackDollop(new_dollop);
 					break;
 				}
 				/*
@@ -130,11 +128,11 @@ namespace zipr {
 				// because CreateNewDollop does not adaquately trim the dollop
 				// and it might result in an instruction being in two dollops
 				// Using AddNewDollops instead.
-				new_dollop = this->AddNewDollops(fallthrough);
-				previous_dollop->FallthroughDollop(new_dollop);
-				new_dollop->FallbackDollop(previous_dollop);
+				new_dollop = this->addNewDollops(fallthrough);
+				previous_dollop->setFallthroughDollop(new_dollop);
+				new_dollop->setFallbackDollop(previous_dollop);
 			}
-			AddDollops(original_new_dollop);
+			addDollops(original_new_dollop);
 			return original_new_dollop;
 		}
 	}
@@ -144,9 +142,9 @@ namespace zipr {
 		const auto l_zipr=dynamic_cast<ZiprImpl_t*>(m_zipr);
 		const auto sizer=l_zipr->getSizer();
 		if (m_zipr != nullptr)
-			return m_zipr->DetermineDollopEntrySize(entry, false);
+			return m_zipr->determineDollopEntrySize(entry, false);
 		else
-			return sizer->DetermineInsnSize(entry->Instruction(), false);
+			return sizer->DetermineInsnSize(entry->getInstruction(), false);
 	}
 
 	void ZiprDollopManager_t::PrintDollopPatches(const ostream &out) {
@@ -171,8 +169,8 @@ namespace zipr {
 		Dollop_t *dollop = dollop_head;
 		while (dollop != nullptr)
 		{
-			AddDollop(dollop);
-			dollop = dollop->FallthroughDollop();
+			addDollop(dollop);
+			dollop = dollop->getFallthroughDollop();
 		}
 		m_refresh_stats = true;
 	}
@@ -184,7 +182,7 @@ namespace zipr {
 	 * sure to test whether or not the instruction-to-dollop map
 	 * is properly updated in all cases.
 	 */
-	void ZiprDollopManager_t::AddDollop(Dollop_t *dollop) {
+	void ZiprDollopManager_t::addDollop(Dollop_t *dollop) {
 		/*
 		 * We always want to update the isntruction-to-dollop map.
 		 * However, we might not always want to push it on to the
@@ -197,7 +195,7 @@ namespace zipr {
 		for (it = dollop->begin(), it_end = dollop->end();
 		     it != it_end;
 				 it++) {
-			m_insn_to_dollop[(*it)->Instruction()] = dollop;
+			m_insn_to_dollop[(*it)->getInstruction()] = dollop;
 		}
 		/*
 		 * Push the actual dollop onto the list of dollops
@@ -212,10 +210,10 @@ namespace zipr {
 		const auto local_dollop=list<DollopEntry_t*>(dollop->begin(), dollop->end());
 		for (auto &entry : local_dollop )
 		{
-			auto insn=entry->Instruction();
+			auto insn=entry->getInstruction();
 			if (insn->getTarget()) 
 			{
-				auto new_target=AddNewDollops(insn->getTarget());
+				auto new_target=addNewDollops(insn->getTarget());
 
 				/*
 				 * In the case there is a change, we have to restart.
@@ -226,8 +224,8 @@ namespace zipr {
 				 * 
 				 * But!  We could avoid the break by using a copy of the set, which we do.
 				 */
-				if (new_target != entry->TargetDollop()) {
-					entry->TargetDollop(new_target);
+				if (new_target != entry->getTargetDollop()) {
+					entry->setTargetDollop(new_target);
 					changed = true;
 				}
 			}
@@ -247,7 +245,7 @@ namespace zipr {
                                 // we don't bother marking a change because
                                 // we only need to do this once for relocs
                                 // and we are certain to get here once for every dollop
-                                AddNewDollops(wrt_insn);
+                                addNewDollops(wrt_insn);
                                 cout<<"Adding new dollop for reloc of type="<<reloc->getType()<<endl;
 
                         }
@@ -303,7 +301,7 @@ namespace zipr {
 		{
 			Dollop_t *dollop = *dollop_it;
 			m_total_dollop_entries += dollop->getDollopEntryCount();
-			if (dollop->WasTruncated())
+			if (dollop->wasTruncated())
 				m_truncated_dollops++;
 		}
 		m_refresh_stats = false;
@@ -363,9 +361,9 @@ namespace zipr {
 					 dollop_it++)
 			{
 				Dollop_t *dollop = (*dollop_it);
-				if (current_range.getStart() <= dollop->Place() &&
-				    current_range.getEnd() >= dollop->Place())
-					dollops_in_range[dollop->Place()] = dollop;
+				if (current_range.getStart() <= dollop->getPlace() &&
+				    current_range.getEnd() >= dollop->getPlace())
+					dollops_in_range[dollop->getPlace()] = dollop;
 			}
 			
 			map_output << "==========" << endl;
@@ -381,9 +379,9 @@ namespace zipr {
 					 dollops_in_range_it++)
 			{
 				dollop_to_print = (*dollops_in_range_it).second;
-				if (previous_dollop_end < dollop_to_print->Place())
+				if (previous_dollop_end < dollop_to_print->getPlace())
 				{
-					for (unsigned i=0;i<(dollop_to_print->Place()-previous_dollop_end);i++)
+					for (unsigned i=0;i<(dollop_to_print->getPlace()-previous_dollop_end);i++)
 					{
 						if (!((byte_print_counter) % LINE_LENGTH)) 
 							PRINT_LINE_HEADER((current_range.getStart()+byte_print_counter))
@@ -392,9 +390,9 @@ namespace zipr {
 					}
 #if 0
 					map_output << "0x" << std::hex << previous_dollop_end
-					           << " - 0x" <<std::hex <<(dollop_to_print->Place())
+					           << " - 0x" <<std::hex <<(dollop_to_print->getPlace())
 					           << ": (" << std::dec 
-					           << (dollop_to_print->Place() - previous_dollop_end)
+					           << (dollop_to_print->getPlace() - previous_dollop_end)
 					           << ") EMPTY" << endl;
 #endif
 				}
@@ -406,15 +404,15 @@ namespace zipr {
 					byte_print_counter++;
 				}
 #if 0
-				map_output << "0x" << std::hex << dollop_to_print->Place()
+				map_output << "0x" << std::hex << dollop_to_print->getPlace()
 				           << " - 0x" << std::hex
-									 <<(dollop_to_print->Place()+dollop_to_print->getSize())
+									 <<(dollop_to_print->getPlace()+dollop_to_print->getSize())
 									 << ": (" << std::dec << dollop_to_print->getSize()
 									 << ") "
 									 << endl;
 
 #endif
-				previous_dollop_end = dollop_to_print->Place() + 
+				previous_dollop_end = dollop_to_print->getPlace() + 
 				                      dollop_to_print->getSize();
 			}
 
@@ -429,7 +427,7 @@ namespace zipr {
 					byte_print_counter++;
 				}
 #if 0
-				map_output << "0x" << std::hex << dollop_to_print->Place()
+				map_output << "0x" << std::hex << dollop_to_print->getPlace()
 				           << " - 0x" << std::hex
 				           <<(dollop_to_print->Place()+dollop_to_print->getSize())
 				           << ": (" << std::dec 

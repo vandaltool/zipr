@@ -65,54 +65,54 @@ for(DLFunctionHandleSet_t::iterator it=m_handleList.begin(); it!=m_handleList.en
  *
  * Use this function as the comparator for sorting
  * the plugins by the name that they return in their
- * ToString() method. Sorting plugins by name is
+ * toString() method. Sorting plugins by name is
  * useful when trying to debug problems that depend
  * on specific ordering.
  */
 bool sort_plugins_by_name(DLFunctionHandle_t a, DLFunctionHandle_t b)
 {
-	return a->ToString() < b->ToString();
+	return a->toString() < b->toString();
 }
  
 void ZiprPluginManager_t::PinningBegin()
 {
-	dispatch_to(PinningBegin);
+	dispatch_to(doPinningBegin);
 }
 
 void ZiprPluginManager_t::PinningEnd()
 {
-	dispatch_to(PinningEnd);
+	dispatch_to(doPinningEnd);
 }
 
 void ZiprPluginManager_t::DollopBegin()
 {
-	dispatch_to(DollopBegin);
+	dispatch_to(doDollopBegin);
 }
 
 void ZiprPluginManager_t::DollopEnd()
 {
-	dispatch_to(DollopEnd);
+	dispatch_to(doDollopEnd);
 }
 void ZiprPluginManager_t::CallbackLinkingBegin()
 {
-	dispatch_to(CallbackLinkingBegin);
+	dispatch_to(doCallbackLinkingBegin);
 }
 void ZiprPluginManager_t::CallbackLinkingEnd()
 {
-	dispatch_to(CallbackLinkingEnd);
+	dispatch_to(doCallbackLinkingEnd);
 }
 
 RangeAddress_t ZiprPluginManager_t::PlaceScoopsBegin(const RangeAddress_t max_addr)
 {
 	RangeAddress_t ret=max_addr;
-	dispatch_to_with_var(PlaceScoopsBegin,ret);
+	dispatch_to_with_var(doPlaceScoopsBegin,ret);
 	return ret;
 }
 
 RangeAddress_t ZiprPluginManager_t::PlaceScoopsEnd(const RangeAddress_t max_addr)
 {
 	RangeAddress_t ret=max_addr;
-	dispatch_to_with_var(PlaceScoopsEnd,ret);
+	dispatch_to_with_var(doPlaceScoopsEnd,ret);
 	return ret;
 }
 
@@ -123,7 +123,7 @@ bool ZiprPluginManager_t::DoesPluginAddress(const Dollop_t *dollop, const RangeA
 	for(m_handleList.begin();it!=m_handleList.end();++it)
 	{
 		ZiprPluginInterface_t* zpi=(ZiprPluginInterface_t*)*it;
-		if (Must == zpi->AddressDollop(dollop, source, place, coalesce, fallthrough_allowed))
+		if (Must == zpi->addressDollop(dollop, source, place, coalesce, fallthrough_allowed))
 		{
 			placer = zpi;
 			return true;
@@ -139,7 +139,7 @@ bool ZiprPluginManager_t::DoPluginsPlop(Instruction_t *insn, std::list<DLFunctio
 	for(m_handleList.begin();it!=m_handleList.end();++it)
 	{
 		ZiprPluginInterface_t* zpi=(ZiprPluginInterface_t*)*it;
-		if (zpi->WillPluginPlop(insn))
+		if (zpi->willPluginPlop(insn))
 		{
 			callbacks.push_back(zpi);
 			a_plugin_does_plop = true;
@@ -154,7 +154,7 @@ bool ZiprPluginManager_t::DoesPluginRetargetCallback(const RangeAddress_t &callb
 	for(m_handleList.begin();it!=m_handleList.end();++it)
 	{
 		ZiprPluginInterface_t* zpi=(ZiprPluginInterface_t*)*it;
-		if(Must==zpi->RetargetCallback(callback_addr,callback_entry,target_address))
+		if(Must==zpi->retargetCallback(callback_addr,callback_entry,target_address))
 		{
 			patcher = zpi;
 			return true;
@@ -169,7 +169,7 @@ bool ZiprPluginManager_t::DoesPluginRetargetPin(const RangeAddress_t &patch_addr
 	for(m_handleList.begin();it!=m_handleList.end();++it)
 	{
 		ZiprPluginInterface_t* zpi=(ZiprPluginInterface_t*)*it;
-		if (Must == zpi->RetargetPin(patch_addr, target_dollop, target_address))
+		if (Must == zpi->retargetPin(patch_addr, target_dollop, target_address))
 		{
 			patcher = zpi;
 			return true;
@@ -235,7 +235,7 @@ void ZiprPluginManager_t::open_plugins
 			exit(1);
 		}
 
-		ZiprOptionsNamespace_t *global_ns = p_opts->Namespace("global");
+		ZiprOptionsNamespace_t *global_ns = p_opts->getNamespace("global");
 		GetPluginInterface_t my_GetPluginInterface=(GetPluginInterface_t)sym;
 		Zipr_SDK::ZiprPluginInterface_t *interface=(*my_GetPluginInterface)(zipr_obj);
 
@@ -244,7 +244,7 @@ void ZiprPluginManager_t::open_plugins
 			cerr<<"Failed to get interface from file ("<<name<<")"<<endl;
 			exit(1);
 		}
-		p_opts->AddNamespace(interface->RegisterOptions(global_ns));
+		p_opts->addNamespace(interface->registerOptions(global_ns));
 
 		m_handleList.push_back(interface);
 		

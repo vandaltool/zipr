@@ -32,7 +32,7 @@ ZiprSizerBase_t::ZiprSizerBase_t(Zipr_SDK::Zipr_t* p_zipr_obj,
 		const size_t p_SHORT_PIN_SIZE,
 		const size_t p_ALIGNMENT
 		) :
-	memory_space(*dynamic_cast<zipr::ZiprMemorySpace_t*>(p_zipr_obj->GetMemorySpace())),
+	memory_space(*dynamic_cast<zipr::ZiprMemorySpace_t*>(p_zipr_obj->getMemorySpace())),
 	m_zipr_obj(*dynamic_cast<zipr::ZiprImpl_t*>(p_zipr_obj)),
 	CALLBACK_TRAMPOLINE_SIZE(p_CALLBACK_TRAMPOLINE_SIZE),
 	TRAMPOLINE_SIZE         (p_TRAMPOLINE_SIZE         ),
@@ -57,9 +57,9 @@ size_t ZiprSizerBase_t::DetermineDollopSizeInclFallthrough(Dollop_t *dollop) con
         Dollop_t *fallthrough_it = nullptr;
         for (fallthrough_it = dollop;
              fallthrough_it != nullptr;
-                         fallthrough_it = fallthrough_it->FallthroughDollop())
+                         fallthrough_it = fallthrough_it->getFallthroughDollop())
         {
-                if (fallthrough_it->IsPlaced())
+                if (fallthrough_it->isPlaced())
                         /*
                          * We are going to stop calculating when
                          * we see that we'll hit a dollop that
@@ -75,7 +75,7 @@ size_t ZiprSizerBase_t::DetermineDollopSizeInclFallthrough(Dollop_t *dollop) con
                  * That space is included in getSize()
                  * result, so we subtract it here.
                  */
-                if (fallthrough_it->FallthroughDollop())
+                if (fallthrough_it->getFallthroughDollop())
                         fallthroughs_wcds -= TRAMPOLINE_SIZE;
         }
         /*

@@ -58,7 +58,7 @@ using namespace ELFIO;
 ZiprPatcherARM64_t::ZiprPatcherARM64_t(Zipr_SDK::Zipr_t* p_parent) :
 	m_parent(dynamic_cast<zipr::ZiprImpl_t*>(p_parent)),     // upcast to ZiprImpl
         m_firp(p_parent->getFileIR()),
-        memory_space(*p_parent->GetMemorySpace())
+        memory_space(*p_parent->getMemorySpace())
 
 { 
 }
@@ -159,7 +159,7 @@ void ZiprPatcherARM64_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_
 				const auto tramp_range=memory_space.getFreeRange(tramp_size);
 				tramp_start=tramp_range.getStart();
 				// don't be too fancy, just reserve 12 bytes.
-				memory_space.SplitFreeRange({tramp_start,tramp_start+tramp_size});
+				memory_space.splitFreeRange({tramp_start,tramp_start+tramp_size});
 				// record that we had to trampoline this!
 				redirect_map[from_addr]=tramp_start;
 			}
@@ -184,16 +184,16 @@ void ZiprPatcherARM64_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_
 			ApplyPatch(L0,L2);
 
 			// now make the original location jump to the trampoline
-			memory_space.PlopBytes(FA, branch_bytes.c_str(), 4);
+			memory_space.plopBytes(FA, branch_bytes.c_str(), 4);
 			ApplyPatch(FA,L0);// make it jump to FT
 			
 			// now drop down a uncond jump for L1, and make it go to FT
 			// (i.e., jump around the jump to the target)
-			memory_space.PlopBytes(L1, branch_bytes.c_str(), 4);
+			memory_space.plopBytes(L1, branch_bytes.c_str(), 4);
 			ApplyPatch(L1,FT);// make it jump to FT
 
 			// lastly, put down the uncond jump at L2, and make it go to the target
-			memory_space.PlopBytes(L2, branch_bytes.c_str(), 4);
+			memory_space.plopBytes(L2, branch_bytes.c_str(), 4);
 			ApplyPatch(L2,to_addr);// make it jump to +8
 
 			const auto disasm_str=DecodedInstruction_t::factory(from_addr, (const void*)&full_word, 4)->getDisassembly();

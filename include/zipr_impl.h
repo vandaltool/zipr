@@ -121,6 +121,25 @@ class ZiprImpl_t : public Zipr_t
 		 * may be plopping this instruction and want
 		 * to do some calculations.
 		 */
+		size_t determineDollopEntrySize(DollopEntry_t *entry, bool account_for_trampoline) { return DetermineDollopEntrySize(entry,account_for_trampoline); } 
+		Zipr_SDK::RangeAddress_t plopDollopEntry(
+			DollopEntry_t *de,
+			RangeAddress_t override_place = 0,
+			RangeAddress_t override_target = 0) { return PlopDollopEntry(de,override_place,override_target); } 
+
+		Zipr_SDK::RangeAddress_t plopDollopEntryWithTarget(
+			DollopEntry_t *de,
+			RangeAddress_t override_place = 0,
+			RangeAddress_t override_target = 0) { return PlopDollopEntryWithTarget(de,override_place,override_target); } 
+
+		Zipr_SDK::RangeAddress_t plopDollopEntryWithCallback(
+			DollopEntry_t *de,
+			RangeAddress_t override_place = 0) { return PlopDollopEntryWithCallback(de,override_place); } 
+
+		ZiprOptionsNamespace_t *registerOptions(ZiprOptionsNamespace_t *ns) { return RegisterOptions(ns); } 
+
+
+
 		size_t DetermineDollopEntrySize(DollopEntry_t *entry, bool account_for_trampoline);
 
 		Zipr_SDK::RangeAddress_t PlopDollopEntry(
@@ -174,12 +193,16 @@ class ZiprImpl_t : public Zipr_t
 		}
 
 
+                virtual Zipr_SDK::MemorySpace_t *getMemorySpace() { return &memory_space; }
                 virtual Zipr_SDK::MemorySpace_t *GetMemorySpace() { return &memory_space; }
 		virtual Zipr_SDK::DollopManager_t *getDollopManager() { return &m_dollop_mgr; }
                 virtual ELFIO::elfio *getELFIO() { return elfiop; }
                 virtual IRDB_SDK::FileIR_t *getFileIR() { return m_firp; }
+                virtual Zipr_SDK::InstructionLocationMap_t *getLocationMap() { return &final_insn_locations; }
                 virtual Zipr_SDK::InstructionLocationMap_t *GetLocationMap() { return &final_insn_locations; }
+		virtual Zipr_SDK::PlacementQueue_t* getPlacementQueue() { return &placement_queue; }  
 		virtual Zipr_SDK::PlacementQueue_t* GetPlacementQueue() { return &placement_queue; }  
+		virtual Zipr_SDK::RangeAddress_t placeUnplacedScoops(Zipr_SDK::RangeAddress_t max) { return PlaceUnplacedScoops(max); } 
 		virtual Zipr_SDK::RangeAddress_t PlaceUnplacedScoops(Zipr_SDK::RangeAddress_t max);
 		Stats_t* getStats() { return m_stats; }
 		ZiprSizerBase_t* getSizer() { return sizer; }
@@ -339,6 +362,7 @@ class ZiprImpl_t : public Zipr_t
 		void ApplyPatches(IRDB_SDK::Instruction_t* insn);
 		void PatchInstruction(RangeAddress_t addr, IRDB_SDK::Instruction_t* insn);
 		void RewritePCRelOffset(RangeAddress_t from_addr,RangeAddress_t to_addr, int insn_length, int offset_pos);
+		void applyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr) { return ApplyPatch(from_addr,to_addr); } 
 		void ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr);
 		void ApplyNopToPatch(RangeAddress_t addr);
 		void PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr);
