@@ -173,6 +173,8 @@ class ElfWriterImpl : public ElfWriter
 		IRDB_SDK::DataScoop_t* find_scoop_by_name(const std::string& name, IRDB_SDK::FileIR_t* );
 		void AddSections(FILE* fout);
 		void update_phdr_for_scoop_sections(IRDB_SDK::FileIR_t* );
+		void trim_last_segment_filesz(IRDB_SDK::FileIR_t* firp);
+
 		void WriteElf(FILE* fout);
 	private:
 		unsigned int DetermineMaxPhdrSize();

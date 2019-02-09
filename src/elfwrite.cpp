@@ -23,6 +23,10 @@ using namespace zipr;
 using namespace ELFIO;
 
 
+static inline uintptr_t page_round_down(uintptr_t x)
+{
+	return x & (~(PAGE_SIZE-1));
+}
 static inline uintptr_t page_round_up(uintptr_t x)
 {
         return  ( (((uintptr_t)(x)) + PAGE_SIZE-1)  & (~(PAGE_SIZE-1)) );
@@ -187,13 +191,6 @@ void ElfWriter::CreateSegmap(const ELFIO::elfio *elfiop, FileIR_t* firp, const s
 		// if we switch perms, or skip a page 
 		if( (perms.m_perms!=segperms.m_perms) || (segend!=pagestart))
 		{
-/*
-			LoadSegment_t *seg=new LoadSegment_t;
-			seg->memsz=segend-segstart;
-			seg->filesz=initend-segstart;
-			seg->start_page=segstart;
-			seg->m_perms=segperms.m_perms;
-*/
 			const auto seg=new LoadSegment_t(initend-segstart, segend-segstart, 0, segstart,segperms.m_perms);
 			segvec.push_back(seg);
 
@@ -204,32 +201,19 @@ void ElfWriter::CreateSegmap(const ELFIO::elfio *elfiop, FileIR_t* firp, const s
 			segend=segstart+PAGE_SIZE;
 
 			update_initend(perms);
-/*
-			if( should_bss_optimize(perms) ) // perms.is_zero_initialized() && m_bss_opts)
-				initend=segstart;
-			else
-				initend=segend;
-*/
 
 		}
 		else
 		{
 			// else, same permission and next page, extend segment. 
 			segend=pagestart+PAGE_SIZE;
-			if(! should_bss_optimize(perms) ) // !perms.is_zero_initialized() || ! m_bss_opts)
+			if(! should_bss_optimize(perms) ) 
 				initend=pagestart+PAGE_SIZE;
 		}
 		
 	}
 
 	// make sure we print the last one
-/*
-	LoadSegment_t *seg=new LoadSegment_t;
-	seg->memsz=segend-segstart;
-	seg->filesz=initend-segstart;
-	seg->start_page=segstart;
-	seg->m_perms=segperms.m_perms;
-*/
 	const auto seg=new LoadSegment_t(initend-segstart, segend-segstart, 0, segstart,segperms.m_perms);
 	segvec.push_back(seg);
 
@@ -553,6 +537,53 @@ void  ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf
 	}
 	return;
 }
+template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
+void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::trim_last_segment_filesz(FileIR_t* firp)
+{
+	// skip trimming if we aren't doing bss optimization.
+	if(!m_bss_opts) return;
+
+
+	// find the last pt load segment header.
+	auto seg_to_trim=-1;
+	for(auto i=0u;i<new_phdrs.size(); i++)
+	{
+		if(new_phdrs[i].p_type==PT_LOAD)
+		{
+			seg_to_trim=i;
+		}
+		
+	}
+	assert(seg_to_trim!=-1);
+
+
+	
+
+	const auto seg_start_addr=new_phdrs[seg_to_trim].p_vaddr;
+	const auto seg_filesz=new_phdrs[seg_to_trim].p_filesz;
+	const auto seg_end_addr=seg_start_addr+seg_filesz-1;
+	const auto seg_end_page_start=page_round_down(seg_end_addr);
+	const auto &page=pagemap[seg_end_page_start];
+
+	// don't write 0's at end of last page 
+	auto k=PAGE_SIZE-1;
+	for (/* above */; k>=0; k--)
+	{
+		if(page.data[k]!=0)
+			break;
+	}
+	const auto last_nonzero_byte_in_seg = k;
+	const auto bytes_to_trim = (PAGE_SIZE - 1) - last_nonzero_byte_in_seg;	
+
+	// lastly, update the filesz so we don't need the reste of those bytes.
+	// memsz is allowed to be bigger than filesz.
+	new_phdrs[seg_to_trim].p_filesz -= bytes_to_trim;
+
+	return;
+
+}
+
+
 
 
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
@@ -693,30 +724,16 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 	std::vector<T_Elf_Phdr> relro_phdrs;
 	new_phdrs.insert(new_phdrs.end(), relro_phdrs.begin(), relro_phdrs.end());
 
-#ifdef CGC
-// 
-// Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
-// LOAD           0x000f20 0x00000000 0x00000000 0x00000 0x00000       0x1000 (edited)
-	// create 0-size headre
-	std::cout<<"New phdrs at: "<<std::hex<<new_phdr_addr<<std::endl;
-	T_Elf_Phdr aqphdr;
-	memset(&aqphdr,0,sizeof(aqphdr));
-	aqphdr.p_type = PT_LOAD;
-	aqphdr.p_offset =phdr_map_offset; 
-	aqphdr.p_align =0x1000;
-	new_phdrs.insert(new_phdrs.begin(),aqphdr);
-#endif
-
 	// record the new ehdr.
 	new_ehdr=ehdr;
 	new_ehdr.e_phoff=phdr_map_offset;
 	new_ehdr.e_shoff=0;
 	new_ehdr.e_shnum=0;
 	new_ehdr.e_phnum=new_phdrs.size();
-	// new_ehdr.e_phoff=sizeof(new_ehdr);
 	new_ehdr.e_shstrndx=0;
 
 	update_phdr_for_scoop_sections(m_firp);
+	trim_last_segment_filesz(m_firp);
 
 
 	return true;
@@ -751,6 +768,11 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 				}
 				else
 				{
+#if 0
+note:  this does not work on centos as it leaves  the segments
+start address + filesize to be a number greater than the entire files size.
+This causes the loader to complain.  The "right" way to do this is to update the
+filesz before we start writing out the elf.  See "trim_last_seg_filesz"
 					// don't write 0's at end of last page 
 					int k=0;
 					for (k=PAGE_SIZE-1;k>=0;k--)
@@ -759,7 +781,12 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 							break;
 					}
 					std::cout<<"phdr["<<std::dec<<loadcnt<<"] optimizing last page write to size k="<<std::hex<<k<<std::endl;
-					fwrite(page.data.data(), k+1, 1, fout);
+#endif
+					const auto end_offset=new_phdrs[i].p_filesz;
+					const auto current_offset = j;
+					const auto bytes_to_write = end_offset - current_offset;
+					assert(bytes_to_write <= PAGE_SIZE);
+					fwrite(page.data.data(), bytes_to_write, 1, fout);
 				}
 		
 			}
