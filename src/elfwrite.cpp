@@ -540,6 +540,10 @@ void  ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
 void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::trim_last_segment_filesz(FileIR_t* firp)
 {
+	// this seems OK and is necessary on centos... but on ubuntu, it's a no-go (segfault from loader).
+	// for now, disabling this optimization until we can figure out what's up.
+	
+#if 0
 	// skip trimming if we aren't doing bss optimization.
 	if(!m_bss_opts) return;
 
@@ -573,13 +577,16 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 			break;
 	}
 	const auto last_nonzero_byte_in_seg = k;
-	const auto bytes_to_trim = (PAGE_SIZE - 1) - last_nonzero_byte_in_seg;	
+	(void)last_nonzero_byte_in_seg;
+
+	const auto bytes_to_trim = 1 (PAGE_SIZE - 1) - last_nonzero_byte_in_seg;	
 
 	// lastly, update the filesz so we don't need the reste of those bytes.
 	// memsz is allowed to be bigger than filesz.
-	new_phdrs[seg_to_trim].p_filesz -= bytes_to_trim;
+ 	new_phdrs[seg_to_trim].p_filesz -= (bytes_to_trim);
 
 	return;
+#endif
 
 }
 
@@ -735,7 +742,6 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 	update_phdr_for_scoop_sections(m_firp);
 	trim_last_segment_filesz(m_firp);
 
-
 	return true;
 }
 
@@ -769,7 +775,7 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 				else
 				{
 #if 0
-note:  this does not work on centos as it leaves  the segments
+note:  this does not work on centos as it can leave the segments
 start address + filesize to be a number greater than the entire files size.
 This causes the loader to complain.  The "right" way to do this is to update the
 filesz before we start writing out the elf.  See "trim_last_seg_filesz"
