@@ -91,13 +91,15 @@ protect()
 
 clean()
 {
-	rm out >> /dev/null 2>&1
-	rm correct >> /dev/null 2>&1
+	local ec=$?
+	rm -f out >> /dev/null 2>&1
+	rm -f correct >> /dev/null 2>&1
 	rm -Rf fib.exe* peasoup_exe* lib*.so* >> /dev/null 2>&1
 
  	for config in "${configs[@]}"; do
-                rm *."$config" >> /dev/null 2>&1 
+                rm -f *."$config" >> /dev/null 2>&1 
         done	
+	exit $ec
 }
 
 

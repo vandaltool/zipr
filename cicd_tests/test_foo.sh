@@ -90,6 +90,7 @@ protect()
 
 clean()
 {
+	local ec=$?
 	rm -f out >> /dev/null 2&>1
 	rm -f correct >> /dev/null 2&>1
 	rm -rf peasoup_executable_directory.* >> /dev/null 2&>1
@@ -100,6 +101,8 @@ clean()
 	for config in "${configs[@]}"; do
 		rm -f *."$config" >> /dev/null 2&>1
 	done
+	
+	exit $ec
 }
 
 
