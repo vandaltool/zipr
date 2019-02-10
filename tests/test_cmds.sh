@@ -15,7 +15,7 @@ do_tests()
 
 	build_only=0
 
-	export IB_VERBOSE=1
+#	export IB_VERBOSE=1
 
 	progs_pass=""
 	progs_fail=""
