@@ -111,7 +111,7 @@ main()
 	for fib_varient in "${fib_varients[@]}"; do
                 for libfib_varient in "${libfib_so_orig_varients[@]}"; do
 			for libfib2_varient in "${libfib2_so_orig_varients[@]}"; do
-				for i in {2..6}; do
+				for i in 2 6; do
                         		do_test "$fib_varient" $i "$libfib_varient" "$libfib2_varient"
 				done
 			done
