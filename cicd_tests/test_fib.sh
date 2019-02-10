@@ -20,7 +20,7 @@ get_correct()
 	set -e
 }
 
-test()
+do_test()
 {
 	echo running test $1 $2 $3 $4
 	
@@ -34,9 +34,17 @@ test()
 	set +e
 	./$1 $n > out 
 	echo $? >> out
-	set -e
+
 
 	cmp out correct
+	res=$?
+	if [[ $? != 0 ]]; then
+		echo "detected output diff:"
+		diff out correct
+		exit 1
+	fi
+
+	set -e
 }
 
 
@@ -104,7 +112,7 @@ main()
                 for libfib_varient in "${libfib_so_orig_varients[@]}"; do
 			for libfib2_varient in "${libfib2_so_orig_varients[@]}"; do
 				for i in {2..6}; do
-                        		test "$fib_varient" $i "$libfib_varient" "$libfib2_varient"
+                        		do_test "$fib_varient" $i "$libfib_varient" "$libfib2_varient"
 				done
 			done
                 done

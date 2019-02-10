@@ -13,16 +13,27 @@ get_correct()
 {
 	cp libfoo.so.orig libfoo.so
 	./foo.exe > correct
+	echo $? >> correct
 }
 
 do_test()
 {
 	echo Running test: "$1" "$2"
 	
+	set +e
 	cp $2 libfoo.so  
 	./$1 > out 
+	echo $? >> out
 
 	cmp out correct
+        res=$?
+        if [[ $? != 0 ]]; then
+                echo "detected output diff:"
+                diff out correct
+                exit 1
+        fi
+	set -e
+
 }
 
 
