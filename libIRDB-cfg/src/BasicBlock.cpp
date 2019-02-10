@@ -78,6 +78,8 @@ void BasicBlock_t::BuildBlock
 	/* loop through the instructions for this block */
 	while(insn)
 	{
+		const auto d = DecodedInstruction_t::factory(insn);
+
 		/* insert this instruction */
 		instructions.push_back(insn);
 
@@ -85,12 +87,13 @@ void BasicBlock_t::BuildBlock
 		auto ft_insn=insn->getFallthrough();
 
 		/* determine if there's a target block */
-		BasicBlock_t* target_block=NULL;
-		if (target_insn && is_in_container(insn2block_map,target_insn)) 
+		BasicBlock_t* target_block=nullptr;
+		const auto include_target = (!d->isCall());
+		if (include_target && target_insn && is_in_container(insn2block_map,target_insn)) 
 			target_block=find_map_object(insn2block_map,target_insn);
 
 		/* determine if there's a ft block */
-		BasicBlock_t* ft_block=NULL;
+		BasicBlock_t* ft_block=nullptr;
 		if(ft_insn && is_in_container(insn2block_map,ft_insn))
 			ft_block=find_map_object(insn2block_map,ft_insn);
 
@@ -108,14 +111,15 @@ void BasicBlock_t::BuildBlock
 		}
 
 		// handle fixed-call fallthroughs.
-		for_each(ALLOF(insn->getRelocations()),  [this,&insn2block_map](IRDB_SDK::Relocation_t* reloc)
+		// for_each(ALLOF(insn->getRelocations()),  [this,&insn2block_map](IRDB_SDK::Relocation_t* reloc)
+		for(auto reloc : insn->getRelocations())
 		{
 			// and has a reloc that's a pcrel with a WRT object 
 			// possible for a call to have a null fallthrouth (and consequently null WRT)
 			// becauase the call may be the last insn in a section, etc.
-			if( reloc->getType()==string("fix_call_fallthrough") && reloc->getWRT()!=NULL) 
+			if( reloc->getType()==string("fix_call_fallthrough") && reloc->getWRT()!=nullptr) 
 			{
-				assert(reloc->getWRT()!=NULL);
+				assert(reloc->getWRT()!=nullptr);
 				auto fix_call_fallthrough_insn=dynamic_cast<Instruction_t*>(reloc->getWRT());
 				assert(fix_call_fallthrough_insn);
 
@@ -129,7 +133,7 @@ void BasicBlock_t::BuildBlock
 
 				is_exit_block=false;
 			}
-		});
+		};
 
 
 		/* if there's a fallthrough block, insert it into the appropriate sets */
@@ -156,13 +160,19 @@ void BasicBlock_t::BuildBlock
 		insn=ft_insn;
 	}
 
+
 	// deal with IB targets for the end of the block
 
 	insn=instructions[instructions.size()-1]; // get last instruction.
 	assert(insn);
-	if(insn->getIBTargets())
+	const auto icfs         = insn->getIBTargets();
+	const auto d            = DecodedInstruction_t::factory(insn);
+	const auto include_icfs = (d->isReturn() || d->isCall() ) ;
+
+
+	if(icfs != nullptr && include_icfs)
 	{
-		for_each(ALLOF(*insn->getIBTargets()), [this,&insn2block_map,func](IRDB_SDK::Instruction_t* target)
+		for(const auto target : *icfs)
 		{
 			if(is_in_container(insn2block_map,target) && target!=func->getEntryPoint())	// don't link calls to the entry block.
 			{
@@ -170,7 +180,7 @@ void BasicBlock_t::BuildBlock
 				target_block->GetPredecessors().insert(this);
 				successors.insert(target_block);
 			}
-		});
+		};
 	}
 	
 }
@@ -222,7 +232,7 @@ IRDB_SDK::Instruction_t* BasicBlock_t::getBranchInstruction() const
 
 {
 	if(!endsInBranch())
-		return NULL;
+		return nullptr;
 
 	auto branch=instructions[instructions.size()-1];	
 	return branch;

@@ -72,14 +72,8 @@ static InstructionSet_t FindBlockStarts(IRDB_SDK::Function_t* func)
 	/* for each instruction, decide if it's a block start based on whether or not 
 	 * it can be indirectly branched to.  Also mark direct targets as block starts.
 	 */
-	for(auto it=func->getInstructions().begin();
-		it!=func->getInstructions().end();
-		++it
-	   )
+	for(auto insn : func->getInstructions())
 	{
-		/* Get the instruction */
-		auto insn=*it;
-
 		/* If this instruction might be an indirect branch target, then mark it as a block start */
 		if(insn->getIndirectBranchTargetAddress())
 		{
