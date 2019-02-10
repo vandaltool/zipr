@@ -1,6 +1,5 @@
 #!/bin/bash
 
-set -x
 set -e
 trap clean EXIT
 
@@ -16,7 +15,7 @@ get_correct()
 	./foo.exe > correct
 }
 
-test()
+do_test()
 {
 	echo Running test: "$1" "$2"
 	
@@ -58,7 +57,18 @@ protect()
  	for file in "${files[@]}"; do
 		for config in "${configs[@]}"; do
 			echo Protecting file "$file" with config "$config"
-			"$config" ./"$file" ./"$file"".""$config"
+			set -e
+			"$config" ./"$file" ./"$file"".""$config"  > ps.log 2>&1 
+			res=$?
+			set +e
+			if [[ $res  != 0 ]]; then
+				echo "Failed to xform!"
+				cat peasoup*/logs/*
+				exit 1	
+			else
+				rm -Rf peasoup*
+			fi
+			
 			varient_array_name="$(echo "$file" | sed -e 's/\./_/g')""_varients"
 			varient_file="$file"".""$config"
                         eval $varient_array_name+=\(\$varient_file\)			
@@ -69,17 +79,15 @@ protect()
 
 clean()
 {
-	set +e
-	set +x
-	rm out >> /dev/null 2&>1
-	rm correct >> /dev/null 2&>1
+	rm -f out >> /dev/null 2&>1
+	rm -f correct >> /dev/null 2&>1
 	rm -rf peasoup_executable_directory.* >> /dev/null 2&>1
-	rm *.orig >> /dev/null 2&>1
-	rm *.exe >> /dev/null 2&>1
-	rm *.so >> /dev/null 2&>1
+	rm -f *.orig >> /dev/null 2&>1
+	rm -f *.exe >> /dev/null 2&>1
+	rm -f *.so >> /dev/null 2&>1
 	
 	for config in "${configs[@]}"; do
-		rm *."$config" >> /dev/null 2&>1
+		rm -f *."$config" >> /dev/null 2&>1
 	done
 }
 
@@ -96,7 +104,7 @@ main()
 	
 	for foo_varient in "${foo_exe_varients[@]}"; do
 		for libfoo_varient in "${libfoo_varients[@]}"; do
-			test "$foo_varient" "$libfoo_varient"
+			do_test "$foo_varient" "$libfoo_varient"
 		done
 	done	
 	

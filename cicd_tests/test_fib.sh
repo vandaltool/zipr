@@ -1,6 +1,5 @@
 #!/bin/bash  
 
-set -x
 set -e
 trap clean EXIT
 
@@ -64,7 +63,17 @@ protect()
         for file in "${files[@]}"; do
                 for config in "${configs[@]}"; do
                         echo Protecting file "$file" with config "$config"
-                        "$config" ./"$file" ./"$file"".""$config"
+			set +e
+                        "$config" ./"$file" ./"$file"".""$config" > out 2>&1 
+			res=$?
+			set -e
+			if [[ $res == 0 ]]; then
+				rm -f out peasoup*
+			else
+				echo "Failed protection!"
+				cat out peasoup*/logs/*
+				exit 1
+			fi
                         varient_array_name="$(echo "$file" | sed -e 's/\./_/g')""_varients"
 			varient_file="$file"".""$config"
                         eval $varient_array_name+=\(\$varient_file\)                        
@@ -74,8 +83,6 @@ protect()
 
 clean()
 {
-	set +e
-	set +x
 	rm out >> /dev/null 2>&1
 	rm correct >> /dev/null 2>&1
 	rm -Rf fib.exe* peasoup_exe* lib*.so* >> /dev/null 2>&1
