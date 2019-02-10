@@ -68,7 +68,7 @@ protect()
 			res=$?
 			set -e
 			if [[ $res == 0 ]]; then
-				rm -f out peasoup*
+				rm -rf out peasoup*
 			else
 				echo "Failed protection!"
 				cat out peasoup*/logs/*
