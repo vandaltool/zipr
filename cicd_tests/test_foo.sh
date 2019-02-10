@@ -27,7 +27,7 @@ do_test()
 
 	cmp out correct
         res=$?
-        if [[ $? != 0 ]]; then
+        if [[ $res != 0 ]]; then
                 echo "detected output diff:"
                 diff out correct
                 exit 1
