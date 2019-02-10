@@ -53,7 +53,7 @@ class ZiprMemorySpace_t : public MemorySpace_t
 		RangeSet_t::iterator findFreeRange(RangeAddress_t addr) { return FindFreeRange(addr); } 
 		void addFreeRange(Range_t newRange)                { return AddFreeRange(newRange); } 
 		void addFreeRange(Range_t newRange, bool original) { return AddFreeRange(newRange, original); } 
-		void removeFreeRange(Range_t newRange) {return removeFreeRange(newRange); } 
+		void removeFreeRange(Range_t newRange) {return RemoveFreeRange(newRange); } 
 		Range_t getLargeRange(void) { return GetLargeRange(); } 
 		bool areBytesFree(RangeAddress_t addr, int num_bytes) { return AreBytesFree(addr,num_bytes); } 
 		bool isByteFree(RangeAddress_t addr) { return IsByteFree(addr); } 
@@ -65,7 +65,7 @@ class ZiprMemorySpace_t : public MemorySpace_t
 		RangeAddress_t getMinPlopped() const { return min_plopped; }
 		RangeAddress_t getMaxPlopped() const { return max_plopped; }
 		ZiprOptionsNamespace_t *registerOptions(ZiprOptionsNamespace_t* ns) { return RegisterOptions(ns); } 
-		int getRangeCount() { return getRangeCount(); } 
+		int getRangeCount() { return GetRangeCount(); } 
 
 
 
