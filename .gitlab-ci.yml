@@ -85,25 +85,25 @@ xform-ls-centos75:
 
 
 #
-# test_cmds.sh rida
+# test_quick for EH handling
 #
-.basic-pgms-rida: &basic-pgms-rida
+.basic-pgms-rida: &eh-tests
   stage: test
   script:
-    - ./cicd_testing/basic-pgms-rida.sh
+    - ./cicd_testing/eh-tests.sh
 
-basic-pgms-rida-ubuntu18:
-  <<: *basic-pgms-rida
+eh-tests-ubuntu18:
+  <<: *eh-tests
   tags:
     - ubuntu18
 
-basic-pgms-rida-ubuntu16:
-  <<: *basic-pgms-rida
+eh-tests-ubuntu16:
+  <<: *eh-tests
   tags:
     - ubuntu16
 
-basic-pgms-rida-centos75:
-  <<: *basic-pgms-rida
+eh-tests-centos75:
+  <<: *eh-tests
   tags:
     - centos75
 
