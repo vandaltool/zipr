@@ -167,7 +167,7 @@ void BasicBlock_t::BuildBlock
 	assert(insn);
 	const auto icfs         = insn->getIBTargets();
 	const auto d            = DecodedInstruction_t::factory(insn);
-	const auto include_icfs = (d->isReturn() || d->isCall() ) ;
+	const auto include_icfs = !(d->isReturn() || d->isCall() ) ;
 
 
 	if(icfs != nullptr && include_icfs)

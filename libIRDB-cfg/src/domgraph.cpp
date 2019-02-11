@@ -44,20 +44,22 @@ inline S const& find_map_object( const std::map< T , S > &a_map, const T& key)
 DominatorGraph_t::DominatorGraph_t(const ControlFlowGraph_t* p_cfg, bool needs_postdoms, bool needs_idoms)
 	: cfg(*p_cfg), warn(false)
 {
+	auto &blocks=p_cfg->getBlocks();
 
 
 	assert(needs_postdoms==false);
 	assert(needs_idoms==false);
 
 
-//	typedef const BasicBlockSet_t& (*) (const BasicBlock_t* node) pred_func_ptr_t;
 	pred_func_ptr_t func_get_predecessors=[](const IRDB_SDK::BasicBlock_t* node) -> const IRDB_SDK::BasicBlockSet_t&
 	{
 		return node->getPredecessors();
 	};
 
-	dom_graph=Dom_Comp(p_cfg->getBlocks(), func_get_predecessors, p_cfg->getEntry());
-	idom_graph=Idom_Comp(p_cfg->getBlocks(), dom_graph, p_cfg->getEntry());
+	dom_graph=Dom_Comp(blocks, func_get_predecessors, p_cfg->getEntry());
+	idom_graph=Idom_Comp(blocks, dom_graph, p_cfg->getEntry());
+
+	Dominated_Compute();
 
 // a func may have multiple exit nodes.  how do we deal with that?
 // psuedo-block?  invoke this for each exit block?
@@ -300,6 +302,7 @@ BlockToBlockMap_t DominatorGraph_t::Idom_Comp(const IRDB_SDK::BasicBlockSet_t& N
 		};
 	};
 
+
 	//for each n \in N-{r} do
 	for (auto n : NminusR)
 	{
@@ -312,6 +315,26 @@ BlockToBlockMap_t DominatorGraph_t::Idom_Comp(const IRDB_SDK::BasicBlockSet_t& N
 } // IDom_Comp
 
 
+void DominatorGraph_t::Dominated_Compute()
+{
+	for(auto p : dom_graph)
+	{
+		auto dominates     = p.first;
+		auto dominated_set = p.second;
+
+		for(auto dominated : dominated_set)
+			dominated_graph[dominated].insert(dominates);
+	}
+	for(auto p : idom_graph)
+	{
+		auto dominates = p.first;
+		auto dominated = p.second;
+		idominated_graph[dominated].insert(dominates);
+	}
+
+}
+
+
 
 
 ostream& IRDB_SDK::operator<<(ostream& os, const DominatorGraph_t& dg)
@@ -322,28 +345,43 @@ ostream& IRDB_SDK::operator<<(ostream& os, const DominatorGraph_t& dg)
 
 void DominatorGraph_t::dump(ostream& os) const
 {
-	// for_each(dg.cfg.GetBlocks().begin(), dg.cfg.GetBlocks().end(), [&](const BasicBlock_t* blk)
 	for(auto blk : cfg.getBlocks())
 	{
 		assert(blk);
-		const auto& blk_dominates=getDominators(blk);
+		const auto& blk_dominators=getDominators(blk);
 		auto first_insn=*(blk->getInstructions().begin());
 		assert(first_insn);
 
-		os<<"\tBlock entry id:" <<blk->getInstructions()[0]->getBaseID()<<endl;
-		os<<"\t\tDominated by: ";
-		for(auto dom : blk_dominates)
+		os<<"\tBlock entry id:" <<dec<<blk->getInstructions()[0]->getBaseID()<<endl;
+		os<<"\t\tBlocks that (eventually) dominate me: ";
+		for(auto blk : blk_dominators)
 		{
-			os<<dom->getInstructions()[0]->getBaseID()<<", ";
+			os<<blk->getInstructions()[0]->getBaseID()<<", ";
 		};
 		os<<endl;
 
 		const IRDB_SDK::BasicBlock_t* idom=getImmediateDominator(blk);
 		if(idom)
-			os<<"\t\tImmediate Dominator: "<<hex<<idom->getInstructions()[0]->getBaseID()<<endl;
+			os<<"\t\tMy Immediate Dominator: "<<dec<<idom->getInstructions()[0]->getBaseID()<<endl;
 		else
 			os<<"\t\tNo Immed Dominator."<<endl;
 
+
+		os<<"\t\tBlocks I (eventually) Dominate: ";
+		const auto& dominated_blocks=getDominated(blk);
+		for(auto blk : dominated_blocks)
+		{
+			os<<blk->getInstructions()[0]->getBaseID()<<", ";
+		};
+		os<<endl;
+
+		os<<"\t\tBlocks I Immediately Dominate: ";
+		const auto& imm_dominated_blocks=getImmediateDominated(blk);
+		for(auto blk : imm_dominated_blocks)
+		{
+			os<<blk->getInstructions()[0]->getBaseID()<<", ";
+		};
+		os<<endl;
 	};
 
 }
@@ -355,4 +393,8 @@ IRDB_SDK::DominatorGraph_t::factory(const ControlFlowGraph_t* p_cfg, const bool 
 	const auto real_cfg=dynamic_cast<const libIRDB::ControlFlowGraph_t*>(p_cfg);
 	return unique_ptr<IRDB_SDK::DominatorGraph_t>(new libIRDB::DominatorGraph_t(real_cfg, needs_postdoms, needs_idoms));
 }
+
+
+
+
 
