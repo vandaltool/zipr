@@ -129,8 +129,14 @@ do_tests()
 				p1)
 					$PSZ $progpath $protected -c p1transform=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
-				mg)
-					$PSZ $progpath $protected -c move_globals=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+				mga)
+					$PSZ $progpath $protected -c move_globals=on -o --aggressive --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+				;;
+				rida_mga_p1)
+					$PSZ $progpath $protected -c rida -c move_globals=on -o --aggressive -c p1transform --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+				;;
+				mgc)
+					$PSZ $progpath $protected -c move_globals=on -o --conservative --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				mg_elfonly)
 					$PSZ $progpath $protected -c move_globals=on -o move_globals:--elftables-only --tempdir $temp_dir > test_${prog}.ps.log 2>&1
@@ -156,8 +162,14 @@ do_tests()
 				p1_scfi)
 					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected -c p1transform=on -c selective_cfi=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
-				p1_scfi_mg)
+				rida_p1_scfi)
+					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ -c rida $progpath $protected -c p1transform=on -c selective_cfi=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+				;;
+				p1_scfi_mga)
 					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected -c p1transform=on -c selective_cfi=on -c move_globals=on --step-option move_globals:--aggressive --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+				;;
+				rida_p1_scfi_mga)
+					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ -c rida $progpath $protected -c p1transform=on -c selective_cfi=on -c move_globals=on --step-option move_globals:--aggressive --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				kill_deads)
 					$PSZ $progpath $protected -c kill_deads=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
