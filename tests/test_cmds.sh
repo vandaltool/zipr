@@ -105,9 +105,6 @@ do_tests()
 				zafl_fix_map)
 					zafl.sh $progpath $protected --rida -m --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
-				zafl_dom)
-					zafl.sh $progpath $protected --rida -d --tempdir $temp_dir > test_${prog}.ps.log 2>&1
-				;;
 				zipr)
 					$PSZ $progpath $protected --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
