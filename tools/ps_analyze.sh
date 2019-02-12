@@ -626,7 +626,7 @@ check_steps_completed()
 				echo "*********************************************************"
 				echo "  Warning! Step requested, but not performed: $step_name "
 				echo "  (Could not find ${step_name}.exe nor lib${step_name}.so"
-				echo "  in include path: $SECURITY_TRANSFORMS_HOME/plugins_install/)"
+				echo "  in search path: $SECURITY_TRANSFORMS_HOME/plugins_install/)"
 				echo "*********************************************************"
 				echo "*********************************************************"
 				warnings=1
@@ -905,7 +905,7 @@ do_plugins()
 			echo "*********************************************************"
 			echo "  Warning! Step requested, but not performed: $stepname "
 			echo "  (Could not find ${stepname}.exe nor lib${stepname}.so "
-			echo "  in include path: $SECURITY_TRANSFORMS_HOME/plugins_install/)"
+			echo "  in search path: $SECURITY_TRANSFORMS_HOME/plugins_install/)"
 			echo "*********************************************************"
 			echo "*********************************************************"
 			warnings=1
