@@ -591,7 +591,6 @@ void PopulateCFG::fill_in_landing_pads(FileIR_t *firp)
 
 	map<Function_t*,set<Instruction_t*> > insns_to_add_to_funcs;
 
-	// for_each(firp->getInstructions().begin(), firp->getInstructions().end(), [&](Instruction_t* t)
 	for(const auto t : firp->getInstructions())
 	{
 		if(t->getFunction()==NULL)
@@ -602,7 +601,6 @@ void PopulateCFG::fill_in_landing_pads(FileIR_t *firp)
 	};
 
 
-	// for_each(insns_to_add_to_funcs.begin(), insns_to_add_to_funcs.end(), [&](pair<Function_t* const,set<Instruction_t*> > & p)
 	for(const auto & p : insns_to_add_to_funcs)
 	{
 		auto & func=p.first; 	

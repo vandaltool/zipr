@@ -83,8 +83,6 @@ Relocation_t* SCFI_Instrument::create_reloc(Instruction_t* insn)
 {
         /*
 	 * Relocation_t* reloc=new Relocation_t;
-        insn->getRelocations().insert(reloc);
-        firp->getRelocations().insert(reloc);
 	*/
 	auto reloc=firp->addNewRelocation(insn,0,"error-if-seen"); // will update offset and type in caller
 
@@ -1175,30 +1173,30 @@ static void insert_into_scoop_at(const string &str, DataScoop_t* scoop, FileIR_t
 	scoop->getEnd()->setVirtualOffset(newend);
 
 	// update each reloc to point to the new location.
-	for_each(scoop->getRelocations().begin(), scoop->getRelocations().end(), [str,at](Relocation_t* reloc)
+	for(auto reloc : scoop->getRelocations())
 	{
 		if((unsigned int)reloc->getOffset()>=at)
 			reloc->setOffset(reloc->getOffset()+str.size());
 		
-	});
+	};
 
 	// check relocations for pointers to this object.
 	// we'll update dataptr_to_scoop relocs, but nothing else
 	// so assert if we find something else
-	for_each(firp->getRelocations().begin(), firp->getRelocations().end(), [scoop](Relocation_t* reloc)
+	for(auto reloc : firp->getRelocations())
 	{
-		DataScoop_t* wrt=dynamic_cast<DataScoop_t*>(reloc->getWRT());
+		auto wrt=dynamic_cast<DataScoop_t*>(reloc->getWRT());
 		assert(wrt != scoop || reloc->getType()=="dataptr_to_scoop");
-	});
+	};
 
 	// for each scoop
-	for_each(firp->getDataScoops().begin(), firp->getDataScoops().end(), [&str,scoop,firp,at](DataScoop_t* scoop_to_update)
+	for(auto scoop_to_update : firp->getDataScoops())
 	{
 		// for each relocation for that scoop
-		for_each(scoop_to_update->getRelocations().begin(), scoop_to_update->getRelocations().end(), [&str,scoop,firp,scoop_to_update,at](Relocation_t* reloc)
+		for(auto reloc : scoop_to_update->getRelocations())
 		{
 			// if it's a reloc that's wrt scoop
-			DataScoop_t* wrt=dynamic_cast<DataScoop_t*>(reloc->getWRT());
+			auto wrt=dynamic_cast<DataScoop_t*>(reloc->getWRT());
 			if(wrt==scoop)
 			{
 				// then we need to update the scoop
@@ -1234,9 +1232,9 @@ static void insert_into_scoop_at(const string &str, DataScoop_t* scoop, FileIR_t
 				}
 			}	
 
-		});
+		};
 		
-	});
+	};
 };
 
 template<int ptrsize>
@@ -1410,21 +1408,16 @@ bool SCFI_Instrument::add_got_entries()
 	// ICFS_t *newicfs=new ICFS_t;
 	// firp->GetAllICFS().insert(newicfs);
 	auto newicfs=firp->addNewICFS();
-	for_each(firp->getInstructions().begin(), firp->getInstructions().end(), [&](Instruction_t* insn)
+	for(auto insn : firp->getInstructions())
 	{
 		if(insn->getIndirectBranchTargetAddress() != NULL )
 			newicfs->insert(insn);
-	});
+	};
 	zestcfi_function_entry->setIBTargets(newicfs);
 	firp->assembleRegistry();
 	
 
 	// add a relocation so that the zest_cfi "function"  gets pointed to by the symbol
-	/*
-	Relocation_t* zestcfi_reloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE,  zestcfi_pos+((uintptr_t)&zestcfi_sym.st_value - (uintptr_t)&zestcfi_sym), "data_to_insn_ptr", zestcfi_function_entry);
-	dynsym_scoop->getRelocations().insert(zestcfi_reloc);
-	firp->getRelocations().insert(zestcfi_reloc);
-	*/
 	auto zestcfi_reloc=firp->addNewRelocation(dynsym_scoop,zestcfi_pos+((uintptr_t)&zestcfi_sym.st_value - (uintptr_t)&zestcfi_sym), "data_to_insn_ptr", zestcfi_function_entry);
 	(void)zestcfi_reloc;
 

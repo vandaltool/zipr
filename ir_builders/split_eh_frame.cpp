@@ -91,7 +91,7 @@ void split_eh_frame_impl_t<ptrsize>::lsda_call_site_build_ir
 	}
 	else
 	{
-		for_each(action_table.begin(), action_table.end(), [&](const shared_ptr<LSDACallSiteAction_t>& p)
+		for(auto p : action_table)
 		{
 			const auto action=p->getAction();
 			if(action==0)
@@ -153,7 +153,7 @@ void split_eh_frame_impl_t<ptrsize>::lsda_call_site_build_ir
 				cout<<"What? :"<< action <<endl;
 				exit(1);
 			}
-		});
+		};
 	}
 }
 
@@ -163,12 +163,11 @@ void split_eh_frame_impl_t<ptrsize>::lsda_build_ir(const LSDA_t& lsda, Instructi
 	const auto  call_site_table_ptr=lsda.getCallSites();
 	const auto& call_site_table=*call_site_table_ptr;
 	const auto& type_table_ptr=lsda.getTypeTable();
-//	auto& type_table=*type_table_ptr;
 
 	const auto cs_ptr_it=find_if(ALLOF(call_site_table), [&](const shared_ptr<LSDACallSite_t> &p)
-	{
-		return lsda_call_site_appliesTo(*p, insn);
-	});
+		{
+			return lsda_call_site_appliesTo(*p, insn);
+		});
 
 	if(cs_ptr_it!= call_site_table.end())
 	{

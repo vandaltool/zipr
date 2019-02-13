@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
 			FileIR_t* firp=new FileIR_t(*pidp, this_file);
 			assert(firp);
 
-			std::for_each(firp->GetFunctions().begin(), firp->GetFunctions().end(), [](const Function_t* fn) {
+			for(auto fn : firp->GetFunctions())
 				if (!fn) return;
 				cout<<"Function: " << fn->GetName();				
 				cout<<" NumArgs: " << fn->GetNumArguments();				
@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
 				cout<<" StackFrameSize: " << fn->GetStackFrameSize();				
 				cout<<" OutArgsRegionSize: " << fn->GetOutArgsRegionSize();				
 				cout<<endl;
-			});
+			};
 
 			for(
 				set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
