@@ -849,10 +849,11 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 	vector<T_Elf_Shdr> shdrs;
 
 	// add each scoop name to the string table
-	for_each(m_firp->getDataScoops().begin(), m_firp->getDataScoops().end(), [&](DataScoop_t* scoop)
+	// for_each(m_firp->getDataScoops().begin(), m_firp->getDataScoops().end(), [&](DataScoop_t* scoop)
+	for(auto scoop : m_firp->getDataScoops()) 
 	{
 		strtab.AddString(scoop->getName());
-	});
+	};
 
 
 	string zipr_symtab=".scoop_symtab";
@@ -862,7 +863,8 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 
 
 	// locate a file offset for each scoop by examining the output phdrs.
-	for_each(m_firp->getDataScoops().begin(), m_firp->getDataScoops().end(), [&](DataScoop_t* scoop)
+	// for_each(m_firp->getDataScoops().begin(), m_firp->getDataScoops().end(), [&](DataScoop_t* scoop)
+	for(auto scoop : m_firp->getDataScoops()) 
 	{
 		auto finder=find_if(new_phdrs.begin(), new_phdrs.end(), [scoop](const T_Elf_Phdr& phdr)
 		{
@@ -875,7 +877,7 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 
 		size_t filepos=phdr.p_offset + (scoop->getStart()->getVirtualOffset()-phdr.p_vaddr);
 		file_positions[scoop]=filepos;
-	});
+	};
 
 	T_Elf_Shdr null_shdr;
 	memset(&null_shdr,0,sizeof(null_shdr));
@@ -913,7 +915,8 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 
 
 	// for each scoop, pushback an shdr
-	for_each(m_firp->getDataScoops().begin(), m_firp->getDataScoops().end(), [&](DataScoop_t* scoop)
+	// for_each(m_firp->getDataScoops().begin(), m_firp->getDataScoops().end(), [&](DataScoop_t* scoop)
+	for(auto scoop : m_firp->getDataScoops())
 	{
 
 		T_Elf_Shdr shdr;
@@ -947,7 +950,7 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 		shdr. sh_addralign= 0 ; // scoop->getAlign(); doesn't exist?
 	
 		shdrs.push_back(shdr);
-	});
+	};
 	auto scoop_it=m_firp->getDataScoops().begin();
 	for(unsigned int i=1; i<shdrs.size(); i++)	 // skip null shdr
 	{

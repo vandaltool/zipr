@@ -41,8 +41,6 @@ cpppath='''
 	.
 	$ZIPR_HOME/third_party/ELFIO/elfio-2.2	
 	$IRDB_SDK//include/
-	$SECURITY_TRANSFORMS_HOME/include/
-	$SECURITY_TRANSFORMS_HOME/libtransform/include
 	$ZIPR_HOME/include/
 	$ZIPR_SDK/include/
 	'''
