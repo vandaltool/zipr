@@ -16,10 +16,6 @@ namespace Zipr_SDK
 	{
 		return !operator==(comp);
 	}
-	Zipr_SDK::Dollop_t *Dollop_t::createNewDollop(IRDB_SDK::Instruction_t *start, Zipr_SDK::DollopManager_t *mgr) 
-	{
-		return new zipr::Dollop_t(start, mgr);
-	}
 
 	ostream &operator<<(ostream &out, const Zipr_SDK::Dollop_t &d) 
 	{
@@ -116,7 +112,7 @@ namespace zipr
 		assert(l_zipr_impl);
 		return 	total_dollop_entry_size + l_zipr_impl->getSizer()->TRAMPOLINE_SIZE;
 	}
-	Zipr_SDK::DollopEntry_t *Dollop_t::setFallthroughDollopEntry(Zipr_SDK::DollopEntry_t *entry) const
+	Zipr_SDK::DollopEntry_t *Dollop_t::getFallthroughDollopEntry(Zipr_SDK::DollopEntry_t *entry) const
 	{
 		const auto found_entry = find(ALLOF(*this), entry);
 		if (found_entry == end())
@@ -266,5 +262,10 @@ namespace zipr
 		out << "Instruction: " << hex << p.getInstruction() << endl;
 		out << "Target Dollop: " << hex << p.getTargetDollop() << endl;
 		return out;
+	}
+
+	Zipr_SDK::Dollop_t* Dollop_t::createNewDollop(IRDB_SDK::Instruction_t *start, Zipr_SDK::DollopManager_t *mgr) 
+	{
+		return new zipr::Dollop_t(start, mgr);
 	}
 }

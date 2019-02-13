@@ -1323,7 +1323,7 @@ void ZiprImpl_t::PlaceDollops()
 				auto split_dollop = to_place->split((*dit)->getInstruction());
 				m_dollop_mgr.AddDollops(split_dollop);
 
-				to_place->wasTruncated(true);
+				to_place->setTruncated(true);
 				if (am_coalescing)
 					m_stats->truncated_dollops_during_coalesce++;
 

@@ -160,7 +160,7 @@ RangeAddress_t ZiprSizerX86_t::PlopDollopEntryWithTarget(
                         // jmp fallthrough
                         // +5: jmp target
                         char bytes[]={0,0x5};
-                        auto fallthrough_de = entry->getMemberOfDollop()->setFallthroughDollopEntry(entry);
+                        auto fallthrough_de = entry->getMemberOfDollop()->getFallthroughDollopEntry(entry);
 
                         /*
                          * This means that we have a fallthrough for this dollop entry

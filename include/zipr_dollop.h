@@ -99,15 +99,18 @@ namespace zipr
 			bool isFallthroughPatched(void) const { return m_fallthrough_patched; }
 			void setFallthroughPatched(bool patched);
 
-			Zipr_SDK::DollopEntry_t *setFallthroughDollopEntry(Zipr_SDK::DollopEntry_t *) const;
+			Zipr_SDK::DollopEntry_t *getFallthroughDollopEntry(Zipr_SDK::DollopEntry_t *) const;
 
-			void wasTruncated(bool truncated) { m_was_truncated = truncated; }
 			bool wasTruncated(void) const { return m_was_truncated; }
+			void setTruncated(bool truncated) { m_was_truncated = truncated; }
 
 			void setCoalesced(bool coalesced);
 			bool wasCoalesced(void) const { return m_coalesced; }
 
 			void reCalculateSize();
+
+			static Zipr_SDK::Dollop_t* createNewDollop(IRDB_SDK::Instruction_t *start, Zipr_SDK::DollopManager_t *mgr);
+
 		private:
 			size_t CalculateSize();
 			size_t m_size;
