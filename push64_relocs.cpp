@@ -105,14 +105,6 @@ void Push64Relocs_t::HandlePush64Relocation(Instruction_t *insn, Relocation_t *r
 
 	/* 
 	 * Step 0: Add the add instruction and its address.
-	AddressID_t *add_addr = new AddressID_t;
-	add_addr->setFileID(push_insn->getAddress()->getFileID());
-	m_firp.getAddresses().insert(add_addr);
-
-	Instruction_t *add_insn = new Instruction_t;
-	add_insn->setAddress(add_addr);
-	add_insn->setFunction(push_insn->getFunction());
-	m_firp.getInstructions().insert(add_insn);
 	 */
 	auto add_addr=m_firp.addNewAddress(push_insn->getAddress()->getFileID(), 0);
 	auto add_insn=m_firp.addNewInstruction(
@@ -154,11 +146,6 @@ void Push64Relocs_t::HandlePush64Relocation(Instruction_t *insn, Relocation_t *r
 
 	/*
 	 * Step 3: Put the relocation on the add instruction.
-	Relocation_t *add_reloc = new Relocation_t;
-	add_reloc->SetOffset(push_addr);
-	add_reloc->setType("add64");
-	add_insn->getRelocations().insert(add_reloc);
-	m_firp.getRelocations().insert(add_reloc);
 	 */
 	auto add_reloc=m_firp.addNewRelocation(add_insn,push_addr,"add64");
 
