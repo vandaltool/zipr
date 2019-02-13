@@ -3,7 +3,55 @@
 
 #define ALLOF(a) std::begin((a)),std::end((a))
 
-namespace Zipr_SDK {
+namespace Zipr_SDK
+{
+	bool DollopEntry_t::operator==(const  DollopEntry_t &comp) 
+	{
+		return 
+			make_tuple(     getInstruction(),      getTargetDollop()) == 
+			make_tuple(comp.getInstruction(), comp.getTargetDollop()) ;
+	}
+
+	bool DollopEntry_t::operator!=(const Zipr_SDK::DollopEntry_t &comp) 
+	{
+		return !operator==(comp);
+	}
+	Zipr_SDK::Dollop_t *Dollop_t::createNewDollop(IRDB_SDK::Instruction_t *start, Zipr_SDK::DollopManager_t *mgr) 
+	{
+		return new zipr::Dollop_t(start, mgr);
+	}
+
+	ostream &operator<<(ostream &out, const Zipr_SDK::Dollop_t &d) 
+	{
+
+		//for (it = d.begin(), it_end = d.end(); it != it_end; it++) 
+		for (auto entry : d) 
+		{
+			out << hex << *(entry) << endl;
+		}
+		auto fallback = d.getFallbackDollop();
+		if ( fallback != nullptr)
+			out << "Fallback: " << hex << fallback << endl;
+		auto fallthrough = d.getFallthroughDollop();
+		if ( fallthrough != nullptr)
+			out << "Fallthrough: " << hex << fallthrough << endl;
+		return out;
+	}
+
+	ostream &operator<<(ostream &out, const DollopPatch_t &p) {
+		out << hex << &p << ":" << hex << p.getTarget();
+		return out;
+	}
+
+	ostream &operator<<(ostream &out, const DollopEntry_t &p) {
+		out << "Instruction: " << hex << p.getInstruction() << endl;
+		out << "Target Dollop: " << hex << p.getTargetDollop() << endl;
+		return out;
+	}
+}
+
+namespace zipr 
+{
 	using namespace IRDB_SDK;
 	using namespace zipr;
 	using namespace std;
@@ -68,7 +116,7 @@ namespace Zipr_SDK {
 		assert(l_zipr_impl);
 		return 	total_dollop_entry_size + l_zipr_impl->getSizer()->TRAMPOLINE_SIZE;
 	}
-	DollopEntry_t *Dollop_t::setFallthroughDollopEntry(DollopEntry_t *entry) const
+	Zipr_SDK::DollopEntry_t *Dollop_t::setFallthroughDollopEntry(Zipr_SDK::DollopEntry_t *entry) const
 	{
 		const auto found_entry = find(ALLOF(*this), entry);
 		if (found_entry == end())
@@ -89,19 +137,19 @@ namespace Zipr_SDK {
 		m_size = CalculateSize();
 	}
 
-	Dollop_t *Dollop_t::split(IRDB_SDK::Instruction_t *split_point) {
+	Zipr_SDK::Dollop_t *Dollop_t::split(IRDB_SDK::Instruction_t *split_point) 
+	{
 		/*
 		 * 1. Find the matching dollop entry.
 		 */
 		DollopEntry_t query(split_point, nullptr);
-		std::list<DollopEntry_t *>::iterator de_split_point, de_it;
 		Dollop_t *new_dollop = nullptr;
 
-		de_split_point = find_if(begin(),end(),
-			[&query](const DollopEntry_t *p) {
-//				std::cout << "Checking "
-//				          << std::hex << query.Instruction() << " ?= "
-//									<< std::hex << p->Instruction() << "." << std::endl;
+		auto de_split_point = find_if(begin(),end(),
+			[&query](const Zipr_SDK::DollopEntry_t *p) {
+//				cout << "Checking "
+//				          << hex << query.Instruction() << " ?= "
+//									<< hex << p->Instruction() << "." << endl;
 				return query.getInstruction() == p->getInstruction();
 			});
 		/*
@@ -132,13 +180,13 @@ namespace Zipr_SDK {
 		/*
 		 * 2. Remove them from this one
 		 */
-		de_it = de_split_point;
+		auto de_it = de_split_point;
 		while (de_it != end()) {
 		/*
 		 * 3. Move them to a new one
 		 */
-			DollopEntry_t *to_move = *de_it;
-			std::list<DollopEntry_t*>::iterator moved_it = de_it;
+			auto to_move = *de_it;
+			auto moved_it = de_it;
 
 			de_it++;
 
@@ -156,13 +204,14 @@ namespace Zipr_SDK {
 	}
 
 	void Dollop_t::removeDollopEntries(
-		std::list<DollopEntry_t*>::iterator first_to_remove, 
-		std::list<DollopEntry_t*>::iterator last_to_remove) {
+		Zipr_SDK::DollopEntryList_t::iterator first_to_remove, 
+		Zipr_SDK::DollopEntryList_t::iterator last_to_remove) 
+	{
 		erase(first_to_remove, last_to_remove);
 		m_size = CalculateSize();
 	}
 
-	DollopEntry_t::DollopEntry_t(IRDB_SDK::Instruction_t *insn,Dollop_t *member_of)
+	DollopEntry_t::DollopEntry_t(IRDB_SDK::Instruction_t *insn, Zipr_SDK::Dollop_t *member_of)
 	{
 		/*
 		 * NB: This does not link if the insn has a target.
@@ -172,15 +221,15 @@ namespace Zipr_SDK {
 		m_member_of_dollop = member_of;
 	}
 
-	bool DollopEntry_t::operator==(const DollopEntry_t &comp) {
-		std::cout << "operator==s being invoked "
-		          << "(" << std::hex << m_instruction
-		          << ", " << std::hex << comp.m_instruction
+	bool DollopEntry_t::operator==(const  DollopEntry_t &comp) {
+		cout << "operator==s being invoked "
+		          << "(" << hex << m_instruction
+		          << ", " << hex << comp.m_instruction
 							<< ") "
-		          << "(" << std::hex << m_target_dollop
-		          << ", " << std::hex << comp.m_target_dollop
+		          << "(" << hex << m_target_dollop
+		          << ", " << hex << comp.m_target_dollop
 							<< ") "
-							<< std::endl;
+							<< endl;
 		return comp.m_instruction == m_instruction &&
 		       comp.m_target_dollop == m_target_dollop;
 	}
@@ -189,35 +238,33 @@ namespace Zipr_SDK {
 		return !operator==(comp);
 	}
 
-	Dollop_t *Dollop_t::createNewDollop(IRDB_SDK::Instruction_t *start,
-	                                    Zipr_SDK::DollopManager_t *mgr) {
-		return new Zipr_SDK::Dollop_t(start, mgr);
-	}
 
-	std::ostream &operator<<(std::ostream &out, const Dollop_t &d) {
-		std::list<DollopEntry_t*>::const_iterator it, it_end;
-		Dollop_t *fallthrough = nullptr, *fallback = nullptr;
 
-		for (it = d.begin(), it_end = d.end();
-		     it != it_end;
-				 it++) {
-			out << std::hex << *(*it) << std::endl;
+	ostream &operator<<(ostream &out, const Dollop_t &d) 
+	{
+
+		//for (it = d.begin(), it_end = d.end(); it != it_end; it++) 
+		for (auto entry : d) 
+		{
+			out << hex << *(entry) << endl;
 		}
-		if ((fallback = d.getFallbackDollop()) != nullptr)
-			out << "Fallback: " << std::hex << fallback << std::endl;
-		if ((fallthrough = d.getFallthroughDollop()) != nullptr)
-			out << "Fallthrough: " << std::hex << fallthrough << std::endl;
+		auto fallback = d.getFallbackDollop();
+		if ( fallback != nullptr)
+			out << "Fallback: " << hex << fallback << endl;
+		auto fallthrough = d.getFallthroughDollop();
+		if ( fallthrough != nullptr)
+			out << "Fallthrough: " << hex << fallthrough << endl;
 		return out;
 	}
 
-	std::ostream &operator<<(std::ostream &out, const DollopPatch_t &p) {
-		out << std::hex << &p << ":" << std::hex << p.getTarget();
+	ostream &operator<<(ostream &out, const DollopPatch_t &p) {
+		out << hex << &p << ":" << hex << p.getTarget();
 		return out;
 	}
 
-	std::ostream &operator<<(std::ostream &out, const DollopEntry_t &p) {
-		out << "Instruction: " << std::hex << p.getInstruction() << std::endl;
-		out << "Target Dollop: " << std::hex << p.getTargetDollop() << std::endl;
+	ostream &operator<<(ostream &out, const DollopEntry_t &p) {
+		out << "Instruction: " << hex << p.getInstruction() << endl;
+		out << "Target Dollop: " << hex << p.getTargetDollop() << endl;
 		return out;
 	}
 }

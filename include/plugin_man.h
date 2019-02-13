@@ -45,7 +45,7 @@ class ZiprPluginManager_t : public ZiprPluginInterface_t
 
 		virtual bool DoPluginsPlop(IRDB_SDK::Instruction_t*,std::list<DLFunctionHandle_t>&);
 
-		virtual bool DoesPluginAddress(const Dollop_t *, const RangeAddress_t &, Range_t &, bool &coalesce, bool &fallthrough_allowed, DLFunctionHandle_t &);
+		virtual bool DoesPluginAddress(const Zipr_SDK::Dollop_t *, const RangeAddress_t &, Range_t &, bool &coalesce, bool &fallthrough_allowed, DLFunctionHandle_t &);
 		virtual bool DoesPluginRetargetCallback(const RangeAddress_t &, const DollopEntry_t *, RangeAddress_t &, DLFunctionHandle_t &) ;
 		virtual bool DoesPluginRetargetPin(const RangeAddress_t &, const Dollop_t *, RangeAddress_t &, DLFunctionHandle_t &) ;
 

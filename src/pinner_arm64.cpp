@@ -35,7 +35,7 @@ void  ZiprPinnerARM64_t::doPinning()
                         // Unpinned IBT. Create dollop and add it to placement
                         // queue straight away--there are no pinning considerations.
                         auto newDoll=m_dollop_mgr.addNewDollops(insn);
-                        placement_queue.insert(pair<Dollop_t*,RangeAddress_t>(newDoll, 0));
+                        placement_queue.insert({newDoll, 0});
                         continue;
                 }
 

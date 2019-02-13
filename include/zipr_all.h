@@ -72,4 +72,6 @@ using namespace Zipr_SDK;
 
 };
 
+#include <zipr_dollop.h>
+
 #endif

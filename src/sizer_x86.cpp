@@ -81,7 +81,7 @@ size_t ZiprSizerX86_t::DetermineInsnSize(Instruction_t* insn, bool account_for_j
 }
 
 RangeAddress_t ZiprSizerX86_t::PlopDollopEntryWithTarget(
-        DollopEntry_t *entry,
+        Zipr_SDK::DollopEntry_t *entry,
         RangeAddress_t override_place,
         RangeAddress_t override_target) const
 {
@@ -160,9 +160,7 @@ RangeAddress_t ZiprSizerX86_t::PlopDollopEntryWithTarget(
                         // jmp fallthrough
                         // +5: jmp target
                         char bytes[]={0,0x5};
-                        DollopEntry_t *fallthrough_de = nullptr;
-
-                        fallthrough_de = entry->getMemberOfDollop()->setFallthroughDollopEntry(entry);
+                        auto fallthrough_de = entry->getMemberOfDollop()->setFallthroughDollopEntry(entry);
 
                         /*
                          * This means that we have a fallthrough for this dollop entry

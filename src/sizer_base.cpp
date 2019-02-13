@@ -51,13 +51,11 @@ Range_t ZiprSizerBase_t::DoPlacement(const size_t size) const
 }
 
 
-size_t ZiprSizerBase_t::DetermineDollopSizeInclFallthrough(Dollop_t *dollop) const
+size_t ZiprSizerBase_t::DetermineDollopSizeInclFallthrough(Zipr_SDK::Dollop_t *dollop) const
 {
-        size_t fallthroughs_wcds = 0;
-        Dollop_t *fallthrough_it = nullptr;
-        for (fallthrough_it = dollop;
-             fallthrough_it != nullptr;
-                         fallthrough_it = fallthrough_it->getFallthroughDollop())
+        auto fallthroughs_wcds = 0;
+	auto fallthrough_it = dollop;
+        for ( /* empty */ ; fallthrough_it != nullptr; fallthrough_it = fallthrough_it->getFallthroughDollop())
         {
                 if (fallthrough_it->isPlaced())
                         /*

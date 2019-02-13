@@ -861,7 +861,7 @@ void ZiprImpl_t::PlaceDollops()
 		auto target_dollop = m_dollop_mgr.getContainingDollop(target_insn);
 		assert(target_dollop);
 
-		placement_queue.insert(pair<Dollop_t*,RangeAddress_t>(target_dollop,patch.getAddress()));
+		placement_queue.insert({target_dollop,patch.getAddress()});
 		if (m_verbose) 
 		{
 			cout << "Original: " << hex << target_insn-> getAddress()-> getVirtualOffset() << " "
@@ -888,7 +888,7 @@ void ZiprImpl_t::PlaceDollops()
                         assert(containing!=nullptr);
                         if(!containing->isPlaced())
                         {
-                        	placement_queue.insert(pair<Dollop_t*, RangeAddress_t>( containing, wrt_insn->getAddress()->getVirtualOffset()));
+                        	placement_queue.insert({containing, wrt_insn->getAddress()->getVirtualOffset()});
                         }
                 }
         };
@@ -905,7 +905,7 @@ void ZiprImpl_t::PlaceDollops()
 		auto placed = false;
 		auto cur_addr = RangeAddress_t(0);
 		auto has_fallthrough = false;
-		auto fallthrough = (Dollop_t*)(nullptr);
+		auto fallthrough = (Zipr_SDK::Dollop_t*)(nullptr);
 		auto continue_placing = false;
 		auto initial_placement_abuts_pin = false;
 		auto initial_placement_abuts_fallthrough = false;
@@ -1190,7 +1190,7 @@ void ZiprImpl_t::PlaceDollops()
 			auto dit_end = to_place->end();
 			for ( /* empty */; dit != dit_end; dit++)
 			{
-				DollopEntry_t *dollop_entry = *dit;	
+				auto dollop_entry = *dit;	
 								
 				/*
 				 * There are several ways that a dollop could end:
@@ -1299,9 +1299,7 @@ void ZiprImpl_t::PlaceDollops()
 						if (m_vverbose)
 							cout << "Adding " << std::hex << dollop_entry->getTargetDollop()
 							     << " to placement queue." << endl;
-						placement_queue.insert(pair<Dollop_t*, RangeAddress_t>(
-								dollop_entry->getTargetDollop(),
-								cur_addr));
+						placement_queue.insert({dollop_entry->getTargetDollop(), cur_addr});
 					}
 				}
 				else
@@ -1397,7 +1395,7 @@ void ZiprImpl_t::PlaceDollops()
 					 */
 					if (!to_place->getFallthroughDollop()->isPlaced())
 					{
-						placement_queue.insert(pair<Dollop_t*, RangeAddress_t>( to_place->getFallthroughDollop(), cur_addr));
+						placement_queue.insert({to_place->getFallthroughDollop(), cur_addr});
 					}
 					m_stats->total_did_not_coalesce++;
 					break;
@@ -1435,8 +1433,8 @@ void ZiprImpl_t::PlaceDollops()
 				{
 
 					string patch_jump_string;
-					Instruction_t *patch = archhelper->createNewJumpInstruction(m_firp, nullptr);
-					DollopEntry_t *patch_de = new DollopEntry_t(patch, to_place);
+					auto patch = archhelper->createNewJumpInstruction(m_firp, nullptr);
+					auto patch_de = new DollopEntry_t(patch, to_place);
 
 					patch_de->setTargetDollop(fallthrough);
 					patch_de->Place(cur_addr);
@@ -1455,7 +1453,7 @@ void ZiprImpl_t::PlaceDollops()
 						     << "to fallthrough dollop (" << std::hex 
 						     << fallthrough << ")." << endl;
 
-					placement_queue.insert(pair<Dollop_t*, RangeAddress_t>( fallthrough, cur_addr));
+					placement_queue.insert({fallthrough, cur_addr});
 					/*
 					 * Since we inserted a new instruction, we should
 					 * check to see whether a plugin wants to plop it.
@@ -1540,7 +1538,7 @@ void ZiprImpl_t::PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr)
 	patcher->PatchCall(at_addr,to_addr);
 }
 
-size_t ZiprImpl_t::DetermineDollopEntrySize(DollopEntry_t *entry, bool account_for_fallthrough)
+size_t ZiprImpl_t::DetermineDollopEntrySize(Zipr_SDK::DollopEntry_t *entry, bool account_for_fallthrough)
 {
 	std::map<Instruction_t*,unique_ptr<list<DLFunctionHandle_t>>>::const_iterator plop_it;
 	size_t opening_size = 0, closing_size = 0;
@@ -1652,8 +1650,8 @@ void ZiprImpl_t::UpdatePins()
 	{
 		UnresolvedUnpinned_t uu=(*patch_list.begin()).first;
 		Patch_t p=(*patch_list.begin()).second;
-		Dollop_t *target_dollop = nullptr;
-		DollopEntry_t *target_dollop_entry = nullptr;
+		Zipr_SDK::Dollop_t *target_dollop = nullptr;
+		Zipr_SDK::DollopEntry_t *target_dollop_entry = nullptr;
 		Instruction_t *target_dollop_entry_instruction = nullptr;
 		RangeAddress_t patch_addr, target_addr;
 		target_dollop = m_dollop_mgr.getContainingDollop(uu.getInstrution());
@@ -1745,7 +1743,7 @@ void ZiprImpl_t::PatchInstruction(RangeAddress_t from_addr, Instruction_t* to_in
 	}
 }
 
-RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t *entry, RangeAddress_t override_address)
+RangeAddress_t ZiprImpl_t::_PlopDollopEntry(Zipr_SDK::DollopEntry_t *entry, RangeAddress_t override_address)
 {
 	const auto insn = entry->getInstruction();
 	const auto insn_wcis = DetermineInsnSize(insn, false);
@@ -1824,7 +1822,7 @@ RangeAddress_t ZiprImpl_t::_PlopDollopEntry(DollopEntry_t *entry, RangeAddress_t
 }
 
 RangeAddress_t ZiprImpl_t::PlopDollopEntry(
-	DollopEntry_t *entry,
+	Zipr_SDK::DollopEntry_t *entry,
 	RangeAddress_t override_place,
 	RangeAddress_t override_target)
 {
@@ -1893,7 +1891,7 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntry(
 }
 
 RangeAddress_t ZiprImpl_t::PlopDollopEntryWithTarget(
-	DollopEntry_t *entry,
+	Zipr_SDK::DollopEntry_t *entry,
 	RangeAddress_t override_place,
 	RangeAddress_t override_target)
 {
@@ -1901,7 +1899,7 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntryWithTarget(
 }
 
 RangeAddress_t ZiprImpl_t::PlopDollopEntryWithCallback(
-	DollopEntry_t *entry,
+	Zipr_SDK::DollopEntry_t *entry,
 	RangeAddress_t override_place)
 {
 	auto at = entry->getPlace();
@@ -1914,7 +1912,7 @@ RangeAddress_t ZiprImpl_t::PlopDollopEntryWithCallback(
 	{
 	char bytes[]={(char)0xe8,(char)0,(char)0,(char)0,(char)0}; // call rel32
 	memory_space.PlopBytes(at, bytes, sizeof(bytes));
-	unpatched_callbacks.insert(pair<DollopEntry_t*,RangeAddress_t>(entry,at));
+	unpatched_callbacks.insert({entry,at});
 	at+=sizeof(bytes);
 	}
 
@@ -2424,19 +2422,15 @@ RangeAddress_t ZiprImpl_t::FindCallbackAddress(RangeAddress_t end_of_new_space, 
 void ZiprImpl_t::UpdateCallbacks()
 {
 	// first byte of this range is the last used byte.
-	RangeSet_t::iterator range_it=memory_space.FindFreeRange((RangeAddress_t) -1);
+	const auto range_it=memory_space.FindFreeRange((RangeAddress_t) -1);
 	assert(memory_space.IsValidRange(range_it));
 
-	set<std::pair<DollopEntry_t*,RangeAddress_t> >::iterator it, it_end;
 
-	for(it=unpatched_callbacks.begin(), it_end=unpatched_callbacks.end();
-	    it!=it_end;
-	    it++
-	   )
+	for(const auto &p : unpatched_callbacks)
 	{
-		DollopEntry_t *entry=it->first;
+		auto entry=p.first;
 		Instruction_t *insn = entry->getInstruction();
-		RangeAddress_t at=it->second;
+		RangeAddress_t at=p.second;
 		RangeAddress_t to=0x0;//FindCallbackAddress(end_of_new_space,start_addr,insn->getCallback());
 		DLFunctionHandle_t patcher = nullptr;
 

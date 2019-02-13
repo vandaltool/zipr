@@ -100,13 +100,8 @@ void ZiprPinnerX86_t::AddPinnedInstructions()
 	 */
 	RecordPinnedInsnAddrs();
 
-	for(
-	    set<Instruction_t*>::const_iterator it=m_firp->getInstructions().begin();
-	    it!=m_firp->getInstructions().end();
-	    ++it
-	   )
+	for(auto insn : m_firp->getInstructions())
 	{
-		Instruction_t* insn=*it;
 		assert(insn);
 
 		if(insn->getIndirectBranchTargetAddress()==nullptr)
@@ -116,8 +111,8 @@ void ZiprPinnerX86_t::AddPinnedInstructions()
                 {
                         // Unpinned IBT. Create dollop and add it to placement
                         // queue straight away--there are no pinning considerations.
-                        Dollop_t *newDoll=m_dollop_mgr.addNewDollops(insn);
-			placement_queue.insert(pair<Dollop_t*,RangeAddress_t>(newDoll, 0));
+                        auto newDoll=m_dollop_mgr.addNewDollops(insn);
+			placement_queue.insert({newDoll, 0});
 			continue;
                 }
 
@@ -128,7 +123,7 @@ void ZiprPinnerX86_t::AddPinnedInstructions()
 			next_pin_addr+=5;// sizeof pin
 		}
 
-		unresolved_pinned_addrs.insert(UnresolvedPinned_t(insn));
+		unresolved_pinned_addrs.insert({insn});
 	}
 }
 

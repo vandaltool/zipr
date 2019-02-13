@@ -24,10 +24,10 @@ class ZiprSizerBase_t
 		 * makes sure not to overcalculate the trampoline
 		 * space to accomodate for the fallthroughs.
 		 */
-		virtual size_t DetermineDollopSizeInclFallthrough(Dollop_t *dollop) const;
+		virtual size_t DetermineDollopSizeInclFallthrough(Zipr_SDK::Dollop_t *dollop) const;
 		virtual size_t DetermineInsnSize(IRDB_SDK::Instruction_t*, bool account_for_jump = true) const =0;
 		virtual Range_t DoPlacement(size_t pminimum_valid_req_size) const;
-		virtual RangeAddress_t PlopDollopEntryWithTarget( DollopEntry_t *entry, RangeAddress_t override_place, RangeAddress_t override_target) const =0;
+		virtual RangeAddress_t PlopDollopEntryWithTarget(Zipr_SDK::DollopEntry_t *entry, RangeAddress_t override_place, RangeAddress_t override_target) const =0;
 
 		// maybe try to make these private/protected and provide getters eventually.
 		const size_t CALLBACK_TRAMPOLINE_SIZE;

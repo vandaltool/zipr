@@ -30,7 +30,7 @@ size_t ZiprSizerARM64_t::DetermineInsnSize(Instruction_t* insn, bool account_for
 }
 
 RangeAddress_t ZiprSizerARM64_t::PlopDollopEntryWithTarget(
-        DollopEntry_t *entry,
+        Zipr_SDK::DollopEntry_t *entry,
         RangeAddress_t override_place,
         RangeAddress_t override_target) const
 {
@@ -41,7 +41,7 @@ RangeAddress_t ZiprSizerARM64_t::PlopDollopEntryWithTarget(
 }
 
 RangeAddress_t ZiprSizerARM64_t::TBZPlopDollopEntryWithTarget(
-        DollopEntry_t *entry,
+        Zipr_SDK::DollopEntry_t *entry,
         RangeAddress_t override_place,
         RangeAddress_t override_target) const
 {
@@ -75,7 +75,7 @@ RangeAddress_t ZiprSizerARM64_t::TBZPlopDollopEntryWithTarget(
 
 
 RangeAddress_t ZiprSizerARM64_t::DefaultPlopDollopEntryWithTarget(
-        DollopEntry_t *entry,
+        Zipr_SDK::DollopEntry_t *entry,
         RangeAddress_t override_place,
         RangeAddress_t override_target) const
 {

@@ -117,7 +117,7 @@ RangeAddress_t ZiprPluginManager_t::PlaceScoopsEnd(const RangeAddress_t max_addr
 }
 
 
-bool ZiprPluginManager_t::DoesPluginAddress(const Dollop_t *dollop, const RangeAddress_t &source, Range_t &place, bool &coalesce, bool &fallthrough_allowed, DLFunctionHandle_t &placer)
+bool ZiprPluginManager_t::DoesPluginAddress(const Zipr_SDK::Dollop_t *dollop, const RangeAddress_t &source, Range_t &place, bool &coalesce, bool &fallthrough_allowed, DLFunctionHandle_t &placer)
 {
 	DLFunctionHandleSet_t::iterator it=m_handleList.begin();
 	for(m_handleList.begin();it!=m_handleList.end();++it)
@@ -148,7 +148,7 @@ bool ZiprPluginManager_t::DoPluginsPlop(Instruction_t *insn, std::list<DLFunctio
 	return a_plugin_does_plop;
 }
 
-bool ZiprPluginManager_t::DoesPluginRetargetCallback(const RangeAddress_t &callback_addr, const DollopEntry_t *callback_entry, RangeAddress_t &target_address, DLFunctionHandle_t &patcher)
+bool ZiprPluginManager_t::DoesPluginRetargetCallback(const RangeAddress_t &callback_addr, const Zipr_SDK::DollopEntry_t *callback_entry, RangeAddress_t &target_address, DLFunctionHandle_t &patcher)
 {
 	DLFunctionHandleSet_t::iterator it=m_handleList.begin();
 	for(m_handleList.begin();it!=m_handleList.end();++it)
@@ -163,7 +163,7 @@ bool ZiprPluginManager_t::DoesPluginRetargetCallback(const RangeAddress_t &callb
 	return false;
 }
 
-bool ZiprPluginManager_t::DoesPluginRetargetPin(const RangeAddress_t &patch_addr, const Dollop_t *target_dollop, RangeAddress_t &target_address, DLFunctionHandle_t &patcher) 
+bool ZiprPluginManager_t::DoesPluginRetargetPin(const RangeAddress_t &patch_addr, const Zipr_SDK::Dollop_t *target_dollop, RangeAddress_t &target_address, DLFunctionHandle_t &patcher) 
 {
 	DLFunctionHandleSet_t::iterator it=m_handleList.begin();
 	for(m_handleList.begin();it!=m_handleList.end();++it)
