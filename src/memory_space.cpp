@@ -31,9 +31,11 @@
 using namespace zipr;
 using namespace std;
 
-ZiprOptionsNamespace_t *ZiprMemorySpace_t::RegisterOptions(ZiprOptionsNamespace_t *global) {
-	global->addOption(&m_verbose);
-	return nullptr;
+void ZiprMemorySpace_t::registerOptions(ZiprOptions_t* opt_man)
+{
+	auto global=opt_man->getNamespace("global");
+	m_verbose=global->getBooleanOption("verbose");
+	return;
 }
 
 void ZiprMemorySpace_t::SplitFreeRange(Range_t split_from)

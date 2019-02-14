@@ -68,8 +68,8 @@ myenv=myenv.Clone(CPPPATH=Split(cpppath), LIBS=Split(libs), LIBPATH=Split(libpat
 
 Range=myenv.Program("Range.exe", Split(RangeFiles))
 MemorySpace=myenv.Program("MemorySpace.exe", Split(MemorySpaceFiles))
-Options=myenv.Program("Options.exe", Split(OptionFiles))
+#Options=myenv.Program("Options.exe", Split(OptionFiles))
 Dollop=myenv.Program("Dollop.exe", Split(DollopFiles))
-Default([MemorySpace, Options, Range])
+Default([MemorySpace, Range])
 #Default([Range])
 

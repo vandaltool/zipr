@@ -87,22 +87,7 @@ class ZiprImpl_t : public Zipr_t
 			elfiop(new ELFIO::elfio), 
 			start_of_new_space(0),
 			memory_space(),
-			m_zipr_options(argc-1, argv+1),
-			m_output_filename("output", "b.out"),
-			m_callbacks("callbacks"),
-			m_objcopy("objcopy", "/usr/bin/objcopy"),
-			m_replop("replop", false),
-			m_verbose("verbose", false),
-			m_vverbose("very_verbose", false),
-			m_apply_nop("apply_nop", false),
-			m_add_sections("add-sections", true),
-			m_bss_opts("bss-opts", true),
-			m_variant("variant"),
-			m_architecture("architecture"),
-			m_seed("seed", 0),
-			m_dollop_map_filename("dollop_map_filename", "dollop.map"),
-			m_paddable_minimum_distance("paddable_minimum_distance", 5*1024)
-
+			m_zipr_options(argc-1, argv+1)
 
 		{ 
 			Init();
@@ -136,7 +121,6 @@ class ZiprImpl_t : public Zipr_t
 			DollopEntry_t *de,
 			RangeAddress_t override_place = 0) { return PlopDollopEntryWithCallback(de,override_place); } 
 
-		ZiprOptionsNamespace_t *registerOptions(ZiprOptionsNamespace_t *ns) { return RegisterOptions(ns); } 
 
 
 
@@ -156,7 +140,8 @@ class ZiprImpl_t : public Zipr_t
 			DollopEntry_t *,
 			RangeAddress_t override_place = 0);
 
-		ZiprOptionsNamespace_t *RegisterOptions(ZiprOptionsNamespace_t *);
+		// ZiprOptionsNamespace_t *registerOptions(ZiprOptionsNamespace_t *ns) { return RegisterOptions(ns); } 
+		void registerOptions();
 
 		/*
 		 * ()
@@ -200,7 +185,8 @@ class ZiprImpl_t : public Zipr_t
                 virtual IRDB_SDK::FileIR_t *getFileIR() { return m_firp; }
                 virtual Zipr_SDK::InstructionLocationMap_t *getLocationMap() { return &final_insn_locations; }
                 virtual Zipr_SDK::InstructionLocationMap_t *GetLocationMap() { return &final_insn_locations; }
-		virtual Zipr_SDK::PlacementQueue_t* getPlacementQueue() { return &placement_queue; }  
+		virtual Zipr_SDK::PlacementQueue_t* getPlacementQueue()      { return &placement_queue; }  
+		virtual Zipr_SDK::ZiprOptionsManager_t* getOptionsManager()  { return &m_zipr_options; }  
 		virtual Zipr_SDK::PlacementQueue_t* GetPlacementQueue() { return &placement_queue; }  
 		virtual Zipr_SDK::RangeAddress_t placeUnplacedScoops(Zipr_SDK::RangeAddress_t max) { return PlaceUnplacedScoops(max); } 
 		virtual Zipr_SDK::RangeAddress_t PlaceUnplacedScoops(Zipr_SDK::RangeAddress_t max);
@@ -465,13 +451,24 @@ class ZiprImpl_t : public Zipr_t
 		std::map<IRDB_SDK::Instruction_t*,
 		std::unique_ptr<std::list<DLFunctionHandle_t>>> plopping_plugins;
 		
-		// Options
+		// Options Manager
 		ZiprOptions_t m_zipr_options;
-		ZiprStringOption_t m_output_filename, m_callbacks, m_objcopy;
-		ZiprBooleanOption_t m_replop, m_verbose, m_vverbose, m_apply_nop, m_add_sections, m_bss_opts;
-		ZiprIntegerOption_t m_variant, m_architecture, m_seed;
-		ZiprStringOption_t m_dollop_map_filename;
-		ZiprIntegerOption_t m_paddable_minimum_distance;
+
+		// Options
+		Zipr_SDK::ZiprStringOption_t  *m_output_filename, 
+					      *m_callbacks, 
+					      *m_objcopy,
+					      *m_dollop_map_filename;
+		Zipr_SDK::ZiprBooleanOption_t *m_replop, 
+					      *m_verbose, 
+					      *m_vverbose, 
+					      *m_apply_nop, 
+					      *m_add_sections, 
+					      *m_bss_opts;
+		Zipr_SDK::ZiprIntegerOption_t *m_variant, 
+					      *m_architecture, 
+					      *m_seed,
+					      *m_paddable_minimum_distance;
 
 
 

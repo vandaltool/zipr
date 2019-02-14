@@ -39,11 +39,11 @@ class ZiprMemorySpace_t : public MemorySpace_t
 			free_ranges(),
 			original_free_ranges(),
 			max_plopped(0),
-			min_plopped(-1),
-			m_verbose("verbose")
+			min_plopped(-1)
 		{ 
 		}
 
+		void registerOptions(ZiprOptions_t* opt_man); 
 
 		// range operatations
 		void splitFreeRange(RangeAddress_t addr) { return SplitFreeRange(addr); } 
@@ -64,7 +64,6 @@ class ZiprMemorySpace_t : public MemorySpace_t
 		void plopJump(RangeAddress_t addr) { return PlopJump(addr); } 
 		RangeAddress_t getMinPlopped() const { return min_plopped; }
 		RangeAddress_t getMaxPlopped() const { return max_plopped; }
-		ZiprOptionsNamespace_t *registerOptions(ZiprOptionsNamespace_t* ns) { return RegisterOptions(ns); } 
 		int getRangeCount() { return GetRangeCount(); } 
 
 
@@ -121,7 +120,6 @@ class ZiprMemorySpace_t : public MemorySpace_t
 		RangeAddress_t GetMinPlopped() const { return min_plopped; }
 		RangeAddress_t GetMaxPlopped() const { return max_plopped; }
 
-		ZiprOptionsNamespace_t *RegisterOptions(ZiprOptionsNamespace_t*);
 
 	protected:
 		RangeSet_t  free_ranges; // keep ordered
@@ -131,7 +129,7 @@ class ZiprMemorySpace_t : public MemorySpace_t
 	private:
 		RangeAddress_t max_plopped;
 		RangeAddress_t min_plopped;
-		ZiprBooleanOption_t m_verbose;
+		Zipr_SDK::ZiprBooleanOption_t* m_verbose;
 		static bool SortRangeBySize(const Range_t &a, const Range_t &b);
 };
 

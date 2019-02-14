@@ -181,7 +181,7 @@ bool ZiprPluginManager_t::DoesPluginRetargetPin(const RangeAddress_t &patch_addr
 void ZiprPluginManager_t::open_plugins
                         (
 				Zipr_SDK::Zipr_t* zipr_obj,
-				Zipr_SDK::ZiprOptions_t *p_opts
+				Zipr_SDK::ZiprOptionsManager_t *p_opts
                         )
 {
 	char* zinst=getenv("ZIPR_INSTALL");
@@ -203,10 +203,10 @@ void ZiprPluginManager_t::open_plugins
 
     	while ((dirp = readdir(dp)) != nullptr) 
 	{
-		string basename = string(dirp->d_name);
-		string name=dir+basename;
-		string zpi(".zpi");
-		string extension=name.substr(name.size() - zpi.length());
+		auto basename = string(dirp->d_name);
+		auto name=dir+basename;
+		auto zpi=string(".zpi");
+		auto extension=name.substr(name.size() - zpi.length());
 
 		// Automatically skip cwd and pwd entries.
 		if(basename == "." || basename == "..")
@@ -220,7 +220,7 @@ void ZiprPluginManager_t::open_plugins
 		if (m_verbose)
 			cout<<"Attempting load of file ("<<name<<")."<<endl;
 
-		void* handle=dlopen(name.c_str(), RTLD_LAZY|RTLD_GLOBAL);
+		auto handle=dlopen(name.c_str(), RTLD_LAZY|RTLD_GLOBAL);
 		if(!handle)
 		{
 			cerr<<"Failed to open file ("<<name<<"), error code: "<<dlerror()<<endl;
@@ -228,23 +228,25 @@ void ZiprPluginManager_t::open_plugins
 		}
 		dlerror();
 
-		void* sym=dlsym(handle,"GetPluginInterface");
+		auto sym=dlsym(handle,"GetPluginInterface");
 		if(!sym)
 		{
 			cerr<<"Failed to find GetPluginInterface from file ("<<name<<"), error code: "<<dlerror()<<endl;
 			exit(1);
 		}
 
-		ZiprOptionsNamespace_t *global_ns = p_opts->getNamespace("global");
-		GetPluginInterface_t my_GetPluginInterface=(GetPluginInterface_t)sym;
-		Zipr_SDK::ZiprPluginInterface_t *interface=(*my_GetPluginInterface)(zipr_obj);
+		auto my_GetPluginInterface= (GetPluginInterface_t)sym;
+		auto interface            = (*my_GetPluginInterface)(zipr_obj);
 
 		if(!interface)
 		{
 			cerr<<"Failed to get interface from file ("<<name<<")"<<endl;
 			exit(1);
 		}
-		p_opts->addNamespace(interface->registerOptions(global_ns));
+
+		// constructors now register options
+		// auto global_ns            = p_opts->getNamespace("global");
+		// p_opts->addNamespace(interface->registerOptions(global_ns));
 
 		m_handleList.push_back(interface);
 		

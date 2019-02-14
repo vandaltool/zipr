@@ -19,13 +19,13 @@ class ZiprPluginManager_t : public ZiprPluginInterface_t
 		ZiprPluginManager_t
 			(
 				Zipr_SDK::Zipr_t* zipr_obj,
-				Zipr_SDK::ZiprOptions_t *p_opts
+				zipr::ZiprOptions_t *p_opts
 			)
 			:
 				m_verbose("verbose"),
 				m_opts(p_opts)
 			{
-				ZiprOptionsNamespace_t *opts_global_ns = m_opts->getNamespace("global");
+				auto opts_global_ns = dynamic_cast<ZiprOptionsNamespace_t*>(m_opts->getNamespace("global"));
 				if (opts_global_ns)
 					opts_global_ns->addOption(&m_verbose);
 				open_plugins(zipr_obj, p_opts);
@@ -50,18 +50,15 @@ class ZiprPluginManager_t : public ZiprPluginInterface_t
 		virtual bool DoesPluginRetargetPin(const RangeAddress_t &, const Dollop_t *, RangeAddress_t &, DLFunctionHandle_t &) ;
 
 
-
-
-
 	private:
 
 		void open_plugins
 			(
 				Zipr_SDK::Zipr_t* zipr_obj,
-				Zipr_SDK::ZiprOptions_t *p_opts
+				Zipr_SDK::ZiprOptionsManager_t *p_opts
 			);
 		ZiprBooleanOption_t m_verbose;
-		ZiprOptions_t *m_opts;
+		zipr::ZiprOptions_t *m_opts;
 		// storage for handles that've been dlopened()
 		DLFunctionHandleSet_t m_handleList;
 

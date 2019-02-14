@@ -19,6 +19,7 @@
  */
 
 #include <zipr-sdk>
+#include <zipr_options.h>
 #include <unistd.h>
 #include <iostream>
 #include <cstddef>
@@ -28,7 +29,7 @@
 #define IMPLEMENTATION_DEBUG 0
 #endif
 
-using namespace Zipr_SDK;
+using namespace zipr;
 using namespace std;
 
 void ZiprOptionsNamespace_t::printNamespace() {
@@ -38,7 +39,7 @@ void ZiprOptionsNamespace_t::printNamespace() {
 	}
 }
 
-bool ZiprOptionsNamespace_t::areRequirementsMet() {
+bool ZiprOptionsNamespace_t::areRequirementsMet() const {
 	ZiprOptionsNamespace_t::const_iterator it, it_end = end();
 	for (it = begin(); it != it_end; it++) {
 		if (!(*it)->areRequirementMet())
@@ -86,13 +87,15 @@ void ZiprOptionsNamespace_t::printUsage(int tabs, ostream &out) {
 	}
 }
 
-void ZiprOptions_t::printUsage(ostream &out) {
+void ZiprOptions_t::printUsage(ostream &out) 
+{
 	set<ZiprOptionsNamespace_t*>::const_iterator it, it_end = m_namespaces.end();
 	for (it = m_namespaces.begin(); it != it_end; it++)
 		(*it)->printUsage(1, out);
 }	
 
-bool ZiprOptions_t::areRequirementsMet() {
+bool ZiprOptions_t::areRequirementsMet() const 
+{
 	set<ZiprOptionsNamespace_t*>::const_iterator it, it_end = m_namespaces.end();
 	for (it = m_namespaces.begin(); it != it_end; it++)
 		if (!(*it)->areRequirementsMet())
@@ -100,22 +103,22 @@ bool ZiprOptions_t::areRequirementsMet() {
 	return true;
 }
 
-ZiprOptions_t::ZiprOptions_t(int argc, char **argv) {
+ZiprOptions_t::ZiprOptions_t(int argc, char **argv) 
+{
 	int i = 0;
 	for (i = 0; i<argc; i++) {
 		m_arguments.push_back(string(argv[i]));
 	}
 }
 
-bool ZiprOptions_t::parse(ostream *error, ostream *warn) {
+bool ZiprOptions_t::parse(ostream *error, ostream *warn) 
+{
 	vector<string>::const_iterator it, it_end = m_arguments.end();
 	bool success = true;
 
 	for (it = m_arguments.begin(); it != it_end; it++) {
 		string ns, key, argument = *it;
 		string::size_type location = 0;
-		ZiprOptionsNamespace_t *option_ns;
-		ZiprOption_t *option_option;
 		bool next_is_option_value = false;
 
 		if (0 != (location = argument.find_first_of("--"))) {
@@ -143,14 +146,17 @@ bool ZiprOptions_t::parse(ostream *error, ostream *warn) {
 		cout << "ns: " << ns << endl;
 		cout << "key: " << key << endl;
 #endif
-		if (!(option_ns = getNamespace(ns))) {
+		auto option_ns = dynamic_cast<zipr::ZiprOptionsNamespace_t*>(getNamespace(ns));
+		if (!option_ns) 
+		{
 			if (error)
 				*error << "Invalid namespace: " << ns << endl;
 			success = false;
 			continue;
-			//return false;
 		}
-		if (!(option_option = option_ns->optionByKey(key))) {
+		auto option_option = option_ns->optionByKey(key);
+		if (!option_option) 
+		{
 			if (error)
 				*error << "Error: namespace "
 				       << ns
@@ -158,18 +164,18 @@ bool ZiprOptions_t::parse(ostream *error, ostream *warn) {
 				       << key << endl;
 			success = false;
 			continue;
-			//return false;
 		}
 		/*
 		 * By default, options need and take values. Some, though,
 		 * take values but don't need them. Finally, some neither
 		 * take nor need values.
 		 */
-		if (((it+1) != it_end) &&
-		    (0 != (location = (*(it+1)).find_first_of("--")))) {
+		if (((it+1) != it_end) && (0 != (location = (*(it+1)).find_first_of("--")))) 
+		{
 			next_is_option_value = true;
 		}
-		if (option_option->getNeedsValue()) {
+		if (option_option->getNeedsValue()) 
+		{
 			if ((it + 1) == it_end || !next_is_option_value)
 			{
 				if (error)
@@ -179,50 +185,91 @@ bool ZiprOptions_t::parse(ostream *error, ostream *warn) {
 				//return false;
 			}
 			option_option->setValue(*(++it));
-		} else if (option_option->getTakesValue()) {
+		} 
+		else if (option_option->getTakesValue()) 
+		{
 			/*
 			 * Check to see if the next argument starts with --.
 			 * If it does, we consider it the next option
 			 * and not the value to the previous option.
 			 */
-			if (next_is_option_value) {
+			if (next_is_option_value) 
+			{
 				option_option->setValue(*(++it));
-			} else {
+			} 
+			else 
+			{
 				option_option->setOption();
 			}
-		} else {
+		} 
+		else 
+		{
 			option_option->setOption();
 		}
 	}
 	return success;
 }
 
-ZiprOptionsNamespace_t *ZiprOptions_t::getNamespace(const string& ns) {
-	set<ZiprOptionsNamespace_t*>::const_iterator it, it_end = m_namespaces.end();
-	for (it = m_namespaces.begin(); it != it_end; it++) {
+Zipr_SDK::ZiprOptionsNamespace_t *ZiprOptions_t::getNamespace(const string& ns) 
+{
+	auto it_end = m_namespaces.end();
+	for (auto it = m_namespaces.begin(); it != it_end; it++) 
+	{
 		if ((*it)->getNamespace() == ns)
 			return *it;
 	}
-	return nullptr;
+
+	auto ret=new zipr::ZiprOptionsNamespace_t(ns);
+	m_namespaces.insert(ret);
+	return ret;
 }
 
-void ZiprOptions_t::addNamespace(ZiprOptionsNamespace_t *ns) {
+void ZiprOptions_t::addNamespace(ZiprOptionsNamespace_t *ns) 
+{
 	if (ns)
 		m_namespaces.insert(ns);
 }
 
-void ZiprOptionsNamespace_t::mergeNamespace(ZiprOptionsNamespace_t *in) {
+void ZiprOptionsNamespace_t::mergeNamespace(ZiprOptionsNamespace_t *in) 
+{
 	if (!in) return;
-	set<ZiprOption_t*>::const_iterator it, it_end = in->end();
-	for (it = in->begin(); it != it_end; it++)
+	auto it_end = in->end();
+	for (auto it = in->begin(); it != it_end; it++)
 		addOption(*it);
 }
 
-void ZiprOptions_t::printNamespaces() {
-	set<ZiprOptionsNamespace_t*>::const_iterator it, it_end = m_namespaces.end();
-
-	for (it = m_namespaces.begin(); it != it_end; it++) {
+void ZiprOptions_t::printNamespaces() 
+{
+	auto  it_end = m_namespaces.end();
+	for (auto it = m_namespaces.begin(); it != it_end; it++) 
+	{
 		cout << (*it)->getNamespace() << endl;
 		(*it)->printNamespace();
 	}
 }
+
+
+#if 0
+Zipr_SDK::ZiprOptionsNamespace_t* ZiprOptions_t::getNamespace(const string& name)
+{
+}
+
+
+Zipr_SDK::ZiprStringOption_t*  zipr::ZiprOptionsNamespace_t::getStringOption (const string& name, const string &description, const string& default_value)    
+{
+}
+
+Zipr_SDK::ZiprIntegerOption_t* zipr::ZiprOptionsNamespace_t::getIntegerOption(const string& name, const string &description, const size_t& default_value)
+{
+}
+
+Zipr_SDK::ZiprBooleanOption_t* zipr::ZiprOptionsNamespace_t::getBooleanOption(const string& name, const string &description, const bool  & default_value)
+{
+}
+
+Zipr_SDK::ZiprDoubleOption_t*  zipr::ZiprOptionsNamespace_t::getDoubleOption (const string& name, const string &description, const double& default_value)
+{
+
+}
+
+#endif

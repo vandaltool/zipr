@@ -45,6 +45,7 @@
 #include "elfio/elfio_dump.hpp"
 
 #include <zipr-sdk>
+#include <zipr_options.h>
 
 namespace zipr
 {
