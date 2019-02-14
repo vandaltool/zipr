@@ -73,9 +73,10 @@ bool Unpin_t::should_cfi_pin(Instruction_t* insn)
 	// add command line option that:
 	// 	1) return false if !has_cfi_reloc(insn)
 	// 	2) return true if option is on.
-	return m_should_cfi_pin;
+	return *m_should_cfi_pin;
 }
 
+#if 0
 ZiprOptionsNamespace_t *Unpin_t::registerOptions(ZiprOptionsNamespace_t *global)
 {
 	auto unpin_ns = new ZiprOptionsNamespace_t("unpin");
@@ -92,6 +93,7 @@ ZiprOptionsNamespace_t *Unpin_t::registerOptions(ZiprOptionsNamespace_t *global)
 
 	return unpin_ns;
 }
+#endif
 
 // CAN BE DELETED, left in just for stats? (Would speed up zipr step to delete)
 void Unpin_t::DoUnpin()
@@ -104,7 +106,7 @@ void Unpin_t::DoUnpin()
 // scan instructions and process instruction relocs that can be unpinned.
 void Unpin_t::DoUnpinForFixedCalls()
 {
-	if(m_max_unpins != -1 && unpins>=m_max_unpins)
+	if(*m_max_unpins != -1 && unpins>=*m_max_unpins)
 		return;
 	auto insn_unpins=0;
 	auto missed_unpins=0;
@@ -128,7 +130,7 @@ void Unpin_t::DoUnpinForFixedCalls()
 		
 				unpins++;
 				insn_unpins++;
-				if(m_max_unpins != -1 && unpins>=m_max_unpins)
+				if(*m_max_unpins != -1 && unpins>=*m_max_unpins)
 					return;
 			}
 		}
@@ -141,7 +143,7 @@ void Unpin_t::DoUnpinForFixedCalls()
 // CAN BE DELETED, left in just for stats?
 void Unpin_t::DoUnpinForScoops()
 {
-	if(m_max_unpins != -1 && unpins>=m_max_unpins)
+	if(*m_max_unpins != -1 && unpins>=*m_max_unpins)
 		return;
 	auto missed_unpins=0;
 	auto scoop_unpins=0;
@@ -159,7 +161,7 @@ void Unpin_t::DoUnpinForScoops()
 
 				unpins++;
 				scoop_unpins++;
-				if(m_max_unpins != -1 && unpins>=m_max_unpins)
+				if(*m_max_unpins != -1 && unpins>=*m_max_unpins)
 					return;
 			}
 		}
@@ -174,10 +176,10 @@ Zipr_SDK::ZiprPreference Unpin_t::retargetCallback(
 	const DollopEntry_t *callback_entry,
 	RangeAddress_t &target_address)
 {
-	if(!m_on) return Zipr_SDK::ZiprPluginInterface_t::retargetCallback(callback_address, callback_entry, target_address);
+	if(!*m_on) return Zipr_SDK::ZiprPluginInterface_t::retargetCallback(callback_address, callback_entry, target_address);
 
 	unpins++;// unpinning a call to a scoop.
-	if(m_max_unpins != -1 && unpins>=m_max_unpins)
+	if(*m_max_unpins != -1 && unpins>=*m_max_unpins)
 		return Zipr_SDK::ZiprPluginInterface_t::retargetCallback(callback_address, callback_entry, target_address);
 
 
@@ -193,7 +195,7 @@ Zipr_SDK::ZiprPreference Unpin_t::retargetCallback(
 
 			target_address = wrt->getStart()->getVirtualOffset() + addend;
 		
-			if (m_verbose) {
+			if (*m_verbose) {
 				cout << "Unpin::callback_to_scoop: target_addr "
 				     << std::hex << target_address << endl;
 			}
