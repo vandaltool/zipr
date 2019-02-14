@@ -404,7 +404,7 @@ namespace zipr
 				auto new_opt=new S(name,default_value);
 				assert(new_opt);
 				new_opt->setDescription(description);
-				all_options.insert(new_opt);
+				addOption(new_opt);
 				return new_opt;
 			}
 

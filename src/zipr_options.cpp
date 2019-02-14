@@ -113,10 +113,10 @@ ZiprOptions_t::ZiprOptions_t(int argc, char **argv)
 
 bool ZiprOptions_t::parse(ostream *error, ostream *warn) 
 {
-	vector<string>::const_iterator it, it_end = m_arguments.end();
 	bool success = true;
 
-	for (it = m_arguments.begin(); it != it_end; it++) {
+	auto it_end = m_arguments.end();
+	for (auto it = m_arguments.begin(); it != it_end; it++) {
 		string ns, key, argument = *it;
 		string::size_type location = 0;
 		bool next_is_option_value = false;
