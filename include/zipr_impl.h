@@ -367,26 +367,6 @@ class ZiprImpl_t : public Zipr_t
 		std::string AddCallbacksToNewSegment(const std::string& tmpname, RangeAddress_t end_of_new_space);
 		RangeAddress_t FindCallbackAddress(RangeAddress_t end_of_new_space,RangeAddress_t start_addr, const std::string &callback);
 
-#if 0
-		IRDB_SDK::Instruction_t *FindPinnedInsnAtAddr(RangeAddress_t addr);
-
-// 		bool ShouldPinImmediately(IRDB_SDK::Instruction_t *upinsn);
-// 		bool IsPinFreeZone(RangeAddress_t addr, int size);
-
-		// routines to deal with a "68 sled"
-// 		int Calc68SledSize(RangeAddress_t addr, size_t sled_overhead=6);
-// 		RangeAddress_t Do68Sled(RangeAddress_t addr);
-// 		void Update68Sled(Sled_t, Sled_t &);
-// 		IRDB_SDK::Instruction_t* Emit68Sled(Sled_t sled);
-// 		IRDB_SDK::Instruction_t* Emit68Sled(RangeAddress_t addr, Sled_t sled, IRDB_SDK::Instruction_t* next_sled);
-		/*
-		 * The goal here is to simply clear out chain entries
-		 * that may be in the way. This will not clear out 
-		 * previously added PUSHs.
-		 */
-//		void Clear68SledArea(Sled_t sled);
-//		void InsertJumpPoints68SledArea(Sled_t &sled);
-#endif
 		// support
 		RangeAddress_t extend_section(ELFIO::section *sec,ELFIO::section *next_sec);
 
@@ -412,15 +392,12 @@ class ZiprImpl_t : public Zipr_t
 
 
 		// structures necessary for ZIPR algorithm.
-		// std::set<UnresolvedUnpinned_t> unresolved_unpinned_addrs;
-		// std::set<UnresolvedPinned_t,pin_sorter_t> unresolved_pinned_addrs; 
 		std::multimap<UnresolvedUnpinned_t,Patch_t> patch_list;
 
 		// a manager for all dollops
 		ZiprDollopManager_t m_dollop_mgr;
 
 		// final mapping of instruction to address.
-		// std::map<IRDB_SDK::Instruction_t*,RangeAddress_t> 
 		Zipr_SDK::InstructionLocationMap_t final_insn_locations; 
 		std::map<RangeAddress_t,UnresolvedUnpinnedPatch_t> m_PatchAtAddrs; 
 
