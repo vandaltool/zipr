@@ -1,5 +1,5 @@
 
-submanifest security_transforms/manifest.txt
+submanifest irdb-libs/manifest.txt
 submanifest peasoup_examples/manifest.txt
 submanifest idaproCur/manifest.txt
 submanifest SMPStaticAnalyzer/manifest.txt

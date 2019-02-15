@@ -1,5 +1,5 @@
 [submodule "security_transforms"]
-	path = security_transforms
+	path = irdb-libs
 	url = git@git.zephyr-software.com:allnp/security_transforms.git
 [submodule "idaproCur"]
 	shallow = true
@@ -19,7 +19,7 @@
 	path = zipr
 	url = git@git.zephyr-software.com:allzp/zipr.git
 [submodule "zipr_sdk"]
-	path = zipr_sdk
+	path = zipr-sdk
 	url = git@git.zephyr-software.com:allnp/zipr_sdk.git
 [submodule "daffy"]
 	path = daffy
