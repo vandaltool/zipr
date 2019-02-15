@@ -2125,11 +2125,11 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 	InsertNewSegmentIntoExe(name,callback_file_name,start_of_new_space);
 #endif
 
+#endif
 
 	// now that the textra scoop has been crated and setup, we have the info we need to 
 	// re-generate the eh information.
 	RelayoutEhInfo(); 
-#endif
 
 
 	// create the output file in a totally different way using elfwriter. later we may 
