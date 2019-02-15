@@ -1,9 +1,0 @@
-Application-level Firewall to detect command injections uses the sqlite parser.
-The supported version is: sqlite-autoconf-3071300.tar.gz 
-And was retrieved from http://www.sqlite.org/download.html on 20120816
-
-#Not yet used below:
-#Also uses libinjection/BlackHat2012
-#GPL licence
-#Original retrieved via:
-#git clone https://github.com/client9/libinjection.git libinjection
