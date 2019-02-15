@@ -33,124 +33,126 @@
 
 #include <zipr-sdk>
 
-
-typedef		std::set<Dollop_t*> DollopList_t;
-typedef		std::map<IRDB_SDK::Instruction_t*,Dollop_t*>  InsnToDollopMap_t;
-typedef		std::list<DollopPatch_t*>  DollopPatchList_t;
-typedef		std::map<Dollop_t*, DollopPatchList_t > DollopToDollopPatchListMap_t;
-
-class ZiprDollopManager_t : public DollopManager_t 
+namespace zipr
 {
-	public:
-		ZiprDollopManager_t() : m_refresh_stats(true), m_zipr(nullptr) {}
-		ZiprDollopManager_t(Zipr_SDK::Zipr_t *zipr) : m_refresh_stats(true), m_zipr(zipr) {}
+	class DollopPatch_t;
 
-		/*
-		 * Adders.
-		 */
-		void addDollops(Dollop_t *dollop_head) { return AddDollops(dollop_head); }
-		void AddDollops(Dollop_t *dollop_head);
+	typedef		std::set<Dollop_t*> DollopList_t;
+	typedef		std::map<IRDB_SDK::Instruction_t*,Dollop_t*>  InsnToDollopMap_t;
+	typedef		std::list<DollopPatch_t*>  DollopPatchList_t;
+	typedef		std::map<Dollop_t*, DollopPatchList_t > DollopToDollopPatchListMap_t;
 
+	class ZiprDollopManager_t : public DollopManager_t 
+	{
+		public:
+			ZiprDollopManager_t() : m_refresh_stats(true), m_zipr(nullptr) {}
+			ZiprDollopManager_t(Zipr_SDK::Zipr_t *zipr) : m_refresh_stats(true), m_zipr(zipr) {}
 
-		Zipr_SDK::Dollop_t *addNewDollops(IRDB_SDK::Instruction_t *start) { return AddNewDollops(start); } 
-		Zipr_SDK::Dollop_t *AddNewDollops(IRDB_SDK::Instruction_t *start);
-
-		/*
-		 * Getters.
-		 */
-		Zipr_SDK::Dollop_t *getContainingDollop(IRDB_SDK::Instruction_t *insn);
-
-		size_t getSize() { return Size(); } 
-		size_t Size() {
-			return m_dollops.size();
-		}
-
-		/*
-		 * Patch functions.
-		 */
-		void addDollopPatch(Zipr_SDK::DollopPatch_t *new_patch) { return AddDollopPatch(new_patch); } 
-		void AddDollopPatch(Zipr_SDK::DollopPatch_t *new_patch) {
-			m_patches_to_dollops[new_patch->getTarget()].push_back(new_patch);
-		}
-
-		std::list<DollopPatch_t*> getPatchesToDollop(Dollop_t *target) { return PatchesToDollop(target); } 
-		std::list<DollopPatch_t*> PatchesToDollop(Dollop_t *target) {
 			/*
-			 * FIXME: This will throw an exception if target is
-			 * not already in the list. [] fixes that but allocates.
-			 * Decide what to do.
+			 * Adders.
 			 */
-			return m_patches_to_dollops.at(target);
-		}
+			void addDollops(Dollop_t *dollop_head) { return AddDollops(dollop_head); }
+			void AddDollops(Dollop_t *dollop_head);
 
-		/*
-		 * Dollop target update functions.
-		 */
-		bool updateTargets(Dollop_t *t) { return UpdateTargets(t); } 
-		bool UpdateTargets(Dollop_t *t);
 
-		void updateAllTargets() { return UpdateAllTargets(); }
-		void UpdateAllTargets();
+			Zipr_SDK::Dollop_t *addNewDollops(IRDB_SDK::Instruction_t *start) { return AddNewDollops(start); } 
+			Zipr_SDK::Dollop_t *AddNewDollops(IRDB_SDK::Instruction_t *start);
 
-		/*
-		 * Iteration functions.
-		 */
-		DollopList_t::iterator begin() { return dollops_begin(); } 
-		DollopList_t::iterator end()   { return dollops_end();   }  
+			/*
+			 * Getters.
+			 */
+			Zipr_SDK::Dollop_t *getContainingDollop(IRDB_SDK::Instruction_t *insn);
 
-		DollopList_t::iterator dollops_begin() {
-			return m_dollops.begin();
-		}
-		DollopList_t::iterator dollops_end() {
-			return m_dollops.end();
-		}
-		DollopList_t& getDollops() { return m_dollops; }
-		const DollopList_t& getDollops() const { return m_dollops; }
+			size_t getSize() { return Size(); } 
+			size_t Size() {
+				return m_dollops.size();
+			}
 
-		/*
-		 * Printing/output functions.
-		 */
-		void printDollopPatches(const std::ostream &o) { return PrintDollopPatches(o); } 
-		void PrintDollopPatches(const std::ostream &o);
+			/*
+			 * Patch functions.
+			 */
+			void addDollopPatch(DollopPatch_t *new_patch) { return AddDollopPatch(new_patch); } 
+			void AddDollopPatch(DollopPatch_t *new_patch) ; 
 
-		friend std::ostream &operator<<(std::ostream &out,
-		                                const ZiprDollopManager_t &dollop_man);
+			std::list<DollopPatch_t*> getPatchesToDollop(Dollop_t *target) { return PatchesToDollop(target); } 
+			std::list<DollopPatch_t*> PatchesToDollop(Dollop_t *target) {
+				/*
+				 * FIXME: This will throw an exception if target is
+				 * not already in the list. [] fixes that but allocates.
+				 * Decide what to do.
+				 */
+				return m_patches_to_dollops.at(target);
+			}
 
-		void printStats(std::ostream &out) { return PrintStats(out); } 
-		void PrintStats(std::ostream &out);
+			/*
+			 * Dollop target update functions.
+			 */
+			bool updateTargets(Dollop_t *t) { return UpdateTargets(t); } 
+			bool UpdateTargets(Dollop_t *t);
 
-		void printPlacementMap(const MemorySpace_t &memory_space, const std::string &map_filename) { return PrintPlacementMap(memory_space,map_filename); }
-		void PrintPlacementMap(const MemorySpace_t &memory_space, const std::string &map_filename);
-	
-		/*
-		 * Helper functions.
-		 */
-		size_t determineDollopEntrySize(DollopEntry_t *entry) { return DetermineDollopEntrySize(entry); } 
-		size_t DetermineDollopEntrySize(DollopEntry_t *entry);
+			void updateAllTargets() { return UpdateAllTargets(); }
+			void UpdateAllTargets();
 
-		Zipr_SDK::Zipr_t* GetZipr() const { return m_zipr; }
-	private:
-		/*
-		 * Helper functions.
-		 */
-		void addDollop(Dollop_t *dollop);
-		void CalculateStats();
+			/*
+			 * Iteration functions.
+			 */
+			DollopList_t::iterator begin() { return dollops_begin(); } 
+			DollopList_t::iterator end()   { return dollops_end();   }  
 
-		/*
-		 * Support variables.
-		 */
-		DollopList_t m_dollops;
-		InsnToDollopMap_t m_insn_to_dollop;
-		DollopPatchList_t m_patches;
-		DollopToDollopPatchListMap_t m_patches_to_dollops;
+			DollopList_t::iterator dollops_begin() {
+				return m_dollops.begin();
+			}
+			DollopList_t::iterator dollops_end() {
+				return m_dollops.end();
+			}
+			DollopList_t& getDollops() { return m_dollops; }
+			const DollopList_t& getDollops() const { return m_dollops; }
 
-		/*
-		 * Statistics.
-		 */
-		bool m_refresh_stats;
-		size_t m_total_dollop_space, m_total_dollop_entries;
-		unsigned int m_total_dollops, m_truncated_dollops;
+			/*
+			 * Printing/output functions.
+			 */
+			void printDollopPatches(const std::ostream &o) { return PrintDollopPatches(o); } 
+			void PrintDollopPatches(const std::ostream &o);
 
-		Zipr_SDK::Zipr_t* m_zipr;
-};
+			friend std::ostream &operator<<(std::ostream &out,
+							const ZiprDollopManager_t &dollop_man);
+
+			void printStats(std::ostream &out) { return PrintStats(out); } 
+			void PrintStats(std::ostream &out);
+
+			void printPlacementMap(const MemorySpace_t &memory_space, const std::string &map_filename) { return PrintPlacementMap(memory_space,map_filename); }
+			void PrintPlacementMap(const MemorySpace_t &memory_space, const std::string &map_filename);
+		
+			/*
+			 * Helper functions.
+			 */
+			size_t determineDollopEntrySize(DollopEntry_t *entry) { return DetermineDollopEntrySize(entry); } 
+			size_t DetermineDollopEntrySize(DollopEntry_t *entry);
+
+			Zipr_SDK::Zipr_t* GetZipr() const { return m_zipr; }
+		private:
+			/*
+			 * Helper functions.
+			 */
+			void addDollop(Dollop_t *dollop);
+			void CalculateStats();
+
+			/*
+			 * Support variables.
+			 */
+			DollopList_t m_dollops;
+			InsnToDollopMap_t m_insn_to_dollop;
+			DollopPatchList_t m_patches;
+			DollopToDollopPatchListMap_t m_patches_to_dollops;
+
+			/*
+			 * Statistics.
+			 */
+			bool m_refresh_stats;
+			size_t m_total_dollop_space, m_total_dollop_entries;
+			unsigned int m_total_dollops, m_truncated_dollops;
+
+			Zipr_SDK::Zipr_t* m_zipr;
+	};
+}
 #endif

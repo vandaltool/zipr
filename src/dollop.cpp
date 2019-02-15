@@ -33,11 +33,12 @@ namespace Zipr_SDK
 			out << "Fallthrough: " << hex << fallthrough << endl;
 		return out;
 	}
-
+#if 0
 	ostream &operator<<(ostream &out, const DollopPatch_t &p) {
 		out << hex << &p << ":" << hex << p.getTarget();
 		return out;
 	}
+#endif
 
 	ostream &operator<<(ostream &out, const DollopEntry_t &p) {
 		out << "Instruction: " << hex << p.getInstruction() << endl;

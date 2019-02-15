@@ -34,6 +34,7 @@ files=  '''
 	sizer_base.cpp
 	sizer_x86.cpp
 	sizer_arm64.cpp
+	range.cpp
 	'''
 
 # ELFIO needs to be first so we get the zipr version instead of the sectrans version.  the zipr version is modified to include get_offset.

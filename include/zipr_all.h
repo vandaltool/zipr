@@ -59,7 +59,13 @@ using namespace Zipr_SDK;
 #include <unresolved.h>
 #include <zipr_mem_space.h>
 #include <plugin_man.h>
+}
+
+// trying to move the namespace zipr into the header files
 #include <zipr_dollop_man.h>
+
+namespace zipr
+{
 #include <zipr_utils.h>
 #include <pinner/pinner_base.hpp>
 #include <patcher/patcher_base.hpp>

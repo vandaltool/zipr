@@ -28,7 +28,7 @@ namespace zipr
 	};
 
 
-	class DollopPatch_t : virtual public Zipr_SDK::DollopPatch_t, public Placeable_t 
+	class DollopPatch_t : /*virtual public Zipr_SDK::DollopPatch_t, */ public Placeable_t 
 	{
 		public:
 			DollopPatch_t(Zipr_SDK::Dollop_t *target) : m_target(target) {};

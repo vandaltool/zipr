@@ -27,7 +27,6 @@
 #include <ctime>        // std::time
 #include <cstdlib>      // std::rand, std::srand
 
-
 using namespace zipr;
 using namespace std;
 

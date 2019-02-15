@@ -324,6 +324,11 @@ namespace zipr {
 #define PRINT_LINE_HEADER(x) \
 	map_output << endl << std::hex << (x) << ": ";
 
+	void ZiprDollopManager_t::AddDollopPatch(DollopPatch_t *new_patch) 
+	{
+		m_patches_to_dollops[new_patch->getTarget()].push_back(new_patch);
+	}
+
 	void ZiprDollopManager_t::PrintPlacementMap(
 		const MemorySpace_t &_memory_space,
 		const std::string &map_filename)
