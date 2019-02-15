@@ -881,7 +881,7 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 
 	T_Elf_Shdr null_shdr;
 	memset(&null_shdr,0,sizeof(null_shdr));
-	null_shdr.sh_type=SHT_nullptr;
+	null_shdr.sh_type=SHT_NULL;
 	null_shdr. sh_name =strtab.location(null_symtab);
 
 	shdrs.push_back(null_shdr);

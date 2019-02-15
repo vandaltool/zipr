@@ -1951,6 +1951,8 @@ DataScoop_t* ZiprImpl_t::FindScoop(const RangeAddress_t &addr)
 
 void ZiprImpl_t::WriteScoop(section* sec, FILE* fexe)
 {
+	assert(0);
+#if 0
 	// skip any nobits/tls sections.  
 	if ( (sec->get_flags() & SHF_TLS) == SHF_TLS && sec->get_type()  ==  SHT_NOBITS )
 		return;
@@ -1985,8 +1987,10 @@ void ZiprImpl_t::WriteScoop(section* sec, FILE* fexe)
 		}
 
 	}
+#endif
 }
 
+#if 0
 static bool InScoop(VirtualOffset_t addr, DataScoop_t* scoop)
 {
 	if(scoop->getStart()->getVirtualOffset()==0)
@@ -2000,9 +2004,12 @@ static bool InScoop(VirtualOffset_t addr, DataScoop_t* scoop)
 	return true;
 
 }
+#endif
 
 void ZiprImpl_t::FillSection(section* sec, FILE* fexe)
 {
+	assert(0);
+#if 0
 	RangeAddress_t start=sec->get_address();
 	RangeAddress_t end=sec->get_size()+start;
 	DataScoop_t* scoop=nullptr;
@@ -2032,10 +2039,12 @@ void ZiprImpl_t::FillSection(section* sec, FILE* fexe)
 			}
 		}
 	}
+#endif
 }
 
 void ZiprImpl_t::OutputBinaryFile(const string &name)
 {
+#if 0
 	assert(elfiop);
 
 #ifdef support_stratafier_mode
@@ -2120,6 +2129,7 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 	// now that the textra scoop has been crated and setup, we have the info we need to 
 	// re-generate the eh information.
 	RelayoutEhInfo(); 
+#endif
 
 
 	// create the output file in a totally different way using elfwriter. later we may 

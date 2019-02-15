@@ -41,7 +41,7 @@ DollopFiles= '''
 # ELFIO needs to be first so we get the zipr version instead of the sectrans version.  the zipr version is modified to include get_offset.
 cpppath=''' 
 	.
-	$ZIPR_HOME/third_party/ELFIO/elfio-2.2	
+	$SECURITY_TRANSFORMS_HOME/third_party/elfio-code/
 	$IRDB_SDK/include/
 	$ZIPR_HOME/include/
 	$ZIPR_SDK/include/
