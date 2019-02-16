@@ -5,7 +5,7 @@ trap clean EXIT
 
 cd $CICD_MODULE_WORK_DIR/irdblibs_umbrella
 source set_env_vars
-cd ./security_transforms/tools/selective_cfi/tests/cicd_tests/foo_src
+cd ./irdb-libs/tools/selective_cfi/tests/cicd_tests/foo_src
 
 source ../../cfi_smokescreen_configs.sh 
 
