@@ -70,5 +70,8 @@ if sysname == "SunOS":
 
 
 Export('env')
-SConscript("SConscript", variant_dir='build')
+if int(env['build_deep']) == 1:
+	SConscript("SConscript.deep", variant_dir='build')
+else:
+	SConscript("SConscript", variant_dir='build')
 

@@ -9,3 +9,7 @@ tools/meds2pdb/meds2pdb
 plugins_install/*.exe
 plugins_install/*.so
 *.swp
+*.os
+*.o
+
+scons_build

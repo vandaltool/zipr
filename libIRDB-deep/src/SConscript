@@ -11,6 +11,7 @@ files=  '''
 cpppath=''' 
 	$IRDB_SDK/include/
 	$SECURITY_TRANSFORMS_HOME/include/
+	$SECURITY_TRANSFORMS_HOME/libIRDB-deep/src
 	$SECURITY_TRANSFORMS_HOME/libMEDSannotation/include
 	$SMPSA_HOME/include/
 	'''

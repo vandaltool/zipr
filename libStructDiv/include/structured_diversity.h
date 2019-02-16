@@ -43,7 +43,7 @@ class StructuredDiversity_t
         		// pass marshalled value to DoBarrier
         		const vector<string> &string_res=DoBarrier(s.str());
 		
-        		assert(string_res.size()==m_total_variants);
+        		assert((size_t)string_res.size()==(size_t)m_total_variants);
 		
         		/* declare a result */
         		vector<T> t_res;

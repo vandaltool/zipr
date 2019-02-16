@@ -47,7 +47,7 @@ files=  '''
 	'''
 
 cpppath=''' 
-	.
+	$SECURITY_TRANSFORMS_HOME/pebliss/trunk/pe_lib
 	'''
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath))
