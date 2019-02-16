@@ -58,7 +58,6 @@ void UnpinAarch64_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* re
 	const auto insn_wrt=dynamic_cast<Instruction_t*>(reloc->getWRT());
 	assert(the_arg_it!=operands.end());
 	const auto the_arg=*the_arg_it;
-	const auto mt=firp.getArchitecture()->getMachineType();
 
 	// get the new insn addr 	
 	const auto from_insn_location=(VirtualOffset_t)locMap[from_insn];

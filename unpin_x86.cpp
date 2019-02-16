@@ -102,7 +102,6 @@ void UnpinX86_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* reloc)
 	const auto insn_wrt=dynamic_cast<Instruction_t*>(reloc->getWRT());
 	assert(the_arg_it!=operands.end());
 	const auto the_arg=*the_arg_it;
-	const auto mt=firp.getArchitecture()->getMachineType();
 
 	// get the new insn addr 	
 	const auto from_insn_location=(VirtualOffset_t)locMap[from_insn];
@@ -133,7 +132,7 @@ void UnpinX86_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* reloc)
 	const auto disp_offset=(int)disasm->getMemoryDisplacementOffset(the_arg.get(),from_insn); 
 	const auto disp_size=(int)the_arg->getMemoryDisplacementEncodingSize(); 
 	assert(disp_size==4);
-	assert(0<disp_offset && disp_offset<=from_insn->getDataBits().size() - disp_size);
+	assert(0<disp_offset && (int64_t)disp_offset<=(int64_t)from_insn->getDataBits().size() - disp_size);
 		
 	const auto new_disp=(int)(rel_addr1 + to_addr - from_insn->getDataBits().size()-from_insn_location);
 	const auto newbits=from_insn->getDataBits().replace(disp_offset, disp_size, (char*)&new_disp, disp_size); 
@@ -158,12 +157,11 @@ void UnpinX86_t::HandleAbsptrReloc(Instruction_t* from_insn, Relocation_t* reloc
 	assert(wrt);
 	assert(the_arg_it!=operands.end());
 	const auto &the_arg=*the_arg_it;
-	VirtualOffset_t rel_addr1=the_arg->getMemoryDisplacement(); 
 
 	int disp_offset=disasm->getMemoryDisplacementOffset(the_arg.get(),from_insn); 
 	int disp_size=the_arg->getMemoryDisplacementEncodingSize(); 
 	assert(disp_size==4);
-	assert(0<disp_offset && disp_offset<=from_insn->getDataBits().size() - disp_size);
+	assert(0<disp_offset && (int64_t)disp_offset<=(int64_t)from_insn->getDataBits().size() - disp_size);
 	assert(reloc->getWRT());
 
 	unsigned int new_disp=the_arg->getMemoryDisplacement() + wrt->getStart()->getVirtualOffset();
@@ -210,21 +208,17 @@ void UnpinX86_t::HandleImmedptrReloc(Instruction_t* from_insn, Relocation_t* rel
 
 void UnpinX86_t::HandleCallbackReloc(Instruction_t* from_insn, Relocation_t* reloc)
 {
-	DataScoop_t *wrt = dynamic_cast<DataScoop_t*>(reloc->getWRT());
-	int addend = reloc->getAddend();
 	char bytes[]={(char)0x48,
 		      (char)0x8d,
 		      (char)0x64,
 		      (char)0x24,
 		      (char)(64/0x08)}; // lea rsp, [rsp+8]
-	uintptr_t call_addr = 0x0, at = 0x0;
-	uint32_t target_addr = 0x0;
 
 	if (m_verbose)
 		cout << "The call insn is " 
 		     << from_insn->getDataBits().length() << " bytes long." << endl;
 	
-	call_addr = locMap[from_insn];
+	auto call_addr = locMap[from_insn];
 
 	if (m_verbose) {
 		cout << "Unpin::callback_to_scoop: call_addr " 
@@ -234,8 +228,7 @@ void UnpinX86_t::HandleCallbackReloc(Instruction_t* from_insn, Relocation_t* rel
 	/*
 	 * Put down the bogus pop.
 	 */
-	at = call_addr + 1;
-	at = call_addr + from_insn->getDataBits().length();
+	auto at = call_addr + from_insn->getDataBits().length();
 	ms.plopBytes(at, bytes, sizeof(bytes));
 
 	/*

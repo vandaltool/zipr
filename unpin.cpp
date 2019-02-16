@@ -43,57 +43,6 @@ using namespace Zipr_SDK;
 
 #define ALLOF(a) begin(a),end(a)
 
-static std::string findAndReplace(const std::string& in_str, const std::string& oldStr, const std::string& newStr)
-{
-        std::string str=in_str;
-        size_t pos = 0;
-        while((pos = str.find(oldStr, pos)) != std::string::npos)
-        {
-                str.replace(pos, oldStr.length(), newStr);
-                pos += newStr.length();
-        }
-        return str;
-}
-
-static bool has_cfi_reloc(Instruction_t* insn)
-{
-	for(auto reloc : insn->getRelocations())
-	{
-		/* check for a nonce relocation */
-		if ( reloc -> getType().find("cfi_nonce") != string::npos )
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
-bool Unpin_t::should_cfi_pin(Instruction_t* insn)
-{
-	// add command line option that:
-	// 	1) return false if !has_cfi_reloc(insn)
-	// 	2) return true if option is on.
-	return *m_should_cfi_pin;
-}
-
-#if 0
-ZiprOptionsNamespace_t *Unpin_t::registerOptions(ZiprOptionsNamespace_t *global)
-{
-	auto unpin_ns = new ZiprOptionsNamespace_t("unpin");
-	global->addOption(&m_verbose);
-
-	m_should_cfi_pin.setDescription("Pin CFI instructions.");
-	unpin_ns->addOption(&m_should_cfi_pin);
-
-	m_on.setDescription("Turn unpin plugin on/off.");
-	unpin_ns->addOption(&m_on);
-
-	m_max_unpins.setDescription("Set how many unpins are allowed, useful for debugging.");
-	unpin_ns->addOption(&m_max_unpins);
-
-	return unpin_ns;
-}
-#endif
 
 // CAN BE DELETED, left in just for stats? (Would speed up zipr step to delete)
 void Unpin_t::DoUnpin()
@@ -106,7 +55,7 @@ void Unpin_t::DoUnpin()
 // scan instructions and process instruction relocs that can be unpinned.
 void Unpin_t::DoUnpinForFixedCalls()
 {
-	if(*m_max_unpins != -1 && unpins>=*m_max_unpins)
+	if((int64_t)*m_max_unpins != (int64_t)-1 && (int64_t)unpins>=(int64_t)*m_max_unpins)
 		return;
 	auto insn_unpins=0;
 	auto missed_unpins=0;
@@ -130,7 +79,7 @@ void Unpin_t::DoUnpinForFixedCalls()
 		
 				unpins++;
 				insn_unpins++;
-				if(*m_max_unpins != -1 && unpins>=*m_max_unpins)
+				if((int64_t)*m_max_unpins != (int64_t)-1 && (int64_t)unpins>=(int64_t)*m_max_unpins)
 					return;
 			}
 		}
@@ -143,8 +92,9 @@ void Unpin_t::DoUnpinForFixedCalls()
 // CAN BE DELETED, left in just for stats?
 void Unpin_t::DoUnpinForScoops()
 {
-	if(*m_max_unpins != -1 && unpins>=*m_max_unpins)
+	if((int64_t)*m_max_unpins != (int64_t)-1 && (int64_t)unpins>=(int64_t)*m_max_unpins)
 		return;
+
 	auto missed_unpins=0;
 	auto scoop_unpins=0;
 
@@ -161,7 +111,7 @@ void Unpin_t::DoUnpinForScoops()
 
 				unpins++;
 				scoop_unpins++;
-				if(*m_max_unpins != -1 && unpins>=*m_max_unpins)
+				if((int64_t)*m_max_unpins != (int64_t)-1 && (int64_t)unpins>=(int64_t)*m_max_unpins)
 					return;
 			}
 		}
@@ -179,13 +129,11 @@ Zipr_SDK::ZiprPreference Unpin_t::retargetCallback(
 	if(!*m_on) return Zipr_SDK::ZiprPluginInterface_t::retargetCallback(callback_address, callback_entry, target_address);
 
 	unpins++;// unpinning a call to a scoop.
-	if(*m_max_unpins != -1 && unpins>=*m_max_unpins)
+	if((int64_t)*m_max_unpins != (int64_t)-1 && (int64_t)unpins>=(int64_t)*m_max_unpins)
 		return Zipr_SDK::ZiprPluginInterface_t::retargetCallback(callback_address, callback_entry, target_address);
 
 
-	auto& ms=*zo->getMemorySpace();
 	auto  insn = callback_entry->getInstruction();
-	auto& locMap=*(zo->getLocationMap());
 	for(auto reloc : insn->getRelocations())
 	{
 		if (reloc->getType()==string("callback_to_scoop"))
