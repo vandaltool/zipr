@@ -42,9 +42,6 @@
 [submodule "zipr_unpin_plugin"]
 	path = zipr_unpin_plugin
 	url = git@git.zephyr-software.com:allnp/zipr_unpin_plugin.git
-[submodule "zipr_scfi_plugin"]
-	path = zipr_scfi_plugin
-	url = git@git.zephyr-software.com:allzp/zipr_scfi_plugin.git
 [submodule "zipr_relax_plugin"]
 	path = zipr_relax_plugin
 	url = git@git.zephyr-software.com:allnp/zipr_relax_plugin.git
@@ -60,6 +57,3 @@
 [submodule "irdb-sdk"]
 	path = irdb-sdk
 	url = git@git.zephyr-software.com:allnp/irdb-sdk.git
-[submodule "zipr_xeon_plugin"]
-	path = zipr_xeon_plugin
-	url = git@git.zephyr-software.com:allnp/xeon_plugin
