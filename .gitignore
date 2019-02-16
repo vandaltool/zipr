@@ -1,12 +1,5 @@
-bin/callbacks.exe
-bin/zipr.exe
 manifest.txt.config
-plugins/large_only.zpi
-plugins/push64_relocs.zpi
-plugins/relax.zpi
-plugins/traceplacement.zpi
-plugins/unpin.zpi
-plugins/Xeon_relocs.zpi
-plugins/nonce_relocs.zpi
-lib/libtrace.so
+*.so
+*.zpi
+*.exe
 
