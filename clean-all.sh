@@ -1,5 +1,10 @@
 #!/bin/bash
 
+scons -c
+
+exit
+
+
 # check if DIR is the directory containing the build script.
 BUILD_LOC=`dirname $0`
 FULL_BUILD_LOC=`cd $BUILD_LOC; pwd`
