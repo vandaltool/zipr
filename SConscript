@@ -9,6 +9,8 @@ Import('env')
 # build security transforms
 irdbenv=env.Clone(); 
 
+print "zipr's LINKFLAGS="+env['LINKFLAGS']
+
 zipr=SConscript("src/SConscript", variant_dir='scons_build/zipr')
 
 if sysname  != "SunOS":
@@ -20,4 +22,5 @@ pedi = Command( target = "./testoutput",
 
 Depends(pedi,zipr)
 Default( pedi )
-
+ret=pedi+zipr
+Return('ret')

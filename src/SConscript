@@ -76,4 +76,5 @@ ziprexe=myenv.Program("zipr.exe", Split(files))
 
 install=myenv.Install("$ZIPR_INSTALL/bin/", ziprexe)
 Default(install)
-Return('install')
+ret=install+ziprexe
+Return('ret')
