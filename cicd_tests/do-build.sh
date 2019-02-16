@@ -18,7 +18,7 @@ main()
 	local orig_dir=$(pwd)
 
 	# puts irdblibs_umbrella (and all submodules) in CICD_MODULE_WORK_DIR
-	cicd_setup_module_dependency allnp/irdblibs_umbrella.git
+	cicd_setup_module_dependency allnp/peasoup_umbrella.git irdblibs_umbrella
 
 
 	# puts the version of irdb-libs to test in irdblibs_umbrella/irdb-libs
