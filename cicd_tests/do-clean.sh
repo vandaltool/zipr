@@ -14,7 +14,7 @@ main()
 
 
 	if [[ $CICD_NIGHTLY == 1 ]] ; then
-		rm -rf $CICD_MODULE_WORK_DIR/peasoup_umbrella
+		rm -rf $CICD_MODULE_WORK_DIR/irdblibs_umbrella
 	fi
 
 }
