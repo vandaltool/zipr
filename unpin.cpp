@@ -43,6 +43,13 @@ using namespace Zipr_SDK;
 
 #define ALLOF(a) begin(a),end(a)
 
+bool Unpin_t::should_cfi_pin(Instruction_t* insn)
+{
+	// add command line option that:
+	// 	1) return false if !has_cfi_reloc(insn)
+	// 	2) return true if option is on.
+	return m_should_cfi_pin;
+}
 
 // CAN BE DELETED, left in just for stats? (Would speed up zipr step to delete)
 void Unpin_t::DoUnpin()
