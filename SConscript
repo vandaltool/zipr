@@ -97,11 +97,12 @@ dump_insns=SConscript("dump_insns/SConscript", variant_dir='scons_build/dump_ins
 ir_builders=SConscript("ir_builders/SConscript", variant_dir='scons_build/ir_builders')
 
 
-tools=None
-if 'build_tools' not in env or env['build_tools'] is None or int(env['build_tools']) == 1:
-	tools=SConscript("tools/SConscript", variant_dir='scons_build/tools')
-	if "PEDI_HOME" in os.environ:
-		Depends(pedi,tools)
+# no more tools in irdb-libs
+#tools=None
+#if 'build_tools' not in env or env['build_tools'] is None or int(env['build_tools']) == 1:
+#	tools=SConscript("tools/SConscript", variant_dir='scons_build/tools')
+#	if "PEDI_HOME" in os.environ:
+#		Depends(pedi,tools)
 
 libs=( libIRDBcore, 
 	libIRDBcfg, 
@@ -128,6 +129,4 @@ if "PEDI_HOME" in os.environ:
 else:
 
 	Default(libIRDBcore, libIRDBcfg, libIRDButil, libIRDBdeep, libIRDBcore, libehp,libtransform,libEXEIO,libMEDSannotation,libStructDiv,libElfDep, libcapstone, thanos, rida, meds2pdb, dump_map, dump_insns, ir_builders)
-	if 'build_tools' not in env or env['build_tools'] is None or int(env['build_tools']) == 1:
-		Default(tools)
 

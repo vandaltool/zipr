@@ -1,7 +1,0 @@
-
-
-
-env=Environment()
-Export('env')
-#env.SConscript('SConscript32', variant_dir='/tmp/build32')
-env.SConscript('SConscript64', variant_dir='/tmp/build64')
