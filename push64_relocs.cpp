@@ -57,11 +57,8 @@ bool Push64Relocs_t::IsRelocationWithType(Relocation_t *reloc,std::string type)
 // would be nice to have a FindRelocation function that takes a parameterized type.
 Relocation_t* Push64Relocs_t::FindRelocationWithType(Instruction_t* insn, std::string type)
 {
-	Instruction_t* first_slow_path_insn=NULL;
-	RelocationSet_t::iterator rit = insn->getRelocations().begin();
-	for(rit; rit!=insn->getRelocations().end(); rit++)
+	for(auto reloc : insn->getRelocations())
 	{
-		Relocation_t *reloc=*rit;
 		if (IsRelocationWithType(reloc, type))
 			return reloc;
 	}
@@ -160,22 +157,19 @@ void Push64Relocs_t::HandlePush64Relocs()
 	int push64_relocations_count=0;
 	int pcrel_relocations_count=0;
 	// for each instruction 
-	InstructionSet_t::iterator iit = m_firp.getInstructions().begin();
-	for(iit; iit!=m_firp.getInstructions().end(); iit++)
+	for(auto insn : m_firp.getInstructions())
 	{
-		Instruction_t *insn=*iit;
-
-		Relocation_t *reloc=NULL;
+		auto reloc= FindPushRelocation(insn);
 		// caution, side effect in if statement.
-		if (reloc = FindPushRelocation(insn))
+		if (reloc) 
 		{
 			if (*m_verbose)
 				cout << "Found a Push relocation:" << insn->getDisassembly()<<endl;
 			HandlePush64Relocation(insn,reloc);
 			push64_relocations_count++;
 		}
-		// caution, side effect in if statement.
-		else if (reloc = FindPcrelRelocation(insn))
+		reloc = FindPcrelRelocation(insn);
+		if (reloc)
 		{
 			if (*m_verbose)
 				cout << "Found a pcrel relocation." << endl;
@@ -197,13 +191,10 @@ void Push64Relocs_t::UpdatePush64Adds()
 {
 	if (*m_verbose)
 		cout << "push64:UpdatePush64Adds()" << endl;
-	InstructionSet_t::iterator insn_it = plopped_relocs.begin();
-	for (insn_it; insn_it != plopped_relocs.end(); insn_it++)
+	for(auto insn : plopped_relocs)
 	{
-		Relocation_t *reloc = NULL;
-		Instruction_t *insn = *insn_it;
-		// caution, side effect in if statement.
-		if (reloc = FindPushRelocation(insn))
+		auto reloc = FindPushRelocation(insn);
+		if (reloc)
 		{
 // would consider updating this if statement to be a function call for simplicity/readability.
 			bool change_to_add = false;
@@ -215,14 +206,14 @@ void Push64Relocs_t::UpdatePush64Adds()
 			Instruction_t *call = NULL, *add = NULL;
 			Relocation_t *add_reloc = NULL;
 
-			call = *insn_it;
+			call = insn;
 			add = call->getTarget();
 
 			assert(call && add);
 
 			call_addr = final_insn_locations[call];
 			add_addr = final_insn_locations[add];
-			Instruction_t* wrt_insn=dynamic_cast<Instruction_t*>(reloc->getWRT());
+			auto wrt_insn=dynamic_cast<Instruction_t*>(reloc->getWRT());
 			if(wrt_insn)
 				wrt_addr=final_insn_locations[wrt_insn];
 
@@ -246,7 +237,7 @@ void Push64Relocs_t::UpdatePush64Adds()
 
 // would this be simpler if we always used an add (or sub)
 // and just signed the sign of the value we are adding (or subbing)?
-			if (add_offset>call_addr)
+			if ((size_t)add_offset>(size_t)call_addr)
 			{
 				change_to_add = true;
 				if(wrt_insn)

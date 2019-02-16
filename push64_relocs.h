@@ -92,12 +92,13 @@ class Push64Relocs_t : public Zipr_SDK::ZiprPluginInterface_t
 
 		IRDB_SDK::Relocation_t* FindPushRelocation(IRDB_SDK::Instruction_t* insn)
 		{ 
-			IRDB_SDK::Relocation_t* reloc=NULL;
-			if(reloc=FindPush64Relocation(insn))
+			auto reloc=FindPush64Relocation(insn);
+			if(reloc)
 			{
 				return reloc; 
 			}
-			if(reloc=Find32BitRelocation(insn))
+			reloc=Find32BitRelocation(insn);
+			if(reloc)
 			{
 				return reloc; 
 			}
