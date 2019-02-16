@@ -8,23 +8,16 @@ Import('env')
 #if [ ! -f manifest.txt.config -o ! -d "$PS_INSTALL" ]; then
 
 if not os.path.isfile("manifest.txt.config"):
-	print "Doing pedi setup"  
-	pedisetup = Command( target = "./testoutput-setup",
-			source = "./SConscript",
-			action = os.environ['PEDI_HOME'] + 
-					"/pedi --setup -m manifest.txt -l ida -l ida_key -l ps -l zipr -l stars -i " + 
-					os.environ['PS_INSTALL']
-		)
+	os.system("$PEDI_HOME/pedi --setup -m manifest.txt -l ida -l ida_key -l ps -l zipr -l stars -i $PS_INSTALL")
 else:
 	print "Pedi already setup"  
-	pedisetup=list()
 
 
 
 # build stars and libirdb
 libirdb=      SConscript("irdb-libs/SConscript") # , variant_dir='build/irdb-libs')
-Depends(libirdb,pedisetup)
 libsmpsa=     SConscript("SMPStaticAnalyzer/SConscript") # 
+
 
 # specify some explicit dependencies to make sure these build in order
 Depends(libsmpsa,libirdb)
@@ -33,6 +26,14 @@ Depends(libsmpsa,libirdb)
 libirdbdeep=SConscript("irdb-libs/SConscript.deep", variant_dir='build/irdb-libs')
 Depends(libirdbdeep,libsmpsa)
 
+print "Zipr install is "+env['ZIPR_INSTALL']
+Export('env')
+libtrace=env.SConscript(["zipr_trace_plugin/libtrace/SConscript"])
+print "Zipr install is "+env['ZIPR_INSTALL']
+zipr_trace_plugin=SConscript(["zipr_trace_plugin/SConscript"])
+Depends(zipr_trace_plugin,libtrace);
+
+
 # list of zipr plugins and irdb xforms to build
 transformDirs='''
 	zipr_large_only_plugin
@@ -40,7 +41,6 @@ transformDirs='''
 	zipr_push64_reloc_plugin
 	zipr_relax_plugin
 	zipr
-	zipr_trace_plugin
 	zipr_unpin_plugin
 	'''
 
@@ -49,7 +49,6 @@ xforms=list()
 for i in Split(transformDirs):
 	Export('env')
 	xform = SConscript(i+"/SConscript")
-	print "After step "+str(i)+", env[LINKFLAGS]=:"+env['LINKFLAGS']
 	Depends(xform, libirdbdeep)
 	xforms = xforms + xform 
 
