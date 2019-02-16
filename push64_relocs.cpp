@@ -90,7 +90,8 @@ void Push64Relocs_t::HandlePush64Relocation(Instruction_t *insn, Relocation_t *r
 	 * we know that the opcode is one byte.
 	 * The pushed value will start at the 1th offset.
 	 */
-	push_addr = *((VirtualOffset_t*)(&push_data_bits[1]));
+	// push_addr = *((VirtualOffset_t*)(push_data_bits+1));
+	memcpy(&push_addr,&push_data_bits[1], 4);
 
 	if (*m_verbose)
 		cout << "push_addr: 0x" << std::hex << push_addr << endl;
