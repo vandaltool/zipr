@@ -1,4 +1,4 @@
-cd $CICD_MODULE_WORK_DIR/peasoup_umbrella
+cd $CICD_MODULE_WORK_DIR/ps_pe_umbrella
 
 set -e
 set -x

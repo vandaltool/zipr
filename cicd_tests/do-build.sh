@@ -18,14 +18,14 @@ main()
 	local orig_dir=$(pwd)
 
 	# puts peasoup_umbrella (and all submodules) in CICD_MODULE_WORK_DIR
-	cicd_setup_module_dependency allnp/peasoup_umbrella.git
+	cicd_setup_module_dependency allnp/peasoup_umbrella.git ps_pe_umbrella
 
 
-	# puts the version of peasoup_examples to test in peasoup_umbrella/peasoup_examples
-	cicd_put_module_in_tree peasoup_umbrella/peasoup_examples
+	# puts the version of peasoup_examples to test in ps_pe_umbrella/peasoup_examples
+	cicd_put_module_in_tree ps_pe_umbrella/peasoup_examples
 
 	# Build/run $PSZ, test result
-	cd $CICD_MODULE_WORK_DIR/peasoup_umbrella
+	cd $CICD_MODULE_WORK_DIR/ps_pe_umbrella
 	source set_env_vars
 	sudo ./get-peasoup-packages.sh all
 

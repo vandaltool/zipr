@@ -2,7 +2,7 @@
 set -e
 set -x
 
-cd $CICD_MODULE_WORK_DIR/peasoup_umbrella
+cd $CICD_MODULE_WORK_DIR/ps_pe_umbrella
 source set_env_vars
 
 cd $PEASOUP_HOME/tests
