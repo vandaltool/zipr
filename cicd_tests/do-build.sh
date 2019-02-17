@@ -15,14 +15,14 @@ main()
 	local orig_dir=$(pwd)
 
 	# puts peasoup_umbrella (and all submodules) in CICD_MODULE_WORK_DIR
-	cicd_setup_module_dependency allnp/peasoup_umbrella.git
+	cicd_setup_module_dependency allnp/peasoup_umbrella.git zipr_umbrella
 
 
 	# puts the version of zipr to test in peasoup_umbrella/zipr.
-	cicd_put_module_in_tree peasoup_umbrella/zipr
+	cicd_put_module_in_tree zipr_umbrella/zipr
 
 	# Build/run $PSZ, test result
-	cd $CICD_MODULE_WORK_DIR/peasoup_umbrella
+	cd $CICD_MODULE_WORK_DIR/zipr_umbrella
 	source set_env_vars
 	sudo ./get-peasoup-packages.sh all
 	./build-all.sh
