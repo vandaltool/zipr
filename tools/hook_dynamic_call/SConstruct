@@ -1,7 +1,0 @@
-
-
-
-env=Environment()
-Export('env')
-install=SConscript("SConscript")
-Return('install')
