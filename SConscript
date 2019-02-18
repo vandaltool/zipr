@@ -4,6 +4,20 @@ import tarfile
 
 Import('env')
 
+def createFolder(directory):
+    try:
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+    except OSError:
+        print ('Error: Creating directory. ' +  directory)
+
+
+
+createFolder(os.environ['ZEST_RUNTIME']+'/lib32')
+createFolder(os.environ['ZEST_RUNTIME']+'/lib64')
+createFolder(os.environ['ZEST_RUNTIME']+'/sbin')
+createFolder(os.environ['ZEST_RUNTIME']+'/bin')
+
 
 #if [ ! -f manifest.txt.config -o ! -d "$PS_INSTALL" ]; then
 
