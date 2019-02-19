@@ -1,6 +1,3 @@
-[submodule "security_transforms"]
-	path = irdb-libs
-	url = git@git.zephyr-software.com:allnp/security_transforms.git
 [submodule "idaproCur"]
 	shallow = true
 	path = idaproCur
