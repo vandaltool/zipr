@@ -1,0 +1,36 @@
+import os
+
+Import('env')
+myenv=env.Clone()
+myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
+
+lib="MEDSannotation"
+
+files=  '''
+	src/FuncExitAnnotation.cpp
+	src/MEDS_AnnotationParser.cpp
+	src/MEDS_FPTRShadowAnnotation.cpp
+	src/MEDS_DeadRegAnnotation.cpp
+	src/MEDS_FRSafeAnnotation.cpp
+	src/MEDS_FuncPrototypeAnnotation.cpp
+	src/MEDS_InstructionCheckAnnotation.cpp
+	src/MEDS_MemoryRangeAnnotation.cpp
+	src/MEDS_ProblemFuncAnnotation.cpp
+	src/MEDS_Register.cpp
+	src/MEDS_SafeFuncAnnotation.cpp
+	src/VirtualOffset.cpp
+	'''
+cpppath=''' 
+	./include/
+	$IRDB_SDK/include/
+	'''
+
+#CFLAGS="-fPIC  "
+
+myenv=myenv.Clone(CPPPATH=Split(cpppath))
+myenv.Append(CXXFLAGS=" -std=c++11 -Wall -Werror ")
+lib=myenv.SharedLibrary(lib, Split(files))
+
+install=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
+Default(install)
+Return('install')

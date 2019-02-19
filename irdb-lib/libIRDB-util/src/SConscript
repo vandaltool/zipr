@@ -1,0 +1,31 @@
+import os
+
+Import('env')
+myenv=env
+myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
+
+
+libname="irdb-util"
+files=  '''
+	insn_preds.cpp
+        IBT_Provenance.cpp
+	params.cpp
+	registers.cpp
+	'''
+cpppath=''' 
+	$IRDB_SDK/include/
+	$SECURITY_TRANSFORMS_HOME/include/
+	$SECURITY_TRANSFORMS_HOME/libIRDB-core/include/
+	$SECURITY_TRANSFORMS_HOME/libIRDB-util/include/
+	'''
+
+#myenv.Append(CCFLAGS=" -Wall -W -Wextra -Wconversion ")
+
+myenv=myenv.Clone(CPPPATH=Split(cpppath))
+myenv.Append(CXXFLAGS = " -std=c++11 ")
+lib=myenv.SharedLibrary(libname, Split(files), LIBS=Split("irdb-core"), LIBPATH=Split("$SECURITY_TRANSFORMS_HOME/lib"))
+
+install=env.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
+Default(install)
+
+Return('install')

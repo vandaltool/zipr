@@ -1,0 +1,9 @@
+edt.exe
+edt.o
+edt.out
+edt_driver.o
+elf_dep_test.os
+libelf_dep_test.so
+peasoup_executable_directory.*
+tmp.out
+

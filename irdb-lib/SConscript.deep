@@ -1,0 +1,16 @@
+import os
+
+Import('env')
+
+pedi = Command( target = "./testoutput",
+		source = "./SConscript",
+		action = os.environ['PEDI_HOME']+"/pedi -m manifest.txt " )
+
+env['BASE_IRDB_LIBS']="irdb-core", "pqxx", "pq"
+
+libIRDBdeep=env.SConscript("libIRDB-deep/src/SConscript", variant_dir='scons_build/libIRDB-deep')
+
+Depends(pedi,  libIRDBdeep)
+Default( pedi )
+
+Return('pedi')

@@ -1,8 +1,9 @@
 before_script:
   - "source ~gitlab-runner/cicd_support/cicd_support.shinc" 
 
+
 after_script:
-  - "source ~gitlab-runner/cicd_support/cicd_support.shinc" 
+  - "echo Test Complete."
 
 stages:
   - clean
@@ -18,20 +19,28 @@ stages:
   script:
     - ./cicd_testing/do-clean.sh 
 
+# per os items
 do-nightly-clean-ubuntu18:
   <<: *do-nightly-clean
   tags:
     - ubuntu18
+  variables:
+    OS: 'ubuntu18'  
 
 do-nightly-clean-ubuntu16:
   <<: *do-nightly-clean
   tags:
     - ubuntu16
+  variables:
+    OS: 'ubuntu16'  
 
 do-nightly-clean-centos75:
   <<: *do-nightly-clean
   tags:
     - centos75
+  variables:
+    OS: 'centos75'  
+
 
 #
 # Building
@@ -42,46 +51,43 @@ do-nightly-clean-centos75:
   script:
     - ./cicd_testing/do-build.sh 
 
+  variables:
+    OS: 'centos75'  
+
+
+#
+# building 
+#
+
+
+# template
+.do-build: &do-build
+  stage: build
+  script:
+    - ./cicd_tests/do-build.sh
+
+
+# per os items
 do-build-ubuntu18:
   <<: *do-build
   tags:
     - ubuntu18
+  variables:
+    OS: 'ubuntu18'  
 
 do-build-ubuntu16:
   <<: *do-build
   tags:
     - ubuntu16
+  variables:
+    OS: 'ubuntu16'  
 
 do-build-centos75:
   <<: *do-build
   tags:
     - centos75
-
-#
-# $PSZ ls
-#
-
-.xform-ls: &xform-ls
-  stage: test
-  script:
-    - ./cicd_testing/xform-ls.sh
-
-
-xform-ls-ubuntu18:
-  <<: *xform-ls
-  tags:
-    - ubuntu18
-
-xform-ls-ubuntu16:
-  <<: *xform-ls
-  tags:
-    - ubuntu16
-
-xform-ls-centos75:
-  <<: *xform-ls
-  tags:
-    - centos75
-
+  variables:
+    OS: 'centos75'  
 
 
 #
@@ -90,7 +96,7 @@ xform-ls-centos75:
 .basic-pgms-rida: &eh-tests
   stage: test
   script:
-    - ./cicd_testing/eh-tests.sh
+    - ./irdb-libs/cicd_testing/eh-tests.sh
 
 eh-tests-ubuntu18:
   <<: *eh-tests
@@ -152,4 +158,36 @@ basic-pgms-fixcalls-centos75:
   <<: *basic-pgms-fixcalls
   tags:
     - centos75
+  variables:
+    OS: 'centos75'  
 
+#
+# elfdep test
+#
+
+# template
+.elfdep: &elfdep
+  stage: test
+  script:
+    - ./irdb-libs/cicd_tests/elfdep.sh
+
+elfdep-ubuntu18:
+  <<: *elfdep
+  tags:
+    - ubuntu18
+  variables:
+    OS: 'ubuntu18'  
+    
+elfdep-ubuntu16:
+  <<: *elfdep
+  tags:
+    - ubuntu16
+  variables:
+    OS: 'ubuntu16'  
+
+elfdep-centos75:
+  <<: *elfdep
+  tags:
+    - centos75
+  variables:
+    OS: 'centos75'  

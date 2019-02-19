@@ -1,0 +1,38 @@
+import os
+
+Import('env')
+myenv=env.Clone()
+myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
+
+(sysname, nodename, release, version, machine)=os.uname()
+
+
+libname="exeio_test"
+files=  '''
+	main.cpp
+	'''
+
+cpppath=''' 
+	.
+	$SECURITY_TRANSFORMS_HOME/include/
+	$SECURITY_TRANSFORMS_HOME/libEXEIO/include
+	$SECURITY_TRANSFORMS_HOME/libEXEIO/include
+	'''
+libpath=''' 
+	$SECURITY_TRANSFORMS_HOME/lib/
+	'''
+
+libs=   '''
+	EXEIO
+	pebliss
+	'''
+if "CYGWIN" in sysname:
+	libs = libs + " iconv"
+
+myenv=myenv.Clone(CPPPATH=Split(cpppath), LIBS=Split(libs), LIBPATH=Split(libpath))
+myenv.Append(CXXFLAGS=" -Wall -Werror -std=c++11 ")
+pgm=myenv.Program(libname, Split(files))
+
+install=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
+Default(install)
+Return('install')

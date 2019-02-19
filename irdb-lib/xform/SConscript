@@ -1,0 +1,39 @@
+import os
+
+Import('env')
+myenv=env.Clone()
+myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
+
+lib="xform"
+
+files=  '''
+	instruction_descriptor.cpp
+	function_descriptor.cpp
+	elfreader.cpp
+	null_transform.cpp
+	rewriter.cpp
+	spri_alloc.c
+	gen_hash.c
+	constant_hash.c
+	funclist_hash.c
+	instrmap_hash.c
+	framerestore_hash.c
+	stackref_hash.c
+	'''
+cpppath=''' 
+	$SECURITY_TRANSFORMS_HOME/libIRDB/include/
+	$SECURITY_TRANSFORMS_HOME/libEXEIO/include/
+	$SECURITY_TRANSFORMS_HOME/include/
+	'''
+
+CFLAGS="-fPIC  -DUBUNTU"
+
+myenv=myenv.Clone(CC="$CXX", CPPPATH=Split(cpppath), CFLAGS=CFLAGS)
+myenv.Append(CXXFLAGS=" -std=c++11 ")
+lib=myenv.SharedLibrary(lib, Split(files), LIBS=Split("IRDB-core EXEIO"), LIBPATH=Split("$SECURITY_TRANSFORMS_HOME/lib"))
+
+install=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
+
+Default(install)
+
+Return('lib')

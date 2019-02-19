@@ -1,0 +1,53 @@
+Note
+------------------
+20110622 To turn on P1 off the main trun, uncomment the comments in $PEASOUP_HOME/tools/ps_analyze.h that have to do with P1.
+
+Tool Chain
+------------------
+	MEDS: produces annotations
+	Grace: produces inputs/outputs, instruction execution trace
+	Stratafication: produces stratafied binary + heaprand + pc_confinement
+	P1: produces validated stratafied binary + SPRI file
+
+Steps in producing P1 transform rules
+-------------------------------------
+Call the p1transform tool
+	For every candidate function (i.e., not marketd as safe by MEDS, nice stack frame allocation/dealloc)
+	Generate assembly SPRI files for every candidate function in statically-linked program
+	Generate binary SPRI files for every candidate function in statically-linked program
+
+Produce coverage information for all candidate functions
+	Use instruction execution information provided by Grace + instructions info per function provided by MEDS/ELF (for a fn, metric is: #instructions-visited/#instructions-in-function). A better metric here could be: #instructions-stack-reference/#instruction-stack-references-in-function (TBD).
+
+Run BED (Behavioral Equivalence Detector)
+	Use GrammaTech's replayer tool
+
+Produce final set of spri rules by merging all functions that pass BED
+	Literally a merge of all the files
+
+Validate binary with final merged set of rules
+	Use BED again
+
+Deploy binary
+	If the validation fails, we leave the original binary alone, i.e., PEASOUP runs the stratafied binary but w/o any P1 transform rules
+	Otherwise, PEASOUP automatically picks up the P1 transform rules
+
+	NB: to do later: if validation fails we need to iterate and remove rules until we get a set of rules that pass BED. One way of doing this is to use coverage information to guide this search, i.e., start by removing the least covered functions first.
+
+Notes
+------------------
+P1 only attempts to transform functions that are "nice" (1 stack frame alloc/dealloc, not memory safe)
+   Example stats for test1.exe:
+         1027 functions, test1.exe(18), libc(1009)
+         P1 candidate fns (333)  P1 non-candidate (not "p1-nice") (584), non-candidate-MEDS-safe (110) 
+	 filtered-out functions(896) [no instruction coverage]
+	 P1 candidate functions(131) 
+	 BEDS(P1): 43/131 functions validated
+         #functions P1 transformed (43), libc(25), user-functions (13/18), MEDS safe:(4/18), main not transformed
+                
+P1 works by pattern matching to find and transform stack references. The set of rules is incomplete and probably does not handle corner cases 
+P1 only tested on simple test programs (test1, dumbledore), and with -fomit-frame-pointer
+
+Next steps
+------------------
+Push P1 through Spec2006. Find bugs. Fix them. Iterate.

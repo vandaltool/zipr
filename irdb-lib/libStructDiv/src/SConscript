@@ -1,0 +1,24 @@
+import os
+
+
+
+Import('env')
+myenv=env.Clone()
+myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
+
+files="filebased.cpp  structured_diversity.cpp"
+
+cpppath='''
+         $SECURITY_TRANSFORMS_HOME/libStructDiv/include/
+        '''
+
+
+LIBPATH="$SECURITY_TRANSFORMS_HOME/lib"
+
+myenv=myenv.Clone(CPPPATH=Split(cpppath))
+myenv.Append(CXXFLAGS="-fPIC")
+lib=myenv.SharedLibrary("StructDiv",  Split(files))
+install=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
+Default(install)
+
+Return('install')

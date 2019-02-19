@@ -1,0 +1,36 @@
+import os
+
+
+
+Import('env')
+
+# import and create a copy of the environment so we don't screw up anyone elses env.
+myenv=env.Clone()
+myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
+myenv.Replace(ZIPR_HOME=os.environ['ZIPR_HOME'])
+myenv.Replace(ZIPR_SDK=os.environ['ZIPR_SDK'])
+myenv.Replace(IRDB_SDK=os.environ['IRDB_SDK'])
+myenv.Replace(ZIPR_INSTALL=os.environ['ZIPR_INSTALL'])
+
+myenv.Replace(CXXFLAGS = " -g -std=c++11 -Wall ")
+myenv.Append(LINKFLAGS = " -Wl,-unresolved-symbols=ignore-in-shared-libs ")
+
+cpppath=''' 
+	 $IRDB_SDK/include 
+	'''
+
+
+files=Glob( Dir('.').srcnode().abspath+"/edt*.cpp")
+
+pgm="edt.exe"
+
+LIBPATH="$SECURITY_TRANSFORMS_HOME/lib"
+LIBS=Split("irdb-core irdb-transform irdb-elfdep")
+myenv=myenv.Clone(CPPPATH=Split(cpppath))
+pgm=myenv.Program(pgm,  files,  LIBPATH=LIBPATH, LIBS=LIBS)
+install=myenv.Install("$SECURITY_TRANSFORMS_HOME/plugins_install/", pgm)
+Default(install)
+
+files=Glob( Dir('.').srcnode().abspath+"/elf_dep_test*.cpp")
+sharedLib=myenv.SharedLibrary("elf_dep_test",  files,  LIBPATH=LIBPATH, LIBS=LIBS)
+Default(sharedLib)

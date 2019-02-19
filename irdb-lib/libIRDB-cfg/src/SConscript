@@ -1,0 +1,31 @@
+import os
+
+Import('env')
+
+myenv=env.Clone()
+myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
+
+
+libname="irdb-cfg"
+files=  '''
+	BasicBlock.cpp  callgraph.cpp  CFG.cpp domgraph.cpp criticaledge.cpp
+	'''
+cpppath=''' 
+	$IRDB_SDK/include/
+	$SECURITY_TRANSFORMS_HOME/include/
+	$SECURITY_TRANSFORMS_HOME/libIRDB-core/include/
+	$SECURITY_TRANSFORMS_HOME/libIRDB-cfg/include/
+	'''
+libpath='''
+	$SECURITY_TRANSFORMS_HOME/lib
+	'''
+
+myenv.Append(CCFLAGS=" -Wall -std=c++11 -fmax-errors=2 ")
+
+myenv=myenv.Clone(CPPPATH=Split(cpppath))
+lib=myenv.SharedLibrary(libname, Split(files), LIBS=Split("irdb-core"), LIBPATH=Split(libpath))
+
+install=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", lib)
+Default(install)
+
+Return('install')

@@ -4,4 +4,15 @@ ubuntu16_files/manifest.txt.config
 zest_runtime
 .sconsign.dblite
 build
-
+irdb-libs/build/
+irdb-libs/.sconsign.dblite
+irdb-libs/bin/
+irdb-libs/lib/
+irdb-libs/manifest.txt.config
+irdb-libs/tools/meds2pdb/meds2pdb
+irdb-libs/plugins_install/*.exe
+irdb-libs/plugins_install/*.so
+irdb-libs/*.swp
+irdb-libs/*.os
+irdb-libs/*.o
+scons_buiirdb-libs/ld
