@@ -21,3 +21,4 @@ peasoup_examples/chopzero_src/chopzero
 peasoup_examples/manifest.txt.config
 peasoup_examples/tests/tmp*
 peasoup_examples/*.swp
+irdb-libs/scons_build/

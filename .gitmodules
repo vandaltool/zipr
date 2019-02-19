@@ -51,12 +51,12 @@
 [submodule "irdb-sdk"]
 	path = irdb-sdk
 	url = git@git.zephyr-software.com:allnp/irdb-sdk.git
-[submodule "libcapstone"]
+[submodule "irdb-libs/libcapstone"]
 	path = irdb-libs/libcapstone
 	url = https://github.com/aquynh/capstone.git
-[submodule "libehp"]
+[submodule "irdb-libs/libehp"]
 	path = irdb-libs/libehp
 	url = git@git.zephyr-software.com:opensrc/libehp.git
-[submodule "third_party/elfio-code"]
+[submodule "irdb-libs/third_party/elfio-code"]
 	path = irdb-libs/third_party/elfio-code
 	url = http://git.code.sf.net/p/elfio/code
