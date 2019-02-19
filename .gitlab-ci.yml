@@ -51,7 +51,7 @@ do-nightly-clean-centos75:
 .do-build: &do-build
   stage: build
   script:
-    - ./cicd_tests/do-build.sh
+    - ./cicd_testing/do-build.sh
 
 
 # per os items
