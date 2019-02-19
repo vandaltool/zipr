@@ -30,9 +30,6 @@
 [submodule "zipr_large_only_plugin"]
 	path = zipr_large_only_plugin
 	url = git@git.zephyr-software.com:allnp/zipr_large_only_plugin.git
-[submodule "peasoup_examples"]
-	path = peasoup_examples
-	url = git@git.zephyr-software.com:allnp/peasoup_examples.git
 [submodule "zipr_callbacks"]
 	path = zipr_callbacks
 	url = git@git.zephyr-software.com:allnp/zipr_callbacks.git
