@@ -1,0 +1,26 @@
+
+
+set_env()
+{
+	exepath=$(dirname $1)
+	pushd . > /dev/null 2>&1 
+	cd $exepath > /dev/null 2>&1 
+
+	#echo in $(pwd)
+	while [ ! -f .pedi_root -a $(pwd) != "/" ] ; do
+		cd ..	
+		#echo in $(pwd)
+	done
+
+	if [[ -f .pedi_root ]] ; then
+		#echo pwd is $(pwd)
+		source ./set_env_vars
+	else
+		echo "Cannot find environment."
+		exit 1
+	fi
+
+	popd > /dev/null 2>&1
+}
+
+set_env $*

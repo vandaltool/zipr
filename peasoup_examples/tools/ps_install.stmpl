@@ -1,0 +1,22 @@
+#!/bin/sh
+
+#
+# Template for creating an installer file for Peasoupified binaries
+#
+
+peasoup_dir=`pwd`/#PEASOUP_DIR#
+peasoup_binary=`basename #PEASOUP_DIR# .peasoup`
+
+echo Installing $peasoup_binary...
+
+rm $peasoup_binary 2>/dev/null
+
+echo "#!/bin/sh" >> $peasoup_binary
+echo "" >> $peasoup_binary
+echo "$peasoup_dir/ps_run.sh $peasoup_dir \"\$@\"" >> $peasoup_binary
+
+chmod +x $peasoup_binary
+
+echo $peasoup_binary is ready for use
+
+

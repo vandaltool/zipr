@@ -1,0 +1,60 @@
+            "<<VARIANTNUM>>" : {
+                "exec" : {
+                        "env" : [
+                        "PEASOUP_SCHEDULE_PERTURB=0",
+                        "STRATA_WATCHDOG=0",
+                        "STRATA_NUM_HANDLE=0",
+                        "STRATA_DOUBLE_FREE=0",
+                        "STRATA_HEAPRAND=0",
+                        "STRATA_SHADOW_STACK=0",
+                        "STRATA_CONTROLLED_EXIT=0",
+                        "STRATA_DETECT_SERVERS=0",
+                        "STRATA_PC_CONFINE=1",
+                        "STRATA_PC_CONFINE_XOR=0",
+                        "STRATA_REKEY_AFTER=0",
+                        "STRATA_PC_CONFINE_XOR_KEY_LENGTH=1024",
+                        "STRATA_IS_SO=0",
+                        "STRATA_MAX_WARNINGS=500000",
+                        "STRATA_SPRI_FILE=/variant_specific/a.irdb.fbspri",
+                        "STRATA_ANNOT_FILE=/variant_specific/a.ncexe.annot",
+                        "STRATA_OUTPUT_FILE=/variant_specific/diagnostics.out",
+                        "STRATA_EXE_FILE=/variant_specific/a.stratafied",
+                        "SPAWNER_EXE_FILE=/variant_specific/spawned"
+                        ,<<ENV>>
+
+                        ],
+                    "alias" : [
+                        "/dev/zero=/dev/zero",
+                        "/dev/cfar_urandom=/dev/urandom",
+                        "/proc/self/maps=/proc/self/maps",
+                        "/variant_specific/libheaprand.so=<<EXEPATH>>/<<PS_DIR>>/libheaprand.so",
+                        "/variant_specific/noh.so=<<EXEPATH>>/<<PS_DIR>>/noh.so",
+                        "/sbin/thttpd=<<EXEPATH>>/<<PS_DIR>>/a.stratafied",
+                        "/usr/lib/libstrata.so=<<EXEPATH>>/<<PS_DIR>>/libstrata.so",
+                        "<<EXEPATH>>/<<PS_DIR>>/libstrata.so=<<EXEPATH>>/<<PS_DIR>>/libstrata.so",
+                        "<<EXEPATH>>/<<PS_DIR>>/libheaprand.so=<<EXEPATH>>/<<PS_DIR>>/libheaprand.so",
+                        "<<EXEPATH>>/<<PS_DIR>>/noh.so=<<EXEPATH>>/<<PS_DIR>>/noh.so",
+                        "/variant_specific/a.irdb.fbspri=<<EXEPATH>>/<<PS_DIR>>/a.irdb.fbspri",
+                        "/variant_specific/a.ncexe.annot=<<EXEPATH>>/<<PS_DIR>>/a.ncexe.annot",
+                        "/variant_specific/diagnostics.out=<<EXEPATH>>/<<PS_DIR>>/diagnostics.out",
+                        "/variant_specific/a.stratafied=<<EXEPATH>>/<<PS_DIR>>/a.stratafied",
+                        "<<EXEPATH>>/<<PS_DIR>>/a.stratafied=<<EXEPATH>>/<<PS_DIR>>/a.stratafied",
+                        "/variant_specific/spawned=<<EXEPATH>>/<<PS_DIR>>/spawned",
+                        "/etc/ld.so.cache=/etc/ld.so.cache",
+			"/lib/x86_64-linux-gnu/libcrypt.so.1=/lib/x86_64-linux-gnu/libcrypt.so.1",
+			"/lib/x86_64-linux-gnu/libc.so.6=/lib/x86_64-linux-gnu/libc.so.6",
+			"/lib/x86_64-linux-gnu/ld-2.19.so=/lib/x86_64-linux-gnu/ld-2.19.so",
+			"/lib/x86_64-linux-gnu/libc-2.19.so=/lib/x86_64-linux-gnu/libc-2.19.so",
+			"/lib/x86_64-linux-gnu/libcrypt-2.19.so=/lib/x86_64-linux-gnu/libcrypt-2.19.so",
+			"/lib/x86_64-linux-gnu/libnss_nis.so.2=/lib/x86_64-linux-gnu/libnss_nis.so.2",
+			"/lib/x86_64-linux-gnu/libpcre.so.3=/lib/x86_64-linux-gnu/libpcre.so.3",
+			"/lib/x86_64-linux-gnu/libpcre.so.3.13.1=/lib/x86_64-linux-gnu/libpcre.so.3.13.1",
+			"/lib/x86_64-linux-gnu/libpthread.so.0=/lib/x86_64-linux-gnu/libpthread.so.0",
+			"/lib/x86_64-linux-gnu/libpthread-2.19.so=/lib/x86_64-linux-gnu/libpthread-2.19.so",
+			"/variant_specific/nolnoh_config=<<VARIANTDIR>>/nolnoh_config",<<LDLIB>>
+                        ]
+                }
+            }
+
+
+

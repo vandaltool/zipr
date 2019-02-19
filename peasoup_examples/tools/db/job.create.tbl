@@ -1,0 +1,23 @@
+CREATE TABLE job_spec
+(
+	job_id		text PRIMARY KEY,
+	job_name	text,
+	variant_id	integer DEFAULT -1,
+	submitted_ts	timestamp,
+	start_ts	timestamp,
+	stop_ts		timestamp,
+	configuration	text,
+	status		text,
+	installer	text
+);
+
+CREATE TABLE job_status
+(
+	job_id		text,
+	step		text,
+	step_num	integer DEFAULT -1,
+	log		text,
+	start_ts	timestamp,
+	stop_ts		timestamp,
+	status		text
+);

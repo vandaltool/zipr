@@ -1,0 +1,3 @@
+DROP TABLE variant_dependency;
+DROP TABLE variant_info;
+DROP TABLE file_info;

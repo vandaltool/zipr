@@ -1,0 +1,8 @@
+1,5c1
+<   M 12:00:00:64:64:23 ethertype IPv6 (0x86dd), length 80: 
+< 	0x0000:  6000 0000 0018 3aff fe80 0000 0000 0000  `.....:.........
+< 	0x0010:  1000 00ff fe64 6423 ff02 0000 0000 0000  .....dd#........
+< 	0x0020:  0000 0000 0000 0001 9b02 7769 000a 2a01  ..........wi..*.
+< 	0x0030:  7468 6973 6973 6d79 6e69 6365 6461 6731  thisismynicedag1
+---
+> IP6 (hlim 255, next-header ICMPv6 (58) payload length: 24) fe80::1000:ff:fe64:6423 > ff02::1: [icmp6 sum ok] ICMP6, RPL, (CLR)Destination Advertisement Object

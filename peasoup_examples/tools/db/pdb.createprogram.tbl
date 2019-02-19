@@ -1,0 +1,125 @@
+-- 
+-- 
+--  WARNING!  If you edit these tables, you must also edit the API in $SECURITY_TRANSFORMS_HOME/libIRDB/src/variantid.cpp
+-- 
+-- 
+
+CREATE TABLE #ATN#
+(
+  address_id         SERIAL PRIMARY KEY,		-- key
+  file_id            integer REFERENCES file_info,	-- which file this address is part of
+  vaddress_offset    bigint,				-- the offset into the file
+  doip_id            integer DEFAULT -1 		-- the DOIP
+);
+
+CREATE TABLE #FTN#
+(
+  function_id        		SERIAL PRIMARY KEY,	-- key
+  entry_point_id     		integer, 		-- id of the address that is the entry point of this function. 
+  name               		text,			-- name of this function
+  stack_frame_size   		integer,		-- believed stack frame size
+  out_args_region_size		integer,		-- believed out arg size
+  use_frame_pointer	    	boolean,		-- believed whether this function uses the FP
+  is_safe					boolean DEFAULT FALSE,		-- believed whether this function is safe
+  type_id               	integer DEFAULT -1, 	-- id for the type that describes the function prototype
+  doip_id	          	integer DEFAULT -1 	-- the DOIP
+);
+
+CREATE TABLE #TYP#
+(
+  type_id            integer,     
+  type               integer DEFAULT 0,    -- possible types (0: UNKNOWN)
+  name               text DEFAULT '',      -- string representation of the type
+  ref_type_id        integer DEFAULT -1,   -- for aggregate types
+  pos                integer DEFAULT -1,   -- for aggregate types, position in aggregate
+  ref_type_id2       integer DEFAULT -1,   -- for func types
+  doip_id            integer DEFAULT -1   -- the DOIP
+);
+
+CREATE TABLE #DTN#
+(
+  scoop_id     	     SERIAL PRIMARY KEY,	-- key
+  name               text DEFAULT '',    	-- string representation of the type
+  type_id            integer,     		-- the type of the data, as an index into the table table.
+  start_address_id   integer, 			-- address id for start.
+  end_address_id     integer,			-- address id for end
+  permissions        integer,     		-- in umask format (bitmask for rwx)
+  relro	     	     bit, 			-- is this scoop a relro scoop (i.e., is r/w until relocs are done).
+  data               bytea			-- the actual bytes of the scoop 
+);
+
+CREATE TABLE #DTN#_part2
+(
+  scoop_id     	     SERIAL PRIMARY KEY,	-- key
+  name               text DEFAULT '',    	-- string representation of the type
+  type_id            integer,     		-- the type of the data, as an index into the table table.
+  start_address_id   integer, 			-- address id for start.
+  end_address_id     integer,			-- address id for end
+  permissions        integer,     		-- in umask format (bitmask for rwx)
+  relro	     	     bit, 			-- is this scoop a relro scoop (i.e., is r/w until relocs are done).
+  data               bytea			-- the actual bytes of the scoop 
+);
+
+CREATE TABLE #ITN#
+(
+  instruction_id	    SERIAL PRIMARY KEY,		-- key
+  address_id                integer REFERENCES #ATN#,	-- which address this instruction si at
+  parent_function_id        integer,			-- does this instruction belong to a func, if so, which
+  orig_address_id           integer,			-- where did this instruction come from in the orig pgm.
+  fallthrough_address_id    integer DEFAULT -1,		-- the fallthrough address (if can fall through)
+  target_address_id         integer DEFAULT -1,		-- the target address (if direct) 
+  icfs_id                   integer DEFAULT -1,  	-- ICFS set id
+  ehpgm_id                  integer DEFAULT -1,  	-- id of EhProgram object (may be NOT_IN_DATABASE).
+  ehcss_id                  integer DEFAULT -1,  	-- id of EhCallSite object (may be NOT_IN_DATABASE).
+  data                      bytea,			-- the actual bytes of the instruction 
+  callback                  text,			-- a callback registered for this instruction
+  comment                   text,			-- a comment for human debugging
+  ind_target_address_id	    integer DEFAULT -1,		-- is this instruction jumped to indirectly, if so, it's using this addr
+  doip_id		    integer DEFAULT -1 		-- the DOIP
+);
+
+CREATE TABLE #RTN#
+(
+	reloc_id	      	integer, 	-- id in the table
+	reloc_offset 	  	integer DEFAULT 0,	-- how far into the object/instruction is the relocation
+	reloc_type	    	text DEFAULT '',	-- what type is the relocation.
+	instruction_id  	integer DEFAULT -1,	-- the object/instruction for this reloc, field name is anachronistic. 
+	addend  		integer DEFAULT 0,	-- the addend for this relocation in case it's hard to store the addend in the relocated object.
+	wrt_id  		integer DEFAULT -1,	-- the object that this reloc is with respect to.
+	doip_id	        	integer DEFAULT -1	-- the DOIP
+);
+
+-- keep track of indirect control flow sets (ibtargets)
+CREATE TABLE #ICFS#
+(
+	icfs_id		SERIAL PRIMARY KEY, 						-- set id
+	icfs_status	icfs_analysis_result DEFAULT 'icfs_analysis_incomplete'
+);
+
+-- map set id to addresses
+-- by mapping to address_id, we allow cross-file references
+CREATE TABLE #ICFS_MAP#
+(
+  icfs_id	      integer REFERENCES #ICFS#(icfs_id),
+  address_id      integer,
+  UNIQUE(icfs_id,address_id)   
+);
+
+CREATE TABLE #EHPGM#
+(
+	eh_pgm_id	integer,	-- id of this object.
+	caf		integer,	-- code alignment factor.
+	daf		integer,	-- data alignment factor
+	return_register	integer,	-- dwarf return register.
+	ptrsize		integer,	-- size of a pointer, 4 or 8.
+	cie_program	text,		-- for the cie, the bytes that make up a cie program, encoded as hex with commas separating instructions.
+	fde_program	text		-- for the fde, bytes as above
+);
+
+CREATE TABLE #EHCS#
+(
+	ehcs_id		integer,	-- id of this object.
+	tt_encoding	integer,	-- the encoding of the type table.
+	ttov		text,		-- the order of TT entries to use, a 0 indicates a cleanup
+	lp_insn_id	integer 	-- the landing pad instruction's id.
+);

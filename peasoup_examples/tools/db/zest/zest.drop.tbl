@@ -1,0 +1,6 @@
+DROP TABLE users;
+DROP TABLE job_spec;
+DROP TABLE bundle_info CASCADE;
+DROP TABLE bundle_spec;
+DROP TABLE file_info;
+DROP TABLE job_status;

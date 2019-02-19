@@ -27,6 +27,7 @@ do-nightly-clean-ubuntu18:
   variables:
     OS: 'ubuntu18'  
 
+# per os items
 do-nightly-clean-ubuntu16:
   <<: *do-nightly-clean
   tags:
@@ -34,6 +35,7 @@ do-nightly-clean-ubuntu16:
   variables:
     OS: 'ubuntu16'  
 
+# per os items
 do-nightly-clean-centos75:
   <<: *do-nightly-clean
   tags:
@@ -45,21 +47,6 @@ do-nightly-clean-centos75:
 #
 # Building
 #
-
-.do-build: &do-build
-  stage: build
-  script:
-    - ./cicd_testing/do-build.sh 
-
-  variables:
-    OS: 'centos75'  
-
-
-#
-# building 
-#
-
-
 # template
 .do-build: &do-build
   stage: build

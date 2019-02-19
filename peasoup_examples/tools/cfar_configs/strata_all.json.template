@@ -1,0 +1,42 @@
+{
+    "atd" : {
+        "name" : "config generated from template strata_all.json.template ",
+        "server" : "<<SERVER>>",
+        "class" : "<<CLASS>>",
+        "description" : "n/a"
+        "performer" : "UVA-DoubleHelix"
+        "family" : "DynamicBinaryRewriting"
+    },
+
+	<<MONITOR>>
+
+    "variant" : {
+        "global" : {
+            "exec" : {
+                "path" : "/sbin/thttpd",
+                "argv" : [ <<ARGS>> ],
+		"env" : [
+			"TRATA_LOG=detectors,builder_enters",
+			"STRATA_TRACING=0",
+			"LD_LIBRARY_PATH=/target_apps/variant1/bin/peasoup_executable_dir/shared_objects",
+			<<ENV>>
+		]
+            },
+            "settings" : {
+                "COMMENT" : "We are disabling NR_rt_sigprocmask(14), __NR_getpid(39), gettimeofday(96),__NR_gettid(186)",
+                "disable_syscall_xcheck" : "14,39,96,186,3",
+                "aslr_mode" : 1
+            }
+        },
+        "specs" : {
+                <<VARIANT_CONFIG>>
+        },
+        "sets" : {
+            "default" : [
+                <<VARIANT_LIST>>
+                ]
+        }
+
+    }
+}
+

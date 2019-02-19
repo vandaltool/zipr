@@ -1,0 +1,27 @@
+            "<<VARIANTNUM>>" : {
+                "exec" : {
+                    "alias" : [
+			"/work_dir/images/=/work_dir/images/",
+                        "<<MAINEXE>>=<<EXEPATH>>/<<EXE_NAME>>",
+                        "/variant_specific/heap_map=<<EXEPATH>>/<<PS_DIR>>/heap.map",
+			"/dev/cfar_urandom=/dev/urandom",
+                        "/etc/ld.so.cache=/etc/ld.so.cache",
+			"/variant_specific/libheaprand.so=<<EXEPATH>>/<<PS_DIR>>/libheaprand.so",
+			"/variant_specific/noh.so=<<EXEPATH>>/<<PS_DIR>>/noh.so",
+			"/variant_specific/nolnoh_config=<<VARIANTDIR>>/nolnoh_config",<<LIBS>>
+                        ],
+                    "env" : [
+                        <<ENV>>
+			]
+                },
+                "marshaling" : {
+		     "code_map" :  { <<CODE_MAP>> } , 
+		     "scoop_map" :  { <<SCOOP_MAP>> } , 
+		     "p1_map" :  { <<P1_MAP>> } , 
+                     "heap_map" : "<<EXEPATH>>/<<PS_DIR>>/heap.map",
+		     "initial_dump_dir" : "<<EXEPATH>>/initial_dump_dir"
+	
+                }
+            }
+
+

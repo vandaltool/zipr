@@ -16,3 +16,8 @@ irdb-libs/*.swp
 irdb-libs/*.os
 irdb-libs/*.o
 scons_buiirdb-libs/ld
+peasoup_examples/cgc_spri/spawner
+peasoup_examples/chopzero_src/chopzero
+peasoup_examples/manifest.txt.config
+peasoup_examples/tests/tmp*
+peasoup_examples/*.swp

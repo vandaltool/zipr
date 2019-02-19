@@ -1,0 +1,19 @@
+
+This is a collection of scripts for the December 2011 T&E of the PEASOUP 
+project, run by MITRE. The scripts are required by the MITRE provided 
+TestHarness for the testing system.
+
+To use, first install the TestHarness and TestManager following the
+instructions provided in the Peasoup collaboration wiki under the
+MirrorMitreDocs heading. Be sure to install the TESTHarness on a 
+platform with with a working Peasoup installation.
+
+Copy the scripts analyze, execute, and new into the TestHraness directory
+as described in the setup instructions. You are ready to run the
+TestHarness.
+
+These scripts were developed by the Peasoup collaboration, loosely based
+on examples provided by Mitre. Contributions were made by W. Ella of
+Raytheon, M. Co of University of Virginia, and J. Phillips of GrammaTech.
+Copywrite of the Peasoup collaboration. All rights reserved.
+

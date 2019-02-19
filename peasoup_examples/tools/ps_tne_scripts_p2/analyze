@@ -1,0 +1,181 @@
+#------------------------------Copyright-------------------------------------------------
+# NOTICE
+# 
+# This software (or technical data) was produced for the U. S.
+# Government under contract 2009-0917826-016 and is subject to the Rights in Data-General Clause 52.227-14 (DEC 2007).
+# 
+# The following copyright notice may be affixed after receipt of written approval from the Contracting Officer.  Please contact the Contracts Office for assistance with obtaining approval or identifying the correct clause. If the contract has Clause 52.227-14, Alt. IV, written approval is not required and the below copyright notice may be affixed.
+# 
+# Copyright (c) 2012 The MITRE Corporation. All Rights Reserved.
+#------------------------------Copyright-------------------------------------------------
+#
+# bash analyze <test_case> <run_command> <run_directory> <build_command> <build_directory> <ref_id> <msg_port> -> <void>
+
+# compile the source if it is available
+
+echo "test_case = $1"
+echo "run_command = $2"
+echo "run_directory = $3"
+echo "build_command = $4"
+echo "build_directory = $5"
+echo "ref_id = $6"
+echo "msg_port = $7"
+
+env > analysis_before.env
+
+previous_dir=`pwd`
+
+#DAH
+cd /home/tm/peasoup
+source ./set_env_vars
+export PATH=/usr/bin:/bin:$PATH
+cd $previous_dir
+
+env > analysis_after.env
+
+# cd to the build directory
+# cd $5
+# NO BUILD FOR PEASOUP!!
+
+export TNE_TEST_CASE="$1"
+
+# SKIP ARCHIVING FOR NOW - DH
+#-----------------------------------------------------------
+#archive the tc test case zip file
+# pushd $PEASOUP/TestHarness/$2/.. >/dev/null
+# zip everything.zip *
+# $PEASOUP/scripts/archive.sh 2 $1 `readlink -f everything.zip`
+# popd > /dev/null
+#-----------------------------------------------------------
+
+
+# For now, put the path to the environment file needed by ps_analyze and ps_run
+# in an environment variable of its own. This is to try and make it obvious
+# what this path is for and the fact that it is local layout dependant
+# export PEASOUP_ENV_PATH='/ps0/testbot/uva-svn/strata_env'
+# Set the environment for Peasoup, then run it
+
+LOG_COMMAND="$GRACE_HOME/concolic/src/util/linux/ps_log_tne.py"
+GEN_MESSAGE_COMMAND="$GRACE_HOME/concolic/src/util/linux/general_message.py"
+
+# Log the call and its contents
+# Build log message
+l_message_1_1="analyze script called for test case $1 with arguments"
+l_message_1_2="run command: $2"
+l_message_1_3="run dir: $3"
+l_message_1_4="build command: $4"
+l_message_1_5="build dir: $5"
+l_message_1_6="ref_id: $6"
+l_message_1_7="msg_port: $7"
+l_message_1_8="analyze called from dir: $PWD"
+
+message_1="${l_message_1_1}
+${l_message_1_2}
+${l_message_1_3}
+${l_message_1_4}
+${l_message_1_5}
+${l_message_1_6}
+${l_message_1_7}
+${l_message_1_8}"
+
+python $LOG_COMMAND -n $1 -t "Analyze parameters" -m "$message_1"
+# Send a general message that analyze was called
+python $GEN_MESSAGE_COMMAND -n $1 -t "Analyze called" -m "analyze script called for test case"
+
+# Process the run command to get the <path>/<name of exe>
+# cmdline=($2)
+# execpath=${cmdline[0]}
+
+# All script debugging stuff
+echo "arg2 = $2"
+execcmd=$2
+echo "execcmd = $execcmd"
+# SS_TC_ROOT=built
+echo "SS_TC_ROOT = $SS_TC_ROOT"
+# SS_TC_INSTALL=
+echo "SS_TC_INSTALL = $SS_TC_INSTALL"
+eval execcmd=$execcmd
+echo "execcmd = $execcmd"
+echo "-----------"
+ls -l $SS_TC_ROOT/$SS_TC_INSTALL
+echo "-----------"
+ls -l $execcmd
+echo "-----------"
+ldd $execcmd
+echo "-----------"
+file $execcmd
+echo "-----------"
+
+## TODO: Enhance Grace to be able to use the 'ignored arguments' since 
+## T&E will always call the executable with them
+
+l_message_2_1="In run dir: $PWD"
+l_message_2_2="Constructed command: $execpath"
+l_message_2_3="Constructed basename: $execcmd"
+
+message_2="$l_message_2_1
+$l_message_2_2
+$l_message_2_3"
+
+python $LOG_COMMAND -n $1 -t "Analyze script" -m "$message_2"
+
+python $LOG_COMMAND -n $1 -t "Analyze script" -m "Analysis phase beginning"
+
+# Get a list of pathnames of everything $execcmd execs during initialization
+EXEC_FILES=( $( $GRACE_HOME/concolic/bin/pgrp-timeout 10 strace -s10240 -f -e trace=execve $execcmd 2>&1 >/dev/null | /bin/grep " = 0$" | /bin/grep -Po '(?<=execve\(")([^"]+(?="))' | sort | uniq ) )
+TO_ANALYZE=()
+
+# filter out anything that matches execcmd, 
+execcmd_base=`basename $execcmd`
+for f in "${EXEC_FILES[@]}"
+do
+    if [[ -x $f ]] && [[ `basename $f` != $execcmd_base ]] && [[ $f != /bin/* ]] && [[ $f != /usr/bin/* ]] && [[ $f != /sbin/* ]] && [[ $f != /usr/sbin/* ]]; then
+        file $f | /bin/grep "ELF 32"
+        if [[ $? = 0 ]]; then
+            python $LOG_COMMAND -n $1 -t "Analyze script" -m "Queueing subprogram for analysis: $f"
+            TO_ANALYZE+=("$f")
+        fi
+    else
+        python $LOG_COMMAND -n $1 -t "Analyze script" -m "Skipping subprogram: $f"
+    fi
+done
+TO_ANALYZE+=("$execcmd")
+
+
+for f in "${TO_ANALYZE[@]}"
+do
+    echo "Analyzing $f..." >> ps_analyze_log.txt
+    $PEASOUP_HOME/tools/ps_analyze.sh $f $f.peasoup --step manual_test=off --step determine_program=off --timeout 7200 >> ps_analyze_log.txt 2>&1
+    PS_ANALYZE_STATUS="$?"
+    python $LOG_COMMAND -n $1 -t "Analyze script" -m "Analysis phase done with exit status: $PS_ANALYZE_STATUS"
+    if [ "$PS_ANALYZE_STATUS" != "0" ]
+    then
+        break
+    fi
+    mv $f $f.orig
+    mv $f.peasoup $f
+done
+
+# Send a general message that analyze is done
+python $GEN_MESSAGE_COMMAND -n $1 -t "Analyze complete" -m "analyze script finished"
+
+if [ "$PS_ANALYZE_STATUS" == "0" ]; then
+    ss_report_status $7 "<?xml version=1.0 encoding=UTF-8 ?><return_status_message><message_type>analyze_status</message_type><test_case>$1</test_case><ref_id>$7</ref_id><status>success</status></return_status_message>"
+elif [ "$PS_ANALYZE_STATUS" == "142" ]; then
+    ss_report_status $7 "<?xml version=1.0 encoding=UTF-8 ?><return_status_message><message_type>analyze_status</message_type><test_case>$1</test_case><ref_id>$7</ref_id><status>timeout</status></return_status_message>"
+else
+    ss_report_status $7 "<?xml version=1.0 encoding=UTF-8 ?><return_status_message><message_type>analyze_status</message_type><test_case>$1</test_case><ref_id>$7</ref_id><status>skip</status></return_status_message>"
+fi
+
+# CLEANUP
+# It should delete temporary files only
+# Any file deleted will not be archived or available for execute
+
+# Clean the database
+${PEASOUP_HOME}/tools/db/drop_my_tables.sh
+${PEASOUP_HOME}/tools/db/pdb_setup.sh
+
+# Remove any temporary files here
+
+# Remove any left over processes
+pkill sleep

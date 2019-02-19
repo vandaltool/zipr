@@ -1,0 +1,1051 @@
+../..:
+total 76
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jan  9 23:27 sort
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jan  8 18:58 grep
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jan  8 16:56 tar
+drwxrwxr-x 2 ubuntu ubuntu 4096 Jan  8 16:43 readelf
+drwxrwxr-x 2 ubuntu ubuntu 4096 Jan  8 16:37 objdump
+drwxrwxr-x 2 ubuntu ubuntu 4096 Jan  8 15:48 touch
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jan  8 15:13 ls
+-rwxrwxr-x 1 ubuntu ubuntu 9274 Jan  8 15:13 manual_test_lib.sh
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jan  7 18:51 wget
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jan  7 18:50 bzip2
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jan  7 18:47 egrep
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jan  7 18:45 w3c
+drwxrwxr-x 6 ubuntu ubuntu 4096 Jan  7 18:43 nginx
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jan  7 18:31 tcpdump
+drwxrwxr-x 4 ubuntu ubuntu 4096 Jan  7 18:03 zsh
+drwxrwxr-x 4 ubuntu ubuntu 4096 Jan  7 16:43 test_scripts
+drwxrwxr-x 3 ubuntu ubuntu 4096 Apr 23  2015 fgrep
+lrwxrwxrwx 1 ubuntu ubuntu    6 Apr 23  2015 bunzip2 -> bzip2/
+
+../../sort:
+total 8
+drwxrwxr-x 2 ubuntu ubuntu 4096 Jan  9 23:27 data
+-rwxrwxr-x 1 ubuntu ubuntu 1070 Jan  9 23:27 test_script.sh
+
+../../sort/data:
+total 0
+-rw-rw-r-- 1 ubuntu ubuntu 0 Jan  9 23:27 data.txt
+
+../../grep:
+total 1544
+-rw-rw-r-- 1 ubuntu ubuntu 1567075 Jan  7 17:08 out
+drwxrwxr-x 2 ubuntu ubuntu    4096 Apr 23  2015 data
+-rwxrwxr-x 1 ubuntu ubuntu    6408 Apr 23  2015 test_script.sh
+
+../../grep/data:
+total 24
+-rw-rw-r-- 1 ubuntu ubuntu  728 Apr 23  2015 khadafy.lines
+-rw-rw-r-- 1 ubuntu ubuntu  208 Apr 23  2015 data1.txt
+-rw-rw-r-- 1 ubuntu ubuntu 1228 Apr 23  2015 data2.txt
+-rw-rw-r-- 1 ubuntu ubuntu   67 Apr 23  2015 khadafy.regexp
+-rw-rw-r-- 1 ubuntu ubuntu   38 Apr 23  2015 pattern2
+-rw-rw-r-- 1 ubuntu ubuntu    9 Apr 23  2015 pattern
+
+../../tar:
+total 8
+-rw-rw-r-- 1 ubuntu ubuntu    0 Jan  8 16:58 data.tar
+-rwxrwxr-x 1 ubuntu ubuntu 1065 Jan  8 15:54 test_script.sh
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jan  8 15:51 data
+
+../../tar/data:
+total 24
+-rw-rw-r-- 1 ubuntu ubuntu 10240 Jan  8 15:51 test.tar
+drwxrwxr-x 3 ubuntu ubuntu  4096 Jan  8 15:46 dir1
+-rw-rw-r-- 1 ubuntu ubuntu     7 Jan  8 15:46 hello1
+-rw-rw-r-- 1 ubuntu ubuntu     9 Jan  8 15:46 yo.txt
+
+../../tar/data/dir1:
+total 12
+drwxrwxr-x 2 ubuntu ubuntu 4096 Jan  8 15:46 dir2
+-rw-rw-r-- 1 ubuntu ubuntu    7 Jan  8 15:46 hello2
+-rw-rw-r-- 1 ubuntu ubuntu    9 Jan  8 15:46 yo2.xls
+
+../../tar/data/dir1/dir2:
+total 4
+-rw-rw-r-- 1 ubuntu ubuntu 7 Jan  8 15:46 readme
+
+../../readelf:
+total 4
+-rwxrwxr-x 1 ubuntu ubuntu 1319 Jan  8 16:41 test_script.sh
+
+../../objdump:
+total 4
+-rwxrwxr-x 1 ubuntu ubuntu 1563 Jan  8 16:36 test_script.sh
+
+../../touch:
+total 4
+-rwxrwxr-x 1 ubuntu ubuntu 357 Apr 23  2015 test_script.sh
+
+../../ls:
+total 8
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jan  8 15:11 data
+-rwxrwxr-x 1 ubuntu ubuntu 1824 Jan  8 15:10 test_script.sh
+
+../../ls/data:
+total 12
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jan  8 15:11 dir1
+-rw-rw-r-- 1 ubuntu ubuntu    9 Jan  8 15:11 yo.txt
+-rw-rw-r-- 1 ubuntu ubuntu    7 Jan  8 15:01 hello1
+
+../../ls/data/dir1:
+total 12
+-rw-rw-r-- 1 ubuntu ubuntu    9 Jan  8 15:11 yo2.xls
+drwxrwxr-x 2 ubuntu ubuntu 4096 Jan  8 15:02 dir2
+-rw-rw-r-- 1 ubuntu ubuntu    7 Jan  8 15:01 hello2
+
+../../ls/data/dir1/dir2:
+total 4
+-rw-rw-r-- 1 ubuntu ubuntu 7 Jan  8 15:02 readme
+
+../../wget:
+total 12
+-rwxrwxr-x 1 ubuntu ubuntu 6281 Apr 23  2015 test_script.sh
+drwxrwxr-x 3 ubuntu ubuntu 4096 Apr 23  2015 data
+
+../../wget/data:
+total 4
+drwxrwxr-x 2 ubuntu ubuntu 4096 Apr 23  2015 throw_away
+
+../../wget/data/throw_away:
+total 0
+
+../../bzip2:
+total 8
+drwxrwxr-x 2 ubuntu ubuntu 4096 Jan  7 18:50 data
+-rwxrwxr-x 1 ubuntu ubuntu 4003 Apr 23  2015 test_script.sh
+
+../../bzip2/data:
+total 568
+-rw-rw-r-- 1 ubuntu ubuntu 289631 Apr 23  2015 compression_input1
+-rw-rw-r-- 1 ubuntu ubuntu 287981 Apr 23  2015 decompression_input1
+
+../../egrep:
+total 12
+drwxrwxr-x 2 ubuntu ubuntu 4096 Apr 23  2015 data
+-rwxrwxr-x 1 ubuntu ubuntu 7017 Apr 23  2015 test_script.sh
+
+../../egrep/data:
+total 24
+-rw-rw-r-- 1 ubuntu ubuntu 1228 Apr 23  2015 data2.txt
+-rw-rw-r-- 1 ubuntu ubuntu   38 Apr 23  2015 pattern2
+-rw-rw-r-- 1 ubuntu ubuntu  728 Apr 23  2015 khadafy.lines
+-rw-rw-r-- 1 ubuntu ubuntu   67 Apr 23  2015 khadafy.regexp
+-rw-rw-r-- 1 ubuntu ubuntu  208 Apr 23  2015 data1.txt
+-rw-rw-r-- 1 ubuntu ubuntu    9 Apr 23  2015 pattern
+
+../../w3c:
+total 12
+drwxrwxr-x 2 ubuntu ubuntu 4096 Apr 23  2015 data
+-rwxrwxr-x 1 ubuntu ubuntu 4819 Apr 23  2015 test_script.sh
+
+../../w3c/data:
+total 8
+-rw-rw-r-- 1 ubuntu ubuntu 76 Apr 23  2015 bogus.conf
+-rw-rw-r-- 1 ubuntu ubuntu 24 Apr 23  2015 data.txt
+
+../../nginx:
+total 36
+drwxrwxr-x  4 ubuntu ubuntu 4096 Jan  7 18:43 throw_away
+-rw-rw-r--  1 ubuntu ubuntu    2 Jan  7 18:43 test_status
+-rw-rw-r--  1 ubuntu ubuntu  111 Jan  7 18:43 test_error
+-rw-rw-r--  1 ubuntu ubuntu    0 Jan  7 18:43 test_out
+-rw-rw-r--  1 ubuntu ubuntu    2 Jan  7 18:43 orig_status
+-rw-rw-r--  1 ubuntu ubuntu  111 Jan  7 18:43 orig_error
+-rw-rw-r--  1 ubuntu ubuntu    0 Jan  7 18:43 orig_out
+drwxrwxr-x  2 ubuntu ubuntu 4096 Apr 23  2015 tests
+-rwxrwxr-x  1 ubuntu ubuntu 3455 Apr 23  2015 test_script.sh
+drwxrwxr-x 10 ubuntu ubuntu 4096 Apr 23  2015 data
+drwxrwxr-x  2 ubuntu ubuntu 4096 Apr 23  2015 scripts
+
+../../nginx/throw_away:
+total 32
+drwxrwxr-x 2 ubuntu ubuntu 4096 Jan  7 18:43 good-01.test
+-rw-rw-r-- 1 ubuntu ubuntu  583 Jan  7 18:43 test_script_test_run_error
+-rw-rw-r-- 1 ubuntu ubuntu    2 Jan  7 18:43 test_script_test_run_status
+-rw-rw-r-- 1 ubuntu ubuntu   18 Jan  7 18:43 test_script_test_run_out
+-rw-rw-r-- 1 ubuntu ubuntu  584 Jan  7 18:43 test_script_run_bench_error
+-rw-rw-r-- 1 ubuntu ubuntu    2 Jan  7 18:43 test_script_run_bench_status
+drwxrwxr-x 2 ubuntu ubuntu 4096 Jan  7 18:43 good-01.orig
+-rw-rw-r-- 1 ubuntu ubuntu   18 Jan  7 18:43 test_script_run_bench_out
+
+../../nginx/throw_away/good-01.test:
+total 4
+-rw-rw-r-- 1 ubuntu ubuntu 574 Apr 23  2015 index.html
+
+../../nginx/throw_away/good-01.orig:
+total 4
+-rw-rw-r-- 1 ubuntu ubuntu 574 Apr 23  2015 index.html
+
+../../nginx/tests:
+total 16
+-rwxrwxr-x 1 ubuntu ubuntu 702 Apr 23  2015 test3.sh
+-rwxrwxr-x 1 ubuntu ubuntu 704 Apr 23  2015 test4.sh
+-rwxrwxr-x 1 ubuntu ubuntu 700 Apr 23  2015 test1.sh
+-rwxrwxr-x 1 ubuntu ubuntu 702 Apr 23  2015 test2.sh
+
+../../nginx/data:
+total 32
+drwxrwxr-x 2 ubuntu ubuntu 4096 Jan  7 18:43 logs
+drwxrwxr-x 4 ubuntu ubuntu 4096 Apr 23  2015 wwwroot
+drwxrwxr-x 2 ubuntu ubuntu 4096 Apr 23  2015 conf
+drwxrwxr-x 2 ubuntu ubuntu 4096 Apr 23  2015 client_body_temp
+drwxrwxr-x 2 ubuntu ubuntu 4096 Apr 23  2015 scgi_temp
+drwxrwxr-x 2 ubuntu ubuntu 4096 Apr 23  2015 proxy_temp
+drwxrwxr-x 2 ubuntu ubuntu 4096 Apr 23  2015 fastcgi_temp
+drwxrwxr-x 2 ubuntu ubuntu 4096 Apr 23  2015 uwsgi_temp
+
+../../nginx/data/logs:
+total 4
+-rw-r--r-- 1 ubuntu ubuntu 344 Jan  7 18:43 host.access.log
+-rw-r--r-- 1 ubuntu ubuntu   0 Jan  7 18:43 access.log
+-rw-r--r-- 1 ubuntu ubuntu   0 Jan  7 18:43 error.log
+
+../../nginx/data/wwwroot:
+total 24
+drwxrwxr-x 2 ubuntu ubuntu 4096 Apr 23  2015 images
+-rw-rw-r-- 1 ubuntu ubuntu  580 Apr 23  2015 pagetwo.html
+-rw-rw-r-- 1 ubuntu ubuntu  574 Apr 23  2015 index.html
+-rw-rw-r-- 1 ubuntu ubuntu  616 Apr 23  2015 pageone.html
+-rw-rw-r-- 1 ubuntu ubuntu  579 Apr 23  2015 pagethree.html
+drwxrwxr-x 2 ubuntu ubuntu 4096 Apr 23  2015 css
+
+../../nginx/data/wwwroot/images:
+total 84
+-rw-rw-r-- 1 ubuntu ubuntu  1595 Apr 23  2015 smiley.gif
+-rw-rw-r-- 1 ubuntu ubuntu 16218 Apr 23  2015 cupcake.jpg
+-rw-rw-r-- 1 ubuntu ubuntu 30976 Apr 23  2015 confessionbear.jpg
+-rw-rw-r-- 1 ubuntu ubuntu 28915 Apr 23  2015 grumpycat.jpg
+
+../../nginx/data/wwwroot/css:
+total 4
+-rw-rw-r-- 1 ubuntu ubuntu 330 Apr 23  2015 style.css
+
+../../nginx/data/conf:
+total 60
+-rw-rw-r-- 1 ubuntu ubuntu 1034 Apr 23  2015 fastcgi.conf.default
+-rw-rw-r-- 1 ubuntu ubuntu  964 Apr 23  2015 fastcgi_params
+-rw-rw-r-- 1 ubuntu ubuntu 2223 Apr 23  2015 koi-win
+-rw-rw-r-- 1 ubuntu ubuntu 3610 Apr 23  2015 win-utf
+-rw-rw-r-- 1 ubuntu ubuntu 2730 Apr 23  2015 nginx.conf
+-rw-rw-r-- 1 ubuntu ubuntu 1034 Apr 23  2015 fastcgi.conf
+-rw-rw-r-- 1 ubuntu ubuntu 3463 Apr 23  2015 mime.types.default
+-rw-rw-r-- 1 ubuntu ubuntu 3463 Apr 23  2015 mime.types
+-rw-rw-r-- 1 ubuntu ubuntu 2837 Apr 23  2015 koi-utf
+-rw-rw-r-- 1 ubuntu ubuntu  623 Apr 23  2015 uwsgi_params.default
+-rw-rw-r-- 1 ubuntu ubuntu  964 Apr 23  2015 fastcgi_params.default
+-rw-rw-r-- 1 ubuntu ubuntu 2685 Apr 23  2015 nginx.conf.default
+-rw-rw-r-- 1 ubuntu ubuntu  623 Apr 23  2015 uwsgi_params
+-rw-rw-r-- 1 ubuntu ubuntu  596 Apr 23  2015 scgi_params
+-rw-rw-r-- 1 ubuntu ubuntu  596 Apr 23  2015 scgi_params.default
+
+../../nginx/data/client_body_temp:
+total 0
+
+../../nginx/data/scgi_temp:
+total 0
+
+../../nginx/data/proxy_temp:
+total 0
+
+../../nginx/data/fastcgi_temp:
+total 0
+
+../../nginx/data/uwsgi_temp:
+total 0
+
+../../nginx/scripts:
+total 4
+-rwxrwxr-x 1 ubuntu ubuntu 140 Apr 23  2015 service_mon.sh
+
+../../tcpdump:
+total 16
+-rwxrwxr-x 1 ubuntu ubuntu 4427 Jan  7 18:05 test_script.sh
+-rwxrwxr-x 1 ubuntu ubuntu  763 Apr 23  2015 gen_test.sh
+drwxrwxr-x 4 ubuntu ubuntu 4096 Apr 23  2015 tcpd_tests
+
+../../tcpdump/tcpd_tests:
+total 1332
+-rw-rw-r-- 1 ubuntu ubuntu   2063 Apr 23  2015 babel1.out
+-rw-rw-r-- 1 ubuntu ubuntu   9878 Apr 23  2015 forces2.pcap
+-rw-rw-r-- 1 ubuntu ubuntu   1956 Apr 23  2015 mpls-traceroute.pcap
+-rw-rw-r-- 1 ubuntu ubuntu   7966 Apr 23  2015 print-AA.out
+-rw-rw-r-- 1 ubuntu ubuntu   2119 Apr 23  2015 zmtp1.pcap
+-rw-rw-r-- 1 ubuntu ubuntu    747 Apr 23  2015 dhcpv6-AFTR-Name-RFC6334.pcap
+-rw-rw-r-- 1 ubuntu ubuntu     24 Apr 23  2015 eapon1.gdbinit
+-rw-rw-r-- 1 ubuntu ubuntu  75243 Apr 23  2015 failure-outputs.txt
+-rw-rw-r-- 1 ubuntu ubuntu    984 Apr 23  2015 lspping-fec-rsvp.pcap
+-rw-rw-r-- 1 ubuntu ubuntu    248 Apr 23  2015 msnlb.pcap
+-rw-rw-r-- 1 ubuntu ubuntu  75249 Apr 23  2015 spb.pcap
+-rw-rw-r-- 1 ubuntu ubuntu   1560 Apr 23  2015 e1000g.out
+drwxrwxr-x 2 ubuntu ubuntu   4096 Apr 23  2015 NEW
+-rw-rw-r-- 1 ubuntu ubuntu    667 Apr 23  2015 mpls-ldp-hello.out
+-rw-rw-r-- 1 ubuntu ubuntu   1239 Apr 23  2015 babel_auth.out
+-rw-rw-r-- 1 ubuntu ubuntu   1419 Apr 23  2015 dhcpv6-ia-na.out
+-rw-rw-r-- 1 ubuntu ubuntu    638 Apr 23  2015 dhcpv6-ia-na.pcap
+-rw-rw-r-- 1 ubuntu ubuntu    120 Apr 23  2015 dio.pcap
+-rw-rw-r-- 1 ubuntu ubuntu   2504 Apr 23  2015 e1000g.pcap
+-rw-rw-r-- 1 ubuntu ubuntu   7159 Apr 23  2015 eapon1.out
+-rw-rw-r-- 1 ubuntu ubuntu    544 Apr 23  2015 esp0.out
+-rw-rw-r-- 1 ubuntu ubuntu    229 Apr 23  2015 esp2.gdbinit
+-rw-rw-r-- 1 ubuntu ubuntu     74 Apr 23  2015 esp5.gdbinit
+-rw-rw-r-- 1 ubuntu ubuntu  10128 Apr 23  2015 forces1vvv.out
+-rw-rw-r-- 1 ubuntu ubuntu  12807 Apr 23  2015 forces1vvvv.out
+-rw-rw-r-- 1 ubuntu ubuntu  18176 Apr 23  2015 forces3.pcap
+-rw-rw-r-- 1 ubuntu ubuntu    349 Apr 23  2015 igmpv3-queries.out
+-rw-rw-r-- 1 ubuntu ubuntu   6411 Apr 23  2015 ikev2four.out
+-rw-rw-r-- 1 ubuntu ubuntu   3372 Apr 23  2015 ikev2pI2.out
+-rw-rw-r-- 1 ubuntu ubuntu    112 Apr 23  2015 isakmp-pointer-loop.pcap
+-rwxrwxr-x 1 ubuntu ubuntu    147 Apr 23  2015 lmp.sh
+-rw-rw-r-- 1 ubuntu ubuntu    630 Apr 23  2015 mpbgp-linklocal-nexthop.out
+-rw-rw-r-- 1 ubuntu ubuntu     20 Apr 23  2015 msnlb2.out
+-rw-rw-r-- 1 ubuntu ubuntu   4056 Apr 23  2015 ospf-gmpls.out
+-rw-rw-r-- 1 ubuntu ubuntu   6621 Apr 23  2015 print-flags.pcap
+-rw-rw-r-- 1 ubuntu ubuntu 135935 Apr 23  2015 QinQpacketv.out
+-rwxrwxr-x 1 ubuntu ubuntu    929 Apr 23  2015 TESTonce
+-rw-rw-r-- 1 ubuntu ubuntu    606 Apr 23  2015 dhcpv6-ia-ta.pcap
+drwxrwxr-x 2 ubuntu ubuntu   4096 Apr 23  2015 DIFF
+-rw-rw-r-- 1 ubuntu ubuntu    272 Apr 23  2015 ikev2pI2-secrets.txt
+-rw-rw-r-- 1 ubuntu ubuntu     68 Apr 23  2015 isakmp2.out
+-rw-rw-r-- 1 ubuntu ubuntu    114 Apr 23  2015 mpls-ldp-hello.pcap
+-rw-rw-r-- 1 ubuntu ubuntu    176 Apr 23  2015 msnlb.out
+-rw-rw-r-- 1 ubuntu ubuntu    721 Apr 23  2015 isakmp-delete-segfault.pcap
+-rw-rw-r-- 1 ubuntu ubuntu  29308 Apr 23  2015 sflow_multiple_counter_30_pdus.pcap
+-rw-rw-r-- 1 ubuntu ubuntu   1352 Apr 23  2015 02-sunrise-sunset-esp.pcap
+-rw-rw-r-- 1 ubuntu ubuntu   3320 Apr 23  2015 babel.pcap
+-rw-rw-r-- 1 ubuntu ubuntu    554 Apr 23  2015 bgp-infinite-loop.pcap
+-rw-rw-r-- 1 ubuntu ubuntu    641 Apr 23  2015 dhcpv6-ia-pd.pcap
+-rw-rw-r-- 1 ubuntu ubuntu   2488 Apr 23  2015 forces1.pcap
+-rw-rw-r-- 1 ubuntu ubuntu  29523 Apr 23  2015 forces3vvv.out
+-rw-rw-r-- 1 ubuntu ubuntu  16205 Apr 23  2015 ikev2fourv4.out
+-rw-rw-r-- 1 ubuntu ubuntu    352 Apr 23  2015 ripv1v2.pcap
+-rw-rw-r-- 1 ubuntu ubuntu    384 Apr 23  2015 rsvp-infinite-loop.pcap
+-rw-rw-r-- 1 ubuntu ubuntu   1800 Apr 23  2015 08-sunrise-sunset-esp2.pcap
+-rw-rw-r-- 1 ubuntu ubuntu     26 Apr 23  2015 empty.uu
+-rw-rw-r-- 1 ubuntu ubuntu  20801 Apr 23  2015 forces2vv.out
+-rw-rw-r-- 1 ubuntu ubuntu  16412 Apr 23  2015 eapon1.pcap
+-rw-rw-r-- 1 ubuntu ubuntu    298 Apr 23  2015 esp-secrets.txt
+-rw-rw-r-- 1 ubuntu ubuntu      0 Apr 23  2015 forces2v.out
+-rw-rw-r-- 1 ubuntu ubuntu    912 Apr 23  2015 ikev2pI2.pcap
+-rw-rw-r-- 1 ubuntu ubuntu   2629 Apr 23  2015 lmp.new
+-rw-rw-r-- 1 ubuntu ubuntu    196 Apr 23  2015 mpbgp-linklocal-nexthop.pcap
+-rw-rw-r-- 1 ubuntu ubuntu    640 Apr 23  2015 ospf-gmpls.pcap
+-rw-rw-r-- 1 ubuntu ubuntu     74 Apr 23  2015 pppoe.out
+-rw-rw-r-- 1 ubuntu ubuntu  28583 Apr 23  2015 print-capX.out
+-rw-rw-r-- 1 ubuntu ubuntu  21271 Apr 23  2015 print-x.out
+-rw-rw-r-- 1 ubuntu ubuntu    822 Apr 23  2015 ripv1v2.out
+-rw-rw-r-- 1 ubuntu ubuntu 130398 Apr 23  2015 sflow_multiple_counter_30_pdus.out
+-rw-rw-r-- 1 ubuntu ubuntu   2779 Apr 23  2015 spb.out
+-rw-rw-r-- 1 ubuntu ubuntu    356 Apr 23  2015 isakmp-identification-segfault.pcap
+-rw-rw-r-- 1 ubuntu ubuntu   2629 Apr 23  2015 lmp.out
+-rw-rw-r-- 1 ubuntu ubuntu   1190 Apr 23  2015 lspping-fec-ldp.pcap
+-rw-rw-r-- 1 ubuntu ubuntu  21721 Apr 23  2015 print-xx.out
+-rw-rw-r-- 1 ubuntu ubuntu    217 Apr 23  2015 bgp_vpn_attrset.pcap
+-rw-rw-r-- 1 ubuntu ubuntu   5136 Apr 23  2015 ripv2_auth.out
+-rw-rw-r-- 1 ubuntu ubuntu    530 Apr 23  2015 babel_auth.pcap
+-rw-rw-r-- 1 ubuntu ubuntu    140 Apr 23  2015 esp1.gdbinit
+-rw-rw-r-- 1 ubuntu ubuntu   1272 Apr 23  2015 esp1.out
+-rw-rw-r-- 1 ubuntu ubuntu     74 Apr 23  2015 esp4.gdbinit
+-rw-rw-r-- 1 ubuntu ubuntu   1416 Apr 23  2015 espudp1.pcap
+-rwxrwxr-x 1 ubuntu ubuntu    689 Apr 23  2015 print-flags.sh
+-rw-rw-r-- 1 ubuntu ubuntu  46823 Apr 23  2015 QinQpacket.out
+-rw-rw-r-- 1 ubuntu ubuntu  78264 Apr 23  2015 QinQpacket.pcap
+-rw-rw-r-- 1 ubuntu ubuntu   3740 Apr 23  2015 TESTLIST
+-rw-rw-r-- 1 ubuntu ubuntu   6689 Apr 23  2015 zmtp1.out
+-rw-rw-r-- 1 ubuntu ubuntu  40251 Apr 23  2015 forces2vvv.out
+-rw-rw-r-- 1 ubuntu ubuntu    188 Apr 23  2015 msnlb2.pcap
+-rwxrwxr-x 1 ubuntu ubuntu   1309 Apr 23  2015 TESTrun.sh
+-rw-rw-r-- 1 ubuntu ubuntu   1480 Apr 23  2015 08-sunrise-sunset-aes.pcap
+-rw-rw-r-- 1 ubuntu ubuntu     62 Apr 23  2015 chdlc-slarp.pcap
+-rw-rw-r-- 1 ubuntu ubuntu   1354 Apr 23  2015 dhcpv6-ia-ta.out
+-rw-rw-r-- 1 ubuntu ubuntu    159 Apr 23  2015 dio.out
+-rw-rw-r-- 1 ubuntu ubuntu    414 Apr 23  2015 ldp-infinite-loop.pcap
+-rw-rw-r-- 1 ubuntu ubuntu   1139 Apr 23  2015 bgp_vpn_attrset.out
+-rw-rw-r-- 1 ubuntu ubuntu     58 Apr 23  2015 chdlc-slarp-short.pcap
+-rw-rw-r-- 1 ubuntu ubuntu   1515 Apr 23  2015 dhcpv6-AFTR-Name-RFC6334.out
+-rw-rw-r-- 1 ubuntu ubuntu   1389 Apr 23  2015 dhcpv6-ia-pd.out
+-rw-rw-r-- 1 ubuntu ubuntu   1936 Apr 23  2015 esp2.out
+-rw-rw-r-- 1 ubuntu ubuntu   1272 Apr 23  2015 esp5.out
+-rw-rw-r-- 1 ubuntu ubuntu    802 Apr 23  2015 espudp1.out
+-rw-rw-r-- 1 ubuntu ubuntu   2587 Apr 23  2015 forces1.out
+-rw-rw-r-- 1 ubuntu ubuntu   2400 Apr 23  2015 icmpv6.out
+-rw-rw-r-- 1 ubuntu ubuntu  15068 Apr 23  2015 ikev2fourv.out
+-rw-rw-r-- 1 ubuntu ubuntu   2675 Apr 23  2015 isakmp4.out
+-rw-rw-r-- 1 ubuntu ubuntu    454 Apr 23  2015 isis-infinite-loop.pcap
+-rw-rw-r-- 1 ubuntu ubuntu   1732 Apr 23  2015 lmp.pcap
+-rw-rw-r-- 1 ubuntu ubuntu   7826 Apr 23  2015 print-A.out
+-rw-rw-r-- 1 ubuntu ubuntu  29243 Apr 23  2015 print-capXX.out
+-rw-rw-r-- 1 ubuntu ubuntu   1600 Apr 23  2015 spb_bpduv4.out
+-rw-rw-r-- 1 ubuntu ubuntu   5974 Apr 23  2015 spb_bpduv4.pcap
+-rw-rw-r-- 1 ubuntu ubuntu   1648 Apr 23  2015 ripv2_auth.pcap
+-rw-rw-r-- 1 ubuntu ubuntu   5167 Apr 23  2015 babel1v.out
+-rw-rw-r-- 1 ubuntu ubuntu    119 Apr 23  2015 esp3.gdbinit
+-rw-rw-r-- 1 ubuntu ubuntu    754 Apr 23  2015 icmpv6.pcap
+-rw-rw-r-- 1 ubuntu ubuntu    420 Apr 23  2015 igmpv3-queries.pcap
+-rw-rw-r-- 1 ubuntu ubuntu   5856 Apr 23  2015 ikev2four.pcap
+-rw-rw-r-- 1 ubuntu ubuntu   1451 Apr 23  2015 isakmp3.out
+-rw-rw-r-- 1 ubuntu ubuntu   6830 Apr 23  2015 isakmp4500.pcap
+-rw-rw-r-- 1 ubuntu ubuntu     78 Apr 23  2015 pppoe.pcap
+-rw-rw-r-- 1 ubuntu ubuntu     42 Apr 23  2015 isakmp1.out
+
+../../tcpdump/tcpd_tests/NEW:
+total 660
+-rw-rw-r-- 1 ubuntu ubuntu    733 Apr 23  2015 mpbgp-linklocal-nexthop.out
+-rw-rw-r-- 1 ubuntu ubuntu   7159 Apr 23  2015 eapon1.out
+-rw-rw-r-- 1 ubuntu ubuntu  16205 Apr 23  2015 ikev2fourv4.out
+-rw-rw-r-- 1 ubuntu ubuntu    667 Apr 23  2015 mpls-ldp-hello.out
+-rw-rw-r-- 1 ubuntu ubuntu   1139 Apr 23  2015 bgp_vpn_attrset.out
+-rw-rw-r-- 1 ubuntu ubuntu    544 Apr 23  2015 esp0.out
+-rw-rw-r-- 1 ubuntu ubuntu  12807 Apr 23  2015 forces1vvvv.out
+-rw-rw-r-- 1 ubuntu ubuntu   2938 Apr 23  2015 icmpv6.out
+-rw-rw-r-- 1 ubuntu ubuntu    349 Apr 23  2015 igmpv3-queries.out
+-rw-rw-r-- 1 ubuntu ubuntu    950 Apr 23  2015 msnlb.out
+-rw-rw-r-- 1 ubuntu ubuntu  29243 Apr 23  2015 print-capXX.new
+-rw-rw-r-- 1 ubuntu ubuntu  12167 Apr 23  2015 babel1.out
+-rw-rw-r-- 1 ubuntu ubuntu  12167 Apr 23  2015 babel1v.out
+-rw-rw-r-- 1 ubuntu ubuntu   3372 Apr 23  2015 ikev2pI2.out
+-rw-rw-r-- 1 ubuntu ubuntu     74 Apr 23  2015 pppoe.out
+-rw-rw-r-- 1 ubuntu ubuntu   2113 Apr 23  2015 babel_auth.out
+-rw-rw-r-- 1 ubuntu ubuntu   2414 Apr 23  2015 dhcpv6-ia-na.out
+-rw-rw-r-- 1 ubuntu ubuntu   2521 Apr 23  2015 dhcpv6-ia-pd.out
+-rw-rw-r-- 1 ubuntu ubuntu   2382 Apr 23  2015 dhcpv6-ia-ta.out
+-rw-rw-r-- 1 ubuntu ubuntu   1560 Apr 23  2015 e1000g.out
+-rw-rw-r-- 1 ubuntu ubuntu     68 Apr 23  2015 isakmp2.out
+-rw-rw-r-- 1 ubuntu ubuntu    278 Apr 23  2015 msnlb2.out
+-rw-rw-r-- 1 ubuntu ubuntu   4056 Apr 23  2015 ospf-gmpls.out
+-rw-rw-r-- 1 ubuntu ubuntu  21721 Apr 23  2015 print-xx.new
+-rw-rw-r-- 1 ubuntu ubuntu   3400 Apr 23  2015 ripv2_auth.out
+-rw-rw-r-- 1 ubuntu ubuntu 130398 Apr 23  2015 sflow_multiple_counter_30_pdus.out
+-rw-rw-r-- 1 ubuntu ubuntu    800 Apr 23  2015 spb_bpduv4.out
+-rw-rw-r-- 1 ubuntu ubuntu   2779 Apr 23  2015 spb.out
+-rw-rw-r-- 1 ubuntu ubuntu   2939 Apr 23  2015 dhcpv6-AFTR-Name-RFC6334.out
+-rw-rw-r-- 1 ubuntu ubuntu    331 Apr 23  2015 dio.out
+-rw-rw-r-- 1 ubuntu ubuntu   1272 Apr 23  2015 esp1.out
+-rw-rw-r-- 1 ubuntu ubuntu   1272 Apr 23  2015 esp5.out
+-rw-rw-r-- 1 ubuntu ubuntu    802 Apr 23  2015 espudp1.out
+-rw-rw-r-- 1 ubuntu ubuntu  10128 Apr 23  2015 forces1vvv.out
+-rw-rw-r-- 1 ubuntu ubuntu   6411 Apr 23  2015 ikev2four.out
+-rw-rw-r-- 1 ubuntu ubuntu   7985 Apr 23  2015 print-AA.new
+-rw-rw-r-- 1 ubuntu ubuntu   7845 Apr 23  2015 print-A.new
+-rw-rw-r-- 1 ubuntu ubuntu  28583 Apr 23  2015 print-capX.new
+-rw-rw-r-- 1 ubuntu ubuntu  21271 Apr 23  2015 print-x.new
+-rw-rw-r-- 1 ubuntu ubuntu  46823 Apr 23  2015 QinQpacket.out
+-rw-rw-r-- 1 ubuntu ubuntu 135935 Apr 23  2015 QinQpacketv.out
+-rw-rw-r-- 1 ubuntu ubuntu    685 Apr 23  2015 ripv1v2.out
+-rw-rw-r-- 1 ubuntu ubuntu   1936 Apr 23  2015 esp2.out
+-rw-rw-r-- 1 ubuntu ubuntu   2587 Apr 23  2015 forces1.out
+-rw-rw-r-- 1 ubuntu ubuntu  15068 Apr 23  2015 ikev2fourv.out
+-rw-rw-r-- 1 ubuntu ubuntu     42 Apr 23  2015 isakmp1.out
+-rw-rw-r-- 1 ubuntu ubuntu   1451 Apr 23  2015 isakmp3.out
+-rw-rw-r-- 1 ubuntu ubuntu   2675 Apr 23  2015 isakmp4.out
+-rw-rw-r-- 1 ubuntu ubuntu      0 Apr 23  2015 zmtp1.out
+
+../../tcpdump/tcpd_tests/DIFF:
+total 140
+-rw-rw-r-- 1 ubuntu ubuntu 17833 Apr 23  2015 babel1v.out.diff
+-rw-rw-r-- 1 ubuntu ubuntu  3454 Apr 23  2015 babel_auth.out.diff
+-rw-rw-r-- 1 ubuntu ubuntu   299 Apr 23  2015 mpbgp-linklocal-nexthop.out.diff
+-rw-rw-r-- 1 ubuntu ubuntu  5025 Apr 23  2015 ripv2_auth.out.diff
+-rw-rw-r-- 1 ubuntu ubuntu  6842 Apr 23  2015 zmtp1.out.diff
+-rw-rw-r-- 1 ubuntu ubuntu  4561 Apr 23  2015 dhcpv6-AFTR-Name-RFC6334.out.diff
+-rw-rw-r-- 1 ubuntu ubuntu  5490 Apr 23  2015 icmpv6.out.diff
+-rw-rw-r-- 1 ubuntu ubuntu  1171 Apr 23  2015 msnlb.out.diff
+-rw-rw-r-- 1 ubuntu ubuntu  3220 Apr 23  2015 print-capX.out.diff
+-rw-rw-r-- 1 ubuntu ubuntu  3220 Apr 23  2015 print-capXX.out.diff
+-rw-rw-r-- 1 ubuntu ubuntu   378 Apr 23  2015 ripv1v2.out.diff
+-rw-rw-r-- 1 ubuntu ubuntu 14677 Apr 23  2015 babel1.out.diff
+-rw-rw-r-- 1 ubuntu ubuntu  4005 Apr 23  2015 dhcpv6-ia-pd.out.diff
+-rw-rw-r-- 1 ubuntu ubuntu   322 Apr 23  2015 msnlb2.out.diff
+-rw-rw-r-- 1 ubuntu ubuntu  4348 Apr 23  2015 print-AA.out.diff
+-rw-rw-r-- 1 ubuntu ubuntu  4348 Apr 23  2015 print-A.out.diff
+-rw-rw-r-- 1 ubuntu ubuntu  3924 Apr 23  2015 dhcpv6-ia-na.out.diff
+-rw-rw-r-- 1 ubuntu ubuntu  3827 Apr 23  2015 dhcpv6-ia-ta.out.diff
+-rw-rw-r-- 1 ubuntu ubuntu   512 Apr 23  2015 dio.out.diff
+-rw-rw-r-- 1 ubuntu ubuntu  3220 Apr 23  2015 print-x.out.diff
+-rw-rw-r-- 1 ubuntu ubuntu  3220 Apr 23  2015 print-xx.out.diff
+-rw-rw-r-- 1 ubuntu ubuntu  2514 Apr 23  2015 spb_bpduv4.out.diff
+
+../../zsh:
+total 1132
+-rw-rw-r-- 1 ubuntu ubuntu    1027 Jan  7 18:04 gdb.txt
+-rw-rw-r-- 1 ubuntu ubuntu       0 Jan  7 18:02 tmp
+-rwxrwxr-x 1 ubuntu ubuntu 1141343 Jan  7 17:51 zsh.cfi.color
+drwxrwxr-x 3 ubuntu ubuntu    4096 Jan  7 17:51 peasoup_executable_directory.zsh.29614
+drwxrwxr-x 2 ubuntu ubuntu    4096 Jan  7 17:47 tests
+-rwxrwxr-x 1 ubuntu ubuntu     886 Apr 23  2015 test_script.sh
+
+../../zsh/peasoup_executable_directory.zsh.29614:
+total 84600
+drwxrwxr-x 2 ubuntu ubuntu     4096 Jan  7 17:51 logs
+-rw-rw-r-- 1 ubuntu ubuntu  8328152 Jan  7 17:51 zipr.map
+-rwxrwxr-x 1 ubuntu ubuntu  1141343 Jan  7 17:51 b.out.addseg
+-rw-rw-r-- 1 ubuntu ubuntu  1137248 Jan  7 17:51 b.out
+-rw-rw-r-- 1 ubuntu ubuntu   360985 Jan  7 17:51 b.out.to_insert3
+-rw-rw-r-- 1 ubuntu ubuntu      416 Jan  7 17:51 b.out.to_insert2
+-rw-rw-r-- 1 ubuntu ubuntu   360569 Jan  7 17:51 b.out.to_insert
+-rw-rw-r-- 1 ubuntu ubuntu    10142 Jan  7 17:51 tmp.bin
+-rw-rw-r-- 1 ubuntu ubuntu    17193 Jan  7 17:51 tmp.asm
+-rw-rw-r-- 1 ubuntu ubuntu   692928 Jan  7 17:50 readeh_tmp_file.exe
+-rw-rw-r-- 1 ubuntu ubuntu        4 Jan  7 17:50 clone.id
+-rw-rw-r-- 1 ubuntu ubuntu     3296 Jan  7 17:50 db_script.30015
+-rw-rw-r-- 1 ubuntu ubuntu        4 Jan  7 17:49 registered.id
+-rw-rw-r-- 1 ubuntu ubuntu     3395 Jan  7 17:49 db.tmp.29848
+-rw-rw-r-- 1 ubuntu ubuntu 19124669 Jan  7 17:49 a.ncexe.annot.full
+-rw-rw-rw- 1 ubuntu ubuntu 19124669 Jan  7 17:49 a.ncexe.annot
+-rw-rw-r-- 1 ubuntu ubuntu    44838 Jan  7 17:49 screenlog.0
+-rw-rw-rw- 1 ubuntu ubuntu  6750532 Jan  7 17:49 a.i64
+-rw-rw-r-- 1 ubuntu ubuntu  1084109 Jan  7 17:49 a.ncexe.log
+-rw-rw-rw- 1 ubuntu ubuntu  4280656 Jan  7 17:49 a.asm
+-rw-rw-rw- 1 ubuntu ubuntu       26 Jan  7 17:49 stubtest.idaoutput
+-rw-rw-rw- 1 ubuntu ubuntu  4288446 Jan  7 17:49 a.ncexe.asm
+-rw-rw-rw- 1 ubuntu ubuntu  1452064 Jan  7 17:49 a.ncexe.STARScallreturn
+-rw-rw-rw- 1 ubuntu ubuntu   786546 Jan  7 17:49 a.ncexe.STARSxrefs
+-rw-rw-rw- 1 ubuntu ubuntu   260150 Jan  7 17:49 a.ncexe.infoannot
+-rw-rw-rw- 1 ubuntu ubuntu        0 Jan  7 17:48 a.ncexe.alarms
+-rw-rw-r-- 1 ubuntu ubuntu    16541 Jan  7 17:48 a.ncexe.eh_frame_addrs
+-rw-rw-r-- 1 ubuntu ubuntu  7412596 Jan  7 17:48 a.ncexe.SMPobjdump
+-rwxrwxr-x 1 ubuntu ubuntu     4813 Jan  7 17:48 ps_run.sh
+-rwxrwxr-x 1 ubuntu ubuntu      232 Jan  7 17:48 zsh.sh
+-rwxr-xr-x 1 ubuntu ubuntu   692928 Jan  7 17:48 a.ncexe.orig
+-rwxrwxr-x 1 ubuntu ubuntu  7321180 Jan  7 17:48 libheaprand.so
+-rwxrwxr-x 1 ubuntu ubuntu  2479496 Jan  7 17:48 libstrata.so
+-rwxrwxr-x 1 ubuntu ubuntu  2479496 Jan  7 17:48 libstrata.so.nosymbols
+-rwxrwxr-x 1 ubuntu ubuntu  2540203 Jan  7 17:48 libstrata.so.symbols
+-rwxr-xr-x 1 ubuntu ubuntu   692928 Jan  7 17:48 a.ncexe
+
+../../zsh/peasoup_executable_directory.zsh.29614/logs:
+total 89724
+-rw-rw-r-- 1 ubuntu ubuntu     4149 Jan  7 17:51 stats.json
+-rw-rw-r-- 1 ubuntu ubuntu 45919589 Jan  7 17:51 ps_analyze.log
+-rw-rw-r-- 1 ubuntu ubuntu 37748821 Jan  7 17:51 zipr.log
+-rw-rw-r-- 1 ubuntu ubuntu  2542650 Jan  7 17:51 selective_cfi.log
+-rw-rw-r-- 1 ubuntu ubuntu   276319 Jan  7 17:50 fix_calls.log
+-rw-rw-r-- 1 ubuntu ubuntu     1190 Jan  7 17:50 clone.log
+-rw-rw-r-- 1 ubuntu ubuntu  4710187 Jan  7 17:50 fill_in_indtargs.log
+-rw-rw-r-- 1 ubuntu ubuntu     4601 Jan  7 17:50 fill_in_cfg.log
+-rw-rw-r-- 1 ubuntu ubuntu   631326 Jan  7 17:49 pdb_register.log
+-rw-rw-r-- 1 ubuntu ubuntu      618 Jan  7 17:49 meds_static.log
+-rw-rw-r-- 1 ubuntu ubuntu      386 Jan  7 17:48 gather_libraries.log
+-rw-rw-r-- 1 ubuntu ubuntu      322 Jan  7 17:48 is_so.log
+-rw-rw-r-- 1 ubuntu ubuntu      332 Jan  7 17:48 create_binary_script.log
+
+../../zsh/tests:
+total 24
+-rwxrwxr-x 1 ubuntu ubuntu  133 Apr 23  2015 test5.sh
+-rwxrwxr-x 1 ubuntu ubuntu  167 Apr 23  2015 test4.sh
+-rwxrwxr-x 1 ubuntu ubuntu   39 Apr 23  2015 test1.sh
+-rwxrwxr-x 1 ubuntu ubuntu   15 Apr 23  2015 test2.sh
+-rwxrwxr-x 1 ubuntu ubuntu   71 Apr 23  2015 test3.sh
+-rwxrwxr-x 1 ubuntu ubuntu 1670 Apr 23  2015 test6.sh
+
+../../test_scripts:
+total 88
+drwxrwxr-x 2 ubuntu ubuntu 20480 Oct 14 15:33 foo_tests
+-rwxrwxr-x 1 ubuntu ubuntu  4208 Oct 14 15:33 generate_tests.sh
+-rw-rw-r-- 1 ubuntu ubuntu   161 Oct 14 15:33 foo.cpp
+drwxrwxr-x 2 ubuntu ubuntu 40960 Oct 14 15:33 sample_tests
+-rwxrwxr-x 1 ubuntu ubuntu  3714 Oct 14 15:33 template.foo.shtmpl
+-rw-rw-r-- 1 ubuntu ubuntu   813 Oct 14 15:33 sample.cpp
+-rwxrwxr-x 1 ubuntu ubuntu  3712 Oct 14 15:33 template.sample.shtmpl
+-rw-rw-r-- 1 ubuntu ubuntu   339 Oct 14 15:33 test.cpp
+
+../../test_scripts/foo_tests:
+total 640
+-rw-rw-r-- 1 ubuntu ubuntu 3701 Oct 14 15:33 foo.strata.no_startfile.-O2.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3729 Oct 14 15:33 foo.zipr.no_startfile.no_optflag.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3731 Oct 14 15:33 foo.zipr.no_startfile.-O2.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3723 Oct 14 15:33 foo.zipr.no_startfile.-O2.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3693 Oct 14 15:33 foo.zipr.no_startfile.-O3.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3723 Oct 14 15:33 foo.zipr.no_startfile.-O.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3731 Oct 14 15:33 foo.zipr.no_startfile.-Os.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3739 Oct 14 15:33 foo.strata.no_startfile.-O2.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3693 Oct 14 15:33 foo.strata.no_startfile.-O3.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3699 Oct 14 15:33 foo.strata.no_startfile.-Os.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3727 Oct 14 15:33 foo.zipr.no_startfile.no_optflag.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3689 Oct 14 15:33 foo.zipr.no_startfile.no_optflag.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3683 Oct 14 15:33 foo.zipr.no_startfile.no_optflag.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3693 Oct 14 15:33 foo.zipr.no_startfile.-O2.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3725 Oct 14 15:33 foo.zipr.no_startfile.-O3.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3731 Oct 14 15:33 foo.zipr.no_startfile.-O.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3695 Oct 14 15:33 foo.strata.no_startfile.no_optflag.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3737 Oct 14 15:33 foo.strata.no_startfile.-O.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3689 Oct 14 15:33 foo.strata.no_startfile.-O.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3681 Oct 14 15:33 foo.zipr.no_startfile.no_optflag.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3723 Oct 14 15:33 foo.zipr.no_startfile.-O3.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3685 Oct 14 15:33 foo.zipr.no_startfile.-O3.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3729 Oct 14 15:33 foo.zipr.no_startfile.-O.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3691 Oct 14 15:33 foo.zipr.no_startfile.-O.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3725 Oct 14 15:33 foo.zipr.no_startfile.-Os.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3723 Oct 14 15:33 foo.zipr.no_startfile.-Os.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3725 Oct 14 15:33 foo.strata.no_startfile.no_optflag.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3737 Oct 14 15:33 foo.strata.no_startfile.-O2.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3693 Oct 14 15:33 foo.strata.no_startfile.-O2.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3739 Oct 14 15:33 foo.strata.no_startfile.-O3.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3691 Oct 14 15:33 foo.strata.no_startfile.-O3.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3739 Oct 14 15:33 foo.strata.no_startfile.-Os.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3737 Oct 14 15:33 foo.strata.no_startfile.-Os.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3731 Oct 14 15:33 foo.strata.no_startfile.-Os.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3693 Oct 14 15:33 foo.strata.no_startfile.-Os.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3721 Oct 14 15:33 foo.zipr.no_startfile.no_optflag.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3687 Oct 14 15:33 foo.zipr.no_startfile.-O2.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3687 Oct 14 15:33 foo.zipr.no_startfile.-Os.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3689 Oct 14 15:33 foo.strata.no_startfile.no_optflag.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3729 Oct 14 15:33 foo.strata.no_startfile.-O3.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3691 Oct 14 15:33 foo.strata.no_startfile.-Os.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3691 Oct 14 15:33 foo.zipr.no_startfile.no_optflag.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3733 Oct 14 15:33 foo.zipr.no_startfile.-O2.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3695 Oct 14 15:33 foo.zipr.no_startfile.-O2.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3693 Oct 14 15:33 foo.zipr.no_startfile.-O2.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3725 Oct 14 15:33 foo.zipr.no_startfile.-O2.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3685 Oct 14 15:33 foo.zipr.no_startfile.-O2.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3693 Oct 14 15:33 foo.zipr.no_startfile.-O.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3723 Oct 14 15:33 foo.zipr.no_startfile.-O.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3733 Oct 14 15:33 foo.zipr.no_startfile.-Os.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3695 Oct 14 15:33 foo.zipr.no_startfile.-Os.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3701 Oct 14 15:33 foo.strata.no_startfile.-O2.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3731 Oct 14 15:33 foo.strata.no_startfile.-O2.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3739 Oct 14 15:33 foo.strata.no_startfile.-O3.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3737 Oct 14 15:33 foo.strata.no_startfile.-O3.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3699 Oct 14 15:33 foo.strata.no_startfile.-O3.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3731 Oct 14 15:33 foo.strata.no_startfile.-O3.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3693 Oct 14 15:33 foo.strata.no_startfile.-O3.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3701 Oct 14 15:33 foo.strata.no_startfile.-Os.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3699 Oct 14 15:33 foo.strata.no_startfile.-Os.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3731 Oct 14 15:33 foo.strata.no_startfile.-Os.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3727 Oct 14 15:33 foo.zipr.no_startfile.no_optflag.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3689 Oct 14 15:33 foo.zipr.no_startfile.no_optflag.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3731 Oct 14 15:33 foo.zipr.no_startfile.-O3.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3725 Oct 14 15:33 foo.zipr.no_startfile.-O3.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3687 Oct 14 15:33 foo.zipr.no_startfile.-O3.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3731 Oct 14 15:33 foo.zipr.no_startfile.-O.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3683 Oct 14 15:33 foo.zipr.no_startfile.-O.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3731 Oct 14 15:33 foo.zipr.no_startfile.-Os.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3687 Oct 14 15:33 foo.zipr.no_startfile.-Os.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3733 Oct 14 15:33 foo.strata.no_startfile.no_optflag.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3687 Oct 14 15:33 foo.strata.no_startfile.no_optflag.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3691 Oct 14 15:33 foo.strata.no_startfile.-O3.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3735 Oct 14 15:33 foo.strata.no_startfile.-O.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3727 Oct 14 15:33 foo.strata.no_startfile.-O.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3737 Oct 14 15:33 foo.strata.no_startfile.-Os.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3691 Oct 14 15:33 foo.zipr.no_startfile.no_optflag.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3721 Oct 14 15:33 foo.zipr.no_startfile.no_optflag.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3723 Oct 14 15:33 foo.zipr.no_startfile.-O3.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3729 Oct 14 15:33 foo.zipr.no_startfile.-O.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3721 Oct 14 15:33 foo.zipr.no_startfile.-O.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3685 Oct 14 15:33 foo.zipr.no_startfile.-O.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3731 Oct 14 15:33 foo.strata.no_startfile.-O2.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3691 Oct 14 15:33 foo.strata.no_startfile.-O2.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3701 Oct 14 15:33 foo.strata.no_startfile.-O3.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3701 Oct 14 15:33 foo.strata.no_startfile.-Os.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3733 Oct 14 15:33 foo.zipr.no_startfile.-O2.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3685 Oct 14 15:33 foo.zipr.no_startfile.-O2.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3733 Oct 14 15:33 foo.zipr.no_startfile.-O3.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3695 Oct 14 15:33 foo.zipr.no_startfile.-O3.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3733 Oct 14 15:33 foo.zipr.no_startfile.-Os.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3695 Oct 14 15:33 foo.zipr.no_startfile.-Os.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3693 Oct 14 15:33 foo.zipr.no_startfile.-Os.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3697 Oct 14 15:33 foo.strata.no_startfile.no_optflag.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3699 Oct 14 15:33 foo.strata.no_startfile.-O2.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3729 Oct 14 15:33 foo.strata.no_startfile.-O2.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3731 Oct 14 15:33 foo.strata.no_startfile.-O3.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3699 Oct 14 15:33 foo.strata.no_startfile.-O.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3729 Oct 14 15:33 foo.strata.no_startfile.-O.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3691 Oct 14 15:33 foo.strata.no_startfile.-O.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3719 Oct 14 15:33 foo.zipr.no_startfile.no_optflag.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3687 Oct 14 15:33 foo.zipr.no_startfile.-O3.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3693 Oct 14 15:33 foo.zipr.no_startfile.-O.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3735 Oct 14 15:33 foo.strata.no_startfile.no_optflag.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3733 Oct 14 15:33 foo.strata.no_startfile.no_optflag.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3727 Oct 14 15:33 foo.strata.no_startfile.no_optflag.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3687 Oct 14 15:33 foo.strata.no_startfile.no_optflag.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3693 Oct 14 15:33 foo.strata.no_startfile.-O2.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3737 Oct 14 15:33 foo.strata.no_startfile.-O3.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3699 Oct 14 15:33 foo.strata.no_startfile.-O3.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3697 Oct 14 15:33 foo.strata.no_startfile.-O.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3727 Oct 14 15:33 foo.strata.no_startfile.-O.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3731 Oct 14 15:33 foo.zipr.no_startfile.-O3.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3721 Oct 14 15:33 foo.zipr.no_startfile.-O.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3683 Oct 14 15:33 foo.zipr.no_startfile.-O.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3685 Oct 14 15:33 foo.zipr.no_startfile.-Os.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3735 Oct 14 15:33 foo.strata.no_startfile.no_optflag.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3697 Oct 14 15:33 foo.strata.no_startfile.no_optflag.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3691 Oct 14 15:33 foo.strata.no_startfile.-O2.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3739 Oct 14 15:33 foo.strata.no_startfile.-Os.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3693 Oct 14 15:33 foo.strata.no_startfile.-Os.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3729 Oct 14 15:33 foo.zipr.no_startfile.no_optflag.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3683 Oct 14 15:33 foo.zipr.no_startfile.no_optflag.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3695 Oct 14 15:33 foo.zipr.no_startfile.-O3.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3693 Oct 14 15:33 foo.zipr.no_startfile.-O3.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3685 Oct 14 15:33 foo.zipr.no_startfile.-O3.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3693 Oct 14 15:33 foo.zipr.no_startfile.-Os.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3723 Oct 14 15:33 foo.zipr.no_startfile.-Os.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3685 Oct 14 15:33 foo.zipr.no_startfile.-Os.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3739 Oct 14 15:33 foo.strata.no_startfile.-O2.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3701 Oct 14 15:33 foo.strata.no_startfile.-O3.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3737 Oct 14 15:33 foo.strata.no_startfile.-O.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3735 Oct 14 15:33 foo.strata.no_startfile.-O.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3697 Oct 14 15:33 foo.strata.no_startfile.-O.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3691 Oct 14 15:33 foo.strata.no_startfile.-O.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3719 Oct 14 15:33 foo.zipr.no_startfile.no_optflag.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3681 Oct 14 15:33 foo.zipr.no_startfile.no_optflag.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3723 Oct 14 15:33 foo.zipr.no_startfile.-O2.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3733 Oct 14 15:33 foo.zipr.no_startfile.-O3.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3695 Oct 14 15:33 foo.strata.no_startfile.no_optflag.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3725 Oct 14 15:33 foo.strata.no_startfile.no_optflag.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3729 Oct 14 15:33 foo.strata.no_startfile.-O.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3729 Oct 14 15:33 foo.strata.no_startfile.-Os.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3731 Oct 14 15:33 foo.zipr.no_startfile.-O2.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3685 Oct 14 15:33 foo.zipr.no_startfile.-O.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3725 Oct 14 15:33 foo.zipr.no_startfile.-Os.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3699 Oct 14 15:33 foo.strata.no_startfile.-O2.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3729 Oct 14 15:33 foo.strata.no_startfile.-O2.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3691 Oct 14 15:33 foo.zipr.no_startfile.-O.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3689 Oct 14 15:33 foo.strata.no_startfile.-O.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3727 Oct 14 15:33 foo.strata.no_startfile.no_optflag.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3689 Oct 14 15:33 foo.strata.no_startfile.no_optflag.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3737 Oct 14 15:33 foo.strata.no_startfile.-O2.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3729 Oct 14 15:33 foo.strata.no_startfile.-O3.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3699 Oct 14 15:33 foo.strata.no_startfile.-O.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3729 Oct 14 15:33 foo.strata.no_startfile.-Os.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3725 Oct 14 15:33 foo.zipr.no_startfile.-O2.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3687 Oct 14 15:33 foo.zipr.no_startfile.-O2.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3691 Oct 14 15:33 foo.strata.no_startfile.-Os.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3695 Oct 14 15:33 foo.zipr.no_startfile.-O2.-fPIC.no_omit-fp.-g.-m64.sh
+
+../../test_scripts/sample_tests:
+total 1280
+-rw-rw-r-- 1 ubuntu ubuntu 3736 Oct 14 15:33 sample.strata.no_startfile.-O2.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3708 Oct 14 15:33 sample.strata.no_startfile.-O3.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3698 Oct 14 15:33 sample.strata.no_startfile.-O3.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3766 Oct 14 15:33 sample.strata.-nostartfiles.no_optflag.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3720 Oct 14 15:33 sample.strata.-nostartfiles.no_optflag.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3694 Oct 14 15:33 sample.zipr.no_startfile.-O2.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3692 Oct 14 15:33 sample.zipr.no_startfile.-O2.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3730 Oct 14 15:33 sample.zipr.no_startfile.-O3.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3736 Oct 14 15:33 sample.zipr.no_startfile.-O.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3698 Oct 14 15:33 sample.zipr.no_startfile.-O.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3728 Oct 14 15:33 sample.zipr.no_startfile.-O.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3700 Oct 14 15:33 sample.zipr.no_startfile.-Os.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3724 Oct 14 15:33 sample.zipr.-nostartfiles.-Os.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3756 Oct 14 15:33 sample.zipr.-nostartfiles.-Os.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3734 Oct 14 15:33 sample.strata.no_startfile.-O.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3696 Oct 14 15:33 sample.strata.no_startfile.-O.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3724 Oct 14 15:33 sample.strata.-nostartfiles.-O2.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3724 Oct 14 15:33 sample.strata.-nostartfiles.-Os.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3702 Oct 14 15:33 sample.zipr.no_startfile.-O2.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3692 Oct 14 15:33 sample.zipr.no_startfile.-O.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3730 Oct 14 15:33 sample.zipr.no_startfile.-Os.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3722 Oct 14 15:33 sample.zipr.-nostartfiles.-O.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3744 Oct 14 15:33 sample.strata.no_startfile.-O3.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3698 Oct 14 15:33 sample.strata.no_startfile.-Os.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3758 Oct 14 15:33 sample.strata.-nostartfiles.no_optflag.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3756 Oct 14 15:33 sample.strata.-nostartfiles.no_optflag.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3720 Oct 14 15:33 sample.strata.-nostartfiles.no_optflag.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3762 Oct 14 15:33 sample.strata.-nostartfiles.-O2.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3760 Oct 14 15:33 sample.strata.-nostartfiles.-O2.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3768 Oct 14 15:33 sample.strata.-nostartfiles.-O.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3768 Oct 14 15:33 sample.strata.-nostartfiles.-O.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3736 Oct 14 15:33 sample.zipr.no_startfile.no_optflag.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3740 Oct 14 15:33 sample.zipr.no_startfile.-O3.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3694 Oct 14 15:33 sample.zipr.no_startfile.-O3.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3730 Oct 14 15:33 sample.zipr.no_startfile.-O.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3702 Oct 14 15:33 sample.zipr.no_startfile.-Os.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3732 Oct 14 15:33 sample.zipr.no_startfile.-Os.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3694 Oct 14 15:33 sample.zipr.no_startfile.-Os.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3742 Oct 14 15:33 sample.strata.no_startfile.no_optflag.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3742 Oct 14 15:33 sample.strata.no_startfile.no_optflag.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3698 Oct 14 15:33 sample.strata.no_startfile.-O.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3770 Oct 14 15:33 sample.strata.-nostartfiles.-O2.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3730 Oct 14 15:33 sample.zipr.no_startfile.-O2.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3738 Oct 14 15:33 sample.zipr.no_startfile.-O3.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3700 Oct 14 15:33 sample.zipr.no_startfile.-O3.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3700 Oct 14 15:33 sample.zipr.no_startfile.-O.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3738 Oct 14 15:33 sample.zipr.no_startfile.-Os.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3754 Oct 14 15:33 sample.zipr.-nostartfiles.-O.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3738 Oct 14 15:33 sample.strata.no_startfile.-Os.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3758 Oct 14 15:33 sample.strata.-nostartfiles.no_optflag.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3724 Oct 14 15:33 sample.strata.-nostartfiles.-O2.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3760 Oct 14 15:33 sample.strata.-nostartfiles.-O3.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3760 Oct 14 15:33 sample.strata.-nostartfiles.-O.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3760 Oct 14 15:33 sample.strata.-nostartfiles.-Os.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3716 Oct 14 15:33 sample.zipr.-nostartfiles.-O2.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3714 Oct 14 15:33 sample.zipr.-nostartfiles.-O.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3706 Oct 14 15:33 sample.strata.no_startfile.-O3.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3706 Oct 14 15:33 sample.strata.no_startfile.-Os.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3736 Oct 14 15:33 sample.strata.no_startfile.-Os.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3698 Oct 14 15:33 sample.strata.no_startfile.-Os.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3764 Oct 14 15:33 sample.strata.-nostartfiles.no_optflag.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3724 Oct 14 15:33 sample.strata.-nostartfiles.-O3.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3728 Oct 14 15:33 sample.strata.-nostartfiles.-O.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3724 Oct 14 15:33 sample.strata.-nostartfiles.-Os.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3694 Oct 14 15:33 sample.zipr.no_startfile.-O2.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3702 Oct 14 15:33 sample.zipr.no_startfile.-O3.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3702 Oct 14 15:33 sample.zipr.no_startfile.-Os.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3730 Oct 14 15:33 sample.zipr.no_startfile.-Os.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3752 Oct 14 15:33 sample.zipr.-nostartfiles.no_optflag.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3764 Oct 14 15:33 sample.zipr.-nostartfiles.-O2.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3724 Oct 14 15:33 sample.zipr.-nostartfiles.-O3.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3756 Oct 14 15:33 sample.zipr.-nostartfiles.-O3.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3754 Oct 14 15:33 sample.zipr.-nostartfiles.-O.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3756 Oct 14 15:33 sample.zipr.-nostartfiles.-Os.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3706 Oct 14 15:33 sample.strata.no_startfile.-O2.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3736 Oct 14 15:33 sample.strata.no_startfile.-O2.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3700 Oct 14 15:33 sample.strata.no_startfile.-O2.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3738 Oct 14 15:33 sample.strata.no_startfile.-Os.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3770 Oct 14 15:33 sample.strata.-nostartfiles.-O2.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3766 Oct 14 15:33 sample.strata.-nostartfiles.-O.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3700 Oct 14 15:33 sample.zipr.no_startfile.-O2.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3694 Oct 14 15:33 sample.zipr.no_startfile.-Os.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3752 Oct 14 15:33 sample.zipr.-nostartfiles.no_optflag.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3712 Oct 14 15:33 sample.zipr.-nostartfiles.no_optflag.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3724 Oct 14 15:33 sample.zipr.-nostartfiles.-Os.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3734 Oct 14 15:33 sample.strata.no_startfile.no_optflag.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3706 Oct 14 15:33 sample.strata.no_startfile.-O3.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3698 Oct 14 15:33 sample.strata.no_startfile.-O3.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3726 Oct 14 15:33 sample.strata.-nostartfiles.no_optflag.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3730 Oct 14 15:33 sample.strata.-nostartfiles.-O.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3762 Oct 14 15:33 sample.strata.-nostartfiles.-Os.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3740 Oct 14 15:33 sample.zipr.no_startfile.-O2.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3700 Oct 14 15:33 sample.zipr.no_startfile.-O2.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3730 Oct 14 15:33 sample.zipr.no_startfile.-O3.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3764 Oct 14 15:33 sample.zipr.-nostartfiles.-O2.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3756 Oct 14 15:33 sample.zipr.-nostartfiles.-O3.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3702 Oct 14 15:33 sample.strata.no_startfile.no_optflag.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3742 Oct 14 15:33 sample.strata.no_startfile.-O.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3736 Oct 14 15:33 sample.strata.no_startfile.-Os.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3760 Oct 14 15:33 sample.strata.-nostartfiles.-O3.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3724 Oct 14 15:33 sample.strata.-nostartfiles.-O3.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3738 Oct 14 15:33 sample.zipr.no_startfile.-O3.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3702 Oct 14 15:33 sample.zipr.no_startfile.-O3.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3700 Oct 14 15:33 sample.zipr.no_startfile.-O3.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3730 Oct 14 15:33 sample.zipr.no_startfile.-O.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3728 Oct 14 15:33 sample.zipr.no_startfile.-O.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3720 Oct 14 15:33 sample.zipr.-nostartfiles.no_optflag.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3724 Oct 14 15:33 sample.zipr.-nostartfiles.-O2.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3700 Oct 14 15:33 sample.strata.no_startfile.-O2.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3738 Oct 14 15:33 sample.strata.no_startfile.-O3.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3736 Oct 14 15:33 sample.strata.no_startfile.-O3.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3700 Oct 14 15:33 sample.strata.no_startfile.-Os.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3728 Oct 14 15:33 sample.strata.-nostartfiles.no_optflag.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3692 Oct 14 15:33 sample.zipr.no_startfile.-O.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3724 Oct 14 15:33 sample.zipr.-nostartfiles.-O3.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3722 Oct 14 15:33 sample.zipr.-nostartfiles.-O.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3702 Oct 14 15:33 sample.strata.no_startfile.no_optflag.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3734 Oct 14 15:33 sample.strata.no_startfile.no_optflag.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3706 Oct 14 15:33 sample.strata.no_startfile.-O2.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3742 Oct 14 15:33 sample.strata.no_startfile.-O.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3706 Oct 14 15:33 sample.strata.no_startfile.-O.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3746 Oct 14 15:33 sample.strata.no_startfile.-Os.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3764 Oct 14 15:33 sample.strata.-nostartfiles.no_optflag.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3762 Oct 14 15:33 sample.strata.-nostartfiles.-O3.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3766 Oct 14 15:33 sample.strata.-nostartfiles.-O.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3728 Oct 14 15:33 sample.strata.-nostartfiles.-O.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3698 Oct 14 15:33 sample.zipr.no_startfile.no_optflag.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3740 Oct 14 15:33 sample.zipr.no_startfile.-O2.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3732 Oct 14 15:33 sample.zipr.no_startfile.-O3.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3694 Oct 14 15:33 sample.zipr.no_startfile.-O3.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3758 Oct 14 15:33 sample.zipr.-nostartfiles.no_optflag.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3712 Oct 14 15:33 sample.zipr.-nostartfiles.no_optflag.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3762 Oct 14 15:33 sample.zipr.-nostartfiles.-O2.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3754 Oct 14 15:33 sample.zipr.-nostartfiles.-O2.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3718 Oct 14 15:33 sample.zipr.-nostartfiles.-O2.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3698 Oct 14 15:33 sample.strata.no_startfile.-O2.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3738 Oct 14 15:33 sample.strata.no_startfile.-O3.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3736 Oct 14 15:33 sample.strata.no_startfile.-O3.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3746 Oct 14 15:33 sample.strata.no_startfile.-Os.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3728 Oct 14 15:33 sample.strata.-nostartfiles.no_optflag.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3720 Oct 14 15:33 sample.strata.-nostartfiles.-O.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3734 Oct 14 15:33 sample.zipr.no_startfile.no_optflag.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3732 Oct 14 15:33 sample.zipr.no_startfile.-O3.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3732 Oct 14 15:33 sample.zipr.no_startfile.-Os.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3760 Oct 14 15:33 sample.zipr.-nostartfiles.no_optflag.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3762 Oct 14 15:33 sample.zipr.-nostartfiles.-O2.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3762 Oct 14 15:33 sample.zipr.-nostartfiles.-Os.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3754 Oct 14 15:33 sample.zipr.-nostartfiles.-Os.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3698 Oct 14 15:33 sample.strata.no_startfile.-O2.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3700 Oct 14 15:33 sample.strata.no_startfile.-O3.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3700 Oct 14 15:33 sample.strata.no_startfile.-Os.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3726 Oct 14 15:33 sample.strata.-nostartfiles.no_optflag.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3730 Oct 14 15:33 sample.strata.-nostartfiles.-O.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3762 Oct 14 15:33 sample.strata.-nostartfiles.-Os.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3722 Oct 14 15:33 sample.strata.-nostartfiles.-Os.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3720 Oct 14 15:33 sample.zipr.-nostartfiles.no_optflag.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3726 Oct 14 15:33 sample.zipr.-nostartfiles.-O2.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3724 Oct 14 15:33 sample.zipr.-nostartfiles.-O2.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3760 Oct 14 15:33 sample.zipr.-nostartfiles.-O.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3746 Oct 14 15:33 sample.strata.no_startfile.-O3.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3700 Oct 14 15:33 sample.strata.no_startfile.-O3.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3706 Oct 14 15:33 sample.strata.no_startfile.-O.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3768 Oct 14 15:33 sample.strata.-nostartfiles.-O2.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3730 Oct 14 15:33 sample.strata.-nostartfiles.-Os.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3734 Oct 14 15:33 sample.zipr.no_startfile.no_optflag.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3754 Oct 14 15:33 sample.zipr.-nostartfiles.-O2.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3724 Oct 14 15:33 sample.zipr.-nostartfiles.-O.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3726 Oct 14 15:33 sample.zipr.-nostartfiles.-Os.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3718 Oct 14 15:33 sample.zipr.-nostartfiles.-Os.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3732 Oct 14 15:33 sample.strata.no_startfile.no_optflag.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3732 Oct 14 15:33 sample.strata.-nostartfiles.-O2.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3762 Oct 14 15:33 sample.strata.-nostartfiles.-O3.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3722 Oct 14 15:33 sample.strata.-nostartfiles.-O3.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3722 Oct 14 15:33 sample.strata.-nostartfiles.-Os.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3698 Oct 14 15:33 sample.zipr.no_startfile.no_optflag.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3696 Oct 14 15:33 sample.zipr.no_startfile.no_optflag.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3738 Oct 14 15:33 sample.zipr.no_startfile.-O.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3760 Oct 14 15:33 sample.zipr.-nostartfiles.no_optflag.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3722 Oct 14 15:33 sample.zipr.-nostartfiles.no_optflag.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3726 Oct 14 15:33 sample.zipr.-nostartfiles.-O2.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3718 Oct 14 15:33 sample.zipr.-nostartfiles.-O2.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3762 Oct 14 15:33 sample.zipr.-nostartfiles.-O.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3760 Oct 14 15:33 sample.zipr.-nostartfiles.-O.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3762 Oct 14 15:33 sample.zipr.-nostartfiles.-Os.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3754 Oct 14 15:33 sample.zipr.-nostartfiles.-Os.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3744 Oct 14 15:33 sample.strata.no_startfile.-O2.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3746 Oct 14 15:33 sample.strata.no_startfile.-O3.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3768 Oct 14 15:33 sample.strata.-nostartfiles.-O2.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3730 Oct 14 15:33 sample.strata.-nostartfiles.-O3.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3720 Oct 14 15:33 sample.strata.-nostartfiles.-O.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3770 Oct 14 15:33 sample.strata.-nostartfiles.-Os.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3730 Oct 14 15:33 sample.strata.-nostartfiles.-Os.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3758 Oct 14 15:33 sample.zipr.-nostartfiles.no_optflag.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3722 Oct 14 15:33 sample.zipr.-nostartfiles.no_optflag.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3756 Oct 14 15:33 sample.zipr.-nostartfiles.-O2.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3762 Oct 14 15:33 sample.zipr.-nostartfiles.-O3.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3754 Oct 14 15:33 sample.zipr.-nostartfiles.-O3.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3752 Oct 14 15:33 sample.zipr.-nostartfiles.-O.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3696 Oct 14 15:33 sample.strata.no_startfile.no_optflag.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3694 Oct 14 15:33 sample.strata.no_startfile.no_optflag.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3738 Oct 14 15:33 sample.strata.no_startfile.-O2.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3704 Oct 14 15:33 sample.strata.no_startfile.-O.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3718 Oct 14 15:33 sample.strata.-nostartfiles.no_optflag.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3768 Oct 14 15:33 sample.strata.-nostartfiles.-Os.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3688 Oct 14 15:33 sample.zipr.no_startfile.no_optflag.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3692 Oct 14 15:33 sample.zipr.no_startfile.-Os.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3726 Oct 14 15:33 sample.zipr.-nostartfiles.-O3.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3718 Oct 14 15:33 sample.zipr.-nostartfiles.-O3.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3724 Oct 14 15:33 sample.zipr.-nostartfiles.-O.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3716 Oct 14 15:33 sample.zipr.-nostartfiles.-O.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3718 Oct 14 15:33 sample.zipr.-nostartfiles.-Os.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3716 Oct 14 15:33 sample.zipr.-nostartfiles.-Os.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3732 Oct 14 15:33 sample.strata.no_startfile.no_optflag.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3736 Oct 14 15:33 sample.strata.no_startfile.-O.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3770 Oct 14 15:33 sample.strata.-nostartfiles.-O3.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3768 Oct 14 15:33 sample.strata.-nostartfiles.-O3.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3722 Oct 14 15:33 sample.strata.-nostartfiles.-O3.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3770 Oct 14 15:33 sample.strata.-nostartfiles.-Os.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3768 Oct 14 15:33 sample.strata.-nostartfiles.-Os.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3732 Oct 14 15:33 sample.strata.-nostartfiles.-Os.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3762 Oct 14 15:33 sample.zipr.-nostartfiles.-O3.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3762 Oct 14 15:33 sample.zipr.-nostartfiles.-O.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3752 Oct 14 15:33 sample.zipr.-nostartfiles.-O.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3764 Oct 14 15:33 sample.zipr.-nostartfiles.-Os.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3726 Oct 14 15:33 sample.zipr.-nostartfiles.-Os.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3740 Oct 14 15:33 sample.strata.no_startfile.no_optflag.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3696 Oct 14 15:33 sample.strata.no_startfile.no_optflag.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3744 Oct 14 15:33 sample.strata.no_startfile.-O.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3704 Oct 14 15:33 sample.strata.no_startfile.-O.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3732 Oct 14 15:33 sample.strata.-nostartfiles.-O2.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3730 Oct 14 15:33 sample.strata.-nostartfiles.-O3.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3728 Oct 14 15:33 sample.zipr.no_startfile.no_optflag.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3738 Oct 14 15:33 sample.zipr.no_startfile.-O.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3750 Oct 14 15:33 sample.zipr.-nostartfiles.no_optflag.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3726 Oct 14 15:33 sample.zipr.-nostartfiles.-O3.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3754 Oct 14 15:33 sample.zipr.-nostartfiles.-O3.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3718 Oct 14 15:33 sample.zipr.-nostartfiles.-O3.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3694 Oct 14 15:33 sample.strata.no_startfile.no_optflag.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3708 Oct 14 15:33 sample.strata.no_startfile.-O2.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3730 Oct 14 15:33 sample.strata.-nostartfiles.-O2.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3732 Oct 14 15:33 sample.strata.-nostartfiles.-O3.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3696 Oct 14 15:33 sample.zipr.no_startfile.no_optflag.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3692 Oct 14 15:33 sample.zipr.no_startfile.-O3.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3740 Oct 14 15:33 sample.zipr.no_startfile.-Os.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3692 Oct 14 15:33 sample.zipr.no_startfile.-Os.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3756 Oct 14 15:33 sample.zipr.-nostartfiles.-O2.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3716 Oct 14 15:33 sample.zipr.-nostartfiles.-O3.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3716 Oct 14 15:33 sample.zipr.-nostartfiles.-O.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3764 Oct 14 15:33 sample.zipr.-nostartfiles.-Os.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3744 Oct 14 15:33 sample.strata.no_startfile.-O2.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3708 Oct 14 15:33 sample.strata.no_startfile.-O2.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3738 Oct 14 15:33 sample.strata.no_startfile.-O2.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3744 Oct 14 15:33 sample.strata.no_startfile.-Os.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3758 Oct 14 15:33 sample.strata.-nostartfiles.-O.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3726 Oct 14 15:33 sample.zipr.no_startfile.no_optflag.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3690 Oct 14 15:33 sample.zipr.no_startfile.no_optflag.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3688 Oct 14 15:33 sample.zipr.no_startfile.no_optflag.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3738 Oct 14 15:33 sample.zipr.no_startfile.-O2.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3732 Oct 14 15:33 sample.zipr.no_startfile.-O2.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3690 Oct 14 15:33 sample.zipr.no_startfile.-O.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3714 Oct 14 15:33 sample.zipr.-nostartfiles.no_optflag.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3704 Oct 14 15:33 sample.strata.no_startfile.no_optflag.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3746 Oct 14 15:33 sample.strata.no_startfile.-O2.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3708 Oct 14 15:33 sample.strata.no_startfile.-Os.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3718 Oct 14 15:33 sample.strata.-nostartfiles.no_optflag.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3722 Oct 14 15:33 sample.strata.-nostartfiles.-O2.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3770 Oct 14 15:33 sample.strata.-nostartfiles.-O3.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3722 Oct 14 15:33 sample.strata.-nostartfiles.-O.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3732 Oct 14 15:33 sample.strata.-nostartfiles.-Os.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3764 Oct 14 15:33 sample.zipr.-nostartfiles.-O3.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3716 Oct 14 15:33 sample.zipr.-nostartfiles.-Os.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3740 Oct 14 15:33 sample.strata.no_startfile.no_optflag.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3744 Oct 14 15:33 sample.strata.no_startfile.-O3.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3744 Oct 14 15:33 sample.strata.no_startfile.-O.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3736 Oct 14 15:33 sample.strata.no_startfile.-O.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3734 Oct 14 15:33 sample.strata.no_startfile.-O.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3696 Oct 14 15:33 sample.strata.no_startfile.-O.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3744 Oct 14 15:33 sample.strata.no_startfile.-Os.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3730 Oct 14 15:33 sample.strata.-nostartfiles.-O2.-fPIC.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3762 Oct 14 15:33 sample.strata.-nostartfiles.-O2.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3768 Oct 14 15:33 sample.strata.-nostartfiles.-O3.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3728 Oct 14 15:33 sample.zipr.no_startfile.no_optflag.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3692 Oct 14 15:33 sample.zipr.no_startfile.-O3.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3736 Oct 14 15:33 sample.zipr.no_startfile.-O.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3750 Oct 14 15:33 sample.zipr.-nostartfiles.no_optflag.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3766 Oct 14 15:33 sample.strata.-nostartfiles.no_optflag.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3756 Oct 14 15:33 sample.strata.-nostartfiles.no_optflag.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3760 Oct 14 15:33 sample.strata.-nostartfiles.-O2.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3722 Oct 14 15:33 sample.strata.-nostartfiles.-O2.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3758 Oct 14 15:33 sample.strata.-nostartfiles.-O.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3736 Oct 14 15:33 sample.zipr.no_startfile.no_optflag.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3726 Oct 14 15:33 sample.zipr.no_startfile.no_optflag.no_pic.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3702 Oct 14 15:33 sample.zipr.no_startfile.-O2.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3732 Oct 14 15:33 sample.zipr.no_startfile.-O2.no_pic.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3692 Oct 14 15:33 sample.zipr.no_startfile.-O2.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3740 Oct 14 15:33 sample.zipr.no_startfile.-O3.-fPIC.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3740 Oct 14 15:33 sample.zipr.no_startfile.-Os.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3764 Oct 14 15:33 sample.zipr.-nostartfiles.-O3.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3716 Oct 14 15:33 sample.zipr.-nostartfiles.-O3.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3704 Oct 14 15:33 sample.strata.no_startfile.no_optflag.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3746 Oct 14 15:33 sample.strata.no_startfile.-O2.-fPIC.-fomit-frame-pointer.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3708 Oct 14 15:33 sample.strata.no_startfile.-O3.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3698 Oct 14 15:33 sample.strata.no_startfile.-O.no_pic.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3708 Oct 14 15:33 sample.strata.no_startfile.-Os.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3732 Oct 14 15:33 sample.strata.-nostartfiles.-O3.-fPIC.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3760 Oct 14 15:33 sample.strata.-nostartfiles.-Os.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3690 Oct 14 15:33 sample.zipr.no_startfile.no_optflag.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3738 Oct 14 15:33 sample.zipr.no_startfile.-O2.-fPIC.-fomit-frame-pointer.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3730 Oct 14 15:33 sample.zipr.no_startfile.-O2.no_pic.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3700 Oct 14 15:33 sample.zipr.no_startfile.-O.-fPIC.no_omit-fp.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3690 Oct 14 15:33 sample.zipr.no_startfile.-O.no_pic.no_omit-fp.no_debug.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3738 Oct 14 15:33 sample.zipr.no_startfile.-Os.-fPIC.-fomit-frame-pointer.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3700 Oct 14 15:33 sample.zipr.no_startfile.-Os.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3714 Oct 14 15:33 sample.zipr.-nostartfiles.no_optflag.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3714 Oct 14 15:33 sample.zipr.-nostartfiles.-O.no_pic.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3706 Oct 14 15:33 sample.strata.no_startfile.-Os.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3760 Oct 14 15:33 sample.strata.-nostartfiles.-O.no_pic.-fomit-frame-pointer.-g.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3722 Oct 14 15:33 sample.strata.-nostartfiles.-O.no_pic.no_omit-fp.-g.-m32.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3698 Oct 14 15:33 sample.zipr.no_startfile.-O.-fPIC.no_omit-fp.no_debug.-m64.sh
+-rw-rw-r-- 1 ubuntu ubuntu 3716 Oct 14 15:33 sample.zipr.-nostartfiles.-O2.no_pic.no_omit-fp.no_debug.-m64.sh
+
+../../fgrep:
+total 12
+drwxrwxr-x 2 ubuntu ubuntu 4096 Apr 23  2015 data
+-rwxrwxr-x 1 ubuntu ubuntu 7017 Apr 23  2015 test_script.sh
+
+../../fgrep/data:
+total 24
+-rw-rw-r-- 1 ubuntu ubuntu  728 Apr 23  2015 khadafy.lines
+-rw-rw-r-- 1 ubuntu ubuntu   67 Apr 23  2015 khadafy.regexp
+-rw-rw-r-- 1 ubuntu ubuntu  208 Apr 23  2015 data1.txt
+-rw-rw-r-- 1 ubuntu ubuntu 1228 Apr 23  2015 data2.txt
+-rw-rw-r-- 1 ubuntu ubuntu   38 Apr 23  2015 pattern2
+-rw-rw-r-- 1 ubuntu ubuntu    9 Apr 23  2015 pattern

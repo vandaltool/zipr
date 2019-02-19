@@ -1,0 +1,14 @@
+*************************************************************************************
+*
+* Unless otherwise specified, software artifacts in this directory and its
+* subdirectories are subject to:
+*
+* GOVERNMENT PURPOSE RIGHTS
+*
+* The Government's rights to use, modify, reproduce, release, perform, display, or
+* disclose this software are restricted by GOVERNMENT PURPOSE RIGHTS.
+*
+* Any reproduction of the software or portions thereof marked with this legend 
+* must also reproduce the markings.
+*
+*************************************************************************************
