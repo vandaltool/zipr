@@ -22,3 +22,7 @@ peasoup_examples/manifest.txt.config
 peasoup_examples/tests/tmp*
 peasoup_examples/*.swp
 irdb-libs/scons_build/
+*.o
+*.os
+*.so
+*.exe
