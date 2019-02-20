@@ -42,13 +42,11 @@ cpppath='''
 	$IRDB_SDK/include/
 	$SECURITY_TRANSFORMS_HOME/include/
 	$SECURITY_TRANSFORMS_HOME/libIRDB-core/include/
-	$SECURITY_TRANSFORMS_HOME/libcapstone/include/capstone/
+	$SECURITY_TRANSFORMS_HOME/third_party/capstone/include/capstone/
 	'''
 libpath='''
 	$SECURITY_TRANSFORMS_HOME/lib
         '''
-
-#globs=glob.glob(os.environ['SECURITY_TRANSFORMS_HOME']+'/libcapstone/zipr_unpack/*.o')
 
 myenv.Append(CCFLAGS=" -Wall -std=c++11 -fmax-errors=2 ")
 myenv.Append(LIBPATH=libpath)

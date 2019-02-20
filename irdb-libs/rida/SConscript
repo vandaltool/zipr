@@ -10,7 +10,7 @@ cpppath='''
 	 $SECURITY_TRANSFORMS_HOME/include 
 	 $SECURITY_TRANSFORMS_HOME/libehp/include 
 	 $SECURITY_TRANSFORMS_HOME/libEXEIO/include 
-	 $SECURITY_TRANSFORMS_HOME/libcapstone/include 
+	 $SECURITY_TRANSFORMS_HOME/third_party/capstone/include 
 	'''
 
 
@@ -21,7 +21,6 @@ pgm="rida.exe"
 
 LIBPATH=Split('''
 	$SECURITY_TRANSFORMS_HOME/lib 
-	$SECURITY_TRANSFORMS_HOME/libcapstone
 	''')
 LIBS=Split("ehp EXEIO pebliss capstone") 
 myenv=myenv.Clone(CPPPATH=Split(cpppath))

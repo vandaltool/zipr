@@ -52,7 +52,7 @@
 	path = irdb-sdk
 	url = git@git.zephyr-software.com:allnp/irdb-sdk.git
 [submodule "irdb-libs/libcapstone"]
-	path = irdb-libs/libcapstone
+	path = irdb-libs/third_party/capstone
 	url = https://github.com/aquynh/capstone.git
 [submodule "irdb-libs/libehp"]
 	path = irdb-libs/libehp
