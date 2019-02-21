@@ -2,6 +2,8 @@
 
 
 env=Environment()
+env.Append(LINKFLAGS=" -Wl,-unresolved-symbols=ignore-in-shared-libs -L../lib")
 Export('env')
 install=SConscript("SConscript")
+
 Return('install')

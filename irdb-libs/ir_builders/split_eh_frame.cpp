@@ -296,7 +296,7 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 	auto build_ir_insn=[&](Instruction_t* insn) -> void
 	{
 		const auto find_addr=insn->getAddress()->getVirtualOffset();
-		static auto fie_ptr=shared_ptr<FDEContents_t>(); 
+		static auto fie_ptr=(const FDEContents_t*)nullptr;
 		static auto cie_instructions=shared_ptr<EHProgramInstructionVector_t>();
 		static auto fde_instructions=shared_ptr<EHProgramInstructionVector_t>();
 
@@ -336,7 +336,8 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 			{
 				auto out_pgm=vector<shared_ptr<EHProgramInstruction_t> >();
 				auto cur_addr=fde_addr;
-				const auto in_pgm_instructions=*in_pgm_instructions_ptr;
+				const auto &in_pgm_instructions=*in_pgm_instructions_ptr;
+				auto last_was_def_cfa_offset = false;
 				for(const auto & insn_ptr : in_pgm_instructions)
 				{
 					const auto & insn=*insn_ptr;
@@ -370,7 +371,17 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 					}
 					else
 					{
-						out_pgm.push_back(insn_ptr);
+						const auto this_is_def_cfa_offset=insn.isDefCFAOffset();
+						if(last_was_def_cfa_offset && this_is_def_cfa_offset)
+						{
+							out_pgm.pop_back();
+							out_pgm.push_back(insn_ptr);
+						}
+						else
+						{
+							out_pgm.push_back(insn_ptr);
+						}
+						last_was_def_cfa_offset=this_is_def_cfa_offset;
 					}
 
 				}
@@ -463,7 +474,7 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 			}
 			
 			// build the IR from the FDE.
-			fde_contents_build_ir(*fie_ptr.get(), insn);
+			fde_contents_build_ir(*fie_ptr, insn);
 		}
 		else
 		{
@@ -504,6 +515,17 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 	};
 #endif
 
+	/*
+	for(auto f : firp->getFunctions())
+	{
+		for(Instruction_t* i : f->getInstructions())
+		{
+			build_ir_insn(i);
+		}
+		eh_program_cache.clear(); // this can get big, so we erase it between functions.  there's minimal re-use between functions anyhow
+	}
+	*/
+
 	for(Instruction_t* i : firp->getInstructions())
 	{
 		build_ir_insn(i);
@@ -529,7 +551,7 @@ template <int ptrsize>
 Instruction_t* split_eh_frame_impl_t<ptrsize>::find_lp(Instruction_t* i) const 
 {
 	const auto find_addr=i->getAddress()->getVirtualOffset();
-	const auto fde_ptr=eh_frame_parser->findFDE(find_addr);
+	auto fde_ptr=eh_frame_parser->findFDE(find_addr);
 
 	if(fde_ptr==nullptr)
 		return nullptr;
