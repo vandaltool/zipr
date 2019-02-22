@@ -117,6 +117,8 @@ class EhWriterImpl_t : public EhWriter_t
 	std::vector<FDErepresentation_t*> all_fdes;
 	std::vector<CIErepresentation_t*> all_cies;
 
+	VirtualOffset_t eh_frame_hdr_addr; // where the eh frame hdr will land.
+
         void BuildFDEs();
         void GenerateEhOutput();
         void CompileEhOutput();
