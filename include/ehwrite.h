@@ -118,6 +118,7 @@ class EhWriterImpl_t : public EhWriter_t
 	std::vector<CIErepresentation_t*> all_cies;
 
 	VirtualOffset_t eh_frame_hdr_addr; // where the eh frame hdr will land.
+	string asm_comment;
 
         void BuildFDEs();
         void GenerateEhOutput();
@@ -129,6 +130,7 @@ class EhWriterImpl_t : public EhWriter_t
 		: zipr_obj(p_zipr_obj)
 	
 	{ 
+		asm_comment = p_zipr_obj.getFileIR()->getArchitecture()->getMachineType()==admtAarch64 ?  " // " : " # " ;
 	}
 
 	virtual ~EhWriterImpl_t();
