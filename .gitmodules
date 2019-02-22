@@ -60,3 +60,9 @@
 [submodule "irdb-libs/third_party/elfio-code"]
 	path = irdb-libs/third_party/elfio-code
 	url = http://git.code.sf.net/p/elfio/code
+[submodule "irdb-libs/third_party/pebliss"]
+	path = irdb-libs/third_party/pebliss
+	url = git@git.zephyr-software.com:third-party-mirrors/pebliss.git
+
+
+

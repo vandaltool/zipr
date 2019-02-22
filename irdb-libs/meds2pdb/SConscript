@@ -25,10 +25,8 @@ LIBS=Split(" irdb-cfg irdb-util irdb-transform EXEIO MEDSannotation pqxx "+env.s
 myenv=myenv.Clone(CPPPATH=Split(cpppath))
 pgm=myenv.Program(pgm,  files,  LIBPATH=LIBPATH, LIBS=LIBS)
 install1=myenv.Install("$SECURITY_TRANSFORMS_HOME/bin/", pgm)
-install2=myenv.Install("$SECURITY_TRANSFORMS_HOME/tools/meds2pdb/", pgm)
 
 Default(install1)
-Default(install2)
 
-install=[]+install1+install2
+install=[]+install1
 Return('install')

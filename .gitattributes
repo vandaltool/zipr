@@ -1,3 +1,4 @@
 irdb-libs/third_party/capstone norecurse
 irdb-libs/third_party/elfio-code norecurse
+irdb-libs/third_party/pebliss
 

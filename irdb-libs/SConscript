@@ -48,7 +48,7 @@ if "PEDI_HOME" in os.environ:
 env['BASE_IRDB_LIBS']="irdb-core"
 
 if sysname != "SunOS":
-	libPEBLISS=SConscript("pebliss/trunk/pe_lib/SConscript", variant_dir='scons_build/libPEBLISS')
+	libPEBLISS=SConscript("third_party/SConscript.pebliss", variant_dir='scons_build/libPEBLISS')
 	# setup libraries needed for linking
 	if "PEDI_HOME" in os.environ:
 		Depends(pedi,libPEBLISS)

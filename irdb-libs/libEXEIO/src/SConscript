@@ -14,7 +14,7 @@ cpppath='''
 	.
 	$SECURITY_TRANSFORMS_HOME/include/
 	$SECURITY_TRANSFORMS_HOME/libEXEIO/include
-	$SECURITY_TRANSFORMS_HOME/pebliss/trunk/pe_lib/
+	$SECURITY_TRANSFORMS_HOME/third_party/pebliss/pe_lib/
 	$SECURITY_TRANSFORMS_HOME/third_party/elfio-code
 	'''
 
