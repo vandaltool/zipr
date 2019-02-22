@@ -1191,7 +1191,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 		out<<"        .uleb128 "<<dec<<cie->code_alignment_factor<<"              "<<asm_comment<<" code alignment factor"<<endl;
 		out<<"        .sleb128 "<<dec<<cie->data_alignment_factor<<"             "<<asm_comment<<" data alignment factor"<<endl;
 		out<<"        .uleb128 "<<dec<<cie->return_reg<<"             "<<asm_comment<<" return address reg."<<endl;
-		out<<"        // encode the Z (length)"<<endl;
+		out<<"        "<<asm_comment<<" encode the Z (length)"<<endl;
 		out<<"        .sleb128 Lcie"<<cie_pos<<"_aug_data_end-Lcie"<<cie_pos<<"_aug_data_start "<<asm_comment<<" Z -- handle length field"<<endl;
 		out<<"Lcie"<<cie_pos<<"_aug_data_start:"<<endl;
 		out<<""<<endl;
