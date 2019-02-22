@@ -1151,7 +1151,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 					assert(scoop);
 					const auto final_addr=scoop->getStart()->getVirtualOffset() + reloc->getAddend();
 					if(((lsda->tt_encoding)&0x10) == 0x10) // if encoding contains pcrel (0x10).
-						out<<"	.int 0x"<<hex<<final_addr<<" + eh_frame_hdr_start - . -  "<<eh_frame_hdr_addr<<endl;
+						out<<"	.int 0x"<<hex<<final_addr<<" + eh_frame_hdr_start - . -  "<<dec<<eh_frame_hdr_addr<<endl;
 					else
 						out<<"	.int 0x"<<hex<<final_addr<<endl;
 					
@@ -1200,7 +1200,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 			auto personality_value=personality_scoop->getStart()->getVirtualOffset()+personality_addend;
 			out<<"        "<<asm_comment<<"encode the P (personality encoding + personality routine)"<<endl;
 			out<<"        .byte 0x80 | 0x10 | 0x0B        "<<asm_comment<<"  personality pointer encoding DH_EH_PE_indirect (0x80) | pcrel | sdata4"<<endl;
-			out<<"        .int "<<personality_value<<" + eh_frame_hdr_start - . - "<<eh_frame_hdr_addr<<" "<<asm_comment<<" actual personality routine, encoded as noted in prev line."<<endl;
+			out<<"        .int "<<personality_value<<" + eh_frame_hdr_start - . - "<<dec<<eh_frame_hdr_addr<<" "<<asm_comment<<" actual personality routine, encoded as noted in prev line."<<endl;
 		}
 		else if(personality_insn)
 		{
@@ -1208,7 +1208,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 			const auto personality_value=personality_insn_addr+personality_addend;
 			out<<"        "<<asm_comment<<"encode the P (personality encoding + personality routine)"<<endl;
 			out<<"        .byte 0x10 | 0x0B        "<<asm_comment<<"  personality pointer encoding pcrel | sdata4"<<endl;
-			out<<"        .int "<<personality_value<<" + eh_frame_hdr_start - . - "<<eh_frame_hdr_addr<<" "<<asm_comment<<" actual personality routine, encoded as noted in prev line."<<endl;
+			out<<"        .int "<<personality_value<<" + eh_frame_hdr_start - . - "<<dec<<eh_frame_hdr_addr<<" "<<asm_comment<<" actual personality routine, encoded as noted in prev line."<<endl;
 		}
 		else
 		{
@@ -1248,7 +1248,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 		     "length doesn't include this field."<<endl;
 		out<<"        .int . - Lcie"<<cie_pos<<"                  "<<asm_comment<<" this is an FDE (not a "
 		     "cie), and it's cie is CIE"<<cie_pos<<".  byte offset from start of field."<<endl;
-		out<<"        .int 0x"<<hex<<fde->start_addr<<dec<<" + eh_frame_hdr_start - . - "<<eh_frame_hdr_addr<<" "<<asm_comment<<" FDE start addr"<<endl;
+		out<<"        .int 0x"<<hex<<fde->start_addr<<dec<<" + eh_frame_hdr_start - . - "<<dec<<eh_frame_hdr_addr<<" "<<asm_comment<<" FDE start addr"<<endl;
 		out<<"        .int "<<dec<<fde->end_addr-fde->start_addr<<"                     "<<asm_comment<<" fde range length (i.e., can calc the "
 		     "fde_end_addr from this -- note that pcrel is ignored here!)"<<endl;
 		out<<"        "<<asm_comment<<"encode Z (length)"<<endl;
@@ -1258,7 +1258,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 		if(fde->hasLsda())
 			out<<"        .int LSDA"<<fde_num<<" - .    "<<asm_comment<<" LSDA hard coded here (as pcrel+sdata4)"<<endl;	 
 		else
-			out<<"        .int 0 + eh_frame_hdr_start - . - "<<eh_frame_hdr_addr<<"      "<<asm_comment<<" no LSDA, encoded with pcrel "<<endl;	 
+			out<<"        .int 0 + eh_frame_hdr_start - . - "<<dec<<eh_frame_hdr_addr<<"      "<<asm_comment<<" no LSDA, encoded with pcrel "<<endl;	 
 		out<<"Lfde"<<fde_num<<"_aug_data_end:"<<endl;
 		out<<""<<endl;
 		out<<"        "<<asm_comment<<" FDE"<<fde_num<<" program"<<endl;
@@ -1286,7 +1286,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 		for(auto fde_num=0U; fde_num < all_fdes.size(); fde_num++)
 		{
 			const auto& fde=all_fdes[fde_num];
-			out<<"        .int 0x"<<hex<<fde->start_addr<<" - "<<eh_frame_hdr_addr<<endl;
+			out<<"        .int 0x"<<hex<<fde->start_addr<<" - "<<dec<<eh_frame_hdr_addr<<endl;
 			out<<"        .int Lfde"<<dec<<fde_num<<" - eh_frame_hdr_start"<<endl;
 		}
 
