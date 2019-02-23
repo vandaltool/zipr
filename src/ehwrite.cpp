@@ -1279,7 +1279,11 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 
 		out<<"        .int Lfde_table - .     "<<asm_comment<<" pointer to fde_table, encoded as an sdata4, pcrel"<<endl;
 		out<<"        .int (eh_frame_table_end-eh_frame_table)/8     "<<asm_comment<<" number of FDEs in the header."<<endl;
-		out<<"        .align 4"<<endl;
+
+// on some archs, this line causes an additional alignment, as the assembler feels free to align as much as you want.
+// but the eh-parser is expecting the table _right here_, so we do the alignment manually by making sure the above part
+// has a multiple-of-4 bytes.
+//		out<<"        .align 4"<<endl;
 		out<<"eh_frame_table:"<<endl;
 		out<<"        "<<asm_comment<<" fde pointers"<<endl;
 
