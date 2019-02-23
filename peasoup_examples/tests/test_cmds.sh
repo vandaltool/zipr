@@ -69,6 +69,9 @@ do_tests()
 				zafl_domgraph)
 					zafl.sh $progpath $protected -d --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
+				zafl_domgraph_opt)
+					zafl.sh $progpath $protected -d -g --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+				;;
 				zafl_domgraph_locality)
 					zafl.sh $progpath $protected -d --enable-locality --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
