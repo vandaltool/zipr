@@ -69,6 +69,9 @@ do_tests()
 				zafl_domgraph)
 					zafl.sh $progpath $protected -d --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
+				zafl_domgraph_locality)
+					zafl.sh $progpath $protected -d --enable-locality --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+				;;
 				zafl0)
 					ZAFL_LIMIT_END=0 zafl.sh $progpath $protected --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
@@ -90,6 +93,9 @@ do_tests()
 				zafl_ida)
 					zafl.sh $progpath $protected --ida --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
+				zafl_locality)
+					zafl.sh $progpath $protected -l --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+				;;
 				zafl_ida_nostars)
 					zafl.sh $progpath $protected --ida --no-stars --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
@@ -108,8 +114,14 @@ do_tests()
 				zafl_context_sensitive)
 					zafl.sh $progpath $protected --rida --enable-context-sensitivity function --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
+				zafl_context_sensitive_locality)
+					zafl.sh $progpath $protected --rida --enable-context-sensitivity function -l --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+				;;
 				zipr)
 					$PSZ $progpath $protected --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+				;;
+				zipr_locality)
+					$PSZ $progpath $protected --step-option zipr:--traceplacement:on --step-option zipr:true --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				ida)
 					$PSZ $progpath $protected -s meds_static=on -s rida=off --tempdir $temp_dir > test_${prog}.ps.log 2>&1
