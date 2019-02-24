@@ -162,6 +162,9 @@ do_tests()
 				mg_elfonly)
 					$PSZ $progpath $protected -c move_globals=on -o move_globals:--elftables-only --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
+				mg_elfonly_rida)
+					$PSZ $progpath $protected -s rida=on -s meds_static=off -c move_globals=on -o move_globals:--elftables-only --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+				;;
 				mgx)
 					$PSZ $progpath $protected -c move_globals=on --step-option move_globals:--aggressive --step xor_globals=on  --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
