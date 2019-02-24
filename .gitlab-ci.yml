@@ -178,3 +178,28 @@ elfdep-centos75:
     - centos75
   variables:
     OS: 'centos75'  
+
+#
+# test_cmds.sh kill_deads
+#
+.basic-pgms-killdeads: &basic-pgms-killdeads
+  stage: test
+  script:
+    - ./cicd_testing/basic-pgms-killdeads.sh
+
+basic-pgms-killdeads-ubuntu18:
+  <<: *basic-pgms-killdeads
+  tags:
+    - ubuntu18
+
+basic-pgms-killdeads-ubuntu16:
+  <<: *basic-pgms-killdeads
+  tags:
+    - ubuntu16
+
+basic-pgms-killdeads-centos75:
+  <<: *basic-pgms-killdeads
+  tags:
+    - centos75
+  variables:
+    OS: 'centos75'  
