@@ -198,7 +198,7 @@ do_tests()
 				kill_deads)
 					$PSZ $progpath $protected -c kill_deads=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
-				kill_deads.rida)
+				kill_deads_rida)
 					$PSZ $progpath $protected -c rida -c kill_deads=on -s meds_static=off --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				scdi)
