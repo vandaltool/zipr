@@ -1082,7 +1082,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 				out<<"        .byte 0x1b // DW_EH_PE_pcrel (0x10) |sdata4 (0xb)"<<endl;
 				out<<""<<endl;
 				out<<"        // 2) landing pad base, if omitted, use FDE start addr"<<endl;
-				out<<"        .int  0x"<<hex<<landing_pad_base<<"- . // as pcrel|sdata4 .  "<<endl;
+				out<<"        .int  0x"<<hex<<landing_pad_base<<" + eh_frame_hdr_start - . - "<<dec<<eh_frame_hdr_addr<<" // as pcrel|sdata4 .  "<<endl;
 			}
 			out<<""<<endl;
 			out<<asm_comment<<"   3) encoding of type table entries"<<endl;
