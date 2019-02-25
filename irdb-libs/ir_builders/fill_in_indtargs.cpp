@@ -3702,6 +3702,9 @@ int executeStep(IRDBObjects_t *const irdb_objects)
 			fill_in_indtargs(firp, elfiop.get(), do_unpin_opt);
 			if(split_eh_frame_opt)
 				split_eh_frame(firp);
+
+			if(firp->getArchitecture()->getMachineType() != admtAarch64)
+				assert(getenv("SELF_VALIDATE")==nullptr || ranges.size() > 1 );
 		}
 
 		if(getenv("FII_NOUPDATE")!=nullptr)
@@ -3721,7 +3724,6 @@ int executeStep(IRDBObjects_t *const irdb_objects)
 
 	assert(getenv("SELF_VALIDATE")==nullptr || bounds.size() > 3 );
 	assert(getenv("SELF_VALIDATE")==nullptr || targets.size() > 100 );
-	assert(getenv("SELF_VALIDATE")==nullptr || ranges.size() > 1 );
 	assert(getenv("SELF_VALIDATE")==nullptr || preds.size() > 100 );
 	assert(getenv("SELF_VALIDATE")==nullptr || lookupInstructionMap.size() > 100 );
 
