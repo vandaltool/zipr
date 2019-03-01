@@ -92,13 +92,20 @@ VirtualOffset_t ElfWriter::DetectMaxAddr(const ELFIO::elfio *elfiop, FileIR_t* f
 void ElfWriter::CreatePagemap(const ELFIO::elfio *elfiop, FileIR_t* firp, const string &out_file)
 {
 
-	for(DataScoopSet_t::iterator it=firp->getDataScoops().begin(); it!=firp->getDataScoops().end(); ++it)
+// 	for(DataScoopSet_t::iterator it=firp->getDataScoops().begin(); it!=firp->getDataScoops().end(); ++it)
+// 		DataScoop_t* scoop=*it;
+//
+	for(auto scoop : firp->getDataScoops())
 	{
-		DataScoop_t* scoop=*it;
+		// tbss is an elf-byproduct that irdb doesn't entirely support.  
+		// IRDB needs a better mechanism.
+		// To support this for now, we can just ignore it here.
+		if(scoop->getName()==".tbss")
+			continue;
 
-		AddressID_t* scoop_addr=scoop->getStart();
-		VirtualOffset_t start_addr=scoop_addr->getVirtualOffset();
-		VirtualOffset_t end_addr=scoop->getEnd()->getVirtualOffset();
+		auto scoop_addr=scoop->getStart();
+		auto start_addr=scoop_addr->getVirtualOffset();
+		auto end_addr=scoop->getEnd()->getVirtualOffset();
 
 		// we'll deal with unpinned scoops later.
 		if(scoop_addr->getVirtualOffset()==0)
