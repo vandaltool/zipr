@@ -316,7 +316,8 @@ int ThanosPlugin_t::runPlugin()
 
 void ThanosPlugin_t::tidyIR()
 {
-	optind=1;
+	optind=0;	// despite documentation, implementation inits this to 0, which causes a full re-init of getopts
+			// setting back to 1 leads to memory errors!
 	shared_objects->tidyIR();
 }
 

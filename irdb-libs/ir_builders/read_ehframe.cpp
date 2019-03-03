@@ -871,14 +871,12 @@ void read_ehframe(FileIR_t* virp, EXEIO::exeio* exeiop)
 	int eh_frame_index;
        	for (secndx=1; secndx<secnum; secndx++)
        	{
-		// cout<<"sechdrs["<<i<<"] name index="<<sechdrs[secndx].sh_name<<endl;
-               	const char *p=elfiop->sections[secndx]->get_name().c_str(); 
-               	if (strcmp(".eh_frame",p)==0)
+               	if (elfiop->sections[secndx]->get_name() == ".eh_frame")
                	{
                        	found = true;
 			eh_frame_index=secndx;
                        	break;
-               	};
+               	}
        	}
 
 	if(!found)
@@ -892,8 +890,7 @@ void read_ehframe(FileIR_t* virp, EXEIO::exeio* exeiop)
 	cout<<"Found .eh_frame section addr is "<<std::dec<<eh_frame_addr<<endl;
 	int total_size=0;
 
-	const char *p=elfiop->sections[secndx+1]->get_name().c_str(); 
-        if (strcmp(".gcc_except_table",p)!=0)
+        if (elfiop->sections[secndx+1]->get_name() != ".gcc_except_table")
 	{
 		cout<<"Did not find .gcc_except_table immediately after .eh_frame\n";
 		total_size=elfiop->sections[eh_frame_index]->get_size()+1;
@@ -901,8 +898,8 @@ void read_ehframe(FileIR_t* virp, EXEIO::exeio* exeiop)
 	else
 	{
 		total_size=
-		(elfiop->sections[eh_frame_index+1]->get_address()+
-		 elfiop->sections[eh_frame_index+1]->get_size()   ) - (uintptr_t)eh_frame_addr;
+			(elfiop->sections[eh_frame_index+1]->get_address()+
+			 elfiop->sections[eh_frame_index+1]->get_size()   ) - (uintptr_t)eh_frame_addr;
 	}
 	eh_frame_data_total_size=total_size;
 	
