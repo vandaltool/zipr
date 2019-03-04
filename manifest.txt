@@ -1,6 +1,5 @@
 
 submanifest irdb-libs/manifest.txt
-submanifest peasoup_examples/manifest.txt
 submanifest idaproCur/manifest.txt
 submanifest SMPStaticAnalyzer/manifest.txt
 submanifest zipr_install/manifest.txt
@@ -16,3 +15,8 @@ file README.txt ps
 file cfar_postgres_setup.sh cfar
 file get-peasoup-packages.sh ps
 directory centos_files centos
+directory tools ps
+directory tools/db ps
+directory tools/eh_frame_tools ps
+directory tools/cfar_configs cfar
+

@@ -42,18 +42,18 @@ Depends(libirdbdeep,libsmpsa)
 
 print "Zipr install is "+env['ZIPR_INSTALL']
 Export('env')
-libtrace=env.SConscript(["zipr_trace_plugin/libtrace/SConscript"])
-print "Zipr install is "+env['ZIPR_INSTALL']
-zipr_trace_plugin=SConscript(["zipr_trace_plugin/SConscript"])
-Depends(zipr_trace_plugin,libtrace);
+
+
+#libtrace=env.SConscript(["zipr_trace_plugin/libtrace/SConscript"])
+#print "Zipr install is "+env['ZIPR_INSTALL']
+#zipr_trace_plugin=SConscript(["zipr_trace_plugin/SConscript"])
+#Depends(zipr_trace_plugin,libtrace);
 
 
 # list of zipr plugins and irdb xforms to build
 transformDirs='''
-	zipr_large_only_plugin
 	irdb_transforms
 	zipr_push64_reloc_plugin
-	zipr_relax_plugin
 	zipr
 	zipr_unpin_plugin
 	'''
