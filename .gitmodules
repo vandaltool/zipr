@@ -15,9 +15,9 @@
 [submodule "zipr"]
 	path = zipr
 	url = git@git.zephyr-software.com:allzp/zipr.git
-[submodule "zipr_sdk"]
+[submodule "zipr-sdk"]
 	path = zipr-sdk
-	url = git@git.zephyr-software.com:allnp/zipr_sdk.git
+	url = git@git.zephyr-software.com:opensrc/zipr-sdk.git
 [submodule "daffy"]
 	path = daffy
 	url = git@git.zephyr-software.com:allnp/daffy.git
@@ -50,7 +50,7 @@
 	url = git@git.zephyr-software.com:allnp/zipr_install.git
 [submodule "irdb-sdk"]
 	path = irdb-sdk
-	url = git@git.zephyr-software.com:allnp/irdb-sdk.git
+	url = git@git.zephyr-software.com:opensrc/irdb-sdk.git
 [submodule "irdb-libs/libcapstone"]
 	path = irdb-libs/third_party/capstone
 	url = https://github.com/aquynh/capstone.git
