@@ -6,9 +6,6 @@
 	shallow = true
 	path = idaproCur_sdk
 	url = git@git.zephyr-software.com:allzp/idapro71_sdk
-[submodule "irdb_transforms"]
-	path = irdb_transforms
-	url = git@git.zephyr-software.com:allnp/irdb_transforms.git
 [submodule "SMPStaticAnalyzer"]
 	path = SMPStaticAnalyzer
 	url = git@git.zephyr-software.com:allnp/SMPStaticAnalyzer.git
