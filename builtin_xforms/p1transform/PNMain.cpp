@@ -33,7 +33,7 @@
 
 #include "PrecedenceBoundaryInference.hpp"
 #include "AnnotationBoundaryGenerator.hpp"
-#include "MEDS_AnnotationParser.hpp"
+// #include "MEDS_AnnotationParser.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -48,7 +48,7 @@
 
 using namespace std;
 using namespace IRDB_SDK;
-using namespace MEDS_Annotation;
+// using namespace MEDS_Annotation;
 
 #define ALLOF(a) begin(a),end(a)
 
@@ -535,24 +535,24 @@ int executeStep(IRDBObjects_t *const irdb_objects)
 		ifstream annotationFile("a.ncexe.infoannot", ifstream::in);
 		assert(annotationFile.is_open());
 
-		AnnotationBoundaryGenerator *abgen = new AnnotationBoundaryGenerator(new MEDS_AnnotationParser(annotationFile));
+// 		AnnotationBoundaryGenerator *abgen = new AnnotationBoundaryGenerator(new MEDS_AnnotationParser(annotationFile));
 
-		PrecedenceBoundaryInference *aggressive_memset_inference = new PrecedenceBoundaryInference(offset_inference,abgen);
+// 		PrecedenceBoundaryInference *aggressive_memset_inference = new PrecedenceBoundaryInference(offset_inference,abgen);
 
 		DirectOffsetInference *direct_offset_inference = new DirectOffsetInference(offset_inference);
 		ScaledOffsetInference *scaled_offset_inference = new ScaledOffsetInference(offset_inference);
 		P1Inference *p1 = new P1Inference(offset_inference);
-		PrecedenceBoundaryInference *conservative_memset_inference = new PrecedenceBoundaryInference(p1, abgen);
+		// PrecedenceBoundaryInference *conservative_memset_inference = new PrecedenceBoundaryInference(p1, abgen);
 
 		//Add new boundary inferences here
 
 		//TODO: in addition to a hierarchy there should be equivalence classes, a failure in one member, is a failure for all. 
 
-		transform_driver.AddInference(aggressive_memset_inference);
+// 		transform_driver.AddInference(aggressive_memset_inference);
 		transform_driver.AddInference(offset_inference,1);
 		transform_driver.AddInference(direct_offset_inference,1);
 		transform_driver.AddInference(scaled_offset_inference,1);
-		transform_driver.AddInference(conservative_memset_inference,1);
+//		transform_driver.AddInference(conservative_memset_inference,1);
 		transform_driver.AddInference(p1,2);
 
 		transform_driver.AddBlacklist(blackListOfFunctions);

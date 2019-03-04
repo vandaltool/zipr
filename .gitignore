@@ -26,3 +26,4 @@ irdb-libs/scons_build/
 *.os
 *.so
 *.exe
+.*.swp

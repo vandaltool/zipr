@@ -26,12 +26,13 @@
 
 using namespace std;
 using namespace IRDB_SDK;
-using namespace MEDS_Annotation;
 //using namespace MEDS_Annotation;
 
 
 vector<Range> AnnotationBoundaryGenerator::GetBoundaries(IRDB_SDK::Function_t *func)
 {
+	assert(0);
+#if 0
 	vector<Range> ranges;
 	
 //	std::multimap<VirtualOffset, MEDS_AnnotationBase> 
@@ -95,4 +96,5 @@ vector<Range> AnnotationBoundaryGenerator::GetBoundaries(IRDB_SDK::Function_t *f
 	}
 
 	return ranges;
+#endif
 }

@@ -14,6 +14,7 @@ env.Replace(SHLINKFLAGS="-fPIC -fmax-errors=2 -Wall -Werror -fmax-errors=2 -shar
 env.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 env.Replace(IRDB_SDK=os.environ['IRDB_SDK'])
 env.Replace(SMPSA_HOME=os.environ['SMPSA_HOME'])
+env.Replace(PEASOUP_HOME=os.environ['PEASOUP_HOME'])
 env.Replace(debug=ARGUMENTS.get("debug",0))
 env.Replace(PEDI_HOME=os.environ['PEDI_HOME'])
 env.Replace(ZIPR_INSTALL=os.environ['ZIPR_INSTALL'])
