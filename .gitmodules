@@ -18,9 +18,6 @@
 [submodule "zipr-sdk"]
 	path = zipr-sdk
 	url = git@git.zephyr-software.com:opensrc/zipr-sdk.git
-[submodule "daffy"]
-	path = daffy
-	url = git@git.zephyr-software.com:allnp/daffy.git
 [submodule "pedi"]
 	path = pedi
 	url = git@git.zephyr-software.com:allnp/pedi.git

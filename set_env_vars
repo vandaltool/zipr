@@ -22,7 +22,6 @@ export SECURITY_TRANSFORMS_HOME=$PEASOUP_HOME/irdb-libs
 export IRDB_SDK=$PEASOUP_HOME/irdb-sdk
 export IRDB_TRANSFORMS=$PEASOUP_HOME/irdb_transforms
 export ZEST_RUNTIME=$PEASOUP_HOME/zest_runtime
-export DAFFY_HOME=$PEASOUP_HOME/daffy
 
 if [ -f manifest.txt ]; then 
 	if [ -f $PS_INSTALL ]; then
