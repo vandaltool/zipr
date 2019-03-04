@@ -80,46 +80,46 @@ do-build-centos75:
 #
 # test_quick for EH handling
 #
-.basic-pgms-rida: &eh-tests
+.basic_eh_tests: &basic_eh-tests
   stage: test
   script:
     - ./cicd_testing/eh-tests.sh
 
-eh-tests-ubuntu18:
-  <<: *eh-tests
+basic_eh-tests-ubuntu18:
+  <<: *basic_eh-tests
   tags:
     - ubuntu18
 
-eh-tests-ubuntu16:
-  <<: *eh-tests
+basic_eh-tests-ubuntu16:
+  <<: *basic_eh-tests
   tags:
     - ubuntu16
 
-eh-tests-centos75:
-  <<: *eh-tests
+basic_eh-tests-centos75:
+  <<: *basic_eh-tests
   tags:
     - centos75
 
 #
 # test_cmds.sh fixcalls
 #
-.basic-pgms-fixcalls: &basic-pgms-fixcalls
+.builtin-xforms: &builtin-xforms
   stage: test
   script:
-    - ./cicd_testing/basic-pgms-fixcalls.sh
+    - ./cicd_testing/builtin-xforms.sh
 
-basic-pgms-fixcalls-ubuntu18:
-  <<: *basic-pgms-fixcalls
+builtin-xforms-ubuntu18:
+  <<: *builtin-xforms
   tags:
     - ubuntu18
 
-basic-pgms-fixcalls-ubuntu16:
-  <<: *basic-pgms-fixcalls
+builtin-xforms-ubuntu16:
+  <<: *builtin-xforms
   tags:
     - ubuntu16
 
-basic-pgms-fixcalls-centos75:
-  <<: *basic-pgms-fixcalls
+builtin-xforms-centos75:
+  <<: *builtin-xforms
   tags:
     - centos75
   variables:

@@ -4,7 +4,7 @@ Import('env')
 myenv=env.Clone()
 
 
-LIBS= " irdb-cfg irdb-transform irdb-core "
+LIBS= " irdb-cfg irdb-transform irdb-core EXEIO "
 
 cpppath='''
         $IRDB_SDK/include
