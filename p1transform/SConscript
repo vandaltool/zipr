@@ -1,0 +1,27 @@
+import os
+
+Import('irdb_env')
+myenv=irdb_env.Clone()
+myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
+
+
+cpppath=irdb_env['IRDB_INC'] + " $SECURITY_TRANSFORMS_HOME/libMEDSannotation/include "
+
+LIBS= " irdb-cfg MEDSannotation irdb-transform EXEIO " + irdb_env.subst('$BASE_IRDB_LIBS') 
+LIBPATH="$SECURITY_TRANSFORMS_HOME/lib"
+
+#integer_files="transformutils.cpp integertransformdriver.cpp"
+
+# doesn't work on solaris.
+myenv.Append(CXXFLAGS = " -std=c++11 ")
+
+all_files="P1_utility.cpp PNTransformDriver.cpp PNStackLayout.cpp PNRange.cpp Range.cpp OffsetInference.cpp DirectOffsetInference.cpp ScaledOffsetInference.cpp P1Inference.cpp PNRegularExpressions.cpp PNMain.cpp StackLayout.cpp General_Utility.cpp AnnotationBoundaryGenerator.cpp PrecedenceBoundaryInference.cpp PNIrdbManager.cpp EhUpdater.cpp"
+
+
+myenv=myenv.Clone(CPPPATH=Split(cpppath))
+
+p1=myenv.SharedLibrary("p1transform.so", Split(all_files), LIBS=Split(LIBS), LIBPATH=Split(LIBPATH))
+install=myenv.Install("$SECURITY_TRANSFORMS_HOME/plugins_install/", p1)
+Default(install)
+
+Return('install')
