@@ -101,29 +101,6 @@ eh-tests-centos75:
     - centos75
 
 #
-# test_cmds.sh rida-p1
-#
-.basic-pgms-rida-p1: &basic-pgms-rida-p1
-  stage: test
-  script:
-    - ./cicd_testing/basic-pgms-rida-p1.sh
-
-basic-pgms-rida-p1-ubuntu18:
-  <<: *basic-pgms-rida-p1
-  tags:
-    - ubuntu18
-
-basic-pgms-rida-p1-ubuntu16:
-  <<: *basic-pgms-rida-p1
-  tags:
-    - ubuntu16
-
-basic-pgms-rida-p1-centos75:
-  <<: *basic-pgms-rida-p1
-  tags:
-    - centos75
-
-#
 # test_cmds.sh fixcalls
 #
 .basic-pgms-fixcalls: &basic-pgms-fixcalls
@@ -179,27 +156,3 @@ elfdep-centos75:
   variables:
     OS: 'centos75'  
 
-#
-# test_cmds.sh kill_deads
-#
-.basic-pgms-killdeads: &basic-pgms-killdeads
-  stage: test
-  script:
-    - ./cicd_testing/basic-pgms-killdeads.sh
-
-basic-pgms-killdeads-ubuntu18:
-  <<: *basic-pgms-killdeads
-  tags:
-    - ubuntu18
-
-basic-pgms-killdeads-ubuntu16:
-  <<: *basic-pgms-killdeads
-  tags:
-    - ubuntu16
-
-basic-pgms-killdeads-centos75:
-  <<: *basic-pgms-killdeads
-  tags:
-    - centos75
-  variables:
-    OS: 'centos75'  
