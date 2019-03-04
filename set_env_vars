@@ -1,42 +1,42 @@
 
 export PEASOUP_UMBRELLA_DIR=`pwd`
-export PEDI_HOME=$PEASOUP_UMBRELLA_DIR/pedi
-export STRATAFIER_OBJCOPY=$PEASOUP_UMBRELLA_DIR/binutils-2.19/binutils/objcopy
-export TOOLCHAIN=$PEASOUP_UMBRELLA_DIR/diablo_toolchain
 export PEASOUP_HOME=$PEASOUP_UMBRELLA_DIR
-export SMPSA_HOME=$PEASOUP_UMBRELLA_DIR/SMPStaticAnalyzer
-export STRATAFIER=$PEASOUP_UMBRELLA_DIR/stratafier
-export IDAROOT=$PEASOUP_UMBRELLA_DIR/idaproCur
-export IDASDK=$PEASOUP_UMBRELLA_DIR/idaproCur_sdk
-export STRATA=$PEASOUP_UMBRELLA_DIR/strata
+export PEDI_HOME=$PEASOUP_HOME/pedi
+export STRATAFIER_OBJCOPY=$PEASOUP_HOME/binutils-2.19/binutils/objcopy
+export TOOLCHAIN=$PEASOUP_HOME/diablo_toolchain
+export SMPSA_HOME=$PEASOUP_HOME/SMPStaticAnalyzer
+export STRATAFIER=$PEASOUP_HOME/stratafier
+export IDAROOT=$PEASOUP_HOME/idaproCur
+export IDASDK=$PEASOUP_HOME/idaproCur_sdk
+export STRATA=$PEASOUP_HOME/strata
 export STRATA_HOME=$STRATA
-export STRATA32=$PEASOUP_UMBRELLA_DIR/strata32
+export STRATA32=$PEASOUP_HOME/strata32
 export STRATA_HOME32=$STRATA32
-export ZIPR_HOME=$PEASOUP_UMBRELLA_DIR/zipr
-export ZIPR_INSTALL=$PEASOUP_UMBRELLA_DIR/zipr_install
-export ZIPR_CALLBACKS=$PEASOUP_UMBRELLA_DIR/zipr_callbacks
-export ZIPR_SDK=$PEASOUP_UMBRELLA_DIR/zipr-sdk
-export ZIPR_SCFI_PLUGIN=$PEASOUP_UMBRELLA_DIR/zipr_scfi_plugin
-export ZIPR_XEON_PLUGIN=$PEASOUP_UMBRELLA_DIR/zipr_xeon_plugin
-export SECURITY_TRANSFORMS_HOME=$PEASOUP_UMBRELLA_DIR/irdb-libs
-export IRDB_SDK=$PEASOUP_UMBRELLA_DIR/irdb-sdk
-export IRDB_TRANSFORMS=$PEASOUP_UMBRELLA_DIR/irdb_transforms
-export ZEST_RUNTIME=$PEASOUP_UMBRELLA_DIR/zest_runtime
-export DAFFY_HOME=$PEASOUP_UMBRELLA_DIR/daffy
+export ZIPR_HOME=$PEASOUP_HOME/zipr
+export ZIPR_INSTALL=$PEASOUP_HOME/zipr_install
+export ZIPR_CALLBACKS=$PEASOUP_HOME/zipr_callbacks
+export ZIPR_SDK=$PEASOUP_HOME/zipr-sdk
+export ZIPR_SCFI_PLUGIN=$PEASOUP_HOME/zipr_scfi_plugin
+export ZIPR_XEON_PLUGIN=$PEASOUP_HOME/zipr_xeon_plugin
+export SECURITY_TRANSFORMS_HOME=$PEASOUP_HOME/irdb-libs
+export IRDB_SDK=$PEASOUP_HOME/irdb-sdk
+export IRDB_TRANSFORMS=$PEASOUP_HOME/irdb_transforms
+export ZEST_RUNTIME=$PEASOUP_HOME/zest_runtime
+export DAFFY_HOME=$PEASOUP_HOME/daffy
 
 if [ -f manifest.txt ]; then 
 	if [ -f $PS_INSTALL ]; then
-		export PS_INSTALL=$PEASOUP_UMBRELLA_DIR/installed
+		export PS_INSTALL=$PEASOUP_HOME/installed
 	fi
-	export PS=$PS_INSTALL/peasoup_examples/tools/ps_analyze.sh
-	export PSZ=$PS_INSTALL/peasoup_examples/tools/ps_zipr.sh 
+	export PS=$PS_INSTALL/tools/ps_analyze.sh
+	export PSZ=$PS_INSTALL/tools/ps_zipr.sh 
 else
-	export PS=$PEASOUP_UMBRELLA_DIR/peasoup_examples/tools/ps_analyze.sh
-	export PSZ=$PEASOUP_UMBRELLA_DIR/peasoup_examples/tools/ps_zipr.sh 
+	export PS=$PEASOUP_HOME/tools/ps_analyze.sh
+	export PSZ=$PEASOUP_HOME/tools/ps_zipr.sh 
 fi
 
 source ./irdb_vars
-source $PEASOUP_UMBRELLA_DIR/set_command_envs
+source $PEASOUP_HOME/set_command_envs
 
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$ZEST_RUNTIME/lib32:$ZEST_RUNTIME/lib64:$SECURITY_TRANSFORMS_HOME/lib"
 
