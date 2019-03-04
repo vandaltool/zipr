@@ -5,5 +5,5 @@ set -x
 cd /tmp/peasoup_test
 source set_env_vars
 cd $CICD_TO_TEST_DIR/examples/cpp-examples
-./test_quick_zipr_only.sh
+./test_quick_zipronly.sh
 
