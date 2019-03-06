@@ -123,6 +123,9 @@ do_tests()
 				zafl_context_sensitive_locality)
 					zafl.sh $progpath $protected --rida --enable-context-sensitivity function -l --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
+				zafl_laf)
+					zafl.sh $progpath $protected --enable-split-compare --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+				;;
 				zipr)
 					$PSZ $progpath $protected --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
