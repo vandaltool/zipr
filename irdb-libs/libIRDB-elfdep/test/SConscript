@@ -32,5 +32,5 @@ install=myenv.Install("$SECURITY_TRANSFORMS_HOME/plugins_install/", pgm)
 Default(install)
 
 files=Glob( Dir('.').srcnode().abspath+"/elf_dep_test*.cpp")
-sharedLib=myenv.SharedLibrary("elf_dep_test",  files,  LIBPATH=LIBPATH, LIBS=LIBS)
+sharedLib=myenv.SharedLibrary("elf_dep_test",  files,  LIBPATH=LIBPATH, LIBS="")
 Default(sharedLib)
