@@ -29,6 +29,19 @@ bool redirect_opt=true;
 int new_stdout_fd=1;
 int new_stderr_fd=2;
 
+static string getFileStem(const string& filePath) 
+{
+   char* buff = new char[filePath.size()+1];
+   strcpy(buff, filePath.c_str());
+   string tmp = string(basename(buff));
+   string::size_type i = tmp.rfind('.');
+   if (i != string::npos) {
+      tmp = tmp.substr(0,i);
+   }
+   delete[] buff;
+   return tmp;
+}
+
 class ThanosPlugin_t
 {
     public:
@@ -222,8 +235,10 @@ unique_ptr<ThanosPlugin_t> ThanosPlugin_t::pluginFactory(const string plugin_det
 }
 
 
+
 int ThanosPlugin_t::runPlugin()
 {
+#if 0
 	static const char *const base_path = getenv("SECURITY_TRANSFORMS_HOME");
         if(base_path == NULL)
         {
@@ -231,8 +246,9 @@ int ThanosPlugin_t::runPlugin()
 		return -1;
     	}
     	static const auto plugin_path (string(base_path).append("/plugins_install/"));
-
-	void *const dlhdl = dlopen((plugin_path+"lib"+step_name+".so").c_str(), RTLD_NOW);
+#endif
+	const auto short_step_name = string(getFileStem(step_name).c_str()+3);
+	void *const dlhdl = dlopen(step_name.c_str(), RTLD_NOW);
         if(dlhdl == NULL)
         {
         	const auto err=dlerror();
@@ -260,8 +276,9 @@ int ThanosPlugin_t::runPlugin()
 	auto are_logging = !((bool) are_debugging);
 	if(are_logging)
 	{
+
 		// setup logging
-		auto logfile_path = "./logs/"+step_name+".log";
+		auto logfile_path = "./logs/"+short_step_name+".log";
 		logfile=fopen(logfile_path.c_str(), "a+");
 		if(!logfile)
 		{

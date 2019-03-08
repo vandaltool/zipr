@@ -1,27 +1,14 @@
 
-export PEASOUP_UMBRELLA_DIR=`pwd`
-export PEASOUP_HOME=$PEASOUP_UMBRELLA_DIR
+export PEASOUP_HOME=`pwd`
 export PEDI_HOME=$PEASOUP_HOME/pedi
-export STRATAFIER_OBJCOPY=$PEASOUP_HOME/binutils-2.19/binutils/objcopy
-export TOOLCHAIN=$PEASOUP_HOME/diablo_toolchain
 export SMPSA_HOME=$PEASOUP_HOME/SMPStaticAnalyzer
-export STRATAFIER=$PEASOUP_HOME/stratafier
 export IDAROOT=$PEASOUP_HOME/idaproCur
 export IDASDK=$PEASOUP_HOME/idaproCur_sdk
-export STRATA=$PEASOUP_HOME/strata
-export STRATA_HOME=$STRATA
-export STRATA32=$PEASOUP_HOME/strata32
-export STRATA_HOME32=$STRATA32
 export ZIPR_HOME=$PEASOUP_HOME/zipr
-export ZIPR_INSTALL=$PEASOUP_HOME/zipr_install
-export ZIPR_CALLBACKS=$PEASOUP_HOME/zipr_callbacks
 export ZIPR_SDK=$PEASOUP_HOME/zipr-sdk
-export ZIPR_SCFI_PLUGIN=$PEASOUP_HOME/zipr_scfi_plugin
-export ZIPR_XEON_PLUGIN=$PEASOUP_HOME/zipr_xeon_plugin
-export SECURITY_TRANSFORMS_HOME=$PEASOUP_HOME/irdb-libs
 export IRDB_SDK=$PEASOUP_HOME/irdb-sdk
-export IRDB_TRANSFORMS=$PEASOUP_HOME/irdb_transforms
 export ZEST_RUNTIME=$PEASOUP_HOME/zest_runtime
+export PSPATH=$PEASOUP_HOME/irdb-libs/plugins_install
 
 if [ -f manifest.txt ]; then 
 	if [ -f $PS_INSTALL ]; then
@@ -39,3 +26,18 @@ source $PEASOUP_HOME/set_command_envs
 
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$ZEST_RUNTIME/lib32:$ZEST_RUNTIME/lib64:$SECURITY_TRANSFORMS_HOME/lib"
 
+
+# deprecated:  going away soon.
+export SECURITY_TRANSFORMS_HOME=$PEASOUP_HOME/irdb-libs
+export ZIPR_INSTALL=$PEASOUP_HOME/zipr_install
+export PEASOUP_UMBRELLA_DIR=$PEASOUP_HOME
+
+
+# already gone
+#export STRATA_HOME=$STRATA
+#export STRATA32=$PEASOUP_HOME/strata32
+#export STRATA=$PEASOUP_HOME/strata
+#export STRATA_HOME32=$STRATA32
+#export TOOLCHAIN=$PEASOUP_HOME/diablo_toolchain
+#export STRATAFIER_OBJCOPY=$PEASOUP_HOME/binutils-2.19/binutils/objcopy
+#export STRATAFIER=$PEASOUP_HOME/stratafier

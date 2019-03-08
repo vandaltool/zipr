@@ -10,7 +10,7 @@
 
 source $(dirname $0)/ps_wrapper.source $0
 
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SECURITY_TRANSFORMS_HOME/lib
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PEASOUP_HOME/irdb-libs/lib
 
 realpath() 
 {
@@ -626,7 +626,7 @@ check_steps_completed()
 				echo "*********************************************************"
 				echo "  Warning! Step requested, but not performed: $step_name "
 				echo "  (Could not find ${step_name}.exe nor lib${step_name}.so"
-				echo "  in search path: $SECURITY_TRANSFORMS_HOME/plugins_install/)"
+				echo "  in search path: ${PSPATH}                              "
 				echo "*********************************************************"
 				echo "*********************************************************"
 				warnings=1
@@ -662,12 +662,12 @@ perform_step()
 
 	if [ "$step" = "$stop_before_step" ]; then 
 		echo "ps_analyze has been asked to stop before step $step."
-		echo "command is:  LD_LIBRARY_PATH=$SECURITY_TRANSFORMS_HOME/lib gdb --args $command"	
+		echo "command is:  LD_LIBRARY_PATH=$PEASOUP_HOME/irdb-libs/lib gdb --args $command"	
 		exit 1
 	fi
 	if [ "$step" = "$dump_before_step" ]; then 
 		echo " ---- ps_analyze has been asked to dump before step $step."	
-		$SECURITY_TRANSFORMS_HOME/plugins_install/dump_map.exe $cloneid > logs/dump_before.log
+		$PEASOUP_HOME/irdb-libs/plugins_install/dump_map.exe $cloneid > logs/dump_before.log
 	fi
 
 	is_step_on $step
@@ -800,7 +800,7 @@ perform_step()
 	fi
 	if [ "$step" = "$dump_after_step" ]; then 
 		echo " ---- ps_analyze has been asked to dump after step $step."
-		$SECURITY_TRANSFORMS_HOME/plugins_install/dump_map.exe $cloneid > logs/dump_after.log
+		$PEASOUP_HOME/irdb-libs/plugins_install/dump_map.exe $cloneid > logs/dump_after.log
 	fi
 	return $command_exit
 }
@@ -810,10 +810,31 @@ run_current_thanos_steps()
 	# echo "Doing thanos steps: $thanos_plugins"
 	# execute last block of thanos plugins if there are any left	
 	if [[ $thanos_plugins ]]; then
-		perform_step "$thanos_steps" none "$plugin_path/thanos.exe "$thanos_plugins""
+		perform_step "$thanos_steps" none "$PEASOUP_HOME/irdb-libs/plugins_install/thanos.exe "$thanos_plugins""
                 thanos_plugins=""
                 thanos_steps=""		
 	fi
+}
+
+
+find_plugin()
+{
+	local plugin_name=$1
+
+	for i in ${PSPATH//:/ }
+	do
+                if [[ -x $i/lib$stepname.so ]]; then
+			echo "$i/lib$stepname.so"
+			return
+		elif [[ -x $i/$stepname.exe ]]; then
+			echo "$i/$stepname.exe" 
+			return
+		elif [[ -x $i/$stepname.sh ]]; then
+			echo "$i/$stepname.sh" 
+			return
+		fi
+	done
+
 }
 
 
@@ -856,11 +877,10 @@ do_plugins()
 		this_step_options_name=step_options_$stepname
 		value="${!this_step_options_name}"
 
-		plugin_path=$SECURITY_TRANSFORMS_HOME/plugins_install/
-
+		plugin_path=$(find_plugin $stepname)
 
 		# first check if step can be invoked as a thanos plugin
-                if [ -x $plugin_path/lib$stepname.so ]; then
+		if [[ "$plugin_path" == *.so ]]; then
 
 			# if this step is a stop before/after step, cleanup anything outstanding so we can do the one step special.
 			if [[ $stepname == $stop_before_step ]] || [[ $stepname == $stop_after_step ]] ||
@@ -871,9 +891,9 @@ do_plugins()
 			# add step to the block of contiguous thanos plugins
 			stop_if_error $stepname			
 			if [[ $? -gt $error_threshold ]]; then
-                        	thanos_plugins="$thanos_plugins \"$stepname --step-args $cloneid $value\""
+                        	thanos_plugins="$thanos_plugins \"$plugin_path --step-args $cloneid $value\""
 			else
-				thanos_plugins="$thanos_plugins \"$stepname -optional --step-args $cloneid $value\""	
+				thanos_plugins="$thanos_plugins \"$plugin_path -optional --step-args $cloneid $value\""	
 			fi
 			thanos_steps="$thanos_steps $stepname"
 
@@ -896,16 +916,16 @@ do_plugins()
 		fi
 		
 		# invoke .exe, or .sh as a plugin step
-		if [ -x $plugin_path/$stepname.exe ]; then
-			perform_step $stepname none $plugin_path/$stepname.exe  $cloneid  $value
-		elif [ -x $plugin_path/$stepname.sh ]; then
-			perform_step $stepname none $plugin_path/$stepname.sh $cloneid  $value
+		if [[ "$plugin_path" == *.exe ]]; then
+			perform_step $stepname none $plugin_path $cloneid  $value
+		elif [[ "$plugin_path" == *.sh ]]; then
+			perform_step $stepname none $plugin_path $cloneid  $value
 		else
 			echo "*********************************************************"
 			echo "*********************************************************"
-			echo "  Warning! Step requested, but not performed: $stepname "
-			echo "  (Could not find ${stepname}.exe nor lib${stepname}.so "
-			echo "  in search path: $SECURITY_TRANSFORMS_HOME/plugins_install/)"
+			echo "  Warning! Step requested, but not performed: $stepname  "
+			echo "  (Could not find ${stepname}.exe nor lib${stepname}.so  "
+			echo "  in search path: ${PSPATH})                             "
 			echo "*********************************************************"
 			echo "*********************************************************"
 			warnings=1
@@ -1053,7 +1073,7 @@ do_prefix_steps()
 	# Running IDA Pro static analysis phase ...
 	#
 	perform_step meds_static mandatory $PEASOUP_HOME/tools/do_idapro.sh $name $step_options_meds_static
-	perform_step rida mandatory $SECURITY_TRANSFORMS_HOME/plugins_install/rida.exe ./a.ncexe ./a.ncexe.annot ./a.ncexe.infoannot ./a.ncexe.STARSxrefs $step_options_rida
+	perform_step rida mandatory $PEASOUP_HOME/irdb-libs/plugins_install/rida.exe ./a.ncexe ./a.ncexe.annot ./a.ncexe.infoannot ./a.ncexe.STARSxrefs $step_options_rida
 	touch a.ncexe.annot
 	cp a.ncexe.annot a.ncexe.annot.full
 
@@ -1102,7 +1122,7 @@ main()
 	#
 	# Check for proper environment variables and files that are necessary to peasoupify a program.
 	#
-	check_environ_vars PEASOUP_HOME SECURITY_TRANSFORMS_HOME 
+	check_environ_vars PEASOUP_HOME 
 
 	#
 	# finish argument parsing
