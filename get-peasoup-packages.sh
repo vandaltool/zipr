@@ -137,10 +137,6 @@ for arg in $args; do
 done
 
 orig_dir=$(pwd)
-echo "Getting irdb_transforms packages."
-cd irdb_transforms
-sudo ./get-packages.sh
-cd $orig_dir
 
 if [ ! -z $DAFFY_HOME ]; then
 	cd daffy
