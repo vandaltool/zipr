@@ -2732,7 +2732,7 @@ void setup_icfs(FileIR_t* firp, EXEIO::exeio* elfiop)
 			firp->GetAllICFS().insert(nn);
 			insn->SetIBTargets(nn);
 			*/
-			auto nn=firp->addNewICFS(insn,jmptables[insn]);
+			auto nn=firp->addNewICFS(insn,jmptables[insn], jmptables[insn].getAnalysisStatus());
 
 			if(getenv("IB_VERBOSE")!=0)
 			{
@@ -3209,7 +3209,11 @@ void unpin_switches(FileIR_t *firp, int do_unpin_opt)
 		DataScoop_t* scoop=find_scoop(firp,jmptables[insn].GetTableStart());
 		if(!scoop) continue;
 
-		if(jmptables[insn].GetSwitchType().areOnlyTheseSet(ibt_provenance_t::ibtp_switchtable_type3))
+		if(jmptables[insn].GetSwitchType().areOnlyTheseSet(
+					ibt_provenance_t::ibtp_switchtable_type3 | 
+					ibt_provenance_t::ibtp_rodata | 
+					ibt_provenance_t::ibtp_stars_switch
+					))
 		{
 			unpin_type3_switchtable(firp,insn,scoop, do_unpin_opt);
 		}
