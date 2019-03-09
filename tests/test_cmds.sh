@@ -126,6 +126,9 @@ do_tests()
 				zafl_laf)
 					zafl.sh $progpath $protected --enable-split-compare --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
+				laf)
+					$PSZ $progpath $protected -s rida=on -s meds_static=off -s laf=on -o laf:--enable-split-compare --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+				;;
 				zipr)
 					$PSZ $progpath $protected --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
