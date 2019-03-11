@@ -664,6 +664,19 @@ int PopulateCFG::parseArgs(const vector<string> step_args)
     return 0;
 }
 
+void PopulateCFG::rename_start(FileIR_t *firp)
+{
+	for(auto f : firp->getFunctions())
+	{
+		const auto entry_point_insn = f->getEntryPoint();
+		if(!entry_point_insn) continue;
+
+		const auto entry_point_vo = entry_point_insn->getAddress()->getVirtualOffset();
+		if(entry_point_vo==elfiop->get_entry())
+			f->setName("_start");
+	}
+}
+
 int PopulateCFG::executeStep(IRDBObjects_t *const irdb_objects)
 {
 	try 
@@ -688,6 +701,7 @@ int PopulateCFG::executeStep(IRDBObjects_t *const irdb_objects)
 			elfiop.reset(new exeio());
 			elfiop->load(string("readeh_tmp_file.exe"));
 
+			rename_start(firp);
 			fill_in_cfg(firp);
 			fill_in_scoops(firp);
 			detect_scoops_in_code(firp);
