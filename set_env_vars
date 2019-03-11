@@ -8,7 +8,12 @@ export ZIPR_HOME=$PEASOUP_HOME/zipr
 export ZIPR_SDK=$PEASOUP_HOME/zipr-sdk
 export IRDB_SDK=$PEASOUP_HOME/irdb-sdk
 export ZEST_RUNTIME=$PEASOUP_HOME/zest_runtime
-export PSPATH=$PEASOUP_HOME/irdb-libs/plugins_install
+
+
+# don't override pspath
+if [[ -z $PSPATH ]]; then
+	export PSPATH=$PEASOUP_HOME/irdb-libs/plugins_install
+fi
 
 if [ -f manifest.txt ]; then 
 	if [ -f $PS_INSTALL ]; then

@@ -48,6 +48,8 @@ class PopulateCFG : public IRDB_SDK::TransformStep_t
         void fill_in_scoops(IRDB_SDK::FileIR_t *);
         void detect_scoops_in_code(IRDB_SDK::FileIR_t *firp);
         void fill_in_landing_pads(IRDB_SDK::FileIR_t *);
+	void rename_start(IRDB_SDK::FileIR_t *firp);
+
         
         // helpers
         void populate_instruction_map

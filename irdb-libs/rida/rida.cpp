@@ -76,15 +76,15 @@ class CreateFunctions_t
 
 			const auto cs_mode= 
 				machine_type==mtAarch64 ? CS_MODE_LITTLE_ENDIAN :
-				file_class==ELF64 ? CS_MODE_64 : 
-				file_class==ELF32 ? CS_MODE_32 : 
-				throw std::runtime_error("Cannot handle ELF class");
+				file_class==ELF64       ? CS_MODE_64            : 
+				file_class==ELF32       ? CS_MODE_32            : 
+				                          throw std::runtime_error("Cannot handle ELF class");
 
 			const auto my_cs_arch = 
-				machine_type == mtX86_64  ?  CS_ARCH_X86 : 
-				machine_type == mtI386    ?  CS_ARCH_X86 :
+				machine_type == mtX86_64  ?  CS_ARCH_X86   : 
+				machine_type == mtI386    ?  CS_ARCH_X86   :
 				machine_type == mtAarch64 ?  CS_ARCH_ARM64 : 
-				throw std::runtime_error("Cannot handle architecture");
+				                          throw std::runtime_error("Cannot handle architecture");
 
 			if (cs_open(my_cs_arch, cs_mode , &cshandle) != CS_ERR_OK)
 			{
@@ -146,21 +146,30 @@ class CreateFunctions_t
 			auto unnamedFunctions=0U;
 			auto functions=0U;
 
+			const auto entryPointAddress=exeio.get_entry();
+
 			// set default names 
 			for(const auto &func: sccs)
 			{
 				assert(func.begin() != func.end());
 				const auto first_range=*(func.begin());
 				const auto startAddr=first_range.first;
-				std::stringstream ss;
-				ss << "sub_" << hex << startAddr;
-				const auto name = ss.str();
 
 				functions++;
-				if(funcNames[func]=="")	// destructive test OK, next line sets if empty.
+				if(entryPointAddress == startAddr)
 				{
-					unnamedFunctions++;
+					// override the elf entry point to be called _start
+					funcNames[func]="_start";
+					namedFunctions++;
+				}
+				else if(funcNames[func]=="")	// destructive test OK, next line sets if empty.
+				{
+					std::stringstream ss;
+					ss << "sub_" << hex << startAddr;
+					const auto name = ss.str();
+
 					funcNames[func]=name;
+					unnamedFunctions++;
 				}
 				else
 				{

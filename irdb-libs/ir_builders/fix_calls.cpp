@@ -1048,6 +1048,7 @@ int executeStep(IRDBObjects_t *const irdb_objects)
 			// do eh_frame reading as required. 
 			if(do_eh_frame)
         			read_ehframe(firp, elfiop);
+			setFrameSizes(firp);
 
 			fix_all_calls(firp,fix_all);
 			fix_other_pcrel(firp);
@@ -1099,9 +1100,48 @@ bool possible_target(uintptr_t p, uintptr_t at, ibt_provenance_t prov)
 }
 
 
-std::string getStepName(void) const override
+string getStepName(void) const override
 {
         return std::string("fix_calls");
+}
+
+void setFrameSizes(FileIR_t* firp)
+{
+	for(auto func : firp->getFunctions())
+	{
+		if(func->getEntryPoint()==nullptr) continue;
+
+		const auto is_found_it=cfg_optimizer.find(func);
+		const auto is_found=(is_found_it!=end(cfg_optimizer));
+
+		if(!is_found)
+			/* build a cfg for this function */
+			cfg_optimizer[func]=shared_ptr<ControlFlowGraph_t>(move(ControlFlowGraph_t::factory(func)));
+
+		const auto cfg=cfg_optimizer[func].get();
+		const auto entry_block=cfg->getEntry();
+		auto pushes=0;
+		for(auto insn : entry_block->getInstructions())
+		{
+			const auto di=DecodedInstruction_t::factory(insn);
+			const auto mnemonic=di->getMnemonic();
+			if(mnemonic=="push")
+				pushes++;
+			if(mnemonic=="sub")
+			{
+			       	const auto hasop0    = di->hasOperand(0);
+				const auto op0_sp    = hasop0 && (di->getOperand(0)->getString()=="rsp" || di->getOperand(0)->getString()=="esp");
+			       	const auto hasop1    = di->hasOperand(1);
+			       	const auto op1_const = hasop1 && di->getOperand(1)->isConstant();
+				if(op0_sp && op1_const)
+				{
+					func->setStackFrameSize(di->getOperand(1)->getConstant());
+				}
+				break;
+			}
+
+		}
+	}
 }
 
 }; // end class FixCalls_t
