@@ -7,6 +7,7 @@ export IDASDK=$PEASOUP_HOME/idaproCur_sdk
 export ZIPR_HOME=$PEASOUP_HOME/zipr
 export ZIPR_SDK=$PEASOUP_HOME/zipr-sdk
 export IRDB_SDK=$PEASOUP_HOME/irdb-sdk
+export IRDB_LIBS=$PEASOUP_HOME/irdb-libs/lib
 export ZEST_RUNTIME=$PEASOUP_HOME/zest_runtime
 
 
