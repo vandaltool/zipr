@@ -39,7 +39,7 @@ class PopulateCFG : public IRDB_SDK::TransformStep_t
 		return std::string("fill_in_cfg");
 	}
         int parseArgs(const std::vector<std::string> step_args) override;
-	int executeStep(IRDB_SDK::IRDBObjects_t *const) override;
+	int executeStep() override;
     
     private: // methods
         

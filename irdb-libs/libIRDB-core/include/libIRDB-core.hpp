@@ -52,7 +52,6 @@
 #include <fileir.hpp>
 #include <pqxxdb.hpp>
 #include <IRDB_Objects.hpp>
-#include <transform_step.h>
 #include <decode.hpp>
 
 int command_to_stream(const std::string& command, std::ostream& stream);

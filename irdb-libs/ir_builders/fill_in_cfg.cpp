@@ -639,13 +639,15 @@ void PopulateCFG::fill_in_landing_pads(FileIR_t *firp)
 
 int PopulateCFG::parseArgs(const vector<string> step_args)
 {   
+#if 0
     if(step_args.size()<1)
     {
-            cerr<<"Usage: <id> [--fix-landing-pads | --no-fix-landing-pads]"<<endl;
+            cerr<<"Usage: [--fix-landing-pads | --no-fix-landing-pads]"<<endl;
             return -1;
     }
+#endif
 
-    variant_id = stoi(step_args[0]);
+//    variant_id = stoi(step_args[0]);
     
     for (unsigned int i = 1; i < step_args.size(); ++i)
     {
@@ -677,8 +679,10 @@ void PopulateCFG::rename_start(FileIR_t *firp)
 	}
 }
 
-int PopulateCFG::executeStep(IRDBObjects_t *const irdb_objects)
+int PopulateCFG::executeStep()
 {
+	variant_id=getVariantID();
+	auto irdb_objects=getIRDBObjects();
 	try 
 	{
 		const auto pqxx_interface = irdb_objects->getDBInterface();

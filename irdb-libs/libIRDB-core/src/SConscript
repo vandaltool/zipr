@@ -29,6 +29,7 @@ files=  '''
 	operand_csarm.cpp
 	IRDB_Objects.cpp
 	decode_base.cpp
+	transform_step.cpp
 '''
 unused_files='''
 	decode_bea.cpp

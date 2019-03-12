@@ -58,8 +58,7 @@ PNOptions *pn_options;
 
 enum
 {
-	VARIANT_ID_OPTION = CHAR_MAX+1,
-	BED_SCRIPT_OPTION,
+	BED_SCRIPT_OPTION = CHAR_MAX+1,
 	BLACKLIST_OPTION,
 	COVERAGE_FILE_OPTION,
 	PN_THRESHOLD_OPTION,
@@ -88,7 +87,6 @@ enum
 
 static struct option const long_options[] = 
 {
-	{"variant_id",required_argument, nullptr, VARIANT_ID_OPTION},
 	{"bed_script",required_argument, nullptr, BED_SCRIPT_OPTION},
 	{"blacklist",required_argument, nullptr, BLACKLIST_OPTION},
 	{"coverage_file",required_argument, nullptr, COVERAGE_FILE_OPTION},
@@ -263,7 +261,7 @@ int parseArgs(const vector<string> step_args)
 
 	verbose_log = (verbose != nullptr);
 
-	progid = atoi(argv[0]);
+// 	progid = atoi(argv[0]);
 	char buf[]="libp1transform.so";
 	argv[0]=buf;
   
@@ -276,11 +274,6 @@ int parseArgs(const vector<string> step_args)
 	{
 		switch(c)
 		{
-		case VARIANT_ID_OPTION:
-		{
-			progid = atoi(optarg);
-			break;
-		}
 		case BED_SCRIPT_OPTION:
 		{
 			BED_script = optarg;
@@ -488,8 +481,10 @@ int parseArgs(const vector<string> step_args)
 }
 
 
-int executeStep(IRDBObjects_t *const irdb_objects)
+int executeStep()
 {
+	progid=getVariantID();
+	auto irdb_objects=getIRDBObjects();
 	//setup the interface to the sql server 
 
 	const auto pqxx_interface=irdb_objects->getDBInterface();

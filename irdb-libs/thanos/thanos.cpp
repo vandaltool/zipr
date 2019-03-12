@@ -12,6 +12,7 @@
 #include <ctime>
 #include <ext/stdio_filebuf.h>
 
+#include <transform_step_state.hpp>
 
 
 using namespace std;
@@ -42,7 +43,7 @@ static string getFileStem(const string& filePath)
    return tmp;
 }
 
-class ThanosPlugin_t
+class IRDB_SDK::ThanosPlugin_t
 {
     public:
         static unique_ptr<ThanosPlugin_t> pluginFactory(const string plugin_details);
@@ -238,15 +239,6 @@ unique_ptr<ThanosPlugin_t> ThanosPlugin_t::pluginFactory(const string plugin_det
 
 int ThanosPlugin_t::runPlugin()
 {
-#if 0
-	static const char *const base_path = getenv("SECURITY_TRANSFORMS_HOME");
-        if(base_path == NULL)
-        {
-		*thanos_log << "Environment variables not set." << endl;
-		return -1;
-    	}
-    	static const auto plugin_path (string(base_path).append("/plugins_install/"));
-#endif
 	const auto short_step_name = string(getFileStem(step_name).c_str()+3);
 	void *const dlhdl = dlopen(step_name.c_str(), RTLD_NOW);
         if(dlhdl == NULL)
@@ -347,7 +339,8 @@ int ThanosPlugin_t::executeStep(TransformStep_t& the_step, const bool are_debugg
 
 	tidyIR();
 
-	const int parse_retval = the_step.parseArgs(step_args);
+	const auto vid=atoi(step_args[0].c_str());
+	const int parse_retval = the_step.parseArgs(vector<string>(begin(step_args)+1,end(step_args)));
 	if(parse_retval != 0)
 	{
 		*real_cout<<"Done.  Command failed! ***************************************"<<endl;
@@ -374,7 +367,10 @@ int ThanosPlugin_t::executeStep(TransformStep_t& the_step, const bool are_debugg
 		}
 	}
 
-	const int step_error = the_step.executeStep(shared_objects.get());
+	auto the_step_state=TransformStepState_t(vid,shared_objects.get());
+	the_step.setState(&the_step_state);
+
+	const int step_error = the_step.executeStep();
 
 	if(step_error)
 	{

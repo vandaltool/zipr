@@ -951,6 +951,7 @@ bool do_eh_frame=true;
 int parseArgs(const vector<string> step_args)
 {
 
+#if 0
 	if(step_args.size()<1)
 	{
 		cerr<<"Usage: <id> [--fix-all | --no-fix-all ] [--eh-frame | --no-ehframe] "<<endl;
@@ -962,6 +963,7 @@ int parseArgs(const vector<string> step_args)
 		cerr<<" --no-fix-icalls 	Convert (or don't) indirect calls."<<endl;
 		exit(-1);
 	}
+#endif
 
 	for(unsigned int argc_iter=1; argc_iter<step_args.size(); argc_iter++)
 	{
@@ -1006,15 +1008,17 @@ int parseArgs(const vector<string> step_args)
 	if(getenv("FIX_CALLS_FIX_ALL_CALLS"))
 		fix_all=true;
 
-	variant_id=stoi(step_args[0]);
+//	variant_id=stoi(step_args[0]);
 	return 0;
 }
 
 DatabaseID_t variant_id=BaseObj_t::NOT_IN_DATABASE;
 
 
-int executeStep(IRDBObjects_t *const irdb_objects)
+int executeStep()
 {
+	variant_id=getVariantID();
+	auto irdb_objects=getIRDBObjects();
 
 	cout<<"Reading variant "<<variant_id<<" from database." << endl;
 	try 

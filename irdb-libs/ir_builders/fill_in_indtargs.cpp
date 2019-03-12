@@ -3587,13 +3587,15 @@ set<VirtualOffset_t> forced_pins;
 int parseArgs(const vector<string> step_args)
 {
 
+#if 0
 	if(step_args.size()<1)
 	{
 		cerr<<"Usage: <id> [--[no-]split-eh-frame] [--[no-]unpin] [addr,...]"<<endl;
 		exit(-1);
 	}
+#endif
 
-	variant_id=stoi(step_args[0]);
+	// variant_id=stoi(step_args[0]);
 	cout<<"Parsing parameters with argc= " << step_args.size()<<endl;
 
 	// parse dash-style options.
@@ -3660,10 +3662,10 @@ int parseArgs(const vector<string> step_args)
 }
 
 
-int executeStep(IRDBObjects_t *const irdb_objects)
+int executeStep()
 {
-	//VariantID_t *pidp=nullptr;
-	//FileIR_t * firp=nullptr;
+	variant_id=getVariantID();
+	auto irdb_objects=getIRDBObjects();
 
 	try 
 	{
