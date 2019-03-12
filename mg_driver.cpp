@@ -55,23 +55,26 @@ int parseArgs(const vector<string> step_args)
         auto argv = vector<char*>();
         transform(ALLOF(step_args), back_inserter(argv), [](const string &s) -> char* { return const_cast<char*>(s.c_str()); } );
 	const auto argc = step_args.size();
-	auto strtolError = (char*) nullptr;
 
 	/*
 	 * Check that we've been called correctly:
 	 * <program> <variant id> <annotation file>
 	 */
+#if 0
 	if(argc < 1)
 	{
 		usage(programName);
 		return 2;
 	}
+#endif
+#if 0
 	variantID = strtol(step_args[0].c_str(), &strtolError, 10);
 	if (*strtolError != '\0')
 	{
 		cerr << "Invalid variantID: " << step_args[0] << endl;
 		return 1;
 	}
+#endif
 
 	// Parse some options for the transform
 	const static struct option long_options[] = {
@@ -144,8 +147,10 @@ int parseArgs(const vector<string> step_args)
 }
 
 
-int executeStep(IRDBObjects_t *const irdb_objects)
+int executeStep()
 {
+	variantID=getVariantID();
+	auto irdb_objects=getIRDBObjects();
 
 	auto exit_code = (int) 0;
 
