@@ -95,7 +95,7 @@ MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::MoveGlobals_t(
 	const bool p_aggressive,
 	const bool p_use_stars)
 	:
-	Transform(p_variantIR),
+	Transform_t(p_variantIR),
 	struct_div(NULL),
 	exe_reader(NULL),
 	tied_unpinned(0),

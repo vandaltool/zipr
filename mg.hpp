@@ -19,7 +19,7 @@ using Elf_Xword = uint64_t;
 using Elf_Half  = uint16_t;
 
 template <class T_Sym, class T_Rela, class T_Rel, class T_Dyn, class Extractor>
-class MoveGlobals_t : public IRDB_SDK::Transform
+class MoveGlobals_t : public IRDB_SDK::Transform_t
 {
 	public:
 		MoveGlobals_t(IRDB_SDK::VariantID_t *p_variantID, 
