@@ -52,29 +52,9 @@ bool use_stars=true;
 int parseArgs(const vector<string> step_args) 
 {	
 
-        auto argv = vector<char*>();
+        auto argv = vector<char*>({const_cast<char*>("libmove_globals.so")});
         transform(ALLOF(step_args), back_inserter(argv), [](const string &s) -> char* { return const_cast<char*>(s.c_str()); } );
-	const auto argc = step_args.size();
-
-	/*
-	 * Check that we've been called correctly:
-	 * <program> <variant id> <annotation file>
-	 */
-#if 0
-	if(argc < 1)
-	{
-		usage(programName);
-		return 2;
-	}
-#endif
-#if 0
-	variantID = strtol(step_args[0].c_str(), &strtolError, 10);
-	if (*strtolError != '\0')
-	{
-		cerr << "Invalid variantID: " << step_args[0] << endl;
-		return 1;
-	}
-#endif
+	const auto argc = argv.size();
 
 	// Parse some options for the transform
 	const static struct option long_options[] = {
@@ -96,8 +76,7 @@ int parseArgs(const vector<string> step_args)
 	auto short_opts="b:oh?m:d:n:aAst";
 	while(1) 
 	{
-		int index = 0;
-		int c = getopt_long(argc, &argv[0], short_opts, long_options, &index);
+		int c = getopt_long(argc, &argv[0], short_opts, long_options, nullptr);
 		if (c == -1)
 			break;
 		switch(c) {
