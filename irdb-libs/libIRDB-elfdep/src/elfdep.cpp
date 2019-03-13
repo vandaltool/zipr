@@ -168,7 +168,7 @@ static void prefix_scoop(const string &str, IRDB_SDK::DataScoop_t* scoop, IRDB_S
 
 // constructors
 ElfDependencies_t::ElfDependencies_t(IRDB_SDK::FileIR_t* firp)
-	: Transform(firp)
+	: Transform_t(firp)
 {
 	typedef ElfDependencies_t::ElfDependenciesImpl_t<Elf64_Sym, Elf64_Rela, Elf64_Dyn, R_X86_64_GLOB_DAT, 32, 8> ElfDependencies64_t;
 	typedef ElfDependencies_t::ElfDependenciesImpl_t<Elf32_Sym, Elf32_Rel, Elf32_Dyn, R_386_GLOB_DAT, 8, 4> ElfDependencies32_t;

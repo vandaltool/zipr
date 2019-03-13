@@ -11,7 +11,7 @@ using namespace std;
 
 
 typedef set<string> StringSet_t;
-class AddLib_t : Transform
+class AddLib_t : Transform_t
 {
 	public:
 	AddLib_t(FileIR_t* firp, const StringSet_t &prepended, const StringSet_t &appended);

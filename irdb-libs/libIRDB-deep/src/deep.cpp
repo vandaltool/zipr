@@ -14,7 +14,7 @@ using namespace MEDS_Annotation;
 
 
 StarsDeepAnalysis_t::StarsDeepAnalysis_t(IRDB_SDK::FileIR_t* firp, const vector<string>& options)
-	: Transform(firp)
+	: Transform_t(firp)
 {
 	for(const auto s : options)
 	{

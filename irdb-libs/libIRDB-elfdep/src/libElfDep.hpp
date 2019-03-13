@@ -11,7 +11,7 @@ namespace libIRDB
 
 using namespace std;
 
-class ElfDependencies_t : public IRDB_SDK::Transform, public IRDB_SDK::ElfDependencies_t
+class ElfDependencies_t : public IRDB_SDK::Transform_t, public IRDB_SDK::ElfDependencies_t
 {
 	public:
 
@@ -27,10 +27,10 @@ class ElfDependencies_t : public IRDB_SDK::Transform, public IRDB_SDK::ElfDepend
 
 	private:
 
-	class ElfDependenciesBase_t : public Transform
+	class ElfDependenciesBase_t : public IRDB_SDK::Transform_t
 	{
 		public:
-			ElfDependenciesBase_t(IRDB_SDK::FileIR_t* firp) : Transform(firp) {}
+			ElfDependenciesBase_t(IRDB_SDK::FileIR_t* firp) : Transform_t(firp) {}
 			virtual void prependLibraryDepedencies(const string &libraryName)=0;
 			virtual void appendLibraryDepedencies(const string &libraryName)=0;
 			virtual pair<IRDB_SDK::DataScoop_t*,int> appendGotEntry(const string &name)=0; 

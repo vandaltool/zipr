@@ -10,7 +10,7 @@ using namespace IRDB_SDK;
 template <class T> void ignore_result(const T&){}; 
 
 Callbacks::Callbacks(FileIR_t *p_variantIR) :
-	Transform(p_variantIR),
+	Transform_t(p_variantIR),
 	m_firp(p_variantIR),
 	m_text_offset(0)
 {

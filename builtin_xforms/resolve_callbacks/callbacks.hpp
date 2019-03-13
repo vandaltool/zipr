@@ -9,7 +9,7 @@
 using namespace std;
 using namespace IRDB_SDK;
 
-class Callbacks : public Transform
+class Callbacks : public Transform_t
 {
 	public:
 		Callbacks(FileIR_t *p_variantIR);

@@ -8,7 +8,7 @@ using namespace AddLib;
 
 
 AddLib_t::AddLib_t(FileIR_t* firp, const StringSet_t &p_prepended, const StringSet_t &p_appended)
-	: Transform (firp), prepended(p_prepended), appended(p_appended)
+	: Transform_t(firp), prepended(p_prepended), appended(p_appended)
 {
 }
 

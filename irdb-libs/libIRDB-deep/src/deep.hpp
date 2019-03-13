@@ -12,7 +12,7 @@ namespace libIRDB
 {
 	using namespace std;
 
-	class StarsDeepAnalysis_t : public IRDB_SDK::DeepAnalysis_t, protected IRDB_SDK::Transform
+	class StarsDeepAnalysis_t : public IRDB_SDK::DeepAnalysis_t, protected IRDB_SDK::Transform_t
 	{
 		private:
 			StarsDeepAnalysis_t()                           = delete;
