@@ -249,9 +249,9 @@ std::string getStepName(void) const override
 
 int parseArgs(const vector<string> step_args)
 {
-	auto argv = vector<char*>();
+	auto argv = vector<char*>({const_cast<char*>("libp1transform.so")});
 	transform(ALLOF(step_args), back_inserter(argv), [](const string &s) -> char* { return const_cast<char*>(s.c_str()); } );
-	const auto argc=step_args.size();
+	const auto argc=argv.size();
 	
 
 	//Set the verbose flag

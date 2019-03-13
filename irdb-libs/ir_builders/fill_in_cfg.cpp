@@ -649,7 +649,7 @@ int PopulateCFG::parseArgs(const vector<string> step_args)
 
 //    variant_id = stoi(step_args[0]);
     
-    for (unsigned int i = 1; i < step_args.size(); ++i)
+    for (auto i = 0u; i < step_args.size(); ++i)
     {
             if (step_args[i]=="--fix-landing-pads")
             {

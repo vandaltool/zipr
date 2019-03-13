@@ -3599,7 +3599,7 @@ int parseArgs(const vector<string> step_args)
 	cout<<"Parsing parameters with argc= " << step_args.size()<<endl;
 
 	// parse dash-style options.
-	unsigned int argc_iter = 1;
+	auto argc_iter = 0u;
 	while(argc_iter < step_args.size() && step_args[argc_iter][0]=='-')
 	{
 		cout<<"Parsing parameter: "<< step_args[argc_iter] << endl;

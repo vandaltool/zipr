@@ -965,7 +965,7 @@ int parseArgs(const vector<string> step_args)
 	}
 #endif
 
-	for(unsigned int argc_iter=1; argc_iter<step_args.size(); argc_iter++)
+	for(auto argc_iter=0u; argc_iter<step_args.size(); argc_iter++)
 	{
 		if("--fix-all"==step_args[argc_iter])
 		{
