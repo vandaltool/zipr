@@ -262,8 +262,8 @@ int parseArgs(const vector<string> step_args)
 	verbose_log = (verbose != nullptr);
 
 // 	progid = atoi(argv[0]);
-	char buf[]="libp1transform.so";
-	argv[0]=buf;
+//	char buf[]="libp1transform.so";
+//	argv[0]=buf;
   
 	int c=0;
 
