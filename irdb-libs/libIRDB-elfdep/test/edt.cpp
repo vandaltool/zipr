@@ -9,7 +9,7 @@ using namespace ElfDep_Tester;
 
 
 ElfDep_Tester_t::ElfDep_Tester_t(FileIR_t* firp)
-	: Transform (firp)
+	: Transform_t (firp)
 {
 }
 

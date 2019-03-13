@@ -12,7 +12,7 @@ using namespace std;
 
 
 typedef set<string> StringSet_t;
-class ElfDep_Tester_t : Transform
+class ElfDep_Tester_t : Transform_t
 {
 	public:
 	ElfDep_Tester_t(FileIR_t* firp);
