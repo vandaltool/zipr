@@ -56,6 +56,11 @@ do_logout()
 
 main()
 {
+	if [[ -z $PEASOUP_HOME ]]; then
+		cd /tmp/peasoup_test
+		source set_env_vars
+	fi
+
 	set -e 
 	do_docker_clean
 	do_login
