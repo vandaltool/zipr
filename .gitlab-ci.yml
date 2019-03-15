@@ -165,7 +165,7 @@ elfdep-centos75:
 deploy-u18:
   stage: deploy
   script:
-    - ./cicd_testing/elfdep.sh
+    - ./cicd_testing/deploy.sh
   tags:
     - ubuntu18
   variables:

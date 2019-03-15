@@ -17,6 +17,19 @@ print_usage()
 	echo ""
 }
 
+function is_in_activation 
+{
+	service "$1" status
+   activation=$(service "$1" status | grep "Active: activation" )
+   if [ -z "$activation" ]; then
+      true;
+   else
+      false;
+   fi
+
+   return $?;
+}
+
 main()
 {
 	local res=0
@@ -36,8 +49,7 @@ main()
 			echo
 			echo "Setting up postgres..."
 			echo
-			service postgresql start
-			sleep 2 # let service start up enough to print the message
+			service postgresql start 
 			echo
 			echo 'The IRDB toolchain is setup and ready to run.'
 			echo 'You could start your first experiment with:'
@@ -56,7 +68,7 @@ main()
 			echo ' < ls output >  '
 			echo 'zuser@a3fc1666aaa4:~$ readelf -l /bin/ls ./ls.p1 ' 
 			echo
-			exec sudo su - zuser
+			bash
 			res=0
 		;;
 
