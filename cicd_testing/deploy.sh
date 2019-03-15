@@ -30,6 +30,7 @@ do_build_image()
 	rm -rf installed || true
 	$PEDI_HOME/pedi --setup -m manifest.txt -l ps -l zipr -l stars -i $PS_INSTALL
 	$PEDI_HOME/pedi -m manifest.txt
+	rm manifest.txt.config
 
 	# build the docker image
 	cd $PEASOUP_HOME/cicd_testing/docker-zipr-bin
