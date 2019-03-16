@@ -9,6 +9,7 @@ stages:
   - clean
   - build
   - test
+  - deploy
 
 
 #
@@ -156,3 +157,16 @@ elfdep-centos75:
   variables:
     OS: 'centos75'  
 
+
+
+#
+# deploy a docker image
+#
+deploy-u18:
+  stage: deploy
+  script:
+    - ./cicd_testing/deploy.sh
+  tags:
+    - ubuntu18
+  variables:
+    OS: 'ubuntu18'  
