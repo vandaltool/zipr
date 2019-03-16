@@ -133,13 +133,13 @@ do_tests()
 					zafl.sh $progpath $protected --rida --enable-laf --enable-context-sensitivity function -d --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				laf)
-					$PSZ $progpath $protected -s rida=on -s meds_static=off -s laf=on -o laf:--enable-split-compare -o laf:--enable-trace-div --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					$PSZ $progpath $protected -s rida=on -s meds_static=off -s laf=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
-				laf_split)
-					$PSZ $progpath $protected -s rida=on -s meds_static=off -s laf=on -o laf:--disable-trace-div -o laf:--enable-split-compare --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+				laf_cmp)
+					$PSZ $progpath $protected -s rida=on -s meds_static=off -s laf=on -o laf:--disable-trace-div -o laf:--enable-trace-compare --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				laf_div)
-					$PSZ $progpath $protected -s rida=on -s meds_static=off -s laf=on -o laf:--enable-trace-div -o laf:--disable-split-compare --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					$PSZ $progpath $protected -s rida=on -s meds_static=off -s laf=on -o laf:--enable-trace-div -o laf:--disable-trace-compare --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				zipr)
 					$PSZ $progpath $protected --tempdir $temp_dir > test_${prog}.ps.log 2>&1
