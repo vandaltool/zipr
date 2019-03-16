@@ -421,3 +421,32 @@ RegisterID_t IRDB_SDK::convertRegisterTo16bit(const RegisterID_t p_reg)
 	}
 }
 
+RegisterID_t IRDB_SDK::convertRegisterTo8bit(const RegisterID_t p_reg)
+{
+	if (is16bitRegister(p_reg))
+		return p_reg;
+
+	switch (p_reg)
+	{
+		case rn_RAX: case  rn_EAX:  case   rn_AX:  return rn_AL;
+		case rn_RBX: case  rn_EBX:  case   rn_BX:  return rn_BL;
+		case rn_RCX: case  rn_ECX:  case   rn_CX:  return rn_CL;
+		case rn_RDX: case  rn_EDX:  case   rn_DX:  return rn_DL;
+		case rn_RBP: case  rn_EBP:  case   rn_BP:  return rn_BPL;
+		case rn_RSP: case  rn_ESP:  case   rn_SP:  return rn_SPL;
+		case rn_RSI: case  rn_ESI:  case   rn_SI:  return rn_SIL;
+		case rn_RDI: case  rn_EDI:  case   rn_DI:  return rn_DIL;
+		case  rn_R8: case  rn_R8D:  case  rn_R8W:  return rn_R8B;
+		case  rn_R9: case  rn_R9D:  case  rn_R9W:  return rn_R9B;
+		case rn_R10: case rn_R10D:  case rn_R10W:  return rn_R10B;
+		case rn_R11: case rn_R11D:  case rn_R11W:  return rn_R11B;
+		case rn_R12: case rn_R12D:  case rn_R12W:  return rn_R12B;
+		case rn_R13: case rn_R13D:  case rn_R13W:  return rn_R13B;
+		case rn_R14: case rn_R14D:  case rn_R14W:  return rn_R14B;
+		case rn_R15: case rn_R15D:  case rn_R15W:  return rn_R15B;
+		default:
+			return rn_UNKNOWN;
+			break;
+	}
+}
+
