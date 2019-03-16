@@ -136,7 +136,7 @@ do_tests()
 					$PSZ $progpath $protected -s rida=on -s meds_static=off -s laf=on -o laf:-v --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				laf_cmp)
-					$PSZ $progpath $protected -s rida=on -s meds_static=off -s laf=on -o laf:-v -o laf:--disable-trace-div -o laf:--enable-trace-compare --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					$PSZ $progpath $protected -s rida=on -s meds_static=off -s laf=on -o laf:--disable-trace-div -o laf:--enable-trace-compare --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				laf_div)
 					$PSZ $progpath $protected -s rida=on -s meds_static=off -s laf=on -o laf:-v -o laf:--enable-trace-div -o laf:--disable-trace-compare --tempdir $temp_dir > test_${prog}.ps.log 2>&1
