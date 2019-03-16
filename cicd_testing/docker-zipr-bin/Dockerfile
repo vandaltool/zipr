@@ -8,7 +8,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update &&   \
 	sudo 					\
 	nasm
 
-ENV IRDB_SDK=/opt/ps_zipr/irdb-sdk
 ENV IRDB_LIBS=/opt/ps_zipr/irdb-libs/lib
 COPY ./installed /opt/ps_zipr/
 COPY ./run_pszr.sh /run_pszr.sh
