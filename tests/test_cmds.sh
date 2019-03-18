@@ -124,10 +124,13 @@ do_tests()
 					zafl.sh $progpath $protected --rida --enable-context-sensitivity function -l --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				zafl_laf)
-					zafl.sh $progpath $protected -v --enable-laf --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					zafl.sh $progpath $protected --enable-laf --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+				;;
+				zafl_laf_domgraph)
+					zafl.sh $progpath $protected --enable-laf -d --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				zafl_context_sensitive_laf)
-					zafl.sh $progpath $protected -v --rida --enable-laf --enable-context-sensitivity function --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					zafl.sh $progpath $protected --rida --enable-laf --enable-context-sensitivity function --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				zafl_context_sensitive_laf_domgraph)
 					zafl.sh $progpath $protected --rida --enable-laf --enable-context-sensitivity function -d --tempdir $temp_dir > test_${prog}.ps.log 2>&1
