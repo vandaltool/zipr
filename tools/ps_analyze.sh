@@ -262,7 +262,7 @@ usage()
 	echo "   -o <stepname>:<option>                 Same as --step-option."
 	echo "   --timeout                              Specify a timeout for ps_analyze.sh."
 	echo "   --help                                 Print this page."
-	echo "   --usage        Same as --help"
+	echo "   --usage                                Same as --help"
 	echo "   --tempdir <dir>                        Specify where the temporary analysis files are stored, "
 	echo "                                          default is peasoup_executable_directory.<exe>.<pid>"
 	echo
