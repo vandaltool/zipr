@@ -136,13 +136,13 @@ do_tests()
 					zafl.sh $progpath $protected --rida --enable-laf --enable-context-sensitivity function -d --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				laf)
-					$PSZ $progpath $protected -s rida=on -s meds_static=off -s laf=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					$PSZ $progpath $protected -s rida -c laf --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				laf_cmp)
-					$PSZ $progpath $protected -s rida=on -s meds_static=off -s laf=on -o laf:--disable-trace-div -o laf:--enable-trace-compare --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					$PSZ $progpath $protected -s rida -c laf -o --disable-trace-div --enable-trace-compare --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				laf_div)
-					$PSZ $progpath $protected -s rida=on -s meds_static=off -s laf=on -o laf:-v -o laf:--enable-trace-div -o laf:--disable-trace-compare --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					$PSZ $progpath $protected -s rida -s laf -o -v --enable-trace-div --disable-trace-compare --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				zipr)
 					$PSZ $progpath $protected --tempdir $temp_dir > test_${prog}.ps.log 2>&1
@@ -151,22 +151,22 @@ do_tests()
 					$PSZ $progpath $protected --step-option zipr:--traceplacement:on --step-option zipr:true --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				ida)
-					$PSZ $progpath $protected -s meds_static=on -s rida=off --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					$PSZ $progpath $protected -s meds_static --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				rida)
-					$PSZ $progpath $protected -s meds_static=off -s rida=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					$PSZ $progpath $protected -s rida --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				rida_p1)
-					$PSZ $progpath $protected -s meds_static=off -s rida=on -c p1transform=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					$PSZ $progpath $protected -s rida -c p1transform=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				ida_scfi)
-					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected -s meds_static=on -s rida=off -s selective_cfi=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected -s meds_static  -s selective_cfi=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				rida_scfi)
-					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected -s meds_static=off -s rida=on -s selective_cfi=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected  -s rida -s selective_cfi=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				rida_p1_scfi)
-					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected -s meds_static=off -s rida=on -s p1transform=on -s selective_cfi=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected  -s rida -s p1transform=on -s selective_cfi=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				p1)
 					$PSZ $progpath $protected -c p1transform=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
@@ -184,7 +184,7 @@ do_tests()
 					$PSZ $progpath $protected -c move_globals=on -o move_globals:--elftables-only --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				mg_elfonly_rida)
-					$PSZ $progpath $protected -s rida=on -s meds_static=off -c move_globals=on -o move_globals:--elftables-only --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					$PSZ $progpath $protected -s rida  -c move_globals=on -o move_globals:--elftables-only --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				mgx)
 					$PSZ $progpath $protected -c move_globals=on --step-option move_globals:--aggressive --step xor_globals=on  --tempdir $temp_dir > test_${prog}.ps.log 2>&1
@@ -220,7 +220,7 @@ do_tests()
 					$PSZ $progpath $protected -c kill_deads=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				kill_deads_rida)
-					$PSZ $progpath $protected -c rida -c kill_deads=on -s meds_static=off --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					$PSZ $progpath $protected -c rida -c kill_deads=on  --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				scdi)
 					SimpleCDI_VERBOSE=1 $PSZ $progpath $protected --backend zipr --step simple_cdi=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
@@ -314,10 +314,10 @@ do_tests()
 					cp $temp_dir/vs-1/variant-3/bin/$(basename $progpath) $protected 
 				;;
 				fix_calls_ida)
-					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected -s meds_static=on -s rida=off --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected -s meds_static --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				fix_calls_rida)
-					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected -s meds_static=off -s rida=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected -s rida --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				fix_calls)
 					FIX_CALLS_FIX_ALL_CALLS=1 $PSZ $progpath $protected --tempdir $temp_dir > test_${prog}.ps.log 2>&1
