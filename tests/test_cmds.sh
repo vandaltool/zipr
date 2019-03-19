@@ -124,16 +124,19 @@ do_tests()
 					zafl.sh $progpath $protected --rida --enable-context-sensitivity function -l --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				zafl_laf)
-					zafl.sh $progpath $protected -v --enable-laf --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					zafl.sh $progpath $protected --enable-laf --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+				;;
+				zafl_laf_domgraph)
+					zafl.sh $progpath $protected --enable-laf -d --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				zafl_context_sensitive_laf)
-					zafl.sh $progpath $protected -v --rida --enable-laf --enable-context-sensitivity function --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					zafl.sh $progpath $protected --rida --enable-laf --enable-context-sensitivity function --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				zafl_context_sensitive_laf_domgraph)
 					zafl.sh $progpath $protected --rida --enable-laf --enable-context-sensitivity function -d --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				laf)
-					$PSZ $progpath $protected -s rida=on -s meds_static=off -s laf=on -o laf:-v --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+					$PSZ $progpath $protected -s rida=on -s meds_static=off -s laf=on --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
 				laf_cmp)
 					$PSZ $progpath $protected -s rida=on -s meds_static=off -s laf=on -o laf:--disable-trace-div -o laf:--enable-trace-compare --tempdir $temp_dir > test_${prog}.ps.log 2>&1
