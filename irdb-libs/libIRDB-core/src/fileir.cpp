@@ -977,6 +977,8 @@ void FileIR_t::setArchitecture(const int width, const ADMachineType_t mt)
 		archdesc=new ArchitectureDescription_t;
 	archdesc->setBitWidth(width); 
 	archdesc->setMachineType(mt); 
+
+	archdesc->setFileBase(0);	// maybe not rght for PE files?
 }	
 
 void FileIR_t::setArchitecture()
@@ -1025,12 +1027,85 @@ void FileIR_t::setArchitecture()
 	}
 
 
-	if (is_pe) // libIRDB::FileIR_t::archdesc->getFileType() == IRDB_SDK::adftPE)
+	if (is_pe) 
 	{
+		// set machine/file types
 		libIRDB::FileIR_t::archdesc->setFileType(IRDB_SDK::adftPE);
 		// just assume x86-64 bit for Windows, o/w could also extract from file
 		libIRDB::FileIR_t::archdesc->setBitWidth(64);
 		libIRDB::FileIR_t::archdesc->setMachineType(IRDB_SDK::admtX86_64);
+
+		// now we need to read the image base from the exe file
+
+		//DOS .EXE header
+		struct irdb_dos_header
+		{
+			uint16_t e_magic;                     // Magic number
+			uint16_t e_cblp;                      // Bytes on last page of file
+			uint16_t e_cp;                        // Pages in file
+			uint16_t e_crlc;                      // Relocations
+			uint16_t e_cparhdr;                   // Size of header in paragraphs
+			uint16_t e_minalloc;                  // Minimum extra paragraphs needed
+			uint16_t e_maxalloc;                  // Maximum extra paragraphs needed
+			uint16_t e_ss;                        // Initial (relative) SS value
+			uint16_t e_sp;                        // Initial SP value
+			uint16_t e_csum;                      // Checksum
+			uint16_t e_ip;                        // Initial IP value
+			uint16_t e_cs;                        // Initial (relative) CS value
+			uint16_t e_lfarlc;                    // File address of relocation table
+			uint16_t e_ovno;                      // Overlay number
+			uint16_t e_res[4];                    // Reserved words
+			uint16_t e_oemid;                     // OEM identifier (for e_oeminfo)
+			uint16_t e_oeminfo;                   // OEM information; e_oemid specific
+			uint16_t e_res2[10];                  // Reserved words
+			int32_t  e_lfanew;                    // File address of new exe header
+		};
+
+		struct irdb_image_pe_headers64
+		{
+			uint32_t Signature;
+			uint16_t Machine;
+			uint16_t NumberOfSections;
+			uint32_t TimeDateStamp;
+			uint32_t PointerToSymbolTable;
+			uint32_t NumberOfSymbols;
+			uint16_t SizeOfOptionalHeader;
+			uint16_t Characteristics;
+			uint16_t Magic;
+			uint8_t  MajorLinkerVersion;
+			uint8_t  MinorLinkerVersion;
+			uint32_t SizeOfCode;
+			uint32_t SizeOfInitializedData;
+			uint32_t SizeOfUninitializedData;
+			uint32_t AddressOfEntryPoint;
+			uint32_t BaseOfCode;
+
+			// ImageBase is a uint32_t for 32-bit code.
+			uint64_t ImageBase;
+
+		};
+
+
+		// declare and init a dos header.
+                struct irdb_dos_header idh;
+                memset(&idh,0,sizeof(idh));
+                struct irdb_image_pe_headers64 pe_and_opt_headers;
+                memset(&pe_and_opt_headers,0,sizeof(pe_and_opt_headers));
+
+                loa.seek(0, ios::beg);
+                loa.cread((char*)&idh, sizeof(idh));
+
+                loa.seek(idh.e_lfanew, ios::beg);
+                loa.cread((char*)&pe_and_opt_headers, sizeof(pe_and_opt_headers));
+
+                assert(pe_and_opt_headers.Signature ==0x4550 /* "PE" means pe file */);
+                assert(pe_and_opt_headers.Magic ==0x20b /* "8664" means 64-bits */);
+                /* note: if pe_and_opt_headers.Magic==0x10b that means "8632" or intel 32-bit file.  not supporting yet. */
+
+                if(getenv("IRDB_VERBOSE"))
+                        cout<<"Determined PE32+ file has image base: "<<hex<<pe_and_opt_headers.ImageBase<<endl;
+
+                archdesc->setFileBase(pe_and_opt_headers.ImageBase);
 	}
 	else if(is_elf)
 	{

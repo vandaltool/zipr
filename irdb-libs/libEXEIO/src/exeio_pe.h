@@ -132,7 +132,15 @@ namespace EXEIO
 			}
 			virtual MachineType_t getMachineType() const
 			{
-				assert(0);
+				assert(e);
+                                switch(e->get_machine())
+                                {
+                                        case 0x14c  : return mtI386;
+                                        case 0x8664 : return mtX86_64;
+                                        default: assert(0);
+                                }
+                                assert(0);
+
 			}
 
                         virtual execlass_t get_class() 

@@ -369,9 +369,9 @@ string adjust_esp_offset(string newbits, int offset)
         }
 
         /* 8-bit offset */
-        else if ( (unsigned char)newbits[0] == 0xff &&                           	/* ff */
-             ((unsigned char)newbits[1] == 0x54 || (unsigned char)newbits[1]==0xa4) &&    		/* /3 or /5 */
-             sib_base == 0x4 )                                          /* base==esp */
+        else if ( (unsigned char)newbits[0] == 0xff &&                                  //   ff 
+             ((unsigned char)newbits[1] == 0x54 || (unsigned char)newbits[1]==0xa4) &&  //   /3 or /5 
+             sib_base == 0x4 )                                                          //   base==esp 
         {
                 /* We need to add 4 to the offset, but this may overflow an 8-bit quantity
                  * (note:  there's no 16-bit offset for this insn.  Only 8-bit or 32-bit offsets exist for this instr)
@@ -540,16 +540,7 @@ void fix_call(Instruction_t* insn, FileIR_t *firp, bool can_unpin)
 	VirtualOffset_t next_addr=insn->getAddress()->getVirtualOffset() + insn->getDataBits().length();
 
 	/* create a new instruction and a new addresss for it that do not correspond to any original program address */
-	/*
-	 Instruction_t *callinsn=new Instruction_t();
-	 firp->getInstructions().insert(callinsn);
-	 */
 	auto callinsn=firp->addNewInstruction();
-	/*
-	 AddressID_t *calladdr=new AddressID_t;
-	 firp->getAddresses().insert(calladdr);
-       	 calladdr->setFileID(insn->getAddress()->getFileID());
-	*/
 	auto calladdr=firp->addNewAddress(insn->getAddress()->getFileID(),0);
 
 	/* set the fields in the new instruction */
@@ -599,21 +590,8 @@ void fix_call(Instruction_t* insn, FileIR_t *firp, bool can_unpin)
 	insn->setComment(insn->getComment()+" Push part");
 
 	/* create a relocation for this instruction */
-	/*
-	Relocation_t* reloc=new Relocation_t;
-	insn->getRelocations().insert(reloc);
-	firp->getRelocations().insert(reloc);
-	*/
 	auto reloc= firp->getArchitectureBitWidth()==32 ? firp->addNewRelocation(insn, 1, "32-bit") :
-		/*
-		reloc->setOffset(1);
-		reloc->setType("32-bit");
-		*/
 		    firp->getArchitectureBitWidth()==64 ? firp->addNewRelocation(insn, 0, "push64") :
-		/*
-		reloc->setOffset(0);
-		reloc->setType("push64");
-		*/
 		    throw invalid_argument("odd bit width?");
 
 
@@ -622,13 +600,6 @@ void fix_call(Instruction_t* insn, FileIR_t *firp, bool can_unpin)
 	if(newindirtarg && !newindirtarg->getIndirectBranchTargetAddress())
 	{
 		/* create a new address for the IBTA */
-		/*
-		AddressID_t* newaddr = new AddressID_t;
-		assert(newaddr);
-		newaddr->setFileID(newindirtarg->getAddress()->getFileID());
-		newaddr->setVirtualOffset(newindirtarg->getAddress()->getVirtualOffset());
-		firp->getAddresses().insert(newaddr);
-		*/
 		auto newaddr=firp->addNewAddress(newindirtarg->getAddress()->getFileID(), newindirtarg->getAddress()->getVirtualOffset());
 
 		/* set the instruction and include this address in the list of addrs */
@@ -650,18 +621,8 @@ void fix_call(Instruction_t* insn, FileIR_t *firp, bool can_unpin)
 
 
 	// mark in the IR what the fallthrough of this insn is.
-	/* 
-	Relocation_t* fix_call_reloc=new Relocation_t(); 
-	callinsn->getRelocations().insert(fix_call_reloc);
-	firp->getRelocations().insert(fix_call_reloc);
-	*/
 	auto fix_call_reloc=firp->addNewRelocation(callinsn, 0, "fix_call_fallthrough", newindirtarg);
 	(void)fix_call_reloc; // not used, just give to IR
-	/*
-	fix_call_reloc->setOffset(0);
-	fix_call_reloc->setType("fix_call_fallthrough");
-	fix_call_reloc->setWRT(newindirtarg);
-	*/
 }
 
 
@@ -703,9 +664,12 @@ bool can_skip_safe_function(Instruction_t *call_insn)
 }
 
 
-template <class T> struct insn_less : binary_function <T,T,bool> {
-  bool operator() (const T& x, const T& y) const {
-        return  x->getBaseID()  <   y->getBaseID()  ;}
+template <class T> struct insn_less : binary_function <T,T,bool> 
+{
+	bool operator() (const T& x, const T& y) const 
+	{
+		return  make_tuple(x->getBaseID(),x) < make_tuple(y->getBaseID(),y);
+	}
 };
 
 
@@ -717,14 +681,6 @@ void mark_as_unpinned_ibt(FileIR_t* firp, Instruction_t* ret_point)
 	if( ret_point == NULL ) return;
 	if( ret_point->getIndirectBranchTargetAddress() != NULL ) return;
 	
-	/*
-	auto newaddr = new AddressID_t;
-	assert(newaddr);
-	newaddr->setFileID(ret_point->getAddress()->getFileID());
-	newaddr->setVirtualOffset(0);	// unpinne
-	
-	firp->getAddresses().insert(newaddr);
-	*/
 	auto newaddr=firp->addNewAddress(ret_point->getAddress()->getFileID(),0);
 	ret_point->setIndirectBranchTargetAddress(newaddr);
 	
@@ -859,9 +815,9 @@ void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 			memcpy(cstr,data.c_str(), data.length());
 			void *offsetptr=&cstr[offset];
 
-			uintptr_t disp=the_arg.getMemoryDisplacement(); 
-			uintptr_t oldpc=virt_offset;
-			uintptr_t newdisp=disp+oldpc;
+			auto disp=the_arg.getMemoryDisplacement(); 
+			auto oldpc=virt_offset;
+			auto newdisp=disp+oldpc-firp->getArchitecture()->getFileBase();
 
 			assert((uintptr_t)(offset+size)<=(uintptr_t)(data.length()));
 			
@@ -894,11 +850,6 @@ void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 		}
 
 		// now that we've done the rewriting, go ahead and add the reloc.
-		/*
-		auto reloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, 0,"pcrel");
-		insn->getRelocations().insert(reloc);
-		firp->getRelocations().insert(reloc);
-		*/
 		auto reloc=firp->addNewRelocation(insn,0,"pcrel");
 		(void)reloc; // not used, only given to the IR
 
@@ -916,10 +867,6 @@ void fix_safefr(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 		assert(reloc);
 		if( reloc->getType() == "safefr" )
 		{
-			/*
-			auto addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE, insn->getAddress()->getFileID(), 0);
-			firp->getAddresses().insert(addr);
-			*/
 			auto addr=firp->addNewAddress(insn->getAddress()->getFileID(), 0);
 			insn->setAddress(addr);
 		}
@@ -929,7 +876,6 @@ void fix_safefr(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 
 void fix_other_pcrel(FileIR_t* firp)
 {
-
 	for(auto insn : firp->getInstructions())
 	{
 		fix_other_pcrel(firp,insn, insn->getAddress()->getVirtualOffset());
@@ -1008,7 +954,6 @@ int parseArgs(const vector<string> step_args)
 	if(getenv("FIX_CALLS_FIX_ALL_CALLS"))
 		fix_all=true;
 
-//	variant_id=stoi(step_args[0]);
 	return 0;
 }
 
@@ -1169,8 +1114,6 @@ shared_ptr<TransformStep_t> getTransformStep(void)
 {
         curInvocation.reset(new FixCalls_t());
         return curInvocation;
-
-        //return shared_ptr<Transform_SDK::TransformStep_t>(new FixCalls_t());
 }
 
 

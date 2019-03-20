@@ -41,11 +41,15 @@ class ArchitectureDescription_t : virtual public IRDB_SDK::ArchitectureDescripti
 		ADMachineType_t getMachineType() const 		{ return mt; }	
 		void setMachineType(const ADMachineType_t t) 	{ mt=t; }
 
+		IRDB_SDK::VirtualOffset_t getFileBase() const   { return file_base; }
+		void setFileBase(virtual_offset_t _file_base)   { file_base=_file_base; }
+
 	private:
 
 		size_t bits;
 		ADFileType_t ft;
 		ADMachineType_t mt;
+		IRDB_SDK::VirtualOffset_t file_base;
 };
 
 }

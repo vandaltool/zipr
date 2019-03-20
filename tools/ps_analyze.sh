@@ -1038,17 +1038,17 @@ compatcheck()
 
 	file $1 |egrep  "ELF.*executable" > /dev/null 2>&1 
 	if [ $? = 0 ]; then
-		echo Detected ELF file.
+		echo "Detected ELF non-PIE executable."
 		return
 	fi
 	file $1 |egrep  "ELF.*shared object" > /dev/null 2>&1 
 	if [ $? = 0 ]; then
-		echo Detected ELF shared object.
+		echo "Detected ELF shared object."
 		return
 	fi
-	file $1 |egrep  "CGC.*executable" > /dev/null 2>&1 
+	file $1 |egrep  "PE32\+ executable" > /dev/null 2>&1 
 	if [ $? = 0 ]; then
-		echo Detected CGCEF file.
+		echo "Detected PE32+ file"
 		return
 	fi
 
