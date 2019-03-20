@@ -17,12 +17,24 @@ BASE_PKGS="
   gcc-multilib
   g++-multilib
   autoconf
-  realpath
+  apt-libjsoncpp-dev
   apt-libelf-dev
   yum-libelf-devel
   libstdc++6:i386
   coreutils
-  makeself"
+  makeself
+  "
+
+# realpath is not a candidate install package on u18
+platform=$(lsb_release -d -s)
+case "$platform" in
+	Ubuntu?18*)
+		;;
+	*)
+		BASE_PKGS="$BASE_PKGS realpath"
+		;;
+esac
+
 
 #
 # base (ld):
@@ -86,7 +98,7 @@ install_packs()
 	which apt-get 1> /dev/null 2> /dev/null 
 	if [[ $? == 0  ]]; then
 		cmd="sudo apt-get install -y --ignore-missing $apters"
-		sudo apt-get install -y --ignore-missing $apters
+		sudo apt-get -y --ignore-missing install $apters
 	else
 		sudo yum install -y --skip-broken $yummers
 	fi
