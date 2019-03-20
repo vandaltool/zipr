@@ -901,12 +901,12 @@ do_plugins()
 			# if this step is a stop before/after step, do it special, so we exit early.
 			if [[ $stepname == $stop_before_step ]] || [[ $stepname == $stop_after_step ]]; then
 				# just run the step now.
-				perform_step $stepname none "$plugin_path/thanos.exe --no-redirect "$thanos_plugins""
+				perform_step $stepname none "$PEASOUP_HOME/irdb-libs/plugins_install/thanos.exe --no-redirect "$thanos_plugins""
 				thanos_steps=""
 				thanos_plugins=""
 			elif   [[ $stepname == $dump_before_step ]] || [[ $stepname == $dump_after_step ]]; then
 				# just run the step now.
-				perform_step $stepname none "$plugin_path/thanos.exe "$thanos_plugins""
+				perform_step $stepname none "$PEASOUP_HOME/irdb-libs/plugins_install/thanos.exe "$thanos_plugins""
 				thanos_steps=""
 				thanos_plugins=""
 			fi
