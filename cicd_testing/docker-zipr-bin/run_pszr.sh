@@ -5,7 +5,7 @@ print_usage()
 	echo ""
 	echo " This docker container is made available to the public by Zephyr Software       "
 	echo " (contact: jwd@zephyr-software.com) under the Creative Commons Attribution-     "
-	echo " NonCommercial license (CC BY-NC).                                              "
+	echo " NonCommercial 4.0 International license (CC BY-NC 4.0).                                              "
 	echo ""
 	echo " Linux, Gcc, and other relevant open source projects are licensed under their   "
 	echo " own license and are exempt from this license statement.                        "
