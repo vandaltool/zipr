@@ -135,6 +135,9 @@ do_tests()
 				zafl_context_sensitive_laf_domgraph)
 					zafl.sh $progpath $protected --rida --enable-laf --enable-context-sensitivity function -d --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
+				zafl_context_sensitive_laf_domgraph_optgraph)
+					zafl.sh $progpath $protected --rida --enable-laf --enable-context-sensitivity function -d -g --tempdir $temp_dir > test_${prog}.ps.log 2>&1
+				;;
 				laf)
 					$PSZ $progpath $protected -s rida -c laf --tempdir $temp_dir > test_${prog}.ps.log 2>&1
 				;;
