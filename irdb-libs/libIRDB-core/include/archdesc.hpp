@@ -29,8 +29,15 @@ class ArchitectureDescription_t : virtual public IRDB_SDK::ArchitectureDescripti
 {
 	public:
 
-		virtual ~ArchitectureDescription_t() {}
-		ArchitectureDescription_t() : bits(0), ft(IRDB_SDK::adftNone), mt(IRDB_SDK::admtNone) {}
+		virtual ~ArchitectureDescription_t() { }
+		ArchitectureDescription_t() 
+			: 
+				bits(0), 
+				ft(IRDB_SDK::adftNone), 
+				mt(IRDB_SDK::admtNone), 
+				file_base(0) 
+		{
+		}
 
 		int getBitWidth() const 		{ return bits; }	
 		void setBitWidth(const int _bits) 	{ bits=_bits; }	
