@@ -79,6 +79,7 @@ namespace zipr
 #include <zipr_impl.h>
 #include <zipr_optimizations.h>
 #include <zipr_stats.h>
+#include <exewrite.h>
 #include <elfwrite.h>
 #include <pewrite.h>
 #include <ehwrite.h>

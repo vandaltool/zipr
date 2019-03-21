@@ -10,93 +10,47 @@
 #endif
 
 
-class ElfWriter
+class ElfWriter : public ExeWriter
 {
 	protected: 
 
-	class StringTable_t
-	{
-		public:
-
-		StringTable_t() { } ;
-		void AddString(const std::string &s)
+		class StringTable_t
 		{
-			if(locations.find(s)!=locations.end()) 
-				return;
-		
-			locations[s]=table.size();
-			table+=s;
-			table+='\0';
-		}
-		void Write(FILE* fout) const
-		{
-			fwrite(table.c_str(), table.size(), 1, fout);
-		}
-		std::size_t size() const { return table.size(); }
-		std::size_t location(const std::string &s) const { return locations.at(s); }
-	
-		private:
+			public:
 
-		std::string table;
-		std::map<std::string,std::size_t> locations;
-	};
-
-	class PageData_t
-	{
-		
-		public: 	
-			PageData_t() : m_perms(0), is_relro(false), data(PAGE_SIZE), inuse(PAGE_SIZE) { }
-
-			void union_permissions(int p_perms) { m_perms|=p_perms; }
-
-			bool is_zero_initialized() const
-			{ 
-				for(unsigned int i=0;i<data.size();i++)
-				{
-					if(data.at(i)!=0)
-						return false;
-				}
-				return true;
-			}
-
-		int m_perms;
-		bool is_relro;
-
-		std::vector<unsigned char> data;
-		std::vector<bool> inuse;
-	};
-	class LoadSegment_t
-	{
-		public:
-			LoadSegment_t() :filesz(0), memsz(0), filepos(0), start_page(0), m_perms(0) { }
-
-			LoadSegment_t( unsigned int p_filesz, unsigned int p_memsz, unsigned int p_filepos, unsigned int p_start_page, unsigned int p_m_perms)
-				:
-				filesz(p_filesz),
-				memsz(p_memsz), 
-				filepos(p_filepos),
-				start_page(p_start_page),
-				m_perms(p_m_perms)
+			StringTable_t() { } ;
+			void AddString(const std::string &s)
 			{
-				
-			}
-
-
-		unsigned int filesz; 
-		unsigned int memsz; 
-		unsigned int filepos;
-		unsigned int start_page;
-		unsigned int m_perms;
+				if(locations.find(s)!=locations.end()) 
+					return;
 			
-	};
-	typedef std::vector<LoadSegment_t*> LoadSegmentVector_t;
-	
-	typedef std::map<IRDB_SDK::VirtualOffset_t, PageData_t> PageMap_t;
+				locations[s]=table.size();
+				table+=s;
+				table+='\0';
+			}
+			void Write(FILE* fout) const
+			{
+				fwrite(table.c_str(), table.size(), 1, fout);
+			}
+			std::size_t size() const { return table.size(); }
+			std::size_t location(const std::string &s) const { return locations.at(s); }
+		
+			private:
+
+			std::string table;
+			std::map<std::string,std::size_t> locations;
+		};
+
 
 	public: 
-		ElfWriter(IRDB_SDK::FileIR_t* firp, bool write_sections, bool bss_opts) : m_firp(firp), m_write_sections(write_sections), m_bss_opts(bss_opts) { }
+		ElfWriter(IRDB_SDK::FileIR_t* firp, bool write_sections, bool bss_opts) 
+			:
+				ExeWriter(firp,write_sections,bss_opts)
+			{
+			}
+
 		virtual ~ElfWriter() {}
-		void Write(const ELFIO::elfio *elfiop, IRDB_SDK::FileIR_t* firp, const std::string &out_file, const std::string &infile);
+		void Write(const EXEIO::exeio *exeiop, const std::string &out_file, const std::string &infile);
 
 
 	protected:
@@ -108,39 +62,7 @@ class ElfWriter
 		virtual void CreateNewPhdrs(const IRDB_SDK::VirtualOffset_t &min_addr, const IRDB_SDK::VirtualOffset_t &max_addr)=0;
 		virtual void WriteElf(FILE* fout)=0;
 		virtual void AddSections(FILE* fout)=0;
-	
-
-		PageMap_t pagemap;
-		LoadSegmentVector_t segvec;
-
-		template <class T> static T page_align(const T& in)
-		{
-
-			return in&~(PAGE_SIZE-1);
-		}
-
-
-
-	protected:
-		IRDB_SDK::FileIR_t* m_firp;
-		bool m_write_sections;
-		bool m_bss_opts;
-	private:
-		IRDB_SDK::VirtualOffset_t DetectMinAddr(const ELFIO::elfio *elfiop, IRDB_SDK::FileIR_t* firp, const std::string &out_file);
-		IRDB_SDK::VirtualOffset_t DetectMaxAddr(const ELFIO::elfio *elfiop, IRDB_SDK::FileIR_t* firp, const std::string &out_file);
-
-		void CreatePagemap(const ELFIO::elfio *elfiop, IRDB_SDK::FileIR_t* firp, const std::string &out_file);
-		void CreateSegmap(const ELFIO::elfio *elfiop, IRDB_SDK::FileIR_t* firp, const std::string &out_file);
-		void SortSegmap();
-
-
-
-		
 };
-
-
-// 
-
 
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
 class ElfWriterImpl : public ElfWriter

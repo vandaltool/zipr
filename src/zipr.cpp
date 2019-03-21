@@ -1916,14 +1916,14 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 		// create the output file in a totally different way using elfwriter. later we may 
 		// use this instead of the old way.
 
-		auto elfiop=reinterpret_cast<ELFIO::elfio*>(exeiop->get_elfio());
+		//auto elfiop=reinterpret_cast<ELFIO::elfio*>(exeiop->get_elfio());
 		auto ew=unique_ptr<ElfWriter>();
 		ew.reset(
 			bit_width == 64 ? (ElfWriter*)new ElfWriter64(m_firp, *m_add_sections, *m_bss_opts) :
 			bit_width == 32 ? (ElfWriter*)new ElfWriter32(m_firp, *m_add_sections, *m_bss_opts) :
 			throw invalid_argument("Unknown machine width")
 			);
-		ew->Write(elfiop,m_firp, output_filename, "a.ncexe");
+		ew->Write(exeiop,output_filename, "a.ncexe");
 		ew.reset(nullptr); // explicitly free ew as we're done with it
 	}
 	else if (is_pe)

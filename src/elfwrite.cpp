@@ -34,18 +34,17 @@ static inline uintptr_t page_round_up(uintptr_t x)
 
 
 
-void ElfWriter::Write(const ELFIO::elfio *elfiop, FileIR_t* firp, const string &out_file, const string &infile)
+void ElfWriter::Write(const EXEIO::exeio *exeiop, const string &out_file, const string &infile)
 {
-
-	FILE* fin=fopen(infile.c_str(), "r");
-	FILE* fout=fopen(out_file.c_str(), "w");
+	auto fin=fopen(infile.c_str(), "r");
+	auto fout=fopen(out_file.c_str(), "w");
 	assert(fin && fout);
 
-	CreatePagemap(elfiop, firp, out_file);
-	CreateSegmap(elfiop, firp, out_file);
+	CreatePagemap();
+	CreateSegmap();
 	//SortSegmap();
-	VirtualOffset_t min_addr=DetectMinAddr(elfiop, firp, out_file);
-	VirtualOffset_t max_addr=DetectMaxAddr(elfiop, firp, out_file);
+	VirtualOffset_t min_addr=DetectMinAddr();
+	VirtualOffset_t max_addr=DetectMaxAddr();
 
 	LoadEhdr(fin);
 	LoadPhdrs(fin);
@@ -59,8 +58,9 @@ void ElfWriter::Write(const ELFIO::elfio *elfiop, FileIR_t* firp, const string &
 
 }
 
-VirtualOffset_t ElfWriter::DetectMinAddr(const ELFIO::elfio *elfiop, FileIR_t* firp, const string &out_file)
+VirtualOffset_t ExeWriter::DetectMinAddr()
 {
+	auto firp=m_firp;
 	VirtualOffset_t min_addr=(*(firp->getDataScoops().begin()))->getStart()->getVirtualOffset();
 	for(DataScoopSet_t::iterator it=firp->getDataScoops().begin(); it!=firp->getDataScoops().end(); ++it)
 	{
@@ -74,8 +74,9 @@ VirtualOffset_t ElfWriter::DetectMinAddr(const ELFIO::elfio *elfiop, FileIR_t* f
 
 }
 
-VirtualOffset_t ElfWriter::DetectMaxAddr(const ELFIO::elfio *elfiop, FileIR_t* firp, const string &out_file)
+VirtualOffset_t ExeWriter::DetectMaxAddr()
 {
+	auto firp=m_firp;
 	VirtualOffset_t max_addr=(*(firp->getDataScoops().begin()))->getEnd()->getVirtualOffset();
 	for(DataScoopSet_t::iterator it=firp->getDataScoops().begin(); it!=firp->getDataScoops().end(); ++it)
 	{
@@ -89,8 +90,9 @@ VirtualOffset_t ElfWriter::DetectMaxAddr(const ELFIO::elfio *elfiop, FileIR_t* f
 
 }
 
-void ElfWriter::CreatePagemap(const ELFIO::elfio *elfiop, FileIR_t* firp, const string &out_file)
+void ExeWriter::CreatePagemap()
 {
+	auto firp=m_firp;
 
 // 	for(DataScoopSet_t::iterator it=firp->getDataScoops().begin(); it!=firp->getDataScoops().end(); ++it)
 // 		DataScoop_t* scoop=*it;
@@ -144,7 +146,7 @@ void ElfWriter::CreatePagemap(const ELFIO::elfio *elfiop, FileIR_t* firp, const 
 	}
 }
 
-void ElfWriter::SortSegmap()
+void ExeWriter::SortSegmap()
 {
 	// do one interation of a bubble sort to move the segement with the largest bss last.
 	for (unsigned int i=0; i<segvec.size()-1;i++)
@@ -160,7 +162,7 @@ void ElfWriter::SortSegmap()
 	}
 }
 
-void ElfWriter::CreateSegmap(const ELFIO::elfio *elfiop, FileIR_t* firp, const string &out_file)
+void ExeWriter::CreateSegmap()
 {
 	const auto should_bss_optimize= [&] (const PageData_t& perms)
 	{

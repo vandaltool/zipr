@@ -10,22 +10,18 @@
 #endif
 
 
-class PeWriter
+class PeWriter : ExeWriter
 {
 	public: 
-		PeWriter(IRDB_SDK::FileIR_t* firp, bool write_sections, bool bss_opts) : m_firp(firp), m_write_sections(write_sections), m_bss_opts(bss_opts) { }
+		PeWriter(IRDB_SDK::FileIR_t* firp, bool write_sections, bool bss_opts) 
+			: 
+				ExeWriter(firp,write_sections,bss_opts)
+		{
+		}
 		virtual ~PeWriter() {}
 		void Write(const EXEIO::exeio *exeiop, const std::string &out_file, const std::string &infile);
 
 	protected:
-
-		FileIR_t* m_firp=nullptr;
-		bool m_write_sections=false;
-		bool m_bss_opts=false;
-
-
-
-		
 };
 
 
