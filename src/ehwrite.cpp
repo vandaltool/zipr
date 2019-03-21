@@ -16,13 +16,12 @@
 
 #include <zipr_dwarf2.hpp>
 
-#include "elfio/elfio.hpp"
-#include "elfio/elfio_dump.hpp"
+#include "exeio.h"
 
 using namespace IRDB_SDK;
 using namespace std;
 using namespace zipr;
-using namespace ELFIO;
+using namespace EXEIO;
 
 template < typename T > std::string to_hex_string( const T& n )
 {
@@ -1354,12 +1353,12 @@ void EhWriterImpl_t<ptrsize>::CompileEhOutput()
 template<int ptrsize>
 void EhWriterImpl_t<ptrsize>::ScoopifyEhOutput()
 {
-        ELFIO::elfio ehframe_exe_elfio;
-	ehframe_exe_elfio.load(ehframe_exe_filename);
+        EXEIO::exeio ehframe_exe_rep;
+	ehframe_exe_rep.load(ehframe_exe_filename);
 
 	auto to_scoop=[&](const string &secname)->void
 	{
-		const auto &sec=ehframe_exe_elfio.sections[secname];
+		const auto &sec=ehframe_exe_rep.sections[secname];
 
 		// if sec is missing, don't scoopify.
 

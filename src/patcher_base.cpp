@@ -48,15 +48,11 @@ namespace zipr
 #include <string>     // std::string, std::to_string
 #include <fstream>
 
-#include "elfio/elfio.hpp"
-#include "elfio/elfio_dump.hpp"
-
 #define ALLOF(a) begin(a),end(a)
 
 using namespace IRDB_SDK;
 using namespace std;
 using namespace zipr;
-using namespace ELFIO;
 
 unique_ptr<ZiprPatcherBase_t> ZiprPatcherBase_t::factory(Zipr_SDK::Zipr_t* p_parent)
 {

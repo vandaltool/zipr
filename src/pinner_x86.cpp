@@ -327,7 +327,7 @@ void ZiprPinnerX86_t::PreReserve2ByteJumpTargets()
 							(void*)(uintptr_t)upinsn->getIndirectBranchTargetAddress()->getVirtualOffset() : 0x0);
 
 						up.SetRange(Range_t(addr+i, addr+i+size));
-						for (unsigned int j = up.GetRange().getStart(); j<up.GetRange().getEnd(); j++)
+						for (auto j = up.GetRange().getStart(); j<up.GetRange().getEnd(); j++)
 						{
 							memory_space.splitFreeRange(j);
 						}
@@ -469,7 +469,7 @@ void ZiprPinnerX86_t::InsertJumpPoints68SledArea(Sled_t &sled)
 Instruction_t* ZiprPinnerX86_t::Emit68Sled(RangeAddress_t addr, Sled_t sled, Instruction_t* next_sled)
 {
 	Instruction_t *sled_start_insn = nullptr;
-	unsigned int sled_number = addr - sled.SledRange().getStart();
+	auto sled_number = addr - sled.SledRange().getStart();
 	size_t sled_size = sled.SledRange().getEnd() - sled.SledRange().getStart();
 
 	sled_start_insn = FindPinnedInsnAtAddr(addr);
@@ -935,17 +935,12 @@ void ZiprPinnerX86_t::ReservePinnedInstructions()
 	/* first, for each pinned instruction, try to 
 	 * put down a jump for the pinned instruction
  	 */
-	for(
-		set<UnresolvedPinned_t,pin_sorter_t>::const_iterator it=unresolved_pinned_addrs.begin();
-		it!=unresolved_pinned_addrs.end();
-		++it
-		)
+	for( auto it=unresolved_pinned_addrs.begin(); it!=unresolved_pinned_addrs.end(); ++it)
 	{
 		char bytes[]={(char)0xeb,(char)0}; // jmp rel8
 		UnresolvedPinned_t up=*it;
-		Instruction_t* upinsn=up.getInstrution();
-		RangeAddress_t addr=(unsigned)upinsn->getIndirectBranchTargetAddress()
-		                                    ->getVirtualOffset();
+		const auto upinsn=up.getInstrution();
+		auto addr=upinsn->getIndirectBranchTargetAddress()->getVirtualOffset();
 
 		if(upinsn->getIndirectBranchTargetAddress()->getFileID() ==
 		   BaseObj_t::NOT_IN_DATABASE)
@@ -962,7 +957,7 @@ void ZiprPinnerX86_t::ReservePinnedInstructions()
 			if (m_verbose)
 				printf("Final pinning %p-%p.  fid=%d\n", (void*)addr, (void*)(addr+upinsn->getDataBits().size()-1),
 				upinsn->getAddress()->getFileID());
-			for(unsigned int i=0;i<upinsn->getDataBits().size();i++)
+			for(auto i=0u;i<upinsn->getDataBits().size();i++)
 			{
 				memory_space[addr+i]=upinsn->getDataBits()[i];
 				memory_space.splitFreeRange(addr+i);
@@ -995,7 +990,7 @@ void ZiprPinnerX86_t::ReservePinnedInstructions()
 			 * Assert that the space is free.  We already checked that it should be 
 			 * with the FindPinnedInsnAtAddr, but just to be safe.
 			 */
-			for(unsigned int i=0;i<sizeof(bytes);i++)
+			for(auto i=0u;i<sizeof(bytes);i++)
 			{
 				assert(memory_space.find(addr+i) == memory_space.end() );
 				memory_space[addr+i]=bytes[i];
@@ -1064,7 +1059,7 @@ void ZiprPinnerX86_t::ReservePinnedInstructions()
 			addr += sizeof(push_bytes);
 
 			// reserve the bytes for the jump at the end of the push.
-			for(unsigned int i=0;i<sizeof(bytes);i++)
+			for(auto i=0u;i<sizeof(bytes);i++)
 			{
 				assert(memory_space.find(addr+i) == memory_space.end() );
 				memory_space[addr+i]=bytes[i];
@@ -1113,16 +1108,15 @@ void ZiprPinnerX86_t::ReservePinnedInstructions()
 		// After we resync, we have to inspect the TOS elements to see which instruction we jumped to.
 		else if (FindPinnedInsnAtAddr(addr+1))
 		{
-			RangeAddress_t end_of_sled=Do68Sled(addr);
+			const auto end_of_sled=Do68Sled(addr);
 
 			// skip over some entries until we get passed the sled.
 			while (true)
 			{
 				// get this entry
-				UnresolvedPinned_t up=*it;
-				Instruction_t* upinsn=up.getInstrution();
-				RangeAddress_t addr=(unsigned)upinsn->getIndirectBranchTargetAddress()
-		                                    ->getVirtualOffset();
+				const auto up=*it;
+				const auto upinsn=up.getInstrution();
+				auto addr=upinsn->getIndirectBranchTargetAddress() ->getVirtualOffset();
 
 				// is the entry within the sled?
 				if(addr>=end_of_sled)
@@ -1211,7 +1205,7 @@ void ZiprPinnerX86_t::ExpandPinnedInstructions()
 			/*
 			 * Unreserve those bytes that we reserved before!
 			 */
-			for (unsigned int j = up.GetRange().getStart(); j<up.GetRange().getEnd(); j++)
+			for (auto j = up.GetRange().getStart(); j<up.GetRange().getEnd(); j++)
 			{
 				if (!m_AddrInSled[j])
 					memory_space.mergeFreeRange(j);
@@ -1286,7 +1280,7 @@ void ZiprPinnerX86_t::Fix2BytePinnedInstructions()
 			 */
 			if (up.HasRange())
 			{
-				for (unsigned int j = up.GetRange().getStart(); j<up.GetRange().getEnd(); j++)
+				for (auto j = up.GetRange().getStart(); j<up.GetRange().getEnd(); j++)
 				{
 					if (!m_AddrInSled[j])
 						memory_space.mergeFreeRange(j);
@@ -1303,7 +1297,7 @@ void ZiprPinnerX86_t::Fix2BytePinnedInstructions()
 			 * Do this here because some/most of the algorithms
 			 * that we use below assume that it is unreserved.
 			 */
-			for (unsigned int j = up.GetRange().getStart(); j<up.GetRange().getEnd(); j++)
+			for (auto j = up.GetRange().getStart(); j<up.GetRange().getEnd(); j++)
 			{
 				if (!m_AddrInSled[j])
 					memory_space.mergeFreeRange(j);

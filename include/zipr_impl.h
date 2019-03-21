@@ -84,7 +84,7 @@ class ZiprImpl_t : public Zipr_t
 			lo(nullptr),
 			m_error(false),
 			m_dollop_mgr(this),
-			elfiop(new ELFIO::elfio), 
+			exeiop(new EXEIO::exeio), 
 			start_of_new_space(0),
 			memory_space(),
 			m_zipr_options(argc-1, argv+1)
@@ -181,7 +181,7 @@ class ZiprImpl_t : public Zipr_t
                 virtual Zipr_SDK::MemorySpace_t *getMemorySpace() { return &memory_space; }
                 virtual Zipr_SDK::MemorySpace_t *GetMemorySpace() { return &memory_space; }
 		virtual Zipr_SDK::DollopManager_t *getDollopManager() { return &m_dollop_mgr; }
-                virtual ELFIO::elfio *getELFIO() { return elfiop; }
+                virtual EXEIO::exeio *getEXEIO() { return exeiop; }
                 virtual IRDB_SDK::FileIR_t *getFileIR() { return m_firp; }
                 virtual Zipr_SDK::InstructionLocationMap_t *getLocationMap() { return &final_insn_locations; }
                 virtual Zipr_SDK::InstructionLocationMap_t *GetLocationMap() { return &final_insn_locations; }
@@ -207,7 +207,7 @@ class ZiprImpl_t : public Zipr_t
 		 *
 		 * Input: Nothing
 		 * Output: Nothing
-		 * Uses: elfio
+		 * Uses: exeio
 		 * Effects: memory_space
 		 *
 		 * Adds available memory ranges to memory space.
@@ -218,7 +218,7 @@ class ZiprImpl_t : public Zipr_t
 		/* 
 		 * Input: A map of section addresses to integers in order of address
 		 * Output:  A new scoop with RX perms for each allocatable/executable series-of-segments.
-		 * Uses: elfio
+		 * Uses: exeio
 		 * Effects: IRDB_SDK IR.
  	         *
 		 * Creates a scoop for the executable instructions in the IR.
@@ -355,10 +355,10 @@ class ZiprImpl_t : public Zipr_t
 		void CallToNop(RangeAddress_t at_addr);
 
 		// outputing new .exe
-		void FillSection(ELFIO::section* sec, FILE* fexe);
+		void FillSection(EXEIO::section* sec, FILE* fexe);
 		void OutputBinaryFile(const std::string &name);
 		IRDB_SDK::DataScoop_t* FindScoop(const RangeAddress_t &addr);
-		void WriteScoop(ELFIO::section* sec, std::FILE* fexe);
+		void WriteScoop(EXEIO::section* sec, std::FILE* fexe);
 
 
 		// helpers.
@@ -368,7 +368,7 @@ class ZiprImpl_t : public Zipr_t
 		RangeAddress_t FindCallbackAddress(RangeAddress_t end_of_new_space,RangeAddress_t start_addr, const std::string &callback);
 
 		// support
-		RangeAddress_t extend_section(ELFIO::section *sec,ELFIO::section *next_sec);
+		RangeAddress_t extend_section(EXEIO::section *sec,EXEIO::section *next_sec);
 
 		void dump_scoop_map();
 		void dump_instruction_map();
@@ -407,7 +407,7 @@ class ZiprImpl_t : public Zipr_t
 		std::map<std::string,RangeAddress_t> callback_addrs;
 
 		// way to read elf headers, etc.
-		ELFIO::elfio*    elfiop;
+		EXEIO::exeio*    exeiop;
 
 		// records where we will insert extra bytes into the program.
 		RangeAddress_t start_of_new_space;

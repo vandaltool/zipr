@@ -1,14 +1,14 @@
 
-#ifndef EhWriter_h
-#define EhWriter_h
+#ifndef ElfWriter_h
+#define ElfWriter_h
 
 #include <vector>
 #include <map>
 
-
 #ifndef PAGE_SIZE
 #define PAGE_SIZE 4096
 #endif
+
 
 class ElfWriter
 {

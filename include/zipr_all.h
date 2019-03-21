@@ -41,6 +41,7 @@
 #include <algorithm>
 #include <memory>
 
+#include "exeio.h"
 
 #pragma GCC diagnostic ignored "-Wsign-compare"
 #include "elfio/elfio.hpp"
@@ -79,6 +80,7 @@ namespace zipr
 #include <zipr_optimizations.h>
 #include <zipr_stats.h>
 #include <elfwrite.h>
+#include <pewrite.h>
 #include <ehwrite.h>
 
 };

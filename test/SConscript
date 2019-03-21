@@ -42,6 +42,7 @@ DollopFiles= '''
 cpppath=''' 
 	.
 	$SECURITY_TRANSFORMS_HOME/third_party/elfio-code/
+	$SECURITY_TRANSFORMS_HOME/libEXEIO/include
 	$IRDB_SDK/include/
 	$ZIPR_HOME/include/
 	$ZIPR_SDK/include/

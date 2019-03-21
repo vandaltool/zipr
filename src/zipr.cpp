@@ -41,15 +41,12 @@
 #include <string>     // std::string, std::to_string
 #include <fstream>
 
-#include "elfio/elfio.hpp"
-#include "elfio/elfio_dump.hpp"
-
 #define ALLOF(a) begin(a),end(a)
 
 using namespace IRDB_SDK;
 using namespace std;
 using namespace zipr;
-using namespace ELFIO;
+using namespace EXEIO;
 using namespace Zipr_SDK;
 
 
@@ -184,8 +181,7 @@ void ZiprImpl_t::registerOptions()
 
 void ZiprImpl_t::CreateBinaryFile()
 {
-	elfiop->load("a.ncexe");
-	ELFIO::dump::section_headers(cout,*elfiop);
+	exeiop->load("a.ncexe");
 
 	if (*m_architecture == 0)
 	{
@@ -260,13 +256,14 @@ void ZiprImpl_t::CreateBinaryFile()
 	PrintStats();
 }
 
-static bool in_same_segment(ELFIO::section* sec1, ELFIO::section* sec2, ELFIO::elfio* elfiop)
+#if 0
+static bool in_same_segment(EXEIO::section* sec1, EXEIO::section* sec2, EXEIO::exeio* exeiop)
 {
-	ELFIO::Elf_Half n = elfiop->segments.size();
-	for ( ELFIO::Elf_Half i = 0; i < n; ++i ) 
+	auto n = exeiop->segments.size();
+	for ( auto i = 0; i < n; ++i ) 
 	{
-		uintptr_t segstart=elfiop->segments[i]->get_virtual_address();
-		uintptr_t segsize=elfiop->segments[i]->get_file_size();
+		uintptr_t segstart=exeiop->segments[i]->get_virtual_address();
+		uintptr_t segsize=exeiop->segments[i]->get_file_size();
 
 		/* sec1 in segment i? */
 		if(segstart <= sec1->get_address() && sec1->get_address() < (segstart+segsize))
@@ -279,13 +276,16 @@ static bool in_same_segment(ELFIO::section* sec1, ELFIO::section* sec2, ELFIO::e
 
 	return false;
 }
+#endif
 
 
 //
 // check if there's padding we can use between this section and the next section.
 //
-RangeAddress_t ZiprImpl_t::extend_section(ELFIO::section *sec, ELFIO::section *next_sec)
+RangeAddress_t ZiprImpl_t::extend_section(EXEIO::section *sec, EXEIO::section *next_sec)
 {
+	assert(0);
+#if 0
 	RangeAddress_t start=sec->get_address();
 	RangeAddress_t end=sec->get_size()+start;
 	if( (next_sec->get_flags() & SHF_ALLOC) != 0 && in_same_segment(sec,next_sec,elfiop))
@@ -295,6 +295,7 @@ RangeAddress_t ZiprImpl_t::extend_section(ELFIO::section *sec, ELFIO::section *n
 		sec->set_size(next_sec->get_address() - sec->get_address() - 1);
 	}
 	return end;
+#endif
 }
 
 void ZiprImpl_t::CreateExecutableScoops(const std::map<RangeAddress_t, int> &ordered_sections)
@@ -305,22 +306,18 @@ void ZiprImpl_t::CreateExecutableScoops(const std::map<RangeAddress_t, int> &ord
 	 */
 	for(auto it = ordered_sections.begin(); it!=ordered_sections.end();  /* empty */ ) 
 	{
-		section* sec = elfiop->sections[it->second];
+		auto sec = exeiop->sections[it->second];
 		assert(sec);
 
 		// skip non-exec and non-alloc sections.
-		if( (sec->get_flags() & SHF_ALLOC) ==0 || (sec->get_flags() & SHF_EXECINSTR) ==0 )
+		// if( (sec->get_flags() & SHF_ALLOC) ==0 || (sec->get_flags() & SHF_EXECINSTR) ==0 )
+		if(!sec->isLoadable() || !sec->isExecutable())
 		{
 			++it;
 			continue;
 		}
 
 		// setup start of scoop.
-		/*
-		AddressID_t *text_start=new AddressID_t();
-		text_start->setVirtualOffset(sec->get_address());
-		m_firp->getAddresses().insert(text_start);
-		*/
 		auto text_start=m_firp->addNewAddress(m_firp->getFile()->getBaseID(), sec->get_address());
 
 		/*
@@ -329,16 +326,18 @@ void ZiprImpl_t::CreateExecutableScoops(const std::map<RangeAddress_t, int> &ord
 		 */
 		while(1)
 		{
-			sec = elfiop->sections[it->second];
+			sec = exeiop->sections[it->second];
 
 			// skip non-alloc sections.
-			if( (sec->get_flags() & SHF_ALLOC) ==0)
+			// if( (sec->get_flags() & SHF_ALLOC) ==0)
+			if(!sec->isLoadable())
 			{
 				++it;
 				continue;
 			}
 			// stop if not executable.
-			if( (sec->get_flags() & SHF_EXECINSTR) ==0 )
+			// if( (sec->get_flags() & SHF_EXECINSTR) ==0 )
+			if(!sec->isExecutable())
 				break;
 
 			// try next 
@@ -447,10 +446,10 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 	 * Make an ordered list of the sections
 	 * by their starting address.
 	 */
-	ELFIO::Elf_Half n = elfiop->sections.size();
-	for ( ELFIO::Elf_Half i = 0; i < n; ++i ) 
+	auto n = exeiop->sections.size();
+	for ( auto i = 0; i < n; ++i ) 
 	{ 
-		section* sec = elfiop->sections[i];
+		auto sec = exeiop->sections[i];
 		assert(sec);
 		ordered_sections.insert(std::pair<RangeAddress_t,int>(sec->get_address(), i));
 	}
@@ -460,7 +459,7 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 	// scan sections for a max-addr.
 	for (auto p : ordered_sections )
 	{ 
-		section* sec = elfiop->sections[p.second];
+		section* sec = exeiop->sections[p.second];
 		assert(sec);
 
 		RangeAddress_t start=sec->get_address();
@@ -476,7 +475,8 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 			max_addr=end;
 		}
 
-		if( (sec->get_flags() & SHF_ALLOC) ==0 )
+		// if( (sec->get_flags() & SHF_ALLOC) ==0 )
+		if(!sec->isLoadable())	
 			continue;
 	}
 
@@ -1905,29 +1905,45 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 	// re-generate the eh information.
 	RelayoutEhInfo(); 
 
+	const auto file_type = m_firp->getArchitecture()->getFileType();
+	const auto is_elf    = file_type == IRDB_SDK::adftELFEXE || file_type ==  IRDB_SDK::adftELFSO;
+	const auto is_pe     = file_type == IRDB_SDK::adftPE;
+	const auto bit_width = m_firp->getArchitectureBitWidth();
+	const auto output_filename="c.out";
 
-	// create the output file in a totally different way using elfwriter. later we may 
-	// use this instead of the old way.
-
-
-	string elfwriter_filename="c.out";
-	ElfWriter *ew=nullptr;
-	if(m_firp->getArchitectureBitWidth()==64)
+	if(is_elf)
 	{
-		ew=new ElfWriter64(m_firp, *m_add_sections, *m_bss_opts);
-	}
-	else if(m_firp->getArchitectureBitWidth()==32)
-	{
-		ew=new ElfWriter32(m_firp, *m_add_sections, *m_bss_opts);
-	}
-	else assert(0);
+		// create the output file in a totally different way using elfwriter. later we may 
+		// use this instead of the old way.
 
-	ew->Write(elfiop,m_firp,elfwriter_filename, "a.ncexe");
-	delete ew;
-	string chmod_cmd=string("chmod +x "); 
-	chmod_cmd=chmod_cmd+elfwriter_filename;
+		auto elfiop=reinterpret_cast<ELFIO::elfio*>(exeiop->get_elfio());
+		auto ew=unique_ptr<ElfWriter>();
+		ew.reset(
+			bit_width == 64 ? (ElfWriter*)new ElfWriter64(m_firp, *m_add_sections, *m_bss_opts) :
+			bit_width == 32 ? (ElfWriter*)new ElfWriter32(m_firp, *m_add_sections, *m_bss_opts) :
+			throw invalid_argument("Unknown machine width")
+			);
+		ew->Write(elfiop,m_firp, output_filename, "a.ncexe");
+		ew.reset(nullptr); // explicitly free ew as we're done with it
+	}
+	else if (is_pe)
+	{
+		assert(m_firp->getArchitectureBitWidth()==64);
+		auto pe_write=new PeWriter64(m_firp, *m_add_sections, *m_bss_opts);
+		pe_write->Write(exeiop,output_filename, "a.ncexe");
+	}
+	else
+	{
+		cout << "Cannot create output file of correct type " << endl;
+		assert(0); 
+		abort(); 
+	}
+
+	// change permissions on output file
+	auto chmod_cmd=string("chmod +x ")+output_filename;
 	auto res=system(chmod_cmd.c_str());
 	assert(res!=-1);
+
 }
 
 

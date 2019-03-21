@@ -45,15 +45,11 @@ namespace zipr
 #include <string>     // std::string, std::to_string
 #include <fstream>
 
-#include "elfio/elfio.hpp"
-#include "elfio/elfio_dump.hpp"
-
 #define ALLOF(a) begin(a),end(a)
 
 using namespace IRDB_SDK;
 using namespace std;
 using namespace zipr;
-using namespace ELFIO;
 
 ZiprPatcherX86_t::ZiprPatcherX86_t(Zipr_SDK::Zipr_t* p_parent) :
 	m_parent(dynamic_cast<zipr::ZiprImpl_t*>(p_parent)),     // upcast to ZiprImpl
