@@ -32,9 +32,7 @@ static inline uintptr_t page_round_up(uintptr_t x)
         return  ( (((uintptr_t)(x)) + PAGE_SIZE-1)  & (~(PAGE_SIZE-1)) );
 }
 
-
-
-void ElfWriter::Write(const EXEIO::exeio *exeiop, const string &out_file, const string &infile)
+void ElfWriter::Write(const string &out_file, const string &infile)
 {
 	auto fin=fopen(infile.c_str(), "r");
 	auto fout=fopen(out_file.c_str(), "w");

@@ -52,24 +52,32 @@ class ExeWriter
 			}
 
 
-		unsigned int filesz; 
-		unsigned int memsz; 
-		unsigned int filepos;
-		unsigned int start_page;
-		unsigned int m_perms;
+		uint64_t filesz; 
+		uint64_t memsz; 
+		uint64_t filepos;
+		uint64_t start_page;
+		uint64_t m_perms;
 			
 	};
 	using LoadSegmentVector_t = std::vector<LoadSegment_t*>;
 	using PageMap_t           = std::map<IRDB_SDK::VirtualOffset_t, PageData_t>;
 
 	public: 
-		ExeWriter(IRDB_SDK::FileIR_t* firp, bool write_sections, bool bss_opts) : m_firp(firp), m_write_sections(write_sections), m_bss_opts(bss_opts) { }
-		virtual ~ExeWriter() {}
-		virtual void Write(const EXEIO::exeio *exeio, const std::string &out_file, const std::string &infile) = 0;
+		ExeWriter(EXEIO::exeio* p_exeiop, IRDB_SDK::FileIR_t* firp, bool write_sections, bool bss_opts) 
+			: 
+				m_exeiop(p_exeiop), 
+				m_firp(firp), 
+				m_write_sections(write_sections), 
+				m_bss_opts(bss_opts) 
+		{ 
+		}
 
+		virtual ~ExeWriter() {}
+		virtual void Write(const std::string &out_file, const std::string &infile) = 0;
 
 	protected:
 
+		EXEIO::exeio* m_exeiop;
 		IRDB_SDK::FileIR_t* m_firp;
 		bool m_write_sections;
 		bool m_bss_opts;
@@ -88,12 +96,24 @@ class ExeWriter
 		template <class T> 
 		static inline T page_round_down(const T& x)
 		{
-			return x & (~(PAGE_SIZE-1));
+			return round_down_to(x,PAGE_SIZE);
 		}
 		template <class T> 
 		static inline T page_round_up(const T& x)
 		{
-			return  ( (((uintptr_t)(x)) + PAGE_SIZE-1)  & (~(PAGE_SIZE-1)) );
+			return round_up_to(x,PAGE_SIZE);
+		}
+		template <class T> 
+		static inline T round_down_to(const T& x, const uint64_t& to)
+		{
+			assert( (to & (to-1)) == 0 );
+			return x & (~(to-1));
+		}
+		template <class T> 
+		static inline T round_up_to(const T& x, const uint64_t& to)
+		{
+			assert( (to & (to-1)) == 0 );
+			return  ( (((uintptr_t)(x)) + to-1)  & (~(to-1)) );
 		}
 
 		IRDB_SDK::VirtualOffset_t DetectMinAddr();

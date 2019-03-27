@@ -43,6 +43,7 @@ cpppath='''
 	.
 	$SECURITY_TRANSFORMS_HOME/third_party/elfio-code
 	$SECURITY_TRANSFORMS_HOME/libEXEIO/include
+        $SECURITY_TRANSFORMS_HOME/third_party/pebliss/pe_lib/
 	$IRDB_SDK//include/
 	$ZIPR_HOME/include/
 	$ZIPR_SDK/include/
@@ -52,9 +53,10 @@ libs='''
 	irdb-core 
 	irdb-cfg 
 	irdb-transform 
-	dl 
 	EXEIO
 	StructDiv
+	pebliss
+	dl 
 	'''
 
 libpath='''

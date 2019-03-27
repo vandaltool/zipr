@@ -43,14 +43,14 @@ class ElfWriter : public ExeWriter
 
 
 	public: 
-		ElfWriter(IRDB_SDK::FileIR_t* firp, bool write_sections, bool bss_opts) 
+		ElfWriter(EXEIO::exeio* p_exeiop, IRDB_SDK::FileIR_t* firp, bool write_sections, bool bss_opts) 
 			:
-				ExeWriter(firp,write_sections,bss_opts)
+				ExeWriter(p_exeiop, firp,write_sections,bss_opts)
 			{
 			}
 
 		virtual ~ElfWriter() {}
-		void Write(const EXEIO::exeio *exeiop, const std::string &out_file, const std::string &infile);
+		void Write(const std::string &out_file, const std::string &infile);
 
 
 	protected:
@@ -69,7 +69,7 @@ class ElfWriterImpl : public ElfWriter
 {
 	public:
 
-		ElfWriterImpl(IRDB_SDK::FileIR_t* firp, bool write_sections, bool bss_opts ) : ElfWriter(firp, write_sections, bss_opts) { } 
+		ElfWriterImpl(EXEIO::exeio* exeiop, IRDB_SDK::FileIR_t* firp, bool write_sections, bool bss_opts ) : ElfWriter(exeiop, firp, write_sections, bss_opts) { } 
 	
 	protected:
 		int getFileHeaderSize()  { return sizeof(T_Elf_Ehdr); } 

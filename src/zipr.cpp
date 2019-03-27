@@ -451,7 +451,7 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 	{ 
 		auto sec = exeiop->sections[i];
 		assert(sec);
-		ordered_sections.insert(std::pair<RangeAddress_t,int>(sec->get_address(), i));
+		ordered_sections.insert({sec->get_address(), i});
 	}
 
 	CreateExecutableScoops(ordered_sections);
@@ -502,18 +502,18 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 	);
 	for( auto it=sorted_scoop_set.begin(); it!=sorted_scoop_set.end(); ++it )
 	{
-		auto this_scoop=*it;
-		DataScoop_t* next_scoop=nullptr;
-		RangeAddress_t this_end = this_scoop->getEnd()->getVirtualOffset(),
-		               next_start = 0;
+		const auto this_scoop = *it;
+		auto       next_scoop = (DataScoop_t*)nullptr;
+		auto       this_end   = this_scoop->getEnd()->getVirtualOffset();
+		auto       next_start = RangeAddress_t(0);
 
 		assert(this_scoop->getStart()->getVirtualOffset()!=0);
 
 		if (*m_verbose)
-			cout << "There's a scoop between " << std::hex
-			     << this_scoop->getStart()->getVirtualOffset()
-			     << " and " << std::hex << this_scoop->getEnd()->getVirtualOffset()
-			     << " with permissions " << std::hex << this_scoop->getRawPerms()
+			cout << hex 
+			     << "There's a scoop between " << this_scoop->getStart()->getVirtualOffset()
+			     << " and "                    << this_scoop->getEnd()->getVirtualOffset()
+			     << " with permissions "       << +this_scoop->getRawPerms() // print as int, not char
 			     << endl;
 
 		/*
@@ -668,21 +668,11 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 	 * Make a scoop out of this. Insert it into m_zipr_scoops
 	 * and m_firp->getDataScoops()
 	 */
-	auto textra_start = RangeAddress_t(new_free_page);
-	auto textra_end   = (RangeAddress_t)-1;
-	auto textra_name  = string("textra");
-
-	/*
-	DataScoop_t *textra_scoop = nullptr;
-	AddressID_t *textra_start_addr = new AddressID_t(),
-	            *textra_end_addr = new AddressID_t();
-		    */
-	// textra_start_addr->setVirtualOffset(textra_start);
-	// textra_end_addr->setVirtualOffset(textra_end);
-	// m_firp->getAddresses().insert(textra_start_addr);
-	// m_firp->getAddresses().insert(textra_end_addr);
-	auto textra_start_addr=m_firp->addNewAddress(m_firp->getFile()->getBaseID(), textra_start);
-	auto textra_end_addr  =m_firp->addNewAddress(m_firp->getFile()->getBaseID(), textra_end);
+	auto textra_start      = RangeAddress_t(new_free_page);
+	auto textra_end        = (RangeAddress_t)-1;
+	auto textra_name       = string("textra");
+	auto textra_start_addr = m_firp->addNewAddress(m_firp->getFile()->getBaseID(), textra_start);
+	auto textra_end_addr   = m_firp->addNewAddress(m_firp->getFile()->getBaseID(), textra_end);
 
 	cout << "New free space: 0x" << std::hex << textra_start
 	     << "-0x"
@@ -703,8 +693,6 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 	 * Normally we would have to resize the underlying contents here.
 	 * Unfortunately that's not a smart idea since it will be really big.
 	 * Instead, we are going to do a batch resizing below.
-	textra_contents.resize(textra_end - textra_start + 1);
-	textra_scoop->setContents(textra_contents);
 	 */
 
 	m_zipr_scoops.insert(textra_scoop);
@@ -716,7 +704,9 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 
 	for(auto scoop : m_firp->getDataScoops())
 	{
-		if(scoop->isExecuteable()) continue;
+		// skip the scoops we just added.
+		if(scoop->getBaseID()==BaseObj_t::NOT_IN_DATABASE) continue;
+
 		// put scoops in memory to make sure they are busy,
 		// just in case they overlap with free ranges.
 		// this came up on Aarch64 because data is in the .text segment.
@@ -1667,19 +1657,18 @@ void ZiprImpl_t::PatchInstruction(RangeAddress_t from_addr, Instruction_t* to_in
 	// register that it's patch needs to be applied later. 
 
 	UnresolvedUnpinned_t uu(to_insn);
-	auto thepatch=Patch_t(from_addr,UncondJump_rel32);
-
+	const auto thepatch=Patch_t(from_addr,UncondJump_rel32);
 	const auto it=final_insn_locations.find(to_insn);
 	if(it==final_insn_locations.end())
 	{
 		if (*m_verbose)
 			printf("Instruction cannot be patch yet, as target is unknown.\n");
 
-		patch_list.insert(pair<const  UnresolvedUnpinned_t,Patch_t>(uu,thepatch));
+		patch_list.insert({uu,thepatch});
 	}
 	else
 	{
-		RangeAddress_t to_addr=final_insn_locations[to_insn];
+		const auto to_addr=final_insn_locations[to_insn];
 		assert(to_addr!=0);
 		/*
 		 * TODO: This debugging output is not really exactly correct.
@@ -1911,33 +1900,14 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 	const auto bit_width = m_firp->getArchitectureBitWidth();
 	const auto output_filename="c.out";
 
-	if(is_elf)
-	{
-		// create the output file in a totally different way using elfwriter. later we may 
-		// use this instead of the old way.
-
-		//auto elfiop=reinterpret_cast<ELFIO::elfio*>(exeiop->get_elfio());
-		auto ew=unique_ptr<ElfWriter>();
-		ew.reset(
-			bit_width == 64 ? (ElfWriter*)new ElfWriter64(m_firp, *m_add_sections, *m_bss_opts) :
-			bit_width == 32 ? (ElfWriter*)new ElfWriter32(m_firp, *m_add_sections, *m_bss_opts) :
-			throw invalid_argument("Unknown machine width")
-			);
-		ew->Write(exeiop,output_filename, "a.ncexe");
-		ew.reset(nullptr); // explicitly free ew as we're done with it
-	}
-	else if (is_pe)
-	{
-		assert(m_firp->getArchitectureBitWidth()==64);
-		auto pe_write=new PeWriter64(m_firp, *m_add_sections, *m_bss_opts);
-		pe_write->Write(exeiop,output_filename, "a.ncexe");
-	}
-	else
-	{
-		cout << "Cannot create output file of correct type " << endl;
-		assert(0); 
-		abort(); 
-	}
+	auto ew=unique_ptr<ExeWriter>(
+		is_pe  && bit_width == 64 ? (ExeWriter*)new PeWriter64(exeiop, m_firp, *m_add_sections, *m_bss_opts)  :
+		is_elf && bit_width == 64 ? (ExeWriter*)new ElfWriter64(exeiop, m_firp, *m_add_sections, *m_bss_opts) :
+		is_elf && bit_width == 32 ? (ExeWriter*)new ElfWriter32(exeiop, m_firp, *m_add_sections, *m_bss_opts) :
+		throw invalid_argument("Unknown file type/machine width combo")
+		);
+	ew->Write(output_filename, "a.ncexe");
+	ew.reset(nullptr); // explicitly free ew as we're done with it
 
 	// change permissions on output file
 	auto chmod_cmd=string("chmod +x ")+output_filename;
@@ -2009,11 +1979,11 @@ void ZiprImpl_t::dump_scoop_map()
 
 	for(const auto &scoop : m_firp->getDataScoops())
 	{
-		ofs << hex << setw(10)<<scoop->getBaseID()
-		    <<hex<<left<<setw(10)<<scoop->getStart()->getVirtualOffset()
-		    <<hex<<left<<setw(10)<< scoop->getSize()
-		    <<hex<<left<<setw(10)<< scoop->getRawPerms()
-		    <<hex<<left<<setw(10)<< scoop->getName()
+		ofs << hex <<         setw(10) << scoop->getBaseID()
+		    << hex << left << setw(10) << scoop->getStart()->getVirtualOffset()
+		    << hex << left << setw(10) << scoop->getSize()
+		    << hex << left << setw(10) << +scoop->getRawPerms() // print as int, not char
+		    << hex << left << setw(10) << scoop->getName()
 		    << endl;
 	}
 }

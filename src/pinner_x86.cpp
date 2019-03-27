@@ -192,7 +192,8 @@ bool ZiprPinnerX86_t::ShouldPinImmediately(Instruction_t *upinsn)
 		ft_ibta=upinsn->getFallthrough()->getIndirectBranchTargetAddress();
 
 	/* careful with 1 byte instructions that have a pinned fallthrough */ 
-	if(upinsn->getDataBits().length()==1)
+	const auto len=upinsn->getDataBits().length();
+	if(len==1)
 	{
 		if(upinsn->getFallthrough()==nullptr)
 			return true;
@@ -200,6 +201,28 @@ bool ZiprPinnerX86_t::ShouldPinImmediately(Instruction_t *upinsn)
 		if((ft_ibta && ft_ibta->getVirtualOffset()!=0) && (upinsn_ibta->getVirtualOffset()+1) == ft_ibta->getVirtualOffset())
 			return true;
 	}
+
+
+	// look for a pinned ib 
+	if(upinsn->getFallthrough()==nullptr && upinsn->getIBTargets()!=nullptr)
+	{
+		// check the bytes that follow to make sure we can fit it.
+		auto found=false;
+		for(auto i = 1u; i < len; i++)
+		{
+
+			const auto ibt_at=FindPinnedInsnAtAddr(upinsn_ibta->getVirtualOffset() + i);
+			if(ibt_at)
+				found=true;
+		}
+
+		// if the whole range is clear, we can pin the ib.
+		if(!found)
+			return true;
+	}
+
+
+
 
 	// find the insn pinned at the next byte.
 	pin_at_next_byte = FindPinnedInsnAtAddr(upinsn_ibta->getVirtualOffset() + 1);
@@ -221,7 +244,6 @@ bool ZiprPinnerX86_t::ShouldPinImmediately(Instruction_t *upinsn)
 	 */
 		pin_at_next_byte->getFallthrough() == upinsn->getFallthrough() ) 
 	/*
-	 *
 	 * x should become nop, put down immediately
 	 * x+1 should become the entire lock command.
 	 */
@@ -942,32 +964,48 @@ void ZiprPinnerX86_t::ReservePinnedInstructions()
 		const auto upinsn=up.getInstrution();
 		auto addr=upinsn->getIndirectBranchTargetAddress()->getVirtualOffset();
 
-		if(upinsn->getIndirectBranchTargetAddress()->getFileID() ==
-		   BaseObj_t::NOT_IN_DATABASE)
+		if(upinsn->getIndirectBranchTargetAddress()->getFileID() == BaseObj_t::NOT_IN_DATABASE)
 			continue;
 
 		/* sometimes, we need can't just put down a 2-byte jump into the old slot
 	   	 * we may need to do alter our technique if there are two consecutive pinned addresses (e.g. 800 and 801).
 		 * That case is tricky, as we can't put even a 2-byte jump instruction down. 
 		 * so, we attempt to pin any 1-byte instructions with no fallthrough (returns are most common) immediately.
-		 * we also attempt to pin any 1-byte insn that falls through to the next pinned address (nops are common).
+		 * We may also attempt to pin any 1-byte insn that falls through to the next pinned address (nops are common).
+		 * We may also pin multi-byte instructions that don't fall through.
 		 */
 		if(ShouldPinImmediately(upinsn))
 		{
 			if (m_verbose)
-				printf("Final pinning %p-%p.  fid=%d\n", (void*)addr, (void*)(addr+upinsn->getDataBits().size()-1),
-				upinsn->getAddress()->getFileID());
+				cout << "Final pinning " << hex << addr << "-" << (addr+upinsn->getDataBits().size()-1)  << endl;
+
 			for(auto i=0u;i<upinsn->getDataBits().size();i++)
 			{
 				memory_space[addr+i]=upinsn->getDataBits()[i];
 				memory_space.splitFreeRange(addr+i);
 				m_stats->total_other_space++;
 			}
+
+			// record the final location of this instruction.
 			final_insn_locations[upinsn] = addr;
+
+			// create a dollop for this instruction and place it.
+			auto dollop=m_dollop_mgr.addNewDollops(upinsn);
+			assert(dollop);
+			dollop->Place(addr);
+
+			auto place_addr=addr;
+			for(auto de : *dollop)
+			{
+				de->Place(place_addr);
+				place_addr+=sizeof(de->getInstruction()->getDataBits().size());
+			}
+
 			continue;
 		}
 
-		if (m_verbose) {
+		if (m_verbose) 
+		{
 			printf("Working two byte pinning decision at %p for: ", (void*)addr);
 			printf("%s\n", upinsn->getComment().c_str());
 		}
@@ -1135,7 +1173,7 @@ void ZiprPinnerX86_t::ReservePinnedInstructions()
 				if (it==unresolved_pinned_addrs.end())
 					break;
 			}
-			// back up one, because the last  one still needs to be processed.
+			// back up one, because the last one still needs to be processed.
 			--it;
 
 			// resolve any new instructions added for the sled.
@@ -1143,8 +1181,6 @@ void ZiprPinnerX86_t::ReservePinnedInstructions()
 		}
 		else
 			assert(0); // impossible to reach, right?
-	
-
 	}
 }
 
