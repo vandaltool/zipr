@@ -104,7 +104,8 @@ void UnpinX86_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* reloc)
 	const auto the_arg=*the_arg_it;
 
 	// get the new insn addr 	
-	const auto from_insn_location=(VirtualOffset_t)locMap[from_insn];
+	const auto from_insn_location_with_filebase = (VirtualOffset_t)locMap[from_insn];
+	const auto from_insn_location_no_file_base  = from_insn_location_with_filebase - firp.getArchitecture()->getFileBase();
 
 	// get WRT info
 	IRDB_SDK::VirtualOffset_t to_addr=0xdeadbeef; // noteable value that shouldn't be used.
@@ -134,15 +135,15 @@ void UnpinX86_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* reloc)
 	assert(disp_size==4);
 	assert(0<disp_offset && (int64_t)disp_offset<=(int64_t)from_insn->getDataBits().size() - disp_size);
 		
-	const auto new_disp=(int)(rel_addr1 + to_addr - from_insn->getDataBits().size()-from_insn_location);
+	const auto new_disp=(int)(rel_addr1 + to_addr - from_insn->getDataBits().size()-from_insn_location_no_file_base);
 	const auto newbits=from_insn->getDataBits().replace(disp_offset, disp_size, (char*)&new_disp, disp_size); 
 	from_insn->setDataBits(newbits);
-	ms.plopBytes(from_insn_location, newbits.c_str(), newbits.size());
+	ms.plopBytes(from_insn_location_with_filebase, newbits.c_str(), newbits.size());
 	const auto disasm2=DecodedInstruction_t::factory(from_insn);
-	cout<<"unpin:pcrel:new_disp="<<hex<<new_disp<<endl;
-	cout<<"unpin:pcrel:new_insn_addr="<<hex<<from_insn_location<<endl;
-	cout<<"unpin:pcrel:Converting "<<hex<<from_insn->getBaseID()<<":"<<disasm->getDisassembly() 
-	    <<" to "<<disasm2->getDisassembly() <<" wrt "<< convert_string <<endl;
+	cout << "unpin:pcrel:new_disp=" << hex << new_disp << endl;
+	cout << "unpin:pcrel:new_insn_addr=" << hex << from_insn_location_with_filebase << endl;
+	cout << "unpin:pcrel:Converting " << hex << from_insn->getBaseID() << ":" << disasm->getDisassembly() 
+	     << " to " << disasm2->getDisassembly() << " wrt " << convert_string << endl;
 
 }
 
