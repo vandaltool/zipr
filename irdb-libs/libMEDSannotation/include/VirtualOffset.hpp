@@ -27,32 +27,33 @@
 namespace MEDS_Annotation
 {
 
-typedef unsigned long long ApplicationAddress;
+	using namespace std;
+	using ApplicationAddress = uint64_t;
 
 #define DEFAULT_LIBRARY_NAME "a.out"
 
-class VirtualOffset 
-{
-	public:
-		VirtualOffset();
-		VirtualOffset(const std::string &p_offset, const std::string &p_libraryName);
-		VirtualOffset(const std::string &p_offset);
-		VirtualOffset(const int p_offset);
+	class VirtualOffset 
+	{
+		public:
+			VirtualOffset();
+			VirtualOffset(const string &p_offset, const string &p_libraryName);
+			VirtualOffset(const string &p_offset);
+			VirtualOffset(const ApplicationAddress p_offset);
 
-		ApplicationAddress getOffset() const;
-		std::string getLibraryName() const;
+			ApplicationAddress getOffset() const;
+			string getLibraryName() const;
 
-		bool operator < (const VirtualOffset &p_other) const;
-		bool operator == (const VirtualOffset &p_other) const;
-		VirtualOffset& operator = (const VirtualOffset &p_other);
+			bool operator < (const VirtualOffset &p_other) const;
+			bool operator == (const VirtualOffset &p_other) const;
+			VirtualOffset& operator = (const VirtualOffset &p_other);
 
-		const std::string to_string() const { std::ostringstream oss; oss<<getLibraryName() << "+0x"<<std::hex<<getOffset(); return oss.str(); }
-		const std::string toString() const { return to_string(); }
+			const string to_string() const { ostringstream oss; oss<<getLibraryName() << "+0x"<<hex<<getOffset(); return oss.str(); }
+			const string toString() const { return to_string(); }
 
-	private:
-		ApplicationAddress   m_offset;
-		std::string          m_libraryName;
-};
+		private:
+			ApplicationAddress   m_offset;
+			string          m_libraryName;
+	};
 
 }
 

@@ -31,6 +31,16 @@
 using namespace std;
 using namespace EXEIO;
 using namespace IRDB_SDK;
+using namespace PopCFG;
+
+template < typename T > 
+static inline std::string to_hex_string( const T& n )
+{
+        std::ostringstream stm ;
+        stm << std::hex<< "0x"<< n ;
+        return stm.str() ;
+}
+
 
 void PopulateCFG::populate_instruction_map
 	(
@@ -209,7 +219,7 @@ void PopulateCFG::add_new_instructions(FileIR_t *firp)
 
 
 
-        	int secnum = elfiop->sections.size(); 
+        	int secnum = exeiop->sections.size(); 
 		int secndx=0;
 
 		bool found=false;
@@ -218,25 +228,25 @@ void PopulateCFG::add_new_instructions(FileIR_t *firp)
         	for (secndx=1; secndx<secnum; secndx++)
 		{
         		/* not a loaded section */
-        		if( !elfiop->sections[secndx]->isLoadable()) 
+        		if( !exeiop->sections[secndx]->isLoadable()) 
                 		continue;
 		
         		/* loaded, and contains instruction, record the bounds */
-        		if( !elfiop->sections[secndx]->isExecutable()) 
+        		if( !exeiop->sections[secndx]->isExecutable()) 
                 		continue;
 		
-        		VirtualOffset_t first=elfiop->sections[secndx]->get_address();
-        		VirtualOffset_t second=elfiop->sections[secndx]->get_address()+elfiop->sections[secndx]->get_size();
+        		VirtualOffset_t first=exeiop->sections[secndx]->get_address();
+        		VirtualOffset_t second=exeiop->sections[secndx]->get_address()+exeiop->sections[secndx]->get_size();
 
 			/* is the missed instruction in this section */
 			if(first<=missed_address && missed_address<second)
 			{
-				const char* data=elfiop->sections[secndx]->get_data();
+				const char* data=exeiop->sections[secndx]->get_data();
 				// second=data?
-				VirtualOffset_t offset_into_section=missed_address-elfiop->sections[secndx]->get_address();
+				VirtualOffset_t offset_into_section=missed_address-exeiop->sections[secndx]->get_address();
 	
 				/* disassemble the instruction */
-				auto disasm_p=DecodedInstruction_t::factory(missed_address, (void*)&data[offset_into_section], elfiop->sections[secndx]->get_size()-offset_into_section );
+				auto disasm_p=DecodedInstruction_t::factory(missed_address, (void*)&data[offset_into_section], exeiop->sections[secndx]->get_size()-offset_into_section );
 				auto &disasm=*disasm_p;
 
 
@@ -376,27 +386,27 @@ void PopulateCFG::fill_in_cfg(FileIR_t *firp)
 
 bool PopulateCFG::is_in_relro_segment(const int secndx)
 {
-	ELFIO::elfio *real_elfiop = reinterpret_cast<ELFIO::elfio*>(elfiop->get_elfio()); 
-	if(!real_elfiop)
+	ELFIO::elfio *real_exeiop = reinterpret_cast<ELFIO::elfio*>(exeiop->get_elfio()); 
+	if(!real_exeiop)
 		return false;
 
-	int segnum = real_elfiop->segments.size();
+	int segnum = real_exeiop->segments.size();
 
-	VirtualOffset_t sec_start=(VirtualOffset_t)(elfiop->sections[secndx]->get_address());
-	VirtualOffset_t sec_end=(VirtualOffset_t)(elfiop->sections[secndx]->get_address() + elfiop->sections[secndx]->get_size() - 1 );
+	VirtualOffset_t sec_start=(VirtualOffset_t)(exeiop->sections[secndx]->get_address());
+	VirtualOffset_t sec_end=(VirtualOffset_t)(exeiop->sections[secndx]->get_address() + exeiop->sections[secndx]->get_size() - 1 );
 
 	/* look through each section */
 	for (int segndx=1; segndx<segnum; segndx++)
 	{
-		ELFIO::Elf_Word type=real_elfiop->segments[segndx]->get_type();
+		ELFIO::Elf_Word type=real_exeiop->segments[segndx]->get_type();
 #ifndef PT_GNU_RELRO
 #define PT_GNU_RELRO    0x6474e552      /* Read-only after relocation */
 #endif
 
 		if(type==PT_GNU_RELRO)
 		{
-			VirtualOffset_t seg_start=(VirtualOffset_t)(real_elfiop->segments[segndx]->get_virtual_address());
-			VirtualOffset_t seg_end=(VirtualOffset_t)(real_elfiop->segments[segndx]->get_virtual_address() + real_elfiop->segments[segndx]->get_memory_size() - 1 );
+			VirtualOffset_t seg_start=(VirtualOffset_t)(real_exeiop->segments[segndx]->get_virtual_address());
+			VirtualOffset_t seg_end=(VirtualOffset_t)(real_exeiop->segments[segndx]->get_virtual_address() + real_exeiop->segments[segndx]->get_memory_size() - 1 );
 
 			// check if start lies within 
 			if(seg_start <= sec_start  && sec_start <= seg_end)
@@ -419,84 +429,81 @@ void PopulateCFG::fill_in_scoops(FileIR_t *firp)
 {
 
 	auto max_base_id=firp->getMaxBaseID();
-	auto secnum = elfiop->sections.size();
-	auto secndx=0;
+	auto secnum = exeiop->sections.size();
 
 	/* look through each section */
-	for (secndx=1; secndx<secnum; secndx++)
+	for (auto secndx=1; secndx<secnum; secndx++)
 	{
 		/* not a loaded section, try next section */
-		if(!elfiop->sections[secndx]->isLoadable()) 
+		if(!exeiop->sections[secndx]->isLoadable()) 
 		{
-			cout<<"Skipping scoop for section (not loadable) "<<elfiop->sections[secndx]->get_name()<<endl;
+			cout << "Skipping scoop for section (not loadable) " << exeiop->sections[secndx]->get_name() << endl;
 			continue;
 		}
 
-        	if(elfiop->sections[secndx]->isWriteable() && elfiop->sections[secndx]->isExecutable()) 
+        	if(exeiop->sections[secndx]->isWriteable() && exeiop->sections[secndx]->isExecutable()) 
 		{
 			ofstream fout("warning.txt");
-			fout<<"Found that section "<<elfiop->sections[secndx]->get_name()<<" is both writeable and executable.  Program is inherently unsafe!"<<endl;
+			fout << "Found that section " << exeiop->sections[secndx]->get_name() << " is both writeable and executable.  Program is inherently unsafe!" << endl;
 		}
 
 		/* executable sections handled by zipr/spri. */
-        	if(elfiop->sections[secndx]->isExecutable()) 
+        	if(exeiop->sections[secndx]->isExecutable()) 
 		{
-			cout<<"Skipping scoop for section (executable) "<<elfiop->sections[secndx]->get_name()<<endl;
+			cout << "Skipping scoop for section (executable) " << exeiop->sections[secndx]->get_name() << endl;
                 	continue;
 		}
 		/* name */
-		string name=elfiop->sections[secndx]->get_name();
+		const auto name=string(exeiop->sections[secndx]->get_name());
 
-		/* start address */
-		/*
-		auto startaddr=new AddressID_t();
-		assert(startaddr);
-		startaddr->setVirtualOffset( elfiop->sections[secndx]->get_address());
-		startaddr->setFileID(firp->getFile()->getBaseID());
-		firp->getAddresses().insert(startaddr);
-		*/
-		auto startaddr=firp->addNewAddress(firp->getFile()->getBaseID(), elfiop->sections[secndx]->get_address());
-
-		/* end */
-		/*
-		auto endaddr=new AddressID_t();
-		assert(endaddr);
-		endaddr->setVirtualOffset( elfiop->sections[secndx]->get_address() + elfiop->sections[secndx]->get_size()-1);
-		endaddr->setFileID(firp->getFile()->getBaseID());
-		firp->getAddresses().insert(endaddr);
-		*/
-		auto endaddr=firp->addNewAddress(firp->getFile()->getBaseID(), elfiop->sections[secndx]->get_address() + elfiop->sections[secndx]->get_size()-1);
+		/* start and end address */
+		auto startaddr = firp->addNewAddress(firp->getFile()->getBaseID(), exeiop->sections[secndx]->get_address());
+		auto endaddr   = firp->addNewAddress(firp->getFile()->getBaseID(), exeiop->sections[secndx]->get_address() + exeiop->sections[secndx]->get_size()-1);
 
 
-		string the_contents;
-		the_contents.resize(elfiop->sections[secndx]->get_size()); 
+		auto the_contents=string(exeiop->sections[secndx]->get_size(), '\0'); 
 		// deal with .bss segments that are 0 init'd.
-		if (elfiop->sections[secndx]->get_data()) 
-			the_contents.assign(elfiop->sections[secndx]->get_data(),elfiop->sections[secndx]->get_size());
-
-//		Type_t *chunk_type=NULL; /* FIXME -- need to figure out the type system for scoops, but NULL should remain valid */
+		if (exeiop->sections[secndx]->get_data()) 
+			the_contents.assign(exeiop->sections[secndx]->get_data(),exeiop->sections[secndx]->get_size());
 
 		/* permissions */
 		int permissions= 
-			( elfiop->sections[secndx]->isReadable() << 2 ) | 
-			( elfiop->sections[secndx]->isWriteable() << 1 ) | 
-			( elfiop->sections[secndx]->isExecutable() << 0 ) ;
+			( exeiop->sections[secndx]->isReadable()   << 2 ) | 
+			( exeiop->sections[secndx]->isWriteable()  << 1 ) | 
+			( exeiop->sections[secndx]->isExecutable() << 0 ) ;
 
 		bool is_relro=is_in_relro_segment(secndx);
 		scoops_detected++;
-		/*
-		DataScoop_t *newscoop=new DataScoop_t(max_base_id++, name, startaddr, endaddr, NULL, permissions, is_relro, the_contents);
-		assert(newscoop);
-		firp->getDataScoops().insert(newscoop);
-		*/
 		auto newscoop=firp->addNewDataScoop( name, startaddr, endaddr, NULL, permissions, is_relro, the_contents, max_base_id++ );
 		(void)newscoop; // just give it to the IR
 
-		cout<<"Allocated new scoop for section "<<name
-		    <<"("<<hex<<startaddr->getVirtualOffset()<<"-"
-		    <<hex<<endaddr->getVirtualOffset()<<")"
-		    <<" perms="<<permissions<<" relro="<<boolalpha<<is_relro<<endl;
+		cout << "Allocated new scoop for section " << name
+		     << "(" << hex << startaddr->getVirtualOffset() << "-"
+		     << hex << endaddr->getVirtualOffset() << ")"
+		     << " perms=" << permissions << " relro=" << boolalpha << is_relro << endl;
 
+	}
+	for(auto extra_scoop : extra_scoops)
+	{
+		const auto start_vo        = extra_scoop.first;                                           // start and end offsets in this file 
+		const auto end_vo          = extra_scoop.second;
+		auto startaddr             = firp->addNewAddress(firp->getFile()->getBaseID(), start_vo); // start and end address 
+		auto endaddr               = firp->addNewAddress(firp->getFile()->getBaseID(), end_vo);
+		const auto sec             = exeiop->sections.findByAddress(start_vo);                    // section that contains the data 
+		assert(sec);
+		const auto sec_data        = sec->get_data();                                             // data
+		const auto scoop_start_ptr = sec_data+(start_vo-sec->get_address());                      // relevant start of data
+		const auto the_contents    = string(scoop_start_ptr, end_vo-start_vo+1); 
+		const auto name            = string("user_added_")+to_hex_string(start_vo);               // name of new segment
+		const auto permissions     =                                                              // permissions and relro bit.
+			( sec->isReadable()   << 2 ) |  
+			( sec->isWriteable()  << 1 ) | 
+			( sec->isExecutable() << 0 ) ;
+		const auto is_relro       = false;
+
+		// finally, create the new scoop
+		firp->addNewDataScoop( name, startaddr, endaddr, NULL, permissions, is_relro, the_contents, max_base_id++ );
+		
 	}
 
 }
@@ -541,7 +548,7 @@ void PopulateCFG::detect_scoops_in_code(FileIR_t *firp)
 
 
 		// find section and sanity check.
-		const auto sec=elfiop->sections.findByAddress(referenced_address);
+		const auto sec=exeiop->sections.findByAddress(referenced_address);
 		if(sec==nullptr) continue;
 
 		// only trying to do this for executable chunks, other code deals with
@@ -552,33 +559,104 @@ void PopulateCFG::detect_scoops_in_code(FileIR_t *firp)
 		const auto sec_start=sec->get_address();
 		const auto the_contents=string(&sec_data[referenced_address-sec_start],referenced_size);
 		const auto fileid=firp->getFile()->getBaseID();
-
-
-		/*
-		auto start_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE,fileid,referenced_address);
-		assert(start_addr);
-		firp->getAddresses().insert(start_addr);
-
-		auto end_addr=new AddressID_t(BaseObj_t::NOT_IN_DATABASE,fileid,referenced_address+referenced_size-1);
-		assert(end_addr);
-		firp->getAddresses().insert(end_addr);
-		*/
 		auto start_addr=firp->addNewAddress(fileid,referenced_address);
 		auto end_addr  =firp->addNewAddress(fileid,referenced_address+referenced_size-1);
-
 		const auto name="data_in_text_"+to_string(referenced_address);
 		const auto permissions=0x4; /* R-- */
 		const auto is_relro=false;
-		/*
-		auto newscoop=new DataScoop_t(BaseObj_t::NOT_IN_DATABASE, name, start_addr, end_addr, NULL, permissions, is_relro, the_contents);
-		firp->getDataScoops().insert(newscoop);
-		*/
 		auto newscoop=firp->addNewDataScoop(name, start_addr, end_addr, NULL, permissions, is_relro, the_contents);
 		(void)newscoop;
 
 		cout<< "Allocated data in text segment "<<name<<"=("<<start_addr->getVirtualOffset()<<"-"
 		    << end_addr->getVirtualOffset()<<")"<<endl;
 	}
+}
+
+void PopulateCFG::ctor_detection(FileIR_t *firp)
+{
+	assert(firp);
+	if(do_ctor_detection == cdt_NO) return;
+
+	const auto is_pe = firp->getArchitecture()->getFileType() == adftPE ;
+	if(do_ctor_detection == cdt_PE32AUTO && !is_pe) return;
+
+	// is either a PE file and we are in auto detect mode
+	// or ctor_detection is yes.
+	assert(is_pe || do_ctor_detection == cdt_YES);
+
+	auto find_ctor_start=[&](const exeio_section_t* sec, const VirtualOffset_t end_of_ctor) -> VirtualOffset_t
+		{
+			// values needed later for various things
+			const auto ptrsize   = 8;
+			const auto sec_data  = sec->get_data();
+			const auto sec_start = sec->get_address();
+
+			// check for a null terminator at the stated end of table
+			const auto null_term_addr=end_of_ctor-ptrsize;
+			const auto null_term_value=
+				ptrsize == 8 ?  *(uint64_t*)(sec_data+null_term_addr-sec_start) :
+				                throw invalid_argument("Unknown ptrsize");
+
+			// not found, return this isn't sane.
+			if(null_term_value!=0) return 0;
+
+			// now scan the table in reverse order for 1) valid entries, or 2) a -1 terminator.
+			auto next_addr=null_term_addr-ptrsize;
+			while(true)
+			{
+				// check for flowing
+				if(next_addr<sec_start) return 0;
+
+				// get the table entry
+				const auto ctor_entry_value=
+					ptrsize == 8 ?  *(uint64_t*)(sec_data+next_addr-sec_start) :
+							throw invalid_argument("Unknown ptrsize");
+
+				// check for the -1 terminator
+				if((int64_t)ctor_entry_value==int64_t(-1)) return next_addr;
+
+				// check if the table entry isn't a valid address
+				const auto is_before_start = ctor_entry_value <  sec->get_address() ;
+				const auto is_after_end    = ctor_entry_value > (sec->get_address()+sec->get_size());
+				if(is_before_start || is_after_end) return 0;
+
+				next_addr -= ptrsize;
+			}
+		};
+
+	auto create_ctor_scoop=[&](const string& name, const VirtualOffset_t& start_vo, const VirtualOffset_t& end_vo)
+		{
+			auto startaddr             = firp->addNewAddress(firp->getFile()->getBaseID(), start_vo); // start and end address 
+			auto endaddr               = firp->addNewAddress(firp->getFile()->getBaseID(), end_vo);
+			const auto sec             = exeiop->sections.findByAddress(start_vo);                    // section that contains the data 
+			assert(sec);
+			const auto sec_data        = sec->get_data();                                             // data
+			const auto scoop_start_ptr = sec_data+(start_vo-sec->get_address());                      // relevant start of data
+			const auto the_contents    = string(scoop_start_ptr, end_vo-start_vo+1); 
+			const auto permissions     =                                                              // permissions and relro bit.
+				( sec->isReadable()   << 2 ) |  
+				( sec->isWriteable()  << 1 ) | 
+				( sec->isExecutable() << 0 ) ;
+			const auto is_relro       = false;
+
+			// finally, create the new scoop
+			firp->addNewDataScoop( name, startaddr, endaddr, NULL, permissions, is_relro, the_contents);
+		};	
+
+	const auto text_sec = exeiop->sections[".text"];
+	if(text_sec == nullptr) return;
+	const auto text_end_addr = text_sec->get_address()+text_sec->get_size();
+	const auto dtor_end      = text_end_addr-1;
+	const auto dtor_start    = find_ctor_start(text_sec,text_end_addr);
+	if(dtor_start==0) return;
+	create_ctor_scoop(".dtor", dtor_start, dtor_end);
+
+	const auto ctor_end   = dtor_start-1;
+	const auto ctor_start = find_ctor_start(text_sec,dtor_start);
+	if(ctor_start==0) return;
+	create_ctor_scoop(".ctor", ctor_start, ctor_end);
+	return;
+
 }
 
 void PopulateCFG::fill_in_landing_pads(FileIR_t *firp)
@@ -639,15 +717,6 @@ void PopulateCFG::fill_in_landing_pads(FileIR_t *firp)
 
 int PopulateCFG::parseArgs(const vector<string> step_args)
 {   
-#if 0
-    if(step_args.size()<1)
-    {
-            cerr<<"Usage: [--fix-landing-pads | --no-fix-landing-pads]"<<endl;
-            return -1;
-    }
-#endif
-
-//    variant_id = stoi(step_args[0]);
     
     for (auto i = 0u; i < step_args.size(); ++i)
     {
@@ -659,6 +728,27 @@ int PopulateCFG::parseArgs(const vector<string> step_args)
             {
                     fix_landing_pads = false;
             }
+            else if (step_args[i]=="--extra-scoop")
+	    {
+		    i++;
+		    const auto extra_scoops_str=step_args[i];
+		    stringstream ss(extra_scoops_str);
+		    auto start_addr = VirtualOffset_t(0);
+		    auto end_addr   = VirtualOffset_t(0);
+		    auto c          = uint8_t(0);
+		    ss>>hex>>start_addr>>c>>end_addr;
+		    assert(c=='-');
+		    extra_scoops.insert({start_addr,end_addr});
+		    cout << "Recognizing request to add " << hex << start_addr << "-" << end_addr << " as a scoop."<<endl;
+	    }
+            else if (step_args[i]=="--do-ctor-detection")
+	    {
+		    do_ctor_detection=cdt_YES;
+	    }
+            else if (step_args[i]=="--no-ctor-detection")
+	    {
+		    do_ctor_detection=cdt_NO;
+	    }
     }
 
     cout<<"fix_landing_pads="<<fix_landing_pads<<endl;
@@ -674,7 +764,7 @@ void PopulateCFG::rename_start(FileIR_t *firp)
 		if(!entry_point_insn) continue;
 
 		const auto entry_point_vo = entry_point_insn->getAddress()->getVirtualOffset();
-		if(entry_point_vo==elfiop->get_entry())
+		if(entry_point_vo==exeiop->get_entry())
 			f->setName("_start");
 	}
 }
@@ -696,19 +786,14 @@ int PopulateCFG::executeStep()
 			assert(firp);
                         cout<<"Filling in cfg for "<<firp->getFile()->getURL()<<endl;
 
-			/* get the OID of the file */
-			const int elfoid=firp->getFile()->getELFOID();
-
-			pqxx::largeobject lo(elfoid);
-                	lo.to_file(pqxx_interface->getTransaction(),"readeh_tmp_file.exe");
-
-			elfiop.reset(new exeio());
-			elfiop->load(string("readeh_tmp_file.exe"));
+			exeiop.reset(new exeio());
+			exeiop->load(string("a.ncexe"));
 
 			rename_start(firp);
 			fill_in_cfg(firp);
 			fill_in_scoops(firp);
 			detect_scoops_in_code(firp);
+			ctor_detection(firp);
 
 			if (fix_landing_pads)
 			{

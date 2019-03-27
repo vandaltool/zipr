@@ -29,7 +29,7 @@ namespace EXEIO
 			bool isWriteable() const { return s->writeable(); }
 			bool isReadable() const { return s->readable(); }
 			bool isBSS() const  { return s->empty(); }
-			const char* get_data() const  { return s->get_raw_data().c_str(); }
+			const char* get_data() const  { return s->get_virtual_data(b->get_section_alignment()).c_str(); }
 			std::string get_name() const { return s->get_name(); }
 			int get_size() const  { return s->get_virtual_size(); }
 			int get_type() const  { assert(0); } // not imp'd yet
@@ -160,10 +160,9 @@ namespace EXEIO
 				return (virtual_offset_t)e->get_ep();
 			}
 
+			virtual bool isDLL() { return true; } 
 
-                        virtual bool isDLL() { assert(0); }
-
-
+                        virtual void* get_pebliss() { assert(e); return (void*)e; }
 	
 		private:  
 			pe_bliss::pe_base* e;

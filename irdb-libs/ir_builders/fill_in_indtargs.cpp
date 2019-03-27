@@ -236,8 +236,9 @@ void mark_targets(FileIR_t *firp)
 		/* lookup in the list of targets */
 		if(targets.find(addr)!=targets.end())
 		{
-			const auto isret=targets[addr].areOnlyTheseSet(ibt_provenance_t::ibtp_ret);
-			const auto isprintf=targets[addr].areOnlyTheseSet(ibt_provenance_t::ibtp_stars_data|ibt_provenance_t::ibtp_texttoprintf);
+			const auto isret    = targets[addr].areOnlyTheseSet(ibt_provenance_t::ibtp_ret);
+			const auto isprintf = targets[addr].areOnlyTheseSet(ibt_provenance_t::ibtp_stars_data|ibt_provenance_t::ibtp_texttoprintf) && 
+			                      targets[addr].isFullySet     (ibt_provenance_t::ibtp_stars_data|ibt_provenance_t::ibtp_texttoprintf);
 			if (isret)
 			{
 				if(getenv("IB_VERBOSE")!=nullptr)
@@ -2440,7 +2441,7 @@ void read_stars_xref_file(FileIR_t* firp)
         for(auto insn : firp->getInstructions())
 	{
 		const auto irdb_vo = insn->getAddress()->getVirtualOffset();
-		const auto vo=VirtualOffset_t(irdb_vo);
+		const auto vo=MEDS_Annotation::VirtualOffset(irdb_vo);
 
 		/* find it in the annotations */
 		const auto ret = annotationParser.getAnnotations().equal_range(vo);

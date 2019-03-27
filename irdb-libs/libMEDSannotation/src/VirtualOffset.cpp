@@ -20,7 +20,7 @@
 
 #include <cstdio>
 #include <iostream>
-
+#include <inttypes.h>
 #include "VirtualOffset.hpp"
 
 using namespace std;
@@ -29,25 +29,25 @@ using namespace MEDS_Annotation;
 VirtualOffset::VirtualOffset()
 {
 	m_offset = 0;
-	m_libraryName = std::string(DEFAULT_LIBRARY_NAME);
+	m_libraryName = string(DEFAULT_LIBRARY_NAME);
 }
 
-VirtualOffset::VirtualOffset(const std::string &p_offset, const std::string &p_libraryName)
+VirtualOffset::VirtualOffset(const string &p_offset, const string &p_libraryName)
 {
-	sscanf(p_offset.c_str(), "%llx", &m_offset);
+	sscanf(p_offset.c_str(), "%" SCNx64, &m_offset);
 	m_libraryName = p_libraryName;
 }
 
-VirtualOffset::VirtualOffset(const std::string &p_offset)
+VirtualOffset::VirtualOffset(const string &p_offset)
 {
-	sscanf(p_offset.c_str(), "%llx", &m_offset);
-	m_libraryName = std::string(DEFAULT_LIBRARY_NAME);
+	sscanf(p_offset.c_str(), "%" SCNx64, &m_offset);
+	m_libraryName = string(DEFAULT_LIBRARY_NAME);
 }
 
-VirtualOffset::VirtualOffset(const int p_offset)
+VirtualOffset::VirtualOffset(const ApplicationAddress p_offset)
 {
 	m_offset = p_offset;
-	m_libraryName = std::string(DEFAULT_LIBRARY_NAME);
+	m_libraryName = string(DEFAULT_LIBRARY_NAME);
 }
 
 ApplicationAddress VirtualOffset::getOffset() const
@@ -55,7 +55,7 @@ ApplicationAddress VirtualOffset::getOffset() const
 	return m_offset;
 }
 
-std::string VirtualOffset::getLibraryName() const
+string VirtualOffset::getLibraryName() const
 {
 	return m_libraryName;
 }

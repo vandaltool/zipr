@@ -29,31 +29,32 @@
 
 namespace MEDS_Annotation
 {
+	using namespace std;
 
-typedef std::multimap<const VirtualOffset, MEDS_AnnotationBase*> MEDS_Annotations_t;
-typedef std::pair<const VirtualOffset, MEDS_AnnotationBase*> MEDS_Annotations_Pair_t;
+	using MEDS_Annotations_t          = multimap<const VirtualOffset, MEDS_AnnotationBase*> ;
+	using MEDS_Annotations_Pair_t     = pair<const VirtualOffset, MEDS_AnnotationBase*>     ;
 
-typedef std::multimap<const std::string, MEDS_AnnotationBase*> MEDS_FuncAnnotations_t;
-typedef std::pair<const std::string, MEDS_AnnotationBase*> MEDS_Annotations_FuncPair_t;
+	using MEDS_FuncAnnotations_t      = multimap<const string, MEDS_AnnotationBase*>        ;
+	using MEDS_Annotations_FuncPair_t = pair<const string, MEDS_AnnotationBase*>            ; 
 
-class MEDS_AnnotationParser
-{
-	public:
-		MEDS_AnnotationParser() {};
-		MEDS_AnnotationParser(std::istream &); 	/* pass opened file */
-		void parseFile(std::istream &);
-		void parseFile(const std::string &);	 /* pass filename */
-		MEDS_Annotations_t &         getAnnotations() { return m_annotations; }
-		MEDS_FuncAnnotations_t & getFuncAnnotations() { return m_func_annotations; }
+	class MEDS_AnnotationParser
+	{
+		public:
+			MEDS_AnnotationParser() {};
+			MEDS_AnnotationParser(istream &); 	/* pass opened file */
+			void parseFile(istream &);
+			void parseFile(const string &);	 /* pass filename */
+			MEDS_Annotations_t &         getAnnotations() { return m_annotations; }
+			MEDS_FuncAnnotations_t & getFuncAnnotations() { return m_func_annotations; }
 
-	private:
-		// helpers
-		template <class type> bool add_if_valid(std::string line);
+		private:
+			// helpers
+			template <class type> bool add_if_valid(string line);
 
-		// data
-		MEDS_Annotations_t m_annotations;
-		MEDS_FuncAnnotations_t m_func_annotations;
-};
+			// data
+			MEDS_Annotations_t m_annotations;
+			MEDS_FuncAnnotations_t m_func_annotations;
+	};
 
 }
 
