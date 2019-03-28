@@ -41,8 +41,8 @@ class PeWriter : ExeWriter
 		        struct standard_coff_header
 			{
 				uint16_t magic;
-				uint8_t major_linker_verson;
-				uint8_t minor_linker_verson;
+				uint8_t major_linker_version;
+				uint8_t minor_linker_version;
 				uint32_t sizeof_code;
 				uint32_t sizeof_initd_data;
 				uint32_t sizeof_uninitd_data;

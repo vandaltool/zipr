@@ -81,65 +81,73 @@ void PeWriter<width>::Write(const string &out_file, const string &infile)
 template<int width>
 void PeWriter<width>::InitHeaders()
 {
+	const auto pebliss=reinterpret_cast<pe_bliss::pe_base*>(m_exeiop->get_pebliss());
+	assert(pebliss);
+
+	const auto orig_file_full_headers_str     = pebliss -> get_full_headers_data();
+	const auto orig_file_full_headres_cstr    = orig_file_full_headers_str.c_str();
+	// unused -- const auto orig_file_coff_header          = (coff_header_t*)(orig_file_full_headres_cstr+sizeof(dos_header));
+	const auto orig_file_standard_coff_header = (standard_coff_header_t*)(orig_file_full_headres_cstr+sizeof(dos_header)+sizeof(coff_header_t));
+	// unused --const auto orig_file_win_header           = (win_specific_fields_t*)(orig_file_full_headres_cstr+sizeof(dos_header)+sizeof(coff_header_t)+sizeof(standard_coff_header_t));
+
+	// calculate the total size (last-first), rounded to page boundaries so that the OS can allocate that much virtual memory
+	// for this object.
+	const auto image_base = m_firp->getArchitecture()->getFileBase();
+	const auto image_size = page_round_up(DetectMaxAddr()) - page_round_down(image_base);
+
+
 
 	// initialize the headers
 	coff_header_hdr = coff_header_t
 		({
-		 	0x00004550,    // "PE\0\0"
-			0x8664,        // x86 64
-			(uint16_t)segvec.size(), 
-			               // size of the segment map
-			(uint32_t)time(nullptr), 
-			               // time in seconds
-			0,             // ?? have to figure file pointer to symtable out.
-			0,             // no symbols
-			0,             // ?? have to figure size of optional headers out.
-			0x2f           // relocs stripped |  executable | line numbers stripped | large addresses OK
+		 	0x00004550,                    // "PE\0\0"
+			0x8664,                        // x86 64
+			(uint16_t)segvec.size(),       // size of the segment map
+			(uint32_t)time(nullptr),       // time in seconds
+			0,                             // ?? have to figure file pointer to symtable out.
+			0,                             // no symbols
+			0,                             // size of optional headers -- calc'd below.
+			pebliss->get_characteristics() // relocs stripped |  executable | line numbers stripped | large addresses OK
 	       } );
 
 
 	standard_coff_header_hdr = standard_coff_header_t
 		( {
 			0x20b,  // PE32+
-			2,      // version 2.25 linker (major part)
-			25,     // version 2.25 linker (minor part)
-			0x1234, // ?? have to figure out sizeof code
-			0x5678, // ?? have to figure out initd data
-			0x4321, // ?? have to figure out uninitd data
-			0x1000, // ?? entry point
-			0x1000  // ?? have to figure out code base
+			orig_file_standard_coff_header->major_linker_version,  // version 2.25 linker (major part)
+			orig_file_standard_coff_header->minor_linker_version,  // version 2.25 linker (minor part)
+			0x1234,                                                // ?? have to figure out sizeof code
+			0x5678,                                                // ?? have to figure out initd data
+			0x4321,                                                // ?? have to figure out uninitd data
+			(uint32_t)m_exeiop->get_entry(),                       // entry point
+			0x1000                                                 // ?? have to figure out code base
 		} );
 
 
 	win_specific_fields_hdr = win_specific_fields_t
 		( {
-		m_firp->getArchitecture()->getFileBase(), 
-		           // image_base;
-		PAGE_SIZE, // section_alignment;
-		512,       // ?? file_alignment -- guessing this is a magic constant?
-		4,         // major_os_version -- constants, may very if we need to port to more win versions.  read from a.ncexe?
-		0,         // minor_os_version;
-		0,         // major_image_version;
-		0,         // minor_image_version;
-		5,         // major_subsystem_version;
-		2,         // minor_subsystem_version;
-		0,         // win32_version;
-		0,         // ?? sizeof_image in memory.  need to figure out.  we're creating constant headers, right?  maybe?
-		0x400,     // sizeof_headers;
-		0,         // checksum ?? need to fix later
-		3,         // subsystem ?? read from input file?
-		0x8000,    // dll_characteristics ?? read from input file?
-		0x200000,  // sizeof_stack_reserve -- maybe read from input file?
-		0x1000,    // sizeof_stack_commit -- maybe read from input file?
-		0x100000,  // sizeof_heap_reserve -- maybe read from input file?
-		0x1000,    // sizeof_heap_commit -- maybe read from input file?
-		0,         // loader_flags -- reserved, must be 0.
-		0x10       // number of rva_and_sizes -- always 16 from what I can tell?
-
+		image_base,                               // image_base;
+		PAGE_SIZE,                                // section_alignment;
+		512,                                      // file_alignment -- guessing this is a magic constant we can always use
+		pebliss->get_major_os_version(),          // major_os_version -- constants, may very if we need to port to more win versions.  read from a.ncexe?
+		pebliss->get_minor_os_version(),          // minor_os_version;
+		0,                                        // major_image_version;
+		0,                                        // minor_image_version;
+		pebliss->get_major_subsystem_version(),   // major_subsystem_version;
+		pebliss->get_minor_subsystem_version(),   // minor_subsystem_version;
+		0,                                        // win32_version;
+		(uint32_t)image_size,                     // sizeof_image in memory (not including headers?)
+		0x1000,                                   // sizeof_headers (OK to over estimate?)
+		0,                                        // checksum ?? need to fix later
+		3,                                        // subsystem ?? read from input file?
+		pebliss->get_dll_characteristics   (),    // dll_characteristics 
+		pebliss->get_stack_size_reserve_64 (),    // sizeof_stack_reserve
+		pebliss->get_stack_size_commit_64  (),    // sizeof_stack_commit
+		pebliss->get_heap_size_reserve_64  (),    // sizeof_heap_reserve
+		pebliss->get_heap_size_commit_64   (),    // sizeof_heap_commit
+		0,                                        // loader_flags -- reserved, must be 0.
+		0x10                                      // number of rva_and_sizes -- always 16 from what I can tell?
 		} );
-
-	const auto pebliss=reinterpret_cast<pe_bliss::pe_base*>(m_exeiop->get_pebliss());
-	assert(pebliss);
 
 	//
 	// Get data directories from pebliss
@@ -173,6 +181,18 @@ void  PeWriter<width>::CalculateHeaderSizes()
 	hdr_size += sizeof(standard_coff_header_t);
 	hdr_size += sizeof(win_specific_fields_t);
 	hdr_size += sizeof(image_data_directory_t) * image_data_dir_hdrs.size();
+
+	// for each section header (but the last), look to make sure the section fills
+	// the area until the start of the next section
+	for(auto i=0u; i<section_headers.size()-1; i++)
+	{
+		// get header entry I and i+1.
+		auto       &shi   = section_headers[i  ];
+		const auto &ship1 = section_headers[i+1];
+
+		// set the size to the only valid value.
+		shi.virtual_size = ship1.virtual_addr - shi.virtual_addr;
+	}
 
 }
 
@@ -251,10 +271,6 @@ void  PeWriter<width>::WriteFilePass1()
 	assert(res3==0);
 	const auto zero=uint8_t(0);
 	fwrite(&zero,0,0,fout);	 // fill out the file with the last byte.
-
-	// update the header with the total file size.
-	win_specific_fields_hdr.sizeof_image=end_pos;
-
 
 
 }
