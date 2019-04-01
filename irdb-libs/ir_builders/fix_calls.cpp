@@ -46,6 +46,8 @@ extern void read_ehframe(FileIR_t* firp, EXEIO::exeio* );
 
 class FixCalls_t : public TransformStep_t
 {
+	const bool opt_fix_no_func_target=false;
+	const bool opt_fix_no_target = false;
 
 public:
 
@@ -148,10 +150,10 @@ bool call_needs_fix(Instruction_t* insn)
 			return false;
 	}
 
-	auto target=insn->getTarget();
-	auto fallthru=insn->getFallthrough();
+	const auto target=insn->getTarget();
+	const auto fallthru=insn->getFallthrough();
 
-	string pattern;
+// 	string pattern;
 
 // this used to work because fill_in_indirects would mark IBTs 
 // while reading the ehframe, which perfectly corresponds to when
@@ -173,8 +175,8 @@ bool call_needs_fix(Instruction_t* insn)
 		return true;
 	}
 
-	auto addr=fallthru->getAddress()->getVirtualOffset();
-	auto rangeiter=eh_frame_ranges.find(Range_t(addr,addr));
+	const auto addr=fallthru->getAddress()->getVirtualOffset();
+	const auto rangeiter=eh_frame_ranges.find(Range_t(addr,addr));
 	if(rangeiter != eh_frame_ranges.end())	// found an eh_frame addr entry for this call
 	{
 		in_ehframe++;
@@ -192,7 +194,7 @@ bool call_needs_fix(Instruction_t* insn)
 	if(!target)
 	{
 		/* call 0's aren't to real locations */
-		auto disasm=DecodedInstruction_t::factory(insn);
+		const auto disasm=DecodedInstruction_t::factory(insn);
 		if(disasm->getOperand(0)->isConstant() && disasm->getAddress()==0)
 		{
 			return false;
@@ -207,17 +209,19 @@ bool call_needs_fix(Instruction_t* insn)
 			cout<<"Needs fix: No target instruction"<< " address="
 			    <<hex<<addr<<": "<<insn->getDisassembly()<<endl;
 		}
-		/* then we need to fix it */
-		return true;
+		// then we might need to fix it 
+		// but typically, we don't fix it because it's not really a valid isntruction. 
+		return opt_fix_no_target;
 	}
 
 
-	/* if the location after the call is marked as an IBT, then 
+	/* 
+	 * if the location after the call is marked as an IBT, then 
 	 * this location might be used for walking the stack 
   	 */
 
 
-	auto func=target->getFunction();
+	const auto func=target->getFunction();
 
 	/* if there's no function for this instruction */
 	if(!func)
@@ -232,7 +236,7 @@ bool call_needs_fix(Instruction_t* insn)
 		}
 		target_not_in_function++;
 		/* we need to fix it */
-		return true;
+		return opt_fix_no_func_target;
 	}
 
 

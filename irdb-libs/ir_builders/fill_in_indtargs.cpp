@@ -37,6 +37,7 @@
 #include <list>
 #include <stdio.h>
 #include <elf.h>
+#include <cctype>
 
 #include <exeio.h>
 #include "check_thunks.hpp"
@@ -170,11 +171,11 @@ bool is_possible_target(VirtualOffset_t p, VirtualOffset_t addr)
 
 }
 
-EXEIO::section*  find_section(VirtualOffset_t addr, EXEIO::exeio *elfiop)
+EXEIO::section*  find_section(VirtualOffset_t addr, EXEIO::exeio *exeiop)
 {
-         for ( int i = 0; i < elfiop->sections.size(); ++i )
+         for ( int i = 0; i < exeiop->sections.size(); ++i )
          {   
-                 EXEIO::section* pSec = elfiop->sections[i];
+                 EXEIO::section* pSec = exeiop->sections[i];
                  assert(pSec);
                  if(pSec->get_address() > addr)
                          continue;
@@ -309,7 +310,7 @@ bool texttoprintf(FileIR_t *firp,Instruction_t* insn)
 	return false;
 }
 
-void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<VirtualOffset_t>& thunk_bases)
+void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* exeiop, const set<VirtualOffset_t>& thunk_bases)
 {
 
         for(auto insn : firp->getInstructions())
@@ -324,22 +325,22 @@ void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* elfiop, const set<Vir
 		if(mt==admtX86_64 || mt==admtI386)
 		{
 			// work for both 32- and 64-bit.
-			check_for_PIC_switch_table32_type2(firp, insn, *disasm, elfiop, thunk_bases);
-			check_for_PIC_switch_table32_type3(firp, insn, *disasm, elfiop, thunk_bases);
+			check_for_PIC_switch_table32_type2(firp, insn, *disasm, exeiop, thunk_bases);
+			check_for_PIC_switch_table32_type3(firp, insn, *disasm, exeiop, thunk_bases);
 
 			if (firp->getArchitectureBitWidth()==32)
-				check_for_PIC_switch_table32(firp, insn, *disasm, elfiop, thunk_bases);
+				check_for_PIC_switch_table32(firp, insn, *disasm, exeiop, thunk_bases);
 			else if (firp->getArchitectureBitWidth()==64)
-				check_for_PIC_switch_table64(firp, insn, *disasm, elfiop);
+				check_for_PIC_switch_table64(firp, insn, *disasm, exeiop);
 			else
 				assert(0);
 
-			check_for_nonPIC_switch_table(firp, insn, *disasm, elfiop);
-			check_for_nonPIC_switch_table_pattern2(firp, insn, *disasm, elfiop);
+			check_for_nonPIC_switch_table(firp, insn, *disasm, exeiop);
+			check_for_nonPIC_switch_table_pattern2(firp, insn, *disasm, exeiop);
 		}
 		else if(mt==admtAarch64)
 		{
-			check_for_arm_switch_type1(firp,insn,  *disasm, elfiop);
+			check_for_arm_switch_type1(firp,insn,  *disasm, exeiop);
 		}
 		else
 			throw invalid_argument("Cannot determine machine type");
@@ -638,7 +639,7 @@ void check_for_arm_switch_type1(
 		FileIR_t *firp, 
 		Instruction_t* i10, 
 		const DecodedInstruction_t &d10, 
-		EXEIO::exeio* elfiop)
+		EXEIO::exeio* exeiop)
 {
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type1;
 
@@ -974,7 +975,7 @@ notes:
 		const auto i10_func=i10->getFunction();
 
 		// find the section with the jump table
-		const auto table_section=find_section(cur_table_addr,elfiop);
+		const auto table_section=find_section(cur_table_addr,exeiop);
 		if(!table_section) continue;  
 
 		// if the section has no data, abort if not found
@@ -1115,7 +1116,7 @@ notes:
 /*
  * check_for_PIC_switch_table32 - look for switch tables in PIC code for 32-bit code.
  */
-void check_for_PIC_switch_table32(FileIR_t *firp, Instruction_t* insn, const DecodedInstruction_t& disasm, EXEIO::exeio* elfiop, const set<VirtualOffset_t> &thunk_bases)
+void check_for_PIC_switch_table32(FileIR_t *firp, Instruction_t* insn, const DecodedInstruction_t& disasm, EXEIO::exeio* exeiop, const set<VirtualOffset_t> &thunk_bases)
 {
 
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type1;
@@ -1269,7 +1270,7 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 		VirtualOffset_t table_base=thunk_base+table_offset;
 
 		// find the section with the data table
-        	EXEIO::section *pSec=find_section(table_base,elfiop);
+        	EXEIO::section *pSec=find_section(table_base,exeiop);
 		if(!pSec)
 			continue;
 
@@ -1344,7 +1345,7 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 
 
 
-void check_for_PIC_switch_table32_type2(FileIR_t *firp, Instruction_t* insn, const DecodedInstruction_t& disasm, EXEIO::exeio* elfiop, const set<VirtualOffset_t> &thunk_bases)
+void check_for_PIC_switch_table32_type2(FileIR_t *firp, Instruction_t* insn, const DecodedInstruction_t& disasm, EXEIO::exeio* exeiop, const set<VirtualOffset_t> &thunk_bases)
 {
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type2;
 	auto ibtargets = InstructionSet_t();
@@ -1403,7 +1404,7 @@ I5:   0x809900e <text_handler+51>: jmp    ecx
 		auto table_base=thunk_base+table_offset;
 
 		// find the section with the data table
-        	auto pSec=find_section(table_base,elfiop);
+        	auto pSec=find_section(table_base,exeiop);
 		if(!pSec)
 			continue;
 
@@ -1475,7 +1476,7 @@ I5:   0x809900e <text_handler+51>: jmp    ecx
  *
  * nb: also works for 64-bit.
  */
-void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, const DecodedInstruction_t& disasm, EXEIO::exeio* elfiop, const set<VirtualOffset_t> &thunk_bases)
+void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, const DecodedInstruction_t& disasm, EXEIO::exeio* exeiop, const set<VirtualOffset_t> &thunk_bases)
 {
 	uint32_t ptrsize=firp->getArchitectureBitWidth()/8;
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type3;
@@ -1505,7 +1506,7 @@ void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, con
 		return;
 
 	// find the section with the data table
-	EXEIO::section *pSec=find_section(table_base,elfiop);
+	EXEIO::section *pSec=find_section(table_base,exeiop);
 	if(!pSec)
 		return;
 
@@ -1701,7 +1702,7 @@ void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, con
  * if so, see if we can trace back a few instructions to find a
  * the start of the table.
  */
-void check_for_PIC_switch_table64(FileIR_t* firp, Instruction_t* insn, const DecodedInstruction_t& p_disasm, EXEIO::exeio* elfiop)
+void check_for_PIC_switch_table64(FileIR_t* firp, Instruction_t* insn, const DecodedInstruction_t& p_disasm, EXEIO::exeio* exeiop)
 {
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type4;
 /* here's the pattern we're looking for */
@@ -1824,7 +1825,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	 * This instruction will contain the register names for
 	 * the index and the address of the base of the table
 	 */
-	if(!backup_until("movsxd", I6, I7))
+	if(!backup_until("(mov|movsxd)", I6, I7))
 		return;
 
 	string lea_string="lea ";
@@ -1875,27 +1876,20 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	 * make sure we match the register,
 	 * and allow recursion in the search (last parameter as true).
 	 *
-	 */
-
-	 /*
 	  * Convert to return set
-		*/
+	  */
 
 	auto found_leas=InstructionSet_t();
 	
 	
-	if (I6->getFunction())
+	if (backup_until(lea_string.c_str(), I5, I6, "", true))
+	{
+		found_leas.insert(I5);
+	}
+	else if (I6->getFunction())
 	{
 		cout << "Using find_in_function method." << endl;
 		found_leas=find_in_function(lea_string,I6->getFunction());
-	}
-	else
-	{
-		cout << "Using fallback method." << endl;
-		if (backup_until(lea_string.c_str(), I5, I6, "", true))
-		{
-			found_leas.insert(I5);
-		}
 	}
 	if (found_leas.empty())
 	{
@@ -1927,8 +1921,14 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		VirtualOffset_t D1=strtol(d5.getOperand(1)->getString().c_str(), nullptr, 0);
 		D1+=I5_cur->getAddress()->getVirtualOffset();
 
+		// sometimes the lea only points at the image base, and the displacement field here is used for 
+		// the offset into the image.  This is useful if there are multiple switches (or other constructs)
+		// in the same function which can share register assignment of the image-base register.
+		// we recod the d6_displ field here
+		const auto d6_displ = d6->getOperand(1)->getMemoryDisplacement();	 
+
 		// find the section with the data table
-		auto pSec=find_section(D1,elfiop);
+		auto pSec=find_section(D1+d6_displ,exeiop);
 
 		// sanity check there's a section
 		if(!pSec)
@@ -1972,8 +1972,11 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 			table_size=std::numeric_limits<int>::max();
 		}
 
+		// record the set of ibtargets we find here.
 		auto ibtargets=InstructionSet_t();
-		auto offset=D1-pSec->get_address();
+
+		// offset from address to access - section address 
+		auto offset=D1+d6_displ-pSec->get_address();
 		auto entry=0U;
 		auto found_table_error = false;
 		do
@@ -1985,8 +1988,8 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 				break;
 			}
 
-			const int *table_entry_ptr=(const int*)&(secdata[offset]);
-			VirtualOffset_t table_entry=*table_entry_ptr;
+			const auto table_entry_ptr = (const int*)&(secdata[offset]);
+			const auto table_entry     = VirtualOffset_t(*table_entry_ptr);
 
 			if(!possible_target(D1+table_entry, 0/* from addr unknown */,prov))
 			{
@@ -2021,26 +2024,166 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 			entry++;
 		} while ( entry<=table_size);
 
+		// record the max entry we found
+		const auto max_valid_table_entry=entry+1;
+
 		
 		// valid switch table? may or may not have default: in the switch
 		// table size = 8, #entries: 9 b/c of default
-		cout << "pic64: detected table size (max_int means no found): 0x"<< hex << table_size << " #entries: 0x" << entry << " ibtargets.size: " << ibtargets.size() << endl;
-
+		cout << "pic64: max-table-entry (max_int means no found): 0x"<< hex << table_size << " #entries: 0x" << entry << " ibtargets.size: " << ibtargets.size() << endl;
 		jmptables[I8].addTargets(ibtargets);
+
 		// note that there may be an off-by-one error here as table size depends on whether instruction I2 is a jb or jbe.
-		if (!found_table_error)
+		
+		// If we've successfully found a table with at least 3 things, or we (oddly) found a table with 
+		// less than 3 things but did so 100% effectively, go ahead and mark it a successful analysis	
+		if (!found_table_error || ibtargets.size() > 3)	
 		{
-			cout << "pic64: valid switch table for "<<hex<<I8->getAddress()->getVirtualOffset()
-			     <<"detected ibtp_switchtable_type4" << endl;
+			cout << "pic64: valid switch table for " << hex << I8->getAddress()->getVirtualOffset()
+			     << " detected ibtp_switchtable_type4" << endl;
 			jmptables[I8].setAnalysisStatus(iasAnalysisComplete);
+			addSwitchTableScoop(firp,max_valid_table_entry,4,D1+d6_displ,exeiop, I6, D1);
+
 		}
 		else
 		{
-			cout << "pic64: INVALID switch table detected for, "
-			     <<hex<<I8->getAddress()->getVirtualOffset()<<"type=ibtp_switchtable_type4" << endl;
+			cout << "pic64: INVALID switch table detected for, " << hex 
+			     << I8->getAddress()->getVirtualOffset() 
+			     << "type=ibtp_switchtable_type4 with L5=" << endl;
+			// try the next L5.
+			continue;
+		}
+		/* 
+		 * Now, check to see if this was a two level table. 
+		 * Here's an example from a visual studio compiled program:
+		 *
+		 *                 cmp    eax,0x23
+   		 *                 ja     0x1400066d3
+   		 *    I5_cur:      lea    rcx,[rip+0xffffffffffff9a7d]        # 0x140000000
+   		 *    I6_2         movzx  eax,BYTE PTR [rcx+rax*1+0x6a50]
+   		 *    I6:          mov    edx,DWORD PTR [rcx+rax*4+0x6a34]
+   		 *    I7:          add    rdx,rcx
+   		 *    I8:          jmp    rdx
+		 *
+		 */
+
+		// sanity check that I understand the variables of this function properly.
+		// and grab the index reg
+		const auto d6_memop  = d6->getOperand(1);
+		assert(I6 && d6 && d6_memop->isMemory());
+
+		// hack approved by an7s to convert a field from the index register to the actual 32-bit register from RegID_t
+		const auto ireg_no         = RegisterID_t(rn_EAX + d6_memop->getIndexRegister());
+		auto ireg_str        = registerToString(ireg_no);
+		transform(ALLOF(ireg_str), begin(ireg_str), ::tolower);
+		const auto I6_2_opcode_str = string() + "movzx " + ireg_str + ",";
+
+		auto I6_2 = (Instruction_t*)nullptr;
+		if(backup_until(I6_2_opcode_str, I6_2, I6))
+		{
+			// woo!  found a 2 level table
+			// decode d6_2 and check the memory operand
+			const auto d6_2            = DecodedInstruction_t::factory(I6_2);
+			const auto d6_2_memop      = d6_2->getOperand(1);
+			assert(d6_2_memop->isMemory());
+			const auto d6_2_displ      = d6_2_memop->getMemoryDisplacement();
+
+			// try next L5 if no 2 level table here
+			if(d6_2_displ == 0) continue;
+
+			// look up the section and try next L5 if not found
+			const auto lvl2_table_addr =  D1 + d6_2_displ;
+			const auto lvl2_table_sec=find_section(lvl2_table_addr,exeiop);
+			if(lvl2_table_sec == nullptr) continue;
+
+			const auto lvl2_table_secdata=pSec->get_data();
+
+			// if the section has no data, abort 
+			if(lvl2_table_secdata == nullptr) continue;
+
+			// now, scan the lvl2 table, and stop if we find an entry bigger than 
+			// the lvl1 table's size.  This will calc the size of the lvl2 table.
+			//
+			// offset from address to access - section address 
+			auto lvl2_table_offset=lvl2_table_addr - lvl2_table_sec->get_address();
+			auto lvl2_table_entry_no=0U;
+			do
+			{
+				// check that we can still grab a word from this section
+				if((int)(lvl2_table_offset+sizeof(int)) > (int)lvl2_table_sec->get_size())
+					break;
+
+				const auto lvl2_table_entry_ptr = (const uint8_t*)&(lvl2_table_secdata[lvl2_table_offset]);
+				const auto lvl2_table_entry_val = *lvl2_table_entry_ptr;
+
+				// found an entry that's bigger than our lvl1 table's max element
+				if(lvl2_table_entry_val > max_valid_table_entry )
+					break;
+
+				lvl2_table_offset+=sizeof(uint8_t);
+				lvl2_table_entry_no++;
+			} while ( lvl2_table_entry_no <= table_size); /* table_size from original cmp! */
+			
+			// now record the lvl2 table into a scoop 
+			addSwitchTableScoop(firp,lvl2_table_entry_no+1,1,lvl2_table_addr,exeiop, I6_2, D1);
 		}
 	}
 }
+
+
+void addSwitchTableScoop(
+		FileIR_t* firp, 
+		const size_t num_entries, 
+		const size_t entry_size, 
+		const VirtualOffset_t table_base_addr, 
+		EXEIO::exeio* exeiop, 
+		Instruction_t* I6,
+		const VirtualOffset_t I5_constant
+		)
+{
+	// make sure we can find the section with the switch table
+	const auto sec = exeiop->sections.findByAddress(table_base_addr);                    // section that contains the data
+
+	// and only add if the section is executable.
+	// data sections already have scoops (consider splitting data scoops?)
+	if(sec == nullptr) return;
+	if(!sec->isExecutable()) return;
+
+	const auto start_vo        = 0u;                                                          // start and end offsets in this file
+	const auto end_vo          = start_vo+num_entries*entry_size;
+	auto startaddr             = firp->addNewAddress(firp->getFile()->getBaseID(), start_vo); // start and end address
+	auto endaddr               = firp->addNewAddress(firp->getFile()->getBaseID(), end_vo);
+	assert(sec);
+	const auto sec_data        = sec->get_data();                                             // data
+	const auto scoop_start_ptr = sec_data+(table_base_addr-sec->get_address());               // relevant start of data
+	const auto the_contents    = string(scoop_start_ptr, end_vo-start_vo+1);
+	const auto name            = string("fii_switch_")+to_hex_string(table_base_addr);        // name of new segment
+	const auto permissions     =                                                              // permissions and relro bit.
+		( sec->isReadable()   << 2 ) |
+		( sec->isWriteable()  << 1 ) |
+		( sec->isExecutable() << 0 ) ;
+	const auto is_relro       = false;
+
+	// finally, create the new scoop
+	const auto switch_tab = firp->addNewDataScoop( name, startaddr, endaddr, NULL, permissions, is_relro, the_contents, max_base_id++ );
+
+	// and add a relocation so we can later repin the scoop
+	firp->addNewRelocation(I6, 0, "absoluteptr_to_scoop",  switch_tab);
+
+	// now rewrite the 
+	const auto d6          = DecodedInstruction_t::factory(I6);
+	const auto operands    = d6->getOperands();
+	const auto the_arg     = find_if(ALLOF(operands), [](const shared_ptr<DecodedOperand_t>& arg) { return arg->isMemory(); });
+	const auto disp_offset = uint32_t(d6->getMemoryDisplacementOffset(the_arg->get(),I6));
+        const auto disp_size   = uint32_t((*the_arg)->getMemoryDisplacementEncodingSize());
+	const auto file_base   = firp->getArchitecture()->getFileBase();
+	const auto new_disp    = uint32_t(I5_constant-file_base);
+	const auto new_bits    = I6->getDataBits().replace(disp_offset, disp_size, (const char*)&new_disp, disp_size);
+	I6->setDataBits(new_bits);
+
+
+}
+
 
 /*
   switch table pattern (non-PIC):
@@ -2055,7 +2198,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 
 	nb: handles both 32 and 64 bit
 */
-void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn, const DecodedInstruction_t& p_disasm, EXEIO::exeio* elfiop)
+void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn, const DecodedInstruction_t& p_disasm, EXEIO::exeio* exeiop)
 {
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type5;
 	Instruction_t *I1 = nullptr;
@@ -2084,7 +2227,7 @@ void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn,
 
 	if(!backup_until("cmp", I1, IJ))
 	{
-		cout<<"(nonPIC): could not find size of switch table"<<endl;
+		cout<<"(nonPIC-pattern2): could not find size of switch table"<<endl;
 		return;
 	}
 
@@ -2099,7 +2242,7 @@ void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn,
 	cout<<"(nonPIC-pattern2): size of jmp table: "<< table_size << endl;
 
 	// find the section with the data table
-    	auto pSec=find_section(table_offset,elfiop);
+    	auto pSec=find_section(table_offset,exeiop);
 	if(!pSec)
 	{
 		return;
@@ -2127,7 +2270,7 @@ void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn,
 		VirtualOffset_t table_entry=*table_entry_ptr;
 		possible_target(table_entry,0,prov);
 
-		Instruction_t *ibtarget = lookupInstruction(firp, table_entry);
+		auto ibtarget = lookupInstruction(firp, table_entry);
 		if (!ibtarget) {
 			if(getenv("IB_VERBOSE"))
 				cout << "0x" << hex << table_entry << " is not an instruction, invalid switch table" << endl;
@@ -2158,7 +2301,7 @@ void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn,
 
 	nb: handles both 32 and 64 bit
 */
-void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, const DecodedInstruction_t& p_disasm, EXEIO::exeio* elfiop)
+void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, const DecodedInstruction_t& p_disasm, EXEIO::exeio* exeiop)
 {
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type6;
 	Instruction_t *I1 = nullptr;
@@ -2219,7 +2362,7 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, const De
 		cout<<"(nonPIC): size of jmp table: "<< table_size << endl;
 
 	// find the section with the data table
-	auto pSec=find_section(table_offset,elfiop);
+	auto pSec=find_section(table_offset,exeiop);
 	if(!pSec)
 	{
 		cout<<hex<<"(nonPIC): could not find jump table in section"<<endl;
@@ -2479,7 +2622,7 @@ void process_dynsym(FileIR_t* firp)
 }
 
 
-ICFS_t* setup_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop, ibt_provenance_t allowed)
+ICFS_t* setup_hellnode(FileIR_t* firp, EXEIO::exeio* exeiop, ibt_provenance_t allowed)
 {
 	auto hn=firp->addNewICFS(nullptr, {}, iasAnalysisModuleComplete);
 
@@ -2496,13 +2639,13 @@ ICFS_t* setup_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop, ibt_provenance_t al
 		}
 	}
 
-	if(hn->size() < 1000 && !elfiop->isDynamicallyLinked())
+	if(hn->size() < 1000 && !exeiop->isDynamicallyLinked())
 		hn->setAnalysisStatus(iasAnalysisComplete);
 
 	return hn;
 }
 
-ICFS_t* setup_call_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop)
+ICFS_t* setup_call_hellnode(FileIR_t* firp, EXEIO::exeio* exeiop)
 {
 	ibt_provenance_t allowed=
 		ibt_provenance_t::ibtp_data |
@@ -2541,14 +2684,14 @@ ICFS_t* setup_call_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop)
 	 * ibt_provenance_t::ibtp_switchtable_type10
 	 */
 
-	auto ret=setup_hellnode(firp,elfiop,allowed);
+	auto ret=setup_hellnode(firp,exeiop,allowed);
 
 	cout<<"# ATTRIBUTE fill_in_indtargs::call_hellnode_size="<<dec<<ret->size()<<endl;
 	return ret;
 
 }
 
-ICFS_t* setup_jmp_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop)
+ICFS_t* setup_jmp_hellnode(FileIR_t* firp, EXEIO::exeio* exeiop)
 {
 	ibt_provenance_t allowed=
 		ibt_provenance_t::ibtp_data |
@@ -2585,14 +2728,14 @@ ICFS_t* setup_jmp_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop)
 	 * ibt_provenance_t::ibtp_switchtable_type10
 	 */
 
-	auto ret=setup_hellnode(firp,elfiop,allowed);
+	auto ret=setup_hellnode(firp,exeiop,allowed);
 	cout<<"# ATTRIBUTE fill_in_indtargs::jmp_hellnode_size="<<dec<<ret->size()<<endl;
 	return ret;
 
 }
 
 
-ICFS_t* setup_ret_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop)
+ICFS_t* setup_ret_hellnode(FileIR_t* firp, EXEIO::exeio* exeiop)
 {
 	ibt_provenance_t allowed=
 		ibt_provenance_t::ibtp_stars_ret |	// stars says a return goes here, and this return isn't analyzeable.
@@ -2634,7 +2777,7 @@ ICFS_t* setup_ret_hellnode(FileIR_t* firp, EXEIO::exeio* elfiop)
 	 * ibt_provenance_t::ibtp_gotplt  
 	 */
 
-	auto ret_hell_node=setup_hellnode(firp,elfiop,allowed);
+	auto ret_hell_node=setup_hellnode(firp,exeiop,allowed);
 	cout<<"# ATTRIBUTE fill_in_indtargs::basicret_hellnode_size="<<dec<<ret_hell_node->size()<<endl;
 
 	cout<<"# ATTRIBUTE fill_in_indtargs::fullret_hellnode_size="<<dec<<ret_hell_node->size()<<endl;
@@ -2678,7 +2821,7 @@ void print_icfs(FileIR_t* firp)
 	}
 }
 
-void setup_icfs(FileIR_t* firp, EXEIO::exeio* elfiop)
+void setup_icfs(FileIR_t* firp, EXEIO::exeio* exeiop)
 {
 	int total_ibta_set=0;
 
@@ -2700,9 +2843,9 @@ void setup_icfs(FileIR_t* firp, EXEIO::exeio* elfiop)
 
 
 	// setup calls, jmps and ret hell nodes.
-	auto call_hell = setup_call_hellnode(firp,elfiop);
-	auto jmp_hell = setup_jmp_hellnode(firp,elfiop);
-	auto ret_hell = setup_ret_hellnode(firp,elfiop);
+	auto call_hell = setup_call_hellnode(firp,exeiop);
+	auto jmp_hell = setup_jmp_hellnode(firp,exeiop);
+	auto ret_hell = setup_ret_hellnode(firp,exeiop);
 
 	// for each instruction 
         for(auto insn : firp->getInstructions())
@@ -3502,7 +3645,7 @@ void find_all_arm_unks(FileIR_t* firp)
 /*
  * fill_in_indtargs - main driver routine for 
  */
-void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, int64_t do_unpin_opt)
+void fill_in_indtargs(FileIR_t* firp, exeio* exeiop, int64_t do_unpin_opt)
 {
 	calc_preds(firp);
 
@@ -3518,12 +3661,12 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, int64_t do_unpin_opt)
 	lookupInstruction_init(firp);
 
 
-        int secnum = elfiop->sections.size();
+        int secnum = exeiop->sections.size();
 	int secndx=0;
 
 	/* look through each section and record bounds */
         for (secndx=0; secndx<secnum; secndx++)
-		get_executable_bounds(firp, elfiop->sections[secndx]);
+		get_executable_bounds(firp, exeiop->sections[secndx]);
 
 	/* import info from stars */
 	read_stars_xref_file(firp);
@@ -3534,7 +3677,7 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, int64_t do_unpin_opt)
 
 	/* look through each section and look for target possibilities */
         for (secndx=0; secndx<secnum; secndx++)
-		infer_targets(firp, elfiop->sections[secndx]);
+		infer_targets(firp, exeiop->sections[secndx]);
 
 	handle_scoop_scanning(firp);
 	
@@ -3543,14 +3686,14 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, int64_t do_unpin_opt)
 		possible_target(pin, 0, ibt_provenance_t::ibtp_user);
 
 	/* look through the instructions in the program for targets */
-	get_instruction_targets(firp, elfiop, thunk_bases);
+	get_instruction_targets(firp, exeiop, thunk_bases);
 
 	/* mark the entry point as a target */
-	possible_target(elfiop->get_entry(),0,ibt_provenance_t::ibtp_entrypoint); 
+	possible_target(exeiop->get_entry(),0,ibt_provenance_t::ibtp_entrypoint); 
 
 	/* Read the exception handler frame so that those indirect branches are accounted for */
 	/* then now process the ranges and mark IBTs as necessarthat have exception handling */
-        read_ehframe(firp, elfiop);
+        read_ehframe(firp, exeiop);
 	process_ranges(firp);
 	
 	/* now, find the .GOT addr and process any pc-rel things for x86-32 ibts. */
@@ -3572,7 +3715,7 @@ void fill_in_indtargs(FileIR_t* firp, exeio* elfiop, int64_t do_unpin_opt)
 	cout<<"========================================="<<endl;
 
 	// try to setup an ICFS for every IB.
-	setup_icfs(firp, elfiop);
+	setup_icfs(firp, exeiop);
 
 	// do unpinning of well analyzed ibts.
 	if(do_unpin_opt!=(int64_t)-1) 
@@ -3662,6 +3805,7 @@ int parseArgs(const vector<string> step_args)
 	return 0;
 }
 
+DatabaseID_t max_base_id=BaseObj_t::NOT_IN_DATABASE;
 
 int executeStep()
 {
@@ -3698,15 +3842,18 @@ int executeStep()
 			firp->setBaseIDS();
 			firp->assembleRegistry();
 
+			// record the max base id, in case we add objects
+			max_base_id=firp->getMaxBaseID();
+
 			// read the executeable file
 			int elfoid=firp->getFile()->getELFOID();
 		        pqxx::largeobject lo(elfoid);
         		lo.to_file(pqxx_interface->getTransaction(),"readeh_tmp_file.exe");
-        		auto elfiop=unique_ptr<EXEIO::exeio>(new EXEIO::exeio);
-        		elfiop->load(string("readeh_tmp_file.exe"));
+        		auto exeiop=unique_ptr<EXEIO::exeio>(new EXEIO::exeio);
+        		exeiop->load(string("readeh_tmp_file.exe"));
 
 			// find all indirect branch targets
-			fill_in_indtargs(firp, elfiop.get(), do_unpin_opt);
+			fill_in_indtargs(firp, exeiop.get(), do_unpin_opt);
 			if(split_eh_frame_opt)
 				split_eh_frame(firp);
 
