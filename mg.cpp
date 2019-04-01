@@ -550,9 +550,9 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::HandleMemoryOperand(De
 
 	auto to1 = (DataScoop_t*) NULL;
 	// examine the memory operation to see if there's a pc-rel
-	if ((*the_arg)->isMemory() /*the_arg->Memory.DisplacementAddr!=0*/ && 
+	if ((*the_arg)->isMemory() && 
 	    (*the_arg)->hasMemoryDisplacement() && 
-	    (*the_arg)->getMemoryDisplacementEncodingSize() /*Memory.DisplacementSize*/==4
+	    (*the_arg)->getMemoryDisplacementEncodingSize() == 4
 
 	   )
 	{
@@ -607,7 +607,6 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::HandleMemoryOperand(De
 						<<hex<<to1->getEnd()->getVirtualOffset()<<")"<<endl; 
 				}
 				//ApplyAbsoluteMemoryRelocation(insn,to1);
-
 				absolute_refs_to_scoops.insert({insn,to1});
 			}
 		}
@@ -644,13 +643,12 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::HandleMemoryOperand(De
 template <class T_Sym, class  T_Rela, class T_Rel, class T_Dyn, class T_Extractor>
 void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ApplyPcrelMemoryRelocation(Instruction_t* insn, DataScoop_t* to)
 {
-	//DISASM disasm;
-	//Disassemble(insn,disasm);
 	const auto disasmp=DecodedInstruction_t::factory(insn);
 	const auto &disasm=*disasmp;
 	auto operands=disasm.getOperands();
 
-#if 1 // don't change instructions that reference re-pinned scoops.
+#if 1 
+	// don't change instructions that reference re-pinned scoops.
 	// This was necessary because we were not getting the zipr_unpin_plugin
 	//  to undo our changes to the instruction in the case of a re-pinned scoop.
 	//  That problem is fixed, but it is more efficient and safer to
@@ -689,7 +687,8 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ApplyAbsoluteMemoryRel
 	const auto &disasm=*disasmp;
 	auto operands=disasm.getOperands();
 
-#if 1 // don't change instructions that reference re-pinned scoops.
+#if 1 
+	// don't change instructions that reference re-pinned scoops.
 	// This was necessary because we were not getting the zipr_unpin_plugin
 	//  to undo our changes to the instruction in the case of a re-pinned scoop.
 	//  That problem is fixed, but it is more efficient and safer to
@@ -707,11 +706,6 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ApplyAbsoluteMemoryRel
 	unsigned int disp_offset=disasm.getMemoryDisplacementOffset(the_arg->get(),insn) /*the_arg->Memory.DisplacementAddr-disasm.EIP*/;
 	unsigned int disp_size=(*the_arg)->getMemoryDisplacementEncodingSize() /*the_arg->Memory.DisplacementSize*/;
 	assert(0<disp_offset && disp_offset<=insn->getDataBits().size() - disp_size);
-	/*
-	Relocation_t* reloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, 0, "absoluteptr_to_scoop",to);
-	insn->getRelocations().insert(reloc);
-	getFileIR()->getRelocations().insert(reloc);
-	*/
 	auto reloc=getFileIR()->addNewRelocation(insn,0, "absoluteptr_to_scoop",to);
 	(void)reloc; // just giving to the ir
 
@@ -728,45 +722,6 @@ DataScoop_t* MoveGlobals_t<T_Sym, T_Rela, T_Rel, T_Dyn, T_Extractor>::DetectAnno
 	if (!m_use_stars)
 		return nullptr;
 
-#if 0
-	/* this looks a whle lot like:
-        	const auto AnnotIterPair = getAnnotations().equal_range(insn->getBaseID());
-		const auto it=find_if(AnnotIterPair.first, AnnotIterPair.second, [&](const pair<DatabaseID_t,MEDS_AnnotationBase_t*> p)
-			{
-				const auto annotation = dynamic_cast<MEDS_MemoryRangeAnnotation*>(p.second);
-				return  (annotation!=nullptr && annotation->isValid() && annotation->isStaticGlobalRange());
-			};
-		if(auto_it==AnnotIterPair.second)
-			return nullptr;
-		cout << "Memory range annotation found: " << annotation->toString() << endl;
-		const auto  StartAddr = annotation->getRangeMin();
-		const auto  VirtualOffset = (IRDB_SDK::VirtualOffset_t) StartAddr;
-		return this->findScoopByAddress(VirtualOffset);
-
-		I'm not entirely sure it's the same, but I think it would be.  
-		Good coding guidelines prefer using stuff from <algorithm> (i.e., find_if) instead re-writing, which is more 
-		likely to be buggy with maintenance in the future.
-	 */
-
-	auto ReferencedScoop = (DataScoop_t*)nullptr;
-	auto AnnotIterPair = getAnnotations().equal_range(insn->getBaseID());
-	for (auto  it = AnnotIterPair.first; it != AnnotIterPair.second; ++it)
-	{
-		auto annotation = dynamic_cast<MEDS_MemoryRangeAnnotation*>(it->second);
-		if (annotation)
-		{
-			cout << "Memory range annotation found: " << annotation->toString() << endl;
-
-			if (annotation->isValid() && (annotation->isStaticGlobalRange() || annotation->isSentinel()))
-			{
-				// Get the scoop at which the annotated range begins.
-				const auto  StartAddr = annotation->getRangeMin();
-				const auto  VirtualOffset = (IRDB_SDK::VirtualOffset_t) StartAddr;
-				ReferencedScoop = this->findScoopByAddress(VirtualOffset);
-			}
-		}
-	} // end for all annotations for this instruction ID
-#endif
 	const auto dgsr_it     = deep_global_static_ranges->find(insn);
        	const auto dgsr_found  = dgsr_it != deep_global_static_ranges->end();
 	const auto sentinel_it = sentinels->find(insn);
