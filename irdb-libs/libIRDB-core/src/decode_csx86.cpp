@@ -72,37 +72,15 @@ static bool isPartOfGroup(const cs_insn* the_insn, const x86_insn_group the_grp)
 
 static bool isJmp(cs_insn* the_insn) 
 {
-	return isPartOfGroup(the_insn,X86_GRP_JUMP);
+
+	const auto is_jmp_grp =  isPartOfGroup(the_insn,X86_GRP_JUMP);
+	const auto is_loop = 
+		the_insn->id == X86_INS_LOOP   || 
+		the_insn->id == X86_INS_LOOPE  || 
+		the_insn->id == X86_INS_LOOPNE ;
+
+	return is_jmp_grp || is_loop;
 }
-
-#if 0
-class CapstoneHandle_t
-{
-	public:
-		CapstoneHandle_t(FileIR_t* firp=NULL)
-		{
-
-			const auto width=FileIR_t::getArchitectureBitWidth();
-			const auto mode = (width==64) ? CS_MODE_64: CS_MODE_32; 
-	                auto err = cs_open(CS_ARCH_X86, mode,  &handle);
-
-			if (err) 
-			{
-				const auto s=string("Failed on cs_open() with error returned: ")+to_string(err)+"\n";
-				throw std::runtime_error(s);
-			}
-                	cs_option(handle, CS_OPT_DETAIL, CS_OPT_ON);
-			cs_option(handle, CS_OPT_SYNTAX, CS_OPT_SYNTAX_INTEL);
-
-
-		}
-		inline csh getHandle() { return handle; }
-
-	private:
-		csh handle;
-};
-static CapstoneHandle_t *cs_handle=NULL;
-#endif
 
 template<class type>
 static inline type insnToImmedHelper(cs_insn* the_insn, csh handle)
