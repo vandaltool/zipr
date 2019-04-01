@@ -149,34 +149,47 @@ void UnpinX86_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* reloc)
 
 void UnpinX86_t::HandleAbsptrReloc(Instruction_t* from_insn, Relocation_t* reloc)
 {
+	// decode the instruction
 	const auto disasm=DecodedInstruction_t::factory(from_insn);
 	const auto operands=disasm->getOperands();
 
+	// find the memory operand
 	// push/pop from memory might have a memory operand with no string to represent the implicit stack operand.
 	const auto the_arg_it=find_if(ALLOF(operands),[](const shared_ptr<DecodedOperand_t>& op){ return op->isMemory() && op->getString()!=""; });
-	DataScoop_t* wrt=dynamic_cast<DataScoop_t*>(reloc->getWRT());
+	const auto wrt=dynamic_cast<DataScoop_t*>(reloc->getWRT());
+
+	// assert we found the right thing
 	assert(wrt);
 	assert(the_arg_it!=operands.end());
 	const auto &the_arg=*the_arg_it;
 
-	int disp_offset=disasm->getMemoryDisplacementOffset(the_arg.get(),from_insn); 
-	int disp_size=the_arg->getMemoryDisplacementEncodingSize(); 
+	// extract the info about where the displacement encoding is
+	const auto disp_offset = uint32_t(disasm->getMemoryDisplacementOffset(the_arg.get(),from_insn)); 
+	const auto disp_size   = uint32_t(the_arg->getMemoryDisplacementEncodingSize()); 
 	assert(disp_size==4);
 	assert(0<disp_offset && (int64_t)disp_offset<=(int64_t)from_insn->getDataBits().size() - disp_size);
 	assert(reloc->getWRT());
 
-	unsigned int new_disp=the_arg->getMemoryDisplacement() + wrt->getStart()->getVirtualOffset();
+	// calculate the new displcement
+	const auto new_disp=uint32_t(the_arg->getMemoryDisplacement() + wrt->getStart()->getVirtualOffset() + reloc->getAddend() - firp.getArchitecture()->getFileBase());
+
+	// update the instruction
 	from_insn->setDataBits(from_insn->getDataBits().replace(disp_offset, disp_size, (char*)&new_disp, disp_size));
+
 	// update the instruction in the memory space.
-	IRDB_SDK::VirtualOffset_t from_insn_location=locMap[from_insn];
+	const auto from_insn_location=locMap[from_insn];
 	for(unsigned int i=0;i<from_insn->getDataBits().size();i++)
 	{ 
-		unsigned char newbyte=from_insn->getDataBits()[i];
+		const auto newbyte=from_insn->getDataBits()[i];
 		ms[from_insn_location+i]=newbyte;
 
 		//cout<<"Updating push["<<i<<"] from "<<hex<<oldbyte<<" to "<<newbyte<<endl;
 	}
+
+	// decode again for logging
 	const auto disasm2=DecodedInstruction_t::factory(from_insn);
+
+	// log 
 	cout<<"unpin:absptr_to_scoop:Converting "<<hex<<from_insn->getBaseID()<<":"<<disasm->getDisassembly()
 	    <<" to "<<disasm2->getDisassembly() <<" for scoop: "<<wrt->getName()<<endl;
 }
