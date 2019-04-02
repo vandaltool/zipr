@@ -8,7 +8,6 @@
 #include <set>
 #include <tuple>
 
-#include <libStructDiv.h>
 #include <exeio.h>
 
 #include <elfio/elfio.hpp>
@@ -66,8 +65,6 @@ class MoveGlobals_t : public IRDB_SDK::Transform_t
 		IRDB_SDK::DataScoop_t* findScoopByAddress(const IRDB_SDK::VirtualOffset_t a) const;
 		bool AreScoopsAdjacent(const IRDB_SDK::DataScoop_t *a, const IRDB_SDK::DataScoop_t *b) const;
 
-
-		libStructDiv::StructuredDiversity_t *struct_div;
 
 		std::vector<T_Sym> static_symbols;
 		std::vector<T_Sym> dynamic_symbols;

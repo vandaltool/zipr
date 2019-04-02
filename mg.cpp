@@ -4,7 +4,6 @@
 #include <assert.h>
 #include <stdexcept>
 #include <unistd.h>
-#include <libStructDiv.h>
 #include <memory>
 #include <inttypes.h>
 #include <algorithm>
@@ -17,7 +16,6 @@
 
 using namespace std;
 using namespace IRDB_SDK;
-using namespace libStructDiv;
 using namespace EXEIO;
 
 #define ALLOF(s) begin(s), end(s)
@@ -96,7 +94,6 @@ MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::MoveGlobals_t(
 	const bool p_use_stars)
 	:
 	Transform_t(p_variantIR),
-	struct_div(NULL),
 	exe_reader(NULL),
 	tied_unpinned(0),
 	tied_pinned(0),

@@ -9,7 +9,6 @@ myenv=env.Clone()
 
 cpppath='''
 	 $SECURITY_TRANSFORMS_HOME/third_party/elfio-code
-	 $PEASOUP_HOME/irdb-libs/libStructDiv/include
 	 $PEASOUP_HOME/irdb-libs/libEXEIO/include
          $IRDB_SDK/include
         '''
