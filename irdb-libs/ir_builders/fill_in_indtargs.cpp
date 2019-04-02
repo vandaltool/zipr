@@ -2074,18 +2074,24 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 
 		// hack approved by an7s to convert a field from the index register to the actual 32-bit register from RegID_t
 		const auto ireg_no         = RegisterID_t(rn_EAX + d6_memop->getIndexRegister());
-		auto ireg_str        = registerToString(ireg_no);
+		auto ireg_str              = registerToString(ireg_no);
 		transform(ALLOF(ireg_str), begin(ireg_str), ::tolower);
 		const auto I6_2_opcode_str = string() + "movzx " + ireg_str + ",";
 
+		const auto stopif_reg_no   = RegisterID_t(rn_RAX + d6_memop->getIndexRegister());
+		auto stopif_reg_str         = registerToString(stopif_reg_no);
+		transform(ALLOF(stopif_reg_str), begin(stopif_reg_str), ::tolower);
+		const auto stop_if         = string() + "^" + stopif_reg_str + "$";              
+
 		auto I6_2 = (Instruction_t*)nullptr;
-		if(backup_until(I6_2_opcode_str, I6_2, I6))
+		if(backup_until(I6_2_opcode_str, I6_2, I6, stop_if))
 		{
 			// woo!  found a 2 level table
 			// decode d6_2 and check the memory operand
 			const auto d6_2            = DecodedInstruction_t::factory(I6_2);
 			const auto d6_2_memop      = d6_2->getOperand(1);
-			assert(d6_2_memop->isMemory());
+			if(!d6_2_memop->isMemory()) continue;
+
 			const auto d6_2_displ      = d6_2_memop->getMemoryDisplacement();
 
 			// try next L5 if no 2 level table here
