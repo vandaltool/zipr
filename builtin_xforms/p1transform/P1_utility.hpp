@@ -32,6 +32,8 @@ Instruction_t* P1_insertAssemblyAfter(FileIR_t* virp, Instruction_t* first, stri
 Instruction_t* P1_insertAssemblyAfter(FileIR_t* virp, Instruction_t* first, string assembly);
 Instruction_t* P1_insertDataBitsAfter(FileIR_t* virp, Instruction_t* first, string dataBits, Instruction_t *target);
 Instruction_t* P1_insertDataBitsAfter(FileIR_t* virp, Instruction_t* first, string dataBits);
+Instruction_t* P1_insertDataBitsBefore(FileIR_t* virp, Instruction_t* first, string dataBits, Instruction_t *target);
+Instruction_t* P1_insertDataBitsBefore(FileIR_t* virp, Instruction_t* first, string dataBits);
 Instruction_t* P1_copyInstruction(Instruction_t* instr);
 void P1_copyInstruction(Instruction_t* src, Instruction_t* dest);
 Instruction_t* P1_allocateNewInstruction(FileIR_t* virp, DatabaseID_t p_fileID,Function_t* func);

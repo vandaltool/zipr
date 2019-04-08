@@ -78,23 +78,26 @@ Instruction_t* P1_insertDataBitsAfter(FileIR_t* virp, Instruction_t* first, stri
         return newInsn;
 }
 
-
-#if 0
-Instruction_t* P1_copyInstruction(Instruction_t* instr)
+Instruction_t* P1_insertDataBitsBefore(FileIR_t* virp, Instruction_t* first, string dataBits, Instruction_t *target)
 {
-	return IRDB_SDK::copyInstruction(instr);
+	Instruction_t* newInsn = IRDB_SDK::insertDataBitsBefore(virp, first, dataBits, target);
+	Function_t* func = newInsn->getFunction();
+	inserted_instr[func].insert(newInsn);
+        inserted_addr[func].insert(newInsn->getAddress());
+        return newInsn;
 }
 
-
-void P1_copyInstruction(Instruction_t* src, Instruction_t* dest)
+Instruction_t* P1_insertDataBitsBefore(FileIR_t* virp, Instruction_t* first, string dataBits)
 {
-	IRDB_SDK::copyInstruction(src, dest);
+	Instruction_t* newInsn = IRDB_SDK::insertDataBitsBefore(virp, first, dataBits);
+	Function_t* func = newInsn->getFunction();
+	inserted_instr[func].insert(newInsn);
+        inserted_addr[func].insert(newInsn->getAddress());
+        return newInsn;
 }
-#endif
 
 Instruction_t* P1_allocateNewInstruction(FileIR_t* virp, DatabaseID_t p_fileID, Function_t* func)
 {
-//	Instruction_t* newInsn = IRDB_SDK::allocateNewInstruction(virp, p_fileID, func);
 	auto newAddr=virp->addNewAddress(virp->getFile()->getBaseID(),0);
 	auto newInsn=virp->addNewInstruction(newAddr, func);
 
@@ -106,7 +109,6 @@ Instruction_t* P1_allocateNewInstruction(FileIR_t* virp, DatabaseID_t p_fileID, 
 
 Instruction_t* P1_allocateNewInstruction(FileIR_t* virp, Instruction_t *template_instr)
 {
-// 	Instruction_t* newInsn = IRDB_SDK::allocateNewInstruction(virp, template_instr);
 	auto fileId=virp->getFile()->getBaseID();
 	Function_t* func = template_instr->getFunction();
 	auto newInsn=P1_allocateNewInstruction(virp,fileId,func);
@@ -188,27 +190,27 @@ string getJecxzDataBits()
 Instruction_t* getHandlerCode(FileIR_t* virp, Instruction_t* fallthrough, mitigation_policy policy, unsigned exit_code)
 {
 	auto handler_code=(Instruction_t *)nullptr;
+	static auto breadcrumb=(DataScoop_t *)nullptr;
+
 
 	if (policy == P_CONTROLLED_EXIT) 
 	{
-		string exit_code_str = 
-			virp->getArchitectureBitWidth()==64 ? 
+		const auto exit_code_str = virp->getArchitectureBitWidth()==64 ? 
 				"mov rdi, " + std::to_string(exit_code) : 
 				"mov ebx, " + std::to_string(exit_code);
 
 		handler_code = P1_allocateNewInstruction(virp,fallthrough);
 
 		P1_setInstructionAssembly(virp,handler_code,exit_code_str.c_str(), NULL,NULL);
-		Instruction_t* syscall_num = 
-			virp->getArchitectureBitWidth()==64 ? 
+		auto syscall_num = virp->getArchitectureBitWidth()==64 ? 
 				P1_insertAssemblyAfter(virp,handler_code,"mov rax, 60",NULL):  
 				P1_insertAssemblyAfter(virp,handler_code,"mov eax, 1",NULL);
-		Instruction_t* syscall_i = P1_insertAssemblyAfter(virp,syscall_num,"syscall",NULL);
+		auto syscall_i = P1_insertAssemblyAfter(virp,syscall_num,"syscall",NULL);
 		syscall_i->setFallthrough(fallthrough);
 	}
 	else if (policy == P_HARD_EXIT) 
 	{
-		handler_code= P1_allocateNewInstruction(virp,fallthrough);
+		handler_code = P1_allocateNewInstruction(virp,fallthrough);
 		P1_setInstructionAssembly(virp,handler_code,"hlt",NULL,NULL);
 		handler_code->setComment("hlt ; hard exit requested");
 		handler_code->setFallthrough(fallthrough);
@@ -221,6 +223,31 @@ Instruction_t* getHandlerCode(FileIR_t* virp, Instruction_t* fallthrough, mitiga
 		handler_code->setFallthrough(fallthrough);
 	}
 
+
+	// now that we've created some handler code, pre-pend the breadcrumbs as necessary
+	if(pn_options->getDoBreadcrumbs())
+	{
+		if(breadcrumb == nullptr)
+		{
+			auto sa=virp->addNewAddress(fallthrough->getAddress()->getFileID(), 0);
+			auto ea=virp->addNewAddress(fallthrough->getAddress()->getFileID(), 7);
+			auto contents=string(8,'\xff');
+			breadcrumb=virp->addNewDataScoop("p1_breadcrumb", sa, ea, nullptr, 6, false, contents );
+		}
+
+		const auto func_id       = fallthrough->getFunction()->getBaseID();
+		auto new_insn_bits_start = string{0x48, (int8_t)0xc7, 0x05, (int8_t)0xf5, (int8_t)0xff, (int8_t)0xff, (int8_t)0xff}; 
+		auto new_insn_bits       = new_insn_bits_start + string(reinterpret_cast<const char*>(&func_id), 4);
+
+		// note: updates handler_code to be the newly inserted instruction
+		P1_insertDataBitsBefore(virp, handler_code, new_insn_bits);
+		 
+		// add a pcrel reloc to the breadcrumb instruction, and link it to the breadcrumb scoop
+		(void)virp->addNewRelocation(handler_code, 0, "pcrel", breadcrumb);
+
+	}
+
+	/* note:  may be breadcrumb code */
 	return handler_code;
 }
 

@@ -63,6 +63,7 @@ enum
 	COVERAGE_FILE_OPTION,
 	PN_THRESHOLD_OPTION,
 	CANARIES_OPTION,
+	BREADCRUMBS_OPTION,
 	ONLY_VALIDATE_OPTION,
 	NO_P1_VALIDATE_OPTION,
 	ALIGN_STACK_OPTION,
@@ -92,6 +93,7 @@ static struct option const long_options[] =
 	{"coverage_file",required_argument, nullptr, COVERAGE_FILE_OPTION},
 	{"pn_threshold",required_argument, nullptr, PN_THRESHOLD_OPTION},
 	{"canaries", required_argument, nullptr, CANARIES_OPTION},
+	{"breadcrumbs", required_argument, nullptr, BREADCRUMBS_OPTION},
 	{"only_validate",required_argument, nullptr, ONLY_VALIDATE_OPTION},
 	{"no_p1_validate",no_argument,nullptr,NO_P1_VALIDATE_OPTION},
 	{"apriori_layout_file",required_argument, nullptr, APRIORI_OPTION},
@@ -311,6 +313,24 @@ int parseArgs(const vector<string> step_args)
 			else if(strcasecmp("off",optarg)==0)
 			{
 				pn_options->setDoCanaries(false);
+			}
+			else
+			{
+				//TODO: print error message and usage
+				usage();
+				return 1;
+			}
+			break;
+		}
+		case BREADCRUMBS_OPTION:
+		{
+			if(strcasecmp("on",optarg)==0)
+			{
+				pn_options->setDoBreadcrumbs(true);
+			}
+			else if(strcasecmp("off",optarg)==0)
+			{
+				pn_options->setDoBreadcrumbs(false);
 			}
 			else
 			{

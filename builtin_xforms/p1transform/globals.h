@@ -58,6 +58,7 @@ class PNOptions
 			recursive_min_stack_padding = 64;
 			recursive_max_stack_padding = recursive_min_stack_padding*2;
 			do_canaries = true;
+			do_breadcrumbs = false;
 			do_selective_canaries = false;
 			should_double_frame_size=true;
 			random_seed=getpid();
@@ -94,8 +95,11 @@ class PNOptions
 				return (rand()&0xffff) | (rand()<<16); 
 		}
 
-		void setDoCanaries(bool canaries) { do_canaries = canaries; }
-		bool getDoCanaries() const { return do_canaries; }
+		void setDoCanaries   (bool canaries   ) { do_canaries = canaries; }
+		void setDoBreadcrumbs(bool breadcrumbs) { do_breadcrumbs = breadcrumbs; }
+
+		bool getDoCanaries()    const { return do_canaries;    }
+		bool getDoBreadcrumbs() const { return do_breadcrumbs; }
 
 		void addSelectiveCanaryFunction(std::string func) { do_selective_canaries = true; canary_functions.insert(func);}
 		bool shouldCanaryFunction(std::string func) 
@@ -121,6 +125,7 @@ class PNOptions
 		int recursive_min_stack_padding;
 		int recursive_max_stack_padding;
 		bool do_canaries;
+		bool do_breadcrumbs;
 		bool do_selective_canaries;
 		bool should_double_frame_size;
 		int random_seed;
