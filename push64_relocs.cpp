@@ -33,9 +33,7 @@
 #include <algorithm>
 #include "push64_relocs.h"
 
-using namespace IRDB_SDK;
-using namespace Zipr_SDK;
-using namespace std;
+using namespace Push64Relocs;
 
 #define ALLOF(a) begin(a), end(a)
 
@@ -49,30 +47,26 @@ Push64Relocs_t::Push64Relocs_t(Zipr_SDK::Zipr_t* zipr_object)
 	m_verbose  = global->getBooleanOption("verbose");
 }
 
-bool Push64Relocs_t::IsRelocationWithType(Relocation_t *reloc,std::string type)
+bool Push64Relocs_t::IsRelocationWithType(Relocation_t *reloc,string type)
 {
-	return (reloc->getType().find(type) != std::string::npos);
+	return (reloc->getType().find(type) != string::npos);
 }
 
 // would be nice to have a FindRelocation function that takes a parameterized type.
-Relocation_t* Push64Relocs_t::FindRelocationWithType(Instruction_t* insn, std::string type)
+Relocation_t* Push64Relocs_t::FindRelocationWithType(Instruction_t* insn, string type)
 {
 	for(auto reloc : insn->getRelocations())
 	{
 		if (IsRelocationWithType(reloc, type))
 			return reloc;
 	}
-	return NULL;
+	return nullptr;
 }
 
-#define PUSH_DATA_BITS_MAX_LEN 16
 void Push64Relocs_t::HandlePush64Relocation(Instruction_t *insn, Relocation_t *reloc)
 {
-	// Instruction_t *push_insn = NULL, *jmp_insn = NULL;
-	VirtualOffset_t push_addr = 0;
-	string databits = "";
-	uint8_t push_data_bits[PUSH_DATA_BITS_MAX_LEN] = {0,};
-	int push_data_bits_len = 0;
+	const auto PUSH_DATA_BITS_MAX_LEN  = 16;
+	auto push_data_bits = vector<uint8_t>(PUSH_DATA_BITS_MAX_LEN);
 
 	plopped_relocs.insert(insn);	
 
@@ -80,73 +74,56 @@ void Push64Relocs_t::HandlePush64Relocation(Instruction_t *insn, Relocation_t *r
 	auto jmp_insn = insn->getFallthrough();
 	assert(jmp_insn);
 
-	push_data_bits_len = push_insn->getDataBits().length();
-	assert(push_data_bits_len<PUSH_DATA_BITS_MAX_LEN);
-	memcpy(push_data_bits,
-	       (uint8_t*)push_insn->getDataBits().c_str(),
-				 push_data_bits_len);
+	auto push_data_bits_len = push_insn->getDataBits().length();
+	assert(push_data_bits_len < PUSH_DATA_BITS_MAX_LEN);
+	memcpy(push_data_bits.data(), (uint8_t*)push_insn->getDataBits().c_str(), push_data_bits_len);
+
 	/*
 	 * Because we know that this is a push instruction,
 	 * we know that the opcode is one byte.
 	 * The pushed value will start at the 1th offset.
 	 */
-	// push_addr = *((VirtualOffset_t*)(push_data_bits+1));
+	auto push_addr = VirtualOffset_t(0);
 	memcpy(&push_addr,&push_data_bits[1], 4);
 
 	if (*m_verbose)
-		cout << "push_addr: 0x" << std::hex << push_addr << endl;
+		cout << "push_addr: 0x" << hex << push_addr << endl;
 	assert(push_addr != 0);
 
 	/* 
 	 * Step 0: Add the add instruction and its address.
 	 */
 	auto add_addr=m_firp.addNewAddress(push_insn->getAddress()->getFileID(), 0);
-	auto add_insn=m_firp.addNewInstruction(
-			add_addr,
-			push_insn->getFunction()
-			);
+	auto add_insn=m_firp.addNewInstruction( add_addr, push_insn->getFunction());
+
 	/* 
 	 * Step 1: Change the push to a call 0.
 	 */
 
-// this is OK, but could we consider the insn->Assemble() method for readability? 
-	databits.resize(5);
-	databits[0] = 0xe8;
-	databits[1] = 0x00;
-	databits[2] = 0x00;
-	databits[3] = 0x00;
-	databits[4] = 0x00;
-	insn->setDataBits(databits);
+	auto call_databits = string({int8_t(0xe8), 0x00, 0x00, 0x00, 0x00 });
+	insn->setDataBits(call_databits);
 	insn->setTarget(add_insn); // Comment
-	insn->setFallthrough(NULL);
+	insn->setFallthrough(nullptr);
 	insn->setComment(push_insn->getComment()+" Thunk part");
 
 		
 	/* 
 	 * Step 2: Create the add instruction.
 	 */
-// this is OK, but could we consider the insn->Assemble() method for readability? 
-	databits = "";
+	auto add_databits = string();
 	if(m_firp.getArchitectureBitWidth()==64)
-		databits+=(char)0x48;	 // rex prefix to convert esp->rsp
-	databits+=(char)0x81;
-	databits+=(char)0x2c;	
-	databits+=(char)0x24;
-	databits+=(char)0xff;
-	databits+=(char)0xff;
-	databits+=(char)0xff;
-	databits+=(char)0xff;
-	add_insn->setDataBits(databits);
+		add_databits+=string({0x48});	 // rex prefix to convert esp->rsp
+	add_databits+=string({(int8_t)0x81, 0x2c, 0x24, (int8_t)0xff, (int8_t)0xff, (int8_t)0xff, (int8_t)0xff} );
+	add_insn->setDataBits(add_databits);
 
 	/*
 	 * Step 3: Put the relocation on the add instruction.
 	 */
-	auto add_reloc=m_firp.addNewRelocation(add_insn,push_addr,"add64");
+	auto add_reloc=m_firp.addNewRelocation(add_insn, push_addr, "add64");
 
 	if (*m_verbose)
 		cout << "Adding an add/sub with reloc offset 0x" 
-		     << std::hex << add_reloc->getOffset() 
-				 << endl;
+		     << hex << add_reloc->getOffset() << endl;
 	/*
 	 * Step 4: Tell the add insn to fallthrough to the call.
 	 */
@@ -155,22 +132,22 @@ void Push64Relocs_t::HandlePush64Relocation(Instruction_t *insn, Relocation_t *r
 
 void Push64Relocs_t::HandlePush64Relocs()
 {
-	int push64_relocations_count=0;
-	int pcrel_relocations_count=0;
+	auto push64_relocations_count = 0;
+	auto pcrel_relocations_count  = 0;
+
 	// for each instruction 
 	for(auto insn : m_firp.getInstructions())
 	{
-		auto reloc= FindPushRelocation(insn);
-		// caution, side effect in if statement.
-		if (reloc) 
+		const auto push_reloc = FindPushRelocation(insn);
+		if (push_reloc != nullptr)  
 		{
 			if (*m_verbose)
-				cout << "Found a Push relocation:" << insn->getDisassembly()<<endl;
-			HandlePush64Relocation(insn,reloc);
+				cout << "Found a Push relocation:" << insn->getDisassembly() << endl;
+			HandlePush64Relocation(insn,push_reloc);
 			push64_relocations_count++;
 		}
-		reloc = FindPcrelRelocation(insn);
-		if (reloc)
+		const auto pcrel_reloc = FindPcrelRelocation(insn);
+		if (pcrel_reloc != nullptr)
 		{
 			if (*m_verbose)
 				cout << "Found a pcrel relocation." << endl;
@@ -179,12 +156,10 @@ void Push64Relocs_t::HandlePush64Relocs()
 		}
 	}
 
-	cout<<"# ATTRIBUTE Push_Relocations::push_relocations_count="
-	    <<std::dec<<push64_relocations_count
-			<<endl;
-	cout<<"# ATTRIBUTE Push_Relocations::pcrel_relocations_count="
-	    <<std::dec<<pcrel_relocations_count
-			<<endl;
+	cout << "# ATTRIBUTE Push_Relocations::push_relocations_count="
+	     << dec << push64_relocations_count << endl;
+	cout << "# ATTRIBUTE Push_Relocations::pcrel_relocations_count="
+	     << dec << pcrel_relocations_count << endl;
 }
 
 
@@ -192,31 +167,18 @@ void Push64Relocs_t::UpdatePush64Adds()
 {
 	if (*m_verbose)
 		cout << "push64:UpdatePush64Adds()" << endl;
+
 	for(auto insn : plopped_relocs)
 	{
 		auto reloc = FindPushRelocation(insn);
 		if (reloc)
 		{
-// would consider updating this if statement to be a function call for simplicity/readability.
-			bool change_to_add = false;
-			RangeAddress_t call_addr = 0;
-			RangeAddress_t add_addr = 0;
-			RangeAddress_t wrt_addr = 0;
-			int add_offset = 0;
-			uint32_t relocated_value = 0;
-			Instruction_t *call = NULL, *add = NULL;
-			Relocation_t *add_reloc = NULL;
-
-			call = insn;
-			add = call->getTarget();
-
-			assert(call && add);
-
-			call_addr = final_insn_locations[call];
-			add_addr = final_insn_locations[add];
-			auto wrt_insn=dynamic_cast<Instruction_t*>(reloc->getWRT());
-			if(wrt_insn)
-				wrt_addr=final_insn_locations[wrt_insn];
+			auto call      = insn;                             assert(call != nullptr);
+			auto add       = call->getTarget();                assert(add  != nullptr);
+			auto call_addr = final_insn_locations[call];
+			auto add_addr  = final_insn_locations[add];
+			auto wrt_insn  = dynamic_cast<Instruction_t*>(reloc->getWRT());
+			auto wrt_addr  = wrt_insn ?  final_insn_locations[wrt_insn] : RangeAddress_t(0);
 
 			if (call_addr == 0 || add_addr == 0)
 			{
@@ -225,51 +187,56 @@ void Push64Relocs_t::UpdatePush64Adds()
 				continue;
 			}
 
-			add_reloc = FindAdd64Relocation(add);
-			assert(add_reloc && "push64:Add in Call/Add pair must have relocation.");
+			auto add_reloc = FindAdd64Relocation(add);
+			assert(add_reloc != nullptr); 
 
-			add_offset = add_reloc->getOffset();
+			auto add_offset = add_reloc->getOffset();
 
 			/*
 			 * Stupid call will push the NEXT instruction address.
 			 */
-			call_addr+=call->getDataBits().length();
+			auto ret_addr = call_addr + call->getDataBits().length();
+			auto change_to_add   = false;
 
-
-// would this be simpler if we always used an add (or sub)
-// and just signed the sign of the value we are adding (or subbing)?
-			if ((size_t)add_offset>(size_t)call_addr)
+#if 1
+			const auto reloc_adjustnent_value = wrt_insn ? wrt_addr : (m_firp.getArchitecture()->getFileBase() + add_offset);
+			const auto relocated_value = ret_addr - reloc_adjustnent_value;
+#else
+			auto relocated_value = uint32_t(0);
+			if ((size_t)add_offset > (size_t)ret_addr)
 			{
 				change_to_add = true;
 				if(wrt_insn)
-					relocated_value= wrt_addr - call_addr;
+					relocated_value = wrt_addr   - ret_addr;
 				else
-					relocated_value = add_offset - call_addr;
+					relocated_value = add_offset - ret_addr;
 			}
 			else
-			// never covert it, a sub with a negative value is just fine.
 			{
 				if(wrt_insn)
-					relocated_value= call_addr - wrt_addr;
+					relocated_value = ret_addr - wrt_addr;
 				else
-					relocated_value = call_addr - add_offset;
+					relocated_value = ret_addr - (firp->getArchtecture()->getFileBase() + add_offset);
 			}
+#endif
 
-			cout << "Push64:Relocating a(n) "<< ((change_to_add) ? "add":"sub") << " from " 
-			     << std::hex << call_addr 
-					 << " at "
-					 << std::hex << add_addr
-					 << endl
-			     << "push64:Using 0x" << std::hex << relocated_value 
-			     << " as the updated offset." << endl
-					 << "Using 0x" << std::hex << add_offset 
-					 << " as the base offset." << endl;
+			cout << "Push64:Relocating a(n) " << ((change_to_add) ? "add":"sub") << " from " 
+			     << hex << ret_addr << " at " << hex << add_addr << endl;
+
+			cout << "push64:Using 0x" << hex << relocated_value 
+			     << " as the updated offset." << endl;
+
+			cout << "Using 0x" << hex << add_offset 
+			     << " as the base offset." << endl;
+
 			const auto rex_skip=m_firp.getArchitectureBitWidth()==64 ? 1 : 0;
+#if 0
 			if (change_to_add)
 			{
 				char add = (char)0x04;
 				m_memory_space.plopBytes(add_addr+rex_skip+1, (const char*)&add, 1);
 			}
+#endif
 			m_memory_space.plopBytes(add_addr+rex_skip+3, (const char*)&relocated_value, 4);
 		}
 	}

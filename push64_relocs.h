@@ -34,93 +34,96 @@
 #include <irdb-core>
 #include <zipr-sdk>
 
-class Push64Relocs_t : public Zipr_SDK::ZiprPluginInterface_t
+namespace Push64Relocs
 {
-	public:
-		Push64Relocs_t(Zipr_SDK::Zipr_t* zipr_object);
 
-		virtual void doPinningEnd() override
-		{ 
-			// if(m_elfio.get_type()==ET_EXEC)
-			if(m_firp.getArchitecture()->getFileType()==IRDB_SDK::adftELFEXE)
-			{
-				std::cout<<"Push64_reloc: elide PinningEnd as type==ET_EXEC"<<std::endl;
-				return;
+	using namespace std;
+	using namespace IRDB_SDK;
+	using namespace Zipr_SDK;
+
+	class Push64Relocs_t : public ZiprPluginInterface_t
+	{
+		public:
+			Push64Relocs_t(Zipr_t* zipr_object);
+
+			virtual void doPinningEnd() override
+			{ 
+				if(m_firp.getArchitecture()->getFileType()==adftELFEXE)
+				{
+					cout<<"Push64_reloc: elide PinningEnd as type==ET_EXEC"<<endl;
+					return;
+				}
+				cout<<"Push64Plugin: Ending  pinning, applying push64 relocs."<<endl;
+				HandlePush64Relocs(); 
 			}
-			std::cout<<"Push64Plugin: Ending  pinning, applying push64 relocs."<<std::endl;
-			HandlePush64Relocs(); 
-		}
-		virtual void doCallbackLinkingEnd() override
-		{
-			// if(m_elfio.get_type()==ET_EXEC)
-			if(m_firp.getArchitecture()->getFileType()==IRDB_SDK::adftELFEXE)
+			virtual void doCallbackLinkingEnd() override
 			{
-				std::cout<<"Push64_reloc: elide CallbackLinkingEnd as type==ET_EXEC"<<std::endl;
-				return;
+				if(m_firp.getArchitecture()->getFileType()==adftELFEXE)
+				{
+					cout<<"Push64_reloc: elide CallbackLinkingEnd as type==ET_EXEC"<<endl;
+					return;
+				}
+				cout<<"Push64Plugin: CBLinkEnd, updating adds."  <<endl;
+				UpdatePush64Adds(); 
 			}
-			std::cout<<"Push64Plugin: CBLinkEnd, updating adds."  <<std::endl;
-			UpdatePush64Adds(); 
-		}
 
-		// virtual Zipr_SDK::ZiprOptionsNamespace_t *registerOptions(Zipr_SDK::ZiprOptionsNamespace_t *) override;
-	private:
-		// main workhorses
-		void HandlePush64Relocs();
-		void UpdatePush64Adds();
+		private:
+			// main workhorses
+			void HandlePush64Relocs();
+			void UpdatePush64Adds();
 
-		// subsidiary workhorses 
-		void HandlePush64Relocation(IRDB_SDK::Instruction_t* insn, IRDB_SDK::Relocation_t *reloc);
+			// subsidiary workhorses 
+			void HandlePush64Relocation(Instruction_t* insn, Relocation_t *reloc);
 
-		// helpers
-		bool IsPcrelRelocation(IRDB_SDK::Relocation_t *reloc)
-		{ return IsRelocationWithType(reloc,"pcrel"); }
-		bool IsAdd64Relocation(IRDB_SDK::Relocation_t *reloc)
-		{ return IsRelocationWithType(reloc,"add64"); }
-		bool IsPush64Relocation(IRDB_SDK::Relocation_t *reloc)
-		{ return IsRelocationWithType(reloc,"push64"); }
-		bool Is32BitRelocation(IRDB_SDK::Relocation_t *reloc)
-		{ return IsRelocationWithType(reloc,"push64"); }
+			// helpers
+			bool IsPcrelRelocation(Relocation_t *reloc)
+			{ return IsRelocationWithType(reloc,"pcrel"); }
+			bool IsAdd64Relocation(Relocation_t *reloc)
+			{ return IsRelocationWithType(reloc,"add64"); }
+			bool IsPush64Relocation(Relocation_t *reloc)
+			{ return IsRelocationWithType(reloc,"push64"); }
+			bool Is32BitRelocation(Relocation_t *reloc)
+			{ return IsRelocationWithType(reloc,"push64"); }
 
-		IRDB_SDK::Relocation_t* FindPcrelRelocation(IRDB_SDK::Instruction_t* insn)
-		{ return FindRelocationWithType(insn,"pcrel"); }
-		IRDB_SDK::Relocation_t* FindAdd64Relocation(IRDB_SDK::Instruction_t* insn)
-		{ return FindRelocationWithType(insn,"add64"); }
-		IRDB_SDK::Relocation_t* FindPush64Relocation(IRDB_SDK::Instruction_t* insn)
-		{ return FindRelocationWithType(insn,"push64"); }
-		IRDB_SDK::Relocation_t* Find32BitRelocation(IRDB_SDK::Instruction_t* insn)
-		{ return FindRelocationWithType(insn,"32-bit"); }
+			Relocation_t* FindPcrelRelocation(Instruction_t* insn)
+			{ return FindRelocationWithType(insn,"pcrel"); }
+			Relocation_t* FindAdd64Relocation(Instruction_t* insn)
+			{ return FindRelocationWithType(insn,"add64"); }
+			Relocation_t* FindPush64Relocation(Instruction_t* insn)
+			{ return FindRelocationWithType(insn,"push64"); }
+			Relocation_t* Find32BitRelocation(Instruction_t* insn)
+			{ return FindRelocationWithType(insn,"32-bit"); }
 
-		IRDB_SDK::Relocation_t* FindPushRelocation(IRDB_SDK::Instruction_t* insn)
-		{ 
-			auto reloc=FindPush64Relocation(insn);
-			if(reloc)
-			{
-				return reloc; 
+			Relocation_t* FindPushRelocation(Instruction_t* insn)
+			{ 
+				auto reloc=FindPush64Relocation(insn);
+				if(reloc != nullptr)
+				{
+					return reloc; 
+				}
+				reloc=Find32BitRelocation(insn);
+				if(reloc != nullptr)
+				{
+					return reloc; 
+				}
+				return nullptr;
 			}
-			reloc=Find32BitRelocation(insn);
-			if(reloc)
-			{
-				return reloc; 
-			}
-			return NULL;
-		}
 
-		bool IsRelocationWithType(IRDB_SDK::Relocation_t *reloc, std::string type);
-		IRDB_SDK::Relocation_t* FindRelocationWithType(IRDB_SDK::Instruction_t* insn, std::string type);
+			bool IsRelocationWithType(Relocation_t *reloc, string type);
+			Relocation_t* FindRelocationWithType(Instruction_t* insn, string type);
 
 
+			// references to input
+			MemorySpace_t &m_memory_space;	
+			FileIR_t& m_firp;
+			InstructionLocationMap_t &final_insn_locations;
 
+			// local data.
+			InstructionSet_t plopped_relocs;
 
-		// references to input
-		Zipr_SDK::MemorySpace_t &m_memory_space;	
-		IRDB_SDK::FileIR_t& m_firp;
-		Zipr_SDK::InstructionLocationMap_t &final_insn_locations;
+			ZiprBooleanOption_t *m_verbose;
 
-		// local data.
-		IRDB_SDK::InstructionSet_t plopped_relocs;
+	};
 
-		Zipr_SDK::ZiprBooleanOption_t *m_verbose;
-
-};
-
+}
 #endif
