@@ -109,6 +109,16 @@ set<Instruction_t*> already_unpinned;
 
 long total_unpins=0;
 
+/*
+ * Convert a reg id to a lower-case string
+ */
+string registerToSearchString(const RegisterID_t& reg)
+{
+	auto str=registerToString(reg);
+	transform(ALLOF(str), begin(str), ::tolower);
+	return str;
+
+}
 void range(VirtualOffset_t start, VirtualOffset_t end)
 { 	
 	pair<VirtualOffset_t,VirtualOffset_t> foo(start,end);
@@ -1813,19 +1823,35 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	const auto d7=DecodedInstruction_t::factory(I7);
 
 	// Check if lea instruction is being used as add (scale=1, disp=0)
-	if(strstr(d7->getMnemonic().c_str(), "lea"))
+	if(d7->getMnemonic() == "lea")
 	{
 		if(!(d7->getOperand(1)->isMemory() ))
 			return;
 		if(!(d7->getOperand(1)->getScaleValue() == 1 && d7->getOperand(1)->getMemoryDisplacement() == 0))
 			return;
 	} 
+
+
+	// calculate the registers we need for the I6 backup.
+	const auto I7_reg0        = d7->getMnemonic() == "lea" ? d7->getOperand(1)->getBaseRegister()  : d7->getOperand(0)->getRegNumber(); 
+	const auto I7_reg0_32_str = registerToSearchString(RegisterID_t(rn_EAX+I7_reg0));
+	const auto I7_reg0_64_str = registerToSearchString(RegisterID_t(rn_RAX+I7_reg0));
+	const auto I7_reg1        = d7->getMnemonic() == "lea" ? d7->getOperand(1)->getIndexRegister() : d7->getOperand(1)->getRegNumber(); 
+	const auto I7_reg1_32_str = registerToSearchString(RegisterID_t(rn_EAX+I7_reg1));
+	const auto I7_reg1_64_str = registerToSearchString(RegisterID_t(rn_RAX+I7_reg1));
+    
+        const auto I6_reg_str     = string() + "(" + I7_reg0_32_str + "|"
+	                                           + I7_reg0_64_str + "|"
+	                                           + I7_reg1_32_str + "|"
+	                                           + I7_reg1_64_str + ")";
+
+
 	// backup and find the instruction that's an movsxd before I7
 	/*
 	 * This instruction will contain the register names for
 	 * the index and the address of the base of the table
 	 */
-	if(!backup_until("(mov|movsxd)", I6, I7))
+	if(!backup_until("(mov|movsxd) "+I6_reg_str+",", I6, I7,string()+"^"+I6_reg_str+"$"))
 		return;
 
 	string lea_string="lea ";
@@ -1918,7 +1944,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		// instruction address (and include the instruction's size, etc.
 		// but, fix_calls has already removed this oddity so we can relocate
 		// the instruction.
-		VirtualOffset_t D1=strtol(d5.getOperand(1)->getString().c_str(), nullptr, 0);
+		auto D1=VirtualOffset_t(strtol(d5.getOperand(1)->getString().c_str(), nullptr, 0));
 		D1+=I5_cur->getAddress()->getVirtualOffset();
 
 		// sometimes the lea only points at the image base, and the displacement field here is used for 
@@ -2074,13 +2100,10 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 
 		// hack approved by an7s to convert a field from the index register to the actual 32-bit register from RegID_t
 		const auto ireg_no         = RegisterID_t(rn_EAX + d6_memop->getIndexRegister());
-		auto ireg_str              = registerToString(ireg_no);
-		transform(ALLOF(ireg_str), begin(ireg_str), ::tolower);
+		const auto ireg_str        = registerToSearchString(ireg_no);
 		const auto I6_2_opcode_str = string() + "movzx " + ireg_str + ",";
-
 		const auto stopif_reg_no   = RegisterID_t(rn_RAX + d6_memop->getIndexRegister());
-		auto stopif_reg_str         = registerToString(stopif_reg_no);
-		transform(ALLOF(stopif_reg_str), begin(stopif_reg_str), ::tolower);
+		const auto stopif_reg_str  = registerToSearchString(stopif_reg_no);
 		const auto stop_if         = string() + "^" + stopif_reg_str + "$";              
 
 		auto I6_2 = (Instruction_t*)nullptr;
