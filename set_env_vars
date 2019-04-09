@@ -12,20 +12,14 @@ export ZEST_RUNTIME=$PEASOUP_HOME/zest_runtime
 
 
 # don't override pspath
-if [[ -z $PSPATH ]]; then
-	export PSPATH=$PEASOUP_HOME/irdb-libs/plugins_install
-fi
+# add us to the pspath
+export PSPATH=$PSPATH:$PEASOUP_HOME/irdb-libs/plugins_install
 
-if [ -f manifest.txt ]; then 
-	if [ -f $PS_INSTALL ]; then
-		export PS_INSTALL=$PEASOUP_HOME/installed
-	fi
-	export PS=$PS_INSTALL/tools/ps_analyze.sh
-	export PSZ=$PS_INSTALL/tools/ps_zipr.sh 
-else
-	export PS=$PEASOUP_HOME/tools/ps_analyze.sh
-	export PSZ=$PEASOUP_HOME/tools/ps_zipr.sh 
+if [ -z $PS_INSTALL ]; then
+	export PS_INSTALL=$PEASOUP_HOME/installed
 fi
+export PS=$PS_INSTALL/tools/ps_analyze.sh
+export PSZ=$PS_INSTALL/tools/ps_zipr.sh 
 
 source ./irdb_vars
 source $PEASOUP_HOME/set_command_envs
