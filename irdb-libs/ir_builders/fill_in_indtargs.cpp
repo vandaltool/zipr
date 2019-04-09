@@ -1778,7 +1778,6 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	// for now, only trying to find I4-I8.  ideally finding I1 would let us know the size of the
 	// jump table.  We'll figure out N by trying targets until they fail to produce something valid.
 
-	string table_index_str;
 	Instruction_t* I8=insn;
 	Instruction_t* I7=nullptr;
 	Instruction_t* I6=nullptr;
@@ -1804,20 +1803,18 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	 *
 	 * Backup and find the instruction that's an add or lea before I8.
 	 */
-	table_index_str = "(add ";
-	table_index_str += p_disasm.getOperand(0)->getString(); 
-	table_index_str += "|lea ";
-	table_index_str += p_disasm.getOperand(0)->getString(); 
-	table_index_str += ")";
+	const auto table_index_reg_str = p_disasm.getOperand(0)->getString();
+	const auto table_index_str = "(add " + table_index_reg_str + ",|lea " + table_index_reg_str + ",)";
+	const auto table_index_stop_if = string() + "^" + table_index_reg_str +  "$";              
 
-	const auto cmp_str = string("cmp ") + p_disasm.getOperand(0)->getString(); 
+	const auto cmp_str = string("cmp ") + table_index_reg_str;
 
 	// this was completely broken because argument2 had a null mnemonic, which we found out because getOperand(1) threw an exception.
 	// i suspect it's attempting to find a compare of operand1 on the RHS of a compare, but i need better regex foo to get that.
 	// for now, repeat what was working.
 	const auto cmp_str2 = string("cmp "); 
 
-	if(!backup_until(table_index_str.c_str(), I7, I8))
+	if(!backup_until(table_index_str.c_str(), I7, I8, table_index_stop_if))
 		return;
 
 	const auto d7=DecodedInstruction_t::factory(I7);
