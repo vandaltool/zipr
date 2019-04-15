@@ -1837,10 +1837,8 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	const auto I7_reg1_32_str = registerToSearchString(RegisterID_t(rn_EAX+I7_reg1));
 	const auto I7_reg1_64_str = registerToSearchString(RegisterID_t(rn_RAX+I7_reg1));
     
-        const auto I6_reg_str     = string() + "(" + I7_reg0_32_str + "|"
-	                                           + I7_reg0_64_str + "|"
-	                                           + I7_reg1_32_str + "|"
-	                                           + I7_reg1_64_str + ")";
+        const auto I6_reg0_str    = string() + "(" + I7_reg0_32_str + "|" + I7_reg0_64_str + ")";
+        const auto I6_reg1_str    = string() + "(" + I7_reg1_32_str + "|" + I7_reg1_64_str + ")";
 
 
 	// backup and find the instruction that's an movsxd before I7
@@ -1848,13 +1846,26 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	 * This instruction will contain the register names for
 	 * the index and the address of the base of the table
 	 */
-	if(!backup_until("(mov|movsxd) "+I6_reg_str+",", I6, I7,string()+"^"+I6_reg_str+"$"))
+	/* we have to be careful not to stop on an instruction that sets reg0 if we're looking
+	 * because we might find the set to reg1.  Thus, we do 2 backsup, and continue if either one
+	 * is OK.
+	 */
+	if(
+		!backup_until("(mov|movsxd) "+I6_reg0_str+",", I6, I7,string()+"^"+I6_reg0_str+"$") && 
+		!backup_until("(mov|movsxd) "+I6_reg1_str+",", I6, I7,string()+"^"+I6_reg1_str+"$")
+	  )
+	{
+		// give up if we can't find a mov/movsxd of either register.
 		return;
+	}
 
 	string lea_string="lea ";
 	
 	const auto d6=DecodedInstruction_t::factory(I6);
-	if( d6->getOperand(1)->isMemory() )
+	const auto d6_op1 = d6->getOperand(1);
+	const auto d6_op1_is_mem = d6_op1->isMemory();
+
+	if( d6_op1_is_mem ) 
 	{
 		// try to be smarter for memory types.
 
@@ -1948,20 +1959,15 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		// the offset into the image.  This is useful if there are multiple switches (or other constructs)
 		// in the same function which can share register assignment of the image-base register.
 		// we recod the d6_displ field here
-		const auto d6_displ = d6->getOperand(1)->getMemoryDisplacement();	 
+		const auto d6_displ = d6_op1_is_mem  ?  d6->getOperand(1)->getMemoryDisplacement() : 0; 
 
 		// find the section with the data table
-		auto pSec=find_section(D1+d6_displ,exeiop);
-
-		// sanity check there's a section
-		if(!pSec)
-			continue;
-
-		const char* secdata=pSec->get_data();
+		const auto pSec=find_section(D1+d6_displ,exeiop);
+		if(!pSec) continue;
 
 		// if the section has no data, abort 
-		if(!secdata)
-			continue;
+		const char* secdata=pSec->get_data();
+		if(!secdata) continue;
 
 		auto table_size = 0U;
 		if(backup_until(cmp_str.c_str(), I1, I8))
@@ -2092,66 +2098,68 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 
 		// sanity check that I understand the variables of this function properly.
 		// and grab the index reg
-		const auto d6_memop  = d6->getOperand(1);
-		assert(I6 && d6 && d6_memop->isMemory());
+		assert(I6 && d6);
 
-		// hack approved by an7s to convert a field from the index register to the actual 32-bit register from RegID_t
-		const auto ireg_no         = RegisterID_t(rn_EAX + d6_memop->getIndexRegister());
-		const auto ireg_str        = registerToSearchString(ireg_no);
-		const auto I6_2_opcode_str = string() + "movzx " + ireg_str + ",";
-		const auto stopif_reg_no   = RegisterID_t(rn_RAX + d6_memop->getIndexRegister());
-		const auto stopif_reg_str  = registerToSearchString(stopif_reg_no);
-		const auto stop_if         = string() + "^" + stopif_reg_str + "$";              
-
-		auto I6_2 = (Instruction_t*)nullptr;
-		if(backup_until(I6_2_opcode_str, I6_2, I6, stop_if))
+		if(d6_op1_is_mem)
 		{
-			// woo!  found a 2 level table
-			// decode d6_2 and check the memory operand
-			const auto d6_2            = DecodedInstruction_t::factory(I6_2);
-			const auto d6_2_memop      = d6_2->getOperand(1);
-			if(!d6_2_memop->isMemory()) continue;
+			// hack approved by an7s to convert a field from the index register to the actual 32-bit register from RegID_t
+			const auto ireg_no         = RegisterID_t(rn_EAX + d6_op1->getIndexRegister());
+			const auto ireg_str        = registerToSearchString(ireg_no);
+			const auto I6_2_opcode_str = string() + "movzx " + ireg_str + ",";
+			const auto stopif_reg_no   = RegisterID_t(rn_RAX + d6_op1->getIndexRegister());
+			const auto stopif_reg_str  = registerToSearchString(stopif_reg_no);
+			const auto stop_if         = string() + "^" + stopif_reg_str + "$";              
 
-			const auto d6_2_displ      = d6_2_memop->getMemoryDisplacement();
-
-			// try next L5 if no 2 level table here
-			if(d6_2_displ == 0) continue;
-
-			// look up the section and try next L5 if not found
-			const auto lvl2_table_addr =  D1 + d6_2_displ;
-			const auto lvl2_table_sec=find_section(lvl2_table_addr,exeiop);
-			if(lvl2_table_sec == nullptr) continue;
-
-			const auto lvl2_table_secdata=pSec->get_data();
-
-			// if the section has no data, abort 
-			if(lvl2_table_secdata == nullptr) continue;
-
-			// now, scan the lvl2 table, and stop if we find an entry bigger than 
-			// the lvl1 table's size.  This will calc the size of the lvl2 table.
-			//
-			// offset from address to access - section address 
-			auto lvl2_table_offset=lvl2_table_addr - lvl2_table_sec->get_address();
-			auto lvl2_table_entry_no=0U;
-			do
+			auto I6_2 = (Instruction_t*)nullptr;
+			if(backup_until(I6_2_opcode_str, I6_2, I6, stop_if))
 			{
-				// check that we can still grab a word from this section
-				if((int)(lvl2_table_offset+sizeof(int)) > (int)lvl2_table_sec->get_size())
-					break;
+				// woo!  found a 2 level table
+				// decode d6_2 and check the memory operand
+				const auto d6_2            = DecodedInstruction_t::factory(I6_2);
+				const auto d6_2_memop      = d6_2->getOperand(1);
+				if(!d6_2_memop->isMemory()) continue;
 
-				const auto lvl2_table_entry_ptr = (const uint8_t*)&(lvl2_table_secdata[lvl2_table_offset]);
-				const auto lvl2_table_entry_val = *lvl2_table_entry_ptr;
+				const auto d6_2_displ      = d6_2_memop->getMemoryDisplacement();
 
-				// found an entry that's bigger than our lvl1 table's max element
-				if(lvl2_table_entry_val > max_valid_table_entry )
-					break;
+				// try next L5 if no 2 level table here
+				if(d6_2_displ == 0) continue;
 
-				lvl2_table_offset+=sizeof(uint8_t);
-				lvl2_table_entry_no++;
-			} while ( lvl2_table_entry_no <= table_size); /* table_size from original cmp! */
-			
-			// now record the lvl2 table into a scoop 
-			addSwitchTableScoop(firp,lvl2_table_entry_no+1,1,lvl2_table_addr,exeiop, I6_2, D1);
+				// look up the section and try next L5 if not found
+				const auto lvl2_table_addr =  D1 + d6_2_displ;
+				const auto lvl2_table_sec=find_section(lvl2_table_addr,exeiop);
+				if(lvl2_table_sec == nullptr) continue;
+
+				const auto lvl2_table_secdata=pSec->get_data();
+
+				// if the section has no data, abort 
+				if(lvl2_table_secdata == nullptr) continue;
+
+				// now, scan the lvl2 table, and stop if we find an entry bigger than 
+				// the lvl1 table's size.  This will calc the size of the lvl2 table.
+				//
+				// offset from address to access - section address 
+				auto lvl2_table_offset=lvl2_table_addr - lvl2_table_sec->get_address();
+				auto lvl2_table_entry_no=0U;
+				do
+				{
+					// check that we can still grab a word from this section
+					if((int)(lvl2_table_offset+sizeof(int)) > (int)lvl2_table_sec->get_size())
+						break;
+
+					const auto lvl2_table_entry_ptr = (const uint8_t*)&(lvl2_table_secdata[lvl2_table_offset]);
+					const auto lvl2_table_entry_val = *lvl2_table_entry_ptr;
+
+					// found an entry that's bigger than our lvl1 table's max element
+					if(lvl2_table_entry_val > max_valid_table_entry )
+						break;
+
+					lvl2_table_offset+=sizeof(uint8_t);
+					lvl2_table_entry_no++;
+				} while ( lvl2_table_entry_no <= table_size); /* table_size from original cmp! */
+				
+				// now record the lvl2 table into a scoop 
+				addSwitchTableScoop(firp,lvl2_table_entry_no+1,1,lvl2_table_addr,exeiop, I6_2, D1);
+			}
 		}
 	}
 }

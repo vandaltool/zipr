@@ -15,8 +15,16 @@ export ZEST_RUNTIME=$PEASOUP_HOME/zest_runtime
 # add us to the pspath
 export PSPATH=$PSPATH:$PEASOUP_HOME/irdb-libs/plugins_install
 
-if [ -z $PS_INSTALL ]; then
-	export PS_INSTALL=$PEASOUP_HOME/installed
+if [[ -z $PS_INSTALL ]]; then
+
+	# manifest.txt doesn't exist in the installed development
+	if [[ -f manifest.txt ]]; then
+		# we're in dev mode
+		export PS_INSTALL=$PEASOUP_HOME/installed
+	else
+		# we're in release mode
+		export PS_INSTALL=$PEASOUP_HOME
+	fi
 fi
 export PS=$PS_INSTALL/tools/ps_analyze.sh
 export PSZ=$PS_INSTALL/tools/ps_zipr.sh 
