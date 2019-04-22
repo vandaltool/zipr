@@ -18,6 +18,8 @@
 #pragma GCC diagnostic pop
 
 
+#define ALLOF(a) begin(a),end(a)
+
 
 using namespace IRDB_SDK;
 using namespace std;
@@ -161,6 +163,18 @@ void PeWriter<width>::InitHeaders()
 		image_data_dir_hdrs.push_back({rva, rva_size});
 	}
 
+
+	auto exc_dir_it = find_if(ALLOF(m_firp->getDataScoops()), 
+		[](const DataScoop_t* s)
+		{
+			return s->getName() == ".zipr_sehd";
+		});
+	if(exc_dir_it != end(m_firp->getDataScoops()))
+	{
+		const auto sehd_scoop=*exc_dir_it;
+		image_data_dir_hdrs[pe_bliss::pe_win::image_directory_entry_exception].virtual_address = sehd_scoop->getStart()->getVirtualOffset() - m_firp->getArchitecture()->getFileBase();
+		image_data_dir_hdrs[pe_bliss::pe_win::image_directory_entry_exception].size            = sehd_scoop->getSize();
+	}
 
 	CreateSectionHeaders();
 }

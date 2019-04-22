@@ -799,8 +799,7 @@ void ZiprImpl_t::PlaceDollops()
 	auto count_pins=0u;
 
 	/*
-	 * Build up initial placement q with destinations of
-	 * pins.
+	 * Build up initial placement q with destinations of pins.
 	 */
 	for (auto p : patch_list)
 	{
@@ -844,7 +843,7 @@ void ZiprImpl_t::PlaceDollops()
 
 	// Make sure each instruction referenced in a relocation (regardless
 	// of if that relocation is on an instruction or a scoop) gets placed.
-	for(auto &reloc : m_firp->getRelocations())
+	for(const auto &reloc : m_firp->getRelocations())
         	handle_reloc(reloc);	
 
 	while (!placement_queue.empty())
@@ -2244,28 +2243,10 @@ void  ZiprImpl_t::FixMultipleFallthroughs()
 
 void  ZiprImpl_t::RelayoutEhInfo()
 {
-	const auto found_eh_ir_it = find_if( 
-		m_firp->getInstructions().begin(), 
-		m_firp->getInstructions().end(),
-	 	[](const Instruction_t* i)
-			{ 
-				return (i->getEhProgram()!=nullptr || i->getEhCallSite()!=nullptr);
-			} 
-		);
-
-	// do nothing if we didn't find any IR.
-	if(found_eh_ir_it==m_firp->getInstructions().end())
+	if(m_firp->getAllEhPrograms().size()  ==  0 && m_firp->getAllEhCallSites().size() ==0)
 		return;
-		
-	auto eh = (EhWriter_t *)nullptr;
-	if(m_firp->getArchitectureBitWidth()==64)
-		eh=new EhWriterImpl_t<8>(*this);
-	else if(m_firp->getArchitectureBitWidth()==32)
-		eh=new EhWriterImpl_t<4>(*this);
-	else
-		assert(0);
 
-	eh->GenerateNewEhInfo();
+	EhWriter::EhWriter_t::factory(*this) -> GenerateNewEhInfo();
 }
 
 

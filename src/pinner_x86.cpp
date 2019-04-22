@@ -112,7 +112,11 @@ void ZiprPinnerX86_t::AddPinnedInstructions()
                         // Unpinned IBT. Create dollop and add it to placement
                         // queue straight away--there are no pinning considerations.
                         auto newDoll=m_dollop_mgr.addNewDollops(insn);
-			placement_queue.insert({newDoll, 0});
+#if 1
+			(void)newDoll;
+#else
+// 			placement_queue.insert({newDoll, 0});
+#endif
 			continue;
                 }
 
@@ -129,14 +133,8 @@ void ZiprPinnerX86_t::AddPinnedInstructions()
 
 void ZiprPinnerX86_t::RecordPinnedInsnAddrs()
 {
-	for(
-		set<Instruction_t*>::const_iterator it=m_firp->getInstructions().begin();
-		it!=m_firp->getInstructions().end();
-		++it
-		)
+	for(auto insn : m_firp->getInstructions())
 	{
-		RangeAddress_t ibta_addr;
-		Instruction_t* insn=*it;
 		assert(insn);
 
 		if(!insn->getIndirectBranchTargetAddress()
@@ -144,9 +142,8 @@ void ZiprPinnerX86_t::RecordPinnedInsnAddrs()
 		{
 			continue;
 		}
-		ibta_addr=(RangeAddress_t)insn->
-		                          getIndirectBranchTargetAddress()->
-		                          getVirtualOffset();
+		const auto ibta_addr=(RangeAddress_t)insn-> getIndirectBranchTargetAddress()-> getVirtualOffset();
+
 		/*
 		* Record the size of thing that we are pinning.
 		* We are going to use this information for doing
@@ -169,27 +166,22 @@ void ZiprPinnerX86_t::RecordPinnedInsnAddrs()
 		* record the size of the instruction itself.
 		*/
 		if (ShouldPinImmediately(insn))
-			m_InsnSizeAtAddrs[ibta_addr]=std::pair<Instruction_t*, size_t>(insn,insn->getDataBits().length());
+			m_InsnSizeAtAddrs[ibta_addr]={insn,insn->getDataBits().length()};
 		else					 
-			m_InsnSizeAtAddrs[ibta_addr]=std::pair<Instruction_t*, size_t>(insn,2);
+			m_InsnSizeAtAddrs[ibta_addr]={insn,2};
 	}
 }
 
 
 bool ZiprPinnerX86_t::ShouldPinImmediately(Instruction_t *upinsn)
 {
-	auto d=DecodedInstruction_t::factory (upinsn);
-	Instruction_t *pin_at_next_byte = nullptr;
-	AddressID_t *upinsn_ibta = nullptr, *ft_ibta = nullptr;
-
+	const auto d=DecodedInstruction_t::factory (upinsn);
 	if(d->isReturn() )
 		return true;
 
-	upinsn_ibta=upinsn->getIndirectBranchTargetAddress();
+	const auto upinsn_ibta = upinsn->getIndirectBranchTargetAddress();
+	const auto ft_ibta     = upinsn->getFallthrough() != nullptr ? upinsn->getFallthrough()->getIndirectBranchTargetAddress() : (AddressID_t*)nullptr;
 	assert(upinsn_ibta!=nullptr && upinsn_ibta->getVirtualOffset()!=0);
-
-	if (upinsn->getFallthrough() != nullptr)
-		ft_ibta=upinsn->getFallthrough()->getIndirectBranchTargetAddress();
 
 	/* careful with 1 byte instructions that have a pinned fallthrough */ 
 	const auto len=upinsn->getDataBits().length();
@@ -197,7 +189,6 @@ bool ZiprPinnerX86_t::ShouldPinImmediately(Instruction_t *upinsn)
 	{
 		if(upinsn->getFallthrough()==nullptr)
 			return true;
-		ft_ibta=upinsn->getFallthrough()->getIndirectBranchTargetAddress();
 		if((ft_ibta && ft_ibta->getVirtualOffset()!=0) && (upinsn_ibta->getVirtualOffset()+1) == ft_ibta->getVirtualOffset())
 			return true;
 	}
@@ -225,28 +216,29 @@ bool ZiprPinnerX86_t::ShouldPinImmediately(Instruction_t *upinsn)
 
 
 	// find the insn pinned at the next byte.
-	pin_at_next_byte = FindPinnedInsnAtAddr(upinsn_ibta->getVirtualOffset() + 1);
-	if ( pin_at_next_byte && 
+	auto pin_at_next_byte = FindPinnedInsnAtAddr(upinsn_ibta->getVirtualOffset() + 1);
+	if (    pin_at_next_byte && 
 
-	/* upinsn has lock prefix */
+		/* upinsn has lock prefix */
 		upinsn->getDataBits()[0]==(char)(0xF0) 	&&
-	/*
-	 * upinsn:  lock cmpxchange op1 op2 [pinned at x]
-	 *          x    x+1        x+2 x+3
-	 * 
-	 * AND pin_at_next_byte (x+1) is:
-	 */
+		/*
+		 * upinsn:  lock cmpxchange op1 op2 [pinned at x]
+		 *          x    x+1        x+2 x+3
+		 * 
+		 * AND pin_at_next_byte (x+1) is:
+		 */
 		pin_at_next_byte->getDataBits() == upinsn->getDataBits().substr(1,upinsn->getDataBits().length()-1) &&  
-	/*
-         *               cmpxchange op1 op2 [pinned at x+1]
-	 *               x+1        x+2 x+3
-	 * AND  pin_at_next_byte->fallthrough() == upinsn->Fallthrough()
-	 */
-		pin_at_next_byte->getFallthrough() == upinsn->getFallthrough() ) 
-	/*
-	 * x should become nop, put down immediately
-	 * x+1 should become the entire lock command.
-	 */
+		/*
+		 *               cmpxchange op1 op2 [pinned at x+1]
+		 *               x+1        x+2 x+3
+		 * AND  pin_at_next_byte->fallthrough() == upinsn->Fallthrough()
+		 */
+		pin_at_next_byte->getFallthrough() == upinsn->getFallthrough() 
+		/*
+		 * x should become nop, put down immediately
+		 * x+1 should become the entire lock command.
+		 */
+	  )
 	{
 		if (m_verbose)
 			cout<<"Using pin_at_next_byte special case, addrs="<<
@@ -286,9 +278,7 @@ void ZiprPinnerX86_t::PreReserve2ByteJumpTargets()
 	do
 	{
 		repeat = false;
-		for(set<UnresolvedPinned_t>::const_iterator it=two_byte_pins.begin();
-			it!=two_byte_pins.end();
-			)
+		for(auto  it=two_byte_pins.begin(); it!=two_byte_pins.end(); /* empty */)
 		{
 			UnresolvedPinned_t up=*it;
 			bool found_close_target = false;
@@ -364,17 +354,18 @@ void ZiprPinnerX86_t::PreReserve2ByteJumpTargets()
 						 * addr: place of prereserved memory
 						 * size: size of the amount of prereserved memory
 						 */
-						UnresolvedUnpinned_t uu(up);
-						Patch_t patch(up.GetRange().getStart(),
-						              UnresolvedType_t::UncondJump_rel32);
+						auto uu = UnresolvedUnpinned_t(up);
+						auto patch = Patch_t(up.GetRange().getStart(), UnresolvedType_t::UncondJump_rel32);
+
 						if (size == 2)
 							patch.setType(UnresolvedType_t::UncondJump_rel8);
-						UnresolvedUnpinnedPatch_t uup(uu, patch);
+
+						auto uup = UnresolvedUnpinnedPatch_t(uu, patch);
 
 						if (m_verbose)
 							cout << "Adding a chain entry at address "
 							     << std::hex << up.GetRange().getStart() << endl;
-						m_parent->RecordNewPatch(std::pair<RangeAddress_t, UnresolvedUnpinnedPatch_t>(up.GetRange().getStart(),uup));
+						m_parent->RecordNewPatch({up.GetRange().getStart(),uup});
 
 						found_close_target = true;
 						break;

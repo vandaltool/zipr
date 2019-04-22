@@ -9,8 +9,8 @@
 #include <assert.h>
 #include <sys/mman.h>
 #include <ctype.h>
-#include <iostream>   // std::cout
-#include <string>     // std::string, std::to_string
+#include <iostream>   // cout
+#include <string>     // string, to_string
 #include <fstream>
 #include <elf.h>
 
@@ -22,38 +22,211 @@ using namespace IRDB_SDK;
 using namespace std;
 using namespace zipr;
 using namespace EXEIO;
+using namespace EhWriter;
 
-template < typename T > std::string to_hex_string( const T& n )
+#define ALLOF(a) begin(a),end(a)
+
+template < typename T > string to_hex_string( const T& n )
 {
-        std::ostringstream stm ;
-        stm << std::hex<< "0x"<< n ;
+        ostringstream stm ;
+        stm << hex <<  "0x" <<  n ;
         return stm.str() ;
 }
 
-template<int ptrsize>
-void EhWriterImpl_t<ptrsize>::GenerateNewEhInfo()
+
+
+PE_unwind_info_t::PE_unwind_info_t(Instruction_t* insn, ZiprImpl_t& p_zipr_obj)
+	: zipr_obj(p_zipr_obj)
 {
-	auto page_round_up=[](const uintptr_t x) -> uintptr_t 
-	{
-		auto page_size=(uintptr_t)PAGE_SIZE;
-		return  ( (((uintptr_t)(x)) + page_size-1)  & (~(page_size-1)) );
-	};
+	// extract bits from IR into this structure.
+	const auto  ehpgm        = insn->getEhProgram();
+	const auto  cie_pgm      = ehpgm ->getCIEProgram();
+	const auto  fde_pgm      = ehpgm ->getFDEProgram();
+	const auto &ehcs         = insn->getEhCallSite();
+	const auto  handler_insn = ehcs->getLandingPad();
+	const auto &loc_map      = *zipr_obj.getLocationMap();
 
-	// find maximum used scoop address.
-	const auto max_used_addr=std::max_element(
-		zipr_obj.getFileIR()->getDataScoops().begin(),
-		zipr_obj.getFileIR()->getDataScoops().end(),
-		[&](const DataScoop_t* a, const DataScoop_t* b)
-		{
-			assert(a && b && a->getEnd() && b->getEnd()) ;
-			return a->getEnd()->getVirtualOffset() < b->getEnd()->getVirtualOffset();
-		}
-		);
+	// constants
+	ver_and_flags.parts.version                 = *reinterpret_cast<const uint8_t*>(cie_pgm[0].c_str());
+	ver_and_flags.parts.flags                   = *reinterpret_cast<const uint8_t*>(cie_pgm[1].c_str());
+	prolog_sz                                   = 0; // don't do prologues for now.
+	frame_reg_and_offset.parts.frame_reg        = *reinterpret_cast<const uint8_t*>(cie_pgm[2].c_str());
+	frame_reg_and_offset.parts.frame_reg_offset = *reinterpret_cast<const uint8_t*>(cie_pgm[3].c_str());
 
-	// round it up and stringify it.
-	eh_frame_hdr_addr=page_round_up((*max_used_addr)->getEnd()->getVirtualOffset());
+	// extract unwind array
+	for(const auto &s : fde_pgm) 	
+		unwind_array.push_back({*reinterpret_cast<const uint16_t*>(s.c_str())});
 
+	// extract the handler
+	if(handler_insn != nullptr)
+		handle.handler_rva = loc_map.at(handler_insn) - zipr_obj.getFileIR()->getArchitecture()->getFileBase();
+
+	start_rva = loc_map.at(insn) - zipr_obj.getFileIR()->getArchitecture()->getFileBase();
+	end_rva   = loc_map.at(insn) - zipr_obj.getFileIR()->getArchitecture()->getFileBase() + insn->getDataBits().size();
 	
+	// extract user data
+	if(cie_pgm.size() > 4) 
+		handle.user_data.insert(handle.user_data.end(), ALLOF(cie_pgm[4]));
+
+}
+
+template<int ptrsize>
+typename PEEhWriter_t<ptrsize>::SehVector_t  PEEhWriter_t<ptrsize>::BuildSehVector()
+{
+	// build a map of the instructions in program order
+	auto insn_in_order = map<VirtualOffset_t,Instruction_t*>();
+	for(const auto& this_pair : *zipr_obj.GetLocationMap())
+		insn_in_order[this_pair.second]=this_pair.first;
+
+	// build the unwind directory and unwind info
+	auto insns_with_frame      = 0u;
+	auto current_unwind_info   = unique_ptr<PE_unwind_info_t>();
+	auto all_unwind_infos      = vector<unique_ptr<PE_unwind_info_t> >();
+
+
+	// generate an unwind info struct for each chunk of code in the output program.
+	// record in all_unwind_infos
+	// for_each instruction in program order
+	for(const auto& this_pair : insn_in_order)
+	{
+		const auto &this_insn=this_pair.second;
+		const auto &this_addr=this_pair.first;
+
+		// no eh pgm or call site?  no worries, just ignore this insn
+		if(this_insn->getEhProgram()==nullptr && this_insn->getEhCallSite()==nullptr)
+			continue;
+
+		insns_with_frame++;
+
+		// if it has an unwinder and/or a call site, we will need an fde.
+
+		// end this fde
+		if(current_unwind_info && !current_unwind_info->canExtend(this_insn))
+		{
+			if(getenv("EH_VERBOSE")!=nullptr)
+				cout << "Ending unwind_info because insn " << hex << this_insn->getBaseID() << ":" << this_insn->getDisassembly() << " doesn't fit at "  <<  this_addr << endl;
+
+			current_unwind_info->extend(this_addr);  // extend all the way up to this instruction, but then end this unwind info.
+			all_unwind_infos.push_back(move(current_unwind_info));
+		}
+
+
+		// if we need to start a new fde, create one.
+		if(current_unwind_info == nullptr)
+		{
+			if(getenv("EH_VERBOSE")!=nullptr)
+				cout << "Creating new unwind_info for " << hex << this_insn->getBaseID() << ":" << this_insn->getDisassembly() <<  " at "  <<  this_addr << endl;
+			current_unwind_info.reset(new PE_unwind_info_t(this_insn, zipr_obj));
+		}
+		else
+		{
+			if(getenv("EH_VERBOSE")!=nullptr)
+				cout << "Extending unwind info for " << hex << this_insn->getBaseID() << ":" << this_insn->getDisassembly() << " at "  <<  this_addr  << endl;
+
+			current_unwind_info->extend(this_insn);
+		}
+	}
+	const auto unwind_infos        = all_unwind_infos.size();
+	const auto avg_insn_per_unwind = insns_with_frame/(float)unwind_infos;
+
+	cout << "# ATTRIBUTE ExceptionHandlerWrite::unwinds_calculated=" << dec << unwind_infos        << endl;
+	cout << "# ATTRIBUTE ExceptionHandlerWrite::insns_with_eh_info=" << dec << insns_with_frame    << endl;
+	cout << "# ATTRIBUTE ExceptionHandlerWrite::avg_insns_per_fde =" << dec << avg_insn_per_unwind << endl;
+	return move(all_unwind_infos);
+}
+
+template<int ptrsize>
+void PEEhWriter_t<ptrsize>::LayoutSehVector(const PEEhWriter_t<ptrsize>::SehVector_t& seh_vector)
+{
+	const auto exc_dir_entry_sz = (sizeof(uint32_t)*3);
+	const auto exc_dir_sz       = seh_vector.size() * exc_dir_entry_sz;
+	const auto unwind_info_addr = eh_addr + exc_dir_sz;
+	const auto firp             = zipr_obj.getFileIR();
+	const auto file_base        = firp->getArchitecture()->getFileBase();
+
+
+
+	// assign addresses to the unwind infos.
+	// and record the bytes that go into the unwind area
+	auto cur_uia      = unwind_info_addr;
+	auto ui_rvas      = map<PE_unwind_info_t*, VirtualOffset_t>();
+	auto all_ui_bytes = string();
+
+	for(auto & ui : seh_vector)
+	{
+		// record address
+		ui_rvas[ui.get()] = cur_uia - file_base;
+
+		// get the raw bytes
+		auto raw_bytes = ui->get_raw_bytes();
+
+		// update the address of the next thing to be at the right place
+		cur_uia += raw_bytes.length();
+
+		// record the raw bytes for output in a moment.
+		all_ui_bytes += raw_bytes;
+ 
+	}
+
+	// now, record the exception directory entries
+	auto except_dir_str = string();
+	for(auto &ui : seh_vector)
+	{
+		// create the entry
+		struct 
+		{
+			uint32_t start_rva;
+			uint32_t end_rva;
+			uint32_t unwind_rva;
+
+		} entry = 
+		{
+			static_cast<uint32_t>(ui->getStartRVA()),
+			static_cast<uint32_t>(ui->getEndRVA()),
+			static_cast<uint32_t>(ui_rvas[ui.get()])
+		};
+
+		// record the bytes as a string;
+		except_dir_str += string (reinterpret_cast<const char*>(&entry), sizeof(entry));
+	}
+
+
+	// how to create a scoop
+	auto to_scoop=[&](const string& name, const string& contents, const VirtualOffset_t start_rva) -> DataScoop_t*
+		{
+			// create exception directory
+			const auto start_vo   = start_rva;
+			const auto start_addr = firp->addNewAddress(BaseObj_t::NOT_IN_DATABASE, start_vo);
+			const auto end_vo     = start_vo + contents.size();
+			const auto end_addr   = firp->addNewAddress(BaseObj_t::NOT_IN_DATABASE, end_vo);
+			return firp->addNewDataScoop(name, start_addr,end_addr,nullptr,4,false,contents);
+		};
+
+	// create a scoop in the IR for the new SEH data
+	to_scoop(".zipr_sehd" , except_dir_str, eh_addr);
+	to_scoop(".zipr_sehui", all_ui_bytes  , eh_addr+except_dir_str.size());
+
+}
+
+template<int ptrsize>
+void PEEhWriter_t<ptrsize>::GenerateNewEhInfo()
+{
+	// find the location of the eh infos.
+	SetEhAddr(); 
+
+	// build the basic structure.
+	const auto seh_vec = BuildSehVector();
+	LayoutSehVector(seh_vec);
+}
+
+template<int ptrsize>
+void ElfEhWriter_t<ptrsize>::GenerateNewEhInfo()
+{
+
+	// find and record the max scoop addr, round it up 
+	SetEhAddr(); 
+	eh_frame_hdr_addr=eh_addr;
+
 	BuildFDEs();
 	GenerateEhOutput();
 	CompileEhOutput();
@@ -62,7 +235,7 @@ void EhWriterImpl_t<ptrsize>::GenerateNewEhInfo()
 }
 
 template <int ptrsize>
-bool EhWriterImpl_t<ptrsize>::CIErepresentation_t::canSupport(Instruction_t* insn) const
+bool ElfEhWriter_t<ptrsize>::CIErepresentation_t::canSupport(Instruction_t* insn) const
 {
 	// if the insn is missing info, we can support it.
 	if(insn==nullptr)
@@ -104,7 +277,7 @@ bool EhWriterImpl_t<ptrsize>::CIErepresentation_t::canSupport(Instruction_t* ins
 }
 
 template <int ptrsize>
-EhWriterImpl_t<ptrsize>::CIErepresentation_t::CIErepresentation_t(Instruction_t* insn, EhWriterImpl_t<ptrsize>* ehw)
+ElfEhWriter_t<ptrsize>::CIErepresentation_t::CIErepresentation_t(Instruction_t* insn, ElfEhWriter_t<ptrsize>* ehw)
 	: has_been_output(false)
 {
 	assert(insn && ehw && insn->getEhProgram());
@@ -126,29 +299,29 @@ EhWriterImpl_t<ptrsize>::CIErepresentation_t::CIErepresentation_t(Instruction_t*
 
 
 template <int ptrsize>
-void EhWriterImpl_t<ptrsize>::print_pers(Instruction_t* insn, EhWriterImpl_t<ptrsize>::CIErepresentation_t *cie)
+void ElfEhWriter_t<ptrsize>::print_pers(Instruction_t* insn, ElfEhWriter_t<ptrsize>::CIErepresentation_t *cie)
 {
 	const auto pretty_print= [&](Relocation_t* pr)
 		{
 			if(pr==nullptr)
 			{
-				cout<<"Found no personality reloc"<<endl;
+				cout << "Found no personality reloc" << endl;
 				return;
 			}
 			const auto personality_scoop=dynamic_cast<DataScoop_t*>(pr->getWRT());
 			const auto personality_insn=dynamic_cast<Instruction_t*>(pr->getWRT());
 
 			if(pr->getWRT()==nullptr)
-				cout<<"\tFound null personality"<<endl;
+				cout << "\tFound null personality" << endl;
 			else if(personality_scoop)
-				cout<<"\tFound personlity scoop "<<personality_scoop->getName()<<"+0x"<<hex<<pr->getAddend()<<endl;
+				cout << "\tFound personlity scoop " << personality_scoop->getName() << "+0x" << hex << pr->getAddend() << endl;
 			else if(personality_insn)
-				cout<<"\tFound personlity instruction "<<hex<<personality_insn->getBaseID()<<dec<<":"<<hex<<personality_insn->getDisassembly()<<endl;
+				cout << "\tFound personlity instruction " << hex << personality_insn->getBaseID() << dec << ":" << hex << personality_insn->getDisassembly() << endl;
 			else
-				cout<<"\tFound reloc: unexpected type? "<<endl;
+				cout << "\tFound reloc: unexpected type? " << endl;
 		};
 
-	cout<<"  CIE-Personality addr= "<<hex<<cie->personality_reloc<<dec<<endl;
+	cout << "  CIE-Personality addr= " << hex << cie->personality_reloc << dec << endl;
 	pretty_print(cie->GetPersonalityReloc());
 	const auto personality_it=find_if(
 		insn->getEhProgram()->getRelocations().begin(), 
@@ -158,7 +331,7 @@ void EhWriterImpl_t<ptrsize>::print_pers(Instruction_t* insn, EhWriterImpl_t<ptr
 	const auto pr = (personality_it==insn->getEhProgram()->getRelocations().end())
 		? (Relocation_t*)nullptr
 		: *personality_it;
-	cout<<"  insn personality addr= "<<hex<<pr<<dec<<endl;
+	cout << "  insn personality addr= " << hex << pr << dec << endl;
 	pretty_print(pr);
 
 
@@ -166,7 +339,7 @@ void EhWriterImpl_t<ptrsize>::print_pers(Instruction_t* insn, EhWriterImpl_t<ptr
 
 
 template <int ptrsize>
-EhWriterImpl_t<ptrsize>::FDErepresentation_t::FDErepresentation_t(Instruction_t* insn, EhWriterImpl_t<ptrsize>* ehw)
+ElfEhWriter_t<ptrsize>::FDErepresentation_t::FDErepresentation_t(Instruction_t* insn, ElfEhWriter_t<ptrsize>* ehw)
 	: 
 		lsda(insn),
 		cie(nullptr)
@@ -182,14 +355,14 @@ EhWriterImpl_t<ptrsize>::FDErepresentation_t::FDErepresentation_t(Instruction_t*
 		ehw->all_cies.push_back(cie);
 
 		if(getenv("EH_VERBOSE")!=nullptr)
-			cout<<"Creating new CIE representation"<<endl;
+			cout << "Creating new CIE representation" << endl;
 	}
 	else
 	{
 		cie=*cie_it;
 		if(getenv("EH_VERBOSE")!=nullptr)
 		{
-			cout<<"Re-using CIE representation"<<endl;
+			cout << "Re-using CIE representation" << endl;
 			print_pers(insn, cie);
 		}
 	}
@@ -202,7 +375,7 @@ EhWriterImpl_t<ptrsize>::FDErepresentation_t::FDErepresentation_t(Instruction_t*
 
 
 template <int ptrsize>
-int EhWriterImpl_t<ptrsize>::EhProgramListingManip_t::getMergeIndex(const EhProgramListingManip_t &other)
+int ElfEhWriter_t<ptrsize>::EhProgramListingManip_t::getMergeIndex(const EhProgramListingManip_t &other)
 {
 	auto other_index=(size_t)0;
 	for(const auto &this_ele : *this)
@@ -221,13 +394,13 @@ int EhWriterImpl_t<ptrsize>::EhProgramListingManip_t::getMergeIndex(const EhProg
 	return other_index;
 }
 template <int ptrsize>
-bool EhWriterImpl_t<ptrsize>::EhProgramListingManip_t::canExtend(const EhProgramListingManip_t &other)
+bool ElfEhWriter_t<ptrsize>::EhProgramListingManip_t::canExtend(const EhProgramListingManip_t &other)
 {
 	return getMergeIndex(other) != -1;
 }
 
 template <int ptrsize>
-void EhWriterImpl_t<ptrsize>::EhProgramListingManip_t::extend(const uint64_t inc_amt, const EhProgramListingManip_t &other)
+void ElfEhWriter_t<ptrsize>::EhProgramListingManip_t::extend(const uint64_t inc_amt, const EhProgramListingManip_t &other)
 {
 	if(size() > 0 && isAdvanceDirective(at(size()-1)))
 	{
@@ -308,10 +481,10 @@ void EhWriterImpl_t<ptrsize>::EhProgramListingManip_t::extend(const uint64_t inc
 }
 
 template <int ptrsize>
-bool EhWriterImpl_t<ptrsize>::EhProgramListingManip_t::isAdvanceDirective(const string &s) const
+bool ElfEhWriter_t<ptrsize>::EhProgramListingManip_t::isAdvanceDirective(const string &s) const
 {
 	// make sure uint8_t is an unsigned char.       
-	static_assert(std::is_same<unsigned char, uint8_t>::value, "uint8_t is not unsigned char");
+	static_assert(is_same<unsigned char, uint8_t>::value, "uint8_t is not unsigned char");
 
 	auto data=s.data();
 	auto opcode=data[0];
@@ -379,7 +552,7 @@ static bool read_sleb128 (
         {
                 byte = data [position];
                 position++;
-                result |= ((byte & 0x7f)<< shift);
+                result |= ((byte & 0x7f) << shift);
                 shift += 7;
         } while( (byte & 0x80) != 0);
 
@@ -403,7 +576,7 @@ static void print_uleb_operand(
 {
         auto uleb=uint64_t(0xdeadbeef);
         read_uleb128<ptrsize>(uleb, pos, data, max);
-        sout<<" "<<dec<<uleb;
+        sout << " " << dec << uleb;
 }
 
 template <int ptrsize>
@@ -415,18 +588,18 @@ static void print_sleb_operand(
 {
         auto leb=int64_t(0xdeadbeef);
         read_sleb128<ptrsize>(leb, pos, data, max);
-        sout<<" "<<dec<<leb;
+        sout << " " << dec << leb;
 }
 
 
 
 template <int ptrsize>
-string EhWriterImpl_t<ptrsize>::EhProgramListingManip_t::getPrintableString(const string &s) const
+string ElfEhWriter_t<ptrsize>::EhProgramListingManip_t::getPrintableString(const string &s) const
 {
 
 	stringstream sout;
 	// make sure uint8_t is an unsigned char.	
-	static_assert(std::is_same<unsigned char, uint8_t>::value, "uint8_t is not unsigned char");
+	static_assert(is_same<unsigned char, uint8_t>::value, "uint8_t is not unsigned char");
 
 	auto data=s;
 	auto opcode=(uint8_t)data[0];
@@ -440,23 +613,23 @@ string EhWriterImpl_t<ptrsize>::EhProgramListingManip_t::getPrintableString(cons
 		case 1:
 		{
 			// case DW_CFA_advance_loc:
-			sout<<"				cfa_advance_loc "<<dec<<+opcode_lower6<<" * caf";
+			sout << "				cfa_advance_loc " << dec << +opcode_lower6 << " * caf";
 			break;
 		}
 		case 2:
 		{
 			uint64_t uleb=0;
-			sout<<"				cfa_offset "; 
+			sout << "				cfa_offset "; 
 			if(read_uleb128<ptrsize>(uleb, pos, (const uint8_t* const)data.data(), max))
 				break;
 			// case DW_CFA_offset:
-			sout <<dec<<uleb;
+			sout  << dec << uleb;
 			break;
 		}
 		case 3:
 		{
 			// case DW_CFA_restore (register #):
-			sout<<"				cfa_restore";
+			sout << "				cfa_restore";
 			break;
 		}
 		case 0:
@@ -465,39 +638,39 @@ string EhWriterImpl_t<ptrsize>::EhProgramListingManip_t::getPrintableString(cons
 			{
 			
 				case DW_CFA_nop:
-					sout<<"				nop" ;
+					sout << "				nop" ;
 					break;
 				case DW_CFA_remember_state:
-					sout<<"				remember_state" ;
+					sout << "				remember_state" ;
 					break;
 				case DW_CFA_restore_state:
-					sout<<"				restore_state" ;
+					sout << "				restore_state" ;
 					break;
 
 				// takes single uleb128
 				case DW_CFA_undefined:
-					sout<<"				undefined" ;
+					sout << "				undefined" ;
 					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max); 
 					break;
 		
 				case DW_CFA_same_value:
-					sout<<"				same_value ";
+					sout << "				same_value ";
 					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max); 
 					break;
 				case DW_CFA_restore_extended:
-					sout<<"				restore_extended ";
+					sout << "				restore_extended ";
 					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max); 
 					break;
 				case DW_CFA_def_cfa_register:
-					sout<<"				def_cfa_register ";
+					sout << "				def_cfa_register ";
 					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max); 
 					break;
 				case DW_CFA_GNU_args_size:
-					sout<<"				GNU_arg_size ";
+					sout << "				GNU_arg_size ";
 					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max); 
 					break;
 				case DW_CFA_def_cfa_offset:
-					sout<<"				def_cfa_offset "; 
+					sout << "				def_cfa_offset "; 
 					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max); 
 					break;
 
@@ -513,46 +686,46 @@ string EhWriterImpl_t<ptrsize>::EhProgramListingManip_t::getPrintableString(cons
 						default: 
 							assert(0);
 					}
-					sout<<"				set_loc "<<hex<<arg;
+					sout << "				set_loc " << hex << arg;
 					break;
 				}
 				case DW_CFA_advance_loc1:
 				{
 					auto loc=*(uint8_t*)(&data.data()[pos]);
-					sout<<"				advance_loc1 "<<+loc<<" * caf " ;
+					sout << "				advance_loc1 " << +loc << " * caf " ;
 					break;
 				}
 
 				case DW_CFA_advance_loc2:
 				{
 					auto loc=*(uint16_t*)(&data.data()[pos]);
-					sout<<"				advance_loc2 "<<+loc<<" * caf " ;
+					sout << "				advance_loc2 " << +loc << " * caf " ;
 					break;
 				}
 
 				case DW_CFA_advance_loc4:
 				{
 					auto loc=*(uint32_t*)(&data.data()[pos]);
-					sout<<"				advance_loc4 "<<+loc<<" * caf " ;
+					sout << "				advance_loc4 " << +loc << " * caf " ;
 					break;
 				}
 				case DW_CFA_offset_extended:
-					sout<<"				offset_extended ";
+					sout << "				offset_extended ";
 					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max);
 					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max);
 					break;
 				case DW_CFA_register:
-					sout<<"				register ";
+					sout << "				register ";
 					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max);
 					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max);
 					break;
 				case DW_CFA_def_cfa:
-					sout<<"				def_cfa ";
+					sout << "				def_cfa ";
 					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max);
 					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max);
 					break;
 				case DW_CFA_def_cfa_sf:
-					sout<<"				def_cfa_sf ";
+					sout << "				def_cfa_sf ";
 					print_uleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max);
 					print_sleb_operand<ptrsize>(sout,pos,(const uint8_t* const)data.data(),max);
 					break;
@@ -560,24 +733,24 @@ string EhWriterImpl_t<ptrsize>::EhProgramListingManip_t::getPrintableString(cons
 				case DW_CFA_def_cfa_expression:
 				{
 					auto uleb=uint64_t(0);
-					sout<<"				def_cfa_expression "; 
+					sout << "				def_cfa_expression "; 
 					if(read_uleb128<ptrsize>(uleb, pos, (const uint8_t* const)data.data(), max))
 						break;
-					sout <<dec<<uleb;
+					sout  << dec << uleb;
 					pos+=uleb;		// doing this old school for now, as we aren't printing the expression.
-					sout <<" (not printing expression)";
+					sout  << " (not printing expression)";
 					break;
 				}
 				case DW_CFA_expression:
 				{
 					auto uleb1=uint64_t(0);
 					auto uleb2=uint64_t(0);
-					sout<<"                              expression "; 
+					sout << "                              expression "; 
 					if(read_uleb128<ptrsize>(uleb1, pos, (const uint8_t* const)data.data(), max))
 						break;
 					if(read_uleb128<ptrsize>(uleb2, pos, (const uint8_t* const)data.data(), max))
 						break;
-					sout<<dec<<uleb1<<" "<<uleb2;
+					sout << dec << uleb1 << " " << uleb2;
 					pos+=uleb2;
 					break;
 				}
@@ -585,34 +758,34 @@ string EhWriterImpl_t<ptrsize>::EhProgramListingManip_t::getPrintableString(cons
 				{
 					auto uleb1=uint64_t(0);
 					auto uleb2=uint64_t(0);
-					sout<<"                              val_expression "; 
+					sout << "                              val_expression "; 
 					if(read_uleb128<ptrsize>(uleb1, pos, (const uint8_t* const)data.data(), max))
 						break;
 					if(read_uleb128<ptrsize>(uleb2, pos, (const uint8_t* const)data.data(), max))
 						break;
-					sout <<dec<<uleb1<<" "<<uleb2;
+					sout  << dec << uleb1 << " " << uleb2;
 					pos+=uleb2;
 					break;
 				}
 				case DW_CFA_def_cfa_offset_sf:
 				{
 					auto leb=int64_t(0);
-					sout<<"					def_cfa_offset_sf "; 
+					sout << "					def_cfa_offset_sf "; 
 					if(read_sleb128<ptrsize>(leb, pos, (const uint8_t* const)data.data(), max))
 						break;
-					sout <<dec<<leb;
+					sout  << dec << leb;
 					break;
 				}
 				case DW_CFA_offset_extended_sf:
 				{
 					auto uleb1=uint64_t(0);
 					auto sleb2=int64_t(0);
-					sout<<"                              offset_extended_sf "; 
+					sout << "                              offset_extended_sf "; 
 					if(read_uleb128<ptrsize>(uleb1, pos, (const uint8_t* const)data.data(), max))
 						break;
 					if(read_sleb128<ptrsize>(sleb2, pos, (const uint8_t* const)data.data(), max))
 						break;
-					sout <<dec<<uleb1<<" "<<sleb2;
+					sout  << dec << uleb1 << " " << sleb2;
 					break;
 				}
 
@@ -624,7 +797,7 @@ string EhWriterImpl_t<ptrsize>::EhProgramListingManip_t::getPrintableString(cons
 				case DW_CFA_GNU_window_save:
 				case DW_CFA_GNU_negative_offset_extended:
 				default:
-					sout<<"Unhandled opcode cannot print. opcode="<<opcode;
+					sout << "Unhandled opcode cannot print. opcode=" << opcode;
 			}
 			break;
 		}
@@ -636,7 +809,7 @@ string EhWriterImpl_t<ptrsize>::EhProgramListingManip_t::getPrintableString(cons
 }
 
 template <int ptrsize>
-EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::LSDArepresentation_t(Instruction_t* insn)
+ElfEhWriter_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::LSDArepresentation_t(Instruction_t* insn)
 	// if there are call sites, use the call site encoding.  if not, set to omit for initializer.
 	//  extend/canExtend should be able to extend an omit to a non-omit.
 	: tt_encoding( insn->getEhCallSite() ? insn->getEhCallSite()->getTTEncoding() : 0xff)
@@ -659,7 +832,7 @@ static const auto RelocsEqual=[](const Relocation_t* a, const Relocation_t* b) -
 };
 
 template <int ptrsize>
-bool EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::canExtend(Instruction_t* insn) const
+bool ElfEhWriter_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::canExtend(Instruction_t* insn) const
 {
 	if(insn->getEhCallSite() == nullptr)
 		return true;
@@ -702,7 +875,7 @@ bool EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::canExte
 }
 
 template <int ptrsize>
-void EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::extend(Instruction_t* insn)
+void ElfEhWriter_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::extend(Instruction_t* insn)
 {
 	// if there's no call site info, the LSDA doesn't need an extension.
 	if(insn->getEhCallSite() == nullptr)
@@ -714,7 +887,7 @@ void EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::extend(
 	// has the same set of catch-types + landing_pad and is "close enough" to this insn.
 	// if so, combine.  
 
-	cout<<"Creating call sites in LSDA for "<<hex<<insn->getBaseID()<<":"<<insn->getDisassembly()<<endl;
+	cout << "Creating call sites in LSDA for " << hex << insn->getBaseID() << ":" << insn->getDisassembly() << endl;
 
 	// just create a new entry in the CS table.. 
 	auto cs=(call_site_t){0}; 
@@ -751,11 +924,11 @@ void EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::extend(
 	{
 		const auto wrt_scoop=dynamic_cast<DataScoop_t*>(reloc->getWRT());
 		if(reloc->getWRT()==nullptr)
-			cout<<"\tFound reloc: nullptr (catch all)"<<endl;
+			cout << "\tFound reloc: nullptr (catch all)" << endl;
 		else if(wrt_scoop)
-			cout<<"\tFound reloc: scoop "<<wrt_scoop->getName()<<"+0x"<<hex<<reloc->getAddend()<<endl;
+			cout << "\tFound reloc: scoop " << wrt_scoop->getName() << "+0x" << hex << reloc->getAddend() << endl;
 		else
-			cout<<"\tFound reloc: unexpected type? "<<endl;
+			cout << "\tFound reloc: unexpected type? " << endl;
 
 		// for now, this is the only supported reloc type on a EhCallSite 
 		assert(reloc->getType()=="type_table_entry");
@@ -800,7 +973,7 @@ void EhWriterImpl_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::extend(
 }
 
 template <int ptrsize>
-bool EhWriterImpl_t<ptrsize>::FDErepresentation_t::canExtend(Instruction_t* insn, EhWriterImpl_t<ptrsize>* ehw)
+bool ElfEhWriter_t<ptrsize>::FDErepresentation_t::canExtend(Instruction_t* insn, ElfEhWriter_t<ptrsize>* ehw)
 {
 	const auto insn_addr=ehw->zipr_obj.GetLocationMap()->at(insn);
 	const auto new_fde_thresh=100;
@@ -822,7 +995,7 @@ bool EhWriterImpl_t<ptrsize>::FDErepresentation_t::canExtend(Instruction_t* insn
 }
 
 template <int ptrsize>
-void EhWriterImpl_t<ptrsize>::FDErepresentation_t::extend(Instruction_t* insn, EhWriterImpl_t<ptrsize>* ehw)
+void ElfEhWriter_t<ptrsize>::FDErepresentation_t::extend(Instruction_t* insn, ElfEhWriter_t<ptrsize>* ehw)
 {
 	const auto insn_addr=ehw->zipr_obj.GetLocationMap()->at(insn);
 	const auto new_end_addr=insn_addr+insn->getDataBits().size();
@@ -839,20 +1012,13 @@ void EhWriterImpl_t<ptrsize>::FDErepresentation_t::extend(Instruction_t* insn, E
 	
 }
 
-template <int ptrsize>
-void EhWriterImpl_t<ptrsize>::FDErepresentation_t::emitAssembly(ostream& out)
-{
-	out<<"Hello"<<endl;
-}
-
 template<int ptrsize>
-void EhWriterImpl_t<ptrsize>::BuildFDEs()
+void ElfEhWriter_t<ptrsize>::BuildFDEs()
 {
 	// build a map of the instructions in program order
-	map<VirtualOffset_t,Instruction_t*> insn_in_order;
+	auto insn_in_order = map<VirtualOffset_t,Instruction_t*>();
 	for(const auto& this_pair : *zipr_obj.GetLocationMap())
 		insn_in_order[this_pair.second]=this_pair.first;
-
 
 	// build the fdes (and cies/lsdas) for this insn, starting with a null fde in case none exist
 	auto current_fde=(FDErepresentation_t*)nullptr;
@@ -876,7 +1042,7 @@ void EhWriterImpl_t<ptrsize>::BuildFDEs()
 		if(current_fde && !current_fde->canExtend(this_insn, this))
 		{
 			if(getenv("EH_VERBOSE")!=nullptr)
-				cout<<"Ending FDE because insn "<<hex<<this_insn->getBaseID()<<":"<<this_insn->getDisassembly()<<" doesn't fit at " << this_addr<< endl;
+				cout << "Ending FDE because insn " << hex << this_insn->getBaseID() << ":" << this_insn->getDisassembly() << " doesn't fit at "  <<  this_addr <<  endl;
 			current_fde=nullptr;
 		}
 
@@ -885,7 +1051,7 @@ void EhWriterImpl_t<ptrsize>::BuildFDEs()
 		if(current_fde==nullptr)
 		{
 			if(getenv("EH_VERBOSE")!=nullptr)
-				cout<<"Creating new FDE for "<<hex<<this_insn->getBaseID()<<":"<<this_insn->getDisassembly()<< " at " << this_addr<<endl;
+				cout << "Creating new FDE for " << hex << this_insn->getBaseID() << ":" << this_insn->getDisassembly() <<  " at "  <<  this_addr << endl;
 			current_fde=new FDErepresentation_t(this_insn,this);
 			all_fdes.push_back(current_fde);
 		}
@@ -893,7 +1059,7 @@ void EhWriterImpl_t<ptrsize>::BuildFDEs()
 		{
 			if(getenv("EH_VERBOSE")!=nullptr)
 			{
-				cout<<"Extending new FDE for "<<hex<<this_insn->getBaseID()<<":"<<this_insn->getDisassembly()<<" at " << this_addr <<endl;
+				cout << "Extending new FDE for " << hex << this_insn->getBaseID() << ":" << this_insn->getDisassembly() << " at "  <<  this_addr  << endl;
 				print_pers(this_insn,current_fde->cie);
 
 			}
@@ -909,14 +1075,14 @@ void EhWriterImpl_t<ptrsize>::BuildFDEs()
         assert(getenv("SELF_VALIDATE")==nullptr || insns_with_frame > 10 );
         assert(getenv("SELF_VALIDATE")==nullptr ||  avg_insn_per_fde > 1 ) ;
 
-	cout<<"# ATTRIBUTE ExceptionHandlerWrite::fdes_calculated="<<dec<<all_fdes.size()<<endl;
-	cout<<"# ATTRIBUTE ExceptionHandlerWrite::cies_calculated="<<dec<<all_cies.size()<<endl;
-	cout<<"# ATTRIBUTE ExceptionHandlerWrite::insns_with_eh_info="<<dec<<insns_with_frame<<endl;
-	cout<<"# ATTRIBUTE ExceptionHandlerWrite::avg_insns_per_fde="<<dec<<avg_insn_per_fde<<endl;
+	cout << "# ATTRIBUTE ExceptionHandlerWrite::fdes_calculated=" << dec << all_fdes.size() << endl;
+	cout << "# ATTRIBUTE ExceptionHandlerWrite::cies_calculated=" << dec << all_cies.size() << endl;
+	cout << "# ATTRIBUTE ExceptionHandlerWrite::insns_with_eh_info=" << dec << insns_with_frame << endl;
+	cout << "# ATTRIBUTE ExceptionHandlerWrite::avg_insns_per_fde=" << dec << avg_insn_per_fde << endl;
 }
 
 template<int ptrsize>
-void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
+void ElfEhWriter_t<ptrsize>::GenerateEhOutput()
 {
 
 	auto output_program=[&](const EhProgramListingManip_t& p, ostream & out) 
@@ -927,26 +1093,26 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 			const auto &s = p[i];
 			if(i==p.size()-1 && p.isAdvanceDirective(s))	/* no need to output last insn if it's an advance */
 				break;
-			out<<"       .byte ";
+			out << "       .byte ";
 			auto first=true;
 			for(const auto &c : s)
 			{
 				if(!first)
 				{
-					out<<", ";
+					out << ", ";
 				}
 				else
 					first=false;
-				out<<"0x"<<hex<<setfill('0')<<setw(2)<<((int)c&0xff);
+				out << "0x" << hex << setfill('0') << setw(2) << ((int)c&0xff);
 			}
-			out << asm_comment << p.getPrintableString(s)<<endl;
+			out  <<  asm_comment  <<  p.getPrintableString(s) << endl;
 		}
 		out.flags(flags); // restore flags
 	};
 	const auto output_lsda=[&](const FDErepresentation_t* fde, ostream& out, const uint32_t lsda_num) -> void
 	{
 		const auto lsda=&fde->lsda;
-		out<<"LSDA"<<dec<<lsda_num<<":"<<endl;
+		out << "LSDA" << dec << lsda_num << ":" << endl;
 		if(!lsda->exists())
 		{
 			return;
@@ -1018,12 +1184,12 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 
 			for(int i=act_entry_num; i>=0; i--)
 			{
-				out<<"LSDA"<<dec<<lsda_num<<"_act"<<act_num<<"_start_entry"<<act_entry_num<<""<<":"<<endl;
-				out<<"	.sleb128 "<<dec<<ttov.at(act_entry_num)<<endl;        
+				out << "LSDA" << dec << lsda_num << "_act" << act_num << "_start_entry" << act_entry_num << "" << ":" << endl;
+				out << "	.sleb128 " << dec << ttov.at(act_entry_num) << endl;        
 				if(act_entry_num==biggest_ttov_index)
-					out<<"	.sleb128 0 "<<endl;
+					out << "	.sleb128 0 " << endl;
 				else
-					out<<"	.sleb128  LSDA"<<lsda_num<<"_act"<<act_num<<"_start_entry"<<act_entry_num+1<<" - . "<<endl;
+					out << "	.sleb128  LSDA" << lsda_num << "_act" << act_num << "_start_entry" << act_entry_num+1 << " - . " << endl;
 				act_entry_num--;
 			}
 		};
@@ -1034,34 +1200,34 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 			const auto cs_start_addr=zipr_obj.GetLocationMap()->at(cs.cs_insn_start);
 			const auto cs_end_addr=zipr_obj.GetLocationMap()->at(cs.cs_insn_start)+cs.cs_insn_start->getDataBits().size();
 			const auto cs_len=cs_end_addr-cs_start_addr;
-			out<<"LSDA"<<dec<<lsda_num<<"_cs_tab_entry"<<cs_num<<"_start:"<<endl;
-        		out<< asm_comment << "	1) start of call site relative to FDE start addr (call site encoding)"<<endl;
-        		out<<"	.sleb128 0x"<<hex<<cs_start_addr<<" - 0x"<<hex<<fde->start_addr<<endl;
-        		out<<asm_comment << "   2) length of call site (call site encoding)"<<endl;
-        		out<<"	.sleb128 "<<dec<<cs_len<<endl;
+			out << "LSDA" << dec << lsda_num << "_cs_tab_entry" << cs_num << "_start:" << endl;
+        		out <<  asm_comment  <<  "	1) start of call site relative to FDE start addr (call site encoding)" << endl;
+        		out << "	.sleb128 0x" << hex << cs_start_addr << " - 0x" << hex << fde->start_addr << endl;
+        		out << asm_comment  <<  "   2) length of call site (call site encoding)" << endl;
+        		out << "	.sleb128 " << dec << cs_len << endl;
 			if(cs.landing_pad)
 			{
 				const auto lp_addr=zipr_obj.GetLocationMap()->at(cs.landing_pad);
-				out<<asm_comment<<"   3) the landing pad, or 0 if none exists. (call site encoding)"<<endl;
-				out<<"	.sleb128 0x"<<hex<<lp_addr<<" - 0x"<<hex<<landing_pad_base<<endl;
+				out << asm_comment << "   3) the landing pad, or 0 if none exists. (call site encoding)" << endl;
+				out << "	.sleb128 0x" << hex << lp_addr << " - 0x" << hex << landing_pad_base << endl;
 			}
 			else
 			{
-				out<<asm_comment<<"   3) the landing pad, or 0 if none exists. (call site encoding)"<<endl;
-				out<<"	.sleb128 0"<<endl;
+				out << asm_comment << "   3) the landing pad, or 0 if none exists. (call site encoding)" << endl;
+				out << "	.sleb128 0" << endl;
 			}
 			if(cs.actions.size() > 0 )
 			{
-				out<<asm_comment<<"   4) index into action table + 1 -- 0 indicates unwind only (call site encoding)"<<endl;
-				out<<"	.sleb128 1 + LSDA"<<dec<<lsda_num<<"_act"
-				   <<cs.action_table_index<<"_start_entry0 - LSDA"<<dec<<lsda_num<<"_action_tab_start"<<endl;
+				out << asm_comment << "   4) index into action table + 1 -- 0 indicates unwind only (call site encoding)" << endl;
+				out << "	.sleb128 1 + LSDA" << dec << lsda_num << "_act"
+				    << cs.action_table_index << "_start_entry0 - LSDA" << dec << lsda_num << "_action_tab_start" << endl;
 			}
 			else
 			{
-				out<<asm_comment<<"   4) index into action table + 1 -- 0 indicates unwind only (always uleb)"<<endl;
-				out<<"	.uleb128 0 // no actions!" << endl;
+				out << asm_comment << "   4) index into action table + 1 -- 0 indicates unwind only (always uleb)" << endl;
+				out << "	.uleb128 0 // no actions!"  <<  endl;
 			}
-			out<<"LSDA"<<dec<<lsda_num<<"_cs_tab_entry"<<cs_num<<"_end:"<<endl;
+			out << "LSDA" << dec << lsda_num << "_cs_tab_entry" << cs_num << "_end:" << endl;
 
 		};
 
@@ -1069,41 +1235,41 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 		{
 			if(landing_pad_base==fde->start_addr)
 			{
-				out<<asm_comment<<"   1) encoding of next field "<<endl;
-				out<<"        .byte 0xff "<<asm_comment<<" DW_EH_PE_omit (0xff)"<<endl;
-				out<<""<<endl;
-				out<<asm_comment<<"   2) landing pad base, if omitted, use FDE start addr"<<endl;
-				out<<asm_comment<<"   .<fdebasetype> <fdebase> -- omitted.  "<<endl;
+				out << asm_comment << "   1) encoding of next field " << endl;
+				out << "        .byte 0xff " << asm_comment << " DW_EH_PE_omit (0xff)" << endl;
+				out << "" << endl;
+				out << asm_comment << "   2) landing pad base, if omitted, use FDE start addr" << endl;
+				out << asm_comment << "   .<fdebasetype> <fdebase> -- omitted.  " << endl;
 			}
 			else
 			{
-				out<<asm_comment<<"   1) encoding of next field "<<endl;
-				out<<"        .byte 0x1b "<<asm_comment<<" DW_EH_PE_pcrel (0x10) |sdata4 (0xb)"<<endl;
-				out<<""<<endl;
-				out<<"        "<<asm_comment<<" 2) landing pad base, if omitted, use FDE start addr"<<endl;
-				out<<"        .int  0x"<<hex<<landing_pad_base<<" + eh_frame_hdr_start - . - "<<dec<<eh_frame_hdr_addr<<" "<<asm_comment<<" as pcrel|sdata4 .  "<<endl;
+				out << asm_comment << "   1) encoding of next field " << endl;
+				out << "        .byte 0x1b " << asm_comment << " DW_EH_PE_pcrel (0x10) |sdata4 (0xb)" << endl;
+				out << "" << endl;
+				out << "        " << asm_comment << " 2) landing pad base, if omitted, use FDE start addr" << endl;
+				out << "        .int  0x" << hex << landing_pad_base << " + eh_frame_hdr_start - . - " << dec << eh_frame_hdr_addr << " " << asm_comment << " as pcrel|sdata4 .  " << endl;
 			}
-			out<<""<<endl;
-			out<<asm_comment<<"   3) encoding of type table entries"<<endl;
-			out<<"        .byte 0x"<<hex<<lsda->tt_encoding<<"  "<<asm_comment<<" DW_EH_PE_udata4"<<endl;
-			out<<""<<endl;
-			out<<asm_comment<<"   4) type table pointer -- always a uleb128"<<endl;
+			out << "" << endl;
+			out << asm_comment << "   3) encoding of type table entries" << endl;
+			out << "        .byte 0x" << hex << lsda->tt_encoding << "  " << asm_comment << " DW_EH_PE_udata4" << endl;
+			out << "" << endl;
+			out << asm_comment << "   4) type table pointer -- always a uleb128" << endl;
 			if(lsda->tt_encoding==0xff) /* omit */
 			{
-				out<<asm_comment<<"   .uleb128 LSDAptr omitted"<< endl;
+				out << asm_comment << "   .uleb128 LSDAptr omitted" <<  endl;
 			}
 			else
 			{
-				out<<"        .uleb128 LSDA"<<dec<<lsda_num<<"_type_table_end - LSDA"<<lsda_num<<"_tt_ptr_end"<<endl;
+				out << "        .uleb128 LSDA" << dec << lsda_num << "_type_table_end - LSDA" << lsda_num << "_tt_ptr_end" << endl;
 			}
-			out<<"LSDA"<<dec<<lsda_num<<"_tt_ptr_end:"<<endl;
-			out<<""<<endl;
-			out<<asm_comment<<"   5) call site table encoding"<<endl;
-			out<<"        .byte 0x9 "<<asm_comment<<" DW_EH_PE_sleb128 "<<endl;
-			out<<""<<endl;
-			out<<asm_comment<<"   6) the length of the call site table"<<endl;
-			out<<"        .uleb128 LSDA"<<dec<<lsda_num<<"_cs_tab_end-LSDA"<<dec<<lsda_num<<"_cs_tab_start"<<endl;
-			out<<"LSDA"<<dec<<lsda_num<<"_cs_tab_start:"<<endl;
+			out << "LSDA" << dec << lsda_num << "_tt_ptr_end:" << endl;
+			out << "" << endl;
+			out << asm_comment << "   5) call site table encoding" << endl;
+			out << "        .byte 0x9 " << asm_comment << " DW_EH_PE_sleb128 " << endl;
+			out << "" << endl;
+			out << asm_comment << "   6) the length of the call site table" << endl;
+			out << "        .uleb128 LSDA" << dec << lsda_num << "_cs_tab_end-LSDA" << dec << lsda_num << "_cs_tab_start" << endl;
+			out << "LSDA" << dec << lsda_num << "_cs_tab_start:" << endl;
 		};
 
 		const auto output_call_site_table=[&]()
@@ -1114,34 +1280,34 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 			{
 				output_callsite(cs,cs_num++);
 			}
-			out<<"LSDA"<<dec<<lsda_num<<"_cs_tab_end:"<<endl;
+			out << "LSDA" << dec << lsda_num << "_cs_tab_end:" << endl;
 		};
 		const auto output_action_table=[&]()
 		{
 			// output action table
-			out<<"LSDA"<<dec<<lsda_num<<"_action_tab_start:"<<endl;
+			out << "LSDA" << dec << lsda_num << "_action_tab_start:" << endl;
 			auto act_num=0;
 			for(const auto & act : lsda->action_table)
 			{
 				output_action(act,act_num++);
 			}
-			out<<"LSDA"<<dec<<lsda_num<<"_action_tab_end:"<<endl;
+			out << "LSDA" << dec << lsda_num << "_action_tab_end:" << endl;
 		};
 
 		const auto output_type_table=[&]()
 		{
-			out<<"LSDA"<<dec<<lsda_num<<"_type_table_start:"<<endl;
+			out << "LSDA" << dec << lsda_num << "_type_table_start:" << endl;
 			for_each( lsda->type_table.rbegin(), lsda->type_table.rend(),  [&](const Relocation_t* reloc)
 			{
 				if(reloc==nullptr)
 				{
 					// indicates a catch all or empty type table entry
-					out<<"	.int 0x0 "<<asm_comment<<" not used!"<<endl;
+					out << "	.int 0x0 " << asm_comment << " not used!" << endl;
 				}
 				else if(reloc->getWRT()==nullptr)
 				{
 					// indicates a catch all or empty type table entry
-					out<<"	.int 0x0 "<<asm_comment<<" catch all "<<endl;
+					out << "	.int 0x0 " << asm_comment << " catch all " << endl;
 				}
 				else
 				{
@@ -1150,13 +1316,13 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 					assert(scoop);
 					const auto final_addr=scoop->getStart()->getVirtualOffset() + reloc->getAddend();
 					if(((lsda->tt_encoding)&0x10) == 0x10) // if encoding contains pcrel (0x10).
-						out<<"	.int 0x"<<hex<<final_addr<<" + eh_frame_hdr_start - . -  "<<dec<<eh_frame_hdr_addr<<endl;
+						out << "	.int 0x" << hex << final_addr << " + eh_frame_hdr_start - . -  " << dec << eh_frame_hdr_addr << endl;
 					else
-						out<<"	.int 0x"<<hex<<final_addr<<endl;
+						out << "	.int 0x" << hex << final_addr << endl;
 					
 				}
 			});
-			out<<"LSDA"<<dec<<lsda_num<<"_type_table_end:"<<endl;
+			out << "LSDA" << dec << lsda_num << "_type_table_end:" << endl;
 		};
 
 		output_lsda_header();
@@ -1171,7 +1337,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 		if(cie->has_been_output)
 			return;
 
-		const auto cie_pos_it=std::find(all_cies.begin(), all_cies.end(), cie);
+		const auto cie_pos_it=find(all_cies.begin(), all_cies.end(), cie);
 		assert(cie_pos_it!=all_cies.end());
 
 		const auto personality_scoop=cie->personality_reloc ? dynamic_cast<DataScoop_t*>  (cie->personality_reloc->getWRT()) : (DataScoop_t*)nullptr;
@@ -1181,54 +1347,54 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 		const auto cie_pos=cie_pos_it-all_cies.begin();
 
 		cie->has_been_output=true;
-		out<<asm_comment<<" cie "<<dec<<cie_pos<<""<<endl;
-		out<<"Lcie"<<cie_pos<<":"<<endl;
-		out<<"	 .int Lcie"<<cie_pos<<"_end - Lcie"<<cie_pos<<" - 4 "<<asm_comment<<" length of this record. -4 because length doesn't include this field"<<endl;
-		out<<"        .int 0                  "<<asm_comment<<" cie (not fde)"<<endl;
-		out<<"        .byte 3                 "<<asm_comment<<" version"<<endl;
-		out<<"        .asciz \"zPLR\"           "<<asm_comment<<" aug string."<<endl;
-		out<<"        .uleb128 "<<dec<<cie->code_alignment_factor<<"              "<<asm_comment<<" code alignment factor"<<endl;
-		out<<"        .sleb128 "<<dec<<cie->data_alignment_factor<<"             "<<asm_comment<<" data alignment factor"<<endl;
-		out<<"        .uleb128 "<<dec<<cie->return_reg<<"             "<<asm_comment<<" return address reg."<<endl;
-		out<<"        "<<asm_comment<<" encode the Z (length)"<<endl;
-		out<<"        .sleb128 Lcie"<<cie_pos<<"_aug_data_end-Lcie"<<cie_pos<<"_aug_data_start "<<asm_comment<<" Z -- handle length field"<<endl;
-		out<<"Lcie"<<cie_pos<<"_aug_data_start:"<<endl;
-		out<<""<<endl;
+		out << asm_comment << " cie " << dec << cie_pos << "" << endl;
+		out << "Lcie" << cie_pos << ":" << endl;
+		out << "	 .int Lcie" << cie_pos << "_end - Lcie" << cie_pos << " - 4 " << asm_comment << " length of this record. -4 because length doesn't include this field" << endl;
+		out << "        .int 0                  " << asm_comment << " cie (not fde)" << endl;
+		out << "        .byte 3                 " << asm_comment << " version" << endl;
+		out << "        .asciz \"zPLR\"           " << asm_comment << " aug string." << endl;
+		out << "        .uleb128 " << dec << cie->code_alignment_factor << "              " << asm_comment << " code alignment factor" << endl;
+		out << "        .sleb128 " << dec << cie->data_alignment_factor << "             " << asm_comment << " data alignment factor" << endl;
+		out << "        .uleb128 " << dec << cie->return_reg << "             " << asm_comment << " return address reg." << endl;
+		out << "        " << asm_comment << " encode the Z (length)" << endl;
+		out << "        .sleb128 Lcie" << cie_pos << "_aug_data_end-Lcie" << cie_pos << "_aug_data_start " << asm_comment << " Z -- handle length field" << endl;
+		out << "Lcie" << cie_pos << "_aug_data_start:" << endl;
+		out << "" << endl;
 		if(personality_scoop)
 		{
 			auto personality_value=personality_scoop->getStart()->getVirtualOffset()+personality_addend;
-			out<<"        "<<asm_comment<<"encode the P (personality encoding + personality routine)"<<endl;
-			out<<"        .byte 0x80 | 0x10 | 0x0B        "<<asm_comment<<"  personality pointer encoding DH_EH_PE_indirect (0x80) | pcrel | sdata4"<<endl;
-			out<<"        .int "<<personality_value<<" + eh_frame_hdr_start - . - "<<dec<<eh_frame_hdr_addr<<" "<<asm_comment<<" actual personality routine, encoded as noted in prev line."<<endl;
+			out << "        " << asm_comment << "encode the P (personality encoding + personality routine)" << endl;
+			out << "        .byte 0x80 | 0x10 | 0x0B        " << asm_comment << "  personality pointer encoding DH_EH_PE_indirect (0x80) | pcrel | sdata4" << endl;
+			out << "        .int " << personality_value << " + eh_frame_hdr_start - . - " << dec << eh_frame_hdr_addr << " " << asm_comment << " actual personality routine, encoded as noted in prev line." << endl;
 		}
 		else if(personality_insn)
 		{
 			const auto personality_insn_addr=zipr_obj.GetLocationMap()->at(personality_insn);
 			const auto personality_value=personality_insn_addr+personality_addend;
-			out<<"        "<<asm_comment<<"encode the P (personality encoding + personality routine)"<<endl;
-			out<<"        .byte 0x10 | 0x0B        "<<asm_comment<<"  personality pointer encoding pcrel | sdata4"<<endl;
-			out<<"        .int "<<personality_value<<" + eh_frame_hdr_start - . - "<<dec<<eh_frame_hdr_addr<<" "<<asm_comment<<" actual personality routine, encoded as noted in prev line."<<endl;
+			out << "        " << asm_comment << "encode the P (personality encoding + personality routine)" << endl;
+			out << "        .byte 0x10 | 0x0B        " << asm_comment << "  personality pointer encoding pcrel | sdata4" << endl;
+			out << "        .int " << personality_value << " + eh_frame_hdr_start - . - " << dec << eh_frame_hdr_addr << " " << asm_comment << " actual personality routine, encoded as noted in prev line." << endl;
 		}
 		else
 		{
 			assert(cie->personality_reloc==nullptr || cie->personality_reloc->getWRT()==nullptr);
-			out<<"        "<<asm_comment<<"encode the P (personality encoding + personality routine)"<<endl;
-			out<<"        .byte  0x0B        "<<asm_comment<<"  personality pointer encoding sdata4"<<endl;
-			out<<"        .int 0               "<<asm_comment<<" actual personality routine, encoded as noted in prev line."<<endl;
+			out << "        " << asm_comment << "encode the P (personality encoding + personality routine)" << endl;
+			out << "        .byte  0x0B        " << asm_comment << "  personality pointer encoding sdata4" << endl;
+			out << "        .int 0               " << asm_comment << " actual personality routine, encoded as noted in prev line." << endl;
 		}
-		out<<""<<endl;
-		out<<"        "<<asm_comment<<" encode L (lsda encoding) "<<endl;
-		out<<"        .byte  0x1b     "<<asm_comment<<" LSDA encoding (pcrel|sdata4)"<<endl;
-		out<<""<<endl;
-		out<<"        "<<asm_comment<<" encode R (FDE encoding) "<<endl;
-		out<<"        .byte  0x10 | 0x0B      "<<asm_comment<<" FDE encoding (pcrel | sdata4)"<<endl;
-		out<<"Lcie"<<cie_pos<<"_aug_data_end:"<<endl;
-		out<<"       "<<asm_comment<<" CIE program"<<endl;
+		out << "" << endl;
+		out << "        " << asm_comment << " encode L (lsda encoding) " << endl;
+		out << "        .byte  0x1b     " << asm_comment << " LSDA encoding (pcrel|sdata4)" << endl;
+		out << "" << endl;
+		out << "        " << asm_comment << " encode R (FDE encoding) " << endl;
+		out << "        .byte  0x10 | 0x0B      " << asm_comment << " FDE encoding (pcrel | sdata4)" << endl;
+		out << "Lcie" << cie_pos << "_aug_data_end:" << endl;
+		out << "       " << asm_comment << " CIE program" << endl;
 		output_program(cie->pgm,out);
-		out<<""<<endl;
-		out<<"       "<<asm_comment<<" pad with nops"<<endl;
-		out<<"       .align 4, 0"<<endl;
-		out<<"Lcie"<<cie_pos<<"_end:"<<endl;
+		out << "" << endl;
+		out << "       " << asm_comment << " pad with nops" << endl;
+		out << "       .align 4, 0" << endl;
+		out << "Lcie" << cie_pos << "_end:" << endl;
 
 	};
 	auto output_fde=[&](const FDErepresentation_t* fde, ostream& out, const uint32_t fde_num) -> void
@@ -1237,69 +1403,69 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 		output_cie(fde->cie,out);
 
 
-		auto cie_pos_it=std::find(all_cies.begin(), all_cies.end(), fde->cie);
+		auto cie_pos_it=find(all_cies.begin(), all_cies.end(), fde->cie);
 		assert(cie_pos_it!=all_cies.end());
 		auto cie_pos=cie_pos_it-all_cies.begin();
 
-		out<<""<<asm_comment<<"fde "<<dec<<fde_num<<""<<endl;
-		out<<"Lfde"<<fde_num<<":"<<endl;
-		out<<"        .int Lfde"<<fde_num<<"_end - Lfde"<<fde_num<<" - 4      "<<asm_comment<<" length of this record. -4 because "
-		     "length doesn't include this field."<<endl;
-		out<<"        .int . - Lcie"<<cie_pos<<"                  "<<asm_comment<<" this is an FDE (not a "
-		     "cie), and it's cie is CIE"<<cie_pos<<".  byte offset from start of field."<<endl;
-		out<<"        .int 0x"<<hex<<fde->start_addr<<dec<<" + eh_frame_hdr_start - . - "<<dec<<eh_frame_hdr_addr<<" "<<asm_comment<<" FDE start addr"<<endl;
-		out<<"        .int "<<dec<<fde->end_addr-fde->start_addr<<"                     "<<asm_comment<<" fde range length (i.e., can calc the "
-		     "fde_end_addr from this -- note that pcrel is ignored here!)"<<endl;
-		out<<"        "<<asm_comment<<"encode Z (length)"<<endl;
-		out<<"        .uleb128 Lfde"<<fde_num<<"_aug_data_end-Lfde"<<fde_num<<"_aug_data_start"<<endl;
-		out<<"Lfde"<<fde_num<<"_aug_data_start:"<<endl;
-		out<<"        "<<asm_comment<<"encode L (LSDA) "<<endl;
+		out << "" << asm_comment << "fde " << dec << fde_num << "" << endl;
+		out << "Lfde" << fde_num << ":" << endl;
+		out << "        .int Lfde" << fde_num << "_end - Lfde" << fde_num << " - 4      " << asm_comment << " length of this record. -4 because "
+		     "length doesn't include this field." << endl;
+		out << "        .int . - Lcie" << cie_pos << "                  " << asm_comment << " this is an FDE (not a "
+		     "cie), and it's cie is CIE" << cie_pos << ".  byte offset from start of field." << endl;
+		out << "        .int 0x" << hex << fde->start_addr << dec << " + eh_frame_hdr_start - . - " << dec << eh_frame_hdr_addr << " " << asm_comment << " FDE start addr" << endl;
+		out << "        .int " << dec << fde->end_addr-fde->start_addr << "                     " << asm_comment << " fde range length (i.e., can calc the "
+		     "fde_end_addr from this -- note that pcrel is ignored here!)" << endl;
+		out << "        " << asm_comment << "encode Z (length)" << endl;
+		out << "        .uleb128 Lfde" << fde_num << "_aug_data_end-Lfde" << fde_num << "_aug_data_start" << endl;
+		out << "Lfde" << fde_num << "_aug_data_start:" << endl;
+		out << "        " << asm_comment << "encode L (LSDA) " << endl;
 		if(fde->hasLsda())
-			out<<"        .int LSDA"<<fde_num<<" - .    "<<asm_comment<<" LSDA hard coded here (as pcrel+sdata4)"<<endl;	 
+			out << "        .int LSDA" << fde_num << " - .    " << asm_comment << " LSDA hard coded here (as pcrel+sdata4)" << endl;	 
 		else
-			out<<"        .int 0 + eh_frame_hdr_start - . - "<<dec<<eh_frame_hdr_addr<<"      "<<asm_comment<<" no LSDA, encoded with pcrel "<<endl;	 
-		out<<"Lfde"<<fde_num<<"_aug_data_end:"<<endl;
-		out<<""<<endl;
-		out<<"        "<<asm_comment<<" FDE"<<fde_num<<" program"<<endl;
+			out << "        .int 0 + eh_frame_hdr_start - . - " << dec << eh_frame_hdr_addr << "      " << asm_comment << " no LSDA, encoded with pcrel " << endl;	 
+		out << "Lfde" << fde_num << "_aug_data_end:" << endl;
+		out << "" << endl;
+		out << "        " << asm_comment << " FDE" << fde_num << " program" << endl;
 		output_program(fde->pgm,out);
-		out<<"        .align 4, 0"<<endl;
-		out<<"        Lfde"<<fde_num<<"_end:"<<endl;
+		out << "        .align 4, 0" << endl;
+		out << "        Lfde" << fde_num << "_end:" << endl;
 
 	};
 	auto generate_eh_frame_hdr=[&](ostream& out) -> void	
 	{
-		out<<".section eh_frame_hdr, \"a\", @progbits"<<endl;
-		out<<"eh_frame_hdr_start:"<<endl;
-		out<<"        .byte 1                 "<<asm_comment<<" version"<<endl;
-		out<<"        .byte 0x10 | 0x0B       "<<asm_comment<<" encoding for pointer to eh-frame -- DH_EH_PE_pcrel (0x10) | DH_EH_PE_sdata4 (0x0B)"<<endl;
-		out<<"        .byte 0x03              "<<asm_comment<<" encoding for ; of entries in eh-frame-hdr  -- BDH_EH_PE_udata4 (0x03)"<<endl;
-		out<<"        .byte 0x30 | 0x0B       "<<asm_comment<<" encoding for pointers (to fdes) held in the eh-frame-hdr header  "
-		     "-- DH_EH_PE_datarel (0x30) | DH_EH_PE_sdata4 (0x0b) " <<endl;
+		out << ".section eh_frame_hdr, \"a\", @progbits" << endl;
+		out << "eh_frame_hdr_start:" << endl;
+		out << "        .byte 1                 " << asm_comment << " version" << endl;
+		out << "        .byte 0x10 | 0x0B       " << asm_comment << " encoding for pointer to eh-frame -- DH_EH_PE_pcrel (0x10) | DH_EH_PE_sdata4 (0x0B)" << endl;
+		out << "        .byte 0x03              " << asm_comment << " encoding for ; of entries in eh-frame-hdr  -- BDH_EH_PE_udata4 (0x03)" << endl;
+		out << "        .byte 0x30 | 0x0B       " << asm_comment << " encoding for pointers (to fdes) held in the eh-frame-hdr header  "
+		     "-- DH_EH_PE_datarel (0x30) | DH_EH_PE_sdata4 (0x0b) "  << endl;
 
-		out<<"        .int Lfde_table - .     "<<asm_comment<<" pointer to fde_table, encoded as an sdata4, pcrel"<<endl;
-		out<<"        .int (eh_frame_table_end-eh_frame_table)/8     "<<asm_comment<<" number of FDEs in the header."<<endl;
+		out << "        .int Lfde_table - .     " << asm_comment << " pointer to fde_table, encoded as an sdata4, pcrel" << endl;
+		out << "        .int (eh_frame_table_end-eh_frame_table)/8     " << asm_comment << " number of FDEs in the header." << endl;
 
 // on some archs, this line causes an additional alignment, as the assembler feels free to align as much as you want.
 // but the eh-parser is expecting the table _right here_, so we do the alignment manually by making sure the above part
 // has a multiple-of-4 bytes.
-//		out<<"        .align 4"<<endl;
-		out<<"eh_frame_table:"<<endl;
-		out<<"        "<<asm_comment<<" fde pointers"<<endl;
+//		out << "        .align 4" << endl;
+		out << "eh_frame_table:" << endl;
+		out << "        " << asm_comment << " fde pointers" << endl;
 
 		for(auto fde_num=0U; fde_num < all_fdes.size(); fde_num++)
 		{
 			const auto& fde=all_fdes[fde_num];
-			out<<"        .int 0x"<<hex<<fde->start_addr<<" - "<<dec<<eh_frame_hdr_addr<<endl;
-			out<<"        .int Lfde"<<dec<<fde_num<<" - eh_frame_hdr_start"<<endl;
+			out << "        .int 0x" << hex << fde->start_addr<<" - " << dec << eh_frame_hdr_addr << endl;
+			out << "        .int Lfde" << dec << fde_num << " - eh_frame_hdr_start" << endl;
 		}
 
-		out<<"eh_frame_table_end:"<<endl;
+		out << "eh_frame_table_end:" << endl;
 
 	};
 	auto generate_eh_frame=[&](ostream& out) -> void	
 	{
-		out<<".section eh_frame, \"a\", @progbits"<<endl;
-		out<<"Lfde_table: "<<asm_comment<<" needed for xref to eh_frame_hdr" <<endl;
+		out << ".section eh_frame, \"a\", @progbits" << endl;
+		out << "Lfde_table: " << asm_comment << " needed for xref to eh_frame_hdr"  << endl;
 
 		auto fde_num=0;
 		for(const auto& fde: all_fdes)
@@ -1309,7 +1475,7 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 	};
 	auto generate_gcc_except_table=[&](ostream& out) -> void	
 	{
-		out<<".section gcc_except_table, \"a\", @progbits"<<endl;
+		out << ".section gcc_except_table, \"a\", @progbits" << endl;
 		auto lsda_num=0;
 		for(const auto& fde: all_fdes)
 		{
@@ -1317,10 +1483,10 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 		}
 	};
 
-	ofstream fout(ehframe_s_filename, std::ofstream::out);
+	ofstream fout(ehframe_s_filename, ofstream::out);
 	if(!fout)
 	{
-		cerr<<"Fatal: cannot open "<<ehframe_s_filename<<"."<<endl;
+		cerr << "Fatal: cannot open " << ehframe_s_filename << "." << endl;
 		exit(2);
 	}
 
@@ -1330,28 +1496,28 @@ void EhWriterImpl_t<ptrsize>::GenerateEhOutput()
 }
 
 template<int ptrsize>
-void EhWriterImpl_t<ptrsize>::CompileEhOutput()
+void ElfEhWriter_t<ptrsize>::CompileEhOutput()
 {
 
 	const auto eh_frame_hdr_addr_str=to_hex_string(eh_frame_hdr_addr);
 
 	// create and execute the command to build the ehframe.
 	auto cmd=(string)"$PEASOUP_HOME/tools/eh_frame_tools/eh_to_bin.sh "+ehframe_s_filename+" "+eh_frame_hdr_addr_str+" "+ehframe_exe_filename;
-	cout<<"Running: "<<cmd<<endl;
+	cout << "Running: " << cmd << endl;
 	auto res=system(cmd.c_str());
 
 	// err check.
 	if( res==-1 || WEXITSTATUS(res)!=0 )
 	{
 		perror("Cannot compile eh_frame.");
-		cerr<<"Exit code="<<res<<endl;
-		cerr<<" for command="<<cmd<<endl;
+		cerr << "Exit code=" << res << endl;
+		cerr << " for command=" << cmd << endl;
 		exit(2);
 	}
 }
 
 template<int ptrsize>
-void EhWriterImpl_t<ptrsize>::ScoopifyEhOutput()
+void ElfEhWriter_t<ptrsize>::ScoopifyEhOutput()
 {
         EXEIO::exeio ehframe_exe_rep;
 	ehframe_exe_rep.load(ehframe_exe_filename);
@@ -1384,16 +1550,34 @@ void EhWriterImpl_t<ptrsize>::ScoopifyEhOutput()
 }
 
 template<int ptrsize>
-EhWriterImpl_t<ptrsize>::~EhWriterImpl_t()
+ElfEhWriter_t<ptrsize>::~ElfEhWriter_t()
 {
 	for(const auto &i : all_fdes) delete i;
 	for(const auto &i : all_cies) delete i;
 }
 
 
+unique_ptr<EhWriter_t> EhWriter_t::factory(ZiprImpl_t& zipr_obj)
+{
+	auto firp=zipr_obj.getFileIR();
+	const auto is_pe  = firp->getArchitecture()->getFileType() == adftPE;
+	const auto is_elf = firp->getArchitecture()->getFileType() == adftELFEXE ||
+	              firp->getArchitecture()->getFileType() == adftELFSO;
+	const auto is_64  = firp->getArchitectureBitWidth()==64;
+	const auto is_32  = firp->getArchitectureBitWidth()==32;
+
+	auto eh = (is_elf && is_64) ? static_cast<EhWriter_t*>(new ElfEhWriter_t<8>(zipr_obj)) :
+		  (is_elf && is_32) ? static_cast<EhWriter_t*>(new ElfEhWriter_t<4>(zipr_obj)) :
+		  (is_pe  && is_64) ? static_cast<EhWriter_t*>(new PEEhWriter_t <8>(zipr_obj)) :
+		  throw invalid_argument("Cannot create eh factory for unknown file type/ptr size combo");
+
+	return unique_ptr<EhWriter_t>(eh);
+}
+
+
 /* make sure these get compiled */
 namespace zipr
 {
-template class EhWriterImpl_t<8>;
-template class EhWriterImpl_t<4>;
+	template class ElfEhWriter_t<8>;
+	template class ElfEhWriter_t<4>;
 };
