@@ -1841,11 +1841,12 @@ void FileIR_t::splitScoop(
 }
 
 
-IRDB_SDK::EhCallSite_t* FileIR_t::addEhCallSite_t(IRDB_SDK::Instruction_t* for_insn, const uint64_t enc, IRDB_SDK::Instruction_t* lp) 
+IRDB_SDK::EhCallSite_t* FileIR_t::addEhCallSite(IRDB_SDK::Instruction_t* for_insn, const uint64_t enc, IRDB_SDK::Instruction_t* lp) 
 {
 	auto new_ehcs = new libIRDB::EhCallSite_t(BaseObj_t::NOT_IN_DATABASE, enc, lp);
 	GetAllEhCallSites().insert(new_ehcs);
-        for_insn->setEhCallSite(new_ehcs);
+	if(for_insn)
+        	for_insn->setEhCallSite(new_ehcs);
 	return new_ehcs;
 
 }

@@ -102,7 +102,7 @@ class FileIR_t : public BaseObj_t, virtual public IRDB_SDK::FileIR_t
 		void splitScoop(IRDB_SDK::DataScoop_t *tosplit, const IRDB_SDK::VirtualOffset_t &addr, size_t size, 
 				IRDB_SDK::DataScoop_t* &before, IRDB_SDK::DataScoop_t* &containing,  IRDB_SDK::DataScoop_t* &after, IRDB_SDK::DatabaseID_t *max_id=NULL);
 
-		virtual IRDB_SDK::EhCallSite_t* addEhCallSite_t(IRDB_SDK::Instruction_t* for_insn, const uint64_t enc=0, IRDB_SDK::Instruction_t* lp=nullptr) ;
+		virtual IRDB_SDK::EhCallSite_t* addEhCallSite(IRDB_SDK::Instruction_t* for_insn, const uint64_t enc=0, IRDB_SDK::Instruction_t* lp=nullptr) ;
 
 		virtual IRDB_SDK::Relocation_t* addNewRelocation(
                         IRDB_SDK::BaseObj_t* from_obj,

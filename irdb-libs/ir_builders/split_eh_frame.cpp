@@ -13,7 +13,12 @@
 #include <tuple>
 #include <functional>
 
+// stuff to read the exe file
 #include <exeio.h>
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#include <pe_bliss.h>
+#pragma GCC diagnostic pop
+
 
 #include "split_eh_frame.hpp"
 #include "ehp.hpp"
@@ -22,8 +27,17 @@ using namespace std;
 using namespace EXEIO;
 using namespace IRDB_SDK;
 using namespace EHP;
+using namespace pe_bliss;
 
 #define ALLOF(s) begin(s), end(s)
+
+template <class T>
+static inline T round_up_to(const T& x, const uint64_t& to)
+{
+	assert( (to & (to-1)) == 0 );
+	return  ( (((uintptr_t)(x)) + to-1)  & (~(to-1)) );
+}
+
 
 
 struct EhProgramPlaceHolder_t
@@ -63,7 +77,7 @@ void split_eh_frame_impl_t<ptrsize>::lsda_call_site_build_ir
 	(
 	    const LSDACallSite_t& cs,
 	    Instruction_t* insn, 
-	    const /*vector<lsda_type_table_entry_t <ptrsize> > &*/ std::shared_ptr<EHP::TypeTableVector_t> type_table_ptr, 
+	    const EHP::TypeTableVector_t* type_table_ptr, 
 	    const uint8_t& tt_encoding
 	) const
 {
@@ -81,7 +95,7 @@ void split_eh_frame_impl_t<ptrsize>::lsda_call_site_build_ir
 		lp_insn=lp_it->second;
 
 	// create the callsite.
-	auto new_ehcs = firp->addEhCallSite_t(insn, tt_encoding, lp_insn);
+	auto new_ehcs = firp->addEhCallSite(insn, tt_encoding, lp_insn);
 
 	//cout<<"landing pad addr : 0x"<<hex<<landing_pad_addr<<endl;
 	if(action_table.size() == 0 ) 
@@ -121,11 +135,6 @@ void split_eh_frame_impl_t<ptrsize>::lsda_call_site_build_ir
 				auto addend=0;
 				if(wrt!=NULL) 
 					addend=type_table.at(index)->getTypeInfoPointer()-wrt->getStart()->getVirtualOffset();
-				/*
-				auto newreloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, offset, "type_table_entry", wrt, addend);
-				new_ehcs->getRelocations().insert(newreloc);
-				firp->getRelocations().insert(newreloc);
-				*/
 				auto newreloc=firp->addNewRelocation(new_ehcs,offset, "type_table_entry", wrt, addend);
 				(void)newreloc; // just give it to the ir
 
@@ -164,7 +173,7 @@ void split_eh_frame_impl_t<ptrsize>::lsda_build_ir(const LSDA_t& lsda, Instructi
 	const auto& call_site_table=*call_site_table_ptr;
 	const auto& type_table_ptr=lsda.getTypeTable();
 
-	const auto cs_ptr_it=find_if(ALLOF(call_site_table), [&](const shared_ptr<LSDACallSite_t> &p)
+	const auto cs_ptr_it=find_if(ALLOF(call_site_table), [&](const LSDACallSite_t* p)
 		{
 			return lsda_call_site_appliesTo(*p, insn);
 		});
@@ -251,9 +260,6 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 		friend struct EhProgramComparator_t;
 	};
 
-	//const auto fdes_ptr=eh_frame_parser->getFDEs();
-	//const auto &fdes=*fdes_ptr;
-
 	auto reusedpgms=size_t(0);
 	struct EhProgramComparator_t 
 	{
@@ -284,7 +290,6 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 					   );
 			else 
 				return lhs.hashcode < rhs.hashcode;
-//			return tie(*a.first, a.second) < tie(*b.first,b.second); 
 		}
 	};
 
@@ -297,8 +302,8 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 	{
 		const auto find_addr=insn->getAddress()->getVirtualOffset();
 		static auto fie_ptr=(const FDEContents_t*)nullptr;
-		static auto cie_instructions=shared_ptr<EHProgramInstructionVector_t>();
-		static auto fde_instructions=shared_ptr<EHProgramInstructionVector_t>();
+		static auto cie_instructions=(const EHProgramInstructionVector_t* )nullptr;
+		static auto fde_instructions=(const EHProgramInstructionVector_t* )nullptr;
 
 		if (fie_ptr && fie_ptr->getStartAddress() <= find_addr && find_addr < fie_ptr->getEndAddress())
 		{
@@ -332,9 +337,9 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 			const auto personality=fie_ptr->getCIE().getPersonality(); 
 			const auto insn_addr=insn->getAddress()->getVirtualOffset();
 
-			auto import_pgm = [&](EhProgramListing_t& out_pgm_final, const shared_ptr<EHProgramInstructionVector_t> &in_pgm_instructions_ptr) -> void
+			auto import_pgm = [&](EhProgramListing_t& out_pgm_final, const EHProgramInstructionVector_t* in_pgm_instructions_ptr) -> void
 			{
-				auto out_pgm=vector<shared_ptr<EHProgramInstruction_t> >();
+				auto out_pgm=vector<const EHProgramInstruction_t* >();
 				auto cur_addr=fde_addr;
 				const auto &in_pgm_instructions=*in_pgm_instructions_ptr;
 				auto last_was_def_cfa_offset = false;
@@ -393,7 +398,7 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 				    (
 				        ALLOF(out_pgm), 
 				        back_inserter(out_pgm_final), 
-				        [](const shared_ptr<EHProgramInstruction_t>& p){ return string(ALLOF(p->getBytes()));}
+				        [](const EHProgramInstruction_t* p){ return string(ALLOF(p->getBytes()));}
 				    ); 
 			}; 
 
@@ -424,12 +429,6 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 					cout<<"Allocating new Program!"<<endl;
 
 				// allocate a new pgm in the heap so we can give it to the IR.
-				/*
-				auto newehpgm=new EhProgram_t(ehpgm); // copy constructor
-				assert(newehpgm);
-				firp->getAllEhPrograms().insert(newehpgm);
-				insn->setEhProgram(newehpgm);
-				*/
 				auto newehpgm=firp->addEhProgram(insn, ehpgm.caf, ehpgm.daf,ehpgm.rr, ehpgm.ptrsize, ehpgm.cie_program, ehpgm.fde_program);
 
 				// allocate a relocation for the personality and give it to the IR.	
@@ -460,12 +459,6 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 				else
 					assert(0);
 
-				/*
-				auto newreloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, 0, "personality", personality_obj, addend);
-				assert(newreloc);	
-				newehpgm->getRelocations().insert(newreloc);
-				firp->getRelocations().insert(newreloc);
-				*/
 				auto newreloc=firp->addNewRelocation(newehpgm,0, "personality", personality_obj, addend);
 				(void)newreloc; // not used, just give it to the IR
 
@@ -486,45 +479,6 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 		}
 		
 	};
-
-#if 0
-	auto remove_reloc=[&](Relocation_t* r) -> void
-	{
-		firp->getRelocations().erase(r);
-		delete r;
-	};
-
-	auto remove_address=[&](AddressID_t* a) -> void
-	{
-		firp->getAddresses().erase(a);
-		for(auto &r : a->getRelocations()) remove_reloc(r);
-		for(auto &r : firp->getRelocations()) assert(r->getWRT() != a);
-		delete a;	
-	};
-
-	auto remove_scoop=[&] (DataScoop_t* s) -> void 
-	{ 
-		if(s==NULL)
-			return;
-		firp->getDataScoops().erase(s);
-		remove_address(s->getStart());
-		remove_address(s->getEnd());
-		for(auto &r : s->getRelocations()) remove_reloc(r);
-		for(auto &r : firp->getRelocations()) assert(r->getWRT() != s);
-		delete s;
-	};
-#endif
-
-	/*
-	for(auto f : firp->getFunctions())
-	{
-		for(Instruction_t* i : f->getInstructions())
-		{
-			build_ir_insn(i);
-		}
-		eh_program_cache.clear(); // this can get big, so we erase it between functions.  there's minimal re-use between functions anyhow
-	}
-	*/
 
 	for(Instruction_t* i : firp->getInstructions())
 	{
@@ -562,7 +516,7 @@ Instruction_t* split_eh_frame_impl_t<ptrsize>::find_lp(Instruction_t* i) const
 	const auto &cstab_ptr  = the_lsda.getCallSites();
 	const auto &cstab  = *cstab_ptr;
 
-	const auto cstab_it=find_if(ALLOF(cstab), [&](const shared_ptr<LSDACallSite_t>& cs)
+	const auto cstab_it=find_if(ALLOF(cstab), [&](const LSDACallSite_t* cs)
 		{ return lsda_call_site_appliesTo(*cs,i); });
 
 	if(cstab_it==cstab.end())
@@ -641,12 +595,157 @@ unique_ptr<split_eh_frame_t> split_eh_frame_t::factory(FileIR_t *firp)
 
 }
 
-void split_eh_frame(FileIR_t* firp)
-{
-	auto found_err=false;
-	//auto eh_frame_splitter=(unique_ptr<split_eh_frame_t>)NULL;
-	const auto eh_frame_splitter=split_eh_frame_t::factory(firp);
-	eh_frame_splitter->build_ir();
 
-	assert(!found_err);
+
+template <int ptrsize>
+class pe_eh_split_t
+{
+	private:
+		FileIR_t* firp;
+		exeio *exeiop;
+		OffsetMap_t offset_to_insn_map;
+
+	public:
+		pe_eh_split_t(FileIR_t* p_firp, exeio *p_exeiop)
+			:
+				firp(p_firp),
+				exeiop(p_exeiop)
+		{
+			init_offset_map();
+		}
+
+		void split_pe_file()
+		{
+			const auto peb_obj=reinterpret_cast<pe_base*>(exeiop->get_pebliss());
+			assert(peb_obj != nullptr);
+
+			auto edd = get_exception_directory_data(*peb_obj);
+
+			for(auto i=0u; i < edd.size(); i++)
+			{
+				const auto &exc = edd[i];
+
+				cout << boolalpha ; 
+				cout << "Entry is: " << exc.get_begin_address() << "-" << exc.get_end_address() << endl;
+				cout << "\thas except handler " << exc.has_exception_handler() << endl;
+				cout << "\thas term handler   " << exc.has_termination_handler() << endl;
+				cout << "\tis chain info      " << exc.is_chaininfo() << endl;
+				cout << "\tprologue size      " << +exc.get_size_of_prolog() << endl;
+				cout << "\tunwind slots       " << +exc.get_number_of_unwind_slots() << endl;
+				cout << "\tuses fp            " << +exc.uses_frame_pointer() << endl;
+				cout << "\tfp reg             " << +exc.get_frame_pointer_register_number() << endl;
+				cout << "\tscaled rsp offset  " << +exc.get_scaled_rsp_offset() << endl;
+
+				const auto  unwind_addr     = exc.get_unwind_info_address();
+				const auto &unwind_sec      = peb_obj->section_from_rva(unwind_addr);
+				const auto next_unwind_addr = i < edd.size() ?                            // last element?
+					edd[i+1].get_unwind_info_address()   :                            // yes: value from start of next unwind info entry 
+					unwind_sec.get_virtual_address() + unwind_sec.get_virtual_size(); // no:  end of section
+				const auto &unwind_data_str = unwind_sec.get_virtual_data(0x1000);
+				const auto  unwind_data_ptr = unwind_data_str.data();
+				assert(unwind_data_ptr != nullptr);
+
+				// cast the contents of the section at the right offset for unwind_addr to an unwind_info struct pointer 
+				const auto  unwind_struct_ptr = reinterpret_cast<const pe_win::unwind_info*>( unwind_data_ptr + (unwind_addr - unwind_sec.get_virtual_address()) );
+				const auto &unwind_struct     = *unwind_struct_ptr;
+
+				// extract some fields
+				const auto has_handler     = exc.has_exception_handler() || exc.has_termination_handler();
+				const auto version         = uint8_t(unwind_struct.Version);
+				const auto flags           = uint8_t(unwind_struct.Flags);
+				const auto frame_reg       = uint8_t(unwind_struct.FrameRegister);
+				const auto frame_offset    = uint8_t(unwind_struct.FrameOffset);
+				const auto unwind_pgm_size = round_up_to(unwind_struct.CountOfCodes,2);
+				const auto handler_ptr     = reinterpret_cast<const uint32_t*>(&unwind_struct.UnwindCode[unwind_pgm_size]);
+				const auto handler_rva     = *handler_ptr;
+				const auto handler_addr    = firp->getArchitecture()->getFileBase() + handler_rva;
+				const auto handler_insn_it = offset_to_insn_map.find(handler_addr);
+				const auto handler_insn    = has_handler ? handler_insn_it->second : (Instruction_t*)nullptr;
+
+
+				assert( (handler_insn_it != end(offset_to_insn_map)) == has_handler);
+
+				auto user_data = string();
+				if(has_handler)
+				{
+					const auto unwind_user_data = reinterpret_cast<const char*>(handler_ptr) + sizeof(uint32_t);
+					const auto unwind_info_size_with_unwindcode_array = reinterpret_cast<const char*>(&unwind_struct.UnwindCode[unwind_pgm_size]) - reinterpret_cast<const char*>(&unwind_struct);
+					const auto user_data_addr   = firp->getArchitecture()->getFileBase() + unwind_addr + unwind_info_size_with_unwindcode_array;
+
+					for(auto i=user_data_addr ; i < next_unwind_addr; i++)
+						user_data.push_back(unwind_user_data[i-user_data_addr]);
+				}
+
+
+
+				// create the EH program and Callsite info that's shared by all insns in this exception handling range
+				auto cie_pgm=EhProgramListing_t
+					{
+						// cast the version and flags into strings and store in the cie program
+						{reinterpret_cast<const char*>(&version)     , 1},
+						{reinterpret_cast<const char*>(&flags)       , 1},
+						{reinterpret_cast<const char*>(&frame_reg)   , 1},
+						{reinterpret_cast<const char*>(&frame_offset), 1},
+						user_data
+					};
+				auto fde_pgm=EhProgramListing_t();
+				for(auto i=0u;  i < unwind_struct.CountOfCodes; i++)
+					// convert the unwind code into a string for the fde program
+					fde_pgm.push_back( { reinterpret_cast<const char*>(&unwind_struct.UnwindCode[i]) ,sizeof(unwind_struct.UnwindCode[0]) } );
+
+
+				auto ehpgm = firp->addEhProgram(
+                                        /*Instruction_t* insn       */ nullptr,
+                                        /*const uint64_t caf        */ 1,
+                                        /*const int64_t daf         */ 1,
+                                        /*const uint8_t rr          */ 1,
+                                        /*const uint8_t p_ptrsize   */ 8,
+                                        /*const EhProgramListing_t& */ cie_pgm,
+                                        /*const EhProgramListing_t& */ fde_pgm);
+
+				auto ehcs = firp->addEhCallSite(
+                                        /* Instruction_t* for_insn */ nullptr, 
+                                        /* const uint64_t enc=*/      0, 
+                                        /* Instruction_t* lp=*/       handler_insn);
+
+
+
+				const auto file_base = firp->getArchitecture()->getFileBase();
+				for(auto i=exc.get_begin_address() ; i < exc.get_end_address() ; i++)
+				{
+					const auto insn_it = offset_to_insn_map.find(i + file_base);
+					if (insn_it != end(offset_to_insn_map))
+					{
+						auto insn = insn_it->second;
+						assert(insn != nullptr);
+						cout << "Applying to " << insn->getDisassembly() << endl;
+
+						insn->setEhProgram(ehpgm);
+						insn->setEhCallSite(ehcs);
+					}
+				}
+
+			}
+		}
+		bool init_offset_map() 
+		{
+			for(const auto i : firp->getInstructions())
+			{
+				offset_to_insn_map[i->getAddress()->getVirtualOffset()]=i;
+			};
+			return false;
+		}
+};
+
+void split_eh_frame(FileIR_t* firp, exeio *exeiop)
+{
+	if( firp->getArchitecture()->getFileType()==adftPE )
+	{
+		pe_eh_split_t<64>(firp,exeiop).split_pe_file();
+
+	}
+	else
+	{
+		split_eh_frame_t::factory(firp)->build_ir();
+	}
 }

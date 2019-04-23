@@ -242,7 +242,7 @@ void mark_targets(FileIR_t *firp)
 {
         for(auto insn : firp->getInstructions())
 	{
-		auto addr=insn->getAddress()->getVirtualOffset();
+		const auto addr=insn->getAddress()->getVirtualOffset();
 
 		/* lookup in the list of targets */
 		if(targets.find(addr)!=targets.end())
@@ -2821,12 +2821,11 @@ ICFS_t* setup_ret_hellnode(FileIR_t* firp, EXEIO::exeio* exeiop)
 
 void mark_return_points(FileIR_t* firp)
 {
-
 	// add unmarked return points.  fix_calls will deal with whether they need to be pinned or not later.
-        for(auto insn : firp->getInstructions())
+        for(const auto insn : firp->getInstructions())
 	{
-		auto d=DecodedInstruction_t::factory(insn);
-		if(string("call")==d->getMnemonic() && insn->getFallthrough())
+		const auto d=DecodedInstruction_t::factory(insn);
+		if(d->isCall() && insn->getFallthrough())
 		{
 			targets[insn->getFallthrough()->getAddress()->getVirtualOffset()].add(ibt_provenance_t::ibtp_ret);
 		}
@@ -2837,7 +2836,7 @@ void mark_return_points(FileIR_t* firp)
 void print_icfs(FileIR_t* firp)
 {
 	cout<<"Printing ICFS sets."<<endl;
-        for(auto insn : firp->getInstructions())
+        for(const auto insn : firp->getInstructions())
 	{
 		auto icfs=insn->getIBTargets();
 
@@ -2845,13 +2844,13 @@ void print_icfs(FileIR_t* firp)
 		if(!icfs)
 			continue;
 
-		cout<<hex<<insn->getAddress()->getVirtualOffset()<<" -> ";
+		cout << hex << insn->getAddress()->getVirtualOffset() << " -> ";
 
 		for(auto target : *icfs)
 		{
-			cout<<hex<<target->getAddress()->getVirtualOffset()<<" ";
+			cout << hex << target->getAddress()->getVirtualOffset() << " ";
 		}
-		cout<<endl;
+		cout << endl;
 	}
 }
 
@@ -3880,16 +3879,13 @@ int executeStep()
 			max_base_id=firp->getMaxBaseID();
 
 			// read the executeable file
-			int elfoid=firp->getFile()->getELFOID();
-		        pqxx::largeobject lo(elfoid);
-        		lo.to_file(pqxx_interface->getTransaction(),"readeh_tmp_file.exe");
         		auto exeiop=unique_ptr<EXEIO::exeio>(new EXEIO::exeio);
-        		exeiop->load(string("readeh_tmp_file.exe"));
+        		exeiop->load(string("a.ncexe"));
 
 			// find all indirect branch targets
 			fill_in_indtargs(firp, exeiop.get(), do_unpin_opt);
 			if(split_eh_frame_opt)
-				split_eh_frame(firp);
+				split_eh_frame(firp,exeiop.get());
 
 			if(firp->getArchitecture()->getMachineType() != admtAarch64)
 				assert(getenv("SELF_VALIDATE")==nullptr || ranges.size() > 1 );

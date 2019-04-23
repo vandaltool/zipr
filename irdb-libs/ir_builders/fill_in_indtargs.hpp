@@ -219,5 +219,5 @@ class fii_icfs  : public IRDB_SDK::InstructionSet_t
 
 };
 
-void split_eh_frame(IRDB_SDK::FileIR_t* firp);
+void split_eh_frame(IRDB_SDK::FileIR_t* firp, EXEIO::exeio *exeiop);
 

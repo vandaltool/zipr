@@ -30,7 +30,7 @@ void usage(int argc, char* argv[])
 class CreateFunctions_t
 {
 	private:
-		shared_ptr<const EHFrameParser_t> ehp;
+		unique_ptr<const EHFrameParser_t> ehp;
 		using Address_t = uint64_t;
 		class Range_t : public pair<Address_t,Address_t>
 		{
@@ -522,7 +522,7 @@ class CreateFunctions_t
 			const auto &ehprogram=fde->getProgram();
 			const auto ehprogramInstructions=ehprogram.getInstructions();
 
-			const auto def_cfa_rbp_it = find_if(ALLOF(*ehprogramInstructions), [&](const shared_ptr<EHProgramInstruction_t> insn)
+			const auto def_cfa_rbp_it = find_if(ALLOF(*ehprogramInstructions), [&](const EHProgramInstruction_t* insn)
 				{
 					assert(insn);
 					const auto &insnBytes=insn->getBytes();

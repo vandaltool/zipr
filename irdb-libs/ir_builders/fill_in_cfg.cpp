@@ -277,25 +277,9 @@ void PopulateCFG::add_new_instructions(FileIR_t *firp)
 					newinsnbits[i]=data[offset_into_section+i];
 
 				/* create a new address */
-				/*
-				auto newaddr=new AddressID_t();
-				assert(newaddr);
-				newaddr->setVirtualOffset(missed_address);
-				newaddr->setFileID(missed_fileid);
-				firp->getAddresses().insert(newaddr);
-				*/
 				auto newaddr=firp->addNewAddress(missed_fileid,missed_address);
 
 				/* create a new instruction */
-				/*
-				auto newinsn=new Instruction_t();
-				assert(newinsn);
-				newinsn->setAddress(newaddr);
-				newinsn->setDataBits(newinsnbits);
-				newinsn->setComment(disasm.getDisassembly()+string(" from fill_in_cfg "));
-				firp->getInstructions().insert(newinsn);
-				newinsn->setAddress(newaddr);
-				*/
 				auto newinsn=firp->addNewInstruction(newaddr, nullptr, newinsnbits, disasm.getDisassembly()+string(" from fill_in_cfg "), nullptr);
 				(void)newinsn;// just add to IR
 
@@ -662,7 +646,6 @@ void PopulateCFG::ctor_detection(FileIR_t *firp)
 void PopulateCFG::fill_in_landing_pads(FileIR_t *firp)
 {
 	const auto eh_frame_rep_ptr = split_eh_frame_t::factory(firp);
-	// eh_frame_rep_ptr->parse(); already parsed now.
 	if(getenv("EHIR_VERBOSE"))
 		eh_frame_rep_ptr->print();
 	cout<<"Completed eh-frame parsing"<<endl;
