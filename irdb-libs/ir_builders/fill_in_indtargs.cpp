@@ -350,7 +350,11 @@ void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* exeiop, const set<Vir
 		}
 		else if(mt==admtAarch64)
 		{
-			check_for_arm_switch_type1(firp,insn,  *disasm, exeiop);
+			check_for_arm64_switch_type1(firp,insn,  *disasm, exeiop);
+		}
+		else if(mt==admtArm32)
+		{
+			check_for_arm32_switch_type1(firp,insn,  *disasm, exeiop);
 		}
 		else
 			throw invalid_argument("Cannot determine machine type");
@@ -644,8 +648,16 @@ bool backup_until(const string &insn_type_regex_str,
 }
 
 
+void check_for_arm32_switch_type1(
+		FileIR_t *firp, 
+		Instruction_t* i10, 
+		const DecodedInstruction_t &d10, 
+		EXEIO::exeio* exeiop)
+{
+	return;
+}
 
-void check_for_arm_switch_type1(
+void check_for_arm64_switch_type1(
 		FileIR_t *firp, 
 		Instruction_t* i10, 
 		const DecodedInstruction_t &d10, 

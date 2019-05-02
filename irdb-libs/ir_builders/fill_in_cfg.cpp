@@ -497,8 +497,11 @@ void PopulateCFG::detect_scoops_in_code(FileIR_t *firp)
 	// data for this function
 	auto already_scoopified=set<VirtualOffset_t>();
 
+	const auto is_arm64 = firp->getArchitecture()->getMachineType() == admtAarch64;
+	const auto is_arm32 = firp->getArchitecture()->getMachineType() == admtArm32;
+
 	// only valid for arm64
-	if(firp->getArchitecture()->getMachineType() != admtAarch64) return;
+	if(!is_arm64 && !is_arm32) return;
 
 	// check each insn for an ldr with a pcrel operand.
 	for(auto insn : firp->getInstructions())
@@ -512,20 +515,25 @@ void PopulateCFG::detect_scoops_in_code(FileIR_t *firp)
 
 		// sanity check that it's a memory operation, and extract fields
 		assert(op1->isMemory());
-		const auto referenced_address=op1->getMemoryDisplacement();
-		const auto op0_str=op0->getString();
-		const auto referenced_size=  // could use API call?
-			op0_str[0]=='w' ? 4  : 
-			op0_str[0]=='x' ? 8  : 
-			op0_str[0]=='s' ? 4  : 
-			op0_str[0]=='d' ? 8  : 
-			op0_str[0]=='q' ? 16 : 
+		const auto referenced_address = op1->getMemoryDisplacement() + (is_arm32 ? insn->getAddress()->getVirtualOffset() + 8 : 0); 
+		const auto op0_str            = op0->getString();
+		const auto referenced_size    =  // could use API call?
+			is_arm64 && op0_str[0]=='w' ? 4  : 
+			is_arm64 && op0_str[0]=='x' ? 8  : 
+			is_arm64 && op0_str[0]=='s' ? 4  : 
+			is_arm64 && op0_str[0]=='d' ? 8  : 
+			is_arm64 && op0_str[0]=='q' ? 16 : 
+			is_arm32 && op0_str[0]=='r' ? 4  : 
+			is_arm32 && op0_str   =="lr"? 4  : 
+			is_arm32 && op0_str   =="fp"? 4  : 
+			is_arm32 && op0_str   =="sp"? 4  : 
+			is_arm32 && op0_str   =="ip"? 4  : 
 			throw domain_error("Cannot decode instruction size");
 			;
 
 		// check if we've seen this address already
-		const auto already_seen_it=already_scoopified.find(referenced_address);
-		if(already_seen_it!=end(already_scoopified)) continue;
+		const auto already_seen_it = already_scoopified.find(referenced_address);
+		if(already_seen_it != end(already_scoopified)) continue;
 
 		// not seen, add it
 		already_scoopified.insert(referenced_address);

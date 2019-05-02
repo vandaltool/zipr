@@ -777,24 +777,27 @@ class FixCalls_t : public TransformStep_t
 		//
 		void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 		{
-			auto disasm=DecodedInstruction_t::factory(insn);
-			const auto &operands=disasm->getOperands();
-			const auto relop_it=find_if(ALLOF(operands),[](const shared_ptr<DecodedOperand_t>& op)
-				{ return op->isPcrel() ; } );
-			const bool is_rel= relop_it!=operands.end(); 
+			const auto disasm    = DecodedInstruction_t::factory(insn);
+			const auto &operands = disasm->getOperands();
+			const auto relop_it  = find_if(ALLOF(operands),[](const shared_ptr<DecodedOperand_t>& op) { return op->isPcrel() ; } );
+			const auto is_rel    = relop_it!=operands.end(); 
+			const auto is_read   = is_rel ? (*relop_it)->isRead() : false;
 
 			/* if this has already been fixed, we can skip it */
-			if(virt_offset==0 || virt_offset==(uintptr_t)-1)
+			if(virt_offset == 0 || virt_offset == (uintptr_t)-1)
 				return;
 
-			if(is_rel)
+			if(is_rel && is_read)
 			{
-				const auto &the_arg=*(relop_it->get());	
-				const auto mt=firp->getArchitecture()->getMachineType();
-				if(mt==admtAarch64)
+				const auto &the_arg = *(relop_it->get());	
+				const auto mt       = firp->getArchitecture()->getMachineType();
+				if(mt==admtAarch64 || mt==admtArm32)
 				{
 					// figure out how to rewrite pcrel arm insns, then change the virt addr
 					// insn->getAddress()->setVirtualOffset(0);	
+					// for now, we aren't doing this... we may need to for doing xforms.
+					if(getenv("VERBOSE_FIX_CALLS"))
+						cout << "Detected arm32/64 pc-rel operand in " << disasm->getDisassembly()  << endl;
 				}
 				else if(mt==admtX86_64 ||  mt==admtI386)
 				{
@@ -848,13 +851,14 @@ class FixCalls_t : public TransformStep_t
 
 					other_fixes++;
 
-					disasm=DecodedInstruction_t::factory(insn);
 					if(getenv("VERBOSE_FIX_CALLS"))
-						cout<<" Converted to: "<<disasm->getDisassembly() << endl;
+						cout << " Converted to: " << insn->getDisassembly() << endl;
 
 					// and it's important to set the VO to 0, so that the pcrel-ness is calculated correctly.
 					insn->getAddress()->setVirtualOffset(0);	
 				}
+				else
+					throw std::invalid_argument("Unknown architecture in fix_other_pcrel");
 
 				// now that we've done the rewriting, go ahead and add the reloc.
 				auto reloc=firp->addNewRelocation(insn,0,"pcrel");

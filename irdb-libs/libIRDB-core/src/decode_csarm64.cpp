@@ -21,14 +21,18 @@ using namespace std;
 static const auto ARM64_REG_PC=(arm64_reg)(ARM64_REG_ENDING+1);
 
 
-DecodedInstructionCapstoneARM64_t::CapstoneHandle_t* DecodedInstructionCapstoneARM64_t::cs_handle=NULL ;
+DecodedInstructionCapstoneARM_t::CapstoneHandle_t* DecodedInstructionCapstoneARM_t::cs_handle=nullptr;
 
-DecodedInstructionCapstoneARM64_t::CapstoneHandle_t::CapstoneHandle_t(FileIR_t* firp)
+DecodedInstructionCapstoneARM_t::CapstoneHandle_t::CapstoneHandle_t(FileIR_t* firp)
 {
-	const auto mode = CS_MODE_LITTLE_ENDIAN;
 	static_assert(sizeof(csh)==sizeof(handle), "Capstone handle size is unexpected.  Has CS changed?");
-	auto err = cs_open(CS_ARCH_ARM64, mode,  (csh*)&handle);
 
+	const auto mode = CS_MODE_LITTLE_ENDIAN;
+	const auto arch = 
+		firp->getArchitectureBitWidth() == 64 ? CS_ARCH_ARM64 : 
+		firp->getArchitectureBitWidth() == 32 ? CS_ARCH_ARM   : 
+		throw invalid_argument("Unknown bit width: "+to_string(firp->getArchitectureBitWidth()));
+	const auto err  = cs_open(arch, mode,  (csh*)&handle);
 	if (err)
 	{
 		const auto s=string("Failed on cs_open() with error returned: ")+to_string(err)+"\n";
@@ -36,28 +40,21 @@ DecodedInstructionCapstoneARM64_t::CapstoneHandle_t::CapstoneHandle_t(FileIR_t* 
 	}
 	cs_option(handle, CS_OPT_DETAIL, CS_OPT_ON);
 	cs_option(handle, CS_OPT_SYNTAX, CS_OPT_SYNTAX_INTEL);
-
-
 }
-
-
-
 
 static bool isPartOfGroup(const cs_insn* the_insn, const arm64_insn_group the_grp) 
 {
 	const auto grp_it=find(ALLOF(the_insn->detail->groups), the_grp);
 	return grp_it!=end(the_insn->detail->groups);
-
 }
 
-static bool isJmp(cs_insn* the_insn) 
+static bool isArm64Jmp(cs_insn* the_insn) 
 {
 	return isPartOfGroup(the_insn,ARM64_GRP_JUMP);
 }
 
-
 template<class type>
-static inline type insnToImmedHelper(cs_insn* the_insn, csh handle)
+static inline type arm64InsnToImmedHelper(cs_insn* the_insn, csh handle)
 {
         const auto count = cs_op_count(handle, the_insn, ARM64_OP_IMM);
 	const auto arm = &(the_insn->detail->arm64);
@@ -72,7 +69,6 @@ static inline type insnToImmedHelper(cs_insn* the_insn, csh handle)
 	else
 		throw std::logic_error(string("Called ")+__FUNCTION__+" with number of immedaites not equal 1");
 }
-
 
 
 // shared code 
@@ -123,7 +119,6 @@ void DecodedInstructionCapstoneARM64_t::Disassemble(const virtual_offset_t start
 
 DecodedInstructionCapstoneARM64_t::DecodedInstructionCapstoneARM64_t(const Instruction_t* i)
 {
-	if(!cs_handle) cs_handle=new CapstoneHandle_t(NULL);
 	if(!i) throw std::invalid_argument("No instruction given to DecodedInstruction_t(Instruction_t*)");
 
         const auto length=i->getDataBits().size();
@@ -137,13 +132,11 @@ DecodedInstructionCapstoneARM64_t::DecodedInstructionCapstoneARM64_t(const Instr
 
 DecodedInstructionCapstoneARM64_t::DecodedInstructionCapstoneARM64_t(const virtual_offset_t start_addr, const void *data, uint32_t max_len)
 {
-	if(!cs_handle) cs_handle=new CapstoneHandle_t(NULL);
         Disassemble(start_addr, data, max_len);
 }
 
 DecodedInstructionCapstoneARM64_t::DecodedInstructionCapstoneARM64_t(const virtual_offset_t start_addr, const void *data, const void* endptr)
 {
-	if(!cs_handle) cs_handle=new CapstoneHandle_t(NULL);
         const auto length=(char*)endptr-(char*)data;
         Disassemble(start_addr,data,length);
 }
@@ -154,8 +147,8 @@ DecodedInstructionCapstoneARM64_t::DecodedInstructionCapstoneARM64_t(const Decod
 }
 
 DecodedInstructionCapstoneARM64_t::DecodedInstructionCapstoneARM64_t(const shared_ptr<void> &p_my_insn)
-	: my_insn(p_my_insn)
 {
+	my_insn = p_my_insn;
 }
 
 DecodedInstructionCapstoneARM64_t::~DecodedInstructionCapstoneARM64_t()
@@ -198,7 +191,7 @@ bool DecodedInstructionCapstoneARM64_t::isBranch() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
-	return isCall() || isReturn() || isJmp(the_insn);
+	return isCall() || isReturn() || isArm64Jmp(the_insn);
 }
 
 bool DecodedInstructionCapstoneARM64_t::isCall() const
@@ -214,7 +207,7 @@ bool DecodedInstructionCapstoneARM64_t::isUnconditionalBranch() const
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
 
-	return isJmp(the_insn) && 
+	return isArm64Jmp(the_insn) && 
 		(getMnemonic()=="b" || getMnemonic()=="br");
 }
 
@@ -222,7 +215,7 @@ bool DecodedInstructionCapstoneARM64_t::isConditionalBranch() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
-	return isJmp(the_insn) && !isUnconditionalBranch();
+	return isArm64Jmp(the_insn) && !isUnconditionalBranch();
 }
 
 bool DecodedInstructionCapstoneARM64_t::isReturn() const
@@ -284,10 +277,10 @@ int64_t DecodedInstructionCapstoneARM64_t::getImmediate() const
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
 
 	// direct calls and jumps have a "immediate" which is really an address"  those are returned by getAddress
-	if(isCall() || isJmp(the_insn))
+	if(isCall() || isArm64Jmp(the_insn))
 		return 0;
 
-	return insnToImmedHelper<int64_t>(the_insn, cs_handle->getHandle());
+	return arm64InsnToImmedHelper<int64_t>(the_insn, cs_handle->getHandle());
 }
 
 
@@ -295,12 +288,12 @@ virtual_offset_t DecodedInstructionCapstoneARM64_t::getAddress() const
 {
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
-	if(isCall() || isJmp(the_insn))
+	if(isCall() || isArm64Jmp(the_insn))
 	{
 		const auto mnemonic=getMnemonic();
 		if( mnemonic=="tbnz" || mnemonic=="tbz")
 			return getOperand(2)->getConstant();
-		return insnToImmedHelper<int64_t>(the_insn, cs_handle->getHandle());
+		return arm64InsnToImmedHelper<int64_t>(the_insn, cs_handle->getHandle());
 	}
 	assert(0);
 
@@ -329,8 +322,6 @@ IRDB_SDK::VirtualOffset_t DecodedInstructionCapstoneARM64_t::getMemoryDisplaceme
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	assert(0);
 }
-
-
 
 bool DecodedInstructionCapstoneARM64_t::hasRelevantRepPrefix() const
 {

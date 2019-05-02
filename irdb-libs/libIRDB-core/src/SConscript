@@ -25,8 +25,10 @@ files=  '''
 	reloc.cpp
 	decode_csx86.cpp
 	operand_csx86.cpp
-	decode_csarm.cpp
-	operand_csarm.cpp
+	decode_csarm32.cpp
+	decode_csarm64.cpp
+	operand_csarm32.cpp
+	operand_csarm64.cpp
 	IRDB_Objects.cpp
 	decode_base.cpp
 	transform_step.cpp

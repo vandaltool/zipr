@@ -26,8 +26,8 @@ class ElfReader
 
 	bool isElf32() const { assert(m_reader); return m_reader->get_class()==EXEIO::ELF32; }
 	bool isElf64() const { assert(m_reader); return m_reader->get_class()==EXEIO::ELF64; }
-	bool isPe32() const { assert(m_reader); return m_reader->get_class()==EXEIO::PE32; }
-	bool isPe64() const { assert(m_reader); return m_reader->get_class()==EXEIO::PE64; }
+	bool isPe32()  const { assert(m_reader); return m_reader->get_class()==EXEIO::PE32 ; }
+	bool isPe64()  const { assert(m_reader); return m_reader->get_class()==EXEIO::PE64 ; }
 	void SetArchitecture() ;
 
   	private:

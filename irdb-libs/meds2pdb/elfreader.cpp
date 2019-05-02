@@ -147,9 +147,10 @@ void ElfReader::SetArchitecture()
 		(isElf32() || isPe32()) ? 32 :
 		(isElf64() || isPe64()) ? 64 :
 		throw std::invalid_argument("Unknown architecture.");
-	const auto mt = m_reader->getMachineType() == EXEIO::mtI386 ? IRDB_SDK::admtI386 :
-			m_reader->getMachineType() == EXEIO::mtX86_64 ? IRDB_SDK::admtX86_64 :
+	const auto mt = m_reader->getMachineType() == EXEIO::mtI386    ? IRDB_SDK::admtI386    :
+			m_reader->getMachineType() == EXEIO::mtX86_64  ? IRDB_SDK::admtX86_64  :
 			m_reader->getMachineType() == EXEIO::mtAarch64 ? IRDB_SDK::admtAarch64 :
+			m_reader->getMachineType() == EXEIO::mtArm32   ? IRDB_SDK::admtArm32   :
 			throw std::invalid_argument("Unknown architecture.");
 
 	libIRDB::FileIR_t::setArchitecture(width,mt);
