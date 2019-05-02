@@ -150,4 +150,23 @@ class UnpinAarch64_t : public Unpin_t
 
 
 };
+
+class UnpinArm32_t : public Unpin_t
+{
+	public:
+		UnpinArm32_t( Zipr_SDK::Zipr_t* zipr_object) 
+			: Unpin_t(zipr_object)
+
+		{ 
+		}
+	protected:
+		// designed for arch-specific override.
+		void HandleRetAddrReloc(IRDB_SDK::Instruction_t* from_insn,IRDB_SDK::Relocation_t* reloc) override;
+		void HandlePcrelReloc(IRDB_SDK::Instruction_t* from_insn,IRDB_SDK::Relocation_t* reloc) override;
+		void HandleAbsptrReloc(IRDB_SDK::Instruction_t* from_insn,IRDB_SDK::Relocation_t* reloc) override;
+		void HandleImmedptrReloc(IRDB_SDK::Instruction_t* from_insn,IRDB_SDK::Relocation_t* reloc) override;
+		void HandleCallbackReloc(IRDB_SDK::Instruction_t* from_insn,IRDB_SDK::Relocation_t* reloc) override;
+
+
+};
 #endif
