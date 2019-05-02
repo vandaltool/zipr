@@ -6,6 +6,7 @@ namespace zipr
 {
 #include <arch/arch_x86.hpp>
 #include <arch/arch_arm64.hpp>
+#include <arch/arch_arm32.hpp>
 }
 #include <memory>
 
@@ -27,6 +28,7 @@ unique_ptr<ZiprArchitectureHelperBase_t> ZiprArchitectureHelperBase_t::factory(Z
 	auto ret= l_firp->getArchitecture()->getMachineType() == admtX86_64   ?  (ZiprArchitectureHelperBase_t*)new ZiprArchitectureHelperX86_t  (p_zipr_obj) :
 	          l_firp->getArchitecture()->getMachineType() == admtI386     ?  (ZiprArchitectureHelperBase_t*)new ZiprArchitectureHelperX86_t  (p_zipr_obj) :
 	          l_firp->getArchitecture()->getMachineType() == admtAarch64  ?  (ZiprArchitectureHelperBase_t*)new ZiprArchitectureHelperARM64_t(p_zipr_obj) :
+	          l_firp->getArchitecture()->getMachineType() == admtArm32    ?  (ZiprArchitectureHelperBase_t*)new ZiprArchitectureHelperARM32_t(p_zipr_obj) :
 	          throw domain_error("Cannot init architecture");
 
 	return unique_ptr<ZiprArchitectureHelperBase_t>(ret);

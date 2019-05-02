@@ -29,22 +29,28 @@
  **************************************************************************/
 
 
-#ifndef PATCHER_BASE
-#define PATCHER_BASE
 
-class ZiprPatcherBase_t
+#ifndef PATCHER_ARM32
+#define PATCHER_ARM32
+
+class ZiprPatcherARM32_t : public ZiprPatcherBase_t
 {
-	protected:
-		ZiprPatcherBase_t(){}
-	public:
-		virtual ~ZiprPatcherBase_t() { }
-		static unique_ptr<ZiprPatcherBase_t> factory(Zipr_SDK::Zipr_t* p_parent);
-		virtual void ApplyNopToPatch(RangeAddress_t addr)=0;
-		virtual void ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)=0;
-		virtual void PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)=0;
-		virtual void PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr)=0;
-		virtual void CallToNop(RangeAddress_t at_addr)=0;
+	// data
+        zipr::ZiprImpl_t* m_parent;
+        IRDB_SDK::FileIR_t* m_firp;
+        Zipr_SDK::MemorySpace_t &memory_space;
 
+	std::map<RangeAddress_t, RangeAddress_t> redirect_map;
+
+
+	public:
+
+	ZiprPatcherARM32_t(Zipr_SDK::Zipr_t* p_parent);
+	void ApplyNopToPatch(RangeAddress_t addr) override;
+	void ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr) override;
+	void PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr) override;
+	void PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr) override;
+	void CallToNop(RangeAddress_t at_addr) override;
 
 
 };

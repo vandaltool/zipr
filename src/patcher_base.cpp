@@ -32,6 +32,7 @@
 
 namespace zipr
 {
+#include "patcher/patcher_arm32.hpp"
 #include "patcher/patcher_arm64.hpp"
 #include "patcher/patcher_x86.hpp"
 }
@@ -60,6 +61,7 @@ unique_ptr<ZiprPatcherBase_t> ZiprPatcherBase_t::factory(Zipr_SDK::Zipr_t* p_par
         auto ret= l_firp->getArchitecture()->getMachineType() == admtX86_64   ?  (ZiprPatcherBase_t*)new ZiprPatcherX86_t  (p_parent) :
                   l_firp->getArchitecture()->getMachineType() == admtI386     ?  (ZiprPatcherBase_t*)new ZiprPatcherX86_t  (p_parent) :
                   l_firp->getArchitecture()->getMachineType() == admtAarch64  ?  (ZiprPatcherBase_t*)new ZiprPatcherARM64_t(p_parent) :
+                  l_firp->getArchitecture()->getMachineType() == admtArm32    ?  (ZiprPatcherBase_t*)new ZiprPatcherARM32_t(p_parent) :
                   throw domain_error("Cannot init architecture");
 
         return unique_ptr<ZiprPatcherBase_t>(ret);

@@ -16,6 +16,7 @@ class ZiprSizerBase_t
 		ZiprMemorySpace_t &memory_space;
 		ZiprImpl_t &m_zipr_obj;
 	public:
+		virtual ~ZiprSizerBase_t() {}
 		// methods
 		/** Calculate entire size of a dollop and it's fallthroughs.
 		 *

@@ -30,8 +30,8 @@
 
 
 
-#ifndef PATCHER_ARM
-#define PATCHER_ARM
+#ifndef PATCHER_ARM64
+#define PATCHER_ARM64
 
 class ZiprPatcherARM64_t : public ZiprPatcherBase_t
 {
