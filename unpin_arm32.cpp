@@ -68,7 +68,7 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 	const auto bo_wrt         = reloc->getWRT();
 	const auto scoop_wrt      = dynamic_cast<DataScoop_t* >(reloc->getWRT());
 	const auto insn_wrt       = dynamic_cast<Instruction_t*>(reloc->getWRT());
-	const auto branch_bytes   =  string("\x00\x00\x00\x0ea",4);
+	const auto branch_bytes   =  string("\x00\x00\x00\xea",4);
 	uint8_t    insn_bytes[insn_bytes_len]; // compiler disallows init on some platforms.
         // but memcpy should init it sufficiently.
         memcpy(insn_bytes, from_insn->getDataBits().c_str(), insn_bytes_len);
@@ -77,6 +77,15 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 	const auto mask4  = (1<<4 )-1;
 	const auto mask8  = (1<<8 )-1;
 	const auto mask12 = (1<<12)-1;
+	const auto allocate_reg = [](const set<uint32_t>& used) -> uint32_t
+		{
+			for(auto i=0u; i<15; i++)
+			{
+				if(used.find(i) == end(used))
+					return i;
+			}
+			assert(0);
+		};
 
 
 
@@ -85,7 +94,7 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 
 	// get WRT info
 	auto to_addr=VirtualOffset_t(0xdeadbeef); // noteable value that shouldn't be used.
-	string convert_string;
+	auto convert_string=string();
 
 	if(scoop_wrt)
 	{
@@ -109,13 +118,26 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 
 
 	// so far, only handling ldr and ldrb
-	const auto is_ldr_type = mnemonic.substr(0,3)=="ldr";  // ldr, ldrb, ldreq, ldrbeq, etc.
-	const auto is_add_type = mnemonic.substr(0,3)=="add";
-	const auto I_bit_set   = (bool)( (full_insn >> 25) & mask1);	// 25th bit indicates if op2 is shifted immediate.  
-	const auto S_bit_set   = (bool)( (full_insn >> 20) & mask1);	// 20th bit indicates if the flags are updated.  not valid for all insns.
-	const auto dest_reg     = (full_insn >> 12) & mask4;		// destination register, not valid for all insns 
+	const auto is_ldr_type   = mnemonic.substr(0,3)=="ldr";         // ldr, ldrb, ldreq, ldrbeq, etc.
+	const auto is_add_type   = mnemonic.substr(0,3)=="add";         // add, addne, etc.
+	const auto is_addne_type = mnemonic == "addne";                 // exactly addne
+	const auto is_addls_type = mnemonic == "addls";                	// exactly addls
+	const auto is_ldrls_type = mnemonic == "ldrls";                 // exactly ldrls
+	const auto I_bit_set     = 0b1 == ( (full_insn >> 25) & mask1);	// 25th bit indicates if op2 is shifted immediate.  
+	const auto S_bit_set     = 0b1 == ( (full_insn >> 20) & mask1);	// 20th bit indicates if the flags are updated.  not valid for all insns.
+	const auto Rd            = uint32_t(full_insn >> 12) & mask4;
+	const auto Rm            = uint32_t(full_insn >>  0) & mask4;
+	const auto Rn            = uint32_t(full_insn >> 16) & mask4;
+	const auto Rs            = uint32_t(full_insn >>  8) & mask4;
+	const auto is_rn_pc      = Rn == 0b1111;                    // rn reg may not be valid for all instructions
+	const auto is_rd_pc      = Rd == 0b1111;	                // destination register, not valid for all insns 
 
-	if(is_ldr_type)
+	// find a temp_reg if we need one
+	const auto tmp_reg = allocate_reg({Rd,Rm,Rn,Rs, 13, 15});
+	assert(tmp_reg < 15); // sanity check 4 bits
+
+
+	if(is_ldr_type && !is_rd_pc)
 	{
 		/* 
 		 * We need to patch an ldr[b][cond] reg, [pc + constant]
@@ -125,8 +147,8 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 		 * FA: b<cond> L0
 		 * FT:
 		 * ..
-		 * L0  ldr     dest_reg, [L3]
-		 * L1  ldr(b)  dest_reg, [pc, dest_reg]
+		 * L0  ldr     rd, [L3]
+		 * L1  ldr(b)  rd, [pc, rd]
 		 * L2: b       FT
 		 * L3: .word <constant to add>
 		 */
@@ -148,12 +170,13 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 		const auto is_pos_imm   = (bool)((full_insn >> 23) & mask1);
 		const auto is_byte_load = (bool)((full_insn >> 22) & mask1);
 
-		assert(dest_reg!=0xf);	 // not the program counter.
+		assert(Rd!=0xf);	 // not the program counter.
 
 		// Create a branch to put over the original ldr 
 		// and set the conditional bits equal to 
 		// the original instruction conditional bits
 		auto my_branch_bytes = branch_bytes;
+		my_branch_bytes[3]  &= 0x0f; // clear always condition bits
 		my_branch_bytes[3]  |= (insn_bytes[3] & 0xf0);
 		ms.plopBytes(FA,my_branch_bytes.c_str(),4);
 		// and make it point at L0
@@ -161,13 +184,13 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 
 		// ldr dest_reg, [pc+k] (where pc+k == L3)
 		auto ldr_imm_insn = string("\x04\x00\x9f\xe5",4);
-		ldr_imm_insn[1]  |= (dest_reg << 4); // set this instruction's dest reg to the ldr's dest reg.
+		ldr_imm_insn[1]  |= (Rd << 4); // set this instruction's dest reg to the ldr's dest reg.
 		ms.plopBytes(L0,ldr_imm_insn.c_str(),4);
 
 		// create the modified ldr(b) from the original ldr instruction
 		auto new_ldr_word = string("\x00\x00\x9f\xe7",4);
-		new_ldr_word[1]  |= (dest_reg << 4);   // set this instruction's dest reg to the ldr's dest reg.
-		new_ldr_word[0]  |= dest_reg;          // set this instruction's 2nd src reg to the orig ldr's dest reg.
+		new_ldr_word[1]  |= (Rd << 4);   // set this instruction's dest reg to the ldr's dest reg.
+		new_ldr_word[0]  |= Rd;          // set this instruction's 2nd src reg to the orig ldr's dest reg.
 		new_ldr_word[3]  |= is_byte_load << 6; // set this instruction's B flag to match orig insn's
 		ms.plopBytes(L1,new_ldr_word.c_str(),4);
 
@@ -187,6 +210,103 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 		cout<< "Had to trampoline " << disasm->getDisassembly() << " @"<<FA<<" to "
 		    << hex << L0 << "-" << L0+tramp_size-1 << " ldr_imm = " << ldr_imm << endl;
 	}
+	else if((is_ldrls_type || is_addne_type || is_addls_type) && is_rd_pc && is_rn_pc)
+	{
+		/* 
+		 * We need to patch an addne pc, pc, reg lsl #2
+		 * to be at a new location.
+		 *
+		 * The plan :
+		 * FA: bne L0
+		 * FT:
+		 * ..
+		 * L0:  str r0, [sp, # - fc]       # spill tmp reg, use tmp_reg instead of r0
+		 * L1:  ldr r0, [pc, #k]           # where L1+8+k == L7 or k = L7-L1-8
+		 * L2:  add r0, pc, r0             # add in pc
+		 * L3:  op r0, r0, ( r2 lsl #2 )  # copy of orig insn with pc removed from op0 and op1, and replaced with tmp_reg.
+		 * L4:  str r0, [sp, # - f8]       # store calculated pc
+		 * L5:  ldr r0, [sp, # - fc]       # restore reg
+		 * L6:  ldr pc, [sp, # - f8]       # jmp dispatch
+		 * L7:  .word L2 - orig_insn_addr
+
+		 */
+		const auto tramp_size  = 7*4 + 4 ; // 7 insns, 4 bytes each, plus one word of read-only data
+		const auto tramp_range = ms.getFreeRange(tramp_size);
+		const auto tramp_start = tramp_range.getStart();
+		// don't be too fancy, just reserve tramp_size bytes.
+		ms.splitFreeRange({tramp_start,tramp_start+tramp_size});
+
+		// and give the bytes some names
+		const auto FA=from_insn_location;
+		const auto L0 = tramp_start;
+		const auto L1 = L0 + 4;
+		const auto L2 = L1 + 4;
+		const auto L3 = L2 + 4;
+		const auto L4 = L3 + 4;
+		const auto L5 = L4 + 4;
+		const auto L6 = L5 + 4;
+		const auto L7 = L6 + 4;
+
+		// Create a branch to put over the original ldr 
+		// and set the conditional bits equal to 
+		// the original instruction conditional bits
+		auto my_branch_bytes = branch_bytes;
+		my_branch_bytes[3]  &= 0x0f; // clear always condition bits
+		my_branch_bytes[3]  |= (insn_bytes[3] & 0xf0);
+		ms.plopBytes(FA,my_branch_bytes.c_str(),4);
+		// and make it point at L0
+		zo->applyPatch(FA,L0);
+
+		// spill reg at L0, e50d00fc
+		auto  spill_insn = string("\xfc\x00\x0d\xe5",4);
+		spill_insn[1]   |= (tmp_reg<<4);
+		ms.plopBytes(L0,spill_insn.c_str(),4);
+
+		// ldr dest_reg, [pc+k] (where pc+8+k == L7)
+		auto ldr_imm_insn = string("\x10\x00\x9f\xe5",4);
+		ldr_imm_insn[1]  |= (tmp_reg<<4);
+		ms.plopBytes(L1,ldr_imm_insn.c_str(),4);
+
+		// put down L2
+		auto new_add_word = string("\x00\x00\x8f\xe0",4);   // e08f0000	 add r0, pc, r0
+		new_add_word[1]  |= (tmp_reg<<4);
+		new_add_word[0]  |= (tmp_reg<<0);
+		ms.plopBytes(L2,new_add_word.c_str(),4);
+
+		// put down L3 (orig insn with pc fields set to r0)
+		auto orig_add = from_insn->getDataBits();
+		orig_add[3]  &=  0b00001111;   // clear the cond bits.
+		orig_add[3]  |=  0b11100000;   // set the cond bits to "always".
+		orig_add[1]  &= ~(mask4 << 4); // clear this instruction's Rd field (i.e., set to r0)
+		orig_add[2]  &= ~(mask4 << 0); // clear this instruction's Rn field (i.e., set to r0)
+		orig_add[1]   |= (tmp_reg<<4); // set Rd and Rn fields to tmp_reg
+		orig_add[2]   |= (tmp_reg<<0);
+		ms.plopBytes(L3,orig_add.c_str(),4);
+
+		// put down L4, store of calc'd pc.
+		auto  spill_targ_insn = string("\xf8\x00\x0d\xe5",4);
+		spill_targ_insn[1]   |= (tmp_reg<<4); // set Rd field
+		ms.plopBytes(L4,spill_targ_insn.c_str(),4);
+
+		// put down L5, restore of scratch reg r0
+		auto  restore_insn = string("\xfc\x00\x1d\xe5",4);
+		restore_insn[1]   |= (tmp_reg<<4); // set Rd field
+		ms.plopBytes(L5,restore_insn.c_str(),4);
+
+		// put down L6, the actual control transfer using the saved value on the stack
+		auto  xfer_insn = string("\xf8\x00\x1d\xe5",4);
+		xfer_insn[1]   |= (0b1111 << 4); // set this instruction's Rd reg to PC
+		ms.plopBytes(L6,xfer_insn.c_str(),4);
+
+		// put the calculated pc-rel offset at L7
+		const auto new_offset = orig_insn_addr - L2;
+		ms.plopBytes(L7,reinterpret_cast<const char*>(&new_offset),4);	// endianness of host must match target
+
+		// should be few enough of these to always print
+		cout<< "Had to trampoline " << disasm->getDisassembly() << " @"<<FA<<" to "
+		    << hex << L0 << "-" << L0+tramp_size-1 << endl;
+
+	}
 	else if(is_add_type && I_bit_set)
 	{
 		/* 
@@ -204,7 +324,7 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 		 * L3: .word <constant to add>
 		 */
 
-		assert(dest_reg!=0xf);	 // not the program counter.  needs to be handled as IB
+		assert(Rd!=0xf);	 // not the program counter.  needs to be handled as IB
 
 		const auto tramp_size  = 4*4; // 3 insns, 4 bytes each, plus one word of read-only data
 		const auto tramp_range = ms.getFreeRange(tramp_size);
@@ -224,6 +344,7 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 		// and set the conditional bits equal to 
 		// the original instruction conditional bits
 		auto my_branch_bytes = branch_bytes;
+		my_branch_bytes[3]  &= 0x0f; // clear always condition bits
 		my_branch_bytes[3]  |= (insn_bytes[3] & 0xf0);
 		ms.plopBytes(FA,my_branch_bytes.c_str(),4);
 		// and make it point at L0
@@ -231,14 +352,13 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 
 		// ldr dest_reg, [pc+k] (where pc+k == L3)
 		auto ldr_imm_insn = string("\x04\x00\x9f\xe5",4);
-		ldr_imm_insn[1]  |= (dest_reg << 4); // set this instruction's dest reg to the ldr's dest reg.
+		ldr_imm_insn[1]  |= (Rd << 4); // set this instruction's dest reg to the ldr's dest reg.
 		ms.plopBytes(L0,ldr_imm_insn.c_str(),4);
 
 		// create the modified add from the original ldr instruction
 		auto new_add_word = string("\x00\x00\x8f\xe0",4);   // e08f0000	 add r0, pc, r0
-
-		new_add_word[1]  |= (dest_reg << 4);   // set this instruction's dest reg to the origin insn's dest reg.
-		new_add_word[0]  |= dest_reg;          // set this instruction's 2nd src reg to the orig insn's dest reg.
+		new_add_word[1]  |= (Rd << 4);   // set this instruction's dest reg to the origin insn's dest reg.
+		new_add_word[0]  |= Rd;          // set this instruction's 2nd src reg to the orig insn's dest reg.
 		new_add_word[3]  |= S_bit_set << 4; // set this instruction's S flag to match the orig insn
 		ms.plopBytes(L1,new_add_word.c_str(),4);
 
@@ -284,15 +404,15 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 		 * FA: b<cond> L0  # deals with all <cond> properly.
 		 * FT:
 		 * ..
-		 * L0  str    tmp_reg -> [sp + 0xfc] # save reg
+		 * L0  str    tmp_reg -> [sp - 0xfc] # save reg
 		 * L1  add    Rd, ...		     # orig add instruction, without <cond> or <s>
 		 * L2  ldr    tmp_reg <- [L3]        # load constant offset from cur pc to other pc
 		 * L3  add<s> Rd, tmp_reg, Rd        # add in constant, and set S flag.
-		 * L4  ldr    tmp_reg <- [sp + 0xfc] # restore reg
+		 * L4  ldr    tmp_reg <- [sp - 0xfc] # restore reg
 		 * L5: b      FT 
 		 * L6: .word <orig_pc - new_pc> # Note:  all other fields factor out!
 		 */
-		assert(dest_reg!=0xf);	 // not the program counter.  needs to be handled as IB
+		assert(Rd!=0xf); // not the program counter.  needs to be handled as IB
 
 		const auto tramp_size  = 6*4 + 4 ; // 6 insns, 4 bytes each, plus one word of read-only data
 		const auto tramp_range = ms.getFreeRange(tramp_size);
@@ -311,36 +431,19 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 		const auto L5 = L4 + 4;
 		const auto L6 = L5 + 4;
 
-		// find temp_reg
-		const auto Rd      = uint32_t(full_insn >> 12) & mask4;
-		const auto Rm      = uint32_t(full_insn >>  0) & mask4;
-		const auto Rn      = uint32_t(full_insn >> 16) & mask4;
-		const auto Rs      = uint32_t(full_insn >>  8) & mask4;
-		const auto allocate_reg = [](const set<uint32_t>& used) -> uint32_t
-			{
-				for(auto i=0u; i<15; i++)
-				{
-					if(used.find(i) != end(used))
-						return i;
-				}
-				assert(0);
-
-			};
-		const auto tmp_reg = allocate_reg({Rd,Rm,Rn,Rs, 13, 15});
-		assert(tmp_reg < 15); // sanity check 4 bits
-
 
 		// Create a branch to put over the original insn 
 		// and set the conditional bits equal to 
 		// the original instruction conditional bits
 		auto my_branch_bytes = branch_bytes;
+		my_branch_bytes[3]  &= 0x0f; // clear always condition bits
 		my_branch_bytes[3]  |= (insn_bytes[3] & 0xf0);	// set cond bits
 		ms.plopBytes(FA,my_branch_bytes.c_str(),4);
 		// and make it point at L0
 		zo->applyPatch(FA,L0);
 
-		// put down L0, e58d00fc
-		auto  spill_insn = string("\xfc\x00\x8d\xe5",4);
+		// put down L0
+		auto  spill_insn = string("\xfc\x00\x0d\xe5",4);
 		spill_insn[1]   |= (tmp_reg << 4); // set this instruction's Rd reg to the tmp reg 
 		ms.plopBytes(L0,spill_insn.c_str(),4);
 
@@ -364,7 +467,7 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 		ms.plopBytes(L3,L3_insn.c_str(),4);
 
 		// put down L4, e59d00fc
-		auto  restore_insn = string("\xfc\x00\x9d\xe5",4);
+		auto  restore_insn = string("\xfc\x00\x1d\xe5",4);
 		restore_insn[1]   |= (tmp_reg << 4); // set this instruction's Rd reg to the tmp reg 
 		ms.plopBytes(L4,restore_insn.c_str(),4);
 
@@ -382,7 +485,14 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 		    << hex << L0 << "-" << L0+tramp_size-1 << endl;
 	}
 	else 
+	{
+		cout <<"WARN: insn patching help: "<< from_insn->getDisassembly()<<endl;
+	}
+/*
+ * other instructions are probably false positives in the disassembly process.  let's just not patch them
+	else 
 		assert(0);
+*/
 
 }
 
