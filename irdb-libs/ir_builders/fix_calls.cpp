@@ -777,93 +777,95 @@ class FixCalls_t : public TransformStep_t
 		//
 		void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, uintptr_t virt_offset)
 		{
-			const auto disasm    = DecodedInstruction_t::factory(insn);
-			const auto &operands = disasm->getOperands();
-			const auto relop_it  = find_if(ALLOF(operands),[](const shared_ptr<DecodedOperand_t>& op) { return op->isPcrel() ; } );
-			const auto is_rel    = relop_it!=operands.end(); 
-			const auto is_read   = is_rel ? (*relop_it)->isRead() : false;
-
 			/* if this has already been fixed, we can skip it */
 			if(virt_offset == 0 || virt_offset == (uintptr_t)-1)
 				return;
 
-			if(is_rel && is_read)
+			const auto disasm    = DecodedInstruction_t::factory(insn);
+			const auto &operands = disasm->getOperands();
+			for(const auto &op : operands)
 			{
-				const auto &the_arg = *(relop_it->get());	
-				const auto mt       = firp->getArchitecture()->getMachineType();
-				if(mt==admtAarch64 || mt==admtArm32)
+				const auto &the_arg = *op;
+				const auto  is_rel  = the_arg.isPcrel(); 
+				const auto  is_read = the_arg.isRead();
+
+				if(is_rel && is_read)
 				{
-					// figure out how to rewrite pcrel arm insns, then change the virt addr
-					// insn->getAddress()->setVirtualOffset(0);	
-					// for now, we aren't doing this... we may need to for doing xforms.
-					if(getenv("VERBOSE_FIX_CALLS"))
-						cout << "Detected arm32/64 pc-rel operand in " << disasm->getDisassembly()  << endl;
-				}
-				else if(mt==admtX86_64 ||  mt==admtI386)
-				{
-					assert(the_arg.isMemory());
-					auto offset=disasm->getMemoryDisplacementOffset(&the_arg, insn); 
-					assert(offset>=0 && offset <=15);
-					auto size=the_arg.getMemoryDisplacementEncodingSize(); 
-					assert(size==1 || size==2 || size==4 || size==8);
-
-					if(getenv("VERBOSE_FIX_CALLS"))
+					const auto mt       = firp->getArchitecture()->getMachineType();
+					if(mt==admtAarch64 || mt==admtArm32)
 					{
-						cout<<"Found insn with pcrel memory operand: "<<disasm->getDisassembly()
-						    <<" Displacement="<<hex<<the_arg.getMemoryDisplacement() << dec
-						    <<" size="<<the_arg.getMemoryDisplacementEncodingSize() <<" Offset="<<offset;
+						// figure out how to rewrite pcrel arm insns, then change the virt addr
+						// insn->getAddress()->setVirtualOffset(0);	
+						// for now, we aren't doing this... we may need to for doing xforms.
+						if(getenv("VERBOSE_FIX_CALLS"))
+							cout << "Detected arm32/64 pc-rel operand in " << disasm->getDisassembly()  << endl;
 					}
-
-					/* convert [rip_pc+displacement] addresssing mode into [rip_0+displacement] where rip_pc is the actual PC of the insn, 
-					 * and rip_0 is means that the PC=0. AKA, we are relocating this instruction to PC=0. Later we add a relocation to undo this transform at runtime 
-					 * when we know the actual address.
-					 */
-
-					/* get the data */
-					string data=insn->getDataBits();
-					char cstr[20]={}; 
-					memcpy(cstr,data.c_str(), data.length());
-					void *offsetptr=&cstr[offset];
-
-					auto disp=the_arg.getMemoryDisplacement(); 
-					auto oldpc=virt_offset;
-					auto newdisp=disp+oldpc-firp->getArchitecture()->getFileBase();
-
-					assert((uintptr_t)(offset+size)<=(uintptr_t)(data.length()));
-					
-					switch(size)
+					else if(mt==admtX86_64 ||  mt==admtI386)
 					{
-						case 4:
-							assert( (uintptr_t)(int)newdisp == (uintptr_t)newdisp);
-							*(int*)offsetptr=newdisp;
-							break;
-						case 1:
-						case 2:
-						case 8:
-						default:
-							assert(0);
-							//assert(("Cannot handle offset of given size", 0));
+						assert(the_arg.isMemory());
+						auto offset=disasm->getMemoryDisplacementOffset(&the_arg, insn); 
+						assert(offset>=0 && offset <=15);
+						auto size=the_arg.getMemoryDisplacementEncodingSize(); 
+						assert(size==1 || size==2 || size==4 || size==8);
+
+						if(getenv("VERBOSE_FIX_CALLS"))
+						{
+							cout<<"Found insn with pcrel memory operand: "<<disasm->getDisassembly()
+							    <<" Displacement="<<hex<<the_arg.getMemoryDisplacement() << dec
+							    <<" size="<<the_arg.getMemoryDisplacementEncodingSize() <<" Offset="<<offset;
+						}
+
+						/* convert [rip_pc+displacement] addresssing mode into [rip_0+displacement] where rip_pc is the actual PC of the insn, 
+						 * and rip_0 is means that the PC=0. AKA, we are relocating this instruction to PC=0. Later we add a relocation to undo this transform at runtime 
+						 * when we know the actual address.
+						 */
+
+						/* get the data */
+						string data=insn->getDataBits();
+						char cstr[20]={}; 
+						memcpy(cstr,data.c_str(), data.length());
+						void *offsetptr=&cstr[offset];
+
+						auto disp=the_arg.getMemoryDisplacement(); 
+						auto oldpc=virt_offset;
+						auto newdisp=disp+oldpc-firp->getArchitecture()->getFileBase();
+
+						assert((uintptr_t)(offset+size)<=(uintptr_t)(data.length()));
+						
+						switch(size)
+						{
+							case 4:
+								assert( (uintptr_t)(int)newdisp == (uintptr_t)newdisp);
+								*(int*)offsetptr=newdisp;
+								break;
+							case 1:
+							case 2:
+							case 8:
+							default:
+								assert(0);
+								//assert(("Cannot handle offset of given size", 0));
+						}
+
+						/* put the data back into the insn */
+						data.replace(0, data.length(), cstr, data.length());
+						insn->setDataBits(data);
+
+						other_fixes++;
+
+						if(getenv("VERBOSE_FIX_CALLS"))
+							cout << " Converted to: " << insn->getDisassembly() << endl;
+
+						// and it's important to set the VO to 0, so that the pcrel-ness is calculated correctly.
+						insn->getAddress()->setVirtualOffset(0);	
 					}
+					else
+						throw std::invalid_argument("Unknown architecture in fix_other_pcrel");
 
-					/* put the data back into the insn */
-					data.replace(0, data.length(), cstr, data.length());
-					insn->setDataBits(data);
+					// now that we've done the rewriting, go ahead and add the reloc.
+					auto reloc=firp->addNewRelocation(insn,0,"pcrel");
+					(void)reloc; // not used, only given to the IR
 
-					other_fixes++;
-
-					if(getenv("VERBOSE_FIX_CALLS"))
-						cout << " Converted to: " << insn->getDisassembly() << endl;
-
-					// and it's important to set the VO to 0, so that the pcrel-ness is calculated correctly.
-					insn->getAddress()->setVirtualOffset(0);	
 				}
-				else
-					throw std::invalid_argument("Unknown architecture in fix_other_pcrel");
-
-				// now that we've done the rewriting, go ahead and add the reloc.
-				auto reloc=firp->addNewRelocation(insn,0,"pcrel");
-				(void)reloc; // not used, only given to the IR
-
 			}
 		}
 

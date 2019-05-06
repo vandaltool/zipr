@@ -507,23 +507,35 @@ void PopulateCFG::detect_scoops_in_code(FileIR_t *firp)
 	for(auto insn : firp->getInstructions())
 	{
 		// look for ldr's with a pcrel operand
-		const auto d=DecodedInstruction_t::factory(insn);
-		if(d->getMnemonic()!="ldr") continue;	 // only valid on arm.
-		const auto op0=d->getOperand(0);
-		const auto op1=d->getOperand(1);
-	       	if( !op1->isPcrel()) continue;
+		const auto d        = DecodedInstruction_t::factory(insn);
+		const auto mnemonic = d->getMnemonic();
+		if(mnemonic.substr(0,3) != "ldr") continue;	 // only valid on arm.
+		const auto op0      = d->getOperand(0);
+
+		// capstone reports ldrd instructions as having 2 "dest" operands.
+		// so we skip to the 3rd operand to get the memory op.  
+		// todo:  fix libirdb-core to fix this and skip the odd operand.
+		// todo:  report to capstone that they are broken.
+		const auto mem_op = mnemonic[3]=='d' ? d->getOperand(2) : d->getOperand(1);
+	       	if( !mem_op->isPcrel()) continue;
 
 		// sanity check that it's a memory operation, and extract fields
-		assert(op1->isMemory());
-		const auto referenced_address = op1->getMemoryDisplacement() + (is_arm32 ? insn->getAddress()->getVirtualOffset() + 8 : 0); 
+		assert(mem_op->isMemory());
+		const auto referenced_address = mem_op->getMemoryDisplacement() + (is_arm32 ? insn->getAddress()->getVirtualOffset() + 8 : 0); 
 		const auto op0_str            = op0->getString();
+
+		// if op0 is the PC, the instruction is some switch dispatch that we have to detect in more depth.  skip here.  see check_arm32_switch...
+		if(is_arm32 && op0_str == "pc" ) continue;
+
 		const auto referenced_size    =  // could use API call?
-			is_arm64 && op0_str[0]=='w' ? 4  : 
+			is_arm64 && op0_str[0]=='w' ? 4  :  // arm64 regs
 			is_arm64 && op0_str[0]=='x' ? 8  : 
 			is_arm64 && op0_str[0]=='s' ? 4  : 
 			is_arm64 && op0_str[0]=='d' ? 8  : 
 			is_arm64 && op0_str[0]=='q' ? 16 : 
-			is_arm32 && op0_str[0]=='r' ? 4  : 
+			is_arm32 && op0_str[0]=='r' ? 4  : // arm32 regs
+			is_arm32 && op0_str   =="sb"? 4  : // special arm32 regs
+			is_arm32 && op0_str   =="sl"? 4  : 
 			is_arm32 && op0_str   =="lr"? 4  : 
 			is_arm32 && op0_str   =="fp"? 4  : 
 			is_arm32 && op0_str   =="sp"? 4  : 
@@ -559,8 +571,9 @@ void PopulateCFG::detect_scoops_in_code(FileIR_t *firp)
 		auto newscoop=firp->addNewDataScoop(name, start_addr, end_addr, NULL, permissions, is_relro, the_contents);
 		(void)newscoop;
 
-		cout<< "Allocated data in text segment "<<name<<"=("<<start_addr->getVirtualOffset()<<"-"
-		    << end_addr->getVirtualOffset()<<")"<<endl;
+		cout << "Allocated data in text segment " << name << "=(" << start_addr->getVirtualOffset() << "-"
+		     << end_addr->getVirtualOffset() << ")" 
+		     << " for " << d->getDisassembly() << "@" << hex << insn->getAddress()->getVirtualOffset() << endl;
 	}
 }
 

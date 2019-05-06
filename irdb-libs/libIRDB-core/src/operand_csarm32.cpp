@@ -51,7 +51,6 @@ string DecodedOperandCapstoneARM32_t::getString() const
                         return string(cs_reg_name(handle, op.reg));
                 case ARM_OP_IMM:
                         return to_string(op.imm);
-#if 0
                 case ARM_OP_MEM:
                 {
 			string ret_val;
@@ -64,12 +63,10 @@ string DecodedOperandCapstoneARM32_t::getString() const
 			if (op.mem.disp != 0)
 				ret_val+=" + "+ to_string(op.mem.disp);
 
-			if(ret_val=="")
-				return "0";
+			ret_val += " lsl/ror? ?? ";
 
 			return ret_val;
 		}
-#endif
                 default:
                         assert(0);
         }

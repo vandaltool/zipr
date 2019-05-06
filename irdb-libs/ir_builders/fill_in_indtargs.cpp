@@ -260,16 +260,15 @@ void mark_targets(FileIR_t *firp)
 				if(getenv("IB_VERBOSE")!=nullptr)
 					cout<<"Skipping pin for text to printf at "<<hex<<addr<<endl;
 			}
+			else if(firp->findScoop(addr))
+			{
+				if(getenv("IB_VERBOSE")!=nullptr)
+					cout<<"Skipping pin data_in_text "<<hex<<addr<<endl;
+			}
 			else
 			{
 				if(getenv("IB_VERBOSE")!=nullptr)
 					cout<<"Setting pin at "<<hex<<addr<<endl;
-				/*
-				AddressID_t* newaddr = new AddressID_t;
-				newaddr->SetFileID(insn->getAddress()->getFileID());
-				newaddr->setVirtualOffset(insn->getAddress()->getVirtualOffset());
-				firp->getAddresses().insert(newaddr);
-				*/
 				auto newaddr=firp->addNewAddress(insn->getAddress()->getFileID(), insn->getAddress()->getVirtualOffset());
 				insn->setIndirectBranchTargetAddress(newaddr);
 			}
@@ -355,6 +354,8 @@ void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* exeiop, const set<Vir
 		else if(mt==admtArm32)
 		{
 			check_for_arm32_switch_type1(firp,insn,  *disasm, exeiop);
+			check_for_arm32_switch_type2(firp,insn,  *disasm, exeiop);
+			check_for_arm32_switch_type3(firp,insn,  *disasm, exeiop);
 		}
 		else
 			throw invalid_argument("Cannot determine machine type");
@@ -412,18 +413,20 @@ void get_executable_bounds(FileIR_t *firp, const section* shdr)
 
 void infer_targets(FileIR_t *firp, section* shdr)
 {
-//	int flags = shdr->get_flags();
-
-	if( ! shdr->isLoadable()) // (flags & SHF_ALLOC) != SHF_ALLOC)
-		/* not a loaded section */
+	/* check for a not loaded section */
+	if( ! shdr->isLoadable()) 
 		return;
 
-	if( shdr->isExecutable() ) //(flags & SHF_EXECINSTR) == SHF_EXECINSTR)
-		/* loaded, but contains instruction.  we'll look through the VariantIR for this section. */
+	/* check for a loaded, but contains instruction section.  
+	 * we'll look through the VariantIR for this section. */
+	if( shdr->isExecutable() ) 
 		return;
 
 	/* if the type is NOBITS, then there's no actual data to look through */
-	if(shdr->isBSS() ) // get_type()==SHT_NOBITS)
+	if(shdr->isBSS() ) 
+		return;
+	// skip .dynsym section -- process-dynsym does this.
+	if(shdr->get_name()==".dynsym")
 		return;
 
 
@@ -432,7 +435,8 @@ void infer_targets(FileIR_t *firp, section* shdr)
 	const char* data=shdr->get_data() ; // C(char*)malloc(shdr->sh_size);
 
 	assert(arch_ptr_bytes()==4 || arch_ptr_bytes()==8);
-	for(auto i=0u;i+arch_ptr_bytes()<=(size_t)shdr->get_size();i++)
+	// assume pointers need to be at least 4-byte aligned.
+	for(auto i=0u;i+arch_ptr_bytes()<=(size_t)shdr->get_size();i+=4)
 	{
 		// even on 64-bit, pointers might be stored as 32-bit, as a 
 		// elf object has the 32-bit limitations.
@@ -445,7 +449,7 @@ void infer_targets(FileIR_t *firp, section* shdr)
 
 
 
-		ibt_provenance_t prov;
+		auto prov = ibt_provenance_t();
 		if(shdr->get_name()==".init_array")
 			prov=ibt_provenance_t::ibtp_initarray;
 		else if(shdr->get_name()==".fini_array")
@@ -454,8 +458,6 @@ void infer_targets(FileIR_t *firp, section* shdr)
 			prov=ibt_provenance_t::ibtp_gotplt;
 		else if(shdr->get_name()==".got")
 			prov=ibt_provenance_t::ibtp_got;
-		else if(shdr->get_name()==".dynsym")
-			prov=ibt_provenance_t::ibtp_dynsym;
 		else if(shdr->get_name()==".symtab")
 			prov=ibt_provenance_t::ibtp_symtab;
 		else if(shdr->isWriteable()) 
@@ -650,20 +652,265 @@ bool backup_until(const string &insn_type_regex_str,
 
 void check_for_arm32_switch_type1(
 		FileIR_t *firp, 
+		Instruction_t* insn, 
+		const DecodedInstruction_t &d10, 
+		EXEIO::exeio* exeiop)
+{
+	const auto prov=ibt_provenance_t::ibtp_switchtable_type1;
+
+	/*
+	 * Check for hand-written assembly for divsi and udivsi that has this dispatch insn: addeq pc, pc, <reg> lsl #2
+	 */
+	const auto d        = DecodedInstruction_t::factory(insn);
+	const auto is_addne = d->getMnemonic() == "addne" ;
+	if(is_addne) 
+	{
+		const auto is_op0_pc = d->getOperand(0)->getString()=="pc";
+		const auto is_op1_pc = d->getOperand(1)->getString()=="pc";
+		if(is_op0_pc && is_op1_pc)
+		{
+			cout << "Found gcc addne pc,pc idiom" << endl;
+			for(auto i=1u;i<32u;i++)
+			{
+				const auto ibta = insn->getAddress()->getVirtualOffset() + 8 + i*12;
+				possible_target(ibta,0,prov);
+			}
+		}
+	}
+	return;
+}
+
+void check_for_arm32_switch_type2(
+		FileIR_t *firp, 
 		Instruction_t* i10, 
 		const DecodedInstruction_t &d10, 
 		EXEIO::exeio* exeiop)
 {
-	return;
+#if 0
+
+Looking for this pattern:
+
+I9:	cmp	r2, #4
+I10:	ldrls	pc, [pc, r2, lsl #2]
+
+or this:
+
+I8:	ldr	r3, [pc, #k]
+I9:	cmp	r2, r3
+I10:	ldrls	pc, [pc, r2, lsl #2]
+
+#endif
+
+	const auto prov=ibt_provenance_t::ibtp_switchtable_type2;
+
+	// check that i10 is what we need
+	const auto i10_dis       = d10.getDisassembly();
+	const auto is_i10_ldrls  = i10_dis.find("ldrls pc, [pc")==0;
+	if(!is_i10_ldrls) return;
+
+	// this is sufficient to determine we have a switch dispatch.
+	// now try to figure out the table size.
+	auto jt_size = numeric_limits<uint32_t>::max();
+
+	// and we do that by looking  for a cmp on the dispatch register.
+	// the dispatch register is the index register in the ldrls instruction.
+	// which we find via string extraction.
+	const auto i10_dis_15_3  = i10_dis.substr(15,3);  // reg or reg,
+	const auto i10_index_reg = i10_dis_15_3[2] == ',' ? i10_dis_15_3.substr(0,2) : i10_dis_15_3;
+
+	// look for i9
+	auto i9=(Instruction_t*)nullptr;
+	if(!backup_until( string()+"cmp "+i10_index_reg+",", /* look for this pattern. */
+				i9,                          /* find i9 */
+				i10,                         /* before I10 */
+				"^"+i10_index_reg+"$"        /* stop if i10_reg set */
+				))
+	{
+		return; 
+	}
+
+
+	if(i9 != nullptr)
+	{
+		// decode i9
+		const auto d9     = DecodedInstruction_t::factory(i9);
+		const auto d9_op1 = d9->getOperand(1);
+
+		// look for a constant in the 2nd operand.
+		if( d9_op1->isConstant())
+			jt_size=d9_op1->getConstant();
+		else
+		{
+			// check if it's a register 
+			// and look backwards for a load of the register from the .text seg
+			// TBD
+		}
+	}
+
+	// extract the jump table -- this is simple as the addresing mode in i10 says it's at is "pc+8".
+	const auto jt_addr    = i10->getAddress()->getVirtualOffset() + 8u;
+	const auto jt_section = find_section(jt_addr,exeiop);
+	assert(jt_section);
+	const auto jt_secdata = jt_section->get_data();
+	const auto jt_secaddr = jt_section->get_address();
+	const auto jt_secendaddr = jt_secaddr + jt_section->get_size();
+
+	auto jt_entry_no=0u;
+	while(true)
+	{
+		// calculate some stuff about the jump table entry we're looking at
+		const auto jte_size   = 4u;
+		const auto jte_offset = jt_entry_no * jte_size;  
+		const auto jte_addr   = jt_addr + jte_offset;
+
+		// stop if we've exceeded the section size
+		if(jte_addr + jte_size > jt_secendaddr)  break;
+
+		// extract the table entry
+		const auto jte = * reinterpret_cast<const uint32_t*>(&jt_secdata[jte_addr - jt_secaddr]);
+
+		// mark the instruction at jte as an ibt
+		possible_target(jte, jte_addr, prov);
+
+		// check to see if the entry is valid.  if not, exit.
+		const auto ibtarget = lookupInstruction(firp, jte);
+		if(ibtarget == nullptr) break;
+
+		cout << "Found ARM32 switch (ldrls -- type2)@0x" << hex << i10->getAddress()->getVirtualOffset()
+		     << " table_entry[" << dec << jt_entry_no << "]=" << hex << jte << "@0x " << jte_addr
+		     << " to " << ibtarget->getBaseID() << ":" << ibtarget->getDisassembly() 
+		     << "@" << ibtarget->getAddress()->getVirtualOffset() << endl;
+
+		// add to i10
+		jmptables[i10].insert(ibtarget);
+
+		// stop if we've exceeded the number of table entries we found.
+		if(jt_entry_no+1 > jt_size) break;
+
+		jt_entry_no++;
+
+	}
+
+	// add a data scoop for the switch table.
+	cout << "Detected " << dec << jt_entry_no << "entries in this table.  adding data scoop for table" << endl;
+	addSwitchTableScoop(firp, jt_entry_no + 1 , 4, jt_addr, exeiop, nullptr, 0, false);
+
+	// mark that we figured out all possible targets for this ib.
+	jmptables[i10].setAnalysisStatus(iasAnalysisComplete);
 }
 
+void check_for_arm32_switch_type3(
+		FileIR_t *firp, 
+		Instruction_t* i10, 
+		const DecodedInstruction_t &d10, 
+		EXEIO::exeio* exeiop)
+{
+#if 0
+
+Looking for this pattern:
+
+I9:	cmp	r2, #4
+I10:	addls	pc, [pc, r2, lsl #2]
+
+or this:
+
+I8:	ldr	r3, [pc, #k]
+I9:	cmp	r2, r3
+I10:	addls	pc, [pc, r2, lsl #2]
+
+#endif
+
+	const auto prov=ibt_provenance_t::ibtp_switchtable_type3;
+
+	// check that i10 is what we need
+	const auto i10_dis       = d10.getDisassembly();
+	const auto is_i10_ldrls  = i10_dis.find("addls pc, pc")==0;
+	if(!is_i10_ldrls) return;
+
+	// this is sufficient to determine we have a switch dispatch.
+	// now try to figure out the table size.
+	auto jt_size = numeric_limits<uint32_t>::max();
+
+	// and we do that by looking  for a cmp on the dispatch register.
+	// the dispatch register is the index register in the ldrls instruction.
+	// which we find via string extraction.
+	const auto i10_index_reg = d10.getOperand(2)->getString();
+
+	// look for i9
+	auto i9=(Instruction_t*)nullptr;
+	if(!backup_until( string()+"cmp "+i10_index_reg+",", /* look for this pattern. */
+				i9,                          /* find i9 */
+				i10,                         /* before I10 */
+				"^"+i10_index_reg+"$"        /* stop if i10_reg set */
+				))
+	{
+		return; 
+	}
+
+
+	if(i9 != nullptr)
+	{
+		// decode i9
+		const auto d9     = DecodedInstruction_t::factory(i9);
+		const auto d9_op1 = d9->getOperand(1);
+
+		// look for a constant in the 2nd operand.
+		if( d9_op1->isConstant())
+			jt_size=d9_op1->getConstant();
+		else
+		{
+			// check if it's a register 
+			// and look backwards for a load of the register from the .text seg
+			// TBD
+		}
+	}
+
+	// extract the jump table -- this is simple as the addresing mode in i10 says it's at is "pc+8".
+	const auto jt_addr       = i10->getAddress()->getVirtualOffset() + 8u;
+	const auto jt_entry_size = 4u;
+
+	auto jt_entry_no=0u;
+	while(true)
+	{
+		// check to see if the entry is valid.  if not, exit.
+		const auto jte = jt_addr + jt_entry_no * jt_entry_size;
+		const auto ibtarget = lookupInstruction(firp, jte);
+		if(ibtarget == nullptr) break;
+
+		// check if it's an uncond branch
+		const auto ibt_dis = DecodedInstruction_t::factory(ibtarget);
+		if(ibt_dis->getMnemonic() != "b") break;
+
+		// mark the instruction at jte as an ibt
+		possible_target(jte, 0, prov);
+
+		cout << "Found ARM32 switch (addls -- type2)@0x" << hex << i10->getAddress()->getVirtualOffset()
+		     << " to " << ibtarget->getBaseID() << ":" << ibtarget->getDisassembly() 
+		     << "@" << ibtarget->getAddress()->getVirtualOffset() << endl;
+
+		// add to i10
+		jmptables[i10].insert(ibtarget);
+
+		// stop if we've exceeded the number of table entries we found.
+		if(jt_entry_no+1 > jt_size) break;
+
+		jt_entry_no++;
+
+	}
+
+	// add a data scoop for the switch table.
+	cout << "Detected " << dec << jt_entry_no << "entries in this table.  adding data scoop for table" << endl;
+
+	// mark that we figured out all possible targets for this ib.
+	jmptables[i10].setAnalysisStatus(iasAnalysisComplete);
+}
 void check_for_arm64_switch_type1(
 		FileIR_t *firp, 
 		Instruction_t* i10, 
 		const DecodedInstruction_t &d10, 
 		EXEIO::exeio* exeiop)
 {
-	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type1;
+	const auto prov=ibt_provenance_t::ibtp_switchtable_type1;
 
 #if 0
 Sample code for this branch type:
@@ -2184,7 +2431,8 @@ void addSwitchTableScoop(
 		const VirtualOffset_t table_base_addr, 
 		EXEIO::exeio* exeiop, 
 		Instruction_t* I6,
-		const VirtualOffset_t I5_constant
+		const VirtualOffset_t I5_constant,
+		const bool do_unpin=true
 		)
 {
 	// make sure we can find the section with the switch table
@@ -2195,8 +2443,8 @@ void addSwitchTableScoop(
 	if(sec == nullptr) return;
 	if(!sec->isExecutable()) return;
 
-	const auto start_vo        = 0u;                                                          // start and end offsets in this file
-	const auto end_vo          = start_vo+num_entries*entry_size;
+	const auto start_vo        = do_unpin ? 0u : table_base_addr;                             // start and end offsets in this file
+	const auto end_vo          = start_vo + num_entries * entry_size -1;
 	auto startaddr             = firp->addNewAddress(firp->getFile()->getBaseID(), start_vo); // start and end address
 	auto endaddr               = firp->addNewAddress(firp->getFile()->getBaseID(), end_vo);
 	assert(sec);
@@ -2213,20 +2461,46 @@ void addSwitchTableScoop(
 	// finally, create the new scoop
 	const auto switch_tab = firp->addNewDataScoop( name, startaddr, endaddr, NULL, permissions, is_relro, the_contents, max_base_id++ );
 
-	// and add a relocation so we can later repin the scoop
-	firp->addNewRelocation(I6, 0, "absoluteptr_to_scoop",  switch_tab);
+	const auto mt=firp->getArchitecture()->getMachineType();
+	if(do_unpin)
+	{
+		if(mt==admtX86_64 || mt==admtI386)
+		{
+			// on x86 we need to rewrite the table base instruction.
+			
+			// and add a relocation so we can later repin the scoop
+			firp->addNewRelocation(I6, 0, "absoluteptr_to_scoop",  switch_tab);
 
-	// now rewrite the 
-	const auto d6          = DecodedInstruction_t::factory(I6);
-	const auto operands    = d6->getOperands();
-	const auto the_arg     = find_if(ALLOF(operands), [](const shared_ptr<DecodedOperand_t>& arg) { return arg->isMemory(); });
-	const auto disp_offset = uint32_t(d6->getMemoryDisplacementOffset(the_arg->get(),I6));
-        const auto disp_size   = uint32_t((*the_arg)->getMemoryDisplacementEncodingSize());
-	const auto file_base   = firp->getArchitecture()->getFileBase();
-	const auto new_disp    = uint32_t(I5_constant-file_base);
-	const auto new_bits    = I6->getDataBits().replace(disp_offset, disp_size, (const char*)&new_disp, disp_size);
-	I6->setDataBits(new_bits);
+			// now rewrite the 
+			const auto d6          = DecodedInstruction_t::factory(I6);
+			const auto operands    = d6->getOperands();
+			const auto the_arg     = find_if(ALLOF(operands), [](const shared_ptr<DecodedOperand_t>& arg) { return arg->isMemory(); });
+			const auto disp_offset = uint32_t(d6->getMemoryDisplacementOffset(the_arg->get(),I6));
+			const auto disp_size   = uint32_t((*the_arg)->getMemoryDisplacementEncodingSize());
+			const auto file_base   = firp->getArchitecture()->getFileBase();
+			const auto new_disp    = uint32_t(I5_constant-file_base);
+			const auto new_bits    = I6->getDataBits().replace(disp_offset, disp_size, (const char*)&new_disp, disp_size);
+			I6->setDataBits(new_bits);
+		}
+		else if(mt==admtArm32 || mt==admtAarch64)
+		{
+			// on ARM we need need to update the pc-rel relocation to indicate which scoop is the table.
+			for(auto &reloc : I6->getRelocations())
+			{
+				if(reloc->getType()=="pcrel")
+				{
+					assert(reloc->getWRT() == nullptr);
+					reloc->setWRT(switch_tab);
+				}
+			}
+		}
+		else
+		{
+			// unknown arch.
+			assert(0);
+		}
 
+	}
 
 }
 
