@@ -46,9 +46,14 @@ void  ZiprPinnerARM32_t::doPinning()
                 uint8_t bytes[]={'\x00','\x00','\x00',uint8_t('\xea')};
 		for(auto i=0U;i<sizeof(bytes);i++)
 		{
-			assert(memory_space.find(ibta_addr+i) == memory_space.end() );
-			memory_space[ibta_addr+i]=bytes[i];
-			memory_space.splitFreeRange(ibta_addr+i);
+			const auto ibta_byte_addr = ibta_addr+i;
+			if(memory_space.find(ibta_byte_addr) != memory_space.end() )
+			{
+				cout << "Byte is marked as both code and data at: " << hex << ibta_byte_addr << endl;
+				exit(10);
+			}
+			memory_space[ibta_byte_addr]=bytes[i];
+			memory_space.splitFreeRange(ibta_byte_addr);
 		}
 		// insert a patch to patch the branch later.
 		const auto patch=Patch_t(ibta_addr, UnresolvedType_t::UncondJump_rel26);
