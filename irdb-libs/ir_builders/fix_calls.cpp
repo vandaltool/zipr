@@ -502,7 +502,8 @@ class FixCalls_t : public TransformStep_t
 		void fix_call(Instruction_t* insn, FileIR_t *firp, bool can_unpin)
 		{
 			// doesn't work for ARM64 yet.
-			if(firp->getArchitecture()->getMachineType()==admtAarch64)
+			const auto mt = firp->getArchitecture()->getMachineType();
+			if( mt == admtAarch64 || mt == admtArm32)
 				return;
 
 			/* record the possibly new indirect branch target if this call gets fixed */
