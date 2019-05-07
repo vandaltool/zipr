@@ -789,8 +789,12 @@ class FixCalls_t : public TransformStep_t
 				const auto &the_arg = *op;
 				const auto  is_rel  = the_arg.isPcrel(); 
 				const auto  is_read = the_arg.isRead();
+				const auto  is_mem  = the_arg.isMemory();
 
-				if(is_rel && is_read)
+				// memory operations  and reads get pcrel relocs
+				// a register operation that's a write does not get a pcrel op.
+				// that's handled as an IBT.
+				if(is_rel && (is_mem || is_read))
 				{
 					const auto mt       = firp->getArchitecture()->getMachineType();
 					if(mt==admtAarch64 || mt==admtArm32)
