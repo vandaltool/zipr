@@ -497,20 +497,24 @@ void PopulateCFG::detect_scoops_in_code(FileIR_t *firp)
 	// data for this function
 	auto already_scoopified=set<VirtualOffset_t>();
 
-	const auto is_arm64 = firp->getArchitecture()->getMachineType() == admtAarch64;
-	const auto is_arm32 = firp->getArchitecture()->getMachineType() == admtArm32;
+	const auto is_arm64       = firp->getArchitecture()->getMachineType() == admtAarch64;
+	const auto is_arm32       = firp->getArchitecture()->getMachineType() == admtArm32;
+	const auto is_arm_variant = is_arm32 || is_arm64;
 
 	// only valid for arm64
-	if(!is_arm64 && !is_arm32) return;
+	if(!is_arm_variant) return;
 
 	// check each insn for an ldr with a pcrel operand.
 	for(auto insn : firp->getInstructions())
 	{
 		// look for ldr's with a pcrel operand
-		const auto d        = DecodedInstruction_t::factory(insn);
-		const auto mnemonic = d->getMnemonic();
-		if(mnemonic.substr(0,3) != "ldr") continue;	 // only valid on arm.
-		const auto op0      = d->getOperand(0);
+		const auto d               = DecodedInstruction_t::factory(insn);
+		const auto mnemonic        = d->getMnemonic();
+		const auto is_ldr_variant  = mnemonic.substr(0,3) == "ldr";
+		const auto is_vldr_variant = mnemonic.substr(0,4) == "vldr";
+		const auto is_relevant_ldr = is_ldr_variant || is_vldr_variant;
+		if(!is_relevant_ldr) continue;	 
+		const auto op0             = d->getOperand(0);
 
 		// capstone reports ldrd instructions as having 2 "dest" operands.
 		// so we skip to the 3rd operand to get the memory op.  
@@ -533,6 +537,7 @@ void PopulateCFG::detect_scoops_in_code(FileIR_t *firp)
 			is_arm64 && op0_str[0]=='s' ? 4  : 
 			is_arm64 && op0_str[0]=='d' ? 8  : 
 			is_arm64 && op0_str[0]=='q' ? 16 : 
+			is_arm32 && op0_str[0]=='s' ? 4  : // arm32 regs
 			is_arm32 && op0_str[0]=='r' ? 4  : // arm32 regs
 			is_arm32 && op0_str   =="sb"? 4  : // special arm32 regs
 			is_arm32 && op0_str   =="sl"? 4  : 
@@ -540,6 +545,7 @@ void PopulateCFG::detect_scoops_in_code(FileIR_t *firp)
 			is_arm32 && op0_str   =="fp"? 4  : 
 			is_arm32 && op0_str   =="sp"? 4  : 
 			is_arm32 && op0_str   =="ip"? 4  : 
+			is_arm32 && op0_str[0]=='d' ? 8  : // arm32 regs
 			throw domain_error("Cannot decode instruction size");
 			;
 
