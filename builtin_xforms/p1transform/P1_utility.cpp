@@ -236,7 +236,7 @@ Instruction_t* getHandlerCode(FileIR_t* virp, Instruction_t* fallthrough, mitiga
 		}
 
 		const auto func_id       = fallthrough->getFunction()->getBaseID();
-		auto new_insn_bits_start = string{0x48, (int8_t)0xc7, 0x05, (int8_t)0xf5, (int8_t)0xff, (int8_t)0xff, (int8_t)0xff}; 
+		auto new_insn_bits_start = string{0x48, (char)0xc7, 0x05, (char)0xf5, (char)0xff, (char)0xff, (char)0xff}; 
 		auto new_insn_bits       = new_insn_bits_start + string(reinterpret_cast<const char*>(&func_id), 4);
 
 		// note: updates handler_code to be the newly inserted instruction
