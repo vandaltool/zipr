@@ -1063,8 +1063,8 @@ notes:
 			const auto d5p        = DecodedInstruction_t::factory(i5);
 			const auto &d5        = *d5p;
 			const auto table_page = d5.getOperand(1)->getConstant();
-			const auto table_addr=table_page+table_page_offset;
-			all_table_bases= PerFuncAddrSet_t({table_addr});
+			const auto table_addr = table_page+table_page_offset;
+			all_table_bases       = PerFuncAddrSet_t({static_cast<VirtualOffset_t>(table_addr)});
 		}
 		else
 		{
