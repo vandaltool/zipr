@@ -100,7 +100,7 @@ void Push64Relocs_t::HandlePush64Relocation(Instruction_t *insn, Relocation_t *r
 	 * Step 1: Change the push to a call 0.
 	 */
 
-	auto call_databits = string({int8_t(0xe8), 0x00, 0x00, 0x00, 0x00 });
+	auto call_databits = string({char(0xe8), 0x00, 0x00, 0x00, 0x00 });
 	insn->setDataBits(call_databits);
 	insn->setTarget(add_insn); // Comment
 	insn->setFallthrough(nullptr);
@@ -113,7 +113,7 @@ void Push64Relocs_t::HandlePush64Relocation(Instruction_t *insn, Relocation_t *r
 	auto add_databits = string();
 	if(m_firp.getArchitectureBitWidth()==64)
 		add_databits+=string({0x48});	 // rex prefix to convert esp->rsp
-	add_databits+=string({(int8_t)0x81, 0x2c, 0x24, (int8_t)0xff, (int8_t)0xff, (int8_t)0xff, (int8_t)0xff} );
+	add_databits+=string({(char)0x81, 0x2c, 0x24, (char)0xff, (char)0xff, (char)0xff, (char)0xff} );
 	add_insn->setDataBits(add_databits);
 
 	/*
