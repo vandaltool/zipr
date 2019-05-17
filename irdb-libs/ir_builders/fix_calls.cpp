@@ -782,6 +782,10 @@ class FixCalls_t : public TransformStep_t
 			if(virt_offset == 0 || virt_offset == (uintptr_t)-1)
 				return;
 
+			const auto cur_relocs     = insn->getRelocations();
+			const auto pcrel_reloc_it = find_if(ALLOF(cur_relocs), [](const Relocation_t* r) { return r->getType()=="pcrel"; });
+			if(pcrel_reloc_it != end(cur_relocs)) return; // already exists.
+
 			const auto disasm    = DecodedInstruction_t::factory(insn);
 			const auto &operands = disasm->getOperands();
 			for(const auto &op : operands)

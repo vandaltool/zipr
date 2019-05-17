@@ -495,11 +495,12 @@ void PopulateCFG::fill_in_scoops(FileIR_t *firp)
 void PopulateCFG::detect_scoops_in_code(FileIR_t *firp)
 {
 	// data for this function
-	auto already_scoopified=set<VirtualOffset_t>();
+	auto already_scoopified=map<VirtualOffset_t,DataScoop_t*>();
 
 	const auto is_arm64       = firp->getArchitecture()->getMachineType() == admtAarch64;
 	const auto is_arm32       = firp->getArchitecture()->getMachineType() == admtArm32;
 	const auto is_arm_variant = is_arm32 || is_arm64;
+	const auto do_unpin       = is_arm32;
 
 	// only valid for arm64
 	if(!is_arm_variant) return;
@@ -523,9 +524,13 @@ void PopulateCFG::detect_scoops_in_code(FileIR_t *firp)
 		const auto mem_op = mnemonic[3]=='d' ? d->getOperand(2) : d->getOperand(1);
 	       	if( !mem_op->isPcrel()) continue;
 
+		// if there is an indexing operation, skip this instruction.
+	       	if( mem_op->hasIndexRegister()) continue;
+
 		// sanity check that it's a memory operation, and extract fields
 		assert(mem_op->isMemory());
 		const auto referenced_address = mem_op->getMemoryDisplacement() + (is_arm32 ? insn->getAddress()->getVirtualOffset() + 8 : 0); 
+		const auto name           = "data_in_text_"+to_hex_string(referenced_address);
 		const auto op0_str            = op0->getString();
 
 		// if op0 is the PC, the instruction is some switch dispatch that we have to detect in more depth.  skip here.  see check_arm32_switch...
@@ -551,31 +556,42 @@ void PopulateCFG::detect_scoops_in_code(FileIR_t *firp)
 
 		// check if we've seen this address already
 		const auto already_seen_it = already_scoopified.find(referenced_address);
-		if(already_seen_it != end(already_scoopified)) continue;
+		if(already_seen_it == end(already_scoopified)) 
+		{
 
-		// not seen, add it
-		already_scoopified.insert(referenced_address);
+			// find section and sanity check.
+			const auto sec=exeiop->sections.findByAddress(referenced_address);
+			if(sec==nullptr) continue; 
 
+			// only trying to do this for executable chunks, other code deals with
+			// scoops not in the .text section.
+			if(!sec->isExecutable()) continue;
 
-		// find section and sanity check.
-		const auto sec=exeiop->sections.findByAddress(referenced_address);
-		if(sec==nullptr) continue;
+			const auto new_scoop_addr = do_unpin ?  VirtualOffset_t(0u) : referenced_address;
+			const auto sec_data       = sec->get_data();
+			const auto sec_start      = sec->get_address();
+			const auto the_contents   = string(&sec_data[referenced_address-sec_start],referenced_size);
+			const auto fileid         = firp->getFile()->getBaseID();
+			auto new_start_addr       = firp->addNewAddress(fileid,new_scoop_addr);
+			auto new_end_addr         = firp->addNewAddress(fileid,new_scoop_addr+referenced_size-1);
+			const auto permissions    = 0x4; /* R-- */
+			const auto is_relro       = false;
 
-		// only trying to do this for executable chunks, other code deals with
-		// scoops not in the .text section.
-		if(!sec->isExecutable()) continue;
+			// create the new scoop
+			already_scoopified[referenced_address] = firp->addNewDataScoop(name, new_start_addr, 
+					new_end_addr, NULL, permissions, is_relro, the_contents);
+		}
 
-		const auto sec_data=sec->get_data();
-		const auto sec_start=sec->get_address();
-		const auto the_contents=string(&sec_data[referenced_address-sec_start],referenced_size);
-		const auto fileid=firp->getFile()->getBaseID();
-		auto start_addr=firp->addNewAddress(fileid,referenced_address);
-		auto end_addr  =firp->addNewAddress(fileid,referenced_address+referenced_size-1);
-		const auto name="data_in_text_"+to_string(referenced_address);
-		const auto permissions=0x4; /* R-- */
-		const auto is_relro=false;
-		auto newscoop=firp->addNewDataScoop(name, start_addr, end_addr, NULL, permissions, is_relro, the_contents);
-		(void)newscoop;
+		auto newscoop = already_scoopified[referenced_address] ;
+		assert(newscoop);
+		const auto start_addr = newscoop -> getStart();
+		const auto end_addr   = newscoop -> getEnd();
+
+		if(do_unpin)
+		{
+			const auto new_addend = -uint32_t(insn->getAddress()->getVirtualOffset());
+			(void)firp->addNewRelocation(insn,0,"pcrel",newscoop, new_addend);
+		}
 
 		cout << "Allocated data in text segment " << name << "=(" << start_addr->getVirtualOffset() << "-"
 		     << end_addr->getVirtualOffset() << ")" 
