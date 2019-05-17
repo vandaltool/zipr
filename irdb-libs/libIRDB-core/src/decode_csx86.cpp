@@ -574,17 +574,17 @@ uint32_t DecodedInstructionCapstoneX86_t::getPrefixCount() const
 
 IRDB_SDK::VirtualOffset_t DecodedInstructionCapstoneX86_t::getMemoryDisplacementOffset(const IRDB_SDK::DecodedOperand_t* p_t, const IRDB_SDK::Instruction_t* insn) const
 {
-	auto &t = *p_t;
+	const auto &t = *p_t;
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 
-	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
+	const auto the_insn = static_cast<cs_insn*>(my_insn.get());
 
 	//const auto encoding_size=t.getMemoryDisplacementEncodingSize();
 	//const auto x86 = &(the_insn->detail->x86);
-    const auto imm_count = cs_op_count(cs_handle->getHandle(), the_insn, X86_OP_IMM);
-	const auto disp_size=t.getMemoryDisplacementEncodingSize();
-	const auto imm=getImmediate();
-	const auto disp=t.getMemoryDisplacement();
+	const auto imm_count = cs_op_count(cs_handle->getHandle(), the_insn, X86_OP_IMM);
+	const auto disp_size = t.getMemoryDisplacementEncodingSize();
+	const auto imm       = getImmediate();
+	const auto disp      = t.getMemoryDisplacement();
 
 	if(string((char*)the_insn->detail->x86.opcode)=="\x0f\xc2") // CMPPD, CMPSS 
 	{
@@ -633,8 +633,7 @@ IRDB_SDK::VirtualOffset_t DecodedInstructionCapstoneX86_t::getMemoryDisplacement
 	}
 
 	assert(0);
-
-
+	abort();
 }
 
 
