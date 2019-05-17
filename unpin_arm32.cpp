@@ -36,6 +36,7 @@
 #include <inttypes.h>
 #include <stdint.h>
 #include <limits.h>
+#include <irdb-util>
 
 
 using namespace IRDB_SDK;
@@ -87,34 +88,23 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 			assert(0);
 		};
 
-
-
 	// get the new insn addr 	
-	const auto from_insn_location=(VirtualOffset_t)locMap[from_insn];
+	const auto from_insn_location = VirtualOffset_t(locMap[from_insn]);
 
 	// get WRT info
-	auto to_addr=VirtualOffset_t(0xdeadbeef); // noteable value that shouldn't be used.
-	auto convert_string=string();
+	const auto to_addr = 
+		(scoop_wrt != nullptr) ?  scoop_wrt->getStart()->getVirtualOffset() : // is scoop
+		(insn_wrt  != nullptr) ?  locMap[insn_wrt]                          : // is instruction
+		(bo_wrt    == nullptr) ?  VirtualOffset_t(0u)                       : // no WRT obj 
+		throw invalid_argument("Cannot map pcrel relocation WRT object to address");
+	const auto addend       = reloc -> getAddend(); 
+	const auto reloc_offset = to_addr + addend;
 
-	if(scoop_wrt)
-	{
-		to_addr=scoop_wrt->getStart()->getVirtualOffset();
-		convert_string=string("scoop ")+scoop_wrt->getName();
-	}
-	else if(insn_wrt)
-	{
-		to_addr=locMap[insn_wrt];
-		convert_string=string("insn ")+to_string(insn_wrt->getBaseID())+
-			       ":"+insn_wrt->getDisassembly();
-	}
-	else 
-	{
-		assert(bo_wrt==nullptr);
-		to_addr=0; /* no WRT obj */
-		convert_string=string("no-object");
-	}
-	assert(bo_wrt==nullptr); // not yet imp'd WRT offsetting.
-	assert(to_addr==0); // not yet imp'd WRT offsetting.
+	const auto to_object_id =  
+		(scoop_wrt != nullptr) ?  scoop_wrt->getName()       +"@"+to_hex_string(scoop_wrt->getStart()  ->getVirtualOffset()) : // scoop 
+		(insn_wrt  != nullptr) ?  insn_wrt ->getDisassembly()+"@"+to_hex_string(insn_wrt ->getAddress()->getVirtualOffset()) : // instruction
+		(bo_wrt    == nullptr) ?  string("No-object") : 
+		throw invalid_argument("Cannot map pcrel relocation WRT object to address");
 
 
 	// so far, only handling ldr and ldrb
@@ -216,12 +206,12 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 		zo->applyPatch(L5,FT);
 
 		// put the calculated pc-rel offset at L3
-		const auto new_offset    = int32_t(orig_insn_addr - L2);
+		const auto new_offset    = int32_t(orig_insn_addr - L2 + reloc_offset);
 		ms.plopBytes(L6,reinterpret_cast<const char*>(&new_offset),4);	// endianness of host must match target
 
 		// should be few enough of these to always print
 		cout<< "Had to trampoline " << disasm->getDisassembly() << " @"<<FA<<" to "
-		    << hex << L0 << "-" << L0+tramp_size-1 << endl;
+		    << hex << L0 << "-" << L0+tramp_size-1 << " WRT=" << to_object_id << endl;
 
 	}
 	else if( is_ldr_type && !is_rd_pc && !I_bit_set)	/* ldr <not pc>, [pc, imm] */
@@ -289,13 +279,13 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 		// put the calculated pc-rel offset at L3
 		const auto ldr_imm_field = int32_t(full_insn & mask12);
 		const auto ldr_imm       = is_pos_imm ? ldr_imm_field : - ldr_imm_field;
-		const auto orig_target   = orig_insn_addr + 8 +  to_addr + ldr_imm;
-		const auto new_offset    = int32_t(orig_target - (L1+8));
+		const auto new_addend    =  bo_wrt == nullptr ?  8 + ldr_imm : reloc_offset;
+		const auto new_offset    = int32_t(orig_insn_addr - L3 + new_addend);
 		ms.plopBytes(L3,reinterpret_cast<const char*>(&new_offset),4);	// endianness of host must match target
 
 		// should be few enough of these to always print
 		cout<< "Had to trampoline " << disasm->getDisassembly() << " @"<<FA<<" to "
-		    << hex << L0 << "-" << L0+tramp_size-1 << " ldr_imm = " << ldr_imm << endl;
+		    << hex << L0 << "-" << L0+tramp_size-1 << " ldr_imm = " << ldr_imm << " WRT=" << to_object_id << endl;
 	}
 	else if( is_ldr_type && !is_rd_pc && I_bit_set)	/* ldr <not pc>, [pc, reg/shift] */
 	{
@@ -379,14 +369,13 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 		zo->applyPatch(L5,FT);
 
 		// put the calculated pc-rel offset at L6
-		const auto new_offset = orig_insn_addr - L2;
+		const auto new_offset = int32_t(orig_insn_addr - L2 + reloc_offset);
 		ms.plopBytes(L6,reinterpret_cast<const char*>(&new_offset),4);	// endianness of host must match target
 
 		// should be few enough of these to always print
 		cout << "Had to trampoline " << disasm->getDisassembly() << " @" << hex << FA 
-		     << " to " << L0 << "-" << L0+tramp_size-1 << endl;
+		     << " to " << L0 << "-" << L0+tramp_size-1 << " WRT=" << to_object_id << endl;
 
-		
 	}
 	else if((is_ldrls_type || is_addne_type || is_addls_type) && is_rd_pc && is_rn_pc)
 	{
@@ -477,13 +466,12 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 		ms.plopBytes(L6,xfer_insn.c_str(),4);
 
 		// put the calculated pc-rel offset at L7
-		const auto new_offset = orig_insn_addr - L2;
+		const auto new_offset = int32_t(orig_insn_addr - L2 + reloc_offset);
 		ms.plopBytes(L7,reinterpret_cast<const char*>(&new_offset),4);	// endianness of host must match target
 
 		// should be few enough of these to always print
 		cout<< "Had to trampoline " << disasm->getDisassembly() << " @"<<FA<<" to "
-		    << hex << L0 << "-" << L0+tramp_size-1 << endl;
-
+		    << hex << L0 << "-" << L0+tramp_size-1 << " WRT=" << to_object_id << endl;
 	}
 	else if(is_add_type && I_bit_set)
 	{
@@ -549,13 +537,13 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 		const auto add_imm_field = int32_t(full_insn & mask8);
 		const auto add_ror_field = int32_t((full_insn>>8) & mask4);
 		const auto add_imm       = rotr32(add_imm_field,add_ror_field*2);
-		const auto orig_target   = orig_insn_addr + 8 +  to_addr + add_imm;
-		const auto new_offset    = int32_t(orig_target - (L1+8));
+		const auto orig_target   = orig_insn_addr + 8 +  add_imm;
+		const auto new_offset    = int32_t(orig_target - L3 + reloc_offset);
 		ms.plopBytes(L3,reinterpret_cast<const char*>(&new_offset),4);	// endianness of host must match target
 
 		// should be few enough of these to always print
 		cout<< "Had to trampoline " << disasm->getDisassembly() << " @"<<FA<<" to "
-		    << hex << L0 << "-" << L0+tramp_size-1 << " add_imm = " << add_imm << endl;
+		    << hex << L0 << "-" << L0+tramp_size-1 << " add_imm = " << add_imm << " WRT=" << to_object_id << endl;
 	}
 	else if(is_add_type && !I_bit_set)
 	{
@@ -655,12 +643,12 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 		zo->applyPatch(L5,FT);
 
 		// put the calculated pc-rel offset at L3
-		const auto new_offset    = int32_t(orig_insn_addr - L1);
+		const auto new_offset    = int32_t(orig_insn_addr - L1 + reloc_offset);
 		ms.plopBytes(L6,reinterpret_cast<const char*>(&new_offset),4);	// endianness of host must match target
 
 		// should be few enough of these to always print
 		cout<< "Had to trampoline " << disasm->getDisassembly() << " @"<<FA<<" to "
-		    << hex << L0 << "-" << L0+tramp_size-1 << endl;
+		    << hex << L0 << "-" << L0+tramp_size-1 << " WRT=" << to_object_id << endl;
 	}
 	else 
 	{
