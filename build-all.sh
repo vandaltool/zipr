@@ -6,7 +6,12 @@ if [[ "$*" =~ "--debug" ]]; then
 	SCONSDEBUG=" debug=1 "
 fi
 
-scons $SCONSDEBUG -j 3
+
+if [[ $(uname -m) == 'armv7l' ]]; then
+	scons $SCONSDEBUG 
+else 
+	scons $SCONSDEBUG -j 3
+fi
 
 exit
 
