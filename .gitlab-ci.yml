@@ -21,28 +21,35 @@ stages:
     - ./cicd_testing/do-clean.sh 
 
 # per os items
-do-nightly-clean-ubuntu18:
-  <<: *do-nightly-clean
-  tags:
-    - ubuntu18
-  variables:
-    OS: 'ubuntu18'  
+#do-nightly-clean-ubuntu18:
+#  <<: *do-nightly-clean
+#  tags:
+#    - ubuntu18
+#  variables:
+#    OS: 'ubuntu18'  
+#
+## per os items
+#do-nightly-clean-ubuntu16:
+#  <<: *do-nightly-clean
+#  tags:
+#    - ubuntu16
+#  variables:
+#    OS: 'ubuntu16'  
+#
+## per os items
+#do-nightly-clean-centos75:
+#  <<: *do-nightly-clean
+#  tags:
+#    - centos75
+#  variables:
+#    OS: 'centos75'  
 
-# per os items
-do-nightly-clean-ubuntu16:
+do-nightly-clean-arm32:
   <<: *do-nightly-clean
   tags:
-    - ubuntu16
+    - arm32
   variables:
-    OS: 'ubuntu16'  
-
-# per os items
-do-nightly-clean-centos75:
-  <<: *do-nightly-clean
-  tags:
-    - centos75
-  variables:
-    OS: 'centos75'  
+    OS: 'arm32'  
 
 
 #
@@ -56,26 +63,33 @@ do-nightly-clean-centos75:
 
 
 # per os items
-do-build-ubuntu18:
-  <<: *do-build
-  tags:
-    - ubuntu18
-  variables:
-    OS: 'ubuntu18'  
+#do-build-ubuntu18:
+#  <<: *do-build
+#  tags:
+#    - ubuntu18
+#  variables:
+#    OS: 'ubuntu18'  
+#
+#do-build-ubuntu16:
+#  <<: *do-build
+#  tags:
+#    - ubuntu16
+#  variables:
+#    OS: 'ubuntu16'  
+#
+#do-build-centos75:
+#  <<: *do-build
+#  tags:
+#    - centos75
+#  variables:
+#    OS: 'centos75'  
 
-do-build-ubuntu16:
+do-build-arm32:
   <<: *do-build
   tags:
-    - ubuntu16
+    - arm32
   variables:
-    OS: 'ubuntu16'  
-
-do-build-centos75:
-  <<: *do-build
-  tags:
-    - centos75
-  variables:
-    OS: 'centos75'  
+    OS: 'arm32'  
 
 
 #
@@ -86,20 +100,20 @@ do-build-centos75:
   script:
     - ./cicd_testing/eh-tests.sh
 
-basic_eh-tests-ubuntu18:
-  <<: *basic_eh-tests
-  tags:
-    - ubuntu18
-
-basic_eh-tests-ubuntu16:
-  <<: *basic_eh-tests
-  tags:
-    - ubuntu16
-
-basic_eh-tests-centos75:
-  <<: *basic_eh-tests
-  tags:
-    - centos75
+#basic_eh-tests-ubuntu18:
+#  <<: *basic_eh-tests
+#  tags:
+#    - ubuntu18
+#
+#basic_eh-tests-ubuntu16:
+#  <<: *basic_eh-tests
+#  tags:
+#    - ubuntu16
+#
+#basic_eh-tests-centos75:
+#  <<: *basic_eh-tests
+#  tags:
+#    - centos75
 
 #
 # test_cmds.sh fixcalls
@@ -109,64 +123,64 @@ basic_eh-tests-centos75:
   script:
     - ./cicd_testing/builtin-xforms.sh
 
-builtin-xforms-ubuntu18:
-  <<: *builtin-xforms
-  tags:
-    - ubuntu18
-
-builtin-xforms-ubuntu16:
-  <<: *builtin-xforms
-  tags:
-    - ubuntu16
-
-builtin-xforms-centos75:
-  <<: *builtin-xforms
-  tags:
-    - centos75
-  variables:
-    OS: 'centos75'  
+#builtin-xforms-ubuntu18:
+#  <<: *builtin-xforms
+#  tags:
+#    - ubuntu18
+#
+#builtin-xforms-ubuntu16:
+#  <<: *builtin-xforms
+#  tags:
+#    - ubuntu16
+#
+#builtin-xforms-centos75:
+#  <<: *builtin-xforms
+#  tags:
+#    - centos75
+#  variables:
+#    OS: 'centos75'  
 
 #
 # elfdep test
 #
 
 # template
-.elfdep: &elfdep
-  stage: test
-  script:
-    - ./cicd_testing/elfdep.sh
-
-elfdep-ubuntu18:
-  <<: *elfdep
-  tags:
-    - ubuntu18
-  variables:
-    OS: 'ubuntu18'  
-    
-elfdep-ubuntu16:
-  <<: *elfdep
-  tags:
-    - ubuntu16
-  variables:
-    OS: 'ubuntu16'  
-
-elfdep-centos75:
-  <<: *elfdep
-  tags:
-    - centos75
-  variables:
-    OS: 'centos75'  
+#.elfdep: &elfdep
+#  stage: test
+#  script:
+#    - ./cicd_testing/elfdep.sh
+#
+#elfdep-ubuntu18:
+#  <<: *elfdep
+#  tags:
+#    - ubuntu18
+#  variables:
+#    OS: 'ubuntu18'  
+#    
+#elfdep-ubuntu16:
+#  <<: *elfdep
+#  tags:
+#    - ubuntu16
+#  variables:
+#    OS: 'ubuntu16'  
+#
+#elfdep-centos75:
+#  <<: *elfdep
+#  tags:
+#    - centos75
+#  variables:
+#    OS: 'centos75'  
 
 
 
 #
 # deploy a docker image
 #
-deploy-u18:
-  stage: deploy
-  script:
-    - ./cicd_testing/deploy.sh
-  tags:
-    - ubuntu18
-  variables:
-    OS: 'ubuntu18'  
+#deploy-u18:
+#  stage: deploy
+#  script:
+#    - ./cicd_testing/deploy.sh
+#  tags:
+#    - ubuntu18
+#  variables:
+#    OS: 'ubuntu18'  
