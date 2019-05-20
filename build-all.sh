@@ -7,7 +7,7 @@ if [[ "$*" =~ "--debug" ]]; then
 fi
 
 
-if [[ $(uname -m) == 'armv7l' ]]; then
+if [[ $(uname -m) == 'armv7l' ]] || [[ $(uname -m) == 'aarch64' ]]; then
 	scons $SCONSDEBUG 
 else 
 	scons $SCONSDEBUG -j 3
