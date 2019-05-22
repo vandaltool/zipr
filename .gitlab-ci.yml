@@ -44,12 +44,12 @@ stages:
 #  variables:
 #    OS: 'centos75'  
 #
-#do-nightly-clean-arm32:
-#  <<: *do-nightly-clean
-#  tags:
-#    - arm32
-#  variables:
-#    OS: 'arm32'  
+do-nightly-clean-arm32:
+  <<: *do-nightly-clean
+  tags:
+    - arm32
+  variables:
+    OS: 'arm32'  
 
 do-nightly-clean-arm64:
   <<: *do-nightly-clean
@@ -91,12 +91,12 @@ do-nightly-clean-arm64:
 #  variables:
 #    OS: 'centos75'  
 #
-#do-build-arm32:
-#  <<: *do-build
-#  tags:
-#    - arm32
-#  variables:
-#    OS: 'arm32'  
+do-build-arm32:
+  <<: *do-build
+  tags:
+    - arm32
+  variables:
+    OS: 'arm32'  
 
 do-build-arm64:
   <<: *do-build
