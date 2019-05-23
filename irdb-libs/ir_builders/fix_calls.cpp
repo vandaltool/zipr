@@ -844,7 +844,9 @@ class FixCalls_t : public TransformStep_t
 						switch(size)
 						{
 							case 4:
-								assert( (uintptr_t)(int)newdisp == (uintptr_t)newdisp);
+								// if newdisp is negative (or bigger than 32-bit), then the instruction is accessing invalid memory.
+								// and is likely bogus.  we just skip doing any pc-rel for it.
+								if( (uintptr_t)(int32_t)newdisp != (uintptr_t)newdisp) continue;
 								*(int*)offsetptr=newdisp;
 								break;
 							case 1:
