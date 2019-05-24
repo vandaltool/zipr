@@ -34,6 +34,13 @@ static uint32_t to_seg_reg_number(const x86_reg &reg)
 
 static uint32_t to_reg_number(const x86_reg &reg)
 {
+	if(X86_REG_XMM0 <= reg && reg <= X86_REG_XMM31)
+		return reg-X86_REG_XMM0;
+	if(X86_REG_YMM0 <= reg && reg <= X86_REG_YMM31)
+		return reg-X86_REG_YMM0;
+	if(X86_REG_ZMM0 <= reg && reg <= X86_REG_ZMM31)
+		return reg-X86_REG_ZMM0;
+
 	switch(reg)
 	{	
 		case X86_REG_AH: 
