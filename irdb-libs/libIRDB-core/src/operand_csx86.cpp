@@ -1,20 +1,53 @@
 
 #include <libIRDB-core.hpp>
 #include <memory>
+#include <map>
 #include <decode_base.hpp>
 #include <decode_csx86.hpp>
 #include <operand_base.hpp>
 #include <operand_csx86.hpp>
+#include <capstone.h>
 
 
 
 using namespace std;
 using namespace libIRDB;
 
-#include <capstone.h>
-
 
 // static helpers.
+
+static uint32_t special_to_reg_num(const x86_reg &reg)
+{
+	const auto reg_nos = map<x86_reg,uint32_t>
+		({
+			{X86_REG_CR0,  0}, 
+			{X86_REG_CR1,  1}, 
+			{X86_REG_CR2,  2}, 
+			{X86_REG_CR3,  3}, 
+			{X86_REG_CR4,  4}, 
+			{X86_REG_CR5,  5}, 
+			{X86_REG_CR6,  6}, 
+			{X86_REG_CR7,  7}, 
+			{X86_REG_CR8,  8}, 
+			{X86_REG_CR9,  9}, 
+			{X86_REG_CR10, 10}, 
+			{X86_REG_CR11, 11}, 
+			{X86_REG_CR12, 12}, 
+			{X86_REG_CR13, 13}, 
+			{X86_REG_CR14, 14}, 
+			{X86_REG_CR15, 15}, 
+			{X86_REG_DR0,  16}, 
+			{X86_REG_DR1,  17}, 
+			{X86_REG_DR2,  18}, 
+			{X86_REG_DR3,  19}, 
+			{X86_REG_DR4,  20}, 
+			{X86_REG_DR5,  21}, 
+			{X86_REG_DR6,  22}, 
+			{X86_REG_DR7,  23}, 
+		});
+
+	return reg_nos.at(reg);
+}
 
 
 static uint32_t to_seg_reg_number(const x86_reg &reg)
@@ -345,7 +378,7 @@ bool DecodedOperandCapstoneX86_t::isZmmRegister() const
 bool DecodedOperandCapstoneX86_t::isSpecialRegister() const
 {
 	const auto regs=set<x86_reg>({
-		X86_REG_CR1, X86_REG_CR2, X86_REG_CR3, X86_REG_CR4, X86_REG_CR5,
+		X86_REG_CR0, X86_REG_CR1, X86_REG_CR2, X86_REG_CR3, X86_REG_CR4, X86_REG_CR5,
 		X86_REG_CR6, X86_REG_CR7, X86_REG_CR8, X86_REG_CR9, X86_REG_CR10,
         	X86_REG_CR11, X86_REG_CR12, X86_REG_CR13, X86_REG_CR14, X86_REG_CR15,
 		X86_REG_DR0, X86_REG_DR1, X86_REG_DR2, X86_REG_DR3, X86_REG_DR4,
@@ -391,6 +424,8 @@ uint32_t DecodedOperandCapstoneX86_t::getRegNumber() const
 		return op.reg-X86_REG_ZMM0;
 	else if(isSegmentRegister())
 		return to_seg_reg_number(op.reg);
+	else if(isSpecialRegister())
+		return special_to_reg_num(op.reg);
 	else
 		assert(0);
 }
@@ -406,7 +441,12 @@ bool DecodedOperandCapstoneX86_t::hasBaseRegister() const
 {
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
         const auto &op = (the_insn->detail->x86.operands[op_num]);
-	return isMemory() && op.mem.base!=X86_REG_INVALID && op.mem.base!=X86_REG_RIP;
+	const auto br_is_pc = 
+		op.mem.base==X86_REG_RIP || 
+		op.mem.base==X86_REG_EIP || 
+		op.mem.base==X86_REG_IP;
+	const auto br_is_valid = op.mem.base!=X86_REG_INVALID;
+	return isMemory() && br_is_valid && !br_is_pc;
 }
 
 bool DecodedOperandCapstoneX86_t::hasIndexRegister() const
