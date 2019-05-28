@@ -20,6 +20,8 @@ using namespace EXEIO;
 
 #define ALLOF(s) begin(s), end(s)
 
+
+
 // use this to determine whether a scoop has a given name.
 static struct ScoopFinder : binary_function<DataScoop_t*,string,bool>
 {
@@ -81,6 +83,17 @@ static std::string to_hex_string( T i )
 }
 
 
+template <class T_Sym, class  T_Rela, class T_Rel, class T_Dyn, class T_Extractor>
+bool MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::is_elftable(DataScoop_t* ret)
+{ 
+	return find(ALLOF(elftable_names), ret->getName()) != elftable_names.end() ;  
+}; 
+
+template <class T_Sym, class  T_Rela, class T_Rel, class T_Dyn, class T_Extractor>
+bool MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::is_noptr_table(DataScoop_t* ret)
+{ 
+	return find(ALLOF(elftable_nocodeptr_names), ret->getName()) != elftable_nocodeptr_names.end() ;  
+}; 
 
 template <class T_Sym, class  T_Rela, class T_Rel, class T_Dyn, class T_Extractor>
 MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::MoveGlobals_t(
@@ -124,32 +137,12 @@ int MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::execute(pqxxDB_t &pqxx_
 {
 
 	// read the executeable file
-	/*
-	int elfoid = this->getFileIR()->getFile()->getELFOID(); // from Transform base class
-	pqxx::largeobject lo(elfoid);
-	lo.to_file(pqxx_interface.getTransaction(),"readeh_tmp_file.exe");
-	*/
 
 	// load the executable.
-	this->exe_reader = new EXEIO::exeio;
-	assert(this->exe_reader);
-	this->exe_reader->load((char*)"a.ncexe");
+	exe_reader = new EXEIO::exeio;
+	assert(exe_reader);
+	exe_reader->load((char*)"a.ncexe");
 
-#if 0
-	STARS::IRDB_Interface_t STARS_analysis_engine(pqxx_interface);
-	STARS_analysis_engine.GetSTARSOptions().SetDeepLoopAnalyses(true);
-	STARS_analysis_engine.GetSTARSOptions().SetConstantPropagation(true);
-	if(m_use_stars)
-	{
-		STARS_analysis_engine.do_STARS(this->getFileIR());
-		this->m_annotationParser = &STARS_analysis_engine.getAnnotations();
-        	assert(getenv("SELF_VALIDATE")==nullptr || getAnnotations().size() > 15);
-
-	}
-	cout << "move_globals execute(): enter" << endl;
-	const auto annot_size = m_use_stars ? (size_t)this->getAnnotations().size() : (size_t)0 ;
-	cout << "size of annotation set: " << annot_size << endl;
-#endif
 	if(m_use_stars)
 	{
 		auto deep_analysis=DeepAnalysis_t::factory(getFileIR(), aeSTARS,  {"SetDeepLoopAnalyses=true", "SetConstantPropagation=true"});
@@ -163,15 +156,15 @@ int MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::execute(pqxxDB_t &pqxx_
 
 
 
-	this->ParseSyms(exe_reader);
-	this->SetupScoopMap();
-	this->FilterScoops();
-	this->TieScoops();
-	this->FindInstructionReferences();	// may record some scoops are tied together
-	this->FindDataReferences();
-	this->FilterAndCoalesceTiedScoops();
-	this->UpdateScoopLocations();
-	this->PrintStats();
+	ParseSyms(exe_reader);
+	SetupScoopMap();
+	FilterScoops();
+	TieScoops();
+	FindInstructionReferences();	// may record some scoops are tied together
+	FindDataReferences();
+	FilterAndCoalesceTiedScoops();
+	UpdateScoopLocations();
+	PrintStats();
 
 	return 0;
 }
@@ -218,7 +211,7 @@ bool MoveGlobals_t<T_Sym, T_Rela, T_Rel, T_Dyn, T_Extractor>::AreScoopsAdjacent(
 	}
 	for (IRDB_SDK::VirtualOffset_t i = FirstEnd + 1; adjacent && (i < SecondStart); ++i)
 	{
-		DataScoop_t *c = this->findScoopByAddress(i);
+		DataScoop_t *c = findScoopByAddress(i);
 		if (c)
 		{
 			adjacent = false; // found intervening scoop before SecondStart
@@ -389,7 +382,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ParseSyms(EXEIO::exeio
                 while(scoop_names.find(s->getName())!=scoop_names.end())
                 {
                         cout<<"Rename scoop because of name conflict: "<<s->getName()<<" --> ";
-                        s->setName(s->getName()+"-renamed");
+                        s->setName(s->getName()+"-renamed"+to_string(rand()));
                         cout<<s->getName()<<endl;
                 }
                 scoop_names.insert(s->getName());
@@ -401,6 +394,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ParseSyms(EXEIO::exeio
 template <class T_Sym, class  T_Rela, class T_Rel, class T_Dyn, class T_Extractor>
 void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FilterScoops()
 {
+	const auto mg_env = getenv("MG_VERBOSE");
 
 
 	// filter using the move_only option
@@ -414,7 +408,16 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FilterScoops()
 		auto it=find_if(ALLOF(moveable_scoops), bind2nd(finder, word));
 		// if found, insert into the move_only set.
 		if(it!=moveable_scoops.end())
+		{
+			if(mg_env)
+				cout<<"Keeping scoop (for mo_ss) "<< word << endl;
 			move_only_scoops.insert(*it);
+		}
+		else
+		{
+			if(mg_env)
+				cout<<"Skipping scoop (for mo_ss) "<< word << endl;
+		}
 		
 	});
 
@@ -424,7 +427,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FilterScoops()
 		moveable_scoops.clear();
 		moveable_scoops.insert(ALLOF(move_only_scoops));
 
-		if(getenv("MG_VERBOSE"))
+		if(mg_env)
 		{
 			cout<<"Moveable Scoops after move_only filter:"<<endl;
 			for(auto &s : moveable_scoops)
@@ -467,15 +470,16 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FilterScoops()
                 uniform_real_distribution<double> distribution(0.0,1.0);
 		while(moveable_scoops.size() > (unsigned)max_moveables)
 		{
-                    if (random == true)
-                    {
-                        double rand_num = distribution(generator);
-                        int rand_idx = (int) (rand_num * moveable_scoops.size());
-                        auto it = moveable_scoops.begin();
-                        advance(it, rand_idx);
-                        moveable_scoops.erase(it);
-                    }
-		    else moveable_scoops.erase(prev(moveable_scoops.end()));
+			if (random == true)
+			{
+				double rand_num = distribution(generator);
+				int rand_idx = (int) (rand_num * moveable_scoops.size());
+				auto it = moveable_scoops.begin();
+				advance(it, rand_idx);
+				moveable_scoops.erase(it);
+			}
+			else 
+				moveable_scoops.erase(prev(moveable_scoops.end()));
 		}
  	}
 }
@@ -650,7 +654,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ApplyPcrelMemoryReloca
 	//  to undo our changes to the instruction in the case of a re-pinned scoop.
 	//  That problem is fixed, but it is more efficient and safer to
 	//  avoid editing instructions that reference re-pinned scoops.
-	if (this->moveable_scoops.find(to) == this->moveable_scoops.cend()) {
+	if (moveable_scoops.find(to) == moveable_scoops.cend()) {
 		if (getenv("MG_VERBOSE")) {
 			cout << "Avoiding editing of insn at " << hex << insn->getBaseID() << " after repinning scoop "
 				<< to->getName() << endl;
@@ -690,7 +694,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ApplyAbsoluteMemoryRel
 	//  to undo our changes to the instruction in the case of a re-pinned scoop.
 	//  That problem is fixed, but it is more efficient and safer to
 	//  avoid editing instructions that reference re-pinned scoops.
-	if (this->moveable_scoops.find(to) == this->moveable_scoops.cend()) {
+	if (moveable_scoops.find(to) == moveable_scoops.cend()) {
 		if (getenv("MG_VERBOSE")) {
 			cout << "Avoiding editing of insn at " << hex << insn->getBaseID() << " after repinning scoop "
 				<< to->getName() << endl;
@@ -738,13 +742,14 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 {
 	assert(insn);
 	assert(immed || (the_arg != the_arg_container.end()));	// immeds don't need an argument, but memory ops do.
+
 	if (immed && (0 == insn_addr))
 		return NULL; // immed value of zero is not a scoop address
 
-	const int small_memory_threshold = exe_reader->isDLL() ? 10 : 4096 * 10;
-	bool ValidImmed = immed && (small_memory_threshold <= ((int)insn_addr));
+	const auto small_memory_threshold = exe_reader->isDLL() ? 10 : 4096 * 10;
+	const auto ValidImmed             = immed && (small_memory_threshold <= ((int)insn_addr));
 
-	DataScoop_t *ret = this->findScoopByAddress(insn_addr);
+	auto ret = findScoopByAddress(insn_addr);
 
 	// so far, we haven't run into any problems with not finding a scoop.  we could later.
 	if (!ret)
@@ -758,9 +763,8 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 	}
 	
 	// See if STARS analyzed the instruction and determined which scoop it references.
-	DataScoop_t *retSTARS = (immed && (!ValidImmed)) ? nullptr : this->DetectAnnotationScoop(insn);
+	const auto retSTARS = (immed && (!ValidImmed)) ? (DataScoop_t*)nullptr : DetectAnnotationScoop(insn);
 
-#if 1
 	if (!ret)
 	{
 		if (nullptr != retSTARS)
@@ -769,21 +773,21 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 		}
 		return ret;
 	}
-#endif
+	
 
-	/* check to see if it's an elftable */
-	if (find(ALLOF(elftable_nocodeptr_names), ret->getName()) != elftable_nocodeptr_names.end())
+	/* check to see if it's directly pointing at an elftable that isn't allowed to have pointers */
+	if (is_noptr_table(ret))
 	{
 		/* it's an elftable, so we don't need to look so hard because */
 		/* we probably aren't pointing to an elf table from an instruction */
 		/* find middle of table */
-		auto mid_of_table = (ret->getStart()->getVirtualOffset() / 2) + (ret->getEnd()->getVirtualOffset() / 2);
+		const auto mid_of_table = (ret->getStart()->getVirtualOffset() / 2) + (ret->getEnd()->getVirtualOffset() / 2);
 
 		/* look forward if above middle, else look backwards */
 		const auto op = (insn_addr < mid_of_table)
 			? [](const VirtualOffset_t i, const VirtualOffset_t j) { return i - j; }
-		: [](const VirtualOffset_t i, const VirtualOffset_t j) { return i + j; }
-		;
+			: [](const VirtualOffset_t i, const VirtualOffset_t j) { return i + j; }
+			;
 
 		/* start at begin/end of table depending on direction */
 		const auto addr = (insn_addr < mid_of_table)
@@ -820,23 +824,21 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 		{
 			// We have two different non-null choices. We will tie the two scoops
 			//  together if they are adjacent, and pin them both otherwise.
-			if (this->AreScoopsAdjacent(ret, retSTARS)) // tie adjacent scoops
+			if (AreScoopsAdjacent(ret, retSTARS)) // tie adjacent scoops
 			{
 				cout << "Tieing adjacent scoops due to STARS vs. DetectProperScoop conflict for insn at " << hex << insn->getBaseID() << endl;
-				if (ret->getStart()->getVirtualOffset() < retSTARS->getStart()->getVirtualOffset()) {
-					ScoopPair_t TiedPair(ret, retSTARS);
-					(void) this->tied_scoops.insert(TiedPair);
-				}
-				else {
-					ScoopPair_t TiedPair(retSTARS, ret);
-					(void) this->tied_scoops.insert(TiedPair);
-				}
+				if (ret->getStart()->getVirtualOffset() < retSTARS->getStart()->getVirtualOffset()) 
+					tied_scoops.insert({ret, retSTARS});
+				else 
+					tied_scoops.insert({retSTARS, ret});
 			}
 			else // not adjacent; must pin
 			{
 				cout << "Pinning non-adjacent scoops due to STARS vs. DetectProperScoop conflict for insn at " << hex << insn->getBaseID() << endl;
-				(void) this->moveable_scoops.erase(ret);
-				(void) this->moveable_scoops.erase(retSTARS);
+				if(!is_elftable(ret)) 
+					moveable_scoops.erase(ret);
+				if(!is_elftable(retSTARS)) 
+					moveable_scoops.erase(retSTARS);
 			}
 		}
 
@@ -937,11 +939,19 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 	{
 		DataScoop_t *this_scoop=findScoopByAddress(insn_addr+i);	
 		// no scoop at this addr?
-		if(this_scoop==NULL)
-			return NULL;
+		if(this_scoop==nullptr)
+			return nullptr;
 		// un-tie-able scoop at this addr?
 		if(find(ALLOF(elftable_nocodeptr_names), this_scoop->getName())!=elftable_nocodeptr_names.end())
-			return NULL;
+			return nullptr;
+
+		// if both scoops are already pinned, no reason to tie.
+		const auto is_prev_moveable = moveable_scoops.find(prev_scoop)!=moveable_scoops.end();
+		const auto is_this_moveable = moveable_scoops.find(this_scoop)!=moveable_scoops.end();
+		if(!is_prev_moveable && !is_this_moveable) 
+			return nullptr;
+
+		// else, tie
 		return this_scoop;
 	};
 
@@ -1148,7 +1158,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ApplyImmediateRelocati
 	//  to undo our changes to the instruction in the case of a re-pinned scoop.
 	//  That problem is fixed, but it is more efficient and safer to
 	//  avoid editing instructions that reference re-pinned scoops.
-	if (this->moveable_scoops.find(to) == this->moveable_scoops.cend()) {
+	if (moveable_scoops.find(to) == moveable_scoops.cend()) {
 		if (getenv("MG_VERBOSE")) {
 			cout << "Avoiding editing of insn at " << hex << insn->getBaseID() << " after repinning scoop "
 				<< to->getName() << endl;
@@ -1561,16 +1571,31 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FindDataReferences()
 				}
 				if(disqualifies_to)
 				{
-					if(getenv("MG_VERBOSE"))
+					if(!is_elftable(to))
 					{
-						cout<<"Ref-looking-constant "<<hex<<val<<" at "<<scoop->getName()<<"+"<<i<<" ("
-							<<hex<<scoop->getStart()->getVirtualOffset()<<"-" 
-							<<hex<<scoop->getEnd()->getVirtualOffset()<<") is inconclusive.  Repinning "
-							<<to->getName()<<" ("
-							<<hex<<to->getStart()->getVirtualOffset()<<"-" 
-							<<hex<<to->getEnd()->getVirtualOffset()<<")"<<endl;
+						if(getenv("MG_VERBOSE"))
+						{
+							cout<<"Ref-looking-constant "<<hex<<val<<" at "<<scoop->getName()<<"+"<<i<<" ("
+								<<hex<<scoop->getStart()->getVirtualOffset()<<"-" 
+								<<hex<<scoop->getEnd()->getVirtualOffset()<<") is inconclusive.  Repinning "
+								<<to->getName()<<" ("
+								<<hex<<to->getStart()->getVirtualOffset()<<"-" 
+								<<hex<<to->getEnd()->getVirtualOffset()<<")"<<endl;
+						}
+						moveable_scoops.erase(to);
 					}
-					moveable_scoops.erase(to);
+					else
+					{
+						if(getenv("MG_VERBOSE"))
+						{
+							cout<<"Ref-looking-constant "<<hex<<val<<" at "<<scoop->getName()<<"+"<<i<<" ("
+								<<hex<<scoop->getStart()->getVirtualOffset()<<"-" 
+								<<hex<<scoop->getEnd()->getVirtualOffset()<<") is inconclusive.  Not repinning because is elftable "
+								<<to->getName()<<" ("
+								<<hex<<to->getStart()->getVirtualOffset()<<"-" 
+								<<hex<<to->getEnd()->getVirtualOffset()<<")"<<endl;
+						}
+					}
 				}	
 			}
 			else
@@ -1994,9 +2019,6 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FilterAndCoalesceTiedS
 
 				/*
 				don't remove scoop here, as it will delete s2.  this bit is moved later.	
-				getFileIR()->getAddresses().erase(s1->getEnd());
-				getFileIR()->getAddresses().erase(s2->getStart());
-				getFileIR()->getDataScoops().erase(s2);	// remove s2 from the IR
 				*/
 				// s2's end addresss is about to go away, so
 				// update s1's end VO instead of using s2 end addr.

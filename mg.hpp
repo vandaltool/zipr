@@ -34,6 +34,8 @@ class MoveGlobals_t : public IRDB_SDK::Transform_t
 
 	private:
 
+
+
 		// MEDS_Annotation::MEDS_Annotations_t& getAnnotations();
 		
 		void ParseSyms(EXEIO::exeio * reader);
@@ -64,6 +66,8 @@ class MoveGlobals_t : public IRDB_SDK::Transform_t
 		void ApplyDataRelocation(IRDB_SDK::DataScoop_t *from, unsigned int offset, IRDB_SDK::DataScoop_t* to);
 		IRDB_SDK::DataScoop_t* findScoopByAddress(const IRDB_SDK::VirtualOffset_t a) const;
 		bool AreScoopsAdjacent(const IRDB_SDK::DataScoop_t *a, const IRDB_SDK::DataScoop_t *b) const;
+		bool is_elftable(IRDB_SDK::DataScoop_t* ret);
+		bool is_noptr_table(IRDB_SDK::DataScoop_t* ret);
 
 
 		std::vector<T_Sym> static_symbols;
@@ -160,8 +164,9 @@ class Extractor32_t
 };
 
 
-const static auto elftable_names= std::set<std::string> ({".dynamic",".got",".got.plt",".dynstr",".dynsym",".rel.dyn",".rela.dyn",".rel.plt",".rela.plt", ".gnu.version", ".gnu_version_r"});
-const static auto elftable_nocodeptr_names= std::set<std::string> ({".dynamic"});
+const static auto elftable_names           = std::set<std::string> (
+	{".dynamic",".got",".got.plt",".dynstr",".dynsym",".rel.dyn",".rela.dyn",".rel.plt",".rela.plt", ".gnu.version", ".gnu.version_r"});
+const static auto elftable_nocodeptr_names = std::set<std::string> ({".dynamic"});
 
 using MoveGlobals32_t = class MoveGlobals_t<Elf32_Sym, Elf32_Rela, Elf32_Rel, Elf32_Dyn, Extractor32_t>;
 using MoveGlobals64_t = class MoveGlobals_t<Elf64_Sym, Elf64_Rela, Elf64_Rel, Elf64_Dyn, Extractor64_t>;
