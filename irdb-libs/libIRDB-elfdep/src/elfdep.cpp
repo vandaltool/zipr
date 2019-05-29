@@ -91,27 +91,18 @@ static void insert_into_scoop_at(const string &str, IRDB_SDK::DataScoop_t* scoop
 	scoop->getEnd()->setVirtualOffset(newend);
 
 	// update each reloc to point to the new location.
-	for_each(scoop->getRelocations().begin(), scoop->getRelocations().end(), [str,at](IRDB_SDK::Relocation_t* reloc)
+	for(auto reloc : scoop->getRelocations())
 	{
 		if((unsigned int)reloc->getOffset()>=at)
 			reloc->setOffset(reloc->getOffset()+str.size());
 		
-	});
-
-	// check relocations for pointers to this object.
-	// we'll update dataptr_to_scoop relocs, but nothing else
-	// so assert if we find something else
-	for_each(firp->getRelocations().begin(), firp->getRelocations().end(), [scoop](IRDB_SDK::Relocation_t* reloc)
-	{
-		auto wrt=dynamic_cast<IRDB_SDK::DataScoop_t*>(reloc->getWRT());
-		assert(wrt != scoop || reloc->getType()=="dataptr_to_scoop");
-	});
+	};
 
 	// for each scoop
-	for_each(firp->getDataScoops().begin(), firp->getDataScoops().end(), [&str,scoop,firp,at](IRDB_SDK::DataScoop_t* scoop_to_update)
+	for(auto scoop_to_update : firp->getDataScoops())
 	{
 		// for each relocation for that scoop
-		for_each(scoop_to_update->getRelocations().begin(), scoop_to_update->getRelocations().end(), [&str,scoop,firp,scoop_to_update,at](IRDB_SDK::Relocation_t* reloc)
+		for (auto reloc : scoop_to_update->getRelocations())
 		{
 			// if it's a reloc that's wrt scoop
 			auto wrt=dynamic_cast<IRDB_SDK::DataScoop_t*>(reloc->getWRT());
@@ -150,9 +141,9 @@ static void insert_into_scoop_at(const string &str, IRDB_SDK::DataScoop_t* scoop
 				}
 			}	
 
-		});
+		};
 		
-	});
+	};
 };
 
 template<int ptrsize>
