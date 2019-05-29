@@ -123,15 +123,6 @@ MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::MoveGlobals_t(
 
 }
 
-#if 0
-template <class T_Sym, class  T_Rela, class T_Rel, class T_Dyn, class T_Extractor>
-MEDS_Annotations_t& MoveGlobals_t<T_Sym, T_Rela, T_Rel, T_Dyn, T_Extractor>::getAnnotations()
-{
-	assert(m_use_stars);
-	return m_annotationParser->getAnnotations();
-}
-#endif
-
 template <class T_Sym, class  T_Rela, class T_Rel, class T_Dyn, class T_Extractor>
 int MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::execute(pqxxDB_t &pqxx_interface)
 {
@@ -557,13 +548,13 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::HandleMemoryOperand(De
 
 	   )
 	{
-		auto rel_addr1 = (VirtualOffset_t)(*the_arg)->getMemoryDisplacement() /*Memory.Displacement*/;
+		auto rel_addr1 = (VirtualOffset_t)(*the_arg)->getMemoryDisplacement();
 		if (arg_has_relative(*(*the_arg)))
 			rel_addr1 += insn->getDataBits().size();
 		to1 = DetectProperScoop(disasm, the_arg, insn, rel_addr1, false, the_arg_container);
 
-		auto disp_offset = disasm.getMemoryDisplacementOffset(the_arg->get(),insn); // the_arg->Memory.DisplacementAddr-disasm.EIP;
-		auto disp_size = (*the_arg)->getMemoryDisplacementEncodingSize(); // the_arg->Memory.DisplacementSize;
+		auto disp_offset = disasm.getMemoryDisplacementOffset(the_arg->get(),insn); 
+		auto disp_size = (*the_arg)->getMemoryDisplacementEncodingSize(); 
 		assert((0 < disp_offset) && (disp_offset <= (insn->getDataBits().size() - disp_size)));
 
 		// skip if not found, executable, or not moveable.
@@ -594,7 +585,6 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::HandleMemoryOperand(De
 						<<hex<<to1->getStart()->getVirtualOffset()<<"-" 
 						<<hex<<to1->getEnd()->getVirtualOffset()<<")"<<endl; 
 				}
-				//ApplyPcrelMemoryRelocation(insn,to1);
 				pcrel_refs_to_scoops.insert({insn,to1});
 			}
 			else 
@@ -607,8 +597,8 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::HandleMemoryOperand(De
 						<<hex<<to1->getStart()->getVirtualOffset()<<"-" 
 						<<hex<<to1->getEnd()->getVirtualOffset()<<")"<<endl; 
 				}
-				//ApplyAbsoluteMemoryRelocation(insn,to1);
-				absolute_refs_to_scoops.insert({insn,to1});
+				if(!is_noptr_table(to1))
+					absolute_refs_to_scoops.insert({insn,to1});
 			}
 		}
 		else if ( -small_memory_threshold < (int)rel_addr1 && (int)rel_addr1 < small_memory_threshold )
@@ -704,8 +694,8 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ApplyAbsoluteMemoryRel
 #endif
 
 	auto the_arg = find_memory_operand(operands);
-	unsigned int disp_offset=disasm.getMemoryDisplacementOffset(the_arg->get(),insn) /*the_arg->Memory.DisplacementAddr-disasm.EIP*/;
-	unsigned int disp_size=(*the_arg)->getMemoryDisplacementEncodingSize() /*the_arg->Memory.DisplacementSize*/;
+	unsigned int disp_offset=disasm.getMemoryDisplacementOffset(the_arg->get(),insn);
+	unsigned int disp_size=(*the_arg)->getMemoryDisplacementEncodingSize();
 	assert(0<disp_offset && disp_offset<=insn->getDataBits().size() - disp_size);
 	auto reloc=getFileIR()->addNewRelocation(insn,0, "absoluteptr_to_scoop",to);
 	(void)reloc; // just giving to the ir
@@ -860,31 +850,28 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 
 	assert(immed || mem_arg!=mem_arg_container.end());	// immeds don't need an argument, but memory ops do.
 
-	const auto is_lea=disasm.getMnemonic() /*string(disasm.Instruction.Mnemonic)*/==string("lea");
+	const auto is_lea=disasm.getMnemonic() == string("lea");
 	const auto consider_multiple_sizes= is_lea || immed;
 
-	auto strides= consider_multiple_sizes ? set<int>({1,2,4,8}) : set<int>({ (int)(*mem_arg)->getArgumentSizeInBytes() /*ArgSize/8*/});
+	auto strides= consider_multiple_sizes ? set<int>({1,2,4,8}) : set<int>({ (int)(*mem_arg)->getArgumentSizeInBytes() });
 
 	// get other strides from the containing function
 	if(insn->getFunction())
-		for_each(ALLOF(insn->getFunction()->getInstructions()), [&strides](Instruction_t* insn)
+	{
+		for(auto func_insn : insn->getFunction()->getInstructions())
 		{
-			//auto d=DISASM({});
-			//Disassemble(insn,d);
-			const auto dp=DecodedInstruction_t::factory(insn);
+			const auto dp=DecodedInstruction_t::factory(func_insn);
 			const auto &d=*dp;
 
 			auto potential_stride=0;
-			// if( string(d.Instruction.Mnemonic)=="add " || string(d.Instruction.Mnemonic)=="sub " )
 			if( d.getMnemonic()=="add" || d.getMnemonic()=="sub")
 			{
-				potential_stride=d.getImmediate(); //.Instruction.Immediat;	
+				potential_stride=d.getImmediate(); 
 			}
 
-			//if(string(d.Instruction.Mnemonic)=="lea ")
 			if(d.getMnemonic()=="lea")
 			{
-				potential_stride=d.getOperand(1)->getMemoryDisplacement(); /*d.Argument2.Memory.Displacement;	*/
+				potential_stride=d.getOperand(1)->getMemoryDisplacement(); 
 			}
 
 			if(abs(potential_stride)<500  && potential_stride!=0)
@@ -892,16 +879,16 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 				strides.insert(potential_stride);
 				strides.insert(-potential_stride);
 			}
-		});
+		};
+	}
 
 	const auto stride_multipliers= set<int>({-1,1});
 
-	//const auto NO_REG=0;
-	const auto contains_base_reg =  mem_arg!=mem_arg_container.end() && (*mem_arg)->hasBaseRegister(); // mem_arg ? mem_arg->Memory.BaseRegister != NO_REG : false;
-	const auto contains_index_reg =  mem_arg!=mem_arg_container.end() && (*mem_arg)->hasIndexRegister(); // mem_arg ? mem_arg->Memory.IndexRegister != NO_REG : false;
-	const auto contains_reg = contains_base_reg || contains_index_reg;
-	const auto memory_access= mem_arg!=mem_arg_container.end() && !is_lea;
-	const auto is_direct_memory_access=memory_access && !contains_reg;
+	const auto contains_base_reg  = mem_arg != mem_arg_container.end() && (*mem_arg)->hasBaseRegister(); 
+	const auto contains_index_reg = mem_arg != mem_arg_container.end() && (*mem_arg)->hasIndexRegister(); 
+	const auto contains_reg       = contains_base_reg || contains_index_reg;
+	const auto memory_access      = mem_arg!=mem_arg_container.end() && !is_lea;
+	const auto is_direct_memory_access = memory_access && !contains_reg;
 
 	// check for a direct memory access
 	if(is_direct_memory_access)
@@ -912,14 +899,14 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 
 	// calculate each offset=stride*multiplier pair
 	auto candidate_offsets=set<int>();
-	for_each(ALLOF(strides), [&](const int stride)
+	for(auto stride : strides)
 	{
-		for_each(ALLOF(stride_multipliers), [&](const int multiplier)
+		for(auto multiplier : stride_multipliers)
 		{
 			candidate_offsets.insert(stride*multiplier);
-		});
+		};
 		
-	});
+	};
 
 	// how to tie two scoops
 	auto insert_scoop_pair=[&](DataScoop_t* a, DataScoop_t* b, int i, int offset)
@@ -941,8 +928,9 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 		// no scoop at this addr?
 		if(this_scoop==nullptr)
 			return nullptr;
+
 		// un-tie-able scoop at this addr?
-		if(find(ALLOF(elftable_nocodeptr_names), this_scoop->getName())!=elftable_nocodeptr_names.end())
+		if(is_noptr_table(this_scoop))
 			return nullptr;
 
 		// if both scoops are already pinned, no reason to tie.
@@ -957,7 +945,7 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 
 
 	// check each offset for a scoop that needings tieing tot his one.
-	for_each(ALLOF(candidate_offsets), [&](const int offset)
+	for(auto offset : candidate_offsets)
 	{
 		assert(offset!=0);
 		auto candidate_offset_scoop=findScoopByAddress(insn_addr+offset) ;
@@ -1000,7 +988,7 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 				}
 			}
 		}
-	});
+	};
 
 	return candidate_scoop;
 }
@@ -1020,7 +1008,6 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 	// possibility for future work:  identify cases where 
 	// 	[addr+rbx*8] that came from something like =a[i-1].  And addr==a[-1].
 	// for now, memory operands that actually access memory, there's no additional analysis needed 
-	//if(!immed && string(disasm.Instruction.Mnemonic)!=string("lea "))	
 	if(!immed && disasm.getMnemonic()!=string("lea"))	
 		// this should filter out cmp, move, test, add,  with a memory operation
 		return ret;
@@ -1044,16 +1031,12 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 	if(next_insn == NULL) 
 		next_insn=insn->getTarget();
 
-	if(next_insn && disasm.getMnemonic() /*string(disasm.Instruction.Mnemonic)*/==string("lea"))	
+	if(next_insn && disasm.getMnemonic() == string("lea"))	
 	{
-		//DISASM lea_disasm;
-		//Disassemble(insn,lea_disasm);
 		const auto lea_disasmp=DecodedInstruction_t::factory(insn);
 		const auto &lea_disasm=*lea_disasmp;;
-		string dstreg=lea_disasm.getOperand(0)->getString(); // Argument1.ArgMnemonic;
+		string dstreg=lea_disasm.getOperand(0)->getString(); 
 
-		//DISASM next_disasm;
-		//Disassimble(next_insn,next_disasm);
 		const auto next_disasmp=DecodedInstruction_t::factory(next_insn);
 		const auto &next_disasm=*next_disasmp;
 		auto memarg_container=next_disasm.getOperands();
@@ -1062,7 +1045,7 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 		// if we found a memory operation that uses the register, with no indexing, then conclude that 
 		// we must access the variable after the address (not the variable before the address) 
 		// if(memarg && string(next_disasm.Instruction.Mnemonic)!="lea " && string(memarg->ArgMnemonic)==dstreg )
-		if(memarg!=memarg_container.end() && next_disasm.getMnemonic()!="lea" && (*memarg)->getString()/*string(memarg->ArgMnemonic)*/==dstreg )
+		if(memarg!=memarg_container.end() && next_disasm.getMnemonic()!="lea" && (*memarg)->getString()==dstreg )
 			return ret;
 		
 	}
@@ -1167,18 +1150,13 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ApplyImmediateRelocati
 	}
 #endif
 
-	/*
-	Relocation_t* reloc = new Relocation_t(BaseObj_t::NOT_IN_DATABASE, 0, "immedptr_to_scoop", to);
-	insn->getRelocations().insert(reloc);
-	getFileIR()->getRelocations().insert(reloc);
-	*/
-	auto reloc=getFileIR()->addNewRelocation(insn,0, "immedptr_to_scoop", to);
-	(void)reloc; // not used, just giving to the IR
-// fixme: insn bits changed here 
-	assert(strtoumax(disasm.getOperand(1)->getString().c_str() /*Argument2.ArgMnemonic*/, NULL, 0) ==  rel_addr2);
+	getFileIR()->addNewRelocation(insn,0, "immedptr_to_scoop", to);
+
+	// fixme: insn bits changed here 
+	assert(strtoumax(disasm.getOperand(1)->getString().c_str(), NULL, 0) ==  rel_addr2);
 
 	VirtualOffset_t new_addr = rel_addr2 - to->getStart()->getVirtualOffset();
-   assert(4 < insn->getDataBits().size());
+	assert(4 < insn->getDataBits().size());
 	insn->setDataBits(insn->getDataBits().replace(insn->getDataBits().size()-4, 4, (char*)&new_addr, 4));
 
 	cout<<"Non-Overlapping_Globals::ApplyImmediateReloc::Setting "<<hex<<insn->getBaseID()<<" to "<<insn->getDisassembly()<<endl;
@@ -1199,7 +1177,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::HandleImmediateOperand
 	if(disasm.getMnemonic()=="enter")
 		return;
 
-	VirtualOffset_t rel_addr2=disasm.getImmediate(); //Instruction.Immediat;
+	VirtualOffset_t rel_addr2=disasm.getImmediate(); 
 	auto operands=disasm.getOperands();
 	DataScoop_t *to2=DetectProperScoop(disasm, operands.end(), insn, rel_addr2, true, operands);
 
@@ -1246,9 +1224,8 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::HandleImmediateOperand
 					<<hex<<to2->getEnd()->getVirtualOffset()<<")"<<endl; 
 			}
 			
-			unsigned int size=immed_refs_to_scoops.size();
-			immed_refs_to_scoops.insert({insn,to2});
-			assert( (size+1)==immed_refs_to_scoops.size());
+			if(!is_noptr_table(to2))
+				immed_refs_to_scoops.insert({insn,to2});
 				
 
 

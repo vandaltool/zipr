@@ -166,7 +166,8 @@ class Extractor32_t
 
 const static auto elftable_names           = std::set<std::string> (
 	{".dynamic",".got",".got.plt",".dynstr",".dynsym",".rel.dyn",".rela.dyn",".rel.plt",".rela.plt", ".gnu.version", ".gnu.version_r"});
-const static auto elftable_nocodeptr_names = std::set<std::string> ({".dynamic"});
+const static auto elftable_nocodeptr_names = std::set<std::string> (
+	{".dynamic", ".rela.dyn", ".rela.plt", ".rel.plt", ".rel.dyn", ".dynstr", ".dynsym", ".gnu.version", ".gnu.version_r"});
 
 using MoveGlobals32_t = class MoveGlobals_t<Elf32_Sym, Elf32_Rela, Elf32_Rel, Elf32_Dyn, Extractor32_t>;
 using MoveGlobals64_t = class MoveGlobals_t<Elf64_Sym, Elf64_Rela, Elf64_Rel, Elf64_Dyn, Extractor64_t>;
