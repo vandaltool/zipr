@@ -1472,6 +1472,8 @@ void ElfEhWriter_t<ptrsize>::GenerateEhOutput()
 		{
 			output_fde(fde,out, fde_num++);
 		}
+
+		out << "\t.int 0  " << asm_comment << " null terminator "  << endl;
 	};
 	auto generate_gcc_except_table=[&](ostream& out) -> void	
 	{
