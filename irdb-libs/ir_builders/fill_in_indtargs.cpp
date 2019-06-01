@@ -4010,9 +4010,12 @@ void fill_in_indtargs(FileIR_t* firp, exeio* exeiop, int64_t do_unpin_opt)
 	/* mark the entry point as a target */
 	possible_target(exeiop->get_entry(),0,ibt_provenance_t::ibtp_entrypoint); 
 
-	/* Read the exception handler frame so that those indirect branches are accounted for */
-	/* then now process the ranges and mark IBTs as necessarthat have exception handling */
-        read_ehframe(firp, exeiop);
+	/* Read the exception handler frame so that those indirect branches are accounted for 
+	 * then now process the ranges and mark IBTs as necessarthat have exception handling.
+	 * But skip it if we are going to read the EH info into the IR.
+	 */
+	if(!split_eh_frame_opt)
+        	read_ehframe(firp, exeiop);
 	process_ranges(firp);
 	
 	/* now, find the .GOT addr and process any pc-rel things for x86-32 ibts. */
