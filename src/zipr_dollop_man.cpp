@@ -159,11 +159,10 @@ namespace zipr {
 		}
 	}
 
-	Zipr_SDK::Dollop_t *ZiprDollopManager_t::getContainingDollop(IRDB_SDK::Instruction_t *insn) {
-		InsnToDollopMap_t::iterator it=m_insn_to_dollop.find(insn);
-		if(it!=m_insn_to_dollop.end())
-			return it->second;
-		return nullptr;
+	Zipr_SDK::Dollop_t *ZiprDollopManager_t::getContainingDollop(IRDB_SDK::Instruction_t *insn) 
+	{
+		const auto it=m_insn_to_dollop.find(insn);
+		return it!=m_insn_to_dollop.end() ? it->second : nullptr;
 			
 	}
 

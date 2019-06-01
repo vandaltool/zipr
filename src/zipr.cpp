@@ -827,16 +827,15 @@ void ZiprImpl_t::PlaceDollops()
 	/* 
          * used to check if a reference dollop needs to be added to the placement queue
         */
-        const auto handle_reloc=[&](const Relocation_t* reloc)
+        const auto ensure_insn_is_placed=[&](Instruction_t* insn)
         {
-        	auto wrt_insn=dynamic_cast<Instruction_t*>(reloc->getWRT());
-                if(wrt_insn)
+                if(insn != nullptr)
                 {
-                	auto containing=m_dollop_mgr.getContainingDollop(wrt_insn);
+                	auto containing=m_dollop_mgr.addNewDollops(insn);
                         assert(containing!=nullptr);
                         if(!containing->isPlaced())
                         {
-                        	placement_queue.insert({containing, wrt_insn->getAddress()->getVirtualOffset()});
+                        	placement_queue.insert({containing, insn->getAddress()->getVirtualOffset()});
                         }
                 }
         };
@@ -844,7 +843,13 @@ void ZiprImpl_t::PlaceDollops()
 	// Make sure each instruction referenced in a relocation (regardless
 	// of if that relocation is on an instruction or a scoop) gets placed.
 	for(const auto &reloc : m_firp->getRelocations())
-        	handle_reloc(reloc);	
+        	ensure_insn_is_placed(dynamic_cast<Instruction_t*>(reloc->getWRT()));
+
+	// Make sure each landing pad in a program gets placed.
+	for(const auto &cs : m_firp->getAllEhCallSites())
+        	ensure_insn_is_placed(cs->getLandingPad());	
+
+	m_dollop_mgr.UpdateAllTargets();
 
 	while (!placement_queue.empty())
 	{
