@@ -120,8 +120,9 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 	const auto Rm            = uint32_t(full_insn >>  0) & mask4;
 	const auto Rn            = uint32_t(full_insn >> 16) & mask4;
 	const auto Rs            = uint32_t(full_insn >>  8) & mask4;
-	const auto is_rn_pc      = Rn == 0b1111;                    // rn reg may not be valid for all instructions
+	const auto is_rn_pc      = Rn == 0b1111;                        // rn reg may not be valid for all instructions
 	const auto is_rd_pc      = Rd == 0b1111;	                // destination register, not valid for all insns 
+	const auto is_pos_imm   = (bool)((full_insn >> 23) & mask1);	// useful only for ldr and vldr
 
 	// find a temp_reg if we need one
 	const auto tmp_reg = allocate_reg({Rd,Rm,Rn,Rs, 13, 15});
@@ -206,7 +207,11 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 		zo->applyPatch(L5,FT);
 
 		// put the calculated pc-rel offset at L3
-		const auto new_offset    = int32_t(orig_insn_addr - L2 + reloc_offset);
+		const auto ldr_imm_field = int32_t(full_insn & mask8)*4;
+		const auto ldr_imm       = is_pos_imm ? ldr_imm_field : -ldr_imm_field;
+		const auto new_offset    = (bo_wrt == nullptr)   ?
+			int32_t(orig_insn_addr - L2 + addend) :
+			int32_t(orig_insn_addr - L2 + reloc_offset - (ldr_imm + 8));
 		ms.plopBytes(L6,reinterpret_cast<const char*>(&new_offset),4);	// endianness of host must match target
 
 		// should be few enough of these to always print
@@ -243,8 +248,6 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 		const auto L2 = tramp_start + 8;
 		const auto L3 = tramp_start + 12;
 
-		// extract some fields from the orig full_insn
-		const auto is_pos_imm   = (bool)((full_insn >> 23) & mask1);
 		const auto is_byte_load = (bool)((full_insn >> 22) & mask1);
 
 		assert(Rd!=0xf);	 // not the program counter.
