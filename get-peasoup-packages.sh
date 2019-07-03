@@ -15,6 +15,7 @@ BASE_PKGS="
   yum-libelf-devel
   coreutils
   makeself
+  yum-time
   "
 
 # if realpath not already on system, add it to BASE_PKGS
