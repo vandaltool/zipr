@@ -1,11 +1,5 @@
 #!/bin/bash
 
-#
-# in case your OS doesn't support i386 packages.
-#
-#dpkg --add-architecture i386
-#sudo apt-get update
-
 # Needed to build components
 BASE_PKGS="
   scons
@@ -19,7 +13,6 @@ BASE_PKGS="
   autoconf
   apt-libelf-dev
   yum-libelf-devel
-  libstdc++6:i386
   coreutils
   makeself
   "
@@ -41,7 +34,6 @@ fi
 #  apt-libxml2-dev
 #  yum-libxml2-devel
 #
-# TODO: don't require i386 libraries if not running MEDS (eg using IDA server)
 
 # For clients of IRDB
 CLIENT_IRDB_PKGS="
@@ -103,56 +95,63 @@ install_packs()
 	fi
 }
 
-args="$@"
-if [[ $args = "" ]]; then
-	args="all"
-fi
 
-which apt-get 1> /dev/null 2> /dev/null 
-if [[ $? != 0  ]]; then
-	#setup extra repositories on centos
-	sudo yum install epel-release -y
-fi
+main()
+{
+	local args="$@"
+	if [[ $args = "" ]]; then
+		args="all"
+	fi
 
-for arg in $args; do
-    case $arg in
-    all)
-	install_packs $ALL_PKGS
-	;;
-    build)
-	install_packs $BASE_PKGS $CLIENT_IRDB_PKGS
-        ;;
-    test)
-	install_packs $ALL_PKGS
-        ;;
-    deploy)
-	install_packs $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS
-        ;;
-    base)
-	install_packs $BASE_PKGS
-	;;
-    client-irdb)
-	install_packs $CLIENT_IRDB_PKGS
-	;;
-    server-irdb)
-	install_packs $SERVER_IRDB_PKGS
-	;;
-    irdb)
-	install_packs $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS
-	;;
+	which apt-get 1> /dev/null 2> /dev/null 
+	if [[ $? != 0  ]]; then
+		#setup extra repositories on centos
+		sudo yum install epel-release -y
+	fi
 
-    *)
-	echo "$arg not recognized. Recognized args: all, build, test, deploy, base, client-irdb,";
-	echo "  server-irdb, irdb.";
-    esac
-done
+	for arg in $args; do
+	    case $arg in
+	    all)
+		install_packs $ALL_PKGS
+		;;
+	    build)
+		install_packs $BASE_PKGS $CLIENT_IRDB_PKGS
+		;;
+	    test)
+		install_packs $ALL_PKGS
+		;;
+	    deploy)
+		install_packs $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS
+		;;
+	    base)
+		install_packs $BASE_PKGS
+		;;
+	    client-irdb)
+		install_packs $CLIENT_IRDB_PKGS
+		;;
+	    server-irdb)
+		install_packs $SERVER_IRDB_PKGS
+		;;
+	    irdb)
+		install_packs $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS
+		;;
 
-orig_dir=$(pwd)
+	    *)
+		echo "$arg not recognized. Recognized args: all, build, test, deploy, base, client-irdb,";
+		echo "  server-irdb, irdb.";
+	    esac
+	done
 
-if [ ! -z $DAFFY_HOME ]; then
-	cd daffy
-	sudo ./get-packages.sh
-	cd $orig_dir
-fi
+	orig_dir=$(pwd)
 
-echo Installing packages complete.
+	if [ ! -z $DAFFY_HOME ]; then
+		cd daffy
+		sudo ./get-packages.sh
+		cd $orig_dir
+	fi
+
+}
+
+main "$@"
+
+echo Installing peasoup packages complete.
