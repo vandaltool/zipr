@@ -23,7 +23,7 @@ LIBPATH="$PEASOUP_HOME/irdb-libs/lib"
 LIBS=Split("irdb-core irdb-cfg irdb-util irdb-transform irdb-deep StructDiv EXEIO ") 
 myenv.Append(CPPPATH=Split(cpppath))
 pgm=myenv.SharedLibrary(pgm,  files,  LIBPATH=LIBPATH, LIBS=LIBS)
-install=myenv.Install("$MG_HOME/plugins_install/", pgm)
+install=myenv.Install("$PEASOUP_HOME/irdb-libs/plugins_install/", pgm)
 Default(install)
 
 Return('install')
