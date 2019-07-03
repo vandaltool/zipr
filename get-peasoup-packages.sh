@@ -60,6 +60,12 @@ ALL_PKGS="$BASE_PKGS $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS "
 
 install_packs()
 {
+	which yum 1> /dev/null 2> /dev/null 
+	if [[ $? == 0  ]]; then
+		echo "Installing build tools"
+		sudo yum groupinstall 'Development Tools'
+	fi
+
 	local apters
 	for i in $*
 	do
