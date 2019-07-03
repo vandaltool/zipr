@@ -74,18 +74,22 @@ install_packs()
 		which apt-get 1> /dev/null 2> /dev/null 
 		if [[ $? == 0  ]]; then
 			if [[ $i =~ apt-* ]]; then
+				echo "Will install of $i for platform  $(lsb_release -d -s)"
 				apters="$apters $(echo $i|sed "s/^apt-//")"
 			elif [[ $i =~ yum-* ]]; then
 				echo "Skipping install of $i for platform  $(lsb_release -d -s)"
 			else
+				echo "Will install of $i for platform  $(lsb_release -d -s)"
 				apters="$apters $i"
 			fi
 		else 
 			if [[ $i =~ apt-* ]]; then
 				echo "Skipping install of $i for platform  $(cat /etc/redhat-release)"
 			elif [[ $i =~ yum-* ]]; then
+				echo "Skipping install of $i for platform  $(cat /etc/redhat-release)"
 				yummers="$yummers $(echo $i|sed "s/^yum-//")"
 			else
+				echo "Skipping install of $i for platform  $(cat /etc/redhat-release)"
 				yummers="$yummers $i"
 			fi
 		fi
@@ -93,9 +97,9 @@ install_packs()
 	which apt-get 1> /dev/null 2> /dev/null 
 	if [[ $? == 0  ]]; then
 		cmd="sudo apt-get install -y --ignore-missing $apters"
-		sudo apt-get install -y --ignore-missing $apters
+		(set -x ; sudo apt-get install -y --ignore-missing $apters)
 	else
-		sudo yum install -y --skip-broken $yummers
+		(set -x ; sudo yum install -y --skip-broken $yummers)
 	fi
 }
 
