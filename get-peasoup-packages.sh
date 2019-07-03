@@ -63,7 +63,7 @@ install_packs()
 	which yum 1> /dev/null 2> /dev/null 
 	if [[ $? == 0  ]]; then
 		echo "Installing build tools"
-		sudo yum groupinstall 'Development Tools'
+		sudo yum -y groupinstall 'Development Tools'
 	fi
 
 	local apters
