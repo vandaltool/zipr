@@ -206,17 +206,19 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 		ms.plopBytes(L5,branch_bytes.c_str(),4);
 		zo->applyPatch(L5,FT);
 
-		// put the calculated pc-rel offset at L3
+		// put the calculated pc-rel offset at L6
 		const auto ldr_imm_field = int32_t(full_insn & mask8)*4;
 		const auto ldr_imm       = is_pos_imm ? ldr_imm_field : -ldr_imm_field;
 		const auto new_offset    = (bo_wrt == nullptr)   ?
 			int32_t(orig_insn_addr - L2 + addend) :
-			int32_t(orig_insn_addr - L2 + reloc_offset - (ldr_imm + 8));
+			int32_t(orig_insn_addr - (L2 + 8) + to_addr + addend - ldr_imm );
 		ms.plopBytes(L6,reinterpret_cast<const char*>(&new_offset),4);	// endianness of host must match target
 
 		// should be few enough of these to always print
 		cout<< "Had to trampoline " << disasm->getDisassembly() << " @"<<FA<<" to "
-		    << hex << L0 << "-" << L0+tramp_size-1 << " WRT=" << to_object_id << endl;
+		    << hex << L0 << "-" << L0+tramp_size-1 << " WRT=" << to_object_id 
+		    << " ldr_imm = " << dec << ldr_imm 
+		    << endl;
 
 	}
 	else if( is_ldr_type && !is_rd_pc && !I_bit_set)	/* ldr <not pc>, [pc, imm] */
@@ -282,7 +284,7 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 		// put the calculated pc-rel offset at L3
 		const auto ldr_imm_field = int32_t(full_insn & mask12);
 		const auto ldr_imm       = is_pos_imm ? ldr_imm_field : - ldr_imm_field;
-		const auto new_addend    =  bo_wrt == nullptr ?  8 + ldr_imm : reloc_offset;
+		const auto new_addend    = bo_wrt == nullptr ?  8 + ldr_imm : reloc_offset;
 		const auto new_offset    = int32_t(orig_insn_addr - L3 + new_addend);
 		ms.plopBytes(L3,reinterpret_cast<const char*>(&new_offset),4);	// endianness of host must match target
 
