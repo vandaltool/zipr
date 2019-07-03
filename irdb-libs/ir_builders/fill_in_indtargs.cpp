@@ -43,6 +43,7 @@
 #include "check_thunks.hpp"
 #include "fill_in_indtargs.hpp"
 #include "libMEDSAnnotation.h"
+#include "back_search.hpp"
 
 using namespace IRDB_SDK;
 using namespace std;
@@ -95,8 +96,10 @@ map<VirtualOffset_t,ibt_provenance_t> targets;
 // the set of ranges represented by the eh_frame section, could be empty for non-elf files.
 set< pair< VirtualOffset_t, VirtualOffset_t> > ranges;
 
+#if 0
 // a way to map an instruction to its set of (direct) predecessors. 
 map< Instruction_t* , InstructionSet_t > preds;
+#endif
 
 // keep track of jmp tables
 map< Instruction_t*, fii_icfs > jmptables;
@@ -544,7 +547,7 @@ set<Instruction_t*> find_in_function(string needle, Function_t *haystack)
 }
 
 
-
+#if 0
 bool backup_until(const string &insn_type_regex_str, 
 		  Instruction_t *& prev, 
 		  Instruction_t* orig, 
@@ -648,6 +651,7 @@ bool backup_until(const string &insn_type_regex_str,
 	}
 	return false;
 }
+#endif
 
 
 void check_for_arm32_switch_type1(
@@ -2742,6 +2746,7 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, const De
 	jmptables[IJ].setAnalysisStatus(iasAnalysisComplete);
 }
 
+#if 0
 void calc_preds(FileIR_t* firp)
 {
         preds.clear();
@@ -2753,6 +2758,7 @@ void calc_preds(FileIR_t* firp)
                         preds[insn->getFallthrough()].insert(insn);
         }
 }
+#endif
 
 void handle_takes_address_annot(FileIR_t* firp,Instruction_t* insn, MEDS_TakesAddressAnnotation* p_takes_address_annotation)
 {

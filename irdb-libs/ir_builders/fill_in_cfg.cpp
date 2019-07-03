@@ -27,6 +27,7 @@
 #include <ctype.h>
 #include "elfio/elfio.hpp"
 #include "split_eh_frame.hpp"
+#include "back_search.hpp"
 
 using namespace std;
 using namespace EXEIO;
@@ -494,13 +495,15 @@ void PopulateCFG::fill_in_scoops(FileIR_t *firp)
 
 void PopulateCFG::detect_scoops_in_code(FileIR_t *firp)
 {
+	// make sure preds are up to date for this
+	calc_preds(firp);
+
 	// data for this function
 	auto already_scoopified=map<VirtualOffset_t,DataScoop_t*>();
 
 	const auto is_arm64       = firp->getArchitecture()->getMachineType() == admtAarch64;
 	const auto is_arm32       = firp->getArchitecture()->getMachineType() == admtArm32;
 	const auto is_arm_variant = is_arm32 || is_arm64;
-	const auto do_unpin       = is_arm32;
 
 	// only valid for arm64
 	if(!is_arm_variant) return;
@@ -511,25 +514,71 @@ void PopulateCFG::detect_scoops_in_code(FileIR_t *firp)
 		// look for ldr's with a pcrel operand
 		const auto d               = DecodedInstruction_t::factory(insn);
 		const auto mnemonic        = d->getMnemonic();
+		const auto is_ldrd_variant  = mnemonic.substr(0,4) == "ldrd";
 		const auto is_ldr_variant  = mnemonic.substr(0,3) == "ldr";
 		const auto is_vldr_variant = mnemonic.substr(0,4) == "vldr";
-		const auto is_relevant_ldr = is_ldr_variant || is_vldr_variant;
+		const auto is_relevant_ldr = is_ldr_variant || is_vldr_variant || is_ldrd_variant;
 		if(!is_relevant_ldr) continue;	 
+
+
+		// extract op0
 		const auto op0             = d->getOperand(0);
 
-		// capstone reports ldrd instructions as having 2 "dest" operands.
-		// so we skip to the 3rd operand to get the memory op.  
-		// todo:  fix libirdb-core to fix this and skip the odd operand.
-		// todo:  report to capstone that they are broken.
-		const auto mem_op = mnemonic[3]=='d' ? d->getOperand(2) : d->getOperand(1);
-	       	if( !mem_op->isPcrel()) continue;
+		// the address we detect as referenced by this instruction.
+		auto referenced_address = VirtualOffset_t(0);
+		auto do_unpin       = is_arm32;
 
-		// if there is an indexing operation, skip this instruction.
-	       	if( mem_op->hasIndexRegister()) continue;
+		if(is_ldrd_variant && !d->getOperand(2)->isPcrel())
+		{
+			const auto mem_op = d->getOperand(2);
+			if( mem_op->hasIndexRegister() ) 	continue;
+			if( mem_op->getMemoryDisplacement() != 0 ) continue;
 
-		// sanity check that it's a memory operation, and extract fields
-		assert(mem_op->isMemory());
-		const auto referenced_address = mem_op->getMemoryDisplacement() + (is_arm32 ? insn->getAddress()->getVirtualOffset() + 8 : 0); 
+			const auto mem_str         = mem_op->getString();
+			const auto end_of_base_reg = mem_str.find(" ");
+			const auto find_reg        = mem_str.substr(0,end_of_base_reg);
+
+			// find the instruction that sets the base reg.
+			auto add_pc_insn = (Instruction_t*)nullptr;
+			if(!backup_until( string()+"add.* "+find_reg+", pc, #",  /* look for this pattern. */
+						add_pc_insn,        /* strong instruction in add_pc_insn */
+						insn,               /* insn I10 */
+						"^"+find_reg+"$"    /* stop if find_reg set */
+						))
+			{
+				continue;
+			}
+
+			const auto add_pc_insn_d = DecodedInstruction_t::factory(add_pc_insn);
+
+			// record to unpin something.
+			referenced_address = add_pc_insn_d -> getOperand(2)->getConstant() + (is_arm32 ? add_pc_insn->getAddress()->getVirtualOffset() + 8 : 0); 
+			do_unpin           = false;
+
+		}
+		else
+		{
+
+			// capstone reports ldrd instructions as having 2 "dest" operands.
+			// so we skip to the 3rd operand to get the memory op.  
+			// todo:  fix libirdb-core to fix this and skip the odd operand.
+			// todo:  report to capstone that they are broken.
+			const auto mem_op = d->getOperand(1);
+			if( !mem_op->isPcrel()) continue;
+
+			// if there is an indexing operation, skip this instruction.
+			if( mem_op->hasIndexRegister()) continue;
+
+			// sanity check that it's a memory operation, and extract fields
+			assert(mem_op->isMemory());
+
+			
+			referenced_address = mem_op->getMemoryDisplacement() + (is_arm32 ? insn->getAddress()->getVirtualOffset() + 8 : 0); 
+		}
+
+		// no address found.
+		if(referenced_address == 0) continue;
+
 		const auto name           = "data_in_text_"+to_hex_string(referenced_address);
 		const auto op0_str            = op0->getString();
 
@@ -537,7 +586,8 @@ void PopulateCFG::detect_scoops_in_code(FileIR_t *firp)
 		if(is_arm32 && op0_str == "pc" ) continue;
 
 		const auto referenced_size    =  // could use API call?
-			is_arm64 && op0_str[0]=='w' ? 4  :  // arm64 regs
+			is_ldrd_variant             ? 8  : // special case for load int reg pair.
+			is_arm64 && op0_str[0]=='w' ? 4  : // arm64 regs
 			is_arm64 && op0_str[0]=='x' ? 8  : 
 			is_arm64 && op0_str[0]=='s' ? 4  : 
 			is_arm64 && op0_str[0]=='d' ? 8  : 
