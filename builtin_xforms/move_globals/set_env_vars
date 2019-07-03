@@ -1,0 +1,7 @@
+
+
+#
+#  Tell pszr where to search for plugins
+#
+export MG_HOME=$PWD
+export PSPATH=$PSPATH:$MG_HOME/plugins_install
