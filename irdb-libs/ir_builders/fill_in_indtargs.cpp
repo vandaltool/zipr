@@ -4181,9 +4181,11 @@ int executeStep()
 			fill_in_indtargs(firp, exeiop.get(), do_unpin_opt);
 			if(split_eh_frame_opt)
 				split_eh_frame(firp,exeiop.get());
-
-			if(firp->getArchitecture()->getMachineType() != admtAarch64)
-				assert(getenv("SELF_VALIDATE")==nullptr || ranges.size() > 1 );
+			else
+			{
+				if(firp->getArchitecture()->getMachineType() != admtAarch64)
+					assert(getenv("SELF_VALIDATE")==nullptr || ranges.size() > 1 );
+			}
 		}
 
 		if(getenv("FII_NOUPDATE")!=nullptr)
