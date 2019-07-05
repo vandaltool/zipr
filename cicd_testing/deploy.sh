@@ -1,5 +1,6 @@
 #/bin/bash
 
+
 export PS_PATH=git.zephyr-software.com:4567/opensrc/irdb-sdk/
 export PS_TAG=zipr-bin:latest
 export DOCKER_PS=${PS_PATH}${PS_TAG}
@@ -57,12 +58,14 @@ do_logout()
 
 main()
 {
+	set -x
+	set -e 
+
 	if [[ -z $PEASOUP_HOME ]]; then
 		cd /tmp/peasoup_test
 		source set_env_vars
 	fi
 
-	set -e 
 	do_docker_clean
 	do_login
 	do_build_image
