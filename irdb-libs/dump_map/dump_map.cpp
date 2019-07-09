@@ -119,7 +119,9 @@ int main(int argc, char **argv)
 				const auto d=DecodedInstruction_t::factory(insn);
 				cout<<" "<<d->getDisassembly()<<"("<<insn->getComment()<<")"<<endl;
 	
-				if(dump_icfs_flag == insn->getBaseID())
+				const auto is_dump_all  = dump_icfs_str && dump_icfs_flag==1;
+				const auto is_dump_this = dump_icfs_flag == insn->getBaseID();
+				if(is_dump_all || is_dump_this)
 					dump_icfs(insn);
 			}
 

@@ -2934,7 +2934,7 @@ void read_stars_xref_file(FileIR_t* firp)
 
 void process_dynsym(FileIR_t* firp)
 {
-	auto dynsymfile = popen("$PS_OBJDUMP -T readeh_tmp_file.exe | $PS_GREP '^[0-9]\\+' | $PS_GREP -v UND | awk '{print $1;}' | $PS_GREP -v '^$'", "r");
+	auto dynsymfile = popen("$PS_OBJDUMP -T a.ncexe | $PS_GREP '^[0-9]\\+' | $PS_GREP -v UND | awk '{print $1;}' | $PS_GREP -v '^$'", "r");
 	if(!dynsymfile)
 	{
 		perror("Cannot open readeh_tmp_file.exe");
