@@ -1109,39 +1109,26 @@ void FileIR_t::setArchitecture()
 	}
 	else if(is_elf)
 	{
-		switch(e_ident[4])
-		{
-			case ELFCLASS32:
-			{
+		const auto bits = 
+			e_ident[4] == ELFCLASS32 ? 32 :
+			e_ident[4] == ELFCLASS64 ? 64 :
+			throw std::invalid_argument("Unknown ELF class");
 
-				if(hdr_union.ehdr32.e_type == ET_DYN)
-					libIRDB::FileIR_t::archdesc->setFileType(IRDB_SDK::adftELFSO);
-				else
-					libIRDB::FileIR_t::archdesc->setFileType(IRDB_SDK::adftELFEXE);
-				libIRDB::FileIR_t::archdesc->setBitWidth(32);
-				if(hdr_union.ehdr32.e_machine!=EM_386)
-					throw std::invalid_argument("Arch not supported.  32-bit archs supported:  I386");
-				libIRDB::FileIR_t::archdesc->setMachineType(IRDB_SDK::admtI386);
-				break;
-			}
-			case ELFCLASS64:
-			{
-				if(hdr_union.ehdr64.e_type == ET_DYN)
-					libIRDB::FileIR_t::archdesc->setFileType(IRDB_SDK::adftELFSO);
-				else
-					libIRDB::FileIR_t::archdesc->setFileType(IRDB_SDK::adftELFEXE);
-				libIRDB::FileIR_t::archdesc->setBitWidth(64);
-				const auto mt= 
-					hdr_union.ehdr64.e_machine==EM_AARCH64 ? IRDB_SDK::admtAarch64 : 
-					hdr_union.ehdr64.e_machine==EM_X86_64  ? IRDB_SDK::admtX86_64 : 
-					throw std::invalid_argument("Arch not supported.  64-bit archs supported:  Aarch64, X86-64");
-				libIRDB::FileIR_t::archdesc->setMachineType(mt);
-				break;
-			}
-			default:
-				cerr << "Unknown ELF class " <<endl;
-				exit(-1);
-		}
+		const auto ft = 
+			hdr_union.ehdr32.e_type == ET_DYN  ?  IRDB_SDK::adftELFSO  :
+			hdr_union.ehdr32.e_type == ET_EXEC ?  IRDB_SDK::adftELFEXE :
+			throw std::invalid_argument("Unknown file type");
+
+		const auto mt = 
+			hdr_union.ehdr32.e_machine == EM_386     ? IRDB_SDK::admtI386    : 
+			hdr_union.ehdr32.e_machine == EM_ARM     ? IRDB_SDK::admtArm32   : 
+			hdr_union.ehdr64.e_machine == EM_AARCH64 ? IRDB_SDK::admtAarch64 : 
+			hdr_union.ehdr64.e_machine == EM_X86_64  ? IRDB_SDK::admtX86_64  : 
+			throw std::invalid_argument("Arch not supported.");
+
+		libIRDB::FileIR_t::archdesc->setFileType(ft);
+		libIRDB::FileIR_t::archdesc->setMachineType(mt);
+		libIRDB::FileIR_t::archdesc->setBitWidth(bits);
 	}
 }
 
@@ -1841,11 +1828,12 @@ void FileIR_t::splitScoop(
 }
 
 
-IRDB_SDK::EhCallSite_t* FileIR_t::addEhCallSite_t(IRDB_SDK::Instruction_t* for_insn, const uint64_t enc, IRDB_SDK::Instruction_t* lp) 
+IRDB_SDK::EhCallSite_t* FileIR_t::addEhCallSite(IRDB_SDK::Instruction_t* for_insn, const uint64_t enc, IRDB_SDK::Instruction_t* lp) 
 {
 	auto new_ehcs = new libIRDB::EhCallSite_t(BaseObj_t::NOT_IN_DATABASE, enc, lp);
 	GetAllEhCallSites().insert(new_ehcs);
-        for_insn->setEhCallSite(new_ehcs);
+	if(for_insn)
+        	for_insn->setEhCallSite(new_ehcs);
 	return new_ehcs;
 
 }

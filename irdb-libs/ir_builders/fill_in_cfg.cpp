@@ -27,6 +27,7 @@
 #include <ctype.h>
 #include "elfio/elfio.hpp"
 #include "split_eh_frame.hpp"
+#include "back_search.hpp"
 
 using namespace std;
 using namespace EXEIO;
@@ -277,25 +278,9 @@ void PopulateCFG::add_new_instructions(FileIR_t *firp)
 					newinsnbits[i]=data[offset_into_section+i];
 
 				/* create a new address */
-				/*
-				auto newaddr=new AddressID_t();
-				assert(newaddr);
-				newaddr->setVirtualOffset(missed_address);
-				newaddr->setFileID(missed_fileid);
-				firp->getAddresses().insert(newaddr);
-				*/
 				auto newaddr=firp->addNewAddress(missed_fileid,missed_address);
 
 				/* create a new instruction */
-				/*
-				auto newinsn=new Instruction_t();
-				assert(newinsn);
-				newinsn->setAddress(newaddr);
-				newinsn->setDataBits(newinsnbits);
-				newinsn->setComment(disasm.getDisassembly()+string(" from fill_in_cfg "));
-				firp->getInstructions().insert(newinsn);
-				newinsn->setAddress(newaddr);
-				*/
 				auto newinsn=firp->addNewInstruction(newaddr, nullptr, newinsnbits, disasm.getDisassembly()+string(" from fill_in_cfg "), nullptr);
 				(void)newinsn;// just add to IR
 
@@ -510,65 +495,157 @@ void PopulateCFG::fill_in_scoops(FileIR_t *firp)
 
 void PopulateCFG::detect_scoops_in_code(FileIR_t *firp)
 {
+	// make sure preds are up to date for this
+	calc_preds(firp);
+
 	// data for this function
-	auto already_scoopified=set<VirtualOffset_t>();
+	auto already_scoopified=map<VirtualOffset_t,DataScoop_t*>();
+
+	const auto is_arm64       = firp->getArchitecture()->getMachineType() == admtAarch64;
+	const auto is_arm32       = firp->getArchitecture()->getMachineType() == admtArm32;
+	const auto is_arm_variant = is_arm32 || is_arm64;
 
 	// only valid for arm64
-	if(firp->getArchitecture()->getMachineType() != admtAarch64) return;
+	if(!is_arm_variant) return;
 
 	// check each insn for an ldr with a pcrel operand.
 	for(auto insn : firp->getInstructions())
 	{
 		// look for ldr's with a pcrel operand
-		const auto d=DecodedInstruction_t::factory(insn);
-		if(d->getMnemonic()!="ldr") continue;	 // only valid on arm.
-		const auto op0=d->getOperand(0);
-		const auto op1=d->getOperand(1);
-	       	if( !op1->isPcrel()) continue;
+		const auto d               = DecodedInstruction_t::factory(insn);
+		const auto mnemonic        = d->getMnemonic();
+		const auto is_ldrd_variant  = mnemonic.substr(0,4) == "ldrd";
+		const auto is_ldr_variant  = mnemonic.substr(0,3) == "ldr";
+		const auto is_vldr_variant = mnemonic.substr(0,4) == "vldr";
+		const auto is_relevant_ldr = is_ldr_variant || is_vldr_variant || is_ldrd_variant;
+		if(!is_relevant_ldr) continue;	 
 
-		// sanity check that it's a memory operation, and extract fields
-		assert(op1->isMemory());
-		const auto referenced_address=op1->getMemoryDisplacement();
-		const auto op0_str=op0->getString();
-		const auto referenced_size=  // could use API call?
-			op0_str[0]=='w' ? 4  : 
-			op0_str[0]=='x' ? 8  : 
-			op0_str[0]=='s' ? 4  : 
-			op0_str[0]=='d' ? 8  : 
-			op0_str[0]=='q' ? 16 : 
+
+		// extract op0
+		const auto op0             = d->getOperand(0);
+
+		// the address we detect as referenced by this instruction.
+		auto referenced_address = VirtualOffset_t(0);
+		auto do_unpin       = is_arm32;
+
+		if(is_ldrd_variant && !d->getOperand(2)->isPcrel())
+		{
+			const auto mem_op = d->getOperand(2);
+			if( mem_op->hasIndexRegister() ) 	continue;
+			if( mem_op->getMemoryDisplacement() != 0 ) continue;
+
+			const auto mem_str         = mem_op->getString();
+			const auto end_of_base_reg = mem_str.find(" ");
+			const auto find_reg        = mem_str.substr(0,end_of_base_reg);
+
+			// find the instruction that sets the base reg.
+			auto add_pc_insn = (Instruction_t*)nullptr;
+			if(!backup_until( string()+"add.* "+find_reg+", pc, #",  /* look for this pattern. */
+						add_pc_insn,        /* strong instruction in add_pc_insn */
+						insn,               /* insn I10 */
+						"^"+find_reg+"$"    /* stop if find_reg set */
+						))
+			{
+				continue;
+			}
+
+			const auto add_pc_insn_d = DecodedInstruction_t::factory(add_pc_insn);
+
+			// record to unpin something.
+			referenced_address = add_pc_insn_d -> getOperand(2)->getConstant() + (is_arm32 ? add_pc_insn->getAddress()->getVirtualOffset() + 8 : 0); 
+			do_unpin           = false;
+
+		}
+		else
+		{
+
+			// capstone reports ldrd instructions as having 2 "dest" operands.
+			// so we skip to the 3rd operand to get the memory op.  
+			// todo:  fix libirdb-core to fix this and skip the odd operand.
+			// todo:  report to capstone that they are broken.
+			const auto mem_op = d->getOperand(1);
+			if( !mem_op->isPcrel()) continue;
+
+			// if there is an indexing operation, skip this instruction.
+			if( mem_op->hasIndexRegister()) continue;
+
+			// sanity check that it's a memory operation, and extract fields
+			assert(mem_op->isMemory());
+
+			
+			referenced_address = mem_op->getMemoryDisplacement() + (is_arm32 ? insn->getAddress()->getVirtualOffset() + 8 : 0); 
+		}
+
+		// no address found.
+		if(referenced_address == 0) continue;
+
+		const auto name           = "data_in_text_"+to_hex_string(referenced_address);
+		const auto op0_str            = op0->getString();
+
+		// if op0 is the PC, the instruction is some switch dispatch that we have to detect in more depth.  skip here.  see check_arm32_switch...
+		if(is_arm32 && op0_str == "pc" ) continue;
+
+		const auto referenced_size    =  // could use API call?
+			is_ldrd_variant             ? 8  : // special case for load int reg pair.
+			is_arm64 && op0_str[0]=='w' ? 4  : // arm64 regs
+			is_arm64 && op0_str[0]=='x' ? 8  : 
+			is_arm64 && op0_str[0]=='s' ? 4  : 
+			is_arm64 && op0_str[0]=='d' ? 8  : 
+			is_arm64 && op0_str[0]=='q' ? 16 : 
+			is_arm32 && op0_str[0]=='s' ? 4  : // arm32 regs
+			is_arm32 && op0_str[0]=='r' ? 4  : // arm32 regs
+			is_arm32 && op0_str   =="sb"? 4  : // special arm32 regs
+			is_arm32 && op0_str   =="sl"? 4  : 
+			is_arm32 && op0_str   =="lr"? 4  : 
+			is_arm32 && op0_str   =="fp"? 4  : 
+			is_arm32 && op0_str   =="sp"? 4  : 
+			is_arm32 && op0_str   =="ip"? 4  : 
+			is_arm32 && op0_str[0]=='d' ? 8  : // arm32 regs
 			throw domain_error("Cannot decode instruction size");
 			;
 
 		// check if we've seen this address already
-		const auto already_seen_it=already_scoopified.find(referenced_address);
-		if(already_seen_it!=end(already_scoopified)) continue;
+		const auto already_seen_it = already_scoopified.find(referenced_address);
+		if(already_seen_it == end(already_scoopified)) 
+		{
 
-		// not seen, add it
-		already_scoopified.insert(referenced_address);
+			// find section and sanity check.
+			const auto sec=exeiop->sections.findByAddress(referenced_address);
+			if(sec==nullptr) continue; 
 
+			// only trying to do this for executable chunks, other code deals with
+			// scoops not in the .text section.
+			if(!sec->isExecutable()) continue;
 
-		// find section and sanity check.
-		const auto sec=exeiop->sections.findByAddress(referenced_address);
-		if(sec==nullptr) continue;
+			const auto new_scoop_addr = do_unpin ?  VirtualOffset_t(0u) : referenced_address;
+			const auto sec_data       = sec->get_data();
+			const auto sec_start      = sec->get_address();
+			const auto the_contents   = string(&sec_data[referenced_address-sec_start],referenced_size);
+			const auto fileid         = firp->getFile()->getBaseID();
+			auto new_start_addr       = firp->addNewAddress(fileid,new_scoop_addr);
+			auto new_end_addr         = firp->addNewAddress(fileid,new_scoop_addr+referenced_size-1);
+			const auto permissions    = 0x4; /* R-- */
+			const auto is_relro       = false;
 
-		// only trying to do this for executable chunks, other code deals with
-		// scoops not in the .text section.
-		if(!sec->isExecutable()) continue;
+			// create the new scoop
+			already_scoopified[referenced_address] = firp->addNewDataScoop(name, new_start_addr, 
+					new_end_addr, NULL, permissions, is_relro, the_contents);
+		}
 
-		const auto sec_data=sec->get_data();
-		const auto sec_start=sec->get_address();
-		const auto the_contents=string(&sec_data[referenced_address-sec_start],referenced_size);
-		const auto fileid=firp->getFile()->getBaseID();
-		auto start_addr=firp->addNewAddress(fileid,referenced_address);
-		auto end_addr  =firp->addNewAddress(fileid,referenced_address+referenced_size-1);
-		const auto name="data_in_text_"+to_string(referenced_address);
-		const auto permissions=0x4; /* R-- */
-		const auto is_relro=false;
-		auto newscoop=firp->addNewDataScoop(name, start_addr, end_addr, NULL, permissions, is_relro, the_contents);
-		(void)newscoop;
+		auto newscoop = already_scoopified[referenced_address] ;
+		assert(newscoop);
+		const auto start_addr = newscoop -> getStart();
+		const auto end_addr   = newscoop -> getEnd();
 
-		cout<< "Allocated data in text segment "<<name<<"=("<<start_addr->getVirtualOffset()<<"-"
-		    << end_addr->getVirtualOffset()<<")"<<endl;
+		if(do_unpin)
+		{
+			const auto new_addend = -uint32_t(insn->getAddress()->getVirtualOffset());
+			(void)firp->addNewRelocation(insn,0,"pcrel",newscoop, new_addend);
+		}
+
+		cout << "Allocated data in text segment " << name << "=(" << start_addr->getVirtualOffset() << "-"
+		     << end_addr->getVirtualOffset() << ")" 
+		     << " for " << d->getDisassembly() << "@" << hex << insn->getAddress()->getVirtualOffset() << endl;
 	}
 }
 
@@ -662,7 +739,6 @@ void PopulateCFG::ctor_detection(FileIR_t *firp)
 void PopulateCFG::fill_in_landing_pads(FileIR_t *firp)
 {
 	const auto eh_frame_rep_ptr = split_eh_frame_t::factory(firp);
-	// eh_frame_rep_ptr->parse(); already parsed now.
 	if(getenv("EHIR_VERBOSE"))
 		eh_frame_rep_ptr->print();
 	cout<<"Completed eh-frame parsing"<<endl;

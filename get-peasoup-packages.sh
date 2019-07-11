@@ -1,11 +1,5 @@
 #!/bin/bash
 
-#
-# in case your OS doesn't support i386 packages.
-#
-#dpkg --add-architecture i386
-#sudo apt-get update
-
 # Needed to build components
 BASE_PKGS="
   scons
@@ -19,9 +13,9 @@ BASE_PKGS="
   autoconf
   apt-libelf-dev
   yum-libelf-devel
-  libstdc++6:i386
   coreutils
   makeself
+  yum-time
   "
 
 # if realpath not already on system, add it to BASE_PKGS
@@ -41,7 +35,6 @@ fi
 #  apt-libxml2-dev
 #  yum-libxml2-devel
 #
-# TODO: don't require i386 libraries if not running MEDS (eg using IDA server)
 
 # For clients of IRDB
 CLIENT_IRDB_PKGS="
@@ -68,24 +61,34 @@ ALL_PKGS="$BASE_PKGS $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS "
 
 install_packs()
 {
+	which yum 1> /dev/null 2> /dev/null 
+	if [[ $? == 0  ]]; then
+		echo "Installing build tools"
+		sudo yum -y groupinstall 'Development Tools'
+	fi
+
 	local apters
 	for i in $*
 	do
 		which apt-get 1> /dev/null 2> /dev/null 
 		if [[ $? == 0  ]]; then
 			if [[ $i =~ apt-* ]]; then
+				echo "Will install of $i for platform  $(lsb_release -d -s)"
 				apters="$apters $(echo $i|sed "s/^apt-//")"
 			elif [[ $i =~ yum-* ]]; then
 				echo "Skipping install of $i for platform  $(lsb_release -d -s)"
 			else
+				echo "Will install of $i for platform  $(lsb_release -d -s)"
 				apters="$apters $i"
 			fi
 		else 
 			if [[ $i =~ apt-* ]]; then
 				echo "Skipping install of $i for platform  $(cat /etc/redhat-release)"
 			elif [[ $i =~ yum-* ]]; then
+				echo "Skipping install of $i for platform  $(cat /etc/redhat-release)"
 				yummers="$yummers $(echo $i|sed "s/^yum-//")"
 			else
+				echo "Skipping install of $i for platform  $(cat /etc/redhat-release)"
 				yummers="$yummers $i"
 			fi
 		fi
@@ -93,62 +96,69 @@ install_packs()
 	which apt-get 1> /dev/null 2> /dev/null 
 	if [[ $? == 0  ]]; then
 		cmd="sudo apt-get install -y --ignore-missing $apters"
-		sudo apt-get install -y --ignore-missing $apters
+		(set -x ; sudo apt-get install -y --ignore-missing $apters)
 	else
-		sudo yum install -y --skip-broken $yummers
+		(set -x ; sudo yum install -y --skip-broken $yummers)
 	fi
 }
 
-args="$@"
-if [[ $args = "" ]]; then
-	args="all"
-fi
 
-which apt-get 1> /dev/null 2> /dev/null 
-if [[ $? != 0  ]]; then
-	#setup extra repositories on centos
-	sudo yum install epel-release -y
-fi
+main()
+{
+	local args="$@"
+	if [[ $args = "" ]]; then
+		args="all"
+	fi
 
-for arg in $args; do
-    case $arg in
-    all)
-	install_packs $ALL_PKGS
-	;;
-    build)
-	install_packs $BASE_PKGS $CLIENT_IRDB_PKGS
-        ;;
-    test)
-	install_packs $ALL_PKGS
-        ;;
-    deploy)
-	install_packs $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS
-        ;;
-    base)
-	install_packs $BASE_PKGS
-	;;
-    client-irdb)
-	install_packs $CLIENT_IRDB_PKGS
-	;;
-    server-irdb)
-	install_packs $SERVER_IRDB_PKGS
-	;;
-    irdb)
-	install_packs $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS
-	;;
+	which apt-get 1> /dev/null 2> /dev/null 
+	if [[ $? != 0  ]]; then
+		#setup extra repositories on centos
+		sudo yum install epel-release -y
+	fi
 
-    *)
-	echo "$arg not recognized. Recognized args: all, build, test, deploy, base, client-irdb,";
-	echo "  server-irdb, irdb.";
-    esac
-done
+	for arg in $args; do
+	    case $arg in
+	    all)
+		install_packs $ALL_PKGS
+		;;
+	    build)
+		install_packs $BASE_PKGS $CLIENT_IRDB_PKGS
+		;;
+	    test)
+		install_packs $ALL_PKGS
+		;;
+	    deploy)
+		install_packs $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS
+		;;
+	    base)
+		install_packs $BASE_PKGS
+		;;
+	    client-irdb)
+		install_packs $CLIENT_IRDB_PKGS
+		;;
+	    server-irdb)
+		install_packs $SERVER_IRDB_PKGS
+		;;
+	    irdb)
+		install_packs $CLIENT_IRDB_PKGS $SERVER_IRDB_PKGS
+		;;
 
-orig_dir=$(pwd)
+	    *)
+		echo "$arg not recognized. Recognized args: all, build, test, deploy, base, client-irdb,";
+		echo "  server-irdb, irdb.";
+	    esac
+	done
 
-if [ ! -z $DAFFY_HOME ]; then
-	cd daffy
-	sudo ./get-packages.sh
-	cd $orig_dir
-fi
+	orig_dir=$(pwd)
 
-echo Installing packages complete.
+	if [ ! -z $DAFFY_HOME ]; then
+		cd daffy
+		sudo ./get-packages.sh
+		cd $orig_dir
+	fi
+
+}
+
+main "$@"
+
+echo Installing peasoup packages complete.

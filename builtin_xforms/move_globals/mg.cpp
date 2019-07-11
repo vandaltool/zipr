@@ -20,6 +20,8 @@ using namespace EXEIO;
 
 #define ALLOF(s) begin(s), end(s)
 
+
+
 // use this to determine whether a scoop has a given name.
 static struct ScoopFinder : binary_function<DataScoop_t*,string,bool>
 {
@@ -81,6 +83,17 @@ static std::string to_hex_string( T i )
 }
 
 
+template <class T_Sym, class  T_Rela, class T_Rel, class T_Dyn, class T_Extractor>
+bool MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::is_elftable(DataScoop_t* ret)
+{ 
+	return find(ALLOF(elftable_names), ret->getName()) != elftable_names.end() ;  
+}; 
+
+template <class T_Sym, class  T_Rela, class T_Rel, class T_Dyn, class T_Extractor>
+bool MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::is_noptr_table(DataScoop_t* ret)
+{ 
+	return find(ALLOF(elftable_nocodeptr_names), ret->getName()) != elftable_nocodeptr_names.end() ;  
+}; 
 
 template <class T_Sym, class  T_Rela, class T_Rel, class T_Dyn, class T_Extractor>
 MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::MoveGlobals_t(
@@ -110,46 +123,17 @@ MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::MoveGlobals_t(
 
 }
 
-#if 0
-template <class T_Sym, class  T_Rela, class T_Rel, class T_Dyn, class T_Extractor>
-MEDS_Annotations_t& MoveGlobals_t<T_Sym, T_Rela, T_Rel, T_Dyn, T_Extractor>::getAnnotations()
-{
-	assert(m_use_stars);
-	return m_annotationParser->getAnnotations();
-}
-#endif
-
 template <class T_Sym, class  T_Rela, class T_Rel, class T_Dyn, class T_Extractor>
 int MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::execute(pqxxDB_t &pqxx_interface)
 {
 
 	// read the executeable file
-	/*
-	int elfoid = this->getFileIR()->getFile()->getELFOID(); // from Transform base class
-	pqxx::largeobject lo(elfoid);
-	lo.to_file(pqxx_interface.getTransaction(),"readeh_tmp_file.exe");
-	*/
 
 	// load the executable.
-	this->exe_reader = new EXEIO::exeio;
-	assert(this->exe_reader);
-	this->exe_reader->load((char*)"a.ncexe");
+	exe_reader = new EXEIO::exeio;
+	assert(exe_reader);
+	exe_reader->load((char*)"a.ncexe");
 
-#if 0
-	STARS::IRDB_Interface_t STARS_analysis_engine(pqxx_interface);
-	STARS_analysis_engine.GetSTARSOptions().SetDeepLoopAnalyses(true);
-	STARS_analysis_engine.GetSTARSOptions().SetConstantPropagation(true);
-	if(m_use_stars)
-	{
-		STARS_analysis_engine.do_STARS(this->getFileIR());
-		this->m_annotationParser = &STARS_analysis_engine.getAnnotations();
-        	assert(getenv("SELF_VALIDATE")==nullptr || getAnnotations().size() > 15);
-
-	}
-	cout << "move_globals execute(): enter" << endl;
-	const auto annot_size = m_use_stars ? (size_t)this->getAnnotations().size() : (size_t)0 ;
-	cout << "size of annotation set: " << annot_size << endl;
-#endif
 	if(m_use_stars)
 	{
 		auto deep_analysis=DeepAnalysis_t::factory(getFileIR(), aeSTARS,  {"SetDeepLoopAnalyses=true", "SetConstantPropagation=true"});
@@ -163,15 +147,15 @@ int MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::execute(pqxxDB_t &pqxx_
 
 
 
-	this->ParseSyms(exe_reader);
-	this->SetupScoopMap();
-	this->FilterScoops();
-	this->TieScoops();
-	this->FindInstructionReferences();	// may record some scoops are tied together
-	this->FindDataReferences();
-	this->FilterAndCoalesceTiedScoops();
-	this->UpdateScoopLocations();
-	this->PrintStats();
+	ParseSyms(exe_reader);
+	SetupScoopMap();
+	FilterScoops();
+	TieScoops();
+	FindInstructionReferences();	// may record some scoops are tied together
+	FindDataReferences();
+	FilterAndCoalesceTiedScoops();
+	UpdateScoopLocations();
+	PrintStats();
 
 	return 0;
 }
@@ -218,7 +202,7 @@ bool MoveGlobals_t<T_Sym, T_Rela, T_Rel, T_Dyn, T_Extractor>::AreScoopsAdjacent(
 	}
 	for (IRDB_SDK::VirtualOffset_t i = FirstEnd + 1; adjacent && (i < SecondStart); ++i)
 	{
-		DataScoop_t *c = this->findScoopByAddress(i);
+		DataScoop_t *c = findScoopByAddress(i);
 		if (c)
 		{
 			adjacent = false; // found intervening scoop before SecondStart
@@ -389,7 +373,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ParseSyms(EXEIO::exeio
                 while(scoop_names.find(s->getName())!=scoop_names.end())
                 {
                         cout<<"Rename scoop because of name conflict: "<<s->getName()<<" --> ";
-                        s->setName(s->getName()+"-renamed");
+                        s->setName(s->getName()+"-renamed"+to_string(rand()));
                         cout<<s->getName()<<endl;
                 }
                 scoop_names.insert(s->getName());
@@ -401,6 +385,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ParseSyms(EXEIO::exeio
 template <class T_Sym, class  T_Rela, class T_Rel, class T_Dyn, class T_Extractor>
 void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FilterScoops()
 {
+	const auto mg_env = getenv("MG_VERBOSE");
 
 
 	// filter using the move_only option
@@ -414,7 +399,16 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FilterScoops()
 		auto it=find_if(ALLOF(moveable_scoops), bind2nd(finder, word));
 		// if found, insert into the move_only set.
 		if(it!=moveable_scoops.end())
+		{
+			if(mg_env)
+				cout<<"Keeping scoop (for mo_ss) "<< word << endl;
 			move_only_scoops.insert(*it);
+		}
+		else
+		{
+			if(mg_env)
+				cout<<"Skipping scoop (for mo_ss) "<< word << endl;
+		}
 		
 	});
 
@@ -424,7 +418,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FilterScoops()
 		moveable_scoops.clear();
 		moveable_scoops.insert(ALLOF(move_only_scoops));
 
-		if(getenv("MG_VERBOSE"))
+		if(mg_env)
 		{
 			cout<<"Moveable Scoops after move_only filter:"<<endl;
 			for(auto &s : moveable_scoops)
@@ -467,15 +461,16 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FilterScoops()
                 uniform_real_distribution<double> distribution(0.0,1.0);
 		while(moveable_scoops.size() > (unsigned)max_moveables)
 		{
-                    if (random == true)
-                    {
-                        double rand_num = distribution(generator);
-                        int rand_idx = (int) (rand_num * moveable_scoops.size());
-                        auto it = moveable_scoops.begin();
-                        advance(it, rand_idx);
-                        moveable_scoops.erase(it);
-                    }
-		    else moveable_scoops.erase(prev(moveable_scoops.end()));
+			if (random == true)
+			{
+				double rand_num = distribution(generator);
+				int rand_idx = (int) (rand_num * moveable_scoops.size());
+				auto it = moveable_scoops.begin();
+				advance(it, rand_idx);
+				moveable_scoops.erase(it);
+			}
+			else 
+				moveable_scoops.erase(prev(moveable_scoops.end()));
 		}
  	}
 }
@@ -553,13 +548,13 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::HandleMemoryOperand(De
 
 	   )
 	{
-		auto rel_addr1 = (VirtualOffset_t)(*the_arg)->getMemoryDisplacement() /*Memory.Displacement*/;
+		auto rel_addr1 = (VirtualOffset_t)(*the_arg)->getMemoryDisplacement();
 		if (arg_has_relative(*(*the_arg)))
 			rel_addr1 += insn->getDataBits().size();
 		to1 = DetectProperScoop(disasm, the_arg, insn, rel_addr1, false, the_arg_container);
 
-		auto disp_offset = disasm.getMemoryDisplacementOffset(the_arg->get(),insn); // the_arg->Memory.DisplacementAddr-disasm.EIP;
-		auto disp_size = (*the_arg)->getMemoryDisplacementEncodingSize(); // the_arg->Memory.DisplacementSize;
+		auto disp_offset = disasm.getMemoryDisplacementOffset(the_arg->get(),insn); 
+		auto disp_size = (*the_arg)->getMemoryDisplacementEncodingSize(); 
 		assert((0 < disp_offset) && (disp_offset <= (insn->getDataBits().size() - disp_size)));
 
 		// skip if not found, executable, or not moveable.
@@ -590,7 +585,6 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::HandleMemoryOperand(De
 						<<hex<<to1->getStart()->getVirtualOffset()<<"-" 
 						<<hex<<to1->getEnd()->getVirtualOffset()<<")"<<endl; 
 				}
-				//ApplyPcrelMemoryRelocation(insn,to1);
 				pcrel_refs_to_scoops.insert({insn,to1});
 			}
 			else 
@@ -603,8 +597,8 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::HandleMemoryOperand(De
 						<<hex<<to1->getStart()->getVirtualOffset()<<"-" 
 						<<hex<<to1->getEnd()->getVirtualOffset()<<")"<<endl; 
 				}
-				//ApplyAbsoluteMemoryRelocation(insn,to1);
-				absolute_refs_to_scoops.insert({insn,to1});
+				if(!is_noptr_table(to1))
+					absolute_refs_to_scoops.insert({insn,to1});
 			}
 		}
 		else if ( -small_memory_threshold < (int)rel_addr1 && (int)rel_addr1 < small_memory_threshold )
@@ -650,7 +644,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ApplyPcrelMemoryReloca
 	//  to undo our changes to the instruction in the case of a re-pinned scoop.
 	//  That problem is fixed, but it is more efficient and safer to
 	//  avoid editing instructions that reference re-pinned scoops.
-	if (this->moveable_scoops.find(to) == this->moveable_scoops.cend()) {
+	if (moveable_scoops.find(to) == moveable_scoops.cend()) {
 		if (getenv("MG_VERBOSE")) {
 			cout << "Avoiding editing of insn at " << hex << insn->getBaseID() << " after repinning scoop "
 				<< to->getName() << endl;
@@ -690,7 +684,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ApplyAbsoluteMemoryRel
 	//  to undo our changes to the instruction in the case of a re-pinned scoop.
 	//  That problem is fixed, but it is more efficient and safer to
 	//  avoid editing instructions that reference re-pinned scoops.
-	if (this->moveable_scoops.find(to) == this->moveable_scoops.cend()) {
+	if (moveable_scoops.find(to) == moveable_scoops.cend()) {
 		if (getenv("MG_VERBOSE")) {
 			cout << "Avoiding editing of insn at " << hex << insn->getBaseID() << " after repinning scoop "
 				<< to->getName() << endl;
@@ -700,8 +694,8 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ApplyAbsoluteMemoryRel
 #endif
 
 	auto the_arg = find_memory_operand(operands);
-	unsigned int disp_offset=disasm.getMemoryDisplacementOffset(the_arg->get(),insn) /*the_arg->Memory.DisplacementAddr-disasm.EIP*/;
-	unsigned int disp_size=(*the_arg)->getMemoryDisplacementEncodingSize() /*the_arg->Memory.DisplacementSize*/;
+	unsigned int disp_offset=disasm.getMemoryDisplacementOffset(the_arg->get(),insn);
+	unsigned int disp_size=(*the_arg)->getMemoryDisplacementEncodingSize();
 	assert(0<disp_offset && disp_offset<=insn->getDataBits().size() - disp_size);
 	auto reloc=getFileIR()->addNewRelocation(insn,0, "absoluteptr_to_scoop",to);
 	(void)reloc; // just giving to the ir
@@ -738,13 +732,14 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 {
 	assert(insn);
 	assert(immed || (the_arg != the_arg_container.end()));	// immeds don't need an argument, but memory ops do.
+
 	if (immed && (0 == insn_addr))
 		return NULL; // immed value of zero is not a scoop address
 
-	const int small_memory_threshold = exe_reader->isDLL() ? 10 : 4096 * 10;
-	bool ValidImmed = immed && (small_memory_threshold <= ((int)insn_addr));
+	const auto small_memory_threshold = exe_reader->isDLL() ? 10 : 4096 * 10;
+	const auto ValidImmed             = immed && (small_memory_threshold <= ((int)insn_addr));
 
-	DataScoop_t *ret = this->findScoopByAddress(insn_addr);
+	auto ret = findScoopByAddress(insn_addr);
 
 	// so far, we haven't run into any problems with not finding a scoop.  we could later.
 	if (!ret)
@@ -758,9 +753,8 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 	}
 	
 	// See if STARS analyzed the instruction and determined which scoop it references.
-	DataScoop_t *retSTARS = (immed && (!ValidImmed)) ? nullptr : this->DetectAnnotationScoop(insn);
+	const auto retSTARS = (immed && (!ValidImmed)) ? (DataScoop_t*)nullptr : DetectAnnotationScoop(insn);
 
-#if 1
 	if (!ret)
 	{
 		if (nullptr != retSTARS)
@@ -769,21 +763,21 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 		}
 		return ret;
 	}
-#endif
+	
 
-	/* check to see if it's an elftable */
-	if (find(ALLOF(elftable_nocodeptr_names), ret->getName()) != elftable_nocodeptr_names.end())
+	/* check to see if it's directly pointing at an elftable that isn't allowed to have pointers */
+	if (is_noptr_table(ret))
 	{
 		/* it's an elftable, so we don't need to look so hard because */
 		/* we probably aren't pointing to an elf table from an instruction */
 		/* find middle of table */
-		auto mid_of_table = (ret->getStart()->getVirtualOffset() / 2) + (ret->getEnd()->getVirtualOffset() / 2);
+		const auto mid_of_table = (ret->getStart()->getVirtualOffset() / 2) + (ret->getEnd()->getVirtualOffset() / 2);
 
 		/* look forward if above middle, else look backwards */
 		const auto op = (insn_addr < mid_of_table)
 			? [](const VirtualOffset_t i, const VirtualOffset_t j) { return i - j; }
-		: [](const VirtualOffset_t i, const VirtualOffset_t j) { return i + j; }
-		;
+			: [](const VirtualOffset_t i, const VirtualOffset_t j) { return i + j; }
+			;
 
 		/* start at begin/end of table depending on direction */
 		const auto addr = (insn_addr < mid_of_table)
@@ -820,23 +814,21 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 		{
 			// We have two different non-null choices. We will tie the two scoops
 			//  together if they are adjacent, and pin them both otherwise.
-			if (this->AreScoopsAdjacent(ret, retSTARS)) // tie adjacent scoops
+			if (AreScoopsAdjacent(ret, retSTARS)) // tie adjacent scoops
 			{
 				cout << "Tieing adjacent scoops due to STARS vs. DetectProperScoop conflict for insn at " << hex << insn->getBaseID() << endl;
-				if (ret->getStart()->getVirtualOffset() < retSTARS->getStart()->getVirtualOffset()) {
-					ScoopPair_t TiedPair(ret, retSTARS);
-					(void) this->tied_scoops.insert(TiedPair);
-				}
-				else {
-					ScoopPair_t TiedPair(retSTARS, ret);
-					(void) this->tied_scoops.insert(TiedPair);
-				}
+				if (ret->getStart()->getVirtualOffset() < retSTARS->getStart()->getVirtualOffset()) 
+					tied_scoops.insert({ret, retSTARS});
+				else 
+					tied_scoops.insert({retSTARS, ret});
 			}
 			else // not adjacent; must pin
 			{
 				cout << "Pinning non-adjacent scoops due to STARS vs. DetectProperScoop conflict for insn at " << hex << insn->getBaseID() << endl;
-				(void) this->moveable_scoops.erase(ret);
-				(void) this->moveable_scoops.erase(retSTARS);
+				if(!is_elftable(ret)) 
+					moveable_scoops.erase(ret);
+				if(!is_elftable(retSTARS)) 
+					moveable_scoops.erase(retSTARS);
 			}
 		}
 
@@ -858,31 +850,28 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 
 	assert(immed || mem_arg!=mem_arg_container.end());	// immeds don't need an argument, but memory ops do.
 
-	const auto is_lea=disasm.getMnemonic() /*string(disasm.Instruction.Mnemonic)*/==string("lea");
+	const auto is_lea=disasm.getMnemonic() == string("lea");
 	const auto consider_multiple_sizes= is_lea || immed;
 
-	auto strides= consider_multiple_sizes ? set<int>({1,2,4,8}) : set<int>({ (int)(*mem_arg)->getArgumentSizeInBytes() /*ArgSize/8*/});
+	auto strides= consider_multiple_sizes ? set<int>({1,2,4,8}) : set<int>({ (int)(*mem_arg)->getArgumentSizeInBytes() });
 
 	// get other strides from the containing function
 	if(insn->getFunction())
-		for_each(ALLOF(insn->getFunction()->getInstructions()), [&strides](Instruction_t* insn)
+	{
+		for(auto func_insn : insn->getFunction()->getInstructions())
 		{
-			//auto d=DISASM({});
-			//Disassemble(insn,d);
-			const auto dp=DecodedInstruction_t::factory(insn);
+			const auto dp=DecodedInstruction_t::factory(func_insn);
 			const auto &d=*dp;
 
 			auto potential_stride=0;
-			// if( string(d.Instruction.Mnemonic)=="add " || string(d.Instruction.Mnemonic)=="sub " )
 			if( d.getMnemonic()=="add" || d.getMnemonic()=="sub")
 			{
-				potential_stride=d.getImmediate(); //.Instruction.Immediat;	
+				potential_stride=d.getImmediate(); 
 			}
 
-			//if(string(d.Instruction.Mnemonic)=="lea ")
 			if(d.getMnemonic()=="lea")
 			{
-				potential_stride=d.getOperand(1)->getMemoryDisplacement(); /*d.Argument2.Memory.Displacement;	*/
+				potential_stride=d.getOperand(1)->getMemoryDisplacement(); 
 			}
 
 			if(abs(potential_stride)<500  && potential_stride!=0)
@@ -890,16 +879,16 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 				strides.insert(potential_stride);
 				strides.insert(-potential_stride);
 			}
-		});
+		};
+	}
 
 	const auto stride_multipliers= set<int>({-1,1});
 
-	//const auto NO_REG=0;
-	const auto contains_base_reg =  mem_arg!=mem_arg_container.end() && (*mem_arg)->hasBaseRegister(); // mem_arg ? mem_arg->Memory.BaseRegister != NO_REG : false;
-	const auto contains_index_reg =  mem_arg!=mem_arg_container.end() && (*mem_arg)->hasIndexRegister(); // mem_arg ? mem_arg->Memory.IndexRegister != NO_REG : false;
-	const auto contains_reg = contains_base_reg || contains_index_reg;
-	const auto memory_access= mem_arg!=mem_arg_container.end() && !is_lea;
-	const auto is_direct_memory_access=memory_access && !contains_reg;
+	const auto contains_base_reg  = mem_arg != mem_arg_container.end() && (*mem_arg)->hasBaseRegister(); 
+	const auto contains_index_reg = mem_arg != mem_arg_container.end() && (*mem_arg)->hasIndexRegister(); 
+	const auto contains_reg       = contains_base_reg || contains_index_reg;
+	const auto memory_access      = mem_arg!=mem_arg_container.end() && !is_lea;
+	const auto is_direct_memory_access = memory_access && !contains_reg;
 
 	// check for a direct memory access
 	if(is_direct_memory_access)
@@ -910,14 +899,14 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 
 	// calculate each offset=stride*multiplier pair
 	auto candidate_offsets=set<int>();
-	for_each(ALLOF(strides), [&](const int stride)
+	for(auto stride : strides)
 	{
-		for_each(ALLOF(stride_multipliers), [&](const int multiplier)
+		for(auto multiplier : stride_multipliers)
 		{
 			candidate_offsets.insert(stride*multiplier);
-		});
+		};
 		
-	});
+	};
 
 	// how to tie two scoops
 	auto insert_scoop_pair=[&](DataScoop_t* a, DataScoop_t* b, int i, int offset)
@@ -937,17 +926,26 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 	{
 		DataScoop_t *this_scoop=findScoopByAddress(insn_addr+i);	
 		// no scoop at this addr?
-		if(this_scoop==NULL)
-			return NULL;
+		if(this_scoop==nullptr)
+			return nullptr;
+
 		// un-tie-able scoop at this addr?
-		if(find(ALLOF(elftable_nocodeptr_names), this_scoop->getName())!=elftable_nocodeptr_names.end())
-			return NULL;
+		if(is_noptr_table(this_scoop))
+			return nullptr;
+
+		// if both scoops are already pinned, no reason to tie.
+		const auto is_prev_moveable = moveable_scoops.find(prev_scoop)!=moveable_scoops.end();
+		const auto is_this_moveable = moveable_scoops.find(this_scoop)!=moveable_scoops.end();
+		if(!is_prev_moveable && !is_this_moveable) 
+			return nullptr;
+
+		// else, tie
 		return this_scoop;
 	};
 
 
 	// check each offset for a scoop that needings tieing tot his one.
-	for_each(ALLOF(candidate_offsets), [&](const int offset)
+	for(auto offset : candidate_offsets)
 	{
 		assert(offset!=0);
 		auto candidate_offset_scoop=findScoopByAddress(insn_addr+offset) ;
@@ -990,7 +988,7 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 				}
 			}
 		}
-	});
+	};
 
 	return candidate_scoop;
 }
@@ -1010,7 +1008,6 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 	// possibility for future work:  identify cases where 
 	// 	[addr+rbx*8] that came from something like =a[i-1].  And addr==a[-1].
 	// for now, memory operands that actually access memory, there's no additional analysis needed 
-	//if(!immed && string(disasm.Instruction.Mnemonic)!=string("lea "))	
 	if(!immed && disasm.getMnemonic()!=string("lea"))	
 		// this should filter out cmp, move, test, add,  with a memory operation
 		return ret;
@@ -1034,16 +1031,12 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 	if(next_insn == NULL) 
 		next_insn=insn->getTarget();
 
-	if(next_insn && disasm.getMnemonic() /*string(disasm.Instruction.Mnemonic)*/==string("lea"))	
+	if(next_insn && disasm.getMnemonic() == string("lea"))	
 	{
-		//DISASM lea_disasm;
-		//Disassemble(insn,lea_disasm);
 		const auto lea_disasmp=DecodedInstruction_t::factory(insn);
 		const auto &lea_disasm=*lea_disasmp;;
-		string dstreg=lea_disasm.getOperand(0)->getString(); // Argument1.ArgMnemonic;
+		string dstreg=lea_disasm.getOperand(0)->getString(); 
 
-		//DISASM next_disasm;
-		//Disassimble(next_insn,next_disasm);
 		const auto next_disasmp=DecodedInstruction_t::factory(next_insn);
 		const auto &next_disasm=*next_disasmp;
 		auto memarg_container=next_disasm.getOperands();
@@ -1052,7 +1045,7 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 		// if we found a memory operation that uses the register, with no indexing, then conclude that 
 		// we must access the variable after the address (not the variable before the address) 
 		// if(memarg && string(next_disasm.Instruction.Mnemonic)!="lea " && string(memarg->ArgMnemonic)==dstreg )
-		if(memarg!=memarg_container.end() && next_disasm.getMnemonic()!="lea" && (*memarg)->getString()/*string(memarg->ArgMnemonic)*/==dstreg )
+		if(memarg!=memarg_container.end() && next_disasm.getMnemonic()!="lea" && (*memarg)->getString()==dstreg )
 			return ret;
 		
 	}
@@ -1148,7 +1141,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ApplyImmediateRelocati
 	//  to undo our changes to the instruction in the case of a re-pinned scoop.
 	//  That problem is fixed, but it is more efficient and safer to
 	//  avoid editing instructions that reference re-pinned scoops.
-	if (this->moveable_scoops.find(to) == this->moveable_scoops.cend()) {
+	if (moveable_scoops.find(to) == moveable_scoops.cend()) {
 		if (getenv("MG_VERBOSE")) {
 			cout << "Avoiding editing of insn at " << hex << insn->getBaseID() << " after repinning scoop "
 				<< to->getName() << endl;
@@ -1157,18 +1150,13 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ApplyImmediateRelocati
 	}
 #endif
 
-	/*
-	Relocation_t* reloc = new Relocation_t(BaseObj_t::NOT_IN_DATABASE, 0, "immedptr_to_scoop", to);
-	insn->getRelocations().insert(reloc);
-	getFileIR()->getRelocations().insert(reloc);
-	*/
-	auto reloc=getFileIR()->addNewRelocation(insn,0, "immedptr_to_scoop", to);
-	(void)reloc; // not used, just giving to the IR
-// fixme: insn bits changed here 
-	assert(strtoumax(disasm.getOperand(1)->getString().c_str() /*Argument2.ArgMnemonic*/, NULL, 0) ==  rel_addr2);
+	getFileIR()->addNewRelocation(insn,0, "immedptr_to_scoop", to);
+
+	// fixme: insn bits changed here 
+	assert(strtoumax(disasm.getOperand(1)->getString().c_str(), NULL, 0) ==  rel_addr2);
 
 	VirtualOffset_t new_addr = rel_addr2 - to->getStart()->getVirtualOffset();
-   assert(4 < insn->getDataBits().size());
+	assert(4 < insn->getDataBits().size());
 	insn->setDataBits(insn->getDataBits().replace(insn->getDataBits().size()-4, 4, (char*)&new_addr, 4));
 
 	cout<<"Non-Overlapping_Globals::ApplyImmediateReloc::Setting "<<hex<<insn->getBaseID()<<" to "<<insn->getDisassembly()<<endl;
@@ -1189,7 +1177,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::HandleImmediateOperand
 	if(disasm.getMnemonic()=="enter")
 		return;
 
-	VirtualOffset_t rel_addr2=disasm.getImmediate(); //Instruction.Immediat;
+	VirtualOffset_t rel_addr2=disasm.getImmediate(); 
 	auto operands=disasm.getOperands();
 	DataScoop_t *to2=DetectProperScoop(disasm, operands.end(), insn, rel_addr2, true, operands);
 
@@ -1236,9 +1224,8 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::HandleImmediateOperand
 					<<hex<<to2->getEnd()->getVirtualOffset()<<")"<<endl; 
 			}
 			
-			unsigned int size=immed_refs_to_scoops.size();
-			immed_refs_to_scoops.insert({insn,to2});
-			assert( (size+1)==immed_refs_to_scoops.size());
+			if(!is_noptr_table(to2))
+				immed_refs_to_scoops.insert({insn,to2});
 				
 
 
@@ -1561,16 +1548,31 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FindDataReferences()
 				}
 				if(disqualifies_to)
 				{
-					if(getenv("MG_VERBOSE"))
+					if(!is_elftable(to))
 					{
-						cout<<"Ref-looking-constant "<<hex<<val<<" at "<<scoop->getName()<<"+"<<i<<" ("
-							<<hex<<scoop->getStart()->getVirtualOffset()<<"-" 
-							<<hex<<scoop->getEnd()->getVirtualOffset()<<") is inconclusive.  Repinning "
-							<<to->getName()<<" ("
-							<<hex<<to->getStart()->getVirtualOffset()<<"-" 
-							<<hex<<to->getEnd()->getVirtualOffset()<<")"<<endl;
+						if(getenv("MG_VERBOSE"))
+						{
+							cout<<"Ref-looking-constant "<<hex<<val<<" at "<<scoop->getName()<<"+"<<i<<" ("
+								<<hex<<scoop->getStart()->getVirtualOffset()<<"-" 
+								<<hex<<scoop->getEnd()->getVirtualOffset()<<") is inconclusive.  Repinning "
+								<<to->getName()<<" ("
+								<<hex<<to->getStart()->getVirtualOffset()<<"-" 
+								<<hex<<to->getEnd()->getVirtualOffset()<<")"<<endl;
+						}
+						moveable_scoops.erase(to);
 					}
-					moveable_scoops.erase(to);
+					else
+					{
+						if(getenv("MG_VERBOSE"))
+						{
+							cout<<"Ref-looking-constant "<<hex<<val<<" at "<<scoop->getName()<<"+"<<i<<" ("
+								<<hex<<scoop->getStart()->getVirtualOffset()<<"-" 
+								<<hex<<scoop->getEnd()->getVirtualOffset()<<") is inconclusive.  Not repinning because is elftable "
+								<<to->getName()<<" ("
+								<<hex<<to->getStart()->getVirtualOffset()<<"-" 
+								<<hex<<to->getEnd()->getVirtualOffset()<<")"<<endl;
+						}
+					}
 				}	
 			}
 			else
@@ -1994,9 +1996,6 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FilterAndCoalesceTiedS
 
 				/*
 				don't remove scoop here, as it will delete s2.  this bit is moved later.	
-				getFileIR()->getAddresses().erase(s1->getEnd());
-				getFileIR()->getAddresses().erase(s2->getStart());
-				getFileIR()->getDataScoops().erase(s2);	// remove s2 from the IR
 				*/
 				// s2's end addresss is about to go away, so
 				// update s1's end VO instead of using s2 end addr.

@@ -46,7 +46,7 @@ class split_eh_frame_impl_t : public split_eh_frame_t
 	OffsetMap_t offset_to_insn_map;
 
 	std::unique_ptr<const EHP::EHFrameParser_t> eh_frame_parser;
-	std::shared_ptr<const EHP::FDEVector_t> fdes;
+	const EHP::FDEVector_t* fdes;
 
 	bool init_offset_map();
 
@@ -59,7 +59,7 @@ class split_eh_frame_impl_t : public split_eh_frame_t
 		(
 		    const EHP::LSDACallSite_t& cs,
 		    IRDB_SDK::Instruction_t* insn, 
-		    /* const std::vector<lsda_type_table_entry_t <ptrsize> > &*/ std::shared_ptr<EHP::TypeTableVector_t> type_table_ptr, 
+		    /* const std::vector<lsda_type_table_entry_t <ptrsize> > &*/ const EHP::TypeTableVector_t* type_table_ptr, 
 		    const uint8_t& tt_encoding
 		) const;
 	void lsda_build_ir

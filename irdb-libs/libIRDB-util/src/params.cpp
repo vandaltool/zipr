@@ -70,9 +70,14 @@ bool IRDB_SDK::isParameterWrite(const IRDB_SDK::FileIR_t *firp, IRDB_SDK::Instru
 	if(!d.getOperand(0)->isMemory())
 		return false;
 
+	// pcrel instructions aren't to the stack.
+	if(d.getOperand(0)->isPcrel())
+		return false;
+
 	// check that base reg is esp.
 	if(!d.getOperand(0)->hasBaseRegister())
 		return false;
+
 	if(d.getOperand(0)->getBaseRegister() != 4)
 		return false;
 

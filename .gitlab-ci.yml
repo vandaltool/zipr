@@ -37,12 +37,26 @@ do-nightly-clean-ubuntu16:
     OS: 'ubuntu16'  
 
 # per os items
-do-nightly-clean-centos75:
+do-nightly-clean-centos76:
   <<: *do-nightly-clean
   tags:
-    - centos75
+    - centos76
   variables:
-    OS: 'centos75'  
+    OS: 'centos76'  
+
+do-nightly-clean-arm32:
+  <<: *do-nightly-clean
+  tags:
+    - arm32
+  variables:
+    OS: 'arm32'  
+
+do-nightly-clean-arm64:
+  <<: *do-nightly-clean
+  tags:
+    - arm64
+  variables:
+    OS: 'arm64'  
 
 
 #
@@ -70,12 +84,26 @@ do-build-ubuntu16:
   variables:
     OS: 'ubuntu16'  
 
-do-build-centos75:
+do-build-centos76:
   <<: *do-build
   tags:
-    - centos75
+    - centos76
   variables:
-    OS: 'centos75'  
+    OS: 'centos76'  
+
+do-build-arm32:
+  <<: *do-build
+  tags:
+    - arm32
+  variables:
+    OS: 'arm32'  
+
+do-build-arm64:
+  <<: *do-build
+  tags:
+    - arm64
+  variables:
+    OS: 'arm64'  
 
 
 #
@@ -96,10 +124,10 @@ basic_eh-tests-ubuntu16:
   tags:
     - ubuntu16
 
-basic_eh-tests-centos75:
+basic_eh-tests-centos76:
   <<: *basic_eh-tests
   tags:
-    - centos75
+    - centos76
 
 #
 # test_cmds.sh fixcalls
@@ -119,12 +147,12 @@ builtin-xforms-ubuntu16:
   tags:
     - ubuntu16
 
-builtin-xforms-centos75:
+builtin-xforms-centos76:
   <<: *builtin-xforms
   tags:
-    - centos75
+    - centos76
   variables:
-    OS: 'centos75'  
+    OS: 'centos76'  
 
 #
 # elfdep test
@@ -150,12 +178,12 @@ elfdep-ubuntu16:
   variables:
     OS: 'ubuntu16'  
 
-elfdep-centos75:
+elfdep-centos76:
   <<: *elfdep
   tags:
-    - centos75
+    - centos76
   variables:
-    OS: 'centos75'  
+    OS: 'centos76'  
 
 
 

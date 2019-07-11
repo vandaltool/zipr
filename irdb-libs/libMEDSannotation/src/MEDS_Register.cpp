@@ -444,6 +444,7 @@ string Register::readRegisterSet(const string &in, RegisterSet_t &out)
 	}
 
 	assert(0 && "No terminator found for register list");
+	abort();	// needed for avoiding errors
 }
 
 RegisterName Register::promoteTo64(const RegisterName p_reg)

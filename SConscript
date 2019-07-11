@@ -54,7 +54,6 @@ Export('env')
 transformDirs='''
 	builtin_xforms/add_lib  	
 	builtin_xforms/move_globals  	
-	builtin_xforms/p1transform  	
 	builtin_xforms/resolve_callbacks
 	zipr_push64_reloc_plugin
 	zipr

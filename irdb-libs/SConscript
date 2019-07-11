@@ -13,8 +13,6 @@ if env.GetOption('clean'):
     	os.remove(os.environ['SECURITY_TRANSFORMS_HOME']+"/include/targ-config.h")
     os.chdir(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/capstone")
     os.system("make clean")
-#    if os.path.exists(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/capstone/zipr_unpack"):
-#    	shutil.rmtree(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/capstone/zipr_unpack")
     os.chdir(os.environ['SECURITY_TRANSFORMS_HOME'])
 
 
@@ -30,12 +28,6 @@ else:
     print "Rebuilding libcapstone."
     jobs=env.GetOption('num_jobs')
     os.system("make -j "+str(jobs))
-#    os.chdir(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/capstone")
-#    if not os.path.exists(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/capstone/zipr_unpack"):
-#	    os.mkdir(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/capstone/zipr_unpack")
-#	    os.chdir(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/capstone/zipr_unpack")
-#            print "Unpacking libcapstone.a for libIRDB-core."
-#	    os.system("ar x "+os.environ['SECURITY_TRANSFORMS_HOME']+"/libcapstone/libcapstone.a")
     os.chdir(os.environ['SECURITY_TRANSFORMS_HOME'])
 
 
@@ -95,13 +87,6 @@ dump_map=SConscript("dump_map/SConscript", variant_dir='scons_build/dump_map')
 dump_insns=SConscript("dump_insns/SConscript", variant_dir='scons_build/dump_insns')
 ir_builders=SConscript("ir_builders/SConscript", variant_dir='scons_build/ir_builders')
 
-
-# no more tools in irdb-libs
-#tools=None
-#if 'build_tools' not in env or env['build_tools'] is None or int(env['build_tools']) == 1:
-#	tools=SConscript("tools/SConscript", variant_dir='scons_build/tools')
-#	if "PEDI_HOME" in os.environ:
-#		Depends(pedi,tools)
 
 libs=( libIRDBcore, 
 	libIRDBcfg, 
