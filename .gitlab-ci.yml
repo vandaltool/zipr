@@ -8,6 +8,9 @@ after_script:
 stages:
   - clean
   - build
+  - gather_bins
+  - protect_bins
+  - test_bins
   - test
   - deploy
 
@@ -25,38 +28,28 @@ do-nightly-clean-ubuntu18:
   <<: *do-nightly-clean
   tags:
     - ubuntu18
-  variables:
-    OS: 'ubuntu18'  
 
 # per os items
 do-nightly-clean-ubuntu16:
   <<: *do-nightly-clean
   tags:
     - ubuntu16
-  variables:
-    OS: 'ubuntu16'  
 
 # per os items
 do-nightly-clean-centos76:
   <<: *do-nightly-clean
   tags:
     - centos76
-  variables:
-    OS: 'centos76'  
 
 do-nightly-clean-arm32:
   <<: *do-nightly-clean
   tags:
     - arm32
-  variables:
-    OS: 'arm32'  
 
 do-nightly-clean-arm64:
   <<: *do-nightly-clean
   tags:
     - arm64
-  variables:
-    OS: 'arm64'  
 
 
 #
@@ -74,37 +67,45 @@ do-build-ubuntu18:
   <<: *do-build
   tags:
     - ubuntu18
-  variables:
-    OS: 'ubuntu18'  
 
 do-build-ubuntu16:
   <<: *do-build
   tags:
     - ubuntu16
-  variables:
-    OS: 'ubuntu16'  
 
 do-build-centos76:
   <<: *do-build
   tags:
     - centos76
-  variables:
-    OS: 'centos76'  
 
 do-build-arm32:
   <<: *do-build
   tags:
     - arm32
-  variables:
-    OS: 'arm32'  
 
 do-build-arm64:
   <<: *do-build
   tags:
     - arm64
-  variables:
-    OS: 'arm64'  
 
+.gather_bins: &do_gather
+        stage: gather_bins
+        script:
+                - ./cicd_testing/do-gather-bins.sh
+        artifacts:               
+        expires_in: 1 day
+                paths:
+                        - test_binaries/
+
+gather_bins-arm32:
+        <<: *do_gather
+        tags:
+                - arm32
+
+gather_bins-arm64:
+        <<: *do_gather
+        tags:
+                - arm64
 
 #
 # test_quick for EH handling
@@ -151,23 +152,17 @@ builtin-xforms-centos76:
   <<: *builtin-xforms
   tags:
     - centos76
-  variables:
-    OS: 'centos76'  
 
 # doesn't work yet
 #builtin-xforms-arm32:
 #  <<: *builtin-xforms
 #  tags:
 #    - arm32
-#  variables:
-#    OS: 'arm32'  
 
 builtin-xforms-arm64:
   <<: *builtin-xforms
   tags:
     - arm64
-  variables:
-    OS: 'arm64'  
 
 
 #
@@ -184,22 +179,16 @@ elfdep-ubuntu18:
   <<: *elfdep
   tags:
     - ubuntu18
-  variables:
-    OS: 'ubuntu18'  
     
 elfdep-ubuntu16:
   <<: *elfdep
   tags:
     - ubuntu16
-  variables:
-    OS: 'ubuntu16'  
 
 elfdep-centos76:
   <<: *elfdep
   tags:
     - centos76
-  variables:
-    OS: 'centos76'  
 
 
 
@@ -212,5 +201,3 @@ deploy-u18:
     - ./cicd_testing/deploy.sh
   tags:
     - ubuntu18
-  variables:
-    OS: 'ubuntu18'  
