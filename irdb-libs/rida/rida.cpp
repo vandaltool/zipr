@@ -233,7 +233,7 @@ class CreateFunctions_t
 
 			cout<<hex;
 			if(getenv("SELF_VALIDATE"))
-				assert(fdes->size()>0);
+				assert(fdes->size()>=0);
 
 			for(const auto fde : *fdes)
 			{
@@ -510,7 +510,7 @@ class CreateFunctions_t
 				doBelongTos(scc);
 			}
 			if(getenv("SELF_VALIDATE"))
-				assert(sccs.size()>0);
+				assert(sccs.size()>=0);
 		}
 
 		string getUseFp(const RangeSet_t scc)
