@@ -88,7 +88,7 @@ do-build-arm64:
   tags:
     - arm64
 
-.gather_bins: &do_gather
+.gather-bins: &do_gather
         stage: gather_bins
         script:
                 - ./cicd_testing/do-gather-bins.sh
@@ -97,12 +97,12 @@ do-build-arm64:
                 paths:
                         - test_binaries/
 
-gather_bins-arm32:
+gather-bins-arm32:
         <<: *do_gather
         tags:
                 - arm32
 
-gather_bins-arm64:
+gather-bins-arm64:
         <<: *do_gather
         tags:
                 - arm64
