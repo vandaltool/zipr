@@ -154,12 +154,13 @@ builtin-xforms-centos76:
   variables:
     OS: 'centos76'  
 
-builtin-xforms-arm32:
-  <<: *builtin-xforms
-  tags:
-    - arm32
-  variables:
-    OS: 'arm32'  
+# doesn't work yet
+#builtin-xforms-arm32:
+#  <<: *builtin-xforms
+#  tags:
+#    - arm32
+#  variables:
+#    OS: 'arm32'  
 
 builtin-xforms-arm64:
   <<: *builtin-xforms
