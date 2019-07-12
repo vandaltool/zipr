@@ -149,7 +149,7 @@ protect-bins-centos76:
                 - artifacts/
 
 test-bins-arm32:
-        <<: *testtest_arm_bins
+        <<: *test_arm_bins
         tags:
             - arm32
 
