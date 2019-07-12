@@ -13,7 +13,7 @@ mkdir -p artifacts/protected_binaries
 main()
 {
 	for i in $(ls artifacts/test_binaries/); do
-		$PSZ  $i artifacts/protected_binaries/$(basename $i.$(hostname))
+		$PSZ  artifacts/test_binaries/$i artifacts/protected_binaries/$(basename $i.$(hostname))
 	done
 }
 
