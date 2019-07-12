@@ -74,9 +74,10 @@ class CreateFunctions_t
 			}
 
 			const auto cs_mode= 
-				machine_type==mtAarch64 ? CS_MODE_LITTLE_ENDIAN :
-				file_class==ELF64 ? CS_MODE_64 : 
-				file_class==ELF32 ? CS_MODE_32 : 
+				machine_type == mtArm32   ? CS_MODE_LITTLE_ENDIAN :
+				machine_type == mtAarch64 ? CS_MODE_LITTLE_ENDIAN :
+				file_class   == ELF64     ? CS_MODE_64 : 
+				file_class   == ELF32     ? CS_MODE_32 : 
 				throw std::runtime_error("Cannot handle ELF class");
 
 			const auto my_cs_arch = 
@@ -394,10 +395,22 @@ class CreateFunctions_t
 					addName(i,dynsymEntryIndex++);
 				}
 			};
-			const auto handle_arm_plt=[&]()
+			const auto handle_arm64_plt=[&]()
 			{
 				const auto plt_entry_size=16;
 				const auto plt_header_size=8*4;
+
+				addRange(startAddr,plt_header_size);
+				for(auto i=startAddr+plt_header_size; i<endAddr; i+=plt_entry_size) 
+				{
+					addRange(i,plt_entry_size);
+					addName(i,dynsymEntryIndex++);
+				}
+			};
+			const auto handle_arm32_plt=[&]()
+			{
+				const auto plt_entry_size=3*4;	// 3 instructions
+				const auto plt_header_size=5*4; // 5 instructions
 
 				addRange(startAddr,plt_header_size);
 				for(auto i=startAddr+plt_header_size; i<endAddr; i+=plt_entry_size) 
@@ -414,7 +427,10 @@ class CreateFunctions_t
 					handle_x86_plt();
 					break;
 				case mtAarch64:
-					handle_arm_plt();
+					handle_arm64_plt();
+					break;
+				case mtArm32:
+					handle_arm32_plt();
 					break;
 				default:
 					assert(0);
