@@ -80,8 +80,9 @@ class CreateFunctions_t
 				throw std::runtime_error("Cannot handle ELF class");
 
 			const auto my_cs_arch = 
-				machine_type == mtX86_64  ?  CS_ARCH_X86 : 
-				machine_type == mtI386    ?  CS_ARCH_X86 :
+				machine_type == mtX86_64  ?  CS_ARCH_X86   : 
+				machine_type == mtI386    ?  CS_ARCH_X86   :
+				machine_type == mtArm32   ?  CS_ARCH_ARM   : 
 				machine_type == mtAarch64 ?  CS_ARCH_ARM64 : 
 				throw std::runtime_error("Cannot handle architecture");
 
