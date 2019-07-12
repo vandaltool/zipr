@@ -10,9 +10,7 @@ popd
 
 install_deps()
 {
-sudo 
-apt-get install -y binutils-aarch64-linux-gnu
-
+	sudo apt-get install -y binutils-aarch64-linux-gnu
 }
 
 main()
