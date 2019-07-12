@@ -131,10 +131,6 @@ protect-bins-ubuntu16:
         tags:
             - ubuntu16
 
-protect-bins-centos76:
-        <<: *prot_bins
-        tags:
-            - centos76
 #
 # gather artifacts and ship them tox 86 boxes
 #
