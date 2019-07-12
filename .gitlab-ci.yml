@@ -88,24 +88,24 @@ do-build-arm64:
   tags:
     - arm64
 
-.gather_bins: &do_gather
+.gather-bins: &do_gather
         stage: gather_bins
         script:
-                - ./cicd_testing/do-gather-bins.sh
+            - ./cicd_testing/do-gather-bins.sh
         artifacts:               
-        expires_in: 1 day
-                paths:
-                        - test_binaries/
+            expire_in: 1 day
+            paths:
+                - test_binaries/
 
-gather_bins-arm32:
+gather-bins-arm32:
         <<: *do_gather
         tags:
-                - arm32
+            - arm32
 
-gather_bins-arm64:
+gather-bins-arm64:
         <<: *do_gather
         tags:
-                - arm64
+            - arm64
 
 #
 # test_quick for EH handling
