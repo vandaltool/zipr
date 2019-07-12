@@ -95,7 +95,7 @@ do-build-arm64:
         artifacts:               
         expires_in: 1 day
                 paths:
-                        - test_binaries/
+                     - test_binaries/
 
 gather-bins-arm32:
         <<: *do_gather
