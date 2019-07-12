@@ -10,7 +10,6 @@ stages:
   - build
   - gather_bins
   - protect_bins
-  - test_bins
   - test
   - deploy
 
@@ -88,6 +87,10 @@ do-build-arm64:
   tags:
     - arm64
 
+
+#
+# gather artifacts and ship them tox 86 boxes
+#
 .gather-bins: &do_gather
         stage: gather_bins
         script:
@@ -95,7 +98,7 @@ do-build-arm64:
         artifacts:               
             expire_in: 1 day
             paths:
-                - test_binaries/
+                - artifacts/
 
 gather-bins-arm32:
         <<: *do_gather
@@ -106,6 +109,55 @@ gather-bins-arm64:
         <<: *do_gather
         tags:
             - arm64
+
+#
+# gather artifacts and ship them tox 86 boxes
+#
+.protect-arm-bins: &prot_bins
+        stage: protect_bins
+        script:
+            - ./cicd_testing/do-prot-bins.sh
+        artifacts:               
+            expire_in: 1 day
+            paths:
+                - artifacts/
+
+protect-arm-ubuntu18:
+        <<: *prot_bins
+        tags:
+            - ubuntu18
+
+protect-bins-ubuntu16:
+        <<: *prot_bins
+        tags:
+            - ubuntu16
+
+protect-bins-centos76:
+        <<: *prot_bins
+        tags:
+            - centos76
+#
+# gather artifacts and ship them tox 86 boxes
+#
+test_arm_bins: &test_arm_bins
+        stage: test
+        script:
+            - ./cicd_testing/do-test-bins.sh
+        artifacts:               
+            expire_in: 1 day
+            paths:
+                - artifacts/
+
+gather-bins-arm32:
+        <<: *prot_bins
+        tags:
+            - arm32
+
+gather-bins-arm64:
+        <<: *prot_bins
+        tags:
+            - arm64
+
 
 #
 # test_quick for EH handling
