@@ -8,7 +8,6 @@ after_script:
 stages:
   - clean
   - build
-  - gather_bins
   - protect_bins
   - test
   - deploy
@@ -92,7 +91,7 @@ do-build-arm64:
 # gather artifacts and ship them tox 86 boxes
 #
 .gather-bins: &do_gather
-        stage: gather_bins
+        stage: build
         script:
             - ./cicd_testing/do-gather-bins.sh
         artifacts:               
