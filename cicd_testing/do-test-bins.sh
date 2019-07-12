@@ -6,7 +6,7 @@ set -x
 main()
 {
 	for i in $(ls artifacts/protected_binaries/*$(uname -m)*); do
-		./artifacts/protected_binaries/$i --help
+		$i --help
 	done
 }
 
