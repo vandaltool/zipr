@@ -93,9 +93,9 @@ do-build-arm64:
         script:
             - ./cicd_testing/do-gather-bins.sh
         artifacts:               
-        expires_in: 1 day
-        paths:
-            - test_binaries/
+            expires_in: 1 day
+            paths:
+                - test_binaries/
 
 gather-bins-arm32:
         <<: *do_gather
