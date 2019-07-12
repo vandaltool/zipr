@@ -139,7 +139,7 @@ protect-bins-centos76:
 #
 # gather artifacts and ship them tox 86 boxes
 #
-test_arm_bins: &test_arm_bins
+.test_arm_bins: &test_arm_bins
         stage: test
         script:
             - ./cicd_testing/do-test-bins.sh
@@ -148,13 +148,13 @@ test_arm_bins: &test_arm_bins
             paths:
                 - artifacts/
 
-gather-bins-arm32:
-        <<: *prot_bins
+test-bins-arm32:
+        <<: *testtest_arm_bins
         tags:
             - arm32
 
-gather-bins-arm64:
-        <<: *prot_bins
+test-bins-arm64:
+        <<: *test_arm_bins
         tags:
             - arm64
 
