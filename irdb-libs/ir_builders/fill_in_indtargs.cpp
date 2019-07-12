@@ -3272,7 +3272,7 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 				auto insn=lookupInstruction(firp,vo);
 
 				// OK for .got scoop to miss, some entries are empty.
-				if(scoop->getName()==".got" && insn==nullptr)
+				if(scoop->getName()==".got" && (vo==0 || insn==nullptr))
 				{
 					if(getenv("UNPIN_VERBOSE")!=0)
 						cout<<"Skipping "<<scoop->getName()<<" unpin for "<<hex<<vo<<" due to no instruction at vo"<<endl;
