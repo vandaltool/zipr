@@ -222,7 +222,6 @@ set_step_option()
 	no_delim_option=`echo "$1" | cut -d: -f99999-` 
 
 	if [[ ! -z $no_delim_option ]]; then
-		echo "Detected elided step option in $1"
 		set_step_option "$last_step_parsed:$no_delim_option"
 		return $?
 	fi
