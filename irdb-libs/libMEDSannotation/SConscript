@@ -12,6 +12,7 @@ files=  '''
 	src/MEDS_FPTRShadowAnnotation.cpp
 	src/MEDS_DeadRegAnnotation.cpp
 	src/MEDS_FRSafeAnnotation.cpp
+	src/MEDS_LoopAnnotation.cpp
 	src/MEDS_FuncPrototypeAnnotation.cpp
 	src/MEDS_InstructionCheckAnnotation.cpp
 	src/MEDS_MemoryRangeAnnotation.cpp

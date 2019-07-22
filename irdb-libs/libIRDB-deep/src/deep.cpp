@@ -142,6 +142,18 @@ unique_ptr<IRDB_SDK::RangeSentinelSet_t> StarsDeepAnalysis_t::getRangeSentinels(
 	return ret;
 }
 
+unique_ptr<IRDB_SDK::LoopNest_t> StarsDeepAnalysis_t::getLoopNest(const IRDB_SDK::Function_t* f) const
+{
+	auto ret = unique_ptr<IRDB_SDK::LoopNest_t>();
+	return ret;
+}
+
+unique_ptr<IRDB_SDK::LoopNest_t> StarsDeepAnalysis_t::getLoopNest(const IRDB_SDK::ControlFlowGraph_t* cfg) const 
+{
+	auto ret = unique_ptr<IRDB_SDK::LoopNest_t>();
+	return ret;
+}
+
 
 unique_ptr<IRDB_SDK::DeepAnalysis_t> IRDB_SDK::DeepAnalysis_t::factory(FileIR_t* firp, const AnalysisEngine_t& ae, const vector<string>& options)
 {
@@ -163,5 +175,7 @@ unique_ptr<IRDB_SDK::DeepAnalysis_t> IRDB_SDK::DeepAnalysis_t::factory(FileIR_t*
 	}
 	return ret;
 }
+
+
 
 
