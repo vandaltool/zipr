@@ -50,6 +50,13 @@ class MEDS_LoopAnnotation : public MEDS_AnnotationBase
 
 		virtual const string toString() const { return "loop annot "; }
 
+		uint64_t getHeaderID()    const { return header;    }
+		uint64_t getPreheaderID() const { return preheader; }
+		uint64_t getLoopID()      const { return loop_no;   }
+
+		const set<uint64_t>& getBlockIDs()     const { return all_blocks; }
+		const set<uint64_t>& getInnerLoopIDs() const { return sub_loops; }
+
 	private:
 		void init();
 		void parse();
@@ -57,9 +64,9 @@ class MEDS_LoopAnnotation : public MEDS_AnnotationBase
 		string m_rawInputLine;
 
 		uint64_t loop_no;
-		IRDB_SDK::VirtualOffset_t preheader;
-		IRDB_SDK::VirtualOffset_t header;
-		set<IRDB_SDK::VirtualOffset_t> all_blocks;
+		uint64_t preheader;
+		uint64_t header;
+		set<uint64_t> all_blocks;
 		set<uint64_t> sub_loops;
 };
 

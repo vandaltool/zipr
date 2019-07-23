@@ -125,7 +125,7 @@ void MEDS_LoopAnnotation::parse()
 	preheader  = readInt<decltype(preheader)>(m_rawInputLine, " PREHEADER ", true);
 
 	all_blocks = readAddrSet<IRDB_SDK::VirtualOffset_t>(m_rawInputLine, " BLOCKLIST ", true);
-	sub_loops  = readAddrSet<uint64_t                 >(m_rawInputLine, " BLOCKLIST ", false);
+	sub_loops  = readAddrSet<uint64_t                 >(m_rawInputLine, " INNERLOOPS ", false);
 
 	setValid();	// no additional info recorded for right now.
 }

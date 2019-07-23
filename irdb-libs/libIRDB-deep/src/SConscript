@@ -7,6 +7,7 @@ myenv=env
 libname="irdb-deep"
 files=  '''
 	deep.cpp
+	loops.cpp
 	'''
 cpppath=''' 
 	$IRDB_SDK/include/
