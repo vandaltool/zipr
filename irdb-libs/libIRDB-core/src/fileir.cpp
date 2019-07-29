@@ -1029,11 +1029,6 @@ void FileIR_t::setArchitecture()
 
 	if (is_pe) 
 	{
-		// set machine/file types
-		libIRDB::FileIR_t::archdesc->setFileType(IRDB_SDK::adftPE);
-		// just assume x86-64 bit for Windows, o/w could also extract from file
-		libIRDB::FileIR_t::archdesc->setBitWidth(64);
-		libIRDB::FileIR_t::archdesc->setMachineType(IRDB_SDK::admtX86_64);
 
 		// now we need to read the image base from the exe file
 
@@ -1066,24 +1061,43 @@ void FileIR_t::setArchitecture()
 			uint32_t Signature;
 			uint16_t Machine;
 			uint16_t NumberOfSections;
+
 			uint32_t TimeDateStamp;
 			uint32_t PointerToSymbolTable;
+
 			uint32_t NumberOfSymbols;
 			uint16_t SizeOfOptionalHeader;
 			uint16_t Characteristics;
+
 			uint16_t Magic;
 			uint8_t  MajorLinkerVersion;
 			uint8_t  MinorLinkerVersion;
 			uint32_t SizeOfCode;
+
 			uint32_t SizeOfInitializedData;
 			uint32_t SizeOfUninitializedData;
+
 			uint32_t AddressOfEntryPoint;
 			uint32_t BaseOfCode;
 
-			// ImageBase is a uint32_t for 32-bit code.
-			uint64_t ImageBase;
+			union
+			{
+				struct 
+				{
+					uint32_t BaseOfData;
+
+					// ImageBase is a uint32_t for 32-bit code.
+					uint32_t ImageBase;
+				} pe32;
+				struct 
+				{
+					// ImageBase is a uint64_t for 64-bit code and BaseOfData is elided.
+					uint64_t ImageBase;
+				} pe32plus;
+			} mach_dep;
 
 		};
+
 
 
 		// declare and init a dos header.
@@ -1099,13 +1113,35 @@ void FileIR_t::setArchitecture()
                 loa.cread((char*)&pe_and_opt_headers, sizeof(pe_and_opt_headers));
 
                 assert(pe_and_opt_headers.Signature ==0x4550 /* "PE" means pe file */);
-                assert(pe_and_opt_headers.Magic ==0x20b /* "8664" means 64-bits */);
-                /* note: if pe_and_opt_headers.Magic==0x10b that means "8632" or intel 32-bit file.  not supporting yet. */
+
+		auto image_base = uint64_t{0};
+		if(pe_and_opt_headers.Magic == 0x20b)
+		{
+			// record image base
+			image_base = pe_and_opt_headers.mach_dep.pe32plus.ImageBase;
+
+			// set machine/file types
+			libIRDB::FileIR_t::archdesc->setFileType(IRDB_SDK::adftPE);
+			libIRDB::FileIR_t::archdesc->setBitWidth(64);
+			libIRDB::FileIR_t::archdesc->setMachineType(IRDB_SDK::admtX86_64);
+		}
+		else if(pe_and_opt_headers.Magic == 0x10b)
+		{
+			// record image base
+			image_base = pe_and_opt_headers.mach_dep.pe32.ImageBase;
+
+			// set machine/file types
+			libIRDB::FileIR_t::archdesc->setFileType(IRDB_SDK::adftPE);
+			libIRDB::FileIR_t::archdesc->setBitWidth(32);
+			libIRDB::FileIR_t::archdesc->setMachineType(IRDB_SDK::admtI386);
+		}
+		else
+			throw invalid_argument("Cannot map Magic number ("+to_string(pe_and_opt_headers.Magic)+") into machine type");
 
                 if(getenv("IRDB_VERBOSE"))
-                        cout<<"Determined PE32+ file has image base: "<<hex<<pe_and_opt_headers.ImageBase<<endl;
+                        cout<<"Determined PE32/PE32+ file has image base: "<<hex<< image_base <<endl;
 
-                archdesc->setFileBase(pe_and_opt_headers.ImageBase);
+                archdesc->setFileBase(image_base);
 	}
 	else if(is_elf)
 	{

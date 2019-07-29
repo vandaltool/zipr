@@ -157,7 +157,8 @@ namespace EXEIO
                         virtual virtual_offset_t get_entry()
 			{
 				assert(e);
-				return (virtual_offset_t)e->get_ep();
+				/* works for 32-bit too */
+				return (virtual_offset_t)e->get_image_base_64() + e->get_ep();
 			}
 
 			virtual bool isDLL() { return true; } 

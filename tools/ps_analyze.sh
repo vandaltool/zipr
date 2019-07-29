@@ -1050,6 +1050,11 @@ compatcheck()
 		echo "Detected PE32+ file"
 		return
 	fi
+	file $1 |egrep  "PE32 executable" > /dev/null 2>&1 
+	if [ $? = 0 ]; then
+		echo "Detected PE32 file"
+		return
+	fi
 
 
 	echo ------------------------
