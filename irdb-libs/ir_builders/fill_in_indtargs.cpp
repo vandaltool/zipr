@@ -479,6 +479,21 @@ void handle_scoop_scanning(FileIR_t* firp)
 	// check for addresses in scoops in the text section. 
 	for(auto scoop : firp->getDataScoops())
 	{
+		if(scoop->getName() == ".ctor" || scoop->getName() == ".dtor" )
+		{
+			const auto  ptrsize        = firp->getArchitectureBitWidth() / 8 ;
+			const auto &scoop_contents = scoop->getContents();
+			for(auto i = 0u; i + ptrsize < scoop_contents.size(); i += ptrsize)
+			{
+				const auto ptr =
+				       	ptrsize == 8 ? *reinterpret_cast<const uint64_t*>(scoop_contents.c_str() + i) : 
+				       	ptrsize == 4 ? *reinterpret_cast<const uint32_t*>(scoop_contents.c_str() + i) : 
+					throw invalid_argument("Cannot map ptrsize to deref type");
+				possible_target(ptr, scoop->getStart()->getVirtualOffset() + i, ibt_provenance_t::ibtp_data);
+			}
+
+		}
+
 		// test if scoop was added by fill_in_cfg -- make this test better.
 		if(scoop->getName().find("data_in_text_")==string::npos) continue;
 
@@ -545,113 +560,6 @@ set<Instruction_t*> find_in_function(string needle, Function_t *haystack)
 	regfree(&preg);
 	return found_instructions;
 }
-
-
-#if 0
-bool backup_until(const string &insn_type_regex_str, 
-		  Instruction_t *& prev, 
-		  Instruction_t* orig, 
-		  const string & stop_if_set="", 
-		  bool recursive=false, 
-		  uint32_t max_insns=10000u, 
-		  uint32_t max_recursions=5u)
-{
-
-	const auto find_or_build_regex=[&] (const string& s) -> regex_t&
-		{
-			// declare a freer for regexs so they go away when the program ends.
-			const auto regex_freer=[](regex_t* to_free)  -> void
-			{
-				regfree(to_free);
-				delete to_free;
-			};
-			// keep the map safe from anyone but me using it.
-			using regex_unique_ptr_t=unique_ptr<regex_t, decltype(regex_freer)>;
-			static map<string, regex_unique_ptr_t > regexs_used;
-
-			if(s=="")
-			{
-				static regex_t empty;
-				return empty;
-			}
-			const auto it=regexs_used.find(s);
-			if(it==regexs_used.end())
-			{
-				// allocate a new regex ptr
-				regexs_used.insert(pair<string,regex_unique_ptr_t>(s,move(regex_unique_ptr_t(new regex_t, regex_freer))));
-				// and compile it.
-				auto &regex_ptr=regexs_used.at(s);
-				const auto ret=regcomp(regex_ptr.get(), s.c_str(), REG_EXTENDED);
-				// error check
-				assert(ret==0);
-			}
-			return *regexs_used.at(s).get();
-		};
-
-
-	// build regexs.
-	const auto &preg            = find_or_build_regex(insn_type_regex_str);
-	const auto &stop_expression = find_or_build_regex(stop_if_set);
-
-
-	prev=orig;
-	while(preds[prev].size()==1 && max_insns > 0)
-	{
-		// dec max for next loop 
-		max_insns--;
-
-		// get the only item in the list.
-		prev=*(preds[prev].begin());
-	
-
-       		// get I7's disassembly
-		const auto disasm=DecodedInstruction_t::factory(prev);
-
-       		// check it's the requested type
-       		if(regexec(&preg, disasm->getDisassembly().c_str(), 0, nullptr, 0) == 0)
-			return true;
-
-		if(stop_if_set!="")
-		{
-			for(const auto operand : disasm->getOperands())
-			{
-				if(operand->isWritten() && regexec(&stop_expression, operand->getString().c_str(), 0, nullptr, 0) == 0)
-					return false;
-			}
-		}
-
-		// otherwise, try backing up again.
-	}
-	if(recursive && max_insns > 0 && max_recursions > 0 )
-	{
-		const auto myprev=prev;
-		// can't just use prev because recursive call will update it.
-		const auto &mypreds=preds[myprev];
-		for(const auto pred : mypreds)
-		{
-			prev=pred;// mark that we are here, in case we return true here.
-			const auto disasm=DecodedInstruction_t::factory(pred);
-       			// check it's the requested type
-       			if(regexec(&preg, disasm->getDisassembly().c_str(), 0, nullptr, 0) == 0)
-				return true;
-			if(stop_if_set!="")
-			{
-				for(const auto operand : disasm->getOperands())
-				{
-					if(operand->isWritten() && regexec(&stop_expression, operand->getString().c_str(), 0, nullptr, 0) == 0)
-						return false;
-				}
-			}
-			if(backup_until(insn_type_regex_str, prev, pred, stop_if_set, recursive, max_insns, max_recursions/mypreds.size()))
-				return true;
-
-			// reset for next call
-			prev=myprev;
-		}
-	}
-	return false;
-}
-#endif
 
 
 void check_for_arm32_switch_type1(
@@ -4058,16 +3966,6 @@ set<VirtualOffset_t> forced_pins;
 
 int parseArgs(const vector<string> step_args)
 {
-
-#if 0
-	if(step_args.size()<1)
-	{
-		cerr<<"Usage: <id> [--[no-]split-eh-frame] [--[no-]unpin] [addr,...]"<<endl;
-		exit(-1);
-	}
-#endif
-
-	// variant_id=stoi(step_args[0]);
 	cout<<"Parsing parameters with argc= " << step_args.size()<<endl;
 
 	// parse dash-style options.
