@@ -49,13 +49,13 @@ uint8_t dos_header[]=
 
 
 
-template<int width>
-void PeWriter<width>::Write(const string &out_file, const string &infile)
+template<int width, class  uintMa_t>
+void PeWriter<width,uintMa_t>::Write(const string &out_file, const string &infile)
 {
 	// confirm our understanding of these fields
 	assert(sizeof(coff_header_t)==24);
 	assert(sizeof(standard_coff_header_t)==24);
-	assert(sizeof(win_specific_fields_t)==88);
+	// assert(sizeof(win_specific_fields_t)==88); not so true on pe32.
 	assert(sizeof(pe_section_header_t)==40);
 
 	// open input/output files
@@ -80,17 +80,15 @@ void PeWriter<width>::Write(const string &out_file, const string &infile)
 
 }
 
-template<int width>
-void PeWriter<width>::InitHeaders()
+template<int width, class  uintMa_t>
+void PeWriter<width,uintMa_t>::InitHeaders()
 {
 	const auto pebliss=reinterpret_cast<pe_bliss::pe_base*>(m_exeiop->get_pebliss());
 	assert(pebliss);
 
 	const auto orig_file_full_headers_str     = pebliss -> get_full_headers_data();
 	const auto orig_file_full_headres_cstr    = orig_file_full_headers_str.c_str();
-	// unused -- const auto orig_file_coff_header          = (coff_header_t*)(orig_file_full_headres_cstr+sizeof(dos_header));
 	const auto orig_file_standard_coff_header = (standard_coff_header_t*)(orig_file_full_headres_cstr+sizeof(dos_header)+sizeof(coff_header_t));
-	// unused --const auto orig_file_win_header           = (win_specific_fields_t*)(orig_file_full_headres_cstr+sizeof(dos_header)+sizeof(coff_header_t)+sizeof(standard_coff_header_t));
 
 	// calculate the total size (last-first), rounded to page boundaries so that the OS can allocate that much virtual memory
 	// for this object.
@@ -98,12 +96,15 @@ void PeWriter<width>::InitHeaders()
 	const auto image_size = page_round_up(DetectMaxAddr()) - page_round_down(image_base);
 
 
+	const auto machine = (width == 64) ? 0x8664 : // x86 64
+	                     (width == 32) ? 0x014c : // i386
+			     throw invalid_argument("Cannot map width to machine type");
 
 	// initialize the headers
 	coff_header_hdr = coff_header_t
 		({
 		 	0x00004550,                    // "PE\0\0"
-			0x8664,                        // x86 64
+			machine,                       // x86 64
 			(uint16_t)segvec.size(),       // size of the segment map
 			(uint32_t)time(nullptr),       // time in seconds
 			0,                             // ?? have to figure file pointer to symtable out.
@@ -112,43 +113,47 @@ void PeWriter<width>::InitHeaders()
 			pebliss->get_characteristics() // relocs stripped |  executable | line numbers stripped | large addresses OK
 	       } );
 
+	const auto magic_no = width==64 ?  0x20b :  // PE32+
+	                      width==32 ?  0x10b :  // PE32
+		              throw invalid_argument("Width -> magic cannot be calculated");
 
 	standard_coff_header_hdr = standard_coff_header_t
 		( {
-			0x20b,  // PE32+
+		  	magic_no,
 			orig_file_standard_coff_header->major_linker_version,  // version 2.25 linker (major part)
 			orig_file_standard_coff_header->minor_linker_version,  // version 2.25 linker (minor part)
 			0x1234,                                                // ?? have to figure out sizeof code
 			0x5678,                                                // ?? have to figure out initd data
 			0x4321,                                                // ?? have to figure out uninitd data
-			(uint32_t)m_exeiop->get_entry(),                       // entry point
+			(uint32_t)(m_exeiop->get_entry() - image_base),        // entry point
 			0x1000                                                 // ?? have to figure out code base
 		} );
+	base_of_data=0x2000;
 
 
 	win_specific_fields_hdr = win_specific_fields_t
 		( {
-		image_base,                               // image_base;
-		PAGE_SIZE,                                // section_alignment;
-		512,                                      // file_alignment -- guessing this is a magic constant we can always use
-		pebliss->get_major_os_version(),          // major_os_version -- constants, may very if we need to port to more win versions.  read from a.ncexe?
-		pebliss->get_minor_os_version(),          // minor_os_version;
-		0,                                        // major_image_version;
-		0,                                        // minor_image_version;
-		pebliss->get_major_subsystem_version(),   // major_subsystem_version;
-		pebliss->get_minor_subsystem_version(),   // minor_subsystem_version;
-		0,                                        // win32_version;
-		(uint32_t)image_size,                     // sizeof_image in memory (not including headers?)
-		0x1000,                                   // sizeof_headers (OK to over estimate?)
-		0,                                        // checksum ?? need to fix later
-		3,                                        // subsystem ?? read from input file?
-		pebliss->get_dll_characteristics   (),    // dll_characteristics 
-		pebliss->get_stack_size_reserve_64 (),    // sizeof_stack_reserve
-		pebliss->get_stack_size_commit_64  (),    // sizeof_stack_commit
-		pebliss->get_heap_size_reserve_64  (),    // sizeof_heap_reserve
-		pebliss->get_heap_size_commit_64   (),    // sizeof_heap_commit
-		0,                                        // loader_flags -- reserved, must be 0.
-		0x10                                      // number of rva_and_sizes -- always 16 from what I can tell?
+		uintMa_t(image_base),                           // image_base;
+		PAGE_SIZE,                                      // section_alignment;
+		512,                                            // file_alignment -- guessing this is a magic constant we can always use
+		pebliss->get_major_os_version(),                // major_os_version -- constants, may very if we need to port to more win versions.  read from a.ncexe?
+		pebliss->get_minor_os_version(),                // minor_os_version;
+		1,                                              // major_image_version;
+		0,                                              // minor_image_version;
+		pebliss->get_major_subsystem_version(),         // major_subsystem_version;
+		pebliss->get_minor_subsystem_version(),         // minor_subsystem_version;
+		0,                                              // win32_version;
+		(uint32_t)image_size,                           // sizeof_image in memory (not including headers?)
+		0x1000,                                         // sizeof_headers (OK to over estimate?)
+		0,                                              // checksum ?? need to fix later
+		3,                                              // subsystem ?? read from input file?
+		pebliss->get_dll_characteristics(),             // dll_characteristics 
+		uintMa_t(pebliss->get_stack_size_reserve_64()), // sizeof_stack_reserve
+		uintMa_t(pebliss->get_stack_size_commit_64 ()), // sizeof_stack_commit
+		uintMa_t(pebliss->get_heap_size_reserve_64 ()), // sizeof_heap_reserve
+		uintMa_t(pebliss->get_heap_size_commit_64  ()), // sizeof_heap_commit
+		0,                                              // loader_flags -- reserved, must be 0.
+		0x10                                            // number of rva_and_sizes -- always 16 from what I can tell?
 		} );
 
 	//
@@ -180,19 +185,21 @@ void PeWriter<width>::InitHeaders()
 }
 
 
-template<int width>
-void  PeWriter<width>::GenerateDataDirectory()
+template<int width, class  uintMa_t>
+void  PeWriter<width,uintMa_t>::GenerateDataDirectory()
 {
 }
 
-template<int width>
-void  PeWriter<width>::CalculateHeaderSizes()
+template<int width, class  uintMa_t>
+void  PeWriter<width,uintMa_t>::CalculateHeaderSizes()
 {
 	// shorten name
 	auto &hdr_size=coff_header_hdr.sizeof_opt_header;
 
 	hdr_size  = 0;
 	hdr_size += sizeof(standard_coff_header_t);
+	if(width==32)
+		hdr_size+=sizeof(uintMa_t); // add in BaseOfData field in sizing.
 	hdr_size += sizeof(win_specific_fields_t);
 	hdr_size += sizeof(image_data_directory_t) * image_data_dir_hdrs.size();
 
@@ -210,8 +217,8 @@ void  PeWriter<width>::CalculateHeaderSizes()
 
 }
 
-template<int width>
-void  PeWriter<width>::CreateSectionHeaders()
+template<int width, class  uintMa_t>
+void  PeWriter<width,uintMa_t>::CreateSectionHeaders()
 {
 	auto code_size=0u;
 	auto init_data_size=0u;
@@ -228,21 +235,23 @@ void  PeWriter<width>::CreateSectionHeaders()
 	}
 
 	// update header with section size info.
-	standard_coff_header_hdr.sizeof_code          = code_size;
+	standard_coff_header_hdr.sizeof_code         = code_size;
 	standard_coff_header_hdr.sizeof_initd_data   = init_data_size;
 	standard_coff_header_hdr.sizeof_uninitd_data = uninit_data_size;
 
 }
 
 
-template<int width>
-void  PeWriter<width>::WriteFilePass1()
+template<int width, class  uintMa_t>
+void  PeWriter<width,uintMa_t>::WriteFilePass1()
 {
 	const auto res1=fseek(fout, 0,SEEK_SET);
 	assert(res1==0);
 	fwrite(&dos_header              , sizeof(dos_header)              , 1, fout);
 	fwrite(&coff_header_hdr         , sizeof(coff_header_hdr)         , 1, fout);
 	fwrite(&standard_coff_header_hdr, sizeof(standard_coff_header_hdr), 1, fout);
+	if(width==32)
+		fwrite(&base_of_data    , sizeof(base_of_data), 1, fout);
 	fwrite(&win_specific_fields_hdr , sizeof(win_specific_fields_hdr) , 1, fout);
 
 	fwrite(image_data_dir_hdrs.data(), sizeof(image_data_directory_t), image_data_dir_hdrs.size(), fout);
@@ -266,7 +275,7 @@ void  PeWriter<width>::WriteFilePass1()
 		const auto seg_end_addr = s.virtual_addr + s.file_size;
 		for(auto i = page_round_down(s.virtual_addr); i < seg_end_addr; i+=PAGE_SIZE)
 		{
-			const auto & page     = pagemap[file_base+i];
+			const auto &page = pagemap[file_base+i];
 			for(auto j=0u; j<PAGE_SIZE; j++)
 			{
 				// skip bytes that aren't in the section.
@@ -289,4 +298,7 @@ void  PeWriter<width>::WriteFilePass1()
 
 }
 
-template class PeWriter<64>;
+template class PeWriter<64, uint64_t>;
+template class PeWriter<32, uint32_t>;
+// class PeWriter32; // instantiate templates.
+// class PeWriter64;

@@ -1906,6 +1906,7 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 
 	auto ew=unique_ptr<ExeWriter>(
 		is_pe  && bit_width == 64 ? (ExeWriter*)new PeWriter64(exeiop, m_firp, *m_add_sections, *m_bss_opts)  :
+		is_pe  && bit_width == 32 ? (ExeWriter*)new PeWriter32(exeiop, m_firp, *m_add_sections, *m_bss_opts)  :
 		is_elf && bit_width == 64 ? (ExeWriter*)new ElfWriter64(exeiop, m_firp, *m_add_sections, *m_bss_opts) :
 		is_elf && bit_width == 32 ? (ExeWriter*)new ElfWriter32(exeiop, m_firp, *m_add_sections, *m_bss_opts) :
 		throw invalid_argument("Unknown file type/machine width combo")

@@ -6,7 +6,7 @@
 #include <map>
 
 
-template <int bitwidth>
+template <int bitwidth, class uintMa_t /* a uint<size>_t for the machine */ >
 class PeWriter : ExeWriter
 {
 
@@ -53,7 +53,7 @@ class PeWriter : ExeWriter
 		using win_specific_fields_t = 
 			struct win_specific_fields
 			{
-				uint64_t image_base;
+				uintMa_t image_base;
 				uint32_t section_alignment;
 				uint32_t file_alignment;
 				uint16_t major_os_version;
@@ -68,10 +68,10 @@ class PeWriter : ExeWriter
 				uint32_t checksum;
 				uint16_t subsystem;
 				uint16_t dll_characteristics;
-				uint64_t sizeof_stack_reserve;
-				uint64_t sizeof_stack_commit;
-				uint64_t sizeof_heap_reserve;
-				uint64_t sizeof_heap_commit;
+				uintMa_t sizeof_stack_reserve;
+				uintMa_t sizeof_stack_commit;
+				uintMa_t sizeof_heap_reserve;
+				uintMa_t sizeof_heap_commit;
 				uint32_t loader_flags;
 				uint32_t num_rva_and_sizes;
 			};
@@ -165,6 +165,7 @@ class PeWriter : ExeWriter
 
 		coff_header_t                       coff_header_hdr={};
 		standard_coff_header_t              standard_coff_header_hdr={};
+		uint32_t                            base_of_data=0; // an extra field for pe32 field that's not part of the pe32+ standard_coff_header_t
 		win_specific_fields_t               win_specific_fields_hdr={};
 		std::vector<image_data_directory_t> image_data_dir_hdrs={}; 
 		std::vector<pe_section_header_t>    section_headers={};
@@ -190,7 +191,8 @@ class PeWriter : ExeWriter
 };
 
 
-using PeWriter64 = PeWriter<64>;
+using PeWriter32 = PeWriter<32, uint32_t>;
+using PeWriter64 = PeWriter<64, uint64_t>;
 
 
 
