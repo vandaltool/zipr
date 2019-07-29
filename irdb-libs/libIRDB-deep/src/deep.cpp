@@ -3,9 +3,11 @@
 #include <set>
 #include <memory>
 #include <deep.hpp>
+#include <loops.hpp>
 #include <MEDS_DeadRegAnnotation.hpp>
 #include <MEDS_MemoryRangeAnnotation.hpp>
 #include <MEDS_SafeFuncAnnotation.hpp>
+#include <MEDS_LoopAnnotation.hpp>
 
 
 using namespace libIRDB;
@@ -40,7 +42,7 @@ unique_ptr<IRDB_SDK::FunctionSet_t> StarsDeepAnalysis_t::getLeafFunctions()     
 	        /* for each annotation for this instruction */
        		for (auto it = the_range.first; it != the_range.second; ++it)
 		{
-		 	auto p_annotation=dynamic_cast<MEDS_SafeFuncAnnotation*>(it->second);
+		 	const auto p_annotation=dynamic_cast<MEDS_SafeFuncAnnotation*>(it->second);
 			if(p_annotation==nullptr)
                                 continue;
 
@@ -142,22 +144,44 @@ unique_ptr<IRDB_SDK::RangeSentinelSet_t> StarsDeepAnalysis_t::getRangeSentinels(
 	return ret;
 }
 
-unique_ptr<IRDB_SDK::LoopNest_t> StarsDeepAnalysis_t::getLoopNest(const IRDB_SDK::Function_t* f) const
+unique_ptr<IRDB_SDK::LoopNest_t> StarsDeepAnalysis_t::getLoops(IRDB_SDK::Function_t* f) const
 {
-	auto ret = unique_ptr<IRDB_SDK::LoopNest_t>();
+	auto cfg = IRDB_SDK::ControlFlowGraph_t::factory(f);
+	auto ret = getLoops(cfg.get());
+	auto real_nest = dynamic_cast<libIRDB::LoopNest_t*>(ret.get()); 
+	real_nest->saveCFG(move(cfg));
+
 	return ret;
 }
 
-unique_ptr<IRDB_SDK::LoopNest_t> StarsDeepAnalysis_t::getLoopNest(const IRDB_SDK::ControlFlowGraph_t* cfg) const 
+unique_ptr<IRDB_SDK::LoopNest_t> StarsDeepAnalysis_t::getLoops(IRDB_SDK::ControlFlowGraph_t* cfg) const 
 {
-	auto ret = unique_ptr<IRDB_SDK::LoopNest_t>();
-	return ret;
-}
+	auto func = cfg->getFunction();
+	auto id_to_block_map = map<IRDB_SDK::DatabaseID_t, IRDB_SDK::BasicBlock_t*>();
+	for(auto blk : cfg->getBlocks())
+		id_to_block_map[blk->getInstructions()[0]->getBaseID()]=blk;
 
+	auto meds_ap=stars_analysis_engine.getAnnotations();
+	const auto the_range = meds_ap.getAnnotations().equal_range(func->getBaseID());
+
+	auto ret = unique_ptr<IRDB_SDK::LoopNest_t>(new LoopNest_t(cfg));
+	for (auto it = the_range.first; it != the_range.second; ++it)
+	{
+		auto p_annotation=dynamic_cast<MEDS_LoopAnnotation*>(it->second);
+		if(p_annotation==nullptr)    continue;
+		if(!p_annotation->isValid()) continue;
+
+		const auto header_id = p_annotation -> getHeaderID();
+		const auto loop_id   = p_annotation -> getLoopID();
+		auto the_loop = unique_ptr<Loop_t>(new Loop_t(id_to_block_map[header_id]));
+		dynamic_cast<libIRDB::LoopNest_t*>(ret.get())->addLoop(loop_id,move(the_loop));
+	}
+
+	return move(ret);
+}
 
 unique_ptr<IRDB_SDK::DeepAnalysis_t> IRDB_SDK::DeepAnalysis_t::factory(FileIR_t* firp, const AnalysisEngine_t& ae, const vector<string>& options)
 {
-
 	auto ret=unique_ptr<IRDB_SDK::DeepAnalysis_t>();
 		
 	switch(ae)

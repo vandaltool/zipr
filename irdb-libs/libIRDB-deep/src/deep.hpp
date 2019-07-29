@@ -27,8 +27,8 @@ namespace libIRDB
 			virtual unique_ptr<IRDB_SDK::StaticGlobalStartMap_t> getStaticGlobalRanges() const override;
 			virtual unique_ptr<IRDB_SDK::RangeSentinelSet_t    > getRangeSentinels()     const override;
 
-			virtual unique_ptr<IRDB_SDK::LoopNest_t> getLoopNest(const IRDB_SDK::Function_t* f)           const override;
-                        virtual unique_ptr<IRDB_SDK::LoopNest_t> getLoopNest(const IRDB_SDK::ControlFlowGraph_t* cfg) const override;
+			virtual unique_ptr<IRDB_SDK::LoopNest_t> getLoops(IRDB_SDK::Function_t* f)           const override;
+                        virtual unique_ptr<IRDB_SDK::LoopNest_t> getLoops(IRDB_SDK::ControlFlowGraph_t* cfg) const override;
 
 
 		private:
