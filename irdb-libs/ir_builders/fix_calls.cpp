@@ -782,6 +782,9 @@ class FixCalls_t : public TransformStep_t
 			if(virt_offset == 0 || virt_offset == (uintptr_t)-1)
 				return;
 
+			// do verbosity output
+			const auto verbose_fix_calls = getenv("VERBOSE_FIX_CALLS") != nullptr;
+
 			const auto cur_relocs     = insn->getRelocations();
 			const auto pcrel_reloc_it = find_if(ALLOF(cur_relocs), [](const Relocation_t* r) { return r->getType()=="pcrel"; });
 			if(pcrel_reloc_it != end(cur_relocs)) return; // already exists.
@@ -806,7 +809,7 @@ class FixCalls_t : public TransformStep_t
 						// figure out how to rewrite pcrel arm insns, then change the virt addr
 						// insn->getAddress()->setVirtualOffset(0);	
 						// for now, we aren't doing this... we may need to for doing xforms.
-						if(getenv("VERBOSE_FIX_CALLS"))
+						if(verbose_fix_calls)
 							cout << "Detected arm32/64 pc-rel operand in " << disasm->getDisassembly()  << endl;
 					}
 					else if(mt==admtX86_64 ||  mt==admtI386)
@@ -861,13 +864,19 @@ class FixCalls_t : public TransformStep_t
 						data.replace(0, data.length(), cstr, data.length());
 						insn->setDataBits(data);
 
-						other_fixes++;
-
-						if(getenv("VERBOSE_FIX_CALLS"))
-							cout << " Converted to: " << insn->getDisassembly() << endl;
-
+#if 0
 						// and it's important to set the VO to 0, so that the pcrel-ness is calculated correctly.
 						insn->getAddress()->setVirtualOffset(0);	
+#endif
+
+						// log
+						if(verbose_fix_calls)
+							cout << " Converted to: " << insn->getDisassembly() << endl;
+
+						// keep up with stats.
+						other_fixes++;
+
+
 					}
 					else
 						throw std::invalid_argument("Unknown architecture in fix_other_pcrel");

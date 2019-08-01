@@ -76,7 +76,7 @@ DominatorGraph_t::DominatorGraph_t(const ControlFlowGraph_t* p_cfg, bool needs_p
 
 /*
 
-algorithm from advanced compiler design & impelmentation, Mucnick, 2nd edition page 18
+algorithm from advanced compiler design & impelmentation, Mucnick, 2nd edition page 186
 
 procedure Dom_Comp(N,Pred,r) returns Node-> set of Node
 	N: in set of Node
