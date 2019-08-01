@@ -51,8 +51,8 @@ namespace libIRDB
 
 			using pred_func_ptr_t =  const IRDB_SDK::BasicBlockSet_t& (*) (const IRDB_SDK::BasicBlock_t* node);
 
-			DominatorMap_t Dom_Comp(const IRDB_SDK::BasicBlockSet_t& N, pred_func_ptr_t pred_func, IRDB_SDK::BasicBlock_t* r);
-			BlockToBlockMap_t Idom_Comp(const IRDB_SDK::BasicBlockSet_t& N, const DominatorMap_t &Domin, IRDB_SDK::BasicBlock_t* r);
+			DominatorMap_t Dom_Comp(const IRDB_SDK::BasicBlockVector_t& N, pred_func_ptr_t pred_func, IRDB_SDK::BasicBlock_t* r);
+			BlockToBlockMap_t Idom_Comp(const IRDB_SDK::BasicBlockVector_t& N, const DominatorMap_t &Domin, IRDB_SDK::BasicBlock_t* r);
 
 
 			DominatorMap_t dom_graph;
