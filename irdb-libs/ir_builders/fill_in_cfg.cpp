@@ -664,15 +664,16 @@ void PopulateCFG::ctor_detection(FileIR_t *firp)
 	auto find_ctor_start=[&](const exeio_section_t* sec, const VirtualOffset_t end_of_ctor) -> VirtualOffset_t
 		{
 			// values needed later for various things
-			const auto ptrsize   = 8;
+			const auto ptrsize   = firp->getArchitectureBitWidth() / 8 ;
 			const auto sec_data  = sec->get_data();
 			const auto sec_start = sec->get_address();
 
 			// check for a null terminator at the stated end of table
 			const auto null_term_addr=end_of_ctor-ptrsize;
-			const auto null_term_value=
+			const auto null_term_value =
 				ptrsize == 8 ?  *(uint64_t*)(sec_data+null_term_addr-sec_start) :
-				                throw invalid_argument("Unknown ptrsize");
+				ptrsize == 4 ?  *(uint32_t*)(sec_data+null_term_addr-sec_start) :
+		                throw invalid_argument("Unknown ptrsize");
 
 			// not found, return this isn't sane.
 			if(null_term_value!=0) return 0;
@@ -685,12 +686,14 @@ void PopulateCFG::ctor_detection(FileIR_t *firp)
 				if(next_addr<sec_start) return 0;
 
 				// get the table entry
-				const auto ctor_entry_value=
+				const auto ctor_entry_value =
 					ptrsize == 8 ?  *(uint64_t*)(sec_data+next_addr-sec_start) :
-							throw invalid_argument("Unknown ptrsize");
+					ptrsize == 4 ?  *(uint32_t*)(sec_data+next_addr-sec_start) :
+					throw invalid_argument("Unknown ptrsize");
 
 				// check for the -1 terminator
-				if((int64_t)ctor_entry_value==int64_t(-1)) return next_addr;
+				if(ptrsize == 8 && (int64_t)ctor_entry_value==int64_t(-1)) return next_addr;
+				if(ptrsize == 4 && (int32_t)ctor_entry_value==int32_t(-1)) return next_addr;
 
 				// check if the table entry isn't a valid address
 				const auto is_before_start = ctor_entry_value <  sec->get_address() ;
@@ -718,6 +721,7 @@ void PopulateCFG::ctor_detection(FileIR_t *firp)
 
 			// finally, create the new scoop
 			firp->addNewDataScoop( name, startaddr, endaddr, NULL, permissions, is_relro, the_contents);
+			cout << "Added ctor/dtor scoop called " << name << " at " << hex << start_vo << "-" << end_vo << endl;
 		};	
 
 	const auto text_sec = exeiop->sections[".text"];

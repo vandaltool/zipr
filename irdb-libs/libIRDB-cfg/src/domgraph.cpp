@@ -44,20 +44,18 @@ inline S const& find_map_object( const std::map< T , S > &a_map, const T& key)
 DominatorGraph_t::DominatorGraph_t(const ControlFlowGraph_t* p_cfg, bool needs_postdoms, bool needs_idoms)
 	: cfg(*p_cfg), warn(false)
 {
-	auto &blocks=p_cfg->getBlocks();
-
-
 	assert(needs_postdoms==false);
 	assert(needs_idoms==false);
 
+	const auto dfs_order = getDFSOrder(const_cast<ControlFlowGraph_t*>(p_cfg));
 
 	pred_func_ptr_t func_get_predecessors=[](const IRDB_SDK::BasicBlock_t* node) -> const IRDB_SDK::BasicBlockSet_t&
 	{
 		return node->getPredecessors();
 	};
 
-	dom_graph=Dom_Comp(blocks, func_get_predecessors, p_cfg->getEntry());
-	idom_graph=Idom_Comp(blocks, dom_graph, p_cfg->getEntry());
+	dom_graph  =  Dom_Comp(dfs_order, func_get_predecessors, p_cfg->getEntry());
+	idom_graph = Idom_Comp(dfs_order, dom_graph,             p_cfg->getEntry());
 
 	Dominated_Compute();
 
@@ -111,7 +109,7 @@ end || Dom_Comp
 
 */
 
-DominatorMap_t DominatorGraph_t::Dom_Comp(const IRDB_SDK::BasicBlockSet_t& N, pred_func_ptr_t get_preds,  IRDB_SDK::BasicBlock_t* r)
+DominatorMap_t DominatorGraph_t::Dom_Comp(const IRDB_SDK::BasicBlockVector_t& N, pred_func_ptr_t get_preds,  IRDB_SDK::BasicBlock_t* r)
 {
 /*
 	D, T: set of Node
@@ -125,17 +123,15 @@ DominatorMap_t DominatorGraph_t::Dom_Comp(const IRDB_SDK::BasicBlockSet_t& N, pr
 	DominatorMap_t Domin;
 	Domin[r].insert(r);
 
-	IRDB_SDK::BasicBlockSet_t NminusR=N;
-	NminusR.erase(r);
-
 /*
 	for each n \in N - {r} do
 		Domin(n)={N}
 	od
 */
-	for( auto n : NminusR)
+	for( const auto &n : N)
 	{
-		Domin[n]=N;
+		if(n==r) continue;
+		Domin[n]=IRDB_SDK::BasicBlockSet_t(ALLOF(N));
 	};
 
 /* 
@@ -147,17 +143,18 @@ DominatorMap_t DominatorGraph_t::Dom_Comp(const IRDB_SDK::BasicBlockSet_t& N, pr
 		/*
 		for each n \in N - {r} do		
 		*/
-		for( auto n : NminusR)
+		for( const auto &n : N)
 		{
+			if(n == r) continue;
 			/* T := N */
-			T=N;
+			T = IRDB_SDK::BasicBlockSet_t(ALLOF(N));
 /*
 
 			for each p \in Pred(n) do
 				T = T intersect Domin(p)
 			done
 */
-			for(auto p : get_preds(n) )
+			for(const auto &p : get_preds(n) )
 			{
 				IRDB_SDK::BasicBlockSet_t tmp;
 				set_intersection(T.begin(), T.end(), Domin[p].begin(), Domin[p].end(), inserter(tmp,tmp.begin()));
@@ -248,21 +245,20 @@ end || IDom_Comp
 	
 
 
-BlockToBlockMap_t DominatorGraph_t::Idom_Comp(const IRDB_SDK::BasicBlockSet_t& N, const DominatorMap_t &Domin, IRDB_SDK::BasicBlock_t* r) 
+BlockToBlockMap_t DominatorGraph_t::Idom_Comp(const IRDB_SDK::BasicBlockVector_t& N, const DominatorMap_t &Domin, IRDB_SDK::BasicBlock_t* r) 
 {
 	// n, s, t: Node
-	//BasicBlock_t* n=NULL, *s=NULL, *t=NULL;
+	const auto verbose=false;
 
 	// Tmp: Node -> set of Node
-	DominatorMap_t Tmp;
+	auto Tmp = DominatorMap_t();
 	
 	// IDom: Node->Node
-	BlockToBlockMap_t IDom;
+	auto IDom = BlockToBlockMap_t() ;
 
-
-	// calculate this set as we use it several times
-	IRDB_SDK::BasicBlockSet_t NminusR = N;
-	NminusR.erase(r);
+	auto tmp_n_total_size = 0u;
+	auto inner_total      = 0u;
+	auto inner_checks     = 0u;
 
 
 	// for each n \in N do
@@ -271,15 +267,22 @@ BlockToBlockMap_t DominatorGraph_t::Idom_Comp(const IRDB_SDK::BasicBlockSet_t& N
 		//Tmp(n) := Domin(n) - {n} 
 		Tmp[n] = Domin.at(n);
 		Tmp[n].erase(n);
+		tmp_n_total_size += Tmp[n].size();
 	// od
-	};
+	}
+
+	if(verbose)
+		cout << "Average size of Tmp[n] = " << tmp_n_total_size / Tmp.size() << endl;
 
 
 	//for each n \in N - {r} do
-	for(auto n : NminusR)
+	for(auto n : N)
 	{
+		if( n == r) continue;
+
 		// for each s \in Tmp(n) do
 		auto Tmp_n=Tmp[n];
+
 		// for_each( Tmp_n.begin(), Tmp_n.end(), [&]( BasicBlock_t* s)
 		for (auto s : Tmp_n)
 		{
@@ -292,20 +295,29 @@ BlockToBlockMap_t DominatorGraph_t::Idom_Comp(const IRDB_SDK::BasicBlockSet_t& N
 				if(t != s)   
 				{
 					//if t \in Tmp(s) then
+					inner_checks ++;
 					if( is_in_container(Tmp[s],t))
 					{
 						//Tmp(n) -= {t}
-						Tmp[n].erase(t);
+						Tmp[n].erase(t); 
+						inner_total ++;
 					}
 				}
 			};
 		};
 	};
 
+	if(verbose)
+	{
+		cout << "Inner checks = " << inner_checks << endl;
+		cout << "Inner total = "  << inner_total  << endl;
+	}
 
 	//for each n \in N-{r} do
-	for (auto n : NminusR)
+	for (auto n : N)
 	{
+		if(n == r) continue;
+
 		//IDom(n) = <only element in>Tmp(n)
 		IDom[n]= *(Tmp[n].begin());
 		if(Tmp[n].size()!=1)	// should only be one idominator.
