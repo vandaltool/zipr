@@ -250,6 +250,9 @@ class FixCalls_t : public TransformStep_t
 			
 
 
+// calls to not the entry of a function likely result
+// from ida/rida mis-identification of functions.  no need to fix them.
+#if 0
 			assert(cfg->getEntry());
 			
 			/* if the call instruction isn't to a function entry point */
@@ -259,6 +262,7 @@ class FixCalls_t : public TransformStep_t
 				/* then we need to fix it */
 				return true;
 			}
+#endif
 
 
 			/* check the entry block for thunks, etc. */
