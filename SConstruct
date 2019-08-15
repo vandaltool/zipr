@@ -35,5 +35,8 @@ else:
         env.Append(SHLINKFLAGS=" -O  ")
 
 Export('env')
-SConscript("SConscript")
+ret=SConscript("SConscript")
+
+Default(ret)
+Return('ret')
 

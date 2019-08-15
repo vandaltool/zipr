@@ -62,10 +62,11 @@ pedi = Command( target = "./zipr-umb-testoutput-install",
 		source = xforms,
 		action = os.environ['PEDI_HOME']+"/pedi -m manifest.txt " )
 
+ret=[]+xforms
 if Dir('.').abspath == Dir('#.').abspath:
-	Default( pedi )
-else:
-	Default(xforms)
+	ret=ret+pedi
+
+
 
 if env.GetOption('clean') and os.path.isfile("manifest.txt.config"):
 	with open("manifest.txt.config") as myfile:
@@ -77,3 +78,7 @@ if env.GetOption('clean') and os.path.isfile("manifest.txt.config"):
 		os.system( "pwd; $PEDI_HOME/pedi -c -m manifest.txt " )
 		shutil.rmtree(os.environ['PS_INSTALL'])
 
+
+
+Default(ret)
+Return('ret')
