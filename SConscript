@@ -54,16 +54,11 @@ myenv=myenv.Clone(CPPPATH=Split(cpppath), LIBS=Split(libs), LIBPATH=Split(libpat
 lib=myenv.SharedLibrary("push64_relocs", Split(files))
 
 install=myenv.Install("$ZIPR_INSTALL/plugins/", lib)
-Default(install)
-
-pedi = Command( target = "./testoutput",
-                source = "./SConscript",
-                action = "cd "+os.environ['ZIPR_INSTALL']+" ; " +os.environ['PEDI_HOME']+"/pedi -m manifest.txt ; cd -" )
-
-Depends (pedi, install)
-Default( pedi )
-
-
-
-ret=pedi+lib
+ret=[install,lib]
+pedi = Command( target = "./push64-testoutput",
+                source = install,
+                action = "echo push64; cd "+os.environ['ZIPR_INSTALL']+" ; " +os.environ['PEDI_HOME']+"/pedi -m manifest.txt ; cd -" )
+if Dir('.').abspath == Dir('#.').abspath:
+	ret=ret+pedi
+Default(ret)
 Return('ret')
