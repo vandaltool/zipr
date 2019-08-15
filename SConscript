@@ -57,12 +57,13 @@ lib=myenv.SharedLibrary("unpin", Split(files))
 install=myenv.Install("$ZIPR_INSTALL/plugins/", lib)
 Default(install)
 
-pedi = Command( target = "./testoutput",
-                source = "./SConscript",
+ret=[install,lib]
+
+pedi = Command( target = "./unpin-testoutput",
+                source = install,
                 action = "cd "+os.environ['ZIPR_INSTALL']+" ; " +os.environ['PEDI_HOME']+"/pedi -m manifest.txt ; cd -" )
-Default( pedi )
 
-
-
-ret=pedi+lib
+if Dir('.').abspath == Dir('#.').abspath:
+	ret=ret+pedi
+Default( ret )
 Return('ret')
