@@ -20,8 +20,6 @@ createFolder(os.environ['ZEST_RUNTIME']+'/bin')
 
 if not os.path.isfile("manifest.txt.config"):
 	os.system("$PEDI_HOME/pedi --setup -m manifest.txt -l ida -l ida_key -l ps -l zipr -l stars -i $PS_INSTALL")
-else:
-	print "Pedi already setup"  
 
 # build stars and libirdb
 libirdb=      SConscript("irdb-libs/SConscript") 
