@@ -27,3 +27,6 @@ irdb-libs/scons_build/
 *.so
 *.exe
 .*.swp
+irdb-libs/libEXEIO/test/exeio_test
+irdb-libs/meds2pdb/meds2pdb
+
