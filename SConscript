@@ -2,23 +2,21 @@ import shutil
 import os
 import tarfile
 
-(sysname, nodename, release, version, machine)=os.uname()
-
 Import('env')
 
 # build security transforms
 irdbenv=env.Clone(); 
 
-zipr=SConscript("src/SConscript", variant_dir='scons_build/zipr')
+zipr=SConscript("src/SConscript")
 
-if sysname  != "SunOS":
-	SConscript("test/SConscript")
+pedi = Command( target = "./zipr-testoutput",
+                source = zipr,
+                action = "echo zipr; cd "+os.environ['ZIPR_INSTALL']+" ; " +os.environ['PEDI_HOME']+"/pedi -m manifest.txt ; cd -" )
 
-pedi = Command( target = "./testoutput",
-                source = "./SConscript",
-                action = "cd "+os.environ['ZIPR_INSTALL']+" ; " +os.environ['PEDI_HOME']+"/pedi -m manifest.txt ; cd -" )
+ret=[zipr]
+if Dir('.').abspath == Dir('#.').abspath:
+	ret=pedi+zipr
 
-Depends(pedi,zipr)
-Default( pedi )
-ret=pedi+zipr
+
+Default(ret)
 Return('ret')

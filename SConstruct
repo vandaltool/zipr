@@ -56,5 +56,5 @@ else:
 
 
 Export('env')
-SConscript("SConscript", variant_dir='build')
+SConscript("SConscript")
 
