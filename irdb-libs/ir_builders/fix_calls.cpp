@@ -511,7 +511,15 @@ class FixCalls_t : public TransformStep_t
 				return;
 
 			/* record the possibly new indirect branch target if this call gets fixed */
-			Instruction_t* newindirtarg=insn->getFallthrough();
+			const auto newindirtarg=insn->getFallthrough();
+
+			if(!newindirtarg)
+			{
+				cout << "Warning!  No fallthrough for fixed call at " << hex
+				     << insn->getBaseID() << ":" << insn->getDisassembly() 
+				     << "@" << insn->getAddress()->getVirtualOffset()
+				     << endl;
+			}
 
 			/* Disassemble the instruction */
 			auto disasmp=DecodedInstruction_t::factory (insn);
@@ -602,6 +610,7 @@ class FixCalls_t : public TransformStep_t
 			auto reloc= firp->getArchitectureBitWidth()==32 ? firp->addNewRelocation(insn, 1, "32-bit") :
 				    firp->getArchitectureBitWidth()==64 ? firp->addNewRelocation(insn, 0, "push64") :
 				    throw invalid_argument("odd bit width?");
+
 
 
 
