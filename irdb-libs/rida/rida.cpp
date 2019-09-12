@@ -628,10 +628,17 @@ int main(int argc, char* argv[])
 		
 	}
 
-	CreateFunctions_t create_funcs(input_pgm,output_annot,verbose);
-	create_funcs.calculate();
-	create_funcs.writeAnnotations();
-
-
+	try
+	{
+		CreateFunctions_t create_funcs(input_pgm,output_annot,verbose);
+		create_funcs.calculate();
+		create_funcs.writeAnnotations();
+	}
+	catch(const exception& e)
+	{
+		cout << "Cannot run rida on input file: " << input_pgm << endl;
+		cout << e.what() << endl;
+		return 2;
+	}
 	return 0;
 }
