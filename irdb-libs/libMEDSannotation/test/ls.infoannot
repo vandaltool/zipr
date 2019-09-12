@@ -1,0 +1,50 @@
+              3758     23 FUNC RETURNTYPE RAX 2
+              3758     23 FUNC INARGS    6  ARG0 0 ARG1 0 ARG2 0 ARG3 0 ARG4 0 ARG5 0 
+              3770     12 FUNC RETURNTYPE RAX 0
+              3770     12 FUNC PROBLEM sub_3770 JUMPUNRESOLVED 
+              3780      6 FUNC RETURNTYPE RAX 0
+              3780      6 FUNC PROBLEM .__ctype_toupper_loc JUMPUNRESOLVED 
+              3790      6 FUNC RETURNTYPE RAX 0
+              37b0      6 FUNC PROBLEM .sigprocmask JUMPUNRESOLVED 
+              3e78      6 FUNC RETURNTYPE RAX 0
+              3e78      6 FUNC PROBLEM malloc JUMPUNRESOLVED 
+              3e80      6 FUNC RETURNTYPE RAX 0
+              3e80      6 FUNC PROBLEM __cxa_finalize JUMPUNRESOLVED 
+              3e90   6587 FUNC RETURNTYPE RAX 0
+              3e90   6587 FUNC INARGS    6  ARG0 0 ARG1 4 ARG2 0 ARG3 0 ARG4 0 ARG5 0 
+              40eb      6 INSTR CODEPTR 1 mov     r15d, 1
+              4124      5 INSTR CHECK OVERFLOW UNSIGNED 32  RAX ZZ add     eax, 83h; switch 276 cases 
+              4151      5 INSTR CODEPTR 1 mov     byte ptr [rsp+88h+var_78], 1; jumptable 000000000000413C case 107
+              a9b8      5 INSTR CODEPTR 5 mov     edx, 5; category
+              a9dd     1         15edf      5 INSTR CODEPTR 73 mov     eax, 73h ; 's'
+             1604f      4 INSTR CHECK OVERFLOW NOFLAGUNSIGNED 64 RAX+2 ZZ lea     rcx, [rax+2] 
+             16053      4 INSTR CHECK OVERFLOW NOFLAGUNSIGNED 64 RAX+3 ZZ lea     rdi, [rax+3]; size 
+             16081      3 INSTR CHECK UNDERFLOW UNSIGNED 64  RDI ZZ sub     rdi, rdx 
+             16084      4 INSTR CHECK OVERFLOW UNSIGNED 64  RDX ZZ add     rdx, 1; n 
+             1608b      3 INSTR CHECK OVERFLOW UNSIGNED 64  RDI ZZ IDIOM 18 MEMORYSINK add     rdi, r15 
+             1608e      3 INSTR CHECK OVERFLOW UNSIGNED 64  RDI ZZ IDIOM 18 MEMORYSINK add     rdi, r12; dest 
+             1609b      5 INSTR CHECK OVERFLOW NOFLAGUNSIGNED 64 R12+R15 ZZ IDIOM 18 MEMORYSINK lea     rdi, [r12+r15-1]; dest 
+             1609b      5 INSTR CHECK OVERFLOW NOFLAGUNSIGNED 64 R12+R15+-1 ZZ IDIOM 18 MEMORYSINK lea     rdi, [r12+r15-1]; dest 
+             160a0      4 INSTR CHECK OVERFLOW NOFLAGUNSIGNED 64 R13+1 ZZ IDIOM 18 MEMORYSINK lea     rdx, [r13+1]; n 
+             160fb      5 INSTR CODEPTR 1 mov     edx, 1
+             16141      4 INSTR CHECK OVERFLOW NOFLAGUNSIGNED 64 RAX+2 ZZ lea     rcx, [rax+2] 
+             16145      4 INSTR CHECK OVERFLOW NOFLAGUNSIGNED 64 RAX+3 ZZ lea     rsi, [rax+3]; size 
+             161a0    123 FUNC RETURNTYPE RAX 1
+             161a0    123 FUNC INARGS    6  ARG0 4 ARG1 0 ARG2 1 ARG3 0 ARG4 0 ARG5 0 
+             161f2      5 INSTR CODEPTR 1 mov     edx, 1; whence
+             16220     64 FUNC RETURNTYPE RAX 0
+             16220     64 FUNC INARGS    6  ARG0 4 ARG1 0 ARG2 0 ARG3 0 ARG4 0 ARG5 0 
+             1624b      5 INSTR CODEPTR 1 mov     edx, 1
+             16260     87 FUNC RETURNTYPE RAX 0
+             16260     87 FUNC INARGS    6  ARG0 4 ARG1 1 ARG2 2 ARG3 0 ARG4 0 ARG5 0 
+             162c0    101 FUNC RETURNTYPE RAX 2
+             162c0    101 FUNC INARGS    6  ARG0 0 ARG1 0 ARG2 0 ARG3 0 ARG4 0 ARG5 0 
+             162c0    101 FUNC PROBLEM init CALLUNRESOLVED 
+             1630d      4 INSTR CHECK OVERFLOW UNSIGNED 64  RBX ZZ add     rbx, 1 
+             16330      2 FUNC RETURNTYPE RAX 0
+             16330      2 FUNC INARGS    6  ARG0 0 ARG1 0 ARG2 0 ARG3 1 ARG4 0 ARG5 0 
+             16340     41 FUNC RETURNTYPE RAX 16
+             16340     41 FUNC INARGS    6  ARG0 2 ARG1 0 ARG2 0 ARG3 0 ARG4 0 ARG5 0 
+             1636c      9 FUNC RETURNTYPE RAX 0
+             1636c      9 FUNC INARGS    6  ARG0 0 ARG1 0 ARG2 0 ARG3 0 ARG4 0 ARG5 0 
+   8000000      2 SUCCESS ANALYSISCOMPLETED

@@ -1,0 +1,19 @@
+             154f0      0 INSTR XREF IBT FROMDATA               1138 
+             155e0      0 INSTR XREF IBT FROMDATA               10d8 
+             15620      0 INSTR XREF IBT FROMDATA               10a8 
+             15690      0 INSTR XREF IBT FROMDATA               1030 
+             162c0      0 INSTR XREF IBT FROMDATA               5866 
+             16330      0 INSTR XREF IBT FROMDATA               585f 
+             1636c      0 INSTR XREF IBT FROMDATA                ee0 
+             162f1      1 INSTR XREF IBT FROMIB               376e RETURNTARGET
+              40d7      7 INSTR XREF TAKES_ADDRESS_OF DATA              16598
+              40f8      7 INSTR XREF TAKES_ADDRESS_OF DATA             21f2e0
+              40ff      7 INSTR XREF TAKES_ADDRESS_OF DATA              1a148
+              4134      5 INSTR XREF TAKES_ADDRESS_OF DATA              16598
+              413e      2 INSTR XREF IBT FROMIB               413c SWITCHTABLE
+              483c      2 INSTR XREF IBT FROMIB               413c SWITCHTABLE
+              484b      2 INSTR XREF IBT FROMIB               413c SWITCHTABLE
+              55ff      2 INSTR XREF IBT FROMIB               413c SWITCHTABLE
+              5699      2 INSTR XREF IBT FROMIB               413c SWITCHTABLE
+              413c      2 INSTR XREF FROMIB COMPLETE     60 SWITCHTABLE
+              413e      7 INSTR XREF TAKES_ADDRESS_OF DATA             22132d

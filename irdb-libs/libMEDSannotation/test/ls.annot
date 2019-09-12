@@ -1,0 +1,91 @@
+                 0      1 DATAREF GLOBAL     1223 221311 PARENT byte_221311  VOID RW
+                 0     10 DATAREF GLOBAL     1251 221366 PARENT SMP_dummy414  VOID RW
+                 0     16 DATAREF GLOBAL     1252 221370 PARENT tp  VOID RW AGGREGATE
+                 0      8 DATAREF GLOBAL     1253 221370 CHILDOF 1252 OFFSET 0 tp + 0 FIELD DIRECT
+                 0      8 DATAREF GLOBAL     1254 221370 CHILDOF 1252 OFFSET 8 tp + 8 FIELD DIRECT
+                 0      8 DATAREF GLOBAL     1255 221380 PARENT ptr  VOID RW
+                 0      8 DATAREF GLOBAL     1256 221388 PARENT qword_221388  VOID RW
+                 0      1 DATAREF GLOBAL     1257 221390 PARENT byte_221390  VOID RW
+                 0      8 DATAREF GLOBAL     1282 221558 PARENT s  VOID RW
+              3758     23 FUNC GLOBAL .init_proc FUNC_SAFE NOFP RET               376e 
+              3758      0 FUNC FRAMERESTORE 0 0 2 1 0 0 2 0 0 3 0 0 4 0 8 5 0 1 6 0 0 7 0 0 8 0 0 9 0 0 10 0 0 11 0 0 12 0 16 13 0 0 14 0 0 15 0 0 ZZ
+              3758      0 FUNC MMSAFENESS SAFE
+              3758      4 INSTR BELONGTO 3758 
+              3758     -1 INSTR LOCAL SafeFrameAlloc sub     rsp, 8; _init 
+              3758      8 MEMORYHOLE STACK esp + 8 ReturnAddress 
+              3758      8 DATAREF STACK 1283 esp + 0 PARENT LocalFrame LOCALFRAME
+              3758      4 INSTR DEADREGS  EFLAGS RAX ZZ sub     rsp, 8; _init 
+              375c      7 INSTR BELONGTO 3758 
+              375c     -2 INSTR LOCAL n RAX ZZ  NumericDEFs mov     rax, cs:__gmon_start___ptr 
+              375c      7 INSTR DEADREGS  EFLAGS RAX ZZ mov     rax, cs:__gmon_start___ptr 
+              3763      3 INSTR BELONGTO 3758 
+              3763     -1 INSTR LOCAL NoMetaUpdate test    rax, rax 
+              3763      3 INSTR DEADREGS  EFLAGS ZZ test    rax, rax 
+              3766      2 INSTR BELONGTO 3758 
+              3766     -1 INSTR LOCAL NoMetaUpdate jz      short loc_376A 
+              3768      2 INSTR BELONGTO 3758 
+              3768     -1 INSTR LOCAL NoMetaUpdate call    rax ; __gmon_start__ 
+              3768      2 INSTR DEADREGS  EFLAGS ZZ call    rax ; __gmon_start__ 
+              376a      4 INSTR BELONGTO 3758 
+              376a      4 INSTR DEADREGS  EFLAGS ZZ add     rsp, 8 
+              376e      1 INSTR BELONGTO 3758 
+              376e      8 DEALLOC STACK esp - 8 retn
+              376e      1 INSTR DEADREGS  EFLAGS ZZ retn 
+              376e     -4 INSTR LOCAL SafeReturn retn
+              3770     12 FUNC GLOBAL sub_3770 FUNC_UNSAFE NOFP RET               377b 
+              3770      0 FUNC FRAMERESTORE 0 0 0 1 0 0 2 0 0 3 0 0 4 0 0 5 0 0 6 0 0 7 0 0 8 0 0 9 0 0 10 0 0 11 0 0 12 0 0 13 0 0 14 0 0 15 0 0 ZZ
+              3770      0 FUNC MMSAFENESS UNSAFE
+              3770      6 INSTR BELONGTO 3770 
+              3770      8 MEMORYHOLE STACK esp + 8 ReturnAddress 
+              3770      8 DATAREF STACK 1284 esp + 0 PARENT LocalFrame LOCALFRAME
+              3770      8 DATAREF STACK 1285 esp + 0 CHILDOF 1284 OFFSET 0 OutArgsRegion OUTARGS
+              3776      6 INSTR BELONGTO 3770 
+              3776     -1 INSTR LOCAL NoMetaUpdate jmp     cs:qword_21FC48 
+              59c0    650 FUNC GLOBAL sub_59C0 FUNC_UNSAFE NOFP RET FUNC_LEAF               5c49 
+              59c0      0 FUNC FRAMERESTORE 0 0 2 1 0 1 2 0 2 3 -48 4 4 0 8 5 -40 8 6 0 4 7 0 4 8 0 4 9 0 4 10 0 0 11 0 16 12 -32 4 13 -24 1 14 -16 4 15 -8 16 ZZ
+              59c0      0 FUNC MMSAFENESS SAFE
+              59c0      3 INSTR BELONGTO 59c0 
+              59c0      3 INSTR DEADREGS  EFLAGS RAX R8 R9 R10 R11 ZZ mov     r8, [rsi] 
+              59c3      3 INSTR BELONGTO 59c0 
+              59c3      3 INSTR DEADREGS  EFLAGS RAX R9 R10 R11 ZZ mov     r9, [rdi] 
+              59c6      7 INSTR BELONGTO 59c0 
+              59c6      7 INSTR DEADREGS  EFLAGS RAX R10 R11 ZZ lea     r11, jpt_5A81 
+              59cd      2 INSTR BELONGTO 59c0 
+              59cd     -3 INSTR LOCAL NoWarn push    r15 
+              59cd      2 INSTR DEADREGS  EFLAGS RAX R10 ZZ push    r15 
+              59cf      3 INSTR BELONGTO 59c0 
+              59cf     -2 INSTR LOCAL n R10 ZZ  AlwaysNUM xor     r10d, r10d 
+              59cf      3 INSTR DEADREGS  EFLAGS RAX R10 R15 ZZ xor     r10d, r10d 
+              59d2      2 INSTR BELONGTO 59c0 
+              59d2     -3 INSTR LOCAL NoWarn push    r14 
+              59d2      2 INSTR DEADREGS  EFLAGS RAX R15 ZZ push    r14 
+              59d4      5 INSTR BELONGTO 59c0 
+              59d4     -1 INSTR LOCAL MetadataUnused mov     eax, 1 
+              59d4      5 INSTR DEADREGS  EFLAGS RAX R14 R15 ZZ mov     eax, 1 
+              59d9      2 INSTR BELONGTO 59c0 
+              59d9     -3 INSTR LOCAL NoWarn push    r13 
+              59d9      2 INSTR DEADREGS  EFLAGS R14 R15 ZZ push    r13 
+              59db      2 INSTR BELONGTO 59c0 
+              59db     -3 INSTR LOCAL NoWarn push    r12 
+              59db      2 INSTR DEADREGS  EFLAGS R13 R14 R15 ZZ push    r12 
+              59dd      3 INSTR BELONGTO 59c0 
+              59dd     -1 INSTR LOCAL MetadataUnused mov     r12d, edx 
+              59dd      3 INSTR DEADREGS  EFLAGS R12 R13 R14 R15 ZZ mov     r12d, edx 
+              59e0      1 INSTR BELONGTO 59c0 
+              5c28      5 INSTR BELONGTO 59c0 
+              5c28     -1 INSTR LOCAL MetadataRedundant lea     r14d, [r13+r14-37h] 
+              5c28      5 INSTR DEADREGS  EFLAGS RCX R15 ZZ lea     r14d, [r13+r14-37h] 
+              5c2d      5 INSTR BELONGTO 59c0 
+              5c2d     -1 INSTR LOCAL NoMetaUpdate jmp     loc_5B28 
+              5c2d      5 INSTR DEADREGS  EFLAGS RCX R13 R15 ZZ jmp     loc_5B28 
+              5c38      4 INSTR BELONGTO 59c0 
+              5c38     -2 INSTR LOCAL n R14 ZZ  AlwaysNUM shl     r14d, 4 
+              5c38      4 INSTR DEADREGS  EFLAGS RCX R15 ZZ shl     r14d, 4 
+              5c3c      4 INSTR BELONGTO 59c0 
+              5c3c      4 INSTR DEADREGS  EFLAGS RCX R15 ZZ add     r8, 1 
+              5c40      5 INSTR BELONGTO 59c0 
+              5c40     -1 INSTR LOCAL MetadataRedundant lea     r14d, [r13+r14-57h] 
+              5c40      5 INSTR DEADREGS  EFLAGS RCX R15 ZZ lea     r14d, [r13+r14-57h] 
+              5c45      5 INSTR BELONGTO 59c0 
+              5c45     -1 INSTR LOCAL NoMetaUpdate jmp     loc_5B28 
+              5c45      5 INSTR DEADREGS  EFLAGS RCX R13 R15 ZZ jmp     loc_5B28 
