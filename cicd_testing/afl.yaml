@@ -1,0 +1,6 @@
+name: 'baseline afl config'
+fuzzing-time: '15 minutes'
+input-timeout: '30 seconds'
+memory-limit: '50 MB'
+num-cores: 2
+working-dir:  /tmp/rida-fuzzing
