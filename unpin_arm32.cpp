@@ -73,7 +73,10 @@ void UnpinArm32_t::HandlePcrelReloc(Instruction_t* from_insn, Relocation_t* relo
 	uint8_t    insn_bytes[insn_bytes_len]; // compiler disallows init on some platforms.
         // but memcpy should init it sufficiently.
         memcpy(insn_bytes, from_insn->getDataBits().c_str(), insn_bytes_len);
-        const auto full_insn=*(uint32_t*)insn_bytes;
+        auto full_insn=(uint32_t)0;
+	memcpy(&full_insn,insn_bytes, sizeof(full_insn));
+
+
 	const auto mask1  = (1<<1 )-1;
 	const auto mask4  = (1<<4 )-1;
 	const auto mask8  = (1<<8 )-1;
