@@ -235,7 +235,8 @@ void Unpin_t::DoUpdateForScoops()
 				{
 					// determine how big the ptr is.
 					const int ptrsize=zo->getFileIR()->getArchitectureBitWidth()/8;
-					char addr[ptrsize] = {};
+					char addr[ptrsize];
+					memset(addr,0,ptrsize);
 		
 					// convert it to bytes.
 					switch(ptrsize)
