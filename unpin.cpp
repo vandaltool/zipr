@@ -30,6 +30,7 @@
 
 
 #include <string>
+#include <cstring>
 #include <algorithm>
 #include "unpin.h"
 #include <memory>
@@ -233,18 +234,24 @@ void Unpin_t::DoUpdateForScoops()
 				else
 				{
 					// determine how big the ptr is.
-					int ptrsize=zo->getFileIR()->getArchitectureBitWidth()/8;
-					char addr[ptrsize];
+					const int ptrsize=zo->getFileIR()->getArchitectureBitWidth()/8;
+					char addr[ptrsize] = {};
 		
 					// convert it to bytes.
 					switch(ptrsize)
 					{
 						case 4:
-							*(int*)addr=newLoc;
+						{
+							const auto newVal=(int)newLoc;
+							memcpy(addr,&newVal,ptrsize);
 							break;
+						}
 						case 8:
-							*(long long*)addr=newLoc;
+						{
+							const auto newVal=(long long)newLoc;
+							memcpy(addr,&newVal,ptrsize);
 							break;
+						}
 						default:
 							assert(0);
 					}
@@ -263,9 +270,17 @@ void Unpin_t::DoUpdateForScoops()
                 		const char* data=scoop_contents.c_str();
 
 				if(byte_width==4)
-					val_to_patch=*(int*)&data[reloc->getOffset()];
+				{
+					auto newVal=(int)0;
+					memcpy(&newVal, &data[reloc->getOffset()], byte_width);
+					val_to_patch=newVal;
+				}
 				else if(byte_width==8)
-					val_to_patch=*(long long*)&data[reloc->getOffset()];
+				{
+					auto newVal=(long long)0;
+					memcpy(&newVal, &data[reloc->getOffset()], byte_width);
+					val_to_patch=newVal;
+				}
 				else
 					assert(0);
 
