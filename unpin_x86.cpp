@@ -72,7 +72,9 @@ void UnpinX86_t::HandleRetAddrReloc(Instruction_t* from_insn, Relocation_t* relo
 
 		unsigned char newpush[5];
 		newpush[0]=0x68;
-		*(int*)&newpush[1]=(int)wrt_insn_location;
+		const auto newVal=(int)wrt_insn_location;
+		// *(int*)&newpush[1]=(int)wrt_insn_location;
+		memcpy(&newpush[1],&newVal,sizeof(newVal));
 
 		cout<<"Unpin::Updating push32/push64-exe insn:"
 		    <<dec<<from_insn->getBaseID()<<":"<<from_insn->getDisassembly()<<"@"<<hex<<from_insn_location<<" to point at "
