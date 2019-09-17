@@ -656,18 +656,19 @@ class pe_eh_split_t
 				const auto frame_reg       = uint8_t(unwind_struct.FrameRegister);
 				const auto frame_offset    = uint8_t(unwind_struct.FrameOffset);
 				const auto unwind_pgm_size = round_up_to(unwind_struct.CountOfCodes,2);
-				const auto handler_ptr     = reinterpret_cast<const uint32_t*>(&unwind_struct.UnwindCode[unwind_pgm_size]);
-				const auto handler_rva     = *handler_ptr;
-				const auto handler_addr    = firp->getArchitecture()->getFileBase() + handler_rva;
-				const auto handler_insn_it = offset_to_insn_map.find(handler_addr);
-				const auto handler_insn    = has_handler ? handler_insn_it->second : (Instruction_t*)nullptr;
 
 
-				assert( (handler_insn_it != end(offset_to_insn_map)) == has_handler);
-
-				auto user_data = string();
+				auto handler_insn = (Instruction_t*)nullptr;
+				auto user_data    = string();
 				if(has_handler)
 				{
+					const auto handler_ptr     = reinterpret_cast<const uint32_t*>(&unwind_struct.UnwindCode[unwind_pgm_size]);
+					const auto handler_rva     = *handler_ptr;
+					const auto handler_addr    = firp->getArchitecture()->getFileBase() + handler_rva;
+					const auto handler_insn_it = offset_to_insn_map.find(handler_addr);
+					assert(handler_insn_it != end(offset_to_insn_map));
+					handler_insn    = handler_insn_it->second ;
+
 					const auto unwind_user_data = reinterpret_cast<const char*>(handler_ptr) + sizeof(uint32_t);
 					const auto unwind_info_size_with_unwindcode_array = reinterpret_cast<const char*>(&unwind_struct.UnwindCode[unwind_pgm_size]) - reinterpret_cast<const char*>(&unwind_struct);
 					const auto user_data_addr   = firp->getArchitecture()->getFileBase() + unwind_addr + unwind_info_size_with_unwindcode_array;
