@@ -28,6 +28,7 @@ if [[ -z $PS_INSTALL ]]; then
 fi
 export PS=$PS_INSTALL/tools/ps_analyze.sh
 export PSZ=$PS_INSTALL/tools/ps_zipr.sh 
+export PSZR=$PS_INSTALL/tools/ps_zipr_rida.sh 
 
 source ./irdb_vars
 source $PEASOUP_HOME/set_command_envs
