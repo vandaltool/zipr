@@ -1,11 +1,3 @@
-[submodule "idaproCur"]
-	shallow = true
-	path = idaproCur
-	url = git@git.zephyr-software.com:allzp/idapro71
-[submodule "idaproCur_sdk"]
-	shallow = true
-	path = idaproCur_sdk
-	url = git@git.zephyr-software.com:allzp/idapro71_sdk
 [submodule "SMPStaticAnalyzer"]
 	path = SMPStaticAnalyzer
 	url = git@git.zephyr-software.com:allnp/SMPStaticAnalyzer.git
