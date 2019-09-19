@@ -45,9 +45,6 @@
 [submodule "irdb-libs/third_party/pebliss"]
 	path = irdb-libs/third_party/pebliss
 	url = git@git.zephyr-software.com:third-party-mirrors/pebliss.git
-
-
-
 [submodule "irdb-libs/third_party/capstone"]
 	path = irdb-libs/third_party/capstone
 	url = git@git.zephyr-software.com:third-party-mirrors/capstone.git
