@@ -8,7 +8,6 @@ after_script:
 stages:
   - clean
   - build
-  - protect_bins
   - test
   - deploy
 
@@ -39,17 +38,6 @@ do-nightly-clean-centos76:
   tags:
     - centos76
 
-do-nightly-clean-arm32:
-  <<: *do-nightly-clean
-  tags:
-    - arm32
-
-do-nightly-clean-arm64:
-  <<: *do-nightly-clean
-  tags:
-    - arm64
-
-
 #
 # Building
 #
@@ -76,19 +64,8 @@ do-build-centos76:
   tags:
     - centos76
 
-do-build-arm32:
-  <<: *do-build
-  tags:
-    - arm32
-
-do-build-arm64:
-  <<: *do-build
-  tags:
-    - arm64
-
-
 #
-# gather artifacts and ship them tox 86 boxes
+# gather artifacts and ship them to x86 boxes
 #
 .gather-bins: &do_gather
         stage: build
@@ -98,61 +75,6 @@ do-build-arm64:
             expire_in: 1 day
             paths:
                 - artifacts/
-
-gather-bins-arm32:
-        <<: *do_gather
-        tags:
-            - arm32
-
-gather-bins-arm64:
-        <<: *do_gather
-        tags:
-            - arm64
-
-#
-# gather artifacts and ship them tox 86 boxes
-#
-.protect-arm-bins: &prot_bins
-        stage: protect_bins
-        script:
-            - ./cicd_testing/do-prot-bins.sh
-        artifacts:               
-            expire_in: 1 day
-            paths:
-                - artifacts/
-
-protect-arm-ubuntu18:
-        <<: *prot_bins
-        tags:
-            - ubuntu18
-
-protect-bins-ubuntu16:
-        <<: *prot_bins
-        tags:
-            - ubuntu16
-
-#
-# gather artifacts and ship them tox 86 boxes
-#
-.test_arm_bins: &test_arm_bins
-        stage: test
-        script:
-            - ./cicd_testing/do-test-bins.sh
-        artifacts:               
-            expire_in: 1 day
-            paths:
-                - artifacts/
-
-test-bins-arm32:
-        <<: *test_arm_bins
-        tags:
-            - arm32
-
-test-bins-arm64:
-        <<: *test_arm_bins
-        tags:
-            - arm64
-
 
 #
 # test_quick for EH handling
@@ -199,18 +121,6 @@ builtin-xforms-centos76:
   <<: *builtin-xforms
   tags:
     - centos76
-
-# doesn't work yet
-#builtin-xforms-arm32:
-#  <<: *builtin-xforms
-#  tags:
-#    - arm32
-
-builtin-xforms-arm64:
-  <<: *builtin-xforms
-  tags:
-    - arm64
-
 
 #
 # elfdep test
