@@ -88,10 +88,10 @@ do_tests()
 					zafl.sh $progpath $protected --rida -m --tempdir $temp_dir --untracer > test_${prog}.ps.log 2>&1
 				;;
 				zafl_untracer_critical_edges)
-					zafl.sh $progpath $protected --rida --tempdir $temp_dir --untracer -c > test_${prog}.ps.log 2>&1
+					zafl.sh $progpath $protected --rida --tempdir $temp_dir --untracer -c all > test_${prog}.ps.log 2>&1
 				;;
 				zafl_untracer_critical_edges_fix_map)
-					zafl.sh $progpath $protected -m --rida --tempdir $temp_dir --untracer -c > test_${prog}.ps.log 2>&1
+					zafl.sh $progpath $protected -m --rida --tempdir $temp_dir --untracer -c all > test_${prog}.ps.log 2>&1
 				;;
 				zafl_rida)
 					zafl.sh $progpath $protected --rida --tempdir $temp_dir > test_${prog}.ps.log 2>&1
