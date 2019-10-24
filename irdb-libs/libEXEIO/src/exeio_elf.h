@@ -98,6 +98,7 @@ namespace EXEIO
 				assert(e);
 				switch(e->get_machine())
 				{
+					case EM_MIPS	: return mtMips32;
 					case EM_ARM	: return mtArm32;
 					case EM_AARCH64	: return mtAarch64;
 					case EM_386     : return mtI386;

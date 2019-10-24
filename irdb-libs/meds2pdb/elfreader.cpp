@@ -31,45 +31,12 @@ using namespace EXEIO;
 
 ElfReader::ElfReader(char *p_elfFile)
 {
-//    m_reader=new elfio;
 	m_reader=new EXEIO::exeio(p_elfFile);
 	assert(m_reader);
 
 	EXEIO::dump::header(cout, *m_reader);
 	EXEIO::dump::section_headers(cout, *m_reader);
 
-    // Initialize it
-/*
-    bool ok = m_reader->load( p_elfFile );
-    if ( ! ok ) {
-        std::cerr << "Can't open file:" << p_elfFile << std::endl;
-	assert(0);
-	exit(-1);
-    }
-
-
-    if(m_reader->get_class() == ELFCLASS32)
-	std::cout << "Input file is ELF32" << std::endl;
-    else
-	std::cout << "Input file is ELF64" << std::endl;
-
-
-    // List all sections of the file
-    int i;
-    ELFIO::Elf_Half nSecNo = m_reader->sections.size();
-    for ( i = 0; i < nSecNo; ++i ) 
-    {    // For all sections
-	section* psec = m_reader->sections[i];
-	m_sections.push_back(psec);
-        std::cout << "  [" << i << "] "
-                  << psec->get_name()
-                  << "\t"
-                  << psec->get_size()
-                  << std::endl;
-
-    }
-    std::cout << std::endl;
-*/
 }
 
 ElfReader::~ElfReader()
@@ -151,6 +118,8 @@ void ElfReader::SetArchitecture()
 			m_reader->getMachineType() == EXEIO::mtX86_64  ? IRDB_SDK::admtX86_64  :
 			m_reader->getMachineType() == EXEIO::mtAarch64 ? IRDB_SDK::admtAarch64 :
 			m_reader->getMachineType() == EXEIO::mtArm32   ? IRDB_SDK::admtArm32   :
+			m_reader->getMachineType() == EXEIO::mtMips32  ? IRDB_SDK::admtMips32  :
+			m_reader->getMachineType() == EXEIO::mtMips64  ? IRDB_SDK::admtMips64  :
 			throw std::invalid_argument("Unknown architecture.");
 
 	libIRDB::FileIR_t::setArchitecture(width,mt);

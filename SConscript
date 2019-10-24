@@ -25,9 +25,6 @@ if not os.path.isfile("manifest.txt.config"):
 libirdb=      SConscript("irdb-libs/SConscript") 
 libsmpsa=     SConscript("SMPStaticAnalyzer/SConscript") 
 
-# specify some explicit dependencies to make sure these build in order
-Depends(libsmpsa,libirdb)
-
 # now finish building irdb-libs once stars is setup
 libirdbdeep=SConscript("irdb-libs/SConscript.deep")
 Depends(libirdbdeep,libsmpsa)

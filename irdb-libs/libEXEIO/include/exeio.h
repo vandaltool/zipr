@@ -13,7 +13,7 @@ namespace EXEIO
 	class exeio_t; // forward decl
 
 	typedef enum { ELF64, ELF32, PE32, PE64 } execlass_t;
-	typedef enum {  mtX86_64, mtI386, mtArm32, mtAarch64 } MachineType_t; 
+	typedef enum {  mtX86_64, mtI386, mtArm32, mtAarch64, mtMips32, mtMips64 } MachineType_t; 
 
 	typedef uintptr_t virtual_offset_t;
 
