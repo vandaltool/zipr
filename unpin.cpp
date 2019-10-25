@@ -320,5 +320,6 @@ Zipr_SDK::ZiprPluginInterface_t* GetPluginInterface(
 		mt==admtI386    ? (Unpin_t*)new UnpinX86_t    (zipr_object) :
 		mt==admtAarch64 ? (Unpin_t*)new UnpinAarch64_t(zipr_object) :
 		mt==admtArm32   ? (Unpin_t*)new UnpinArm32_t  (zipr_object) :
+		mt==admtMips32  ? (Unpin_t*)new UnpinMips32_t (zipr_object) :
 		throw invalid_argument("Cannot determine machine type");
 }

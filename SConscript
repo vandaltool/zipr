@@ -25,6 +25,7 @@ files=  '''
 	unpin.cpp
 	unpin_aarch64.cpp
 	unpin_arm32.cpp
+	unpin_mips32.cpp
 	unpin_x86.cpp
 	'''
 
