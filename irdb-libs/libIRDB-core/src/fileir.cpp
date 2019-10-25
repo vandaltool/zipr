@@ -30,6 +30,7 @@
 #include <sys/wait.h>
 #include <iomanip>
 #include <irdb-util>
+#include <endian.h>
 
 using namespace libIRDB;
 using namespace std;
@@ -1145,21 +1146,40 @@ void FileIR_t::setArchitecture()
 	}
 	else if(is_elf)
 	{
+		const auto elf_big_endian  = 
+			e_ident[5] == 2 ? true  : 
+			e_ident[5] == 1 ? false : 
+			throw invalid_argument("Cannot detect endianness");
+
 		const auto bits = 
 			e_ident[4] == ELFCLASS32 ? 32 :
 			e_ident[4] == ELFCLASS64 ? 64 :
 			throw std::invalid_argument("Unknown ELF class");
 
+		const auto e_type = 
+			elf_big_endian ? be16toh(hdr_union.ehdr32.e_type) : 
+			elf_big_endian ? le16toh(hdr_union.ehdr32.e_type) : 
+			throw invalid_argument("Unknown endianness");
+
 		const auto ft = 
-			hdr_union.ehdr32.e_type == ET_DYN  ?  IRDB_SDK::adftELFSO  :
-			hdr_union.ehdr32.e_type == ET_EXEC ?  IRDB_SDK::adftELFEXE :
+			e_type == ET_DYN  ? IRDB_SDK::adftELFSO  :
+			e_type == ET_EXEC ? IRDB_SDK::adftELFEXE :
 			throw std::invalid_argument("Unknown file type");
 
+		const auto e_machine32 = 
+			elf_big_endian ? be16toh(hdr_union.ehdr32.e_machine) : 
+			elf_big_endian ? le16toh(hdr_union.ehdr32.e_machine) : 
+			throw invalid_argument("Unknown endianness");
+		const auto e_machine64 = 
+			elf_big_endian ? be16toh(hdr_union.ehdr64.e_machine) : 
+			elf_big_endian ? le16toh(hdr_union.ehdr64.e_machine) : 
+			throw invalid_argument("Unknown endianness");
 		const auto mt = 
-			hdr_union.ehdr32.e_machine == EM_386     ? IRDB_SDK::admtI386    : 
-			hdr_union.ehdr32.e_machine == EM_ARM     ? IRDB_SDK::admtArm32   : 
-			hdr_union.ehdr64.e_machine == EM_AARCH64 ? IRDB_SDK::admtAarch64 : 
-			hdr_union.ehdr64.e_machine == EM_X86_64  ? IRDB_SDK::admtX86_64  : 
+			e_machine32 == EM_MIPS    ? IRDB_SDK::admtMips32  : 
+			e_machine32 == EM_386     ? IRDB_SDK::admtI386    : 
+			e_machine32 == EM_ARM     ? IRDB_SDK::admtArm32   : 
+			e_machine64 == EM_AARCH64 ? IRDB_SDK::admtAarch64 : 
+			e_machine64 == EM_X86_64  ? IRDB_SDK::admtX86_64  : 
 			throw std::invalid_argument("Arch not supported.");
 
 		libIRDB::FileIR_t::archdesc->setFileType(ft);

@@ -6,7 +6,7 @@
 #include <operand_base.hpp>
 #include <operand_csmips.hpp>
 
-
+#if 0
 using namespace std;
 using namespace libIRDB;
 
@@ -306,3 +306,4 @@ bool DecodedOperandCapstoneMIPS64_t::isWritten() const
         const auto &op = (the_insn->detail->mips64.operands[op_num]);
 	return (op.access & CS_AC_WRITE)!=0;
 }
+#endif

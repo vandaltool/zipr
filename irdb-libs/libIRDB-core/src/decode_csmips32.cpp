@@ -301,4 +301,3 @@ bool DecodedInstructionCapstoneMIPS32_t::hasImplicitlyModifiedRegs() const
 	return false;
 }
 
-DecodedInstructionCapstoneMIPS_t::CapstoneHandle_t* DecodedInstructionCapstoneMIPS_t::cs_handle=nullptr;

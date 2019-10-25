@@ -360,6 +360,10 @@ void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* exeiop, const set<Vir
 			check_for_arm32_switch_type2(firp,insn,  *disasm, exeiop);
 			check_for_arm32_switch_type3(firp,insn,  *disasm, exeiop);
 		}
+		else if(mt==admtMips32)
+		{
+			// empty for now
+		}
 		else
 			throw invalid_argument("Cannot determine machine type");
 

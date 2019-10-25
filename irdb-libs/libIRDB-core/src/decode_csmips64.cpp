@@ -7,7 +7,7 @@
 
 
 #include <capstone.h>
-#include <mips64.h>
+#include <mips.h>
 #include <string>
 #include <functional>
 #include <set>
@@ -18,7 +18,6 @@ using namespace libIRDB;
 using namespace std;
 
 #define ALLOF(a) begin(a),end(a)
-static const auto MIPS64_REG_PC=(mips64_reg)(MIPS64_REG_ENDING+1);
 
 
 DecodedInstructionCapstoneMIPS_t::CapstoneHandle_t* DecodedInstructionCapstoneMIPS_t::cs_handle=nullptr;
@@ -27,9 +26,8 @@ DecodedInstructionCapstoneMIPS_t::CapstoneHandle_t::CapstoneHandle_t(FileIR_t* f
 {
 	static_assert(sizeof(csh)==sizeof(handle), "Capstone handle size is unexpected.  Has CS changed?");
 
-	const auto mode = CS_MODE_LITTLE_ENDIAN;
+	const auto mode = cs_mode(CS_MODE_MIPS32 | CS_MODE_BIG_ENDIAN);
 	const auto arch = 
-		firp->getArchitectureBitWidth() == 64 ? CS_ARCH_MIPS64 : 
 		firp->getArchitectureBitWidth() == 32 ? CS_ARCH_MIPS   : 
 		throw invalid_argument("Unknown bit width: "+to_string(firp->getArchitectureBitWidth()));
 	const auto err  = cs_open(arch, mode,  (csh*)&handle);
@@ -41,6 +39,10 @@ DecodedInstructionCapstoneMIPS_t::CapstoneHandle_t::CapstoneHandle_t(FileIR_t* f
 	cs_option(handle, CS_OPT_DETAIL, CS_OPT_ON);
 	cs_option(handle, CS_OPT_SYNTAX, CS_OPT_SYNTAX_INTEL);
 }
+
+#if 0
+static const auto MIPS64_REG_PC=(mips64_reg)(MIPS64_REG_ENDING+1);
+
 
 static bool isPartOfGroup(const cs_insn* the_insn, const mips64_insn_group the_grp) 
 {
@@ -352,4 +354,4 @@ bool DecodedInstructionCapstoneMIPS64_t::hasImplicitlyModifiedRegs() const
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	return false;
 }
-
+#endif
