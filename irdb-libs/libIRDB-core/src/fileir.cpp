@@ -1156,24 +1156,15 @@ void FileIR_t::setArchitecture()
 			e_ident[4] == ELFCLASS64 ? 64 :
 			throw std::invalid_argument("Unknown ELF class");
 
-		const auto e_type = 
-			elf_big_endian ? be16toh(hdr_union.ehdr32.e_type) : 
-			elf_big_endian ? le16toh(hdr_union.ehdr32.e_type) : 
-			throw invalid_argument("Unknown endianness");
+		const auto e_type = elf_big_endian ? be16toh(hdr_union.ehdr32.e_type) : le16toh(hdr_union.ehdr32.e_type) ; 
 
 		const auto ft = 
 			e_type == ET_DYN  ? IRDB_SDK::adftELFSO  :
 			e_type == ET_EXEC ? IRDB_SDK::adftELFEXE :
 			throw std::invalid_argument("Unknown file type");
 
-		const auto e_machine32 = 
-			elf_big_endian ? be16toh(hdr_union.ehdr32.e_machine) : 
-			elf_big_endian ? le16toh(hdr_union.ehdr32.e_machine) : 
-			throw invalid_argument("Unknown endianness");
-		const auto e_machine64 = 
-			elf_big_endian ? be16toh(hdr_union.ehdr64.e_machine) : 
-			elf_big_endian ? le16toh(hdr_union.ehdr64.e_machine) : 
-			throw invalid_argument("Unknown endianness");
+		const auto e_machine32 = elf_big_endian ? be16toh(hdr_union.ehdr32.e_machine) : le16toh(hdr_union.ehdr32.e_machine) ; 
+		const auto e_machine64 = elf_big_endian ? be16toh(hdr_union.ehdr64.e_machine) : le16toh(hdr_union.ehdr64.e_machine) ;
 		const auto mt = 
 			e_machine32 == EM_MIPS    ? IRDB_SDK::admtMips32  : 
 			e_machine32 == EM_386     ? IRDB_SDK::admtI386    : 
