@@ -9,8 +9,8 @@
 #include <assert.h>
 #include <sys/mman.h>
 #include <ctype.h>
-#include <iostream>   // std::cout
-#include <string>     // std::string, std::to_string
+#include <iostream>   // cout
+#include <string>     // string, to_string
 #include <fstream>
 #include <elf.h>
 #include <endian.h>
@@ -490,7 +490,7 @@ struct Elf64_Ehdr {
 		ehdr.e_type       = be16toh(ehdr.e_type);
 		ehdr.e_machine    = be16toh(ehdr.e_machine);
 		ehdr.e_version    = be32toh(ehdr.e_version);
-		ehdr.e_flags      = be16toh(ehdr.e_flags);
+		ehdr.e_flags      = be32toh(ehdr.e_flags);
 		ehdr.e_ehsize     = be32toh(ehdr.e_ehsize);
 		ehdr.e_phentsize  = be16toh(ehdr.e_phentsize);
 		ehdr.e_phnum      = be16toh(ehdr.e_phnum);
@@ -758,7 +758,7 @@ void ExeWriter::SortSegmap()
 
 		if(this_bss_size > next_bss_size)
 		{
-			std::swap(segvec[i],segvec[i+1]);
+			swap(segvec[i],segvec[i+1]);
 		}
 
 	}
@@ -1218,8 +1218,8 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 {
 	
 
-	std::cout<<"Assigning phdr to address "<<std::hex<<new_phdr_addr<<std::endl;
-	std::cout<<"Assigning first seg to a file offset that's at least: "<<std::hex<<first_seg_file_offset<<std::endl;
+	cout<<"Assigning phdr to address "<<hex<<new_phdr_addr<<endl;
+	cout<<"Assigning first seg to a file offset that's at least: "<<hex<<first_seg_file_offset<<endl;
 
 	// create a load segments into the new header list.
 	// assume hdr are on first page.
@@ -1231,7 +1231,7 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 		thisphdr.p_type = PT_LOAD; 
 		thisphdr.p_flags = (ELFIO::Elf_Word)segvec[i]->m_perms;      
 		thisphdr.p_offset = fileoff;     
-		std::cout<<"Assigning load["<<dec<<i<<"].ph_offset="<<std::hex<<fileoff<<std::endl;
+		cout<<"Assigning load["<<dec<<i<<"].ph_offset="<<hex<<fileoff<<endl;
 		thisphdr.p_vaddr = (T_Elf_Addr)segvec[i]->start_page; 
 		thisphdr.p_paddr = (T_Elf_Addr)segvec[i]->start_page; 
 		thisphdr.p_filesz = (ELFIO::Elf_Xword)segvec[i]->filesz; 
@@ -1327,7 +1327,7 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 	}
 
 	// create the new phdr phdr
-	std::cout<<"New phdrs at: "<<std::hex<<new_phdr_addr<<std::endl;
+	cout<<"New phdrs at: "<<hex<<new_phdr_addr<<endl;
 	T_Elf_Phdr newphdrphdr;
 	memset(&newphdrphdr,0,sizeof(newphdrphdr));
 	newphdrphdr.p_type = PT_PHDR;
@@ -1341,7 +1341,7 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 	new_phdrs.insert(new_phdrs.begin(),newphdrphdr);
 
 
-	std::vector<T_Elf_Phdr> relro_phdrs;
+	vector<T_Elf_Phdr> relro_phdrs;
 	new_phdrs.insert(new_phdrs.end(), relro_phdrs.begin(), relro_phdrs.end());
 
 	// record the new ehdr.
@@ -1374,7 +1374,7 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 		{
 			loadcnt++;
 		
-			std::cout<<"phdr["<<std::dec<<loadcnt<<"] writing at:"<<std::hex<<new_phdrs[i].p_offset<<std::endl;
+			cout<<"phdr["<<dec<<loadcnt<<"] writing at:"<<hex<<new_phdrs[i].p_offset<<endl;
 			fseek(fout,new_phdrs[i].p_offset,SEEK_SET);
 			for(unsigned int j=0;j<new_phdrs[i].p_filesz;j+=PAGE_SIZE)
 			{
@@ -1399,7 +1399,7 @@ filesz before we start writing out the elf.  See "trim_last_seg_filesz"
 						if(page.data[k]!=0)
 							break;
 					}
-					std::cout<<"phdr["<<std::dec<<loadcnt<<"] optimizing last page write to size k="<<std::hex<<k<<std::endl;
+					cout<<"phdr["<<dec<<loadcnt<<"] optimizing last page write to size k="<<hex<<k<<endl;
 #endif
 					const auto end_offset=new_phdrs[i].p_filesz;
 					const auto current_offset = j;
