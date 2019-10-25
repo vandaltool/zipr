@@ -7,6 +7,7 @@ namespace zipr
 #include <sizer/sizer_x86.hpp>
 #include <sizer/sizer_arm64.hpp>
 #include <sizer/sizer_arm32.hpp>
+#include <sizer/sizer_mips32.hpp>
 }
 #include <memory>
 
@@ -18,10 +19,11 @@ using namespace zipr;
 unique_ptr<ZiprSizerBase_t> ZiprSizerBase_t::factory(Zipr_SDK::Zipr_t* p_zipr_obj)
 {
 	auto l_firp=p_zipr_obj->getFileIR();
-	auto ret= l_firp->getArchitecture()->getMachineType() == admtX86_64   ?  (ZiprSizerBase_t*)new ZiprSizerX86_t  (p_zipr_obj) :
-	          l_firp->getArchitecture()->getMachineType() == admtI386     ?  (ZiprSizerBase_t*)new ZiprSizerX86_t  (p_zipr_obj) :
-	          l_firp->getArchitecture()->getMachineType() == admtAarch64  ?  (ZiprSizerBase_t*)new ZiprSizerARM64_t(p_zipr_obj) :
-	          l_firp->getArchitecture()->getMachineType() == admtArm32    ?  (ZiprSizerBase_t*)new ZiprSizerARM32_t(p_zipr_obj) :
+	auto ret= l_firp->getArchitecture()->getMachineType() == admtX86_64   ?  (ZiprSizerBase_t*)new ZiprSizerX86_t  (p_zipr_obj)  :
+	          l_firp->getArchitecture()->getMachineType() == admtI386     ?  (ZiprSizerBase_t*)new ZiprSizerX86_t  (p_zipr_obj)  :
+	          l_firp->getArchitecture()->getMachineType() == admtAarch64  ?  (ZiprSizerBase_t*)new ZiprSizerARM64_t(p_zipr_obj)  :
+	          l_firp->getArchitecture()->getMachineType() == admtArm32    ?  (ZiprSizerBase_t*)new ZiprSizerARM32_t(p_zipr_obj)  :
+	          l_firp->getArchitecture()->getMachineType() == admtMips32   ?  (ZiprSizerBase_t*)new ZiprSizerMIPS32_t(p_zipr_obj) :
 	          throw domain_error("Cannot init architecture");
 
 	return unique_ptr<ZiprSizerBase_t>(ret);

@@ -28,16 +28,19 @@ files=  '''
 	arch_base.cpp
 	pinner_arm64.cpp  
 	pinner_arm32.cpp  
+	pinner_mips32.cpp  
 	pinner_base.cpp  
 	pinner_x86.cpp
 	patcher_arm64.cpp  
 	patcher_arm32.cpp  
+	patcher_mips32.cpp  
 	patcher_base.cpp  
 	patcher_x86.cpp
 	sizer_base.cpp
 	sizer_x86.cpp
 	sizer_arm64.cpp
 	sizer_arm32.cpp
+	sizer_mips32.cpp
 	range.cpp
 	'''
 

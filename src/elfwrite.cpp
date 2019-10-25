@@ -13,6 +13,7 @@
 #include <string>     // std::string, std::to_string
 #include <fstream>
 #include <elf.h>
+#include <endian.h>
     
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
@@ -22,6 +23,609 @@ using namespace std;
 using namespace zipr;
 using namespace ELFIO;
 
+template<class T_Elf_Ehdr, class T_Elf_Shdr>
+static inline void host_to_shdr(const T_Elf_Ehdr& ehdr, T_Elf_Shdr& shdr)
+{
+#if 0
+	struct Elf64_Shdr
+	{
+		Elf64_Word 	sh_name
+		Elf64_Word 	sh_type
+		Elf64_Xword 	sh_flags
+		Elf64_Addr 	sh_addr
+		Elf64_Off 	sh_offset
+		Elf64_Xword 	sh_size
+		Elf64_Word 	sh_link
+		Elf64_Word 	sh_info
+		Elf64_Xword 	sh_addralign
+		Elf64_Xword 	sh_entsize
+	}
+
+	steruct Elf32_Shdr
+	{
+		Elf32_Word 	sh_name
+		Elf32_Word 	sh_type
+		Elf32_Word 	sh_flags
+		Elf32_Addr 	sh_addr
+		Elf32_Off 	sh_offset
+		Elf32_Word 	sh_size
+		Elf32_Word 	sh_link
+		Elf32_Word 	sh_info
+		Elf32_Word 	sh_addralign
+		Elf32_Word 	sh_entsize
+	}
+#endif
+
+
+	if(ehdr.e_ident[5]==1)	 // little endian elf file
+	{
+		shdr.sh_name      = htole32(shdr.sh_name);
+		shdr.sh_type      = htole32(shdr.sh_type);
+		shdr.sh_link      = htole32(shdr.sh_link);
+		shdr.sh_info      = htole32(shdr.sh_info);
+		if(sizeof(ehdr.e_entry)==4)	 // 32-bit header
+		{
+			shdr.sh_flags     = htole32(shdr.sh_flags);
+			shdr.sh_size      = htole32(shdr.sh_size);
+			shdr.sh_addr      = htole32(shdr.sh_addr);
+			shdr.sh_offset    = htole32(shdr.sh_offset);
+			shdr.sh_addralign = htole32(shdr.sh_addralign);
+			shdr.sh_entsize   = htole32(shdr.sh_entsize);
+		}
+		else if(sizeof(ehdr.e_entry)==8)	// 64-bit header
+		{
+			shdr.sh_flags     = htole64(shdr.sh_flags);
+			shdr.sh_size      = htole64(shdr.sh_size);
+			shdr.sh_addr      = htole64(shdr.sh_addr);
+			shdr.sh_offset    = htole64(shdr.sh_offset);
+			shdr.sh_addralign = htole64(shdr.sh_addralign);
+			shdr.sh_entsize   = htole64(shdr.sh_entsize);
+		}
+		else
+		{
+			assert(0);
+		}
+
+	}
+	else if(ehdr.e_ident[5]==2) // big endian elf file
+	{
+		shdr.sh_name      = htobe32(shdr.sh_name);
+		shdr.sh_type      = htobe32(shdr.sh_type);
+		shdr.sh_link      = htobe32(shdr.sh_link);
+		shdr.sh_info      = htobe32(shdr.sh_info);
+		if(sizeof(ehdr.e_entry)==4)	 // 32-bit header
+		{
+			shdr.sh_flags     = htobe32(shdr.sh_flags);
+			shdr.sh_size      = htobe32(shdr.sh_size);
+			shdr.sh_addr      = htobe32(shdr.sh_addr);
+			shdr.sh_offset    = htobe32(shdr.sh_offset);
+			shdr.sh_addralign = htobe32(shdr.sh_addralign);
+			shdr.sh_entsize   = htobe32(shdr.sh_entsize);
+		}
+		else if(sizeof(ehdr.e_entry)==8)	// 64-bit header
+		{
+			shdr.sh_flags     = htobe64(shdr.sh_flags);
+			shdr.sh_size      = htobe64(shdr.sh_size);
+			shdr.sh_addr      = htobe64(shdr.sh_addr);
+			shdr.sh_offset    = htobe64(shdr.sh_offset);
+			shdr.sh_addralign = htobe64(shdr.sh_addralign);
+			shdr.sh_entsize   = htobe64(shdr.sh_entsize);
+		}
+		else
+		{
+			assert(0);
+		}
+	}
+	else
+	{
+		assert(0);
+	}
+
+}
+
+template<class T_Elf_Ehdr, class T_Elf_Shdr>
+static inline void shdr_to_host(const T_Elf_Ehdr& ehdr, T_Elf_Shdr& shdr)
+{
+
+#if 0
+	struct Elf64_Shdr
+	{
+		Elf64_Word 	sh_name
+		Elf64_Word 	sh_type
+		Elf64_Xword 	sh_flags
+		Elf64_Addr 	sh_addr
+		Elf64_Off 	sh_offset
+		Elf64_Xword 	sh_size
+		Elf64_Word 	sh_link
+		Elf64_Word 	sh_info
+		Elf64_Xword 	sh_addralign
+		Elf64_Xword 	sh_entsize
+	}
+
+	steruct Elf32_Shdr
+	{
+		Elf32_Word 	sh_name
+		Elf32_Word 	sh_type
+		Elf32_Word 	sh_flags
+		Elf32_Addr 	sh_addr
+		Elf32_Off 	sh_offset
+		Elf32_Word 	sh_size
+		Elf32_Word 	sh_link
+		Elf32_Word 	sh_info
+		Elf32_Word 	sh_addralign
+		Elf32_Word 	sh_entsize
+	}
+#endif
+
+
+	if(ehdr.e_ident[5]==1)	 // little endian elf file
+	{
+		shdr.sh_name      = le32toh(shdr.sh_name);
+		shdr.sh_type      = le32toh(shdr.sh_type);
+		shdr.sh_link      = le32toh(shdr.sh_link);
+		shdr.sh_info      = le32toh(shdr.sh_info);
+		if(sizeof(ehdr.e_entry)==4)	 // 32-bit header
+		{
+			shdr.sh_flags     = le32toh(shdr.sh_flags);
+			shdr.sh_size      = le32toh(shdr.sh_size);
+			shdr.sh_addr      = le32toh(shdr.sh_addr);
+			shdr.sh_offset    = le32toh(shdr.sh_offset);
+			shdr.sh_addralign = le32toh(shdr.sh_addralign);
+			shdr.sh_entsize   = le32toh(shdr.sh_entsize);
+		}
+		else if(sizeof(ehdr.e_entry)==8)	// 64-bit header
+		{
+			shdr.sh_flags     = le64toh(shdr.sh_flags);
+			shdr.sh_size      = le64toh(shdr.sh_size);
+			shdr.sh_addr      = le64toh(shdr.sh_addr);
+			shdr.sh_offset    = le64toh(shdr.sh_offset);
+			shdr.sh_addralign = le64toh(shdr.sh_addralign);
+			shdr.sh_entsize   = le64toh(shdr.sh_entsize);
+		}
+		else
+		{
+			assert(0);
+		}
+
+	}
+	else if(ehdr.e_ident[5]==2) // big endian elf file
+	{
+		shdr.sh_name      = be32toh(shdr.sh_name);
+		shdr.sh_type      = be32toh(shdr.sh_type);
+		shdr.sh_link      = be32toh(shdr.sh_link);
+		shdr.sh_info      = be32toh(shdr.sh_info);
+		if(sizeof(ehdr.e_entry)==4)	 // 32-bit header
+		{
+			shdr.sh_flags     = be32toh(shdr.sh_flags);
+			shdr.sh_size      = be32toh(shdr.sh_size);
+			shdr.sh_addr      = be32toh(shdr.sh_addr);
+			shdr.sh_offset    = be32toh(shdr.sh_offset);
+			shdr.sh_addralign = be32toh(shdr.sh_addralign);
+			shdr.sh_entsize   = be32toh(shdr.sh_entsize);
+		}
+		else if(sizeof(ehdr.e_entry)==8)	// 64-bit header
+		{
+			shdr.sh_flags     = be64toh(shdr.sh_flags);
+			shdr.sh_size      = be64toh(shdr.sh_size);
+			shdr.sh_addr      = be64toh(shdr.sh_addr);
+			shdr.sh_offset    = be64toh(shdr.sh_offset);
+			shdr.sh_addralign = be64toh(shdr.sh_addralign);
+			shdr.sh_entsize   = be64toh(shdr.sh_entsize);
+		}
+		else
+		{
+			assert(0);
+		}
+	}
+	else
+	{
+		assert(0);
+	}
+
+}
+
+template<class T_Elf_Ehdr, class T_Elf_Phdr>
+static inline void phdr_to_host(const T_Elf_Ehdr& ehdr, T_Elf_Phdr& phdr)
+{
+
+#if 0
+
+	64-bit:
+
+	struct {
+		Elf64_Word p_type;    size=4
+		Elf64_Word p_flags;   size=4
+		Elf64_Off p_offset;   size=8
+		Elf64_Addr p_vaddr;   size=8
+		Elf64_Addr p_paddr;   size=8
+		Elf64_Xword p_filesz; size=8
+		Elf64_Xword p_memsz;  size=8
+		Elf64_Xword p_align;  size=8
+	}
+
+	32-bit: 
+
+	struct {
+		Elf32_Word p_type;    4
+		Elf32_Off p_offset;   4
+		Elf32_Addr p_vaddr;   4
+		Elf32_Addr p_paddr;   4
+		Elf32_Word p_filesz;  4
+		Elf32_Word p_memsz;   4
+		Elf32_Word p_flags;   4
+		Elf32_Word p_align;   4
+	}
+#endif
+
+
+	if(ehdr.e_ident[5]==1)	 // little endian elf file
+	{
+		phdr.p_flags = le32toh(phdr.p_flags);
+		if(sizeof(ehdr.e_entry)==4)	 // 32-bit header
+		{
+			phdr.p_offset = le32toh(phdr.p_offset);
+			phdr.p_vaddr  = le32toh(phdr.p_vaddr);
+			phdr.p_paddr  = le32toh(phdr.p_paddr);
+			phdr.p_filesz = le32toh(phdr.p_filesz);
+			phdr.p_memsz  = le32toh(phdr.p_memsz);
+			phdr.p_align  = le32toh(phdr.p_align);
+		}
+		else if(sizeof(ehdr.e_entry)==8)	// 64-bit header
+		{
+			phdr.p_offset = le64toh(phdr.p_offset);
+			phdr.p_vaddr  = le64toh(phdr.p_vaddr);
+			phdr.p_paddr  = le64toh(phdr.p_paddr);
+			phdr.p_filesz = le64toh(phdr.p_filesz);
+			phdr.p_memsz  = le64toh(phdr.p_memsz);
+			phdr.p_align  = le64toh(phdr.p_align);
+		}
+		else
+		{
+			assert(0);
+		}
+
+	}
+	else if(ehdr.e_ident[5]==2) // big endian elf file
+	{
+		phdr.p_type = be32toh(phdr.p_type);
+		phdr.p_flags = be32toh(phdr.p_flags);
+		if(sizeof(ehdr.e_entry)==4)	 // 32-bit header
+		{
+			phdr.p_offset = be32toh(phdr.p_offset);
+			phdr.p_vaddr  = be32toh(phdr.p_vaddr);
+			phdr.p_paddr  = be32toh(phdr.p_paddr);
+			phdr.p_filesz = be32toh(phdr.p_filesz);
+			phdr.p_memsz  = be32toh(phdr.p_memsz);
+			phdr.p_align  = be32toh(phdr.p_align);
+		}
+		else if(sizeof(ehdr.e_entry)==8)	// 64-bit header
+		{
+			phdr.p_offset = be64toh(phdr.p_offset);
+			phdr.p_vaddr  = be64toh(phdr.p_vaddr);
+			phdr.p_paddr  = be64toh(phdr.p_paddr);
+			phdr.p_filesz = be64toh(phdr.p_filesz);
+			phdr.p_memsz  = be64toh(phdr.p_memsz);
+			phdr.p_align  = be64toh(phdr.p_align);
+		}
+		else
+		{
+			assert(0);
+		}
+
+	}
+	else
+	{
+		assert(0);
+	}
+
+}
+
+template<class T_Elf_Ehdr, class T_Elf_Phdr>
+static inline void host_to_phdr(const T_Elf_Ehdr& ehdr, T_Elf_Phdr& phdr)
+{
+
+#if 0
+
+	64-bit:
+
+	struct {
+		Elf64_Word p_type;    size=4
+		Elf64_Word p_flags;   size=4
+		Elf64_Off p_offset;   size=8
+		Elf64_Addr p_vaddr;   size=8
+		Elf64_Addr p_paddr;   size=8
+		Elf64_Xword p_filesz; size=8
+		Elf64_Xword p_memsz;  size=8
+		Elf64_Xword p_align;  size=8
+	}
+
+	32-bit: 
+
+	struct {
+		Elf32_Word p_type;    4
+		Elf32_Off p_offset;   4
+		Elf32_Addr p_vaddr;   4
+		Elf32_Addr p_paddr;   4
+		Elf32_Word p_filesz;  4
+		Elf32_Word p_memsz;   4
+		Elf32_Word p_flags;   4
+		Elf32_Word p_align;   4
+	}
+#endif
+
+
+	if(ehdr.e_ident[5]==1)	 // little endian elf file
+	{
+		phdr.p_flags = htole32(phdr.p_flags);
+		if(sizeof(ehdr.e_entry)==4)	 // 32-bit header
+		{
+			phdr.p_offset = htole32(phdr.p_offset);
+			phdr.p_vaddr  = htole32(phdr.p_vaddr);
+			phdr.p_paddr  = htole32(phdr.p_paddr);
+			phdr.p_filesz = htole32(phdr.p_filesz);
+			phdr.p_memsz  = htole32(phdr.p_memsz);
+			phdr.p_align  = htole32(phdr.p_align);
+		}
+		else if(sizeof(ehdr.e_entry)==8)	// 64-bit header
+		{
+			phdr.p_offset = htole64(phdr.p_offset);
+			phdr.p_vaddr  = htole64(phdr.p_vaddr);
+			phdr.p_paddr  = htole64(phdr.p_paddr);
+			phdr.p_filesz = htole64(phdr.p_filesz);
+			phdr.p_memsz  = htole64(phdr.p_memsz);
+			phdr.p_align  = htole64(phdr.p_align);
+		}
+		else
+		{
+			assert(0);
+		}
+
+	}
+	else if(ehdr.e_ident[5]==2) // big endian elf file
+	{
+		phdr.p_type = htobe32(phdr.p_type);
+		phdr.p_flags = htobe32(phdr.p_flags);
+		if(sizeof(ehdr.e_entry)==4)	 // 32-bit header
+		{
+			phdr.p_offset = htobe32(phdr.p_offset);
+			phdr.p_vaddr  = htobe32(phdr.p_vaddr);
+			phdr.p_paddr  = htobe32(phdr.p_paddr);
+			phdr.p_filesz = htobe32(phdr.p_filesz);
+			phdr.p_memsz  = htobe32(phdr.p_memsz);
+			phdr.p_align  = htobe32(phdr.p_align);
+		}
+		else if(sizeof(ehdr.e_entry)==8)	// 64-bit header
+		{
+			phdr.p_offset = htobe64(phdr.p_offset);
+			phdr.p_vaddr  = htobe64(phdr.p_vaddr);
+			phdr.p_paddr  = htobe64(phdr.p_paddr);
+			phdr.p_filesz = htobe64(phdr.p_filesz);
+			phdr.p_memsz  = htobe64(phdr.p_memsz);
+			phdr.p_align  = htobe64(phdr.p_align);
+		}
+		else
+		{
+			assert(0);
+		}
+
+	}
+	else
+	{
+		assert(0);
+	}
+
+}
+
+template<class T_Elf_Ehdr>
+static inline void ehdr_to_host(T_Elf_Ehdr& ehdr)
+{
+#if 0
+struct Elf32_Ehdr {
+    unsigned char e_ident[16];
+    Elf32_Half e_type;
+    Elf32_Half e_machine;
+    Elf32_Word e_version;
+    Elf32_Addr e_entry;
+    Elf32_Off e_phoff;
+    Elf32_Off e_shoff;
+    Elf32_Word e_flags;
+    Elf32_Half e_ehsize;
+    Elf32_Half e_phentsize;
+    Elf32_Half e_phnum;
+    Elf32_Half e_shentsize;
+    Elf32_Half e_shnum;
+    Elf32_Half e_shstrndx;
+}
+struct Elf64_Ehdr {
+    unsigned char e_ident[16];
+    Elf64_Half e_type;
+    Elf64_Half e_machine;
+    Elf64_Word e_version;
+    Elf64_Addr e_entry;
+    Elf64_Off e_phoff;
+    Elf64_Off e_shoff;
+    Elf64_Word e_flags;
+    Elf64_Half e_ehsize;
+    Elf64_Half e_phentsize;
+    Elf64_Half e_phnum;
+    Elf64_Half e_shentsize;
+    Elf64_Half e_shnum;
+    Elf64_Half e_shstrndx;
+}
+#endif
+
+	if(ehdr.e_ident[5]==1)	 // little endian elf file
+	{
+		ehdr.e_type       = le16toh(ehdr.e_type);
+		ehdr.e_machine    = le16toh(ehdr.e_machine);
+		ehdr.e_version    = le32toh(ehdr.e_version);
+		ehdr.e_flags      = le32toh(ehdr.e_flags);
+		ehdr.e_ehsize     = le16toh(ehdr.e_ehsize);
+		ehdr.e_phentsize  = le16toh(ehdr.e_phentsize);
+		ehdr.e_phnum      = le16toh(ehdr.e_phnum);
+		ehdr.e_shentsize  = le16toh(ehdr.e_shentsize);
+		ehdr.e_shnum      = le16toh(ehdr.e_shnum);
+		ehdr.e_shstrndx   = le16toh(ehdr.e_shstrndx);
+
+		if(sizeof(ehdr.e_entry)==4)	 // 32-bit header
+		{
+			ehdr.e_entry = le32toh(ehdr.e_entry);
+			ehdr.e_phoff = le32toh(ehdr.e_phoff);
+			ehdr.e_shoff = le32toh(ehdr.e_shoff);
+		}
+		else if(sizeof(ehdr.e_entry)==8)	// 64-bit header
+		{
+			ehdr.e_entry = le64toh(ehdr.e_entry);
+			ehdr.e_phoff = le64toh(ehdr.e_phoff);
+			ehdr.e_shoff = le64toh(ehdr.e_shoff);
+		}
+		else
+		{
+			assert(0);
+		}
+
+	}
+	else if(ehdr.e_ident[5]==2) // big endian elf file
+	{
+		ehdr.e_type       = be16toh(ehdr.e_type);
+		ehdr.e_machine    = be16toh(ehdr.e_machine);
+		ehdr.e_version    = be32toh(ehdr.e_version);
+		ehdr.e_flags      = be16toh(ehdr.e_flags);
+		ehdr.e_ehsize     = be32toh(ehdr.e_ehsize);
+		ehdr.e_phentsize  = be16toh(ehdr.e_phentsize);
+		ehdr.e_phnum      = be16toh(ehdr.e_phnum);
+		ehdr.e_shentsize  = be16toh(ehdr.e_shentsize);
+		ehdr.e_shnum      = be16toh(ehdr.e_shnum);
+		ehdr.e_shstrndx   = be16toh(ehdr.e_shstrndx);
+
+		if(sizeof(ehdr.e_entry)==4)	 //32-bit header
+		{
+			ehdr.e_entry = be32toh(ehdr.e_entry);
+			ehdr.e_phoff = be32toh(ehdr.e_phoff);
+			ehdr.e_shoff = be32toh(ehdr.e_shoff);
+		}
+		else if(sizeof(ehdr.e_entry)==8) // 64-bit header
+		{
+			ehdr.e_entry = be64toh(ehdr.e_entry);
+			ehdr.e_phoff = be64toh(ehdr.e_phoff);
+			ehdr.e_shoff = be64toh(ehdr.e_shoff);
+		}
+		else
+		{
+			assert(0);
+		}
+
+	}
+	else
+	{
+		assert(0);
+	}
+}
+
+template<class T_Elf_Ehdr>
+static inline void host_to_ehdr(T_Elf_Ehdr& ehdr)
+{
+#if 0
+struct Elf32_Ehdr {
+    unsigned char e_ident[16];
+    Elf32_Half e_type;
+    Elf32_Half e_machine;
+    Elf32_Word e_version;
+    Elf32_Addr e_entry;
+    Elf32_Off e_phoff;
+    Elf32_Off e_shoff;
+    Elf32_Word e_flags;
+    Elf32_Half e_ehsize;
+    Elf32_Half e_phentsize;
+    Elf32_Half e_phnum;
+    Elf32_Half e_shentsize;
+    Elf32_Half e_shnum;
+    Elf32_Half e_shstrndx;
+}
+struct Elf64_Ehdr {
+    unsigned char e_ident[16];
+    Elf64_Half e_type;
+    Elf64_Half e_machine;
+    Elf64_Word e_version;
+    Elf64_Addr e_entry;
+    Elf64_Off e_phoff;
+    Elf64_Off e_shoff;
+    Elf64_Word e_flags;
+    Elf64_Half e_ehsize;
+    Elf64_Half e_phentsize;
+    Elf64_Half e_phnum;
+    Elf64_Half e_shentsize;
+    Elf64_Half e_shnum;
+    Elf64_Half e_shstrndx;
+}
+#endif
+	if(ehdr.e_ident[5]==1)	 // little endian elf file
+	{
+		ehdr.e_type       = htole16(ehdr.e_type);
+		ehdr.e_machine    = htole16(ehdr.e_machine);
+		ehdr.e_version    = htole32(ehdr.e_version);
+		ehdr.e_flags      = htole32(ehdr.e_flags);
+		ehdr.e_ehsize     = htole16(ehdr.e_ehsize);
+		ehdr.e_phentsize  = htole16(ehdr.e_phentsize);
+		ehdr.e_phnum      = htole16(ehdr.e_phnum);
+		ehdr.e_shentsize  = htole16(ehdr.e_shentsize);
+		ehdr.e_shnum      = htole16(ehdr.e_shnum);
+		ehdr.e_shstrndx   = htole16(ehdr.e_shstrndx);
+
+		if(sizeof(ehdr.e_entry)==4)	 // 32-bit header
+		{
+			ehdr.e_entry = htole32(ehdr.e_entry);
+			ehdr.e_phoff = htole32(ehdr.e_phoff);
+			ehdr.e_shoff = htole32(ehdr.e_shoff);
+		}
+		else if(sizeof(ehdr.e_entry)==8)	// 64-bit header
+		{
+			ehdr.e_entry = htole64(ehdr.e_entry);
+			ehdr.e_phoff = htole64(ehdr.e_phoff);
+			ehdr.e_shoff = htole64(ehdr.e_shoff);
+		}
+		else
+		{
+			assert(0);
+		}
+
+	}
+	else if(ehdr.e_ident[5]==2) // big endian elf file
+	{
+		ehdr.e_type       = htobe16(ehdr.e_type);
+		ehdr.e_machine    = htobe16(ehdr.e_machine);
+		ehdr.e_version    = htobe32(ehdr.e_version);
+		ehdr.e_flags      = htobe32(ehdr.e_flags);
+		ehdr.e_ehsize     = htobe16(ehdr.e_ehsize);
+		ehdr.e_phentsize  = htobe16(ehdr.e_phentsize);
+		ehdr.e_phnum      = htobe16(ehdr.e_phnum);
+		ehdr.e_shentsize  = htobe16(ehdr.e_shentsize);
+		ehdr.e_shnum      = htobe16(ehdr.e_shnum);
+		ehdr.e_shstrndx   = htobe16(ehdr.e_shstrndx);
+
+		if(sizeof(ehdr.e_entry)==4)	 //32-bit header
+		{
+			ehdr.e_entry = htobe32(ehdr.e_entry);
+			ehdr.e_phoff = htobe32(ehdr.e_phoff);
+			ehdr.e_shoff = htobe32(ehdr.e_shoff);
+		}
+		else if(sizeof(ehdr.e_entry)==8) // 64-bit header
+		{
+			ehdr.e_entry = htobe64(ehdr.e_entry);
+			ehdr.e_phoff = htobe64(ehdr.e_phoff);
+			ehdr.e_shoff = htobe64(ehdr.e_shoff);
+		}
+		else
+		{
+			assert(0);
+		}
+
+	}
+	else
+	{
+		assert(0);
+	}
+}
 
 static inline uintptr_t page_round_down(uintptr_t x)
 {
@@ -240,6 +844,7 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr, T_Elf_Shdr, T_Elf_Sym, T_El
 	fseek(fin,0,SEEK_SET);
 	auto res=fread(&ehdr,sizeof(ehdr), 1, fin);
 	assert(res==1);
+	ehdr_to_host(ehdr);
 };
 
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
@@ -251,6 +856,7 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr, T_Elf_Sym, T_Elf
 	{
 		auto res=fread(&phdrs[i], sizeof(phdrs[i]), 1, fin);
 		assert(res==1);
+		phdr_to_host(ehdr,phdrs[i]);
 	}
 };
 
@@ -808,12 +1414,21 @@ filesz before we start writing out the elf.  See "trim_last_seg_filesz"
 
 	// write the header.
 	fseek(fout,0,SEEK_SET);
-	fwrite(&new_ehdr, sizeof(new_ehdr), 1, fout);
+	auto new_ehdr_endian_correct = new_ehdr;
+	host_to_ehdr(new_ehdr_endian_correct);
+	fwrite(&new_ehdr_endian_correct, sizeof(new_ehdr), 1, fout);
 	// write the phdrs, which may be part of a segment written above.
-	std::cout<<"Writing segment headers at "<<std::hex<<new_ehdr.e_phoff
-		<<", size="<<new_phdrs.size()*sizeof(new_phdrs[0])<<std::endl;
+	cout << "Writing segment headers at " << hex << new_ehdr.e_phoff << ", size=" << new_phdrs.size()*sizeof(new_phdrs[0]) << endl;
 	fseek(fout,new_ehdr.e_phoff,SEEK_SET);
-	fwrite(new_phdrs.data(), sizeof(new_phdrs[0]), new_phdrs.size(), fout);
+
+	// doesn't account for endian issues
+//	fwrite(new_phdrs.data(), sizeof(new_phdrs[0]), new_phdrs.size(), fout);
+	for(auto phdr : new_phdrs)
+	{
+		host_to_phdr(ehdr,phdr);
+		fwrite(&phdr, sizeof(new_phdrs[0]), 1, fout);
+
+	}
 }
 
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
@@ -1001,7 +1616,14 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 	long shdr_file_pos=ftell(fout);
 	
 	cout<<"Writing section headers at filepos="<<hex<<shdr_file_pos<<endl;
-	fwrite(shdrs.data(), sizeof(T_Elf_Shdr), shdrs.size(), fout);
+	// doesn't account for endianness
+//	fwrite(shdrs.data(), sizeof(T_Elf_Shdr), shdrs.size(), fout);
+	for(auto shdr : shdrs)
+	{
+		host_to_shdr(ehdr,shdr);
+		fwrite(&shdrs, sizeof(T_Elf_Shdr), 1, fout);
+
+	}
 
 	new_ehdr.e_shentsize=sizeof(T_Elf_Shdr);
 	new_ehdr.e_shnum=shdrs.size();
@@ -1010,7 +1632,9 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 
 	// rewrite the file header so that sections are listed.
 	fseek(fout,0,SEEK_SET);
-	fwrite(&new_ehdr, sizeof(new_ehdr),1,fout);
+	auto endian_ehdr = new_ehdr;
+	host_to_ehdr(endian_ehdr);
+	fwrite(&endian_ehdr, sizeof(new_ehdr),1,fout);
 }
 
 //  explicit instantation of methods for 32- and 64-bit classes.
