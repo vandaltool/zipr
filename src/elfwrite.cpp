@@ -66,18 +66,18 @@ static inline void host_to_shdr(const T_Elf_Ehdr& ehdr, T_Elf_Shdr& shdr)
 		if(sizeof(ehdr.e_entry)==4)	 // 32-bit header
 		{
 			shdr.sh_flags     = htole32(shdr.sh_flags);
-			shdr.sh_size      = htole32(shdr.sh_size);
 			shdr.sh_addr      = htole32(shdr.sh_addr);
 			shdr.sh_offset    = htole32(shdr.sh_offset);
+			shdr.sh_size      = htole32(shdr.sh_size);
 			shdr.sh_addralign = htole32(shdr.sh_addralign);
 			shdr.sh_entsize   = htole32(shdr.sh_entsize);
 		}
 		else if(sizeof(ehdr.e_entry)==8)	// 64-bit header
 		{
 			shdr.sh_flags     = htole64(shdr.sh_flags);
-			shdr.sh_size      = htole64(shdr.sh_size);
 			shdr.sh_addr      = htole64(shdr.sh_addr);
 			shdr.sh_offset    = htole64(shdr.sh_offset);
+			shdr.sh_size      = htole64(shdr.sh_size);
 			shdr.sh_addralign = htole64(shdr.sh_addralign);
 			shdr.sh_entsize   = htole64(shdr.sh_entsize);
 		}
@@ -96,18 +96,18 @@ static inline void host_to_shdr(const T_Elf_Ehdr& ehdr, T_Elf_Shdr& shdr)
 		if(sizeof(ehdr.e_entry)==4)	 // 32-bit header
 		{
 			shdr.sh_flags     = htobe32(shdr.sh_flags);
-			shdr.sh_size      = htobe32(shdr.sh_size);
 			shdr.sh_addr      = htobe32(shdr.sh_addr);
 			shdr.sh_offset    = htobe32(shdr.sh_offset);
+			shdr.sh_size      = htobe32(shdr.sh_size);
 			shdr.sh_addralign = htobe32(shdr.sh_addralign);
 			shdr.sh_entsize   = htobe32(shdr.sh_entsize);
 		}
 		else if(sizeof(ehdr.e_entry)==8)	// 64-bit header
 		{
 			shdr.sh_flags     = htobe64(shdr.sh_flags);
-			shdr.sh_size      = htobe64(shdr.sh_size);
 			shdr.sh_addr      = htobe64(shdr.sh_addr);
 			shdr.sh_offset    = htobe64(shdr.sh_offset);
+			shdr.sh_size      = htobe64(shdr.sh_size);
 			shdr.sh_addralign = htobe64(shdr.sh_addralign);
 			shdr.sh_entsize   = htobe64(shdr.sh_entsize);
 		}
@@ -167,18 +167,18 @@ static inline void shdr_to_host(const T_Elf_Ehdr& ehdr, T_Elf_Shdr& shdr)
 		if(sizeof(ehdr.e_entry)==4)	 // 32-bit header
 		{
 			shdr.sh_flags     = le32toh(shdr.sh_flags);
-			shdr.sh_size      = le32toh(shdr.sh_size);
 			shdr.sh_addr      = le32toh(shdr.sh_addr);
 			shdr.sh_offset    = le32toh(shdr.sh_offset);
+			shdr.sh_size      = le32toh(shdr.sh_size);
 			shdr.sh_addralign = le32toh(shdr.sh_addralign);
 			shdr.sh_entsize   = le32toh(shdr.sh_entsize);
 		}
 		else if(sizeof(ehdr.e_entry)==8)	// 64-bit header
 		{
 			shdr.sh_flags     = le64toh(shdr.sh_flags);
-			shdr.sh_size      = le64toh(shdr.sh_size);
 			shdr.sh_addr      = le64toh(shdr.sh_addr);
 			shdr.sh_offset    = le64toh(shdr.sh_offset);
+			shdr.sh_size      = le64toh(shdr.sh_size);
 			shdr.sh_addralign = le64toh(shdr.sh_addralign);
 			shdr.sh_entsize   = le64toh(shdr.sh_entsize);
 		}
@@ -197,18 +197,18 @@ static inline void shdr_to_host(const T_Elf_Ehdr& ehdr, T_Elf_Shdr& shdr)
 		if(sizeof(ehdr.e_entry)==4)	 // 32-bit header
 		{
 			shdr.sh_flags     = be32toh(shdr.sh_flags);
-			shdr.sh_size      = be32toh(shdr.sh_size);
 			shdr.sh_addr      = be32toh(shdr.sh_addr);
 			shdr.sh_offset    = be32toh(shdr.sh_offset);
+			shdr.sh_size      = be32toh(shdr.sh_size);
 			shdr.sh_addralign = be32toh(shdr.sh_addralign);
 			shdr.sh_entsize   = be32toh(shdr.sh_entsize);
 		}
 		else if(sizeof(ehdr.e_entry)==8)	// 64-bit header
 		{
 			shdr.sh_flags     = be64toh(shdr.sh_flags);
-			shdr.sh_size      = be64toh(shdr.sh_size);
 			shdr.sh_addr      = be64toh(shdr.sh_addr);
 			shdr.sh_offset    = be64toh(shdr.sh_offset);
+			shdr.sh_size      = be64toh(shdr.sh_size);
 			shdr.sh_addralign = be64toh(shdr.sh_addralign);
 			shdr.sh_entsize   = be64toh(shdr.sh_entsize);
 		}
@@ -1427,7 +1427,6 @@ filesz before we start writing out the elf.  See "trim_last_seg_filesz"
 	{
 		host_to_phdr(ehdr,phdr);
 		fwrite(&phdr, sizeof(new_phdrs[0]), 1, fout);
-
 	}
 }
 
@@ -1621,7 +1620,7 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 	for(auto shdr : shdrs)
 	{
 		host_to_shdr(ehdr,shdr);
-		fwrite(&shdrs, sizeof(T_Elf_Shdr), 1, fout);
+		fwrite(&shdr, sizeof(T_Elf_Shdr), 1, fout);
 
 	}
 
