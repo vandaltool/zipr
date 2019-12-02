@@ -41,9 +41,10 @@ void  ZiprPinnerMIPS32_t::doPinning()
 
 		auto ibta_addr=(RangeAddress_t)insn-> getIndirectBranchTargetAddress()-> getVirtualOffset();
 
-		// put unconditional branch with 24-bit offset in memory
-		// 1110 1010  0000 0000  0000 0000  0000 0000 
-                uint8_t bytes[]={'\x18','\x00','\x00','\x00'};
+		// put branch with 16-bit offset in memory
+		// i.e., beq $0, $0, imm16
+		// including putting a nop in the delay slot.
+                uint8_t bytes[]={'\x10','\x00','\x00','\x00', '\x00', '\x00', '\x00', '\x00'};
 		for(auto i=0U;i<sizeof(bytes);i++)
 		{
 			const auto ibta_byte_addr = ibta_addr+i;

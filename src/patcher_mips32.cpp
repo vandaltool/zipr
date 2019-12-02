@@ -64,43 +64,28 @@ void ZiprPatcherMIPS32_t::ApplyNopToPatch(RangeAddress_t addr)
 
 void ZiprPatcherMIPS32_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)
 { 
+#if 0
         const auto first_byte  = (uint8_t)memory_space[from_addr+0];
-        const auto new_offset  = (int32_t)((to_addr) - (from_addr+8)) >> 2;
+	assert(first_byte == 0x10); // beq $0
+#endif
 
-	// A Branch in binary is: op= 000010 imm26=0000  00000000  00000000  00000000
-	// it includes a 26-bit immediate, which is +/- 128mb, which should be a good enough "jump anywhere"
-	// for now.
-	const auto mask6             = (0b111111);
-	const auto is_uncond_branch  = ((first_byte >> 2) & mask6) == (0b000010);  // jump branch
+        const auto new_offset  = (int32_t)((to_addr) - (from_addr+4)) >> 2;
 
-	if(is_uncond_branch)
-	{
-		cout<<"Applying uncond branch patch from "<<hex<<from_addr<<" to "<<to_addr<<endl;
-		const auto non_imm_bits = 32U-26U;	// 32 bits - imm26
-		// assert there's no overflow.
-		assert((int64_t)(new_offset << non_imm_bits) == ((int64_t)new_offset) << non_imm_bits);
-		// or in opcode for first byte.  set remaining bytes.
-		const auto mask26         = ((1<<26)-1);
-		const auto trimmed_offset = new_offset & mask26;
-		memory_space[from_addr+3]  = (trimmed_offset>> 0)&0xff;
-		memory_space[from_addr+2]  = (trimmed_offset>> 8)&0xff;
-		memory_space[from_addr+1]  = (trimmed_offset>>16)&0xff;
-		memory_space[from_addr+0] |= (trimmed_offset>>24)&0x02;
-	}
-	else 
-	{
-		cout<<"Applying cond branch patch from "<<hex<<from_addr<<" to "<<to_addr<<endl;
-		const auto non_imm_bits = 32U-24U;	// 32 bits - imm24
-		// assert there's no overflow.
-		assert((int64_t)(new_offset << non_imm_bits) == ((int64_t)new_offset) << non_imm_bits);
-		// or in opcode for first byte.  set remaining bytes.
-		const auto mask24         = ((1<<24)-1);
-		const auto trimmed_offset = new_offset & mask24;
-		memory_space[from_addr+3]  = (trimmed_offset>> 0)&0xff;
-		memory_space[from_addr+2]  = (trimmed_offset>> 8)&0xff;
-		memory_space[from_addr+1]  = (trimmed_offset>>16)&0xff;
-		memory_space[from_addr+0] |= (trimmed_offset>>24)&0x02;
-	}
+
+	// Use a branch always.  In mips, this will be a  beq $0, $0, <label> as there is no branch always.
+	// format: 0001 00ss sstt iiii iiii iiii iiii iiii 
+	// ssss=0b0000
+	// tttt=0b0000
+	// i...i = (from_addr-to_addr)>>2
+	cout<<"Applying cond branch patch from "<<hex<<from_addr<<" to "<<to_addr<<endl;
+	const auto non_imm_bits = 16;
+	// assert there's no overflow.
+	assert((int64_t)(new_offset << non_imm_bits) == ((int64_t)new_offset) << non_imm_bits);
+	// or in opcode for first byte.  set remaining bytes.
+	const auto mask16         = ((1<<16)-1);
+	const auto trimmed_offset = new_offset & mask16;
+	memory_space[from_addr+3]  = (trimmed_offset>> 0)&0xff;
+	memory_space[from_addr+2]  = (trimmed_offset>> 8)&0xff;
 
 }
 

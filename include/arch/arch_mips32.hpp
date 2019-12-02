@@ -10,8 +10,8 @@ class ZiprArchitectureHelperMIPS32_t : public ZiprArchitectureHelperBase_t
 
 		virtual IRDB_SDK::Instruction_t* createNewJumpInstruction(IRDB_SDK::FileIR_t *p_firp, IRDB_SDK::Instruction_t* p_existing) override
 		{
-			// bytes = 0b00000000 0b00000000 0b00000000 0b00010000
-			// jump always with 26bit offset
+			// create a beq $0, $0, imm16 instruction
+			// to be PC-relative.
 			const auto bits =string("\x10\x00\x00\x000",4);
 			auto ret=IRDB_SDK::addNewDataBits(p_firp, p_existing, bits);
 			const auto d=IRDB_SDK::DecodedInstruction_t::factory(ret);
