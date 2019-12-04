@@ -64,28 +64,54 @@ void ZiprPatcherMIPS32_t::ApplyNopToPatch(RangeAddress_t addr)
 
 void ZiprPatcherMIPS32_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)
 { 
-#if 0
-        const auto first_byte  = (uint8_t)memory_space[from_addr+0];
-	assert(first_byte == 0x10); // beq $0
-#endif
-
-        const auto new_offset  = (int32_t)((to_addr) - (from_addr+4)) >> 2;
+	const auto mask6      = 0b111111;
+        const auto first_byte = (uint8_t)memory_space[from_addr+0];
+	const auto top6bits   = (first_byte >> 2) & mask6;
 
 
-	// Use a branch always.  In mips, this will be a  beq $0, $0, <label> as there is no branch always.
-	// format: 0001 00ss sstt iiii iiii iiii iiii iiii 
-	// ssss=0b0000
-	// tttt=0b0000
-	// i...i = (from_addr-to_addr)>>2
-	cout<<"Applying cond branch patch from "<<hex<<from_addr<<" to "<<to_addr<<endl;
-	const auto non_imm_bits = 16;
-	// assert there's no overflow.
-	assert((int64_t)(new_offset << non_imm_bits) == ((int64_t)new_offset) << non_imm_bits);
-	// or in opcode for first byte.  set remaining bytes.
-	const auto mask16         = ((1<<16)-1);
-	const auto trimmed_offset = new_offset & mask16;
-	memory_space[from_addr+3]  = (trimmed_offset>> 0)&0xff;
-	memory_space[from_addr+2]  = (trimmed_offset>> 8)&0xff;
+	if(
+		top6bits == 0b000100 ||  // beq, 
+		top6bits == 0b000001 ||  // bgez, bgezal, bltz, bltzal
+		top6bits == 0b000111 ||  // bgtz, 
+		top6bits == 0b000110 ||  // blez, 
+		top6bits == 0b000110 ||  // blez, 
+		top6bits == 0b000101     // bne
+		) 
+	{
+		const auto new_offset  = (int32_t)((to_addr) - (from_addr+4)) >> 2;
+		// Use a branch always.  In mips, this will be a  beq $0, $0, <label> as there is no branch always.
+		// format: 0001 00ss sstt iiii iiii iiii iiii iiii 
+		// ssss=0b0000
+		// tttt=0b0000
+		// i...i = (from_addr-to_addr)>>2
+		cout<<"Applying cond branch patch from "<<hex<<from_addr<<" to "<<to_addr<<endl;
+		const auto non_imm_bits = 16;
+		// assert there's no overflow.
+		assert((int64_t)(new_offset << non_imm_bits) == ((int64_t)new_offset) << non_imm_bits);
+		// or in opcode for first byte.  set remaining bytes.
+		const auto mask16         = ((1<<16)-1);
+		const auto trimmed_offset = new_offset & mask16;
+		memory_space[from_addr+3]  = (trimmed_offset>> 0)&0xff;
+		memory_space[from_addr+2]  = (trimmed_offset>> 8)&0xff;
+	}
+	else if(top6bits == 0b00010) /* j and jal */
+	{
+		const auto new_offset  = (int32_t)(to_addr) >> 2;
+		cout<<"Applying uncond jump patch from "<<hex<<from_addr<<" to "<<to_addr<<endl;
+		const auto non_imm_bits = 32-26;
+		// assert there's no overflow.
+		assert((int64_t)(new_offset << non_imm_bits) == ((int64_t)new_offset) << non_imm_bits);
+		// or in opcode for first byte.  set remaining bytes.
+		const auto mask26         = ((1<<26)-1);
+		const auto trimmed_offset = new_offset & mask26;
+		memory_space[from_addr+3]   = (trimmed_offset>> 0)&0b11111111;  /* low 8 bits */
+		memory_space[from_addr+2]   = (trimmed_offset>> 8)&0b11111111;  /* 2nd 8 bits */
+		memory_space[from_addr+1]   = (trimmed_offset>> 16)&0b11111111; /* 3rd 8 bits */
+		memory_space[from_addr+0]  |= (trimmed_offset>> 24)&0b11;       /* last 2 bits of 26 bit address. */
+
+	}
+	else
+		assert(0);
 
 }
 

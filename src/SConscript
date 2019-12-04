@@ -26,6 +26,7 @@ files=  '''
 	pewrite.cpp
 	ehwrite.cpp
 	arch_base.cpp
+	arch_mips32.cpp
 	pinner_arm64.cpp  
 	pinner_arm32.cpp  
 	pinner_mips32.cpp  

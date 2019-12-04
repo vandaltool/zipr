@@ -1385,7 +1385,21 @@ void ZiprImpl_t::PlaceDollops()
 				   )
 				{
 
-					string patch_jump_string;
+					if (*m_vverbose)
+					{
+						const auto end_of_cur_dollop_insn  = (*to_place  ->rbegin())->getInstruction();
+						const auto start_of_ft_dollop_insn = (*fallthrough->begin())->getInstruction();
+						cout << "Not coalescing " 
+						     << end_of_cur_dollop_insn->getDisassembly() << "@" << hex << end_of_cur_dollop_insn->getAddress()->getVirtualOffset() 
+						     << " and " 
+						     << start_of_ft_dollop_insn->getDisassembly() << "@" << hex << start_of_ft_dollop_insn->getAddress()->getVirtualOffset() 
+						     << string((fallthrough->isPlaced()) ?  " because fallthrough is placed" : "")
+						     << string((!allowed_coalescing) ?  " because I am not allowed" : "") 
+						     << ".  Add jmp to fallthrough dollop (" << std::hex << fallthrough << ")." << '\n';
+					}
+
+					cur_addr = archhelper->splitDollop(m_firp,to_place, cur_addr);
+#if 0
 					auto patch = archhelper->createNewJumpInstruction(m_firp, nullptr);
 					auto patch_de = new DollopEntry_t(patch, to_place);
 
@@ -1397,14 +1411,6 @@ void ZiprImpl_t::PlaceDollops()
 					to_place->push_back(patch_de);
 					to_place->setFallthroughPatched(true);
 
-					if (*m_vverbose)
-						cout << "Not coalescing"
-						     << string((fallthrough->isPlaced()) ?  " because fallthrough is placed" : "")
-						     << string((!allowed_coalescing) ?  " because I am not allowed" : "")
-						     << "; Added jump (via " << std::hex << patch_de
-						     << " at " << std::hex << patch_de->getPlace() << ") "
-						     << "to fallthrough dollop (" << std::hex 
-						     << fallthrough << ")." << endl;
 
 					placement_queue.insert({fallthrough, cur_addr});
 					/*
@@ -1412,6 +1418,7 @@ void ZiprImpl_t::PlaceDollops()
 					 * check to see whether a plugin wants to plop it.
 					 */
 					AskPluginsAboutPlopping(patch_de->getInstruction());
+#endif
 
 					m_stats->total_did_not_coalesce++;
 

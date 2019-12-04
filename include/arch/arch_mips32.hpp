@@ -29,5 +29,8 @@ class ZiprArchitectureHelperMIPS32_t : public ZiprArchitectureHelperBase_t
 			assert(d->valid());
 			return ret;
 		}
+
+		virtual RangeAddress_t splitDollop(FileIR_t* p_firp, Zipr_SDK::Dollop_t* to_split, const RangeAddress_t p_cur_addr);
+
 };
 #endif

@@ -18,7 +18,8 @@ using namespace zipr;
 ZiprArchitectureHelperBase_t::ZiprArchitectureHelperBase_t(Zipr_SDK::Zipr_t* p_zipr_obj) :
 	m_pinner (ZiprPinnerBase_t ::factory(p_zipr_obj)),
 	m_patcher(ZiprPatcherBase_t::factory(p_zipr_obj)),
-	m_sizer  (ZiprSizerBase_t  ::factory(p_zipr_obj)) 
+	m_sizer  (ZiprSizerBase_t  ::factory(p_zipr_obj)),
+	m_zipr   (p_zipr_obj)
 {
 }
 
@@ -34,4 +35,32 @@ unique_ptr<ZiprArchitectureHelperBase_t> ZiprArchitectureHelperBase_t::factory(Z
 	          throw domain_error("Cannot init architecture");
 
 	return unique_ptr<ZiprArchitectureHelperBase_t>(ret);
+}
+
+/*
+ * Default way to split a dollop is to create a jump instruction, push it on the dollop, then ask plugins if they want anything to do with it
+ */
+RangeAddress_t ZiprArchitectureHelperBase_t::splitDollop(FileIR_t* p_firp, Zipr_SDK::Dollop_t* to_split, const RangeAddress_t p_cur_addr)
+{
+	auto zipr_impl   = dynamic_cast<ZiprImpl_t*>(m_zipr);
+	auto cur_addr    = p_cur_addr;
+	auto fallthrough = to_split->getFallthroughDollop();
+	auto patch       = createNewJumpInstruction(p_firp, nullptr);
+	auto patch_de    = new DollopEntry_t(patch, to_split);
+
+	patch_de->setTargetDollop(fallthrough);
+	patch_de->Place(cur_addr);
+	cur_addr += m_zipr->determineDollopEntrySize(patch_de, false);
+
+	to_split->push_back(patch_de);
+	to_split->setFallthroughPatched(true);
+
+	m_zipr->getPlacementQueue()->insert({fallthrough, cur_addr});
+	/*
+	 * Since we inserted a new instruction, we should
+	 * check to see whether a plugin wants to plop it.
+	 */
+	zipr_impl->AskPluginsAboutPlopping(patch_de->getInstruction());
+
+	return cur_addr;
 }
