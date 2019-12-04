@@ -500,32 +500,24 @@ void infer_targets(FileIR_t *firp, section* shdr)
 		// even on 64-bit, pointers might be stored as 32-bit, as a 
 		// elf object has the 32-bit limitations.
 		// there's no real reason to look for 64-bit pointers 
-		uintptr_t p=0;
-		if(arch_ptr_bytes()==4)
-			p=*(int*)&data[i];
-		else
-			p=*(VirtualOffset_t*)&data[i];	// 64 or 32-bit depending on sizeof uintptr_t, may need porting for cross platform analysis.
+		const auto ptr_val = uint64_t(
+		                (arch_ptr_bytes()==4) ?  cptrtoh<uint32_t>(firp, reinterpret_cast<const uint8_t*>(&data[i])) :
+		                (arch_ptr_bytes()==8) ?  cptrtoh<uint64_t>(firp, reinterpret_cast<const uint8_t*>(&data[i])) :
+		                throw invalid_argument("Cannot map architecture size to bit width")
+                	       );
 
+		const auto ptr_addr = i+shdr->get_address();
 
+		const auto ptr_prov = 
+			(shdr->get_name()==".init_array") ? ibt_provenance_t::ibtp_initarray :
+			(shdr->get_name()==".fini_array") ? ibt_provenance_t::ibtp_finiarray :
+			(shdr->get_name()==".got.plt") ?    ibt_provenance_t::ibtp_gotplt    :
+			(shdr->get_name()==".got") ?        ibt_provenance_t::ibtp_got       :
+			(shdr->get_name()==".symtab") ?     ibt_provenance_t::ibtp_symtab    :
+			(shdr->isWriteable()) ?             ibt_provenance_t::ibtp_data      :
+			ibt_provenance_t::ibtp_rodata;
 
-		auto prov = ibt_provenance_t();
-		if(shdr->get_name()==".init_array")
-			prov=ibt_provenance_t::ibtp_initarray;
-		else if(shdr->get_name()==".fini_array")
-			prov=ibt_provenance_t::ibtp_finiarray;
-		else if(shdr->get_name()==".got.plt")
-			prov=ibt_provenance_t::ibtp_gotplt;
-		else if(shdr->get_name()==".got")
-			prov=ibt_provenance_t::ibtp_got;
-		else if(shdr->get_name()==".symtab")
-			prov=ibt_provenance_t::ibtp_symtab;
-		else if(shdr->isWriteable()) 
-			prov=ibt_provenance_t::ibtp_data;
-		else
-			prov=ibt_provenance_t::ibtp_rodata;
-
-		possible_target(p, i+shdr->get_address(), prov);
-
+		possible_target(ptr_val, ptr_addr, ptr_prov);
 	}
 
 }
