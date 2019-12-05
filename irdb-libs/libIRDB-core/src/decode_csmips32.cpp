@@ -146,7 +146,18 @@ bool DecodedInstructionCapstoneMIPS32_t::isCall() const
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
 	assert(the_insn);
-	return isPartOfGroup(the_insn, MIPS_GRP_CALL);
+
+	const auto marked_call = isPartOfGroup(the_insn, MIPS_GRP_CALL);
+
+	const auto unmarked_call  = isPartOfGroup(the_insn, MIPS_GRP_BRANCH_RELATIVE) &&
+		( 
+		 getMnemonic() == "bal"  || 
+		 getMnemonic() == "balr" || 
+		 getMnemonic() == "jal"  || 
+		 getMnemonic() == "jalr" 
+		);
+
+	return marked_call || unmarked_call;
 
 }
 
