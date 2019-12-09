@@ -572,9 +572,15 @@ split_eh_frame_impl_t<ptrsize>::split_eh_frame_impl_t(FileIR_t* p_firp)
 	eh_frame_hdr_scoop=lookup_scoop_by_name(".eh_frame_hdr");
 	gcc_except_table_scoop=lookup_scoop_by_name(".gcc_except_table");
 
+
+	const auto endian_type = 
+		firp->getArchitecture()->getMachineType() == admtMips32 ? EHP::BIG :
+		EHP::LITTLE;
+
 	eh_frame_parser=EHFrameParser_t::factory
 		( 
 		    ptrsize,
+		    endian_type,
 		    scoop_contents(eh_frame_scoop),         scoop_address(eh_frame_scoop), 
 		    scoop_contents(eh_frame_hdr_scoop),     scoop_address(eh_frame_hdr_scoop), 
 		    scoop_contents(gcc_except_table_scoop), scoop_address(gcc_except_table_scoop)
