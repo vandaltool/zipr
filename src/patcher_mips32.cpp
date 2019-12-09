@@ -64,9 +64,12 @@ void ZiprPatcherMIPS32_t::ApplyNopToPatch(RangeAddress_t addr)
 
 void ZiprPatcherMIPS32_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)
 { 
-	const auto mask6      = 0b111111;
-        const auto first_byte = (uint8_t)memory_space[from_addr+0];
-	const auto top6bits   = (first_byte >> 2) & mask6;
+	const auto mask6       = 0b111111;
+        const auto first_byte  = (uint8_t)memory_space[from_addr+0];
+        const auto second_byte = (uint8_t)memory_space[from_addr+1];
+	const auto top6bits    = (first_byte >> 2) & mask6;
+	const auto top16bits   = (uint32_t(first_byte) << 8) | second_byte;
+	const auto top16bits_nocc  = top16bits & ~(0b11100);
 
 
 	if(
@@ -75,7 +78,9 @@ void ZiprPatcherMIPS32_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to
 		top6bits == 0b000111 ||  // bgtz, 
 		top6bits == 0b000110 ||  // blez, 
 		top6bits == 0b000110 ||  // blez, 
-		top6bits == 0b000101     // bne
+		top6bits == 0b000101 ||  // bne
+		top16bits_nocc == 0b0100010100000000 ||  // bc1f
+		top16bits_nocc == 0b0100010100000001     // bc1t
 		) 
 	{
 		const auto new_offset  = (int32_t)((to_addr) - (from_addr+4)) >> 2;
