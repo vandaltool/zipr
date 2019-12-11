@@ -32,6 +32,8 @@
 #include <irdb-util>
 #include <endian.h>
 
+#include "cmdstr.hpp"
+
 using namespace libIRDB;
 using namespace std;
 
@@ -44,26 +46,10 @@ using namespace std;
 
 int command_to_stream(const string& command, ostream& stream)
 {
-	auto redirect_command=command+" 2>&1 ";
-	auto buffer=array<char,128>();
+	const auto res = command_to_string(command);
 
-	std::cout << "Issuing subcommand: "<< command << std::endl;
-	auto pipe = popen(redirect_command.c_str(), "r");
-	if (!pipe)
-	{
-		stream << "Couldn't start command:"<< strerror(errno) << endl;
-		return 1;
-	}
-	while (fgets(buffer.data(), 128, pipe) != NULL) 
-	{
-		stream<<buffer.data();
-	}
-	auto returnCode = pclose(pipe);
-	if(returnCode==-1)
-		stream << "Could not close pipe: "<< strerror(errno) << endl;
-
-	std::cout << "Return code = "<<returnCode << std::endl;
-	return returnCode;
+	stream << res.first << endl;
+	return res.second;
 }
 
 static void UpdateEntryPoints(
