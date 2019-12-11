@@ -45,21 +45,19 @@ static inline std::string to_hex_string( const T& n )
 
 void PopulateCFG::populate_instruction_map
 	(
-		map< pair<DatabaseID_t,VirtualOffset_t>, Instruction_t*> &insnMap,
+		InstructionMap_t &insnMap,
 		FileIR_t *firp
 	)
 {
 	/* start from scratch each time */
 	insnMap.clear();
 
-
 	/* for each instruction in the IR */
 	for(auto insn : firp->getInstructions())
 	{
-		auto fileID=insn->getAddress()->getFileID();
-		auto vo=insn->getAddress()->getVirtualOffset();
-
-		auto p=pair<DatabaseID_t,VirtualOffset_t>(fileID,vo);
+		const auto fileID= insn->getAddress()->getFileID();
+		const auto vo    = insn->getAddress()->getVirtualOffset();
+		const auto p     = pair<DatabaseID_t,VirtualOffset_t>(fileID,vo);
 
 		assert(insnMap[p]==NULL);
 		insnMap[p]=insn;
@@ -69,8 +67,10 @@ void PopulateCFG::populate_instruction_map
 
 void PopulateCFG::set_fallthrough
 	(
-	map< pair<DatabaseID_t,VirtualOffset_t>, Instruction_t*> &insnMap,
-	DecodedInstruction_t *disasm, Instruction_t *insn, FileIR_t *firp
+	InstructionMap_t &insnMap,
+	DecodedInstruction_t *disasm, 
+	Instruction_t *insn, 
+	FileIR_t *firp
 	)
 {
 	assert(disasm);
@@ -79,14 +79,20 @@ void PopulateCFG::set_fallthrough
 	if(insn->getFallthrough())
 		return;
 	
-	// check for branches with targets 
-	if(
-		(disasm->isUnconditionalBranch() ) ||	// it is a unconditional branch 
-		(disasm->isReturn())			// or a return
-	  )
+	const auto is_mips = firp->getArchitecture()->getMachineType() == admtMips32;	 
+	// always set fallthrough for mips
+	// other platforms can end fallthroughs ofr uncond branches and returns
+	if(!is_mips) 
 	{
-		// this is a branch with no fallthrough instruction
-		return;
+		// check for branches with targets 
+		if(
+			(disasm->isUnconditionalBranch() ) ||	// it is a unconditional branch 
+			(disasm->isReturn())			// or a return
+		  )
+		{
+			// this is a branch with no fallthrough instruction
+			return;
+		}
 	}
 
 	/* get the address of the next instrution */
@@ -117,11 +123,37 @@ void PopulateCFG::set_fallthrough
 		missed_instructions.insert(pair<DatabaseID_t,VirtualOffset_t>(insn->getAddress()->getFileID(),virtual_offset));
 }
 
+void PopulateCFG::set_delay_slots
+	(
+	InstructionMap_t &insnMap,
+	DecodedInstruction_t *disasm, 
+	Instruction_t *insn, 
+	FileIR_t *firp
+	)
+{
+	const auto is_mips = firp->getArchitecture()->getMachineType() == admtMips32;
+	if(!is_mips)
+		return;
+
+	// using df=DecodedInstruction_t::factory;
+	const auto d=DecodedInstruction_t::factory(insn);
+	if(d->isBranch())
+	{
+		const auto branch_addr     = insn->getAddress();
+		const auto delay_slot_insn = insnMap[ {branch_addr->getFileID(), branch_addr->getVirtualOffset() + 4}];
+		assert(delay_slot_insn);
+		(void)firp->addNewRelocation(insn,0,"delay_slot1", delay_slot_insn, 0);
+	}
+
+}
+
 
 void PopulateCFG::set_target
 	(
-	map< pair<DatabaseID_t,VirtualOffset_t>, Instruction_t*> &insnMap,
-	DecodedInstruction_t *disasm, Instruction_t *insn, FileIR_t *firp
+	InstructionMap_t &insnMap,
+	DecodedInstruction_t *disasm, 
+	Instruction_t *insn, 
+	FileIR_t *firp
 	)
 {
 
@@ -316,7 +348,7 @@ void PopulateCFG::fill_in_cfg(FileIR_t *firp)
 		failed_target_count=0;
 		missed_instructions.clear();
 
-		map< pair<DatabaseID_t,VirtualOffset_t>, Instruction_t*> insnMap;
+		auto insnMap = InstructionMap_t();
 		populate_instruction_map(insnMap, firp);
 
 		cout << "Found "<<firp->getInstructions().size()<<" instructions." <<endl;
@@ -332,6 +364,7 @@ void PopulateCFG::fill_in_cfg(FileIR_t *firp)
 	
 			set_fallthrough(insnMap, disasm.get(), insn, firp);
 			set_target(insnMap, disasm.get(), insn, firp);
+			set_delay_slots(insnMap, disasm.get(), insn, firp);
 			
 		}
 		if(bad_target_count>0)

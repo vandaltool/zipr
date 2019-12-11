@@ -15,6 +15,7 @@ namespace PopCFG
 	class PopulateCFG : public TransformStep_t
 	{
 			using extra_scoop_set_t = set<pair<VirtualOffset_t,VirtualOffset_t> >;
+			using InstructionMap_t = map< pair<DatabaseID_t,VirtualOffset_t>, Instruction_t*> ;
 			extra_scoop_set_t extra_scoops;
 
 		public:
@@ -61,30 +62,10 @@ namespace PopCFG
 
 			
 			// helpers
-			void populate_instruction_map
-				(
-					map< pair<DatabaseID_t,VirtualOffset_t>, 
-					Instruction_t*>&,
-					FileIR_t *
-				);
-			
-			void set_fallthrough
-				(
-					map< pair<DatabaseID_t,VirtualOffset_t>, 
-					Instruction_t*>&,
-					DecodedInstruction_t *, 
-					Instruction_t *, 
-					FileIR_t *
-				);
-			
-			void set_target
-				(
-					map< pair<DatabaseID_t,VirtualOffset_t>, 
-					Instruction_t*>&,
-					DecodedInstruction_t *, 
-					Instruction_t *, 
-					FileIR_t *
-				);
+			void populate_instruction_map ( InstructionMap_t&, FileIR_t *);
+			void set_fallthrough          ( InstructionMap_t&, DecodedInstruction_t *, Instruction_t *, FileIR_t *);
+			void set_target               ( InstructionMap_t&, DecodedInstruction_t *, Instruction_t *, FileIR_t *);
+			void set_delay_slots          ( InstructionMap_t&, DecodedInstruction_t *, Instruction_t *, FileIR_t *);
 			
 			File_t* find_file(FileIR_t *, DatabaseID_t);
 			void add_new_instructions(FileIR_t *);

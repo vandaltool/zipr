@@ -73,11 +73,12 @@ class CreateFunctions_t
 				exit(1);
 			}
 
-			const auto cs_mode= 
-				machine_type == mtArm32   ? CS_MODE_LITTLE_ENDIAN :
-				machine_type == mtAarch64 ? CS_MODE_LITTLE_ENDIAN :
-				file_class   == ELF64     ? CS_MODE_64 : 
-				file_class   == ELF32     ? CS_MODE_32 : 
+			const auto my_cs_mode = 
+				machine_type == mtArm32   ? cs_mode(CS_MODE_LITTLE_ENDIAN) :
+				machine_type == mtAarch64 ? cs_mode(CS_MODE_LITTLE_ENDIAN) :
+				machine_type == mtMips32  ? cs_mode(CS_MODE_MIPS32 | CS_MODE_BIG_ENDIAN) : 
+				file_class   == ELF64     ? cs_mode(CS_MODE_64) : 
+				file_class   == ELF32     ? cs_mode(CS_MODE_32) : 
 				throw std::runtime_error("Cannot handle ELF class");
 
 			const auto my_cs_arch = 
@@ -85,9 +86,10 @@ class CreateFunctions_t
 				machine_type == mtI386    ?  CS_ARCH_X86   :
 				machine_type == mtArm32   ?  CS_ARCH_ARM   : 
 				machine_type == mtAarch64 ?  CS_ARCH_ARM64 : 
+				machine_type == mtMips32  ?  CS_ARCH_MIPS  : 
 				throw std::runtime_error("Cannot handle architecture");
 
-			if (cs_open(my_cs_arch, cs_mode , &cshandle) != CS_ERR_OK)
+			if (cs_open(my_cs_arch, my_cs_mode , &cshandle) != CS_ERR_OK)
 			{
 				cerr<<"Cannot initialize capstone"<<endl;
 				exit(1);

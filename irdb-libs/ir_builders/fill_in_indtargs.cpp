@@ -58,6 +58,56 @@ using namespace MEDS_Annotation;
 
 extern void read_ehframe(FileIR_t* firp, EXEIO::exeio* );
 
+template<typename T>
+static inline T cptrtoh(FileIR_t* firp, const uint8_t* cptr)
+{
+	const auto ptrsize = firp->getArchitectureBitWidth() / 8 ;
+	const auto mt      = firp->getArchitecture()->getMachineType();
+
+	switch(ptrsize)
+	{
+		case 4:
+		{
+			const auto raw_const = *reinterpret_cast<const uint64_t*>(cptr);
+			switch(mt)
+			{
+				case admtI386:
+				case admtArm32:
+					return le32toh(raw_const);
+				case admtMips32:
+					return be32toh(raw_const);
+
+				default:
+					throw invalid_argument("Cannot detect machine type");
+			}
+			assert(0);
+		}
+		case 8:
+		{
+			const auto raw_const = *reinterpret_cast<const uint32_t*>(cptr);
+			switch(mt)
+			{
+				case admtX86_64:
+				case admtAarch64:
+					return le64toh(raw_const);
+				case admtMips64:
+					return be64toh(raw_const);
+
+				default:
+					throw invalid_argument("Cannot detect machine type");
+			}
+			assert(0);
+			break;
+		}
+		default:
+		{
+			throw invalid_argument("Cannot detect pointer size");
+		}
+	}
+
+
+}
+
 
 
 class PopulateIndTargs_t : public TransformStep_t
@@ -362,7 +412,9 @@ void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* exeiop, const set<Vir
 		}
 		else if(mt==admtMips32)
 		{
-			// empty for now
+			/* no reason to look for pc-rel constants in mips */
+			if(firp->getArchitecture()->getFileType() == adftELFSO)
+				continue;;
 		}
 		else
 			throw invalid_argument("Cannot determine machine type");
@@ -448,32 +500,24 @@ void infer_targets(FileIR_t *firp, section* shdr)
 		// even on 64-bit, pointers might be stored as 32-bit, as a 
 		// elf object has the 32-bit limitations.
 		// there's no real reason to look for 64-bit pointers 
-		uintptr_t p=0;
-		if(arch_ptr_bytes()==4)
-			p=*(int*)&data[i];
-		else
-			p=*(VirtualOffset_t*)&data[i];	// 64 or 32-bit depending on sizeof uintptr_t, may need porting for cross platform analysis.
+		const auto ptr_val = uint64_t(
+		                (arch_ptr_bytes()==4) ?  cptrtoh<uint32_t>(firp, reinterpret_cast<const uint8_t*>(&data[i])) :
+		                (arch_ptr_bytes()==8) ?  cptrtoh<uint64_t>(firp, reinterpret_cast<const uint8_t*>(&data[i])) :
+		                throw invalid_argument("Cannot map architecture size to bit width")
+                	       );
 
+		const auto ptr_addr = i+shdr->get_address();
 
+		const auto ptr_prov = 
+			(shdr->get_name()==".init_array") ? ibt_provenance_t::ibtp_initarray :
+			(shdr->get_name()==".fini_array") ? ibt_provenance_t::ibtp_finiarray :
+			(shdr->get_name()==".got.plt") ?    ibt_provenance_t::ibtp_gotplt    :
+			(shdr->get_name()==".got") ?        ibt_provenance_t::ibtp_got       :
+			(shdr->get_name()==".symtab") ?     ibt_provenance_t::ibtp_symtab    :
+			(shdr->isWriteable()) ?             ibt_provenance_t::ibtp_data      :
+			ibt_provenance_t::ibtp_rodata;
 
-		auto prov = ibt_provenance_t();
-		if(shdr->get_name()==".init_array")
-			prov=ibt_provenance_t::ibtp_initarray;
-		else if(shdr->get_name()==".fini_array")
-			prov=ibt_provenance_t::ibtp_finiarray;
-		else if(shdr->get_name()==".got.plt")
-			prov=ibt_provenance_t::ibtp_gotplt;
-		else if(shdr->get_name()==".got")
-			prov=ibt_provenance_t::ibtp_got;
-		else if(shdr->get_name()==".symtab")
-			prov=ibt_provenance_t::ibtp_symtab;
-		else if(shdr->isWriteable()) 
-			prov=ibt_provenance_t::ibtp_data;
-		else
-			prov=ibt_provenance_t::ibtp_rodata;
-
-		possible_target(p, i+shdr->get_address(), prov);
-
+		possible_target(ptr_val, ptr_addr, ptr_prov);
 	}
 
 }
@@ -485,14 +529,11 @@ void handle_scoop_scanning(FileIR_t* firp)
 	{
 		if(scoop->getName() == ".ctor" || scoop->getName() == ".dtor" )
 		{
-			const auto  ptrsize        = firp->getArchitectureBitWidth() / 8 ;
 			const auto &scoop_contents = scoop->getContents();
+			const auto  ptrsize = firp->getArchitectureBitWidth() / 8 ;
 			for(auto i = 0u; i + ptrsize < scoop_contents.size(); i += ptrsize)
 			{
-				const auto ptr =
-				       	ptrsize == 8 ? *reinterpret_cast<const uint64_t*>(scoop_contents.c_str() + i) : 
-				       	ptrsize == 4 ? *reinterpret_cast<const uint32_t*>(scoop_contents.c_str() + i) : 
-					throw invalid_argument("Cannot map ptrsize to deref type");
+				const auto ptr = cptrtoh<uint64_t>(firp, reinterpret_cast<const uint8_t*>(scoop_contents.c_str() + i));
 				possible_target(ptr, scoop->getStart()->getVirtualOffset() + i, ibt_provenance_t::ibtp_data);
 			}
 
@@ -3363,14 +3404,6 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 
                                                 if(insn->getIndirectBranchTargetAddress()==nullptr)
                                                 {
-							/*
-                                                        auto newaddr = new AddressID_t;
-                                                        assert(newaddr);
-                                                        newaddr->SetFileID(insn->getAddress()->getFileID());
-                                                        newaddr->setVirtualOffset(0);   // unpinne
-
-                                                        firp->getAddresses().insert(newaddr);
-							*/
 							auto newaddr=firp->addNewAddress(insn->getAddress()->getFileID(),0);
                                                         insn->setIndirectBranchTargetAddress(newaddr);
                                                 }
@@ -3514,15 +3547,8 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 					already_unpinned.insert(ibt);
 
 					// add reloc to IR.
-					/*
-					auto nr=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, scoop_off, "data_to_insn_ptr", ibt);
-					assert(nr);
-					firp->getRelocations().insert(nr);
-					scoop->getRelocations().insert(nr);
-					*/
 					auto nr=firp->addNewRelocation(scoop,scoop_off, "data_to_insn_ptr", ibt);
 					(void)nr;
-
 
 					// remove rodata reference for hell nodes.
 					targets[table_entry]=newprov;
@@ -3530,14 +3556,6 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 
                                          if(ibt->getIndirectBranchTargetAddress()==nullptr)
                                          {
-						 /*
-                                                 auto newaddr = new AddressID_t;
-                                                 assert(newaddr);
-                                                 newaddr->SetFileID(ibt->getAddress()->getFileID());
-                                                 newaddr->setVirtualOffset(0);   // unpinne
-
-                                                 firp->getAddresses().insert(newaddr);
-						 */
 						 auto newaddr=firp->addNewAddress(ibt->getAddress()->getFileID(),0);
                                                  ibt->setIndirectBranchTargetAddress(newaddr);
                                          }
