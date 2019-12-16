@@ -642,7 +642,10 @@ class pe_eh_split_t
 				cout << "\tfp reg             " << +exc.get_frame_pointer_register_number() << endl;
 				cout << "\tscaled rsp offset  " << +exc.get_scaled_rsp_offset() << endl;
 
-				const auto  unwind_addr     = exc.get_unwind_info_address();
+				const auto unwind_addr     = exc.get_unwind_info_address();
+				if(unwind_addr == 0) 
+					continue; // no unwind info 
+
 				const auto &unwind_sec      = peb_obj->section_from_rva(unwind_addr);
 				const auto next_unwind_addr = i < edd.size() ?                            // last element?
 					edd[i+1].get_unwind_info_address()   :                            // yes: value from start of next unwind info entry 
@@ -748,7 +751,7 @@ void split_eh_frame(FileIR_t* firp, exeio *exeiop)
 {
 	if( firp->getArchitecture()->getFileType()==adftPE )
 	{
-		pe_eh_split_t<64>(firp,exeiop).split_pe_file();
+//		pe_eh_split_t<64>(firp,exeiop).split_pe_file();
 
 	}
 	else

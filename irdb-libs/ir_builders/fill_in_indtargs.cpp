@@ -4114,12 +4114,17 @@ int executeStep()
 	}
 	catch (DatabaseError_t pnide)
 	{
-		cout<<"Unexpected database error: "<<pnide<<endl;
+		cout << "Unexpected database error: " << pnide << endl;
 		return -1;
         }
+	catch (const exception& e)
+	{
+		cout << "Unexpected error: " << e.what() << endl;
+		return -1;
+	}
         catch(...)
         {
-                cerr<<"Unexpected error"<<endl;
+                cerr << "Unexpected error" << endl;
                 return -1;
         }
 

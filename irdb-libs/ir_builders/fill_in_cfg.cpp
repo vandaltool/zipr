@@ -28,6 +28,12 @@
 #include "elfio/elfio.hpp"
 #include "split_eh_frame.hpp"
 #include "back_search.hpp"
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#include <pe_bliss.h>
+#include <pe_structures.h>
+#pragma GCC diagnostic pop
+
+
 
 using namespace std;
 using namespace EXEIO;
@@ -684,60 +690,7 @@ void PopulateCFG::detect_scoops_in_code(FileIR_t *firp)
 
 void PopulateCFG::ctor_detection(FileIR_t *firp)
 {
-	assert(firp);
-	if(do_ctor_detection == cdt_NO) return;
-
-	const auto is_pe = firp->getArchitecture()->getFileType() == adftPE ;
-	if(do_ctor_detection == cdt_PE32AUTO && !is_pe) return;
-
-	// is either a PE file and we are in auto detect mode
-	// or ctor_detection is yes.
-	assert(is_pe || do_ctor_detection == cdt_YES);
-
-	auto find_ctor_start=[&](const exeio_section_t* sec, const VirtualOffset_t end_of_ctor) -> VirtualOffset_t
-		{
-			// values needed later for various things
-			const auto ptrsize   = firp->getArchitectureBitWidth() / 8 ;
-			const auto sec_data  = sec->get_data();
-			const auto sec_start = sec->get_address();
-
-			// check for a null terminator at the stated end of table
-			const auto null_term_addr=end_of_ctor-ptrsize;
-			const auto null_term_value =
-				ptrsize == 8 ?  *(uint64_t*)(sec_data+null_term_addr-sec_start) :
-				ptrsize == 4 ?  *(uint32_t*)(sec_data+null_term_addr-sec_start) :
-		                throw invalid_argument("Unknown ptrsize");
-
-			// not found, return this isn't sane.
-			if(null_term_value!=0) return 0;
-
-			// now scan the table in reverse order for 1) valid entries, or 2) a -1 terminator.
-			auto next_addr=null_term_addr-ptrsize;
-			while(true)
-			{
-				// check for flowing
-				if(next_addr<sec_start) return 0;
-
-				// get the table entry
-				const auto ctor_entry_value =
-					ptrsize == 8 ?  *(uint64_t*)(sec_data+next_addr-sec_start) :
-					ptrsize == 4 ?  *(uint32_t*)(sec_data+next_addr-sec_start) :
-					throw invalid_argument("Unknown ptrsize");
-
-				// check for the -1 terminator
-				if(ptrsize == 8 && (int64_t)ctor_entry_value==int64_t(-1)) return next_addr;
-				if(ptrsize == 4 && (int32_t)ctor_entry_value==int32_t(-1)) return next_addr;
-
-				// check if the table entry isn't a valid address
-				const auto is_before_start = ctor_entry_value <  sec->get_address() ;
-				const auto is_after_end    = ctor_entry_value > (sec->get_address()+sec->get_size());
-				if(is_before_start || is_after_end) return 0;
-
-				next_addr -= ptrsize;
-			}
-		};
-
-	auto create_ctor_scoop=[&](const string& name, const VirtualOffset_t& start_vo, const VirtualOffset_t& end_vo)
+	const auto create_text_scoop=[&](const string& name, const VirtualOffset_t& start_vo, const VirtualOffset_t& end_vo)
 		{
 			auto startaddr             = firp->addNewAddress(firp->getFile()->getBaseID(), start_vo); // start and end address 
 			auto endaddr               = firp->addNewAddress(firp->getFile()->getBaseID(), end_vo);
@@ -757,19 +710,193 @@ void PopulateCFG::ctor_detection(FileIR_t *firp)
 			cout << "Added ctor/dtor scoop called " << name << " at " << hex << start_vo << "-" << end_vo << endl;
 		};	
 
-	const auto text_sec = exeiop->sections[".text"];
-	if(text_sec == nullptr) return;
-	const auto text_end_addr = text_sec->get_address()+text_sec->get_size();
-	const auto dtor_end      = text_end_addr-1;
-	const auto dtor_start    = find_ctor_start(text_sec,text_end_addr);
-	if(dtor_start==0) return;
-	create_ctor_scoop(".dtor", dtor_start, dtor_end);
+	const auto gnustyle = [&]() -> bool
+	{
+		assert(firp);
+		if(do_ctor_detection == cdt_NO) return false;
 
-	const auto ctor_end   = dtor_start-1;
-	const auto ctor_start = find_ctor_start(text_sec,dtor_start);
-	if(ctor_start==0) return;
-	create_ctor_scoop(".ctor", ctor_start, ctor_end);
-	return;
+		const auto is_pe = firp->getArchitecture()->getFileType() == adftPE ;
+		if(do_ctor_detection == cdt_PE32AUTO && !is_pe) return false;
+
+		// is either a PE file and we are in auto detect mode
+		// or ctor_detection is yes.
+		assert(is_pe || do_ctor_detection == cdt_YES);
+
+		auto find_ctor_start=[&](const exeio_section_t* sec, const VirtualOffset_t end_of_ctor) -> VirtualOffset_t
+			{
+				// values needed later for various things
+				const auto ptrsize   = firp->getArchitectureBitWidth() / 8 ;
+				const auto sec_data  = sec->get_data();
+				const auto sec_start = sec->get_address();
+
+				// check for a null terminator at the stated end of table
+				const auto null_term_addr=end_of_ctor-ptrsize;
+				const auto null_term_value =
+					ptrsize == 8 ?  *(uint64_t*)(sec_data+null_term_addr-sec_start) :
+					ptrsize == 4 ?  *(uint32_t*)(sec_data+null_term_addr-sec_start) :
+					throw invalid_argument("Unknown ptrsize");
+
+				// not found, return this isn't sane.
+				if(null_term_value!=0) return 0;
+
+				// now scan the table in reverse order for 1) valid entries, or 2) a -1 terminator.
+				auto next_addr=null_term_addr-ptrsize;
+				while(true)
+				{
+					// check for flowing
+					if(next_addr<sec_start) return 0;
+
+					// get the table entry
+					const auto ctor_entry_value =
+						ptrsize == 8 ?  *(uint64_t*)(sec_data+next_addr-sec_start) :
+						ptrsize == 4 ?  *(uint32_t*)(sec_data+next_addr-sec_start) :
+						throw invalid_argument("Unknown ptrsize");
+
+					// check for the -1 terminator
+					if(ptrsize == 8 && (int64_t)ctor_entry_value==int64_t(-1)) return next_addr;
+					if(ptrsize == 4 && (int32_t)ctor_entry_value==int32_t(-1)) return next_addr;
+
+					// check if the table entry isn't a valid address
+					const auto is_before_start = ctor_entry_value <  sec->get_address() ;
+					const auto is_after_end    = ctor_entry_value > (sec->get_address()+sec->get_size());
+					if(is_before_start || is_after_end) return 0;
+
+					next_addr -= ptrsize;
+				}
+			};
+
+
+		const auto text_sec = exeiop->sections[".text"];
+		if(text_sec == nullptr) return false;
+		const auto text_end_addr = text_sec->get_address()+text_sec->get_size();
+		const auto dtor_end      = text_end_addr-1;
+		const auto dtor_start    = find_ctor_start(text_sec,text_end_addr);
+		if(dtor_start==0) return false;
+		create_text_scoop(".dtor", dtor_start, dtor_end);
+
+		const auto ctor_end   = dtor_start-1;
+		const auto ctor_start = find_ctor_start(text_sec,dtor_start);
+		if(ctor_start==0) return false;
+		create_text_scoop(".ctor", ctor_start, ctor_end);
+		return true;
+	};
+
+	const auto winstyle = [&]() -> bool
+	{
+		const auto  reloc_sec = exeiop->sections[".reloc"];
+		if(reloc_sec == nullptr) return false;
+		const auto reloc_data = string(reloc_sec->get_data(), reloc_sec->get_size());
+		const auto peblissp = static_cast<pe_bliss::pe_base*>(exeiop->get_pebliss());
+		if(peblissp == nullptr) return false;
+		const auto pe_image_base = peblissp->get_image_base_64();
+
+		// for each block in the reloc section
+		using reloc_block_header_t = 
+			struct 
+			{
+				uint32_t page;
+				uint32_t block_size;
+			};
+		using reloc_block_t = 
+			struct
+			{
+				uint16_t offset:12; 	// lower bits 
+				uint16_t type:4;	// higher bits than offset?
+			};
+		static_assert(sizeof(reloc_block_header_t)==8, "size of reloc_block_header is wrong");
+		static_assert(sizeof(reloc_block_t)==2, "size of reloc_block is wrong");
+		// start at block 0
+		auto current_offset = VirtualOffset_t(0);
+		while(true)
+		{
+
+			// stop if we fall off the end of the section.
+			if(current_offset + sizeof(reloc_block_header_t) > static_cast<size_t>(reloc_sec->get_size()))
+				break;
+
+			// read the header
+			auto header = reloc_block_header_t();
+			memcpy(&header, &reloc_data.c_str()[current_offset], sizeof(header));
+
+			// start counting the length after we've read the header.
+			auto current_length = size_t(sizeof(header));
+
+			// for each entry in the block
+			while(true)
+			{
+				// stop if we exceed the block
+				if(current_length + sizeof(reloc_block_t) > header.block_size)
+					break;
+				// stop if we exceed the section
+				if(current_offset + current_length + sizeof(reloc_block_t) > static_cast<size_t>(reloc_sec->get_size()))
+					break;
+				
+				// read the block
+				auto block  = reloc_block_t();
+				memcpy(&block, &reloc_data.c_str()[current_offset+current_length], sizeof(block));
+				current_length += sizeof(block);
+
+				// for now, just log
+				const auto rva = pe_image_base + header.page + block.offset;
+				cout << "reloc rva = " << hex << rva << " type = " << block.type << '\n';
+
+				switch(block.type)
+				{
+					case pe_bliss::pe_win::image_rel_based_absolute: /* ignored */
+						break;
+					case pe_bliss::pe_win::image_rel_based_dir64: /* dir64 */
+					{
+						const auto relocd_sec = exeiop->sections.findByAddress(rva);
+						if(!relocd_sec) throw runtime_error("Unexpected relocation address?");
+
+						const auto relocd_sec_name = relocd_sec->get_name();
+						if(relocd_sec_name != ".text") // no need to pin anything besides the text seg.
+							continue;   // try next block
+
+						const auto new_name = "winstyle_scoop_"+to_string(rva);
+						create_text_scoop(new_name, rva, rva+8);
+
+						break;
+					}
+					default:
+						throw runtime_error("Cannot handle PE relocation.");
+
+				}
+			}
+			// update to the next block
+			current_offset += current_length;
+		}
+		return true;
+
+
+	};
+
+
+	const auto scoopify_data_dir_sections = [&]() 
+	{
+		const auto peblissp = static_cast<pe_bliss::pe_base*>(exeiop->get_pebliss());
+
+		for(auto dir=0u; dir<15; dir++)
+		{
+			if(!peblissp->directory_exists(dir))
+				continue;
+
+			const auto dir_rva  = peblissp->get_directory_rva (dir);
+			const auto dir_size = peblissp->get_directory_size(dir);
+
+			cout << "Directory " << dec << dir << " is at " << hex << dir_rva << " - " << dir_rva+dir_size << '\n';
+
+			
+		}
+	};
+
+	
+//	scoopify_data_dir_sections();
+
+	if(gnustyle()) return;
+//	if(winstyle()) return;
+
+	cerr << "Caution!  Could not find any reloc handling for ctor/dtor and/or plts." << endl;
 
 }
 
