@@ -46,6 +46,7 @@ using namespace std;
 
 int command_to_stream(const string& command, ostream& stream)
 {
+	cout << "Issuing command: " << command << endl;
 	const auto res = command_to_string(command);
 
 	stream << res.first << endl;

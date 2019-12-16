@@ -19,7 +19,7 @@ using namespace std;
 static inline pair<string,int> command_to_string( const string& command)
 {
 	auto ret=string();
-	int exit_code;
+	int exit_code=0;
 	int cout_pipe[2];
 	int cerr_pipe[2];
 	posix_spawn_file_actions_t action;
@@ -54,14 +54,14 @@ static inline pair<string,int> command_to_string( const string& command)
 	{
 		if ( plist[0].revents&POLLIN) {
 			const auto bytes_read = read(cout_pipe[0], &buffer[0], buffer.length());
-			cout << "read " << bytes_read << " bytes from stdout.\n";
-			cout << buffer.substr(0, static_cast<size_t>(bytes_read)) << "\n";
+			// cout << "read " << bytes_read << " bytes from stdout.\n";
+			// cout << buffer.substr(0, static_cast<size_t>(bytes_read)) << "\n";
 			ret += buffer.substr(0, static_cast<size_t>(bytes_read));
 		}
 		else if ( plist[1].revents&POLLIN ) {
 			const auto bytes_read = read(cerr_pipe[0], &buffer[0], buffer.length());
-			cout << "read " << bytes_read << " bytes from stderr.\n";
-			cout << buffer.substr(0, static_cast<size_t>(bytes_read)) << "\n";
+			// cout << "read " << bytes_read << " bytes from stderr.\n";
+			// cout << buffer.substr(0, static_cast<size_t>(bytes_read)) << "\n";
 			ret +=  buffer.substr(0, static_cast<size_t>(bytes_read));
 		}
 		else 

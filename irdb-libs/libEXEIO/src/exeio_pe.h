@@ -163,7 +163,7 @@ namespace EXEIO
 
 			virtual bool isDLL() { return true; } 
 
-                        virtual void* get_pebliss() { assert(e); return (void*)e; }
+                        virtual void* get_pebliss() { assert(e); return static_cast<void*>(e); }
 	
 		private:  
 			pe_bliss::pe_base* e;
