@@ -87,8 +87,9 @@ void PeWriter<width,uintMa_t>::InitHeaders()
 	assert(pebliss);
 
 	const auto orig_file_full_headers_str     = pebliss -> get_full_headers_data();
-	const auto orig_file_full_headres_cstr    = orig_file_full_headers_str.c_str();
-	const auto orig_file_standard_coff_header = (standard_coff_header_t*)(orig_file_full_headres_cstr+sizeof(dos_header)+sizeof(coff_header_t));
+	const auto orig_file_full_headers_cstr    = orig_file_full_headers_str.c_str();
+	const auto coff_header_offset             = *reinterpret_cast<const uint32_t*>(orig_file_full_headers_cstr + 0x3c);	// coff header at header ptr at 0x3c
+	const auto orig_file_standard_coff_header = (standard_coff_header_t*)(orig_file_full_headers_cstr+coff_header_offset+sizeof(coff_header_t));
 
 	// calculate the total size (last-first), rounded to page boundaries so that the OS can allocate that much virtual memory
 	// for this object.
@@ -146,7 +147,7 @@ void PeWriter<width,uintMa_t>::InitHeaders()
 		(uint32_t)image_size,                           // sizeof_image in memory (not including headers?)
 		0x1000,                                         // sizeof_headers (OK to over estimate?)
 		0,                                              // checksum ?? need to fix later
-		3,                                              // subsystem ?? read from input file?
+		pebliss->get_subsystem(),                       // subsystem ?? read from input file?
 		pebliss->get_dll_characteristics(),             // dll_characteristics 
 		uintMa_t(pebliss->get_stack_size_reserve_64()), // sizeof_stack_reserve
 		uintMa_t(pebliss->get_stack_size_commit_64 ()), // sizeof_stack_commit

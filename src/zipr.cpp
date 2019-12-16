@@ -40,6 +40,7 @@
 #include <iostream>   // std::cout
 #include <string>     // std::string, std::to_string
 #include <fstream>
+#include "cmdstr.hpp"
 
 #define ALLOF(a) begin(a),end(a)
 
@@ -1922,8 +1923,8 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 	ew.reset(nullptr); // explicitly free ew as we're done with it
 
 	// change permissions on output file
-	auto chmod_cmd=string("chmod +x ")+output_filename;
-	auto res=system(chmod_cmd.c_str());
+	const auto chmod_cmd=string("chmod +x ")+output_filename;
+	const auto res=command_to_stream(chmod_cmd,cout);
 	assert(res!=-1);
 
 }
@@ -2184,21 +2185,25 @@ void  ZiprImpl_t::FixNoFallthroughs()
 
 void  ZiprImpl_t::FixTwoByteWithPrefix()
 {
+	const auto is_x64 = m_firp->getArchitecture()->getMachineType() == admtX86_64;
+	const auto is_x32 = m_firp->getArchitecture()->getMachineType() == admtI386;  
+
+	if(!is_x64 && !is_x32) return; // only do this for x86 machines.
+
 	for(const auto insn : m_firp->getInstructions())
 	{
 		const auto d=DecodedInstruction_t::factory(insn);
-		if(!d->isBranch()) continue;	// skip non-branches
-		if(d->isReturn()) continue;	// skip returns
-		if(d->getOperands().size()!=1) continue;	// skip branches that have no operands or more than one
+		if(!d->isBranch())                  continue;	// skip non-branches
+		if(d->isReturn())                   continue;	// skip returns
+		if(d->getOperands().size()!=1)      continue;	// skip branches that have no operands or more than one
 		if(!d->getOperand(0)->isConstant()) continue;	// skip anything where the operand isn't a constant
-		if(d->getPrefixCount()==0) continue;	// prevents arm instructions from being xformed.
 
 		
 		while (true)
 		{
-			const auto b=insn->getDataBits()[0];
+			const auto b=static_cast<uint8_t>(insn->getDataBits()[0]);
 			// basic prefix check
-			const auto prefixes=set<uint8_t>({0x2e, 0x3e, 0x64, 0x65, 0xf2, 0xf3});
+			const auto prefixes=set<uint8_t>({0x2e, 0x36, 0x3e, 0x26, 0x64, 0x65, 0x2e, 0x3e, 0xf0, 0xf2, 0xf3, 0x66, 0x67});
 			if(prefixes.find(b)!=end(prefixes))
 			{
 				// remove prefix 

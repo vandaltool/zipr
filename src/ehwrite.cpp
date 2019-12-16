@@ -17,6 +17,7 @@
 #include <zipr_dwarf2.hpp>
 
 #include "exeio.h"
+#include "cmdstr.hpp"
 
 using namespace IRDB_SDK;
 using namespace std;
@@ -1506,7 +1507,7 @@ void ElfEhWriter_t<ptrsize>::CompileEhOutput()
 	// create and execute the command to build the ehframe.
 	auto cmd=(string)"$PEASOUP_HOME/tools/eh_frame_tools/eh_to_bin.sh "+ehframe_s_filename+" "+eh_frame_hdr_addr_str+" "+ehframe_exe_filename;
 	cout << "Running: " << cmd << endl;
-	auto res=system(cmd.c_str());
+	auto res=command_to_stream(cmd,cout); // system(cmd.c_str());
 
 	// err check.
 	if( res==-1 || WEXITSTATUS(res)!=0 )
