@@ -781,6 +781,7 @@ void PopulateCFG::ctor_detection(FileIR_t *firp)
 		return true;
 	};
 
+#if 0
 	const auto winstyle = [&]() -> bool
 	{
 		const auto  reloc_sec = exeiop->sections[".reloc"];
@@ -889,6 +890,8 @@ void PopulateCFG::ctor_detection(FileIR_t *firp)
 			
 		}
 	};
+#endif
+
 
 	
 //	scoopify_data_dir_sections();
