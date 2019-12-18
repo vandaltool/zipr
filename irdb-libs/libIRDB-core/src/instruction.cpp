@@ -25,6 +25,7 @@
 #include <sstream>
 #include <iomanip>
 #include <irdb-util>
+#include "cmdstr.hpp"
 
 #undef EIP
 

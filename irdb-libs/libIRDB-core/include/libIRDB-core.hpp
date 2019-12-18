@@ -54,7 +54,5 @@
 #include <IRDB_Objects.hpp>
 #include <decode.hpp>
 
-int command_to_stream(const std::string& command, std::ostream& stream);
-
 
 #endif

@@ -44,6 +44,7 @@ using namespace std;
 
 #undef EIP
 
+#if 0
 int command_to_stream(const string& command, ostream& stream)
 {
 	cout << "Issuing command: " << command << endl;
@@ -52,6 +53,7 @@ int command_to_stream(const string& command, ostream& stream)
 	stream << res.first << endl;
 	return res.second;
 }
+#endif
 
 static void UpdateEntryPoints(
 	const std::map<db_id_t,Instruction_t*> 	&insnMap,
