@@ -183,28 +183,6 @@ void FileIR_t::assembleRegistry()
 {
 	if(assembly_registry.size() == 0)
 		return;
-/*
-	string assemblyFile = "tmp.asm";
-	string binaryOutputFile = "tmp.bin";
-
-	string command = "rm -f " + assemblyFile + " " + binaryOutputFile;
-	auto actual_exit = command_to_stream(command, cout); // system(command.c_str());
-	
-	assert(actual_exit == 0);
-	
-	ofstream asmFile;
-	asmFile.open(assemblyFile.c_str());
-	if(!asmFile.is_open())
-		assert(false);
-
-	asmFile<<"BITS "<<std::dec<<getArchitectureBitWidth()<<endl; 
-
-	for(auto it : assembly_registry)
-	{
-		asmFile<<it.second<<endl;
-	}
-	asmFile.close();
-*/
 
 	uint32_t bits = getArchitectureBitWidth();
 	ks_engine *ks;
@@ -230,7 +208,7 @@ void FileIR_t::assembleRegistry()
 		//assert if err is equal to KS_ERR_OK
 		//Check if count = 1
 		if(ks_asm(ks, it.second.c_str(), 0, &encode, &size, &count) != KS_ERR_OK) { //string or cstr
-          		printf("ERROR: ks_asm() failed & count = %lu, error = %u\n", count, ks_errno(ks));
+          		printf("ERROR: ks_asm() failed & count = %u, error = %u\n", count, ks_errno(ks));
 			ks_free(encode);
 			ks_close(ks);
 			;
@@ -247,66 +225,6 @@ void FileIR_t::assembleRegistry()
 	ks_close(ks);
 	assembly_registry.clear();
 
-	/*command = string("nasm ") + assemblyFile + string(" -o ") + binaryOutputFile;
-	actual_exit = command_to_stream(command,cout); // system(command.c_str());
-	assert(actual_exit == 0);
-	
-	ifstream binreader;
-	unsigned int filesize;
-	binreader.open(binaryOutputFile.c_str(),ifstream::in|ifstream::binary);
-
-	assert(binreader.is_open());
-
-	binreader.seekg(0,ios::end);
-	filesize = binreader.tellg();
-	binreader.seekg(0,ios::beg);
-
-	unsigned char *binary_stream = new unsigned char[filesize];
-
-	binreader.read((char*)binary_stream,filesize);
-	binreader.close();
-
-	unsigned int index = 0;
-	registry_type::iterator reg_val =  assembly_registry.begin();
-
-	while(index < filesize)
-	{
-		//the number of registered instructions should not be exceeded
-		assert(reg_val != assembly_registry.end());
-		Instruction_t *instr = reg_val->first;
-
-
-		// disasm.EIP =  (UIntPtr)&binary_stream[index];
-		// int instr_len = Disasm(&disasm);
-
-		const auto p_disasm=DecodedInstruction_t::factory
-			(
-				0x1000, 
-				(void*)&binary_stream[index], 
-				(void*)&binary_stream[filesize]
-			);
-		const auto& disasm=*p_disasm;
-
-		assert(disasm.valid());
-		const auto instr_len=disasm.length();
-
-		string rawBits;
-		rawBits.resize(instr_len);
-		for(auto i=0U;i<instr_len;i++,index++)
-		{
-			rawBits[i] = binary_stream[index];
-		}
-
-		instr->setDataBits(rawBits);
-//		*verbose_logging << "doing instruction:" << ((Instruction_t*)instr)->getDisassembly() << " comment: " << ((Instruction_t*)instr)->getComment() << endl;
-		reg_val++;
-	}
-
-	assert(reg_val == assembly_registry.end());
-
-	delete [] binary_stream;
-	assembly_registry.clear();
-*/
 }
 
 void FileIR_t::registerAssembly(IRDB_SDK::Instruction_t *p_instr, string assembly)

@@ -110,27 +110,6 @@ std::string Instruction_t::getDisassembly() const
 //
 bool Instruction_t::assemble(string assembly)
 {
-/*   const string assemblyFile = "tmp.asm"; 
-   const string binaryOutputFile = "tmp.bin";
-
-   //remove any preexisting assembly or nasm generated files
-   string command = "rm -f " + assemblyFile;
-   command_to_stream(command,cout);
-   command = "rm -f "+assemblyFile+".bin";
-   command_to_stream(command,cout);
-
-   ofstream asmFile;
-   asmFile.open(assemblyFile.c_str());
-   if(!asmFile.is_open())
-   {
-     return false;
-   }
-
-   asmFile<<"BITS "<<std::dec<<FileIR_t::getArchitectureBitWidth()<<endl; 
-
-   asmFile<<assembly<<endl;
-   asmFile.close();
-*/
 
         uint32_t bits = FileIR_t::getArchitectureBitWidth();
         ks_engine *ks;
@@ -157,7 +136,7 @@ bool Instruction_t::assemble(string assembly)
         ks_option(ks, KS_OPT_SYNTAX, KS_OPT_SYNTAX_NASM);
 
         if(ks_asm(ks, assembly.c_str(), 0, &encode, &size, &count) != KS_ERR_OK) { //string or cstr
-                printf("ERROR: ks_asm() failed & count = %lu, error = %u\n", count, ks_errno(ks));
+                printf("ERROR: ks_asm() failed & count = %u, error = %u\n", count, ks_errno(ks));
                 ks_free(encode);
                 ks_close(ks);
                 return false;
@@ -171,42 +150,6 @@ bool Instruction_t::assemble(string assembly)
 		return true;
         }
 
-/*
-   command = "nasm " + assemblyFile + " -o "+ binaryOutputFile;
-   command_to_stream(command,cout);
-
-    ifstream binreader;
-    unsigned int filesize;
-    binreader.open(binaryOutputFile.c_str(),ifstream::in|ifstream::binary);
-
-    if(!binreader.is_open())
-    {
-      return false;
-    }
-
-    binreader.seekg(0,ios::end);
-
-    filesize = binreader.tellg();
-
-    binreader.seekg(0,ios::beg);
-
-    if (filesize == 0) return false;
-
-    unsigned char *memblock = new unsigned char[filesize];
-
-    binreader.read((char*)memblock,filesize);
-    binreader.close();
-
-    string rawBits;
-    rawBits.resize(filesize);
-    for (auto i = 0U; i < filesize; ++i)
-      rawBits[i] = memblock[i];
-
-    // should erase those 2 files here
-
-    this->setDataBits(rawBits);
-    return true;
-*/
 }
 
 
