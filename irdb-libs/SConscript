@@ -26,6 +26,7 @@ else:
     os.system("mkdir ./build")
     os.chdir("build")
     os.system("../make-share.sh")
+    os.system("sudo make install")
     os.chdir(os.environ['SECURITY_TRANSFORMS_HOME'])
 
 
