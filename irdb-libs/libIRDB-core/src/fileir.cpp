@@ -208,7 +208,7 @@ void FileIR_t::assembleRegistry()
 		//assert if err is equal to KS_ERR_OK
 		//Check if count = 1
 		if(ks_asm(ks, it.second.c_str(), 0, &encode, &size, &count) != KS_ERR_OK) { //string or cstr
-          		printf("ERROR: ks_asm() failed & count = %u, error = %u\n", count, ks_errno(ks));
+          		printf("ERROR: ks_asm() failed & count = %u, error = %u\n", (unsigned int)count, (unsigned int)ks_errno(ks));
 			ks_free(encode);
 			ks_close(ks);
 			;

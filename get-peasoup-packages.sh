@@ -162,6 +162,6 @@ main()
 main "$@"
 
 #This is just so that ci/cd passes
-apt-get install cmake
+apt-get install -y cmake
 
 echo Installing peasoup packages complete.

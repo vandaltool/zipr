@@ -136,7 +136,7 @@ bool Instruction_t::assemble(string assembly)
         ks_option(ks, KS_OPT_SYNTAX, KS_OPT_SYNTAX_NASM);
 
         if(ks_asm(ks, assembly.c_str(), 0, &encode, &size, &count) != KS_ERR_OK) { //string or cstr
-                printf("ERROR: ks_asm() failed & count = %u, error = %u\n", count, ks_errno(ks));
+                printf("ERROR: ks_asm() failed & count = %u, error = %u\n", (unsigned int)count, (unsigned int)ks_errno(ks));
                 ks_free(encode);
                 ks_close(ks);
                 return false;
