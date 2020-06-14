@@ -20,6 +20,10 @@ else:
     print "Rebuilding libcapstone."
     jobs=env.GetOption('num_jobs')
     os.system("make -j "+str(jobs))
+    os.chdir(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/keystone")
+    print "Rebuilding libkeystone."
+    os.chdir(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/keystone")
+    os.system("./make_share.sh")
     os.chdir(os.environ['SECURITY_TRANSFORMS_HOME'])
 
 

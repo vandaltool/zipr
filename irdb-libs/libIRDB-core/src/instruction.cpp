@@ -25,6 +25,7 @@
 #include <sstream>
 #include <iomanip>
 #include <irdb-util>
+#include <keystone/keystone.h>
 #include "cmdstr.hpp"
 
 #undef EIP
@@ -109,7 +110,7 @@ std::string Instruction_t::getDisassembly() const
 //
 bool Instruction_t::assemble(string assembly)
 {
-   const string assemblyFile = "tmp.asm"; 
+/*   const string assemblyFile = "tmp.asm"; 
    const string binaryOutputFile = "tmp.bin";
 
    //remove any preexisting assembly or nasm generated files
@@ -129,7 +130,48 @@ bool Instruction_t::assemble(string assembly)
 
    asmFile<<assembly<<endl;
    asmFile.close();
+*/
 
+        uint32_t bits = FileIR_t::getArchitectureBitWidth();
+        ks_engine *ks;
+        ks_err err;
+        size_t count;
+        unsigned char *encode;
+        size_t size;
+
+        if(bits == 32) {
+                err = ks_open(KS_ARCH_X86, KS_MODE_32, &ks);
+                if (err != KS_ERR_OK) {
+                        printf("ERROR: failed on ks_open(), quit\n");
+                        return false;
+                }
+        }
+        else if(bits == 64) {
+                err = ks_open(KS_ARCH_X86, KS_MODE_64, &ks); 
+                if (err != KS_ERR_OK) {
+                        printf("ERROR: failed on ks_open(), quit\n"); 
+                        return false;
+                }
+        }
+
+        ks_option(ks, KS_OPT_SYNTAX, KS_OPT_SYNTAX_NASM);
+
+        if(ks_asm(ks, assembly.c_str(), 0, &encode, &size, &count) != KS_ERR_OK) { //string or cstr
+                printf("ERROR: ks_asm() failed & count = %lu, error = %u\n", count, ks_errno(ks));
+                ks_free(encode);
+                ks_close(ks);
+                return false;
+        }
+        else {
+                //Instruction_t *instr = it.first;
+                string rawBits((char *)encode);
+                this->setDataBits(rawBits);
+                ks_free(encode);
+		ks_close(ks);
+		return true;
+        }
+
+/*
    command = "nasm " + assemblyFile + " -o "+ binaryOutputFile;
    command_to_stream(command,cout);
 
@@ -164,6 +206,7 @@ bool Instruction_t::assemble(string assembly)
 
     this->setDataBits(rawBits);
     return true;
+*/
 }
 
 

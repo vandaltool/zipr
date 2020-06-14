@@ -31,6 +31,7 @@
 #include <iomanip>
 #include <irdb-util>
 #include <endian.h>
+#include <keystone/keystone.h>
 
 #include "cmdstr.hpp"
 
@@ -182,7 +183,7 @@ void FileIR_t::assembleRegistry()
 {
 	if(assembly_registry.size() == 0)
 		return;
-
+/*
 	string assemblyFile = "tmp.asm";
 	string binaryOutputFile = "tmp.bin";
 
@@ -203,8 +204,50 @@ void FileIR_t::assembleRegistry()
 		asmFile<<it.second<<endl;
 	}
 	asmFile.close();
+*/
 
-	command = string("nasm ") + assemblyFile + string(" -o ") + binaryOutputFile;
+	uint32_t bits = getArchitectureBitWidth();
+	ks_engine *ks;
+	ks_err err;
+	size_t count;
+	unsigned char *encode;
+	size_t size;
+
+	if(bits == 32) {
+		err = ks_open(KS_ARCH_X86, KS_MODE_32, &ks);
+		assert(err == KS_ERR_OK);
+	}
+	else if(bits == 64) {
+                err = ks_open(KS_ARCH_X86, KS_MODE_64, &ks);
+		assert(err == KS_ERR_OK);
+	}
+
+	ks_option(ks, KS_OPT_SYNTAX, KS_OPT_SYNTAX_NASM);
+
+	//Build and set assembly string
+	for(auto it : assembly_registry) {
+		// do ks_asm call here
+		//assert if err is equal to KS_ERR_OK
+		//Check if count = 1
+		if(ks_asm(ks, it.second.c_str(), 0, &encode, &size, &count) != KS_ERR_OK) { //string or cstr
+          		printf("ERROR: ks_asm() failed & count = %lu, error = %u\n", count, ks_errno(ks));
+			ks_free(encode);
+			ks_close(ks);
+			;
+      		}
+		else {
+			Instruction_t *instr = it.first;
+			string rawBits((char *)encode); //beware of null terminat
+			//resize string based on size
+			instr->setDataBits(rawBits);
+			ks_free(encode);
+		}
+	}
+
+	ks_close(ks);
+	assembly_registry.clear();
+
+	/*command = string("nasm ") + assemblyFile + string(" -o ") + binaryOutputFile;
 	actual_exit = command_to_stream(command,cout); // system(command.c_str());
 	assert(actual_exit == 0);
 	
@@ -238,7 +281,7 @@ void FileIR_t::assembleRegistry()
 
 		const auto p_disasm=DecodedInstruction_t::factory
 			(
-				/* fake start addr doesn't matter */0x1000, 
+				0x1000, 
 				(void*)&binary_stream[index], 
 				(void*)&binary_stream[filesize]
 			);
@@ -263,7 +306,7 @@ void FileIR_t::assembleRegistry()
 
 	delete [] binary_stream;
 	assembly_registry.clear();
-
+*/
 }
 
 void FileIR_t::registerAssembly(IRDB_SDK::Instruction_t *p_instr, string assembly)
