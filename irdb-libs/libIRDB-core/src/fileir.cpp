@@ -191,13 +191,47 @@ void FileIR_t::assembleRegistry()
 	unsigned char *encode;
 	size_t size;
 
+	const auto arch = getArchitecture()->getMachineType();
+
 	if(bits == 32) {
-		err = ks_open(KS_ARCH_X86, KS_MODE_32, &ks);
-		assert(err == KS_ERR_OK);
+		if(arch == IRDB_SDK::admtI386) {
+			err = ks_open(KS_ARCH_X86, KS_MODE_32, &ks);
+			assert(err == KS_ERR_OK);
+		}
+		else if(arch == IRDB_SDK::admtArm32) {
+			err = ks_open(KS_ARCH_ARM, KS_MODE_32, &ks);
+			assert(err == KS_ERR_OK);
+		}
+		else if(arch == IRDB_SDK::admtMips32) {
+			err = ks_open(KS_ARCH_MIPS, KS_MODE_32, &ks);
+			assert(err == KS_ERR_OK);
+		}
+		else {
+			puts("Unknown 32 bit arch.");
+			return;
+		}
 	}
 	else if(bits == 64) {
-                err = ks_open(KS_ARCH_X86, KS_MODE_64, &ks);
-		assert(err == KS_ERR_OK);
+		if(arch == IRDB_SDK::admtX86_64) {
+            err = ks_open(KS_ARCH_X86, KS_MODE_64, &ks);
+			assert(err == KS_ERR_OK);
+		}
+		else if(arch == IRDB_SDK::admtAarch64) {
+			err = ks_open(KS_ARCH_ARM64, KS_MODE_64, &ks);
+			assert(err == KS_ERR_OK);
+		}
+		else if(arch == IRDB_SDK::admtMips64) {
+			err = ks_open(KS_ARCH_MIPS, KS_MODE_64, &ks);
+			assert(err == KS_ERR_OK);
+		}
+		else {
+			puts("Unknown 64 bit arch.");
+			return;
+		}
+	}
+	else {
+		puts("Unknown bitwidth");
+		return;
 	}
 
 	ks_option(ks, KS_OPT_SYNTAX, KS_OPT_SYNTAX_NASM);
