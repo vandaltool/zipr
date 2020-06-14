@@ -159,6 +159,7 @@ main()
 
 }
 
+dpkg --purge --force-depends "libc6-dev-x32"
 main "$@"
 
 #This is just so that ci/cd passes
