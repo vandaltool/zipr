@@ -24,6 +24,7 @@ else:
     print "Rebuilding libkeystone."
     os.chdir(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/keystone")
     os.system("./make_share.sh")
+    os.system("pwd")
     os.chdir(os.environ['SECURITY_TRANSFORMS_HOME'])
 
 
