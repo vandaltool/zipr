@@ -163,6 +163,6 @@ apt-get update
 main "$@"
 
 #This is just so that ci/cd passes
-apt-get install -y cmake
+apt-get install -y cmake makeself coreutils
 
 echo Installing peasoup packages complete.
