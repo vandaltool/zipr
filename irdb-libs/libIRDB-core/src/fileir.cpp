@@ -181,6 +181,7 @@ void  FileIR_t::changeRegistryKey(IRDB_SDK::Instruction_t *p_orig, IRDB_SDK::Ins
 
 void FileIR_t::assembleRegistry()
 {
+	puts("Fileir.cpp Begin");
 	if(assembly_registry.size() == 0)
 		return;
 
@@ -258,7 +259,7 @@ void FileIR_t::assembleRegistry()
 
 	ks_close(ks);
 	assembly_registry.clear();
-
+	puts("Fileir.cpp end");
 }
 
 void FileIR_t::registerAssembly(IRDB_SDK::Instruction_t *p_instr, string assembly)

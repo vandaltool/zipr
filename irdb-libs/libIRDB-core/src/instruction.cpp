@@ -110,7 +110,7 @@ std::string Instruction_t::getDisassembly() const
 //
 bool Instruction_t::assemble(string assembly)
 {
-
+	puts("Instruction.cpp begin");
         uint32_t bits = FileIR_t::getArchitectureBitWidth();
         ks_engine *ks;
         ks_err err;
@@ -195,6 +195,7 @@ bool Instruction_t::assemble(string assembly)
 		ks_close(ks);
 		return true;
         }
+	puts("Instruction.cpp end");
 
 }
 
