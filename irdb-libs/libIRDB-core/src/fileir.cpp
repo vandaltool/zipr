@@ -181,7 +181,6 @@ void  FileIR_t::changeRegistryKey(IRDB_SDK::Instruction_t *p_orig, IRDB_SDK::Ins
 
 void FileIR_t::assembleRegistry()
 {
-	puts("Fileir.cpp Begin");
 	if(assembly_registry.size() == 0)
 		return;
 
@@ -250,8 +249,12 @@ void FileIR_t::assembleRegistry()
       		}
 		else {
 			Instruction_t *instr = it.first;
-			string rawBits((char *)encode); //beware of null terminat
+			string rawBits; //beware of null terminat
 			//resize string based on size
+			rawBits.resize(size);
+			for(unsigned int i = 0; i < size; i++) {
+				rawBits[i] = encode[i];
+			}
 			instr->setDataBits(rawBits);
 			ks_free(encode);
 		}
@@ -259,7 +262,6 @@ void FileIR_t::assembleRegistry()
 
 	ks_close(ks);
 	assembly_registry.clear();
-	puts("Fileir.cpp end");
 }
 
 void FileIR_t::registerAssembly(IRDB_SDK::Instruction_t *p_instr, string assembly)

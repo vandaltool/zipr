@@ -110,7 +110,6 @@ std::string Instruction_t::getDisassembly() const
 //
 bool Instruction_t::assemble(string assembly)
 {
-	puts("Instruction.cpp begin");
         uint32_t bits = FileIR_t::getArchitectureBitWidth();
         ks_engine *ks;
         ks_err err;
@@ -189,13 +188,16 @@ bool Instruction_t::assemble(string assembly)
         }
         else {
                 //Instruction_t *instr = it.first;
-                string rawBits((char *)encode);
+                string rawBits;
+                rawBits.resize(size);
+				for(unsigned int i = 0; i < size; i++) {
+					rawBits[i] = encode[i];
+				}
                 this->setDataBits(rawBits);
                 ks_free(encode);
-		ks_close(ks);
-		return true;
+				ks_close(ks);
+				return true;
         }
-	puts("Instruction.cpp end");
 
 }
 
