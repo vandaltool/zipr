@@ -105,8 +105,8 @@ std::string Instruction_t::getDisassembly() const
 }
 
 // 
-// Given an instruction in assembly, returns the raw bits in a string
-// On error, return the empty string
+// Given an instruction in assembly, set the data bits to the byte value of the machine code that it represents.
+// On error, return False, no data bits will be set/
 //
 bool Instruction_t::assemble(string assembly)
 {
@@ -178,16 +178,15 @@ bool Instruction_t::assemble(string assembly)
 			return false;
 		}
 
-        ks_option(ks, KS_OPT_SYNTAX, KS_OPT_SYNTAX_NASM);
+        ks_option(ks, KS_OPT_SYNTAX, KS_OPT_SYNTAX_NASM); //Use this to replace the nasm command
 
-        if(ks_asm(ks, assembly.c_str(), 0, &encode, &size, &count) != KS_ERR_OK) { //string or cstr
+        if(ks_asm(ks, assembly.c_str(), 0, &encode, &size, &count) != KS_ERR_OK) {
                 printf("ERROR: ks_asm() failed & count = %u, error = %u\n", (unsigned int)count, (unsigned int)ks_errno(ks));
                 ks_free(encode);
                 ks_close(ks);
                 return false;
         }
         else {
-                //Instruction_t *instr = it.first;
                 string rawBits;
                 rawBits.resize(size);
 				for(unsigned int i = 0; i < size; i++) {

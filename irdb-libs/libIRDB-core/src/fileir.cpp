@@ -234,14 +234,14 @@ void FileIR_t::assembleRegistry()
 		return;
 	}
 
-	ks_option(ks, KS_OPT_SYNTAX, KS_OPT_SYNTAX_NASM);
+	ks_option(ks, KS_OPT_SYNTAX, KS_OPT_SYNTAX_NASM); //Use this to replace the nasm command
 
 	//Build and set assembly string
 	for(auto it : assembly_registry) {
 		// do ks_asm call here
 		//assert if err is equal to KS_ERR_OK
 		//Check if count = 1
-		if(ks_asm(ks, it.second.c_str(), 0, &encode, &size, &count) != KS_ERR_OK) { //string or cstr
+		if(ks_asm(ks, it.second.c_str(), 0, &encode, &size, &count) != KS_ERR_OK) {
           		printf("ERROR: ks_asm() failed & count = %u, error = %u\n", (unsigned int)count, (unsigned int)ks_errno(ks));
 			ks_free(encode);
 			ks_close(ks);
