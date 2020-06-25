@@ -19,6 +19,7 @@
  *
  */
 
+#include <keystone/keystone.h>
 #include <all.hpp>
 #include <irdb-util>
 #include <cstdlib>
@@ -31,7 +32,6 @@
 #include <iomanip>
 #include <irdb-util>
 #include <endian.h>
-#include <keystone/keystone.h>
 
 #include "cmdstr.hpp"
 
@@ -166,7 +166,7 @@ void FileIR_t::ReadFromDB()
 }
 
 
-void  FileIR_t::changeRegistryKey(IRDB_SDK::Instruction_t *p_orig, IRDB_SDK::Instruction_t *p_updated)
+void FileIR_t::changeRegistryKey(IRDB_SDK::Instruction_t *p_orig, IRDB_SDK::Instruction_t *p_updated)
 {
 	auto orig=dynamic_cast<libIRDB::Instruction_t*>(p_orig);
 	auto updated=dynamic_cast<libIRDB::Instruction_t*>(p_updated);
@@ -179,85 +179,51 @@ void  FileIR_t::changeRegistryKey(IRDB_SDK::Instruction_t *p_orig, IRDB_SDK::Ins
 	}
 }
 
+void IRDB_SDK::FileIR_t::assemblestr(ks_engine * &ks, IRDB_SDK::Instruction_t *ins, const char * instruct, char * &encode, size_t &size, size_t &count) 
+{
+	if(ks_asm(ks, instruct, 0, (unsigned char **)&encode, &size, &count) != KS_ERR_OK) { //string or cstr
+		ks_free((unsigned char*)encode);
+		ks_close(ks);
+		throw std::runtime_error("ERROR: ks_asm() failed during instrunction assembly.");
+    }
+	else {
+		ins->setDataBits(string(encode, size));
+		ks_free((unsigned char*)encode);
+	}
+}
+
 void FileIR_t::assembleRegistry()
 {
 	if(assembly_registry.size() == 0)
 		return;
 
-	uint32_t bits = getArchitectureBitWidth();
-	ks_engine *ks;
-	ks_err err;
-	size_t count;
-	unsigned char *encode;
-	size_t size;
+	const auto bits = getArchitectureBitWidth();
+	auto count = (size_t)0;
+	auto *encode = (char *)NULL;
+	auto size = (size_t)0;
 
-	const auto arch = getArchitecture()->getMachineType();
+	const auto mode = (bits == 32) ? KS_MODE_32 : 
+                      (bits == 64) ? KS_MODE_64 :
+                      throw std::invalid_argument("Cannot map IRDB bit size to keystone bit size");
+    
+    const auto machinetype = getArchitecture()->getMachineType();
+    const auto arch = (machinetype == IRDB_SDK::admtI386 || machinetype == IRDB_SDK::admtX86_64) ? KS_ARCH_X86 :
+                      (machinetype == IRDB_SDK::admtArm32) ? KS_ARCH_ARM :
+                      (machinetype == IRDB_SDK::admtAarch64) ? KS_ARCH_ARM64 : 
+                      (machinetype == IRDB_SDK::admtMips64 || machinetype == IRDB_SDK::admtMips32) ? KS_ARCH_MIPS :
+                      throw std::invalid_argument("Cannot map IRDB architecture to keystone architure");
+    auto ks = (ks_engine *)NULL;
+    const auto err = ks_open(arch, mode, &ks);
+	assert(err == KS_ERR_OK);
 
-	if(bits == 32) {
-		if(arch == IRDB_SDK::admtI386) {
-			err = ks_open(KS_ARCH_X86, KS_MODE_32, &ks);
-			assert(err == KS_ERR_OK);
-		}
-		else if(arch == IRDB_SDK::admtArm32) {
-			err = ks_open(KS_ARCH_ARM, KS_MODE_32, &ks);
-			assert(err == KS_ERR_OK);
-		}
-		else if(arch == IRDB_SDK::admtMips32) {
-			err = ks_open(KS_ARCH_MIPS, KS_MODE_32, &ks);
-			assert(err == KS_ERR_OK);
-		}
-		else {
-			puts("Unknown 32 bit arch.");
-			return;
-		}
-	}
-	else if(bits == 64) {
-		if(arch == IRDB_SDK::admtX86_64) {
-            err = ks_open(KS_ARCH_X86, KS_MODE_64, &ks);
-			assert(err == KS_ERR_OK);
-		}
-		else if(arch == IRDB_SDK::admtAarch64) {
-			err = ks_open(KS_ARCH_ARM64, KS_MODE_64, &ks);
-			assert(err == KS_ERR_OK);
-		}
-		else if(arch == IRDB_SDK::admtMips64) {
-			err = ks_open(KS_ARCH_MIPS, KS_MODE_64, &ks);
-			assert(err == KS_ERR_OK);
-		}
-		else {
-			puts("Unknown 64 bit arch.");
-			return;
-		}
-	}
-	else {
-		puts("Unknown bitwidth");
-		return;
-	}
-
-	ks_option(ks, KS_OPT_SYNTAX, KS_OPT_SYNTAX_NASM); //Use this to replace the nasm command
+	ks_option(ks, KS_OPT_SYNTAX, KS_OPT_SYNTAX_NASM);
 
 	//Build and set assembly string
 	for(auto it : assembly_registry) {
 		// do ks_asm call here
 		//assert if err is equal to KS_ERR_OK
 		//Check if count = 1
-		if(ks_asm(ks, it.second.c_str(), 0, &encode, &size, &count) != KS_ERR_OK) {
-          		printf("ERROR: ks_asm() failed & count = %u, error = %u\n", (unsigned int)count, (unsigned int)ks_errno(ks));
-			ks_free(encode);
-			ks_close(ks);
-			;
-      		}
-		else {
-			Instruction_t *instr = it.first;
-			string rawBits; //beware of null terminat
-			//resize string based on size
-			rawBits.resize(size);
-			for(unsigned int i = 0; i < size; i++) {
-				rawBits[i] = encode[i];
-			}
-			instr->setDataBits(rawBits);
-			ks_free(encode);
-		}
+		assemblestr(ks, it.first, it.second.c_str(), encode, size, count);
 	}
 
 	ks_close(ks);
