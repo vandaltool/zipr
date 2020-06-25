@@ -12,6 +12,9 @@ if env.GetOption('clean'):
     os.chdir(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/capstone")
     os.system("make clean")
     os.chdir(os.environ['SECURITY_TRANSFORMS_HOME'])
+    os.chdir(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/keystone/build")
+    os.system("rm -rf " + os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/keystone/build")
+    os.chdir(os.environ['SECURITY_TRANSFORMS_HOME'])
 
 
 else:
@@ -20,6 +23,13 @@ else:
     print "Rebuilding libcapstone."
     jobs=env.GetOption('num_jobs')
     os.system("make -j "+str(jobs))
+    os.chdir(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/keystone")
+    print "Rebuilding libkeystone."
+    os.chdir(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/keystone")
+    os.system("mkdir -p ./build")
+    os.chdir("build")
+    os.system('../make-common.sh lib_only; cmake -DBUILD_LIBS_ONLY=$BUILD_LIBS_ONLY -DLLVM_BUILD_32_BITS="$LLVM_BUILD_32_BITS" -DCMAKE_OSX_ARCHITECTURES="$ARCH" -DCMAKE_BUILD_TYPE=$BUILDTYPE -DBUILD_SHARED_LIBS=ON -DLLVM_TARGETS_TO_BUILD="all" -G "Unix Makefiles" ..; make -j' + str(jobs))
+    os.system("make DESTDIR=$SECURITY_TRANSFORMS_HOME/lib install")
     os.chdir(os.environ['SECURITY_TRANSFORMS_HOME'])
 
 

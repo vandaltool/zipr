@@ -32,7 +32,7 @@ export PSZ=$PS_INSTALL/tools/ps_zipr.sh
 source ./irdb_vars
 source $PEASOUP_HOME/set_command_envs
 
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$ZEST_RUNTIME/lib32:$ZEST_RUNTIME/lib64:$SECURITY_TRANSFORMS_HOME/lib"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$ZEST_RUNTIME/lib32:$ZEST_RUNTIME/lib64:$SECURITY_TRANSFORMS_HOME/lib:$SECURITY_TRANSFORMS_HOME/lib/usr/local/lib64/"
 
 
 # deprecated:  going away soon.
