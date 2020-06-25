@@ -17,6 +17,7 @@
  * URL   : http://www.zephyr-software.com/
  *
  */
+#include <keystone/keystone.h>
 
 namespace libIRDB
 {
