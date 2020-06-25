@@ -48,3 +48,6 @@
 [submodule "irdb-libs/third_party/capstone"]
 	path = irdb-libs/third_party/capstone
 	url = git@git.zephyr-software.com:third-party-mirrors/capstone.git
+[submodule "irdb-libs/third_party/keystone"]
+	path = irdb-libs/third_party/keystone
+	url = https://github.com/keystone-engine/keystone/

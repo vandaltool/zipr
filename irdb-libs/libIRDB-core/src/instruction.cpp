@@ -25,6 +25,7 @@
 #include <sstream>
 #include <iomanip>
 #include <irdb-util>
+#include <keystone/keystone.h>
 #include "cmdstr.hpp"
 
 #undef EIP
@@ -109,61 +110,32 @@ std::string Instruction_t::getDisassembly() const
 //
 bool Instruction_t::assemble(string assembly)
 {
-   const string assemblyFile = "tmp.asm"; 
-   const string binaryOutputFile = "tmp.bin";
+        const auto bits = FileIR_t::getArchitectureBitWidth();
+        auto count = (size_t)0;
+        auto encode = (char *)NULL;
+        auto size = (size_t)0;
 
-   //remove any preexisting assembly or nasm generated files
-   string command = "rm -f " + assemblyFile;
-   command_to_stream(command,cout);
-   command = "rm -f "+assemblyFile+".bin";
-   command_to_stream(command,cout);
+        const auto machinetype = FileIR_t::getArchitecture()->getMachineType();
 
-   ofstream asmFile;
-   asmFile.open(assemblyFile.c_str());
-   if(!asmFile.is_open())
-   {
-     return false;
-   }
+        const auto mode = (bits == 32) ? KS_MODE_32 : 
+                      (bits == 64) ? KS_MODE_64 :
+                      throw std::invalid_argument("Cannot map IRDB bit size to keystone bit size");
+    
+    	const auto arch = (machinetype == IRDB_SDK::admtI386 || machinetype == IRDB_SDK::admtX86_64) ? KS_ARCH_X86 :
+                      (machinetype == IRDB_SDK::admtArm32) ? KS_ARCH_ARM :
+                      (machinetype == IRDB_SDK::admtAarch64) ? KS_ARCH_ARM64 : 
+                      (machinetype == IRDB_SDK::admtMips64 || machinetype == IRDB_SDK::admtMips32) ? KS_ARCH_MIPS :
+                      throw std::invalid_argument("Cannot map IRDB architecture to keystone architure");
 
-   asmFile<<"BITS "<<std::dec<<FileIR_t::getArchitectureBitWidth()<<endl; 
+    	auto ks = (ks_engine *)NULL;
+    	const auto err = ks_open(arch, mode, &ks);
+		assert(err == KS_ERR_OK);        
 
-   asmFile<<assembly<<endl;
-   asmFile.close();
+        ks_option(ks, KS_OPT_SYNTAX, KS_OPT_SYNTAX_NASM);
 
-   command = "nasm " + assemblyFile + " -o "+ binaryOutputFile;
-   command_to_stream(command,cout);
+        FileIR_t::assemblestr(ks, this, assembly.c_str(), encode, size, count);
+        return true;
 
-    ifstream binreader;
-    unsigned int filesize;
-    binreader.open(binaryOutputFile.c_str(),ifstream::in|ifstream::binary);
-
-    if(!binreader.is_open())
-    {
-      return false;
-    }
-
-    binreader.seekg(0,ios::end);
-
-    filesize = binreader.tellg();
-
-    binreader.seekg(0,ios::beg);
-
-    if (filesize == 0) return false;
-
-    unsigned char *memblock = new unsigned char[filesize];
-
-    binreader.read((char*)memblock,filesize);
-    binreader.close();
-
-    string rawBits;
-    rawBits.resize(filesize);
-    for (auto i = 0U; i < filesize; ++i)
-      rawBits[i] = memblock[i];
-
-    // should erase those 2 files here
-
-    this->setDataBits(rawBits);
-    return true;
 }
 
 

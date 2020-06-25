@@ -50,16 +50,17 @@ cpppath='''
 	$SECURITY_TRANSFORMS_HOME/include/
 	$SECURITY_TRANSFORMS_HOME/libIRDB-core/include/
 	$SECURITY_TRANSFORMS_HOME/third_party/capstone/include/capstone/
+	$SECURITY_TRANSFORMS_HOME/third_party/capstone/include/keystone/
 	'''
 libpath='''
 	$SECURITY_TRANSFORMS_HOME/lib
         '''
 
-myenv.Append(CCFLAGS=" -Wall -std=c++11 -fmax-errors=2 ")
+myenv.Append(CCFLAGS=" -Wall -std=c++11 -fmax-errors=2")
 myenv.Append(LIBPATH=libpath)
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath))
-mylib=myenv.SharedLibrary(libname, Split(files), LIBS=Split("pqxx capstone"))
+mylib=myenv.SharedLibrary(libname, Split(files), LIBS=Split("pqxx capstone keystone"))
 
 install=myenv.Install("$SECURITY_TRANSFORMS_HOME/lib/", mylib)
 Default(install)

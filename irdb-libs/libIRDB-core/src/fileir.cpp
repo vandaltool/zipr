@@ -19,6 +19,7 @@
  *
  */
 
+#include <keystone/keystone.h>
 #include <all.hpp>
 #include <irdb-util>
 #include <cstdlib>
@@ -165,7 +166,7 @@ void FileIR_t::ReadFromDB()
 }
 
 
-void  FileIR_t::changeRegistryKey(IRDB_SDK::Instruction_t *p_orig, IRDB_SDK::Instruction_t *p_updated)
+void FileIR_t::changeRegistryKey(IRDB_SDK::Instruction_t *p_orig, IRDB_SDK::Instruction_t *p_updated)
 {
 	auto orig=dynamic_cast<libIRDB::Instruction_t*>(p_orig);
 	auto updated=dynamic_cast<libIRDB::Instruction_t*>(p_updated);
@@ -178,92 +179,55 @@ void  FileIR_t::changeRegistryKey(IRDB_SDK::Instruction_t *p_orig, IRDB_SDK::Ins
 	}
 }
 
+void FileIR_t::assemblestr(ks_engine * &ks, IRDB_SDK::Instruction_t *ins, const char * instruct, char * &encode, size_t &size, size_t &count) 
+{
+	// do ks_asm call here
+        //assert if err is equal to KS_ERR_OK
+        //Check if count = 1
+	if(ks_asm(ks, instruct, 0, (unsigned char **)&encode, &size, &count) != KS_ERR_OK) { //string or cstr
+		ks_free((unsigned char*)encode);
+		ks_close(ks);
+		throw std::runtime_error("ERROR: ks_asm() failed during instrunction assembly.");
+    }
+	else {
+		ins->setDataBits(string(encode, size));
+		ks_free((unsigned char*)encode);
+	}
+}
+
 void FileIR_t::assembleRegistry()
 {
 	if(assembly_registry.size() == 0)
 		return;
 
-	string assemblyFile = "tmp.asm";
-	string binaryOutputFile = "tmp.bin";
+	const auto bits = getArchitectureBitWidth();
+	auto count = (size_t)0;
+	auto *encode = (char *)NULL;
+	auto size = (size_t)0;
 
-	string command = "rm -f " + assemblyFile + " " + binaryOutputFile;
-	auto actual_exit = command_to_stream(command, cout); // system(command.c_str());
-	
-	assert(actual_exit == 0);
-	
-	ofstream asmFile;
-	asmFile.open(assemblyFile.c_str());
-	if(!asmFile.is_open())
-		assert(false);
+	const auto mode = (bits == 32) ? KS_MODE_32 : 
+                      (bits == 64) ? KS_MODE_64 :
+                      throw std::invalid_argument("Cannot map IRDB bit size to keystone bit size");
+    
+    const auto machinetype = getArchitecture()->getMachineType();
+    const auto arch = (machinetype == IRDB_SDK::admtI386 || machinetype == IRDB_SDK::admtX86_64) ? KS_ARCH_X86 :
+                      (machinetype == IRDB_SDK::admtArm32) ? KS_ARCH_ARM :
+                      (machinetype == IRDB_SDK::admtAarch64) ? KS_ARCH_ARM64 : 
+                      (machinetype == IRDB_SDK::admtMips64 || machinetype == IRDB_SDK::admtMips32) ? KS_ARCH_MIPS :
+                      throw std::invalid_argument("Cannot map IRDB architecture to keystone architure");
+    auto ks = (ks_engine *)NULL;
+    const auto err = ks_open(arch, mode, &ks);
+	assert(err == KS_ERR_OK);
 
-	asmFile<<"BITS "<<std::dec<<getArchitectureBitWidth()<<endl; 
+	ks_option(ks, KS_OPT_SYNTAX, KS_OPT_SYNTAX_NASM);
 
-	for(auto it : assembly_registry)
-	{
-		asmFile<<it.second<<endl;
-	}
-	asmFile.close();
-
-	command = string("nasm ") + assemblyFile + string(" -o ") + binaryOutputFile;
-	actual_exit = command_to_stream(command,cout); // system(command.c_str());
-	assert(actual_exit == 0);
-	
-	ifstream binreader;
-	unsigned int filesize;
-	binreader.open(binaryOutputFile.c_str(),ifstream::in|ifstream::binary);
-
-	assert(binreader.is_open());
-
-	binreader.seekg(0,ios::end);
-	filesize = binreader.tellg();
-	binreader.seekg(0,ios::beg);
-
-	unsigned char *binary_stream = new unsigned char[filesize];
-
-	binreader.read((char*)binary_stream,filesize);
-	binreader.close();
-
-	unsigned int index = 0;
-	registry_type::iterator reg_val =  assembly_registry.begin();
-
-	while(index < filesize)
-	{
-		//the number of registered instructions should not be exceeded
-		assert(reg_val != assembly_registry.end());
-		Instruction_t *instr = reg_val->first;
-
-
-		// disasm.EIP =  (UIntPtr)&binary_stream[index];
-		// int instr_len = Disasm(&disasm);
-
-		const auto p_disasm=DecodedInstruction_t::factory
-			(
-				/* fake start addr doesn't matter */0x1000, 
-				(void*)&binary_stream[index], 
-				(void*)&binary_stream[filesize]
-			);
-		const auto& disasm=*p_disasm;
-
-		assert(disasm.valid());
-		const auto instr_len=disasm.length();
-
-		string rawBits;
-		rawBits.resize(instr_len);
-		for(auto i=0U;i<instr_len;i++,index++)
-		{
-			rawBits[i] = binary_stream[index];
-		}
-
-		instr->setDataBits(rawBits);
-//		*verbose_logging << "doing instruction:" << ((Instruction_t*)instr)->getDisassembly() << " comment: " << ((Instruction_t*)instr)->getComment() << endl;
-		reg_val++;
+	//Build and set assembly string
+	for(auto it : assembly_registry) {
+		assemblestr(ks, it.first, it.second.c_str(), encode, size, count);
 	}
 
-	assert(reg_val == assembly_registry.end());
-
-	delete [] binary_stream;
+	ks_close(ks);
 	assembly_registry.clear();
-
 }
 
 void FileIR_t::registerAssembly(IRDB_SDK::Instruction_t *p_instr, string assembly)
