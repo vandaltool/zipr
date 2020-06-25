@@ -79,6 +79,7 @@ class FileIR_t : public BaseObj_t, virtual public IRDB_SDK::FileIR_t
 		// assembles the assembly isntructions for each registered instruction
 		// and clears the registry. RegisterAssembly registers the instruction
 		// to be assembled later. 
+		static void assemblestr(ks_engine * &ks, IRDB_SDK::Instruction_t *ins, const char * instruct, char * &encode, size_t &size, size_t &count);
 		void assembleRegistry();
 		void registerAssembly(IRDB_SDK::Instruction_t *instr, string assembly);
 		void unregisterAssembly(IRDB_SDK::Instruction_t *instr);

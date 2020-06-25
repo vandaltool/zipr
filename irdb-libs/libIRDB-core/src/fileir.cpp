@@ -179,7 +179,7 @@ void FileIR_t::changeRegistryKey(IRDB_SDK::Instruction_t *p_orig, IRDB_SDK::Inst
 	}
 }
 
-void IRDB_SDK::FileIR_t::assemblestr(ks_engine * &ks, IRDB_SDK::Instruction_t *ins, const char * instruct, char * &encode, size_t &size, size_t &count) 
+void FileIR_t::assemblestr(ks_engine * &ks, IRDB_SDK::Instruction_t *ins, const char * instruct, char * &encode, size_t &size, size_t &count) 
 {
 	if(ks_asm(ks, instruct, 0, (unsigned char **)&encode, &size, &count) != KS_ERR_OK) { //string or cstr
 		ks_free((unsigned char*)encode);
