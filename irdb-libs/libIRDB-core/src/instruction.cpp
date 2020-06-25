@@ -136,25 +136,6 @@ bool Instruction_t::assemble(string assembly)
         FileIR_t::assemblestr(ks, this, assembly.c_str(), encode, size, count);
         return true;
 
-        /*if(ks_asm(ks, assembly.c_str(), 0, &encode, &size, &count) != KS_ERR_OK) { //string or cstr
-                printf("ERROR: ks_asm() failed & count = %u, error = %u\n", (unsigned int)count, (unsigned int)ks_errno(ks));
-                ks_free(encode);
-                ks_close(ks);
-                return false;
-        }
-        else {
-                //Instruction_t *instr = it.first;
-                string rawBits;
-                rawBits.resize(size);
-				for(unsigned int i = 0; i < size; i++) {
-					rawBits[i] = encode[i];
-				}
-                this->setDataBits(rawBits);
-                ks_free(encode);
-				ks_close(ks);
-				return true;
-        }*/
-
 }
 
 
