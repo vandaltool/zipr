@@ -19,7 +19,8 @@
  *
  */
 
-#include <keystone/keystone.h>
+#include <keystone.h>
+//#include <keystone/keystone.h>
 #include <all.hpp>
 #include <irdb-util>
 #include <cstdlib>

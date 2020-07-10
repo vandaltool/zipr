@@ -57,6 +57,15 @@ libcapstone_path = env.Install("$SECURITY_TRANSFORMS_HOME/lib/", libcapstone_pat
 env.Command(os.environ['SECURITY_TRANSFORMS_HOME']+"/lib/libcapstone.so", libcapstone_path, "ln -s $SOURCE.abspath $TARGET.abspath")
 libcapstone=os.environ['SECURITY_TRANSFORMS_HOME']+"/lib/libcapstone.so"
 
+# get the libkeystone.so.[version] file regardless of the version extension
+libkeystone_path = Glob(os.environ['SECURITY_TRANSFORMS_HOME']+'/lib/usr/local/lib/libkeystone.so.*')
+assert len(libkeystone_path) <= 1, "More than one candidate for libkeystone.so.[version]?!"
+
+libkeystone_path = env.Install("$SECURITY_TRANSFORMS_HOME/lib/", libkeystone_path)
+
+env.Command(os.environ['SECURITY_TRANSFORMS_HOME']+"/lib/libkeystone.so", libkeystone_path, "ln -s $SOURCE.abspath $TARGET.abspath")
+libkeystone=os.environ['SECURITY_TRANSFORMS_HOME']+"/lib/libkeystone.so"
+
 libehp=env.SConscript("libehp/SConscript")
 libehp=env.Install("$SECURITY_TRANSFORMS_HOME/lib", libehp);
 

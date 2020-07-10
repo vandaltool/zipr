@@ -15,6 +15,7 @@ cpppath='''
          $SECURITY_TRANSFORMS_HOME/libIRDB-cfg/include
          $SECURITY_TRANSFORMS_HOME/libIRDB-util/include
          $SECURITY_TRANSFORMS_HOME/libMEDSannotation/include/
+        $SECURITY_TRANSFORMS_HOME/third_party/keystone/include/keystone/
         '''
 
 

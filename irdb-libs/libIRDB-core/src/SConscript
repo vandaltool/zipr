@@ -50,7 +50,7 @@ cpppath='''
 	$SECURITY_TRANSFORMS_HOME/include/
 	$SECURITY_TRANSFORMS_HOME/libIRDB-core/include/
 	$SECURITY_TRANSFORMS_HOME/third_party/capstone/include/capstone/
-	$SECURITY_TRANSFORMS_HOME/third_party/capstone/include/keystone/
+	$SECURITY_TRANSFORMS_HOME/third_party/keystone/include/keystone/
 	'''
 libpath='''
 	$SECURITY_TRANSFORMS_HOME/lib

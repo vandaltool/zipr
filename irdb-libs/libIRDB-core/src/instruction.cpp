@@ -25,7 +25,8 @@
 #include <sstream>
 #include <iomanip>
 #include <irdb-util>
-#include <keystone/keystone.h>
+//#include <keystone/keystone.h>
+#include <keystone.h>
 #include "cmdstr.hpp"
 
 #undef EIP

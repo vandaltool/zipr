@@ -15,7 +15,8 @@ cpppath='''
 	$SECURITY_TRANSFORMS_HOME/include/
 	$SECURITY_TRANSFORMS_HOME/libIRDB-core/include/
 	$SECURITY_TRANSFORMS_HOME/libIRDB-cfg/include/
-	'''
+        $SECURITY_TRANSFORMS_HOME/third_party/keystone/include/keystone/
+ 	'''
 libpath='''
 	$SECURITY_TRANSFORMS_HOME/lib
 	'''

@@ -9,6 +9,7 @@ myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 cpppath=''' 
 	 $IRDB_SDK/include 
 	 $SECURITY_TRANSFORMS_HOME/libIRDB-core/include 
+        $SECURITY_TRANSFORMS_HOME/third_party/keystone/include/keystone/
 	'''
 
 

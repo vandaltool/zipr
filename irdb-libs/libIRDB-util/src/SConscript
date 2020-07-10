@@ -17,6 +17,7 @@ cpppath='''
 	$SECURITY_TRANSFORMS_HOME/include/
 	$SECURITY_TRANSFORMS_HOME/libIRDB-core/include/
 	$SECURITY_TRANSFORMS_HOME/libIRDB-util/include/
+        $SECURITY_TRANSFORMS_HOME/third_party/keystone/include/keystone/
 	'''
 
 #myenv.Append(CCFLAGS=" -Wall -W -Wextra -Wconversion ")
