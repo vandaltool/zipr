@@ -219,7 +219,7 @@ void FileIR_t::assembleRegistry()
     const auto err = ks_open(arch, mode, &ks);
 	assert(err == KS_ERR_OK);
 
-	ks_option(ks, KS_OPT_SYNTAX, KS_OPT_SYNTAX_NASM);
+	ks_option(ks, KS_OPT_SYNTAX, KS_OPT_SYNTAX_MASM);
 
 	//Build and set assembly string
 	for(auto it : assembly_registry) {
