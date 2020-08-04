@@ -181,9 +181,6 @@ void FileIR_t::changeRegistryKey(IRDB_SDK::Instruction_t *p_orig, IRDB_SDK::Inst
 
 void FileIR_t::assemblestr(ks_engine * &ks, IRDB_SDK::Instruction_t *ins, const char * instruct, char * &encode, size_t &size, size_t &count) 
 {
-	// do ks_asm call here
-        //assert if err is equal to KS_ERR_OK
-        //Check if count = 1
 	if(ks_asm(ks, instruct, 0, (unsigned char **)&encode, &size, &count) != KS_ERR_OK) { //string or cstr
 		ks_free((unsigned char*)encode);
 		ks_close(ks);
@@ -193,6 +190,47 @@ void FileIR_t::assemblestr(ks_engine * &ks, IRDB_SDK::Instruction_t *ins, const 
 		ins->setDataBits(string(encode, size));
 		ks_free((unsigned char*)encode);
 	}
+}
+
+// Assembles a vector of assembly instructions at once, and return the assembled bytes
+string FileIR_t::assemblevect(vector<string> assembly_vec) {
+	const auto bits = getArchitectureBitWidth();
+	auto *encode = (char *)NULL;
+	auto count = (size_t)0;
+	auto size = (size_t)0;
+
+        const auto mode = (bits == 32) ? KS_MODE_32 : 
+                      (bits == 64) ? KS_MODE_64 :
+                      throw std::invalid_argument("Cannot map IRDB bit size to keystone bit size");
+    
+    const auto machinetype = getArchitecture()->getMachineType();
+    const auto arch = (machinetype == IRDB_SDK::admtI386 || machinetype == IRDB_SDK::admtX86_64) ? KS_ARCH_X86 :
+                      (machinetype == IRDB_SDK::admtArm32) ? KS_ARCH_ARM :
+                      (machinetype == IRDB_SDK::admtAarch64) ? KS_ARCH_ARM64 : 
+                      (machinetype == IRDB_SDK::admtMips64 || machinetype == IRDB_SDK::admtMips32) ? KS_ARCH_MIPS :
+                      throw std::invalid_argument("Cannot map IRDB architecture to keystone architure");
+    auto ks = (ks_engine *)NULL;
+    const auto err = ks_open(arch, mode, &ks);
+        assert(err == KS_ERR_OK);
+
+	string concatenated = "";
+
+	for(auto it = assembly_vec.begin(); it != assembly_vec.end(); it++) {
+		concatenated += *it;
+		concatenated += "; ";
+	}
+
+        if(ks_asm(ks, concatenated.c_str(), 0, (unsigned char **)&encode, &size, &count) != KS_ERR_OK) { //string or cstr
+                ks_free((unsigned char*)encode);
+                ks_close(ks);
+                throw std::runtime_error("ERROR: ks_asm() failed during instrunction assembly.");
+    }
+        else {
+		string assembled = string(encode, size);
+                ks_free((unsigned char*)encode);
+		return assembled;
+        }
+
 }
 
 void FileIR_t::assembleRegistry()
@@ -219,10 +257,13 @@ void FileIR_t::assembleRegistry()
     const auto err = ks_open(arch, mode, &ks);
 	assert(err == KS_ERR_OK);
 
-	ks_option(ks, KS_OPT_SYNTAX, KS_OPT_SYNTAX_NASM);
+//	ks_option(ks, KS_OPT_SYNTAX, KS_OPT_SYNTAX_NASM);
 
 	//Build and set assembly string
 	for(auto it : assembly_registry) {
+		// do ks_asm call here
+		//assert if err is equal to KS_ERR_OK
+		//Check if count = 1
 		assemblestr(ks, it.first, it.second.c_str(), encode, size, count);
 	}
 
