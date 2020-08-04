@@ -82,6 +82,7 @@ class FileIR_t : public BaseObj_t, virtual public IRDB_SDK::FileIR_t
 		// to be assembled later. 
 		static void assemblestr(ks_engine * &ks, IRDB_SDK::Instruction_t *ins, const char * instruct, char * &encode, size_t &size, size_t &count);
 		void assembleRegistry();
+		string assemblevect(vector<string> assembly_vec);
 		void registerAssembly(IRDB_SDK::Instruction_t *instr, string assembly);
 		void unregisterAssembly(IRDB_SDK::Instruction_t *instr);
 		string lookupAssembly(IRDB_SDK::Instruction_t *instr);
