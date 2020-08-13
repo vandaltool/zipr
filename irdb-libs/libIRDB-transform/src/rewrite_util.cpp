@@ -76,10 +76,10 @@ vector<Instruction_t*> IRDB_SDK::insertAssemblyInstructionsBefore(FileIR_t* firp
 	for(int i = size - 1; i >= 0; i--) {
 		Instruction_t* curins;
 		if(i == size - 1) {
-			curins = insertDataBitsBefore(firp, before, databits[size - 1], NULL);
+			curins = insertDataBitsBefore(firp, before, databits[size - 1], target);
 		}
 		else {
-			curins = insertDataBitsBefore(firp, curins, databits[i], NULL);
+			curins = insertDataBitsBefore(firp, curins, databits[i], target);
 		}
 		results.push_back(curins);
 	}
@@ -97,10 +97,10 @@ vector<Instruction_t*> IRDB_SDK::insertAssemblyInstructionsAfter(FileIR_t* firp,
 	for(int i = 0; i < size; i++) {
 		Instruction_t* curins;
 		if(i == 0) {
-			curins = insertDataBitsAfter(firp, after, databits[0], NULL);
+			curins = insertDataBitsAfter(firp, after, databits[0], target);
 		}
 		else {
-			curins = insertDataBitsAfter(firp, curins, databits[i], NULL);
+			curins = insertDataBitsAfter(firp, curins, databits[i], target);
 		}
 		results.push_back(curins);
 	}
@@ -113,6 +113,10 @@ Instruction_t* insertAssemblyBefore(FileIR_t* virp, Instruction_t* first, string
 	return insertAssemblyBefore(virp,first,assembly,NULL);
 }
 
+vector<Instruction_t*> insertAssemblyInstructionsBefore(FileIR_t* virp, Instruction_t* first, string assemblygroup)
+{
+	return insertAssemblyInstructionsBefore(virp, first, assemblygroup, NULL)
+}
 
 Instruction_t* insertDataBitsBefore(FileIR_t* virp, Instruction_t* first, string dataBits)
 {
@@ -175,6 +179,11 @@ Instruction_t* IRDB_SDK::insertDataBitsAfter(FileIR_t* virp, Instruction_t* firs
 Instruction_t* insertDataBitsAfter(FileIR_t* virp, Instruction_t* first, string dataBits)
 {
         return insertDataBitsAfter(virp,first,dataBits,NULL);
+}
+
+vector<Instruction_t*> insertAssemblyInstructionsAfter(FileIR_t* virp, Instruction_t* first, string assemblygroup)
+{
+	return insertAssemblyInstructionsAfter(virp, first, assemblygroup, NULL)
 }
 #endif
 
