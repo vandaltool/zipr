@@ -1,6 +1,9 @@
 
 #include <irdb-transform>
 #include <libIRDB-core.hpp>
+#include <keystone/keystone.h>
+#include <capstone.h>
+#include <bits/stdc++.h> 
 
 // Copied from PnTransform
 // @todo: create a utility library with the one interface
@@ -13,6 +16,7 @@ void copyInstruction(Instruction_t* src, Instruction_t* dest);
 Instruction_t* copyInstruction(FileIR_t* virp, Instruction_t* instr);
 Instruction_t* allocateNewInstruction(FileIR_t* virp, DatabaseID_t p_fileID,Function_t* func);
 Instruction_t* allocateNewInstruction(FileIR_t* virp, Instruction_t *template_instr);
+vector<string> assemblegroup(string group);
 
 
 
@@ -62,6 +66,45 @@ Instruction_t* IRDB_SDK::insertAssemblyBefore(FileIR_t* virp, Instruction_t* fir
 	IRDB_SDK::setInstructionAssembly(virp,first,assembly,next,target);
 
 	return next;
+}
+
+vector<Instruction_t*> IRDB_SDK::insertAssemblyInstructionsBefore(FileIR_t* firp, Instruction_t* before, string instructions, Instruction_t *target) {
+	vector<string> databits = assemblegroup(instructions);
+	vector<Instruction_t*> results;
+	int size = databits.size();
+	results.push_back(before);
+	for(int i = size - 1; i >= 0; i--) {
+		Instruction_t* curins;
+		if(i == size - 1) {
+			curins = insertDataBitsBefore(firp, before, databits[size - 1], NULL);
+		}
+		else {
+			curins = insertDataBitsBefore(firp, curins, databits[i], NULL);
+		}
+		results.push_back(curins);
+	}
+	reverse(results.begin(), results.end());
+	return results;
+}
+
+vector<Instruction_t*> IRDB_SDK::insertAssemblyInstructionsAfter(FileIR_t* firp, Instruction_t* after, string instructions, Instruction_t *target) {
+        //string newBits = after->assemblegroup(instructions);
+        //return insertDataBitsBefore(firp, after, newBits, NULL);
+	vector<string> databits = assemblegroup(instructions);
+	vector<Instruction_t*> results;
+	int size = databits.size();
+	results.push_back(after);
+	for(int i = 0; i < size; i++) {
+		Instruction_t* curins;
+		if(i == 0) {
+			curins = insertDataBitsAfter(firp, after, databits[0], NULL);
+		}
+		else {
+			curins = insertDataBitsAfter(firp, curins, databits[i], NULL);
+		}
+		results.push_back(curins);
+	}
+	return results;
 }
 
 #if 0
@@ -134,6 +177,75 @@ Instruction_t* insertDataBitsAfter(FileIR_t* virp, Instruction_t* first, string 
         return insertDataBitsAfter(virp,first,dataBits,NULL);
 }
 #endif
+
+
+/** This function ssembles a group of instructions, separated by semicolons/newlines, into databits, and returns a vector of assembled instructions, with each item inside the vector being a string that represents each assembled instruction.
+ * Param 1: The group of semicolon/newline delimited assembly instructions to be assembled.
+ * Returns: a vector of assembled instructions, with each item inside the vector being a string that represents each assembled instruction.
+ */
+vector<string> assemblegroup(string group) {
+        const auto bits = FileIR_t::getArchitectureBitWidth();
+        auto *encode = (char *)NULL;
+        auto count = (size_t)0;
+        auto size = (size_t)0;
+
+        const auto mode = (bits == 32) ? KS_MODE_32 : 
+                      (bits == 64) ? KS_MODE_64 :
+                      throw std::invalid_argument("Cannot map IRDB bit size to keystone bit size");
+    
+    const auto machinetype = FileIR_t::getArchitecture()->getMachineType();
+    const auto arch = (machinetype == IRDB_SDK::admtI386 || machinetype == IRDB_SDK::admtX86_64) ? KS_ARCH_X86 :
+                      (machinetype == IRDB_SDK::admtArm32) ? KS_ARCH_ARM :
+                      (machinetype == IRDB_SDK::admtAarch64) ? KS_ARCH_ARM64 : 
+                      (machinetype == IRDB_SDK::admtMips64 || machinetype == IRDB_SDK::admtMips32) ? KS_ARCH_MIPS :
+                      throw std::invalid_argument("Cannot map IRDB architecture to keystone architure");
+    auto ks = (ks_engine *)NULL;
+    const auto err = ks_open(arch, mode, &ks);
+        assert(err == KS_ERR_OK);
+
+        if(ks_asm(ks, group.c_str(), 0, (unsigned char **)&encode, &size, &count) != KS_ERR_OK) { //string or cstr
+                ks_free((unsigned char*)encode);
+                ks_close(ks);
+                throw std::runtime_error("ERROR: ks_asm() failed during instrunction assembly.");
+    }
+        else {
+        	vector<string> assembled;
+        	csh handle;
+        	auto insn = (cs_insn *)NULL;
+        	auto cscount = (size_t)0;
+
+			const auto csmode = (bits == 32) ? CS_MODE_32 : 
+                      (bits == 64) ? CS_MODE_64 :
+                      throw std::invalid_argument("Cannot map IRDB bit size to keystone bit size");
+
+            const auto csarch = (machinetype == IRDB_SDK::admtI386 || machinetype == IRDB_SDK::admtX86_64) ? CS_ARCH_X86 :
+                      (machinetype == IRDB_SDK::admtArm32) ? CS_ARCH_ARM :
+                      (machinetype == IRDB_SDK::admtAarch64) ? CS_ARCH_ARM64 : 
+                      (machinetype == IRDB_SDK::admtMips64 || machinetype == IRDB_SDK::admtMips32) ? CS_ARCH_MIPS :
+                      throw std::invalid_argument("Cannot map IRDB architecture to keystone architure");
+
+            const auto cserr = cs_open(csarch, csmode, &handle);
+            assert(cserr == CS_ERR_OK);
+            cscount = cs_disasm(handle, (const unsigned char*)encode, size, 0x1000, 0, &insn);
+            if(cscount == count) {
+            	auto assembleidx = 0;
+            	for(unsigned int i = 0; i < cscount; i++) {
+            		assembled.push_back(string(&encode[assembleidx], insn[i].size));
+            		assembleidx += insn[i].size;
+            	}
+            }
+            else {
+            	throw std::runtime_error("ERROR: cs_disasm() failed during instrunction assembly.");
+            }
+            cs_free(insn, cscount);
+            ks_free((unsigned char*)encode);
+            ks_close(ks);
+            cs_close(&handle);
+            return assembled;
+        }
+
+}
+
 
 Instruction_t* IRDB_SDK::addNewDataBits(FileIR_t* firp, Instruction_t *p_instr, string p_bits)
 {
