@@ -12,7 +12,6 @@ cpppath='''
 	 $SECURITY_TRANSFORMS_HOME/libIRDB-core/include 
 	 $SECURITY_TRANSFORMS_HOME/libEXEIO/include 
 	 $SECURITY_TRANSFORMS_HOME/libMEDSannotation/include 
-        $SECURITY_TRANSFORMS_HOME/third_party/keystone/include/keystone/
 	'''
 
 files=Glob( Dir('.').srcnode().abspath+"/*.cpp") + Glob(Dir('.').srcnode().abspath+"/*.c")

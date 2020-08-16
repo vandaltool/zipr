@@ -60,6 +60,14 @@ Instruction_t* Transform_t::insertDataBitsAfter(Instruction_t* before, const str
 	return IRDB_SDK::insertDataBitsAfter(getFileIR(), before, the_asm, target);
 }
 
+vector<Instruction_t*> Transform_t::insertAssemblyInstructionsBefore(Instruction_t* before, string templateIns, vector<string> templateParams) {
+	return IRDB_SDK::insertAssemblyInstructionsBefore(getFileIR(), before, templateIns, templateParams);
+}
+
+vector<Instruction_t*> Transform_t::insertAssemblyInstructionsAfter(Instruction_t* after, string templateIns, vector<string> templateParams) {
+        return IRDB_SDK::insertAssemblyInstructionsAfter(getFileIR(), after, templateIns, templateParams);
+}
+
 Instruction_t* Transform_t::addNewDataBits(const string& p_bits)
 {
 	return IRDB_SDK::addNewDataBits(getFileIR(), p_bits);

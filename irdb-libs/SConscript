@@ -68,6 +68,7 @@ libkeystone_path = env.Install("$SECURITY_TRANSFORMS_HOME/lib/", libkeystone_pat
 env.Command(os.environ['SECURITY_TRANSFORMS_HOME']+"/lib/libkeystone.so", libkeystone_path, "ln -s $SOURCE.abspath $TARGET.abspath")
 libkeystone=os.environ['SECURITY_TRANSFORMS_HOME']+"/lib/libkeystone.so"
 
+
 libehp=env.SConscript("libehp/SConscript")
 libehp=env.Install("$SECURITY_TRANSFORMS_HOME/lib", libehp);
 

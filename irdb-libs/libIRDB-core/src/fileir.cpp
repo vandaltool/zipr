@@ -20,7 +20,6 @@
  */
 
 #include <keystone.h>
-//#include <keystone/keystone.h>
 #include <all.hpp>
 #include <irdb-util>
 #include <cstdlib>
@@ -182,9 +181,6 @@ void FileIR_t::changeRegistryKey(IRDB_SDK::Instruction_t *p_orig, IRDB_SDK::Inst
 
 void FileIR_t::assemblestr(ks_engine * &ks, IRDB_SDK::Instruction_t *ins, const char * instruct, char * &encode, size_t &size, size_t &count) 
 {
-	// do ks_asm call here
-        //assert if err is equal to KS_ERR_OK
-        //Check if count = 1
 	if(ks_asm(ks, instruct, 0, (unsigned char **)&encode, &size, &count) != KS_ERR_OK) { //string or cstr
 		ks_free((unsigned char*)encode);
 		ks_close(ks);
@@ -224,6 +220,9 @@ void FileIR_t::assembleRegistry()
 
 	//Build and set assembly string
 	for(auto it : assembly_registry) {
+		// do ks_asm call here
+		//assert if err is equal to KS_ERR_OK
+		//Check if count = 1
 		assemblestr(ks, it.first, it.second.c_str(), encode, size, count);
 	}
 
