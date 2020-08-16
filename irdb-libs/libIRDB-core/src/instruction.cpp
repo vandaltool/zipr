@@ -25,7 +25,6 @@
 #include <sstream>
 #include <iomanip>
 #include <irdb-util>
-//#include <keystone/keystone.h>
 #include <keystone.h>
 #include "cmdstr.hpp"
 
@@ -132,7 +131,7 @@ bool Instruction_t::assemble(string assembly)
     	const auto err = ks_open(arch, mode, &ks);
 		assert(err == KS_ERR_OK);        
 
-        ks_option(ks, KS_OPT_SYNTAX, KS_OPT_SYNTAX_NASM);
+	ks_option(ks, KS_OPT_SYNTAX, KS_OPT_SYNTAX_NASM);
 
         FileIR_t::assemblestr(ks, this, assembly.c_str(), encode, size, count);
         return true;
