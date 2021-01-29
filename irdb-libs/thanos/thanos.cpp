@@ -163,8 +163,8 @@ int main(int argc, char* argv[])
 	const int result = ThanosPlugin_t::saveChanges();
 	if(result != 0)
 	{
-		*thanos_log << "A critical step failed: " << (thanos_plugins.back())->getStepName() 
-		     << endl;
+		*real_cerr << "A critical step failed (possibly while writing the IR back to the IRDB):\n\t " << (thanos_plugins.back())->getStepName() << endl;
+		*thanos_log << "A critical step failed: " << (thanos_plugins.back())->getStepName() << endl;
                 *thanos_log << "If DEBUG_STEPS is not on, this failure could "
                      << "be due to an earlier critical step." << endl;
                 return 1; // critical step failed, abort
