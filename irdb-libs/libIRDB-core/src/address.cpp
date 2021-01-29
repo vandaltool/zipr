@@ -26,25 +26,13 @@
 using namespace libIRDB;
 using namespace std;
 
-
 vector<string> AddressID_t::WriteToDB(File_t *fid, db_id_t newid, bool p_withHeader)
 {
         assert(fid);
 	
-	if(getBaseID()==NOT_IN_DATABASE)
+	if(getBaseID() == NOT_IN_DATABASE)
 		setBaseID(newid);
 
-/*
-	string q;
-	if (p_withHeader)
-        q=string("insert into ")+fid->address_table_name + 
-			string("(address_id , file_id , vaddress_offset , doip_id)") +
-			string(" values ");
-	else
-		q = ",";
-			
-	q +=
-*/
 	return {
 		to_string(getBaseID()),
 		to_string(fileID),
