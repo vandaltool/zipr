@@ -34,6 +34,7 @@
 #include <endian.h>
 
 #include "cmdstr.hpp"
+#include "assemblestr.hpp"
 
 using namespace libIRDB;
 using namespace std;
@@ -44,17 +45,6 @@ using namespace std;
 
 
 #undef EIP
-
-#if 0
-int command_to_stream(const string& command, ostream& stream)
-{
-	cout << "Issuing command: " << command << endl;
-	const auto res = command_to_string(command);
-
-	stream << res.first << endl;
-	return res.second;
-}
-#endif
 
 static void UpdateEntryPoints(
 	const std::map<db_id_t,Instruction_t*> 	&insnMap,
@@ -179,18 +169,6 @@ void FileIR_t::changeRegistryKey(IRDB_SDK::Instruction_t *p_orig, IRDB_SDK::Inst
 	}
 }
 
-void FileIR_t::assemblestr(ks_engine * &ks, IRDB_SDK::Instruction_t *ins, const char * instruct, char * &encode, size_t &size, size_t &count) 
-{
-	if(ks_asm(ks, instruct, 0, (unsigned char **)&encode, &size, &count) != KS_ERR_OK) { //string or cstr
-		ks_free((unsigned char*)encode);
-		ks_close(ks);
-		throw std::runtime_error("ERROR: ks_asm() failed during instrunction assembly.");
-    }
-	else {
-		ins->setDataBits(string(encode, size));
-		ks_free((unsigned char*)encode);
-	}
-}
 
 void FileIR_t::assembleRegistry()
 {

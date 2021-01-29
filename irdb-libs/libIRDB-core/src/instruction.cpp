@@ -27,6 +27,7 @@
 #include <irdb-util>
 #include <keystone/keystone.h>
 #include "cmdstr.hpp"
+#include "assemblestr.hpp"
 
 #undef EIP
 
@@ -133,7 +134,7 @@ bool Instruction_t::assemble(string assembly)
 
 	ks_option(ks, KS_OPT_SYNTAX, KS_OPT_SYNTAX_NASM);
 
-        FileIR_t::assemblestr(ks, this, assembly.c_str(), encode, size, count);
+        assemblestr(ks, this, assembly.c_str(), encode, size, count);
         return true;
 
 }
