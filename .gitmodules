@@ -1,53 +1,45 @@
-[submodule "idaproCur"]
-	shallow = true
-	path = idaproCur
-	url = git@git.zephyr-software.com:allzp/idapro71
-[submodule "idaproCur_sdk"]
-	shallow = true
-	path = idaproCur_sdk
-	url = git@git.zephyr-software.com:allzp/idapro71_sdk
 [submodule "SMPStaticAnalyzer"]
 	path = SMPStaticAnalyzer
-	url = git@git.zephyr-software.com:allnp/SMPStaticAnalyzer.git
+	url = ../SMPStaticAnalyzer.git
 [submodule "zipr"]
 	path = zipr
-	url = git@git.zephyr-software.com:allzp/zipr.git
+	url = ../zipr.git
 [submodule "zipr-sdk"]
 	path = zipr-sdk
-	url = git@git.zephyr-software.com:opensrc/zipr-sdk.git
+	url = ../zipr-sdk.git
 [submodule "pedi"]
 	path = pedi
-	url = git@git.zephyr-software.com:allnp/pedi.git
+	url = ../pedi.git
 [submodule "IdaProServer"]
 	path = IdaProServer
-	url = git@git.zephyr-software.com:allnp/IdaProServer.git
+	url = ../IdaProServer.git
 [submodule "zipr_callbacks"]
 	path = zipr_callbacks
-	url = git@git.zephyr-software.com:allnp/zipr_callbacks.git
+	url = ../zipr_callbacks.git
 [submodule "zipr_unpin_plugin"]
 	path = zipr_unpin_plugin
-	url = git@git.zephyr-software.com:allnp/zipr_unpin_plugin.git
+	url = ../zipr_unpin_plugin.git
 [submodule "zipr_push64_reloc_plugin"]
 	path = zipr_push64_reloc_plugin
-	url = git@git.zephyr-software.com:allnp/zipr_push64_reloc_plugin.git
+	url = ../zipr_push64_reloc_plugin.git
 [submodule "zipr_install"]
 	path = zipr_install
-	url = git@git.zephyr-software.com:allnp/zipr_install.git
+	url = ../zipr_install.git
 [submodule "irdb-sdk"]
 	path = irdb-sdk
-	url = git@git.zephyr-software.com:opensrc/irdb-sdk.git
+	url = ../../opensrc/irdb-sdk.git
 [submodule "irdb-libs/libehp"]
 	path = irdb-libs/libehp
-	url = git@git.zephyr-software.com:opensrc/libehp.git
+	url = ../../opensrc/libehp.git
 [submodule "irdb-libs/third_party/elfio-code"]
 	path = irdb-libs/third_party/elfio-code
-	url = git@git.zephyr-software.com:third-party-mirrors/ELFIO.git
+	url = ../../third-party-mirrors/ELFIO.git
 [submodule "irdb-libs/third_party/pebliss"]
 	path = irdb-libs/third_party/pebliss
-	url = git@git.zephyr-software.com:third-party-mirrors/pebliss.git
+	url = ../../third-party-mirrors/pebliss.git
 [submodule "irdb-libs/third_party/capstone"]
 	path = irdb-libs/third_party/capstone
-	url = git@git.zephyr-software.com:third-party-mirrors/capstone.git
+	url = ../../third-party-mirrors/capstone.git
 [submodule "irdb-libs/third_party/keystone"]
 	path = irdb-libs/third_party/keystone
-	url = https://github.com/keystone-engine/keystone/
+	url = ../../third-party-mirrors/keystone.git
