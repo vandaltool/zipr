@@ -6,7 +6,7 @@
 	url = ../zipr.git
 [submodule "zipr-sdk"]
 	path = zipr-sdk
-	url = ../zipr-sdk.git
+	url = ../../opensrc/zipr-sdk.git
 [submodule "pedi"]
 	path = pedi
 	url = ../pedi.git
