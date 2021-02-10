@@ -16,9 +16,9 @@ time rsync -a --exclude='.git'  $CICD_TO_TEST_DIR/ /tmp/peasoup_test
 cd /tmp/peasoup_test
 source set_env_vars
 cicd_setup_module_dependency allzp/idapro71.git ida71
-export IDAROOT=$CICD_MODULE_WORK_DIR/zipr_umbrella_ida
+export IDAROOT=$CICD_MODULE_WORK_DIR/ida71
 cicd_setup_module_dependency allzp/idapro71_sdk.git ida71_sdk
-export IDASDK=$CICD_MODULE_WORK_DIR/zipr_umbrella_idasdk
+export IDASDK=$CICD_MODULE_WORK_DIR/ida71_sdk
 
 sudo ./get-peasoup-packages.sh all
 bash -x ./build-all.sh 
