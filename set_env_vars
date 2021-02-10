@@ -2,8 +2,8 @@
 export PEASOUP_HOME=`pwd`
 export PEDI_HOME=$PEASOUP_HOME/pedi
 export SMPSA_HOME=$PEASOUP_HOME/SMPStaticAnalyzer
-export IDAROOT=$PEASOUP_HOME/idaproCur
-export IDASDK=$PEASOUP_HOME/idaproCur_sdk
+#export IDAROOT=$PEASOUP_HOME/idaproCur
+#export IDASDK=$PEASOUP_HOME/idaproCur_sdk
 export ZIPR_HOME=$PEASOUP_HOME/zipr
 export ZIPR_SDK=$PEASOUP_HOME/zipr-sdk
 export IRDB_SDK=$PEASOUP_HOME/irdb-sdk

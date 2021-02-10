@@ -1,6 +1,5 @@
 
 submanifest irdb-libs/manifest.txt
-submanifest idaproCur/manifest.txt
 submanifest SMPStaticAnalyzer/manifest.txt
 submanifest zipr_install/manifest.txt
 submanifest IdaProServer/manifest.txt
