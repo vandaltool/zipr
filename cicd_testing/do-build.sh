@@ -18,7 +18,7 @@ source set_env_vars
 cicd_setup_module_dependency allzp/idapro71.git idapro71
 export IDAROOT=$CICD_MODULE_WORK_DIR/idapro71
 cicd_setup_module_dependency allzp/idapro71_sdk.git idapro71_sdk
-export IDASDK=$CICD_MODULE_WORK_DIR/ida71pro_sdk
+export IDASDK=$CICD_MODULE_WORK_DIR/idapro71_sdk
 
 sudo ./get-peasoup-packages.sh all
 bash -x ./build-all.sh 
