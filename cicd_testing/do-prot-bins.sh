@@ -4,6 +4,8 @@ set -e
 set -x
 
 pushd /tmp/peasoup_test
+export IDAROOT=$CICD_MODULE_WORK_DIR/zipr_umbrella_ida
+export IDASDK=$CICD_MODULE_WORK_DIR/zipr_umbrella_idasdk
 source set_env_vars
 popd
 
