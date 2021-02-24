@@ -17,8 +17,10 @@ do_docker_clean()
 do_login()
 {
 
-	# login to gitlab's docker registry as gitlab-user
-	docker login $PS_PATH -u gitlab-runner -p 84MyuSuDo4kQat4GZ_Zs  2> /dev/null
+	if [[ $CICD_WEEKLY == 1 ]]; then
+		# login to gitlab's docker registry as gitlab-user
+		docker login $PS_PATH -u gitlab-runner -p 84MyuSuDo4kQat4GZ_Zs  2> /dev/null
+	fi
 }
 
 do_build_image()
