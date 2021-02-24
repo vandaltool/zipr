@@ -1,7 +1,7 @@
 #/bin/bash
 
 
-export PS_PATH=git.zephyr-software.com:4567/opensrc/zipr
+export PS_PATH=git.zephyr-software.com:4567/opensrc/zipr/
 export PS_TAG=zipr-bin:latest
 export DOCKER_PS=${PS_PATH}${PS_TAG}
 
