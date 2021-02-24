@@ -24,9 +24,8 @@ need to be adjusted if it doesn't work by default.
 
 # Preparing Zipr for Use (Setting up local postgres tables)
 
-Next we need to setup the proper tables in a local copy of the postgres database.
+Next we need to setup the proper tables in a local copy of the postgres database.  In the `zipr` directory, run:
 ```
-cd ~/peasoup_umbrella
 ./postgres_setup.sh
 ```
 
