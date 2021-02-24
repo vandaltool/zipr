@@ -41,6 +41,7 @@ do_build_image()
 do_push()
 {
 	if [[ $CICD_WEEKLY == 1 ]]; then
+		docker login -u $CI_REGISTER_USER -p $CI_REGISTER_PASSWORD $DOCKER_PS
 		docker push ${DOCKER_PS}
 	fi
 }
