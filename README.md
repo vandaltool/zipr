@@ -10,8 +10,8 @@ The instructions that follow assume that:
 
 First install the Zipr static binary rewriting infrastructure
 ```
-git clone --recurse-submodules  https://git.zephyr-software.com/allnp/zafl_umbrella.git # or git@git.zephyr-software.com:opensrc/peasoup_umbrella.git
-cd peasoup_umbrella
+git clone --recurse-submodules  https://git.zephyr-software.com/opensrc/zipr.git # or git@git.zephyr-software.com:opensrc/zipr.git
+cd zipr
 . set_env_vars
 ./get-peasoup-packages.sh all
 scons -j3
