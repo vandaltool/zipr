@@ -1,7 +1,7 @@
 #/bin/bash
 
 
-export PS_PATH=git.zephyr-software.com:4567/opensrc/irdb-sdk/
+export PS_PATH=git.zephyr-software.com:4567/opensrc/zipr
 export PS_TAG=zipr-bin:latest
 export DOCKER_PS=${PS_PATH}${PS_TAG}
 
@@ -41,7 +41,6 @@ do_build_image()
 do_push()
 {
 	if [[ $CICD_WEEKLY == 1 ]]; then
-		docker login -u $CI_REGISTER_USER -p $CI_REGISTER_PASSWORD $DOCKER_PS
 		docker push ${DOCKER_PS}
 	fi
 }
@@ -59,6 +58,9 @@ main()
 	if [[ -z $PEASOUP_HOME ]]; then
 		cd /tmp/peasoup_test
 		source set_env_vars
+	fi
+	if [[ $CICD_WEEKLY == 1 ]]; then
+		docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $DOCKER_PS
 	fi
 
 	do_docker_clean
