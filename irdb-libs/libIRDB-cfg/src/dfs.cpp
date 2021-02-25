@@ -45,5 +45,5 @@ BasicBlockVector_t IRDB_SDK::getDFSOrder(ControlFlowGraph_t* cfg)
 			// add it to the dfs end.
 			ret.push_back(p.first);
 
-	return move(ret);
+	return ret;
 }

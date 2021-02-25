@@ -31,6 +31,9 @@
 #include "MEDS_FuncPrototypeAnnotation.hpp"
 #include <irdb-core>
 
+#include <pqxx/tablewriter.hxx>
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 using namespace std;
 using namespace pqxx;
 using namespace IRDB_SDK;
