@@ -7,6 +7,7 @@
 #include <operand_base.hpp>
 #include <operand_csx86.hpp>
 #include <capstone.h>
+#include <irdb-util>
 
 
 
@@ -256,7 +257,7 @@ string DecodedOperandCapstoneX86_t::getString() const
 					ret_val+=string(" * ") + to_string(op.mem.scale);
 
 				if (op.mem.disp != 0)
-					ret_val+=" + "+ to_string(op.mem.disp);
+					ret_val+=" + 0x"+ IRDB_SDK::to_hex_string(op.mem.disp);
 
 				if(ret_val=="")
 					return "0";
