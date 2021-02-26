@@ -1053,7 +1053,7 @@ class FixCalls_t : public TransformStep_t
 
 				}
 			}
-			catch (DatabaseError_t pnide)
+			catch (const DatabaseError_t &pnide)
 			{
 				cout<<"Unexpected database error: "<<pnide<<endl;
 				return -1;

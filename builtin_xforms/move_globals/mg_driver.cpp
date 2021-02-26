@@ -177,7 +177,7 @@ int executeStep()
 				exit_code=2;
 			}
 		}
-		catch (DatabaseError_t pnide)
+		catch (const DatabaseError_t &pnide)
 		{
 			cerr << programName << ": Unexpected database error: " << pnide << endl;
 			return 1;

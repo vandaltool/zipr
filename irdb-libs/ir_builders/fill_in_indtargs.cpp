@@ -4014,7 +4014,7 @@ int parseArgs(const vector<string> step_args)
 			try { 
 				do_unpin_opt = stoul(arg_as_str,nullptr,0);
 			}
-			catch (invalid_argument ia)
+			catch (const invalid_argument &ia)
 			{
 				cerr<<"In --max-unpin, cannot convert "<<arg_as_str<<" to unsigned"<<endl;
 				exit(1);
@@ -4112,7 +4112,7 @@ int executeStep()
 			return -1;
 
 	}
-	catch (DatabaseError_t pnide)
+	catch (const DatabaseError_t &pnide)
 	{
 		cout << "Unexpected database error: " << pnide << endl;
 		return -1;

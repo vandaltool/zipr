@@ -29,7 +29,7 @@ libsmpsa=     SConscript("SMPStaticAnalyzer/SConscript")
 libirdbdeep=SConscript("irdb-libs/SConscript.deep")
 Depends(libirdbdeep,libsmpsa)
 
-print "Zipr install is "+env['ZIPR_INSTALL']
+print("Zipr install is "+env['ZIPR_INSTALL'])
 Export('env')
 
 
@@ -69,7 +69,7 @@ if env.GetOption('clean') and os.path.isfile("manifest.txt.config"):
 
 	# if [[ $(head -1 manifest.txt.config) == $PS_INSTALL ]] ; then
 	if str(first_line) == str(os.environ['PS_INSTALL']):
-		print "Doing pedi clean as I'm the pedi root"
+		print("Doing pedi clean as I'm the pedi root")
 		os.system( "pwd; $PEDI_HOME/pedi -c -m manifest.txt " )
 		shutil.rmtree(os.environ['PS_INSTALL'])
 

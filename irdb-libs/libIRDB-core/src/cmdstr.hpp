@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include <array>
+#include <functional>
 
 using namespace std;
 

@@ -36,6 +36,9 @@
 #include "cmdstr.hpp"
 #include "assemblestr.hpp"
 
+#include <pqxx/tablewriter.hxx>
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 using namespace libIRDB;
 using namespace std;
 
@@ -928,7 +931,7 @@ void FileIR_t::setArchitecture()
 	auto *mypqxxintr=dynamic_cast<pqxxDB_t*>(myinter);
 
 	const auto elfoid=getFile()->getELFOID();
-        pqxx::largeobjectaccess loa(mypqxxintr->getTransaction(), elfoid, PGSTD::ios::in);
+        pqxx::largeobjectaccess loa(mypqxxintr->getTransaction(), elfoid, std::ios::in);
 
 
         loa.cread((char*)&hdr_union, sizeof(hdr_union));

@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
 		f.close();
 
 	}
-	catch (DatabaseError_t pnide)
+	catch (const DatabaseError_t &pnide)
 	{
 		cout<<"Unexpected database error: "<<pnide<<endl;
 		exit(-1);

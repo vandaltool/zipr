@@ -1044,7 +1044,7 @@ int PopulateCFG::executeStep()
 			}
 		}
 	}
-	catch (DatabaseError_t pnide)
+	catch (const DatabaseError_t &pnide)
 	{
 		cerr<<"Unexpected database error: "<<pnide<<endl;
 		return -1;

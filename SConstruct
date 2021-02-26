@@ -22,13 +22,13 @@ env.Replace(ZIPR_INSTALL=os.environ['ZIPR_INSTALL'])
 
 
 if int(env['debug']) == 1:
-        print "Setting debug mode"
+        print("Setting debug mode")
         env.Append(CFLAGS="      -g ")
         env.Append(CXXFLAGS="    -g ")
-	env.Append(LINKFLAGS="   -g ")
-	env.Append(SHLINKFLAGS=" -g ")
+        env.Append(LINKFLAGS="   -g ")
+        env.Append(SHLINKFLAGS=" -g ")
 else:
-        print "Setting release mode"
+        print("Setting release mode")
         env.Append(CFLAGS="      -O ")
         env.Append(CXXFLAGS="    -O ")
         env.Append(LINKFLAGS="   -O  ")

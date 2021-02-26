@@ -99,7 +99,7 @@ int main(int argc, char **argv)
 
 
 	}
-	catch (DatabaseError_t pnide)
+	catch (const DatabaseError_t &pnide)
 	{
 		cerr << programName << ": Unexpected database error: " << pnide << "file url: " << this_file->getURL() << endl;
 	}
