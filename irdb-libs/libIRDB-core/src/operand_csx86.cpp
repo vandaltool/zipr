@@ -247,17 +247,22 @@ string DecodedOperandCapstoneX86_t::getString() const
 			else
 			{
 				string ret_val;
+				const auto doPlus = [&]() -> string 
+				{
+					return ret_val == "" ? "" : " + ";
+				};
+
 				if (op.mem.base != X86_REG_INVALID)
 					ret_val+=cs_reg_name(handle, op.mem.base);
 
 				if (op.mem.index != X86_REG_INVALID)
-					ret_val+=string(" + ") +cs_reg_name(handle, op.mem.index);
+					ret_val+=doPlus() +cs_reg_name(handle, op.mem.index);
 
 				if (op.mem.scale != 1)
-					ret_val+=string(" * ") + to_string(op.mem.scale);
+					ret_val+=doPlus() + to_string(op.mem.scale);
 
 				if (op.mem.disp != 0)
-					ret_val+=" + 0x"+ IRDB_SDK::to_hex_string(op.mem.disp);
+					ret_val+=doPlus() + " 0x"+ IRDB_SDK::to_hex_string(op.mem.disp);
 
 				if(ret_val=="")
 					return "0";
