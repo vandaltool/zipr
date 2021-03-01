@@ -49,6 +49,11 @@ do-nightly-clean-arm64:
   tags:
     - arm64
 
+do-nightly-clean-ubuntu20:
+  <<: *do-nightly-clean
+  tags:
+    - ubuntu20
+
 
 #
 # Building
@@ -85,6 +90,11 @@ do-build-arm64:
   <<: *do-build
   tags:
     - arm64
+
+do-build-ubuntu20:
+  <<: *do-build
+  tags:
+    - ubuntu20
 
 
 #
@@ -177,6 +187,11 @@ basic_eh-tests-centos76:
   tags:
     - centos76
 
+basic_eh-tests-ubuntu20:
+  <<: *basic_eh-tests
+  tags:
+    - ubuntu20
+
 #
 # test_cmds.sh fixcalls
 #
@@ -199,6 +214,12 @@ builtin-xforms-centos76:
   <<: *builtin-xforms
   tags:
     - centos76
+
+builtin-xforms-ubuntu20:
+  <<: *builtin-xforms
+  tags:
+    - ubuntu20
+
 
 # doesn't work yet
 #builtin-xforms-arm32:
@@ -236,7 +257,10 @@ elfdep-centos76:
   <<: *elfdep
   tags:
     - centos76
-
+elfdep-ubuntu20:
+  <<: *elfdep
+  tags:
+    - ubuntu20
 
 
 #
