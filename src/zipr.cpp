@@ -146,7 +146,7 @@ ZiprImpl_t::~ZiprImpl_t()
 	{
 		m_pqxx_interface->commit();
 	}
-	catch (DatabaseError_t pnide)
+	catch (const DatabaseError_t& pnide)
 	{
 		cout<<"Unexpected database error: "<<pnide<<endl;
 	}

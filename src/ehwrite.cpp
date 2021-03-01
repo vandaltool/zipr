@@ -133,7 +133,7 @@ typename PEEhWriter_t<ptrsize>::SehVector_t  PEEhWriter_t<ptrsize>::BuildSehVect
 	cout << "# ATTRIBUTE ExceptionHandlerWrite::unwinds_calculated=" << dec << unwind_infos        << endl;
 	cout << "# ATTRIBUTE ExceptionHandlerWrite::insns_with_eh_info=" << dec << insns_with_frame    << endl;
 	cout << "# ATTRIBUTE ExceptionHandlerWrite::avg_insns_per_fde =" << dec << avg_insn_per_unwind << endl;
-	return move(all_unwind_infos);
+	return (all_unwind_infos);
 }
 
 template<int ptrsize>
