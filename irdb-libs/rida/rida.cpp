@@ -11,6 +11,7 @@
 #include <fstream>
 #include <elf.h>
 #include <functional>
+#include <cstring>
 
 
 using namespace std;
@@ -384,18 +385,30 @@ class CreateFunctions_t
 
 			const auto handle_x86_plt=[&]()
 			{
+				const auto plt_sec_data_ptr = pltSec->get_data();
 				const auto plt_skip=16;
-				const auto plt_header_size=12;
 				const auto plt_entry_size=16;
-				const auto plt_entry_size_first_part=6;
+				// Need to determine whether there is an "enhanced plt" in use. An enhanced plt
+				// uses bounded prefixes on the jump instructions to make sure that the plt
+				// entries are not poisoned. Use this array of bytes (which translates to an endbr64
+				// instruction) in order to make the determination.
+				uint8_t enhanced_plt_signature[] = {0xf3, 0x0f, 0x1e, 0xfa};
+				const auto use_enhanced_plt = !memcmp((const void*)(plt_sec_data_ptr+16),
+				                                      (const void*)enhanced_plt_signature,
+				                                      sizeof(enhanced_plt_signature));
+				const auto plt_header_size = use_enhanced_plt ? 13 : 12;
+				const auto plt_entry_size_first_part = use_enhanced_plt ? 15 : 6;
 
 				addRange(startAddr,plt_header_size);
 				for(auto i=startAddr+plt_skip; i<endAddr; i+=plt_skip) 
 				{
 					addRange(i,plt_entry_size_first_part);
-					addRange(i+6,plt_entry_size-plt_entry_size_first_part);
+					addRange(i+plt_entry_size_first_part,plt_entry_size-plt_entry_size_first_part);
 					addName(i,dynsymEntryIndex++);
 				}
+
+				// Return whether or not we used an enhanced plt.
+				return use_enhanced_plt;
 			};
 			const auto handle_arm64_plt=[&]()
 			{
@@ -422,11 +435,12 @@ class CreateFunctions_t
 				}
 			};
 
+			bool use_enhanced_x86_plt = false;
 			switch(machine_type)
 			{
 				case mtX86_64:
 				case mtI386: 
-					handle_x86_plt();
+					use_enhanced_x86_plt = handle_x86_plt();
 					break;
 				case mtAarch64:
 					handle_arm64_plt();
@@ -447,9 +461,11 @@ class CreateFunctions_t
 				return;
 
 
-			// both 32- and 64-bit, entries are 6 bytes, with 2 bytes of padding.
-			const auto gotPltEntrySize=8;
-			const auto gotPltRangeSize=6;
+			// Decide on the sizes/configuration of the plt entries depending on
+			// whether we are using enhanced plts. See handle_x86_plt() for more
+			// information about this choice.
+			const auto gotPltEntrySize= use_enhanced_x86_plt ? 16 : 8;
+			const auto gotPltRangeSize= use_enhanced_x86_plt ? 11 : 6;
 			const auto gotPltStartAddr=gotPltSec->get_address();
 
 			const auto gotPltRange_it=find_if(ALLOF(sccs), [&](const RangeSet_t& s) 
