@@ -15,7 +15,7 @@ main()
 	local orig_dir=$(pwd)
 
 	# puts peasoup_umbrella (and all submodules) in CICD_MODULE_WORK_DIR
-	cicd_setup_module_dependency allnp/peasoup_umbrella.git zipr_umbrella
+	cicd_setup_module_dependency opensrc/zipr.git zipr_umbrella
 
 
 	# puts the version of zipr to test in peasoup_umbrella/zipr.
