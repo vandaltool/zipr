@@ -129,7 +129,7 @@ namespace EhWriter
 				ret += string(reinterpret_cast<const char*>(&handle.handler_rva)    , 4);
 				ret += string(reinterpret_cast<const char*>(handle.user_data.data()), handle.user_data.size());
 
-				return move(ret);
+				return ret;
 
 			}
 
