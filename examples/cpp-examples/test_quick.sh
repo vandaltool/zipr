@@ -68,7 +68,7 @@ main()
 
 	for src in $src_files1
 	do
-		for option in -O0 -O3 
+		for option in '-O3 -fno-reorder-blocks-and-partition' -O0
 		do
 
 			#rida
@@ -80,7 +80,7 @@ main()
 
 	for src in $src_files2
 	do
-		for option in -O3
+		for option in '-O3 -fno-reorder-blocks-and-partition'
 		do
 			#rida
 			doit_meta $src "$option" "$rida_flags $p1_flags $ss_flags "
