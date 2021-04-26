@@ -2023,7 +2023,6 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	const auto table_index_str = "(add " + table_index_reg_str + ",|lea " + table_index_reg_str + ",)";
 	const auto table_index_stop_if = string() + "^" + table_index_reg_str +  "$";              
 
-	const auto cmp_str = string("cmp ") + table_index_reg_str;
 
 	// this was completely broken because argument2 had a null mnemonic, which we found out because getOperand(1) threw an exception.
 	// i suspect it's attempting to find a compare of operand1 on the RHS of a compare, but i need better regex foo to get that.
@@ -2080,6 +2079,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	const auto d6=DecodedInstruction_t::factory(I6);
 	const auto d6_op1 = d6->getOperand(1);
 	const auto d6_op1_is_mem = d6_op1->isMemory();
+	auto cmp_str = string(" do not match anything "); // to be updated inside if statement below
 
 	if( d6_op1_is_mem ) 
 	{
@@ -2111,6 +2111,30 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 			case 13/*REG13*/: base_reg="r13"; break;
 			case 14/*REG14*/: base_reg="r14"; break;
 			case 15/*REG15*/: base_reg="r15"; break;
+			default: 
+				// no base register;
+				return;
+		}
+		if(!d6->getOperand(1)->hasIndexRegister() )
+			return;
+		switch(d6->getOperand(1)->getIndexRegister() )
+		{
+			case 0/*REG0*/: cmp_str = string("cmp eax|cmp rax"); break;
+			case 1/*REG1*/: cmp_str = string("cmp ecx|cmp rcx"); break;
+			case 2/*REG2*/: cmp_str = string("cmp edx|cmp rdx"); break;
+			case 3/*REG3*/: cmp_str = string("cmp ebx|cmp rbx"); break;
+			case 4/*REG4*/: cmp_str = string("cmp esp|cmp rsp"); break;
+			case 5/*REG5*/: cmp_str = string("cmp ebp|cmp rbp"); break;
+			case 6/*REG6*/: cmp_str = string("cmp esi|cmp rsi"); break;
+			case 7/*REG7*/: cmp_str = string("cmp edi|cmp rdi"); break;
+			case 8/*REG8*/: cmp_str = string("cmp r8|cmp r8w"); break;
+			case 9/*REG9*/: cmp_str = string("cmp r9|cmp r9w"); break;
+			case 10/*REG10*/: cmp_str = string("cmp r10|cmp r10w"); break;
+			case 11/*REG11*/: cmp_str = string("cmp r11|cmp r11w"); break;
+			case 12/*REG12*/: cmp_str = string("cmp r12|cmp r12w"); break;
+			case 13/*REG13*/: cmp_str = string("cmp r13|cmp r13w"); break;
+			case 14/*REG14*/: cmp_str = string("cmp r14|cmp r14w"); break;
+			case 15/*REG15*/: cmp_str = string("cmp r15|cmp r15w"); break;
 			default: 
 				// no base register;
 				return;
@@ -2186,11 +2210,15 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		if(!secdata) continue;
 
 		auto table_size = 0U;
-		if(backup_until(cmp_str.c_str(), I1, I8))
+		if(backup_until(cmp_str.c_str(), I1, I6))
 		{
 			auto d1=DecodedInstruction_t::factory(I1);
 			table_size = d1->getImmediate(); // Instruction.Immediat;
-			if (table_size <= 4)
+
+
+			// notes on table size: 
+			// readelf on ubuntu20 has a table size of 4.
+			if (table_size < 4)
 			{
 				cout<<"pic64: found I1 ('"<<d1->getDisassembly()<<"'), but could not find size of switch table"<<endl;
 				// set table_size to be very large, so we can still do pinning appropriately
