@@ -485,8 +485,16 @@ void infer_targets(FileIR_t *firp, section* shdr)
 	if(shdr->isBSS() ) 
 		return;
 	// skip .dynsym section -- process-dynsym does this.
-	if(shdr->get_name()==".dynsym")
+	// skip version sections -- no code pointers here.
+	if(
+		shdr->get_name()==".gnu.version" || 
+		shdr->get_name()==".gnu.version_r" || 
+		shdr->get_name()==".dynsym"
+	)
+	{
 		return;
+	}
+
 
 
 	cout<<"Checking section "<<shdr->get_name() <<endl;
@@ -3960,7 +3968,7 @@ void fill_in_indtargs(FileIR_t* firp, exeio* exeiop, int64_t do_unpin_opt)
 
 	/* look through each section and look for target possibilities */
         for (secndx=0; secndx<secnum; secndx++)
-		infer_targets(firp, exeiop->sections[secndx]);
+			infer_targets(firp, exeiop->sections[secndx]);
 
 	handle_scoop_scanning(firp);
 	
