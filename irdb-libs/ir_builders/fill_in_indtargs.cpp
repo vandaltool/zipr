@@ -71,8 +71,10 @@ static inline T cptrtoh(FileIR_t* firp, const uint8_t* cptr)
 			const auto raw_const = *reinterpret_cast<const uint64_t*>(cptr);
 			switch(mt)
 			{
-				case admtI386:
 				case admtArm32:
+				case admtAarch64:
+				case admtI386:
+				case admtX86_64:
 					return le32toh(raw_const);
 				case admtMips32:
 					return be32toh(raw_const);
@@ -87,8 +89,10 @@ static inline T cptrtoh(FileIR_t* firp, const uint8_t* cptr)
 			const auto raw_const = *reinterpret_cast<const uint32_t*>(cptr);
 			switch(mt)
 			{
-				case admtX86_64:
+				case admtArm32:
 				case admtAarch64:
+				case admtI386:
+				case admtX86_64:
 					return le64toh(raw_const);
 				case admtMips64:
 					return be64toh(raw_const);
@@ -106,6 +110,80 @@ static inline T cptrtoh(FileIR_t* firp, const uint8_t* cptr)
 	}
 
 
+}
+
+/* 
+ * Endian convert a integer type to the machine's type.
+ */
+template<typename T>
+static inline T targetToHost(FileIR_t* firp, const T cptr)
+{
+	const auto intSize = sizeof(T);
+	const auto mt      = firp->getArchitecture()->getMachineType();
+
+	switch(intSize)
+	{
+		case 1:
+		{
+			return cptr;
+		}
+		case 2:
+		{
+			switch(mt)
+			{
+				case admtArm32:
+				case admtAarch64:
+				case admtI386:
+				case admtX86_64:
+					return le16toh(cptr);
+				case admtMips32:
+					return be16toh(cptr);
+
+				default:
+					throw invalid_argument("Cannot detect machine type");
+			}
+			assert(0);
+		}
+		case 4:
+		{
+			switch(mt)
+			{
+				case admtArm32:
+				case admtAarch64:
+				case admtI386:
+				case admtX86_64:
+					return le32toh(cptr);
+				case admtMips32:
+					return be32toh(cptr);
+
+				default:
+					throw invalid_argument("Cannot detect machine type");
+			}
+			assert(0);
+		}
+		case 8:
+		{
+			switch(mt)
+			{
+				case admtArm32:
+				case admtAarch64:
+				case admtI386:
+				case admtX86_64:
+					return le64toh(cptr);
+				case admtMips64:
+					return be64toh(cptr);
+
+				default:
+					throw invalid_argument("Cannot detect machine type");
+			}
+			assert(0);
+			break;
+		}
+		default:
+		{
+			throw invalid_argument("Cannot detect size of integer to endian convert");
+		}
+	}
 }
 
 
@@ -470,7 +548,48 @@ void get_executable_bounds(FileIR_t *firp, const section* shdr)
 
 }
 
-void infer_targets(FileIR_t *firp, section* shdr)
+
+/*
+ * Return true iff a reloc exists for the address in question
+ */
+template <class RelocType>
+bool priv_has_reloc(FileIR_t* firp, EXEIO::exeio* exeiop, uint64_t address)
+{
+	// grab the relocations, and return if they don't exist.
+	const auto reloc_sec = exeiop->sections[".rela.dyn"];
+	if(!reloc_sec) return false;
+
+	const auto reloc_data = reloc_sec->get_data() ; 
+
+	// for each entry in the reloc table.
+	for(auto i = 0u; i+sizeof(RelocType) <= (size_t)reloc_sec->get_size(); i+=sizeof(RelocType))
+	{
+		// extract the address
+		const auto reloc = *reinterpret_cast<const RelocType*>(&reloc_data[i]);
+		const auto r_offset = targetToHost(firp,reloc.r_offset);
+
+		// if it matches, we are done.
+		if(r_offset == address) 
+		{
+			return true;	
+		}
+			
+	}
+	return false;
+}
+
+/*
+ * Given an IR, determine if there is a reloc corresponding to the address given.
+ */
+bool has_reloc(FileIR_t* firp, EXEIO::exeio* exeiop, uint64_t address)
+{
+	return  arch_ptr_bytes()==4 ? priv_has_reloc<Elf64_Rela>(firp,exeiop,address) :
+		arch_ptr_bytes()==8 ? priv_has_reloc<Elf32_Rela>(firp,exeiop,address) : 
+		throw invalid_argument("Cannot map architecture size to bit width");
+}
+
+
+void infer_targets(FileIR_t *firp, section* shdr, EXEIO::exeio* exeiop)
 {
 	/* check for a not loaded section */
 	if( ! shdr->isLoadable()) 
@@ -484,6 +603,7 @@ void infer_targets(FileIR_t *firp, section* shdr)
 	/* if the type is NOBITS, then there's no actual data to look through */
 	if(shdr->isBSS() ) 
 		return;
+
 	// skip .dynsym section -- process-dynsym does this.
 	// skip version sections -- no code pointers here.
 	if(
@@ -524,6 +644,18 @@ void infer_targets(FileIR_t *firp, section* shdr)
 			(shdr->get_name()==".symtab") ?     ibt_provenance_t::ibtp_symtab    :
 			(shdr->isWriteable()) ?             ibt_provenance_t::ibtp_data      :
 			ibt_provenance_t::ibtp_rodata;
+
+
+		// if this is a DLL, constant addresses in rodata need a relocation of some 
+		// form to be considered a target.
+		// we add the is_possible_check because it's _much_ quicker than has_reloc
+		if(
+			exeiop->isDLL() && 
+			shdr->get_name()==".rodata" &&
+			is_possible_target(ptr_val,ptr_addr) && 
+			!has_reloc(firp, exeiop, ptr_addr)
+		) 
+			continue;
 
 		possible_target(ptr_val, ptr_addr, ptr_prov);
 	}
@@ -3318,11 +3450,6 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 						// add reloc to IR.
 						auto nr=firp->addNewRelocation(scoop, i, "data_to_insn_ptr", insn);
 						assert(nr);
-						/*
-						Relocation_t* nr=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, i, "data_to_insn_ptr", insn);
-						firp->getRelocations().insert(nr);
-						scoop->getRelocations().insert(nr);
-						*/
 
 						if(getenv("UNPIN_VERBOSE")!=0)
 							cout<<"Unpinning "+scoop->getName()+" entry at offset "<<dec<<i<<endl;
@@ -3330,11 +3457,6 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 						{
 							// add ibta to mark as unpipnned
 							const auto fileid=insn->getAddress()->getFileID();
-							/*
-							auto newaddr = new AddressID_t(BaseObj_t::NOT_IN_DATABASE,fileid,0);
-							assert(newaddr);
-							firp->getAddresses().insert(newaddr);
-							*/
 							auto newaddr=firp->addNewAddress(fileid,0);
 							insn->setIndirectBranchTargetAddress(newaddr);
 						}
@@ -3427,14 +3549,6 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 						// when/if these asserts fail, convert to if and guard the reloc creation.
 
 						unpin_counts[scoop->getName()]++;
-						/*
-						auto nr=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, i+addr_offset, "data_to_insn_ptr", insn);
-						assert(nr);
-
-						// add reloc to IR.
-						firp->getRelocations().insert(nr);
-						scoop->getRelocations().insert(nr);
-						*/
 						auto nr=firp->addNewRelocation(scoop, i+addr_offset, "data_to_insn_ptr", insn);
 						(void)nr;
 
@@ -3968,7 +4082,7 @@ void fill_in_indtargs(FileIR_t* firp, exeio* exeiop, int64_t do_unpin_opt)
 
 	/* look through each section and look for target possibilities */
         for (secndx=0; secndx<secnum; secndx++)
-			infer_targets(firp, exeiop->sections[secndx]);
+		infer_targets(firp, exeiop->sections[secndx], exeiop);
 
 	handle_scoop_scanning(firp);
 	
