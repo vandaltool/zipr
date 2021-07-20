@@ -95,11 +95,19 @@ class FixCalls_t : public TransformStep_t
 		bool opt_fix_icalls = false;
 		bool opt_fix_safefn = true;
 
-		bool check_entry(bool &found, ControlFlowGraph_t* cfg)
+		/**
+		 * return true iff the target is a simple thunk.
+		 */
+		bool is_simple_thunk(const Instruction_t* insn, const Instruction_t* target) {
+			return (target->getDisassembly().find("[esp]") != string::npos);
+		}
+		/**
+		 * Check to see if this function directly references the return address from esp.
+		 */
+		bool check_entry(const ControlFlowGraph_t* cfg)
 		{
 
 			auto entry=cfg->getEntry();
-			found=false;
 
 			for(auto insn : entry->getInstructions())
 			{
@@ -120,7 +128,6 @@ class FixCalls_t : public TransformStep_t
 
 				if(strstr(disasm.getDisassembly().c_str(), "[esp]"))
 				{
-					found=true;
 					if(getenv("VERBOSE_FIX_CALLS"))
 					{
 						VirtualOffset_t addr = 0;
@@ -226,11 +233,15 @@ class FixCalls_t : public TransformStep_t
 			{
 				if(getenv("VERBOSE_FIX_CALLS"))
 				{
-					VirtualOffset_t addr = 0;
-					if (insn->getAddress())
-						addr = insn->getAddress()->getVirtualOffset();
-					cout<<"Needs fix: Target not in a function"<< " address="
-					    <<hex<<addr<<": "<<insn->getDisassembly()<<endl;
+					VirtualOffset_t addr = insn->getAddress()->getVirtualOffset();
+					cout<<"Needs fix: Target not in a function"<< " address=" <<hex<<addr<<": "<<insn->getDisassembly()<<endl;
+				}
+				if(is_simple_thunk(insn,target)) {
+					if(getenv("VERBOSE_FIX_CALLS"))
+					{
+						cout<<"Fix needed: (via call is_simple_thunk(target)), thunk detected"<< " address=" <<hex<<addr<<": "<<insn->getDisassembly()<<endl;
+					}
+					return true;;
 				}
 				target_not_in_function++;
 				/* we need to fix it */
@@ -250,41 +261,51 @@ class FixCalls_t : public TransformStep_t
 			
 
 
-// calls to not the entry of a function likely result
-// from ida/rida mis-identification of functions.  no need to fix them.
-#if 0
+			// calls to not the entry of a function likely result
+			// from ida/rida mis-identification of functions.  no need to fix them.
+			// except when they are calls to a thunk, e.g. from ubuntu 20 startup code in x86/32 mode
+			//
+			//   0x11df <_start+15>:  call   0x1206 <_start+54>
+			//   ...
+			//   0x1206 <_start+54>:  mov    (%esp),%ebx
+			//   0x1209 <_start+57>:  ret
 			assert(cfg->getEntry());
 			
 			/* if the call instruction isn't to a function entry point */
 			if(cfg->getEntry()->getInstructions()[0]!=target)
 			{
+				const auto addr = insn->getAddress()->getVirtualOffset();
 				call_to_not_entry++;
-				/* then we need to fix it */
-				return true;
-			}
-#endif
-
-
-			/* check the entry block for thunks, etc. */
-			auto found=false;
-			bool ret=check_entry(found,cfg);
-			// delete cfg;
-			if(found)
-			{
-				if(ret)
+				// check immediately for a simple thunk 
+				if(!is_simple_thunk(insn,target))
 				{
 					if(getenv("VERBOSE_FIX_CALLS"))
 					{
-						VirtualOffset_t addr = 0;
-						if (insn->getAddress())
-							addr = insn->getAddress()->getVirtualOffset();
-						cout<<"Needs fix: (via check_entry) Thunk detected"<< " address="
-						    <<hex<<addr<<": "<<insn->getDisassembly()<<endl;
+						cout<<"No fix needed: (via call to non-function entry), no thunk detected"<< " address=" <<hex<<addr<<": "<<insn->getDisassembly()<<endl;
 					}
-					thunk_check++;
+					return false;;
 				}
+				/* then we need to fix it */
+				if(getenv("VERBOSE_FIX_CALLS"))
+				{
+					cout<<"Fix needed: (via call to non-function entry), Thunk detected"<< " address=" <<hex<<addr<<": "<<insn->getDisassembly()<<endl;
+				}
+				thunk_check++;
+				return true;
+			}
 
-				return ret;
+
+			/* check the entry block for thunks, etc. */
+			bool found=check_entry(cfg);
+			if(found)
+			{
+				if(getenv("VERBOSE_FIX_CALLS"))
+				{
+					VirtualOffset_t addr = insn->getAddress()->getVirtualOffset();
+					cout<<"Needs fix: (via check_entry) Thunk detected"<< " address=" <<hex<<addr<<": "<<insn->getDisassembly()<<endl;
+				}
+				thunk_check++;
+				return found;
 			}
 
 

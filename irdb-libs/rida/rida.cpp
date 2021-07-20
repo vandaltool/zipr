@@ -126,7 +126,7 @@ public:
 				unsigned char elf_st_bind(unsigned char a) { return ELF32_ST_BIND(a); }
 				unsigned char elf_st_type(unsigned char a) { return ELF32_ST_TYPE(a); }
 			};
-			pltSplit<Elf32_Sym, Elf32_Rela, Elf32_Rel, Extracter32>(".plt", ".plt.got");
+			pltSplit<Elf32_Sym, Elf32_Rela, Elf32_Rel, Extracter32>(".plt", ".plt.got", ".plt.sec");
 			nameFunctions<Elf32_Sym, Extracter32>();
 		}
 	}
@@ -375,14 +375,20 @@ public:
 			const auto plt_entry_size = 16;
 			// Need to determine whether there is an "enhanced plt" in use. An enhanced plt
 			// uses bounded prefixes on the jump instructions to make sure that the plt
-			// entries are not poisoned. Use this array of bytes (which translates to an endbr64
+			// entries are not poisoned. Use this array of bytes (which translates to an endbr64/32
 			// instruction) in order to make the determination.
-			uint8_t enhanced_plt_signature[] = {0xf3, 0x0f, 0x1e, 0xfa};
-			const auto use_enhanced_plt = !memcmp((const void *)(plt_sec_data_ptr + 16),
-												  (const void *)enhanced_plt_signature,
-												  sizeof(enhanced_plt_signature));
-			const auto plt_header_size = use_enhanced_plt ? 13 : 12;
-			const auto plt_entry_size_first_part = use_enhanced_plt ? 15 : 6;
+			uint8_t enhanced_plt_signature64[] = {0xf3, 0x0f, 0x1e, 0xfa};
+			uint8_t enhanced_plt_signature32[] = {0xf3, 0x0f, 0x1e, 0xfb};
+			const auto use_enhanced_plt64 = ! memcmp((const void *)(plt_sec_data_ptr + 16), (const void *)enhanced_plt_signature64, sizeof(enhanced_plt_signature64));
+			const auto use_enhanced_plt32 = ! memcmp((const void *)(plt_sec_data_ptr + 16), (const void *)enhanced_plt_signature32, sizeof(enhanced_plt_signature32));
+			const auto plt_header_size = 
+				use_enhanced_plt64 ? 13 : 
+				use_enhanced_plt32 ? 12 : 
+				12;
+			const auto plt_entry_size_first_part = 
+				use_enhanced_plt64 ? 15 :
+				use_enhanced_plt32 ? 14 :
+				6;
 
 			addRange(startAddr, plt_header_size);
 			for (auto i = startAddr + plt_skip; i < endAddr; i += plt_skip)
@@ -393,7 +399,7 @@ public:
 			}
 
 			// Return whether or not we used an enhanced plt.
-			return use_enhanced_plt;
+			return use_enhanced_plt32 || use_enhanced_plt64;
 		};
 		const auto handle_arm64_plt = [&]() {
 			const auto plt_entry_size = 16;
@@ -418,21 +424,28 @@ public:
 			}
 		};
 
+
+		// Parse out the .plt section.  If we determine it's an "enhanced" plt (as in on x86/ubuntu20), 
+		// record that information
+		// note enhanced plt's use the "endbr64" or "endbr32" to do course-grain cfi.  E.g.,
+		//  0x1110 <printf@plt>:	endbr32 
+		//  0x1114 <printf@plt+4>:	jmp    *0xc(%ebx)
+		//  0x111a <printf@plt+10>:	nopw   0x0(%eax,%eax,1)
 		bool use_enhanced_x86_plt = false;
 		switch (machine_type)
 		{
-		case mtX86_64:
-		case mtI386:
-			use_enhanced_x86_plt = handle_x86_plt();
-			break;
-		case mtAarch64:
-			handle_arm64_plt();
-			break;
-		case mtArm32:
-			handle_arm32_plt();
-			break;
-		default:
-			assert(0);
+			case mtX86_64:
+			case mtI386:
+				use_enhanced_x86_plt = handle_x86_plt();
+				break;
+			case mtAarch64:
+				handle_arm64_plt();
+				break;
+			case mtArm32:
+				handle_arm32_plt();
+				break;
+			default:
+				assert(0);
 		};
 		cout << "#ATTRIBUTE plt_entries=" << dec << dynsymEntryIndex << endl;
 
@@ -470,9 +483,9 @@ public:
 
 		const auto pltSecStartAddr = pltSecSection->get_address();
 		const auto pltSecEndAddr = pltSecSection->get_address() + pltSecSection->get_size();
-		const auto handle_x86_pltSec = [&]() {
+		const auto handle_x86_pltSec = [&](const uint32_t& size) {
 			const auto plt_skip = 16;
-			const auto plt_entry_size = 11;
+			const auto plt_entry_size = size;
 
 			for (auto i = pltSecStartAddr; i < pltSecEndAddr; i += plt_skip)
 			{
@@ -490,11 +503,14 @@ public:
 		}
 		switch (machine_type)
 		{
-		case mtX86_64:
-			handle_x86_pltSec();
-			break;
-		default:
-			assert(0);
+			case mtX86_64:
+				handle_x86_pltSec(12);
+				break;
+			case mtI386:
+				handle_x86_pltSec(11);
+				break;
+			default:
+				assert(0);
 		};
 	}
 
@@ -612,18 +628,18 @@ int main(int argc, char *argv[])
 			break;
 		switch (c)
 		{
-		case 0:
-			break;
-		case 'v':
-			verbose = true;
-			break;
-		case '?':
-		case 'h':
-			usage(argc, argv);
-			exit(1);
-			break;
-		default:
-			break;
+			case 0:
+				break;
+			case 'v':
+				verbose = true;
+				break;
+			case '?':
+			case 'h':
+				usage(argc, argv);
+				exit(1);
+				break;
+			default:
+				break;
 		}
 	}
 
