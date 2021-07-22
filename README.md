@@ -1,8 +1,18 @@
+# Zipr via Docker 
+
+Run our docker image by [installing Docker](https://docs.docker.com/get-docker/), then running:
+
+```
+docker run -it git.zephyr-software.com:4567/opensrc/zipr/zipr-bin
+```
+
+The image will prompt you how to proceed.  To learn how to invoke and use Zipr transforms, see the [IRDB Cookbook Examples repository](https://git.zephyr-software.com/opensrc/irdb-cookbook-examples) section on using [transforms in Docker](https://git.zephyr-software.com/opensrc/irdb-cookbook-examples#docker-recommended).
+
 # Building Zipr/Peasoup
 
 The instructions that follow assume that:
 
-* you have access to both the Zipr and ZAFL repo
+* you have access to both the Zipr repo
 * you have sudo privileges
 * you are installing in your home directory
 * you are using a recent version of Linux, e.g., Ubuntu 18.04
