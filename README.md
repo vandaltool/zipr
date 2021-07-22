@@ -41,7 +41,7 @@ peasoup_XXX=>
 
 # Testing Zipr
 
-Test  the binary rewriting infrastructure by rewriting /bin/ls
+Test the binary rewriting infrastructure by rewriting /bin/ls
 ```
 cd /tmp
 $PSZ /bin/ls ls.zipr -c rida
