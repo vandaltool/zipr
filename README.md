@@ -59,16 +59,13 @@ $PSZ /bin/ls ls.zipr -c rida
 Your terminal's output should look like this:
 ```
 Using Zipr backend.
-Detected ELF file.
-Performing step gather_libraries [dependencies=mandatory] ...Done. Successful.
-Performing step meds_static [dependencies=mandatory] ...Done. Successful.
-Performing step pdb_register [dependencies=mandatory] ...Done. Successful.
-Performing step fill_in_cfg [dependencies=mandatory] ...Done. Successful.
-Performing step fill_in_indtargs [dependencies=mandatory] ...Done. Successful.
-Performing step clone [dependencies=mandatory] ...Done. Successful.
-Performing step fix_calls [dependencies=mandatory] ...Done. Successful.
-Program not detected in signature database.
-Performing step zipr [dependencies=clone,fill_in_indtargs,fill_in_cfg,pdb_register] ...Done. Successful.
+Detected ELF shared object.
+Performing step rida [dependencies=mandatory] ...Done.  Successful.
+Performing step pdb_register [dependencies=mandatory] ...Done.  Successful.
+Performing step fill_in_cfg [dependencies=unknown] ...Done.  Successful.
+Performing step fill_in_indtargs [dependencies=unknown] ...Done.  Successful.
+Performing step fix_calls [dependencies=unknown] ...Done.  Successful.
+Performing step zipr [dependencies=none] ...Done.  Successful.
 ```
 
 Invoke the rewritten version of /bin/ls and make sure it runs normally:
