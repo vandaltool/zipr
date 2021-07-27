@@ -9,6 +9,7 @@
 #include <iostream>   // std::cout
 #include <string>     // std::string, std::to_string
 #include <fstream>
+#include <irdb-util>
 
 namespace zipr
 {
@@ -24,6 +25,27 @@ static int ceildiv(int a, int b)
 {
         return  (a+b-1)/b;
 }
+
+
+//
+// Convert a 32-bit integer into a string that keystone will accept
+// without indicating an overflow.
+// return a string
+inline string to_ks_string(uint32_t val) 
+{
+	// Ks is very funky about what integers it accepts.
+	// 31-bit integers work in hex
+	if(val <= 0x7fffffff) 
+	{
+		return "0x"+to_hex_string(val);
+	}
+	// and negative 31-bit integers work in hex.
+	else
+	{
+		return "-0x"+to_hex_string(-val);
+	}
+}
+
 
 #define ALLOF(a) begin(a),end(a)
 
@@ -534,7 +556,7 @@ Instruction_t* ZiprPinnerX86_t::Emit68Sled(RangeAddress_t addr, Sled_t sled, Ins
 
 	for(int i=0;i<number_of_pushed_values;i++)
 	{
-		string cmp_str="cmp "+decoration+" ["+stack_reg+"+ "+to_string(i*stack_push_size)+"], "+to_string(pushed_values[i]);
+		string cmp_str="cmp "+decoration+" ["+stack_reg+"+ "+to_string(i*stack_push_size)+"], "+to_ks_string(pushed_values[i]);
 		Instruction_t* cmp=addNewAssembly(m_firp, nullptr, cmp_str); 
 		Instruction_t *jne=addNewAssembly(m_firp, nullptr, "jne 0"); 
 		cmp->setFallthrough(jne);
