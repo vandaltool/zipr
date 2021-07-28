@@ -619,16 +619,20 @@ void infer_targets(FileIR_t *firp, section* shdr, EXEIO::exeio* exeiop)
 
 	cout<<"Checking section "<<shdr->get_name() <<endl;
 
-	const char* data=shdr->get_data() ; // C(char*)malloc(shdr->sh_size);
+	const char* data=shdr->get_data() ; 
 
 	assert(arch_ptr_bytes()==4 || arch_ptr_bytes()==8);
 	// assume pointers need to be at least 4-byte aligned.
-	for(auto i=0u;i+arch_ptr_bytes()<=(size_t)shdr->get_size();i+=4)
+	for(auto i=0u; i+arch_ptr_bytes() <= (size_t)shdr->get_size(); i+=4)
 	{
-		// even on 64-bit, pointers might be stored as 32-bit, as a 
-		// elf object has the 32-bit limitations.
-		// there's no real reason to look for 64-bit pointers 
+		// Even on 64-bit, pointers might be stored as 32-bit, as a 
+		// elf object has the 32-bit limitations.  E.g., reloc tables, PLTs, GOTs, etc.
+		// are still stored in 32-bit format.
+		// Thus, we don't bother looking for 64-bit pointers 
+		// FIXME: Prior comment does not match the code.  Clarify which model is needed,
+		// and make comment match code.
 		const auto ptr_val = uint64_t(
+		                // cptrtoh<uint32_t>(firp, reinterpret_cast<const uint8_t*>(&data[i])) 
 		                (arch_ptr_bytes()==4) ?  cptrtoh<uint32_t>(firp, reinterpret_cast<const uint8_t*>(&data[i])) :
 		                (arch_ptr_bytes()==8) ?  cptrtoh<uint64_t>(firp, reinterpret_cast<const uint8_t*>(&data[i])) :
 		                throw invalid_argument("Cannot map architecture size to bit width")
@@ -3055,10 +3059,10 @@ void read_stars_xref_file(FileIR_t* firp)
 
 void process_dynsym(FileIR_t* firp)
 {
-	auto dynsymfile = popen("$PS_OBJDUMP -T a.ncexe | $PS_GREP '^[0-9]\\+' | $PS_GREP -v UND | awk '{print $1;}' | $PS_GREP -v '^$'", "r");
+	auto dynsymfile = popen("$PS_OBJDUMP -T a.ncexe | $PS_GREP '^[0-9]\\+' | awk '{print $1;}' | $PS_GREP -v '^$'", "r");
 	if(!dynsymfile)
 	{
-		perror("Cannot open readeh_tmp_file.exe");
+		perror("Cannot start pipe to $PS_OBJDUMP a.ncexe");
 		exit(2);
 	}
 	auto target=(unsigned int)0;
