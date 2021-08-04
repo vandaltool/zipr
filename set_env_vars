@@ -37,7 +37,7 @@ export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$ZEST_RUNTIME/lib32:$ZEST_RUNTIME/lib64
 
 # deprecated:  going away soon.
 export SECURITY_TRANSFORMS_HOME=$PEASOUP_HOME/irdb-libs
-export ZIPR_INSTALL=$PEASOUP_HOME/zipr_install
+export ZIPR_PLUGIN_PATH=$PEASOUP_HOME/zipr_install/plugins
 export PEASOUP_UMBRELLA_DIR=$PEASOUP_HOME
 
 

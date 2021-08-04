@@ -29,7 +29,6 @@ libsmpsa=     SConscript("SMPStaticAnalyzer/SConscript")
 libirdbdeep=SConscript("irdb-libs/SConscript.deep")
 Depends(libirdbdeep,libsmpsa)
 
-print("Zipr install is "+env['ZIPR_INSTALL'])
 Export('env')
 
 

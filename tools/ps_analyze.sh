@@ -1179,8 +1179,7 @@ main()
 		check_environ_vars STRATA_HOME 
 		check_files $PEASOUP_HOME/tools/getsyms.sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh 
 	elif [ $backend = "zipr" ]; then
-		check_environ_vars ZIPR_INSTALL
-		check_files $ZIPR_INSTALL/bin/zipr.exe
+		check_files $PEASOUP_HOME/zipr_install/bin/zipr.exe
 	else
 		echo "Unknown backend!"
 		exit 1

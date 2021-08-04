@@ -17,7 +17,7 @@ env.Replace(SMPSA_HOME=os.environ['SMPSA_HOME'])
 env.Replace(PEASOUP_HOME=os.environ['PEASOUP_HOME'])
 env.Replace(debug=ARGUMENTS.get("debug",0))
 env.Replace(PEDI_HOME=os.environ['PEDI_HOME'])
-env.Replace(ZIPR_INSTALL=os.environ['ZIPR_INSTALL'])
+env.Replace(ZIPR_PLUGIN_PATH=os.environ['ZIPR_PLUGIN_PATH'])
 
 
 
