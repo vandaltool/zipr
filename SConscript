@@ -18,7 +18,6 @@ myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 myenv.Replace(ZIPR_HOME=os.environ['ZIPR_HOME'])
 myenv.Replace(ZIPR_SDK=os.environ['ZIPR_SDK'])
 myenv.Replace(IRDB_SDK=os.environ['IRDB_SDK'])
-myenv.Replace(ZIPR_INSTALL=os.environ['ZIPR_INSTALL'])
 myenv.Replace(do_cgc=ARGUMENTS.get("do_cgc",0))
 
 
@@ -53,11 +52,11 @@ myenv.Append(CXXFLAGS=" -std=c++11 ")
 myenv=myenv.Clone(CPPPATH=Split(cpppath), LIBS=Split(libs), LIBPATH=Split(libpath), SHLIBSUFFIX=".zpi", SHLIBPREFIX="")
 lib=myenv.SharedLibrary("push64_relocs", Split(files))
 
-install=myenv.Install("$ZIPR_INSTALL/plugins/", lib)
+install=myenv.Install("$PEASOUP_HOME/zipr_install/plugins/", lib)
 ret=[install,lib]
 pedi = Command( target = "./push64-testoutput",
                 source = install,
-                action = "echo push64; cd "+os.environ['ZIPR_INSTALL']+" ; " +os.environ['PEDI_HOME']+"/pedi -m manifest.txt ; cd -" )
+                action = "echo push64; cd "+os.environ['PEASOUP_HOME']+"/zipr_install ; " +os.environ['PEDI_HOME']+"/pedi -m manifest.txt ; cd -" )
 if Dir('.').abspath == Dir('#.').abspath:
 	ret=ret+pedi
 Default(ret)
