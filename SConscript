@@ -18,7 +18,6 @@ myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 myenv.Replace(ZIPR_HOME=os.environ['ZIPR_HOME'])
 myenv.Replace(IRDB_SDK=os.environ['IRDB_SDK'])
 myenv.Replace(ZIPR_SDK=os.environ['ZIPR_SDK'])
-myenv.Replace(ZIPR_INSTALL=os.environ['ZIPR_INSTALL'])
 myenv.Replace(do_cgc=ARGUMENTS.get("do_cgc",0))
 
 files=  '''
@@ -55,14 +54,14 @@ myenv.Append(CXXFLAGS=" -std=c++11 ")
 myenv=myenv.Clone(CPPPATH=Split(cpppath), LIBS=Split(libs), LIBPATH=Split(libpath), SHLIBSUFFIX=".zpi", SHLIBPREFIX="")
 lib=myenv.SharedLibrary("unpin", Split(files))
 
-install=myenv.Install("$ZIPR_INSTALL/plugins/", lib)
+install=myenv.Install("$PEASOUP_HOME/zipr_install/plugins/", lib)
 Default(install)
 
 ret=[install,lib]
 
 pedi = Command( target = "./unpin-testoutput",
                 source = install,
-                action = "cd "+os.environ['ZIPR_INSTALL']+" ; " +os.environ['PEDI_HOME']+"/pedi -m manifest.txt ; cd -" )
+                action = "cd "+os.environ['PEASOUP_HOME']+"/zipr_install ; " +os.environ['PEDI_HOME']+"/pedi -m manifest.txt ; cd -" )
 
 if Dir('.').abspath == Dir('#.').abspath:
 	ret=ret+pedi
