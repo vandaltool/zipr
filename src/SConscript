@@ -9,7 +9,6 @@ myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
 myenv.Replace(ZIPR_HOME=os.environ['ZIPR_HOME'])
 myenv.Replace(IRDB_SDK=os.environ['IRDB_SDK'])
 myenv.Replace(ZIPR_SDK=os.environ['ZIPR_SDK'])
-myenv.Replace(ZIPR_INSTALL=os.environ['ZIPR_INSTALL'])
 
 
 files=  '''
@@ -85,7 +84,7 @@ myenv=myenv.Clone(CPPPATH=Split(cpppath), LIBS=Split(libs), LIBPATH=Split(libpat
 myenv.Append(CXXFLAGS=" -Wno-deprecated -fmax-errors=2")
 ziprexe=myenv.Program("zipr.exe", Split(files))
 
-install=myenv.Install("$ZIPR_INSTALL/bin/", ziprexe)
+install=myenv.Install("$PEASOUP_HOME/zipr_install/bin/", ziprexe)
 Default(install)
 ret=install+ziprexe
 Return('ret')

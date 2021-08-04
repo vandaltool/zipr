@@ -11,7 +11,7 @@ zipr=SConscript("src/SConscript")
 
 pedi = Command( target = "./zipr-testoutput",
                 source = zipr,
-                action = "echo zipr; cd "+os.environ['ZIPR_INSTALL']+" ; " +os.environ['PEDI_HOME']+"/pedi -m manifest.txt ; cd -" )
+                action = "echo zipr; cd "+os.environ['PEASOUP_HOME']+"/zipr_install ; " +os.environ['PEDI_HOME']+"/pedi -m manifest.txt ; cd -" )
 
 ret=[zipr]
 if Dir('.').abspath == Dir('#.').abspath:

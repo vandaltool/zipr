@@ -39,7 +39,6 @@
 #include <iostream>
 
 
-
 using namespace std;
 using namespace Zipr_SDK;
 using namespace IRDB_SDK;
@@ -59,6 +58,36 @@ for(DLFunctionHandleSet_t::iterator it=m_handleList.begin(); it!=m_handleList.en
 	ZiprPluginInterface_t* zpi=(ZiprPluginInterface_t*)*it; \
 	var=zpi->func(var); \
 } 
+
+#define ALLOF(a) begin(a),end(a)
+
+
+
+/*
+ * Convert a bash PATH-like string into a vector of strings.
+ * by default, delimintor is :
+ * Returns the vector of strings
+ */
+const vector<string>& splitVar(const string& toSplit , const char delimiter = ':')
+{
+    static vector<string> result;
+    if( !result.empty() )
+        return result;
+    if( toSplit.empty() )
+        throw runtime_error( "toSplit should not be empty" );
+
+    auto previous = size_t(0);
+    auto index = toSplit.find( delimiter );
+    while( index != string::npos )
+    {
+        result.push_back( toSplit.substr(previous, index-previous));
+        previous=index+1;
+        index = toSplit.find( delimiter, previous );
+    }
+    result.push_back( toSplit.substr(previous) );
+
+    return result;
+}
 
 /*
  * sort_plugins_by_name()
@@ -165,10 +194,8 @@ bool ZiprPluginManager_t::DoesPluginRetargetCallback(const RangeAddress_t &callb
 
 bool ZiprPluginManager_t::DoesPluginRetargetPin(const RangeAddress_t &patch_addr, const Zipr_SDK::Dollop_t *target_dollop, RangeAddress_t &target_address, DLFunctionHandle_t &patcher) 
 {
-	DLFunctionHandleSet_t::iterator it=m_handleList.begin();
-	for(m_handleList.begin();it!=m_handleList.end();++it)
+	for(const auto& zpi : m_handleList)
 	{
-		ZiprPluginInterface_t* zpi=(ZiprPluginInterface_t*)*it;
 		if (Must == zpi->retargetPin(patch_addr, target_dollop, target_address))
 		{
 			patcher = zpi;
@@ -184,76 +211,72 @@ void ZiprPluginManager_t::open_plugins
 				Zipr_SDK::ZiprOptionsManager_t *p_opts
                         )
 {
-	char* zinst=getenv("ZIPR_INSTALL");
-
-	if(!zinst)
+	const auto ziprPluginDirs=splitVar(getenv("ZIPR_PLUGIN_PATH"));
+	for(const auto dir : ziprPluginDirs) 
 	{
-		cerr<<"Cannot fid $ZIPR_INSTALL environment variable.  Please set properly."<<endl;
+
+		const auto dp = opendir(dir.c_str());
+		if(dp == nullptr) 
+		{
+			cout << "Error(" << errno << ") opening plugins directory: " << dir << endl;
+			exit(1);
+		}
+
+		auto dirp = (dirent*) nullptr;
+		while ((dirp = readdir(dp)) != nullptr) 
+		{
+			const auto basename = string(dirp->d_name);
+			const auto name=dir+'/'+basename;
+			const auto zpi=string(".zpi");
+			const auto extension=name.substr(name.size() - zpi.length());
+
+			// Automatically skip cwd and pwd entries.
+			if(basename == "." || basename == "..")
+				continue;
+
+			if (extension!=zpi)
+			{
+				cout<<"File ("<<name<<") does not have proper extension, skipping."<<endl;
+				continue; // try next file
+			}
+			if (m_verbose)
+				cout<<"Attempting load of file ("<<name<<")."<<endl;
+
+			const auto handle=dlopen(name.c_str(), RTLD_LAZY|RTLD_GLOBAL);
+			if(!handle)
+			{
+				cerr<<"Failed to open file ("<<name<<"), error code: "<<dlerror()<<endl;
+				exit(1);
+			}
+			dlerror();
+
+			const auto sym=dlsym(handle,"GetPluginInterface");
+			if(!sym)
+			{
+				cerr<<"Failed to find GetPluginInterface from file ("<<name<<"), error code: "<<dlerror()<<endl;
+				exit(1);
+			}
+
+			const auto my_GetPluginInterface= (GetPluginInterface_t)sym;
+			const auto interface            = (*my_GetPluginInterface)(zipr_obj);
+
+			if(!interface)
+			{
+				cerr<<"Failed to get interface from file ("<<name<<")"<<endl;
+				exit(1);
+			}
+
+			// constructors now register options
+			// auto global_ns            = p_opts->getNamespace("global");
+			// p_opts->addNamespace(interface->registerOptions(global_ns));
+
+			m_handleList.push_back(interface);
+
+		}
+		closedir(dp);
+
 	}
-
-	string dir=string(zinst)+"/plugins/";
-
-    	DIR *dp;
-    	struct dirent *dirp;
-    	if((dp  = opendir(dir.c_str())) == nullptr) 
-	{
-        	cout << "Error(" << errno << ") opening plugins directory: " << dir << endl;
-		exit(1);
-    	}
-
-    	while ((dirp = readdir(dp)) != nullptr) 
-	{
-		auto basename = string(dirp->d_name);
-		auto name=dir+basename;
-		auto zpi=string(".zpi");
-		auto extension=name.substr(name.size() - zpi.length());
-
-		// Automatically skip cwd and pwd entries.
-		if(basename == "." || basename == "..")
-			continue;
-
-		if (extension!=zpi)
-		{
-			cout<<"File ("<<name<<") does not have proper extension, skipping."<<endl;
-			continue; // try next file
-		}
-		if (m_verbose)
-			cout<<"Attempting load of file ("<<name<<")."<<endl;
-
-		auto handle=dlopen(name.c_str(), RTLD_LAZY|RTLD_GLOBAL);
-		if(!handle)
-		{
-			cerr<<"Failed to open file ("<<name<<"), error code: "<<dlerror()<<endl;
-			exit(1);
-		}
-		dlerror();
-
-		auto sym=dlsym(handle,"GetPluginInterface");
-		if(!sym)
-		{
-			cerr<<"Failed to find GetPluginInterface from file ("<<name<<"), error code: "<<dlerror()<<endl;
-			exit(1);
-		}
-
-		auto my_GetPluginInterface= (GetPluginInterface_t)sym;
-		auto interface            = (*my_GetPluginInterface)(zipr_obj);
-
-		if(!interface)
-		{
-			cerr<<"Failed to get interface from file ("<<name<<")"<<endl;
-			exit(1);
-		}
-
-		// constructors now register options
-		// auto global_ns            = p_opts->getNamespace("global");
-		// p_opts->addNamespace(interface->registerOptions(global_ns));
-
-		m_handleList.push_back(interface);
-		
-    	}
-    	closedir(dp);
-
-			std::sort(m_handleList.begin(), m_handleList.end(), sort_plugins_by_name);
+	std::sort(ALLOF(m_handleList), sort_plugins_by_name);
 
     	return;
 }
