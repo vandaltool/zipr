@@ -1,0 +1,6 @@
+*.os
+*.zpi
+.sconsign.dblite
+build
+*.swp
+
