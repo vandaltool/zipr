@@ -10,9 +10,6 @@
 [submodule "IdaProServer"]
 	path = IdaProServer
 	url = ../IdaProServer.git
-[submodule "zipr_install"]
-	path = zipr_install
-	url = ../zipr_install.git
 [submodule "irdb-sdk"]
 	path = irdb-sdk
 	url = ../../opensrc/irdb-sdk.git
