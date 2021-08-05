@@ -212,6 +212,7 @@ void ZiprPluginManager_t::open_plugins
                         )
 {
 	const auto ziprPluginDirs=splitVar(getenv("ZIPR_PLUGIN_PATH"));
+	auto loadedBasenames = set<string>();
 	for(const auto dir : ziprPluginDirs) 
 	{
 
@@ -226,6 +227,15 @@ void ZiprPluginManager_t::open_plugins
 		while ((dirp = readdir(dp)) != nullptr) 
 		{
 			const auto basename = string(dirp->d_name);
+			if(loadedBasenames.find(basename) != loadedBasenames.end()) 
+			{
+				if (m_verbose)
+					cout<<"Already loaded "<<basename<<".  Skipping..."<<endl;
+				continue;
+
+			}
+			loadedBasenames.insert(basename);
+
 			const auto name=dir+'/'+basename;
 			const auto zpi=string(".zpi");
 			const auto extension=name.substr(name.size() - zpi.length());
@@ -239,9 +249,21 @@ void ZiprPluginManager_t::open_plugins
 				cout<<"File ("<<name<<") does not have proper extension, skipping."<<endl;
 				continue; // try next file
 			}
+
+			// test if this library is already loaded, can happen when 
+			// an entry in ZIPR_PLUGIN_PATH is duplicated.
+			const auto isLoaded = dlopen(name.c_str(), RTLD_LAZY|RTLD_GLOBAL|RTLD_NOLOAD) != nullptr;
+			if(isLoaded)
+			{
+				if (m_verbose)
+					cout<<"File ("<<name<<") already loaded."<<endl;
+				continue;
+			}
+
 			if (m_verbose)
 				cout<<"Attempting load of file ("<<name<<")."<<endl;
 
+			// actuall load
 			const auto handle=dlopen(name.c_str(), RTLD_LAZY|RTLD_GLOBAL);
 			if(!handle)
 			{
