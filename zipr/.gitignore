@@ -1,0 +1,9 @@
+build
+.sconsign.dblite
+*.o
+*.swp
+test/MemorySpace.exe
+test/Options.exe
+test/Range.exe
+scons_build
+*.exe

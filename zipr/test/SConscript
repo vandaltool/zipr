@@ -1,0 +1,76 @@
+import os
+
+Import('env')
+myenv=env
+myenv.Replace(SECURITY_TRANSFORMS_HOME=os.environ['SECURITY_TRANSFORMS_HOME'])
+myenv.Replace(IRDB_SDK=os.environ['IRDB_SDK'])
+myenv.Replace(ZIPR_HOME=os.environ['ZIPR_HOME'])
+myenv.Replace(ZIPR_SDK=os.environ['ZIPR_SDK'])
+myenv.Append(LINKFLAGS=" -Wl,-unresolved-symbols=ignore-in-shared-libs ")
+
+
+MemorySpaceFiles=  '''
+	MemorySpace.cpp
+	../src/memory_space.cpp
+	../src/zipr_options.cpp
+	../src/range.cpp
+	'''
+
+RangeFiles=  '''
+	ZiprRange.cpp
+	../src/memory_space.cpp
+	../src/zipr_options.cpp
+	../src/range.cpp
+	'''
+
+OptionFiles=  '''
+	ZiprOptions.cpp
+	../src/zipr_options.cpp
+	../src/range.cpp
+	'''
+
+DollopFiles= '''
+	ZiprDollop.cpp
+	../src/zipr_dollop_man.cpp
+	../src/dollop.cpp
+	../src/utils.cpp
+	../src/range.cpp
+	'''
+
+# ELFIO needs to be first so we get the zipr version instead of the sectrans version.  the zipr version is modified to include get_offset.
+cpppath=''' 
+	.
+	$SECURITY_TRANSFORMS_HOME/third_party/elfio-code/
+	$SECURITY_TRANSFORMS_HOME/libEXEIO/include
+	$IRDB_SDK/include/
+	$ZIPR_HOME/include/
+	$ZIPR_SDK/include/
+	'''
+
+libs='''
+	irdb-core 
+	irdb-cfg 
+	irdb-transform 
+	dl 
+	EXEIO
+	'''
+
+libpath='''
+	$SECURITY_TRANSFORMS_HOME/lib
+	'''
+
+myenv.Append(CCFLAGS=" -Wall ")
+myenv.Append(CXXFLAGS=" -pg -std=c++0x -g -O0 ")
+myenv.Append(LINKFLAGS="  -pg -Wl,-E ")	# export all symbols
+
+
+myenv=myenv.Clone(CPPPATH=Split(cpppath), LIBS=Split(""), LIBPATH=Split(libpath))
+
+#print 'myenv='
+#print myenv.Dump()
+
+Range=myenv.Program("Range.exe", Split(RangeFiles))
+MemorySpace=myenv.Program("MemorySpace.exe", Split(MemorySpaceFiles))
+Dollop=myenv.Program("Dollop.exe", Split(DollopFiles))
+Default([MemorySpace, Range])
+
