@@ -14,6 +14,7 @@ export ZEST_RUNTIME=$PEASOUP_HOME/zest_runtime
 # don't override pspath
 # add us to the pspath
 export PSPATH=$PSPATH:$PEASOUP_HOME/irdb-libs/plugins_install
+export ZIPR_PLUGIN_PATH=$ZIPR_PLUGIN_PATH:$PEASOUP_HOME/zipr_install/plugins
 
 if [[ -z $PS_INSTALL ]]; then
 
@@ -37,7 +38,6 @@ export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$ZEST_RUNTIME/lib32:$ZEST_RUNTIME/lib64
 
 # deprecated:  going away soon.
 export SECURITY_TRANSFORMS_HOME=$PEASOUP_HOME/irdb-libs
-export ZIPR_PLUGIN_PATH=$PEASOUP_HOME/zipr_install/plugins
 export PEASOUP_UMBRELLA_DIR=$PEASOUP_HOME
 
 
