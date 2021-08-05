@@ -1,0 +1,5 @@
+* text=auto !eol
+/SConscript -text
+/SConstruct -text
+/unpin.cpp -text
+/unpin.h -text
