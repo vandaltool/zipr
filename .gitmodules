@@ -13,9 +13,6 @@
 [submodule "zipr_callbacks"]
 	path = zipr_callbacks
 	url = ../zipr_callbacks.git
-[submodule "zipr_unpin_plugin"]
-	path = zipr_unpin_plugin
-	url = ../zipr_unpin_plugin.git
 [submodule "zipr_push64_reloc_plugin"]
 	path = zipr_push64_reloc_plugin
 	url = ../zipr_push64_reloc_plugin.git
