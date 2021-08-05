@@ -215,6 +215,9 @@ void ZiprPluginManager_t::open_plugins
 	auto loadedBasenames = set<string>();
 	for(const auto dir : ziprPluginDirs) 
 	{
+		/* skip empty directories in list. */
+		if(dir == "" )
+			continue;
 
 		const auto dp = opendir(dir.c_str());
 		if(dp == nullptr) 
