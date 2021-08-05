@@ -1,0 +1,5 @@
+manifest.txt.config
+*.so
+*.zpi
+*.exe
+
