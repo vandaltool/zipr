@@ -1,9 +1,6 @@
 [submodule "SMPStaticAnalyzer"]
 	path = SMPStaticAnalyzer
 	url = ../SMPStaticAnalyzer.git
-[submodule "zipr"]
-	path = zipr
-	url = ../zipr-be.git
 [submodule "zipr-sdk"]
 	path = zipr-sdk
 	url = ../../opensrc/zipr-sdk.git
