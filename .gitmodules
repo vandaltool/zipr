@@ -10,9 +10,6 @@
 [submodule "IdaProServer"]
 	path = IdaProServer
 	url = ../IdaProServer.git
-[submodule "zipr_callbacks"]
-	path = zipr_callbacks
-	url = ../zipr_callbacks.git
 [submodule "zipr_install"]
 	path = zipr_install
 	url = ../zipr_install.git
