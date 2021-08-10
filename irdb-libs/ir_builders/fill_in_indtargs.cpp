@@ -2572,6 +2572,8 @@ void addSwitchTableScoop(
 	if(sec == nullptr) return;
 	if(!sec->isExecutable()) return;
 
+
+
 	const auto start_vo        = do_unpin ? 0u : table_base_addr;                             // start and end offsets in this file
 	const auto end_vo          = start_vo + num_entries * entry_size -1;
 	auto startaddr             = firp->addNewAddress(firp->getFile()->getBaseID(), start_vo); // start and end address
@@ -2597,13 +2599,24 @@ void addSwitchTableScoop(
 		{
 			// on x86 we need to rewrite the table base instruction.
 			
-			// and add a relocation so we can later repin the scoop
-			firp->addNewRelocation(I6, 0, "absoluteptr_to_scoop",  switch_tab);
 
 			// now rewrite the 
 			const auto d6          = DecodedInstruction_t::factory(I6);
 			const auto operands    = d6->getOperands();
 			const auto the_arg     = find_if(ALLOF(operands), [](const shared_ptr<DecodedOperand_t>& arg) { return arg->isMemory(); });
+
+			// FIXME: No displacement added here, convert to memory operand with displacement and fix later.
+			// cannot unpin
+			if(!(*the_arg)->hasMemoryDisplacement())
+			{
+				// repin the scoop, first
+				startaddr->setVirtualOffset(startaddr->getVirtualOffset()+table_base_addr);
+				endaddr->setVirtualOffset(endaddr->getVirtualOffset()+table_base_addr);
+				return;
+			}
+
+			// else, mark I6 as referencing the scoop, and add a relocation so we can later repin the scoop
+			firp->addNewRelocation(I6, 0, "absoluteptr_to_scoop",  switch_tab);
 			const auto disp_offset = uint32_t(d6->getMemoryDisplacementOffset(the_arg->get(),I6));
 			const auto disp_size   = uint32_t((*the_arg)->getMemoryDisplacementEncodingSize());
 			const auto file_base   = firp->getArchitecture()->getFileBase();
