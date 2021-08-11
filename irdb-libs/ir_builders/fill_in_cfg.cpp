@@ -336,7 +336,7 @@ void PopulateCFG::add_new_instructions(FileIR_t *firp)
 		{
 			failed_target_count++;
 	
-			cout<<"Cannot find address "<<std::hex<<missed_address<<" in file "<<"<no name yet>"<<"."<<endl; 
+			cout<<"Cannot find address "<<std::hex<<missed_address<<endl;
 		} 
 	}	
 	cout<<"Found a total of "<<std::dec<<found_instructions<<" new instructions."<<endl;

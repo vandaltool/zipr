@@ -56,6 +56,65 @@ using namespace MEDS_Annotation;
  */
 #define ALLOF(a) begin(a),end(a)
 
+
+/*
+ * Return the x86-64, 64-bit register corresponding to the regno passed in
+ */
+static inline string regNoToX8664Reg(int regno) 
+{
+	switch(regno)
+	{
+		case 0/*REG0*/: return "rax"; 
+		case 1/*REG1*/: return "rcx"; 
+		case 2/*REG2*/: return "rdx"; 
+		case 3/*REG3*/: return "rbx"; 
+		case 4/*REG4*/: return "rsp"; 
+		case 5/*REG5*/: return "rbp"; 
+		case 6/*REG6*/: return "rsi"; 
+		case 7/*REG7*/: return "rdi"; 
+		case 8/*REG8*/: return "r8"; 
+		case 9/*REG9*/: return "r9"; 
+		case 10/*REG10*/: return "r10"; 
+		case 11/*REG11*/: return "r11"; 
+		case 12/*REG12*/: return "r12"; 
+		case 13/*REG13*/: return "r13"; 
+		case 14/*REG14*/: return "r14"; 
+		case 15/*REG15*/: return "r15"; 
+		default: 
+			// no base register;
+			return "";
+	}
+}
+
+/*
+ * Return the x86-32/64, 32-bit register corresponding to the regno passed in
+ */
+static inline string regNoToX8632Reg(int regno) 
+{
+	switch(regno)
+	{
+		case 0/*REG0*/: return "eax"; 
+		case 1/*REG1*/: return "ecx"; 
+		case 2/*REG2*/: return "edx"; 
+		case 3/*REG3*/: return "ebx"; 
+		case 4/*REG4*/: return "esp"; 
+		case 5/*REG5*/: return "ebp"; 
+		case 6/*REG6*/: return "esi"; 
+		case 7/*REG7*/: return "edi"; 
+		case 8/*REG8*/: return "r8w"; 
+		case 9/*REG9*/: return "r9w"; 
+		case 10/*REG10*/: return "r10w"; 
+		case 11/*REG11*/: return "r11w"; 
+		case 12/*REG12*/: return "r12w"; 
+		case 13/*REG13*/: return "r13w"; 
+		case 14/*REG14*/: return "r14w"; 
+		case 15/*REG15*/: return "r15w"; 
+		default: 
+			// no base register;
+			return "";
+	}
+}
+
 extern void read_ehframe(FileIR_t* firp, EXEIO::exeio* );
 
 template<typename T>
@@ -2206,7 +2265,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	 * the index and the address of the base of the table
 	 */
 	/* we have to be careful not to stop on an instruction that sets reg0 if we're looking
-	 * because we might find the set to reg1.  Thus, we do 2 backsup, and continue if either one
+	 * because we might find the set to reg1.  Thus, we do 2 backups, and continue if either one
 	 * is OK.
 	 */
 	if(
@@ -2218,7 +2277,8 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		return;
 	}
 
-	string lea_string="lea ";
+	auto lea_string1=string("lea ");
+	auto lea_string2=string("do_not_mach ");
 	
 	const auto d6=DecodedInstruction_t::factory(I6);
 	const auto d6_op1 = d6->getOperand(1);
@@ -2234,56 +2294,20 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		 * base_reg is the register that holds the address
 		 * for the base of the jump table.
 		 */
-		string base_reg="";
 		if(!d6->getOperand(1)->hasBaseRegister() )
 			return;
-		switch(d6->getOperand(1)->getBaseRegister() )
-		{
-			case 0/*REG0*/: base_reg="rax"; break;
-			case 1/*REG1*/: base_reg="rcx"; break;
-			case 2/*REG2*/: base_reg="rdx"; break;
-			case 3/*REG3*/: base_reg="rbx"; break;
-			case 4/*REG4*/: base_reg="rsp"; break;
-			case 5/*REG5*/: base_reg="rbp"; break;
-			case 6/*REG6*/: base_reg="rsi"; break;
-			case 7/*REG7*/: base_reg="rdi"; break;
-			case 8/*REG8*/: base_reg="r8"; break;
-			case 9/*REG9*/: base_reg="r9"; break;
-			case 10/*REG10*/: base_reg="r10"; break;
-			case 11/*REG11*/: base_reg="r11"; break;
-			case 12/*REG12*/: base_reg="r12"; break;
-			case 13/*REG13*/: base_reg="r13"; break;
-			case 14/*REG14*/: base_reg="r14"; break;
-			case 15/*REG15*/: base_reg="r15"; break;
-			default: 
-				// no base register;
-				return;
-		}
+		const auto base_reg=regNoToX8664Reg(d6->getOperand(1)->getBaseRegister() );
+
 		if(!d6->getOperand(1)->hasIndexRegister() )
 			return;
-		switch(d6->getOperand(1)->getIndexRegister() )
-		{
-			case 0/*REG0*/: cmp_str = string("cmp eax|cmp rax"); break;
-			case 1/*REG1*/: cmp_str = string("cmp ecx|cmp rcx"); break;
-			case 2/*REG2*/: cmp_str = string("cmp edx|cmp rdx"); break;
-			case 3/*REG3*/: cmp_str = string("cmp ebx|cmp rbx"); break;
-			case 4/*REG4*/: cmp_str = string("cmp esp|cmp rsp"); break;
-			case 5/*REG5*/: cmp_str = string("cmp ebp|cmp rbp"); break;
-			case 6/*REG6*/: cmp_str = string("cmp esi|cmp rsi"); break;
-			case 7/*REG7*/: cmp_str = string("cmp edi|cmp rdi"); break;
-			case 8/*REG8*/: cmp_str = string("cmp r8|cmp r8w"); break;
-			case 9/*REG9*/: cmp_str = string("cmp r9|cmp r9w"); break;
-			case 10/*REG10*/: cmp_str = string("cmp r10|cmp r10w"); break;
-			case 11/*REG11*/: cmp_str = string("cmp r11|cmp r11w"); break;
-			case 12/*REG12*/: cmp_str = string("cmp r12|cmp r12w"); break;
-			case 13/*REG13*/: cmp_str = string("cmp r13|cmp r13w"); break;
-			case 14/*REG14*/: cmp_str = string("cmp r14|cmp r14w"); break;
-			case 15/*REG15*/: cmp_str = string("cmp r15|cmp r15w"); break;
-			default: 
-				// no base register;
-				return;
-		}
-		lea_string+=base_reg;
+		const auto indexRegno = d6->getOperand(1)->getIndexRegister();
+		const auto index_reg_64bit=regNoToX8664Reg(indexRegno);
+		const auto index_reg_32bit=regNoToX8632Reg(indexRegno);
+
+		cmp_str = "cmp "+index_reg_32bit+"|cmp "+index_reg_64bit;
+		lea_string1+=base_reg;
+		if(d6->getOperand(1)->getScaleValue()  == 1)
+			lea_string2="lea "+index_reg_64bit;
 	}	
 
 	/* 
@@ -2300,14 +2324,19 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	auto found_leas=InstructionSet_t();
 	
 	
-	if (backup_until(lea_string.c_str(), I5, I6, "", true))
-	{
+	if (backup_until(lea_string1.c_str(), I5, I6, "", true))
 		found_leas.insert(I5);
-	}
-	else if (I6->getFunction())
+	if (backup_until(lea_string2.c_str(), I5, I6, "", true))
+		found_leas.insert(I5);
+
+	// if we didn't find anything yet, ....
+	if(found_leas.size()==0 && I6->getFunction())
 	{
 		cout << "Using find_in_function method." << endl;
-		found_leas=find_in_function(lea_string,I6->getFunction());
+		const auto found_leas1=find_in_function(lea_string1,I6->getFunction());
+		found_leas.insert(ALLOF(found_leas1));
+		const auto found_leas2=find_in_function(lea_string2,I6->getFunction());
+		found_leas.insert(ALLOF(found_leas2));
 	}
 	if (found_leas.empty())
 	{
@@ -2344,6 +2373,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		// in the same function which can share register assignment of the image-base register.
 		// we recod the d6_displ field here
 		const auto d6_displ = d6_op1_is_mem  ?  d6->getOperand(1)->getMemoryDisplacement() : 0; 
+		const auto d6_scale = d6_op1_is_mem  ?  d6->getOperand(1)->getScaleValue() : 4; 
 
 		// find the section with the data table
 		const auto pSec=find_section(D1+d6_displ,exeiop);
@@ -2399,14 +2429,19 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		do
 		{
 			// check that we can still grab a word from this section
-			if((int)(offset+sizeof(int)) > (int)pSec->get_size())
+			if((int)(offset+d6_scale) > (int)pSec->get_size())
 			{
 				found_table_error = true;
 				break;
 			}
 
-			const auto table_entry_ptr = (const int*)&(secdata[offset]);
-			const auto table_entry     = VirtualOffset_t(*table_entry_ptr);
+			const auto table_entry_ptr = reinterpret_cast<const char*>(&(secdata[offset]));
+			const auto table_entry     = 
+				d6_scale == 1 ? VirtualOffset_t(*reinterpret_cast<const int8_t *>(table_entry_ptr)) :
+				d6_scale == 2 ? VirtualOffset_t(*reinterpret_cast<const int16_t*>(table_entry_ptr)) :
+				d6_scale == 4 ? VirtualOffset_t(*reinterpret_cast<const int32_t*>(table_entry_ptr)) :
+				d6_scale == 8 ? VirtualOffset_t(*reinterpret_cast<const int64_t*>(table_entry_ptr)) :
+				throw new invalid_argument("Cannot detect displacement size to load value ");
 
 			if(!possible_target(D1+table_entry, 0/* from addr unknown */,prov))
 			{
@@ -2437,7 +2472,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 				found_table_error = true;
 				break;
 			}
-			offset+=sizeof(int);
+			offset+=d6_scale;
 			entry++;
 		} while ( entry<=table_size);
 
@@ -2459,14 +2494,14 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 			cout << "pic64: valid switch table for " << hex << I8->getAddress()->getVirtualOffset()
 			     << " detected ibtp_switchtable_type4" << endl;
 			jmptables[I8].setAnalysisStatus(iasAnalysisComplete);
-			addSwitchTableScoop(firp,max_valid_table_entry,4,D1+d6_displ,exeiop, I6, D1);
+			addSwitchTableScoop(firp,max_valid_table_entry,d6_scale,D1+d6_displ,exeiop, I6, D1);
 
 		}
 		else
 		{
-			cout << "pic64: INVALID switch table detected for, " << hex 
+			cout << "pic64: INVALID switch table detected for " << hex 
 			     << I8->getAddress()->getVirtualOffset() 
-			     << "type=ibtp_switchtable_type4 with L5=" << endl;
+			     << " type=ibtp_switchtable_type4 with L5=" << endl;
 			// try the next L5.
 			continue;
 		}
