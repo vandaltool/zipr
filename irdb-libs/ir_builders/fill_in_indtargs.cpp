@@ -2373,7 +2373,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		// in the same function which can share register assignment of the image-base register.
 		// we recod the d6_displ field here
 		const auto d6_displ = d6_op1_is_mem  ?  d6->getOperand(1)->getMemoryDisplacement() : 0; 
-		const auto d6_scale = d6_op1_is_mem  ?  d6->getOperand(1)->getScaleValue() : 4; 
+		const auto table_entry_size = d6_op1_is_mem  ?  d6->getOperand(1)->getArgumentSizeInBytes() : 4; 
 
 		// find the section with the data table
 		const auto pSec=find_section(D1+d6_displ,exeiop);
@@ -2429,7 +2429,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		do
 		{
 			// check that we can still grab a word from this section
-			if((int)(offset+d6_scale) > (int)pSec->get_size())
+			if((int)(offset+table_entry_size) > (int)pSec->get_size())
 			{
 				found_table_error = true;
 				break;
@@ -2437,10 +2437,10 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 
 			const auto table_entry_ptr = reinterpret_cast<const char*>(&(secdata[offset]));
 			const auto table_entry     = 
-				d6_scale == 1 ? VirtualOffset_t(*reinterpret_cast<const int8_t *>(table_entry_ptr)) :
-				d6_scale == 2 ? VirtualOffset_t(*reinterpret_cast<const int16_t*>(table_entry_ptr)) :
-				d6_scale == 4 ? VirtualOffset_t(*reinterpret_cast<const int32_t*>(table_entry_ptr)) :
-				d6_scale == 8 ? VirtualOffset_t(*reinterpret_cast<const int64_t*>(table_entry_ptr)) :
+				table_entry_size == 1 ? VirtualOffset_t(*reinterpret_cast<const int8_t *>(table_entry_ptr)) :
+				table_entry_size == 2 ? VirtualOffset_t(*reinterpret_cast<const int16_t*>(table_entry_ptr)) :
+				table_entry_size == 4 ? VirtualOffset_t(*reinterpret_cast<const int32_t*>(table_entry_ptr)) :
+				table_entry_size == 8 ? VirtualOffset_t(*reinterpret_cast<const int64_t*>(table_entry_ptr)) :
 				throw new invalid_argument("Cannot detect displacement size to load value ");
 
 			if(!possible_target(D1+table_entry, 0/* from addr unknown */,prov))
@@ -2472,7 +2472,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 				found_table_error = true;
 				break;
 			}
-			offset+=d6_scale;
+			offset+=table_entry_size;
 			entry++;
 		} while ( entry<=table_size);
 
@@ -2494,7 +2494,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 			cout << "pic64: valid switch table for " << hex << I8->getAddress()->getVirtualOffset()
 			     << " detected ibtp_switchtable_type4" << endl;
 			jmptables[I8].setAnalysisStatus(iasAnalysisComplete);
-			addSwitchTableScoop(firp,max_valid_table_entry,d6_scale,D1+d6_displ,exeiop, I6, D1);
+			addSwitchTableScoop(firp,max_valid_table_entry,table_entry_size,D1+d6_displ,exeiop, I6, D1);
 
 		}
 		else
