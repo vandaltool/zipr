@@ -945,7 +945,7 @@ void ElfEhWriter_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::extend(I
 			       (tt_encoding&0xf)==0xc ||  		// encoding contains DW_EH_PE_sdata8
 			       ((tt_encoding&0xf)==0x0 && ptrsize==4)  	// encoding contains DW_EH_PE_absptr && ptrsize==4
 				);
-			const auto tt_entry_size= ((tt_encoding&0xf)==0xb) ? 8 : 4;
+			const auto tt_entry_size= ((tt_encoding&0xf)==0xc) ? 8 : 4;
 			const auto tt_index= reloc->getOffset()/tt_entry_size;
 			if(tt_index>=(int64_t)type_table.size())
 				type_table.resize(tt_index+1);
