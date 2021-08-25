@@ -847,7 +847,10 @@ bool ElfEhWriter_t<ptrsize>::FDErepresentation_t::LSDArepresentation_t::canExten
 	}
 	// check if tt encodings match.
 	else if(insn_tt_encoding!=tt_encoding)
-		return true;
+	{
+		// can't have two type table encodings in one lsda.
+		return false;
+	}
 
 	assert((tt_encoding&0xf)==0x3   || 			// encoding contains DW_EH_PE_udata4 
 	       (tt_encoding)==0xff      || 			// or is exactly DW_EH_PE_omit
