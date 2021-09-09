@@ -11,6 +11,14 @@
 #include <fstream>
 #include <irdb-util>
 
+template <class T>
+static inline T round_up_to(const T& x, const uint64_t& to)
+{
+	assert( (to & (to-1)) == 0 );
+	return  ( (((uintptr_t)(x)) + to-1)  & (~(to-1)) );
+}
+
+
 namespace zipr
 {
 #include <pinner/pinner_x86.hpp>
@@ -113,8 +121,8 @@ void  ZiprPinnerX86_t::doPinning()
 void ZiprPinnerX86_t::AddPinnedInstructions()
 {
 	// find the big chunk of free memory in case we need it for unassigned pins.
-	VirtualOffset_t next_pin_addr=memory_space.getInfiniteFreeRange().getStart();
-
+	const auto pin_memory_start = memory_space.getInfiniteFreeRange().getStart();
+	auto next_pin_addr=round_up_to(pin_memory_start,4);
 
 	/*
 	 * Start out by recording the pinned address into a map
@@ -133,12 +141,7 @@ void ZiprPinnerX86_t::AddPinnedInstructions()
                 {
                         // Unpinned IBT. Create dollop and add it to placement
                         // queue straight away--there are no pinning considerations.
-                        auto newDoll=m_dollop_mgr.addNewDollops(insn);
-#if 1
-			(void)newDoll;
-#else
-// 			placement_queue.insert({newDoll, 0});
-#endif
+			m_dollop_mgr.addNewDollops(insn);
 			continue;
                 }
 
@@ -146,7 +149,7 @@ void ZiprPinnerX86_t::AddPinnedInstructions()
 		if(insn->getIndirectBranchTargetAddress()->getVirtualOffset()==0)
 		{
 			insn->getIndirectBranchTargetAddress()->setVirtualOffset(next_pin_addr);
-			next_pin_addr+=5;// sizeof pin
+			next_pin_addr+=8;// sizeof pin is 5, but keep word aligned.
 		}
 
 		unresolved_pinned_addrs.insert({insn});
@@ -579,10 +582,7 @@ Instruction_t* ZiprPinnerX86_t::Emit68Sled(Sled_t sled)// RangeAddress_t addr, i
 
 	Instruction_t *top_of_sled=addNewAssembly(m_firp, nullptr, "hlt"); 
 
-	for (std::set<RangeAddress_t>::reverse_iterator
-	     addr_iter=sled.JumpPointsReverseBegin();
-	     addr_iter != sled.JumpPointsReverseEnd();
-			 addr_iter++)
+	for (auto addr_iter=sled.JumpPointsReverseBegin(); addr_iter != sled.JumpPointsReverseEnd(); addr_iter++)
 	{
 		RangeAddress_t addr = *addr_iter;
 		if (m_verbose)
@@ -684,11 +684,7 @@ void ZiprPinnerX86_t::Update68Sled(Sled_t new_sled, Sled_t &existing_sled)
 		/*
 		 * The pin pointing to the disambiguation is only ever a 5 byte pin.
 		 */
-		for(
-			std::map<UnresolvedPinned_t,RangeAddress_t>::iterator it=five_byte_pins.begin();
-				it!=five_byte_pins.end() /*&& !sled_disambiguation*/;
-				it++
-		   )
+		for( auto it=five_byte_pins.begin(); it!=five_byte_pins.end() ; it++)
 		{
 			RangeAddress_t addr=(*it).second;
 			UnresolvedPinned_t up=(*it).first;
@@ -719,15 +715,12 @@ RangeAddress_t ZiprPinnerX86_t::Do68Sled(RangeAddress_t addr)
 	const size_t sled_overhead = nop_overhead + jmp_overhead;
 	const int sled_size=Calc68SledSize(addr, sled_overhead);
 	Sled_t sled(memory_space, Range_t(addr,addr+sled_size), m_verbose);
-	set<Sled_t>::iterator sled_it;
 
 	if (m_verbose)
 		cout << "Adding 68-sled at 0x" << std::hex << addr 
 		     << " size="<< std::dec << sled_size << endl;
 	
-	for (sled_it = m_sleds.begin();
-	     sled_it != m_sleds.end();
-			 sled_it++)
+	for (auto sled_it = m_sleds.begin(); sled_it != m_sleds.end(); sled_it++)
 	{
 		Sled_t sled_i = *sled_it;
 		if (sled_i.Overlaps(sled))
@@ -849,9 +842,7 @@ RangeAddress_t ZiprPinnerX86_t::Do68Sled(RangeAddress_t addr)
 
 void ZiprPinnerX86_t::Clear68SledArea(Sled_t sled)
 {
-	for (std::set<RangeAddress_t>::iterator addr_iter = sled.JumpPointsBegin();
-	     addr_iter != sled.JumpPointsEnd();
-			 addr_iter++)
+	for (auto addr_iter = sled.JumpPointsBegin(); addr_iter != sled.JumpPointsEnd(); addr_iter++)
 	{
 		RangeAddress_t addr = *addr_iter;
 		size_t clear_size = 0;
@@ -874,12 +865,8 @@ void ZiprPinnerX86_t::Clear68SledArea(Sled_t sled)
 		}
 		else if (FindPinnedInsnAtAddr(addr))
 		{
-			std::map<RangeAddress_t, std::pair<IRDB_SDK::Instruction_t*, size_t> >
-			   ::iterator pinned_it = m_InsnSizeAtAddrs.find(addr);
-
+			auto pinned_it = m_InsnSizeAtAddrs.find(addr);
 			assert(pinned_it != m_InsnSizeAtAddrs.end());
-
-
 			clear_size = pinned_it->second.second;
 
 			if (m_verbose)
@@ -1201,10 +1188,7 @@ void ZiprPinnerX86_t::ExpandPinnedInstructions()
 {
 	/* now, all insns have 2-byte pins.  See which ones we can make 5-byte pins */
 	
-	for(
-		set<UnresolvedPinned_t>::iterator it=two_byte_pins.begin();
-		it!=two_byte_pins.end();
-		)
+	for( auto it=two_byte_pins.begin(); it!=two_byte_pins.end(); /* empty */)
 	{
 		UnresolvedPinned_t up=*it;
 		Instruction_t* upinsn=up.getInstrution();
@@ -1295,10 +1279,7 @@ void ZiprPinnerX86_t::ExpandPinnedInstructions()
 
 void ZiprPinnerX86_t::Fix2BytePinnedInstructions()
 {
-	for(
-		set<UnresolvedPinned_t>::const_iterator it=two_byte_pins.begin();
-		it!=two_byte_pins.end();
-		)
+	for(auto it=two_byte_pins.begin(); it!=two_byte_pins.end(); /* empty */)
 	{
 		UnresolvedPinned_t up=*it;
 		Instruction_t* upinsn=up.getInstrution();
@@ -1444,10 +1425,7 @@ void ZiprPinnerX86_t::OptimizePinnedInstructions()
 	assert(two_byte_pins.size()==0);
 
 
-	for(
-		std::map<UnresolvedPinned_t,RangeAddress_t>::iterator it=five_byte_pins.begin();
-			it!=five_byte_pins.end();
-	   )
+	for( auto it=five_byte_pins.begin(); it!=five_byte_pins.end();)
 	{
 		RangeAddress_t addr=(*it).second;
 		UnresolvedPinned_t up=(*it).first;
@@ -1498,7 +1476,7 @@ void ZiprPinnerX86_t::OptimizePinnedInstructions()
 
 Instruction_t *ZiprPinnerX86_t::FindPinnedInsnAtAddr(RangeAddress_t addr)
 {
-        std::map<RangeAddress_t,std::pair<IRDB_SDK::Instruction_t*, size_t> >::iterator it=m_InsnSizeAtAddrs.find(addr);
+        const auto it=m_InsnSizeAtAddrs.find(addr);
         if(it!=m_InsnSizeAtAddrs.end())
                 return it->second.first;
         return nullptr;
