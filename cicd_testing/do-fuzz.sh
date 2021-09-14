@@ -10,7 +10,7 @@ function main()
 	scons -j3
 
 	# force reinstall tools so we are always up-to-date
-	yes | sudo bash -c "$(curl -fsSL allzp.zephyr-software.io/turbo/cli-install.sh)"
+	yes | sudo bash -c "$(curl -fsSL allzp.pages.zephyr-software.com/turbo/cli-install.sh)"
 
 	# better done with boost add -q -i 
 	turbo-cli boost add rida_exe || true

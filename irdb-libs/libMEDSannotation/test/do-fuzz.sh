@@ -7,7 +7,7 @@ function main()
 	g++ test.cpp -I ../include -fmax-errors=2 -L../../lib -lMEDSannotation -g -o test.exe
 
 	# force reinstall tools so we are always up-to-date
-	yes | sudo bash -c "$(curl -fsSL allzp.zephyr-software.io/turbo/cli-install.sh)"
+	yes | sudo bash -c "$(curl -fsSL allzp.pages.zephyr-software.com/turbo/cli-install.sh)"
 
 	# better done with boost add -q -i 
 	turbo-cli boost add map_so || true
