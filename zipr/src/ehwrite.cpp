@@ -1305,15 +1305,37 @@ void ElfEhWriter_t<ptrsize>::GenerateEhOutput()
 			out << "LSDA" << dec << lsda_num << "_type_table_start:" << endl;
 			for_each( lsda->type_table.rbegin(), lsda->type_table.rend(),  [&](const Relocation_t* reloc)
 			{
+			/*
+DW_EH_PE_uleb128        0x01
+DW_EH_PE_udata2         0x02
+DW_EH_PE_udata4         0x03
+DW_EH_PE_udata8         0x04
+DW_EH_PE_sleb128        0x09
+DW_EH_PE_sdata2         0x0A
+DW_EH_PE_sdata4         0x0B
+DW_EH_PE_sdata8         0x0C
+*/
+				const auto tt_encoding_size_byte = lsda->tt_encoding & 0xf;
+				const auto tt_encoding_str = 
+					tt_encoding_size_byte == DW_EH_PE_uleb128 ? ".uleb128" :
+					tt_encoding_size_byte == DW_EH_PE_udata2  ? ".short"   :
+					tt_encoding_size_byte == DW_EH_PE_udata4  ? ".int"     :
+					tt_encoding_size_byte == DW_EH_PE_udata8  ? ".quad"    :
+					tt_encoding_size_byte == DW_EH_PE_sleb128 ? ".sleb128" :
+					tt_encoding_size_byte == DW_EH_PE_sdata2  ? ".short"   :
+					tt_encoding_size_byte == DW_EH_PE_sdata4  ? ".int"     :
+					tt_encoding_size_byte == DW_EH_PE_sdata8  ? ".quad"    :
+					throw invalid_argument("Cannot determine size of type table encoding");
+
 				if(reloc==nullptr)
 				{
 					// indicates a catch all or empty type table entry
-					out << "	.int 0x0 " << asm_comment << " not used!" << endl;
+					out << "	" << tt_encoding_str << " 0x0 " << asm_comment << " not used!" << endl;
 				}
 				else if(reloc->getWRT()==nullptr)
 				{
 					// indicates a catch all or empty type table entry
-					out << "	.int 0x0 " << asm_comment << " catch all " << endl;
+					out << "	" << tt_encoding_str << " 0x0 " << asm_comment << " catch all " << endl;
 				}
 				else
 				{
@@ -1322,9 +1344,9 @@ void ElfEhWriter_t<ptrsize>::GenerateEhOutput()
 					assert(scoop);
 					const auto final_addr=scoop->getStart()->getVirtualOffset() + reloc->getAddend();
 					if(((lsda->tt_encoding)&0x10) == 0x10) // if encoding contains pcrel (0x10).
-						out << "	.int 0x" << hex << final_addr << " + eh_frame_hdr_start - . -  " << dec << eh_frame_hdr_addr << endl;
+						out << "	" << tt_encoding_str << " 0x" << hex << final_addr << " + eh_frame_hdr_start - . -  " << dec << eh_frame_hdr_addr << endl;
 					else
-						out << "	.int 0x" << hex << final_addr << endl;
+						out << "	" << tt_encoding_str << " 0x" << hex << final_addr << endl;
 					
 				}
 			});
