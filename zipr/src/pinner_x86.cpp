@@ -99,7 +99,7 @@ void  ZiprPinnerX86_t::doPinning()
 		 * Put down the five byte targets
 		 * for two byte jumps, if any exist.
 		 */
-		printf("Going to Fix2BytePinnedInstructions.\n");
+		cout << "Going to Fix2BytePinnedInstructions.\n";
 		Fix2BytePinnedInstructions();
 
 		/*
@@ -122,7 +122,9 @@ void ZiprPinnerX86_t::AddPinnedInstructions()
 {
 	// find the big chunk of free memory in case we need it for unassigned pins.
 	const auto pin_memory_start = memory_space.getInfiniteFreeRange().getStart();
-	auto next_pin_addr=round_up_to(pin_memory_start,4);
+	const auto pin_align_factor=m_alignment->getValue();
+	cout << "Pins are being align to " << dec << pin_align_factor << " byte boundary\n";
+	auto next_pin_addr=round_up_to(pin_memory_start,pin_align_factor);
 
 	/*
 	 * Start out by recording the pinned address into a map
@@ -149,7 +151,7 @@ void ZiprPinnerX86_t::AddPinnedInstructions()
 		if(insn->getIndirectBranchTargetAddress()->getVirtualOffset()==0)
 		{
 			insn->getIndirectBranchTargetAddress()->setVirtualOffset(next_pin_addr);
-			next_pin_addr+=8;// sizeof pin is 5, but keep word aligned.
+			next_pin_addr=round_up_to(next_pin_addr+5,pin_align_factor);// sizeof pin is 5, but keep aligned.
 		}
 
 		unresolved_pinned_addrs.insert({insn});
@@ -1483,7 +1485,13 @@ Instruction_t *ZiprPinnerX86_t::FindPinnedInsnAtAddr(RangeAddress_t addr)
 }
 
 
-
+void ZiprPinnerX86_t::registerOptions(ZiprOptions_t* opt_man)
+{
+	ZiprPinnerBase_t::registerOptions(opt_man);
+        auto pinnerNs=opt_man->getNamespace("pinner-x86");
+        m_alignment=pinnerNs->getIntegerOption("alignment", "the alignment factor for unpinned things, e.g., 1,2,4,8.  Must be pow(2,x).",8);
+        return;
+}
 
 
 

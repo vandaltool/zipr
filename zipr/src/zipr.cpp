@@ -121,6 +121,7 @@ void ZiprImpl_t::Init()
 	{
 		archhelper=ZiprArchitectureHelperBase_t::factory(this);
 		pinner =archhelper->getPinner ();
+		pinner->registerOptions(&m_zipr_options);
 		patcher=archhelper->getPatcher();
 		sizer  =archhelper->getSizer  ();
 	}

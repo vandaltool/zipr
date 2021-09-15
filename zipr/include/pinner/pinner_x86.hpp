@@ -6,6 +6,7 @@ class ZiprPinnerX86_t : public ZiprPinnerBase_t
 	public:
 		ZiprPinnerX86_t(Zipr_SDK::Zipr_t* p_parent);
 		virtual void doPinning() override;
+		virtual void registerOptions(ZiprOptions_t* opt_man) override;
 
 	private:
 
@@ -27,6 +28,7 @@ class ZiprPinnerX86_t : public ZiprPinnerBase_t
 		void ExpandPinnedInstructions();
 		void Fix2BytePinnedInstructions();
 		void OptimizePinnedInstructions();
+
 		IRDB_SDK::Instruction_t* FindPinnedInsnAtAddr(RangeAddress_t addr);
 
 
@@ -55,6 +57,10 @@ class ZiprPinnerX86_t : public ZiprPinnerBase_t
                 std::map<RangeAddress_t,std::pair<IRDB_SDK::Instruction_t*, size_t> > m_InsnSizeAtAddrs;
                 std::map<RangeAddress_t, bool> m_AddrInSled;
 		std::set<Sled_t> m_sleds;
+
+		// the alignment for pinning.
+		Zipr_SDK::ZiprIntegerOption_t* m_alignment;
+
 
 
 };
