@@ -569,8 +569,20 @@ uint32_t DecodedInstructionCapstoneX86_t::getPrefixCount() const
 	if(!valid()) throw std::logic_error(string("Called ")+__FUNCTION__+" on invalid instruction");
 
 
-	const auto the_insn=static_cast<cs_insn*>(my_insn.get());
-	const auto count=count_if(ALLOF(the_insn->detail->x86.prefix), [](const uint8_t pref) { return pref!=0x0; } ) ;
+	const auto the_insn       = static_cast<cs_insn*>(my_insn.get());
+	const auto the_insn_bytes = the_insn->bytes;
+	/*
+	 * some prefixes can be repeated on the instruction, but this method doesn't account for that:
+	 * const auto count=count_if(ALLOF(the_insn->detail->x86.prefix), [](const uint8_t pref) { return pref!=0x0; } ) ;
+	 */
+	auto count=0;
+	while(find(ALLOF(the_insn->detail->x86.prefix), the_insn_bytes[count]) != end(the_insn->detail->x86.prefix))
+	{
+		count++;
+	}
+
+
+
 	const auto count_with_rex = the_insn->detail->x86.rex == 0 ? count : count + 1;
 	return count_with_rex;
 }
