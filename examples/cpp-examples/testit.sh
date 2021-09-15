@@ -26,14 +26,17 @@ compare()
 
 doit()
 {
-	src=$1
-	options="$2"
-	psopts="$3"
+	local src=$1
+	local options="$2"
+	local psopts="$3"
+	local compiler="$4"
+
 
 	echo  "------------------------------------------------------"
-	echo "Trying $src with options: $options"
+	echo "Trying $src with options: $compiler $options"
 	echo "And psflags=$psopts "
-	g++ -w $options $src 
+	rm -f a.out  # in case compiler err's out.
+	${compiler} -w $options $src 
 	rm -Rf peasoup_executable_direc*
 	(set -x ; EHIR_VERBOSE=1 $PSZ ./a.out ./xxx --step-option fill_in_indtargs:--split-eh-frame --step-option zipr:'--add-sections true' 	$psopts)
 
@@ -50,36 +53,40 @@ doit()
 
 doit_meta()
 {
-	src=$1
-	option="$2"
-	psopts="$3"
+	local src=$1
+	local option="$2"
+	local psopts="$3"
+	local compiler="$4"
 
-	doit $src "$option  " "$psopts"
-	doit $src "$option -fPIC " "$psopts"
-	doit $src "$option -fPIC -fomit-frame-pointer" "$psopts"
-	doit $src "$option -fPIC  -pie" "$psopts"
-	doit $src "$option -fPIC -fomit-frame-pointer -pie" "$psopts"
+	doit $src "$option  " "$psopts" "$compiler"
+	doit $src "$option -fPIC " "$psopts" "$compiler"
+	doit $src "$option -fPIC -fomit-frame-pointer" "$psopts" "$compiler"
+	doit $src "$option -fPIC  -pie" "$psopts" "$compiler"
+	doit $src "$option -fPIC -fomit-frame-pointer -pie" "$psopts" "$compiler"
 }
 
 main()
 {
-	local rida_flags="-c rida=on -s meds_static=off "
-	local ss_flags="-c stack_stamp=on"
-	local p1_flags="-c p1transform=on"
+	local rida_flags="-c rida"
+	local ss_flags="-c stack_stamp"
+	local p1_flags="-c p1transform"
 
 	for src in $src_files
 	do
-		for option in -O0 -O1 -O2 -O3 -Os -Og
+		for compiler in $(which clang++) $(which g++)
 		do
-			# stars/ida
-			doit_meta $src "$option" ""
-			doit_meta $src "$option" "$p1_flags"
-			doit_meta $src "$option" "$ss_flags"
+			for option in -O0 -O1 -O2 -O3 -Os -Og
+			do
+				# stars/ida
+				# doit_meta $src "$option" "" "$compiler"
+				# doit_meta $src "$option" "$p1_flags" "$compiler"
+				# doit_meta $src "$option" "$ss_flags" "$compiler"
 
-			#rida
-			doit_meta $src "$option" "$rida_flags "
-			doit_meta $src "$option" "$rida_flags $p1_flags"
-			doit_meta $src "$option" "$rida_flags $ss_flags"
+				#rida
+				doit_meta $src "$option" "$rida_flags " "$compiler"
+				# doit_meta $src "$option" "$rida_flags $p1_flags" "$compiler"
+				# doit_meta $src "$option" "$rida_flags $ss_flags" "$compiler"
+			done
 		done
 	done
 }

@@ -31,7 +31,7 @@ int foo()
 	return ret;
 
 }
-main()
+int main()
 {
 
 	try	

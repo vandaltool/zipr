@@ -29,7 +29,7 @@ int bar()
 		return 0;
 }
 
-main()
+int main()
 {
 
 	try	

@@ -15,7 +15,7 @@ void foo()
 	cout<<s<<endl;
 
 }
-main()
+int main()
 {
 
 	try	
