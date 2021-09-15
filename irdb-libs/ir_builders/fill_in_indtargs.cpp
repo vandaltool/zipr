@@ -3430,7 +3430,7 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 	{
 		// 4 or 8 
 		const auto ptrsize=firp->getArchitectureBitWidth()/8;
-		const char *scoop_contents=scoop->getContents().c_str();
+		const auto scoop_contents=scoop->getContents().c_str();
 		if(scoop->getName()==".init_array" || scoop->getName()==".fini_array" || scoop->getName()==".got.plt" || scoop->getName()==".got")
 		{
 			const auto start_offset= (scoop->getName()==".got.plt") ? 3*ptrsize : 0u;
@@ -3442,7 +3442,7 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 					throw domain_error("Invalid ptr size");
 
 
-				auto insn=lookupInstruction(firp,vo);
+				const auto insn=lookupInstruction(firp,vo);
 
 				// OK for .got scoop to miss, some entries are empty.
 				if(scoop->getName()==".got" && (vo==0 || insn==nullptr))
@@ -3580,39 +3580,45 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 
 					// check that the ibt is only ref'd by .dynsym (and STARS, which is ambigulous
 					// about which section 
-					if(targets[vo].areOnlyTheseSet(
-						ibt_provenance_t::ibtp_dynsym | ibt_provenance_t::ibtp_stars_data))
+					if(targets[vo].areOnlyTheseSet(ibt_provenance_t::ibtp_dynsym | ibt_provenance_t::ibtp_stars_data))
 					{
 						total_unpins++;
+						auto allow_unpin=true;
 						if(do_unpin_opt != -1)
 						{
 							if(total_unpins > do_unpin_opt) 
 							{
-								cout<<"Aborting unpin process mid elf table."<<endl;
-								return;
+								cout<<"Disallowing more new unpins in .dynsym."<<endl;
+								allow_unpin=false;
 							}
-							cout<<"Attempting unpin #"<<total_unpins<<"."<<endl;
+							else
+							{
+								cout<<"Attempting unpin #"<<total_unpins<<"."<<endl;
+							}
 						}
 
-						if(getenv("UNPIN_VERBOSE")!=0)
-							cout<<"Unpinning .dynsym entry no "<<dec<<table_entry_no<<". vo="<<hex<<vo<<endl;
+						// check if we are allowing a new unpin, in which case, unpin here.
+						// or, if we are continuing the rewrite for an already unpinned instruction.
+						if(allow_unpin || already_unpinned.find(insn)!=already_unpinned.end())
+						{
+							already_unpinned.insert(insn);
+							if(getenv("UNPIN_VERBOSE")!=0)
+								cout<<"Unpinning .dynsym entry no "<<dec<<table_entry_no<<". vo="<<hex<<vo<<endl;
 
+							unpin_counts[scoop->getName()]++;
+							auto nr=firp->addNewRelocation(scoop, i+addr_offset, "data_to_insn_ptr", insn);
+							(void)nr;
 
-						// when/if these asserts fail, convert to if and guard the reloc creation.
-
-						unpin_counts[scoop->getName()]++;
-						auto nr=firp->addNewRelocation(scoop, i+addr_offset, "data_to_insn_ptr", insn);
-						(void)nr;
-
-                                                if(insn->getIndirectBranchTargetAddress()==nullptr)
-                                                {
-							auto newaddr=firp->addNewAddress(insn->getAddress()->getFileID(),0);
-                                                        insn->setIndirectBranchTargetAddress(newaddr);
-                                                }
-						else
-                                                {
-                                                        insn->getIndirectBranchTargetAddress()->setVirtualOffset(0);
-                                                }
+							if(insn->getIndirectBranchTargetAddress()==nullptr)
+							{
+								auto newaddr=firp->addNewAddress(insn->getAddress()->getFileID(),0);
+								insn->setIndirectBranchTargetAddress(newaddr);
+							}
+							else
+							{
+								insn->getIndirectBranchTargetAddress()->setVirtualOffset(0);
+							}
+						}
 					}
 					else
 					{
@@ -3628,20 +3634,19 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 			if(getenv("UNPIN_VERBOSE")!=0)
 				cout<<"Skipping unpin of section "<<scoop->getName()<<endl;
 		}
-			
 	}
 
-	int total_elftable_unpins=0;
+	auto total_elftable_unpins=0;
 
 	// print unpin stats.
 	for(map<string,int>::iterator it=unpin_counts.begin(); it!=unpin_counts.end(); ++it)
 	{
-		string name=it->first;
-		int count=it->second;
+		auto name=it->first;
+		auto count=it->second;
 		cout<<"# ATTRIBUTE fill_in_indtargs::unpin_count_"<<name<<"="<<dec<<count<<endl;
 		total_elftable_unpins++;
 	}
-	for(map<string,int>::iterator it=missed_unpins.begin(); it!=missed_unpins.end(); ++it)
+	for(auto it=missed_unpins.begin(); it!=missed_unpins.end(); ++it)
 	{
 		string name=it->first;
 		int count=it->second;
@@ -4213,12 +4218,10 @@ int parseArgs(const vector<string> step_args)
 			auto arg_as_str=step_args[argc_iter];
 			argc_iter++;
 
-			try { 
-				do_unpin_opt = stoul(arg_as_str,nullptr,0);
-			}
-			catch (const invalid_argument &ia)
-			{
-				cerr<<"In --max-unpin, cannot convert "<<arg_as_str<<" to unsigned"<<endl;
+			do_unpin_opt = stoul(arg_as_str,nullptr,0);
+			if (do_unpin_opt == 0)
+			{ 
+				cerr<<"In --max-unpin, cannot convert "<<arg_as_str<<" to unsigned"<<endl; 
 				exit(1);
 			}
 			
