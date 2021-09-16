@@ -597,20 +597,7 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 				new_padding_scoop_name = "zipr_scoop_"+
 				                         to_string(new_padding_scoop_start);
 
-				/*
-				DataScoop_t *new_padding_scoop = nullptr;
-				AddressID_t *new_padding_scoop_start_addr = nullptr,
-				            *new_padding_scoop_end_addr = nullptr;
-				new_padding_scoop_start_addr = new AddressID_t();
-				new_padding_scoop_start_addr->setVirtualOffset(new_padding_scoop_start);
-				m_firp->getAddresses().insert(new_padding_scoop_start_addr);
-				*/
 				auto new_padding_scoop_start_addr=m_firp->addNewAddress(m_firp->getFile()->getBaseID(), new_padding_scoop_start);
-				/*
-				new_padding_scoop_end_addr = new AddressID_t();
-				new_padding_scoop_end_addr->setVirtualOffset(new_padding_scoop_end);
-				m_firp->getAddresses().insert(new_padding_scoop_end_addr);
-				*/
 				auto new_padding_scoop_end_addr  =m_firp->addNewAddress(m_firp->getFile()->getBaseID(), new_padding_scoop_end);
 
 				cout << "Gap filling with a scoop between 0x"
