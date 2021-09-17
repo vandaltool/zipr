@@ -36,7 +36,7 @@ namespace zipr {
 				/*
 				 * Split at this dollop to make a new one!
 				 */
-				new_dollop = existing_dollop->split(start)
+				new_dollop = existing_dollop->split(start);
 				addDollops(new_dollop);
 				return new_dollop;
 			}
@@ -50,8 +50,8 @@ namespace zipr {
 			Instruction_t *fallthrough = nullptr;
 			original_new_dollop = new_dollop = Dollop_t::createNewDollop(start,this);
 
-			auto it_end = new_dollop->end()
-			for (auto it = new_dollop->begin(); ; it != it_end; it++)
+			auto it_end = new_dollop->end();
+			for (auto it = new_dollop->begin(); it != it_end; it++)
 			{
 				auto containing_dollop = getContainingDollop((*it)->getInstruction());
 				if (containing_dollop) 
