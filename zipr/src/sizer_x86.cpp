@@ -9,7 +9,7 @@ using namespace zipr ;
 using namespace IRDB_SDK;
 
 
-ZiprSizerX86_t::ZiprSizerX86_t(Zipr_SDK::Zipr_t* p_zipr_obj) : ZiprSizerBase_t(p_zipr_obj,10,5,2,5,1)
+ZiprSizerX86_t::ZiprSizerX86_t(Zipr_SDK::Zipr_t* p_zipr_obj) : ZiprSizerBase_t(p_zipr_obj,10,5,2,5,1,8)
 {
 }
 

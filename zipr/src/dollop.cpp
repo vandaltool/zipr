@@ -61,12 +61,10 @@ namespace zipr
 		m_was_truncated(false),
 		m_dollop_mgr(mgr)
 	{
-		Instruction_t *loop = nullptr;
-
 		if (start == nullptr)
 			return;
 
-		loop = start;
+		auto loop = start;
 		do {
 			push_back(new DollopEntry_t(loop, this));
 		} while ((nullptr != (loop = loop->getFallthrough())) &&

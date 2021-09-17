@@ -918,13 +918,12 @@ void ZiprImpl_t::PlaceDollops()
 			 * (3) Then there's the possibility that the dollop *has* a fallthrough
 			 * but that the fallthrough is actually pinned and 
 			 * that pin is abutting the end of the dollop in which 
-			 * case we elide (I hate that term) the fallthrough jump.
+			 * case we elide the fallthrough jump.
 			 *
 			 * (4) Then there's the possibility that the dollop has a 
 			 * fallthrough but that the fallthrough is actually abutting
 			 * the beginning of it's fallthrough dollop in which case we elide
-			 * (still hate that term) the fallthrough jump. Very similar
-			 * to case (3).
+			 * the fallthrough jump. Very similar to case (3).
 			 *
 			 * TODO: Consider that allowed_coalescing may invalidate the
 			 * possibility of the validity of the placement in (2).
@@ -1011,13 +1010,8 @@ void ZiprImpl_t::PlaceDollops()
 
 		if (!placed) 
 		{
-			// cout << "Using default place locator." << endl;
-			/*
-			 * TODO: Re-enable this ONCE we figure out why the dollop
-			 * sizes are not being recalculated correctly.
-			 */
-			//placement = memory_space.getFreeRange(to_place->getSize());
-			placement = sizer->DoPlacement(minimum_valid_req_size);
+			/* Actually place the pin */
+			placement = sizer->DoPlacement(minimum_valid_req_size, to_place);
 
 			/*
 			 * Reset allowed_coalescing because DoesPluginAddress
@@ -1028,7 +1022,6 @@ void ZiprImpl_t::PlaceDollops()
 		}
 
 		cur_addr = placement.getStart();
-		//cout << "Adjusting cur_addr to " << std::hex << cur_addr << " at A." << endl;
 		has_fallthrough = (to_place->getFallthroughDollop() != nullptr);
 
 		if (*m_vverbose)
@@ -1039,12 +1032,9 @@ void ZiprImpl_t::PlaceDollops()
 		  	     << "a fallthrough" << endl;
 		}
 
-		const auto has_pinned_ibta=
-				to_place->front()->getInstruction()->getIndirectBranchTargetAddress() && 
-				to_place->front()->getInstruction()->getIndirectBranchTargetAddress()->getVirtualOffset()!=0 ;
-		const auto pinned_ibta_addr = has_pinned_ibta ?  
-				to_place-> front()->getInstruction()-> getIndirectBranchTargetAddress()-> getVirtualOffset() : 
-				VirtualOffset_t(0);
+		const auto ibta = to_place->front()->getInstruction()->getIndirectBranchTargetAddress() ; 
+		const auto has_pinned_ibta= ibta && ibta->getVirtualOffset()!=0 ;
+		const auto pinned_ibta_addr = has_pinned_ibta ?  ibta-> getVirtualOffset() : VirtualOffset_t(0);
 		if (has_pinned_ibta && cur_addr == pinned_ibta_addr)
 		{
 			unsigned int space_to_clear = sizer->SHORT_PIN_SIZE;
@@ -1136,8 +1126,6 @@ void ZiprImpl_t::PlaceDollops()
 
 			to_place->Place(cur_addr);
 
-			// cout << "to_place->getSize(): " << to_place->getSize() << endl;
-
 			fits_entirely = (to_place->getSize() <= (placement.getEnd()-cur_addr));
 			all_fallthroughs_fit = (wcds <= (placement.getEnd()-cur_addr));
 
@@ -1166,7 +1154,7 @@ void ZiprImpl_t::PlaceDollops()
 				 *    within the space allotted.
 				 *    Call this the fits_entirely case.
 				 * 4. The dollop and all of its fallthroughs will fit
-				 *    "[A]ll of its fallthoughs will fit" encompasses
+				 *    '[A]ll of its fallthoughs will fit' encompasses
 				 *    the possibility that one of those is already 
 				 *    placed -- we use the trampoline size at that point.
 				 *    See DetermineDollopSizeInclFallthrough().
@@ -1336,7 +1324,12 @@ void ZiprImpl_t::PlaceDollops()
 				 * even if we do coaelesce something its fallthrough could
 				 * be preplaced ...
 				 */
-				if (!am_coalescing && to_place->getFallthroughDollop() && fallthrough_has_preplacement && fallthrough_dollop_place == cur_addr)
+				if (
+					!am_coalescing && 
+					to_place->getFallthroughDollop() && 
+					fallthrough_has_preplacement && 
+					fallthrough_dollop_place == cur_addr
+				   )
 				{
 					if (*m_verbose)
 						cout << "Dollop had a fallthrough dollop and "
@@ -1401,26 +1394,6 @@ void ZiprImpl_t::PlaceDollops()
 					}
 
 					cur_addr = archhelper->splitDollop(m_firp,to_place, cur_addr);
-#if 0
-					auto patch = archhelper->createNewJumpInstruction(m_firp, nullptr);
-					auto patch_de = new DollopEntry_t(patch, to_place);
-
-					patch_de->setTargetDollop(fallthrough);
-					patch_de->Place(cur_addr);
-					cur_addr+=DetermineDollopEntrySize(patch_de, false);
-					//cout << "Adjusting cur_addr to " << std::hex << cur_addr << " at C." << endl;
-
-					to_place->push_back(patch_de);
-					to_place->setFallthroughPatched(true);
-
-
-					placement_queue.insert({fallthrough, cur_addr});
-					/*
-					 * Since we inserted a new instruction, we should
-					 * check to see whether a plugin wants to plop it.
-					 */
-					AskPluginsAboutPlopping(patch_de->getInstruction());
-#endif
 
 					m_stats->total_did_not_coalesce++;
 
@@ -1616,7 +1589,6 @@ void ZiprImpl_t::UpdatePins()
 		assert(target_dollop_entry_instruction != nullptr &&
 		       target_dollop_entry_instruction == uu.getInstrution());
 
-
 		patch_addr = p.getAddress();
 		target_addr = target_dollop_entry->getPlace();
 
@@ -1662,9 +1634,7 @@ void ZiprImpl_t::UpdatePins()
 
 void ZiprImpl_t::PatchInstruction(RangeAddress_t from_addr, Instruction_t* to_insn)
 {
-
 	// addr needs to go to insn, but insn has not yet been been pinned.
-
 
 	// patch the instruction at address  addr to go to insn.  if insn does not yet have a concrete address,
 	// register that it's patch needs to be applied later. 
@@ -2022,7 +1992,7 @@ void ZiprImpl_t::dump_instruction_map()
 
 		ofs << hex << setw(10)<<insn->getBaseID()
 		    <<hex<<left<<setw(10)<<insn->getAddress()->getVirtualOffset()
-		    <<hex<<left<<setw(10)<< (ibta ? ibta->getVirtualOffset() : 0)
+		    <<hex<<left<<setw(10)<< (ibta ? (ibta->getVirtualOffset()==0 ? "UNPIN" : to_hex_string(ibta->getVirtualOffset())) : "NA")
 		    <<hex<<left<<setw(10)<<addr
 		    <<hex<<left<<setw(10)<<( insn->getFunction() ? insn->getFunction()->getBaseID() : -1 )
 		    << left<<insn->getDisassembly()<<endl;

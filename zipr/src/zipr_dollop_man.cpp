@@ -24,18 +24,20 @@ namespace zipr {
 			/*
 			 * There is a target dollop. But, do we need to split it?
 			 */
-			if (existing_dollop->getDollopEntryCount() &&
-			    existing_dollop->front()->getInstruction() == start) {
+			if (existing_dollop->getDollopEntryCount() && existing_dollop->front()->getInstruction() == start) 
+			{
 				/*
 				 * Just return the existing dollop.
 				 */
 				return existing_dollop;
 			}
-			else {
+			else 
+			{
 				/*
 				 * Split at this dollop to make a new one!
 				 */
-				addDollops(new_dollop = existing_dollop->split(start));
+				new_dollop = existing_dollop->split(start)
+				addDollops(new_dollop);
 				return new_dollop;
 			}
 		}
@@ -44,24 +46,20 @@ namespace zipr {
 			/*
 			 * There is no target dollop. Let's create one!
 			 */
-			DollopEntryList_t::iterator it, it_end;
 			Zipr_SDK::Dollop_t *original_new_dollop = nullptr, *previous_dollop = nullptr;
 			Instruction_t *fallthrough = nullptr;
 			original_new_dollop = new_dollop = Dollop_t::createNewDollop(start,this);
 
-			for (it = new_dollop->begin(), it_end = new_dollop->end();
-			     it != it_end;
-					 it++)
+			auto it_end = new_dollop->end()
+			for (auto it = new_dollop->begin(); ; it != it_end; it++)
 			{
 				auto containing_dollop = getContainingDollop((*it)->getInstruction());
 				if (containing_dollop) 
 				{
-					if (true)
-						cout << "Found an instruction in a new dollop that "
-						     << "is already in a dollop: " << std::hex
-								 << ((nullptr!=(*it)->getInstruction()->getAddress()) ?
-								    (*it)->getInstruction()->getAddress()->getVirtualOffset():0x0)
-								 << endl;
+					cout << "Found an instruction in a new dollop that "
+					     << "is already in a dollop: " << std::hex
+					     << ((nullptr!=(*it)->getInstruction()->getAddress()) ?  (*it)->getInstruction()->getAddress()->getVirtualOffset():0x0)
+					     << endl;
 					/*
 					 * Reliably get a pointer to the containing dollop.
 					 */

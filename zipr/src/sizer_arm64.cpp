@@ -17,7 +17,7 @@ static bool is_tbz_type(Instruction_t* insn)
 
 }
 
-ZiprSizerARM64_t::ZiprSizerARM64_t(Zipr_SDK::Zipr_t* p_zipr_obj) : ZiprSizerBase_t(p_zipr_obj,4,4,4,4,4)
+ZiprSizerARM64_t::ZiprSizerARM64_t(Zipr_SDK::Zipr_t* p_zipr_obj) : ZiprSizerBase_t(p_zipr_obj,4,4,4,4,4,8)
 {
 }
 

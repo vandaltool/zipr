@@ -14,7 +14,7 @@ using namespace IRDB_SDK;
 const auto is_delay_slot_reloc = [](const Relocation_t* reloc) -> bool  { return reloc->getType() == "delay_slot1"; } ;
 
 
-ZiprSizerMIPS32_t::ZiprSizerMIPS32_t(Zipr_SDK::Zipr_t* p_zipr_obj) : ZiprSizerBase_t(p_zipr_obj,8,8,8,8,4)
+ZiprSizerMIPS32_t::ZiprSizerMIPS32_t(Zipr_SDK::Zipr_t* p_zipr_obj) : ZiprSizerBase_t(p_zipr_obj,8,8,8,8,4,8)
 {
 }
 

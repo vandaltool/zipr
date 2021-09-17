@@ -34,7 +34,8 @@ ZiprSizerBase_t::ZiprSizerBase_t(Zipr_SDK::Zipr_t* p_zipr_obj,
 		const size_t p_TRAMPOLINE_SIZE,
 		const size_t p_LONG_PIN_SIZE,
 		const size_t p_SHORT_PIN_SIZE,
-		const size_t p_ALIGNMENT
+		const size_t p_ALIGNMENT,
+		const size_t p_UNPIN_ALIGNMENT
 		) :
 	memory_space(*dynamic_cast<zipr::ZiprMemorySpace_t*>(p_zipr_obj->getMemorySpace())),
 	m_zipr_obj(*dynamic_cast<zipr::ZiprImpl_t*>(p_zipr_obj)),
@@ -42,15 +43,25 @@ ZiprSizerBase_t::ZiprSizerBase_t(Zipr_SDK::Zipr_t* p_zipr_obj,
 	TRAMPOLINE_SIZE         (p_TRAMPOLINE_SIZE         ),
 	LONG_PIN_SIZE           (p_LONG_PIN_SIZE           ),
 	SHORT_PIN_SIZE          (p_SHORT_PIN_SIZE          ),
-	ALIGNMENT               (p_ALIGNMENT               )
+	ALIGNMENT               (p_ALIGNMENT               ),
+	UNPIN_ALIGNMENT         (p_UNPIN_ALIGNMENT         )
 {
 }
 
 
-Range_t ZiprSizerBase_t::DoPlacement(const size_t size) const
+Range_t ZiprSizerBase_t::DoPlacement(const size_t p_size, const Zipr_SDK::Dollop_t* p_dollop) const
 {
-	auto new_place=memory_space.getFreeRange(size+ALIGNMENT-1);	
-	auto aligned_start=(new_place.getStart()+ALIGNMENT-1)&~(ALIGNMENT-1);
+	assert(p_dollop->getSize() > 0);
+	const auto dollop_entry        = p_dollop->front();
+	const auto dollop_insn         = dollop_entry->getInstruction();
+	const auto dollop_ibta         = dollop_insn->getIndirectBranchTargetAddress();
+	const auto isUnpinnedIbta      = dollop_ibta ? dollop_ibta->getVirtualOffset() == 0 : false;
+	const auto sizeToAlloc         = isUnpinnedIbta ? (p_size+UNPIN_ALIGNMENT-1) : (p_size+ALIGNMENT-1);	
+	const auto new_place           = memory_space.getFreeRange(sizeToAlloc);
+	const auto aligned_start_nopin = (new_place.getStart()+ALIGNMENT-1)&~(ALIGNMENT-1);
+	const auto aligned_start_unpin = (new_place.getStart()+UNPIN_ALIGNMENT-1)&~(UNPIN_ALIGNMENT-1);
+	const auto aligned_start       = isUnpinnedIbta ? aligned_start_unpin : aligned_start_nopin;
+
 	return { aligned_start, new_place.getEnd() };
 }
 
