@@ -139,7 +139,6 @@ void ZiprPinnerX86_t::AddPinnedInstructions()
 		if(insn->getIndirectBranchTargetAddress()==nullptr)
 			continue;
 
-/*
 		if(insn->getIndirectBranchTargetAddress()->getVirtualOffset()==0)
                 {
                         // Unpinned IBT. Create dollop and add it to placement
@@ -147,12 +146,10 @@ void ZiprPinnerX86_t::AddPinnedInstructions()
 			m_dollop_mgr.addNewDollops(insn);
 			continue;
                 }
-*/
 
 		// deal with unassigned IBTAs.
 		if(insn->getIndirectBranchTargetAddress()->getVirtualOffset()==0)
 		{
-			cout<<"Setting pin for instruction "<<hex<<insn->getBaseID()<<":"<<insn->getDisassembly() << " to "<<hex<<next_pin_addr<<"\n";
 			insn->getIndirectBranchTargetAddress()->setVirtualOffset(next_pin_addr);
 			next_pin_addr=round_up_to(next_pin_addr+5,pin_align_factor);// sizeof pin is 5, but keep aligned.
 		}
@@ -1462,6 +1459,8 @@ void ZiprPinnerX86_t::OptimizePinnedInstructions()
 		{
 			if (m_verbose)
 			{
+				//DISASM d;
+				//Disassemble(uu.getInstrution(),d);
 				auto d=DecodedInstruction_t::factory(uu.getInstrution());
 				printf("Converting 5-byte pinned jump at %p-%p to patch to %d:%s\n", 
 				       (void*)addr,(void*)(addr+4), uu.getInstrution()->getBaseID(), d->getDisassembly().c_str()/*.CompleteInstr*/);
