@@ -187,23 +187,22 @@ void FileIR_t::assembleRegistry()
                       (bits == 64) ? KS_MODE_64 :
                       throw std::invalid_argument("Cannot map IRDB bit size to keystone bit size");
     
-    const auto machinetype = getArchitecture()->getMachineType();
-    const auto arch = (machinetype == IRDB_SDK::admtI386 || machinetype == IRDB_SDK::admtX86_64) ? KS_ARCH_X86 :
-                      (machinetype == IRDB_SDK::admtArm32) ? KS_ARCH_ARM :
-                      (machinetype == IRDB_SDK::admtAarch64) ? KS_ARCH_ARM64 : 
-                      (machinetype == IRDB_SDK::admtMips64 || machinetype == IRDB_SDK::admtMips32) ? KS_ARCH_MIPS :
-                      throw std::invalid_argument("Cannot map IRDB architecture to keystone architure");
-    auto ks = (ks_engine *)NULL;
-    const auto err = ks_open(arch, mode, &ks);
+	const auto machinetype = getArchitecture()->getMachineType();
+	const auto arch = (machinetype == IRDB_SDK::admtI386 || machinetype == IRDB_SDK::admtX86_64) ? KS_ARCH_X86 :
+	                  (machinetype == IRDB_SDK::admtArm32) ? KS_ARCH_ARM :
+	                  (machinetype == IRDB_SDK::admtAarch64) ? KS_ARCH_ARM64 : 
+	                  (machinetype == IRDB_SDK::admtMips64 || machinetype == IRDB_SDK::admtMips32) ? KS_ARCH_MIPS :
+	                  throw std::invalid_argument("Cannot map IRDB architecture to keystone architure");
+
+	auto ks = (ks_engine *)NULL;
+	const auto err = ks_open(arch, mode, &ks);
 	assert(err == KS_ERR_OK);
 
 	ks_option(ks, KS_OPT_SYNTAX, KS_OPT_SYNTAX_NASM);
 
 	//Build and set assembly string
-	for(auto it : assembly_registry) {
-		// do ks_asm call here
-		//assert if err is equal to KS_ERR_OK
-		//Check if count = 1
+	for(auto it : assembly_registry) 
+	{
 		assemblestr(ks, it.first, it.second.c_str(), encode, size, count);
 	}
 
@@ -1580,6 +1579,7 @@ std::map<db_id_t,DataScoop_t*> FileIR_t::ReadScoopsFromDB
 // Lookup a scoop by address
 IRDB_SDK::DataScoop_t* FileIR_t::findScoop(const IRDB_SDK::VirtualOffset_t &addr) const
 {
+/*
 	for(auto it=scoops.begin(); it!=scoops.end(); ++it)
 	{
 		auto s=dynamic_cast<DataScoop_t*>(*it);
@@ -1589,7 +1589,11 @@ IRDB_SDK::DataScoop_t* FileIR_t::findScoop(const IRDB_SDK::VirtualOffset_t &addr
 		if( s->getStart()->getVirtualOffset() <= addr && addr <= s->getEnd()->getVirtualOffset() )
 			return *it;
 	}
-	return NULL;
+*/
+	const auto found = find_if(ALLOF(scoops), [addr](IRDB_SDK::DataScoop_t* s) {
+		return s->getStart()->getVirtualOffset() <= addr && addr <= s->getEnd()->getVirtualOffset();
+	});
+	return found==scoops.end() ? NULL : *found;
 }
 
 

@@ -93,9 +93,15 @@ class DataScoop_t : public BaseObj_t, virtual public IRDB_SDK::DataScoop_t
 		void clearWriteable() { permissions &= ~permissions_w; }
 		void clearExecuteable() { permissions &= ~permissions_x; }
 		void clearRelRo() { is_relro=false; }
+                void replaceBytes(std::size_t pos, const std::string& newBytes)
+		{ 
+			contents.replace(pos,newBytes.length(),newBytes); 
+		}
 
                 std::string WriteToDB(File_t *fid, db_id_t newid);
 		std::string WriteToDBRange(File_t *fid, db_id_t newid, int start, int end, std::string table_name);
+
+
 
 	friend DataScoopByAddressComp_t;
 
