@@ -138,6 +138,7 @@ class MoveGlobals_t : public IRDB_SDK::Transform_t
 		const bool random;
 		const bool aggressive;
 		const bool m_use_stars;
+		const bool m_verbose;
 
 
 		std::unique_ptr<IRDB_SDK::StaticGlobalStartMap_t > deep_global_static_ranges;

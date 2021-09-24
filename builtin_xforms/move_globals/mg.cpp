@@ -118,10 +118,9 @@ MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::MoveGlobals_t(
 	max_moveables(p_max_mov),
         random(p_random),
 	aggressive(p_aggressive),
-	m_use_stars(p_use_stars)
-
-{
-
+	m_use_stars(p_use_stars),
+	m_verbose(getenv("MG_VERBOSE") != nullptr) 
+{ 
 }
 
 template <class T_Sym, class  T_Rela, class T_Rel, class T_Dyn, class T_Extractor>
@@ -220,11 +219,11 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ParseSyms(EXEIO::exeio
 
 	auto max_id=getFileIR()->getMaxBaseID();
 
-	if(getenv("MG_VERBOSE"))
+	if(m_verbose)
 		cout<<"Initial scoops:"<<endl;
 	for(const auto &scoop : getFileIR()->getDataScoops())
 	{
-		if(getenv("MG_VERBOSE"))
+		if(m_verbose)
 		{
 			cout<<"scoop: "<<scoop->getName()<<" ("<<hex<<scoop->getStart()->getVirtualOffset()
 				<<"-"<<scoop->getEnd()->getVirtualOffset()<<")"<<endl;
@@ -273,7 +272,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ParseSyms(EXEIO::exeio
 	{
 		// For all sections
 		auto sec = reader.sections[i];
-		char* max_splits = getenv("MG_MAX_SPLITS");
+		const char* max_splits = m_verbose ? getenv("MG_MAX_SPLITS") : "0";
 
 		// if it's a symtab section
 		if ( SHT_SYMTAB == sec->get_type() || SHT_DYNSYM == sec->get_type() ) 
@@ -312,7 +311,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ParseSyms(EXEIO::exeio
 
 					auto before=(DataScoop_t*)NULL, containing=(DataScoop_t*)NULL, after=(DataScoop_t*)NULL;
 
-					if(getenv("MG_VERBOSE"))
+					if(m_verbose)
 					{
 						cout<<"\ttosplit: "<<hex<<tosplit->getStart()->getVirtualOffset()<<"-"
 							<<tosplit->getEnd()->getVirtualOffset();
@@ -336,7 +335,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ParseSyms(EXEIO::exeio
 
 					getFileIR()->splitScoop(tosplit, value, size, before,containing,after,&max_id);
 
-					if(getenv("MG_VERBOSE"))
+					if(m_verbose)
 					{
 						if(before)
 						{
@@ -386,8 +385,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ParseSyms(EXEIO::exeio
 template <class T_Sym, class  T_Rela, class T_Rel, class T_Dyn, class T_Extractor>
 void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FilterScoops()
 {
-	const auto mg_env = getenv("MG_VERBOSE");
-
+	const auto mg_env = m_verbose;
 
 	// filter using the move_only option
 	DataScoopSet_t move_only_scoops;	
@@ -446,7 +444,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FilterScoops()
 	});
 	if(dont_move!="")
 	{
-		if(getenv("MG_VERBOSE"))
+		if(m_verbose)
 		{
 			cout<<"Moveable Scoops after dont_move filter:"<<endl;
 			for(auto &s : moveable_scoops)
@@ -518,7 +516,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::HandleMemoryOperand(De
 	// no mem arg.
 	if(the_arg==the_arg_container.end())
 	{
-		if(getenv("MG_VERBOSE"))
+		if(m_verbose)
 		{
 			cout << "Note:  "<<hex<<" no memory op in:";
 			cout << insn->getBaseID()<<":"<<disasm.getDisassembly();
@@ -530,7 +528,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::HandleMemoryOperand(De
 	// shared objects don't need this, you have to use a pcrel addressing mode.
 	if(!arg_has_relative(**the_arg) && exe_reader->isDLL())
 	{
-		if(getenv("MG_VERBOSE"))
+		if(m_verbose)
 		{
 			cout << "Note:  "<<hex<<" no dll-style address in:";
 			cout << insn->getBaseID()<<":"<<disasm.getDisassembly();
@@ -562,7 +560,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::HandleMemoryOperand(De
 		if (to1 && (to1->isExecuteable() || moveable_scoops.find(to1) == moveable_scoops.end())) 	  
 		{  
 			// do nothing, no log or action is necessary for pointers to code.
-			if(getenv("MG_VERBOSE"))
+			if(m_verbose)
 			{
 				cout<<"Skipping (scoop exists, but exe scoop, or not moveable scoop) pcrel mem op in insn: "
 					<< hex << insn->getBaseID()<<":"<<disasm.getDisassembly()<<" to "
@@ -578,7 +576,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::HandleMemoryOperand(De
 			Relocation_t* pcrel_reloc=FindRelocationWithType(insn,"pcrel");
 			if(pcrel_reloc)
 			{
-				if(getenv("MG_VERBOSE"))
+				if(m_verbose)
 				{
 					cout<<"Setting pcrel mem op in insn: "
 						<< hex <<insn->getBaseID()<<":"<<disasm.getDisassembly()<<" to "
@@ -590,7 +588,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::HandleMemoryOperand(De
 			}
 			else 
 			{
-				if(getenv("MG_VERBOSE"))
+				if(m_verbose)
 				{
 					cout<<"Absolute mem-op to scoop in insn: "
 						<< hex << insn->getBaseID()<<":"<<disasm.getDisassembly()<<" to "
@@ -604,7 +602,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::HandleMemoryOperand(De
 		}
 		else if ( -small_memory_threshold < (int)rel_addr1 && (int)rel_addr1 < small_memory_threshold )
 		{
-			if((0 != rel_addr1) && getenv("MG_VERBOSE"))
+			if((0 != rel_addr1) && m_verbose)
 			{
 				cout << "Note:  "<<hex<<rel_addr1<<" not declared address in (low addr thresh) :";
 				cout << insn->getBaseID()<<":"<<disasm.getDisassembly();
@@ -613,7 +611,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::HandleMemoryOperand(De
 		}
 		else 
 		{
-			if ((0 != rel_addr1) && getenv("MG_VERBOSE"))
+			if ((0 != rel_addr1) && m_verbose)
 			{
 				cout << "Note:  "<<hex<<rel_addr1<<" not declared address in (no scoop):";
 				cout << insn->getBaseID()<<":"<<disasm.getDisassembly();
@@ -623,7 +621,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::HandleMemoryOperand(De
 	}
 	else
 	{
-		if(getenv("MG_VERBOSE"))
+		if(m_verbose)
 		{
 			cout << "Note:  "<<hex<<" no address in:";
 			cout << insn->getBaseID()<<":"<<disasm.getDisassembly();
@@ -646,7 +644,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ApplyPcrelMemoryReloca
 	//  That problem is fixed, but it is more efficient and safer to
 	//  avoid editing instructions that reference re-pinned scoops.
 	if (moveable_scoops.find(to) == moveable_scoops.cend()) {
-		if (getenv("MG_VERBOSE")) {
+		if (m_verbose) {
 			cout << "Avoiding editing of insn at " << hex << insn->getBaseID() << " after repinning scoop "
 				<< to->getName() << endl;
 		}
@@ -673,8 +671,6 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ApplyPcrelMemoryReloca
 template <class T_Sym, class  T_Rela, class T_Rel, class T_Dyn, class T_Extractor>
 void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ApplyAbsoluteMemoryRelocation(Instruction_t* insn, DataScoop_t* to)
 {
-	//DISASM disasm;
-	//Disassemble(insn,disasm);
 	const auto disasmp=DecodedInstruction_t::factory(insn);
 	const auto &disasm=*disasmp;
 	auto operands=disasm.getOperands();
@@ -686,7 +682,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ApplyAbsoluteMemoryRel
 	//  That problem is fixed, but it is more efficient and safer to
 	//  avoid editing instructions that reference re-pinned scoops.
 	if (moveable_scoops.find(to) == moveable_scoops.cend()) {
-		if (getenv("MG_VERBOSE")) {
+		if (m_verbose) {
 			cout << "Avoiding editing of insn at " << hex << insn->getBaseID() << " after repinning scoop "
 				<< to->getName() << endl;
 		}
@@ -1061,8 +1057,6 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 			[&](Instruction_t* func_insn)
 			{
 				// disassemble instruction 
-				//DISASM func_insn_disasm;
-				//Disassemble(func_insn,func_insn_disasm);
 				const auto func_insn_disasmp=DecodedInstruction_t::factory(func_insn);
 				const auto &func_insn_disasm=*func_insn_disasmp;
 				auto func_insn_disasm_operands=func_insn_disasm.getOperands();
@@ -1091,8 +1085,8 @@ DataScoop_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::DetectProperSc
 					if(arg_has_relative(*(*the_arg)))
 						addr+=insn->getDataBits().size();
 		
-					if(getFileIR()->findScoop(addr) == scoop_for_prev)	
-						return true;	// return from lamba
+					if(findScoopByAddress(addr) == scoop_for_prev)	
+						return true;  // return from lamba
 					
 				}
 
@@ -1137,13 +1131,13 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ApplyImmediateRelocati
 	const auto &disasm=*disasmp;
 	VirtualOffset_t rel_addr2=disasm.getImmediate(); // Instruction.Immediat;
 
-#if 1 // don't change instructions that reference re-pinned scoops.
+#if 1   // don't change instructions that reference re-pinned scoops.
 	// This was necessary because we were not getting the zipr_unpin_plugin
 	//  to undo our changes to the instruction in the case of a re-pinned scoop.
 	//  That problem is fixed, but it is more efficient and safer to
 	//  avoid editing instructions that reference re-pinned scoops.
 	if (moveable_scoops.find(to) == moveable_scoops.cend()) {
-		if (getenv("MG_VERBOSE")) {
+		if (m_verbose) {
 			cout << "Avoiding editing of insn at " << hex << insn->getBaseID() << " after repinning scoop "
 				<< to->getName() << endl;
 		}
@@ -1217,7 +1211,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::HandleImmediateOperand
 		   disasm.getMnemonic() == string("add")  ||
 		   disasm.getMnemonic() == string("sub") )
 		{
-			if(getenv("MG_VERBOSE"))
+			if(m_verbose)
 			{
 				cout<<"Found non-mem ref in insn: "<<insn->getBaseID()<<":"<<disasm.getDisassembly()<<" to "
 					<< to2->getName() <<"("
@@ -1234,9 +1228,9 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::HandleImmediateOperand
 	}
 	else  
 	{
-		if ((int)rel_addr2 < -small_memory_threshold || (int) rel_addr2 > small_memory_threshold || getenv("MG_VERBOSE"))
+		if ((int)rel_addr2 < -small_memory_threshold || (int) rel_addr2 > small_memory_threshold || m_verbose)
 		{
-			if ((0 != rel_addr2) && getenv("MG_VERBOSE"))
+			if ((0 != rel_addr2) && m_verbose)
 			{
 				cout << "Note:  " << hex << rel_addr2 << " not declared address in:";
 				cout << insn->getBaseID() << ":" << disasm.getDisassembly();
@@ -1250,16 +1244,8 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::HandleImmediateOperand
 template <class T_Sym, class  T_Rela, class T_Rel, class T_Dyn, class T_Extractor>
 void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FindInstructionReferences()
 {
-
-
-	for(InstructionSet_t::iterator iit=getFileIR()->getInstructions().begin();
-		iit!=getFileIR()->getInstructions().end();
-		++iit
-	   )
+	for(auto insn : getFileIR()->getInstructions())
 	{
-		Instruction_t* insn=*iit;
-		//DISASM disasm;
-		//Disassemble(insn,disasm);
 		auto disasmp=DecodedInstruction_t::factory(insn);
 		auto &disasm=*disasmp;
 		auto disasm_operands=disasm.getOperands();
@@ -1267,7 +1253,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FindInstructionReferen
 		// find memory arg.
 		const auto the_arg=find_memory_operand(disasm_operands);
 
-		if(getenv("MG_VERBOSE"))
+		if(m_verbose)
 			cout<<"Considering "<<hex<<insn->getBaseID()<<":"<<disasm.getDisassembly()<<endl;
 		HandleMemoryOperand(disasm,the_arg,insn, disasm_operands);
 		HandleImmediateOperand(disasm,the_arg,insn);
@@ -1292,30 +1278,25 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::ApplyDataRelocation(Da
 	else
 		assert(0);
 		
-	/*
-	Relocation_t* reloc=new Relocation_t(BaseObj_t::NOT_IN_DATABASE, offset, "dataptr_to_scoop", to);
-	from->getRelocations().insert(reloc);
-	getFileIR()->getRelocations().insert(reloc);
-	*/
 	auto reloc=getFileIR()->addNewRelocation(from,offset, "dataptr_to_scoop", to);
 	(void)reloc; // just giving to ir
 
 	VirtualOffset_t newval=val-to->getStart()->getVirtualOffset();
 
-	auto str=from->getContents();
+	// auto str=from->getContents();
 	// create new value for pointer.
 	if(byte_width==4)
 	{
-		unsigned int intnewval=(unsigned int)newval;	 // 64->32 narrowing OK. 
-		str.replace(offset, byte_width, (char*)&intnewval, byte_width);
+		const auto intnewval=(unsigned int)newval;	 // 64->32 narrowing OK. 
+		from->replaceBytes(offset, string(reinterpret_cast<const char*>(&intnewval), byte_width));
 	}
 	else if(byte_width==8)
 	{
-		str.replace(offset, byte_width, (char*)&newval, byte_width);
+		from->replaceBytes(offset,string(reinterpret_cast<const char*>(&newval),byte_width));
 	}
 	else
 		assert(0);
-	from->setContents(str);
+	// from->setContents(str);
 }
 
 
@@ -1362,8 +1343,9 @@ static inline bool is_part_of_string(VirtualOffset_t val, const DataScoop_t* fro
 			return false;
 	}
 
+#if 0
 	// we found enough string chars before the (candidate) pointer value, so we think that a string is here, not a pointer.
-	if(getenv("MG_VERBOSE"))
+	if(m_verbose)
 	{
 		cout<<"Found string as non-ref "<<hex<<val<<" at "<<from->getName()<<"+"<<offset<<" ("
 			<<hex<<from->getStart()->getVirtualOffset()<<"-" 
@@ -1372,6 +1354,7 @@ static inline bool is_part_of_string(VirtualOffset_t val, const DataScoop_t* fro
 			<<hex<<to->getStart()->getVirtualOffset()<<"-" 
 			<<hex<<to->getEnd()->getVirtualOffset()<<")"<<endl;
 	}
+#endif
 	return true;
 
 }
@@ -1411,7 +1394,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FindDataReferences()
 			auto to=findScoopByAddress(val);	
 			if(to)
 			{
-				if(getenv("MG_VERBOSE"))
+				if(m_verbose)
 				{
 					cout<<"Found ref "<<hex<<val<<" at "<<scoop->getName()<<"+"<<i<<" ("
 						<<hex<<scoop->getStart()->getVirtualOffset()<<"-" 
@@ -1519,7 +1502,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FindDataReferences()
 
 				if(move_ok)
 				{
-					if(getenv("MG_VERBOSE"))
+					if(m_verbose)
 					{
 						cout<<"Found ref "<<hex<<val<<" at "<<scoop->getName()<<"+"<<i<<" ("
 							<<hex<<scoop->getStart()->getVirtualOffset()<<"-" 
@@ -1537,7 +1520,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FindDataReferences()
 				}
 				else
 				{
-					if(getenv("MG_VERBOSE"))
+					if(m_verbose)
 					{
 						cout<<"Found ref-looking-constant "<<hex<<val<<" at "<<scoop->getName()<<"+"<<i<<" ("
 							<<hex<<scoop->getStart()->getVirtualOffset()<<"-" 
@@ -1551,7 +1534,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FindDataReferences()
 				{
 					if(!is_elftable(to))
 					{
-						if(getenv("MG_VERBOSE"))
+						if(m_verbose)
 						{
 							cout<<"Ref-looking-constant "<<hex<<val<<" at "<<scoop->getName()<<"+"<<i<<" ("
 								<<hex<<scoop->getStart()->getVirtualOffset()<<"-" 
@@ -1564,7 +1547,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FindDataReferences()
 					}
 					else
 					{
-						if(getenv("MG_VERBOSE"))
+						if(m_verbose)
 						{
 							cout<<"Ref-looking-constant "<<hex<<val<<" at "<<scoop->getName()<<"+"<<i<<" ("
 								<<hex<<scoop->getStart()->getVirtualOffset()<<"-" 
@@ -1578,7 +1561,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FindDataReferences()
 			}
 			else
 			{
-				if((0 != val) && getenv("MG_VERBOSE"))
+				if((0 != val) && m_verbose)
 				{
 					cout<<"Constant "<<hex<<val<<" at "<<scoop->getName()<<"+"<<i<<" ("
 						<<hex<<scoop->getStart()->getVirtualOffset()<<"-" 
@@ -1605,7 +1588,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FindDataReferences()
 				unsigned int offset=(unsigned int)((VirtualOffset_t)symptr)-((VirtualOffset_t)data);
 				offset+=((VirtualOffset_t)&symptr->st_value)-(VirtualOffset_t)symptr;
 
-				if(getenv("MG_VERBOSE"))
+				if(m_verbose)
 				{
 
 					cout<<"Found dynsym:st_value ref "<<hex<<val<<" at "<<scoop->getName()<<"+"<<offset<<" ("
@@ -1642,7 +1625,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FindDataReferences()
 					unsigned int offset=(unsigned int)((VirtualOffset_t)symptr)-((VirtualOffset_t)data);
 					offset+=((VirtualOffset_t)&symptr->r_offset)-(VirtualOffset_t)symptr;
 
-					if(getenv("MG_VERBOSE"))
+					if(m_verbose)
 					{
 						cout<<"Found rela:r_offset ref "<<hex<<val<<" at "<<scoop->getName()<<"+"<<offset<<" ("
 							<<hex<<scoop->getStart()->getVirtualOffset()<<"-" 
@@ -1678,7 +1661,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FindDataReferences()
 					unsigned int offset=(unsigned int)((VirtualOffset_t)symptr)-((VirtualOffset_t)data);
 					offset+=((VirtualOffset_t)&symptr->r_addend)-(VirtualOffset_t)symptr;
 
-					if(getenv("MG_VERBOSE"))
+					if(m_verbose)
 					{
 						cout<<"Found rela:r_added ref "<<hex<<val<<" at "<<scoop->getName()<<"+"<<offset<<" ("
 							<<hex<<scoop->getStart()->getVirtualOffset()<<"-" 
@@ -1700,7 +1683,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FindDataReferences()
 					unsigned int offset=(unsigned int)((VirtualOffset_t)symptr)-((VirtualOffset_t)data);
 					offset+=((VirtualOffset_t)&symptr->r_offset)-(VirtualOffset_t)symptr;
 
-					if(getenv("MG_VERBOSE"))
+					if(m_verbose)
 					{
 						cout<<"Found rela:r_offset ref "<<hex<<val<<" at "<<scoop->getName()<<"+"<<offset<<" ("
 							<<hex<<scoop->getStart()->getVirtualOffset()<<"-" 
@@ -1749,7 +1732,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FindDataReferences()
 						auto offset=(unsigned int) (((VirtualOffset_t)symptr)-((VirtualOffset_t)data));
 						offset+=((VirtualOffset_t)&symptr->d_un.d_val)-(VirtualOffset_t)symptr;
 
-						if(getenv("MG_VERBOSE"))
+						if(m_verbose)
 						{
 
 							cout<<"Found .dynamic:d_val ref "<<hex<<val<<" at "<<scoop->getName()<<"+"<<offset<<" ("
@@ -2070,7 +2053,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::UpdateScoopLocations()
 	for_each(ALLOF(pcrel_refs_to_scoops),
 		[this] (const Insn_fixup_t  & it)
 	{
-		if (getenv("MG_VERBOSE"))
+		if (m_verbose)
 			cout << "Applying pcrel w/wrt from " << it.from->getDisassembly() << " to " << it.to->getName() << " at " << hex << it.from->getBaseID() << endl;
 		ApplyPcrelMemoryRelocation(it.from,it.to);
 	});
@@ -2078,7 +2061,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::UpdateScoopLocations()
 	for_each(ALLOF(absolute_refs_to_scoops),
 		[this] (const Insn_fixup_t  & it)
 	{
-		if (getenv("MG_VERBOSE"))
+		if (m_verbose)
 			cout << "Applying absptr_to_scoop from " << it.from->getDisassembly() << " to " << it.to->getName() << " at " << hex << it.from->getBaseID() << endl;
 		ApplyAbsoluteMemoryRelocation(it.from,it.to);
 	});
@@ -2086,14 +2069,14 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::UpdateScoopLocations()
 	for_each(ALLOF(immed_refs_to_scoops),
 		[this] (const Insn_fixup_t  & it)
 	{
-		if (getenv("MG_VERBOSE"))
+		if (m_verbose)
 			cout << "Applying immedptr_to_scoop from " << it.from->getDisassembly() << " to " << it.to->getName() << " at " << hex << it.from->getBaseID() << endl;
 		ApplyImmediateRelocation(it.from, it.to);
 	});
 	for_each(ALLOF(data_refs_to_scoops),
 		[this] (const Scoop_fixup_t  & it)
 	{
-		if (getenv("MG_VERBOSE"))
+		if (m_verbose)
 			cout << "Applying dataptr_to_scoop from " << it.from->getName() << " to " << it.to->getName() << " at " << hex << it.offset << endl;
 		ApplyDataRelocation(it.from, it.offset, it.to);
 	});
@@ -2112,10 +2095,8 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::UpdateScoopLocations()
 template <class T_Sym, class  T_Rela, class T_Rel, class T_Dyn, class T_Extractor>
 Relocation_t* MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::FindRelocationWithType(BaseObj_t* obj, std::string type)
 {
-	RelocationSet_t::iterator rit = obj->getRelocations().begin();
-	for( ; rit!=obj->getRelocations().end(); rit++)
+	for(auto reloc : obj->getRelocations())
 	{
-		Relocation_t *reloc=*rit;
 		if (reloc->getType() == type)
 			return reloc;
 	}
@@ -2137,7 +2118,7 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::PrintStats()
 		inserter(unmoveable_scoops,unmoveable_scoops.end()));
 		
 	
-	if(getenv("MG_VERBOSE"))
+	if(m_verbose)
 	{
 		cout<<"Moveable scoops: "<<endl;
 		for_each(ALLOF(moveable_scoops), [](DataScoop_t* scoop)
