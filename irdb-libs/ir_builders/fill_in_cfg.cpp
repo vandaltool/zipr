@@ -65,6 +65,8 @@ void PopulateCFG::populate_instruction_map
 		const auto vo    = insn->getAddress()->getVirtualOffset();
 		const auto p     = pair<DatabaseID_t,VirtualOffset_t>(fileID,vo);
 
+		cout << "VO: " << vo << " FILEID: " << fileID << endl; 
+
 		assert(insnMap[p]==NULL);
 		insnMap[p]=insn;
 	}
@@ -1049,9 +1051,9 @@ int PopulateCFG::executeStep()
 		cerr<<"Unexpected database error: "<<pnide<<endl;
 		return -1;
         }
-	catch(...)
+	catch(const exception& e)
 	{
-		cerr<<"Unexpected error"<<endl;
+		cerr << "Unexpected error: "<< e.what() << endl;
 		return -1;
 	}
 

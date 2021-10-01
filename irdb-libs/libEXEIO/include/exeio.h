@@ -12,7 +12,7 @@ namespace EXEIO
 {
 	class exeio_t; // forward decl
 
-	typedef enum { ELF64, ELF32, PE32, PE64 } execlass_t;
+	typedef enum { ELF64, ELF32, PE32, PE64 } execlass_t;//maybe add elf filetype
 	typedef enum {  mtX86_64, mtI386, mtArm32, mtAarch64, mtMips32, mtMips64 } MachineType_t; 
 
 	typedef uintptr_t virtual_offset_t;
@@ -34,6 +34,7 @@ namespace EXEIO
 			virtual int get_size() const =0;
 			virtual int get_type() const =0;
 			virtual EXEIO::virtual_offset_t get_address() const =0;
+			virtual EXEIO::virtual_offset_t get_offset() const =0;//ADDED 10-1
 			virtual bool mightContainStrings() const =0;
 	};		
 

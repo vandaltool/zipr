@@ -1055,7 +1055,11 @@ compatcheck()
 		echo "Detected PE32 file"
 		return
 	fi
-
+	file $1 |egrep  "ELF.*relocatable" > /dev/null 2>&1
+        if [ $? = 0 ]; then
+                echo "Detected KO Object file"
+                return
+        fi
 
 	echo ------------------------
 	echo "Input file ($infile) failed compatability check.  Cannot protect this file:"

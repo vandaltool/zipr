@@ -37,6 +37,9 @@ namespace EXEIO
 				EXEIO::virtual_offset_t base = b->get_image_base_64();
 				return base + s->get_virtual_address(); 
 			}
+			EXEIO::virtual_offset_t get_offset() const { 
+				return get_address(); 
+			}
 			bool mightContainStrings() const { assert(0); }
 
 		private:

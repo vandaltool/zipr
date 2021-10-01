@@ -1094,6 +1094,7 @@ void FileIR_t::setArchitecture()
 		const auto ft = 
 			e_type == ET_DYN  ? IRDB_SDK::adftELFSO  :
 			e_type == ET_EXEC ? IRDB_SDK::adftELFEXE :
+			e_type == ET_REL  ? IRDB_SDK::adftELFREL :
 			throw std::invalid_argument("Unknown file type");
 
 		const auto e_machine32 = elf_big_endian ? be16toh(hdr_union.ehdr32.e_machine) : le16toh(hdr_union.ehdr32.e_machine) ; 
