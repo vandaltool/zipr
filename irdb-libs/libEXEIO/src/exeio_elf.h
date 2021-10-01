@@ -33,7 +33,7 @@ namespace EXEIO
 			int get_size() const { return s->get_size(); }
 			int get_type() const { return s->get_type(); }
 			EXEIO::virtual_offset_t get_address() const { return s->get_address(); }
-			EXEIO::virtual_offset_t get_offset() const { return s->get_offset(); }//ADDED 10-1
+			EXEIO::virtual_offset_t get_offset() const { return s->get_address(); }//ADDED 10-1
 			bool mightContainStrings() const { assert(0); }
 
 		private:
