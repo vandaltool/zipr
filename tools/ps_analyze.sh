@@ -12,7 +12,7 @@ source $(dirname $0)/ps_wrapper.source $0
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PEASOUP_HOME/irdb-libs/lib
 
-realpath() 
+realpath()
 {
   \cd "$1"
   /bin/pwd
@@ -36,8 +36,8 @@ init_globals()
 
 	export backend=strata
 
-	# 
-	# set default values for 
+	#
+	# set default values for
 	#
 
 	#CONCOLIC_DIR=concolic.files_a.stratafied_0001
@@ -47,7 +47,7 @@ init_globals()
 
 	user_critical_steps=""
 
-	# 
+	#
 	# By default, big data approach is off
 	# To turn on the big data approach: modify check_options()
 	#
@@ -77,7 +77,7 @@ init_globals()
 
 	#
 	# stepnum used for counting how many steps peasoup executes
-	# 
+	#
 	stepnum=0
 
 
@@ -143,7 +143,7 @@ adjust_lib_path()
 	for i in `echo $LD_LIBRARY_PATH | sed 's/:/ /g'`
 	do
 		alp_newdir=`realpath $i	 2> /dev/null`
-		if [ $? = 0  ] ; then 
+		if [ $? = 0  ] ; then
 			NEWPATH=$NEWPATH:$alp_newdir
 		fi
 	done
@@ -168,12 +168,12 @@ check_step_option()
 
 	# check if step is specified to be on
 	echo $step_specifier|egrep "=on$" > /dev/null
-	if [[ $? -eq 0 ]] 
+	if [[ $? -eq 0 ]]
 	then
 		specifies_step_on=1
 	fi
 
-	# if user didn't specify, sanity check further 
+	# if user didn't specify, sanity check further
 	if [[ $specifies_step_on -eq 0 ]] && [[ $specifies_step_off -eq 0 ]]
 	then
 		echo $step_specifier|egrep "=" > /dev/null
@@ -217,9 +217,9 @@ check_step_option()
 
 set_step_option()
 {
-	step=`echo "$1" | cut -d: -f1` 
-	option=`echo "$1" | cut -s -d: -f2-` 
-	no_delim_option=`echo "$1" | cut -d: -f99999-` 
+	step=`echo "$1" | cut -d: -f1`
+	option=`echo "$1" | cut -s -d: -f2-`
+	no_delim_option=`echo "$1" | cut -d: -f99999-`
 
 	if [[ ! -z $no_delim_option ]]; then
 		set_step_option "$last_step_parsed:$no_delim_option"
@@ -299,25 +299,25 @@ check_options()
 		fi
 	done
 
-	# 
+	#
 	# loop to process options.
-	# 
+	#
 
-	# Note that we use `"$@"' to let each command-line parameter expand to a 
+	# Note that we use `"$@"' to let each command-line parameter expand to a
 	# separate word. The quotes around `$@' are essential!
 	# We need TEMP as the `eval set --' would nuke the return value of getopt.
 	short_opts="s:c:t:w:b:o:h"
-	long_opts="--long step-option: 
-		   --long step: 
-		   --long critical-step: 
-		   --long timeout: 
-		   --long id:  				
-		   --long name:	  			
-		   --long manual_test_script: 
-		   --long manual_test_coverage_file: 
-		   --long watchdog: 
-		   --long backend:  			
-		   --long tempdir:  			
+	long_opts="--long step-option:
+		   --long step:
+		   --long critical-step:
+		   --long timeout:
+		   --long id:
+		   --long name:
+		   --long manual_test_script:
+		   --long manual_test_coverage_file:
+		   --long watchdog:
+		   --long backend:
+		   --long tempdir:
 		   --long help
 		   --long usage
 		   --long stop-after:
@@ -375,35 +375,35 @@ check_options()
 #            			watchdog_val=$2
 #            			shift 2
 #            		;;
-			-s|--step) 
+			-s|--step)
 				check_step_option $2
-				shift 2 
+				shift 2
 			;;
-			-c|--critical-step) 
+			-c|--critical-step)
 				check_step_option $2
 				step_name=$(echo "$2" | sed "s/=on *$//"|sed "s/=off *$//")
 				user_critical_steps="$user_critical_steps $step_name "
-				shift 2 
+				shift 2
 			;;
-			--manual_test_script) 
+			--manual_test_script)
 				manual_test_script=$2
-				shift 2 
+				shift 2
 			;;
-			--manual_test_coverage_file) 
+			--manual_test_coverage_file)
 				manual_test_coverage_file=$2
-				shift 2 
+				shift 2
 			;;
-			-t|--timeout) 
+			-t|--timeout)
 				set_timer $2 & TIMER_PID=$!
-				shift 2 
+				shift 2
 			;;
-			--id) 
+			--id)
 				JOBID=$2
-				shift 2 
+				shift 2
 			;;
-			--name) 
+			--name)
 				DB_PROGRAM_NAME=$2
-				shift 2 
+				shift 2
 			;;
 			-h|--help|--usage)
 				usage
@@ -425,11 +425,11 @@ check_options()
 				dump_after_step=$2
 				shift 2
 			;;
-			--) 	shift 
-				break 
+			--) 	shift
+				break
 			;;
-			*) 	echo "Internal error!" 
-		 		exit -2 
+			*) 	echo "Internal error!"
+		 		exit -2
 			;;
 		esac
 	done
@@ -480,8 +480,8 @@ check_options()
 		echo "Cannot explicitly disable both rida and meds_static (or disable meds_static without enabling rida)"
 		exit -4
 	fi
-		
-	
+
+
 
 
 	# record a job id
@@ -499,7 +499,7 @@ check_options()
 	fi
 	for arg do echo '--> '"\`$arg'" ; done
 	if [ ! -z $1 ]; then
-		exit -3;	
+		exit -3;
 	fi
 
 	#
@@ -574,7 +574,7 @@ stop_if_error()
 		meds_static|rida)
 			return 1;
 		;;
-		# DB operations are necessary 
+		# DB operations are necessary
 		pdb_register|clone|fix_calls|fill_in_cfg|fill_in_indtargs|spasm|fast_spri|generate_spri|spasm|stratafy_with_pc_confine)
 			return 2;
 		;;
@@ -631,9 +631,9 @@ check_steps_completed()
 				echo "*********************************************************"
 				warnings=1
 			fi
-			
+
 		fi
-		
+
 	done
 }
 
@@ -660,18 +660,18 @@ perform_step()
 		logfile=logs/thanos.log
 	fi
 
-	if [ "$step" = "$stop_before_step" ]; then 
+	if [ "$step" = "$stop_before_step" ]; then
 		echo "ps_analyze has been asked to stop before step $step."
-		echo "command is:  LD_LIBRARY_PATH=$PEASOUP_HOME/irdb-libs/lib gdb --args $command"	
+		echo "command is:  LD_LIBRARY_PATH=$PEASOUP_HOME/irdb-libs/lib gdb --args $command"
 		exit 1
 	fi
-	if [ "$step" = "$dump_before_step" ]; then 
-		echo " ---- ps_analyze has been asked to dump before step $step."	
+	if [ "$step" = "$dump_before_step" ]; then
+		echo " ---- ps_analyze has been asked to dump before step $step."
 		$PEASOUP_HOME/irdb-libs/plugins_install/dump_map.exe $cloneid > logs/dump_before.log
 	fi
 
 	is_step_on $step
-	if [ $? -eq 0 ]; then 
+	if [ $? -eq 0 ]; then
 		#echo Skipping step $step. [dependencies=$mandatory]
 		return 0
 	fi
@@ -685,7 +685,7 @@ perform_step()
 
 	if [[ "$mandatory" != "none" && "$mandatory" != "mandatory" ]]; then
 		check_dependencies $mandatory
-		if [ $? -eq 0 ]; then 
+		if [ $? -eq 0 ]; then
 			echo Skipping step $step because of failed dependencies. [dependencies=$mandatory] "*************************************************"
 			errors=1
 			if [ $record_stats -eq 1 ]; then
@@ -697,11 +697,11 @@ perform_step()
 
 	starttime=`$PS_DATE`
 
-		
-	# If verbose is on, tee to a file 
+
+	# If verbose is on, tee to a file
 	if [[ ! -z "$DEBUG_STEPS" ]]; then
 		echo -n Performing step "$step" [dependencies=$mandatory] ...
-		eval $command 
+		eval $command
 		command_exit=$?
 	elif [[ ! -z "$VERBOSE" && $using_thanos -eq 0 ]]; then
 		echo -n Performing step "$step" [dependencies=$mandatory] ...
@@ -722,12 +722,12 @@ perform_step()
 		command_exit=$?
 	else
 		echo -n Performing step "$step" [dependencies=$mandatory] ...
-		eval $command > $logfile 2>&1 
+		eval $command > $logfile 2>&1
 		command_exit=$?
 	fi
-	
+
 	endtime=`$PS_DATE`
-	
+
 	echo "#ATTRIBUTE start_time=$starttime" >> $logfile
 	echo "#ATTRIBUTE end_time=$endtime" >> $logfile
 	echo "#ATTRIBUTE step_name=$step" >> $logfile
@@ -759,7 +759,7 @@ perform_step()
 	                       	echo "A critical step executed under the thanos plugin driver has been forcefully terminated. Exiting ps_analyze early."
 			fi
                         exit -1;
-		elif [ $? -gt $error_threshold ]; then 
+		elif [ $? -gt $error_threshold ]; then
 			echo "The $step step is necessary, but failed.  Exiting ps_analyze early."
 			exit -1;
 		fi
@@ -782,7 +782,7 @@ perform_step()
 		fi
 	fi
 
-	# move to the next step 
+	# move to the next step
 	stepnum=`expr $stepnum + 1`
 
 	if [[ $using_thanos -ne 0 ]]; then
@@ -792,13 +792,13 @@ perform_step()
         	done
 	fi
 	all_logs="$all_logs $logfile"
-	
-	if [ "$step" = "$stop_after_step" ]; then 
+
+	if [ "$step" = "$stop_after_step" ]; then
 		echo "ps_analyze has been asked to stop after step $step."
 		echo "command is:  LD_LIBRARY_PATH=$SECURITY_TRANSFORMS_HOME/lib gdb --args $command"
 		exit 1
 	fi
-	if [ "$step" = "$dump_after_step" ]; then 
+	if [ "$step" = "$dump_after_step" ]; then
 		echo " ---- ps_analyze has been asked to dump after step $step."
 		$PEASOUP_HOME/irdb-libs/plugins_install/dump_map.exe $cloneid > logs/dump_after.log
 	fi
@@ -808,11 +808,11 @@ perform_step()
 run_current_thanos_steps()
 {
 	# echo "Doing thanos steps: $thanos_plugins"
-	# execute last block of thanos plugins if there are any left	
+	# execute last block of thanos plugins if there are any left
 	if [[ $thanos_plugins ]]; then
 		perform_step "$thanos_steps" none "$PEASOUP_HOME/irdb-libs/plugins_install/thanos.exe "$thanos_plugins""
                 thanos_plugins=""
-                thanos_steps=""		
+                thanos_steps=""
 	fi
 }
 
@@ -827,10 +827,10 @@ find_plugin()
 			echo "$i/lib$stepname.so"
 			return
 		elif [[ -x $i/$stepname.exe ]]; then
-			echo "$i/$stepname.exe" 
+			echo "$i/$stepname.exe"
 			return
 		elif [[ -x $i/$stepname.sh ]]; then
-			echo "$i/$stepname.sh" 
+			echo "$i/$stepname.sh"
 			return
 		fi
 	done
@@ -860,9 +860,9 @@ do_plugins()
 		stepname=$i
 		stepname=$(basename $stepname =on)
 		stepname=$(basename $stepname =off)
-			
-		echo $builtin_steps | grep $stepname  > /dev/null 2> /dev/null 
-	
+
+		echo $builtin_steps | grep $stepname  > /dev/null 2> /dev/null
+
 		if [ $? = 0 ]; then
 			# skip builtin steps so we don't get errors.
 			continue
@@ -889,11 +889,11 @@ do_plugins()
 			fi
 
 			# add step to the block of contiguous thanos plugins
-			stop_if_error $stepname			
+			stop_if_error $stepname
 			if [[ $? -gt $error_threshold ]]; then
                         	thanos_plugins="$thanos_plugins \"$plugin_path --step-args $cloneid $value\""
 			else
-				thanos_plugins="$thanos_plugins \"$plugin_path -optional --step-args $cloneid $value\""	
+				thanos_plugins="$thanos_plugins \"$plugin_path -optional --step-args $cloneid $value\""
 			fi
 			thanos_steps="$thanos_steps $stepname"
 
@@ -910,11 +910,11 @@ do_plugins()
 				thanos_plugins=""
 			fi
 			continue
-		elif [[ $thanos_steps ]]; then 
+		elif [[ $thanos_steps ]]; then
 			# execute preceding block of thanos plugin steps now
 			run_current_thanos_steps
 		fi
-		
+
 		# invoke .exe, or .sh as a plugin step
 		if [[ "$plugin_path" == *.exe ]]; then
 			perform_step $stepname none $plugin_path $cloneid  $value
@@ -932,7 +932,7 @@ do_plugins()
 		fi
 	done
 
-	# execute last block of thanos plugins if there are any left	
+	# execute last block of thanos plugins if there are any left
 	run_current_thanos_steps
 
 }
@@ -961,7 +961,7 @@ report_logs()
 check_environ_vars()
 {
 
-	while [ true ]; 
+	while [ true ];
 	do
 
 		# done?
@@ -977,7 +977,7 @@ check_environ_vars()
 
 		if [ -z $val ]; then echo Please set $1; exit 1; fi
 
-		shift 
+		shift
 	done
 
 }
@@ -988,7 +988,7 @@ check_environ_vars()
 check_files()
 {
 
-	while [ true ]; 
+	while [ true ];
 	do
 
 		# done?
@@ -996,11 +996,11 @@ check_files()
 			return;
 		fi
 
-		if [ ! -f $1 ]; then 
+		if [ ! -f $1 ]; then
 			fail_gracefully "PEASOUP ERROR:  $1  not found.  Is there an environment var set incorrectly?"
 		fi
 
-		shift 
+		shift
 	done
 
 }
@@ -1013,8 +1013,8 @@ check_for_bad_funcs()
 
 	for ducs_i in $bad_funcs
 	do
-		nm $my_name 2>&1 |grep $ducs_i  > /dev/null 2> /dev/null 
-	
+		nm $my_name 2>&1 |grep $ducs_i  > /dev/null 2> /dev/null
+
 		if [ $? = 0 ]; then
 			echo "Found bad function ($ducs_i) in executable, we should skip this test."
 			echo SKIP
@@ -1035,22 +1035,22 @@ compatcheck()
 		exit 2
 	fi
 
-	file $1 |egrep  "ELF.*executable" > /dev/null 2>&1 
+	file $1 |egrep  "ELF.*executable" > /dev/null 2>&1
 	if [ $? = 0 ]; then
 		echo "Detected ELF non-PIE executable."
 		return
 	fi
-	file $1 |egrep  "ELF.*shared object" > /dev/null 2>&1 
+	file $1 |egrep  "ELF.*shared object" > /dev/null 2>&1
 	if [ $? = 0 ]; then
 		echo "Detected ELF shared object."
 		return
 	fi
-	file $1 |egrep  "PE32\+ executable" > /dev/null 2>&1 
+	file $1 |egrep  "PE32\+ executable" > /dev/null 2>&1
 	if [ $? = 0 ]; then
 		echo "Detected PE32+ file"
 		return
 	fi
-	file $1 |egrep  "PE32 executable" > /dev/null 2>&1 
+	file $1 |egrep  "PE32 executable" > /dev/null 2>&1
 	if [ $? = 0 ]; then
 		echo "Detected PE32 file"
 		return
@@ -1092,7 +1092,7 @@ do_prefix_steps()
 
 	#
 	# get some simple info for the program
-	#	
+	#
 	if [ -z $DB_PROGRAM_NAME ]; then
 		DB_PROGRAM_NAME=`basename $protected_exe | sed "s/[^a-zA-Z0-9]/_/g"`
 	fi
@@ -1122,7 +1122,7 @@ do_prefix_steps()
 	fi
 }
 
-main() 
+main()
 {
 	init_globals
 
@@ -1131,7 +1131,7 @@ main()
 	#
 	# Check for proper environment variables and files that are necessary to peasoupify a program.
 	#
-	check_environ_vars PEASOUP_HOME 
+	check_environ_vars PEASOUP_HOME
 
 	#
 	# finish argument parsing
@@ -1167,8 +1167,8 @@ main()
 	# store the original executable as a.ncexe
 	cp $orig_exe $newdir/$newname.ncexe
 
-	file $orig_exe|grep 32-bit >/dev/null 2>&1 
-	if [ $? = 0 ]; then 
+	file $orig_exe|grep 32-bit >/dev/null 2>&1
+	if [ $? = 0 ]; then
 		if [ `uname -p` = 'x86_64' ]; then
 			STRATA_HOME=$STRATA_HOME32
 			STRATA=$STRATA32
@@ -1180,8 +1180,8 @@ main()
 
 
 	if [ $backend = "strata" ]; then
-		check_environ_vars STRATA_HOME 
-		check_files $PEASOUP_HOME/tools/getsyms.sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh 
+		check_environ_vars STRATA_HOME
+		check_files $PEASOUP_HOME/tools/getsyms.sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh
 	elif [ $backend = "zipr" ]; then
 		check_files $PEASOUP_HOME/zipr_install/bin/zipr.exe
 	else
@@ -1201,7 +1201,7 @@ main()
 	fi
 
 
-	adjust_lib_path 
+	adjust_lib_path
 
 
 
@@ -1214,7 +1214,7 @@ main()
 	check_for_bad_funcs $newname.ncexe
 
 	# next, create a location for our log files
-	mkdir logs 	
+	mkdir logs
 
 
 	do_prefix_steps
@@ -1227,13 +1227,13 @@ main()
 	#
 	# create a report for all of ps_analyze.
 	#
-	ps_endtime=`$PS_DATE` 
+	ps_endtime=`$PS_DATE`
 	report_logs
 
 	# figure out the output file
 	is_step_on zipr
 	zipr_on=$?
-	if [ $zipr_on -eq 0 ]; then 
+	if [ $zipr_on -eq 0 ]; then
 		my_outfile=$newdir/a.sh
 	else
 		my_outfile=$newdir/c.out
@@ -1253,7 +1253,7 @@ main()
 	# make sure we only do this once there are no more updates to the peasoup_dir
 	#perform_step installer none $PEASOUP_HOME/tools/do_installer.sh $PWD $protected_exe
 
-	
+
 	cd - > /dev/null 2>&1
 
 
@@ -1265,9 +1265,9 @@ main()
 	check_steps_completed
 
 	#
-	# return success if we created a script to invoke the pgm and zipr is off. 
+	# return success if we created a script to invoke the pgm and zipr is off.
 	#
-	if [ -f $protected_exe ]; then 
+	if [ -f $protected_exe ]; then
 		if [ $errors = 1 ]; then
 			echo
 			echo
@@ -1275,7 +1275,7 @@ main()
 			echo "* Warning: Some steps failed! *"
 			echo "*******************************"
 			if [ $record_stats -eq 1 ]; then
-				$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'partial' "$ps_endtime" 
+				$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'partial' "$ps_endtime"
 			fi
 			exit 2;
 		elif [ $warnings = 1 ]; then
@@ -1285,13 +1285,13 @@ main()
 			echo "* Warning: Some steps had critical warnings! *"
 			echo "**********************************************"
 			if [ $record_stats -eq 1 ]; then
-				$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'partial' "$ps_endtime" 
+				$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'partial' "$ps_endtime"
 			fi
 			exit 1;
-		
+
 		else
 			if [ $record_stats -eq 1 ]; then
-				$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'success' "$ps_endtime" 
+				$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'success' "$ps_endtime"
 			fi
 			exit 0;
 		fi
