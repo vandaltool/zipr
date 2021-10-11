@@ -72,3 +72,24 @@ Invoke the rewritten version of /bin/ls and make sure it runs normally:
 ```
 ./ls.zipr
 ```
+
+# Zipr with IDAPro 
+
+In some configurations, Zipr can leverage IDA Pro's information to get better rewriting.  IDA is most useful when Rida cannot analyze the program (Rida currently only handles ELF x86 binaries, not PE binaries for Windows or other architectures).  To setup Zipr to use IDA, install (or clone) IDA and the corresponding IDA SDK, then set these environment variables:
+
+```
+export IDAROOT=/path/to/idapro
+export IDASDK=/path/to/idapro-sdk
+```
+
+Next, rebuild Zipr:
+
+```
+$ cd /path/to/zipr 
+$ scons
+```
+
+The `$PSZ` script uses IDA pro by default if it is setup properly.  You'll see the `meds-static` step replace the `rida` step.
+
+
+
