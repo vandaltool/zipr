@@ -1348,6 +1348,35 @@ void ZiprImpl_t::PlaceDollops()
 					m_stats->total_did_not_coalesce++;
 					break;
 				}
+
+				/* 
+				 * Sometimes on a function that ends in a call to a non-returning function, Zipr's IR
+				 * has that the function falls through to the next function. Eg:
+				 *   foo: ...
+				 *         call throw_exception
+				 *         nop
+				 *   bar:  push rbp [ibta==0]
+				 * 
+				 * In this case, the nop will fall-through to bar, resulting in bar being (possibly) unaligned 
+				 * when we may want it aligned.  In this case, disallow coalescing so that DoPlacement
+				 * can maintain alignment (only when the fallthrough is an IBTA).
+				 */
+				const auto toPlaceBackInsn      = to_place->back()->getInstruction();
+				const auto fallthroughFrontInsn = to_place->getFallthroughDollop()->front()->getInstruction();
+				const auto fallthroughIsIBTA    = fallthroughFrontInsn -> getIndirectBranchTargetAddress() != nullptr;
+				const auto sameFunction         = fallthroughFrontInsn->getFunction() == toPlaceBackInsn->getFunction();
+				if(allowed_coalescing && fallthroughIsIBTA && !sameFunction)
+				{
+					if (*m_verbose)
+					{
+						cout << "Disallowing coalescing because of IBTA to non-adjacent functions at " 
+						     << fallthroughFrontInsn->getBaseID() 
+						     << ":"  
+						     << fallthroughFrontInsn->getDisassembly() 
+						     << "\n";
+					}
+					allowed_coalescing=false;
+				}
 					
 				/*
 				 * We could fit the entirety of the dollop (and
