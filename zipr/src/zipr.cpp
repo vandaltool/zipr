@@ -2228,22 +2228,27 @@ void  ZiprImpl_t::FixTwoByteWithPrefix()
 		// jcc rel16/32
 		const auto jcc32bitOffset=set<uint8_t>({0x81,0x82,0x83,0x84,0x85,0x86,0x88,0x88,0x89,0x8a,0x8b,0x8c,0x8d,0x8e,0x8f});
 
-		if(jmp8bitOffset.find(b)!=jmp8bitOffset.end()) 
+		// now convert to the right opcode
+		if(jmp8bitOffset.find(b)!=jmp8bitOffset.end())
 		{
-			insn->setDataBits(string({static_cast<int8_t>(b),0}));
+			const char newValue[]={b,0};
+			insn->setDataBits(string(newValue,sizeof(newValue)));
 		}
-		else if(b==0xE9 /* jmp rel16/32 */) 
+		else if(b==0xE9 /* jmp rel16/32 */)
 		{
-			insn->setDataBits(string({static_cast<int8_t>(b),0,0,0,0}));
+			const char newValue[]={b,0,0,0,0};
+			insn->setDataBits(string(newValue,sizeof(newValue)));
 		}
-		else if(b==0xE8 /* call rel16/32 */) 
+		else if(b==0xE8 /* call rel16/32 */)
 		{
 			insn->setDataBits(string("\xe8\x00\x00\x00\x00",5));
 		}
-		else if(b==0x0f && jcc32bitOffset.find(c)!=jcc32bitOffset.end()) 
+		else if(b==0x0f && jcc32bitOffset.find(c)!=jcc32bitOffset.end())
 		{
-			insn->setDataBits(string({static_cast<int8_t>(b),static_cast<int8_t>(c),0,0,0,0}));
+			const char newValue[]={b,c,0,0,0,0};
+			insn->setDataBits(string(newValue,sizeof(newValue)));
 		}
+
 	}
 }
 
