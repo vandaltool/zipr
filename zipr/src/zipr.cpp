@@ -2231,12 +2231,12 @@ void  ZiprImpl_t::FixTwoByteWithPrefix()
 		// now convert to the right opcode
 		if(jmp8bitOffset.find(b)!=jmp8bitOffset.end())
 		{
-			const char newValue[]={b,0};
+			const char newValue[]={static_cast<char>(b),0};
 			insn->setDataBits(string(newValue,sizeof(newValue)));
 		}
 		else if(b==0xE9 /* jmp rel16/32 */)
 		{
-			const char newValue[]={b,0,0,0,0};
+			const char newValue[]={static_cast<char>(b),0,0,0,0};
 			insn->setDataBits(string(newValue,sizeof(newValue)));
 		}
 		else if(b==0xE8 /* call rel16/32 */)
@@ -2245,7 +2245,7 @@ void  ZiprImpl_t::FixTwoByteWithPrefix()
 		}
 		else if(b==0x0f && jcc32bitOffset.find(c)!=jcc32bitOffset.end())
 		{
-			const char newValue[]={b,c,0,0,0,0};
+			const char newValue[]={static_cast<char>(b),static_cast<char>(c),0,0,0,0};
 			insn->setDataBits(string(newValue,sizeof(newValue)));
 		}
 
