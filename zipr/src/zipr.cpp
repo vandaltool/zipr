@@ -1473,12 +1473,11 @@ void ZiprImpl_t::RecalculateDollopSizes()
 void ZiprImpl_t::CreateDollops()
 {
 	if (*m_verbose)
-		cout<< "Attempting to create "
-		    << patch_list.size()
-				<< " dollops for the pins."
-				<< endl;
+		cout<< "Attempting to create " << patch_list.size() << " dollops for the pins." << endl;
 	for (auto patch : patch_list )
+	{
 		m_dollop_mgr.AddNewDollops(patch.first.getInstrution());
+	}
 
 	if (*m_verbose)
 		cout << "Done creating dollops for the pins! Updating all Targets" << endl;
@@ -1673,8 +1672,7 @@ void ZiprImpl_t::PatchInstruction(RangeAddress_t from_addr, Instruction_t* to_in
 	const auto it=final_insn_locations.find(to_insn);
 	if(it==final_insn_locations.end())
 	{
-		if (*m_verbose)
-			printf("Instruction cannot be patch yet, as target is unknown.\n");
+		cout << "Instruction "<< to_insn->getBaseID() << ":" << to_insn->getDisassembly() << " cannot be patch yet, as target is unknown.\n";
 
 		patch_list.insert({uu,thepatch});
 	}

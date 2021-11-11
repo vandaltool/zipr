@@ -2371,7 +2371,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		// sometimes the lea only points at the image base, and the displacement field here is used for 
 		// the offset into the image.  This is useful if there are multiple switches (or other constructs)
 		// in the same function which can share register assignment of the image-base register.
-		// we recod the d6_displ field here
+		// we record the d6_displ field here
 		const auto d6_displ = d6_op1_is_mem  ?  d6->getOperand(1)->getMemoryDisplacement() : 0; 
 		const auto table_entry_size = d6_op1_is_mem  ?  d6->getOperand(1)->getArgumentSizeInBytes() : 4; 
 
@@ -2387,7 +2387,7 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		if(backup_until(cmp_str.c_str(), I1, I6))
 		{
 			auto d1=DecodedInstruction_t::factory(I1);
-			table_size = d1->getImmediate(); // Instruction.Immediat;
+			table_size = d1->getImmediate(); 
 
 
 			// notes on table size: 
@@ -2466,11 +2466,13 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 			}
 			else
 			{
+				// here we have found a switch table that has an entry that does not correspond to a valid 
+				// instruction from disassembly.  We really should add it to the disassembly just to be sure.
+				// Since we aren't currently architected to go _back_ to disasembly after this, the "right"
+				// fix is heavy, and we'll hack a bit to avoid that for now.
+				// The hack:  ignore the error on this table entry.
 				if(getenv("IB_VERBOSE"))
 					cout << "      INVALID target" << endl;
-
-				found_table_error = true;
-				break;
 			}
 			offset+=table_entry_size;
 			entry++;
@@ -2491,11 +2493,19 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		// less than 3 things but did so 100% effectively, go ahead and mark it a successful analysis	
 		if (!found_table_error || ibtargets.size() > 3)	
 		{
-			cout << "pic64: valid switch table for " << hex << I8->getAddress()->getVirtualOffset()
-			     << " detected ibtp_switchtable_type4" << endl;
-			jmptables[I8].setAnalysisStatus(iasAnalysisComplete);
-			addSwitchTableScoop(firp,max_valid_table_entry,table_entry_size,D1+d6_displ,exeiop, I6, D1);
-
+			if(!found_table_error)
+			{
+				cout << "pic64: found complete switch table for " << hex << I8->getAddress()->getVirtualOffset()
+				     << " detected ibtp_switchtable_type4" << endl;
+				jmptables[I8].setAnalysisStatus(iasAnalysisComplete);
+				addSwitchTableScoop(firp,max_valid_table_entry,table_entry_size,D1+d6_displ,exeiop, I6, D1,true);
+			}
+			else
+			{
+				cout << "pic64: found incomplete switch table for " << hex << I8->getAddress()->getVirtualOffset()
+				     << " detected ibtp_switchtable_type4" << endl;
+				addSwitchTableScoop(firp,max_valid_table_entry,table_entry_size,D1+d6_displ,exeiop, I6, D1,false);
+			}
 		}
 		else
 		{

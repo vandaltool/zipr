@@ -33,6 +33,7 @@ class Function_t : public BaseObj_t, virtual public IRDB_SDK::Function_t
 
 	InstructionSet_t& GetInstructions() { return my_insns; }
 	const InstructionSet_t& getInstructions() const { return my_insns; }
+	void setInstructions (const InstructionSet_t& newInsns) override { my_insns=newInsns; }
 
         const int getStackFrameSize() const { return stack_frame_size; }
         const std::string& getName() const { return name; }

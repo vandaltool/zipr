@@ -1965,3 +1965,15 @@ IRDB_SDK::EhProgram_t* FileIR_t::copyEhProgram(const IRDB_SDK::EhProgram_t& orig
 
 
 
+void FileIR_t::removeInstruction(IRDB_SDK::Instruction_t* toRemove)
+{
+	auto func = toRemove->getFunction();
+	if(func)
+	{
+		auto func_insns = func->getInstructions();
+		func_insns.erase(toRemove);
+		func->setInstructions(func_insns);
+	}
+	insns.erase(toRemove);
+
+}
