@@ -373,6 +373,16 @@ void split_eh_frame_impl_t<ptrsize>::build_ir() const
 							if(back_insn->isRememberState())
 								break;
 						}
+
+
+						// we need to re-set last_was_def_cfa_offset 
+						// so that the else-clause below can run properly
+						// after a restore state
+						last_was_def_cfa_offset=false; // init
+						if(out_pgm.size()>0) // if there was a last-instruction, check it's type.
+						{
+							last_was_def_cfa_offset=out_pgm.back()->isDefCFAOffset();
+						}
 					}
 					else
 					{
