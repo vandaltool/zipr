@@ -2234,7 +2234,6 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	// We can't just find any random compare, as we might accidentally mark a switch complete w/o enough information.
 	// Worse, we may cause the switch table scanner below to premature exit, and thus miss pins.
 	//
-	const auto cmp_str2 = string("do_not_match ");  
 
 	if(!backup_until(table_index_str.c_str(), I7, I8, table_index_stop_if))
 		return;
@@ -2273,21 +2272,21 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	 * is OK.
 	 */
 	if(
-		!backup_until("(mov|movsxd) "+I6_reg0_str+",", I6, I7,string()+"^"+I6_reg0_str+"$") && 
-		!backup_until("(mov|movsxd) "+I6_reg1_str+",", I6, I7,string()+"^"+I6_reg1_str+"$")
+		!backup_until("(mov|movsxd) "+I6_reg0_str+",", I6, I7, string()+"^"+I6_reg0_str+"$") && 
+		!backup_until("(mov|movsxd) "+I6_reg1_str+",", I6, I7, string()+"^"+I6_reg1_str+"$")
 	  )
 	{
 		// give up if we can't find a mov/movsxd of either register.
 		return;
 	}
 
-	auto lea_string1=string("lea ");
-	auto lea_string2=string("do_not_mach ");
-	
-	const auto d6=DecodedInstruction_t::factory(I6);
-	const auto d6_op1 = d6->getOperand(1);
+	auto lea_string1         = string("lea ");
+	auto lea_string2         = string("do_not_mach ");
+	const auto d6            = DecodedInstruction_t::factory(I6);
+	const auto d6_op1        = d6->getOperand(1);
 	const auto d6_op1_is_mem = d6_op1->isMemory();
-	auto cmp_str = string(" do not match anything "); // to be updated inside if statement below
+	auto cmp_str             = string(" do not match anything "); // to be updated inside if statement below
+	auto cmp_str_stopif      = string(" do not match anything "); // to be updated inside if statement below
 
 	if( d6_op1_is_mem ) 
 	{
@@ -2304,11 +2303,12 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 
 		if(!d6->getOperand(1)->hasIndexRegister() )
 			return;
-		const auto indexRegno = d6->getOperand(1)->getIndexRegister();
-		const auto index_reg_64bit=regNoToX8664Reg(indexRegno);
-		const auto index_reg_32bit=regNoToX8632Reg(indexRegno);
+		const auto indexRegno      = d6->getOperand(1)->getIndexRegister();
+		const auto index_reg_64bit = regNoToX8664Reg(indexRegno);
+		const auto index_reg_32bit = regNoToX8632Reg(indexRegno);
 
-		cmp_str = "cmp "+index_reg_32bit+"|cmp "+index_reg_64bit;
+		cmp_str        = "cmp "+index_reg_32bit+"|cmp "+index_reg_64bit;
+		cmp_str_stopif = "^"+index_reg_32bit+"$|^"+index_reg_64bit+"$";
 		lea_string1+=base_reg;
 		if(d6->getOperand(1)->getScaleValue()  == 1)
 			lea_string2="lea "+index_reg_64bit;
@@ -2398,36 +2398,34 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		// cannot find a bounds check on the table size.
 		// 
 		auto table_size = 255U;
-		if(backup_until(cmp_str.c_str(), I1, I6))
+		if(backup_until(cmp_str.c_str(), I1, I6, cmp_str_stopif))
 		{
 			auto d1=DecodedInstruction_t::factory(I1);
 			table_size = d1->getImmediate(); 
-
 
 			// notes on table size: 
 			// readelf on ubuntu20 has a table size of 4.
 			if (table_size < 4)
 			{
 				cout<<"pic64: found I1 ('"<<d1->getDisassembly()<<"'), but could not find size of switch table"<<endl;
-				// set table_size to be very large, so we can still do pinning appropriately
-			}
-		}
-		else if(backup_until(cmp_str2.c_str(), I1, I8))
-		{
-			auto d1=DecodedInstruction_t::factory(I1);
-			table_size = d1->getImmediate()/*Instruction.Immediat*/;
-			if (table_size <= 4)
-			{
-				// set table_size to be very large, so we can still do pinning appropriately
-				cout<<"pic64: found I1 ('"<<d1->getDisassembly()<<"'), but could not find size of switch table"<<endl;
 			}
 		}
 		else
 		{
+			// it's very common for the cmp_str_stopif to stop before finding the compare
+			// because of a code pattern like this:
+			//
+			// cmp rax, 0x1234
+			// ...
+			// mov rbx, rax
+			// mov ..., [ ... rbx*4 ...]
+			//
+			// As you can see, the mov rbx,rax would cause backup_until to stop there,
+			// missing the compare.
+			// For now, we tolerate this and let the no-table-size code find the table size
+			// but it might be useful to look for mov/movzx that did a register rename before
+			// the compare.
 			cout<<"pic64: could not find size of switch table"<<endl;
-
-			// we set the table_size variable to max_int so that we can still do pinning, 
-			// but we won't do the switch identification.
 		}
 
 		// record the set of ibtargets we find here.
