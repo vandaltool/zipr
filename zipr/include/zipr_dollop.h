@@ -110,6 +110,7 @@ namespace zipr
 			void reCalculateSize();
 
 			static Zipr_SDK::Dollop_t* createNewDollop(IRDB_SDK::Instruction_t *start, Zipr_SDK::DollopManager_t *mgr);
+			static bool canCoalesce(const Zipr_SDK::Dollop_t* first, const Zipr_SDK::Dollop_t* fallthrough);
 
 		private:
 			size_t CalculateSize();

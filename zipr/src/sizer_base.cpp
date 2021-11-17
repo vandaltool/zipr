@@ -68,10 +68,18 @@ Range_t ZiprSizerBase_t::DoPlacement(const size_t p_size, const Zipr_SDK::Dollop
 
 size_t ZiprSizerBase_t::DetermineDollopSizeInclFallthrough(Zipr_SDK::Dollop_t *dollop) const
 {
-        auto fallthroughs_wcds = 0;
+        auto fallthroughs_wcds = 0u;
 	auto fallthrough_it = dollop;
         for ( /* empty */ ; fallthrough_it != nullptr; fallthrough_it = fallthrough_it->getFallthroughDollop())
         {
+
+                fallthroughs_wcds += fallthrough_it->getSize();
+
+		// if we can't coalesce the next dollop, we can stop now.
+		if(!Dollop_t::canCoalesce(fallthrough_it, fallthrough_it->getFallthroughDollop()) )
+			break;
+
+		// or, if the next dollop is already placed, we keep the trampolining.
                 if (fallthrough_it->isPlaced())
                         /*
                          * We are going to stop calculating when
@@ -80,7 +88,7 @@ size_t ZiprSizerBase_t::DetermineDollopSizeInclFallthrough(Zipr_SDK::Dollop_t *d
                          */
                         break;
 
-                fallthroughs_wcds += fallthrough_it->getSize();
+		// otherwise, we can get ride of the trampolining, and add the size of the next dollop.
                 /*
                  * For every dollop that we consolidate,
                  * we will lose TRAMPOLINE_SIZE bytes by
@@ -90,6 +98,7 @@ size_t ZiprSizerBase_t::DetermineDollopSizeInclFallthrough(Zipr_SDK::Dollop_t *d
                  */
                 if (fallthrough_it->getFallthroughDollop())
                         fallthroughs_wcds -= TRAMPOLINE_SIZE;
+
         }
         /*
          * If there is a fallthrough_it, that means

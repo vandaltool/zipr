@@ -873,19 +873,19 @@ void ZiprImpl_t::PlaceDollops()
 		auto to_place = pq_entry.first;
 		auto from_address = pq_entry.second;
 
-		if (*m_vverbose)
-		{
-			cout << "Placing dollop with original starting address: " << hex
-			     << to_place->front()->getInstruction()->getAddress()->getVirtualOffset() << endl;
-		}
-
 		if (to_place->isPlaced())
 			continue;
 
+		if (*m_vverbose)
+		{
+			cout << "\nPlacing dollop with original starting address: " << hex
+			     << to_place->front()->getInstruction()->getAddress()->getVirtualOffset() << endl;
+		}
+
 		to_place->reCalculateSize();
 
-		auto minimum_valid_req_size = std::min(
-			DetermineDollopEntrySize(to_place->front(), true),
+		const auto minimum_valid_req_size =  std::min(
+			DetermineDollopEntrySize(to_place->front(), true), 
 			sizer->DetermineDollopSizeInclFallthrough(to_place));
 		/*
 		 * Ask the plugin manager if there are any plugins
@@ -981,9 +981,10 @@ void ZiprImpl_t::PlaceDollops()
 					}
 				}
 			}
-			initial_placement_abuts_fallthrough = to_place->getFallthroughDollop() &&
-			                                           fallthrough_has_preplacement &&
-			                                           fallthrough_dollop_place == (placement.getStart() + to_place->getSize() - sizer->TRAMPOLINE_SIZE);
+			initial_placement_abuts_fallthrough = 
+				to_place->getFallthroughDollop() &&
+			       	fallthrough_has_preplacement &&
+			       fallthrough_dollop_place == (placement.getStart() + to_place->getSize() - sizer->TRAMPOLINE_SIZE);
 
 
 			auto fits_entirely = (to_place->getSize() <= (placement.getEnd()-placement.getStart()));
@@ -1026,8 +1027,10 @@ void ZiprImpl_t::PlaceDollops()
 
 		if (*m_vverbose)
 		{
-			cout << "Dollop size=" << dec << to_place->getSize() << ".  Placing in hole size="
-			     << (placement.getEnd() - placement.getStart()) << " hole at " << hex << cur_addr << endl;
+			cout << "Dollop size=" << dec << to_place->getSize() 
+			     << ", minimum_valid_req_size=" << minimum_valid_req_size 
+			     << ".  Placing in hole size=" << (placement.getEnd() - placement.getStart()) 
+			     << " hole at " << hex << cur_addr << endl;
 			cout << "Dollop " << ((has_fallthrough) ? "has " : "does not have ")
 		  	     << "a fallthrough" << endl;
 		}
@@ -1285,7 +1288,6 @@ void ZiprImpl_t::PlaceDollops()
 			fallthrough = to_place->getFallthroughDollop();
 			if ( fallthrough  != nullptr && !to_place->wasCoalesced() )
 			{
-				size_t fallthroughs_wcds, fallthrough_wcis, remaining_size;
 
 				/*
 				 * We do not care about the fallthrough dollop if its 
@@ -1361,14 +1363,11 @@ void ZiprImpl_t::PlaceDollops()
 				 * when we may want it aligned.  In this case, disallow coalescing so that DoPlacement
 				 * can maintain alignment (only when the fallthrough is an IBTA).
 				 */
-				const auto toPlaceBackInsn      = to_place->back()->getInstruction();
-				const auto fallthroughFrontInsn = to_place->getFallthroughDollop()->front()->getInstruction();
-				const auto fallthroughIsIBTA    = fallthroughFrontInsn -> getIndirectBranchTargetAddress() != nullptr;
-				const auto sameFunction         = fallthroughFrontInsn->getFunction() == toPlaceBackInsn->getFunction();
-				if(allowed_coalescing && fallthroughIsIBTA && !sameFunction)
+				if(allowed_coalescing && !Dollop_t::canCoalesce(to_place, to_place->getFallthroughDollop()))
 				{
 					if (*m_verbose)
 					{
+						const auto fallthroughFrontInsn = to_place->getFallthroughDollop()->front()->getInstruction();
 						cout << "Disallowing coalescing because of IBTA to non-adjacent functions at " 
 						     << fallthroughFrontInsn->getBaseID() 
 						     << ":"  
@@ -1378,35 +1377,29 @@ void ZiprImpl_t::PlaceDollops()
 					allowed_coalescing=false;
 				}
 					
-				/*
-				 * We could fit the entirety of the dollop (and
-				 * fallthroughs) ...
-				 */
-				fallthroughs_wcds = sizer->DetermineDollopSizeInclFallthrough(fallthrough);
-				/*
-				 * ... or maybe we just want to start the next dollop.
-				 */
-				fallthrough_wcis=DetermineDollopEntrySize(fallthrough-> front(),
-																													 true);
-				remaining_size = placement.getEnd() - cur_addr;
+				// We could fit the entirety of the dollop (and fallthroughs) ...
+				const auto fallthroughs_wcds = sizer->DetermineDollopSizeInclFallthrough(fallthrough);
+				// ... or maybe we just want to start the next dollop.
+				const auto fallthrough_wcis=DetermineDollopEntrySize(fallthrough-> front(), true);
+				const auto remaining_size = placement.getEnd() - cur_addr;
+				const auto remaining_needed = std::min(fallthrough_wcis,fallthroughs_wcds);
 
 				/*
-				 * We compare remaining_size to min(fallthroughs_wdcs,
-				 * fallthrough_wcis) since the entirety of the dollop
-				 * and its fallthroughs could (its unlikely) be 
+				 * We compare remaining_size to the neede size
+				 * since the entirety of the dollop
+				 * and its fallthroughs could (not that unlikely!) be 
 				 * smaller than the first instruction fallthrough 
 				 * in the fallthrough dollop and the trampoline size.
 				 */
 				if (*m_vverbose)
+				{
 					cout << "Determining whether to coalesce: "
-					     << "Remaining: " << std::dec << remaining_size
-					     << " vs Needed: " << std::dec 
-					     << std::min(fallthrough_wcis,fallthroughs_wcds) << endl;
+					     << "Remaining: " << dec << remaining_size
+					     << " vs Needed: " << dec 
+					     << remaining_needed << endl;
+				}
 
-				if (remaining_size < std::min(fallthrough_wcis,fallthroughs_wcds) || 
-				    fallthrough->isPlaced()                                       || 
-				    !allowed_coalescing
-				   )
+				if (remaining_size < remaining_needed || fallthrough->isPlaced() || !allowed_coalescing)
 				{
 
 					if (*m_vverbose)
@@ -1417,8 +1410,10 @@ void ZiprImpl_t::PlaceDollops()
 						     << end_of_cur_dollop_insn->getDisassembly() << "@" << hex << end_of_cur_dollop_insn->getAddress()->getVirtualOffset() 
 						     << " and " 
 						     << start_of_ft_dollop_insn->getDisassembly() << "@" << hex << start_of_ft_dollop_insn->getAddress()->getVirtualOffset() 
-						     << string((fallthrough->isPlaced()) ?  " because fallthrough is placed" : "")
-						     << string((!allowed_coalescing) ?  " because I am not allowed" : "") 
+						     << " because "
+						     << string((fallthrough->isPlaced()) ?  "there's not enough space" : "")
+						     << string((fallthrough->isPlaced()) ?  "fallthrough is placed"    : "")
+						     << string((!allowed_coalescing)     ?  "I am not allowed"         : "") 
 						     << ".  Add jmp to fallthrough dollop (" << std::hex << fallthrough << ")." << '\n';
 					}
 
@@ -1448,6 +1443,7 @@ void ZiprImpl_t::PlaceDollops()
 				}
 			}
 		} while (continue_placing); 
+
 		/* 
 		 * This is the end of the do-while-true loop
 		 * that will place as many fallthrough-linked 
@@ -1458,9 +1454,14 @@ void ZiprImpl_t::PlaceDollops()
 		 * Reserve the range that we just used.
 		 */
 		if (*m_vverbose)
+		{
 			cout << "Reserving " << std::hex << placement.getStart()
 			     << ", " << std::hex << cur_addr << "." << endl;
-		memory_space.splitFreeRange(Range_t(placement.getStart(), cur_addr));
+			cout << "Done placing this dollop (and maybe it's fallthroughs).\n";
+		}
+		// sanity check that placement actually took less than we allocated.
+		assert( cur_addr-1 <= placement.getEnd());
+		memory_space.splitFreeRange({placement.getStart(), cur_addr});
 	}
 }
 
@@ -1554,11 +1555,13 @@ size_t ZiprImpl_t::DetermineInsnSize(Instruction_t* insn, bool account_for_fallt
 		worst_case_size = default_worst_case_size;
 	}
 
+#if 0
 	if (*m_vverbose)
 	{
 		const auto inc_jmp=((account_for_fallthrough) ? " (including jump)" : "");
 		cout << "Worst case size" << inc_jmp << ": " << worst_case_size << endl;
 	}
+#endif
 
 	return worst_case_size;
 }

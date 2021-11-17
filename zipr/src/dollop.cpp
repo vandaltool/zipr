@@ -267,4 +267,16 @@ namespace zipr
 	{
 		return new zipr::Dollop_t(start, mgr);
 	}
+
+	bool Dollop_t::canCoalesce(const Zipr_SDK::Dollop_t* first, const Zipr_SDK::Dollop_t* fallthrough)
+	{
+		if(!first || !fallthrough)
+			return true;
+		const auto firstBackInsn        = first->back()->getInstruction();
+		const auto fallthroughFrontInsn = fallthrough->front()->getInstruction();
+		const auto fallthroughIsIBTA    = fallthroughFrontInsn -> getIndirectBranchTargetAddress() != nullptr;
+		const auto sameFunction         = fallthroughFrontInsn->getFunction() == firstBackInsn->getFunction();
+		return (!fallthroughIsIBTA || sameFunction);
+	}
+
 }

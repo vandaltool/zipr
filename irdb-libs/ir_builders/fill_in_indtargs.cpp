@@ -2226,11 +2226,15 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 	const auto table_index_str = "(add " + table_index_reg_str + ",|lea " + table_index_reg_str + ",)";
 	const auto table_index_stop_if = string() + "^" + table_index_reg_str +  "$";              
 
-
+	//
 	// this was completely broken because argument2 had a null mnemonic, which we found out because getOperand(1) threw an exception.
 	// i suspect it's attempting to find a compare of operand1 on the RHS of a compare, but i need better regex foo to get that.
 	// for now, repeat what was working.
-	const auto cmp_str2 = string("cmp "); 
+	//
+	// We can't just find any random compare, as we might accidentally mark a switch complete w/o enough information.
+	// Worse, we may cause the switch table scanner below to premature exit, and thus miss pins.
+	//
+	const auto cmp_str2 = string("do_not_match ");  
 
 	if(!backup_until(table_index_str.c_str(), I7, I8, table_index_stop_if))
 		return;
@@ -2383,7 +2387,17 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		const char* secdata=pSec->get_data();
 		if(!secdata) continue;
 
-		auto table_size = 0U;
+		//
+		// Setting default to 255 without a great reason.  The bad reason
+		// is that 255 is pretty big for a switch table, and we very likely shouldn't
+		// scan for one bigger than that.  Without this limit, there are some types of switch tables
+		// that would scan until the end of the section that the table is in.  (e.g.,
+		// Visual Studio will produce tables with 1-byte entries, and it's highly likely that
+		// 1-byte offsets from the table base will result in a valid instruction address.
+		// Thus, this default is sane for most cases, and is only applied when we absolutely
+		// cannot find a bounds check on the table size.
+		// 
+		auto table_size = 255U;
 		if(backup_until(cmp_str.c_str(), I1, I6))
 		{
 			auto d1=DecodedInstruction_t::factory(I1);
@@ -2396,7 +2410,6 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 			{
 				cout<<"pic64: found I1 ('"<<d1->getDisassembly()<<"'), but could not find size of switch table"<<endl;
 				// set table_size to be very large, so we can still do pinning appropriately
-				table_size=std::numeric_limits<int>::max();
 			}
 		}
 		else if(backup_until(cmp_str2.c_str(), I1, I8))
@@ -2407,7 +2420,6 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 			{
 				// set table_size to be very large, so we can still do pinning appropriately
 				cout<<"pic64: found I1 ('"<<d1->getDisassembly()<<"'), but could not find size of switch table"<<endl;
-				table_size=std::numeric_limits<int>::max();
 			}
 		}
 		else
@@ -2416,7 +2428,6 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 
 			// we set the table_size variable to max_int so that we can still do pinning, 
 			// but we won't do the switch identification.
-			table_size=std::numeric_limits<int>::max();
 		}
 
 		// record the set of ibtargets we find here.
