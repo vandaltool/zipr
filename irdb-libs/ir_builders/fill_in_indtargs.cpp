@@ -2191,6 +2191,21 @@ I8	   0xdd2c <+60>:	jmp    rsi
 Note: Here the operands of the add are reversed, so lookup code was not finding I5 where it was expected.c
 
 
+Yet another alternate:
+Here, one of the registers used in the switch dispatch is spilled?  How can this be good code?
+   0x289e2dc <HUF_decompress4X2_usingDTable_internal_default+3980>:	cmp    di,0x7
+   0x289e2e0 <HUF_decompress4X2_usingDTable_internal_default+3984>:	mov    QWORD PTR [rbp-0xe0],rcx
+   0x289e2e7 <HUF_decompress4X2_usingDTable_internal_default+3991>:	mov    QWORD PTR [rbp-0x100],rax
+   0x289e2ee <HUF_decompress4X2_usingDTable_internal_default+3998>:	mov    QWORD PTR [rbp-0xf0],rax
+   0x289e2f5 <HUF_decompress4X2_usingDTable_internal_default+4005>:	ja     0x289e381 <HUF_decompress4X2_usingDTable_internal_default+4145>
+   0x289e2fb <HUF_decompress4X2_usingDTable_internal_default+4011>:	lea    rax,[rip+0xd1189e]        # 0x35afba0
+   0x289e302 <HUF_decompress4X2_usingDTable_internal_default+4018>:	movsxd rax,DWORD PTR [rax+rdi*4]
+   0x289e306 <HUF_decompress4X2_usingDTable_internal_default+4022>:	mov    QWORD PTR [rbp-0x108],rax
+   0x289e30d <HUF_decompress4X2_usingDTable_internal_default+4029>:	lea    rax,[rip+0xd1188c]        # 0x35afba0
+   0x289e314 <HUF_decompress4X2_usingDTable_internal_default+4036>:	add    rax,QWORD PTR [rbp-0x108]
+   0x289e31b <HUF_decompress4X2_usingDTable_internal_default+4043>:	jmp    rax
+
+
 #endif
 
 
@@ -2248,6 +2263,13 @@ Note: Here the operands of the add are reversed, so lookup code was not finding 
 		if(!(d7->getOperand(1)->getScaleValue() == 1 && d7->getOperand(1)->getMemoryDisplacement() == 0))
 			return;
 	} 
+
+	// Check if lea instruction is being used as add (scale=1, disp=0)
+	if(d7->getMnemonic() != "lea" && !d7->getOperand(1)->isRegister())
+	{
+		cout << "Warning, switch with spilled register?  See comment at start of function.\n" << endl;
+		return;
+	}
 
 
 	// calculate the registers we need for the I6 backup.
