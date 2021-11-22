@@ -2359,10 +2359,8 @@ Here, one of the registers used in the switch dispatch is spilled?  How can this
 	if(found_leas.size()==0 && I6->getFunction())
 	{
 		cout << "Using find_in_function method." << endl;
-		const auto found_leas1=find_in_function(lea_string1,I6->getFunction());
-		found_leas.insert(ALLOF(found_leas1));
-		const auto found_leas2=find_in_function(lea_string2,I6->getFunction());
-		found_leas.insert(ALLOF(found_leas2));
+		const auto tmp_found_leas=find_in_function("lea ",I6->getFunction());
+		found_leas.insert(ALLOF(tmp_found_leas));
 	}
 	if (found_leas.empty())
 	{
@@ -2541,8 +2539,12 @@ Here, one of the registers used in the switch dispatch is spilled?  How can this
 		else
 		{
 			cout << "pic64: INVALID switch table detected for " << hex 
-			     << I8->getAddress()->getVirtualOffset() 
-			     << " type=ibtp_switchtable_type4 with L5=" << endl;
+			     << I8->getDisassembly() << "@" << I8->getAddress()->getVirtualOffset() 
+			     << " type=ibtp_switchtable_type4 with I5=" 
+			     << I5->getAddress()->getVirtualOffset() << "@" << I5_cur->getDisassembly() 
+			     << " found_table_error=" << found_table_error
+			     << " ibtargets.size() == " << ibtargets.size()
+			     << endl;
 			// try the next L5.
 			continue;
 		}
