@@ -16,7 +16,7 @@ reset_db()
 reset_db
 
 #Create Database User and Table
-for i in $(seq 0 4)
+for i in $(seq 0 128)
 do
 	#Setup the Database to store PEASOUP info
 	PGDATABASE=peasoup_${USER}_v$i reset_db

@@ -137,6 +137,12 @@ void ZiprPatcherX86_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_ad
 			// recurse at addr+1 if we find a prefix byte has been plopped.
 			return this->ApplyPatch(from_addr+1, to_addr);
 		}
+		case (unsigned char)0xc7: // address size override
+		{
+			assert( (unsigned char) insn_second_byte ==0xf8);
+			cout << "Found xbegin instruction, fixme:  ignoring.\n"; 
+			break;
+		}
 		default:
 		{
 			if(m_firp->getArchitectureBitWidth()==64) /* 64-bit x86 machine  assumed */

@@ -69,9 +69,14 @@ int IRDBObjects_t::writeBackFileIR(const IRDB_SDK::DatabaseID_t file_id, ostream
 		the_fileIR->writeToDB(verbose_logging);
         	return 0;
 	}
-	catch (const DatabaseError_t &pnide)
+	catch (const DatabaseError_t &theException)
 	{
-		cerr << "Unexpected database error: " << pnide << "file url: " << the_file->getURL() << endl;
+		cerr << "Unexpected database error: " << theException << "file url: " << the_file->getURL() << endl;
+		return -1;
+	}
+	catch (const std::exception &theException)
+	{
+		cerr << "Unexpected database error: " << theException.what() << "file url: " << the_file->getURL() << endl;
 		return -1;
 	}
 	catch (...)
@@ -150,9 +155,14 @@ int IRDBObjects_t::writeBackVariant(const IRDB_SDK::DatabaseID_t variant_id)
 		it->second->WriteToDB();
         	return 0;
 	}
-	catch (const DatabaseError_t &pnide)
+	catch (const DatabaseError_t &theException)
 	{
-		cerr << "Unexpected database error: " << pnide << "variant ID: " << variant_id << endl;
+		cerr << "Unexpected database error: " << theException << "variant ID: " << variant_id << endl;
+		return -1;
+	}
+	catch (const std::exception &theException)
+	{
+		cerr << "Unexpected database error: " << theException.what() << "variant ID: " << variant_id << endl;
 		return -1;
 	}
 	catch (...)

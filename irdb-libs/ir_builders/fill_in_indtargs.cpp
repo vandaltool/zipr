@@ -50,11 +50,38 @@ using namespace std;
 using namespace EXEIO;
 using namespace MEDS_Annotation;
 
+/* 
+ * Constants
+ */
+const auto BINARY_NAME=string("a.ncexe");
+const auto SHARED_OBJECTS_DIR=string("shared_objects");
+
 
 /*
  * defines 
  */
 #define ALLOF(a) begin(a),end(a)
+
+
+//
+// Compute power of two greater than or equal to `n`
+//
+static inline uint64_t findNextPowerOf2(uint64_t n)
+{
+    // decrement `n` (to handle the case when `n` itself is a power of 2)
+    n--;
+
+    // set all bits after the last set bit
+    n |= n >> 1;
+    n |= n >> 2;
+    n |= n >> 4;
+    n |= n >> 8;
+    n |= n >> 16;
+    n |= n >> 32;
+
+    // increment `n` and return
+    return ++n;
+}
 
 
 /*
@@ -421,7 +448,7 @@ void lookupInstruction_init(FileIR_t *firp)
 	}
 }
 
-Instruction_t *lookupInstruction(FileIR_t *firp, VirtualOffset_t virtual_offset)
+Instruction_t *lookupInstruction(VirtualOffset_t virtual_offset)
 {
 	if(lookupInstructionMap.find(virtual_offset)!=lookupInstructionMap.end())
 		return lookupInstructionMap[virtual_offset];
@@ -512,7 +539,8 @@ bool texttoprintf(FileIR_t *firp,Instruction_t* insn)
 void get_instruction_targets(FileIR_t *firp, EXEIO::exeio* exeiop, const set<VirtualOffset_t>& thunk_bases)
 {
 
-        for(auto insn : firp->getInstructions())
+        const auto origInsns = firp->getInstructions();
+        for(auto insn : origInsns)
         {
 		auto disasm=DecodedInstruction_t::factory(insn);
                 VirtualOffset_t instr_len = disasm->length(); // Disassemble(insn,disasm);
@@ -933,7 +961,7 @@ I10:	ldrls	pc, [pc, r2, lsl #2]
 		possible_target(jte, jte_addr, prov);
 
 		// check to see if the entry is valid.  if not, exit.
-		const auto ibtarget = lookupInstruction(firp, jte);
+		const auto ibtarget = lookupInstruction(jte);
 		if(ibtarget == nullptr) break;
 
 		cout << "Found ARM32 switch (ldrls -- type2)@0x" << hex << i10->getAddress()->getVirtualOffset()
@@ -1034,7 +1062,7 @@ I10:	addls	pc, [pc, r2, lsl #2]
 	{
 		// check to see if the entry is valid.  if not, exit.
 		const auto jte = jt_addr + jt_entry_no * jt_entry_size;
-		const auto ibtarget = lookupInstruction(firp, jte);
+		const auto ibtarget = lookupInstruction(jte);
 		if(ibtarget == nullptr) break;
 
 		// check if it's an uncond branch
@@ -1460,7 +1488,7 @@ notes:
 				table_entry_size==2 ? *(int16_t*)entry_ptr :
 				throw invalid_argument("Cannot determine how to load table entry from size");
 			const auto candidate_ibta = jump_base_addr+table_entry*4;	 // 4 being instruction alignment factor for ARM64
-			const auto ibtarget       = lookupInstruction(firp, candidate_ibta);
+			const auto ibtarget       = lookupInstruction(candidate_ibta);
 
 			if(do_verbose)
 				cout << "\tEntry #"<<dec<<target_count<<"= ent-addr="<<hex<<entry_address
@@ -1744,7 +1772,7 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 				if(!possible_target(thunk_base+table_entry,table_base+i*4,prov))
 					break;
 
-				auto ibtarget = lookupInstruction(firp, thunk_base+table_entry);
+				auto ibtarget = lookupInstruction(thunk_base+table_entry);
 				if (ibtarget && ibtargets.size() <= table_size)
 				{
 					ibtargets.insert(ibtarget);
@@ -1878,10 +1906,10 @@ I5:   0x809900e <text_handler+51>: jmp    ecx
 				if(!t1 && !t2)
 					break;
 
-				auto ibtarget1 = lookupInstruction(firp, table_base+table_entry);
+				auto ibtarget1 = lookupInstruction(table_base+table_entry);
 				if (ibtarget1)
 					ibtargets.insert(ibtarget1);
-				auto ibtarget2 = lookupInstruction(firp, thunk_base+table_entry);
+				auto ibtarget2 = lookupInstruction(thunk_base+table_entry);
 				if (ibtarget2)
 					ibtargets.insert(ibtarget2);
 			}
@@ -1989,7 +2017,7 @@ void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, con
 					assert(0);
 			}
 
-			Instruction_t* ibt=lookupInstruction(firp,table_entry);
+			Instruction_t* ibt=lookupInstruction(table_entry);
 			// if we didn't find an instruction or the insn isn't in our set, stop looking, we've found the table size
 			if(ibt==nullptr || jmptables[insn].find(ibt) == jmptables[insn].end())
 				break;
@@ -2035,7 +2063,7 @@ void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, con
 			/* but the table can have 1 valid entry. */
 			if(pSec->get_name()==".got.plt")
 			{	
-	                        Instruction_t *ibtarget = lookupInstruction(firp, table_entry);
+	                        Instruction_t *ibtarget = lookupInstruction(table_entry);
 				if(ibtarget)
 				{
 					jmptables[I5].insert(ibtarget);
@@ -2107,7 +2135,7 @@ void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, con
 					assert(0);
 			}
 
-			Instruction_t* ibt=lookupInstruction(firp,table_entry);
+			Instruction_t* ibt=lookupInstruction(table_entry);
 			if(!possible_target(table_entry,table_base+i*ptrsize,prov) || ibt==nullptr)
 				return;
 			if(getenv("IB_VERBOSE")!=0)
@@ -2308,7 +2336,8 @@ Here, one of the registers used in the switch dispatch is spilled?  How can this
 	const auto d6_op1        = d6->getOperand(1);
 	const auto d6_op1_is_mem = d6_op1->isMemory();
 	auto cmp_str             = string(" do not match anything "); // to be updated inside if statement below
-	auto cmp_str_stopif      = string(" do not match anything "); // to be updated inside if statement below
+	auto bound_stopif        = string(" do not match anything "); // to be updated inside if statement below
+	auto and_str             = string(" do not match anything "); // to be updated inside if statement below
 
 	if( d6_op1_is_mem ) 
 	{
@@ -2330,7 +2359,8 @@ Here, one of the registers used in the switch dispatch is spilled?  How can this
 		const auto index_reg_32bit = regNoToX8632Reg(indexRegno);
 
 		cmp_str        = "cmp "+index_reg_32bit+"|cmp "+index_reg_64bit;
-		cmp_str_stopif = "^"+index_reg_32bit+"$|^"+index_reg_64bit+"$";
+		bound_stopif   = "^"+index_reg_32bit+"$|^"+index_reg_64bit+"$";
+		and_str        = "and "+index_reg_32bit+"|and "+index_reg_64bit;
 		lea_string1+=base_reg;
 		if(d6->getOperand(1)->getScaleValue()  == 1)
 			lea_string2="lea "+index_reg_64bit;
@@ -2418,21 +2448,37 @@ Here, one of the registers used in the switch dispatch is spilled?  How can this
 		// cannot find a bounds check on the table size.
 		// 
 		auto table_size = 255U;
-		if(backup_until(cmp_str.c_str(), I1, I6, cmp_str_stopif))
+		if(backup_until(cmp_str.c_str(), I1, I6, bound_stopif ))
 		{
-			auto d1=DecodedInstruction_t::factory(I1);
+			const auto d1=DecodedInstruction_t::factory(I1);
 			table_size = d1->getImmediate(); 
 
 			// notes on table size: 
 			// readelf on ubuntu20 has a table size of 4.
 			if (table_size < 4)
 			{
-				cout<<"pic64: found I1 ('"<<d1->getDisassembly()<<"'), but could not find size of switch table"<<endl;
+				cout << "pic64: found cmp-type I1 ('" << d1->getDisassembly() << "'), but could not find size of switch table" << "\n";
+			}
+		}
+		else if(backup_until(and_str.c_str(), I1, I6, bound_stopif ))
+		{
+			const auto d1            = DecodedInstruction_t::factory(I1);
+			const auto d1SecondOp    = d1->getOperand(1);
+			const auto isConstantAnd = d1SecondOp->isConstant();
+			if(isConstantAnd)
+			{
+				table_size = findNextPowerOf2(d1SecondOp->getConstant());
+				cout << "pic64: found and-type I1 ('" << d1->getDisassembly() << "') with table-size = " << dec << table_size << "\n";
+					
+			}
+			else
+			{
+				cout << "pic64: found and-type I1 ('" << d1->getDisassembly() << "'), but could not find size of switch table" << "\n";
 			}
 		}
 		else
 		{
-			// it's very common for the cmp_str_stopif to stop before finding the compare
+			// it's very common for the bound_stopif   to stop before finding the compare
 			// because of a code pattern like this:
 			//
 			// cmp rax, 0x1234
@@ -2455,6 +2501,7 @@ Here, one of the registers used in the switch dispatch is spilled?  How can this
 		auto offset=D1+d6_displ-pSec->get_address();
 		auto entry=0U;
 		auto found_table_error = false;
+		auto newInstructions=InstructionSet_t();
 		do
 		{
 			// check that we can still grab a word from this section
@@ -2478,37 +2525,34 @@ Here, one of the registers used in the switch dispatch is spilled?  How can this
 				break;
 			}
 
-			if(getenv("IB_VERBOSE"))
-			{
-				cout<<"Found possible table entry, at: "<< std::hex << I8->getAddress()->getVirtualOffset()
-			    		<< " insn: " << d5.getDisassembly()<< " d1: "
-			    		<< D1 << " table_entry:" << table_entry 
-			    		<< " target: "<< D1+table_entry << std::dec << endl;
-			}
-
-			auto ibtarget = lookupInstruction(firp, D1+table_entry);
-			if (ibtarget && ibtargets.size() <= table_size)
+			const auto ibtarget = doDisassemblyForIBT(
+				firp, 			// the IR.
+				newInstructions, 	// output: the set of instructions that
+				D1+table_entry,  	// jump target from table.:w
+				I8->getFunction(), 	// the function to add new instructions to.
+				I8->getAddress()->getFileID(),  // the file to add to.
+				exeiop, 		// a handle to the executable so we can read raw data.
+				true,  			// do pin
+				pSec->isExecutable() 	// table in text
+				);
+			if (ibtarget)
 			{
 				if(getenv("IB_VERBOSE"))
+				{
 					cout << "jmp table [" << entry << "]: " << hex << table_entry << dec << endl;
+					cout<<"Found possible table entry, at: "<< std::hex << I8->getAddress()->getVirtualOffset()
+						<< " insn: " << d5.getDisassembly()<< " d1: "
+						<< D1 << " table_entry:" << table_entry 
+						<< " target: "<< D1+table_entry << std::dec << endl;
+				}
 				ibtargets.insert(ibtarget);
-			}
-			else
-			{
-				// here we have found a switch table that has an entry that does not correspond to a valid 
-				// instruction from disassembly.  We really should add it to the disassembly just to be sure.
-				// Since we aren't currently architected to go _back_ to disasembly after this, the "right"
-				// fix is heavy, and we'll hack a bit to avoid that for now.
-				// The hack:  ignore the error on this table entry.
-				if(getenv("IB_VERBOSE"))
-					cout << "      INVALID target" << endl;
 			}
 			offset+=table_entry_size;
 			entry++;
 		} while ( entry<=table_size);
 
 		// record the max entry we found
-		const auto max_valid_table_entry=entry+1;
+		const auto max_valid_table_entry=entry;
 
 		
 		// valid switch table? may or may not have default: in the switch
@@ -2527,7 +2571,8 @@ Here, one of the registers used in the switch dispatch is spilled?  How can this
 				cout << "pic64: found complete switch table for " << hex << I8->getAddress()->getVirtualOffset()
 				     << " detected ibtp_switchtable_type4" << endl;
 				jmptables[I8].setAnalysisStatus(iasAnalysisComplete);
-				addSwitchTableScoop(firp,max_valid_table_entry,table_entry_size,D1+d6_displ,exeiop, I6, D1,true);
+				const auto do_unpin = found_leas.size() == 1;
+				addSwitchTableScoop(firp,max_valid_table_entry,table_entry_size,D1+d6_displ,exeiop, I6, D1, do_unpin);
 			}
 			else
 			{
@@ -2624,22 +2669,26 @@ Here, one of the registers used in the switch dispatch is spilled?  How can this
 				} while ( lvl2_table_entry_no <= table_size); /* table_size from original cmp! */
 				
 				// now record the lvl2 table into a scoop 
-				addSwitchTableScoop(firp,lvl2_table_entry_no+1,1,lvl2_table_addr,exeiop, I6_2, D1);
+				addSwitchTableScoop(firp,lvl2_table_entry_no+1,1,lvl2_table_addr,exeiop, I6_2, D1, false);
 			}
 		}
 	}
 }
 
 
+/*
+ * Add a switch table in code.
+ */
 void addSwitchTableScoop(
-		FileIR_t* firp, 
-		const size_t num_entries, 
-		const size_t entry_size, 
-		const VirtualOffset_t table_base_addr, 
-		EXEIO::exeio* exeiop, 
-		Instruction_t* I6,
-		const VirtualOffset_t I5_constant,
-		const bool do_unpin=true
+		FileIR_t* firp,   			// the IR to modify
+		const size_t num_entries,  		// how many entries in the switch table.
+		const size_t entry_size, 		// how many bytes in an entry.
+		const VirtualOffset_t table_base_addr,  // the original address of the table.
+		EXEIO::exeio* exeiop, 			// a handle to the executable to read bytes from.
+		Instruction_t* table_ref,		// an instruction that depends on the architecture type.
+		const VirtualOffset_t table_base_addr_without_disp,	
+							// the constant in table_ref used to offset into the table.
+		const bool do_unpin=true		// should we even try to unpin this switch table?
 		)
 {
 	// make sure we can find the section with the switch table
@@ -2671,41 +2720,140 @@ void addSwitchTableScoop(
 	const auto switch_tab = firp->addNewDataScoop( name, startaddr, endaddr, NULL, permissions, is_relro, the_contents, max_base_id++ );
 
 	const auto mt=firp->getArchitecture()->getMachineType();
+
+	// how to pin the scoop
+	const auto repinScoop = [&]() 
+	{
+		startaddr->setVirtualOffset(startaddr->getVirtualOffset()+table_base_addr);
+		endaddr->setVirtualOffset(endaddr->getVirtualOffset()+table_base_addr);
+	};
+
 	if(do_unpin)
 	{
 		if(mt==admtX86_64 || mt==admtI386)
 		{
-			// on x86 we need to rewrite the table base instruction.
-			
-
-			// now rewrite the 
-			const auto d6          = DecodedInstruction_t::factory(I6);
-			const auto operands    = d6->getOperands();
-			const auto the_arg     = find_if(ALLOF(operands), [](const shared_ptr<DecodedOperand_t>& arg) { return arg->isMemory(); });
-
-			// FIXME: No displacement added here, convert to memory operand with displacement and fix later.
-			// cannot unpin
-			if(!(*the_arg)->hasMemoryDisplacement())
+			// on x86 we need to rewrite the instruction that loads from the table.
+			// Rewrite this for x86-64 pic switch tables.
+			// "I6" is the memory instruction that loads from the table.
+			auto d6              = DecodedInstruction_t::factory(table_ref);
+			auto operands        = d6->getOperands();
+			auto the_arg         = find_if(ALLOF(operands), [](const shared_ptr<DecodedOperand_t>& arg) { return arg->isMemory(); });
+			const auto found_arg = the_arg != operands.end();
+		
+			// I6 really needs a memory operand, or we just have to repin.
+			if(!found_arg)
 			{
 				// repin the scoop, first
-				startaddr->setVirtualOffset(startaddr->getVirtualOffset()+table_base_addr);
-				endaddr->setVirtualOffset(endaddr->getVirtualOffset()+table_base_addr);
+				cout << "Warning:  I6 not a memory access?  Repinning switch table\n";
+				repinScoop();
 				return;
 			}
 
-			// else, mark I6 as referencing the scoop, and add a relocation so we can later repin the scoop
-			firp->addNewRelocation(I6, 0, "absoluteptr_to_scoop",  switch_tab);
-			const auto disp_offset = uint32_t(d6->getMemoryDisplacementOffset(the_arg->get(),I6));
+			// if we have a move operation, we need to check if it has a 4-byte displacement field.
+			// If not, we need to modify the move so that it does.
+			if(!(*the_arg)->hasMemoryDisplacement() || (*the_arg)->getMemoryDisplacementEncodingSize() !=4 )
+			{
+				const auto oldInsnBits=table_ref->getDataBits();
+
+				auto byteIndex=0u;
+				auto newInsnBits=string();
+
+
+				// check for and copy rex prefix.
+				if((oldInsnBits[byteIndex] & 0x40) == 0x40)
+				{
+					newInsnBits+=oldInsnBits[byteIndex++];
+				}
+				if(uint8_t(oldInsnBits[byteIndex]) != uint8_t(0x8a) && uint8_t(oldInsnBits[byteIndex]) != uint8_t(0x8b))
+				{
+					cout << "Warning:  I6 not a move (opcode=8a or 8b) ?  Repinning switch table\n";
+					repinScoop();
+					return;
+				}
+				// copy opcode
+				newInsnBits+=oldInsnBits[byteIndex++];
+
+				// decode mod/reg/rm byte
+				const auto modRegRmByte = uint8_t(oldInsnBits[byteIndex]);
+				const auto modBits      = (modRegRmByte>>6)&0b11 ; // bits 7-6
+				const auto regBits      = (modRegRmByte>>3)&0b111; // bits 5-3
+				const auto rmBits       = (modRegRmByte>>0)&0b111; // bits 2-0
+
+				// check that there's a SIB byte.
+				// since we're expecting I6 to be the load from table, there should be a base and index register,
+				// requiring a SIB byte.
+				if(rmBits != 0b100)
+				{
+					cout << "Warning:  I6 not a mem. move with mod==0b00, rm=0b100)?  Repinning switch table\n";
+					repinScoop();
+					return;
+				}
+
+				// recreate ModRegRM byte
+				const auto newModRegRmByte = (0b10 << 6) | (regBits << 3) | (rmBits << 0);
+				newInsnBits+=newModRegRmByte;
+
+				// skip the old modRegRM byte
+				byteIndex++;
+
+				// copy the SIB byte.
+				newInsnBits+=oldInsnBits[byteIndex++];
+
+				// add a new displacement field, but that depends on the old disp, which may be a disp8.
+				switch(modBits)
+				{
+					case 0b00:
+					{
+
+						// add 4 byte displacement
+						newInsnBits+=string("\0\0\0\0",4);
+
+						// good to go!
+						break;
+					}
+					case 0b01:
+					{
+					
+						// get, sign extend, and add 4 byte displacement
+						const auto oldDisp = int8_t(oldInsnBits[byteIndex]);
+						const auto newDisp = int32_t(oldDisp);
+						newInsnBits+=string(reinterpret_cast<const char*>(&newDisp),4);
+						break;
+
+					}
+					default:
+						throw runtime_error("Invalid decoding of instruction?");
+					
+				}
+
+				// set the new data bits to have a 32-bit displacement,
+				// and re-decode the isntruction for the code below.
+				table_ref->setDataBits(newInsnBits);
+				d6       = DecodedInstruction_t::factory(table_ref);
+			 	operands = d6->getOperands();
+				the_arg  = find_if(ALLOF(operands), [](const shared_ptr<DecodedOperand_t>& arg) { return arg->isMemory(); });
+
+
+			}
+			assert((*the_arg)->getMemoryDisplacementEncodingSize() == 4);
+
+			// Finally, mark table_ref as referencing the scoop, and add a relocation so we can later repin the scoop
+			firp->addNewRelocation(table_ref, 0, "absoluteptr_to_scoop",  switch_tab, -table_base_addr_without_disp);
+			#if 0
+			const auto disp_offset = uint32_t(d6->getMemoryDisplacementOffset(the_arg->get(),table_ref));
 			const auto disp_size   = uint32_t((*the_arg)->getMemoryDisplacementEncodingSize());
 			const auto file_base   = firp->getArchitecture()->getFileBase();
-			const auto new_disp    = uint32_t(I5_constant-file_base);
-			const auto new_bits    = I6->getDataBits().replace(disp_offset, disp_size, (const char*)&new_disp, disp_size);
-			I6->setDataBits(new_bits);
+			const auto new_disp    = uint32_t(table_base_addr_without_disp-file_base);
+			const auto new_bits    = table_ref->getDataBits().replace(disp_offset, disp_size, reinterpret_cast<const char*>(&new_disp), disp_size);
+			cout << "Updating "  table_ref->getDisassembly() " for switch table unpin to ";
+			table_ref->setDataBits(new_bits);
+			cout << table_ref->getDisassembly() << "\n";
+			#endif
 		}
 		else if(mt==admtArm32 || mt==admtAarch64)
 		{
 			// on ARM we need need to update the pc-rel relocation to indicate which scoop is the table.
-			for(auto &reloc : I6->getRelocations())
+			for(auto &reloc : table_ref->getRelocations())
 			{
 				if(reloc->getType()=="pcrel")
 				{
@@ -2810,7 +2958,7 @@ void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn,
 		VirtualOffset_t table_entry=*table_entry_ptr;
 		possible_target(table_entry,0,prov);
 
-		auto ibtarget = lookupInstruction(firp, table_entry);
+		auto ibtarget = lookupInstruction(table_entry);
 		if (!ibtarget) {
 			if(getenv("IB_VERBOSE"))
 				cout << "0x" << hex << table_entry << " is not an instruction, invalid switch table" << endl;
@@ -2945,7 +3093,7 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, const De
 			assert(0 && "Unknown arch size.");
 
 		possible_target(table_entry, 0 /* from addr unknown */, prov);
-		auto ibtarget = lookupInstruction(firp, table_entry);
+		auto ibtarget = lookupInstruction(table_entry);
 		if (!ibtarget) {
 			if(getenv("IB_VERBOSE"))
 				cout << "0x" << hex << table_entry << " is not an instruction, invalid switch table" << endl;
@@ -3020,8 +3168,8 @@ void handle_ibt_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBTAnnotation* p_
 			possible_target((VirtualOffset_t)p_ibt_annotation->getVirtualOffset().getOffset(),
 				0,ibt_provenance_t::ibtp_stars_switch);
 			auto addr=(VirtualOffset_t)p_ibt_annotation->GetXrefAddr();
-			auto fromib=lookupInstruction(firp, addr);
-			auto ibt=lookupInstruction(firp, p_ibt_annotation->getVirtualOffset().getOffset());
+			auto fromib=lookupInstruction(addr);
+			auto ibt=lookupInstruction(p_ibt_annotation->getVirtualOffset().getOffset());
 			if(fromib && ibt)
 			{
 				if(getenv("IB_VERBOSE")!=nullptr)
@@ -3042,9 +3190,9 @@ void handle_ibt_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBTAnnotation* p_
 
 
 			auto fromaddr=(VirtualOffset_t)p_ibt_annotation->GetXrefAddr();
-			auto fromib=lookupInstruction(firp, fromaddr);
+			auto fromib=lookupInstruction(fromaddr);
 			auto toaddr=p_ibt_annotation->getVirtualOffset().getOffset();
-			auto ibt=lookupInstruction(firp, toaddr);
+			auto ibt=lookupInstruction(toaddr);
 			if(fromib && ibt)
 			{
 				if(getenv("IB_VERBOSE")!=nullptr)
@@ -3101,8 +3249,6 @@ void handle_ibt_annot(FileIR_t* firp,Instruction_t* insn, MEDS_IBTAnnotation* p_
 void read_stars_xref_file(FileIR_t* firp)
 {
 
-	const auto BINARY_NAME=string("a.ncexe");
-	const auto SHARED_OBJECTS_DIR=string("shared_objects");
 
 	const auto fileBasename = string(basename((char*)firp->getFile()->getURL().c_str()));
 
@@ -3485,7 +3631,7 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 					throw domain_error("Invalid ptr size");
 
 
-				const auto insn=lookupInstruction(firp,vo);
+				const auto insn=lookupInstruction(vo);
 
 				// OK for .got scoop to miss, some entries are empty.
 				if(scoop->getName()==".got" && (vo==0 || insn==nullptr))
@@ -3615,7 +3761,7 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 
 				if(shndx!=SHN_UNDEF && type==STT_FUNC)
 				{
-					auto insn=lookupInstruction(firp,vo);
+					auto insn=lookupInstruction(vo);
 
 					// these asserts are probably overkill, but want them for sanity checking for now.
 					assert(insn);
@@ -3765,7 +3911,7 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 		}
 
 		// verify we have an instruction.
-		auto ibt=lookupInstruction(firp,table_entry);
+		auto ibt=lookupInstruction(table_entry);
 		if(ibt)
 		{
 			// which isn't otherwise addressed.
@@ -3833,15 +3979,9 @@ void unpin_switches(FileIR_t *firp, int do_unpin_opt)
 	type3_pins=0;
 
 	// for each instruction 
-        for(
-                set<Instruction_t*>::const_iterator it=firp->getInstructions().begin();
-                it!=firp->getInstructions().end();
-                ++it
-	   )
-
+        for(auto insn : firp->getInstructions()) 
         {
 		// check for an insn.
-		Instruction_t* insn=*it;
 		assert(insn);
 
 		// if we didn't find a jmptable for this insn, try again.
@@ -3855,7 +3995,7 @@ void unpin_switches(FileIR_t *firp, int do_unpin_opt)
 		if(insn->getIBTargets()->getAnalysisStatus()!=iasAnalysisComplete) continue;
 
 		// find the scoop, try next if we fail.
-		DataScoop_t* scoop=find_scoop(firp,jmptables[insn].GetTableStart());
+		auto scoop=find_scoop(firp,jmptables[insn].GetTableStart());
 		if(!scoop) continue;
 
 		if(jmptables[insn].GetSwitchType().areOnlyTheseSet(
@@ -4389,6 +4529,99 @@ std::string getStepName(void) const override
 	return std::string("fill_in_indtargs");
 }
 
+
+/*
+ * Do a linear-scan disassembly for an IBT.  Start disassemblying at start_addr, and go until you err-out or 
+ * find an existing instruction.  Pin the start_addr and return it, output the set of new instructions in the
+ * output parameter.  Put the new instructions in the "func" function.
+ */
+Instruction_t* doDisassemblyForIBT(
+	FileIR_t *firp, 
+	InstructionSet_t& newInstructions, 
+	VirtualOffset_t start_addr, 
+	Function_t* func,
+	IRDB_SDK::DatabaseID_t newFileID,
+	EXEIO::exeio* exeiop, 
+	const bool doPin,
+	const bool fromTableInText)
+{
+	// if we already have an instruction, we're done.
+	auto ibtarget = lookupInstruction(start_addr);
+	if(ibtarget)
+		return ibtarget;
+
+	// skip extra disassembly unless the switch table is in the text.
+	if(!fromTableInText)
+		return nullptr;
+
+	// otherwise, grab the bits we'll need.
+	const auto sec          = find_section(start_addr,exeiop);
+
+	// sanity check we have a section.
+	if(!sec) return nullptr;
+
+	const auto sec_addr     = sec->get_address();
+	const auto sec_size     = sec->get_size();
+	const auto end_sec_addr = sec_addr+sec_size;
+	const auto secdata      = sec->get_data();
+        const auto sec_offset   = start_addr-sec_addr;
+
+
+
+	// sanity check we have data
+	if(!secdata) return nullptr;
+	assert(sec_addr <= start_addr && start_addr <= end_sec_addr);
+
+	// no disassembly for non-executable sections
+	if(!sec->isExecutable())
+		return nullptr;
+
+	// disassemble the instruction
+	const auto disasm=DecodedInstruction_t::factory(start_addr, (void*)&secdata[sec_offset], sec_size-sec_offset );
+	if(!disasm->valid())
+	{
+		// done if we can't disassembly
+		return nullptr;
+	}
+
+	/* create a new instruction */
+        const auto instr_len = disasm->length();
+	const auto newinsnbits=string(&secdata[sec_offset],instr_len);
+	auto newaddr=firp->addNewAddress(newFileID,start_addr);
+	auto newpin=doPin ? firp->addNewAddress(newFileID,start_addr) : nullptr;
+	auto newinsn=firp->addNewInstruction(newaddr, nullptr, newinsnbits, disasm->getDisassembly()+string(" from fill_in_indtargs "), newpin);
+
+	// bit of a hack here -- set that this instruction was already in the DB
+	// so that it can be written w/o the error checks.
+	newinsn->setOriginalAddressID(1);
+
+	lookupInstructionMap[start_addr]=newinsn;
+
+	newInstructions.insert(newinsn);
+	cout<<"Found new instruction from IB analysis "<<newinsn->getComment()<<"@"<<hex<<newinsn->getAddress()->getVirtualOffset()<<endl;
+
+	const auto fallthroughAddr=start_addr+instr_len;
+	auto fallthroughInsn=doDisassemblyForIBT(firp, newInstructions, fallthroughAddr, func, newFileID, exeiop, false, true);
+
+	const auto hasFallthrough = !(disasm->isReturn() || disasm->isUnconditionalBranch());
+	if(hasFallthrough)
+		newinsn->setFallthrough(fallthroughInsn);
+
+        const auto &operands = disasm->getOperands();
+        for(auto operand : operands)
+        {
+                // check for branches with targets 
+                if( disasm->isBranch() &&           // it is a branch 
+                    !disasm->isReturn() &&          // and not a return
+                    operand->isConstant())          // and has a constant argument 
+                {
+               		const auto targetAddress=disasm->getAddress();
+ 			auto target_insn = doDisassemblyForIBT(firp,newInstructions,targetAddress, func, newFileID, exeiop, false, true);
+			newinsn->setTarget(target_insn);
+		}
+	}
+	return newinsn;
+}
 
 };
 

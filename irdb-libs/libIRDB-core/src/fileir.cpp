@@ -713,15 +713,12 @@ void FileIR_t::writeToDB(ostream *verbose_logging)
 	for(auto i=insns.begin(); i!=insns.end(); ++i)
 	{	
 		auto insnp=dynamic_cast<Instruction_t*>(*i);
-		//DISASM disasm;
-		//Disassemble(insnp,disasm);
 		const auto p_disasm=DecodedInstruction_t::factory(insnp);
 		const auto& disasm=*p_disasm;
 
 		if(insnp->getOriginalAddressID() == NOT_IN_DATABASE)
 		{
 
-			// if(insnp->getFallthrough()==NULL && disasm.Instruction.BranchType!=RetType && disasm.Instruction.BranchType!=JmpType )
 			if(insnp->getFallthrough()==NULL && !disasm.isReturn() && !disasm.isUnconditionalBranch())
 			{
 				// instructions that fall through are required to either specify a fallthrough that's
@@ -733,12 +730,6 @@ void FileIR_t::writeToDB(ostream *verbose_logging)
 				assert(0);
 				abort();
 			}
-			//if(insnp->getTarget()==NULL && disasm.Instruction.BranchType!=0 && 
-			//	disasm.Instruction.BranchType!=RetType &&
-			//	// not an indirect branch
-			//	((disasm.Instruction.BranchType!=JmpType && disasm.Instruction.BranchType!=CallType) ||
-			//	 disasm.Argument1.ArgType&CONSTANT_TYPE))
-
 			if(insnp->getTarget()==NULL && disasm.isBranch() && !disasm.isReturn() &&
 				// not an indirect branch
 				( (!disasm.isUnconditionalBranch() && !disasm.isCall()) || disasm.getOperand(0)->isConstant())
