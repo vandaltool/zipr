@@ -564,7 +564,6 @@ class FixCalls_t : public TransformStep_t
 				 (insn->getDataBits()[0]!=(char)0x9a) )
 			{
 				cout<<"Found odd prefixing.\n  Not handling **********************************************"<<endl;
-				assert(0);
 				return;
 			}
 

@@ -47,7 +47,7 @@ enum UnresolvedType_t
 class UnresolvedInfo_t
 {
 	public:
-		virtual IRDB_SDK::Instruction_t* getInstrution() const  =0 ;
+		virtual IRDB_SDK::Instruction_t* getInstruction() const  =0 ;
 	private:
 };
 
@@ -57,7 +57,7 @@ class UnresolvedPinned_t : public UnresolvedInfo_t
 	public:
 		UnresolvedPinned_t(IRDB_SDK::Instruction_t* p_from) : from_instruction(p_from), m_range(0,0), m_updated_address(0) { assert(p_from); }
 		UnresolvedPinned_t(IRDB_SDK::Instruction_t* p_from, Range_t range) : from_instruction(p_from), m_range(range), m_updated_address(0) { assert(p_from); }
-		IRDB_SDK::Instruction_t* getInstrution() const { return from_instruction; }
+		IRDB_SDK::Instruction_t* getInstruction() const { return from_instruction; }
 
 		/*
 		 * Use the range to store the place where 
@@ -135,10 +135,10 @@ class Patch_t
 class UnresolvedUnpinned_t  : public UnresolvedInfo_t
 {
 	public:
-		UnresolvedUnpinned_t(UnresolvedPinned_t up) : from_instruction(up.getInstrution()) {}
+		UnresolvedUnpinned_t(UnresolvedPinned_t up) : from_instruction(up.getInstruction()) {}
 		UnresolvedUnpinned_t(IRDB_SDK::Instruction_t* p_from) : from_instruction(p_from) 
 		{ assert(p_from); }
-		IRDB_SDK::Instruction_t* getInstrution() const { assert(from_instruction); return from_instruction; }
+		IRDB_SDK::Instruction_t* getInstruction() const { assert(from_instruction); return from_instruction; }
 	private:
 		IRDB_SDK::Instruction_t *from_instruction;
 		

@@ -59,15 +59,15 @@ class pin_sorter_t
 	public:
 		bool operator() (const UnresolvedPinned_t& p1, const UnresolvedPinned_t& p2)
 		{
-			assert(p1.getInstrution());
-			assert(p2.getInstrution());
-			assert(p1.getInstrution()->getIndirectBranchTargetAddress()
-			       && p1.getInstrution()->getIndirectBranchTargetAddress()->getVirtualOffset()!=0);
-			assert(p2.getInstrution()->getIndirectBranchTargetAddress()
-			       && p2.getInstrution()->getIndirectBranchTargetAddress()->getVirtualOffset()!=0);
+			assert(p1.getInstruction());
+			assert(p2.getInstruction());
+			assert(p1.getInstruction()->getIndirectBranchTargetAddress()
+			       && p1.getInstruction()->getIndirectBranchTargetAddress()->getVirtualOffset()!=0);
+			assert(p2.getInstruction()->getIndirectBranchTargetAddress()
+			       && p2.getInstruction()->getIndirectBranchTargetAddress()->getVirtualOffset()!=0);
 
-			return p1.getInstrution()->getIndirectBranchTargetAddress()->getVirtualOffset() < 
-				p2.getInstrution()->getIndirectBranchTargetAddress()->getVirtualOffset() ;
+			return p1.getInstruction()->getIndirectBranchTargetAddress()->getVirtualOffset() < 
+				p2.getInstruction()->getIndirectBranchTargetAddress()->getVirtualOffset() ;
 		}
 };
 

@@ -73,8 +73,7 @@ class Sled_t
 			for (auto jmp_pnt : merging.m_jmp_pts)
 			{
 				if (m_verbose)
-					std::cout << "Merging jump point: " 
-					          << std::hex << jmp_pnt << std::endl;
+					std::cout << "Merging jump point: " << std::hex << jmp_pnt << std::endl;
 
 				m_jmp_pts.insert(jmp_pnt);
 			}

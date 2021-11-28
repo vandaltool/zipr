@@ -202,8 +202,13 @@ void ZiprPinnerX86_t::RecordPinnedInsnAddrs()
 
 bool ZiprPinnerX86_t::ShouldPinImmediately(Instruction_t *upinsn)
 {
+/* doesn't play well with sleds. */
+/* fixme:  make this play well with sleds? */
+return false;
+#if 0
 	const auto d=DecodedInstruction_t::factory (upinsn);
-	if(d->isReturn() )
+	const auto len=upinsn->getDataBits().length();
+	if(d->isReturn() && len==1)
 		return true;
 
 	const auto upinsn_ibta = upinsn->getIndirectBranchTargetAddress();
@@ -211,7 +216,6 @@ bool ZiprPinnerX86_t::ShouldPinImmediately(Instruction_t *upinsn)
 	assert(upinsn_ibta!=nullptr && upinsn_ibta->getVirtualOffset()!=0);
 
 	/* careful with 1 byte instructions that have a pinned fallthrough */ 
-	const auto len=upinsn->getDataBits().length();
 	if(len==1)
 	{
 		if(upinsn->getFallthrough()==nullptr)
@@ -296,6 +300,7 @@ bool ZiprPinnerX86_t::ShouldPinImmediately(Instruction_t *upinsn)
 		return true;
 	}
 	return false;
+#endif
 }
 
 void ZiprPinnerX86_t::PreReserve2ByteJumpTargets()
@@ -309,7 +314,7 @@ void ZiprPinnerX86_t::PreReserve2ByteJumpTargets()
 		{
 			UnresolvedPinned_t up=*it;
 			bool found_close_target = false;
-			Instruction_t* upinsn=up.getInstrution();
+			Instruction_t* upinsn=up.getInstruction();
 
 			RangeAddress_t addr;
 			
@@ -455,7 +460,7 @@ void ZiprPinnerX86_t::PreReserve2ByteJumpTargets()
 			}
 			else
 			{
-				UnresolvedPinned_t new_up = UnresolvedPinned_t(up.getInstrution(), up.GetRange());
+				UnresolvedPinned_t new_up = UnresolvedPinned_t(up.getInstruction(), up.GetRange());
 				if (up.HasUpdatedAddress())
 				{
 					new_up.SetUpdatedAddress(up.GetUpdatedAddress());
@@ -493,8 +498,8 @@ void ZiprPinnerX86_t::InsertJumpPoints68SledArea(Sled_t &sled)
 		if (is_patch_point)
 		{
 			
-			cout << "There is a patch at 0x"
-			     << std::hex << addr << " inside a sled." << endl;
+			cout << "There is a patch at 0x" << hex << addr 
+			     << " inside a sled.\n";
 		}
 
 		if (is_pin_point || is_patch_point)
@@ -544,8 +549,8 @@ Instruction_t* ZiprPinnerX86_t::Emit68Sled(RangeAddress_t addr, Sled_t sled, Ins
 	 * 	jmp dollop's translation	// found
 	*/
 
-	string stack_reg="rsp";
-	string decoration="qword";
+	auto stack_reg=string("rsp");
+	auto decoration=string("qword");
 	if(m_firp->getArchitectureBitWidth()!=64)
 	{
 		decoration="dword";
@@ -553,17 +558,17 @@ Instruction_t* ZiprPinnerX86_t::Emit68Sled(RangeAddress_t addr, Sled_t sled, Ins
 	}
 	const int stack_push_size=m_firp->getArchitectureBitWidth()/8;
 
-	string lea_string=string("lea ")+stack_reg+", ["+stack_reg+"+" + to_string(stack_push_size*number_of_pushed_values)+"]"; 
-	Instruction_t *lea=addNewAssembly(m_firp, nullptr, lea_string);
+	auto lea_string=string("lea ")+stack_reg+", ["+stack_reg+"+" + to_ks_string(stack_push_size*number_of_pushed_values)+"]"; 
+	auto lea=addNewAssembly(m_firp, nullptr, lea_string);
 	lea->setFallthrough(sled_start_insn);
 
 	Instruction_t *old_cmp=lea;
 
 	for(int i=0;i<number_of_pushed_values;i++)
 	{
-		string cmp_str="cmp "+decoration+" ["+stack_reg+"+ "+to_string(i*stack_push_size)+"], "+to_ks_string(pushed_values[i]);
-		Instruction_t* cmp=addNewAssembly(m_firp, nullptr, cmp_str); 
-		Instruction_t *jne=addNewAssembly(m_firp, nullptr, "jne 0"); 
+		const auto cmp_str="cmp "+decoration+" ["+stack_reg+"+ "+to_ks_string(i*stack_push_size)+"], "+to_ks_string(pushed_values[i]);
+		auto cmp=addNewAssembly(m_firp, nullptr, cmp_str); 
+		auto jne=addNewAssembly(m_firp, nullptr, "jne 0"); 
 		cmp->setFallthrough(jne);
 		jne->setTarget(next_sled);
 		jne->setFallthrough(old_cmp);
@@ -638,19 +643,20 @@ void ZiprPinnerX86_t::Update68Sled(Sled_t new_sled, Sled_t &existing_sled)
 	    i++)
 	{
 		if (m_verbose)
-			cout << "Adding 68 at "
-			     << std::hex << addr+i 
-					 << " for sled at 0x"
-					 << std::hex << addr << endl;
+			cout << "Adding 68 at " << std::hex << addr+i 
+		             << " for sled at 0x" << std::hex << addr << endl;
 		
 		/*
 		 * Do not assert that we are writing into a free space.
 		 * We may be writing over a PUSH that was there before!
+		 * assert(memory_space.isByteFree(addr+i) || memory_space[addr+i]==0x68);
+		 * Also:  may just be unused sled space
 		 */
-		assert(memory_space.isByteFree(addr+i) || memory_space[addr+i]==0x68);
 		memory_space[addr+i] = 0x68;
 		m_AddrInSled[addr+i] = true;
-		memory_space.splitFreeRange(addr+i);
+
+		if(memory_space.isByteFree(addr+i))
+			memory_space.splitFreeRange(addr+i);
 	}
 
 	existing_sled.MergeSled(new_sled);
@@ -691,8 +697,8 @@ void ZiprPinnerX86_t::Update68Sled(Sled_t new_sled, Sled_t &existing_sled)
 			RangeAddress_t addr=(*it).second;
 			UnresolvedPinned_t up=(*it).first;
 
-			cout << std::hex << up.getInstrution() << " 5b vs " << disambiguation_to_update << endl;
-			if (up.getInstrution() == disambiguation_to_update)
+			cout << std::hex << up.getInstruction() << " 5b vs " << disambiguation_to_update << endl;
+			if (up.getInstruction() == disambiguation_to_update)
 			{
 				five_byte_pins.erase(it);
 				UnresolvedPinned_t cup(sled_disambiguation);
@@ -712,11 +718,11 @@ void ZiprPinnerX86_t::Update68Sled(Sled_t new_sled, Sled_t &existing_sled)
 RangeAddress_t ZiprPinnerX86_t::Do68Sled(RangeAddress_t addr)
 {
 	char jmp_rel32_bytes[]={(char)0xe9,(char)0,(char)0,(char)0,(char)0};
-	const size_t nop_overhead=4;	// space for nops.
-	const size_t jmp_overhead=sizeof(jmp_rel32_bytes);	// space for nops.
+	const size_t nop_overhead  = 4;	// space for nops.
+	const size_t jmp_overhead  = sizeof(jmp_rel32_bytes);	// space for nops.
 	const size_t sled_overhead = nop_overhead + jmp_overhead;
-	const int sled_size=Calc68SledSize(addr, sled_overhead);
-	Sled_t sled(memory_space, Range_t(addr,addr+sled_size), m_verbose);
+	const int sled_size        = Calc68SledSize(addr, sled_overhead);
+	auto sled                  = Sled_t(memory_space, Range_t(addr,addr+sled_size), m_verbose);
 
 	if (m_verbose)
 		cout << "Adding 68-sled at 0x" << std::hex << addr 
@@ -753,12 +759,13 @@ RangeAddress_t ZiprPinnerX86_t::Do68Sled(RangeAddress_t addr)
 	/* Now, let's (speculatively) clear out the overhead space.
 	 */
 	if (m_verbose)
-		cout << "Clearing overhead space at " << std::hex
-		     << "(" << addr+sled_size << "."
-		     << addr+sled_size+sled_overhead << ")." << endl;
+		cout << "Clearing overhead space at " << hex
+		     << "(" << addr+sled_size << "." << addr+sled_size+sled_overhead << ")." << endl;
 	for (size_t i=0;i<sled_overhead;i++)
+	{
 		if (!memory_space.isByteFree(addr+sled_size+i))
 			memory_space.mergeFreeRange(addr+sled_size+i);
+	}
 
 	/*
 	 * Put down the sled.
@@ -766,14 +773,12 @@ RangeAddress_t ZiprPinnerX86_t::Do68Sled(RangeAddress_t addr)
 	for(auto i=0;i<sled_size;i++)
 	{
 		if (m_verbose)
-			cout << "Adding 68 at "
-			     << std::hex << addr+i 
-					 << " for sled at 0x"
-					 << std::hex << addr << endl;
-		assert(memory_space.isByteFree(addr+i));
-		memory_space[addr+i]=0x68;
+			cout << "Adding 68 at " << hex << addr+i << " for sled at 0x" << addr << endl;
+		// assert(memory_space.isByteFree(addr+i));
+		memory_space[addr+i] = 0x68;
 		m_AddrInSled[addr+i] = true;
-		memory_space.splitFreeRange(addr+i);
+		if (memory_space.isByteFree(addr+i))
+			memory_space.splitFreeRange(addr+i);
 	}
 	/*
 	 * Put down the NOPs
@@ -781,10 +786,8 @@ RangeAddress_t ZiprPinnerX86_t::Do68Sled(RangeAddress_t addr)
 	for(size_t i=0;i<nop_overhead;i++)
 	{
 		if (m_verbose)
-			cout << "Adding 90 at "
-			     << std::hex << addr+sled_size+i 
-					 << " for sled at 0x"
-					 << std::hex << addr << endl;
+			cout << "Adding 90 at " << hex << addr+sled_size+i 
+			     << " for sled at 0x" << hex << addr << endl;
 
 		assert(memory_space.isByteFree(addr+sled_size+i));
 		memory_space[addr+sled_size+i] = 0x90;
@@ -803,9 +806,8 @@ RangeAddress_t ZiprPinnerX86_t::Do68Sled(RangeAddress_t addr)
 		cout << "Generated sled_disambiguation (in Do68Sled()): " << std::hex << sled_disambiguation << endl;
 
 	if (m_verbose)
-		cout << "Pin for 68-sled  at 0x"
-		     << std::hex << addr <<" is "
-				 << std::hex << (addr+sled_size+nop_overhead) << endl;
+		cout << "Pin for 68-sled  at 0x" << hex << addr 
+		     <<" is " << hex << (addr+sled_size+nop_overhead) << endl;
 
 	/*
 	 * Reserve the bytes for the jump at the end of the sled that
@@ -813,6 +815,11 @@ RangeAddress_t ZiprPinnerX86_t::Do68Sled(RangeAddress_t addr)
 	 */
 	for(size_t i=0;i<jmp_overhead;i++)
 	{
+		if (m_verbose)
+			cout << "Adding jmp-byte 0x" << hex << +jmp_rel32_bytes[i] 
+			     << " at " << addr+sled_size+i 
+			     << " for sled at 0x" << addr << endl;
+
 		assert(memory_space.isByteFree(addr+sled_size+nop_overhead+i));
 		memory_space[addr+sled_size+nop_overhead+i]=jmp_rel32_bytes[i];
 		memory_space.splitFreeRange(addr+sled_size+nop_overhead+i);
@@ -882,15 +889,25 @@ void ZiprPinnerX86_t::Clear68SledArea(Sled_t sled)
 		if (m_verbose)
 			cout << "Need to clear " << std::dec << clear_size << " bytes." << endl;
 
-		if (clear_size>0)
+		// clear any bytes needed.
+		for(auto i=0u; i<clear_size; i++)
 		{
 			/*
 			 * We do want to free this space, but only if it
 			 * is already in use.
 			 */
-			if (!memory_space.isByteFree(addr))
-				memory_space.mergeFreeRange(Range_t(addr, addr+clear_size));
-			assert(memory_space.isByteFree(addr));
+			if (!memory_space.isByteFree(addr+i))
+			{
+				memory_space.mergeFreeRange(Range_t(addr+i, addr+i+1));
+				if (m_verbose)
+					cout << "Clearing " << hex << addr+i << "." << endl;
+			}
+			else 
+			{
+				if (m_verbose)
+					cout << "Already cleared " << hex << addr+i << "." << endl;
+			}
+			assert(memory_space.isByteFree(addr+i));
 		}
 	}
 }
@@ -921,6 +938,7 @@ int ZiprPinnerX86_t::Calc68SledSize(RangeAddress_t addr, size_t sled_overhead)
 			{
 				if (m_verbose)
 					cout << "Sled free space at " << std::hex << (addr+sled_size+i) << endl;
+
 			}
 		}
 		// if i==sled_overhead, that means that we found 6 bytes in a row free
@@ -963,7 +981,7 @@ void ZiprPinnerX86_t::ReservePinnedInstructions()
 	{
 		char bytes[]={(char)0xeb,(char)0}; // jmp rel8
 		UnresolvedPinned_t up=*it;
-		const auto upinsn=up.getInstrution();
+		const auto upinsn=up.getInstruction();
 		auto addr=upinsn->getIndirectBranchTargetAddress()->getVirtualOffset();
 
 		if(upinsn->getIndirectBranchTargetAddress()->getFileID() == BaseObj_t::NOT_IN_DATABASE)
@@ -979,7 +997,8 @@ void ZiprPinnerX86_t::ReservePinnedInstructions()
 		if(ShouldPinImmediately(upinsn))
 		{
 			if (m_verbose)
-				cout << "Final pinning " << hex << addr << "-" << (addr+upinsn->getDataBits().size()-1)  << endl;
+				cout << "Final pinning for " << upinsn->getComment()  << " at "
+				     << hex << addr << "-" << (addr+upinsn->getDataBits().size()-1)  << endl;
 
 			for(auto i=0u;i<upinsn->getDataBits().size();i++)
 			{
@@ -1017,6 +1036,7 @@ void ZiprPinnerX86_t::ReservePinnedInstructions()
 		if (FindPinnedInsnAtAddr(addr+1)==nullptr)
 		{
 			/* so common it's not worth printing 
+			*/
 			if (m_verbose)
 			{
 				printf("Can fit two-byte pin (%p-%p).  fid=%d\n", 
@@ -1024,7 +1044,6 @@ void ZiprPinnerX86_t::ReservePinnedInstructions()
 					(void*)(addr+sizeof(bytes)-1),
 					upinsn->getAddress()->getFileID());
 			}
-			*/
 		
 			/*
 			 * Assert that the space is free.  We already checked that it should be 
@@ -1155,7 +1174,7 @@ void ZiprPinnerX86_t::ReservePinnedInstructions()
 			{
 				// get this entry
 				const auto up=*it;
-				const auto upinsn=up.getInstrution();
+				const auto upinsn=up.getInstruction();
 				auto addr=upinsn->getIndirectBranchTargetAddress() ->getVirtualOffset();
 
 				// is the entry within the sled?
@@ -1193,7 +1212,7 @@ void ZiprPinnerX86_t::ExpandPinnedInstructions()
 	for( auto it=two_byte_pins.begin(); it!=two_byte_pins.end(); /* empty */)
 	{
 		UnresolvedPinned_t up=*it;
-		Instruction_t* upinsn=up.getInstrution();
+		Instruction_t* upinsn=up.getInstruction();
 		RangeAddress_t addr=0;
 
 		/*
@@ -1284,7 +1303,7 @@ void ZiprPinnerX86_t::Fix2BytePinnedInstructions()
 	for(auto it=two_byte_pins.begin(); it!=two_byte_pins.end(); /* empty */)
 	{
 		UnresolvedPinned_t up=*it;
-		Instruction_t* upinsn=up.getInstrution();
+		Instruction_t* upinsn=up.getInstruction();
 		RangeAddress_t addr;
 		
 		if (up.HasUpdatedAddress())
@@ -1385,7 +1404,7 @@ void ZiprPinnerX86_t::Fix2BytePinnedInstructions()
 				 * target location.
 				 */
 				UnresolvedPinned_t new_up = 
-					UnresolvedPinned_t(up.getInstrution());
+					UnresolvedPinned_t(up.getInstruction());
 				new_up.SetUpdatedAddress(up.GetRange().getStart());
 				new_up.SetRange(up.GetRange());
 
@@ -1402,7 +1421,7 @@ void ZiprPinnerX86_t::Fix2BytePinnedInstructions()
 					printf("Patching 2 byte to 2 byte: %p to %p (orig: %p)\n", 
 					(void*)addr,
 					(void*)up.GetRange().getStart(),
-					(void*)(uintptr_t)upinsn->getIndirectBranchTargetAddress()->getVirtualOffset());
+					(void*)(uintptr_t)upinsn->getAddress()->getVirtualOffset());
 
 				PatchJump(addr, up.GetRange().getStart());
 
@@ -1444,7 +1463,7 @@ void ZiprPinnerX86_t::OptimizePinnedInstructions()
 			continue;
 		}
 
-		UnresolvedUnpinned_t uu(up.getInstrution());
+		UnresolvedUnpinned_t uu(up.getInstruction());
 		Patch_t	thepatch(addr,UncondJump_rel32);
 		m_parent->AddPatch(uu,thepatch);
 		memory_space.plopJump(addr);
@@ -1460,10 +1479,10 @@ void ZiprPinnerX86_t::OptimizePinnedInstructions()
 			if (m_verbose)
 			{
 				//DISASM d;
-				//Disassemble(uu.getInstrution(),d);
-				auto d=DecodedInstruction_t::factory(uu.getInstrution());
+				//Disassemble(uu.getInstruction(),d);
+				auto d=DecodedInstruction_t::factory(uu.getInstruction());
 				printf("Converting 5-byte pinned jump at %p-%p to patch to %d:%s\n", 
-				       (void*)addr,(void*)(addr+4), uu.getInstrution()->getBaseID(), d->getDisassembly().c_str()/*.CompleteInstr*/);
+				       (void*)addr,(void*)(addr+4), uu.getInstruction()->getBaseID(), d->getDisassembly().c_str()/*.CompleteInstr*/);
 			}
 			m_stats->total_tramp_space+=5;
 		}

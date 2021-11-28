@@ -727,7 +727,7 @@ Instruction_t *ZiprImpl_t::FindPatchTargetAtAddr(RangeAddress_t addr)
 {
         std::map<RangeAddress_t,UnresolvedUnpinnedPatch_t>::iterator it=m_PatchAtAddrs.find(addr);
         if(it!=m_PatchAtAddrs.end())
-                return it->second.first.getInstrution();
+                return it->second.first.getInstruction();
         return nullptr;
 }
 
@@ -807,7 +807,7 @@ void ZiprImpl_t::PlaceDollops()
 	{
 		const auto uu = p.first;
 		const auto patch = p.second;
-		auto target_insn = uu.getInstrution();
+		auto target_insn = uu.getInstruction();
 		auto target_dollop = m_dollop_mgr.getContainingDollop(target_insn);
 		assert(target_dollop);
 
@@ -1477,7 +1477,7 @@ void ZiprImpl_t::CreateDollops()
 		cout<< "Attempting to create " << patch_list.size() << " dollops for the pins." << endl;
 	for (auto patch : patch_list )
 	{
-		m_dollop_mgr.AddNewDollops(patch.first.getInstrution());
+		m_dollop_mgr.AddNewDollops(patch.first.getInstruction());
 	}
 
 	if (*m_verbose)
@@ -1609,7 +1609,7 @@ void ZiprImpl_t::UpdatePins()
 		Zipr_SDK::DollopEntry_t *target_dollop_entry = nullptr;
 		Instruction_t *target_dollop_entry_instruction = nullptr;
 		RangeAddress_t patch_addr, target_addr;
-		target_dollop = m_dollop_mgr.getContainingDollop(uu.getInstrution());
+		target_dollop = m_dollop_mgr.getContainingDollop(uu.getInstruction());
 		assert(target_dollop != nullptr);
 		DLFunctionHandle_t patcher = nullptr;
 
@@ -1618,7 +1618,7 @@ void ZiprImpl_t::UpdatePins()
 
 		target_dollop_entry_instruction  = target_dollop_entry->getInstruction();
 		assert(target_dollop_entry_instruction != nullptr &&
-		       target_dollop_entry_instruction == uu.getInstrution());
+		       target_dollop_entry_instruction == uu.getInstruction());
 
 		patch_addr = p.getAddress();
 		target_addr = target_dollop_entry->getPlace();
@@ -1653,7 +1653,7 @@ void ZiprImpl_t::UpdatePins()
 				     << target_addr << ": " << d->getDisassembly() << endl;
 			}
 			assert(target_dollop_entry_instruction != nullptr &&
-			       target_dollop_entry_instruction == uu.getInstrution());
+			       target_dollop_entry_instruction == uu.getInstruction());
 
 		}
 
