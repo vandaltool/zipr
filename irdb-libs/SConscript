@@ -29,7 +29,10 @@ else:
     os.chdir(os.environ['SECURITY_TRANSFORMS_HOME']+"/third_party/keystone")
     os.system("mkdir -p ./build")
     os.chdir("build")
-    os.system('../make-common.sh lib_only; cmake -DBUILD_LIBS_ONLY=$BUILD_LIBS_ONLY -DLLVM_BUILD_32_BITS="$LLVM_BUILD_32_BITS" -DCMAKE_OSX_ARCHITECTURES="$ARCH" -DCMAKE_BUILD_TYPE=$BUILDTYPE -DBUILD_SHARED_LIBS=ON -DLLVM_TARGETS_TO_BUILD="all" -G "Unix Makefiles" ..; make -j' + str(jobs))
+    build_type='Release'
+    cmake_cmd='cmake -DBUILD_LIBS_ONLY=1 -DLLVM_BUILD_32_BITS="$LLVM_BUILD_32_BITS" -DCMAKE_OSX_ARCHITECTURES="$ARCH" -DCMAKE_BUILD_TYPE="'+build_type+'" -DBUILD_SHARED_LIBS=ON -DLLVM_TARGETS_TO_BUILD="all" -G "Unix Makefiles" ..; make -j' + str(jobs)
+    print("Running cmd: " + cmake_cmd)
+    os.system(cmake_cmd)
     os.system("make DESTDIR=$SECURITY_TRANSFORMS_HOME/lib install")
     os.chdir(os.environ['SECURITY_TRANSFORMS_HOME'])
 

@@ -24,7 +24,7 @@ namespace zipr {
 			/*
 			 * There is a target dollop. But, do we need to split it?
 			 */
-			if (existing_dollop->getDollopEntryCount() && existing_dollop->front()->getInstruction() == start) 
+			if (existing_dollop->begin()!=existing_dollop->end() && existing_dollop->front()->getInstruction() == start) 
 			{
 				/*
 				 * Just return the existing dollop.

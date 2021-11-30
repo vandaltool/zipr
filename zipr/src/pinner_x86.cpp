@@ -566,9 +566,10 @@ Instruction_t* ZiprPinnerX86_t::Emit68Sled(RangeAddress_t addr, Sled_t sled, Ins
 
 	for(int i=0;i<number_of_pushed_values;i++)
 	{
+		const auto jne0bits=string("\x0f\x85\x00\x00\x00\x00",6); // jne 0
 		const auto cmp_str="cmp "+decoration+" ["+stack_reg+"+ "+to_ks_string(i*stack_push_size)+"], "+to_ks_string(pushed_values[i]);
-		auto cmp=addNewAssembly(m_firp, nullptr, cmp_str); 
-		auto jne=addNewAssembly(m_firp, nullptr, "jne 0"); 
+		auto cmp=addNewAssembly(m_firp, cmp_str); 
+		auto jne=addNewDataBits(m_firp, jne0bits);
 		cmp->setFallthrough(jne);
 		jne->setTarget(next_sled);
 		jne->setFallthrough(old_cmp);
