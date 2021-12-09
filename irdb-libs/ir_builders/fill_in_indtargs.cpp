@@ -2154,6 +2154,32 @@ void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, con
 }
 
 
+#if 0
+// Two examples from ICX that use a sub instead of an add.  Further, the sub/add happens from memory 
+// instead of using a move
+// The second example has no easy-to-infer table size.
+
+
+V1:
+   0x83d0f6 <__intel_avx_rep_memset+38>:        lea    rsi,[rip+0xc83]        # 0x83dd80 <__intel_avx_rep_memset+3248>
+   0x83d102 <__intel_avx_rep_memset+50>:        cmp    r11,0x80
+   0x83d109 <__intel_avx_rep_memset+57>:        ja     0x83d120 <__intel_avx_rep_memset+80>
+   0x83d111 <__intel_avx_rep_memset+65>:        sub    rsi,QWORD PTR [rsi+r11*8]
+   0x83d115 <__intel_avx_rep_memset+69>:        notrack jmp rsi
+
+V2:
+
+   0x83d120 <__intel_avx_rep_memset+80>:        lea    rsi,[rip+0x359]        # 0x83d480 <__intel_avx_rep_memset+944>
+   0x83d127 <__intel_avx_rep_memset+87>:        mov    rcx,r10
+   0x83d12a <__intel_avx_rep_memset+90>:        and    rcx,0x1f
+   0x83d12e <__intel_avx_rep_memset+94>:        je     0x83d153 <__intel_avx_rep_memset+131>
+   0x83d130 <__intel_avx_rep_memset+96>:        neg    rcx
+   0x83d133 <__intel_avx_rep_memset+99>:        add    rcx,0x20
+   0x83d140 <__intel_avx_rep_memset+112>:       sub    rsi,QWORD PTR [rsi+rcx*8]
+   0x83d144 <__intel_avx_rep_memset+116>:       notrack jmp rsi
+
+#endif
+
 
 /* check if this instruction is an indirect jump via a register,
  * if so, see if we can trace back a few instructions to find a
