@@ -2350,7 +2350,7 @@ V2:
 			return;
 		}
 	}
-	else if(d7->getMnemonic() != "lea" ) // add or subtract
+	else if(d7->getMnemonic() != "lea" && d7->getOperand(1)->isMemory())
 	{
 		assert(d7->getOperand(1)->isMemory());
 
@@ -2359,6 +2359,11 @@ V2:
 		 * In these cases, I6 and I7 are the same.
 		 */
 		I6=I7;
+	}
+	else 
+	{
+		// sub <reg>, constant?
+		return;
 	}
 
 	/* 
