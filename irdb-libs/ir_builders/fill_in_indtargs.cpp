@@ -2154,38 +2154,12 @@ void check_for_PIC_switch_table32_type3(FileIR_t* firp, Instruction_t* insn, con
 }
 
 
-#if 0
-// Two examples from ICX that use a sub instead of an add.  Further, the sub/add happens from memory 
-// instead of using a move
-// The second example has no easy-to-infer table size.
-
-
-V1:
-   0x83d0f6 <__intel_avx_rep_memset+38>:        lea    rsi,[rip+0xc83]        # 0x83dd80 <__intel_avx_rep_memset+3248>
-   0x83d102 <__intel_avx_rep_memset+50>:        cmp    r11,0x80
-   0x83d109 <__intel_avx_rep_memset+57>:        ja     0x83d120 <__intel_avx_rep_memset+80>
-   0x83d111 <__intel_avx_rep_memset+65>:        sub    rsi,QWORD PTR [rsi+r11*8]
-   0x83d115 <__intel_avx_rep_memset+69>:        notrack jmp rsi
-
-V2:
-
-   0x83d120 <__intel_avx_rep_memset+80>:        lea    rsi,[rip+0x359]        # 0x83d480 <__intel_avx_rep_memset+944>
-   0x83d127 <__intel_avx_rep_memset+87>:        mov    rcx,r10
-   0x83d12a <__intel_avx_rep_memset+90>:        and    rcx,0x1f
-   0x83d12e <__intel_avx_rep_memset+94>:        je     0x83d153 <__intel_avx_rep_memset+131>
-   0x83d130 <__intel_avx_rep_memset+96>:        neg    rcx
-   0x83d133 <__intel_avx_rep_memset+99>:        add    rcx,0x20
-   0x83d140 <__intel_avx_rep_memset+112>:       sub    rsi,QWORD PTR [rsi+rcx*8]
-   0x83d144 <__intel_avx_rep_memset+116>:       notrack jmp rsi
-
-#endif
-
 
 /* check if this instruction is an indirect jump via a register,
  * if so, see if we can trace back a few instructions to find a
  * the start of the table.
  */
-void check_for_PIC_switch_table64(FileIR_t* firp, Instruction_t* insn, const DecodedInstruction_t& p_disasm, EXEIO::exeio* exeiop)
+void check_for_PIC_switch_table64(FileIR_t* firp, Instruction_t* switch_dispatch, const DecodedInstruction_t& p_disasm, EXEIO::exeio* exeiop)
 {
 	ibt_provenance_t prov=ibt_provenance_t::ibtp_switchtable_type4;
 /* here's the pattern we're looking for */
@@ -2259,6 +2233,28 @@ Here, one of the registers used in the switch dispatch is spilled?  How can this
    0x289e314 <HUF_decompress4X2_usingDTable_internal_default+4036>:	add    rax,QWORD PTR [rbp-0x108]
    0x289e31b <HUF_decompress4X2_usingDTable_internal_default+4043>:	jmp    rax
 
+// Two examples from intel ICX compiler that use a sub instead of an add.  Further, the sub/add happens from memory 
+// instead of using a move, then an add/sub
+
+
+V1:
+   0x83d0f6 <__intel_avx_rep_memset+38>:        lea    rsi,[rip+0xc83]        # 0x83dd80 <__intel_avx_rep_memset+3248>
+   0x83d102 <__intel_avx_rep_memset+50>:        cmp    r11,0x80
+   0x83d109 <__intel_avx_rep_memset+57>:        ja     0x83d120 <__intel_avx_rep_memset+80>
+   0x83d111 <__intel_avx_rep_memset+65>:        sub    rsi,QWORD PTR [rsi+r11*8]
+   0x83d115 <__intel_avx_rep_memset+69>:        notrack jmp rsi
+
+// This example has no easy-to-infer table size.
+V2:
+
+   0x83d120 <__intel_avx_rep_memset+80>:        lea    rsi,[rip+0x359]        # 0x83d480 <__intel_avx_rep_memset+944>
+   0x83d127 <__intel_avx_rep_memset+87>:        mov    rcx,r10
+   0x83d12a <__intel_avx_rep_memset+90>:        and    rcx,0x1f
+   0x83d12e <__intel_avx_rep_memset+94>:        je     0x83d153 <__intel_avx_rep_memset+131>
+   0x83d130 <__intel_avx_rep_memset+96>:        neg    rcx
+   0x83d133 <__intel_avx_rep_memset+99>:        add    rcx,0x20
+   0x83d140 <__intel_avx_rep_memset+112>:       sub    rsi,QWORD PTR [rsi+rcx*8]
+   0x83d144 <__intel_avx_rep_memset+116>:       notrack jmp rsi
 
 #endif
 
@@ -2266,11 +2262,10 @@ Here, one of the registers used in the switch dispatch is spilled?  How can this
 	// for now, only trying to find I4-I8.  ideally finding I1 would let us know the size of the
 	// jump table.  We'll figure out N by trying targets until they fail to produce something valid.
 
-	Instruction_t* I8=insn;
+	Instruction_t* I8=switch_dispatch;
 	Instruction_t* I7=nullptr;
 	Instruction_t* I6=nullptr;
 	Instruction_t* I5=nullptr;
-	Instruction_t* I1=nullptr;
 	// check if I8 is a jump
 	if(strstr(p_disasm.getMnemonic().c_str(), "jmp")==nullptr)
 		return;
@@ -2292,7 +2287,10 @@ Here, one of the registers used in the switch dispatch is spilled?  How can this
 	 * Backup and find the instruction that's an add or lea before I8.
 	 */
 	const auto table_index_reg_str = p_disasm.getOperand(0)->getString();
-	const auto table_index_str = "(add " + table_index_reg_str + ",|lea " + table_index_reg_str + ",)";
+	const auto table_index_str = 
+		"(add " + table_index_reg_str + 
+		",|lea " + table_index_reg_str + ","+
+		",|sub " + table_index_reg_str + ",)";
 	const auto table_index_stop_if = string() + "^" + table_index_reg_str +  "$";              
 
 	//
@@ -2319,45 +2317,62 @@ Here, one of the registers used in the switch dispatch is spilled?  How can this
 	} 
 
 	// Check if lea instruction is being used as add (scale=1, disp=0)
-	if(d7->getMnemonic() != "lea" && !d7->getOperand(1)->isRegister())
+	if(d7->getMnemonic() != "lea" && d7->getOperand(1)->isRegister())
 	{
-		cout << "Warning, switch with spilled register?  See comment at start of function.\n" << endl;
-		return;
+
+		// calculate the registers we need for the I6 backup.
+		const auto I7_reg0        = d7->getMnemonic() == "lea" ? d7->getOperand(1)->getBaseRegister()  : d7->getOperand(0)->getRegNumber(); 
+		const auto I7_reg0_32_str = registerToSearchString(RegisterID_t(rn_EAX+I7_reg0));
+		const auto I7_reg0_64_str = registerToSearchString(RegisterID_t(rn_RAX+I7_reg0));
+		const auto I7_reg1        = d7->getMnemonic() == "lea" ? d7->getOperand(1)->getIndexRegister() : d7->getOperand(1)->getRegNumber(); 
+		const auto I7_reg1_32_str = registerToSearchString(RegisterID_t(rn_EAX+I7_reg1));
+		const auto I7_reg1_64_str = registerToSearchString(RegisterID_t(rn_RAX+I7_reg1));
+
+		const auto I6_reg0_str    = string() + "(" + I7_reg0_32_str + "|" + I7_reg0_64_str + ")";
+		const auto I6_reg1_str    = string() + "(" + I7_reg1_32_str + "|" + I7_reg1_64_str + ")";
+
+
+		// backup and find the instruction that's an movsxd before I7
+		/*
+		 * This instruction will contain the register names for
+		 * the index and the address of the base of the table
+		 */
+		/* we have to be careful not to stop on an instruction that sets reg0 if we're looking
+		 * because we might find the set to reg1.  Thus, we do 2 backups, and continue if either one
+		 * is OK.
+		 */
+		if(
+				!backup_until("(mov|movsxd) "+I6_reg0_str+",", I6, I7, string()+"^"+I6_reg0_str+"$") && 
+				!backup_until("(mov|movsxd) "+I6_reg1_str+",", I6, I7, string()+"^"+I6_reg1_str+"$")
+		  )
+		{
+			// give up if we can't find a mov/movsxd of either register.
+			return;
+		}
+	}
+	else if(d7->getMnemonic() != "lea" ) // add or subtract
+	{
+		assert(d7->getOperand(1)->isMemory());
+
+		/*  
+		 * Here we handle the icx case where an add/sub is combined with the table memory access 
+		 * In these cases, I6 and I7 are the same.
+		 */
+		I6=I7;
 	}
 
+	/* 
+	 * Specify whether the table is multiplied by a value.  Use -1 for subtracts.
+	 * TODO:  look for shifts of the value loaded from the table to deal with 
+	 * size-packing of the table?
+	 */
+	const auto table_entry_multiplier = d7->getMnemonic()=="sub" ? -1 : 1;
 
-	// calculate the registers we need for the I6 backup.
-	const auto I7_reg0        = d7->getMnemonic() == "lea" ? d7->getOperand(1)->getBaseRegister()  : d7->getOperand(0)->getRegNumber(); 
-	const auto I7_reg0_32_str = registerToSearchString(RegisterID_t(rn_EAX+I7_reg0));
-	const auto I7_reg0_64_str = registerToSearchString(RegisterID_t(rn_RAX+I7_reg0));
-	const auto I7_reg1        = d7->getMnemonic() == "lea" ? d7->getOperand(1)->getIndexRegister() : d7->getOperand(1)->getRegNumber(); 
-	const auto I7_reg1_32_str = registerToSearchString(RegisterID_t(rn_EAX+I7_reg1));
-	const auto I7_reg1_64_str = registerToSearchString(RegisterID_t(rn_RAX+I7_reg1));
-    
-        const auto I6_reg0_str    = string() + "(" + I7_reg0_32_str + "|" + I7_reg0_64_str + ")";
-        const auto I6_reg1_str    = string() + "(" + I7_reg1_32_str + "|" + I7_reg1_64_str + ")";
-
-
-	// backup and find the instruction that's an movsxd before I7
 	/*
-	 * This instruction will contain the register names for
-	 * the index and the address of the base of the table
+	 * Now try to find an LEA that loads the table base address into a register. 
 	 */
-	/* we have to be careful not to stop on an instruction that sets reg0 if we're looking
-	 * because we might find the set to reg1.  Thus, we do 2 backups, and continue if either one
-	 * is OK.
-	 */
-	if(
-		!backup_until("(mov|movsxd) "+I6_reg0_str+",", I6, I7, string()+"^"+I6_reg0_str+"$") && 
-		!backup_until("(mov|movsxd) "+I6_reg1_str+",", I6, I7, string()+"^"+I6_reg1_str+"$")
-	  )
-	{
-		// give up if we can't find a mov/movsxd of either register.
-		return;
-	}
-
 	auto lea_string1         = string("lea ");
-	auto lea_string2         = string("do_not_mach ");
+	auto lea_string2         = string("do_not_mach ");	 // may be updated later for searching for the index reg
 	const auto d6            = DecodedInstruction_t::factory(I6);
 	const auto d6_op1        = d6->getOperand(1);
 	const auto d6_op1_is_mem = d6_op1->isMemory();
@@ -2433,270 +2448,312 @@ Here, one of the registers used in the switch dispatch is spilled?  How can this
 	for (; found_leas_it != found_leas.end(); found_leas_it++) 
 	{
 		auto I5_cur = *found_leas_it;
-		auto d5p=DecodedInstruction_t::factory(I5_cur);
-		auto &d5=*d5p;
+		PIC_switch_table64_iterate_table(
+				firp, 
+				I8, 
+				exeiop, 
+				I5_cur, 
+				I6, 
+				table_entry_multiplier, 
+				prov, 
+				cmp_str, 
+				bound_stopif, 
+				and_str,
+				found_leas.size() == 1
+				);
+	}
+}
 
-		if(!(d5.getOperand(1)->isMemory() ))
-			continue;
-		if(!(d5.getOperand(1)->isPcrel() ))
-			continue;
 
-		// note that we'd normally have to add the displacement to the
-		// instruction address (and include the instruction's size, etc.
-		// but, fix_calls has already removed this oddity so we can relocate
-		// the instruction.
-		auto D1=VirtualOffset_t(strtol(d5.getOperand(1)->getString().c_str(), nullptr, 0));
-		D1+=I5_cur->getAddress()->getVirtualOffset();
+/*
+ *	Iterate a pic64 switch table.
+ * 	firp -- fileIR
+ * 	exeiop -- pointer to the exeio representing the file we are transforming
+ * 	switch_dispatch -- the switch dispatch instruction, aka I8
+ * 	lea_for_table_base -- the instruction that sets a regsiter to the the table base address. AKA I5/D5
+ * 	table_load_instruction -- the instruction that loads from the switch  table aka I6/D6
+ *
+ */
+void PIC_switch_table64_iterate_table
+	(
+		FileIR_t* firp, Instruction_t* dispatch_insn, 
+		EXEIO::exeio* exeiop, 
+		Instruction_t* lea_for_table_base, 
+		Instruction_t* table_load_instruction,
+		int32_t table_entry_multiplier,
+		const ibt_provenance_t &switch_prov,
+		const string &cmp_str,
+		const string &bound_stopif,
+		const string& and_str,
+		const bool allow_unpins
+	)
+{
+	auto table_load_disasm=DecodedInstruction_t::factory(lea_for_table_base);
 
-		// sometimes the lea only points at the image base, and the displacement field here is used for 
-		// the offset into the image.  This is useful if there are multiple switches (or other constructs)
-		// in the same function which can share register assignment of the image-base register.
-		// we record the d6_displ field here
-		const auto d6_displ = d6_op1_is_mem  ?  d6->getOperand(1)->getMemoryDisplacement() : 0; 
-		const auto table_entry_size = d6_op1_is_mem  ?  d6->getOperand(1)->getArgumentSizeInBytes() : 4; 
+	if(!(table_load_disasm->getOperand(1)->isMemory() ))
+		return;
+	if(!(table_load_disasm->getOperand(1)->isPcrel() ))
+		return;
 
-		// find the section with the data table
-		const auto pSec=find_section(D1+d6_displ,exeiop);
-		if(!pSec) continue;
+	// note that we'd normally have to add the displacement to the
+	// instruction address (and include the instruction's size, etc.
+	// but, fix_calls has already removed this oddity so we can relocate
+	// the instruction.
+	auto D1=VirtualOffset_t(strtol(table_load_disasm->getOperand(1)->getString().c_str(), nullptr, 0));
+	D1+=lea_for_table_base->getAddress()->getVirtualOffset();
 
-		// if the section has no data, abort 
-		const char* secdata=pSec->get_data();
-		if(!secdata) continue;
+	// sometimes the lea only points at the image base, and the displacement field here is used for 
+	// the offset into the image.  This is useful if there are multiple switches (or other constructs)
+	// in the same function which can share register assignment of the image-base register.
+	// we record the d6_displ field here
+	const auto d6               = DecodedInstruction_t::factory(table_load_instruction);
+	const auto d6_op1           = d6->getOperand(1);
+	const auto d6_op1_is_mem    = d6_op1->isMemory();
+	const auto d6_displ         = d6_op1_is_mem ? d6->getOperand(1)->getMemoryDisplacement()  : 0; 
+	const auto table_entry_size = d6_op1_is_mem ? d6->getOperand(1)->getArgumentSizeInBytes() : 4; 
 
-		//
-		// Setting default to 255 without a great reason.  The bad reason
-		// is that 255 is pretty big for a switch table, and we very likely shouldn't
-		// scan for one bigger than that.  Without this limit, there are some types of switch tables
-		// that would scan until the end of the section that the table is in.  (e.g.,
-		// Visual Studio will produce tables with 1-byte entries, and it's highly likely that
-		// 1-byte offsets from the table base will result in a valid instruction address.
-		// Thus, this default is sane for most cases, and is only applied when we absolutely
-		// cannot find a bounds check on the table size.
-		// 
-		auto table_size = 255U;
-		if(backup_until(cmp_str.c_str(), I1, I6, bound_stopif ))
+	// find the section with the data table
+	const auto pSec=find_section(D1+d6_displ,exeiop);
+	if(!pSec) return;
+
+	// if the section has no data, abort 
+	const char* secdata=pSec->get_data();
+	if(!secdata) return;
+
+	//
+	// Setting default to 255 without a great reason.  The bad reason
+	// is that 255 is pretty big for a switch table, and we very likely shouldn't
+	// scan for one bigger than that.  Without this limit, there are some types of switch tables
+	// that would scan until the end of the section that the table is in.  (e.g.,
+	// Visual Studio will produce tables with 1-byte entries, and it's highly likely that
+	// 1-byte offsets from the table base will result in a valid instruction address.
+	// Thus, this default is sane for most cases, and is only applied when we absolutely
+	// cannot find a bounds check on the table size.
+	// 
+	auto table_size = 255U;
+	auto I1=static_cast<Instruction_t*>(nullptr); 
+	if(backup_until(cmp_str.c_str(), I1, table_load_instruction, bound_stopif ))
+	{
+		const auto d1=DecodedInstruction_t::factory(I1);
+		table_size = d1->getImmediate(); 
+
+		// notes on table size: 
+		// readelf on ubuntu20 has a table size of 4.
+		if (table_size < 4)
 		{
-			const auto d1=DecodedInstruction_t::factory(I1);
-			table_size = d1->getImmediate(); 
-
-			// notes on table size: 
-			// readelf on ubuntu20 has a table size of 4.
-			if (table_size < 4)
-			{
-				cout << "pic64: found cmp-type I1 ('" << d1->getDisassembly() << "'), but could not find size of switch table" << "\n";
-			}
+			cout << "pic64: found cmp-type I1 ('" << d1->getDisassembly() << "'), but could not find size of switch table" << "\n";
 		}
-		else if(backup_until(and_str.c_str(), I1, I6, bound_stopif ))
+	}
+	else if(backup_until(and_str.c_str(), I1, table_load_instruction, bound_stopif ))
+	{
+		const auto d1            = DecodedInstruction_t::factory(I1);
+		const auto d1SecondOp    = d1->getOperand(1);
+		const auto isConstantAnd = d1SecondOp->isConstant();
+		if(isConstantAnd)
 		{
-			const auto d1            = DecodedInstruction_t::factory(I1);
-			const auto d1SecondOp    = d1->getOperand(1);
-			const auto isConstantAnd = d1SecondOp->isConstant();
-			if(isConstantAnd)
-			{
-				table_size = findNextPowerOf2(d1SecondOp->getConstant());
-				cout << "pic64: found and-type I1 ('" << d1->getDisassembly() << "') with table-size = " << dec << table_size << "\n";
-					
-			}
-			else
-			{
-				cout << "pic64: found and-type I1 ('" << d1->getDisassembly() << "'), but could not find size of switch table" << "\n";
-			}
+			table_size = findNextPowerOf2(d1SecondOp->getConstant());
+			cout << "pic64: found and-type I1 ('" << d1->getDisassembly() << "') with table-size = " << dec << table_size << "\n";
+
 		}
 		else
 		{
-			// it's very common for the bound_stopif   to stop before finding the compare
-			// because of a code pattern like this:
-			//
-			// cmp rax, 0x1234
-			// ...
-			// mov rbx, rax
-			// mov ..., [ ... rbx*4 ...]
-			//
-			// As you can see, the mov rbx,rax would cause backup_until to stop there,
-			// missing the compare.
-			// For now, we tolerate this and let the no-table-size code find the table size
-			// but it might be useful to look for mov/movzx that did a register rename before
-			// the compare.
-			cout<<"pic64: could not find size of switch table"<<endl;
+			cout << "pic64: found and-type I1 ('" << d1->getDisassembly() << "'), but could not find size of switch table" << "\n";
+		}
+	}
+	else
+	{
+		// it's very common for the bound_stopif   to stop before finding the compare
+		// because of a code pattern like this:
+		//
+		// cmp rax, 0x1234
+		// ...
+		// mov rbx, rax
+		// mov ..., [ ... rbx*4 ...]
+		//
+		// As you can see, the mov rbx,rax would cause backup_until to stop there,
+		// missing the compare.
+		// For now, we tolerate this and let the no-table-size code find the table size
+		// but it might be useful to look for mov/movzx that did a register rename before
+		// the compare.
+		cout<<"pic64: could not find size of switch table"<<endl;
+	}
+
+	// record the set of ibtargets we find here.
+	auto ibtargets=InstructionSet_t();
+
+	// offset from address to access - section address 
+	auto offset=D1+d6_displ-pSec->get_address();
+	auto entry=0U;
+	auto found_table_error = false;
+	auto newInstructions=InstructionSet_t();
+	do
+	{
+		// check that we can still grab a word from this section
+		if((int)(offset+table_entry_size) > (int)pSec->get_size())
+		{
+			found_table_error = true;
+			break;
 		}
 
-		// record the set of ibtargets we find here.
-		auto ibtargets=InstructionSet_t();
+		const auto table_entry_ptr = reinterpret_cast<const char*>(&(secdata[offset]));
+		const auto raw_table_entry = 
+			table_entry_size == 1 ? VirtualOffset_t(*reinterpret_cast<const int8_t *>(table_entry_ptr)) :
+			table_entry_size == 2 ? VirtualOffset_t(*reinterpret_cast<const int16_t*>(table_entry_ptr)) :
+			table_entry_size == 4 ? VirtualOffset_t(*reinterpret_cast<const int32_t*>(table_entry_ptr)) :
+			table_entry_size == 8 ? VirtualOffset_t(*reinterpret_cast<const int64_t*>(table_entry_ptr)) :
+			throw new invalid_argument("Cannot detect displacement size to load value ");
+		const auto table_entry = raw_table_entry * table_entry_multiplier;
 
-		// offset from address to access - section address 
-		auto offset=D1+d6_displ-pSec->get_address();
-		auto entry=0U;
-		auto found_table_error = false;
-		auto newInstructions=InstructionSet_t();
-		do
+		if(!possible_target(D1+table_entry, 0/* from addr unknown */, switch_prov))
 		{
-			// check that we can still grab a word from this section
-			if((int)(offset+table_entry_size) > (int)pSec->get_size())
-			{
-				found_table_error = true;
-				break;
-			}
+			found_table_error = true;
+			break;
+		}
 
-			const auto table_entry_ptr = reinterpret_cast<const char*>(&(secdata[offset]));
-			const auto table_entry     = 
-				table_entry_size == 1 ? VirtualOffset_t(*reinterpret_cast<const int8_t *>(table_entry_ptr)) :
-				table_entry_size == 2 ? VirtualOffset_t(*reinterpret_cast<const int16_t*>(table_entry_ptr)) :
-				table_entry_size == 4 ? VirtualOffset_t(*reinterpret_cast<const int32_t*>(table_entry_ptr)) :
-				table_entry_size == 8 ? VirtualOffset_t(*reinterpret_cast<const int64_t*>(table_entry_ptr)) :
-				throw new invalid_argument("Cannot detect displacement size to load value ");
-
-			if(!possible_target(D1+table_entry, 0/* from addr unknown */,prov))
-			{
-				found_table_error = true;
-				break;
-			}
-
-			const auto ibtarget = doDisassemblyForIBT(
+		const auto ibtarget = doDisassemblyForIBT(
 				firp, 			// the IR.
 				newInstructions, 	// output: the set of instructions that
 				D1+table_entry,  	// jump target from table.:w
-				I8->getFunction(), 	// the function to add new instructions to.
-				I8->getAddress()->getFileID(),  // the file to add to.
+				dispatch_insn->getFunction(), 	// the function to add new instructions to.
+				dispatch_insn->getAddress()->getFileID(),  // the file to add to.
 				exeiop, 		// a handle to the executable so we can read raw data.
 				true,  			// do pin
 				pSec->isExecutable() 	// table in text
 				);
-			if (ibtarget)
-			{
-				if(getenv("IB_VERBOSE"))
-				{
-					cout << "jmp table [" << entry << "]: " << hex << table_entry << dec << endl;
-					cout<<"Found possible table entry, at: "<< std::hex << I8->getAddress()->getVirtualOffset()
-						<< " insn: " << d5.getDisassembly()<< " d1: "
-						<< D1 << " table_entry:" << table_entry 
-						<< " target: "<< D1+table_entry << std::dec << endl;
-				}
-				ibtargets.insert(ibtarget);
-			}
-			offset+=table_entry_size;
-			entry++;
-		} while ( entry<=table_size);
-
-		// record the max entry we found
-		const auto max_valid_table_entry=entry;
-
-		
-		// valid switch table? may or may not have default: in the switch
-		// table size = 8, #entries: 9 b/c of default
-		cout << "pic64: max-table-entry (max_int means no found): 0x"<< hex << table_size << " #entries: 0x" << entry << " ibtargets.size: " << ibtargets.size() << endl;
-		jmptables[I8].addTargets(ibtargets);
-
-		// note that there may be an off-by-one error here as table size depends on whether instruction I2 is a jb or jbe.
-		
-		// If we've successfully found a table with at least 3 things, or we (oddly) found a table with 
-		// less than 3 things but did so 100% effectively, go ahead and mark it a successful analysis	
-		if (!found_table_error || ibtargets.size() > 3)	
+		if (ibtarget)
 		{
-			if(!found_table_error)
+			if(getenv("IB_VERBOSE"))
 			{
-				cout << "pic64: found complete switch table for " << hex << I8->getAddress()->getVirtualOffset()
-				     << " detected ibtp_switchtable_type4" << endl;
-				jmptables[I8].setAnalysisStatus(iasAnalysisComplete);
-				const auto do_unpin = found_leas.size() == 1;
-				addSwitchTableScoop(firp,max_valid_table_entry,table_entry_size,D1+d6_displ,exeiop, I6, D1, do_unpin);
+				cout << "jmp table [" << entry << "]: " << hex << table_entry << dec << endl;
+				cout<<"Found possible table entry, at: "<< std::hex << dispatch_insn->getAddress()->getVirtualOffset()
+					<< " insn: " << table_load_disasm->getDisassembly()<< " d1: "
+					<< D1 << " table_entry:" << table_entry 
+					<< " target: "<< D1+table_entry << std::dec << endl;
 			}
-			else
-			{
-				cout << "pic64: found incomplete switch table for " << hex << I8->getAddress()->getVirtualOffset()
-				     << " detected ibtp_switchtable_type4" << endl;
-				addSwitchTableScoop(firp,max_valid_table_entry,table_entry_size,D1+d6_displ,exeiop, I6, D1,false);
-			}
+			ibtargets.insert(ibtarget);
+		}
+		offset+=table_entry_size;
+		entry++;
+	} while ( entry<=table_size);
+
+	// record the max entry we found
+	const auto max_valid_table_entry=entry;
+
+
+	// valid switch table? may or may not have default: in the switch
+	// table size = 8, #entries: 9 b/c of default
+	cout << "pic64: max-table-entry (max_int means no found): 0x"<< hex << table_size << " #entries: 0x" << entry << " ibtargets.size: " << ibtargets.size() << endl;
+	jmptables[dispatch_insn].addTargets(ibtargets);
+
+	// note that there may be an off-by-one error here as table size depends on whether instruction I2 is a jb or jbe.
+
+	// If we've successfully found a table with at least 3 things, or we (oddly) found a table with 
+	// less than 3 things but did so 100% effectively, go ahead and mark it a successful analysis	
+	if (!found_table_error || ibtargets.size() > 3)	
+	{
+		if(!found_table_error)
+		{
+			cout << "pic64: found complete switch table for " << hex << dispatch_insn->getAddress()->getVirtualOffset()
+				<< " detected ibtp_switchtable_type4" << endl;
+			jmptables[dispatch_insn].setAnalysisStatus(iasAnalysisComplete);
+			addSwitchTableScoop(firp,max_valid_table_entry,table_entry_size,D1+d6_displ,exeiop, table_load_instruction, D1, allow_unpins);
 		}
 		else
 		{
-			cout << "pic64: INVALID switch table detected for " << hex 
-			     << I8->getDisassembly() << "@" << I8->getAddress()->getVirtualOffset() 
-			     << " type=ibtp_switchtable_type4 with I5=" 
-			     << I5->getAddress()->getVirtualOffset() << "@" << I5_cur->getDisassembly() 
-			     << " found_table_error=" << found_table_error
-			     << " ibtargets.size() == " << ibtargets.size()
-			     << endl;
-			// try the next L5.
-			continue;
+			cout << "pic64: found incomplete switch table for " << hex << dispatch_insn->getAddress()->getVirtualOffset()
+				<< " detected ibtp_switchtable_type4" << endl;
+			addSwitchTableScoop(firp,max_valid_table_entry,table_entry_size,D1+d6_displ,exeiop, table_load_instruction, D1,false);
 		}
-		/* 
-		 * Now, check to see if this was a two level table. 
-		 * Here's an example from a visual studio compiled program:
-		 *
-		 *                 cmp    eax,0x23
-   		 *                 ja     0x1400066d3
-   		 *    I5_cur:      lea    rcx,[rip+0xffffffffffff9a7d]        # 0x140000000
-   		 *    I6_2         movzx  eax,BYTE PTR [rcx+rax*1+0x6a50]
-   		 *    I6:          mov    edx,DWORD PTR [rcx+rax*4+0x6a34]
-   		 *    I7:          add    rdx,rcx
-   		 *    I8:          jmp    rdx
-		 *
-		 */
+	}
+	else
+	{
+		cout << "pic64: INVALID switch table detected for " << hex 
+			<< dispatch_insn->getDisassembly() << "@" << dispatch_insn->getAddress()->getVirtualOffset() 
+			<< " type=ibtp_switchtable_type4 with lea_insn=" 
+			<< lea_for_table_base->getAddress()->getVirtualOffset() << "@" << lea_for_table_base->getDisassembly() 
+			<< " found_table_error=" << found_table_error
+			<< " ibtargets.size() == " << ibtargets.size()
+			<< endl;
+		// try the next L5.
+		return;
+	}
+	/* 
+	 * Now, check to see if this was a two level table. 
+	 * Here's an example from a visual studio compiled program:
+	 *
+	 *                 cmp    eax,0x23
+	 *                 ja     0x1400066d3
+	 *    lea_for_table_base:      lea    rcx,[rip+0xffffffffffff9a7d]        # 0x140000000
+	 *    I6_2         movzx  eax,BYTE PTR [rcx+rax*1+0x6a50]
+	 *    I6:          mov    edx,DWORD PTR [rcx+rax*4+0x6a34]
+	 *    I7:          add    rdx,rcx
+	 *    I8:          jmp    rdx
+	 *
+	 */
 
-		// sanity check that I understand the variables of this function properly.
-		// and grab the index reg
-		assert(I6 && d6);
+	// sanity check that I understand the variables of this function properly.
+	// and grab the index reg
+	assert(table_load_instruction);
 
-		if(d6_op1_is_mem)
+	if(d6_op1_is_mem)
+	{
+		// hack approved by an7s to convert a field from the index register to the actual 32-bit register from RegID_t
+		const auto ireg_no         = RegisterID_t(rn_EAX + d6_op1->getIndexRegister());
+		const auto ireg_str        = registerToSearchString(ireg_no);
+		const auto I6_2_opcode_str = string() + "movzx " + ireg_str + ",";
+		const auto stopif_reg_no   = RegisterID_t(rn_RAX + d6_op1->getIndexRegister());
+		const auto stopif_reg_str  = registerToSearchString(stopif_reg_no);
+		const auto stop_if         = string() + "^" + stopif_reg_str + "$";              
+
+		auto I6_2 = (Instruction_t*)nullptr;
+		if(backup_until(I6_2_opcode_str, I6_2, table_load_instruction, stop_if))
 		{
-			// hack approved by an7s to convert a field from the index register to the actual 32-bit register from RegID_t
-			const auto ireg_no         = RegisterID_t(rn_EAX + d6_op1->getIndexRegister());
-			const auto ireg_str        = registerToSearchString(ireg_no);
-			const auto I6_2_opcode_str = string() + "movzx " + ireg_str + ",";
-			const auto stopif_reg_no   = RegisterID_t(rn_RAX + d6_op1->getIndexRegister());
-			const auto stopif_reg_str  = registerToSearchString(stopif_reg_no);
-			const auto stop_if         = string() + "^" + stopif_reg_str + "$";              
+			// woo!  found a 2 level table
+			// decode d6_2 and check the memory operand
+			const auto d6_2            = DecodedInstruction_t::factory(I6_2);
+			const auto d6_2_memop      = d6_2->getOperand(1);
+			if(!d6_2_memop->isMemory()) return;
 
-			auto I6_2 = (Instruction_t*)nullptr;
-			if(backup_until(I6_2_opcode_str, I6_2, I6, stop_if))
+			const auto d6_2_displ      = d6_2_memop->getMemoryDisplacement();
+
+			// try next L5 if no 2 level table here
+			if(d6_2_displ == 0) return;
+
+			// look up the section and try next L5 if not found
+			const auto lvl2_table_addr =  D1 + d6_2_displ;
+			const auto lvl2_table_sec=find_section(lvl2_table_addr,exeiop);
+			if(lvl2_table_sec == nullptr) return;
+
+			const auto lvl2_table_secdata=pSec->get_data();
+
+			// if the section has no data, abort 
+			if(lvl2_table_secdata == nullptr) return;
+
+			// now, scan the lvl2 table, and stop if we find an entry bigger than 
+			// the lvl1 table's size.  This will calc the size of the lvl2 table.
+			//
+			// offset from address to access - section address 
+			auto lvl2_table_offset=lvl2_table_addr - lvl2_table_sec->get_address();
+			auto lvl2_table_entry_no=0U;
+			do
 			{
-				// woo!  found a 2 level table
-				// decode d6_2 and check the memory operand
-				const auto d6_2            = DecodedInstruction_t::factory(I6_2);
-				const auto d6_2_memop      = d6_2->getOperand(1);
-				if(!d6_2_memop->isMemory()) continue;
+				// check that we can still grab a word from this section
+				if((int)(lvl2_table_offset+sizeof(int)) > (int)lvl2_table_sec->get_size())
+					break;
 
-				const auto d6_2_displ      = d6_2_memop->getMemoryDisplacement();
+				const auto lvl2_table_entry_ptr = (const uint8_t*)&(lvl2_table_secdata[lvl2_table_offset]);
+				const auto lvl2_table_entry_val = *lvl2_table_entry_ptr;
 
-				// try next L5 if no 2 level table here
-				if(d6_2_displ == 0) continue;
+				// found an entry that's bigger than our lvl1 table's max element
+				if(lvl2_table_entry_val > max_valid_table_entry )
+					break;
 
-				// look up the section and try next L5 if not found
-				const auto lvl2_table_addr =  D1 + d6_2_displ;
-				const auto lvl2_table_sec=find_section(lvl2_table_addr,exeiop);
-				if(lvl2_table_sec == nullptr) continue;
+				lvl2_table_offset+=sizeof(uint8_t);
+				lvl2_table_entry_no++;
+			} while ( lvl2_table_entry_no <= table_size); /* table_size from original cmp! */
 
-				const auto lvl2_table_secdata=pSec->get_data();
-
-				// if the section has no data, abort 
-				if(lvl2_table_secdata == nullptr) continue;
-
-				// now, scan the lvl2 table, and stop if we find an entry bigger than 
-				// the lvl1 table's size.  This will calc the size of the lvl2 table.
-				//
-				// offset from address to access - section address 
-				auto lvl2_table_offset=lvl2_table_addr - lvl2_table_sec->get_address();
-				auto lvl2_table_entry_no=0U;
-				do
-				{
-					// check that we can still grab a word from this section
-					if((int)(lvl2_table_offset+sizeof(int)) > (int)lvl2_table_sec->get_size())
-						break;
-
-					const auto lvl2_table_entry_ptr = (const uint8_t*)&(lvl2_table_secdata[lvl2_table_offset]);
-					const auto lvl2_table_entry_val = *lvl2_table_entry_ptr;
-
-					// found an entry that's bigger than our lvl1 table's max element
-					if(lvl2_table_entry_val > max_valid_table_entry )
-						break;
-
-					lvl2_table_offset+=sizeof(uint8_t);
-					lvl2_table_entry_no++;
-				} while ( lvl2_table_entry_no <= table_size); /* table_size from original cmp! */
-				
-				// now record the lvl2 table into a scoop 
-				addSwitchTableScoop(firp,lvl2_table_entry_no+1,1,lvl2_table_addr,exeiop, I6_2, D1, false);
-			}
+			// now record the lvl2 table into a scoop 
+			addSwitchTableScoop(firp,lvl2_table_entry_no+1,1,lvl2_table_addr,exeiop, I6_2, D1, false);
 		}
 	}
 }
