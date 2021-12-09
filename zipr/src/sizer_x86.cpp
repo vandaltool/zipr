@@ -16,7 +16,7 @@ ZiprSizerX86_t::ZiprSizerX86_t(Zipr_SDK::Zipr_t* p_zipr_obj) : ZiprSizerBase_t(p
 size_t ZiprSizerX86_t::DetermineInsnSize(Instruction_t* insn, bool account_for_jump) const
 {
 
-	int required_size=0;
+	int required_size=insn->getDataBits().size();
 
 	switch(insn->getDataBits()[0])
 	{
@@ -45,6 +45,7 @@ size_t ZiprSizerX86_t::DetermineInsnSize(Instruction_t* insn, bool account_for_j
 		case (char)0xeb:
 		{
 			// two byte JMP -> 5byte JMP
+				if(insn->getTarget()) 
 			required_size=5;
 			break;
 		}
@@ -60,7 +61,8 @@ size_t ZiprSizerX86_t::DetermineInsnSize(Instruction_t* insn, bool account_for_j
 			// jmp fallthrough
 			// +5: jmp target
 			// 2+5+5;
-			required_size=12;
+			if(insn->getTarget()) 
+				required_size=12;
 			break;
 		}
 		
