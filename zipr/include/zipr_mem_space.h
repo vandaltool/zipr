@@ -31,6 +31,79 @@
 #ifndef memory_space_h
 #define memory_space_h
 
+class FreeRanges_t 
+{
+
+	public:
+		FreeRanges_t()
+			: by_size(32)
+		{
+
+		}
+		RangeSet_t::iterator find( const Range_t& key )
+		{
+			return by_address.find(key);
+		}
+		RangeSet_t::const_iterator find( const Range_t& key ) const
+		{
+			return by_address.find(key);
+		}
+		pair<RangeSet_t::iterator,bool> insert( const Range_t& value )
+		{
+			const auto size   = value.getSize();
+			assert(size>=1);
+			const auto bucket = integerlog2floor(size);
+			by_size[bucket].insert(value);
+			return by_address.insert(value);
+		}
+		RangeSet_t::iterator erase( RangeSet_t::iterator pos )
+		{
+			assert(pos!=by_address.end());
+			const auto theRange=*pos;
+			const auto size   = theRange.getSize();
+			assert(size>=1);
+			const auto bucket = integerlog2floor(size);
+			by_size[bucket].erase(theRange);
+			return by_address.erase(pos);
+		}
+		RangeSet_t::iterator erase( const Range_t& range)
+		{
+			return erase(find(range));
+		}
+		const RangeSet_t& byAddress() const { return by_address; }
+		const RangeSet_t& bySize(const size_t size) const
+		{ 
+			assert(size>=1);
+			const auto bucket = integerlog2ceil(size);
+			return by_size[bucket]; 
+		}
+		size_t size() const { return by_address.size(); }
+
+	private:
+		static unsigned integerlog2ceil (unsigned int index)
+		{
+		    auto result = 0u;
+		    --index;
+		    while (index > 0) {
+			++result;
+			index >>= 1;
+		    }
+
+		    return result;
+		}
+		static unsigned integerlog2floor(unsigned int index)
+		{
+			assert(index>=0);
+			int targetlevel = 0;
+			while (index >>= 1) 
+				++targetlevel;
+			return  targetlevel;
+		}
+
+		RangeSet_t  by_address; // keep ordered
+		vector< RangeSet_t > by_size;
+};
+
 // a memory space _is_ a map of range addres to char, with additional functionality.
 class ZiprMemorySpace_t : public MemorySpace_t
 {
@@ -122,9 +195,8 @@ class ZiprMemorySpace_t : public MemorySpace_t
 
 
 	protected:
-		RangeSet_t  free_ranges; // keep ordered
+		FreeRanges_t free_ranges;
 		RangeSet_t  original_free_ranges; // keep ordered
-		// std::set<Range_t, Range_tCompare> free_ranges;   // keep ordered
 
 	private:
 		RangeAddress_t max_plopped;
