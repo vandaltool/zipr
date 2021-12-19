@@ -27,6 +27,11 @@ RangeAddress_t Zipr_SDK::Range_t::getEnd() const
 	return m_end; 
 }
 
+size_t Zipr_SDK::Range_t::getSize() const 
+{
+	return m_end-m_start+1;
+}
+
 void Zipr_SDK::Range_t::setStart(RangeAddress_t s) 
 { 
 	m_start=s; 

@@ -236,7 +236,7 @@ bool TestClearAllIteratively()
 		return false;
 	while (m.GetRangeCount())
 	{
-		removableRange = m.getFreeRange(0);
+		removableRange = m.getFreeRange(1);
 		m.RemoveFreeRange(removableRange);
 	}	
 	m.PrintMemorySpace(cout);
@@ -274,7 +274,7 @@ bool TestClearSomeIteratively()
 	 */
 	while (m.GetRangeCount() != 1)
 	{
-		removableRange = m.getFreeRange(0);
+		removableRange = m.getFreeRange(1);
 		if (removableRange.getEnd() == 4096)
 			continue;
 		m.RemoveFreeRange(removableRange);
@@ -283,6 +283,7 @@ bool TestClearSomeIteratively()
 	return m.GetRangeCount() == 1;
 }
 
+#if 0
 bool TestgetNearbyFreeRanges()
 {
 	ZiprMemorySpace_t m;
@@ -302,6 +303,7 @@ bool TestgetNearbyFreeRanges()
 			 result_it++, result_count++) {}
 	return result_count == 2;
 }
+#endif
 
 bool TestCopyConstructor()
 {
@@ -334,6 +336,6 @@ int main(int argc, char *argv[])
 	INVOKE(TestClearAllIteratively);
 	INVOKE(TestClearSomeIteratively);
 	INVOKE(TestEraseOneByter);
-	INVOKE(TestgetNearbyFreeRanges);
+//	INVOKE(TestgetNearbyFreeRanges);
 	INVOKE(TestCopyConstructor);
 }

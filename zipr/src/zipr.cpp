@@ -886,7 +886,7 @@ void ZiprImpl_t::PlaceDollops()
 
 		const auto minimum_valid_req_size =  std::min(
 			DetermineDollopEntrySize(to_place->front(), true), 
-			sizer->DetermineDollopSizeInclFallthrough(to_place));
+			sizer->DetermineDollopSizeInclFallthrough(to_place)) + 1;
 		/*
 		 * Ask the plugin manager if there are any plugins
 		 * that want to tell us where to place this dollop.
@@ -1013,6 +1013,7 @@ void ZiprImpl_t::PlaceDollops()
 		{
 			/* Actually place the pin */
 			placement = sizer->DoPlacement(minimum_valid_req_size, to_place);
+			assert(minimum_valid_req_size <= placement.getSize());
 
 			/*
 			 * Reset allowed_coalescing because DoesPluginAddress
