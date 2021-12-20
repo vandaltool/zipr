@@ -292,7 +292,7 @@ int ThanosPlugin_t::runPlugin()
 
 	const auto start_time = clock();
   	const auto start_t=time(nullptr);
-	const auto start_time_str = ctime(&start_t);
+	const auto start_time_str = string(ctime(&start_t)); // copy out results because ctime stores in a static var.
 
 	const auto step_result = executeStep(*(the_step.get()), (bool) are_debugging);
 
