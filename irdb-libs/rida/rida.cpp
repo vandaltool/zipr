@@ -182,6 +182,10 @@ public:
 
 		const auto data = sec->get_data();
 		const auto stringData = stringSec->get_data();
+		auto sccsMap = map<Address_t,RangeSet_t>();
+		// Put all pairs of <s.begin()->first,s> into sccsMap
+		// so we can do fast lookups of s by s.begin().first.
+		transform(ALLOF(sccs), inserter(sccsMap, sccsMap.end()), [] (const RangeSet_t &s) -> pair<Address_t,RangeSet_t> { return {s.begin()->first, s}; } );
 
 		for (auto i = 0U; i + sizeof(T_Sym) <= (size_t)sec->get_size(); i += sizeof(T_Sym))
 		{
@@ -206,13 +210,18 @@ public:
 			const auto name = string(stringData + name_offset);
 
 			// find a function
+			/*
 			auto func_it = find_if(ALLOF(sccs), [&](const RangeSet_t &s) {
 				return s.begin()->first == value;
-			});
 			if (func_it != sccs.end())
+			});
+			*/
+			const auto func_it=sccsMap.find(value);
+
+			if (func_it != sccsMap.end())
 			{
-				cout << "Setting function at " << hex << value << " to name " << name << endl;
-				funcNames[*func_it] = name;
+				cout << "Setting function at " << hex << value << " from symbols in " << stringSecName << " to name " << name << endl;
+				funcNames[func_it->second] = name;
 			}
 		}
 	}
@@ -341,7 +350,7 @@ public:
 				});
 				if (func_it != sccs.end())
 				{
-					cout << "Setting function at " << hex << myAddr << " to name " << name << endl;
+					cout << "Setting function at " << hex << myAddr << " to name from plt symbols" << name << endl;
 					funcNames[*func_it] = name;
 				}
 			};
