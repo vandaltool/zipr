@@ -499,7 +499,9 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 	        inserter(sorted_scoop_set, sorted_scoop_set.begin()),
 	        [](DataScoop_t* ds)
 	        {
-	        	return ds->getStart()->getVirtualOffset() != 0;
+	        	const auto is_pinned = ds->getStart()->getVirtualOffset() != 0;
+	        	const auto is_exec = ds->isExecuteable();
+	        	return is_pinned  && !is_exec;
 	        }
 	);
 	for( auto it=sorted_scoop_set.begin(); it!=sorted_scoop_set.end(); ++it )
@@ -529,7 +531,19 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 			RangeAddress_t new_padding_scoop_start = this_end + 1;
 			RangeAddress_t new_padding_scoop_end = next_start - 1;
 
-			if (this_end > next_start) {
+
+			if (*m_verbose)
+				cout << "Considering a gap between: 0x" << std::hex 
+				     << new_padding_scoop_start << "-0x"
+				     << std::hex << new_padding_scoop_end
+				     << endl;
+
+
+			/* detect if the free range is already empty */
+
+			/* or if there is overlap between these scoops */
+			if (this_end > next_start) 
+			{
 				/*
 				 * It's possible that sections overlap
 				 * one another. Computing the distance
@@ -537,16 +551,9 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 				 * So, we make a special check here.
 				 */
 				if (*m_verbose)
-					cout << "Not considering this section because it "
-					     << "does not end before the next one starts." << endl;
+					cout << "Not considering this gap because it " << "does not end before the next one starts." << endl;
 				continue;
 			}
-
-			if (*m_verbose)
-				cout << "Considering a gap between: 0x" << std::hex 
-				     << new_padding_scoop_start << "-0x"
-				     << std::hex << new_padding_scoop_end
-				     << endl;
 
 			/*
 			 * If the adjacent scoop is writable, we
@@ -591,33 +598,14 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 			    (!this_scoop->isWriteable() || !next_scoop->isWriteable())
 				 )
 			{
-				string new_padding_scoop_contents, new_padding_scoop_name;
-				int new_padding_scoop_perms = 0x5 /* r-x */;
-
-				new_padding_scoop_name = "zipr_scoop_"+
-				                         to_string(new_padding_scoop_start);
-
-				/*
-				DataScoop_t *new_padding_scoop = nullptr;
-				AddressID_t *new_padding_scoop_start_addr = nullptr,
-				            *new_padding_scoop_end_addr = nullptr;
-				new_padding_scoop_start_addr = new AddressID_t();
-				new_padding_scoop_start_addr->setVirtualOffset(new_padding_scoop_start);
-				m_firp->getAddresses().insert(new_padding_scoop_start_addr);
-				*/
-				auto new_padding_scoop_start_addr=m_firp->addNewAddress(m_firp->getFile()->getBaseID(), new_padding_scoop_start);
-				/*
-				new_padding_scoop_end_addr = new AddressID_t();
-				new_padding_scoop_end_addr->setVirtualOffset(new_padding_scoop_end);
-				m_firp->getAddresses().insert(new_padding_scoop_end_addr);
-				*/
-				auto new_padding_scoop_end_addr  =m_firp->addNewAddress(m_firp->getFile()->getBaseID(), new_padding_scoop_end);
-
 				cout << "Gap filling with a scoop between 0x"
 				     << std::hex << new_padding_scoop_start << " and 0x"
 				     << std::hex << new_padding_scoop_end
 				     << endl;
-
+				const auto new_padding_scoop_perms      = 0x5 /* r-x */;
+				const auto new_padding_scoop_name       = string() + "zipr_scoop_"+ to_string(new_padding_scoop_start);
+				const auto new_padding_scoop_start_addr =m_firp->addNewAddress(m_firp->getFile()->getBaseID(), new_padding_scoop_start);
+				const auto new_padding_scoop_end_addr   =m_firp->addNewAddress(m_firp->getFile()->getBaseID(), new_padding_scoop_end);
 				auto new_padding_scoop = m_firp->addNewDataScoop(
 				                                    new_padding_scoop_name,
 				                                    new_padding_scoop_start_addr,
@@ -625,8 +613,8 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 				                                    nullptr,
 				                                    new_padding_scoop_perms,
 				                                    false,
-				                                    new_padding_scoop_contents);
-				new_padding_scoop_contents.resize(new_padding_scoop->getSize());
+				                                    "");
+				const auto new_padding_scoop_contents = string(new_padding_scoop->getSize(), '\0');
 				new_padding_scoop->setContents(new_padding_scoop_contents);
 
 				/*
@@ -637,8 +625,7 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 				/*
 				 * Tell Zipr that it can put executable code in this section.
 				 */
-				memory_space.AddFreeRange(Range_t(new_padding_scoop_start,
-				                                  new_padding_scoop_end), true);
+				memory_space.addFreeRange({new_padding_scoop_start, new_padding_scoop_end});
 			}
 		}
 	}
