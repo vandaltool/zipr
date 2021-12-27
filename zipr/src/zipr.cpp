@@ -312,7 +312,6 @@ void ZiprImpl_t::CreateExecutableScoops(const std::map<RangeAddress_t, int> &ord
 		assert(sec);
 
 		// skip non-exec and non-alloc sections.
-		// if( (sec->get_flags() & SHF_ALLOC) ==0 || (sec->get_flags() & SHF_EXECINSTR) ==0 )
 		if(!sec->isLoadable() || !sec->isExecutable())
 		{
 			++it;
@@ -331,14 +330,12 @@ void ZiprImpl_t::CreateExecutableScoops(const std::map<RangeAddress_t, int> &ord
 			sec = exeiop->sections[it->second];
 
 			// skip non-alloc sections.
-			// if( (sec->get_flags() & SHF_ALLOC) ==0)
 			if(!sec->isLoadable())
 			{
 				++it;
 				continue;
 			}
 			// stop if not executable.
-			// if( (sec->get_flags() & SHF_EXECINSTR) ==0 )
 			if(!sec->isExecutable())
 				break;
 
@@ -349,11 +346,6 @@ void ZiprImpl_t::CreateExecutableScoops(const std::map<RangeAddress_t, int> &ord
 		}
 
 		// setup end of scoop address
-		/*
-		auto text_end=new AddressID_t();
-		// insert into IR
-		m_firp->getAddresses().insert(text_end);
-		*/
 		auto text_end=m_firp->addNewAddress(m_firp->getFile()->getBaseID(),0);
 
 		// two cases for end-of-scoop 
@@ -368,17 +360,9 @@ void ZiprImpl_t::CreateExecutableScoops(const std::map<RangeAddress_t, int> &ord
 
 		// setup a scoop for this section.
 		// zero init is OK, after zipring we'll update with the right bytes.
-		string text_contents;
-		string text_name=string(".zipr_text_")+to_string(count++);
-		if(count==1)
-			text_name=".text"; // use the name .text first.
-
-		text_contents.resize(text_end->getVirtualOffset() - text_start->getVirtualOffset()+1);
-		//
-		// DataScoop_t* text_scoop=new DataScoop_t(m_firp->GetMaxBaseID()+1, text_name,  text_start, text_end, nullptr, 5 /*R-X*/, false, text_contents);
-		// m_firp->getDataScoops().insert(text_scoop);
-		//
-		auto text_scoop=m_firp->addNewDataScoop(text_name,  text_start, text_end, nullptr, 5 /*R-X*/, false, text_contents);
+		const auto text_name     = count == 1 ? string(".text") : string(".zipr_text_")+to_string(count++);
+		const auto text_contents = string(text_end->getVirtualOffset() - text_start->getVirtualOffset()+1, '\x00');
+		const auto text_scoop    = m_firp->addNewDataScoop(text_name,  text_start, text_end, nullptr, 5 /*R-X*/, false, text_contents);
 	
 		cout<<"Adding scoop "<<text_scoop->getName()<<hex<<" at "<<hex<<text_start->getVirtualOffset()<<" - "<<text_end->getVirtualOffset()<<endl;
 		m_zipr_scoops.insert(text_scoop);
@@ -461,25 +445,20 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 	// scan sections for a max-addr.
 	for (auto p : ordered_sections )
 	{ 
-		section* sec = exeiop->sections[p.second];
+		const auto sec = exeiop->sections[p.second];
 		assert(sec);
 
-		RangeAddress_t start=sec->get_address();
-		RangeAddress_t end=sec->get_size()+start-1;
+		const auto start=sec->get_address();
+		const auto end=sec->get_size()+(start-1);
 
 		if (*m_verbose)
 			printf("max_addr is %p, end is %p\n", (void*)max_addr, (void*)end);
 
 		if(start && end>max_addr)
 		{
-			if (*m_verbose)
-				printf("new max_addr is %p\n", (void*)max_addr);
 			max_addr=end;
 		}
 
-		// if( (sec->get_flags() & SHF_ALLOC) ==0 )
-		if(!sec->isLoadable())	
-			continue;
 	}
 
 	/*
@@ -492,16 +471,18 @@ void ZiprImpl_t::FindFreeRanges(const std::string &name)
 		     << *m_paddable_minimum_distance << " bytes." << endl;
 
 	/*
-	 * Only put pinned data scoops into the list of
-	 * scoops to consider for adding gap filling.
+	 * Only put pinned data scoops into the list of scoops to consider for adding gap filling.
+	 * Exclude executable scoops except those created by CreateExecutableScoops.
 	 */
 	copy_if(ALLOF(m_firp->getDataScoops()),
 	        inserter(sorted_scoop_set, sorted_scoop_set.begin()),
-	        [](DataScoop_t* ds)
+	        [&](DataScoop_t* ds)
 	        {
-	        	const auto is_pinned = ds->getStart()->getVirtualOffset() != 0;
-	        	const auto is_exec = ds->isExecuteable();
-	        	return is_pinned  && !is_exec;
+	        	const auto is_pinned          = ds->getStart()->getVirtualOffset() != 0;
+			const auto is_exec            = ds->isExecuteable();
+			const auto is_ces_scoop       = m_zipr_scoops.find(ds) != m_zipr_scoops.end();
+			const auto excluded_exe_scoop = is_exec && !is_ces_scoop;
+	        	return is_pinned && !excluded_exe_scoop;
 	        }
 	);
 	for( auto it=sorted_scoop_set.begin(); it!=sorted_scoop_set.end(); ++it )
