@@ -106,7 +106,54 @@ class ibt_provenance_t
 		bool areOnlyTheseSet(const provtype_t t) const { return (value&~t) == 0; }
 		bool areOnlyTheseSet(const ibt_provenance_t t) const { return (value&~t.value) == 0; }
 		bool isEmpty() const { return value==0; }
+		std::string toString() const
+		{
+			
+			auto result = std::string();
 
+#define print_prov(a)                                    \
+	{                                                    \
+		if (value & (ibt_provenance_t::a))          \
+		{                                                \
+			const auto foo = std::string(#a);            \
+			result += foo.substr(5, foo.length()) + ","; \
+		}                                                \
+	}
+			print_prov(ibtp_eh_frame);
+			print_prov(ibtp_user);
+			print_prov(ibtp_gotplt);
+			print_prov(ibtp_initarray);
+			print_prov(ibtp_finiarray);
+			print_prov(ibtp_entrypoint);
+			print_prov(ibtp_data);
+			print_prov(ibtp_text);
+			print_prov(ibtp_texttoprintf);
+			print_prov(ibtp_dynsym);
+			print_prov(ibtp_symtab);
+			print_prov(ibtp_stars_ret);
+			print_prov(ibtp_stars_switch);
+			print_prov(ibtp_stars_data);
+			print_prov(ibtp_stars_unknown);
+			print_prov(ibtp_stars_addressed);
+			print_prov(ibtp_stars_unreachable);
+			print_prov(ibtp_switchtable_type1);
+			print_prov(ibtp_switchtable_type2);
+			print_prov(ibtp_switchtable_type3);
+			print_prov(ibtp_switchtable_type4);
+			print_prov(ibtp_switchtable_type5);
+			print_prov(ibtp_switchtable_type6);
+			print_prov(ibtp_switchtable_type7);
+			print_prov(ibtp_switchtable_type8);
+			print_prov(ibtp_switchtable_type9);
+			print_prov(ibtp_switchtable_type10);
+			print_prov(ibtp_rodata);
+			print_prov(ibtp_unknown);
+			print_prov(ibtp_got);
+			print_prov(ibtp_ret);
+#undef print_prov
+
+			return result;
+		}
 
 	private:
 
@@ -117,49 +164,10 @@ class ibt_provenance_t
 
 static inline std::ostream& operator<<(std::ostream& out, const ibt_provenance_t& prov)
 {
-#define print_prov(a) 						\
-{						 		\
-	if(prov.value&(ibt_provenance_t::a))			\
-	{ 							\
-		const auto foo=std::string(#a);			\
-		out<<foo.substr(4,foo.length())<<",";		\
-	}							\
-}		
-	print_prov(ibtp_eh_frame);
-	print_prov(ibtp_user);
-	print_prov(ibtp_gotplt);
-	print_prov(ibtp_initarray);
-	print_prov(ibtp_finiarray);
-	print_prov(ibtp_entrypoint);
-	print_prov(ibtp_data);
-	print_prov(ibtp_text);
-	print_prov(ibtp_texttoprintf);
-	print_prov(ibtp_dynsym);
-	print_prov(ibtp_symtab);
-	print_prov(ibtp_stars_ret);
-	print_prov(ibtp_stars_switch);
-	print_prov(ibtp_stars_data);
-	print_prov(ibtp_stars_unknown);
-	print_prov(ibtp_stars_addressed);
-	print_prov(ibtp_stars_unreachable);
-	print_prov(ibtp_switchtable_type1);
-	print_prov(ibtp_switchtable_type2);
-	print_prov(ibtp_switchtable_type3);
-	print_prov(ibtp_switchtable_type4);
-	print_prov(ibtp_switchtable_type5);
-	print_prov(ibtp_switchtable_type6);
-	print_prov(ibtp_switchtable_type7);
-	print_prov(ibtp_switchtable_type8);
-	print_prov(ibtp_switchtable_type9);
-	print_prov(ibtp_switchtable_type10);
-	print_prov(ibtp_rodata);
-	print_prov(ibtp_unknown);
-	print_prov(ibtp_got);
-	print_prov(ibtp_ret);
-#undef print_prov
-
+	out << prov.toString();
 	return out;
 }
+
 
 
 /*
@@ -173,48 +181,71 @@ bool possible_target(IRDB_SDK::VirtualOffset_t p, IRDB_SDK::VirtualOffset_t from
 class fii_icfs  : public IRDB_SDK::InstructionSet_t
 {
 	public:
+		fii_icfs() :
+			table_start(0),
+			table_size(0),
+			table_entry_size(0),
+			table_multiplier(1),
+			m_icfs_analysis_status(IRDB_SDK::iasAnalysisIncomplete)
+		{
+		}
+
 		// get/set table start
-		IRDB_SDK::VirtualOffset_t GetTableStart() {return table_start; }
-		void SetTableStart(IRDB_SDK::VirtualOffset_t s) {table_start=s; }
+		IRDB_SDK::VirtualOffset_t GetTableStart() const { return table_start; }
+		void SetTableStart(IRDB_SDK::VirtualOffset_t new_start) { table_start = new_start; }
+
+		// get/set table entry size
+		uint32_t GetTableEntrySize() const { return table_entry_size; }
+		void SetTableEntrySize(const uint32_t new_size) { table_entry_size = new_size; }
+		
+		// get/set table multiplier
+		int32_t GetTableMultiplier() const { return table_multiplier; }
+		void SetTableMultiplier(const int32_t new_mult) { table_multiplier = new_mult; }
 
 		// get/set switch type
-		ibt_provenance_t GetSwitchType() { return switch_type; }
+		ibt_provenance_t GetSwitchType() const { return switch_type; }
 		void AddSwitchType(const ibt_provenance_t& p) { switch_type.add(p); }
 
 		// get/set table size
-		int GetTableSize() { return table_size; }
-		void SetTableSize(int s) { table_size=s; }
+		uint32_t GetTableSize() { return table_size; }
+		void SetTableSize(uint32_t new_size) { table_size = new_size; }
 
-                void addTargets(const IRDB_SDK::InstructionSet_t &other)
-                {
-                        insert(std::begin(other), std::end(other));
-                }
-		bool isIncomplete() const {
-                        return getAnalysisStatus() == IRDB_SDK::iasAnalysisIncomplete;
-                }
+		void addTargets(const IRDB_SDK::InstructionSet_t &other)
+		{
+			insert(std::begin(other), std::end(other));
+		}
+		bool isIncomplete() const
+		{
+			return getAnalysisStatus() == IRDB_SDK::iasAnalysisIncomplete;
+		}
 
-                bool isComplete() const {
-                        return getAnalysisStatus() == IRDB_SDK::iasAnalysisComplete;
-                }
+		bool isComplete() const
+		{
+			return getAnalysisStatus() == IRDB_SDK::iasAnalysisComplete;
+		}
 
-                bool isModuleComplete() const {
-                        return getAnalysisStatus() == IRDB_SDK::iasAnalysisModuleComplete;
-                }
+		bool isModuleComplete() const
+		{
+			return getAnalysisStatus() == IRDB_SDK::iasAnalysisModuleComplete;
+		}
 
-                void setAnalysisStatus(const IRDB_SDK::ICFSAnalysisStatus_t p_status) {
-                        m_icfs_analysis_status = p_status;
-                }
+		void setAnalysisStatus(const IRDB_SDK::ICFSAnalysisStatus_t p_status)
+		{
+			m_icfs_analysis_status = p_status;
+		}
 
-		IRDB_SDK::ICFSAnalysisStatus_t getAnalysisStatus() const {
-                        return m_icfs_analysis_status;
-                }
-
+		IRDB_SDK::ICFSAnalysisStatus_t getAnalysisStatus() const
+		{
+			return m_icfs_analysis_status;
+		}
 
 	private:
 
 		IRDB_SDK::VirtualOffset_t table_start;
 		ibt_provenance_t switch_type;
-		int table_size;
+		uint32_t table_size;
+		uint32_t table_entry_size;
+		int32_t table_multiplier;
 		IRDB_SDK::ICFSAnalysisStatus_t m_icfs_analysis_status;
 
 };

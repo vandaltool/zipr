@@ -310,11 +310,6 @@ map<VirtualOffset_t,ibt_provenance_t> targets;
 // the set of ranges represented by the eh_frame section, could be empty for non-elf files.
 set< pair< VirtualOffset_t, VirtualOffset_t> > ranges;
 
-#if 0
-// a way to map an instruction to its set of (direct) predecessors. 
-map< Instruction_t* , InstructionSet_t > preds;
-#endif
-
 // keep track of jmp tables
 map< Instruction_t*, fii_icfs > jmptables;
 
@@ -325,6 +320,15 @@ map<VirtualOffset_t,Instruction_t*> lookupInstructionMap;
 set<Instruction_t*> already_unpinned;
 
 long total_unpins=0;
+
+// stats for unpinning arm32 switch table entries.
+int type3_unpins=0;
+int type3_pins=0;
+
+// stats for unpinning x86-64 pic switch table entries.
+int type4_unpins=0;
+int type4_pins=0;
+map<string, int> type4_missed_unpin_reasons;
 
 /*
  * Convert a reg id to a lower-case string
@@ -2288,9 +2292,10 @@ V2:
 	 */
 	const auto table_index_reg_str = p_disasm.getOperand(0)->getString();
 	const auto table_index_str = 
-		"(add " + table_index_reg_str + 
-		",|lea " + table_index_reg_str + ","+
-		",|sub " + table_index_reg_str + ",)";
+		"(add " + table_index_reg_str + "," +
+		"|lea " + table_index_reg_str + "," +
+		"|sub " + table_index_reg_str + "," +
+		")";
 	const auto table_index_stop_if = string() + "^" + table_index_reg_str +  "$";              
 
 	//
@@ -2316,8 +2321,8 @@ V2:
 			return;
 	} 
 
-	// Check if lea instruction is being used as add (scale=1, disp=0)
-	if(d7->getMnemonic() != "lea" && d7->getOperand(1)->isRegister())
+	// if we found an lea, or an add/sub with a register
+	if(d7->getMnemonic() == "lea" || d7->getOperand(1)->isRegister())
 	{
 
 		// calculate the registers we need for the I6 backup.
@@ -2365,6 +2370,7 @@ V2:
 		// sub <reg>, constant?
 		return;
 	}
+
 
 	/* 
 	 * Specify whether the table is multiplied by a value.  Use -1 for subtracts.
@@ -2449,10 +2455,9 @@ V2:
 	/*
 	 * Check each one that is returned.
 	 */
-	auto found_leas_it = found_leas.begin();
-	for (; found_leas_it != found_leas.end(); found_leas_it++) 
+	const auto allow_unpins = found_leas.size() == 1;
+	for (auto I5_cur : found_leas)
 	{
-		auto I5_cur = *found_leas_it;
 		PIC_switch_table64_iterate_table(
 				firp, 
 				I8, 
@@ -2464,9 +2469,11 @@ V2:
 				cmp_str, 
 				bound_stopif, 
 				and_str,
-				found_leas.size() == 1
+				allow_unpins
 				);
 	}
+	if(allow_unpins)
+		jmptables[I8].AddSwitchType(prov);
 }
 
 
@@ -2521,6 +2528,14 @@ void PIC_switch_table64_iterate_table
 	const auto pSec=find_section(D1+d6_displ,exeiop);
 	if(!pSec) return;
 
+	// record for unpinning.
+	jmptables[dispatch_insn].SetTableStart(D1+d6_displ);
+	jmptables[dispatch_insn].SetTableEntrySize(table_entry_size);
+	jmptables[dispatch_insn].SetTableMultiplier(table_entry_multiplier);
+
+	// wait until we scan the table to know if we are complete or not.
+	jmptables[dispatch_insn].setAnalysisStatus(iasAnalysisIncomplete);
+
 	// if the section has no data, abort 
 	const char* secdata=pSec->get_data();
 	if(!secdata) return;
@@ -2536,6 +2551,7 @@ void PIC_switch_table64_iterate_table
 	// cannot find a bounds check on the table size.
 	// 
 	auto table_size = 255U;
+	auto found_table_size = false;
 	auto I1=static_cast<Instruction_t*>(nullptr); 
 	if(backup_until(cmp_str.c_str(), I1, table_load_instruction, bound_stopif ))
 	{
@@ -2544,10 +2560,8 @@ void PIC_switch_table64_iterate_table
 
 		// notes on table size: 
 		// readelf on ubuntu20 has a table size of 4.
-		if (table_size < 4)
-		{
-			cout << "pic64: found cmp-type I1 ('" << d1->getDisassembly() << "'), but could not find size of switch table" << "\n";
-		}
+		cout << "pic64: found cmp-type I1 ('" << d1->getDisassembly() << "'), with table_size=" << table_size << "\n";
+		found_table_size = true;
 	}
 	else if(backup_until(and_str.c_str(), I1, table_load_instruction, bound_stopif ))
 	{
@@ -2557,6 +2571,7 @@ void PIC_switch_table64_iterate_table
 		if(isConstantAnd)
 		{
 			table_size = findNextPowerOf2(d1SecondOp->getConstant());
+			found_table_size = true;
 			cout << "pic64: found and-type I1 ('" << d1->getDisassembly() << "') with table-size = " << dec << table_size << "\n";
 
 		}
@@ -2567,7 +2582,7 @@ void PIC_switch_table64_iterate_table
 	}
 	else
 	{
-		// it's very common for the bound_stopif   to stop before finding the compare
+		// it's very common for the bound_stopif backup to stop before finding the compare
 		// because of a code pattern like this:
 		//
 		// cmp rax, 0x1234
@@ -2641,9 +2656,9 @@ void PIC_switch_table64_iterate_table
 		entry++;
 	} while ( entry<=table_size);
 
-	// record the max entry we found
+	// record the max entry we found for unpinning.
 	const auto max_valid_table_entry=entry;
-
+	jmptables[dispatch_insn].SetTableSize(max_valid_table_entry);
 
 	// valid switch table? may or may not have default: in the switch
 	// table size = 8, #entries: 9 b/c of default
@@ -2656,12 +2671,13 @@ void PIC_switch_table64_iterate_table
 	// less than 3 things but did so 100% effectively, go ahead and mark it a successful analysis	
 	if (!found_table_error || ibtargets.size() > 3)	
 	{
-		if(!found_table_error)
+		if(!found_table_error && found_table_size)
 		{
 			cout << "pic64: found complete switch table for " << hex << dispatch_insn->getAddress()->getVirtualOffset()
 				<< " detected ibtp_switchtable_type4" << endl;
-			jmptables[dispatch_insn].setAnalysisStatus(iasAnalysisComplete);
 			addSwitchTableScoop(firp,max_valid_table_entry,table_entry_size,D1+d6_displ,exeiop, table_load_instruction, D1, allow_unpins);
+			if(allow_unpins)
+				jmptables[dispatch_insn].setAnalysisStatus(iasAnalysisComplete);
 		}
 		else
 		{
@@ -3927,7 +3943,7 @@ void unpin_elf_tables(FileIR_t *firp, int64_t do_unpin_opt)
 	{
 		string name=it->first;
 		int count=it->second;
-		cout<<"# ATTRIBUTE fill_in_indtargs::hmissed_unpin_count_"<<name<<"="<<dec<<count<<endl;
+		cout<<"# ATTRIBUTE fill_in_indtargs::missed_unpin_count_"<<name<<"="<<dec<<count<<endl;
 	}
 	cout<<"# ATTRIBUTE fill_in_indtargs::total_elftable_unpins="<<dec<<total_elftable_unpins<<endl;
 
@@ -3943,16 +3959,27 @@ DataScoop_t* find_scoop(FileIR_t *firp, const VirtualOffset_t &vo)
 	return nullptr;
 }
 
-// stats for unpinning.
-int type3_unpins=0;
-int type3_pins=0;
 
-void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* scoop, int64_t do_unpin_opt)
+/*
+ * unpin_type3_switchtable -- Unpin table entries for arm32 type switchs.
+ *
+ * 	firp -- the file IR to modify
+ * 	insn -- the instruction that is the switch dispatch, used for obtaining jump table entries
+ * 	scoop -- the scoop that holds the jump table
+ * 	do_unpin_opt -- how many unpins are allowed, so we can abort unpin early for debugging.
+ */
+void unpin_type3_switchtable
+	(
+		FileIR_t* firp,
+		Instruction_t* insn,
+		DataScoop_t* scoop, 
+		int64_t do_unpin_opt
+	)
 {
 
 	assert(firp && insn && scoop);
 
-	set<Instruction_t*> switch_targs;
+	auto switch_targs = set<Instruction_t*>();
 
 	if(getenv("UNPIN_VERBOSE"))
 	{
@@ -3981,78 +4008,75 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 	const char *scoop_contents=scoop->getContents().c_str();
 
 
-	for(int i=0; i<jmptables[insn].GetTableSize(); i++)
+	for(auto i=0u; i < jmptables[insn].GetTableSize(); i++)
 	{
 
 		// grab the value out of the scoop
-		VirtualOffset_t table_entry=0;		
-		switch(ptrsize)
+		VirtualOffset_t table_entry = 0;
+		switch (ptrsize)
 		{
-			case 4:
-				table_entry=(VirtualOffset_t)*(int*)&scoop_contents[scoop_off];
-				break;
-			case 8:
-				table_entry=(VirtualOffset_t)*(int**)&scoop_contents[scoop_off];
-				break;
-			default:
-				assert(0);
+		case 4:
+			table_entry = (VirtualOffset_t) * (int *)&scoop_contents[scoop_off];
+			break;
+		case 8:
+			table_entry = (VirtualOffset_t) * (int **)&scoop_contents[scoop_off];
+			break;
+		default:
+			assert(0);
 		}
 
 		// verify we have an instruction.
-		auto ibt=lookupInstruction(table_entry);
-		if(ibt)
+		auto ibt = lookupInstruction(table_entry);
+		if (ibt)
 		{
 			// which isn't otherwise addressed.
-			if(targets[table_entry].areOnlyTheseSet(prov))
+			if (targets[table_entry].areOnlyTheseSet(prov))
 			{
-				auto allow_new_unpins=true;
+				auto allow_new_unpins = true;
 				total_unpins++;
-				if(do_unpin_opt != -1 && total_unpins > do_unpin_opt) 
+				if (do_unpin_opt != -1 && total_unpins > do_unpin_opt)
 				{
-					allow_new_unpins=false;
-					
-					// don't abort early as we need to fully unpin the IBT once we've started.
-					//cout<<"Aborting unpin process mid switch table."<<endl;
-					// return;
+					allow_new_unpins = false;
+
+					// don't abort early (e.g. return) as we need to fully unpin the IBT once we've started.
+					// just disallow new unpins.
 				}
 
 				// if we are out of unpins, and we haven't unpinned this instruction yet, skip unpinning it.
-				if(!allow_new_unpins && already_unpinned.find(ibt)==already_unpinned.end())
+				if (!allow_new_unpins && already_unpinned.find(ibt) == already_unpinned.end())
 				{
-					if(getenv("UNPIN_VERBOSE"))
-						cout<<"Eliding switch unpin for entry["<<dec<<i<<"] ibt="<<hex<<table_entry<<", scoop_off="<<scoop_off<<endl;
+					if (getenv("UNPIN_VERBOSE"))
+						cout << "Eliding switch unpin for entry[" << dec << i << "] ibt=" << hex << table_entry << ", scoop_off=" << scoop_off << endl;
 
 					// do nothing
 				}
 				else
 				{
-					if(getenv("UNPIN_VERBOSE"))
-						cout<<"Unpinning switch entry ["<<dec<<i<<"] for ibt="<<hex<<table_entry<<", scoop_off="<<scoop_off<<endl;
+					if (getenv("UNPIN_VERBOSE"))
+						cout << "Unpinning switch entry [" << dec << i << "] for ibt=" << hex << table_entry << ", scoop_off=" << scoop_off << endl;
 					already_unpinned.insert(ibt);
 
 					// add reloc to IR.
-					auto nr=firp->addNewRelocation(scoop,scoop_off, "data_to_insn_ptr", ibt);
+					auto nr = firp->addNewRelocation(scoop, scoop_off, "data_to_insn_ptr", ibt);
 					(void)nr;
 
 					// remove rodata reference for hell nodes.
-					targets[table_entry]=newprov;
+					targets[table_entry] = newprov;
 					switch_targs.insert(ibt);
 
-                                         if(ibt->getIndirectBranchTargetAddress()==nullptr)
-                                         {
-						 auto newaddr=firp->addNewAddress(ibt->getAddress()->getFileID(),0);
-                                                 ibt->setIndirectBranchTargetAddress(newaddr);
-                                         }
-				         else
-                                         {
-                                                 ibt->getIndirectBranchTargetAddress()->setVirtualOffset(0);
-                                         }
+					if (ibt->getIndirectBranchTargetAddress() == nullptr)
+					{
+						auto newaddr = firp->addNewAddress(ibt->getAddress()->getFileID(), 0);
+						ibt->setIndirectBranchTargetAddress(newaddr);
+					}
+					else
+					{
+						ibt->getIndirectBranchTargetAddress()->setVirtualOffset(0);
+					}
 				}
 			}
 		}
-		scoop_off+=ptrsize;
-		
-		
+		scoop_off += ptrsize;
 	}
 
 	type3_unpins+=switch_targs.size();
@@ -4060,43 +4084,193 @@ void unpin_type3_switchtable(FileIR_t* firp,Instruction_t* insn,DataScoop_t* sco
 
 }
 
+/*
+ * unpin_type4_switchtable -- Unpin table entries for x86-64 pic-type switchs.
+ *
+ * 	firp -- the file IR to modify
+ * 	insn -- the instruction that is the switch dispatch, used for obtaining jump table entries
+ * 	scoop -- the scoop that holds the jump table
+ * 	do_unpin_opt -- how many unpins are allowed, so we can abort unpin early for debugging.
+ */
+void unpin_type4_switchtable
+	(
+		FileIR_t* firp,
+		Instruction_t* insn,
+		DataScoop_t* scoop, 
+		int64_t do_unpin_opt
+	)
+{
+	assert(firp && insn && scoop);
+
+	// switch check
+	// could be dangerous if the IBT is found in rodata section,
+	// but then also used for a switch.  this is unlikely.
+	const auto prov=ibt_provenance_t::ibtp_switchtable_type4 | // found as switch by FII
+		ibt_provenance_t::ibtp_stars_switch              | // found as stars switch
+		ibt_provenance_t::ibtp_ret                       ; // or a ret, which won't stop us from unpinning.
+
+
+	// extract some fields we will need
+	const auto entry_size  = jmptables[insn].GetTableEntrySize();
+	const auto table_size  = jmptables[insn].GetTableSize();
+	const auto multiplier  = jmptables[insn].GetTableMultiplier();
+	const auto table_start = jmptables[insn].GetTableStart();
+
+	if(getenv("UNPIN_VERBOSE"))
+	{
+		cout << "Unpinning type4 switch, dispatch is " 
+		     << hex << insn->getAddress()->getVirtualOffset() << "@" << insn->getDisassembly()  << '\n'
+			 << "\twith tabSz=" << table_size  << '\n'
+			 << "\twith tableStart address=" << table_start << '\n'
+			 << "\twith entrySz=" << entry_size << '\n'
+			 << "\twith mult=" << multiplier << '\n'; 
+	}
+
+	// make assumption for now so we can use standard relocation types.
+	if( entry_size != 4 || multiplier != 1 )
+		return;
+
+
+	// scoop contents
+	const auto scoop_contents=scoop->getContents().c_str();
+
+	// inspect each table entry
+	auto allow_new_unpins = true;
+	for(auto i=0u; i < table_size; i++)
+	{
+		// offset of the table entry from start of scoop
+		const auto scoop_off = jmptables[insn].GetTableStart() - scoop->getStart()->getVirtualOffset() + (entry_size * i);
+
+		// grab the value out of the scoop
+		assert(entry_size == 4);
+		const auto table_entry = static_cast<VirtualOffset_t>(*reinterpret_cast<const int32_t *>(&scoop_contents[scoop_off]));
+
+		// a table entry is:
+		// (target - table_start)/multiplier
+		// multiplier is typically 1 or -1 and applied by the switch dispach code
+		assert(multiplier == 1);
+
+		// calculate the target address from the table entry.
+		const auto ibt_address = table_entry + table_start;
+
+		if(getenv("UNPIN_VERBOSE"))
+			cout << "Trying unpin for address " << hex << ibt_address << '\n';
+
+
+		// verify we have an instruction.
+		auto ibt = lookupInstruction(ibt_address);
+		if (!ibt)
+		{
+			if(getenv("UNPIN_VERBOSE"))
+				cout << "No instruciton for address " << hex << ibt_address << '\n';
+			type4_missed_unpin_reasons["no-instruction"]++;
+			continue;
+		}
+
+		// which isn't otherwise addressed.
+		const auto pinTypes = targets[ibt_address];
+		if (!pinTypes.areOnlyTheseSet(prov))
+		{
+			if(getenv("UNPIN_VERBOSE"))
+				cout << "Instruction has unknown pin types (" << pinTypes <<  ") for address " 
+				     << hex << ibt_address << '\n';
+			type4_missed_unpin_reasons["other-refs-"+pinTypes.toString()]++;
+			continue;
+		}
+
+		total_unpins++;
+		if (do_unpin_opt != -1 && total_unpins > do_unpin_opt)
+		{
+			allow_new_unpins = false;
+
+			// don't abort early (e.g. return) as we need to fully unpin the IBT once we've started.
+			// just disallow new unpins.
+		}
+
+		// if we are out of unpins, and we haven't unpinned this instruction yet, skip unpinning it.
+		if (!allow_new_unpins && already_unpinned.find(ibt) == already_unpinned.end())
+		{
+			if (getenv("UNPIN_VERBOSE"))
+				cout << "Eliding switch unpin for entry[" << dec << i << "] ibt=" << hex << ibt_address << ", scoop_off=" << scoop_off << endl;
+
+			type4_missed_unpin_reasons["unpins-disallowed"]++;
+			continue;
+		}
+
+		if (getenv("UNPIN_VERBOSE"))
+			cout << "Unpinning switch entry [" << hex << i << "] for ibt=" << hex << ibt_address << ", scoop_off=" << scoop_off << endl;
+		already_unpinned.insert(ibt);
+
+		// add reloc to IR.
+		firp->addNewRelocation(scoop, scoop_off, "switch_type4", ibt, -ibt_address);
+
+		// remove rodata reference for hell nodes.
+		type4_unpins++;
+
+		assert (ibt->getIndirectBranchTargetAddress() != nullptr);
+		ibt->getIndirectBranchTargetAddress()->setVirtualOffset(0);
+	}
+
+	type4_pins+=jmptables[insn].size();
+
+}
+
 void unpin_switches(FileIR_t *firp, int do_unpin_opt)
 {
-	// re-init stats for this file.
-	type3_unpins=0;
-	type3_pins=0;
-
 	// for each instruction 
-        for(auto insn : firp->getInstructions()) 
-        {
-		// check for an insn.
-		assert(insn);
-
-		// if we didn't find a jmptable for this insn, try again.
-		if(jmptables.find(insn) == jmptables.end())
-			continue;
-
-		// sanity check we have a good switch 
-		if(insn->getIBTargets()==nullptr) continue;
-
-		// sanity check we have a good switch 
-		if(insn->getIBTargets()->getAnalysisStatus()!=iasAnalysisComplete) continue;
-
-		// find the scoop, try next if we fail.
-		auto scoop=find_scoop(firp,jmptables[insn].GetTableStart());
-		if(!scoop) continue;
-
-		if(jmptables[insn].GetSwitchType().areOnlyTheseSet(
-					ibt_provenance_t::ibtp_switchtable_type3 | 
-					ibt_provenance_t::ibtp_rodata | 
-					ibt_provenance_t::ibtp_stars_switch
-					))
+        for(auto insn : firp->getInstructions())
 		{
-			unpin_type3_switchtable(firp,insn,scoop, do_unpin_opt);
+			// check for an insn.
+			assert(insn);
+
+			// if we didn't find a jmptable for this insn, try again.
+			if (jmptables.find(insn) == jmptables.end())
+				continue;
+
+			// sanity check we have a good switch
+			if (insn->getIBTargets() == nullptr)
+				continue;
+
+			// sanity check we have a good switch
+			if (insn->getIBTargets()->getAnalysisStatus() != iasAnalysisComplete)
+				continue;
+
+			// find the scoop, try next if we fail.
+			auto scoop = find_scoop(firp, jmptables[insn].GetTableStart());
+			if (!scoop)
+				continue;
+
+			/* handle arm32 unpins */
+			if (jmptables[insn].GetSwitchType().areOnlyTheseSet(
+					ibt_provenance_t::ibtp_switchtable_type3 |
+					ibt_provenance_t::ibtp_rodata |
+					ibt_provenance_t::ibtp_stars_switch))
+			{
+				unpin_type3_switchtable(firp, insn, scoop, do_unpin_opt);
+			}
+			/* handle x86-64 pic64 unpins */
+			else if (jmptables[insn].GetSwitchType().areOnlyTheseSet(
+						 ibt_provenance_t::ibtp_switchtable_type4 |
+						 ibt_provenance_t::ibtp_rodata |
+						 ibt_provenance_t::ibtp_stars_switch))
+			{
+				unpin_type4_switchtable(firp, insn, scoop, do_unpin_opt);
+			}
 		}
-        }
-	cout<<"# ATTRIBUTE fill_in_indtargs::switch_type3_pins="<<dec<<type3_pins<<endl;
-	cout<<"# ATTRIBUTE fill_in_indtargs::switch_type3_unpins="<<dec<<type3_unpins<<endl;
+	cout << "# ATTRIBUTE fill_in_indtargs::switch_type3_pins="   << dec << type3_pins   << '\n';
+	cout << "# ATTRIBUTE fill_in_indtargs::switch_type3_unpins=" << dec << type3_unpins << '\n';
+	cout << "# ATTRIBUTE fill_in_indtargs::switch_type4_pins="   << dec << type4_pins   << '\n';
+	cout << "# ATTRIBUTE fill_in_indtargs::switch_type4_unpins=" << dec << type4_unpins << '\n';
+	for(auto type4_missed_unpin_reason : type4_missed_unpin_reasons)
+	{
+		const auto reason = type4_missed_unpin_reason.first;
+		const auto count  = type4_missed_unpin_reason.second;
+		cout << "# ATTRIBUTE fill_in_indtargs::type4_missed_unpin_" << reason << "=" << dec << count << '\n';
+	}
+	if(type4_missed_unpin_reasons.size() == 0 )
+	{
+		cout << "# ATTRIBUTE type4_missed_unpin=0\n";
+	}
 }
 
 void print_unpins(FileIR_t *firp)
