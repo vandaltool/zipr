@@ -1705,10 +1705,8 @@ I7: 08069391 <_gedit_app_ready+0x91> ret
 	}
 	else
 	{
-		//DISASM dcmp;
-		//Disassemble(Icmp,dcmp);
-		auto dcmp=DecodedInstruction_t::factory(Icmp);	
-		table_size = dcmp->getImmediate(); //Instruction.Immediat;
+		auto dcmp=DecodedInstruction_t::factory(Icmp);
+		table_size = dcmp->getImmediate();
 		if(table_size<=0)
 			table_size=std::numeric_limits<int>::max();
 	}
@@ -2943,16 +2941,6 @@ void addSwitchTableScoop(
 
 			// Finally, mark table_ref as referencing the scoop, and add a relocation so we can later repin the scoop
 			firp->addNewRelocation(table_ref, 0, "absoluteptr_to_scoop",  switch_tab, -table_base_addr_without_disp);
-			#if 0
-			const auto disp_offset = uint32_t(d6->getMemoryDisplacementOffset(the_arg->get(),table_ref));
-			const auto disp_size   = uint32_t((*the_arg)->getMemoryDisplacementEncodingSize());
-			const auto file_base   = firp->getArchitecture()->getFileBase();
-			const auto new_disp    = uint32_t(table_base_addr_without_disp-file_base);
-			const auto new_bits    = table_ref->getDataBits().replace(disp_offset, disp_size, reinterpret_cast<const char*>(&new_disp), disp_size);
-			cout << "Updating "  table_ref->getDisassembly() " for switch table unpin to ";
-			table_ref->setDataBits(new_bits);
-			cout << table_ref->getDisassembly() << "\n";
-			#endif
 		}
 		else if(mt==admtArm32 || mt==admtAarch64)
 		{
@@ -3027,7 +3015,7 @@ void check_for_nonPIC_switch_table_pattern2(FileIR_t* firp, Instruction_t* insn,
 	// make sure not off by one
 	auto d1p=DecodedInstruction_t::factory(I1);
 	auto &d1=*d1p;
-	VirtualOffset_t table_size = d1.getImmediate()/*d1.Instruction.Immediat*/;
+	VirtualOffset_t table_size = d1.getImmediate();
 
 	if (table_size <= 0) return;
 
@@ -3103,15 +3091,15 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, const De
 	if (!IJ) return;
 
 	// check if IJ is a jump
-	if(strstr(p_disasm.getMnemonic().c_str()/*disasm.Instruction.Mnemonic*/, "jmp")==nullptr)
+	if(strstr(p_disasm.getMnemonic().c_str(), "jmp")==nullptr)
 		return;
 
 	// return if it's a jump to a constant address, these are common
-	if(p_disasm.getOperand(0)->isConstant() /*disasm.Argument1.ArgType&CONSTANT_TYPE*/)
+	if(p_disasm.getOperand(0)->isConstant() )
 		return;
 
 	// return if it's a jump to a memory address
-	if(p_disasm.getOperand(0)->isMemory() /*disasm.Argument1.ArgType&MEMORY_TYPE*/)
+	if(p_disasm.getOperand(0)->isMemory() )
 		return;
 
 	// has to be a jump to a register now
@@ -3121,8 +3109,6 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, const De
 		return;
 
 	// extract start of jmp table
-	// DISASM d4;
-	// Disassemble(I4,d4);
 	auto d4p=DecodedInstruction_t::factory(I4);
 	auto &d4=*d4p;
 
@@ -3147,7 +3133,7 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, const De
 	// make sure not off by one
 	auto d1p=DecodedInstruction_t::factory(I1);
 	auto &d1=*d1p;
-	auto table_size = d1.getImmediate(); // d1.Instruction.Immediat;
+	auto table_size = d1.getImmediate(); 
 	if (table_size <= 0) return;
 
 	if(getenv("IB_VERBOSE"))
@@ -3213,20 +3199,6 @@ void check_for_nonPIC_switch_table(FileIR_t* firp, Instruction_t* insn, const De
 	jmptables[IJ].addTargets(ibtargets);
 	jmptables[IJ].setAnalysisStatus(iasAnalysisComplete);
 }
-
-#if 0
-void calc_preds(FileIR_t* firp)
-{
-        preds.clear();
-        for(auto insn : firp->getInstructions())
-        {
-                if(insn->getTarget())
-                        preds[insn->getTarget()].insert(insn);
-                if(insn->getFallthrough())
-                        preds[insn->getFallthrough()].insert(insn);
-        }
-}
-#endif
 
 void handle_takes_address_annot(FileIR_t* firp,Instruction_t* insn, MEDS_TakesAddressAnnotation* p_takes_address_annotation)
 {
