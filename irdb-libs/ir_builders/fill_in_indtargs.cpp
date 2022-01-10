@@ -336,6 +336,7 @@ public:
 	 */
 	void init_direct_addresses() 
 	{
+		const auto isVerbose = (getenv("IB_VERBOSE") != nullptr);
 		for(auto insn: m_firp->getInstructions())
 		{
 			const auto dis = DecodedInstruction_t::factory(insn);
@@ -343,10 +344,32 @@ public:
 			{
 					if(operand->isMemory() && operand->isPcrel())
 					{
+						const auto displ = operand->getMemoryDisplacement();
 						const auto generated_address =
-							operand->getMemoryDisplacement() +
+							displ + 
 							insn->getAddress()->getVirtualOffset() +
 							insn->getDataBits().length();
+
+						if(llabs(displ) < 16)
+						{
+							if(isVerbose) 
+							{
+							cout << "Skipping direct address (" << hex << generated_address 
+						 	     << ") because small constant in " << displ
+							     << ":" << insn->getDisassembly()
+							     << '\n';
+							}
+							continue;
+
+						}
+						if(isVerbose) 
+						{
+							cout << "Found direct address " << hex << generated_address 
+						 	     << " in " << insn->getAddress()->getVirtualOffset() 
+							     << ":" << insn->getDisassembly()
+							     << '\n';
+						}
+
 						direct_addresses.insert(generated_address);
 					}
 			}
@@ -2616,7 +2639,8 @@ V2:
 			const auto next_direct_address = *next_direct_address_it;
 			const auto dont_overflow_size = static_cast<uint32_t>((next_direct_address - table_start_address) / table_entry_size)-1;
 			table_size = min(table_size, dont_overflow_size);
-			cout << "pic64: clamped switch table via direct_address match" << '\n';
+			cout << "pic64: clamped switch table via direct_address match of address=" 
+			     << hex << next_direct_address << '\n';
 		}
 		cout << "pic64: Setting table size = " << dec << table_size << '\n';
 
