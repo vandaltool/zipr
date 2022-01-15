@@ -115,7 +115,7 @@ void ZiprMemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 		 * one byte smaller!
 		 */
 		Range_t nnr(addr, r.getEnd());
-		if (m_verbose)
+		if (*m_verbose)
 		{
 			printf("Expanded range: ");
 			printf("from: (%p - %p) ", (void*)r.getStart(), (void*)r.getEnd());
@@ -129,7 +129,7 @@ void ZiprMemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 		if(IsValidRange(itm1))
 		{
 			Range_t r2=*itm1;
-			if (m_verbose)
+			if (*m_verbose)
 			{
 				printf("Expanded range: ");
 				printf("from: (%p - %p) ", (void*)nr.getStart(), (void*)nr.getEnd());
@@ -157,7 +157,7 @@ void ZiprMemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 		 * bigger
 		 */
 		Range_t nnr(r.getStart(), addr);
-		if (m_verbose)
+		if (*m_verbose)
 		{
 			printf("Expanded range: ");
 			printf("from: (%p - %p) ", (void*)r.getStart(), (void*)r.getEnd());

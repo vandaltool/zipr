@@ -210,7 +210,40 @@ void Unpin_t::DoUpdateForScoops()
 
 		for(auto reloc : scoop->getRelocations())
 		{
-			if(reloc->getType()==string("data_to_insn_ptr"))
+			if(reloc->getType()==string("switch_type4"))
+			{
+				const auto reloff=reloc->getOffset();
+				auto insn=dynamic_cast<Instruction_t*>(reloc->getWRT());
+				// getWRT returns an BaseObj, but this reloc type expects an instruction
+				// safe cast and check.
+				assert(insn);
+				auto &locMap=*(zo->getLocationMap());
+				const auto newLoc=locMap[insn];
+
+				cout << "Unpin::Unpinned switch_type4 insn (" << hex << insn->getBaseID() << ":"
+				     << insn->getDisassembly() << ") with offset=" << hex << reloc->getOffset()
+				     << ".  Insn moved to " << hex << newLoc << endl;
+
+				/* don't unpin if we found one */
+				if(should_cfi_pin(insn))
+				{
+					cout<<"Unpin::Skipping update because CFI is requesting a nonce."<<endl;
+					continue;
+				}
+
+				// load the scoop contents
+				auto oldVal=0u;
+				memcpy(&oldVal, &(scoop_contents.c_str()[reloff]), 4);
+				const auto newValue=int32_t(oldVal + reloc->getAddend() + newLoc);
+
+				cout << "Adjusting  to " << newValue 
+					 << "(0x" << oldVal <<  " + 0x" 
+					 << reloc->getAddend() << " + " << newLoc << ")\n";
+				for(auto i=0u; i < 4u; i++)
+					scoop_contents[reloff+i]=reinterpret_cast<const char*>(&newValue)[i];
+
+			}
+			else if(reloc->getType()==string("data_to_insn_ptr"))
 			{
 				VirtualOffset_t reloff=reloc->getOffset();
 				Instruction_t* insn=dynamic_cast<Instruction_t*>(reloc->getWRT());
