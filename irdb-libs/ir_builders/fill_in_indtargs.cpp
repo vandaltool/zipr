@@ -2583,7 +2583,7 @@ V2:
 		// Thus, this default is sane for most cases, and is only applied when we absolutely
 		// cannot find a bounds check on the table size.
 		//
-		auto table_size = 255U;
+		auto table_size = 25U;
 		auto found_table_size = false;
 		auto I1 = static_cast<Instruction_t *>(nullptr);
 		if (backup_until(cmp_str.c_str(), I1, table_load_instruction, bound_stopif))
