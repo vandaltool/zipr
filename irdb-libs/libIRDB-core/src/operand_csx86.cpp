@@ -234,7 +234,7 @@ string DecodedOperandCapstoneX86_t::getString() const
 		case X86_OP_REG: 
 			return string(cs_reg_name(handle, op.reg));
 		case X86_OP_IMM: 
-			return to_string(op.imm);
+			return "0x"+ IRDB_SDK::to_hex_string(op.imm);
 		case X86_OP_MEM: 
 		{
 //			if (op.mem.segment != X86_REG_INVALID)
@@ -242,7 +242,7 @@ string DecodedOperandCapstoneX86_t::getString() const
 			if (op.mem.base == X86_REG_RIP)
 			{
 				/* convert pc+disp into disp+insn_size. */
-				return to_string(op.mem.disp+the_insn->size);
+				return "0x"+ IRDB_SDK::to_hex_string(op.mem.disp+the_insn->size);
 			}
 			else
 			{
@@ -250,6 +250,10 @@ string DecodedOperandCapstoneX86_t::getString() const
 				const auto doPlus = [&]() -> string 
 				{
 					return ret_val == "" ? "" : " + ";
+				};
+				const auto doMul = [&]() -> string 
+				{
+					return ret_val == "" ? "" : " * ";
 				};
 
 				if (op.mem.base != X86_REG_INVALID)
@@ -259,7 +263,7 @@ string DecodedOperandCapstoneX86_t::getString() const
 					ret_val+=doPlus() +cs_reg_name(handle, op.mem.index);
 
 				if (op.mem.scale != 1)
-					ret_val+=doPlus() + to_string(op.mem.scale);
+					ret_val+=doMul() + to_string(op.mem.scale);
 
 				if (op.mem.disp != 0)
 					ret_val+=doPlus() + " 0x"+ IRDB_SDK::to_hex_string(op.mem.disp);
