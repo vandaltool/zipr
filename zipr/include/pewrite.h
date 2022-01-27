@@ -179,7 +179,7 @@ class PeWriter : ExeWriter
 		{
 		}
 		virtual ~PeWriter() {}
-		void Write(const std::string &out_file, const std::string &infile);
+		void Write(const std::string &out_file, const std::string &infile, const Zipr_SDK::InstructionLocationMap_t &im);
 		void InitHeaders();
 		void GenerateDataDirectory();
 		void CalculateHeaderSizes();

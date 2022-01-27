@@ -636,7 +636,7 @@ static inline uintptr_t page_round_up(uintptr_t x)
         return  ( (((uintptr_t)(x)) + PAGE_SIZE-1)  & (~(PAGE_SIZE-1)) );
 }
 
-void ElfWriter::Write(const string &out_file, const string &infile)
+void ElfWriter::Write(const string &out_file, const string &infile, const Zipr_SDK::InstructionLocationMap_t &im)
 {
 	auto fin=fopen(infile.c_str(), "r");
 	auto fout=fopen(out_file.c_str(), "w");
@@ -656,7 +656,7 @@ void ElfWriter::Write(const string &out_file, const string &infile)
 	WriteElf(fout);
 
 	if( m_write_sections ) 
-		AddSections(fout);
+		AddSections(fout, im);
 
 }
 
@@ -1459,7 +1459,7 @@ unsigned int ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym
 }
 
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
-void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::AddSections(FILE* fout)
+void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_Rel, T_Elf_Rela, T_Elf_Dyn>::AddSections(FILE* fout, const Zipr_SDK::InstructionLocationMap_t &im)
 {
 	fseek(fout,0,SEEK_END);
 	long cur_file_pos=ftell(fout);
@@ -1476,7 +1476,12 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 		strtab.AddString(scoop->getName());
 	};
 
+	for (auto f : m_firp->getFunctions()) {
+		strtab.AddString(f->getName());
+	}
 
+	string reg_symtab = ".symtab";
+	strtab.AddString(reg_symtab);
 	string zipr_symtab=".scoop_symtab";
 	strtab.AddString(zipr_symtab);
 	string null_symtab="nullptr";
@@ -1596,18 +1601,93 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 		scoop_it++;
 	}
 
-	T_Elf_Shdr symtab_shdr;
-	symtab_shdr. sh_name =strtab.location(zipr_symtab);
-	symtab_shdr. sh_type = SHT_STRTAB;	
-	symtab_shdr. sh_flags = 0;
-	symtab_shdr. sh_addr = 0;
-	symtab_shdr. sh_offset = cur_file_pos;
-	symtab_shdr. sh_size = strtab.size();
-	symtab_shdr. sh_link = SHN_UNDEF;	
-	symtab_shdr. sh_info = 0;
-	symtab_shdr. sh_addralign=0;
-	symtab_shdr. sh_entsize =0;
-	shdrs.push_back(symtab_shdr);
+	{
+		cur_file_pos = ftell(fout);
+
+		std::vector<T_Elf_Sym> symbols;
+		for (auto f : m_firp->getFunctions()) {
+			std::vector<std::pair<RangeAddress_t, int>> ranges;
+			for (auto instruction : f->getInstructions()) {
+				auto it = im.find(instruction);
+				if (it == im.end()) {
+					continue;
+				}
+				const auto decoded = DecodedInstruction_t::factory(instruction);
+				const auto addr = it->second;
+				ranges.push_back({addr, -1});
+				ranges.push_back({addr + decoded->length(), 1});
+			}
+			std::sort(ranges.begin(), ranges.end());
+			if (ranges.size() == 0) {
+				continue;
+			}
+
+			int acc = 0;
+			RangeAddress_t rangeStart;
+			for (auto pd : ranges) {
+				auto pos = pd.first;
+				if (acc == 0) {
+					rangeStart = pos;
+				}
+				acc += pd.second;
+				if (acc == 0) {
+
+					// find fitting scoop
+					int sectionId = SHN_UNDEF;
+					int counter = 0;
+					for (const auto scoop : m_firp->getDataScoops()) {
+						if (rangeStart >= scoop->getStart()->getVirtualOffset() && 
+								pos <= scoop->getEnd()->getVirtualOffset()) {
+							sectionId = counter + 1;
+							break;
+						}
+						counter++;
+					}
+
+					// create symbol description
+					T_Elf_Sym sym;
+					sym.st_name = strtab.location(f->getName());
+					sym.st_info = ELF64_ST_INFO(STB_LOCAL, STT_FUNC);
+					sym.st_other = STV_DEFAULT;
+					sym.st_shndx =  sectionId;
+					sym.st_value = rangeStart;
+					sym.st_size = pos - rangeStart;
+					symbols.push_back(sym);
+				}
+			}
+		}
+
+		if (symbols.size() > 0) {
+			T_Elf_Shdr symtab_shdr;
+			symtab_shdr. sh_name =strtab.location(reg_symtab);
+			symtab_shdr. sh_type = SHT_SYMTAB;
+			symtab_shdr. sh_flags = 0;
+			symtab_shdr. sh_addr = 0;
+			symtab_shdr. sh_offset = cur_file_pos;
+			symtab_shdr. sh_size = symbols.size() * sizeof(T_Elf_Sym);
+			symtab_shdr. sh_link = shdrs.size() + 1;
+			symtab_shdr. sh_info = symbols.size();
+			symtab_shdr. sh_addralign=0;
+			symtab_shdr. sh_entsize = sizeof(T_Elf_Sym);
+			shdrs.push_back(symtab_shdr);
+
+			fwrite(symbols.data(), symbols.size(), sizeof(T_Elf_Sym), fout);
+			cur_file_pos = ftell(fout);
+		}
+	}
+
+	T_Elf_Shdr strtab_shdr;
+	strtab_shdr. sh_name =strtab.location(zipr_symtab);
+	strtab_shdr. sh_type = SHT_STRTAB;
+	strtab_shdr. sh_flags = 0;
+	strtab_shdr. sh_addr = 0;
+	strtab_shdr. sh_offset = cur_file_pos;
+	strtab_shdr. sh_size = strtab.size();
+	strtab_shdr. sh_link = SHN_UNDEF;
+	strtab_shdr. sh_info = 0;
+	strtab_shdr. sh_addralign=0;
+	strtab_shdr. sh_entsize =0;
+	shdrs.push_back(strtab_shdr);
 
 	cout<<"Writing strtab at filepos="<<hex<<cur_file_pos<<endl;
 	strtab.Write(fout);

@@ -1889,7 +1889,7 @@ void ZiprImpl_t::OutputBinaryFile(const string &name)
 		is_elf && bit_width == 32 ? (ExeWriter*)new ElfWriter32(exeiop, m_firp, *m_add_sections, *m_bss_opts) :
 		throw invalid_argument("Unknown file type/machine width combo")
 		);
-	ew->Write(output_filename, "a.ncexe");
+	ew->Write(output_filename, "a.ncexe", final_insn_locations);
 	ew.reset(nullptr); // explicitly free ew as we're done with it
 
 	// change permissions on output file
