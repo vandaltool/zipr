@@ -504,9 +504,11 @@ public:
 			const auto plt_skip = 16;
 			const auto plt_entry_size = size;
 
+			dynsymEntryIndex = 0;
 			for (auto i = pltSecStartAddr; i < pltSecEndAddr; i += plt_skip)
 			{
 				addRange(i, plt_entry_size);
+				addName(i, dynsymEntryIndex++);
 			}
 		};
 		const auto pltSecRange_it = find_if(ALLOF(sccs), [&](const RangeSet_t &s) {
