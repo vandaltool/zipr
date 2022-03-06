@@ -35,8 +35,16 @@ BasicBlockVector_t IRDB_SDK::getDFSOrder(ControlFlowGraph_t* cfg)
 	for(auto& node : cfg->getBlocks())
 		visited[node]=false;
 
+	// make sure the function entry goes first
 	doDFS(ret,visited,cfg->getEntry());
 
+	for (auto it = visited.begin();it!=visited.end();it++) {
+		if (!it->second && it->first->getPredecessors().size() == 0) {
+			doDFS(ret,visited,it->first);
+		}
+	}
+
+	// everything should be visited now, but just to be sure
 	// for each node in the map
 	for(auto &p : visited)
 		// if it's not visited
