@@ -384,12 +384,19 @@ public:
 			const auto plt_entry_size = 16;
 			// Need to determine whether there is an "enhanced plt" in use. An enhanced plt
 			// uses bounded prefixes on the jump instructions to make sure that the plt
-			// entries are not poisoned. Use this array of bytes (which translates to an endbr64/32
-			// instruction) in order to make the determination.
-			uint8_t enhanced_plt_signature64[] = {0xf3, 0x0f, 0x1e, 0xfa};
-			uint8_t enhanced_plt_signature32[] = {0xf3, 0x0f, 0x1e, 0xfb};
-			const auto use_enhanced_plt64 = ! memcmp((const void *)(plt_sec_data_ptr + 16), (const void *)enhanced_plt_signature64, sizeof(enhanced_plt_signature64));
-			const auto use_enhanced_plt32 = ! memcmp((const void *)(plt_sec_data_ptr + 16), (const void *)enhanced_plt_signature32, sizeof(enhanced_plt_signature32));
+			// entries are not poisoned. These bytes arrays make the determination.
+
+			// x86-64:  check the plt header for a `bnd jmp` with the right operands.
+			uint8_t enhanced_plt_signature64[] = {0xf2,	0xff,	0x25};
+
+			// x86-32: check for a nop vs. 0-bytes in padding area.
+			// FIXME:  check first plt entry or first plt.got entry 
+			// for more reliable check.  this is gcc-specific hackery
+			// caution: make sure .plt and .plt.got has entries before checking them.
+			uint8_t enhanced_plt_signature32[] = {0x0f,	0x1f, 0x40};
+			assert(pltSec->get_size() >= 16);
+			const auto use_enhanced_plt64 = ! memcmp((const void *)(plt_sec_data_ptr+6), (const void *)enhanced_plt_signature64, sizeof(enhanced_plt_signature64));
+			const auto use_enhanced_plt32 = ! memcmp((const void *)(plt_sec_data_ptr+13), (const void *)enhanced_plt_signature32, sizeof(enhanced_plt_signature32));
 			const auto plt_header_size = 
 				use_enhanced_plt64 ? 13 : 
 				use_enhanced_plt32 ? 12 : 
