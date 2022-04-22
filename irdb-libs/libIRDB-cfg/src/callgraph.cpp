@@ -213,7 +213,7 @@ void Callgraph_t::dump(std::ostream& fout) const
 	fout<<"Dumping callgraph ..."<<endl;
 
 	fout<<"Mapping one way ..."<<endl;
-	for(const auto p : callees) // it=callees.begin(); callees.end()!=it; ++it)
+	for(const auto &p : callees) // it=callees.begin(); callees.end()!=it; ++it)
 	{
 		// CallGraphNode_t* node = it->first;
 		// CallGraphNodeSet_t &node_callers=it->second;
@@ -227,7 +227,7 @@ void Callgraph_t::dump(std::ostream& fout) const
 			fout<<GetNodeName(the_callee)<<", ";
 		}
 		fout<<endl;
-		for(const auto the_call_site : GetCallSites(node)) // auto it2=GetCallSites(node).begin(); GetCallSites(node).end() != it2; ++it2)
+		for(const auto &the_call_site : GetCallSites(node)) // auto it2=GetCallSites(node).begin(); GetCallSites(node).end() != it2; ++it2)
 		{
 			// CallSite_t the_call_site=*it2;
 			fout<<"\t"<<GetCallsiteDisassembly(the_call_site)<<endl;
@@ -235,7 +235,7 @@ void Callgraph_t::dump(std::ostream& fout) const
 	}
 
 	fout<<"Mapping the other way ..."<<endl;
-	for(const auto p : callers) // auto it=callers.begin(); callers.end()!=it; ++it)
+	for(const auto &p : callers) // auto it=callers.begin(); callers.end()!=it; ++it)
 	{
 		// CallGraphNode_t* n=it->first;
 		const auto  n           =p.first;
@@ -253,14 +253,14 @@ void Callgraph_t::dump(std::ostream& fout) const
 
 
 	fout<<"Printing call sites..."<<endl;
-	for(const auto p : call_sites) // auto it=call_sites.begin(); call_sites.end()!=it; ++it)
+	for(const auto &p : call_sites) // auto it=call_sites.begin(); call_sites.end()!=it; ++it)
 	{
 		const auto from_node=p.first;
 		const auto &call_sites_for_func=p.second;
 
 		fout<<"Call Sites for "<<GetNodeName(from_node)<<": ";
 
-		for(const auto the_call_site : call_sites_for_func) // auto it2=call_sites_for_func.begin(); call_sites_for_func.end() != it2; ++it2)
+		for(const auto &the_call_site : call_sites_for_func) // auto it2=call_sites_for_func.begin(); call_sites_for_func.end() != it2; ++it2)
 		{
 			// auto the_call_site=*it2;
 			fout<<GetCallsiteDisassembly(the_call_site)<<", ";

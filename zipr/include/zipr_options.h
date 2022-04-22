@@ -301,16 +301,16 @@ namespace zipr
 			}
 	};
 
-	class ZiprDoubleOption_t : virtual public Zipr_SDK::ZiprDoubleOption_t, public ZiprTypedOption_t<double>
+	class ZiprDoubleOption_t : virtual public Zipr_SDK::ZiprDoubleOption_t, public zipr::ZiprTypedOption_t<double>
 	{
 		public:
 			ZiprDoubleOption_t(const string& key, const string& value = "")
-				: ZiprTypedOption_t<double>(zotZiprDoubleOptionType, key, value) 
+				: zipr::ZiprTypedOption_t<double>(zotZiprDoubleOptionType, key, value) 
 				{
 				m_value = convertToTyped(value);
 			}
 			ZiprDoubleOption_t(const string& key, double value)
-				: ZiprTypedOption_t<double>(zotZiprDoubleOptionType, key, "") 
+				: zipr::ZiprTypedOption_t<double>(zotZiprDoubleOptionType, key, "") 
 			{
 				m_value = value;
 				m_untyped_value = convertToUntyped(value);

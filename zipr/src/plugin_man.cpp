@@ -213,7 +213,7 @@ void ZiprPluginManager_t::open_plugins
 {
 	const auto ziprPluginDirs=splitVar(getenv("ZIPR_PLUGIN_PATH"));
 	auto loadedBasenames = set<string>();
-	for(const auto dir : ziprPluginDirs) 
+	for(const auto &dir : ziprPluginDirs) 
 	{
 		/* skip empty directories in list. */
 		if(dir == "" )

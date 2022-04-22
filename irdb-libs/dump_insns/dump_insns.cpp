@@ -79,7 +79,7 @@ int main(int argc, char **argv)
 
 				cout<<" "<<d.getDisassembly()<<endl;
 				int op_count=0;
-				for(const auto p_op : operands)
+				for(const auto &p_op : operands)
 				{
 					const auto &op=*p_op;
 					auto readWriteString= string();

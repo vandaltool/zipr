@@ -124,7 +124,7 @@ bool backup_until(const string &insn_type_regex_str,
 
 		if(stop_if_set!="")
 		{
-			for(const auto operand : disasm->getOperands())
+			for(const auto &operand : disasm->getOperands())
 			{
 				if(operand->isWritten() && regexec(&stop_expression, operand->getString().c_str(), 0, nullptr, 0) == 0)
 					return false;
@@ -138,7 +138,7 @@ bool backup_until(const string &insn_type_regex_str,
 		const auto myprev=prev;
 		// can't just use prev because recursive call will update it.
 		const auto &mypreds=preds[myprev];
-		for(const auto pred : mypreds)
+		for(const auto &pred : mypreds)
 		{
 			prev=pred;// mark that we are here, in case we return true here.
 			const auto disasm=DecodedInstruction_t::factory(pred);
@@ -147,7 +147,7 @@ bool backup_until(const string &insn_type_regex_str,
 				return true;
 			if(stop_if_set!="")
 			{
-				for(const auto operand : disasm->getOperands())
+				for(const auto &operand : disasm->getOperands())
 				{
 					if(operand->isWritten() && regexec(&stop_expression, operand->getString().c_str(), 0, nullptr, 0) == 0)
 						return false;

@@ -44,11 +44,13 @@ int ElfDep_Tester_t::execute()
 	tmp=  insertAssemblyAfter(tmp," push rcx ") ;
 	tmp=  insertAssemblyAfter(tmp," push r8 ") ;
 	tmp=  insertAssemblyAfter(tmp," push r9 ") ;
+	tmp=  insertAssemblyAfter(tmp," push r9 ") ;
 	tmp=  insertAssemblyAfter(tmp," call 0 ", edpcb) ;
 	tmp=  insertAssemblyAfter(tmp," L1: mov rcx, [rel L1]");
 	auto got_insn=tmp;
 	tmp=  insertAssemblyAfter(tmp," inc dword [rcx]");
 	tmp=  insertAssemblyAfter(tmp," call 0", edpcb);
+	tmp=  insertAssemblyAfter(tmp," pop r9");
 	tmp=  insertAssemblyAfter(tmp," pop r9");
 	tmp=  insertAssemblyAfter(tmp," pop r8");
 	tmp=  insertAssemblyAfter(tmp," pop rcx");

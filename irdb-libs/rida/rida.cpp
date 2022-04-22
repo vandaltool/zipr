@@ -613,7 +613,7 @@ public:
 
 ostream &operator<<(ostream &os, const CreateFunctions_t::RangeSet_t &rs)
 {
-	for (const auto r : rs)
+	for (const auto &r : rs)
 	{
 		os << "(" << r.first << "-" << r.second << "), ";
 	}

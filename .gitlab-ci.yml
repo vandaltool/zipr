@@ -54,6 +54,11 @@ do-nightly-clean-ubuntu20:
   tags:
     - ubuntu20
 
+do-nightly-clean-ubuntu22:
+  <<: *do-nightly-clean
+  tags:
+    - ubuntu22
+
 
 #
 # Building
@@ -95,6 +100,11 @@ do-build-ubuntu20:
   <<: *do-build
   tags:
     - ubuntu20
+
+do-build-ubuntu22:
+  <<: *do-build
+  tags:
+    - ubuntu22
 
 
 #
@@ -192,6 +202,11 @@ basic_eh-tests-ubuntu20:
   tags:
     - ubuntu20
 
+basic_eh-tests-ubuntu22:
+  <<: *basic_eh-tests
+  tags:
+    - ubuntu22
+
 #
 # test_cmds.sh fixcalls
 #
@@ -219,6 +234,11 @@ builtin-xforms-ubuntu20:
   <<: *builtin-xforms
   tags:
     - ubuntu20
+
+builtin-xforms-ubuntu22:
+  <<: *builtin-xforms
+  tags:
+    - ubuntu22
 
 
 # doesn't work yet
@@ -261,6 +281,11 @@ elfdep-ubuntu20:
   <<: *elfdep
   tags:
     - ubuntu20
+
+elfdep-ubuntu22:
+  <<: *elfdep
+  tags:
+    - ubuntu22
 
 
 #
