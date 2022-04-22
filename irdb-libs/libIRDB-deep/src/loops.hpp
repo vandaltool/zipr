@@ -29,11 +29,12 @@ namespace libIRDB
 	{
 		public:
 			Loop_t() = delete;
-			Loop_t(IRDB_SDK::BasicBlock_t* header_blk) 
+			Loop_t(IRDB_SDK::BasicBlock_t* header_blk, const IRDB_SDK::BasicBlockSet_t& blks) 
 				:
 				preheader(nullptr)
 				{ 
-					header = header_blk; 
+					header = header_blk;
+					blocks = blks;
 					assert(header != nullptr);
 				}
 			Loop_t(const Loop_t& copy) = delete;
@@ -41,7 +42,7 @@ namespace libIRDB
 
 			virtual IRDB_SDK::BasicBlock_t*   getPreheader()   const override { assert(0); }
 			virtual IRDB_SDK::BasicBlock_t*   getHeader()      const override { return header; }
-			virtual IRDB_SDK::BasicBlockSet_t getAllBlocks()   const override { assert(0); }
+			virtual IRDB_SDK::BasicBlockSet_t getAllBlocks()   const override { return blocks; }
 			virtual IRDB_SDK::BasicBlockSet_t getOuterBlocks() const override { assert(0); }
 			virtual IRDB_SDK::LoopSet_t       getInnerLoops()  const override { assert(0); }
 

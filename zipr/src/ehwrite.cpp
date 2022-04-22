@@ -1231,7 +1231,7 @@ void ElfEhWriter_t<ptrsize>::GenerateEhOutput()
 			else
 			{
 				out << asm_comment << "   4) index into action table + 1 -- 0 indicates unwind only (always uleb)" << endl;
-				out << "	.uleb128 0 // no actions!"  <<  endl;
+				out << "	.uleb128 0 " << asm_comment << " no actions!"  <<  endl;
 			}
 			out << "LSDA" << dec << lsda_num << "_cs_tab_entry" << cs_num << "_end:" << endl;
 

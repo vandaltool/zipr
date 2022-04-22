@@ -173,7 +173,11 @@ unique_ptr<IRDB_SDK::LoopNest_t> StarsDeepAnalysis_t::getLoops(IRDB_SDK::Control
 
 		const auto header_id = p_annotation -> getHeaderID();
 		const auto loop_id   = p_annotation -> getLoopID();
-		auto the_loop = unique_ptr<Loop_t>(new Loop_t(id_to_block_map[header_id]));
+		IRDB_SDK::BasicBlockSet_t loop_blocks;
+		for (auto block_id : p_annotation->getBlockIDs()) {
+			loop_blocks.insert(id_to_block_map[block_id]);
+		}
+		auto the_loop = unique_ptr<Loop_t>(new Loop_t(id_to_block_map[header_id], loop_blocks));
 		dynamic_cast<libIRDB::LoopNest_t*>(ret.get())->addLoop(loop_id,move(the_loop));
 	}
 
