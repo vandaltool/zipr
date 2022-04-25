@@ -23,6 +23,7 @@ cleanup()
 # make sure xforms are built
 scons || cleanup
 
+set -x 
 $PSZ /bin/ls ./xxx -c move_globals=on -o move_globals:--elftables -c edt=on || cleanup
  
 /bin/ls /tmp > $TMP_ORIG || cleanup
