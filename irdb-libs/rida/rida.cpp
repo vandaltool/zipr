@@ -304,7 +304,7 @@ public:
 			sccs.insert(RangeSet_t({Range_t({s, s + len})}));
 		};
 
-		const auto addName = [&](const Address_t addr, uint64_t symIndex) {
+		const auto addName = [&](const Address_t addr, uint64_t symIndex,  const int part1_size) {
 			if (!dynsymSec)
 				return;
 			if (!dynstrSec)
@@ -356,7 +356,8 @@ public:
 			};
 
 			applyName("part1", addr);
-			applyName("part2", addr + 6);
+			if(part1_size > 0 )
+				applyName("part2", addr + part1_size);
 		};
 
 		const auto pltSec = exeio.sections[pltName];
@@ -411,7 +412,7 @@ public:
 			{
 				addRange(i, plt_entry_size_first_part);
 				addRange(i + plt_entry_size_first_part, plt_entry_size - plt_entry_size_first_part);
-				addName(i, dynsymEntryIndex++);
+				addName(i, dynsymEntryIndex++, plt_entry_size_first_part);
 			}
 
 			// Return whether or not we used an enhanced plt.
@@ -425,7 +426,7 @@ public:
 			for (auto i = startAddr + plt_header_size; i < endAddr; i += plt_entry_size)
 			{
 				addRange(i, plt_entry_size);
-				addName(i, dynsymEntryIndex++);
+				addName(i, dynsymEntryIndex++, -1);
 			}
 		};
 		const auto handle_arm32_plt = [&]() {
@@ -436,7 +437,7 @@ public:
 			for (auto i = startAddr + plt_header_size; i < endAddr; i += plt_entry_size)
 			{
 				addRange(i, plt_entry_size);
-				addName(i, dynsymEntryIndex++);
+				addName(i, dynsymEntryIndex++, -1);
 			}
 		};
 
