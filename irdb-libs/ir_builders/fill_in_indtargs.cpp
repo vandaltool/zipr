@@ -2492,6 +2492,7 @@ V2:
 		const auto allow_unpins = found_leas.size() == 1;
 		for (auto I5_cur : found_leas)
 		{
+			PIC_switch_icc_computed_iterate(firp,I5_cur, I6, I8, table_entry_multiplier);
 			PIC_switch_table64_iterate_table(
 				firp,
 				I8,
@@ -2508,6 +2509,83 @@ V2:
 		if (allow_unpins)
 			jmptables[I8].AddSwitchType(prov);
 	}
+
+	/*
+	 * Recognize an icc computed jump
+	 *
+	 * Example:
+	 *    0x407488:	lea    rdi,[r8*4+0x0] # indexing_operation
+	 *    0x407490:	mov    eax,0x4074c7   # computed_base_insn
+     *    0x4074a2:	sub    rax,rdi        # table_entry_multipler = -1
+     *    0x4074a5:	jmp    rax   # dispatch_insn
+     *    0x4074a7:	movaps XMMWORD PTR [rcx-0xf],xmm7
+     *    0x4074ab:	movaps XMMWORD PTR [rcx-0x1f],xmm6
+     *    0x4074af:	movaps XMMWORD PTR [rcx-0x2f],xmm5
+     *    0x4074b3:	movaps XMMWORD PTR [rcx-0x3f],xmm4
+     *    0x4074b7:	movaps XMMWORD PTR [rcx-0x4f],xmm3
+     *    0x4074bb:	movaps XMMWORD PTR [rcx-0x5f],xmm2
+     *    0x4074bf:	movaps XMMWORD PTR [rcx-0x6f],xmm1
+     *    0x4074c3:	movaps XMMWORD PTR [rcx-0x7f],xmm0
+     *    0x4074c7:
+	 */
+
+	
+	void PIC_switch_icc_computed_iterate(
+		FileIR_t *firp, 
+		Instruction_t *indexing_operation,
+		Instruction_t *computed_base_insn,
+		Instruction_t *dispatch_insn,
+		int32_t table_entry_multiplier
+	)
+	{
+
+		// sanity check the indexing operation.
+		const auto indexing_operation_dis = DecodedInstruction_t::factory(indexing_operation);
+		if(indexing_operation_dis->getMnemonic() != "lea") return;
+		const auto indexing_operand = indexing_operation_dis->getOperand(1);
+		if(indexing_operand->hasMemoryDisplacement() && indexing_operand->getMemoryDisplacement()!=0x0) return;
+		if(indexing_operand->hasBaseRegister()) return;
+		if(!indexing_operand->hasIndexRegister()) return;
+
+		// sanity check the computed_base.
+		const auto computed_base_dis = DecodedInstruction_t::factory(computed_base_insn);
+		if(computed_base_dis->getMnemonic() != "mov") return;
+		if(!computed_base_dis->getOperand(0)->isRegister()) return;
+		if(!computed_base_dis->getOperand(1)->isConstant()) return;
+
+		// check the table multipler is in fact negative.
+		// todo:  support positive multipliers?
+		if(table_entry_multiplier !=- 1) return;
+
+
+		// code matches our example above!
+		cout << "pic64: found icc computed jump at " 
+		     << to_hex_string(dispatch_insn->getAddress()->getVirtualOffset()) << "@" << dispatch_insn->getDisassembly() << "\n"; 
+
+		// extract the fields we need.
+		const auto computed_base_address = computed_base_dis->getOperand(1)->getConstant();
+		const auto index_size = indexing_operand->getScaleValue();
+
+
+		// init a jumptables entry
+		jmptables[dispatch_insn].SetTableStart(0);
+		jmptables[dispatch_insn].SetTableEntrySize(0);
+		jmptables[dispatch_insn].SetTableMultiplier(table_entry_multiplier);
+		jmptables[dispatch_insn].setAnalysisStatus(iasAnalysisIncomplete);
+
+		auto ibtargets = InstructionSet_t();
+		for(auto next_computed_address = computed_base_address ; true; next_computed_address += (int32_t(index_size) * table_entry_multiplier))
+		{
+			const auto ibtarget = lookupInstruction(next_computed_address);
+			if(!ibtarget)  break;
+			possible_target(next_computed_address,0, ibt_provenance_t::ibtp_switchtable_type7);
+			ibtargets.insert(ibtarget);
+		}
+		jmptables[dispatch_insn].addTargets(ibtargets);
+		cout << "pic64: done icc computed jump \n";
+
+	}
+
 
 	/*
 	 *	Iterate a pic64 switch table.
