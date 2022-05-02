@@ -44,7 +44,7 @@ main()
 			echo 'Performing step zipr [dependencies=none] ...Done.  Successful.'
 			echo 'zuser@a3fc1666aaa4:~$ ./ls.bilr -l ' 
 			echo ' < ls output >  '
-			echo 'zuser@a3fc1666aaa4:~$ readelf -l /bin/ls ./ls.p1 ' 
+			echo 'zuser@a3fc1666aaa4:~$ readelf -l /bin/ls ./ls.bilr ' 
 			echo
 			bash
 			res=0
