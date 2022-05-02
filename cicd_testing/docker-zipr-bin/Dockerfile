@@ -1,7 +1,8 @@
 
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 RUN DEBIAN_FRONTEND=noninteractive apt-get update &&   \
     DEBIAN_FRONTEND=noninteractive apt-get install -yq \
+	lsb-release  				\
 	postgresql  				\
 	postgresql-client  			\
 	libpqxx-dev				\
@@ -20,7 +21,7 @@ RUN echo 'sudo service postgresql start ' >> /home/zuser/.bashrc
 RUN chown zuser:zuser /home/zuser/.bashrc
 USER zuser
 ENV USER=zuser
-RUN sudo service postgresql start && cd /opt/ps_zipr/ && (env USER=zuser ./postgres_setup.sh || true)
+RUN sudo service postgresql start && cd /opt/ps_zipr/ && (env USER=zuser ./postgres_setup.sh && sudo service postgresql stop || true)
 WORKDIR /home/zuser
 ENTRYPOINT [ "/bin/bash", "-c", "/run_pszr.sh \"$@\"", "--" ]
 CMD [ ] 

@@ -27,13 +27,6 @@ do-nightly-clean-ubuntu18:
   tags:
     - ubuntu18
 
-# per os items
-do-nightly-clean-ubuntu16:
-  <<: *do-nightly-clean
-  tags:
-    - ubuntu16
-
-# per os items
 do-nightly-clean-centos76:
   <<: *do-nightly-clean
   tags:
@@ -75,11 +68,6 @@ do-build-ubuntu18:
   <<: *do-build
   tags:
     - ubuntu18
-
-do-build-ubuntu16:
-  <<: *do-build
-  tags:
-    - ubuntu16
 
 do-build-centos76:
   <<: *do-build
@@ -146,11 +134,6 @@ protect-arm-ubuntu18:
         tags:
             - ubuntu18
 
-protect-bins-ubuntu16:
-        <<: *prot_bins
-        tags:
-            - ubuntu16
-
 #
 # gather artifacts and ship them tox 86 boxes
 #
@@ -187,11 +170,6 @@ basic_eh-tests-ubuntu18:
   tags:
     - ubuntu18
 
-basic_eh-tests-ubuntu16:
-  <<: *basic_eh-tests
-  tags:
-    - ubuntu16
-
 basic_eh-tests-centos76:
   <<: *basic_eh-tests
   tags:
@@ -219,11 +197,6 @@ builtin-xforms-ubuntu18:
   <<: *builtin-xforms
   tags:
     - ubuntu18
-
-builtin-xforms-ubuntu16:
-  <<: *builtin-xforms
-  tags:
-    - ubuntu16
 
 builtin-xforms-centos76:
   <<: *builtin-xforms
@@ -268,11 +241,6 @@ elfdep-ubuntu18:
   tags:
     - ubuntu18
     
-elfdep-ubuntu16:
-  <<: *elfdep
-  tags:
-    - ubuntu16
-
 elfdep-centos76:
   <<: *elfdep
   tags:
@@ -291,9 +259,9 @@ elfdep-ubuntu22:
 #
 # deploy a docker image
 #
-deploy-u18:
+deploy-u22:
   stage: deploy
   script:
     - ./cicd_testing/deploy.sh
   tags:
-    - ubuntu18
+    - ubuntu22
