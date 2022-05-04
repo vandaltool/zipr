@@ -93,6 +93,7 @@ class FixCalls_t : public TransformStep_t
 		size_t not_calls=0;
 
 		bool opt_fix_icalls = false;
+		bool opt_fix_no_fallthru = false;
 		bool opt_fix_safefn = true;
 
 		/**
@@ -157,36 +158,30 @@ class FixCalls_t : public TransformStep_t
 
 			const auto target=insn->getTarget();
 			const auto fallthru=insn->getFallthrough();
+			const auto insn_addr = insn->getAddress()->getVirtualOffset();
 
-		// 	string pattern;
-
-		// this used to work because fill_in_indirects would mark IBTs 
-		// while reading the ehframe, which perfectly corresponds to when
-		// we need to fix calls due to eh_frame.  However, now STARS also marks
-		// return points as IBTs, so we need to re-parse the ehframe and use that instead.
+			const auto ft_addr=fallthru ? 
+				fallthru->getAddress()->getVirtualOffset() : 
+				insn_addr + insn->getDataBits().length();
+			const auto rangeiter=eh_frame_ranges.find(Range_t(ft_addr,ft_addr));
+			if(rangeiter != eh_frame_ranges.end())	// found an eh_frame addr entry for this call
+			{
+				in_ehframe++;
+				return true;
+			}
 
 			/* no fallthrough instruction, something is odd here */
 			if(!fallthru)
 			{
 				if(getenv("VERBOSE_FIX_CALLS"))
 				{
-					VirtualOffset_t addr = 0;
-					if (insn->getAddress())
-						addr = insn->getAddress()->getVirtualOffset();
-					cout << "Needs fix: No fallthrough" << " address="
-					     << hex << addr << ": " << insn->getDisassembly() << endl;
+					cout << "Needs fix: No fallthrough for insn at " << " address="
+					     << hex << insn_addr << ": " << insn->getDisassembly() << endl;
 				}
 				no_fallthrough_insn++;
-				return true;
+				return opt_fix_no_fallthru;
 			}
 
-			const auto addr=fallthru->getAddress()->getVirtualOffset();
-			const auto rangeiter=eh_frame_ranges.find(Range_t(addr,addr));
-			if(rangeiter != eh_frame_ranges.end())	// found an eh_frame addr entry for this call
-			{
-				in_ehframe++;
-				return true;
-			}
 
 			if (!opt_fix_icalls && insn->getIBTargets() && insn->getIBTargets()->size() > 0) 
 			{
@@ -236,12 +231,14 @@ class FixCalls_t : public TransformStep_t
 					VirtualOffset_t addr = insn->getAddress()->getVirtualOffset();
 					cout<<"Needs fix: Target not in a function"<< " address=" <<hex<<addr<<": "<<insn->getDisassembly()<<endl;
 				}
-				if(is_simple_thunk(insn,target)) {
+				if(is_simple_thunk(insn,target)) 
+				{
 					if(getenv("VERBOSE_FIX_CALLS"))
 					{
-						cout<<"Fix needed: (via call is_simple_thunk(target)), thunk detected"<< " address=" <<hex<<addr<<": "<<insn->getDisassembly()<<endl;
+						cout << "Fix needed: (via call is_simple_thunk(target)), thunk detected at insn w/address="
+						     << hex << insn_addr << ":" << insn->getDisassembly() << endl;
 					}
-					return true;;
+					return true;
 				}
 				target_not_in_function++;
 				/* we need to fix it */
@@ -1002,6 +999,14 @@ class FixCalls_t : public TransformStep_t
 				else if("--no-fix-icalls"==step_args[argc_iter])
 				{
 					opt_fix_icalls = false;
+				}
+				else if("--fix-no-fallthru"==step_args[argc_iter])
+				{
+					opt_fix_no_fallthru = true;
+				}
+				else if("--no-fix-no-fallthru"==step_args[argc_iter])
+				{
+					opt_fix_no_fallthru = false;
 				}
 				else if("--fix-safefn"==step_args[argc_iter])
 				{
