@@ -22,7 +22,7 @@ int main()
 	{
 		foo();
 	}
-	catch(string s)
+	catch(const string& s)
 	{
 		cout<<"Threw string s:" << s << endl;
 	}

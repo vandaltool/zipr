@@ -38,7 +38,7 @@ int main()
 		cout<<"No Throw!"<<endl;
 		return res;
 	}
-	catch(Derived s)
+	catch(const Derived &s)
 	{
 		cout<<"main caught Derived with val=" << s.a << endl;
 	}
