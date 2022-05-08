@@ -38,13 +38,13 @@ int main()
 		cout<<"No Throw!"<<endl;
 		return res;
 	}
-	catch(Base s)
-	{
-		cout<<"main caught Base with val=" << s.a << endl;
-	}
-	catch(Derived s)
+	catch(const Derived &s)
 	{
 		cout<<"main caught Derived with val=" << s.a << endl;
+	}
+	catch(const Base &s)
+	{
+		cout<<"main caught Base with val=" << s.a << endl;
 	}
 	catch(...)
 	{

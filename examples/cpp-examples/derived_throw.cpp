@@ -38,7 +38,7 @@ int main()
 		cout<<"No Throw!"<<endl;
 		return res;
 	}
-	catch(Base s)
+	catch(const Base &s)
 	{
 		cout<<"main caught Base with val=" << s.a << endl;
 	}
