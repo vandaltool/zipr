@@ -2,6 +2,7 @@
 FROM ubuntu:22.04
 RUN DEBIAN_FRONTEND=noninteractive apt-get update &&   \
     DEBIAN_FRONTEND=noninteractive apt-get install -yq \
+	file 					\
 	lsb-release  				\
 	postgresql  				\
 	postgresql-client  			\
