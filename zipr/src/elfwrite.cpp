@@ -1637,7 +1637,7 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 					int counter = 0;
 					for (const auto scoop : m_firp->getDataScoops()) {
 						if (rangeStart >= scoop->getStart()->getVirtualOffset() && 
-								pos <= scoop->getEnd()->getVirtualOffset()) {
+								pos <= scoop->getEnd()->getVirtualOffset() + 1) {
 							sectionId = counter + 1;
 							break;
 						}
