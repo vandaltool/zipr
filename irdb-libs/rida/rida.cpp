@@ -508,7 +508,7 @@ public:
 			for (auto i = pltSecStartAddr; i < pltSecEndAddr; i += plt_skip)
 			{
 				addRange(i, plt_entry_size);
-				addName(i, dynsymEntryIndex++);
+				addName(i, dynsymEntryIndex++, -1);
 			}
 		};
 		const auto pltSecRange_it = find_if(ALLOF(sccs), [&](const RangeSet_t &s) {
