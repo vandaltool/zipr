@@ -26,6 +26,7 @@
 #include <limits>
 #include <string>
 #include <algorithm>
+#include <numeric>
 #include <stdlib.h>
 #include <string.h>
 #include <map>
@@ -312,7 +313,9 @@ public:
 	set<pair<VirtualOffset_t, VirtualOffset_t>> ranges;
 
 	// keep track of jmp tables
-	map<Instruction_t *, fii_icfs> jmptables;
+	using JmpTable_t = map<Instruction_t *, fii_icfs> ;
+	JmpTable_t jmptables;
+
 
 	// a map of virtual offset -> instruction for quick access.
 	map<VirtualOffset_t, Instruction_t *> lookupInstructionMap;
@@ -2749,6 +2752,10 @@ V2:
 
 			if (!possible_target(D1 + table_entry, 0 /* from addr unknown */, switch_prov))
 			{
+				if (getenv("IB_VERBOSE"))
+				{
+					cout << "Found table entry " << hex << D1 << "[" << dec << entry << "] is invalid." << endl;
+				}
 				found_table_error = true;
 				break;
 			}
@@ -2805,7 +2812,9 @@ V2:
 			else
 			{
 				cout << "pic64: found incomplete switch table for " << hex << dispatch_insn->getAddress()->getVirtualOffset()
-					 << " detected ibtp_switchtable_type4" << endl;
+					 << " detected ibtp_switchtable_type4." 
+				     << " found_table_error=" << found_table_error
+					 << endl;
 				addSwitchTableScoop(firp, max_valid_table_entry, table_entry_size, D1 + d6_displ, exeiop, table_load_instruction, D1, false);
 			}
 		}
@@ -4166,7 +4175,8 @@ V2:
 		FileIR_t *firp,
 		Instruction_t *insn,
 		DataScoop_t *scoop,
-		int64_t do_unpin_opt)
+		int64_t do_unpin_opt, 
+		const InstructionSet_t& always_complete_targets)
 	{
 		assert(firp && insn && scoop);
 
@@ -4243,6 +4253,21 @@ V2:
 				continue;
 			}
 
+			// Check that we can unpin this target in all type4 switch tables.
+			// if a target is pinned in one table, we can't unpin it here.
+			const auto always_complete_it = always_complete_targets.find(ibt);
+			const auto always_complete = always_complete_it != always_complete_targets.end();
+			if(!always_complete)
+			{
+				if (getenv("UNPIN_VERBOSE"))
+				{
+					cout << "Instruction is pinned in incomlpete switch tables (" << pinTypes << ") for address "
+						 << hex << ibt_address << '\n';
+				}
+				type4_missed_unpin_reasons["incomplete-switch-refs-" + pinTypes.toString()]++;
+				continue;
+			}
+
 			total_unpins++;
 			if (do_unpin_opt != -1 && total_unpins > do_unpin_opt)
 			{
@@ -4281,6 +4306,46 @@ V2:
 
 	void unpin_switches(FileIR_t *firp, int do_unpin_opt)
 	{
+		auto all_fiis = vector<JmpTable_t::mapped_type>();
+		auto complete_fiis = vector<JmpTable_t::mapped_type>();
+		auto other_fiis = vector<JmpTable_t::mapped_type>();
+		auto complete_targets = vector<InstructionSet_t>();
+		auto other_targets = vector<InstructionSet_t>();
+
+		// reduce complexity of jmptables by dropping the keys, and getting a vector of values.
+		transform(ALLOF(jmptables),
+				  back_inserter(all_fiis),
+				  [](const JmpTable_t::value_type &p)
+				  { return p.second; });
+
+		// get the ones that have complete status, and the ones that don't
+		copy_if(ALLOF(all_fiis),
+				back_inserter(complete_fiis),
+				[](const JmpTable_t::mapped_type &p)
+				{ return p.isComplete(); });
+		copy_if(ALLOF(all_fiis),
+				back_inserter(other_fiis),
+				[](const JmpTable_t::mapped_type &p)
+				{ return !p.isComplete(); });
+
+		// remove complete/not complete status away and flatten
+		transform(ALLOF(complete_fiis), back_inserter(complete_targets), [](const fii_icfs& p) { return p; } );
+		auto complete_target_insns = accumulate(
+			ALLOF(complete_targets), 
+			InstructionSet_t(), 
+			[](InstructionSet_t &a, const InstructionSet_t& b) { a.insert(ALLOF(b)); return a; }
+			);
+
+		transform(ALLOF(other_fiis), back_inserter(other_targets), [](const fii_icfs& p) { return p; } );
+		auto other_target_insns = accumulate(
+			ALLOF(other_targets), 
+			InstructionSet_t(), 
+			[](InstructionSet_t &a, const InstructionSet_t& b) { a.insert(ALLOF(b));  return a; }
+			);
+
+		auto always_complete_targets = InstructionSet_t();
+		set_difference(ALLOF(complete_target_insns), ALLOF(other_target_insns), inserter(always_complete_targets, always_complete_targets.begin()) );;
+
 		// for each instruction
 		for (auto insn : firp->getInstructions())
 		{
@@ -4318,7 +4383,7 @@ V2:
 						 ibt_provenance_t::ibtp_rodata |
 						 ibt_provenance_t::ibtp_stars_switch))
 			{
-				unpin_type4_switchtable(firp, insn, scoop, do_unpin_opt);
+				unpin_type4_switchtable(firp, insn, scoop, do_unpin_opt, always_complete_targets);
 			}
 		}
 		cout << "# ATTRIBUTE fill_in_indtargs::switch_type3_pins=" << dec << type3_pins << '\n';
