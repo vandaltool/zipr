@@ -809,14 +809,13 @@ bool DecodedOperandCapstoneX86_t::isRead() const
 	const auto isNormal = (isMarkedRead || isMarkedWrite || isMarkedReadWrite || isMarkedInvalid);
 	if(!isNormal)
 	{
-		cout << " Odd return value from capstone.  op.access=" << hex << +op.access << endl;
+		cout << "Odd return value from capstone.  op.access=" << hex << +op.access << endl;
 		cout << "insn = " << d.getDisassembly() << endl;
-		assert(0);
 	}
 
 	// capstone may mark immediates as neither read nor written.
 	// assume Read is if it is marked invalid.
-	return isMarkedRead || isMarkedInvalid;
+	return isMarkedRead || !isMarkedRead;
 }
 
 bool DecodedOperandCapstoneX86_t::isWritten() const
@@ -864,9 +863,8 @@ bool DecodedOperandCapstoneX86_t::isWritten() const
 	const auto isNormal = (isMarkedRead || isMarkedWrite || isMarkedReadWrite || isMarkedInvalid);
 	if(!isNormal)
 	{
-		cout << " Odd return value from capstone.  op.access=" << hex << +op.access << endl;
+		cout << "Odd return value from capstone.  op.access=" << hex << +op.access << endl;
 		cout << "insn = " << d.getDisassembly() << endl;
-		assert(0);
 	}
 	return isMarkedWrite;
 }
