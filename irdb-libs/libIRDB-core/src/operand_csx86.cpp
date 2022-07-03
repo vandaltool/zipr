@@ -800,28 +800,23 @@ bool DecodedOperandCapstoneX86_t::isRead() const
 		
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
         const auto &op = (the_insn->detail->x86.operands[op_num]);
-	return (op.access & CS_AC_READ)!=0;
-/*
-	if(op_num!=0)
-		return true;
+	const auto isMarkedRead = (op.access & CS_AC_READ)!=0 ;
+	const auto isMarkedWrite = (op.access & CS_AC_WRITE)!=0 ;
+	const auto isMarkedReadWrite = isMarkedRead || isMarkedWrite;
+	const auto isMarkedInvalid = (op.access == CS_AC_INVALID);
 
-	const auto d=DecodedInstructionCapstoneX86_t(my_insn);
-	if(d.isBranch())	
-		return true;	
+	// sanity check that we understand how capstone works.
+	const auto isNormal = (isMarkedRead || isMarkedWrite || isMarkedReadWrite || isMarkedInvalid);
+	if(!isNormal)
+	{
+		cout << " Odd return value from capstone.  op.access=" << hex << +op.access << endl;
+		cout << "insn = " << d.getDisassembly() << endl;
+		assert(0);
+	}
 
-	const auto room_it=read_only_operand_mnemonics.find(d.getMnemonic());
-	const auto in_room=(room_it!=end(read_only_operand_mnemonics));
-	if(in_room)
-		return true;
-
-	if(d.getMnemonic().substr(0,3)=="mov")
-		return false;
-
-	// op0 is typically read/write
-	return true;
-
-	assert(0);
-*/
+	// capstone may mark immediates as neither read nor written.
+	// assume Read is if it is marked invalid.
+	return isMarkedRead || isMarkedInvalid;
 }
 
 bool DecodedOperandCapstoneX86_t::isWritten() const
@@ -859,19 +854,19 @@ bool DecodedOperandCapstoneX86_t::isWritten() const
 	// default: use capstone's advice.
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
         const auto &op = (the_insn->detail->x86.operands[op_num]);
-	return (op.access & CS_AC_WRITE)!=0;
-/*
-	if(op_num!=0)
-		return false;
-	const auto d=DecodedInstructionCapstoneX86_t(my_insn);
-	if(d.isBranch())	
-		return false;	
 
-	const auto room_it=read_only_operand_mnemonics.find(d.getMnemonic());
-	const auto in_room=(room_it!=end(read_only_operand_mnemonics));
-	if(in_room)
-		return false;
+	const auto isMarkedRead = (op.access & CS_AC_READ)!=0 ;
+	const auto isMarkedWrite = (op.access & CS_AC_WRITE)!=0 ;
+	const auto isMarkedReadWrite = isMarkedRead || isMarkedWrite;
+	const auto isMarkedInvalid = (op.access == CS_AC_INVALID);
 
-	return true;
-*/
+	// sanity check that we understand how capstone works.
+	const auto isNormal = (isMarkedRead || isMarkedWrite || isMarkedReadWrite || isMarkedInvalid);
+	if(!isNormal)
+	{
+		cout << " Odd return value from capstone.  op.access=" << hex << +op.access << endl;
+		cout << "insn = " << d.getDisassembly() << endl;
+		assert(0);
+	}
+	return isMarkedWrite;
 }
