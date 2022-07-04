@@ -812,7 +812,10 @@ bool DecodedOperandCapstoneX86_t::isRead() const
 		cout << "Odd return value from capstone.  op.access=" << hex << +op.access << endl;
 		cout << "insn = " << d.getDisassembly() << endl;
 	}
-
+	if(d_mnemonic=="palignr")
+	{
+		cout << "palignr op3= " << getString() << " with op.access=" << hex << +op.access << endl;
+	}
 	// capstone may mark immediates as neither read nor written.
 	// assume Read is if it is marked invalid.
 	return isMarkedRead || !isMarkedRead;
@@ -865,6 +868,10 @@ bool DecodedOperandCapstoneX86_t::isWritten() const
 	{
 		cout << "Odd return value from capstone.  op.access=" << hex << +op.access << endl;
 		cout << "insn = " << d.getDisassembly() << endl;
+	}
+	if(d_mnemonic=="palignr")
+	{
+		cout << "palignr op3= " << getString() << " with op.access=" << hex << +op.access << endl;
 	}
 	return isMarkedWrite;
 }
