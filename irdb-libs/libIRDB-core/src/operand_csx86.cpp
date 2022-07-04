@@ -181,18 +181,6 @@ static uint32_t to_reg_number(const x86_reg &reg)
 	assert(0);
 }
 
-// methods
-
-//DecodedOperandCapstoneX86_t& DecodedOperandCapstoneX86_t::operator=(const DecodedOperandCapstoneX86_t& copy)
-//{
-//	return *this;
-//}
-//
-//DecodedOperandCapstoneX86_t::DecodedOperandCapstoneX86_t(const DecodedOperandCapstoneX86_t& copy)
-//{
-//	*this=copy;
-//}
-
 DecodedOperandCapstoneX86_t::DecodedOperandCapstoneX86_t( const shared_ptr<void> & p_my_insn, uint8_t p_op_num)
 	:
 	my_insn(p_my_insn),
@@ -797,6 +785,10 @@ bool DecodedOperandCapstoneX86_t::isRead() const
 	const auto in_woom=(woom_it!=end(write_only_operand_mnemonics));
 	if(in_woom)
 		return false;
+
+	// special cast constants because op.access is unset
+	if(isConstant())	
+		return true;
 		
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
         const auto &op = (the_insn->detail->x86.operands[op_num]);
@@ -853,6 +845,10 @@ bool DecodedOperandCapstoneX86_t::isWritten() const
 		return false;
 
 
+	// special cast constants because op.access is unset
+	if(isConstant())	
+		return false;
+		
 	// default: use capstone's advice.
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
         const auto &op = (the_insn->detail->x86.operands[op_num]);
