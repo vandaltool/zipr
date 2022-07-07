@@ -168,6 +168,10 @@ void MoveGlobals_t<T_Sym,T_Rela,T_Rel,T_Dyn,T_Extractor>::SetupScoopMap()
 	{
 		if(s->getStart()->getVirtualOffset() == 0)
 			continue;
+		if(s->getName() == ".tdata")
+			continue;
+		if(s->getName() == ".tbss")
+			continue;
 		RangePair_t p(s->getStart()->getVirtualOffset(), s->getEnd()->getVirtualOffset());
 		scoop_map[p]=s;
 	}
