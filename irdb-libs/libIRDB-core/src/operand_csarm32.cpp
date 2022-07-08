@@ -359,6 +359,15 @@ uint32_t DecodedOperandCapstoneARM32_t::getSegmentRegister() const
 
 bool DecodedOperandCapstoneARM32_t::isRead() const
 {
+      if(!this->isWritten())
+         return true;
+
+#if 0  // isWritten() usage just above takes care of this problem.
+      // capstone might leave garbage in "access" field for immediates.
+      if (this->isConstant())
+         return true;
+#endif
+
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
         const auto &op = (the_insn->detail->arm.operands[op_num]);
 	return (op.access & CS_AC_READ)!=0;
@@ -366,7 +375,11 @@ bool DecodedOperandCapstoneARM32_t::isRead() const
 
 bool DecodedOperandCapstoneARM32_t::isWritten() const
 {	
-	// default: use capstone's advice.
+        // capstone might leave garbage in "access" field for immediates.
+        if (this->isConstant())
+           return false;
+
+    // default: use capstone's advice.
         const auto the_insn=static_cast<cs_insn*>(my_insn.get());
         const auto &op = (the_insn->detail->arm.operands[op_num]);
 	return (op.access & CS_AC_WRITE)!=0;
