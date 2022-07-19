@@ -791,6 +791,12 @@ bool DecodedOperandCapstoneX86_t::isRead() const
 	if(!isWritten())
 		return true;
 
+#if 0  // isWritten() usage just above takes care of this problem.
+        // capstone might leave garbage in "access" field for immediates.
+        if (this->isConstant())
+           return true;
+#endif
+        
 	const auto d=DecodedInstructionCapstoneX86_t(my_insn);
 	const auto d_mnemonic=d.getMnemonic();
 	const auto woom_it=write_only_operand_mnemonics.find(d_mnemonic);
@@ -835,6 +841,10 @@ bool DecodedOperandCapstoneX86_t::isWritten() const
 	if(in_room)
 		return false;
 
+        // capstone might leave garbage in "access" field for immediates.
+        if (this->isConstant())
+           return false;
+        
 	// special case check:  all operands are writes
 	const auto woom_it=write_only_operand_mnemonics.find(d_mnemonic);
 	const auto in_woom=(woom_it!=end(write_only_operand_mnemonics));
