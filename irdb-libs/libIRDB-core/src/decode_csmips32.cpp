@@ -54,14 +54,17 @@ void DecodedInstructionCapstoneMIPS32_t::Disassemble(const virtual_offset_t star
 	auto size=(size_t)max_len;
 	const uint8_t* code=(uint8_t*)data;
 	const auto ok = cs_disasm_iter(cs_handle->getHandle(), &code, &size, &address, insn);
-	if(!ok)
-		insn->size=0;
 
 	const auto cs_freer=[](cs_insn * insn) -> void 
 		{  
 			cs_free(insn,1); 
 		} ; 
 	my_insn.reset(insn,cs_freer);
+	if(!ok)
+	{
+		insn->size=0;
+		return;
+	}
 }
 
 DecodedInstructionCapstoneMIPS32_t::DecodedInstructionCapstoneMIPS32_t(const Instruction_t* i)
