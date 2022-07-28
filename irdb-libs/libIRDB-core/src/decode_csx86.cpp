@@ -113,6 +113,11 @@ void DecodedInstructionCapstoneX86_t::Disassemble(const virtual_offset_t start_a
 	auto size=(size_t)max_len;
 	const uint8_t* code=(uint8_t*)data;
 	const auto ok = cs_disasm_iter(cs_handle->getHandle(), &code, &size, &address, insn);
+	const auto cs_freer=[](cs_insn * insn) -> void 
+		{  
+			cs_free(insn,1); 
+		} ; 
+	my_insn.reset(insn,cs_freer);
 	if(!ok)
 		insn->size=0;
 
@@ -136,6 +141,8 @@ void DecodedInstructionCapstoneX86_t::Disassemble(const virtual_offset_t start_a
 		}
 	
 	}
+	if(insn->size==0)
+		return;
 
 	const auto mnemonic=string(insn->mnemonic);
 
@@ -154,27 +161,6 @@ void DecodedInstructionCapstoneX86_t::Disassemble(const virtual_offset_t start_a
 	else if(x86.opcode[0]==0xa4 && string(insn->mnemonic)=="movsb")
 		strcpy(insn->op_str, ""); // force into MOVS version
 
-/*
-	if(mnemonic=="movabs")
-	{
-		if(insn->detail->x86.operands[0].type==X86_OP_MEM)
-		{
-			insn->detail->x86.operands[0].imm=insn->detail->x86.operands[0].mem.disp;
-			insn->detail->x86.operands[0].type=X86_OP_IMM;
-		}
-		if(insn->detail->x86.operands[1].type==X86_OP_MEM)
-		{
-			insn->detail->x86.operands[1].imm=insn->detail->x86.operands[1].mem.disp;
-			insn->detail->x86.operands[1].type=X86_OP_IMM;
-		}
-	}
-*/
-
-	const auto cs_freer=[](cs_insn * insn) -> void 
-		{  
-			cs_free(insn,1); 
-		} ; 
-	my_insn.reset(insn,cs_freer);
 }
 
 DecodedInstructionCapstoneX86_t::DecodedInstructionCapstoneX86_t(const Instruction_t* i)

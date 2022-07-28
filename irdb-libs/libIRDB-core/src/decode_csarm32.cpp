@@ -61,8 +61,16 @@ void DecodedInstructionCapstoneARM32_t::Disassemble(const virtual_offset_t start
 	auto size=(size_t)max_len;
 	const uint8_t* code=(uint8_t*)data;
 	const auto ok = cs_disasm_iter(cs_handle->getHandle(), &code, &size, &address, insn);
+	const auto cs_freer=[](cs_insn * insn) -> void 
+		{  
+			cs_free(insn,1); 
+		} ; 
+	my_insn.reset(insn,cs_freer);
 	if(!ok)
+	{
 		insn->size=0;
+		return;
+	}
 
         auto &op0 = (insn->detail->arm.operands[0]); // might change these.
         auto &op1 = (insn->detail->arm.operands[1]);
@@ -89,11 +97,6 @@ void DecodedInstructionCapstoneARM32_t::Disassemble(const virtual_offset_t start
 	}
 
 
-	const auto cs_freer=[](cs_insn * insn) -> void 
-		{  
-			cs_free(insn,1); 
-		} ; 
-	my_insn.reset(insn,cs_freer);
 }
 
 DecodedInstructionCapstoneARM32_t::DecodedInstructionCapstoneARM32_t(const Instruction_t* i)
