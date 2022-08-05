@@ -1512,26 +1512,28 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 		string name;
 		unsigned int type;
 		unsigned int sh_ent_size;
+		unsigned int sh_info;
 		string link;
 	} section_type_map[]={
-		{".init_array",   SHT_INIT_ARRAY,	0, 			"" },
-		{".fini_array",   SHT_FINI_ARRAY,	0, 			"" },
-		{".dynamic", 	  SHT_DYNAMIC,		sizeof(T_Elf_Dyn),	".dynstr"},
-		{".note.ABI-tag", SHT_NOTE,		0,  			""},
-		{".note.gnu.build-id", SHT_NOTE,	0,  			""},
-		{".gnu.hash",     SHT_GNU_HASH,		0,  			".dynsym"},
-		{".dynsym",       SHT_DYNSYM, 		sizeof(T_Elf_Sym),  	".dynstr"},
-		{".dynstr",       SHT_STRTAB, 		0, 		  	""},
-		{".shstrtab",     SHT_STRTAB, 		0, 		  	""},
-		{".symtab",       SHT_SYMTAB, 		sizeof(T_Elf_Sym),  	""},
-		{".strtab",       SHT_STRTAB, 		0, 		  	""},
-		{".rel.dyn",      SHT_REL,    		sizeof(T_Elf_Rel),  	""},
-		{".rela.dyn",     SHT_RELA,   		sizeof(T_Elf_Rela), 	".dynsym"},
-		{".rel.plt",      SHT_REL,    		sizeof(T_Elf_Rel),  	".dynsym"},
-		{".rela.plt",     SHT_RELA,   		sizeof(T_Elf_Rela), 	".dynsym"},
-		{".gnu.version",  SHT_GNU_versym,    	2, 			".dynsym"},
-		{".gnu.version_r",SHT_GNU_verneed,    	0,		  	".dynstr"},
-		{".rela.dyn coalesced w/.rela.plt",     SHT_RELA,   		sizeof(T_Elf_Rela), 	".dynsym"}
+		{".init_array",   SHT_INIT_ARRAY,	0, 			0                                                                                                  , "" },
+		{".fini_array",   SHT_FINI_ARRAY,	0, 			0                                                                                                  , "" },
+		{".dynamic", 	  SHT_DYNAMIC,		sizeof(T_Elf_Dyn),	0                                                                                                  , ".dynstr"},
+		{".note.ABI-tag", SHT_NOTE,		0,  			0                                                                                                  , ""},
+		{".note.gnu.build-id", SHT_NOTE,	0,  			0                                                                                                  , ""},
+		{".gnu.hash",     SHT_GNU_HASH,		0,  			0                                                                                                  , ".dynsym"},
+		{".dynstr",       SHT_STRTAB, 		0, 		  	0                                                                                                  , ""},
+		{".shstrtab",     SHT_STRTAB, 		0, 		  	0                                                                                                  , ""},
+		{".dynsym",       SHT_DYNSYM, 		sizeof(T_Elf_Sym),  	0 /* FIXME: One greater than the symbol table index of the last local symbol (binding STB_LOCAL) */, ".dynstr"},
+		{".symtab",       SHT_SYMTAB, 		sizeof(T_Elf_Sym),  	0 /* FIXME: One greater than the symbol table index of the last local symbol (binding STB_LOCAL) */, ""},
+		{".strtab",       SHT_STRTAB, 		0, 		  	0 /* FIXME: One greater than the symbol table index of the last local symbol (binding STB_LOCAL) */, ""},
+		{".rel.dyn",      SHT_REL,    		sizeof(T_Elf_Rel),  	0 /* FIXME: the section header index of the section to which the relocation applies */             , ""},
+		{".rela.dyn",     SHT_RELA,   		sizeof(T_Elf_Rela), 	0 /* FIXME: the section header index of the section to which the relocation applies */             , ".dynsym"},
+		{".rel.plt",      SHT_REL,    		sizeof(T_Elf_Rel),  	0 /* FIXME: the section header index of the section to which the relocation applies */             , ".dynsym"},
+		{".rela.plt",     SHT_RELA,   		sizeof(T_Elf_Rela), 	0 /* FIXME: the section header index of the section to which the relocation applies */             ,  ".dynsym"},
+		{".gnu.version",  SHT_GNU_versym,    	2, 			1 /* FIXME: The number of version definitions within the section.  */                              ,  ".dynsym"},
+		{".gnu.version_r",SHT_GNU_verneed,    	0,		  	1 /* FIXME: The number of version dependencies within the section. */                              , ".dynstr"},
+		{".rela.dyn coalesced w/.rela.plt",     
+		                  SHT_RELA,   		sizeof(T_Elf_Rela), 	0                                                                                                  , ".dynsym"}
 	};
 
 
@@ -1550,13 +1552,15 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 		if(end(section_type_map) != it)
 		{
 			cout<<"Setting ent-size for "<<scoop->getName()<<" to "<<dec<<it->sh_ent_size<<endl;
-			shdr. sh_type = it->type;	// sht_progbits, sht, sht_strtab, sht_symtab, ...
+			shdr. sh_type = it->type;	// sht_progbits, sht_strtab, sht_symtab, ...
 			shdr. sh_entsize = it->sh_ent_size;	
+			shdr. sh_info = it->sh_info ;
 		}
 		else
 		{
 			shdr. sh_type = SHT_PROGBITS;	// sht_progbits, sht, sht_strtab, sht_symtab, ...
 			shdr. sh_entsize = 0;
+			shdr. sh_info = 0 ;
 		}
 		shdr. sh_flags = SHF_ALLOC; // scoop->getRawPerms();
 		if(scoop->isExecuteable())
@@ -1567,7 +1571,6 @@ void ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 		shdr. sh_offset =file_positions[scoop];
 		shdr. sh_size = scoop->getEnd()->getVirtualOffset() - scoop->getStart()->getVirtualOffset() + 1;
 		shdr. sh_link = SHN_UNDEF;	
-		shdr. sh_info = 0 ;
 		shdr. sh_addralign= 0 ; // scoop->getAlign(); doesn't exist?
 	
 		shdrs.push_back(shdr);
