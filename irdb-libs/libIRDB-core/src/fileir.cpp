@@ -64,7 +64,6 @@ static void UpdateEntryPoints(
 
 		assert(func_entry_id==-1 || insnMap.at(func_entry_id));
 		func->setEntryPoint(insnMap.at(func_entry_id));
-//		cout<<"Function named "<<func->getName()<< " getting entry point set to "<<insnMap[func_entry_id]->getComment()<<"."<<endl;
 	}
 		
 }
@@ -286,7 +285,6 @@ std::map<db_id_t,Function_t*> FileIR_t::ReadFuncsFromDB
 		assert(newfunc);
 		entry_points[newfunc]=entry_point_id;
 		
-//std::cout<<"Found function "<<name<<"."<<std::endl;
 
 		idMap[fid]=newfunc;
 
@@ -460,7 +458,6 @@ std::map<db_id_t,AddressID_t*> FileIR_t::ReadAddrsFromDB
 
 		AddressID_t *newaddr=new AddressID_t(aid,file_id,vaddr);
 
-//std::cout<<"Found address "<<aid<<"."<<std::endl;
 
 		idMap[aid]=newaddr;
 
@@ -560,7 +557,6 @@ std::map<db_id_t,Instruction_t*> FileIR_t::ReadInsnsFromDB
 			newinsn->setFunction(funcMap.at(parent_func_id));
 		}
 
-//std::cout<<"Found address "<<aid<<"."<<std::endl;
 
 		idMap[instruction_id]=newinsn;
 		fallthroughs[instruction_id]=fallthrough_address_id;
@@ -635,7 +631,6 @@ void FileIR_t::ReadRelocsFromDB
 
 void FileIR_t::writeToDB(ostream *verbose_logging)
 {
-//     	const auto WriteIRDB_start = clock();
 
 	const auto pqIntr=dynamic_cast<pqxxDB_t*>(dbintr);
 	assert(pqIntr);
@@ -715,6 +710,14 @@ void FileIR_t::writeToDB(ostream *verbose_logging)
 		auto insnp=dynamic_cast<Instruction_t*>(*i);
 		const auto p_disasm=DecodedInstruction_t::factory(insnp);
 		const auto& disasm=*p_disasm;
+                if(p_disasm->isCall())
+                {
+                	auto operands = p_disasm->getOperands();
+                        auto hasTarget = insnp->getTarget() != nullptr;
+			auto isIndirect = !operands[0]->isConstant();
+                        assert(isIndirect == !hasTarget);
+                }
+
 
 		if(insnp->getOriginalAddressID() == NOT_IN_DATABASE)
 		{
@@ -1119,12 +1122,8 @@ std::map<db_id_t, Type_t*> FileIR_t::ReadTypesFromDB (TypeSet_t& types)
 	//
 
 	// pass 1, get all the basic types first
-//	std::string q= "select * from " + fileptr->types_table_name + " WHERE ref_type_id = -1 AND ref_type_id2 = -1 AND pos = -1 order by type; ";
 
 	std::string q= "select * from " + fileptr->types_table_name + " WHERE ref_type_id = -1 order by type; ";
-
-//	cout << "pass1: query: " << q;
-
 	dbintr->issueQuery(q);
 
 	while(!dbintr->isDone())
@@ -1142,7 +1141,6 @@ std::map<db_id_t, Type_t*> FileIR_t::ReadTypesFromDB (TypeSet_t& types)
 		std::string name=dbintr->getResultColumn("name");
 		BasicType_t *t = NULL;	
 
-//		cout << "fileir::ReadFromDB(): pass1: " << name << endl;
 		switch(type) 
 		{
 			case IRDB_SDK::itUnknown:
@@ -1183,12 +1181,10 @@ std::map<db_id_t, Type_t*> FileIR_t::ReadTypesFromDB (TypeSet_t& types)
 		IRDB_Type type=(IRDB_Type)atoi(dbintr->getResultColumn("type").c_str());
 		std::string name=dbintr->getResultColumn("name");
 		db_id_t ref1=atoi(dbintr->getResultColumn("ref_type_id").c_str());
-//		cout << "fileir::ReadFromDB(): pass2 (pointers): " << name << endl;
 		switch(type) 
 		{
 			case IRDB_SDK::itPointer:
 			{
-//						cout << "   pointer type: ref1: " << ref1 << endl;
 				Type_t *referentType = NULL;
 				if (ref1 >= 0) 
 				{
@@ -1223,14 +1219,12 @@ std::map<db_id_t, Type_t*> FileIR_t::ReadTypesFromDB (TypeSet_t& types)
 		db_id_t ref1=atoi(dbintr->getResultColumn("ref_type_id").c_str());
 		int pos=atoi(dbintr->getResultColumn("pos").c_str());
 		AggregateType_t *agg = NULL;	
-//		cout << "fileir::ReadFromDB(): pass3 (aggregates): " << name << endl;
 		switch(type) 
 		{
 			case IRDB_SDK::itAggregate:
 			{
 				if (tMap.count(tid) == 0)  // new aggregate
 				{	
-//		cout << "fileir::ReadFromDB(): pass3: new aggregate type: typeid: " << tid << " name: " << name << endl;
 					agg = new AggregateType_t(tid, name);	
 					types.insert(agg);
 					tMap[tid] = agg;
@@ -1466,19 +1460,6 @@ std::map<db_id_t,DataScoop_t*> FileIR_t::ReadScoopsFromDB
 
 	std::map<db_id_t,DataScoop_t*> scoopMap;
 
-	//std::map<db_id_t,string> bonus_contents;
-	//
-	// read part 2 of the scoops.
-        //std::string q= "select * from " + fileptr->scoop_table_name + "_part2 ; ";
-        //dbintr->issueQuery(q);
-        //while(!dbintr->isDone())
-	//{
-        //        db_id_t sid=atoi(dbintr->getResultColumn("scoop_id").c_str());
-	//	bonus_contents[sid]=dbintr->getResultColumn("data");
-	//	dbintr->moveToNextRow();
-	//}
-
-
 
 	// read part 1 of the scoops, and merge in the part 2s
 	// scoop_id           SERIAL PRIMARY KEY,        -- key
@@ -1570,17 +1551,6 @@ std::map<db_id_t,DataScoop_t*> FileIR_t::ReadScoopsFromDB
 // Lookup a scoop by address
 IRDB_SDK::DataScoop_t* FileIR_t::findScoop(const IRDB_SDK::VirtualOffset_t &addr) const
 {
-/*
-	for(auto it=scoops.begin(); it!=scoops.end(); ++it)
-	{
-		auto s=dynamic_cast<DataScoop_t*>(*it);
-		// we're doing <= in both comparisons here intentionally.
-		// scoop addresses are the start/end address are inclusive
-		// so that start+size-1 == end.
-		if( s->getStart()->getVirtualOffset() <= addr && addr <= s->getEnd()->getVirtualOffset() )
-			return *it;
-	}
-*/
 	const auto found = find_if(ALLOF(scoops), [addr](IRDB_SDK::DataScoop_t* s) {
 		return s->getStart()->getVirtualOffset() <= addr && addr <= s->getEnd()->getVirtualOffset();
 	});
