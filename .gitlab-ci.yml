@@ -27,10 +27,10 @@ do-nightly-clean-ubuntu18:
   tags:
     - ubuntu18
 
-do-nightly-clean-centos76:
+do-nightly-clean-coss9:
   <<: *do-nightly-clean
   tags:
-    - centos76
+    - coss9
 
 do-nightly-clean-arm32:
   <<: *do-nightly-clean
@@ -69,10 +69,10 @@ do-build-ubuntu18:
   tags:
     - ubuntu18
 
-do-build-centos76:
+do-build-coss9:
   <<: *do-build
   tags:
-    - centos76
+    - coss9
 
 do-build-arm32:
   <<: *do-build
@@ -170,10 +170,10 @@ basic_eh-tests-ubuntu18:
   tags:
     - ubuntu18
 
-basic_eh-tests-centos76:
+basic_eh-tests-coss9:
   <<: *basic_eh-tests
   tags:
-    - centos76
+    - coss9
 
 basic_eh-tests-ubuntu20:
   <<: *basic_eh-tests
@@ -198,10 +198,10 @@ builtin-xforms-ubuntu18:
   tags:
     - ubuntu18
 
-builtin-xforms-centos76:
+builtin-xforms-coss9:
   <<: *builtin-xforms
   tags:
-    - centos76
+    - coss9
 
 builtin-xforms-ubuntu20:
   <<: *builtin-xforms
@@ -241,10 +241,10 @@ elfdep-ubuntu18:
   tags:
     - ubuntu18
     
-elfdep-centos76:
+elfdep-coss9:
   <<: *elfdep
   tags:
-    - centos76
+    - coss9
 elfdep-ubuntu20:
   <<: *elfdep
   tags:
