@@ -11,7 +11,7 @@ cpppath='''
 	 $IRDB_SDK/include 
 	'''
 
-myenv.Append(CPPFLAGS="-std=c++11")
+myenv.Append(CPPFLAGS="-std=c++14")
 
 LIBPATH="$SECURITY_TRANSFORMS_HOME/lib"
 LIBS=Split( " irdb-core irdb-cfg irdb-util irdb-transform ") 

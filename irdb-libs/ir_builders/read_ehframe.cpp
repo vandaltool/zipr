@@ -36,6 +36,7 @@
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
 #pragma GCC diagnostic pop
+#include <elf.h>
 
 
 #include "fill_in_indtargs.hpp"

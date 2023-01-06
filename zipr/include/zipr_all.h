@@ -46,7 +46,7 @@
 #pragma GCC diagnostic ignored "-Wsign-compare"
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
-#include "elf.h"
+#include <elf.h>
 #pragma GCC diagnostic pop
 
 #include <zipr-sdk>

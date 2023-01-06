@@ -14,7 +14,7 @@ cpppath='''
 
 files=Glob( Dir('.').srcnode().abspath+"/*.cpp")
 
-myenv.Append(CXXFLAGS = " -std=c++11 -Wall ")
+myenv.Append(CXXFLAGS = " -std=c++14 -Wall ")
 
 pgm="thanos.exe"
 

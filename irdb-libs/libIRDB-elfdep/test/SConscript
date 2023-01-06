@@ -11,7 +11,7 @@ myenv.Replace(ZIPR_HOME=os.environ['ZIPR_HOME'])
 myenv.Replace(ZIPR_SDK=os.environ['ZIPR_SDK'])
 myenv.Replace(IRDB_SDK=os.environ['IRDB_SDK'])
 
-myenv.Replace(CXXFLAGS = " -g -std=c++11 -Wall ")
+myenv.Replace(CXXFLAGS = " -g -std=c++14 -Wall ")
 myenv.Append(LINKFLAGS = " -Wl,-unresolved-symbols=ignore-in-shared-libs ")
 
 cpppath=''' 

@@ -13,7 +13,7 @@ cpppath='''
 
 files=Glob( Dir('.').srcnode().abspath+"/*.cpp")
 
-myenv.Append(CPPFLAGS="-std=c++11")
+myenv.Append(CPPFLAGS="-std=c++14")
 
 
 pgm="dump_insns.exe"
