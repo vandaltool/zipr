@@ -26,6 +26,21 @@ stages:
     - ./cicd_testing/builtin-xforms.sh
     - ./cicd_testing/elfdep.sh
 
+  test-arm32: 
+    needs: []
+    stage: clean
+    script:
+      - ./cicd_testing/do-clean.sh 
+      - ./cicd_testing/do-build.sh
+
+test-arm64: 
+    needs: []
+    stage: clean
+    script:
+      - ./cicd_testing/do-clean.sh 
+      - ./cicd_testing/do-build.sh
+      - ./cicd_testing/builtin-xforms.sh
+      
 # per os items
 test-ubuntu18:
   <<: *test
@@ -36,16 +51,6 @@ test-coss9:
   <<: *test
   tags:
     - coss9
-
-test-arm32:
-  <<: *test
-  tags:
-    - arm32
-
-test-arm64:
-  <<: *test
-  tags:
-    - arm64
 
 test-ubuntu20:
   <<: *test
@@ -123,49 +128,6 @@ test-bins-arm64:
         <<: *test_arm_bins
         tags:
             - arm64
-
-
-
-
-# doesn't work yet
-#builtin-xforms-arm32:
-#  <<: *builtin-xforms
-#  tags:
-#    - arm32
-
-builtin-xforms-arm64:
-  <<: *builtin-xforms
-  tags:
-    - arm64
-
-
-#
-# elfdep test
-#
-
-# template
-.elfdep: &elfdep
-  stage: test
-  script:
-
-elfdep-ubuntu18:
-  <<: *elfdep
-  tags:
-    - ubuntu18
-    
-elfdep-coss9:
-  <<: *elfdep
-  tags:
-    - coss9
-elfdep-ubuntu20:
-  <<: *elfdep
-  tags:
-    - ubuntu20
-
-elfdep-ubuntu22:
-  <<: *elfdep
-  tags:
-    - ubuntu22
 
 
 #
