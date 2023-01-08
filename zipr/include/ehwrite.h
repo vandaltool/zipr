@@ -143,7 +143,7 @@ namespace EhWriter
 	class PEEhWriter_t : public EhWriter_t
 	{
 		private:
-			using SehVector_t = vector<unique_ptr<PE_unwind_info_t> > ;
+			using SehVector_t = vector<shared_ptr<PE_unwind_info_t> > ;
 
 			SehVector_t BuildSehVector();
 			void LayoutSehVector (const SehVector_t& seh_vector);
