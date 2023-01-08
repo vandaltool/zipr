@@ -13,56 +13,6 @@ stages:
   - deploy
 
 
-#
-# Cleaning, build, test
-#
-.test: &test
-  needs: []
-  stage: clean
-  script:
-    - ./cicd_testing/do-clean.sh 
-    - ./cicd_testing/do-build.sh
-    - ./cicd_testing/eh-tests.sh
-    - ./cicd_testing/builtin-xforms.sh
-    - ./cicd_testing/elfdep.sh
-
-  test-arm32: 
-    needs: []
-    stage: clean
-    script:
-      - ./cicd_testing/do-clean.sh 
-      - ./cicd_testing/do-build.sh
-
-test-arm64: 
-    needs: []
-    stage: clean
-    script:
-      - ./cicd_testing/do-clean.sh 
-      - ./cicd_testing/do-build.sh
-      - ./cicd_testing/builtin-xforms.sh
-      
-# per os items
-test-ubuntu18:
-  <<: *test
-  tags:
-    - ubuntu18
-
-test-coss9:
-  <<: *test
-  tags:
-    - coss9
-
-test-ubuntu20:
-  <<: *test
-  tags:
-    - ubuntu20
-
-test-ubuntu22:
-  <<: *test
-  tags:
-    - ubuntu22
-
-
 
 #
 # gather artifacts and ship them tox 86 boxes
@@ -114,10 +64,11 @@ protect-arm-ubuntu22:
         stage: test
         script:
             - ./cicd_testing/do-test-bins.sh
-        artifacts:               
+        artifacts:
             expire_in: 1 day
             paths:
                 - artifacts/
+
 
 test-bins-arm32:
         <<: *test_arm_bins
@@ -129,11 +80,78 @@ test-bins-arm64:
         tags:
             - arm64
 
+#
+# Cleaning, build, test
+#
+.test: &test
+  needs: []
+  stage: test
+  script:
+    - ./cicd_testing/do-clean.sh 
+    - ./cicd_testing/do-build.sh
+    - ./cicd_testing/eh-tests.sh
+    - ./cicd_testing/builtin-xforms.sh
+    - ./cicd_testing/elfdep.sh
+
+#
+# gather artifacts and ship them tox 86 boxes
+#
+.test_arm_bins: &test_arm_bins
+        needs: [protect-arm-ubuntu22]
+        stage: test
+        script:
+            - ./cicd_testing/do-test-bins.sh
+        artifacts:               
+            expire_in: 1 day
+            paths:
+                - artifacts/
+
+test-arm32: 
+  needs: []
+  stage: test
+  script:
+    - ./cicd_testing/do-clean.sh 
+    - ./cicd_testing/do-build.sh
+
+test-arm64: 
+    needs: []
+    stage: test
+    script:
+      - ./cicd_testing/do-clean.sh 
+      - ./cicd_testing/do-build.sh
+      - ./cicd_testing/builtin-xforms.sh
+      
+# per os items
+test-ubuntu18:
+  <<: *test
+  tags:
+    - ubuntu18
+
+test-coss9:
+  <<: *test
+  tags:
+    - coss9
+
+test-ubuntu20:
+  <<: *test
+  tags:
+    - ubuntu20
+
+test-ubuntu22:
+  <<: *test
+  tags:
+    - ubuntu22
+
+
+
+
+
 
 #
 # deploy a docker image
 #
 deploy-u22:
+  needs: [test-coss9, test-ubuntu18, test-ubuntu20, test-ubuntu22, test-arm32, test-arm64, test-bins-arm32, test-bins-arm64]
   stage: deploy
   script:
     - ./cicd_testing/do-clean.sh 
