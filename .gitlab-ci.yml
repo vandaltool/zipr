@@ -14,85 +14,49 @@ stages:
 
 
 #
-# Cleaning
+# Cleaning, build, test
 #
-.do-nightly-clean: &do-nightly-clean
+.test: &test
+  needs: []
   stage: clean
   script:
     - ./cicd_testing/do-clean.sh 
-
-# per os items
-do-nightly-clean-ubuntu18:
-  <<: *do-nightly-clean
-  tags:
-    - ubuntu18
-
-do-nightly-clean-coss9:
-  <<: *do-nightly-clean
-  tags:
-    - coss9
-
-do-nightly-clean-arm32:
-  <<: *do-nightly-clean
-  tags:
-    - arm32
-
-do-nightly-clean-arm64:
-  <<: *do-nightly-clean
-  tags:
-    - arm64
-
-do-nightly-clean-ubuntu20:
-  <<: *do-nightly-clean
-  tags:
-    - ubuntu20
-
-do-nightly-clean-ubuntu22:
-  <<: *do-nightly-clean
-  tags:
-    - ubuntu22
-
-
-#
-# Building
-#
-# template
-.do-build: &do-build
-  stage: build
-  script:
     - ./cicd_testing/do-build.sh
-
+    - ./cicd_testing/eh-tests.sh
+    - ./cicd_testing/builtin-xforms.sh
+    - ./cicd_testing/elfdep.sh
 
 # per os items
-do-build-ubuntu18:
-  <<: *do-build
+test-ubuntu18:
+  <<: *test
   tags:
     - ubuntu18
 
-do-build-coss9:
-  <<: *do-build
+test-coss9:
+  <<: *test
   tags:
     - coss9
 
-do-build-arm32:
-  <<: *do-build
+test-arm32:
+  <<: *test
   tags:
     - arm32
 
-do-build-arm64:
-  <<: *do-build
+test-arm64:
+  <<: *test
   tags:
     - arm64
 
-do-build-ubuntu20:
-  <<: *do-build
+test-ubuntu20:
+  <<: *test
   tags:
     - ubuntu20
 
-do-build-ubuntu22:
-  <<: *do-build
+test-ubuntu22:
+  <<: *test
   tags:
     - ubuntu22
+
 
 
 #
@@ -121,23 +85,27 @@ gather-bins-arm64:
 # gather artifacts and ship them tox 86 boxes
 #
 .protect-arm-bins: &prot_bins
+        needs: [gather-bins-arm32, gather-bins-arm64]
         stage: protect_bins
         script:
+	    - ./cicd_testing/do-clean.sh 
+	    - ./cicd_testing/do-build.sh
             - ./cicd_testing/do-prot-bins.sh
         artifacts:               
             expire_in: 1 day
             paths:
                 - artifacts/
 
-protect-arm-ubuntu18:
+protect-arm-ubuntu22:
         <<: *prot_bins
         tags:
-            - ubuntu18
+            - ubuntu22
 
 #
 # gather artifacts and ship them tox 86 boxes
 #
 .test_arm_bins: &test_arm_bins
+        needs: [protect-arm-ubuntu22]
         stage: test
         script:
             - ./cicd_testing/do-test-bins.sh
@@ -157,61 +125,6 @@ test-bins-arm64:
             - arm64
 
 
-#
-# test_quick for EH handling
-#
-.basic_eh_tests: &basic_eh-tests
-  stage: test
-  script:
-    - ./cicd_testing/eh-tests.sh
-
-basic_eh-tests-ubuntu18:
-  <<: *basic_eh-tests
-  tags:
-    - ubuntu18
-
-basic_eh-tests-coss9:
-  <<: *basic_eh-tests
-  tags:
-    - coss9
-
-basic_eh-tests-ubuntu20:
-  <<: *basic_eh-tests
-  tags:
-    - ubuntu20
-
-basic_eh-tests-ubuntu22:
-  <<: *basic_eh-tests
-  tags:
-    - ubuntu22
-
-#
-# test_cmds.sh fixcalls
-#
-.builtin-xforms: &builtin-xforms
-  stage: test
-  script:
-    - ./cicd_testing/builtin-xforms.sh
-
-builtin-xforms-ubuntu18:
-  <<: *builtin-xforms
-  tags:
-    - ubuntu18
-
-builtin-xforms-coss9:
-  <<: *builtin-xforms
-  tags:
-    - coss9
-
-builtin-xforms-ubuntu20:
-  <<: *builtin-xforms
-  tags:
-    - ubuntu20
-
-builtin-xforms-ubuntu22:
-  <<: *builtin-xforms
-  tags:
-    - ubuntu22
 
 
 # doesn't work yet
@@ -234,7 +147,6 @@ builtin-xforms-arm64:
 .elfdep: &elfdep
   stage: test
   script:
-    - ./cicd_testing/elfdep.sh
 
 elfdep-ubuntu18:
   <<: *elfdep
@@ -262,6 +174,8 @@ elfdep-ubuntu22:
 deploy-u22:
   stage: deploy
   script:
+    - ./cicd_testing/do-clean.sh 
+    - ./cicd_testing/do-build.sh
     - ./cicd_testing/deploy.sh
   tags:
     - ubuntu22
