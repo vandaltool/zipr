@@ -88,8 +88,8 @@ gather-bins-arm64:
         needs: [gather-bins-arm32, gather-bins-arm64]
         stage: protect_bins
         script:
-	    - ./cicd_testing/do-clean.sh 
-	    - ./cicd_testing/do-build.sh
+            - ./cicd_testing/do-clean.sh 
+            - ./cicd_testing/do-build.sh
             - ./cicd_testing/do-prot-bins.sh
         artifacts:               
             expire_in: 1 day
