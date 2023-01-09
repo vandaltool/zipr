@@ -112,6 +112,8 @@ test-arm32:
   script:
     - ./cicd_testing/do-clean.sh 
     - ./cicd_testing/do-build.sh
+  tags:
+    - arm32
 
 test-arm64: 
     needs: []
@@ -120,6 +122,8 @@ test-arm64:
       - ./cicd_testing/do-clean.sh 
       - ./cicd_testing/do-build.sh
       - ./cicd_testing/builtin-xforms.sh
+  tags:
+    - arm64
       
 # per os items
 test-ubuntu18:
