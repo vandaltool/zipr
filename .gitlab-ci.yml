@@ -6,19 +6,19 @@ after_script:
   - "echo Test Complete."
 
 stages:
-  - clean
+  - gather
   - build
-  - protect_bins
+  - cross-protect
   - test
   - deploy
 
 
 
 #
-# gather artifacts and ship them tox 86 boxes
+# gather artifacts and ship them to x86 boxes
 #
 .gather-bins: &do_gather
-        stage: build
+        stage: gather
         script:
             - ./cicd_testing/do-gather-bins.sh
         artifacts:               
@@ -37,11 +37,11 @@ gather-bins-arm64:
             - arm64
 
 #
-# gather artifacts and ship them tox 86 boxes
+# protect gathered arm binaries on an x86 box.
 #
 .protect-arm-bins: &prot_bins
         needs: [gather-bins-arm32, gather-bins-arm64]
-        stage: protect_bins
+        stage: cross-protect
         script:
             - ./cicd_testing/do-clean.sh 
             - ./cicd_testing/do-build.sh
@@ -57,7 +57,7 @@ protect-arm-ubuntu22:
             - ubuntu22
 
 #
-# gather artifacts and ship them tox 86 boxes
+# Test the cross-protected binaries.
 #
 .test_arm_bins: &test_arm_bins
         needs: [protect-arm-ubuntu22]
@@ -81,7 +81,7 @@ test-bins-arm64:
             - arm64
 
 #
-# Cleaning, build, test
+# Cleaning, build, test for x86 on various OSes
 #
 .test: &test
   needs: []
@@ -93,18 +93,7 @@ test-bins-arm64:
     - ./cicd_testing/builtin-xforms.sh
     - ./cicd_testing/elfdep.sh
 
-#
-# gather artifacts and ship them tox 86 boxes
-#
-.test_arm_bins: &test_arm_bins
-        needs: [protect-arm-ubuntu22]
-        stage: test
-        script:
-            - ./cicd_testing/do-test-bins.sh
-        artifacts:               
-            expire_in: 1 day
-            paths:
-                - artifacts/
+
 
 test-arm32: 
   needs: []
@@ -122,8 +111,8 @@ test-arm64:
       - ./cicd_testing/do-clean.sh 
       - ./cicd_testing/do-build.sh
       - ./cicd_testing/builtin-xforms.sh
-  tags:
-    - arm64
+    tags:
+      - arm64
       
 # per os items
 test-ubuntu18:
@@ -145,10 +134,6 @@ test-ubuntu22:
   <<: *test
   tags:
     - ubuntu22
-
-
-
-
 
 
 #
