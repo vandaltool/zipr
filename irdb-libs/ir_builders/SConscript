@@ -24,7 +24,7 @@ if 'build_tools' not in myenv or myenv['build_tools'] is None or int(myenv['buil
 
 	myenv=myenv.Clone(CPPPATH=Split(cpppath))
 
-	myenv.Append(CCFLAGS=" -std=c++11 -Wall")
+	myenv.Append(CCFLAGS=" -std=c++14 -Wall")
 
 	ehframe=myenv.SharedObject("read_ehframe.cpp");
 	split_eh_frame=myenv.SharedObject("split_eh_frame.cpp");

@@ -82,7 +82,7 @@ typename PEEhWriter_t<ptrsize>::SehVector_t  PEEhWriter_t<ptrsize>::BuildSehVect
 	// build the unwind directory and unwind info
 	auto insns_with_frame      = 0u;
 	auto current_unwind_info   = unique_ptr<PE_unwind_info_t>();
-	auto all_unwind_infos      = vector<unique_ptr<PE_unwind_info_t> >();
+	auto all_unwind_infos      = PEEhWriter_t<ptrsize>::SehVector_t();
 
 
 	// generate an unwind info struct for each chunk of code in the output program.

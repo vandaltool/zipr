@@ -56,7 +56,7 @@ libpath='''
 	$SECURITY_TRANSFORMS_HOME/lib
         '''
 
-myenv.Append(CCFLAGS=" -Wall -std=c++11 -fmax-errors=2")
+myenv.Append(CCFLAGS=" -Wall -std=c++14 -fmax-errors=2")
 myenv.Append(LIBPATH=libpath)
 
 myenv=myenv.Clone(CPPPATH=Split(cpppath))
