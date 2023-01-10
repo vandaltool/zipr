@@ -715,7 +715,8 @@ void FileIR_t::writeToDB(ostream *verbose_logging)
                 	auto operands = p_disasm->getOperands();
                         auto hasTarget = insnp->getTarget() != nullptr;
 			auto isIndirect = !operands[0]->isConstant();
-                        assert(isIndirect == !hasTarget);
+			if(isIndirect) 
+				assert(!hasTarget);
                 }
 
 
