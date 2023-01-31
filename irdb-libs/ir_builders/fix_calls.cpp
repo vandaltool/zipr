@@ -960,6 +960,16 @@ class FixCalls_t : public TransformStep_t
 		DatabaseID_t variant_id=BaseObj_t::NOT_IN_DATABASE;
 
 	public:
+		FixCalls_t()
+		{
+			const auto exe_reader = new EXEIO::exeio;
+			assert(exe_reader);
+			exe_reader->load((char*)"a.ncexe");
+			const auto has_pclntab = exe_reader->sections[".gopclntab"] != NULL;
+			if(has_pclntab)
+				fix_all=true;
+		}
+
 		int parseArgs(const vector<string> step_args)
 		{
 
