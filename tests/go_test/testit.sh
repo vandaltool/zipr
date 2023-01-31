@@ -10,10 +10,14 @@ testone()
 
 	$PSZ $PUT ./$PUT.zipr $OPTS
 	diff <(./$PUT 2>&1 ) <(./$PUT.zipr 2>&1 )
+
+	# turn off exit-on-error because some programs err and we need their exit code.
+	set +e
 	./$PUT > /dev/null 2>&1
 	local putRes=$?
 	./$PUT.zipr > /dev/null 2>&1
 	local putResZipr=$?
+	set -e
 
 	if [[ $putRes != $putResZipr ]];
 	then

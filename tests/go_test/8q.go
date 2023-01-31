@@ -13,7 +13,7 @@ type Point struct {
 var results = make([][]Point, 0)
 
 func main() {
-	Solve(8)
+	Solve(6)
 
 }
 
