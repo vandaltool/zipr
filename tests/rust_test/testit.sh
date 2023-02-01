@@ -6,7 +6,7 @@ testone()
 	local OPTS=$2
 	set -x
 	set -e
-	go build $PUT.go
+	rustc $PUT.rs -o $PUT
 
 	$PSZ $PUT ./$PUT.zipr $OPTS
 	diff <(./$PUT 2>&1 ) <(./$PUT.zipr 2>&1 )
@@ -30,7 +30,7 @@ testone()
 
 main()
 {
-	for bench in panic hello
+	for bench in 8q hello throw
 	do
 		for opts in "-c rida" "" 
 		do
