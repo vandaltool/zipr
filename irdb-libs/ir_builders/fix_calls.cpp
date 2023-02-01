@@ -962,7 +962,7 @@ class FixCalls_t : public TransformStep_t
 	public:
 		FixCalls_t()
 		{
-			const auto exe_reader = new EXEIO::exeio;
+			const auto exe_reader = make_unique<EXEIO::exeio>();
 			assert(exe_reader);
 			exe_reader->load((char*)"a.ncexe");
 			const auto has_pclntab = exe_reader->sections[".gopclntab"] != NULL;
@@ -1068,13 +1068,13 @@ class FixCalls_t : public TransformStep_t
 					int elfoid=firp->getFile()->getELFOID();
 					pqxx::largeobject lo(elfoid);
 					lo.to_file(pqxx_interface->getTransaction(),"readeh_tmp_file.exe");
-					EXEIO::exeio*    elfiop=new EXEIO::exeio;
+					const auto    elfiop=make_unique<EXEIO::exeio>();
 					elfiop->load(string("readeh_tmp_file.exe"));
 					EXEIO::dump::header(cout,*elfiop);
 					EXEIO::dump::section_headers(cout,*elfiop);
 					// do eh_frame reading as required. 
 					if(do_eh_frame)
-						read_ehframe(firp, elfiop);
+						read_ehframe(firp, elfiop.get());
 					setFrameSizes(firp);
 
 					fix_all_calls(firp,fix_all);
@@ -1191,7 +1191,7 @@ void range(VirtualOffset_t start, VirtualOffset_t end)
 extern "C"
 shared_ptr<TransformStep_t> getTransformStep(void)
 {
-        curInvocation.reset(new FixCalls_t());
+        curInvocation = make_shared<FixCalls_t>();
         return curInvocation;
 }
 
