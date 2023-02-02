@@ -907,13 +907,19 @@ bool ElfWriterImpl<T_Elf_Ehdr,T_Elf_Phdr,T_Elf_Addr,T_Elf_Shdr,T_Elf_Sym, T_Elf_
 {
 	// check to see if there's room on the first page for 
 	unsigned int phdr_size=DetermineMaxPhdrSize();
-	if(page_align(min_addr)+sizeof(T_Elf_Ehdr)+phdr_size > min_addr)
+	const auto min_addr_start_page = page_align(min_addr);
+	const auto total_header_size=phdr_size+sizeof(T_Elf_Ehdr);
+	const auto header_end_address =	min_addr_start_page + total_header_size;
+	if(header_end_address >= min_addr)
 		return false;
+
 	// this is an uncommon case -- we are typically adding
 	// segments and so the segment map won't fit on the first page.
-	// if this assertion hits, email jdhiser@gmail.com and attach your input pgm,
-	// then convert this to a return false to avoid assertion until he fixes it;
-	assert(0);
+	// note:  we've found this to be more common in some Go programs because
+	// the linker just leaves extra space, so we're implementing it now.
+
+	IRDB_SDK::VirtualOffset_t new_phdr_addr=(T_Elf_Addr)min_addr_start_page+sizeof(T_Elf_Ehdr);
+	return CreateNewPhdrs_internal(min_addr, max_addr, 0x0, false, sizeof(T_Elf_Ehdr), new_phdr_addr);
 }
 
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
