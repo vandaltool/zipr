@@ -941,10 +941,10 @@ I10:	ldrls	pc, [pc, r2, lsl #2]
 
 		// look for i9
 		auto i9 = (Instruction_t *)nullptr;
-		if (!backup_until(string() + "cmp " + i10_index_reg + ",", /* look for this pattern. */
-						  i9,									   /* find i9 */
-						  i10,									   /* before I10 */
-						  "^" + i10_index_reg + "$"				   /* stop if i10_reg set */
+		if (!backup_until(string() + "cmp " + i10_index_reg + ",",  /* look for this pattern. */
+						  i9,                       /* find i9 */
+						  i10,                      /* before I10 */
+						  "^" + i10_index_reg + "$" /* stop if i10_reg set */
 						  ))
 		{
 			return;
@@ -1061,10 +1061,10 @@ I10:	addls	pc, [pc, r2, lsl #2]
 
 		// look for i9
 		auto i9 = (Instruction_t *)nullptr;
-		if (!backup_until(string() + "cmp " + i10_index_reg + ",", /* look for this pattern. */
-						  i9,									   /* find i9 */
-						  i10,									   /* before I10 */
-						  "^" + i10_index_reg + "$"				   /* stop if i10_reg set */
+		if (!backup_until(string() + "cmp " + i10_index_reg + ",",  /* look for this pattern. */
+						  i9,                       /* find i9 */
+						  i10,                      /* before I10 */
+						  "^" + i10_index_reg + "$" /* stop if i10_reg set */
 						  ))
 		{
 			return;
@@ -1206,10 +1206,10 @@ notes:
 
 		// try to find I8
 		auto i8 = (Instruction_t *)nullptr;
-		if (!backup_until(string() + "adr " + offset_reg + ",", /* look for this pattern. */
-						  i8,									/* find i8 */
-						  i9,									/* before I9 */
-						  "^" + offset_reg + "$"				/* stop if offste_reg set */
+		if (!backup_until(string() + "adr " + offset_reg + ",",  /* look for this pattern. */
+						  i8,                    /* find i8 */
+						  i9,                    /* before I9 */
+						  "^" + offset_reg + "$" /* stop if offste_reg set */
 						  ))
 			return;
 
@@ -1222,9 +1222,9 @@ notes:
 		// try to find I7
 		auto i7 = (Instruction_t *)nullptr;
 		if (!backup_until(string() + "(ldrh " + table_entry_reg + ",)|(ldrb " + table_entry_reg + ",)", /* look for this pattern. */
-						  i7,																			/* find i7 */
-						  i9,																			/* before I9 */
-						  "^" + table_entry_reg + "$"													/* stop if index_reg set */
+						  i7,                         /* find i7 */
+						  i9,                         /* before I9 */
+						  "^" + table_entry_reg + "$" /* stop if index_reg set */
 						  ))
 			return;
 
@@ -1249,11 +1249,12 @@ notes:
 
 		// try to find I6
 		auto i6 = (Instruction_t *)nullptr;
-		if (backup_until(string() + "add " + table_base_reg + ",", /* look for this pattern. */
-						 i6,									   /* find i6 */
-						 i7,									   /* before I7 */
-						 "^" + table_base_reg + "$",			   /* stop if table_base_reg set */
-						 true,									   /* look hard -- recursely examine up to 10k instructions and 500 blocks */
+		if (backup_until(string() + "add " + table_base_reg + ",",   /* look for this pattern. */
+						 i6,                         /* find i6 */
+						 i7,                         /* before I7 */
+						 "^" + table_base_reg + "$", /* stop if table_base_reg set */
+						 "", 			     /* no opcodes */
+						 true,                       /* look hard -- recursely examine up to 10k instructions and 500 blocks */
 						 10000,
 						 500))
 		{
@@ -1268,10 +1269,11 @@ notes:
 			// try to find I5
 			auto i5 = (Instruction_t *)nullptr;
 			if (backup_until(string() + "adrp " + table_page_reg + ",", /* look for this pattern. */
-							 i5,										/* find i5 */
-							 i6,										/* before I6 */
-							 "^" + table_page_reg + "$",				/* stop if table_page set */
-							 true,										/* look hard -- recursely examine up to 10k instructions and 500 blocks */
+							 i5,                        /* find i5 */
+							 i6,                        /* before I6 */
+							 "^" + table_page_reg + "$",/* stop if table_page set */
+						 	"", 			    /* no opcodes */
+							 true,                      /* look hard -- recursely examine up to 10k instructions and 500 blocks */
 							 10000,
 							 500))
 			{
@@ -1293,11 +1295,12 @@ notes:
 		}
 		// could not find i5/i6, it's possible (likely) that the table was just spilled and is being
 		// reloaded from the stack.  check for that.
-		else if (backup_until(string() + "ldr " + table_base_reg + ",", /* look for this pattern. */
-							  i6,										/* find i6 -- the reload of the table */
-							  i7,										/* before I7 */
-							  "^" + table_base_reg + "$",				/* stop if table_base_reg set */
-							  true,										/* look hard -- recursely examine up to 10k instructions and 500 blocks */
+		else if (backup_until(string() + "ldr " + table_base_reg + ",",       /* look for this pattern. */
+							  i6,                         /* find i6 -- the reload of the table */
+							  i7,                         /* before I7 */
+							  "^" + table_base_reg + "$", /* stop if table_base_reg set */
+						 	  "", 			      /* no opcodes */
+							  true,                       /* look hard -- recursely examine up to 10k instructions and 500 blocks */
 							  10000,
 							  500))
 		{
@@ -1331,11 +1334,12 @@ notes:
 			}
 		}
 		// also possible we couldn't find it spilled to the stack, and it's instead spilled to an FP register.
-		else if (backup_until(string() + "fmov " + table_base_reg + ",", /* look for this pattern. */
-							  i6,										 /* find i6 -- the reload of the table from an FP reg*/
-							  i7,										 /* before I7 */
-							  "^" + table_base_reg + "$",				 /* stop if table_base_reg set */
-							  true,										 /* look hard -- recursely examine up to 10k instructions and 500 blocks */
+		else if (backup_until(string() + "fmov " + table_base_reg + ",",      /* look for this pattern. */
+							  i6,                         /* find i6 -- the reload of the table from an FP reg*/
+							  i7,                         /* before I7 */
+							  "^" + table_base_reg + "$", /* stop if table_base_reg set */
+						 	  "", 			      /* no opcodes */
+							  true,                       /* look hard -- recursely examine up to 10k instructions and 500 blocks */
 							  10000,
 							  500))
 		{
@@ -1368,19 +1372,21 @@ notes:
 		// start by finding i2.
 		auto i2 = (Instruction_t *)nullptr;
 		if (backup_until(string() + "(b.hi)|(b.ls)", /* look for this pattern. */
-						 i2,						 /* find i2 */
-						 i7,						 /* before I7 */
-						 "",						 /* don't stop for reg sets, just look for control flow */
-						 true						 /* recurse into other blocks */
+						 i2,/* find i2 */
+						 i7,/* before I7 */
+						 "",/* don't stop for reg sets, just look for control flow */
+						 "",/* no opcode */
+						 true/* recurse into other blocks */
 						 ))
 		{
 			/* find i1 */
 			auto i1 = (Instruction_t *)nullptr;
-			if (backup_until(string() + "cmp ",			  /* look for this pattern. */
-							 i1,						  /* find i1 */
-							 i2,						  /* before I2 */
+			if (backup_until(string() + "cmp ",                           /* look for this pattern. */
+							 i1,                          /* find i1 */
+							 i2,                          /* before I2 */
 							 "(cmp)|(adds)|(subs)|(cmn)", /* stop for CC-setting insns -- fixme, probably not the right syntax for stop-if */
-							 true						  /* recurse into other blocks */
+							 "",                          /* no opcode stopping */
+							 true                         /* recurse into other blocks */
 							 ))
 			{
 				// try to verify that there's data flow from the ldr[bh] to the cmp
@@ -1389,11 +1395,12 @@ notes:
 				while (true)
 				{
 					auto new_i1 = (Instruction_t *)nullptr;
-					if (backup_until(string() + "cmp " + next_reg + ",", /* look for this pattern. */
-									 new_i1,							 /* find i1 */
-									 prev_insn,							 /* before prev_insn */
-									 "^" + next_reg + "$",				 /* stop if next_reg is set */
-									 true								 /* recurse into other blocks */
+					if (backup_until(string() + "cmp " + next_reg + ",",   /* look for this pattern. */
+									 new_i1,               /* find i1 */
+									 prev_insn,            /* before prev_insn */
+									 "^" + next_reg + "$", /* stop if next_reg is set */
+									 "",                   /* no opcode stopping */
+									 true                  /* recurse into other blocks */
 									 ))
 					{
 						if (i1 != new_i1) /* sanity check that we got to the same place */
@@ -1406,11 +1413,12 @@ notes:
 						}
 						break;
 					}
-					else if (backup_until(string() + "mov " + next_reg + ",", /* look for this pattern. */
-										  new_i1,							  /* find i1 */
-										  prev_insn,						  /* before I2 */
-										  "^" + next_reg + "$",				  /* stop if next_reg is set */
-										  true								  /* recurse into other blocks */
+					else if (backup_until(string() + "mov " + next_reg + ",",      /* look for this pattern. */
+										  new_i1,              /* find i1 */
+										  prev_insn,           /* before I2 */
+										  "^" + next_reg + "$",/* stop if next_reg is set */
+									 	  "",                  /* no opcode stopping */
+										  true                 /* recurse into other blocks */
 										  ))
 					{
 						// track backwards on reg 2 if we find a mov <reg1>, <reg2>
@@ -2337,7 +2345,7 @@ V2:
 			"|lea " + table_index_reg_str + "," +
 			"|sub " + table_index_reg_str + "," +
 			")";
-		const auto table_index_stop_if = string() + "^" + table_index_reg_str + "$";
+		const auto table_index_stop_if = "^"s + table_index_reg_str + "$";
 
 		//
 		// this was completely broken because argument2 had a null mnemonic, which we found out because getOperand(1) threw an exception.
@@ -2469,9 +2477,9 @@ V2:
 
 		auto found_leas = InstructionSet_t();
 
-		if (backup_until(lea_string1.c_str(), I5, I6, "", true))
+		if (backup_until(lea_string1.c_str(), I5, I6, "", "", true))
 			found_leas.insert(I5);
-		if (backup_until(lea_string2.c_str(), I5, I6, "", true))
+		if (backup_until(lea_string2.c_str(), I5, I6, "", "", true))
 			found_leas.insert(I5);
 
 		// if we didn't find anything yet, ....
@@ -2667,7 +2675,7 @@ V2:
 		auto table_size = 255U;
 		auto found_table_size = false;
 		auto I1 = static_cast<Instruction_t *>(nullptr);
-		if (backup_until(cmp_str.c_str(), I1, table_load_instruction, bound_stopif))
+		if (backup_until(cmp_str.c_str(), I1, table_load_instruction, bound_stopif,"^jne$|^je$|^jeq$"))
 		{
 			const auto d1 = DecodedInstruction_t::factory(I1);
 			table_size = d1->getImmediate();
@@ -4433,11 +4441,11 @@ V2:
 		page_only = true;
 
 		auto adrp_insn = (Instruction_t *)nullptr;
-		if (backup_until(string() + "adrp " + reg + ",", /* to find */
-						 adrp_insn,						 /* return insn here */
-						 insn,							 /* look before here */
-						 "^" + reg + "$",				 /* stop if reg is set */
-						 true))							 /* try hard to find the other half, more expensive */
+		if (backup_until(string() + "adrp " + reg + ",",     /* to find */
+						 adrp_insn,          /* return insn here */
+						 insn,               /* look before here */
+						 "^" + reg + "$", "",/* stop if reg is set */
+						 true))              /* try hard to find the other half, more expensive */
 		{
 			assert(adrp_insn);
 			const auto adrp_disasm = DecodedInstruction_t::factory(adrp_insn);
@@ -4452,11 +4460,11 @@ V2:
 		}
 
 		auto add_insn = (Instruction_t *)nullptr;
-		if (backup_until(string() + "add " + reg + ",", /* to find */
-						 add_insn,						/* return insn here */
-						 insn,							/* look before here */
-						 "^" + reg + "$",				/* stop if reg is set */
-						 true))							/* try hard to find the other half, more expensive */
+		if (backup_until(string() + "add " + reg + ",",      /* to find */
+						 add_insn,           /* return insn here */
+						 insn,               /* look before here */
+						 "^" + reg + "$", "",/* stop if reg is set */
+						 true))	             /* try hard to find the other half, more expensive */
 		{
 			assert(add_insn);
 			const auto add_disasm = DecodedInstruction_t::factory(add_insn);
@@ -4474,11 +4482,11 @@ V2:
 
 			// try to find an adrp
 			auto adrp_insn = (Instruction_t *)nullptr;
-			if (!backup_until(string() + "adrp " + add_op1_reg + ",", /* to find */
-							  adrp_insn,							  /* return insn here */
-							  add_insn,								  /* look before here */
-							  "^" + add_op1_reg + "$",				  /* stop if reg is set */
-							  true))								  /* try hard to find the other half, more expensive */
+			if (!backup_until(string() + "adrp " + add_op1_reg + ",",     /* to find */
+							  adrp_insn,                  /* return insn here */
+							  add_insn,                   /* look before here */
+							  "^" + add_op1_reg + "$", "",/* stop if reg is set */
+							  true))                      /* try hard to find the other half, more expensive */
 				return false;
 			assert(adrp_insn);
 
@@ -4551,11 +4559,11 @@ V2:
 
 			// try to find an adrp
 			auto adrp_insn = (Instruction_t *)nullptr;
-			if (!backup_until(string() + "adrp " + op1_reg + ",", /* to find */
-							  adrp_insn,						  /* return insn here */
-							  insn,								  /* look before here */
-							  "^" + op1_reg + "$",				  /* stop if reg is set */
-							  true))							  /* try hard to find the other half, more expensive */
+			if (!backup_until(string() + "adrp " + op1_reg + ",",      /* to find */
+							  adrp_insn,               /* return insn here */
+							  insn,                    /* look before here */
+							  "^" + op1_reg + "$", "", /* stop if reg is set */
+							  true))                   /* try hard to find the other half, more expensive */
 				continue;
 			assert(adrp_insn);
 
