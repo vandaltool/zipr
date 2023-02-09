@@ -30,7 +30,7 @@ testone()
 
 main()
 {
-	for bench in 8q hello throw
+	for bench in hangman 8q hello throw
 	do
 		for opts in "-c rida" "" 
 		do
