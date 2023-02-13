@@ -59,13 +59,15 @@ void calc_preds(FileIR_t* firp)
 }
 
 
-bool backup_until(const string &insn_type_regex_str, 
-		  Instruction_t *& prev, 
-		  Instruction_t* orig, 
-		  const string & stop_if_set="", 
-		  bool recursive=false, 
-		  uint32_t max_insns=10000u, 
-		  uint32_t max_recursions=5u)
+// search for an expression in prior instructions.
+bool backup_until(const string &insn_type_regex_str, // what to search for 
+		  Instruction_t *& prev,             // output param -- the instruction we found.
+		  Instruction_t* orig,               // where to start the search.
+		  const string & stop_if_set="",     // stop if an operand that's written matches this expression.
+		  const string & stop_if_opcode="",  // stop if an opcode matches this expression
+		  bool recursive=false,              // search recursively?
+		  uint32_t max_insns=10000u,         // max number of instructions to search through.
+		  uint32_t max_recursions=5u)        // make number of blocks to recusive into
 {
 
 	const auto find_or_build_regex=[&] (const string& s) -> regex_t&
@@ -101,8 +103,9 @@ bool backup_until(const string &insn_type_regex_str,
 
 
 	// build regexs.
-	const auto &preg            = find_or_build_regex(insn_type_regex_str);
-	const auto &stop_expression = find_or_build_regex(stop_if_set);
+	const auto &preg                    = find_or_build_regex(insn_type_regex_str);
+	const auto &stop_operand_expression = find_or_build_regex(stop_if_set);
+	const auto &stop_opcode_expression  = find_or_build_regex(stop_if_opcode);
 
 
 	prev=orig;
@@ -122,14 +125,18 @@ bool backup_until(const string &insn_type_regex_str,
        		if(regexec(&preg, disasm->getDisassembly().c_str(), 0, nullptr, 0) == 0)
 			return true;
 
+		// if we have a stop_if_set expression, check operands for the stop condition.
 		if(stop_if_set!="")
 		{
 			for(const auto &operand : disasm->getOperands())
 			{
-				if(operand->isWritten() && regexec(&stop_expression, operand->getString().c_str(), 0, nullptr, 0) == 0)
+				if(operand->isWritten() && regexec(&stop_operand_expression, operand->getString().c_str(), 0, nullptr, 0) == 0)
 					return false;
 			}
 		}
+		// if we have a stop_if_opcode expresison, check the opcode to see if it matches.
+		if(stop_if_opcode!="" && regexec(&stop_opcode_expression, disasm->getMnemonic().c_str(), 0, nullptr, 0) == 0)
+			return false;
 
 		// otherwise, try backing up again.
 	}
@@ -149,11 +156,14 @@ bool backup_until(const string &insn_type_regex_str,
 			{
 				for(const auto &operand : disasm->getOperands())
 				{
-					if(operand->isWritten() && regexec(&stop_expression, operand->getString().c_str(), 0, nullptr, 0) == 0)
+					if(operand->isWritten() && regexec(&stop_operand_expression, operand->getString().c_str(), 0, nullptr, 0) == 0)
 						return false;
 				}
 			}
-			if(backup_until(insn_type_regex_str, prev, pred, stop_if_set, recursive, max_insns, max_recursions/mypreds.size()))
+			// if we have a stop_if_opcode expresison, check the opcode to see if it matches.
+			if(stop_if_opcode!="" && regexec(&stop_opcode_expression, disasm->getMnemonic().c_str(), 0, nullptr, 0) == 0)
+				return false;
+			if(backup_until(insn_type_regex_str, prev, pred, stop_if_set, stop_if_opcode, recursive, max_insns, max_recursions/mypreds.size()))
 				return true;
 
 			// reset for next call
