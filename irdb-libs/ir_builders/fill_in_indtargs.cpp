@@ -2347,16 +2347,10 @@ V2:
 			")";
 		const auto table_index_stop_if = "^"s + table_index_reg_str + "$";
 
-		//
-		// this was completely broken because argument2 had a null mnemonic, which we found out because getOperand(1) threw an exception.
-		// i suspect it's attempting to find a compare of operand1 on the RHS of a compare, but i need better regex foo to get that.
-		// for now, repeat what was working.
-		//
-		// We can't just find any random compare, as we might accidentally mark a switch complete w/o enough information.
-		// Worse, we may cause the switch table scanner below to premature exit, and thus miss pins.
-		//
-
-		if (!backup_until(table_index_str.c_str(), I7, I8, table_index_stop_if))
+		// we found a case in a rust program (xsv) where the switch table index
+		// was loop invariant and hoisted outside of the loop.  Thus, breaking I8 away from I6-I7.
+		// So, we search a bit harder for I7 here.
+		if (!backup_until(table_index_str.c_str(), I7, I8, table_index_stop_if, "", true))
 			return;
 
 		const auto d7 = DecodedInstruction_t::factory(I7);
