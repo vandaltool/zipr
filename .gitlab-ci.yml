@@ -94,6 +94,7 @@ test-bins-arm64:
     - ./cicd_testing/elfdep.sh
     - ./cicd_testing/go_tests.sh
     - ./cicd_testing/rust_tests.sh
+    - ./cicd_testing/libc_test.sh
 
 
 

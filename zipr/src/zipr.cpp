@@ -360,7 +360,7 @@ void ZiprImpl_t::CreateExecutableScoops(const std::map<RangeAddress_t, int> &ord
 
 		// setup a scoop for this section.
 		// zero init is OK, after zipring we'll update with the right bytes.
-		const auto text_name     = count == 1 ? string(".text") : string(".zipr_text_")+to_string(count++);
+		const auto text_name     = count++ == 0u ? string(".text") : string(".zipr_text_")+to_string(count);
 		const auto text_contents = string(text_end->getVirtualOffset() - text_start->getVirtualOffset()+1, '\x00');
 		const auto text_scoop    = m_firp->addNewDataScoop(text_name,  text_start, text_end, nullptr, 5 /*R-X*/, false, text_contents);
 	
