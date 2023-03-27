@@ -89,12 +89,12 @@ test-bins-arm64:
   script:
     - ./cicd_testing/do-clean.sh 
     - ./cicd_testing/do-build.sh
+    - ./cicd_testing/libc_test.sh
     - ./cicd_testing/eh-tests.sh
     - ./cicd_testing/builtin-xforms.sh
     - ./cicd_testing/elfdep.sh
     - ./cicd_testing/go_tests.sh
     - ./cicd_testing/rust_tests.sh
-    - ./cicd_testing/libc_test.sh
 
 
 
