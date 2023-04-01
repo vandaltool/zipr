@@ -54,7 +54,7 @@ Export('env')
 
 if not env.GetOption('clean'):
 	# get the libcapstone.so.[version] file regardless of the version extension
-	libcapstone_path = Glob(os.environ['SECURITY_TRANSFORMS_HOME']+'/third_party/capstone/libcapstone.so.*')
+	libcapstone_path = Glob(os.environ['SECURITY_TRANSFORMS_HOME']+'/third_party/capstone/libcapstone.so.*') 
 	assert len(libcapstone_path) <= 1, "More than one candidate for libcapstone.so.[version]?!"
 	assert len(libcapstone_path) != 0, "No candidates for libcapstone.so.[version]?!"
 
@@ -64,7 +64,7 @@ if not env.GetOption('clean'):
 	libcapstone=os.environ['SECURITY_TRANSFORMS_HOME']+"/lib/libcapstone.so"
 
 	# get the libkeystone.so.[version] file regardless of the version extension
-	libkeystone_path = Glob(os.environ['SECURITY_TRANSFORMS_HOME']+'/lib/usr/local/lib*/libkeystone.so.*')
+	libkeystone_path =  Glob(os.environ['SECURITY_TRANSFORMS_HOME']+'/lib/usr/local/lib*/libkeystone.so.*') + Glob(os.environ['SECURITY_TRANSFORMS_HOME']+'/lib/usr/local/lib*/*/libkeystone.so.*')
 	assert len(libkeystone_path) <= 1, "More than one candidate for libkeystone.so.[version]?!"
 	assert len(libkeystone_path) != 0, "No candidates for libkeystone.so.[version]?!"
 
