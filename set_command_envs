@@ -8,4 +8,5 @@ if [[ -z $PS_TAR ]] ; then export PS_TAR=tar; fi
 if [[ -z $PS_MD5SUM ]] ; then export PS_MD5SUM=md5sum; fi
 if [[ -z $PS_TIMEOUT ]] ; then export PS_TIMEOUT=timeout; fi
 if [[ -z $PS_GREP ]] ; then export PS_GREP=grep; fi
+if [[ -z $PS_GCC ]] ; then export PS_GCC=gcc; fi
 
