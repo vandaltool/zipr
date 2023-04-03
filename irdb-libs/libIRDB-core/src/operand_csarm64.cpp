@@ -51,12 +51,23 @@ string DecodedOperandCapstoneARM64_t::getString() const
         {
                 case ARM64_OP_REG:
                         return string(cs_reg_name(handle, op.reg));
-                case ARM64_OP_REG_MRS:
-                case ARM64_OP_REG_MSR:
-                case ARM64_OP_FP:
-			return string("fpcr");
                 case ARM64_OP_IMM:
+		case ARM64_OP_CIMM:
                         return to_string(op.imm);
+		case ARM64_OP_FP:
+			return to_string(op.fp);
+		case ARM64_OP_REG_MRS:
+			return "MRS"s + to_string(op.reg);
+		case ARM64_OP_REG_MSR:
+			return "MSR"s + to_string(op.reg);
+		case ARM64_OP_PSTATE:
+			return "STATE"s + to_string(op.pstate);
+		case ARM64_OP_SYS:
+			return "SYS"s + to_string(op.sys);
+		case ARM64_OP_PREFETCH:
+			return "PREFETCH"s + to_string(op.prefetch);
+		case ARM64_OP_BARRIER:
+			return "BARRIER"s + to_string(op.barrier);
                 case ARM64_OP_MEM:
                 {
 			string ret_val;
@@ -74,6 +85,7 @@ string DecodedOperandCapstoneARM64_t::getString() const
 
 			return ret_val;
 		}
+
                 default:
                         assert(0);
         }

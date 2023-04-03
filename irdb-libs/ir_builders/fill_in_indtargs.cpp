@@ -3915,10 +3915,10 @@ V2:
 				const auto scoop_contents = scoop->getContents().c_str();
 				const auto symsize =
 					ptrsize == 8 ? sizeof(Elf64_Sym) : ptrsize == 4 ? sizeof(Elf32_Sym)
-																	: throw domain_error("Cannot detect ptr size -> ELF symbol mapping");
+					: throw domain_error("Cannot detect ptr size -> ELF symbol mapping");
 
 				auto table_entry_no = 0U;
-				for (auto i = 0U; i + symsize < scoop->getSize(); i += symsize, table_entry_no++)
+				for (auto i = 0U; i + symsize <= scoop->getSize(); i += symsize, table_entry_no++)
 				{
 					int addr_offset = 0;
 					VirtualOffset_t vo = 0;

@@ -12,7 +12,7 @@ popd
 
 install_deps()
 {
-	sudo apt-get install -y binutils-aarch64-linux-gnu
+	sudo apt-get install -y binutils-aarch64-linux-gnu gcc-aarch64-linux-gnu
 }
 
 main()
@@ -20,6 +20,8 @@ main()
 	install_deps
 	export PS_OBJDUMP=$(which aarch64-linux-gnu-objdump)
 	export PS_READELF=$(which aarch64-linux-gnu-readelf)
+	export PS_GCC=$(which aarch64-linux-gnu-gcc)
+	export PS_OBJCOPY=$(which aarch64-linux-gnu-objcopy)
 
 
 	mkdir -p artifacts/protected_binaries
