@@ -1,7 +1,0 @@
-
-
-
-env=Environment()
-Export('env')
-ret=SConscript("SConscript")
-Return('ret')

@@ -1,6 +1,0 @@
-
-
-
-env=Environment()
-Export('env')
-SConscript("SConscript")
