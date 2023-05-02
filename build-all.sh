@@ -8,7 +8,7 @@ fi
 
 
 if [[ $(uname -m) == 'armv7l' ]] || [[ $(uname -m) == 'aarch64' ]]; then
-	scons $SCONSDEBUG 
+	scons $SCONSDEBUG debug=1 
 else 
 	scons $SCONSDEBUG -j 3
 fi
