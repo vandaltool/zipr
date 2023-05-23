@@ -27,7 +27,7 @@ DecodedInstructionCapstoneARM_t::CapstoneHandle_t::CapstoneHandle_t(FileIR_t* fi
 {
 	static_assert(sizeof(csh)==sizeof(handle), "Capstone handle size is unexpected.  Has CS changed?");
 
-	const auto mode = CS_MODE_LITTLE_ENDIAN;
+	const auto mode = static_cast<cs_mode>(CS_MODE_LITTLE_ENDIAN | ( firp->getArchitectureBitWidth() == 32 ? CS_MODE_V8 : 0));
 	const auto arch = 
 		firp->getArchitectureBitWidth() == 64 ? CS_ARCH_ARM64 : 
 		firp->getArchitectureBitWidth() == 32 ? CS_ARCH_ARM   : 
