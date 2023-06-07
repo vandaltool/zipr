@@ -3,7 +3,7 @@
 	url = https://git.zephyr-software.com/opensrc/SMPStaticAnalyzer.git
 [submodule "zipr-sdk"]
 	path = zipr-sdk
-	url = https://git.zephyr-software.com/opensrc/opensrc/zipr-sdk.git
+	url = https://git.zephyr-software.com/opensrc/zipr-sdk.git
 [submodule "pedi"]
 	path = pedi
 	url = https://git.zephyr-software.com/opensrc/pedi.git
