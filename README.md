@@ -1,3 +1,5 @@
+# Zipr Clone with Symbols
+
 # Zipr via Docker 
 
 Run our docker image by [installing Docker](https://docs.docker.com/get-docker/), then running:
