@@ -1,30 +1,30 @@
 [submodule "SMPStaticAnalyzer"]
 	path = SMPStaticAnalyzer
-	url = ../SMPStaticAnalyzer.git
+	url = https://git.zephyr-software.com/opensrc/SMPStaticAnalyzer.git
 [submodule "zipr-sdk"]
 	path = zipr-sdk
-	url = ../../opensrc/zipr-sdk.git
+	url = https://git.zephyr-software.com/opensrc/opensrc/zipr-sdk.git
 [submodule "pedi"]
 	path = pedi
-	url = ../pedi.git
+	url = https://git.zephyr-software.com/opensrc/pedi.git
 [submodule "IdaProServer"]
 	path = IdaProServer
-	url = ../IdaProServer.git
+	url = https://git.zephyr-software.com/opensrc/IdaProServer.git
 [submodule "irdb-sdk"]
 	path = irdb-sdk
-	url = ../../opensrc/irdb-sdk.git
+	url = https://git.zephyr-software.com/opensrc/irdb-sdk.git
 [submodule "irdb-libs/libehp"]
 	path = irdb-libs/libehp
-	url = ../../opensrc/libehp.git
+	url = https://git.zephyr-software.com/opensrc/libehp.git
 [submodule "irdb-libs/third_party/elfio-code"]
 	path = irdb-libs/third_party/elfio-code
-	url = ../../third-party-mirrors/ELFIO.git
+	url = https://git.zephyr-software.com/third-party-mirrors/ELFIO.git
 [submodule "irdb-libs/third_party/pebliss"]
 	path = irdb-libs/third_party/pebliss
-	url = ../../third-party-mirrors/pebliss.git
+	url = https://git.zephyr-software.com/third-party-mirrors/pebliss.git
 [submodule "irdb-libs/third_party/capstone"]
 	path = irdb-libs/third_party/capstone
-	url = ../../third-party-mirrors/capstone.git
+	url = https://git.zephyr-software.com/third-party-mirrors/capstone.git
 [submodule "irdb-libs/third_party/keystone"]
 	path = irdb-libs/third_party/keystone
-	url = ../../third-party-mirrors/keystone.git
+	url = https://git.zephyr-software.com/third-party-mirrors/keystone.git
