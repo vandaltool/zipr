@@ -50,7 +50,7 @@ uint8_t dos_header[]=
 
 
 template<int width, class  uintMa_t>
-void PeWriter<width,uintMa_t>::Write(const string &out_file, const string &infile)
+void PeWriter<width,uintMa_t>::Write(const string &out_file, const string &infile, const Zipr_SDK::InstructionLocationMap_t &)
 {
 	// confirm our understanding of these fields
 	assert(sizeof(coff_header_t)==24);

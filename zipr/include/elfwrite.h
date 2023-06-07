@@ -50,7 +50,7 @@ class ElfWriter : public ExeWriter
 			}
 
 		virtual ~ElfWriter() {}
-		void Write(const std::string &out_file, const std::string &infile);
+		void Write(const std::string &out_file, const std::string &infile, const Zipr_SDK::InstructionLocationMap_t &im);
 
 
 	protected:
@@ -61,7 +61,7 @@ class ElfWriter : public ExeWriter
 		virtual void LoadPhdrs(FILE* fin)=0;
 		virtual void CreateNewPhdrs(const IRDB_SDK::VirtualOffset_t &min_addr, const IRDB_SDK::VirtualOffset_t &max_addr)=0;
 		virtual void WriteElf(FILE* fout)=0;
-		virtual void AddSections(FILE* fout)=0;
+		virtual void AddSections(FILE* fout, const Zipr_SDK::InstructionLocationMap_t &im)=0;
 };
 
 template <class T_Elf_Ehdr, class T_Elf_Phdr, class T_Elf_Addr, class T_Elf_Shdr, class T_Elf_Sym, class T_Elf_Rel, class T_Elf_Rela, class T_Elf_Dyn>
@@ -93,7 +93,7 @@ class ElfWriterImpl : public ElfWriter
 			IRDB_SDK::VirtualOffset_t new_phdr_addr
 			);
 		IRDB_SDK::DataScoop_t* find_scoop_by_name(const std::string& name, IRDB_SDK::FileIR_t* );
-		void AddSections(FILE* fout);
+		void AddSections(FILE* fout, const Zipr_SDK::InstructionLocationMap_t &im);
 		void update_phdr_for_scoop_sections(IRDB_SDK::FileIR_t* );
 		void trim_last_segment_filesz(IRDB_SDK::FileIR_t* firp);
 

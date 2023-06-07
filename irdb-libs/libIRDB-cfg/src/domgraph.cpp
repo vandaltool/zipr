@@ -154,7 +154,11 @@ DominatorMap_t DominatorGraph_t::Dom_Comp(const IRDB_SDK::BasicBlockVector_t& N,
 				T = T intersect Domin(p)
 			done
 */
-			for(const auto &p : get_preds(n) )
+			IRDB_SDK::BasicBlockSet_t preds = get_preds(n);
+			if (preds.size() == 0 && n != r) {
+				preds.insert(r);
+			} 
+			for(const auto &p : preds )
 			{
 				IRDB_SDK::BasicBlockSet_t tmp;
 				set_intersection(T.begin(), T.end(), Domin[p].begin(), Domin[p].end(), inserter(tmp,tmp.begin()));

@@ -158,7 +158,13 @@ void ControlFlowGraph_t::find_unblocked_instructions(IRDB_SDK::InstructionSet_t 
 
 	auto my_inserter=inserter(missed_instructions,missed_instructions.end());
 	set_difference(ALLOF(func->getInstructions()), ALLOF(mapped_instructions), my_inserter);
-	starts.insert(ALLOF(missed_instructions));
+	for (auto i : missed_instructions) {
+		const auto d = DecodedInstruction_t::factory(i);
+		if (d->getMnemonic() != "nop") {
+			starts.insert(i);
+		}
+	}
+	// starts.insert(ALLOF(missed_instructions));
 }
 
 

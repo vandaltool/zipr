@@ -73,7 +73,7 @@ class ExeWriter
 		}
 
 		virtual ~ExeWriter() {}
-		virtual void Write(const std::string &out_file, const std::string &infile) = 0;
+		virtual void Write(const std::string &out_file, const std::string &infile, const Zipr_SDK::InstructionLocationMap_t &im) = 0;
 
 	protected:
 
